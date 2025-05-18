@@ -2,21 +2,21 @@
     "type": "confluence:hellforge",
     "ingredients": [
         {
-            "type": "terra_curio:amount_ingredient",
+            "type": "confluence_magic_lib:amount_ingredient",
             "ingredient": {
                 "item": "confluence:silk"
             },
             "count": 10
         },
         {
-            "type": "terra_curio:amount_ingredient",
+            "type": "confluence_magic_lib:amount_ingredient",
             "ingredient": {
                 "tag": "confluence:shadow_scale_and_tissue_sample"
             },
             "count": 5
         },
         {
-            "type": "terra_curio:amount_ingredient",
+            "type": "confluence_magic_lib:amount_ingredient",
             "ingredient": {
                 "item": "minecraft:obsidian"
             },

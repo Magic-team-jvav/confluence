@@ -1,22 +1,6 @@
 {
-  "biomes": "#confluence:has_structure/heaven_islands",
-  "adapt_noise": false,
+  "type": "confluence:heaven_islands",
+  "biomes": "#confluence:has_structure/shimmer_lake",
   "spawn_overrides": {},
-  "type": "minecraft:jigsaw",
-  "start_pool": "confluence:heaven_islands/heaven_islands",
-  "size": 7,
-  "step": "top_layer_modification",
-  "start_height": {
-    "type": "uniform",
-    "min_inclusive": {
-      "absolute": 280
-    },
-    "max_inclusive": {
-      "absolute": 260
-    }
-  },
-  "max_distance_from_center": 128,
-  "terrain_adaptation": "none",
-  "use_expansion_hack": false,
-  "liquid_settings": "ignore_waterlogging"
+  "step": "top_layer_modification"
 }

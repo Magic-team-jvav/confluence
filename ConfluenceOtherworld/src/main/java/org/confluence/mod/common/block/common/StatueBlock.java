@@ -7,8 +7,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.confluence.mod.common.block.HorizontalDirectionalWithVerticalTwoPartBlock;
-import org.confluence.mod.common.block.StateProperties;
+import org.confluence.lib.common.block.HorizontalDirectionalWithVerticalTwoPartBlock;
+import org.confluence.lib.common.block.StateProperties;
 
 /**
  * <a href="https://terraria.wiki.gg/zh/wiki/%E9%9B%95%E5%83%8F">雕像Wiki页面</a>

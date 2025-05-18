@@ -1,0 +1,27 @@
+{
+    "name": "patchouli.confluence.otherworld_note.weapon.dynamite.name",
+    "icon": "minecraft:tnt",
+    "category": "confluence:weapon",
+    "pages": [
+        {
+            "type": "patchouli:spotlight",
+            "item": "minecraft:tnt",
+            "text": "patchouli.confluence.otherworld_note.weapon.dynamite.0"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minecraft:tnt",
+            "text": "patchouli.confluence.otherworld_note.weapon.dynamite.1"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minecraft:tnt",
+            "text": "patchouli.confluence.otherworld_note.weapon.dynamite.2"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minecraft:tnt",
+            "text": "patchouli.confluence.otherworld_note.weapon.dynamite.3"
+        }
+    ]
+}

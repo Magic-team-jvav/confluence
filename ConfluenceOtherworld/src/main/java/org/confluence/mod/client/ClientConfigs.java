@@ -2,6 +2,7 @@ package org.confluence.mod.client;
 
 import net.minecraft.network.chat.Component;
 import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.ModList;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
 import net.neoforged.neoforge.common.ModConfigSpec.Builder;
@@ -12,6 +13,8 @@ import org.confluence.mod.client.gui.hud.TerraStyleArmorHud;
 import org.confluence.mod.client.gui.hud.TerraStyleFoodHud;
 import org.confluence.mod.client.gui.hud.TerraStyleHealthHud;
 import org.confluence.mod.client.gui.hud.TerraStyleManaHud;
+import org.confluence.mod.client.handler.StarPhaseHandler;
+import org.confluence.mod.common.CommonConfigs;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Locale;
@@ -19,6 +22,8 @@ import java.util.Locale;
 public final class ClientConfigs {
     public static int showWindParticles = 90;
     public static boolean achievementToast = true;
+    public static boolean playerOurMusic = false;
+    public static boolean showItemPrice = true;
 
     public static boolean terraStyleHealth = true;
     public static TerraStyleHealthHud.Health healthStyle = TerraStyleHealthHud.Health.OVERLAY;
@@ -36,6 +41,8 @@ public final class ClientConfigs {
 
     private static IntValue SHOW_WIND_PARTICLES;
     private static BooleanValue ACHIEVEMENT_TOAST;
+    private static BooleanValue PLAY_OUR_MUSIC;
+    private static BooleanValue SHOW_ITEM_PRICE;
 
     private static BooleanValue TERRA_STYLE_HEALTH;
     private static EnumValue<TerraStyleHealthHud.Health> HEALTH_STYLE;
@@ -54,6 +61,8 @@ public final class ClientConfigs {
     public static void onLoad() {
         showWindParticles = SHOW_WIND_PARTICLES.get();
         achievementToast = ACHIEVEMENT_TOAST.get();
+        playerOurMusic = PLAY_OUR_MUSIC.get();
+        showItemPrice = SHOW_ITEM_PRICE.get();
 
         terraStyleHealth = TERRA_STYLE_HEALTH.get();
         healthStyle = HEALTH_STYLE.get();
@@ -65,9 +74,10 @@ public final class ClientConfigs {
         terraStyleFood = TERRA_STYLE_FOOD.get();
 
         bloodyEffect = BLOODY_EFFECT.get();
-        goreEffect = GORE_EFFECT.get();
+        goreEffect = GORE_EFFECT != null ? GORE_EFFECT.get() : GoreEffect.OFF;
         damageIndicator = DAMAGE_INDICATOR.get();
         healIndicator = HEAL_INDICATOR.get();
+        StarPhaseHandler.enabled = CommonConfigs.STAR_PHASE.get();
     }
 
     public static void register(ModContainer container) {
@@ -75,6 +85,8 @@ public final class ClientConfigs {
 
         SHOW_WIND_PARTICLES = BUILDER.defineInRange("showWindParticles", 90, 0, 100);
         ACHIEVEMENT_TOAST = BUILDER.define("achievementToast", true);
+        PLAY_OUR_MUSIC = BUILDER.define("playerOurMusic", false);
+        SHOW_ITEM_PRICE = BUILDER.define("showItemPrice", true);
 
         BUILDER.push("HUD");
         BUILDER.push("Health");
@@ -102,7 +114,9 @@ public final class ClientConfigs {
 
         BUILDER.push("Entity");
         BLOODY_EFFECT = BUILDER.define("bloodyEffect", true);
-        GORE_EFFECT = BUILDER.defineEnum("goreEffect", GoreEffect.CONFLUENCE_VANILLA);
+        if(!ModList.get().isLoaded("yes_steve_model")) {
+            GORE_EFFECT = BUILDER.defineEnum("goreEffect", GoreEffect.CONFLUENCE_VANILLA);
+        }
         DAMAGE_INDICATOR = BUILDER.define("damageIndicator", true);
         HEAL_INDICATOR = BUILDER.define("healIndicator", true);
         BUILDER.pop();

@@ -1,0 +1,23 @@
+{
+    "display": {
+        "icon": {
+            "id": "minecraft:barrier"
+        },
+        "title": {
+            "translate": "achievements.confluence.lihzahrdian_idol.title"
+        },
+        "description": {
+            "translate": "achievements.confluence.lihzahrdian_idol.description"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": false,
+        "hidden": false
+    },
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "never": {
+            "trigger": "minecraft:impossible"
+        }
+    }
+}

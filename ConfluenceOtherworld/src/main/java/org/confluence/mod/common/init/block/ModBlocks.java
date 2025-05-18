@@ -1,11 +1,15 @@
 package org.confluence.mod.common.init.block;
 
+import com.mojang.datafixers.DSL;
+import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
+import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
@@ -15,14 +19,14 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.confluence.lib.common.block.EmptyPickupLiquidBlock;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.common.*;
 import org.confluence.mod.common.block.natural.CoinPileBlock;
-import org.confluence.mod.common.block.natural.CrackedBrickBlock;
-import org.confluence.mod.common.block.natural.CrispyHoneyBlock;
-import org.confluence.mod.common.block.natural.SwordInStoneBlock;
+import org.confluence.mod.common.block.natural.CursedFlameBlock;
+import org.confluence.mod.common.block.natural.food.BoulderBreadBlock;
+import org.confluence.mod.common.block.natural.food.GreenDumplingBlock;
 import org.confluence.mod.common.block.natural.herbs.*;
-import org.confluence.mod.common.fluid.EmptyPickupLiquidBlock;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.item.ModItems;
 
@@ -32,6 +36,7 @@ import java.util.function.Supplier;
 public final class ModBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Confluence.MODID);
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, Confluence.MODID);
+    public static final Object2BooleanMap<DeferredBlock<TombstoneBlock>> TOMBSTONES = new Object2BooleanOpenHashMap<>();
 
     public static final DeferredBlock<CoinPileBlock> COPPER_COIN_PILE = registerWithoutItem("copper_coin_pile", CoinPileBlock::new);
     public static final DeferredBlock<CoinPileBlock> SILVER_COIN_PILE = registerWithoutItem("silver_coin_pile", CoinPileBlock::new);
@@ -39,17 +44,11 @@ public final class ModBlocks {
     public static final DeferredBlock<CoinPileBlock> PLATINUM_COIN_PILE = registerWithoutItem("platinum_coin_pile", CoinPileBlock::new);
     public static final DeferredBlock<CoinPileBlock> EMERALD_COIN_PILE = registerWithoutItem("emerald_coin_pile", CoinPileBlock::new);
 
-    public static final Supplier<SwordInStoneBlock> SWORD_IN_STONE = registerWithItem("sword_in_stone", SwordInStoneBlock::new);
-    public static final Supplier<CrackedBrickBlock> CRACKED_BLUE_BRICK = registerWithItem("cracked_blue_block", CrackedBrickBlock::new);
-    public static final Supplier<CrackedBrickBlock> CRACKED_GREEN_BRICK = registerWithItem("cracked_green_block", CrackedBrickBlock::new);
-    public static final Supplier<CrackedBrickBlock> CRACKED_PINK_BRICK = registerWithItem("cracked_pink_block", CrackedBrickBlock::new);
-    public static final Supplier<CrispyHoneyBlock> CRISPY_HONEY_BLOCK = registerWithItem("crispy_honey_block", CrispyHoneyBlock::new);
-
     // 流体
-    public static final Supplier<LiquidBlock> HONEY = registerWithoutItem("honey", () -> new LiquidBlock(ModFluids.HONEY.fluid().get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.COLOR_YELLOW)));
-    public static final Supplier<LiquidBlock> SHIMMER = registerWithoutItem("shimmer", () -> new EmptyPickupLiquidBlock(ModFluids.SHIMMER.fluid().get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.COLOR_PINK).lightLevel(blockState -> 10)));
-    public static final Supplier<AetheriumCauldronBlock> AETHERIUM_CAULDRON = registerWithItem("aetherium_cauldron", () -> new AetheriumCauldronBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WATER_CAULDRON)));
-    public static final Supplier<HoneyCauldronBlock> HONEY_CAULDRON = registerWithItem("honey_cauldron", () -> new HoneyCauldronBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WATER_CAULDRON)));
+    public static final DeferredBlock<LiquidBlock> HONEY = registerWithoutItem("honey", () -> new LiquidBlock(ModFluids.HONEY.fluid().get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.COLOR_YELLOW)));
+    public static final DeferredBlock<LiquidBlock> SHIMMER = registerWithoutItem("shimmer", () -> new EmptyPickupLiquidBlock(ModFluids.SHIMMER.fluid().get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.COLOR_PINK).lightLevel(blockState -> 10)));
+    public static final DeferredBlock<AetheriumCauldronBlock> AETHERIUM_CAULDRON = registerWithItem("aetherium_cauldron", () -> new AetheriumCauldronBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WATER_CAULDRON)));
+    public static final DeferredBlock<HoneyCauldronBlock> HONEY_CAULDRON = registerWithItem("honey_cauldron", () -> new HoneyCauldronBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WATER_CAULDRON)));
 
     // 草药
     public static final DeferredBlock<BaseHerbBlock> WATERLEAF = registerWithoutItem("waterleaf", Waterleaf::new); // 幌菊
@@ -60,17 +59,41 @@ public final class ModBlocks {
     public static final DeferredBlock<BaseHerbBlock> DAYBLOOM = registerWithoutItem("daybloom", Daybloom::new); // 太阳花
     public static final DeferredBlock<DeathWeed> DEATHWEED = registerWithoutItem("deathweed", DeathWeed::new); // 死亡草
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BaseHerbBlock.Entity>> HERBS_ENTITY = BLOCK_ENTITIES.register("herbs_entity", () -> BlockEntityType.Builder.of(BaseHerbBlock.Entity::new,
-            WATERLEAF.get(), FIREBLOSSOM.get(), MOONGLOW.get(), BLINKROOT.get(), SHIVERTHORN.get(), DAYBLOOM.get(), DEATHWEED.get()).build(null));
+            WATERLEAF.get(), FIREBLOSSOM.get(), MOONGLOW.get(), BLINKROOT.get(), SHIVERTHORN.get(), DAYBLOOM.get(), DEATHWEED.get()).build(DSL.remainderType()));
 
-    public static final Supplier<PooBlock> POO = registerWithItem("poo", () -> new PooBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MUD)));
+    public static final DeferredBlock<PooBlock> POO = registerWithItem("poo", () -> new PooBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MUD)));
 
-    public static final Supplier<BaseRopeBlock> ROPE = registerWithItem("rope", () -> new BaseRopeBlock(BlockBehaviour.Properties.of().noCollission().instabreak()), BaseRopeBlock.Item::new);
-    public static final Supplier<BaseRopeBlock> VINE_ROPE = registerWithItem("vine_rope", () -> new BaseRopeBlock(BlockBehaviour.Properties.of().noCollission().instabreak()), BaseRopeBlock.Item::new);
-    public static final Supplier<BaseRopeBlock> SILK_ROPE = registerWithItem("silk_rope", () -> new BaseRopeBlock(BlockBehaviour.Properties.of().noCollission().instabreak()), BaseRopeBlock.Item::new);
-    public static final Supplier<BaseRopeBlock> WEB_ROPE = registerWithItem("web_rope", () -> new BaseRopeBlock(BlockBehaviour.Properties.of().noCollission().instabreak()), BaseRopeBlock.Item::new);
+    public static final DeferredBlock<BaseRopeBlock> ROPE = registerWithItem("rope", () -> new BaseRopeBlock(BlockBehaviour.Properties.of().noCollission().instabreak()), BaseRopeBlock.Item::new);
+    public static final DeferredBlock<BaseRopeBlock> VINE_ROPE = registerWithItem("vine_rope", () -> new BaseRopeBlock(BlockBehaviour.Properties.of().noCollission().instabreak()), BaseRopeBlock.Item::new);
+    public static final DeferredBlock<BaseRopeBlock> SILK_ROPE = registerWithItem("silk_rope", () -> new BaseRopeBlock(BlockBehaviour.Properties.of().noCollission().instabreak()), BaseRopeBlock.Item::new);
+    public static final DeferredBlock<BaseRopeBlock> WEB_ROPE = registerWithItem("web_rope", () -> new BaseRopeBlock(BlockBehaviour.Properties.of().noCollission().instabreak()), BaseRopeBlock.Item::new);
 
-    public static final Supplier<Block> FAILED_SKULL_BLOCK = registerWithoutItem("failed_skull_block", () -> new ModSkullBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.CREEPER).strength(1.0F).pushReaction(PushReaction.DESTROY)));
-    public static final Supplier<Block> FAILED_SKULL_WALL_BLOCK = registerWithoutItem("failed_skull_wall_block", () -> new ModSkullBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.CREEPER).strength(1.0F).pushReaction(PushReaction.DESTROY)));
+    public static final DeferredBlock<Block> FAILED_SKULL_BLOCK = registerWithoutItem("failed_skull_block", () -> new BaseSkullBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.CREEPER).strength(1.0F).pushReaction(PushReaction.DESTROY)));
+    public static final DeferredBlock<Block> FAILED_SKULL_WALL_BLOCK = registerWithoutItem("failed_skull_wall_block", () -> new BaseSkullBlock(BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.CREEPER).strength(1.0F).pushReaction(PushReaction.DESTROY)));
+
+    public static final DeferredBlock<TombstoneBlock> TOMBSTONE = registerTombstone("tombstone", false);
+    public static final DeferredBlock<TombstoneBlock> GRAVE_MARKER = registerTombstone("grave_marker", false);
+    public static final DeferredBlock<TombstoneBlock> CROSS_GRAVE_MARKER = registerTombstone("cross_grave_marker", false);
+    public static final DeferredBlock<TombstoneBlock> HEADSTONE = registerTombstone("headstone", false);
+    public static final DeferredBlock<TombstoneBlock> GRAVESTONE = registerTombstone("gravestone", false);
+    public static final DeferredBlock<TombstoneBlock> OBELISK = registerTombstone("obelisk", false);
+    public static final DeferredBlock<TombstoneBlock> GOLDEN_TOMBSTONE = registerTombstone("golden_tombstone", true);
+    public static final DeferredBlock<TombstoneBlock> GOLDEN_GRAVE_MARKER = registerTombstone("golden_grave_marker", true);
+    public static final DeferredBlock<TombstoneBlock> GOLDEN_CROSS_GRAVE_MARKER = registerTombstone("golden_cross_grave_marker", true);
+    public static final DeferredBlock<TombstoneBlock> GOLDEN_HEADSTONE = registerTombstone("golden_headstone", true);
+    public static final DeferredBlock<TombstoneBlock> GOLDEN_GRAVESTONE = registerTombstone("golden_gravestone", true);
+    public static final Supplier<BlockEntityType<TombstoneBlock.Entity>> TOMBSTONE_ENTITY = BLOCK_ENTITIES.register("tombstone_entity", () -> BlockEntityType.Builder.of(TombstoneBlock.Entity::new, TOMBSTONES.keySet().stream().map(DeferredHolder::get).toArray(TombstoneBlock[]::new)).build(DSL.remainderType()));
+
+    public static final DeferredBlock<GreenDumplingBlock> GREEN_DUMPLING_BLOCK = registerWithoutItem("green_dumpling_block", GreenDumplingBlock::new);
+    public static final DeferredBlock<BoulderBreadBlock> BOULDER_BREAD_BLOCK = registerWithoutItem("boulder_bread_block", BoulderBreadBlock::new);
+
+    public static final DeferredBlock<CursedFlameBlock> CURSED_FLAME_BLOCK = registerWithoutItem("cursed_flame_block", () -> new CursedFlameBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_LIGHT_GREEN).replaceable().noCollission().instabreak().lightLevel(l -> 7).sound(SoundType.WOOL).pushReaction(PushReaction.DESTROY)));
+
+    private static DeferredBlock<TombstoneBlock> registerTombstone(String id, boolean isGolden) {
+        DeferredBlock<TombstoneBlock> tombstone = registerWithItem(id, TombstoneBlock::new);
+        TOMBSTONES.put(tombstone, isGolden);
+        return tombstone;
+    }
 
     public static <B extends Block> DeferredBlock<B> registerWithItem(String id, Supplier<B> block) {
         return registerWithItem(id, block, new Item.Properties());
@@ -98,6 +121,7 @@ public final class ModBlocks {
      * @param delta 偏差值
      * @return 爆炸抗性
      */
+    @SuppressWarnings("deprecation")
     public static float getObsidianBasedExplosionResistance(float delta) {
         return Blocks.OBSIDIAN.getExplosionResistance() + delta;
     }

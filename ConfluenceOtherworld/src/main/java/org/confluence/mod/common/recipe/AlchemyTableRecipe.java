@@ -1,6 +1,5 @@
 package org.confluence.mod.common.recipe;
 
-import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
@@ -11,10 +10,10 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
+import org.confluence.lib.common.recipe.AbstractAmountRecipe;
+import org.confluence.lib.common.recipe.AmountIngredient;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.menu.AlchemyTableMenu;
-import org.confluence.terra_curio.common.recipe.AbstractAmountRecipe;
-import org.confluence.terra_curio.common.recipe.AmountIngredient;
 import org.jetbrains.annotations.Nullable;
 
 public class AlchemyTableRecipe implements Recipe<AlchemyTableRecipe.Input> {
@@ -22,7 +21,7 @@ public class AlchemyTableRecipe implements Recipe<AlchemyTableRecipe.Input> {
     private final Ingredient base;
     private final NonNullList<Ingredient> ingredients;
 
-    protected AlchemyTableRecipe(ItemStack result, Ingredient base, NonNullList<Ingredient> ingredients) {
+    public AlchemyTableRecipe(ItemStack result, Ingredient base, NonNullList<Ingredient> ingredients) {
         if (ingredients.size() > 6) {
             throw new RuntimeException("Too many ingredients for '" + getGroup() + "' recipe. The maximum is: 6");
         }
@@ -74,14 +73,7 @@ public class AlchemyTableRecipe implements Recipe<AlchemyTableRecipe.Input> {
         public static final MapCodec<AlchemyTableRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
                 ItemStack.STRICT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
                 Ingredient.CODEC_NONEMPTY.fieldOf("base").forGetter(recipe -> recipe.base),
-                Ingredient.CODEC_NONEMPTY.listOf().fieldOf("ingredients").flatXmap(list -> {
-                    Ingredient[] ingredients = list.toArray(Ingredient[]::new);
-                    if (ingredients.length == 0) {
-                        return DataResult.error(() -> "No ingredients for workshop recipe");
-                    } else {
-                        return DataResult.success(NonNullList.of(AmountIngredient.EMPTY, ingredients));
-                    }
-                }, DataResult::success).forGetter(recipe -> recipe.ingredients)
+                AbstractAmountRecipe.INGREDIENTS_CODEC.forGetter(recipe -> recipe.ingredients)
         ).apply(instance, AlchemyTableRecipe::new));
         public static final StreamCodec<RegistryFriendlyByteBuf, AlchemyTableRecipe> STREAM_CODEC = StreamCodec.of(Serializer::toNetwork, Serializer::fromNetwork);
 

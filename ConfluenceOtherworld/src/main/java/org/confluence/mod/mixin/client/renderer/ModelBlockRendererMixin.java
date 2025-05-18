@@ -8,13 +8,9 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.block.ModelBlockRenderer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.BlockAndTintGetter;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
-import org.confluence.mod.client.handler.ClientPacketHandler;
+import org.confluence.lib.util.LibClientUtils;
 import org.confluence.mod.client.textures.LocalBrushData;
 import org.confluence.mod.common.data.saved.BrushData;
-import org.confluence.mod.util.ClientUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -29,7 +25,7 @@ public abstract class ModelBlockRendererMixin {
         if (color == BrushData.EMPTY_COLOR || color == BrushData.ECHO_COLOR) {
             original.call(instance, pose, quad, brightness, red, green, blue, alpha, lightmap, packedOverlay, readAlpha);
         } else if (color == BrushData.ILLUMINANT_COLOR) {
-            original.call(instance, pose, quad, brightness, red, green, blue, alpha, ClientUtils.FULL_BRIGHT, packedOverlay, readAlpha);
+            original.call(instance, pose, quad, brightness, red, green, blue, alpha, LibClientUtils.FULL_BRIGHT, packedOverlay, readAlpha);
         } else if (color == BrushData.NEGATIVE_COLOR) {
             if (red != 1.0F || green != 1.0F || blue != 1.0F) {
                 original.call(instance, pose, quad, brightness, 1.0F - red, 1.0F - green, 1.0F - blue, alpha, lightmap, packedOverlay, readAlpha);
@@ -37,24 +33,10 @@ public abstract class ModelBlockRendererMixin {
                 original.call(instance, pose, quad, brightness, red, green, blue, alpha, lightmap, packedOverlay, readAlpha);
             }
         } else {
-            float r = (float) (color >> 16 & 255) * ClientUtils.INV_255;
-            float g = (float) (color >> 8 & 255) * ClientUtils.INV_255;
-            float b = (float) (color & 255) * ClientUtils.INV_255;
+            float r = (float) (color >> 16 & 255) * LibClientUtils.INV_255;
+            float g = (float) (color >> 8 & 255) * LibClientUtils.INV_255;
+            float b = (float) (color & 255) * LibClientUtils.INV_255;
             original.call(instance, pose, quad, brightness, r, g, b, alpha, lightmap, packedOverlay, readAlpha);
-        }
-    }
-
-    @Mixin(targets = "net.minecraft.client.renderer.block.ModelBlockRenderer$AmbientOcclusionFace")
-    public static class AmbientOcclusionFaceMixin {
-        /**
-         * @see org.confluence.mod.mixin.integration.sodium.LightDataAccessMixin
-         */
-        @WrapOperation(method = "calculate", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/BlockAndTintGetter;getBlockState(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;"))
-        private BlockState replace(BlockAndTintGetter instance, BlockPos blockPos, Operation<BlockState> original, @Local(argsOnly = true) BlockPos pos) {
-            if (!ClientPacketHandler.hasEchoVisible() && !blockPos.equals(pos) && LocalBrushData.hasEcho(blockPos)) {
-                return Blocks.AIR.defaultBlockState();
-            }
-            return original.call(instance, blockPos);
         }
     }
 }

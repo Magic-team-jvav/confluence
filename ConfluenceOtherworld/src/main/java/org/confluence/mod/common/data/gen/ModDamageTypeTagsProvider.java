@@ -9,6 +9,7 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.terra_curio.common.init.TCTags;
+import org.confluence.terraentity.init.TETags;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
@@ -23,9 +24,14 @@ public class ModDamageTypeTagsProvider extends DamageTypeTagsProvider {
         tag(TCTags.HARMFUL_EFFECT).add(
                 ModDamageTypes.ACID_VENOM,
                 ModDamageTypes.CURSED_INFERNO,
-                ModDamageTypes.FROST_BURN
+                TETags.DamageTypes.FROST_BURN
         );
-        tag(DamageTypeTags.IS_PROJECTILE).add(ModDamageTypes.MAGICAL_PROJECTILE);
+        tag(DamageTypeTags.IS_PROJECTILE).add(
+                ModDamageTypes.MAGICAL_PROJECTILE,
+                ModDamageTypes.SWORD_PROJECTILE
+        );
         tag(Tags.DamageTypes.IS_MAGIC).add(ModDamageTypes.MAGICAL_PROJECTILE);
+        tag(DamageTypeTags.BYPASSES_ARMOR).add(TETags.DamageTypes.PASS_ARMOR);
+
     }
 }

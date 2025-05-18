@@ -1,0 +1,17 @@
+{
+    "name": "patchouli.confluence.otherworld_note.tool.bug_net.name",
+    "icon": "minecraft:cobweb",
+    "category": "confluence:tool",
+    "pages": [
+        {
+            "type": "patchouli:spotlight",
+            "item": "minecraft:cobweb",
+            "text": "patchouli.confluence.otherworld_note.tool.bug_net.0"
+        },
+        {
+            "type": "patchouli:spotlight",
+            "item": "minecraft:cobweb",
+            "text": "patchouli.confluence.otherworld_note.tool.bug_net.1"
+        }
+    ]
+}

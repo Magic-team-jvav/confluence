@@ -7,14 +7,12 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.StarPhaseHandler;
-import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.data.saved.StarPhase;
 import org.jetbrains.annotations.NotNull;
 
@@ -73,12 +71,6 @@ public record StarPhasesPacketS2C(Either<Map<Integer, StarPhase>, Map.Entry<Inte
         });
     }
 
-    public static void sendToAll(ServerLevel serverLevel) {
-        if (ServerLifecycleHooks.getCurrentServer() != null) {
-            PacketDistributor.sendToAllPlayers(new StarPhasesPacketS2C(Either.left(ConfluenceData.get(serverLevel).getStarPhases())));
-        }
-    }
-
     public static void sendToAll(int index, int timeOffset, float radius, float angle) {
         if (ServerLifecycleHooks.getCurrentServer() != null) {
             PacketDistributor.sendToAllPlayers(new StarPhasesPacketS2C(Either.right(new AbstractInt2ObjectMap.BasicEntry<>(index, new StarPhase(timeOffset, radius, angle)))));
@@ -87,9 +79,5 @@ public record StarPhasesPacketS2C(Either<Map<Integer, StarPhase>, Map.Entry<Inte
 
     public static void sendToClient(ServerPlayer serverPlayer, Map<Integer, StarPhase> starPhases) {
         PacketDistributor.sendToPlayer(serverPlayer, new StarPhasesPacketS2C(Either.left(starPhases)));
-    }
-
-    public static void sendToClient(ServerPlayer serverPlayer, int index, int timeOffset, float radius, float angle) {
-        PacketDistributor.sendToPlayer(serverPlayer, new StarPhasesPacketS2C(Either.right(new AbstractInt2ObjectMap.BasicEntry<>(index, new StarPhase(timeOffset, radius, angle)))));
     }
 }

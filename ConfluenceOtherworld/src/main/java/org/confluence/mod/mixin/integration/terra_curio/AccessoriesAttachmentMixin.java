@@ -23,7 +23,7 @@ public abstract class AccessoriesAttachmentMixin {
     @Shadow
     protected abstract <T, V extends PrimitiveValue<T>> void combineValue(ValueType<T, V> type, V value);
 
-    @Inject(method = "lambda$flushAbility$4", at = @At(value = "INVOKE", target = "Lorg/confluence/terra_curio/util/TCUtils;forConfluence$Inject()V"))
+    @Inject(method = "lambda$flushAbility$4", at = @At(value = "INVOKE", target = "Lorg/confluence/lib/util/LibUtils;forMixin$Inject()V"))
     private void additionalMana(LivingEntity living, ICuriosItemHandler handler, CallbackInfo ci, @Local ItemStack stack) {
         PrefixComponent prefix = PrefixUtils.getPrefix(stack);
         if (prefix == null) return;

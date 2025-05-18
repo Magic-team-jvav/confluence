@@ -16,11 +16,11 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.confluence.mod.common.block.HorizontalDirectionalWithVerticalFourPartBlock;
-import org.confluence.mod.common.block.StateProperties;
+import org.confluence.lib.common.block.HorizontalDirectionalWithVerticalFourPartBlock;
+import org.confluence.lib.common.block.StateProperties;
+import org.confluence.lib.common.recipe.EnvironmentLevelAccess;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.menu.HeavyWorkBenchMenu;
-import org.confluence.mod.common.recipe.EnvironmentLevelAccess;
 import org.confluence.mod.util.DynamicBiomeUtils;
 import org.jetbrains.annotations.Nullable;
 
@@ -46,7 +46,6 @@ public class HeavyWorkBenchBlock extends HorizontalDirectionalWithVerticalFourPa
     private static final VoxelShape[] RIGHT_SHAPES = new VoxelShape[]{RIGHT_SHAPE_SOUTH, RIGHT_SHAPE_WEST, RIGHT_SHAPE_NORTH, RIGHT_SHAPE_EAST};
     private static final VoxelShape[] UP_SHAPES = new VoxelShape[]{UP_SHAPE_SOUTH, UP_SHAPE_WEST, UP_SHAPE_NORTH, UP_SHAPE_EAST};
     private static final VoxelShape[] RIGHT_UP_SHAPES = new VoxelShape[]{RIGHT_UP_SHAPE_SOUTH, RIGHT_UP_SHAPE_WEST, RIGHT_UP_SHAPE_NORTH, RIGHT_UP_SHAPE_EAST};
-    private static final Component CONTAINER_TITLE = Component.translatable("container.confluence.heavy_work_bench");
 
     public HeavyWorkBenchBlock(Properties properties) {
         super(properties);
@@ -69,7 +68,7 @@ public class HeavyWorkBenchBlock extends HorizontalDirectionalWithVerticalFourPa
 
     @Override
     public @Nullable MenuProvider getMenuProvider(BlockState pState, Level pLevel, BlockPos pPos) {
-        return new SimpleMenuProvider((pContainerId, pPlayerInventory, pPlayer) -> new HeavyWorkBenchMenu(pContainerId, pPlayerInventory, new HeavyWorkBenchBlock.LevelAccess(pLevel, pPos)), CONTAINER_TITLE);
+        return new SimpleMenuProvider((pContainerId, pPlayerInventory, pPlayer) -> new HeavyWorkBenchMenu(pContainerId, pPlayerInventory, new HeavyWorkBenchBlock.LevelAccess(pLevel, pPos)), Component.translatable("container.confluence.heavy_work_bench"));
     }
 
     @Override

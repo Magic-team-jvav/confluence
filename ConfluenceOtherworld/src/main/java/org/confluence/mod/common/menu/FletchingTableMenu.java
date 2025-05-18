@@ -18,10 +18,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import org.confluence.lib.common.recipe.AbstractAmountRecipe;
 import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.recipe.FletchingTableRecipe;
-import org.confluence.terra_curio.common.recipe.AbstractAmountRecipe;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -181,7 +181,7 @@ public class FletchingTableMenu extends AbstractContainerMenu {
         @Override
         public void onTake(Player pPlayer, ItemStack pStack) {
             if (recipe != null) {
-                AbstractAmountRecipe.extractInput(input, recipe.getIngredients(), false);
+                AbstractAmountRecipe.consumeShapeless(input, recipe.getIngredients());
                 input.setChanged();
             }
         }

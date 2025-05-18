@@ -2,6 +2,9 @@ package org.confluence.mod.client.gui.container;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Renderable;
+import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.player.LocalPlayer;
@@ -13,12 +16,12 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.confluence.lib.common.menu.IToggleSlot;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.menu.ExtraInventoryMenu;
-import org.confluence.mod.common.menu.IToggleSlot;
+import org.confluence.mod.integration.mine_team.ExtraTeamRender;
 import org.confluence.terra_curio.TerraCurio;
-import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.common.network.client.CPacketOpenVanilla;
 
 import static net.minecraft.client.gui.screens.inventory.InventoryScreen.renderEntityInInventoryFollowsMouse;
@@ -31,13 +34,15 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
     private boolean buttonPressed = false;
     private float xMouse;
     private float yMouse;
+    private final ExtraTeamRender teamRender = new ExtraTeamRender(this);
 
     public ExtraInventoryScreen(ExtraInventoryMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
     }
 
     @Override
-    public void render(@NotNull GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
+    public void render(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
+        teamRender.renderTeamIcon(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
         super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
         renderTooltip(pGuiGraphics, pMouseX, pMouseY);
         this.xMouse = (float) pMouseX;
@@ -45,7 +50,14 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
     }
 
     @Override
-    protected void renderLabels(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY) {}
+    protected void init() {
+        super.init();
+        teamRender.initButton();
+        // better experience mixin here
+    }
+
+    @Override
+    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {}
 
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
@@ -93,14 +105,6 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
             guiGraphics.blit(BACKGROUND, leftPos + 147, topPos + 33, 194, 0, 18, 20);
         }
         renderEntityInInventoryFollowsMouse(guiGraphics, leftPos + 26, topPos + 8, leftPos + 75, topPos + 78, 30, 0.0625F, xMouse, yMouse, minecraft.player);
-    }
-
-    @Override
-    public int getSlotColor(int index) {
-        if (!buttonPressed && index < menu.invStart && index >= menu.invStart - menu.extraInventory.getSizeAccessoryDye()) {
-            return 0x80FF0000;
-        }
-        return super.getSlotColor(index);
     }
 
     private void renderEquipment(GuiGraphics guiGraphics, int i) {
@@ -156,5 +160,10 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
         minecraft.setScreen(inventory);
         player.containerMenu.setCarried(stack);
         PacketDistributor.sendToServer(new CPacketOpenVanilla(stack));
+    }
+
+    @Override
+    public <T extends GuiEventListener & Renderable & NarratableEntry> T addRenderableWidget(T widget) {
+        return super.addRenderableWidget(widget);
     }
 }

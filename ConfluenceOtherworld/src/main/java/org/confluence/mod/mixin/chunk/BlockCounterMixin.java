@@ -15,28 +15,29 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(targets = "net.minecraft.world.level.chunk.LevelChunkSection$1BlockCounter")
 public abstract class BlockCounterMixin {
-    @Unique IChunkSection confluence$section;
+    @Unique
+    IChunkSection confluence$section;
 
     @Dynamic // 抑制一下报错
     @Inject(method = "accept", at = @At("RETURN"))
-    private void accept(BlockState state, int count, CallbackInfo ci){
-        if(confluence$section == null) return;
-        if(state.getBlock() instanceof ISpreadable spreadable){
-            switch(spreadable.getType()){
+    private void accept(BlockState state, int count, CallbackInfo ci) {
+        if (confluence$section == null) return;
+        if (state.getBlock() instanceof ISpreadable spreadable) {
+            switch (spreadable.getType()) {
                 case CRIMSON -> confluence$section.confluence$countCrimson(count);
                 case CORRUPT -> confluence$section.confluence$countCorrupt(count);
                 case HALLOW -> confluence$section.confluence$countHallow(count);
             }
         }
-        if(state.is(ModTags.Blocks.TOMBSTONE)){
+        if (state.is(ModTags.Blocks.TOMBSTONE)) {
             confluence$section.confluence$countTomb(count);
-        }else if(state.is(Blocks.SUNFLOWER)){
+        } else if (state.is(Blocks.SUNFLOWER)) {
             confluence$section.confluence$countSunflower(count);
         }
     }
 
-    @Inject(method = "<init>", at = @At("RETURN"))
-    private void constr(LevelChunkSection section, CallbackInfo ci){
-        confluence$section = (IChunkSection) section;
+    @Inject(method = "<init>*", at = @At("RETURN"))
+    private void constr(LevelChunkSection section, CallbackInfo ci) {
+        this.confluence$section = (IChunkSection) section;
     }
 }

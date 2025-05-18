@@ -5,7 +5,7 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.Blocks;
-import org.confluence.terra_curio.common.component.ModRarity;
+import org.confluence.lib.common.component.ModRarity;
 
 import java.util.Optional;
 
@@ -21,5 +21,10 @@ public class DemonConch extends MagicConch {
     @Override
     protected boolean checkAvailable(UseOnContext pContext) {
         return pContext.getLevel().getBlockState(pContext.getClickedPos()).is(Blocks.NETHER_PORTAL);
+    }
+
+    @Override
+    protected Component successStoreMessage(BlockPos pos) {
+        return Component.translatable("chat.confluence.demon_conch", pos.toShortString());
     }
 }

@@ -1,6 +1,10 @@
 package org.confluence.mod.common.init;
 
+import com.mojang.serialization.Codec;
+import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -8,13 +12,34 @@ import net.neoforged.neoforge.registries.datamaps.DataMapType;
 import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.ValueComponent;
+import org.confluence.mod.common.data.map.ExtractinatorData;
+import org.confluence.mod.common.data.map.TreasureBagDrop;
+
+import java.util.LinkedList;
+import java.util.List;
 
 @EventBusSubscriber(modid = Confluence.MODID, bus = EventBusSubscriber.Bus.MOD)
 public final class ModDataMaps {
-    public static final DataMapType<Item, ValueComponent> VALUE = DataMapType.builder(Confluence.asResource("value"), Registries.ITEM, ValueComponent.CODEC).synced(ValueComponent.CODEC, false).build();
+    private static List<DataMapType<?,?>> types = new LinkedList<>();
+
+    public static final DataMapType<Item, ValueComponent> VALUE = register("value", Registries.ITEM, ValueComponent.CODEC, true);
+    public static final DataMapType<Item, ExtractinatorData> EXTRACTINATOR = register("extractinator", Registries.ITEM, ExtractinatorData.CODEC, false);
+    public static final DataMapType<Item, ExtractinatorData> CHLOROPHYTE_EXTRACTINATOR = register("chlorophyte_extractinator", Registries.ITEM, ExtractinatorData.CODEC, false);
+    public static final DataMapType<EntityType<?>, TreasureBagDrop> TREASURE_BAG = register("treasure_bag", Registries.ENTITY_TYPE, TreasureBagDrop.CODEC, false);
+
+    private static <R, T> DataMapType<R, T> register(String path, ResourceKey<Registry<R>> resourceKey, Codec<T> codec, boolean synced) {
+        DataMapType.Builder<T, R> builder = DataMapType.builder(Confluence.asResource(path), resourceKey, codec);
+        if (synced) builder.synced(codec, false);
+        DataMapType<R, T> type = builder.build();
+        types.add(type);
+        return type;
+    }
 
     @SubscribeEvent
     public static void registerDataMapTypes(RegisterDataMapTypesEvent event) {
-        event.register(VALUE);
+        for (DataMapType<?, ?> type : types) {
+            event.register(type);
+        }
+        types = null;
     }
 }

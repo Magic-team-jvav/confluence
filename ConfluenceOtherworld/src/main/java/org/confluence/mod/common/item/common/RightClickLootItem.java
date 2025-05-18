@@ -11,11 +11,11 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import org.confluence.lib.common.component.ModRarity;
+import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.mod.common.component.LootComponent;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModSoundEvents;
-import org.confluence.mod.common.item.CustomRarityItem;
-import org.confluence.terra_curio.common.component.ModRarity;
 
 public class RightClickLootItem extends CustomRarityItem {
     public RightClickLootItem(ModRarity rarity, ResourceKey<LootTable> lootTable) {
@@ -30,7 +30,7 @@ public class RightClickLootItem extends CustomRarityItem {
                     .withParameter(LootContextParams.THIS_ENTITY, player)
                     .withLuck(player.getLuck())
                     .create(LootContextParamSets.GIFT);
-            LootTable loottable = serverLevel.getServer().reloadableRegistries().getLootTable(itemStack.get(ModDataComponentTypes.LOOT).lootTable());
+            LootTable loottable = serverLevel.getServer().reloadableRegistries().getLootTable(itemStack.get(ModDataComponentTypes.LOOT).value());
             int count = 1;
             if (player.isCrouching()) count = itemStack.getCount();
             for (int i = 0; i < count; i++) {

@@ -9,10 +9,10 @@
   "start_height": {
     "type": "uniform",
     "min_inclusive": {
-      "absolute": 80
+      "absolute": 64
     },
     "max_inclusive": {
-      "absolute": 64
+      "absolute": 80
     }
   },
   "max_distance_from_center": 116,

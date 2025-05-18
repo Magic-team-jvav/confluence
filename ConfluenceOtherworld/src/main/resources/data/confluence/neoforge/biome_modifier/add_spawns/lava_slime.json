@@ -1,0 +1,14 @@
+{
+    "type": "neoforge:add_spawns",
+    "biomes": [
+        "minecraft:nether_wastes",
+        "confluence:ash_wasteland",
+        "confluence:ash_forest"
+    ],
+    "spawners": {
+        "type": "terra_entity:lava_slime",
+        "weight": 480,
+        "minCount": 1,
+        "maxCount": 1
+    }
+}

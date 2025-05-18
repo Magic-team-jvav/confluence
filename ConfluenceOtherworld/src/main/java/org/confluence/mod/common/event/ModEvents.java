@@ -1,74 +1,83 @@
 package org.confluence.mod.common.event;
 
 import net.minecraft.core.cauldron.CauldronInteraction;
-import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackSelectionConfig;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
+import net.minecraft.world.Container;
+import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.event.AddPackFindersEvent;
 import net.neoforged.neoforge.event.BlockEntityTypeAddBlocksEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.ModifyDefaultComponentsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
+import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
+import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.RegisterEvent;
 import net.neoforged.neoforgespi.locating.IModFile;
-import nowebsite.makertechno.terra_furniture.common.init.TFBlocks;
-import nowebsite.makertechno.terra_furniture.common.init.TFTabs;
+import org.confluence.lib.common.data.saved.IGlobalData;
+import org.confluence.lib.util.ConfluenceResources;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.block.common.AetheriumCauldronBlock;
+import org.confluence.mod.common.block.common.BaseChestBlock;
 import org.confluence.mod.common.block.common.HoneyCauldronBlock;
+import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.block.natural.StepRevealingBlock;
 import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
 import org.confluence.mod.common.data.saved.ConfluenceData;
+import org.confluence.mod.common.data.saved.HardmodeConvertor;
+import org.confluence.mod.common.data.saved.KillBoard;
+import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.entity.TargetDummyEntity;
-import org.confluence.mod.common.fluid.FluidBuilder;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
-import org.confluence.mod.common.init.block.StatueBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.common.item.accessory.MusicBoxItem;
 import org.confluence.mod.integration.patchouli.PatchouliEntityEntriesPacketS2C;
 import org.confluence.mod.integration.patchouli.PatchouliHelper;
+import org.confluence.mod.integration.terra_entity.TEItemComponentModify;
+import org.confluence.mod.integration.terra_entity.TERemoval;
 import org.confluence.mod.network.c2s.*;
 import org.confluence.mod.network.s2c.*;
-import org.confluence.mod.util.ConfluenceResources;
+import org.confluence.mod.util.DateUtils;
 import org.confluence.phase_journey.api.PhaseJourneyEvent;
 import org.confluence.terra_curio.api.event.RegisterAccessoriesComponentUpdateEvent;
-import org.confluence.terra_curio.common.component.ModRarity;
-import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTabs;
-import org.confluence.terra_guns.common.init.TGItems;
-import org.confluence.terraentity.entity.monster.AbstractMonster;
+import org.confluence.terraentity.init.entity.TEMonsterEntities;
 
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 import static org.confluence.mod.Confluence.MODID;
 
@@ -78,6 +87,7 @@ public final class ModEvents {
     public static void commonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             CommonConfigs.onLoad();
+            ModGunProperties.init();
             Confluence.registerGameRules();
             ModFluids.registerInteraction();
             ModFluids.registerShimmerTransform();
@@ -102,6 +112,7 @@ public final class ModEvents {
     public static void loadComplete(FMLLoadCompleteEvent event) {
         event.enqueueWork(() -> {
             LogBlockSet.wrapStrip();
+            LogBlockSet.setFlammable();
             ISpreadable.Type.buildMap();
             MusicBoxItem.initialize();
             ModRecipes.Brewing.initialize();
@@ -114,6 +125,8 @@ public final class ModEvents {
                 interactionMap.put(ToolItems.HONEY_BUCKET.get(), HoneyCauldronBlock.FILL_HONEY);
                 interactionMap.put(NatureBlocks.AETHERIUM_BLOCK.asItem(), AetheriumCauldronBlock.FILL_AETHERIUM);
             });
+            TERemoval.redirectLootTable();
+            IGlobalData.registerGlobalData(KillBoard.INSTANCE, HardmodeConvertor.INSTANCE, NPCSpawner.INSTANCE);
         });
     }
 
@@ -152,46 +165,39 @@ public final class ModEvents {
     }
 
     @SubscribeEvent
-    public static void register(RegisterEvent event) {
-        FluidBuilder.register(event);
-    }
-
-    @SubscribeEvent
     public static void registerPayloadHandlers(RegisterPayloadHandlersEvent event) {
         PayloadRegistrar registrar = event.registrar("1");
-        registrar.playToClient(ManaPacketS2C.TYPE, ManaPacketS2C.STREAM_CODEC, ManaPacketS2C::handle);
-        registrar.playToClient(GamePhasePacketS2C.TYPE, GamePhasePacketS2C.STREAM_CODEC, GamePhasePacketS2C::handle);
-        registrar.playToClient(FishingPowerInfoPacketS2C.TYPE, FishingPowerInfoPacketS2C.STREAM_CODEC, FishingPowerInfoPacketS2C::handle);
-        registrar.playToClient(StarPhasesPacketS2C.TYPE, StarPhasesPacketS2C.STREAM_CODEC, StarPhasesPacketS2C::handle);
-        registrar.playToClient(EchoVisibilityPacketS2C.TYPE, EchoVisibilityPacketS2C.STREAM_CODEC, EchoVisibilityPacketS2C::handle);
-        registrar.playToClient(OpenSelectionsScreenPacketS2C.TYPE, OpenSelectionsScreenPacketS2C.STREAM_CODEC, OpenSelectionsScreenPacketS2C::handle);
-        registrar.playToClient(MeteoriteLocationPacketS2C.TYPE, MeteoriteLocationPacketS2C.STREAM_CODEC, MeteoriteLocationPacketS2C::handle);
-        registrar.playToClient(WindSpeedPacketS2C.TYPE, WindSpeedPacketS2C.STREAM_CODEC, WindSpeedPacketS2C::handle);
-        registrar.playToClient(SecretFlagSyncPacketS2C.TYPE, SecretFlagSyncPacketS2C.STREAM_CODEC, SecretFlagSyncPacketS2C::handle);
-        registrar.playToClient(ExtraInventorySyncPacketS2C.TYPE, ExtraInventorySyncPacketS2C.STREAM_CODEC, ExtraInventorySyncPacketS2C::handle);
-        registrar.playToClient(ExtraInventoryStackPacketS2C.TYPE, ExtraInventoryStackPacketS2C.STREAM_CODEC, ExtraInventoryStackPacketS2C::handle);
         registrar.playToClient(BrushingColorPacketS2C.TYPE, BrushingColorPacketS2C.STREAM_CODEC, BrushingColorPacketS2C::handle);
         registrar.playToClient(DeathMotionPacketS2C.TYPE, DeathMotionPacketS2C.STREAM_CODEC, DeathMotionPacketS2C::handle);
+        registrar.playToClient(VisibilityPacketS2C.TYPE, VisibilityPacketS2C.STREAM_CODEC, VisibilityPacketS2C::handle);
+        registrar.playToClient(ExtraInventoryStackPacketS2C.TYPE, ExtraInventoryStackPacketS2C.STREAM_CODEC, ExtraInventoryStackPacketS2C::handle);
+        registrar.playToClient(ExtraInventorySyncPacketS2C.TYPE, ExtraInventorySyncPacketS2C.STREAM_CODEC, ExtraInventorySyncPacketS2C::handle);
+        registrar.playToClient(FishingPowerInfoPacketS2C.TYPE, FishingPowerInfoPacketS2C.STREAM_CODEC, FishingPowerInfoPacketS2C::handle);
+        registrar.playToClient(GamePhasePacketS2C.TYPE, GamePhasePacketS2C.STREAM_CODEC, GamePhasePacketS2C::handle);
+        registrar.playToClient(ManaPacketS2C.TYPE, ManaPacketS2C.STREAM_CODEC, ManaPacketS2C::handle);
+        registrar.playToClient(MeteoriteLocationPacketS2C.TYPE, MeteoriteLocationPacketS2C.STREAM_CODEC, MeteoriteLocationPacketS2C::handle);
+        registrar.playToClient(OpenSelectionsScreenPacketS2C.TYPE, OpenSelectionsScreenPacketS2C.STREAM_CODEC, OpenSelectionsScreenPacketS2C::handle);
+        registrar.playToClient(PlayerDeathInfoPacketS2C.TYPE, PlayerDeathInfoPacketS2C.STREAM_CODEC, PlayerDeathInfoPacketS2C::handle);
+        registrar.playToClient(SecretFlagSyncPacketS2C.TYPE, SecretFlagSyncPacketS2C.STREAM_CODEC, SecretFlagSyncPacketS2C::handle);
+        registrar.playToClient(StarPhasesPacketS2C.TYPE, StarPhasesPacketS2C.STREAM_CODEC, StarPhasesPacketS2C::handle);
+        registrar.playToClient(WindSpeedPacketS2C.TYPE, WindSpeedPacketS2C.STREAM_CODEC, WindSpeedPacketS2C::handle);
         if (PatchouliHelper.IS_LOADED) {
             registrar.playToClient(PatchouliEntityEntriesPacketS2C.TYPE, PatchouliEntityEntriesPacketS2C.STREAM_CODEC, PatchouliEntityEntriesPacketS2C::handle);
         }
-        registrar.playToClient(TheConstantPostEffectPacketS2C.TYPE, TheConstantPostEffectPacketS2C.STREAM_CODEC, TheConstantPostEffectPacketS2C::handle);
-        registrar.playToClient(PlayerDeathInfoPacketS2C.TYPE, PlayerDeathInfoPacketS2C.STREAM_CODEC, PlayerDeathInfoPacketS2C::handle);
-        registrar.playToClient(NPCTradesPacketS2C.TYPE, NPCTradesPacketS2C.STREAM_CODEC, NPCTradesPacketS2C::handle);
 
-        registrar.playToServer(SwordShootingPacketC2S.TYPE, SwordShootingPacketC2S.STREAM_CODEC, SwordShootingPacketC2S::receive);
-        registrar.playToServer(HookThrowingPacketC2S.TYPE, HookThrowingPacketC2S.STREAM_CODEC, HookThrowingPacketC2S::handle);
         registrar.playToServer(ApplySelectionPacketC2S.TYPE, ApplySelectionPacketC2S.STREAM_CODEC, ApplySelectionPacketC2S::handle);
-        registrar.playToServer(ReplaceMusicBoxItemPacketC2S.TYPE, ReplaceMusicBoxItemPacketC2S.STREAM_CODEC, ReplaceMusicBoxItemPacketC2S::handle);
+        registrar.playToServer(HookThrowingPacketC2S.TYPE, HookThrowingPacketC2S.STREAM_CODEC, HookThrowingPacketC2S::handle);
+        registrar.playToServer(KeyRequestPacketC2S.TYPE, KeyRequestPacketC2S.STREAM_CODEC, KeyRequestPacketC2S::handle);
         registrar.playToServer(OpenMenuPacketC2S.TYPE, OpenMenuPacketC2S.STREAM_CODEC, OpenMenuPacketC2S::handle);
-        registrar.playToServer(NPCShopPacket.TYPE, NPCShopPacket.STREAM_CODEC, NPCShopPacket::handle);
+        registrar.playToServer(ReplaceMusicBoxItemPacketC2S.TYPE, ReplaceMusicBoxItemPacketC2S.STREAM_CODEC, ReplaceMusicBoxItemPacketC2S::handle);
+        registrar.playToServer(SwordShootingPacketC2S.TYPE, SwordShootingPacketC2S.STREAM_CODEC, SwordShootingPacketC2S::receive);
         registrar.playToServer(WormholeToPlayerPacketC2S.TYPE, WormholeToPlayerPacketC2S.STREAM_CODEC, WormholeToPlayerPacketC2S::handle);
+        registrar.playToServer(SellTradePacketC2S.TYPE, SellTradePacketC2S.STREAM_CODEC, SellTradePacketC2S::handle);
+
     }
 
     @SubscribeEvent
     public static void registerAttributes(EntityAttributeCreationEvent event) {
-        event.put(ModEntities.GUIDE.get(), AbstractMonster.createAttributes().build());
-
         event.put(ModEntities.TARGET_DUMMY.get(), TargetDummyEntity.createAttributes().build());
     }
 
@@ -200,7 +206,6 @@ public final class ModEvents {
     public static void registerUnitType(RegisterAccessoriesComponentUpdateEvent.UnitType event) {
         event.register(AccessoryItems.LUCKY$COIN);
         event.register(AccessoryItems.VINE$ROPE);
-        event.register(AccessoryItems.ICE$SAFE);
         event.register(AccessoryItems.AUTO$GET$MANA);
         event.register(AccessoryItems.HURT$GET$MANA);
         event.register(AccessoryItems.FAST$MANA$GENERATION);
@@ -234,22 +239,6 @@ public final class ModEvents {
             for (DeferredHolder<Item, ? extends Item> entry : AccessoryItems.ITEMS.getEntries()) {
                 event.insertBefore(everlasting, entry.get().getDefaultInstance(), visibility);
             }
-        } else if (event.getTab() == TFTabs.FURNITURE.get()) {
-            ItemStack plasticChair = TFBlocks.PLASTIC_CHAIR.toStack();
-            for (LogBlockSet logBlockSet : LogBlockSet.LOG_BLOCK_SETS) {
-                if (logBlockSet.getDoor() != null) {
-                    event.insertBefore(plasticChair, logBlockSet.getDoor().toStack(), visibility);
-                }
-                if (logBlockSet.getTrapdoor() != null) {
-                    event.insertBefore(plasticChair, logBlockSet.getTrapdoor().toStack(), visibility);
-                }
-                if (logBlockSet.getSignItem() != null) {
-                    event.insertBefore(plasticChair, logBlockSet.getSignItem().toStack(), visibility);
-                }
-            }
-            for (DeferredHolder<Block, ? extends Block> entry : StatueBlocks.BLOCKS.getEntries()) {
-                event.insertBefore(plasticChair, entry.get().asItem().getDefaultInstance(), visibility);
-            }
         }
     }
 
@@ -267,7 +256,7 @@ public final class ModEvents {
                 context.blockReplacement(OreBlocks.DEEPSLATE_PALLADIUM_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), target);
             });
             event.phaseRegister(Confluence.asResource("reveal_step_" + (step++)), context -> {
-                context.blockReplacement(OreBlocks.DEEPSLATE_MITHRIL_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), target);
+                context.blockReplacement(OreBlocks.DEEPSLATE_MYTHRIL_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), target);
                 context.blockReplacement(OreBlocks.DEEPSLATE_ORICHALCUM_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), target);
             });
             event.phaseRegister(Confluence.asResource("reveal_step_" + (step++)), context -> {
@@ -287,43 +276,34 @@ public final class ModEvents {
 
     @SubscribeEvent
     public static void modifyDefaultComponents(ModifyDefaultComponentsEvent event) {
-        Consumer<DataComponentPatch.Builder> green = builder -> builder.set(TCDataComponentTypes.MOD_RARITY.get(), ModRarity.GREEN);
-        event.modify(TGItems.BOOMSTICK.get(), green);
-        event.modify(TGItems.HANGGUN.get(), green);
-        event.modify(TGItems.MINISHARK.get(), green);
-        event.modify(TGItems.REVOLVER.get(), green);
-        event.modify(TGItems.SANDGUN.get(), green);
-        event.modify(TGItems.STAR_CANNON.get(), green);
-        event.modify(TGItems.ENDLESS_MUSKET_POUCH.get(), green);
-        Consumer<DataComponentPatch.Builder> yellow = builder -> builder.set(TCDataComponentTypes.MOD_RARITY.get(), ModRarity.YELLOW);
-        event.modify(TGItems.SNIPER_RIFLE.get(), yellow);
-        event.modify(TGItems.TACTICAL_SHOTGUN.get(), yellow);
-        Consumer<DataComponentPatch.Builder> light_red = builder -> builder.set(TCDataComponentTypes.MOD_RARITY.get(), ModRarity.LIGHT_RED);
-        event.modify(TGItems.ONYX_BLASTER.get(), light_red);
-        event.modify(TGItems.SHOTGUN.get(), light_red);
-        Consumer<DataComponentPatch.Builder> blue = builder -> builder.set(TCDataComponentTypes.MOD_RARITY.get(), ModRarity.BLUE);
-        event.modify(TGItems.FLINTLOCK_PISTOL.get(), blue);
-        event.modify(TGItems.MUSKET.get(), blue);
-        event.modify(TGItems.THE_UNDERTAKER.get(), blue);
-        event.modify(TGItems.FLARE_GUN.get(), blue);
-        event.modify(TGItems.SNOWBALL_CANNON.get(), blue);
-        event.modify(TGItems.METEOR_BULLET.get(), blue);
-        Consumer<DataComponentPatch.Builder> orange = builder -> builder.set(TCDataComponentTypes.MOD_RARITY.get(), ModRarity.ORANGE);
-        event.modify(TGItems.PHOENIX_BLASTER.get(), orange);
-        event.modify(TGItems.BLOWGUN.get(), orange);
-        event.modify(TGItems.CRYSTAL_BULLET.get(), orange);
-        event.modify(TGItems.CURSED_BULLET.get(), orange);
-        event.modify(TGItems.ICHOR_BULLET.get(), orange);
-        event.modify(TGItems.VENOM_BULLET.get(), orange);
-        event.modify(TGItems.PARTY_BULLET.get(), orange);
-        event.modify(TGItems.NANO_BULLET.get(), orange);
-        event.modify(TGItems.EXPLODING_BULLET.get(), orange);
-        event.modify(TGItems.GOLDEN_BULLET.get(), orange);
-        event.modify(TGItems.HIGH_VELOCITY_BULLET.get(), orange);
-        Consumer<DataComponentPatch.Builder> lime = builder -> builder.set(TCDataComponentTypes.MOD_RARITY.get(), ModRarity.LIME);
-        event.modify(TGItems.UZI.get(), lime);
-        event.modify(TGItems.CHLOROPHYTE_BULLET.get(), lime);
-        Consumer<DataComponentPatch.Builder> cyan = builder -> builder.set(TCDataComponentTypes.MOD_RARITY.get(), ModRarity.CYAN);
-        event.modify(TGItems.LUMINITE_BULLET.get(), cyan);
+        TEItemComponentModify.modifyDefaultComponents(event);
+        event.modify(Items.SNOWBALL, builder -> builder.set(DataComponents.MAX_STACK_SIZE, 9999));
+    }
+
+    @SubscribeEvent
+    public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+        event.registerBlock(Capabilities.ItemHandler.BLOCK, (level, pos, state, blockEntity, side) -> {
+            if (!state.getValue(BaseChestBlock.UNLOCKED)) return null;
+            Container container = ChestBlock.getContainer((ChestBlock) state.getBlock(), state, level, pos, true);
+            if (container == null) return null;
+            return new InvWrapper(container);
+        }, FunctionalBlocks.BASE_CHEST_BLOCK.get(), FunctionalBlocks.DEATH_CHEST_BLOCK.get());
+        event.registerBlock(Capabilities.ItemHandler.BLOCK, (level, pos, state, blockEntity, context) -> {
+            if (blockEntity instanceof AltarBlock.Entity entity) {
+                return new InvWrapper(entity);
+            }
+            return null;
+        }, FunctionalBlocks.DEMON_ALTAR.get(), FunctionalBlocks.CRIMSON_ALTAR.get());
+    }
+
+    @SubscribeEvent
+    public static void registerSpawnReplacements(RegisterSpawnPlacementsEvent event) {
+        event.register(TEMonsterEntities.GREEN_DUMPLING_SLIME.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, (entityType, serverLevel, spawnType, pos, random) -> {
+            if (DateUtils.isQingMing(DateUtils.getLunar()) && serverLevel instanceof Level level) {
+                int y = pos.getY();
+                return y > 30 && y < 260 && level.isDay() && serverLevel.canSeeSky(pos);
+            }
+            return false;
+        }, RegisterSpawnPlacementsEvent.Operation.REPLACE);
     }
 }

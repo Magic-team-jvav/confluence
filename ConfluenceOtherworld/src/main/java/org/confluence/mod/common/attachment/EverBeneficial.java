@@ -15,6 +15,7 @@ public class EverBeneficial implements INBTSerializable<CompoundTag> {
     private boolean gummyWorm;
     private boolean galaxyPearl;
     private boolean minecartUpgradeKit;
+    private boolean artisanLoafUsed;
 
     public EverBeneficial() {
         this.lifeCrystals = 0;
@@ -26,6 +27,7 @@ public class EverBeneficial implements INBTSerializable<CompoundTag> {
         this.gummyWorm = false;
         this.galaxyPearl = false;
         this.minecartUpgradeKit = false;
+        this.artisanLoafUsed = false;
     }
 
     public boolean increaseCrystals() {
@@ -62,8 +64,7 @@ public class EverBeneficial implements INBTSerializable<CompoundTag> {
 
     public boolean setVitalCrystalUsed() {
         if (vitalCrystal) return false;
-        this.vitalCrystal = true;
-        return true;
+        return this.vitalCrystal = true;
     }
 
     public boolean isVitalCrystalUsed() {
@@ -72,8 +73,7 @@ public class EverBeneficial implements INBTSerializable<CompoundTag> {
 
     public boolean setAegisAppleUsed() {
         if (aegisApple) return false;
-        this.aegisApple = true;
-        return true;
+        return this.aegisApple = true;
     }
 
     public boolean isAegisAppleUsed() {
@@ -82,8 +82,7 @@ public class EverBeneficial implements INBTSerializable<CompoundTag> {
 
     public boolean setAmbrosiaUsed() {
         if (ambrosia) return false;
-        this.ambrosia = true;
-        return true;
+        return this.ambrosia = true;
     }
 
     public boolean isAmbrosiaUsed() {
@@ -92,8 +91,7 @@ public class EverBeneficial implements INBTSerializable<CompoundTag> {
 
     public boolean setGummyWormUsed() {
         if (gummyWorm) return false;
-        this.gummyWorm = true;
-        return true;
+        return this.gummyWorm = true;
     }
 
     public boolean isGummyWormUsed() {
@@ -102,8 +100,7 @@ public class EverBeneficial implements INBTSerializable<CompoundTag> {
 
     public boolean setGalaxyPearlUsed() {
         if (galaxyPearl) return false;
-        this.galaxyPearl = true;
-        return true;
+        return this.galaxyPearl = true;
     }
 
     public boolean isGalaxyPearlUsed() {
@@ -111,12 +108,20 @@ public class EverBeneficial implements INBTSerializable<CompoundTag> {
     }
 
     public boolean setMinecartUpgradeKitUsed() {
-        this.minecartUpgradeKit = true;
-        return true;
+        return this.minecartUpgradeKit = true;
     }
 
     public boolean isMinecartUpgradeKitUsed() {
         return minecartUpgradeKit;
+    }
+
+    public boolean setArtisanLoafUsed() {
+        if (artisanLoafUsed) return false;
+        return this.artisanLoafUsed = true;
+    }
+
+    public boolean isArtisanLoafUsed() {
+        return artisanLoafUsed;
     }
 
     @Override
@@ -131,6 +136,7 @@ public class EverBeneficial implements INBTSerializable<CompoundTag> {
         nbt.putBoolean("gummyWorm", gummyWorm);
         nbt.putBoolean("galaxyPearl", galaxyPearl);
         nbt.putBoolean("minecartUpgradeKit", minecartUpgradeKit);
+        nbt.putBoolean("artisanLoafUsed", artisanLoafUsed);
         return nbt;
     }
 
@@ -145,5 +151,6 @@ public class EverBeneficial implements INBTSerializable<CompoundTag> {
         this.gummyWorm = nbt.getBoolean("gummyWorm");
         this.galaxyPearl = nbt.getBoolean("galaxyPearl");
         this.minecartUpgradeKit = nbt.getBoolean("minecartUpgradeKit");
+        this.artisanLoafUsed = nbt.getBoolean("artisanLoafUsed");
     }
 }

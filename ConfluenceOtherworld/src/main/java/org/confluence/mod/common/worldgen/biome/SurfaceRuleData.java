@@ -17,13 +17,13 @@ public class SurfaceRuleData {
     private static final SurfaceRules.RuleSource RED_SAND = makeStateRule(Blocks.RED_SAND);
     private static final SurfaceRules.RuleSource GRAVEL = makeStateRule(Blocks.GRAVEL);
     private static final SurfaceRules.RuleSource SANDSTONE = makeStateRule(Blocks.SANDSTONE);
-    private static final SurfaceRules.RuleSource RED_SANDSTONE = makeStateRule(Blocks.RED_SANDSTONE);
+    //private static final SurfaceRules.RuleSource RED_SANDSTONE = makeStateRule(Blocks.RED_SANDSTONE);
     private static final SurfaceRules.RuleSource HARDENED_SAND = makeStateRule(NatureBlocks.HARDENED_SAND_BLOCK.get());
     private static final SurfaceRules.RuleSource RED_HARDENED_SAND = makeStateRule(NatureBlocks.RED_HARDENED_SAND_BLOCK.get());
     private static final SurfaceRules.RuleSource MOIST_SAND = makeStateRule(NatureBlocks.MOIST_SAND_BLOCK.get());
     private static final SurfaceRules.RuleSource GRASS_BLOCK = makeStateRule(Blocks.GRASS_BLOCK);
     private static final SurfaceRules.RuleSource JUNGLE_GRASS_BLOCK = makeStateRule(NatureBlocks.JUNGLE_GRASS_BLOCK.get());
-    private static final SurfaceRules.RuleSource CLAY = makeStateRule(Blocks.CLAY);
+    //private static final SurfaceRules.RuleSource CLAY = makeStateRule(Blocks.CLAY);
 
     private static final SurfaceRules.RuleSource CORRUPT_GRASS_BLOCK = makeStateRule(NatureBlocks.CORRUPT_GRASS_BLOCK.get());
     private static final SurfaceRules.RuleSource EBONY_STONE = makeStateRule(NatureBlocks.EBONY_STONE.get());
@@ -42,7 +42,7 @@ public class SurfaceRuleData {
     // 判断 =============================================================
     //表面判断
     private static final SurfaceRules.ConditionSource isAtOrAboveWaterLevel = SurfaceRules.waterBlockCheck(-1, 0);
-    private static final SurfaceRules.ConditionSource isUnderWaterLevel = SurfaceRules.waterStartCheck(-6, -1);
+    //private static final SurfaceRules.ConditionSource isUnderWaterLevel = SurfaceRules.waterStartCheck(-6, -1);
     private static final SurfaceRules.ConditionSource isHole = SurfaceRules.not(SurfaceRules.abovePreliminarySurface());
     //渐变层随机种子
     private static final SurfaceRules.ConditionSource bedrockRoofSeed = SurfaceRules.verticalGradient("minecraft:bedrock_roof", VerticalAnchor.belowTop(5), VerticalAnchor.belowTop(0));
@@ -180,23 +180,13 @@ public class SurfaceRuleData {
                 ),
 
                 //丛林
-                SurfaceRules.ifTrue(SurfaceRules.isBiome(Biomes.JUNGLE),
-                        SurfaceRules.ifTrue(SurfaceRules.not(deepslateSeed),
-                                SurfaceRules.sequence(
-                                        SurfaceRules.ifTrue(SurfaceRules.not(sandSeed),
-                                                SurfaceRules.sequence(
-                                                        SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR,
-                                                                jungleGrassSurface
-                                                        ),
-                                                        MUD
-                                                )
-                                        ),
-                                        SurfaceRules.sequence(
-                                                SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR,
-                                                        GRASS_BLOCK
-                                                ),
-                                                DIRT
-                                        )
+                SurfaceRules.ifTrue(SurfaceRules.isBiome(Biomes.JUNGLE, Biomes.SPARSE_JUNGLE, Biomes.BAMBOO_JUNGLE),
+                        SurfaceRules.sequence(
+                                SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR,
+                                        jungleGrassSurface
+                                ),
+                                SurfaceRules.ifTrue(SurfaceRules.not(bedrockFloorSeed),
+                                        MUD
                                 )
                         )
                 ),

@@ -1,11 +1,11 @@
 package org.confluence.mod.util;
 
-import com.xiaohunao.heaven_destiny_moment.common.moment.MomentManager;
+import com.xiaohunao.equipment_benediction.common.hook.HookMapManager;
+import com.xiaohunao.heaven_destiny_moment.common.moment.MomentInstanceManager;
 import com.xiaohunao.terra_moment.common.init.TMMoments;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import net.minecraft.advancements.AdvancementHolder;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -15,16 +15,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.network.PacketDistributor;
-import org.confluence.mod.Confluence;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.api.event.GetCustomDiggingPowerEvent;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.data.saved.ConfluenceData;
-import org.confluence.mod.common.init.ModAttachmentTypes;
-import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.common.init.ModTiers;
+import org.confluence.mod.common.data.saved.KillBoard;
+import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.common.CoinItem;
@@ -32,6 +30,7 @@ import org.confluence.mod.network.s2c.GamePhasePacketS2C;
 import org.confluence.mod.network.s2c.ManaPacketS2C;
 import org.confluence.mod.network.s2c.StarPhasesPacketS2C;
 import org.confluence.mod.network.s2c.WindSpeedPacketS2C;
+import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.util.TCUtils;
 import org.confluence.terraentity.entity.ai.Boss;
 
@@ -41,11 +40,11 @@ import java.util.function.IntSupplier;
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
 
+import static org.confluence.lib.util.LibUtils.MAX_STACK_SIZE;
 import static org.confluence.mod.common.attachment.ExtraInventory.COINS_START;
 import static org.confluence.mod.common.attachment.ExtraInventory.SIZE_COINS;
 import static org.confluence.mod.common.item.common.CoinItem.UPGRADES_COUNT;
 import static org.confluence.mod.util.DateUtils.isWithinDayTime;
-import static org.confluence.mod.util.ModUtils.MAX_STACK_SIZE;
 
 public final class PlayerUtils {
     public static final ToIntFunction<Item> COIN_2_INDEX = coin -> {
@@ -95,11 +94,12 @@ public final class PlayerUtils {
         if (manaStorage.receiveMana(receive)) syncMana2Client(serverPlayer, manaStorage);
     }
 
-    public static boolean extractMana(ServerPlayer serverPlayer, IntSupplier sup) {
-        if (serverPlayer.gameMode.isCreative()) return true;
+    public static boolean extractMana(ServerPlayer serverPlayer, ItemStack itemStack, IntSupplier sup) {
+        if (serverPlayer.isCreative()) return true;
+        IntSupplier posted = HookMapManager.postHooks(ModHookTypes.MANA_CONSUME.get(), (owner, hook, original) -> hook.onManaConsume(owner, itemStack, original), serverPlayer, sup);
         ManaStorage manaStorage = serverPlayer.getData(ModAttachmentTypes.MANA_STORAGE);
-        if (manaStorage.extractMana(sup, serverPlayer)) {
-            manaStorage.setRegenerateDelay((int) Math.ceil(0.7F * ((1 - (float) manaStorage.getCurrentMana() / manaStorage.getMaxMana()) * 240 + 45)));
+        if (manaStorage.extractMana(posted, serverPlayer)) {
+            manaStorage.setRegenerateDelay(Mth.ceil(0.7F * ((1 - (float) manaStorage.getCurrentMana() / manaStorage.getMaxMana()) * 240 + 45)));
             syncMana2Client(serverPlayer, manaStorage);
             return true;
         }
@@ -114,17 +114,21 @@ public final class PlayerUtils {
     public static void syncSavedData(ServerPlayer serverPlayer) {
         ConfluenceData data = ConfluenceData.get(serverPlayer.serverLevel());
         WindSpeedPacketS2C.sendToClient(serverPlayer, data.getWindSpeedX(), data.getWindSpeedZ());
-        GamePhasePacketS2C.sendToClient(serverPlayer, data.getGamePhase());
-        StarPhasesPacketS2C.sendToClient(serverPlayer, data.getStarPhases());
+        if (CommonConfigs.STAR_PHASE.get()) {
+            StarPhasesPacketS2C.sendToClient(serverPlayer, data.getStarPhases());
+        }
+        GamePhasePacketS2C.sendToClient(serverPlayer, KillBoard.INSTANCE.getGamePhase());
     }
 
     public static float getFishingPower(ServerPlayer player) {
         float base = TCUtils.getAccessoriesValue(player, AccessoryItems.FISHING$POWER);
         if (player.getData(ModAttachmentTypes.EVER_BENEFICIAL).isGummyWormUsed()) base += 3.0F;
+        if (player.isInFluidType() && TCUtils.hasAccessoriesType(player, TCItems.FLOAT$ON$LIQUID$SURFACE)) base += 5.0F;
+        if (player.hasEffect(ModEffects.TIPSY)) base += 5.0F;
         Level level = player.level();
-        long dayTime = level.dayTime();
         if (level.isRaining()) base *= 1.1F;
         else if (level.isThundering()) base *= 1.2F;
+        long dayTime = level.dayTime();
         if (isWithinDayTime(4, 30, 6, 0, dayTime)) base *= 1.3F; // 04:30 -> 06:00
         else if (isWithinDayTime(9, 0, 15, 0, dayTime)) base *= 0.8F; // 09:00 -> 15:00
         else if (isWithinDayTime(18, 0, 19, 30, dayTime)) base *= 1.3F; // 18:00 -> 19:30
@@ -136,14 +140,15 @@ public final class PlayerUtils {
             case 4 -> 0.9F; // 新月
             default -> 1.0F;
         };
-        if (MomentManager.of(level).hasMoment(TMMoments.BLOOD_MOON)) {
+        if (MomentInstanceManager.of(level).hasMoment(TMMoments.BLOOD_MOON.getKey().location())) {
             base *= 1.1F;
         }
-        return base + player.getLuck();
+        base = HookMapManager.postHooks(ModHookTypes.FISHING_POWER.get(), (owner, hook, original) -> hook.modifyFishingPower(owner, player, original), player, base);
+        return base;
     }
 
     public static Tuple<ItemStack, Integer> getMaxDiggingPowerItem(Player player) {
-        int max = 0;
+        int max = -1;
         ItemStack ret = ItemStack.EMPTY;
         for (ItemStack itemStack : player.getInventory().items) {
             if (itemStack.isEmpty()) continue;
@@ -171,18 +176,6 @@ public final class PlayerUtils {
             }
         }
         return new Tuple<>(ret, max);
-    }
-
-    public static void awardAchievement(ServerPlayer serverPlayer, String path) {
-        CompoundTag data = serverPlayer.getPersistentData();
-        String key = Confluence.MODID + ":" + path;
-        if (!data.getBoolean(key)) {
-            AdvancementHolder advancement = serverPlayer.server.getAdvancements().get(Confluence.asResource("achievements/" + path));
-            if (advancement != null) {
-                serverPlayer.getAdvancements().award(advancement, "never");
-            }
-            data.putBoolean(key, true);
-        }
     }
 
     public static void consumeItemCount(List<ItemStack> have, Item item, int consumeCount) {
@@ -223,7 +216,7 @@ public final class PlayerUtils {
         int[] coins = getCoins(player);
         long res = 0;
         for (int i = 0; i < SIZE_COINS; i++) {
-            res += (long) (coins[i] * Math.pow(100, 3 - i));
+            res += (long) (coins[i] * Math.pow(UPGRADES_COUNT, 3 - i));
         }
         return res;
     }
@@ -263,19 +256,19 @@ public final class PlayerUtils {
 
     public static int[] decodeCoin(long money) {
         int[] coins = new int[SIZE_COINS];
-        while (money > 0x3F3F3F3F) {
-            int[] ints = decodeCoin(0x3F3F3F3F);
-            coins[0] += ints[0];
-            coins[1] += ints[1];
-            coins[2] += ints[2];
-            coins[3] += ints[3];
-            money -= 0x3F3F3F3F;
+        if (money < 0) {
+            throw new IllegalArgumentException("Money cannot be negative");
         }
-        int[] ints = decodeCoin((int) money);
-        coins[0] += ints[0];
-        coins[1] += ints[1];
-        coins[2] += ints[2];
-        coins[3] += ints[3];
+
+        // jit自动优化
+        coins[3] = (int) (money / (UPGRADES_COUNT * UPGRADES_COUNT * UPGRADES_COUNT)); // 铂金
+        money %= UPGRADES_COUNT * UPGRADES_COUNT * UPGRADES_COUNT;
+        coins[2] = (int) (money / (UPGRADES_COUNT * UPGRADES_COUNT)); // 金币
+        money %= UPGRADES_COUNT * UPGRADES_COUNT;
+        coins[1] = (int) (money / UPGRADES_COUNT); // 银币
+        money %= UPGRADES_COUNT;
+        coins[0] = (int) money; // 铜币
+
         return coins;
     }
 
@@ -323,7 +316,7 @@ public final class PlayerUtils {
         long money = getMoney(player);
         long drops;
         if (player.level().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) {
-            int ratio = ModUtils.switchByDifficulty(player.level(), player.blockPosition(), 2, 3, 4);
+            int ratio = LibUtils.switchByDifficulty(player.level(), player.blockPosition(), 2, 3, 4);
             drops = money * ratio / 4;
         } else {
             drops = money;

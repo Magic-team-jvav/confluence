@@ -32,6 +32,9 @@ public abstract class DeathScreenMixin extends Screen implements IDeathScreen {
     @Shadow
     private Component deathScore;
 
+    @Shadow
+    protected abstract void exitToTitleScreen();
+
     @Unique
     private Button confluence$respawnButton;
     @Unique
@@ -65,25 +68,33 @@ public abstract class DeathScreenMixin extends Screen implements IDeathScreen {
 
     @Inject(method = "render", at = @At("HEAD"))
     public void render(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick, CallbackInfo ci) {
-        if (confluence$respawnWaitTime * 20 >= delayTicker) {
+        if (confluence$respawnWaitTime >= delayTicker) {
             pGuiGraphics.drawCenteredString(font, confluence$respawnTimeComponent, width / 2, 120, 16777215);
         }
     }
 
     @Inject(method = "tick", at = @At("HEAD"))
     private void tick(CallbackInfo ci) {
-        if (delayTicker >= confluence$respawnWaitTime * 20) {
+        if (delayTicker >= confluence$respawnWaitTime) {
             if (confluence$respawnButton != null) {
                 confluence$respawnButton.active = true;
             }
         }
-        this.confluence$respawnTimeComponent = Component.translatable("info.confluence.respawn_time", (confluence$respawnWaitTime * 20 - delayTicker) / 20).withStyle(ChatFormatting.GRAY);
+        this.confluence$respawnTimeComponent = Component.translatable("info.confluence.respawn_time", (confluence$respawnWaitTime - delayTicker) / 20).withStyle(ChatFormatting.GRAY);
     }
 
     @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/DeathScreen;setButtonsActive(Z)V", shift = At.Shift.AFTER))
     private void setInactive(CallbackInfo ci) {
         if (confluence$respawnButton != null) {
             confluence$respawnButton.active = false;
+        }
+    }
+
+    @Inject(method = "handleExitToTitleScreen", at = @At("HEAD"), cancellable = true)
+    private void confirmExit(CallbackInfo ci) {
+        if (delayTicker < confluence$respawnWaitTime) {
+            exitToTitleScreen();
+            ci.cancel();
         }
     }
 }

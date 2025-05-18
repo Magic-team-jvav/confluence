@@ -1,8 +1,11 @@
 package org.confluence.mod.mixin.client.gui;
 
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import net.minecraft.advancements.AdvancementNode;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.advancements.AdvancementWidget;
+import net.minecraft.world.item.ItemStack;
+import org.confluence.mod.client.gui.AchievementToast;
 import org.confluence.mod.common.init.ModAchievements;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -22,5 +25,10 @@ public abstract class AdvancementWidgetMixin {
         if (ModAchievements.DISPLAY_OFFSET.containsKey(advancementNode.holder().id())) {
             ci.cancel();
         }
+    }
+
+    @WrapWithCondition(method = "draw", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;renderFakeItem(Lnet/minecraft/world/item/ItemStack;II)V"))
+    private boolean renderIcon(GuiGraphics instance, ItemStack stack, int x, int y) {
+        return AchievementToast.renderWidgetIcon(advancementNode.holder().id(), instance, x, y);
     }
 }

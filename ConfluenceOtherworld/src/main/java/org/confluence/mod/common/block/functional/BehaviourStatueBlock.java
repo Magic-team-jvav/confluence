@@ -22,14 +22,14 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.confluence.mod.common.block.StateProperties;
+import org.confluence.lib.common.block.StateProperties;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.block.common.StatueBlock;
 import org.confluence.mod.common.block.functional.network.INetworkBlock;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.block.functional.network.Network;
 import org.confluence.mod.common.block.functional.network.NetworkNode;
 import org.confluence.mod.common.init.block.StatueBlocks;
-import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -112,7 +112,7 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
 
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-        return state.getValue(StateProperties.VERTICAL_TWO_PART).isBase() ? ModUtils.getTicker(blockEntityType, StatueBlocks.BLOCK_ENTITY.get(), behaviour::entityTick) : null;
+        return state.getValue(StateProperties.VERTICAL_TWO_PART).isBase() ? LibUtils.getTicker(blockEntityType, StatueBlocks.BLOCK_ENTITY.get(), behaviour::entityTick) : null;
     }
 
     public static class Entity extends AbstractMechanicalBlock.Entity {
@@ -208,12 +208,12 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
                     return entity1 == null || entity1.isRemoved();
                 });
                 if (entities.size() >= 3) return;
-                BlockPos relative = pPos.relative(Util.getRandom(ModUtils.HORIZONTAL, pLevel.random));
+                BlockPos relative = pPos.relative(Util.getRandom(LibUtils.HORIZONTAL, pLevel.random));
                 E entity = factory.apply(pLevel, relative.getCenter());
                 pLevel.addFreshEntity(entity);
                 afterSummon.accept(entity);
                 if (noDrops) {
-                    entity.addTag(ModUtils.NO_DROPS_TAG);
+                    entity.addTag(LibUtils.NO_DROPS_TAG);
                 }
                 entities.add(entity.getUUID());
                 pLevel.setBlockAndUpdate(pPos, pState.setValue(StateProperties.DRIVE, true));

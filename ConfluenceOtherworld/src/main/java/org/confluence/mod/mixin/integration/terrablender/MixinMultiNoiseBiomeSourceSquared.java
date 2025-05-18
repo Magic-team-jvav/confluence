@@ -16,6 +16,7 @@ import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.levelgen.WorldOptions;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
+import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.worldgen.BannedBiomeMultiNoiseBiomeSource;
@@ -23,7 +24,6 @@ import org.confluence.mod.common.worldgen.secret_seed.NotTheBees;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IMultiNoiseBiomeSource;
 import org.confluence.mod.mixed.IWorldOptions;
-import org.confluence.terra_curio.mixed.SelfGetter;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -79,12 +79,13 @@ public abstract class MixinMultiNoiseBiomeSourceSquared implements SelfGetter<Mu
     private List<Holder<Biome>> confluence$getJungle() {
         if (confluence$jungle == null) {
             this.confluence$jungle = new ArrayList<>();
-            Set<Holder<Biome>> set = self().possibleBiomes().stream().filter(holder -> holder.is(Tags.Biomes.IS_JUNGLE)).collect(Collectors.toSet());
+            Set<Holder<Biome>> set = confluence$self().possibleBiomes().stream().filter(holder -> holder.is(Tags.Biomes.IS_JUNGLE)).collect(Collectors.toSet());
             confluence$jungle.addAll(set);
         }
         return confluence$jungle;
     }
 
+    @Override
     public Pair<Holder<Biome>, Holder<Biome>> confluence$getBiomePair() {
         if (confluence$biomePair == null) {
             MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
@@ -93,7 +94,7 @@ public abstract class MixinMultiNoiseBiomeSourceSquared implements SelfGetter<Mu
             long flag = ((IWorldOptions) worldOptions).confluence$getSecretFlag();
             ResourceKey<Biome> from;
             ResourceKey<Biome> to;
-            if (self() instanceof BannedBiomeMultiNoiseBiomeSource) {
+            if (confluence$self() instanceof BannedBiomeMultiNoiseBiomeSource) {
                 return this.confluence$biomePair = new Pair<>(null, null);
             } else if (ModSecretSeeds.DRUNK_WORLD.match(flag)) {
                 ((IMinecraftServer) server).confluence$updateSecretFlag(IWorldOptions.DOUBLE_EVIL);

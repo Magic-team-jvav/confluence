@@ -8,6 +8,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -23,11 +24,10 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.MultiplyExplosionDamageCalculator;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 public class ScarabBombEntity extends StickyBombEntity {
     private static final EntityDataAccessor<Integer> DATA_OWNER_ID = SynchedEntityData.defineId(ScarabBombEntity.class, EntityDataSerializers.INT);
@@ -36,10 +36,12 @@ public class ScarabBombEntity extends StickyBombEntity {
 
     public ScarabBombEntity(EntityType<? extends ScarabBombEntity> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
+        this.blastPower = 5;
     }
 
     public ScarabBombEntity(LivingEntity pShooter) {
         super(ModEntities.SCARAB_BOMB_ENTITY.get(), pShooter);
+        this.blastPower = 5;
     }
 
     @Override
@@ -53,11 +55,13 @@ public class ScarabBombEntity extends StickyBombEntity {
         if (!(level() instanceof ServerLevel serverLevel)) return;
         Vec3 blastPos = getEyePosition();
         Vec3 step = facingDir.normalize().scale(-3);
-        float upperLimit = ModBlocks.getObsidianBasedExplosionResistance(100);
+        float upperLimit = ModBlocks.getObsidianBasedExplosionResistance(50);
         ObjectArrayList<Pair<ItemStack, BlockPos>> objectArrayList = new ObjectArrayList<>();
-        for (int i = 0; i < 13; i++) {
+        DamageSource damageSource = Explosion.getDefaultDamageSource(level(), this);
+        MultiplyExplosionDamageCalculator damageCalculator = new MultiplyExplosionDamageCalculator(0.2F);
+        for (int i = 0; i < 24; i++) {
             if (i % 3 == 0) {
-                Explosion explosion = level().explode(this, blastPos.x(), blastPos.y(), blastPos.z(), blastPower, Level.ExplosionInteraction.MOB);
+                Explosion explosion = level().explode(this, damageSource, damageCalculator, blastPos.x(), blastPos.y(), blastPos.z(), blastPower, false, Level.ExplosionInteraction.MOB);
                 Vec3 end = blastPos.add(step);
                 BlockPos.betweenClosedStream(new AABB(blastPos, end)).forEach(blockPos -> {
                     if (!level().isLoaded(blockPos)) return;
@@ -131,11 +135,5 @@ public class ScarabBombEntity extends StickyBombEntity {
             }
         }
         return owner;
-    }
-
-    public static void itemInvulnerableToExplosion(@Nullable Entity directSourceEntity, List<Entity> affectedEntities) {
-        if (directSourceEntity instanceof ScarabBombEntity) {
-            affectedEntities.removeIf(entity -> entity instanceof ItemEntity);
-        }
     }
 }

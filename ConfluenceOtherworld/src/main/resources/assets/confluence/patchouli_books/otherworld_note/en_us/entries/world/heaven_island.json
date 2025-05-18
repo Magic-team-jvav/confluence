@@ -1,0 +1,31 @@
+{
+    "name": "patchouli.confluence.otherworld_note.world.heaven_island.name",
+    "icon": "confluence:cloud_block",
+    "category": "confluence:world",
+    "pages": [
+        {
+            "type": "patchouli:text",
+            "text": "patchouli.confluence.otherworld_note.world.heaven_island.0"
+        },
+        {
+            "type": "patchouli:image",
+            "images":[
+                "minecraft:textures/block/grass_block.png"
+            ],
+            "text": "patchouli.confluence.otherworld_note.world.heaven_island.1",
+            "title": "patchouli.confluence.otherworld_note.appearance"
+        },
+        {
+            "type": "patchouli:text",
+            "text": "patchouli.confluence.otherworld_note.world.heaven_island.2"
+        },
+        {
+            "type": "patchouli:image",
+            "images":[
+                "minecraft:textures/block/grass_block.png"
+            ],
+            "text": "patchouli.confluence.otherworld_note.world.heaven_island.3",
+            "title": "patchouli.confluence.otherworld_note.appearance"
+        }
+    ]
+}

@@ -41,6 +41,10 @@ public final class DateUtils {
         return lunar.getMonth() == 1 && lunar.getDay() <= 15;
     }
 
+    public static boolean isQingMing(Lunar lunar) {
+        return lunar.getMonth() == 3 && (lunar.getDay() >= 7 && lunar.getDay() <= 9);
+    }
+
     public static boolean isDuanWu(Lunar lunar) {
         return lunar.getMonth() == 5 && lunar.getDay() == 5;
     }

@@ -1,7 +1,9 @@
 package org.confluence.mod.common.item.sponsor;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Position;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -10,10 +12,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ProjectileItem;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import org.confluence.lib.common.component.ModRarity;
+import org.confluence.lib.common.item.CustomRarityItem;
+import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.common.entity.projectile.IceTofuBrickProjectile;
-import org.confluence.mod.common.item.CustomRarityItem;
-import org.confluence.terra_curio.common.component.ModRarity;
+
+import java.util.List;
 
 public class IceTofuBrickItem extends CustomRarityItem implements ProjectileItem {
     public IceTofuBrickItem() {
@@ -27,8 +33,9 @@ public class IceTofuBrickItem extends CustomRarityItem implements ProjectileItem
         if (!level.isClientSide) {
             IceTofuBrickProjectile brick = new IceTofuBrickProjectile(player, level);
             brick.setItem(itemstack);
-            brick.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.5F, 1.0F);
+            brick.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.0F, 0.0F);
             level.addFreshEntity(brick);
+            player.getCooldowns().addCooldown(this, 6);
         }
         return InteractionResultHolder.sidedSuccess(itemstack, level.isClientSide());
     }
@@ -38,5 +45,10 @@ public class IceTofuBrickItem extends CustomRarityItem implements ProjectileItem
         IceTofuBrickProjectile brick = new IceTofuBrickProjectile(pos.x(), pos.y(), pos.z(), level);
         brick.setItem(itemStack);
         return brick;
+    }
+    @Override
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+        tooltipComponents.addAll(TooltipItem.getTooltipsFromString("ice_tofu_brick", 1, ChatFormatting.GRAY));
+        super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
     }
 }

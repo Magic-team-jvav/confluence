@@ -10,9 +10,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.entity.projectile.ShurikenProjectileModel;
-import org.confluence.mod.common.entity.projectile.ShurikenProjectile;
+import org.confluence.mod.common.entity.projectile.ThrowableDropSelfProjectile;
 
-public class ShurikenProjectileRenderer extends EntityRenderer<ShurikenProjectile> {
+public class ShurikenProjectileRenderer extends EntityRenderer<ThrowableDropSelfProjectile> {
     private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/shuriken_projectile.png");
     private final ShurikenProjectileModel model;
 
@@ -22,12 +22,12 @@ public class ShurikenProjectileRenderer extends EntityRenderer<ShurikenProjectil
     }
 
     @Override
-    public ResourceLocation getTextureLocation(ShurikenProjectile pEntity) {
+    public ResourceLocation getTextureLocation(ThrowableDropSelfProjectile pEntity) {
         return TEXTURE;
     }
 
     @Override
-    public void render(ShurikenProjectile entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight) {
+    public void render(ThrowableDropSelfProjectile entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight) {
         poseStack.pushPose();
         poseStack.translate(0.00F, 0.125F, -0.125F);
         poseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTick, entity.yRotO, entity.getYRot()) - 90.0F));

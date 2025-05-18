@@ -7,15 +7,14 @@ import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(EntityType.class)
 public class EntityTypeMixin implements Immunity {
-
     @Override
-    public Types confluence$getImmunityType(){
+    public Types confluence$getImmunityType() {
         return Types.STATIC;
     }
 
     @Override
-    public int confluence$getImmunityDuration(DamageSource damageSource){
-        if(damageSource.getDirectEntity() instanceof Immunity im){
+    public int confluence$getImmunityDuration(DamageSource damageSource) {
+        if (damageSource.getDirectEntity() instanceof Immunity im) {
             return im.confluence$getImmunityDuration(damageSource);
         }
         return Immunity.super.confluence$getImmunityDuration(damageSource);

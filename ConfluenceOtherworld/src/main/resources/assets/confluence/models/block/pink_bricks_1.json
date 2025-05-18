@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "confluence:block/pink_bricks_1"
+  }
+}

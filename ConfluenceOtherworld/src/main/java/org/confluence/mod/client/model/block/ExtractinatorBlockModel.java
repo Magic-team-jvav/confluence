@@ -5,7 +5,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.crafting.ExtractinatorBlock;
 import software.bernie.geckolib.model.GeoModel;
 
-@SuppressWarnings("removal")
 public class ExtractinatorBlockModel extends GeoModel<ExtractinatorBlock.Entity> {
     public static final ResourceLocation MODEL = Confluence.asResource("geo/block/extractinator.geo.json");
     public static final ResourceLocation TEXTURE = Confluence.asResource("textures/block/extractinator.png");
@@ -25,5 +24,4 @@ public class ExtractinatorBlockModel extends GeoModel<ExtractinatorBlock.Entity>
     public ResourceLocation getAnimationResource(ExtractinatorBlock.Entity animatable) {
         return ANIMATION;
     }
-
 }

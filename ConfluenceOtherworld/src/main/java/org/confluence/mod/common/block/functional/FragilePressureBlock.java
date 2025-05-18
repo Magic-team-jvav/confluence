@@ -10,6 +10,7 @@ import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.confluence.lib.common.block.ISimulatorBlock;
 
 import java.util.function.Supplier;
 

@@ -4,11 +4,6 @@
             "confluence:transmission"
         ]
     },
-    "waving": {
-        "sounds": [
-            "confluence:waving"
-        ]
-    },
     "lightsaber_open": {
         "sounds": [
             "confluence:lightsaber_open"
@@ -92,6 +87,11 @@
     "use_mounts": {
         "sounds": [
             "confluence:use_mounts"
+        ]
+    },
+    "bow_cooldown_recovery": {
+        "sounds": [
+            "confluence:bow_cooldown_recovery"
         ]
     },
     "decoupling": {

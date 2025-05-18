@@ -10,12 +10,12 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import org.confluence.lib.common.block.StateProperties;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.block.StateProperties;
 import org.confluence.mod.common.block.functional.network.INetworkBlock;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.Nullable;
 import org.mesdag.particlestorm.PSGameClient;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
@@ -49,7 +49,7 @@ public class SillyBalloonMachineBlock extends Block implements EntityBlock, INet
 
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-        return level.isClientSide ? ModUtils.getTicker(blockEntityType, FunctionalBlocks.SILLY_BALLOON_MACHINE_ENTITY.get(), Entity::clientTick) : null;
+        return level.isClientSide ? LibUtils.getTicker(blockEntityType, FunctionalBlocks.SILLY_BALLOON_MACHINE_ENTITY.get(), Entity::clientTick) : null;
     }
 
     public static class Entity extends AbstractMechanicalBlock.Entity {

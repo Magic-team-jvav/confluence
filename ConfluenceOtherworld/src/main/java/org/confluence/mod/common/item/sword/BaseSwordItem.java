@@ -1,9 +1,15 @@
 package org.confluence.mod.common.item.sword;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlotGroup;
@@ -16,23 +22,29 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.common.ItemAbility;
-import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.network.PacketDistributor;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.item.sword.stagedy.InventoryTickStrategy;
-import org.confluence.mod.common.item.sword.stagedy.ProjectileStrategy;
-import org.confluence.mod.common.item.sword.stagedy.SwordPrefabs;
-import org.confluence.mod.common.item.sword.stagedy.projectile.IProjContainer;
-import org.confluence.terra_curio.common.component.ModRarity;
-import org.confluence.terra_curio.common.init.TCDataComponentTypes;
-import org.confluence.terraentity.hit_effect.EffectStrategy;
+import org.confluence.mod.common.component.SwordProjectileComponent;
+import org.confluence.mod.common.entity.projectile.sword.SwordProjectile;
+import org.confluence.mod.common.init.ModDataComponentTypes;
+import org.confluence.mod.common.item.sword.legacy.InventoryTickStrategy;
+import org.confluence.mod.common.item.sword.legacy.SwordPrefabs;
+import org.confluence.mod.network.c2s.SwordShootingPacketC2S;
+import org.confluence.terraentity.data.component.EffectStrategyComponent;
+import org.confluence.terraentity.init.TEDataComponentTypes;
+import org.confluence.terraentity.registries.hit_effect.IEffectStrategy;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
-
 
 public class BaseSwordItem extends SwordItem {
     public ModifierBuilder modifier;
@@ -49,62 +61,85 @@ public class BaseSwordItem extends SwordItem {
     public BaseSwordItem(Tier tier, ModRarity rarity, int rawDamage, float rawSpeed) {
         super(tier, new Item.Properties()
                 .durability(tier.getUses())
-                .component(TCDataComponentTypes.MOD_RARITY, rarity)
+                .component(ConfluenceMagicLib.MOD_RARITY, rarity)
                 .component(DataComponents.ATTRIBUTE_MODIFIERS,
-                        createAttributes(tier,rawDamage, rawSpeed))
+                        createAttributes(tier,rawDamage - tier.getAttackDamageBonus() - 1, rawSpeed - 4))
         );
         this.modifier = new ModifierBuilder();
-        modifier.damage =rawDamage + tier.getAttackDamageBonus();
-        modifier.speed = rawSpeed + tier.getSpeed();
     }
     /**TR带特殊效果的剑。
      * @param modifier 效果修饰器
      * @see SwordPrefabs 预制体和半预制体
      * */
     public BaseSwordItem(Tier tier, ModRarity rarity, int rawDamage, float rawSpeed, ModifierBuilder modifier) {
-        super(tier, modifier.properties
-                .durability(tier.getUses())
-                .component(TCDataComponentTypes.MOD_RARITY, rarity)
-                .component(DataComponents.ATTRIBUTE_MODIFIERS,
-                        modifier.attributeModifiersBuilder
-                                .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, rawDamage + tier.getAttackDamageBonus(), AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
-                                .add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, rawSpeed, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
-                                .build())
-        );
+        super(tier, modifier.buildProperties(tier, rarity, rawDamage, rawSpeed));
         this.modifier = modifier;
-        modifier.damage =rawDamage + tier.getAttackDamageBonus();
-        modifier.speed = rawSpeed + tier.getSpeed();
+
     }
 
-    public void applyHitEffects(ItemStack weapon, Entity attacker, LivingEntity hurter, DamageSource damageSource, float damage){
+    public void applyHitEffects(ItemStack weapon, @Nullable Entity attacker, LivingEntity hurter, DamageSource damageSource, float damage){
         if (modifier != null &&
-                damageSource.is(DamageTypeTags.IS_PLAYER_ATTACK) &&
-                damageSource.is(DamageTypeTags.CAN_BREAK_ARMOR_STAND) &&
+//                damageSource.is(DamageTypeTags.IS_PLAYER_ATTACK) &&
                 damageSource.is(DamageTypeTags.PANIC_CAUSES)) {
-            if (attacker instanceof Player player && player.getAttackStrengthScale(0.5f) > 0.95f) {
-                modifier.onHitEffects.forEach(effect -> effect.get().getEffect().accept(player, hurter));
+            var data = weapon.get(TEDataComponentTypes.EFFECT_STRATEGY);
+            if(data != null) {
+                if (attacker instanceof Player player
+                        && damageSource.is(DamageTypeTags.CAN_BREAK_ARMOR_STAND)
+                        && damageSource.is(DamageTypeTags.IS_PLAYER_ATTACK)
+                ) {
+                    if(player.getAttackStrengthScale(0.5f) > 0.95f) {
+                        data.applyAll(player, hurter);
+                    }
+                } else if (attacker instanceof LivingEntity livingEntity) {
+                    data.applyAll(livingEntity, hurter);
+                }
             }
         }
     }
 
+    public void genProjectile(LivingEntity living, ItemStack weapon){
+        var data = weapon.get(ModDataComponentTypes.SWORD_PROJECTILE);
+        if(data != null){
+            living.level().playSound(null, living.getX(), living.getY(), living.getZ(), data.getSoundEvent(), SoundSource.AMBIENT, 1.0F, 1.0F);
+
+            try {
+                data.generation().genProjectile(living, weapon, data.getVelocity(living), () -> {
+                    if (BuiltInRegistries.ENTITY_TYPE.get(data.projType()).create(living.level()) instanceof SwordProjectile projectile) {
+                        projectile.setProjComponent(data);
+                        projectile.addAttackDamage((float) (data.damageFactor() * living.getAttributeValue(Attributes.ATTACK_DAMAGE)));
+                        return projectile;
+                    } else {
+                        living.sendSystemMessage(Component.literal("Error DataComponent sword_projectile: projType must be a SwordProjectile"));
+                        return null;
+                    }
+                });
+            } catch (Exception e) {
+                Confluence.LOGGER.error("Error DataComponent sword_projectile: projType must be a SwordProjectile");
+            }
+        }
+
+    }
+
     public static class ModifierBuilder {
-        public float damage;
-        public float speed;
-        public Supplier<? extends IProjContainer>  proj;
-        public List<DeferredHolder<EffectStrategy,? extends EffectStrategy>> onHitEffects = new ArrayList<>();
-        public QuaConsumer<ItemStack,Level,Entity,Boolean> inventoryTick;
-        public ItemAttributeModifiers.Builder attributeModifiersBuilder = ItemAttributeModifiers.builder();
-        private int modifyCount = 0;
         public boolean canPerformSweep = true;
-        private float sweepRange = 1.0F;
-        private Item.Properties properties = new Item.Properties();
+        public float sweepRange = 1.0F;
+
+        protected Item.Properties properties = new Item.Properties();
+//        private final List<DeferredHolder<EffectStrategy,? extends EffectStrategy>> onHitEffects = new ArrayList<>();
+        private QuaConsumer<ItemStack,Level,Entity,Boolean> inventoryTick;
+        private final ItemAttributeModifiers.Builder attributeModifiersBuilder = ItemAttributeModifiers.builder();
+        private int modifyCount = 0;
+        protected List<Function<Item.Properties,Item.Properties>> modifier = new ArrayList<>();
+        List<Function<MutableComponent, MutableComponent>> tooltipsModifier = new ArrayList<>();
 
 
-        /**添加击中效果
-         * @see EffectStrategy
+        /**添加击中效果组件
+         * <p>注意会覆盖原有组件</p>
+         * @see EffectStrategyComponent
          * */
-        public ModifierBuilder addOnHitEffect(DeferredHolder<EffectStrategy,? extends EffectStrategy> onHit){
-            this.onHitEffects.add(onHit);
+        public ModifierBuilder setOnHitEffect(EffectStrategyComponent onHit){
+//            this.onHitEffects.add(onHit);
+            this.modifier.add(p->p.component(TEDataComponentTypes.EFFECT_STRATEGY, onHit));
             return this;
         }
 
@@ -115,10 +150,10 @@ public class BaseSwordItem extends SwordItem {
         }
 
         /**设置弹幕
-         * @see ProjectileStrategy
+         * @see SwordProjectileComponent
          * */
-        public ModifierBuilder setProj(Supplier<? extends IProjContainer>  proj){
-            this.proj = proj;
+        public ModifierBuilder setProj(Supplier<SwordProjectileComponent>  proj){
+            this.modifier.add(p->p.component(ModDataComponentTypes.SWORD_PROJECTILE,proj.get()));
             return this;
         }
 
@@ -143,26 +178,80 @@ public class BaseSwordItem extends SwordItem {
         }
 
         public ModifierBuilder modifyProperties(Function<Item.Properties,Item.Properties> modifier){
-            this.properties = modifier.apply(this.properties);
+//            this.properties = modifier.getEffect(this.properties);
+            this.modifier.add(modifier);
+            return this;
+        }
+
+        public ModifierBuilder addTooltip(int count){
+            for(int i = 0;i<count;i++)
+                addTooltip();
+            return this;
+        }
+
+        public ModifierBuilder addTooltip(){
+            addTooltip(p->p);
+            return this;
+        }
+
+        public ModifierBuilder addTooltip(int count, Function<MutableComponent, MutableComponent> tooltips){
+            for(int i = 0;i<count;i++)
+                addTooltip(tooltips);
+            return this;
+        }
+
+        public ModifierBuilder addTooltip(Function<MutableComponent, MutableComponent> tooltips){
+            this.tooltipsModifier.add(tooltips);
             return this;
         }
 
 
-
+        public Item.Properties buildProperties(Tier tier, ModRarity rarity, int rawDamage, float rawSpeed){
+            if(modifier != null)
+                modifier.forEach(m->properties = m.apply(properties));
+            properties = properties.durability(tier.getUses())
+                    .component(ConfluenceMagicLib.MOD_RARITY, rarity)
+                    .component(DataComponents.ATTRIBUTE_MODIFIERS,
+                            attributeModifiersBuilder
+                                    .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, rawDamage - 1, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+                                    .add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, rawSpeed - 4, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+                                    .build());
+            return properties;
+        }
 
     }
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        if(!this.modifier.onHitEffects.isEmpty()){
-            EffectStrategy.appendDescription(tooltipComponents,
-                    this.modifier.onHitEffects.stream().map(DeferredHolder::get).toList(),
+        var hitEffects = stack.get(TEDataComponentTypes.EFFECT_STRATEGY);
+        if(hitEffects != null){
+            IEffectStrategy.appendDescription(tooltipComponents,
+                    hitEffects.effects(),
                     Component.translatable("tooltip.item.confluence.on_hit_effects").append(": ").withColor(0x969811));
         }
-        if(this.modifier.proj != null){
-            tooltipComponents.add(Component.translatable("tooltip.item.confluence.has_proj").withColor(0xAABB));
+        var data = stack.get(ModDataComponentTypes.SWORD_PROJECTILE);
+        if(data != null){
+            tooltipComponents.add(Component.translatable("tooltip.item.confluence.has_proj").withColor(0x57cdfb));
+            tooltipComponents.add(Component.translatable("tooltip.item.confluence.has_proj.damage").append(": x"+data.damageFactor()).withColor(0x57cdfb));
+            tooltipComponents.add(Component.translatable("tooltip.item.confluence.has_proj.speed").append(": "+data.baseSpeed()).withColor(0x57cdfb));
+            tooltipComponents.add(Component.translatable("tooltip.item.confluence.has_proj.cooldown").append(": "+data.cooldown()).withColor(0x57cdfb));
+            if(data.trackType().isPresent()){
+                data.trackType().ifPresent(type -> tooltipComponents.add(Component.translatable("tooltip.item.confluence.has_proj.track_type").append(": ").append(Component.translatable(type.getName())).withColor(0x57cdfb)));
+            }
         }
 
+        for(int i = 0;i<modifier.tooltipsModifier.size();i++){
+            if(i == 0){
+                tooltipComponents.add(Component.empty());
+            }
+            var it = modifier.tooltipsModifier.get(i);
+            tooltipComponents.add(it.apply(
+                    Component.translatable("tooltip.item.confluence." + BuiltInRegistries.ITEM.getKey(this).getPath() + "." + i)
+                            .withStyle(style -> style.withColor(0x666666).withItalic(true))
+                    )
+//                    .withColor(0x004388)
+            );
+        }
     }
 
     @Override
@@ -182,5 +271,22 @@ public class BaseSwordItem extends SwordItem {
     @FunctionalInterface
     public interface QuaConsumer<A,B,C,D> {
         void accept(A a,B b,C c,D d);
+    }
+
+    // TODO: 这是飞龙、波涌之刃的发剑气方式，还要写附魔剑、泰拉刃的
+    @OnlyIn(Dist.CLIENT)
+    public static void swordProjectileHandle(Minecraft minecraft, LocalPlayer player) {
+        if (minecraft.gameMode == null || minecraft.gameMode.isDestroying() || !minecraft.options.keyAttack.isDown()) {return;}
+
+        ItemStack stack = player.getMainHandItem();
+        Item item = stack.getItem();
+        var data = stack.get(ModDataComponentTypes.SWORD_PROJECTILE);
+        if (item instanceof BaseSwordItem sword && !player.getCooldowns().isOnCooldown(item)
+                && data!= null
+        ) {
+            PacketDistributor.sendToServer((new SwordShootingPacketC2S()));
+            player.getCooldowns().addCooldown(sword, data.getAttackSpeed(player));
+            player.swing(InteractionHand.MAIN_HAND);
+        }
     }
 }

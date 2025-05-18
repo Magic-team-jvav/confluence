@@ -1,9 +1,7 @@
 {
     "variants": {
-        "": [
-            {
-                "model": "confluence:block/pearl_stone"
-            }
-        ]
+        "": {
+            "model": "confluence:block/pearl_stone"
+        }
     }
 }

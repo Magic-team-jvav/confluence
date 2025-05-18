@@ -6,8 +6,6 @@ import net.minecraft.resources.ResourceLocation;
  * <a href="https://terraria.wiki.gg/zh/wiki/Drunk_world">Wiki</a>
  */
 public class DrunkWorld extends SecretSeed {
-    public static final int SEA_LEVEL = 47;
-
     public DrunkWorld(long flag, ResourceLocation id) {
         super(flag, id);
     }

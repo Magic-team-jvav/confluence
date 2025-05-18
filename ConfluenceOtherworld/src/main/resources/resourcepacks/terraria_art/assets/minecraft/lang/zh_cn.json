@@ -1,6 +1,10 @@
 {
     "options.difficulty.peaceful": "§d旅行",
+    "options.difficulty.peaceful.info": "能力越大，责任越大",
     "options.difficulty.easy": "§f经典",
+    "options.difficulty.easy.info": "冒险从这里开始………",
     "options.difficulty.normal": "§6专家",
-    "options.difficulty.hard": "§c大师"
+    "options.difficulty.normal.info": "为财富和荣誉而战，孩子。",
+    "options.difficulty.hard": "§c大师",
+    "options.difficulty.hard.info": "游戏结束了，伙计，游戏结束了！"
 }

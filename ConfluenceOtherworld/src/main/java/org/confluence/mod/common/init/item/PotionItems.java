@@ -5,16 +5,15 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.confluence.lib.common.component.ModRarity;
+import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.item.CustomRarityItem;
 import org.confluence.mod.common.item.potion.*;
-import org.confluence.mod.util.PlayerUtils;
-import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCEffects;
 import org.jetbrains.annotations.NotNull;
 
@@ -26,10 +25,12 @@ public class PotionItems {
         @Override
         protected void apply(@NotNull ItemStack itemStack, @NotNull Level level, @NotNull LivingEntity living) {
             if (living.getAirSupply() <= 0 && living instanceof ServerPlayer serverPlayer) {
-                PlayerUtils.awardAchievement(serverPlayer, "unusual_survival_strategies");
+                ModAchievements.awardAchievement(serverPlayer, "unusual_survival_strategies");
             }
         }
     });
+    public static final DeferredItem<Item> MUG = ITEMS.register("mug", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<AbstractPotionItem> ALE = ITEMS.register("ale", () -> new EffectPotionItem(ModEffects.TIPSY, 2400));
     public static final DeferredItem<AbstractPotionItem> ARCHERY_POTION = ITEMS.register("archery_potion", () -> new EffectPotionItem(ModEffects.ARCHERY, 9600));
     public static final DeferredItem<AbstractPotionItem> BUILDER_POTION = ITEMS.register("builder_potion", () -> new EffectPotionItem(ModEffects.BUILDER, 54000));
     public static final DeferredItem<AbstractPotionItem> DANGERSENSE_POTION = ITEMS.register("dangersense_potion", () -> new EffectPotionItem(ModEffects.DANGER_SENSE, 4800));
@@ -46,8 +47,8 @@ public class PotionItems {
     public static final DeferredItem<AbstractPotionItem> IRON_SKIN_POTION = ITEMS.register("iron_skin_potion", () -> new EffectPotionItem(ModEffects.IRON_SKIN, 9600));
     public static final DeferredItem<AbstractPotionItem> LIFEFORCE_POTION = ITEMS.register("lifeforce_potion", () -> new EffectPotionItem(ModEffects.LIFE_FORCE, 9600));
     public static final DeferredItem<AbstractPotionItem> LOVE_POTION = ITEMS.register("love_potion", () -> new EffectThrowablePotionItem(ModEffects.LOVE, 600));
-    public static final DeferredItem<AbstractPotionItem> LUCK_POTION = ITEMS.register("luck_potion", () -> new EffectPotionItem(ModEffects.LUCK_EFFECT, 6000));
-    public static final DeferredItem<AbstractPotionItem> LESSER_LUCK_POTION = ITEMS.register("lesser_luck_potion", () -> new EffectPotionItem(ModEffects.LUCK_EFFECT, 6000, 1));
+    public static final DeferredItem<AbstractPotionItem> LESSER_LUCK_POTION = ITEMS.register("lesser_luck_potion", () -> new EffectPotionItem(ModEffects.LUCK_EFFECT, 6000));
+    public static final DeferredItem<AbstractPotionItem> LUCK_POTION = ITEMS.register("luck_potion", () -> new EffectPotionItem(ModEffects.LUCK_EFFECT, 6000, 1));
     public static final DeferredItem<AbstractPotionItem> GREATER_LUCK_POTION = ITEMS.register("greater_luck_potion", () -> new EffectPotionItem(ModEffects.LUCK_EFFECT, 6000, 2));
     public static final DeferredItem<AbstractPotionItem> MANA_REGENERATION_POTION = ITEMS.register("mana_regeneration_potion", () -> new EffectPotionItem(ModEffects.MANA_REGENERATION, 9600));
     public static final DeferredItem<AbstractPotionItem> MAGIC_POWER_POTION = ITEMS.register("magic_power_potion", () -> new EffectPotionItem(ModEffects.MAGIC_POWER, 4800));
@@ -64,18 +65,27 @@ public class PotionItems {
     public static final DeferredItem<AbstractPotionItem> TITAN_POTION = ITEMS.register("titan_potion", () -> new EffectPotionItem(ModEffects.TITAN, 9600));
     public static final DeferredItem<AbstractPotionItem> WATER_WALKING_POTION = ITEMS.register("water_walking_potion", () -> new EffectPotionItem(ModEffects.WATER_WALKING, 12000));
     public static final DeferredItem<AbstractPotionItem> WRATH_POTION = ITEMS.register("wrath_potion", () -> new EffectPotionItem(ModEffects.WRATH, 4800));
-    public static final DeferredItem<AbstractPotionItem> LESSER_HEALING_POTION = ITEMS.register("lesser_healing_potion", () -> new HealingPotionItem(10, Rarity.COMMON));
-    public static final DeferredItem<AbstractPotionItem> HEALING_POTION = ITEMS.register("healing_potion", () -> new HealingPotionItem(20, Rarity.UNCOMMON));
-    public static final DeferredItem<AbstractPotionItem> GREATER_HEALING_POTION = ITEMS.register("greater_healing_potion", () -> new HealingPotionItem(40, Rarity.RARE));
-    public static final DeferredItem<AbstractPotionItem> SUPER_HEALING_POTION = ITEMS.register("super_healing_potion", () -> new HealingPotionItem(60, Rarity.EPIC));
-    public static final DeferredItem<AbstractPotionItem> LESSER_MANA_POTION = ITEMS.register("lesser_mana_potion", () -> new ManaPotionItem(50, Rarity.COMMON));
-    public static final DeferredItem<AbstractPotionItem> MANA_POTION = ITEMS.register("mana_potion", () -> new ManaPotionItem(100, Rarity.UNCOMMON));
-    public static final DeferredItem<AbstractPotionItem> GREATER_MANA_POTION = ITEMS.register("greater_mana_potion", () -> new ManaPotionItem(200, Rarity.RARE));
-    public static final DeferredItem<AbstractPotionItem> SUPER_MANA_POTION = ITEMS.register("super_mana_potion", () -> new ManaPotionItem(300, Rarity.EPIC));
+    public static final DeferredItem<AbstractPotionItem> LESSER_HEALING_POTION = ITEMS.register("lesser_healing_potion", () -> new HealingPotionItem(10, ModRarity.WHITE));
+    public static final DeferredItem<AbstractPotionItem> EGGNOG = ITEMS.register("eggnog", () -> new HealingPotionItem(16, ModRarity.WHITE));
+    public static final DeferredItem<AbstractPotionItem> RESTORATION_POTION = ITEMS.register("restoration_potion", () -> new HealingPotionItem(18, ModRarity.BLUE));
+    public static final DeferredItem<AbstractPotionItem> HEALING_POTION = ITEMS.register("healing_potion", () -> new HealingPotionItem(20, ModRarity.BLUE));
+    public static final DeferredItem<AbstractPotionItem> GREATER_HEALING_POTION = ITEMS.register("greater_healing_potion", () -> new HealingPotionItem(40, ModRarity.ORANGE));
+    public static final DeferredItem<AbstractPotionItem> SUPER_HEALING_POTION = ITEMS.register("super_healing_potion", () -> new HealingPotionItem(60, ModRarity.LIME));
+    public static final DeferredItem<AbstractPotionItem> LESSER_MANA_POTION = ITEMS.register("lesser_mana_potion", () -> new ManaPotionItem(50, ModRarity.WHITE));
+    public static final DeferredItem<AbstractPotionItem> MANA_POTION = ITEMS.register("mana_potion", () -> new ManaPotionItem(100, ModRarity.BLUE));
+    public static final DeferredItem<AbstractPotionItem> GREATER_MANA_POTION = ITEMS.register("greater_mana_potion", () -> new ManaPotionItem(200, ModRarity.ORANGE));
+    public static final DeferredItem<AbstractPotionItem> SUPER_MANA_POTION = ITEMS.register("super_mana_potion", () -> new ManaPotionItem(300, ModRarity.LIGHT_RED));
     public static final DeferredItem<AbstractPotionItem> RANDOM_TELEPORT_POTION = ITEMS.register("random_teleport_potion", RandomTeleportPotionItem::new);
     public static final DeferredItem<AbstractPotionItem> CRATE_POTION = ITEMS.register("crate_potion", () -> new EffectPotionItem(ModEffects.CRATE, 4800));
-    public static final DeferredItem<AbstractPotionItem> STINK_POTION = ITEMS.register("stink_potion", () -> new EffectThrowablePotionItem(ModEffects.STINKY, 600));
+    public static final DeferredItem<AbstractPotionItem> STINK_POTION = ITEMS.register("stink_potion", () -> new EffectThrowablePotionItem(ModRarity.WHITE, ModEffects.STINKY, 600));
     public static final DeferredItem<CustomRarityItem> WORMHOLE_POTION = ITEMS.register("wormhole_potion", () -> new CustomRarityItem(new Item.Properties().stacksTo(16), ModRarity.BLUE));
+    public static final DeferredItem<AbstractPotionItem> AMMO_RESERVATION_POTION = ITEMS.register("ammo_reservation_potion", () -> new EffectPotionItem(ModEffects.AMMO_BOX, 9600));
+    public static final DeferredItem<AbstractPotionItem> SUMMONING_POTION = ITEMS.register("summoning_potion", () -> new EffectPotionItem(ModEffects.SUMMONING, 9600));
 
+    public static final DeferredItem<AbstractPotionItem> RED_POTION = ITEMS.register("red_potion", RedPotionItem::new);
     public static final DeferredItem<AbstractPotionItem> CHAOS_POTION = ITEMS.register("chaos_potion", ChaosPotionItem::new);
+    public static final DeferredItem<AbstractPotionItem> STRANGE_BREW = ITEMS.register("strange_brew", StrangeBrewItem::new);
+
+    public static final DeferredItem<AbstractPotionItem> FLASK_OF_FIRE = ITEMS.register("flask_of_fire", () -> new EffectPotionItem(ModRarity.LIGHT_RED, ModEffects.WEAPON_IMBUE_FIRE, 24000));
+    public static final DeferredItem<AbstractPotionItem> FLASK_OF_GOLD = ITEMS.register("flask_of_gold", () -> new EffectPotionItem(ModRarity.LIGHT_RED, ModEffects.WEAPON_IMBUE_GOLD, 24000));
 }

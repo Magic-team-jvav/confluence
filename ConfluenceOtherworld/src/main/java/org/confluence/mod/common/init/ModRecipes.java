@@ -17,16 +17,16 @@ import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.brewing.IBrewingRecipe;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.init.block.ModBlocks;
+import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.BaitItems;
 import org.confluence.mod.common.init.item.FoodItems;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.init.item.PotionItems;
 import org.confluence.mod.common.recipe.*;
-import org.confluence.mod.util.ModUtils;
-import org.confluence.terra_curio.util.TCUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -50,6 +50,16 @@ public final class ModRecipes {
     public static final Supplier<RecipeSerializer<?>> FLETCHING_TABLE_SERIALIZER = SERIALIZERS.register("fletching_table", FletchingTableRecipe.Serializer::new);
     public static final Supplier<RecipeType<AlchemyTableRecipe>> ALCHEMY_TABLE_TYPE = registerType("alchemy_table");
     public static final Supplier<RecipeSerializer<?>> ALCHEMY_TABLE_SERIALIZER = SERIALIZERS.register("alchemy_table", AlchemyTableRecipe.Serializer::new);
+    public static final Supplier<RecipeType<CookingPotRecipe>> COOKING_POT_TYPE = registerType("cooking_pot");
+    public static final Supplier<RecipeSerializer<?>> COOKING_POT_SERIALIZER = SERIALIZERS.register("cooking_pot", CookingPotRecipe.Serializer::new);
+    public static final Supplier<RecipeType<SawmillRecipe>> SAWMILL_TYPE = registerType("sawmill");
+    public static final Supplier<RecipeSerializer<?>> SAWMILL_SERIALIZER = SERIALIZERS.register("sawmill", SawmillRecipe.Serializer::new);
+    public static final Supplier<RecipeType<SolidifierRecipe>> SOLIDIFIER_TYPE = registerType("solidifier");
+    public static final Supplier<RecipeSerializer<?>> SOLIDIFIER_SERIALIZER = SERIALIZERS.register("solidifier", SolidifierRecipe.Serializer::new);
+    public static final Supplier<RecipeType<CrystalBallRecipe>> CRYSTAL_BALL_TYPE = registerType("crystal_ball");
+    public static final Supplier<RecipeSerializer<?>> CRYSTAL_BALL_SERIALIZER = SERIALIZERS.register("crystal_ball", CrystalBallRecipe.Serializer::new);
+    public static final Supplier<RecipeType<HardmodeAnvilRecipe>> HARDMODE_ANVIL_TYPE = registerType("hardmode_anvil");
+    public static final Supplier<RecipeSerializer<?>> HARDMODE_ANVIL_SERIALIZER = SERIALIZERS.register("hardmode_anvil", HardmodeAnvilRecipe.Serializer::new);
 
     private static <R extends Recipe<?>> Supplier<RecipeType<R>> registerType(String id) {
         return TYPES.register(id + "_type", () -> new RecipeType<>() {
@@ -71,6 +81,7 @@ public final class ModRecipes {
         private static final Object2ObjectMap<int[], ItemStack> MATERIAL_TO_RESULT = new Object2ObjectOpenHashMap<>();
 
         public static void initialize() {
+            if (!CommonConfigs.BREWING_STAND_RECIPE.get()) return;
             registerMaterial(MaterialItems.WATERLEAF.get());
             registerMaterial(MaterialItems.FIREBLOSSOM.get());
             registerMaterial(MaterialItems.MOONGLOW.get());
@@ -82,7 +93,7 @@ public final class ModRecipes {
             registerMaterial(Items.COBWEB);
             registerMaterial(FoodItems.ARMORED_CAVE_FISH.get());
             registerMaterial(Items.FEATHER);
-            registerMaterial(ModBlocks.CRISPY_HONEY_BLOCK.get().asItem());
+            registerMaterial(DecorativeBlocks.CRISPY_HONEY_BLOCK.get().asItem());
             registerMaterial(Items.FIRE_CORAL);
             registerMaterial(BaitItems.LADYBUG.get());
             registerMaterial(FoodItems.FLASHFIN_KOI.get());
@@ -141,7 +152,7 @@ public final class ModRecipes {
             }, PotionItems.FEATHERFALL_POTION.toStack());
             // 钓鱼
             registerMix(new Item[]{
-                    ModBlocks.CRISPY_HONEY_BLOCK.get().asItem(),
+                    DecorativeBlocks.CRISPY_HONEY_BLOCK.get().asItem(),
                     MaterialItems.WATERLEAF.get(),
             }, PotionItems.FISHING_POTION.toStack());
             // 脚蹼
@@ -284,7 +295,7 @@ public final class ModRecipes {
             }, PotionItems.THORNS_POTION.toStack());
             // 泰坦
             registerMix(new Item[]{
-                    Items.BONE,
+                    MaterialItems.DUNGEON_DEMON_BONE.get(),
                     MaterialItems.DEATHWEED.get(),
                     MaterialItems.SHIVERTHORN.get()
             }, PotionItems.TITAN_POTION.toStack());
@@ -330,6 +341,16 @@ public final class ModRecipes {
                     MaterialItems.SHIVERTHORN.get(),
                     MaterialItems.WATERLEAF.get()
             }, PotionItems.CRATE_POTION.toStack());
+            // 弹药储备
+            registerMix(new Item[]{
+                    FoodItems.PISCES_FIN_COD.get(),
+                    MaterialItems.MOONGLOW.get()
+            }, PotionItems.AMMO_RESERVATION_POTION.toStack());
+            // 召唤
+            registerMix(new Item[]{
+                    FoodItems.MOTTLED_OILFISH.get(),
+                    MaterialItems.MOONGLOW.get()
+            }, PotionItems.SUMMONING_POTION.toStack());
         }
 
         private static void registerMaterial(Item material) {
@@ -522,7 +543,7 @@ public final class ModRecipes {
         }
 
         public static void addMaterials(ItemStack potion, Item... materials) {
-            TCUtils.updateItemStackNbt(potion, tag -> {
+            LibUtils.updateItemStackNbt(potion, tag -> {
                 int[] ids = tag.getIntArray("confluence:potion_materials");
                 for (Item material : materials) {
                     int id = MATERIAL_ID_MAP.getOrDefault(material, -1);
@@ -534,7 +555,7 @@ public final class ModRecipes {
         }
 
         public static void setMaterials(ItemStack potion, Item[] materials) {
-            TCUtils.updateItemStackNbt(potion, tag -> {
+            LibUtils.updateItemStackNbt(potion, tag -> {
                 int[] ids = Arrays.stream(materials).mapToInt(material -> MATERIAL_ID_MAP.getOrDefault(material, -1)).filter(id -> id != -1).toArray();
                 Arrays.sort(ids);
                 tag.putIntArray("confluence:potion_materials", ids);
@@ -543,11 +564,11 @@ public final class ModRecipes {
 
         public static void setMaterials(ItemStack potion, int[] materials) {
             Arrays.sort(materials);
-            TCUtils.updateItemStackNbt(potion, tag -> tag.putIntArray("confluence:potion_materials", materials));
+            LibUtils.updateItemStackNbt(potion, tag -> tag.putIntArray("confluence:potion_materials", materials));
         }
 
         public static int[] getMaterials(ItemStack potion) {
-            CompoundTag tag = ModUtils.getItemStackNbt(potion);
+            CompoundTag tag = LibUtils.getItemStackNbtIfPresent(potion);
             if (tag == null) return new int[0];
             return tag.getIntArray("confluence:potion_materials");
         }

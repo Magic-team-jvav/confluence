@@ -8,24 +8,24 @@
   ],
   "key": {
     "a": {
-      "type": "terra_curio:amount_ingredient",
+      "type": "confluence_magic_lib:amount_ingredient",
       "ingredient": {
         "item": "confluence:hellstone_ingot"
       },
       "count": 3
     },
     "b": {
-      "type": "terra_curio:amount_ingredient",
+      "type": "confluence_magic_lib:amount_ingredient",
       "ingredient": {
         "item": "confluence:hellstone_ingot"
       },
       "count": 2
     },
     "c": {
-      "item": "confluence:enchanted_boomerang"
+      "item": "terra_entity:enchanted_boomerang"
     }
   },
   "result": {
-    "id": "confluence:flamarang"
+    "id": "terra_entity:flamarang"
   }
 }

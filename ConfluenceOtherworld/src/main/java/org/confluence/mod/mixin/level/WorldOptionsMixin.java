@@ -21,6 +21,15 @@ import java.util.function.Function;
 
 @Mixin(WorldOptions.class)
 public abstract class WorldOptionsMixin implements IWorldOptions {
+    @Shadow
+    @Final
+    private long seed;
+    @Shadow
+    @Final
+    private boolean generateStructures;
+    @Shadow
+    @Final
+    private boolean generateBonusChest;
     @Mutable
     @Shadow
     @Final
@@ -41,6 +50,13 @@ public abstract class WorldOptionsMixin implements IWorldOptions {
     @Override
     public void confluence$setLegacyCustomOptions(Optional<String> legacyCustomOptions) {
         this.legacyCustomOptions = legacyCustomOptions;
+    }
+
+    @Override
+    public WorldOptions confluence$copyWithoutSecretFlag() {
+        WorldOptions worldOptions = new WorldOptions(seed, generateStructures, generateBonusChest);
+        ((IWorldOptions) worldOptions).confluence$setLegacyCustomOptions(legacyCustomOptions);
+        return worldOptions;
     }
 
     @SuppressWarnings("unchecked")

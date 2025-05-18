@@ -12,12 +12,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.entity.projectile.bomb.BaseBombEntity;
 import org.confluence.mod.common.entity.projectile.bomb.BaseGrenadeEntity;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.item.ConsumableItems;
-import org.confluence.mod.util.VectorUtils;
 
 import java.util.List;
 

@@ -1,5 +1,6 @@
 package org.confluence.mod.client.gui;
 
+import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.advancements.AdvancementType;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -13,12 +14,17 @@ import net.minecraft.util.Mth;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Hashtable;
 import java.util.List;
 
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 @OnlyIn(Dist.CLIENT)
 public class AchievementToast implements Toast {
     public static final Component DISPLAY = Component.translatable("achievements.toast.complete");
@@ -40,7 +46,7 @@ public class AchievementToast implements Toast {
     }
 
     @Override
-    public @NotNull Visibility render(@NotNull GuiGraphics pGuiGraphics, @NotNull ToastComponent pToastComponent, long pTimeSinceLastVisible) {
+    public Visibility render(GuiGraphics pGuiGraphics, ToastComponent pToastComponent, long pTimeSinceLastVisible) {
         Font font = pToastComponent.getMinecraft().font;
         pGuiGraphics.pose().pushPose();
         pGuiGraphics.pose().translate(0.0F, pGuiGraphics.guiHeight() - height(), 0.0F);
@@ -53,7 +59,7 @@ public class AchievementToast implements Toast {
         return (double) pTimeSinceLastVisible >= 5000.0 * pToastComponent.getNotificationDisplayTimeMultiplier() ? Visibility.HIDE : Visibility.SHOW;
     }
 
-    private void playSound(@NotNull ToastComponent pToastComponent, long pTimeSinceLastVisible) {
+    private void playSound(ToastComponent pToastComponent, long pTimeSinceLastVisible) {
         if (!playedSound && pTimeSinceLastVisible > 0L) {
             this.playedSound = true;
             if (display.type() == AdvancementType.CHALLENGE) {
@@ -62,7 +68,7 @@ public class AchievementToast implements Toast {
         }
     }
 
-    private void renderDescription(@NotNull GuiGraphics pGuiGraphics, Font font) {
+    private void renderDescription(GuiGraphics pGuiGraphics, Font font) {
         List<FormattedCharSequence> list = font.split(display.description(), 141);
         if (list.size() == 1) {
             pGuiGraphics.drawString(font, list.getFirst(), 8, 44, 0, false);
@@ -83,7 +89,7 @@ public class AchievementToast implements Toast {
         pGuiGraphics.pose().popPose();
     }
 
-    private void renderTitle(@NotNull GuiGraphics pGuiGraphics, long pTimeSinceLastVisible, Font font) {
+    private void renderTitle(GuiGraphics pGuiGraphics, long pTimeSinceLastVisible, Font font) {
         List<FormattedCharSequence> list = font.split(display.title(), 125);
         int i = display.type() == AdvancementType.CHALLENGE ? 16746751 : 16776960;
         if (list.size() == 1) {
@@ -105,12 +111,23 @@ public class AchievementToast implements Toast {
         }
     }
 
+    public static boolean renderWidgetIcon(ResourceLocation id, GuiGraphics guiGraphics, int x, int y) {
+        AchievementToast achievementToast = getToast(id);
+        if (achievementToast == null) return true;
+        guiGraphics.pose().pushPose();
+        guiGraphics.pose().translate(x, y, 0);
+        guiGraphics.pose().scale(0.25F, 0.25F, 1.0F);
+        guiGraphics.blit(achievementToast.icon, 0, 0, 0, 0, 64, 64, 64, 64);
+        guiGraphics.pose().popPose();
+        return false;
+    }
+
     public static void registerToast(ResourceLocation advancement, AchievementToast toast) {
         ACHIEVEMENTS.put(advancement, toast);
     }
 
     public static void registerToast(String namespace, String path) {
-        registerToast(ResourceLocation.fromNamespaceAndPath(namespace, "achievements/" + path), new AchievementToast(
+        registerToast(ResourceLocation.fromNamespaceAndPath(namespace, ModAchievements.PREFIX + path), new AchievementToast(
                 ResourceLocation.fromNamespaceAndPath(namespace, "textures/achievement/" + path + ".png"),
                 new Display(AdvancementType.CHALLENGE,
                         Component.translatable("achievements." + namespace + "." + path + ".title"),
@@ -122,7 +139,7 @@ public class AchievementToast implements Toast {
         registerToast(Confluence.MODID, path);
     }
 
-    public static AchievementToast getToast(ResourceLocation advancement) {
+    public static @Nullable AchievementToast getToast(ResourceLocation advancement) {
         return ACHIEVEMENTS.get(advancement);
     }
 

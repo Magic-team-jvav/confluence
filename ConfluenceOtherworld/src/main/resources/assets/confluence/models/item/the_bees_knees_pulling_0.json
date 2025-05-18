@@ -1,0 +1,6 @@
+{
+    "parent": "confluence:item/the_bees_knees",
+    "textures": {
+        "layer0": "confluence:item/bow/the_bees_knees_pulling_0"
+    }
+}

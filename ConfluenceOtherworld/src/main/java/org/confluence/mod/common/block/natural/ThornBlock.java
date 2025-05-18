@@ -8,6 +8,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -69,7 +70,7 @@ public class ThornBlock extends PipeBlock {
     public void entityInside(BlockState pState, Level pLevel, BlockPos pPos, Entity pEntity) {
         if (pLevel.isClientSide()) return;
         if (pEntity instanceof ServerPlayer player) {
-            player.hurt(ModDamageTypes.of(pLevel, ModDamageTypes.THORN), damageAmount);
+            player.hurt(ModDamageTypes.of(pLevel, DamageTypes.THORNS), damageAmount);
             pLevel.destroyBlock(pPos, false);
         }
         if (pEntity instanceof Projectile) {

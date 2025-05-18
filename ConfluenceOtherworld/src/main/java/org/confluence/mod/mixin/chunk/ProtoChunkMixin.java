@@ -28,7 +28,6 @@ public abstract class ProtoChunkMixin {
         if (targetBiome != null) {
             confluence$infect(section, targetBiome);
         }
-
     }
 
     // 生成阶段只管传播不管净化

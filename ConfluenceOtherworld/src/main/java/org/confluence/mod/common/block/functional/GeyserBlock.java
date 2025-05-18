@@ -18,11 +18,10 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.confluence.mod.common.block.StateProperties;
+import org.confluence.lib.common.block.StateProperties;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.jetbrains.annotations.Nullable;
 
-@SuppressWarnings("deprecation")
 public class GeyserBlock extends AbstractMechanicalBlock { // 热喷泉
     public static final BooleanProperty IS_FLOOR = BooleanProperty.create("is_floor");
     private static final VoxelShape SHAPE_FLOOR = Shapes.box(0.0625, 0.0, 0.0625, 0.9375, 0.5, 0.9375);

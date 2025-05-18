@@ -12,9 +12,9 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.client.handler.WeatherHandler;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2f;
 
@@ -32,7 +32,7 @@ public class WeatherVaneBlock extends Block implements EntityBlock {
 
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-        return level.isClientSide ? ModUtils.getTicker(blockEntityType, FunctionalBlocks.WEATHER_VANE_ENTITY.get(), Entity::clientTick) : null;
+        return level.isClientSide ? LibUtils.getTicker(blockEntityType, FunctionalBlocks.WEATHER_VANE_ENTITY.get(), Entity::clientTick) : null;
     }
 
     @Override

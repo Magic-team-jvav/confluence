@@ -12,7 +12,6 @@ public final class ModSoundEvents {
     public static final DeferredRegister<SoundEvent> EVENTS = DeferredRegister.create(Registries.SOUND_EVENT, Confluence.MODID);
 
     public static final DeferredHolder<SoundEvent, SoundEvent> TRANSMISSION = register("transmission"); // 泰拉传送
-    public static final DeferredHolder<SoundEvent, SoundEvent> WAVING = register("waving"); // 泰拉挥动
     public static final DeferredHolder<SoundEvent, SoundEvent> LIGHTSABER_OPEN = register("lightsaber_open"); // 光剑
     public static final DeferredHolder<SoundEvent, SoundEvent> REGULAR_STAFF_SHOOT = register("regular_staff_shoot"); // 法杖1
     public static final DeferredHolder<SoundEvent, SoundEvent> REGULAR_STAFF_SHOOT_2 = register("regular_staff_shoot_2"); // 法杖2
@@ -20,6 +19,7 @@ public final class ModSoundEvents {
     public static final DeferredHolder<SoundEvent, SoundEvent> MANA_STAR_USE = register("mana_star_use"); // 魔力水晶
     public static final DeferredHolder<SoundEvent, SoundEvent> COINS = register("coins"); // 币
     public static final DeferredHolder<SoundEvent, SoundEvent> COOLDOWN_RECOVERY = register("cooldown_recovery"); // CD冷却
+    public static final DeferredHolder<SoundEvent, SoundEvent> BOW_COOLDOWN_RECOVERY = register("bow_cooldown_recovery"); // CD冷却-弓箭
     public static final DeferredHolder<SoundEvent, SoundEvent> FROZEN_ARROW = register("frozen_arrow"); // 冰雪射弹
     public static final DeferredHolder<SoundEvent, SoundEvent> FROZEN_BROKEN = register("frozen_broken"); // 冰雪射弹消失
     public static final DeferredHolder<SoundEvent, SoundEvent> SHIMMER_DETACHMENT = register("shimmer_detachment"); // 脱离微光

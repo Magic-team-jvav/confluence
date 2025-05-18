@@ -26,11 +26,6 @@
         },
         {
           "type": "minecraft:item",
-          "name": "confluence:wood_boomerang",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
           "name": "terra_guns:blowpipe",
           "weight": 1
         },
@@ -51,7 +46,7 @@
         },
         {
           "type": "minecraft:item",
-          "name": "confluence:wood_boomerang",
+          "name": "terra_entity:wood_boomerang",
           "weight": 1
         },
         {
@@ -76,8 +71,8 @@
       "bonus_rolls": 0.0,
       "entries": [
         {
-          "type": "minecraft:loot_table",
-          "value": "confluence:gameplay/living_carry",
+          "type": "minecraft:item",
+          "name": "confluence:living_wood_wand",
           "weight": 2
         },
         {
@@ -92,6 +87,11 @@
       "entries": [
         {
           "type": "minecraft:item",
+          "name": "confluence:leaf_wand",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
           "name": "confluence:sunflower_minecart",
           "weight": 1
         },
@@ -102,7 +102,7 @@
         },
         {
           "type": "minecraft:empty",
-          "weight": 18
+          "weight": 2
         }
       ],
       "rolls": 1

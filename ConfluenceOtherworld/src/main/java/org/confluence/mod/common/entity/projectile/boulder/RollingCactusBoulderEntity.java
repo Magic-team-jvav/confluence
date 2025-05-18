@@ -18,12 +18,12 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.init.ModEntities;
-import org.confluence.mod.util.VectorUtils;
 
 public class RollingCactusBoulderEntity extends BoulderEntity {
-    public RollingCactusBoulderEntity(EntityType<RollingCactusBoulderEntity> pEntityType, Level pLevel) {
-        super(pEntityType, pLevel);
+    public RollingCactusBoulderEntity(EntityType<RollingCactusBoulderEntity> entityType, Level pLevel) {
+        super(entityType, pLevel);
         this.minimumBreakSpeed = 0.05;
         this.speed = 0.3;
     }
@@ -47,7 +47,7 @@ public class RollingCactusBoulderEntity extends BoulderEntity {
                 float f = -Mth.sin(y) * cos;
                 float f1 = -Mth.sin(x);
                 float f2 = Mth.cos(y) * cos;
-                projectile.setPos(position().add(0.5, 1.25, 0.5));
+                projectile.setPos(position().add(0.0, 1.25, 0.0));
                 projectile.shoot(f, f1, f2, 0.4F, 0.1F);
                 level().addFreshEntity(projectile);
                 y += d;

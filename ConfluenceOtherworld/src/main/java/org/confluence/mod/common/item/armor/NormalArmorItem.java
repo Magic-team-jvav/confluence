@@ -9,6 +9,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.renderer.item.NormalArmorItemRenderer;
 import org.jetbrains.annotations.Nullable;
@@ -29,6 +31,11 @@ public class NormalArmorItem extends ArmorItem implements GeoItem {
         this.name = name;
     }
 
+    public NormalArmorItem(String name, ModRarity rarity, Holder<ArmorMaterial> material, Type type, Properties properties) {
+        super(material, type, properties.component(ConfluenceMagicLib.MOD_RARITY, rarity));
+        this.name = name;
+    }
+
     @Override
     public boolean isEnchantable(ItemStack stack) {
         return stack.getMaxStackSize() == 1;
@@ -37,16 +44,16 @@ public class NormalArmorItem extends ArmorItem implements GeoItem {
     @Override
     public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
         consumer.accept(new GeoRenderProvider() {
-            private NormalArmorItemRenderer renderer;
+            private NormalArmorItemRenderer<NormalArmorItem> renderer;
 
             @Override
             public <T extends LivingEntity> HumanoidModel<?> getGeoArmorRenderer(@Nullable T livingEntity, ItemStack itemStack, @Nullable EquipmentSlot equipmentSlot, @Nullable HumanoidModel<T> original) {
                 if (renderer == null) {
                     ResourceLocation textureResource = Confluence.asResource("textures/item/" + name + ".png");
                     if (Minecraft.getInstance().getResourceManager().getResource(textureResource).isEmpty()) {
-                        this.renderer = new NormalArmorItemRenderer("armor/cactus_armor"); // as a fallback
+                        this.renderer = new NormalArmorItemRenderer<>("armor/cactus_armor"); // as a fallback
                     } else {
-                        this.renderer = new NormalArmorItemRenderer(name);
+                        this.renderer = new NormalArmorItemRenderer<>(name);
                     }
                 }
                 return renderer;

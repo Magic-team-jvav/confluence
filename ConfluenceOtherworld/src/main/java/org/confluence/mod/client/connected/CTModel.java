@@ -12,8 +12,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.client.model.data.ModelProperty;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.client.connected.behaviour.ConnectedTextureBehaviour;
-import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ public class CTModel extends BakedModelWrapperWithData {
 	protected CTData createCTData(BlockAndTintGetter world, BlockPos pos, BlockState state) {
 		CTData data = new CTData();
 		MutableBlockPos mutablePos = new MutableBlockPos();
-		for (Direction face : ModUtils.DIRECTIONS) {
+		for (Direction face : LibUtils.DIRECTIONS) {
 			if (!behaviour.buildContextForOccludedDirections() && !Block.shouldRenderFace(state, world, pos, face, mutablePos.setWithOffset(pos, face)))
 				continue;
 			CTType dataType = behaviour.getDataType(world, pos, state, face);

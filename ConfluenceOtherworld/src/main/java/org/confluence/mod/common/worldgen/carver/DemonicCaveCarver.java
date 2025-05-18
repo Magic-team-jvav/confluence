@@ -20,9 +20,9 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.carver.CarverConfiguration;
 import net.minecraft.world.level.levelgen.carver.CarvingContext;
 import net.minecraft.world.level.levelgen.carver.WorldCarver;
+import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.block.NatureBlocks;
-import org.confluence.mod.util.VectorUtils;
 import org.joml.Vector3d;
 
 import java.util.List;

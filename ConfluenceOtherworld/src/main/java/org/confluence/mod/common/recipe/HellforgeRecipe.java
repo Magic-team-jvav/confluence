@@ -1,7 +1,6 @@
 package org.confluence.mod.common.recipe;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.NonNullList;
@@ -9,20 +8,21 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
+import org.confluence.lib.common.recipe.AbstractAmountRecipe;
+import org.confluence.lib.common.recipe.AmountIngredient;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.terra_curio.common.recipe.AbstractAmountRecipe;
-import org.confluence.terra_curio.common.recipe.AmountIngredient;
 
-public class HellforgeRecipe extends AbstractAmountRecipe {
+public class HellforgeRecipe extends AbstractAmountRecipe<RecipeInput> {
     protected final float experience;
     protected final int cookingTime;
     protected final boolean requiresFuel;
 
-    public HellforgeRecipe(ItemStack pResult, NonNullList<Ingredient> pIngredients, float experience, int cookingTime, boolean requiresFuel) {
-        super(pResult, pIngredients);
+    public HellforgeRecipe(ItemStack result, NonNullList<Ingredient> ingredients, float experience, int cookingTime, boolean requiresFuel) {
+        super(result, ingredients);
         this.experience = experience;
         this.cookingTime = cookingTime;
         this.requiresFuel = requiresFuel;
@@ -68,14 +68,7 @@ public class HellforgeRecipe extends AbstractAmountRecipe {
     public static class Serializer implements RecipeSerializer<HellforgeRecipe> {
         public static final MapCodec<HellforgeRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
                 ItemStack.STRICT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
-                Ingredient.CODEC_NONEMPTY.listOf().fieldOf("ingredients").flatXmap(list -> {
-                    Ingredient[] ingredients = list.toArray(Ingredient[]::new);
-                    if (ingredients.length == 0) {
-                        return DataResult.error(() -> "No ingredients for workshop recipe");
-                    } else {
-                        return DataResult.success(NonNullList.of(AmountIngredient.EMPTY, ingredients));
-                    }
-                }, DataResult::success).forGetter(recipe -> recipe.ingredients),
+                INGREDIENTS_CODEC.forGetter(recipe -> recipe.ingredients),
                 Codec.FLOAT.lenientOptionalFieldOf("experience", 0.0F).forGetter(recipe -> recipe.experience),
                 Codec.INT.lenientOptionalFieldOf("cookingtime", 100).forGetter(recipe -> recipe.cookingTime),
                 Codec.BOOL.lenientOptionalFieldOf("requires_fuel", false).forGetter(recipe -> recipe.requiresFuel)

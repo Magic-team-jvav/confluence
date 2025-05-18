@@ -22,7 +22,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.data.saved.BrushData;
-import org.confluence.mod.common.entity.projectile.bomb.ScarabBombEntity;
+import org.confluence.mod.common.entity.projectile.bomb.BaseBombEntity;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.ModBlocks;
@@ -30,7 +30,6 @@ import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.item.axe.BaseAxeItem;
 import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
 import org.confluence.mod.common.worldgen.secret_seed.NoTraps;
-import org.confluence.mod.integration.carryon.CarryOnHelper;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
 import org.confluence.terra_curio.util.TCUtils;
 
@@ -38,7 +37,7 @@ import org.confluence.terra_curio.util.TCUtils;
 public final class LevelEvents {
     @SubscribeEvent
     public static void explosion$Detonate(ExplosionEvent.Detonate event) {
-        ScarabBombEntity.itemInvulnerableToExplosion(event.getExplosion().getDirectSourceEntity(), event.getAffectedEntities());
+        BaseBombEntity.itemInvulnerableToExplosion(event.getExplosion().getDirectSourceEntity(), event.getAffectedEntities());
         NoTraps.entityInvulnerableToExplosion(event.getLevel(), event.getAffectedEntities());
     }
 
@@ -55,11 +54,18 @@ public final class LevelEvents {
 
     @SubscribeEvent
     public static void blockDrops(BlockDropsEvent event) {
-        if (event.getBreaker() instanceof LivingEntity living && !living.getMainHandItem().is(Items.SHEARS)) {
-            if (event.getState().is(ModTags.Blocks.VINES) && TCUtils.hasAccessoriesType(living, AccessoryItems.VINE$ROPE)) {
+        ItemStack tool = event.getTool();
+        Entity breaker = event.getBreaker();
+        BlockState state = event.getState();
+        if (breaker instanceof LivingEntity living && !tool.is(Items.SHEARS)) {
+            if (state.is(ModTags.Blocks.VINES) && TCUtils.hasAccessoriesType(living, AccessoryItems.VINE$ROPE)) {
                 event.setCanceled(true);
                 Block.popResource(event.getLevel(), event.getPos(), ModBlocks.VINE_ROPE.get().asItem().getDefaultInstance());
             }
+        }
+        // 再生法杖/再生之斧 时运
+        if (tool.is(ModTags.Items.CROP_FORTUNE) && breaker != null && (state.is(BlockTags.CROPS) || state.getBlock() instanceof CropBlock)) {
+            BaseAxeItem.increaseDropsOnBlockBreak(breaker, tool, event.getDrops());
         }
     }
 
@@ -77,13 +83,7 @@ public final class LevelEvents {
         if (event.isCanceled() || !(event.getPlayer() instanceof ServerPlayer serverPlayer)) return;
         BlockState blockState = event.getState();
 
-        if (CarryOnHelper.shouldDeny(blockState)) {
-            event.setCanceled(true);
-            return;
-        }
-
-        if (blockState.getBlock() instanceof AltarBlock && !serverPlayer.getMainHandItem().is(ModTags.Items.ABLE_TO_DESTROY_ALTAR)) {
-            serverPlayer.hurt(serverPlayer.damageSources().fellOutOfWorld(), serverPlayer.getMaxHealth() / 2);
+        if (AltarBlock.hurtPlayerIfBrokenNotAllowed(serverPlayer, blockState)) {
             event.setCanceled(true);
             return;
         }
@@ -91,17 +91,5 @@ public final class LevelEvents {
         BlockPos pos = event.getPos();
         NoTraps.dropBombWhenLeavesDestroy(serverPlayer, blockState, pos);
         BoulderWorld.createBoulderWhenBlockDestroy(serverPlayer, blockState, pos);
-    }
-
-    @SubscribeEvent
-    public static void dropBlock(BlockDropsEvent event) {
-        BlockState state = event.getState();
-        Entity breaker = event.getBreaker();
-        ItemStack tool = event.getTool();
-
-        // 再生法杖/再生之斧 时运
-        if (tool.is(ModTags.Items.CROP_FORTUNE) && breaker != null && (state.is(BlockTags.CROPS) || state.getBlock() instanceof CropBlock)) {
-            BaseAxeItem.increaseDropsOnBlockBreak(breaker, tool, event.getDrops());
-        }
     }
 }

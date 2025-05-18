@@ -1,0 +1,30 @@
+{
+    "name": "block.confluence.alchemy_table",
+    "icon": "confluence:alchemy_table",
+    "category": "confluence:crafting_stations",
+    "pages": [
+        {
+            "type": "patchouli:spotlight",
+            "item": "confluence:alchemy_table",
+            "text": "patchouli.confluence.otherworld_note.crafting_stations.alchemy_table.0"
+        },
+        {
+            "type": "patchouli:text",
+            "text": "patchouli.confluence.otherworld_note.crafting_stations.alchemy_table.1",
+            "title": "patchouli.confluence.otherworld_note.how_to_use"
+        },
+        {
+            "type": "patchouli:image",
+            "images": [
+                "confluence:textures/patchouli/gui/crafting_stations/alchemy_table.png"
+            ],
+            "text": "patchouli.confluence.otherworld_note.crafting_stations.alchemy_table.2",
+            "title": "patchouli.confluence.otherworld_note.gui"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe":"minecraft:diamond", 
+            "text": "patchouli.confluence.otherworld_note.example"
+        }
+    ]
+}

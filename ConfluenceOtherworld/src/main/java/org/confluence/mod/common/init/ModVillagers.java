@@ -40,10 +40,12 @@ public final class ModVillagers {
 
     // 村民的兴趣点
     public static final DeferredHolder<PoiType, PoiType> SKY_POI = POIS.register("sky", () -> new PoiType(ImmutableSet.copyOf(FunctionalBlocks.SKY_MILL.get().getStateDefinition().getPossibleStates()), 1, 1));
+    public static final DeferredHolder<PoiType, PoiType> COOKING_POI = POIS.register("cooking", () -> new PoiType(ImmutableSet.copyOf(FunctionalBlocks.COOKING_POT.get().getStateDefinition().getPossibleStates()), 1, 1));
     public static final DeferredHolder<PoiType, PoiType> COIN_POI = POIS.register("coin", () -> new PoiType(ImmutableSet.copyOf(ModBlocks.GOLDEN_COIN_PILE.get().getStateDefinition().getPossibleStates()), 1, 1));
 
     // 村民的职业
     public static final Supplier<VillagerProfession> SKY_MILLER = PROFESSIONS.register("sky_miller", () -> new VillagerProfession("sky", holder -> holder.is(SKY_POI.getId()), holder -> holder.is(SKY_POI.getId()), ImmutableSet.of(MaterialItems.FALLING_STAR.get()), ImmutableSet.of(), SoundEvents.VILLAGER_WORK_WEAPONSMITH));
+    public static final Supplier<VillagerProfession> CHEF = PROFESSIONS.register("chef", () -> new VillagerProfession("chef", holder -> holder.is(COOKING_POI.getId()), holder -> holder.is(COOKING_POI.getId()), ImmutableSet.of(MaterialItems.FALLING_STAR.get()), ImmutableSet.of(), SoundEvents.CAMPFIRE_CRACKLE));
     public static final Supplier<VillagerProfession> BANKER = PROFESSIONS.register("banker", () -> new VillagerProfession("coin", holder -> holder.is(COIN_POI.getId()), holder -> holder.is(COIN_POI.getId()), ImmutableSet.of(
             ModItems.GOLDEN_COIN.get(),
             ModItems.PLATINUM_COIN.get(),
@@ -104,7 +106,7 @@ public final class ModVillagers {
             tier1.add(new SkyVillagerItemListing(Items.BEEF, IntegerRange.of(6, 7), Items.EMERALD, 5, 25, 0.05F));
             tier1.add(new SkyVillagerItemListing(Items.MUTTON, IntegerRange.of(6, 7), Items.EMERALD, 5, 25, 0.05F));
             tier1.add(new SkyVillagerItemListing(Items.PORKCHOP, IntegerRange.of(6, 7), Items.EMERALD, 5, 25, 0.05F));
-            tier2.add(new SkyVillagerItemListing(Items.EMERALD, 5, FoodItems.FISH_AND_MUSHROOM_SOUP.get(), 10, 25, 0.05F));
+            tier2.add(new SkyVillagerItemListing(Items.EMERALD, 5, FoodItems.BOWL_OF_SOUP.get(), 10, 25, 0.05F));
             tier3.add(new SkyVillagerItemListing(Items.RABBIT, 2, Items.EMERALD, 10, 25, 0.05F));
             tier3.add(new SkyVillagerItemListing(Items.CHICKEN, 10, Items.EMERALD, 2, 10, 25, 0.05F));
             tier5.add(new SkyVillagerItemListing(ModItems.EMERALD_COIN.get(), 120, TCItems.SEXTANT.get(), 10, 25, 0.05F));
@@ -176,7 +178,25 @@ public final class ModVillagers {
             tier3.add(new BasicItemListing(new ItemStack(Items.EMERALD, 20), new ItemStack(ModItems.EMERALD_COIN.get()), 30, 15, 0.05F));
             tier4.add(new BasicItemListing(new ItemStack(ModItems.SILVER_COIN.get(), 15), new ItemStack(Items.EMERALD), 45, 10, 0.05F));
             tier5.add(new BasicItemListing(new ItemStack(ModItems.GOLDEN_COIN.get(), 2), new ItemStack(ModItems.EMERALD_COIN.get()),  45, 10, 0.05F));
+        } else if (type == CHEF.get()) {
+            tier1.add(new BasicItemListing(new ItemStack(Items.EMERALD), new ItemStack(Items.BREAD,3), 12, 10, 0.05F));
+            tier1.add(new BasicItemListing(new ItemStack(Items.EMERALD), new ItemStack(Items.BEETROOT_SOUP,3), 12, 10, 0.05F));
+            tier1.add(new BasicItemListing(new ItemStack(Items.EMERALD), new ItemStack(Items.MUSHROOM_STEW,3), 12, 10, 0.05F));
+            tier1.add(new BasicItemListing(new ItemStack(Items.EMERALD,3), new ItemStack(FoodItems.COOK_FISH.get()), 12, 10, 0.05F));
+            tier1.add(new BasicItemListing(new ItemStack(Items.EMERALD, 2), new ItemStack(FoodItems.MARSHMALLOW.get()), 15, 10, 0.05F));
+            tier2.add(new BasicItemListing(new ItemStack(Items.EMERALD, 3), new ItemStack(Items.RABBIT_STEW), 12, 10, 0.05F));
+            tier2.add(new BasicItemListing(new ItemStack(Items.EMERALD, 3), new ItemStack(FoodItems.LOBSTER_TAIL.get()), 12, 10, 0.05F));
+            tier2.add(new BasicItemListing(new ItemStack(Items.EMERALD, 5), new ItemStack(FoodItems.BOWL_OF_SOUP.get()), 15, 10, 0.05F));
+            tier3.add(new BasicItemListing(new ItemStack(Items.EMERALD, 8), new ItemStack(FoodItems.FRIES.get()), 12, 10, 0.05F));
+            tier3.add(new BasicItemListing(new ItemStack(Items.EMERALD, 5), new ItemStack(FoodItems.PEACH_SANGRIA.get()), 12, 10, 0.05F));
+            tier3.add(new BasicItemListing(new ItemStack(Items.EMERALD, 10), new ItemStack(FoodItems.BANANA_SPLIT.get()), 12, 10, 0.05F));
+            tier4.add(new BasicItemListing(new ItemStack(Items.EMERALD, 12), new ItemStack(FoodItems.FRIED_EGG.get()), 12, 10, 0.05F));
+            tier4.add(new BasicItemListing(new ItemStack(Items.EMERALD, 4), new ItemStack(FoodItems.LEMONADE.get()), 12, 10, 0.05F));
+            tier4.add(new BasicItemListing(new ItemStack(Items.EMERALD, 14), new ItemStack(FoodItems.SHRIMP_PO_BOY.get()), 12, 10, 0.05F));
+            tier5.add(new BasicItemListing(new ItemStack(ModItems.EMERALD_COIN.get(), 2), new ItemStack(ConsumableItems.DELUXE_PACKAGE.get()), 5, 10, 0.05F));
+            tier5.add(new BasicItemListing(new ItemStack(ModItems.EMERALD_COIN.get(), 1), new ItemStack(FoodItems.PHO.get()), 10, 10, 0.05F));
         }
+
     }
 
     public static void setVillagerType(Villager villager) {

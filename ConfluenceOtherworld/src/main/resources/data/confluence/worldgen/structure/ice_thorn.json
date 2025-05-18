@@ -1,0 +1,6 @@
+{
+  "type": "confluence:ice_thorn",
+  "biomes": "#c:is_snowy",
+  "spawn_overrides": {},
+  "step": "top_layer_modification"
+}

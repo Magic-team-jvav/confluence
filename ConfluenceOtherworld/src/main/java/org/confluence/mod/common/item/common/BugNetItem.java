@@ -8,10 +8,10 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import org.confluence.lib.common.component.ModRarity;
+import org.confluence.lib.common.item.CustomRarityItem;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.item.ModItems;
-import org.confluence.mod.common.item.CustomRarityItem;
-import org.confluence.terra_curio.common.component.ModRarity;
-import org.confluence.terra_curio.util.TCUtils;
 
 import java.util.function.Predicate;
 
@@ -36,7 +36,7 @@ public class BugNetItem extends CustomRarityItem {
             interactionTarget.setYHeadRot(0.0F);
             interactionTarget.setYBodyRot(0.0F);
             interactionTarget.setXRot(0.0F);
-            TCUtils.updateItemStackNbt(itemStack, interactionTarget::save);
+            LibUtils.updateItemStackNbt(itemStack, interactionTarget::save);
             if (interactionTarget.hasCustomName()) {
                 itemStack.set(DataComponents.CUSTOM_NAME, interactionTarget.getCustomName());
             }

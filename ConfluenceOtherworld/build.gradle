@@ -1,9 +1,10 @@
 plugins {
     id 'net.neoforged.moddev'
 }
-var projectName = ["TerraEntity", "MineTeam", "EquipmentBenediction",
-                   "TerraCurio", "ParticleStorm", "HeavenDestinyMoment", "PhaseJourney",
-                   "TerraMoment", "TerraGuns", "IsekaiInvaded", "TerraFurniture"
+var projectName = ["Confluence-Magic-Lib", "TerraEntity", "MineTeam", "EquipmentBenediction",
+                   "TerraCurio", "HeavenDestinyMoment", "PhaseJourney",
+                   "TerraMoment", "TerraGuns", "IsekaiInvaded", "TerraFurniture",
+                   "EntityTrackerHUD", "EnemyBanner"
 ]
 
 version = mod_version
@@ -35,6 +36,15 @@ neoForge {
         configureEach {
             systemProperty 'forge.logging.markers', 'REGISTRIES'
             logLevel = org.slf4j.event.Level.DEBUG
+            jvmArguments.addAll([
+                    // 忽略无效指令，避免有的人没安装 JetBrain Runtime 无法启动游戏
+                    "-XX:+IgnoreUnrecognizedVMOptions",
+                    // 启用 JetBrain Runtime 热重载功能
+                    "-XX:+AllowEnhancedClassRedefinition"
+            ])
+            if (isRunningInIdea()) {
+                systemProperty "terminal.jline", "true"
+            }
         }
     }
 
@@ -54,6 +64,9 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
     mavenLocal()
+    flatDir {
+        dirs 'libs'
+    }
     maven { // Registrate
         url "https://maven.ithundxr.dev/snapshots"
     }
@@ -86,24 +99,8 @@ repositories {
     }
 
     maven {
-        // saps.dev Maven (KubeJS and Rhino)
-        url = "https://maven.saps.dev/minecraft"
-        content {
-            includeGroup "dev.latvian.mods"
-        }
-    }
-    maven {
-        url = "https://maven.bawnorton.com/releases"
-    }
-    maven {
-        // For Terra Blender
-        name = 'Forge'
-        url = "https://maven.minecraftforge.net"
-    }
-
-    maven {
-        // saps.dev Maven (KubeJS and Rhino)
-        url = "https://maven.saps.dev/releases"
+        name = "LatvianMaven"
+        url = "https://maven.latvian.dev/releases"
         content {
             includeGroup "dev.latvian.mods"
             includeGroup "dev.latvian.apps"
@@ -116,6 +113,23 @@ repositories {
             includeGroup "com.github.rtyley"
         }
     }
+
+    maven {
+        url 'https://jitpack.io'
+        content {
+            includeGroup "com.github.rtyley"
+        }
+    }
+
+
+    maven {
+        url = "https://maven.bawnorton.com/releases"
+    }
+
+    repositories {
+        maven { url = 'https://maven.minecraftforge.net/' }
+    }
+
     maven {
         name = "Curios"
         url = uri("https://maven.theillusivec4.top/")
@@ -131,10 +145,17 @@ repositories {
     }
 }
 
+boolean vanillin = false // 香兰素
+boolean observable = false // 可视性能侦测
+boolean ftb = true
+boolean ipn = true
+
 dependencies {
     projectName.forEach { name -> implementation jarJar(project(":" + name)) }
 
-    compileOnly group: 'software.bernie.geckolib', name: "geckolib-neoforge-${minecraft_version}", version: "[${geckolib_version},)"
+    implementation(jarJar(group: 'com.xiaohunao.xhn_lib', name: 'xhn_lib', version: '1.21.1-0.0.1'))
+    implementation(jarJar("software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"))
+    implementation(jarJar("curse.maven:particle-storm-1124172:${particle_storm_version}"))
 
     implementation "top.theillusivec4.curios:curios-neoforge:${curios_version}"
     implementation jarJar('com.github.glitchfiend:TerraBlender-neoforge:' + minecraft_version + '-' + terrablender_version)
@@ -146,32 +167,41 @@ dependencies {
     additionalRuntimeClasspath 'cn.6tail:lunar:1.4.0'
 
     compileOnly "net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}"
-    runtimeOnly "net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}"
+    if (false) {
+        runtimeOnly("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
+        runtimeOnly("net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}")
+        runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}")
+        runtimeOnly("com.tterrag.registrate:Registrate:${registrate_version}")
+    }
 
     compileOnly "curse.maven:jade-324717:6011258"
     runtimeOnly "curse.maven:jade-324717:6011258"
 
-    compileOnly "mezz.jei:jei-1.21-common-api:${jei_version}"
-    compileOnly "mezz.jei:jei-1.21-neoforge-api:${jei_version}"
-    runtimeOnly "mezz.jei:jei-1.21-neoforge:${jei_version}"
+    compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
+    compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
+    runtimeOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
 
     compileOnly "vazkii.patchouli:Patchouli:1.21-87-NEOFORGE:api"
     compileOnly "vazkii.patchouli:Patchouli:1.21-87-NEOFORGE"
-    runtimeOnly "vazkii.patchouli:Patchouli:1.21-87-NEOFORGE"
+    //runtimeOnly "vazkii.patchouli:Patchouli:1.21-87-NEOFORGE"
 
     compileOnly "curse.maven:ftb-chunks-forge-314906:5968500"
     compileOnly "curse.maven:ftb-library-forge-404465:6016745"
-    //runtimeOnly "curse.maven:ftb-chunks-forge-314906:5968500"
-    //runtimeOnly "curse.maven:ftb-library-forge-404465:6016745"
-    //runtimeOnly "curse.maven:ftb-ultimine-forge-386134:5671703"
-    //runtimeOnly "curse.maven:ftb-teams-forge-404468:5882217"
-    //runtimeOnly "dev.architectury:architectury-neoforge:${architectury_version}"
+    if (ftb) {
+        runtimeOnly "curse.maven:ftb-chunks-forge-314906:5968500"
+        runtimeOnly "curse.maven:ftb-library-forge-404465:6016745"
+        runtimeOnly "curse.maven:ftb-ultimine-forge-386134:5671703"
+        runtimeOnly "curse.maven:ftb-teams-forge-404468:5882217"
+    }
 
     compileOnly "curse.maven:better-advancements-272515:5850587"
-    //runtimeOnly "curse.maven:better-advancements-272515:5850587"
+    runtimeOnly "curse.maven:better-advancements-272515:5850587"
 
     compileOnly "curse.maven:sodium-394468:6211307"
-    //runtimeOnly "curse.maven:sodium-394468:6211307"
+    if (!vanillin) {
+        runtimeOnly "curse.maven:sodium-394468:6211307"
+        runtimeOnly "curse.maven:irisshaders-455508:6213632"
+    }
 
     compileOnly "curse.maven:advancement-plaques-499826:5905995"
     //runtimeOnly "curse.maven:advancement-plaques-499826:5905995"
@@ -180,16 +210,79 @@ dependencies {
     compileOnly "curse.maven:journeymap-32274:6213329"
     //runtimeOnly "curse.maven:journeymap-32274:6213329"
 
-    runtimeOnly "curse.maven:worldedit-225608:5830452"
-    //runtimeOnly "curse.maven:ars-nouveau-401955:6228434"
+    compileOnly "curse.maven:touhou-little-maid-355044:6302619"
+    //runtimeOnly "curse.maven:touhou-little-maid-355044:6302619"
+
+    compileOnly "curse.maven:carry-on-274259:5649344"
     //runtimeOnly "curse.maven:carry-on-274259:5649344"
+
+    compileOnly "curse.maven:apothic-attributes-898963:6302334"
+    if (false) {
+        runtimeOnly "curse.maven:apothic-attributes-898963:6302334"
+        runtimeOnly "curse.maven:placebo-283644:6337156"
+    }
+
+    compileOnly "curse.maven:appleskin-248787:5586600"
+    runtimeOnly "curse.maven:appleskin-248787:5586600"
+
+    api("dev.latvian.mods:kubejs-neoforge:$kubejs_version")
+    if (false) {
+        runtimeOnly "dev.latvian.mods:kubejs-neoforge:$kubejs_version"
+        runtimeOnly "dev.latvian.mods:rhino:$rhino_version"
+    }
+
+    /**********************************************************/
+
+    //runtimeOnly "curse.maven:worldedit-225608:5830452"
+    //runtimeOnly "curse.maven:ars-nouveau-401955:6228434"
     //runtimeOnly "curse.maven:spark-361579:6225208"
-    //runtimeOnly "curse.maven:xaeros-minimap-263420:6184458"
-    //runtimeOnly "curse.maven:xaeros-world-map-317780:6212662"
-    runtimeOnly "curse.maven:touhou-little-maid-355044:6266244"
-    //runtimeOnly "curse.maven:applied-energistics-2-223794:6237438" // requires guideme
-    //runtimeOnly "curse.maven:guideme-1173950:6283609"
-    //runtimeOnly "curse.maven:probejs-585406:5820894"
+    //runtimeOnly "curse.maven:lithium-360438:6290413"
+    //runtimeOnly "curse.maven:dynamiclights-reforged-551736:5807536"
+    //runtimeOnly "curse.maven:lootr-361276:6294335"
+    //runtimeOnly "curse.maven:the-twilight-forest-227639:6087105"
+    //runtimeOnly "maven.modrinth:mekanism:10.7.13.78"
+    //runtimeOnly "curse.maven:modern-ui-352491:6200236"
+    //runtimeOnly "curse.maven:eternal-starlight-1080592:6383693"
+    //runtimeOnly "curse.maven:refined-storage-243076:6391989"
+    //runtimeOnly "curse.maven:display-delight-1144296:5964213"
+    //runtimeOnly "curse.maven:dynamictrees-252818:6360173"
+    if (observable) {
+        runtimeOnly "curse.maven:observable-509575:5733591"
+    }
+    if (ipn) {
+        runtimeOnly "maven.modrinth:inventory-profiles-next:neoforge-1.21.1-2.1.8"
+        runtimeOnly "maven.modrinth:libipn:neoforge-1.21.1-6.5.0"
+    }
+    if (observable || ftb) {
+        runtimeOnly "dev.architectury:architectury-neoforge:${architectury_version}"
+    }
+    if (observable || ipn) {
+        runtimeOnly "curse.maven:kotlin-for-forge-351264:5978393"
+    }
+    if (true) {
+        runtimeOnly "curse.maven:tweakerge-915857:6387063"
+        runtimeOnly "curse.maven:mafglib-910766:6416901"
+    }
+    if (vanillin) {
+        runtimeOnly "curse.maven:vanillin-965702:6446560"
+    }
+    if (false) {
+        runtimeOnly "curse.maven:xaeros-minimap-263420:6184458"
+        runtimeOnly "curse.maven:xaeros-world-map-317780:6212662"
+    }
+    if (false) {
+        runtimeOnly "curse.maven:applied-energistics-2-223794:6237438"
+        runtimeOnly "curse.maven:guideme-1173950:6283609"
+    }
+    if (false) {
+        runtimeOnly "curse.maven:supplementaries-412082:6284266"
+        runtimeOnly "curse.maven:selene-499980:6302654"
+    }
+    if (false) {
+        runtimeOnly "curse.maven:oh-the-biomes-weve-gone-1070751:6298837"
+        runtimeOnly "curse.maven:corgilib-693313:6002859"
+        runtimeOnly "curse.maven:oh-the-trees-youll-grow-962544:6294221"
+    }
 }
 
 tasks.withType(ProcessResources).configureEach {
@@ -210,10 +303,7 @@ tasks.withType(ProcessResources).configureEach {
     filesMatching(['META-INF/neoforge.mods.toml']) {
         expand replaceProperties
     }
-
-
 }
-
 
 tasks.withType(Copy).configureEach { duplicatesStrategy = DuplicatesStrategy.EXCLUDE }
 
@@ -238,24 +328,30 @@ tasks.register("genVoilaRun") {
     def ideaRt = "D:\\Program Files\\JetBrains\\IntelliJ IDEA 2024.2.3\\lib\\idea_rt.jar"
 //    return;
 
-    def runConfig =
-            """
-<component name="ProjectRunConfigurationManager">
-    <configuration default="false" name="Confluence" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="false">
-        <option name="MAIN_CLASS_NAME" value="net.neoforged.devlaunch.Main" />
-        <option name="SPRING_BOOT_MAIN_CLASS" value="net.neoforged.devlaunch.Main" />
-        <module name="${moduleName}" />
-        <option name="VM_PARAMETERS" value="@${vmArgs} -Dfml.modFolders=${modId}%%${classesDir};${modId}%%${resDir} -cp &quot;${runtimeClasspath.asPath};${ideaRt}&quot;" />
-        <option name="PROGRAM_PARAMETERS" value="@${programParam}" />
-        <option name="WORKING_DIRECTORY" value="${workingDir}" />
-        <method v="2">
-            <option name="Make" enabled="true" />
-        </method>
-    </configuration>
-</component>
-"""
+    def runConfig = """
+            <component name="ProjectRunConfigurationManager">
+                <configuration default="false" name="Confluence" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="false">
+                    <option name="MAIN_CLASS_NAME" value="net.neoforged.devlaunch.Main" />
+                    <option name="SPRING_BOOT_MAIN_CLASS" value="net.neoforged.devlaunch.Main" />
+                    <module name="${moduleName}" />
+                    <option name="VM_PARAMETERS" value="@${vmArgs} -Dfml.modFolders=${modId}%%${classesDir};${modId}%%${resDir} -cp &quot;${runtimeClasspath.asPath};${ideaRt}&quot;" />
+                    <option name="PROGRAM_PARAMETERS" value="@${programParam}" />
+                    <option name="WORKING_DIRECTORY" value="${workingDir}" />
+                    <method v="2">
+                        <option name="Make" enabled="true" />
+                    </method>
+                </configuration>
+            </component>"""
     if (!runConfigDir.exists()) {
         runConfigDir.mkdirs()
     }
     new File(runConfigDir, "GeneratedRunConfig.xml").text = runConfig
+}
+
+def isRunningInIdea() {
+    return System.getProperty("idea.active") == "true"
+}
+
+jar {
+    exclude 'org/confluence/mod/common/data/gen'
 }

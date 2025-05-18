@@ -8,9 +8,6 @@ import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -29,6 +26,9 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import org.confluence.lib.mixed.IExtraSyncedData;
+import org.confluence.lib.network.SetEntityDataPacketS2C;
+import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.ModTags;
@@ -36,8 +36,6 @@ import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.item.fishing.IBait;
 import org.confluence.mod.mixed.IFishingHook;
-import org.confluence.mod.util.PlayerUtils;
-import org.confluence.terra_curio.mixed.SelfGetter;
 import org.confluence.terra_curio.util.TCUtils;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -51,9 +49,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import javax.annotation.Nullable;
 
 @Mixin(FishingHook.class)
-public abstract class FishingHookMixin implements IFishingHook, SelfGetter<FishingHook> {
+public abstract class FishingHookMixin implements IFishingHook, IExtraSyncedData<FishingHook> {
     @Unique
-    private static final EntityDataAccessor<Boolean> DATA_LAVA = SynchedEntityData.defineId(FishingHook.class, EntityDataSerializers.BOOLEAN);
+    private static final byte[] confluence$dataIds = {SetEntityDataPacketS2C.DATA_BOOLEAN};
 
     @Shadow
     @Nullable
@@ -61,22 +59,40 @@ public abstract class FishingHookMixin implements IFishingHook, SelfGetter<Fishi
 
     @Shadow
     @Final
-    private int luck;
+    public int luck;
     @Unique
     private ItemStack confluence$bait = null;
     @Unique
     private boolean confluence$achievement = false;
+    @Unique
+    private boolean confluence$lavaHook = false;
 
     @Unique
     @Override
     public void confluence$setIsLavaHook() {
-        self().getEntityData().set(DATA_LAVA, true);
+        confluence$setData(SetEntityDataPacketS2C.DATA_BOOLEAN, true);
     }
 
     @Unique
     @Override
     public boolean confluence$isLavaHook() {
-        return self().getEntityData().get(DATA_LAVA);
+        return confluence$lavaHook;
+    }
+
+    @Override
+    public void confluence$setData(byte dataId, Object o) {
+        IExtraSyncedData.super.confluence$setData(dataId, o);
+        this.confluence$lavaHook = (boolean) o;
+    }
+
+    @Override
+    public Object confluence$getData(byte dataId) {
+        return confluence$lavaHook;
+    }
+
+    @Override
+    public byte[] confluence$getAllDataId() {
+        return confluence$dataIds;
     }
 
     @Unique
@@ -99,7 +115,7 @@ public abstract class FishingHookMixin implements IFishingHook, SelfGetter<Fishi
     @Inject(method = "tick", at = @At("TAIL"))
     private void achievement(CallbackInfo ci, @Share("isLavaHook") LocalBooleanRef isLavaHook) {
         if (!confluence$achievement && isLavaHook.get() && confluence$isInLava() && getPlayerOwner() instanceof ServerPlayer serverPlayer) {
-            PlayerUtils.awardAchievement(serverPlayer, "hot_reels");
+            ModAchievements.awardAchievement(serverPlayer, "hot_reels");
             this.confluence$achievement = true;
         }
     }
@@ -185,21 +201,16 @@ public abstract class FishingHookMixin implements IFishingHook, SelfGetter<Fishi
         return pParams;
     }
 
-    @Inject(method = "defineSynchedData", at = @At("TAIL"))
-    private void define(SynchedEntityData.Builder builder, CallbackInfo ci) {
-        builder.define(DATA_LAVA, false);
-    }
-
     @ModifyArg(method = "retrieve", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/ReloadableServerRegistries$Holder;getLootTable(Lnet/minecraft/resources/ResourceKey;)Lnet/minecraft/world/level/storage/loot/LootTable;"))
     private ResourceKey<LootTable> modifyLoot(ResourceKey<LootTable> lootTableKey) {
         if (confluence$isInLava()) return ModLootTables.FISHING_LAVA;
-        if (self().getType() == EntityType.FISHING_BOBBER) return lootTableKey;
-        return ModLootTables.FISH;
+        if (confluence$self().getType() == EntityType.FISHING_BOBBER) return lootTableKey;
+        return ModLootTables.FISHING;
     }
 
     @Unique
     private boolean confluence$isInLava() {
-        return self().getInBlockState().getFluidState().is(FluidTags.LAVA);
+        return confluence$self().getInBlockState().getFluidState().is(FluidTags.LAVA);
     }
 
     @ModifyExpressionValue(method = "retrieve", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/loot/LootTable;getRandomItems(Lnet/minecraft/world/level/storage/loot/LootParams;)Lit/unimi/dsi/fastutil/objects/ObjectArrayList;"))
@@ -210,8 +221,8 @@ public abstract class FishingHookMixin implements IFishingHook, SelfGetter<Fishi
             if (level.random.nextFloat() < chance) {
                 return level.getServer().reloadableRegistries().getLootTable(ModLootTables.CRATE)
                         .getRandomItems(new LootParams.Builder(level)
-                                .withParameter(LootContextParams.ORIGIN, self().position())
-                                .withParameter(LootContextParams.THIS_ENTITY, self())
+                                .withParameter(LootContextParams.ORIGIN, confluence$self().position())
+                                .withParameter(LootContextParams.THIS_ENTITY, confluence$self())
                                 .create(LootContextParamSets.GIFT));
             }
         }

@@ -1,5 +1,0 @@
-{
-    "name": "Mana",
-    "description": "After the world convergence, you received the Star Blessing from another world and gained a mysterious power known as Star Magic.Mana is a resource consumed by the player upon using magic weapons or summon weapons (except whips). Magic and summon weapons have a specific mana cost that depletes the player's mana upon use. When a player's mana is depleted completely, a magic or summon weapon cannot be used again until that weapon's mana cost has regenerated.",
-    "icon": "confluence:magic_icon"
-}

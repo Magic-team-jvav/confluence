@@ -8,7 +8,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class MushroomGrassBlock extends SpreadingGrassBlock {
     public MushroomGrassBlock() {
-        super(Type.PURE, Properties.ofFullCopy(Blocks.GRASS_BLOCK));
+        super(Type.GLOWING, Properties.ofFullCopy(Blocks.MUD));
     }
 
     @Override

@@ -1,0 +1,6 @@
+{
+  "type": "confluence:pyramid",
+  "biomes": "#confluence:has_structure/shimmer_lake",
+  "spawn_overrides": {},
+  "step": "top_layer_modification"
+}

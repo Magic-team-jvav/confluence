@@ -36,8 +36,9 @@ public record FishingPowerInfoPacketS2C(float value) implements CustomPacketPayl
         });
     }
 
-    public static void sendToClient(ServerPlayer serverPlayer) {
+    public static float sendAndGet(ServerPlayer serverPlayer) {
         float fishingPower = PlayerUtils.getFishingPower(serverPlayer);
         PacketDistributor.sendToPlayer(serverPlayer, new FishingPowerInfoPacketS2C(fishingPower));
+        return fishingPower;
     }
 }

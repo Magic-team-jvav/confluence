@@ -8,6 +8,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEntities;
 
 public class VilethronProjectile extends StripedProjectile {
@@ -25,7 +26,7 @@ public class VilethronProjectile extends StripedProjectile {
 
     @Override
     protected void onTouchEntity(EntityHitResult result) {
-        result.getEntity().hurt(damageSources().indirectMagic(this, getOwner()), 2.5f);
+        result.getEntity().hurt(ModDamageTypes.of(level(), ModDamageTypes.MAGICAL_PROJECTILE, this, getOwner()), 3.5f);
     }
 
     @Override

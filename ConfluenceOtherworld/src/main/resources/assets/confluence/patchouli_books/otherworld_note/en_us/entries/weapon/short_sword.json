@@ -1,0 +1,17 @@
+{
+    "name": "patchouli.confluence.otherworld_note.weapon.short_sword.name",
+    "icon": "minecraft:diamond_sword",
+    "category": "confluence:weapon",
+    "pages": [
+        {
+            "type": "patchouli:spotlight",
+            "item": "minecraft:diamond_sword",
+            "text": "patchouli.confluence.otherworld_note.weapon.short_sword.0"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minecraft:diamond_sword",
+            "text": "patchouli.confluence.otherworld_note.weapon.short_sword.1"
+        }
+    ]
+}

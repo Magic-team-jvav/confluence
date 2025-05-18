@@ -4,7 +4,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
-import org.confluence.mod.common.block.StateProperties;
+import org.confluence.lib.common.block.StateProperties;
 
 public class NetworkNode {
     private final int id;

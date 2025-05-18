@@ -6,5 +6,5 @@
             "loot_table_id": "minecraft:entities/elder_guardian"
         }
     ],
-    "table": "terra_curio:with/entities/elder_guardian"
+    "table": "confluence:with/entities/elder_guardian"
 }

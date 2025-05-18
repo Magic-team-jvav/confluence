@@ -1,0 +1,33 @@
+{
+    "name": "patchouli.confluence.otherworld_note.crafting_stations.altar.name",
+    "icon": "confluence:crimson_altar",
+    "category": "confluence:crafting_stations",
+    "pages": [
+        {
+            "type": "patchouli:spotlight",
+            "item": "confluence:demon_altar,confluence:crimson_altar",
+            "text": "patchouli.confluence.otherworld_note.crafting_stations.altar.0"
+        },
+        {
+            "type": "patchouli:text",
+            "text": "patchouli.confluence.otherworld_note.crafting_stations.altar.1",
+            "title": "patchouli.confluence.otherworld_note.how_to_use"
+        },
+        {
+            "type": "patchouli:image",
+            "images": [
+                "confluence:textures/patchouli/gui/crafting_stations/altar_demon.png"
+            ],
+            "text": "patchouli.confluence.otherworld_note.crafting_stations.altar.2",
+            "title": "patchouli.confluence.otherworld_note.appearance"
+        },
+        {
+            "type": "patchouli:image",
+            "images":[
+                "confluence:textures/patchouli/gui/crafting_stations/altar_crimson.png"
+            ],
+            "text": "patchouli.confluence.otherworld_note.crafting_stations.altar.3",
+            "title": "patchouli.confluence.otherworld_note.appearance"
+        }
+    ]
+}

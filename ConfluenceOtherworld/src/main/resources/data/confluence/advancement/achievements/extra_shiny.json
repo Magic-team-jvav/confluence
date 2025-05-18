@@ -1,7 +1,7 @@
 {
     "display": {
         "icon": {
-            "id": "confluence:raw_mithril"
+            "id": "confluence:raw_mythril"
         },
         "title": {
             "translate": "achievements.confluence.extra_shiny.title"
@@ -21,7 +21,7 @@
             "conditions": {
                 "items": [
                     {
-                        "items": "#confluence:hardmode_ores"
+                        "items": "#confluence:hardmode_raw_materials"
                     }
                 ]
             }

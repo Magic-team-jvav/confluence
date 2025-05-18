@@ -6,11 +6,11 @@
     ],
     "key": {
         "#": {
-            "type": "terra_curio:amount_ingredient",
+            "type": "confluence_magic_lib:amount_ingredient",
             "ingredient": {
                 "item": "minecraft:pumpkin"
             },
-            "count": 4
+            "count": 2
         }
     },
     "result": {

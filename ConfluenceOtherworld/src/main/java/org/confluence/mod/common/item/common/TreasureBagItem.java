@@ -1,5 +1,6 @@
 package org.confluence.mod.common.item.common;
 
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -17,14 +18,13 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import org.confluence.lib.common.component.ModRarity;
+import org.confluence.lib.common.item.CustomRarityItem;
+import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.common.data.map.TreasureBagDrop;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
+import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.mod.common.init.ModSoundEvents;
-import org.confluence.mod.common.init.item.TreasureBagItems;
-import org.confluence.mod.common.item.CustomRarityItem;
-import org.confluence.mod.util.ModUtils;
-import org.confluence.terra_curio.common.component.ModRarity;
-import org.confluence.terra_curio.util.TCUtils;
-import org.confluence.terraentity.init.TEEntities;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.BiFunction;
@@ -40,7 +40,7 @@ public class TreasureBagItem extends CustomRarityItem {
     }
 
     public TreasureBagItem(ResourceLocation lootTable) {
-        this(lootTable, (level, pos) -> ModUtils.switchByDifficulty(level, pos, "/classic", "/expert", "/master"));
+        this(lootTable, (level, pos) -> LibUtils.switchByDifficulty(level, pos, "/classic", "/expert", "/master"));
     }
 
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
@@ -51,16 +51,20 @@ public class TreasureBagItem extends CustomRarityItem {
                     .withParameter(LootContextParams.THIS_ENTITY, player)
                     .withLuck(player.getLuck())
                     .create(LootContextParamSets.GIFT);
-            String string = TCUtils.getItemStackNbt(itemStack).getString("lootTable");
+            String string = LibUtils.getItemStackNbt(itemStack).getString("lootTable");
+            ResourceLocation table;
             if (string.isEmpty() && player.isCreative()) {
-                string = lootTable.withSuffix(suffix.apply(serverLevel, player.blockPosition())).toString();
+                table = lootTable.withSuffix(suffix.apply(serverLevel, player.blockPosition()));
+            } else {
+                table = ResourceLocation.parse(string);
             }
-            ResourceLocation table = ResourceLocation.parse(string);
             LootTable loottable = serverLevel.getServer().reloadableRegistries().getLootTable(ResourceKey.create(Registries.LOOT_TABLE, table));
             int count = 1;
             if (player.isCrouching()) count = itemStack.getCount();
             for (int i = 0; i < count; i++) {
-                for (ItemStack loot : loottable.getRandomItems(lootparams)) {
+                ObjectArrayList<ItemStack> items = loottable.getRandomItems(lootparams);
+                collectItems(serverLevel, player, itemStack, items);
+                for (ItemStack loot : items) {
                     if (!player.addItem(loot)) player.drop(loot, false, true);
                 }
             }
@@ -71,34 +75,23 @@ public class TreasureBagItem extends CustomRarityItem {
         return InteractionResultHolder.success(itemStack);
     }
 
+    protected void collectItems(ServerLevel serverLevel, Player player, ItemStack itemStack, ObjectArrayList<ItemStack> items) {}
+
     public static @Nullable ItemStack getTreasureBag(LivingEntity living) {
         if (!(living.level() instanceof ServerLevel serverLevel)) return null;
         EntityType<?> type = living.getType();
-        TreasureBagItem item = null;
-        if (type == TEEntities.KING_SLIME.get()) {
-            item = TreasureBagItems.KING_SLIME_TREASURE_BAG.get();
-        } else if (type == TEEntities.EYE_OF_CTHULHU.get()) {
-            item = TreasureBagItems.EYE_OF_CTHULHU_TREASURE_BAG.get();
-        } else if (type == TEEntities.EATER_OF_WORLDS.get()) {
-            item = TreasureBagItems.EATER_OF_WORLDS_TREASURE_BAG.get();
-        } else if (type == TEEntities.BRAIN_OF_CTHULHU.get()) {
-            item = TreasureBagItems.BRAIN_OF_CTHULHU_TREASURE_BAG.get();
-        } else if (type == TEEntities.QUEEN_BEE.get()) {
-            item = TreasureBagItems.QUEEN_BEE_TREASURE_BAG.get();
-        }
-        if (item == null) return null;
+        TreasureBagDrop data = type.builtInRegistryHolder().getData(ModDataMaps.TREASURE_BAG);
+        if (data == null || !(data.item() instanceof TreasureBagItem item)) return null;
         ItemStack itemStack = item.getDefaultInstance();
         String lootTable = item.lootTable.withSuffix(item.suffix.apply(serverLevel, living.blockPosition())).toString();
-        TCUtils.updateItemStackNbt(itemStack, tag -> tag.putString("lootTable", lootTable));
+        LibUtils.updateItemStackNbt(itemStack, tag -> tag.putString("lootTable", lootTable));
         return itemStack;
     }
 
     public static void createItemEntity(LivingEntity living, ServerPlayer owner) {
         ItemStack itemStack = getTreasureBag(living);
         if (itemStack != null) {
-            TreasureBagItemEntity entity = new TreasureBagItemEntity(living.level(), living.position(), itemStack, owner);
-            entity.setGlowingTag(true);
-            living.level().addFreshEntity(entity);
+            living.level().addFreshEntity(new TreasureBagItemEntity(living.level(), living.position(), itemStack, owner));
         }
     }
 }

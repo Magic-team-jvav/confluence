@@ -17,14 +17,17 @@ public final class ModKeyBindings {
     public static void keyBinding(RegisterKeyMappingsEvent event) {
         event.register(HOOK.get());
         event.register(SHOW_DETAIL_SPECULAR.get());
+        event.register(HEALING.get());
+        event.register(MANA.get());
+        event.register(EXTRA_INVENTORY.get());
     }
 
     public static final Lazy<KeyMapping> HOOK = Lazy.of(() -> new KeyMapping(
             "key.confluence.hook",
             KeyConflictContext.IN_GAME,
             InputConstants.Type.KEYSYM,
-            GLFW.GLFW_KEY_F,
-            "key.categories.gameplay"
+            GLFW.GLFW_KEY_R,
+            "key.confluence.gameplay"
     ));
 
     public static final Lazy<KeyMapping> SHOW_DETAIL_SPECULAR = Lazy.of(() -> new KeyMapping(
@@ -32,6 +35,30 @@ public final class ModKeyBindings {
             KeyConflictContext.IN_GAME,
             InputConstants.Type.KEYSYM,
             GLFW.GLFW_KEY_TAB,
-            "key.categories.gameplay"
+            "key.confluence.gameplay"
+    ));
+
+    public static final Lazy<KeyMapping> HEALING = Lazy.of(() -> new KeyMapping(
+            "key.confluence.healing",
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM,
+            GLFW.GLFW_KEY_H,
+            "key.confluence.gameplay"
+    ));
+
+    public static final Lazy<KeyMapping> MANA = Lazy.of(() -> new KeyMapping(
+            "key.confluence.mana",
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.MOUSE,
+            GLFW.GLFW_MOUSE_BUTTON_4,
+            "key.confluence.gameplay"
+    ));
+
+    public static final Lazy<KeyMapping> EXTRA_INVENTORY = Lazy.of(() -> new KeyMapping(
+            "key.confluence.extra_inventory",
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM,
+            InputConstants.UNKNOWN.getValue(),
+            "key.confluence.gameplay"
     ));
 }

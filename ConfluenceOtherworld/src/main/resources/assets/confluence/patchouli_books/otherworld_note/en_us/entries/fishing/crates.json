@@ -1,0 +1,15 @@
+{
+    "name": "patchouli.confluence.otherworld_note.fishing.crates.name",
+    "icon": "minecraft:barrel",
+    "category": "confluence:fishing",
+    "pages": [
+        {
+            "type": "patchouli:text",
+            "text": "patchouli.confluence.otherworld_note.fishing.crates.0"
+        },
+        {
+            "type": "patchouli:empty",
+            "draw_filler": false
+        }
+    ]
+}

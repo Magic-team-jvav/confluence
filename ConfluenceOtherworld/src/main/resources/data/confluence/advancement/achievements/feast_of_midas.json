@@ -1,0 +1,32 @@
+{
+    "display": {
+        "icon": {
+            "id": "confluence:golden_delight"
+        },
+        "title": {
+            "translate": "achievements.confluence.feast_of_midas.title"
+        },
+        "description": {
+            "translate": "achievements.confluence.feast_of_midas.description"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": false,
+        "hidden": false
+    },
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "requirement": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+                            "confluence:golden_delight"
+                        ]
+                    }
+                ]
+            }
+        }
+    }
+}

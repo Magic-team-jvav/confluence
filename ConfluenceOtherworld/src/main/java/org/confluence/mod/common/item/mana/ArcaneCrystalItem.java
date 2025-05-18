@@ -1,5 +1,6 @@
 package org.confluence.mod.common.item.mana;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -7,15 +8,15 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.confluence.lib.common.component.ModRarity;
+import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModSoundEvents;
-import org.confluence.mod.common.item.CustomRarityItem;
-import org.confluence.terra_curio.common.component.ModRarity;
 
-public class ArcaneCrystalItem extends CustomRarityItem {
+public class ArcaneCrystalItem extends TooltipItem {
     public ArcaneCrystalItem() {
-        super(ModRarity.LIGHT_PURPLE);
+        super(new Properties(), ModRarity.LIGHT_PURPLE, getTooltipsFromString("arcane_crystal", 1, ChatFormatting.GREEN));
     }
 
     @Override

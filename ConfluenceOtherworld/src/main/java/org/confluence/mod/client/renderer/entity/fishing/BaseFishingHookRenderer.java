@@ -15,11 +15,11 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.color.IntegerRGB;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.entity.fishing.BaseFishingHookModel;
 import org.confluence.mod.common.entity.fishing.AbstractFishingHook;
 import org.confluence.mod.common.entity.fishing.BaseFishingHook;
-import org.confluence.mod.util.color.IntegerRGB;
 
 public class BaseFishingHookRenderer<E extends BaseFishingHook> extends EntityRenderer<E> {
     private static final ResourceLocation[] TEXTURES = new ResourceLocation[]{

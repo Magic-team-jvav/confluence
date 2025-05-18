@@ -4,15 +4,20 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
+import org.confluence.lib.util.ReturnException;
 import org.confluence.mod.common.block.functional.network.INetworkBlock;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
-import org.jetbrains.annotations.Nullable;
+import org.confluence.mod.mixin.accessor.LevelAccessor;
+
+import java.util.function.Predicate;
 
 public class SignalPressurePlateBlock extends PressurePlateBlock implements EntityBlock, INetworkBlock {
     public SignalPressurePlateBlock(BlockSetType type, Properties properties) {
@@ -47,10 +52,25 @@ public class SignalPressurePlateBlock extends PressurePlateBlock implements Enti
     }
 
     @Override
-    public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+    public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
         return new AbstractMechanicalBlock.Entity(blockPos, blockState);
     }
 
     @Override
     public void onExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {}
+
+    @Override
+    protected int getSignalStrength(Level level, BlockPos pos) {
+        Predicate<Entity> test = EntitySelector.NO_SPECTATORS.and(entity -> !entity.isIgnoringBlockTriggers() && (type.pressurePlateSensitivity() != BlockSetType.PressurePlateSensitivity.MOBS || entity instanceof LivingEntity));
+        try {
+            ((LevelAccessor) level).callGetEntities().get(TOUCH_AABB.move(pos), entity -> {
+                if (test.test(entity)) {
+                    throw new ReturnException(0);
+                }
+            });
+        } catch (ReturnException e) {
+            return 15;
+        }
+        return 0;
+    }
 }

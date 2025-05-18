@@ -1,63 +1,26 @@
 package org.confluence.mod.common.recipe;
 
 import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import net.minecraft.world.level.Level;
+import org.confluence.lib.common.recipe.EitherAmountRecipe4x;
+import org.confluence.lib.common.recipe.EnvironmentRecipeInput;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.terra_curio.common.recipe.AbstractAmountRecipe;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class HeavyWorkBenchRecipe extends AbstractAmountRecipe {
-    public final ShapedRecipePattern pattern;
-
-    protected HeavyWorkBenchRecipe(ItemStack pResult, ShapedRecipePattern pattern) {
-        super(pResult, pattern.ingredients());
-        this.pattern = pattern;
-    }
-
-    public static HeavyWorkBenchRecipe of(ShapedRecipePattern pattern, ItemStack result) {
-        return new HeavyWorkBenchRecipe(result, pattern);
+public class HeavyWorkBenchRecipe extends EitherAmountRecipe4x<EnvironmentRecipeInput> {
+    public HeavyWorkBenchRecipe(ItemStack pResult, ShapedRecipePattern pattern) {
+        super(pResult, pattern);
     }
 
     @Override
-    public boolean canCraftInDimensions(int width, int height) {
-        return width >= pattern.width() && height >= pattern.height();
-    }
-
-    @Override
-    public boolean matches(RecipeInput input, Level pLevel) {
-        List<ItemStack> itemStacks = new ArrayList<>();
-        for (int i = 0; i < input.size(); i++) {
-            ItemStack itemStack = input.getItem(i);
-            itemStacks.add(itemStack);
-        }
-        return pattern.matches(CraftingInput.of(4, 4, itemStacks));
-    }
-
-    @Override
-    public ItemStack assembleAndExtract(RecipeInput input, HolderLookup.Provider registries) {
-        extractInput(input, ingredients, true);
-        return assemble(input, registries);
-    }
-
-    @Override
-    public boolean isIncomplete() {
-        NonNullList<Ingredient> nonnulllist = getIngredients();
-        return nonnulllist.isEmpty() || nonnulllist.stream().filter(ingredient -> !ingredient.isEmpty()).anyMatch(Ingredient::hasNoItems);
-    }
-
-    @Override
-    protected int maxIngredientSize() {
-        return 16;
+    public boolean matches(EnvironmentRecipeInput input, Level level) {
+        return input.getAccess().matches(this) && super.matches(input, level);
     }
 
     @Override
@@ -81,11 +44,8 @@ public class HeavyWorkBenchRecipe extends AbstractAmountRecipe {
     }
 
     public static class Serializer implements RecipeSerializer<HeavyWorkBenchRecipe> {
-        public static final MapCodec<HeavyWorkBenchRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-                ItemStack.STRICT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
-                ShapedRecipePattern.MAP_CODEC.forGetter(recipe -> recipe.pattern)
-        ).apply(instance, HeavyWorkBenchRecipe::new));
-        public static final StreamCodec<RegistryFriendlyByteBuf, HeavyWorkBenchRecipe> STREAM_CODEC = StreamCodec.of(Serializer::toNetwork, Serializer::fromNetwork);
+        public static final MapCodec<HeavyWorkBenchRecipe> CODEC = EitherAmountRecipe4x.shapedSerializerMapCodec(HeavyWorkBenchRecipe::new);
+        public static final StreamCodec<RegistryFriendlyByteBuf, HeavyWorkBenchRecipe> STREAM_CODEC = EitherAmountRecipe4x.shapedSerializerSteamCodec(HeavyWorkBenchRecipe::new);
 
         @Override
         public MapCodec<HeavyWorkBenchRecipe> codec() {
@@ -95,17 +55,6 @@ public class HeavyWorkBenchRecipe extends AbstractAmountRecipe {
         @Override
         public StreamCodec<RegistryFriendlyByteBuf, HeavyWorkBenchRecipe> streamCodec() {
             return STREAM_CODEC;
-        }
-
-        private static HeavyWorkBenchRecipe fromNetwork(RegistryFriendlyByteBuf buffer) {
-            ItemStack itemstack = ItemStack.STREAM_CODEC.decode(buffer);
-            ShapedRecipePattern shapedrecipepattern = ShapedRecipePattern.STREAM_CODEC.decode(buffer);
-            return new HeavyWorkBenchRecipe(itemstack, shapedrecipepattern);
-        }
-
-        private static void toNetwork(RegistryFriendlyByteBuf buffer, HeavyWorkBenchRecipe recipe) {
-            ItemStack.STREAM_CODEC.encode(buffer, recipe.result);
-            ShapedRecipePattern.STREAM_CODEC.encode(buffer, recipe.pattern);
         }
     }
 }

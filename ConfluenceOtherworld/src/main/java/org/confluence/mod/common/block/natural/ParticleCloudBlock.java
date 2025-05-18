@@ -3,29 +3,15 @@ package org.confluence.mod.common.block.natural;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class ParticleCloudBlock extends Block {
+public class ParticleCloudBlock extends CloudBlock {
     private final ParticleOptions particleTypes;
-
-    public ParticleCloudBlock(ParticleOptions particleTypes) {
-        this(Properties.ofFullCopy(Blocks.GLASS).sound(SoundType.SNOW), particleTypes);
-    }
 
     public ParticleCloudBlock(Properties properties, ParticleOptions particleTypes) {
         super(properties);
         this.particleTypes = particleTypes;
-    }
-
-    public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, float fallDistance) {
-        if (entity.isSuppressingBounce()) {
-            super.fallOn(level, state, pos, entity, fallDistance);
-        }
     }
 
     @Override

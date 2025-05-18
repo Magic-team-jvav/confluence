@@ -17,10 +17,12 @@ import mezz.jei.api.recipe.transfer.IRecipeTransferHandler;
 import mezz.jei.api.runtime.IIngredientManager;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.confluence.mod.Confluence;
@@ -28,17 +30,16 @@ import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.menu.HeavyWorkBenchMenu;
 import org.confluence.mod.common.recipe.HeavyWorkBenchRecipe;
-import org.confluence.terra_curio.integration.jei.JeiBackGround;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
 import static org.confluence.terra_curio.integration.jei.ModJeiPlugin.addInput;
 
-public class HeavyWorkBenchCategory implements IRecipeCategory<HeavyWorkBenchRecipe> {
-    public static final RecipeType<HeavyWorkBenchRecipe> TYPE = RecipeType.create(Confluence.MODID, "heavy_work_bench", HeavyWorkBenchRecipe.class);
+public class HeavyWorkBenchCategory implements IRecipeCategory<RecipeHolder<HeavyWorkBenchRecipe>> {
+    public static final RecipeType<RecipeHolder<HeavyWorkBenchRecipe>> TYPE = RecipeType.createRecipeHolderType(Confluence.asResource("heavy_work_bench"));
     private static final Component TITLE = Component.translatable("title.confluence.heavy_work_bench");
-    private static final IDrawable BACKGROUND = new JeiBackGround(144, 80, Confluence.asResource("textures/gui/heavy_work_bench.png"));
+    private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/heavy_work_bench.png");
     private final IDrawable icon;
     private final IIngredientManager ingredientManager;
 
@@ -48,7 +49,7 @@ public class HeavyWorkBenchCategory implements IRecipeCategory<HeavyWorkBenchRec
     }
 
     @Override
-    public RecipeType<HeavyWorkBenchRecipe> getRecipeType() {
+    public RecipeType<RecipeHolder<HeavyWorkBenchRecipe>> getRecipeType() {
         return TYPE;
     }
 
@@ -58,8 +59,13 @@ public class HeavyWorkBenchCategory implements IRecipeCategory<HeavyWorkBenchRec
     }
 
     @Override
-    public IDrawable getBackground() {
-        return BACKGROUND;
+    public int getWidth() {
+        return 144;
+    }
+
+    @Override
+    public int getHeight() {
+        return 80;
     }
 
     @Override
@@ -68,25 +74,26 @@ public class HeavyWorkBenchCategory implements IRecipeCategory<HeavyWorkBenchRec
     }
 
     @Override
-    public void setRecipe(IRecipeLayoutBuilder builder, HeavyWorkBenchRecipe recipe, IFocusGroup focuses) {
-        ShapedRecipePattern pattern = recipe.pattern;
+    public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<HeavyWorkBenchRecipe> recipe, IFocusGroup focuses) {
+        ShapedRecipePattern pattern = recipe.value().either.orThrow();
         int width = pattern.width();
         int height = pattern.height();
         boolean symmetrical = pattern.symmetrical;
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 if (symmetrical) {
-                    addInput(builder, j * 18 + 6, i * 18 + 5, recipe.ingredients.get(width - j - 1 + i * width));
+                    addInput(builder, j * 18 + 6, i * 18 + 5, recipe.value().ingredients.get(width - j - 1 + i * width));
                 } else {
-                    addInput(builder, j * 18 + 6, i * 18 + 5, recipe.ingredients.get(j + i * width));
+                    addInput(builder, j * 18 + 6, i * 18 + 5, recipe.value().ingredients.get(j + i * width));
                 }
             }
         }
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 117, 33).addItemStack(recipe.getResultItem(null));
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 117, 33).addItemStack(recipe.value().getResultItem(null));
     }
 
     @Override
-    public void draw(HeavyWorkBenchRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+    public void draw(RecipeHolder<HeavyWorkBenchRecipe> recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+        guiGraphics.blit(BACKGROUND, 0, 0, 0, 0, 144, 80, 144, 80);
         if (mouseX >= 80 && mouseX <= 80 + 28 && mouseY >= 29 && mouseY <= 29 + 23) {
             guiGraphics.pose().pushPose();
             guiGraphics.pose().translate(0, 80, 0);
@@ -126,7 +133,7 @@ public class HeavyWorkBenchCategory implements IRecipeCategory<HeavyWorkBenchRec
         return pairMap.values().stream().sorted(comparator.reversed()).toList();
     }
 
-    public static class RecipeTransfer implements IRecipeTransferHandler<HeavyWorkBenchMenu, HeavyWorkBenchRecipe> {
+    public static class RecipeTransfer implements IRecipeTransferHandler<HeavyWorkBenchMenu, RecipeHolder<HeavyWorkBenchRecipe>> {
         @Override
         public Class<? extends HeavyWorkBenchMenu> getContainerClass() {
             return HeavyWorkBenchMenu.class;
@@ -138,12 +145,12 @@ public class HeavyWorkBenchCategory implements IRecipeCategory<HeavyWorkBenchRec
         }
 
         @Override
-        public RecipeType<HeavyWorkBenchRecipe> getRecipeType() {
+        public RecipeType<RecipeHolder<HeavyWorkBenchRecipe>> getRecipeType() {
             return TYPE;
         }
 
         @Override
-        public @Nullable IRecipeTransferError transferRecipe(HeavyWorkBenchMenu container, HeavyWorkBenchRecipe recipe, IRecipeSlotsView recipeSlots, Player player, boolean maxTransfer, boolean doTransfer) {
+        public @Nullable IRecipeTransferError transferRecipe(HeavyWorkBenchMenu container, RecipeHolder<HeavyWorkBenchRecipe> recipe, IRecipeSlotsView recipeSlots, Player player, boolean maxTransfer, boolean doTransfer) {
             return null;
         }
     }

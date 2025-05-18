@@ -6,36 +6,6 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "confluence:platinum_coin",
-          "functions": [
-          {
-            "function": "set_count",
-            "count": {
-              "type": "uniform",
-              "min": 1,
-              "max": 1
-            }
-          }
-        ],
-          "weight": 73
-        },
-        {
-          "type": "minecraft:item",
-          "name": "confluence:golden_coin",
-          "functions": [
-            {
-              "function": "set_count",
-              "count": {
-                "type": "uniform",
-                "min": 1,
-                "max": 2
-              }
-            }
-          ],
-          "weight": 1017
-        },
-        {
-          "type": "minecraft:item",
           "name": "confluence:silver_coin",
           "functions": [
             {
@@ -66,111 +36,6 @@
         },
         {
           "type": "minecraft:item",
-          "name": "confluence:tr_amethyst",
-          "functions": [
-            {
-              "function": "set_count",
-              "count": {
-                "type": "uniform",
-                "min": 1,
-                "max": 2
-              }
-            }
-          ],
-          "weight": 3333
-        },
-        {
-          "type": "minecraft:item",
-          "name": "confluence:sapphire",
-          "functions": [
-            {
-              "function": "set_count",
-              "count": {
-                "type": "uniform",
-                "min": 1,
-                "max": 2
-              }
-            }
-          ],
-          "weight": 3333
-        },
-        {
-          "type": "minecraft:item",
-          "name": "confluence:topaz",
-          "functions": [
-            {
-              "function": "set_count",
-              "count": {
-                "type": "uniform",
-                "min": 1,
-                "max": 2
-              }
-            }
-          ],
-          "weight": 3333
-        },
-        {
-          "type": "minecraft:item",
-          "name": "confluence:amber",
-          "functions": [
-            {
-              "function": "set_count",
-              "count": {
-                "type": "uniform",
-                "min": 1,
-                "max": 2
-              }
-            }
-          ],
-          "weight": 9598
-        },
-        {
-          "type": "minecraft:item",
-          "name": "confluence:ruby",
-          "functions": [
-            {
-              "function": "set_count",
-              "count": {
-                "type": "uniform",
-                "min": 1,
-                "max": 2
-              }
-            }
-          ],
-          "weight": 3333
-        },
-        {
-          "type": "minecraft:item",
-          "name": "confluence:tr_emerald",
-          "functions": [
-            {
-              "function": "set_count",
-              "count": {
-                "type": "uniform",
-                "min": 1,
-                "max": 2
-              }
-            }
-          ],
-          "weight": 3333
-        },
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:diamond",
-          "functions": [
-            {
-              "function": "set_count",
-              "count": {
-                "type": "uniform",
-                "min": 1,
-                "max": 2
-              }
-            }
-          ],
-          "weight": 3333
-        },
-        {
-          "type": "minecraft:item",
           "name": "confluence:raw_tin",
           "functions": [
             {
@@ -187,51 +52,6 @@
         {
           "type": "minecraft:item",
           "name": "confluence:raw_lead",
-          "functions": [
-            {
-              "function": "set_count",
-              "count": {
-                "type": "uniform",
-                "min": 1,
-                "max": 2
-              }
-            }
-          ],
-          "weight": 39192
-        },
-        {
-          "type": "minecraft:item",
-          "name": "confluence:raw_silver",
-          "functions": [
-            {
-              "function": "set_count",
-              "count": {
-                "type": "uniform",
-                "min": 1,
-                "max": 2
-              }
-            }
-          ],
-          "weight": 39192
-        },
-        {
-          "type": "minecraft:item",
-          "name": "confluence:raw_tungsten",
-          "functions": [
-            {
-              "function": "set_count",
-              "count": {
-                "type": "uniform",
-                "min": 1,
-                "max": 2
-              }
-            }
-          ],
-          "weight": 39192
-        },
-        {
-          "type": "minecraft:item",
-          "name": "confluence:raw_platinum",
           "functions": [
             {
               "function": "set_count",

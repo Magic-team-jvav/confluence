@@ -1,21 +1,30 @@
 package org.confluence.mod.common.entity.projectile.bomb;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.ExplosionDamageCalculator;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.MultiplyExplosionDamageCalculator;
+import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEntities;
-import org.confluence.mod.util.VectorUtils;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import org.mesdag.particlestorm.PSGameClient;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
+
+import java.util.List;
 
 public class BaseBombEntity extends ThrowableItemProjectile {
     public static final ResourceLocation PARTICLE = Confluence.asResource("bomb_lead");
@@ -27,7 +36,7 @@ public class BaseBombEntity extends ThrowableItemProjectile {
     public ParticleEmitter emitter;
 
     protected int delay = 60;
-    protected float blastPower = 3.0F;
+    protected float blastPower = 10.0F;
     protected double bounceFactor = 0.2;
     protected double frictionFactor = 0.9;
 
@@ -57,7 +66,11 @@ public class BaseBombEntity extends ThrowableItemProjectile {
      * 子类可以覆盖的方法，定义炸弹如何爆炸
      */
     protected void explodeFunction() {
-        level().explode(this, getX(), getY(), getZ(), blastPower, Level.ExplosionInteraction.BLOCK);
+        level().explode(this, Explosion.getDefaultDamageSource(level(), this), getExplosionDamageCalculator(), getX(), getY(), getZ(), blastPower, false, Level.ExplosionInteraction.BLOCK);
+    }
+
+    protected ExplosionDamageCalculator getExplosionDamageCalculator() {
+        return new MultiplyExplosionDamageCalculator(0.2F);
     }
 
     @Override
@@ -115,5 +128,29 @@ public class BaseBombEntity extends ThrowableItemProjectile {
 
     protected ResourceLocation getLeadParticle() {
         return PARTICLE;
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
+        this.delay = compound.getInt("Delay");
+        this.blastPower = compound.getFloat("BlastPower");
+        this.bounceFactor = compound.getDouble("BounceFactor");
+        this.frictionFactor = compound.getDouble("FrictionFactor");
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
+        compound.putInt("Delay", delay);
+        compound.putFloat("BlastPower", blastPower);
+        compound.putDouble("BounceFactor", bounceFactor);
+        compound.putDouble("FrictionFactor", frictionFactor);
+    }
+
+    public static void itemInvulnerableToExplosion(@Nullable Entity directSourceEntity, List<Entity> affectedEntities) {
+        if (directSourceEntity instanceof BaseBombEntity) {
+            affectedEntities.removeIf(entity -> entity instanceof ItemEntity);
+        }
     }
 }

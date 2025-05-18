@@ -13,7 +13,7 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.SculkSensorBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import org.confluence.mod.util.ModUtils;
+import org.confluence.lib.util.LibUtils;
 import org.jetbrains.annotations.Nullable;
 
 public class SculkTrapBlock extends SculkSensorBlock {
@@ -26,7 +26,7 @@ public class SculkTrapBlock extends SculkSensorBlock {
         super.activate(entity, level, pos, state, power, frequency);
         if (level instanceof ServerLevel serverLevel) {
             SpawnUtil.trySpawnMob(EntityType.WARDEN, MobSpawnType.TRIGGERED, serverLevel, pos, 20, 5, 6, SpawnUtil.Strategy.ON_TOP_OF_COLLIDER).ifPresent(warden -> {
-                warden.addTag(ModUtils.NO_DROPS_TAG);
+                warden.addTag(LibUtils.NO_DROPS_TAG);
                 SoundEvent soundevent = SoundEvents.WARDEN_LISTENING_ANGRY;
                 int i = pos.getX() + Mth.randomBetweenInclusive(level.random, -10, 10);
                 int j = pos.getY() + Mth.randomBetweenInclusive(level.random, -10, 10);

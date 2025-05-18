@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#/#",
+        "#/#"
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:stick"
+        },
+        "/": {
+            "item": "confluence:living_mahogany_planks"
+        }
+    },
+    "result": {
+        "id": "confluence:living_mahogany_fence_gate"
+    },
+    "group": "wooden_fence_gate"
+}

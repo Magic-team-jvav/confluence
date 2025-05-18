@@ -1,0 +1,48 @@
+{
+    "name": "patchouli.confluence.otherworld_note.boss_checklist.eater_of_worlds.name",
+    "icon": "confluence:worm_food",
+    "category": "confluence:boss_checklist",
+    "pages": [
+        {
+            "type": "patchouli:text",
+            "text": "patchouli.confluence.otherworld_note.boss_checklist.eater_of_worlds.0"
+        },
+        {
+            "type": "patchouli:entity",
+            "entity": "terra_entity:eater_of_worlds",
+            "text": "patchouli.confluence.otherworld_note.boss_checklist.eater_of_worlds.1"
+        },
+        {
+            "type":"patchouli:text",
+            "text": "patchouli.confluence.otherworld_note.boss_checklist.eater_of_worlds.2",
+            "title": "patchouli.confluence.otherworld_note.boss_checklist.eater_of_worlds.2.0"
+        },
+        {
+            "type": "patchouli:entity",
+            "entity": "terra_entity:eater_of_worlds_segment",
+            "text": "patchouli.confluence.otherworld_note.boss_checklist.eater_of_worlds.3"
+        },
+        {
+            "type": "patchouli:spotlight",
+            "item": "confluence:worm_food",
+            "text": "patchouli.confluence.otherworld_note.boss_checklist.eater_of_worlds.4",
+            "title": "patchouli.confluence.otherworld_note.boss_checklist.how_to_summon"
+        },
+        {
+            "type": "patchouli:spotlight",
+            "item": "confluence:worm_food",
+            "text": "patchouli.confluence.otherworld_note.boss_checklist.eater_of_worlds.5"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minecraft:slime_ball",
+            "text": "patchouli.confluence.otherworld_note.boss_checklist.eater_of_worlds.6"
+        },
+        {
+            "type": "patchouli:image",
+            "images":[
+                "confluence:textures/gui/patchouli/boss_checklist/eater_of_worlds.png"
+            ]
+        }
+    ]
+}

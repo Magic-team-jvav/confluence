@@ -26,10 +26,10 @@ public record PrefixComponent(PrefixType type, String name, AttributeModifiersVa
             PrefixType t1 = PrefixType.STREAM_CODEC.decode(buffer);
             String t2 = ByteBufCodecs.STRING_UTF8.decode(buffer);
             AttributeModifiersValue t3 = AttributeModifiersValue.STREAM_CODEC.decode(buffer);
-            float t4 = ByteBufCodecs.FLOAT.decode(buffer);
-            int t5 = ByteBufCodecs.INT.decode(buffer);
-            int t6 = ByteBufCodecs.INT.decode(buffer);
-            float t7 = ByteBufCodecs.FLOAT.decode(buffer);
+            float t4 = buffer.readFloat();
+            int t5 = buffer.readInt();
+            int t6 = buffer.readInt();
+            float t7 = buffer.readFloat();
             return new PrefixComponent(t1, t2, t3, t4, t5, t6, t7);
         }
 
@@ -38,10 +38,10 @@ public record PrefixComponent(PrefixType type, String name, AttributeModifiersVa
             PrefixType.STREAM_CODEC.encode(buffer, component.type);
             ByteBufCodecs.STRING_UTF8.encode(buffer, component.name);
             AttributeModifiersValue.STREAM_CODEC.encode(buffer, component.modifiers);
-            ByteBufCodecs.FLOAT.encode(buffer, component.manaCost);
-            ByteBufCodecs.INT.encode(buffer, component.additionalMana);
-            ByteBufCodecs.INT.encode(buffer, component.tier);
-            ByteBufCodecs.FLOAT.encode(buffer, component.value);
+            buffer.writeFloat(component.manaCost);
+            buffer.writeInt(component.additionalMana);
+            buffer.writeInt(component.tier);
+            buffer.writeFloat(component.value);
         }
     };
 
@@ -53,5 +53,12 @@ public record PrefixComponent(PrefixType type, String name, AttributeModifiersVa
     @Override
     public @NotNull StreamCodec<? super RegistryFriendlyByteBuf, PrefixComponent> streamCodec() {
         return STREAM_CODEC;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) return true;
+        return o instanceof PrefixComponent(PrefixType type1, String name1, AttributeModifiersValue modifiers1, float cost, int mana, int tier1, float value1) &&
+                mana == additionalMana && tier1 == tier && value1 == value && cost == manaCost && type1 == type && name1.equals(name) && modifiers1.equals(modifiers);
     }
 }

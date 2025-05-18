@@ -10,6 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
@@ -17,17 +18,14 @@ import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.menu.NPCReforgeMenu;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
-import org.confluence.terra_curio.common.component.ModRarity;
-import org.confluence.terraentity.entity.ai.keyframe.KeyframeInterpolator;
-import org.confluence.terraentity.entity.ai.keyframe.interpolator.IInterpolator;
-import org.jetbrains.annotations.NotNull;
+import org.confluence.terraentity.entity.ai.keyframe.animation.KeyframeAnimation;
 
 public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
     private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/container/reforge.png");
     private boolean buttonClicked = false;
     private final EvictingQueue<Component> prefixBefore;
     int clickTime = 500;
-    KeyframeInterpolator interpolator;
+    KeyframeAnimation interpolator;
 
 
     public NPCReforgeScreen(NPCReforgeMenu menu, Inventory playerInventory, Component title) {
@@ -36,7 +34,7 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
     }
 
     @Override
-    protected void renderBg(@NotNull GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
+    protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
         guiGraphics.blit(BACKGROUND, leftPos, topPos + 19, 0, 0, imageWidth, imageHeight);
         int cost = menu.getCost();
         if (cost < 0x3F3F3F3F) {
@@ -83,24 +81,21 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
 
     protected void init() {
         super.init();
-        this.interpolator = KeyframeInterpolator.Builder(IInterpolator.cubicSpline)
-                .addKeyframe(0, 0)
+        this.interpolator = KeyframeAnimation.Builder()
+                .addKeyframe(0,0)
                 .addKeyframe(15, 55)
                 .addKeyframe(20, 60)
                 .addKeyframe(40, 60)
                 .addKeyframe(45, 65)
                 .addKeyframe(60, 100)
-                .addInterpolator(1, IInterpolator.linear.get())
-                .addInterpolator(2, IInterpolator.linear.get())
-                .addInterpolator(3, IInterpolator.linear.get())
                 .build();
     }
 
     @Override
-    protected void renderLabels(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY) {}
+    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {}
 
     @Override
-    public void render(@NotNull GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
+    public void render(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
         renderTooltip(pGuiGraphics, pMouseX, pMouseY);
 
@@ -115,7 +110,7 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
                 MutableComponent component = Component.translatable("prefix.confluence." + prefix.name()).append(" ").append(Component.translatable(itemStack.getItem().getDescriptionId()));
                 ModRarity rarity = ModRarity.getRarity(itemStack);
                 if (rarity != null) {
-                    component.withColor(rarity.getColor());
+                    component.withColor(rarity.color());
                 }
                 pGuiGraphics.pose().translate(0, -v * 0.5f, 0);
                 float f = (clickTime / 60.0f);
@@ -140,7 +135,7 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
                 MutableComponent component = Component.translatable("prefix.confluence." + prefix.name());
                 ModRarity rarity = ModRarity.getRarity(itemStack);
                 if (rarity != null) {
-                    component.withColor(rarity.getColor());
+                    component.withColor(rarity.color());
                 }
                 prefixBefore.add(component);
             }

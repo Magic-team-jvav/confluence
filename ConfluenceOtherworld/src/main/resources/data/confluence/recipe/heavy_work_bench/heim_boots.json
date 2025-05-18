@@ -6,14 +6,14 @@
     ],
     "key": {
         "a": {
-            "type": "terra_curio:amount_ingredient",
+            "type": "confluence_magic_lib:amount_ingredient",
             "ingredient": {
                 "item": "minecraft:prismarine_shard"
             },
             "count": 2
         },
         "#": {
-            "type": "terra_curio:amount_ingredient",
+            "type": "confluence_magic_lib:amount_ingredient",
             "ingredient": {
                 "item": "confluence:heim"
             },

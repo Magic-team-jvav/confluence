@@ -1,30 +1,25 @@
 package org.confluence.mod.common.init.item;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.confluence.lib.common.component.ModRarity;
+import org.confluence.lib.common.item.CustomRarityItem;
+import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.NatureBlocks;
-import org.confluence.mod.common.item.CustomRarityItem;
-import org.confluence.mod.common.item.common.ColoredItem;
+import org.confluence.mod.common.item.common.CursedFlameItem;
+import org.confluence.mod.common.item.common.GelItem;
 import org.confluence.mod.common.item.common.MushroomItem;
-import org.confluence.terra_curio.common.component.ModRarity;
-import org.jetbrains.annotations.NotNull;
 
 public class MaterialItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
 
-    public static final DeferredItem<Item> GEL = ITEMS.register("gel", () -> new ColoredItem(ModRarity.WHITE) {
-        @Override
-        public @NotNull ItemStack getDefaultInstance() {
-            ItemStack itemStack = new ItemStack(GEL.get());
-            setColor(itemStack, 0xFF66CCFF);
-            return itemStack;
-        }
-    });
+    public static final DeferredItem<Item> GEL = ITEMS.register("gel", GelItem::new);
     public static final DeferredItem<Item> PINK_GEL = register("pink_gel", ModRarity.PINK);
     public static final DeferredItem<Item> SILK = register("silk", ModRarity.BLUE);
+    public static final DeferredItem<Item> RAW_ASPHALT = register("raw_asphalt", ModRarity.WHITE); // 生沥青
 
     public static final DeferredItem<Item> RAW_TIN = register("raw_tin");
     public static final DeferredItem<Item> TIN_INGOT = register("tin_ingot");
@@ -50,8 +45,8 @@ public class MaterialItems {
     public static final DeferredItem<Item> COBALT_INGOT = register("cobalt_ingot", ModRarity.LIGHT_RED);
     public static final DeferredItem<Item> RAW_PALLADIUM = register("raw_palladium", ModRarity.LIGHT_RED);
     public static final DeferredItem<Item> PALLADIUM_INGOT = register("palladium_ingot", ModRarity.LIGHT_RED);
-    public static final DeferredItem<Item> RAW_MITHRIL = register("raw_mithril", ModRarity.LIGHT_RED);
-    public static final DeferredItem<Item> MITHRIL_INGOT = register("mithril_ingot", ModRarity.LIGHT_RED);
+    public static final DeferredItem<Item> RAW_MYTHRIL = register("raw_mythril", ModRarity.LIGHT_RED);
+    public static final DeferredItem<Item> MYTHRIL_INGOT = register("mythril_ingot", ModRarity.LIGHT_RED);
     public static final DeferredItem<Item> RAW_ORICHALCUM = register("raw_orichalcum", ModRarity.LIGHT_RED);
     public static final DeferredItem<Item> ORICHALCUM_INGOT = register("orichalcum_ingot", ModRarity.LIGHT_RED);
     public static final DeferredItem<Item> RAW_ADAMANTITE = register("raw_adamantite", ModRarity.LIGHT_RED);
@@ -90,6 +85,7 @@ public class MaterialItems {
     public static final DeferredItem<Item> ANTLION_MANDIBLE = register("antlion_mandible");
     public static final DeferredItem<Item> HOOK = register("hook");
     public static final DeferredItem<Item> FILAMENTOUS_FIN = register("filamentous_fin");
+    public static final DeferredItem<Item> TATTERED_CLOTH = register("tattered_cloth");
     public static final DeferredItem<Item> LENS = register("lens");
     public static final DeferredItem<Item> BLACK_LENS = register("black_lens");
     public static final DeferredItem<Item> STURDY_FOSSIL = register("sturdy_fossil", ModRarity.BLUE);
@@ -102,15 +98,16 @@ public class MaterialItems {
     public static final DeferredItem<Item> SHADOW_SCALE = register("shadow_scale", ModRarity.BLUE);
     public static final DeferredItem<Item> TISSUE_SAMPLE = register("tissue_sample", ModRarity.BLUE);
     public static final DeferredItem<Item> ROYAL_WAX = register("royal_wax", ModRarity.BLUE);
-
-    public static final DeferredItem<Item> CRYSTAL_SHARDS_ITEM = register("crystal_shards_item", ModRarity.BLUE);
-    public static final DeferredItem<Item> CURSED_FLAME = register("cursed_flame", ModRarity.ORANGE);
-    public static final DeferredItem<Item> ICHOR = register("ichor", ModRarity.ORANGE);
-    public static final DeferredItem<Item> PIXIE_DUST = register("pixie_dust", ModRarity.BLUE);
+    public static final DeferredItem<Item> DUNGEON_DEMON_BONE = register("dungeon_demon_bone", ModRarity.BLUE);
+    public static final DeferredItem<Item> HARPY_FEATHER = register("harpy_feather", ModRarity.BLUE);
+    public static final DeferredItem<Item> GIANT_HARPY_FEATHER = register("giant_harpy_feather", ModRarity.BLUE);
 
     public static final DeferredItem<Item> PEARL = register("pearl", ModRarity.BLUE);
     public static final DeferredItem<Item> BLACK_PEARL = register("black_pearl", ModRarity.BLUE);
     public static final DeferredItem<Item> PINK_PEARL = register("pink_pearl", ModRarity.BLUE);
+    
+    public static final DeferredItem<Item> CHINA_PLATE = register("china_plate");
+    public static final DeferredItem<Item> CHINA_BOWL = register("china_bowl");
 
     // 草药
     public static final DeferredItem<Item> WATERLEAF = ITEMS.registerSimpleItem("waterleaf");
@@ -127,6 +124,19 @@ public class MaterialItems {
     public static final DeferredItem<Item> GLOWING_MUSHROOM = ITEMS.register("glowing_mushroom", () -> new MushroomItem(NatureBlocks.GLOWING_MUSHROOM.get(), 0.0F));
     public static final DeferredItem<Item> LIFE_MUSHROOM = ITEMS.register("life_mushroom", () -> new MushroomItem(NatureBlocks.LIFE_MUSHROOM.get(), 6.0F));
     public static final DeferredItem<Item> JUNGLE_SPORE = ITEMS.register("jungle_spore", () -> new Item(new Item.Properties()));
+
+    // 困难模式
+    public static final DeferredItem<Item> SOUL_OF_LIGHT = ITEMS.register("soul_of_light", () -> new TooltipItem(new Item.Properties(), ModRarity.ORANGE, TooltipItem.getTooltipsFromString("soul_of_light", 1, ChatFormatting.GRAY)));
+    public static final DeferredItem<Item> SOUL_OF_NIGHT = ITEMS.register("soul_of_night", () -> new TooltipItem(new Item.Properties(), ModRarity.ORANGE, TooltipItem.getTooltipsFromString("soul_of_night", 1, ChatFormatting.GRAY)));
+    public static final DeferredItem<Item> SOUL_OF_FLIGHT = ITEMS.register("soul_of_flight", () -> new TooltipItem(new Item.Properties(), ModRarity.ORANGE, TooltipItem.getTooltipsFromString("soul_of_flight", 1, ChatFormatting.GRAY)));
+    public static final DeferredItem<Item> SOUL_OF_FRIGHT = ITEMS.register("soul_of_fright", () -> new TooltipItem(new Item.Properties(), ModRarity.PINK, TooltipItem.getTooltipsFromString("soul_of_fright", 1, ChatFormatting.GRAY)));
+    public static final DeferredItem<Item> SOUL_OF_MIGHT = ITEMS.register("soul_of_might", () -> new TooltipItem(new Item.Properties(), ModRarity.PINK, TooltipItem.getTooltipsFromString("soul_of_might", 1, ChatFormatting.GRAY)));
+    public static final DeferredItem<Item> SOUL_OF_SIGHT = ITEMS.register("soul_of_sight", () -> new TooltipItem(new Item.Properties(), ModRarity.PINK, TooltipItem.getTooltipsFromString("soul_of_sight", 1, ChatFormatting.GRAY)));
+    public static final DeferredItem<Item> CRYSTAL_SHARDS_ITEM = register("crystal_shards_item", ModRarity.BLUE);
+    public static final DeferredItem<Item> CURSED_FLAME = ITEMS.register("cursed_flame", CursedFlameItem::new);
+    public static final DeferredItem<Item> ICHOR = register("ichor", ModRarity.ORANGE);
+    public static final DeferredItem<Item> PIXIE_DUST = register("pixie_dust", ModRarity.BLUE);
+    public static final DeferredItem<Item> SPELL_TOME = register("spell_tome", ModRarity.BLUE);
 
     public static DeferredItem<Item> register(String id) {
         return ITEMS.register(id, () -> new Item(new Item.Properties()));

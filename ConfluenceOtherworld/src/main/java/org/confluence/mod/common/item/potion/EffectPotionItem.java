@@ -5,10 +5,9 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
-import org.confluence.terra_curio.common.component.ModRarity;
-import org.confluence.terra_curio.common.init.TCDataComponentTypes;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
 
 public class EffectPotionItem extends AbstractPotionItem {
     public final Holder<MobEffect> mobEffect;
@@ -22,20 +21,20 @@ public class EffectPotionItem extends AbstractPotionItem {
         this.amplifier = amplifier;
     }
 
-    public EffectPotionItem(Rarity rarity, Holder<MobEffect> mobEffect, int duration) {
-        this(new Properties().rarity(rarity), mobEffect, duration, 0);
+    public EffectPotionItem(ModRarity rarity, Holder<MobEffect> mobEffect, int duration) {
+        this(new Properties().component(ConfluenceMagicLib.MOD_RARITY, rarity), mobEffect, duration, 0);
     }
 
-    public EffectPotionItem(Rarity rarity, Holder<MobEffect> mobEffect, int duration, int amplifier) {
-        this(new Properties().rarity(rarity), mobEffect, duration, amplifier);
+    public EffectPotionItem(ModRarity rarity, Holder<MobEffect> mobEffect, int duration, int amplifier) {
+        this(new Properties().component(ConfluenceMagicLib.MOD_RARITY, rarity), mobEffect, duration, amplifier);
     }
 
     public EffectPotionItem(Holder<MobEffect> mobEffect, int duration) {
-        this(new Properties().component(TCDataComponentTypes.MOD_RARITY, ModRarity.BLUE), mobEffect, duration, 0);
+        this(new Properties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE), mobEffect, duration, 0);
     }
 
     public EffectPotionItem(Holder<MobEffect> mobEffect, int duration, int amplifier) {
-        this(new Properties().component(TCDataComponentTypes.MOD_RARITY, ModRarity.BLUE), mobEffect, duration, amplifier);
+        this(new Properties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE), mobEffect, duration, amplifier);
     }
 
     @Override

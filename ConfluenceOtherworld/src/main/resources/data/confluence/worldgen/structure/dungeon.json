@@ -1,0 +1,66 @@
+{
+  "type": "confluence:dungeon",
+  "biomes": "#confluence:has_structure/shimmer_lake",
+  "spawn_overrides": {
+    "monster": {
+      "bounding_box": "full",
+      "spawns": [
+        {
+          "type": "terra_entity:anger_bones",
+          "weight": 240,
+          "minCount": 8,
+          "maxCount": 9
+        },
+        {
+          "type": "terra_entity:big_anger_bones",
+          "weight": 240,
+          "minCount": 8,
+          "maxCount": 9
+        },
+        {
+          "type": "terra_entity:big_bones",
+          "weight": 240,
+          "minCount": 8,
+          "maxCount": 9
+        },
+        {
+          "type": "terra_entity:big_helmet_anger_bones",
+          "weight": 240,
+          "minCount": 8,
+          "maxCount": 9
+        },
+        {
+          "type": "terra_entity:big_muscle_anger_bones",
+          "weight": 240,
+          "minCount": 8,
+          "maxCount": 9
+        },
+        {
+          "type": "terra_entity:short_bones",
+          "weight": 240,
+          "minCount": 8,
+          "maxCount": 9
+        },
+        {
+          "type": "terra_entity:dark_caster",
+          "weight": 240,
+          "minCount": 2,
+          "maxCount": 3
+        },
+        {
+          "type": "terra_entity:cursed_skull",
+          "weight": 120,
+          "minCount": 3,
+          "maxCount": 4
+        },
+        {
+          "type": "terra_entity:dungeon_slime",
+          "weight": 120,
+          "minCount": 1,
+          "maxCount": 2
+        }
+      ]
+    }
+  },
+  "step": "top_layer_modification"
+}

@@ -1,7 +1,7 @@
 package org.confluence.mod.common.item.common;
 
-import org.confluence.mod.common.item.CustomRarityItem;
-import org.confluence.terra_curio.common.component.ModRarity;
+import org.confluence.lib.common.component.ModRarity;
+import org.confluence.lib.common.item.CustomRarityItem;
 
 public class IconItem extends CustomRarityItem {
     public IconItem() {

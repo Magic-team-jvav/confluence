@@ -137,11 +137,11 @@ public class LogBlockSet {
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> woodenSlabs = provider.tag(BlockTags.WOODEN_SLABS);
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> fences = provider.tag(BlockTags.FENCES);
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> woodenFences = provider.tag(BlockTags.WOODEN_FENCES);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> forgeFences = provider.tag(Tags.Blocks.FENCES);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> forgeFencesWooden = provider.tag(Tags.Blocks.FENCES_WOODEN);
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> cFences = provider.tag(Tags.Blocks.FENCES);
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> cFencesWooden = provider.tag(Tags.Blocks.FENCES_WOODEN);
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> fenceGates = provider.tag(BlockTags.FENCE_GATES);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> forgeFenceGates = provider.tag(Tags.Blocks.FENCE_GATES);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> forgeFenceGatesWooden = provider.tag(Tags.Blocks.FENCE_GATES_WOODEN);
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> cFenceGates = provider.tag(Tags.Blocks.FENCE_GATES);
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> cFenceGatesWooden = provider.tag(Tags.Blocks.FENCE_GATES_WOODEN);
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> trapdoors = provider.tag(BlockTags.TRAPDOORS);
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> woodenTrapdoors = provider.tag(BlockTags.WOODEN_TRAPDOORS);
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> woodenPressurePlates = provider.tag(BlockTags.WOODEN_PRESSURE_PLATES);
@@ -149,6 +149,7 @@ public class LogBlockSet {
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> woodenDoors = provider.tag(BlockTags.WOODEN_DOORS);
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> leaves = provider.tag(BlockTags.LEAVES);
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> signs = provider.tag(BlockTags.SIGNS);
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> cStrippedLogs = provider.tag(Tags.Blocks.STRIPPED_LOGS);
         for (LogBlockSet logBlocks : LOG_BLOCK_SETS) {
             Builder builder1 = logBlocks.builder;
             planks.add(builder1.PLANKS.get());
@@ -163,6 +164,7 @@ public class LogBlockSet {
                 completes.add(value);
                 if (builder1.ignitedByLava) burn.add(value);
                 logs.add(value);
+                cStrippedLogs.add(value);
             }
             if (builder1.WOOD != null) {
                 RotatedPillarBlock value = builder1.WOOD.get();
@@ -190,14 +192,14 @@ public class LogBlockSet {
                 FenceBlock fenceBlock = builder1.FENCE.get();
                 fences.add(fenceBlock);
                 woodenFences.add(fenceBlock);
-                forgeFences.add(fenceBlock);
-                forgeFencesWooden.add(fenceBlock);
+                cFences.add(fenceBlock);
+                cFencesWooden.add(fenceBlock);
             }
             if (builder1.FENCE_GATE != null) {
                 FenceGateBlock fenceGateBlock = builder1.FENCE_GATE.get();
                 fenceGates.add(fenceGateBlock);
-                forgeFenceGates.add(fenceGateBlock);
-                forgeFenceGatesWooden.add(fenceGateBlock);
+                cFenceGates.add(fenceGateBlock);
+                cFenceGatesWooden.add(fenceGateBlock);
             }
             if (builder1.PRESSURE_PLATE != null) {
                 PressurePlateBlock pressurePlateBlock = builder1.PRESSURE_PLATE.get();
@@ -304,6 +306,68 @@ public class LogBlockSet {
             SIGN_BLOCKS = list.toArray(SignBlock[]::new);
         }
         return SIGN_BLOCKS;
+    }
+
+    public static void setFlammable() {
+        FireBlock fireblock = (FireBlock)Blocks.FIRE;
+        for (LogBlockSet logBlocks : LOG_BLOCK_SETS) {
+            Builder builder1 = logBlocks.builder;
+            fireblock.setFlammable(builder1.PLANKS.get(), 5, 20);
+            if (builder1.LOG != null) {
+                RotatedPillarBlock value = builder1.LOG.get();
+                if (builder1.ignitedByLava) {
+                    fireblock.setFlammable(value, 5, 5);
+                }
+            }
+            if (builder1.STRIPPED_LOG != null) {
+                RotatedPillarBlock value = builder1.STRIPPED_LOG.get();
+                if (builder1.ignitedByLava) {
+                    fireblock.setFlammable(value, 5, 5);
+                }
+            }
+            if (builder1.WOOD != null) {
+                RotatedPillarBlock value = builder1.WOOD.get();
+                if (builder1.ignitedByLava) {
+                    fireblock.setFlammable(value, 5, 5);
+                }
+            }
+            if (builder1.STRIPPED_WOOD != null) {
+                RotatedPillarBlock value = builder1.STRIPPED_WOOD.get();
+                if (builder1.ignitedByLava) {
+                    fireblock.setFlammable(value, 5, 5);
+                }
+            }
+            if (builder1.LEAVES != null) {
+                LeavesBlock value = builder1.LEAVES.get();
+                if (builder1.ignitedByLava) {
+                    fireblock.setFlammable(value, 30, 60);
+                }
+            }
+            if (builder1.FENCE != null) {
+                FenceBlock value = builder1.FENCE.get();
+                if (builder1.ignitedByLava) {
+                    fireblock.setFlammable(value, 5, 20);
+                }
+            }
+            if (builder1.FENCE_GATE != null) {
+                FenceGateBlock value = builder1.FENCE_GATE.get();
+                if (builder1.ignitedByLava) {
+                    fireblock.setFlammable(value, 5, 20);
+                }
+            }
+            if (builder1.SLAB != null) {
+                SlabBlock value = builder1.SLAB.get();
+                if (builder1.ignitedByLava) {
+                    fireblock.setFlammable(value, 5, 20);
+                }
+            }
+            if (builder1.STAIRS != null) {
+                StairBlock value = builder1.STAIRS.get();
+                if (builder1.ignitedByLava) {
+                    fireblock.setFlammable(value, 5, 20);
+                }
+            }
+        }
     }
 
     public static class Builder {
@@ -493,6 +557,7 @@ public class LogBlockSet {
         BAOBAB("baobab"),
         YELLOW_WILLOW("yellow_willow"),
         LIVING("living"),
+        LIVING_MAHOGANY("living_mahogany"),
         ASH("ash"),
         SPOOKY("spooky");
 

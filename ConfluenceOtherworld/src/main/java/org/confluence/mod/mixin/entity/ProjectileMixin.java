@@ -6,9 +6,8 @@ import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(Projectile.class)
 public abstract class ProjectileMixin implements Immunity {
-
     @Override
-    public Types confluence$getImmunityType(){
+    public Types confluence$getImmunityType() {
         return Types.LOCAL;
     }
 }

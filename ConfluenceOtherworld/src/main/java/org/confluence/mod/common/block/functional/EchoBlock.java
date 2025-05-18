@@ -12,8 +12,9 @@ import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.fml.loading.FMLEnvironment;
+import org.confluence.lib.common.block.ISimulatorBlock;
+import org.confluence.lib.common.block.StateProperties;
 import org.confluence.mod.client.handler.ClientPacketHandler;
-import org.confluence.mod.common.block.StateProperties;
 
 public class EchoBlock extends HalfTransparentBlock implements ISimulatorBlock {
     public EchoBlock() {
@@ -25,7 +26,7 @@ public class EchoBlock extends HalfTransparentBlock implements ISimulatorBlock {
     public VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext context) {
         if (context instanceof EntityCollisionContext context1 && context1.getEntity() instanceof Player player) {
             if (player.isLocalPlayer()) return ClientPacketHandler.hasEchoVisible() ? Shapes.block() : Shapes.empty();
-            return player.getPersistentData().getBoolean("confluence:hasEchoVisibility") ? Shapes.block() : Shapes.empty();
+            return player.getPersistentData().getBoolean("confluence:has_echo_visibility") ? Shapes.block() : Shapes.empty();
         }
         return Shapes.block();
     }

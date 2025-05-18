@@ -1,6 +1,5 @@
 package org.confluence.mod.mixin.integration.journeymap;
 
-import com.mojang.blaze3d.platform.Window;
 import journeymap.client.ui.UIManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.effect.MobEffect;
@@ -18,8 +17,8 @@ public abstract class EffectMixin {
     private static void cancel(int k, int l, int j, int i, MobEffect mobEffect, CallbackInfoReturnable<int[]> cir) {
         if (ClientConfigs.leftEffectIcon) {
             int minimapWidth = UIManager.INSTANCE.getMiniMap().getDisplayVars().minimapWidth;
-            Window window = Minecraft.getInstance().getWindow();
-            cir.setReturnValue(new int[]{(int) (minimapWidth / window.getGuiScale()) + 4, l});
+            double guiScale = Minecraft.getInstance().getWindow().getGuiScale();
+            cir.setReturnValue(new int[]{(int) (minimapWidth / guiScale) + 4, l});
         }
     }
 }

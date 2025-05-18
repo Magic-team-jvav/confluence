@@ -5,7 +5,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.ExtraCodecs;
-import net.minecraft.util.Tuple;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -16,6 +15,7 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import org.confluence.lib.util.FeatureUtils;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.init.ModFeatures;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -33,12 +33,12 @@ public class FallingSandTrapFeature extends Feature<FallingSandTrapFeature.Confi
         Config config = context.config();
         WorldGenLevel level = context.level();
         BlockPos origin = context.origin();
-        if (!ModFeatures.isPosAir(level, origin)) return false;
+        if (!FeatureUtils.isPosAir(level, origin)) return false;
         Optional<Column> optionalColumn = Column.scan(level, origin, config.maxDistanceTo, BlockBehaviour.BlockStateBase::isAir, ModFeatures.IS_BASE_STONE);
         if (optionalColumn.isPresent() && optionalColumn.get() instanceof Column.Range range && range.height() >= config.minDistanceTo) {
             int halfHeight = range.height() / 2;
             BlockPos supportPos = origin.atY(range.floor());
-            if (!ModFeatures.isPosSturdy(level, supportPos, Direction.UP)) return false;
+            if (!FeatureUtils.isPosSturdy(level, supportPos, Direction.UP)) return false;
 
             int radius = config.radius;
             int ceiling = range.ceiling();
@@ -79,15 +79,17 @@ public class FallingSandTrapFeature extends Feature<FallingSandTrapFeature.Confi
 
             BlockState sand = Blocks.SAND.defaultBlockState();
             for (BlockPos pos : BlockPos.betweenClosed(origin.atY(0).offset(-radius, ceiling + 1, -radius), origin.atY(0).offset(radius, ceiling + config.height, radius))) {
-                ModFeatures.safeSetBlock(level, pos, sand, ModFeatures.IS_REPLACEABLE);
+                FeatureUtils.safeSetBlock(level, pos, sand, ModFeatures.IS_REPLACEABLE);
             }
 
-            Tuple<BlockPos, BlockState> pressurePlate = ModFeatures.getPressurePlate(level, supportPos);
-            BlockPos platePos = pressurePlate.getA();
-            level.setBlock(platePos, pressurePlate.getB(), Block.UPDATE_ALL);
-            INetworkEntity plateEntity = ModFeatures.getNetworkEntity(level, platePos);
+            boolean isDeepslate = level.isStateAtPosition(supportPos, blockState -> blockState.is(Blocks.DEEPSLATE));
+            BlockState pressureBlock = (isDeepslate
+                    ? FunctionalBlocks.DEEPSLATE_PRESSURE_BLOCK
+                    : FunctionalBlocks.STONE_PRESSURE_BLOCK).get().defaultBlockState();
+            level.setBlock(supportPos, pressureBlock, Block.UPDATE_ALL);
+            INetworkEntity plateEntity = ModFeatures.getNetworkEntity(level, supportPos);
             if (plateEntity != null) {
-                fragileEntity.connectTo(0xFFFF00, platePos, plateEntity);
+                fragileEntity.connectTo(0xFFFF00, supportPos, plateEntity);
                 return true;
             }
         }

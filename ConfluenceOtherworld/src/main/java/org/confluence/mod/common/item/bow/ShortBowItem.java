@@ -3,19 +3,13 @@ package org.confluence.mod.common.item.bow;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.mixed.IAbstractArrow;
-import org.confluence.terra_curio.common.component.ModRarity;
 
 public class ShortBowItem extends TerraBowItem {
-    public static final int MAX_DRAW_DURATION = 4; // 满蓄力时间为4 tick
-
-    public ShortBowItem(float baseDamage, int durability, ModRarity rarity) {
-        super(baseDamage, durability, rarity);
-        this.baseDamage = baseDamage;
-    }
+    public static final int MAX_DRAW_DURATION = 8; // 满蓄力时间为8 tick
 
 
     public ShortBowItem(float baseDamage, int durability) {
-        super(baseDamage, durability, ModRarity.WHITE);
+        super(baseDamage, new TerraBowItem.Builder().setDuration(durability));
         this.baseDamage = baseDamage;
     }
 

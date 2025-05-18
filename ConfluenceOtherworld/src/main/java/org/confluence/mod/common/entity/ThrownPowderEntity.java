@@ -9,11 +9,9 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
 import org.confluence.mod.common.init.ModEntities;
-import org.mesdag.particlestorm.particle.ParticleEmitter;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -22,7 +20,8 @@ public class ThrownPowderEntity extends Entity {
     private static final EntityDataAccessor<Integer> DATA_TYPE = SynchedEntityData.defineId(ThrownPowderEntity.class, EntityDataSerializers.INT);
     private BlockPos lastPos;
     private ISpreadable.Type type;
-    private ParticleEmitter emitter;
+    //    private ParticleEmitter emitter;
+    private final Set<BlockPos> coveredPos = new HashSet<>();
 
     public ThrownPowderEntity(EntityType<ThrownPowderEntity> entityType, Level level) {
         super(entityType, level);
@@ -53,8 +52,8 @@ public class ThrownPowderEntity extends Entity {
         setDeltaMovement(vec3);
         this.hasImpulse = true;
         double d0 = vec3.horizontalDistance();
-        setYRot((float)(Mth.atan2(vec3.x, vec3.z) * Mth.RAD_TO_DEG));
-        setXRot((float)(Mth.atan2(vec3.y, d0) * Mth.RAD_TO_DEG));
+        setYRot((float) (Mth.atan2(vec3.x, vec3.z) * Mth.RAD_TO_DEG));
+        setXRot((float) (Mth.atan2(vec3.y, d0) * Mth.RAD_TO_DEG));
         this.yRotO = getYRot();
         this.xRotO = getXRot();
 
@@ -64,17 +63,16 @@ public class ThrownPowderEntity extends Entity {
 
     @Override
     public void tick() {
-        if (level().isClientSide && emitter == null && type != null) {
-            int color = switch (type) {
-                case CORRUPT -> 0x0000FF;
-                case CRIMSON -> 0xFF0000;
-                default -> 0;
-            };
-            // todo 粒子
+//        if (level().isClientSide && emitter == null && type != null) {
+//            int color = switch (type) {
+//                case CORRUPT -> 0x0000FF;
+//                case CRIMSON -> 0xFF0000;
+//                default -> 0;
+//            };
 //            this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("thrown_powder"), ParticleEffect.Type.PARTICLE_WITH_VELOCITY, new MolangExp("color", color));
 //            emitter.attached = this;
 //            PSGameClient.LOADER.addEmitter(emitter, false);
-        }
+//        }
         Vec3 motion = getDeltaMovement();
         double x = getX() + motion.x;
         double y = getY() + motion.y;
@@ -89,15 +87,11 @@ public class ThrownPowderEntity extends Entity {
             if (!level().isClientSide) {
                 if (lastPos == blockPosition()) return;
                 this.lastPos = blockPosition();
-                Set<BlockPos> coveredPos = new HashSet<>();
                 for (BlockPos blockPos : BlockPos.betweenClosed(blockPosition().offset(-2, -2, -2), blockPosition().offset(2, 2, 2))) {
-                    BlockPos immutable = blockPos.immutable();
-                    if (coveredPos.contains(immutable)) continue;
-                    Block target = type.getBlockMap().get(level().getBlockState(immutable).getBlock());
-                    if (target != null) {
-                        level().setBlockAndUpdate(immutable, target.defaultBlockState());
+                    BlockPos pos = blockPos.immutable();
+                    if (!coveredPos.contains(pos) && type.spread(level(), pos)) {
+                        coveredPos.add(pos);
                     }
-                    coveredPos.add(immutable);
                 }
             }
         }

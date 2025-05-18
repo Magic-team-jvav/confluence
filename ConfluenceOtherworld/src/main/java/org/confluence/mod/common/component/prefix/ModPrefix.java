@@ -26,7 +26,7 @@ public interface ModPrefix {
 
     boolean canBeMercy();
 
-    record Accessory(String name, int armor, float criticalChance, float attackDamage, float attackSpeed, float movementSpeed, int additionalMana, int tier, float value) implements ModPrefix {
+    record Accessory(String name, float armor, float criticalChance, float attackDamage, float attackSpeed, float movementSpeed, int additionalMana, int tier, float value) implements ModPrefix {
         public static final List<Accessory> VALUES = new ArrayList<>();
         public static final ResourceLocation ID = Confluence.asResource("accessory_prefix");
 
@@ -66,8 +66,8 @@ public interface ModPrefix {
             return false;
         }
 
-        private static Accessory register(String name, int armor, float criticalChance, float attackDamage, float attackSpeed, float movementSpeed, int additionalMana, int tier, float value) {
-            Accessory accessory = new Accessory(name, armor, criticalChance, attackDamage, attackSpeed, movementSpeed, additionalMana, tier, value);
+        private static Accessory register(String name, float armor, float criticalChance, float attackDamage, float attackSpeed, float movementSpeed, int additionalMana, int tier, float value) {
+            Accessory accessory = new Accessory(name, armor / 2, criticalChance, attackDamage, attackSpeed, movementSpeed, additionalMana, tier, value);
             VALUES.add(accessory);
             return accessory;
         }

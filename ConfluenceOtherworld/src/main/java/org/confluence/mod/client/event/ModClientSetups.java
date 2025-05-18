@@ -5,18 +5,29 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.Camera;
 import net.minecraft.client.color.block.BlockColor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.WidgetSprites;
+import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.item.CompassItemPropertyFunction;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.item.ItemPropertyFunction;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -26,16 +37,20 @@ import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.client.extensions.common.IClientBlockExtensions;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
+import net.neoforged.neoforge.client.extensions.common.IClientMobEffectExtensions;
+import org.confluence.lib.color.IntegerRGB;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.handler.MeteorLandingHandler;
 import org.confluence.mod.client.renderer.item.EntityDisplayItemRenderer;
+import org.confluence.mod.common.init.ModArmPoses;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.ToolItems;
-import org.confluence.mod.util.ModUtils;
-import org.confluence.mod.util.color.IntegerRGB;
 import org.confluence.terra_curio.common.item.IFunctionCouldEnable;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
@@ -117,6 +132,29 @@ public final class ModClientSetups {
             return renderer;
         }
     };
+    static final IClientItemExtensions BREATHING_REED = new IClientItemExtensions() {
+        @Override
+        public HumanoidModel.ArmPose getArmPose(LivingEntity entityLiving, InteractionHand hand, ItemStack itemStack) {
+            return ModArmPoses.BREATHING_REED.getValue();
+        }
+    };
+    static final IClientItemExtensions LANCE = new IClientItemExtensions() {
+        @Override
+        public HumanoidModel.ArmPose getArmPose(LivingEntity entityLiving, InteractionHand hand, ItemStack itemStack) {
+            return ModArmPoses.LANCE.getValue();
+        }
+    };
+    static final IClientMobEffectExtensions TRANSLUCENT_EFFECT_ICON = new IClientMobEffectExtensions() {
+        @Override
+        public boolean renderInventoryIcon(MobEffectInstance instance, EffectRenderingInventoryScreen<?> screen, GuiGraphics guiGraphics, int x, int y, int blitOffset) {
+            RenderSystem.enableBlend();
+            Holder<MobEffect> holder = instance.getEffect();
+            TextureAtlasSprite textureAtlasSprite = screen.getMinecraft().getMobEffectTextures().get(holder);
+            guiGraphics.blit(x, y + 7, blitOffset, 18, 18, textureAtlasSprite);
+            RenderSystem.disableBlend();
+            return true;
+        }
+    };
     static final BlockColor HALLOW_LEAVES_COLOR = new BlockColor() {
         @Override
         public int getColor(BlockState state, @Nullable BlockAndTintGetter level, @Nullable BlockPos pos, int tintIndex) {
@@ -133,7 +171,6 @@ public final class ModClientSetups {
             return IntegerRGB.HALLOW_C.mixture(IntegerRGB.HALLOW_A, (m - 8) * 0.25F);
         }
     };
-
 
     static void setRenderLayers() {
         RenderType translucent = RenderType.translucent();
@@ -164,6 +201,7 @@ public final class ModClientSetups {
         ItemBlockRenderTypes.setRenderLayer(FunctionalBlocks.EVER_POWERED_RAIL.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(DecorativeBlocks.PURE_GLASS.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(FunctionalBlocks.ECHO_BLOCK.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.CURSED_FLAME_BLOCK.get(), cutout);
         RenderType cutoutMipped = RenderType.cutoutMipped();
         ItemBlockRenderTypes.setRenderLayer(NatureBlocks.GREEN_MOSS.get(), cutoutMipped);
         ItemBlockRenderTypes.setRenderLayer(NatureBlocks.BROWN_MOSS.get(), cutoutMipped);
@@ -176,13 +214,13 @@ public final class ModClientSetups {
         ItemBlockRenderTypes.setRenderLayer(NatureBlocks.ARGON_MOSS.get(), cutoutMipped);
         ItemBlockRenderTypes.setRenderLayer(NatureBlocks.NEON_MOSS.get(), cutoutMipped);
         ItemBlockRenderTypes.setRenderLayer(NatureBlocks.HELIUM_MOSS.get(), cutoutMipped);
-        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.GROWING_MUSHROOM_MOSS.get(), cutoutMipped);
+        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.GLOWING_MUSHROOM_MOSS.get(), cutoutMipped);
     }
 
     static void registerItemProperties() {
         ResourceLocation enable = Confluence.asResource("enable");
         ItemPropertyFunction enableFunction = (itemStack, level, living, speed) -> {
-            CompoundTag tag = ModUtils.getItemStackNbt(itemStack);
+            CompoundTag tag = LibUtils.getItemStackNbtIfPresent(itemStack);
             if (tag == null) return 1;
             return tag.getBoolean(IFunctionCouldEnable.DISABLE) ? 0 : 1;
         };
@@ -191,12 +229,13 @@ public final class ModClientSetups {
         ItemProperties.register(ToolItems.ENCUMBERING_STONE.get(), enable, enableFunction);
         ResourceLocation variant = Confluence.asResource("variant");
         ItemPropertyFunction variantFunction = (itemStack, level, living, speed) -> {
-            CompoundTag tag = ModUtils.getItemStackNbt(itemStack);
+            CompoundTag tag = LibUtils.getItemStackNbtIfPresent(itemStack);
             if (tag == null) return 0;
             return tag.getInt("VariantId");
         };
         ItemProperties.register(FunctionalBlocks.BASE_CHEST_BLOCK.get().asItem(), variant, variantFunction);
         ItemProperties.register(FunctionalBlocks.DEATH_CHEST_BLOCK.get().asItem(), variant, variantFunction);
+        ItemProperties.register(ToolItems.METEOR_COMPASS.get(), ResourceLocation.withDefaultNamespace("angle"), new CompassItemPropertyFunction((level, stack, entity) -> MeteorLandingHandler.getGlobalPos()));
     }
 
     static void eventBus(Consumer<IEventBus> consumer) {

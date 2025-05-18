@@ -17,8 +17,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.Pig;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.util.ModUtils;
 
 import java.util.Hashtable;
 import java.util.Map;
@@ -58,7 +58,7 @@ public class EntityDisplayItemRenderer extends BlockEntityWithoutLevelRenderer {
     public void renderByItem(ItemStack stack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
         ClientLevel level = Minecraft.getInstance().level;
         if (level == null) return;
-        CompoundTag tag = ModUtils.getItemStackNbt(stack);
+        CompoundTag tag = LibUtils.getItemStackNbtIfPresent(stack);
         Entity entity;
         if (tag == null) {
             entity = magicHarp2333.apply(level);

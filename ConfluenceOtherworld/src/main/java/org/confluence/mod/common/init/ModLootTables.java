@@ -1,11 +1,19 @@
 package org.confluence.mod.common.init;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
+import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.loot.DateLootItemCondition;
+
+import java.util.function.Supplier;
 
 public final class ModLootTables {
+    public static final ResourceKey<LootTable> ENVIRONMENT_CRATE = register("gameplay/crate/environment_crate");
+    public static final ResourceKey<LootTable> ENVIRONMENT_CRATE_HARDMODE = register("gameplay/crate/environment_crate_hardmode");
     public static final ResourceKey<LootTable> WOODEN_CRATE = register("gameplay/crate/wooden_crate");
     public static final ResourceKey<LootTable> IRON_CRATE = register("gameplay/crate/iron_crate");
     public static final ResourceKey<LootTable> GOLDEN_CRATE = register("gameplay/crate/golden_crate");
@@ -22,7 +30,7 @@ public final class ModLootTables {
     public static final ResourceKey<LootTable> OCEAN_CRATE = register("gameplay/crate/ocean_crate");
 
     public static final ResourceKey<LootTable> PEARLWOOD_CRATE = register("gameplay/crate/pearlwood_crate");
-    public static final ResourceKey<LootTable> MITHRIL_CRATE = register("gameplay/crate/mithril_crate");
+    public static final ResourceKey<LootTable> MYTHRIL_CRATE = register("gameplay/crate/mythril_crate");
     public static final ResourceKey<LootTable> TITANIUM_CRATE = register("gameplay/crate/titanium_crate");
     public static final ResourceKey<LootTable> THORNS_CRATE = register("gameplay/crate/thorns_crate");
     public static final ResourceKey<LootTable> WILD_CRATE = register("gameplay/crate/wild_crate");
@@ -46,21 +54,32 @@ public final class ModLootTables {
     public static final ResourceKey<LootTable> CAN_OF_WORMS = register("gameplay/can_of_worms");
 
     public static final ResourceKey<LootTable> FISHING_LAVA = register("gameplay/fishing/lava");
-    public static final ResourceKey<LootTable> FISH = register("gameplay/fishing");
+    public static final ResourceKey<LootTable> FISHING = register("gameplay/fishing");
+    public static final ResourceKey<LootTable> FISH = register("gameplay/fishing/fish");
+    public static final ResourceKey<LootTable> JUNK = register("gameplay/fishing/junk");
+    public static final ResourceKey<LootTable> TREASURE = register("gameplay/fishing/treasure");
     public static final ResourceKey<LootTable> CRATE = register("gameplay/crate");
 
-    public static final ResourceKey<LootTable> EXTRACT_DESERT_FOSSIL = register("gameplay/extract/with_desert_fossil");
-    public static final ResourceKey<LootTable> EXTRACT_GRAVEL = register("gameplay/extract/with_gravel");
-    public static final ResourceKey<LootTable> EXTRACT_JUNK = register("gameplay/extract/with_junk");
-    public static final ResourceKey<LootTable> EXTRACT_SLUSH = register("gameplay/extract/with_slush");
-    public static final ResourceKey<LootTable> EXTRACT_MARINE_GRAVEL = register("gameplay/extract/with_marine_gravel");
+    public static final ResourceKey<LootTable> CORRUPTION_CARRY = register("gameplay/corruption_carry");
+    public static final ResourceKey<LootTable> SLIME_CARRY = register("gameplay/slime_carry");
 
+    public static final ResourceKey<LootTable> HERB_BAG_INNER = register("gameplay/herb_bag_inner");
+
+    public static final ResourceKey<LootTable> INITIAL_WORLD_UNDERGROUND_CHEST = register("chests/initial_world_underground_chest");
     public static final ResourceKey<LootTable> CAVE_CHESTS = register("chests/cave_chests");
 
     public static final ResourceKey<LootTable> OPAL_BLOCK = register("archaeology/opal_ore");
 
+    public static final ResourceKey<LootTable> GOLDEN_LOCK_BOX = register("gameplay/crate/golden_lock_box");
+    public static final ResourceKey<LootTable> OBSIDIAN_LOCK_BOX = register("gameplay/crate/obsidian_lock_box");
 
     private static ResourceKey<LootTable> register(String name) {
-        return ResourceKey.create(Registries.LOOT_TABLE, Confluence.asResource(name));
+        return Confluence.asResourceKey(Registries.LOOT_TABLE, name);
+    }
+
+    public static class ItemConditions {
+        public static final DeferredRegister<LootItemConditionType> TYPES = DeferredRegister.create(BuiltInRegistries.LOOT_CONDITION_TYPE, Confluence.MODID);
+
+        public static final Supplier<LootItemConditionType> DATE = TYPES.register("date", () -> new LootItemConditionType(DateLootItemCondition.CODEC));
     }
 }

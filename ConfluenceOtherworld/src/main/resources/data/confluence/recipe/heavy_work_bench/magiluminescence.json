@@ -8,17 +8,17 @@
     ],
     "key": {
         "a": {
-            "tag": "confluence:demonite_and_crimson_ingot"
+            "tag": "confluence:evil_ingot"
         },
         "c": {
-            "type": "terra_curio:amount_ingredient",
+            "type": "confluence_magic_lib:amount_ingredient",
             "ingredient": {
-                "tag": "confluence:demonite_and_crimson_ingot"
+                "tag": "confluence:evil_ingot"
             },
             "count": 2
         },
         "/": {
-            "type": "terra_curio:amount_ingredient",
+            "type": "confluence_magic_lib:amount_ingredient",
             "ingredient": {
                 "item": "confluence:topaz"
             },

@@ -1,23 +1,17 @@
 {
     "type": "confluence:heavy_work_bench",
     "pattern": [
-        " ff ",
-        " ee ",
-        "#gg#",
-        "f  f"
+        "  a ",
+        " a a",
+        "a#a ",
+        " a  "
     ],
     "key": {
         "#": {
             "item": "minecraft:red_dye"
         },
-        "e": {
-            "tag": "c:ingots/tungsten"
-        },
-        "f": {
-            "item": "minecraft:iron_ingot"
-        },
-        "g": {
-            "tag": "c:ingots/silver"
+        "a": {
+            "tag": "c:ingots/platinum"
         }
     },
     "result": {

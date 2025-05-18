@@ -13,15 +13,16 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.util.ModUtils;
+import org.jetbrains.annotations.Nullable;
 
 public class TheConstant extends SecretSeed {
-    private static final ResourceLocation POST_EFFECT = Confluence.asResource("shaders/post/the_constant.json");
+    public static final ResourceLocation POST_EFFECT = Confluence.asResource("shaders/post/the_constant.json");
 
     public TheConstant(long flag, ResourceLocation id) {
         super(flag, id);
@@ -32,7 +33,7 @@ public class TheConstant extends SecretSeed {
         return "constant".equals(seed) || "theconstant".equals(seed) || "the constant".equals(seed) || "eye4aneye".equals(seed) || "eyeforaneye".equals(seed);
     }
 
-    public static float applyAttackDamage(Entity causer, float amount) {
+    public static float applyAttackDamage(@Nullable Entity causer, float amount) {
         if (causer instanceof ServerPlayer serverPlayer && serverPlayer.getFoodData().needsFood() && ModSecretSeeds.THE_CONSTANT.match(serverPlayer.server)) {
             return amount * 0.8F;
         }
@@ -42,7 +43,7 @@ public class TheConstant extends SecretSeed {
     public static void applyDarkness(ServerPlayer player, ServerLevel level) {
         if (player.gameMode.getGameModeForPlayer().isSurvival() && level.getGameTime() % 20 == 0 && ModSecretSeeds.THE_CONSTANT.match(level)) {
             if (player.hasEffect(ModEffects.SHINE) || player.hasEffect(MobEffects.GLOWING)) return;
-            if (ModUtils.anyHandHasItem(player, itemStack -> itemStack.is(ModTags.Items.PROVIDE_LIGHT))) return;
+            if (LibUtils.anyHandHasItem(player, itemStack -> itemStack.is(ModTags.Items.PROVIDE_LIGHT))) return;
             CompoundTag data = player.getPersistentData();
             int tick = data.getInt("confluence:in_darkness_tick");
             BlockPos eyePos = BlockPos.containing(player.getEyePosition());

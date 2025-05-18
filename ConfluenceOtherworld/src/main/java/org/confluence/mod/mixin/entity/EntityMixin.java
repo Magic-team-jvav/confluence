@@ -1,30 +1,37 @@
 package org.confluence.mod.mixin.entity;
 
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSources;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.Skeleton;
+import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.entity.PartEntity;
 import net.neoforged.neoforge.fluids.FluidType;
+import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.api.event.ShimmerEntityTransmutationEvent;
-import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.data.saved.GamePhase;
+import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.common.init.item.ArmorItems;
 import org.confluence.mod.mixed.IEntity;
-import org.confluence.terra_curio.mixed.SelfGetter;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import static org.confluence.mod.api.event.ShimmerEntityTransmutationEvent.ENTITY_TRANSMUTATION;
 
@@ -88,19 +95,21 @@ public abstract class EntityMixin implements IEntity, SelfGetter<Entity> {
 
     @Inject(method = "baseTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiling/ProfilerFiller;pop()V"))
     private void shimmerTick(CallbackInfo ci) {
+        Entity self = confluence$self();
+        if (self instanceof PartEntity<?>) return;
+
         if (confluence$entity_coolDown < 0) this.confluence$entity_coolDown = 0;
 
-        Entity self = self();
         boolean isItem = self instanceof ItemEntity;
         if (getEyeInFluidType() == ModFluids.SHIMMER.type().get()) {
             if (!confluence$isInShimmer) { // 入微光
                 this.confluence$isInShimmer = true;
-                self.level().playSound(null, self.getX(), self.getY(), self.getZ(), isItem ? ModSoundEvents.SHIMMER_ITEM_INTERACTIONS.get() : ModSoundEvents.SHIMMER_IMMERSION.get(), SoundSource.AMBIENT, 1.0F, 1.0F);
+                self.level().playSound(null, self.getX(), self.getY(), self.getZ(), isItem ? ModSoundEvents.SHIMMER_ITEM_INTERACTIONS.get() : ModSoundEvents.SHIMMER_IMMERSION.get(), SoundSource.AMBIENT, 0.5F, 1.0F);
             }
         } else {
             if (confluence$isInShimmer) { // 出微光
                 this.confluence$isInShimmer = false;
-                self.level().playSound(null, self.getX(), self.getY(), self.getZ(), ModSoundEvents.SHIMMER_DETACHMENT.get(), SoundSource.AMBIENT, 1.0F, 1.0F);
+                self.level().playSound(null, self.getX(), self.getY(), self.getZ(), ModSoundEvents.SHIMMER_DETACHMENT.get(), SoundSource.AMBIENT, 0.5F, 1.0F);
             }
         }
 
@@ -121,7 +130,7 @@ public abstract class EntityMixin implements IEntity, SelfGetter<Entity> {
                         discard();
                         confluence$setup(target, post.getCoolDown(), post.getSpeedY());
                         self.level().addFreshEntity(target);
-                        self.level().playSound(null, self.getX(), self.getY(), self.getZ(), ModSoundEvents.SHIMMER_EVOLUTION.get(), SoundSource.AMBIENT, 1.0F, 1.0F);
+                        self.level().playSound(null, self.getX(), self.getY(), self.getZ(), ModSoundEvents.SHIMMER_EVOLUTION.get(), SoundSource.AMBIENT, 0.5F, 1.0F);
                         return;
                     }
                 }
@@ -146,6 +155,25 @@ public abstract class EntityMixin implements IEntity, SelfGetter<Entity> {
         }
     }
 
+    @Inject(method = "getName", at = @At("RETURN"), cancellable = true)
+    private void zombieName(CallbackInfoReturnable<Component> cir) {
+        Component returnValue = cir.getReturnValue();
+        Entity self = confluence$self();
+        if (self instanceof Zombie zombie) {
+            ItemStack chestItem = zombie.getItemBySlot(EquipmentSlot.CHEST);
+            if (chestItem.is(ArmorItems.RAINCOAT.get())) {
+                returnValue = Component.translatable("entity.confluence.raincoat_zombie");
+            } else if (chestItem.is(ArmorItems.SNOW_SUITS.get()) || chestItem.is(ArmorItems.PINK_SNOW_SUITS.get())) {
+                returnValue = Component.translatable("entity.confluence.frozen_zombie");
+            }
+        } else if (self instanceof Skeleton skeleton) {
+            if (skeleton.getItemBySlot(EquipmentSlot.CHEST).is(ArmorItems.MINING_CHESTPLATE.get())) {
+                returnValue = Component.translatable("entity.confluence.undead_miner");
+            }
+        }
+        cir.setReturnValue(returnValue);
+    }
+
     @Unique
     private static void confluence$setup(Entity entity, int coolDown, double y) {
         IEntity iEntity = (IEntity) entity;
@@ -160,9 +188,9 @@ public abstract class EntityMixin implements IEntity, SelfGetter<Entity> {
     @Unique
     private static void confluence$initTarget(ShimmerEntityTransmutationEvent.Post event) {
         Entity sourceEntity = event.getSource();
-        GamePhase gamePhase = ConfluenceData.get((ServerLevel) sourceEntity.level()).getGamePhase();
+        GamePhase gamePhase = KillBoard.INSTANCE.getGamePhase();
         for (ShimmerEntityTransmutationEvent.EntityTransmutation transmutation : ENTITY_TRANSMUTATION) {
-            if (transmutation.gamePhase().isOtherBelowThenMe(gamePhase)) continue;
+            if (transmutation.gamePhase().isAboveThan(gamePhase)) continue;
             if (transmutation.source().test(sourceEntity)) {
                 Entity target = transmutation.target().create(sourceEntity.level());
                 if (target == null) continue;

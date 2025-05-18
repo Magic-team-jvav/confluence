@@ -1,0 +1,19 @@
+{
+    "variants": {
+        "facing=east": {
+            "model": "confluence:block/piggy_bank",
+            "y": 90
+        },
+        "facing=north": {
+            "model": "confluence:block/piggy_bank"
+        },
+        "facing=south": {
+            "model": "confluence:block/piggy_bank",
+            "y": 180
+        },
+        "facing=west": {
+            "model": "confluence:block/piggy_bank",
+            "y": 270
+        }
+    }
+}

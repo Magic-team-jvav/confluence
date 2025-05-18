@@ -13,14 +13,12 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.PointedDripstoneBlock;
 import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.common.SoundActions;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.fluids.FluidInteractionRegistry;
+import org.confluence.lib.common.fluid.FluidTriple;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.GamePhase;
-import org.confluence.mod.common.fluid.FluidTriple;
-import org.confluence.mod.common.init.block.CrateBlocks;
-import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.common.init.block.ModBlocks;
-import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 
 import static org.confluence.mod.api.event.ShimmerEntityTransmutationEvent.addEntity;
@@ -83,7 +81,7 @@ public final class ModFluids {
                 NeoForgeMod.WATER_TYPE.value(), fluidState -> fluidState.isSource() ? Blocks.HONEY_BLOCK.defaultBlockState() : NatureBlocks.THIN_HONEY_BLOCK.get().defaultBlockState()
         ));
         FluidInteractionRegistry.addInteraction(HONEY.type().get(), new FluidInteractionRegistry.InteractionInformation(
-                NeoForgeMod.LAVA_TYPE.value(), fluidState -> fluidState.isSource() ? ModBlocks.CRISPY_HONEY_BLOCK.get().defaultBlockState() : NatureBlocks.LOOSE_HONEY_BLOCK.get().defaultBlockState()
+                NeoForgeMod.LAVA_TYPE.value(), fluidState -> fluidState.isSource() ? DecorativeBlocks.CRISPY_HONEY_BLOCK.get().defaultBlockState() : NatureBlocks.LOOSE_HONEY_BLOCK.get().defaultBlockState()
         ));
         FluidInteractionRegistry.addInteraction(SHIMMER.type().get(), new FluidInteractionRegistry.InteractionInformation(
                 NeoForgeMod.WATER_TYPE.value(), fluidState -> fluidState.isSource() ? NatureBlocks.AETHERIUM_BLOCK.get().defaultBlockState() : NatureBlocks.DARK_AETHERIUM_BLOCK.get().defaultBlockState()
@@ -104,6 +102,16 @@ public final class ModFluids {
         addItem(ItemTags.WOOL, Items.WHITE_WOOL, 1);
         addItem(ItemTags.WOOL_CARPETS, Items.WHITE_CARPET, 1);
         addItem(Items.CRAFTING_TABLE, Items.OAK_PLANKS, 1);
+        // 下界合金装备嬗变
+        addItem(Items.NETHERITE_CHESTPLATE, Items.NETHERITE_INGOT, 1);
+        addItem(Items.NETHERITE_HELMET, Items.NETHERITE_INGOT, 1);
+        addItem(Items.NETHERITE_LEGGINGS, Items.NETHERITE_INGOT, 1);
+        addItem(Items.NETHERITE_BOOTS, Items.NETHERITE_INGOT, 1);
+        addItem(Items.NETHERITE_SWORD, Items.NETHERITE_INGOT, 1);
+        addItem(Items.NETHERITE_SHOVEL, Items.NETHERITE_INGOT, 1);
+        addItem(Items.NETHERITE_HOE, Items.NETHERITE_INGOT, 1);
+        addItem(Items.NETHERITE_AXE, Items.NETHERITE_INGOT, 1);
+        addItem(Items.NETHERITE_PICKAXE, Items.NETHERITE_INGOT, 1);
         // 饰品转化
         addItem(BALLOON_PUFFERFISH.get(), SHINY_RED_BALLOON.get());
         addItem(MAGMA_STONE.get(), LAVA_CHARM.get());
@@ -125,32 +133,30 @@ public final class ModFluids {
         addItem(ANGLER_EARRING.get(), TACKLE_BOX.get());
         addItem(TACKLE_BOX.get(), HIGH_TEST_FISHING_LINE.get());
         addItem(STAR_CLOAK.get(), CHROMATIC_CLOAK.get());
+        addItem(SUMMONER_EMBLEM.get(), WARRIOR_EMBLEM.get());
+        addItem(WARRIOR_EMBLEM.get(), RANGER_EMBLEM.get());
+        addItem(RANGER_EMBLEM.get(), SORCERER_EMBLEM.get());
+        addItem(SORCERER_EMBLEM.get(), SUMMONER_EMBLEM.get());
         // todo 火把转化
         // 临时转化
         addItem(Blocks.SCULK.asItem(), FunctionalBlocks.ECHO_BLOCK.get().asItem());
-        addItem(PaintItems.ECHO_COATING.get(),PaintItems.ILLUMINANT_COATING.get());
-        addItem(PaintItems.ILLUMINANT_COATING.get(),PaintItems.NEGATIVE_PAINT.get());
-        addItem(PaintItems.NEGATIVE_PAINT.get(),PaintItems.SHADOW_PAINT.get());
-        addItem(PaintItems.SHADOW_PAINT.get(),PaintItems.ECHO_COATING.get());
-        addItem(AccessoryItems.MECHANICAL_LENS.get(),AccessoryItems.SPECTRE_GOGGLES.get());
+        addItem(PaintItems.ECHO_COATING.get(), PaintItems.ILLUMINANT_COATING.get());
+        addItem(PaintItems.ILLUMINANT_COATING.get(), PaintItems.NEGATIVE_PAINT.get());
+        addItem(PaintItems.NEGATIVE_PAINT.get(), PaintItems.SHADOW_PAINT.get());
+        addItem(PaintItems.SHADOW_PAINT.get(), PaintItems.ECHO_COATING.get());
+        addItem(AccessoryItems.MECHANICAL_LENS.get(), AccessoryItems.SPECTRE_GOGGLES.get());
         // 微光箭转化
-        addItem(ArrowItems.FLAMING_ARROW.get(), ArrowItems.SHIMMER_ARROW.get());
-        addItem(ArrowItems.UNHOLY_ARROW.get(), ArrowItems.SHIMMER_ARROW.get());
-        addItem(ArrowItems.STAR_ARROW.get(), ArrowItems.SHIMMER_ARROW.get());
-        addItem(ArrowItems.HELLFIRE_ARROW.get(), ArrowItems.SHIMMER_ARROW.get());
-        addItem(ArrowItems.FROSTBURN_ARROW.get(), ArrowItems.SHIMMER_ARROW.get());
-        addItem(ArrowItems.BONE_ARROW.get(), ArrowItems.SHIMMER_ARROW.get());
-        addItem(Items.ARROW, ArrowItems.SHIMMER_ARROW.get());
+        addItem(ItemTags.ARROWS, ArrowItems.SHIMMER_ARROW.get(), 1);
         // 匣子转化
         addItem(CrateBlocks.PEARLWOOD_CRATE.get().asItem(), CrateBlocks.WOODEN_CRATE.get().asItem());
-        addItem(CrateBlocks.MITHRIL_CRATE.get().asItem(), CrateBlocks.IRON_CRATE.get().asItem());
+        addItem(CrateBlocks.MYTHRIL_CRATE.get().asItem(), CrateBlocks.IRON_CRATE.get().asItem());
         addItem(CrateBlocks.TITANIUM_CRATE.get().asItem(), CrateBlocks.GOLDEN_CRATE.get().asItem());
         addItem(CrateBlocks.THORNS_CRATE.get().asItem(), CrateBlocks.JUNGLE_CRATE.get().asItem());
         addItem(CrateBlocks.WILD_CRATE.get().asItem(), CrateBlocks.SAVANNA_CRATE.get().asItem());
         addItem(CrateBlocks.SPACE_CRATE.get().asItem(), CrateBlocks.SKY_CRATE.get().asItem());
         addItem(CrateBlocks.DEFACED_CRATE.get().asItem(), CrateBlocks.CORRUPT_CRATE.get().asItem());
         addItem(CrateBlocks.BLOOD_CRATE.get().asItem(), CrateBlocks.TR_CRIMSON_CRATE.get().asItem());
-        addItem(CrateBlocks.PROVIDENTIAL_CRATE.get().asItem(), CrateBlocks.SACRED_CRATE.get().asItem());
+        addItem(CrateBlocks.PROVIDENTIAL_CRATE.get().asItem(), CrateBlocks.HALLOWED_CRATE.get().asItem());
         addItem(CrateBlocks.FENCING_CRATE.get().asItem(), CrateBlocks.DUNGEON_CRATE.get().asItem());
         addItem(CrateBlocks.CONIFEROUS_WOOD_CRATE.get().asItem(), CrateBlocks.FREEZE_CRATE.get().asItem());
         addItem(CrateBlocks.ILLUSION_CRATE.get().asItem(), CrateBlocks.OASIS_CRATE.get().asItem());
@@ -163,16 +169,15 @@ public final class ModFluids {
         addItem(MaterialItems.TR_EMERALD.get(), MaterialItems.SAPPHIRE.get());
         addItem(MaterialItems.RUBY.get(), MaterialItems.TR_EMERALD.get());
         addItem(Items.DIAMOND, MaterialItems.RUBY.get());
-        addItem(MaterialItems.TR_AMETHYST.get(), Items.DIRT);
+        addItem(MaterialItems.TR_AMETHYST.get(), Items.COBBLESTONE);
         // 锭到矿的转化
         addItem(MaterialItems.TITANIUM_INGOT.get(), MaterialItems.RAW_TITANIUM.get());
         addItem(MaterialItems.ADAMANTITE_INGOT.get(), MaterialItems.RAW_ADAMANTITE.get());
         addItem(MaterialItems.ORICHALCUM_INGOT.get(), MaterialItems.RAW_ORICHALCUM.get());
-        addItem(MaterialItems.MITHRIL_INGOT.get(), MaterialItems.RAW_MITHRIL.get());
+        addItem(MaterialItems.MYTHRIL_INGOT.get(), MaterialItems.RAW_MYTHRIL.get());
         addItem(MaterialItems.PALLADIUM_INGOT.get(), MaterialItems.RAW_PALLADIUM.get());
         addItem(MaterialItems.COBALT_INGOT.get(), MaterialItems.RAW_COBALT.get());
         addItem(MaterialItems.HELLSTONE_INGOT.get(), MaterialItems.RAW_HELLSTONE.get());
-        addItem(MaterialItems.RAW_HELLSTONE.get(), MaterialItems.RAW_HELLSTONE.get());
         addItem(MaterialItems.TR_CRIMSON_INGOT.get(), MaterialItems.RAW_TR_CRIMSON.get());
         addItem(MaterialItems.DEMONITE_INGOT.get(), MaterialItems.RAW_DEMONITE.get());
         addItem(MaterialItems.METEORITE_INGOT.get(), MaterialItems.RAW_METEORITE.get());
@@ -189,7 +194,7 @@ public final class ModFluids {
         // 矿的下级转化（陨石，魔矿，猩红矿不参与这一过程）
         addItem(MaterialItems.RAW_TITANIUM.get(), MaterialItems.RAW_ADAMANTITE.get());
         addItem(MaterialItems.RAW_ADAMANTITE.get(), MaterialItems.RAW_ORICHALCUM.get());
-        addItem(MaterialItems.RAW_ORICHALCUM.get(), MaterialItems.RAW_MITHRIL.get());
+        addItem(MaterialItems.RAW_ORICHALCUM.get(), MaterialItems.RAW_MYTHRIL.get());
         addItem(MaterialItems.RAW_PALLADIUM.get(), MaterialItems.RAW_COBALT.get());
         addItem(MaterialItems.RAW_COBALT.get(), MaterialItems.RAW_PLATINUM.get());
         addItem(MaterialItems.RAW_PLATINUM.get(), Items.RAW_GOLD);
@@ -208,7 +213,7 @@ public final class ModFluids {
         addItem(ConsumableItems.LIFE_CRYSTAL.get(), ConsumableItems.VITAL_CRYSTAL.get());
         addItem(ConsumableItems.MANA_CRYSTAL.get(), ConsumableItems.ARCANE_CRYSTAL.get());
         addItem(ConsumableItems.LIFE_FRUIT.get(), ConsumableItems.AEGIS_APPLE.get());
-        addItem(ModTags.Items.FRUIT, ConsumableItems.AMBROSIA.get(), 1);
+        addItem(Tags.Items.FOODS_FRUIT, ConsumableItems.AMBROSIA.get(), 1);
         addItem(BaitItems.GOLD_WORM.get(), ConsumableItems.GUMMY_WORM.get());
         addItem(MaterialItems.PINK_PEARL.get(), ConsumableItems.GALAXY_PEARL.get());
 

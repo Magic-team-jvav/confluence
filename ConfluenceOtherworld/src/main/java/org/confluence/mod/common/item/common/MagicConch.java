@@ -18,11 +18,11 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.neoforged.neoforge.common.Tags;
-import org.confluence.mod.common.item.CustomRarityItem;
+import org.confluence.lib.common.component.ModRarity;
+import org.confluence.lib.common.item.CustomRarityItem;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.network.c2s.ApplySelectionPacketC2S;
 import org.confluence.mod.network.s2c.OpenSelectionsScreenPacketS2C;
-import org.confluence.terra_curio.common.component.ModRarity;
-import org.confluence.terra_curio.util.TCUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -33,11 +33,10 @@ public class MagicConch extends CustomRarityItem implements ApplySelectionPacket
     }
 
     @Override
-    public InteractionResult useOn(UseOnContext pContext) {
-        Level level = pContext.getLevel();
-        if (!level.isClientSide && pContext.getHand() == InteractionHand.MAIN_HAND && checkAvailable(pContext)) {
-            BlockPos clickedPos = pContext.getClickedPos();
-            TCUtils.updateItemStackNbt(pContext.getItemInHand(), tag -> {
+    public InteractionResult useOn(UseOnContext context) {
+        if (context.getPlayer() instanceof ServerPlayer serverPlayer && context.getHand() == InteractionHand.MAIN_HAND && checkAvailable(context)) {
+            BlockPos clickedPos = context.getClickedPos();
+            LibUtils.updateItemStackNbt(context.getItemInHand(), tag -> {
                 if (!tag.contains("pos1")) {
                     tag.put("pos1", NbtUtils.writeBlockPos(clickedPos));
                 } else if (!tag.contains("pos2")) {
@@ -55,16 +54,21 @@ public class MagicConch extends CustomRarityItem implements ApplySelectionPacket
                         tag.put(distanceToPos1 > distanceToPos2 ? "pos2" : "pos1", NbtUtils.writeBlockPos(clickedPos));
                     }
                 }
+                serverPlayer.sendSystemMessage(successStoreMessage(clickedPos), false);
             });
         }
         return InteractionResult.SUCCESS;
+    }
+
+    protected Component successStoreMessage(BlockPos pos) {
+        return Component.translatable("chat.confluence.magic_conch", pos.toShortString());
     }
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         ItemStack itemStack = pPlayer.getItemInHand(pUsedHand);
         if (pPlayer instanceof ServerPlayer serverPlayer) {
-            CompoundTag tag = TCUtils.getItemStackNbt(itemStack);
+            CompoundTag tag = LibUtils.getItemStackNbt(itemStack);
             if (tag.get("pos1") != null || tag.get("pos2") != null) {
                 Optional<BlockPos> pos1 = NbtUtils.readBlockPos(tag, "pos1");
                 Optional<BlockPos> pos2 = NbtUtils.readBlockPos(tag, "pos2");
@@ -93,7 +97,7 @@ public class MagicConch extends CustomRarityItem implements ApplySelectionPacket
 
     @Override
     public @Nullable BlockPos getSelected(byte index, ItemStack itemStack) {
-        CompoundTag tag = TCUtils.getItemStackNbt(itemStack);
+        CompoundTag tag = LibUtils.getItemStackNbt(itemStack);
         if (index == 0) {
             return NbtUtils.readBlockPos(tag, "pos1").orElse(null);
         }

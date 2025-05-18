@@ -5,14 +5,14 @@
     },
     "ingredients": [
         {
-            "type": "terra_curio:amount_ingredient",
+            "type": "confluence_magic_lib:amount_ingredient",
             "ingredient": {
                 "item": "confluence:vile_powder"
             },
             "count": 30
         },
         {
-            "type": "terra_curio:amount_ingredient",
+            "type": "confluence_magic_lib:amount_ingredient",
             "ingredient": {
                 "item": "confluence:rotten_chunk"
             },

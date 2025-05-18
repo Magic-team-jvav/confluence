@@ -1,7 +1,6 @@
 package org.confluence.mod.common.worldgen.carver;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.util.Mth;
@@ -113,9 +112,7 @@ public class DesertCaveCarver extends WorldCarver<DesertCaveCarver.Config> {
     }
 
     public static class Config extends CarverConfiguration {
-        public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                CarverConfiguration.CODEC.forGetter(config -> config)
-        ).apply(instance, Config::new));
+        public static final Codec<Config> CODEC = CarverConfiguration.CODEC.codec().xmap(Config::new, Function.identity());
 
         public Config(CarverConfiguration configuration) {
             super(configuration.probability, configuration.y, configuration.yScale, configuration.lavaLevel, configuration.debugSettings, configuration.replaceable);

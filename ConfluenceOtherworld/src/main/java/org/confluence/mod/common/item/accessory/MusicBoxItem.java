@@ -3,6 +3,7 @@ package org.confluence.mod.common.item.accessory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.client.sounds.MusicManager;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.Music;
@@ -10,27 +11,35 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
+import org.confluence.mod.client.event.GameClientEvents;
 import org.confluence.mod.common.block.functional.MusicBoxBlock;
 import org.confluence.mod.mixed.IMusicManager;
 import org.confluence.mod.network.c2s.ReplaceMusicBoxItemPacketC2S;
-import org.confluence.terra_curio.common.component.ModRarity;
-import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 import org.confluence.terra_curio.common.item.IFunctionCouldEnable;
 import org.confluence.terra_curio.util.CuriosUtils;
 import org.jetbrains.annotations.Nullable;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 
 public class MusicBoxItem extends BlockItem implements ICurioItem, IFunctionCouldEnable {
+    private static Map<Music, MusicBoxItem> MUSIC_2_ITEM = new HashMap<>();
     private static final Map<ResourceLocation, MusicBoxItem> SOUND_ID_2_ITEM = new Hashtable<>();
     public final @Nullable Music music;
 
-    public MusicBoxItem(@Nullable Music music, MusicBoxBlock block) {
-        super(block, new Properties().stacksTo(1).component(TCDataComponentTypes.MOD_RARITY, ModRarity.ORANGE));
-        this.music = music;
+    public MusicBoxItem(MusicBoxBlock block) {
+        super(block, new Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.ORANGE));
+        this.music = block.music;
+        if (music != null) {
+            MUSIC_2_ITEM.put(music, this);
+        }
     }
 
     @Override
@@ -59,15 +68,23 @@ public class MusicBoxItem extends BlockItem implements ICurioItem, IFunctionCoul
                 }
             } else {
                 if (!musicManager.isPlayingMusic(music)) {
+                    musicManager.stopPlaying();
                     musicManager.startPlaying(music);
                 }
+                /**
+                 * @see GameClientEvents#clientTick$Post(ClientTickEvent.Post) 1st
+                 * @see MusicBoxBlock.Entity#clientTick(Level, BlockPos, BlockState, MusicBoxBlock.Entity) 3rd
+                 */
                 manager.confluence$setMusicBoxOccupied(IMusicManager.State.ACCESSORY); // 2nd
             }
         }
     }
 
     public static void initialize() {
-        // todo 注册音乐->物品
+        for (Map.Entry<Music, MusicBoxItem> entry : MUSIC_2_ITEM.entrySet()) {
+            SOUND_ID_2_ITEM.put(entry.getKey().getEvent().value().getLocation(), entry.getValue());
+        }
+        MUSIC_2_ITEM = null;
     }
 
     public static void register(Holder<SoundEvent> holder, MusicBoxItem musicBoxItem) {

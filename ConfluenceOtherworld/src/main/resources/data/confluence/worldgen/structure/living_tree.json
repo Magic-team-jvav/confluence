@@ -1,6 +1,6 @@
 {
   "type": "confluence:living_tree",
-  "biomes": "minecraft:forest",
+  "biomes": "#c:is_forest",
   "spawn_overrides": {},
   "step": "top_layer_modification"
 }

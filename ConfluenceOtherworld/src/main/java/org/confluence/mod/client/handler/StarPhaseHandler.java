@@ -40,8 +40,11 @@ public final class StarPhaseHandler {
             map.add(StarPhase.DEFAULT);
         }
     });
+    public static boolean enabled = false;
 
     public static void render(RenderLevelStageEvent event) {
+        if (!enabled) return;
+
         Minecraft minecraft = Minecraft.getInstance();
         ClientLevel level = minecraft.level;
         if (level == null || level.dimension() != Level.OVERWORLD) return;
@@ -61,18 +64,23 @@ public final class StarPhaseHandler {
         float invEarthT = 1.0F / earthT;
         float invSqrt = Mth.invSqrt(earthRa * earthRa * earthRa * invEarthT) * Mth.DEG_TO_RAD;
 
+        float time = 1.0F;
+        float sizeSet = 1.0F;
+
+        float alphaX = dayTime * Mth.PI / 1200;
+        float alphaSet = (float) Math.pow(Mth.abs(Mth.sin(alphaX)), 0.1) * (Mth.sin(alphaX) / Mth.abs(Mth.sin(alphaX) * 2)) + 0.5F;
+        alpha *= alphaSet;
+
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, alpha);
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         for (int i = 0; i < STAR_PHASES_SIZE; i++) {
             StarPhase phase = STAR_PHASES.get(i);
-            float sizeSet = 1.0F;
             float timeOffset = phase.timeOffset();
             float radius = phase.radius();
             float size = sizeSet * (radius * 0.001F + timeOffset * 0.0001F + 0.07F / radius);
             poseStack.pushPose();
 
             // poseStack变换在这
-            float time = 1.0F;
             float angle = phase.angle() * Mth.DEG_TO_RAD;
             float v = time * v2;
             float earthR = v * invSqrt;
@@ -86,6 +94,10 @@ public final class StarPhaseHandler {
             float starZ = radius * sin * Mth.sin(angle);
 
             float dis = Mth.sqrt(starX * starX + starY * starY);
+            float disMax = radius + earthRa;
+            float disMin = Mth.abs(radius - earthRa);
+            float trueDis = (dis - disMin) / (disMax - disMin) * 20 + 600;
+            float trueSize = size / dis * trueDis;
 
             poseStack.mulPose(Axis.ZP
                     .rotation((float) Mth.atan2(starY, starX))
@@ -96,10 +108,10 @@ public final class StarPhaseHandler {
             Matrix4f matrix4f = poseStack.last().pose();
             RenderSystem.setShaderTexture(0, TEXTURES[i]);
             BufferBuilder bufferBuilder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-            bufferBuilder.addVertex(matrix4f, -size, dis, -size).setUv(0.0F, 1.0F);
-            bufferBuilder.addVertex(matrix4f, size, dis, -size).setUv(1.0F, 1.0F);
-            bufferBuilder.addVertex(matrix4f, size, dis, size).setUv(1.0F, 0.0F);
-            bufferBuilder.addVertex(matrix4f, -size, dis, size).setUv(0.0F, 0.0F);
+            bufferBuilder.addVertex(matrix4f, -trueSize, trueDis, -trueSize).setUv(0.0F, 1.0F);
+            bufferBuilder.addVertex(matrix4f, trueSize, trueDis, -trueSize).setUv(1.0F, 1.0F);
+            bufferBuilder.addVertex(matrix4f, trueSize, trueDis, trueSize).setUv(1.0F, 0.0F);
+            bufferBuilder.addVertex(matrix4f, -trueSize, trueDis, trueSize).setUv(0.0F, 0.0F);
             BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
             poseStack.popPose();
         }

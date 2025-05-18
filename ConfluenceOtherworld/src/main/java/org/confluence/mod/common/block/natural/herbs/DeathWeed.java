@@ -1,6 +1,6 @@
 package org.confluence.mod.common.block.natural.herbs;
 
-import com.xiaohunao.heaven_destiny_moment.common.moment.MomentManager;
+import com.xiaohunao.heaven_destiny_moment.common.moment.MomentInstanceManager;
 import com.xiaohunao.terra_moment.common.init.TMMoments;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -39,7 +39,7 @@ public class DeathWeed extends BaseHerbBlock {
 
     @Override
     public boolean canBloom(ServerLevel world, BlockState state) {
-        return world.isNight() && (world.getMoonPhase() == 0 || MomentManager.of(world).hasMoment(TMMoments.BLOOD_MOON));
+        return world.isNight() && (world.getMoonPhase() == 0 || MomentInstanceManager.of(world).hasMoment(TMMoments.BLOOD_MOON.getKey().location()));
     }
 
     @Override

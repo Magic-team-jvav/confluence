@@ -13,7 +13,7 @@ public interface IMusicManager {
 
     static void reset(MusicManager musicManager) {
         IMusicManager manager = (IMusicManager) musicManager;
-        if (manager.confluence$getMusicBoxOccupied().isAccessory()) {
+        if (manager.confluence$getCurrentMusic() == null || manager.confluence$getMusicBoxOccupied().isAccessory()) {
             manager.confluence$setMusicBoxOccupied(State.NONE);
         }
     }

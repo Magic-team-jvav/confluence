@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "confluence:item/compass/meteor_compass_02"
+  }
+}

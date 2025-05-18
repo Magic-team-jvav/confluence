@@ -15,12 +15,12 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import org.confluence.lib.common.recipe.AbstractAmountRecipe;
+import org.confluence.lib.common.recipe.AmountIngredient;
 import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.AlchemyTableRecipe;
-import org.confluence.terra_curio.common.recipe.AbstractAmountRecipe;
-import org.confluence.terra_curio.common.recipe.AmountIngredient;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -180,7 +180,7 @@ public class AlchemyTableMenu extends AbstractContainerMenu {
                         itemStacks.add(new Tuple<>(i + 1, materials.getItem(i).copy()));
                     }
                 }
-                AbstractAmountRecipe.consumeIngredients(size, materials::getItem, recipe.getIngredients(), false);
+                AbstractAmountRecipe.consumeShapeless(size, materials::getItem, recipe.getIngredients());
                 for (Tuple<Integer, ItemStack> back : itemStacks) {
                     input.setItem(back.getA(), back.getB());
                 }

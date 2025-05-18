@@ -1,0 +1,27 @@
+{
+    "name": "patchouli.confluence.otherworld_note.world.ash_forest.name",
+    "icon": "minecraft:tnt",
+    "category": "confluence:weapon",
+    "pages": [
+        {
+            "type": "patchouli:spotlight",
+            "item": "minecraft:tnt",
+            "text": "patchouli.confluence.otherworld_note.world.ash_forest.0"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minecraft:tnt",
+            "text": "patchouli.confluence.otherworld_note.world.ash_forest.1"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minecraft:tnt",
+            "text": "patchouli.confluence.otherworld_note.world.ash_forest.2"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minecraft:tnt",
+            "text": "patchouli.confluence.otherworld_note.world.ash_forest.3"
+        }
+    ]
+}

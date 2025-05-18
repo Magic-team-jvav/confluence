@@ -13,38 +13,37 @@ import org.confluence.mod.common.entity.fishing.CurioFishingHook;
 import org.confluence.mod.common.entity.fishing.HotlineFishingHook;
 import org.confluence.mod.common.entity.hook.*;
 import org.confluence.mod.common.entity.minecart.*;
-import org.confluence.mod.common.entity.npc.AbstractTerraNPC;
 import org.confluence.mod.common.entity.projectile.*;
 import org.confluence.mod.common.entity.projectile.bomb.*;
-import org.confluence.mod.common.entity.projectile.boulder.BoulderEntity;
-import org.confluence.mod.common.entity.projectile.boulder.ExplodeBoulderEntity;
-import org.confluence.mod.common.entity.projectile.boulder.FollowerBoulderEntity;
-import org.confluence.mod.common.entity.projectile.boulder.RollingCactusBoulderEntity;
+import org.confluence.mod.common.entity.projectile.boulder.*;
+import org.confluence.mod.common.entity.projectile.mana.*;
+import org.confluence.mod.common.entity.projectile.range.arrow.BaseArrowEntity;
+import org.confluence.mod.common.entity.projectile.range.arrow.BeeArrow;
 import org.confluence.mod.common.entity.projectile.strip.VilethronProjectile;
-import org.confluence.mod.common.entity.projectile.sword.ForwardSwordProjectile;
-import org.confluence.mod.common.entity.projectile.sword.LightBaneProjectile;
-import org.confluence.mod.common.entity.projectile.sword.StarFuryProjectile;
-import org.confluence.mod.common.event.ModEvents;
+import org.confluence.mod.common.entity.projectile.sword.*;
 
 import java.util.function.Supplier;
 
 /**
  * Fast Link:
- * 渲染器 {@link org.confluence.mod.client.event.ModClientEvents#registerEntityRenderers}
- * 发包   {@link ModEvents#registerPayloadHandlers)}
- * 属性   {@link ModEvents#registerAttributes}
+ * <p>渲染器 {@link org.confluence.mod.client.event.ModClientEvents#registerEntityRenderers}
+ * <p>发包   {@link org.confluence.mod.common.event.ModEvents#registerPayloadHandlers}
+ * <p>属性   {@link org.confluence.mod.common.event.ModEvents#registerAttributes}
  */
 public final class ModEntities {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(BuiltInRegistries.ENTITY_TYPE, Confluence.MODID);
 
+    // 炸弹
     public static final Supplier<EntityType<BaseBombEntity>> BOMB_ENTITY = registerBomb("bomb_entity", BaseBombEntity::new, BaseBombEntity.DIAMETER);
     public static final Supplier<EntityType<BouncyBombEntity>> BOUNCY_BOMB_ENTITY = registerBomb("bouncy_bomb_entity", BouncyBombEntity::new, BaseBombEntity.DIAMETER);
     public static final Supplier<EntityType<ScarabBombEntity>> SCARAB_BOMB_ENTITY = registerBomb("scarab_bomb_entity", ScarabBombEntity::new, BaseBombEntity.DIAMETER);
     public static final Supplier<EntityType<StickyBombEntity>> STICKY_BOMB_ENTITY = registerBomb("sticky_bomb_entity", StickyBombEntity::new, BaseBombEntity.DIAMETER);
+    public static final Supplier<EntityType<SmokeBombEntity>> SMOKE_BOMB_ENTITY = registerBomb("smoke_bomb_entity", SmokeBombEntity::new, BaseBombEntity.DIAMETER);
     public static final Supplier<EntityType<BombFishEntity>> BOMB_FISH_ENTITY = registerBomb("bomb_fish_entity", BombFishEntity::new, BaseBombEntity.DIAMETER);
     public static final Supplier<EntityType<BaseGrenadeEntity>> GRENADE = registerBomb("grenade", BaseGrenadeEntity::new, BaseGrenadeEntity.DIAMETER);
     public static final Supplier<EntityType<BouncyGrenadeEntity>> BOUNCY_GRENADE = registerBomb("bouncy_grenade", BouncyGrenadeEntity::new, BaseGrenadeEntity.DIAMETER);
     public static final Supplier<EntityType<StickyGrenadeEntity>> STICKY_GRENADE = registerBomb("sticky_grenade", StickyGrenadeEntity::new, BaseGrenadeEntity.DIAMETER);
+    public static final Supplier<EntityType<BeenadeEntity>> BEENADE = registerBomb("beenade", BeenadeEntity::new, BaseGrenadeEntity.DIAMETER);
     public static final Supplier<EntityType<BaseDynamiteEntity>> DYNAMITE = registerBomb("dynamite", BaseDynamiteEntity::new, BaseDynamiteEntity.DIAMETER);
     public static final Supplier<EntityType<BouncyDynamiteEntity>> BOUNCY_DYNAMITE = registerBomb("bouncy_dynamite", BouncyDynamiteEntity::new, BaseDynamiteEntity.DIAMETER);
     public static final Supplier<EntityType<StickyDynamiteEntity>> STICKY_DYNAMITE = registerBomb("sticky_dynamite", StickyDynamiteEntity::new, BaseDynamiteEntity.DIAMETER);
@@ -55,34 +54,65 @@ public final class ModEntities {
     public static final Supplier<EntityType<LiquidBombEntity>> LAVA_BOMB = registerBomb("lava_bomb", LiquidBombEntity::new, BaseBombEntity.DIAMETER);
     public static final Supplier<EntityType<LiquidBombEntity>> HONEY_BOMB = registerBomb("honey_bomb", LiquidBombEntity::new, BaseBombEntity.DIAMETER);
 
-    public static final Supplier<EntityType<BaseManaStaffProjectileEntity>> BASE_MANA_STAFF_PROJECTILE = ENTITIES.register("base_mana_staff_projectile", () -> EntityType.Builder.<BaseManaStaffProjectileEntity>of(BaseManaStaffProjectileEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(10).build("confluence:base_mana_staff_projectile"));
-    public static final Supplier<EntityType<VilethronProjectile>> VILETHRON_PROJECTILE = ENTITIES.register("vilethron_projectile", () -> EntityType.Builder.<VilethronProjectile>of(VilethronProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(10).build("confluence:vilethron_projectile"));
+    // 魔法
+    public static final Supplier<EntityType<BaseManaStaffProjectileEntity>> BASE_MANA_STAFF_PROJECTILE = ENTITIES.register("base_mana_staff_projectile", () -> EntityType.Builder.<BaseManaStaffProjectileEntity>of(BaseManaStaffProjectileEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(10).build("confluence:base_mana_staff_projectile"));
+    public static final Supplier<EntityType<VilethronProjectile>> VILETHRON_PROJECTILE = ENTITIES.register("vilethron_projectile", () -> EntityType.Builder.<VilethronProjectile>of(VilethronProjectile::new, MobCategory.MISC).sized(0.75F, 0.75F).clientTrackingRange(10).build("confluence:vilethron_projectile"));
     public static final Supplier<EntityType<HurtnadoProjectile>> HURTNADO_PROJECTILE = ENTITIES.register("hurtnado_projectile", () -> EntityType.Builder.<HurtnadoProjectile>of(HurtnadoProjectile::new, MobCategory.MISC).sized(0.8F, 1.2F).clientTrackingRange(10).build("confluence:hurtnado_projectile"));
-    public static final Supplier<EntityType<WaterStreamProjectile>> WATER_STREAM_PROJECTILE = ENTITIES.register("water_stream_projectile", () -> EntityType.Builder.<WaterStreamProjectile>of(WaterStreamProjectile::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(10).build("confluence:water_stream_projectile"));
-    public static final Supplier<EntityType<BallOfFireProjectile>> BALL_OF_FIRE_PROJECTILE = ENTITIES.register("ball_of_fire_projectile", () -> EntityType.Builder.<BallOfFireProjectile>of(BallOfFireProjectile::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(10).build("confluence:ball_of_fire_projectile"));
-    public static final Supplier<EntityType<BaseArrowEntity>> ARROW_PROJECTILE = ENTITIES.register("arrow_projectile", () -> EntityType.Builder.<BaseArrowEntity>of(BaseArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:arrow_projectile"));
-    public static final Supplier<EntityType<EffectThrownPotion>> EFFECT_THROWN_POTION = ENTITIES.register("effect_thrown_potion", () -> EntityType.Builder.<EffectThrownPotion>of(EffectThrownPotion::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10).build("confluence:effect_thrown_potion"));
-    public static final Supplier<EntityType<ForwardSwordProjectile>> ICE_BLADE_SWORD_PROJECTILE = ENTITIES.register("ice_blade_sword_projectile", () -> EntityType.Builder.of(ForwardSwordProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:ice_blade_sword_projectile"));
-    public static final Supplier<EntityType<StarFuryProjectile>> STAR_FURY_PROJECTILE = ENTITIES.register("star_fury_projectile", () -> EntityType.Builder.of(StarFuryProjectile::new, MobCategory.MISC).sized(1F, 1F).build("confluence:star_fury_projectile"));//星怒弹幕
-    public static final Supplier<EntityType<ForwardSwordProjectile>> ENCHANTED_SWORD_PROJECTILE = ENTITIES.register("enchanted_sword_projectile", () -> EntityType.Builder.of(ForwardSwordProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:enchanted_sword_projectile"));
-    public static final Supplier<EntityType<LightBaneProjectile>> LIGHTS_BANE_PROJECTILE = ENTITIES.register("lights_bane_projectile", () -> EntityType.Builder.of(LightBaneProjectile::new, MobCategory.MISC).sized(1F, 1F).build("confluence:lights_bane_projectile"));
+    public static final Supplier<EntityType<WaterStreamProjectile>> WATER_STREAM_PROJECTILE = ENTITIES.register("water_stream_projectile", () -> EntityType.Builder.<WaterStreamProjectile>of(WaterStreamProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(10).build("confluence:water_stream_projectile"));
+    public static final Supplier<EntityType<WaterBoltProjectile>> WATER_BOLT_PROJECTILE = ENTITIES.register("water_bolt_projectile", () -> EntityType.Builder.<WaterBoltProjectile>of(WaterBoltProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(10).build("confluence:water_bolt_projectile"));
+    public static final Supplier<EntityType<BallOfFireProjectile>> BALL_OF_FIRE_PROJECTILE = ENTITIES.register("ball_of_fire_projectile", () -> EntityType.Builder.<BallOfFireProjectile>of(BallOfFireProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(10).build("confluence:ball_of_fire_projectile"));
+    public static final Supplier<EntityType<EffectThrownPotion>> EFFECT_THROWN_POTION = ENTITIES.register("effect_thrown_potion", () -> EntityType.Builder.<EffectThrownPotion>of(EffectThrownPotion::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(10).build("confluence:effect_thrown_potion"));
+    public static final Supplier<EntityType<MagicDaggerProjectile>> MAGIC_DAGGER_PROJECTILE = ENTITIES.register("magic_dagger_projectile", () -> EntityType.Builder.<MagicDaggerProjectile>of(MagicDaggerProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:magic_dagger_projectile"));
+    public static final Supplier<EntityType<CrystalStormProjectile>> CRYSTAL_STORM_PROJECTILE = ENTITIES.register("crystal_storm_projectile", () -> EntityType.Builder.<CrystalStormProjectile>of(CrystalStormProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:crystal_storm_projectile"));
+    public static final Supplier<EntityType<CursedFlamesProjectile>> CURSED_FLAMES_PROJECTILE = ENTITIES.register("cursed_flames_projectile", () -> EntityType.Builder.<CursedFlamesProjectile>of(CursedFlamesProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:cursed_flames_projectile"));
+    public static final Supplier<EntityType<BallOfFrostProjectile>> BALL_OF_FROST_PROJECTILE = ENTITIES.register("ball_of_frost_projectile", () -> EntityType.Builder.<BallOfFrostProjectile>of(BallOfFrostProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:ball_of_frost_projectile"));
 
-    public static final Supplier<EntityType<BoomerangProjectile>> BOOMERANG_PROJECTILE = ENTITIES.register("boomerang_projectile", () -> EntityType.Builder.<BoomerangProjectile>of(BoomerangProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:boomerang_projectile"));
+    // 剑气
+    public static final DeferredHolder<EntityType<?>, EntityType<ForwardSwordProjectile>> ICE_BLADE_SWORD_PROJECTILE = ENTITIES.register("ice_blade_sword_projectile", () -> EntityType.Builder.of(ForwardSwordProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:ice_blade_sword_projectile"));
+    public static final DeferredHolder<EntityType<?>, EntityType<StarFuryProjectile>> STAR_FURY_PROJECTILE = ENTITIES.register("star_fury_projectile", () -> EntityType.Builder.of(StarFuryProjectile::new, MobCategory.MISC).sized(1F, 1F).build("confluence:star_fury_projectile"));//星怒弹幕
+    public static final DeferredHolder<EntityType<?>, EntityType<ForwardSwordProjectile>> ENCHANTED_SWORD_PROJECTILE = ENTITIES.register("enchanted_sword_projectile", () -> EntityType.Builder.of(ForwardSwordProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:enchanted_sword_projectile"));
+    public static final DeferredHolder<EntityType<?>, EntityType<LightBaneProjectile>> LIGHTS_BANE_PROJECTILE = ENTITIES.register("lights_bane_projectile", () -> EntityType.Builder.of(LightBaneProjectile::new, MobCategory.MISC).sized(1F, 1F).build("confluence:lights_bane_projectile"));
+    public static final DeferredHolder<EntityType<?>, EntityType<GrassSwordProjectile>> GRASS_PROJECTILE = ENTITIES.register("grass_projectile", () -> EntityType.Builder.of(GrassSwordProjectile::new, MobCategory.MISC).sized(2F, 2F).build("confluence:grass_projectile"));
+    public static final DeferredHolder<EntityType<?>, EntityType<BeeKeeperProjectile>> BEE_PROJECTILE = ENTITIES.register("bee_projectile", () -> EntityType.Builder.of(BeeKeeperProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:bee_projectile"));
+    public static final DeferredHolder<EntityType<?>, EntityType<NightEdgeProjectile>> NIGHT_EDGE_PROJECTILE = ENTITIES.register("night_edge_projectile", () -> EntityType.Builder.of(NightEdgeProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:night_edge_projectile"));
+
+    // 弓箭
+    public static final Supplier<EntityType<BaseArrowEntity>> ARROW_PROJECTILE = ENTITIES.register("arrow_projectile", () -> EntityType.Builder.<BaseArrowEntity>of(BaseArrowEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:arrow_projectile"));
+    public static final Supplier<EntityType<BeeArrow>> BEE_ARROW = ENTITIES.register("bee_arrow_projectile", () -> EntityType.Builder.<BeeArrow>of(BeeArrow::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:bee_arrow_projectile"));
+
+    // 其它
     public static final Supplier<EntityType<BoulderEntity>> BOULDER = ENTITIES.register("boulder", () -> EntityType.Builder.<BoulderEntity>of(BoulderEntity::new, MobCategory.MISC).sized(BoulderEntity.DIAMETER, BoulderEntity.DIAMETER).clientTrackingRange(6).build("confluence:boulder"));
     public static final Supplier<EntityType<FollowerBoulderEntity>> FOLLOWER_BOULDER = ENTITIES.register("follower_boulder", () -> EntityType.Builder.<FollowerBoulderEntity>of(FollowerBoulderEntity::new, MobCategory.MISC).sized(BoulderEntity.DIAMETER, BoulderEntity.DIAMETER).clientTrackingRange(6).build("confluence:follower_boulder"));
     public static final Supplier<EntityType<ExplodeBoulderEntity>> EXPLODE_BOULDER = ENTITIES.register("explode_boulder", () -> EntityType.Builder.<ExplodeBoulderEntity>of(ExplodeBoulderEntity::new, MobCategory.MISC).sized(BoulderEntity.DIAMETER, BoulderEntity.DIAMETER).clientTrackingRange(6).build("confluence:explode_boulder"));
     public static final Supplier<EntityType<RollingCactusBoulderEntity>> ROLLING_CACTUS_BOULDER = ENTITIES.register("rolling_cactus_boulder", () -> EntityType.Builder.<RollingCactusBoulderEntity>of(RollingCactusBoulderEntity::new, MobCategory.MISC).sized(BoulderEntity.DIAMETER, BoulderEntity.DIAMETER).clientTrackingRange(6).build("confluence:rolling_cactus_boulder"));
     public static final Supplier<EntityType<RollingCactusBoulderEntity.SpikeProjectile>> ROLLING_CACTUS_SPIKE = ENTITIES.register("rolling_cactus_spike", () -> EntityType.Builder.of(RollingCactusBoulderEntity.SpikeProjectile::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(6).build("confluence:rolling_cactus_spike"));
-    public static final Supplier<EntityType<ThrownKnivesProjectile>> THROWN_KNIVES_PROJECTILE = ENTITIES.register("thrown_knives_projectile", () -> EntityType.Builder.<ThrownKnivesProjectile>of(ThrownKnivesProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:thrown_knives_projectile"));
-    public static final Supplier<EntityType<ShurikenProjectile>> SHURIKEN_PROJECTILE = ENTITIES.register("shuriken_projectile", () -> EntityType.Builder.<ShurikenProjectile>of(ShurikenProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:shuriken_projectile"));
+    public static final Supplier<EntityType<TombstoneBoulder>> TOMBSTONE_BOULDER = ENTITIES.register("tombstone_boulder", () -> EntityType.Builder.<TombstoneBoulder>of(TombstoneBoulder::new, MobCategory.MISC).sized(BoulderEntity.DIAMETER, BoulderEntity.DIAMETER).clientTrackingRange(6).build("confluence:tombstone_boulder"));
+    public static final Supplier<EntityType<ThrowableDropSelfProjectile>> THROWN_KNIVES_PROJECTILE = ENTITIES.register("thrown_knives_projectile", () -> EntityType.Builder.of(ThrowableDropSelfProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:thrown_knives_projectile"));
+    public static final Supplier<EntityType<ThrowableDropSelfProjectile>> SHURIKEN_PROJECTILE = ENTITIES.register("shuriken_projectile", () -> EntityType.Builder.of(ThrowableDropSelfProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:shuriken_projectile"));
+    public static final Supplier<EntityType<ThrowableDropSelfProjectile>> JAVELIN_PROJECTILE = ENTITIES.register("javelin_projectile", () -> EntityType.Builder.of(ThrowableDropSelfProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:javelin_projectile"));
     public static final Supplier<EntityType<RopeCoilsProjectile>> ROPE_COILS = ENTITIES.register("rope_coils", () -> EntityType.Builder.<RopeCoilsProjectile>of(RopeCoilsProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:rope_coils"));
     public static final Supplier<EntityType<IceTofuBrickProjectile>> ICE_TOFU_BRICK_PROJECTILE = ENTITIES.register("ice_tofu_brick_projectile", () -> EntityType.Builder.<IceTofuBrickProjectile>of(IceTofuBrickProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:ice_tofu_brick_projectile"));
+    public static final Supplier<EntityType<SpikyBallProjectile>> SPIKY_BALL_PROJECTILE = ENTITIES.register("spiky_ball_projectile", () -> EntityType.Builder.<SpikyBallProjectile>of(SpikyBallProjectile::new, MobCategory.MISC).sized(0.25F, 0.25F).build("confluence:spiky_ball_projectile"));
+    public static final Supplier<EntityType<ThrownWaterProjectile>> THROWN_WATER_PROJECTILE = ENTITIES.register("thrown_water_projectile", () -> EntityType.Builder.<ThrownWaterProjectile>of(ThrownWaterProjectile::new, MobCategory.MISC).sized(0.25F, 0.25F).build("confluence:thrown_water_projectile"));
+    public static final Supplier<EntityType<FlowerPetalProjectile>> FLOWER_PETAL_PROJECTILE = ENTITIES.register("flower_petal_projectile", () -> EntityType.Builder.<FlowerPetalProjectile>of(FlowerPetalProjectile::new, MobCategory.MISC).sized(0.25F, 0.25F).build("confluence:flower_petal_projectile"));
+    public static final Supplier<EntityType<TitaniumShardsProjectile>> TITANIUM_SHARDS_PROJECTILE = ENTITIES.register("titanium_shards_projectile", () -> EntityType.Builder.<TitaniumShardsProjectile>of(TitaniumShardsProjectile::new, MobCategory.MISC).sized(0.25F, 0.25F).build("confluence:titanium_shards_projectile"));
+    public static final Supplier<EntityType<FallingStarItemEntity>> FALLING_STAR_ITEM_ENTITY = ENTITIES.register("falling_star", () -> EntityType.Builder.<FallingStarItemEntity>of(FallingStarItemEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(16).updateInterval(20).build("confluence:falling_star"));
+    public static final Supplier<EntityType<TreasureBagItemEntity>> TREASURE_BAG_ITEM_ENTITY = ENTITIES.register("treasure_bag", () -> EntityType.Builder.<TreasureBagItemEntity>of(TreasureBagItemEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(16).updateInterval(20).build("confluence:treasure_bag"));
+    public static final Supplier<EntityType<CoinPortalEntity>> COIN_PORTAL = ENTITIES.register("coin_portal", () -> EntityType.Builder.<CoinPortalEntity>of(CoinPortalEntity::new, MobCategory.MISC).sized(1.0F, 1.0F).clientTrackingRange(6).build("confluence:coin_portal"));
+    public static final Supplier<EntityType<ThrownPowderEntity>> THROWN_POWDER = ENTITIES.register("thrown_powder", () -> EntityType.Builder.<ThrownPowderEntity>of(ThrownPowderEntity::new, MobCategory.MISC).sized(0.0F, 0.0F).fireImmune().build("confluence:thrown_powder"));
+    public static final Supplier<EntityType<DeadBodyPartEntity>> BODY_PART = ENTITIES.register("body_part", () -> EntityType.Builder.<DeadBodyPartEntity>of(DeadBodyPartEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).fireImmune().noSave().noSummon().build("confluence:body_part"));
+    public static final Supplier<EntityType<TargetDummyEntity>> TARGET_DUMMY = ENTITIES.register("target_dummy", () -> EntityType.Builder.<TargetDummyEntity>of(TargetDummyEntity::new, MobCategory.MISC).sized(1.0F, 2.0F).clientTrackingRange(6).build("confluence:target_dummy"));
+    public static final Supplier<EntityType<FlameCloudEntity>> FLAME_CLOUD = ENTITIES.register("flame_cloud", () -> EntityType.Builder.<FlameCloudEntity>of(FlameCloudEntity::new, MobCategory.MISC).sized(5, 5).clientTrackingRange(6).build("confluence:flame_cloud"));
+    public static final Supplier<EntityType<SuperSpikyBallProjectile>> SUPER_SPIKY_BALL_PROJECTILE = ENTITIES.register("super_spiky_ball_projectile", () -> EntityType.Builder.<SuperSpikyBallProjectile>of(SuperSpikyBallProjectile::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(6).build("confluence:super_spiky_ball_projectile"));
+    public static final Supplier<EntityType<SpearEntity>> SPEAR = ENTITIES.register("spear", () -> EntityType.Builder.<SpearEntity>of(SpearEntity::new, MobCategory.MISC).sized(1, 1).clientTrackingRange(6).build("confluence:spear"));
 
+    // 鱼钩
     public static final Supplier<EntityType<BaseFishingHook>> BASE_FISHING_HOOK = ENTITIES.register("base_fishing_hook", () -> EntityType.Builder.<BaseFishingHook>of(BaseFishingHook::new, MobCategory.MISC).noSave().noSummon().sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(5).build("confluence:base_fishing_hook"));
     public static final Supplier<EntityType<HotlineFishingHook>> HOTLINE_FISHING_HOOK = ENTITIES.register("hotline_fishing_hook", () -> EntityType.Builder.<HotlineFishingHook>of(HotlineFishingHook::new, MobCategory.MISC).noSave().noSummon().fireImmune().sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(5).build("confluence:hotline_fishing_hook"));
     public static final Supplier<EntityType<CurioFishingHook>> CURIO_FISHING_HOOK = ENTITIES.register("curio_fishing_hook", () -> EntityType.Builder.<CurioFishingHook>of(CurioFishingHook::new, MobCategory.MISC).noSave().noSummon().sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(5).build("confluence:curio_fishing_hook"));
     public static final Supplier<EntityType<BloodyFishingHook>> BLOODY_FISHING_HOOK = ENTITIES.register("bloody_fishing_hook", () -> EntityType.Builder.<BloodyFishingHook>of(BloodyFishingHook::new, MobCategory.MISC).noSave().noSummon().sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(5).build("confluence:bloody_fishing_hook"));
 
+    // 钩爪
     public static final Supplier<EntityType<BaseHookEntity>> BASE_HOOK = registerHook("base_hook", BaseHookEntity::new);
     public static final Supplier<EntityType<AbstractHookEntity.Impl>> WEB_SLINGER = registerHook("web_slinger", AbstractHookEntity.Impl::new);
     public static final Supplier<EntityType<AbstractHookEntity.Impl>> SKELETRON_HAND = registerHook("skeletron_hand", AbstractHookEntity.Impl::new);
@@ -101,6 +131,7 @@ public final class ModEntities {
     public static final Supplier<EntityType<LunarHookEntity>> LUNAR_HOOK = registerHook("lunar_hook", LunarHookEntity::new);
     /* todo 静止钩 */
 
+    // 矿车
     public static final Supplier<EntityType<BaseMinecartEntity>> WOODEN_MINECART = registerMinecart("wooden_minecart", BaseMinecartEntity::new);
     public static final Supplier<EntityType<GenericMinecartEntity>> GENERIC_MINECART = registerMinecart("generic_minecart", GenericMinecartEntity::new);
     public static final Supplier<EntityType<MechanicalCartEntity>> MECHANICAL_CART = registerMinecart("mechanical_cart", MechanicalCartEntity::new);
@@ -108,17 +139,6 @@ public final class ModEntities {
     public static final Supplier<EntityType<DemonicHellcartEntity>> DEMONIC_HELLCART = registerMinecart("demonic_hellcart", DemonicHellcartEntity::new);
     public static final Supplier<EntityType<MeowmereMinecartEntity>> MEOWMERE_MINECART = registerMinecart("meowmere_minecart", MeowmereMinecartEntity::new);
     public static final Supplier<EntityType<DiggingMolecartEntity>> DIGGING_MOLECART = registerMinecart("digging_molecart", DiggingMolecartEntity::new);
-
-    public static final Supplier<EntityType<FallingStarItemEntity>> FALLING_STAR_ITEM_ENTITY = ENTITIES.register("falling_star", () -> EntityType.Builder.<FallingStarItemEntity>of(FallingStarItemEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(16).updateInterval(20).build("confluence:falling_star"));
-    public static final Supplier<EntityType<TreasureBagItemEntity>> TREASURE_BAG_ITEM_ENTITY = ENTITIES.register("treasure_bag", () -> EntityType.Builder.<TreasureBagItemEntity>of(TreasureBagItemEntity::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(16).updateInterval(20).build("confluence:treasure_bag"));
-    public static final Supplier<EntityType<CoinPortalEntity>> COIN_PORTAL = ENTITIES.register("coin_portal", () -> EntityType.Builder.<CoinPortalEntity>of(CoinPortalEntity::new, MobCategory.MISC).sized(1.0F, 1.0F).clientTrackingRange(6).build("confluence:coin_portal"));
-    public static final Supplier<EntityType<ThrownPowderEntity>> THROWN_POWDER = ENTITIES.register("thrown_powder", () -> EntityType.Builder.<ThrownPowderEntity>of(ThrownPowderEntity::new, MobCategory.MISC).sized(0.0F, 0.0F).fireImmune().build("confluence:thrown_powder"));
-    public static final Supplier<EntityType<DeadBodyPartEntity>> BODY_PART = ENTITIES.register("body_part", () -> EntityType.Builder.<DeadBodyPartEntity>of(DeadBodyPartEntity::new, MobCategory.MISC).sized(0.5F, 0.5F).fireImmune().noSave().noSummon().build("confluence:body_part"));
-
-    public static final Supplier<EntityType<TargetDummyEntity>> TARGET_DUMMY = ENTITIES.register("target_dummy", () -> EntityType.Builder.<TargetDummyEntity>of(TargetDummyEntity::new, MobCategory.MISC).sized(1.0F, 2.0F).clientTrackingRange(6).build("confluence:target_dummy"));
-
-    // npc
-    public static final DeferredHolder<EntityType<?>, EntityType<AbstractTerraNPC>> GUIDE = ENTITIES.register("guide", () -> EntityType.Builder.of(AbstractTerraNPC::new, MobCategory.CREATURE).sized(0.95F, 1.95F).clientTrackingRange(6).build("confluence:guide"));
 
 
     private static <E extends BaseMinecartEntity> Supplier<EntityType<E>> registerMinecart(String id, EntityType.EntityFactory<E> factory) {

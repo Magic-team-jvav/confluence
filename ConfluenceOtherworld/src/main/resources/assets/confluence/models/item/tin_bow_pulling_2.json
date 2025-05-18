@@ -1,6 +1,0 @@
-{
-    "parent": "confluence:item/tin_bow",
-    "textures": {
-        "layer0": "confluence:item/bow/tin_bow_pulling_2"
-    }
-}

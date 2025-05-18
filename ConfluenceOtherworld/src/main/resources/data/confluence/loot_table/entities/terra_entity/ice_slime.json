@@ -1,0 +1,140 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "confluence:gameplay/slime_carry",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 19
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "terra_entity:slime_staff",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 6999
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "confluence:ice_cream",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 149
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "confluence:ice_tofu_brick",
+          "conditions": [
+            {
+              "condition": "minecraft:damage_source_properties",
+              "predicate": {
+                "type": "minecraft:falling_anvil"
+              }
+            }
+          ],
+          "weight": 1
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 49
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "confluence:ice_tofu_brick",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 149
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "confluence:ice_tofu_brick",
+          "conditions": [
+            {
+              "condition": "minecraft:killed_by_player",
+              "killer_tool": {
+                "enchantments": [
+                  {
+                    "enchantment": "minecraft:frost_walker",
+                    "levels": {
+                      "min": 1
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "weight": 1
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 14
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 2.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            },
+            {
+              "function": "minecraft:set_components",
+              "components": {
+                "terra_curio:nbt": "{color:-13631506}"
+              }
+            }
+          ],
+          "name": "confluence:gel",
+          "weight": 1
+        }
+      ]
+    }
+  ],
+  "random_sequence": "terra_entity:entity/ice_slime"
+}

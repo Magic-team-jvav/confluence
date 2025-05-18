@@ -9,10 +9,10 @@ import net.minecraft.server.PlayerAdvancements;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.stats.ServerStatsCounter;
+import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.network.s2c.PlayerDeathInfoPacketS2C;
-import org.confluence.terra_curio.mixed.SelfGetter;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -52,10 +52,10 @@ public abstract class ServerPlayerMixin implements IServerPlayer, SelfGetter<Ser
     @Inject(method = "checkMovementStatistics", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;isSprinting()Z"))
     private void checkMarathon(double dx, double dy, double dz, CallbackInfo ci) {
         if (confluence$marathon) return;
-        this.confluence$marathon = ModAchievements.marathonMedalist(self(), stats, confluence$marathon);
+        this.confluence$marathon = ModAchievements.marathonMedalist(confluence$self(), stats, confluence$marathon);
     }
 
-    @WrapWithCondition(method = "die",at= @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerGamePacketListenerImpl;send(Lnet/minecraft/network/protocol/Packet;Lnet/minecraft/network/PacketSendListener;)V"))
+    @WrapWithCondition(method = "die", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerGamePacketListenerImpl;send(Lnet/minecraft/network/protocol/Packet;Lnet/minecraft/network/PacketSendListener;)V"))
     private boolean replacePacket(ServerGamePacketListenerImpl instance, Packet<?> packet, PacketSendListener packetSendListener) {
         if (packet instanceof ClientboundPlayerCombatKillPacket combatKillPacket) {
             return PlayerDeathInfoPacketS2C.replaceCombatKillPacket(instance.player, combatKillPacket.message());

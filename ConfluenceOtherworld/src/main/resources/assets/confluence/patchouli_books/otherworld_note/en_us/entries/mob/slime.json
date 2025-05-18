@@ -1,0 +1,35 @@
+{
+    "name": "patchouli.confluence.otherworld_note.mob.slime.name",
+    "icon": "confluence:gel",
+    "category": "confluence:mob",
+    "pages": [
+        {
+            "type": "patchouli:entity",
+            "entity": "terra_entity:blue_slime",
+            "text": "patchouli.confluence.otherworld_note.mob.slime.0"
+        },
+        {
+            "type": "patchouli:entity",
+            "entity": "terra_entity:green_slime",
+            "text": "patchouli.confluence.otherworld_note.mob.slime.1"
+        },
+        {
+            "type": "patchouli:entity",
+            "entity": "terra_entity:purple_slime",
+            "text": "patchouli.confluence.otherworld_note.mob.slime.2"
+        },
+        {
+            "type": "patchouli:entity",
+            "entity": "terra_entity:red_slime",
+            "text": "patchouli.confluence.otherworld_note.mob.slime.3"
+        },
+        {
+            "type": "patchouli:entity",
+            "entity": "terra_entity:yellow_slime"
+        },
+        {
+            "type": "patchouli:entity",
+            "entity": "terra_entity:pink_slime"
+        }
+    ]
+}

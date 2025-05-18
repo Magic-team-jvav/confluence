@@ -1,8 +1,8 @@
 package org.confluence.mod.common.item.hook;
 
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.entity.hook.AbstractHookEntity;
 import org.confluence.mod.common.init.ModEntities;
-import org.confluence.terra_curio.common.component.ModRarity;
 
 public class WebSlingerItem extends BaseHookItem implements IHookFastThrow {
     public WebSlingerItem() {

@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Pseudo
-@Mixin(targets = "com.anthonyhilyard.advancementplaques.ui.render.AdvancementPlaque")
+@Mixin(targets = "com.anthonyhilyard.advancementplaques.ui.render.AdvancementPlaque", remap = false)
 public abstract class AdvancementPlaqueMixin {
     @Shadow
     @Final

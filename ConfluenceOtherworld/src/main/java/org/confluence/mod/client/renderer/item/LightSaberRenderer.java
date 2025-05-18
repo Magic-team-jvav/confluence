@@ -5,9 +5,9 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import org.confluence.mod.client.model.item.LightSaberModel;
-import org.confluence.mod.common.component.SingleBooleanComponent;
-import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.item.sword.LightSaber;
+import org.confluence.terraentity.data.component.SingleBooleanComponent;
+import org.confluence.terraentity.init.TEDataComponentTypes;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
@@ -39,7 +39,7 @@ public class LightSaberRenderer extends GeoItemRenderer<LightSaber> {
 
     @Override
     public void actuallyRender(PoseStack poseStack, LightSaber animatable, BakedGeoModel model, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int color) {
-        isTurningOn = getCurrentItemStack().getComponents().getOrDefault(ModDataComponentTypes.BOOMERANG_READY.get(), SingleBooleanComponent.FALSE).value();
+        isTurningOn = getCurrentItemStack().getComponents().getOrDefault(TEDataComponentTypes.BOOMERANG_READY.get(), SingleBooleanComponent.FALSE).value();
         super.actuallyRender(poseStack, animatable, model, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, color);
     }
 

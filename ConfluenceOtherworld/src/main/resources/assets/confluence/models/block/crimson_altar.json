@@ -2,7 +2,7 @@
   "credit": "Made with Blockbench",
   "parent": "builtin/entity",
   "textures": {
-    "particle": "confluence:block/crimson_altar"
+    "particle": "confluence:block/tr_crimson_stone"
   },
   "texture_size": [
     128,

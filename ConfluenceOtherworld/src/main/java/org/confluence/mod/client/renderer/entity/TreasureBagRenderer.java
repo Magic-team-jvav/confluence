@@ -17,7 +17,7 @@ import org.joml.Matrix4f;
 
 import java.util.Calendar;
 
-import static org.confluence.mod.util.ClientUtils.HALF_SQRT_3;
+import static org.confluence.lib.util.LibClientUtils.HALF_SQRT_3;
 
 public class TreasureBagRenderer extends ItemEntityRenderer {
     private static final float length = 1.0F;

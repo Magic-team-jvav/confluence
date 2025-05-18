@@ -4,7 +4,7 @@ import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import net.minecraft.Util;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.level.levelgen.WorldOptions;
 import net.neoforged.fml.ModLoader;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.CustomWorldIconRegisterEvent;
@@ -24,9 +24,7 @@ public interface IWorldOptions {
 
     void confluence$setLegacyCustomOptions(Optional<String> legacyCustomOptions);
 
-    static long getSecretFlag(MinecraftServer server) {
-        return ((IWorldOptions) server.getWorldData().worldGenOptions()).confluence$getSecretFlag();
-    }
+    WorldOptions confluence$copyWithoutSecretFlag();
 
     long THE_CORRUPTION = 0b0001;
     long TR_CRIMSON = 0b0010;

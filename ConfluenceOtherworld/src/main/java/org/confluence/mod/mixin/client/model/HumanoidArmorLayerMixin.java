@@ -23,7 +23,7 @@ import org.spongepowered.asm.mixin.injection.At;
 
 import java.util.OptionalInt;
 
-import static org.confluence.mod.util.ModUtils.getSlotIndex;
+import static org.confluence.lib.util.LibUtils.getSlotIndex;
 
 @Mixin(HumanoidArmorLayer.class)
 public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, A extends HumanoidModel<T>> {

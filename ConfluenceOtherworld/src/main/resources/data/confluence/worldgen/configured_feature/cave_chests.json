@@ -4,7 +4,10 @@
     "to_place": {
       "type": "simple_state_provider",
       "state": {
-        "Name": "confluence:base_chest_block"
+        "Name": "confluence:base_chest_block",
+        "Properties": {
+          "unlocked": "true"
+        }
       }
     },
     "nbt": {

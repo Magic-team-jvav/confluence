@@ -10,7 +10,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.item.ModItems;
-import org.confluence.mod.common.item.common.BoxBlockItem;
+import org.confluence.mod.common.item.common.CrateBlockItem;
 
 public class CrateBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Confluence.MODID);
@@ -23,7 +23,7 @@ public class CrateBlocks {
     public static final DeferredBlock<Block> SKY_CRATE = register("sky_crate", ModLootTables.SKY_CRATE);
     public static final DeferredBlock<Block> CORRUPT_CRATE = register("corrupt_crate", ModLootTables.CORRUPT_CRATE);
     public static final DeferredBlock<Block> TR_CRIMSON_CRATE = register("tr_crimson_crate", ModLootTables.TR_CRIMSON_CRATE);
-    public static final DeferredBlock<Block> SACRED_CRATE = register("sacred_crate", ModLootTables.SACRED_CRATE);
+    public static final DeferredBlock<Block> HALLOWED_CRATE = register("hallowed_crate", ModLootTables.SACRED_CRATE);
     public static final DeferredBlock<Block> DUNGEON_CRATE = register("dungeon_crate", ModLootTables.DUNGEON_CRATE);
     public static final DeferredBlock<Block> FREEZE_CRATE = register("freeze_crate", ModLootTables.FREEZE_CRATE);
     public static final DeferredBlock<Block> OASIS_CRATE = register("oasis_crate", ModLootTables.OASIS_CRATE);
@@ -31,7 +31,7 @@ public class CrateBlocks {
     public static final DeferredBlock<Block> OCEAN_CRATE = register("ocean_crate", ModLootTables.OCEAN_CRATE);
 
     public static final DeferredBlock<Block> PEARLWOOD_CRATE = register("pearlwood_crate", ModLootTables.PEARLWOOD_CRATE);
-    public static final DeferredBlock<Block> MITHRIL_CRATE = register("mithril_crate", ModLootTables.MITHRIL_CRATE);
+    public static final DeferredBlock<Block> MYTHRIL_CRATE = register("mythril_crate", ModLootTables.MYTHRIL_CRATE);
     public static final DeferredBlock<Block> TITANIUM_CRATE = register("titanium_crate", ModLootTables.TITANIUM_CRATE);
     public static final DeferredBlock<Block> THORNS_CRATE = register("thorns_crate", ModLootTables.THORNS_CRATE);
     public static final DeferredBlock<Block> WILD_CRATE = register("wild_crate", ModLootTables.WILD_CRATE);
@@ -47,7 +47,7 @@ public class CrateBlocks {
 
     private static DeferredBlock<Block> register(String name, ResourceKey<LootTable> lootTable) {
         DeferredBlock<Block> block = BLOCKS.register(name, () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS)));
-        ModItems.BLOCK_ITEMS.register(name, () -> new BoxBlockItem(block.get(), lootTable));
+        ModItems.BLOCK_ITEMS.register(name, () -> new CrateBlockItem(block.get(), lootTable));
         return block;
     }
 }

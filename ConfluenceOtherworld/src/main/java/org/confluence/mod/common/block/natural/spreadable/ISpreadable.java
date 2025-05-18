@@ -10,17 +10,18 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.util.ByIdMap;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.Property;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.natural.LogBlockSet;
-import org.confluence.mod.common.data.saved.ConfluenceData;
+import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
-import org.confluence.mod.util.ModUtils;
 
 import java.util.Hashtable;
 import java.util.Locale;
@@ -39,10 +40,12 @@ public interface ISpreadable {
 
     default void spread(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource) {
         if (!blockState.getValue(STILL_ALIVE)) return;
-        if (randomSource.nextInt(100) >= serverLevel.getGameRules().getInt(Confluence.SPREADABLE_CHANCE)) return;
-        int phase = ConfluenceData.get(serverLevel).getGamePhase().ordinal();
+        int chance = serverLevel.getGameRules().getInt(Confluence.SPREADABLE_CHANCE);
+        if (chance == 0 || randomSource.nextInt(100) >= chance) return;
+        int phase = KillBoard.INSTANCE.getGamePhase().ordinal();
         for (int i = 0; i < 4; ++i) {
             BlockPos targetPos = blockPos.offset(randomSource.nextInt(3) - 1, randomSource.nextInt(5) - 3, randomSource.nextInt(3) - 1);
+            if (!serverLevel.isLoaded(targetPos)) continue;
             BlockState beforeTransformState = serverLevel.getBlockState(targetPos);
             Block targetBlock = getType().blockMap.get(beforeTransformState.getBlock());
             if (targetBlock == null || beforeTransformState.is(SHORT_GRASS) || beforeTransformState.is(FERN) || beforeTransformState.is(TALL_GRASS)) {
@@ -110,7 +113,7 @@ public interface ISpreadable {
 
     private static Map<BlockPos, BlockState> searchFace(ServerLevel serverLevel, BlockPos targetPos, Map<BlockPos, BlockState> map, int depth) {
         if (depth == 128) return map;
-        for (Direction direction : ModUtils.DIRECTIONS) {
+        for (Direction direction : LibUtils.DIRECTIONS) {
             BlockPos relative = targetPos.relative(direction);
             if (map.containsKey(relative)) continue;
             BlockState blockState = serverLevel.getBlockState(relative);
@@ -217,7 +220,7 @@ public interface ISpreadable {
                 getSupplier(SANDSTONE), NatureBlocks.PEARL_SANDSTONE,
                 getSupplier(SAND), NatureBlocks.PEARL_SAND,
                 getSupplier(SHORT_GRASS), NatureBlocks.HALLOW_GRASS,
-                getSupplier(TALL_GRASS), NatureBlocks.HALLOW_GRASS,
+                //getSupplier(TALL_GRASS), NatureBlocks.HALLOW_GRASS,
                 getSupplier(ICE), NatureBlocks.PINK_ICE,
                 getSupplier(PACKED_ICE), NatureBlocks.PINK_PACKED_ICE,
                 // 邪恶环境方块
@@ -300,7 +303,6 @@ public interface ISpreadable {
                 NatureBlocks.JUNGLE_THORN, getSupplier(Blocks.AIR),
                 NatureBlocks.PLANTERA_THORN, getSupplier(Blocks.AIR)
         ),
-
         CRIMSON(
                 getSupplier(DIRT), NatureBlocks.TR_CRIMSON_GRASS_BLOCK,
                 NatureBlocks.JUNGLE_GRASS_BLOCK, NatureBlocks.TR_CRIMSON_JUNGLE_GRASS_BLOCK,
@@ -364,7 +366,7 @@ public interface ISpreadable {
                 getSupplier(SANDSTONE), NatureBlocks.TR_CRIMSON_SANDSTONE,
                 getSupplier(SAND), NatureBlocks.TR_CRIMSON_SAND,
                 getSupplier(SHORT_GRASS), NatureBlocks.TR_CRIMSON_GRASS,
-                getSupplier(TALL_GRASS), NatureBlocks.TR_CRIMSON_GRASS,
+                //getSupplier(TALL_GRASS), NatureBlocks.TR_CRIMSON_GRASS,
                 getSupplier(ICE), NatureBlocks.RED_ICE,
                 getSupplier(PACKED_ICE), NatureBlocks.RED_PACKED_ICE,
                 //矿物
@@ -391,12 +393,10 @@ public interface ISpreadable {
                 NatureBlocks.RED_HARDENED_SAND_BLOCK, NatureBlocks.TR_CRIMSON_HARDENED_SAND_BLOCK,
                 NatureBlocks.MOIST_SAND_BLOCK, NatureBlocks.TR_CRIMSON_MOIST_SAND_BLOCK,
                 NatureBlocks.RED_MOIST_SAND_BLOCK, NatureBlocks.TR_CRIMSON_MOIST_SAND_BLOCK
-                ),
-
-
+        ),
         CORRUPT(
                 getSupplier(DIRT), NatureBlocks.CORRUPT_GRASS_BLOCK,
-                NatureBlocks.JUNGLE_GRASS_BLOCK,NatureBlocks.CORRUPT_JUNGLE_GRASS_BLOCK,
+                NatureBlocks.JUNGLE_GRASS_BLOCK, NatureBlocks.CORRUPT_JUNGLE_GRASS_BLOCK,
                 // 原木
                 getSupplier(OAK_LOG), NatureBlocks.EBONY_LOG_BLOCKS.getLog(),
                 getSupplier(ACACIA_LOG), NatureBlocks.EBONY_LOG_BLOCKS.getLog(),
@@ -453,7 +453,6 @@ public interface ISpreadable {
                 NatureBlocks.PALM_LOG_BLOCKS.getLeaves(), NatureBlocks.EBONY_LOG_BLOCKS.getLeaves(),
                 NatureBlocks.PEARL_LOG_BLOCKS.getLeaves(), NatureBlocks.EBONY_LOG_BLOCKS.getLeaves(),
 
-
                 // 原版环境方块
                 getSupplier(GRASS_BLOCK), NatureBlocks.CORRUPT_GRASS_BLOCK,
                 getSupplier(STONE), NatureBlocks.EBONY_STONE,
@@ -461,7 +460,7 @@ public interface ISpreadable {
                 getSupplier(SANDSTONE), NatureBlocks.EBONY_SANDSTONE,
                 getSupplier(SAND), NatureBlocks.EBONY_SAND,
                 getSupplier(SHORT_GRASS), NatureBlocks.CORRUPT_GRASS,
-                getSupplier(TALL_GRASS), NatureBlocks.CORRUPT_GRASS,
+                //getSupplier(TALL_GRASS), NatureBlocks.CORRUPT_GRASS,
                 getSupplier(ICE), NatureBlocks.PURPLE_ICE,
                 getSupplier(PACKED_ICE), NatureBlocks.PURPLE_PACKED_ICE,
                 //矿物
@@ -495,20 +494,15 @@ public interface ISpreadable {
 
                 // 邪恶环境方块
                 NatureBlocks.HALLOW_GRASS_BLOCK, NatureBlocks.CORRUPT_GRASS_BLOCK,
-
                 NatureBlocks.PEARL_STONE, NatureBlocks.EBONY_STONE,
-
                 NatureBlocks.PEARL_COBBLESTONE, NatureBlocks.EBONY_COBBLESTONE,
-
                 NatureBlocks.HARDENED_SAND_BLOCK, NatureBlocks.EBONY_HARDENED_SAND_BLOCK,
                 NatureBlocks.RED_HARDENED_SAND_BLOCK, NatureBlocks.EBONY_HARDENED_SAND_BLOCK,
                 NatureBlocks.MOIST_SAND_BLOCK, NatureBlocks.EBONY_MOIST_SAND_BLOCK,
                 NatureBlocks.RED_MOIST_SAND_BLOCK, NatureBlocks.EBONY_MOIST_SAND_BLOCK,
                 NatureBlocks.PEARL_HARDENED_SAND_BLOCK, NatureBlocks.EBONY_HARDENED_SAND_BLOCK,
                 NatureBlocks.PEARL_MOIST_SAND_BLOCK, NatureBlocks.EBONY_MOIST_SAND_BLOCK,
-
                 NatureBlocks.PEARL_SANDSTONE, NatureBlocks.EBONY_SANDSTONE,
-
                 NatureBlocks.PINK_ICE, NatureBlocks.PURPLE_ICE,
                 NatureBlocks.PINK_PACKED_ICE, NatureBlocks.PURPLE_PACKED_ICE,
 
@@ -521,12 +515,19 @@ public interface ISpreadable {
                 NatureBlocks.JUNGLE_THORN, NatureBlocks.CORRUPTION_THORN,
                 NatureBlocks.PLANTERA_THORN, NatureBlocks.CORRUPTION_THORN
         ),
-
         GLOWING(
+                getSupplier(MUD), NatureBlocks.MUSHROOM_GRASS_BLOCK,
+                NatureBlocks.JUNGLE_SPORE, NatureBlocks.GLOWING_MUSHROOM,
+                NatureBlocks.JUNGLE_DROOPING_VINE, NatureBlocks.GLOWING_MUSHROOM_VINE,
+                NatureBlocks.JUNGLE_THORN, getSupplier(Blocks.AIR),
+                getSupplier(SHORT_GRASS), NatureBlocks.GLOWING_MUSHROOM
+                //getSupplier(TALL_GRASS), NatureBlocks.GLOWING_MUSHROOM
         ),
         JUNGLE(
+                getSupplier(MUD), NatureBlocks.JUNGLE_GRASS_BLOCK,
+                NatureBlocks.GLOWING_MUSHROOM, getSupplier(SHORT_GRASS),
+                NatureBlocks.GLOWING_MUSHROOM_VINE, NatureBlocks.JUNGLE_DROOPING_VINE
         ),
-
         PURE(
                 NatureBlocks.ASH_BLOCK, NatureBlocks.ASH_GRASS_BLOCK,
                 NatureBlocks.VICIOUS_MUSHROOM, NatureBlocks.LIFE_MUSHROOM,
@@ -577,6 +578,20 @@ public interface ISpreadable {
 
         public Map<Block, Block> getBlockMap() {
             return blockMap;
+        }
+
+        @SuppressWarnings("unchecked")
+        public <T extends Comparable<T>, V extends T> boolean spread(Level level, BlockPos pos) {
+            BlockState sourceState = level.getBlockState(pos);
+            Block target = blockMap.get(sourceState.getBlock());
+            if (target == null) return false;
+            BlockState targetState = target.defaultBlockState();
+            for (Map.Entry<Property<?>, Comparable<?>> entry1 : sourceState.getValues().entrySet()) {
+                if (targetState.hasProperty(entry1.getKey())) {
+                    targetState = targetState.setValue((Property<T>) entry1.getKey(), (V) entry1.getValue());
+                }
+            }
+            return level.setBlockAndUpdate(pos, targetState);
         }
 
         @Override

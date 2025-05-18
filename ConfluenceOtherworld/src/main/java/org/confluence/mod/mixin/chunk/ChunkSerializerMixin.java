@@ -24,8 +24,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(ChunkSerializer.class)
 public abstract class ChunkSerializerMixin {
     @Shadow
-    private static void logErrors(ChunkPos pChunkPos, int pChunkSectionY, String pErrorMessage) {
-    }
+    private static void logErrors(ChunkPos pChunkPos, int pChunkSectionY, String pErrorMessage) {}
 
     @Inject(method = "write", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/chunk/LevelChunkSection;getBiomes()Lnet/minecraft/world/level/chunk/PalettedContainerRO;"))
     private static void write(ServerLevel pLevel, ChunkAccess pChunk, CallbackInfoReturnable<CompoundTag> cir, @Local Codec<PalettedContainerRO<Holder<Biome>>> codec, @Local(ordinal = 1) CompoundTag sectionTag, @Local LevelChunkSection levelchunksection) {

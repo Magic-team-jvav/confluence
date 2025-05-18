@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "confluence:block/green_brick_column_end",
+    "side": "confluence:block/green_brick_column_side"
+  }
+}

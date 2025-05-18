@@ -19,15 +19,16 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.confluence.lib.color.GlobalColors;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.data.saved.ConfluenceData;
+import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.common.init.item.LightPetItems;
 import org.confluence.mod.util.ModUtils;
-import org.confluence.mod.util.PlayerUtils;
-import org.confluence.mod.util.color.IntegerRGB;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.entity.boss.BrainOfCthulhu;
-import org.confluence.terraentity.init.TEEntities;
+import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.jetbrains.annotations.Nullable;
 
 public class CrimsonHeartBlock extends Block {
@@ -50,15 +51,15 @@ public class CrimsonHeartBlock extends Block {
             ConfluenceData data = ConfluenceData.get(serverLevel);
             int count = data.getEvilBrokenCount() % 3;
 
-            if (level.random.nextFloat() < 0.2F) {
-                ModUtils.createItemEntity(TGItems.THE_UNDERTAKER.toStack(), center.x, center.y, center.z, level, 0);
-                ModUtils.createItemEntity(TGItems.MUSKET_BULLET.get(), 100, center.x, center.y, center.z, level, 0);
+            if (count == 0 || level.random.nextFloat() < 0.2F) {
+                LibUtils.createItemEntity(TGItems.THE_UNDERTAKER.toStack(), center.x, center.y, center.z, level, 0);
+                LibUtils.createItemEntity(TGItems.MUSKET_BULLET.get(), 100, center.x, center.y, center.z, level, 0);
             }
             if (level.random.nextFloat() < 0.2F) {
-                ModUtils.createItemEntity(LightPetItems.CRIMSON_HEART.get(), 1, center.x, center.y, center.z, level, 0);
+                LibUtils.createItemEntity(LightPetItems.CRIMSON_HEART.get(), 1, center.x, center.y, center.z, level, 0);
             }
             if (level.random.nextFloat() < 0.2F) {
-                ModUtils.createItemEntity(TCItems.PANIC_NECKLACE.get(), 1, center.x, center.y, center.z, level, 0);
+                LibUtils.createItemEntity(TCItems.PANIC_NECKLACE.get(), 1, center.x, center.y, center.z, level, 0);
             }
             if (level.random.nextFloat() < 0.2F) {
                 // 猩红魔杖
@@ -68,20 +69,16 @@ public class CrimsonHeartBlock extends Block {
             }
 
             for (ServerPlayer player : serverLevel.getPlayers(serverPlayer -> serverPlayer.distanceToSqr(center) <= 32 * 32)) {
-                PlayerUtils.awardAchievement(player, "smashing_poppet");
+                ModAchievements.awardAchievement(player, "smashing_poppet");
             }
 
             if (count != 2) {
-                Component component = Component.translatable("event.confluence.crimson_heart_broken." + count).withColor(IntegerRGB.GREEN.get());
+                Component component = Component.translatable("event.confluence.crimson_heart_broken." + count).withColor(GlobalColors.MESSAGE.get());
                 serverLevel.getServer().getPlayerList().broadcastSystemMessage(component, false);
             }
 
             if (data.updateEvilBrokenCount()) {
-                BrainOfCthulhu brainOfCthulhu = new BrainOfCthulhu(TEEntities.BRAIN_OF_CTHULHU.get(), level);
-                brainOfCthulhu.setPos(center.x + level.random.nextInt(-50, 51), center.y, center.z + level.random.nextInt(-50, 51));
-                level.addFreshEntity(brainOfCthulhu);
-                Player nearestPlayer = level.getNearestPlayer(brainOfCthulhu, 200);
-                if (nearestPlayer != null) brainOfCthulhu.setTarget(nearestPlayer);
+                ModUtils.summonBoss(level, center, new BrainOfCthulhu(TEBossEntities.BRAIN_OF_CTHULHU.get(), level));
             }
         }
     }
@@ -90,7 +87,7 @@ public class CrimsonHeartBlock extends Block {
     public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack tool) {
         super.playerDestroy(level, player, pos, state, blockEntity, tool);
         if (player instanceof ServerPlayer serverPlayer) {
-            PlayerUtils.awardAchievement(serverPlayer, "smashing_poppet");
+            ModAchievements.awardAchievement(serverPlayer, "smashing_poppet");
         }
     }
 

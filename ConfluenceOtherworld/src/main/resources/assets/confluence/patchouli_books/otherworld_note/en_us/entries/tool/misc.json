@@ -1,0 +1,26 @@
+{
+    "name": "patchouli.confluence.otherworld_note.tool.misc.name",
+    "icon": "minecraft:flint_and_steel",
+    "category": "confluence:tool",
+    "pages": [
+        {
+            "type": "patchouli:text",
+            "text": "patchouli.confluence.otherworld_note.tool.misc.0"
+        },
+        {
+            "type": "patchouli:spotlight",
+            "item": "minecraft:glass_pane",
+            "text": "patchouli.confluence.otherworld_note.tool.misc.1"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minecraft:glass_pane",
+            "recipe2": "minecraft:glass_pane"
+        },
+        {
+            "type": "patchouli:spotlight",
+            "item": "minecraft:glass_pane",
+            "text": "patchouli.confluence.otherworld_note.tool.misc.2"
+        }
+    ]
+}

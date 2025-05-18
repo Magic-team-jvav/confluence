@@ -1,6 +1,8 @@
 package org.confluence.mod.common.attachment;
 
 import net.minecraft.core.NonNullList;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.LivingEntity;
@@ -9,14 +11,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ProjectileWeaponItem;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.apache.commons.lang3.stream.Streams;
+import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.item.hook.BaseHookItem;
 import org.confluence.mod.network.s2c.ExtraInventoryStackPacketS2C;
-import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.TerraCurio;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 
+import java.util.List;
 import java.util.function.Predicate;
 
 public class ExtraInventory extends ItemStackHandler implements Container {
@@ -34,24 +37,42 @@ public class ExtraInventory extends ItemStackHandler implements Container {
     public static final int TRASH_START = EQUIPMENT_START + SIZE_EQUIPMENT;
     public static final int DYE_START = TRASH_START + SIZE_TRASH;
 
+    public static final StreamCodec<RegistryFriendlyByteBuf, ExtraInventory> STREAM_CODEC = new StreamCodec<>() {
+        @Override
+        public ExtraInventory decode(RegistryFriendlyByteBuf buffer) {
+            ExtraInventory extraInventory = new ExtraInventory(false);
+            int accessoryDye = buffer.readVarInt();
+            extraInventory.sizeAccessoryDye = accessoryDye;
+            extraInventory.initialized = true;
+            int size = SIZE_EXCEPT_ACCESSORY_DYE + accessoryDye;
+            extraInventory.previousStacks = NonNullList.withSize(size, ItemStack.EMPTY);
+            extraInventory.dirty = false;
+            List<ItemStack> list = ItemStack.OPTIONAL_LIST_STREAM_CODEC.decode(buffer);
+            if (list instanceof NonNullList<ItemStack> nonNullList) {
+                extraInventory.stacks = nonNullList;
+            } else {
+                extraInventory.stacks = NonNullList.copyOf(list);
+            }
+            return extraInventory;
+        }
+
+        @Override
+        public void encode(RegistryFriendlyByteBuf buffer, ExtraInventory extraInventory) {
+            buffer.writeVarInt(extraInventory.sizeAccessoryDye);
+            ItemStack.OPTIONAL_LIST_STREAM_CODEC.encode(buffer, extraInventory.stacks);
+        }
+    };
+
     private int sizeAccessoryDye = 0;
     private transient boolean initialized = false;
     private transient NonNullList<ItemStack> previousStacks;
-    private transient boolean dirty;
+    private transient boolean dirty = true;
 
-    public ExtraInventory() {
+    public ExtraInventory(boolean init) {
         super(SIZE_EXCEPT_ACCESSORY_DYE);
-        this.previousStacks = NonNullList.withSize(SIZE_EXCEPT_ACCESSORY_DYE, ItemStack.EMPTY);
-    }
-
-    public void setAccessoryDyes(int size) {
-        int all = SIZE_EXCEPT_ACCESSORY_DYE + size;
-        NonNullList<ItemStack> itemStacks = NonNullList.withSize(all, ItemStack.EMPTY);
-        for (int i = 0; i < stacks.size(); i++) {
-            itemStacks.set(i, stacks.get(i));
+        if (init) {
+            this.previousStacks = NonNullList.withSize(SIZE_EXCEPT_ACCESSORY_DYE, ItemStack.EMPTY);
         }
-        this.stacks = itemStacks;
-        this.sizeAccessoryDye = size;
     }
 
     public int getSizeAccessoryDye() {
@@ -71,6 +92,10 @@ public class ExtraInventory extends ItemStackHandler implements Container {
     public ItemStack getAmmo(int index) {
         validateIndex(index, SIZE_AMMO);
         return getItem(AMMO_START + index);
+    }
+
+    public List<ItemStack> getAllAmmo() {
+        return this.stacks.subList(AMMO_START, AMMO_START + SIZE_AMMO);
     }
 
     public ItemStack getPet() {
@@ -149,28 +174,37 @@ public class ExtraInventory extends ItemStackHandler implements Container {
             }
             this.dirty = false;
 
-            if (dyeHard) PlayerUtils.awardAchievement(serverPlayer, "dye_hard");
+            if (dyeHard) ModAchievements.awardAchievement(serverPlayer, "dye_hard");
             if (fashionStatement && Streams.of(serverPlayer.getArmorSlots()).noneMatch(ItemStack::isEmpty)) {
-                PlayerUtils.awardAchievement(serverPlayer, "fashion_statement");
+                ModAchievements.awardAchievement(serverPlayer, "fashion_statement");
             }
-            if (holdOnTight) PlayerUtils.awardAchievement(serverPlayer, "hold_on_tight");
+            if (holdOnTight) ModAchievements.awardAchievement(serverPlayer, "hold_on_tight");
         }
     }
 
     public void initialize(ServerPlayer serverPlayer) {
         if (!initialized) {
-            updateAccessorySize(serverPlayer);
+            updateAccessorySize(CuriosApi.getCuriosInventory(serverPlayer).map(handler -> {
+                ICurioStacksHandler accessory = handler.getCurios().get(TerraCurio.CURIO_SLOT);
+                return accessory == null ? 0 : accessory.getSlots();
+            }).orElse(0));
             this.initialized = true;
         }
     }
 
-    public void updateAccessorySize(ServerPlayer serverPlayer) {
-        int accessoryDye = CuriosApi.getCuriosInventory(serverPlayer).map(handler -> {
-            ICurioStacksHandler accessory = handler.getCurios().get(TerraCurio.CURIO_SLOT);
-            return accessory == null ? 0 : accessory.getSlots();
-        }).orElse(0);
+    public void updateAccessorySize(int accessoryDye) {
         setAccessoryDyes(accessoryDye);
         this.previousStacks = NonNullList.withSize(SIZE_EXCEPT_ACCESSORY_DYE + accessoryDye, ItemStack.EMPTY);
+    }
+
+    public void setAccessoryDyes(int size) {
+        int all = SIZE_EXCEPT_ACCESSORY_DYE + size;
+        NonNullList<ItemStack> itemStacks = NonNullList.withSize(all, ItemStack.EMPTY);
+        for (int i = 0; i < stacks.size(); i++) {
+            itemStacks.set(i, stacks.get(i));
+        }
+        this.stacks = itemStacks;
+        this.sizeAccessoryDye = size;
     }
 
     @Override
@@ -231,6 +265,14 @@ public class ExtraInventory extends ItemStackHandler implements Container {
         stacks.clear();
     }
 
+    public void copyFrom(ExtraInventory other) {
+        this.sizeAccessoryDye = other.sizeAccessoryDye;
+        this.initialized = other.initialized;
+        this.previousStacks = other.previousStacks;
+        this.dirty = other.dirty;
+        this.stacks = other.stacks;
+    }
+
     public static ItemStack getProjectile(ItemStack projectile, ItemStack weapon, LivingEntity living) {
         if (projectile.isEmpty() && weapon.getItem() instanceof ProjectileWeaponItem weaponItem && living instanceof Player player) {
             Predicate<ItemStack> predicate = weaponItem.getSupportedHeldProjectiles(weapon);
@@ -238,6 +280,7 @@ public class ExtraInventory extends ItemStackHandler implements Container {
             for (int i = 0; i < SIZE_AMMO; i++) {
                 ItemStack ammo = extraInventory.getAmmo(i);
                 if (predicate.test(ammo)) {
+                    extraInventory.setChanged();
                     return ammo;
                 }
             }

@@ -21,8 +21,8 @@ public class FletchingTableRecipe implements Recipe<FletchingTableRecipe.Input> 
     private final Ingredient head;
     private final NonNullList<Ingredient> ingredients;
 
-    protected FletchingTableRecipe(ItemStack pResult, Ingredient tail, Ingredient body, Ingredient head) {
-        this.result = pResult;
+    public FletchingTableRecipe(ItemStack result, Ingredient tail, Ingredient body, Ingredient head) {
+        this.result = result;
         this.tail = tail;
         this.body = body;
         this.head = head;

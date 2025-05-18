@@ -1,10 +1,7 @@
 {
-  "multipart": [
-    {
-      "apply": {
-        "model": "confluence:block/cold_crystal_ore",
-        "uvlock": false
-      }
+  "variants": {
+    "": {
+      "model": "confluence:block/cold_crystal_ore"
     }
-  ]
+  }
 }

@@ -1,102 +1,69 @@
 package org.confluence.mod.common.item.common;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
-public class BlockPlacingWandItem extends Item {
-    private final TagKey<Block> blockTags;
-    private final Block blacklistBlock;
+import java.util.function.BiFunction;
 
-    public BlockPlacingWandItem(TagKey<Block> blockTags) {
-        super(new Properties().stacksTo(1));
-        this.blockTags = blockTags;
-        this.blacklistBlock = Blocks.AIR;
+public class BlockPlacingWandItem extends BlockItem {
+    protected final @Nullable TagKey<Block> targetBlock;
+    protected final BiFunction<BlockPlaceContext, BlockState, BlockState> transferTo;
+
+    public BlockPlacingWandItem(@Nullable TagKey<Block> targetBlock, Block transferTo) {
+        super(transferTo, new Properties().stacksTo(1));
+        this.targetBlock = targetBlock;
+        this.transferTo = (context, state) -> state;
     }
 
-    public BlockPlacingWandItem(TagKey<Block> blockTags, Block blacklistBlock) {
-        super(new Properties().stacksTo(1));
-        this.blockTags = blockTags;
-        this.blacklistBlock = blacklistBlock;
+    public BlockPlacingWandItem(@Nullable TagKey<Block> targetBlock, Block defaultBLock, BiFunction<BlockPlaceContext, BlockState, BlockState> transferTo) {
+        super(defaultBLock, new Properties().stacksTo(1));
+        this.targetBlock = targetBlock;
+        this.transferTo = transferTo;
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
-        ItemStack heldItem = player.getItemInHand(usedHand);
-        BlockHitResult hitResult = getPlayerPickedBlock(player);
-        if (hitResult.getType() != HitResult.Type.BLOCK) {
-            return InteractionResultHolder.pass(heldItem);
-        }
-        BlockPos placePos = hitResult.getBlockPos().relative(hitResult.getDirection());
-        if (!level.isEmptyBlock(placePos)) {
-            return InteractionResultHolder.pass(heldItem);
-        }
-        ItemStack offHandItem = player.getItemInHand(InteractionHand.OFF_HAND);
-        if (tryPlaceBlock(level, player, placePos, offHandItem, heldItem)) {
-            return InteractionResultHolder.success(heldItem);
-        }
-        for (ItemStack itemStack : player.getInventory().items) {
-            if (tryPlaceBlock(level, player, placePos, itemStack, heldItem)) {
-                return InteractionResultHolder.success(heldItem);
-            }
-        }
-        return InteractionResultHolder.pass(heldItem);
-    }
-
-    private boolean tryPlaceBlock(Level level, Player player, BlockPos placePos, ItemStack itemStack, ItemStack heldItem) {
-        if (!isValidBlockItem(itemStack, heldItem)) {
-            return false;
-        }
-        BlockState state = ((BlockItem) itemStack.getItem()).getBlock().defaultBlockState();
-        boolean isLeaves = state.is(BlockTags.LEAVES);
-        if (blacklistBlock == Blocks.AIR) {
-            if (isLeaves) {
-                state = state.setValue(LeavesBlock.PERSISTENT, true);
-            }
+    public @Nullable BlockPlaceContext updatePlacementContext(BlockPlaceContext context) {
+        Player player = context.getPlayer();
+        if (player == null) return null;
+        ItemStack heldItem = context.getItemInHand();
+        ItemStack offHandItem = player.getOffhandItem();
+        if (isValidBlockItem(offHandItem, heldItem)) {
+            return new BlockPlaceContext(context.getLevel(), player, context.getHand(), offHandItem, context.getHitResult());
         } else {
-            if (isLeaves) {
-                state = blacklistBlock.defaultBlockState().setValue(LeavesBlock.PERSISTENT, true);
-            } else {
-                state = blacklistBlock.defaultBlockState();
+            for (ItemStack itemStack : player.getInventory().items) {
+                if (isValidBlockItem(itemStack, heldItem)) {
+                    return new BlockPlaceContext(context.getLevel(), player, context.getHand(), itemStack, context.getHitResult());
+                }
             }
         }
-        level.setBlock(placePos, state, 3);
-        if (!player.isCreative()) {
-            itemStack.shrink(1);
-        }
-        return true;
+        return null;
     }
 
-    private BlockHitResult getPlayerPickedBlock(Player player) {
-        Vec3 playerEyePos = player.getEyePosition(1.0f);
-        Vec3 lookDirection = player.getLookAngle();
-        Vec3 targetPos = playerEyePos.add(lookDirection.scale(5.0));
-        ClipContext clipContext = new ClipContext(playerEyePos, targetPos, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player);
-        return player.level().clip(clipContext);
+    @Override
+    protected BlockState getPlacementState(BlockPlaceContext context) {
+        return transferTo.apply(context, super.getPlacementState(context));
     }
 
-    private boolean isValidBlockItem(ItemStack itemStack, ItemStack heldItem) {
-        if (itemStack.isEmpty() || itemStack == heldItem) {
+    @Override
+    public String getDescriptionId() {
+        return getOrCreateDescriptionId();
+    }
+
+    protected boolean isValidBlockItem(ItemStack itemStack, ItemStack heldItem) {
+        if (itemStack.isEmpty() || itemStack == heldItem || itemStack.getItem() instanceof BlockPlacingWandItem) {
             return false;
         }
         if (itemStack.getItem() instanceof BlockItem blockItem) {
-            BlockState state = blockItem.getBlock().defaultBlockState();
-            return state.is(blockTags) && !state.is(blacklistBlock);
+            if (targetBlock == null) {
+                return blockItem.getBlock() == getBlock();
+            }
+            return blockItem.getBlock().builtInRegistryHolder().is(targetBlock) && blockItem.getBlock() != getBlock();
         }
         return false;
     }

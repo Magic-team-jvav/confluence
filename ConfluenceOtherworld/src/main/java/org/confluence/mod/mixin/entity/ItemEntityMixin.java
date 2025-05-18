@@ -17,7 +17,8 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForge;
 import org.confluence.mod.api.event.ShimmerItemTransmutationEvent;
 import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.common.data.saved.ConfluenceData;
+import org.confluence.mod.common.data.saved.GamePhase;
+import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.init.ModCriterionTriggers;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModTags;
@@ -84,8 +85,8 @@ public abstract class ItemEntityMixin implements IItemEntity {
                         ItemEntity itemEntity = new ItemEntity(level, self.getX(), self.getY(), self.getZ(), target);
                         confluence$setup(itemEntity, post.getCoolDown(), post.getSpeedY());
                         level.addFreshEntity(itemEntity);
-                        level.playSound(null, self.getX(), self.getY(), self.getZ(), ModSoundEvents.SHIMMER_EVOLUTION.get(), SoundSource.AMBIENT, 1.0F, 1.0F);
                     }
+                    level.playSound(null, self.getX(), self.getY(), self.getZ(), ModSoundEvents.SHIMMER_EVOLUTION.get(), SoundSource.AMBIENT, 0.5F, 1.0F);
                     if (self.getOwner() instanceof ServerPlayer serverPlayer) {
                         ModCriterionTriggers.SHIMMER_TRANSMUTATION.get().trigger(serverPlayer, self);
                     }
@@ -115,9 +116,9 @@ public abstract class ItemEntityMixin implements IItemEntity {
             }
         }
 
-        ConfluenceData data = ConfluenceData.get((ServerLevel) source.level());
+        GamePhase gamePhase = KillBoard.INSTANCE.getGamePhase();
         for (ShimmerItemTransmutationEvent.ItemTransmutation transmutation : ITEM_TRANSMUTATION) {
-            if (transmutation.gamePhase().isOtherBelowThenMe(data.getGamePhase())) continue;
+            if (transmutation.gamePhase().isAboveThan(gamePhase)) continue;
             if (transmutation.source().test(sourceItem)) {
                 int times = sourceItem.getCount() / transmutation.shrink();
                 List<ItemStack> results = new ArrayList<>();
@@ -140,7 +141,7 @@ public abstract class ItemEntityMixin implements IItemEntity {
 
         if (sourceItem.getDamageValue() != 0) return;
         RegistryAccess registryAccess = source.level().registryAccess();
-        boolean isHardmode = data.getGamePhase().isHardmode();
+        boolean isHardmode = gamePhase.isHardmode();
         RandomSource random = source.level().random;
         for (RecipeHolder<?> recipeHolder : ((ServerLevel) source.level()).getServer().getRecipeManager().getRecipes()) {
             Recipe<?> recipe = recipeHolder.value();

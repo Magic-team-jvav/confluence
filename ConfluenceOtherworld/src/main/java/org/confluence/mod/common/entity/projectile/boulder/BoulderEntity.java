@@ -5,6 +5,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -26,6 +27,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.common.block.functional.BoulderBlock;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -80,10 +83,23 @@ public class BoulderEntity extends Projectile {
     @Override
     public void tick() {
         super.tick();
-        Vec3 motion = getDeltaMovement();
-        setYRot((float) (Mth.atan2(motion.x, motion.z) * Mth.RAD_TO_DEG));
-        setDeltaMovement(motion.x, onGround() ? 0.0 : motion.y - 0.08, motion.z);
-        move(MoverType.SELF, getDeltaMovement());
+        Vec3 vec3 = getDeltaMovement();
+        setYRot((float) (Mth.atan2(vec3.x, vec3.z) * Mth.RAD_TO_DEG));
+        setDeltaMovement(vec3.x, onGround() ? 0.0 : vec3.y - 0.08, vec3.z);
+        vec3 = getDeltaMovement();
+        move(MoverType.SELF, vec3);
+        if (!level().isClientSide) {
+            Vec3 motion = getDeltaMovement();
+            if (motion.x != vec3.x || motion.y != vec3.y || motion.z != vec3.z) {
+                for (Direction dir : LibUtils.DIRECTIONS) {
+                    BlockPos blockPos = blockPosition().relative(dir);
+                    BlockState blockState = level().getBlockState(blockPos);
+                    if (blockState.getBlock() instanceof BoulderBlock block) {
+                        block.onProjectileHit(level(), blockState, new BlockHitResult(blockPos.getCenter(), dir, blockPos, false), this);
+                    }
+                }
+            }
+        }
 
         Vec3 delta = getDeltaMovement().scale(0.99);
         setDeltaMovement(delta);
@@ -101,11 +117,13 @@ public class BoulderEntity extends Projectile {
         if (hitResult1 != null) hitResult = hitResult1;
 
         if (hitResult instanceof BlockHitResult blockHitResult) {
-            onHitBlock(blockHitResult);
+            if (blockHitResult.getType() != HitResult.Type.MISS) {
+                onHitBlock(blockHitResult);
+            }
         } else {
             onHitEntity((EntityHitResult) hitResult);
         }
-        if (getDeltaMovement().length() < minimumBreakSpeed) {
+        if (onGround() && getDeltaMovement().length() < minimumBreakSpeed) {
             if (isVertical()) {
                 targetTo(level().getNearestPlayer(this, SEARCH_RANGE));
                 setVertical(false);
@@ -117,6 +135,7 @@ public class BoulderEntity extends Projectile {
 
     @Override
     protected void onHitBlock(BlockHitResult blockHitResult) {
+        super.onHitBlock(blockHitResult);
         if (isVertical() && !getBlockStateOn().isAir() && blockHitResult.getDirection().getAxis() == Direction.Axis.Y) {
             targetTo(level().getNearestPlayer(this, SEARCH_RANGE));
         }
@@ -129,8 +148,8 @@ public class BoulderEntity extends Projectile {
     }
 
     public void targetTo(@Nullable Player player) {
-        Vec3 vec3 = player == null ? getDeltaMovement().normalize().scale(1.0 + speed) : player.position().subtract(position()).normalize();
-        vec3 = new Vec3(vec3.x, 0.0, vec3.z);
+        Vec3 vec3 = player == null ? getDeltaMovement() : player.position().subtract(position());
+        vec3 = new Vec3(vec3.x, 0.0, vec3.z).normalize();
         setYRot((float) (Mth.atan2(vec3.x, vec3.z) * Mth.RAD_TO_DEG));
         setDeltaMovement(vec3.scale(speed));
         this.yRotO = getYRot();
@@ -148,8 +167,12 @@ public class BoulderEntity extends Projectile {
     }
 
     @Override
-    protected void readAdditionalSaveData(CompoundTag pCompound) {}
+    protected void readAdditionalSaveData(CompoundTag pCompound) {
+        entityData.set(DATA_BLOCK_STATE, BlockState.CODEC.parse(NbtOps.INSTANCE, pCompound.get("BlockState")).getOrThrow());
+    }
 
     @Override
-    protected void addAdditionalSaveData(CompoundTag pCompound) {}
+    protected void addAdditionalSaveData(CompoundTag pCompound) {
+        pCompound.put("BlockState", BlockState.CODEC.encodeStart(NbtOps.INSTANCE, entityData.get(DATA_BLOCK_STATE)).getOrThrow());
+    }
 }

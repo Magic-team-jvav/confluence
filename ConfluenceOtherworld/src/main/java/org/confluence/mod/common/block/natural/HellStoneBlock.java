@@ -21,7 +21,7 @@ public class HellStoneBlock extends Block {
         super(BlockBehaviour.Properties
                 .ofFullCopy(Blocks.ANCIENT_DEBRIS)
                 .mapColor(MapColor.COLOR_RED)
-                .lightLevel(value -> 5)
+                .lightLevel(value -> 10)
                 .requiresCorrectToolForDrops());
     }
 
@@ -36,7 +36,7 @@ public class HellStoneBlock extends Block {
     @Override
     public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack tool) {
         super.playerDestroy(level, player, pos, state, blockEntity, tool);
-        if (!level.isClientSide && !player.getAbilities().instabuild) {
+        if (!level.isClientSide && !player.hasInfiniteMaterials()) {
             level.setBlockAndUpdate(pos, Blocks.LAVA.defaultBlockState());
         }
     }

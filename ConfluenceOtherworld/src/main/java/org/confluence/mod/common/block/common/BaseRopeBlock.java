@@ -27,8 +27,8 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.NotNull;
 
 public class BaseRopeBlock extends PipeBlock implements SimpleWaterloggedBlock {
@@ -80,7 +80,7 @@ public class BaseRopeBlock extends PipeBlock implements SimpleWaterloggedBlock {
         if (belowState.getFluidState().is(Fluids.WATER)) {
             state = state.setValue(WATERLOGGED, true);
         }
-        for (Direction direction : ModUtils.DIRECTIONS) {
+        for (Direction direction : LibUtils.DIRECTIONS) {
             BlockPos neighborPos = pos.relative(direction);
             BlockState neighborState = level.getBlockState(neighborPos);
             if (shouldConnect(level, neighborState, neighborPos, direction)) {

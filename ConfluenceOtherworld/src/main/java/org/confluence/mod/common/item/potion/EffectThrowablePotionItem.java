@@ -9,8 +9,8 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.entity.projectile.EffectThrownPotion;
 
 public class EffectThrowablePotionItem extends EffectPotionItem {
@@ -18,11 +18,11 @@ public class EffectThrowablePotionItem extends EffectPotionItem {
         super(properties, mobEffect, duration, amplifier);
     }
 
-    public EffectThrowablePotionItem(Rarity rarity, Holder<MobEffect> mobEffect, int duration) {
+    public EffectThrowablePotionItem(ModRarity rarity, Holder<MobEffect> mobEffect, int duration) {
         super(rarity, mobEffect, duration);
     }
 
-    public EffectThrowablePotionItem(Rarity rarity, Holder<MobEffect> mobEffect, int duration, int amplifier) {
+    public EffectThrowablePotionItem(ModRarity rarity, Holder<MobEffect> mobEffect, int duration, int amplifier) {
         super(rarity, mobEffect, duration, amplifier);
     }
 
@@ -45,7 +45,7 @@ public class EffectThrowablePotionItem extends EffectPotionItem {
         }
 
         pPlayer.awardStat(Stats.ITEM_USED.get(this));
-        if (!pPlayer.getAbilities().instabuild) {
+        if (!pPlayer.hasInfiniteMaterials()) {
             itemstack.shrink(1);
         }
 

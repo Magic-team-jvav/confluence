@@ -1,0 +1,38 @@
+{
+    "name": "patchouli.confluence.otherworld_note.boss_checklist.queen_bee.name",
+    "icon": "confluence:abeemination",
+    "category": "confluence:boss_checklist",
+    "pages": [
+        {
+            "type": "patchouli:text",
+            "text": "patchouli.confluence.otherworld_note.boss_checklist.queen_bee.0"
+        },
+        {
+            "type": "patchouli:entity",
+            "entity": "terra_entity:queen_bee",
+            "text": "patchouli.confluence.otherworld_note.boss_checklist.queen_bee.1"
+        },
+        {
+            "type": "patchouli:spotlight",
+            "item": "confluence:abeemination",
+            "text": "patchouli.confluence.otherworld_note.boss_checklist.queen_bee.2",
+            "title": "patchouli.confluence.otherworld_note.boss_checklist.how_to_summon"
+        },
+        {
+            "type": "patchouli:spotlight",
+            "item": "confluence:abeemination",
+            "text": "patchouli.confluence.otherworld_note.boss_checklist.queen_bee.3"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minecraft:slime_ball",
+            "text": "patchouli.confluence.otherworld_note.boss_checklist.queen_bee.4"
+        },
+        {
+            "type": "patchouli:image",
+            "images":[
+                "confluence:textures/gui/patchouli/boss_checklist/queen_bee.png"
+            ]
+        }
+    ]
+}

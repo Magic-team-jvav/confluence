@@ -22,7 +22,9 @@ import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -32,6 +34,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
@@ -39,18 +42,22 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.color.GlobalColors;
+import org.confluence.lib.common.component.ModRarity;
+import org.confluence.lib.common.recipe.ItemStackHandlerRecipeInput;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.block.AltarBlockModel;
+import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.saved.ConfluenceData;
+import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.item.HammerItems;
 import org.confluence.mod.common.recipe.AltarRecipe;
-import org.confluence.mod.common.recipe.ItemStackContainer;
-import org.confluence.mod.util.ModUtils;
-import org.confluence.terra_curio.common.component.ModRarity;
-import org.confluence.terra_curio.common.init.TCDataComponentTypes;
+import org.confluence.mod.mixed.IMinecraftServer;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.GeoItem;
@@ -98,7 +105,7 @@ public class AltarBlock extends BaseEntityBlock {
 
     @Override
     public float getDestroyProgress(BlockState pState, Player pPlayer, BlockGetter pLevel, BlockPos pPos) {
-        return pPlayer.getMainHandItem().is(ModTags.Items.HAMMER) ? super.getDestroyProgress(pState, pPlayer, pLevel, pPos) : 0.0F;
+        return pPlayer.getMainHandItem().is(ModTags.Items.HAMMERS) ? super.getDestroyProgress(pState, pPlayer, pLevel, pPos) : 0.0F;
     }
 
     @Override
@@ -109,16 +116,16 @@ public class AltarBlock extends BaseEntityBlock {
     @Override
     public void playerDestroy(Level pLevel, Player pPlayer, BlockPos pPos, BlockState pState, @Nullable BlockEntity pBlockEntity, ItemStack pTool) {
         super.playerDestroy(pLevel, pPlayer, pPos, pState, pBlockEntity, pTool);
-        if (pPlayer instanceof ServerPlayer serverPlayer) {
+        if (pPlayer instanceof ServerPlayer serverPlayer && IMinecraftServer.isHardmode(serverPlayer.server)) {
             ServerLevel serverLevel = serverPlayer.serverLevel();
             ConfluenceData data = ConfluenceData.get(serverLevel);
             if (data.increaseRevealStep(serverLevel)) {
                 serverLevel.getServer().getPlayerList().broadcastSystemMessage(Component.translatable(
                         "event.confluence.reveal_step" + data.getRevealStep()
-                ), false);
+                ).withColor(GlobalColors.MESSAGE.get()), false);
             }
             if (serverPlayer.getMainHandItem().is(HammerItems.PWNHAMMER)) {
-                AdvancementHolder holder = serverLevel.getServer().getAdvancements().get(Confluence.asResource("achievements/begone_evil"));
+                AdvancementHolder holder = serverLevel.getServer().getAdvancements().get(Confluence.asResource(ModAchievements.PREFIX + "begone_evil"));
                 if (holder != null) {
                     serverPlayer.getAdvancements().award(holder, "never");
                 }
@@ -129,7 +136,7 @@ public class AltarBlock extends BaseEntityBlock {
     @Override
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
         if (pLevel.getBlockEntity(pPos) instanceof Entity entity) {
-            Containers.dropContents(pLevel, pPos, entity.itemHandler);
+            Containers.dropContents(pLevel, pPos, entity.itemHandler.getItems());
             pLevel.removeBlockEntity(pPos);
         }
     }
@@ -141,6 +148,10 @@ public class AltarBlock extends BaseEntityBlock {
                 player.addItem(entity.takeItem(-1));
             } else { // 存物品
                 player.setItemInHand(hand, entity.addItem(player.getItemInHand(hand)));
+                if (CommonConfigs.ALTAR_TIPS.get()) {
+                    player.sendSystemMessage(Component.translatable("message.confluence.altar_tips.0"));
+                    player.sendSystemMessage(Component.translatable("message.confluence.altar_tips.1"));
+                }
             }
         }
         return ItemInteractionResult.sidedSuccess(level.isClientSide);
@@ -156,7 +167,7 @@ public class AltarBlock extends BaseEntityBlock {
                     crafted = true;
                     AltarRecipe recipe = recipes.getFirst().value(); // 先只取第一个合成表
                     ItemStack result = recipe.assembleAndExtract(entity.itemHandler, pLevel.registryAccess());
-                    ModUtils.createItemEntity(result, pPos.getX() + 0.5, pPos.getY() + 0.75, pPos.getZ() + 0.5, pLevel, 0);
+                    LibUtils.createItemEntity(result, pPos.getX() + 0.5, pPos.getY() + 0.75, pPos.getZ() + 0.5, pLevel, 0);
                 }
                 if (crafted) entity.playAnimation(serverLevel, pPos);
             } else { // 合成一个
@@ -164,7 +175,7 @@ public class AltarBlock extends BaseEntityBlock {
                 if (recipes.isEmpty()) return;
                 AltarRecipe recipe = recipes.getFirst().value(); // 先只取第一个合成表
                 ItemStack result = recipe.assembleAndExtract(entity.itemHandler, pLevel.registryAccess());
-                ModUtils.createItemEntity(result, pPos.getX() + 0.5, pPos.getY() + 0.75, pPos.getZ() + 0.5, pLevel, 0);
+                LibUtils.createItemEntity(result, pPos.getX() + 0.5, pPos.getY() + 0.75, pPos.getZ() + 0.5, pLevel, 0);
                 entity.playAnimation(serverLevel, pPos);
             }
         }
@@ -176,15 +187,26 @@ public class AltarBlock extends BaseEntityBlock {
         return new Entity(pPos, pState).setVariant(variant);
     }
 
-    public static class Entity extends BlockEntity implements GeoBlockEntity {
+    public static boolean hurtPlayerIfBrokenNotAllowed(Player player, BlockState blockState) {
+        if (!player.hasInfiniteMaterials() &&
+                blockState.getBlock() instanceof AltarBlock &&
+                !player.getMainHandItem().is(ModTags.Items.ABLE_TO_DESTROY_ALTAR)
+        ) {
+            player.hurt(player.damageSources().fellOutOfWorld(), player.getMaxHealth() / 2);
+            return true;
+        }
+        return false;
+    }
+
+    public static class Entity extends BaseContainerBlockEntity implements GeoBlockEntity {
         public static final int CONTAINER_SIZE = 6;
         private final AnimatableInstanceCache CACHE = GeckoLibUtil.createInstanceCache(this);
-        private final ItemStackContainer itemHandler; // 5 Inputs and 1 Output.
+        private final ItemStackHandlerRecipeInput itemHandler; // 5 Inputs and 1 Output.
         private Variant variant;
 
         public Entity(BlockPos pPos, BlockState pBlockState) {
             super(FunctionalBlocks.ALTAR_BLOCK_ENTITY.get(), pPos, pBlockState);
-            this.itemHandler = new ItemStackContainer(this, CONTAINER_SIZE);
+            this.itemHandler = new ItemStackHandlerRecipeInput(this, CONTAINER_SIZE);
             SingletonGeoAnimatable.registerSyncedAnimatable(this);
         }
 
@@ -253,6 +275,31 @@ public class AltarBlock extends BaseEntityBlock {
         }
 
         @Override
+        protected Component getDefaultName() {
+            return Component.empty();
+        }
+
+        @Override
+        protected NonNullList<ItemStack> getItems() {
+            return itemHandler.getItems();
+        }
+
+        @Override
+        protected void setItems(NonNullList<ItemStack> items) {
+            itemHandler.setItems(items);
+        }
+
+        @Override
+        public boolean canOpen(Player player) {
+            return false;
+        }
+
+        @Override
+        protected AbstractContainerMenu createMenu(int containerId, Inventory inventory) {
+            throw new UnsupportedOperationException();
+        }
+
+        @Override
         public ClientboundBlockEntityDataPacket getUpdatePacket() {
             return ClientboundBlockEntityDataPacket.create(this);
         }
@@ -300,13 +347,18 @@ public class AltarBlock extends BaseEntityBlock {
                         500, 0F, 0.0625F, 0F, 0.25F);
             }
         }
+
+        @Override
+        public int getContainerSize() {
+            return itemHandler.size();
+        }
     }
 
     public static class Item extends BlockItem implements GeoItem {
         private final AnimatableInstanceCache CACHE = GeckoLibUtil.createInstanceCache(this);
 
         public Item(AltarBlock pBlock) {
-            super(pBlock, new Properties().component(TCDataComponentTypes.MOD_RARITY, ModRarity.PURPLE));
+            super(pBlock, new Properties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.PURPLE));
         }
 
         @Override
@@ -314,7 +366,6 @@ public class AltarBlock extends BaseEntityBlock {
             consumer.accept(new GeoRenderProvider() {
                 private GeoItemRenderer<Item> renderer;
 
-                @SuppressWarnings("removal")
                 @Override
                 public BlockEntityWithoutLevelRenderer getGeoItemRenderer() {
                     if (renderer == null) {

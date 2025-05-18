@@ -21,7 +21,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.pathfinder.PathComputationType;
-import org.confluence.mod.util.ModUtils;
+import org.confluence.lib.util.LibUtils;
 
 public class BranchesBlock extends PipeBlock {
     public static final MapCodec<BranchesBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
@@ -55,7 +55,7 @@ public class BranchesBlock extends PipeBlock {
         BlockState dest = defaultBlockState();
         BlockState belowState = level.getBlockState(pos.below());
         boolean belowIsThis = belowState.is(this);
-        for (Direction direction : ModUtils.DIRECTIONS) {
+        for (Direction direction : LibUtils.DIRECTIONS) {
             BlockPos relative = pos.relative(direction);
             BlockState relativeState = level.getBlockState(relative);
             boolean shouldConnect = relativeState.is(this) || relativeState.is(attachable) || (direction == Direction.DOWN && relativeState.is(supporting));
@@ -71,7 +71,7 @@ public class BranchesBlock extends PipeBlock {
     private BlockState updateDistance(BlockState state, LevelAccessor level, BlockPos pos) {
         int i = DECAY_DISTANCE;
         int value = state.getValue(DISTANCE);
-        for (Direction direction : ModUtils.DIRECTIONS) {
+        for (Direction direction : LibUtils.DIRECTIONS) {
             if (direction == Direction.UP) continue;
             int distanceAt = getDistanceAt(level.getBlockState(pos.relative(direction)), direction);
             if (distanceAt < value) {
@@ -118,7 +118,7 @@ public class BranchesBlock extends PipeBlock {
         }
         int value = state.getValue(DISTANCE);
         if (value == 1) return true;
-        for (Direction direction : ModUtils.HORIZONTAL) {
+        for (Direction direction : LibUtils.HORIZONTAL) {
             BlockState stateAtSide = level.getBlockState(pos.relative(direction));
             int distanceAt = getDistanceAt(stateAtSide, direction);
             if (distanceAt < value || stateAtSide.is(attachable)) {

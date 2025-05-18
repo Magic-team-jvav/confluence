@@ -1,17 +1,24 @@
-| 项目名                                                  | 备注            | 是否独立运行                |
-|------------------------------------------------------|---------------|-----------------------|
-| [ConfluenceOtherworld](ConfluenceOtherworld) | 本体            | 依赖所有                  |
-| [TerraEntity](TerraEntity)                           | 泰拉实体生物        | 是                     |
-| [MineTeam](MineTeam)                                 | 类泰拉团队机制       | 是                     |
-| [EquipmentBenediction](EquipmentBenediction)         | 多种装备加成机制      | 是                     |
-| [TerraCurio](TerraCurio)                             | 泰拉饰品          | 是                     |
-| [TerraGuns](TerraGuns)                               | 泰拉枪支          | 是                     |
-| [ParticleStorm](ParticleStorm)                       | 为复杂的粒子提供API   | 是                     |
-| [HeavenDestinyMoment](HeavenDestinyMoment)           | 提供各类事件机制API   | 是                     |
-| [PhaseJourney](PhaseJourney)                         | 提供各类阶游戏段机制API | 是                     |
-| [TerraMoment](TerraMoment)                           | 泰拉事件          | 依赖HeavenDestinyMoment |
-| [IsekaiInvaded](IsekaiInvaded)                       | 多维度入侵事件       | 依赖HeavenDestinyMoment |
-| [TerraFurniture](TerraFurniture)                     | 泰拉家具          | 是                     |
+- [English](README-en_us.md)
+
+| 项目名                                                         | 备注                | 是否独立运行                |
+|-------------------------------------------------------------|-------------------|-----------------------|
+| [ConfluenceOtherworld](ConfluenceOtherworld)                | 本体                | 依赖所有                  |
+| [TerraEntity](TerraEntity)                                  | 泰拉实体生物            | 是                     |
+| [MineTeam](MineTeam)                                        | 类泰拉团队机制           | 是                     |
+| [EquipmentBenediction](EquipmentBenediction)                | 多种装备加成机制          | 是                     |
+| [TerraCurio](TerraCurio)                                    | 泰拉饰品              | 是                     |
+| [TerraGuns](TerraGuns)                                      | 泰拉枪支              | 是                     |
+| [ParticleStorm](https://github.com/westernat/ParticleStorm) | 为复杂的粒子提供API       | 是                     |
+| [HeavenDestinyMoment](HeavenDestinyMoment)                  | 提供各类事件机制API       | 是                     |
+| [PhaseJourney](PhaseJourney)                                | 提供各类阶游戏段机制API     | 是                     |
+| [TerraMoment](TerraMoment)                                  | 泰拉事件              | 依赖HeavenDestinyMoment |
+| [IsekaiInvaded](IsekaiInvaded)                              | 多维度入侵事件           | 依赖HeavenDestinyMoment |
+| [TerraFurniture](TerraFurniture)                            | 泰拉家具              | 是                     |
+| [EntityTrackerHUD](EntityTrackerHUD)                        | 提供包括Boss实体的实时位置提示 | 是                     |
+
+| 官方附属                                                                | 备注   |
+|---------------------------------------------------------------------|------|
+| [ConfluenceDelight](https://github.com/XiaoHuNao/ConfluenceDelight) | 汇流乐事 |
 
 ## 构建项目
 
@@ -26,6 +33,6 @@
     git submodule add -b "分支名" "url"
   ~~~
   > 还需要在[settings.gradle](settings.gradle)
-  以及[ConfluenceOtherworld/build.gradle](ConfluenceOtherworld/build.gradle)里加上子模块名
+  > 以及[ConfluenceOtherworld/build.gradle](ConfluenceOtherworld/build.gradle)里加上子模块名
 
 - 全部拉取完成后,在gradle插件中启动ConfluenceOtherworld本体项目中的runClient命令

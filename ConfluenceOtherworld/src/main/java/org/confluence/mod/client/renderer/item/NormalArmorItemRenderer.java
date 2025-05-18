@@ -3,10 +3,11 @@ package org.confluence.mod.client.renderer.item;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.Item;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModAttachmentTypes;
-import org.confluence.mod.common.item.armor.NormalArmorItem;
 import org.confluence.mod.util.ClientUtils;
+import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.model.DefaultedItemGeoModel;
 import software.bernie.geckolib.renderer.specialty.DyeableGeoArmorRenderer;
@@ -14,9 +15,9 @@ import software.bernie.geckolib.util.Color;
 
 import java.util.OptionalInt;
 
-import static org.confluence.mod.util.ModUtils.getSlotIndex;
+import static org.confluence.lib.util.LibUtils.getSlotIndex;
 
-public class NormalArmorItemRenderer extends DyeableGeoArmorRenderer<NormalArmorItem> {
+public class NormalArmorItemRenderer<T extends Item & GeoItem> extends DyeableGeoArmorRenderer<T> {
     public NormalArmorItemRenderer(String path) {
         super(new DefaultedItemGeoModel<>(Confluence.asResource(path)));
     }
@@ -36,7 +37,7 @@ public class NormalArmorItemRenderer extends DyeableGeoArmorRenderer<NormalArmor
     }
 
     @Override
-    public ResourceLocation getTextureLocation(NormalArmorItem animatable) {
+    public ResourceLocation getTextureLocation(T animatable) {
         ResourceLocation original = super.getTextureLocation(animatable);
         if (currentSlot != null && currentEntity instanceof AbstractClientPlayer) {
             if (!currentEntity.getData(ModAttachmentTypes.EXTRA_INVENTORY).getVanityArmorDye(getSlotIndex(currentSlot)).isEmpty()) {

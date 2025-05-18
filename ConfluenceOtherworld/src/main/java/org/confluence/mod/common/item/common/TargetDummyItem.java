@@ -3,10 +3,10 @@ package org.confluence.mod.common.item.common;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.common.component.ModRarity;
+import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.mod.common.entity.TargetDummyEntity;
 import org.confluence.mod.common.init.ModEntities;
-import org.confluence.mod.common.item.CustomRarityItem;
-import org.confluence.terra_curio.common.component.ModRarity;
 
 public class TargetDummyItem extends CustomRarityItem {
     public TargetDummyItem() {

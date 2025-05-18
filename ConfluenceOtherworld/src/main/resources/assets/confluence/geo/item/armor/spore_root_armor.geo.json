@@ -3,7 +3,7 @@
 	"minecraft:geometry": [
 		{
 			"description": {
-				"identifier": "geometry.spore_root_armor",
+				"identifier": "geometry.unknown",
 				"texture_width": 128,
 				"texture_height": 128,
 				"visible_bounds_width": 3,
@@ -36,7 +36,10 @@
 					"parent": "bipedBody",
 					"pivot": [0, 24, 0],
 					"cubes": [
-						{"origin": [-4, 12, -2], "size": [8, 12, 4], "inflate": 1.01, "uv": [0, 32]}
+						{"origin": [-4, 12, -2], "size": [8, 12, 4], "inflate": 0.76, "uv": [0, 32]},
+						{"origin": [7.75, 12, 1], "size": [0, 18, 11], "pivot": [7.75, 21, 8], "rotation": [0, 30, 0], "uv": [72, 50]},
+						{"origin": [-7.75, 12, 1], "size": [0, 18, 11], "pivot": [-7.75, 21, 8], "rotation": [0, -30, 0], "uv": [0, 53], "mirror": true},
+						{"origin": [-4, 12, -2], "size": [8, 12, 4], "inflate": 1.26, "uv": [66, 29]}
 					]
 				},
 				{
@@ -56,7 +59,8 @@
 					"parent": "bipedLeftArm",
 					"pivot": [4, 22, 0],
 					"cubes": [
-						{"origin": [4, 12, -2], "size": [4, 12, 4], "inflate": 1, "uv": [40, 45]}
+						{"origin": [4, 12, -2], "size": [4, 12, 4], "inflate": 0.75, "uv": [40, 45]},
+						{"origin": [4, 12, -2], "size": [4, 12, 4], "inflate": 1, "uv": [40, 61]}
 					]
 				},
 				{
@@ -68,7 +72,8 @@
 					"parent": "bipedRightArm",
 					"pivot": [-4, 22, 0],
 					"cubes": [
-						{"origin": [-8, 12, -2], "size": [4, 12, 4], "inflate": 1, "uv": [24, 45]}
+						{"origin": [-8, 12, -2], "size": [4, 12, 4], "inflate": 0.75, "uv": [24, 45]},
+						{"origin": [-8, 12, -2], "size": [4, 12, 4], "inflate": 1, "uv": [24, 61]}
 					]
 				},
 				{
@@ -80,7 +85,8 @@
 					"parent": "bipedLeftLeg",
 					"pivot": [2, 12, 0],
 					"cubes": [
-						{"origin": [-0.1, 0, -2], "size": [4, 12, 4], "inflate": 0.5, "uv": [56, 0]}
+						{"origin": [-0.1, 0, -2], "size": [4, 12, 4], "inflate": 0.5, "uv": [56, 0]},
+						{"origin": [-0.1, 0, -2], "size": [4, 12, 4], "inflate": 0.74, "uv": [72, 45]}
 					]
 				},
 				{
@@ -100,7 +106,8 @@
 					"parent": "bipedRightLeg",
 					"pivot": [-2, 12, 0],
 					"cubes": [
-						{"origin": [-3.9, 0, -2], "size": [4, 12, 4], "inflate": 0.5, "uv": [56, 45]}
+						{"origin": [-3.9, 0, -2], "size": [4, 12, 4], "inflate": 0.5, "uv": [56, 45]},
+						{"origin": [-3.9, 0, -2], "size": [4, 12, 4], "inflate": 0.74, "uv": [56, 61]}
 					]
 				},
 				{

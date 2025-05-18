@@ -4,18 +4,23 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import org.confluence.lib.common.menu.IToggleSlot;
+import org.confluence.terra_curio.TerraCurio;
+import org.confluence.terra_curio.common.init.TCTags;
+import org.confluence.terra_curio.common.item.curio.BaseCurioItem;
+import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
 
 public class ToggleCurioSlot extends Slot implements IToggleSlot {
     public boolean isActive = true;
+    private final Player player;
 
-    public ToggleCurioSlot(Container container, int slot, int x, int y) {
+    public ToggleCurioSlot(Player player, Container container, int slot, int x, int y) {
         super(container, slot, x, y);
-    }
-
-    public ToggleCurioSlot(ICurioStacksHandler handler, int slot, int x, int y) {
-        super(new WrappedContainer(handler), slot, x, y);
+        this.player = player;
     }
 
     @Override
@@ -25,12 +30,16 @@ public class ToggleCurioSlot extends Slot implements IToggleSlot {
 
     @Override
     public boolean mayPlace(ItemStack stack) {
-        return false;
+        if (stack.getItem() instanceof BaseCurioItem baseCurioItem) {
+            return baseCurioItem.canEquip(new SlotContext(TerraCurio.CURIO_SLOT, player, getSlotIndex(), false, true), stack);
+        }
+        return stack.is(TCTags.ACCESSORY);
     }
 
     @Override
     public boolean mayPickup(Player player) {
-        return false;
+        ItemStack itemstack = getItem();
+        return (itemstack.isEmpty() || player.isCreative() || !EnchantmentHelper.has(itemstack, EnchantmentEffectComponents.PREVENT_ARMOR_CHANGE)) && super.mayPickup(player);
     }
 
     @Override

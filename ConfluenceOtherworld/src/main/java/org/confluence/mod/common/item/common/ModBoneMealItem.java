@@ -18,7 +18,7 @@ import net.minecraft.world.phys.AABB;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.ConsumableItems;
-import org.confluence.terraentity.init.TEEntities;
+import org.confluence.terraentity.init.entity.TEMonsterEntities;
 
 import java.util.List;
 
@@ -39,10 +39,10 @@ public class ModBoneMealItem extends Item {
                     LivingEntity newEntity = null;
                     if (stack.is(ConsumableItems.BLOODSTAINED_POWDER.get()) && entityType == EntityType.CREEPER) {
                         entity.remove(Entity.RemovalReason.KILLED);
-                        newEntity = TEEntities.BLOODY_SPORE.value().create(level);
+                        newEntity = TEMonsterEntities.BLOODY_SPORE.value().create(level);
                     } else if (stack.is(ConsumableItems.ROTTEN_BONE_DUST.get()) && entityType == EntityType.SKELETON) {
                         entity.remove(Entity.RemovalReason.KILLED);
-                        newEntity = TEEntities.DECAYEDER.value().create(level);
+                        newEntity = TEMonsterEntities.DECAYEDER.value().create(level);
                     }
                     if (newEntity != null) {
                         newEntity.setPos(entity.getX(), entity.getY(), entity.getZ());

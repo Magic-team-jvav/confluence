@@ -11,31 +11,34 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
+import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.util.PlayerUtils;
-import org.confluence.terra_curio.common.component.ModRarity;
-import org.confluence.terra_curio.common.init.TCDataComponentTypes;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import static net.minecraft.world.level.block.Block.dropResources;
 
-public class BaseAxeItem extends AxeItem {
-    public BaseAxeItem(Tier tier, float rawDamage, float rawSpeed) {
-        this(tier, rawDamage, rawSpeed, ModRarity.WHITE);
-    }
-
-    public BaseAxeItem(Tier tier, float rawDamage, float rawSpeed, ModRarity rarity) {
+public class BaseAxeItem extends AxeItem {public BaseAxeItem(Tier tier, float rawDamage, float rawSpeed, ModRarity rarity) {
         this(tier, rawDamage, rawSpeed, new Properties(), rarity);
     }
 
     public BaseAxeItem(Tier tier, float rawDamage, float rawSpeed, Properties properties, ModRarity rarity) {
-        super(tier, properties.component(TCDataComponentTypes.MOD_RARITY, rarity)
+        super(tier, properties.component(ConfluenceMagicLib.MOD_RARITY, rarity)
                 .component(DataComponents.ATTRIBUTE_MODIFIERS, createAttributes(tier, (rawDamage - tier.getAttackDamageBonus() - 1), rawSpeed - 4)));
+    }
+
+    public BaseAxeItem(Tier tier, float rawDamage, float rawSpeed, Properties properties, Consumer<ItemAttributeModifiers.Builder> consumer, ModRarity rarity) {
+        super(tier, properties.component(ConfluenceMagicLib.MOD_RARITY, rarity)
+                .component(DataComponents.ATTRIBUTE_MODIFIERS, ModItems.createAttributes(tier, (rawDamage - tier.getAttackDamageBonus() - 1), rawSpeed - 4, consumer)));
     }
 
     public static void dropAndPlaceOnRightClick(Player player, ItemStack stack, BlockPos pos) {

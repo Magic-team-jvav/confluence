@@ -39,34 +39,37 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.confluence.mod.common.block.HorizontalDirectionalWithHorizontalTwoPartBlock;
-import org.confluence.mod.common.block.StateProperties;
+import org.confluence.lib.common.block.HorizontalDirectionalWithHorizontalTwoPartBlock;
+import org.confluence.lib.common.block.StateProperties;
+import org.confluence.lib.common.recipe.ArrayRecipeInput;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.menu.HellforgeMenu;
-import org.confluence.mod.common.recipe.ArrayRecipeInput;
 import org.confluence.mod.common.recipe.HellforgeRecipe;
-import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.Comparator;
+import java.util.Optional;
 import java.util.function.BooleanSupplier;
 
 import static org.confluence.mod.common.menu.HellforgeMenu.*;
 
 public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBlock implements EntityBlock {
     public static final MapCodec<HellforgeBlock> CODEC = simpleCodec(HellforgeBlock::new);
-    private static final VoxelShape BASE_SHAPE_SOUTH = box(3, 0, 3, 16, 16, 13);
-    private static final VoxelShape BASE_SHAPE_WEST = box(3, 0, 3, 13, 16, 16);
-    private static final VoxelShape BASE_SHAPE_NORTH = box(0, 0, 3, 13, 16, 13);
-    private static final VoxelShape BASE_SHAPE_EAST = box(3, 0, 0, 13, 16, 13);
-    private static final VoxelShape RIGHT_SHAPE_SOUTH = box(0, 0, 3, 13, 16, 13);
-    private static final VoxelShape RIGHT_SHAPE_WEST = box(3, 0, 0, 13, 16, 13);
-    private static final VoxelShape RIGHT_SHAPE_NORTH = box(3, 0, 3, 16, 16, 13);
-    private static final VoxelShape RIGHT_SHAPE_EAST = box(3, 0, 3, 13, 16, 16);
-    private static final VoxelShape[] BASE_SHAPES = new VoxelShape[]{BASE_SHAPE_SOUTH, BASE_SHAPE_WEST, BASE_SHAPE_NORTH, BASE_SHAPE_EAST};
-    private static final VoxelShape[] RIGHT_SHAPES = new VoxelShape[]{RIGHT_SHAPE_SOUTH, RIGHT_SHAPE_WEST, RIGHT_SHAPE_NORTH, RIGHT_SHAPE_EAST};
+    private static final VoxelShape[] BASE_SHAPES = new VoxelShape[]{
+            box(3, 0, 3, 16, 16, 13),
+            box(3, 0, 3, 13, 16, 16),
+            box(0, 0, 3, 13, 16, 13),
+            box(3, 0, 0, 13, 16, 13)
+    };
+    private static final VoxelShape[] RIGHT_SHAPES = new VoxelShape[]{
+            box(0, 0, 3, 13, 16, 13),
+            box(3, 0, 0, 13, 16, 13),
+            box(3, 0, 3, 16, 16, 13),
+            box(3, 0, 3, 13, 16, 16)
+    };
 
     public HellforgeBlock(Properties properties) {
         super(properties);
@@ -109,8 +112,7 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
     @Override
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
         if (!pState.is(pNewState.getBlock())) {
-            BlockEntity blockentity = pLevel.getBlockEntity(pPos);
-            if (blockentity instanceof Entity entity && pState.getValue(StateProperties.HORIZONTAL_TWO_PART).isBase()) {
+            if (pLevel.getBlockEntity(pPos) instanceof Entity entity && pState.getValue(StateProperties.HORIZONTAL_TWO_PART).isBase()) {
                 if (pLevel instanceof ServerLevel serverLevel) {
                     Containers.dropContents(pLevel, pPos, entity);
                     entity.getRecipesToAwardAndPopExperience(serverLevel, Vec3.atCenterOf(pPos));
@@ -128,13 +130,13 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
     }
 
     @Override
-    public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new Entity(pos, state);
     }
 
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-        return level.isClientSide || state.getValue(StateProperties.HORIZONTAL_TWO_PART).isRight() ? null : ModUtils.getTicker(blockEntityType, FunctionalBlocks.HELLFORGE_ENTITY.get(), Entity::serverTick);
+        return level.isClientSide || state.getValue(StateProperties.HORIZONTAL_TWO_PART).isRight() ? null : LibUtils.getTicker(blockEntityType, FunctionalBlocks.HELLFORGE_ENTITY.get(), Entity::serverTick);
     }
 
     public static class Entity extends BaseContainerBlockEntity implements WorldlyContainer, RecipeCraftingHolder {
@@ -187,88 +189,131 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
 
             @Override
             public int getCount() {
-                return HellforgeMenu.DATA_COUNT;
+                return DATA_COUNT;
             }
         };
         private final Object2IntOpenHashMap<ResourceLocation> recipesUsed = new Object2IntOpenHashMap<>();
         private final RecipeManager.CachedCheck<RecipeInput, HellforgeRecipe> hellforge;
         private final RecipeManager.CachedCheck<SingleRecipeInput, BlastingRecipe> blasting;
-        private final ItemStack[] inputs = new ItemStack[4];
+        private final ItemStack[] itemStacks = new ItemStack[4];
+        private int lastCheckSlot = 0;
 
         public Entity(BlockPos pos, BlockState blockState) {
             super(FunctionalBlocks.HELLFORGE_ENTITY.get(), pos, blockState);
-            this.hellforge = RecipeManager.createCheck(ModRecipes.HELLFORGE_TYPE.get());
+            this.hellforge = new RecipeManager.CachedCheck<>() {
+                @Nullable
+                private RecipeHolder<HellforgeRecipe> lastRecipe;
+                private int lastIngredientCount = 0;
+
+                @Override
+                public Optional<RecipeHolder<HellforgeRecipe>> getRecipeFor(RecipeInput recipeInput, Level level) {
+                    int count = 0;
+                    for (int i = 0; i < recipeInput.size(); i++) {
+                        if (!recipeInput.getItem(i).isEmpty()) count++;
+                    }
+                    if (count == 0) return Optional.empty();
+
+                    if (lastRecipe != null && lastRecipe.value().matches(recipeInput, level)) {
+                        if (count == lastIngredientCount) {
+                            return Optional.of(lastRecipe);
+                        }
+                        this.lastIngredientCount = count;
+                    }
+
+                    Optional<RecipeHolder<HellforgeRecipe>> recipe = level.getRecipeManager()
+                            .byType(ModRecipes.HELLFORGE_TYPE.get()).stream()
+                            .filter(holder -> holder.value().matches(recipeInput, level))
+                            .max(Comparator.comparingInt(holder -> holder.value().ingredients.size()));
+                    if (recipe.isPresent()) {
+                        this.lastRecipe = recipe.get();
+                        return recipe;
+                    }
+                    return Optional.empty();
+                }
+            };
             this.blasting = RecipeManager.createCheck(RecipeType.BLASTING);
         }
 
-        public static void serverTick(Level level, BlockPos pos, BlockState state, HellforgeBlock.Entity blockEntity) {
+        public static void serverTick(Level level, BlockPos pos, BlockState state, Entity blockEntity) {
             boolean isLit = blockEntity.isLit();
-            boolean update = false;
-            if (blockEntity.isLit()) {
+            boolean[] data = new boolean[2];
+            if (isLit) {
                 blockEntity.litTime--;
                 resetCookTime(blockEntity);
             }
 
-            ItemStack[] inputs = blockEntity.getInputs();
+            ItemStack[] itemStacks = blockEntity.getItemStacks();
             ItemStack fuel = blockEntity.items.get(FUEL_SLOT);
-            List<ItemStack> list = Arrays.stream(inputs).filter(itemStack -> !itemStack.isEmpty()).toList();
-            boolean hasInput = !list.isEmpty();
+            boolean hasItem = !itemStacks[0].isEmpty() || !itemStacks[1].isEmpty() || !itemStacks[2].isEmpty() || !itemStacks[3].isEmpty();;
             boolean hellforgeMatched = false;
 
-            if (hasInput) {
-                RecipeHolder<HellforgeRecipe> recipeholder = blockEntity.hellforge.getRecipeFor(new ArrayRecipeInput(inputs), level).orElse(null);
+            if (hasItem) {
+                RecipeHolder<HellforgeRecipe> recipeholder = blockEntity.hellforge.getRecipeFor(new ArrayRecipeInput(itemStacks), level).orElse(null);
                 if (recipeholder != null) {
-                    int maxStackSize = blockEntity.getMaxStackSize();
-                    if (!blockEntity.isLit() && canHellforgeBurn(level.registryAccess(), recipeholder, blockEntity.items, maxStackSize, blockEntity)) {
-                        update = doUpdateStatus(blockEntity, fuel);
+                    if (!blockEntity.isLit() && canHellforgeBurn(level.registryAccess(), recipeholder, blockEntity.items, blockEntity)) {
+                        data[0] = doUpdateStatus(blockEntity, fuel);
                     }
-                    if (canHellforgeBurn(level.registryAccess(), recipeholder, blockEntity.items, maxStackSize, blockEntity)) {
-                        if (doUpdateProgress(blockEntity, level, recipeholder, () -> burnHellforge(level.registryAccess(), recipeholder, blockEntity.items, maxStackSize, blockEntity))) {
-                            update = true;
+                    if (canHellforgeBurn(level.registryAccess(), recipeholder, blockEntity.items, blockEntity)) {
+                        if (doUpdateProgress(blockEntity, level, recipeholder, () -> burnHellforge(level.registryAccess(), recipeholder, blockEntity.items, blockEntity))) {
+                            data[0] = true;
                         }
                     }
                     hellforgeMatched = true;
                 }
             }
 
-            boolean blastingMatched = false;
-            if (hasInput && !hellforgeMatched) {
-                for (ItemStack input : list) {
-                    RecipeHolder<BlastingRecipe> recipeholder = blockEntity.blasting.getRecipeFor(new SingleRecipeInput(input), level).orElse(null);
-                    if (recipeholder != null) {
-                        int maxStackSize = blockEntity.getMaxStackSize();
-                        if (!blockEntity.isLit() && canBlastingBurn(level.registryAccess(), recipeholder, blockEntity.items, maxStackSize, input)) {
-                            update = doUpdateStatus(blockEntity, fuel);
+            if (hasItem && !hellforgeMatched) {
+                ItemStack lastInput = itemStacks[blockEntity.lastCheckSlot];
+                RecipeHolder<BlastingRecipe> recipeholder;
+                SingleRecipeInput recipeInput;
+                if (!lastInput.isEmpty() &&
+                        (recipeholder = blockEntity.blasting.getRecipeFor(recipeInput = new SingleRecipeInput(lastInput), level).orElse(null)) != null &&
+                        recipeholder.value().matches(recipeInput, level)
+                ) {
+                    doBlasting(level, blockEntity, recipeholder, lastInput, data, fuel);
+                } else {
+                    for (int i = 0; i < itemStacks.length; i++) {
+                        ItemStack input = itemStacks[i];
+                        if (input.isEmpty()) continue;
+                        recipeholder = blockEntity.blasting.getRecipeFor(new SingleRecipeInput(input), level).orElse(null);
+                        if (recipeholder != null) {
+                            doBlasting(level, blockEntity, recipeholder, input, data, fuel);
+                            blockEntity.lastCheckSlot = i;
+                            break;
                         }
-                        if (canBlastingBurn(level.registryAccess(), recipeholder, blockEntity.items, maxStackSize, input)) {
-                            if (doUpdateProgress(blockEntity, level, recipeholder, () -> burnBlasting(level.registryAccess(), recipeholder, blockEntity.items, maxStackSize, input))) {
-                                update = true;
-                            }
-                        }
-                        blastingMatched = true;
-                        break;
                     }
                 }
             }
 
-            if (!blastingMatched && !hellforgeMatched) {
+            if (!data[1] && !hellforgeMatched) {
                 blockEntity.cookingProgress = 0;
             }
 
             if (isLit != blockEntity.isLit()) {
-                update = true;
+                data[0] = true;
                 state = state.setValue(AbstractFurnaceBlock.LIT, blockEntity.useFuel());
                 level.setBlockAndUpdate(pos, state);
             }
 
-            if (update) {
+            if (data[0]) {
                 setChanged(level, pos, state);
             }
         }
 
+        private static void doBlasting(Level level, Entity blockEntity, RecipeHolder<BlastingRecipe> recipeholder, ItemStack lastInput, boolean[] data, ItemStack fuel) {
+            if (!blockEntity.isLit() && canBlastingBurn(level.registryAccess(), recipeholder, blockEntity.items, lastInput)) {
+                data[0] = doUpdateStatus(blockEntity, fuel);
+            }
+            if (canBlastingBurn(level.registryAccess(), recipeholder, blockEntity.items, lastInput)) {
+                if (doUpdateProgress(blockEntity, level, recipeholder, () -> burnBlasting(level.registryAccess(), recipeholder, blockEntity.items, lastInput))) {
+                    data[0] = true;
+                }
+            }
+            data[1] = true;
+        }
+
         private static boolean doUpdateProgress(Entity blockEntity, Level level, RecipeHolder<?> recipeholder, BooleanSupplier supplier) {
-            blockEntity.cookingProgress++;
-            if (blockEntity.cookingProgress == blockEntity.cookingTotalTime) {
+            if (++blockEntity.cookingProgress >= blockEntity.cookingTotalTime) {
                 blockEntity.cookingProgress = 0;
                 if (!blockEntity.isLit()) {
                     blockEntity.cookingTotalTime = getTotalCookTime(level, blockEntity);
@@ -323,16 +368,16 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
             }
         }
 
-        private static boolean canBlastingBurn(RegistryAccess registryAccess, RecipeHolder<BlastingRecipe> recipe, NonNullList<ItemStack> inventory, int maxStackSize, ItemStack input) {
+        private static boolean canBlastingBurn(RegistryAccess registryAccess, RecipeHolder<BlastingRecipe> recipe, NonNullList<ItemStack> inventory, ItemStack input) {
             if (!input.isEmpty()) {
                 ItemStack neoResult = recipe.value().assemble(new SingleRecipeInput(input), registryAccess);
-                return canResultInsert(inventory, maxStackSize, neoResult);
+                return canResultInsert(inventory, neoResult);
             } else {
                 return false;
             }
         }
 
-        private static boolean canResultInsert(NonNullList<ItemStack> inventory, int maxStackSize, ItemStack neoResult) {
+        private static boolean canResultInsert(NonNullList<ItemStack> inventory, ItemStack neoResult) {
             if (neoResult.isEmpty()) {
                 return false;
             } else {
@@ -342,13 +387,13 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
                 } else if (!ItemStack.isSameItemSameComponents(oldResult, neoResult)) {
                     return false;
                 } else {
-                    return oldResult.getCount() + neoResult.getCount() <= maxStackSize && oldResult.getCount() + neoResult.getCount() <= oldResult.getMaxStackSize() || oldResult.getCount() + neoResult.getCount() <= neoResult.getMaxStackSize();
+                    return oldResult.getCount() + neoResult.getCount() <= LibUtils.MAX_STACK_SIZE && oldResult.getCount() + neoResult.getCount() <= oldResult.getMaxStackSize() || oldResult.getCount() + neoResult.getCount() <= neoResult.getMaxStackSize();
                 }
             }
         }
 
-        private static boolean burnBlasting(RegistryAccess registryAccess, RecipeHolder<BlastingRecipe> recipe, NonNullList<ItemStack> inventory, int maxStackSize, ItemStack input) {
-            if (canBlastingBurn(registryAccess, recipe, inventory, maxStackSize, input)) {
+        private static boolean burnBlasting(RegistryAccess registryAccess, RecipeHolder<BlastingRecipe> recipe, NonNullList<ItemStack> inventory, ItemStack input) {
+            if (canBlastingBurn(registryAccess, recipe, inventory, input)) {
                 ItemStack neoResult = recipe.value().assemble(new SingleRecipeInput(input), registryAccess);
                 ItemStack oldResult = inventory.get(RESULT_SLOT);
                 if (oldResult.isEmpty()) {
@@ -368,24 +413,26 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
             }
         }
 
-        private static boolean canHellforgeBurn(RegistryAccess registryAccess, RecipeHolder<HellforgeRecipe> recipe, NonNullList<ItemStack> inventory, int maxStackSize, HellforgeBlock.Entity furnace) {
-            ItemStack[] inputs = furnace.inputs;
+        private static boolean canHellforgeBurn(RegistryAccess registryAccess, RecipeHolder<HellforgeRecipe> recipe, NonNullList<ItemStack> inventory, HellforgeBlock.Entity furnace) {
+            ItemStack[] inputs = furnace.itemStacks;
             if ((!recipe.value().isRequiresFuel() || (furnace.useFuel() || furnace.isLit() || !furnace.getItem(FUEL_SLOT).isEmpty())) && Arrays.stream(inputs).anyMatch(itemStack -> !itemStack.isEmpty())) {
                 ItemStack neoResult = recipe.value().getResultItem(registryAccess);
-                return canResultInsert(inventory, maxStackSize, neoResult);
+                return canResultInsert(inventory, neoResult);
             } else {
                 return false;
             }
         }
 
-        private static boolean burnHellforge(RegistryAccess registryAccess, RecipeHolder<HellforgeRecipe> recipe, NonNullList<ItemStack> inventory, int maxStackSize, HellforgeBlock.Entity furnace) {
-            if (canHellforgeBurn(registryAccess, recipe, inventory, maxStackSize, furnace)) {
-                for (ItemStack input : furnace.inputs) {
-                    if (input.is(Blocks.WET_SPONGE.asItem()) && inventory.get(FUEL_SLOT).is(Items.BUCKET)) {
-                        inventory.set(FUEL_SLOT, Items.WATER_BUCKET.getDefaultInstance());
+        private static boolean burnHellforge(RegistryAccess registryAccess, RecipeHolder<HellforgeRecipe> recipe, NonNullList<ItemStack> inventory, HellforgeBlock.Entity furnace) {
+            if (canHellforgeBurn(registryAccess, recipe, inventory, furnace)) {
+                if (inventory.get(FUEL_SLOT).is(Items.BUCKET)) {
+                    for (ItemStack input : furnace.itemStacks) {
+                        if (input.is(Items.WET_SPONGE)) {
+                            inventory.set(FUEL_SLOT, Items.WATER_BUCKET.getDefaultInstance());
+                        }
                     }
                 }
-                ItemStack neoResult = recipe.value().assembleAndExtract(new ArrayRecipeInput(furnace.inputs), registryAccess);
+                ItemStack neoResult = recipe.value().assembleAndExtract(new ArrayRecipeInput(furnace.itemStacks), registryAccess);
                 ItemStack oldResult = inventory.get(RESULT_SLOT);
                 if (oldResult.isEmpty()) {
                     inventory.set(RESULT_SLOT, neoResult.copy());
@@ -397,7 +444,6 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
                 return false;
             }
         }
-
 
         protected int getBurnDuration(ItemStack fuel) {
             if (fuel.isEmpty()) {
@@ -415,16 +461,16 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
             return litTime > 0;
         }
 
-        protected ItemStack[] getInputs() {
-            this.inputs[0] = items.get(0);
-            this.inputs[1] = items.get(1);
-            this.inputs[2] = items.get(2);
-            this.inputs[3] = items.get(3);
-            return inputs;
+        protected ItemStack[] getItemStacks() {
+            this.itemStacks[0] = items.get(0);
+            this.itemStacks[1] = items.get(1);
+            this.itemStacks[2] = items.get(2);
+            this.itemStacks[3] = items.get(3);
+            return itemStacks;
         }
 
-        private static int getTotalCookTime(Level level, HellforgeBlock.Entity blockEntity) {
-            int time = blockEntity.hellforge.getRecipeFor(new ArrayRecipeInput(blockEntity.getInputs()), level).map(holder -> holder.value().getCookingTime()).orElse(100);
+        private static int getTotalCookTime(Level level, Entity blockEntity) {
+            int time = blockEntity.hellforge.getRecipeFor(new ArrayRecipeInput(blockEntity.getItemStacks()), level).map(holder -> holder.value().getCookingTime()).orElse(100);
             if (!blockEntity.items.get(FUEL_SLOT).isEmpty()) {
                 return time;
             }
@@ -432,7 +478,7 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
         }
 
         @Override
-        public int [] getSlotsForFace(Direction side) {
+        public int[] getSlotsForFace(Direction side) {
             if (side == Direction.DOWN) {
                 return SLOTS_FOR_DOWN;
             } else {
@@ -447,7 +493,7 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
 
         @Override
         public boolean canTakeItemThroughFace(int index, ItemStack stack, Direction direction) {
-            return direction != Direction.DOWN || index != 1 || stack.is(Items.WATER_BUCKET) || stack.is(Items.BUCKET);
+            return direction != Direction.DOWN || index != FUEL_SLOT || stack.is(Items.WATER_BUCKET) || stack.is(Items.BUCKET);
         }
 
         @Override
@@ -522,8 +568,7 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
         @Override
         public void setRecipeUsed(@Nullable RecipeHolder<?> recipe) {
             if (recipe != null) {
-                ResourceLocation resourcelocation = recipe.id();
-                recipesUsed.addTo(resourcelocation, 1);
+                recipesUsed.addTo(recipe.id(), 1);
             }
         }
 

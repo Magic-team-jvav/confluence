@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.texture.SpriteLoader;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.metadata.animation.FrameSize;
 import net.minecraft.resources.ResourceLocation;
+import org.confluence.lib.util.LibClientUtils;
 import org.confluence.mod.StartupConfigs;
 import org.confluence.mod.client.event.ModClientSetups;
 import org.confluence.mod.util.ClientUtils;
@@ -28,12 +29,12 @@ public abstract class SpriteLoaderMixin {
 
     @ModifyVariable(method = "stitch", at = @At("HEAD"), argsOnly = true)
     private List<SpriteContents> generateGraySprites(List<SpriteContents> contents) {
-        if (ModClientSetups.SHOULD_NOT_GENERATE_BLOCK_GRAY_TEXTURE || !StartupConfigs.PAINTS_REPLACE_TEXTURE.get()) return contents;
+        if (ModClientSetups.SHOULD_NOT_GENERATE_BLOCK_GRAY_TEXTURE || !StartupConfigs.paintsReplaceTexture()) return contents;
 
         if (location.equals(TextureAtlas.LOCATION_BLOCKS)) {
             ClientUtils.clearCache();
             List<SpriteContents> neoContents = new ArrayList<>();
-            Set<String> bannedModForPaints = new HashSet<>(StartupConfigs.BANNED_MOD_FOR_PAINTS.get());
+            Set<String> bannedModForPaints = new HashSet<>(StartupConfigs.bannedModForPaints());
             for (SpriteContents content : contents) {
                 neoContents.add(content);
                 ResourceLocation name = content.name();
@@ -41,11 +42,11 @@ public abstract class SpriteLoaderMixin {
                 ClientUtils.ORIGINAL.add(name);
                 FrameSize frameSize = new FrameSize(content.width(), content.height());
 
-                NativeImage grayImage = ClientUtils.copyWithGray(content.getOriginalImage());
+                NativeImage grayImage = LibClientUtils.copyWithGray(content.getOriginalImage());
                 SpriteContents grayContent = new SpriteContents(name.withSuffix(ClientUtils.GRAY_SUFFIX), frameSize, grayImage, content.metadata());
                 neoContents.add(grayContent);
 
-                NativeImage negativeImage = ClientUtils.copyWithNegative(content.getOriginalImage());
+                NativeImage negativeImage = LibClientUtils.copyWithNegative(content.getOriginalImage());
                 SpriteContents negativeContent = new SpriteContents(name.withSuffix(ClientUtils.NEGATIVE_SUFFIX), frameSize, negativeImage, content.metadata());
                 neoContents.add(negativeContent);
             }

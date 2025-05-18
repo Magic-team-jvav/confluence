@@ -19,13 +19,14 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.confluence.lib.color.GlobalColors;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.data.saved.ConfluenceData;
+import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.LightPetItems;
 import org.confluence.mod.common.init.item.ManaWeaponItems;
 import org.confluence.mod.util.ModUtils;
-import org.confluence.mod.util.PlayerUtils;
-import org.confluence.mod.util.color.IntegerRGB;
 import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.entity.boss.EaterOfWorlds;
 import org.jetbrains.annotations.Nullable;
@@ -50,43 +51,34 @@ public class ShadowOrbBlock extends Block {
             ConfluenceData data = ConfluenceData.get(serverLevel);
             int count = data.getEvilBrokenCount() % 3;
 
-            if (count == 0) {
-                ModUtils.createItemEntity(TGItems.MUSKET.toStack(), center.x, center.y, center.z, level, 0);
-                ModUtils.createItemEntity(TGItems.MUSKET_BULLET.get(), 100, center.x, center.y, center.z, level, 0);
-            } else {
-                if (level.random.nextFloat() < 0.2F) {
-                    ModUtils.createItemEntity(TGItems.MUSKET.toStack(), center.x, center.y, center.z, level, 0);
-                    ModUtils.createItemEntity(TGItems.MUSKET_BULLET.get(), 100, center.x, center.y, center.z, level, 0);
-                }
-                if (level.random.nextFloat() < 0.2F) {
-                    ModUtils.createItemEntity(LightPetItems.SHADOW_ORB.get(), 1, center.x, center.y, center.z, level, 0);
-                }
-                if (level.random.nextFloat() < 0.2F) {
-                    ModUtils.createItemEntity(ManaWeaponItems.VILETHRON.get(), 1, center.x, center.y, center.z, level, 0);
-                }
-                if (level.random.nextFloat() < 0.2F) {
-                    // 链球
-                }
-                if (level.random.nextFloat() < 0.2F) {
-                    ModUtils.createItemEntity(AccessoryItems.BAND_OF_STARPOWER.get(), 1, center.x, center.y, center.z, level, 0);
-                }
+            if (count == 0 || level.random.nextFloat() < 0.2F) {
+                LibUtils.createItemEntity(TGItems.MUSKET.toStack(), center.x, center.y, center.z, level, 0);
+                LibUtils.createItemEntity(TGItems.MUSKET_BULLET.get(), 100, center.x, center.y, center.z, level, 0);
+            }
+            if (level.random.nextFloat() < 0.2F) {
+                LibUtils.createItemEntity(LightPetItems.SHADOW_ORB.get(), 1, center.x, center.y, center.z, level, 0);
+            }
+            if (level.random.nextFloat() < 0.2F) {
+                LibUtils.createItemEntity(ManaWeaponItems.VILETHRON.get(), 1, center.x, center.y, center.z, level, 0);
+            }
+            if (level.random.nextFloat() < 0.2F) {
+                // 链球
+            }
+            if (level.random.nextFloat() < 0.2F) {
+                LibUtils.createItemEntity(AccessoryItems.BAND_OF_STARPOWER.get(), 1, center.x, center.y, center.z, level, 0);
             }
 
             for (ServerPlayer player : serverLevel.getPlayers(serverPlayer -> serverPlayer.distanceToSqr(center) <= 32 * 32)) {
-                PlayerUtils.awardAchievement(player, "smashing_poppet");
+                ModAchievements.awardAchievement(player, "smashing_poppet");
             }
 
             if (count != 2) {
-                Component component = Component.translatable("event.confluence.shadow_orb_broken." + count).withColor(IntegerRGB.GREEN.get());
+                Component component = Component.translatable("event.confluence.shadow_orb_broken." + count).withColor(GlobalColors.MESSAGE.get());
                 serverLevel.getServer().getPlayerList().broadcastSystemMessage(component, false);
             }
 
             if (data.updateEvilBrokenCount()) {
-                EaterOfWorlds eaterOfWorlds = new EaterOfWorlds(level, true);
-                eaterOfWorlds.setPos(center.x + level.random.nextInt(-50, 51), center.y, center.z + level.random.nextInt(-50, 51));
-                level.addFreshEntity(eaterOfWorlds);
-                Player nearestPlayer = level.getNearestPlayer(eaterOfWorlds, 200);
-                if (nearestPlayer != null) eaterOfWorlds.setTarget(nearestPlayer);
+                ModUtils.summonBoss(level, center, new EaterOfWorlds(level, true));
             }
         }
     }
@@ -95,7 +87,7 @@ public class ShadowOrbBlock extends Block {
     public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack tool) {
         super.playerDestroy(level, player, pos, state, blockEntity, tool);
         if (player instanceof ServerPlayer serverPlayer) {
-            PlayerUtils.awardAchievement(serverPlayer, "smashing_poppet");
+            ModAchievements.awardAchievement(serverPlayer, "smashing_poppet");
         }
     }
 

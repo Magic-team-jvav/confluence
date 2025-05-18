@@ -4,11 +4,11 @@ import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.TooltipManager;
-import org.confluence.mod.common.init.ModEffectStrategies;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.integration.create.ponder.PonderHelper;
 
 import static org.confluence.mod.common.init.item.PickaxeItems.MOLTEN_PICKAXE;
 
@@ -21,6 +21,7 @@ public class ModChineseProvider extends LanguageProvider {
     protected void addTranslations() {
         add("config.jade.plugin_confluence.jade_network_component", "机械信息");
         add("config.jade.plugin_confluence.jade_ponder_component", "思索信息");
+        add("config.jade.plugin_confluence.jade_tombstone_info", "墓石信息");
 
         add("creativetab.confluence.building_blocks", "汇流来世 | 建筑方块");
         add("creativetab.confluence.natural_blocks", "汇流来世 | 自然方块");
@@ -37,59 +38,137 @@ public class ModChineseProvider extends LanguageProvider {
         add("creativetab.confluence.developer", "汇流来世 | 开发者物品");
 
         add("chat.type.advancement.achievement", "%s达成了成就%s");
+        add("chat.confluence.magic_conch", "你听取海洋声音的位置[%s]已记录");
+        add("chat.confluence.demon_conch", "你听取恶魔呼喊的位置[%s]已记录");
         add("options.difficulty.legendary", "§a传奇");
-
-        add("jukebox_song.confluence.song", "C418 - alpha");
-
+        add("message.confluence.choking", "你被噎住了,需要喝水才行");
+        add("message.confluence.advancement_combat_techniques", "书中的知识赋予了城镇居民力量！");
+        add("message.confluence.toolmode.tip","对空气潜行右击切换模式");
+        add("message.confluence.toolmode.current","当前模式：");
+        add("message.confluence.hamaxe.mode.0","锤与斧");
+        add("message.confluence.hamaxe.mode.1","斧");
+        add("message.confluence.hoe_shovel.mode.0","锹");
+        add("message.confluence.hoe_shovel.mode.1","锄");
+        add("message.confluence.altar_tips.0", "右键存入物品，潜行右键以拿出物品。");
+        add("message.confluence.altar_tips.1", "左键以合成，潜行左键以快速合成。");
+        add("jukebox_song.confluence.alpha", "C418 - alpha");
 
         add("gamerule.confluenceSpreadableChance", "邪恶群系蔓延设置");
         add("generator.confluence.the_corruption", "腐化之地");
         add("generator.confluence.tr_crimson", "猩红之地");
 
+        add("tooltip.price.platinum", "铂");
+        add("tooltip.price.gold", "金");
+        add("tooltip.price.silver", "银");
+        add("tooltip.price.copper", "铜");
+        add("tooltip.price.sell", "售价：");
 
-        add("item.confluence.meteorite_ingot.tooltip", "摸起来是温的");
-        add("item.confluence.encumbering_stone.disable", "负重石：关闭");
-        add("item.confluence.paint", "油漆");
-        add("item.confluence.tokyo_teddy_bear.tooltip.1", "一位自卑的少女如破碎的泰迪熊般说到：");
-        add("item.confluence.tokyo_teddy_bear.tooltip.2", "           来让你听听");
-        add("item.confluence.tokyo_teddy_bear.tooltip.3", "           全智全能的话吧");
-        add("item.confluence.tokyo_teddy_bear.tooltip.4", "           头脑以外的");
-        add("item.confluence.tokyo_teddy_bear.tooltip.5", "           已不再需要");
-        add("item.confluence.tokyo_teddy_bear.tooltip.6", "——由一只蜘蛛讲述的故事");
-        add("item.confluence.paradox_interactive_medal.tooltip.0", "同时玩过钢铁雄心、维多利亚、欧陆风云、十字军之王、都市天际线的证明。");
-        add("item.confluence.pink_cola.tooltip.1", "一瓶普通的粉色可乐，或许原来有一整箱？");
-        add("item.confluence.dongdongs_flatbread.tooltip.1", "刚在地狱岩上考好的饼，快来尝尝吧！");
+        add("tooltip.jei.state_properties", "需要的方块属性：");
 
-        add("item.confluence.boredoms_pact_falling_resolve.tooltip.0", "「无聊之咒·陨志」");
-        add("item.confluence.boredoms_pact_falling_resolve.tooltip.1", "(Boredom's Pact - Falling Resolve)");
-        add("item.confluence.boredoms_pact_falling_resolve.tooltip.2", "           ");
-        add("item.confluence.boredoms_pact_falling_resolve.tooltip.3", "怠惰者的血浸透了星核，凝成这颗会呼吸的诅咒石。");
-        add("item.confluence.boredoms_pact_falling_resolve.tooltip.4", "动，则岩脉奔涌，刃锋割裂长夜；静，则地心跳搏，苍穹睁开独眼。");
-        add("item.confluence.boredoms_pact_falling_resolve.tooltip.5", "古神将惩罚编入契约：八次心跳的静止，便召来陨星审判。");
-        add("item.confluence.boredoms_pact_falling_resolve.tooltip.6", "它不像魔像般沉默——巨石砸碎胫骨时会尖笑：");
-        add("item.confluence.boredoms_pact_falling_resolve.tooltip.7", "'看啊，连石头都比你的双腿更懂生存之道。'");
-        add("item.confluence.boredoms_pact_falling_resolve.tooltip.8", "佩戴者终将明白：所谓'不摧'，不过是逃得比死亡快一秒。");
-        add("item.confluence.boredoms_pact_falling_resolve.tooltip.9", "而灵魂早被碾成岩缝里的尘，比魔像的空壳更荒芜。");
-        //  文本物品↓
-        add("item.confluence.afterlife_notes", "来世手记");
-        add("item.confluence.village_exploration", "村庄环游起源");
-        add("item.confluence.research_on_wheat_mutation", "关于小麦异变的研究");
-        add("item.confluence.research_on_cloud_blocks_1", "关于对云块的研究 I");
-        add("item.confluence.research_on_cloud_blocks_2", "关于对云块的研究 II");
-        add("item.confluence.meteor_diary", "流星日记");
+        add("tooltip.item.confluence.meteorite_ingot.0", "摸起来是温的");
+        add("tooltip.item.confluence.encumbering_stone.0", "锁上时能防止拾取物品");
+        add("tooltip.item.confluence.encumbering_stone.1", "背包内右键点击可解锁");
+        add("tooltip.item.confluence.encumbering_stone.2", "“你负重过多”");
+        add("tooltip.item.confluence.super_absorbant_sponge.0", "能够吸收无限多水");
+        add("tooltip.item.confluence.honey_absorbant_sponge.0", "能够吸收无限多熔岩");
+        add("tooltip.item.confluence.lava_absorbant_sponge.0", "能够吸收无限多蜂蜜");
+        add("tooltip.item.confluence.ultra_absorbant_sponge.0", "能够吸收无限多液体");
+        add("tooltip.item.confluence.wire_cutter.0", "移除电线");
+        add("tooltip.item.confluence.extractinator.0", "将泥沙/雪泥/化石/沙砾/海洋沙砾堆放到提炼机中可将其变成更有用的东西");
+        add("tooltip.item.confluence.sky_mill.0", "用于特殊制作");
+        add("tooltip.item.confluence.heavy_work_bench.0", "用于高级制作");
+        add("tooltip.item.confluence.sawmill.0", "用于高级木工制作");
+        add("tooltip.item.confluence.alchemy_table.0", "33%几率不消耗药水的制作材料");
+        add("tooltip.item.confluence.solidifier.0", "用于制作物件");
+        add("tooltip.item.confluence.hardmode_anvil.0", "用于制作以秘银锭、山铜锭、精金锭和钛金锭为原料的物品");
+        add("tooltip.item.confluence.sharpening_station.0", "提高近战武器的盔甲穿透力");
+        add("tooltip.item.confluence.ammo_box.0", "20%几率省下弹药");
+        add("tooltip.item.confluence.bewitching_table.0", "右键点击可拥有更多仆从");
+        add("tooltip.item.confluence.keg.0", "用于酿造麦芽酒");
+        add("tooltip.item.confluence.chlorophyte_extractinator.0", "将泥沙/雪泥/化石/沙砾/海洋沙砾堆放到提炼机中可将其变成更有用的东西");
+        add("tooltip.item.confluence.chlorophyte_extractinator.1", "将受污染的物块放入提炼机可净化之");
+        add("tooltip.item.confluence.chlorophyte_extractinator.2", "放入其他物品可能会产生有趣的效果");
+        add("tooltip.item.confluence.blend_o_matic.0", "用于制作物件");
+        add("tooltip.item.confluence.meat_grinder.0", "用于制作物件");
+        add("tooltip.item.confluence.life_campfire.0", "靠近篝火时生命再生提速");
+        add("tooltip.item.confluence.piggy_bank.0", "可用来储存你的物品");
+        add("tooltip.item.confluence.piggy_bank.1", "储存的物品只有你能存取");
+        add("tooltip.item.confluence.safe.0", "可用来储存你的物品");
+        add("tooltip.item.confluence.safe.1", "储存的物品只有你能存取");
+        add("tooltip.item.confluence.echo_block.0", "只在回声视觉下才能看到");
+        add("tooltip.item.confluence.advanced_combat_techniques.0", "增强所有城镇居民的防御力和力量");
+        add("tooltip.item.confluence.advanced_combat_techniques.1", "“包含攻防战斗技能”");
+        add("tooltip.item.confluence.advanced_combat_techniques_volume_two.0", "增强所有城镇居民的防御力和力量");
+        add("tooltip.item.confluence.advanced_combat_techniques_volume_two.1", "“包含攻防战斗技术，卷二！”");
+        add("tooltip.item.confluence.binoculars.0", "使用时扩大视野，鼠标滚轮可调整缩放");
+        add("tooltip.item.confluence.meteor_compass.0", "退出存档将会失去之前记录的坐标");
+        add("tooltip.item.confluence.gel.0", "“既好吃，又易燃”");
+        add("tooltip.item.confluence.npc_invitation.0", "使用它，在当前区域邀请一批新的NPC吧！");
+        add("tooltip.item.confluence.red_potion.0", "“仅献给配得上的人”");
 
-        add("text.confluence.afterlife_notes", "  冒险者，新的天地充满了无尽的挑战与机遇，这本手记将帮助你了解这个世界的奥秘，指引你面对怪物和困境，只有不断探索，你才能发现更多的力量与宝藏，你的旅途才刚刚开始。                            —— 向导");
-        add("text.confluence.village_exploration", "  世界异变悄然降临，生灵阴暗的邪念纷纷爆发，外界的肉体侵扰接踵而至。所有可用的资源，皆被唤醒。新世界的降临，既带来了毁灭的阴影，也打开了新的可能。建筑如腾飞的鸟儿，直抵苍穹，令人惊叹。曾经无法触及的云彩，如今化作实体的方块，映衬出人们心中的渴望。在探索的旅程中，他们掌握了前所未有的知识，发现了新的植物，仿佛在喧嚣中寻得了一隅宁静。在那片净土上，新的希望悄然滋生，带来了久违的安详。");
-        add("text.confluence.research_on_wheat_mutation", "  我们发现，带来的小麦竟开始发白、发黄。起初，我们以为它们无法适应这陌生的环境，直到一块云块轻盈飘过，它把小麦染上了彩霞的色彩，幻化为一种全新的植物。对这异变的产物，我们心中难免生出怀疑——直到有人忍饥挨饿，迫切渴望食物。奇怪的是，明明吃饱了，身体却似乎愈发轻盈，仿佛与大地的重负渐行渐远。在这奇异的世界里，变化与困惑交织，我们开始重新审视，食物的本质和生命的奇迹。");
-        add("text.confluence.research_on_cloud_blocks_1", "  云块，无毒的存在，成分为天际凝结的冰晶，含量各异。随着与异星的长时间接触，这些云彩逐渐实体化，能够承载成年人的重量，护佑他们免受强烈动能的冲击。然而，靠近的植物却开始出现异变，我们对此仍感到困惑，不知这奇异的变迁何以而生。在这神秘的交汇处，云与植物编织出未知的故事，仿佛大自然正悄然书写着新篇章。");
-        add("text.confluence.research_on_cloud_blocks_2", "  随着研究的深入，我们渐渐发现，云块与一种名为云织草的植物其实是同质的存在。云织草在云块之上生长，静静收集高空的水汽，直到孕育出全新的云块。如今，这种植物已被移植到云的花圃中，成为我们重要的建筑资源。在这神秘的空间里，植物与云彩交融，编织出无尽的可能，将构筑梦想的力量交付于大地。");
-        add("text.confluence.meteor_diary", "  它们划破夜空，令怪物们心生畏惧；而我们却常常对着流星，静静许下愿望。或许，它们真的拥有无形的魔力。孩子们仰望，满怀喜悦，追逐着那微弱的光辉；它们从云间悄然生长，又轻盈地从云中坠落。在这夜的舞台上，流星闪烁着希望的光芒，温暖着每一个期待的心灵。");
+        add("tooltip.item.confluence.slime_crown.0", "右键使用以召唤史莱姆王");
+        add("tooltip.item.confluence.slime_crown.1", "一只小巧的王冠，看上去是为那些人畜无害的可爱凝胶生物的加冕仪式所准备的。");
+        add("tooltip.item.confluence.slime_crown.2", "“戴上它可能不是个好选择”");
+        add("tooltip.item.confluence.suspicious_looking_eye.0", "右键使用以召唤克苏鲁之眼，它只在夜间出没");
+        add("tooltip.item.confluence.suspicious_looking_eye.1", "一颗死气沉沉，目光呆滞的眼球，尽管它不具备攻击性，但它似乎比它们那些夜间会在半空中飞来飞去的同僚们更为危险。");
+        add("tooltip.item.confluence.suspicious_looking_eye.2", "“它好像在看着你…”");
+        add("tooltip.item.confluence.worm_food.0", "右键使用以召唤世界吞噬者，它会在充满腐化毒雾的巨大裂谷中穿梭");
+        add("tooltip.item.confluence.worm_food.1", "闻起来像一块烂掉了的排骨，似乎对那些病变了的泰拉生物有极强的吸引力。");
+        add("tooltip.item.confluence.worm_food.2", "“它还要吞噬更多…更多更多更多更多…”");
+        add("tooltip.item.confluence.bloody_spine.0", "右键使用以召唤克苏鲁之脑，它会在嗅到猩红之地血肉与脓浆的气息后方才苏醒");
+        add("tooltip.item.confluence.bloody_spine.1", "一截被剥离下来了的身体组织，上面斑驳着血痂块与肌肉组织，很难想象它是从哪种生物体内，以何种方式取出来的。");
+        add("tooltip.item.confluence.bloody_spine.2", "“它似乎在尝试着与你对话…要不蘨睈錗㧴氓旳義厡…”");
+        add("tooltip.item.confluence.abeemination.0", "右键使用以召唤蜂王，只有热带阔叶雨林间的污浊瘴气才能压制住她的狂怒");
+        add("tooltip.item.confluence.abeemination.1", "她似乎极度那些厌恶荧光真菌孢子的气息");
+        add("tooltip.item.confluence.abeemination.2", "一团尚未成型的幼蜂，摸上去感觉像黏稠的蜂蜜……蜂王与她的下属们对它们甜蜜领地的保护欲不知何时渐渐发展为对非同类生物的极度排斥与憎恶。");
+        add("tooltip.item.confluence.abeemination.3", "“群蜂振翅之声憾动了丛林中最为厚重的叶片”");
+        add("tooltip.item.confluence.clothier_voodoo_doll.0", "“你这人真可怕”");
+        add("tooltip.item.confluence.guide_voodoo_doll.0", "“你这人真可怕”");
 
-        add("lore.confluence.village_exploration", "看不出详细的年代，但是感觉包装很精良的样子......");
-        add("lore.confluence.research_on_wheat_mutation", "书页中混杂着一些粉末，但是好像并不是书页老化出来的粉末......");
-        add("lore.confluence.research_on_cloud_blocks_1", "明明很厚一本书，拿在手上却轻飘飘的。看标题的样子好像还有另一本？");
-        add("lore.confluence.research_on_cloud_blocks_2", "书页摸起来非常柔软，就好像丝绸一样。看标题的样子好像还有另一本？");
-        add("lore.confluence.meteor_diary", "很薄的书，但似乎有些荧荧微光。");
+        add("tooltip.item.confluence.tokyo_teddy_bear.0", "一位自卑的少女如破碎的泰迪熊般说到：");
+        add("tooltip.item.confluence.tokyo_teddy_bear.1", "           来让你听听");
+        add("tooltip.item.confluence.tokyo_teddy_bear.2", "           全智全能的话吧");
+        add("tooltip.item.confluence.tokyo_teddy_bear.3", "           头脑以外的");
+        add("tooltip.item.confluence.tokyo_teddy_bear.4", "           已不再需要");
+        add("tooltip.item.confluence.tokyo_teddy_bear.5", "——由一只蜘蛛讲述的故事");
+        add("tooltip.item.confluence.paradox_interactive_medal.0", "同时玩过钢铁雄心、维多利亚、欧陆风云、十字军之王、都市天际线的证明。");
+        add("tooltip.item.confluence.kind_miside_ring.0", "“戒指会带你找到正确的方向，亲爱的”");
+        add("tooltip.item.confluence.failed_skull.0", "一只苦力怕被猪灵强制改造了身体，可以多次自爆。猪灵想用它作为入侵主世界的生物兵器，却被其意外逃脱");
+        add("tooltip.item.confluence.ice_tofu_brick.0", "它现在不能吃了，但不妨碍它把你吃了");
+        add("tooltip.item.confluence.pink_cola.0", "一瓶普通的粉色可乐，或许原来有一整箱？");
+        add("tooltip.item.confluence.dongdongs_flatbread.0", "刚在下界岩上考好的饼，快来尝尝吧！");
+        add("tooltip.item.confluence.piglin_stew.0", "屁戈林在饿死前最想吃的东西，可他最终没能吃上…");
+        add("tooltip.item.confluence.boredoms_pact_falling_resolve.0", "「无聊之咒·陨志」");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.1", "(Boredom's Pact - Falling Resolve)");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.2", "           ");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.3", "怠惰者的血浸透了星核，凝成这颗会呼吸的诅咒石。");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.4", "动，则岩脉奔涌，刃锋割裂长夜；静，则地心跳搏，苍穹睁开独眼。");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.5", "古神将惩罚编入契约：八次心跳的静止，便召来陨星审判。");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.6", "它不像魔像般沉默——巨石砸碎胫骨时会尖笑：");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.7", "'看啊，连石头都比你的双腿更懂生存之道。'");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.8", "佩戴者终将明白：所谓'不摧'，不过是逃得比死亡快一秒。");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.9", "而灵魂早被碾成岩缝里的尘，比魔像的空壳更荒芜。");
+
+        // 文本物品↓
+        add("item.confluence.mysterious_note.name_0", "带牙印的小纸条");
+        add("lore.confluence.mysterious_note_0", "呜被你发现了，不要告诉别人小狗藏在这里UQYQU");
+        add("item.confluence.mysterious_note.name_1", "带橘子气息的小纸条");
+        add("lore.confluence.mysterious_note_1", "嘿，既然被你找到了，就告诉你吧。其实，和你在一块睡觉的某只动物，很可能是牢枕的眼线哦");
+        add("item.confluence.mysterious_note.name_2", "数据化的小纸条");
+        add("lore.confluence.mysterious_note_2", "最初的勇者不求回报，只愿所有向往冒险的灵魂，都能自由地拾取这些珍贵馈赠，在冒险中绽放属于自己的光芒。请守护这份来自勇者的善意，莫让利益的阴霾，遮蔽了来世自由与希望的光芒。");
+        add("item.confluence.mysterious_note.name_3", "温柔的小纸条");
+        add("lore.confluence.mysterious_note_3", "希望看到这张字条的冒险者可以学习顺心，工作顺利，生活事事如意，不管什么阴霾都会很快过去的因为我们都要向着明天前进。");
+        add("item.confluence.mysterious_note.name_4", "被啃一半的小纸条");
+        add("lore.confluence.mysterious_note_4", "汇流乐事什么时候才开始制作啊，我都已经等的变成傻子了");
+
+        add("item.confluence.mysterious_slate.name_0", "认真的石板");
+        add("lore.confluence.mysterious_slate_0", "“冷知识：其实召唤师要和召唤物进行心灵沟通，盔甲防护不能太厚否则会影响沟通。”");
+        add("item.confluence.mysterious_slate.name_1", "异常古老的石板");
+        add("lore.confluence.mysterious_slate_1", "“这一切要从月球领主卖的氵……（内容被血迹覆盖了，看不清全貌）”");
+
+        add("text.building_0", "施工中");
+        add("text.building_1", "预计版本%s完成");
+        add("text.building_2", "请勿靠近!");
 
         add("author.confluence.the_ancestor_of_explorers", "最初的发起人");
         add("author.confluence.sheila", "希尔娜");
@@ -117,17 +196,19 @@ public class ModChineseProvider extends LanguageProvider {
         add("info.confluence.drops_money.silver", " %s 银");
         add("info.confluence.drops_money.copper", " %s 铜");
 
+        add("key.confluence.gameplay", "汇流来世按键设置");
+        add("key.confluence.healing", "快捷喝药（生命）");
+        add("key.confluence.mana", "快捷喝药（魔力）");
+        add("key.confluence.extra_inventory", "快捷打开额外栏");
         add("key.confluence.hook", "使用钩爪");
         add("key.confluence.specular_detail", "视觉药水细节观测");
 
         add("death.attack.falling_star", "%1$s 得到了流星的回应");
         add("death.attack.boulder", "%1$s 被巨石均匀地涂抹在地上");
-        add("death.attack.thron", "%1$s 发现自己成了刺猬");
         add("death.attack.darkness", "%1$s 被黑暗中的什么东西杀死了！");
 
         add("selections.confluence.magic_conch", "回应海的召唤[%s]");
         add("selections.confluence.demon_conch", "回应熔岩的召唤[%s]");
-
 
         add("tooltip.item.confluence.adhesive_bandage.0", "对流血免疫");
         add("tooltip.item.confluence.medicated_bandage.0", "对中毒和流血免疫");
@@ -191,118 +272,145 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.paint_scraper", "用于去除油漆或涂料，按下shift+右键仅去除一面");
         add("tooltip.item.confluence.paint_sprayer.0", "自动给放置的物体刷油漆或涂料");
         add("tooltip.item.confluence.coin", "潜行右键合并为上级钱币");
-        add("tooltip.item.confluence.penetration", "穿透数量");
-        add("tooltip.item.confluence.on_hit_effects", "命中效果");
-        add("tooltip.item.confluence.max_count", "分身数量");
-        add("tooltip.item.confluence.fly_speed", "飞行速度");
+        add("tooltip.item.confluence.hardmode_convertor.0", "右击地面将当前世界立刻开始转变为困难模式");
+        add("tooltip.item.confluence.life_crystal.0", "最大生命永久增加4");
+        add("tooltip.item.confluence.life_fruit.0", "最大生命永久增加1");
+        add("tooltip.item.confluence.mana_crystal.0", "最大魔力永久增加20");
+        add("tooltip.item.confluence.arcane_crystal.0", "永久提高魔力再生");
+        add("tooltip.item.confluence.vital_crystal.0", "永久加速生命再生");
+        add("tooltip.item.confluence.aegis_apple.0", "永久提高防御力");
+        add("tooltip.item.confluence.ambrosia.0", "永久提高挖矿速度和建造速度");
+        add("tooltip.item.confluence.gummy_worm.0", "永久提高钓鱼技能");
+        add("tooltip.item.confluence.galaxy_pearl.0", "永久提高运气");
+        add("tooltip.item.confluence.minecart_upgrade_kit.0", "永久提高矿车的速度并加装防御探测器");
+        add("tooltip.item.confluence.minecart_upgrade_kit.1", "“内含免费的机械货车！”");
+        add("tooltip.item.confluence.artisan_loaf.0", "使用后可永久扩大方块交互范围");
+        add("tooltip.item.confluence.artisan_loaf.1", "“曾经让泰迪想家的传奇面包”");
+
         add("tooltip.item.confluence.bow_full_pull_on_hit_effects", "蓄满效果");
+        add("tooltip.item.confluence.max_count", "多重射击");
+        add("tooltip.item.confluence.on_hit_effects", "命中效果");
+
         add("tooltip.item.confluence.has_proj", "剑气");
+        add("tooltip.item.confluence.has_proj.damage", "- 伤害");
+        add("tooltip.item.confluence.has_proj.speed", "- 速度");
+        add("tooltip.item.confluence.has_proj.cooldown", "- 冷却");
+        add("tooltip.item.confluence.has_proj.track_type", "- 追踪");
+
         add("tooltip.item.confluence.arrow_transform", "木箭转换");
         add("tooltip.item.confluence.additional_attack_damage", "额外伤害");
         add("tooltip.item.confluence.no_gravity", "无重力");
         add("tooltip.item.confluence.cause_fire", "点燃");
         add("tooltip.item.confluence.can_penetrate", "穿透");
 
+        add("tooltip.confluence.damage", "伤害：%s");
+        add("tooltip.confluence.mana_cost", "魔力消耗：%s");
+        add("tooltip.confluence.velocity", "射弹速度：%s");
+        add("tooltip.confluence.cooldown", "冷却：%s");
+
         add("tooltip.item.confluence.radio_thing.0", "允许使用者以不同的方式看世界");
         add("tooltip.item.terra_curio.radio_thing.1", "“禁忌的知识在其中回响……”");
 
+        add("tooltip.item.confluence.sweet_sword.0", "来自一只屑水缡写的au“传说之下：虚无之上”");
 
-        add("jei.tooltip.item.confluence.bezoar.0", "有几率从黄蜂，青苔蜜蜂，毒泥身上掉落。");
-        add("jei.tooltip.item.confluence.holy_water.0", "有几率从凋灵骷髅身上掉落。");
-        add("jei.tooltip.item.confluence.vitamins.0", "有几率从腐化者，恶心浮游怪身上掉落。");
-        add("jei.tooltip.item.confluence.energy_bar.0", "有几率从僵尸猪灵身上掉落。");
-        add("jei.tooltip.item.confluence.blindfold.0", "有几率从血木乃伊，暗黑木乃伊，猩红史莱姆，腐化史莱姆，恶翅史莱姆身上掉落。");
-        add("jei.tooltip.item.confluence.flashlight.0", "有几率从要塞宝箱中获得。");
-        add("jei.tooltip.item.confluence.fast_clock.0", "有几率从木乃伊，妖精，幻灵身上掉落。");
-        add("jei.tooltip.item.confluence.trifold_map.0", "有几率从小丑，巨型蝙蝠，光明木乃伊身上掉落。");
-        add("jei.tooltip.item.confluence.hand_drill.0", "从远古守卫者身上掉落。");
-        add("jei.tooltip.item.confluence.shot_put.0", "有几率从要塞宝箱中获得。");
-        add("jei.tooltip.item.confluence.star_cloak.0", "有几率从宝箱怪中获得。");
-        add("jei.tooltip.item.confluence.black_belt.0", "有几率从骷髅李小龙身上获得。");
-        add("jei.tooltip.item.confluence.sun_stone.0", "有几率从石巨人身上获得。");
-        add("jei.tooltip.item.confluence.moon_stone.0", "有几率从吸血鬼身上获得。");
-        add("jei.tooltip.item.confluence.moon_charm.0", "有几率从狼人身上获得。");
-        add("jei.tooltip.item.confluence.neptunes_shell.0", "有几率从水月怪身上获得。");
-        add("jei.tooltip.item.confluence.cobalt_shield.0", "有几率从地牢箱、地牢匣/围栏匣（金锁盒）中获得。");
-        add("jei.tooltip.item.confluence.cross_necklace.0", "有几率从宝箱怪中获得。");
-        add("jei.tooltip.item.confluence.ranger_emblem.0", "有几率从血肉墙身上获得。");
-        add("jei.tooltip.item.confluence.warrior_emblem.0", "有几率从血肉墙身上获得。");
-        add("jei.tooltip.item.confluence.sorcerer_emblem.0", "有几率从血肉墙身上获得。");
-        add("jei.tooltip.item.confluence.eye_of_the_golem.0", "有几率从石巨人身上获得。");
-        add("jei.tooltip.item.confluence.feral_claws.0", "有几率从常春藤箱、丛林匣/荆棘匣，以及丛林神庙（Minecraft）中的宝箱获得。");
-        add("jei.tooltip.item.confluence.titan_glove.0", "有几率从宝箱怪中获得。");
-        add("jei.tooltip.item.confluence.flesh_knuckles.0", "有几率从猩红宝箱怪身上获得。");
-        add("jei.tooltip.item.confluence.paladins_shield.0", "有几率从圣骑士身上获得。");
-        add("jei.tooltip.item.confluence.frozen_turtle_shell.0", "有几率从冰雪陆龟身上获得。");
-        add("jei.tooltip.item.confluence.honey_comb.0", "有几率从蜂王身上获得。");
-        add("jei.tooltip.item.confluence.shark_tooth_necklace.0", "有几率从血腥僵尸，滴滴怪身上获得。");
-        add("jei.tooltip.item.confluence.panic_necklace.0", "有几率从猩红匣/血匣，猩红心脏获得。");
-        add("jei.tooltip.item.confluence.magic_quiver.0", "有几率从骷髅弓箭手身上获得。");
-        add("jei.tooltip.item.confluence.rifle_scope.0", "有几率从骷髅狙击手身上获得。");
-        add("jei.tooltip.item.confluence.magma_stone.0", "有几率从地狱蝙蝠，熔岩蝙蝠身上获得。");
-        add("jei.tooltip.item.confluence.obsidian_rose.0", "有几率从火焰小鬼身上获得。");
-        add("jei.tooltip.item.confluence.putrid_scent.0", "有几率从腐化宝箱怪身上获得。");
-        add("jei.tooltip.item.confluence.shackle.0", "有几率从僵尸身上获得。");
-        add("jei.tooltip.item.confluence.toolbelt.0", "在哥布林工匠处购买。");
-        add("jei.tooltip.item.confluence.toolbox.0", "有几率从礼物中获得。");
-        add("jei.tooltip.item.confluence.extendo_grip.0", "在旅商处购买。");
-        add("jei.tooltip.item.confluence.portable_cement_mixer.0", "在旅商处购买。");
-        add("jei.tooltip.item.confluence.brick_layer.0", "在旅商处购买。");
-        add("jei.tooltip.item.confluence.ancient_chisel.0", "有几率从绿洲匣/幻象匣，砂岩箱获得。");
-        add("jei.tooltip.item.confluence.band_of_regeneration.0", "有几率从地下层箱子获得。");
-        add("jei.tooltip.item.confluence.depth_meter.0", "有几率从洞穴蝙蝠，巨型蝙蝠，冰雪蝙蝠，丛林蝙蝠，龙虾，巨型卷壳怪，蝾螈怪身上获得。");
-        add("jei.tooltip.item.confluence.compass.0", "有几率从装甲维京海盗，亡灵维京海盗，史莱姆之母，食人鱼，小雪怪，龙虾，巨型卷壳怪，蝾螈怪身上获得。");
-        add("jei.tooltip.item.confluence.radar.0", "在骷髅商人处购买。有几率从木匣/珍珠木匣，地表宝箱获得。");
-        add("jei.tooltip.item.confluence.life_form_analyzer.0", "在旅商处购买。");
-        add("jei.tooltip.item.confluence.tally_counter.0", "有几率从愤怒骷髅怪，诅咒骷髅头，暗黑法师身上获得。");
-        add("jei.tooltip.item.confluence.metal_detector.0", "有几率从宁芙身上获得。");
-        add("jei.tooltip.item.confluence.dps_meter.0", "有几率从愤怒骷髅怪，诅咒骷髅头，暗黑法师身上获得。");
-        add("jei.tooltip.item.confluence.fishermans_pocket_guide.0", "有几率从渔夫任务获得。");
-        add("jei.tooltip.item.confluence.weather_radio.0", "有几率从渔夫任务获得。");
-        add("jei.tooltip.item.confluence.sextant.0", "有几率从渔夫任务获得。");
-        add("jei.tooltip.item.confluence.step_stool.0", "有几率从木匣/珍珠木匣，地表宝箱获得。");
-        add("jei.tooltip.item.confluence.flying_carpet.0", "有几率从金字塔，沙漠神殿宝箱获得。");
-        add("jei.tooltip.item.confluence.aglet.0", "有几率从木匣/珍珠木匣，地表宝箱获得。");
-        add("jei.tooltip.item.confluence.magiluminescence.0", "合成获得。");
-        add("jei.tooltip.item.confluence.lava_charm.0", "有几率从黑曜石匣/狱石匣，洞穴宝箱获得。");
-        add("jei.tooltip.item.confluence.climbing_claws.0", "有几率从木匣/珍珠木匣，地表宝箱获得。");
-        add("jei.tooltip.item.confluence.shoe_spikes.0", "有几率从洞穴宝箱，红木箱中获得。");
-        add("jei.tooltip.item.confluence.tabi.0", "有几率从骷髅李小龙身上获得。");
-        add("jei.tooltip.item.confluence.hermes_boots.0", "有几率从地下宝箱获得。");
-        add("jei.tooltip.item.confluence.flurry_boots.0", "有几率从冰冻匣/针叶木匣，冰冻箱，冰雪宝箱怪中获得。");
-        add("jei.tooltip.item.confluence.sailfish_boots.0", "有几率从木匣/珍珠木匣，铁匣/秘银匣，沉船宝箱，废墟宝箱中获得。");
-        add("jei.tooltip.item.confluence.dunerider_boots.0", "有几率从绿洲匣/幻象匣，砂岩箱，沙漠神殿宝箱获得。");
-        add("jei.tooltip.item.confluence.water_walking_boots.0", "有几率从海洋匣/海边匣，水中箱，沉船宝箱，废墟宝箱中获得。");
-        add("jei.tooltip.item.confluence.cloud_in_a_bottle.0", "有几率从地下宝箱，洞穴宝箱中获得。");
-        add("jei.tooltip.item.confluence.sandstorm_in_a_bottle.0", "有几率从绿洲匣/幻象匣，金字塔宝箱，沙漠神殿宝箱获得。");
-        add("jei.tooltip.item.confluence.fart_in_a_jar.0", "合成获得。");
-        add("jei.tooltip.item.confluence.diving_helmet.0", "有几率从鲨鱼身上获得。");
-        add("jei.tooltip.item.confluence.diving_helmet.1", "有几率从溺尸身上获得。");
-        add("jei.tooltip.item.confluence.tsunami_in_a_bottle.0", "有几率从木匣/珍珠木匣，铁匣/秘银匣，沉船宝箱，废墟宝箱中获得。");
-        add("jei.tooltip.item.confluence.shiny_red_balloon.0", "有几率从天蓝匣/天域匣，天域箱中获得。");
-        add("jei.tooltip.item.confluence.lucky_horseshoe.0", "有几率从天蓝匣/天域匣，天域箱中获得。");
-        add("jei.tooltip.item.confluence.inner_tube.0", "有几率从海洋匣/海边匣，水中箱中获得。");
-        add("jei.tooltip.item.confluence.flipper.0", "有几率从海洋匣/海边匣，水中箱，沉船宝箱，废墟宝箱中获得。");
-        add("jei.tooltip.item.confluence.jellyfish_necklace.0", "有几率从粉水母，绿水母，蓝水母身上获得。");
-        add("jei.tooltip.item.confluence.arctic_diving_gear.0", "合成获得。");
-        add("jei.tooltip.item.confluence.frog_leg.0", "在任意群系钓鱼有几率获得。");
-        add("jei.tooltip.item.confluence.treasure_magnet.0", "有几率从黑曜石锁盒，暗影箱中获得。");
-        add("jei.tooltip.item.confluence.flower_boots.0", "有几率从常春藤箱、丛林匣/荆棘匣，以及丛林神庙（Minecraft）中的宝箱获得。");
-        add("jei.tooltip.item.confluence.angler_earring.0", "有几率从渔夫任务获得。");
-        add("jei.tooltip.item.confluence.royal_gel.0", "在普通模式或更高难度下，击败史莱姆之王获得。");
-        add("jei.tooltip.item.confluence.shield_of_cthulhu.0", "在普通模式或更高难度下，击败克苏鲁之眼获得。");
-        add("jei.tooltip.item.confluence.worm_scarf.0", "在普通模式或更高难度下，击败世界吞噬怪获得。");
-        add("jei.tooltip.item.confluence.brain_of_confusion.0", "在普通模式或更高难度下，击败克苏鲁之脑获得。");
-        add("jei.tooltip.item.confluence.hive_pack.0", "在普通模式或更高难度下，击败蜂王获得。");
-        add("jei.tooltip.item.confluence.demon_heart.0", "在普通模式或更高难度下，击败血肉之墙获得。");
-        add("jei.tooltip.item.confluence.shiny_stone.0", "在普通模式或更高难度下，击败石巨人获得。");
-        add("jei.tooltip.item.confluence.soaring_insignia.0", "在普通模式或更高难度下，击败光之女皇获得。");
-        add("jei.tooltip.item.confluence.gravity_globe.0", "在普通模式或更高难度下，击败月球领主获得。");
-        add("jei.tooltip.item.confluence.celestial_starboard.0", "在普通模式或更高难度下，击败月球领主获得。");
+        add("tooltip.item.confluence.copper_short_sword.0", "神兵最微末的那部分力量自两世汇流之初就伴随着你…直至旅途的终点");
+        add("tooltip.item.confluence.copper_short_sword.1", "“我们十个真厉害！”铜短剑说。");
+        add("tooltip.item.confluence.starfury.0", "神兵的一小部分力量凝聚在云团间，化为晶莹剔透的闪星");
+        add("tooltip.item.confluence.starfury.1", "“天域的怒火倾泻而下”");
+        add("tooltip.item.confluence.enchanted_sword.0", "神兵的一小部分力量埋藏在洞穴中，凝成了寒碜碜的剑意");
+        add("tooltip.item.confluence.enchanted_sword.1", "“昏暗剑冢中一抹流光”");
+        add("tooltip.item.confluence.bee_keeper.0", "神兵的一小部分力量为丛林中的蜂群所占有，沦为嗡嗡作响的蜂群");
+        add("tooltip.item.confluence.bee_keeper.1", "“口蜜腹剑”");
+
+        add("tooltip.item.confluence.soul_of_light.0", "“光明生物的精华”");
+        add("tooltip.item.confluence.soul_of_night.0", "“黑暗生物的精华”");
+        add("tooltip.item.confluence.soul_of_flight.0", "“强大飞行生物的精华”");
+        add("tooltip.item.confluence.soul_of_might.0", "“毁灭者的精华”");
+        add("tooltip.item.confluence.soul_of_sight.0", "“全知看守者的精华”");
+        add("tooltip.item.confluence.soul_of_fright.0", "“纯粹恐惧的精华”");
+        add("tooltip.item.confluence.golden_dungeon_key.0", "“打开一个锁住的地牢箱或金锁盒”");
+        add("tooltip.item.confluence.golden_key.0", "“打开一个锁住的金箱”");
+        add("tooltip.item.confluence.shadow_key.0", "“打开所有暗影箱和黑曜石锁盒”");
+        add("tooltip.item.confluence.temple_key.0", "“打开丛林神庙的大门”");
+        add("tooltip.item.confluence.jungle_key.0", "“打开地牢中的丛林箱”");
+        add("tooltip.item.confluence.corruption_key.0", "“打开地牢中的腐化箱”");
+        add("tooltip.item.confluence.crimson_key.0", "“打开地牢中的猩红箱”");
+        add("tooltip.item.confluence.hallowed_key.0", "“打开地牢中的神圣箱”");
+        add("tooltip.item.confluence.frozen_key.0", "“打开地牢中的冰雪箱”");
+        add("tooltip.item.confluence.desert_key.0", "“打开地牢中的沙漠箱”");
+        add("tooltip.item.confluence.golden_lock_box.0", "“使用钥匙在背包中右键打开”");
+        add("tooltip.item.confluence.golden_lock_box.1", "“需要地牢金钥匙”");
+        add("tooltip.item.confluence.obsidian_lock_box.0", "“使用钥匙在背包中右键打开”");
+        add("tooltip.item.confluence.obsidian_lock_box.1", "“需要暗影钥匙”");
 
 
+        add("tooltip.item.confluence.angel_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.demon_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.fairy_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.fin_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.frozen_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.harpy_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.jetpack.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.leaf_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.bat_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.bee_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.butterfly_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.flame_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.hoverboard.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.bone_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.mothron_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.spectre_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.beetle_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.festive_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.spooky_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.tattered_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.steampunk_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.betsys_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.empress_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.fishron_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.nebula_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.vortex_booster.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.solar_wings.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.stardust.0", "可飞行和缓慢坠落");
+
+        //设置
+        add("confluence.configuration.wrappedCrimsonHeart", "被包裹的猩红心脏");
+        add("confluence.configuration.wrappedCrimsonHeart.tooltip", "启用后，新生成的猩红洞穴将会生成被包裹的猩红心脏");
+        add("confluence.configuration.showItemPrice", "显示物品价格");
+        add("confluence.configuration.showItemPrice.tooltip", "启用以查看该物品出售于NPC时的价格");
+        add("confluence.configuration.Recipe", "合成配方机制");
+        add("confluence.configuration.Recipe.button", "合成配方机制");
+        add("confluence.configuration.Recipe.tooltip", "一些合成配方相关设置");
+        add("confluence.configuration.Spawning", "生成机制");
+        add("confluence.configuration.Spawning.button", "生成机制");
+        add("confluence.configuration.Spawning.tooltip", "一些生成相关设置");
+        add("confluence.configuration.Falling Star", "坠落之星");
+        add("confluence.configuration.Falling Star.button", "坠落之星");
+        add("confluence.configuration.Falling Star.tooltip", "控制坠落之星生成相关设置");
+        add("confluence.configuration.NPC", "NPC");
+        add("confluence.configuration.NPC.tooltip", "控制NPC生成相关设置");
+        add("confluence.configuration.doNPCSpawning", "NPC生成");
+        add("confluence.configuration.doNPCSpawning.button", "NPC生成");
+        add("confluence.configuration.doNPCSpawning.tooltip", "启用时，NPC将会生成");
+        add("confluence.configuration.npcSpawnInterval", "NPC生成间隔");
+        add("confluence.configuration.npcSpawnInterval.tooltip", "定义NPC生成间隔");
+        add("confluence.configuration.doMeteoriteSpawning", "陨石生成");
+        add("confluence.configuration.doMeteoriteSpawning.tooltip", "启用时，天空将会对未加载区域砸下陨石");
+        add("confluence.configuration.doFallingStarSpawning", "坠落之星生成");
+        add("confluence.configuration.doFallingStarSpawning.tooltip", "启用时，坠落之星将会在晚上生成");
+        add("confluence.configuration.fallingStarInterval", "坠星生成间隔");
+        add("confluence.configuration.fallingStarInterval.tooltip", "定义夜晚中坠星的生成间隔");
+        add("confluence.configuration.WorldGeneration", "世界生成机制");
+        add("confluence.configuration.WorldGeneration.button", "世界生成机制");
+        add("confluence.configuration.WorldGeneration.tooltip", "一些世界生成相关设置");
+        add("confluence.configuration.brewingStandRecipe", "泰拉药水酿造台配方");
+        add("confluence.configuration.brewingStandRecipe.tooltip", "启用时，酿造台可以酿造泰拉药水");
+        add("confluence.configuration.alertPlayerDungeon", "地牢守卫警告");
+        add("confluence.configuration.alertPlayerDungeon.tooltip", "启用时，地牢守卫出现前将有三次吼叫警告");
         add("confluence.configuration.achievementToast", "启用泰拉样式成就");
         add("confluence.configuration.achievementToast.tooltip", "如果想使用原版样式进度的话就关闭它");
+        add("confluence.configuration.playerOurMusic", "启用泰拉音乐");
+        add("confluence.configuration.playerOurMusic.tooltip", "启用泰拉的音乐，它会在合适的环境播放");
         add("confluence.configuration.dropsMoney", "钱币掉落");
         add("confluence.configuration.dropsMoney.tooltip", "启用时，生物死亡后会掉落钱币");
         add("confluence.configuration.Paints", "油漆功能设置");
@@ -317,12 +425,16 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.bannedModForPaints.tooltip", "如果本模组的油漆为其他模组的部分方块带来渲染问题，填入MODID以禁止该模组的方块使用油漆染色");
         add("confluence.configuration.fletchingMenu", "制箭台菜单");
         add("confluence.configuration.fletchingMenu.tooltip", "启用时，将使用汇流来世的修改制箭台");
-        add("confluence.configuration.shimmer_decompose", "微光分解");
-        add("confluence.configuration.shimmer_decompose.tooltip", "启用时，微光液体能将物品分解为原材料");
-        add("confluence.configuration.fallingStarInterval", "坠星间隔");
-        add("confluence.configuration.fallingStarInterval.tooltip", "定义夜晚中坠星的生成间隔");
+        add("confluence.configuration.shimmerDecompose", "微光分解");
+        add("confluence.configuration.shimmerDecompose.tooltip", "启用时，微光液体能将物品分解为原材料");
         add("confluence.configuration.returnPotionGlassBottle", "返还药水瓶");
         add("confluence.configuration.returnPotionGlassBottle.tooltip", "决定你使用药水后是否返还瓶子");
+        add("confluence.configuration.rightClickRideMinecart", "右键上矿车");
+        add("confluence.configuration.rightClickRideMinecart.tooltip", "开启后，当你右键点击轨道时，将自动乘坐矿车");
+        add("confluence.configuration.announcementBoxDistance", "广播盒距离");
+        add("confluence.configuration.announcementBoxDistance.tooltip", "广播盒的最大信息发送距离");
+        add("confluence.configuration.dropsTombstone", "掉落墓石");
+        add("confluence.configuration.dropsTombstone.tooltip", "启用时，允许玩家死亡后掉落墓石");
         add("confluence.configuration.defaultRespawnTimeMin", "默认最小重生时间");
         add("confluence.configuration.defaultRespawnTimeMin.tooltip", "设置默认最小重生时间");
         add("confluence.configuration.defaultRespawnTimeMax", "默认最大重生时间");
@@ -376,6 +488,10 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.PlayerDeath.tooltip", "定义玩家死亡时的效果");
         add("confluence.configuration.showMoneyDrops", "死亡界面显示掉落钱币数");
         add("confluence.configuration.showMoneyDrops.tooltip", "启用以在死亡界面显示掉落钱币数");
+        add("confluence.configuration.starPhase", "星象");
+        add("confluence.configuration.starPhase.tooltip", "暂时没有任何用处，不建议开启");
+        add("confluence.configuration.altarTips", "祭坛使用提示");
+        add("confluence.configuration.altarTips.tooltip", "学会后可自行关闭提示");
         // 分割
         add("confluence.configuration.Mana.button", "魔力值");
         add("confluence.configuration.Armor.button", "护甲值");
@@ -391,7 +507,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.HUD.tooltip", "关于HUD显示");
         add("confluence.configuration.showWindParticles.tooltip", "通过调整数值，来决定你能看见风粒子的数量");
         add("confluence.configuration.HUD.button", "关于HUD显示");
-
         add("confluence.configuration.terraStyleHealth.tooltip", "开启后，生命值显示为泰拉样式");
         add("confluence.configuration.healthStyle.tooltip", "生命值显示");
         add("confluence.configuration.Health.tooltip", "关于生命值显示");
@@ -400,10 +515,9 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.title", "配置界面");
         add("confluence.configuration.section.confluence.client.toml.title", "客户端配置");
         add("confluence.configuration.Entity.tooltip", "与生物有关的视觉效果");
+        add("confluence.configuration.section.confluence.common.toml.title", "通用配置");
 
-        add("confluence.configuration.section.confluence.common.toml.title", "服务端配置");
-
-
+        //生物群系
         add("biome.confluence.the_corruption", "腐化之地");
         add("biome.confluence.the_corruption_desert", "腐化沙漠");
         add("biome.confluence.the_corruption_tundra", "腐化苔原");
@@ -417,59 +531,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("biome.confluence.ash_wasteland", "灰烬荒地");
         add("biome.confluence.ash_forest", "白蜡木林");
 
-        add("painting.confluence.magic_harp.title", "MAGIC_HARP");
-        add("painting.confluence.magic_harp.author", "BiliBili_魔法竖琴waaa，看上去傻傻的...");
-        add("painting.confluence.westernat.title", "WESTERNAT");
-        add("painting.confluence.westernat.author", "BiliBili_Westernat233，MC21世纪以来，最具有印象派主义的白桦树绘画!");
-        add("painting.confluence.cooobrid.title", "COOOBRID");
-        add("painting.confluence.cooobrid.author", "BiliBili_事一只一只一只鸽子，事一只只会咕咕咕的鸽子");
-        add("painting.confluence.nakinosi.title", "NAKINOSI");
-        add("painting.confluence.nakinosi.author", "BiliBili_咕咕咕的屑枕头，世界上最好看的渐变头发！");
-        add("painting.confluence.maker.title", "MAKER");
-        add("painting.confluence.maker.author", "BiliBili_Maker-2333，是Maker不是Marker！");
-        add("painting.confluence.mustard_oasis.title", "MUSTARD_OASIS");
-        add("painting.confluence.mustard_oasis.author", "BiliBili_芥末Oasis，芥末配fish，豪赤😋");
-        add("painting.confluence.a_pigeon_delight.title", "A_PIGEON_DELIGHT");
-        add("painting.confluence.a_pigeon_delight.author", "BiliBili_一只鸽子悦");
-        add("painting.confluence.sheep_mink.title", "SHEEP_MINK");
-        add("painting.confluence.sheep_mink.author", "BiliBili_眠羊敏克，“啊？我打json？”");
-        add("painting.confluence.voila.title", "VOILA");
-        add("painting.confluence.voila.author", "BiliBili_风起下片灬");
-        add("painting.confluence.xuanyu_1725.title", "XUANYU");
-        add("painting.confluence.xuanyu_1725.author", "BiliBili_轩宇1725");
-        add("painting.confluence.shadow_end.title", "SHADOW_END");
-        add("painting.confluence.shadow_end.author", "BiliBili_影末子");
-        add("painting.confluence.kl_jiana.title", "Kaleb Langley");
-        add("painting.confluence.kl_jiana.author", "BiliBili_KalebLangley");
-        add("painting.confluence.hunao.title", "HUNAO");
-        add("painting.confluence.hunao.author", "BiliBili_小胡闹鸭");
-        add("painting.confluence.sihuai_2412.title", "SIHUAI_2412");
-        add("painting.confluence.sihuai_2412.author", "BiliBili_思怀_2412");
-        add("painting.confluence.old_sheep.title", "OLD_SHEEP");
-        add("painting.confluence.old_sheep.author", "BiliBili_我叫老绵羊");
-        add("painting.confluence.slime_dragon.title", "SLIME_DRAGON");
-        add("painting.confluence.slime_dragon.author", "BiliBili_小史龙吖Slime_Dragon");
-        add("painting.confluence.khaki_coffee_beans.title", "KHAKI_COFFEE_BEANS");
-        add("painting.confluence.khaki_coffee_beans.author", "BiliBili_卡其色咖啡豆");
-        add("painting.confluence.uqtqu_day.title", "UQTQU_DAY");
-        add("painting.confluence.uqtqu_day.author", "BiliBili__昼泽_，✞ʚ散兵重度依赖ɞ✟⁺");
-        add("painting.confluence.emerald_shenyi.title", "EMERALD_SHENYI");
-        add("painting.confluence.emerald_shenyi.author", "BiliBili_Emerald_审翼");
-        add("painting.confluence.chromatic.title", "CHROMATIC");
-        add("painting.confluence.chromatic.author", "BiliBili_陌林_Chromatic");
-        add("painting.confluence.the_great_papyrus.title", "THE_GREAT_PAPYRUS");
-        add("painting.confluence.the_great_papyrus.author", "BiliBili_事伟大的papyrus呀");
-        add("painting.confluence.kulou_d.title", "KULOU_D");
-        add("painting.confluence.kulou_d.author", "BiliBili_KuLou_D");
-        add("painting.confluence.in_the_gap_of_the_cloud_sea.title", "云海隙间");
-        add("painting.confluence.in_the_gap_of_the_cloud_sea.author", "鹰角豆");
-
-        add("painting.confluence.confluence.title", "CONFLUENCE");
-        add("painting.confluence.confluence.author", "汇流来世");
-        add("painting.confluence.the_twilight_of_dawn.title", "The Twilight Of Dawn");
-        add("painting.confluence.the_twilight_of_dawn.author", "汇聚的旅程走到了分岔口，迎接强敌的时刻终将来临。");
-
-        // new
+        //成就
         add("achievements.toast.complete", "成就达成！");
         add("achievements.confluence.new_world.title", "旧的世界，新的旅途！");
         add("achievements.confluence.new_world.description", "汇合交流的来世。");
@@ -518,7 +580,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("achievements.confluence.extra_shiny.title", "光彩夺目");
         add("achievements.confluence.extra_shiny.description", "开采你的世界新获赐的强大矿石。");
         add("achievements.confluence.dungeon_heist.title", "地牢大劫案");
-        add("achievements.confluence.dungeon_heist.description", "从地牢的亡灵居民处偷取钥匙，并打开一个它们的宝贵金宝箱。");
+        add("achievements.confluence.dungeon_heist.description", "从地牢的亡灵居民处偷取钥匙，并打开一个它们的宝贵地牢宝箱。");
         add("achievements.confluence.drax_attax.title", "斧钻战队");
         add("achievements.confluence.drax_attax.description", "用神圣锭和三个机械Boss的灵魂制作斧钻或镐斧。");
         add("achievements.confluence.dead_men_tell_no_tales.title", "死人不会告密");
@@ -535,10 +597,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("achievements.confluence.dye_hard.description", "在每个可能的染料栏中都装备染料。");
         add("achievements.confluence.fashion_statement.title", "时尚宣言");
         add("achievements.confluence.fashion_statement.description", "在全部四个社交盔甲栏中都装备上盔甲或时装服饰。");
-        add("achievements.confluence.the_cavalry.title", "骑兵 ");
+        add("achievements.confluence.the_cavalry.title", "骑兵");
         add("achievements.confluence.the_cavalry.description", "装备坐骑。");
-
-
         add("achievements.confluence.ooo_shinny.title", "哦！亮闪闪！");
         add("achievements.confluence.ooo_shinny.description", "用镐开采第一块矿石。");
         add("achievements.confluence.i_am_loot.title", "我要洗劫！");
@@ -559,7 +619,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("achievements.confluence.ankhumulation_complete.description", "这是对抗烦人疾病的最佳防护。");
         add("achievements.confluence.a_shimmer_in_the_dark.title", "暗中微光");
         add("achievements.confluence.a_shimmer_in_the_dark.description", "用微光将一个物品变成另一个物品。你还能找到哪些其他变化？");
-
         add("achievements.confluence.pretty_in_pink.title", "粉红佳人");
         add("achievements.confluence.pretty_in_pink.description", "杀死粉史莱姆。");
         add("achievements.confluence.slippery_shinobi.title", "黏滑忍者");
@@ -572,7 +631,140 @@ public class ModChineseProvider extends LanguageProvider {
         add("achievements.confluence.mastermind.description", "打败克苏鲁之脑，它是出没在让人毛骨悚然的猩红之地的巨大恶魔大脑。");
         add("achievements.confluence.sting_operation.title", "蜇刺行动 ");
         add("achievements.confluence.sting_operation.description", "打败蜂王，它是统治丛林蜂巢的女王。");
-
+        add("achievements.confluence.deceiver_of_fools.title", "傻瓜骗子");
+        add("achievements.confluence.deceiver_of_fools.description", "杀死宁芙。");
+        add("achievements.confluence.not_the_bees.title", "不要蜜蜂！");
+        add("achievements.confluence.not_the_bees.description", "穿着一整套蜜蜂盔甲时使用蜜蜂枪射击。");
+        add("achievements.confluence.bloodbath.title", "大屠杀");
+        add("achievements.confluence.bloodbath.description", "活着度过血月，在这一夜间事件中，河流会泛红，怪物蜂拥而至。");
+        add("achievements.confluence.sticky_situation.title", "黏黏糊糊");
+        add("achievements.confluence.sticky_situation.description", "在史莱姆雨中活下来，在此期间明胶生物会成群结队地从天而降。");
+        add("achievements.confluence.its_hard.title", "举步维艰！");
+        add("achievements.confluence.its_hard.description", "在你的世界里释放古老的光明与黑暗之魂，让更强大的敌人出现，并用耀眼夺目的宝藏（和彩虹！）洗礼世界。");
+        add("achievements.confluence.no_hobo.title", "有家可归");
+        add("achievements.confluence.no_hobo.description", "建造一栋足够大的房屋，让第一个城镇NPC（如向导）住进来。");
+        add("achievements.confluence.wheres_my_honey.title", "我的甜甜在哪儿?");
+        add("achievements.confluence.wheres_my_honey.description", "发现丛林深处的巨蜂蜂巢。");
+        add("achievements.confluence.temple_raider.title", "神庙丽影");
+        add("achievements.confluence.temple_raider.description", "攻破丛林神庙坚不可摧的墙。");
+        add("achievements.confluence.sword_of_the_hero.title", "英雄之剑");
+        add("achievements.confluence.sword_of_the_hero.description", "获得泰拉刃，这是用极品光明刃与极品黑暗刃锻造而成的。");
+        add("achievements.confluence.sick_throw.title", "非凡投掷");
+        add("achievements.confluence.sick_throw.description", "获得泰拉悠悠球。");
+        add("achievements.confluence.robbing_the_grave.title", "盗墓");
+        add("achievements.confluence.robbing_the_grave.description", "从难对付的地牢怪兽那儿获得稀世珍宝。");
+        add("achievements.confluence.big_booty.title", "丰厚战利品");
+        add("achievements.confluence.big_booty.description", "用一把特别的钥匙打开地牢中的其中一个神秘大宝箱。");
+        add("achievements.confluence.prismancer.title", "七彩法师");
+        add("achievements.confluence.prismancer.description", "获得一根彩虹魔杖。");
+        add("achievements.confluence.kill_the_sun.title", "杀死太阳");
+        add("achievements.confluence.kill_the_sun.description", "活着度过日食，这是比黑夜还黑暗的白天，到处都是恐怖生物。");
+        add("achievements.confluence.jeepers_creepers.title", "毛骨悚然");
+        add("achievements.confluence.jeepers_creepers.description", "在地下摸进蜘蛛洞。");
+        add("achievements.confluence.funkytown.title", "时髦小镇");
+        add("achievements.confluence.funkytown.description", "打造或发现地表上的发光蘑菇地。");
+        add("achievements.confluence.infinity_1_sword.title", "无限+1之剑");
+        add("achievements.confluence.infinity_1_sword.description", "获得天顶剑，这是由旅程的巅峰时刻凝聚而成的终极宝剑。");
+        add("achievements.confluence.feast_of_midas.title", "迈达斯盛宴");
+        add("achievements.confluence.feast_of_midas.description", "获得金美味，这是用最高品质的……食材制成的最高品质的餐点。");
+        add("achievements.confluence.it_can_talk.title", "它能说话？！");
+        add("achievements.confluence.it_can_talk.description", "在蘑菇群落里建造一栋房屋，并让松露人住进来。");
+        add("achievements.confluence.boned.title", "粉身碎骨");
+        add("achievements.confluence.boned.description", "打败骷髅王，它是被诅咒的地牢守卫。");
+        add("achievements.confluence.still_hungry.title", "野心依旧");
+        add("achievements.confluence.still_hungry.description", "打败血肉墙，它是世界的主宰与核心，会在伟大的燃烧献祭后出现。");
+        add("achievements.confluence.buckets_of_bolts.title", "万矢齐发");
+        add("achievements.confluence.buckets_of_bolts.description", "打败三个夜间出没的危险机械怪物：双子魔眼、毁灭者和机械骷髅王。");
+        add("achievements.confluence.the_great_southern_plantkill.title", "大南方植物终结者");
+        add("achievements.confluence.the_great_southern_plantkill.description", "打败世纪之花，它是蔓生在丛林深处的畸形怪花。");
+        add("achievements.confluence.lihzahrdian_idol.title", "丛林蜥蜴之神");
+        add("achievements.confluence.lihzahrdian_idol.description", "打败石巨人，它是丛林蜥蜴部落的石脸祭祀神像。");
+        add("achievements.confluence.fish_out_of_water.title", "离水之鱼");
+        add("achievements.confluence.fish_out_of_water.description", "打败猪龙鱼公爵，他是大海中的变异怪兽。");
+        add("achievements.confluence.obsessive_devotion.title", "虔诚信仰");
+        add("achievements.confluence.obsessive_devotion.description", "打败远古邪教徒，他是地牢巫团的狂热首领。");
+        add("achievements.confluence.star_destroyer.title", "歼星者");
+        add("achievements.confluence.star_destroyer.description", "打败四个月亮天界柱。");
+        add("achievements.confluence.champion_of_terraria.title", "泰拉瑞亚斗士");
+        add("achievements.confluence.champion_of_terraria.description", "打败月亮领主。");
+        add("achievements.confluence.goblin_punter.title", "哥布林草民");
+        add("achievements.confluence.goblin_punter.description", "击败哥布林入侵，它们是一群低贱、野蛮、粗暴的尖耳朵战士和暗影焰巫士。");
+        add("achievements.confluence.walk_the_plank.title", "稳走跳板");
+        add("achievements.confluence.walk_the_plank.description", "击败海盗入侵，这群来自海上的劫匪不仅要抢你的战利品……还要你的命！");
+        add("achievements.confluence.do_you_want_to_slay_a_snowman.title", "想要杀死雪人吗？");
+        add("achievements.confluence.do_you_want_to_slay_a_snowman.description", "征服雪人军团，这是疯狂雪人暴徒的欢乐家族。");
+        add("achievements.confluence.tin_foil_hatter.title", "锡箔帽商");
+        add("achievements.confluence.tin_foil_hatter.description", "击败火星人入侵，在这事件里不属于这个世界的生物会扰乱你的心神并窥探你的隐私。");
+        add("achievements.confluence.baleful_harvest.title", "邪恶丰收");
+        add("achievements.confluence.baleful_harvest.description", "在南瓜月中打到第15波，恶魔潜伏在金秋丰收之中。");
+        add("achievements.confluence.ice_scream.title", "寒冰尖啸");
+        add("achievements.confluence.ice_scream.description", "在霜月里打到第15波，节日迅速沦为疯狂暴动。");
+        add("achievements.confluence.real_estate_agent.title", "房产中介");
+        add("achievements.confluence.real_estate_agent.description", "让所有可能的城镇NPC都生活在你的世界中。");
+        add("achievements.confluence.mecha_mayhem.title", "机甲混战");
+        add("achievements.confluence.mecha_mayhem.description", "同时与双子魔眼、毁灭者和机械骷髅王战斗并获胜。”");
+        add("achievements.confluence.gelatin_world_tour.title", "明胶世界之旅");
+        add("achievements.confluence.gelatin_world_tour.description", "打败每一种史莱姆！");
+        add("achievements.confluence.there_are_some_who_call_him.title", "有人要杀他……");
+        add("achievements.confluence.there_are_some_who_call_him.description", "杀死蒂姆。");
+        add("achievements.confluence.throwing_lines.title", "扔绳子");
+        add("achievements.confluence.throwing_lines.description", "投掷悠悠球。");
+        add("achievements.confluence.the_frequent_flyer.title", "常旅客");
+        add("achievements.confluence.the_frequent_flyer.description", "在接受护士的治疗上花费超过1个金币。");
+        add("achievements.confluence.til_death.title", "至死不渝……");
+        add("achievements.confluence.til_death.description", "杀死僵尸新郎。");
+        add("achievements.confluence.archaeologist.title", "考古学家");
+        add("achievements.confluence.archaeologist.description", "杀死骷髅博士。");
+        add("achievements.confluence.rainbows_and_unicorns.title", "彩虹和独角兽");
+        add("achievements.confluence.rainbows_and_unicorns.description", "骑着独角兽时用彩虹枪射击。");
+        add("achievements.confluence.you_and_what_army.title", "你和哪路神仙啊？");
+        add("achievements.confluence.you_and_what_army.description", "同时控制九个召唤仆从。");
+        add("achievements.confluence.servant_in_training.title", "受训仆人");
+        add("achievements.confluence.servant_in_training.description", "完成第1个渔夫任务。");
+        add("achievements.confluence.good_little_slave.title", "三好小奴隶");
+        add("achievements.confluence.good_little_slave.description", "完成10个渔夫任务");
+        add("achievements.confluence.trout_monkey.title", "顽皮鳟鱼");
+        add("achievements.confluence.trout_monkey.description", "完成25个渔夫任务");
+        add("achievements.confluence.fast_and_fishious.title", "游刃有鱼");
+        add("achievements.confluence.fast_and_fishious.description", "完成50个渔夫任务");
+        add("achievements.confluence.supreme_helper_minion.title", "终极得力仆从！");
+        add("achievements.confluence.supreme_helper_minion.description", "共完成200个渔夫任务。");
+        add("achievements.confluence.slayer_of_worlds.title", "世界杀手");
+        add("achievements.confluence.slayer_of_worlds.description", "打败泰拉瑞亚中的每一个Boss。");
+        add("achievements.confluence.fae_flayer.title", "仙灵鞭挞者");
+        add("achievements.confluence.fae_flayer.description", "打败光之女皇，她是所有闪亮光辉之源。");
+        add("achievements.confluence.just_desserts.title", "甜点而已");
+        add("achievements.confluence.just_desserts.description", "打败史莱姆皇后，帮所有摇晃之物的君主解脱。");
+        add("achievements.confluence.dont_dread_on_me.title", "不要怕我");
+        add("achievements.confluence.dont_dread_on_me.description", "打败恐惧鹦鹉螺，它是潜伏在血染海面之下的残忍软体动物。");
+        add("achievements.confluence.hero_of_etheria.title", "埃特尼亚的英雄");
+        add("achievements.confluence.hero_of_etheria.description", "击退撒旦军队可以召集的最强部队。");
+        add("achievements.confluence.a_rather_blustery_day.title", "狂风大作的一天");
+        add("achievements.confluence.a_rather_blustery_day.description", "在大风天放风筝。");
+        add("achievements.confluence.heliophobia.title", "日光恐惧症");
+        add("achievements.confluence.heliophobia.description", "诱使侏儒变成石头！");
+        add("achievements.confluence.leading_landlord.title", "杰出房东");
+        add("achievements.confluence.leading_landlord.description", "见一位极度快乐的房客！");
+        add("achievements.confluence.feeling_petty.title", "感觉受宠");
+        add("achievements.confluence.feeling_petty.description", "去拍拍城镇宠物的脑袋。");
+        add("achievements.confluence.hey_listen.title", "嘿！听着！");
+        add("achievements.confluence.hey_listen.description", "遇到仙灵。");
+        add("achievements.confluence.jolly_jamboree.title", "欢乐盛会");
+        add("achievements.confluence.jolly_jamboree.description", "在庆祝什么不重要，只要办派对就好啦！");
+        add("achievements.confluence.an_eye_for_an_eye.title", "以眼还眼");
+        add("achievements.confluence.an_eye_for_an_eye.description", "打败独眼巨鹿，它是来自异地的阴冷独眼怪物。");
+        add("achievements.confluence.torch_god.title", "火把神");
+        add("achievements.confluence.torch_god.description", "引发了火把神的愤怒，并存活足够长时间来获得它的恩宠。");
+        add("achievements.confluence.a_rare_realm.title", "稀有国度");
+        add("achievements.confluence.a_rare_realm.description", "一些非常特殊的种子可以带来独特而有收获的体验。你能找到其中之一吗？");
+        add("achievements.confluence.the_great_slime_mitosis.title", "史莱姆大分裂 ");
+        add("achievements.confluence.the_great_slime_mitosis.description", "找到所有史莱姆宠物并让它们搬进来！");
+        add("achievements.confluence.and_good_riddance.title", "终于解脱了！");
+        add("achievements.confluence.and_good_riddance.description", "彻底净化世界中所有的腐化、猩红和神圣，直到树妖满意为止！");
+        add("achievements.confluence.to_infinity_and_beyond.title", "飞向宇宙，浩瀚无垠！");
+        add("achievements.confluence.to_infinity_and_beyond.description", "将四轴竞速无人机飞进外太空。");
+        add("achievements.confluence.quiet_neighborhood.title", "安静的邻里 ");
+        add("achievements.confluence.quiet_neighborhood.description", "进入笼罩着薄雾的墓地，墓地中到处都是粗鲁无礼的死人。");
 
         add("prefix.confluence.tooltip.plus", "+%s%% %s");
         add("prefix.confluence.tooltip.take", "-%s%% %s");
@@ -666,7 +858,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("block.confluence.shimmer", "微光");
         add("block.confluence.honey", "蜂蜜");
 
-        add("title.confluence.shimmer_transmutation", "微光嬗变");
         add("condition.confluence.shimmer_transmutation.before_skeletron", "需要的游戏阶段：骷髅王前");
         add("condition.confluence.shimmer_transmutation.after_skeletron", "需要的游戏阶段：骷髅王后");
         add("condition.confluence.shimmer_transmutation.wall_of_flesh", "需要的游戏阶段：肉后");
@@ -674,21 +865,39 @@ public class ModChineseProvider extends LanguageProvider {
         add("condition.confluence.shimmer_transmutation.plantera", "需要的游戏阶段：世花后");
         add("condition.confluence.shimmer_transmutation.golem", "需要的游戏阶段：石巨人后");
         add("condition.confluence.shimmer_transmutation.moon_lord", "需要的游戏阶段：月后");
-        add("title.confluence.altar", "祭坛");
-        add("title.confluence.sky_mill", "天磨");
+        add("condition.confluence.requires_fuel", "需要燃料");
+
         add("container.confluence.sky_mill", "天磨");
-        add("title.confluence.heavy_work_bench", "重型工作台");
+        add("container.confluence.safe", "保险箱");
         add("container.confluence.heavy_work_bench", "重型工作台");
-        add("title.confluence.hellforge", "地狱熔炉");
+        add("container.confluence.crystal_ball", "水晶球");
         add("container.confluence.hellforge", "地狱熔炉");
         add("container.confluence.alchemy_table", "炼药桌");
-        add("title.confluence.alchemy_table", "炼药桌");
-        add("condition.confluence.requires_fuel", "需要燃料");
+        add("container.confluence.cooking_pot", "烹饪锅");
+        add("container.confluence.cauldron", "大锅");
         add("container.confluence.fletching_table", "制箭台");
+        add("container.confluence.piggy_bank", "猪猪存钱罐");
+        add("container.confluence.npc_shop", "NPC商店");
+        add("container.confluence.sawmill", "锯木机");
+        add("container.confluence.tree_holes", "树洞");
+        add("container.confluence.solidifier", "固化机");
+
+        add("title.confluence.shimmer_transmutation", "微光嬗变");
+        add("title.confluence.altar", "祭坛");
+        add("title.confluence.sky_mill", "天磨");
+        add("title.confluence.heavy_work_bench", "重型工作台");
+        add("title.confluence.crystal_ball", "水晶球");
+        add("title.confluence.hellforge", "地狱熔炉");
+        add("title.confluence.alchemy_table", "炼药桌");
         add("title.confluence.fletching_table", "制箭台");
         add("title.confluence.touhoulittlemaid", "女仆特供");
         add("title.confluence.npc_trade", "汇流商店");
+        add("title.confluence.cooking_pot", "烹饪锅");
+        add("title.confluence.sawmill", "锯木机");
 
+        // 覆盖
+        add("item.confluence.encumbering_stone.disable", "负重石：关闭");
+        add("item.confluence.paint", "油漆");
 
         add("block.confluence.base_chest_block.locked_golden", "§r上锁的金箱");
         add("block.confluence.base_chest_block.unlocked_golden", "§r金箱");
@@ -710,31 +919,599 @@ public class ModChineseProvider extends LanguageProvider {
         add("block.confluence.base_chest_block.death_sandstone", "§r死人砂岩箱");
         add("block.confluence.base_chest_block.unlocked_living_wood", "§r生命木箱");
         add("block.confluence.base_chest_block.death_living_wood", "§r死人生命木箱");
-
+        add("block.confluence.base_chest_block.locked_dungeon", "§r上锁的地牢箱");
+        add("block.confluence.base_chest_block.unlocked_dungeon", "§r地牢箱");
+        add("block.confluence.base_chest_block.death_dungeon", "§r死人地牢箱");
 
         add("resourcepack.terraria_art", "泰拉艺术");
-        add("resourcepack.otherworldly_music", "来世音乐包");
         add("resourcepack.terraria_armor", "泰拉盔甲样式材质");
 
-        add("event.confluence.blood_moon", "血月正在升起...");
-        add("event.confluence.meteorite", "陨石已落地！");
+        add("event.confluence.meteorite", "有一颗陨石落地了！");
+        add("event.confluence.meteorite.ready", "陨石即将落下！");
         add("event.confluence.shadow_orb_broken.0", "不寒而栗，毛骨悚然……");
         add("event.confluence.shadow_orb_broken.1", "四面回荡着尖叫声……");
         add("event.confluence.crimson_heart_broken.0", "不寒而栗，毛骨悚然……！");
         add("event.confluence.crimson_heart_broken.1", "四面回荡着尖叫声……");
-
-        add("attribute.name.player.minion_capacity", "仆从容量");
-        add("attribute.name.player.sentry_capacity", "哨兵容量");
-        add("attribute.name.player.summon_damage", "召唤伤害");
-        add("attribute.name.player.summon_knockback", "召唤击退");
-        add("attribute.name.player.whip_range", "鞭范围");
+        add("event.confluence.eye_of_cthulhu", "你感到有个邪恶的东西在看着你……");
+        add("event.confluence.hardmode_conversion.pass", "世界中已有转换任务！");
+        add("event.confluence.hardmode_conversion.hardmode", "世界类型已转换为困难模式");
+        add("event.confluence.hardmode_conversion.starting", "转换数据准备中，请稍等");
+        add("event.confluence.hardmode_conversion.generate_data.sanctification", "神圣化数据：%s条，预计耗时%s秒");
+        add("event.confluence.hardmode_conversion.started", "转换数据准备完毕，正在开始转换");
+        add("event.confluence.hardmode_conversion.finished", "“古老的光明与黑暗之魂已经释放。”");
+        add("event.confluence.hardmode_conversion.welcome", "欢迎来到泰拉瑞亚");
+        add("event.confluence.npc.arrived", "%s%s已到达！");
+        add("event.confluence.npc.slain", "%s%s被杀死了……");
+        add("event.confluence.npc.left", "%s已离开！");
+        add("event.confluence.npc.departed", "旅商%s已离去！");
 
         add("entity.minecraft.villager.confluence.sky_miller", "天师");
+        add("entity.minecraft.villager.confluence.chef", "厨师");
         add("entity.minecraft.villager.confluence.banker", "银行家");
+        add("entity.minecraft.villager.sky", "天师");
+        add("entity.minecraft.villager.coin", "银行家");
+        add("entity.minecraft.villager.chef", "厨师");
         add("entity.confluence.dart", "毒镖");
         add("entity.confluence.frozen_zombie", "冰冻僵尸");
         add("entity.confluence.raincoat_zombie", "雨衣僵尸");
         add("entity.confluence.undead_miner", "不死矿工");
+
+        add("equipment_benediction.set_switcher.confluence.cold_crystal_set", "寒晶套装");
+        add("equipment_benediction.set_switcher.confluence.cold_crystal_set.data.0", "最大魔力值增加20，暴击率提高4%");
+        add("equipment_benediction.set_switcher.confluence.cold_crystal_set.data.1", "最大魔力值增加20，魔法伤害提高4%");
+        add("equipment_benediction.set_switcher.confluence.cold_crystal_set.data.2", "魔法伤害提高4%");
+        add("equipment_benediction.set_switcher.confluence.cold_crystal_set.data.3", "暴击率提高4%");
+        add("equipment_benediction.set_switcher.confluence.cold_crystal_set.data.4", "魔法攻击会有附带霜冻效果");
+
+        add("equipment_benediction.set_switcher.confluence.mining_set", "挖矿套装");
+        add("equipment_benediction.set_switcher.confluence.mining_set.data.0", "提供照明");
+        add("equipment_benediction.set_switcher.confluence.mining_set.data.1", "+10%挖矿速度");
+        add("equipment_benediction.set_switcher.confluence.mining_set.data.2", "+10%挖矿速度");
+
+        add("equipment_benediction.set_switcher.confluence.shadow_set", "暗影套装");
+        add("equipment_benediction.set_switcher.confluence.shadow_set.data.0", "暴击率提高3.5%");
+        add("equipment_benediction.set_switcher.confluence.shadow_set.data.1", "暴击率提高3.5%");
+        add("equipment_benediction.set_switcher.confluence.shadow_set.data.2", "暴击率提高3.5%");
+        add("equipment_benediction.set_switcher.confluence.shadow_set.data.3", "暴击率提高3.5%");
+        add("equipment_benediction.set_switcher.confluence.shadow_set.data.4", "提高移动速度和加速度");
+
+        add("equipment_benediction.set_switcher.confluence.crimson_set", "猩红套装");
+        add("equipment_benediction.set_switcher.confluence.crimson_set.data.0", "伤害提高2%");
+        add("equipment_benediction.set_switcher.confluence.crimson_set.data.1", "伤害提高2%");
+        add("equipment_benediction.set_switcher.confluence.crimson_set.data.2", "伤害提高2%");
+        add("equipment_benediction.set_switcher.confluence.crimson_set.data.3", "伤害提高2%");
+        add("equipment_benediction.set_switcher.confluence.crimson_set.data.4", "提高再生量50%");
+
+        add("equipment_benediction.set_switcher.confluence.snow_set", "防雪套装");
+        add("equipment_benediction.set_switcher.confluence.snow_set.data.0", "免疫冷冻类debuff");
+        add("equipment_benediction.set_switcher.confluence.snow_set.data.1", "免疫冷冻类debuff");
+
+        add("equipment_benediction.set_switcher.confluence.bee_set", "蜜蜂套装");
+        add("equipment_benediction.set_switcher.confluence.bee_set.data.0", "召唤伤害提高4%，仆从数量上限增加1");
+        add("equipment_benediction.set_switcher.confluence.bee_set.data.1", "召唤伤害提高4%");
+        add("equipment_benediction.set_switcher.confluence.bee_set.data.2", "仆从数量上限增加1");
+        add("equipment_benediction.set_switcher.confluence.bee_set.data.3", "召唤伤害提高5%");
+        add("equipment_benediction.set_switcher.confluence.bee_set.data.4", "召唤伤害提高10%");
+
+        add("equipment_benediction.set_switcher.confluence.molten_set", "熔岩套装");
+        add("equipment_benediction.set_switcher.confluence.molten_set.data.0", "暴击率提高7%");
+        add("equipment_benediction.set_switcher.confluence.molten_set.data.1", "近战伤害提高7%");
+        add("equipment_benediction.set_switcher.confluence.molten_set.data.2", "近战速度提高3.5%");
+        add("equipment_benediction.set_switcher.confluence.molten_set.data.3", "近战速度提高3.5%");
+        add("equipment_benediction.set_switcher.confluence.molten_set.data.4", "近战伤害提高10%，免疫着火");
+
+        add("equipment_benediction.set_switcher.confluence.meteor_set", "流星套装");
+        add("equipment_benediction.set_switcher.confluence.meteor_set.data.0", "魔法伤害提高7%");
+        add("equipment_benediction.set_switcher.confluence.meteor_set.data.1", "魔法伤害提高7%");
+        add("equipment_benediction.set_switcher.confluence.meteor_set.data.2", "魔法伤害提高7%");
+        add("equipment_benediction.set_switcher.confluence.meteor_set.data.3", "魔法伤害提高7%");
+        add("equipment_benediction.set_switcher.confluence.meteor_set.data.4", "太空枪魔力消耗降低为0");
+
+        add("equipment_benediction.set_switcher.confluence.gladiator_set", "角斗士套装");
+        add("equipment_benediction.set_switcher.confluence.gladiator_set.data.0", "免疫击退");
+
+        add("equipment_benediction.set_switcher.confluence.fossil_set", "化石套装");
+        add("equipment_benediction.set_switcher.confluence.fossil_set.data.0", "暴击率提高4%");
+        add("equipment_benediction.set_switcher.confluence.fossil_set.data.1", "远程伤害提高2.5%");
+        add("equipment_benediction.set_switcher.confluence.fossil_set.data.2", "远程伤害提高2.5%");
+        add("equipment_benediction.set_switcher.confluence.fossil_set.data.3", "暴击率提高4%");
+        add("equipment_benediction.set_switcher.confluence.fossil_set.data.4", "不消耗弹药几率提高20%");
+
+        add("equipment_benediction.set_switcher.confluence.ninja_set", "忍者套装");
+        add("equipment_benediction.set_switcher.confluence.ninja_set.data.0", "暴击率提高2%");
+        add("equipment_benediction.set_switcher.confluence.ninja_set.data.1", "暴击率提高2%");
+        add("equipment_benediction.set_switcher.confluence.ninja_set.data.2", "暴击率提高2%");
+        add("equipment_benediction.set_switcher.confluence.ninja_set.data.3", "暴击率提高2%");
+        add("equipment_benediction.set_switcher.confluence.ninja_set.data.4", "移动速度提高20%");
+
+        add("equipment_benediction.set_switcher.confluence.spore_root_set", "孢根套装");
+        add("equipment_benediction.set_switcher.confluence.spore_root_set.data.0", "召唤伤害提高2%，仆从数量上限增加1");
+        add("equipment_benediction.set_switcher.confluence.spore_root_set.data.1", "召唤伤害提高3%");
+        add("equipment_benediction.set_switcher.confluence.spore_root_set.data.2", "召唤伤害提高3%");
+        add("equipment_benediction.set_switcher.confluence.spore_root_set.data.3", "召唤伤害提高2%");
+        add("equipment_benediction.set_switcher.confluence.spore_root_set.data.4", "仆从数量上限增加1");
+
+        add("equipment_benediction.set_switcher.confluence.cactus_set", "仙人掌套装");
+        add("equipment_benediction.set_switcher.confluence.cactus_set.data.0", "攻击者因为仙人掌尖刺受到伤害");
+
+        add("equipment_benediction.set_switcher.confluence.heim_set", "渊鳞套装");
+        add("equipment_benediction.set_switcher.confluence.heim_set.data.0", "延长水下呼吸时间5%，近战伤害提高1%");
+        add("equipment_benediction.set_switcher.confluence.heim_set.data.1", "成功使用护盾拦截下一次攻击后三秒内伤害提高20%，三秒提高过程中你发动攻击命中或被击中时停止，近战伤害提高1%");
+        add("equipment_benediction.set_switcher.confluence.heim_set.data.2", "增加2%暴击率，近战伤害提高1%");
+        add("equipment_benediction.set_switcher.confluence.heim_set.data.3", "提高水下移动速度5%，近战伤害提高1%");
+        add("equipment_benediction.set_switcher.confluence.heim_set.data.4", "赋予你4点血量的伤害吸收，每隔3秒钟再次赋予");
+
+        add("equipment_benediction.set_switcher.confluence.necro_set", "死灵套装");
+        add("equipment_benediction.set_switcher.confluence.necro_set.data.0", "远程伤害提高5%");
+        add("equipment_benediction.set_switcher.confluence.necro_set.data.1", "远程伤害提高5%");
+        add("equipment_benediction.set_switcher.confluence.necro_set.data.2", "远程伤害提高2.5%");
+        add("equipment_benediction.set_switcher.confluence.necro_set.data.3", "远程伤害提高2.5%");
+        add("equipment_benediction.set_switcher.confluence.necro_set.data.4", "暴击率提高10%");
+
+        add("equipment_benediction.set_switcher.confluence.jungle_set", "丛林套装");
+        add("equipment_benediction.set_switcher.confluence.jungle_set.data.0", "最大魔力增加40，暴击率提高6%");
+        add("equipment_benediction.set_switcher.confluence.jungle_set.data.1", "最大魔力增加20，魔法伤害提高6%");
+        add("equipment_benediction.set_switcher.confluence.jungle_set.data.2", "最大魔力增加10，暴击率提高3%");
+        add("equipment_benediction.set_switcher.confluence.jungle_set.data.3", "最大魔力增加10，暴击率提高3%");
+        add("equipment_benediction.set_switcher.confluence.jungle_set.data.4", "魔力消耗降低16%");
+
+        // npc对话
+        add("dialogs.confluence.guide.0", "我的工作是为你接下来的任务提供建议。建议你遇到任何困难时都来和我谈谈。");
+        add("dialogs.confluence.guide.1", "他们说，有个人会告诉你如何在这地方上生存……哦等下。那个人就是我。");
+        add("dialogs.confluence.guide.2", "晚上你应该呆在家里。黑夜在外面转悠非常危险。");
+        add("dialogs.confluence.guide.3", "在融合的世界中，你会收获多倍的宝藏，但这也以为着承担多倍的风险。");
+        add("dialogs.confluence.guide.4", "据我所知这个世界上的人类比我们原来的世界更多。");
+        add("dialogs.confluence.guide.5", "抱歉，有时候我不得不开门。");
+        add("dialogs.confluence.guide.6", "那些会爆炸的家伙比一般的地表怪物更具威胁！");
+        add("dialogs.confluence.guide.7", "草地上的生命蘑菇有时候可以救你一命。");
+        add("dialogs.confluence.guide.8", "地下有水晶之心，可以用来提高你的最大生命值。你可以用镐来打碎它们。");
+        add("dialogs.confluence.guide.9", "地底下有一种具有神奇魔力的湖，它非常稀有。");
+        add("dialogs.confluence.guide.10", "夜晚，星星在坠落，洒满全世界。它们的用途极为广泛。如果你看到了，一定要拿到手，因为星星在日出后就会消失。");
+        add("dialogs.confluence.guide.11", "无论是什么东西在疯狂蔓延，你都将意识到是时候阻止它们。");
+        add("dialogs.confluence.guide.12", "如果你想活下来，你需要制造武器和建造房屋。首先要砍树并收集木材。");
+        add("dialogs.confluence.guide.13", "拥有一把剑后，你可以试试从史莱姆身上收集一些凝胶。用木棍和凝胶制作火把！");
+        add("dialogs.confluence.guide.14", "如果你拥有了一些矿石，你需要将它铸成矿锭，才能用来制作物品。这需要熔炉！");
+        add("dialogs.confluence.guide.15", "如果在祭坛上合成晶状体，你也许能够找到方法来召唤一个强大的怪物。不过，最好等到夜晚再用它。");
+
+        add("dialogs.confluence.nurse.0", "我要和向导认真谈一谈。你一周到底有多少次被熔岩烫成重伤？");
+        add("dialogs.confluence.nurse.1", "看到那个在地牢周围转来转去的老人没？他看上去遇到麻烦了。");
+        add("dialogs.confluence.nurse.2", "嗨，军火商有没有提过要去看医生啥的？就随便问问。");
+        add("dialogs.confluence.nurse.3", "又惹上混混了？");
+        add("dialogs.confluence.nurse.4", "别像个孩子似的！我见过更糟的。");
+        add("dialogs.confluence.nurse.5", "你这么做的时候疼吗？别那么做。");
+
+        add("dialogs.confluence.demolitionist.0", "炸药如今十分火爆。马上买一些！");
+        add("dialogs.confluence.demolitionist.1", "今天是个找死的好日子！");
+        add("dialogs.confluence.demolitionist.2", "让我看看这样会怎……（轰！）……哦，对不起，你还要那条腿吗？");
+        add("dialogs.confluence.demolitionist.3", "看看我的商品；都是惊爆价");
+        add("dialogs.confluence.demolitionist.4", "雷管，这是我特别为你准备的灵丹妙药，包治百病。");
+        add("dialogs.confluence.demolitionist.5", "想穿过那些邪恶石头，嗯？为什么不用炸药炸掉它！");
+
+        add("dialogs.confluence.goblin_tinkerer.0", "哥布林太容易生气了。事实上，他们能为了一些破布发动战争！");
+        add("dialogs.confluence.goblin_tinkerer.1", "老实说，大部分哥布林都不是真正的火箭科学家。好吧，有一些是。");
+        add("dialogs.confluence.goblin_tinkerer.2", "你知不知道为什么大家到哪儿都带着这些尖刺球？因为我不知道。");
+        add("dialogs.confluence.goblin_tinkerer.3", "我刚刚完成了最新的作品！这个版本就算你对着它猛力吹吸也不会猛烈爆炸。");
+        add("dialogs.confluence.goblin_tinkerer.4", "哥布林盗贼不太擅长偷东西。没上锁的箱子都不会偷！");
+        add("dialogs.confluence.goblin_tinkerer.5", "唷，我听说你喜欢火箭和跑鞋，所以我在你的跑鞋上加了一些火箭。");
+
+        add("dialogs.confluence.arms_dealer.0", "哥们，把手从我的枪上拿开！");
+        add("dialogs.confluence.arms_dealer.1", "嘿，兄弟，这可不是演电影。需要另行准备弹药。");
+        add("dialogs.confluence.arms_dealer.2", "我看你在盯着迷你鲨……你绝对想不到它是怎么做成的。");
+        add("dialogs.confluence.arms_dealer.3", "我想买护士卖的东西。你说啥？她什么也不卖？");
+        add("dialogs.confluence.arms_dealer.4", "飞鱼？我把它叫作打靶！");
+        add("dialogs.confluence.arms_dealer.5", "别和爆破专家浪费时间了。我这边有你要的一切。");
+
+        add("dialogs.confluence.merchant.0", "剑克纸！赶紧买一把。");
+        add("dialogs.confluence.merchant.1", "你想要苹果？你想要胡萝卜？你想要菠萝？我们只有火把。");
+        add("dialogs.confluence.merchant.2", "看看我的土块；它们特别土。");
+        add("dialogs.confluence.merchant.3", "你根本不知道这些树能在国外有多便宜");
+        add("dialogs.confluence.merchant.4", "总有一天他们会讲述你的传奇……肯定会是好故事。");
+        add("dialogs.confluence.merchant.5", "Kosh, kapleck Mog。哦，对不起，这是克林贡语，意思是“要么买，要么死。");
+
+        add("dialogs.confluence.painter.0", "我知道青绿色和蓝绿色之间的差别。但我不会告诉你。");
+        add("dialogs.confluence.painter.1", "钛白色用完了，别问了。");
+        add("dialogs.confluence.painter.2", "尝试调合粉色和紫色，肯定管用，我发誓！");
+        add("dialogs.confluence.painter.3", "不、不、不……灰色也分很多种！别让我开始……");
+        add("dialogs.confluence.painter.4", "我希望别下雨了，漆还没干。下雨就惨了！");
+        add("dialogs.confluence.painter.5", "我试过举办一次彩弹大战，但是每个人都只想要食物和装饰品。");
+
+        add("dialogs.confluence.dryad.0", "注意安全！两边的世界都需要你！");
+        add("dialogs.confluence.dryad.1", "时间的沙漏在缓缓流逝。而你并没有优雅地变老。");
+        add("dialogs.confluence.dryad.2", "两个哥布林走进酒吧，其中一个对另一个说：“来杯啤酒？！");
+        add("dialogs.confluence.dryad.3", "说我雷声大雨点小是啥意思？");
+        add("dialogs.confluence.dryad.4", "你必须停止邪恶的蔓延。");
+        add("dialogs.confluence.dryad.5", "这个世界更为广阔……自然的力量也更强大了");
+
+        add("dialogs.confluence.dye_trader.0", "我带给你最丰富的色彩，以换取你的财富。");
+        add("dialogs.confluence.dye_trader.1", "亲爱的，你的穿着太单调了。你一定得好好学学，怎么给单调的衣服染色！");
+        add("dialogs.confluence.dye_trader.2", "我唯一愿意染的木材是红木。给任何其他木材染色都是浪费。");
+        add("dialogs.confluence.dye_trader.3", "噢，不行，不行，这样是不行的。有钱也没用，你必须拿稀有的植物样本来和我交换！");
+        add("dialogs.confluence.dye_trader.4", "这些染料瓶？抱歉，亲爱的朋友，这些是非卖品。我只接受用最珍稀的植物来交换它们！");
+        add("dialogs.confluence.dye_trader.5", "你以为可以骗过我的眼睛？我可不这么想！我只接受用最稀有的花来交换这些特别的瓶子。");
+
+        add("dialogs.confluence.angler.0", "谢谢，我想，谢谢你救了我之类的。你是个优秀的得力仆从！");
+        add("dialogs.confluence.angler.1", "啥？你是哪位？我绝对不是溺水之类的！");
+        add("dialogs.confluence.angler.2", "你救了我！你太好了，我可以使唤你……呃，我是说，雇你帮我做些了不起的事！");
+        add("dialogs.confluence.angler.3", "我没有妈妈，也没有爸爸，但我有很多鱼！这就够了！");
+        add("dialogs.confluence.angler.4", "嘿！当心！我设了许多陷阱，用来实施史上最大的恶作剧！没人会发觉！你敢告诉别人试试！");
+        add("dialogs.confluence.angler.5", "听说过会叫的鱼吗？！我没听说过，只是想知道你听说过没！");
+
+        add("dialogs.confluence.old_man.0", "如果你不解除我的诅咒，我是不会让你进的。");
+        add("dialogs.confluence.old_man.1", "陌生人，你是否拥有能打败我主人的力量？");
+        add("dialogs.confluence.old_man.2", "打败我的主人，我就让你进入地牢。");
+        add("dialogs.confluence.old_man.3", "你要想进去的话就晚上再来。");
+
+        add("mood.terra_entity.goblin_tinkerer.like.dye_trader", "染料商知道把东西混在一起是多么有趣，我能理解！");
+        add("mood.terra_entity.guide.hate.painter", "我讨厌油漆工在附近。世界本来挺美好的！");
+        add("mood.terra_entity.arms_dealer.hate.demolitionist", "爆破专家怎么回事啊？难道他没发现我们卖的东西完全不同？");
+        add("mood.terra_entity.arms_dealer.love.nurse", "那啥，你觉得护士对我有意思吗");
+        add("mood.terra_entity.angler.like.demolitionist", "爆破专家其实知道他们在做什么，不像某些其他人！我挺喜欢的！");
+        add("mood.terra_entity.dye_trader.like.arms_dealer", "军火商善于发现鲜艳的颜色和商机，对吧？我喜欢。");
+        add("mood.terra_entity.dye_trader.like.painter", "油漆工善于发现鲜艳的颜色和商机，对吧？我喜欢。”");
+        add("mood.terra_entity.demolitionist.dislike.arms_dealer", "我想把军火商绑到火箭上，看看会发生什么！");
+        add("mood.terra_entity.demolitionist.dislike.goblin_tinkerer", "我想把哥布林工匠绑到火箭上，看看会发生什么！");
+        add("mood.terra_entity.painter.love.dryad", "我真的很想画树妖……当然是因为色彩鲜艳！");
+        add("mood.terra_entity.dryad.dislike.angler", "我不喜欢渔夫不尊重其他生物。");
+        add("mood.terra_entity.merchant.like.nurse", "护士赚了很多钱，我喜欢有钱人。");
+        add("mood.terra_entity.nurse.love.arms_dealer", "什么？军火商？我才没有暗恋他！我没有！闭嘴！");
+        add("mood.terra_entity.nurse.dislike.dryad", "我不太喜欢树妖，这个人有点奇怪。");
+
+        //帕秋莉手册
+        add("patchouli.confluence.otherworld_note.name", "来世手记");
+        add("patchouli.confluence.otherworld_note.landing_text", "暗流涌动，世界的命运岌岌可危，邪恶势力的阴影笼罩着两个世界。命运的交汇之时，融合的时代悄然来临。你将在这两大世界的融合中，开始一段崭新的冒险之旅，挑战未知，拯救世界，或为自己谋求力量。");
+        add("patchouli.confluence.otherworld_note.appearance", "外观");
+        add("patchouli.confluence.otherworld_note.example", "一个例子");
+        add("patchouli.confluence.otherworld_note.gui", "GUI界面");
+        add("patchouli.confluence.otherworld_note.how_to_use", "使用方式");
+        //章节
+        add("patchouli.confluence.otherworld_note.accessories.name", "饰品");
+        add("patchouli.confluence.otherworld_note.accessories.description", "两只手 两只脚 21个戒指🤔");
+        add("patchouli.confluence.otherworld_note.boss_checklist.name", "Boss 列表");
+        add("patchouli.confluence.otherworld_note.boss_checklist.description", "不止比苦力怕可怕。");
+        add("patchouli.confluence.otherworld_note.crafting_stations.name", "制作站");
+        add("patchouli.confluence.otherworld_note.crafting_stations.description", "合成台...工作台...制作台...");
+        add("patchouli.confluence.otherworld_note.fishing.name", "钓鱼");
+        add("patchouli.confluence.otherworld_note.fishing.description", "钓鱼佬永不空军！");
+        add("patchouli.confluence.otherworld_note.food.name", "食物");
+        add("patchouli.confluence.otherworld_note.food.description", "这是什么？吃一口。");
+        add("patchouli.confluence.otherworld_note.mana.name", "魔力");
+        add("patchouli.confluence.otherworld_note.mana.description", "你是一个巫师，哈利。");
+        add("patchouli.confluence.otherworld_note.material.name", "材料");
+        add("patchouli.confluence.otherworld_note.material.description", "恭喜发材！");
+        add("patchouli.confluence.otherworld_note.mob.name", "生物");
+        add("patchouli.confluence.otherworld_note.mob.description", "史莱姆是动物还是植物？");
+        add("patchouli.confluence.otherworld_note.tool.name", "工具");
+        add("patchouli.confluence.otherworld_note.tool.description", "这不是铁镐么！");
+        add("patchouli.confluence.otherworld_note.weapon.name", "武器");
+        add("patchouli.confluence.otherworld_note.weapon.description", "吃我一剑！");
+        add("patchouli.confluence.otherworld_note.world.name", "世界");
+        add("patchouli.confluence.otherworld_note.world.description", "正在生成世界中...*i正在隐藏宝藏...*i正在隐藏更多宝藏...*i正在隐藏更多更多宝藏...");
+
+        //条目
+        //饰品
+        //Boss 列表
+        add("patchouli.confluence.otherworld_note.boss_checklist.how_to_summon", "召唤方式");
+
+        add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.name", "克苏鲁之脑");
+        add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.0", "克苏鲁之脑看上去就是个裸露的大脑，不过真的非常大");
+        add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.1", "*z$(#AA0000)“出没在让人毛骨悚然的猩红之地的巨大恶魔大脑。”*c*w");
+        add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.2", "在克苏鲁之脑的防御解除之前无法攻击它，需要杀死所有视神经元才能开始攻击。");
+        add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.2.0", "视神经元");
+        add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.3", "单片镜爱好者。");
+        add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.4", "当视神经元被消灭完，克苏鲁之脑就会裸露出它的心脏并召唤出 3 个无法攻击的克苏鲁之脑幻象。");
+        add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.4.0", "克苏鲁之脑幻象");
+        add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.5", "*o“假作真时真亦假，无为有处有还无。”*b*t——摘自《红楼梦》*c");
+        add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.6", "在!w:cr!猩红之地*c使用血腥脊椎，或者摧毁 3 个生成于血腥世界中的猩红心脏来召唤克苏鲁之脑。*b需要在晚上才能召唤。");
+        add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.7", "血腥脊椎是一个用于召唤Boss的物品，看起来像是个被剥离的脊椎。*b它可以用来在猩红之地立刻召唤克苏鲁之脑。*2在!cs:a!祭坛*c中使用 30 个毒粉和 15 个椎骨合成血腥脊椎。");
+        add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.8", "*o$(#555555)“一截被剥离下来了的身体组织，上面斑驳着血痂块与肌肉组织，很难想象它是从哪种生物体内，以何种方式取出来的。它似乎在尝试着与你对话...*c");
+
+        add("patchouli.confluence.otherworld_note.boss_checklist.eater_of_worlds.name", "世界吞噬怪");
+        add("patchouli.confluence.otherworld_note.boss_checklist.eater_of_worlds.0", "世界吞噬怪是一只体型巨大的...蠕虫？看上去就挺像是地底蠕虫的腐化版。");
+        add("patchouli.confluence.otherworld_note.boss_checklist.eater_of_worlds.1", "*z$(#AA00AA)“居住在腐化之地的巨虫。”*c*w");
+        add("patchouli.confluence.otherworld_note.boss_checklist.eater_of_worlds.2", "当任何一段体节被击杀时，它会分裂！只有当所有体节被击杀才算真正击败世界吞噬怪。");
+        add("patchouli.confluence.otherworld_note.boss_checklist.eater_of_worlds.2.0", "世界吞噬怪体节");
+        add("patchouli.confluence.otherworld_note.boss_checklist.eater_of_worlds.3", "节节高升（字面意思）。");
+        add("patchouli.confluence.otherworld_note.boss_checklist.eater_of_worlds.4", "在!w:co!腐化之地*c使用蠕虫诱饵，或者摧毁 3 个生成于腐化世界中的暗影珠来召唤世界吞噬怪。*b可以在任意时间召唤。");
+        add("patchouli.confluence.otherworld_note.boss_checklist.eater_of_worlds.5", "蠕虫诱饵是一个用于召唤Boss的物品，看起来像是一块腐烂的肉。*b它可以用来在腐化之地立刻召唤世界吞噬怪。*2在!cs:a!祭坛*c中使用 30 个魔粉和 15 个腐肉合成蠕虫诱饵。");
+        add("patchouli.confluence.otherworld_note.boss_checklist.eater_of_worlds.6", "*o$(#555555)“闻起来像一块烂掉了的排骨，似乎对那些病变了的泰拉生物有极强的吸引力。*c");
+
+        add("patchouli.confluence.otherworld_note.boss_checklist.eye_of_cthulhu.name", "克苏鲁之眼");
+        add("patchouli.confluence.otherworld_note.boss_checklist.eye_of_cthulhu.0", "作为一只巨大的眼睛，克苏鲁之眼又快又狠（不太准）。*b当克苏鲁之眼血量低于一定数值，它会将其眼睛变为嘴发出吼叫声并进入狂暴。*b在狂暴时，克苏鲁之眼只会疯狂的向你冲刺。*2此时是真的快准狠了。");
+        add("patchouli.confluence.otherworld_note.boss_checklist.eye_of_cthulhu.1", "*z$(#9A5CC6)“只在夜间出没的危险眼球怪。”*c*w");
+        add("patchouli.confluence.otherworld_note.boss_checklist.eye_of_cthulhu.2", "在任何地方使用可疑眼球来召唤世界吞噬怪。*b有时克苏鲁之眼会在晚上出现：$(#AA0000)“你感到有个邪恶的东西在看着你……”*c*2需要在晚上才能召唤。");
+        add("patchouli.confluence.otherworld_note.boss_checklist.eye_of_cthulhu.3", "可疑眼球是一个用于召唤Boss的物品，看起来像是个被剥离的眼球。*b它可以用来在任何地点立刻召唤克苏鲁之眼。*2在!cs:a!祭坛*c中使用 6 个晶状体合成可疑眼球。");
+        add("patchouli.confluence.otherworld_note.boss_checklist.eye_of_cthulhu.4", "*o$(#555555)“一颗死气沉沉，目光呆滞的眼球，尽管它不具备攻击性，但它似乎比那些夜间会在半空中飞来飞去的同僚们更为危险。它好像在看着你。”");
+
+        add("patchouli.confluence.otherworld_note.boss_checklist.king_slime.name", "史莱姆王");
+        add("patchouli.confluence.otherworld_note.boss_checklist.king_slime.0", "史莱姆王作为一只超大史莱姆，它不止比普通史莱姆跳的更高更远，当你离它过远时它还会瞬移！*2它还有顶巨大的王冠！");
+        add("patchouli.confluence.otherworld_note.boss_checklist.king_slime.1", "*z$(#555555)“所有黏滑生物的首领。”*c*w");
+        add("patchouli.confluence.otherworld_note.boss_checklist.king_slime.2", "在任何地方使用史莱姆皇冠，或者在史莱姆雨中击杀 150 只史莱姆来召唤世界吞噬怪。*2可以在任意时间召唤。");
+        add("patchouli.confluence.otherworld_note.boss_checklist.king_slime.3", "史莱姆皇冠是一个用于召唤Boss的物品，看起来像是个戴着王冠的小蓝色史莱姆。*b它可以用来在任何地点立刻召唤史莱姆王。*2在!cs:a!祭坛*c中使用 20 个!ma:g!凝胶*c和金冠/铂金冠合成史莱姆皇冠。");
+        add("patchouli.confluence.otherworld_note.boss_checklist.king_slime.4", "*o$(#555555)“一只小巧的王冠，看上去是为那些人畜无害的可爱凝胶生物的加冕仪式所准备的。戴上它可能不是个好选择。*c");
+
+        add("patchouli.confluence.otherworld_note.boss_checklist.queen_bee.name", "蜂王");
+        add("patchouli.confluence.otherworld_note.boss_checklist.queen_bee.0", "字面意思，它是蜜蜂们的女王，所以当它开始抖动它的体节时会召唤大群的小蜜蜂来攻击你。*b它底下的蜂巢当然不是装饰，可是货真价实会发射毒针的！*b小心蜂王偶尔会朝你俯冲！*2*o绝对不要把蜂王带出丛林，当蜂王的眼睛变红时请尽快结束战斗或者……*c*l$(#FF0000)跑！");
+        add("patchouli.confluence.otherworld_note.boss_checklist.queen_bee.1", "*z$(#FFAA00)“统治丛林蜂巢的女王。”*c*w");
+        add("patchouli.confluence.otherworld_note.boss_checklist.queen_bee.2", "在丛林使用憎恶之蜂，或者在蜂巢破坏幼虫来召唤世界吞噬怪。*2可以在任意时间召唤。");
+        add("patchouli.confluence.otherworld_note.boss_checklist.queen_bee.3", "憎恶之蜂是一个用于召唤Boss的物品，看起来像是个蜜蜂。*b它可以用来在丛林中立刻召唤蜂王。*2在!cs:hwb!重型工作台*c中使用 5 个蜂蜜块、5 个丛林蜂巢、毒刺和蜂蜜瓶合成憎恶之蜂。");
+        add("patchouli.confluence.otherworld_note.boss_checklist.queen_bee.4", "*o$(#555555)“她似乎嫉妒厌恶那些荧光真菌孢子的气息。一团尚未成型的幼蜂，摸上去感觉像粘稠的蜂蜜...蜂王与她的下属们对它们甜蜜领地的保护欲不知何时渐渐发展为对非同类生物的嫉妒排斥与憎恶。群峰振翅值声撼动了丛林中最为厚重的叶片。”");
+
+        //制作站
+        add("patchouli.confluence.otherworld_note.crafting_stations.alchemy_table.0", "炼药桌差不多就是酿造台的Plus版，当然不能用于制作酿造台的配方，而是制作特殊的酿药配方。*b在!cs:hwb!重型工作台*c中使用木板、酿造台、骷髅头颅、蜡烛和玻璃瓶制作而成。");
+        add("patchouli.confluence.otherworld_note.crafting_stations.alchemy_table.1", "左右 6 个格子放材料，中上塞水瓶（或者其他特殊的东西），然后下方就会有成品了。");
+        add("patchouli.confluence.otherworld_note.crafting_stations.alchemy_table.2", "如果乱赛东西，你的合成可能会变得奇怪。");
+
+        add("patchouli.confluence.otherworld_note.crafting_stations.altar.name", "祭坛");
+        add("patchouli.confluence.otherworld_note.crafting_stations.altar.0", "祭坛是天然生成的制作站，主要出现在!w:co!腐化之地*c或!w:cr!猩红之地*c中的裂隙或周围，较少出现在地下。*b它们用于制作许多Boss的召唤物品和其他特殊物品。*b它们不能被拿走、拾取、放置、或制作。");
+        add("patchouli.confluence.otherworld_note.crafting_stations.altar.1", "将物品放入祭坛，潜行右击将物品取出，空手状态下左击使用祭坛进行合成");
+        add("patchouli.confluence.otherworld_note.crafting_stations.altar.2", "恶魔祭坛通常出现在腐化之地的地下，在世界各地的地下少量出现。");
+        add("patchouli.confluence.otherworld_note.crafting_stations.altar.3", "猩红祭坛通常出现在腐化之地的地下，在世界各地的地下少量出现。");
+
+        add("patchouli.confluence.otherworld_note.crafting_stations.extractinator.0", "提炼机是一种可以将砂砾、泥沙块、雪泥块、海洋砂砾和沙漠化石转换为更有价值的物品（例如矿石，钱币，和宝石），或将钓鱼垃圾转换为低级鱼饵的功能方块。*2*o垃圾回收站 3000。");
+        add("patchouli.confluence.otherworld_note.crafting_stations.extractinator.1", "手持物品对着提炼机长按右键即可，手中的物品会以极快的速度被提炼，提炼的结果会以掉落物形式掉出。*2rua~狂~风~刀~法~！");
+        add("patchouli.confluence.otherworld_note.crafting_stations.extractinator.2", "散落一地的物品。");
+        add("patchouli.confluence.otherworld_note.crafting_stations.extractinator.3", "在木匣中可以获取提炼机。");
+
+        add("patchouli.confluence.otherworld_note.crafting_stations.heavy_work_bench.0", "重型工作台有点像工作台的升级版，但是不能用于制作工作台的 3x3 配方，而是制作属于重型工作台的 4x4 配方。*b它可用于制作各种建筑方块、工具和装饰物品。");
+        add("patchouli.confluence.otherworld_note.crafting_stations.heavy_work_bench.1", "其实它差不多就是普通的工作台，不过使用 4x4 的配方。");
+        add("patchouli.confluence.otherworld_note.crafting_stations.heavy_work_bench.2", "如果配方相同，可以使用右侧的箭头切换成品。");
+
+        add("patchouli.confluence.otherworld_note.crafting_stations.hellforge.0", "比高炉还耐烧（而且兼容高炉的配方！），就是说这是个高炉的升级版。*b在!w:nt!下界塔*c的某个地方会里有概率生成地狱熔炉。");
+        add("patchouli.confluence.otherworld_note.crafting_stations.hellforge.1", "在中间 4 个地方输入材料，左下角放燃料，稍等片刻成品就会在右边出现了。");
+        add("patchouli.confluence.otherworld_note.crafting_stations.hellforge.2", "不太符合熔炉和高炉的样子，是吧？但是也不是不好看。");
+
+        add("patchouli.confluence.otherworld_note.crafting_stations.lead_anvil.0", "其实铅砧就是铁砧的换皮，功能和铁砧一模一样。*b似乎...比铁砧便宜？");
+        add("patchouli.confluence.otherworld_note.crafting_stations.lead_anvil.1", "就是铁砧，那不然呢。");
+
+        add("patchouli.confluence.otherworld_note.crafting_stations.sky_mill.0", "听起来看上去很厉害，但是实际上就是个造家具的。*b在!w:hi!天堂岛*c的箱子里有概率生成天磨。");
+        add("patchouli.confluence.otherworld_note.crafting_stations.sky_mill.1", "就像切石机一样，即放即用。");
+        add("patchouli.confluence.otherworld_note.crafting_stations.sky_mill.2", "下面三处放材料，右边选择配方，顶上就会有成品了。");
+
+        add("patchouli.confluence.otherworld_note.crafting_stations.workshop.0", "工匠作坊可以用来制作许多的饰品，而且不需要按顺序放！*b在!cs:hwb!重型工作台*c中使用木板、红色羊毛、书、锻造台、铁砧或!cs:la!铅砧*c和皮革制作而成。*2一切都是哥布林商人的阴谋！");
+        add("patchouli.confluence.otherworld_note.crafting_stations.workshop.1", "12 个材料格包围着中间的成品格即可合成。");
+        add("patchouli.confluence.otherworld_note.crafting_stations.workshop.2", "如果配方相同，可以使用右侧的箭头切换成品。");
+
+        //钓鱼
+        add("patchouli.confluence.otherworld_note.fishing.bait.name", "鱼饵");
+        add("patchouli.confluence.otherworld_note.fishing.bait.0", "当然不是必须要鱼饵才能钓鱼，但是有鱼饵能钓上更好的战利品！");
+
+        add("patchouli.confluence.otherworld_note.fishing.crates.name", "宝匣");
+        add("patchouli.confluence.otherworld_note.fishing.crates.0", "宝匣是可堆叠的摸彩袋类型物品，其中包含的东西是随机的，包括药水、鱼饵、有用的物品、钱币、金属锭、甚至还有矿石。*b越是少见的宝匣类型内含的东西价值就越高。");
+
+        //食物
+        add("patchouli.confluence.otherworld_note.food.cloud_bread.name", "云朵面包");
+        add("patchouli.confluence.otherworld_note.food.cloud_bread.0", "云朵面团用于制作云朵面包的物品，使用 3 个飘飘麦合成云朵面团。");
+        add("patchouli.confluence.otherworld_note.food.cloud_bread.1", "食用后恢复5点饥饿值，30点饱和度。*b且食用后会获得15秒漂浮II、30秒缓降II、5分钟膳食II。");
+        add("patchouli.confluence.otherworld_note.food.cloud_bread.2", "相较于普通面包，它可不需要排成一条。");
+        add("patchouli.confluence.otherworld_note.food.cloud_bread.3", "我怎么在飞啊~");
+
+        add("patchouli.confluence.otherworld_note.food.fruit.name", "水果");
+        add("patchouli.confluence.otherworld_note.food.fruit.0", "水果是一种食物，除了砂糖橘外，都可以直接食用。*b食用所有的水果都可以恢复 4 点饥饿值和 12 点饱和度。*b食用水果还可以获得 5 分钟的膳食。*b杨桃、火龙果和葡萄是例外，它们可以恢复 6 点饥饿值和 42 点饱和度（由于溢出，所以实际上最多只有 20 点），并提供 5 分钟膳食II和 50 秒饥饿延缓。");
+        add("patchouli.confluence.otherworld_note.food.fruit.1", "破坏各种树叶后有概率掉落各种水果。*b所有的水果都可以微光嬗变为仙馔密酒。");
+        add("patchouli.confluence.otherworld_note.food.fruit.2", "砂糖橘是一种水果，无法直接食用。*b需要手持砂糖橘右击以拨开为拨开的砂糖橘。");
+        add("patchouli.confluence.otherworld_note.food.fruit.3", "已拨开的砂糖橘，可食用。食用后给予 5 分钟膳食，恢复 4 点饥饿值和 12 点饱和度。");
+
+        //魔法
+        add("patchouli.confluence.otherworld_note.mana.mana_regeneration.name", "恢复魔力");
+        add("patchouli.confluence.otherworld_note.mana.mana_regeneration.0", "魔力在不使用时会自行再生，直到达到玩家的当前最大值。自然再生速率会受玩家是否在移动中、和人物当前有多少魔力所影响。魔力也可以通过药水，饰品和拾取星星再生。");
+
+        add("patchouli.confluence.otherworld_note.mana.mana_capacity.name", "魔力容量");
+        add("patchouli.confluence.otherworld_note.mana.mana_capacity.0", "每个人物都会以 20 魔力容量（魔力条上一颗星星）开局。用魔力水晶可以将玩家的魔力容量永久性提升 20，为魔力条添上另一颗星星。这最多可以进行 9 次，加上一开始的那颗星星，一共会有 10 颗星星，代表 200 魔力。");
+
+        //材料
+        add("patchouli.confluence.otherworld_note.material.coin.name", "钱币");
+        add("patchouli.confluence.otherworld_note.material.coin.0", "钱币包括四种不同等级的材质：铜、银、金、铂金。还有特殊的绿宝石币，作用后面再说。*b可以这么获取钱币：*i击杀敌对生物有概率；*i战利品箱子；*i!cs:e!提炼机*c。*2*o“有了钱地球才会转，孩子。”   --蟹老板");
+        add("patchouli.confluence.otherworld_note.material.coin.1", "钱币的4个等级是可以相互转化的，使用百进制。*b例如：每100个铜币可以做成1个银币。*b1个铂金币等于：*i100个金币；*i10,000个银币*i1,000,000个铜币*b即一个铂金币等于1x10^6个铜币。");
+        add("patchouli.confluence.otherworld_note.material.coin.2", "你拾取的、通过快捷键放入的或从收纳物品（如箱子）中取出的钱币会自动结合成更高等级的钱币。*b然而，手动将钱币移入收纳物品时，它们不会自动结合，此时需要再拾取一次货币方可自动结合。*b也可以手动合并钱币。手持钱币潜行右击以合成上级钱币；!cs:hwb!重型工作台*c也可以将钱币结合为上级/下级钱币。");
+        add("patchouli.confluence.otherworld_note.material.coin.3", "钱币还可以被放置在方块上。*b放置后的钱币堆可以被徒手破坏，在破坏后会返还所有钱币。手持钱币右击方块即可将钱币放下。方块形式的钱币可以单独成堆，也可以混杂叠放；没有堆叠高度限制，只要钱币足够多就可以一直放置下去；方块形式的钱币还拥有类似沙子的物理特性。");
+        add("patchouli.confluence.otherworld_note.material.coin.4", "绿宝石币可以用于与银行家交易。*b银行家是一种新增的村民职业，工作站点是方块形式的金币/铂金币，可以与其交易一些东西。*2当玩家死亡时，所拥有的钱币都会掉落。");
+        add("patchouli.confluence.otherworld_note.material.coin.5", "金金金金金金金金金");
+
+        add("patchouli.confluence.otherworld_note.material.corruption_material.name", "腐化材料");
+        add("patchouli.confluence.otherworld_note.material.corruption_material.0", "!w:co!腐化之地*c中生物的掉落物和结构里的宝箱会有各种各样的材料。*2邪恶...也是种力量。");
+        add("patchouli.confluence.otherworld_note.material.corruption_material.1", "击杀噬魂怪、吞噬怪和腐骴概率掉落。");
+        add("patchouli.confluence.otherworld_note.material.corruption_material.2", "击杀吞噬怪掉落。");
+        add("patchouli.confluence.otherworld_note.material.corruption_material.3", "击杀世界吞噬怪掉落。");
+        add("patchouli.confluence.otherworld_note.material.corruption_material.4", "一种生成在腐化之地的蘑菇，用于制作魔粉进而制作蠕虫诱饵。");
+        add("patchouli.confluence.otherworld_note.material.corruption_material.5", "魔法灵感菇🍄~");
+
+        add("patchouli.confluence.otherworld_note.material.crimson_material.name", "猩红材料");
+        add("patchouli.confluence.otherworld_note.material.crimson_material.0", "!w:cr!猩红之地*c中生物的掉落物和结构里的宝箱会有各种各样的材料。*2邪恶...也是种力量。");
+        add("patchouli.confluence.otherworld_note.material.crimson_material.1", "击杀血爬虫、脸怪、猩红咯迈拉和血腥芽孢概率掉落。");
+        add("patchouli.confluence.otherworld_note.material.crimson_material.2", "击杀视神经元掉落，也会出现在克苏鲁之脑宝藏袋中。");
+        add("patchouli.confluence.otherworld_note.material.crimson_material.3", "一种生成在猩红之地的蘑菇，用于制作毒粉进而制作血腥脊柱。");
+        add("patchouli.confluence.otherworld_note.material.crimson_material.4", "小黑子你们闹够没！");
+
+        add("patchouli.confluence.otherworld_note.material.falling_star.name", "坠落之星");
+        add("patchouli.confluence.otherworld_note.material.falling_star.0", "坠落之星会在整个夜间期间随机生成，坠落后在地上会发光，使其在夜晚中容易找到。它可以用来做魔力水晶从而提升自己的法力上限。*b坠落时，它会对砸到的生物造成 100 点（50 颗心）伤害。*2*o“夜晚，星星在坠落，洒满全世界。它们的用途极为广泛。");
+        add("patchouli.confluence.otherworld_note.material.falling_star.1", "*o如果你看到了，一定要拿到手，因为星星在日出后就会消失。”*t--向导");
+
+        add("patchouli.confluence.otherworld_note.material.gel.name", "凝胶");
+        add("patchouli.confluence.otherworld_note.material.gel.0", "凝胶是构成一些史莱姆的物品。*b击杀大多数种类的史莱姆生物即可获得凝胶。*2注意：凝胶并不是史莱姆球，而是一种可食的燃料，凝胶可燃但黏不住东西；*b史莱姆球黏附性大但不能燃烧。*2*o食品级和工业级的区别。");
+        add("patchouli.confluence.otherworld_note.material.gel.1", "据说还有种稀有的粉色凝胶...");
+
+        add("patchouli.confluence.otherworld_note.material.gems.name", "宝石");
+        add("patchouli.confluence.otherworld_note.material.gems.0", "宝石是一种材料，用于合成。*b会在提炼机和箱子中出现。*2为了规避“紫水晶”，原“紫晶”改为“异域紫晶石”");
+
+        //生物
+        add("patchouli.confluence.otherworld_note.mob.slime.name", "史莱姆");
+        add("patchouli.confluence.otherworld_note.mob.slime.0", "相较于原有的史莱姆，这些新的史莱姆更加多元化。");
+        add("patchouli.confluence.otherworld_note.mob.slime.1", "绿色史莱姆≠Minecraft史莱姆。");
+        add("patchouli.confluence.otherworld_note.mob.slime.2", "这个不是腐化，可能是踩到青金石了。");
+        add("patchouli.confluence.otherworld_note.mob.slime.3", "这个不是猩红，可能是吃到虞美人了。");
+
+        //工具
+        add("patchouli.confluence.otherworld_note.tool.axe.name", "斧");
+        add("patchouli.confluence.otherworld_note.tool.axe.0", "斧作为一种兼备工具与武器为一体的工具，你会想要一把的！");
+        add("patchouli.confluence.otherworld_note.tool.axe.1", "再生之斧是使用食人怪藤蔓、丛林孢子、再生法杖制作的斧。");
+        add("patchouli.confluence.otherworld_note.tool.axe.2", "金斧是使用红玉、金斧和金锭制作的斧。*b*o不要与原版的金斧混淆。");
+        add("patchouli.confluence.otherworld_note.tool.axe.3", "暗夜战斧是使用魔矿锭制作的斧，特点是不会损坏！");
+        add("patchouli.confluence.otherworld_note.tool.axe.4", "嗜血狂斧是使用猩红矿锭制作的斧，特点是不会损坏！");
+
+        add("patchouli.confluence.otherworld_note.tool.bottomless_bucket.name", "无底桶");
+        add("patchouli.confluence.otherworld_note.tool.bottomless_bucket.0", "无底桶可以看做是一个不会消耗的桶，可以源源不断的放置液体。*2无底桶在参与合成时不会被消耗！");
+        add("patchouli.confluence.otherworld_note.tool.bottomless_bucket.1", "无底水桶 = 2个水桶");
+        add("patchouli.confluence.otherworld_note.tool.bottomless_bucket.2", "无底熔岩桶 = 无尽能源");
+        add("patchouli.confluence.otherworld_note.tool.bottomless_bucket.3", "纯天然无污染！");
+        add("patchouli.confluence.otherworld_note.tool.bottomless_bucket.4", "小心掉进去！");
+
+        add("patchouli.confluence.otherworld_note.tool.bug_net.name", "虫网");
+        add("patchouli.confluence.otherworld_note.tool.bug_net.0", "一把小虫网，可以用来抓虫，进而钓鱼。*2（不过目前版本并没有虫）（悲）");
+        add("patchouli.confluence.otherworld_note.tool.bug_net.1", "一把黄金制成的虫网，甚至可以用来抓小型动物（比如猪、牛）！*2（但是还是不能抓虫）（悲）");
+
+        add("patchouli.confluence.otherworld_note.tool.fishing_rod.name", "钓竿");
+        add("patchouli.confluence.otherworld_note.tool.fishing_rod.0", "那根木头棍子当然可以用一辈子，但是更高级的鱼竿会有更多的战利品！");
+        add("patchouli.confluence.otherworld_note.tool.fishing_rod.1", "强化钓竿是使用铅锭/铁锭制作的钓竿，比普通钓竿更耐用！");
+        add("patchouli.confluence.otherworld_note.tool.fishing_rod.2", "玻璃钢钓竿是在丛林地下小屋搜刮宝箱获得的钓竿。");
+        add("patchouli.confluence.otherworld_note.tool.fishing_rod.3", "甲虫钓竿是在绿洲匣抽取获得的钓竿。");
+
+        add("patchouli.confluence.otherworld_note.tool.hammer.name", "锤");
+        add("patchouli.confluence.otherworld_note.tool.hammer.0", "锤是一种基本工具，可快速破坏如墙、泥土、树叶和木板这类硬度较低的物品。*b当其破坏方块时，以被目标方块为中心，3x3 范围内的方块也会一起被破坏。");
+        add("patchouli.confluence.otherworld_note.tool.hammer.1", "金锤是使用金锭制作的锤，可能稍微有些不耐用？");
+        add("patchouli.confluence.otherworld_note.tool.hammer.2", "魔锤是使用魔矿锭制作的锤，特点是不会损坏！");
+        add("patchouli.confluence.otherworld_note.tool.hammer.3", "血肉锤是使用猩红矿锭制作的锤，特点是不会损坏！");
+
+        add("patchouli.confluence.otherworld_note.tool.hook.name", "抓钩");
+        add("patchouli.confluence.otherworld_note.tool.hook.0", "抓钩是一类有助于玩家穿越地形的工具。*b使用时，抓钩会发射链条来钩住方块表面并将玩家拉向它。*2将抓钩装备至饰品栏中的抓钩栏后，对准想要前往的地方按下F键即可发射抓钩。*b到达目标地点后跳跃即可。");
+        add("patchouli.confluence.otherworld_note.tool.hook.1", "抓钩主要有宝石钩和其他各种特殊抓钩。");
+
+        add("patchouli.confluence.otherworld_note.tool.misc.name", "杂项");
+        add("patchouli.confluence.otherworld_note.tool.misc.0", "各种各样的武器百花八门，千奇百怪的功能各式各样！");
+        add("patchouli.confluence.otherworld_note.tool.misc.1", "一面美观的镜子，可以送你回家！*2不，它不是魔镜，不会告诉你谁是最美的。");
+        add("patchouli.confluence.otherworld_note.tool.misc.2", "也是一面美观的镜子，不过可能有点冻手...*2其实冰块是甜的，不信你可以舔一下尝尝！");
+
+        add("patchouli.confluence.otherworld_note.tool.paint.name", "油漆");
+        add("patchouli.confluence.otherworld_note.tool.paint.0", "油漆可以用于改变方块的颜色，几乎所有可放置物品都可以被油漆涂色。*b油漆需要使用漆刷或油漆滚刷来刷到方块上，若持有喷漆器，那么方块在放置时会自动被喷涂上色，每次上色都会消耗 1 个油漆。*b基本的油漆可以在油漆工NPC处购买。");
+        add("patchouli.confluence.otherworld_note.tool.paint.1", "若有多个颜色的油漆，那么在物品栏最前方的颜色会被最先使用（顺序为从上到下，从左到右）；*b若玩家的物品栏和背包中均有油漆，且它们的颜色不同，那么物品栏中的颜色会被优先使用。");
+        add("patchouli.confluence.otherworld_note.tool.paint.2", "漆刷是用于为整个方块上色的一种工具。*2油漆滚刷用于为方块单面上色的一种工具。*2其实直接挖掉方块也能使油漆失效...");
+        add("patchouli.confluence.otherworld_note.tool.paint.3", "漆铲是一种用于移除油漆的工具，令玩家无需破坏并重新放置方块来去除油漆。*2手持漆铲右击需要除漆的方块，即可将方块上的油漆去除；*b漆铲默认为整个方块除漆，若想为单面去漆，只需潜行右击方块即可。");
+        add("patchouli.confluence.otherworld_note.tool.paint.4", "看来还是直接挖掉更省事...");
+
+        add("patchouli.confluence.otherworld_note.tool.pickaxe.name", "镐");
+        add("patchouli.confluence.otherworld_note.tool.pickaxe.0", "镐作为一种兼备工具与武器为一体的工具，你会想要一把的！");
+        add("patchouli.confluence.otherworld_note.tool.pickaxe.1", "仙人掌镐是使用仙人掌制作的镐，非常的好用。");
+        add("patchouli.confluence.otherworld_note.tool.pickaxe.2", "金镐是使用红玉、金镐和金锭制作的镐。*b*o不要与原版的金镐混淆。");
+        add("patchouli.confluence.otherworld_note.tool.pickaxe.3", "恶魔镐是使用魔矿锭和暗影鳞片制作的镐，特点是不会损坏！");
+        add("patchouli.confluence.otherworld_note.tool.pickaxe.4", "死亡使者镐是使用猩红矿锭和组织样本制作的镐，特点是不会损坏！");
+        add("patchouli.confluence.otherworld_note.tool.pickaxe.5", "化石镐是使用坚固化石制作的镐，又老又坚固！");
+        add("patchouli.confluence.otherworld_note.tool.pickaxe.6", "熔岩镐是一个骷髅王前的镐，使用狱石矿锭和烈焰棒制作，十分坚固！");
+        add("patchouli.confluence.otherworld_note.tool.pickaxe.7", "骨镐是一把骷髅王前的镐，相较同等级的其他镐，它的挖掘速度更快。");
+        add("patchouli.confluence.otherworld_note.tool.pickaxe.8", "掠夺鲨是一把通过钓鱼获取的镐。*b*o鲨鲨，嘿嘿:P");
+
+        add("patchouli.confluence.otherworld_note.tool.rope.name", "绳索");
+        add("patchouli.confluence.otherworld_note.tool.rope.0", "几段看上去平平无奇的绳子，但是危机情况下也许会救你一命！");
+        add("patchouli.confluence.otherworld_note.tool.rope.1", "把零散的绳子集合起来，效果更佳！");
+
+        //武器
+        add("patchouli.confluence.otherworld_note.weapon.arrow.name", "箭");
+        add("patchouli.confluence.otherworld_note.weapon.arrow.0", "");
+        add("patchouli.confluence.otherworld_note.weapon.arrow.1", "");
+        add("patchouli.confluence.otherworld_note.weapon.arrow.2", "");
+        add("patchouli.confluence.otherworld_note.weapon.arrow.3", "");
+        add("patchouli.confluence.otherworld_note.weapon.arrow.4", "");
+        add("patchouli.confluence.otherworld_note.weapon.arrow.5", "");
+
+        add("patchouli.confluence.otherworld_note.weapon.bomb.name", "炸弹");
+        add("patchouli.confluence.otherworld_note.weapon.bomb.0", "炸弹是一种道具，主要可用于采矿时的爆破。*b可以在地下自然生成的金箱中开到，也有概率在罐子打碎后获得。");
+        add("patchouli.confluence.otherworld_note.weapon.bomb.1", "黏性炸弹可以用炸弹和凝胶合成获得。*b黏性炸弹与炸弹的属性基本一致，区别是当抛出的黏性炸弹接触方块时会粘在方块上。");
+        add("patchouli.confluence.otherworld_note.weapon.bomb.2", "弹力炸弹可以用炸弹和粉凝胶合成获得。*b弹力炸弹与炸弹的属性基本一致，区别是当抛出的弹力炸弹接触方块时会弹起，弹起的高度随下落的高度增高而增高，但不会超过下落时的高度。");
+        add("patchouli.confluence.otherworld_note.weapon.bomb.3", "甲虫炸弹是一种道具，主要可用于采矿时的爆破。*b可以使用炸弹和坚固化石合成，也有概率在沙漠罐子打碎后获得。");
+
+        add("patchouli.confluence.otherworld_note.weapon.boomerang.name", "回旋镖");
+        add("patchouli.confluence.otherworld_note.weapon.boomerang.0", "木回旋镖是一把基础的回旋镖，后续可以升级成更高级的回旋镖。");
+        add("patchouli.confluence.otherworld_note.weapon.boomerang.1", "附魔回旋镖是使用木回旋镖制作的回旋镖，增加了伤害还无法破坏。");
+        add("patchouli.confluence.otherworld_note.weapon.boomerang.2", "蘑菇回旋镖是一把回旋镖，击杀孢子蝙蝠后有概率掉落。");
+        add("patchouli.confluence.otherworld_note.weapon.boomerang.3", "烈焰回旋镖是使用附魔回旋镖制作的回旋镖。");
+        add("patchouli.confluence.otherworld_note.weapon.boomerang.4", "三尖回旋镖是使用附魔回旋镖、附魔回旋镖和冰雪回旋镖制作的回旋镖。");
+
+        add("patchouli.confluence.otherworld_note.weapon.bow.name", "弓");
+        add("patchouli.confluence.otherworld_note.weapon.bow.0", "作为射手的的武器之一，弓也不一定只有射手才能用。");
+        add("patchouli.confluence.otherworld_note.weapon.bow.1", "石骸弓是使用坚固化石制作的弓，会将剑转化成化石箭。");
+        add("patchouli.confluence.otherworld_note.weapon.bow.2", "");
+        add("patchouli.confluence.otherworld_note.weapon.bow.3", "恶魔弓是使用魔矿锭制作的弓，特点是不会损坏！");
+        add("patchouli.confluence.otherworld_note.weapon.bow.4", "肌腱弓是使用猩红矿锭制作的弓，特点是不会损坏！");
+        add("patchouli.confluence.otherworld_note.weapon.bow.5", "浴火之怒弓是使用狱石矿锭制作的弓，特点是不会损坏！");
+        add("patchouli.confluence.otherworld_note.weapon.bow.6", "");
+
+        add("patchouli.confluence.otherworld_note.weapon.dynamite.name", "雷管");
+        add("patchouli.confluence.otherworld_note.weapon.dynamite.0", "雷管是一种道具，主要可用于采矿时的爆破。*b可以在地下自然生成的金箱中开到。");
+        add("patchouli.confluence.otherworld_note.weapon.dynamite.1", "黏性雷管可以用雷管和凝胶在工作台上合成获得。*b黏性雷管与雷管的属性基本一致，区别是当抛出的黏性雷管接触方块时会粘在方块上。");
+        add("patchouli.confluence.otherworld_note.weapon.dynamite.2", "弹力雷管可以用雷管和粉凝胶在工作台上合成获得。*b弹力雷管与雷管的属性基本一致，区别是当抛出的弹力雷管接触方块时会弹起，弹起的高度随下落的高度增高而增高，但不会超过下落时的高度。");
+        add("patchouli.confluence.otherworld_note.weapon.dynamite.3", "甲虫炸弹是一种道具，主要可用于采矿时的爆破。*b可以使用炸弹和坚固化石合成，也有概率在沙漠罐子打碎后获得。");
+
+        add("patchouli.confluence.otherworld_note.weapon.short_bow.name", "短弓");
+        add("patchouli.confluence.otherworld_note.weapon.short_bow.0", "短弓是一种武器，相较于普通的弓，它们的速度更快，所需材料较少，但伤害低。");
+        add("patchouli.confluence.otherworld_note.weapon.short_bow.1", "不是取火钻!");
+
+        add("patchouli.confluence.otherworld_note.weapon.short_sword.name", "短剑");
+        add("patchouli.confluence.otherworld_note.weapon.short_sword.0", "短剑是一种武器，相较于普通的剑/阔剑，它们的速度更快，所需材料较少，但伤害低。");
+        add("patchouli.confluence.otherworld_note.weapon.short_sword.1", "小匕首可爱捏。");
+
+        add("patchouli.confluence.otherworld_note.weapon.sword.name", "阔剑");
+        add("patchouli.confluence.otherworld_note.weapon.sword.0", "作为战士的的武器之一，阔剑也不一定只有战士才能用。");
+        add("patchouli.confluence.otherworld_note.weapon.sword.1", "仙人掌剑是使用仙人掌制作的阔剑。");
+        add("patchouli.confluence.otherworld_note.weapon.sword.2", "金阔剑是使用红玉、金剑和金锭制作的镐。*b*o不要与原版的金剑混淆。");
+
+        //世界
+        add("patchouli.confluence.otherworld_note.world.ash_forest.name", "白蜡木林");
+        add("patchouli.confluence.otherworld_note.world.ash_forest.0", "白蜡木林是一种会在下界生成的生物群系，这里生长着大量的白蜡木。*b白蜡木林几乎都由灰烬块组成，最上方则被灰烬草方块覆盖，灰烬草在其上生长。*2白蜡木在这里生长，玩家可以在这里获取到白蜡木及其衍生物。火焰花同样会在这里生成。");
+        add("patchouli.confluence.otherworld_note.world.ash_forest.1", "*z$(#AAAAAA)“烬墟生芽启新痕。”");
+        add("patchouli.confluence.otherworld_note.world.ash_forest.2", "*o*t灰暗的尘土死气沉沉，*b*t赤红的世界生机勃勃");
+
+        add("patchouli.confluence.otherworld_note.world.ash_wasteland.name", "灰烬荒地");
+        add("patchouli.confluence.otherworld_note.world.ash_wasteland.0", "灰烬荒地是一种荒芜的生物群系，会在下界生成。*b灰烬荒地几乎都由灰烬块组成，地形则类似下界荒地。*2灰烬狱石会在这里较多地生成，并且相当显眼，所以这里算得上是一个挖掘狱石的好去处。*b火焰花同样会在这里生成。");
+        add("patchouli.confluence.otherworld_note.world.ash_wasteland.1", "*z$(#AAAAAA)“灼世熔烬埋终章”");
+        add("patchouli.confluence.otherworld_note.world.ash_wasteland.2", "*o*t灰暗的尘土隐藏宝物，*b*t赤红的世界危机四伏。");
+
+        add("patchouli.confluence.otherworld_note.world.enchanted_sword_shrine.name", "附魔剑冢");
+        add("patchouli.confluence.otherworld_note.world.enchanted_sword_shrine.0", "附魔剑冢是一种会在世界中随机生成的结构，整体风格类似于繁茂洞穴。*b在正上方会有很长的狭长空间连通地面（尽管通常不会连通）。");
+        add("patchouli.confluence.otherworld_note.world.enchanted_sword_shrine.1", "*z$(#B4684D)“隔绝世界的神器”");
+        add("patchouli.confluence.otherworld_note.world.enchanted_sword_shrine.2", "*o*t深埋于月光流转的岩层，隐藏在邪恶祭坛的裂隙，青苔斑驳的岩石暗暗埋葬着星芒碎屑。*b*t躲避于尘世之外的洞穴，藏身在世间隐蔽的角落，深蓝锋利的宝剑仍然闪烁着点点星光。");
+
+        add("patchouli.confluence.otherworld_note.world.heaven_island.name", "天堂岛");
+        add("patchouli.confluence.otherworld_note.world.heaven_island.0", "天堂岛是生成于世界上空的漂浮岛屿，有天堂岛和天堂湖两种变种。*2天堂岛由云朵包裹着一片陆地组成，包含一个天空小屋，小屋中必定包含两个箱子。*b天堂湖全部由云块和水组成，可以在这里钓鱼。*2*o钓鱼佬永不空军！！！");
+        add("patchouli.confluence.otherworld_note.world.heaven_island.1", "*z$(#9A5CC6)“崇高的宝藏”");
+        add("patchouli.confluence.otherworld_note.world.heaven_island.2", "*o*t浮岛悬于云霭之间，土石基座托起千年苔痕，残破神殿流淌着凝固的星辉。*b*t飘湖立于云顶之中，浮云包围支撑生命之源，隐秘蓝水保存着流淌的生命。");
+        add("patchouli.confluence.otherworld_note.world.heaven_island.3", "*z$(#9A5CC6)“寂静的生命”");
+
+        add("patchouli.confluence.otherworld_note.world.living_tree.name", "生命树");
+        add("patchouli.confluence.otherworld_note.world.living_tree.0", "生命树是一种大型的树形结构，它只会在森林群系生成。*b生命树地表部分的底部的内部是空心的，其中有一个箱子，内容与其他地表箱子一致。*b在其内部还有一条通往地下部分的通道，顺着通道往下走，可以发现一个小房间，房间内有一个包含独特物品的箱子。");
+        add("patchouli.confluence.otherworld_note.world.living_tree.1", "*z$(#55FF55)“健康的生命之树”");
+        add("patchouli.confluence.otherworld_note.world.living_tree.2", "*o*t滕阔的巨树屹立世间，*b*t森罗的邪恶引起质变。");
+
+        add("patchouli.confluence.otherworld_note.world.nether_tower.name", "下界塔");
+        add("patchouli.confluence.otherworld_note.world.nether_tower.0", "下界塔是一种会生成在下界岩浆海的附近的结构。只会生成在下界荒地和灰烬荒地两个生物群系中。*b由两个主塔和连接它们的桥梁组成，各区域都分布着资源。主塔共有三层，两塔存在着一些差异：一座底层为绯红木板，另一座则为诡异木板，通过建筑下半部分的色系即可区分它们。");
+        add("patchouli.confluence.otherworld_note.world.nether_tower.1", "*z$(#FF5555)“炎热的藏宝地”");
+        add("patchouli.confluence.otherworld_note.world.nether_tower.2", "*o*t酷热的塔中隐藏着宝藏，*b*t堵塞的冤魂诉说着肮脏。");
+
+        add("patchouli.confluence.otherworld_note.world.queen_bee_hive.name", "蜂王蜂巢");
+        add("patchouli.confluence.otherworld_note.world.queen_bee_hive.0", "蜂王蜂巢是一个巨型蜂巢，自然生成于丛林群系的地下。*b主要由丛林蜂巢构成，在靠底部的部位有一摊较大的蜂蜜池。*2*l注意！在蜂蜜池中间会有一个以丛林蜂巢为底座、被稀薄蜂蜜块包裹的幼虫，如果将其破坏将会召唤出蜂王！");
+        add("patchouli.confluence.otherworld_note.world.queen_bee_hive.1", "*z$(#FFFF55)“甜蜜的炸弹”");
+        add("patchouli.confluence.otherworld_note.world.queen_bee_hive.2", "*o*t甜蜜的蜂蜜暗藏着剧毒，*b*t严密的淤泥包裹着诅猝。");
+
+        add("patchouli.confluence.otherworld_note.world.shimmer_lake.name", "微光湖");
+        add("patchouli.confluence.otherworld_note.world.shimmer_lake.0", "微光湖是一种会在世界中随机生成的结构，其中会大量生成微光。*b在微光湖的中央，有着一大池的微光，周围环绕着几棵宝石树。");
+        add("patchouli.confluence.otherworld_note.world.shimmer_lake.1", "*z$(#FF55FF)“美丽而静谧，虚幻而空灵”");
+        add("patchouli.confluence.otherworld_note.world.shimmer_lake.2", "*o*t微光湖似那星穹坠落的碎片，液态星光在寂静中泛起涟漪。*b*t秘境被柔蓝雾气笼罩，湖面如镜倒悬着永恒暮色，浸入其中便化作虚无剪影，与亿万星辰的呢喃共沉于无垠梦境。");
+
+        add("patchouli.confluence.otherworld_note.world.sky_village.name", "天空村庄");
+        add("patchouli.confluence.otherworld_note.world.sky_village.0", "天空村庄是一种生成于世界上空的建筑，就像!w:hi!一样。天空村庄由多个浮岛组成，中心浮岛和其他浮岛之间由桥梁连接着，其它浮岛有农田浮岛和房屋浮岛，而房屋浮岛有以下类型：*i铁匠铺；*i石匠屋；*i天文台；*i马厩岛；*i大教堂；*i图书馆。");
+        add("patchouli.confluence.otherworld_note.world.sky_village.1", "*z$(#B4684D)“漂浮的桃花源”");
+        add("patchouli.confluence.otherworld_note.world.sky_village.2", "*o*t浮岛聚成集体，辅道链接文明，腐盗远离人间。*b*t桃园浮于孤寂，陶院保护孤独，涛冤断绝世间。");
+        add("patchouli.confluence.otherworld_note.world.sky_village.3", "*z$(#B4684D)“孤寂之家”");
+
+        add("patchouli.confluence.otherworld_note.world.the_corruption.name", "腐化之地");
+        add("patchouli.confluence.otherworld_note.world.the_corruption.0", "腐化之地是一种邪恶生物群系，有着深紫色的废土、死亡、与腐烂的主题，会生成腐化主题的敌怪。*b腐化之地群系会在邪恶生物群系为腐化的世界中自然生成。也可以自行创造腐化之地，当一个区块内的腐化系邪恶方块（例如黑檀石块）超过 256 个时，这个区块的生物群系会变为腐化之地。*b相应的，当邪恶方块不足 256 个时，这个区块的群系会变为原本的生物群系。");
+        add("patchouli.confluence.otherworld_note.world.the_corruption.1", "*z$(#AA00AA)“正在使世界变得邪恶”");
+        add("patchouli.confluence.otherworld_note.world.the_corruption.2", "*o*t腐化之地是一片充满裂隙和悬崖的危险区域，弥漫着邪恶与死亡的气息。*b*t它是由生物的邪念所产生的毒瘤，滋生出可怕的畸形怪物，这些怪物妒忌一切生灵。");
+
+        add("patchouli.confluence.otherworld_note.world.the_crimson.name", "猩红之地");
+        add("patchouli.confluence.otherworld_note.world.the_crimson.0", "猩红之地是一种邪恶生物群系，有着肉体感染的红色血腥主题，会生成血腥主题的敌怪。*b猩红之地群系会在邪恶生物群系为猩红的世界中自然生成。也可以自行创造猩红之地，当一个区块内的猩红系邪恶方块（例如猩红石块）超过 256 个时，这个区块的生物群系会变为猩红之地。*b相应的，当邪恶方块不足 256 个时，这个区块的群系会变为原本的生物群系。");
+        add("patchouli.confluence.otherworld_note.world.the_crimson.1", "*z$(#AA0000)“正在使世界变得血腥”");
+        add("patchouli.confluence.otherworld_note.world.the_crimson.2", "*o*t古时，泰拉瑞亚的人民犯下了愚昧的错误：他们屈服于猩红，视其为神明，并献祭自己的血肉。*b*t最终，他们被同化成扭曲的生命，与猩红的野心一同蔓延在大地上。");
+
+
+        add(ModEntities.BEE_ARROW.get(), "蜜蜂箭");
         add(ModEntities.ARROW_PROJECTILE.get(), "泰拉箭");
         add(ModEntities.ANTI_GRAVITY_HOOK.get(), "反重力钩");
         add(ModEntities.BALL_OF_FIRE_PROJECTILE.get(), "火球弹");
@@ -746,7 +1523,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEntities.BODY_PART.get(), "身体部件");
         add(ModEntities.BOMB_ENTITY.get(), "炸弹");
         add(ModEntities.BOMB_FISH_ENTITY.get(), "炸弹鱼");
-        add(ModEntities.BOOMERANG_PROJECTILE.get(), "回旋镖");
+//        add(ModEntities.BOOMERANG_PROJECTILE.get(), "回旋镖");
         add(ModEntities.BOUNCY_BOMB_ENTITY.get(), "弹力炸弹");
         add(ModEntities.BOUNCY_DYNAMITE.get(), "弹力炸药");
         add(ModEntities.BOUNCY_GRENADE.get(), "弹力手雷");
@@ -765,7 +1542,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEntities.FISH_HOOK.get(), "钓鱼钩");
         add(ModEntities.GENERIC_MINECART.get(), "矿车");
         add(ModEntities.GRENADE.get(), "手雷");
-        add(ModEntities.GUIDE.get(), "向导");
         add(ModEntities.HONEY_BOMB.get(), "蜂蜜炸弹");
         add(ModEntities.HOOK_OF_DISSONANCE.get(), "失谐钩");
         add(ModEntities.HOTLINE_FISHING_HOOK.get(), "熔线钓鱼钩");
@@ -783,6 +1559,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEntities.ROPE_COILS.get(), "绳索卷");
         add(ModEntities.SCARAB_BOMB_ENTITY.get(), "圣甲虫炸弹");
         add(ModEntities.SHURIKEN_PROJECTILE.get(), "手里剑");
+        add(ModEntities.JAVELIN_PROJECTILE.get(), "标枪");
         add(ModEntities.SKELETRON_HAND.get(), "骷髅王之手");
         add(ModEntities.SLIME_HOOK.get(), "史莱姆钩");
         add(ModEntities.SPOOKY_HOOK.get(), "诡异钩");
@@ -803,6 +1580,18 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEntities.BOULDER.get(), "巨石");
         add(ModEntities.FOLLOWER_BOULDER.get(), "跟踪巨石");
         add(ModEntities.EXPLODE_BOULDER.get(), "爆炸巨石");
+        add(ModEntities.ROLLING_CACTUS_BOULDER.get(), "仙人球");
+        add(ModEntities.ROLLING_CACTUS_SPIKE.get(), "仙人球尖刺");
+        add(ModEntities.TOMBSTONE_BOULDER.get(), "墓石巨石");
+        add(ModEntities.SPIKY_BALL_PROJECTILE.get(), "尖球");
+        add(ModEntities.THROWN_WATER_PROJECTILE.get(), "掷出的液体瓶");
+        add(ModEntities.FLOWER_PETAL_PROJECTILE.get(), "花瓣射弹");
+        add(ModEntities.TITANIUM_SHARDS_PROJECTILE.get(), "钛金防护碎片");
+        add(ModEntities.FALLING_STAR_ITEM_ENTITY.get(), "坠落之星");
+        add(ModEntities.TREASURE_BAG_ITEM_ENTITY.get(), "宝藏袋");
+        add(ModEntities.FLAME_CLOUD.get(), "火焰云");
+        add(ModEntities.SUPER_SPIKY_BALL_PROJECTILE.get(), "超级尖球射弹");
+        add(ModEntities.SPEAR.get(), "长矛");
 
 
         //region blocks
@@ -926,9 +1715,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(OreBlocks.RAW_PALLADIUM_BLOCK.get(), "粗钯金块");
         add(OreBlocks.DEEPSLATE_PALLADIUM_ORE.get(), "深层钯金矿");
         add(OreBlocks.PALLADIUM_BLOCK.get(), "钯金块");
-        add(OreBlocks.RAW_MITHRIL_BLOCK.get(), "粗秘银块");
-        add(OreBlocks.DEEPSLATE_MITHRIL_ORE.get(), "深层秘银矿");
-        add(OreBlocks.MITHRIL_BLOCK.get(), "秘银块");
+        add(OreBlocks.RAW_MYTHRIL_BLOCK.get(), "粗秘银块");
+        add(OreBlocks.DEEPSLATE_MYTHRIL_ORE.get(), "深层秘银矿");
+        add(OreBlocks.MYTHRIL_BLOCK.get(), "秘银块");
         add(OreBlocks.RAW_ORICHALCUM_BLOCK.get(), "粗山铜块");
         add(OreBlocks.DEEPSLATE_ORICHALCUM_ORE.get(), "深层山铜矿");
         add(OreBlocks.ORICHALCUM_BLOCK.get(), "山铜块");
@@ -1078,6 +1867,22 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.LIVING_LOG_BLOCKS.getFenceGate().get(), "生命木栅栏门");
         add(NatureBlocks.LIVING_LOG_BLOCKS.getPressurePlate().get(), "生命木压力板");
 
+        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getButton().get(), "生命红木按钮");
+        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getPlanks().get(), "生命红木板");
+        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getLog().get(), "生命红木原木");
+        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getStrippedLog().get(), "去皮生命红原木");
+        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getStrippedWood().get(), "去皮生命红木");
+        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getDoor().get(), "生命红木门");
+        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getTrapdoor().get(), "生命红木活板门");
+        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getSign().get(), "生命红木告示牌");
+        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getStairs().get(), "生命红木楼梯");
+        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getSlab().get(), "生命红木台阶");
+        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getWood().get(), "生命红木");
+        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getLeaves().get(), "生命红木树叶");
+        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getFence().get(), "生命红木栅栏");
+        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getFenceGate().get(), "生命红木栅栏门");
+        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getPressurePlate().get(), "生命红木压力板");
+
         add(NatureBlocks.DESERT_FOSSIL.get(), "沙漠化石");
         add(NatureBlocks.HARDENED_SAND_BLOCK.get(), "硬化沙块");
         add(NatureBlocks.MOIST_SAND_BLOCK.get(), "湿润沙块");
@@ -1087,6 +1892,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.RED_MOIST_SAND_BLOCK.get(), "湿润红沙块");
         add(NatureBlocks.DIATOMACEOUS.get(), "硅藻土");
         add(NatureBlocks.SLUSH.get(), "雪泥块");
+        add(NatureBlocks.SILT_BLOCK.get(), "泥沙块");
         add(NatureBlocks.MARINE_GRAVEL.get(), "海洋砂砾");
         add(NatureBlocks.EBONY_STONE.get(), "黑檀石块");
         add(NatureBlocks.EBONY_COBBLESTONE.get(), "黑檀圆石");
@@ -1123,7 +1929,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.MUSHROOM_GRASS_BLOCK.get(), "蘑菇草方块");
         add(NatureBlocks.JUNGLE_GRASS_BLOCK.get(), "丛林草方块");
         add(NatureBlocks.ASH_BLOCK.get(), "灰烬块");
-        add(NatureBlocks.ASH_GRASS_BLOCK.get(), "灰烬草块");
+        add(NatureBlocks.ASH_GRASS_BLOCK.get(), "灰烬草方块");
         add(NatureBlocks.ASH_GRASS.get(), "灰烬草");
         add(NatureBlocks.CLOUD_BLOCK.get(), "云块");
         add(NatureBlocks.EVAPORATIVE_CLOUD_BLOCK.get(), "蒸发云块");
@@ -1162,6 +1968,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.SPOOKY_LOG_BLOCKS.getSign().get(), "阴森告示牌");
         add(NatureBlocks.SPOOKY_LOG_BLOCKS.getStairs().get(), "阴森楼梯");
         add(NatureBlocks.SPOOKY_LOG_BLOCKS.getSlab().get(), "阴森台阶");
+        add(NatureBlocks.SPOOKY_LOG_BLOCKS.getLeaves().get(), "阴森树叶");
 
 
         add(NatureBlocks.STELLAR_BLOSSOM.get(), "星辰花");
@@ -1202,7 +2009,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.NATURES_GIFT.get(), "大自然的恩赐");
         //藤蔓
         add(NatureBlocks.YELLOW_WILLOW_DROOPING_LEAVES.get(), "黄柳垂叶");
-        add(NatureBlocks.GLOWING_MUSHROOM_DROOPING_VINE.get(), "发光蘑菇垂藤");
+        add(NatureBlocks.GLOWING_MUSHROOM_VINE.get(), "发光蘑菇垂藤");
         add(NatureBlocks.FOREST_DROOPING_VINE.get(), "森林垂藤");
         add(NatureBlocks.JUNGLE_DROOPING_VINE.get(), "丛林垂藤");
         add(NatureBlocks.CORRUPT_DROOPING_VINE.get(), "腐化垂藤");
@@ -1220,8 +2027,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.ARGON_MOSS.get(), "氩苔藓");
         add(NatureBlocks.NEON_MOSS.get(), "氖苔藓");
         add(NatureBlocks.HELIUM_MOSS.get(), "氦苔藓");
-        add(NatureBlocks.GROWING_MUSHROOM_MOSS.get(), "发光蘑菇苔藓");
-
+        add(NatureBlocks.GLOWING_MUSHROOM_MOSS.get(), "发光蘑菇苔藓");
         add(NatureBlocks.CATTAILS_BODY.get(), "香蒲");
         add(NatureBlocks.JUNGLE_CATTAILS_BODY.get(), "丛林香蒲");
         add(NatureBlocks.GLOWING_MUSHROOM_CATTAILS_BODY.get(), "发光蘑菇香蒲");
@@ -1229,9 +2035,19 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.EBONY_CATTAILS_BODY.get(), "腐化香蒲");
         add(NatureBlocks.TR_CRIMSON_CATTAILS_BODY.get(), "猩红香蒲");
         add(NatureBlocks.FLOATING_WHEAT.get(), "飘飘麦");
+        add(NatureBlocks.COCONUT_BLOCK.get(), "椰子方块");
+        add(NatureBlocks.CRIMSON_VENUS_FLYTRAP_BLOCK.get(), "猩红捕蝇草");
+        add(NatureBlocks.BLOODTHIRST_CRYSTALLIZED_BLOCK.get(), "嗜血结晶");
+        add(NatureBlocks.DECOMPOSE_THE_SOURCE_EXTRACT_BLOCK.get(), "分解源萃");
+        add(NatureBlocks.CORRODED_WORM_ROOTS_BLOCK.get(), "腐蚀蠕根");
+        add(NatureBlocks.CORRUPTED_OVARIES_BLOCK.get(), "腐化卵巢");
+        add(NatureBlocks.DESERT_TAPERED_BLOCK.get(), "沙漠石笋");
+        add(NatureBlocks.BLINKING_ROYAL_SHIMMERLILY.get(), "微光王莲");
+        add(NatureBlocks.LARVA.get(), "幼虫");
 
         add(LightPetItems.SHADOW_ORB.get(), "暗影珠");
         add(LightPetItems.CRIMSON_HEART.get(), "猩红心脏");
+        add(LightPetItems.MAGIC_LANTERN.get(), "魔法灯笼");
 
         add(DecorativeBlocks.RUBY_BLOCK.get(), "红玉块");
         add(DecorativeBlocks.AMBER_BLOCK.get(), "琥珀块");
@@ -1276,7 +2092,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.OBSIDIAN_BRICKS_DOOR.get(), "黑曜石砖门");
         add(DecorativeBlocks.TR_SMOOTH_OBSIDIAN.get(), "异域光滑黑曜石块");
         add(DecorativeBlocks.CHISELED_TR_OBSIDIAN_BRICKS.get(), "雕纹异域黑曜石块");
-        add(DecorativeBlocks.CRYSTAL_BLOCKS.get(), "水晶块");
+        add(DecorativeBlocks.CRYSTAL_BLOCK.get(), "水晶块");
         add(DecorativeBlocks.RAINBOW_BRICKS.get(), "彩虹砖");
         add(DecorativeBlocks.TR_OAK_PLANKS.get(), "经典风情木板");
         add(DecorativeBlocks.TR_NORTHLAND_PLANKS.get(), "北地风情木板");
@@ -1288,6 +2104,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.CHISELED_YELLOW_WILLOW_PLANKS.get(), "雕纹黄柳木板");
         add(DecorativeBlocks.CHISELED_BAOBAB_PLANKS.get(), "雕纹猴面包木木板");
         add(DecorativeBlocks.CHISELED_LIVING_PLANKS.get(), "雕纹生命木板");
+        add(DecorativeBlocks.CHISELED_LIVING_MAHOGANY_PLANKS.get(), "雕纹生命红木板");
         add(DecorativeBlocks.TR_GRANITE_COLUMN.get(), "异域花岗岩梁");
         add(DecorativeBlocks.PURE_GLASS.get(), "纯净玻璃");
         add(DecorativeBlocks.WHITE_PURE_GLASS.get(), "白色纯净玻璃");
@@ -1322,11 +2139,33 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.BLUE_BRICKS.get(), "蓝色地牢砖");
         add(DecorativeBlocks.GREEN_BRICKS.get(), "绿色地牢砖");
         add(DecorativeBlocks.PINK_BRICKS.get(), "粉色地牢砖");
+        add(DecorativeBlocks.BLUE_BRICK_COLUMN.get(), "蓝色地牢砖柱");
+        add(DecorativeBlocks.GREEN_BRICK_COLUMN.get(), "绿色地牢砖柱");
+        add(DecorativeBlocks.PINK_BRICK_COLUMN.get(), "粉色地牢砖柱");
+
+        add(DecorativeBlocks.BLUE_BRICK_STAIRS.get(), "蓝色地牢砖楼梯");
+        add(DecorativeBlocks.GREEN_BRICK_STAIRS.get(), "绿色地牢砖楼梯");
+        add(DecorativeBlocks.PINK_BRICK_STAIRS.get(), "粉色地牢砖楼梯");
+        add(DecorativeBlocks.BLUE_BRICK_SLAB.get(), "蓝色地牢砖台阶");
+        add(DecorativeBlocks.GREEN_BRICK_SLAB.get(), "绿色地牢砖台阶");
+        add(DecorativeBlocks.PINK_BRICK_SLAB.get(), "粉色地牢砖台阶");
+        add(DecorativeBlocks.DUNGEON_DOOR.get(), "地牢门");
         add(DecorativeBlocks.CHISELED_BLUE_BRICKS.get(), "雕纹蓝色地牢砖");
         add(DecorativeBlocks.CHISELED_GREEN_BRICKS.get(), "雕纹绿色地牢砖");
         add(DecorativeBlocks.CHISELED_PINK_BRICKS.get(), "雕纹粉色地牢砖");
         add(DecorativeBlocks.AETHERIUM_BRICKS.get(), "以太砖");
+        add(DecorativeBlocks.CLOUD_BLOCK_TRAMPOLINE.get(), "云块蹦床");
         add(DecorativeBlocks.BOUNCY_CLOUD_BLOCK.get(), "弹力云块");
+        add(DecorativeBlocks.CRISPY_HONEY_BLOCK.get(), "松脆蜂蜜块");
+        add(DecorativeBlocks.CRACKED_BLUE_BRICKS.get(), "碎裂蓝色地牢砖");
+        add(DecorativeBlocks.CRACKED_GREEN_BRICKS.get(), "碎裂绿色地牢砖");
+        add(DecorativeBlocks.CRACKED_PINK_BRICKS.get(), "碎裂粉色地牢砖");
+        add(DecorativeBlocks.ENCHANTED_BLUE_BRICKS.get(), "蕴魔蓝色地牢砖");
+        add(DecorativeBlocks.ENCHANTED_GREEN_BRICKS.get(), "蕴魔绿色地牢砖");
+        add(DecorativeBlocks.ENCHANTED_PINK_BRICKS.get(), "蕴魔粉色地牢砖");
+        add(DecorativeBlocks.SWORD_IN_STONE.get(), "石中剑");
+        add(DecorativeBlocks.REMAINS_BLOCK.get(), "遗骸");
+        add(DecorativeBlocks.LIHZAHRD_DOOR.get(), "丛林蜥蜴门");
 
         // 雕像
         add(StatueBlocks.A_STATUE.get(), "A字雕像");
@@ -1410,11 +2249,6 @@ public class ModChineseProvider extends LanguageProvider {
 
 
         add(ModBlocks.POO.get(), "臭臭");
-        add(ModBlocks.CRISPY_HONEY_BLOCK.get(), "松脆蜂蜜块");
-        add(ModBlocks.CRACKED_BLUE_BRICK.get(), "碎裂蓝色地牢砖");
-        add(ModBlocks.CRACKED_GREEN_BRICK.get(), "碎裂绿色地牢砖");
-        add(ModBlocks.CRACKED_PINK_BRICK.get(), "碎裂粉色地牢砖");
-        add(ModBlocks.SWORD_IN_STONE.get(), "石中剑");
         add(ModBlocks.WATERLEAF.get(), "幌菊");
         add(ModBlocks.FIREBLOSSOM.get(), "火焰花");
         add(ModBlocks.MOONGLOW.get(), "月光草");
@@ -1474,14 +2308,14 @@ public class ModChineseProvider extends LanguageProvider {
         add(CrateBlocks.SKY_CRATE.get(), "天空匣");
         add(CrateBlocks.CORRUPT_CRATE.get(), "腐化匣");
         add(CrateBlocks.TR_CRIMSON_CRATE.get(), "猩红匣");
-        add(CrateBlocks.SACRED_CRATE.get(), "神圣匣");
+        add(CrateBlocks.HALLOWED_CRATE.get(), "神圣匣");
         add(CrateBlocks.DUNGEON_CRATE.get(), "地牢匣");
         add(CrateBlocks.FREEZE_CRATE.get(), "冰冻匣");
         add(CrateBlocks.OASIS_CRATE.get(), "绿洲匣");
         add(CrateBlocks.OBSIDIAN_CRATE.get(), "黑曜石匣");
         add(CrateBlocks.OCEAN_CRATE.get(), "海洋匣");
         add(CrateBlocks.PEARLWOOD_CRATE.get(), "珍珠木匣");
-        add(CrateBlocks.MITHRIL_CRATE.get(), "秘银匣");
+        add(CrateBlocks.MYTHRIL_CRATE.get(), "秘银匣");
         add(CrateBlocks.TITANIUM_CRATE.get(), "钛金匣");
         add(CrateBlocks.THORNS_CRATE.get(), "荆棘匣");
         add(CrateBlocks.WILD_CRATE.get(), "野性匣");
@@ -1526,14 +2360,14 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.DEMONITE_INGOT.get(), "魔矿锭");
         add(MaterialItems.RAW_TR_CRIMSON.get(), "粗猩红矿");
         add(MaterialItems.TR_CRIMSON_INGOT.get(), "猩红矿锭");
-        add(MaterialItems.RAW_HELLSTONE.get(), "狱石矿");
+        add(MaterialItems.RAW_HELLSTONE.get(), "粗狱石矿");
         add(MaterialItems.HELLSTONE_INGOT.get(), "狱石矿锭");
         add(MaterialItems.RAW_COBALT.get(), "粗钴");
         add(MaterialItems.COBALT_INGOT.get(), "钴锭");
         add(MaterialItems.RAW_PALLADIUM.get(), "粗钯金");
         add(MaterialItems.PALLADIUM_INGOT.get(), "钯金锭");
-        add(MaterialItems.RAW_MITHRIL.get(), "粗秘银");
-        add(MaterialItems.MITHRIL_INGOT.get(), "秘银锭");
+        add(MaterialItems.RAW_MYTHRIL.get(), "粗秘银");
+        add(MaterialItems.MYTHRIL_INGOT.get(), "秘银锭");
         add(MaterialItems.RAW_ORICHALCUM.get(), "粗山铜");
         add(MaterialItems.ORICHALCUM_INGOT.get(), "山铜锭");
         add(MaterialItems.RAW_ADAMANTITE.get(), "粗精金");
@@ -1574,7 +2408,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.SHADOW_SCALE.get(), "暗影鳞片");
         add(MaterialItems.TISSUE_SAMPLE.get(), "组织样本");
         add(MaterialItems.ROYAL_WAX.get(), "蜂王蜡");
-        add(MaterialItems.CURSED_FLAME.get(), "诅咒火");
+        add(MaterialItems.DUNGEON_DEMON_BONE.get(), "地牢魔骨");
+        add(MaterialItems.CURSED_FLAME.get(), "诅咒焰");
         add(MaterialItems.ICHOR.get(), "灵液");
         add(MaterialItems.PIXIE_DUST.get(), "妖精尘");
         add(MaterialItems.PEARL.get(), "珍珠");
@@ -1592,6 +2427,19 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.WINTER_MARROW.get(), "霜髓");
         add(MaterialItems.COLD_CRYSTAL.get(), "寒晶");
         add(MaterialItems.LEAD_NUGGET.get(), "铅粒");
+        add(MaterialItems.RAW_ASPHALT.get(), "生沥青");
+        add(MaterialItems.TATTERED_CLOTH.get(), "破布");
+        add(MaterialItems.SOUL_OF_LIGHT.get(), "光明之魂");
+        add(MaterialItems.SOUL_OF_NIGHT.get(), "暗影之魂");
+        add(MaterialItems.SOUL_OF_FLIGHT.get(), "飞翔之魂");
+        add(MaterialItems.SOUL_OF_MIGHT.get(), "力量之魂");
+        add(MaterialItems.SOUL_OF_SIGHT.get(), "视域之魂");
+        add(MaterialItems.SOUL_OF_FRIGHT.get(), "恐惧之魂");
+        add(MaterialItems.SPELL_TOME.get(), "魔法书");
+        add(MaterialItems.HARPY_FEATHER.get(), "鸟妖之羽");
+        add(MaterialItems.GIANT_HARPY_FEATHER.get(), "巨型鸟妖之羽");
+        add(MaterialItems.CHINA_PLATE.get(), "陶瓷盘");
+        add(MaterialItems.CHINA_BOWL.get(), "陶瓷碗");
         // 植物
         add(MaterialItems.WATERLEAF.get(), "幌菊");
         add(MaterialItems.FIREBLOSSOM.get(), "火焰花");
@@ -1619,10 +2467,14 @@ public class ModChineseProvider extends LanguageProvider {
         add(SwordItems.GOLDEN_SHORT_SWORD.get(), "金短剑");
         add(SwordItems.GOLDEN_BOARD_SWORD.get(), "金阔剑");
         add(SwordItems.CACTUS_SWORD.get(), "仙人掌剑");
+        add(SwordItems.MURAMASA.get(), "村正大刀");
+
 
         add(SwordItems.CROWBAR.get(), "撬棍");
         add(SwordItems.ZOMBIE_ARM.get(), "僵尸臂");
         add(SwordItems.MANDIBLE_BLADE.get(), "颌骨剑");
+        add(SwordItems.SWEET_SWORD.get(), "糖果剑");
+        add(SwordItems.BROKEN_SWEET_SWORD.get(), "断裂的糖果剑");
         add(SwordItems.STYLISH_SCISSORS.get(), "时尚剪刀");
         add(SwordItems.BONE_SWORD.get(), "骨剑");
         add(SwordItems.GLADIUS.get(), "罗马短剑");
@@ -1642,6 +2494,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(SwordItems.EXOTIC_SCIMITAR.get(), "异域弯刀");
         add(SwordItems.FAKE_SWORD.get(), "假剑");
         add(SwordItems.VOLCANO.get(), "火山");
+        add(SwordItems.BEE_KEEPER.get(), "养蜂人");
+        add(SwordItems.BLADE_OF_GRASS.get(), "草剑");
+        add(SwordItems.NIGHT_EDGE.get(), "永夜");
+
         add(SwordItems.DEVELOPER_SWORD.get(), "开发者剑");
         // 光剑
         add(SwordItems.RED_LIGHT_SABER.get(), "红陨石光剑");
@@ -1651,20 +2507,13 @@ public class ModChineseProvider extends LanguageProvider {
         add(SwordItems.BLUE_LIGHT_SABER.get(), "蓝陨石光剑");
         add(SwordItems.PURPLE_LIGHT_SABER.get(), "紫陨石光剑");
         add(SwordItems.WHITE_LIGHT_SABER.get(), "白陨石光剑");
+
+        // 其他近战
+        add(LanceItems.DARK_LANCE.get(), "暗黑长枪");
         //剑气
         add(SwordItems.ENCHANTED_SWORD.get(), "附魔剑");
         //快攻
         add(SwordItems.TERRAGRIM.get(), "泰拉魔刃");
-
-
-        add(BoomerangItems.WOOD_BOOMERANG.get(), "木回旋镖");
-        add(BoomerangItems.ENCHANTED_BOOMERANG.get(), "附魔回旋镖");
-        add(BoomerangItems.SHROOMERANG.get(), "蘑菇回旋镖");
-        add(BoomerangItems.ICE_BOOMERANG.get(), "冰雪回旋镖");
-        add(BoomerangItems.TRIMARANG.get(), "三尖回旋镖");
-        add(BoomerangItems.FLAMARANG.get(), "烈焰回旋镖");
-        add(BoomerangItems.DEVELOPER_BOOMERANG.get(), "开发者回旋镖");
-        add(BoomerangItems.BeiDou_BOOMERANG.get(), "北斗飞镖");
 
 
         add(AxeItems.COPPER_AXE.get(), "铜斧");
@@ -1676,8 +2525,44 @@ public class ModChineseProvider extends LanguageProvider {
         add(AxeItems.PLATINUM_AXE.get(), "铂金斧");
         add(AxeItems.WAR_AXE_OF_THE_NIGHT.get(), "暗夜战斧");
         add(AxeItems.BLOOD_LUST_CLUSTER.get(), "嗜血狂斧");
+        add(AxeItems.COBALT_WARAXE.get(), "钴战斧");
+        add(AxeItems.PALLADIUM_WARAXE.get(), "钯金战斧");
+        add(AxeItems.MYTHRIL_WARAXE.get(), "秘银战斧");
+        add(AxeItems.ORICHALCUM_WARAXE.get(), "山铜战斧");
+        add(AxeItems.ADAMANTITE_WARAXE.get(), "精金战斧");
+        add(AxeItems.TITANIUM_WARAXE.get(), "钛金战斧");
+        add(AxeItems.CHLOROPHYTE_GREATAXE.get(), "叶绿巨斧");
         add(AxeItems.STAFF_OF_REGROWTH.get(), "再生法杖");
-        add(AxeItems.DRILL_OF_REGROWTH.get(), "再生之斧");
+        add(AxeItems.AXE_OF_REGROWTH.get(), "再生之斧");
+        add(HamaxeItems.METEOR_HAMAXE.get(), "流星锤斧");
+        add(HoeShovelItems.METEOR_HOE_SHOVEL.get(), "流星锄锹");
+        add(HamaxeItems.MOLTEN_HAMAXE.get(), "熔火锤斧");
+        add(HoeShovelItems.MOLTEN_HOE_SHOVEL.get(), "熔火锄锹");
+        add(HamaxeItems.SPECTRE_HAMAXE.get(), "幽灵锤斧");
+        add(HamaxeItems.SOLAR_FLARE_HAMAXE.get(), "耀斑锤斧");
+        add(HamaxeItems.VORTEX_HAMAXE.get(), "星旋锤斧");
+        add(HamaxeItems.NEBULA_HAMAXE.get(), "星云锤斧");
+        add(HamaxeItems.STARDUST_HAMAXE.get(), "星尘锤斧");
+
+        add(HoeItems.COPPER_HOE.get(), "铜锄");
+        add(HoeItems.TIN_HOE.get(), "锡锄");
+        add(HoeItems.LEAD_HOE.get(), "铅锄");
+        add(HoeItems.SILVER_HOE.get(), "银锄");
+        add(HoeItems.TUNGSTEN_HOE.get(), "钨锄");
+        add(HoeItems.GOLDEN_HOE.get(), "金锄");
+        add(HoeItems.PLATINUM_HOE.get(), "铂金锄");
+        add(HoeItems.CULTIVATOR.get(), "耕耘者");
+        add(HoeItems.SHADOW_HOE.get(), "暗影锄");
+
+        add(ShovelItems.COPPER_SHOVEL.get(), "铜锹");
+        add(ShovelItems.TIN_SHOVEL.get(), "锡锹");
+        add(ShovelItems.LEAD_SHOVEL.get(), "铅锹");
+        add(ShovelItems.SILVER_SHOVEL.get(), "银锹");
+        add(ShovelItems.TUNGSTEN_SHOVEL.get(), "钨锹");
+        add(ShovelItems.GOLDEN_SHOVEL.get(), "金锹");
+        add(ShovelItems.PLATINUM_SHOVEL.get(), "铂金锹");
+        add(ShovelItems.SHADOW_SHOVEL.get(), "暗影锹");
+        add(ShovelItems.MINER.get(), "采掘者");
 
 
         add(PickaxeItems.COPPER_PICKAXE.get(), "铜镐");
@@ -1695,14 +2580,45 @@ public class ModChineseProvider extends LanguageProvider {
         add(PickaxeItems.NIGHTMARE_PICKAXE.get(), "恶魔镐");
         add(PickaxeItems.DEATHBRINGER_PICKAXE.get(), "死亡使者镐");
         add(MOLTEN_PICKAXE.get(), "熔岩镐");
+        add(PickaxeItems.COBALT_PICKAXE.get(), "钴镐");
+        add(PickaxeItems.PALLADIUM_PICKAXE.get(), "钯金镐");
+        add(PickaxeItems.MYTHRIL_PICKAXE.get(), "秘银镐");
+        add(PickaxeItems.ORICHALCUM_PICKAXE.get(), "山铜镐");
+        add(PickaxeItems.ADAMANTITE_PICKAXE.get(), "精金镐");
+        add(PickaxeItems.TITANIUM_PICKAXE.get(), "钛金镐");
+        add(PickaxeItems.SPECTRE_PICKAXE.get(), "幽灵镐");
+        add(PickaxeItems.CHLOROPHYTE_PICKAXE.get(), "叶绿镐");
+        add(PickaxeItems.SOLAR_FLARE_PICKAXE.get(), "耀斑镐");
+        add(PickaxeItems.VORTEX_PICKAXE.get(), "星旋镐");
+        add(PickaxeItems.NEBULA_PICKAXE.get(), "星云镐");
+        add(PickaxeItems.STARDUST_PICKAXE.get(), "星尘镐");
 
+        add(PickaxeAxeItems.SHROOMITE_DIGGING_CLAW.get(), "蘑菇矿挖爪");
         add(PickaxeAxeItems.PICKSAW.get(), "锯刃镐");
         add(PickaxeAxeItems.PICKAXE_AXE.get(), "镐斧");
 
         add(DrillItems.DRAX.get(), "斧钻");
+        add(DrillItems.COBALT_DRILL.get(), "钴钻头");
+        add(DrillItems.PALLADIUM_DRILL.get(), "钯金钻头");
+        add(DrillItems.MYTHRIL_DRILL.get(), "秘银钻头");
+        add(DrillItems.ORICHALCUM_DRILL.get(), "山铜钻头");
+        add(DrillItems.ADAMANTITE_DRILL.get(), "精金钻头");
+        add(DrillItems.TITANIUM_DRILL.get(), "钛金钻头");
+        add(DrillItems.CHLOROPHYTE_DRILL.get(), "叶绿钻头");
+        add(DrillItems.SOLAR_FLARE_DRILL.get(), "耀斑钻头");
+        add(DrillItems.VORTEX_DRILL.get(), "星旋钻头");
+        add(DrillItems.NEBULA_DRILL.get(), "星云钻头");
+        add(DrillItems.STARDUST_DRILL.get(), "星尘钻头");
 
         // Hammers
         add(HammerItems.WOODEN_HAMMER.get(), "木锤");
+        add(HammerItems.RICH_MAHOGANY_HAMMER.get(), "红木锤");
+        add(HammerItems.PALM_WOOD_HAMMER.get(), "棕榈木锤");
+        add(HammerItems.SPRUCE_WOOD_HAMMER.get(), "云杉木锤");
+        add(HammerItems.EBONWOOD_HAMMER.get(), "乌木锤");
+        add(HammerItems.SHADEWOOD_HAMMER.get(), "暗影木锤");
+        add(HammerItems.ASH_WOOD_HAMMER.get(), "白蜡木锤");
+        add(HammerItems.PEARLWOOD_HAMMER.get(), "珍珠木锤");
         add(HammerItems.COPPER_HAMMER.get(), "铜锤");
         add(HammerItems.TIN_HAMMER.get(), "锡锤");
         add(HammerItems.IRON_HAMMER.get(), "铁锤");
@@ -1714,7 +2630,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(HammerItems.THE_BREAKER.get(), "魔锤");
         add(HammerItems.FLESH_GRINDER.get(), "血肉锤");
         add(HammerItems.PWNHAMMER.get(), "神锤");
-        /* HammerAxes */
+        add(HammerItems.HAMMUSH.get(), "蘑菇锤");
+        add(HammerItems.CHLOROPHYTE_WARHAMMER.get(), "叶绿战锤");
 
         // 杂项
         add(ToolItems.ICE_MIRROR.get(), "冰雪镜");
@@ -1723,12 +2640,20 @@ public class ModChineseProvider extends LanguageProvider {
         add(ToolItems.GREEN_WRENCH.get(), "绿扳手");
         add(ToolItems.YELLOW_WRENCH.get(), "黄扳手");
         add(ToolItems.WIRE_CUTTER.get(), "钢丝钳");
+        add(ToolItems.GOLDEN_DUNGEON_KEY.get(), "地牢金钥匙");
         add(ToolItems.GOLDEN_KEY.get(), "金钥匙");
         add(ToolItems.SHADOW_KEY.get(), "暗影钥匙");
+        add(ToolItems.TEMPLE_KEY.get(), "神庙钥匙");
+        add(ToolItems.JUNGLE_KEY.get(), "丛林钥匙");
+        add(ToolItems.CORRUPTION_KEY.get(), "腐化钥匙");
+        add(ToolItems.CRIMSON_KEY.get(), "猩红钥匙");
+        add(ToolItems.HALLOWED_KEY.get(), "神圣钥匙");
+        add(ToolItems.FROZEN_KEY.get(), "冰冻钥匙");
+        add(ToolItems.DESERT_KEY.get(), "沙漠钥匙");
+        add(ToolItems.TARGET_DUMMY.get(), "训练假人");
         add(ToolItems.ENCUMBERING_STONE.get(), "负重石");
         add(ToolItems.MAGIC_CONCH.get(), "魔法海螺");
         add(ToolItems.DEMON_CONCH.get(), "恶魔海螺");
-        add(ToolItems.HOUSE_DETECTOR.get(), "房屋探测器");
         add(ToolItems.HONEY_BUCKET.get(), "蜂蜜桶");
         add(ToolItems.BOTTOMLESS_SHIMMER_BUCKET.get(), "无底微光桶");
         add(ToolItems.BOTTOMLESS_WATER_BUCKET.get(), "无底水桶");
@@ -1741,12 +2666,20 @@ public class ModChineseProvider extends LanguageProvider {
         add(ToolItems.VINE_ROPE_COIL.get(), "藤蔓绳圈");
         add(ToolItems.SILK_ROPE_COIL.get(), "丝绸绳圈");
         add(ToolItems.WEB_ROPE_COIL.get(), "蛛丝绳圈");
+        add(ToolItems.METEOR_COMPASS.get(), "陨石指南针");
+        add(ToolItems.NPC_INVITATION.get(), "NPC请柬");
 
 
         add(ConsumableItems.SHURIKEN.get(), "手里剑");
         add(ConsumableItems.THROWING_KNIVES.get(), "投刀");
+        add(ConsumableItems.JAVELIN.get(), "标枪");
+        add(ConsumableItems.SPIKY_BALL.get(), "尖球");
+        add(ConsumableItems.HOLY_WATER.get(), "圣水");
+        add(ConsumableItems.UNHOLY_WATER.get(), "邪水");
+        add(ConsumableItems.BLOOD_WATER.get(), "血水");
         add(ConsumableItems.VITAL_CRYSTAL.get(), "活力水晶");
         add(ConsumableItems.MINECART_UPGRADE_KIT.get(), "矿车升级包");
+        add(ConsumableItems.ARTISAN_LOAF.get(), "工匠面包");
         add(ConsumableItems.GALAXY_PEARL.get(), "银河珍珠");
         add(ConsumableItems.ARCANE_CRYSTAL.get(), "奥术水晶");
         add(ConsumableItems.AEGIS_APPLE.get(), "神盾果");
@@ -1791,12 +2724,20 @@ public class ModChineseProvider extends LanguageProvider {
         add(ConsumableItems.LIFE_FRUIT.get(), "生命果");
         add(ConsumableItems.ROTTEN_BONE_DUST.get(), "朽骨齑尘");
         add(ConsumableItems.BLOODSTAINED_POWDER.get(), "血凝痂粉");
+        add(ConsumableItems.ADVANCED_COMBAT_TECHNIQUES.get(), "先进战斗技术");
+        add(ConsumableItems.ADVANCED_COMBAT_TECHNIQUES_VOLUME_TWO.get(), "先进战斗技术：卷二");
+        add(ConsumableItems.GOLDEN_LOCK_BOX.get(), "金锁盒");
+        add(ConsumableItems.OBSIDIAN_LOCK_BOX.get(), "黑曜石锁盒");
+        add(ConsumableItems.CLOTHIER_VOODOO_DOLL.get(), "服装商巫毒玩偶");
+        add(ConsumableItems.GUIDE_VOODOO_DOLL.get(), "向导巫毒玩偶");
 
-        add(TreasureBagItems.KING_SLIME_TREASURE_BAG.get(), "史莱姆之王宝藏袋");
+        add(TreasureBagItems.KING_SLIME_TREASURE_BAG.get(), "史莱姆王宝藏袋");
         add(TreasureBagItems.EYE_OF_CTHULHU_TREASURE_BAG.get(), "克苏鲁之眼宝藏袋");
         add(TreasureBagItems.EATER_OF_WORLDS_TREASURE_BAG.get(), "世界吞噬怪宝藏袋");
         add(TreasureBagItems.BRAIN_OF_CTHULHU_TREASURE_BAG.get(), "克苏鲁之脑宝藏袋");
         add(TreasureBagItems.QUEEN_BEE_TREASURE_BAG.get(), "蜂王宝藏袋");
+        add(TreasureBagItems.SKELETRON_TREASURE_BAG.get(), "骷髅王宝藏袋");
+        add(TreasureBagItems.WALL_OF_FLESH_TREASURE_BAG.get(), "血肉墙宝藏袋");
 
         // 杂项
         add(ModItems.COPPER_COIN.get(), "铜币");
@@ -1811,7 +2752,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModItems.CANDY_CANE.get(), "拐杖糖");
         add(ModItems.CANDY_APPLE.get(), "糖葫芦");
         add(ModItems.WHOOPIE_CUSHION.get(), "整蛊坐垫");
-        add(ModItems.DEAD_MANS_SWEATER.get(), "死人毛衣");
         add(ModItems.GRASS_SEED.get(), "草种子");
         add(ModItems.JUNGLE_GRASS_SEED.get(), "丛林草种子");
         add(ModItems.MUSHROOM_GRASS_SEED.get(), "蘑菇草种子");
@@ -1819,12 +2759,21 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModItems.TR_CRIMSON_SEED.get(), "猩红种子");
         add(ModItems.HALLOWED_SEED.get(), "神圣种子");
         add(ModItems.ASH_GRASS_SEED.get(), "灰烬草种子");
+
         add(ModItems.PARADOX_INTERACTIVE_MEDAL.get(), "帕拉多克斯·英特拉克缇福勋章");
         add(ModItems.BOREDOMS_PACT_FALLING_RESOLVE.get(), "「无聊之咒·陨志」");
         add(ModItems.TOKYO_TEDDY_BEAR.get(), "东京泰迪熊");
         add(ModItems.FAILED_SKULL.get(), "失败品的头颅");
-        add(ModItems.KIND_MITA_RING.get(), "善良米塔的戒指");
+        add(ModItems.KIND_MISIDE_RING.get(), "善良米塔的戒指");
         add(ModItems.ICE_TOFU_BRICK.get(), "冰豆腐砖");
+        add(ModItems.MYSTERIOUS_NOTE.get(), "神秘纸条");
+        add(ModItems.MYSTERIOUS_SLATE.get(), "神秘石板");
+        add(ModItems.FERTILE_SINGULARITY.get(), "丰饶奇点");
+        add(ModItems.PERPLEXED_CAT_MEDAL.get(), "疑惑猫猫勋章");
+        add(ModItems.PULSAR.get(), "脉冲星");
+        add(ModItems.ENTITY_DISPLAY.get(), "生物显示");
+        add(ModItems.HARDMODE_CONVERTOR.get(), "困难模式转换器");
+
         add(ModItems.CATTAILS.get(), "香蒲");
         add(ModItems.JUNGLE_CATTAILS.get(), "丛林香蒲");
         add(ModItems.GLOWING_MUSHROOM_CATTAILS.get(), "发光蘑菇香蒲");
@@ -1832,7 +2781,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModItems.EBONY_CATTAILS.get(), "腐化香蒲");
         add(ModItems.TR_CRIMSON_CATTAILS.get(), "猩红香蒲");
         add(ModItems.LIVING_WOOD_WAND.get(), "生命木魔棒");
-        add(ModItems.LEAVES_WAND.get(), "树叶魔棒");
+        add(ModItems.LEAF_WAND.get(), "树叶魔棒");
+        add(ModItems.LIVING_MAHOGANY_WAND.get(), "生命红木魔棒");
+        add(ModItems.RICH_MAHOGANY_LEAF_WAND.get(), "红木树叶魔棒");
+        add(ModItems.HIVE_WAND.get(), "蜂巢魔棒");
 
         add(FunctionalBlocks.ECHO_BLOCK.get(), "回声块");
         add(FunctionalBlocks.NORMAL_BOULDER.get(), "巨石");
@@ -1852,6 +2804,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.TIMERS_BLOCK_1_4.get(), "1/4秒计时器");
         add(FunctionalBlocks.EVER_POWERED_RAIL.get(), "永久动力铁轨");
         add(FunctionalBlocks.SHARPENING_STATION.get(), "利器站");
+        add(FunctionalBlocks.BEWITCHING_TABLE.get(), "施法桌");
         add(FunctionalBlocks.AMMO_BOX.get(), "弹药箱");
         add(FunctionalBlocks.LIFE_CAMPFIRE.get(), "生命篝火");
         add(FunctionalBlocks.SILLY_BALLOON_MACHINE.get(), "呆萌气球机");
@@ -1867,10 +2820,12 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.EXTRACTINATOR.get(), "提炼机");
         add(FunctionalBlocks.SKY_MILL.get(), "天磨");
         add(FunctionalBlocks.HEAVY_WORK_BENCH.get(), "重型工作台");
+        add(FunctionalBlocks.CRYSTAL_BALL.get(), "水晶球");
         add(FunctionalBlocks.HELLFORGE.get(), "地狱熔炉");
         add(FunctionalBlocks.ALCHEMY_TABLE.get(), "炼药桌");
         add(FunctionalBlocks.WEATHER_VANE.get(), "风向标");
         add(FunctionalBlocks.LEAD_ANVIL.get(), "铅砧");
+        add(FunctionalBlocks.COOKING_POT.get(), "烹饪锅");
         add(FunctionalBlocks.CHIPPED_LEAD_ANVIL.get(), "开裂的铅砧");
         add(FunctionalBlocks.DAMAGED_LEAD_ANVIL.get(), "损坏的铅砧");
         add(FunctionalBlocks.SHIMMER_TRAP.get(), "微光陷阱");
@@ -1883,8 +2838,51 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.MECHANICAL_FRAGILE_OBSIDIAN_BRICKS.get(), "机械易碎黑曜石砖");
         add(FunctionalBlocks.DETONATOR.get(), "引爆器");
         add(FunctionalBlocks.BASE_CHEST_BLOCK.get(), "箱子");
+        add(FunctionalBlocks.DEATH_CHEST_BLOCK.get(), "死人箱");
+        add(FunctionalBlocks.CRIMSON_CHEST.get(), "猩红箱");
+        add(FunctionalBlocks.CORRUPTION_CHEST.get(), "腐化箱");
+        add(FunctionalBlocks.JUNGLE_CHEST.get(), "丛林箱");
+        add(FunctionalBlocks.ICE_CHEST.get(), "冰雪箱");
+        add(FunctionalBlocks.DESERT_CHEST.get(), "沙漠箱");
+        add(FunctionalBlocks.HALLOWED_CHEST.get(), "神圣箱");
         add(FunctionalBlocks.SCULK_TRAP.get(), "幽匿陷阱");
         add(FunctionalBlocks.ROLLING_CACTUS_BOULDER.get(), "仙人球");
+        add(FunctionalBlocks.PIGGY_BANK.get(), "猪猪存钱罐");
+        add(FunctionalBlocks.SAFE.get(), "保险箱");
+        add(FunctionalBlocks.CAULDRON.get(), "大锅");
+        add(FunctionalBlocks.SAWMILL.get(), "锯木机");
+        add(FunctionalBlocks.ANNOUNCEMENT_BOX.get(), "广播盒");
+        add(FunctionalBlocks.TREE_HOLES_BLOCK.get(), "树洞");
+        add(FunctionalBlocks.MAGIC_MAIL_BOX.get(), "魔法邮箱");
+        add(FunctionalBlocks.SOLIDIFIER.get(), "固化机");
+        add(FunctionalBlocks.KEG.get(), "酒桶");
+        add(FunctionalBlocks.MYTHRIL_ANVIL.get(), "秘银砧");
+        add(FunctionalBlocks.ORICHALCUM_ANVIL.get(), "山铜砧");
+        add(FunctionalBlocks.CHLOROPHYTE_EXTRACTINATOR.get(), "叶绿提炼机");
+        add(FunctionalBlocks.BLEND_O_MATIC.get(), "搅拌机");
+        add(FunctionalBlocks.MEAT_GRINDER.get(), "搅肉机");
+        add(FunctionalBlocks.FRAGILE_BLUE_BRICKS.get(), "易碎蓝色地牢砖");
+        add(FunctionalBlocks.FRAGILE_GREEN_BRICKS.get(), "易碎绿色地牢砖");
+        add(FunctionalBlocks.FRAGILE_PINK_BRICKS.get(), "易碎粉色地牢砖");
+        add(FunctionalBlocks.LAND_MINE.get(), "地雷");
+        add(FunctionalBlocks.SUPER_DART_TRAP.get(), "超级飞镖机关");
+        add(FunctionalBlocks.FLAME_TRAP.get(), "烈焰机关");
+        add(FunctionalBlocks.SPIKY_BALL_TRAP.get(), "尖球机关");
+        add(FunctionalBlocks.SPEAR_TRAP.get(), "长矛机关");
+        add(FunctionalBlocks.LEVER.get(), "控制杆");
+        add(FunctionalBlocks.WOODEN_SPIKE.get(), "木尖刺");
+
+        add(ModBlocks.TOMBSTONE.get(), "墓石");
+        add(ModBlocks.GRAVE_MARKER.get(), "墓石碑");
+        add(ModBlocks.CROSS_GRAVE_MARKER.get(), "十字墓石碑");
+        add(ModBlocks.HEADSTONE.get(), "碑石");
+        add(ModBlocks.GRAVESTONE.get(), "墓碑");
+        add(ModBlocks.OBELISK.get(), "方尖碑");
+        add(ModBlocks.GOLDEN_TOMBSTONE.get(), "金墓石");
+        add(ModBlocks.GOLDEN_GRAVE_MARKER.get(), "金墓石碑");
+        add(ModBlocks.GOLDEN_CROSS_GRAVE_MARKER.get(), "金十字墓石碑");
+        add(ModBlocks.GOLDEN_HEADSTONE.get(), "金碑石");
+        add(ModBlocks.GOLDEN_GRAVESTONE.get(), "金墓碑");
 
 
         add(MinecartItems.MECHANICAL_CART.get(), "机械矿车");
@@ -2016,13 +3014,17 @@ public class ModChineseProvider extends LanguageProvider {
         add(ManaWeaponItems.WEATHER_PAIN.get(), "天候棒");
         add(ManaWeaponItems.AQUA_SCEPTER.get(), "海蓝权杖");
         add(ManaWeaponItems.FLOWER_OF_FIRE.get(), "火之花");
+        add(ManaWeaponItems.WATER_BOLT.get(), "水矢");
+        add(ManaWeaponItems.MAGIC_DAGGER.get(), "魔法飞刀");
+        add(ManaWeaponItems.CRYSTAL_STORM.get(), "水晶风暴");
+        add(ManaWeaponItems.CURSED_FLAMES.get(), "诅咒焰");
+        add(ManaWeaponItems.FLOWER_OF_FROST.get(), "寒霜之花");
         /*
         add(ManaWeapons.MAGIC_MISSILE.get(), "魔法导弹");
         add(ManaWeapons.FLAMELASH.get(), "烈焰火鞭");
         add(ManaWeapons.SKY_FRACTURE.get(), "裂天剑");
         add(ManaWeapons.CRYSTAL_SERPENT.get(), "水晶蛇");
         add(ManaWeapons.FROST_STAFF.get(), "寒霜法杖");
-        add(ManaWeapons.FLOWER_OF_FROST.get(), "寒霜之花");
         add(ManaWeapons.CRYSTAL_VILE_SHARD.get(), "魔晶碎块");
         add(ManaWeapons.LIFE_DRAIN.get(), "夺命杖");
         add(ManaWeapons.METEOR_STAFF.get(), "流星法杖");
@@ -2044,6 +3046,7 @@ public class ModChineseProvider extends LanguageProvider {
          */
         add(ManaWeaponItems.BEE_GUN.get(), "蜜蜂枪");
         add(ManaWeaponItems.SPACE_GUN.get(), "太空枪");
+        add(GunItems.STAR_CANNON.get(), "星星炮");
 
         // 弓
         add(BowItems.WOODEN_SHORT_BOW.get(), "木短弓");
@@ -2068,6 +3071,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(BowItems.FOSSIL_BOW.get(), "石骸弓");
         add(BowItems.DEMON_BOW.get(), "恶魔弓");
         add(BowItems.TENDON_BOW.get(), "肌腱弓");
+        add(BowItems.THE_BEES_KNEES.get(), "蜂膝弓");
         add(BowItems.MOLTEN_FURY.get(), "熔火之怒");
 
 
@@ -2197,6 +3201,77 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.MOLTEN_HELMET.get(), "熔岩头盔");
         add(ArmorItems.MOLTEN_LEGGINGS.get(), "熔岩护腿");
         add(ArmorItems.MOLTEN_BOOTS.get(), "熔岩靴子");
+        add(ArmorItems.NECRO_CHESTPLATE.get(), "死灵胸甲");
+        add(ArmorItems.NECRO_HELMET.get(), "死灵头盔");
+        add(ArmorItems.NECRO_LEGGINGS.get(), "死灵护腿");
+        add(ArmorItems.NECRO_BOOTS.get(), "死灵靴子");
+        add(ArmorItems.JUNGLE_CHESTPLATE.get(), "丛林胸甲");
+        add(ArmorItems.JUNGLE_HELMET.get(), "丛林头盔");
+        add(ArmorItems.JUNGLE_LEGGINGS.get(), "丛林护腿");
+        add(ArmorItems.JUNGLE_BOOTS.get(), "丛林靴子");
+
+        add(ArmorItems.COBALT_MASK.get(), "钴面具");
+        add(ArmorItems.COBALT_HAT.get(), "钴帽");
+        add(ArmorItems.COBALT_HELMET.get(), "钴头盔");
+        add(ArmorItems.COBALT_CHESTPLATE.get(), "钴胸甲");
+        add(ArmorItems.COBALT_LEGGINGS.get(), "钴护腿");
+        add(ArmorItems.COBALT_BOOTS.get(), "钴靴子");
+
+        add(ArmorItems.PALLADIUM_MASK.get(), "钯金面具");
+        add(ArmorItems.PALLADIUM_HEADGEAR.get(), "钯金头饰");
+        add(ArmorItems.PALLADIUM_HELMET.get(), "钯金头盔");
+        add(ArmorItems.PALLADIUM_CHESTPLATE.get(), "钯金胸甲");
+        add(ArmorItems.PALLADIUM_LEGGINGS.get(), "钯金护腿");
+        add(ArmorItems.PALLADIUM_BOOTS.get(), "钯金靴子");
+
+        add(ArmorItems.MYTHRIL_HOOD.get(), "秘银兜帽");
+        add(ArmorItems.MYTHRIL_HAT.get(), "秘银帽");
+        add(ArmorItems.MYTHRIL_HELMET.get(), "秘银头盔");
+        add(ArmorItems.MYTHRIL_CHESTPLATE.get(), "秘银胸甲");
+        add(ArmorItems.MYTHRIL_LEGGINGS.get(), "秘银护腿");
+        add(ArmorItems.MYTHRIL_BOOTS.get(), "秘银靴子");
+
+        add(ArmorItems.ORICHALCUM_HEADGEAR.get(), "山铜头饰");
+        add(ArmorItems.ORICHALCUM_MASK.get(), "山铜面具");
+        add(ArmorItems.ORICHALCUM_HELMET.get(), "山铜头盔");
+        add(ArmorItems.ORICHALCUM_CHESTPLATE.get(), "山铜胸甲");
+        add(ArmorItems.ORICHALCUM_LEGGINGS.get(), "山铜护腿");
+        add(ArmorItems.ORICHALCUM_BOOTS.get(), "山铜靴子");
+
+        add(ArmorItems.ADAMANTITE_HEADGEAR.get(), "精金头饰");
+        add(ArmorItems.ADAMANTITE_MASK.get(), "精金面具");
+        add(ArmorItems.ADAMANTITE_HELMET.get(), "精金头盔");
+        add(ArmorItems.ADAMANTITE_CHESTPLATE.get(), "精金胸甲");
+        add(ArmorItems.ADAMANTITE_LEGGINGS.get(), "精金护腿");
+        add(ArmorItems.ADAMANTITE_BOOTS.get(), "精金靴子");
+
+        add(ArmorItems.TITANIUM_HEADGEAR.get(), "钛金头饰");
+        add(ArmorItems.TITANIUM_MASK.get(), "钛金面具");
+        add(ArmorItems.TITANIUM_HELMET.get(), "钛金头盔");
+        add(ArmorItems.TITANIUM_CHESTPLATE.get(), "钛金胸甲");
+        add(ArmorItems.TITANIUM_LEGGINGS.get(), "钛金护腿");
+        add(ArmorItems.TITANIUM_BOOTS.get(), "钛金靴子");
+
+        add(ArmorItems.HALLOWED_HEADGEAR.get(), "神圣头饰");
+        add(ArmorItems.HALLOWED_HOOD.get(), "神圣兜帽");
+        add(ArmorItems.HALLOWED_MASK.get(), "神圣面具");
+        add(ArmorItems.HALLOWED_HELMET.get(), "神圣头盔");
+        add(ArmorItems.HALLOWED_CHESTPLATE.get(), "神圣胸甲");
+        add(ArmorItems.HALLOWED_LEGGINGS.get(), "神圣护腿");
+        add(ArmorItems.HALLOWED_BOOTS.get(), "神圣靴子");
+
+        add(ArmorItems.GOGGLES.get(), "护目镜");
+        add(ArmorItems.WIZARD_HAT.get(), "巫师帽");
+        add(ArmorItems.MAGIC_HAT.get(), "魔法帽");
+        add(ArmorItems.AMETHYST_ROBE.get(), "紫晶长袍");
+        add(ArmorItems.TOPAZ_ROBE.get(), "黄玉长袍");
+        add(ArmorItems.SAPPHIRE_ROBE.get(), "蓝玉长袍");
+        add(ArmorItems.EMERALD_ROBE.get(), "翡翠长袍");
+        add(ArmorItems.RUBY_ROBE.get(), "红玉长袍");
+        add(ArmorItems.MYSTIC_ROBE.get(), "神秘长袍");
+        add(ArmorItems.DIAMOND_ROBE.get(), "钻石长袍");
+        add(ArmorItems.AMBER_ROBE.get(), "琥珀长袍");
+
 
         // 任务鱼
         add(QuestedFishes.AMANITA_FUNGIFIN.get(), "发光蘑菇鱼");
@@ -2245,7 +3320,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.APPLE_JUICE.get(), "苹果汁");
         add(FoodItems.BLACKCURRANT.get(), "黑醋栗");
         add(FoodItems.BLOOD_ORANGE.get(), "血橙");
-        add(FoodItems.BLOODY_MOSCATO.get(), "猩红麝香葡萄");
+        add(FoodItems.BLOODY_MOSCATO.get(), "血腥麝香葡萄");
         add(FoodItems.ELDERBERRY.get(), "接骨木果");
         add(FoodItems.APRICOT.get(), "杏");
         add(FoodItems.BANANA.get(), "香蕉");
@@ -2262,63 +3337,66 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.STAR_FRUIT.get(), "杨桃");
         add(FoodItems.POMEGRANATE.get(), "番石榴");
         add(FoodItems.RAMBUTAN.get(), "红毛丹");
-        add(FoodItems.PEELED_SUGAR_TANGERINE.get(), "拨开的砂糖橘");
+        add(FoodItems.PEELED_SUGAR_TANGERINE.get(), "剥开的砂糖橘");
         add(FoodItems.COOKED_SHRIMP.get(), "熟虾");
-        add(FoodItems.ESCARGOT.get(), "法式蜗牛");
-        add(FoodItems.FROGGLE_BUNWICH.get(), "面包夹田鸡");
+        add(FoodItems.ESCARGOT.get(), "食用蜗牛");
+        add(FoodItems.FROGGLE_BUNWICH.get(), "蛙腿三明治");
         add(FoodItems.GOLDEN_DELIGHT.get(), "金美味");
-        add(FoodItems.GRILLED_SQUIRREL.get(), "松鼠尾");
+        add(FoodItems.GRILLED_SQUIRREL.get(), "烤松鼠");
         add(FoodItems.LOBSTER_TAIL.get(), "龙虾尾");
         add(FoodItems.MONSTER_LASAGNA.get(), "怪物千层面");
+        add(FoodItems.COOK_FISH.get(), "熟鱼");
         add(FoodItems.SASHIMI.get(), "生鱼片");
         add(FoodItems.ROASTED_BIRD.get(), "烤鸟腿");
-        add(FoodItems.ROASTED_DUCK.get(), "鸭肉");
-        add(FoodItems.SAUTEED_FROG_LEGS.get(), "爆炒青蛙腿");
+        add(FoodItems.ROASTED_DUCK.get(), "烤鸭");
+        add(FoodItems.SAUTEED_FROG_LEGS.get(), "炒蛙腿");
         add(FoodItems.SEAFOOD_DINNER.get(), "海鲜大餐");
         add(FoodItems.BACON.get(), "培根");
         add(FoodItems.BANANA_SPLIT.get(), "香蕉船");
-        add(FoodItems.BBQ_RIBS.get(), "炭烧排骨");
+        add(FoodItems.BBQ_RIBS.get(), "烧烤肋排");
         add(FoodItems.BURGER.get(), "汉堡");
         add(FoodItems.CHICKEN_NUGGET.get(), "鸡块");
         add(FoodItems.CHOCOLATE_CHIP_COOKIE.get(), "巧克力大曲奇");
         add(FoodItems.FRIED_EGG.get(), "煎蛋");
-        add(FoodItems.FRIES.get(), "薯条");
+        add(FoodItems.FRIES.get(), "炸薯条");
         add(FoodItems.HOTDOG.get(), "热狗");
         add(FoodItems.PIZZA.get(), "披萨");
         add(FoodItems.POTATO_CHIPS.get(), "薯片");
-        add(FoodItems.SHRIMP_PO_BOY.get(), "鲨宝男孩");
+        add(FoodItems.SHRIMP_PO_BOY.get(), "鲜虾三明治");
         add(FoodItems.SHUCKED_OYSTER.get(), "去壳牡蛎");
         add(FoodItems.SPAGHETTI.get(), "意大利面");
-        add(FoodItems.SURPER_STEAK.get(), "超大肉排");
+        add(FoodItems.SURPER_STEAK.get(), "超大牛排");
+        add(FoodItems.APPLE_PIE.get(), "苹果派");
         add(FoodItems.CHRISTMAS_PUDDING.get(), "圣诞布丁");
         add(FoodItems.GINGERBREAD_COOKIE.get(), "姜饼人");
-        add(FoodItems.SUGAR_COOKIE.get(), "糖曲奇");
+        add(FoodItems.SUGAR_COOKIE.get(), "蜜糖饼干");
         add(FoodItems.MARSHMALLOW.get(), "棉花糖");
         add(FoodItems.COOKED_MARSHMALLOW.get(), "烤棉花糖");
-        add(FoodItems.PAD_THAI.get(), "泰式炒河粉");
+        add(FoodItems.PAD_THAI.get(), "泰式炒面");
         add(FoodItems.GRAPE.get(), "葡萄");
-        add(FoodItems.FROZEN_BANANA_DAIQUIRI.get(), "香蕉圣代");
+        add(FoodItems.FROZEN_BANANA_DAIQUIRI.get(), "冰冻香蕉代基里");
         add(FoodItems.GRAPE_JUICE.get(), "葡萄汁");
         add(FoodItems.LEMONADE.get(), "柠檬水");
-        add(FoodItems.PEACH_SANGRIA.get(), "桃子桑格利亚汽酒");
-        add(FoodItems.PIÑA_COLADA.get(), "皮尼亚·科拉达");
-        add(FoodItems.PRISMATIC_PUNCH.get(), "味蕾冲击者");
-        add(FoodItems.TROPICAL_SMOOTHIE.get(), "热带冰沙");
+        add(FoodItems.PEACH_SANGRIA.get(), "桃子果酒");
+        add(FoodItems.PINA_COLADA.get(), "椰林飘香");
+        add(FoodItems.PRISMATIC_PUNCH.get(), "七彩潘趣酒");
+        add(FoodItems.TROPICAL_SMOOTHIE.get(), "热带奶昔");
         add(FoodItems.SMOOTHIE_OF_DARKNESS.get(), "黑暗奶昔");
-        add(FoodItems.CREAM_SODA.get(), "奶油苏打");
+        add(FoodItems.CREAM_SODA.get(), "奶油苏打水");
         add(FoodItems.ICE_CREAM.get(), "冰淇淋");
         add(FoodItems.MILKSHAKE.get(), "奶昔");
         add(FoodItems.JOJA_COLA.get(), "Joja可乐");
         add(FoodItems.CARTON_OF_MILK.get(), "卡通牛奶");
         add(FoodItems.TEACUP.get(), "一小杯茶");
         add(FoodItems.COFFEE.get(), "咖啡");
-        add(FoodItems.FISH_AND_MUSHROOM_SOUP.get(), "鱼菇汤");
+        add(FoodItems.BOWL_OF_SOUP.get(), "鱼菇汤");
         add(FoodItems.FRUIT_SALAD.get(), "水果沙拉");
         add(FoodItems.GRUB_SOUP.get(), "蛆虫汤");
         add(FoodItems.NACHOS.get(), "一碗玉米粒");
-        add(FoodItems.PHO.get(), "河粉");
-        add(FoodItems.FRUIT_JUICE.get(), "混合果汁");
+        add(FoodItems.PHO.get(), "越南河粉");
+        add(FoodItems.FRUIT_JUICE.get(), "果汁");
         add(FoodItems.SAKE.get(), "清酒");
+        add(FoodItems.BUNNY_STEW.get(), "炖兔兔");
         add(FoodItems.ZONGZI.get(), "粽子");
         add(FoodItems.CLOUD_DOUGH.get(), "云朵面团");
         add(FoodItems.CLOUD_BREAD.get(), "云朵面包");
@@ -2331,10 +3409,14 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.COOKED_FLUTTERING_LAMB_CHOPS.get(), "熟飘飘羊排");
         add(FoodItems.BAOBAB_FRUIT.get(), "猴面包果");
         add(FoodItems.COOKED_BAOBAB_FRUIT.get(), "烤猴面包果");
+        add(FoodItems.GREEN_DUMPLING.get(), "青团");
+        add(FoodItems.BOULDER_BREAD.get(), "巨石面包");
         //赞助
         add(FoodItems.PINK_COLA.get(), "粉色可乐");
         add(FoodItems.DONGDONGS_FLATBREAD.get(), "东东的大饼");
+        add(FoodItems.PIGLIN_STEW.get(), "猪灵堡");
         // 鱼
+        add(FoodItems.GOLDFISH.get(), "金鱼");
         add(FoodItems.SEA_BASS.get(), "鲈鱼");
         add(FoodItems.ATLANTIC_COD.get(), "大西洋鳕鱼");
         add(FoodItems.ARMORED_CAVE_FISH.get(), "装甲洞穴鱼");
@@ -2364,6 +3446,12 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.YELLOW_EEL.get(), "黄鳝");
         add(FoodItems.TILAPIA.get(), "罗非鱼");
 
+
+        add(FoodItems.RAW_FROG.get(), "生青蛙肉");
+        add(FoodItems.RAW_SQUIRREL.get(), "生松鼠肉");
+        add(FoodItems.RAW_BIRD.get(), "生鸟肉");
+        add(FoodItems.RAW_DUCK.get(), "生鸭肉");
+
         add(FoodItems.WATERLEAF_SEED.get(), "幌菊种子");
         add(FoodItems.FIREBLOSSOM_SEED.get(), "火焰花种子");
         add(FoodItems.MOONGLOW_SEED.get(), "月光草种子");
@@ -2379,6 +3467,8 @@ public class ModChineseProvider extends LanguageProvider {
         // 药水
         add(PotionItems.BOTTLE.get(), "玻璃瓶");
         add(PotionItems.BOTTLED_WATER.get(), "瓶装水");
+        add(PotionItems.MUG.get(), "玻璃杯");
+        add(PotionItems.ALE.get(), "麦芽酒");
         add(PotionItems.LESSER_HEALING_POTION.get(), "弱效治疗药水");
         add(PotionItems.HEALING_POTION.get(), "治疗药水");
         add(PotionItems.GREATER_HEALING_POTION.get(), "强效治疗药水");
@@ -2411,7 +3501,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(PotionItems.FLIPPER_POTION.get(), "脚蹼药水");
         add(PotionItems.ARCHERY_POTION.get(), "箭术药水");
         add(PotionItems.HEART_REACH_POTION.get(), "拾心药水");
-        add(PotionItems.GILLS_POTION.get(), "鱼腮药水");
+        add(PotionItems.GILLS_POTION.get(), "鱼鳃药水");
         add(PotionItems.INVISIBILITY_POTION.get(), "隐形药水");
         add(PotionItems.WORMHOLE_POTION.get(), "虫洞药水");
         add(PotionItems.MINING_POTION.get(), "采矿药水");
@@ -2426,6 +3516,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(PotionItems.CRATE_POTION.get(), "宝匣药水");
         add(PotionItems.CHAOS_POTION.get(), "混沌药水");
         add(PotionItems.STINK_POTION.get(), "臭味药水");
+        add(PotionItems.RED_POTION.get(), "红药水");
+        add(PotionItems.AMMO_RESERVATION_POTION.get(), "弹药储备药水");
+        add(PotionItems.SUMMONING_POTION.get(), "召唤药水");
 
         // 饰品
         add(AccessoryItems.ADHESIVE_BANDAGE.get(), "黏性绷带");
@@ -2487,6 +3580,45 @@ public class ModChineseProvider extends LanguageProvider {
         add(AccessoryItems.RADIO_THING.get(), "收音机");
 
 
+        add(AccessoryItems.MUSIC_BOX_OTHERWORLD_DAY.get(), "八音盒（地表世界）");
+        add(AccessoryItems.MUSIC_BOX_NIGHT.get(), "八音盒（夜间）");
+        add(AccessoryItems.MUSIC_BOX_UNDERGROUND.get(), "八音盒（地下）");
+        add(AccessoryItems.MUSIC_BOX_JUNGLE.get(), "八音盒（丛林）");
+        add(AccessoryItems.MUSIC_BOX_CORRUPTION.get(), "八音盒（腐化之地）");
+        add(AccessoryItems.MUSIC_BOX_UNDERGROUND_CORRUPTION.get(), "八音盒（地下腐化之地）");
+        add(AccessoryItems.MUSIC_BOX_THE_HALLOW.get(), "八音盒（神圣之地）");
+        add(AccessoryItems.MUSIC_BOX_UNDERGROUND_HALLOW.get(), "八音盒（地下神圣之地）");
+
+        add(AccessoryItems.ANGEL_WINGS.get(), "天使之翼");
+        add(AccessoryItems.DEMON_WINGS.get(), "恶魔之翼");
+        add(AccessoryItems.FAIRY_WINGS.get(), "仙灵之翼");
+        add(AccessoryItems.FIN_WINGS.get(), "鳍翼");
+        add(AccessoryItems.FROZEN_WINGS.get(), "冰冻之翼");
+        add(AccessoryItems.HARPY_WINGS.get(), "女妖之翼");
+        add(AccessoryItems.JETPACK.get(), "喷气背包");
+        add(AccessoryItems.LEAF_WINGS.get(), "叶之翼");
+        add(AccessoryItems.BAT_WINGS.get(), "蝙蝠之翼");
+        add(AccessoryItems.BEE_WINGS.get(), "蜜蜂之翼");
+        add(AccessoryItems.BUTTERFLY_WINGS.get(), "蝴蝶之翼");
+        add(AccessoryItems.FLAME_WINGS.get(), "烈焰之翼");
+        add(AccessoryItems.HOVERBOARD.get(), "悬浮板");
+        add(AccessoryItems.BONE_WINGS.get(), "骨之翼");
+        add(AccessoryItems.MOTHRON_WINGS.get(), "蛾怪之翼");
+        add(AccessoryItems.SPECTRE_WINGS.get(), "幽灵之翼");
+        add(AccessoryItems.BEETLE_WINGS.get(), "甲虫之翼");
+        add(AccessoryItems.FESTIVE_WINGS.get(), "喜庆之翼");
+        add(AccessoryItems.SPOOKY_WINGS.get(), "阴森之翼");
+        add(AccessoryItems.TATTERED_WINGS.get(), "褴褛仙灵之翼");
+        add(AccessoryItems.STEAMPUNK_WINGS.get(), "蒸汽朋克之翼");
+        add(AccessoryItems.BETSYS_WINGS.get(), "双足翼龙之翼");
+        add(AccessoryItems.EMPRESS_WINGS.get(), "女皇之翼");
+        add(AccessoryItems.FISHRON_WINGS.get(), "猪鱼龙之翼");
+        add(AccessoryItems.NEBULA_WINGS.get(), "星云斗篷");
+        add(AccessoryItems.VORTEX_BOOSTER.get(), "星旋强化翼");
+        add(AccessoryItems.SOLAR_WINGS.get(), "日耀之翼");
+        add(AccessoryItems.STARDUST_WINGS.get(), "星尘之翼");
+
+
         // 染料
         add(PaintItems.PAINTBRUSH.get(), "漆刷");
         add(PaintItems.PAINT_ROLLER.get(), "油漆滚刷");
@@ -2525,6 +3657,39 @@ public class ModChineseProvider extends LanguageProvider {
         add(PaintItems.ILLUMINANT_COATING.get(), "夜明漆");
         add(PaintItems.ECHO_COATING.get(), "回声漆");
 
+        add(VanityArmorItems.DEAD_MANS_SWEATER.get(), "死人毛衣");
+        add(VanityArmorItems.ROBE.get(), "长袍");
+        add(VanityArmorItems.TOP_HAT.get(), "高顶礼貌");
+        add(VanityArmorItems.TUXEDO_SHIRT.get(), "西装衣");
+        add(VanityArmorItems.TUXEDO_PANTS.get(), "西装裤");
+        add(VanityArmorItems.TUXEDO_SHOES.get(), "西装鞋");
+        add(VanityArmorItems.SUMMER_HAT.get(), "夏日草帽");
+        add(VanityArmorItems.BUNNY_HOOD.get(), "兔兔兜帽");
+        add(VanityArmorItems.PLUMBERS_HAT.get(), "管道工帽");
+        add(VanityArmorItems.PLUMBERS_SHIRT.get(), "管道工衣");
+        add(VanityArmorItems.PLUMBERS_PANTS.get(), "管道工背带裤");
+        add(VanityArmorItems.PLUMBERS_SHOES.get(), "管道工鞋");
+        add(VanityArmorItems.HEROS_HAT.get(), "英雄帽");
+        add(VanityArmorItems.HEROS_SHIRT.get(), "英雄衣");
+        add(VanityArmorItems.HEROS_PANTS.get(), "英雄裤");
+        add(VanityArmorItems.HEROS_SHOES.get(), "英雄鞋");
+        add(VanityArmorItems.ARCHAEOLOGISTS_HAT.get(), "考古帽");
+        add(VanityArmorItems.ARCHAEOLOGISTS_JACKET.get(), "考古夹克");
+        add(VanityArmorItems.ARCHAEOLOGISTS_PANTS.get(), "考古裤");
+        add(VanityArmorItems.ARCHAEOLOGISTS_SHOES.get(), "考古鞋");
+        add(VanityArmorItems.CLOTHIERS_HAT.get(), "红帽");
+        add(VanityArmorItems.CLOTHIERS_JACKET.get(), "服装商夹克");
+        add(VanityArmorItems.CLOTHIERS_PANTS.get(), "服装商裤");
+        add(VanityArmorItems.CLOTHIERS_SHOES.get(), "服装商鞋");
+        add(VanityArmorItems.ROBOT_HAT.get(), "机器人帽");
+        add(VanityArmorItems.FAMILIAR_WIG.get(), "便装假发");
+        add(VanityArmorItems.FAMILIAR_SHIRT.get(), "便装衣");
+        add(VanityArmorItems.FAMILIAR_PANTS.get(), "便装裤");
+        add(VanityArmorItems.FAMILIAR_SHOES.get(), "便装鞋");
+        add(VanityArmorItems.MIME_MASK.get(), "丑角面具");
+        add(VanityArmorItems.THE_DOCTORS_SHIRT.get(), "博士衣");
+        add(VanityArmorItems.THE_DOCTORS_PANTS.get(), "博士裤");
+        add(VanityArmorItems.THE_DOCTORS_SHOES.get(), "博士鞋");
         add(VanityArmorItems.GOLD_CROWN.get(), "金冠");
         add(VanityArmorItems.PLATINUM_CROWN.get(), "铂金冠");
         add(VanityArmorItems.RED_DYE.get(), "红染料");
@@ -2555,6 +3720,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(VanityArmorItems.GRAY_DYE.get(), "灰染料");
         add(VanityArmorItems.SILVER_DYE.get(), "银染料");
         add(VanityArmorItems.BROWN_DYE.get(), "棕染料");
+        add(VanityArmorItems.TEAM_DYE.get(), "团队染料");
 
         // 药水效果
         add(ModEffects.MANA_SICKNESS.get(), "耐魔性");
@@ -2582,7 +3748,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEffects.CRATE.get(), "宝匣");
         add(ModEffects.ACID_VENOM.get(), "酸性毒液");
         add(ModEffects.CURSED_INFERNO.get(), "诅咒焰");
-        add(ModEffects.FROST_BURN.get(), "霜冻");
+//        add(ModEffects.FROST_BURN.get(), "霜冻");
         add(ModEffects.RAGE.get(), "暴怒");
         add(ModEffects.FISHING.get(), "钓鱼");
         add(ModEffects.LUCK_EFFECT.get(), "幸运");
@@ -2601,12 +3767,32 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEffects.ARCHERY.get(), "箭术");
         add(ModEffects.HEART_REACH.get(), "拾心");
         add(ModEffects.OBSIDIAN_SKIN.get(), "黑曜石皮");
-        add(ModEffects.HELLFIRE.get(), "狱炎");
+//        add(ModEffects.HELLFIRE.get(), "狱炎");
         add(ModEffects.COZY_FIRE.get(), "温馨之火");
+        add(ModEffects.BEWITCHED.get(), "着魔");
+        add(ModEffects.HUNGER_DELAYED.get(), "饥饿延缓");
+        add(ModEffects.CHOKING.get(), "干噎");
+        add(ModEffects.DELICIOUS.get(), "美味");
+        add(ModEffects.LOVE.get(), "爱情");
+        add(ModEffects.MIDAS.get(), "迈达斯");
+        add(ModEffects.TIPSY.get(), "踉跄");
+        add(ModEffects.CLAIRVOYANCE.get(), "透视");
+        add(ModEffects.HOLY_PROTECTION.get(), "神圣防护");
+        add(ModEffects.TITANIUM_BARRIER.get(), "钛金防护");
+        add(ModEffects.WEAPON_IMBUE_FIRE.get(), "武器灌注：火焰");
+        add(ModEffects.WEAPON_IMBUE_GOLD.get(), "武器灌注：金");
+        add(ModEffects.FROSTBITE.get(), "冻伤");
+        add(ModEffects.SHADOWFLAME.get(), "暗影焰");
 
         add(TooltipManager.prefix, "** 赞助者物品 **");
 
+        add("item.confluence.spawn_eggs", "%s刷怪蛋");
 
-        ModEffectStrategies.EFFECT_STRATEGY.getEntries().forEach(strategy -> add(strategy.get().getTranslationKey(), strategy.get().getDescription_zh_cn()));
+        // 车万女仆
+        add("task.confluence.use_life_crystal", "生命水晶");
+        add("task.confluence.use_life_crystal.desc", "女仆会主动使用生命水晶增加最大生命值");
+        add("task.confluence.use_life_crystal.condition.has_life_crystal", "主手持有生命水晶");
+
+        PonderHelper.addTranslateKeys(this::add, false);
     }
 }

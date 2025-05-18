@@ -8,10 +8,10 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.entity.projectile.ShurikenProjectile;
+import org.confluence.mod.common.entity.projectile.ThrowableDropSelfProjectile;
 import org.jetbrains.annotations.NotNull;
 
-public class ShurikenProjectileModel extends EntityModel<ShurikenProjectile> {
+public class ShurikenProjectileModel extends EntityModel<ThrowableDropSelfProjectile> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Confluence.asResource("shuriken_projectile"), "main");
     private final ModelPart root;
 
@@ -30,7 +30,7 @@ public class ShurikenProjectileModel extends EntityModel<ShurikenProjectile> {
     }
 
     @Override
-    public void setupAnim(@NotNull ShurikenProjectile entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {}
+    public void setupAnim(@NotNull ThrowableDropSelfProjectile entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {}
 
     @Override
     public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {

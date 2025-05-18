@@ -1,7 +1,9 @@
 package org.confluence.mod.client.event;
 
+import net.minecraft.client.RecipeBookCategories;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.BiomeColors;
+import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.client.renderer.entity.MinecartRenderer;
 import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
@@ -14,6 +16,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.block.Block;
@@ -25,6 +28,8 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import org.confluence.lib.common.item.ColoredItem;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.StartupConfigs;
 import org.confluence.mod.client.ClientConfigs;
@@ -65,23 +70,25 @@ import org.confluence.mod.client.renderer.entity.projectile.*;
 import org.confluence.mod.client.renderer.entity.projectile.bomb.*;
 import org.confluence.mod.client.renderer.entity.projectile.sword.ForwardProjRenderer;
 import org.confluence.mod.client.renderer.entity.projectile.sword.LightsBaneProjectileRenderer;
+import org.confluence.mod.client.renderer.entity.projectile.sword.NightEdgeProjectileRenderer;
 import org.confluence.mod.client.renderer.entity.projectile.sword.StarFuryProjectileRenderer;
 import org.confluence.mod.client.textures.GrayBlockModelSwapper;
 import org.confluence.mod.client.textures.GraySpriteShifterEntry;
-import org.confluence.mod.common.init.ModFluids;
-import org.confluence.mod.common.init.ModMenuTypes;
-import org.confluence.mod.common.init.ModParticleTypes;
+import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.StatueBlocks;
 import org.confluence.mod.common.init.item.*;
-import org.confluence.mod.common.item.common.ColoredItem;
 import org.confluence.mod.common.item.paint.PaintItem;
 import org.confluence.mod.common.item.vanity_armor.BaseDyeItem;
-import org.confluence.mod.integration.ponder.PonderHelper;
+import org.confluence.mod.integration.appleskin.AppleskinHelper;
+import org.confluence.mod.integration.create.ponder.PonderHelper;
 import org.confluence.mod.util.ClientUtils;
-import org.confluence.terraentity.client.entity.renderer.GeoNormalRenderer;
+import org.confluence.terra_curio.TerraCurio;
+import org.confluence.terra_curio.client.model.entity.BeeProjectileModel;
+import org.confluence.terra_guns.util.TGUtil;
+import software.bernie.geckolib.model.DefaultedBlockGeoModel;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
 import java.util.HashSet;
@@ -106,6 +113,7 @@ public final class ModClientEvents {
             ModClientSetups.eventBus(ModConnectives::register);
 
             PonderHelper.registerPlugin();
+            AppleskinHelper.addListeners();
         });
     }
 
@@ -124,9 +132,14 @@ public final class ModClientEvents {
         event.register(ModMenuTypes.FLETCHING_TABLE.get(), FletchingTableScreen::new);
         event.register(ModMenuTypes.ALCHEMY_TABLE.get(), AlchemyTableScreen::new);
         event.register(ModMenuTypes.EXTRA_INVENTORY.get(), ExtraInventoryScreen::new);
-        event.register(ModMenuTypes.MAID_TRADES_MENU.get(), NPCTradeScreen::new);
-        event.register(ModMenuTypes.REFORGE_MENU.get(), NPCReforgeScreen::new);
+        event.register(ModMenuTypes.COOKING_POT.get(), CookingPotScreen::new);
+        event.register(ModMenuTypes.SAWMILL.get(), SawmillScreen::new);
+        event.register(ModMenuTypes.SOLIDIFIER.get(), SolidifierScreen::new);
+        event.register(ModMenuTypes.CRYSTAL_BALL.get(), CrystalBallScreen::new);
+        event.register(ModMenuTypes.HARDMODE_ANVIL.get(), HardmodeAnvilScreen::new);
 
+        event.register(ModMenuTypes.NPC_TRADES_MENU.get(), WithForgeTradeScreen::new);
+        event.register(ModMenuTypes.REFORGE_MENU.get(), NPCReforgeScreen::new);
     }
 
     @SubscribeEvent
@@ -200,33 +213,14 @@ public final class ModClientEvents {
         event.registerEntityRenderer(BOUNCY_BOMB_ENTITY.get(), BouncyBombEntityRenderer::new);
         event.registerEntityRenderer(SCARAB_BOMB_ENTITY.get(), ScarabBombEntityRenderer::new);
         event.registerEntityRenderer(STICKY_BOMB_ENTITY.get(), StickyBombEntityRenderer::new);
+        event.registerEntityRenderer(SMOKE_BOMB_ENTITY.get(), NoopRenderer::new); // todo 模型
         event.registerEntityRenderer(BOMB_FISH_ENTITY.get(), BombFishEntityRenderer::new);
         event.registerEntityRenderer(DIRT_BOMB.get(), DirtBombEntityRenderer::new);
         event.registerEntityRenderer(STICKY_DIRT_BOMB.get(), StickyDirtBombEntityRenderer::new);
-
-        event.registerEntityRenderer(BASE_MANA_STAFF_PROJECTILE.get(), NoopRenderer::new);
-        event.registerEntityRenderer(VILETHRON_PROJECTILE.get(), VilethronProjectileRenderer::new);
-        event.registerEntityRenderer(HURTNADO_PROJECTILE.get(), HurtnadoProjectileRenderer::new);
-        event.registerEntityRenderer(WATER_STREAM_PROJECTILE.get(), NoopRenderer::new);
-        event.registerEntityRenderer(BALL_OF_FIRE_PROJECTILE.get(), NoopRenderer::new);
-        event.registerEntityRenderer(ARROW_PROJECTILE.get(), TerraArrowRenderer::new);
-        event.registerEntityRenderer(EFFECT_THROWN_POTION.get(), ThrownItemRenderer::new);
-        event.registerEntityRenderer(ICE_BLADE_SWORD_PROJECTILE.get(), c -> new ForwardProjRenderer<>(c, new IceBladeSwordProjectileModel(c.bakeLayer(IceBladeSwordProjectileModel.LAYER_LOCATION)), Confluence.asResource("textures/entity/ice_blade_sword_projectile.png"), 1, 0F));
-        event.registerEntityRenderer(STAR_FURY_PROJECTILE.get(), StarFuryProjectileRenderer::new);
-        event.registerEntityRenderer(ENCHANTED_SWORD_PROJECTILE.get(), c -> new ForwardProjRenderer<>(c, new EnchantedSwordProjectileModel(c.bakeLayer(EnchantedSwordProjectileModel.LAYER_LOCATION)), Confluence.asResource("textures/entity/enchanted_sword_projectile.png"), 1, 0.2F, 0.89f));
-        event.registerEntityRenderer(LIGHTS_BANE_PROJECTILE.get(), LightsBaneProjectileRenderer::new);
-
-        event.registerEntityRenderer(BOOMERANG_PROJECTILE.get(), BoomerangProjRenderer::new);
-        event.registerEntityRenderer(BOULDER.get(), BoulderRenderer::new);
-        event.registerEntityRenderer(FOLLOWER_BOULDER.get(), BoulderRenderer::new);
-        event.registerEntityRenderer(EXPLODE_BOULDER.get(), BoulderRenderer::new);
-        event.registerEntityRenderer(ROLLING_CACTUS_BOULDER.get(), BoulderRenderer::new);
-        event.registerEntityRenderer(ROLLING_CACTUS_SPIKE.get(), RollingCactusSpikeRenderer::new);
-        event.registerEntityRenderer(THROWN_KNIVES_PROJECTILE.get(), ThrownKnivesProjectileRenderer::new);
-        event.registerEntityRenderer(SHURIKEN_PROJECTILE.get(), ShurikenProjectileRenderer::new);
         event.registerEntityRenderer(GRENADE.get(), BaseGrenadeEntityRenderer::new);
         event.registerEntityRenderer(BOUNCY_GRENADE.get(), BouncyGrenadeEntityRenderer::new);
         event.registerEntityRenderer(STICKY_GRENADE.get(), StickyGrenadeEntityRenderer::new);
+        event.registerEntityRenderer(BEENADE.get(), NoopRenderer::new); // todo 模型
         event.registerEntityRenderer(DYNAMITE.get(), BaseDynamiteEntityRenderer::new);
         event.registerEntityRenderer(BOUNCY_DYNAMITE.get(), BouncyDynamiteEntityRenderer::new);
         event.registerEntityRenderer(STICKY_DYNAMITE.get(), StickyDynamiteEntityRenderer::new);
@@ -235,6 +229,51 @@ public final class ModClientEvents {
         event.registerEntityRenderer(LAVA_BOMB.get(), LavaBombEntityRenderer::new);
         event.registerEntityRenderer(HONEY_BOMB.get(), HoneyBombEntityRenderer::new);
 
+        event.registerEntityRenderer(BASE_MANA_STAFF_PROJECTILE.get(), NoopRenderer::new);
+        event.registerEntityRenderer(VILETHRON_PROJECTILE.get(), VilethronProjectileRenderer::new);
+        event.registerEntityRenderer(HURTNADO_PROJECTILE.get(), HurtnadoProjectileRenderer::new);
+        event.registerEntityRenderer(WATER_STREAM_PROJECTILE.get(), NoopRenderer::new);
+        event.registerEntityRenderer(WATER_BOLT_PROJECTILE.get(), NoopRenderer::new);
+        event.registerEntityRenderer(BALL_OF_FIRE_PROJECTILE.get(), NoopRenderer::new);
+        event.registerEntityRenderer(EFFECT_THROWN_POTION.get(), ThrownItemRenderer::new);
+        event.registerEntityRenderer(ICE_BLADE_SWORD_PROJECTILE.get(), c -> new ForwardProjRenderer<>(c, new IceBladeSwordProjectileModel(c.bakeLayer(IceBladeSwordProjectileModel.LAYER_LOCATION)), Confluence.asResource("textures/entity/ice_blade_sword_projectile.png"), 1, 0F));
+        event.registerEntityRenderer(STAR_FURY_PROJECTILE.get(), StarFuryProjectileRenderer::new);
+        event.registerEntityRenderer(ENCHANTED_SWORD_PROJECTILE.get(), c -> new ForwardProjRenderer<>(c, new EnchantedSwordProjectileModel(c.bakeLayer(EnchantedSwordProjectileModel.LAYER_LOCATION)), Confluence.asResource("textures/entity/enchanted_sword_projectile.png"), 1, 0.2F, 0.89f));
+        event.registerEntityRenderer(LIGHTS_BANE_PROJECTILE.get(), LightsBaneProjectileRenderer::new);
+        event.registerEntityRenderer(GRASS_PROJECTILE.get(), c -> new ForwardProjRenderer<>(c, null, null));
+        event.registerEntityRenderer(BEE_PROJECTILE.get(), c -> new ForwardProjRenderer<>(c, new BeeProjectileModel(c.bakeLayer(BeeProjectileModel.LAYER_LOCATION)), TerraCurio.asResource("textures/entity/bee_projectile.png")));
+        event.registerEntityRenderer(NIGHT_EDGE_PROJECTILE.get(), NightEdgeProjectileRenderer::new);
+
+        event.registerEntityRenderer(ARROW_PROJECTILE.get(), TerraArrowRenderer::new);
+        event.registerEntityRenderer(BEE_ARROW.get(), c -> new ForwardProjRenderer<>(c, new BeeProjectileModel(c.bakeLayer(BeeProjectileModel.LAYER_LOCATION)), TerraCurio.asResource("textures/entity/bee_projectile.png")));
+        event.registerEntityRenderer(BOULDER.get(), BoulderRenderer::new);
+        event.registerEntityRenderer(FOLLOWER_BOULDER.get(), BoulderRenderer::new);
+        event.registerEntityRenderer(EXPLODE_BOULDER.get(), BoulderRenderer::new);
+        event.registerEntityRenderer(ROLLING_CACTUS_BOULDER.get(), BoulderRenderer::new);
+        event.registerEntityRenderer(ROLLING_CACTUS_SPIKE.get(), RollingCactusSpikeRenderer::new);
+        event.registerEntityRenderer(TOMBSTONE_BOULDER.get(), BoulderRenderer::new);
+        event.registerEntityRenderer(THROWN_KNIVES_PROJECTILE.get(), ThrownKnivesProjectileRenderer::new);
+        event.registerEntityRenderer(JAVELIN_PROJECTILE.get(), SpearRenderer::new);
+        event.registerEntityRenderer(SHURIKEN_PROJECTILE.get(), ShurikenProjectileRenderer::new);
+        event.registerEntityRenderer(SPIKY_BALL_PROJECTILE.get(), NoopRenderer::new); // todo 模型
+        event.registerEntityRenderer(THROWN_WATER_PROJECTILE.get(), ThrownItemRenderer::new);
+        event.registerEntityRenderer(MAGIC_DAGGER_PROJECTILE.get(), NoopRenderer::new); // todo 模型
+        event.registerEntityRenderer(CRYSTAL_STORM_PROJECTILE.get(), NoopRenderer::new); // todo 模型
+        event.registerEntityRenderer(CURSED_FLAMES_PROJECTILE.get(), NoopRenderer::new); // todo 模型
+        event.registerEntityRenderer(FLOWER_PETAL_PROJECTILE.get(), NoopRenderer::new); // todo 模型
+        event.registerEntityRenderer(TITANIUM_SHARDS_PROJECTILE.get(), NoopRenderer::new); // todo 模型
+        event.registerEntityRenderer(FALLING_STAR_ITEM_ENTITY.get(), FallingStarRenderer::new);
+        event.registerEntityRenderer(TREASURE_BAG_ITEM_ENTITY.get(), TreasureBagRenderer::new);
+        event.registerEntityRenderer(COIN_PORTAL.get(), NoopRenderer::new);
+        event.registerEntityRenderer(THROWN_POWDER.get(), NoopRenderer::new);
+        event.registerEntityRenderer(ROPE_COILS.get(), ThrownItemRenderer::new);
+        event.registerEntityRenderer(ICE_TOFU_BRICK_PROJECTILE.get(), ThrownItemRenderer::new);
+        event.registerEntityRenderer(BODY_PART.get(), BodyPartRenderer::new);
+        event.registerEntityRenderer(TARGET_DUMMY.get(), TargetDummyRenderer::new);
+        event.registerEntityRenderer(FLAME_CLOUD.get(), NoopRenderer::new); // todo 模型
+        event.registerEntityRenderer(SUPER_SPIKY_BALL_PROJECTILE.get(), NoopRenderer::new); // todo 模型
+        event.registerEntityRenderer(SPEAR.get(), NoopRenderer::new); // todo 模型
+        event.registerEntityRenderer(BALL_OF_FROST_PROJECTILE.get(), NoopRenderer::new); // todo 模型
 
         event.registerEntityRenderer(HOTLINE_FISHING_HOOK.get(), HotlineFishingHookRenderer::new);
         event.registerEntityRenderer(BASE_FISHING_HOOK.get(), BaseFishingHookRenderer::new);
@@ -267,18 +306,6 @@ public final class ModClientEvents {
         event.registerEntityRenderer(MEOWMERE_MINECART.get(), context -> new MinecartRenderer<>(context, ModelLayers.MINECART));
         event.registerEntityRenderer(DIGGING_MOLECART.get(), context -> new MinecartRenderer<>(context, ModelLayers.MINECART));
 
-        event.registerEntityRenderer(FALLING_STAR_ITEM_ENTITY.get(), FallingStarRenderer::new);
-        event.registerEntityRenderer(TREASURE_BAG_ITEM_ENTITY.get(), TreasureBagRenderer::new);
-        event.registerEntityRenderer(COIN_PORTAL.get(), NoopRenderer::new);
-        event.registerEntityRenderer(THROWN_POWDER.get(), NoopRenderer::new);
-        event.registerEntityRenderer(ROPE_COILS.get(), ThrownItemRenderer::new);
-        event.registerEntityRenderer(ICE_TOFU_BRICK_PROJECTILE.get(), ThrownItemRenderer::new);
-        event.registerEntityRenderer(BODY_PART.get(), BodyPartRenderer::new);
-
-        event.registerEntityRenderer(TARGET_DUMMY.get(), c -> new TargetDummyRenderer(c, new TargetDummyModel<>(c.bakeLayer(TargetDummyModel.LAYER_LOCATION)), 0));
-
-        // npc
-        event.registerEntityRenderer(GUIDE.get(), c -> new GeoNormalRenderer<>(c, GUIDE.getId()));
 
         event.registerBlockEntityRenderer(FunctionalBlocks.ALTAR_BLOCK_ENTITY.get(), context -> new GeoBlockRenderer<>(new AltarBlockModel()));
         event.registerBlockEntityRenderer(FunctionalBlocks.SKY_MILL_ENTITY.get(), context -> new SkyMillBlockRenderer());
@@ -290,6 +317,9 @@ public final class ModClientEvents {
         event.registerBlockEntityRenderer(FunctionalBlocks.WEATHER_VANE_ENTITY.get(), WeatherVaneBlockRenderer::new);
         event.registerBlockEntityRenderer(NatureBlocks.LIFE_CRYSTAL_BLOCK_ENTITY.get(), context -> new GeoBlockRenderer<>(new LifeCrystalBlockModel()));
         event.registerBlockEntityRenderer(StatueBlocks.BLOCK_ENTITY.get(), MechanicalBlockRenderer::new);
+        event.registerBlockEntityRenderer(FunctionalBlocks.COOKING_POT_ENTITY.get(), context -> new GeoBlockRenderer<>(new DefaultedBlockGeoModel<>(Confluence.asResource("cooking_pot"))));
+        event.registerBlockEntityRenderer(FunctionalBlocks.ANNOUNCEMENT_BOX_ENTITY.get(), SignRenderer::new);
+        event.registerBlockEntityRenderer(FunctionalBlocks.SAFE_ENTITY.get(), context -> new GeoBlockRenderer<>(new DefaultedBlockGeoModel<>(Confluence.asResource("safe"))));
     }
 
     @SubscribeEvent
@@ -304,7 +334,7 @@ public final class ModClientEvents {
         event.register((pStack, pTintIndex) -> ColoredItem.getColor(pStack), MaterialItems.GEL.get());
         event.register((pStack, pTintIndex) -> GrassColor.getDefaultColor(), NatureBlocks.JUNGLE_GRASS_BLOCK.get());
         event.register((stack, tintIndex) -> tintIndex == 1 && stack.getItem() instanceof PaintItem paintItem ? FastColor.ARGB32.opaque(paintItem.getColor(stack)) : 0xFFFFFFFF, PaintItems.PAINT_ITEMS.toArray(PaintItem[]::new));
-        event.register((stack, tintIndex) -> tintIndex == 1 && stack.getItem() instanceof BaseDyeItem dyeItem ? dyeItem.color : 0xFFFFFFFF, VanityArmorItems.DYE_ITEMS.toArray(BaseDyeItem[]::new));
+        event.register((stack, tintIndex) -> tintIndex == 1 && stack.getItem() instanceof BaseDyeItem dyeItem ? dyeItem.color : 0xFFFFFFFF, VanityArmorItems.DYE_ITEMS.stream().map(DeferredHolder::get).toArray(Item[]::new));
     }
 
     @SubscribeEvent
@@ -313,6 +343,12 @@ public final class ModClientEvents {
         event.registerFluidType(ModClientSetups.SHIMMER_CLIENT_EXTENSIONS, ModFluids.SHIMMER.type());
         event.registerBlock(ModClientSetups.NO_HIT_EFFECTS, ModBlocks.ROPE.get(), ModBlocks.VINE_ROPE.get(), ModBlocks.SILK_ROPE.get(), ModBlocks.WEB_ROPE.get());
         event.registerItem(ModClientSetups.ENTITY_DISPLAY, ModItems.ENTITY_DISPLAY.get());
+        event.registerItem(ModClientSetups.BREATHING_REED, SwordItems.BREATHING_REED);
+        event.registerItem(ModClientSetups.LANCE, LanceItems.ITEMS.getEntries().stream().map(DeferredHolder::get).toArray(Item[]::new));
+        TGUtil.registerOtherGunModel(event, Confluence.MODID, ManaWeaponItems.BEE_GUN);
+        TGUtil.registerOtherGunModel(event, Confluence.MODID, ManaWeaponItems.SPACE_GUN);
+        GunItems.ITEMS.getEntries().forEach(holder -> TGUtil.registerOtherGunModel(event, Confluence.MODID, holder));
+        event.registerMobEffect(ModClientSetups.TRANSLUCENT_EFFECT_ICON, ModEffects.LUCK_EFFECT.get());
     }
 
     @SubscribeEvent
@@ -326,10 +362,8 @@ public final class ModClientEvents {
         event.registerSpriteSet(ModParticleTypes.LIGHT_BANE.get(), LightBaneParticle.Provider::new);
         event.registerSpriteSet(ModParticleTypes.LIGHT_BANE_DUST.get(), SimpleTextureSheetParticle.Provider::new);
         event.registerSpriteSet(ModParticleTypes.LIGHT_BANE_FADE.get(), SimpleTextureSheetParticle.Provider::new);
-
     }
 
-    @SuppressWarnings("deprecation")
     @SubscribeEvent
     public static void textureAtlasStitched(TextureAtlasStitchedEvent event) {
         TextureAtlas atlas = event.getAtlas();
@@ -343,16 +377,17 @@ public final class ModClientEvents {
                     GraySpriteShifterEntry.ALL.put(key, new GraySpriteShifterEntry(sprite, gray, negative));
                 }
             }
+            ClientUtils.ORIGINAL.clear();
         }
     }
 
     @SubscribeEvent
     public static void model$ModifyBakingResult(ModelEvent.ModifyBakingResult event) {
-        if (ModClientSetups.SHOULD_NOT_GENERATE_BLOCK_GRAY_TEXTURE || !StartupConfigs.PAINTS_REPLACE_TEXTURE.get()) return;
+        if (ModClientSetups.SHOULD_NOT_GENERATE_BLOCK_GRAY_TEXTURE || !StartupConfigs.paintsReplaceTexture()) return;
 
         Map<ModelResourceLocation, BakedModel> modelRegistry = event.getModels();
         CustomBlockModels customBlockModels = ModConnectives.MODEL_SWAPPER.getCustomBlockModels();
-        Set<String> bannedModForPaints = new HashSet<>(StartupConfigs.BANNED_MOD_FOR_PAINTS.get());
+        Set<String> bannedModForPaints = new HashSet<>(StartupConfigs.bannedModForPaints());
         for (Map.Entry<Block, Holder.Reference<Block>> entry : ((DefaultedMappedRegistry<Block>) BuiltInRegistries.BLOCK).byValue.entrySet()) {
             Block block = entry.getKey();
             if (customBlockModels.containsBlock(block) || bannedModForPaints.contains(entry.getValue().key().location().getNamespace())) {
@@ -365,5 +400,10 @@ public final class ModClientEvents {
                 }
             }
         }
+    }
+
+    @SubscribeEvent
+    public static void registerRecipeBookCategories(RegisterRecipeBookCategoriesEvent event) {
+        ModRecipes.TYPES.getEntries().forEach(holder -> event.registerRecipeCategoryFinder(holder.get(), recipeHolder -> RecipeBookCategories.UNKNOWN));
     }
 }

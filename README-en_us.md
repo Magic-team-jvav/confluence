@@ -1,0 +1,39 @@
+- [中文](README.md)
+
+| Project Name                                 | Description                | Runs Independently             |
+|----------------------------------------------|----------------------------|--------------------------------|
+| [ConfluenceOtherworld](ConfluenceOtherworld) | Main module                | Depends on all                 |
+| [TerraEntity](TerraEntity)                   | Terra's Entities           | yes                            |
+| [MineTeam](MineTeam)                         | Terra's Teams              | yes                            |
+| [EquipmentBenediction](EquipmentBenediction) | Equipment Effects          | yes                            |
+| [TerraCurio](TerraCurio)                     | Terra's Wearables          | yes                            |
+| [TerraGuns](TerraGuns)                       | Terra's Guns               | yes                            |
+| [ParticleStorm](ParticleStorm)               | Particles API              | yes                            |
+| [HeavenDestinyMoment](HeavenDestinyMoment)   | Event API                  | yes                            |
+| [PhaseJourney](PhaseJourney)                 | Game Stage API             | yes                            |
+| [TerraMoment](TerraMoment)                   | Terra's Events             | depends on HeavenDestinyMoment |
+| [IsekaiInvaded](IsekaiInvaded)               | Dimensional Invasion Event | depends on HeavenDestinyMoment |
+| [TerraFurniture](TerraFurniture)             | Terra's Furniture          | yes                            |
+
+| Official Integrations                                               | Description                  |
+|---------------------------------------------------------------------|------------------------------|
+| [ConfluenceDelight](https://github.com/XiaoHuNao/ConfluenceDelight) | Farmer's Delight integration |
+
+## Build the Project
+
+- When you pull the project, confirm whether the sub-project files are pulled. If the folder is empty, you can run the
+  following sequence of terminal commands:
+  ~~~cmd
+    git submodule init
+    git submodule update
+  ~~~
+
+- If you would like to manually add a submodule, you can run:
+  ~~~cmd
+    git submodule add -b "<branch name>" "<url>"
+  ~~~
+  > You will also need to add the submodule name in [settings.gradle](settings.gradle)
+  > and [ConfluenceOtherworld/build.gradle](ConfluenceOtherworld/build.gradle).
+
+- After all the project is pulled successuly, you can use gradle's runClient command.
+

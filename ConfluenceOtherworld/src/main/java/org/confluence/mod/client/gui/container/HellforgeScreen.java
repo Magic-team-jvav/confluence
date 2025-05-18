@@ -8,7 +8,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.menu.HellforgeMenu;
-import org.jetbrains.annotations.NotNull;
 
 public class HellforgeScreen extends AbstractContainerScreen<HellforgeMenu> {
     public static final ResourceLocation SUPER_LIT_PROGRESS = Confluence.asResource("textures/gui/container/super_lit_progress.png");
@@ -27,7 +26,7 @@ public class HellforgeScreen extends AbstractContainerScreen<HellforgeMenu> {
     }
 
     @Override
-    public void render(@NotNull GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
+    public void render(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
         renderTooltip(pGuiGraphics, pMouseX, pMouseY);
     }
@@ -36,11 +35,11 @@ public class HellforgeScreen extends AbstractContainerScreen<HellforgeMenu> {
     protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
         guiGraphics.blit(BACKGROUND, leftPos, topPos, 0, 0, imageWidth, imageHeight);
         if (menu.isLit()) {
-            int l = Mth.ceil(menu.getLitProgress() * 16.0F);
+            int l = Mth.ceil(menu.getLitProgress() * 16);
             guiGraphics.blit(SUPER_LIT_PROGRESS, leftPos + 57, topPos + 59, 0, 0, 14, 14, 14, 14);
             guiGraphics.blit(BACKGROUND, leftPos + 56, topPos + 75, 177, 0, l, 3, 256, 256);
         }
-        int j1 = Mth.ceil(menu.getBurnProgress() * 24.0F);
+        int j1 = Mth.ceil(menu.getBurnProgress() * 24);
         guiGraphics.blitSprite(BURN_PROGRESS_SPRITE, 24, 16, 0, 0, leftPos + 91, topPos + 34, j1, 16);
     }
 }

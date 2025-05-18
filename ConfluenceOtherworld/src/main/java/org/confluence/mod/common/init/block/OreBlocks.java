@@ -1,27 +1,24 @@
 package org.confluence.mod.common.init.block;
 
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
-import net.minecraft.tags.BlockTags;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RedStoneOreBlock;
 import net.minecraft.world.level.block.TransparentBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.registries.DeferredBlock;
-import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.natural.HellStoneBlock;
 import org.confluence.mod.common.block.natural.MeteoriteOre;
 import org.confluence.mod.common.block.natural.OpalOreBlock;
 import org.confluence.mod.common.block.natural.StepRevealingBlock;
-import org.confluence.mod.common.data.gen.ModBlockTagsProvider;
 import org.confluence.mod.common.init.item.ModItems;
 
+import java.util.function.Function;
 import java.util.function.Supplier;
-
-import static org.confluence.mod.common.init.block.ModBlocks.registerWithItem;
 
 public class OreBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Confluence.MODID);
@@ -85,9 +82,9 @@ public class OreBlocks {
     public static final DeferredBlock<Block> CORRUPTION_GOLD_ORE = copyBlockRegister("corruption_gold_ore", Blocks.GOLD_ORE);
     public static final DeferredBlock<Block> FLESHIFICATION_GOLD_ORE = copyBlockRegister("fleshification_gold_ore", Blocks.GOLD_ORE);
 
-    public static final DeferredBlock<Block> METEORITE_ORE = simpleBlockRegister("meteorite_ore", MeteoriteOre::new);
-    public static final DeferredBlock<Block> RAW_METEORITE_BLOCK = simpleBlockRegister("raw_meteorite_block", MeteoriteOre::new);
-    public static final DeferredBlock<Block> METEORITE_BLOCK = simpleBlockRegister("meteorite_block", MeteoriteOre::new);
+    public static final DeferredBlock<Block> METEORITE_ORE = registerWithItem("meteorite_ore", MeteoriteOre::new, block -> new BlockItem(block, new Item.Properties().fireResistant()));
+    public static final DeferredBlock<Block> RAW_METEORITE_BLOCK = registerWithItem("raw_meteorite_block", MeteoriteOre::new, block -> new BlockItem(block, new Item.Properties().fireResistant()));
+    public static final DeferredBlock<Block> METEORITE_BLOCK = registerWithItem("meteorite_block", MeteoriteOre::new, block -> new BlockItem(block, new Item.Properties().fireResistant()));
 
     public static final DeferredBlock<Block> STURDY_FOSSIL_BLOCK = copyBlockRegister("sturdy_fossil_block", Blocks.DIAMOND_BLOCK);
 
@@ -170,16 +167,16 @@ public class OreBlocks {
     public static final DeferredBlock<Block> RAW_LUMINITE_BLOCK = copyBlockRegister("raw_luminite_block", Blocks.RAW_IRON_BLOCK);
     public static final DeferredBlock<Block> LUMINITE_BLOCK = copyBlockRegister("luminite_block", Blocks.IRON_BLOCK);
 
-    public static final Supplier<Block> OPAL_ORE = simpleBlockRegister("opal_ore", OpalOreBlock::new);
+    public static final DeferredBlock<Block> OPAL_ORE = simpleBlockRegister("opal_ore", OpalOreBlock::new);
     public static final DeferredBlock<Block> GELSTONE_ORE = copyBlockRegister("gelstone_ore", Blocks.IRON_ORE);
     public static final DeferredBlock<Block> SPORE_ROOT_BLOCK = copyBlockRegister("spore_root_block", Blocks.IRON_ORE);
     public static final DeferredBlock<Block> WINTER_MARROW_BLOCK = copyBlockRegister("winter_marrow_block", Blocks.IRON_ORE);
-    public static final DeferredBlock<TransparentBlock> COLD_CRYSTAL_ORE = registerWithItem("cold_crystal_ore", () -> new TransparentBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PACKED_ICE).noOcclusion()));
-    public static final DeferredBlock<Block> HELLSTONE = simpleBlockRegister("hellstone", HellStoneBlock::new);
-    public static final DeferredBlock<Block> ASH_HELLSTONE = simpleBlockRegister("ash_hellstone", HellStoneBlock::new);
-    public static final DeferredBlock<Block> HELLSTONE_BRICKS = simpleBlockRegister("hellstone_bricks", HellStoneBlock::new);
-    public static final DeferredBlock<Block> RAW_HELLSTONE_BLOCK = simpleBlockRegister("raw_hellstone_block", BlockBehaviour.Properties.of().requiresCorrectToolForDrops());
-    public static final DeferredBlock<Block> HELLSTONE_BLOCK = simpleBlockRegister("hellstone_block", BlockBehaviour.Properties.of().requiresCorrectToolForDrops());
+    public static final DeferredBlock<Block> COLD_CRYSTAL_ORE = registerWithItem("cold_crystal_ore", () -> new TransparentBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_ORE).noOcclusion()));
+    public static final DeferredBlock<Block> HELLSTONE = registerWithItem("hellstone", HellStoneBlock::new, block -> new BlockItem(block, new Item.Properties().fireResistant()));
+    public static final DeferredBlock<Block> ASH_HELLSTONE = registerWithItem("ash_hellstone", HellStoneBlock::new, block -> new BlockItem(block, new Item.Properties().fireResistant()));
+    public static final DeferredBlock<Block> HELLSTONE_BRICKS = registerWithItem("hellstone_bricks", HellStoneBlock::new, block -> new BlockItem(block, new Item.Properties().fireResistant()));
+    public static final DeferredBlock<Block> RAW_HELLSTONE_BLOCK = registerWithItem("raw_hellstone_block", HellStoneBlock::new, block -> new BlockItem(block, new Item.Properties().fireResistant()));
+    public static final DeferredBlock<Block> HELLSTONE_BLOCK = registerWithItem("hellstone_block", HellStoneBlock::new, block -> new BlockItem(block, new Item.Properties().fireResistant()));
 
     // 红石矿
     public static final DeferredBlock<Block> SANCTIFICATION_REDSTONE_ORE = simpleBlockRegister("sanctification_redstone_ore", () -> new RedStoneOreBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_REDSTONE_ORE)));
@@ -194,9 +191,9 @@ public class OreBlocks {
     public static final DeferredBlock<Block> RAW_PALLADIUM_BLOCK = simpleBlockRegister("raw_palladium_block");
     public static final DeferredBlock<Block> PALLADIUM_BLOCK = simpleBlockRegister("palladium_block");
 
-    public static final DeferredBlock<Block> DEEPSLATE_MITHRIL_ORE = simpleBlockRegister("deepslate_mithril_ore", () -> new StepRevealingBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE)));
-    public static final DeferredBlock<Block> RAW_MITHRIL_BLOCK = simpleBlockRegister("raw_mithril_block");
-    public static final DeferredBlock<Block> MITHRIL_BLOCK = simpleBlockRegister("mithril_block");
+    public static final DeferredBlock<Block> DEEPSLATE_MYTHRIL_ORE = simpleBlockRegister("deepslate_mythril_ore", () -> new StepRevealingBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE)));
+    public static final DeferredBlock<Block> RAW_MYTHRIL_BLOCK = simpleBlockRegister("raw_mythril_block");
+    public static final DeferredBlock<Block> MYTHRIL_BLOCK = simpleBlockRegister("mythril_block");
 
     public static final DeferredBlock<Block> DEEPSLATE_ORICHALCUM_ORE = simpleBlockRegister("deepslate_orichalcum_ore", () -> new StepRevealingBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE)));
     public static final DeferredBlock<Block> RAW_ORICHALCUM_BLOCK = simpleBlockRegister("raw_orichalcum_block");
@@ -228,23 +225,25 @@ public class OreBlocks {
         return block;
     }
 
+    private static DeferredBlock<Block> registerWithItem(String name, Supplier<Block> blockSupplier, Function<Block, BlockItem> function) {
+        DeferredBlock<Block> block = BLOCKS.register(name, blockSupplier);
+        ModItems.BLOCK_ITEMS.register(name, () -> function.apply(block.get()));
+        return block;
+    }
+
+    private static DeferredBlock<Block> registerWithItem(String name, Supplier<Block> blockSupplier) {
+        DeferredBlock<Block> block = BLOCKS.register(name, blockSupplier);
+        ModItems.BLOCK_ITEMS.registerSimpleBlockItem(block);
+        return block;
+    }
+
     private static DeferredBlock<Block> copyBlockRegister(String newName, Block originalBlock) {
         DeferredBlock<Block> block = BLOCKS.registerSimpleBlock(newName, BlockBehaviour.Properties.ofFullCopy(originalBlock));
         ModItems.BLOCK_ITEMS.registerSimpleBlockItem(newName, block);
         return block;
     }
 
-    public static void acceptTags(ModBlockTagsProvider provider) {
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithPickaxe = provider.tag(BlockTags.MINEABLE_WITH_PICKAXE);
-        for (DeferredHolder<Block, ? extends Block> oreblock : BLOCKS.getEntries()) {
-            mineableWithPickaxe.add(oreblock.get());
-        }
-    }
-
-    public static void acceptOreTags(ModBlockTagsProvider provider) {
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> ores = provider.tag(Tags.Blocks.ORES);
-        for (DeferredHolder<Block, ? extends Block> oreblock : BLOCKS.getEntries()) {
-            ores.add(oreblock.get());
-        }
+    public static void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> tag) {
+        BLOCKS.getEntries().forEach(block -> tag.add(block.get()));
     }
 }

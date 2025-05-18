@@ -17,13 +17,13 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.Nullable;
 
-import static org.confluence.mod.common.block.StateProperties.DRIVE;
-import static org.confluence.mod.common.block.StateProperties.SIGNAL;
+import static org.confluence.lib.common.block.StateProperties.DRIVE;
+import static org.confluence.lib.common.block.StateProperties.SIGNAL;
 
 public class TimersBlock extends AbstractMechanicalBlock {
     private final int duration;
@@ -72,10 +72,11 @@ public class TimersBlock extends AbstractMechanicalBlock {
                 Block.box(0.0, 0.0, 0.0, 16.0, 4.0, 16.0)
         );
     }
+
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
-        return ModUtils.getTicker(pBlockEntityType, FunctionalBlocks.MECHANICAL_BLOCK_ENTITY.get(), TimersBlock::timer);
+        return LibUtils.getTicker(pBlockEntityType, FunctionalBlocks.MECHANICAL_BLOCK_ENTITY.get(), TimersBlock::timer);
     }
 
     private static void timer(Level level, BlockPos blockPos, BlockState blockState, Entity entity) {

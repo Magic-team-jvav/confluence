@@ -1,0 +1,11 @@
+{
+  "type": "confluence:rail_support",
+  "config": {
+    "check": {
+      "type": "simple_state_provider",
+      "state": {
+        "Name": "minecraft:oak_planks"
+      }
+    }
+  }
+}

@@ -8,11 +8,21 @@ public interface IMinecraftServer {
 
     boolean confluence$matchesSecretFlag(long flag);
 
+    long confluence$getSecretFlag();
+
     default boolean confluence$matchesSecretFlag(SecretSeed secretSeed) {
         return confluence$matchesSecretFlag(secretSeed.getFlag());
     }
 
     static boolean matchesSecretFlag(MinecraftServer server, long flag) {
         return ((IMinecraftServer) server).confluence$matchesSecretFlag(flag);
+    }
+
+    static boolean isHardmode(MinecraftServer server) {
+        return ((IMinecraftServer) server).confluence$matchesSecretFlag(IWorldOptions.HARDMODE);
+    }
+
+    static boolean isGraduated(MinecraftServer server) {
+        return ((IMinecraftServer) server).confluence$matchesSecretFlag(IWorldOptions.GRADUATED);
     }
 }

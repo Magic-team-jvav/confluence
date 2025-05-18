@@ -1,7 +1,9 @@
 package org.confluence.mod.common.menu;
 
 import com.google.common.collect.Lists;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
@@ -13,14 +15,13 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import org.confluence.lib.common.menu.AmountResultSlot;
+import org.confluence.lib.common.recipe.EnvironmentRecipeInput;
 import org.confluence.mod.common.block.functional.crafting.SkyMillBlock;
 import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.common.recipe.EnvironmentRecipeInput;
 import org.confluence.mod.common.recipe.SkyMillRecipe;
-import org.confluence.terra_curio.common.menu.AmountResultSlot;
-import org.confluence.terra_curio.common.menu.RecipeInputContainer;
 
 import java.util.List;
 
@@ -32,7 +33,8 @@ public class SkyMillMenu extends AbstractContainerMenu {
     private final SkyMillBlock.LevelAccess access;
     private final Player player;
     private Runnable slotUpdateListener = () -> {};
-    public final RecipeInputContainer input;
+    public final EnvironmentRecipeInput input;
+    private final AmountResultSlot<SkyMillRecipe> resultSlot;
     private final ResultContainer result = new ResultContainer();
     private final DataSlot selectedRecipeIndex = DataSlot.standalone();
     private List<RecipeHolder<SkyMillRecipe>> recipes = Lists.newArrayList();
@@ -52,12 +54,23 @@ public class SkyMillMenu extends AbstractContainerMenu {
                 SkyMillMenu.this.slotUpdateListener.run();
             }
         };
-        addSlot(new AmountResultSlot(input, result, 0, 35, 14) {
+        this.resultSlot = new AmountResultSlot<>(input, result, 0, 35, 14) {
+            @Override
+            public void onTake(Player pPlayer, ItemStack pStack) {
+                super.onTake(pPlayer, pStack);
+                access.execute((level, pos) -> {
+                    if (level instanceof ServerLevel serverLevel) {
+                        serverLevel.sendParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 5, 0, 0, 0, 0.01);
+                    }
+                });
+            }
+
             @Override
             protected void updateMenu() {
                 SkyMillMenu.this.setupResultSlot();
             }
-        });
+        };
+        addSlot(resultSlot);
         addSlot(new Slot(input, 0, 35, 57));
         addSlot(new Slot(input, 1, 16, 38));
         addSlot(new Slot(input, 2, 54, 38));
@@ -120,7 +133,7 @@ public class SkyMillMenu extends AbstractContainerMenu {
                     if (selectedRecipeIndex.get() == -1) selectedRecipeIndex.set(0);
                     SkyMillRecipe recipe = recipes.get(selectedRecipeIndex.get()).value();
                     itemStack = recipe.getResultItem(null).copy();
-                    setCurrentRecipe(recipe);
+                    resultSlot.setCurrentRecipe(recipe);
                 }
                 result.setItem(0, itemStack);
                 setRemoteSlot(0, itemStack);
@@ -129,19 +142,13 @@ public class SkyMillMenu extends AbstractContainerMenu {
         });
     }
 
-    private void setCurrentRecipe(SkyMillRecipe recipe) {
-        if (getSlot(0) instanceof AmountResultSlot amountResultSlot) {
-            amountResultSlot.setCurrentRecipe(recipe);
-        }
-    }
-
     private void setupResultSlot() {
         if (!recipes.isEmpty() && isValidRecipeIndex(selectedRecipeIndex.get())) {
             SkyMillRecipe recipe = recipes.get(selectedRecipeIndex.get()).value();
             ItemStack itemStack = recipe.getResultItem(null).copy();
             if (itemStack.isItemEnabled(player.level().enabledFeatures())) {
                 result.setItem(0, itemStack);
-                setCurrentRecipe(recipe);
+                resultSlot.setCurrentRecipe(recipe);
             } else {
                 result.setItem(0, ItemStack.EMPTY);
             }

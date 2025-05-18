@@ -2,7 +2,7 @@ package org.confluence.mod.common.item.sponsor;
 
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import org.confluence.terra_curio.common.component.ModRarity;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.terra_curio.common.item.curio.BaseCurioItem;
 import org.confluence.terraentity.init.TEAttributes;
 

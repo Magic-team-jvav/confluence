@@ -3,17 +3,21 @@ package org.confluence.mod.common.item.potion;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
+import org.confluence.mod.common.attachment.ManaStorage;
+import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.util.PlayerUtils;
 
 public class ManaPotionItem extends AbstractPotionItem {
     private final int amount;
 
-    public ManaPotionItem(int amount, Rarity rarity) {
-        super(new Properties().rarity(rarity));
+    public ManaPotionItem(int amount, ModRarity rarity) {
+        super(new Properties().component(ConfluenceMagicLib.MOD_RARITY, rarity));
         this.amount = amount;
     }
 
@@ -34,5 +38,11 @@ public class ManaPotionItem extends AbstractPotionItem {
                 serverPlayer.addEffect(instance);
             }
         }
+    }
+
+    public static void use(Player player) {
+        ManaStorage manaStorage = player.getData(ModAttachmentTypes.MANA_STORAGE);
+        float required = manaStorage.getMaxMana() - manaStorage.getCurrentMana();
+        AbstractPotionItem.use(player, required, ManaPotionItem.class, manaPotionItem -> manaPotionItem.amount);
     }
 }

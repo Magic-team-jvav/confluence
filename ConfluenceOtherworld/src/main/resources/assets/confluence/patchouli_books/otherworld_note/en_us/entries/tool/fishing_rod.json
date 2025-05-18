@@ -1,0 +1,27 @@
+{
+    "name": "patchouli.confluence.otherworld_note.tool.fishing_rod.name",
+    "icon": "minecraft:fishing_rod",
+    "category": "confluence:tool",
+    "pages": [
+        {
+            "type": "patchouli:spotlight",
+            "item": "minecraft:fishing_rod",
+            "text": "patchouli.confluence.otherworld_note.tool.fishing_rod.0"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minecraft:fishing_rod",
+            "text": "patchouli.confluence.otherworld_note.tool.fishing_rod.1"
+        },
+        {
+            "type": "patchouli:spotlight",
+            "item": "minecraft:fishing_rod",
+            "text": "patchouli.confluence.otherworld_note.tool.fishing_rod.2"
+        },
+        {
+            "type": "patchouli:spotlight",
+            "item": "minecraft:fishing_rod",
+            "text": "patchouli.confluence.otherworld_note.tool.fishing_rod.3"
+        }
+    ]
+}

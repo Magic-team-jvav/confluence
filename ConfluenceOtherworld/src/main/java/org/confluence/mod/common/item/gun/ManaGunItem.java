@@ -1,167 +1,74 @@
 package org.confluence.mod.common.item.gun;
 
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ItemUtils;
-import net.minecraft.world.item.component.ItemAttributeModifiers;
-import net.minecraft.world.level.Level;
-import org.confluence.mod.Confluence;
+import net.neoforged.neoforge.common.NeoForge;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.util.PlayerUtils;
-import org.confluence.terra_curio.common.component.ModRarity;
-import org.confluence.terra_curio.common.init.TCDataComponentTypes;
-import org.confluence.terra_guns.api.IAmmo;
-import org.confluence.terra_guns.api.IGun;
-import org.confluence.terra_guns.common.entity.SimpleTrailProjectile;
-import org.confluence.terra_guns.common.item.gun.GeoGunItem;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.animatable.client.GeoRenderProvider;
-import software.bernie.geckolib.model.DefaultedItemGeoModel;
-import software.bernie.geckolib.renderer.GeoItemRenderer;
+import org.confluence.mod.util.PrefixUtils;
+import org.confluence.terra_guns.api.event.GunEvent;
+import org.confluence.terra_guns.common.init.TGItems;
+import org.confluence.terra_guns.common.item.gun.BaseGun;
 
-import java.util.function.Consumer;
-import java.util.function.Predicate;
 
-@SuppressWarnings("unchecked")
-public abstract class ManaGunItem<T extends Projectile> extends GeoGunItem<T> implements IAmmo<T> {
-    protected ItemAttributeModifiers modifiers;
-    private final float baseDamage;
-    private final float ammoSpeed;
-    private final float knockBack;
-    private final float inaccuracy;
+public class ManaGunItem extends BaseGun {
     private final int manaCost;
+    private final float damage;
+    private final float knockback;
+    private final float critical;
+    private final float velocity;
+    private final int penetrate;
+    private final float inaccuracy;
 
-    public ManaGunItem(Properties properties, ModRarity rarity, float baseDamage, float ammoSpeed, float knockBack, float inaccuracy, int manaCost) {
-        super(properties.component(TCDataComponentTypes.MOD_RARITY, rarity));
-        this.baseDamage = baseDamage;
-        this.ammoSpeed = ammoSpeed;
-        this.knockBack = knockBack;
-        this.inaccuracy = Math.max(0, inaccuracy);
-        this.manaCost = manaCost;
+    public ManaGunItem(Properties properties, int cooldown, float damage, float velocity, float knockback, float critical, int penetrate, float inaccuracy, ModRarity rarity, int manaCost) {
+        super(properties, cooldown, damage, velocity, knockback, critical, penetrate, inaccuracy, rarity);
+        this.manaCost=manaCost;
+        this.damage = damage;
+        this.critical = critical;
+        this.knockback = knockback;
+        this.velocity = velocity;
+        this.penetrate = penetrate;
+        this.inaccuracy = inaccuracy;
     }
 
-    public ManaGunItem(ModRarity rarity, float baseDamage, float ammoSpeed, float knockBack, float inaccuracy, int manaCost) {
-        this(new Properties(), rarity, baseDamage, ammoSpeed, knockBack, inaccuracy, manaCost);
+    public int getManaCost() {
+        return manaCost;
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        ItemStack itemInHand = player.getItemInHand(hand);
-        if (hand != InteractionHand.MAIN_HAND) {
-            return InteractionResultHolder.pass(itemInHand);
+    public void shoot(ServerPlayer player, ItemStack bullet, ItemStack gunStack) {
+        if (PlayerUtils.extractMana(player, gunStack, () -> manaCost)) {
+            GunEvent.AmmoDataEvent ammoDataEvent = new GunEvent.AmmoDataEvent(player, this, gunStack, damage, critical, knockback, velocity, penetrate, inaccuracy);
+            NeoForge.EVENT_BUS.post(ammoDataEvent);
+
+            prepareBulletEntity(baseBulletEntities, player, TGItems.EMPTY_BULLET.toStack(), gunStack, ammoDataEvent.getDamage(), ammoDataEvent.getKnockback(), ammoDataEvent.getVelocity(), ammoDataEvent.getPenetrate(), ammoDataEvent.getInaccuracy());
+            baseBulletEntities.forEach(player.serverLevel()::addFreshEntity);
+            baseBulletEntities.clear();
         }
-        if (player instanceof ServerPlayer serverPlayer && PlayerUtils.extractMana(serverPlayer, () -> manaCost)) {
-            return ItemUtils.startUsingInstantly(level, player, hand);
-        }
-        return InteractionResultHolder.fail(itemInHand);
     }
 
-    @Override
-    public ItemStack finishUsingItem(ItemStack gunStack, Level level, LivingEntity livingEntity) {
-        if (livingEntity instanceof Player player) {
-            ItemStack ammoStack = player.getProjectile(gunStack);
-            IGun<T> gun = (IGun<T>) gunStack.getItem();
-            IAmmo<T> ammo = (IAmmo<T>) ammoStack.getItem();
-            if (level.isClientSide) {
-                gun.clientShoot((ClientLevel) level, player, gunStack, ammoStack);
-                ammo.clientShoot((ClientLevel) level, player, gunStack, ammoStack);
-            } else {
-                serverShoot((ServerLevel) level, player, gunStack, ammoStack, ammo, gun, true);
-            }
-        }
-        return gunStack;
-    }
-
-    @Override
-    public @NotNull Predicate<ItemStack> getAllSupportedProjectiles() {
-        return itemStack -> itemStack.is(this);
-    }
-
-    @Override
-    public ItemStack getDefaultCreativeAmmo(@Nullable Player player, ItemStack projectileWeaponItem) {
-        return getDefaultInstance();
-    }
-
-    @Override
-    public boolean isInfinite(Player shooter, ItemStack ammoStack, ItemStack gunStack) {
-        return true;
-    }
-
-    @Override
-    public boolean isValidAmmo(ItemStack ammoStack) {
-        return false;
-    }
-
-    @Override
-    public float getAmmoSpeed(Player shooter, T projectile, ItemStack gunStack) {
-        return ammoSpeed;
-    }
-
-    @Override
-    public float getInaccuracy(Player shooter, T projectile, ItemStack gunStack) {
-        return inaccuracy;
-    }
-
-    @Override
-    public float getKnockBack() {
-        return knockBack;
-    }
-
-    @Override
-    public float getBaseDamage(Player shooter, T projectile, ItemStack gunStack) {
-        return baseDamage;
-    }
-
-    @Override
-    public float getDamageMultiplier(Player shooter, T projectile, ItemStack gunStack) {
-        return 1;
-    }
-
-    @Override
-    public void beforeAmmoShoot(Player shooter, T projectile, ItemStack gunStack, ItemStack ammoStack) {}
-
-    @Override
-    public void doPostHurtEffects(T projectile, Entity target) {}
-
-    @Override
-    public float getFinalDamage(float damage, Player shooter, T projectile, ItemStack gunStack, ItemStack ammoStack) {
+    public float getDamage() {
         return damage;
     }
 
-    @Override
-    public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
-        consumer.accept(new GeoRenderProvider() {
-            private GeoItemRenderer<GeoGunItem<SimpleTrailProjectile>> renderer;
-
-            @Override
-            public BlockEntityWithoutLevelRenderer getGeoItemRenderer() {
-                if (renderer == null) {
-                    String path = BuiltInRegistries.ITEM.getKey(ManaGunItem.this).getPath();
-                    this.renderer = new GeoItemRenderer<>(new DefaultedItemGeoModel<>(Confluence.asResource("guns/" + path)));
-                }
-                return renderer;
-            }
-        });
+    public float getInaccuracy() {
+        return inaccuracy;
     }
 
-    public void addAttributeModifiers(Consumer<ItemAttributeModifiers.Builder> consumer) {
-        ItemAttributeModifiers.Builder builder = ItemAttributeModifiers.builder();
-        consumer.accept(builder);
-        this.modifiers = builder.build();
+    public float getVelocity() {
+        return velocity;
     }
 
-    @Override
-    public ItemAttributeModifiers getDefaultAttributeModifiers(ItemStack stack) {
-        return modifiers == null ? super.getDefaultAttributeModifiers(stack) : modifiers;
+    public int getPenetrate() {
+        return penetrate;
+    }
+
+    public float getKnockback() {
+        return knockback;
+    }
+
+    public float getCritical() {
+        return critical;
     }
 }

@@ -1,7 +1,7 @@
 package org.confluence.mod.common.item.vanity_armor;
 
-import org.confluence.mod.common.item.CustomRarityItem;
-import org.confluence.terra_curio.common.component.ModRarity;
+import org.confluence.lib.common.component.ModRarity;
+import org.confluence.lib.common.item.CustomRarityItem;
 import software.bernie.geckolib.util.Color;
 
 public class BaseDyeItem extends CustomRarityItem {

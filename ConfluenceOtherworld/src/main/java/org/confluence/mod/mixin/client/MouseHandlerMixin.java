@@ -17,6 +17,7 @@ public abstract class MouseHandlerMixin {
 
     @WrapWithCondition(method = "handleAccumulatedMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MouseHandler;turnPlayer(D)V"))
     private boolean canTurn(MouseHandler instance, double d6) {
+        assert minecraft.player != null;
         return ((ILocalPlayer) minecraft.player).confluence$isCanMove();
     }
 }

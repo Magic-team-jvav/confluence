@@ -7,11 +7,11 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
+import org.confluence.lib.client.animate.ExpertColorAnimation;
+import org.confluence.lib.color.IntegerRGB;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.entity.fishing.GlowingFishingHookModel;
 import org.confluence.mod.common.entity.fishing.CurioFishingHook;
-import org.confluence.mod.util.color.IntegerRGB;
-import org.confluence.terra_curio.client.animate.ExpertColorAnimation;
 
 import static org.confluence.mod.client.renderer.entity.fishing.BaseFishingHookRenderer.renderString;
 

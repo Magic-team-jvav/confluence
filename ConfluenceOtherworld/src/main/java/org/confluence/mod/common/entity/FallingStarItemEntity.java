@@ -60,23 +60,34 @@ public class FallingStarItemEntity extends ItemEntity {
             PSGameClient.LOADER.addEmitter(emitter, false);
         }
         if (level().getDayTime() % 24000 < 12000) {
-            discard();
+            onRemove();
         } else {
-            super.tick();
             if (onGround()) {
                 if (hasPickUpDelay()) setNoPickUpDelay();
                 if (!wasOnGround()) {
                     setWasOnGround(true);
                     level().playSound(null, getX(), getY(), getZ(), ModSoundEvents.STAR_LANDS.get(), SoundSource.NEUTRAL, 2.0F, 1.0F);
                 }
-            } else if (!wasOnGround() && !level().getBlockState(getOnPos().below(6)).isAir()) {
+            } else if (!wasOnGround() && !level().getBlockState(blockPosition().below(6)).isAir()) {
                 level().playSound(null, getX(), getY(), getZ(), ModSoundEvents.STAR.get(), SoundSource.NEUTRAL, 2.0F, 1.0F);
             } else if (level() instanceof ServerLevel serverLevel && ModSecretSeeds.DONT_DIG_UP.match(serverLevel)) {
                 if (ProjectileUtil.getHitResultOnMoveVector(this, entity -> true) instanceof EntityHitResult entityHitResult) {
                     entityHitResult.getEntity().hurt(ModDamageTypes.of(level(), ModDamageTypes.FALLING_STAR), 100);
-                    discard();
+                    onRemove();
+                    return;
                 }
             }
+            if (getInBlockState().liquid() || getBlockStateOn().liquid()) {
+                setWasOnGround(true);
+                setOnGround(true);
+            }
+        }
+    }
+
+    private void onRemove() {
+        discard();
+        if (level().isClientSide && emitter != null) {
+            PSGameClient.LOADER.removeEmitter(emitter, false);
         }
     }
 
@@ -106,7 +117,7 @@ public class FallingStarItemEntity extends ItemEntity {
     }
 
     public static void summon(ServerLevel level) {
-        if (level.getDayTime() % 24000 > 12000 && level.getGameTime() % CommonConfigs.fallingStarInterval == 0) {
+        if (CommonConfigs.DO_FALLING_STAR_SPAWNING.get() && level.getDayTime() % 24000 > 12000 && level.getGameTime() % CommonConfigs.FALLING_STAR_INTERVAL.get() == 0) {
             RandomSource random = level.random;
             Set<Vec3> cache = new HashSet<>();
             for (ServerPlayer serverPlayer : level.players()) {

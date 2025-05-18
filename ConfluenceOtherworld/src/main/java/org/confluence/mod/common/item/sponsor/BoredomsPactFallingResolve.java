@@ -17,14 +17,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.common.component.ModRarity;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.projectile.boulder.BoulderEntity;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.terra_curio.common.component.ModRarity;
 import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terra_curio.common.item.curio.BaseCurioItem;
-import org.confluence.terra_curio.util.TCUtils;
 import org.confluence.terraentity.init.TEAttributes;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurio;
@@ -40,7 +40,7 @@ public class BoredomsPactFallingResolve extends BaseCurioItem {
     public static final ResourceLocation ID = Confluence.asResource("boredoms_pact_falling_resolve");
 
     public BoredomsPactFallingResolve() {
-        super(builder(ID.getPath()).rarity(ModRarity.MASTER));
+        super(builder(ID.getPath()).rarity(ModRarity.MASTER).tooltips(8));
     }
 
     @Override
@@ -48,7 +48,7 @@ public class BoredomsPactFallingResolve extends BaseCurioItem {
         LivingEntity living = slotContext.entity();
         Level level = living.level();
         if (level.isClientSide) return;
-        TCUtils.updateItemStackNbt(stack, tag -> {
+        LibUtils.updateItemStackNbt(stack, tag -> {
             Vec3 currentPos = readPos(tag);
             if (currentPos == null) {
                 savePos(tag, living);
@@ -66,7 +66,8 @@ public class BoredomsPactFallingResolve extends BaseCurioItem {
                                 mutable.move(0, 1, 0);
                             }
                             BlockState blockState = level.getBlockState(living.blockPosition().below());
-                            if (blockState.isAir()) blockState = FunctionalBlocks.NORMAL_BOULDER.get().defaultBlockState();
+                            if (blockState.isAir())
+                                blockState = FunctionalBlocks.NORMAL_BOULDER.get().defaultBlockState();
                             level.addFreshEntity(new BoulderEntity(level, currentPos.add(0, i, 0), blockState));
                             tag.putBoolean("summoned", true);
                         }
@@ -95,7 +96,7 @@ public class BoredomsPactFallingResolve extends BaseCurioItem {
 
     @Override
     public Multimap<Holder<Attribute>, AttributeModifier> getAttributeModifiers(SlotContext slotContext, ResourceLocation id, ItemStack stack) {
-        AttributeModifier modifier = new AttributeModifier(ID, 0.2 * TCUtils.getItemStackNbt(stack).getByte("count"), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+        AttributeModifier modifier = new AttributeModifier(ID, 0.2 * LibUtils.getItemStackNbt(stack).getByte("count"), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
         return ImmutableMultimap.of(
                 Attributes.ATTACK_DAMAGE, modifier,
                 TCAttributes.getMagicDamage(), modifier,

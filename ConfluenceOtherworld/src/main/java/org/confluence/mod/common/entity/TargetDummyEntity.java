@@ -8,16 +8,19 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.item.ToolItems;
-import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -36,7 +39,7 @@ public class TargetDummyEntity extends Mob {
         if (source.getEntity() instanceof Player player) {
             if (player.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof PickaxeItem && player.isShiftKeyDown()) {
                 this.remove(RemovalReason.DISCARDED);
-                ModUtils.createItemEntity(ToolItems.TARGET_DUMMY.get().getDefaultInstance(), position(), player.level(), 0);
+                LibUtils.createItemEntity(ToolItems.TARGET_DUMMY.get().getDefaultInstance(), position(), player.level(), 0);
                 return true;
             } else if (player.isCreative() && player.isShiftKeyDown()){
                 this.remove(RemovalReason.DISCARDED);
@@ -65,10 +68,10 @@ public class TargetDummyEntity extends Mob {
     @Override
     public void remove(RemovalReason reason) {
         for (var armor : this.getArmorSlots()){
-            ModUtils.createItemEntity(armor, getX(), getY(), getZ(), level(), 0);
+            LibUtils.createItemEntity(armor, getX(), getY(), getZ(), level(), 0);
         }
-        ModUtils.createItemEntity(this.getMainHandItem(), getX(), getY(), getZ(), level(), 0);
-        ModUtils.createItemEntity(this.getOffhandItem(), getX(), getY(), getZ(), level(), 0);
+        LibUtils.createItemEntity(this.getMainHandItem(), getX(), getY(), getZ(), level(), 0);
+        LibUtils.createItemEntity(this.getOffhandItem(), getX(), getY(), getZ(), level(), 0);
         super.remove(reason);
     }
 
@@ -96,12 +99,10 @@ public class TargetDummyEntity extends Mob {
             } else if (equipmentSlot.getType() == EquipmentSlot.Type.HUMANOID_ARMOR) {
                 if (level.isClientSide) return InteractionResult.CONSUME;
                 this.swapItem(player, equipmentSlot, itemstack, hand);
-            } else {
-                this.swapItem(player, hand.equals(InteractionHand.MAIN_HAND) ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND, itemstack, hand);
             }
         }
 
-        return InteractionResult.SUCCESS;
+        return InteractionResult.PASS;
     }
 
     private void swapItem(Player player, EquipmentSlot slot, ItemStack armor, InteractionHand hand) {

@@ -3,28 +3,30 @@ package org.confluence.mod.common.block.natural;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.BlockGetter;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.GrowingPlantBodyBlock;
-import net.minecraft.world.level.block.GrowingPlantHeadBlock;
-import net.minecraft.world.level.block.LiquidBlockContainer;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.init.block.NatureBlocks;
-import org.jetbrains.annotations.Nullable;
 
-public class CattailsBodyBlock extends GrowingPlantBodyBlock implements LiquidBlockContainer {
+public class CattailsBodyBlock extends GrowingPlantBodyBlock implements SimpleWaterloggedBlock, BonemealableBlock {
     public static final MapCodec<CattailsBodyBlock> CODEC = simpleCodec(CattailsBodyBlock::new);
-    private static final VoxelShape SHAPE = Block.box(1.0, 0.0, 1.0, 15.0, 16.0, 15.0);
+    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+    private static final VoxelShape SHAPE = Block.box(2.0, 0.0, 2.0, 14.0, 16.0, 14.0);
 
     public CattailsBodyBlock(BlockBehaviour.Properties properties) {
-        super(properties, Direction.UP, SHAPE, false);
+        super(properties, Direction.UP, SHAPE, true);
+        this.registerDefaultState(this.stateDefinition.any().setValue(WATERLOGGED, false));
     }
 
     @Override
@@ -54,16 +56,40 @@ public class CattailsBodyBlock extends GrowingPlantBodyBlock implements LiquidBl
 
     @Override
     protected FluidState getFluidState(BlockState state) {
-        return Fluids.WATER.getSource(false);
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
     @Override
-    public boolean canPlaceLiquid(@Nullable Player player, BlockGetter level, BlockPos pos, BlockState state, Fluid fluid) {
-        return false;
+    public boolean isValidBonemealTarget(LevelReader levelReader, BlockPos pos, BlockState state) {
+        return true;
     }
 
     @Override
-    public boolean placeLiquid(LevelAccessor level, BlockPos pos, BlockState state, FluidState fluidState) {
-        return false;
+    public boolean isBonemealSuccess(Level level, RandomSource randomSource, BlockPos pos, BlockState state) {
+        return true;
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(WATERLOGGED);
+    }
+
+    @Override
+    protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
+        boolean water = level.getBlockState(currentPos).getValue(WATERLOGGED);
+        if (facing == this.growthDirection.getOpposite() && !state.canSurvive(level, currentPos)) {
+            level.scheduleTick(currentPos, this, 1);
+        }
+
+        GrowingPlantHeadBlock growingplantheadblock = this.getHeadBlock();
+        if (facing == this.growthDirection && !facingState.is(this) && !facingState.is(growingplantheadblock)) {
+            return this.updateHeadAfterConvertedFromBody(state, growingplantheadblock.getStateForPlacement(level).trySetValue(WATERLOGGED, water));
+        } else {
+            if (this.scheduleFluidTicks) {
+                level.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+            }
+
+            return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
+        }
     }
 }

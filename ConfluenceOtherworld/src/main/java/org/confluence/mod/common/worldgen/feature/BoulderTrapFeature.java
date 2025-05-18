@@ -13,6 +13,7 @@ import net.minecraft.world.level.levelgen.Column;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
+import org.confluence.lib.util.FeatureUtils;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.init.ModFeatures;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -29,16 +30,16 @@ public class BoulderTrapFeature extends Feature<BoulderTrapFeature.Config> {
         Config config = pContext.config();
         WorldGenLevel level = pContext.level();
         BlockPos blockPos = pContext.origin();
-        if (ModFeatures.isPosAir(level, blockPos)) {
+        if (FeatureUtils.isPosAir(level, blockPos)) {
             Optional<Column> optionalColumn = Column.scan(level, blockPos, config.maxBoulderHeight, BlockBehaviour.BlockStateBase::isAir, ModFeatures.IS_BASE_STONE);
             if (optionalColumn.isPresent() && optionalColumn.get() instanceof Column.Range range && range.height() > 4) {
                 BlockPos supportPos = blockPos.atY(range.floor());
-                if (ModFeatures.isPosSturdy(level, supportPos, Direction.UP)) {
+                if (FeatureUtils.isPosSturdy(level, supportPos, Direction.UP)) {
                     BlockPos boulderPos = blockPos.atY(range.ceiling());
                     Tuple<BlockPos, BlockState> pressurePlate = ModFeatures.getPressurePlate(level, supportPos);
                     BlockPos platePos = pressurePlate.getA();
-                    boolean b = ModFeatures.safeSetBlock(level, boulderPos, ModFeatures.getBoulder(level, pContext.random(), config.boulder), ModFeatures.IS_REPLACEABLE);
-                    boolean b1 = ModFeatures.safeSetBlock(level, platePos, pressurePlate.getB(), ModFeatures.IS_REPLACEABLE);
+                    boolean b = FeatureUtils.safeSetBlock(level, boulderPos, ModFeatures.getBoulder(level, pContext.random(), config.boulder), ModFeatures.IS_REPLACEABLE);
+                    boolean b1 = FeatureUtils.safeSetBlock(level, platePos, pressurePlate.getB(), ModFeatures.IS_REPLACEABLE);
                     if (b && b1) {
                         INetworkEntity boulder = ModFeatures.getNetworkEntity(level, boulderPos);
                         INetworkEntity plate = ModFeatures.getNetworkEntity(level, platePos);

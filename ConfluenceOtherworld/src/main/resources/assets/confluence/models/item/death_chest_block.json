@@ -45,6 +45,18 @@
                 "confluence:variant": 9
             },
             "model": "confluence:item/chest_death_sandstone"
+        },
+        {
+            "predicate": {
+                "confluence:variant": 10
+            },
+            "model": "confluence:item/chest_death_living_wood"
+        },
+        {
+            "predicate": {
+                "confluence:variant": 12
+            },
+            "model": "confluence:item/chest_death_dungeon"
         }
     ]
 }

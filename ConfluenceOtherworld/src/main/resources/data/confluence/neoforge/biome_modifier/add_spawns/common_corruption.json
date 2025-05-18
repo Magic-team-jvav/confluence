@@ -1,0 +1,24 @@
+{
+    "type": "neoforge:add_spawns",
+    "biomes": "confluence:the_corruption",
+    "spawners": [
+        {
+            "type": "terra_entity:decayeder",
+            "weight": 22,
+            "minCount": 1,
+            "maxCount": 1
+        },
+        {
+            "type": "terra_entity:devourer",
+            "weight": 3,
+            "minCount": 1,
+            "maxCount": 1
+        },
+        {
+            "type": "terra_entity:eater_of_souls",
+            "weight": 75,
+            "minCount": 1,
+            "maxCount": 2
+        }
+    ]
+}

@@ -10,17 +10,15 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.grower.TreeGrower;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -55,6 +53,8 @@ public final class ModFeatures {
     public static final Supplier<BaobabTreeFeature> BAOBAB_TREE = FEATURES.register("baobab_tree", () -> new BaobabTreeFeature(BaobabTreeFeature.Config.CODEC));
     public static final Supplier<BranchTreeFeature> BRANCH_TREE = FEATURES.register("branch_tree", () -> new BranchTreeFeature(BranchTreeFeature.Config.CODEC));
     public static final Supplier<MeteoriteFeature> METEORITE = FEATURES.register("meteorite", () -> new MeteoriteFeature(MeteoriteFeature.Config.CODEC));
+    public static final Supplier<RailSupportFeature> RAIL_SUPPORT = FEATURES.register("rail_support", () -> new RailSupportFeature(RailSupportFeature.Config.CODEC));
+    public static final Supplier<RailTrapFeature> RAIL_TRAP = FEATURES.register("rail_trap", () -> new RailTrapFeature(RailTrapFeature.Config.CODEC));
 
     public static final Supplier<PlacementModifierType<SecretFlagPlacementModifier>> SECRET_FLAG_PLACEMENT_MODIFIER = MODIFIER_TYPES.register("secret_flag", () -> () -> SecretFlagPlacementModifier.CODEC);
 
@@ -108,69 +108,8 @@ public final class ModFeatures {
         if (level.getBlockEntity(blockPos) instanceof INetworkEntity entity) {
             return entity;
         }
-        Confluence.LOGGER.error("Failed to fetch mechanical block entity at ({}, {}, {})", blockPos.getX(), blockPos.getY(), blockPos.getZ());
+        LibUtils.devRun(() -> Confluence.LOGGER.error("Failed to fetch mechanical block entity at ({}, {}, {})", blockPos.getX(), blockPos.getY(), blockPos.getZ()));
         return null;
-    }
-
-    public static @Nullable BlockEntity getBlockEntity(WorldGenLevel level, BlockPos blockPos) {
-        BlockEntity blockEntity = level.getBlockEntity(blockPos);
-        if (blockEntity == null) {
-            Confluence.LOGGER.error("Failed to fetch block entity at ({}, {}, {})", blockPos.getX(), blockPos.getY(), blockPos.getZ());
-            return null;
-        }
-        return blockEntity;
-    }
-
-    public static boolean safeSetBlock(WorldGenLevel level, BlockPos pos, BlockState state, Predicate<BlockState> oldState) {
-        if (oldState.test(level.getBlockState(pos))) {
-            return level.setBlock(pos, state, 3);
-        }
-        return false;
-    }
-
-    public static boolean isPosAir(WorldGenLevel level, BlockPos blockPos) {
-        return level.isStateAtPosition(blockPos, BlockBehaviour.BlockStateBase::isAir);
-    }
-
-    public static boolean isPosSturdy(WorldGenLevel level, BlockPos blockPos, Direction face) {
-        return level.isStateAtPosition(blockPos, blockState -> blockState.isFaceSturdy(level, blockPos, face));
-    }
-
-    public static void leaves(BoundingBox box, BlockState leaves, boolean up, RandomSource random, WorldGenLevel level, BlockState droopingLeaves, boolean droop) {
-        int xStart = box.minX();
-        int yStart = box.minY();
-        int zStart = box.minZ();
-        int xEnd = box.maxX();
-        int yEnd = box.maxY();
-        int zEnd = box.maxZ();
-        boolean set;
-        BlockPos posPlace;
-        BlockPos posDroop;
-        int yDroop;
-        int length;
-        for (int x = xStart; x <= xEnd; x++) {
-            for (int y = yStart; y <= yEnd; y++) {
-                for (int z = zStart; z <= zEnd; z++) {
-                    posPlace = new BlockPos(x, y, z);
-                    set = (!((x == xStart || x == xEnd) && (z == zStart || z == zEnd)) || ((y == yStart || up) && random.nextInt(3) == 0)) && (level.getBlockState(posPlace).isAir());
-                    if (set) {
-                        level.setBlock(posPlace, leaves, 3);
-                    }
-                    if (droop) {
-                        if (posPlace.getY() == yStart) {
-                            yDroop = posPlace.getY() - 1;
-                            length = (level.getBlockState(posPlace).isAir()) ? 0 : random.nextInt(4);
-                            for (int i = 0; i < length; i++) {
-                                posDroop = new BlockPos(x, yDroop - i, z);
-                                if (level.getBlockState(posDroop).isAir()) {
-                                    level.setBlock(posDroop, droopingLeaves, 3);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
     }
 
     public static void register(IEventBus eventBus) {

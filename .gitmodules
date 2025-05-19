@@ -50,3 +50,6 @@
 	path = EnemyBanner
 	url = https://github.com/XiaoHuNao/EnemyBanner
 	branch = neoforge-dev/1.21.1
+[submodule "ConfluenceWiki"]
+	path = ConfluenceWiki
+	url = https://github.com/IAFEnvoy/ConfluenceWiki.git

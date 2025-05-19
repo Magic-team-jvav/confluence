@@ -1,6 +1,5 @@
 package org.confluence.mod.common.data.gen;
 
-import com.xiaohunao.terra_moment.common.init.TMItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
@@ -15,9 +14,11 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import org.confluence.lib.common.LibTags;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.block.functional.DeathChestBlock;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
@@ -145,7 +146,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 QuestedFishes.UNICORN_FISH.get(),
                 QuestedFishes.WYVERNTAIL.get(),
                 QuestedFishes.ZOMBIE_FISH.get()
-                );
+        );
         tag(ModTags.Items.EMBLEM).add(
                 AccessoryItems.SUMMONER_EMBLEM.get(),
                 TCItems.RANGER_EMBLEM.get(),
@@ -1498,7 +1499,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         MinecartItems.ITEMS.getEntries().forEach(wipAction);
         DrillItems.ITEMS.getEntries().forEach(wipAction);
         LightPetItems.ITEMS.getEntries().forEach(wipAction);
-        TMItems.ITEMS.getEntries().forEach(wipAction);
 
         tag(TGTags.GUN).add(
                 GunItems.STAR_CANNON.get()
@@ -1511,8 +1511,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(TGTags.AMMO).add(
                 MaterialItems.FALLING_STAR.get()
         );
-        tag(ModTags.Items.DEATH).add(
-                FunctionalBlocks.DEATH_CHEST_BLOCK.asItem(),
+        IntrinsicTagAppender<Item> death = tag(ModTags.Items.DEATH);
+        death.add(
                 FunctionalBlocks.SHIMMER_TRAP.asItem(),
                 FunctionalBlocks.GRAVITATION_TRAP.asItem(),
                 FunctionalBlocks.PNEUMATIC_TRAP.asItem(),
@@ -1545,6 +1545,9 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FunctionalBlocks.SPEAR_TRAP.asItem(),
                 HookItems.STATIC_HOOK.get()
         );
+        for (DeferredBlock<DeathChestBlock> deathChest : ChestBlocks.DEATH_CHESTS) {
+            death.add(deathChest.asItem());
+        }
 
         IntrinsicTagAppender<Item> skipResetStrength = tag(LibTags.Items.SKIP_RESET_STRENGTH);
         DrillItems.ITEMS.getEntries().forEach(item -> skipResetStrength.add(item.get()));

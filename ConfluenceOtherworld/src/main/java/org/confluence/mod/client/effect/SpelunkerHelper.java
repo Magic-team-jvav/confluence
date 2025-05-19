@@ -27,9 +27,12 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.registries.DeferredBlock;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.block.common.BaseChestBlock;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.block.ChestBlocks;
 import org.confluence.terraentity.client.buffer.AbstractBufferManager;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
@@ -267,7 +270,9 @@ public class SpelunkerHelper extends AbstractBufferManager {
         // 生命水晶
         putTarget(LIFE_CRYSTAL_BLOCK.get(), Color.RED, true, ShowType.SPELUNKER);
         // 箱子
-        putTarget(BASE_CHEST_BLOCK.get(), Color.ORANGE, true, ShowType.SPELUNKER);
+        for (DeferredBlock<BaseChestBlock> normalChest : ChestBlocks.NORMAL_CHESTS) {
+            putTarget(normalChest.get(), Color.ORANGE, true, ShowType.SPELUNKER);
+        }
         putTarget(Blocks.CHEST, Color.ORANGE, true, ShowType.SPELUNKER);
 
 

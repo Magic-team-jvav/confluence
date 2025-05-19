@@ -572,9 +572,9 @@ public class BlockSubProvider extends BlockLootSubProvider {
                 getIterableFromRegister(ModBlocks.BLOCKS),
                 getIterableFromRegister(OreBlocks.BLOCKS),
                 getIterableFromRegister(DecorativeBlocks.BLOCKS),
+                getIterableFromRegister(ChestBlocks.BLOCKS),
                 getIterableFromRegister(CrateBlocks.BLOCKS),
                 getIterableFromRegister(FunctionalBlocks.BLOCKS),
-                getIterableFromRegister(FunctionalBlocks.HIDDEN),
                 getIterableFromRegister(NatureBlocks.BLOCKS),
                 getIterableFromRegister(PotBlocks.BLOCKS)
         );

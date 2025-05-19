@@ -4,7 +4,7 @@
     "to_place": {
       "type": "simple_state_provider",
       "state": {
-        "Name": "confluence:base_chest_block",
+        "Name": "confluence:golden_chest",
         "Properties": {
           "unlocked": "true"
         }
@@ -13,7 +13,6 @@
     "nbt": {
       "LootTable": "confluence:chests/cave_chests",
       "id": "confluence:base_chest_block_entity",
-      "VariantId": 1,
       "CustomName": "{\"italic\":false,\"translate\":\"block.confluence.base_chest_block.unlocked_golden\"}"
     }
   }

@@ -227,14 +227,6 @@ public final class ModClientSetups {
         ItemProperties.register(AccessoryItems.SPECTRE_GOGGLES.get(), enable, enableFunction);
         ItemProperties.register(AccessoryItems.MECHANICAL_LENS.get(), enable, enableFunction);
         ItemProperties.register(ToolItems.ENCUMBERING_STONE.get(), enable, enableFunction);
-        ResourceLocation variant = Confluence.asResource("variant");
-        ItemPropertyFunction variantFunction = (itemStack, level, living, speed) -> {
-            CompoundTag tag = LibUtils.getItemStackNbtIfPresent(itemStack);
-            if (tag == null) return 0;
-            return tag.getInt("VariantId");
-        };
-        ItemProperties.register(FunctionalBlocks.BASE_CHEST_BLOCK.get().asItem(), variant, variantFunction);
-        ItemProperties.register(FunctionalBlocks.DEATH_CHEST_BLOCK.get().asItem(), variant, variantFunction);
         ItemProperties.register(ToolItems.METEOR_COMPASS.get(), ResourceLocation.withDefaultNamespace("angle"), new CompassItemPropertyFunction((level, stack, entity) -> MeteorLandingHandler.getGlobalPos()));
     }
 

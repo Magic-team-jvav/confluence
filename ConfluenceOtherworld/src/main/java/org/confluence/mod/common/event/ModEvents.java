@@ -57,6 +57,7 @@ import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.entity.TargetDummyEntity;
 import org.confluence.mod.common.init.*;
+import org.confluence.mod.common.init.block.ChestBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
@@ -287,7 +288,7 @@ public final class ModEvents {
             Container container = ChestBlock.getContainer((ChestBlock) state.getBlock(), state, level, pos, true);
             if (container == null) return null;
             return new InvWrapper(container);
-        }, FunctionalBlocks.BASE_CHEST_BLOCK.get(), FunctionalBlocks.DEATH_CHEST_BLOCK.get());
+        }, ChestBlocks.GOLDEN_CHEST.get(), ChestBlocks.DEATH_GOLDEN_CHEST.get());
         event.registerBlock(Capabilities.ItemHandler.BLOCK, (level, pos, state, blockEntity, context) -> {
             if (blockEntity instanceof AltarBlock.Entity entity) {
                 return new InvWrapper(entity);

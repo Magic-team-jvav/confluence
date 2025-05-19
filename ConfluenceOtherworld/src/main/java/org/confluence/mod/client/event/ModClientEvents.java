@@ -75,10 +75,7 @@ import org.confluence.mod.client.renderer.entity.projectile.sword.StarFuryProjec
 import org.confluence.mod.client.textures.GrayBlockModelSwapper;
 import org.confluence.mod.client.textures.GraySpriteShifterEntry;
 import org.confluence.mod.common.init.*;
-import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.common.init.block.ModBlocks;
-import org.confluence.mod.common.init.block.NatureBlocks;
-import org.confluence.mod.common.init.block.StatueBlocks;
+import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.paint.PaintItem;
 import org.confluence.mod.common.item.vanity_armor.BaseDyeItem;
@@ -312,9 +309,9 @@ public final class ModClientEvents {
         event.registerBlockEntityRenderer(FunctionalBlocks.EXTRACTINATOR_ENTITY.get(), context -> new ExtractinatorBlockRenderer());
         event.registerBlockEntityRenderer(FunctionalBlocks.MECHANICAL_BLOCK_ENTITY.get(), MechanicalBlockRenderer::new);
         event.registerBlockEntityRenderer(FunctionalBlocks.SILLY_BALLOON_MACHINE_ENTITY.get(), MechanicalBlockRenderer::new);
-        event.registerBlockEntityRenderer(FunctionalBlocks.BASE_CHEST_BLOCK_ENTITY.get(), BaseChestBlockRenderer::new);
-        event.registerBlockEntityRenderer(FunctionalBlocks.DEATH_CHEST_BLOCK_ENTITY.get(), DeathChestBlockRenderer::new);
         event.registerBlockEntityRenderer(FunctionalBlocks.WEATHER_VANE_ENTITY.get(), WeatherVaneBlockRenderer::new);
+        event.registerBlockEntityRenderer(ChestBlocks.BASE_CHEST_BLOCK_ENTITY.get(), BaseChestBlockRenderer::new);
+        event.registerBlockEntityRenderer(ChestBlocks.DEATH_CHEST_BLOCK_ENTITY.get(), DeathChestBlockRenderer::new);
         event.registerBlockEntityRenderer(NatureBlocks.LIFE_CRYSTAL_BLOCK_ENTITY.get(), context -> new GeoBlockRenderer<>(new LifeCrystalBlockModel()));
         event.registerBlockEntityRenderer(StatueBlocks.BLOCK_ENTITY.get(), MechanicalBlockRenderer::new);
         event.registerBlockEntityRenderer(FunctionalBlocks.COOKING_POT_ENTITY.get(), context -> new GeoBlockRenderer<>(new DefaultedBlockGeoModel<>(Confluence.asResource("cooking_pot"))));

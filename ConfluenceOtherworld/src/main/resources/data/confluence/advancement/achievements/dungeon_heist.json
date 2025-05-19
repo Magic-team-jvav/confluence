@@ -24,8 +24,7 @@
                         "condition": "minecraft:location_check",
                         "predicate": {
                             "block": {
-                                "blocks": "confluence:base_chest_block",
-                                "nbt": "{VariantId:12}"
+                                "blocks": "confluence:dungeon_chest"
                             }
                         }
                     },

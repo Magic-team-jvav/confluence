@@ -23,6 +23,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.concurrent.CompletableFuture;
 
 import static org.confluence.mod.Confluence.MODID;
+import static org.confluence.mod.common.init.block.ChestBlocks.GOLDEN_CHEST;
 import static org.confluence.mod.common.init.block.DecorativeBlocks.*;
 import static org.confluence.mod.common.init.block.FunctionalBlocks.*;
 import static org.confluence.mod.common.init.block.ModBlocks.*;
@@ -272,7 +273,6 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 TIMERS_BLOCK_1_4.get(),
                 EVER_POWERED_RAIL.get(),
                 SILLY_BALLOON_MACHINE.get(),
-                BASE_CHEST_BLOCK.get(),
                 JUNGLE_HIVE_BLOCK.get(),
                 THIN_ICE_BLOCK.get(),
                 WINTER_MARROW_BLOCK.get(),
@@ -368,7 +368,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 CHISELED_LIVING_PLANKS.get(),
                 CHISELED_ASH_PLANKS.get(),
                 WOOD_STONE_SLATTED_BLOCKS.get(),
-                BASE_CHEST_BLOCK.get(),
+                GOLDEN_CHEST.get(),
                 SPORE_ROOT_BLOCK.get(),
 
                 ANNOUNCEMENT_BOX.get(),

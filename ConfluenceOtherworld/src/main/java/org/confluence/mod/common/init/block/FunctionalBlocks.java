@@ -12,7 +12,6 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.MapColor;
-import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -21,7 +20,6 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipBlockItem;
 import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.block.common.BaseChestBlock;
 import org.confluence.mod.common.block.common.BiomeChestBlock;
 import org.confluence.mod.common.block.common.EnchantedFragileBricksBlock;
 import org.confluence.mod.common.block.functional.*;
@@ -44,10 +42,9 @@ import static org.confluence.mod.common.init.block.ModBlocks.BLOCK_ENTITIES;
 
 public class FunctionalBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Confluence.MODID);
-    public static final DeferredRegister.Blocks HIDDEN = DeferredRegister.createBlocks(Confluence.MODID);
     static List<DeferredBlock<? extends Block>> MECHANICAL_BLOCKS = new ArrayList<>();
 
-    public static final DeferredBlock<Block> ANDESITE_CASING = registerWithItemButHidden("andesite_casing", () -> new Block(BlockBehaviour.Properties.of()));
+    public static final DeferredBlock<Block> ANDESITE_CASING = registerWithItem("andesite_casing", () -> new Block(BlockBehaviour.Properties.of()));
 
     public static final DeferredBlock<BiomeChestBlock> JUNGLE_CHEST = registerWithItem("jungle_chest", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.JUNGLE_KEY)));
     public static final DeferredBlock<BiomeChestBlock> CORRUPTION_CHEST = registerWithItem("corruption_chest", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.CORRUPTION_KEY)));
@@ -106,10 +103,6 @@ public class FunctionalBlocks {
     public static final Supplier<BlockEntityType<SafeBlock.Entity>> SAFE_ENTITY = BLOCK_ENTITIES.register("safe_entity", () -> BlockEntityType.Builder.of(SafeBlock.Entity::new, SAFE.get()).build(DSL.remainderType()));
 
     public static final DeferredBlock<EchoBlock> ECHO_BLOCK = registerWithItem("echo_block", EchoBlock::new, block -> new TooltipBlockItem(block, new Item.Properties(), ModRarity.BLUE, "tooltip.item.confluence.echo_block.0"));
-    public static final DeferredBlock<BaseChestBlock> BASE_CHEST_BLOCK = registerWithItemButHidden("base_chest_block", BaseChestBlock::new);
-    public static final Supplier<BlockEntityType<BaseChestBlock.Entity>> BASE_CHEST_BLOCK_ENTITY = BLOCK_ENTITIES.register("base_chest_block_entity", () -> BlockEntityType.Builder.of(BaseChestBlock.Entity::new, BASE_CHEST_BLOCK.get()).build(DSL.remainderType()));
-    public static final DeferredBlock<DeathChestBlock> DEATH_CHEST_BLOCK = registerWithItemButHidden("death_chest_block", DeathChestBlock::new);
-    public static final Supplier<BlockEntityType<DeathChestBlock.Entity>> DEATH_CHEST_BLOCK_ENTITY = BLOCK_ENTITIES.register("death_chest_block_entity", () -> BlockEntityType.Builder.of(DeathChestBlock.Entity::new, DEATH_CHEST_BLOCK.get()).build(DSL.remainderType()));
     public static final DeferredBlock<EverPoweredRailBlock> EVER_POWERED_RAIL = registerWithItem("ever_powered_rail", () -> new EverPoweredRailBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ACTIVATOR_RAIL)));
     public static final DeferredBlock<StepOnTrapBlock> SHIMMER_TRAP = registerWithItem("shimmer_trap", () -> new StepOnTrapBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DISPENSER), StepOnTrapBlock.SHIMMER));
     public static final DeferredBlock<StepOnTrapBlock> GRAVITATION_TRAP = registerWithItem("gravitation_trap", () -> new StepOnTrapBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DISPENSER), StepOnTrapBlock.GRAVITATION));
@@ -180,12 +173,6 @@ public class FunctionalBlocks {
         return object;
     }
 
-    private static <B extends Block> DeferredBlock<B> registerNoItem(String id, Supplier<B> block) {
-        DeferredBlock<B> object = BLOCKS.register(id, block);
-        //ModItems.BLOCK_ITEMS.registerSimpleBlockItem(object);
-        return object;
-    }
-
     private static <B extends Block> DeferredBlock<B> registerWithItem(String id, Supplier<B> block, Function<B, BlockItem> function) {
         DeferredBlock<B> object = BLOCKS.register(id, block);
         ModItems.BLOCK_ITEMS.register(id, () -> function.apply(object.get()));
@@ -196,16 +183,5 @@ public class FunctionalBlocks {
         DeferredBlock<B> holder = registerWithItem(id, supplier);
         MECHANICAL_BLOCKS.add(holder);
         return holder;
-    }
-
-    private static <B extends Block> DeferredBlock<B> registerWithItemButHidden(String id, Supplier<B> block) {
-        DeferredBlock<B> object = HIDDEN.register(id, block);
-        ModItems.BLOCK_ITEMS.registerSimpleBlockItem(object);
-        return object;
-    }
-
-    public static void register(IEventBus eventBus) {
-        BLOCKS.register(eventBus);
-        HIDDEN.register(eventBus);
     }
 }

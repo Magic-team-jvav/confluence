@@ -899,30 +899,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("item.confluence.encumbering_stone.disable", "负重石：关闭");
         add("item.confluence.paint", "油漆");
 
-        add("block.confluence.base_chest_block.locked_golden", "§r上锁的金箱");
-        add("block.confluence.base_chest_block.unlocked_golden", "§r金箱");
-        add("block.confluence.base_chest_block.death_golden", "§r死人金箱");
-        add("block.confluence.base_chest_block.locked_shadow", "§r上锁的暗影箱");
-        add("block.confluence.base_chest_block.unlocked_shadow", "§r暗影箱");
-        add("block.confluence.base_chest_block.death_shadow", "§r死人暗影箱");
-        add("block.confluence.base_chest_block.unlocked_lvy", "§r常春藤箱");
-        add("block.confluence.base_chest_block.death_lvy", "§r死人常春藤箱");
-        add("block.confluence.base_chest_block.unlocked_frozen", "§r冰冻箱");
-        add("block.confluence.base_chest_block.death_frozen", "§r死人冰冻箱");
-        add("block.confluence.base_chest_block.unlocked_water", "§r水中箱");
-        add("block.confluence.base_chest_block.death_water", "§r死人水中箱");
-        add("block.confluence.base_chest_block.unlocked_skyware", "§r天域箱");
-        add("block.confluence.base_chest_block.death_skyware", "§r死人天域箱");
-        add("block.confluence.base_chest_block.unlocked_normal", "§r木箱");
-        add("block.confluence.base_chest_block.death_normal", "§r死人木箱");
-        add("block.confluence.base_chest_block.unlocked_sandstone", "§r砂岩箱");
-        add("block.confluence.base_chest_block.death_sandstone", "§r死人砂岩箱");
-        add("block.confluence.base_chest_block.unlocked_living_wood", "§r生命木箱");
-        add("block.confluence.base_chest_block.death_living_wood", "§r死人生命木箱");
-        add("block.confluence.base_chest_block.locked_dungeon", "§r上锁的地牢箱");
-        add("block.confluence.base_chest_block.unlocked_dungeon", "§r地牢箱");
-        add("block.confluence.base_chest_block.death_dungeon", "§r死人地牢箱");
-
         add("resourcepack.terraria_art", "泰拉艺术");
         add("resourcepack.terraria_armor", "泰拉盔甲样式材质");
 
@@ -2837,8 +2813,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.MECHANICAL_FRAGILE_SANDSTONE.get(), "机械易碎砂岩");
         add(FunctionalBlocks.MECHANICAL_FRAGILE_OBSIDIAN_BRICKS.get(), "机械易碎黑曜石砖");
         add(FunctionalBlocks.DETONATOR.get(), "引爆器");
-        add(FunctionalBlocks.BASE_CHEST_BLOCK.get(), "箱子");
-        add(FunctionalBlocks.DEATH_CHEST_BLOCK.get(), "死人箱");
         add(FunctionalBlocks.CRIMSON_CHEST.get(), "猩红箱");
         add(FunctionalBlocks.CORRUPTION_CHEST.get(), "腐化箱");
         add(FunctionalBlocks.JUNGLE_CHEST.get(), "丛林箱");
@@ -2871,6 +2845,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.SPEAR_TRAP.get(), "长矛机关");
         add(FunctionalBlocks.LEVER.get(), "控制杆");
         add(FunctionalBlocks.WOODEN_SPIKE.get(), "木尖刺");
+
+        add(ChestBlocks.GOLDEN_CHEST.get(), "金箱");
+        add(ChestBlocks.DEATH_GOLDEN_CHEST.get(), "死人金箱");
 
         add(ModBlocks.TOMBSTONE.get(), "墓石");
         add(ModBlocks.GRAVE_MARKER.get(), "墓石碑");

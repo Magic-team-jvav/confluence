@@ -878,29 +878,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add("block.confluence.timers_block_5_1", "5 Second TImer");
         add("block.confluence.timers_block_1_2", "1/2 Second Timer");
         add("block.confluence.timers_block_1_4", "1/4 Second TImer");
-        add("block.confluence.base_chest_block.locked_golden", "§rLocked Golden Chest");
-        add("block.confluence.base_chest_block.unlocked_golden", "§rGolden Chest");
-        add("block.confluence.base_chest_block.death_golden", "§rDeath Golden Chest");
-        add("block.confluence.base_chest_block.locked_shadow", "§rLocked Shadow Chest");
-        add("block.confluence.base_chest_block.unlocked_shadow", "§rShadow Chest");
-        add("block.confluence.base_chest_block.death_shadow", "§rDeath Shadow Chest");
-        add("block.confluence.base_chest_block.unlocked_lvy", "§rLvy Chest");
-        add("block.confluence.base_chest_block.death_lvy", "§rDeath Lvy Chest");
-        add("block.confluence.base_chest_block.unlocked_frozen", "§rFrozen Chest");
-        add("block.confluence.base_chest_block.death_frozen", "§rDeath Frozen Chest");
-        add("block.confluence.base_chest_block.unlocked_water", "§rWater Chest");
-        add("block.confluence.base_chest_block.death_water", "§rDeath Water Chest");
-        add("block.confluence.base_chest_block.unlocked_skyware", "§rSkyware Chest");
-        add("block.confluence.base_chest_block.death_skyware", "§rDeath Skyware Chest");
-        add("block.confluence.base_chest_block.unlocked_normal", "§rWooden Chest");
-        add("block.confluence.base_chest_block.death_normal", "§rDeath Wooden Chest");
-        add("block.confluence.base_chest_block.unlocked_sandstone", "§rSandstone Chest");
-        add("block.confluence.base_chest_block.death_sandstone", "§rDeath Sandstone Chest");
-        add("block.confluence.base_chest_block.unlocked_living_wood", "§rLiving Wood Chest");
-        add("block.confluence.base_chest_block.death_living_wood", "§rDeath Living Wood Chest");
-        add("block.confluence.base_chest_block.locked_dungeon", "§rLocked Dungeon Chest");
-        add("block.confluence.base_chest_block.unlocked_dungeon", "§rDungeon Chest");
-        add("block.confluence.base_chest_block.death_dungeon", "§rDeath Dungeon Chest");
 
         add("resourcepack.terraria_art", "Terraria Art");
         add("resourcepack.terraria_armor", "Terraria-Like Armor");
@@ -1504,6 +1481,7 @@ public class ModEnglishProvider extends LanguageProvider {
 
 
         Consumer<DeferredHolder<Block, ? extends Block>> blockAction = block -> add(block.get(), LibUtils.toTitleCase(block.getId().getPath()));
+        ChestBlocks.BLOCKS.getEntries().forEach(blockAction);
         CrateBlocks.BLOCKS.getEntries().forEach(blockAction);
         DecorativeBlocks.BLOCKS.getEntries().forEach(blockAction);
         FunctionalBlocks.BLOCKS.getEntries().forEach(blockAction);

@@ -27,7 +27,7 @@ public final class ModTags {
         public static final TagKey<Block> UNBREAKABLE = register("unbreakable"); // 用于锯刃镐及以上
         public static final TagKey<Block> TORCH = register("torch"); // todo
         public static final TagKey<Block> HARDMODE = register("hardmode"); // todo
-        public static final TagKey<Block> COIN_PILE = register("coin_pile");
+        public static final TagKey<Block> COINS = register("coins");
         public static final TagKey<Block> EASY_CRASH = register("easy_crash");
         public static final TagKey<Block> VINES = register("vines");
         public static final TagKey<Block> MINEABLE_WITH_PICKAXE_AXE = register("mineable_with_pickaxe_axe");

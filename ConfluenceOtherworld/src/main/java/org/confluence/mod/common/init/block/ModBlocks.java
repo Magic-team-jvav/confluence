@@ -38,11 +38,11 @@ public final class ModBlocks {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, Confluence.MODID);
     public static final Object2BooleanMap<DeferredBlock<TombstoneBlock>> TOMBSTONES = new Object2BooleanOpenHashMap<>();
 
-    public static final DeferredBlock<CoinPileBlock> COPPER_COIN_PILE = registerWithoutItem("copper_coin_pile", CoinPileBlock::new);
-    public static final DeferredBlock<CoinPileBlock> SILVER_COIN_PILE = registerWithoutItem("silver_coin_pile", CoinPileBlock::new);
-    public static final DeferredBlock<CoinPileBlock> GOLDEN_COIN_PILE = registerWithoutItem("golden_coin_pile", CoinPileBlock::new);
-    public static final DeferredBlock<CoinPileBlock> PLATINUM_COIN_PILE = registerWithoutItem("platinum_coin_pile", CoinPileBlock::new);
-    public static final DeferredBlock<CoinPileBlock> EMERALD_COIN_PILE = registerWithoutItem("emerald_coin_pile", CoinPileBlock::new);
+    public static final DeferredBlock<CoinPileBlock> COPPER_COIN = registerWithoutItem("copper_coin", CoinPileBlock::new);
+    public static final DeferredBlock<CoinPileBlock> SILVER_COIN = registerWithoutItem("silver_coin", CoinPileBlock::new);
+    public static final DeferredBlock<CoinPileBlock> GOLDEN_COIN = registerWithoutItem("golden_coin", CoinPileBlock::new);
+    public static final DeferredBlock<CoinPileBlock> PLATINUM_COIN = registerWithoutItem("platinum_coin", CoinPileBlock::new);
+    public static final DeferredBlock<CoinPileBlock> EMERALD_COIN = registerWithoutItem("emerald_coin", CoinPileBlock::new);
 
     // 流体
     public static final DeferredBlock<LiquidBlock> HONEY = registerWithoutItem("honey", () -> new LiquidBlock(ModFluids.HONEY.fluid().get(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.COLOR_YELLOW)));

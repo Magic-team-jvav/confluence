@@ -104,7 +104,7 @@ public class CoinPileBlock extends FallingBlock {
     }
 
     private boolean isCoinPileBlock(BlockState blockState) {
-        return blockState.is(this) || blockState.is(ModTags.Blocks.COIN_PILE);
+        return blockState.is(this) || blockState.is(ModTags.Blocks.COINS);
     }
 
     @Override

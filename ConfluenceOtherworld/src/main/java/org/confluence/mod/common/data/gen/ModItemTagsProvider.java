@@ -542,13 +542,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         DrillItems.acceptTag(prefix_universal_only);
         TEBoomerangItems.acceptTag(prefix_universal_only);
 
-        tag(ModTags.Items.COINS).add(
-                ModItems.COPPER_COIN.get(),
-                ModItems.SILVER_COIN.get(),
-                ModItems.GOLDEN_COIN.get(),
-                ModItems.PLATINUM_COIN.get()
-                // 不要加回来，会出bug。ModItems.EMERALD_COIN.get()
-        );
+        copy(ModTags.Blocks.COINS, ModTags.Items.COINS);
         tag(ModTags.Items.HARDMODE_RAW_MATERIALS).add(
                 MaterialItems.RAW_COBALT.get(),
                 MaterialItems.RAW_PALLADIUM.get(),

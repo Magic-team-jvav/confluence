@@ -663,7 +663,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 RAW_HELLSTONE_BLOCK.get(),
                 HELLSTONE_BLOCK.get()
         ).addTag(BlockTags.LEAVES);
-        tag(ModTags.Blocks.COIN_PILE).add(COPPER_COIN_PILE.get(), SILVER_COIN_PILE.get(), GOLDEN_COIN_PILE.get(), PLATINUM_COIN_PILE.get(), EMERALD_COIN_PILE.get());
+        tag(ModTags.Blocks.COINS).add(COPPER_COIN.get(), SILVER_COIN.get(), GOLDEN_COIN.get(), PLATINUM_COIN.get()); // 绿宝石币不要放进去
 
         tag(ModTags.Blocks.NEEDS_5_LEVEL).add(
                 DEEPSLATE_COBALT_ORE.get(),

@@ -855,11 +855,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add("item.confluence.paint", "Paint");
         add(AccessoryItems.PHILOSOPHERS_STONE.get(), "Philosopher's Stone");
         add(ModItems.BOREDOMS_PACT_FALLING_RESOLVE.get(), "Boredom's Pact - Falling Resolve");
-        add(ModBlocks.COPPER_COIN_PILE.get(), "Copper Coin");
-        add(ModBlocks.SILVER_COIN_PILE.get(), "Silver Coin");
-        add(ModBlocks.GOLDEN_COIN_PILE.get(), "Golden Coin");
-        add(ModBlocks.PLATINUM_COIN_PILE.get(), "Platinum Coin");
-        add(ModBlocks.EMERALD_COIN_PILE.get(), "Emerald Coin");
         add(FunctionalBlocks.BLEND_O_MATIC.get(), "Blend-O-Matic");
         add(StatueBlocks.N0_STATUE.get(), "'0' Statue");
         add(StatueBlocks.N1_STATUE.get(), "'1' Statue");

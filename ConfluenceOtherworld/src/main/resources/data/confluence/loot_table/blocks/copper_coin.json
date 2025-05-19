@@ -5,7 +5,7 @@
       "bonus_rolls": 0.0,
       "conditions": [
         {
-          "block": "confluence:copper_coin_pile",
+          "block": "confluence:copper_coin",
           "condition": "minecraft:block_state_property",
           "properties": {
             "heaps": "1"
@@ -30,7 +30,7 @@
       "bonus_rolls": 0.0,
       "conditions": [
         {
-          "block": "confluence:copper_coin_pile",
+          "block": "confluence:copper_coin",
           "condition": "minecraft:block_state_property",
           "properties": {
             "heaps": "2"
@@ -55,7 +55,7 @@
       "bonus_rolls": 0.0,
       "conditions": [
         {
-          "block": "confluence:copper_coin_pile",
+          "block": "confluence:copper_coin",
           "condition": "minecraft:block_state_property",
           "properties": {
             "heaps": "3"
@@ -80,7 +80,7 @@
       "bonus_rolls": 0.0,
       "conditions": [
         {
-          "block": "confluence:copper_coin_pile",
+          "block": "confluence:copper_coin",
           "condition": "minecraft:block_state_property",
           "properties": {
             "heaps": "4"
@@ -105,7 +105,7 @@
       "bonus_rolls": 0.0,
       "conditions": [
         {
-          "block": "confluence:copper_coin_pile",
+          "block": "confluence:copper_coin",
           "condition": "minecraft:block_state_property",
           "properties": {
             "heaps": "5"
@@ -130,7 +130,7 @@
       "bonus_rolls": 0.0,
       "conditions": [
         {
-          "block": "confluence:copper_coin_pile",
+          "block": "confluence:copper_coin",
           "condition": "minecraft:block_state_property",
           "properties": {
             "heaps": "6"
@@ -155,7 +155,7 @@
       "bonus_rolls": 0.0,
       "conditions": [
         {
-          "block": "confluence:copper_coin_pile",
+          "block": "confluence:copper_coin",
           "condition": "minecraft:block_state_property",
           "properties": {
             "heaps": "7"
@@ -180,7 +180,7 @@
       "bonus_rolls": 0.0,
       "conditions": [
         {
-          "block": "confluence:copper_coin_pile",
+          "block": "confluence:copper_coin",
           "condition": "minecraft:block_state_property",
           "properties": {
             "heaps": "8"
@@ -205,7 +205,7 @@
       "bonus_rolls": 0.0,
       "conditions": [
         {
-          "block": "confluence:copper_coin_pile",
+          "block": "confluence:copper_coin",
           "condition": "minecraft:block_state_property",
           "properties": {
             "heaps": "9"
@@ -230,7 +230,7 @@
       "bonus_rolls": 0.0,
       "conditions": [
         {
-          "block": "confluence:copper_coin_pile",
+          "block": "confluence:copper_coin",
           "condition": "minecraft:block_state_property",
           "properties": {
             "heaps": "10"
@@ -255,7 +255,7 @@
       "bonus_rolls": 0.0,
       "conditions": [
         {
-          "block": "confluence:copper_coin_pile",
+          "block": "confluence:copper_coin",
           "condition": "minecraft:block_state_property",
           "properties": {
             "heaps": "11"
@@ -280,7 +280,7 @@
       "bonus_rolls": 0.0,
       "conditions": [
         {
-          "block": "confluence:copper_coin_pile",
+          "block": "confluence:copper_coin",
           "condition": "minecraft:block_state_property",
           "properties": {
             "heaps": "12"
@@ -302,5 +302,5 @@
       "rolls": 1.0
     }
   ],
-  "random_sequence": "confluence:block/copper_coin_pile"
+  "random_sequence": "confluence:block/copper_coin"
 }

@@ -145,9 +145,11 @@
         "integration.terra_curio.TCUtilsMixin"
     ],
     "server": [
-        "DedicatedServerPropertiesMixin"
+        "server.DedicatedServerMixin",
+        "server.DedicatedServerPropertiesMixin",
+        "server.ServerWatchdogMixin"
     ],
     "injectors": {
         "defaultRequire": 1
-  }
+    }
 }

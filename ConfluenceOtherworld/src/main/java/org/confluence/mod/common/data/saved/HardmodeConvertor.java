@@ -32,6 +32,7 @@ import org.confluence.mod.api.event.EnterHardmodeEvent;
 import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.mixed.IDedicatedServer;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.network.s2c.SecretFlagSyncPacketS2C;
@@ -87,6 +88,9 @@ public class HardmodeConvertor implements IGlobalData {
 
     public void start(MinecraftServer server, boolean debug) {
         if (started || completed) return;
+        if (server instanceof IDedicatedServer dedicatedServer) {
+            dedicatedServer.confluence$setOnHardmodeConversation(true);
+        }
         this.shouldContinue = false;
         this.started = true;
         print(server, Component.translatable("event.confluence.hardmode_conversion.starting"), debug);
@@ -109,6 +113,9 @@ public class HardmodeConvertor implements IGlobalData {
             if (started) {
                 this.completed = true;
                 MinecraftServer server = serverLevel.getServer();
+                if (server instanceof IDedicatedServer dedicatedServer) {
+                    dedicatedServer.confluence$setOnHardmodeConversation(false);
+                }
                 SecretFlagSyncPacketS2C.sendToAll(((IMinecraftServer) server).confluence$getSecretFlag());
                 for (ServerPlayer serverPlayer : server.getPlayerList().getPlayers()) {
                     ModAchievements.awardAchievement(serverPlayer, "its_hard");
@@ -122,6 +129,9 @@ public class HardmodeConvertor implements IGlobalData {
             this.started = false;
             theHallowConversionTable.clear();
         } else if (serverLevel.getGameTime() % 5 == 0) {
+            if (serverLevel.getServer() instanceof IDedicatedServer dedicatedServer && !dedicatedServer.confluence$isOnHardmodeConversation()) {
+                dedicatedServer.confluence$setOnHardmodeConversation(true);
+            }
             Tuple<ChunkPos, BlockPosColumn[][]> entry = sanctification.getFirst();
             ChunkPos chunkPos = entry.getA();
 

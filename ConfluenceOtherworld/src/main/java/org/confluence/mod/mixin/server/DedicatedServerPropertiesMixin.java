@@ -1,4 +1,4 @@
-package org.confluence.mod.mixin;
+package org.confluence.mod.mixin.server;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.server.dedicated.DedicatedServerProperties;

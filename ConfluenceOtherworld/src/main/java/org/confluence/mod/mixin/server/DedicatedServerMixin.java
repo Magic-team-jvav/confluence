@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.Unique;
 @Mixin(DedicatedServer.class)
 public abstract class DedicatedServerMixin implements IDedicatedServer {
     @Unique
-    private volatile boolean confluence$onHardmodeConversation = false;
+    private transient volatile boolean confluence$onHardmodeConversation = false;
 
     @Override
     public void confluence$setOnHardmodeConversation(boolean on) {

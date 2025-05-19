@@ -325,7 +325,7 @@ public final class PlayerUtils {
         ModUtils.dropMoney(drops, player.getX(), player.getY(), player.getZ(), player.level());
 
         if (CommonConfigs.SHOW_MONEY_DROPS.get()) {
-            player.getPersistentData().putLong("confluence:drops_money", drops);
+            LibUtils.getOrCreatePersistedData(player).putLong("confluence:drops_money", drops);
         }
     }
 

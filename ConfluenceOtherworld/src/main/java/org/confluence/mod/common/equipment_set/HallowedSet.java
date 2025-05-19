@@ -2,8 +2,8 @@ package org.confluence.mod.common.equipment_set;
 
 import com.google.common.collect.Multimap;
 import com.xiaohunao.equipment_benediction.common.equipment_set.EquipmentSet;
-import com.xiaohunao.equipment_benediction.common.equipment_set.EquippableGroup;
 import com.xiaohunao.equipment_benediction.common.equipment_set.EquipmentSetBranch;
+import com.xiaohunao.equipment_benediction.common.equipment_set.EquippableGroup;
 import com.xiaohunao.equipment_benediction.common.equippable.VanillaEquippable;
 import com.xiaohunao.equipment_benediction.common.hook.HookMap;
 import com.xiaohunao.equipment_benediction.common.hook.hooks.AfterLivingHurtEntityHook;
@@ -16,6 +16,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.crafting.Ingredient;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEquipmentSets;
@@ -72,13 +73,13 @@ public class HallowedSet extends EquipmentSet {
         LivingIncomingDamageHook protection = (owner, event) -> {
             if (event.getEntity() instanceof Player player && player.hasEffect(ModEffects.HOLY_PROTECTION)) {
                 player.removeEffect(ModEffects.HOLY_PROTECTION);
-                player.getPersistentData().putLong("confluence:last_holy_protection", player.level().getGameTime());
+                LibUtils.getOrCreatePersistedData(player).putLong("confluence:last_holy_protection", player.level().getGameTime());
                 event.setCanceled(true);
             }
         };
         AfterLivingHurtEntityHook hurt = (owner, data) -> {
             Player attacker = data.attacker();
-            if (attacker.level().getGameTime() - attacker.getPersistentData().getLong("confluence:last_holy_protection") > 600) {
+            if (attacker.level().getGameTime() - LibUtils.getOrCreatePersistedData(attacker).getLong("confluence:last_holy_protection") > 600) {
                 attacker.addEffect(new MobEffectInstance(ModEffects.HOLY_PROTECTION, 600));
             }
         };
@@ -105,8 +106,8 @@ public class HallowedSet extends EquipmentSet {
                 .build());
     }
 
-    public static void checkHead(Entity attacker) {
-        if (attacker instanceof Player player && player.level().getGameTime() - player.getPersistentData().getLong("confluence:last_holy_protection") > 600) {
+    public static void checkHead(Entity attacker) { // todo
+        if (attacker instanceof Player player && player.level().getGameTime() - LibUtils.getOrCreatePersistedData(player).getLong("confluence:last_holy_protection") > 600) {
             Multimap<EquipmentSet, EquipmentSetBranch> activatedEquipped = player.getData(EBAttachments.ENTITY_HOOK_MANAGER).getSetHookManager().getActivatedSetBranch();
             if (activatedEquipped.containsKey(ModEquipmentSets.HALLOWED_SET.get())) {
                 player.addEffect(new MobEffectInstance(ModEffects.HOLY_PROTECTION, 600));

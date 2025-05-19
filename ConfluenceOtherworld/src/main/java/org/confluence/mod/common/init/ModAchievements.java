@@ -15,6 +15,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec2;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.block.functional.DartTrapBlock;
@@ -177,30 +178,30 @@ public final class ModAchievements {
         DISPLAY_OFFSET.put(Confluence.asResource(PREFIX + path), new Vec2(x, y));
     }
 
-    public static void awardAchievement(ServerPlayer serverPlayer, String path) {
-        CompoundTag data = serverPlayer.getPersistentData();
+    public static void awardAchievement(ServerPlayer player, String path) {
+        CompoundTag data = LibUtils.getOrCreatePersistedData(player);
         String key = Confluence.MODID + ':' + path;
         if (!data.getBoolean(key)) {
-            AdvancementHolder advancement = serverPlayer.server.getAdvancements().get(Confluence.asResource(PREFIX + path));
+            AdvancementHolder advancement = player.server.getAdvancements().get(Confluence.asResource(PREFIX + path));
             if (advancement != null) {
-                serverPlayer.getAdvancements().award(advancement, "never");
+                player.getAdvancements().award(advancement, "never");
             }
             data.putBoolean(key, true);
         }
     }
 
-    public static void youCanDoIt(ServerPlayer serverPlayer, ServerLevel level) {
+    public static void youCanDoIt(ServerPlayer player, ServerLevel level) {
         if (level.getDayTime() % 1200L == 0L) { // 每分钟检查一次
-            long firstNight = serverPlayer.getPersistentData().getLong("confluence:you_can_do_it");
+            long firstNight = LibUtils.getOrCreatePersistedData(player).getLong("confluence:you_can_do_it");
             if (firstNight != -1L) {
                 if (firstNight == 0L && level.isNight()) {
-                    serverPlayer.getPersistentData().putLong("confluence:you_can_do_it", level.getDayTime());
+                    LibUtils.getOrCreatePersistedData(player).putLong("confluence:you_can_do_it", level.getDayTime());
                 } else if (firstNight != 0L && level.getDayTime() - firstNight > 12000L) {
-                    AdvancementHolder advancement = serverPlayer.server.getAdvancements().get(Confluence.asResource(PREFIX + "you_can_do_it"));
+                    AdvancementHolder advancement = player.server.getAdvancements().get(Confluence.asResource(PREFIX + "you_can_do_it"));
                     if (advancement != null) {
-                        serverPlayer.getAdvancements().award(advancement, "never");
+                        player.getAdvancements().award(advancement, "never");
                     }
-                    serverPlayer.getPersistentData().putLong("confluence:you_can_do_it", -1L);
+                    LibUtils.getOrCreatePersistedData(player).putLong("confluence:you_can_do_it", -1L);
                 }
             }
         }
@@ -251,7 +252,7 @@ public final class ModAchievements {
     }
 
     public static void theFrequentFlyer(ServerPlayer player, long cost) {
-        short before = player.getPersistentData().getShort("confluence:the_frequent_flyer");
+        short before = LibUtils.getOrCreatePersistedData(player).getShort("confluence:the_frequent_flyer");
         if (before > 10000) return;
         long total = before + cost;
         if (total >= 10000) {
@@ -260,7 +261,7 @@ public final class ModAchievements {
                 player.getAdvancements().award(advancement, "never");
             }
         }
-        player.getPersistentData().putShort("confluence:the_frequent_flyer", (short) total);
+        LibUtils.getOrCreatePersistedData(player).putShort("confluence:the_frequent_flyer", (short) total);
     }
 
     public static void noHobo(AbstractTerraNPC npc, NPCSpawner.Region region) {

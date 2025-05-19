@@ -5,6 +5,7 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.entity.projectile.TitaniumShardsProjectile;
 
 public class TitaniumBarrierEffect extends MobEffect {
@@ -15,11 +16,11 @@ public class TitaniumBarrierEffect extends MobEffect {
     @Override
     public boolean applyEffectTick(LivingEntity livingEntity, int amplifier) {
         if (livingEntity instanceof Player player) {
-            long lastTime = livingEntity.getPersistentData().getLong("confluence:titanium_barrier");
+            long lastTime = LibUtils.getOrCreatePersistedData(player).getLong("confluence:titanium_barrier");
             long gameTime = livingEntity.level().getGameTime();
             if (lastTime <= 0) {
                 livingEntity.level().addFreshEntity(new TitaniumShardsProjectile(player));
-                livingEntity.getPersistentData().putLong("confluence:titanium_barrier", gameTime);
+                LibUtils.getOrCreatePersistedData(player).putLong("confluence:titanium_barrier", gameTime);
             }
             return gameTime - lastTime <= 200;
         }
@@ -28,7 +29,9 @@ public class TitaniumBarrierEffect extends MobEffect {
 
     @Override
     public void onMobRemoved(LivingEntity livingEntity, int amplifier, Entity.RemovalReason reason) {
-        livingEntity.getPersistentData().putLong("confluence:titanium_barrier", 0);
+        if (livingEntity instanceof Player player) {
+            LibUtils.getOrCreatePersistedData(player).putLong("confluence:titanium_barrier", 0);
+        }
     }
 
     @Override

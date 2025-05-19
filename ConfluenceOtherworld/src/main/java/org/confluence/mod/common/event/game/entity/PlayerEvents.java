@@ -3,8 +3,6 @@ package org.confluence.mod.common.event.game.entity;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -258,25 +256,13 @@ public final class PlayerEvents {
         }
     }
 
-    @SubscribeEvent // 可以拿到复制前的玩家
+    @SubscribeEvent
     public static void clone(PlayerEvent.Clone event) {
         Player old = event.getOriginal();
         Player neo = event.getEntity();
 
         for (MobEffectInstance activeEffect : old.getActiveEffects()) {
             neo.forceAddEffect(activeEffect, null);
-        }
-
-        CompoundTag oldTag = old.getPersistentData();
-        CompoundTag neoTag = neo.getPersistentData();
-        for (String key : oldTag.getAllKeys()) {
-            if (key.startsWith(Confluence.MODID)) {
-                Tag value = oldTag.get(key);
-                if (value != null) neoTag.put(key, value);
-            }
-        }
-        if (!event.isWasDeath()) {
-            neoTag.putFloat("confluence:cached_health", old.getHealth());
         }
     }
 
@@ -290,10 +276,7 @@ public final class PlayerEvents {
         EverBeneficialItem.AMBROSIA.recovery(everBeneficial, EverBeneficial::isAmbrosiaUsed, serverPlayer);
         EverBeneficialItem.GALAXY_PEARL.recovery(everBeneficial, EverBeneficial::isGalaxyPearlUsed, serverPlayer);
         EverBeneficialItem.ARTISAN_LOAF.recovery(everBeneficial, EverBeneficial::isArtisanLoafUsed, serverPlayer);
-        if (event.isEndConquered()) {
-            float health = serverPlayer.getPersistentData().getFloat("confluence:cached_health");
-            serverPlayer.setHealth(health <= 0.0F ? 20.0F : health);
-        }
+
         BoulderWorld.forceSetAccessory(serverPlayer);
         ExtraInventorySyncPacketS2C.sendToClient(serverPlayer, serverPlayer, serverPlayer.getData(ModAttachmentTypes.EXTRA_INVENTORY));
     }

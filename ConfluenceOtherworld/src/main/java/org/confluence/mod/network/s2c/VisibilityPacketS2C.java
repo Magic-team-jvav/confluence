@@ -9,6 +9,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.common.init.ModSecretSeeds;
@@ -48,15 +49,15 @@ public record VisibilityPacketS2C(byte mask) implements CustomPacketPayload {
         });
     }
 
-    public static void sendEcho(ServerPlayer serverPlayer) {
-        boolean visible = TCUtils.hasAccessoriesType(serverPlayer, AccessoryItems.SPECTRE$GOGGLES) &&
-                CuriosUtils.hasCurio(serverPlayer, (Predicate<ItemStack>) itemStack -> {
+    public static void sendEcho(ServerPlayer player) {
+        boolean visible = TCUtils.hasAccessoriesType(player, AccessoryItems.SPECTRE$GOGGLES) &&
+                CuriosUtils.hasCurio(player, (Predicate<ItemStack>) itemStack -> {
                     AccessoriesComponent component = TCUtils.getAccessoriesComponent(itemStack);
                     if (component == null) return false;
                     return component.contains(AccessoryItems.SPECTRE$GOGGLES) && itemStack.getItem() instanceof IFunctionCouldEnable func && func.isEnabled(itemStack, null);
                 });
-        serverPlayer.getPersistentData().putBoolean("confluence:has_echo_visibility", visible);
-        PacketDistributor.sendToPlayer(serverPlayer, new VisibilityPacketS2C(ECHO, visible));
+        LibUtils.getOrCreatePersistedData(player).putBoolean("confluence:has_echo_visibility", visible);
+        PacketDistributor.sendToPlayer(player, new VisibilityPacketS2C(ECHO, visible));
     }
 
     public static void sendTheConstantPostEffect(ServerPlayer serverPlayer) {

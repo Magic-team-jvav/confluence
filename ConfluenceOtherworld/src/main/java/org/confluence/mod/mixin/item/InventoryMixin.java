@@ -34,7 +34,7 @@ public abstract class InventoryMixin {
     @Shadow
     protected abstract boolean hasRemainingSpaceForItem(ItemStack destination, ItemStack origin);
 
-    @Inject(method = "add(ILnet/minecraft/world/item/ItemStack;)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;isDamaged()Z"), cancellable = true)
+    @Inject(method = "add(ILnet/minecraft/world/item/ItemStack;)Z", at = @At("HEAD"), cancellable = true)
     private void add2Extra(int slot, ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
         if (stack.is(ModTags.Items.COINS)) {
             ExtraInventory extraInventory = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
@@ -70,7 +70,7 @@ public abstract class InventoryMixin {
             if (confluence$insert2Extra(AMMO_START, SIZE_AMMO, extraInventory, stack, extraInventory2 -> {})) {
                 cir.setReturnValue(true);
             }
-        } else if (PrefixUtils.canInit(stack)) {
+        } else if (!stack.isEmpty() && PrefixUtils.canInit(stack)) {
             PrefixUtils.initPrefix(player.getRandom(), stack);
         }
     }

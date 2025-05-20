@@ -2,5 +2,5 @@
   "type": "confluence:shimmer_lake",
   "biomes": "#confluence:has_structure/shimmer_lake",
   "spawn_overrides": {},
-  "step": "top_layer_modification"
+  "step": "vegetal_decoration"
 }

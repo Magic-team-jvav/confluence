@@ -2,5 +2,5 @@
   "type": "confluence:queen_bee_hive",
   "biomes": "minecraft:jungle",
   "spawn_overrides": {},
-  "step": "top_layer_modification"
+  "step": "vegetal_decoration"
 }

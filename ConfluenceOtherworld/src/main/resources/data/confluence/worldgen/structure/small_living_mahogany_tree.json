@@ -2,5 +2,5 @@
   "type": "confluence:small_living_mahogany_tree",
   "biomes": "#c:is_swamp",
   "spawn_overrides": {},
-  "step": "top_layer_modification"
+  "step": "vegetal_decoration"
 }

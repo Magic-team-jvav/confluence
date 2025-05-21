@@ -246,6 +246,7 @@ dependencies {
     //runtimeOnly "curse.maven:refined-storage-243076:6391989"
     //runtimeOnly "curse.maven:display-delight-1144296:5964213"
     //runtimeOnly "curse.maven:dynamictrees-252818:6360173"
+    //runtimeOnly "maven.modrinth:modernfix:JNjN5X7g"
     if (observable) {
         runtimeOnly "curse.maven:observable-509575:5733591"
     }

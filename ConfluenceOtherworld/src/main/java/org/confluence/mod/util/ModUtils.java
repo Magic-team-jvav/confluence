@@ -225,4 +225,8 @@ public final class ModUtils {
         if (copper > 0) cmp.append(Component.literal(" " + copper + " ").withColor(-3837899)).append(Component.translatable("tooltip.price.copper").withColor(-3837899));
         return cmp;
     }
+
+//    public static long getVendorFreq() {
+//        return new SystemInfo().getHardware().getProcessor().getProcessorIdentifier().getVendorFreq();
+//    }
 }

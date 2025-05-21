@@ -77,7 +77,7 @@ public abstract class InventoryMixin {
 
     @Inject(method = "setItem", at = @At("HEAD"))
     private void initPrefix(int index, ItemStack stack, CallbackInfo ci) {
-        if (PrefixUtils.canInit(stack)) {
+        if (!stack.isEmpty() && PrefixUtils.canInit(stack)) {
             PrefixUtils.initPrefix(player.getRandom(), stack);
         }
     }

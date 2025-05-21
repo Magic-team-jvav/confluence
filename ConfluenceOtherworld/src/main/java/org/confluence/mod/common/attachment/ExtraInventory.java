@@ -11,10 +11,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ProjectileWeaponItem;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.apache.commons.lang3.stream.Streams;
-import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.item.hook.BaseHookItem;
 import org.confluence.mod.network.s2c.ExtraInventoryStackPacketS2C;
+import org.confluence.mod.util.AchievementUtils;
 import org.confluence.terra_curio.TerraCurio;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
@@ -174,11 +174,11 @@ public class ExtraInventory extends ItemStackHandler implements Container {
             }
             this.dirty = false;
 
-            if (dyeHard) ModAchievements.awardAchievement(serverPlayer, "dye_hard");
+            if (dyeHard) AchievementUtils.awardAchievement(serverPlayer, "dye_hard");
             if (fashionStatement && Streams.of(serverPlayer.getArmorSlots()).noneMatch(ItemStack::isEmpty)) {
-                ModAchievements.awardAchievement(serverPlayer, "fashion_statement");
+                AchievementUtils.awardAchievement(serverPlayer, "fashion_statement");
             }
-            if (holdOnTight) ModAchievements.awardAchievement(serverPlayer, "hold_on_tight");
+            if (holdOnTight) AchievementUtils.awardAchievement(serverPlayer, "hold_on_tight");
         }
     }
 

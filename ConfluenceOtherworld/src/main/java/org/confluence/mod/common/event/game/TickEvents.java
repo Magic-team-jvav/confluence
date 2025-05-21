@@ -20,13 +20,13 @@ import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.block.functional.network.PathService;
 import org.confluence.mod.common.data.saved.*;
 import org.confluence.mod.common.entity.FallingStarItemEntity;
-import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
 import org.confluence.mod.common.worldgen.structure.DungeonStructure;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.mixed.Immunity;
+import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terraentity.entity.boss.EyeOfCthulhu;
 import org.confluence.terraentity.init.entity.TEBossEntities;
@@ -84,7 +84,7 @@ public final class TickEvents {
             ((IServerPlayer) serverPlayer).confluence$setCouldPickupItem(true);
             serverPlayer.getData(ModAttachmentTypes.EXTRA_INVENTORY).sync(serverPlayer);
             ServerLevel serverLevel = serverPlayer.serverLevel();
-            ModAchievements.youCanDoIt(serverPlayer, serverLevel);
+            AchievementUtils.youCanDoIt(serverPlayer, serverLevel);
             TheConstant.applyDarkness(serverPlayer, serverLevel);
             DungeonStructure.checkSkeletronDefeated(serverPlayer, serverLevel);
         }

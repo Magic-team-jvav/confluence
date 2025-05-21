@@ -29,13 +29,13 @@ import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.api.event.EnterHardmodeEvent;
-import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.mixed.IDedicatedServer;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.network.s2c.SecretFlagSyncPacketS2C;
+import org.confluence.mod.util.AchievementUtils;
 
 import javax.annotation.CheckForNull;
 import java.util.*;
@@ -118,7 +118,7 @@ public class HardmodeConvertor implements IGlobalData {
                 }
                 SecretFlagSyncPacketS2C.sendToAll(((IMinecraftServer) server).confluence$getSecretFlag());
                 for (ServerPlayer serverPlayer : server.getPlayerList().getPlayers()) {
-                    ModAchievements.awardAchievement(serverPlayer, "its_hard");
+                    AchievementUtils.awardAchievement(serverPlayer, "its_hard");
                 }
                 ((IMinecraftServer) server).confluence$updateSecretFlag(IWorldOptions.HARDMODE);
                 print(server, Component.translatable("event.confluence.hardmode_conversion.hardmode"), !FMLEnvironment.production);

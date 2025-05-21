@@ -47,11 +47,10 @@ import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.recipe.ItemStackHandlerRecipeInput;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.block.AltarBlockModel;
 import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.data.AchievementOffsetLoader;
 import org.confluence.mod.common.data.saved.ConfluenceData;
-import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -125,7 +124,7 @@ public class AltarBlock extends BaseEntityBlock {
                 ).withColor(GlobalColors.MESSAGE.get()), false);
             }
             if (serverPlayer.getMainHandItem().is(HammerItems.PWNHAMMER)) {
-                AdvancementHolder holder = serverLevel.getServer().getAdvancements().get(Confluence.asResource(ModAchievements.PREFIX + "begone_evil"));
+                AdvancementHolder holder = serverLevel.getServer().getAdvancements().get(AchievementOffsetLoader.asAchievement("begone_evil"));
                 if (holder != null) {
                     serverPlayer.getAdvancements().award(holder, "never");
                 }

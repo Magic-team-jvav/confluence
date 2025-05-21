@@ -34,6 +34,7 @@ import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
+import org.confluence.mod.common.data.AchievementOffsetLoader;
 import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
 import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
@@ -53,6 +54,7 @@ import org.confluence.mod.network.s2c.ExtraInventorySyncPacketS2C;
 import org.confluence.mod.network.s2c.FishingPowerInfoPacketS2C;
 import org.confluence.mod.network.s2c.SecretFlagSyncPacketS2C;
 import org.confluence.mod.network.s2c.VisibilityPacketS2C;
+import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.util.TCUtils;
@@ -78,7 +80,7 @@ public final class PlayerEvents {
             long secretFlag = ((IMinecraftServer) serverPlayer.server).confluence$getSecretFlag();
             SecretFlagSyncPacketS2C.sendToAll(secretFlag);
             if ((secretFlag & IWorldOptions.HARDMODE) != 0) {
-                ModAchievements.awardAchievement(serverPlayer, "its_hard");
+                AchievementUtils.awardAchievement(serverPlayer, "its_hard");
             }
             if (CommonConfigs.DO_NPC_SPAWNING.get() && serverPlayer.serverLevel().getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)) {
                 NPCSpawner.INSTANCE.trySpawnGuide(serverPlayer);
@@ -323,7 +325,7 @@ public final class PlayerEvents {
     @SubscribeEvent
     public static void advancementEarn(AdvancementEvent.AdvancementEarnEvent event) {
         AdvancementHolder advancement = event.getAdvancement();
-        if (event.getEntity() instanceof ServerPlayer player && ModAchievements.DISPLAY_OFFSET.containsKey(advancement.id())) {
+        if (event.getEntity() instanceof ServerPlayer player && AchievementOffsetLoader.getDisplayOffset().containsKey(advancement.id())) {
             player.server.getPlayerList().broadcastSystemMessage(Component.translatable("chat.type.advancement.achievement", player.getDisplayName(), Advancement.name(advancement)), false);
         }
     }

@@ -6,7 +6,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.advancements.AdvancementWidget;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.client.gui.AchievementToast;
-import org.confluence.mod.common.init.ModAchievements;
+import org.confluence.mod.common.data.AchievementOffsetLoader;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -22,7 +22,7 @@ public abstract class AdvancementWidgetMixin {
 
     @Inject(method = "drawConnectivity", at = @At("HEAD"), cancellable = true)
     private void disconnect(GuiGraphics pGuiGraphics, int pX, int pY, boolean pDropShadow, CallbackInfo ci) {
-        if (ModAchievements.DISPLAY_OFFSET.containsKey(advancementNode.holder().id())) {
+        if (AchievementOffsetLoader.getDisplayOffset().containsKey(advancementNode.holder().id())) {
             ci.cancel();
         }
     }

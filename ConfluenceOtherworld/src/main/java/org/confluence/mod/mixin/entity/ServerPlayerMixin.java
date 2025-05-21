@@ -10,9 +10,9 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.stats.ServerStatsCounter;
 import org.confluence.lib.mixed.SelfGetter;
-import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.network.s2c.PlayerDeathInfoPacketS2C;
+import org.confluence.mod.util.AchievementUtils;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -52,7 +52,7 @@ public abstract class ServerPlayerMixin implements IServerPlayer, SelfGetter<Ser
     @Inject(method = "checkMovementStatistics", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;isSprinting()Z"))
     private void checkMarathon(double dx, double dy, double dz, CallbackInfo ci) {
         if (confluence$marathon) return;
-        this.confluence$marathon = ModAchievements.marathonMedalist(confluence$self(), stats, confluence$marathon);
+        this.confluence$marathon = AchievementUtils.marathonMedalist(confluence$self(), stats, confluence$marathon);
     }
 
     @WrapWithCondition(method = "die", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerGamePacketListenerImpl;send(Lnet/minecraft/network/protocol/Packet;Lnet/minecraft/network/PacketSendListener;)V"))

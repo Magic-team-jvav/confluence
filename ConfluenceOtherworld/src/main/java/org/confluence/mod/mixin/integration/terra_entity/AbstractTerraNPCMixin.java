@@ -6,8 +6,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.common.data.saved.NPCSpawner;
-import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.mixed.IAbstractTerraNPC;
+import org.confluence.mod.util.AchievementUtils;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 import org.confluence.terraentity.entity.npc.house.House;
 import org.spongepowered.asm.mixin.Mixin;
@@ -58,7 +58,7 @@ public abstract class AbstractTerraNPCMixin implements IAbstractTerraNPC, SelfGe
         if (!house.isEmpty()) {
             NPCSpawner.Region region = new NPCSpawner.Region(house.center());
             NPCSpawner.INSTANCE.moveNPCToAnotherRegion(confluence$self(), confluence$getRegion(), region);
-            ModAchievements.noHobo(confluence$self(), region);
+            AchievementUtils.noHobo(confluence$self(), region);
         }
     }
 

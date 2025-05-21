@@ -24,8 +24,7 @@ import org.confluence.mod.common.recipe.ItemTransmutationRecipe;
 
 public class ShimmerItemTransmutationCategory implements IRecipeCategory<RecipeHolder<ItemTransmutationRecipe>> {
     public static final RecipeType<RecipeHolder<ItemTransmutationRecipe>> TYPE = RecipeType.createRecipeHolderType(Confluence.asResource("item_transmutation"));
-
-    private static final Component SHIMMER_TRANSMUTATION_TITLE = Component.translatable("title.confluence.shimmer_transmutation");
+    private static final Component TITLE = Component.translatable("title.confluence.shimmer_transmutation");
     private final IDrawable icon;
 
     public ShimmerItemTransmutationCategory(IJeiHelpers jeiHelpers) {
@@ -39,7 +38,7 @@ public class ShimmerItemTransmutationCategory implements IRecipeCategory<RecipeH
 
     @Override
     public Component getTitle() {
-        return SHIMMER_TRANSMUTATION_TITLE;
+        return TITLE;
     }
 
     @Override
@@ -71,7 +70,11 @@ public class ShimmerItemTransmutationCategory implements IRecipeCategory<RecipeH
             inputSlot.addItemStack(input);
         }
         // output
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 56, 88).addItemStacks(value.target());
+        if (value.isValid()) {
+            builder.addSlot(RecipeIngredientRole.OUTPUT, 56, 88).addItemStacks(value.target());
+        } else {
+            builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 56, 88).addItemStack(Items.BARRIER.getDefaultInstance());
+        }
     }
 
     @Override
@@ -84,7 +87,7 @@ public class ShimmerItemTransmutationCategory implements IRecipeCategory<RecipeH
                 guiGraphics.renderTooltip(Minecraft.getInstance().font, text, (int) mouseX, (int) mouseY);
             }
         } else {
-            ModJeiPlugin.drawArrowDown(guiGraphics, 54, 46, true);
+            ModJeiPlugin.drawArrowDown(guiGraphics, 54, 46, recipe.value().isValid());
         }
     }
 }

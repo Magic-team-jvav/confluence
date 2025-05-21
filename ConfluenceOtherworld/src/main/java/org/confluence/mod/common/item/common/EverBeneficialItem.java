@@ -18,9 +18,9 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.EverBeneficial;
-import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.item.MinecartItems;
+import org.confluence.mod.util.AchievementUtils;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.network.s2c.RightClickSubtractorPacketS2C;
 import org.confluence.terra_curio.util.TCUtils;
@@ -34,7 +34,7 @@ public class EverBeneficialItem extends TooltipItem {
     public static final Post DO_NOTHING = (id, player, everBeneficial, isRespawn) -> {};
     public static final Beneficial LIFE_CRYSTAL = new Beneficial(Confluence.asResource("life_crystal"), EverBeneficial::increaseCrystals, (id, player, everBeneficial, isRespawn) -> {
         if (everBeneficial.isLifeCrystalsMaximum() && everBeneficial.isLifeFruitsMaximum() && player.getData(ModAttachmentTypes.MANA_STORAGE).isStarMaximum()) {
-            ModAchievements.awardAchievement(player, "topped_off");
+            AchievementUtils.awardAchievement(player, "topped_off");
         }
         AttributeInstance attributeInstance = player.getAttributes().getInstance(Attributes.MAX_HEALTH);
         if (attributeInstance == null) return;

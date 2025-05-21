@@ -92,7 +92,6 @@ public final class ModEvents {
             Confluence.registerGameRules();
             ModFluids.registerInteraction();
             ModFluids.registerShimmerTransform();
-            ModAchievements.initialize();
             ModBiomes.registerRegionAndSurface();
 
             if (!ModList.get().isLoaded("attributefix")) {
@@ -185,6 +184,7 @@ public final class ModEvents {
         if (PatchouliHelper.IS_LOADED) {
             registrar.playToClient(PatchouliEntityEntriesPacketS2C.TYPE, PatchouliEntityEntriesPacketS2C.STREAM_CODEC, PatchouliEntityEntriesPacketS2C::handle);
         }
+        registrar.playToClient(AchievementOffsetSyncPacketS2C.TYPE, AchievementOffsetSyncPacketS2C.STREAM_CODEC, AchievementOffsetSyncPacketS2C::handle);
 
         registrar.playToServer(ApplySelectionPacketC2S.TYPE, ApplySelectionPacketC2S.STREAM_CODEC, ApplySelectionPacketC2S::handle);
         registrar.playToServer(HookThrowingPacketC2S.TYPE, HookThrowingPacketC2S.STREAM_CODEC, HookThrowingPacketC2S::handle);

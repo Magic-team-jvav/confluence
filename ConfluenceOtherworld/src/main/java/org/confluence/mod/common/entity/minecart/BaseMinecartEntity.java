@@ -13,8 +13,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.VectorUtils;
-import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.common.init.ModAttachmentTypes;
+import org.confluence.mod.util.AchievementUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -68,7 +68,7 @@ public class BaseMinecartEntity extends Minecart {
                         if (!entity.isAlive()) killed = true;
                     }
                     if (killed && driver instanceof ServerPlayer serverPlayer) {
-                        ModAchievements.awardAchievement(serverPlayer, "vehicular_manslaughter");
+                        AchievementUtils.awardAchievement(serverPlayer, "vehicular_manslaughter");
                     }
                 }
             }

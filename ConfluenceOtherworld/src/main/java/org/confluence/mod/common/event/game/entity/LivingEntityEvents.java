@@ -40,7 +40,10 @@ import org.confluence.mod.common.effect.flask.FlaskEffect;
 import org.confluence.mod.common.effect.harmful.ManaSicknessEffect;
 import org.confluence.mod.common.effect.neutral.LoveEffect;
 import org.confluence.mod.common.entity.projectile.boulder.TombstoneBoulder;
-import org.confluence.mod.common.init.*;
+import org.confluence.mod.common.init.ModAttachmentTypes;
+import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.ModHookTypes;
+import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
@@ -54,6 +57,7 @@ import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.network.s2c.DeathMotionPacketS2C;
 import org.confluence.mod.network.s2c.VisibilityPacketS2C;
+import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.DateUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
@@ -209,7 +213,7 @@ public final class LivingEntityEvents {
         Entity attacker = damageSource.getEntity();
         float amount = event.getNewDamage();
 
-        ModAchievements.luckyBreak_watchYourStep(victim, damageSource, attacker);
+        AchievementUtils.luckyBreak_watchYourStep(victim, damageSource, attacker);
         FlaskEffect.onLivingDamage(victim, damageSource, amount);
         Immunity.calculateInvTicks(damageSource, victim);
         DamageIndicatorOptions.sendDamageParticle(serverLevel, damageSource, amount, victim);
@@ -242,7 +246,7 @@ public final class LivingEntityEvents {
     public static void livingEquipmentChange(LivingEquipmentChangeEvent event) {
         LivingEntity living = event.getEntity();
         if (living instanceof ServerPlayer serverPlayer) {
-            ModAchievements.matchingAttire_fashionStatement(event.getSlot(), serverPlayer);
+            AchievementUtils.matchingAttire_fashionStatement(event.getSlot(), serverPlayer);
             if (event.getTo().is(ModTags.Items.SHOW_SIGNAL)) {
                 VisibilityPacketS2C.sendSignal(serverPlayer, true);
             } else if (event.getFrom().is(ModTags.Items.SHOW_SIGNAL)) {

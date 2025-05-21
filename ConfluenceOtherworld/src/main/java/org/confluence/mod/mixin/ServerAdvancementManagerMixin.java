@@ -1,6 +1,7 @@
 package org.confluence.mod.mixin;
 
 import com.google.gson.JsonElement;
+import net.minecraft.Util;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.ServerAdvancementManager;
@@ -8,7 +9,7 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.phys.Vec2;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.init.ModAchievements;
+import org.confluence.mod.common.data.AchievementOffsetLoader;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -24,16 +25,18 @@ public abstract class ServerAdvancementManagerMixin {
 
     @Inject(method = "apply(Ljava/util/Map;Lnet/minecraft/server/packs/resources/ResourceManager;Lnet/minecraft/util/profiling/ProfilerFiller;)V", at = @At("TAIL"))
     private void confluence$setLocation(Map<ResourceLocation, JsonElement> p_136034_, ResourceManager p_136035_, ProfilerFiller p_136036_, CallbackInfo ci) {
-        for (Map.Entry<ResourceLocation, Vec2> entry : ModAchievements.DISPLAY_OFFSET.entrySet()) {
-            AdvancementHolder advancement = advancements.get(entry.getKey());
-            if (advancement == null) {
-                Confluence.LOGGER.warn("Unknown advancement {}", entry.getKey());
-            } else {
-                advancement.value().display().ifPresent(displayInfo -> {
-                    Vec2 vec2 = entry.getValue();
-                    displayInfo.setLocation(vec2.x, vec2.y);
-                });
+        AchievementOffsetLoader.WAITING_FOR.thenAcceptAsync(v -> {
+            for (Map.Entry<ResourceLocation, Vec2> entry : AchievementOffsetLoader.getDisplayOffset().entrySet()) {
+                AdvancementHolder advancement = advancements.get(entry.getKey());
+                if (advancement == null) {
+                    Confluence.LOGGER.warn("Unknown advancement {}", entry.getKey());
+                } else {
+                    advancement.value().display().ifPresent(displayInfo -> {
+                        Vec2 vec2 = entry.getValue();
+                        displayInfo.setLocation(vec2.x, vec2.y);
+                    });
+                }
             }
-        }
+        }, Util.backgroundExecutor());
     }
 }

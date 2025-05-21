@@ -9,8 +9,7 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.mod.Confluence;
-import org.confluence.mod.common.init.ModAchievements;
+import org.confluence.mod.common.data.AchievementOffsetLoader;
 import org.confluence.mod.common.init.item.ArmorItems;
 import org.confluence.terra_curio.common.entity.BeeProjectile;
 import org.confluence.terra_curio.common.init.TCItems;
@@ -51,7 +50,7 @@ public class BeeGunItem extends ManaGunItem {
                     player.getItemBySlot(EquipmentSlot.LEGS).is(ArmorItems.BEE_LEGGINGS.get()) ||
                     player.getItemBySlot(EquipmentSlot.FEET).is(ArmorItems.BEE_BOOTS.get())) {
                 ServerPlayer serverPlayer = (ServerPlayer) player;
-                AdvancementHolder advancement = serverPlayer.server.getAdvancements().get(Confluence.asResource(ModAchievements.PREFIX + "not_the_bees"));
+                AdvancementHolder advancement = serverPlayer.server.getAdvancements().get(AchievementOffsetLoader.asAchievement("not_the_bees"));
                 if (advancement != null) {
                     serverPlayer.getAdvancements().award(advancement, "never");
                 }

@@ -14,7 +14,7 @@ import net.minecraft.util.Mth;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.init.ModAchievements;
+import org.confluence.mod.common.data.AchievementOffsetLoader;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -122,12 +122,10 @@ public class AchievementToast implements Toast {
         return false;
     }
 
-    public static void registerToast(ResourceLocation advancement, AchievementToast toast) {
-        ACHIEVEMENTS.put(advancement, toast);
-    }
-
-    public static void registerToast(String namespace, String path) {
-        registerToast(ResourceLocation.fromNamespaceAndPath(namespace, ModAchievements.PREFIX + path), new AchievementToast(
+    public static void registerToast(ResourceLocation id) {
+        String namespace = id.getNamespace();
+        String path = id.getPath().substring(AchievementOffsetLoader.PREFIX.length());
+        ACHIEVEMENTS.put(ResourceLocation.fromNamespaceAndPath(namespace, AchievementOffsetLoader.PREFIX + path), new AchievementToast(
                 ResourceLocation.fromNamespaceAndPath(namespace, "textures/achievement/" + path + ".png"),
                 new Display(AdvancementType.CHALLENGE,
                         Component.translatable("achievements." + namespace + "." + path + ".title"),
@@ -135,150 +133,12 @@ public class AchievementToast implements Toast {
                 )));
     }
 
-    public static void registerToast(String path) {
-        registerToast(Confluence.MODID, path);
-    }
-
     public static @Nullable AchievementToast getToast(ResourceLocation advancement) {
         return ACHIEVEMENTS.get(advancement);
     }
 
-    public static void removeToast(ResourceLocation advancement) {
-        ACHIEVEMENTS.remove(advancement);
-    }
-
     public static void clearToast() {
         ACHIEVEMENTS.clear();
-    }
-
-    public static void registerAll() {
-        // Collector
-        AchievementToast.registerToast("timber");
-        AchievementToast.registerToast("benched");
-        AchievementToast.registerToast("hammer_time");
-        AchievementToast.registerToast("heavy_metal");
-        AchievementToast.registerToast("matching_attire");
-        AchievementToast.registerToast("star_power");
-        AchievementToast.registerToast("hold_on_tight");
-        AchievementToast.registerToast("miner_for_fire");
-        AchievementToast.registerToast("head_in_the_clouds");
-        AchievementToast.registerToast("like_a_boss");
-        AchievementToast.registerToast("feast_of_midas");
-        AchievementToast.registerToast("drax_attax");
-        AchievementToast.registerToast("fashion_statement");
-        AchievementToast.registerToast("sword_of_the_hero");
-        AchievementToast.registerToast("dye_hard");
-        AchievementToast.registerToast("sick_throw");
-        AchievementToast.registerToast("the_cavalry");
-        AchievementToast.registerToast("completely_awesome");
-        AchievementToast.registerToast("prismancer");
-        AchievementToast.registerToast("glorious_golden_pole");
-        AchievementToast.registerToast("boots_of_the_hero");
-        AchievementToast.registerToast("infinity_1_sword");
-        AchievementToast.registerToast("black_mirror");
-        AchievementToast.registerToast("ankhumulation_complete");
-
-        // Explorer
-        AchievementToast.registerToast("new_world");
-        AchievementToast.registerToast("you_can_do_it");
-        AchievementToast.registerToast("no_hobo");
-        AchievementToast.registerToast("ooo_shinny");
-        AchievementToast.registerToast("heart_breaker");
-        AchievementToast.registerToast("i_am_loot");
-        AchievementToast.registerToast("quiet_neighborhood");
-        AchievementToast.registerToast("hey_listen");
-        AchievementToast.registerToast("smashing_poppet");
-        AchievementToast.registerToast("wheres_my_honey");
-        AchievementToast.registerToast("dungeon_heist");
-        AchievementToast.registerToast("its_getting_hot_in_here");
-        AchievementToast.registerToast("its_hard");
-        AchievementToast.registerToast("begone_evil");
-        AchievementToast.registerToast("extra_shiny");
-        AchievementToast.registerToast("photosynthesis");
-        AchievementToast.registerToast("get_a_life");
-        AchievementToast.registerToast("temple_raider");
-        AchievementToast.registerToast("robbing_the_grave");
-        AchievementToast.registerToast("big_booty");
-        AchievementToast.registerToast("jeepers_creepers");
-        AchievementToast.registerToast("funkytown");
-        AchievementToast.registerToast("into_orbit");
-        AchievementToast.registerToast("rock_bottom");
-        AchievementToast.registerToast("it_can_talk");
-        AchievementToast.registerToast("watch_your_step");
-        AchievementToast.registerToast("rock_bottom");
-        AchievementToast.registerToast("a_rare_realm");
-        AchievementToast.registerToast("a_shimmer_in_the_dark");
-
-        // Slayer boss
-        AchievementToast.registerToast("slippery_shinobi");
-        AchievementToast.registerToast("eye_on_you");
-        AchievementToast.registerToast("worm_fodder");
-        AchievementToast.registerToast("mastermind");
-        AchievementToast.registerToast("sting_operation");
-        AchievementToast.registerToast("boned");
-        AchievementToast.registerToast("an_eye_for_an_eye");
-        AchievementToast.registerToast("still_hungry");
-        AchievementToast.registerToast("just_desserts");
-        AchievementToast.registerToast("buckets_of_bolts");
-        AchievementToast.registerToast("the_great_southern_plantkill");
-        AchievementToast.registerToast("lihzahrdian_idol");
-        AchievementToast.registerToast("fish_out_of_water");
-        AchievementToast.registerToast("fae_flayer");
-        AchievementToast.registerToast("obsessive_devotion");
-        AchievementToast.registerToast("star_destroyer");
-        AchievementToast.registerToast("champion_of_terraria");
-        // Slayer event
-        AchievementToast.registerToast("bloodbath");
-        AchievementToast.registerToast("sticky_situation");
-        AchievementToast.registerToast("goblin_punter");
-        AchievementToast.registerToast("hero_of_etheria");
-        AchievementToast.registerToast("walk_the_plank");
-        AchievementToast.registerToast("dont_dread_on_me");
-        AchievementToast.registerToast("kill_the_sun");
-        AchievementToast.registerToast("do_you_want_to_slay_a_snowman");
-        AchievementToast.registerToast("tin_foil_hatter");
-        AchievementToast.registerToast("baleful_harvest");
-        AchievementToast.registerToast("ice_scream");
-
-        AchievementToast.registerToast("vehicular_manslaughter");
-        AchievementToast.registerToast("there_are_some_who_call_him");
-        AchievementToast.registerToast("deceiver_of_fools");
-        AchievementToast.registerToast("til_death");
-        AchievementToast.registerToast("archaeologist");
-        AchievementToast.registerToast("pretty_in_pink");
-        AchievementToast.registerToast("archaeologist");
-        AchievementToast.registerToast("torch_god");
-
-        // Challenger
-        AchievementToast.registerToast("real_estate_agent");
-        AchievementToast.registerToast("not_the_bees");
-        AchievementToast.registerToast("mecha_mayhem");
-        AchievementToast.registerToast("gelatin_world_tour");
-        AchievementToast.registerToast("bulldozer");
-        AchievementToast.registerToast("lucky_break");
-        AchievementToast.registerToast("throwing_lines");
-        AchievementToast.registerToast("the_frequent_flyer");
-        AchievementToast.registerToast("rainbows_and_unicorns");
-        AchievementToast.registerToast("you_and_what_army");
-        AchievementToast.registerToast("marathon_medalist");
-        AchievementToast.registerToast("servant_in_training");
-        AchievementToast.registerToast("good_little_slave");
-        AchievementToast.registerToast("trout_monkey");
-        AchievementToast.registerToast("fast_and_fishious");
-        AchievementToast.registerToast("supreme_helper_minion");
-        AchievementToast.registerToast("topped_off");
-        AchievementToast.registerToast("slayer_of_worlds");
-        AchievementToast.registerToast("a_rather_blustery_day");
-        AchievementToast.registerToast("hot_reels");
-        AchievementToast.registerToast("heliophobia");
-        AchievementToast.registerToast("leading_landlord");
-        AchievementToast.registerToast("feeling_petty");
-        AchievementToast.registerToast("jolly_jamboree");
-        AchievementToast.registerToast("dead_men_tell_no_tales");
-        AchievementToast.registerToast("unusual_survival_strategies");
-        AchievementToast.registerToast("the_great_slime_mitosis");
-        AchievementToast.registerToast("and_good_riddance");
-        AchievementToast.registerToast("to_infinity_and_beyond");
     }
 
     public record Display(AdvancementType type, Component title, Component description) {}

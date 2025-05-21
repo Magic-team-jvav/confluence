@@ -9,11 +9,11 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.common.menu.NPCTradesForgeMenu;
 import org.confluence.mod.integration.terra_entity.brain.ConfluenceDemolitionistNPCAi;
 import org.confluence.mod.integration.terra_entity.init.ModEffectStrategies;
 import org.confluence.mod.integration.terra_entity.init.ModTradeProviders;
+import org.confluence.mod.util.AchievementUtils;
 import org.confluence.terraentity.api.event.LoadResourceEvent;
 import org.confluence.terraentity.api.event.NPCEvent;
 import org.confluence.terraentity.api.event.SummonEvent;
@@ -99,7 +99,7 @@ public class TEEvents {
     @SubscribeEvent
     public static void summon$Pre(SummonEvent.Pre<?> event) {
         if (event.getPlayer() instanceof ServerPlayer serverPlayer && serverPlayer.getData(TEAttachments.SUMMONER_STORAGE).getIds().size() >= 8) {
-            ModAchievements.awardAchievement(serverPlayer, "you_and_what_army");
+            AchievementUtils.awardAchievement(serverPlayer, "you_and_what_army");
         }
     }
 

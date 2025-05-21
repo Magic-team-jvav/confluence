@@ -17,6 +17,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import net.neoforged.neoforge.event.ItemStackedOnOtherEvent;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
@@ -28,8 +29,8 @@ import org.confluence.mod.api.event.ShimmerItemTransmutationEvent;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.component.LootComponent;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
+import org.confluence.mod.common.data.AchievementOffsetLoader;
 import org.confluence.mod.common.data.ConfluenceCommand;
-import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModHookTypes;
 import org.confluence.mod.common.init.ModRecipes;
@@ -38,14 +39,15 @@ import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
+import org.confluence.mod.network.s2c.AchievementOffsetSyncPacketS2C;
 import org.confluence.mod.network.s2c.ExtraInventorySyncPacketS2C;
 import org.confluence.mod.network.s2c.FishingPowerInfoPacketS2C;
 import org.confluence.mod.network.s2c.VisibilityPacketS2C;
+import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.api.event.AfterAccessoryAbilitiesFlushedEvent;
 import org.confluence.terra_curio.common.item.IFunctionCouldEnable;
 import org.confluence.terra_guns.api.event.GunEvent;
-import org.confluence.terraentity.network.s2c.SyncNPCTradesPacketS2C;
 import top.theillusivec4.curios.api.event.CurioAttributeModifierEvent;
 import top.theillusivec4.curios.api.event.CurioChangeEvent;
 
@@ -141,7 +143,7 @@ public final class GameEvents {
             }
         } else {
             ExtraInventorySyncPacketS2C.sendToClient(serverPlayer, serverPlayer, serverPlayer.getData(ModAttachmentTypes.EXTRA_INVENTORY));
-            SyncNPCTradesPacketS2C.sync(serverPlayer);
+            AchievementOffsetSyncPacketS2C.sendToClient(serverPlayer);
         }
     }
 
@@ -151,7 +153,7 @@ public final class GameEvents {
         if (momentInstance.getLevel() instanceof ServerLevel) {
             if (momentInstance.getMoment() == TMMoments.BLOOD_MOON.get()) {
                 for (Player player : momentInstance.getPlayers()) {
-                    ModAchievements.awardAchievement((ServerPlayer) player, "bloodbath");
+                    AchievementUtils.awardAchievement((ServerPlayer) player, "bloodbath");
                 }
             }
         }
@@ -195,5 +197,10 @@ public final class GameEvents {
             }
             return original;
         }, event.getPlayer(), event);
+    }
+
+    @SubscribeEvent
+    public static void addReloadListener(AddReloadListenerEvent event) {
+        event.addListener(AchievementOffsetLoader.getInstance());
     }
 }

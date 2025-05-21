@@ -35,7 +35,6 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.data.saved.MeteoriteTracker;
-import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.item.ModItems;
@@ -122,11 +121,11 @@ public final class ModUtils {
         level.players().stream().filter(player -> player.level().dimension() == dimension).forEach(player -> {
             TreasureBagItem.createItemEntity(living, player);
             if (isEaterOfWorlds) {
-                ModAchievements.awardAchievement(player, "worm_fodder");
+                AchievementUtils.awardAchievement(player, "worm_fodder");
             } else if (stickySituation) {
-                ModAchievements.awardAchievement(player, "sticky_situation");
+                AchievementUtils.awardAchievement(player, "sticky_situation");
             } else if (is$WallOrMountain$OfFlesh) {
-                ModAchievements.awardAchievement(player, "still_hungry");
+                AchievementUtils.awardAchievement(player, "still_hungry");
             }
         });
     }

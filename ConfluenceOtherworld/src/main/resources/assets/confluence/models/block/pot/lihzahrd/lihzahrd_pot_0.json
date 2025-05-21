@@ -1,5 +1,6 @@
 {
 	"credit": "Made with Blockbench",
+	"render_type": "cutout_mipped",
 	"textures": {
 		"0": "confluence:block/lihzahrd/lihzahrd_pot_0",
 		"1": "confluence:block/lihzahrd/lihzahrd_pot_top_0",

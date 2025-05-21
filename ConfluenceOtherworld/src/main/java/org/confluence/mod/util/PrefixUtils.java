@@ -393,7 +393,7 @@ public final class PrefixUtils {
             else if (rarity > 11) rarity = 11;
         }
         itemStack.set(ConfluenceMagicLib.MOD_RARITY, ModRarity.ID_MAP.getOrDefault(rarity, ModRarity.WHITE));
-        itemStack.set(ModDataComponentTypes.VALUE, new ValueComponent((int) (ValueComponent.getValue(copy, 5000) * num14 * num14)));
+        itemStack.set(ModDataComponentTypes.VALUE, new ValueComponent((int) (ValueComponent.getValue(copy, 50) * num14 * num14)));
     }
 
     public static void unknown(ItemStack itemStack) {

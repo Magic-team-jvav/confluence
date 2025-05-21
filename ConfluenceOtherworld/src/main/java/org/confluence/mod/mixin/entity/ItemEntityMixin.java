@@ -8,10 +8,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.AbstractCookingRecipe;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForge;
@@ -20,8 +17,10 @@ import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.saved.GamePhase;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.init.ModCriterionTriggers;
+import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.recipe.ItemTransmutationRecipe;
 import org.confluence.mod.mixed.IEntity;
 import org.confluence.mod.mixed.IItemEntity;
 import org.confluence.mod.util.PrefixUtils;
@@ -35,9 +34,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static org.confluence.mod.api.event.ShimmerItemTransmutationEvent.BLACK_LIST;
-import static org.confluence.mod.api.event.ShimmerItemTransmutationEvent.ITEM_TRANSMUTATION;
 
 @Mixin(ItemEntity.class)
 public abstract class ItemEntityMixin implements IItemEntity {
@@ -110,31 +106,26 @@ public abstract class ItemEntityMixin implements IItemEntity {
     private static void confluence$initTargets(ShimmerItemTransmutationEvent.Post event) {
         ItemEntity source = event.getSource();
         ItemStack sourceItem = source.getItem();
-        for (Ingredient ingredient : BLACK_LIST) {
-            if (ingredient.test(sourceItem)) {
-                return;
-            }
-        }
 
         GamePhase gamePhase = KillBoard.INSTANCE.getGamePhase();
-        for (ShimmerItemTransmutationEvent.ItemTransmutation transmutation : ITEM_TRANSMUTATION) {
-            if (transmutation.gamePhase().isAboveThan(gamePhase)) continue;
-            if (transmutation.source().test(sourceItem)) {
-                int times = sourceItem.getCount() / transmutation.shrink();
-                List<ItemStack> results = new ArrayList<>();
-                for (ItemStack result : transmutation.target()) {
-                    int count = result.getCount() * times;
-                    int maxStackSize = result.getMaxStackSize();
-                    while (count > maxStackSize) {
-                        results.add(result.copyWithCount(maxStackSize));
-                        count -= maxStackSize;
-                    }
-                    results.add(result.copyWithCount(count));
+        List<RecipeHolder<ItemTransmutationRecipe>> recipes = source.level().getRecipeManager().getRecipesFor(ModRecipes.ITEM_TRANSMUTATION_TYPE.get(), new SingleRecipeInput(sourceItem), source.level());
+        for (RecipeHolder<ItemTransmutationRecipe> recipeHolder : recipes) {
+            ItemTransmutationRecipe recipe = recipeHolder.value();
+            if (!recipe.isValid()) return;
+            int times = sourceItem.getCount() / recipe.shrink();
+            List<ItemStack> results = new ArrayList<>();
+            for (ItemStack result : recipe.target()) {
+                int count = result.getCount() * times;
+                int maxStackSize = result.getMaxStackSize();
+                while (count > maxStackSize) {
+                    results.add(result.copyWithCount(maxStackSize));
+                    count -= maxStackSize;
                 }
-                event.setShrink(transmutation.shrink() * times);
-                event.setTargets(results);
-                return;
+                results.add(result.copyWithCount(count));
             }
+            event.setShrink(recipe.shrink() * times);
+            event.setTargets(results);
+            return;
         }
 
         if (!CommonConfigs.SHIMMER_DECOMPOSE.get()) return;

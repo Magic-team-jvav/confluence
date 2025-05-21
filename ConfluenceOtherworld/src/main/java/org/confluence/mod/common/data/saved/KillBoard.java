@@ -10,8 +10,10 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.entity.EntityType;
+import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.lib.common.data.saved.IGlobalData;
+import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.network.s2c.GamePhasePacketS2C;
@@ -73,6 +75,9 @@ public class KillBoard implements IGlobalData {
     }
 
     public GamePhase getGamePhase() {
+        if (FMLEnvironment.dist.isClient()) {
+            return ClientPacketHandler.getGamePhase();
+        }
         return gamePhase;
     }
 

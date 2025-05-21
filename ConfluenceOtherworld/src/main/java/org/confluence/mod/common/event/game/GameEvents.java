@@ -143,7 +143,6 @@ public final class GameEvents {
             ExtraInventorySyncPacketS2C.sendToClient(serverPlayer, serverPlayer, serverPlayer.getData(ModAttachmentTypes.EXTRA_INVENTORY));
             SyncNPCTradesPacketS2C.sync(serverPlayer);
         }
-
     }
 
     @SubscribeEvent

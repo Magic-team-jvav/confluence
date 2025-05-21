@@ -59,7 +59,8 @@ public final class ModDataGenerator {
                 ModRecipeProvider::new,
                 CraftingRecipeProvider::new,
                 HeavyWorkBenchProvider::new,
-                CookingPotProvider::new
+                CookingPotProvider::new,
+                ShimmerTransmutationProvider::new
         ));
         generator.addProvider(server, new ModDataMapProvider(output, lookup));
         generator.addProvider(server, new ModLootTableProvider(output, lookup));

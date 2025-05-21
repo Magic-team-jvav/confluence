@@ -13,21 +13,17 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.block.Blocks;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.api.event.ShimmerItemTransmutationEvent;
 import org.confluence.mod.client.gui.container.*;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.item.ToolItems;
-import org.confluence.terra_curio.integration.jei.JeiBackGround;
 
 @JeiPlugin
 public final class ModJeiPlugin implements IModPlugin {
     public static final ResourceLocation UID = Confluence.asResource("jei_plugin");
     public static final ResourceLocation ARROW_DOWN = Confluence.asResource("textures/gui/arrow_down.png");
     public static final ResourceLocation ARROW_RIGHT = Confluence.asResource("textures/gui/arrow_right.png");
-    public static final JeiBackGround FULL_BACKGROUND = new JeiBackGround(128, 128, null);
-    public static final JeiBackGround QUARTER_BACKGROUND = new JeiBackGround(128, 32, null);
 
     @Override
     public ResourceLocation getPluginUid() {
@@ -54,10 +50,10 @@ public final class ModJeiPlugin implements IModPlugin {
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
-        registration.addRecipes(ShimmerItemTransmutationCategory.TYPE, ShimmerItemTransmutationEvent.ITEM_TRANSMUTATION);
         ClientLevel level = Minecraft.getInstance().level;
         if (level == null) return;
         RecipeManager recipeManager = level.getRecipeManager();
+        registration.addRecipes(ShimmerItemTransmutationCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.ITEM_TRANSMUTATION_TYPE.get()));
         registration.addRecipes(SkyMillCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.SKY_MILL_TYPE.get()));
         registration.addRecipes(AltarCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.ALTAR_TYPE.get()));
         registration.addRecipes(HellforgeCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.HELLFORGE_TYPE.get()));

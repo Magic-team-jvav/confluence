@@ -41,12 +41,12 @@ public class AchievementOffsetLoader extends ContextAwareReloadListener implemen
             Executor backgroundExecutor,
             Executor gameExecutor
     ) {
-        return WAITING_FOR = CompletableFuture.supplyAsync(() -> prepare(resourceManager, preparationsProfiler), backgroundExecutor)
-                .thenCompose(stage::wait)
-                .thenAcceptAsync(resourceList -> apply(resourceList, resourceManager, reloadProfiler), gameExecutor);
+        return WAITING_FOR = CompletableFuture.supplyAsync(
+                () -> prepare(resourceManager), backgroundExecutor
+        ).thenCompose(stage::wait).thenAcceptAsync(this::apply, gameExecutor);
     }
 
-    protected Map<ResourceLocation, JsonElement> prepare(ResourceManager resourceManager, ProfilerFiller profilerFiller) {
+    protected Map<ResourceLocation, JsonElement> prepare(ResourceManager resourceManager) {
         Map<ResourceLocation, JsonElement> map = new HashMap<>();
         ResourceLocation resourceLocation = Confluence.asResource("achievement_offset.json");
         for (Resource resource : resourceManager.getResourceStack(resourceLocation)) {
@@ -63,7 +63,7 @@ public class AchievementOffsetLoader extends ContextAwareReloadListener implemen
         return map;
     }
 
-    protected void apply(Map<ResourceLocation, JsonElement> resourceList, ResourceManager resourceManager, ProfilerFiller profiler) {
+    protected void apply(Map<ResourceLocation, JsonElement> resourceList) {
         ImmutableMap.Builder<ResourceLocation, Vec2> builder = ImmutableMap.builder();
         for (Map.Entry<ResourceLocation, JsonElement> entry : resourceList.entrySet()) {
             ResourceLocation location = entry.getKey();

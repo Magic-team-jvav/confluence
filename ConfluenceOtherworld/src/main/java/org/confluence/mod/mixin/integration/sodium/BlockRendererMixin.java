@@ -9,7 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.mod.client.textures.LocalBrushData;
 import org.confluence.mod.common.data.saved.BrushData;
-import org.confluence.mod.integration.sodium.SodiumHelper;
+import org.confluence.mod.integration.sodium.IMutableQuadViewImpl;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.Unique;
@@ -46,20 +46,22 @@ public abstract class BlockRendererMixin {
     private void setColor(MutableQuadViewImpl quad, CallbackInfo ci, @Share("colorData") LocalIntRef colorData) {
         int color = colorData.get();
         if (color == BrushData.EMPTY_COLOR || color == BrushData.ILLUMINANT_COLOR || color == BrushData.ECHO_COLOR) return;
+        IMutableQuadViewImpl view = (IMutableQuadViewImpl) (Object) quad;
         if (color == BrushData.NEGATIVE_COLOR) {
+            ModelQuadView view1 = (ModelQuadView) (Object) quad;
             for (int i = 0; i < 4; ++i) {
-                int color1 = ((ModelQuadView) (Object) quad).getColor(i); // 并非冗余
+                int color1 = view1.getColor(i); // 并非冗余
                 if ((color1 & 0xFFFFFF) != 0xFFFFFF) {
                     int comp0 = 255 - (color1 & 255);
                     int comp1 = 255 - (color1 >>> 8 & 255);
                     int comp2 = 255 - (color1 >>> 16 & 255);
                     int comp3 = color1 >>> 24 & 255;
-                    SodiumHelper.quad$color(quad, i, comp0 | comp1 << 8 | comp2 << 16 | comp3 << 24);
+                    view.confluence$color(i, comp0 | comp1 << 8 | comp2 << 16 | comp3 << 24);
                 }
             }
         } else {
             for (int i = 0; i < 4; i++) {
-                SodiumHelper.quad$color(quad, i, color | 0xFF << 24);
+                view.confluence$color(i, color | 0xFF << 24);
             }
         }
     }

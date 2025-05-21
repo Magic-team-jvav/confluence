@@ -1,4 +1,4 @@
-package org.confluence.mod.mixed;
+package org.confluence.mod.integration.geckolib;
 
 import software.bernie.geckolib.cache.object.GeoCube;
 

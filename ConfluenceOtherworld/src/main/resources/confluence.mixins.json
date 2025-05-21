@@ -137,6 +137,7 @@
         "integration.sodium.BlockOcclusionCacheMixin",
         "integration.sodium.BlockRendererMixin",
         "integration.sodium.ChunkBuilderMeshingTaskMixin",
+        "integration.sodium.MutableQuadViewImplMixin",
         "integration.terra_curio.GameClientEventsMixin",
         "integration.terra_curio.InformationHandlerMixin",
         "integration.terra_curio.ScopeFovHandlerMixin",

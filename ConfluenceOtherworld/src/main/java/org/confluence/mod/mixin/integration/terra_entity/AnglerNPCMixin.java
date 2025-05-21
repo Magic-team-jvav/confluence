@@ -8,7 +8,7 @@ import net.minecraft.world.entity.player.Player;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.common.data.saved.NPCSpawner;
-import org.confluence.mod.mixed.IAbstractTerraNPC;
+import org.confluence.mod.integration.terra_entity.IAbstractTerraNPC;
 import org.confluence.terraentity.entity.npc.AnglerNPC;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

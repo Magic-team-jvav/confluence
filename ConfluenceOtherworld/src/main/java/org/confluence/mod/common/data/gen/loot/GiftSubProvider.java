@@ -746,10 +746,11 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
 
         // 暗影套噬魂怪掉落
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/corruption_carry"), LootTable.lootTable()
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ArmorItems.SHADOW_HELMET)))
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ArmorItems.SHADOW_CHESTPLATE)))
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ArmorItems.SHADOW_LEGGINGS)))
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ArmorItems.SHADOW_BOOTS)))
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(ArmorItems.SHADOW_HELMET))
+                        .add(LootItem.lootTableItem(ArmorItems.SHADOW_CHESTPLATE))
+                        .add(LootItem.lootTableItem(ArmorItems.SHADOW_LEGGINGS))
+                        .add(LootItem.lootTableItem(ArmorItems.SHADOW_BOOTS)))
         );
 
         // 牡蛎

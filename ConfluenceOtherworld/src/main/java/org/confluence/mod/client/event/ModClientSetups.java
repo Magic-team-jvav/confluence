@@ -202,19 +202,7 @@ public final class ModClientSetups {
         ItemBlockRenderTypes.setRenderLayer(DecorativeBlocks.PURE_GLASS.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(FunctionalBlocks.ECHO_BLOCK.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(ModBlocks.CURSED_FLAME_BLOCK.get(), cutout);
-        RenderType cutoutMipped = RenderType.cutoutMipped();
-        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.GREEN_MOSS.get(), cutoutMipped);
-        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.BROWN_MOSS.get(), cutoutMipped);
-        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.RED_MOSS.get(), cutoutMipped);
-        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.BLUE_MOSS.get(), cutoutMipped);
-        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.PURPLE_MOSS.get(), cutoutMipped);
-        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.LAVA_MOSS.get(), cutoutMipped);
-        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.KRYPTON_MOSS.get(), cutoutMipped);
-        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.XENON_MOSS.get(), cutoutMipped);
-        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.ARGON_MOSS.get(), cutoutMipped);
-        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.NEON_MOSS.get(), cutoutMipped);
-        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.HELIUM_MOSS.get(), cutoutMipped);
-        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.GLOWING_MUSHROOM_MOSS.get(), cutoutMipped);
+        // 如果方块没有如期cutout渲染，请检查blockstate里是否调用了没有cutout的模型
     }
 
     static void registerItemProperties() {

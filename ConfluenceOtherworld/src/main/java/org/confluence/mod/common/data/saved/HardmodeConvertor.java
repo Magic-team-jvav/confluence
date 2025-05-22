@@ -3,6 +3,7 @@ package org.confluence.mod.common.data.saved;
 import com.google.common.collect.AbstractIterator;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.*;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
@@ -41,7 +42,6 @@ import org.confluence.mod.util.AchievementUtils;
 import javax.annotation.CheckForNull;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 /**
@@ -317,7 +317,7 @@ public class HardmodeConvertor implements IGlobalData {
     }
 
     public static class TheHallowConversionTable {
-        private final Map<BlockState, BlockState> cache = new ConcurrentHashMap<>();
+        private final Map<BlockState, BlockState> cache = new Object2ObjectOpenHashMap<>();
 
         @SuppressWarnings("unchecked")
         public <T extends Comparable<T>, V extends T> BlockState get(BlockState blockState) {

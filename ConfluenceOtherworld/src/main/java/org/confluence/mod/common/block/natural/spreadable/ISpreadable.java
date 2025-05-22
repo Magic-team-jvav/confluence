@@ -22,6 +22,7 @@ import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Hashtable;
 import java.util.Locale;
@@ -561,7 +562,7 @@ public interface ISpreadable {
         );
 
         private static final IntFunction<Type> BY_ID = ByIdMap.continuous(Type::ordinal, values(), ByIdMap.OutOfBoundsStrategy.CLAMP);
-        private Map<Supplier<? extends Block>, Supplier<? extends Block>> supplierMap;
+        private transient @Nullable Map<Supplier<? extends Block>, Supplier<? extends Block>> supplierMap;
         private Map<Block, Block> blockMap;
 
         @SafeVarargs

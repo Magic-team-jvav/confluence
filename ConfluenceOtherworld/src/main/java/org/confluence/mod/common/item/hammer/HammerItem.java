@@ -50,7 +50,7 @@ public class HammerItem extends DiggerItem {
                     case WEST, EAST -> xOff = false;
                     default -> yOff = false;
                 }
-                destroyCount += iteForBlocks(level, player, pos, xOff, yOff, zOff, state.getDestroySpeed(level, pos) * 1.5F);
+                destroyCount += iteForBlocks(level, player, pos, xOff, yOff, zOff, state.getDestroySpeed(level, pos) * 1.5F, stack);
             }
             if (state.getDestroySpeed(level, pos) != 0.0F) {
                 stack.hurtAndBreak(destroyCount, entity, EquipmentSlot.MAINHAND);
@@ -61,10 +61,10 @@ public class HammerItem extends DiggerItem {
     /**
      * Scan 3*1*3 blocks related to the given pos.
      */
-    public static int iteForBlocks(Level level, Player player, BlockPos pos, boolean xOff, boolean yOff, boolean zOff, float speedOff) {
+    public static int iteForBlocks(Level level, Player player, BlockPos pos, boolean xOff, boolean yOff, boolean zOff, float speedOff, ItemStack stack) {
         Stream<BlockPos> posStream = BlockPos.betweenClosedStream(pos.offset(xOff ? 1 : 0, yOff ? 1 : 0, zOff ? 1 : 0), pos.offset(xOff ? -1 : 0, yOff ? -1 : 0, zOff ? -1 : 0));
         return (int) posStream.filter(pos1 -> !pos1.equals(pos))
-                .map(pos1 -> applyBlockDestroy(level, pos1, player, speedOff))
+                .map(pos1 -> applyBlockDestroy(level, pos1, player, speedOff, stack))
                 .filter(destroyed -> destroyed)
                 .count();
     }
@@ -74,9 +74,10 @@ public class HammerItem extends DiggerItem {
      *
      * @param pos      The current producing block's pos(Target pos).
      * @param speedOff Related block's destroy speed * 1.5 (satisfied range).
+     * @param stack    The tool
      * @return TRUE, if the block has been broke, otherwise return FALSE.
      */
-    public static boolean applyBlockDestroy(Level level, BlockPos pos, Player player, float speedOff) {
+    public static boolean applyBlockDestroy(Level level, BlockPos pos, Player player, float speedOff, ItemStack stack) {
         BlockState targetState = level.getBlockState(pos);
         float targetSpeed = targetState.getDestroySpeed(level, pos);
         boolean flag1 = targetState.canHarvestBlock(level, pos, player);
@@ -84,6 +85,7 @@ public class HammerItem extends DiggerItem {
         boolean flag3 = player.hasInfiniteMaterials();
         if (flag1 && flag2 || flag3) {
             level.destroyBlock(pos, flag1, player);
+            targetState.getBlock().playerDestroy(level, player, pos, targetState, targetState.hasBlockEntity() ? level.getBlockEntity(pos) : null, stack);
             return true;
         }
         return false;

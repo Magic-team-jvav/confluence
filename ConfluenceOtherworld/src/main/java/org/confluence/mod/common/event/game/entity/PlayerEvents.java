@@ -35,6 +35,7 @@ import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import org.confluence.mod.common.data.AchievementOffsetLoader;
+import org.confluence.mod.common.data.saved.HardmodeConvertor;
 import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
 import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
@@ -49,7 +50,10 @@ import org.confluence.mod.common.item.common.EverBeneficialItem;
 import org.confluence.mod.common.item.drill.DrillItem;
 import org.confluence.mod.common.menu.FletchingTableMenu;
 import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
-import org.confluence.mod.mixed.*;
+import org.confluence.mod.mixed.IAbstractMinecart;
+import org.confluence.mod.mixed.IFishingHook;
+import org.confluence.mod.mixed.IMinecraftServer;
+import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.network.s2c.ExtraInventorySyncPacketS2C;
 import org.confluence.mod.network.s2c.FishingPowerInfoPacketS2C;
 import org.confluence.mod.network.s2c.SecretFlagSyncPacketS2C;
@@ -77,9 +81,8 @@ public final class PlayerEvents {
             VisibilityPacketS2C.sendEcho(serverPlayer);
             BoulderWorld.forceSetAccessory(serverPlayer);
             VisibilityPacketS2C.sendTheConstantPostEffect(serverPlayer);
-            long secretFlag = ((IMinecraftServer) serverPlayer.server).confluence$getSecretFlag();
-            SecretFlagSyncPacketS2C.sendToAll(secretFlag);
-            if ((secretFlag & IWorldOptions.HARDMODE) != 0) {
+            SecretFlagSyncPacketS2C.sendToAll(((IMinecraftServer) serverPlayer.server).confluence$getSecretFlag());
+            if (HardmodeConvertor.INSTANCE.isCompleted()) {
                 AchievementUtils.awardAchievement(serverPlayer, "its_hard");
             }
             if (CommonConfigs.DO_NPC_SPAWNING.get() && serverPlayer.serverLevel().getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)) {

@@ -61,6 +61,7 @@ import org.confluence.mod.util.ClientUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.api.event.PerformJumpingEvent;
+import org.confluence.terraentity.client.gui.container.TETradeScreen;
 import software.bernie.geckolib.event.GeoRenderEvent;
 import top.theillusivec4.curios.api.SlotContext;
 
@@ -182,7 +183,7 @@ public final class GameClientEvents {
                 }
             }
         }
-        if (ClientConfigs.showItemPrice) {
+        if (ClientConfigs.showItemPrice && Minecraft.getInstance().screen instanceof TETradeScreen<?>) {
             int price = ValueComponent.getValue(itemStack, 0);
             if (price > 0) {
                 event.getToolTip().add(Component.translatable("tooltip.price.sell").withStyle(ChatFormatting.GRAY).append(ModUtils.formatPrice(price)));

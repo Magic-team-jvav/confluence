@@ -34,6 +34,7 @@ public final class CommonConfigs {
     public static IntValue BOSS_RESPAWN_TIME_MAX;
 
     public static BooleanValue WRAPPED_CRIMSON_HEART;
+    public static BooleanValue INSTANTLY_HARDMODE_CONVERSION;
 
     public static void onLoad() {}
 
@@ -88,6 +89,7 @@ public final class CommonConfigs {
         {
             BUILDER.push("WorldGeneration");
             WRAPPED_CRIMSON_HEART = BUILDER.define("wrappedCrimsonHeart", false);
+            INSTANTLY_HARDMODE_CONVERSION = BUILDER.define("instantlyHardmodeConversion", false);
             BUILDER.pop();
         }
         container.registerConfig(ModConfig.Type.COMMON, BUILDER.build());

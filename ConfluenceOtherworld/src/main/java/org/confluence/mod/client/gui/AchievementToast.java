@@ -95,16 +95,14 @@ public class AchievementToast implements Toast {
                         alpha = Mth.floor(Mth.clamp((float) (splitTime - delta) / 200.0F, 0.0F, 1.0F) * 255.0F);
                     } else if (t == times - 1) {
                         alpha = Mth.floor(Mth.clamp((float) delta / 200.0F, 0.0F, 1.0F) * 252.0F);
+                    } else if (delta < splitTime / 2) {
+                        alpha = Mth.floor(Mth.clamp((float) delta / 200.0F, 0.0F, 1.0F) * 252.0F);
                     } else {
-                        if (delta < splitTime / 2) {
-                            alpha = Mth.floor(Mth.clamp((float) delta / 200.0F, 0.0F, 1.0F) * 252.0F);
-                        } else {
-                            alpha = Mth.floor(Mth.clamp((float) (splitTime - delta) / 200.0F, 0.0F, 1.0F) * 252.0F);
-                        }
+                        alpha = Mth.floor(Mth.clamp((float) (splitTime - delta) / 200.0F, 0.0F, 1.0F) * 252.0F);
                     }
                     for (int i = 0; iterator.hasNext(); i++) {
                         FormattedCharSequence next = iterator.next();
-                        if (i < (t + 1) * 3 && i >= t * 3) {
+                        if (i >= t * 3 && i < (t + 1) * 3) {
                             guiGraphics.drawString(font, next, 8, top, alpha << 24 | 67108864, false);
                             top += 9;
                         }

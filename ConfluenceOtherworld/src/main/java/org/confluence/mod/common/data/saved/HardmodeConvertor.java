@@ -29,6 +29,7 @@ import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.api.event.EnterHardmodeEvent;
+import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.mixed.IDedicatedServer;
@@ -108,7 +109,7 @@ public class HardmodeConvertor implements IGlobalData {
     }
 
     public void scheduleRefill(ServerLevel serverLevel) {
-        if (!shouldContinue) return;
+        if (completed || !shouldContinue) return;
         if (sanctification.isEmpty()) {
             if (started) {
                 this.completed = true;
@@ -128,19 +129,32 @@ public class HardmodeConvertor implements IGlobalData {
             }
             this.started = false;
             theHallowConversionTable.clear();
-        } else if (serverLevel.getGameTime() % 5 == 0) {
+        } else {
             if (serverLevel.getServer() instanceof IDedicatedServer dedicatedServer && !dedicatedServer.confluence$isOnHardmodeConversation()) {
                 dedicatedServer.confluence$setOnHardmodeConversation(true);
             }
-            Tuple<ChunkPos, BlockPosColumn[][]> entry = sanctification.getFirst();
-            ChunkPos chunkPos = entry.getA();
+            if (CommonConfigs.INSTANTLY_HARDMODE_CONVERSION.get()) {
+                sanctification.removeIf(entry -> {
+                    ChunkPos chunkPos = entry.getA();
 
-            boolean noForceBefore = !serverLevel.getForcedChunks().contains(chunkPos.toLong());
-            if (noForceBefore) serverLevel.setChunkForced(chunkPos.x, chunkPos.z, true);
-            boolean refilled = refill(serverLevel, chunkPos, entry.getB());
-            if (noForceBefore) serverLevel.setChunkForced(chunkPos.x, chunkPos.z, false);
+                    boolean noForceBefore = !serverLevel.getForcedChunks().contains(chunkPos.toLong());
+                    if (noForceBefore) serverLevel.setChunkForced(chunkPos.x, chunkPos.z, true);
+                    boolean refilled = refill(serverLevel, chunkPos, entry.getB());
+                    if (noForceBefore) serverLevel.setChunkForced(chunkPos.x, chunkPos.z, false);
 
-            if (refilled) sanctification.removeFirst();
+                    return refilled;
+                });
+            } else if (serverLevel.getGameTime() % 5 == 0) {
+                Tuple<ChunkPos, BlockPosColumn[][]> entry = sanctification.getFirst();
+                ChunkPos chunkPos = entry.getA();
+
+                boolean noForceBefore = !serverLevel.getForcedChunks().contains(chunkPos.toLong());
+                if (noForceBefore) serverLevel.setChunkForced(chunkPos.x, chunkPos.z, true);
+                boolean refilled = refill(serverLevel, chunkPos, entry.getB());
+                if (noForceBefore) serverLevel.setChunkForced(chunkPos.x, chunkPos.z, false);
+
+                if (refilled) sanctification.removeFirst();
+            }
         }
     }
 

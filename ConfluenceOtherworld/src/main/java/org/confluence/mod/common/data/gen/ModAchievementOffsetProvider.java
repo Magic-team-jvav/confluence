@@ -9,7 +9,7 @@ import net.minecraft.world.phys.Vec2;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.data.AchievementOffsetLoader;
+import org.confluence.mod.util.AchievementUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -179,7 +179,7 @@ public class ModAchievementOffsetProvider extends AbstractRecipeProvider {
         private final Map<ResourceLocation, Vec2> map = new HashMap<>();
 
         public Builder offset(String path, float x, float y) {
-            map.put(AchievementOffsetLoader.asAchievement(path), new Vec2(x, y));
+            map.put(AchievementUtils.asAchievement(path), new Vec2(x, y));
             return this;
         }
     }

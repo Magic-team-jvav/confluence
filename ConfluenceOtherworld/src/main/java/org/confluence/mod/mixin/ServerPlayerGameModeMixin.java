@@ -6,7 +6,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.ServerPlayerGameMode;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.mod.common.data.AchievementOffsetLoader;
+import org.confluence.mod.util.AchievementUtils;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -30,7 +30,7 @@ public abstract class ServerPlayerGameModeMixin {
         int amount = data.getInt("confluence:block_destroyed");
         data.putInt("confluence:block_destroyed", amount + 1);
         if (amount >= 9999) {
-            AdvancementHolder advancement = player.server.getAdvancements().get(AchievementOffsetLoader.asAchievement("bulldozer"));
+            AdvancementHolder advancement = player.server.getAdvancements().get(AchievementUtils.asAchievement("bulldozer"));
             if (advancement != null) {
                 player.getAdvancements().award(advancement, "never");
             }

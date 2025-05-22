@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.JsonOps;
+import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.Resource;
@@ -18,6 +19,7 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.AchievementToast;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.HashMap;
@@ -25,8 +27,9 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public class AchievementOffsetLoader extends ContextAwareReloadListener implements PreparableReloadListener {
-    public static final String PREFIX = "achievements/";
     public static volatile CompletableFuture<Void> WAITING_FOR = CompletableFuture.completedFuture(null);
     private static AchievementOffsetLoader INSTANCE;
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
@@ -98,7 +101,4 @@ public class AchievementOffsetLoader extends ContextAwareReloadListener implemen
         return getInstance().getRegisteredAchievements();
     }
 
-    public static ResourceLocation asAchievement(String path) {
-        return Confluence.asResource(PREFIX + path);
-    }
 }

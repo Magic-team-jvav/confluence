@@ -3,6 +3,7 @@ package org.confluence.mod.util;
 import com.google.common.collect.Streams;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.ServerStatsCounter;
@@ -17,7 +18,6 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.block.functional.DartTrapBlock;
-import org.confluence.mod.common.data.AchievementOffsetLoader;
 import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
@@ -25,11 +25,17 @@ import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 import static org.confluence.mod.common.attachment.ExtraInventory.SIZE_VANITY_ARMOR;
 
 public final class AchievementUtils {
+    public static final String PREFIX = "achievements/";
+
+    public static ResourceLocation asAchievement(String path) {
+        return Confluence.asResource(PREFIX + path);
+    }
+
     public static void awardAchievement(ServerPlayer player, String path) {
         CompoundTag data = LibUtils.getOrCreatePersistedData(player);
         String key = Confluence.MODID + ':' + path;
         if (!data.getBoolean(key)) {
-            AdvancementHolder advancement = player.server.getAdvancements().get(AchievementOffsetLoader.asAchievement(path));
+            AdvancementHolder advancement = player.server.getAdvancements().get(asAchievement(path));
             if (advancement != null) {
                 player.getAdvancements().award(advancement, "never");
             }
@@ -44,7 +50,7 @@ public final class AchievementUtils {
                 if (firstNight == 0L && level.isNight()) {
                     LibUtils.getOrCreatePersistedData(player).putLong("confluence:you_can_do_it", level.getDayTime());
                 } else if (firstNight != 0L && level.getDayTime() - firstNight > 12000L) {
-                    AdvancementHolder advancement = player.server.getAdvancements().get(AchievementOffsetLoader.asAchievement("you_can_do_it"));
+                    AdvancementHolder advancement = player.server.getAdvancements().get(asAchievement("you_can_do_it"));
                     if (advancement != null) {
                         player.getAdvancements().award(advancement, "never");
                     }
@@ -60,7 +66,7 @@ public final class AchievementUtils {
         int crouch = stats.getValue(Stats.CUSTOM.get(Stats.CROUCH_ONE_CM));
         int walk = stats.getValue(Stats.CUSTOM.get(Stats.WALK_ONE_CM));
         if (sprint + crouch + walk > 46112_00) {
-            AdvancementHolder advancement = player.server.getAdvancements().get(AchievementOffsetLoader.asAchievement("marathon_medalist"));
+            AdvancementHolder advancement = player.server.getAdvancements().get(asAchievement("marathon_medalist"));
             if (advancement != null) {
                 player.getAdvancements().award(advancement, "never");
             }
@@ -103,7 +109,7 @@ public final class AchievementUtils {
         if (before > 10000) return;
         long total = before + cost;
         if (total >= 10000) {
-            AdvancementHolder advancement = player.server.getAdvancements().get(AchievementOffsetLoader.asAchievement("the_frequent_flyer"));
+            AdvancementHolder advancement = player.server.getAdvancements().get(asAchievement("the_frequent_flyer"));
             if (advancement != null) {
                 player.getAdvancements().award(advancement, "never");
             }

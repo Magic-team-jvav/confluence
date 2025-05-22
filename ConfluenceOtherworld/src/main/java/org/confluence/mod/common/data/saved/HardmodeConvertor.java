@@ -1,5 +1,6 @@
 package org.confluence.mod.common.data.saved;
 
+import com.google.common.base.Stopwatch;
 import com.google.common.collect.AbstractIterator;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.*;
@@ -29,6 +30,7 @@ import org.apache.commons.lang3.mutable.MutableInt;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.EnterHardmodeEvent;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.init.ModTags;
@@ -134,6 +136,8 @@ public class HardmodeConvertor implements IGlobalData {
                 dedicatedServer.confluence$setOnHardmodeConversation(true);
             }
             if (CommonConfigs.INSTANTLY_HARDMODE_CONVERSION.get()) {
+                Confluence.LOGGER.info("Starting hardmode conversion ...");
+                Stopwatch stopwatch = Stopwatch.createStarted();
                 sanctification.removeIf(entry -> {
                     ChunkPos chunkPos = entry.getA();
 
@@ -144,6 +148,7 @@ public class HardmodeConvertor implements IGlobalData {
 
                     return refilled;
                 });
+                Confluence.LOGGER.info("Hardmode conversion took {}", stopwatch.stop());
             } else if (serverLevel.getGameTime() % 5 == 0) {
                 Tuple<ChunkPos, BlockPosColumn[][]> entry = sanctification.getFirst();
                 ChunkPos chunkPos = entry.getA();
@@ -318,10 +323,13 @@ public class HardmodeConvertor implements IGlobalData {
 
     public static class TheHallowConversionTable {
         private final Map<BlockState, BlockState> cache = new Object2ObjectOpenHashMap<>();
+        private BlockState lastCheck;
+        private BlockState lastTarget;
 
         @SuppressWarnings("unchecked")
         public <T extends Comparable<T>, V extends T> BlockState get(BlockState blockState) {
-            return cache.computeIfAbsent(blockState, source -> {
+            if (lastTarget != null && blockState == lastCheck) return lastTarget;
+            BlockState computed = cache.computeIfAbsent(blockState, source -> {
                 Block target = null;
 
                 if (source.is(BlockTags.LOGS)) {
@@ -359,6 +367,11 @@ public class HardmodeConvertor implements IGlobalData {
                 }
                 return targetState;
             });
+            if (blockState != lastCheck) {
+                this.lastCheck = blockState;
+                this.lastTarget = computed;
+            }
+            return computed;
         }
 
         public void clear() {

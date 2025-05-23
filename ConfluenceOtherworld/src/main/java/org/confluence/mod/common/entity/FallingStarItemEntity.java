@@ -59,6 +59,7 @@ public class FallingStarItemEntity extends ItemEntity {
             emitter.attached = this;
             PSGameClient.LOADER.addEmitter(emitter, false);
         }
+        super.tick();
         if (level().getDayTime() % 24000 < 12000) {
             onRemove();
         } else {
@@ -77,7 +78,7 @@ public class FallingStarItemEntity extends ItemEntity {
                     return;
                 }
             }
-            if (getInBlockState().liquid() || getBlockStateOn().liquid()) {
+            if (!getInBlockState().isAir()) {
                 setWasOnGround(true);
                 setOnGround(true);
             }

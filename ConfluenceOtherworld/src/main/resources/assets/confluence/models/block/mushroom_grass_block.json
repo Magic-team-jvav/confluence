@@ -1,8 +1,40 @@
 {
-  "parent": "minecraft:block/cube_bottom_top",
   "textures": {
     "bottom": "minecraft:block/mud",
     "side": "confluence:block/mushroom_grass_block_side",
+    "side1": "confluence:block/mushroom_grass_block_side_mud",
     "top": "confluence:block/mushroom_grass_block_top"
-  }
+  },
+  "render_type": "cutout_mipped",
+  "elements": [
+    {
+      "from": [0, 0, 0],
+      "to": [16, 16, 16],
+      "rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+      "faces": {
+        "north": {"texture": "#side1", "cullface": "north"},
+        "east": {"texture": "#side1", "cullface": "east"},
+        "south": {"texture": "#side1", "cullface": "south"},
+        "west": {"texture": "#side1", "cullface": "west"},
+        "down": {"texture": "#bottom", "cullface": "down"}
+      }
+    },
+    {
+      "from": [0, 0, 0],
+      "to": [16, 16, 16],
+      "rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+      "faces": {
+        "north": {"texture": "#side", "cullface": "north"},
+        "east": {"texture": "#side", "cullface": "east"},
+        "south": {"texture": "#side", "cullface": "south"},
+        "west": {"texture": "#side", "cullface": "west"},
+        "up": {"texture": "#top", "cullface": "up"}
+      },
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15
+      },
+      "shade": false
+    }
+  ]
 }

@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "confluence:block/glowing_mushroom_stem_block",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "confluence:block/glowing_mushroom_stem_block"
+    },
+    "axis=z": {
+      "model": "confluence:block/glowing_mushroom_stem_block",
+      "x": 90
+    }
+  }
+}

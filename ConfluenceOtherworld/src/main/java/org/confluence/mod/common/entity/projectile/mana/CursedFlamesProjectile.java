@@ -57,7 +57,7 @@ public class CursedFlamesProjectile extends AbstractManaProjectile {
             if (entity instanceof LivingEntity living) {
                 living.addEffect(new MobEffectInstance(ModEffects.CURSED_INFERNO, 140));
             }
-            if (entity.hurt(getDamagesource(), 11)) {
+            if (entity.hurt(getDamagesource(), getDamage())) {
                 VectorUtils.knockBackA2B(this, entity, 0.6, 0.2);
             }
             if (this.penetrateCount++ >= 1) {

@@ -300,7 +300,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         // 锄锹
         heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
                 'a', AmountIngredient.of(2, MaterialItems.METEORITE_INGOT),
-                '/',Ingredient.of(MaterialItems.METEORITE_INGOT)
+                '/', Ingredient.of(MaterialItems.METEORITE_INGOT)
         ), List.of(
                 " aaa",
                 "  /a",

@@ -10,7 +10,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
@@ -20,6 +19,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.confluence.lib.util.VectorUtils;
+import org.confluence.mod.common.entity.projectile.DamageSettableProjectile;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.util.ModUtils;
@@ -27,7 +27,7 @@ import org.confluence.mod.util.ModUtils;
 /**
  * 长条形射弹
  */
-public abstract class StripedProjectile extends Projectile implements Immunity {
+public abstract class StripedProjectile extends DamageSettableProjectile implements Immunity {
     private static final EntityDataAccessor<Boolean> DATA_IS_HEAD = SynchedEntityData.defineId(StripedProjectile.class, EntityDataSerializers.BOOLEAN);
     protected double distForHeadRemove = 10.0;
     protected double distForCreateBody = 0.95;
@@ -79,6 +79,7 @@ public abstract class StripedProjectile extends Projectile implements Immunity {
                         StripedProjectile body = createBody(living);
                         body.setDeltaMovement(vec3);
                         body.setHead(false);
+                        body.setDamage(getDamage());
                         level().addFreshEntity(body);
                         this.distO = dist;
                     }
@@ -106,7 +107,7 @@ public abstract class StripedProjectile extends Projectile implements Immunity {
     @Override
     protected void onHitEntity(EntityHitResult result) {
         Entity entity = result.getEntity();
-        if (entity.hurt(getDamageSource(), 2.5f)) {
+        if (entity.hurt(getDamageSource(), getDamage())) {
             VectorUtils.knockBackA2B(this, entity, 0.5, 0.2);
         }
     }

@@ -12,6 +12,7 @@ public class MagicDaggerProjectile extends ThrowableDropSelfProjectile {
     public MagicDaggerProjectile(EntityType<? extends ThrowableDropSelfProjectile> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
     }
+
     public MagicDaggerProjectile(Player player) {
         super(ModEntities.MAGIC_DAGGER_PROJECTILE.get(), player.level());
     }

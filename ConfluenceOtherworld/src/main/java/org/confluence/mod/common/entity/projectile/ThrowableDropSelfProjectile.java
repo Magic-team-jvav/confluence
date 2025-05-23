@@ -7,33 +7,28 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.util.ModUtils;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ThrowableDropSelfProjectile extends ThrowableItemProjectile {
-    int penetrate = 0;
-    final int maxPenetrate = 3;
-    ItemStack drop;
-    public float damage = 4.2F;
-    private float _damage = 4.2F;
-    List<Entity> hitList = new ArrayList<>();
-
+public class ThrowableDropSelfProjectile extends DamageSettableProjectile {
     private static final EntityDataAccessor<Integer> DATA_FLY_TICKS = SynchedEntityData.defineId(ThrowableDropSelfProjectile.class, EntityDataSerializers.INT);
+    private int penetrate = 0;
+    private @NotNull ItemStack itemStack = ItemStack.EMPTY;
+    private float damage = 4.2F;
+    private float deltaDamage = damage * 0.1F;
+    private final List<Entity> hitList = new ArrayList<>();
 
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
         builder.define(DATA_FLY_TICKS, 5);
     }
 
@@ -49,14 +44,12 @@ public class ThrowableDropSelfProjectile extends ThrowableItemProjectile {
         }
     }
 
-
-    @Override
-    protected Item getDefaultItem() {
-        return Items.AIR;
+    public void setItem(@NotNull ItemStack drop) {
+        this.itemStack = drop;
     }
 
-    public void setDrop(ItemStack drop) {
-        this.drop = drop;
+    public ItemStack getItem() {
+        return itemStack;
     }
 
     public void setFlyTicks(int ticks) {
@@ -67,19 +60,18 @@ public class ThrowableDropSelfProjectile extends ThrowableItemProjectile {
         return this.entityData.get(DATA_FLY_TICKS);
     }
 
-
     @Override
     protected void onHitEntity(EntityHitResult pResult) {
         super.onHitEntity(pResult);
         Entity entity = pResult.getEntity();
-        if(canHitEntity(entity)) {
+        if (canHitEntity(entity)) {
             hitList.add(entity);
             if (entity.hurt(getDamageSource(), damage)) {
-                damage -= _damage * 0.1f;
+                this.damage -= deltaDamage;
                 VectorUtils.knockBackA2B(this, entity, 0.5, 0.2);
-                if (penetrate == maxPenetrate) {
-                    if (drop != null && random.nextBoolean()) {
-                        LibUtils.createItemEntity(drop, getX(), getY(), getZ(), level(), 0);
+                if (penetrate == 3) {
+                    if (random.nextBoolean()) {
+                        LibUtils.createItemEntity(itemStack, getX(), getY(), getZ(), level(), 0);
                     }
                     discard();
                 } else {
@@ -93,28 +85,28 @@ public class ThrowableDropSelfProjectile extends ThrowableItemProjectile {
         return damageSources().mobProjectile(this, (LivingEntity) getOwner());
     }
 
-
     @Override
     protected void onHitBlock(BlockHitResult pResult) {
         super.onHitBlock(pResult);
-        if (drop != null && random.nextBoolean()) {
-            LibUtils.createItemEntity(drop, getX(), getY(), getZ(), level(), 0);
+        if (itemStack != null && random.nextBoolean()) {
+            LibUtils.createItemEntity(itemStack, getX(), getY(), getZ(), level(), 0);
         }
         discard();
     }
 
+    @Override
     public void setDamage(float damage) {
         this.damage = damage;
-        this._damage = damage;
+        this.deltaDamage = damage * 0.1F;
     }
 
     protected boolean canHitEntity(Entity target) {
-        return ModUtils.canHitEntity(target, getOwner()) && !hitList.contains(target) ;
+        return ModUtils.canHitEntity(target, getOwner()) && !hitList.contains(target);
     }
 
     @Override
     protected void applyGravity() {
-        if(tickCount > getFlyTicks()){
+        if (tickCount > getFlyTicks()) {
             super.applyGravity();
         }
     }
@@ -123,5 +115,4 @@ public class ThrowableDropSelfProjectile extends ThrowableItemProjectile {
     protected double getDefaultGravity() {
         return 0.08;
     }
-
 }

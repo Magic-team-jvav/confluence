@@ -44,7 +44,7 @@ public class ThrowableDropSelfItem extends Item {
                 projectile.setOwner(pPlayer);
                 projectile.setItem(getDefaultInstance());
                 if (dropSelf) {
-                    projectile.setDrop(getDefaultInstance());
+                    projectile.setItem(getDefaultInstance());
                 }
                 projectile.setDamage(damage);
                 projectile.shootFromRotation(pPlayer, pPlayer.getXRot(), pPlayer.getYRot(), 0.0F, power, inaccuracy);

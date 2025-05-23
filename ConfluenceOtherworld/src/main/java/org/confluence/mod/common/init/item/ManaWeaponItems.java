@@ -28,13 +28,13 @@ public class ManaWeaponItems {
     public static final DeferredItem<ManaStaffItem<BaseManaStaffProjectileEntity>> SAPPHIRE_STAFF = ITEMS.register("sapphire_staff", () -> new ManaStaffItem<>(ModRarity.BLUE, player -> new BaseManaStaffProjectileEntity(player, Variant.SAPPHIRE), 9.2F, 6, 7.5F, 14, 0.04));
     public static final DeferredItem<ManaStaffItem<BaseManaStaffProjectileEntity>> AMETHYST_STAFF = ITEMS.register("amethyst_staff", () -> new ManaStaffItem<>(ModRarity.BLUE, player -> new BaseManaStaffProjectileEntity(player, Variant.AMETHYST), 8.0F, 5, 6.0F, 13, 0.04));
     public static final DeferredItem<ManaStaffItem<BaseManaStaffProjectileEntity>> DIAMOND_STAFF = ITEMS.register("diamond_staff", () -> new ManaStaffItem<>(ModRarity.BLUE, player -> new BaseManaStaffProjectileEntity(player, Variant.DIAMOND), 11.2F, 8, 9.5F, 15, 0.04));
-    public static final DeferredItem<ManaStaffItem<VilethronProjectile>> VILETHRON = ITEMS.register("vilethron", () -> new ManaStaffItem<>(ModRarity.BLUE, VilethronProjectile::new, 2.5F, 10, 8.0F, 18, 0.04));
+    public static final DeferredItem<ManaStaffItem<VilethronProjectile>> VILETHRON = ITEMS.register("vilethron", () -> new ManaStaffItem<>(ModRarity.BLUE, VilethronProjectile::new, 3.5F, 10, 8.0F, 18, 0.04));
     public static final DeferredItem<ManaStaffItem<HurtnadoProjectile>> WEATHER_PAIN = ITEMS.register("weather_pain", WeatherPainItem::new);
     /* 魔法飞弹 */
-    public static final DeferredItem<ManaStaffItem<WaterStreamProjectile>> AQUA_SCEPTER = ITEMS.register("aqua_scepter", () -> new ManaStaffItem<>(ModRarity.GREEN, WaterStreamProjectile::new, 7F, 7, 32.0F, 3, 0.04));
-    public static final DeferredItem<ManaStaffItem<BallOfFireProjectile>> FLOWER_OF_FIRE = ITEMS.register("flower_of_fire", () -> new ManaStaffItem<>(ModRarity.ORANGE, BallOfFireProjectile::new, 15.6F, 12, 7.5F, 14, 0.04));
+    public static final DeferredItem<ManaStaffItem<WaterStreamProjectile>> AQUA_SCEPTER = ITEMS.register("aqua_scepter", () -> new ManaStaffItem<>(ModRarity.GREEN, WaterStreamProjectile::new, 8, 7, 32.0F, 3, 0.04));
+    public static final DeferredItem<ManaStaffItem<BallOfFireProjectile>> FLOWER_OF_FIRE = ITEMS.register("flower_of_fire", () -> new ManaStaffItem<>(ModRarity.ORANGE, BallOfFireProjectile::new, 25.6F, 12, 7.5F, 14, 0.04));
     /* 烈焰火鞭 */
-    public static final DeferredItem<ManaStaffItem<WaterBoltProjectile>> WATER_BOLT = ITEMS.register("water_bolt", () -> new ManaStaffItem<>(ModRarity.GREEN, WaterBoltProjectile::new, 13F, 10, 4.5F, 10, 0.04));
+    public static final DeferredItem<ManaStaffItem<WaterBoltProjectile>> WATER_BOLT = ITEMS.register("water_bolt", () -> new ManaStaffItem<>(ModRarity.GREEN, WaterBoltProjectile::new, 14.5F, 10, 4.5F, 10, 0.04));
 
     public static final DeferredItem<ManaStaffItem<MagicDaggerProjectile>> MAGIC_DAGGER = ITEMS.register("magic_dagger", MagicDaggerItem::new);
     public static final DeferredItem<ManaStaffItem<CrystalStormProjectile>> CRYSTAL_STORM = ITEMS.register("crystal_storm", () -> new ManaStaffItem<>(ModRarity.LIGHT_RED, CrystalStormProjectile::new, 1.6F, 5, 16, 7, 0.04));

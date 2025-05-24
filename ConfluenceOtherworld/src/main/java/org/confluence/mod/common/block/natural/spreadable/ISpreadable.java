@@ -517,10 +517,10 @@ public interface ISpreadable {
                 NatureBlocks.PLANTERA_THORN, NatureBlocks.CORRUPTION_THORN
         ),
         GLOWING(
-                getSupplier(MUD)
+                getSupplier(MUD),NatureBlocks.MUSHROOM_GRASS_BLOCK
         ),
         JUNGLE(
-                getSupplier(MUD)
+                getSupplier(MUD),NatureBlocks.JUNGLE_GRASS_BLOCK
         ),
         PURE(
                 NatureBlocks.ASH_BLOCK, NatureBlocks.ASH_GRASS_BLOCK,
@@ -552,17 +552,21 @@ public interface ISpreadable {
                 NatureBlocks.PEARL_SAND, getSupplier(SAND),
                 NatureBlocks.CRIMSON_THORN, getSupplier(Blocks.AIR),
                 NatureBlocks.CORRUPTION_THORN, getSupplier(Blocks.AIR)
-        ),
-        SOLUTIONS(
-                NatureBlocks.MUSHROOM_GRASS_BLOCK, NatureBlocks.JUNGLE_SPORE,
-                NatureBlocks.GLOWING_MUSHROOM, NatureBlocks.JUNGLE_DROOPING_VINE,
-                NatureBlocks.GLOWING_MUSHROOM_VINE, NatureBlocks.JUNGLE_THORN,
-                getSupplier(Blocks.AIR), getSupplier(SHORT_GRASS),
-                NatureBlocks.GLOWING_MUSHROOM, NatureBlocks.JUNGLE_GRASS_BLOCK,
-                NatureBlocks.GLOWING_MUSHROOM, getSupplier(SHORT_GRASS),
-                NatureBlocks.GLOWING_MUSHROOM_VINE, NatureBlocks.JUNGLE_DROOPING_VINE
         );
-
+/*
+        SOLUTIONS_GREEN (
+                NatureBlocks.GLOWING_MUSHROOM,  getSupplier(SHORT_GRASS),
+                NatureBlocks.MUSHROOM_GRASS_BLOCK, NatureBlocks.JUNGLE_GRASS_BLOCK,
+                NatureBlocks.GLOWING_MUSHROOM_VINE, NatureBlocks.JUNGLE_DROOPING_VINE
+        ),
+        SOLUTIONS_DARK_BULE (
+                NatureBlocks.JUNGLE_SPORE, getSupplier(Blocks.AIR),
+                NatureBlocks.JUNGLE_DROOPING_VINE, NatureBlocks.GLOWING_MUSHROOM_VINE,
+                NatureBlocks.JUNGLE_THORN, getSupplier(Blocks.AIR),
+                getSupplier(SHORT_GRASS), NatureBlocks.GLOWING_MUSHROOM,
+                NatureBlocks.JUNGLE_GRASS_BLOCK, NatureBlocks.GLOWING_MUSHROOM
+        );
+*/
         private static final IntFunction<Type> BY_ID = ByIdMap.continuous(Type::ordinal, values(), ByIdMap.OutOfBoundsStrategy.CLAMP);
         private transient @Nullable Map<Supplier<? extends Block>, Supplier<? extends Block>> supplierMap;
         private Map<Block, Block> blockMap;

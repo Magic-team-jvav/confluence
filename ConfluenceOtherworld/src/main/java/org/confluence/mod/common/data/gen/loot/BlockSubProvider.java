@@ -29,6 +29,7 @@ import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.FoodItems;
 import org.confluence.mod.common.init.item.MaterialItems;
+import org.confluence.mod.common.init.item.ModItems;
 
 import java.util.Set;
 
@@ -430,6 +431,14 @@ public class BlockSubProvider extends BlockLootSubProvider {
         this.add(SKYWARE_GLASS_DOOR.get(), this::createDoorTable);
         this.add(DUNGEON_DOOR.get(), this::createDoorTable);
 
+        // 发光蘑菇
+        this.add(GLOWING_MUSHROOM_INDUSIUM_BLOCK.get(), p_249169_ -> this.createMushroomBlockDrop(p_249169_, MaterialItems.GLOWING_MUSHROOM));
+        this.add(GLOWING_MUSHROOM_VINE.get(), p_249169_ -> this.createMushroomBlockDrop(p_249169_, MaterialItems.GLOWING_MUSHROOM));
+        this.add(GLOWING_MUSHROOM_CATTAILS_HEAD.get(), p_249169_ -> this.createMushroomBlockDrop(p_249169_, MaterialItems.GLOWING_MUSHROOM));
+        this.add(GLOWING_MUSHROOM_PILEUS_BLOCK.get(), p_249169_ -> this.createMushroomBlockDrop(p_249169_, MaterialItems.GLOWING_MUSHROOM));
+        this.add(GLOWING_MUSHROOM_STEM_BLOCK.get(), p_249169_ -> this.createMushroomBlockDrop(p_249169_, MaterialItems.GLOWING_MUSHROOM));
+        dropWhenSilkTouch(GLOWING_MUSHROOM_CATTAILS_BODY.get());
+
 
         for (LogBlockSet logBlocks : LogBlockSet.LOG_BLOCK_SETS) {
             dropSelf(logBlocks.getPlanks().get());
@@ -459,7 +468,13 @@ public class BlockSubProvider extends BlockLootSubProvider {
 
         dropOther(NatureBlocks.VICIOUS_MUSHROOM.get(), MaterialItems.VICIOUS_MUSHROOM.get());
         dropOther(NatureBlocks.VILE_MUSHROOM.get(), MaterialItems.VILE_MUSHROOM.get());
-        dropOther(NatureBlocks.GLOWING_MUSHROOM.get(), MaterialItems.GLOWING_MUSHROOM.get()); // TODO: 掉落概率不是100%；掉落蘑菇草种子
+        add(NatureBlocks.GLOWING_MUSHROOM.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(MaterialItems.GLOWING_MUSHROOM)))
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(ModItems.MUSHROOM_GRASS_SEED))
+                        .add(EmptyLootItem.emptyItem().setWeight(39)))
+        );
         dropOther(NatureBlocks.LIFE_MUSHROOM.get(), MaterialItems.LIFE_MUSHROOM.get());
         add(NatureBlocks.JUNGLE_SPORE.get(), LootTable.lootTable().withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.JUNGLE_SPORE.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))))));
         add(NatureBlocks.AMBER_BRANCHES.get(), LootTable.lootTable()

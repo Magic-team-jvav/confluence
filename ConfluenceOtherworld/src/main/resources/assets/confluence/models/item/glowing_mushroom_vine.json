@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "confluence:block/glowing_mushroom_vine_1"
+  }
+}

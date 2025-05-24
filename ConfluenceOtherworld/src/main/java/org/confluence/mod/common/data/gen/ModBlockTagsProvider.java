@@ -15,6 +15,7 @@ import org.confluence.mod.common.block.common.TombstoneBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.CrateBlocks;
+import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.block.StatueBlocks;
 import org.confluence.terraentity.init.TETags;
@@ -385,7 +386,11 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 CrateBlocks.JUNGLE_CRATE.get(),
                 CrateBlocks.THORNS_CRATE.get(),
                 CrateBlocks.SAVANNA_CRATE.get(),
-                CrateBlocks.WILD_CRATE.get()
+                CrateBlocks.WILD_CRATE.get(),
+
+                NatureBlocks.GLOWING_MUSHROOM_INDUSIUM_BLOCK.get(),
+                NatureBlocks.GLOWING_MUSHROOM_STEM_BLOCK.get(),
+                NatureBlocks.GLOWING_MUSHROOM_PILEUS_BLOCK.get()
         );
         tag(ModTags.Blocks.NEEDS_1_LEVEL).add(
                 RAW_TIN_BLOCK.get(),

@@ -2098,7 +2098,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.BLUE_PURE_GLASS.get(), "蓝色纯净玻璃");
         add(DecorativeBlocks.PURPLE_PURE_GLASS.get(), "紫色纯净玻璃");
         add(DecorativeBlocks.MAGENTA_PURE_GLASS.get(), "品红纯净玻璃");
-        add(DecorativeBlocks.PINK_PURE_GLASS.get(), "品红纯净玻璃");
+        add(DecorativeBlocks.PINK_PURE_GLASS.get(), "粉红纯净玻璃");
         add(DecorativeBlocks.DISC_BLOCK.get(), "飞盘块");
         add(DecorativeBlocks.WOOD_STONE_SLATTED_BLOCKS.get(), "木石板条块");
         add(DecorativeBlocks.LIHZAHRD_BRICKS.get(), "丛林蜥蜴砖");

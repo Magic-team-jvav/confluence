@@ -1,0 +1,12 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": [
+    "confluence:glowing_mushroom"
+  ],
+  "features": [
+    "confluence:glowing_mushroom",
+    "confluence:glowing_mushroom_tree",
+    "confluence:glowing_mushroom_vine"
+  ],
+  "step": "vegetal_decoration"
+}

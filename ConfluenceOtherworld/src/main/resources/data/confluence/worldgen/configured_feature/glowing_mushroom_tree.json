@@ -1,0 +1,25 @@
+{
+  "type": "confluence:mushroom_tree",
+  "config": {
+    "stem_block": {
+      "type": "simple_state_provider",
+      "state": {
+        "Name": "confluence:glowing_mushroom_stem_block"
+      }
+    },
+    "pileus_block": {
+      "type": "simple_state_provider",
+      "state": {
+        "Name": "confluence:glowing_mushroom_pileus_block"
+      }
+    },
+    "indusium_block": {
+      "type": "simple_state_provider",
+      "state": {
+        "Name": "confluence:glowing_mushroom_indusium_block"
+      }
+    },
+    "height": 4,
+    "height_more": 1
+  }
+}

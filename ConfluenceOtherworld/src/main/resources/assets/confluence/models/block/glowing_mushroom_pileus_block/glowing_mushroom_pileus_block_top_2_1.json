@@ -12,8 +12,8 @@
         "up": {"uv": [8, 4, 12, 8],"texture": "#texture", "cullface": "up"}
       },
       "neoforge_data": {
-        "block_light": 15,
-        "sky_light": 15
+        "block_light": 7,
+        "sky_light": 7
       },
       "shade": false
     }

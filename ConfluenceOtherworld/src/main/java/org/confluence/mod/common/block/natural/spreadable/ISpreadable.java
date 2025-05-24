@@ -37,7 +37,7 @@ public interface ISpreadable {
     // That was a joke haha!
     BooleanProperty STILL_ALIVE = BooleanProperty.create("still_alive");
 
-    Type getType();
+    Type getSpreadType();
 
     default void spread(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource) {
         if (!blockState.getValue(STILL_ALIVE)) return;
@@ -48,7 +48,7 @@ public interface ISpreadable {
             BlockPos targetPos = blockPos.offset(randomSource.nextInt(3) - 1, randomSource.nextInt(5) - 3, randomSource.nextInt(3) - 1);
             if (!serverLevel.isLoaded(targetPos)) continue;
             BlockState beforeTransformState = serverLevel.getBlockState(targetPos);
-            Block targetBlock = getType().blockMap.get(beforeTransformState.getBlock());
+            Block targetBlock = getSpreadType().blockMap.get(beforeTransformState.getBlock());
             if (targetBlock == null || beforeTransformState.is(SHORT_GRASS) || beforeTransformState.is(FERN) || beforeTransformState.is(TALL_GRASS)) {
                 continue; // 不要直接传播草
             }
@@ -61,7 +61,7 @@ public interface ISpreadable {
             }
             BlockState above = serverLevel.getBlockState(targetPos.above());
             if (above.is(SHORT_GRASS) || above.is(FERN) || above.is(TALL_GRASS)) {  // 被动传播草
-                targetBlock = getType().blockMap.get(above.getBlock());
+                targetBlock = getSpreadType().blockMap.get(above.getBlock());
                 serverLevel.setBlockAndUpdate(targetPos.above(), targetBlock == null ? above : targetBlock.defaultBlockState());
             }
         }
@@ -72,7 +72,7 @@ public interface ISpreadable {
     }
 
     default void spreadOrDie(int phase, BlockState selfState, ServerLevel serverLevel, BlockPos selfPos, RandomSource randomSource, BlockState targetState, BlockPos targetPos) {
-        spreadTree(serverLevel, targetPos, getType().blockMap);
+        spreadTree(serverLevel, targetPos, getSpreadType().blockMap);
         serverLevel.setBlockAndUpdate(targetPos, targetState);
         if (randomSource.nextInt(7) > phase) {
             serverLevel.setBlockAndUpdate(selfPos, selfState.setValue(STILL_ALIVE, false));
@@ -517,17 +517,10 @@ public interface ISpreadable {
                 NatureBlocks.PLANTERA_THORN, NatureBlocks.CORRUPTION_THORN
         ),
         GLOWING(
-                getSupplier(MUD), NatureBlocks.MUSHROOM_GRASS_BLOCK,
-                NatureBlocks.JUNGLE_SPORE, NatureBlocks.GLOWING_MUSHROOM,
-                NatureBlocks.JUNGLE_DROOPING_VINE, NatureBlocks.GLOWING_MUSHROOM_VINE,
-                NatureBlocks.JUNGLE_THORN, getSupplier(Blocks.AIR),
-                getSupplier(SHORT_GRASS), NatureBlocks.GLOWING_MUSHROOM
-                //getSupplier(TALL_GRASS), NatureBlocks.GLOWING_MUSHROOM
+                getSupplier(MUD)
         ),
         JUNGLE(
-                getSupplier(MUD), NatureBlocks.JUNGLE_GRASS_BLOCK,
-                NatureBlocks.GLOWING_MUSHROOM, getSupplier(SHORT_GRASS),
-                NatureBlocks.GLOWING_MUSHROOM_VINE, NatureBlocks.JUNGLE_DROOPING_VINE
+                getSupplier(MUD)
         ),
         PURE(
                 NatureBlocks.ASH_BLOCK, NatureBlocks.ASH_GRASS_BLOCK,
@@ -559,6 +552,15 @@ public interface ISpreadable {
                 NatureBlocks.PEARL_SAND, getSupplier(SAND),
                 NatureBlocks.CRIMSON_THORN, getSupplier(Blocks.AIR),
                 NatureBlocks.CORRUPTION_THORN, getSupplier(Blocks.AIR)
+        ),
+        SOLUTIONS(
+                NatureBlocks.MUSHROOM_GRASS_BLOCK, NatureBlocks.JUNGLE_SPORE,
+                NatureBlocks.GLOWING_MUSHROOM, NatureBlocks.JUNGLE_DROOPING_VINE,
+                NatureBlocks.GLOWING_MUSHROOM_VINE, NatureBlocks.JUNGLE_THORN,
+                getSupplier(Blocks.AIR), getSupplier(SHORT_GRASS),
+                NatureBlocks.GLOWING_MUSHROOM, NatureBlocks.JUNGLE_GRASS_BLOCK,
+                NatureBlocks.GLOWING_MUSHROOM, getSupplier(SHORT_GRASS),
+                NatureBlocks.GLOWING_MUSHROOM_VINE, NatureBlocks.JUNGLE_DROOPING_VINE
         );
 
         private static final IntFunction<Type> BY_ID = ByIdMap.continuous(Type::ordinal, values(), ByIdMap.OutOfBoundsStrategy.CLAMP);

@@ -20,7 +20,7 @@ public class SpreadingGrassBlock extends SpreadingBlock {
         if (isFullBlock(serverLevel, above)) {
             serverLevel.setBlockAndUpdate(blockPos, Blocks.DIRT.defaultBlockState());
         } else {
-            ThornBlock thorn = switch (getType()) {
+            ThornBlock thorn = switch (getSpreadType()) {
                 case CRIMSON -> NatureBlocks.CRIMSON_THORN.get();
                 case CORRUPT -> NatureBlocks.CORRUPTION_THORN.get();
                 default -> null;

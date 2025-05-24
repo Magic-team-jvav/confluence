@@ -25,7 +25,7 @@ public class SpreadingThornBlock extends ThornBlock implements ISpreadable {
 
 
     @Override
-    public Type getType(){
+    public Type getSpreadType(){
         return type;
     }
 

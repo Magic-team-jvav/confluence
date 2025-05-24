@@ -188,7 +188,7 @@ public abstract class EntityMixin implements IEntity, SelfGetter<Entity> {
     @Unique
     private static void confluence$initTarget(ShimmerEntityTransmutationEvent.Post event) {
         Entity sourceEntity = event.getSource();
-        GamePhase gamePhase = KillBoard.INSTANCE.getGamePhase();
+        GamePhase gamePhase = KillBoard.INSTANCE.getGamePhase(sourceEntity.level());
         for (ShimmerEntityTransmutationEvent.EntityTransmutation transmutation : ENTITY_TRANSMUTATION) {
             if (transmutation.gamePhase().isAboveThan(gamePhase)) continue;
             if (transmutation.source().test(sourceEntity)) {

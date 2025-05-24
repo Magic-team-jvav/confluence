@@ -107,7 +107,7 @@ public abstract class ItemEntityMixin implements IItemEntity {
         ItemEntity source = event.getSource();
         ItemStack sourceItem = source.getItem();
 
-        GamePhase gamePhase = KillBoard.INSTANCE.getGamePhase();
+        GamePhase gamePhase = KillBoard.INSTANCE.getGamePhase(source.level());
         List<RecipeHolder<ItemTransmutationRecipe>> recipes = source.level().getRecipeManager().getRecipesFor(ModRecipes.ITEM_TRANSMUTATION_TYPE.get(), new SingleRecipeInput(sourceItem), source.level());
         for (RecipeHolder<ItemTransmutationRecipe> recipeHolder : recipes) {
             ItemTransmutationRecipe recipe = recipeHolder.value();

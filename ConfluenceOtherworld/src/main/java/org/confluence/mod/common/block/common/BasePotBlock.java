@@ -328,7 +328,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
     private boolean dropAmmo(ServerLevel level, Vec3 center) {
         int amount = level.random.nextInt(10, 21);
         Item item = Items.ARROW;
-        boolean isHardmode = KillBoard.INSTANCE.getGamePhase().isHardmode();
+        boolean isHardmode = KillBoard.INSTANCE.getGamePhase(level).isHardmode();
         if (level.random.nextBoolean()) {
             item = isHardmode ? ConsumableItems.GRENADE.get() : ConsumableItems.SHURIKEN.get();
         } else if (level.dimension() == Level.NETHER) {
@@ -346,7 +346,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
 
     private boolean dropHeal(ServerLevel level, BlockPos blockPos, Vec3 center) {
         Item item;
-        if (level.dimension() == Level.NETHER || KillBoard.INSTANCE.getGamePhase().isHardmode()) {
+        if (level.dimension() == Level.NETHER || KillBoard.INSTANCE.getGamePhase(level).isHardmode()) {
             item = PotionItems.HEALING_POTION.get();
         } else {
             item = PotionItems.LESSER_HEALING_POTION.get();
@@ -373,7 +373,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
     }
 
     private boolean dropRope(ServerLevel level, BlockPos blockPos, Vec3 center) {
-        if (level.dimension() == Level.NETHER || KillBoard.INSTANCE.getGamePhase().isHardmode()) {
+        if (level.dimension() == Level.NETHER || KillBoard.INSTANCE.getGamePhase(level).isHardmode()) {
             return dropMoney(level, blockPos, center);
         } else {
             LibUtils.createItemEntity(ModBlocks.ROPE.get().asItem(), level.random.nextInt(5, 11), center, level, 0);

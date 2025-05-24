@@ -43,7 +43,7 @@ public interface ISpreadable {
         if (!blockState.getValue(STILL_ALIVE)) return;
         int chance = serverLevel.getGameRules().getInt(Confluence.SPREADABLE_CHANCE);
         if (chance == 0 || randomSource.nextInt(100) >= chance) return;
-        int phase = KillBoard.INSTANCE.getGamePhase().ordinal();
+        int phase = KillBoard.INSTANCE.getGamePhase(serverLevel).ordinal();
         for (int i = 0; i < 4; ++i) {
             BlockPos targetPos = blockPos.offset(randomSource.nextInt(3) - 1, randomSource.nextInt(5) - 3, randomSource.nextInt(3) - 1);
             if (!serverLevel.isLoaded(targetPos)) continue;

@@ -395,8 +395,8 @@ public class NPCSpawner implements IGlobalData {
 //                return spawnAtPos(serverPlayer.serverLevel(), pos, TENpcEntities.CLOTHIER.get());
 //            }
 //        }
-        if (!KillBoard.INSTANCE.getGamePhase().isAboveThan(GamePhase.BEFORE_SKELETRON)) {
-            ServerLevel level = serverPlayer.serverLevel();
+        ServerLevel level = serverPlayer.serverLevel();
+        if (!KillBoard.INSTANCE.getGamePhase(level).isAboveThan(GamePhase.BEFORE_SKELETRON)) {
             Structure structure = level.registryAccess().registryOrThrow(Registries.STRUCTURE).get(ModStructures.DUNGEON_KEY);
             if (structure == null) return false;
 

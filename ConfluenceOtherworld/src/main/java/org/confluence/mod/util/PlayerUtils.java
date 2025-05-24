@@ -117,7 +117,7 @@ public final class PlayerUtils {
         if (CommonConfigs.STAR_PHASE.get()) {
             StarPhasesPacketS2C.sendToClient(serverPlayer, data.getStarPhases());
         }
-        GamePhasePacketS2C.sendToClient(serverPlayer, KillBoard.INSTANCE.getGamePhase());
+        GamePhasePacketS2C.sendToClient(serverPlayer, KillBoard.INSTANCE.getGamePhase(serverPlayer.serverLevel()));
     }
 
     public static float getFishingPower(ServerPlayer player) {

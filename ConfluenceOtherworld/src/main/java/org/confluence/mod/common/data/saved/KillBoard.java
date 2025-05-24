@@ -10,6 +10,7 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.Level;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.lib.common.data.saved.IGlobalData;
@@ -18,6 +19,8 @@ import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.network.s2c.GamePhasePacketS2C;
 import org.confluence.terraentity.init.entity.TEBossEntities;
+
+import javax.annotation.Nullable;
 
 public class KillBoard implements IGlobalData {
     public static final KillBoard INSTANCE = new KillBoard();
@@ -75,7 +78,11 @@ public class KillBoard implements IGlobalData {
     }
 
     public GamePhase getGamePhase() {
-        if (FMLEnvironment.dist.isClient()) {
+        return getGamePhase(null);
+    }
+
+    public GamePhase getGamePhase(@Nullable Level level) {
+        if (level != null && level.isClientSide) {
             return ClientPacketHandler.getGamePhase();
         }
         return gamePhase;

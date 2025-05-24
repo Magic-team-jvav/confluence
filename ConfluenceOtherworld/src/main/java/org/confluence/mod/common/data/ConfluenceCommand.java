@@ -60,7 +60,7 @@ public class ConfluenceCommand {
                 )
                 .then(Commands.literal("gamePhase")
                         .then(Commands.literal("get").executes(context -> {
-                            String gamePhase = KillBoard.INSTANCE.getGamePhase().getSerializedName();
+                            String gamePhase = KillBoard.INSTANCE.getGamePhase(context.getSource().getLevel()).getSerializedName();
                             context.getSource().sendSystemMessage(Component.literal("GamePhase: " + gamePhase));
                             return 1;
                         }))

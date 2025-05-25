@@ -2286,24 +2286,24 @@ public class ModChineseProvider extends LanguageProvider {
         add(CrateBlocks.TR_CRIMSON_CRATE.get(), "猩红匣");
         add(CrateBlocks.HALLOWED_CRATE.get(), "神圣匣");
         add(CrateBlocks.DUNGEON_CRATE.get(), "地牢匣");
-        add(CrateBlocks.FREEZE_CRATE.get(), "冰冻匣");
+        add(CrateBlocks.FROZEN_CRATE.get(), "冰冻匣");
         add(CrateBlocks.OASIS_CRATE.get(), "绿洲匣");
         add(CrateBlocks.OBSIDIAN_CRATE.get(), "黑曜石匣");
         add(CrateBlocks.OCEAN_CRATE.get(), "海洋匣");
         add(CrateBlocks.PEARLWOOD_CRATE.get(), "珍珠木匣");
         add(CrateBlocks.MYTHRIL_CRATE.get(), "秘银匣");
         add(CrateBlocks.TITANIUM_CRATE.get(), "钛金匣");
-        add(CrateBlocks.THORNS_CRATE.get(), "荆棘匣");
+        add(CrateBlocks.BRAMBLE_CRATE.get(), "荆棘匣");
         add(CrateBlocks.WILD_CRATE.get(), "野性匣");
-        add(CrateBlocks.SPACE_CRATE.get(), "太空匣");
-        add(CrateBlocks.DEFACED_CRATE.get(), "污损匣");
-        add(CrateBlocks.BLOOD_CRATE.get(), "血匣");
-        add(CrateBlocks.PROVIDENTIAL_CRATE.get(), "天赐匣");
-        add(CrateBlocks.FENCING_CRATE.get(), "围栏匣");
-        add(CrateBlocks.CONIFEROUS_WOOD_CRATE.get(), "针叶木匣");
-        add(CrateBlocks.ILLUSION_CRATE.get(), "幻象匣");
-        add(CrateBlocks.HELL_STONE_CRATE.get(), "狱石匣");
-        add(CrateBlocks.BEACH_CRATE.get(), "海滩匣");
+        add(CrateBlocks.AZURE_CRATE.get(), "太空匣");
+        add(CrateBlocks.DEFILED_CRATE.get(), "污损匣");
+        add(CrateBlocks.HEMATIC_CRATE.get(), "血匣");
+        add(CrateBlocks.DIVINE_CRATE.get(), "天赐匣");
+        add(CrateBlocks.STOCKADE_CRATE.get(), "围栏匣");
+        add(CrateBlocks.BOREAL_CRATE.get(), "针叶木匣");
+        add(CrateBlocks.MIRAGE_CRATE.get(), "幻象匣");
+        add(CrateBlocks.HELLSTONE_CRATE.get(), "狱石匣");
+        add(CrateBlocks.SEASIDE_CRATE.get(), "海滩匣");
 
 
         add(ArrowItems.FLAMING_ARROW.get(), "烈焰箭");

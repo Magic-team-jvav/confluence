@@ -161,7 +161,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 )
                 .withPool(LootPool.lootPool().add(NestedLootTable.lootTableReference(ModLootTables.ENVIRONMENT_CRATE)))
         );
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/freeze_crate"), LootTable.lootTable()
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/frozen_crate"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.BLIZZARD_IN_A_BOTTLE))
                         .add(LootItem.lootTableItem(TCItems.FLURRY_BOOTS))
@@ -441,7 +441,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(EmptyLootItem.emptyItem().setWeight(2))
                 )
         );
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/hell_stone_crate"), LootTable.lootTable()
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/hellstone_crate"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.LAVA_CHARM).setWeight(5))
                         .add(LootItem.lootTableItem(AccessoryItems.LAVAPROOF_FISHING_HOOK).setWeight(19))
@@ -457,11 +457,11 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(EmptyLootItem.emptyItem().setWeight(4))
                 )
         );
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/fencing_crate"), LootTable.lootTable()
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/stockade_crate"), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(NestedLootTable.lootTableReference(ModLootTables.ENVIRONMENT_CRATE_HARDMODE)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ConsumableItems.GOLDEN_LOCK_BOX)))
         );
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/providential_crate"), LootTable.lootTable()
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/divine_crate"), LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(NestedLootTable.lootTableReference(ModLootTables.ENVIRONMENT_CRATE_HARDMODE)))
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.SOUL_OF_LIGHT).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 5))))
@@ -472,7 +472,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(EmptyLootItem.emptyItem())
                 )
         );
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/illusion_crate"), LootTable.lootTable()
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/mirage_crate"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.DUNERIDER_BOOTS))
                         .add(LootItem.lootTableItem(TCItems.ANCIENT_CHISEL))
@@ -494,7 +494,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 )
                 .withPool(LootPool.lootPool().add(NestedLootTable.lootTableReference(ModLootTables.ENVIRONMENT_CRATE_HARDMODE)))
         );
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/defaced_crate"), LootTable.lootTable()
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/defiled_crate"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(AccessoryItems.BAND_OF_STARPOWER))
                         .add(LootItem.lootTableItem(TGItems.MUSKET))
@@ -502,7 +502,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 )
                 .withPool(LootPool.lootPool().add(NestedLootTable.lootTableReference(ModLootTables.ENVIRONMENT_CRATE_HARDMODE)))
         );
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/coniferous_wood_crate"), LootTable.lootTable()
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/boreal_crate"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.BLIZZARD_IN_A_BOTTLE))
                         .add(LootItem.lootTableItem(TCItems.FLURRY_BOOTS))
@@ -513,7 +513,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 )
                 .withPool(LootPool.lootPool().add(NestedLootTable.lootTableReference(ModLootTables.ENVIRONMENT_CRATE_HARDMODE)))
         );
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/thorns_crate"), LootTable.lootTable()
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/bramble_crate"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.FLOWER_BOOTS).setWeight(5))
                         .add(LootItem.lootTableItem(TCItems.ANKLET_OF_THE_WIND).setWeight(19))
@@ -541,7 +541,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(BowItems.HUNTING_BOW)))
                 .withPool(LootPool.lootPool().add(NestedLootTable.lootTableReference(ModLootTables.ENVIRONMENT_CRATE_HARDMODE)))
         );
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/space_crate"), LootTable.lootTable()
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/azure_crate"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.LUCKY_HORSESHOE))
                         .add(LootItem.lootTableItem(SwordItems.STARFURY))
@@ -558,7 +558,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 )
                 .withPool(LootPool.lootPool().add(NestedLootTable.lootTableReference(ModLootTables.ENVIRONMENT_CRATE_HARDMODE)))
         );
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/blood_crate"), LootTable.lootTable()
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/hematic_crate"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.PANIC_NECKLACE))
                         .add(LootItem.lootTableItem(TGItems.THE_UNDERTAKER))

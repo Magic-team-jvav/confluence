@@ -334,7 +334,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 DecorativeBlocks.TR_CRIMSON_ROCK_BRICKS.asItem(),
                 DecorativeBlocks.TR_GOLD_BRICKS.asItem(),
                 DecorativeBlocks.TR_IRON_BRICKS.asItem(),
-                DecorativeBlocks.TR_STONE_BRICKS.asItem(),
                 DecorativeBlocks.DEMONITE_ORE_BRICKS.asItem(),
                 DecorativeBlocks.EBONY_ROCK_BRICKS.asItem(),
                 DecorativeBlocks.BLUE_ICE_BRICKS.asItem(),

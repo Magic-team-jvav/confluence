@@ -44,7 +44,6 @@ public class DecorativeBlocks {
     public static final DeferredBlock<Block> BLUE_ICE_BRICKS = copyBlockRegister("blue_ice_bricks", Blocks.BLUE_ICE);
     public static final DeferredBlock<Block> PACKED_ICE_BRICKS = copyBlockRegister("packed_ice_bricks", Blocks.PACKED_ICE);
     public static final DeferredBlock<Block> SNOW_BRICKS = copyBlockRegister("snow_bricks", Blocks.STONE_BRICKS);
-    public static final DeferredBlock<Block> TR_STONE_BRICKS = copyBlockRegister("tr_stone_bricks", Blocks.STONE_BRICKS);
     public static final DeferredBlock<Block> AETHERIUM_BRICKS = copyBlockRegister("aetherium_bricks", Blocks.STONE_BRICKS);
     public static final DeferredBlock<Block> CRYSTAL_BLOCK = copyBlockRegister("crystal_block", Blocks.AMETHYST_BLOCK);
     public static final DeferredBlock<Block> RAINBOW_BRICKS = copyBlockRegister("rainbow_bricks", Blocks.STONE_BRICKS);

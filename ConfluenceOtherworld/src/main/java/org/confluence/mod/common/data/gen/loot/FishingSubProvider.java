@@ -14,7 +14,6 @@ import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.StructureBlock;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -35,7 +34,6 @@ import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.block.CrateBlocks;
 import org.confluence.mod.common.init.item.*;
-import org.confluence.mod.common.worldgen.structure.DungeonStructure;
 import org.confluence.terra_curio.common.init.TCItems;
 
 import java.util.function.BiConsumer;
@@ -847,7 +845,7 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                         )
                         // 雪原
                         .add(
-                                LootItem.lootTableItem(CrateBlocks.FREEZE_CRATE)
+                                LootItem.lootTableItem(CrateBlocks.FROZEN_CRATE)
                                         .when(
                                                 LocationCheck.checkLocation(
                                                         LocationPredicate.Builder.location()
@@ -971,7 +969,7 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                         .add(LootItem.lootTableItem(CrateBlocks.TITANIUM_CRATE).setWeight(12).setQuality(2))
                         // 天空匣
                         .add(
-                                LootItem.lootTableItem(CrateBlocks.SPACE_CRATE)
+                                LootItem.lootTableItem(CrateBlocks.AZURE_CRATE)
                                         .when(
                                                 LocationCheck.checkLocation(
                                                         LocationPredicate.Builder.location()
@@ -982,7 +980,7 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                         )
                         // 丛林
                         .add(
-                                LootItem.lootTableItem(CrateBlocks.THORNS_CRATE)
+                                LootItem.lootTableItem(CrateBlocks.BRAMBLE_CRATE)
                                         .when(
                                                 LocationCheck.checkLocation(
                                                         LocationPredicate.Builder.location()
@@ -1001,7 +999,7 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                         )
                         // 沙漠
                         .add(
-                                LootItem.lootTableItem(CrateBlocks.ILLUSION_CRATE)
+                                LootItem.lootTableItem(CrateBlocks.MIRAGE_CRATE)
                                         .when(
                                                 LocationCheck.checkLocation(
                                                         LocationPredicate.Builder.location()
@@ -1022,7 +1020,7 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                         )
                         // 海洋
                         .add(
-                                LootItem.lootTableItem(CrateBlocks.BEACH_CRATE)
+                                LootItem.lootTableItem(CrateBlocks.SEASIDE_CRATE)
                                         .when(
                                                 LocationCheck.checkLocation(
                                                         LocationPredicate.Builder.location()
@@ -1046,7 +1044,7 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                         )
                         // 雪原
                         .add(
-                                LootItem.lootTableItem(CrateBlocks.CONIFEROUS_WOOD_CRATE)
+                                LootItem.lootTableItem(CrateBlocks.BOREAL_CRATE)
                                         .when(
                                                 LocationCheck.checkLocation(
                                                         LocationPredicate.Builder.location()
@@ -1091,7 +1089,7 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                         )
                         // 腐化之地
                         .add(
-                                LootItem.lootTableItem(CrateBlocks.DEFACED_CRATE)
+                                LootItem.lootTableItem(CrateBlocks.DEFILED_CRATE)
                                         .when(
                                                 LocationCheck.checkLocation(
                                                         LocationPredicate.Builder.location()
@@ -1109,7 +1107,7 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                         )
                         // 猩红之地
                         .add(
-                                LootItem.lootTableItem(CrateBlocks.BLOOD_CRATE)
+                                LootItem.lootTableItem(CrateBlocks.HEMATIC_CRATE)
                                         .when(
                                                 LocationCheck.checkLocation(
                                                         LocationPredicate.Builder.location()
@@ -1127,7 +1125,7 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                         )
                         // 神圣之地
                         .add(
-                                LootItem.lootTableItem(CrateBlocks.PROVIDENTIAL_CRATE)
+                                LootItem.lootTableItem(CrateBlocks.DIVINE_CRATE)
                                         .when(
                                                 LocationCheck.checkLocation(
                                                         LocationPredicate.Builder.location()
@@ -1145,7 +1143,7 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                         )
                         // 地牢
                         .add(
-                                LootItem.lootTableItem(CrateBlocks.FENCING_CRATE)
+                                LootItem.lootTableItem(CrateBlocks.STOCKADE_CRATE)
                                         .when(
                                                 LocationCheck.checkLocation(
                                                         LocationPredicate.Builder.location()

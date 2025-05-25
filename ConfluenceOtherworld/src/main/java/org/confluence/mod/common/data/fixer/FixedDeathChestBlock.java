@@ -1,11 +1,15 @@
-package org.confluence.mod.common.block.functional;
+package org.confluence.mod.common.data.fixer;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.NonNullList;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.stats.Stat;
@@ -13,17 +17,27 @@ import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
-import org.confluence.mod.common.block.common.BaseChestBlock;
+import net.minecraft.world.phys.HitResult;
+import org.confluence.lib.mixin.fixer.ChestBlockEntityAccessor;
+import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.common.block.functional.DeathChestBlock;
 import org.confluence.mod.common.block.functional.network.INetworkBlock;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.block.functional.network.Network;
@@ -33,16 +47,26 @@ import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.VanityArmorItems;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class DeathChestBlock extends BaseChestBlock implements INetworkBlock {
-    public DeathChestBlock() {
-        super(Properties.ofFullCopy(Blocks.TRAPPED_CHEST).explosionResistance(ModBlocks.getObsidianBasedExplosionResistance(0.0F)), ChestBlocks.DEATH_CHEST_ENTITY::get, null);
+public class FixedDeathChestBlock extends FixedBaseChestBlock implements INetworkBlock {
+    public FixedDeathChestBlock() {
+        super(Properties.ofFullCopy(Blocks.TRAPPED_CHEST).explosionResistance(ModBlocks.getObsidianBasedExplosionResistance(0.0F)), RegistriesFixer.DEATH_CHEST_BLOCK_ENTITY::get);
     }
 
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
         return new Entity(pPos, pState);
+    }
+
+    @Override
+    protected List<ItemStack> getDrops(BlockState state, LootParams.Builder params) {
+        if (params.getOptionalParameter(LootContextParams.BLOCK_ENTITY) instanceof Entity entity) {
+            return Collections.singletonList(setData(RegistriesFixer.DEATH_CHEST_BLOCK.toStack(), entity.variant));
+        }
+        return Collections.emptyList();
     }
 
     protected Stat<ResourceLocation> getOpenChestStat() {
@@ -76,6 +100,15 @@ public class DeathChestBlock extends BaseChestBlock implements INetworkBlock {
     }
 
     @Override
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
+        ItemStack itemStack = new ItemStack(this);
+        if (level.getBlockEntity(pos) instanceof Entity entity) {
+            return setData(itemStack, entity.variant);
+        }
+        return itemStack;
+    }
+
+    @Override
     public void onExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {
         execution(pState, pLevel, pPos, pColor, true);
     }
@@ -100,13 +133,24 @@ public class DeathChestBlock extends BaseChestBlock implements INetworkBlock {
         }
     }
 
-    public static class Entity extends BaseChestBlock.Entity implements INetworkEntity {
+    @Override
+    public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
+        return level.isClientSide ? null : LibUtils.getTicker(blockEntityType, RegistriesFixer.DEATH_CHEST_BLOCK_ENTITY.get(), Entity::deathTick);
+    }
+
+    public static ItemStack setData(ItemStack itemStack, Variant variant) {
+        LibUtils.updateItemStackNbt(itemStack, tag -> tag.putInt("VariantId", variant.getId()));
+        itemStack.set(DataComponents.CUSTOM_NAME, Component.translatable("block.confluence.base_chest_block." + variant.getSerializedName().replace("unlocked", "death")).withStyle(style -> style.withItalic(false)));
+        return itemStack;
+    }
+
+    public static class Entity extends FixedBaseChestBlock.Entity implements INetworkEntity {
         private NetworkNode networkNode;
         private final Int2ObjectMap<Set<BlockPos>> connectedPoses;
         private final Int2ObjectMap<Set<BlockPos>> relativePoses;
 
         public Entity(BlockPos pPos, BlockState pBlockState) {
-            super(ChestBlocks.DEATH_CHEST_ENTITY.get(), pPos, pBlockState);
+            super(RegistriesFixer.DEATH_CHEST_BLOCK_ENTITY.get(), pPos, pBlockState);
             this.connectedPoses = new Int2ObjectOpenHashMap<>();
             this.relativePoses = new Int2ObjectOpenHashMap<>();
         }
@@ -211,6 +255,32 @@ public class DeathChestBlock extends BaseChestBlock implements INetworkBlock {
                     !relatedPos.equals(getBlockPos().relative(ChestBlock.getConnectedDirection(getBlockState())))
             ) {
                 INetworkEntity.super.connectTo(color, relatedPos, related); // 确保大箱子之间不连接
+            }
+        }
+
+        public static void deathTick(Level level, BlockPos blockPos, BlockState blockState, Entity entity) {
+            ChestBlock target;
+            if (entity.variant == Variant.UNLOCKED_GOLDEN) {
+                target = ChestBlocks.DEATH_GOLDEN_CHEST.get();
+            } else {
+                target = ChestBlocks.DEATH_WOODEN_CHEST.get();
+            }
+            ResourceKey<LootTable> lootTable = entity.lootTable;
+            long lootTableSeed = entity.lootTableSeed;
+            entity.setLootTable(null);
+            NonNullList<ItemStack> items = NonNullList.withSize(entity.getContainerSize(), ItemStack.EMPTY);
+            for (int i = 0; i < entity.getContainerSize(); i++) {
+                ItemStack itemStack = entity.getItem(i);
+                if (!itemStack.isEmpty()) items.set(i, itemStack);
+            }
+            entity.clearContent();
+            level.setBlockAndUpdate(blockPos, target.defaultBlockState().setValue(FACING, blockState.getValue(FACING)).setValue(WATERLOGGED, blockState.getValue(WATERLOGGED)));
+            if (level.getBlockEntity(blockPos) instanceof DeathChestBlock.Entity blockEntity) {
+                ((ChestBlockEntityAccessor) blockEntity).callSetItems(items);
+                blockEntity.setLootTable(lootTable);
+                blockEntity.setLootTableSeed(lootTableSeed);
+                blockEntity.getConnectedPoses().putAll(entity.connectedPoses);
+                blockEntity.getRelativePoses().putAll(entity.relativePoses);
             }
         }
     }

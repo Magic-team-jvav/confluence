@@ -25,7 +25,7 @@ public class CrateBlocks {
     public static final DeferredBlock<Block> TR_CRIMSON_CRATE = register("tr_crimson_crate", ModLootTables.TR_CRIMSON_CRATE);
     public static final DeferredBlock<Block> HALLOWED_CRATE = register("hallowed_crate", ModLootTables.SACRED_CRATE);
     public static final DeferredBlock<Block> DUNGEON_CRATE = register("dungeon_crate", ModLootTables.DUNGEON_CRATE);
-    public static final DeferredBlock<Block> FREEZE_CRATE = register("freeze_crate", ModLootTables.FREEZE_CRATE);
+    public static final DeferredBlock<Block> FROZEN_CRATE = register("frozen_crate", ModLootTables.FROZEN_CRATE);
     public static final DeferredBlock<Block> OASIS_CRATE = register("oasis_crate", ModLootTables.OASIS_CRATE);
     public static final DeferredBlock<Block> OBSIDIAN_CRATE = register("obsidian_crate", ModLootTables.OBSIDIAN_CRATE);
     public static final DeferredBlock<Block> OCEAN_CRATE = register("ocean_crate", ModLootTables.OCEAN_CRATE);
@@ -33,17 +33,17 @@ public class CrateBlocks {
     public static final DeferredBlock<Block> PEARLWOOD_CRATE = register("pearlwood_crate", ModLootTables.PEARLWOOD_CRATE);
     public static final DeferredBlock<Block> MYTHRIL_CRATE = register("mythril_crate", ModLootTables.MYTHRIL_CRATE);
     public static final DeferredBlock<Block> TITANIUM_CRATE = register("titanium_crate", ModLootTables.TITANIUM_CRATE);
-    public static final DeferredBlock<Block> THORNS_CRATE = register("thorns_crate", ModLootTables.THORNS_CRATE);
+    public static final DeferredBlock<Block> BRAMBLE_CRATE = register("bramble_crate", ModLootTables.BRAMBLE_CRATE);
     public static final DeferredBlock<Block> WILD_CRATE = register("wild_crate", ModLootTables.WILD_CRATE);
-    public static final DeferredBlock<Block> SPACE_CRATE = register("space_crate", ModLootTables.SPACE_CRATE);
-    public static final DeferredBlock<Block> DEFACED_CRATE = register("defaced_crate", ModLootTables.DEFACED_CRATE);
-    public static final DeferredBlock<Block> BLOOD_CRATE = register("blood_crate", ModLootTables.BLOOD_CRATE);
-    public static final DeferredBlock<Block> PROVIDENTIAL_CRATE = register("providential_crate", ModLootTables.PROVIDENTIAL_CRATE);
-    public static final DeferredBlock<Block> FENCING_CRATE = register("fencing_crate", ModLootTables.FENCING_CRATE);
-    public static final DeferredBlock<Block> CONIFEROUS_WOOD_CRATE = register("coniferous_wood_crate", ModLootTables.CONIFEROUS_WOOD_CRATE);
-    public static final DeferredBlock<Block> ILLUSION_CRATE = register("illusion_crate", ModLootTables.ILLUSION_CRATE);
-    public static final DeferredBlock<Block> HELL_STONE_CRATE = register("hell_stone_crate", ModLootTables.HELL_STONE_CRATE);
-    public static final DeferredBlock<Block> BEACH_CRATE = register("beach_crate", ModLootTables.BEACH_CRATE);
+    public static final DeferredBlock<Block> AZURE_CRATE = register("azure_crate", ModLootTables.AZURE_CRATE);
+    public static final DeferredBlock<Block> DEFILED_CRATE = register("defiled_crate", ModLootTables.DEFILED_CRATE);
+    public static final DeferredBlock<Block> HEMATIC_CRATE = register("hematic_crate", ModLootTables.HEMATIC_CRATE);
+    public static final DeferredBlock<Block> DIVINE_CRATE = register("divine_crate", ModLootTables.DIVINE_CRATE);
+    public static final DeferredBlock<Block> STOCKADE_CRATE = register("stockade_crate", ModLootTables.STOCKADE_CRATE);
+    public static final DeferredBlock<Block> BOREAL_CRATE = register("boreal_crate", ModLootTables.BOREAL_CRATE);
+    public static final DeferredBlock<Block> MIRAGE_CRATE = register("mirage_crate", ModLootTables.MIRAGE_CRATE);
+    public static final DeferredBlock<Block> HELLSTONE_CRATE = register("hellstone_crate", ModLootTables.HELLSTONE_CRATE);
+    public static final DeferredBlock<Block> SEASIDE_CRATE = register("seaside_crate", ModLootTables.SEASIDE_CRATE);
 
     private static DeferredBlock<Block> register(String name, ResourceKey<LootTable> lootTable) {
         DeferredBlock<Block> block = BLOCKS.register(name, () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS)));

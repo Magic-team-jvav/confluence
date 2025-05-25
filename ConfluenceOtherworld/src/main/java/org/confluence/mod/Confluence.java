@@ -14,6 +14,7 @@ import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.data.fixer.RegistriesFixer;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.ModItems;
@@ -57,6 +58,7 @@ public class Confluence {
         ModEquipmentSets.SETS.register(eventBus);
         ModHookTypes.TYPES.register(eventBus);
         ModLootTables.ItemConditions.TYPES.register(eventBus);
+        RegistriesFixer.init();
     }
 
     public static void registerGameRules() {

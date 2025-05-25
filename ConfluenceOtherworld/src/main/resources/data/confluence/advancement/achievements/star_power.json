@@ -1,7 +1,7 @@
 {
     "display": {
         "icon": {
-            "id": "confluence:mana_star"
+            "id": "confluence:mana_crystal"
         },
         "title": {
             "translate": "achievements.confluence.star_power.title"
@@ -21,7 +21,7 @@
             "conditions": {
                 "item": {
                     "items": [
-                        "confluence:mana_star"
+                        "confluence:mana_crystal"
                     ]
                 }
             }

@@ -311,14 +311,14 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 
                 CrateBlocks.MYTHRIL_CRATE.get(),
                 CrateBlocks.TITANIUM_CRATE.get(),
-                CrateBlocks.SPACE_CRATE.get(),
-                CrateBlocks.DEFACED_CRATE.get(),
-                CrateBlocks.BLOOD_CRATE.get(),
-                CrateBlocks.PROVIDENTIAL_CRATE.get(),
-                CrateBlocks.FENCING_CRATE.get(),
-                CrateBlocks.ILLUSION_CRATE.get(),
-                CrateBlocks.HELL_STONE_CRATE.get(),
-                CrateBlocks.BEACH_CRATE.get()
+                CrateBlocks.AZURE_CRATE.get(),
+                CrateBlocks.DEFILED_CRATE.get(),
+                CrateBlocks.HEMATIC_CRATE.get(),
+                CrateBlocks.DIVINE_CRATE.get(),
+                CrateBlocks.STOCKADE_CRATE.get(),
+                CrateBlocks.MIRAGE_CRATE.get(),
+                CrateBlocks.HELLSTONE_CRATE.get(),
+                CrateBlocks.SEASIDE_CRATE.get()
         );
         // 铲子
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithShovel = tag(BlockTags.MINEABLE_WITH_SHOVEL);
@@ -381,10 +381,10 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 
                 CrateBlocks.WOODEN_CRATE.get(),
                 CrateBlocks.PEARLWOOD_CRATE.get(),
-                CrateBlocks.FREEZE_CRATE.get(),
-                CrateBlocks.CONIFEROUS_WOOD_CRATE.get(),
+                CrateBlocks.FROZEN_CRATE.get(),
+                CrateBlocks.BOREAL_CRATE.get(),
                 CrateBlocks.JUNGLE_CRATE.get(),
-                CrateBlocks.THORNS_CRATE.get(),
+                CrateBlocks.BRAMBLE_CRATE.get(),
                 CrateBlocks.SAVANNA_CRATE.get(),
                 CrateBlocks.WILD_CRATE.get(),
 

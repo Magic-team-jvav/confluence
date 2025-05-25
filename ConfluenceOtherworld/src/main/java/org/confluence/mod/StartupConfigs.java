@@ -9,9 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public final class StartupConfigs {
-    public static final List<@NotNull String> DEFAULT_BANNED_MOD = List.of(
-            "integrateddynamics", "ae2", "refinedstorage", "create", "mekanism", "immersiveengineering", "enderio"
-    );
+    public static final List<@NotNull String> DEFAULT_BANNED_MOD = List.of();
     private static ModConfigSpec.BooleanValue PAINTS_REPLACE_TEXTURE;
     private static ModConfigSpec.ConfigValue<List<? extends String>> BANNED_MOD_FOR_PAINTS;
 
@@ -19,7 +17,7 @@ public final class StartupConfigs {
         ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
 
         BUILDER.push("Paints");
-        PAINTS_REPLACE_TEXTURE = BUILDER.define("paintsReplaceTexture", false);
+        PAINTS_REPLACE_TEXTURE = BUILDER.define("paintsReplaceTexture", true);
         BANNED_MOD_FOR_PAINTS = BUILDER.defineListAllowEmpty("bannedModForPaints", () -> DEFAULT_BANNED_MOD, () -> "modid", o -> o instanceof String s && !s.contains(":"));
         BUILDER.pop();
 

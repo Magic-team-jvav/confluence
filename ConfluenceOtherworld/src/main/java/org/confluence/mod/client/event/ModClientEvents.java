@@ -308,8 +308,8 @@ public final class ModClientEvents {
         event.registerBlockEntityRenderer(FunctionalBlocks.MECHANICAL_BLOCK_ENTITY.get(), MechanicalBlockRenderer::new);
         event.registerBlockEntityRenderer(FunctionalBlocks.SILLY_BALLOON_MACHINE_ENTITY.get(), MechanicalBlockRenderer::new);
         event.registerBlockEntityRenderer(FunctionalBlocks.WEATHER_VANE_ENTITY.get(), WeatherVaneBlockRenderer::new);
-        event.registerBlockEntityRenderer(ChestBlocks.BASE_CHEST_BLOCK_ENTITY.get(), BaseChestBlockRenderer::new);
-        event.registerBlockEntityRenderer(ChestBlocks.DEATH_CHEST_BLOCK_ENTITY.get(), DeathChestBlockRenderer::new);
+        event.registerBlockEntityRenderer(ChestBlocks.BASE_CHEST_ENTITY.get(), BaseChestBlockRenderer::new);
+        event.registerBlockEntityRenderer(ChestBlocks.DEATH_CHEST_ENTITY.get(), DeathChestBlockRenderer::new);
         event.registerBlockEntityRenderer(NatureBlocks.LIFE_CRYSTAL_BLOCK_ENTITY.get(), context -> new GeoBlockRenderer<>(new LifeCrystalBlockModel()));
         event.registerBlockEntityRenderer(StatueBlocks.BLOCK_ENTITY.get(), MechanicalBlockRenderer::new);
         event.registerBlockEntityRenderer(FunctionalBlocks.COOKING_POT_ENTITY.get(), context -> new GeoBlockRenderer<>(new DefaultedBlockGeoModel<>(Confluence.asResource("cooking_pot"))));
@@ -385,10 +385,11 @@ public final class ModClientEvents {
         Set<String> bannedModForPaints = new HashSet<>(StartupConfigs.bannedModForPaints());
         for (Map.Entry<Block, Holder.Reference<Block>> entry : ((DefaultedMappedRegistry<Block>) BuiltInRegistries.BLOCK).byValue.entrySet()) {
             Block block = entry.getKey();
-            if (customBlockModels.containsBlock(block) || bannedModForPaints.contains(entry.getValue().key().location().getNamespace())) {
+            ResourceLocation id = entry.getValue().key().location();
+            if (customBlockModels.containsBlock(block) || bannedModForPaints.contains(id.getNamespace())) {
                 continue;
             }
-            for (ModelResourceLocation modelLocation : ModelSwapper.getAllBlockStateModelLocations(block)) {
+            for (ModelResourceLocation modelLocation : ModelSwapper.getAllBlockStateModelLocations(id, block)) {
                 BakedModel bakedModel = modelRegistry.get(modelLocation);
                 if (bakedModel != null) {
                     modelRegistry.put(modelLocation, new GrayBlockModelSwapper(bakedModel));

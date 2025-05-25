@@ -9,6 +9,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.world.entity.EntityType;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
@@ -75,7 +76,7 @@ public class KillBoard implements IGlobalData {
     }
 
     public GamePhase getGamePhase() {
-        if (FMLEnvironment.dist.isClient()) {
+        if (FMLEnvironment.dist.isClient() && ServerLifecycleHooks.getCurrentServer() instanceof DedicatedServer) {
             return ClientPacketHandler.getGamePhase();
         }
         return gamePhase;

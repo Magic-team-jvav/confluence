@@ -93,17 +93,17 @@ public class ShimmerTransmutationProvider extends AbstractRecipeProvider {
         item(recipeOutput, CrateBlocks.PEARLWOOD_CRATE, CrateBlocks.WOODEN_CRATE);
         item(recipeOutput, CrateBlocks.MYTHRIL_CRATE, CrateBlocks.IRON_CRATE);
         item(recipeOutput, CrateBlocks.TITANIUM_CRATE, CrateBlocks.GOLDEN_CRATE);
-        item(recipeOutput, CrateBlocks.THORNS_CRATE, CrateBlocks.JUNGLE_CRATE);
+        item(recipeOutput, CrateBlocks.BRAMBLE_CRATE, CrateBlocks.JUNGLE_CRATE);
         item(recipeOutput, CrateBlocks.WILD_CRATE, CrateBlocks.SAVANNA_CRATE);
-        item(recipeOutput, CrateBlocks.SPACE_CRATE, CrateBlocks.SKY_CRATE);
-        item(recipeOutput, CrateBlocks.DEFACED_CRATE, CrateBlocks.CORRUPT_CRATE);
-        item(recipeOutput, CrateBlocks.BLOOD_CRATE, CrateBlocks.TR_CRIMSON_CRATE);
-        item(recipeOutput, CrateBlocks.PROVIDENTIAL_CRATE, CrateBlocks.HALLOWED_CRATE);
-        item(recipeOutput, CrateBlocks.FENCING_CRATE, CrateBlocks.DUNGEON_CRATE);
-        item(recipeOutput, CrateBlocks.CONIFEROUS_WOOD_CRATE, CrateBlocks.FREEZE_CRATE);
-        item(recipeOutput, CrateBlocks.ILLUSION_CRATE, CrateBlocks.OASIS_CRATE);
-        item(recipeOutput, CrateBlocks.HELL_STONE_CRATE, CrateBlocks.OBSIDIAN_CRATE);
-        item(recipeOutput, CrateBlocks.BEACH_CRATE, CrateBlocks.OCEAN_CRATE);
+        item(recipeOutput, CrateBlocks.AZURE_CRATE, CrateBlocks.SKY_CRATE);
+        item(recipeOutput, CrateBlocks.DEFILED_CRATE, CrateBlocks.CORRUPT_CRATE);
+        item(recipeOutput, CrateBlocks.HEMATIC_CRATE, CrateBlocks.TR_CRIMSON_CRATE);
+        item(recipeOutput, CrateBlocks.DIVINE_CRATE, CrateBlocks.HALLOWED_CRATE);
+        item(recipeOutput, CrateBlocks.STOCKADE_CRATE, CrateBlocks.DUNGEON_CRATE);
+        item(recipeOutput, CrateBlocks.BOREAL_CRATE, CrateBlocks.FROZEN_CRATE);
+        item(recipeOutput, CrateBlocks.MIRAGE_CRATE, CrateBlocks.OASIS_CRATE);
+        item(recipeOutput, CrateBlocks.HELLSTONE_CRATE, CrateBlocks.OBSIDIAN_CRATE);
+        item(recipeOutput, CrateBlocks.SEASIDE_CRATE, CrateBlocks.OCEAN_CRATE);
         // 宝石转化
         item(recipeOutput, MaterialItems.TOPAZ, MaterialItems.TR_AMETHYST);
         item(recipeOutput, MaterialItems.SAPPHIRE, MaterialItems.TOPAZ);

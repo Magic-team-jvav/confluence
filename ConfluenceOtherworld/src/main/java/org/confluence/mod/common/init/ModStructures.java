@@ -26,6 +26,7 @@ public final class ModStructures {
     public static final DeferredHolder<StructureType<?>, StructureType<IceThornStructure>> ICE_THORN = TYPES.register("ice_thorn", () -> () -> IceThornStructure.CODEC);
     public static final DeferredHolder<StructureType<?>, StructureType<MineTunnelsStructure>> MINE_TUNNELS = TYPES.register("mine_tunnels", () -> () -> MineTunnelsStructure.CODEC);
     public static final DeferredHolder<StructureType<?>, StructureType<PyramidStructure>> PYRAMID = TYPES.register("pyramid", () -> () -> PyramidStructure.CODEC);
+    public static final DeferredHolder<StructureType<?>, StructureType<OasisStructure>> OASIS = TYPES.register("oasis", () -> () -> OasisStructure.CODEC);
 
     public static final ResourceKey<Structure> DUNGEON_KEY = Confluence.asResourceKey(Registries.STRUCTURE, "dungeon");
 

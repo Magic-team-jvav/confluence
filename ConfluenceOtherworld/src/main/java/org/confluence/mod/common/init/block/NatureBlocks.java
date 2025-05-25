@@ -145,7 +145,7 @@ public class NatureBlocks {
     public static final DeferredBlock<GlowingMushroomPileusBlock> GLOWING_MUSHROOM_PILEUS_BLOCK = registerWithItem("glowing_mushroom_pileus_block", () -> new GlowingMushroomPileusBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MUSHROOM_STEM)));
 
     // 沙漠
-    public static final DeferredBlock<Block> PALM_SAPLING = registerWithItem("palm_sapling", () -> new BaseSaplingBlock(ModFeatures.TreeGrowers.PALM_GROWER, Blocks.SAND, Blocks.RED_SAND, Blocks.GRASS_BLOCK));
+    public static final DeferredBlock<Block> PALM_SAPLING = registerWithItem("palm_sapling", () -> new BaseSaplingBlock(ModFeatures.TreeGrowers.PALM_GROWER, Blocks.SAND, Blocks.RED_SAND, Blocks.GRASS_BLOCK,NatureBlocks.MOIST_SAND_BLOCK.get(),NatureBlocks.RED_MOIST_SAND_BLOCK.get()));
     public static final LogBlockSet PALM_LOG_BLOCKS = LogBlockSet.builder("palm", true)
             .log(RotatedPillarBlock::new)
             .strippedLog(RotatedPillarBlock::new)

@@ -1307,7 +1307,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("patchouli.confluence.otherworld_note.material.gel.1", "据说还有种稀有的粉色凝胶...");
 
         add("patchouli.confluence.otherworld_note.material.gems.name", "宝石");
-        add("patchouli.confluence.otherworld_note.material.gems.0", "宝石是一种材料，用于合成。*b会在提炼机和箱子中出现。*2为了规避“紫水晶”，原“紫晶”改为“异域紫晶石”");
+        add("patchouli.confluence.otherworld_note.material.gems.0", "宝石是一种材料，用于合成。*b会在提炼机和箱子中出现。*2为了规避“紫水晶”，原“紫晶”改为“紫晶石”");
 
         //生物
         add("patchouli.confluence.otherworld_note.mob.slime.name", "史莱姆");
@@ -1638,11 +1638,11 @@ public class ModChineseProvider extends LanguageProvider {
         add(OreBlocks.CORRUPTION_TR_EMERALD_ORE.get(), "腐化翡翠矿石");
         add(OreBlocks.FLESHIFICATION_TR_EMERALD_ORE.get(), "血化翡翠矿石");
         add(OreBlocks.DEEPSLATE_TR_EMERALD_ORE.get(), "深层翡翠矿石");
-        add(OreBlocks.TR_AMETHYST_ORE.get(), "异域紫晶矿石");
-        add(OreBlocks.SANCTIFICATION_TR_AMETHYST_ORE.get(), "圣化异域紫晶矿石");
-        add(OreBlocks.CORRUPTION_TR_AMETHYST_ORE.get(), "腐化异域紫晶矿石");
-        add(OreBlocks.FLESHIFICATION_TR_AMETHYST_ORE.get(), "血化异域紫晶矿石");
-        add(OreBlocks.DEEPSLATE_TR_AMETHYST_ORE.get(), "深层异域紫晶矿石");
+        add(OreBlocks.TR_AMETHYST_ORE.get(), "紫晶矿石");
+        add(OreBlocks.SANCTIFICATION_TR_AMETHYST_ORE.get(), "圣化紫晶矿石");
+        add(OreBlocks.CORRUPTION_TR_AMETHYST_ORE.get(), "腐化紫晶矿石");
+        add(OreBlocks.FLESHIFICATION_TR_AMETHYST_ORE.get(), "血化紫晶矿石");
+        add(OreBlocks.DEEPSLATE_TR_AMETHYST_ORE.get(), "深层紫晶矿石");
         add(OreBlocks.SAPPHIRE_ORE.get(), "蓝玉矿石");
         add(OreBlocks.SANCTIFICATION_SAPPHIRE_ORE.get(), "圣化蓝玉矿石");
         add(OreBlocks.CORRUPTION_SAPPHIRE_ORE.get(), "腐化蓝玉矿石");
@@ -2031,13 +2031,12 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.TR_EMERALD_BLOCK.get(), "翡翠块");
         add(DecorativeBlocks.SAPPHIRE_BLOCK.get(), "蓝玉块");
         add(DecorativeBlocks.TR_AMETHYST_BLOCK.get(), "紫晶块");
-        add(DecorativeBlocks.TR_POLISHED_GRANITE.get(), "异域花岗岩块");
+        add(DecorativeBlocks.TR_POLISHED_GRANITE.get(), "磨制花岗岩块");
         add(DecorativeBlocks.TR_COPPER_BRICKS.get(), "铜砖块");
         add(DecorativeBlocks.TR_CRIMSON_ORE_BRICKS.get(), "猩红矿砖");
         add(DecorativeBlocks.TR_CRIMSON_ROCK_BRICKS.get(), "猩红石砖");
         add(DecorativeBlocks.TR_GOLD_BRICKS.get(), "金砖块");
         add(DecorativeBlocks.TR_IRON_BRICKS.get(), "铁砖块");
-        add(DecorativeBlocks.TR_STONE_BRICKS.get(), "异域石砖");
         add(DecorativeBlocks.DEMONITE_ORE_BRICKS.get(), "魔矿砖");
         add(DecorativeBlocks.EBONY_ROCK_BRICKS.get(), "黑檀石砖");
         add(DecorativeBlocks.BLUE_GEL_BLOCK.get(), "凝胶块");
@@ -2060,18 +2059,18 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.SKYWARE_GLASS_DOOR.get(), "天域玻璃门");
         add(DecorativeBlocks.TIN_BRICKS.get(), "锡砖");
         add(DecorativeBlocks.TUNGSTEN_BRICKS.get(), "钨砖");
-        add(DecorativeBlocks.TR_LAVA_BRICKS.get(), "异域熔岩砖");
-        add(DecorativeBlocks.TR_OBSIDIAN_BRICKS.get(), "异域黑曜石砖");
-        add(DecorativeBlocks.TR_OBSIDIAN_SMALL_BRICKS.get(), "异域切制黑曜石砖");
+        add(DecorativeBlocks.TR_LAVA_BRICKS.get(), "熔岩砖");
+        add(DecorativeBlocks.TR_OBSIDIAN_BRICKS.get(), "黑曜石砖");
+        add(DecorativeBlocks.TR_OBSIDIAN_SMALL_BRICKS.get(), "切制黑曜石砖");
         add(DecorativeBlocks.OBSIDIAN_BRICKS_STAIRS.get(), "黑曜石砖楼梯");
         add(DecorativeBlocks.OBSIDIAN_BRICKS_SLAB.get(), "黑曜石砖台阶");
         add(DecorativeBlocks.OBSIDIAN_BRICKS_DOOR.get(), "黑曜石砖门");
-        add(DecorativeBlocks.TR_SMOOTH_OBSIDIAN.get(), "异域光滑黑曜石块");
-        add(DecorativeBlocks.CHISELED_TR_OBSIDIAN_BRICKS.get(), "雕纹异域黑曜石块");
+        add(DecorativeBlocks.TR_SMOOTH_OBSIDIAN.get(), "光滑黑曜石块");
+        add(DecorativeBlocks.CHISELED_TR_OBSIDIAN_BRICKS.get(), "雕纹黑曜石块");
         add(DecorativeBlocks.CRYSTAL_BLOCK.get(), "水晶块");
         add(DecorativeBlocks.RAINBOW_BRICKS.get(), "彩虹砖");
-        add(DecorativeBlocks.TR_OAK_PLANKS.get(), "经典风情木板");
-        add(DecorativeBlocks.TR_NORTHLAND_PLANKS.get(), "北地风情木板");
+        add(DecorativeBlocks.TR_OAK_PLANKS.get(), "雕纹橡木木板");
+        add(DecorativeBlocks.TR_NORTHLAND_PLANKS.get(), "雕纹云杉木板");
         add(DecorativeBlocks.CHISELED_EBONY_PLANKS.get(), "雕纹乌木木板");
         add(DecorativeBlocks.CHISELED_SHADOW_PLANKS.get(), "雕纹暗影木板");
         add(DecorativeBlocks.CHISELED_PEARL_PLANKS.get(), "雕纹珍珠木板");
@@ -2081,7 +2080,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.CHISELED_BAOBAB_PLANKS.get(), "雕纹猴面包木木板");
         add(DecorativeBlocks.CHISELED_LIVING_PLANKS.get(), "雕纹生命木板");
         add(DecorativeBlocks.CHISELED_LIVING_MAHOGANY_PLANKS.get(), "雕纹生命红木板");
-        add(DecorativeBlocks.TR_GRANITE_COLUMN.get(), "异域花岗岩梁");
+        add(DecorativeBlocks.TR_GRANITE_COLUMN.get(), "花岗岩梁");
         add(DecorativeBlocks.PURE_GLASS.get(), "纯净玻璃");
         add(DecorativeBlocks.WHITE_PURE_GLASS.get(), "白色纯净玻璃");
         add(DecorativeBlocks.LIGHT_GRAY_PURE_GLASS.get(), "淡灰色纯净玻璃");
@@ -2286,24 +2285,24 @@ public class ModChineseProvider extends LanguageProvider {
         add(CrateBlocks.TR_CRIMSON_CRATE.get(), "猩红匣");
         add(CrateBlocks.HALLOWED_CRATE.get(), "神圣匣");
         add(CrateBlocks.DUNGEON_CRATE.get(), "地牢匣");
-        add(CrateBlocks.FREEZE_CRATE.get(), "冰冻匣");
+        add(CrateBlocks.FROZEN_CRATE.get(), "冰冻匣");
         add(CrateBlocks.OASIS_CRATE.get(), "绿洲匣");
         add(CrateBlocks.OBSIDIAN_CRATE.get(), "黑曜石匣");
         add(CrateBlocks.OCEAN_CRATE.get(), "海洋匣");
         add(CrateBlocks.PEARLWOOD_CRATE.get(), "珍珠木匣");
         add(CrateBlocks.MYTHRIL_CRATE.get(), "秘银匣");
         add(CrateBlocks.TITANIUM_CRATE.get(), "钛金匣");
-        add(CrateBlocks.THORNS_CRATE.get(), "荆棘匣");
+        add(CrateBlocks.BRAMBLE_CRATE.get(), "荆棘匣");
         add(CrateBlocks.WILD_CRATE.get(), "野性匣");
-        add(CrateBlocks.SPACE_CRATE.get(), "太空匣");
-        add(CrateBlocks.DEFACED_CRATE.get(), "污损匣");
-        add(CrateBlocks.BLOOD_CRATE.get(), "血匣");
-        add(CrateBlocks.PROVIDENTIAL_CRATE.get(), "天赐匣");
-        add(CrateBlocks.FENCING_CRATE.get(), "围栏匣");
-        add(CrateBlocks.CONIFEROUS_WOOD_CRATE.get(), "针叶木匣");
-        add(CrateBlocks.ILLUSION_CRATE.get(), "幻象匣");
-        add(CrateBlocks.HELL_STONE_CRATE.get(), "狱石匣");
-        add(CrateBlocks.BEACH_CRATE.get(), "海滩匣");
+        add(CrateBlocks.AZURE_CRATE.get(), "太空匣");
+        add(CrateBlocks.DEFILED_CRATE.get(), "污损匣");
+        add(CrateBlocks.HEMATIC_CRATE.get(), "血匣");
+        add(CrateBlocks.DIVINE_CRATE.get(), "天赐匣");
+        add(CrateBlocks.STOCKADE_CRATE.get(), "围栏匣");
+        add(CrateBlocks.BOREAL_CRATE.get(), "针叶木匣");
+        add(CrateBlocks.MIRAGE_CRATE.get(), "幻象匣");
+        add(CrateBlocks.HELLSTONE_CRATE.get(), "狱石匣");
+        add(CrateBlocks.SEASIDE_CRATE.get(), "海滩匣");
 
 
         add(ArrowItems.FLAMING_ARROW.get(), "烈焰箭");
@@ -2362,7 +2361,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.TOPAZ.get(), "黄玉");
         add(MaterialItems.TR_EMERALD.get(), "翡翠");
         add(MaterialItems.SAPPHIRE.get(), "蓝玉");
-        add(MaterialItems.TR_AMETHYST.get(), "异域紫晶石");
+        add(MaterialItems.TR_AMETHYST.get(), "紫晶石");
         add(MaterialItems.FALLING_STAR.get(), "坠落之星");
         add(MaterialItems.STAR_PETALS.get(), "星辰花瓣");
         add(MaterialItems.FLOATING_WHEAT_HEADS.get(), "飘飘麦");
@@ -2467,7 +2466,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(SwordItems.KATANA.get(), "武士刀");
         add(SwordItems.TENTACLE_MACE.get(), "触手钉锤");
         add(SwordItems.ICE_BLADE.get(), "冰雪刃");
-        add(SwordItems.EXOTIC_SCIMITAR.get(), "异域弯刀");
+        add(SwordItems.EXOTIC_SCIMITAR.get(), "弯刀");
         add(SwordItems.FAKE_SWORD.get(), "假剑");
         add(SwordItems.VOLCANO.get(), "火山");
         add(SwordItems.BEE_KEEPER.get(), "养蜂人");
@@ -3261,7 +3260,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(QuestedFishes.CAP_TUNABEARD.get(), "金枪鱼船长");
         add(QuestedFishes.CATFISH.get(), "猫猫鱼");
         add(QuestedFishes.CLOUDFISH.get(), "云朵鱼");
-        add(QuestedFishes.TR_CLOWNFISH.get(), "异域小丑鱼");
+        add(QuestedFishes.TR_CLOWNFISH.get(), "小丑鱼");
         add(QuestedFishes.CURSEDFISH.get(), "诅咒鱼");
         add(QuestedFishes.DEMONIC_HELLFISH.get(), "地狱恶魔鱼");
         add(QuestedFishes.DERPFISH.get(), "跳跳鱼");
@@ -3414,7 +3413,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.RED_SNAPPER.get(), "红鲷鱼");
         add(FoodItems.TROUT.get(), "鳟鱼");
         add(FoodItems.ROCK_LOBSTER.get(), "岩石龙虾");
-        add(FoodItems.TR_SALMON.get(), "异域鲑鱼");
+        add(FoodItems.TR_SALMON.get(), "鲑鱼");
         add(FoodItems.SHRIMP.get(), "虾");
         add(FoodItems.MIRROR_FISH.get(), "镜面鱼");
         add(FoodItems.STINKY_FISH.get(), "臭味鱼");
@@ -3469,9 +3468,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(PotionItems.THORNS_POTION.get(), "荆棘药水");
         add(PotionItems.MAGIC_POWER_POTION.get(), "魔能药水");
         add(PotionItems.OBSIDIAN_SKIN_POTION.get(), "黑曜石皮肤药水");
-        add(PotionItems.LESSER_LUCK_POTION.get(), "异域弱效幸运药水");
-        add(PotionItems.LUCK_POTION.get(), "异域幸运药水");
-        add(PotionItems.GREATER_LUCK_POTION.get(), "异域强效幸运药水");
+        add(PotionItems.LESSER_LUCK_POTION.get(), "弱效幸运药水");
+        add(PotionItems.LUCK_POTION.get(), "幸运药水");
+        add(PotionItems.GREATER_LUCK_POTION.get(), "强效幸运药水");
         add(PotionItems.LOVE_POTION.get(), "爱情药水");
         add(PotionItems.SWIFTNESS_POTION.get(), "迅捷药水");
         add(PotionItems.REGENERATION_POTION.get(), "再生药水");

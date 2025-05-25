@@ -134,7 +134,7 @@ public class ConfluenceData extends SavedData {
 
     public boolean increaseRevealStep(ServerLevel serverLevel) {
         if (revealStep < 8) {
-            serverLevel.players().forEach(serverPlayer -> PhaseUtils.achievePhase(serverPlayer, Confluence.asResource("reveal_step_" + this.revealStep++), true));
+            serverLevel.players().forEach(serverPlayer -> PhaseUtils.achievePlayerPhase(serverPlayer, Confluence.asResource("reveal_step_" + this.revealStep++), true));
             setDirty();
             return true;
         }

@@ -2018,6 +2018,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.CORRODED_WORM_ROOTS_BLOCK.get(), "腐蚀蠕根");
         add(NatureBlocks.CORRUPTED_OVARIES_BLOCK.get(), "腐化卵巢");
         add(NatureBlocks.DESERT_TAPERED_BLOCK.get(), "沙漠石笋");
+        add(NatureBlocks.SMALL_DESERT_PLANT.get(), "小型沙漠植株");
+        add(NatureBlocks.BIG_DESERT_PLANT.get(), "大型沙漠植株");
+        add(NatureBlocks.SMALL_CACTUS.get(), "小型仙人掌");
         add(NatureBlocks.BLINKING_ROYAL_SHIMMERLILY.get(), "微光王莲");
         add(NatureBlocks.LARVA.get(), "幼虫");
 

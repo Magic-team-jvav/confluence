@@ -25,16 +25,18 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 public class MoistSandBlock extends Block implements BonemealableBlock {
 
-    private record PlantEntry(BlockState plantState, int weight) {
+    private record PlantEntry(Supplier<? extends Block> plant, int weight) {
     }
 
-    private static final List<PlantEntry> PLANTS = new ArrayList<>();
-
-    static {
-    }
+    private static final List<PlantEntry> PLANTS = List.of(
+            new PlantEntry(NatureBlocks.SMALL_DESERT_PLANT, 4),
+            new PlantEntry(NatureBlocks.BIG_DESERT_PLANT, 2),
+            new PlantEntry(NatureBlocks.SMALL_CACTUS, 4)
+    );
 
     private final Block TargetBlock;
     public static final BooleanProperty NORTH = PipeBlock.NORTH;
@@ -159,7 +161,7 @@ public class MoistSandBlock extends Block implements BonemealableBlock {
         for (MoistSandBlock.PlantEntry entry : PLANTS) {
             cumulativeWeight += entry.weight;
             if (randomValue < cumulativeWeight) {
-                return entry.plantState;
+                return entry.plant.get().defaultBlockState();
             }
         }
         return Blocks.AIR.defaultBlockState();

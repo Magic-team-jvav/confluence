@@ -44,7 +44,14 @@ public class OasisStructure extends Structure {
         ChunkPos startChunk = context.chunkPos();
         int x = startChunk.getMiddleBlockX();
         int z = startChunk.getMiddleBlockZ();
-        int lowestY = getHeight(x, z, context);
+        int averageY = 0;
+        for (int x1 = -2; x1 < 3; x1++) {
+            for (int z1 = -2; z1 < 3; z1++) {
+                averageY += getHeight(x + 16 * x1, z + 16 * z1, context);
+            }
+        }
+        averageY /= 25;
+        int lowestY = averageY;
         if (x * x + z * z <= 400 * 400 || lowestY < context.chunkGenerator().getSeaLevel() - 16) {
             return Optional.empty();
         }

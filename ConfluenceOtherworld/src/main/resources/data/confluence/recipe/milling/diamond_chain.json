@@ -1,0 +1,19 @@
+{
+  "type": "create:milling",
+  "ingredients": [
+    {
+      "item": "confluence:diamond_chain"
+    }
+  ],
+  "processing_time": 100,
+  "results": [
+    {
+      "count": 1,
+      "id": "minecraft:diamond"
+    },
+    {
+      "chance": 0.5,
+      "id": "minecraft:diamond"
+    }
+  ]
+}

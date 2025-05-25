@@ -1,0 +1,13 @@
+{
+  "type": "create:haunting",
+  "ingredients": [
+    {
+      "item": "confluence:gel"
+    }
+  ],
+  "results": [
+    {
+      "id": "minecraft:slime_ball"
+    }
+  ]
+}

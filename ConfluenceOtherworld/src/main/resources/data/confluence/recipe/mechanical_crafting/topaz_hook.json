@@ -1,0 +1,20 @@
+{
+  "type": "create:mechanical_crafting",
+  "accept_mirrored": false,
+  "key": {
+    "#": {
+      "item": "confluence:topaz_chain"
+    },
+    "$": {
+      "item": "confluence:topaz_block"
+    }
+  },
+  "pattern": [
+    "##$"
+  ],
+  "result": {
+    "count": 1,
+    "id": "confluence:topaz_hook"
+  },
+  "show_notification": false
+}

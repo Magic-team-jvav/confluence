@@ -1,0 +1,12 @@
+{
+  "type": "confluence:item_transmutation",
+  "source": {
+    "item": "create:chocolate_glazed_berries"
+  },
+  "target": [
+    {
+      "count": 1,
+      "id": "minecraft:sweet_berries"
+    }
+  ]
+}

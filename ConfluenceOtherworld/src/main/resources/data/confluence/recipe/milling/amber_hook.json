@@ -1,0 +1,19 @@
+{
+  "type": "create:milling",
+  "ingredients": [
+    {
+      "item": "confluence:amber_hook"
+    }
+  ],
+  "processing_time": 100,
+  "results": [
+    {
+      "count": 13,
+      "id": "confluence:amber"
+    },
+    {
+      "chance": 0.5,
+      "id": "confluence:amber"
+    }
+  ]
+}

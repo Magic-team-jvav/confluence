@@ -1,0 +1,19 @@
+{
+  "type": "create:crushing",
+  "ingredients": [
+    {
+      "item": "confluence:ruby_hook"
+    }
+  ],
+  "processing_time": 100,
+  "results": [
+    {
+      "count": 14,
+      "id": "confluence:ruby"
+    },
+    {
+      "chance": 0.5,
+      "id": "confluence:ruby"
+    }
+  ]
+}

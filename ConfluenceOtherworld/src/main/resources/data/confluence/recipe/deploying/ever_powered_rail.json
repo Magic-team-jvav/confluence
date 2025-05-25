@@ -1,0 +1,16 @@
+{
+  "type": "create:deploying",
+  "ingredients": [
+    {
+      "item": "minecraft:powered_rail"
+    },
+    {
+      "item": "minecraft:redstone_torch"
+    }
+  ],
+  "results": [
+    {
+      "id": "confluence:ever_powered_rail"
+    }
+  ]
+}

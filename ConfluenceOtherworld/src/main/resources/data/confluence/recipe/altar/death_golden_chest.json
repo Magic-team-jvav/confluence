@@ -1,0 +1,11 @@
+{
+    "type": "confluence:altar",
+    "result": {
+        "id": "confluence:death_golden_chest"
+    },
+    "ingredients": [
+        {
+            "item": "confluence:golden_chest"
+        }
+    ]
+}

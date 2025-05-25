@@ -1,0 +1,11 @@
+{
+    "type": "confluence:altar",
+    "result": {
+        "id": "confluence:death_wooden_chest"
+    },
+    "ingredients": [
+        {
+            "item": "minecraft:chest"
+        }
+    ]
+}

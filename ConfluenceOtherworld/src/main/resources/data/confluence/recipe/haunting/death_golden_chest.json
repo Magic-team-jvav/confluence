@@ -1,0 +1,13 @@
+{
+  "type": "create:haunting",
+  "ingredients": [
+    {
+      "item": "confluence:golden_chest"
+    }
+  ],
+  "results": [
+    {
+      "id": "confluence:death_golden_chest"
+    }
+  ]
+}

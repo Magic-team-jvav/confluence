@@ -1,0 +1,11 @@
+{
+    "type": "confluence:altar",
+    "result": {
+        "id": "confluence:follower_boulder"
+    },
+    "ingredients": [
+        {
+            "item": "confluence:normal_boulder"
+        }
+    ]
+}

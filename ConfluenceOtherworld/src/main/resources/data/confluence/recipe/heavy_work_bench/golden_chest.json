@@ -1,0 +1,18 @@
+{
+  "type": "confluence:heavy_work_bench",
+  "key": {
+    "#": {
+      "item": "minecraft:gold_ingot"
+    },
+    "$": {
+      "item": "minecraft:chest"
+    }
+  },
+  "pattern": [
+    "#$#"
+  ],
+  "result": {
+    "count": 1,
+    "id": "confluence:golden_chest"
+  }
+}

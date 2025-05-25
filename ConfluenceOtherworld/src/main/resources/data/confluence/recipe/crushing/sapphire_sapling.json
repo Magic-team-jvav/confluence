@@ -1,0 +1,15 @@
+{
+  "type": "create:crushing",
+  "ingredients": [
+    {
+      "item": "confluence:tr_amethyst_sapling"
+    }
+  ],
+  "processing_time": 100,
+  "results": [
+    {
+      "count": 1,
+      "id": "confluence:tr_amethyst"
+    }
+  ]
+}

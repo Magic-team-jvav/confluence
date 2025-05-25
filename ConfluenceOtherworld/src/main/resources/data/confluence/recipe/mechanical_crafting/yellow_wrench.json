@@ -1,0 +1,23 @@
+{
+  "type": "create:mechanical_crafting",
+  "accept_mirrored": false,
+  "key": {
+    "#": {
+      "item": "confluence:platinum_ingot"
+    },
+    "$": {
+      "item": "minecraft:yellow_dye"
+    }
+  },
+  "pattern": [
+    "  ##",
+    "  #$",
+    " #  ",
+    "#   "
+  ],
+  "result": {
+    "count": 1,
+    "id": "confluence:yellow_wrench"
+  },
+  "show_notification": false
+}

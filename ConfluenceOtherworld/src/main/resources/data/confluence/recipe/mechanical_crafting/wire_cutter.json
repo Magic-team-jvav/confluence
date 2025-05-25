@@ -1,0 +1,23 @@
+{
+  "type": "create:mechanical_crafting",
+  "accept_mirrored": false,
+  "key": {
+    "#": {
+      "item": "confluence:platinum_ingot"
+    },
+    "$": {
+      "item": "minecraft:red_dye"
+    }
+  },
+  "pattern": [
+    "  # ",
+    " # #",
+    "#$# ",
+    " #  "
+  ],
+  "result": {
+    "count": 1,
+    "id": "confluence:wire_cutter"
+  },
+  "show_notification": false
+}

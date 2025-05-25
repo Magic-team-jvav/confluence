@@ -1,0 +1,24 @@
+{
+  "type": "create:mechanical_crafting",
+  "accept_mirrored": false,
+  "key": {
+    "#": {
+      "item": "minecraft:dirt"
+    },
+    "$": {
+      "item": "confluence:bomb"
+    }
+  },
+  "pattern": [
+    "#####",
+    "#####",
+    "##$##",
+    "#####",
+    "#####"
+  ],
+  "result": {
+    "count": 1,
+    "id": "confluence:dirt_bomb"
+  },
+  "show_notification": false
+}

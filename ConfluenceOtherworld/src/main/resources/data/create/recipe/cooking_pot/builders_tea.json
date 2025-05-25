@@ -1,0 +1,31 @@
+{
+  "type": "confluence:cooking_pot",
+  "container": {
+    "item": "confluence:bottle"
+  },
+  "cookingtime": 200,
+  "heat_source": {
+    "blocks": "minecraft:campfires",
+    "state": {
+      "lit": "true"
+    }
+  },  "ingredients": [
+    {
+      "type": "confluence_magic_lib:amount_ingredient",
+      "count": 4,
+      "ingredient": {
+        "tag": "minecraft:leaves"
+      }
+    },
+  {
+    "item": "minecraft:milk_bucket"
+  },
+  {
+    "item": "minecraft:water_bucket"
+  }
+],
+  "result": {
+    "count": 1,
+    "id": "create:builders_tea"
+  }
+}

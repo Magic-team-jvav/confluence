@@ -2031,7 +2031,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.TR_EMERALD_BLOCK.get(), "翡翠块");
         add(DecorativeBlocks.SAPPHIRE_BLOCK.get(), "蓝玉块");
         add(DecorativeBlocks.TR_AMETHYST_BLOCK.get(), "紫晶块");
-        add(DecorativeBlocks.TR_POLISHED_GRANITE.get(), "花岗岩块");
+        add(DecorativeBlocks.TR_POLISHED_GRANITE.get(), "磨制花岗岩块");
         add(DecorativeBlocks.TR_COPPER_BRICKS.get(), "铜砖块");
         add(DecorativeBlocks.TR_CRIMSON_ORE_BRICKS.get(), "猩红矿砖");
         add(DecorativeBlocks.TR_CRIMSON_ROCK_BRICKS.get(), "猩红石砖");

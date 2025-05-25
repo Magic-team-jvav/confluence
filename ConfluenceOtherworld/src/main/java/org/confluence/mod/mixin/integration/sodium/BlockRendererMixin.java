@@ -1,12 +1,17 @@
 package org.confluence.mod.mixin.integration.sodium;
 
+import com.llamalad7.mixinextras.injector.ModifyReceiver;
+import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalIntRef;
 import net.caffeinemc.mods.sodium.client.model.quad.ModelQuadView;
+import net.caffeinemc.mods.sodium.client.render.chunk.compile.buffers.ChunkModelBuilder;
 import net.caffeinemc.mods.sodium.client.render.frapi.mesh.MutableQuadViewImpl;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
+import org.confluence.mod.client.textures.GraySpriteShifterEntry;
 import org.confluence.mod.client.textures.LocalBrushData;
 import org.confluence.mod.common.data.saved.BrushData;
 import org.confluence.mod.integration.sodium.IMutableQuadViewImpl;
@@ -64,5 +69,15 @@ public abstract class BlockRendererMixin {
                 view.confluence$color(i, color | 0xFF << 24);
             }
         }
+    }
+
+    @ModifyReceiver(method = "bufferQuad", at= @At(value = "INVOKE", target = "Lnet/caffeinemc/mods/sodium/client/render/chunk/compile/buffers/ChunkModelBuilder;addSprite(Lnet/minecraft/client/renderer/texture/TextureAtlasSprite;)V"))
+    private ChunkModelBuilder addGray(ChunkModelBuilder instance, TextureAtlasSprite textureAtlasSprite, @Local(argsOnly = true) MutableQuadViewImpl quad) {
+        GraySpriteShifterEntry entry = ((IMutableQuadViewImpl) (Object) quad).confluence$getEntry();
+        if (entry != null) {
+            instance.addSprite(entry.gray());
+            instance.addSprite(entry.negative());
+        }
+        return instance;
     }
 }

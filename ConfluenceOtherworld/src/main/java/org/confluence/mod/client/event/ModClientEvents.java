@@ -33,6 +33,7 @@ import org.confluence.lib.common.item.ColoredItem;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.StartupConfigs;
 import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.connected.CustomBlockModels;
 import org.confluence.mod.client.connected.ModConnectives;
 import org.confluence.mod.client.connected.ModelSwapper;
 import org.confluence.mod.client.gui.container.*;
@@ -380,14 +381,15 @@ public final class ModClientEvents {
         if (ModClientSetups.SHOULD_NOT_GENERATE_BLOCK_GRAY_TEXTURE || !StartupConfigs.paintsReplaceTexture()) return;
 
         Map<ModelResourceLocation, BakedModel> modelRegistry = event.getModels();
-        //CustomBlockModels customBlockModels = ModConnectives.MODEL_SWAPPER.getCustomBlockModels();
+        CustomBlockModels customBlockModels = ModConnectives.MODEL_SWAPPER.getCustomBlockModels();
         Set<String> bannedModForPaints = new HashSet<>(StartupConfigs.bannedModForPaints());
         for (Map.Entry<Block, Holder.Reference<Block>> entry : ((DefaultedMappedRegistry<Block>) BuiltInRegistries.BLOCK).byValue.entrySet()) {
             Block block = entry.getKey();
-            if (/*customBlockModels.containsBlock(block) || */bannedModForPaints.contains(entry.getValue().key().location().getNamespace())) {
+            ResourceLocation id = entry.getValue().key().location();
+            if (customBlockModels.containsBlock(block) || bannedModForPaints.contains(id.getNamespace())) {
                 continue;
             }
-            for (ModelResourceLocation modelLocation : ModelSwapper.getAllBlockStateModelLocations(block)) {
+            for (ModelResourceLocation modelLocation : ModelSwapper.getAllBlockStateModelLocations(id, block)) {
                 BakedModel bakedModel = modelRegistry.get(modelLocation);
                 if (bakedModel != null) {
                     modelRegistry.put(modelLocation, new GrayBlockModelSwapper(bakedModel));

@@ -1,7 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "confluence:item/materials/dark_paint",
-    "layer1": "confluence:item/materials/paint_overlay"
+    "layer0": "confluence:item/paint/dark_paint",
+    "layer1": "confluence:item/paint/paint_overlay"
   }
 }

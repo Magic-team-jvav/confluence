@@ -26,8 +26,6 @@ import java.util.ArrayList;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import static org.confluence.mod.common.init.block.ModBlocks.BLOCK_ENTITIES;
-
 public class ChestBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Confluence.MODID);
     public static final ArrayList<DeferredBlock<BaseChestBlock>> NORMAL_CHESTS = new ArrayList<>();
@@ -51,8 +49,8 @@ public class ChestBlocks {
     public static final DeferredBlock<BaseChestBlock> LIVING_WOOD_CHEST = registerNormal("living_wood_chest", null);
     public static final DeferredBlock<BaseChestBlock> DUNGEON_CHEST = registerNormal("dungeon_chest", stack -> stack.is(ToolItems.GOLDEN_DUNGEON_KEY));
 
-    public static final Supplier<BlockEntityType<BaseChestBlock.Entity>> BASE_CHEST_BLOCK_ENTITY = BLOCK_ENTITIES.register("base_chest_block_entity", () -> BlockEntityType.Builder.of(BaseChestBlock.Entity::new, NORMAL_CHESTS.stream().map(DeferredBlock::get).toArray(Block[]::new)).build(DSL.remainderType()));
-    public static final Supplier<BlockEntityType<DeathChestBlock.Entity>> DEATH_CHEST_BLOCK_ENTITY = BLOCK_ENTITIES.register("death_chest_block_entity", () -> BlockEntityType.Builder.of(DeathChestBlock.Entity::new, DEATH_CHESTS.stream().map(DeferredBlock::get).toArray(Block[]::new)).build(DSL.remainderType()));
+    public static final Supplier<BlockEntityType<BaseChestBlock.Entity>> BASE_CHEST_ENTITY = ModBlocks.BLOCK_ENTITIES.register("base_chest_entity", () -> BlockEntityType.Builder.of(BaseChestBlock.Entity::new, NORMAL_CHESTS.stream().map(DeferredBlock::get).toArray(Block[]::new)).build(DSL.remainderType()));
+    public static final Supplier<BlockEntityType<DeathChestBlock.Entity>> DEATH_CHEST_ENTITY = ModBlocks.BLOCK_ENTITIES.register("death_chest_entity", () -> BlockEntityType.Builder.of(DeathChestBlock.Entity::new, DEATH_CHESTS.stream().map(DeferredBlock::get).toArray(Block[]::new)).build(DSL.remainderType()));
 
     private static DeferredBlock<BaseChestBlock> registerNormal(String id, @Nullable Predicate<ItemStack> predicate) {
         DeferredBlock<BaseChestBlock> object = BLOCKS.register(id, () -> new BaseChestBlock(predicate == null ? null : (stack, state, level, pos, player, hand, hitResult) -> {

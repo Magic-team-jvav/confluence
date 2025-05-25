@@ -70,7 +70,7 @@ public class CoinPileBlock extends FallingBlock {
         return !UseContext.isSecondaryUseActive() && UseContext.getItemInHand().is(asItem()) && state.getValue(HEAPS) < 12 || super.canBeReplaced(state, UseContext);
     }
 
-
+    @Override
     @Nullable
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         BlockState clickedBlockState = context.getLevel().getBlockState(context.getClickedPos());

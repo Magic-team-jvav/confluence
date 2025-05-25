@@ -21,10 +21,12 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.init.item.LightPetItems;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.ModUtils;
+import org.confluence.phase_journey.common.util.PhaseUtils;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.entity.boss.BrainOfCthulhu;
@@ -50,6 +52,8 @@ public class CrimsonHeartBlock extends Block {
             Vec3 center = pos.getCenter();
             ConfluenceData data = ConfluenceData.get(serverLevel);
             int count = data.getEvilBrokenCount() % 3;
+
+            PhaseUtils.achieveLevelPhase(serverLevel, Confluence.asResource("hasItEvilEverBeenBroken"), true);
 
             if (count == 0 || level.random.nextFloat() < 0.2F) {
                 LibUtils.createItemEntity(TGItems.THE_UNDERTAKER.toStack(), center.x, center.y, center.z, level, 0);

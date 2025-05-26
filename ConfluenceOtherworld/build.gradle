@@ -223,7 +223,7 @@ dependencies {
 
     /**********************************************************/
 
-    //runtimeOnly "curse.maven:worldedit-225608:5830452"
+    runtimeOnly "curse.maven:worldedit-225608:5830452"
     //runtimeOnly "curse.maven:ars-nouveau-401955:6228434"
     //runtimeOnly "curse.maven:spark-361579:6225208"
     //runtimeOnly "curse.maven:lithium-360438:6290413"

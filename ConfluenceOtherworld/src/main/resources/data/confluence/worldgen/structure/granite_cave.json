@@ -1,0 +1,6 @@
+{
+    "type": "confluence:granite_cave",
+    "biomes": "confluence:tr_crimson",
+    "spawn_overrides": {},
+    "step": "top_layer_modification"
+}

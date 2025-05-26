@@ -137,8 +137,8 @@ repositories {
 
 boolean vanillin = false // 香兰素
 boolean observable = false // 可视性能侦测
-boolean ftb = true
-boolean ipn = true
+boolean ftb = false
+boolean ipn = false
 
 dependencies {
     projectName.forEach { name -> implementation jarJar(project(":" + name)) }
@@ -261,7 +261,7 @@ dependencies {
         runtimeOnly "curse.maven:xaeros-minimap-263420:6184458"
         runtimeOnly "curse.maven:xaeros-world-map-317780:6212662"
     }
-    if (true) {
+    if (false) {
         runtimeOnly "maven.modrinth:ae2:juQOuKVW"
         runtimeOnly "maven.modrinth:guideme:9aIv5HxH"
     }

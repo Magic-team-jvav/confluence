@@ -280,6 +280,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 SAFE.get(),
                 ANNOUNCEMENT_BOX.get(),
                 WALL_ANNOUNCEMENT_BOX.get(),
+                GRANITE.get(),
 
                 TOMBSTONE.get(),
                 GRAVE_MARKER.get(),
@@ -390,7 +391,11 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 
                 NatureBlocks.GLOWING_MUSHROOM_INDUSIUM_BLOCK.get(),
                 NatureBlocks.GLOWING_MUSHROOM_STEM_BLOCK.get(),
-                NatureBlocks.GLOWING_MUSHROOM_PILEUS_BLOCK.get()
+                NatureBlocks.GLOWING_MUSHROOM_PILEUS_BLOCK.get(),
+                NatureBlocks.LIFE_MUSHROOM_INDUSIUM_BLOCK.get(),
+                NatureBlocks.LIFE_MUSHROOM_STEM_BLOCK.get(),
+                NatureBlocks.LIFE_MUSHROOM_PILEUS_BLOCK.get()
+
         );
         tag(ModTags.Blocks.NEEDS_1_LEVEL).add(
                 RAW_TIN_BLOCK.get(),
@@ -529,6 +534,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 COLD_CRYSTAL_ORE.get(),
                 THIN_ICE_BLOCK.get(),
                 CRISPY_HONEY_BLOCK.get(),
+                GRANITE.get(),
 
                 TOMBSTONE.get(),
                 GRAVE_MARKER.get(),

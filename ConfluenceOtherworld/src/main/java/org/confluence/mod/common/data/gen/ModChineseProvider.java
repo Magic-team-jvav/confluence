@@ -1866,6 +1866,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.RED_SAND_LAYER_BLOCK.get(), "红沙片");
         add(NatureBlocks.RED_HARDENED_SAND_BLOCK.get(), "硬化红沙块");
         add(NatureBlocks.RED_MOIST_SAND_BLOCK.get(), "湿润红沙块");
+        add(NatureBlocks.GRANITE.get(), "花岗岩");
         add(NatureBlocks.DIATOMACEOUS.get(), "硅藻土");
         add(NatureBlocks.SLUSH.get(), "雪泥块");
         add(NatureBlocks.SILT_BLOCK.get(), "泥沙块");
@@ -1977,6 +1978,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.GLOWING_MUSHROOM_STEM_BLOCK.get(), "发光蘑菇柄");
         add(NatureBlocks.GLOWING_MUSHROOM_PILEUS_BLOCK.get(), "发光蘑菇菌盖");
         add(NatureBlocks.LIFE_MUSHROOM.get(), "生命蘑菇");
+        add(NatureBlocks.LIFE_MUSHROOM_INDUSIUM_BLOCK.get(), "生命蘑菇菌裙");
+        add(NatureBlocks.LIFE_MUSHROOM_STEM_BLOCK.get(), "生命蘑菇柄");
+        add(NatureBlocks.LIFE_MUSHROOM_PILEUS_BLOCK.get(), "生命蘑菇菌盖");
         add(NatureBlocks.JUNGLE_SPORE.get(), "丛林孢子");
         add(NatureBlocks.JUNGLE_ROSE.get(), "丛林玫瑰");
         add(NatureBlocks.CORRUPT_GRASS.get(), "腐化草");

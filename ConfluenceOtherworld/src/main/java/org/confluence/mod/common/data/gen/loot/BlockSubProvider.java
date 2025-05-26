@@ -388,6 +388,8 @@ public class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(TR_CRIMSON_HARDENED_SAND_BLOCK.get());
         dropSelf(TR_CRIMSON_MOIST_SAND_BLOCK.get());
 
+        dropSelf(GRANITE.get());
+
         dropSelf(AETHERIUM_BLOCK.get());
         dropSelf(DARK_AETHERIUM_BLOCK.get());
 
@@ -437,6 +439,10 @@ public class BlockSubProvider extends BlockLootSubProvider {
         this.add(GLOWING_MUSHROOM_PILEUS_BLOCK.get(), p_249169_ -> this.createMushroomBlockDrop(p_249169_, MaterialItems.GLOWING_MUSHROOM));
         this.add(GLOWING_MUSHROOM_STEM_BLOCK.get(), p_249169_ -> this.createMushroomBlockDrop(p_249169_, MaterialItems.GLOWING_MUSHROOM));
         dropWhenSilkTouch(GLOWING_MUSHROOM_CATTAILS_BODY.get());
+
+        this.add(LIFE_MUSHROOM_INDUSIUM_BLOCK.get(), p_249169_ -> this.createMushroomBlockDrop(p_249169_, MaterialItems.LIFE_MUSHROOM));
+        this.add(LIFE_MUSHROOM_PILEUS_BLOCK.get(), p_249169_ -> this.createMushroomBlockDrop(p_249169_, MaterialItems.LIFE_MUSHROOM));
+        this.add(LIFE_MUSHROOM_STEM_BLOCK.get(), p_249169_ -> this.createMushroomBlockDrop(p_249169_, MaterialItems.LIFE_MUSHROOM));
 
 
         for (LogBlockSet logBlocks : LogBlockSet.LOG_BLOCK_SETS) {

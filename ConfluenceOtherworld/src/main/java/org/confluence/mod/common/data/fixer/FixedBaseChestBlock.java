@@ -260,7 +260,10 @@ public class FixedBaseChestBlock extends ChestBlock {
         }
 
         public static void baseTick(Level level, BlockPos blockPos, BlockState blockState, Entity entity) {
-            BlockState target = getBlockByVariant(entity.variant).defaultBlockState().setValue(FACING, blockState.getValue(FACING)).setValue(WATERLOGGED, blockState.getValue(WATERLOGGED));
+            BlockState target = getBlockByVariant(entity.variant).defaultBlockState()
+                    .setValue(FACING, blockState.getValue(FACING))
+                    .setValue(WATERLOGGED, blockState.getValue(WATERLOGGED))
+                    .setValue(TYPE, blockState.getValue(TYPE));
             ResourceKey<LootTable> lootTable = entity.lootTable;
             long lootTableSeed = entity.lootTableSeed;
             entity.setLootTable(null);
@@ -350,7 +353,7 @@ public class FixedBaseChestBlock extends ChestBlock {
                 Variant variantId = Variant.byId(tag.getInt("VariantId"));
                 ItemStack itemStack = Entity.getBlockByVariant(variantId).asItem().getDefaultInstance();
                 itemStack.set(DataComponents.BLOCK_STATE, new BlockItemStateProperties(Map.of("unlocked", variantId.unlock < 0 ? "true" : "false")));
-                player.getInventory().setItem(slotId, itemStack); // 从老存档拿一个没上锁的箱子
+                player.getInventory().setItem(slotId, itemStack);
             }
         }
     }

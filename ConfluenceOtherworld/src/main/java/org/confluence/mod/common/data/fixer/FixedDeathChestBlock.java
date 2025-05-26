@@ -274,7 +274,10 @@ public class FixedDeathChestBlock extends FixedBaseChestBlock implements INetwor
                 if (!itemStack.isEmpty()) items.set(i, itemStack);
             }
             entity.clearContent();
-            level.setBlockAndUpdate(blockPos, target.defaultBlockState().setValue(FACING, blockState.getValue(FACING)).setValue(WATERLOGGED, blockState.getValue(WATERLOGGED)));
+            level.setBlockAndUpdate(blockPos, target.defaultBlockState()
+                    .setValue(FACING, blockState.getValue(FACING))
+                    .setValue(WATERLOGGED, blockState.getValue(WATERLOGGED))
+                    .setValue(TYPE, blockState.getValue(TYPE)));
             if (level.getBlockEntity(blockPos) instanceof DeathChestBlock.Entity blockEntity) {
                 ((ChestBlockEntityAccessor) blockEntity).callSetItems(items);
                 blockEntity.setLootTable(lootTable);

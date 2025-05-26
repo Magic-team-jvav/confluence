@@ -1,4 +1,10 @@
 {
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "create"
+    }
+  ],
   "type": "confluence:item_transmutation",
   "source": {
     "item": "create:chocolate_glazed_berries"

@@ -55,6 +55,8 @@ public class ModItemModelProvider extends ItemModelProvider {
         separateModel(HamaxeItems.MOLTEN_HAMAXE, templateNormal24x, "hamaxe/");
         separateModel(AxeItems.WAR_AXE_OF_THE_NIGHT, templateReverse24x, "axe/");
         separateModel(AxeItems.BLOOD_LUST_CLUSTER, templateNormal24x, "axe/");
+        separateModel(AxeItems.AXE_OF_REGROWTH, templateNormal24x, "axe/");
+        separateModel(AxeItems.STAFF_OF_REGROWTH, templateNormal24x, "axe/");
         separateModel(PickaxeItems.REAVER_SHARK_PICKAXE, templateReverse24x, "pickaxe/");
 
         getBuilder(SwordItems.NIGHT_EDGE.getId().getPath()).parent(templateReverse24x).texture("layer0", SwordItems.NIGHT_EDGE.getId().withPrefix("item/sword/"));

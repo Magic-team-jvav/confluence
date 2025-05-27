@@ -15,8 +15,8 @@ public class BannedBiomeNoiseBasedChunkGenerator extends NoiseBasedChunkGenerato
     public static final MapCodec<BannedBiomeNoiseBasedChunkGenerator> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             MultiNoiseBiomeSource.CODEC.fieldOf("biome_source").forGetter(BannedBiomeNoiseBasedChunkGenerator::getBiomeSource),
             NoiseGeneratorSettings.CODEC.fieldOf("settings").forGetter(BannedBiomeNoiseBasedChunkGenerator::generatorSettings),
-            IdFixer.fixBiomeKey(ResourceKey.codec(Registries.BIOME)).fieldOf("banned_biome").forGetter(generator -> generator.bannedBiome),
-            IdFixer.fixBiomeKey(ResourceKey.codec(Registries.BIOME)).fieldOf("target_biome").forGetter(generator -> generator.targetBiome)
+            ResourceKey.codec(Registries.BIOME).mapResult(IdFixer.FIX_BIOME_KEY_FUNC).fieldOf("banned_biome").forGetter(generator -> generator.bannedBiome),
+            ResourceKey.codec(Registries.BIOME).mapResult(IdFixer.FIX_BIOME_KEY_FUNC).fieldOf("target_biome").forGetter(generator -> generator.targetBiome)
     ).apply(instance, instance.stable(BannedBiomeNoiseBasedChunkGenerator::new)));
     public final ResourceKey<Biome> bannedBiome;
     public final ResourceKey<Biome> targetBiome;

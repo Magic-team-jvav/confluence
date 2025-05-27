@@ -20,7 +20,6 @@ import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.block.functional.DartTrapBlock;
 import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.init.ModAttachmentTypes;
-import org.confluence.mod.common.init.item.HammerItems;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 
 import static org.confluence.mod.common.attachment.ExtraInventory.SIZE_VANITY_ARMOR;
@@ -124,15 +123,6 @@ public final class AchievementUtils {
                 if (region.isOnRegion(player.chunkPosition())) {
                     AchievementUtils.awardAchievement(player, "no_hobo");
                 }
-            }
-        }
-    }
-
-    public static void begoneEvil(ServerPlayer player) {
-        if (player.getMainHandItem().is(HammerItems.PWNHAMMER)) {
-            AdvancementHolder holder = player.server.getAdvancements().get(asAchievement("begone_evil"));
-            if (holder != null) {
-                player.getAdvancements().award(holder, "never");
             }
         }
     }

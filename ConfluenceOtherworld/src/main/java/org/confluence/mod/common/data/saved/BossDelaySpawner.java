@@ -8,15 +8,16 @@ import org.confluence.mod.util.ModUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
-public class EntityDelaySpawner {
-    public static final EntityDelaySpawner INSTANCE = new EntityDelaySpawner();
+public class BossDelaySpawner {
+    public static final BossDelaySpawner INSTANCE = new BossDelaySpawner();
     private final List<Delayed<Mob>> bossQueue = new ArrayList<>();
 
     public void tick(ServerLevel serverLevel) {
         if (!bossQueue.isEmpty()) {
             bossQueue.removeIf(mobDelayed -> {
-                if (mobDelayed.delay-- <= 0) {
+                if (mobDelayed.delay-- <= 0 && mobDelayed.predicate.test(serverLevel)) {
                     Vec3 vec3 = serverLevel.players().stream().findAny().map(Entity::position)
                             .orElseGet(serverLevel.getLevelData().getSpawnPos()::getCenter);
                     ModUtils.summonBoss(serverLevel, vec3, mobDelayed.entity);
@@ -27,9 +28,9 @@ public class EntityDelaySpawner {
         }
     }
 
-    public void pushBoss(int delay, Mob entity) {
+    public void pushBoss(int delay, Mob entity, Predicate<ServerLevel> predicate) {
         if (bossQueue.size() == 8) bossQueue.removeFirst();
-        bossQueue.add(new Delayed<>(delay, entity));
+        bossQueue.add(new Delayed<>(delay, entity, predicate));
     }
 
     public void clear() {
@@ -39,10 +40,12 @@ public class EntityDelaySpawner {
     static class Delayed<E extends Entity> {
         int delay;
         final E entity;
+        final Predicate<ServerLevel> predicate;
 
-        Delayed(int delay, E entity) {
+        Delayed(int delay, E entity, Predicate<ServerLevel> predicate) {
             this.delay = delay;
             this.entity = entity;
+            this.predicate = predicate;
         }
     }
 }

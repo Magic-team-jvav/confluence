@@ -4,4 +4,6 @@ public interface IServerPlayer {
     void confluence$setCouldPickupItem(boolean enable);
 
     boolean confluence$isCouldPickupItem();
+
+    void confluence$bulldozer();
 }

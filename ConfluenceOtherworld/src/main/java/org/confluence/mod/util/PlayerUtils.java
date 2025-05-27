@@ -4,6 +4,7 @@ import com.xiaohunao.equipment_benediction.common.hook.HookMapManager;
 import com.xiaohunao.heaven_destiny_moment.common.moment.MomentInstanceManager;
 import com.xiaohunao.terra_moment.common.init.TMMoments;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.util.Tuple;
@@ -26,10 +27,7 @@ import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.common.CoinItem;
-import org.confluence.mod.network.s2c.GamePhasePacketS2C;
-import org.confluence.mod.network.s2c.ManaPacketS2C;
-import org.confluence.mod.network.s2c.StarPhasesPacketS2C;
-import org.confluence.mod.network.s2c.WindSpeedPacketS2C;
+import org.confluence.mod.network.s2c.*;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.util.TCUtils;
 import org.confluence.terraentity.entity.ai.Boss;
@@ -312,6 +310,9 @@ public final class PlayerUtils {
         }
     }
 
+    /**
+     * @see PlayerDeathInfoPacketS2C#replaceCombatKillPacket(ServerPlayer, Component)
+     */
     public static void dropMoney(Player player) {
         long money = getMoney(player);
         long drops;

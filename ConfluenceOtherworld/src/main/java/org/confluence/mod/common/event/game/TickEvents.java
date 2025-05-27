@@ -40,7 +40,7 @@ public final class TickEvents {
         if (serverLevel.dimension() != Level.OVERWORLD) return;
         FallingStarItemEntity.summon(serverLevel);
         MeteoriteTracker.INSTANCE.tick(serverLevel);
-        EntityDelaySpawner.INSTANCE.tick(serverLevel);
+        BossDelaySpawner.INSTANCE.tick(serverLevel);
 
         long dayTime = serverLevel.getDayTime() % 24000L;
         if (dayTime == 0L) { // 6:00
@@ -57,7 +57,7 @@ public final class TickEvents {
                     if (attributeFactor && npcFactor) break;
                 }
                 if (attributeFactor && npcFactor && serverLevel.random.nextFloat() < 0.3333F) {
-                    EntityDelaySpawner.INSTANCE.pushBoss(1350, new EyeOfCthulhu(serverLevel));
+                    BossDelaySpawner.INSTANCE.pushBoss(1350, new EyeOfCthulhu(serverLevel), level -> level.getDayTime() % 24000 > 12000);
                     serverLevel.getServer().getPlayerList().broadcastSystemMessage(Component.translatable("event.confluence.eye_of_cthulhu").withColor(GlobalColors.MESSAGE.get()), false);
                 }
             }

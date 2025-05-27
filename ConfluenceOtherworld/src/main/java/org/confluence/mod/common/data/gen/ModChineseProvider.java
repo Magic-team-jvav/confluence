@@ -213,7 +213,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.adhesive_bandage.0", "对流血免疫");
         add("tooltip.item.confluence.medicated_bandage.0", "对中毒和流血免疫");
         add("tooltip.item.confluence.pocket_mirror.0", "对石化免疫");
-        add("tooltip.item.confluence.reflective_shades.0", "对黑暗和石化免疫");
+        add("tooltip.item.confluence.reflective_shades.0", "对失明和石化免疫");
         add("tooltip.item.confluence.armor_polish.0", "对盔甲破损免疫");
         add("tooltip.item.confluence.armor_bracing.0", "对盔甲破损和虚弱免疫");
         add("tooltip.item.confluence.megaphone.0", "对沉默免疫");

@@ -248,7 +248,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.adhesive_bandage.0", "Immune to bleeding");
         add("tooltip.item.confluence.medicated_bandage.0", "Immune to poison and bleeding");
         add("tooltip.item.confluence.pocket_mirror.0", "Immune to petrification");
-        add("tooltip.item.confluence.reflective_shades.0", "Immune to darkness and petrification");
+        add("tooltip.item.confluence.reflective_shades.0", "Immune to blindness and petrification");
         add("tooltip.item.confluence.armor_polish.0", "Immune to armor degradation");
         add("tooltip.item.confluence.armor_bracing.0", "Immune to armor degradation and weakness");
         add("tooltip.item.confluence.megaphone.0", "Immune to silence");

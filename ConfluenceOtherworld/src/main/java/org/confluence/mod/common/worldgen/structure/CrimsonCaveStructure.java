@@ -45,12 +45,12 @@ public class CrimsonCaveStructure extends Structure {
     protected Optional<GenerationStub> findGenerationPoint(GenerationContext context) {
         if (context.chunkGenerator().getBiomeSource() instanceof MultiNoiseBiomeSource multi) {
             if (multi instanceof BannedBiomeMultiNoiseBiomeSource banned) {
-                if (banned.getBannedBiome() == ModBiomes.TR_CRIMSON) {
+                if (banned.getBannedBiome() == ModBiomes.THE_CRIMSON) {
                     return Optional.empty();
                 }
             } else {
                 Pair<Holder<Biome>, Holder<Biome>> pair = ((IMultiNoiseBiomeSource) multi).confluence$getBiomePair();
-                if (pair != null && pair.getFirst() != null && pair.getFirst().is(ModBiomes.TR_CRIMSON)) {
+                if (pair != null && pair.getFirst() != null && pair.getFirst().is(ModBiomes.THE_CRIMSON)) {
                     return Optional.empty();
                 }
             }

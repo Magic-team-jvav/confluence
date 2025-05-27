@@ -65,7 +65,7 @@ public class ModEnglishProvider extends LanguageProvider {
 
         add("gamerule.confluenceSpreadableChance", "Confluence Spreadable Chance");
         add("generator.confluence.the_corruption", "The Corruption");
-        add("generator.confluence.tr_crimson", "The Crimson");
+        add("generator.confluence.the_crimson", "The Crimson");
 
         add("tooltip.price.platinum", "Platinum");
         add("tooltip.price.gold", "Gold");
@@ -557,9 +557,9 @@ public class ModEnglishProvider extends LanguageProvider {
         add("biome.confluence.the_hallow", "The Hallow");
         add("biome.confluence.the_hallow_desert", "The Hallow Desert");
         add("biome.confluence.the_hallow_tundra", "The Hallow Tundra");
-        add("biome.confluence.tr_crimson", "The Crimson");
-        add("biome.confluence.tr_crimson_desert", "The Crimson Desert");
-        add("biome.confluence.tr_crimson_tundra", "The Crimson Tundra");
+        add("biome.confluence.the_crimson", "The Crimson");
+        add("biome.confluence.the_crimson_desert", "The Crimson Desert");
+        add("biome.confluence.the_crimson_tundra", "The Crimson Tundra");
 
         // new
         add("achievements.toast.complete", "Achievement achieved!");

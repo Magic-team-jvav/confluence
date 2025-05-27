@@ -55,7 +55,7 @@ public class ModChineseProvider extends LanguageProvider {
 
         add("gamerule.confluenceSpreadableChance", "邪恶群系蔓延设置");
         add("generator.confluence.the_corruption", "腐化之地");
-        add("generator.confluence.tr_crimson", "猩红之地");
+        add("generator.confluence.the_crimson", "猩红之地");
 
         add("tooltip.price.platinum", "铂");
         add("tooltip.price.gold", "金");
@@ -521,9 +521,9 @@ public class ModChineseProvider extends LanguageProvider {
         add("biome.confluence.the_corruption", "腐化之地");
         add("biome.confluence.the_corruption_desert", "腐化沙漠");
         add("biome.confluence.the_corruption_tundra", "腐化苔原");
-        add("biome.confluence.tr_crimson", "猩红之地");
-        add("biome.confluence.tr_crimson_desert", "猩红沙漠");
-        add("biome.confluence.tr_crimson_tundra", "猩红苔原");
+        add("biome.confluence.the_crimson", "猩红之地");
+        add("biome.confluence.the_crimson_desert", "猩红沙漠");
+        add("biome.confluence.the_crimson_tundra", "猩红苔原");
         add("biome.confluence.the_hallow", "神圣之地");
         add("biome.confluence.the_hallow_desert", "神圣沙漠");
         add("biome.confluence.the_hallow_tundra", "神圣苔原");

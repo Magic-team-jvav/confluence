@@ -171,7 +171,7 @@ public final class GameEvents {
         MinecraftServer currentServer;
         if (event.getTargets() != null && (currentServer = ServerLifecycleHooks.getCurrentServer()) != null) {
             boolean corruption = IMinecraftServer.matchesSecretFlag(currentServer, IWorldOptions.THE_CORRUPTION);
-            boolean crimson = IMinecraftServer.matchesSecretFlag(currentServer, IWorldOptions.TR_CRIMSON);
+            boolean crimson = IMinecraftServer.matchesSecretFlag(currentServer, IWorldOptions.THE_CRIMSON);
             if (corruption != crimson) {
                 List<ItemStack> targets = new ArrayList<>();
                 for (ItemStack target : event.getTargets()) {

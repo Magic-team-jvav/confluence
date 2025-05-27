@@ -27,7 +27,7 @@ public interface IWorldOptions {
     WorldOptions confluence$copyWithoutSecretFlag();
 
     long THE_CORRUPTION = 0b0001;
-    long TR_CRIMSON = 0b0010;
+    long THE_CRIMSON = 0b0010;
     long DOUBLE_EVIL = 0b0011;
     long HARDMODE = 0b0100;
     long GRADUATED = 0b1100;
@@ -66,9 +66,9 @@ public interface IWorldOptions {
         map.put(flag | THE_CORRUPTION, Confluence.asResource("textures/gui/world_icon/" + base + "_corruption.png"));
         map.put(flag | THE_CORRUPTION | HARDMODE, Confluence.asResource("textures/gui/world_icon/" + base + "_corruption_hardmode.png"));
         map.put(flag | THE_CORRUPTION | GRADUATED, Confluence.asResource("textures/gui/world_icon/" + base + "_corruption_graduated.png"));
-        map.put(flag | TR_CRIMSON, Confluence.asResource("textures/gui/world_icon/" + base + "_crimson.png"));
-        map.put(flag | TR_CRIMSON | HARDMODE, Confluence.asResource("textures/gui/world_icon/" + base + "_crimson_hardmode.png"));
-        map.put(flag | TR_CRIMSON | GRADUATED, Confluence.asResource("textures/gui/world_icon/" + base + "_crimson_graduated.png"));
+        map.put(flag | THE_CRIMSON, Confluence.asResource("textures/gui/world_icon/" + base + "_crimson.png"));
+        map.put(flag | THE_CRIMSON | HARDMODE, Confluence.asResource("textures/gui/world_icon/" + base + "_crimson_hardmode.png"));
+        map.put(flag | THE_CRIMSON | GRADUATED, Confluence.asResource("textures/gui/world_icon/" + base + "_crimson_graduated.png"));
     }
 
     static ResourceLocation getWorldIcon(long flag) {

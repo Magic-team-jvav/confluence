@@ -1,6 +1,6 @@
 {
     "type": "neoforge:add_features",
-    "biomes": "confluence:tr_crimson",
+    "biomes": "confluence:the_crimson",
     "features": "confluence:crimson_altar",
     "step": "underground_decoration"
 }

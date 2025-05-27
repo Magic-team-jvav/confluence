@@ -92,7 +92,7 @@ public class SurfaceRuleData {
                 ),
 
                 //猩红
-                SurfaceRules.ifTrue(SurfaceRules.isBiome(ModBiomes.TR_CRIMSON),
+                SurfaceRules.ifTrue(SurfaceRules.isBiome(ModBiomes.THE_CRIMSON),
                         SurfaceRules.sequence(
                                 SurfaceRules.ifTrue(SurfaceRules.not(grassSeed),
                                         SurfaceRules.ifTrue(SurfaceRules.not(isHole),

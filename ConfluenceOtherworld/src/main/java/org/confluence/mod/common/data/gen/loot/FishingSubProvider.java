@@ -226,7 +226,7 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                                                                                 registrylookup.getOrThrow(Biomes.DESERT),
                                                                                 registrylookup.getOrThrow(Biomes.WOODED_BADLANDS),
                                                                                 registrylookup.getOrThrow(ModBiomes.THE_CORRUPTION_DESERT),
-                                                                                registrylookup.getOrThrow(ModBiomes.TR_CRIMSON_DESERT),
+                                                                                registrylookup.getOrThrow(ModBiomes.THE_CRIMSON_DESERT),
                                                                                 registrylookup.getOrThrow(ModBiomes.THE_HALLOW_DESERT)
                                                                         )
                                                                 )
@@ -246,7 +246,7 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                                                                                 registrylookup.getOrThrow(Biomes.DESERT),
                                                                                 registrylookup.getOrThrow(Biomes.WOODED_BADLANDS),
                                                                                 registrylookup.getOrThrow(ModBiomes.THE_CORRUPTION_DESERT),
-                                                                                registrylookup.getOrThrow(ModBiomes.TR_CRIMSON_DESERT),
+                                                                                registrylookup.getOrThrow(ModBiomes.THE_CRIMSON_DESERT),
                                                                                 registrylookup.getOrThrow(ModBiomes.THE_HALLOW_DESERT)
                                                                         )
                                                                 )
@@ -266,7 +266,7 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                                                                                 registrylookup.getOrThrow(Biomes.DESERT),
                                                                                 registrylookup.getOrThrow(Biomes.WOODED_BADLANDS),
                                                                                 registrylookup.getOrThrow(ModBiomes.THE_CORRUPTION_DESERT),
-                                                                                registrylookup.getOrThrow(ModBiomes.TR_CRIMSON_DESERT),
+                                                                                registrylookup.getOrThrow(ModBiomes.THE_CRIMSON_DESERT),
                                                                                 registrylookup.getOrThrow(ModBiomes.THE_HALLOW_DESERT)
                                                                         )
                                                                 )
@@ -432,7 +432,7 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                                                                                 registrylookup.getOrThrow(Biomes.SNOWY_BEACH),
                                                                                 registrylookup.getOrThrow(Biomes.SNOWY_TAIGA),
                                                                                 registrylookup.getOrThrow(ModBiomes.THE_CORRUPTION_TUNDRA),
-                                                                                registrylookup.getOrThrow(ModBiomes.TR_CRIMSON_TUNDRA),
+                                                                                registrylookup.getOrThrow(ModBiomes.THE_CRIMSON_TUNDRA),
                                                                                 registrylookup.getOrThrow(ModBiomes.THE_HALLOW_TUNDRA)
                                                                         )
                                                                 )
@@ -458,7 +458,7 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                                                                                 registrylookup.getOrThrow(Biomes.SNOWY_BEACH),
                                                                                 registrylookup.getOrThrow(Biomes.SNOWY_TAIGA),
                                                                                 registrylookup.getOrThrow(ModBiomes.THE_CORRUPTION_TUNDRA),
-                                                                                registrylookup.getOrThrow(ModBiomes.TR_CRIMSON_TUNDRA),
+                                                                                registrylookup.getOrThrow(ModBiomes.THE_CRIMSON_TUNDRA),
                                                                                 registrylookup.getOrThrow(ModBiomes.THE_HALLOW_TUNDRA)
                                                                         )
                                                                 )
@@ -484,7 +484,7 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                                                                                 registrylookup.getOrThrow(Biomes.SNOWY_BEACH),
                                                                                 registrylookup.getOrThrow(Biomes.SNOWY_TAIGA),
                                                                                 registrylookup.getOrThrow(ModBiomes.THE_CORRUPTION_TUNDRA),
-                                                                                registrylookup.getOrThrow(ModBiomes.TR_CRIMSON_TUNDRA),
+                                                                                registrylookup.getOrThrow(ModBiomes.THE_CRIMSON_TUNDRA),
                                                                                 registrylookup.getOrThrow(ModBiomes.THE_HALLOW_TUNDRA)
                                                                         )
                                                                 )
@@ -554,9 +554,9 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                                                         LocationPredicate.Builder.location()
                                                                 .setBiomes(
                                                                         HolderSet.direct(
-                                                                                registrylookup.getOrThrow(ModBiomes.TR_CRIMSON),
-                                                                                registrylookup.getOrThrow(ModBiomes.TR_CRIMSON_DESERT),
-                                                                                registrylookup.getOrThrow(ModBiomes.TR_CRIMSON_TUNDRA)
+                                                                                registrylookup.getOrThrow(ModBiomes.THE_CRIMSON),
+                                                                                registrylookup.getOrThrow(ModBiomes.THE_CRIMSON_DESERT),
+                                                                                registrylookup.getOrThrow(ModBiomes.THE_CRIMSON_TUNDRA)
                                                                         )
                                                                 )
                                                                 .setY(MinMaxBounds.Doubles.between(-64.0, 260.0))
@@ -571,9 +571,9 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                                                         LocationPredicate.Builder.location()
                                                                 .setBiomes(
                                                                         HolderSet.direct(
-                                                                                registrylookup.getOrThrow(ModBiomes.TR_CRIMSON),
-                                                                                registrylookup.getOrThrow(ModBiomes.TR_CRIMSON_DESERT),
-                                                                                registrylookup.getOrThrow(ModBiomes.TR_CRIMSON_TUNDRA)
+                                                                                registrylookup.getOrThrow(ModBiomes.THE_CRIMSON),
+                                                                                registrylookup.getOrThrow(ModBiomes.THE_CRIMSON_DESERT),
+                                                                                registrylookup.getOrThrow(ModBiomes.THE_CRIMSON_TUNDRA)
                                                                         )
                                                                 )
                                                                 .setY(MinMaxBounds.Doubles.between(-64.0, 260.0))
@@ -810,7 +810,7 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                                                                                 registrylookup.getOrThrow(Biomes.DESERT),
                                                                                 registrylookup.getOrThrow(Biomes.WOODED_BADLANDS),
                                                                                 registrylookup.getOrThrow(ModBiomes.THE_CORRUPTION_DESERT),
-                                                                                registrylookup.getOrThrow(ModBiomes.TR_CRIMSON_DESERT),
+                                                                                registrylookup.getOrThrow(ModBiomes.THE_CRIMSON_DESERT),
                                                                                 registrylookup.getOrThrow(ModBiomes.THE_HALLOW_DESERT)
                                                                         )
                                                                 )
@@ -861,7 +861,7 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                                                                                 registrylookup.getOrThrow(Biomes.SNOWY_BEACH),
                                                                                 registrylookup.getOrThrow(Biomes.SNOWY_TAIGA),
                                                                                 registrylookup.getOrThrow(ModBiomes.THE_CORRUPTION_TUNDRA),
-                                                                                registrylookup.getOrThrow(ModBiomes.TR_CRIMSON_TUNDRA),
+                                                                                registrylookup.getOrThrow(ModBiomes.THE_CRIMSON_TUNDRA),
                                                                                 registrylookup.getOrThrow(ModBiomes.THE_HALLOW_TUNDRA)
                                                                         )
                                                                 )
@@ -914,9 +914,9 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                                                         LocationPredicate.Builder.location()
                                                                 .setBiomes(
                                                                         HolderSet.direct(
-                                                                                registrylookup.getOrThrow(ModBiomes.TR_CRIMSON),
-                                                                                registrylookup.getOrThrow(ModBiomes.TR_CRIMSON_DESERT),
-                                                                                registrylookup.getOrThrow(ModBiomes.TR_CRIMSON_TUNDRA)
+                                                                                registrylookup.getOrThrow(ModBiomes.THE_CRIMSON),
+                                                                                registrylookup.getOrThrow(ModBiomes.THE_CRIMSON_DESERT),
+                                                                                registrylookup.getOrThrow(ModBiomes.THE_CRIMSON_TUNDRA)
                                                                         )
                                                                 )
                                                                 .setY(MinMaxBounds.Doubles.between(-64.0, 260.0))
@@ -1009,7 +1009,7 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                                                                                 registrylookup.getOrThrow(Biomes.DESERT),
                                                                                 registrylookup.getOrThrow(Biomes.WOODED_BADLANDS),
                                                                                 registrylookup.getOrThrow(ModBiomes.THE_CORRUPTION_DESERT),
-                                                                                registrylookup.getOrThrow(ModBiomes.TR_CRIMSON_DESERT),
+                                                                                registrylookup.getOrThrow(ModBiomes.THE_CRIMSON_DESERT),
                                                                                 registrylookup.getOrThrow(ModBiomes.THE_HALLOW_DESERT)
                                                                         )
                                                                 )
@@ -1060,7 +1060,7 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                                                                                 registrylookup.getOrThrow(Biomes.SNOWY_BEACH),
                                                                                 registrylookup.getOrThrow(Biomes.SNOWY_TAIGA),
                                                                                 registrylookup.getOrThrow(ModBiomes.THE_CORRUPTION_TUNDRA),
-                                                                                registrylookup.getOrThrow(ModBiomes.TR_CRIMSON_TUNDRA),
+                                                                                registrylookup.getOrThrow(ModBiomes.THE_CRIMSON_TUNDRA),
                                                                                 registrylookup.getOrThrow(ModBiomes.THE_HALLOW_TUNDRA)
                                                                         )
                                                                 )
@@ -1113,9 +1113,9 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                                                         LocationPredicate.Builder.location()
                                                                 .setBiomes(
                                                                         HolderSet.direct(
-                                                                                registrylookup.getOrThrow(ModBiomes.TR_CRIMSON),
-                                                                                registrylookup.getOrThrow(ModBiomes.TR_CRIMSON_DESERT),
-                                                                                registrylookup.getOrThrow(ModBiomes.TR_CRIMSON_TUNDRA)
+                                                                                registrylookup.getOrThrow(ModBiomes.THE_CRIMSON),
+                                                                                registrylookup.getOrThrow(ModBiomes.THE_CRIMSON_DESERT),
+                                                                                registrylookup.getOrThrow(ModBiomes.THE_CRIMSON_TUNDRA)
                                                                         )
                                                                 )
                                                                 .setY(MinMaxBounds.Doubles.between(-64.0, 260.0))

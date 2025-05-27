@@ -1,6 +1,6 @@
 {
     "type": "neoforge:add_spawns",
-    "biomes": "confluence:tr_crimson",
+    "biomes": "confluence:the_crimson",
     "spawners": [
         {
             "type": "terra_entity:blood_crawler",

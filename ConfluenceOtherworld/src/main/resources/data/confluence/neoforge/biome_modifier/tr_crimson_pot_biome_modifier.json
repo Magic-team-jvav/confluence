@@ -1,7 +1,7 @@
 {
   "type": "neoforge:add_features",
   "biomes": [
-    "confluence:tr_crimson"
+    "confluence:the_crimson"
   ],
   "features": "confluence:tr_crimson_pot",
   "step": "underground_decoration"

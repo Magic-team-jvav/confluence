@@ -143,7 +143,7 @@ public final class MusicHandler {
             switchMusic(y, ICE, UNDERGROUND_ICE);
         } else if (biome.is(ModTags.Biomes.THE_CORRUPTION)) {
             switchMusic(y, CORRUPTION, UNDERGROUND_CORRUPTION);
-        } else if (biome.is(ModTags.Biomes.TR_CRIMSON)) {
+        } else if (biome.is(ModTags.Biomes.THE_CRIMSON)) {
             switchMusic(y, CRIMSON, UNDERGROUND_CRIMSON);
         } else if (biome.is(ModTags.Biomes.THE_HALLOW)) {
             switchMusic(y, HALLOW, UNDERGROUND_HALLOW);

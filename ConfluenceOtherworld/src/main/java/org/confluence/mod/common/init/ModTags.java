@@ -224,7 +224,7 @@ public final class ModTags {
         public static final TagKey<Biome> IS_CONFLUENCE = register("is_confluence");
         public static final TagKey<Biome> SPREADABLE = register("spreadable");
         public static final TagKey<Biome> THE_CORRUPTION = register("the_corruption");
-        public static final TagKey<Biome> TR_CRIMSON = register("tr_crimson");
+        public static final TagKey<Biome> THE_CRIMSON = register("the_crimson");
         public static final TagKey<Biome> THE_HALLOW = register("the_hallow");
         public static final TagKey<Biome> VANITY_TREES_REPLACEABLE = register("vanity_trees_replaceable");
 

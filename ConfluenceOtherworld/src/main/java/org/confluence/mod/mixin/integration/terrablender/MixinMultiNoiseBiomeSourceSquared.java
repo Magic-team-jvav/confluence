@@ -62,7 +62,7 @@ public abstract class MixinMultiNoiseBiomeSourceSquared implements SelfGetter<Mu
                 }
             }
             MinecraftServer currentServer = ServerLifecycleHooks.getCurrentServer();
-            if (currentServer != null && (replaced.is(ModBiomes.THE_CORRUPTION) || replaced.is(ModBiomes.TR_CRIMSON))) {
+            if (currentServer != null && (replaced.is(ModBiomes.THE_CORRUPTION) || replaced.is(ModBiomes.THE_CRIMSON))) {
                 BlockPos spawnPos = currentServer.getWorldData().overworldData().getSpawnPos();
                 if (Math.abs((spawnPos.getX() >> 2) - x) <= 50 || Math.abs((spawnPos.getZ() >> 2) - z) <= 50) {
                     if (confluence$protection == null) {
@@ -102,19 +102,19 @@ public abstract class MixinMultiNoiseBiomeSourceSquared implements SelfGetter<Mu
             } else if ((flag & IWorldOptions.DOUBLE_EVIL) == 0) {
                 if (new LegacyRandomSource(worldOptions.seed()).nextBoolean()) {
                     from = ModBiomes.THE_CORRUPTION;
-                    to = ModBiomes.TR_CRIMSON;
-                    ((IMinecraftServer) server).confluence$updateSecretFlag(IWorldOptions.TR_CRIMSON);
+                    to = ModBiomes.THE_CRIMSON;
+                    ((IMinecraftServer) server).confluence$updateSecretFlag(IWorldOptions.THE_CRIMSON);
                 } else {
-                    from = ModBiomes.TR_CRIMSON;
+                    from = ModBiomes.THE_CRIMSON;
                     to = ModBiomes.THE_CORRUPTION;
                     ((IMinecraftServer) server).confluence$updateSecretFlag(IWorldOptions.THE_CORRUPTION);
                 }
             } else {
                 if ((flag & IWorldOptions.THE_CORRUPTION) == 0) {
                     from = ModBiomes.THE_CORRUPTION;
-                    to = ModBiomes.TR_CRIMSON;
+                    to = ModBiomes.THE_CRIMSON;
                 } else {
-                    from = ModBiomes.TR_CRIMSON;
+                    from = ModBiomes.THE_CRIMSON;
                     to = ModBiomes.THE_CORRUPTION;
                 }
             }

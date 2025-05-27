@@ -8,7 +8,7 @@
                     "preset": "minecraft:overworld"
                 },
                 "settings": "minecraft:overworld",
-                "banned_biome": "confluence:tr_crimson",
+                "banned_biome": "confluence:the_crimson",
                 "target_biome": "confluence:the_corruption"
             }
         },

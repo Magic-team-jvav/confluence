@@ -26,10 +26,10 @@ public class ModBiomeTagsProvider extends BiomeTagsProvider {
                 ModBiomes.THE_CORRUPTION_DESERT,
                 ModBiomes.THE_CORRUPTION_TUNDRA
         );
-        tag(ModTags.Biomes.TR_CRIMSON).add(
-                ModBiomes.TR_CRIMSON,
-                ModBiomes.TR_CRIMSON_DESERT,
-                ModBiomes.TR_CRIMSON_TUNDRA
+        tag(ModTags.Biomes.THE_CRIMSON).add(
+                ModBiomes.THE_CRIMSON,
+                ModBiomes.THE_CRIMSON_DESERT,
+                ModBiomes.THE_CRIMSON_TUNDRA
         );
         tag(ModTags.Biomes.THE_HALLOW).add(
                 ModBiomes.THE_HALLOW,
@@ -38,7 +38,7 @@ public class ModBiomeTagsProvider extends BiomeTagsProvider {
         );
         tag(ModTags.Biomes.SPREADABLE).addTags(
                 ModTags.Biomes.THE_CORRUPTION,
-                ModTags.Biomes.TR_CRIMSON,
+                ModTags.Biomes.THE_CRIMSON,
                 ModTags.Biomes.THE_HALLOW
         );
         tag(ModTags.Biomes.IS_CONFLUENCE).add(
@@ -46,9 +46,9 @@ public class ModBiomeTagsProvider extends BiomeTagsProvider {
                 ModBiomes.THE_CORRUPTION_DESERT,
                 ModBiomes.THE_CORRUPTION_TUNDRA,
 
-                ModBiomes.TR_CRIMSON,
-                ModBiomes.TR_CRIMSON_DESERT,
-                ModBiomes.TR_CRIMSON_TUNDRA,
+                ModBiomes.THE_CRIMSON,
+                ModBiomes.THE_CRIMSON_DESERT,
+                ModBiomes.THE_CRIMSON_TUNDRA,
 
                 ModBiomes.THE_HALLOW,
                 ModBiomes.THE_HALLOW_DESERT,
@@ -64,9 +64,9 @@ public class ModBiomeTagsProvider extends BiomeTagsProvider {
                 ModBiomes.THE_CORRUPTION_DESERT,
                 ModBiomes.THE_CORRUPTION_TUNDRA,
 
-                ModBiomes.TR_CRIMSON,
-                ModBiomes.TR_CRIMSON_DESERT,
-                ModBiomes.TR_CRIMSON_TUNDRA,
+                ModBiomes.THE_CRIMSON,
+                ModBiomes.THE_CRIMSON_DESERT,
+                ModBiomes.THE_CRIMSON_TUNDRA,
 
                 ModBiomes.THE_HALLOW,
                 ModBiomes.THE_HALLOW_DESERT,

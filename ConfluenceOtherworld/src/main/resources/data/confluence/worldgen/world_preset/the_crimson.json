@@ -9,7 +9,7 @@
                 },
                 "settings": "minecraft:overworld",
                 "banned_biome": "confluence:the_corruption",
-                "target_biome": "confluence:tr_crimson"
+                "target_biome": "confluence:the_crimson"
             }
         },
         "minecraft:the_end": {

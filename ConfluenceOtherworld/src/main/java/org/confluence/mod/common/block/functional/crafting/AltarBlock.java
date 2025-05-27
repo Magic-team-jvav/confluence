@@ -3,7 +3,6 @@ package org.confluence.mod.common.block.functional.crafting;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -53,7 +52,6 @@ import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.common.init.item.HammerItems;
 import org.confluence.mod.common.recipe.AltarRecipe;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.util.AchievementUtils;
@@ -123,12 +121,7 @@ public class AltarBlock extends BaseEntityBlock {
                         "event.confluence.reveal_step" + data.getRevealStep()
                 ).withColor(GlobalColors.MESSAGE.get()), false);
             }
-            if (serverPlayer.getMainHandItem().is(HammerItems.PWNHAMMER)) {
-                AdvancementHolder holder = serverLevel.getServer().getAdvancements().get(AchievementUtils.asAchievement("begone_evil"));
-                if (holder != null) {
-                    serverPlayer.getAdvancements().award(holder, "never");
-                }
-            }
+            AchievementUtils.begoneEvil(serverPlayer);
         }
     }
 

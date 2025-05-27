@@ -11,6 +11,7 @@ import org.confluence.mod.client.connected.custom.RandomizeCTModel;
 import org.confluence.mod.client.connected.custom.WeightedCTModel;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.common.init.block.ModBlocks;
 
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
@@ -24,8 +25,8 @@ public final class ModConnectives {
         modEventBus.addListener(StitchedSprite::onTextureStitchPost);
         MODEL_SWAPPER.registerListeners(modEventBus);
 
-        register(FunctionalBlocks.ANDESITE_CASING.get(), () -> new EncasedCTBehaviour(AllSpriteShifts.ANDESITE_CASING));
-        registerCasingConnectivity(FunctionalBlocks.ANDESITE_CASING.get(), (block, cc) -> cc.makeCasing(block, AllSpriteShifts.ANDESITE_CASING));
+        register(ModBlocks.ANDESITE_CASING.get(), () -> new EncasedCTBehaviour(AllSpriteShifts.ANDESITE_CASING));
+        registerCasingConnectivity(ModBlocks.ANDESITE_CASING.get(), (block, cc) -> cc.makeCasing(block, AllSpriteShifts.ANDESITE_CASING));
 
         register(DecorativeBlocks.SUN_PLATE.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.SUN_PLATE));
         register(FunctionalBlocks.ECHO_BLOCK.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.ECHO_BLOCK));

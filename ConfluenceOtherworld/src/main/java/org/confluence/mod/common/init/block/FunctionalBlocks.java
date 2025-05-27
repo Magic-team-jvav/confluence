@@ -44,8 +44,6 @@ public class FunctionalBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Confluence.MODID);
     static List<DeferredBlock<? extends Block>> MECHANICAL_BLOCKS = new ArrayList<>();
 
-    public static final DeferredBlock<Block> ANDESITE_CASING = registerWithItem("andesite_casing", () -> new Block(BlockBehaviour.Properties.of()));
-
     public static final DeferredBlock<BiomeChestBlock> JUNGLE_CHEST = registerWithItem("jungle_chest", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.JUNGLE_KEY)));
     public static final DeferredBlock<BiomeChestBlock> CORRUPTION_CHEST = registerWithItem("corruption_chest", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.CORRUPTION_KEY)));
     public static final DeferredBlock<BiomeChestBlock> CRIMSON_CHEST = registerWithItem("crimson_chest", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.CRIMSON_KEY)));

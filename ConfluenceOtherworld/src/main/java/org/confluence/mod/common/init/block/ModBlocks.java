@@ -89,6 +89,8 @@ public final class ModBlocks {
 
     public static final DeferredBlock<CursedFlameBlock> CURSED_FLAME_BLOCK = registerWithoutItem("cursed_flame_block", () -> new CursedFlameBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_LIGHT_GREEN).replaceable().noCollission().instabreak().lightLevel(l -> 7).sound(SoundType.WOOL).pushReaction(PushReaction.DESTROY)));
 
+    public static final DeferredBlock<Block> ANDESITE_CASING = registerWithItem("andesite_casing", () -> new Block(BlockBehaviour.Properties.of()));
+
     private static DeferredBlock<TombstoneBlock> registerTombstone(String id, boolean isGolden) {
         DeferredBlock<TombstoneBlock> tombstone = registerWithItem(id, TombstoneBlock::new);
         TOMBSTONES.put(tombstone, isGolden);

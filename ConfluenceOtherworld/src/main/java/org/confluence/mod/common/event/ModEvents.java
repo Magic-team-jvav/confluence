@@ -103,6 +103,9 @@ public final class ModEvents {
                 if (Attributes.MAX_HEALTH.value() instanceof RangedAttribute rangedAttribute) {
                     rangedAttribute.maxValue = 32768;
                 }
+                if (Attributes.ATTACK_DAMAGE.value() instanceof RangedAttribute rangedAttribute) {
+                    rangedAttribute.maxValue = 32768;
+                }
             }
         });
     }

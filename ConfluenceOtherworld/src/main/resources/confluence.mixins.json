@@ -64,6 +64,7 @@
         "integration.terra_entity.AnglerNPCMixin",
         "integration.terra_entity.CursedSkullMixin",
         "integration.terra_entity.DemonEyeMixin",
+        "integration.terra_entity.DungeonGuardianMixin",
         "integration.terra_entity.KingSlimeMixin",
         "integration.terra_entity.ServerBoundEventPacketMixin",
         "integration.terra_entity.SkeletronHandMixin",

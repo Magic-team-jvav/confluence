@@ -173,7 +173,7 @@ dependencies {
 
     compileOnly "vazkii.patchouli:Patchouli:1.21-87-NEOFORGE:api"
     compileOnly "vazkii.patchouli:Patchouli:1.21-87-NEOFORGE"
-    //runtimeOnly "vazkii.patchouli:Patchouli:1.21-87-NEOFORGE"
+    runtimeOnly "vazkii.patchouli:Patchouli:1.21-87-NEOFORGE"
 
     compileOnly "curse.maven:ftb-chunks-forge-314906:5968500"
     compileOnly "curse.maven:ftb-library-forge-404465:6016745"

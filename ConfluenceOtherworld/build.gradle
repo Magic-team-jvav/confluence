@@ -14,6 +14,8 @@ base {
     archivesName = "ConfluenceOtherworld"
 }
 
+boolean isRunningInIdea = System.getProperty("idea.active") == "true"
+
 neoForge {
     version = project.neo_version
     parchment {
@@ -42,7 +44,7 @@ neoForge {
                     // 启用 JetBrain Runtime 热重载功能
                     "-XX:+AllowEnhancedClassRedefinition"
             ])
-            if (isRunningInIdea()) {
+            if (isRunningInIdea) {
                 systemProperty "terminal.jline", "true"
             }
         }
@@ -344,10 +346,6 @@ tasks.register("genVoilaRun") {
         runConfigDir.mkdirs()
     }
     new File(runConfigDir, "GeneratedRunConfig.xml").text = runConfig
-}
-
-def isRunningInIdea() {
-    return System.getProperty("idea.active") == "true"
 }
 
 jar {

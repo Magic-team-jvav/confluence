@@ -42,8 +42,7 @@ public class SharpeningStationBlock extends HorizontalDirectionalBlock {
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
         if (!level.isClientSide) {
             player.addEffect(new MobEffectInstance(ModEffects.SHARPENED, MobEffectInstance.INFINITE_DURATION));
-            return InteractionResult.SUCCESS;
         }
-        return InteractionResult.PASS;
+        return InteractionResult.SUCCESS;
     }
 }

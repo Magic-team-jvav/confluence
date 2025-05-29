@@ -42,8 +42,7 @@ public class AmmoBoxBlock extends HorizontalDirectionalBlock {
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
         if (!level.isClientSide) {
             player.addEffect(new MobEffectInstance(ModEffects.AMMO_BOX, 600 * 20));
-            return InteractionResult.SUCCESS;
         }
-        return InteractionResult.PASS;
+        return InteractionResult.SUCCESS;
     }
 }

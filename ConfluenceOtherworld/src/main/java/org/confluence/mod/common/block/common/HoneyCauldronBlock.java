@@ -4,12 +4,12 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.cauldron.CauldronInteraction;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -61,8 +61,11 @@ public class HoneyCauldronBlock extends AbstractCauldronBlock {
     @Override
     protected void entityInside(BlockState blockState, Level level, BlockPos blockPos, Entity entity) {
         if (!level.isClientSide && isEntityInsideContent(blockState, blockPos, entity) && entity instanceof LivingEntity living) {
-            if (living instanceof Animal || living instanceof ServerPlayer) {
-                living.addEffect(new MobEffectInstance(TCEffects.HONEY, 600));
+            if (living instanceof Animal || living instanceof Player) {
+                MobEffectInstance effect = living.getEffect(TCEffects.HONEY);
+                if (effect == null || effect.getDuration() < 200) {
+                    living.addEffect(new MobEffectInstance(TCEffects.HONEY, 600));
+                }
             }
         }
     }

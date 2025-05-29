@@ -88,12 +88,13 @@ public class BowItems {
     public static final DeferredItem<TerraBowItem> DAEDALUS_STORM_BOW = register("daedalus_storm_bow",()->new DaedalusStormbow(10f, ModRarity.PURPLE));
 
 
-    public static final DeferredItem<TerraBowItem> DEVELOPER_BOW = register("developer_bow", 1F,
+    public static final DeferredItem<TerraBowItem> DEVELOPER_BOW = register("developer_bow", 9999F,
             m->m.setRarity(ModRarity.MASTER).addModifyArrowBuilder(
                     modifier->modifier.setCauseFire(200)
-                            .setDamage(10)
+                            .setDamage(9999)
                             .setSpeedFactor(2)
-                            .setPenetration(2)
+                            .setPenetration(9999)
+                            .setGravity(0)
             ));
 
 

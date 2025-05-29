@@ -109,7 +109,7 @@ public class AccessoryItems {
             XENON_MOSS_FISHING_BOBBER = ITEMS.register("xenon_moss_fishing_bobber", () -> new FishingBobber(CurioFishingHook.Variant.XENON)); // 氙苔藓钓鱼浮标
 
 
-    public static final DeferredItem<BaseCurioItem> MECHANICAL_LENS = registerDirectly("mechanical_lens", name -> new MechanicalLens(BaseCurioItem.builder("mechanical_lens").rarity(ORANGE).accessories(of(TCItems.INFORMATION, List.of(TCItems.MECHANICAL$LENS))))); //机械晶状体
+    public static final DeferredItem<BaseCurioItem> MECHANICAL_LENS = registerDirectly("mechanical_lens", name -> new MechanicalLens(BaseCurioItem.builder("mechanical_lens").rarity(ORANGE).tooltips(1).accessories(of(TCItems.INFORMATION, List.of(TCItems.MECHANICAL$LENS))))); //机械晶状体
     /* 标尺 */
     /* 机械标尺 */
 
@@ -129,7 +129,7 @@ public class AccessoryItems {
                     .attribute(Attributes.LUCK, 0.05, ADD_VALUE)), // 贪婪戒指
             GUIDE_TO_PLANT_FIBER_CORDAGE = registerCurio("guide_to_plant_fiber_cordage", builder -> builder.accessories(units(VINE$ROPE))), // 植物纤维绳索宝典
             RADIO_THING = registerDirectly("radio_thing", name -> new RadioThing(BaseCurioItem.builder(name).rarity(BLUE).tooltips(1))), // 收音机
-            SPECTRE_GOGGLES = registerDirectly("spectre_goggles", name -> new SpectreGoggles(BaseCurioItem.builder(name).rarity(PINK).accessories(units(SPECTRE$GOGGLES)))), // 幽灵护目镜
+            SPECTRE_GOGGLES = registerDirectly("spectre_goggles", name -> new SpectreGoggles(BaseCurioItem.builder(name).rarity(PINK).tooltips(1).accessories(units(SPECTRE$GOGGLES)))), // 幽灵护目镜
             CHROMATIC_CLOAK = registerCurio("chromatic_cloak", builder -> builder.rarity(PINK).accessories(of(TCItems.EFFECT$IMMUNITIES, Set.of(ModEffects.SHIMMER)))); // 炫彩斗篷
 
     public static final DeferredItem<BaseCurioItem> SUMMONER_EMBLEM = registerCurio("summoner_emblem", builder -> builder.noTooltip().rarity(LIGHT_RED).attribute(TEAttributes.SUMMON_DAMAGE, 0.15, ADD_MULTIPLIED_TOTAL)), // 召唤师徽章

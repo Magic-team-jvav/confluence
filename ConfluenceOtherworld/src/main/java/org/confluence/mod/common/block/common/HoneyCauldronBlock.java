@@ -5,11 +5,8 @@ import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -17,7 +14,7 @@ import net.minecraft.world.level.block.AbstractCauldronBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.ToolItems;
-import org.confluence.terra_curio.common.init.TCEffects;
+import org.confluence.terra_curio.common.effect.HoneyEffect;
 
 import java.util.Map;
 
@@ -61,12 +58,7 @@ public class HoneyCauldronBlock extends AbstractCauldronBlock {
     @Override
     protected void entityInside(BlockState blockState, Level level, BlockPos blockPos, Entity entity) {
         if (!level.isClientSide && isEntityInsideContent(blockState, blockPos, entity) && entity instanceof LivingEntity living) {
-            if (living instanceof Animal || living instanceof Player) {
-                MobEffectInstance effect = living.getEffect(TCEffects.HONEY);
-                if (effect == null || effect.getDuration() < 200) {
-                    living.addEffect(new MobEffectInstance(TCEffects.HONEY, 600));
-                }
-            }
+            HoneyEffect.applyHoneyEffect(living);
         }
     }
 

@@ -139,6 +139,8 @@ boolean vanillin = false // 香兰素
 boolean observable = false // 可视性能侦测
 boolean ftb = false
 boolean ipn = false
+boolean mmmmmmmmmmmm = true
+boolean supplementaries = false
 
 dependencies {
     projectName.forEach { name -> implementation jarJar(project(":" + name)) }
@@ -173,7 +175,7 @@ dependencies {
 
     compileOnly "vazkii.patchouli:Patchouli:1.21-87-NEOFORGE:api"
     compileOnly "vazkii.patchouli:Patchouli:1.21-87-NEOFORGE"
-    runtimeOnly "vazkii.patchouli:Patchouli:1.21-87-NEOFORGE"
+    //runtimeOnly "vazkii.patchouli:Patchouli:1.21-87-NEOFORGE"
 
     compileOnly "curse.maven:ftb-chunks-forge-314906:5968500"
     compileOnly "curse.maven:ftb-library-forge-404465:6016745"
@@ -265,14 +267,19 @@ dependencies {
         runtimeOnly "maven.modrinth:ae2:juQOuKVW"
         runtimeOnly "maven.modrinth:guideme:9aIv5HxH"
     }
-    if (false) {
+    if (supplementaries) {
         runtimeOnly "curse.maven:supplementaries-412082:6284266"
-        runtimeOnly "curse.maven:selene-499980:6302654"
     }
     if (false) {
         runtimeOnly "curse.maven:oh-the-biomes-weve-gone-1070751:6298837"
         runtimeOnly "curse.maven:corgilib-693313:6002859"
         runtimeOnly "curse.maven:oh-the-trees-youll-grow-962544:6294221"
+    }
+    if (mmmmmmmmmmmm) {
+        runtimeOnly "maven.modrinth:mmmmmmmmmmmm:4CScWyO3"
+    }
+    if (supplementaries || mmmmmmmmmmmm) {
+        runtimeOnly "maven.modrinth:moonlight:xk77V47Y"
     }
 }
 

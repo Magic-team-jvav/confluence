@@ -15,8 +15,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.monster.piglin.AbstractPiglin;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -34,7 +32,7 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.worldgen.secret_seed.NoTraps;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.Immunity;
-import org.confluence.terra_curio.common.init.TCEffects;
+import org.confluence.terra_curio.common.effect.HoneyEffect;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.util.TCUtils;
 import org.spongepowered.asm.mixin.Mixin;
@@ -121,14 +119,7 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
         FluidType fluidType = self.getBlockStateOn().getFluidState().getType().getFluidType();
         if (fluidType == ModFluids.HONEY.type().get()) {
             if (!self.level().isClientSide) {
-                if (self instanceof Animal || self instanceof Player) {
-                    MobEffectInstance effect = self.getEffect(TCEffects.HONEY);
-                    if (effect == null || effect.getDuration() < 220) {
-                        self.addEffect(new MobEffectInstance(TCEffects.HONEY, 600));
-                    }
-                } else if (self instanceof AbstractPiglin piglin) {
-                    piglin.setImmuneToZombification(true);
-                }
+                HoneyEffect.applyHoneyEffect(self);
             }
             instance = instance.scale(0.8);
         } else if (fluidType == ModFluids.SHIMMER.type().get()) {

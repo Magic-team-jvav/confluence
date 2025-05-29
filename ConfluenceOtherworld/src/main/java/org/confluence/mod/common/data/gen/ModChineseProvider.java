@@ -67,8 +67,8 @@ public class ModChineseProvider extends LanguageProvider {
 
         add("tooltip.item.confluence.meteorite_ingot.0", "摸起来是温的");
         add("tooltip.item.confluence.encumbering_stone.0", "锁上时能防止拾取物品");
-        add("tooltip.item.confluence.encumbering_stone.1", "背包内右键点击可解锁");
-        add("tooltip.item.confluence.encumbering_stone.2", "“你负重过多”");
+        add("tooltip.item.confluence.encumbering_stone.1", "“你负重过多”");
+        add("tooltip.item.confluence.encumbering_stone.2", "背包内右键点击可开关");
         add("tooltip.item.confluence.super_absorbant_sponge.0", "能够吸收无限多水");
         add("tooltip.item.confluence.honey_absorbant_sponge.0", "能够吸收无限多熔岩");
         add("tooltip.item.confluence.lava_absorbant_sponge.0", "能够吸收无限多蜂蜜");
@@ -245,6 +245,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.philosophers_stone.0", "减少治疗药水的冷却时间");
         add("tooltip.item.confluence.charm_of_myths.0", "提供生命恢复，减少治疗药水的冷却时间");
         add("tooltip.item.confluence.mechanical_lens.0", "给予改良的布线视野");
+        add("tooltip.item.confluence.mechanical_lens.1", "背包内右键点击可开关");
         add("tooltip.item.confluence.high_test_fishing_line.0", "鱼线永远不会断");
         add("tooltip.item.confluence.angler_earring.0", "增加渔力");
         add("tooltip.item.confluence.fishing_bobber.0", "增加渔力");
@@ -266,6 +267,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.coin_ring.0", "击中敌人有时会掉落额外的钱币，扩大钱币的拾取范围");
         add("tooltip.item.confluence.greedy_ring.0", "击中敌人有时会掉落额外的钱币，扩大钱币的拾取范围，商店价格降低20%");
         add("tooltip.item.confluence.spectre_goggles.0", "提供幽灵视觉以与回声块交互");
+        add("tooltip.item.confluence.spectre_goggles.1", "背包内右键点击可开关");
         add("tooltip.item.confluence.guide_to_plant_fiber_cordage.0", "可从藤蔓收集藤蔓绳");
         add("tooltip.item.confluence.fledgling_wings.0", "可飞行和缓慢坠落");
         add("tooltip.item.confluence.chromatic_cloak.0", "对微光相位化免疫，当淹没在微光中时潜行可以相位化");

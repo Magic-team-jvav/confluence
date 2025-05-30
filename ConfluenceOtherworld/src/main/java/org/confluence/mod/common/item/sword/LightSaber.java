@@ -51,7 +51,7 @@ public class LightSaber extends BaseSwordItem implements GeoItem {
         }.modifyProperties(p -> p.component(TEDataComponentTypes.BOOMERANG_READY.get(), SingleBooleanComponent.TRUE)));
         this.color = color;
         this.turnOnModifiers = createAttributes(tier, rawDamage - tier.getAttackDamageBonus() - 1, rawSpeed - 4);
-        this.turnOffModifiers = createAttributes(tier, 0, -2);
+        this.turnOffModifiers = createAttributes(tier, 1 - tier.getAttackDamageBonus(), -2);
         SingletonGeoAnimatable.registerSyncedAnimatable(this);
     }
 

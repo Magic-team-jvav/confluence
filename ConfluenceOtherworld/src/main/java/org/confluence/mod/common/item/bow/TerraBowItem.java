@@ -177,7 +177,7 @@ public class TerraBowItem extends BowItem {
             tooltipComponents.add(Component.translatable("tooltip.item.confluence.max_count").append(": ").append(String.format("%d", modifyArrowBuilder.multiShoot)).withColor(0x00FF00));
         }
         // 命中效果
-        var hitEffect = stack.get(TEDataComponentTypes.EFFECT_STRATEGY);
+        EffectStrategyComponent hitEffect = stack.get(TEDataComponentTypes.EFFECT_STRATEGY);
         if(hitEffect != null){
             IEffectStrategy.appendDescription(tooltipComponents,
                     hitEffect.effects(),

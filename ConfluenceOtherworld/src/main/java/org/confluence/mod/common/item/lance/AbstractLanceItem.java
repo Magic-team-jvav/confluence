@@ -13,8 +13,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.decoration.ArmorStand;
-import net.minecraft.world.entity.npc.Npc;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
@@ -114,8 +112,7 @@ public abstract class AbstractLanceItem extends CustomRarityItem implements GeoI
     protected abstract void onHitEntity(DamageSource damageSource, Entity entity, LivingEntity living, Entity victim);
 
     protected boolean canHitEntity(Entity target, LivingEntity owner) {
-        if (owner == target || !target.canBeHitByProjectile() || target instanceof ArmorStand || target instanceof Npc) return false;
-        return !owner.isPassengerOfSameVehicle(target) && target.isAttackable() && !target.skipAttackInteraction(owner);
+        return ModUtils.canHitEntity(target, owner);
     }
 
     protected double getDistance(long tickCount, LivingEntity owner) {

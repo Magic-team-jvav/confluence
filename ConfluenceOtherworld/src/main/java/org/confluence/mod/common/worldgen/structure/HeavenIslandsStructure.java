@@ -125,7 +125,7 @@ public class HeavenIslandsStructure extends Structure {
             roundPos(centerPos.offset(0, 25, 0), (double) radiusXZ / 2.0D + 8, random, vctPosList, 5, random.nextInt(2, 7), 0.78539815F);
             for (Vector3d vector3d : vctPosList) {
                 littleCloudPos = vector3d;
-                littleCloudPosInt = new BlockPos((int) littleCloudPos.x, (int) littleCloudPos.y + random.nextInt(-5, 6), (int) littleCloudPos.z);
+                littleCloudPosInt = new BlockPos(Mth.floor(littleCloudPos.x), Mth.floor((int) littleCloudPos.y + random.nextInt(-5, 6)), Mth.floor(littleCloudPos.z));
                 radiusXZ = random.nextInt(5, 8);
                 radiusY = random.nextInt(3, 6);
                 cloudPos.clear();

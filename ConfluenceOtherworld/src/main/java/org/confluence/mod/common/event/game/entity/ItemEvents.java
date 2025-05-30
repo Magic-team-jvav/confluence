@@ -1,6 +1,8 @@
 package org.confluence.mod.common.event.game.entity;
 
+import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -12,6 +14,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.ItemAttributeModifierEvent;
 import net.neoforged.neoforge.event.entity.item.ItemTossEvent;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.common.attachment.ExtraInventory;
@@ -20,6 +23,7 @@ import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.common.init.item.GunItems;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.item.gun.ManaGunItem;
@@ -49,13 +53,16 @@ public final class ItemEvents {
     public static void toss(ItemTossEvent event) {
         if (event.isCanceled()) return;
         ItemEntity itemEntity = event.getEntity();
-        if (itemEntity.getItem().is(ModTags.Items.TREASURE_BAG)) {
-            TreasureBagItemEntity entity = new TreasureBagItemEntity(itemEntity.level(), itemEntity.position(), itemEntity.getItem(), null);
+        ItemStack itemStack = itemEntity.getItem();
+        if (itemStack.is(ModTags.Items.TREASURE_BAG)) {
+            TreasureBagItemEntity entity = new TreasureBagItemEntity(itemEntity.level(), itemEntity.position(), itemStack, null);
             entity.setPickUpDelay(40);
             entity.setDeltaMovement(itemEntity.getDeltaMovement());
             itemEntity.level().addFreshEntity(entity);
             itemEntity.discard();
             event.setCanceled(true);
+        } else if (itemStack.is(ConsumableItems.GUIDE_VOODOO_DOLL)) {
+            LibUtils.updateItemStackNbt(itemStack, tag -> tag.put("Direction", Direction.CODEC.encodeStart(NbtOps.INSTANCE, event.getPlayer().getDirection()).getOrThrow()));
         }
     }
 

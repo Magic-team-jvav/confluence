@@ -113,7 +113,7 @@ public class CrimsonCaveStructure extends Structure {
                 VectorUtils.lightningPathList(VctList, 1, 5, random);
                 lineSet(VctList, 4, 8, 1, false, blockMap);
                 lineSet(VctList, 2, 6, 0, true, blockMap);
-                pos = new BlockPos((int) VctList.getFirst().x, (int) VctList.getFirst().y, (int) VctList.getFirst().z);
+                pos = VectorUtils.fromVector3d(VctList.getFirst());
                 if (wrappedCrimsonHeart) {
                     StructureUtils.ball(4, pos, 1, true, blockMap);
                     StructureUtils.ball(2, pos, 0, true, blockMap);

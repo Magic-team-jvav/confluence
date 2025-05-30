@@ -18,12 +18,11 @@ import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terraentity.data.component.EffectStrategyComponent;
+import org.confluence.terraentity.registries.generation.IGeneration;
 import org.confluence.terraentity.registries.generation.variant.AboveFallenGeneration;
 import org.confluence.terraentity.registries.generation.variant.ForwardGeneration;
-import org.confluence.terraentity.registries.generation.IGeneration;
 import org.confluence.terraentity.registries.hit_effect.variant.TimePossibilityAmplifierEffect;
 import org.confluence.terraentity.registries.track.ITrackType;
-import org.confluence.terraentity.init.TESounds;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -85,19 +84,19 @@ public record SwordProjectileComponent (
 
     public static final Supplier<SwordProjectileComponent> ENCHANTED_SWORD_PROJ =
             ()->new SwordProjectileComponent(1.2f,0.8f,0.9f,40, 0, 10,
-                    TESounds.REGULAR_STAFF_SHOOT_2.getId(),ModEntities.ENCHANTED_SWORD_PROJECTILE.getId(),
+                    ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),ModEntities.ENCHANTED_SWORD_PROJECTILE.getId(),
                     Optional.empty(), ForwardGeneration.of(0,0),
                     Optional.empty() );
 
     public static final Supplier<SwordProjectileComponent> GRASS_PROJ =
             ()->new SwordProjectileComponent(1,0.8f,0.9f,20, 0, 10,
-                    TESounds.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.GRASS_PROJECTILE.getId(),
+                    ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.GRASS_PROJECTILE.getId(),
                     Optional.empty(), ForwardGeneration.of(0,20),
                     Optional.of(EffectStrategyComponent.of(TimePossibilityAmplifierEffect.of("grass_effect", MobEffects.POISON, 100, 1, 0.5f))));
 
     public static final Supplier<SwordProjectileComponent> NIGHT_PROJ =
             ()->new SwordProjectileComponent(1,0.8f,0.9f,20, 0, 10,
-                    TESounds.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.NIGHT_EDGE_PROJECTILE.getId(),
+                    ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.NIGHT_EDGE_PROJECTILE.getId(),
                     Optional.empty(), ForwardGeneration.of(0,20),
                     Optional.empty());
 

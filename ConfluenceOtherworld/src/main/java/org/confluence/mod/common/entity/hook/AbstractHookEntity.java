@@ -21,6 +21,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.init.ModAttachmentTypes;
+import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.item.hook.BaseHookItem;
 
 import java.util.function.IntFunction;
@@ -122,6 +123,7 @@ public abstract class AbstractHookEntity extends Projectile {
         setHookState(HookState.HOOKED);
         this.hookedState = level().getBlockState(blockPosition());
         this.hasImpulse = true;
+        playSound(ModSoundEvents.HOOK_ATTACH.get(), 0.5F, 1.0F);
     }
 
     @Override

@@ -10,6 +10,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -19,6 +20,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.entity.hook.AbstractHookEntity;
 import org.confluence.mod.common.init.ModAttachmentTypes;
+import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.item.hook.BaseHookItem;
 
 public record HookThrowingPacketC2S(boolean throwing, int id) implements CustomPacketPayload {
@@ -73,6 +75,7 @@ public record HookThrowingPacketC2S(boolean throwing, int id) implements CustomP
                         nbt.put("hooks", listTag);
                         extraInventory.setChanged();
                     });
+                    level.playSound(null, player.getX(), player.getEyeY(), player.getZ(), ModSoundEvents.HOOK_SHOOT.get(), SoundSource.PLAYERS, 0.5F, 1);
                 }
             } else {
                 Entity entity = level.getEntity(id);

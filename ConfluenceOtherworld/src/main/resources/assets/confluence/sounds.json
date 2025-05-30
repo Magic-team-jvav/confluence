@@ -84,11 +84,6 @@
             "confluence:terra_operation"
         ]
     },
-    "use_mounts": {
-        "sounds": [
-            "confluence:use_mounts"
-        ]
-    },
     "bow_cooldown_recovery": {
         "sounds": [
             "confluence:bow_cooldown_recovery"
@@ -107,6 +102,16 @@
     "transmutation_use": {
         "sounds": [
             "confluence:transmutation_use"
+        ]
+    },
+    "hook_attach": {
+        "sounds": [
+            "confluence:hook_attach"
+        ]
+    },
+    "hook_shoot": {
+        "sounds": [
+            "confluence:hook_shoot"
         ]
     },
     "otherworld": {

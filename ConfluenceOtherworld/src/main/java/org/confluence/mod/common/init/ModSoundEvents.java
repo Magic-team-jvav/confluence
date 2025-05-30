@@ -29,10 +29,11 @@ public final class ModSoundEvents {
     public static final DeferredHolder<SoundEvent, SoundEvent> STAR = register("star"); // 坠星
     public static final DeferredHolder<SoundEvent, SoundEvent> STAR_LANDS = register("star_lands"); // 星星落地
     public static final DeferredHolder<SoundEvent, SoundEvent> TERRA_OPERATION = register("terra_operation"); // 操作音效
-    public static final DeferredHolder<SoundEvent, SoundEvent> USE_MOUNTS = register("use_mounts"); // 召唤坐骑
     public static final DeferredHolder<SoundEvent, SoundEvent> DECOUPLING = register("decoupling"); // 脱钩
     public static final DeferredHolder<SoundEvent, SoundEvent> ACHIEVEMENTS = register("achievements"); // 成就音效
     public static final DeferredHolder<SoundEvent, SoundEvent> TRANSMUTATION_USE = register("transmutation_use"); // 高级增益使用
+    public static final DeferredHolder<SoundEvent, SoundEvent> HOOK_SHOOT = register("hook_shoot");
+    public static final DeferredHolder<SoundEvent, SoundEvent> HOOK_ATTACH = register("hook_attach");
 
     // 若干音乐包，都带上otherworld
     public static final DeferredHolder<SoundEvent, SoundEvent> OTHERWORLD = register("otherworld"); // 汇流常规主题曲

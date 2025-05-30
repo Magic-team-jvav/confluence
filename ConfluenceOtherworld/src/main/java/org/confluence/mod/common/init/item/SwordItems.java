@@ -16,10 +16,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.SwordProjectileComponent;
-import org.confluence.mod.common.init.ModDataComponentTypes;
-import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.init.ModEntities;
-import org.confluence.mod.common.init.ModTiers;
+import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.common.item.sword.LightSaber;
 import org.confluence.mod.common.item.sword.SweetSword;
@@ -27,7 +24,6 @@ import org.confluence.mod.common.item.sword.legacy.InventoryTickStrategy;
 import org.confluence.mod.common.item.sword.legacy.SwordPrefabs;
 import org.confluence.mod.integration.terra_entity.init.ModEffectStrategies;
 import org.confluence.terraentity.init.TEEffectStrategies;
-import org.confluence.terraentity.init.TESounds;
 import org.confluence.terraentity.registries.generation.variant.ForwardGeneration;
 import org.confluence.terraentity.registries.track.variant.SimpleTrack;
 
@@ -132,7 +128,7 @@ public class SwordItems {
             .addAttributeModifier(Attributes.MOVEMENT_SPEED, 1.5f, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)        //手持属性加成
             .setInventoryTick(InventoryTickStrategy.INVINCIBLE)             //背包每刻效果
             .modifyProperties(p -> p.component(ModDataComponentTypes.SWORD_PROJECTILE, new SwordProjectileComponent(
-                    1, 1, 1, 50, 0.05f, 20, TESounds.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.ENCHANTED_SWORD_PROJECTILE.getId(),
+                    1, 1, 1, 50, 0.05f, 20, ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.ENCHANTED_SWORD_PROJECTILE.getId(),
                     Optional.of(new SimpleTrack(Mth.HALF_PI, 0.5f, 0.1f, Optional.empty(), 0.1)),
                     ForwardGeneration.of(0, 0), Optional.empty()
             ))));

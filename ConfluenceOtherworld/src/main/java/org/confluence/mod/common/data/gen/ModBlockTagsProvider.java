@@ -242,11 +242,11 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 EBONY_HARDENED_SAND_BLOCK.get(),
                 TR_CRIMSON_HARDENED_SAND_BLOCK.get(),
                 PEARL_HARDENED_SAND_BLOCK.get(),
-                EBONY_STONE.get(),
+                EBONSTONE.get(),
                 EBONY_SANDSTONE.get(),
-                TR_CRIMSON_STONE.get(),
+                CRIMSTONE.get(),
                 TR_CRIMSON_SANDSTONE.get(),
-                PEARL_STONE.get(),
+                PEARLSTONE.get(),
                 PEARL_SANDSTONE.get(),
                 DESERT_FOSSIL.get(),
                 EXTRACTINATOR.get(),
@@ -588,11 +588,11 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 EBONY_HARDENED_SAND_BLOCK.get(),
                 TR_CRIMSON_HARDENED_SAND_BLOCK.get(),
                 PEARL_HARDENED_SAND_BLOCK.get(),
-                EBONY_STONE.get(),
+                EBONSTONE.get(),
                 EBONY_SANDSTONE.get(),
-                TR_CRIMSON_STONE.get(),
+                CRIMSTONE.get(),
                 TR_CRIMSON_SANDSTONE.get(),
-                PEARL_STONE.get(),
+                PEARLSTONE.get(),
                 PEARL_SANDSTONE.get(),
                 HELLSTONE.get(),
                 HELLFORGE.get(),
@@ -729,11 +729,11 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 EBONY_HARDENED_SAND_BLOCK.get(),
                 TR_CRIMSON_HARDENED_SAND_BLOCK.get(),
                 PEARL_HARDENED_SAND_BLOCK.get(),
-                EBONY_STONE.get(),
+                EBONSTONE.get(),
                 EBONY_SANDSTONE.get(),
-                TR_CRIMSON_STONE.get(),
+                CRIMSTONE.get(),
                 TR_CRIMSON_SANDSTONE.get(),
-                PEARL_STONE.get(),
+                PEARLSTONE.get(),
                 PEARL_SANDSTONE.get(),
                 BLUE_BRICKS.get(),
                 GREEN_BRICKS.get(),
@@ -1077,9 +1077,9 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 RED_HARDENED_SAND_BLOCK.get()
         );
         tag(Tags.Blocks.STONES).add(
-                EBONY_STONE.get(),
-                TR_CRIMSON_STONE.get(),
-                PEARL_STONE.get(),
+                EBONSTONE.get(),
+                CRIMSTONE.get(),
+                PEARLSTONE.get(),
                 TR_POLISHED_GRANITE.get()
         );
         tag(Tags.Blocks.STORAGE_BLOCKS_WHEAT).add(
@@ -1096,8 +1096,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 WEB_ROPE.get()
         );
         tag(BlockTags.OVERWORLD_CARVER_REPLACEABLES).add(
-                EBONY_STONE.get(),
-                TR_CRIMSON_STONE.get(),
+                EBONSTONE.get(),
+                CRIMSTONE.get(),
                 HARDENED_SAND_BLOCK.get(),
                 RED_HARDENED_SAND_BLOCK.get()
         );
@@ -1167,8 +1167,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 FRAGILE_PINK_BRICKS.get()
         );
         tag(BlockTags.BASE_STONE_OVERWORLD).add(
-                EBONY_STONE.get(),
-                TR_CRIMSON_STONE.get()
+                EBONSTONE.get(),
+                CRIMSTONE.get()
         );
         tag(ModTags.Blocks.HALLOW_CONVERSION_GRASS_BLOCK).add(
                 Blocks.GRASS_BLOCK,
@@ -1217,7 +1217,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 TR_CRIMSON_MOIST_SAND_BLOCK.get()
         );
         tag(ModTags.Blocks.CURSED_FLAME_BASE_BLOCK).add(
-                EBONY_STONE.get(),
+                EBONSTONE.get(),
                 EBONY_COBBLESTONE.get(),
                 EBONY_HARDENED_SAND_BLOCK.get(),
                 EBONY_SANDSTONE.get(),
@@ -1232,7 +1232,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 CORRUPT_JUNGLE_GRASS_BLOCK.get()
         );
         tag(ModTags.Blocks.DECOMPOSE_THE_SOURCE_EXTRACT_BASE_BLOCK).add(
-                EBONY_STONE.get(),
+                EBONSTONE.get(),
                 EBONY_COBBLESTONE.get()
         );
         tag(BlockTags.FEATURES_CANNOT_REPLACE).add(

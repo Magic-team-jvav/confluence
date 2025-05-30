@@ -2,15 +2,15 @@
     "variants": {
         "": [
             {
-                "model": "confluence:block/tr_crimson_stone",
+                "model": "confluence:block/crimstone",
                 "weight": 12
             },
             {
-                "model": "confluence:block/tr_crimson_stone_0",
+                "model": "confluence:block/crimstone_0",
                 "weight": 1
             },
             {
-                "model": "confluence:block/tr_crimson_stone_1",
+                "model": "confluence:block/crimstone_1",
                 "weight": 1
             }
         ]

@@ -26,11 +26,11 @@ public class SurfaceRuleData {
     //private static final SurfaceRules.RuleSource CLAY = makeStateRule(Blocks.CLAY);
 
     private static final SurfaceRules.RuleSource CORRUPT_GRASS_BLOCK = makeStateRule(NatureBlocks.CORRUPT_GRASS_BLOCK.get());
-    private static final SurfaceRules.RuleSource EBONY_STONE = makeStateRule(NatureBlocks.EBONY_STONE.get());
+    private static final SurfaceRules.RuleSource EBONY_STONE = makeStateRule(NatureBlocks.EBONSTONE.get());
     private static final SurfaceRules.RuleSource EBONY_SAND = makeStateRule(NatureBlocks.EBONY_SAND.get());
 
     private static final SurfaceRules.RuleSource TR_CRIMSON_GRASS_BLOCK = makeStateRule(NatureBlocks.TR_CRIMSON_GRASS_BLOCK.get());
-    private static final SurfaceRules.RuleSource TR_CRIMSON_STONE = makeStateRule(NatureBlocks.TR_CRIMSON_STONE.get());
+    private static final SurfaceRules.RuleSource TR_CRIMSON_STONE = makeStateRule(NatureBlocks.CRIMSTONE.get());
     private static final SurfaceRules.RuleSource TR_CRIMSON_SAND = makeStateRule(NatureBlocks.TR_CRIMSON_SAND.get());
 
     private static final SurfaceRules.RuleSource MUSHROOM_GRASS_BLOCK = makeStateRule(NatureBlocks.MUSHROOM_GRASS_BLOCK.get());

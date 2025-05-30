@@ -246,9 +246,9 @@ public class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(TR_CRIMSON_COBBLESTONE.get());
         dropSelf(TR_CRIMSON_SAND.get());
         dropSelf(ASH_BLOCK.get());
-        this.add(TR_CRIMSON_STONE.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, TR_CRIMSON_COBBLESTONE));
-        this.add(EBONY_STONE.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, EBONY_COBBLESTONE));
-        this.add(PEARL_STONE.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, PEARL_COBBLESTONE));
+        this.add(CRIMSTONE.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, TR_CRIMSON_COBBLESTONE));
+        this.add(EBONSTONE.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, EBONY_COBBLESTONE));
+        this.add(PEARLSTONE.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, PEARL_COBBLESTONE));
         this.add(ASH_GRASS_BLOCK.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, ASH_BLOCK));
         this.add(CORRUPT_GRASS_BLOCK.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, Blocks.DIRT));
         this.add(CORRUPT_JUNGLE_GRASS_BLOCK.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, Blocks.MUD));

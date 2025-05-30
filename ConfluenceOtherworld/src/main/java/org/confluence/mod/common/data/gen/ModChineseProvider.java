@@ -1873,7 +1873,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.SLUSH.get(), "雪泥块");
         add(NatureBlocks.SILT_BLOCK.get(), "泥沙块");
         add(NatureBlocks.MARINE_GRAVEL.get(), "海洋砂砾");
-        add(NatureBlocks.EBONY_STONE.get(), "黑檀石块");
+        add(NatureBlocks.EBONSTONE.get(), "黑檀石块");
         add(NatureBlocks.EBONY_COBBLESTONE.get(), "黑檀圆石");
         add(NatureBlocks.EBONY_HARDENED_SAND_BLOCK.get(), "硬化黑檀沙块");
         add(NatureBlocks.EBONY_MOIST_SAND_BLOCK.get(), "湿润黑檀沙块");
@@ -1882,7 +1882,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.CORRUPT_GRASS_BLOCK.get(), "腐化草方块");
         add(NatureBlocks.CORRUPT_JUNGLE_GRASS_BLOCK.get(), "腐化丛林草方块");
         add(NatureBlocks.EBONY_SAND_LAYER_BLOCK.get(), "腐化沙片");
-        add(NatureBlocks.PEARL_STONE.get(), "珍珠石块");
+        add(NatureBlocks.PEARLSTONE.get(), "珍珠石块");
         add(NatureBlocks.PEARL_COBBLESTONE.get(), "珍珠圆石");
         add(NatureBlocks.PEARL_HARDENED_SAND_BLOCK.get(), "硬化珍珠沙块");
         add(NatureBlocks.PEARL_MOIST_SAND_BLOCK.get(), "湿润珍珠沙块");
@@ -1890,7 +1890,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.PEARL_SAND.get(), "珍珠沙块");
         add(NatureBlocks.HALLOW_GRASS_BLOCK.get(), "神圣草方块");
         add(NatureBlocks.PEARL_SAND_LAYER_BLOCK.get(), "神圣沙片");
-        add(NatureBlocks.TR_CRIMSON_STONE.get(), "猩红石块");
+        add(NatureBlocks.CRIMSTONE.get(), "猩红石块");
         add(NatureBlocks.TR_CRIMSON_COBBLESTONE.get(), "猩红圆石");
         add(NatureBlocks.TR_CRIMSON_HARDENED_SAND_BLOCK.get(), "硬化猩红沙块");
         add(NatureBlocks.TR_CRIMSON_MOIST_SAND_BLOCK.get(), "湿润猩红沙块");

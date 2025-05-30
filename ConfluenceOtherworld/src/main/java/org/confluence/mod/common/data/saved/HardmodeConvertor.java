@@ -337,7 +337,7 @@ public class HardmodeConvertor implements IGlobalData {
                 } else if (source.is(BlockTags.LEAVES)) {
                     target = NatureBlocks.PEARL_LOG_BLOCKS.getLeaves().get();
                 } else if (source.is(BlockTags.BASE_STONE_OVERWORLD)) {
-                    target = NatureBlocks.PEARL_STONE.get();
+                    target = NatureBlocks.PEARLSTONE.get();
                 } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_GRASS_BLOCK)) {
                     target = NatureBlocks.HALLOW_GRASS_BLOCK.get();
                 } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_JUNGLE_GRASS_BLOCK)) {

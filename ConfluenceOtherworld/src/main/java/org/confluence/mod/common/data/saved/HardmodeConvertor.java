@@ -349,13 +349,13 @@ public class HardmodeConvertor implements IGlobalData {
                 } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_ICE)) {
                     target = NatureBlocks.PINK_ICE.get();
                 } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_SAND)) {
-                    target = NatureBlocks.PEARL_SAND.get();
+                    target = NatureBlocks.PEARLSAND.get();
                 } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_SANDSTONE)) {
-                    target = NatureBlocks.PEARL_SANDSTONE.get();
+                    target = NatureBlocks.PEARLSANDSTONE.get();
                 } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_HARDENED_SAND_BLOCK)) {
-                    target = NatureBlocks.PEARL_HARDENED_SAND_BLOCK.get();
+                    target = NatureBlocks.HARDENED_PEARLSAND_BLOCK.get();
                 } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_MOIST_SAND_BLOCK)) {
-                    target = NatureBlocks.PEARL_MOIST_SAND_BLOCK.get();
+                    target = NatureBlocks.MOISTENED_PEARLSAND_BLOCK.get();
                 }
 
                 if (target == null) return null;

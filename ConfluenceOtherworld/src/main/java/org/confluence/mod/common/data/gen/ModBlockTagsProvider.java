@@ -51,7 +51,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         );
         tag(ModTags.Blocks.DESERT_FOSSIL_REPLACEMENT).add(
                 HARDENED_SAND_BLOCK.get(),
-                RED_HARDENED_SAND_BLOCK.get()
+                HARDENED_RED_SAND_BLOCK.get()
         );
         tag(ModTags.Blocks.SLUSH_REPLACEMENT).add(
                 Blocks.PACKED_ICE,
@@ -142,9 +142,9 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 JUNGLE_GRASS_BLOCK.get()
         );
         tag(BlockTags.SAND).add(
-                TR_CRIMSON_SAND.get(),
-                EBONY_SAND.get(),
-                PEARL_SAND.get()
+                CRIMSAND.get(),
+                EBONSAND.get(),
+                PEARLSAND.get()
         );
         tag((BlockTags.ICE)).add(
                 RED_ICE.get(),
@@ -234,20 +234,20 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 SILK_CHAIN.get(),
                 BONE_CHAIN.get(),
                 LIFE_CRYSTAL_BLOCK.get(),
-                EBONY_COBBLESTONE.get(),
-                TR_CRIMSON_COBBLESTONE.get(),
-                PEARL_COBBLESTONE.get(),
+                COBBLED_EBONSTONE.get(),
+                COBBLED_CRIMSTONE.get(),
+                COBBLED_PEARLSTONE.get(),
                 HARDENED_SAND_BLOCK.get(),
-                RED_HARDENED_SAND_BLOCK.get(),
-                EBONY_HARDENED_SAND_BLOCK.get(),
-                TR_CRIMSON_HARDENED_SAND_BLOCK.get(),
-                PEARL_HARDENED_SAND_BLOCK.get(),
+                HARDENED_RED_SAND_BLOCK.get(),
+                HARDENED_EBONSAND_BLOCK.get(),
+                HARDENED_CRIMSAND_BLOCK.get(),
+                HARDENED_PEARLSAND_BLOCK.get(),
                 EBONSTONE.get(),
-                EBONY_SANDSTONE.get(),
+                EBONSANDSTONE.get(),
                 CRIMSTONE.get(),
-                TR_CRIMSON_SANDSTONE.get(),
+                CRIMSANDSTONE.get(),
                 PEARLSTONE.get(),
-                PEARL_SANDSTONE.get(),
+                PEARLSANDSTONE.get(),
                 DESERT_FOSSIL.get(),
                 EXTRACTINATOR.get(),
                 SKY_MILL.get(),
@@ -328,12 +328,12 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 SILT_BLOCK.get(),
                 MARINE_GRAVEL.get(),
                 DIATOMACEOUS.get(),
-                EBONY_SAND.get(),
-                PEARL_SAND.get(),
-                TR_CRIMSON_SAND.get(),
-                EBONY_SAND_LAYER_BLOCK.get(),
-                PEARL_SAND_LAYER_BLOCK.get(),
-                TR_CRIMSON_SAND_LAYER_BLOCK.get(),
+                EBONSAND.get(),
+                PEARLSAND.get(),
+                CRIMSAND.get(),
+                EBONSAND_LAYER_BLOCK.get(),
+                PEARLSAND_LAYER_BLOCK.get(),
+                CRIMSAND_LAYER_BLOCK.get(),
                 ASH_BLOCK.get(),
                 MUSHROOM_GRASS_BLOCK.get(),
                 JUNGLE_GRASS_BLOCK.get(),
@@ -345,9 +345,9 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 ASH_GRASS_BLOCK.get(),
                 MOIST_SAND_BLOCK.get(),
                 RED_MOIST_SAND_BLOCK.get(),
-                TR_CRIMSON_MOIST_SAND_BLOCK.get(),
-                PEARL_MOIST_SAND_BLOCK.get(),
-                EBONY_MOIST_SAND_BLOCK.get()
+                MOISTENED_CRIMSAND_BLOCK.get(),
+                MOISTENED_PEARLSAND_BLOCK.get(),
+                MOISTENED_EBONSAND_BLOCK.get()
         );
         // 锄头
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithHoe = tag(BlockTags.MINEABLE_WITH_HOE);
@@ -505,11 +505,11 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 AMETHYST_CHAIN.get(),
                 SILK_CHAIN.get(),
                 BONE_CHAIN.get(),
-                EBONY_COBBLESTONE.get(),
-                TR_CRIMSON_COBBLESTONE.get(),
-                PEARL_COBBLESTONE.get(),
+                COBBLED_EBONSTONE.get(),
+                COBBLED_CRIMSTONE.get(),
+                COBBLED_PEARLSTONE.get(),
                 HARDENED_SAND_BLOCK.get(),
-                RED_HARDENED_SAND_BLOCK.get(),
+                HARDENED_RED_SAND_BLOCK.get(),
                 EXTRACTINATOR.get(),
                 DART_TRAP.get(),
                 STONY_LOG.get(),
@@ -585,15 +585,15 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 TR_OBSIDIAN_SMALL_BRICKS.get()
         );
         tag(ModTags.Blocks.NEEDS_4_LEVEL).add(
-                EBONY_HARDENED_SAND_BLOCK.get(),
-                TR_CRIMSON_HARDENED_SAND_BLOCK.get(),
-                PEARL_HARDENED_SAND_BLOCK.get(),
+                HARDENED_EBONSAND_BLOCK.get(),
+                HARDENED_CRIMSAND_BLOCK.get(),
+                HARDENED_PEARLSAND_BLOCK.get(),
                 EBONSTONE.get(),
-                EBONY_SANDSTONE.get(),
+                EBONSANDSTONE.get(),
                 CRIMSTONE.get(),
-                TR_CRIMSON_SANDSTONE.get(),
+                CRIMSANDSTONE.get(),
                 PEARLSTONE.get(),
-                PEARL_SANDSTONE.get(),
+                PEARLSANDSTONE.get(),
                 HELLSTONE.get(),
                 HELLFORGE.get(),
                 HELLSTONE_BLOCK.get(),
@@ -726,15 +726,15 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         tag(ModTags.Blocks.MINEABLE_WITH_HOE_SHOVEL).addTag(BlockTags.MINEABLE_WITH_SHOVEL).addTag(BlockTags.MINEABLE_WITH_HOE);
         // neoforge标签
         tag(Tags.Blocks.NEEDS_NETHERITE_TOOL).add(
-                EBONY_HARDENED_SAND_BLOCK.get(),
-                TR_CRIMSON_HARDENED_SAND_BLOCK.get(),
-                PEARL_HARDENED_SAND_BLOCK.get(),
+                HARDENED_EBONSAND_BLOCK.get(),
+                HARDENED_CRIMSAND_BLOCK.get(),
+                HARDENED_PEARLSAND_BLOCK.get(),
                 EBONSTONE.get(),
-                EBONY_SANDSTONE.get(),
+                EBONSANDSTONE.get(),
                 CRIMSTONE.get(),
-                TR_CRIMSON_SANDSTONE.get(),
+                CRIMSANDSTONE.get(),
                 PEARLSTONE.get(),
-                PEARL_SANDSTONE.get(),
+                PEARLSANDSTONE.get(),
                 BLUE_BRICKS.get(),
                 GREEN_BRICKS.get(),
                 PINK_BRICKS.get(),
@@ -776,14 +776,14 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 CRYSTAL_BLOCK.get()
         );
         tag(Tags.Blocks.COBBLESTONES).add(
-                EBONY_COBBLESTONE.get(),
-                PEARL_COBBLESTONE.get(),
-                TR_CRIMSON_COBBLESTONE.get()
+                COBBLED_EBONSTONE.get(),
+                COBBLED_PEARLSTONE.get(),
+                COBBLED_CRIMSTONE.get()
         );
         tag(Tags.Blocks.COBBLESTONES_NORMAL).add(
-                EBONY_COBBLESTONE.get(),
-                PEARL_COBBLESTONE.get(),
-                TR_CRIMSON_COBBLESTONE.get()
+                COBBLED_EBONSTONE.get(),
+                COBBLED_PEARLSTONE.get(),
+                COBBLED_CRIMSTONE.get()
         );
         tag(Tags.Blocks.DYED).add(
                 PURE_GLASS.get(),
@@ -1064,17 +1064,17 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 HELLFORGE.get()
         );
         tag(Tags.Blocks.SANDS).add(
-                EBONY_SAND.get(),
-                TR_CRIMSON_SAND.get(),
-                PEARL_SAND.get()
+                EBONSAND.get(),
+                CRIMSAND.get(),
+                PEARLSAND.get()
         );
         tag(Tags.Blocks.SANDSTONE_BLOCKS).add(
-                EBONY_HARDENED_SAND_BLOCK.get(),
-                TR_CRIMSON_HARDENED_SAND_BLOCK.get(),
-                PEARL_HARDENED_SAND_BLOCK.get()
+                HARDENED_EBONSAND_BLOCK.get(),
+                HARDENED_CRIMSAND_BLOCK.get(),
+                HARDENED_PEARLSAND_BLOCK.get()
         );
         tag(Tags.Blocks.SANDSTONE_RED_BLOCKS).add(
-                RED_HARDENED_SAND_BLOCK.get()
+                HARDENED_RED_SAND_BLOCK.get()
         );
         tag(Tags.Blocks.STONES).add(
                 EBONSTONE.get(),
@@ -1099,7 +1099,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 EBONSTONE.get(),
                 CRIMSTONE.get(),
                 HARDENED_SAND_BLOCK.get(),
-                RED_HARDENED_SAND_BLOCK.get()
+                HARDENED_RED_SAND_BLOCK.get()
         );
         tag(ModTags.Blocks.UNBREAKABLE_IF_CANNOT_HARVEST).addTags(ModTags.Blocks.NEEDS_2_LEVEL, ModTags.Blocks.NEEDS_3_LEVEL, ModTags.Blocks.NEEDS_4_LEVEL, ModTags.Blocks.NEEDS_5_LEVEL, ModTags.Blocks.NEEDS_6_LEVEL, ModTags.Blocks.NEEDS_7_LEVEL, ModTags.Blocks.NEEDS_8_LEVEL, ModTags.Blocks.NEEDS_9_LEVEL, Tags.Blocks.ORES_NETHERITE_SCRAP, Tags.Blocks.STORAGE_BLOCKS_NETHERITE);
         tag(Tags.Blocks.STORAGE_BLOCKS).add(
@@ -1199,8 +1199,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 Blocks.SAND,
                 Blocks.RED_SAND,
                 SILT_BLOCK.get(),
-                EBONY_SAND.get(),
-                TR_CRIMSON_SAND.get()
+                EBONSAND.get(),
+                CRIMSAND.get()
         );
         tag(ModTags.Blocks.HALLOW_CONVERSION_SANDSTONE).add(
                 Blocks.SANDSTONE,
@@ -1208,20 +1208,20 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         );
         tag(ModTags.Blocks.HALLOW_CONVERSION_HARDENED_SAND_BLOCK).add(
                 HARDENED_SAND_BLOCK.get(),
-                RED_HARDENED_SAND_BLOCK.get()
+                HARDENED_RED_SAND_BLOCK.get()
         );
         tag(ModTags.Blocks.HALLOW_CONVERSION_MOIST_SAND_BLOCK).add(
                 MOIST_SAND_BLOCK.get(),
                 RED_MOIST_SAND_BLOCK.get(),
-                EBONY_MOIST_SAND_BLOCK.get(),
-                TR_CRIMSON_MOIST_SAND_BLOCK.get()
+                MOISTENED_EBONSAND_BLOCK.get(),
+                MOISTENED_CRIMSAND_BLOCK.get()
         );
         tag(ModTags.Blocks.CURSED_FLAME_BASE_BLOCK).add(
                 EBONSTONE.get(),
-                EBONY_COBBLESTONE.get(),
-                EBONY_HARDENED_SAND_BLOCK.get(),
-                EBONY_SANDSTONE.get(),
-                EBONY_SAND.get()
+                COBBLED_EBONSTONE.get(),
+                HARDENED_EBONSAND_BLOCK.get(),
+                EBONSANDSTONE.get(),
+                EBONSAND.get()
         );
         tag(ModTags.Blocks.BLOODTHIRST_CRYSTALL_BASE_BLOCK).add(
                 TR_CRIMSON_GRASS_BLOCK.get(),
@@ -1233,7 +1233,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         );
         tag(ModTags.Blocks.DECOMPOSE_THE_SOURCE_EXTRACT_BASE_BLOCK).add(
                 EBONSTONE.get(),
-                EBONY_COBBLESTONE.get()
+                COBBLED_EBONSTONE.get()
         );
         tag(BlockTags.FEATURES_CANNOT_REPLACE).add(
                 BLUE_BRICKS.get(),

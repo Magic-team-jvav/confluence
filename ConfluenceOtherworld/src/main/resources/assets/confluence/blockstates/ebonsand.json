@@ -1,0 +1,9 @@
+{
+    "variants": {
+        "": [
+            {
+                "model": "confluence:block/ebonsand"
+            }
+        ]
+    }
+}

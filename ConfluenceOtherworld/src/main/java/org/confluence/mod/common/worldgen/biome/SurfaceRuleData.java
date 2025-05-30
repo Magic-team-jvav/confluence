@@ -19,7 +19,7 @@ public class SurfaceRuleData {
     private static final SurfaceRules.RuleSource SANDSTONE = makeStateRule(Blocks.SANDSTONE);
     //private static final SurfaceRules.RuleSource RED_SANDSTONE = makeStateRule(Blocks.RED_SANDSTONE);
     private static final SurfaceRules.RuleSource HARDENED_SAND = makeStateRule(NatureBlocks.HARDENED_SAND_BLOCK.get());
-    private static final SurfaceRules.RuleSource RED_HARDENED_SAND = makeStateRule(NatureBlocks.RED_HARDENED_SAND_BLOCK.get());
+    private static final SurfaceRules.RuleSource RED_HARDENED_SAND = makeStateRule(NatureBlocks.HARDENED_RED_SAND_BLOCK.get());
     private static final SurfaceRules.RuleSource MOIST_SAND = makeStateRule(NatureBlocks.MOIST_SAND_BLOCK.get());
     private static final SurfaceRules.RuleSource GRASS_BLOCK = makeStateRule(Blocks.GRASS_BLOCK);
     private static final SurfaceRules.RuleSource JUNGLE_GRASS_BLOCK = makeStateRule(NatureBlocks.JUNGLE_GRASS_BLOCK.get());
@@ -27,11 +27,11 @@ public class SurfaceRuleData {
 
     private static final SurfaceRules.RuleSource CORRUPT_GRASS_BLOCK = makeStateRule(NatureBlocks.CORRUPT_GRASS_BLOCK.get());
     private static final SurfaceRules.RuleSource EBONY_STONE = makeStateRule(NatureBlocks.EBONSTONE.get());
-    private static final SurfaceRules.RuleSource EBONY_SAND = makeStateRule(NatureBlocks.EBONY_SAND.get());
+    private static final SurfaceRules.RuleSource EBONY_SAND = makeStateRule(NatureBlocks.EBONSAND.get());
 
     private static final SurfaceRules.RuleSource TR_CRIMSON_GRASS_BLOCK = makeStateRule(NatureBlocks.TR_CRIMSON_GRASS_BLOCK.get());
     private static final SurfaceRules.RuleSource TR_CRIMSON_STONE = makeStateRule(NatureBlocks.CRIMSTONE.get());
-    private static final SurfaceRules.RuleSource TR_CRIMSON_SAND = makeStateRule(NatureBlocks.TR_CRIMSON_SAND.get());
+    private static final SurfaceRules.RuleSource TR_CRIMSON_SAND = makeStateRule(NatureBlocks.CRIMSAND.get());
 
     private static final SurfaceRules.RuleSource MUSHROOM_GRASS_BLOCK = makeStateRule(NatureBlocks.MUSHROOM_GRASS_BLOCK.get());
     private static final SurfaceRules.RuleSource MUD = makeStateRule(Blocks.MUD);

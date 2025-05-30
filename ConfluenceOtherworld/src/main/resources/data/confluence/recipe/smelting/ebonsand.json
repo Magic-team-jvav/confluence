@@ -1,0 +1,12 @@
+{
+    "type": "minecraft:blasting",
+    "ingredient": {
+        "item": "confluence:moistened_ebonsand_block"
+    },
+    "result": {
+        "id": "confluence:ebonsand"
+    },
+    "experience": 0.4,
+    "cookingtime": 200,
+    "group": "misc"
+}

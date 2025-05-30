@@ -1,0 +1,22 @@
+{
+    "variants": {
+        "": [
+            {
+                "model": "confluence:block/tr_crimsand",
+                "weight": 12
+            },
+            {
+                "model": "confluence:block/tr_crimsand_0",
+                "weight": 1
+            },
+            {
+                "model": "confluence:block/tr_crimsand_1",
+                "weight": 1
+            },
+            {
+                "model": "confluence:block/tr_crimsand_2",
+                "weight": 1
+            }
+        ]
+    }
+}

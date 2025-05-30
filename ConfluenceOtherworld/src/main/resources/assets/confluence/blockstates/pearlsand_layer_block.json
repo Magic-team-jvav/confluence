@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "layers=1": {
+      "model": "confluence:block/pearlsand_height2"
+    },
+    "layers=2": {
+      "model": "confluence:block/pearlsand_height4"
+    },
+    "layers=3": {
+      "model": "confluence:block/pearlsand_height6"
+    },
+    "layers=4": {
+      "model": "confluence:block/pearlsand_height8"
+    },
+    "layers=5": {
+      "model": "confluence:block/pearlsand_height10"
+    },
+    "layers=6": {
+      "model": "confluence:block/pearlsand_height12"
+    },
+    "layers=7": {
+      "model": "confluence:block/pearlsand_height14"
+    },
+    "layers=8": {
+      "model": "confluence:block/pearlsand"
+    }
+  }
+}

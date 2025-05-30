@@ -239,16 +239,16 @@ public class BlockSubProvider extends BlockLootSubProvider {
         // endregion ore
 
         // region natural
-        dropSelf(EBONY_COBBLESTONE.get());
-        dropSelf(EBONY_SAND.get());
-        dropSelf(PEARL_COBBLESTONE.get());
-        dropSelf(PEARL_SAND.get());
-        dropSelf(TR_CRIMSON_COBBLESTONE.get());
-        dropSelf(TR_CRIMSON_SAND.get());
+        dropSelf(COBBLED_EBONSTONE.get());
+        dropSelf(EBONSAND.get());
+        dropSelf(COBBLED_PEARLSTONE.get());
+        dropSelf(PEARLSAND.get());
+        dropSelf(COBBLED_CRIMSTONE.get());
+        dropSelf(CRIMSAND.get());
         dropSelf(ASH_BLOCK.get());
-        this.add(CRIMSTONE.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, TR_CRIMSON_COBBLESTONE));
-        this.add(EBONSTONE.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, EBONY_COBBLESTONE));
-        this.add(PEARLSTONE.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, PEARL_COBBLESTONE));
+        this.add(CRIMSTONE.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, COBBLED_CRIMSTONE));
+        this.add(EBONSTONE.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, COBBLED_EBONSTONE));
+        this.add(PEARLSTONE.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, COBBLED_PEARLSTONE));
         this.add(ASH_GRASS_BLOCK.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, ASH_BLOCK));
         this.add(CORRUPT_GRASS_BLOCK.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, Blocks.DIRT));
         this.add(CORRUPT_JUNGLE_GRASS_BLOCK.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, Blocks.MUD));
@@ -379,14 +379,14 @@ public class BlockSubProvider extends BlockLootSubProvider {
 
         dropSelf(HARDENED_SAND_BLOCK.get());
         dropSelf(MOIST_SAND_BLOCK.get());
-        dropSelf(RED_HARDENED_SAND_BLOCK.get());
+        dropSelf(HARDENED_RED_SAND_BLOCK.get());
         dropSelf(RED_MOIST_SAND_BLOCK.get());
-        dropSelf(EBONY_HARDENED_SAND_BLOCK.get());
-        dropSelf(EBONY_MOIST_SAND_BLOCK.get());
-        dropSelf(PEARL_HARDENED_SAND_BLOCK.get());
-        dropSelf(PEARL_MOIST_SAND_BLOCK.get());
-        dropSelf(TR_CRIMSON_HARDENED_SAND_BLOCK.get());
-        dropSelf(TR_CRIMSON_MOIST_SAND_BLOCK.get());
+        dropSelf(HARDENED_EBONSAND_BLOCK.get());
+        dropSelf(MOISTENED_EBONSAND_BLOCK.get());
+        dropSelf(HARDENED_PEARLSAND_BLOCK.get());
+        dropSelf(MOISTENED_PEARLSAND_BLOCK.get());
+        dropSelf(HARDENED_CRIMSAND_BLOCK.get());
+        dropSelf(MOISTENED_CRIMSAND_BLOCK.get());
 
         dropSelf(GRANITE.get());
 

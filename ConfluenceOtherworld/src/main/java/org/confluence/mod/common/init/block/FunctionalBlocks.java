@@ -86,9 +86,9 @@ public class FunctionalBlocks {
     public static final DeferredBlock<ChlorophyteExtractinatorBlock> CHLOROPHYTE_EXTRACTINATOR = registerWithItem("chlorophyte_extractinator", () -> new ChlorophyteExtractinatorBlock(BlockBehaviour.Properties.of().strength(4.4F, 10.0F).requiresCorrectToolForDrops()), block -> new TooltipBlockItem(block, new Item.Properties(), ModRarity.LIME, TooltipItem.getTooltipsFromString("chlorophyte_extractinator", 3, ChatFormatting.GRAY)));
     public static final DeferredBlock<SingleItemStackSwapperBlock> BLEND_O_MATIC = registerWithItem("blend_o_matic", () -> new SingleItemStackSwapperBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CAULDRON), 1, itemStack -> itemStack.is(MaterialItems.RAW_ASPHALT) ? DecorativeBlocks.ASPHALT_BLOCK.toStack() : ItemStack.EMPTY), block -> new TooltipBlockItem(block, new Item.Properties(), ModRarity.WHITE, "tooltip.item.confluence.blend_o_matic.0"));
     public static final DeferredBlock<SingleItemStackSwapperBlock> MEAT_GRINDER = registerWithItem("meat_grinder", () -> new SingleItemStackSwapperBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CAULDRON), 2, itemStack -> {
-        if (itemStack.is(NatureBlocks.TR_CRIMSON_COBBLESTONE.asItem())) {
+        if (itemStack.is(NatureBlocks.COBBLED_CRIMSTONE.asItem())) {
             return DecorativeBlocks.FLESH_BLOCK.toStack();
-        } else if (itemStack.is(NatureBlocks.EBONY_COBBLESTONE.asItem())) {
+        } else if (itemStack.is(NatureBlocks.COBBLED_EBONSTONE.asItem())) {
             return DecorativeBlocks.LESION_BLOCK.toStack();
         }
         return ItemStack.EMPTY;

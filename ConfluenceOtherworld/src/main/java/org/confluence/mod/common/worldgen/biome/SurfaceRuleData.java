@@ -20,7 +20,7 @@ public class SurfaceRuleData {
     //private static final SurfaceRules.RuleSource RED_SANDSTONE = makeStateRule(Blocks.RED_SANDSTONE);
     private static final SurfaceRules.RuleSource HARDENED_SAND = makeStateRule(NatureBlocks.HARDENED_SAND_BLOCK.get());
     private static final SurfaceRules.RuleSource RED_HARDENED_SAND = makeStateRule(NatureBlocks.HARDENED_RED_SAND_BLOCK.get());
-    private static final SurfaceRules.RuleSource MOIST_SAND = makeStateRule(NatureBlocks.MOIST_SAND_BLOCK.get());
+    private static final SurfaceRules.RuleSource MOIST_SAND = makeStateRule(NatureBlocks.MOISTENED_SAND_BLOCK.get());
     private static final SurfaceRules.RuleSource GRASS_BLOCK = makeStateRule(Blocks.GRASS_BLOCK);
     private static final SurfaceRules.RuleSource JUNGLE_GRASS_BLOCK = makeStateRule(NatureBlocks.JUNGLE_GRASS_BLOCK.get());
     //private static final SurfaceRules.RuleSource CLAY = makeStateRule(Blocks.CLAY);

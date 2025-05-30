@@ -343,8 +343,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 CORRUPT_JUNGLE_GRASS_BLOCK.get(),
                 TR_CRIMSON_JUNGLE_GRASS_BLOCK.get(),
                 ASH_GRASS_BLOCK.get(),
-                MOIST_SAND_BLOCK.get(),
-                RED_MOIST_SAND_BLOCK.get(),
+                MOISTENED_SAND_BLOCK.get(),
+                MOISTENED_RED_SAND_BLOCK.get(),
                 MOISTENED_CRIMSAND_BLOCK.get(),
                 MOISTENED_PEARLSAND_BLOCK.get(),
                 MOISTENED_EBONSAND_BLOCK.get()
@@ -1211,8 +1211,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 HARDENED_RED_SAND_BLOCK.get()
         );
         tag(ModTags.Blocks.HALLOW_CONVERSION_MOIST_SAND_BLOCK).add(
-                MOIST_SAND_BLOCK.get(),
-                RED_MOIST_SAND_BLOCK.get(),
+                MOISTENED_SAND_BLOCK.get(),
+                MOISTENED_RED_SAND_BLOCK.get(),
                 MOISTENED_EBONSAND_BLOCK.get(),
                 MOISTENED_CRIMSAND_BLOCK.get()
         );

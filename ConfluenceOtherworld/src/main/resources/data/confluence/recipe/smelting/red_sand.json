@@ -1,7 +1,7 @@
 {
     "type": "minecraft:blasting",
     "ingredient": {
-        "item": "confluence:red_moist_sand_block"
+        "item": "confluence:moistened_red_sand_block"
     },
     "result": {
         "id": "minecraft:red_sand"

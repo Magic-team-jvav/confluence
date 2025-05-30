@@ -22,7 +22,6 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import org.confluence.mod.common.init.block.NatureBlocks;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -145,7 +144,7 @@ public class MoistSandBlock extends Block implements BonemealableBlock {
     }
 
     private static boolean isMoistSand(BlockState state) {
-        return state.is(NatureBlocks.MOIST_SAND_BLOCK.get()) || state.is(NatureBlocks.RED_MOIST_SAND_BLOCK.get());
+        return state.is(NatureBlocks.MOISTENED_SAND_BLOCK.get()) || state.is(NatureBlocks.MOISTENED_RED_SAND_BLOCK.get());
     }
 
     private static boolean isDesertBiomes(ServerLevel serverLevel, BlockPos pos) {
@@ -170,9 +169,9 @@ public class MoistSandBlock extends Block implements BonemealableBlock {
     @Override
     protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
         if (level.dimension() == Level.NETHER) {
-            if (state.is(NatureBlocks.RED_MOIST_SAND_BLOCK.get())) {
+            if (state.is(NatureBlocks.MOISTENED_RED_SAND_BLOCK.get())) {
                 level.setBlock(pos, Blocks.RED_SAND.defaultBlockState(), 3);
-            } else if (state.is(NatureBlocks.MOIST_SAND_BLOCK.get())) {
+            } else if (state.is(NatureBlocks.MOISTENED_SAND_BLOCK.get())) {
                 level.setBlock(pos, Blocks.SAND.defaultBlockState(), 3);
             }
             level.levelEvent(2009, pos, 0);

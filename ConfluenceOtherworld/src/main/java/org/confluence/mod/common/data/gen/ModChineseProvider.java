@@ -1863,11 +1863,11 @@ public class ModChineseProvider extends LanguageProvider {
 
         add(NatureBlocks.DESERT_FOSSIL.get(), "沙漠化石");
         add(NatureBlocks.HARDENED_SAND_BLOCK.get(), "硬化沙块");
-        add(NatureBlocks.MOIST_SAND_BLOCK.get(), "湿润沙块");
+        add(NatureBlocks.MOISTENED_SAND_BLOCK.get(), "湿润沙块");
         add(NatureBlocks.SAND_LAYER_BLOCK.get(), "沙片");
         add(NatureBlocks.RED_SAND_LAYER_BLOCK.get(), "红沙片");
         add(NatureBlocks.HARDENED_RED_SAND_BLOCK.get(), "硬化红沙块");
-        add(NatureBlocks.RED_MOIST_SAND_BLOCK.get(), "湿润红沙块");
+        add(NatureBlocks.MOISTENED_RED_SAND_BLOCK.get(), "湿润红沙块");
         add(NatureBlocks.GRANITE.get(), "花岗岩");
         add(NatureBlocks.DIATOMACEOUS.get(), "硅藻土");
         add(NatureBlocks.SLUSH.get(), "雪泥块");

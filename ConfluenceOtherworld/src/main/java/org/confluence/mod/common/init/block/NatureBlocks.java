@@ -69,9 +69,9 @@ public class NatureBlocks {
     // 环境辅助
     public static final DeferredBlock<ThinIceBlock> THIN_ICE_BLOCK = registerWithItem("thin_ice_block", ThinIceBlock::new);
     public static final DeferredBlock<Block> HARDENED_SAND_BLOCK = registerWithItem("hardened_sand_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.SANDSTONE)));
-    public static final DeferredBlock<Block> MOIST_SAND_BLOCK = registerWithItem("moist_sand_block", () -> new MoistSandBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MUD), Blocks.SAND));
+    public static final DeferredBlock<Block> MOISTENED_SAND_BLOCK = registerWithItem("moistened_sand_block", () -> new MoistSandBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MUD), Blocks.SAND));
     public static final DeferredBlock<Block> HARDENED_RED_SAND_BLOCK = registerWithItem("hardened_red_sand_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.SANDSTONE)));
-    public static final DeferredBlock<Block> RED_MOIST_SAND_BLOCK = registerWithItem("red_moist_sand_block", () -> new MoistSandBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MUD), Blocks.RED_SAND));
+    public static final DeferredBlock<Block> MOISTENED_RED_SAND_BLOCK = registerWithItem("moistened_red_sand_block", () -> new MoistSandBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MUD), Blocks.RED_SAND));
     public static final DeferredBlock<Block> DIATOMACEOUS = registerWithItem("diatomaceous", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.SAND)));
     public static final DeferredBlock<SandLayerBlock> SAND_LAYER_BLOCK = registerWithItem("sand_layer_block", SandLayerBlock::new);
     public static final DeferredBlock<SandLayerBlock> RED_SAND_LAYER_BLOCK = registerWithItem("red_sand_layer_block", SandLayerBlock::new);
@@ -151,7 +151,7 @@ public class NatureBlocks {
     public static final DeferredBlock<GlowingMushroomPileusBlock> LIFE_MUSHROOM_PILEUS_BLOCK = registerWithItem("life_mushroom_pileus_block", () -> new GlowingMushroomPileusBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MUSHROOM_STEM)));
 
     // 沙漠
-    public static final DeferredBlock<Block> PALM_SAPLING = registerWithItem("palm_sapling", () -> new BaseSaplingBlock(ModFeatures.TreeGrowers.PALM_GROWER, Blocks.SAND, Blocks.RED_SAND, Blocks.GRASS_BLOCK, NatureBlocks.MOIST_SAND_BLOCK.get(), NatureBlocks.RED_MOIST_SAND_BLOCK.get()));
+    public static final DeferredBlock<Block> PALM_SAPLING = registerWithItem("palm_sapling", () -> new BaseSaplingBlock(ModFeatures.TreeGrowers.PALM_GROWER, Blocks.SAND, Blocks.RED_SAND, Blocks.GRASS_BLOCK, NatureBlocks.MOISTENED_SAND_BLOCK.get(), NatureBlocks.MOISTENED_RED_SAND_BLOCK.get()));
     public static final LogBlockSet PALM_LOG_BLOCKS = LogBlockSet.builder("palm", true)
             .log(RotatedPillarBlock::new)
             .strippedLog(RotatedPillarBlock::new)

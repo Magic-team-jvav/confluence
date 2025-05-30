@@ -378,9 +378,9 @@ public class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(BOUNCY_CLOUD_BLOCK.get());
 
         dropSelf(HARDENED_SAND_BLOCK.get());
-        dropSelf(MOIST_SAND_BLOCK.get());
+        dropSelf(MOISTENED_SAND_BLOCK.get());
         dropSelf(HARDENED_RED_SAND_BLOCK.get());
-        dropSelf(RED_MOIST_SAND_BLOCK.get());
+        dropSelf(MOISTENED_RED_SAND_BLOCK.get());
         dropSelf(HARDENED_EBONSAND_BLOCK.get());
         dropSelf(MOISTENED_EBONSAND_BLOCK.get());
         dropSelf(HARDENED_PEARLSAND_BLOCK.get());

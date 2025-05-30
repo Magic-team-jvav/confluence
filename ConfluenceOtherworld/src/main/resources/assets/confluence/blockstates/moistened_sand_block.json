@@ -1,0 +1,1390 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_0",
+        "uvlock": true
+      },
+      "when": {
+        "north": "true",
+        "up": "true",
+        "down": "true",
+        "east": "true",
+        "west": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_1",
+        "uvlock": true
+      },
+      "when": {
+        "north": "true",
+        "up": "true",
+        "down": "true",
+        "east": "false",
+        "west": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_2",
+        "uvlock": true
+      },
+      "when": {
+        "north": "true",
+        "up": "true",
+        "down": "true",
+        "east": "true",
+        "west": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_3",
+        "uvlock": true
+      },
+      "when": {
+        "north": "true",
+        "up": "true",
+        "down": "false",
+        "east": "true",
+        "west": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_4",
+        "uvlock": true
+      },
+      "when": {
+        "north": "true",
+        "up": "false",
+        "down": "true",
+        "east": "true",
+        "west": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_5",
+        "uvlock": true
+      },
+      "when": {
+        "north": "true",
+        "up": "false",
+        "down": "true",
+        "east": "false",
+        "west": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_6",
+        "uvlock": true
+      },
+      "when": {
+        "north": "true",
+        "up": "true",
+        "down": "false",
+        "east": "false",
+        "west": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_7",
+        "uvlock": true
+      },
+      "when": {
+        "north": "true",
+        "up": "true",
+        "down": "false",
+        "east": "true",
+        "west": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_8",
+        "uvlock": true
+      },
+      "when": {
+        "north": "true",
+        "up": "false",
+        "down": "true",
+        "east": "true",
+        "west": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_9",
+        "uvlock": true
+      },
+      "when": {
+        "north": "true",
+        "up": "false",
+        "down": "false",
+        "east": "false",
+        "west": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_10",
+        "uvlock": true
+      },
+      "when": {
+        "north": "true",
+        "up": "false",
+        "down": "true",
+        "east": "false",
+        "west": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_11",
+        "uvlock": true
+      },
+      "when": {
+        "north": "true",
+        "up": "true",
+        "down": "false",
+        "east": "false",
+        "west": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_12",
+        "uvlock": true
+      },
+      "when": {
+        "north": "true",
+        "up": "false",
+        "down": "false",
+        "east": "true",
+        "west": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_13",
+        "uvlock": true
+      },
+      "when": {
+        "north": "true",
+        "up": "false",
+        "down": "false",
+        "east": "true",
+        "west": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_14",
+        "uvlock": true
+      },
+      "when": {
+        "north": "true",
+        "up": "true",
+        "down": "true",
+        "east": "false",
+        "west": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_15",
+        "uvlock": true
+      },
+      "when": {
+        "north": "true",
+        "up": "false",
+        "down": "false",
+        "east": "false",
+        "west": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_0",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "east": "true",
+        "up": "true",
+        "down": "true",
+        "south": "true",
+        "north": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_1",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "east": "true",
+        "up": "true",
+        "down": "true",
+        "south": "false",
+        "north": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_2",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "east": "true",
+        "up": "true",
+        "down": "true",
+        "south": "true",
+        "north": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_3",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "east": "true",
+        "up": "true",
+        "down": "false",
+        "south": "true",
+        "north": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_4",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "east": "true",
+        "up": "false",
+        "down": "true",
+        "south": "true",
+        "north": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_5",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "east": "true",
+        "up": "false",
+        "down": "true",
+        "south": "false",
+        "north": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_6",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "east": "true",
+        "up": "true",
+        "down": "false",
+        "south": "false",
+        "north": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_7",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "east": "true",
+        "up": "true",
+        "down": "false",
+        "south": "true",
+        "north": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_8",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "east": "true",
+        "up": "false",
+        "down": "true",
+        "south": "true",
+        "north": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_9",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "east": "true",
+        "up": "false",
+        "down": "false",
+        "south": "false",
+        "north": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_10",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "east": "true",
+        "up": "false",
+        "down": "true",
+        "south": "false",
+        "north": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_11",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "east": "true",
+        "up": "true",
+        "down": "false",
+        "south": "false",
+        "north": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_12",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "east": "true",
+        "up": "false",
+        "down": "false",
+        "south": "true",
+        "north": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_13",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "east": "true",
+        "up": "false",
+        "down": "false",
+        "south": "true",
+        "north": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_14",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "east": "true",
+        "up": "true",
+        "down": "true",
+        "south": "false",
+        "north": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_15",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "east": "true",
+        "up": "false",
+        "down": "false",
+        "south": "false",
+        "north": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_0",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "south": "true",
+        "up": "true",
+        "down": "true",
+        "west": "true",
+        "east": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_1",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "south": "true",
+        "up": "true",
+        "down": "true",
+        "west": "false",
+        "east": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_2",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "south": "true",
+        "up": "true",
+        "down": "true",
+        "west": "true",
+        "east": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_3",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "south": "true",
+        "up": "true",
+        "down": "false",
+        "west": "true",
+        "east": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_4",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "south": "true",
+        "up": "false",
+        "down": "true",
+        "west": "true",
+        "east": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_5",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "south": "true",
+        "up": "false",
+        "down": "true",
+        "west": "false",
+        "east": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_6",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "south": "true",
+        "up": "true",
+        "down": "false",
+        "west": "false",
+        "east": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_7",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "south": "true",
+        "up": "true",
+        "down": "false",
+        "west": "true",
+        "east": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_8",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "south": "true",
+        "up": "false",
+        "down": "true",
+        "west": "true",
+        "east": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_9",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "south": "true",
+        "up": "false",
+        "down": "false",
+        "west": "false",
+        "east": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_10",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "south": "true",
+        "up": "false",
+        "down": "true",
+        "west": "false",
+        "east": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_11",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "south": "true",
+        "up": "true",
+        "down": "false",
+        "west": "false",
+        "east": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_12",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "south": "true",
+        "up": "false",
+        "down": "false",
+        "west": "true",
+        "east": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_13",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "south": "true",
+        "up": "false",
+        "down": "false",
+        "west": "true",
+        "east": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_14",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "south": "true",
+        "up": "true",
+        "down": "true",
+        "west": "false",
+        "east": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_15",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "south": "true",
+        "up": "false",
+        "down": "false",
+        "west": "false",
+        "east": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_0",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "west": "true",
+        "up": "true",
+        "down": "true",
+        "north": "true",
+        "south": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_1",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "west": "true",
+        "up": "true",
+        "down": "true",
+        "north": "false",
+        "south": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_2",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "west": "true",
+        "up": "true",
+        "down": "true",
+        "north": "true",
+        "south": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_3",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "west": "true",
+        "up": "true",
+        "down": "false",
+        "north": "true",
+        "south": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_4",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "west": "true",
+        "up": "false",
+        "down": "true",
+        "north": "true",
+        "south": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_5",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "west": "true",
+        "up": "false",
+        "down": "true",
+        "north": "false",
+        "south": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_6",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "west": "true",
+        "up": "true",
+        "down": "false",
+        "north": "false",
+        "south": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_7",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "west": "true",
+        "up": "true",
+        "down": "false",
+        "north": "true",
+        "south": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_8",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "west": "true",
+        "up": "false",
+        "down": "true",
+        "north": "true",
+        "south": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_9",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "west": "true",
+        "up": "false",
+        "down": "false",
+        "north": "false",
+        "south": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_10",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "west": "true",
+        "up": "false",
+        "down": "true",
+        "north": "false",
+        "south": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_11",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "west": "true",
+        "up": "true",
+        "down": "false",
+        "north": "false",
+        "south": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_12",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "west": "true",
+        "up": "false",
+        "down": "false",
+        "north": "true",
+        "south": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_13",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "west": "true",
+        "up": "false",
+        "down": "false",
+        "north": "true",
+        "south": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_14",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "west": "true",
+        "up": "true",
+        "down": "true",
+        "north": "false",
+        "south": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_15",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "west": "true",
+        "up": "false",
+        "down": "false",
+        "north": "false",
+        "south": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_0",
+        "uvlock": true,
+        "x": 270
+      },
+      "when": {
+        "up": "true",
+        "north": "true",
+        "south": "true",
+        "west": "true",
+        "east": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_1",
+        "uvlock": true,
+        "x": 270
+      },
+      "when": {
+        "up": "true",
+        "north": "true",
+        "south": "true",
+        "west": "false",
+        "east": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_2",
+        "uvlock": true,
+        "x": 270
+      },
+      "when": {
+        "up": "true",
+        "north": "true",
+        "south": "true",
+        "west": "true",
+        "east": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_3",
+        "uvlock": true,
+        "x": 270
+      },
+      "when": {
+        "up": "true",
+        "north": "true",
+        "south": "false",
+        "west": "true",
+        "east": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_4",
+        "uvlock": true,
+        "x": 270
+      },
+      "when": {
+        "up": "true",
+        "north": "false",
+        "south": "true",
+        "west": "true",
+        "east": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_5",
+        "uvlock": true,
+        "x": 270
+      },
+      "when": {
+        "up": "true",
+        "north": "false",
+        "south": "true",
+        "west": "false",
+        "east": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_6",
+        "uvlock": true,
+        "x": 270
+      },
+      "when": {
+        "up": "true",
+        "north": "true",
+        "south": "false",
+        "west": "false",
+        "east": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_7",
+        "uvlock": true,
+        "x": 270
+      },
+      "when": {
+        "up": "true",
+        "north": "true",
+        "south": "false",
+        "west": "true",
+        "east": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_8",
+        "uvlock": true,
+        "x": 270
+      },
+      "when": {
+        "up": "true",
+        "north": "false",
+        "south": "true",
+        "west": "true",
+        "east": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_9",
+        "uvlock": true,
+        "x": 270
+      },
+      "when": {
+        "up": "true",
+        "north": "false",
+        "south": "false",
+        "west": "false",
+        "east": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_10",
+        "uvlock": true,
+        "x": 270
+      },
+      "when": {
+        "up": "true",
+        "north": "false",
+        "south": "true",
+        "west": "false",
+        "east": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_11",
+        "uvlock": true,
+        "x": 270
+      },
+      "when": {
+        "up": "true",
+        "north": "true",
+        "south": "false",
+        "west": "false",
+        "east": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_12",
+        "uvlock": true,
+        "x": 270
+      },
+      "when": {
+        "up": "true",
+        "north": "false",
+        "south": "false",
+        "west": "true",
+        "east": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_13",
+        "uvlock": true,
+        "x": 270
+      },
+      "when": {
+        "up": "true",
+        "north": "false",
+        "south": "false",
+        "west": "true",
+        "east": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_14",
+        "uvlock": true,
+        "x": 270
+      },
+      "when": {
+        "up": "true",
+        "north": "true",
+        "south": "true",
+        "west": "false",
+        "east": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_15",
+        "uvlock": true,
+        "x": 270
+      },
+      "when": {
+        "up": "true",
+        "north": "false",
+        "south": "false",
+        "west": "false",
+        "east": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_0",
+        "uvlock": true,
+        "x": 90
+      },
+      "when": {
+        "down": "true",
+        "south": "true",
+        "north": "true",
+        "west": "true",
+        "east": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_1",
+        "uvlock": true,
+        "x": 90
+      },
+      "when": {
+        "down": "true",
+        "south": "true",
+        "north": "true",
+        "west": "false",
+        "east": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_2",
+        "uvlock": true,
+        "x": 90
+      },
+      "when": {
+        "down": "true",
+        "south": "true",
+        "north": "true",
+        "west": "true",
+        "east": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_3",
+        "uvlock": true,
+        "x": 90
+      },
+      "when": {
+        "down": "true",
+        "south": "true",
+        "north": "false",
+        "west": "true",
+        "east": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_4",
+        "uvlock": true,
+        "x": 90
+      },
+      "when": {
+        "down": "true",
+        "south": "false",
+        "north": "true",
+        "west": "true",
+        "east": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_5",
+        "uvlock": true,
+        "x": 90
+      },
+      "when": {
+        "down": "true",
+        "south": "false",
+        "north": "true",
+        "west": "false",
+        "east": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_6",
+        "uvlock": true,
+        "x": 90
+      },
+      "when": {
+        "down": "true",
+        "south": "true",
+        "north": "false",
+        "west": "false",
+        "east": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_7",
+        "uvlock": true,
+        "x": 90
+      },
+      "when": {
+        "down": "true",
+        "south": "true",
+        "north": "false",
+        "west": "true",
+        "east": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_8",
+        "uvlock": true,
+        "x": 90
+      },
+      "when": {
+        "down": "true",
+        "south": "false",
+        "north": "true",
+        "west": "true",
+        "east": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_9",
+        "uvlock": true,
+        "x": 90
+      },
+      "when": {
+        "down": "true",
+        "south": "false",
+        "north": "false",
+        "west": "false",
+        "east": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_10",
+        "uvlock": true,
+        "x": 90
+      },
+      "when": {
+        "down": "true",
+        "south": "false",
+        "north": "true",
+        "west": "false",
+        "east": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_11",
+        "uvlock": true,
+        "x": 90
+      },
+      "when": {
+        "down": "true",
+        "south": "true",
+        "north": "false",
+        "west": "false",
+        "east": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_12",
+        "uvlock": true,
+        "x": 90
+      },
+      "when": {
+        "down": "true",
+        "south": "false",
+        "north": "false",
+        "west": "true",
+        "east": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_13",
+        "uvlock": true,
+        "x": 90
+      },
+      "when": {
+        "down": "true",
+        "south": "false",
+        "north": "false",
+        "west": "true",
+        "east": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_14",
+        "uvlock": true,
+        "x": 90
+      },
+      "when": {
+        "down": "true",
+        "south": "true",
+        "north": "true",
+        "west": "false",
+        "east": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_15",
+        "uvlock": true,
+        "x": 90
+      },
+      "when": {
+        "down": "true",
+        "south": "false",
+        "north": "false",
+        "west": "false",
+        "east": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_15"
+      },
+      "when": {
+        "north": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_15",
+        "uvlock": false,
+        "y": 90
+      },
+      "when": {
+        "east": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_15",
+        "uvlock": false,
+        "y": 180
+      },
+      "when": {
+        "south": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_15",
+        "uvlock": false,
+        "y": 270
+      },
+      "when": {
+        "west": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_15",
+        "uvlock": false,
+        "x": 270
+      },
+      "when": {
+        "up": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/moist_sands/moistened_sand_block_15",
+        "uvlock": false,
+        "x": 90
+      },
+      "when": {
+        "down": "false"
+      }
+    }
+  ]
+}

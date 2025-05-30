@@ -4,19 +4,15 @@ import com.google.common.collect.Lists;
 import com.mojang.serialization.MapCodec;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import org.confluence.lib.common.worldgen.structure.GridPiece;
-import org.confluence.lib.common.worldgen.structure.SimpleTemplatePiece;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModStructures;
@@ -28,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static net.minecraft.world.level.block.LeavesBlock.PERSISTENT;
 import static org.confluence.lib.util.StructureUtils.*;
 import static org.confluence.lib.util.VectorUtils.*;
 
@@ -78,7 +73,7 @@ public class OasisStructure extends Structure {
             GridPiece.addPieces(blockMap, Lists.newArrayList(
                     Blocks.AIR.defaultBlockState(),
                     Blocks.SAND.defaultBlockState(),
-                    NatureBlocks.MOIST_SAND_BLOCK.get().defaultBlockState(),
+                    NatureBlocks.MOISTENED_SAND_BLOCK.get().defaultBlockState(),
                     Blocks.WATER.defaultBlockState()
             ), feature, builder);
         });

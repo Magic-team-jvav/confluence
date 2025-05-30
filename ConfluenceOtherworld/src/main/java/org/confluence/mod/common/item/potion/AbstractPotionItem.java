@@ -86,8 +86,8 @@ public abstract class AbstractPotionItem extends Item {
         if (!level.isClientSide && player != null && stack.is(PotionItems.BOTTLED_WATER.get())) {
             Block block = state.getBlock();
             Block newBlock = null;
-            if (block == Blocks.SAND) newBlock = NatureBlocks.MOIST_SAND_BLOCK.get();
-            else if (block == Blocks.RED_SAND) newBlock = NatureBlocks.RED_MOIST_SAND_BLOCK.get();
+            if (block == Blocks.SAND) newBlock = NatureBlocks.MOISTENED_SAND_BLOCK.get();
+            else if (block == Blocks.RED_SAND) newBlock = NatureBlocks.MOISTENED_RED_SAND_BLOCK.get();
             else if (block == NatureBlocks.EBONSAND.get()) newBlock = NatureBlocks.MOISTENED_EBONSAND_BLOCK.get();
             else if (block == NatureBlocks.PEARLSAND.get()) newBlock = NatureBlocks.MOISTENED_PEARLSAND_BLOCK.get();
             else if (block == NatureBlocks.CRIMSAND.get()) newBlock = NatureBlocks.MOISTENED_CRIMSAND_BLOCK.get();

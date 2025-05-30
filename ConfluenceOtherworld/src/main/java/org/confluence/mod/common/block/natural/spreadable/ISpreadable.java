@@ -236,8 +236,8 @@ public interface ISpreadable {
 
                 NatureBlocks.HARDENED_SAND_BLOCK, NatureBlocks.HARDENED_PEARLSAND_BLOCK,
                 NatureBlocks.HARDENED_RED_SAND_BLOCK, NatureBlocks.HARDENED_PEARLSAND_BLOCK,
-                NatureBlocks.MOIST_SAND_BLOCK, NatureBlocks.MOISTENED_PEARLSAND_BLOCK,
-                NatureBlocks.RED_MOIST_SAND_BLOCK, NatureBlocks.MOISTENED_PEARLSAND_BLOCK,
+                NatureBlocks.MOISTENED_SAND_BLOCK, NatureBlocks.MOISTENED_PEARLSAND_BLOCK,
+                NatureBlocks.MOISTENED_RED_SAND_BLOCK, NatureBlocks.MOISTENED_PEARLSAND_BLOCK,
                 NatureBlocks.HARDENED_EBONSAND_BLOCK, NatureBlocks.HARDENED_PEARLSAND_BLOCK,
                 NatureBlocks.MOISTENED_EBONSAND_BLOCK, NatureBlocks.MOISTENED_PEARLSAND_BLOCK,
                 NatureBlocks.HARDENED_CRIMSAND_BLOCK, NatureBlocks.HARDENED_PEARLSAND_BLOCK,
@@ -392,8 +392,8 @@ public interface ISpreadable {
 
                 NatureBlocks.HARDENED_SAND_BLOCK, NatureBlocks.HARDENED_CRIMSAND_BLOCK,
                 NatureBlocks.HARDENED_RED_SAND_BLOCK, NatureBlocks.HARDENED_CRIMSAND_BLOCK,
-                NatureBlocks.MOIST_SAND_BLOCK, NatureBlocks.MOISTENED_CRIMSAND_BLOCK,
-                NatureBlocks.RED_MOIST_SAND_BLOCK, NatureBlocks.MOISTENED_CRIMSAND_BLOCK
+                NatureBlocks.MOISTENED_SAND_BLOCK, NatureBlocks.MOISTENED_CRIMSAND_BLOCK,
+                NatureBlocks.MOISTENED_RED_SAND_BLOCK, NatureBlocks.MOISTENED_CRIMSAND_BLOCK
         ),
         CORRUPT(
                 getSupplier(DIRT), NatureBlocks.CORRUPT_GRASS_BLOCK,
@@ -499,8 +499,8 @@ public interface ISpreadable {
                 NatureBlocks.COBBLED_PEARLSTONE, NatureBlocks.COBBLED_EBONSTONE,
                 NatureBlocks.HARDENED_SAND_BLOCK, NatureBlocks.HARDENED_EBONSAND_BLOCK,
                 NatureBlocks.HARDENED_RED_SAND_BLOCK, NatureBlocks.HARDENED_EBONSAND_BLOCK,
-                NatureBlocks.MOIST_SAND_BLOCK, NatureBlocks.MOISTENED_EBONSAND_BLOCK,
-                NatureBlocks.RED_MOIST_SAND_BLOCK, NatureBlocks.MOISTENED_EBONSAND_BLOCK,
+                NatureBlocks.MOISTENED_SAND_BLOCK, NatureBlocks.MOISTENED_EBONSAND_BLOCK,
+                NatureBlocks.MOISTENED_RED_SAND_BLOCK, NatureBlocks.MOISTENED_EBONSAND_BLOCK,
                 NatureBlocks.HARDENED_PEARLSAND_BLOCK, NatureBlocks.HARDENED_EBONSAND_BLOCK,
                 NatureBlocks.MOISTENED_PEARLSAND_BLOCK, NatureBlocks.MOISTENED_EBONSAND_BLOCK,
                 NatureBlocks.PEARLSANDSTONE, NatureBlocks.EBONSANDSTONE,
@@ -534,13 +534,13 @@ public interface ISpreadable {
                 NatureBlocks.CRIMSAND, getSupplier(SAND),
                 NatureBlocks.CRIMSANDSTONE, getSupplier(SANDSTONE),
                 NatureBlocks.HARDENED_CRIMSAND_BLOCK, NatureBlocks.HARDENED_SAND_BLOCK,
-                NatureBlocks.MOISTENED_CRIMSAND_BLOCK, NatureBlocks.MOIST_SAND_BLOCK,
+                NatureBlocks.MOISTENED_CRIMSAND_BLOCK, NatureBlocks.MOISTENED_SAND_BLOCK,
                 NatureBlocks.TR_CRIMSON_GRASS_BLOCK, getSupplier(GRASS_BLOCK),
                 NatureBlocks.EBONSTONE, getSupplier(STONE),
                 NatureBlocks.COBBLED_EBONSTONE, getSupplier(COBBLESTONE),
                 NatureBlocks.HARDENED_EBONSAND_BLOCK, NatureBlocks.HARDENED_SAND_BLOCK,
                 NatureBlocks.EBONSANDSTONE, getSupplier(SANDSTONE),
-                NatureBlocks.MOISTENED_EBONSAND_BLOCK, NatureBlocks.MOIST_SAND_BLOCK,
+                NatureBlocks.MOISTENED_EBONSAND_BLOCK, NatureBlocks.MOISTENED_SAND_BLOCK,
                 NatureBlocks.EBONSAND, getSupplier(SAND),
                 NatureBlocks.CORRUPT_GRASS_BLOCK, getSupplier(GRASS_BLOCK),
                 NatureBlocks.HALLOW_GRASS_BLOCK, getSupplier(GRASS_BLOCK),
@@ -548,7 +548,7 @@ public interface ISpreadable {
                 NatureBlocks.COBBLED_PEARLSTONE, getSupplier(COBBLESTONE),
                 NatureBlocks.HARDENED_PEARLSAND_BLOCK, NatureBlocks.HARDENED_SAND_BLOCK,
                 NatureBlocks.PEARLSANDSTONE, getSupplier(SANDSTONE),
-                NatureBlocks.MOISTENED_PEARLSAND_BLOCK, NatureBlocks.MOIST_SAND_BLOCK,
+                NatureBlocks.MOISTENED_PEARLSAND_BLOCK, NatureBlocks.MOISTENED_SAND_BLOCK,
                 NatureBlocks.PEARLSAND, getSupplier(SAND),
                 NatureBlocks.CRIMSON_THORN, getSupplier(Blocks.AIR),
                 NatureBlocks.CORRUPTION_THORN, getSupplier(Blocks.AIR)

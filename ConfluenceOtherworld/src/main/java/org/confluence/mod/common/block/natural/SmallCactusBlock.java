@@ -48,7 +48,7 @@ public class SmallCactusBlock extends Block {
     @Override
     protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         BlockState stateBelow = level.getBlockState(pos.below());
-        return stateBelow.is(BlockTags.SAND) || stateBelow.is(NatureBlocks.MOIST_SAND_BLOCK.get()) || stateBelow.is(NatureBlocks.RED_MOIST_SAND_BLOCK.get());
+        return stateBelow.is(BlockTags.SAND) || stateBelow.is(NatureBlocks.MOISTENED_SAND_BLOCK.get()) || stateBelow.is(NatureBlocks.MOISTENED_RED_SAND_BLOCK.get());
     }
 
     @Override

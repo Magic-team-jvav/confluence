@@ -45,7 +45,7 @@ public class LightSaber extends BaseSwordItem implements GeoItem {
         super(tier, rarity, 0, rawSpeed, new ModifierBuilder() {
             @Override
             public Properties buildProperties(Tier tier, ModRarity rarity, int rawDamage, float rawSpeed) {
-                if (modifier != null) modifier.forEach(m -> properties = m.apply(properties));
+                if (modifier != null) modifier.forEach(m -> m.accept(properties));
                 return this.properties = properties.durability(tier.getUses()).component(ConfluenceMagicLib.MOD_RARITY, rarity);
             }
         }.modifyProperties(p -> p.component(TEDataComponentTypes.BOOMERANG_READY.get(), SingleBooleanComponent.TRUE)));

@@ -25,6 +25,8 @@ import net.minecraft.world.entity.npc.Npc;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -224,6 +226,17 @@ public final class ModUtils {
         if (silver > 0) cmp.append(Component.literal(" " + silver + " ").withColor(-4532777)).append(Component.translatable("tooltip.price.silver").withColor(-4532777));
         if (copper > 0) cmp.append(Component.literal(" " + copper + " ").withColor(-3837899)).append(Component.translatable("tooltip.price.copper").withColor(-3837899));
         return cmp;
+    }
+
+    /**
+     * 不可破坏物品无法附魔耐久与经验修补
+     */
+    public static boolean supportsEnchantment(ItemStack stack, Holder<Enchantment> enchantment) {
+        boolean supportedItem = enchantment.value().isSupportedItem(stack);
+        if (stack.has(DataComponents.UNBREAKABLE)) {
+            return supportedItem && !enchantment.is(Enchantments.UNBREAKING) && !enchantment.is(Enchantments.MENDING);
+        }
+        return supportedItem;
     }
 
 //    public static long getVendorFreq() {

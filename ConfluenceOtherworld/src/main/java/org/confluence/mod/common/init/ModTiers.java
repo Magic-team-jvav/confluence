@@ -56,7 +56,7 @@ public final class ModTiers {
     public static final Tier LUMINITE = new PoweredTier(225, ModTags.Blocks.UNBREAKABLE, 10000, 95, 38, 25, () -> Ingredient.of(MaterialItems.LUMINITE_INGOT));
 
     // 给一些无限耐久的物品使用的
-    public static final Tier UNBREAKABLE = new PoweredTier(190, ModTags.Blocks.NEEDS_2_LEVEL, 10000, 4, 1, 18, () -> Ingredient.of(MaterialItems.LUMINITE_INGOT));
+    public static final Tier UNBREAKABLE = new PoweredTier(190, ModTags.Blocks.NEEDS_2_LEVEL, 10000, 4, 1, 18, Ingredient::of);
 
     /**
      * @return 原版Tiers的对应镐力

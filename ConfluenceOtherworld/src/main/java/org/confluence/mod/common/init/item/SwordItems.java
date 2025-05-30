@@ -10,7 +10,6 @@ import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
-import net.minecraft.world.item.component.Unbreakable;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.component.ModRarity;
@@ -112,13 +111,13 @@ public class SwordItems {
             .apply(SwordProjectileComponent.NIGHT_PROJ));
 
     // 光剑 todo 重命名为phaseblade
-    public static final DeferredItem<SwordItem> RED_LIGHT_SABER = register("red_light_saber", () -> new LightSaber(ModTiers.UNBREAKABLE, ModRarity.BLUE, 10, 2, "red"));
-    public static final DeferredItem<SwordItem> ORANGE_LIGHT_SABER = register("orange_light_saber", () -> new LightSaber(ModTiers.UNBREAKABLE, ModRarity.BLUE, 10, 2, "orange"));
-    public static final DeferredItem<SwordItem> YELLOW_LIGHT_SABER = register("yellow_light_saber", () -> new LightSaber(ModTiers.UNBREAKABLE, ModRarity.BLUE, 10, 2, "yellow"));
-    public static final DeferredItem<SwordItem> GREEN_LIGHT_SABER = register("green_light_saber", () -> new LightSaber(ModTiers.UNBREAKABLE, ModRarity.BLUE, 10, 2, "green"));
-    public static final DeferredItem<SwordItem> BLUE_LIGHT_SABER = register("blue_light_saber", () -> new LightSaber(ModTiers.UNBREAKABLE, ModRarity.BLUE, 10, 2, "blue"));
-    public static final DeferredItem<SwordItem> PURPLE_LIGHT_SABER = register("purple_light_saber", () -> new LightSaber(ModTiers.UNBREAKABLE, ModRarity.BLUE, 10, 2, "purple"));
-    public static final DeferredItem<SwordItem> WHITE_LIGHT_SABER = register("white_light_saber", () -> new LightSaber(ModTiers.UNBREAKABLE, ModRarity.BLUE, 10, 2, "white"));
+    public static final DeferredItem<SwordItem> RED_LIGHT_SABER = register("red_light_saber", () -> new LightSaber(ModTiers.METEOR, ModRarity.BLUE, 10, 2, "red"));
+    public static final DeferredItem<SwordItem> ORANGE_LIGHT_SABER = register("orange_light_saber", () -> new LightSaber(ModTiers.METEOR, ModRarity.BLUE, 10, 2, "orange"));
+    public static final DeferredItem<SwordItem> YELLOW_LIGHT_SABER = register("yellow_light_saber", () -> new LightSaber(ModTiers.METEOR, ModRarity.BLUE, 10, 2, "yellow"));
+    public static final DeferredItem<SwordItem> GREEN_LIGHT_SABER = register("green_light_saber", () -> new LightSaber(ModTiers.METEOR, ModRarity.BLUE, 10, 2, "green"));
+    public static final DeferredItem<SwordItem> BLUE_LIGHT_SABER = register("blue_light_saber", () -> new LightSaber(ModTiers.METEOR, ModRarity.BLUE, 10, 2, "blue"));
+    public static final DeferredItem<SwordItem> PURPLE_LIGHT_SABER = register("purple_light_saber", () -> new LightSaber(ModTiers.METEOR, ModRarity.BLUE, 10, 2, "purple"));
+    public static final DeferredItem<SwordItem> WHITE_LIGHT_SABER = register("white_light_saber", () -> new LightSaber(ModTiers.METEOR, ModRarity.BLUE, 10, 2, "white"));
 
 
     // 特殊剑
@@ -152,7 +151,7 @@ public class SwordItems {
 
     public static DeferredItem<SwordItem> register(String name, Tier tier, int rawDamage, float rawSpeed, ModRarity rarity, BaseSwordItem.ModifierBuilder modifierBuilder) {
         if (tier == ModTiers.UNBREAKABLE) {
-            modifierBuilder.modifyProperties(p -> p.component(DataComponents.UNBREAKABLE, new Unbreakable(true)));
+            modifierBuilder.modifyProperties(p -> p.component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE));
         }
         return register(name, () -> new BaseSwordItem(tier, rarity, rawDamage, rawSpeed, modifierBuilder));
     }

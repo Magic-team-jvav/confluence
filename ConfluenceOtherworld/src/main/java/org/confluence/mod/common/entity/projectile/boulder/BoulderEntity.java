@@ -73,8 +73,8 @@ public class BoulderEntity extends Projectile {
     public void onRemove() {
         if (level() instanceof ServerLevel serverLevel) {
             BlockPos pos = blockPosition();
-            serverLevel.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.COBBLESTONE.defaultBlockState())
-                    .setPos(pos), getX(), getY() + 0.5, getZ(), 175, 0.0, 0.0, 0.0, 0.15);
+            serverLevel.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.COBBLESTONE.defaultBlockState()).setPos(pos),
+                    getX(), getY() + 0.5, getZ(), 175, 0.0, 0.0, 0.0, 0.15);
             serverLevel.playSound(null, pos, SoundEvents.STONE_BREAK, SoundSource.BLOCKS, 5.0F, 1.0F);
         }
         discard();

@@ -2,9 +2,12 @@ package org.confluence.mod.common.entity.hook;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.ByIdMap;
 import net.minecraft.util.Mth;
 import net.minecraft.util.StringRepresentable;
@@ -118,12 +121,18 @@ public abstract class AbstractHookEntity extends Projectile {
 
     protected void onHooked(BlockHitResult hitResult, ItemStack itemStack) {
         BlockPos blockPos = hitResult.getBlockPos();
-        level().gameEvent(GameEvent.PROJECTILE_LAND, blockPos, GameEvent.Context.of(this, level().getBlockState(blockPos)));
+        BlockState blockState = level().getBlockState(blockPos);
+        level().gameEvent(GameEvent.PROJECTILE_LAND, blockPos, GameEvent.Context.of(this, blockState));
         setDeltaMovement(Vec3.ZERO);
         setHookState(HookState.HOOKED);
         this.hookedState = level().getBlockState(blockPosition());
         this.hasImpulse = true;
-        playSound(ModSoundEvents.HOOK_ATTACH.get(), 0.5F, 1.0F);
+        float ratio = getOwner() == null ? 1 : Mth.sqrt((float) blockPos.distSqr(getOwner().blockPosition())) / Mth.sqrt(hookRangeSqr);
+        playSound(ModSoundEvents.HOOK_ATTACH.get(), 0.5F * ratio, 1.0F);
+        if (level() instanceof ServerLevel serverLevel) {
+            serverLevel.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, blockState).setPos(blockPos),
+                    getX(), getY() + 0.5, getZ(), (int) (175 * ratio), 0.0, 0.0, 0.0, 0.15);
+        }
     }
 
     @Override

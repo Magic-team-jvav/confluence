@@ -11,8 +11,10 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.HitResult;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.confluence.lib.util.LibUtils;
@@ -75,7 +77,14 @@ public record HookThrowingPacketC2S(boolean throwing, int id) implements CustomP
                         nbt.put("hooks", listTag);
                         extraInventory.setChanged();
                     });
-                    level.playSound(null, player.getX(), player.getEyeY(), player.getZ(), ModSoundEvents.HOOK_SHOOT.get(), SoundSource.PLAYERS, 0.5F, 1);
+                    HitResult hitResult = player.pick(item.getHookRange(), 1.0F, false);
+                    float ratio = hitResult.getType() == HitResult.Type.MISS ? 0.5F : Mth.clamp((float) (hitResult.distanceTo(player) / item.getHookRange()), 0, 1);
+                    level.playSound(null,
+                            player.getX() + hook.getDeltaMovement().x,
+                            player.getEyeY() + hook.getDeltaMovement().y,
+                            player.getZ() + hook.getDeltaMovement().z,
+                            ModSoundEvents.HOOK_SHOOT.get(), SoundSource.PLAYERS,
+                            0.3F * ratio, 1);
                 }
             } else {
                 Entity entity = level.getEntity(id);

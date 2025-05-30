@@ -84,8 +84,8 @@ public final class ModItems {
     public static final DeferredItem<GrassSeedItem> GRASS_SEED = ITEMS.register("grass_seed", () -> new GrassSeedItem(Map.of(Blocks.DIRT, Blocks.GRASS_BLOCK)));
     public static final DeferredItem<GrassSeedItem> JUNGLE_GRASS_SEED = ITEMS.register("jungle_grass_seed", () -> new GrassSeedItem(Map.of(Blocks.MUD, NatureBlocks.JUNGLE_GRASS_BLOCK.get())));
     public static final DeferredItem<GrassSeedItem> MUSHROOM_GRASS_SEED = ITEMS.register("mushroom_grass_seed", () -> new GrassSeedItem(Map.of(Blocks.MUD, NatureBlocks.MUSHROOM_GRASS_BLOCK.get())));
-    public static final DeferredItem<GrassSeedItem> CORRUPT_SEED = ITEMS.register("corrupt_seed", () -> new GrassSeedItem(Map.of(Blocks.MUD, NatureBlocks.CORRUPT_JUNGLE_GRASS_BLOCK.get()), Map.of(BlockTags.DIRT, NatureBlocks.CORRUPT_GRASS_BLOCK.get())));
-    public static final DeferredItem<GrassSeedItem> TR_CRIMSON_SEED = ITEMS.register("tr_crimson_seed", () -> new GrassSeedItem(Map.of(Blocks.MUD, NatureBlocks.TR_CRIMSON_JUNGLE_GRASS_BLOCK.get()), Map.of(BlockTags.DIRT, NatureBlocks.TR_CRIMSON_GRASS_BLOCK.get())));
+    public static final DeferredItem<GrassSeedItem> CORRUPT_SEED = ITEMS.register("corrupt_seed", () -> new GrassSeedItem(Map.of(Blocks.MUD, NatureBlocks.CORRUPT_JUNGLE_GRASS_BLOCK.get())));
+    public static final DeferredItem<GrassSeedItem> TR_CRIMSON_SEED = ITEMS.register("tr_crimson_seed", () -> new GrassSeedItem(Map.of(Blocks.MUD, NatureBlocks.TR_CRIMSON_JUNGLE_GRASS_BLOCK.get())));
     public static final DeferredItem<GrassSeedItem> HALLOWED_SEED = ITEMS.register("hallowed_seed", () -> new GrassSeedItem(Map.of(), Map.of(BlockTags.DIRT, NatureBlocks.HALLOW_GRASS_BLOCK.get())));
     public static final DeferredItem<GrassSeedItem> ASH_GRASS_SEED = ITEMS.register("ash_grass_seed", () -> new GrassSeedItem(Map.of(NatureBlocks.ASH_BLOCK.get(), NatureBlocks.ASH_GRASS_BLOCK.get())));
 

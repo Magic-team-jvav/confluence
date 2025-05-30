@@ -18,13 +18,13 @@ public class GrassSeedItem extends Item {
     private final Map<TagKey<Block>, Block> tagMapping;
 
     public GrassSeedItem(Map<Block, Block> blockMapping) {
-        super(new Properties().stacksTo(64));
+        super(new Properties());
         this.blockMapping = blockMapping;
-        this.tagMapping = null;
+        this.tagMapping = new HashMap<>();
     }
 
     public GrassSeedItem(Map<Block, Block> blockMapping, Map<TagKey<Block>, Block> tagMapping) {
-        super(new Properties().stacksTo(64));
+        super(new Properties());
         this.blockMapping = new HashMap<>(blockMapping);
         this.tagMapping = new HashMap<>(tagMapping);
     }
@@ -43,14 +43,16 @@ public class GrassSeedItem extends Item {
                 stack.shrink(1);
                 return InteractionResult.SUCCESS;
             }
-            for (Map.Entry<TagKey<Block>, Block> entry : tagMapping.entrySet()) {
-                if (state.is(entry.getKey())) {
-                    Block tagMappedBlock = entry.getValue();
-                    if (tagMappedBlock != null) {
-                        level.setBlockAndUpdate(pos, tagMappedBlock.defaultBlockState());
-                        ItemStack stack = pContext.getItemInHand();
-                        stack.shrink(1);
-                        return InteractionResult.SUCCESS;
+            if (tagMapping != null) {
+                for (Map.Entry<TagKey<Block>, Block> entry : tagMapping.entrySet()) {
+                    if (state.is(entry.getKey())) {
+                        Block tagMappedBlock = entry.getValue();
+                        if (tagMappedBlock != null) {
+                            level.setBlockAndUpdate(pos, tagMappedBlock.defaultBlockState());
+                            ItemStack stack = pContext.getItemInHand();
+                            stack.shrink(1);
+                            return InteractionResult.SUCCESS;
+                        }
                     }
                 }
             }

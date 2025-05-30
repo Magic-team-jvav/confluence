@@ -97,7 +97,7 @@ public class ShimmerTransmutationProvider extends AbstractRecipeProvider {
         item(recipeOutput, CrateBlocks.WILD_CRATE, CrateBlocks.SAVANNA_CRATE);
         item(recipeOutput, CrateBlocks.AZURE_CRATE, CrateBlocks.SKY_CRATE);
         item(recipeOutput, CrateBlocks.DEFILED_CRATE, CrateBlocks.CORRUPT_CRATE);
-        item(recipeOutput, CrateBlocks.HEMATIC_CRATE, CrateBlocks.TR_CRIMSON_CRATE);
+        item(recipeOutput, CrateBlocks.HEMATIC_CRATE, CrateBlocks.CRIMSON_CRATE);
         item(recipeOutput, CrateBlocks.DIVINE_CRATE, CrateBlocks.HALLOWED_CRATE);
         item(recipeOutput, CrateBlocks.STOCKADE_CRATE, CrateBlocks.DUNGEON_CRATE);
         item(recipeOutput, CrateBlocks.BOREAL_CRATE, CrateBlocks.FROZEN_CRATE);

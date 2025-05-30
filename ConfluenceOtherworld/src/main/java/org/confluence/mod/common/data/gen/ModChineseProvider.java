@@ -2291,7 +2291,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(CrateBlocks.SAVANNA_CRATE.get(), "热带草原匣");
         add(CrateBlocks.SKY_CRATE.get(), "天空匣");
         add(CrateBlocks.CORRUPT_CRATE.get(), "腐化匣");
-        add(CrateBlocks.TR_CRIMSON_CRATE.get(), "猩红匣");
+        add(CrateBlocks.CRIMSON_CRATE.get(), "猩红匣");
         add(CrateBlocks.HALLOWED_CRATE.get(), "神圣匣");
         add(CrateBlocks.DUNGEON_CRATE.get(), "地牢匣");
         add(CrateBlocks.FROZEN_CRATE.get(), "冰冻匣");

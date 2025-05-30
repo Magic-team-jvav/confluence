@@ -303,7 +303,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 CrateBlocks.GOLDEN_CRATE.get(),
                 CrateBlocks.SKY_CRATE.get(),
                 CrateBlocks.CORRUPT_CRATE.get(),
-                CrateBlocks.TR_CRIMSON_CRATE.get(),
+                CrateBlocks.CRIMSON_CRATE.get(),
                 CrateBlocks.HALLOWED_CRATE.get(),
                 CrateBlocks.DUNGEON_CRATE.get(),
                 CrateBlocks.OASIS_CRATE.get(),

@@ -217,7 +217,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 )
                 .withPool(LootPool.lootPool().add(NestedLootTable.lootTableReference(ModLootTables.ENVIRONMENT_CRATE)))
         );
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/tr_crimson_crate"), LootTable.lootTable()
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/crimson_crate"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.PANIC_NECKLACE))
                         .add(LootItem.lootTableItem(TGItems.THE_UNDERTAKER))

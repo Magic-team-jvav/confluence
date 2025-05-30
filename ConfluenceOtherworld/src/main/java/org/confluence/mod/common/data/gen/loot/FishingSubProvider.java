@@ -908,7 +908,7 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                         )
                         // 猩红之地
                         .add(
-                                LootItem.lootTableItem(CrateBlocks.TR_CRIMSON_CRATE)
+                                LootItem.lootTableItem(CrateBlocks.CRIMSON_CRATE)
                                         .when(
                                                 LocationCheck.checkLocation(
                                                         LocationPredicate.Builder.location()

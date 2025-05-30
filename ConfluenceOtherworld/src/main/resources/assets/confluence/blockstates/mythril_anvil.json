@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "confluence:block/mythril_anvil",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "confluence:block/mythril_anvil"
+    },
+    "facing=south": {
+      "model": "confluence:block/mythril_anvil",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "confluence:block/mythril_anvil",
+      "y": 270
+    }
+  }
+}

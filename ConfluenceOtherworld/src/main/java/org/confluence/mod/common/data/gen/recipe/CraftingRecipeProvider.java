@@ -42,7 +42,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         compressAndDecompressNine(output, MaterialItems.PLATINUM_INGOT, ModTags.Items.INGOTS_PLATINUM, OreBlocks.PLATINUM_BLOCK, ModTags.Items.PLATINUM_BLOCK);
         compressAndDecompressNine(output, MaterialItems.METEORITE_INGOT, ModTags.Items.INGOTS_METEORITE, OreBlocks.METEORITE_BLOCK, ModTags.Items.METEORITE_BLOCK);
         compressAndDecompressNine(output, MaterialItems.DEMONITE_INGOT, ModTags.Items.INGOTS_DEMONITE, OreBlocks.DEMONITE_BLOCK, ModTags.Items.DEMONITE_BLOCK);
-        compressAndDecompressNine(output, MaterialItems.TR_CRIMSON_INGOT, ModTags.Items.INGOTS_CRIMSON, OreBlocks.CRIMTANE_BLOCK, ModTags.Items.CRIMSON_BLOCK);
+        compressAndDecompressNine(output, MaterialItems.CRIMTANE_INGOT, ModTags.Items.INGOTS_CRIMSON, OreBlocks.CRIMTANE_BLOCK, ModTags.Items.CRIMSON_BLOCK);
         compressAndDecompressNine(output, MaterialItems.HELLSTONE_INGOT, ModTags.Items.INGOTS_HELLSTONE, OreBlocks.HELLSTONE_BLOCK, ModTags.Items.HELLSTONE_BLOCK);
         // 粗矿
         compressAndDecompressNine(output, MaterialItems.RAW_TIN, ModTags.Items.RAW_MATERIALS_TIN, OreBlocks.RAW_TIN_BLOCK, ModTags.Items.RAW_MATERIALS_TIN_BLOCK);
@@ -52,7 +52,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         compressAndDecompressNine(output, MaterialItems.RAW_PLATINUM, ModTags.Items.RAW_MATERIALS_PLATINUM, OreBlocks.RAW_PLATINUM_BLOCK, ModTags.Items.RAW_MATERIALS_PLATINUM_BLOCK);
         compressAndDecompressNine(output, MaterialItems.RAW_METEORITE, ModTags.Items.RAW_MATERIALS_METEORITE, OreBlocks.RAW_METEORITE_BLOCK, ModTags.Items.RAW_MATERIALS_METEORITE_BLOCK);
         compressAndDecompressNine(output, MaterialItems.RAW_DEMONITE, ModTags.Items.RAW_MATERIALS_DEMONITE, OreBlocks.RAW_DEMONITE_BLOCK, ModTags.Items.RAW_MATERIALS_DEMONITE_BLOCK);
-        compressAndDecompressNine(output, MaterialItems.RAW_TR_CRIMSON, ModTags.Items.RAW_MATERIALS_CRIMSON, OreBlocks.RAW_CRIMTANE_BLOCK, ModTags.Items.RAW_MATERIALS_CRIMSON_BLOCK);
+        compressAndDecompressNine(output, MaterialItems.RAW_CRIMTANE, ModTags.Items.RAW_MATERIALS_CRIMSON, OreBlocks.RAW_CRIMTANE_BLOCK, ModTags.Items.RAW_MATERIALS_CRIMSON_BLOCK);
         compressAndDecompressNine(output, MaterialItems.RAW_HELLSTONE, ModTags.Items.RAW_MATERIALS_HELLSTONE, OreBlocks.RAW_HELLSTONE_BLOCK, ModTags.Items.RAW_MATERIALS_HELLSTONE_BLOCK);
 
         // 铅砧

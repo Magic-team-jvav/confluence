@@ -42,7 +42,7 @@
         "confluence:corrupt_seed": {
             "chance": 0.45
         },
-        "confluence:tr_crimson_seed": {
+        "confluence:crimson_seed": {
             "chance": 0.45
         },
         "confluence:hallowed_seed": {

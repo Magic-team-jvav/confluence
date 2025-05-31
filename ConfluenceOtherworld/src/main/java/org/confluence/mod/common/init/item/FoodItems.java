@@ -134,7 +134,7 @@ public class FoodItems {
     public static final DeferredItem<BaseFoodItem> PARTIAL_MOUTH_FISH = registerNormalFood("partial_mouth_fish", ModFoodProperties.noEffectProperties(2, 0.4f));
     public static final DeferredItem<BaseFoodItem> ROCK_LOBSTER = registerNormalFood("rock_lobster", ModFoodProperties.noEffectProperties(2, 0.4f));
     public static final DeferredItem<BaseFoodItem> SHRIMP = registerNormalFood("shrimp", ModFoodProperties.noEffectProperties(2, 0.4f));
-    public static final DeferredItem<BaseFoodItem> TR_SALMON = registerNormalFood("tr_salmon", ModFoodProperties.noEffectProperties(2, 0.4f));
+    public static final DeferredItem<BaseFoodItem> SALMON = registerNormalFood("salmon", ModFoodProperties.noEffectProperties(2, 0.4f));
     public static final DeferredItem<BaseFoodItem> TUNA = registerNormalFood("tuna", ModFoodProperties.noEffectProperties(2, 0.4f));
     public static final DeferredItem<BaseFoodItem> RED_SNAPPER = registerNormalFood("red_snapper", ModFoodProperties.noEffectProperties(2, 0.4f));
     public static final DeferredItem<BaseFoodItem> TROUT = registerNormalFood("trout", ModFoodProperties.noEffectProperties(2, 0.4f));

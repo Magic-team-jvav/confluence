@@ -175,10 +175,10 @@ public final class GameEvents {
             if (corruption != crimson) {
                 List<ItemStack> targets = new ArrayList<>();
                 for (ItemStack target : event.getTargets()) {
-                    if (corruption && target.is(MaterialItems.TR_CRIMSON_INGOT)) {
+                    if (corruption && target.is(MaterialItems.CRIMTANE_INGOT)) {
                         targets.add(MaterialItems.DEMONITE_INGOT.toStack(target.getCount()));
                     } else if (crimson && target.is(MaterialItems.DEMONITE_INGOT)) {
-                        targets.add(MaterialItems.TR_CRIMSON_INGOT.toStack(target.getCount()));
+                        targets.add(MaterialItems.CRIMTANE_INGOT.toStack(target.getCount()));
                     } else {
                         targets.add(target);
                     }

@@ -108,7 +108,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "confluence:raw_tr_crimson",
+          "name": "confluence:raw_crimtane",
           "functions": [
             {
               "function": "set_count",
@@ -148,7 +148,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "confluence:tr_crimson_seed",
+          "name": "confluence:crimson_seed",
           "functions": [
             {
               "function": "set_count",

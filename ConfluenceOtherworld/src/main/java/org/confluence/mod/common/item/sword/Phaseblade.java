@@ -35,13 +35,13 @@ import java.util.function.Consumer;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class LightSaber extends BaseSwordItem implements GeoItem {
+public class Phaseblade extends BaseSwordItem implements GeoItem {
     public int frame = 0;
     private final String color;
     private final ItemAttributeModifiers turnOnModifiers;
     private final ItemAttributeModifiers turnOffModifiers;
 
-    public LightSaber(Tier tier, ModRarity rarity, int rawDamage, float rawSpeed, String color) {
+    public Phaseblade(Tier tier, ModRarity rarity, int rawDamage, float rawSpeed, String color) {
         super(tier, rarity, 0, rawSpeed, new ModifierBuilder() {
             @Override
             public Properties buildProperties(Tier tier, ModRarity rarity, int rawDamage, float rawSpeed) {

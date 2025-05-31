@@ -21,7 +21,7 @@
         {
             "type": "confluence:altar",
             "title": "patchouli.confluence.otherworld_note.how_to_use",
-            "input0e": "confluence:demonite_ingot#4,confluence:tr_crimson_ingot#4",
+            "input0e": "confluence:demonite_ingot#4,confluence:crimtane_ingot#4",
             "input1e": "minecraft:compass",
             "input2e": "confluence:falling_star#4",
             "result": "confluence:meteor_compass",

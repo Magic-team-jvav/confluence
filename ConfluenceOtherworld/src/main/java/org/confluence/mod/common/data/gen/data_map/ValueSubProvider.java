@@ -25,7 +25,7 @@ public class ValueSubProvider {
                 .add(Items.TORCH, 10);
         appender.create()
                 .add(Items.COPPER_INGOT, wrap(1, 50))
-                .add(MaterialItems.TR_CRIMSON_INGOT, 3900)
+                .add(MaterialItems.CRIMTANE_INGOT, 3900)
                 .add(MaterialItems.DEMONITE_INGOT, 3000)
                 .add(Items.GOLD_INGOT, 1200)
                 .add(Items.IRON_INGOT, 300)
@@ -78,9 +78,9 @@ public class ValueSubProvider {
                 .add(MaterialItems.AMBER, wrap(30, 0))
                 .add(MaterialItems.RUBY, wrap(22, 50))
                 .add(Items.EMERALD, 1500)
-                .add(MaterialItems.TR_EMERALD, 1500)
+                .add(MaterialItems.PURE_EMERALD, 1500)
                 .add(MaterialItems.SAPPHIRE, wrap(11, 25))
-                .add(MaterialItems.TR_AMETHYST, wrap(3, 75))
+                .add(MaterialItems.AMETHYST, wrap(3, 75))
                 .add(MaterialItems.TOPAZ, wrap(7, 50))
                 .add(Items.LAPIS_LAZULI, 50)
                 .add(Items.REDSTONE, 40)
@@ -109,7 +109,7 @@ public class ValueSubProvider {
                 .add(MaterialItems.RAW_PLATINUM, 450)
                 .add(MaterialItems.RAW_METEORITE, 200)
                 .add(MaterialItems.RAW_DEMONITE, 1000)
-                .add(MaterialItems.RAW_TR_CRIMSON, 1300)
+                .add(MaterialItems.RAW_CRIMTANE, 1300)
                 .add(MaterialItems.RAW_HELLSTONE, 250)
                 .add(MaterialItems.RAW_COBALT, 700)
                 .add(MaterialItems.RAW_PALLADIUM, 900)
@@ -157,7 +157,7 @@ public class ValueSubProvider {
                 // Bladed Glove 1 gold
                 // Bladetongue 4 gold
                 .add(SwordItems.BLOOD_BUTCHERER, wrap(27, 0))
-                .add(SwordItems.BLUE_LIGHT_SABER, wrap(54, 0))
+                .add(SwordItems.BLUE_PHASEBLADE, wrap(54, 0))
                 // Blue Phasesaber 1 gold
                 .add(SwordItems.BONE_SWORD, wrap(18, 0))
                 // Boreal Wood Sword 20 copper
@@ -185,7 +185,7 @@ public class ValueSubProvider {
                 // Gladius 30 silver
                 .add(SwordItems.GOLDEN_BOARD_SWORD, wrap(18, 0))
                 .add(SwordItems.GOLDEN_SHORT_SWORD, wrap(14, 0))
-                .add(SwordItems.GREEN_LIGHT_SABER, wrap(54, 0))
+                .add(SwordItems.GREEN_PHASEBLADE, wrap(54, 0))
                 // Green Phasesaber 1 gold
                 // Ham Bat 1 gold
                 .add(SwordItems.ICE_BLADE, wrap(40, 0))
@@ -203,7 +203,7 @@ public class ValueSubProvider {
                 .add(SwordItems.MURAMASA, wrap(1, 75, 0))
                 // Mythril Sword 2 gold 7 silver
                 // Night's Edge 4 gold
-                .add(SwordItems.ORANGE_LIGHT_SABER, wrap(54, 0))
+                .add(SwordItems.ORANGE_PHASEBLADE, wrap(54, 0))
                 // Orange Phasesaber 1 gold
                 // Orichalcum Sword 2 gold 53 silver
                 // Palladium Sword 1 gold 84 silver
@@ -213,9 +213,9 @@ public class ValueSubProvider {
                 .add(SwordItems.PLATINUM_SHORT_SWORD, wrap(21, 0))
                 // Psycho Knife 10 gold
                 .add(SwordItems.PURPLE_CLUBBERFISH, wrap(1, 0, 0))
-                .add(SwordItems.PURPLE_LIGHT_SABER, wrap(54, 0))
+                .add(SwordItems.PURPLE_PHASEBLADE, wrap(54, 0))
                 // Purple Phasesaber 1 gold
-                .add(SwordItems.RED_LIGHT_SABER, wrap(54, 0))
+                .add(SwordItems.RED_PHASEBLADE, wrap(54, 0))
                 // Red Phasesaber 1 gold
                 // Rich Mahogany Sword 20 copper
                 // Ruler 2 silver
@@ -238,10 +238,10 @@ public class ValueSubProvider {
                 .add(SwordItems.TUNGSTEN_BOARD_SWORD, wrap(13, 50))
                 .add(SwordItems.TUNGSTEN_SHORT_SWORD, wrap(10, 50))
                 .add(SwordItems.VOLCANO, wrap(54, 0))
-                .add(SwordItems.WHITE_LIGHT_SABER, wrap(54, 0))
+                .add(SwordItems.WHITE_PHASEBLADE, wrap(54, 0))
                 // White Phasesaber 1 gold
                 .add(Items.WOODEN_SWORD, 20)
-                .add(SwordItems.YELLOW_LIGHT_SABER, wrap(54, 0))
+                .add(SwordItems.YELLOW_PHASEBLADE, wrap(54, 0))
                 // Yellow Phasesaber 1 gold
                 .add(SwordItems.ZOMBIE_ARM, wrap(4, 0))
 
@@ -1131,7 +1131,7 @@ public class ValueSubProvider {
                 .add(ModItems.GRASS_SEED, 4)
                 .add(ModItems.ASH_GRASS_SEED, 30)
                 .add(ModItems.CORRUPT_SEED, wrap(1, 0))
-                .add(ModItems.TR_CRIMSON_SEED, wrap(1, 0))
+                .add(ModItems.CRIMSON_SEED, wrap(1, 0))
                 .add(Items.SUNFLOWER, wrap(10, 0))
                 .add(Items.OAK_SAPLING, 2)
                 .add(Items.PUMPKIN_SEEDS, 50)

@@ -98,18 +98,18 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         baseStaff(recipeOutput, AmountIngredient.of(5, MaterialItems.RUBY), AmountIngredient.of(2, Tags.Items.INGOTS_GOLD), ManaWeaponItems.RUBY_STAFF.toStack());
         baseStaff(recipeOutput, AmountIngredient.of(5, MaterialItems.AMBER), AmountIngredient.of(2, MaterialItems.STURDY_FOSSIL), ManaWeaponItems.AMBER_STAFF.toStack());
         baseStaff(recipeOutput, AmountIngredient.of(5, MaterialItems.TOPAZ), AmountIngredient.of(2, ModTags.Items.INGOTS_TIN), ManaWeaponItems.TOPAZ_STAFF.toStack());
-        baseStaff(recipeOutput, AmountIngredient.of(5, MaterialItems.TR_EMERALD), AmountIngredient.of(2, ModTags.Items.INGOTS_TUNGSTEN), ManaWeaponItems.EMERALD_STAFF.toStack());
+        baseStaff(recipeOutput, AmountIngredient.of(5, MaterialItems.PURE_EMERALD), AmountIngredient.of(2, ModTags.Items.INGOTS_TUNGSTEN), ManaWeaponItems.EMERALD_STAFF.toStack());
         baseStaff(recipeOutput, AmountIngredient.of(5, MaterialItems.SAPPHIRE), AmountIngredient.of(2, ModTags.Items.INGOTS_SILVER), ManaWeaponItems.SAPPHIRE_STAFF.toStack());
-        baseStaff(recipeOutput, AmountIngredient.of(5, MaterialItems.TR_AMETHYST), AmountIngredient.of(2, Tags.Items.INGOTS_COPPER), ManaWeaponItems.AMETHYST_STAFF.toStack());
+        baseStaff(recipeOutput, AmountIngredient.of(5, MaterialItems.AMETHYST), AmountIngredient.of(2, Tags.Items.INGOTS_COPPER), ManaWeaponItems.AMETHYST_STAFF.toStack());
 
         // 基础光剑
-        baseLightSaber(recipeOutput, AmountIngredient.of(5, Items.DIAMOND), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.WHITE_LIGHT_SABER.toStack());
-        baseLightSaber(recipeOutput, AmountIngredient.of(5, MaterialItems.RUBY), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.RED_LIGHT_SABER.toStack());
-        baseLightSaber(recipeOutput, AmountIngredient.of(5, MaterialItems.AMBER), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.ORANGE_LIGHT_SABER.toStack());
-        baseLightSaber(recipeOutput, AmountIngredient.of(5, MaterialItems.TOPAZ), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.YELLOW_LIGHT_SABER.toStack());
-        baseLightSaber(recipeOutput, AmountIngredient.of(5, MaterialItems.TR_EMERALD), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.GREEN_LIGHT_SABER.toStack());
-        baseLightSaber(recipeOutput, AmountIngredient.of(5, MaterialItems.SAPPHIRE), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.BLUE_LIGHT_SABER.toStack());
-        baseLightSaber(recipeOutput, AmountIngredient.of(5, MaterialItems.TR_AMETHYST), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.PURPLE_LIGHT_SABER.toStack());
+        baseLightSaber(recipeOutput, AmountIngredient.of(5, Items.DIAMOND), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.WHITE_PHASEBLADE.toStack());
+        baseLightSaber(recipeOutput, AmountIngredient.of(5, MaterialItems.RUBY), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.RED_PHASEBLADE.toStack());
+        baseLightSaber(recipeOutput, AmountIngredient.of(5, MaterialItems.AMBER), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.ORANGE_PHASEBLADE.toStack());
+        baseLightSaber(recipeOutput, AmountIngredient.of(5, MaterialItems.TOPAZ), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.YELLOW_PHASEBLADE.toStack());
+        baseLightSaber(recipeOutput, AmountIngredient.of(5, MaterialItems.PURE_EMERALD), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.GREEN_PHASEBLADE.toStack());
+        baseLightSaber(recipeOutput, AmountIngredient.of(5, MaterialItems.SAPPHIRE), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.BLUE_PHASEBLADE.toStack());
+        baseLightSaber(recipeOutput, AmountIngredient.of(5, MaterialItems.AMETHYST), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.PURPLE_PHASEBLADE.toStack());
 
         // 金系列
         heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
@@ -274,7 +274,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "/"
         )), ShovelItems.SHADOW_SHOVEL.toStack());
         heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
-                'a', AmountIngredient.of(4, MaterialItems.TR_CRIMSON_INGOT),
+                'a', AmountIngredient.of(4, MaterialItems.CRIMTANE_INGOT),
                 '/', AmountIngredient.of(2, MaterialItems.VERTEBRA)
         ), List.of(
                 "a",
@@ -290,7 +290,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 " /"
         )), HoeItems.SHADOW_HOE.toStack());
         heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
-                'a', AmountIngredient.of(2, MaterialItems.TR_CRIMSON_INGOT),
+                'a', AmountIngredient.of(2, MaterialItems.CRIMTANE_INGOT),
                 '/', AmountIngredient.of(2, MaterialItems.VERTEBRA)
         ), List.of(
                 "aa",

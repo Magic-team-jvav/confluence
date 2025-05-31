@@ -2341,8 +2341,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.METEORITE_INGOT.get(), "陨铁锭");
         add(MaterialItems.RAW_DEMONITE.get(), "粗魔矿");
         add(MaterialItems.DEMONITE_INGOT.get(), "魔矿锭");
-        add(MaterialItems.RAW_TR_CRIMSON.get(), "粗猩红矿");
-        add(MaterialItems.TR_CRIMSON_INGOT.get(), "猩红矿锭");
+        add(MaterialItems.RAW_CRIMTANE.get(), "粗猩红矿");
+        add(MaterialItems.CRIMTANE_INGOT.get(), "猩红矿锭");
         add(MaterialItems.RAW_HELLSTONE.get(), "粗狱石矿");
         add(MaterialItems.HELLSTONE_INGOT.get(), "狱石矿锭");
         add(MaterialItems.RAW_COBALT.get(), "粗钴");
@@ -2367,9 +2367,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.RUBY.get(), "红玉");
         add(MaterialItems.AMBER.get(), "琥珀");
         add(MaterialItems.TOPAZ.get(), "黄玉");
-        add(MaterialItems.TR_EMERALD.get(), "翡翠");
+        add(MaterialItems.PURE_EMERALD.get(), "翡翠");
         add(MaterialItems.SAPPHIRE.get(), "蓝玉");
-        add(MaterialItems.TR_AMETHYST.get(), "紫晶石");
+        add(MaterialItems.AMETHYST.get(), "紫晶石");
         add(MaterialItems.FALLING_STAR.get(), "坠落之星");
         add(MaterialItems.STAR_PETALS.get(), "星辰花瓣");
         add(MaterialItems.FLOATING_WHEAT_HEADS.get(), "飘飘麦");
@@ -2483,13 +2483,13 @@ public class ModChineseProvider extends LanguageProvider {
 
         add(SwordItems.DEVELOPER_SWORD.get(), "开发者剑");
         // 光剑
-        add(SwordItems.RED_LIGHT_SABER.get(), "红陨石光剑");
-        add(SwordItems.ORANGE_LIGHT_SABER.get(), "橙陨石光剑");
-        add(SwordItems.YELLOW_LIGHT_SABER.get(), "黄陨石光剑");
-        add(SwordItems.GREEN_LIGHT_SABER.get(), "绿陨石光剑");
-        add(SwordItems.BLUE_LIGHT_SABER.get(), "蓝陨石光剑");
-        add(SwordItems.PURPLE_LIGHT_SABER.get(), "紫陨石光剑");
-        add(SwordItems.WHITE_LIGHT_SABER.get(), "白陨石光剑");
+        add(SwordItems.RED_PHASEBLADE.get(), "红陨石光剑");
+        add(SwordItems.ORANGE_PHASEBLADE.get(), "橙陨石光剑");
+        add(SwordItems.YELLOW_PHASEBLADE.get(), "黄陨石光剑");
+        add(SwordItems.GREEN_PHASEBLADE.get(), "绿陨石光剑");
+        add(SwordItems.BLUE_PHASEBLADE.get(), "蓝陨石光剑");
+        add(SwordItems.PURPLE_PHASEBLADE.get(), "紫陨石光剑");
+        add(SwordItems.WHITE_PHASEBLADE.get(), "白陨石光剑");
 
         // 其他近战
         add(LanceItems.DARK_LANCE.get(), "暗黑长枪");
@@ -2739,7 +2739,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModItems.JUNGLE_GRASS_SEED.get(), "丛林草种子");
         add(ModItems.MUSHROOM_GRASS_SEED.get(), "蘑菇草种子");
         add(ModItems.CORRUPT_SEED.get(), "腐化种子");
-        add(ModItems.TR_CRIMSON_SEED.get(), "猩红种子");
+        add(ModItems.CRIMSON_SEED.get(), "猩红种子");
         add(ModItems.HALLOWED_SEED.get(), "神圣种子");
         add(ModItems.ASH_GRASS_SEED.get(), "灰烬草种子");
 
@@ -3277,7 +3277,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(QuestedFishes.CAP_TUNABEARD.get(), "金枪鱼船长");
         add(QuestedFishes.CATFISH.get(), "猫猫鱼");
         add(QuestedFishes.CLOUDFISH.get(), "云朵鱼");
-        add(QuestedFishes.TR_CLOWNFISH.get(), "小丑鱼");
+        add(QuestedFishes.CLOWNFISH.get(), "小丑鱼");
         add(QuestedFishes.CURSEDFISH.get(), "诅咒鱼");
         add(QuestedFishes.DEMONIC_HELLFISH.get(), "地狱恶魔鱼");
         add(QuestedFishes.DERPFISH.get(), "跳跳鱼");
@@ -3430,7 +3430,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.RED_SNAPPER.get(), "红鲷鱼");
         add(FoodItems.TROUT.get(), "鳟鱼");
         add(FoodItems.ROCK_LOBSTER.get(), "岩石龙虾");
-        add(FoodItems.TR_SALMON.get(), "鲑鱼");
+        add(FoodItems.SALMON.get(), "鲑鱼");
         add(FoodItems.SHRIMP.get(), "虾");
         add(FoodItems.MIRROR_FISH.get(), "镜面鱼");
         add(FoodItems.STINKY_FISH.get(), "臭味鱼");

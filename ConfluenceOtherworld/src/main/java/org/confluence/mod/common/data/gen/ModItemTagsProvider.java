@@ -57,7 +57,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 Blocks.DEAD_TUBE_CORAL.asItem(), Blocks.DEAD_TUBE_CORAL_FAN.asItem(), Blocks.DEAD_TUBE_CORAL_BLOCK.asItem(), Blocks.DEAD_BRAIN_CORAL.asItem(), Blocks.DEAD_BRAIN_CORAL_FAN.asItem(), Blocks.DEAD_BRAIN_CORAL_BLOCK.asItem(),
                 Blocks.DEAD_BUBBLE_CORAL.asItem(), Blocks.DEAD_BUBBLE_CORAL_FAN.asItem(), Blocks.DEAD_BUBBLE_CORAL_BLOCK.asItem(), Blocks.DEAD_FIRE_CORAL.asItem(), Blocks.DEAD_FIRE_CORAL_FAN.asItem(), Blocks.DEAD_FIRE_CORAL_BLOCK.asItem(), Blocks.DEAD_HORN_CORAL.asItem(), Blocks.DEAD_HORN_CORAL_FAN.asItem(), Blocks.DEAD_HORN_CORAL_BLOCK.asItem());
         tag(ModTags.Items.EVIL_MATERIAL).add(
-                MaterialItems.TR_CRIMSON_INGOT.get(),
+                MaterialItems.CRIMTANE_INGOT.get(),
                 MaterialItems.DEMONITE_INGOT.get(),
                 MaterialItems.WORM_TOOTH.get(),
                 MaterialItems.VERTEBRA.get(),
@@ -115,7 +115,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 QuestedFishes.CAP_TUNABEARD.get(),
                 QuestedFishes.CATFISH.get(),
                 QuestedFishes.CLOUDFISH.get(),
-                QuestedFishes.TR_CLOWNFISH.get(),
+                QuestedFishes.CLOWNFISH.get(),
                 QuestedFishes.CURSEDFISH.get(),
                 QuestedFishes.DEMONIC_HELLFISH.get(),
                 QuestedFishes.DERPFISH.get(),
@@ -183,7 +183,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.TUNGSTEN_INGOT.get(),
                 MaterialItems.PLATINUM_INGOT.get(),
                 MaterialItems.DEMONITE_INGOT.get(),
-                MaterialItems.TR_CRIMSON_INGOT.get(),
+                MaterialItems.CRIMTANE_INGOT.get(),
                 MaterialItems.HELLSTONE_INGOT.get(),
                 MaterialItems.COBALT_INGOT.get(),
                 MaterialItems.PALLADIUM_INGOT.get(),
@@ -196,8 +196,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.SPECTRE_INGOT.get(),
                 MaterialItems.LUMINITE_INGOT.get(),
                 MaterialItems.AMBER.get(),
-                MaterialItems.TR_AMETHYST.get(),
-                MaterialItems.TR_EMERALD.get(),
+                MaterialItems.AMETHYST.get(),
+                MaterialItems.PURE_EMERALD.get(),
                 MaterialItems.RUBY.get(),
                 MaterialItems.SAPPHIRE.get(),
                 MaterialItems.TOPAZ.get()
@@ -219,7 +219,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 NatureBlocks.YELLOW_WILLOW_SAPLING.asItem()
         );
 
-        tag(ModTags.Items.EVIL_INGOT).add(MaterialItems.DEMONITE_INGOT.get(), MaterialItems.TR_CRIMSON_INGOT.get());
+        tag(ModTags.Items.EVIL_INGOT).add(MaterialItems.DEMONITE_INGOT.get(), MaterialItems.CRIMTANE_INGOT.get());
         tag(ModTags.Items.LEAD_AND_IRON).addTags(Tags.Items.INGOTS_IRON, ModTags.Items.INGOTS_LEAD);
         IntrinsicTagAppender<Item> torch = tag(ModTags.Items.TORCH);
         torch.add(Items.TORCH, Items.SOUL_TORCH);
@@ -283,7 +283,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         );
         tag(ModTags.Items.TR_CRIMSON_ORE_SMELTING).add(
                 OreBlocks.CRIMTANE_ORE.asItem(), OreBlocks.DEEPSLATE_CRIMTANE_ORE.asItem(), OreBlocks.SANCTIFICATION_CRIMTANE_ORE.asItem(), OreBlocks.CORRUPTION_CRIMTANE_ORE.asItem(), OreBlocks.FLESHIFICATION_CRIMTANE_ORE.asItem(),
-                MaterialItems.RAW_TR_CRIMSON.get()
+                MaterialItems.RAW_CRIMTANE.get()
 
         );
         tag(ModTags.Items.RUBY_ORE_SMELTING).add(
@@ -405,9 +405,9 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.RUBY.get(),
                 MaterialItems.AMBER.get(),
                 MaterialItems.TOPAZ.get(),
-                MaterialItems.TR_EMERALD.get(),
+                MaterialItems.PURE_EMERALD.get(),
                 MaterialItems.SAPPHIRE.get(),
-                MaterialItems.TR_AMETHYST.get()
+                MaterialItems.AMETHYST.get()
         );
         tag(ModTags.Items.GEMS_RUBY).add(
                 MaterialItems.RUBY.get()
@@ -419,13 +419,13 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.TOPAZ.get()
         );
         tag(ModTags.Items.GEMS_TR_EMERALD).add(
-                MaterialItems.TR_EMERALD.get()
+                MaterialItems.PURE_EMERALD.get()
         );
         tag(ModTags.Items.GEMS_SAPPHIRE).add(
                 MaterialItems.SAPPHIRE.get()
         );
         tag(ModTags.Items.GEMS_TR_AMETHYST).add(
-                MaterialItems.TR_AMETHYST.get()
+                MaterialItems.AMETHYST.get()
         );
 
         tag(ModTags.Items.NUGGETS_TIN).add(
@@ -439,7 +439,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.PLATINUM_INGOT.get(),
                 MaterialItems.METEORITE_INGOT.get(),
                 MaterialItems.DEMONITE_INGOT.get(),
-                MaterialItems.TR_CRIMSON_INGOT.get(),
+                MaterialItems.CRIMTANE_INGOT.get(),
                 MaterialItems.HELLSTONE_INGOT.get(),
                 MaterialItems.COBALT_INGOT.get(),
                 MaterialItems.PALLADIUM_INGOT.get(),
@@ -494,7 +494,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.RAW_SILVER.get(),
                 MaterialItems.RAW_TIN.get(),
                 MaterialItems.RAW_TUNGSTEN.get(),
-                MaterialItems.RAW_TR_CRIMSON.get()
+                MaterialItems.RAW_CRIMTANE.get()
         );
 
         PaintItems.acceptTag(tag(Tags.Items.DYED));
@@ -571,7 +571,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.METEORITE_BLOCK).add(OreBlocks.METEORITE_BLOCK.asItem());
         tag(ModTags.Items.INGOTS_DEMONITE).add(MaterialItems.DEMONITE_INGOT.get());
         tag(ModTags.Items.DEMONITE_BLOCK).add(OreBlocks.DEMONITE_BLOCK.asItem());
-        tag(ModTags.Items.INGOTS_CRIMSON).add(MaterialItems.TR_CRIMSON_INGOT.get());
+        tag(ModTags.Items.INGOTS_CRIMSON).add(MaterialItems.CRIMTANE_INGOT.get());
         tag(ModTags.Items.CRIMSON_BLOCK).add(OreBlocks.CRIMTANE_BLOCK.asItem());
         tag(ModTags.Items.INGOTS_HELLSTONE).add(MaterialItems.HELLSTONE_INGOT.get());
         tag(ModTags.Items.HELLSTONE_BLOCK).add(OreBlocks.HELLSTONE_BLOCK.asItem());
@@ -590,7 +590,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.RAW_MATERIALS_METEORITE_BLOCK).add(OreBlocks.RAW_METEORITE_BLOCK.asItem());
         tag(ModTags.Items.RAW_MATERIALS_DEMONITE).add(MaterialItems.RAW_DEMONITE.get());
         tag(ModTags.Items.RAW_MATERIALS_DEMONITE_BLOCK).add(OreBlocks.RAW_DEMONITE_BLOCK.asItem());
-        tag(ModTags.Items.RAW_MATERIALS_CRIMSON).add(MaterialItems.RAW_TR_CRIMSON.get());
+        tag(ModTags.Items.RAW_MATERIALS_CRIMSON).add(MaterialItems.RAW_CRIMTANE.get());
         tag(ModTags.Items.RAW_MATERIALS_CRIMSON_BLOCK).add(OreBlocks.RAW_CRIMTANE_BLOCK.asItem());
         tag(ModTags.Items.RAW_MATERIALS_HELLSTONE).add(MaterialItems.RAW_HELLSTONE.get());
         tag(ModTags.Items.RAW_MATERIALS_HELLSTONE_BLOCK).add(OreBlocks.RAW_HELLSTONE_BLOCK.asItem());
@@ -955,7 +955,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 QuestedFishes.CAP_TUNABEARD.get(),
                 QuestedFishes.CATFISH.get(),
                 QuestedFishes.CLOUDFISH.get(),
-                QuestedFishes.TR_CLOWNFISH.get(),
+                QuestedFishes.CLOWNFISH.get(),
                 QuestedFishes.CURSEDFISH.get(),
                 QuestedFishes.DEMONIC_HELLFISH.get(),
                 QuestedFishes.DERPFISH.get(),
@@ -1007,7 +1007,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FoodItems.RED_SNAPPER.get(),
                 FoodItems.TROUT.get(),
                 FoodItems.ROCK_LOBSTER.get(),
-                FoodItems.TR_SALMON.get(),
+                FoodItems.SALMON.get(),
                 FoodItems.MIRROR_FISH.get(),
                 FoodItems.STINKY_FISH.get(),
                 FoodItems.TUNA.get(),
@@ -1338,7 +1338,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 OreBlocks.SPECTRE_BLOCK.asItem(),
                 OreBlocks.RAW_LUMINITE_BLOCK.asItem(),
                 OreBlocks.LUMINITE_BLOCK.asItem(),
-                OreBlocks.HELLSTONE_BRICKS.asItem(),
                 OreBlocks.RAW_HELLSTONE_BLOCK.asItem(),
                 OreBlocks.HELLSTONE_BLOCK.asItem(),
                 OreBlocks.RAW_COBALT_BLOCK.asItem(),

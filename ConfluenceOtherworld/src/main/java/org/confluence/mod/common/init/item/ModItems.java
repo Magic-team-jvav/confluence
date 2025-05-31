@@ -96,7 +96,7 @@ public final class ModItems {
                     Blocks.GRASS_BLOCK, NatureBlocks.CORRUPT_GRASS_BLOCK.get(),
                     NatureBlocks.CRIMSON_GRASS_BLOCK.get(), NatureBlocks.CORRUPT_GRASS_BLOCK.get(),
                     NatureBlocks.HALLOW_GRASS_BLOCK.get(), NatureBlocks.CORRUPT_GRASS_BLOCK.get())));
-    public static final DeferredItem<GrassSeedItem> TR_CRIMSON_SEED = ITEMS.register("tr_crimson_seed", () -> new GrassSeedItem(
+    public static final DeferredItem<GrassSeedItem> CRIMSON_SEED = ITEMS.register("crimson_seed", () -> new GrassSeedItem(
             Map.of(
                     Blocks.MUD, NatureBlocks.CRIMSON_JUNGLE_GRASS_BLOCK.get(),
                     Blocks.DIRT, NatureBlocks.CRIMSON_GRASS_BLOCK.get(),

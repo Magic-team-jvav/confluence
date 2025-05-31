@@ -64,7 +64,7 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                                 )
                         )
                                 .setWeight(5))
-                        .add(LootItem.lootTableItem(FoodItems.TR_SALMON)
+                        .add(LootItem.lootTableItem(FoodItems.SALMON)
                         .when(
                                 LocationCheck.checkLocation(
                                         LocationPredicate.Builder.location()

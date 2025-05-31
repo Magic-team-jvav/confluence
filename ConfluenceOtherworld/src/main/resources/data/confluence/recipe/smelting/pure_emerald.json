@@ -1,12 +1,12 @@
 {
-    "type": "minecraft:blasting",
+    "type": "minecraft:smelting",
     "ingredient": {
         "tag": "confluence:pure_emerald_ore_smelting"
     },
     "result": {
-        "id": "confluence:tr_emerald"
+        "id": "confluence:pure_emerald"
     },
-    "experience": 0.4,
-    "cookingtime": 100,
+    "experience": 0.5,
+    "cookingtime": 200,
     "group": "misc"
 }

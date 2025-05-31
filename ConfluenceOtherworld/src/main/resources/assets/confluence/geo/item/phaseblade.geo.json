@@ -3,7 +3,7 @@
 	"minecraft:geometry": [
 		{
 			"description": {
-				"identifier": "geometry.light_saber",
+				"identifier": "geometry.phaseblade",
 				"texture_width": 40,
 				"texture_height": 40,
 				"visible_bounds_width": 2,

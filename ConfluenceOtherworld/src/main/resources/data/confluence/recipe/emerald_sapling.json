@@ -2,7 +2,7 @@
     "type": "minecraft:crafting_shapeless",
     "ingredients": [
         {
-            "item": "confluence:tr_emerald"
+            "item": "confluence:pure_emerald"
         },
         {
             "item": "minecraft:oak_sapling"

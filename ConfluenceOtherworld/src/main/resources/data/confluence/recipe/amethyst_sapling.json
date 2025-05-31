@@ -2,7 +2,7 @@
     "type": "minecraft:crafting_shapeless",
     "ingredients": [
         {
-            "item": "confluence:tr_amethyst"
+            "item": "confluence:amethyst"
         },
         {
             "item": "minecraft:oak_sapling"

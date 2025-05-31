@@ -5,11 +5,11 @@
     ],
     "key": {
         "#": {
-            "item": "confluence:pure_emerald_block"
+            "item": "confluence:amethyst_block"
         }
     },
     "result": {
-        "id": "confluence:tr_emerald",
+        "id": "confluence:amethyst",
         "count": 9
     }
 }

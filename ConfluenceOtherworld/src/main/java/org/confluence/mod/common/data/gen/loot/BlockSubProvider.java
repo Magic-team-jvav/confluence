@@ -194,21 +194,21 @@ public class BlockSubProvider extends BlockLootSubProvider {
         add(CORRUPTION_TOPAZ_ORE.get(), block -> createOreDrop(block, TOPAZ.get()));
         add(FLESHIFICATION_TOPAZ_ORE.get(), block -> createOreDrop(block, TOPAZ.get()));
         add(DEEPSLATE_TOPAZ_ORE.get(), block -> createOreDrop(block, TOPAZ.get()));
-        add(PURE_EMERALD_ORE.get(), block -> createOreDrop(block, TR_EMERALD.get()));
+        add(PURE_EMERALD_ORE.get(), block -> createOreDrop(block, PURE_EMERALD.get()));
 //            add(SANCTIFICATION_TR_EMERALD_ORE.get(), block -> createOreDrop(block, TR_EMERALD.get()));
 //            add(CORRUPTION_TR_EMERALD_ORE.get(), block -> createOreDrop(block, TR_EMERALD.get()));
 //            add(FLESHIFICATION_TR_EMERALD_ORE.get(), block -> createOreDrop(block, TR_EMERALD.get()));
-        add(DEEPSLATE_PURE_EMERALD_ORE.get(), block -> createOreDrop(block, TR_EMERALD.get()));
+        add(DEEPSLATE_PURE_EMERALD_ORE.get(), block -> createOreDrop(block, PURE_EMERALD.get()));
         add(SAPPHIRE_ORE.get(), block -> createOreDrop(block, SAPPHIRE.get()));
         add(SANCTIFICATION_SAPPHIRE_ORE.get(), block -> createOreDrop(block, SAPPHIRE.get()));
         add(CORRUPTION_SAPPHIRE_ORE.get(), block -> createOreDrop(block, SAPPHIRE.get()));
         add(FLESHIFICATION_SAPPHIRE_ORE.get(), block -> createOreDrop(block, SAPPHIRE.get()));
         add(DEEPSLATE_SAPPHIRE_ORE.get(), block -> createOreDrop(block, SAPPHIRE.get()));
-        add(AMETHYST_ORE.get(), block -> createOreDrop(block, TR_AMETHYST.get()));
-        add(SANCTIFICATION_AMETHYST_ORE.get(), block -> createOreDrop(block, TR_AMETHYST.get()));
-        add(CORRUPTION_AMETHYST_ORE.get(), block -> createOreDrop(block, TR_AMETHYST.get()));
-        add(FLESHIFICATION_AMETHYST_ORE.get(), block -> createOreDrop(block, TR_AMETHYST.get()));
-        add(DEEPSLATE_AMETHYST_ORE.get(), block -> createOreDrop(block, TR_AMETHYST.get()));
+        add(AMETHYST_ORE.get(), block -> createOreDrop(block, AMETHYST.get()));
+        add(SANCTIFICATION_AMETHYST_ORE.get(), block -> createOreDrop(block, AMETHYST.get()));
+        add(CORRUPTION_AMETHYST_ORE.get(), block -> createOreDrop(block, AMETHYST.get()));
+        add(FLESHIFICATION_AMETHYST_ORE.get(), block -> createOreDrop(block, AMETHYST.get()));
+        add(DEEPSLATE_AMETHYST_ORE.get(), block -> createOreDrop(block, AMETHYST.get()));
         add(SANCTIFICATION_EMERALD_ORE.get(), block -> createOreDrop(block, Items.EMERALD));
         add(CORRUPTION_EMERALD_ORE.get(), block -> createOreDrop(block, Items.EMERALD));
         add(FLESHIFICATION_EMERALD_ORE.get(), block -> createOreDrop(block, Items.EMERALD));
@@ -222,8 +222,8 @@ public class BlockSubProvider extends BlockLootSubProvider {
         add(SANCTIFICATION_DEMONITE_ORE.get(), block -> createOreDrop(block, RAW_DEMONITE.get()));
         add(CORRUPTION_DEMONITE_ORE.get(), block -> createOreDrop(block, RAW_DEMONITE.get()));
         add(FLESHIFICATION_DEMONITE_ORE.get(), block -> createOreDrop(block, RAW_DEMONITE.get()));
-        add(CRIMTANE_ORE.get(), block -> createOreDrop(block, RAW_TR_CRIMSON.get()));
-        add(DEEPSLATE_CRIMTANE_ORE.get(), block -> createOreDrop(block, RAW_TR_CRIMSON.get()));
+        add(CRIMTANE_ORE.get(), block -> createOreDrop(block, RAW_CRIMTANE.get()));
+        add(DEEPSLATE_CRIMTANE_ORE.get(), block -> createOreDrop(block, RAW_CRIMTANE.get()));
         add(DEEPSLATE_COBALT_ORE.get(), block -> createOreDrop(block, RAW_COBALT.get()));
         add(DEEPSLATE_PALLADIUM_ORE.get(), block -> createOreDrop(block, RAW_PALLADIUM.get()));
         add(DEEPSLATE_MYTHRIL_ORE.get(), block -> createOreDrop(block, RAW_MYTHRIL.get()));
@@ -507,7 +507,7 @@ public class BlockSubProvider extends BlockLootSubProvider {
         );
         add(NatureBlocks.EMERALD_BRANCHES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TR_EMERALD))
+                        .add(LootItem.lootTableItem(PURE_EMERALD))
                         .add(EmptyLootItem.emptyItem().setWeight(59)))
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(EMERALD_SAPLING))
@@ -531,7 +531,7 @@ public class BlockSubProvider extends BlockLootSubProvider {
         );
         add(NatureBlocks.AMETHYST_BRANCHES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TR_AMETHYST))
+                        .add(LootItem.lootTableItem(AMETHYST))
                         .add(EmptyLootItem.emptyItem().setWeight(59)))
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(AMETHYST_SAPLING))

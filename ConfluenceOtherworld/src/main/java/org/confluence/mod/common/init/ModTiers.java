@@ -39,7 +39,7 @@ public final class ModTiers {
     // 无限耐久uses为10000
 
     public static final Tier DEMONITE = new PoweredTier(65, ModTags.Blocks.NEEDS_5_LEVEL, 10000, 24, 5, 12, () -> Ingredient.of(MaterialItems.DEMONITE_INGOT));
-    public static final Tier TR_CRIMSON = new PoweredTier(70, ModTags.Blocks.NEEDS_5_LEVEL, 10000, 25, 6, 13, () -> Ingredient.of(MaterialItems.TR_CRIMSON_INGOT));
+    public static final Tier TR_CRIMSON = new PoweredTier(70, ModTags.Blocks.NEEDS_5_LEVEL, 10000, 25, 6, 13, () -> Ingredient.of(MaterialItems.CRIMTANE_INGOT));
     public static final Tier METEOR = new PoweredTier(80, ModTags.Blocks.NEEDS_6_LEVEL, 10000, 27, 6.5f, 14, () -> Ingredient.of(MaterialItems.METEORITE_INGOT));
     public static final Tier HELLSTONE = new PoweredTier(100, ModTags.Blocks.NEEDS_6_LEVEL, 10000, 30, 7, 15, () -> Ingredient.of(MaterialItems.HELLSTONE_INGOT));
     public static final Tier COBALT = new PoweredTier(110, ModTags.Blocks.NEEDS_7_LEVEL, 10000, 31, 8, 15, () -> Ingredient.of(MaterialItems.COBALT_INGOT));

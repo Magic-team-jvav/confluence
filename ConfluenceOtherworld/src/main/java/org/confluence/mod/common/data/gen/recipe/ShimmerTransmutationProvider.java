@@ -105,12 +105,12 @@ public class ShimmerTransmutationProvider extends AbstractRecipeProvider {
         item(recipeOutput, CrateBlocks.HELLSTONE_CRATE, CrateBlocks.OBSIDIAN_CRATE);
         item(recipeOutput, CrateBlocks.SEASIDE_CRATE, CrateBlocks.OCEAN_CRATE);
         // 宝石转化
-        item(recipeOutput, MaterialItems.TOPAZ, MaterialItems.TR_AMETHYST);
+        item(recipeOutput, MaterialItems.TOPAZ, MaterialItems.AMETHYST);
         item(recipeOutput, MaterialItems.SAPPHIRE, MaterialItems.TOPAZ);
-        item(recipeOutput, MaterialItems.TR_EMERALD, MaterialItems.SAPPHIRE);
-        item(recipeOutput, MaterialItems.RUBY, MaterialItems.TR_EMERALD);
+        item(recipeOutput, MaterialItems.PURE_EMERALD, MaterialItems.SAPPHIRE);
+        item(recipeOutput, MaterialItems.RUBY, MaterialItems.PURE_EMERALD);
         item(recipeOutput, Items.DIAMOND, MaterialItems.RUBY);
-        item(recipeOutput, "cobblestone_from_amethyst", addItem(MaterialItems.TR_AMETHYST, Items.COBBLESTONE));
+        item(recipeOutput, "cobblestone_from_amethyst", addItem(MaterialItems.AMETHYST, Items.COBBLESTONE));
         // 锭到矿的转化
         item(recipeOutput, MaterialItems.TITANIUM_INGOT, MaterialItems.RAW_TITANIUM);
         item(recipeOutput, "raw_adamantite_from_ingot", addItem(MaterialItems.ADAMANTITE_INGOT, MaterialItems.RAW_ADAMANTITE));
@@ -119,7 +119,7 @@ public class ShimmerTransmutationProvider extends AbstractRecipeProvider {
         item(recipeOutput, "raw_palladium_from_ingot", addItem(MaterialItems.PALLADIUM_INGOT, MaterialItems.RAW_PALLADIUM));
         item(recipeOutput, "raw_cobalt_from_ingot", addItem(MaterialItems.COBALT_INGOT, MaterialItems.RAW_COBALT));
         item(recipeOutput, MaterialItems.HELLSTONE_INGOT, MaterialItems.RAW_HELLSTONE);
-        item(recipeOutput, MaterialItems.TR_CRIMSON_INGOT, MaterialItems.RAW_TR_CRIMSON);
+        item(recipeOutput, MaterialItems.CRIMTANE_INGOT, MaterialItems.RAW_CRIMTANE);
         item(recipeOutput, MaterialItems.DEMONITE_INGOT, MaterialItems.RAW_DEMONITE);
         item(recipeOutput, MaterialItems.METEORITE_INGOT, MaterialItems.RAW_METEORITE);
         item(recipeOutput, "raw_platinum_from_ingot", addItem(ModTags.Items.INGOTS_PLATINUM, MaterialItems.RAW_PLATINUM.get(), 1));

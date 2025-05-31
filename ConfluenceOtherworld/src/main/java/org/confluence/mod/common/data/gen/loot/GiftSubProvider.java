@@ -1004,13 +1004,13 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
         );
 
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/brain_of_cthulhu/classic"), HealingPotionCommon()
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.RAW_TR_CRIMSON)
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.RAW_CRIMTANE)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(40, 90)))
                 ))
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/brain_of_cthulhu/expert"), HealingPotionCommon()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(TCItems.BRAIN_OF_CONFUSION)))
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.RAW_TR_CRIMSON)
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.RAW_CRIMTANE)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(80, 110)))
                 ))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.TISSUE_SAMPLE)
@@ -1020,7 +1020,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/brain_of_cthulhu/master"), HealingPotionCommon()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(TCItems.BRAIN_OF_CONFUSION)))
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.RAW_TR_CRIMSON)
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.RAW_CRIMTANE)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(110, 135)))
                 ))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.TISSUE_SAMPLE)
@@ -1199,10 +1199,10 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ArrowItems.UNHOLY_ARROW)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 50)))
                 ))
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.RAW_TR_CRIMSON)
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.RAW_CRIMTANE)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(30, 90)))
                 ))
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.TR_CRIMSON_SEED)
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.CRIMSON_SEED)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3)))
                 ));
     }
@@ -1215,10 +1215,10 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ArrowItems.UNHOLY_ARROW)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 50)))
                 ))
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.RAW_TR_CRIMSON)
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.RAW_CRIMTANE)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(30, 90)))
                 ))
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.TR_CRIMSON_SEED)
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.CRIMSON_SEED)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3)))
                 ))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.RAW_DEMONITE)

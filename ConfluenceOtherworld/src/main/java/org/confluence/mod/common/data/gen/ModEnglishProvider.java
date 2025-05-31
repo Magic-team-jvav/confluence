@@ -1,6 +1,7 @@
 package org.confluence.mod.common.data.gen;
 
 import com.google.common.collect.Iterables;
+import net.minecraft.Util;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
@@ -1531,7 +1532,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("task.confluence.use_life_crystal.condition.has_life_crystal", "Mainhand holds life crystal");
 
         PonderHelper.addTranslateKeys(this::add, true);
-        WaystonesHelper.addTranslateKeys(this::add, true);
+        WaystonesHelper.addTranslateKeys((block, s) -> add(Util.makeDescriptionId("block", block.getId()), s), true);
     }
 
     @Override

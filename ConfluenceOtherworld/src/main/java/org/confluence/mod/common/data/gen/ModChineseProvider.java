@@ -1,5 +1,6 @@
 package org.confluence.mod.common.data.gen;
 
+import net.minecraft.Util;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import org.confluence.mod.Confluence;
@@ -44,12 +45,12 @@ public class ModChineseProvider extends LanguageProvider {
         add("options.difficulty.legendary", "§a传奇");
         add("message.confluence.choking", "你被噎住了,需要喝水才行");
         add("message.confluence.advancement_combat_techniques", "书中的知识赋予了城镇居民力量！");
-        add("message.confluence.toolmode.tip","对空气潜行右击切换模式");
-        add("message.confluence.toolmode.current","当前模式：");
-        add("message.confluence.hamaxe.mode.0","锤与斧");
-        add("message.confluence.hamaxe.mode.1","斧");
-        add("message.confluence.hoe_shovel.mode.0","锹");
-        add("message.confluence.hoe_shovel.mode.1","锄");
+        add("message.confluence.toolmode.tip", "对空气潜行右击切换模式");
+        add("message.confluence.toolmode.current", "当前模式：");
+        add("message.confluence.hamaxe.mode.0", "锤与斧");
+        add("message.confluence.hamaxe.mode.1", "斧");
+        add("message.confluence.hoe_shovel.mode.0", "锹");
+        add("message.confluence.hoe_shovel.mode.1", "锄");
         add("message.confluence.altar_tips.0", "右键存入物品，潜行右键以拿出物品。");
         add("message.confluence.altar_tips.1", "左键以合成，潜行左键以快速合成。");
         add("jukebox_song.confluence.alpha", "C418 - alpha");
@@ -3788,6 +3789,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("task.confluence.use_life_crystal.condition.has_life_crystal", "主手持有生命水晶");
 
         PonderHelper.addTranslateKeys(this::add, false);
-        WaystonesHelper.addTranslateKeys(this::add, false);
+        WaystonesHelper.addTranslateKeys((block, s) -> add(Util.makeDescriptionId("block", block.getId()), s), false);
     }
 }

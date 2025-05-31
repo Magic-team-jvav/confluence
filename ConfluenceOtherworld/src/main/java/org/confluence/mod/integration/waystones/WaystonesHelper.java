@@ -1,6 +1,5 @@
 package org.confluence.mod.integration.waystones;
 
-import net.minecraft.Util;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.resources.ResourceKey;
@@ -88,19 +87,19 @@ public class WaystonesHelper {
         ITEMS.getEntries().forEach(item -> wip.addOptional(item.getId()));
     }
 
-    public static void addTranslateKeys(BiConsumer<String, String> consumer, boolean en) {
+    public static void addTranslateKeys(BiConsumer<DeferredHolder<Block, ? extends Block>, String> consumer, boolean en) {
         if (en) {
-            BLOCKS.getEntries().forEach(block -> consumer.accept(Util.makeDescriptionId("block", block.getId()), LibUtils.toTitleCase(block.getId().getPath())));
+            BLOCKS.getEntries().forEach(block -> consumer.accept(block, LibUtils.toTitleCase(block.getId().getPath())));
         } else {
-            consumer.accept(Util.makeDescriptionId("block", FOREST_PYLON.getId()), "森林晶塔");
-            consumer.accept(Util.makeDescriptionId("block", SNOW_PYLON.getId()), "雪原晶塔");
-            consumer.accept(Util.makeDescriptionId("block", DESERT_PYLON.getId()), "沙漠晶塔");
-            consumer.accept(Util.makeDescriptionId("block", CAVERN_PYLON.getId()), "洞穴晶塔");
-            consumer.accept(Util.makeDescriptionId("block", OCEAN_PYLON.getId()), "海洋晶塔");
-            consumer.accept(Util.makeDescriptionId("block", JUNGLE_PYLON.getId()), "丛林晶塔");
-            consumer.accept(Util.makeDescriptionId("block", HALLOW_PYLON.getId()), "神圣晶塔");
-            consumer.accept(Util.makeDescriptionId("block", MUSHROOM_PYLON.getId()), "蘑菇晶塔");
-            consumer.accept(Util.makeDescriptionId("block", UNIVERSAL_PYLON.getId()), "万能晶塔");
+            consumer.accept(FOREST_PYLON, "森林晶塔");
+            consumer.accept(SNOW_PYLON, "雪原晶塔");
+            consumer.accept(DESERT_PYLON, "沙漠晶塔");
+            consumer.accept(CAVERN_PYLON, "洞穴晶塔");
+            consumer.accept(OCEAN_PYLON, "海洋晶塔");
+            consumer.accept(JUNGLE_PYLON, "丛林晶塔");
+            consumer.accept(HALLOW_PYLON, "神圣晶塔");
+            consumer.accept(MUSHROOM_PYLON, "蘑菇晶塔");
+            consumer.accept(UNIVERSAL_PYLON, "万能晶塔");
         }
     }
 }

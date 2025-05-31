@@ -281,7 +281,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 OreBlocks.DEMONITE_ORE.asItem(), OreBlocks.DEEPSLATE_DEMONITE_ORE.asItem(), OreBlocks.SANCTIFICATION_DEMONITE_ORE.asItem(), OreBlocks.CORRUPTION_DEMONITE_ORE.asItem(), OreBlocks.FLESHIFICATION_DEMONITE_ORE.asItem(),
                 MaterialItems.RAW_DEMONITE.get()
         );
-        tag(ModTags.Items.TR_CRIMSON_ORE_SMELTING).add(
+        tag(ModTags.Items.CRIMTANE_ORE_SMELTING).add(
                 OreBlocks.CRIMTANE_ORE.asItem(), OreBlocks.DEEPSLATE_CRIMTANE_ORE.asItem(), OreBlocks.SANCTIFICATION_CRIMTANE_ORE.asItem(), OreBlocks.CORRUPTION_CRIMTANE_ORE.asItem(), OreBlocks.FLESHIFICATION_CRIMTANE_ORE.asItem(),
                 MaterialItems.RAW_CRIMTANE.get()
 
@@ -295,7 +295,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.TOPAZ_ORE_SMELTING).add(
                 OreBlocks.TOPAZ_ORE.asItem(), OreBlocks.DEEPSLATE_TOPAZ_ORE.asItem(), OreBlocks.SANCTIFICATION_TOPAZ_ORE.asItem(), OreBlocks.CORRUPTION_TOPAZ_ORE.asItem(), OreBlocks.FLESHIFICATION_TOPAZ_ORE.asItem()
         );
-        tag(ModTags.Items.TR_EMERALD_ORE_SMELTING).add(
+        tag(ModTags.Items.PURE_EMERALD_ORE_SMELTING).add(
                 OreBlocks.PURE_EMERALD_ORE.asItem(), OreBlocks.DEEPSLATE_RUBY_ORE.asItem(), OreBlocks.SANCTIFICATION_RUBY_ORE.asItem(), OreBlocks.CORRUPTION_RUBY_ORE.asItem(), OreBlocks.FLESHIFICATION_RUBY_ORE.asItem()
         );
         tag(ModTags.Items.DIAMOND_ORE_SMELTING).add(
@@ -304,7 +304,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.SAPPHIRE_ORE_SMELTING).add(
                 OreBlocks.SAPPHIRE_ORE.asItem(), OreBlocks.DEEPSLATE_SAPPHIRE_ORE.asItem(), OreBlocks.SANCTIFICATION_SAPPHIRE_ORE.asItem(), OreBlocks.CORRUPTION_SAPPHIRE_ORE.asItem(), OreBlocks.FLESHIFICATION_SAPPHIRE_ORE.asItem()
         );
-        tag(ModTags.Items.TR_AMETHYST_ORE_SMELTING).add(
+        tag(ModTags.Items.AMETHYST_ORE_SMELTING).add(
                 OreBlocks.AMETHYST_ORE.asItem(), OreBlocks.DEEPSLATE_AMETHYST_ORE.asItem(), OreBlocks.SANCTIFICATION_AMETHYST_ORE.asItem(), OreBlocks.CORRUPTION_AMETHYST_ORE.asItem(), OreBlocks.FLESHIFICATION_AMETHYST_ORE.asItem()
         );
         tag(ModTags.Items.REDSTONE_ORE_SMELTING).add(
@@ -418,13 +418,13 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.GEMS_TOPAZ).add(
                 MaterialItems.TOPAZ.get()
         );
-        tag(ModTags.Items.GEMS_TR_EMERALD).add(
+        tag(ModTags.Items.GEMS_PURE_EMERALD).add(
                 MaterialItems.PURE_EMERALD.get()
         );
         tag(ModTags.Items.GEMS_SAPPHIRE).add(
                 MaterialItems.SAPPHIRE.get()
         );
-        tag(ModTags.Items.GEMS_TR_AMETHYST).add(
+        tag(ModTags.Items.GEMS_AMETHYST).add(
                 MaterialItems.AMETHYST.get()
         );
 
@@ -590,8 +590,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.RAW_MATERIALS_METEORITE_BLOCK).add(OreBlocks.RAW_METEORITE_BLOCK.asItem());
         tag(ModTags.Items.RAW_MATERIALS_DEMONITE).add(MaterialItems.RAW_DEMONITE.get());
         tag(ModTags.Items.RAW_MATERIALS_DEMONITE_BLOCK).add(OreBlocks.RAW_DEMONITE_BLOCK.asItem());
-        tag(ModTags.Items.RAW_MATERIALS_CRIMSON).add(MaterialItems.RAW_CRIMTANE.get());
-        tag(ModTags.Items.RAW_MATERIALS_CRIMSON_BLOCK).add(OreBlocks.RAW_CRIMTANE_BLOCK.asItem());
+        tag(ModTags.Items.RAW_MATERIALS_CRIMTANE).add(MaterialItems.RAW_CRIMTANE.get());
+        tag(ModTags.Items.RAW_MATERIALS_CRIMTANE_BLOCK).add(OreBlocks.RAW_CRIMTANE_BLOCK.asItem());
         tag(ModTags.Items.RAW_MATERIALS_HELLSTONE).add(MaterialItems.RAW_HELLSTONE.get());
         tag(ModTags.Items.RAW_MATERIALS_HELLSTONE_BLOCK).add(OreBlocks.RAW_HELLSTONE_BLOCK.asItem());
 

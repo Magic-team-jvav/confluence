@@ -1,7 +1,7 @@
 {
     "type": "minecraft:smoking",
     "ingredient": {
-        "item": "confluence:tr_salmon"
+        "item": "confluence:salmon"
     },
     "result": {
         "id": "minecraft:cooked_salmon"

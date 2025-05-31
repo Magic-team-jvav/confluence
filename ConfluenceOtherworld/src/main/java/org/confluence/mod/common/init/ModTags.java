@@ -122,17 +122,17 @@ public final class ModTags {
         public static final TagKey<Item> RAW_MATERIALS_METEORITE_BLOCK = c("storage_blocks/raw_meteorite");
         public static final TagKey<Item> RAW_MATERIALS_DEMONITE = c("raw_materials/demonite");
         public static final TagKey<Item> RAW_MATERIALS_DEMONITE_BLOCK = c("storage_blocks/raw_demonite");
-        public static final TagKey<Item> RAW_MATERIALS_CRIMSON = c("raw_materials/crimson");
-        public static final TagKey<Item> RAW_MATERIALS_CRIMSON_BLOCK = c("storage_blocks/raw_crimson");
+        public static final TagKey<Item> RAW_MATERIALS_CRIMTANE = c("raw_materials/crimtane");
+        public static final TagKey<Item> RAW_MATERIALS_CRIMTANE_BLOCK = c("storage_blocks/raw_crimtane");
         public static final TagKey<Item> RAW_MATERIALS_HELLSTONE = c("raw_materials/hellstone");
         public static final TagKey<Item> RAW_MATERIALS_HELLSTONE_BLOCK = c("storage_blocks/raw_hellstone");
 
         public static final TagKey<Item> GEMS_RUBY = c("gems/ruby");
         public static final TagKey<Item> GEMS_AMBER = c("gems/amber");
         public static final TagKey<Item> GEMS_TOPAZ = c("gems/topaz");
-        public static final TagKey<Item> GEMS_TR_EMERALD = c("gems/tr_emerald");
+        public static final TagKey<Item> GEMS_PURE_EMERALD = c("gems/pure_emerald");
         public static final TagKey<Item> GEMS_SAPPHIRE = c("gems/sapphire");
-        public static final TagKey<Item> GEMS_TR_AMETHYST = c("gems/tr_amethyst");
+        public static final TagKey<Item> GEMS_AMETHYST = c("gems/amethyst");
 
         public static final TagKey<Item> NUGGETS_TIN = c("nuggets/lead");
 
@@ -191,14 +191,14 @@ public final class ModTags {
         public static final TagKey<Item> GOLD_ORE_SMELTING = register("gold_ore_smelting");
         public static final TagKey<Item> PLATINUM_ORE_SMELTING = register("platinum_ore_smelting");
         public static final TagKey<Item> DEMONITE_ORE_SMELTING = register("demonite_ore_smelting");
-        public static final TagKey<Item> TR_CRIMSON_ORE_SMELTING = register("tr_crimson_ore_smelting");
+        public static final TagKey<Item> CRIMTANE_ORE_SMELTING = register("crimtane_ore_smelting");
         public static final TagKey<Item> RUBY_ORE_SMELTING = register("ruby_ore_smelting");
         public static final TagKey<Item> TOPAZ_ORE_SMELTING = register("topaz_ore_smelting");
         public static final TagKey<Item> AMBER_ORE_SMELTING = register("amber_ore_smelting");
-        public static final TagKey<Item> TR_EMERALD_ORE_SMELTING = register("tr_emerald_ore_smelting");
+        public static final TagKey<Item> PURE_EMERALD_ORE_SMELTING = register("pure_emerald_ore_smelting");
         public static final TagKey<Item> DIAMOND_ORE_SMELTING = register("diamond_ore_smelting");
         public static final TagKey<Item> SAPPHIRE_ORE_SMELTING = register("sapphire_ore_smelting");
-        public static final TagKey<Item> TR_AMETHYST_ORE_SMELTING = register("tr_amethyst_ore_smelting");
+        public static final TagKey<Item> AMETHYST_ORE_SMELTING = register("amethyst_ore_smelting");
         public static final TagKey<Item> REDSTONE_ORE_SMELTING = register("redstone_ore_smelting");
         public static final TagKey<Item> MOSS_ITEM = register("moss_item");
         public static final TagKey<Item> SUMMONER_WEAPON = register("summoner_weapon");

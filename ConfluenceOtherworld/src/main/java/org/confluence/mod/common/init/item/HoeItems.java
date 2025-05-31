@@ -22,7 +22,7 @@ public class HoeItems {
     public static final DeferredItem<BaseHoeItem> GOLDEN_HOE = ITEMS.register("golden_hoe", () -> new BaseHoeItem(ModTiers.GOLD, 1, 4f,ModRarity.COMMON));
     public static final DeferredItem<BaseHoeItem> PLATINUM_HOE = ITEMS.register("platinum_hoe", () -> new BaseHoeItem(ModTiers.PLATINUM, 1, 4f,ModRarity.COMMON));
     public static final DeferredItem<BaseHoeItem> SHADOW_HOE = ITEMS.register("shadow_hoe", () -> new BaseHoeItem(ModTiers.DEMONITE, 2, 4f,unbreakable(),ModRarity.BLUE));
-    public static final DeferredItem<BaseHoeItem> CULTIVATOR = ITEMS.register("cultivator", () -> new BaseHoeItem(ModTiers.TR_CRIMSON, 2, 4f,unbreakable(),ModRarity.BLUE));
+    public static final DeferredItem<BaseHoeItem> CULTIVATOR = ITEMS.register("cultivator", () -> new BaseHoeItem(ModTiers.CRIMTANE, 2, 4f,unbreakable(),ModRarity.BLUE));
     public static void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> tag) {
         ITEMS.getEntries().forEach(hoe -> tag.add(hoe.get()));
     }

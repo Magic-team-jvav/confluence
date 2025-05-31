@@ -13,10 +13,10 @@ import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
 
-public class LightSaberRenderer extends GeoItemRenderer<Phaseblade> {
+public class PhasebladeRenderer extends GeoItemRenderer<Phaseblade> {
 
     private boolean isTurningOn = false;
-    public LightSaberRenderer(String color) {
+    public PhasebladeRenderer(String color) {
         super(new PhasebladeModel(color));
         addRenderLayer(autoGlowingGeoLayer);
     }

@@ -16,7 +16,7 @@ import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.mod.client.renderer.item.LightSaberRenderer;
+import org.confluence.mod.client.renderer.item.PhasebladeRenderer;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.terraentity.data.component.SingleBooleanComponent;
 import org.confluence.terraentity.init.TEDataComponentTypes;
@@ -113,12 +113,12 @@ public class Phaseblade extends BaseSwordItem implements GeoItem {
     @Override
     public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
         consumer.accept(new GeoRenderProvider() {
-            private LightSaberRenderer renderer;
+            private PhasebladeRenderer renderer;
 
             @Override
             public BlockEntityWithoutLevelRenderer getGeoItemRenderer() {
                 if (renderer == null) {
-                    this.renderer = new LightSaberRenderer(color);
+                    this.renderer = new PhasebladeRenderer(color);
                 }
                 return renderer;
             }

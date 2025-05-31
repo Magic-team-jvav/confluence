@@ -139,7 +139,7 @@ public final class ModBiomes {
                         .build())
                 .generationSettings(Util.make(new BiomeGenerationSettings.Builder(placedFeature, configuredWorldCarver), builder -> {
                     addDefaultGenerations(builder);
-                    builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ModFeatures.PLACED_TREES_TR_CRIMSON);
+                    builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ModFeatures.PLACED_TREES_CRIMSON);
                 }).build())
                 .build()
         );

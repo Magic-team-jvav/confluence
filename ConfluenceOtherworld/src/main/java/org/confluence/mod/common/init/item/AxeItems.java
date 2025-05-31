@@ -27,7 +27,7 @@ public class AxeItems {
     public static final DeferredItem<BaseAxeItem> GOLDEN_AXE = ITEMS.register("golden_axe", () -> new BaseAxeItem(ModTiers.GOLD, 7, 1, new Item.Properties(), attributes(0, 0.45), ModRarity.WHITE));
     public static final DeferredItem<BaseAxeItem> PLATINUM_AXE = ITEMS.register("platinum_axe", () -> new BaseAxeItem(ModTiers.PLATINUM, 8, 1.1F, new Item.Properties(), attributes(0, 0.45), ModRarity.WHITE));
     public static final DeferredItem<BaseAxeItem> WAR_AXE_OF_THE_NIGHT = ITEMS.register("war_axe_of_the_night", () -> new BaseAxeItem(ModTiers.DEMONITE, 10, 1.2F, unbreakable(), attributes(0, 0.6), ModRarity.BLUE));
-    public static final DeferredItem<BaseAxeItem> BLOOD_LUST_CLUSTER = ITEMS.register("blood_lust_cluster", () -> new BaseAxeItem(ModTiers.TR_CRIMSON, 11, 1.2F, unbreakable(), attributes(0, 0.6), ModRarity.BLUE));
+    public static final DeferredItem<BaseAxeItem> BLOOD_LUST_CLUSTER = ITEMS.register("blood_lust_cluster", () -> new BaseAxeItem(ModTiers.CRIMTANE, 11, 1.2F, unbreakable(), attributes(0, 0.6), ModRarity.BLUE));
 
     public static final DeferredItem<BaseAxeItem> COBALT_WARAXE = ITEMS.register("cobalt_waraxe", () -> new BaseAxeItem(ModTiers.COBALT, 33, 1.4F, unbreakable(), attributes(0, 0.55), ModRarity.LIGHT_RED));
     public static final DeferredItem<BaseAxeItem> PALLADIUM_WARAXE = ITEMS.register("palladium_waraxe", () -> new BaseAxeItem(ModTiers.PALLADIUM, 36, 1.4F, unbreakable(), attributes(0, 0.5), ModRarity.LIGHT_RED));

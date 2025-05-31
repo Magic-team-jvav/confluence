@@ -26,12 +26,12 @@ public class SurfaceRuleData {
     //private static final SurfaceRules.RuleSource CLAY = makeStateRule(Blocks.CLAY);
 
     private static final SurfaceRules.RuleSource CORRUPT_GRASS_BLOCK = makeStateRule(NatureBlocks.CORRUPT_GRASS_BLOCK.get());
-    private static final SurfaceRules.RuleSource EBONY_STONE = makeStateRule(NatureBlocks.EBONSTONE.get());
-    private static final SurfaceRules.RuleSource EBONY_SAND = makeStateRule(NatureBlocks.EBONSAND.get());
+    private static final SurfaceRules.RuleSource EBONSTONE = makeStateRule(NatureBlocks.EBONSTONE.get());
+    private static final SurfaceRules.RuleSource EBONSAND = makeStateRule(NatureBlocks.EBONSAND.get());
 
-    private static final SurfaceRules.RuleSource TR_CRIMSON_GRASS_BLOCK = makeStateRule(NatureBlocks.CRIMSON_GRASS_BLOCK.get());
-    private static final SurfaceRules.RuleSource TR_CRIMSON_STONE = makeStateRule(NatureBlocks.CRIMSTONE.get());
-    private static final SurfaceRules.RuleSource TR_CRIMSON_SAND = makeStateRule(NatureBlocks.CRIMSAND.get());
+    private static final SurfaceRules.RuleSource CRIMSON_GRASS_BLOCK = makeStateRule(NatureBlocks.CRIMSON_GRASS_BLOCK.get());
+    private static final SurfaceRules.RuleSource CRIMSTONE = makeStateRule(NatureBlocks.CRIMSTONE.get());
+    private static final SurfaceRules.RuleSource CRIMSAND = makeStateRule(NatureBlocks.CRIMSAND.get());
 
     private static final SurfaceRules.RuleSource MUSHROOM_GRASS_BLOCK = makeStateRule(NatureBlocks.MUSHROOM_GRASS_BLOCK.get());
     private static final SurfaceRules.RuleSource MUD = makeStateRule(Blocks.MUD);
@@ -59,8 +59,8 @@ public class SurfaceRuleData {
     private static final SurfaceRules.ConditionSource dirtSnowy = SurfaceRules.isBiome(Biomes.SNOWY_PLAINS, Biomes.SNOWY_TAIGA);
 
     // 生成 =============================================================
-    private static final SurfaceRules.RuleSource corruptGrassSurface = SurfaceRules.sequence(SurfaceRules.ifTrue(isAtOrAboveWaterLevel, CORRUPT_GRASS_BLOCK), EBONY_SAND);
-    private static final SurfaceRules.RuleSource trCrimsonGrassSurface = SurfaceRules.sequence(SurfaceRules.ifTrue(isAtOrAboveWaterLevel, TR_CRIMSON_GRASS_BLOCK), TR_CRIMSON_SAND);
+    private static final SurfaceRules.RuleSource corruptGrassSurface = SurfaceRules.sequence(SurfaceRules.ifTrue(isAtOrAboveWaterLevel, CORRUPT_GRASS_BLOCK), EBONSAND);
+    private static final SurfaceRules.RuleSource crimsonGrassSurface = SurfaceRules.sequence(SurfaceRules.ifTrue(isAtOrAboveWaterLevel, CRIMSON_GRASS_BLOCK), CRIMSAND);
     private static final SurfaceRules.RuleSource mushroomSurface = SurfaceRules.sequence(SurfaceRules.ifTrue(isAtOrAboveWaterLevel, MUSHROOM_GRASS_BLOCK), MUD);
     private static final SurfaceRules.RuleSource ashGrassSurface = SurfaceRules.sequence(SurfaceRules.ifTrue(isAtOrAboveWaterLevel, ASH_GRASS_BLOCK), ASH_BLOCK);
     private static final SurfaceRules.RuleSource jungleGrassSurface = SurfaceRules.sequence(SurfaceRules.ifTrue(isAtOrAboveWaterLevel, JUNGLE_GRASS_BLOCK), MUD);
@@ -86,7 +86,7 @@ public class SurfaceRuleData {
                                         )
                                 ),
                                 SurfaceRules.ifTrue(SurfaceRules.not(deepslateSeed),
-                                        EBONY_STONE
+                                        EBONSTONE
                                 )
                         )
                 ),
@@ -98,7 +98,7 @@ public class SurfaceRuleData {
                                         SurfaceRules.ifTrue(SurfaceRules.not(isHole),
                                                 SurfaceRules.sequence(
                                                         SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR,
-                                                                trCrimsonGrassSurface
+                                                                crimsonGrassSurface
                                                         ),
                                                         SurfaceRules.ifTrue(SurfaceRules.stoneDepthCheck(4, false, 1, CaveSurface.FLOOR),
                                                                 DIRT
@@ -107,7 +107,7 @@ public class SurfaceRuleData {
                                         )
                                 ),
                                 SurfaceRules.ifTrue(SurfaceRules.not(deepslateSeed),
-                                        TR_CRIMSON_STONE
+                                        CRIMSTONE
                                 )
                         )
                 ),

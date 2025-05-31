@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "confluence:block/tr_lava_bricks"
+    "all": "confluence:block/hellstone_bricks"
   }
 }

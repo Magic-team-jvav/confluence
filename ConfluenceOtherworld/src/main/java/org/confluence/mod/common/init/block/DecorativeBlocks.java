@@ -125,7 +125,6 @@ public class DecorativeBlocks {
     public static final DeferredBlock<DoorBlock> SKYWARE_GLASS_DOOR = registerWithItem("skyware_glass_door", () -> new DoorBlock(BlockSetType.STONE, BlockBehaviour.Properties.of().mapColor(BLUE_ICE.defaultMapColor()).instrument(NoteBlockInstrument.BASS).strength(4.0F).noOcclusion().pushReaction(PushReaction.DESTROY)));
     public static final DeferredBlock<Block> SUN_PLATE = copyBlockRegister("sun_plate", Blocks.STONE_BRICKS);
     public static final DeferredBlock<Block> DISC_BLOCK = copyBlockRegister("disc_block", Blocks.STONE_BRICKS);
-    public static final DeferredBlock<Block> TR_LAVA_BRICKS = copyBlockRegister("tr_lava_bricks", OBSIDIAN);
 
     // 黑曜石
     public static final DeferredBlock<Block> TR_OBSIDIAN_BRICKS = copyBlockRegister("tr_obsidian_bricks", Blocks.OBSIDIAN);

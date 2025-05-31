@@ -201,7 +201,6 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 SKYWARE_DOOR.get(),
                 SKYWARE_GLASS_DOOR.get(),
                 DISC_BLOCK.get(),
-                TR_LAVA_BRICKS.get(),
                 TR_OBSIDIAN_BRICKS.get(),
                 OBSIDIAN_BRICKS_SLAB.get(),
                 OBSIDIAN_BRICKS_STAIRS.get(),
@@ -488,7 +487,6 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 SKYWARE_DOOR.get(),
                 DISC_BLOCK.get(),
                 SKYWARE_GLASS_DOOR.get(),
-                TR_LAVA_BRICKS.get(),
                 TR_OBSIDIAN_BRICKS.get(),
                 TR_OBSIDIAN_SMALL_BRICKS.get(),
                 TR_SMOOTH_OBSIDIAN.get(),
@@ -597,9 +595,9 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 HELLSTONE.get(),
                 HELLFORGE.get(),
                 HELLSTONE_BLOCK.get(),
-                TR_LAVA_BRICKS.get(),
                 RAW_HELLSTONE_BLOCK.get(),
                 ASH_HELLSTONE.get(),
+                HELLSTONE_BRICKS.get(),
                 BLUE_BRICKS.get(),
                 GREEN_BRICKS.get(),
                 PINK_BRICKS.get(),
@@ -750,7 +748,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 HELLSTONE.get(),
                 HELLSTONE_BLOCK.get(),
                 RAW_HELLSTONE_BLOCK.get(),
-                ASH_HELLSTONE.get()
+                ASH_HELLSTONE.get(),
+                HELLSTONE_BRICKS.get()
         );
         tag(Tags.Blocks.BUDS).add(  // 塞之后的神圣地水晶装饰
                 CRYSTAL_BLOCK.get()

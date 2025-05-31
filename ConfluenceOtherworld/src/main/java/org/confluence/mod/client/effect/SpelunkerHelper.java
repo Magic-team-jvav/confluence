@@ -186,11 +186,11 @@ public class SpelunkerHelper extends AbstractBufferManager {
         putTarget(FLESHIFICATION_SAPPHIRE_ORE.get(), Color.CYAN, true, ShowType.SPELUNKER);
 
         //紫晶矿
-        putTarget(OreBlocks.PURE_AMETHYST_ORE.get(), Color.CYAN, true, ShowType.SPELUNKER);
-        putTarget(OreBlocks.DEEPSLATE_PURE_AMETHYST_ORE.get(), Color.CYAN, true, ShowType.SPELUNKER);
-        putTarget(OreBlocks.CORRUPTION_PURE_AMETHYST_ORE.get(), Color.CYAN, true, ShowType.SPELUNKER);
-        putTarget(OreBlocks.SANCTIFICATION_PURE_AMETHYST_ORE.get(), Color.CYAN, true, ShowType.SPELUNKER);
-        putTarget(OreBlocks.FLESHIFICATION_PURE_AMETHYST_ORE.get(), Color.CYAN, true, ShowType.SPELUNKER);
+        putTarget(OreBlocks.AMETHYST_ORE.get(), Color.CYAN, true, ShowType.SPELUNKER);
+        putTarget(OreBlocks.DEEPSLATE_AMETHYST_ORE.get(), Color.CYAN, true, ShowType.SPELUNKER);
+        putTarget(OreBlocks.CORRUPTION_AMETHYST_ORE.get(), Color.CYAN, true, ShowType.SPELUNKER);
+        putTarget(OreBlocks.SANCTIFICATION_AMETHYST_ORE.get(), Color.CYAN, true, ShowType.SPELUNKER);
+        putTarget(OreBlocks.FLESHIFICATION_AMETHYST_ORE.get(), Color.CYAN, true, ShowType.SPELUNKER);
 
 
         //绿宝石矿

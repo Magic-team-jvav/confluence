@@ -454,10 +454,10 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 CORRUPTION_SAPPHIRE_ORE.get(),
                 FLESHIFICATION_SAPPHIRE_ORE.get(),
                 SAPPHIRE_ORE.get(),
-                SANCTIFICATION_PURE_AMETHYST_ORE.get(),
-                CORRUPTION_PURE_AMETHYST_ORE.get(),
-                FLESHIFICATION_PURE_AMETHYST_ORE.get(),
-                PURE_AMETHYST_ORE.get(),
+                SANCTIFICATION_AMETHYST_ORE.get(),
+                CORRUPTION_AMETHYST_ORE.get(),
+                FLESHIFICATION_AMETHYST_ORE.get(),
+                AMETHYST_ORE.get(),
                 RUBY_BLOCK.get(),
                 AMBER_BLOCK.get(),
                 TOPAZ_BLOCK.get(),
@@ -940,11 +940,11 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 FLESHIFICATION_SAPPHIRE_ORE.get(),
                 DEEPSLATE_SAPPHIRE_ORE.get(),
                 SAPPHIRE_ORE.get(),
-                SANCTIFICATION_PURE_AMETHYST_ORE.get(),
-                CORRUPTION_PURE_AMETHYST_ORE.get(),
-                FLESHIFICATION_PURE_AMETHYST_ORE.get(),
-                DEEPSLATE_PURE_AMETHYST_ORE.get(),
-                PURE_AMETHYST_ORE.get(),
+                SANCTIFICATION_AMETHYST_ORE.get(),
+                CORRUPTION_AMETHYST_ORE.get(),
+                FLESHIFICATION_AMETHYST_ORE.get(),
+                DEEPSLATE_AMETHYST_ORE.get(),
+                AMETHYST_ORE.get(),
                 DEEPSLATE_PLATINUM_ORE.get(),
                 SANCTIFICATION_PLATINUM_ORE.get(),
                 CORRUPTION_PLATINUM_ORE.get(),
@@ -1037,7 +1037,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 DEEPSLATE_ORICHALCUM_ORE.get(),
                 DEEPSLATE_ADAMANTITE_ORE.get(),
                 DEEPSLATE_TITANIUM_ORE.get(),
-                DEEPSLATE_PURE_AMETHYST_ORE.get()
+                DEEPSLATE_AMETHYST_ORE.get()
         );
         tag(Tags.Blocks.ORES_IN_GROUND_NETHERRACK).add(
                 HELLSTONE.get()
@@ -1052,7 +1052,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 TOPAZ_ORE.get(),
                 PURE_EMERALD_ORE.get(),
                 SAPPHIRE_ORE.get(),
-                PURE_AMETHYST_ORE.get(),
+                AMETHYST_ORE.get(),
                 DEMONITE_ORE.get(),
                 CRIMTANE_ORE.get()
         );

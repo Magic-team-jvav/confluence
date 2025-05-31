@@ -10,7 +10,7 @@
           "tag": "stone_ore_replaceables"
         },
         "state": {
-          "Name": "confluence:pure_amethyst_ore"
+          "Name": "confluence:amethyst_ore"
         }
       },
       {
@@ -19,7 +19,7 @@
           "tag": "deepslate_ore_replaceables"
         },
         "state": {
-          "Name": "confluence:deepslate_pure_amethyst_ore"
+          "Name": "confluence:deepslate_amethyst_ore"
         }
       }
     ]

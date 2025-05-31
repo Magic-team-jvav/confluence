@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "confluence:block/pure_amethyst_ore"
+    "all": "confluence:block/deepslate_amethyst_ore"
   }
 }

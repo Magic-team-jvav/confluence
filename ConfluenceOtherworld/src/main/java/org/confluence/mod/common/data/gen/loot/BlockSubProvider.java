@@ -204,11 +204,11 @@ public class BlockSubProvider extends BlockLootSubProvider {
         add(CORRUPTION_SAPPHIRE_ORE.get(), block -> createOreDrop(block, SAPPHIRE.get()));
         add(FLESHIFICATION_SAPPHIRE_ORE.get(), block -> createOreDrop(block, SAPPHIRE.get()));
         add(DEEPSLATE_SAPPHIRE_ORE.get(), block -> createOreDrop(block, SAPPHIRE.get()));
-        add(PURE_AMETHYST_ORE.get(), block -> createOreDrop(block, TR_AMETHYST.get()));
-        add(SANCTIFICATION_PURE_AMETHYST_ORE.get(), block -> createOreDrop(block, TR_AMETHYST.get()));
-        add(CORRUPTION_PURE_AMETHYST_ORE.get(), block -> createOreDrop(block, TR_AMETHYST.get()));
-        add(FLESHIFICATION_PURE_AMETHYST_ORE.get(), block -> createOreDrop(block, TR_AMETHYST.get()));
-        add(DEEPSLATE_PURE_AMETHYST_ORE.get(), block -> createOreDrop(block, TR_AMETHYST.get()));
+        add(AMETHYST_ORE.get(), block -> createOreDrop(block, TR_AMETHYST.get()));
+        add(SANCTIFICATION_AMETHYST_ORE.get(), block -> createOreDrop(block, TR_AMETHYST.get()));
+        add(CORRUPTION_AMETHYST_ORE.get(), block -> createOreDrop(block, TR_AMETHYST.get()));
+        add(FLESHIFICATION_AMETHYST_ORE.get(), block -> createOreDrop(block, TR_AMETHYST.get()));
+        add(DEEPSLATE_AMETHYST_ORE.get(), block -> createOreDrop(block, TR_AMETHYST.get()));
         add(SANCTIFICATION_EMERALD_ORE.get(), block -> createOreDrop(block, Items.EMERALD));
         add(CORRUPTION_EMERALD_ORE.get(), block -> createOreDrop(block, Items.EMERALD));
         add(FLESHIFICATION_EMERALD_ORE.get(), block -> createOreDrop(block, Items.EMERALD));

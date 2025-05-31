@@ -1640,11 +1640,11 @@ public class ModChineseProvider extends LanguageProvider {
         add(OreBlocks.CORRUPTION_PURE_EMERALD_ORE.get(), "腐化翡翠矿石");
         add(OreBlocks.FLESHIFICATION_PURE_EMERALD_ORE.get(), "血化翡翠矿石");
         add(OreBlocks.DEEPSLATE_PURE_EMERALD_ORE.get(), "深层翡翠矿石");
-        add(OreBlocks.PURE_AMETHYST_ORE.get(), "紫晶矿石");
-        add(OreBlocks.SANCTIFICATION_PURE_AMETHYST_ORE.get(), "圣化紫晶矿石");
-        add(OreBlocks.CORRUPTION_PURE_AMETHYST_ORE.get(), "腐化紫晶矿石");
-        add(OreBlocks.FLESHIFICATION_PURE_AMETHYST_ORE.get(), "血化紫晶矿石");
-        add(OreBlocks.DEEPSLATE_PURE_AMETHYST_ORE.get(), "深层紫晶矿石");
+        add(OreBlocks.AMETHYST_ORE.get(), "紫晶矿石");
+        add(OreBlocks.SANCTIFICATION_AMETHYST_ORE.get(), "圣化紫晶矿石");
+        add(OreBlocks.CORRUPTION_AMETHYST_ORE.get(), "腐化紫晶矿石");
+        add(OreBlocks.FLESHIFICATION_AMETHYST_ORE.get(), "血化紫晶矿石");
+        add(OreBlocks.DEEPSLATE_AMETHYST_ORE.get(), "深层紫晶矿石");
         add(OreBlocks.SAPPHIRE_ORE.get(), "蓝玉矿石");
         add(OreBlocks.SANCTIFICATION_SAPPHIRE_ORE.get(), "圣化蓝玉矿石");
         add(OreBlocks.CORRUPTION_SAPPHIRE_ORE.get(), "腐化蓝玉矿石");

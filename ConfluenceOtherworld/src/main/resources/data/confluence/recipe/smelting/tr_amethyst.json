@@ -1,7 +1,7 @@
 {
     "type": "minecraft:smelting",
     "ingredient": {
-        "tag": "confluence:pure_amethyst_ore_smelting"
+        "tag": "confluence:amethyst_ore_smelting"
     },
     "result": {
         "id": "confluence:tr_amethyst"

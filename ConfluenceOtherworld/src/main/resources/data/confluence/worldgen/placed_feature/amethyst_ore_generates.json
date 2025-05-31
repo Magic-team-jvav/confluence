@@ -1,5 +1,5 @@
 {
-  "feature": "confluence:pure_amethyst_ore_generates",
+  "feature": "confluence:amethyst_ore_generates",
   "placement": [
     {
       "type": "minecraft:count",

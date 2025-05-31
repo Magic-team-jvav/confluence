@@ -305,7 +305,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 OreBlocks.SAPPHIRE_ORE.asItem(), OreBlocks.DEEPSLATE_SAPPHIRE_ORE.asItem(), OreBlocks.SANCTIFICATION_SAPPHIRE_ORE.asItem(), OreBlocks.CORRUPTION_SAPPHIRE_ORE.asItem(), OreBlocks.FLESHIFICATION_SAPPHIRE_ORE.asItem()
         );
         tag(ModTags.Items.TR_AMETHYST_ORE_SMELTING).add(
-                OreBlocks.PURE_AMETHYST_ORE.asItem(), OreBlocks.DEEPSLATE_PURE_AMETHYST_ORE.asItem(), OreBlocks.SANCTIFICATION_PURE_AMETHYST_ORE.asItem(), OreBlocks.CORRUPTION_PURE_AMETHYST_ORE.asItem(), OreBlocks.FLESHIFICATION_PURE_AMETHYST_ORE.asItem()
+                OreBlocks.AMETHYST_ORE.asItem(), OreBlocks.DEEPSLATE_AMETHYST_ORE.asItem(), OreBlocks.SANCTIFICATION_AMETHYST_ORE.asItem(), OreBlocks.CORRUPTION_AMETHYST_ORE.asItem(), OreBlocks.FLESHIFICATION_AMETHYST_ORE.asItem()
         );
         tag(ModTags.Items.REDSTONE_ORE_SMELTING).add(
                 OreBlocks.SANCTIFICATION_REDSTONE_ORE.asItem(), OreBlocks.CORRUPTION_REDSTONE_ORE.asItem(), OreBlocks.FLESHIFICATION_REDSTONE_ORE.asItem()
@@ -739,7 +739,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 OreBlocks.DEEPSLATE_ORICHALCUM_ORE.asItem(),
                 OreBlocks.DEEPSLATE_ADAMANTITE_ORE.asItem(),
                 OreBlocks.DEEPSLATE_TITANIUM_ORE.asItem(),
-                OreBlocks.DEEPSLATE_PURE_AMETHYST_ORE.asItem()
+                OreBlocks.DEEPSLATE_AMETHYST_ORE.asItem()
         );
 
         tag(Tags.Items.ORES_IN_GROUND_NETHERRACK).add(
@@ -755,7 +755,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 OreBlocks.TOPAZ_ORE.asItem(),
                 OreBlocks.PURE_EMERALD_ORE.asItem(),
                 OreBlocks.SAPPHIRE_ORE.asItem(),
-                OreBlocks.PURE_AMETHYST_ORE.asItem(),
+                OreBlocks.AMETHYST_ORE.asItem(),
                 OreBlocks.DEMONITE_ORE.asItem(),
                 OreBlocks.CRIMTANE_ORE.asItem()
         );

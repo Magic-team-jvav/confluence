@@ -2,19 +2,19 @@
     "variants": {
         "": [
             {
-                "model": "confluence:block/tr_crimsand",
+                "model": "confluence:block/crimsand",
                 "weight": 12
             },
             {
-                "model": "confluence:block/tr_crimsand_0",
+                "model": "confluence:block/crimsand_0",
                 "weight": 1
             },
             {
-                "model": "confluence:block/tr_crimsand_1",
+                "model": "confluence:block/crimsand_1",
                 "weight": 1
             },
             {
-                "model": "confluence:block/tr_crimsand_2",
+                "model": "confluence:block/crimsand_2",
                 "weight": 1
             }
         ]

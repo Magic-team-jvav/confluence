@@ -23,4 +23,5 @@ public final class ModCarvers {
     public static final Supplier<JungleCaveCarver> JUNGLE_CAVE_CARVER = CARVERS.register("jungle_cave_carver", () -> new JungleCaveCarver(CaveCarverConfiguration.CODEC));
 
     public static final ResourceKey<ConfiguredWorldCarver<?>> CONFIGURED_DEMONIC_CAVE_CARVER = ResourceKey.create(Registries.CONFIGURED_CARVER, Confluence.asResource("demonic_cave_carver"));
+    public static final ResourceKey<ConfiguredWorldCarver<?>> CONFIGURED_GLOWING_MUSHROOM_CAVE_CARVER = ResourceKey.create(Registries.CONFIGURED_CARVER, Confluence.asResource("glowing_mushroom_cave_carver"));
 }

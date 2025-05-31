@@ -273,7 +273,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.chromatic_cloak.0", "对微光相位化免疫，当淹没在微光中时潜行可以相位化");
         add("tooltip.item.confluence.paint_scraper", "用于去除油漆或涂料，按下shift+右键仅去除一面");
         add("tooltip.item.confluence.paint_sprayer.0", "自动给放置的物体刷油漆或涂料");
-        add("tooltip.item.confluence.coin", "潜行右键合并为上级钱币");
+        add("tooltip.item.confluence.coin", "对着空气潜行右击合并为上级钱币");
         add("tooltip.item.confluence.hardmode_convertor.0", "右击地面将当前世界立刻开始转变为困难模式");
         add("tooltip.item.confluence.life_crystal.0", "最大生命永久增加4");
         add("tooltip.item.confluence.life_fruit.0", "最大生命永久增加1");
@@ -1134,14 +1134,14 @@ public class ModChineseProvider extends LanguageProvider {
         add("mood.terra_entity.nurse.love.arms_dealer", "什么？军火商？我才没有暗恋他！我没有！闭嘴！");
         add("mood.terra_entity.nurse.dislike.dryad", "我不太喜欢树妖，这个人有点奇怪。");
 
-        //帕秋莉手册
+        // 帕秋莉手册
         add("patchouli.confluence.otherworld_note.name", "来世手记");
         add("patchouli.confluence.otherworld_note.landing_text", "暗流涌动，世界的命运岌岌可危，邪恶势力的阴影笼罩着两个世界。命运的交汇之时，融合的时代悄然来临。你将在这两大世界的融合中，开始一段崭新的冒险之旅，挑战未知，拯救世界，或为自己谋求力量。");
         add("patchouli.confluence.otherworld_note.appearance", "外观");
         add("patchouli.confluence.otherworld_note.example", "一个例子");
         add("patchouli.confluence.otherworld_note.gui", "GUI界面");
         add("patchouli.confluence.otherworld_note.how_to_use", "使用方式");
-        //章节
+        // 章节
         add("patchouli.confluence.otherworld_note.accessories.name", "饰品");
         add("patchouli.confluence.otherworld_note.accessories.description", "两只手 两只脚 21个戒指🤔");
         add("patchouli.confluence.otherworld_note.boss_checklist.name", "Boss 列表");
@@ -1165,9 +1165,9 @@ public class ModChineseProvider extends LanguageProvider {
         add("patchouli.confluence.otherworld_note.world.name", "世界");
         add("patchouli.confluence.otherworld_note.world.description", "正在生成世界中...*i正在隐藏宝藏...*i正在隐藏更多宝藏...*i正在隐藏更多更多宝藏...");
 
-        //条目
-        //饰品
-        //Boss 列表
+        // 条目
+        // 饰品
+        // Boss 列表
         add("patchouli.confluence.otherworld_note.boss_checklist.how_to_summon", "召唤方式");
 
         add("patchouli.confluence.otherworld_note.boss_checklist.brain_of_cthulhu.name", "克苏鲁之脑");
@@ -1214,7 +1214,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("patchouli.confluence.otherworld_note.boss_checklist.queen_bee.3", "憎恶之蜂是一个用于召唤Boss的物品，看起来像是个蜜蜂。*b它可以用来在丛林中立刻召唤蜂王。*2在!cs:hwb!重型工作台*c中使用 5 个蜂蜜块、5 个丛林蜂巢、毒刺和蜂蜜瓶合成憎恶之蜂。");
         add("patchouli.confluence.otherworld_note.boss_checklist.queen_bee.4", "*o$(#555555)“她似乎嫉妒厌恶那些荧光真菌孢子的气息。一团尚未成型的幼蜂，摸上去感觉像粘稠的蜂蜜...蜂王与她的下属们对它们甜蜜领地的保护欲不知何时渐渐发展为对非同类生物的嫉妒排斥与憎恶。群峰振翅值声撼动了丛林中最为厚重的叶片。”");
 
-        //制作站
+        // 制作站
         add("patchouli.confluence.otherworld_note.crafting_stations.alchemy_table.0", "炼药桌差不多就是酿造台的Plus版，当然不能用于制作酿造台的配方，而是制作特殊的酿药配方。*b在!cs:hwb!重型工作台*c中使用木板、酿造台、骷髅头颅、蜡烛和玻璃瓶制作而成。");
         add("patchouli.confluence.otherworld_note.crafting_stations.alchemy_table.1", "左右 6 个格子放材料，中上塞水瓶（或者其他特殊的东西），然后下方就会有成品了。");
         add("patchouli.confluence.otherworld_note.crafting_stations.alchemy_table.2", "如果乱赛东西，你的合成可能会变得奇怪。");
@@ -1249,14 +1249,14 @@ public class ModChineseProvider extends LanguageProvider {
         add("patchouli.confluence.otherworld_note.crafting_stations.workshop.1", "12 个材料格包围着中间的成品格即可合成。");
         add("patchouli.confluence.otherworld_note.crafting_stations.workshop.2", "如果配方相同，可以使用右侧的箭头切换成品。");
 
-        //钓鱼
+        // 钓鱼
         add("patchouli.confluence.otherworld_note.fishing.bait.name", "鱼饵");
         add("patchouli.confluence.otherworld_note.fishing.bait.0", "当然不是必须要鱼饵才能钓鱼，但是有鱼饵能钓上更好的战利品！");
 
         add("patchouli.confluence.otherworld_note.fishing.crates.name", "宝匣");
         add("patchouli.confluence.otherworld_note.fishing.crates.0", "宝匣是可堆叠的摸彩袋类型物品，其中包含的东西是随机的，包括药水、鱼饵、有用的物品、钱币、金属锭、甚至还有矿石。*b越是少见的宝匣类型内含的东西价值就越高。");
 
-        //食物
+        // 食物
         add("patchouli.confluence.otherworld_note.food.cloud_bread.name", "云朵面包");
         add("patchouli.confluence.otherworld_note.food.cloud_bread.0", "云朵面团用于制作云朵面包的物品，使用 3 个飘飘麦合成云朵面团。");
         add("patchouli.confluence.otherworld_note.food.cloud_bread.1", "食用后恢复5点饥饿值，30点饱和度。*b且食用后会获得15秒漂浮II、30秒缓降II、5分钟膳食II。");
@@ -1269,18 +1269,18 @@ public class ModChineseProvider extends LanguageProvider {
         add("patchouli.confluence.otherworld_note.food.fruit.2", "砂糖橘是一种水果，无法直接食用。*b需要手持砂糖橘右击以拨开为拨开的砂糖橘。");
         add("patchouli.confluence.otherworld_note.food.fruit.3", "已拨开的砂糖橘，可食用。食用后给予 5 分钟膳食，恢复 4 点饥饿值和 12 点饱和度。");
 
-        //魔法
+        // 魔法
         add("patchouli.confluence.otherworld_note.mana.mana_regeneration.name", "恢复魔力");
         add("patchouli.confluence.otherworld_note.mana.mana_regeneration.0", "魔力在不使用时会自行再生，直到达到玩家的当前最大值。自然再生速率会受玩家是否在移动中、和人物当前有多少魔力所影响。魔力也可以通过药水，饰品和拾取星星再生。");
 
         add("patchouli.confluence.otherworld_note.mana.mana_capacity.name", "魔力容量");
         add("patchouli.confluence.otherworld_note.mana.mana_capacity.0", "每个人物都会以 20 魔力容量（魔力条上一颗星星）开局。用魔力水晶可以将玩家的魔力容量永久性提升 20，为魔力条添上另一颗星星。这最多可以进行 9 次，加上一开始的那颗星星，一共会有 10 颗星星，代表 200 魔力。");
 
-        //材料
+        // 材料
         add("patchouli.confluence.otherworld_note.material.coin.name", "钱币");
         add("patchouli.confluence.otherworld_note.material.coin.0", "钱币包括四种不同等级的材质：铜、银、金、铂金。还有特殊的绿宝石币，作用后面再说。*b可以这么获取钱币：*i击杀敌对生物有概率；*i战利品箱子；*i!cs:e!提炼机*c。*2*o“有了钱地球才会转，孩子。”   --蟹老板");
         add("patchouli.confluence.otherworld_note.material.coin.1", "钱币的4个等级是可以相互转化的，使用百进制。*b例如：每100个铜币可以做成1个银币。*b1个铂金币等于：*i100个金币；*i10,000个银币*i1,000,000个铜币*b即一个铂金币等于1x10^6个铜币。");
-        add("patchouli.confluence.otherworld_note.material.coin.2", "你拾取的、通过快捷键放入的或从收纳物品（如箱子）中取出的钱币会自动结合成更高等级的钱币。*b然而，手动将钱币移入收纳物品时，它们不会自动结合，此时需要再拾取一次货币方可自动结合。*b也可以手动合并钱币。手持钱币潜行右击以合成上级钱币；!cs:hwb!重型工作台*c也可以将钱币结合为上级/下级钱币。");
+        add("patchouli.confluence.otherworld_note.material.coin.2", "你拾取的、通过快捷键放入的或从收纳物品（如箱子）中取出的钱币会自动结合成更高等级的钱币。*b然而，手动将钱币移入收纳物品时，它们不会自动结合，此时需要再拾取一次货币方可自动结合。*b也可以手动合并钱币。手持钱币对着空气潜行右击以合成上级钱币；!cs:hwb!重型工作台*c也可以将钱币结合为上级/下级钱币。");
         add("patchouli.confluence.otherworld_note.material.coin.3", "钱币还可以被放置在方块上。*b放置后的钱币堆可以被徒手破坏，在破坏后会返还所有钱币。手持钱币右击方块即可将钱币放下。方块形式的钱币可以单独成堆，也可以混杂叠放；没有堆叠高度限制，只要钱币足够多就可以一直放置下去；方块形式的钱币还拥有类似沙子的物理特性。");
         add("patchouli.confluence.otherworld_note.material.coin.4", "绿宝石币可以用于与银行家交易。*b银行家是一种新增的村民职业，工作站点是方块形式的金币/铂金币，可以与其交易一些东西。*2当玩家死亡时，所拥有的钱币都会掉落。");
         add("patchouli.confluence.otherworld_note.material.coin.5", "金金金金金金金金金");

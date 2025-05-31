@@ -306,7 +306,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.chromatic_cloak.0", "Immunity to Shimmer Phasing.Hold Shift to Phase while submerged in Shimmer");
         add("tooltip.item.confluence.paint_scraper", "Used to remove paint or coatings.Press Shift + Right-click to remove only one side.");
         add("tooltip.item.confluence.paint_sprayer.0", "Automatically paints or coats placed objects.");
-        add("tooltip.item.confluence.coin", "Using it while crouch to upgrade tier");
+        add("tooltip.item.confluence.coin", "Sneak through the air and right-click to merge into a primary coin");
         add("tooltip.item.confluence.hardmode_convertor.0", "Right-clicking on the ground immediately turns the current world into Hardmode");
         add("tooltip.item.confluence.life_crystal.0", "Permanently increases maximum life by 4");
         add("tooltip.item.confluence.life_fruit.0", "Permanently increases maximum life by 1");
@@ -1107,15 +1107,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("mood.terra_entity.nurse.dislike.dryad", "I don't like Dryad that much, kinda weirds me out.");
 
         // Patchouli Guide
-        // - A selection of alternative translations is provided here, which are commented out.
-        // - Hope to carefully consider the choice of translation results.
-        // - I can't split which are human translations and which are machine translations (or even AI translations?!).
-        // - If machine/AI translation, I hope to directly replace it with the alternative translation.
-        // - 中文：拜托别用AI翻译...*
         add("patchouli.confluence.otherworld_note.name", "Otherworld Note");
         add("patchouli.confluence.otherworld_note.landing_text", "*bHave you felt the dark undercurrents surging?*bThe fate of your world is at stake, but not only yours.*bThe shadow of evil forces shrouds two worlds, their fates converging.*bThe era of confluence has arrived.*bYou begin your adventure as these two worlds collide: challenge the unknown, save the world, or seek power for yourself.");
-        //"Undercurrents are surging, the fate of the world is at stake, and the shadow of evil forces looms over the two worlds. When fate converges, the era of fusion quietly arrives. You will embark on a brand new adventure in the fusion of these two worlds, challenge the unknown, save the world, or seek power for yourself."
-
         add("patchouli.confluence.otherworld_note.appearance", "Appearance");
         add("patchouli.confluence.otherworld_note.example", "Example");
         add("patchouli.confluence.otherworld_note.gui", "GUI");

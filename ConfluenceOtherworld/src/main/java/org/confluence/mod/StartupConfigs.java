@@ -17,7 +17,7 @@ public final class StartupConfigs {
         ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
 
         BUILDER.push("Paints");
-        PAINTS_REPLACE_TEXTURE = BUILDER.define("paintsReplaceTexture", true);
+        PAINTS_REPLACE_TEXTURE = BUILDER.define("paintsReplaceTexture", false);
         BANNED_MOD_FOR_PAINTS = BUILDER.defineListAllowEmpty("bannedModForPaints", () -> DEFAULT_BANNED_MOD, () -> "modid", o -> o instanceof String s && !s.contains(":"));
         BUILDER.pop();
 

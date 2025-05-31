@@ -106,12 +106,16 @@
     },
     "hook_attach": {
         "sounds": [
-            "confluence:hook_attach"
+            "confluence:hook_attach_0",
+            "confluence:hook_attach_1",
+            "confluence:hook_attach_2"
         ]
     },
     "hook_shoot": {
         "sounds": [
-            "confluence:hook_shoot"
+            "confluence:hook_shoot_0",
+            "confluence:hook_shoot_1",
+            "confluence:hook_shoot_2"
         ]
     },
     "otherworld": {

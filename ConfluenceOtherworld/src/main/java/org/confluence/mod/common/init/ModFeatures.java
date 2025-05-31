@@ -79,7 +79,7 @@ public final class ModFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> GLOWING_MUSHROOM = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("glowing_mushroom_tree"));
 
     public static final ResourceKey<PlacedFeature> PLACED_TREES_CORRUPTION = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("trees_corruption"));
-    public static final ResourceKey<PlacedFeature> PLACED_TREES_TR_CRIMSON = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("trees_tr_crimson"));
+    public static final ResourceKey<PlacedFeature> PLACED_TREES_TR_CRIMSON = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("trees_crimson"));
 
     public static Tuple<BlockPos, BlockState> getPressurePlate(WorldGenLevel level, BlockPos supportPos) {
         boolean isDeepslate = level.isStateAtPosition(supportPos, blockState -> blockState.is(Blocks.DEEPSLATE));

@@ -35,7 +35,7 @@ public class IceThornStructure extends Structure {
             Confluence.asResource("ruby_tree"),
             Confluence.asResource("sapphire_tree"),
             Confluence.asResource("topaz_tree"),
-            Confluence.asResource("tr_amethyst_tree")
+            Confluence.asResource("amethyst_tree")
     };
 
     protected IceThornStructure(StructureSettings settings) {

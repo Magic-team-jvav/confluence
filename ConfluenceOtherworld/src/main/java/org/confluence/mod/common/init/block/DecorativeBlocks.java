@@ -29,8 +29,8 @@ public class DecorativeBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Confluence.MODID);
 
     // 杂项
-    public static final DeferredBlock<Block> TR_OAK_PLANKS = copyBlockRegister("tr_oak_planks", Blocks.OAK_PLANKS);
-    public static final DeferredBlock<Block> TR_NORTHLAND_PLANKS = copyBlockRegister("tr_northland_planks", Blocks.OAK_PLANKS);
+    public static final DeferredBlock<Block> CHISELED_OAK_PLANKS = copyBlockRegister("chiseled_oak_planks", Blocks.OAK_PLANKS);
+    public static final DeferredBlock<Block> CHISELED_SPRUCE_PLANKS = copyBlockRegister("chiseled_spruce_planks", Blocks.OAK_PLANKS);
     public static final DeferredBlock<Block> CHISELED_EBONY_PLANKS = copyBlockRegister("chiseled_ebony_planks", Blocks.OAK_PLANKS);
     public static final DeferredBlock<Block> CHISELED_SHADOW_PLANKS = copyBlockRegister("chiseled_shadow_planks", Blocks.OAK_PLANKS);
     public static final DeferredBlock<Block> CHISELED_PEARL_PLANKS = copyBlockRegister("chiseled_pearl_planks", Blocks.OAK_PLANKS);
@@ -98,19 +98,19 @@ public class DecorativeBlocks {
     public static final DeferredBlock<Block> PINK_PURE_GLASS = registerWithItem("pink_pure_glass", () -> new ConnectedStainedGlassBlock(DyeColor.PINK, BlockBehaviour.Properties.ofFullCopy(Blocks.PINK_STAINED_GLASS)));
 
     // 矿砖
-    public static final DeferredBlock<Block> TR_COPPER_BRICKS = copyBlockRegister("tr_copper_bricks", Blocks.COPPER_BLOCK);
+    public static final DeferredBlock<Block> COPPER_BRICKS = copyBlockRegister("copper_bricks", Blocks.COPPER_BLOCK);
     public static final DeferredBlock<Block> TIN_BRICKS = copyBlockRegister("tin_bricks", Blocks.COPPER_BLOCK);
-    public static final DeferredBlock<Block> TR_IRON_BRICKS = copyBlockRegister("tr_iron_bricks", Blocks.IRON_BLOCK);
+    public static final DeferredBlock<Block> IRON_BRICKS = copyBlockRegister("iron_bricks", Blocks.IRON_BLOCK);
     public static final DeferredBlock<Block> LEAD_BRICKS = copyBlockRegister("lead_bricks", Blocks.IRON_BLOCK);
     public static final DeferredBlock<Block> SILVER_BRICKS = copyBlockRegister("silver_bricks", Blocks.IRON_BLOCK);
     public static final DeferredBlock<Block> TUNGSTEN_BRICKS = copyBlockRegister("tungsten_bricks", Blocks.IRON_BLOCK);
-    public static final DeferredBlock<Block> TR_GOLD_BRICKS = copyBlockRegister("tr_gold_bricks", Blocks.IRON_BLOCK);
+    public static final DeferredBlock<Block> GOLDEN_BRICKS = copyBlockRegister("golden_bricks", Blocks.IRON_BLOCK);
     public static final DeferredBlock<Block> PLATINUM_BRICKS = copyBlockRegister("platinum_bricks", Blocks.IRON_BLOCK);
     public static final DeferredBlock<Block> DEMONITE_ORE_BRICKS = copyBlockRegister("demonite_ore_bricks", Blocks.IRON_BLOCK);
-    public static final DeferredBlock<Block> EBONY_ROCK_BRICKS = copyBlockRegister("ebony_rock_bricks", Blocks.IRON_BLOCK);
+    public static final DeferredBlock<Block> EBONSTONE_BRICKS = copyBlockRegister("ebonstone_bricks", Blocks.IRON_BLOCK);
     public static final DeferredBlock<Block> METEORITE_BRICKS = copyBlockRegister("meteorite_bricks", Blocks.IRON_BLOCK);
-    public static final DeferredBlock<Block> TR_CRIMSON_ORE_BRICKS = copyBlockRegister("tr_crimson_ore_bricks", Blocks.IRON_BLOCK);
-    public static final DeferredBlock<Block> TR_CRIMSON_ROCK_BRICKS = copyBlockRegister("tr_crimson_rock_bricks", Blocks.IRON_BLOCK);
+    public static final DeferredBlock<Block> CRIMTANE_ORE_BRICKS = copyBlockRegister("crimtane_ore_bricks", Blocks.IRON_BLOCK);
+    public static final DeferredBlock<Block> CRIMSTONE_BRICKS = copyBlockRegister("crimstone_bricks", Blocks.IRON_BLOCK);
     public static final DeferredBlock<Block> PEARL_ROCK_BRICKS = copyBlockRegister("pearl_rock_bricks", Blocks.STONE_BRICKS);
     public static final DeferredBlock<Block> GREEN_CANDY_BLOCK = copyBlockRegister("green_candy_block", Blocks.STONE_BRICKS);
     public static final DeferredBlock<Block> RED_CANDY_BLOCK = copyBlockRegister("red_candy_block", Blocks.STONE_BRICKS);
@@ -127,8 +127,8 @@ public class DecorativeBlocks {
     public static final DeferredBlock<Block> DISC_BLOCK = copyBlockRegister("disc_block", Blocks.STONE_BRICKS);
 
     // 黑曜石
-    public static final DeferredBlock<Block> TR_OBSIDIAN_BRICKS = copyBlockRegister("tr_obsidian_bricks", Blocks.OBSIDIAN);
-    public static final DeferredBlock<Block> TR_OBSIDIAN_SMALL_BRICKS = copyBlockRegister("tr_obsidian_small_bricks", Blocks.OBSIDIAN);
+    public static final DeferredBlock<Block> OBSIDIAN_BRICKS = copyBlockRegister("obsidian_bricks", Blocks.OBSIDIAN);
+    public static final DeferredBlock<Block> OBSIDIAN_SMALL_BRICKS = copyBlockRegister("obsidian_small_bricks", Blocks.OBSIDIAN);
     public static final DeferredBlock<StairBlock> OBSIDIAN_BRICKS_STAIRS = registerWithItem("obsidian_bricks_stairs", () -> new StairBlock(TUFF.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.OBSIDIAN)));
     public static final DeferredBlock<SlabBlock> OBSIDIAN_BRICKS_SLAB = registerWithItem("obsidian_bricks_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OBSIDIAN)));
     public static final DeferredBlock<DoorBlock> OBSIDIAN_BRICKS_DOOR = registerWithItem("obsidian_bricks_door", () -> new DoorBlock(
@@ -141,11 +141,11 @@ public class DecorativeBlocks {
                     .ignitedByLava()
                     .pushReaction(PushReaction.DESTROY)
     ));
-    public static final DeferredBlock<Block> CHISELED_TR_OBSIDIAN_BRICKS = copyBlockRegister("chiseled_tr_obsidian_bricks", Blocks.OBSIDIAN);
-    public static final DeferredBlock<Block> TR_SMOOTH_OBSIDIAN = copyBlockRegister("tr_smooth_obsidian", Blocks.OBSIDIAN);
+    public static final DeferredBlock<Block> CHISELED_OBSIDIAN_BRICKS = copyBlockRegister("chiseled_obsidian_bricks", Blocks.OBSIDIAN);
+    public static final DeferredBlock<Block> SMOOTH_OBSIDIAN = copyBlockRegister("smooth_obsidian", Blocks.OBSIDIAN);
 
     // 花岗岩
-    public static final DeferredBlock<Block> TR_GRANITE_COLUMN = copyBlockRegister("tr_granite_column", Blocks.STONE_BRICKS);
+    public static final DeferredBlock<Block> GRANITE_COLUMN = copyBlockRegister("granite_column", Blocks.STONE_BRICKS);
 
     // 地牢
     public static final DeferredBlock<Block> BLUE_BRICKS = registerWithItem("blue_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS).mapColor(DyeColor.BLUE).pushReaction(PushReaction.BLOCK).strength(5.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
@@ -175,10 +175,10 @@ public class DecorativeBlocks {
     public static final DeferredBlock<Block> RUBY_BLOCK = copyBlockRegister("ruby_block", Blocks.DIAMOND_BLOCK);
     public static final DeferredBlock<Block> AMBER_BLOCK = copyBlockRegister("amber_block", Blocks.DIAMOND_BLOCK);
     public static final DeferredBlock<Block> TOPAZ_BLOCK = copyBlockRegister("topaz_block", Blocks.DIAMOND_BLOCK);
-    public static final DeferredBlock<Block> TR_EMERALD_BLOCK = copyBlockRegister("tr_emerald_block", Blocks.DIAMOND_BLOCK);
+    public static final DeferredBlock<Block> PURE_EMERALD_BLOCK = copyBlockRegister("pure_emerald_block", Blocks.DIAMOND_BLOCK);
     public static final DeferredBlock<Block> SAPPHIRE_BLOCK = copyBlockRegister("sapphire_block", Blocks.DIAMOND_BLOCK);
-    public static final DeferredBlock<Block> TR_AMETHYST_BLOCK = copyBlockRegister("tr_amethyst_block", Blocks.DIAMOND_BLOCK);
-    public static final DeferredBlock<Block> TR_POLISHED_GRANITE = copyBlockRegister("tr_polished_granite", Blocks.DIAMOND_BLOCK);
+    public static final DeferredBlock<Block> AMETHYST_BLOCK = copyBlockRegister("amethyst_block", Blocks.DIAMOND_BLOCK);
+    public static final DeferredBlock<Block> POLISHED_GRANITE = copyBlockRegister("polished_granite", Blocks.DIAMOND_BLOCK);
 
     // 锁链
     public static final DeferredBlock<ChainBlock> RUBY_CHAIN = copyBlockRegister("ruby_chain", Blocks.CHAIN, properties -> new ChainBlock(properties.mapColor(MapColor.COLOR_RED)));

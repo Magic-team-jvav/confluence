@@ -61,7 +61,7 @@ public final class ModFeatures {
 
     public static final Supplier<PlacementModifierType<SecretFlagPlacementModifier>> SECRET_FLAG_PLACEMENT_MODIFIER = MODIFIER_TYPES.register("secret_flag", () -> () -> SecretFlagPlacementModifier.CODEC);
 
-    public static final ResourceKey<ConfiguredFeature<?, ?>> SHADOW = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("trees_set/trees_tr_crimson"));
+    public static final ResourceKey<ConfiguredFeature<?, ?>> SHADOW = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("trees_set/trees_crimson"));
     public static final ResourceKey<ConfiguredFeature<?, ?>> EBONY = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("trees_set/trees_corruption"));
     public static final ResourceKey<ConfiguredFeature<?, ?>> PALM = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("palm_tree_checked"));
     public static final ResourceKey<ConfiguredFeature<?, ?>> PEARL = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("trees_set/trees_hallow"));
@@ -71,7 +71,7 @@ public final class ModFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> EMERALD = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("emerald_tree"));
     public static final ResourceKey<ConfiguredFeature<?, ?>> DIAMOND = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("diamond_tree"));
     public static final ResourceKey<ConfiguredFeature<?, ?>> SAPPHIRE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("sapphire_tree"));
-    public static final ResourceKey<ConfiguredFeature<?, ?>> TR_AMETHYST = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("tr_amethyst_tree"));
+    public static final ResourceKey<ConfiguredFeature<?, ?>> AMETHYST = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("amethyst_tree"));
     public static final ResourceKey<ConfiguredFeature<?, ?>> ASH = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("ash_tree"));
     public static final ResourceKey<ConfiguredFeature<?, ?>> LIVING = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("living_tree"));
     public static final ResourceKey<ConfiguredFeature<?, ?>> CONFIGURED_YELLOW_WILLOW = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("yellow_willow"));
@@ -135,7 +135,7 @@ public final class ModFeatures {
         public static final TreeGrower EMERALD_GROWER = registerSmallTree("emerald", EMERALD);
         public static final TreeGrower DIAMOND_GROWER = registerSmallTree("diamond", DIAMOND);
         public static final TreeGrower SAPPHIRE_GROWER = registerSmallTree("sapphire", SAPPHIRE);
-        public static final TreeGrower TR_AMETHYST_GROWER = registerSmallTree("tr_amethyst", TR_AMETHYST);
+        public static final TreeGrower AMETHYST_GROWER = registerSmallTree("amethyst", AMETHYST);
         public static final TreeGrower ASH_GROWER = registerSmallTree("ash", ASH);
         public static final TreeGrower LIVING_GROWER = registerSmallTree("living", LIVING);
         public static final TreeGrower YELLOW_WILLOW_GROWER = registerSmallTree("yellow_willow_grower", CONFIGURED_YELLOW_WILLOW);

@@ -77,10 +77,10 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         baseHook(recipeOutput, Ingredient.of(DecorativeBlocks.RUBY_BLOCK), Ingredient.of(DecorativeBlocks.RUBY_CHAIN), HookItems.RUBY_HOOK.toStack());
         baseHook(recipeOutput, Ingredient.of(DecorativeBlocks.AMBER_BLOCK), Ingredient.of(DecorativeBlocks.AMBER_CHAIN), HookItems.AMBER_HOOK.toStack());
         baseHook(recipeOutput, Ingredient.of(DecorativeBlocks.TOPAZ_BLOCK), Ingredient.of(DecorativeBlocks.TOPAZ_CHAIN), HookItems.TOPAZ_HOOK.toStack());
-        baseHook(recipeOutput, Ingredient.of(DecorativeBlocks.TR_EMERALD_BLOCK), Ingredient.of(DecorativeBlocks.EMERALD_CHAIN), HookItems.EMERALD_HOOK.toStack());
+        baseHook(recipeOutput, Ingredient.of(DecorativeBlocks.PURE_EMERALD_BLOCK), Ingredient.of(DecorativeBlocks.EMERALD_CHAIN), HookItems.EMERALD_HOOK.toStack());
         baseHook(recipeOutput, Ingredient.of(Items.DIAMOND_BLOCK), Ingredient.of(DecorativeBlocks.DIAMOND_CHAIN), HookItems.DIAMOND_HOOK.toStack());
         baseHook(recipeOutput, Ingredient.of(DecorativeBlocks.SAPPHIRE_BLOCK), Ingredient.of(DecorativeBlocks.SAPPHIRE_CHAIN), HookItems.SAPPHIRE_HOOK.toStack());
-        baseHook(recipeOutput, Ingredient.of(DecorativeBlocks.TR_AMETHYST_BLOCK), Ingredient.of(DecorativeBlocks.AMETHYST_CHAIN), HookItems.AMETHYST_HOOK.toStack());
+        baseHook(recipeOutput, Ingredient.of(DecorativeBlocks.AMETHYST_BLOCK), Ingredient.of(DecorativeBlocks.AMETHYST_CHAIN), HookItems.AMETHYST_HOOK.toStack());
 
         // 基础鞭子
         baseWhip(recipeOutput, AmountIngredient.of(4, Items.BAMBOO), Ingredient.of(Items.BAMBOO_FENCE), TEWhipItems.SLUB_WHIP.toStack());

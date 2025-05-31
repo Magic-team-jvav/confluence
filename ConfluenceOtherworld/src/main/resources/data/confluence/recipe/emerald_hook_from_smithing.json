@@ -7,7 +7,7 @@
         "item": "confluence:emerald_chain"
     },
     "addition": {
-        "item": "confluence:tr_emerald_block"
+        "item": "confluence:pure_emerald_block"
     },
     "result": {
         "id": "confluence:emerald_hook"

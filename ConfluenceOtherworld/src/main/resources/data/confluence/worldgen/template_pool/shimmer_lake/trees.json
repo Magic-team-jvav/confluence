@@ -168,7 +168,7 @@
       "element": {
         "element_type": "minecraft:single_pool_element",
         "projection": "rigid",
-        "location": "confluence:shimmer_lake/trees/tr_amethyst_tree_0",
+        "location": "confluence:shimmer_lake/trees/amethyst_tree_0",
         "processors": "minecraft:empty"
       }
     },
@@ -177,7 +177,7 @@
       "element": {
         "element_type": "minecraft:single_pool_element",
         "projection": "rigid",
-        "location": "confluence:shimmer_lake/trees/tr_amethyst_tree_1",
+        "location": "confluence:shimmer_lake/trees/amethyst_tree_1",
         "processors": "minecraft:empty"
       }
     },
@@ -186,7 +186,7 @@
       "element": {
         "element_type": "minecraft:single_pool_element",
         "projection": "rigid",
-        "location": "confluence:shimmer_lake/trees/tr_amethyst_tree_2",
+        "location": "confluence:shimmer_lake/trees/amethyst_tree_2",
         "processors": "minecraft:empty"
       }
     },

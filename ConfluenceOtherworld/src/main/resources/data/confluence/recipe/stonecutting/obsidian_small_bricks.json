@@ -1,0 +1,9 @@
+{
+    "type": "minecraft:stonecutting",
+    "ingredient": {
+        "item":"confluence:obsidian_bricks"
+    },
+    "result": {
+        "id": "confluence:obsidian_small_bricks"
+    }
+}

@@ -1,0 +1,10 @@
+{
+    "type": "minecraft:stonecutting",
+    "ingredient": {
+        "item":"minecraft:gold_block"
+    },
+    "result": {
+        "id": "confluence:golden_bricks",
+        "count": 9
+    }
+}

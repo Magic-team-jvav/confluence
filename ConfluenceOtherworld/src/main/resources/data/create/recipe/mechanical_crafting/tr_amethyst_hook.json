@@ -12,7 +12,7 @@
       "item": "confluence:amethyst_chain"
     },
     "$": {
-      "item": "confluence:tr_amethyst_block"
+      "item": "confluence:amethyst_block"
     }
   },
   "pattern": [

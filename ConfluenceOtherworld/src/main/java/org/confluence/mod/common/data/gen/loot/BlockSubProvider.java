@@ -306,12 +306,12 @@ public class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(AMBER_BLOCK.get());
         dropSelf(TOPAZ_BLOCK.get());
         dropSelf(SAPPHIRE_BLOCK.get());
-        dropSelf(TR_AMETHYST_BLOCK.get());
-        dropSelf(TR_EMERALD_BLOCK.get());
+        dropSelf(AMETHYST_BLOCK.get());
+        dropSelf(PURE_EMERALD_BLOCK.get());
 
         // decorative block
-        dropSelf(TR_OAK_PLANKS.get());
-        dropSelf(TR_NORTHLAND_PLANKS.get());
+        dropSelf(CHISELED_OAK_PLANKS.get());
+        dropSelf(CHISELED_SPRUCE_PLANKS.get());
         dropSelf(CHISELED_EBONY_PLANKS.get());
         dropSelf(CHISELED_SHADOW_PLANKS.get());
         dropSelf(CHISELED_PEARL_PLANKS.get());
@@ -324,20 +324,20 @@ public class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(BLUE_ICE_BRICKS.get());
         dropSelf(PACKED_ICE_BRICKS.get());
         dropSelf(SNOW_BRICKS.get());
-        dropSelf(TR_COPPER_BRICKS.get());
+        dropSelf(COPPER_BRICKS.get());
         dropSelf(TIN_BRICKS.get());
-        dropSelf(TR_IRON_BRICKS.get());
+        dropSelf(IRON_BRICKS.get());
 
         dropSelf(LEAD_BRICKS.get());
         dropSelf(SILVER_BRICKS.get());
         dropSelf(TUNGSTEN_BRICKS.get());
-        dropSelf(TR_GOLD_BRICKS.get());
+        dropSelf(GOLDEN_BRICKS.get());
         dropSelf(PLATINUM_BRICKS.get());
         dropSelf(DEMONITE_ORE_BRICKS.get());
-        dropSelf(EBONY_ROCK_BRICKS.get());
+        dropSelf(EBONSTONE_BRICKS.get());
         dropSelf(METEORITE_BRICKS.get());
-        dropSelf(TR_CRIMSON_ORE_BRICKS.get());
-        dropSelf(TR_CRIMSON_ROCK_BRICKS.get());
+        dropSelf(CRIMTANE_ORE_BRICKS.get());
+        dropSelf(CRIMSTONE_BRICKS.get());
         dropSelf(PEARL_ROCK_BRICKS.get());
         dropSelf(GREEN_CANDY_BLOCK.get());
         dropSelf(RED_CANDY_BLOCK.get());
@@ -348,16 +348,16 @@ public class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(SUN_PLATE_SLAB.get());
         dropSelf(SUN_PLATE_STAIRS.get());
         dropSelf(DISC_BLOCK.get());
-        dropSelf(TR_OBSIDIAN_BRICKS.get());
+        dropSelf(OBSIDIAN_BRICKS.get());
         dropSelf(OBSIDIAN_BRICKS_SLAB.get());
         dropSelf(OBSIDIAN_BRICKS_STAIRS.get());
 
-        dropSelf(TR_OBSIDIAN_SMALL_BRICKS.get());
-        dropSelf(TR_SMOOTH_OBSIDIAN.get());
-        dropSelf(TR_POLISHED_GRANITE.get());
-        dropSelf(TR_GRANITE_COLUMN.get());
+        dropSelf(OBSIDIAN_SMALL_BRICKS.get());
+        dropSelf(SMOOTH_OBSIDIAN.get());
+        dropSelf(POLISHED_GRANITE.get());
+        dropSelf(GRANITE_COLUMN.get());
 
-        dropSelf(CHISELED_TR_OBSIDIAN_BRICKS.get());
+        dropSelf(CHISELED_OBSIDIAN_BRICKS.get());
         dropSelf(BLUE_BRICKS.get());
         dropSelf(GREEN_BRICKS.get());
         dropSelf(PINK_BRICKS.get());
@@ -529,12 +529,12 @@ public class BlockSubProvider extends BlockLootSubProvider {
                         .add(LootItem.lootTableItem(SAPPHIRE_SAPLING))
                         .add(EmptyLootItem.emptyItem().setWeight(59)))
         );
-        add(NatureBlocks.TR_AMETHYST_BRANCHES.get(), LootTable.lootTable()
+        add(NatureBlocks.AMETHYST_BRANCHES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TR_AMETHYST))
                         .add(EmptyLootItem.emptyItem().setWeight(59)))
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TR_AMETHYST_SAPLING))
+                        .add(LootItem.lootTableItem(AMETHYST_SAPLING))
                         .add(EmptyLootItem.emptyItem().setWeight(59)))
         );
         add(NatureBlocks.ASH_BRANCHES.get(), LootTable.lootTable()

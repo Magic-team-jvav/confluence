@@ -125,8 +125,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 SPECTRE_BLOCK.get(),
                 LUMINITE_BLOCK.get(),
                 AMBER_BLOCK.get(),
-                TR_AMETHYST_BLOCK.get(),
-                TR_EMERALD_BLOCK.get(),
+                AMETHYST_BLOCK.get(),
+                PURE_EMERALD_BLOCK.get(),
                 RUBY_BLOCK.get(),
                 SAPPHIRE_BLOCK.get(),
                 TOPAZ_BLOCK.get()
@@ -176,22 +176,22 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 AMBER_BLOCK.get(),
                 TOPAZ_BLOCK.get(),
                 SAPPHIRE_BLOCK.get(),
-                TR_AMETHYST_BLOCK.get(),
-                TR_EMERALD_BLOCK.get(),
+                AMETHYST_BLOCK.get(),
+                PURE_EMERALD_BLOCK.get(),
                 SNOW_BRICKS.get(),
-                TR_COPPER_BRICKS.get(),
+                COPPER_BRICKS.get(),
                 TIN_BRICKS.get(),
-                TR_IRON_BRICKS.get(),
+                IRON_BRICKS.get(),
                 LEAD_BRICKS.get(),
                 SILVER_BRICKS.get(),
                 TUNGSTEN_BRICKS.get(),
-                TR_GOLD_BRICKS.get(),
+                GOLDEN_BRICKS.get(),
                 PLATINUM_BRICKS.get(),
                 DEMONITE_ORE_BRICKS.get(),
-                EBONY_ROCK_BRICKS.get(),
+                EBONSTONE_BRICKS.get(),
                 METEORITE_BRICKS.get(),
-                TR_CRIMSON_ORE_BRICKS.get(),
-                TR_CRIMSON_ROCK_BRICKS.get(),
+                CRIMTANE_ORE_BRICKS.get(),
+                CRIMSTONE_BRICKS.get(),
                 PEARL_ROCK_BRICKS.get(),
                 GREEN_CANDY_BLOCK.get(),
                 RED_CANDY_BLOCK.get(),
@@ -201,15 +201,15 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 SKYWARE_DOOR.get(),
                 SKYWARE_GLASS_DOOR.get(),
                 DISC_BLOCK.get(),
-                TR_OBSIDIAN_BRICKS.get(),
+                OBSIDIAN_BRICKS.get(),
                 OBSIDIAN_BRICKS_SLAB.get(),
                 OBSIDIAN_BRICKS_STAIRS.get(),
                 OBSIDIAN_BRICKS_DOOR.get(),
-                TR_OBSIDIAN_SMALL_BRICKS.get(),
-                TR_SMOOTH_OBSIDIAN.get(),
-                TR_POLISHED_GRANITE.get(),
-                TR_GRANITE_COLUMN.get(),
-                CHISELED_TR_OBSIDIAN_BRICKS.get(),
+                OBSIDIAN_SMALL_BRICKS.get(),
+                SMOOTH_OBSIDIAN.get(),
+                POLISHED_GRANITE.get(),
+                GRANITE_COLUMN.get(),
+                CHISELED_OBSIDIAN_BRICKS.get(),
                 CRYSTAL_BLOCK.get(),
                 BLUE_BRICKS.get(),
                 GREEN_BRICKS.get(),
@@ -296,7 +296,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 DARK_AETHERIUM_BLOCK.get(),
                 CRISPY_HONEY_BLOCK.get(),
 
-                TR_POLISHED_GRANITE.get(),
+                POLISHED_GRANITE.get(),
 
                 CrateBlocks.IRON_CRATE.get(),
                 CrateBlocks.GOLDEN_CRATE.get(),
@@ -358,8 +358,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         // 斧头
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithAxe = tag(BlockTags.MINEABLE_WITH_AXE);
         mineableWithAxe.add(
-                TR_OAK_PLANKS.get(),
-                TR_NORTHLAND_PLANKS.get(),
+                CHISELED_OAK_PLANKS.get(),
+                CHISELED_SPRUCE_PLANKS.get(),
                 CHISELED_EBONY_PLANKS.get(),
                 CHISELED_SHADOW_PLANKS.get(),
                 CHISELED_PEARL_PLANKS.get(),
@@ -462,22 +462,22 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 AMBER_BLOCK.get(),
                 TOPAZ_BLOCK.get(),
                 SAPPHIRE_BLOCK.get(),
-                TR_AMETHYST_BLOCK.get(),
-                TR_EMERALD_BLOCK.get(),
+                AMETHYST_BLOCK.get(),
+                PURE_EMERALD_BLOCK.get(),
                 SNOW_BRICKS.get(),
-                TR_COPPER_BRICKS.get(),
+                COPPER_BRICKS.get(),
                 TIN_BRICKS.get(),
-                TR_IRON_BRICKS.get(),
+                IRON_BRICKS.get(),
                 LEAD_BRICKS.get(),
                 SILVER_BRICKS.get(),
                 TUNGSTEN_BRICKS.get(),
-                TR_GOLD_BRICKS.get(),
+                GOLDEN_BRICKS.get(),
                 PLATINUM_BRICKS.get(),
                 DEMONITE_ORE_BRICKS.get(),
-                EBONY_ROCK_BRICKS.get(),
+                EBONSTONE_BRICKS.get(),
                 METEORITE_BRICKS.get(),
-                TR_CRIMSON_ORE_BRICKS.get(),
-                TR_CRIMSON_ROCK_BRICKS.get(),
+                CRIMTANE_ORE_BRICKS.get(),
+                CRIMSTONE_BRICKS.get(),
                 PEARL_ROCK_BRICKS.get(),
                 GREEN_CANDY_BLOCK.get(),
                 RED_CANDY_BLOCK.get(),
@@ -487,12 +487,12 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 SKYWARE_DOOR.get(),
                 DISC_BLOCK.get(),
                 SKYWARE_GLASS_DOOR.get(),
-                TR_OBSIDIAN_BRICKS.get(),
-                TR_OBSIDIAN_SMALL_BRICKS.get(),
-                TR_SMOOTH_OBSIDIAN.get(),
-                TR_POLISHED_GRANITE.get(),
-                TR_GRANITE_COLUMN.get(),
-                CHISELED_TR_OBSIDIAN_BRICKS.get(),
+                OBSIDIAN_BRICKS.get(),
+                OBSIDIAN_SMALL_BRICKS.get(),
+                SMOOTH_OBSIDIAN.get(),
+                POLISHED_GRANITE.get(),
+                GRANITE_COLUMN.get(),
+                CHISELED_OBSIDIAN_BRICKS.get(),
                 CRYSTAL_BLOCK.get(),
                 RUBY_CHAIN.get(),
                 AMBER_CHAIN.get(),
@@ -576,11 +576,11 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 Blocks.OBSIDIAN,
                 Blocks.CRYING_OBSIDIAN,
                 CRIMTANE_ORE.get(),
-                TR_OBSIDIAN_BRICKS.get(),
+                OBSIDIAN_BRICKS.get(),
                 OBSIDIAN_BRICKS_SLAB.get(),
                 OBSIDIAN_BRICKS_STAIRS.get(),
                 OBSIDIAN_BRICKS_DOOR.get(),
-                TR_OBSIDIAN_SMALL_BRICKS.get()
+                OBSIDIAN_SMALL_BRICKS.get()
         );
         tag(ModTags.Blocks.NEEDS_4_LEVEL).add(
                 HARDENED_EBONSAND_BLOCK.get(),
@@ -879,9 +879,9 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 RAW_TITANIUM_BLOCK.get()
         );
         tag(Tags.Blocks.OBSIDIANS).add(
-                TR_OBSIDIAN_BRICKS.get(),
-                TR_OBSIDIAN_SMALL_BRICKS.get(),
-                CHISELED_TR_OBSIDIAN_BRICKS.get()
+                OBSIDIAN_BRICKS.get(),
+                OBSIDIAN_SMALL_BRICKS.get(),
+                CHISELED_OBSIDIAN_BRICKS.get()
         );
         tag(Tags.Blocks.ORE_BEARING_GROUND_NETHERRACK).add(
                 ASH_BLOCK.get()
@@ -1079,10 +1079,10 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 EBONSTONE.get(),
                 CRIMSTONE.get(),
                 PEARLSTONE.get(),
-                TR_POLISHED_GRANITE.get()
+                POLISHED_GRANITE.get()
         );
         tag(Tags.Blocks.STORAGE_BLOCKS_WHEAT).add(
-                TR_AMETHYST_BLOCK.get()
+                AMETHYST_BLOCK.get()
         );
         tag(Tags.Blocks.VILLAGER_JOB_SITES).add(
                 SKY_MILL.get(),

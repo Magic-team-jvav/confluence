@@ -40,7 +40,7 @@ public class NatureBlocks {
     public static final DeferredBlock<Block> EMERALD_SAPLING = registerWithItem("emerald_sapling", () -> new StoneSaplingBlock(ModFeatures.TreeGrowers.EMERALD_GROWER));
     public static final DeferredBlock<Block> DIAMOND_SAPLING = registerWithItem("diamond_sapling", () -> new StoneSaplingBlock(ModFeatures.TreeGrowers.DIAMOND_GROWER));
     public static final DeferredBlock<Block> SAPPHIRE_SAPLING = registerWithItem("sapphire_sapling", () -> new StoneSaplingBlock(ModFeatures.TreeGrowers.SAPPHIRE_GROWER));
-    public static final DeferredBlock<Block> TR_AMETHYST_SAPLING = registerWithItem("tr_amethyst_sapling", () -> new StoneSaplingBlock(ModFeatures.TreeGrowers.TR_AMETHYST_GROWER));
+    public static final DeferredBlock<Block> AMETHYST_SAPLING = registerWithItem("amethyst_sapling", () -> new StoneSaplingBlock(ModFeatures.TreeGrowers.AMETHYST_GROWER));
     public static final DeferredBlock<Block> LIVING_SAPLING = registerWithItem("living_sapling", () -> new BaseSaplingBlock(ModFeatures.TreeGrowers.LIVING_GROWER, Blocks.GRASS_BLOCK, Blocks.DIRT));
     public static final DeferredBlock<Block> YELLOW_WILLOW_SAPLING = registerWithItem("yellow_willow_sapling", () -> new BaseSaplingBlock(ModFeatures.TreeGrowers.YELLOW_WILLOW_GROWER, Blocks.GRASS_BLOCK, Blocks.DIRT));
     public static final DeferredBlock<Block> BAOBAB_SAPLING = registerWithItem("baobab_sapling", () -> new BaseSaplingBlock(ModFeatures.TreeGrowers.BAOBAB_GROWER, Blocks.GRASS_BLOCK, Blocks.DIRT));
@@ -270,7 +270,7 @@ public class NatureBlocks {
     public static final DeferredBlock<Block> EMERALD_BRANCHES = registerWithItem("emerald_branches", () -> new BranchesBlock(ModTags.Blocks.JEWELLERY_BRANCHES_ATTACHABLE, BlockTags.BASE_STONE_OVERWORLD));
     public static final DeferredBlock<Block> DIAMOND_BRANCHES = registerWithItem("diamond_branches", () -> new BranchesBlock(ModTags.Blocks.JEWELLERY_BRANCHES_ATTACHABLE, BlockTags.BASE_STONE_OVERWORLD));
     public static final DeferredBlock<Block> SAPPHIRE_BRANCHES = registerWithItem("sapphire_branches", () -> new BranchesBlock(ModTags.Blocks.JEWELLERY_BRANCHES_ATTACHABLE, BlockTags.BASE_STONE_OVERWORLD));
-    public static final DeferredBlock<Block> TR_AMETHYST_BRANCHES = registerWithItem("tr_amethyst_branches", () -> new BranchesBlock(ModTags.Blocks.JEWELLERY_BRANCHES_ATTACHABLE, BlockTags.BASE_STONE_OVERWORLD));
+    public static final DeferredBlock<Block> AMETHYST_BRANCHES = registerWithItem("amethyst_branches", () -> new BranchesBlock(ModTags.Blocks.JEWELLERY_BRANCHES_ATTACHABLE, BlockTags.BASE_STONE_OVERWORLD));
     public static final DeferredBlock<Block> ASH_BRANCHES = registerWithItem("ash_branches", () -> new BranchesBlock(ModTags.Blocks.ASH_LOG_BRANCHES_ATTACHABLE, ModTags.Blocks.ASH_LOG_BRANCHES_ATTACHABLE));
 
     //藤蔓方块

@@ -8,9 +8,7 @@
       }
     },
     "nbt": {
-      "LootTable": "confluence:chests/ivy_chests",
-      "id": "confluence:base_chest_block_entity",
-      "CustomName": "{\"italic\":false,\"translate\":\"block.confluence.base_chest_block.unlocked_ivy\"}"
+      "LootTable": "confluence:chests/ivy_chests"
     }
   }
 }

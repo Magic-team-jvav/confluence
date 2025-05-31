@@ -1,0 +1,12 @@
+{
+    "type": "minecraft:smelting",
+    "ingredient": {
+        "tag": "confluence:jade_ore_smelting"
+    },
+    "result": {
+        "id": "confluence:jade"
+    },
+    "experience": 0.5,
+    "cookingtime": 200,
+    "group": "misc"
+}

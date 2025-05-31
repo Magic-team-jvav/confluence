@@ -141,7 +141,7 @@
         },
         {
           "type": "minecraft:item",
-          "name": "confluence:pure_emerald",
+          "name": "confluence:jade",
           "functions": [
             {
               "function": "set_count",

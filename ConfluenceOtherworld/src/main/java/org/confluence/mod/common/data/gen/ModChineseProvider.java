@@ -1637,11 +1637,11 @@ public class ModChineseProvider extends LanguageProvider {
         add(OreBlocks.CORRUPTION_AMBER_ORE.get(), "腐化琥珀矿石");
         add(OreBlocks.FLESHIFICATION_AMBER_ORE.get(), "血化琥珀矿石");
         add(OreBlocks.RED_SAND_AMBER_ORE.get(), "红沙琥珀矿石");
-        add(OreBlocks.PURE_EMERALD_ORE.get(), "翡翠矿石");
-        add(OreBlocks.SANCTIFICATION_PURE_EMERALD_ORE.get(), "圣化翡翠矿石");
-        add(OreBlocks.CORRUPTION_PURE_EMERALD_ORE.get(), "腐化翡翠矿石");
-        add(OreBlocks.FLESHIFICATION_PURE_EMERALD_ORE.get(), "血化翡翠矿石");
-        add(OreBlocks.DEEPSLATE_PURE_EMERALD_ORE.get(), "深层翡翠矿石");
+        add(OreBlocks.JADE_ORE.get(), "翡翠矿石");
+        add(OreBlocks.SANCTIFICATION_JADE_ORE.get(), "圣化翡翠矿石");
+        add(OreBlocks.CORRUPTION_JADE_ORE.get(), "腐化翡翠矿石");
+        add(OreBlocks.FLESHIFICATION_JADE_ORE.get(), "血化翡翠矿石");
+        add(OreBlocks.DEEPSLATE_JADE_ORE.get(), "深层翡翠矿石");
         add(OreBlocks.AMETHYST_ORE.get(), "紫晶矿石");
         add(OreBlocks.SANCTIFICATION_AMETHYST_ORE.get(), "圣化紫晶矿石");
         add(OreBlocks.CORRUPTION_AMETHYST_ORE.get(), "腐化紫晶矿石");
@@ -1925,7 +1925,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.AMBER_BRANCHES.get(), "琥珀石枝杈");
         add(NatureBlocks.RUBY_BRANCHES.get(), "红玉石枝杈");
         add(NatureBlocks.TOPAZ_BRANCHES.get(), "黄玉石枝杈");
-        add(NatureBlocks.EMERALD_BRANCHES.get(), "翡翠石枝杈");
+        add(NatureBlocks.JADE_BRANCHES.get(), "翡翠石枝杈");
         add(NatureBlocks.DIAMOND_BRANCHES.get(), "钻石枝杈");
         add(NatureBlocks.SAPPHIRE_BRANCHES.get(), "蓝玉石枝杈");
         add(NatureBlocks.AMETHYST_BRANCHES.get(), "紫晶石枝杈");
@@ -1966,7 +1966,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.RUBY_SAPLING.get(), "红玉树苗");
         add(NatureBlocks.AMBER_SAPLING.get(), "琥珀树苗");
         add(NatureBlocks.TOPAZ_SAPLING.get(), "黄玉树苗");
-        add(NatureBlocks.EMERALD_SAPLING.get(), "翡翠树苗");
+        add(NatureBlocks.JADE_SAPLING.get(), "翡翠树苗");
         add(NatureBlocks.DIAMOND_SAPLING.get(), "钻石树苗");
         add(NatureBlocks.SAPPHIRE_SAPLING.get(), "蓝玉树苗");
         add(NatureBlocks.AMETHYST_SAPLING.get(), "紫晶树苗");
@@ -2039,7 +2039,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.RUBY_BLOCK.get(), "红玉块");
         add(DecorativeBlocks.AMBER_BLOCK.get(), "琥珀块");
         add(DecorativeBlocks.TOPAZ_BLOCK.get(), "黄玉块");
-        add(DecorativeBlocks.PURE_EMERALD_BLOCK.get(), "翡翠块");
+        add(DecorativeBlocks.JADE_BLOCK.get(), "翡翠块");
         add(DecorativeBlocks.SAPPHIRE_BLOCK.get(), "蓝玉块");
         add(DecorativeBlocks.AMETHYST_BLOCK.get(), "紫晶块");
         add(DecorativeBlocks.POLISHED_GRANITE.get(), "磨制花岗岩块");
@@ -2114,7 +2114,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.RUBY_CHAIN.get(), "红玉锁链");
         add(DecorativeBlocks.AMBER_CHAIN.get(), "琥珀锁链");
         add(DecorativeBlocks.TOPAZ_CHAIN.get(), "黄玉锁链");
-        add(DecorativeBlocks.EMERALD_CHAIN.get(), "翡翠锁链");
+        add(DecorativeBlocks.JADE_CHAIN.get(), "翡翠锁链");
         add(DecorativeBlocks.SAPPHIRE_CHAIN.get(), "蓝玉锁链");
         add(DecorativeBlocks.DIAMOND_CHAIN.get(), "钻石锁链");
         add(DecorativeBlocks.AMETHYST_CHAIN.get(), "紫晶锁链");
@@ -2369,7 +2369,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.RUBY.get(), "红玉");
         add(MaterialItems.AMBER.get(), "琥珀");
         add(MaterialItems.TOPAZ.get(), "黄玉");
-        add(MaterialItems.PURE_EMERALD.get(), "翡翠");
+        add(MaterialItems.JADE.get(), "翡翠");
         add(MaterialItems.SAPPHIRE.get(), "蓝玉");
         add(MaterialItems.AMETHYST.get(), "紫晶石");
         add(MaterialItems.FALLING_STAR.get(), "坠落之星");
@@ -2893,7 +2893,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(MinecartItems.AMETHYST_MINECART.get(), "紫晶矿车");
         add(MinecartItems.TOPAZ_MINECART.get(), "黄玉矿车");
         add(MinecartItems.SAPPHIRE_MINECART.get(), "蓝玉矿车");
-        add(MinecartItems.EMERALD_MINECART.get(), "翡翠矿车");
+        add(MinecartItems.JADE_MINECART.get(), "翡翠矿车");
         add(MinecartItems.RUBY_MINECART.get(), "红玉矿车");
         add(MinecartItems.DIAMOND_MINECART.get(), "钻石矿车");
         add(MinecartItems.AMBER_MINECART.get(), "琥珀矿车");
@@ -2972,7 +2972,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(HookItems.RUBY_HOOK.get(), "红玉钩");
         add(HookItems.AMBER_HOOK.get(), "琥珀钩");
         add(HookItems.TOPAZ_HOOK.get(), "黄玉钩");
-        add(HookItems.EMERALD_HOOK.get(), "翡翠钩");
+        add(HookItems.JADE_HOOK.get(), "翡翠钩");
         add(HookItems.SAPPHIRE_HOOK.get(), "蓝玉钩");
         add(HookItems.DIAMOND_HOOK.get(), "钻石钩");
         add(HookItems.AMETHYST_HOOK.get(), "紫晶钩");
@@ -2998,7 +2998,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ManaWeaponItems.RUBY_STAFF.get(), "红玉法杖");
         add(ManaWeaponItems.AMBER_STAFF.get(), "琥珀法杖");
         add(ManaWeaponItems.TOPAZ_STAFF.get(), "黄玉法杖");
-        add(ManaWeaponItems.EMERALD_STAFF.get(), "翡翠法杖");
+        add(ManaWeaponItems.JADE_STAFF.get(), "翡翠法杖");
         add(ManaWeaponItems.SAPPHIRE_STAFF.get(), "蓝玉法杖");
         add(ManaWeaponItems.DIAMOND_STAFF.get(), "钻石法杖");
         add(ManaWeaponItems.AMETHYST_STAFF.get(), "紫晶法杖");
@@ -3261,7 +3261,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.AMETHYST_ROBE.get(), "紫晶长袍");
         add(ArmorItems.TOPAZ_ROBE.get(), "黄玉长袍");
         add(ArmorItems.SAPPHIRE_ROBE.get(), "蓝玉长袍");
-        add(ArmorItems.EMERALD_ROBE.get(), "翡翠长袍");
+        add(ArmorItems.JADE_ROBE.get(), "翡翠长袍");
         add(ArmorItems.RUBY_ROBE.get(), "红玉长袍");
         add(ArmorItems.MYSTIC_ROBE.get(), "神秘长袍");
         add(ArmorItems.DIAMOND_ROBE.get(), "钻石长袍");

@@ -130,7 +130,7 @@ public final class ModTags {
         public static final TagKey<Item> GEMS_RUBY = c("gems/ruby");
         public static final TagKey<Item> GEMS_AMBER = c("gems/amber");
         public static final TagKey<Item> GEMS_TOPAZ = c("gems/topaz");
-        public static final TagKey<Item> GEMS_PURE_EMERALD = c("gems/pure_emerald");
+        public static final TagKey<Item> GEMS_JADE = c("gems/jade");
         public static final TagKey<Item> GEMS_SAPPHIRE = c("gems/sapphire");
         public static final TagKey<Item> GEMS_AMETHYST = c("gems/amethyst");
 
@@ -195,7 +195,7 @@ public final class ModTags {
         public static final TagKey<Item> RUBY_ORE_SMELTING = register("ruby_ore_smelting");
         public static final TagKey<Item> TOPAZ_ORE_SMELTING = register("topaz_ore_smelting");
         public static final TagKey<Item> AMBER_ORE_SMELTING = register("amber_ore_smelting");
-        public static final TagKey<Item> PURE_EMERALD_ORE_SMELTING = register("pure_emerald_ore_smelting");
+        public static final TagKey<Item> JADE_ORE_SMELTING = register("jade_ore_smelting");
         public static final TagKey<Item> DIAMOND_ORE_SMELTING = register("diamond_ore_smelting");
         public static final TagKey<Item> SAPPHIRE_ORE_SMELTING = register("sapphire_ore_smelting");
         public static final TagKey<Item> AMETHYST_ORE_SMELTING = register("amethyst_ore_smelting");

@@ -94,7 +94,7 @@ public final class ModVillagers {
             tier3.add(new SkyVillagerItemListing(MaterialItems.RUBY.get(), IntegerRange.of(1, 2), Items.EMERALD, 2, 10, 25, 0.05F));
             tier3.add(new SkyVillagerItemListing(MaterialItems.AMBER.get(), IntegerRange.of(1, 2), Items.EMERALD, 2, 10, 25, 0.05F));
             tier3.add(new SkyVillagerItemListing(MaterialItems.TOPAZ.get(), IntegerRange.of(1, 2), Items.EMERALD, 2, 10, 25, 0.05F));
-            tier3.add(new SkyVillagerItemListing(MaterialItems.PURE_EMERALD.get(), IntegerRange.of(1, 2), Items.EMERALD, 2, 10, 25, 0.05F));
+            tier3.add(new SkyVillagerItemListing(MaterialItems.JADE.get(), IntegerRange.of(1, 2), Items.EMERALD, 2, 10, 25, 0.05F));
             tier3.add(new SkyVillagerItemListing(MaterialItems.AMETHYST.get(), IntegerRange.of(1, 2), Items.EMERALD, 2, 10, 25, 0.05F));
             tier3.add(new SkyVillagerItemListing(MaterialItems.SAPPHIRE.get(), IntegerRange.of(1, 2), Items.EMERALD, 2, 10, 25, 0.05F));
             tier4.add(new RandomItemListing(Items.EMERALD, IntegerRange.of(7, 9), MaterialItems.PLATINUM_INGOT.get(), 10, 25, 0.05F));

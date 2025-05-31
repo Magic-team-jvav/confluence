@@ -175,7 +175,7 @@ public class DecorativeBlocks {
     public static final DeferredBlock<Block> RUBY_BLOCK = copyBlockRegister("ruby_block", Blocks.DIAMOND_BLOCK);
     public static final DeferredBlock<Block> AMBER_BLOCK = copyBlockRegister("amber_block", Blocks.DIAMOND_BLOCK);
     public static final DeferredBlock<Block> TOPAZ_BLOCK = copyBlockRegister("topaz_block", Blocks.DIAMOND_BLOCK);
-    public static final DeferredBlock<Block> PURE_EMERALD_BLOCK = copyBlockRegister("pure_emerald_block", Blocks.DIAMOND_BLOCK);
+    public static final DeferredBlock<Block> JADE_BLOCK = copyBlockRegister("jade_block", Blocks.DIAMOND_BLOCK);
     public static final DeferredBlock<Block> SAPPHIRE_BLOCK = copyBlockRegister("sapphire_block", Blocks.DIAMOND_BLOCK);
     public static final DeferredBlock<Block> AMETHYST_BLOCK = copyBlockRegister("amethyst_block", Blocks.DIAMOND_BLOCK);
     public static final DeferredBlock<Block> POLISHED_GRANITE = copyBlockRegister("polished_granite", Blocks.DIAMOND_BLOCK);
@@ -184,7 +184,7 @@ public class DecorativeBlocks {
     public static final DeferredBlock<ChainBlock> RUBY_CHAIN = copyBlockRegister("ruby_chain", Blocks.CHAIN, properties -> new ChainBlock(properties.mapColor(MapColor.COLOR_RED)));
     public static final DeferredBlock<ChainBlock> AMBER_CHAIN = copyBlockRegister("amber_chain", Blocks.CHAIN, properties -> new ChainBlock(properties.mapColor(MapColor.COLOR_ORANGE)));
     public static final DeferredBlock<ChainBlock> TOPAZ_CHAIN = copyBlockRegister("topaz_chain", Blocks.CHAIN, properties -> new ChainBlock(properties.mapColor(MapColor.COLOR_YELLOW)));
-    public static final DeferredBlock<ChainBlock> EMERALD_CHAIN = copyBlockRegister("emerald_chain", Blocks.CHAIN, properties -> new ChainBlock(properties.mapColor(MapColor.EMERALD)));
+    public static final DeferredBlock<ChainBlock> JADE_CHAIN = copyBlockRegister("jade_chain", Blocks.CHAIN, properties -> new ChainBlock(properties.mapColor(MapColor.EMERALD)));
     public static final DeferredBlock<ChainBlock> SAPPHIRE_CHAIN = copyBlockRegister("sapphire_chain", Blocks.CHAIN, properties -> new ChainBlock(properties.mapColor(MapColor.COLOR_BLUE)));
     public static final DeferredBlock<ChainBlock> DIAMOND_CHAIN = copyBlockRegister("diamond_chain", Blocks.CHAIN, properties -> new ChainBlock(properties.mapColor(MapColor.DIAMOND)));
     public static final DeferredBlock<ChainBlock> AMETHYST_CHAIN = copyBlockRegister("amethyst_chain", Blocks.CHAIN, properties -> new ChainBlock(properties.mapColor(MapColor.COLOR_PURPLE)));

@@ -198,7 +198,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.LUMINITE_INGOT.get(),
                 MaterialItems.AMBER.get(),
                 MaterialItems.AMETHYST.get(),
-                MaterialItems.PURE_EMERALD.get(),
+                MaterialItems.JADE.get(),
                 MaterialItems.RUBY.get(),
                 MaterialItems.SAPPHIRE.get(),
                 MaterialItems.TOPAZ.get()
@@ -211,7 +211,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 NatureBlocks.RUBY_SAPLING.asItem(),
                 NatureBlocks.AMBER_SAPLING.asItem(),
                 NatureBlocks.TOPAZ_SAPLING.asItem(),
-                NatureBlocks.EMERALD_SAPLING.asItem(),
+                NatureBlocks.JADE_SAPLING.asItem(),
                 NatureBlocks.DIAMOND_SAPLING.asItem(),
                 NatureBlocks.SAPPHIRE_SAPLING.asItem(),
                 NatureBlocks.AMETHYST_SAPLING.asItem(),
@@ -296,8 +296,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.TOPAZ_ORE_SMELTING).add(
                 OreBlocks.TOPAZ_ORE.asItem(), OreBlocks.DEEPSLATE_TOPAZ_ORE.asItem(), OreBlocks.SANCTIFICATION_TOPAZ_ORE.asItem(), OreBlocks.CORRUPTION_TOPAZ_ORE.asItem(), OreBlocks.FLESHIFICATION_TOPAZ_ORE.asItem()
         );
-        tag(ModTags.Items.PURE_EMERALD_ORE_SMELTING).add(
-                OreBlocks.PURE_EMERALD_ORE.asItem(), OreBlocks.DEEPSLATE_RUBY_ORE.asItem(), OreBlocks.SANCTIFICATION_RUBY_ORE.asItem(), OreBlocks.CORRUPTION_RUBY_ORE.asItem(), OreBlocks.FLESHIFICATION_RUBY_ORE.asItem()
+        tag(ModTags.Items.JADE_ORE_SMELTING).add(
+                OreBlocks.JADE_ORE.asItem(), OreBlocks.DEEPSLATE_RUBY_ORE.asItem(), OreBlocks.SANCTIFICATION_RUBY_ORE.asItem(), OreBlocks.CORRUPTION_RUBY_ORE.asItem(), OreBlocks.FLESHIFICATION_RUBY_ORE.asItem()
         );
         tag(ModTags.Items.DIAMOND_ORE_SMELTING).add(
                 OreBlocks.SANCTIFICATION_DIAMOND_ORE.asItem(), OreBlocks.CORRUPTION_DIAMOND_ORE.asItem(), OreBlocks.FLESHIFICATION_DIAMOND_ORE.asItem()
@@ -406,7 +406,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.RUBY.get(),
                 MaterialItems.AMBER.get(),
                 MaterialItems.TOPAZ.get(),
-                MaterialItems.PURE_EMERALD.get(),
+                MaterialItems.JADE.get(),
                 MaterialItems.SAPPHIRE.get(),
                 MaterialItems.AMETHYST.get()
         );
@@ -419,8 +419,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.GEMS_TOPAZ).add(
                 MaterialItems.TOPAZ.get()
         );
-        tag(ModTags.Items.GEMS_PURE_EMERALD).add(
-                MaterialItems.PURE_EMERALD.get()
+        tag(ModTags.Items.GEMS_JADE).add(
+                MaterialItems.JADE.get()
         );
         tag(ModTags.Items.GEMS_SAPPHIRE).add(
                 MaterialItems.SAPPHIRE.get()
@@ -732,7 +732,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 OreBlocks.DEEPSLATE_PLATINUM_ORE.asItem(),
                 OreBlocks.DEEPSLATE_RUBY_ORE.asItem(),
                 OreBlocks.DEEPSLATE_TOPAZ_ORE.asItem(),
-                OreBlocks.DEEPSLATE_PURE_EMERALD_ORE.asItem(),
+                OreBlocks.DEEPSLATE_JADE_ORE.asItem(),
                 OreBlocks.DEEPSLATE_SAPPHIRE_ORE.asItem(),
                 OreBlocks.DEEPSLATE_COBALT_ORE.asItem(),
                 OreBlocks.DEEPSLATE_PALLADIUM_ORE.asItem(),
@@ -754,7 +754,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 OreBlocks.PLATINUM_ORE.asItem(),
                 OreBlocks.RUBY_ORE.asItem(),
                 OreBlocks.TOPAZ_ORE.asItem(),
-                OreBlocks.PURE_EMERALD_ORE.asItem(),
+                OreBlocks.JADE_ORE.asItem(),
                 OreBlocks.SAPPHIRE_ORE.asItem(),
                 OreBlocks.AMETHYST_ORE.asItem(),
                 OreBlocks.DEMONITE_ORE.asItem(),
@@ -1201,7 +1201,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ArmorItems.AMETHYST_ROBE.get(),
                 ArmorItems.TOPAZ_ROBE.get(),
                 ArmorItems.SAPPHIRE_ROBE.get(),
-                ArmorItems.EMERALD_ROBE.get(),
+                ArmorItems.JADE_ROBE.get(),
                 ArmorItems.RUBY_ROBE.get(),
                 ArmorItems.MYSTIC_ROBE.get(),
                 ArmorItems.DIAMOND_ROBE.get(),

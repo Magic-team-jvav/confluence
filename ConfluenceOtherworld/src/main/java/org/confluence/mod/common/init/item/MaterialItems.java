@@ -63,7 +63,7 @@ public class MaterialItems {
 
     public static final DeferredItem<Item> AMBER = register("amber");
     public static final DeferredItem<Item> AMETHYST = register("amethyst");
-    public static final DeferredItem<Item> PURE_EMERALD = register("pure_emerald");
+    public static final DeferredItem<Item> JADE = register("jade");
     public static final DeferredItem<Item> RUBY = register("ruby");
     public static final DeferredItem<Item> SAPPHIRE = register("sapphire");
     public static final DeferredItem<Item> TOPAZ = register("topaz");

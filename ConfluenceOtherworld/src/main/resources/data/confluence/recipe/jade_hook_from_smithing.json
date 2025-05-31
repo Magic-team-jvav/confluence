@@ -1,0 +1,15 @@
+{
+    "type": "minecraft:smithing_transform",
+    "template": {
+        "item": "confluence:jade_chain"
+    },
+    "base": {
+        "item": "confluence:jade_chain"
+    },
+    "addition": {
+        "item": "confluence:jade_block"
+    },
+    "result": {
+        "id": "confluence:jade_hook"
+    }
+}

@@ -68,7 +68,7 @@ public final class ModFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> RUBY = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("ruby_tree"));
     public static final ResourceKey<ConfiguredFeature<?, ?>> AMBER = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("amber_tree"));
     public static final ResourceKey<ConfiguredFeature<?, ?>> TOPAZ = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("topaz_tree"));
-    public static final ResourceKey<ConfiguredFeature<?, ?>> EMERALD = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("emerald_tree"));
+    public static final ResourceKey<ConfiguredFeature<?, ?>> JADE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("jade_tree"));
     public static final ResourceKey<ConfiguredFeature<?, ?>> DIAMOND = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("diamond_tree"));
     public static final ResourceKey<ConfiguredFeature<?, ?>> SAPPHIRE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("sapphire_tree"));
     public static final ResourceKey<ConfiguredFeature<?, ?>> AMETHYST = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("amethyst_tree"));
@@ -132,7 +132,7 @@ public final class ModFeatures {
         public static final TreeGrower RUBY_GROWER = registerSmallTree("ruby", RUBY);
         public static final TreeGrower AMBER_GROWER = registerSmallTree("amber", AMBER);
         public static final TreeGrower TOPAZ_GROWER = registerSmallTree("topaz", TOPAZ);
-        public static final TreeGrower EMERALD_GROWER = registerSmallTree("emerald", EMERALD);
+        public static final TreeGrower JADE_GROWER = registerSmallTree("jade", JADE);
         public static final TreeGrower DIAMOND_GROWER = registerSmallTree("diamond", DIAMOND);
         public static final TreeGrower SAPPHIRE_GROWER = registerSmallTree("sapphire", SAPPHIRE);
         public static final TreeGrower AMETHYST_GROWER = registerSmallTree("amethyst", AMETHYST);

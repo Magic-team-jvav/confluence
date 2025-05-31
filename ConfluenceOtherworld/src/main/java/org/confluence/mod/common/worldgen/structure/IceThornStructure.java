@@ -31,7 +31,7 @@ public class IceThornStructure extends Structure {
     public static final ResourceLocation[] feature = new ResourceLocation[]{
             Confluence.asResource("amber_tree"),
             Confluence.asResource("diamond_tree"),
-            Confluence.asResource("emerald_tree"),
+            Confluence.asResource("jade_tree"),
             Confluence.asResource("ruby_tree"),
             Confluence.asResource("sapphire_tree"),
             Confluence.asResource("topaz_tree"),

@@ -194,11 +194,11 @@ public class BlockSubProvider extends BlockLootSubProvider {
         add(CORRUPTION_TOPAZ_ORE.get(), block -> createOreDrop(block, TOPAZ.get()));
         add(FLESHIFICATION_TOPAZ_ORE.get(), block -> createOreDrop(block, TOPAZ.get()));
         add(DEEPSLATE_TOPAZ_ORE.get(), block -> createOreDrop(block, TOPAZ.get()));
-        add(PURE_EMERALD_ORE.get(), block -> createOreDrop(block, PURE_EMERALD.get()));
+        add(JADE_ORE.get(), block -> createOreDrop(block, JADE.get()));
 //            add(SANCTIFICATION_TR_EMERALD_ORE.get(), block -> createOreDrop(block, TR_EMERALD.get()));
 //            add(CORRUPTION_TR_EMERALD_ORE.get(), block -> createOreDrop(block, TR_EMERALD.get()));
 //            add(FLESHIFICATION_TR_EMERALD_ORE.get(), block -> createOreDrop(block, TR_EMERALD.get()));
-        add(DEEPSLATE_PURE_EMERALD_ORE.get(), block -> createOreDrop(block, PURE_EMERALD.get()));
+        add(DEEPSLATE_JADE_ORE.get(), block -> createOreDrop(block, JADE.get()));
         add(SAPPHIRE_ORE.get(), block -> createOreDrop(block, SAPPHIRE.get()));
         add(SANCTIFICATION_SAPPHIRE_ORE.get(), block -> createOreDrop(block, SAPPHIRE.get()));
         add(CORRUPTION_SAPPHIRE_ORE.get(), block -> createOreDrop(block, SAPPHIRE.get()));
@@ -307,7 +307,7 @@ public class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(TOPAZ_BLOCK.get());
         dropSelf(SAPPHIRE_BLOCK.get());
         dropSelf(AMETHYST_BLOCK.get());
-        dropSelf(PURE_EMERALD_BLOCK.get());
+        dropSelf(JADE_BLOCK.get());
 
         // decorative block
         dropSelf(CHISELED_OAK_PLANKS.get());
@@ -419,7 +419,7 @@ public class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(RUBY_CHAIN.get());
         dropSelf(AMBER_CHAIN.get());
         dropSelf(TOPAZ_CHAIN.get());
-        dropSelf(EMERALD_CHAIN.get());
+        dropSelf(JADE_CHAIN.get());
         dropSelf(SAPPHIRE_CHAIN.get());
         dropSelf(DIAMOND_CHAIN.get());
         dropSelf(AMETHYST_CHAIN.get());
@@ -505,12 +505,12 @@ public class BlockSubProvider extends BlockLootSubProvider {
                         .add(LootItem.lootTableItem(TOPAZ_SAPLING))
                         .add(EmptyLootItem.emptyItem().setWeight(59)))
         );
-        add(NatureBlocks.EMERALD_BRANCHES.get(), LootTable.lootTable()
+        add(NatureBlocks.JADE_BRANCHES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(PURE_EMERALD))
+                        .add(LootItem.lootTableItem(JADE))
                         .add(EmptyLootItem.emptyItem().setWeight(59)))
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(EMERALD_SAPLING))
+                        .add(LootItem.lootTableItem(JADE_SAPLING))
                         .add(EmptyLootItem.emptyItem().setWeight(59)))
         );
         add(NatureBlocks.DIAMOND_BRANCHES.get(), LootTable.lootTable()

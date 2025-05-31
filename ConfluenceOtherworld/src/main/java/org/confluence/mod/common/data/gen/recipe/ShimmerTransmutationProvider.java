@@ -107,8 +107,8 @@ public class ShimmerTransmutationProvider extends AbstractRecipeProvider {
         // 宝石转化
         item(recipeOutput, MaterialItems.TOPAZ, MaterialItems.AMETHYST);
         item(recipeOutput, MaterialItems.SAPPHIRE, MaterialItems.TOPAZ);
-        item(recipeOutput, MaterialItems.PURE_EMERALD, MaterialItems.SAPPHIRE);
-        item(recipeOutput, MaterialItems.RUBY, MaterialItems.PURE_EMERALD);
+        item(recipeOutput, MaterialItems.JADE, MaterialItems.SAPPHIRE);
+        item(recipeOutput, MaterialItems.RUBY, MaterialItems.JADE);
         item(recipeOutput, Items.DIAMOND, MaterialItems.RUBY);
         item(recipeOutput, "cobblestone_from_amethyst", addItem(MaterialItems.AMETHYST, Items.COBBLESTONE));
         // 锭到矿的转化

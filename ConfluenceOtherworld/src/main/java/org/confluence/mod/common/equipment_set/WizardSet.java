@@ -31,7 +31,7 @@ public class WizardSet extends EquipmentSet {
         equippableGroup.addEquippableSet("amethyst_robe", robeBonus(ArmorItems.AMETHYST_ROBE, 20, 0.95F));
         equippableGroup.addEquippableSet("topaz_robe", robeBonus(ArmorItems.TOPAZ_ROBE, 40, 0.93F));
         equippableGroup.addEquippableSet("sapphire_robe", robeBonus(ArmorItems.SAPPHIRE_ROBE, 40, 0.91F));
-        equippableGroup.addEquippableSet("emerald_robe", robeBonus(ArmorItems.EMERALD_ROBE, 60, 0.89F));
+        equippableGroup.addEquippableSet("emerald_robe", robeBonus(ArmorItems.JADE_ROBE, 60, 0.89F));
         equippableGroup.addEquippableSet("ruby_robe", robeBonus(ArmorItems.RUBY_ROBE, 60, 0.87F));
         equippableGroup.addEquippableSet("amethyst_robe", new EquipmentSetBranch.Builder()
                 .addEquippable(VanillaEquippable.CHEST, ArmorItems.MYSTIC_ROBE)
@@ -48,7 +48,7 @@ public class WizardSet extends EquipmentSet {
                 ArmorItems.AMETHYST_ROBE,
                 ArmorItems.TOPAZ_ROBE,
                 ArmorItems.SAPPHIRE_ROBE,
-                ArmorItems.EMERALD_ROBE,
+                ArmorItems.JADE_ROBE,
                 ArmorItems.RUBY_ROBE,
                 ArmorItems.MYSTIC_ROBE,
                 ArmorItems.DIAMOND_ROBE,

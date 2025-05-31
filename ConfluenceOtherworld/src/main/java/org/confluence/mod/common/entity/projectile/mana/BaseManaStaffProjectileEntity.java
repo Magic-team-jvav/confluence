@@ -147,7 +147,7 @@ public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
         public static final Variant AMETHYST = register("amethyst", -1.0, 3.25F, Confluence.asResource("amethyst_projectile"));
         public static final Variant TOPAZ = register("topaz", -1.0, 3.5F, Confluence.asResource("topaz_projectile"));
         public static final Variant SAPPHIRE = register("sapphire", -1.0, 4.0F, Confluence.asResource("sapphire_projectile"));
-        public static final Variant EMERALD = register("emerald", -1.0, 4.25F, Confluence.asResource("emerald_projectile"));
+        public static final Variant JADE = register("emerald", -1.0, 4.25F, Confluence.asResource("emerald_projectile"));
         public static final Variant RUBY = register("ruby", -1.0, 4.75F, Confluence.asResource("ruby_projectile"));
         public static final Variant AMBER = register("amber", -1.0, 4.75F, Confluence.asResource("amber_projectile"));
         public static final Variant DIAMOND = register("diamond", -1.0, 5.5F, Confluence.asResource("diamond_projectile"));

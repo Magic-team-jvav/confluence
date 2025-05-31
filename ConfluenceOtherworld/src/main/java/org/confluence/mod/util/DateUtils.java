@@ -46,7 +46,7 @@ public final class DateUtils {
     }
 
     public static boolean isDuanWu(Lunar lunar) {
-        return lunar.getMonth() == 5 && lunar.getDay() == 5;
+        return lunar.getMonth() == 5 && lunar.getDay() >= 5 && lunar.getDay() <= 7;
     }
 
     public static boolean isZhongQiu(Lunar lunar) {

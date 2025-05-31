@@ -22,6 +22,7 @@ import org.confluence.mod.common.block.functional.DeathChestBlock;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.integration.waystones.WaystonesHelper;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_furniture.common.init.TFBlocks;
 import org.confluence.terra_guns.common.init.TGTags;
@@ -1568,6 +1569,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ToolItems.YELLOW_WRENCH.get(),
                 ToolItems.WIRE_CUTTER.get()
         );
+        WaystonesHelper.itemTag(this::tag);
     }
 
     @Override

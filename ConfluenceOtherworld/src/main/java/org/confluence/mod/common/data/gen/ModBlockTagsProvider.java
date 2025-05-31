@@ -18,6 +18,7 @@ import org.confluence.mod.common.init.block.CrateBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.block.StatueBlocks;
+import org.confluence.mod.integration.waystones.WaystonesHelper;
 import org.confluence.terraentity.init.TETags;
 import org.jetbrains.annotations.Nullable;
 
@@ -1250,6 +1251,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 Blocks.BARRIER,
                 Blocks.STRUCTURE_BLOCK
         );
+        WaystonesHelper.blockTag(this::tag);
     }
 
     @Override

@@ -14,7 +14,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -40,7 +39,6 @@ import net.neoforged.neoforge.fluids.RegisterCauldronFluidContentEvent;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
-import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforgespi.locating.IModFile;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.util.ConfluenceResources;
@@ -240,13 +238,9 @@ public final class ModEvents {
     public static void buildCreativeModeTabContents(BuildCreativeModeTabContentsEvent event) {
         CreativeModeTab.TabVisibility visibility = CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS;
         if (event.getTab() == TCTabs.ACCESSORIES.get()) {
-            ItemStack everlasting = TCItems.EVERLASTING.get().getDefaultInstance();
-            event.insertFirst(TCItems.BASE_POINT.get().getDefaultInstance(), visibility);
-            event.insertFirst(everlasting, visibility);
-
-            for (DeferredHolder<Item, ? extends Item> entry : AccessoryItems.ITEMS.getEntries()) {
-                event.insertBefore(everlasting, entry.get().getDefaultInstance(), visibility);
-            }
+            event.accept(TCItems.EVERLASTING.get().getDefaultInstance(), visibility);
+            event.accept(TCItems.BASE_POINT.get().getDefaultInstance(), visibility);
+            AccessoryItems.ITEMS.getEntries().forEach(item -> event.accept(item.get()));
         }
     }
 

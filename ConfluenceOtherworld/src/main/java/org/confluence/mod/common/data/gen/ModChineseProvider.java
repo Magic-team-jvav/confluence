@@ -9,6 +9,7 @@ import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.integration.create.ponder.PonderHelper;
+import org.confluence.mod.integration.waystones.WaystonesHelper;
 
 import static org.confluence.mod.common.init.item.PickaxeItems.MOLTEN_PICKAXE;
 
@@ -3787,5 +3788,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("task.confluence.use_life_crystal.condition.has_life_crystal", "主手持有生命水晶");
 
         PonderHelper.addTranslateKeys(this::add, false);
+        WaystonesHelper.addTranslateKeys(this::add, false);
     }
 }

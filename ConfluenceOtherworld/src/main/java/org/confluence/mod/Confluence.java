@@ -19,6 +19,7 @@ import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.integration.terra_entity.TEEvents;
+import org.confluence.mod.integration.waystones.WaystonesHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,6 +60,7 @@ public class Confluence {
         ModHookTypes.TYPES.register(eventBus);
         ModLootTables.ItemConditions.TYPES.register(eventBus);
         RegistriesFixer.init();
+        WaystonesHelper.register(eventBus);
     }
 
     public static void registerGameRules() {

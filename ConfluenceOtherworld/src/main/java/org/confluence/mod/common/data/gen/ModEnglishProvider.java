@@ -17,6 +17,7 @@ import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.integration.create.ponder.PonderHelper;
+import org.confluence.mod.integration.waystones.WaystonesHelper;
 
 import java.util.function.Consumer;
 
@@ -1530,6 +1531,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("task.confluence.use_life_crystal.condition.has_life_crystal", "Mainhand holds life crystal");
 
         PonderHelper.addTranslateKeys(this::add, true);
+        WaystonesHelper.addTranslateKeys(this::add, true);
     }
 
     @Override

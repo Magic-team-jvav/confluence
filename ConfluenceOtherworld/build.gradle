@@ -140,9 +140,9 @@ repositories {
 boolean vanillin = false // 香兰素
 boolean observable = false // 可视性能侦测
 boolean ftb = false
-boolean ipn = false
-boolean mmmmmmmmmmmm = true
-boolean supplementaries = false
+boolean ipn = false // 一键背包整理Next
+boolean mmmmmmmmmmmm = true // 试验假人
+boolean supplementaries = false // 锦致装饰
 
 dependencies {
     projectName.forEach { name -> implementation jarJar(project(":" + name)) }
@@ -223,6 +223,12 @@ dependencies {
     if (false) {
         runtimeOnly "dev.latvian.mods:kubejs-neoforge:$kubejs_version"
         runtimeOnly "dev.latvian.mods:rhino:$rhino_version"
+    }
+
+    compileOnly "maven.modrinth:waystones:zKuhJ4Vo"
+    if (true) {
+        runtimeOnly "maven.modrinth:waystones:zKuhJ4Vo"
+        runtimeOnly "maven.modrinth:balm:YgPFqhlP"
     }
 
     /**********************************************************/

@@ -380,6 +380,8 @@ public class ModChineseProvider extends LanguageProvider {
         //设置
         add("confluence.configuration.wrappedCrimsonHeart", "被包裹的猩红心脏");
         add("confluence.configuration.wrappedCrimsonHeart.tooltip", "启用后，新生成的猩红洞穴将会生成被包裹的猩红心脏");
+        add("confluence.configuration.instantlyHardmodeConversion", "困难模式快速转换");
+        add("confluence.configuration.instantlyHardmodeConversion.tooltip", "启用后，转换至困难模式的过程将会加快并以完全卡顿的形式进行，请评估电脑性能斟酌打开此配置");
         add("confluence.configuration.showItemPrice", "显示物品价格");
         add("confluence.configuration.showItemPrice.tooltip", "启用以查看该物品出售于NPC时的价格");
         add("confluence.configuration.Recipe", "合成配方机制");
@@ -891,6 +893,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("title.confluence.sky_mill", "天磨");
         add("title.confluence.heavy_work_bench", "重型工作台");
         add("title.confluence.crystal_ball", "水晶球");
+        add("title.confluence.solidifier", "固化机");
         add("title.confluence.hellforge", "地狱熔炉");
         add("title.confluence.alchemy_table", "炼药桌");
         add("title.confluence.fletching_table", "制箭台");
@@ -2859,7 +2862,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ChestBlocks.DEATH_GOLDEN_CHEST.get(), "死人金箱");
         add(ChestBlocks.SHADOW_CHEST.get(), "暗影箱");
         add(ChestBlocks.FROZEN_CHEST.get(), "冰冻箱");
-        add(ChestBlocks.LVY_CHEST.get(), "常春藤箱");
+        add(ChestBlocks.IVY_CHEST.get(), "常春藤箱");
         add(ChestBlocks.WATER_CHEST.get(), "水中箱");
         add(ChestBlocks.SKYWARE_CHEST.get(), "天界箱");
         add(ChestBlocks.DEATH_WOODEN_CHEST.get(), "死人木箱");
@@ -3393,6 +3396,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.SAKE.get(), "清酒");
         add(FoodItems.BUNNY_STEW.get(), "炖兔兔");
         add(FoodItems.ZONGZI.get(), "粽子");
+        add(FoodItems.MEAT_STUFFED_ZONGZI.get(), "肉粽");
         add(FoodItems.CLOUD_DOUGH.get(), "云朵面团");
         add(FoodItems.CLOUD_BREAD.get(), "云朵面包");
         add(FoodItems.HONEY_MOONCAKES.get(), "蜂蜜月饼");

@@ -1496,7 +1496,14 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 HookItems.ANTI_GRAVITY_HOOK.get(),
                 HookItems.LUNAR_HOOK.get(),
                 HookItems.STATIC_HOOK.get(),
-                TreasureBagItems.WALL_OF_FLESH_TREASURE_BAG.get()
+                TreasureBagItems.WALL_OF_FLESH_TREASURE_BAG.get(),
+                NatureBlocks.LIFE_MUSHROOM_INDUSIUM_BLOCK.asItem(),
+                NatureBlocks.LIFE_MUSHROOM_STEM_BLOCK.asItem(),
+                NatureBlocks.LIFE_MUSHROOM_PILEUS_BLOCK.asItem(),
+                NatureBlocks.DESERT_TAPERED_BLOCK.asItem(),
+                NatureBlocks.SMALL_DESERT_PLANT.asItem(),
+                NatureBlocks.BIG_DESERT_PLANT.asItem(),
+                NatureBlocks.SMALL_CACTUS.asItem()
         );
         Consumer<DeferredHolder<Item, ? extends Item>> wipAction = item -> wip.add(item.get());
         MinecartItems.ITEMS.getEntries().forEach(wipAction);

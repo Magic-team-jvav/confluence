@@ -116,6 +116,15 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 Ingredient.of(PotionItems.BOTTLE),
                 Ingredient.of(PotionItems.BOTTLE)
         );
+        // 玻璃瓶互换
+        shapeless(output, "", "_from_bottle",
+                new ItemStack(Items.GLASS_BOTTLE),
+                Ingredient.of(PotionItems.BOTTLE)
+        );
+        shapeless(output, "", "_from_glass_bottle",
+                new ItemStack(PotionItems.BOTTLE.get()),
+                Ingredient.of(Items.GLASS_BOTTLE)
+        );
 
         // 石头及深板岩压力板
         shaped(output, "", "", ShapedRecipePattern.of(Map.of('#', Ingredient.of(Blocks.STONE)), List.of("##")), new ItemStack(FunctionalBlocks.STONE_PRESSURE_PLATE));

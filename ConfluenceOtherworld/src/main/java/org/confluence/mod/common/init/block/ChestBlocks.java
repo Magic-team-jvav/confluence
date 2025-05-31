@@ -41,7 +41,7 @@ public class ChestBlocks {
     public static final DeferredBlock<DeathChestBlock> DEATH_GOLDEN_CHEST = registerDeath("death_golden_chest");
     public static final DeferredBlock<BaseChestBlock> SHADOW_CHEST = registerNormal("shadow_chest", stack -> stack.is(ToolItems.SHADOW_KEY));
     public static final DeferredBlock<BaseChestBlock> FROZEN_CHEST = registerNormal("frozen_chest", null);
-    public static final DeferredBlock<BaseChestBlock> LVY_CHEST = registerNormal("lvy_chest", null);
+    public static final DeferredBlock<BaseChestBlock> IVY_CHEST = registerNormal("ivy_chest", null);
     public static final DeferredBlock<BaseChestBlock> WATER_CHEST = registerNormal("water_chest", null);
     public static final DeferredBlock<BaseChestBlock> SKYWARE_CHEST = registerNormal("skyware_chest", null);
     public static final DeferredBlock<DeathChestBlock> DEATH_WOODEN_CHEST = registerDeath("death_wooden_chest");

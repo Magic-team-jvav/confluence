@@ -41,13 +41,18 @@
       "bonus_rolls": 0.0,
       "entries": [
         {
+           "type": "minecraft:loot_table",
+           "value": "confluence:gameplay/living_mahogany_carry",
+           "weight": 2
+        },
+        {
           "type": "minecraft:item",
           "name": "confluence:bee_minecart",
           "weight": 1
         },
         {
           "type": "minecraft:empty",
-          "weight": 9
+          "weight": 7
         }
       ],
       "rolls": 1
@@ -428,7 +433,7 @@
       "rolls": 1
     }
   ],
-  "random_sequence": "confluence:chests/lvy_chests",
+  "random_sequence": "confluence:chests/living_ivy_chests",
   "values": [
   ]
 }

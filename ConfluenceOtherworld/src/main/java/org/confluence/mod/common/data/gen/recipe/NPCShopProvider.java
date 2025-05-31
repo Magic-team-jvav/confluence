@@ -24,6 +24,7 @@ import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.TerraEntity;
 import org.confluence.terraentity.entity.npc.trade.NPCTradeManager;
 import org.confluence.terraentity.init.entity.TENpcEntities;
+import org.confluence.terraentity.init.item.TEWhipItems;
 import org.confluence.terraentity.registries.npc_trade.ITrade;
 import org.confluence.terraentity.registries.npc_trade.variant.ItemTradeLootTable;
 import org.confluence.terraentity.registries.npc_trade.variant.TradeTask;
@@ -58,6 +59,9 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(TCItems.STOPWATCH)
                 .add(TCItems.LIFE_FORM_ANALYZER)
                 .add(TCItems.DPS_METER)
+                .add(TCItems.DPS_METER)
+                .add(AccessoryItems.PAINT_SPRAYER)
+                .add(TEWhipItems.LEATHER_WHIP)
                 .add(SwordItems.KATANA)
                 .add(FoodItems.PAD_THAI)
                 .add(SellTrade.INSTANCE)

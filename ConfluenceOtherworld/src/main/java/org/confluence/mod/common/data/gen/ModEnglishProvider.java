@@ -409,6 +409,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.solar_wings.0", "Allows flight and slow fall");
         add("tooltip.item.confluence.stardust.0", "Allows flight and slow fall");
 
+        add("confluence.configuration.instantlyHardmodeConversion", "Instant Hard Mode Conversion");
+        add("confluence.configuration.instantlyHardmodeConversion.tooltip", "When enabled, the transition to Hard Mode will be accelerated and occur with a complete freeze. Please assess your computer's performance before enabling this configuration.");
         add("confluence.configuration.wrappedCrimson_heart", "Exposed Crimson Heart");
         add("confluence.configuration.wrappedCrimson_heart.tooltip", "When enabled, newly generated Crimson Caverns will spawn exposed Crimson Hearts");
         add("confluence.configuration.showItemPrice", "Show Item Price");

@@ -165,6 +165,7 @@ public class FoodItems {
     public static final DeferredItem<BaseFoodItem> PIGLIN_STEW = registerToolTipFood("piglin_stew", builder -> builder.food(ModFoodProperties.hasEffectProperties(20, 80.0f, MobEffects.DAMAGE_RESISTANCE, 1200, 4)).eatingSound(s -> SoundEvents.GENERIC_EAT).duration(d -> 15).useAnim(u -> UseAnim.EAT), 1, ChatFormatting.GRAY);
     //节日特有
     public static final DeferredItem<BaseFoodItem> ZONGZI = registerFood("zongzi", builder -> builder.food(ModFoodProperties.WellFedProperties(6000, 4, 1.5f)).isFireResistant());
+    public static final DeferredItem<BaseFoodItem> MEAT_STUFFED_ZONGZI = registerFood("meat_stuffed_zongzi", builder -> builder.food(ModFoodProperties.WellFedProperties(6000, 5, 3f)).isFireResistant());
 
     public static final DeferredItem<BaseFoodItem> HONEY_MOONCAKES = registerFood("honey_mooncakes", builder -> builder.food(ModFoodProperties.PlentySatisfiedProperties(6000, 6, 3.5f)).duration(d -> 15).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT).isFireResistant());
     public static final DeferredItem<BaseFoodItem> HONEY_MOONCAKES_CHUNKS = registerFood("honey_mooncakes_chunks", builder -> builder.food(ModFoodProperties.MOONCAKES).duration(d -> 15).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT).isFireResistant());

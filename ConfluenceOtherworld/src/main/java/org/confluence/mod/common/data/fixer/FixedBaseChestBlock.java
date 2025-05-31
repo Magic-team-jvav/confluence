@@ -286,7 +286,7 @@ public class FixedBaseChestBlock extends ChestBlock {
                 case LOCKED_GOLDEN, UNLOCKED_GOLDEN -> ChestBlocks.GOLDEN_CHEST.get();
                 case LOCKED_SHADOW, UNLOCKED_SHADOW -> ChestBlocks.SHADOW_CHEST.get();
                 case UNLOCKED_FROZEN -> ChestBlocks.FROZEN_CHEST.get();
-                case UNLOCKED_LVY -> ChestBlocks.LVY_CHEST.get();
+                case UNLOCKED_IVY -> ChestBlocks.IVY_CHEST.get();
                 case UNLOCKED_WATER -> ChestBlocks.WATER_CHEST.get();
                 case UNLOCKED_SKYWARE -> ChestBlocks.SKYWARE_CHEST.get();
                 case UNLOCKED_SANDSTONE -> ChestBlocks.SANDSTONE_CHEST.get();
@@ -303,7 +303,7 @@ public class FixedBaseChestBlock extends ChestBlock {
         LOCKED_SHADOW(2, "locked_shadow", 3),
         UNLOCKED_SHADOW(3, "unlocked_shadow"),
         UNLOCKED_FROZEN(4, "unlocked_frozen"),
-        UNLOCKED_LVY(5, "unlocked_lvy"),
+        UNLOCKED_IVY(5, "unlocked_ivy"),
         UNLOCKED_WATER(6, "unlocked_water"),
         UNLOCKED_SKYWARE(7, "unlocked_skyware"),
         UNLOCKED_NORMAL(8, "unlocked_normal"),

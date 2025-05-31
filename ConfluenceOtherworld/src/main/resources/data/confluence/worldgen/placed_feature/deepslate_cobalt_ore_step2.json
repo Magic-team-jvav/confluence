@@ -1,9 +1,9 @@
 {
-    "feature": "confluence:deepslate_adamantite_ore_step2",
+    "feature": "confluence:deepslate_cobalt_ore_step2",
     "placement": [
         {
             "type": "minecraft:count",
-            "count": 3
+            "count": 5
         },
         {
             "type": "minecraft:in_square"
@@ -16,7 +16,7 @@
                     "absolute": -60
                 },
                 "max_inclusive": {
-                    "absolute": -30
+                    "absolute": -10
                 }
             }
         },

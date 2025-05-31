@@ -4,13 +4,13 @@
     "to_place": {
       "type": "simple_state_provider",
       "state": {
-        "Name": "confluence:lvy_chest"
+        "Name": "confluence:ivy_chest"
       }
     },
     "nbt": {
-      "LootTable": "confluence:chests/lvy_chests",
+      "LootTable": "confluence:chests/ivy_chests",
       "id": "confluence:base_chest_block_entity",
-      "CustomName": "{\"italic\":false,\"translate\":\"block.confluence.base_chest_block.unlocked_lvy\"}"
+      "CustomName": "{\"italic\":false,\"translate\":\"block.confluence.base_chest_block.unlocked_ivy\"}"
     }
   }
 }

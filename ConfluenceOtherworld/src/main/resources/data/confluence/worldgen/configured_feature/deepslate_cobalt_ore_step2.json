@@ -1,7 +1,7 @@
 {
     "type": "minecraft:scattered_ore",
     "config": {
-        "size": 5,
+        "size": 7,
         "discard_chance_on_air_exposure": 0,
         "targets": [
             {
@@ -10,9 +10,9 @@
                     "tag": "deepslate_ore_replaceables"
                 },
                 "state": {
-                    "Name": "confluence:deepslate_titanium_ore",
+                    "Name": "confluence:deepslate_cobalt_ore",
                     "Properties": {
-                        "reveal_step": 1
+                        "reveal_step": 2
                     }
                 }
             }

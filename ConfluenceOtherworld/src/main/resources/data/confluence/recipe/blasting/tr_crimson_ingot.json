@@ -1,7 +1,7 @@
 {
     "type": "minecraft:blasting",
     "ingredient": {
-        "tag": "confluence:tr_crimson_ore_smelting"
+        "tag": "confluence:crimtane_ore_smelting"
     },
     "result": {
         "id": "confluence:tr_crimson_ingot"

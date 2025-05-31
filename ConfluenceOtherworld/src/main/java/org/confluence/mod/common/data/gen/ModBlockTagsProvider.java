@@ -112,7 +112,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 TUNGSTEN_BLOCK.get(),
                 PLATINUM_BLOCK.get(),
                 DEMONITE_BLOCK.get(),
-                TR_CRIMSON_BLOCK.get(),
+                CRIMTANE_BLOCK.get(),
                 HELLSTONE_BLOCK.get(),
                 COBALT_BLOCK.get(),
                 PALLADIUM_BLOCK.get(),
@@ -449,15 +449,15 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 SANCTIFICATION_EMERALD_ORE.get(),
                 CORRUPTION_EMERALD_ORE.get(),
                 FLESHIFICATION_EMERALD_ORE.get(),
-                TR_EMERALD_ORE.get(),
+                PURE_EMERALD_ORE.get(),
                 SANCTIFICATION_SAPPHIRE_ORE.get(),
                 CORRUPTION_SAPPHIRE_ORE.get(),
                 FLESHIFICATION_SAPPHIRE_ORE.get(),
                 SAPPHIRE_ORE.get(),
-                SANCTIFICATION_TR_AMETHYST_ORE.get(),
-                CORRUPTION_TR_AMETHYST_ORE.get(),
-                FLESHIFICATION_TR_AMETHYST_ORE.get(),
-                TR_AMETHYST_ORE.get(),
+                SANCTIFICATION_PURE_AMETHYST_ORE.get(),
+                CORRUPTION_PURE_AMETHYST_ORE.get(),
+                FLESHIFICATION_PURE_AMETHYST_ORE.get(),
+                PURE_AMETHYST_ORE.get(),
                 RUBY_BLOCK.get(),
                 AMBER_BLOCK.get(),
                 TOPAZ_BLOCK.get(),
@@ -565,17 +565,17 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 FLESHIFICATION_DEMONITE_ORE.get(),
                 DEMONITE_BLOCK.get(),
                 RAW_DEMONITE_BLOCK.get(),
-                DEEPSLATE_TR_CRIMSON_ORE.get(),
-                SANCTIFICATION_TR_CRIMSON_ORE.get(),
-                CORRUPTION_TR_CRIMSON_ORE.get(),
-                FLESHIFICATION_TR_CRIMSON_ORE.get(),
-                RAW_TR_CRIMSON_BLOCK.get(),
-                TR_CRIMSON_BLOCK.get(),
-                TR_CRIMSON_ORE.get(),
+                DEEPSLATE_CRIMTANE_ORE.get(),
+                SANCTIFICATION_CRIMTANE_ORE.get(),
+                CORRUPTION_CRIMTANE_ORE.get(),
+                FLESHIFICATION_CRIMTANE_ORE.get(),
+                RAW_CRIMTANE_BLOCK.get(),
+                CRIMTANE_BLOCK.get(),
+                CRIMTANE_ORE.get(),
                 Blocks.ANCIENT_DEBRIS,
                 Blocks.OBSIDIAN,
                 Blocks.CRYING_OBSIDIAN,
-                TR_CRIMSON_ORE.get(),
+                CRIMTANE_ORE.get(),
                 TR_OBSIDIAN_BRICKS.get(),
                 OBSIDIAN_BRICKS_SLAB.get(),
                 OBSIDIAN_BRICKS_STAIRS.get(),
@@ -933,18 +933,18 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 SANCTIFICATION_EMERALD_ORE.get(),
                 CORRUPTION_EMERALD_ORE.get(),
                 FLESHIFICATION_EMERALD_ORE.get(),
-                DEEPSLATE_TR_EMERALD_ORE.get(),
-                TR_EMERALD_ORE.get(),
+                DEEPSLATE_PURE_EMERALD_ORE.get(),
+                PURE_EMERALD_ORE.get(),
                 SANCTIFICATION_SAPPHIRE_ORE.get(),
                 CORRUPTION_SAPPHIRE_ORE.get(),
                 FLESHIFICATION_SAPPHIRE_ORE.get(),
                 DEEPSLATE_SAPPHIRE_ORE.get(),
                 SAPPHIRE_ORE.get(),
-                SANCTIFICATION_TR_AMETHYST_ORE.get(),
-                CORRUPTION_TR_AMETHYST_ORE.get(),
-                FLESHIFICATION_TR_AMETHYST_ORE.get(),
-                DEEPSLATE_TR_AMETHYST_ORE.get(),
-                TR_AMETHYST_ORE.get(),
+                SANCTIFICATION_PURE_AMETHYST_ORE.get(),
+                CORRUPTION_PURE_AMETHYST_ORE.get(),
+                FLESHIFICATION_PURE_AMETHYST_ORE.get(),
+                DEEPSLATE_PURE_AMETHYST_ORE.get(),
+                PURE_AMETHYST_ORE.get(),
                 DEEPSLATE_PLATINUM_ORE.get(),
                 SANCTIFICATION_PLATINUM_ORE.get(),
                 CORRUPTION_PLATINUM_ORE.get(),
@@ -1029,7 +1029,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 DEEPSLATE_PLATINUM_ORE.get(),
                 DEEPSLATE_RUBY_ORE.get(),
                 DEEPSLATE_TOPAZ_ORE.get(),
-                DEEPSLATE_TR_EMERALD_ORE.get(),
+                DEEPSLATE_PURE_EMERALD_ORE.get(),
                 DEEPSLATE_SAPPHIRE_ORE.get(),
                 DEEPSLATE_COBALT_ORE.get(),
                 DEEPSLATE_PALLADIUM_ORE.get(),
@@ -1037,7 +1037,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 DEEPSLATE_ORICHALCUM_ORE.get(),
                 DEEPSLATE_ADAMANTITE_ORE.get(),
                 DEEPSLATE_TITANIUM_ORE.get(),
-                DEEPSLATE_TR_AMETHYST_ORE.get()
+                DEEPSLATE_PURE_AMETHYST_ORE.get()
         );
         tag(Tags.Blocks.ORES_IN_GROUND_NETHERRACK).add(
                 HELLSTONE.get()
@@ -1050,11 +1050,11 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 PLATINUM_ORE.get(),
                 RUBY_ORE.get(),
                 TOPAZ_ORE.get(),
-                TR_EMERALD_ORE.get(),
+                PURE_EMERALD_ORE.get(),
                 SAPPHIRE_ORE.get(),
-                TR_AMETHYST_ORE.get(),
+                PURE_AMETHYST_ORE.get(),
                 DEMONITE_ORE.get(),
-                TR_CRIMSON_ORE.get()
+                CRIMTANE_ORE.get()
         );
         tag(Tags.Blocks.PLAYER_WORKSTATIONS_CRAFTING_TABLES).add(
                 HEAVY_WORK_BENCH.get()
@@ -1108,14 +1108,14 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 RAW_TUNGSTEN_BLOCK.get(),
                 RAW_PLATINUM_BLOCK.get(),
                 RAW_DEMONITE_BLOCK.get(),
-                RAW_TR_CRIMSON_BLOCK.get(),
+                RAW_CRIMTANE_BLOCK.get(),
                 TIN_BLOCK.get(),
                 LEAD_BLOCK.get(),
                 SILVER_BLOCK.get(),
                 TUNGSTEN_BLOCK.get(),
                 PLATINUM_BLOCK.get(),
                 DEMONITE_BLOCK.get(),
-                TR_CRIMSON_BLOCK.get(),
+                CRIMTANE_BLOCK.get(),
                 METEORITE_BLOCK.get(),
                 RAW_ADAMANTITE_BLOCK.get(),
                 RAW_COBALT_BLOCK.get(),
@@ -1142,7 +1142,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         tag(ModTags.Blocks.PLATINUM_BLOCK).add(PLATINUM_BLOCK.get());
         tag(ModTags.Blocks.METEORITE_BLOCK).add(METEORITE_BLOCK.get());
         tag(ModTags.Blocks.DEMONITE_BLOCK).add(DEMONITE_BLOCK.get());
-        tag(ModTags.Blocks.CRIMSON_BLOCK).add(TR_CRIMSON_BLOCK.get());
+        tag(ModTags.Blocks.CRIMSON_BLOCK).add(CRIMTANE_BLOCK.get());
         tag(ModTags.Blocks.HELLSTONE_BLOCK).add(HELLSTONE_BLOCK.get());
         tag(ModTags.Blocks.RAW_TIN_BLOCK).add(RAW_TIN_BLOCK.get());
         tag(ModTags.Blocks.RAW_LEAD_BLOCK).add(RAW_LEAD_BLOCK.get());
@@ -1151,7 +1151,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         tag(ModTags.Blocks.RAW_PLATINUM_BLOCK).add(RAW_PLATINUM_BLOCK.get());
         tag(ModTags.Blocks.RAW_METEORITE_BLOCK).add(RAW_METEORITE_BLOCK.get());
         tag(ModTags.Blocks.RAW_DEMONITE_BLOCK).add(RAW_DEMONITE_BLOCK.get());
-        tag(ModTags.Blocks.RAW_CRIMSON_BLOCK).add(RAW_TR_CRIMSON_BLOCK.get());
+        tag(ModTags.Blocks.RAW_CRIMSON_BLOCK).add(RAW_CRIMTANE_BLOCK.get());
         tag(ModTags.Blocks.RAW_HELLSTONE_BLOCK).add(RAW_HELLSTONE_BLOCK.get());
         tag(ModTags.Blocks.TOMBSTONE).add(TOMBSTONES.keySet().stream().map(DeferredBlock::get).toArray(TombstoneBlock[]::new));
         tag(BlockTags.STONE_BRICKS).add(

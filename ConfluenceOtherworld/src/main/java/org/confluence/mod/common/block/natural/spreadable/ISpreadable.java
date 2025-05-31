@@ -291,11 +291,11 @@ public interface ISpreadable {
                 OreBlocks.FLESHIFICATION_DIAMOND_ORE, OreBlocks.SANCTIFICATION_DIAMOND_ORE,
                 OreBlocks.FLESHIFICATION_REDSTONE_ORE, OreBlocks.SANCTIFICATION_REDSTONE_ORE,
                 OreBlocks.DEMONITE_ORE, OreBlocks.SANCTIFICATION_DEMONITE_ORE,
-                OreBlocks.TR_CRIMSON_ORE, OreBlocks.SANCTIFICATION_TR_CRIMSON_ORE,
+                OreBlocks.CRIMTANE_ORE, OreBlocks.SANCTIFICATION_CRIMTANE_ORE,
                 OreBlocks.FLESHIFICATION_DEMONITE_ORE, OreBlocks.FLESHIFICATION_DEMONITE_ORE,
-                OreBlocks.FLESHIFICATION_TR_CRIMSON_ORE, OreBlocks.SANCTIFICATION_TR_CRIMSON_ORE,
+                OreBlocks.FLESHIFICATION_CRIMTANE_ORE, OreBlocks.SANCTIFICATION_CRIMTANE_ORE,
                 OreBlocks.CORRUPTION_DEMONITE_ORE, OreBlocks.FLESHIFICATION_DEMONITE_ORE,
-                OreBlocks.CORRUPTION_TR_CRIMSON_ORE, OreBlocks.SANCTIFICATION_TR_CRIMSON_ORE,
+                OreBlocks.CORRUPTION_CRIMTANE_ORE, OreBlocks.SANCTIFICATION_CRIMTANE_ORE,
                 // 植物
                 NatureBlocks.CORRUPT_GRASS, NatureBlocks.HALLOW_GRASS,
                 NatureBlocks.TR_CRIMSON_GRASS, NatureBlocks.HALLOW_GRASS,
@@ -385,7 +385,7 @@ public interface ISpreadable {
                 OreBlocks.TUNGSTEN_ORE, OreBlocks.FLESHIFICATION_TUNGSTEN_ORE,
                 OreBlocks.PLATINUM_ORE, OreBlocks.FLESHIFICATION_PLATINUM_ORE,
                 OreBlocks.DEMONITE_ORE, OreBlocks.FLESHIFICATION_DEMONITE_ORE,
-                OreBlocks.TR_CRIMSON_ORE, OreBlocks.FLESHIFICATION_TR_CRIMSON_ORE,
+                OreBlocks.CRIMTANE_ORE, OreBlocks.FLESHIFICATION_CRIMTANE_ORE,
 
                 // 蘑菇
                 NatureBlocks.LIFE_MUSHROOM, NatureBlocks.VICIOUS_MUSHROOM,
@@ -479,7 +479,7 @@ public interface ISpreadable {
                 OreBlocks.TUNGSTEN_ORE, OreBlocks.CORRUPTION_TUNGSTEN_ORE,
                 OreBlocks.PLATINUM_ORE, OreBlocks.CORRUPTION_PLATINUM_ORE,
                 OreBlocks.DEMONITE_ORE, OreBlocks.CORRUPTION_DEMONITE_ORE,
-                OreBlocks.TR_CRIMSON_ORE, OreBlocks.CORRUPTION_TR_CRIMSON_ORE,
+                OreBlocks.CRIMTANE_ORE, OreBlocks.CORRUPTION_CRIMTANE_ORE,
 
                 OreBlocks.SANCTIFICATION_TIN_ORE, OreBlocks.CORRUPTION_TIN_ORE,
                 OreBlocks.SANCTIFICATION_LEAD_ORE, OreBlocks.CORRUPTION_LEAD_ORE,

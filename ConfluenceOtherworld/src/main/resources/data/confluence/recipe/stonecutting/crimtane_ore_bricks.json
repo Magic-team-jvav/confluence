@@ -1,0 +1,10 @@
+{
+    "type": "minecraft:stonecutting",
+    "ingredient": {
+        "item":"confluence:crimtane_block"
+    },
+    "result": {
+        "id": "confluence:crimtane_ore_bricks",
+        "count": 9
+    }
+}

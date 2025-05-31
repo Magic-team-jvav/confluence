@@ -1,7 +1,7 @@
 {
   "values" : {
     "targets" : {
-      "confluence:corruption_tr_amethyst_ore" : {
+      "confluence:corruption_pure_amethyst_ore" : {
         "color" : -16711681,
         "showText" : true,
         "showType" : 0
@@ -11,7 +11,7 @@
         "showText" : true,
         "showType" : 0
       },
-      "confluence:corruption_tr_emerald_ore" : {
+      "confluence:corruption_pure_emerald_ore" : {
         "color" : -16711681,
         "showText" : true,
         "showType" : 0
@@ -186,7 +186,7 @@
         "showText" : false,
         "showType" : 0
       },
-      "confluence:deepslate_tr_amethyst_ore" : {
+      "confluence:deepslate_pure_amethyst_ore" : {
         "color" : -16711681,
         "showText" : true,
         "showType" : 0
@@ -356,12 +356,12 @@
         "showText" : true,
         "showType" : 0
       },
-      "confluence:deepslate_tr_emerald_ore" : {
+      "confluence:deepslate_pure_emerald_ore" : {
         "color" : -16711681,
         "showText" : true,
         "showType" : 0
       },
-      "confluence:fleshification_tr_amethyst_ore" : {
+      "confluence:fleshification_pure_amethyst_ore" : {
         "color" : -16711681,
         "showText" : true,
         "showType" : 0
@@ -471,7 +471,7 @@
         "showText" : true,
         "showType" : 1
       },
-      "confluence:tr_emerald_ore" : {
+      "confluence:pure_emerald_ore" : {
         "color" : -16711681,
         "showText" : true,
         "showType" : 0
@@ -536,7 +536,7 @@
         "showText" : true,
         "showType" : 0
       },
-      "confluence:fleshification_tr_emerald_ore" : {
+      "confluence:fleshification_pure_emerald_ore" : {
         "color" : -16711681,
         "showText" : true,
         "showType" : 0
@@ -551,7 +551,7 @@
         "showText" : false,
         "showType" : 0
       },
-      "confluence:tr_amethyst_ore" : {
+      "confluence:pure_amethyst_ore" : {
         "color" : -16711681,
         "showText" : true,
         "showType" : 0
@@ -591,7 +591,7 @@
         "showText" : true,
         "showType" : 0
       },
-      "confluence:sanctification_tr_amethyst_ore" : {
+      "confluence:sanctification_pure_amethyst_ore" : {
         "color" : -16711681,
         "showText" : true,
         "showType" : 0
@@ -651,7 +651,7 @@
         "showText" : true,
         "showType" : 0
       },
-      "confluence:sanctification_tr_emerald_ore" : {
+      "confluence:sanctification_pure_emerald_ore" : {
         "color" : -16711681,
         "showText" : true,
         "showType" : 0

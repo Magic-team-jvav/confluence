@@ -1,7 +1,7 @@
 {
     "type": "minecraft:blasting",
     "ingredient": {
-        "tag": "confluence:tr_emerald_ore_smelting"
+        "tag": "confluence:pure_emerald_ore_smelting"
     },
     "result": {
         "id": "confluence:tr_emerald"

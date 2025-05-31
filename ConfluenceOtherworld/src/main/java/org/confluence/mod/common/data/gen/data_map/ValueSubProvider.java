@@ -50,7 +50,7 @@ public class ValueSubProvider {
                 .add(MaterialItems.HALLOWED_INGOT, 4000);
         appender.create()
                 .add(Items.COPPER_BLOCK, 150 * 9)
-                .add(OreBlocks.TR_CRIMSON_BLOCK, 3900 * 9)
+                .add(OreBlocks.CRIMTANE_BLOCK, 3900 * 9)
                 .add(OreBlocks.DEMONITE_BLOCK, 3000 * 9)
                 .add(Items.GOLD_BLOCK, 1200 * 9)
                 .add(Items.IRON_BLOCK, 300 * 9)
@@ -130,7 +130,7 @@ public class ValueSubProvider {
                 .add(OreBlocks.RAW_PLATINUM_BLOCK, 450 * 9)
                 .add(OreBlocks.RAW_METEORITE_BLOCK, 200 * 9)
                 .add(OreBlocks.RAW_DEMONITE_BLOCK, 1000 * 9)
-                .add(OreBlocks.RAW_TR_CRIMSON_BLOCK, 1300 * 9)
+                .add(OreBlocks.RAW_CRIMTANE_BLOCK, 1300 * 9)
                 .add(OreBlocks.RAW_HELLSTONE_BLOCK, 250 * 9)
                 .add(OreBlocks.RAW_COBALT_BLOCK, 700 * 9)
                 .add(OreBlocks.RAW_PALLADIUM_BLOCK, 900 * 9)

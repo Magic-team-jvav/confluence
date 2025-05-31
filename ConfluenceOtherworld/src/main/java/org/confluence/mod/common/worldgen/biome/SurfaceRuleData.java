@@ -29,7 +29,7 @@ public class SurfaceRuleData {
     private static final SurfaceRules.RuleSource EBONY_STONE = makeStateRule(NatureBlocks.EBONSTONE.get());
     private static final SurfaceRules.RuleSource EBONY_SAND = makeStateRule(NatureBlocks.EBONSAND.get());
 
-    private static final SurfaceRules.RuleSource TR_CRIMSON_GRASS_BLOCK = makeStateRule(NatureBlocks.TR_CRIMSON_GRASS_BLOCK.get());
+    private static final SurfaceRules.RuleSource TR_CRIMSON_GRASS_BLOCK = makeStateRule(NatureBlocks.CRIMSON_GRASS_BLOCK.get());
     private static final SurfaceRules.RuleSource TR_CRIMSON_STONE = makeStateRule(NatureBlocks.CRIMSTONE.get());
     private static final SurfaceRules.RuleSource TR_CRIMSON_SAND = makeStateRule(NatureBlocks.CRIMSAND.get());
 

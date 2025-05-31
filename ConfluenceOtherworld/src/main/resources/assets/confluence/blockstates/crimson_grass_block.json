@@ -2,21 +2,21 @@
   "variants": {
     "": [
       {
-        "model": "confluence:block/tr_crimson_grass_block",
+        "model": "confluence:block/crimson_grass_block",
         "uvlock": false
       },
       {
-        "model": "confluence:block/tr_crimson_grass_block",
+        "model": "confluence:block/crimson_grass_block",
         "y": 90,
         "uvlock": false
       },
       {
-        "model": "confluence:block/tr_crimson_grass_block",
+        "model": "confluence:block/crimson_grass_block",
         "y": 180,
         "uvlock": false
       },
       {
-        "model": "confluence:block/tr_crimson_grass_block",
+        "model": "confluence:block/crimson_grass_block",
         "y": 270,
         "uvlock": false
       }

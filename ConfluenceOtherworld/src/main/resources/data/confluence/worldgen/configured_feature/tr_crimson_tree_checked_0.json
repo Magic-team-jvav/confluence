@@ -16,7 +16,7 @@
     "drooping_vine_block": {
       "type": "simple_state_provider",
       "state": {
-        "Name": "confluence:tr_crimson_drooping_vine"
+        "Name": "confluence:crimson_drooping_vine"
       }
     },
     "height": 5

@@ -3,7 +3,6 @@ package org.confluence.mod.common.block.natural;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -47,8 +46,8 @@ public class CattailsBodyBlock extends GrowingPlantBodyBlock implements SimpleWa
             return NatureBlocks.HALLOW_CATTAILS_HEAD.get();
         } else if (state.is(NatureBlocks.EBONY_CATTAILS_BODY.get())) {
             return NatureBlocks.EBONY_CATTAILS_HEAD.get();
-        } else if (state.is(NatureBlocks.TR_CRIMSON_CATTAILS_BODY.get())) {
-            return NatureBlocks.TR_CRIMSON_CATTAILS_HEAD.get();
+        } else if (state.is(NatureBlocks.CRIMSON_CATTAILS_BODY.get())) {
+            return NatureBlocks.CRIMSON_CATTAILS_HEAD.get();
         } else {
             return NatureBlocks.CATTAILS_HEAD.get();
         }

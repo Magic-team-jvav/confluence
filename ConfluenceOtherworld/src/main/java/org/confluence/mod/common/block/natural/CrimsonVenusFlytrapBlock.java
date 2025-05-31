@@ -43,6 +43,6 @@ public class CrimsonVenusFlytrapBlock extends Block {
     }
 
     private boolean isGrassBlock(BlockState blockState) {
-        return blockState.is(NatureBlocks.TR_CRIMSON_GRASS_BLOCK) || blockState.is(NatureBlocks.TR_CRIMSON_JUNGLE_GRASS_BLOCK);
+        return blockState.is(NatureBlocks.CRIMSON_GRASS_BLOCK) || blockState.is(NatureBlocks.CRIMSON_JUNGLE_GRASS_BLOCK);
     }
 }

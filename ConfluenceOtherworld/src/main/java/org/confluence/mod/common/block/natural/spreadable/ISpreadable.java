@@ -225,7 +225,7 @@ public interface ISpreadable {
                 getSupplier(ICE), NatureBlocks.PINK_ICE,
                 getSupplier(PACKED_ICE), NatureBlocks.PINK_PACKED_ICE,
                 // 邪恶环境方块
-                NatureBlocks.TR_CRIMSON_GRASS_BLOCK, NatureBlocks.HALLOW_GRASS_BLOCK,
+                NatureBlocks.CRIMSON_GRASS_BLOCK, NatureBlocks.HALLOW_GRASS_BLOCK,
                 NatureBlocks.CORRUPT_GRASS_BLOCK, NatureBlocks.HALLOW_GRASS_BLOCK,
 
                 NatureBlocks.EBONSTONE, NatureBlocks.PEARLSTONE,
@@ -298,15 +298,15 @@ public interface ISpreadable {
                 OreBlocks.CORRUPTION_CRIMTANE_ORE, OreBlocks.SANCTIFICATION_CRIMTANE_ORE,
                 // 植物
                 NatureBlocks.CORRUPT_GRASS, NatureBlocks.HALLOW_GRASS,
-                NatureBlocks.TR_CRIMSON_GRASS, NatureBlocks.HALLOW_GRASS,
+                NatureBlocks.CRIMSON_GRASS, NatureBlocks.HALLOW_GRASS,
                 NatureBlocks.CRIMSON_THORN, getSupplier(Blocks.AIR),
                 NatureBlocks.CORRUPTION_THORN, getSupplier(Blocks.AIR),
                 NatureBlocks.JUNGLE_THORN, getSupplier(Blocks.AIR),
                 NatureBlocks.PLANTERA_THORN, getSupplier(Blocks.AIR)
         ),
         CRIMSON(
-                getSupplier(DIRT), NatureBlocks.TR_CRIMSON_GRASS_BLOCK,
-                NatureBlocks.JUNGLE_GRASS_BLOCK, NatureBlocks.TR_CRIMSON_JUNGLE_GRASS_BLOCK,
+                getSupplier(DIRT), NatureBlocks.CRIMSON_GRASS_BLOCK,
+                NatureBlocks.JUNGLE_GRASS_BLOCK, NatureBlocks.CRIMSON_JUNGLE_GRASS_BLOCK,
                 // 原木
                 getSupplier(OAK_LOG), NatureBlocks.SHADOW_LOG_BLOCKS.getLog(),
                 getSupplier(ACACIA_LOG), NatureBlocks.SHADOW_LOG_BLOCKS.getLog(),
@@ -361,12 +361,12 @@ public interface ISpreadable {
                 NatureBlocks.PALM_LOG_BLOCKS.getLeaves(), NatureBlocks.SHADOW_LOG_BLOCKS.getLeaves(),
 
                 // 原版环境方块
-                getSupplier(GRASS_BLOCK), NatureBlocks.TR_CRIMSON_GRASS_BLOCK,
+                getSupplier(GRASS_BLOCK), NatureBlocks.CRIMSON_GRASS_BLOCK,
                 getSupplier(STONE), NatureBlocks.CRIMSTONE,
                 getSupplier(COBBLESTONE), NatureBlocks.COBBLED_CRIMSTONE,
                 getSupplier(SANDSTONE), NatureBlocks.CRIMSANDSTONE,
                 getSupplier(SAND), NatureBlocks.CRIMSAND,
-                getSupplier(SHORT_GRASS), NatureBlocks.TR_CRIMSON_GRASS,
+                getSupplier(SHORT_GRASS), NatureBlocks.CRIMSON_GRASS,
                 //getSupplier(TALL_GRASS), NatureBlocks.TR_CRIMSON_GRASS,
                 getSupplier(ICE), NatureBlocks.RED_ICE,
                 getSupplier(PACKED_ICE), NatureBlocks.RED_PACKED_ICE,
@@ -527,7 +527,7 @@ public interface ISpreadable {
                 NatureBlocks.VICIOUS_MUSHROOM, NatureBlocks.LIFE_MUSHROOM,
                 NatureBlocks.VILE_MUSHROOM, NatureBlocks.LIFE_MUSHROOM,
                 NatureBlocks.CORRUPT_GRASS, getSupplier(SHORT_GRASS),
-                NatureBlocks.TR_CRIMSON_GRASS, getSupplier(SHORT_GRASS),
+                NatureBlocks.CRIMSON_GRASS, getSupplier(SHORT_GRASS),
                 NatureBlocks.HALLOW_GRASS, getSupplier(SHORT_GRASS),
                 NatureBlocks.CRIMSTONE, getSupplier(STONE),
                 NatureBlocks.COBBLED_CRIMSTONE, getSupplier(COBBLESTONE),
@@ -535,7 +535,7 @@ public interface ISpreadable {
                 NatureBlocks.CRIMSANDSTONE, getSupplier(SANDSTONE),
                 NatureBlocks.HARDENED_CRIMSAND_BLOCK, NatureBlocks.HARDENED_SAND_BLOCK,
                 NatureBlocks.MOISTENED_CRIMSAND_BLOCK, NatureBlocks.MOISTENED_SAND_BLOCK,
-                NatureBlocks.TR_CRIMSON_GRASS_BLOCK, getSupplier(GRASS_BLOCK),
+                NatureBlocks.CRIMSON_GRASS_BLOCK, getSupplier(GRASS_BLOCK),
                 NatureBlocks.EBONSTONE, getSupplier(STONE),
                 NatureBlocks.COBBLED_EBONSTONE, getSupplier(COBBLESTONE),
                 NatureBlocks.HARDENED_EBONSAND_BLOCK, NatureBlocks.HARDENED_SAND_BLOCK,

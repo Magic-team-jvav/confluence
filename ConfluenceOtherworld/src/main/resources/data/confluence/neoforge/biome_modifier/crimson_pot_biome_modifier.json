@@ -3,6 +3,6 @@
   "biomes": [
     "confluence:the_crimson"
   ],
-  "features": "confluence:tr_crimson_pot",
+  "features": "confluence:crimson_pot",
   "step": "underground_decoration"
 }

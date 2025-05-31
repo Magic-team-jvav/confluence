@@ -1,6 +1,6 @@
 {
     "parent": "minecraft:item/generated",
     "textures": {
-        "layer0": "confluence:block/tr_crimson_cattails_head"
+        "layer0": "confluence:block/crimson_cattails_head"
     }
 }

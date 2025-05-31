@@ -9,7 +9,7 @@
           "to_place": {
             "type": "minecraft:simple_state_provider",
             "state": {
-              "Name": "confluence:tr_crimson_grass"
+              "Name": "confluence:crimson_grass"
             }
           }
         }

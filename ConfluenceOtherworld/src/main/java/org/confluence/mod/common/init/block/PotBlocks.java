@@ -19,7 +19,7 @@ public class PotBlocks {
     public static final DeferredBlock<BasePotBlock> UNDERGROUND_DESERT_POT = registerWithItem("underground_desert_pot", 1.25F, 0.002169F);
     public static final DeferredBlock<BasePotBlock> JUNGLE_POT = registerWithItem("jungle_pot", 1.75F, 0.0025F);
     public static final DeferredBlock<BasePotBlock> MARBLE_CAVE_POT = registerWithItem("marble_cave_pot", 2.0F, 0.002667F);
-    public static final DeferredBlock<BasePotBlock> TR_CRIMSON_POT = registerWithItem("tr_crimson_pot", 1.6F, 0.00274F);
+    public static final DeferredBlock<BasePotBlock> CRIMSON_POT = registerWithItem("crimson_pot", 1.6F, 0.00274F);
     public static final DeferredBlock<BasePotBlock> PYRAMID_POT = registerWithItem("pyramid_pot", 10.0F, 0.008F);
     public static final DeferredBlock<BasePotBlock> CORRUPTION_POT = registerWithItem("corruption_pot", 1.6F, 0.00274F);
     public static final DeferredBlock<BasePotBlock> DUNGEON_POT = registerWithItem("dungeon_pot", 1.9F, 0.002604F);

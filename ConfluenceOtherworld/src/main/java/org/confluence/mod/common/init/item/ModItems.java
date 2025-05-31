@@ -84,7 +84,7 @@ public final class ModItems {
     public static final DeferredItem<GrassSeedItem> GRASS_SEED = ITEMS.register("grass_seed", () -> new GrassSeedItem(
             Map.of(
                     Blocks.DIRT, Blocks.GRASS_BLOCK,
-                    NatureBlocks.TR_CRIMSON_GRASS_BLOCK.get(), Blocks.GRASS_BLOCK,
+                    NatureBlocks.CRIMSON_GRASS_BLOCK.get(), Blocks.GRASS_BLOCK,
                     NatureBlocks.CORRUPT_GRASS_BLOCK.get(), Blocks.GRASS_BLOCK,
                     NatureBlocks.HALLOW_GRASS_BLOCK.get(), Blocks.GRASS_BLOCK)));
     public static final DeferredItem<GrassSeedItem> JUNGLE_GRASS_SEED = ITEMS.register("jungle_grass_seed", () -> new GrassSeedItem(Map.of(Blocks.MUD, NatureBlocks.JUNGLE_GRASS_BLOCK.get())));
@@ -94,21 +94,21 @@ public final class ModItems {
                     Blocks.MUD, NatureBlocks.CORRUPT_JUNGLE_GRASS_BLOCK.get(),
                     Blocks.DIRT, NatureBlocks.CORRUPT_GRASS_BLOCK.get(),
                     Blocks.GRASS_BLOCK, NatureBlocks.CORRUPT_GRASS_BLOCK.get(),
-                    NatureBlocks.TR_CRIMSON_GRASS_BLOCK.get(), NatureBlocks.CORRUPT_GRASS_BLOCK.get(),
+                    NatureBlocks.CRIMSON_GRASS_BLOCK.get(), NatureBlocks.CORRUPT_GRASS_BLOCK.get(),
                     NatureBlocks.HALLOW_GRASS_BLOCK.get(), NatureBlocks.CORRUPT_GRASS_BLOCK.get())));
     public static final DeferredItem<GrassSeedItem> TR_CRIMSON_SEED = ITEMS.register("tr_crimson_seed", () -> new GrassSeedItem(
             Map.of(
-                    Blocks.MUD, NatureBlocks.TR_CRIMSON_JUNGLE_GRASS_BLOCK.get(),
-                    Blocks.DIRT, NatureBlocks.TR_CRIMSON_GRASS_BLOCK.get(),
-                    Blocks.GRASS_BLOCK, NatureBlocks.TR_CRIMSON_GRASS_BLOCK.get(),
-                    NatureBlocks.CORRUPT_GRASS_BLOCK.get(), NatureBlocks.TR_CRIMSON_GRASS_BLOCK.get(),
-                    NatureBlocks.HALLOW_GRASS_BLOCK.get(), NatureBlocks.TR_CRIMSON_GRASS_BLOCK.get())));
+                    Blocks.MUD, NatureBlocks.CRIMSON_JUNGLE_GRASS_BLOCK.get(),
+                    Blocks.DIRT, NatureBlocks.CRIMSON_GRASS_BLOCK.get(),
+                    Blocks.GRASS_BLOCK, NatureBlocks.CRIMSON_GRASS_BLOCK.get(),
+                    NatureBlocks.CORRUPT_GRASS_BLOCK.get(), NatureBlocks.CRIMSON_GRASS_BLOCK.get(),
+                    NatureBlocks.HALLOW_GRASS_BLOCK.get(), NatureBlocks.CRIMSON_GRASS_BLOCK.get())));
     public static final DeferredItem<GrassSeedItem> HALLOWED_SEED = ITEMS.register("hallowed_seed", () -> new GrassSeedItem(
             Map.of(
                     Blocks.MUD, NatureBlocks.HALLOW_GRASS_BLOCK.get(),
                     Blocks.DIRT, NatureBlocks.HALLOW_GRASS_BLOCK.get(),
                     Blocks.GRASS_BLOCK, NatureBlocks.HALLOW_GRASS_BLOCK.get(),
-                    NatureBlocks.TR_CRIMSON_GRASS_BLOCK.get(), NatureBlocks.HALLOW_GRASS_BLOCK.get(),
+                    NatureBlocks.CRIMSON_GRASS_BLOCK.get(), NatureBlocks.HALLOW_GRASS_BLOCK.get(),
                     NatureBlocks.CORRUPT_GRASS_BLOCK.get(), NatureBlocks.HALLOW_GRASS_BLOCK.get())));
     public static final DeferredItem<GrassSeedItem> ASH_GRASS_SEED = ITEMS.register("ash_grass_seed", () -> new GrassSeedItem(Map.of(NatureBlocks.ASH_BLOCK.get(), NatureBlocks.ASH_GRASS_BLOCK.get())));
 
@@ -117,7 +117,7 @@ public final class ModItems {
     public static final DeferredItem<BlockItem> GLOWING_MUSHROOM_CATTAILS = BLOCK_ITEMS.register("glowing_mushroom_cattails", () -> new BlockItem(NatureBlocks.GLOWING_MUSHROOM_CATTAILS_HEAD.get(), new Item.Properties().stacksTo(64)));
     public static final DeferredItem<BlockItem> HALLOW_CATTAILS = BLOCK_ITEMS.register("hallow_cattails", () -> new BlockItem(NatureBlocks.HALLOW_CATTAILS_HEAD.get(), new Item.Properties().stacksTo(64)));
     public static final DeferredItem<BlockItem> EBONY_CATTAILS = BLOCK_ITEMS.register("ebony_cattails", () -> new BlockItem(NatureBlocks.EBONY_CATTAILS_HEAD.get(), new Item.Properties().stacksTo(64)));
-    public static final DeferredItem<BlockItem> TR_CRIMSON_CATTAILS = BLOCK_ITEMS.register("tr_crimson_cattails", () -> new BlockItem(NatureBlocks.TR_CRIMSON_CATTAILS_HEAD.get(), new Item.Properties().stacksTo(64)));
+    public static final DeferredItem<BlockItem> CRIMSON_CATTAILS = BLOCK_ITEMS.register("crimson_cattails", () -> new BlockItem(NatureBlocks.CRIMSON_CATTAILS_HEAD.get(), new Item.Properties().stacksTo(64)));
 
     public static final DeferredItem<BlockPlacingWandItem> LIVING_WOOD_WAND = ITEMS.register("living_wood_wand", () -> new BlockPlacingWandItem(BlockTags.LOGS, NatureBlocks.LIVING_LOG_BLOCKS.getLog().get()));
     public static final DeferredItem<BlockPlacingWandItem> LEAF_WAND = ITEMS.register("leaf_wand", () -> new BlockPlacingWandItem(BlockTags.LEAVES, NatureBlocks.LIVING_LOG_BLOCKS.getLeaves().get()));

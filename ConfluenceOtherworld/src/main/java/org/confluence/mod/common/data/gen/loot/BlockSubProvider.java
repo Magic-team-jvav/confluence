@@ -253,8 +253,8 @@ public class BlockSubProvider extends BlockLootSubProvider {
         this.add(CORRUPT_GRASS_BLOCK.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, Blocks.DIRT));
         this.add(CORRUPT_JUNGLE_GRASS_BLOCK.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, Blocks.MUD));
         this.add(JUNGLE_GRASS_BLOCK.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, Blocks.MUD));
-        this.add(TR_CRIMSON_GRASS_BLOCK.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, Blocks.DIRT));
-        this.add(TR_CRIMSON_JUNGLE_GRASS_BLOCK.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, Blocks.MUD));
+        this.add(CRIMSON_GRASS_BLOCK.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, Blocks.DIRT));
+        this.add(CRIMSON_JUNGLE_GRASS_BLOCK.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, Blocks.MUD));
         this.add(MUSHROOM_GRASS_BLOCK.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, Blocks.MUD));
         this.add(HALLOW_GRASS_BLOCK.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, Blocks.DIRT));
 
@@ -577,9 +577,9 @@ public class BlockSubProvider extends BlockLootSubProvider {
                         .when(this.hasSilkTouch())
                         .when(HAS_SHEARS))
         );
-        add(TR_CRIMSON_GRASS.get(), LootTable.lootTable()
+        add(CRIMSON_GRASS.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TR_CRIMSON_GRASS.get()))
+                        .add(LootItem.lootTableItem(CRIMSON_GRASS.get()))
                         .when(this.hasSilkTouch())
                         .when(HAS_SHEARS))
         );

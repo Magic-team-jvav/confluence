@@ -1903,8 +1903,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.PINK_PACKED_ICE.get(), "粉浮冰块");
         add(NatureBlocks.PURPLE_ICE.get(), "紫冰块");
         add(NatureBlocks.PURPLE_PACKED_ICE.get(), "紫浮冰块");
-        add(NatureBlocks.TR_CRIMSON_GRASS_BLOCK.get(), "猩红草方块");
-        add(NatureBlocks.TR_CRIMSON_JUNGLE_GRASS_BLOCK.get(), "猩红丛林草方块");
+        add(NatureBlocks.CRIMSON_GRASS_BLOCK.get(), "猩红草方块");
+        add(NatureBlocks.CRIMSON_JUNGLE_GRASS_BLOCK.get(), "猩红丛林草方块");
         add(NatureBlocks.MUSHROOM_GRASS_BLOCK.get(), "蘑菇草方块");
         add(NatureBlocks.JUNGLE_GRASS_BLOCK.get(), "丛林草方块");
         add(NatureBlocks.ASH_BLOCK.get(), "灰烬块");
@@ -1986,7 +1986,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.JUNGLE_SPORE.get(), "丛林孢子");
         add(NatureBlocks.JUNGLE_ROSE.get(), "丛林玫瑰");
         add(NatureBlocks.CORRUPT_GRASS.get(), "腐化草");
-        add(NatureBlocks.TR_CRIMSON_GRASS.get(), "猩红草");
+        add(NatureBlocks.CRIMSON_GRASS.get(), "猩红草");
         add(NatureBlocks.HALLOW_GRASS.get(), "神圣草");
         add(NatureBlocks.NATURES_GIFT.get(), "大自然的恩赐");
         //藤蔓
@@ -1995,7 +1995,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.FOREST_DROOPING_VINE.get(), "森林垂藤");
         add(NatureBlocks.JUNGLE_DROOPING_VINE.get(), "丛林垂藤");
         add(NatureBlocks.CORRUPT_DROOPING_VINE.get(), "腐化垂藤");
-        add(NatureBlocks.TR_CRIMSON_DROOPING_VINE.get(), "猩红垂藤");
+        add(NatureBlocks.CRIMSON_DROOPING_VINE.get(), "猩红垂藤");
         add(NatureBlocks.HALLOW_DROOPING_VINE.get(), "神圣垂藤");
 
         add(NatureBlocks.GREEN_MOSS.get(), "绿苔藓");
@@ -2015,7 +2015,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.GLOWING_MUSHROOM_CATTAILS_BODY.get(), "发光蘑菇香蒲");
         add(NatureBlocks.HALLOW_CATTAILS_BODY.get(), "神圣香蒲");
         add(NatureBlocks.EBONY_CATTAILS_BODY.get(), "腐化香蒲");
-        add(NatureBlocks.TR_CRIMSON_CATTAILS_BODY.get(), "猩红香蒲");
+        add(NatureBlocks.CRIMSON_CATTAILS_BODY.get(), "猩红香蒲");
         add(NatureBlocks.FLOATING_WHEAT.get(), "飘飘麦");
         add(NatureBlocks.COCONUT_BLOCK.get(), "椰子方块");
         add(NatureBlocks.CRIMSON_VENUS_FLYTRAP_BLOCK.get(), "猩红捕蝇草");
@@ -2278,7 +2278,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(PotBlocks.OCEAN_POT.get(), "海洋罐子");
         add(PotBlocks.PYRAMID_POT.get(), "祭祀罐子");
         add(PotBlocks.CORRUPTION_POT.get(), "蠕虫罐子");
-        add(PotBlocks.TR_CRIMSON_POT.get(), "血肉罐子");
+        add(PotBlocks.CRIMSON_POT.get(), "血肉罐子");
         add(PotBlocks.DUNGEON_POT.get(), "地牢罐子");
         add(PotBlocks.UNDERWORLD_POT.get(), "炎烬罐子");
         add(PotBlocks.LIHZAHRD_POT.get(), "神庙罐子");
@@ -2762,7 +2762,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModItems.GLOWING_MUSHROOM_CATTAILS.get(), "发光蘑菇香蒲");
         add(ModItems.HALLOW_CATTAILS.get(), "神圣香蒲");
         add(ModItems.EBONY_CATTAILS.get(), "腐化香蒲");
-        add(ModItems.TR_CRIMSON_CATTAILS.get(), "猩红香蒲");
+        add(ModItems.CRIMSON_CATTAILS.get(), "猩红香蒲");
         add(ModItems.LIVING_WOOD_WAND.get(), "生命木魔棒");
         add(ModItems.LEAF_WAND.get(), "树叶魔棒");
         add(ModItems.LIVING_MAHOGANY_WAND.get(), "生命红木魔棒");

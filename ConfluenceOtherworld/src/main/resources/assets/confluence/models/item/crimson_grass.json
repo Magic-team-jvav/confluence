@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "confluence:block/tr_crimson_grass"
+    "layer0": "confluence:block/crimson_grass"
   }
 }

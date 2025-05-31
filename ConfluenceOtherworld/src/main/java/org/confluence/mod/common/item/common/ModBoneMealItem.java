@@ -74,7 +74,7 @@ public class ModBoneMealItem extends Item {
                 if (targetState.isAir()) {
                     String blockType = null;
                     if (stack.is(ConsumableItems.BLOODSTAINED_POWDER.get()) &&
-                            (state.is(NatureBlocks.TR_CRIMSON_GRASS_BLOCK) || state.is(NatureBlocks.TR_CRIMSON_JUNGLE_GRASS_BLOCK))) {
+                            (state.is(NatureBlocks.CRIMSON_GRASS_BLOCK) || state.is(NatureBlocks.CRIMSON_JUNGLE_GRASS_BLOCK))) {
                         blockType = "crimson";
                     } else if (stack.is(ConsumableItems.ROTTEN_BONE_DUST.get()) &&
                             (state.is(NatureBlocks.CORRUPT_GRASS_BLOCK) || state.is(NatureBlocks.CORRUPT_JUNGLE_GRASS_BLOCK))) {
@@ -98,7 +98,7 @@ public class ModBoneMealItem extends Item {
         BlockState blockState = Blocks.AIR.defaultBlockState();
         if (random < 90) {
             blockState = switch (blockType) {
-                case "crimson" -> NatureBlocks.TR_CRIMSON_GRASS.get().defaultBlockState();
+                case "crimson" -> NatureBlocks.CRIMSON_GRASS.get().defaultBlockState();
                 case "corrupt" -> NatureBlocks.CORRUPT_GRASS.get().defaultBlockState();
                 default -> blockState;
             };

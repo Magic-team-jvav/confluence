@@ -12,7 +12,7 @@
     "dirt_provider": {
       "type": "minecraft:simple_state_provider",
       "state": {
-        "Name": "confluence:tr_crimson_grass_block"
+        "Name": "confluence:crimson_grass_block"
       }
     },
     "trunk_provider": {

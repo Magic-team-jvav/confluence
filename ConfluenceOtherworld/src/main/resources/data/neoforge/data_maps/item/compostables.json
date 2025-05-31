@@ -129,7 +129,7 @@
         "confluence:corrupt_grass": {
             "chance": 0.45
         },
-        "confluence:tr_crimson_grass": {
+        "confluence:crimson_grass": {
             "chance": 0.45
         },
         "confluence:hallow_grass": {

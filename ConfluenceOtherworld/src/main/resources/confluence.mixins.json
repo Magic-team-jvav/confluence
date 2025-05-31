@@ -69,6 +69,7 @@
         "integration.terra_entity.ServerBoundEventPacketMixin",
         "integration.terra_entity.SkeletronHandMixin",
         "integration.terra_entity.SkeletronMixin",
+        "integration.terra_entity.TEBossEntitiesMixin",
         "integration.terra_entity.TEUtilsMixin",
         "integration.terrablender.MixinMultiNoiseBiomeSourceSquared",
         "integration.touhoulittlemaid.EntityMaidMixin",

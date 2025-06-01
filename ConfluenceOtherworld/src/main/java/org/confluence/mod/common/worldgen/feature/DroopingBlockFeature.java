@@ -35,8 +35,8 @@ public class DroopingBlockFeature extends Feature<DroopingBlockFeature.Config> {
         BlockPos baseBlockPos = context.origin();
         BlockState droopingBlockBlockState = config.droopingBlock.getState(random, baseBlockPos);
         int height = config.height + random.nextInt(config.extraHeight + 1);
-        int minY = context.chunkGenerator().getMinY();
-        int endY = -minY;
+        int minY = level.getMinBuildHeight();
+        int endY = minY;
         boolean toGround = config.toGround;
         boolean placed = level.getBlockState(baseBlockPos).canBeReplaced() && baseBlockPos.getY() > -63;
 
@@ -45,14 +45,14 @@ public class DroopingBlockFeature extends Feature<DroopingBlockFeature.Config> {
                 boolean down;
                 int yCheck = 0;
                 do {
-                    if ((baseBlockPos.getY() + yCheck) <= -minY) break;
+                    if ((baseBlockPos.getY() + yCheck) < minY) break;
                     endY = baseBlockPos.getY() + yCheck;
                     yCheck--;
                     down = level.getBlockState(baseBlockPos.offset(0, yCheck, 0)).canBeReplaced();
                 } while (down);
             } else {
                 for (int yCheck = 0; yCheck < height; yCheck++) {
-                    if ((baseBlockPos.getY() - yCheck) <= -minY) break;
+                    if ((baseBlockPos.getY() - yCheck) < minY) break;
                     if (!level.getBlockState(baseBlockPos.offset(0, -yCheck, 0)).canBeReplaced()) break;
                     endY = baseBlockPos.getY() - yCheck;
                 }

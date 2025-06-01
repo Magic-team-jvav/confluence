@@ -1,9 +1,0 @@
-{
-    "type": "minecraft:stonecutting",
-    "ingredient": {
-        "item": "minecraft:packed_ice"
-    },
-    "result": {
-        "id": "confluence:packed_ice_bricks"
-    }
-}

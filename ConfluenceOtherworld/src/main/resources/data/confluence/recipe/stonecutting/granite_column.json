@@ -1,9 +1,0 @@
-{
-    "type": "minecraft:stonecutting",
-    "ingredient": {
-        "item":"confluence:polished_granite"
-    },
-    "result": {
-        "id": "confluence:granite_column"
-    }
-}

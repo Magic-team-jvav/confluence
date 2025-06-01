@@ -1,9 +1,0 @@
-{
-    "type": "minecraft:stonecutting",
-    "ingredient": {
-        "item":"confluence:silver_block"
-    },
-    "result": {
-        "id": "confluence:silver_bricks"
-    }
-}

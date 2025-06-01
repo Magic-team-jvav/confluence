@@ -15,10 +15,7 @@ import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.lib.common.recipe.AmountIngredient;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.common.init.block.DecorativeBlocks;
-import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.common.init.block.ModBlocks;
-import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.recipe.*;
 import org.confluence.terra_curio.common.init.TCItems;
@@ -50,6 +47,24 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         stonecutting(recipeOutput, "", DecorativeBlocks.BLUE_ICE_BRICKS.toStack(4), Ingredient.of(Blocks.BLUE_ICE));
         stonecutting(recipeOutput, "", MaterialItems.CHINA_BOWL.toStack(1), Ingredient.of(Items.WHITE_TERRACOTTA));
         stonecutting(recipeOutput, "", MaterialItems.CHINA_PLATE.toStack(1), Ingredient.of(Items.WHITE_TERRACOTTA));
+        stonecutting(recipeOutput, "", DecorativeBlocks.OBSIDIAN_BRICKS.toStack(1), Ingredient.of(DecorativeBlocks.CHISELED_OBSIDIAN_BRICKS));
+        stonecutting(recipeOutput, "", DecorativeBlocks.GRANITE_COLUMN.toStack(1), Ingredient.of(DecorativeBlocks.POLISHED_GRANITE));
+        stonecutting(recipeOutput, "", DecorativeBlocks.OBSIDIAN_SMALL_BRICKS.toStack(1), Ingredient.of(DecorativeBlocks.OBSIDIAN_BRICKS));
+        stonecutting(recipeOutput, "", DecorativeBlocks.SMOOTH_OBSIDIAN.toStack(1), Ingredient.of(DecorativeBlocks.OBSIDIAN_BRICKS));
+        stonecutting(recipeOutput, "", DecorativeBlocks.SNOW_BRICKS.toStack(1), Ingredient.of(Items.SNOW_BLOCK));
+
+
+        stonecutting(recipeOutput, "", DecorativeBlocks.GOLDEN_BRICKS.toStack(9), Ingredient.of(Items.GOLD_BLOCK));
+        stonecutting(recipeOutput, "", DecorativeBlocks.COPPER_BRICKS.toStack(9), Ingredient.of(Items.COPPER_BLOCK));
+        stonecutting(recipeOutput, "", DecorativeBlocks.IRON_BRICKS.toStack(9), Ingredient.of(Items.IRON_BLOCK));
+        stonecutting(recipeOutput, "", DecorativeBlocks.TIN_BRICKS.toStack(9), Ingredient.of(OreBlocks.TIN_BLOCK));
+        stonecutting(recipeOutput, "", DecorativeBlocks.LEAD_BRICKS.toStack(9), Ingredient.of(OreBlocks.LEAD_BLOCK));
+        stonecutting(recipeOutput, "", DecorativeBlocks.SILVER_BRICKS.toStack(9), Ingredient.of(OreBlocks.SILVER_BLOCK));
+        stonecutting(recipeOutput, "", DecorativeBlocks.TUNGSTEN_BRICKS.toStack(9), Ingredient.of(OreBlocks.TUNGSTEN_BLOCK));
+        stonecutting(recipeOutput, "", DecorativeBlocks.PLATINUM_BRICKS.toStack(9), Ingredient.of(OreBlocks.PLATINUM_BLOCK));
+        stonecutting(recipeOutput, "", DecorativeBlocks.DEMONITE_ORE_BRICKS.toStack(9), Ingredient.of(OreBlocks.DEMONITE_BLOCK));
+        stonecutting(recipeOutput, "", DecorativeBlocks.CRIMTANE_ORE_BRICKS.toStack(9), Ingredient.of(OreBlocks.CRIMTANE_BLOCK));
+
 
         skyMill(recipeOutput, DecorativeBlocks.BOUNCY_CLOUD_BLOCK.toStack(), Ingredient.of(MaterialItems.PINK_GEL), Ingredient.of(NatureBlocks.CLOUD_BLOCK));
 

@@ -14,6 +14,8 @@ import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvi
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import org.confluence.lib.util.FeatureUtils;
 
+import static org.confluence.mod.common.block.common.BaseRopeBlock.WATERLOGGED;
+
 public class DroopingBlockFeature extends Feature<DroopingBlockFeature.Config> {
     public DroopingBlockFeature(Codec<Config> pCodec) {
         super(pCodec);
@@ -61,7 +63,8 @@ public class DroopingBlockFeature extends Feature<DroopingBlockFeature.Config> {
 
         if (placed) {
             for (int i = endY; i <= baseBlockPos.getY(); i++) {
-                level.setBlock(baseBlockPos.offset(0, -baseBlockPos.getY() + i, 0), droopingBlockBlockState, 3);
+                BlockState toPlace = level.getBlockState(baseBlockPos.offset(0, -baseBlockPos.getY() + i, 0));
+                level.setBlock(baseBlockPos.offset(0, -baseBlockPos.getY() + i, 0), ((toPlace.is(Blocks.WATER) || ((toPlace == toPlace.trySetValue(WATERLOGGED, true)) && toPlace.hasProperty(WATERLOGGED))) ? droopingBlockBlockState.trySetValue(WATERLOGGED, true) : droopingBlockBlockState), 3);
             }
             return true;
         }

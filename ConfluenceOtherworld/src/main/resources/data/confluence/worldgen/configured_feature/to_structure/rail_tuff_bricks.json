@@ -8,7 +8,7 @@
       }
     },
     "height": 1,
-    "height_more": 1,
+    "extra_height": 1,
     "to_ground": true
   }
 }

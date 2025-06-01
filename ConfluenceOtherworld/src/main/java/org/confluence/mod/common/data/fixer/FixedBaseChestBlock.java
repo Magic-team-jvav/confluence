@@ -286,7 +286,7 @@ public class FixedBaseChestBlock extends ChestBlock {
                 case LOCKED_GOLDEN, UNLOCKED_GOLDEN -> ChestBlocks.GOLDEN_CHEST.get();
                 case LOCKED_SHADOW, UNLOCKED_SHADOW -> ChestBlocks.SHADOW_CHEST.get();
                 case UNLOCKED_FROZEN -> ChestBlocks.FROZEN_CHEST.get();
-                case UNLOCKED_IVY -> ChestBlocks.IVY_CHEST.get();
+                case UNLOCKED_LVY -> ChestBlocks.IVY_CHEST.get();
                 case UNLOCKED_WATER -> ChestBlocks.WATER_CHEST.get();
                 case UNLOCKED_SKYWARE -> ChestBlocks.SKYWARE_CHEST.get();
                 case UNLOCKED_SANDSTONE -> ChestBlocks.SANDSTONE_CHEST.get();
@@ -303,7 +303,7 @@ public class FixedBaseChestBlock extends ChestBlock {
         LOCKED_SHADOW(2, "locked_shadow", 3),
         UNLOCKED_SHADOW(3, "unlocked_shadow"),
         UNLOCKED_FROZEN(4, "unlocked_frozen"),
-        UNLOCKED_IVY(5, "unlocked_ivy"),
+        UNLOCKED_LVY(5, "unlocked_lvy"),
         UNLOCKED_WATER(6, "unlocked_water"),
         UNLOCKED_SKYWARE(7, "unlocked_skyware"),
         UNLOCKED_NORMAL(8, "unlocked_normal"),
@@ -351,7 +351,7 @@ public class FixedBaseChestBlock extends ChestBlock {
             if (entity instanceof ServerPlayer player) {
                 CompoundTag tag = LibUtils.getItemStackNbt(stack);
                 Variant variantId = Variant.byId(tag.getInt("VariantId"));
-                ItemStack itemStack = Entity.getBlockByVariant(variantId).asItem().getDefaultInstance();
+                ItemStack itemStack = new ItemStack(Entity.getBlockByVariant(variantId), stack.getCount());
                 itemStack.set(DataComponents.BLOCK_STATE, new BlockItemStateProperties(Map.of("unlocked", variantId.unlock < 0 ? "true" : "false")));
                 player.getInventory().setItem(slotId, itemStack);
             }

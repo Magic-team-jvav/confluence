@@ -1,6 +1,7 @@
 package org.confluence.mod.util;
 
 import com.nlf.calendar.Lunar;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import org.confluence.mod.common.init.item.ConsumableItems;
@@ -63,10 +64,10 @@ public final class DateUtils {
         return calendar.get(Calendar.MONTH) == Calendar.DECEMBER && calendar.get(Calendar.DATE) >= 15;
     }
 
-    public static Item getHolidayGift() {
+    public static Item getHolidayGift(RandomSource random) {
         Lunar lunar = getLunar();
         if (isXinNian(lunar)) return ConsumableItems.RED_ENVELOPE.get();
-        if (isDuanWu(lunar)) return FoodItems.ZONGZI.get();
+        if (isDuanWu(lunar)) return random.nextBoolean() ? FoodItems.ZONGZI.get() : FoodItems.MEAT_STUFFED_ZONGZI.get();
         if (isZhongQiu(lunar)) return FoodItems.EGG_YOLK_MOONCAKES.get();
         Calendar calendar = getCalendar();
         if (isHalloween(calendar)) return ConsumableItems.GOODIE_BAG.get();

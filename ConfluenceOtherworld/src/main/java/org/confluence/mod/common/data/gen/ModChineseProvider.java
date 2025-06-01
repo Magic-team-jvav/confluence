@@ -382,8 +382,11 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.wrappedCrimsonHeart.tooltip", "启用后，新生成的猩红洞穴将会生成被包裹的猩红心脏");
         add("confluence.configuration.instantlyHardmodeConversion", "困难模式快速转换");
         add("confluence.configuration.instantlyHardmodeConversion.tooltip", "启用后，转换至困难模式的过程将会加快并以完全卡顿的形式进行，请评估电脑性能斟酌打开此配置");
-        add("confluence.configuration.showItemPrice", "显示物品价格");
-        add("confluence.configuration.showItemPrice.tooltip", "启用以查看该物品出售于NPC时的价格");
+        add("confluence.configuration.sellPriceDisplay", "物品售价显示");
+        add("confluence.configuration.sellPriceDisplay.tooltip", "切换查看该物品出售于NPC时的价格的时机");
+        add("confluence.configuration.sellPriceDisplay.never", "任何时候都不显示");
+        add("confluence.configuration.sellPriceDisplay.everywhere", "任何时候都显示");
+        add("confluence.configuration.sellPriceDisplay.trade_screen", "仅在交易界面显示");
         add("confluence.configuration.Recipe", "合成配方机制");
         add("confluence.configuration.Recipe.button", "合成配方机制");
         add("confluence.configuration.Recipe.tooltip", "一些合成配方相关设置");

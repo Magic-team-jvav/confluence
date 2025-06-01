@@ -413,8 +413,11 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.configuration.instantlyHardmodeConversion.tooltip", "When enabled, the transition to Hard Mode will be accelerated and occur with a complete freeze. Please assess your computer's performance before enabling this configuration.");
         add("confluence.configuration.wrappedCrimson_heart", "Exposed Crimson Heart");
         add("confluence.configuration.wrappedCrimson_heart.tooltip", "When enabled, newly generated Crimson Caverns will spawn exposed Crimson Hearts");
-        add("confluence.configuration.showItemPrice", "Show Item Price");
-        add("confluence.configuration.showItemPrice.tooltip", "Enable to view the price when selling items to NPCs");
+        add("confluence.configuration.sellPriceDisplay", "Sell Price Display");
+        add("confluence.configuration.sellPriceDisplay.tooltip", "Toggles the timing to see the price of the item when it is sold to NPCs");
+        add("confluence.configuration.sellPriceDisplay.never", "Not displayed at any time");
+        add("confluence.configuration.sellPriceDisplay.everywhere", "Displayed at all times");
+        add("confluence.configuration.sellPriceDisplay.trade_screen", "Only displayed in the trading screen");
         add("confluence.configuration.Recipe", "Crafting Recipe System");
         add("confluence.configuration.Recipe.button", "Crafting Recipe System");
         add("confluence.configuration.Recipe.tooltip", "Settings related to crafting recipes");

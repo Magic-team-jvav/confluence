@@ -26,13 +26,16 @@
             "direction_of_search": "down",
             "max_steps": 12,
             "target_condition": {
-                "type": "minecraft:has_sturdy_face",
+                "type": "minecraft:matching_blocks",
                 "offset": [
                     0,
                     -1,
                     0
                 ],
-                "direction": "up"
+                "blocks": [
+                    "minecraft:mud",
+                    "confluence:mushroom_grass_block"
+                ]
             }
         }
     ]

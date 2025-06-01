@@ -6,7 +6,8 @@
   "features": [
     "confluence:glowing_mushroom",
     "confluence:glowing_mushroom_life_crystal",
-    "confluence:glowing_mushroom_tree"
+    "confluence:glowing_mushroom_tree",
+    "confluence:glowing_mushroom_vine"
   ],
   "step": "vegetal_decoration"
 }

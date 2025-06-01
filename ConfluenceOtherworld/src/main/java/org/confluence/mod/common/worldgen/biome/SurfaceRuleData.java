@@ -52,6 +52,7 @@ public class SurfaceRuleData {
     private static final SurfaceRules.ConditionSource sandSeed = SurfaceRules.verticalGradient("minecraft:deepslate", VerticalAnchor.absolute(20), VerticalAnchor.absolute(25));
     private static final SurfaceRules.ConditionSource redSandSeed = SurfaceRules.verticalGradient("minecraft:deepslate", VerticalAnchor.absolute(74), VerticalAnchor.absolute(76));
     private static final SurfaceRules.ConditionSource iceSeed = SurfaceRules.verticalGradient("minecraft:deepslate", VerticalAnchor.absolute(20), VerticalAnchor.absolute(35));
+    private static final SurfaceRules.ConditionSource mushroomSeed = SurfaceRules.verticalGradient("minecraft:deepslate", VerticalAnchor.absolute(40), VerticalAnchor.absolute(42));
     //群系组合
     private static final SurfaceRules.ConditionSource isOcean = SurfaceRules.isBiome(Biomes.OCEAN, Biomes.WARM_OCEAN, Biomes.LUKEWARM_OCEAN, Biomes.COLD_OCEAN, Biomes.FROZEN_OCEAN, Biomes.DEEP_OCEAN, Biomes.DEEP_FROZEN_OCEAN, Biomes.DEEP_LUKEWARM_OCEAN, Biomes.DEEP_COLD_OCEAN);
     private static final SurfaceRules.ConditionSource sandOcean = SurfaceRules.isBiome(Biomes.WARM_OCEAN, Biomes.DEEP_LUKEWARM_OCEAN);
@@ -114,12 +115,16 @@ public class SurfaceRuleData {
 
                 //发光蘑菇地
                 SurfaceRules.ifTrue(SurfaceRules.isBiome(ModBiomes.GLOWING_MUSHROOM),
-                        SurfaceRules.sequence(
-                                SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR,
-                                        mushroomSurface
-                                ),
-                                SurfaceRules.ifTrue(SurfaceRules.UNDER_FLOOR,
-                                        MUD
+                        SurfaceRules.ifTrue(
+                                mushroomSeed,
+                                SurfaceRules.ifTrue(
+                                        SurfaceRules.not(bedrockFloorSeed),
+                                        SurfaceRules.sequence(
+                                                SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR,
+                                                        mushroomSurface
+                                                ),
+                                                MUD
+                                        )
                                 )
                         )
                 )

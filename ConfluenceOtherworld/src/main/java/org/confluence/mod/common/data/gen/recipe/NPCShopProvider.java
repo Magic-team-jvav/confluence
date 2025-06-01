@@ -93,6 +93,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(Blocks.ANVIL)
                 .add(Blocks.TORCH)
                 .add(Items.ARROW)
+                .add(Items.ARROW,100)
                 .add(ModBlocks.ROPE)
                 .add(ConsumableItems.SHURIKEN)
                 .add(FunctionalBlocks.PIGGY_BANK)

@@ -19,6 +19,7 @@ import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.ToolItems;
+import org.confluence.terraentity.init.entity.TENpcEntities;
 
 import static org.confluence.mod.api.event.ShimmerEntityTransmutationEvent.addEntity;
 
@@ -103,6 +104,8 @@ public final class ModFluids {
         addEntity(EntityType.VEX, EntityType.ALLAY);
         addEntity(entity -> entity instanceof Creeper creeper && creeper.isPowered(), EntityType.CREEPER);
         addEntity(EntityType.MOOSHROOM, EntityType.COW);
+        addEntity(TENpcEntities.ANGLER.get(), TENpcEntities.FEMALE_ANGLER.get());
+        addEntity(TENpcEntities.FEMALE_ANGLER.get(), TENpcEntities.ANGLER.get());
     }
 
     public static void initialize() {}

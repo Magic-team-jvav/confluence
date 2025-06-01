@@ -1,6 +1,7 @@
 package org.confluence.mod.mixin.entity;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSources;
 import net.minecraft.world.entity.Entity;
@@ -21,10 +22,14 @@ import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.api.event.ShimmerEntityTransmutationEvent;
 import org.confluence.mod.common.data.saved.GamePhase;
 import org.confluence.mod.common.data.saved.KillBoard;
+import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.item.ArmorItems;
+import org.confluence.mod.integration.terra_entity.IAbstractTerraNPC;
 import org.confluence.mod.mixed.IEntity;
+import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
+import org.confluence.terraentity.entity.npc.AnglerNPC;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -203,6 +208,17 @@ public abstract class EntityMixin implements IEntity, SelfGetter<Entity> {
                     livingTarget.setHealth(livingTarget.getMaxHealth() * ratio);
                 }
                 event.setTarget(target);
+                if (sourceEntity instanceof AbstractTerraNPC sourceNpc && target instanceof AbstractTerraNPC targetNpc) {
+                    targetNpc.setHouse(sourceNpc.house);
+                    event.setSpeedY(0.7);
+                    NPCSpawner.INSTANCE.setNPCAlive(((IAbstractTerraNPC) sourceNpc).confluence$getRegion(), sourceNpc.getType(), false);
+                    if (target instanceof AnglerNPC anglerNPC) {
+                        anglerNPC.setWakeUp(true);
+                        anglerNPC.initName();
+                        anglerNPC.refreshBrain((ServerLevel) sourceEntity.level());
+                        anglerNPC.refreshDimensions();
+                    }
+                }
                 return;
             }
         }

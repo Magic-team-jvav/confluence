@@ -127,6 +127,10 @@ public class NPCSpawner implements IGlobalData {
         return count;
     }
 
+    public Object2BooleanMap<EntityType<?>> getRegionAliveDetails(Region region) {
+        return npcAlive.computeIfAbsent(region, region1 -> new Object2BooleanOpenHashMap<>());
+    }
+
     public boolean hasNPCAlive(Region region, EntityType<?> entityType) {
         Object2BooleanMap<EntityType<?>> map = npcAlive.get(region);
         return map != null && map.getOrDefault(entityType, false);
@@ -134,7 +138,7 @@ public class NPCSpawner implements IGlobalData {
 
     public void setNPCAlive(Region region, EntityType<?> entityType, boolean alive) {
         if (alive) {
-            npcAlive.computeIfAbsent(region, area -> new Object2BooleanOpenHashMap<>()).put(entityType, true);
+            getRegionAliveDetails(region).put(entityType, true);
             npcSpawned.add(entityType);
         } else {
             Object2BooleanMap<EntityType<?>> map = npcAlive.get(region);
@@ -328,7 +332,7 @@ public class NPCSpawner implements IGlobalData {
                     npc.setPos(closestBiome3d.getFirst().atY(level.getSeaLevel()).offset(dx, 0, dz).getCenter());
                     level.addFreshEntity(npc);
                     IAbstractTerraNPC.of(npc).confluence$setRegion(playerRegion);
-                    npcAlive.computeIfAbsent(playerRegion, region1 -> new Object2BooleanOpenHashMap<>()).put(TENpcEntities.ANGLER.get(), true);
+                    getRegionAliveDetails(playerRegion).put(TENpcEntities.ANGLER.get(), true);
                     return true;
                 }
             }
@@ -424,7 +428,7 @@ public class NPCSpawner implements IGlobalData {
                                 npc.setPos(offset.getBottomCenter());
                                 level.addFreshEntity(npc);
                                 IAbstractTerraNPC.of(npc).confluence$setRegion(npcRegion);
-                                npcAlive.computeIfAbsent(npcRegion, region1 -> new Object2BooleanOpenHashMap<>()).put(TENpcEntities.OLD_MAN.get(), true);
+                                getRegionAliveDetails(npcRegion).put(TENpcEntities.OLD_MAN.get(), true);
                                 return true;
                             }
                             return false;

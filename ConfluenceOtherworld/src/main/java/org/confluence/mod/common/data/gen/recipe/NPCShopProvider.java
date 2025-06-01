@@ -176,7 +176,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(SellTrade.INSTANCE)
                 .build());
 
-        shop(TENpcEntities.ANGLER.getId()).addRecipe(new Builder()
+        NPCTradeManager angler = new Builder()
                 .add(TradeTask.create(DynamicAnglerTradeTask.builder(ItemTradeLootTable.builder()
                                 .addCost(CrateBlocks.WOODEN_CRATE.toStack()) // 在没有任务鱼机制前，用木匣代替
                                 .setLootTable(Confluence.asResource("gameplay/fishing_quests_0"))
@@ -189,7 +189,9 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                         .addResult(30, Collections.singletonList(FishingPoleItems.GOLDEN_FISHING_ROD.toStack()))
 //                        .setTitle("title.terra_entity.npc_trade.task.fishman")
                         .build()))
-                .build());
+                .build();
+        shop(TENpcEntities.ANGLER.getId()).addRecipe(angler);
+        shop(TENpcEntities.FEMALE_ANGLER.getId()).addRecipe(angler);
 
         shop(TENpcEntities.OLD_MAN.getId()).addRecipe(new Builder()
                 .build());

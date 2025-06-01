@@ -104,6 +104,16 @@
       "dialogs.confluence.angler.5"
     ]
   },
+  "terra_entity:female_angler": {
+    "dialogs": [
+      "dialogs.confluence.angler.0",
+      "dialogs.confluence.angler.1",
+      "dialogs.confluence.angler.2",
+      "dialogs.confluence.angler.3",
+      "dialogs.confluence.angler.4",
+      "dialogs.confluence.angler.5"
+    ]
+  },
   "terra_entity:old_man": {
     "dialogs": [
       "dialogs.confluence.old_man.0",

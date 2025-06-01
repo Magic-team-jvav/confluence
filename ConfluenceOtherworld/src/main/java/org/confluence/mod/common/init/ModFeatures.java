@@ -125,32 +125,32 @@ public final class ModFeatures {
     }
 
     public static class Placed {
-        public static final ResourceKey<PlacedFeature> PLACED_TREES_CORRUPTION = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("trees_corruption"));
-        public static final ResourceKey<PlacedFeature> PLACED_CORRUPTION_POT = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("corruption_pot"));
-        public static final ResourceKey<PlacedFeature> PLACED_CORRUPT_GRASS = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("corrupt_grass"));
-        public static final ResourceKey<PlacedFeature> PLACED_DEMON_ALTAR = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("demon_altar"));
-        public static final ResourceKey<PlacedFeature> PLACED_VILE_MUSHROOM = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("vile_mushroom"));
-        public static final ResourceKey<PlacedFeature> PLACED_THE_CORRUPTION_TREE_CHECKED_0 = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("the_corruption_tree_checked_0"));
-        public static final ResourceKey<PlacedFeature> PLACED_THE_CORRUPTION_TREE_CHECKED_1 = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("the_corruption_tree_checked_1"));
-        public static final ResourceKey<PlacedFeature> PLACED_THE_CORRUPTION_TREE_CHECKED_2 = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("the_corruption_tree_checked_2"));
+        public static final ResourceKey<PlacedFeature> TREES_CORRUPTION = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("trees_corruption"));
+        public static final ResourceKey<PlacedFeature> CORRUPTION_POT = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("corruption_pot"));
+        public static final ResourceKey<PlacedFeature> CORRUPT_GRASS = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("corrupt_grass"));
+        public static final ResourceKey<PlacedFeature> DEMON_ALTAR = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("demon_altar"));
+        public static final ResourceKey<PlacedFeature> VILE_MUSHROOM = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("vile_mushroom"));
+        public static final ResourceKey<PlacedFeature> THE_CORRUPTION_TREE_CHECKED_0 = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("the_corruption_tree_checked_0"));
+        public static final ResourceKey<PlacedFeature> THE_CORRUPTION_TREE_CHECKED_1 = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("the_corruption_tree_checked_1"));
+        public static final ResourceKey<PlacedFeature> THE_CORRUPTION_TREE_CHECKED_2 = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("the_corruption_tree_checked_2"));
 
-        public static final ResourceKey<PlacedFeature> PLACED_TREES_CRIMSON = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("trees_crimson"));
-        public static final ResourceKey<PlacedFeature> PLACED_CRIMSON_ALTAR = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("crimson_altar"));
-        public static final ResourceKey<PlacedFeature> PLACED_CRIMSON_POT = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("crimson_pot"));
-        public static final ResourceKey<PlacedFeature> PLACED_CRIMSON_GRASS = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("crimson_grass"));
-        public static final ResourceKey<PlacedFeature> PLACED_CRIMSON_TREE_CHECKED_0 = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("crimson_tree_checked_0"));
-        public static final ResourceKey<PlacedFeature> PLACED_CRIMSON_TREE_CHECKED_1 = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("crimson_tree_checked_1"));
-        public static final ResourceKey<PlacedFeature> PLACED_VICIOUS_MUSHROOM = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("vicious_mushroom"));
+        public static final ResourceKey<PlacedFeature> TREES_CRIMSON = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("trees_crimson"));
+        public static final ResourceKey<PlacedFeature> CRIMSON_ALTAR = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("crimson_altar"));
+        public static final ResourceKey<PlacedFeature> CRIMSON_POT = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("crimson_pot"));
+        public static final ResourceKey<PlacedFeature> CRIMSON_GRASS = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("crimson_grass"));
+        public static final ResourceKey<PlacedFeature> CRIMSON_TREE_CHECKED_0 = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("crimson_tree_checked_0"));
+        public static final ResourceKey<PlacedFeature> CRIMSON_TREE_CHECKED_1 = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("crimson_tree_checked_1"));
+        public static final ResourceKey<PlacedFeature> VICIOUS_MUSHROOM = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("vicious_mushroom"));
 
-        public static final ResourceKey<PlacedFeature> PLACED_GLOWING_MUSHROOM = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("glowing_mushroom"));
-        public static final ResourceKey<PlacedFeature> PLACED_GLOWING_MUSHROOM_LIFE_CRYSTAL = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("glowing_mushroom_life_crystal"));
-        public static final ResourceKey<PlacedFeature> PLACED_GLOWING_MUSHROOM_TREE = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("glowing_mushroom_tree"));
-        public static final ResourceKey<PlacedFeature> PLACED_GLOWING_MUSHROOM_VINE = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("glowing_mushroom_vine"));
+        public static final ResourceKey<PlacedFeature> GLOWING_MUSHROOM = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("glowing_mushroom"));
+        public static final ResourceKey<PlacedFeature> GLOWING_MUSHROOM_LIFE_CRYSTAL = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("glowing_mushroom_life_crystal"));
+        public static final ResourceKey<PlacedFeature> GLOWING_MUSHROOM_TREE = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("glowing_mushroom_tree"));
+        public static final ResourceKey<PlacedFeature> GLOWING_MUSHROOM_VINE = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("glowing_mushroom_vine"));
 
-        public static final ResourceKey<PlacedFeature> PLACED_ASH_HELLSTONE_GENERATES = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("ash_hellstone_generates"));
-        public static final ResourceKey<PlacedFeature> PLACED_ASH_GRASS = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("ash_grass"));
-        public static final ResourceKey<PlacedFeature> PLACED_ASH_TREE = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("ash_tree"));
-        public static final ResourceKey<PlacedFeature> PLACED_FIREBLOSSOM = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("fireblossom"));
+        public static final ResourceKey<PlacedFeature> ASH_HELLSTONE_GENERATES = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("ash_hellstone_generates"));
+        public static final ResourceKey<PlacedFeature> ASH_GRASS = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("ash_grass"));
+        public static final ResourceKey<PlacedFeature> ASH_TREE = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("ash_tree"));
+        public static final ResourceKey<PlacedFeature> FIREBLOSSOM = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("fireblossom"));
     }
 
     public static final class TreeGrowers {

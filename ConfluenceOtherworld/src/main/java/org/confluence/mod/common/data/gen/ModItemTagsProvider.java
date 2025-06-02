@@ -572,8 +572,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.METEORITE_BLOCK).add(OreBlocks.METEORITE_BLOCK.asItem());
         tag(ModTags.Items.INGOTS_DEMONITE).add(MaterialItems.DEMONITE_INGOT.get());
         tag(ModTags.Items.DEMONITE_BLOCK).add(OreBlocks.DEMONITE_BLOCK.asItem());
-        tag(ModTags.Items.INGOTS_CRIMSON).add(MaterialItems.CRIMTANE_INGOT.get());
-        tag(ModTags.Items.CRIMSON_BLOCK).add(OreBlocks.CRIMTANE_BLOCK.asItem());
+        tag(ModTags.Items.INGOTS_CRIMTANE).add(MaterialItems.CRIMTANE_INGOT.get());
+        tag(ModTags.Items.CRIMTANE_BLOCK).add(OreBlocks.CRIMTANE_BLOCK.asItem());
         tag(ModTags.Items.INGOTS_HELLSTONE).add(MaterialItems.HELLSTONE_INGOT.get());
         tag(ModTags.Items.HELLSTONE_BLOCK).add(OreBlocks.HELLSTONE_BLOCK.asItem());
 

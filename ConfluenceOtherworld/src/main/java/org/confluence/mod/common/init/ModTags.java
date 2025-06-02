@@ -103,8 +103,8 @@ public final class ModTags {
         public static final TagKey<Item> METEORITE_BLOCK = c("storage_blocks/meteorite");
         public static final TagKey<Item> INGOTS_DEMONITE = c("ingots/demonite");
         public static final TagKey<Item> DEMONITE_BLOCK = c("storage_blocks/demonite");
-        public static final TagKey<Item> INGOTS_CRIMSON = c("ingots/crimson");
-        public static final TagKey<Item> CRIMSON_BLOCK = c("storage_blocks/crimson");
+        public static final TagKey<Item> INGOTS_CRIMTANE = c("ingots/crimtane");
+        public static final TagKey<Item> CRIMTANE_BLOCK = c("storage_blocks/crimtane");
         public static final TagKey<Item> INGOTS_HELLSTONE = c("ingots/hellstone");
         public static final TagKey<Item> HELLSTONE_BLOCK = c("storage_blocks/hellstone");
 

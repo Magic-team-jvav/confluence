@@ -9,11 +9,10 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.world.entity.EntityType;
-import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.lib.common.data.saved.IGlobalData;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
@@ -76,7 +75,7 @@ public class KillBoard implements IGlobalData {
     }
 
     public GamePhase getGamePhase() {
-        if (FMLEnvironment.dist.isClient() && ServerLifecycleHooks.getCurrentServer() instanceof DedicatedServer) {
+        if (LibUtils.isLogicalAndPhysicalClient()) {
             return ClientPacketHandler.getGamePhase();
         }
         return gamePhase;

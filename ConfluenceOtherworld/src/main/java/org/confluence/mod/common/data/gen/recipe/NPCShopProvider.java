@@ -93,7 +93,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(Blocks.ANVIL)
                 .add(Blocks.TORCH)
                 .add(Items.ARROW)
-                .add(Items.ARROW,100)
+                .add(Items.ARROW, 100)
                 .add(ModBlocks.ROPE)
                 .add(ConsumableItems.SHURIKEN)
                 .add(FunctionalBlocks.PIGGY_BANK)
@@ -120,8 +120,10 @@ public class NPCShopProvider extends AbstractRecipeProvider {
         shop(TENpcEntities.ARMS_DEALER.getId()).addRecipe(new Builder()
                 .add(TGItems.MUSKET_BULLET)
                 .add(TGItems.MUSKET_BULLET, 100)
+//                .add(new SecretFlagMoneyTradeItem(TGItems.SILVER_BULLET.toStack(), null, IWorldOptions.HARDMODE, false))
+//                .add(new SecretFlagMoneyTradeItem(TGItems.SILVER_BULLET.toStack(100), null, IWorldOptions.HARDMODE, false))
                 .add(TGItems.FLINTLOCK_PISTOL)
-                .add(TGItems.MINISHARK)         //先不管晚上的条件，迷你鲨塞一手
+                .add(TGItems.MINISHARK)
                 .add(SellTrade.INSTANCE)
                 .build());
 

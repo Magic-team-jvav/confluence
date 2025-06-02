@@ -41,11 +41,11 @@ public final class ModVillagers {
     // 村民的兴趣点
     public static final DeferredHolder<PoiType, PoiType> SKY_POI = POIS.register("sky", () -> new PoiType(ImmutableSet.copyOf(FunctionalBlocks.SKY_MILL.get().getStateDefinition().getPossibleStates()), 1, 1));
     public static final DeferredHolder<PoiType, PoiType> COOKING_POI = POIS.register("cooking", () -> new PoiType(ImmutableSet.copyOf(FunctionalBlocks.COOKING_POT.get().getStateDefinition().getPossibleStates()), 1, 1));
-    public static final DeferredHolder<PoiType, PoiType> COIN_POI = POIS.register("coin", () -> new PoiType(ImmutableSet.copyOf(ModBlocks.GOLDEN_COIN.get().getStateDefinition().getPossibleStates()), 1, 1));
+    public static final DeferredHolder<PoiType, PoiType> COIN_POI = POIS.register("coin", () -> new PoiType(ImmutableSet.copyOf(FunctionalBlocks.SAFE.get().getStateDefinition().getPossibleStates()), 1, 1));
 
     // 村民的职业
     public static final Supplier<VillagerProfession> SKY_MILLER = PROFESSIONS.register("sky_miller", () -> new VillagerProfession("sky", holder -> holder.is(SKY_POI.getId()), holder -> holder.is(SKY_POI.getId()), ImmutableSet.of(MaterialItems.FALLING_STAR.get()), ImmutableSet.of(), SoundEvents.VILLAGER_WORK_WEAPONSMITH));
-    public static final Supplier<VillagerProfession> CHEF = PROFESSIONS.register("chef", () -> new VillagerProfession("chef", holder -> holder.is(COOKING_POI.getId()), holder -> holder.is(COOKING_POI.getId()), ImmutableSet.of(MaterialItems.FALLING_STAR.get()), ImmutableSet.of(), SoundEvents.CAMPFIRE_CRACKLE));
+    public static final Supplier<VillagerProfession> CHEF = PROFESSIONS.register("chef", () -> new VillagerProfession("chef", holder -> holder.is(COOKING_POI.getId()), holder -> holder.is(COOKING_POI.getId()), ImmutableSet.of(FoodItems.COOK_FISH.get()), ImmutableSet.of(), SoundEvents.CAMPFIRE_CRACKLE));
     public static final Supplier<VillagerProfession> BANKER = PROFESSIONS.register("banker", () -> new VillagerProfession("coin", holder -> holder.is(COIN_POI.getId()), holder -> holder.is(COIN_POI.getId()), ImmutableSet.of(
             ModItems.GOLDEN_COIN.get(),
             ModItems.PLATINUM_COIN.get(),

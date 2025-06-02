@@ -67,7 +67,7 @@ public final class ModTags {
         public static final TagKey<Block> PLATINUM_BLOCK = c("storage_blocks/platinum");
         public static final TagKey<Block> METEORITE_BLOCK = c("storage_blocks/meteorite");
         public static final TagKey<Block> DEMONITE_BLOCK = c("storage_blocks/demonite");
-        public static final TagKey<Block> CRIMSON_BLOCK = c("storage_blocks/crimson");
+        public static final TagKey<Block> CRIMTANE_BLOCK = c("storage_blocks/crimtane");
         public static final TagKey<Block> HELLSTONE_BLOCK = c("storage_blocks/hellstone");
         public static final TagKey<Block> RAW_TIN_BLOCK = c("storage_blocks/raw_tin");
         public static final TagKey<Block> RAW_LEAD_BLOCK = c("storage_blocks/raw_lead");
@@ -76,7 +76,7 @@ public final class ModTags {
         public static final TagKey<Block> RAW_PLATINUM_BLOCK = c("storage_blocks/raw_platinum");
         public static final TagKey<Block> RAW_METEORITE_BLOCK = c("storage_blocks/raw_meteorite");
         public static final TagKey<Block> RAW_DEMONITE_BLOCK = c("storage_blocks/raw_demonite");
-        public static final TagKey<Block> RAW_CRIMSON_BLOCK = c("storage_blocks/raw_crimson");
+        public static final TagKey<Block> RAW_CRIMTANE_BLOCK = c("storage_blocks/raw_crimtane");
         public static final TagKey<Block> RAW_HELLSTONE_BLOCK = c("storage_blocks/raw_hellstone");
 
         private static TagKey<Block> c(String name) {

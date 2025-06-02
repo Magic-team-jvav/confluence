@@ -1143,7 +1143,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         tag(ModTags.Blocks.PLATINUM_BLOCK).add(PLATINUM_BLOCK.get());
         tag(ModTags.Blocks.METEORITE_BLOCK).add(METEORITE_BLOCK.get());
         tag(ModTags.Blocks.DEMONITE_BLOCK).add(DEMONITE_BLOCK.get());
-        tag(ModTags.Blocks.CRIMSON_BLOCK).add(CRIMTANE_BLOCK.get());
+        tag(ModTags.Blocks.CRIMTANE_BLOCK).add(CRIMTANE_BLOCK.get());
         tag(ModTags.Blocks.HELLSTONE_BLOCK).add(HELLSTONE_BLOCK.get());
         tag(ModTags.Blocks.RAW_TIN_BLOCK).add(RAW_TIN_BLOCK.get());
         tag(ModTags.Blocks.RAW_LEAD_BLOCK).add(RAW_LEAD_BLOCK.get());
@@ -1152,7 +1152,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         tag(ModTags.Blocks.RAW_PLATINUM_BLOCK).add(RAW_PLATINUM_BLOCK.get());
         tag(ModTags.Blocks.RAW_METEORITE_BLOCK).add(RAW_METEORITE_BLOCK.get());
         tag(ModTags.Blocks.RAW_DEMONITE_BLOCK).add(RAW_DEMONITE_BLOCK.get());
-        tag(ModTags.Blocks.RAW_CRIMSON_BLOCK).add(RAW_CRIMTANE_BLOCK.get());
+        tag(ModTags.Blocks.RAW_CRIMTANE_BLOCK).add(RAW_CRIMTANE_BLOCK.get());
         tag(ModTags.Blocks.RAW_HELLSTONE_BLOCK).add(RAW_HELLSTONE_BLOCK.get());
         tag(ModTags.Blocks.TOMBSTONE).add(TOMBSTONES.keySet().stream().map(DeferredBlock::get).toArray(TombstoneBlock[]::new));
         tag(BlockTags.STONE_BRICKS).add(

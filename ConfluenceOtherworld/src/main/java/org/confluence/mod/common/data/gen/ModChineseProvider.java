@@ -1493,6 +1493,35 @@ public class ModChineseProvider extends LanguageProvider {
         add("patchouli.confluence.otherworld_note.world.the_crimson.1", "*z$(#AA0000)“正在使世界变得血腥”");
         add("patchouli.confluence.otherworld_note.world.the_crimson.2", "*o*t古时，泰拉瑞亚的人民犯下了愚昧的错误：他们屈服于猩红，视其为神明，并献祭自己的血肉。*b*t最终，他们被同化成扭曲的生命，与猩红的野心一同蔓延在大地上。");
 
+        //标签
+        add("tag.fluid.confluence.fishing_able", "可钓鱼液体");
+        add("tag.fluid.confluence.not_lava", "无熔岩");
+        add("tag.item.confluence.ammo", "弹药");
+        add("tag.item.confluence.boss_summoning", "Boss召唤物");
+        add("tag.item.confluence.bottomless", "无底桶");
+        add("tag.item.confluence.coins", "钱币");
+        add("tag.item.confluence.corals", "珊瑚");
+        add("tag.item.confluence.crop_fortune", "再生能力");
+        add("tag.item.confluence.demonite_and_crimson_ingot", "邪恶锭");
+        add("tag.item.confluence.dye", "染料");
+        add("tag.item.confluence.evil_material", "邪恶材料");
+        add("tag.item.confluence.fast_bow", "快弓");
+        add("tag.item.confluence.gold_cooking", "金食材");
+        add("tag.item.confluence.hardmode_ores", "困难模式矿石");
+        add("tag.item.confluence.hook", "抓钩");
+        add("tag.item.confluence.lead_and_iron", "铅和铁");
+        add("tag.item.confluence.light_pet", "照明宠物");
+        add("tag.item.confluence.mana_weapon", "魔法武器");
+        add("tag.item.confluence.minecart", "矿车");
+        add("tag.item.confluence.moss_item", "苔藓");
+        add("tag.item.confluence.provide_life", "提供生命值");
+        add("tag.item.confluence.provide_light", "提供亮度");
+        add("tag.item.confluence.provide_mana", "提供魔法值");
+        add("tag.item.confluence.shadow_scale_and_tissue_sample", "暗影鳞片和组织样本");
+        add("tag.item.confluence.summoner_weapon", "召唤师武器");
+        add("tag.item.confluence.torch", "火把");
+        add("tag.item.confluence.treasure_bag", "战利品袋");
+        add("tag.item.confluence.wings", "翅膀");
 
         add(ModEntities.BEE_ARROW.get(), "蜜蜂箭");
         add(ModEntities.ARROW_PROJECTILE.get(), "泰拉箭");
@@ -1516,7 +1545,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEntities.CURIO_FISHING_HOOK.get(), "钓鱼钩");
         add(ModEntities.DEMONIC_HELLCART.get(), "恶魔地狱车");
         add(ModEntities.DIGGING_MOLECART.get(), "挖掘地鼠车");
-        add(ModEntities.DIRT_BOMB.get(), "泥土炸弹");
+        add(ModEntities.DIRT_BOMB.get(), "土炸弹");
         add(ModEntities.DRY_BOMB.get(), "干炸弹");
         add(ModEntities.DUAL_HOOK.get(), "双钩");
         add(ModEntities.DYNAMITE.get(), "炸药");
@@ -1548,7 +1577,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEntities.SPOOKY_HOOK.get(), "诡异钩");
         add(ModEntities.STAR_FURY_PROJECTILE.get(), "天堂怒火");
         add(ModEntities.STICKY_BOMB_ENTITY.get(), "黏性炸弹");
-        add(ModEntities.STICKY_DIRT_BOMB.get(), "黏性泥土炸弹");
+        add(ModEntities.STICKY_DIRT_BOMB.get(), "黏性土炸弹");
         add(ModEntities.STICKY_DYNAMITE.get(), "黏性炸药");
         add(ModEntities.STICKY_GRENADE.get(), "黏性手雷");
         add(ModEntities.TARGET_DUMMY.get(), "目标假人");
@@ -2237,7 +2266,7 @@ public class ModChineseProvider extends LanguageProvider {
 
 
         add(ModBlocks.POO.get(), "臭臭");
-        add(ModBlocks.WATERLEAF.get(), "幌菊");
+        add(ModBlocks.WATERLEAF.get(), "水叶草");
         add(ModBlocks.FIREBLOSSOM.get(), "火焰花");
         add(ModBlocks.MOONGLOW.get(), "月光草");
         add(ModBlocks.BLINKROOT.get(), "闪耀根");
@@ -2307,7 +2336,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(CrateBlocks.TITANIUM_CRATE.get(), "钛金匣");
         add(CrateBlocks.BRAMBLE_CRATE.get(), "荆棘匣");
         add(CrateBlocks.WILD_CRATE.get(), "野性匣");
-        add(CrateBlocks.AZURE_CRATE.get(), "太空匣");
+        add(CrateBlocks.AZURE_CRATE.get(), "天蓝匣");
         add(CrateBlocks.DEFILED_CRATE.get(), "污损匣");
         add(CrateBlocks.HEMATIC_CRATE.get(), "血匣");
         add(CrateBlocks.DIVINE_CRATE.get(), "天赐匣");
@@ -2429,7 +2458,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.CHINA_PLATE.get(), "陶瓷盘");
         add(MaterialItems.CHINA_BOWL.get(), "陶瓷碗");
         // 植物
-        add(MaterialItems.WATERLEAF.get(), "幌菊");
+        add(MaterialItems.WATERLEAF.get(), "水叶草");
         add(MaterialItems.FIREBLOSSOM.get(), "火焰花");
         add(MaterialItems.MOONGLOW.get(), "月光草");
         add(MaterialItems.BLINKROOT.get(), "闪耀根");
@@ -2701,8 +2730,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(ConsumableItems.GRENADE.get(), "手榴弹");
         add(ConsumableItems.BOUNCY_GRENADE.get(), "弹力手榴弹");
         add(ConsumableItems.STICKY_GRENADE.get(), "黏性手榴弹");
-        add(ConsumableItems.DIRT_BOMB.get(), "泥土炸弹");
-        add(ConsumableItems.STICKY_DIRT_BOMB.get(), "黏性泥土炸弹");
+        add(ConsumableItems.DIRT_BOMB.get(), "土炸弹");
+        add(ConsumableItems.STICKY_DIRT_BOMB.get(), "黏性土炸弹");
         add(ConsumableItems.DRY_BOMB.get(), "干炸弹");
         add(ConsumableItems.WET_BOMB.get(), "湿炸弹");
         add(ConsumableItems.LAVA_BOMB.get(), "熔岩炸弹");
@@ -2936,11 +2965,11 @@ public class ModChineseProvider extends LanguageProvider {
         add(BaitItems.GLOWING_SNAIL.get(), "发光蜗牛");
         add(BaitItems.GOLD_BUTTERFLY.get(), "金蝴蝶");
         add(BaitItems.GOLD_DRAGONFLY.get(), "金蜻蜓");
-        add(BaitItems.GOLD_GRASSHOPPER.get(), "金蟋蟀");
+        add(BaitItems.GOLD_GRASSHOPPER.get(), "金蚱蜢");
         add(BaitItems.GOLD_LADYBUG.get(), "金瓢虫");
         add(BaitItems.GOLD_WATER_STRIDER.get(), "金水黾");
         add(BaitItems.GOLD_WORM.get(), "金蠕虫");
-        add(BaitItems.GRASSHOPPER.get(), "蟋蟀");
+        add(BaitItems.GRASSHOPPER.get(), "蚱蜢");
         add(BaitItems.GREEN_DRAGONFLY.get(), "绿蜻蜓");
         add(BaitItems.GREEN_JELLYFISH.get(), "绿水母");
         add(BaitItems.GRUBBY.get(), "蛆虫");
@@ -3451,7 +3480,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.RAW_BIRD.get(), "生鸟肉");
         add(FoodItems.RAW_DUCK.get(), "生鸭肉");
 
-        add(FoodItems.WATERLEAF_SEED.get(), "幌菊种子");
+        add(FoodItems.WATERLEAF_SEED.get(), "水叶草种子");
         add(FoodItems.FIREBLOSSOM_SEED.get(), "火焰花种子");
         add(FoodItems.MOONGLOW_SEED.get(), "月光草种子");
         add(FoodItems.BLINKROOT_SEED.get(), "闪耀根种子");

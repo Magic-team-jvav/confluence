@@ -1471,6 +1471,35 @@ public class ModEnglishProvider extends LanguageProvider {
         add("patchouli.confluence.otherworld_note.world.the_crimson.1", "*z$(#AA0000)“Making the world bloody”");
         add("patchouli.confluence.otherworld_note.world.the_crimson.2", "*o*tIn ancient times, the people of Terraria made a foolish mistake: they succumbed to scarlet, regarded it as a god, and sacrificed their flesh and blood.*b*tEventually, they are assimilated into twisted lives, spreading across the earth with scarlet ambitions.");
 
+        // Tags
+        add("tag.fluid.confluence.fishing_able", "Can Fishing Fluid");
+        add("tag.fluid.confluence.not_lava", "Not Lava");
+        add("tag.item.confluence.ammo", "Ammo");
+        add("tag.item.confluence.boss_summoning", "Boss Summoning");
+        add("tag.item.confluence.bottomless", "Bottomless");
+        add("tag.item.confluence.coins", "Coins");
+        add("tag.item.confluence.corals", "Corals");
+        add("tag.item.confluence.crop_fortune", "Crop Fortune");
+        add("tag.item.confluence.demonite_and_crimson_ingot", "Evil Ingot");
+        add("tag.item.confluence.dye", "Dye");
+        add("tag.item.confluence.evil_meterial", "Evil Meterial");
+        add("tag.item.confluence.fast_bow", "Fast Bow");
+        add("tag.item.confluence.gold_cooking", "Golden Cooking");
+        add("tag.item.confluence.hardmode_ores", "Haed-Mode Ores");
+        add("tag.item.confluence.hook", "Hook");
+        add("tag.item.confluence.lead_and_iron", "Lead and Iron");
+        add("tag.item.confluence.light_pets", "Light Pets");
+        add("tag.item.confluence.mana_weapon", "Magic Weapon");
+        add("tag.item.confluence.minecart", "Minecart");
+        add("tag.item.confluence.moss_item", "Moss");
+        add("tag.item.confluence.provide_life", "Provide Life");
+        add("tag.item.confluence.provide_light", "Provide Light");
+        add("tag.item.confluence.provide_mana", "Provide Mana");
+        add("tag.item.confluence.shadow_scale_and_tissue_sample", "Shadow Scale and Tissue Sample");
+        add("tag.item.confluence.summoner_weapon", "Summoner Weapon");
+        add("tag.item.confluence.torch", "Torch");
+        add("tag.item.confluence.treasure_bag", "Treasure Bag");
+        add("tag.item.confluence.wings", "Wings");
 
         Consumer<DeferredHolder<Block, ? extends Block>> blockAction = block -> add(block.get(), LibUtils.toTitleCase(block.getId().getPath()));
         ChestBlocks.BLOCKS.getEntries().forEach(blockAction);

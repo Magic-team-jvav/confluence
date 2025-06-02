@@ -39,8 +39,12 @@ public record MeteoriteLocationPacketS2C(BlockPos location, int tickUntilLanding
         });
     }
 
+    /**
+     * @param location         陨石坐标，等于[0, 0, 0]是无效的
+     * @param tickUntilLanding 落地时间，小于等于0将只刷新指南针
+     */
     public static void sendToAll(BlockPos location, int tickUntilLanding) {
-        if (ServerLifecycleHooks.getCurrentServer() != null) {
+        if (ServerLifecycleHooks.getCurrentServer() != null && !BlockPos.ZERO.equals(location)) {
             PacketDistributor.sendToAllPlayers(new MeteoriteLocationPacketS2C(location, tickUntilLanding));
         }
     }

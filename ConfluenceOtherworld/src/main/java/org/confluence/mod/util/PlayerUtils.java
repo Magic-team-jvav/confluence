@@ -116,6 +116,7 @@ public final class PlayerUtils {
             StarPhasesPacketS2C.sendToClient(serverPlayer, data.getStarPhases());
         }
         GamePhasePacketS2C.sendToClient(serverPlayer, KillBoard.INSTANCE.getGamePhase());
+        MeteoriteLocationPacketS2C.sendToAll(data.getMeteoriteLocation(), 0);
     }
 
     public static float getFishingPower(ServerPlayer player) {

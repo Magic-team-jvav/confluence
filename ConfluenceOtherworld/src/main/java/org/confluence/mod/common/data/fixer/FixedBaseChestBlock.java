@@ -7,6 +7,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -50,6 +51,7 @@ import net.minecraft.world.phys.HitResult;
 import org.confluence.lib.common.block.StateProperties;
 import org.confluence.lib.mixin.fixer.ChestBlockEntityAccessor;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.ChestBlocks;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.mixed.IBaseContainerBlockEntity;
@@ -259,12 +261,22 @@ public class FixedBaseChestBlock extends ChestBlock {
             return !isLocked();
         }
 
+        private static final ResourceKey<LootTable> IVY_CHESTS = ResourceKey.create(Registries.LOOT_TABLE, Confluence.asResource("chests/ivy_chests"));
+        private static final ResourceKey<LootTable> LIVING_IVY_CHESTS = ResourceKey.create(Registries.LOOT_TABLE, Confluence.asResource("chests/living_ivy_chests"));
+
         public static void baseTick(Level level, BlockPos blockPos, BlockState blockState, Entity entity) {
             BlockState target = getBlockByVariant(entity.variant).defaultBlockState()
                     .setValue(FACING, blockState.getValue(FACING))
                     .setValue(WATERLOGGED, blockState.getValue(WATERLOGGED))
                     .setValue(TYPE, blockState.getValue(TYPE));
             ResourceKey<LootTable> lootTable = entity.lootTable;
+            if (lootTable != null) {
+                if ("chests/lvy_chests".equals(lootTable.location().getPath())) {
+                    lootTable = IVY_CHESTS;
+                } else if ("chests/living_lvy_chests".equals(lootTable.location().getPath())) {
+                    lootTable = LIVING_IVY_CHESTS;
+                }
+            }
             long lootTableSeed = entity.lootTableSeed;
             entity.setLootTable(null);
             NonNullList<ItemStack> items = NonNullList.withSize(entity.getContainerSize(), ItemStack.EMPTY);

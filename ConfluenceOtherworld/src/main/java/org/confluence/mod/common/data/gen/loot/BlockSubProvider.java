@@ -425,6 +425,8 @@ public class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(AMETHYST_CHAIN.get());
 
 
+
+
         //door
         this.add(OBSIDIAN_BRICKS_DOOR.get(), this::createDoorTable);
         this.add(SKYWARE_DOOR.get(), this::createDoorTable);
@@ -436,12 +438,12 @@ public class BlockSubProvider extends BlockLootSubProvider {
         this.add(GLOWING_MUSHROOM_VINE.get(), p_249169_ -> this.createMushroomBlockDrop(p_249169_, MaterialItems.GLOWING_MUSHROOM));
         this.add(GLOWING_MUSHROOM_CATTAILS_HEAD.get(), p_249169_ -> this.createMushroomBlockDrop(p_249169_, MaterialItems.GLOWING_MUSHROOM));
         this.add(GLOWING_MUSHROOM_PILEUS_BLOCK.get(), p_249169_ -> this.createMushroomBlockDrop(p_249169_, MaterialItems.GLOWING_MUSHROOM));
-        this.add(GLOWING_MUSHROOM_STEM_BLOCK.get(), p_249169_ -> this.createMushroomBlockDrop(p_249169_, MaterialItems.GLOWING_MUSHROOM));
+        dropSelf(GLOWING_MUSHROOM_STEM_BLOCK.get());
         dropWhenSilkTouch(GLOWING_MUSHROOM_CATTAILS_BODY.get());
 
         this.add(LIFE_MUSHROOM_INDUSIUM_BLOCK.get(), p_249169_ -> this.createMushroomBlockDrop(p_249169_, MaterialItems.LIFE_MUSHROOM));
         this.add(LIFE_MUSHROOM_PILEUS_BLOCK.get(), p_249169_ -> this.createMushroomBlockDrop(p_249169_, MaterialItems.LIFE_MUSHROOM));
-        this.add(LIFE_MUSHROOM_STEM_BLOCK.get(), p_249169_ -> this.createMushroomBlockDrop(p_249169_, MaterialItems.LIFE_MUSHROOM));
+        dropSelf(LIFE_MUSHROOM_STEM_BLOCK.get());
 
 
         for (LogBlockSet logBlocks : LogBlockSet.LOG_BLOCK_SETS) {

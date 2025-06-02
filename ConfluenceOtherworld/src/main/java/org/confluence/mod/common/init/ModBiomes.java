@@ -17,6 +17,8 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.ModMusics;
+import org.confluence.mod.common.init.ModFeatures.Placed;
 import org.confluence.mod.common.worldgen.biome.*;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
 import terrablender.api.Regions;
@@ -77,7 +79,14 @@ public final class ModBiomes {
                 .generationSettings(Util.make(new BiomeGenerationSettings.Builder(placedFeature, configuredWorldCarver), builder -> {
                     addDefaultGenerations(builder);
                     builder.addCarver(GenerationStep.Carving.AIR, ModCarvers.CONFIGURED_DEMONIC_CAVE_CARVER);
-                    builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ModFeatures.PLACED_TREES_CORRUPTION);
+                    builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Placed.TREES_CORRUPTION);
+                    builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Placed.CORRUPT_GRASS);
+                    builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Placed.VILE_MUSHROOM);
+                    builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Placed.THE_CORRUPTION_TREE_CHECKED_0);
+                    builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Placed.THE_CORRUPTION_TREE_CHECKED_1);
+                    builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Placed.THE_CORRUPTION_TREE_CHECKED_2);
+                    builder.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, Placed.CORRUPTION_POT);
+                    builder.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, Placed.DEMON_ALTAR);
                 }).build())
                 .build());
         context.register(THE_CORRUPTION_DESERT, new Biome.BiomeBuilder()
@@ -139,7 +148,13 @@ public final class ModBiomes {
                         .build())
                 .generationSettings(Util.make(new BiomeGenerationSettings.Builder(placedFeature, configuredWorldCarver), builder -> {
                     addDefaultGenerations(builder);
-                    builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ModFeatures.PLACED_TREES_CRIMSON);
+                    builder.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, Placed.CRIMSON_ALTAR);
+                    builder.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, Placed.CRIMSON_POT);
+                    builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Placed.TREES_CRIMSON);
+                    builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Placed.CRIMSON_GRASS);
+                    builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Placed.CRIMSON_TREE_CHECKED_0);
+                    builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Placed.CRIMSON_TREE_CHECKED_1);
+                    builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Placed.VICIOUS_MUSHROOM);
                 }).build())
                 .build()
         );
@@ -229,6 +244,7 @@ public final class ModBiomes {
                 .build()
         );
         context.register(ASH_FOREST, new Biome.BiomeBuilder()
+                .hasPrecipitation(false)
                 .temperature(2)
                 .downfall(0)
                 .specialEffects(new BiomeSpecialEffects.Builder()
@@ -238,12 +254,17 @@ public final class ModBiomes {
                         .waterColor(-10541025)
                         .waterFogColor(4159204)
                         .skyColor(-4592650)
+                        .backgroundMusic(ModMusics.UNDERWORLD)
                         .build())
                 .mobSpawnSettings(MobSpawnSettings.EMPTY)
-                .generationSettings(BiomeGenerationSettings.EMPTY)
+                .generationSettings(Util.make(new BiomeGenerationSettings.Builder(placedFeature, configuredWorldCarver), builder -> {
+                    builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Placed.FIREBLOSSOM);
+                    builder.addFeature(GenerationStep.Decoration.SURFACE_STRUCTURES, Placed.ASH_HELLSTONE_GENERATES);
+                }).build())
                 .build()
         );
         context.register(ASH_WASTELAND, new Biome.BiomeBuilder()
+                .hasPrecipitation(false)
                 .temperature(2)
                 .downfall(0)
                 .specialEffects(new BiomeSpecialEffects.Builder()
@@ -253,9 +274,15 @@ public final class ModBiomes {
                         .waterColor(-10541025)
                         .waterFogColor(4159204)
                         .skyColor(-4592650)
+                        .backgroundMusic(ModMusics.UNDERWORLD)
                         .build())
                 .mobSpawnSettings(MobSpawnSettings.EMPTY)
-                .generationSettings(BiomeGenerationSettings.EMPTY)
+                .generationSettings(Util.make(new BiomeGenerationSettings.Builder(placedFeature, configuredWorldCarver), builder -> {
+                    builder.addFeature(GenerationStep.Decoration.SURFACE_STRUCTURES, Placed.ASH_HELLSTONE_GENERATES);
+                    builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Placed.ASH_GRASS);
+                    builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Placed.ASH_TREE);
+                    builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Placed.FIREBLOSSOM);
+                }).build())
                 .build()
         );
         context.register(GLOWING_MUSHROOM, new Biome.BiomeBuilder()
@@ -273,6 +300,10 @@ public final class ModBiomes {
                 .generationSettings(Util.make(new BiomeGenerationSettings.Builder(placedFeature, configuredWorldCarver), builder -> {
                     addDefaultGenerations(builder);
                     builder.addCarver(GenerationStep.Carving.AIR, ModCarvers.CONFIGURED_GLOWING_MUSHROOM_CAVE_CARVER);
+                    builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Placed.GLOWING_MUSHROOM);
+                    builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Placed.GLOWING_MUSHROOM_LIFE_CRYSTAL);
+                    builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Placed.GLOWING_MUSHROOM_TREE);
+                    builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Placed.GLOWING_MUSHROOM_VINE);
                 }).build())
                 .build()
         );

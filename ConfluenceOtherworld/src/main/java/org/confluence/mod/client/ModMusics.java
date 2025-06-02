@@ -37,6 +37,7 @@ public final class ModMusics {
     public static final CachedLocationMusic STORM = register(ModSoundEvents.STORM);
     public static final CachedLocationMusic SPACE = register(ModSoundEvents.SPACE);
     public static final CachedLocationMusic MUSHROOMS = register(ModSoundEvents.MUSHROOMS);
+    public static final CachedLocationMusic UNDERWORLD = register(ModSoundEvents.UNDERWORLD);
 
     private static CachedLocationMusic register(Holder<SoundEvent> event) {
         return new CachedLocationMusic(event, 0, 0, true);

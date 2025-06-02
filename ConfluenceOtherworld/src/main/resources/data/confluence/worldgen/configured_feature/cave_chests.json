@@ -11,6 +11,7 @@
       }
     },
     "nbt": {
-      "LootTable": "confluence:chests/cave_chests"}
+      "LootTable": "confluence:chests/cave_chests"
+    }
   }
 }

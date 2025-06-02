@@ -35,7 +35,7 @@ public record ExtraInventoryStackPacketS2C(long packedData, ItemStack itemStack)
             Player player = context.player();
             if (player.isLocalPlayer() && player.level().getEntity(getEntityId()) instanceof Player entity) {
                 ExtraInventory extraInventory = entity.getData(ModAttachmentTypes.EXTRA_INVENTORY);
-                extraInventory.setAccessoryDyes(getSizeAccessoryDye());
+                extraInventory.setAccessoryDyes(player, getSizeAccessoryDye());
                 extraInventory.setItem(getSlot(), itemStack);
             }
         }).exceptionally(e -> {

@@ -182,9 +182,9 @@ public class ExtraInventory extends ItemStackHandler implements Container {
         }
     }
 
-    public void initialize(ServerPlayer serverPlayer) {
+    public void initialize(ServerPlayer player) {
         if (!initialized) {
-            updateAccessorySize(CuriosApi.getCuriosInventory(serverPlayer).map(handler -> {
+            updateAccessorySize(player, CuriosApi.getCuriosInventory(player).map(handler -> {
                 ICurioStacksHandler accessory = handler.getCurios().get(TerraCurio.CURIO_SLOT);
                 return accessory == null ? 0 : accessory.getSlots();
             }).orElse(0));
@@ -192,15 +192,22 @@ public class ExtraInventory extends ItemStackHandler implements Container {
         }
     }
 
-    public void updateAccessorySize(int accessoryDye) {
-        setAccessoryDyes(accessoryDye);
+    public void updateAccessorySize(Player player, int accessoryDye) {
+        setAccessoryDyes(player, accessoryDye);
         this.previousStacks = NonNullList.withSize(SIZE_EXCEPT_ACCESSORY_DYE + accessoryDye, ItemStack.EMPTY);
     }
 
-    public void setAccessoryDyes(int size) {
-        int all = SIZE_EXCEPT_ACCESSORY_DYE + size;
-        NonNullList<ItemStack> itemStacks = NonNullList.withSize(all, ItemStack.EMPTY);
-        for (int i = 0; i < stacks.size(); i++) {
+    public void setAccessoryDyes(Player player, int size) {
+        int sizeCurrent = SIZE_EXCEPT_ACCESSORY_DYE + size;
+        int sizeBefore = stacks.size();
+        NonNullList<ItemStack> itemStacks = NonNullList.withSize(sizeCurrent, ItemStack.EMPTY);
+        if (!player.isLocalPlayer() && sizeBefore > sizeCurrent) {
+            for (ItemStack remain : stacks.subList(sizeCurrent, sizeBefore)) {
+                if (!remain.isEmpty()) player.drop(remain, true);
+            }
+        }
+        for (int i = 0; i < sizeCurrent; i++) {
+            if (i >= sizeBefore) continue;
             itemStacks.set(i, stacks.get(i));
         }
         this.stacks = itemStacks;

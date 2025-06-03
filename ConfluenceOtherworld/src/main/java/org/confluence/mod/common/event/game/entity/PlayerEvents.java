@@ -231,7 +231,7 @@ public final class PlayerEvents {
     @SubscribeEvent
     public static void rightClickRailBlock(RightClickRailBlock event) {
         AbstractMinecart minecart = event.getMinecart();
-        if (event.isCanceled() || minecart != null) return;
+        if (minecart != null) return;
 
         ServerLevel level = (ServerLevel) event.getEntity().level();
         BlockPos blockPos = event.getBlockPos();
@@ -253,7 +253,7 @@ public final class PlayerEvents {
 
     @SubscribeEvent
     public static void dismountOnMinecart(DismountOnMinecart event) {
-        if (event.isCanceled() || event.getMinecartItem() != null) return;
+        if (event.getMinecartItem() != null) return;
         AbstractMinecart.Type type = event.getMinecart().getMinecartType();
 
         if (type == AbstractMinecart.Type.RIDEABLE) {

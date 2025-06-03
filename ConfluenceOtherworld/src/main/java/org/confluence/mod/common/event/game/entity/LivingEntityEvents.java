@@ -128,7 +128,6 @@ public final class LivingEntityEvents {
      */
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void livingHeal(LivingHealEvent event) {
-        if (event.isCanceled()) return;
         LivingEntity living = event.getEntity();
         if (!(living.level() instanceof ServerLevel level)) return;
 
@@ -257,7 +256,6 @@ public final class LivingEntityEvents {
 
     @SubscribeEvent
     public static void livingDrops(LivingDropsEvent event) {
-        if (event.isCanceled()) return;
         if (event.getEntity() instanceof Player player && !player.level().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) {
             ExtraInventory data = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
             for (int i = 0; i < data.getContainerSize(); i++) {

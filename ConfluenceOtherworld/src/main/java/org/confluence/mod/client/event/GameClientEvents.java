@@ -281,7 +281,6 @@ public final class GameClientEvents {
 
     @SubscribeEvent
     public static void selectMusic(SelectMusicEvent event) {
-        if (event.isCanceled()) return;
         Minecraft minecraft = Minecraft.getInstance();
         LocalPlayer player = minecraft.player;
         if (player == null) {

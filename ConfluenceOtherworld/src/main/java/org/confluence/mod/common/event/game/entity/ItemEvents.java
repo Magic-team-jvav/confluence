@@ -51,7 +51,6 @@ public final class ItemEvents {
 
     @SubscribeEvent
     public static void toss(ItemTossEvent event) {
-        if (event.isCanceled()) return;
         ItemEntity itemEntity = event.getEntity();
         ItemStack itemStack = itemEntity.getItem();
         if (itemStack.is(ModTags.Items.TREASURE_BAG)) {
@@ -76,7 +75,6 @@ public final class ItemEvents {
 
     @SubscribeEvent
     public static void shirkAmmo(GunEvent.ShrinkBulletEvent event) {
-        if (event.isCanceled()) return;
         if (event.getGun() instanceof ManaGunItem) {
             event.setCanceled(true);
         }

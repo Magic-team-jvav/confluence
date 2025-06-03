@@ -80,7 +80,7 @@ public final class LevelEvents {
 
     @SubscribeEvent
     public static void block$Break(BlockEvent.BreakEvent event) {
-        if (event.isCanceled() || !(event.getPlayer() instanceof ServerPlayer serverPlayer)) return;
+        if (!(event.getPlayer() instanceof ServerPlayer serverPlayer)) return;
         BlockState blockState = event.getState();
 
         if (AltarBlock.hurtPlayerIfBrokenNotAllowed(serverPlayer, blockState)) {

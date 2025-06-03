@@ -61,7 +61,7 @@ public class SwordItems {
     public static final DeferredItem<SwordItem> TUNGSTEN_BOARD_SWORD = register("tungsten_board_sword", ModTiers.TUNGSTEN, 6, 1.6F, NORMAL_SWORD.get());
     public static final DeferredItem<SwordItem> GOLDEN_BOARD_SWORD = register("golden_board_sword", ModTiers.GOLD, 7, 1.6F, NORMAL_SWORD.get());
     public static final DeferredItem<SwordItem> PLATINUM_BOARD_SWORD = register("platinum_board_sword", ModTiers.PLATINUM, 8, 1.6F, NORMAL_SWORD.get());
-    public static final DeferredItem<SwordItem> MURAMASA = register("muramasa", ModTiers.UNBREAKABLE, 12, 3, NORMAL_SWORD.get()
+    public static final DeferredItem<SwordItem> MURAMASA = register("muramasa", ModTiers.UNBREAKABLE, 14, 3, NORMAL_SWORD.get()
             .setSweepRange(2.5F).addAttributeModifier(Attributes.ATTACK_KNOCKBACK, 0.2f, AttributeModifier.Operation.ADD_VALUE));
 
 

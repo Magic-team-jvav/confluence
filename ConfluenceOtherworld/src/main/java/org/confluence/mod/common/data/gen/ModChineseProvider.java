@@ -2420,7 +2420,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.LENS.get(), "晶状体");
         add(MaterialItems.BLACK_LENS.get(), "黑晶状体");
         add(MaterialItems.CRYSTAL_SHARDS_ITEM.get(), "水晶碎块");
-        add(MaterialItems.ANTLION_MANDIBLE.get(), "蚁狮下颚");
+        add(MaterialItems.ANTLION_MANDIBLE.get(), "蚁狮上颚");
         add(MaterialItems.STINGER.get(), "毒刺");
         add(MaterialItems.MAN_EATER_VINE.get(), "食人怪藤蔓");
         add(MaterialItems.BLACK_INK.get(), "黑墨水");
@@ -2511,7 +2511,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(SwordItems.KATANA.get(), "武士刀");
         add(SwordItems.TENTACLE_MACE.get(), "触手钉锤");
         add(SwordItems.ICE_BLADE.get(), "冰雪刃");
-        add(SwordItems.EXOTIC_SCIMITAR.get(), "弯刀");
+        add(SwordItems.EXOTIC_SCIMITAR.get(), "异域弯刀");
         add(SwordItems.FAKE_SWORD.get(), "假剑");
         add(SwordItems.VOLCANO.get(), "火山");
         add(SwordItems.BEE_KEEPER.get(), "养蜂人");

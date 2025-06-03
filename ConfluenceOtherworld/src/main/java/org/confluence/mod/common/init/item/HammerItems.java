@@ -37,14 +37,14 @@ public class HammerItems {
     public static final DeferredItem<HammerItem> TUNGSTEN_HAMMER = ITEMS.register("tungsten_hammer", () -> new HammerItem(ModTiers.TUNGSTEN, 9, 1.3F, new Item.Properties(), attributes(0, 0.55), ModRarity.WHITE));
     public static final DeferredItem<HammerItem> GOLDEN_HAMMER = ITEMS.register("golden_hammer", () -> new HammerItem(ModTiers.GOLD, 9, 1.5F, new Item.Properties(), attributes(0, 0.55), ModRarity.WHITE));
     public static final DeferredItem<HammerItem> PLATINUM_HAMMER = ITEMS.register("platinum_hammer", () -> new HammerItem(ModTiers.PLATINUM, 10, 1.6F, new Item.Properties(), attributes(0, 0.55), ModRarity.WHITE));
-    public static final DeferredItem<HammerItem> THE_BREAKER = ITEMS.register("the_breaker", () -> new HammerItem(ModTiers.DEMONITE, 24, 1.6F, unbreakable(), attributes(0, 0.6), ModRarity.BLUE));
-    public static final DeferredItem<HammerItem> FLESH_GRINDER = ITEMS.register("flesh_grinder", () -> new HammerItem(ModTiers.CRIMTANE, 23, 1.6F, unbreakable(), attributes(0, 0.6), ModRarity.BLUE));
+    public static final DeferredItem<HammerItem> THE_BREAKER = ITEMS.register("the_breaker", () -> new HammerItem(ModTiers.DEMONITE, 11, 1.6F, unbreakable(), attributes(0, 0.6), ModRarity.BLUE));
+    public static final DeferredItem<HammerItem> FLESH_GRINDER = ITEMS.register("flesh_grinder", () -> new HammerItem(ModTiers.CRIMTANE, 12, 1.6F, unbreakable(), attributes(0, 0.6), ModRarity.BLUE));
     public static final DeferredItem<HammerItem> ROCKFISH = ITEMS.register("rockfish", () -> new HammerItem(new SimpleTier(ModTags.Blocks.NEEDS_4_LEVEL, 10000, 9, 3, 10, () -> Ingredient.of(ItemTags.FISHES)), 24, 1.2F, unbreakable(), attributes(0, 0.6), ModRarity.ORANGE));
 
-    public static final DeferredItem<HammerItem> PWNHAMMER = ITEMS.register("pwnhammer", () -> new HammerItem(ModTiers.HALLOWED, 26, 2.0F, unbreakable(), attributes(0, 0.75), ModRarity.LIGHT_RED));
-    public static final DeferredItem<HammerItem> HAMMUSH = ITEMS.register("hammush", () -> new HammerItem(ModTiers.SHROOMITE, 26, 2.2F, unbreakable(), attributes(0, 0.75), ModRarity.LIME));
-    public static final DeferredItem<HammerItem> CHLOROPHYTE_WARHAMMER = ITEMS.register("chlorophyte_warhammer", () -> new HammerItem(ModTiers.CHLOROPHYTE, 28, 2.4F, unbreakable(), attributes(0, 0.75), ModRarity.LIME));
-    public static final DeferredItem<HammerItem> CHLOROPHYTE_JACKHAMMER = ITEMS.register("chlorophyte_jackhammer", () -> new HammerItem(ModTiers.CHLOROPHYTE, 45, 4, unbreakable(), attributes(0, 0.52), ModRarity.LIME));
+    public static final DeferredItem<HammerItem> PWNHAMMER = ITEMS.register("pwnhammer", () -> new HammerItem(ModTiers.HALLOWED, 14, 2.0F, unbreakable(), attributes(0, 0.75), ModRarity.LIGHT_RED));
+    public static final DeferredItem<HammerItem> HAMMUSH = ITEMS.register("hammush", () -> new HammerItem(ModTiers.SHROOMITE, 16, 2.2F, unbreakable(), attributes(0, 0.75), ModRarity.LIME));
+    public static final DeferredItem<HammerItem> CHLOROPHYTE_WARHAMMER = ITEMS.register("chlorophyte_warhammer", () -> new HammerItem(ModTiers.CHLOROPHYTE, 20, 2.4F, unbreakable(), attributes(0, 0.75), ModRarity.LIME));
+    public static final DeferredItem<HammerItem> CHLOROPHYTE_JACKHAMMER = ITEMS.register("chlorophyte_jackhammer", () -> new HammerItem(ModTiers.CHLOROPHYTE, 24, 4, unbreakable(), attributes(0, 0.52), ModRarity.LIME));
 
     public static void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> tag) {
         ITEMS.getEntries().forEach(item -> tag.add(item.get()));

@@ -99,7 +99,7 @@ public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
         if (level().isClientSide) return;
         Entity entity = entityHitResult.getEntity();
         if (canAttack(entity)) {
-            float damage = getDamage() * (1.0F + getAttackBonus());
+            float damage = getCalculatedDamage() * (1.0F + getAttackBonus());
             if (entity.hurt(getDamagesource(), damage)) {
                 float attackKnockback = getBaseKnockBack() * (1.0F + getKnockbackBonus());
                 if (attackKnockback > 0.0F) {

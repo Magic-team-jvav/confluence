@@ -72,8 +72,7 @@ public class HammerItem extends DiggerItem {
     public static int iteForBlocks(Level level, Player player, BlockPos pos, boolean xOff, boolean yOff, boolean zOff, float speedOff, ItemStack stack) {
         Stream<BlockPos> posStream = BlockPos.betweenClosedStream(pos.offset(xOff ? 1 : 0, yOff ? 1 : 0, zOff ? 1 : 0), pos.offset(xOff ? -1 : 0, yOff ? -1 : 0, zOff ? -1 : 0));
         return (int) posStream.filter(pos1 -> !pos1.equals(pos))
-                .map(pos1 -> applyBlockDestroy(level, pos1, player, speedOff, stack))
-                .filter(destroyed -> destroyed)
+                .filter(pos1 -> applyBlockDestroy(level, pos1, player, speedOff, stack))
                 .count();
     }
 
@@ -87,13 +86,16 @@ public class HammerItem extends DiggerItem {
      */
     public static boolean applyBlockDestroy(Level level, BlockPos pos, Player player, float speedOff, ItemStack stack) {
         BlockState targetState = level.getBlockState(pos);
+        if (targetState.isAir() || targetState.liquid()) return false;
         float targetSpeed = targetState.getDestroySpeed(level, pos);
         boolean flag1 = targetState.canHarvestBlock(level, pos, player);
         boolean flag2 = speedOff > 0 ? targetSpeed >= 0 && speedOff >= targetSpeed : targetSpeed >= speedOff;
         boolean flag3 = player.hasInfiniteMaterials();
         if (flag1 && flag2 || flag3) {
-            level.destroyBlock(pos, flag1, player);
-            targetState.getBlock().playerDestroy(level, player, pos, targetState, targetState.hasBlockEntity() ? level.getBlockEntity(pos) : null, stack);
+            level.destroyBlock(pos, false, player);
+            if (flag1) {
+                targetState.getBlock().playerDestroy(level, player, pos, targetState, targetState.hasBlockEntity() ? level.getBlockEntity(pos) : null, stack);
+            }
             return true;
         }
         return false;

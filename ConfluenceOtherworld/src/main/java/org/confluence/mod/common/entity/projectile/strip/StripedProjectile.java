@@ -79,7 +79,7 @@ public abstract class StripedProjectile extends DamageSettableProjectile impleme
                         StripedProjectile body = createBody(living);
                         body.setDeltaMovement(vec3);
                         body.setHead(false);
-                        body.setDamage(getDamage());
+                        body.setDamage(getCalculatedDamage());
                         level().addFreshEntity(body);
                         this.distO = dist;
                     }
@@ -107,7 +107,7 @@ public abstract class StripedProjectile extends DamageSettableProjectile impleme
     @Override
     protected void onHitEntity(EntityHitResult result) {
         Entity entity = result.getEntity();
-        if (entity.hurt(getDamageSource(), getDamage())) {
+        if (entity.hurt(getDamageSource(), getCalculatedDamage())) {
             VectorUtils.knockBackA2B(this, entity, 0.5, 0.2);
         }
     }

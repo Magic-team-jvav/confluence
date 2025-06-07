@@ -3476,6 +3476,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.MOTTLED_OILFISH.get(), "斑驳油鱼");
         add(FoodItems.YELLOW_EEL.get(), "黄鳝");
         add(FoodItems.TILAPIA.get(), "罗非鱼");
+        add(FoodItems.HONEYFIN.get(), "蜂蜜鱼");
+
 
 
         add(FoodItems.RAW_FROG.get(), "生青蛙肉");
@@ -3500,6 +3502,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(PotionItems.BOTTLED_WATER.get(), "瓶装水");
         add(PotionItems.MUG.get(), "玻璃杯");
         add(PotionItems.ALE.get(), "麦芽酒");
+        add(PotionItems.LESSER_HEALING_POTION.get(), "弱效治疗药水");
         add(PotionItems.LESSER_HEALING_POTION.get(), "弱效治疗药水");
         add(PotionItems.HEALING_POTION.get(), "治疗药水");
         add(PotionItems.GREATER_HEALING_POTION.get(), "强效治疗药水");
@@ -3550,6 +3553,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(PotionItems.RED_POTION.get(), "红药水");
         add(PotionItems.AMMO_RESERVATION_POTION.get(), "弹药储备药水");
         add(PotionItems.SUMMONING_POTION.get(), "召唤药水");
+        add(PotionItems.STRANGE_BREW.get(), "诡药");
+        add(PotionItems.FLASK_OF_FIRE.get(), "烈火药剂");
+        add(PotionItems.FLASK_OF_GOLD.get(), "金药剂");
+        add(PotionItems.EGGNOG.get(), "蛋酒");
 
         // 饰品
         add(AccessoryItems.ADHESIVE_BANDAGE.get(), "黏性绷带");

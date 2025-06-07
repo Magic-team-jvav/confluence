@@ -12,8 +12,6 @@ import org.confluence.mod.common.loot.DateLootItemCondition;
 import java.util.function.Supplier;
 
 public final class ModLootTables {
-    public static final ResourceKey<LootTable> ENVIRONMENT_CRATE = register("gameplay/crate/environment_crate");
-    public static final ResourceKey<LootTable> ENVIRONMENT_CRATE_HARDMODE = register("gameplay/crate/environment_crate_hardmode");
     public static final ResourceKey<LootTable> WOODEN_CRATE = register("gameplay/crate/wooden_crate");
     public static final ResourceKey<LootTable> IRON_CRATE = register("gameplay/crate/iron_crate");
     public static final ResourceKey<LootTable> GOLDEN_CRATE = register("gameplay/crate/golden_crate");
@@ -65,7 +63,6 @@ public final class ModLootTables {
 
     public static final ResourceKey<LootTable> HERB_BAG_INNER = register("gameplay/herb_bag_inner");
 
-    public static final ResourceKey<LootTable> INITIAL_WORLD_UNDERGROUND_CHEST = register("chests/initial_world_underground_chest");
     public static final ResourceKey<LootTable> CAVE_CHESTS = register("chests/cave_chests");
 
     public static final ResourceKey<LootTable> OPAL_BLOCK = register("archaeology/opal_ore");

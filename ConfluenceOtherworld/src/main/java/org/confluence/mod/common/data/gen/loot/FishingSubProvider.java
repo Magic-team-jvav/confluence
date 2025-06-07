@@ -1168,8 +1168,15 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                                 .add(LootItem.lootTableItem(ToolItems.DEMON_CONCH).setWeight(3).setQuality(1))
                                 .add(LootItem.lootTableItem(ToolItems.BOTTOMLESS_LAVA_BUCKET).setWeight(3).setQuality(1))
                                 .add(LootItem.lootTableItem(ToolItems.BOTTOMLESS_LAVA_BUCKET).setWeight(3).setQuality(1))
+                                .add(LootItem.lootTableItem(CrateBlocks.OBSIDIAN_CRATE).setWeight(100))
                 )
         );
         // 蜂蜜
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/fishing/honey"), LootTable.lootTable()
+                .withPool(
+                        LootPool.lootPool()
+                                .add(LootItem.lootTableItem(FoodItems.HONEYFIN).setWeight(100))
+                )
+        );
     }
 }

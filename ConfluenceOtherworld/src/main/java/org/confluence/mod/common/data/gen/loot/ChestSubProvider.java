@@ -32,7 +32,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
         // VanillaChestLoot
         HolderLookup.RegistryLookup<Enchantment> registrylookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
 
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/frozen_chests"), LootTable.lootTable()
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/frozen_chests"), initialWorldUndergroundCommon()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.BLIZZARD_IN_A_BOTTLE).setWeight(15))
                         .add(LootItem.lootTableItem(TCItems.FLURRY_BOOTS).setWeight(15))
@@ -46,12 +46,11 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(LootItem.lootTableItem(ToolItems.ICE_MIRROR))
                         .add(EmptyLootItem.emptyItem().setWeight(4))
                 )
-                .withPool(LootPool.lootPool()
-                        .add(NestedLootTable.lootTableReference(ModLootTables.INITIAL_WORLD_UNDERGROUND_CHEST))
-                )
         );
-        // 困难模式前箱子通用
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/initial_world_underground_chest"), LootTable.lootTable()
+    }
+    // 困难模式前箱子通用
+    private static LootTable.Builder initialWorldUndergroundCommon() {
+        return LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ConsumableItems.BOMB).apply(SetItemCountFunction.setCount(UniformGenerator.between(10, 19))))
                         .add(EmptyLootItem.emptyItem().setWeight(4))
@@ -62,11 +61,11 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(EmptyLootItem.emptyItem().setWeight(4))
                 )
                 .withPool(LootPool.lootPool()
-                .add(LootItem.lootTableItem(MaterialItems.LEAD_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(4, 7))))
-                .add(LootItem.lootTableItem(MaterialItems.SILVER_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(4, 7))))
-                .add(LootItem.lootTableItem(MaterialItems.TUNGSTEN_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(4, 7))))
-                .add(LootItem.lootTableItem(Items.IRON_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(4, 7))))
-                .add(EmptyLootItem.emptyItem().setWeight(4))
+                        .add(LootItem.lootTableItem(MaterialItems.LEAD_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(4, 7))))
+                        .add(LootItem.lootTableItem(MaterialItems.SILVER_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(4, 7))))
+                        .add(LootItem.lootTableItem(MaterialItems.TUNGSTEN_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(4, 7))))
+                        .add(LootItem.lootTableItem(Items.IRON_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(4, 7))))
+                        .add(EmptyLootItem.emptyItem().setWeight(4))
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ConsumableItems.SHURIKEN).apply(SetItemCountFunction.setCount(UniformGenerator.between(25, 49))))
@@ -90,7 +89,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(EmptyLootItem.emptyItem().setWeight(9))
                 )
                 .withPool(LootPool.lootPool()
-                       .add(LootItem.lootTableItem(Items.TORCH).apply(SetItemCountFunction.setCount(UniformGenerator.between(10, 20))))
+                        .add(LootItem.lootTableItem(Items.TORCH).apply(SetItemCountFunction.setCount(UniformGenerator.between(10, 20))))
                         .add(EmptyLootItem.emptyItem())
                 )
                 .withPool(LootPool.lootPool()
@@ -100,7 +99,6 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ModItems.SILVER_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(50, 89))))
                         .add(EmptyLootItem.emptyItem())
-                )
-        );
+                );
     }
 }

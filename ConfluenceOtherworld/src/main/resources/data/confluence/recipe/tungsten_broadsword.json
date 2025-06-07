@@ -7,13 +7,13 @@
     ],
     "key": {
         "c": {
-            "tag": "c:ingots/lead"
+            "tag": "c:ingots/tungsten"
         },
         "/": {
             "item": "minecraft:stick"
         }
     },
     "result": {
-        "id": "confluence:lead_board_sword"
+        "id": "confluence:tungsten_broadsword"
     }
 }

@@ -208,7 +208,7 @@ public class ValueSubProvider {
                 // Christmas Tree Sword 10 gold
                 // Classy Cane 50 silver
                 // Cobalt Sword 1 gold 38 silver
-                .add(SwordItems.COPPER_BOARD_SWORD, 90)
+                .add(SwordItems.COPPER_BROADSWORD, 90)
                 .add(SwordItems.COPPER_SHORT_SWORD, 70)
                 // Cutlass 3 gold 60 silver
                 // Death Sickle 7 gold 50 silver
@@ -221,7 +221,7 @@ public class ValueSubProvider {
                 // Flymeal 35 silver
                 // Frostbrand 5 gold
                 // Gladius 30 silver
-                .add(SwordItems.GOLDEN_BOARD_SWORD, wrap(18, 0))
+                .add(SwordItems.GOLDEN_BROADSWORD, wrap(18, 0))
                 .add(SwordItems.GOLDEN_SHORT_SWORD, wrap(14, 0))
                 .add(SwordItems.GREEN_PHASEBLADE, wrap(54, 0))
                 // Green Phasesaber 1 gold
@@ -233,7 +233,7 @@ public class ValueSubProvider {
                 .add(SwordItems.IRON_SHORT_SWORD, wrap(2, 80))
                 .add(SwordItems.KATANA, wrap(2, 50, 0))
                 // Keybrand 4 gold
-                .add(SwordItems.LEAD_BOARD_SWORD, wrap(5, 40))
+                .add(SwordItems.LEAD_BROADSWORD, wrap(5, 40))
                 .add(SwordItems.LEAD_SHORT_SWORD, wrap(4, 20))
                 .add(SwordItems.LIGHTS_BANE, wrap(27, 0))
                 .add(SwordItems.MANDIBLE_BLADE, wrap(10, 0))
@@ -247,7 +247,7 @@ public class ValueSubProvider {
                 // Palladium Sword 1 gold 84 silver
                 // Palm Wood Sword 20 copper
                 // Pearlwood Sword 20 copper
-                .add(SwordItems.PLATINUM_BOARD_SWORD, wrap(27, 0))
+                .add(SwordItems.PLATINUM_BROADSWORD, wrap(27, 0))
                 .add(SwordItems.PLATINUM_SHORT_SWORD, wrap(21, 0))
                 // Psycho Knife 10 gold
                 .add(SwordItems.PURPLE_CLUBBERFISH, wrap(1, 0, 0))
@@ -259,7 +259,7 @@ public class ValueSubProvider {
                 // Ruler 2 silver
                 // Seedler 10 gold
                 // Shadewood Sword 20 copper
-                .add(SwordItems.SILVER_BOARD_SWORD, wrap(9, 0))
+                .add(SwordItems.SILVER_BROADSWORD, wrap(9, 0))
                 .add(SwordItems.SILVER_SHORT_SWORD, wrap(7, 0))
                 // Slap Hand 5 gold
                 // Star Wrath 20 gold
@@ -268,12 +268,12 @@ public class ValueSubProvider {
                 .add(SwordItems.TENTACLE_MACE, wrap(50, 0))
                 // Terra Blade 20 gold
                 // The Horseman's Blade 10 gold
-                .add(SwordItems.TIN_BOARD_SWORD, wrap(1, 35))
+                .add(SwordItems.TIN_BROADSWORD, wrap(1, 35))
                 .add(SwordItems.TIN_SHORT_SWORD, wrap(1, 5))
                 // Titanium Sword 3 gold 22 silver
                 // True Excalibur 10 gold
                 // True Night's Edge 10 gold
-                .add(SwordItems.TUNGSTEN_BOARD_SWORD, wrap(13, 50))
+                .add(SwordItems.TUNGSTEN_BROADSWORD, wrap(13, 50))
                 .add(SwordItems.TUNGSTEN_SHORT_SWORD, wrap(10, 50))
                 .add(SwordItems.VOLCANO, wrap(54, 0))
                 .add(SwordItems.WHITE_PHASEBLADE, wrap(54, 0))

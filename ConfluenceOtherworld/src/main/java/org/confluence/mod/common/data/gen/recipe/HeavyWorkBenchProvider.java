@@ -146,7 +146,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "#",
                 "#",
                 "/"
-        )), SwordItems.GOLDEN_BOARD_SWORD.toStack());
+        )), SwordItems.GOLDEN_BROADSWORD.toStack());
         heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
                 '#', AmountIngredient.of(2, Items.GOLD_INGOT),
                 '/', Ingredient.of(Items.STICK)

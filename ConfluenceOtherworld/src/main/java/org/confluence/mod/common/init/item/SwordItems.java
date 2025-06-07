@@ -54,13 +54,13 @@ public class SwordItems {
 
     //普通宽剑 默认横扫*1.5
     public static final DeferredItem<SwordItem> CACTUS_SWORD = register("cactus_sword", ModTiers.CACTUS, 5, 1.6F, NORMAL_SWORD.get());
-    public static final DeferredItem<SwordItem> COPPER_BOARD_SWORD = register("copper_board_sword", ModTiers.COPPER, 5, 1.6F, NORMAL_SWORD.get());
-    public static final DeferredItem<SwordItem> TIN_BOARD_SWORD = register("tin_board_sword", ModTiers.TIN, 5, 1.6F, NORMAL_SWORD.get());
-    public static final DeferredItem<SwordItem> LEAD_BOARD_SWORD = register("lead_board_sword", ModTiers.LEAD, 6, 1.6F, NORMAL_SWORD.get());
-    public static final DeferredItem<SwordItem> SILVER_BOARD_SWORD = register("silver_board_sword", ModTiers.SILVER, 6, 1.6F, NORMAL_SWORD.get());
-    public static final DeferredItem<SwordItem> TUNGSTEN_BOARD_SWORD = register("tungsten_board_sword", ModTiers.TUNGSTEN, 6, 1.6F, NORMAL_SWORD.get());
-    public static final DeferredItem<SwordItem> GOLDEN_BOARD_SWORD = register("golden_board_sword", ModTiers.GOLD, 7, 1.6F, NORMAL_SWORD.get());
-    public static final DeferredItem<SwordItem> PLATINUM_BOARD_SWORD = register("platinum_board_sword", ModTiers.PLATINUM, 8, 1.6F, NORMAL_SWORD.get());
+    public static final DeferredItem<SwordItem> COPPER_BROADSWORD = register("copper_broadsword", ModTiers.COPPER, 5, 1.6F, NORMAL_SWORD.get());
+    public static final DeferredItem<SwordItem> TIN_BROADSWORD = register("tin_broadsword", ModTiers.TIN, 5, 1.6F, NORMAL_SWORD.get());
+    public static final DeferredItem<SwordItem> LEAD_BROADSWORD = register("lead_broadsword", ModTiers.LEAD, 6, 1.6F, NORMAL_SWORD.get());
+    public static final DeferredItem<SwordItem> SILVER_BROADSWORD = register("silver_broadsword", ModTiers.SILVER, 6, 1.6F, NORMAL_SWORD.get());
+    public static final DeferredItem<SwordItem> TUNGSTEN_BROADSWORD = register("tungsten_broadsword", ModTiers.TUNGSTEN, 6, 1.6F, NORMAL_SWORD.get());
+    public static final DeferredItem<SwordItem> GOLDEN_BROADSWORD = register("golden_broadsword", ModTiers.GOLD, 7, 1.6F, NORMAL_SWORD.get());
+    public static final DeferredItem<SwordItem> PLATINUM_BROADSWORD = register("platinum_broadsword", ModTiers.PLATINUM, 8, 1.6F, NORMAL_SWORD.get());
     public static final DeferredItem<SwordItem> MURAMASA = register("muramasa", ModTiers.UNBREAKABLE, 14, 3, NORMAL_SWORD.get()
             .setSweepRange(2.5F).addAttributeModifier(Attributes.ATTACK_KNOCKBACK, 0.2f, AttributeModifier.Operation.ADD_VALUE));
 

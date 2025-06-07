@@ -23,7 +23,6 @@ import org.confluence.mod.common.entity.npc.RandomItemListing;
 import org.confluence.mod.common.entity.npc.SkyVillagerItemListing;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.terra_curio.common.init.TCItems;
@@ -160,10 +159,10 @@ public final class ModVillagers {
             tier5.add(new SkyVillagerItemListing(ModItems.EMERALD_COIN.get(), 4, TCItems.HAND_WARMER.get(), 10, 25, 0.05F));
         } else if (type == VillagerProfession.WEAPONSMITH) {
             tier1.add(new BasicItemListing(new ItemStack(Items.EMERALD, 5), new ItemStack(SwordItems.LEAD_SHORT_SWORD.get()), 10, 25, 0.05F));
-            tier1.add(new BasicItemListing(new ItemStack(Items.EMERALD, 7), new ItemStack(SwordItems.LEAD_BOARD_SWORD.get()), 10, 25, 0.05F));
+            tier1.add(new BasicItemListing(new ItemStack(Items.EMERALD, 7), new ItemStack(SwordItems.LEAD_BROADSWORD.get()), 10, 25, 0.05F));
             tier2.add(new BasicItemListing(new ItemStack(MaterialItems.LEAD_INGOT.get(), 5), new ItemStack(Items.EMERALD), 10, 25, 0.05F));
             tier4.add(new RandomItemListing(Items.EMERALD, IntegerRange.of(8, 9), SwordItems.PLATINUM_SHORT_SWORD.get(), 10, 25, 0.05F));
-            tier4.add(new RandomItemListing(Items.EMERALD, IntegerRange.of(9, 11), SwordItems.PLATINUM_BOARD_SWORD.get(), 10, 25, 0.05F));
+            tier4.add(new RandomItemListing(Items.EMERALD, IntegerRange.of(9, 11), SwordItems.PLATINUM_BROADSWORD.get(), 10, 25, 0.05F));
             tier5.add(new RandomItemListing(Items.EMERALD, IntegerRange.of(9, 11), BowItems.PLATINUM_SHORT_BOW.get(), 10, 25, 0.05F));
             tier5.add(new RandomItemListing(Items.EMERALD, IntegerRange.of(11, 12), BowItems.PLATINUM_BOW.get(), 10, 25, 0.05F));
         } else if (type == VillagerProfession.TOOLSMITH) {

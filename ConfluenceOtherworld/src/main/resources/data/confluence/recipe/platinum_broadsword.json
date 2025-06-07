@@ -7,13 +7,13 @@
     ],
     "key": {
         "c": {
-            "item": "minecraft:copper_ingot"
+            "tag": "c:ingots/platinum"
         },
         "/": {
             "item": "minecraft:stick"
         }
     },
     "result": {
-        "id": "confluence:copper_board_sword"
+        "id": "confluence:platinum_broadsword"
     }
 }

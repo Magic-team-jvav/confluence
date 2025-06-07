@@ -2473,19 +2473,19 @@ public class ModChineseProvider extends LanguageProvider {
 
         add(SwordItems.COPPER_SHORT_SWORD.get(), "铜短剑");
         add(SwordItems.TIN_SHORT_SWORD.get(), "锡短剑");
-        add(SwordItems.COPPER_BOARD_SWORD.get(), "铜阔剑");
-        add(SwordItems.TIN_BOARD_SWORD.get(), "锡阔剑");
+        add(SwordItems.COPPER_BROADSWORD.get(), "铜阔剑");
+        add(SwordItems.TIN_BROADSWORD.get(), "锡阔剑");
         add(SwordItems.IRON_SHORT_SWORD.get(), "铁短剑");
         add(SwordItems.LEAD_SHORT_SWORD.get(), "铅短剑");
-        add(SwordItems.LEAD_BOARD_SWORD.get(), "铅阔剑");
+        add(SwordItems.LEAD_BROADSWORD.get(), "铅阔剑");
         add(SwordItems.SILVER_SHORT_SWORD.get(), "银短剑");
-        add(SwordItems.SILVER_BOARD_SWORD.get(), "银阔剑");
+        add(SwordItems.SILVER_BROADSWORD.get(), "银阔剑");
         add(SwordItems.TUNGSTEN_SHORT_SWORD.get(), "钨短剑");
-        add(SwordItems.TUNGSTEN_BOARD_SWORD.get(), "钨阔剑");
+        add(SwordItems.TUNGSTEN_BROADSWORD.get(), "钨阔剑");
         add(SwordItems.PLATINUM_SHORT_SWORD.get(), "铂金短剑");
-        add(SwordItems.PLATINUM_BOARD_SWORD.get(), "铂金阔剑");
+        add(SwordItems.PLATINUM_BROADSWORD.get(), "铂金阔剑");
         add(SwordItems.GOLDEN_SHORT_SWORD.get(), "金短剑");
-        add(SwordItems.GOLDEN_BOARD_SWORD.get(), "金阔剑");
+        add(SwordItems.GOLDEN_BROADSWORD.get(), "金阔剑");
         add(SwordItems.CACTUS_SWORD.get(), "仙人掌剑");
         add(SwordItems.MURAMASA.get(), "村正大刀");
 

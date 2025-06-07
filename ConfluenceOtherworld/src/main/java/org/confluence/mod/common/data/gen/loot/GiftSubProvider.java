@@ -143,7 +143,10 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 )
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/savanna_crate"), environmentCrateCommon()
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(BowItems.HUNTING_BOW)))
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(BowItems.HUNTING_BOW))
+                        .add(LootItem.lootTableItem(AccessoryItems.NATURES_GIFT))
+                )
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/sky_crate"), environmentCrateCommon()
                 .withPool(LootPool.lootPool()
@@ -413,7 +416,10 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 )
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/wild_crate"), environmentCrateHardModeCommon()
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(BowItems.HUNTING_BOW)))
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(BowItems.HUNTING_BOW))
+                        .add(LootItem.lootTableItem(AccessoryItems.NATURES_GIFT))
+                )
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/azure_crate"), environmentCrateHardModeCommon()
                 .withPool(LootPool.lootPool()

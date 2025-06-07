@@ -40,7 +40,7 @@ public class RemainsBlock extends DirectionalBlock implements SimpleWaterloggedB
         if (state.getValue(WATERLOGGED)) {
             level.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
-        return state.setValue(FACING, facing.getOpposite()).setValue(IS_FACE_STURDY, !facingState.isAir() && facingState.isFaceSturdy(level, facingPos, facing.getOpposite()));
+        return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
     }
 
     public BlockState getStateForPlacement(BlockPlaceContext context) {
@@ -50,12 +50,10 @@ public class RemainsBlock extends DirectionalBlock implements SimpleWaterloggedB
         BlockState belowState = level.getBlockState(belowPos);
         boolean isFaceSturdy = !belowState.isAir() && belowState.isFaceSturdy(level, belowPos, Direction.UP);
         return this.defaultBlockState()
-                .setValue(FACING, context.getNearestLookingDirection().getOpposite())
+                .setValue(FACING, context.getClickedFace())
                 .setValue(IS_FACE_STURDY, isFaceSturdy)
                 .setValue(WATERLOGGED, level.getFluidState(clickedPos).is(Fluids.WATER));
     }
-
-
 
     @Override
     protected FluidState getFluidState(BlockState state) {

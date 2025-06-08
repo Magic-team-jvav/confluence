@@ -32,34 +32,51 @@ import java.util.stream.Stream;
 public class HardmodeAnvilBlock extends FallingBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final MapCodec<HardmodeAnvilBlock> CODEC = simpleCodec(HardmodeAnvilBlock::new);
-    private static final VoxelShape X_AXIS_AABB;
-    private static final VoxelShape Z_AXIS_AABB;
+    private static final VoxelShape NORTH_AABB;
+    private static final VoxelShape EAST_AABB;
+    private static final VoxelShape SOUTH_AABB;
+    private static final VoxelShape WEST_AABB;
 
     static {
-        X_AXIS_AABB = Stream.of(
-                Block.box(3, 0, 4, 13, 4, 12),
-                Block.box(5, 4, 5, 11, 8, 11),
-                Block.box(2, 8, 3.5, 14, 14, 12.5),
-                Block.box(0, 9, 3.5, 2, 14, 12.5),
-                Block.box(14, 9, 4.5, 16, 14, 11.5),
-                Block.box(0, 9.01, 3.3934, 4.37868, 13.99, 9.75736)
-        ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
 
-        Z_AXIS_AABB = Stream.of(
+        NORTH_AABB = Stream.of(
                 Block.box(4, 0, 3, 12, 4, 13),
                 Block.box(5, 4, 5, 11, 8, 11),
-                Block.box(3.5, 8, 2, 12.5, 14, 14),
-                Block.box(3.5, 9, 0, 12.5, 14, 2),
-                Block.box(4.5, 9, 14, 11.5, 14, 16),
-                Block.box(3.3934, 9.01, 0, 9.75736, 13.99, 4.37868)
+                Block.box(3.5, 8, -3, 12.5, 14, 17)
+        ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
+
+
+        EAST_AABB = Stream.of(
+                Block.box(3, 0, 4, 13, 4, 12),
+                Block.box(5, 4, 5, 11, 8, 11),
+                Block.box(-3, 8, 3.5, 17, 14, 12.5)
+        ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
+
+
+        SOUTH_AABB = Stream.of(
+                Block.box(4, 0, 3, 12, 4, 13),
+                Block.box(5, 4, 5, 11, 8, 11),
+                Block.box(3.5, 8, -1, 12.5, 14, 19)
+        ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
+
+
+        WEST_AABB = Stream.of(
+                Block.box(3, 0, 4, 13, 4, 12),
+                Block.box(5, 4, 5, 11, 8, 11),
+                Block.box(-3, 8, 3.5, 17, 14, 12.5)
         ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
     }
 
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         Direction direction = state.getValue(FACING);
-        // 修正方向判断：X轴方向对应南北朝向，Z轴方向对应东西朝向
-        return direction.getAxis() == Direction.Axis.Z ? Z_AXIS_AABB : X_AXIS_AABB;
+        return switch (direction) {
+            case NORTH -> NORTH_AABB;
+            case EAST -> EAST_AABB;
+            case SOUTH -> SOUTH_AABB;
+            case WEST -> WEST_AABB;
+            default -> NORTH_AABB;
+        };
     }
 
     protected boolean isPathfindable(BlockState state, PathComputationType pathComputationType) {

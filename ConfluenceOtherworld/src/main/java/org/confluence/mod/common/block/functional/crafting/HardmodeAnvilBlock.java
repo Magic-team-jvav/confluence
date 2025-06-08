@@ -20,40 +20,48 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.menu.HardmodeAnvilMenu;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.stream.Stream;
+
 public class HardmodeAnvilBlock extends FallingBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final MapCodec<HardmodeAnvilBlock> CODEC = simpleCodec(HardmodeAnvilBlock::new);
-    private static final VoxelShape BASE;
-    private static final VoxelShape X_LEG1;
-    private static final VoxelShape X_LEG2;
-    private static final VoxelShape X_TOP;
-    private static final VoxelShape Z_LEG1;
-    private static final VoxelShape Z_LEG2;
-    private static final VoxelShape Z_TOP;
     private static final VoxelShape X_AXIS_AABB;
     private static final VoxelShape Z_AXIS_AABB;
 
-    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        Direction direction = (Direction)state.getValue(FACING);
-        return direction.getAxis() == Direction.Axis.X ? X_AXIS_AABB : Z_AXIS_AABB;
-    }
     static {
-        BASE = Block.box(2.0, 0.0, 2.0, 14.0, 4.0, 14.0);
-        X_LEG1 = Block.box(3.0, 4.0, 4.0, 13.0, 5.0, 12.0);
-        X_LEG2 = Block.box(4.0, 5.0, 6.0, 12.0, 10.0, 10.0);
-        X_TOP = Block.box(0.0, 10.0, 3.0, 16.0, 16.0, 13.0);
-        Z_LEG1 = Block.box(4.0, 4.0, 3.0, 12.0, 5.0, 13.0);
-        Z_LEG2 = Block.box(6.0, 5.0, 4.0, 10.0, 10.0, 12.0);
-        Z_TOP = Block.box(3.0, 10.0, 0.0, 13.0, 16.0, 16.0);
-        X_AXIS_AABB = Shapes.or(BASE, new VoxelShape[]{X_LEG1, X_LEG2, X_TOP});
-        Z_AXIS_AABB = Shapes.or(BASE, new VoxelShape[]{Z_LEG1, Z_LEG2, Z_TOP});
+        X_AXIS_AABB = Stream.of(
+                Block.box(3, 0, 4, 13, 4, 12),
+                Block.box(5, 4, 5, 11, 8, 11),
+                Block.box(2, 8, 3.5, 14, 14, 12.5),
+                Block.box(0, 9, 3.5, 2, 14, 12.5),
+                Block.box(14, 9, 4.5, 16, 14, 11.5),
+                Block.box(0, 9.01, 3.3934, 4.37868, 13.99, 9.75736)
+        ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
+
+        Z_AXIS_AABB = Stream.of(
+                Block.box(4, 0, 3, 12, 4, 13),
+                Block.box(5, 4, 5, 11, 8, 11),
+                Block.box(3.5, 8, 2, 12.5, 14, 14),
+                Block.box(3.5, 9, 0, 12.5, 14, 2),
+                Block.box(4.5, 9, 14, 11.5, 14, 16),
+                Block.box(3.3934, 9.01, 0, 9.75736, 13.99, 4.37868)
+        ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
     }
+
+    @Override
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        Direction direction = state.getValue(FACING);
+        // 修正方向判断：X轴方向对应南北朝向，Z轴方向对应东西朝向
+        return direction.getAxis() == Direction.Axis.Z ? Z_AXIS_AABB : X_AXIS_AABB;
+    }
+
     protected boolean isPathfindable(BlockState state, PathComputationType pathComputationType) {
         return false;
     }
@@ -100,6 +108,7 @@ public class HardmodeAnvilBlock extends FallingBlock {
 
     @Override
     public @Nullable MenuProvider getMenuProvider(BlockState state, Level level, BlockPos pos) {
-        return new SimpleMenuProvider((containerId, inventory, player) -> new HardmodeAnvilMenu(containerId, inventory, ContainerLevelAccess.create(level, pos)), Component.translatable("container.confluence." + BuiltInRegistries.BLOCK.getKey(this).getPath()));
+        return new SimpleMenuProvider((containerId, inventory, player) -> new HardmodeAnvilMenu(containerId, inventory, ContainerLevelAccess.create(level, pos)),
+                Component.translatable("container.confluence." + BuiltInRegistries.BLOCK.getKey(this).getPath()));
     }
 }

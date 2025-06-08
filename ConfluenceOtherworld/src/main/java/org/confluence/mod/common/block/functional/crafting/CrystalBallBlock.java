@@ -12,6 +12,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -19,11 +20,21 @@ import org.confluence.lib.common.recipe.EnvironmentLevelAccess;
 import org.confluence.mod.common.menu.CrystalBallMenu;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.stream.Stream;
+
 public class CrystalBallBlock extends Block {
     public CrystalBallBlock(Properties properties) {
         super(properties);
     }
-    private static final VoxelShape SHAPE = Shapes.box(0.1875, 0.0, 0.1875, 0.8125, 1.0, 0.8125);
+    private static final VoxelShape SHAPE = Stream.of(
+            Block.box(4.375, 4.032, 4.375, 11.625, 10.125, 11.625),
+            Block.box(2, 0, 2, 14, 4, 14),
+            Block.box(1, 1.5, 1, 3, 3.5, 3),
+            Block.box(13, 1.5, 1, 15, 3.5, 3),
+            Block.box(13, 1.5, 13, 15, 3.5, 15),
+            Block.box(1, 1.5, 13, 3, 3.5, 15),
+            Block.box(4.5, 3, 4.5, 11.5, 10, 11.5)
+    ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
 
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {

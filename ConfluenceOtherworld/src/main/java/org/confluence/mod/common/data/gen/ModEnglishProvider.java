@@ -843,6 +843,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("container.confluence.tree_holes", "Tree Holes");
         add("container.confluence.npc_shop", "Npc Shop");
         add("container.confluence.solidifier", "Solidifier");
+        add("container.confluence.mythril_anvil", "Mythril Anvil");
+        add("container.confluence.orichalcum_anvil", "Orichalcum Anvil");
 
         add("title.confluence.shimmer_transmutation", "Shimmer Transmutation");
         add("title.confluence.altar", "Altar");
@@ -856,6 +858,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("title.confluence.touhoulittlemaid", "Touhou Little Maid Supplies");
         add("title.confluence.npc_trade", "NPC Trading");
         add("title.confluence.sawmill", "Sawmill");
+        add("title.confluence.mythril_anvil", "Mythril Anvil");
+        add("title.confluence.orichalcum_anvil", "Orichalcum Anvil");
 
         // Override
         add("item.confluence.encumbering_stone.disable", "Encumbering Stone: Disable");

@@ -890,6 +890,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("container.confluence.sawmill", "锯木机");
         add("container.confluence.tree_holes", "树洞");
         add("container.confluence.solidifier", "固化机");
+        add("container.confluence.mythril_anvil", "秘银砧");
+        add("container.confluence.orichalcum_anvil", "山铜砧");
 
         add("title.confluence.shimmer_transmutation", "微光嬗变");
         add("title.confluence.altar", "祭坛");
@@ -904,6 +906,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("title.confluence.npc_trade", "汇流商店");
         add("title.confluence.cooking_pot", "烹饪锅");
         add("title.confluence.sawmill", "锯木机");
+        add("title.confluence.mythril_anvil", "秘银砧");
+        add("title.confluence.orichalcum_anvil", "山铜砧");
 
         // 覆盖
         add("item.confluence.encumbering_stone.disable", "负重石：关闭");

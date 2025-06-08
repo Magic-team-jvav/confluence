@@ -3503,7 +3503,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(PotionItems.MUG.get(), "玻璃杯");
         add(PotionItems.ALE.get(), "麦芽酒");
         add(PotionItems.LESSER_HEALING_POTION.get(), "弱效治疗药水");
-        add(PotionItems.LESSER_HEALING_POTION.get(), "弱效治疗药水");
         add(PotionItems.HEALING_POTION.get(), "治疗药水");
         add(PotionItems.GREATER_HEALING_POTION.get(), "强效治疗药水");
         add(PotionItems.SUPER_HEALING_POTION.get(), "超级治疗药水");

@@ -24,10 +24,10 @@ import java.util.stream.Stream;
 
 public class AmmoBoxBlock extends HorizontalDirectionalBlock {
     public static final MapCodec<AmmoBoxBlock> CODEC = simpleCodec(AmmoBoxBlock::new);
-    private static final VoxelShape SHAPE = Stream.of(
-            Block.box(2, 0, 2, 14, 6, 14),
-            Block.box(1, 6, 1, 15, 9, 15)
-    ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
+    private static final VoxelShape SHAPE = Shapes.or(
+            box(2, 0, 2, 14, 6, 14),
+            box(1, 6, 1, 15, 9, 15)
+    );
 
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {

@@ -24,21 +24,14 @@ import java.util.stream.Stream;
 
 public class SharpeningStationBlock extends HorizontalDirectionalBlock {
     public static final MapCodec<SharpeningStationBlock> CODEC = simpleCodec(SharpeningStationBlock::new);
-    private static final VoxelShape X_AXIS_SHAPE;
-    private static final VoxelShape Z_AXIS_SHAPE;
-
-    static {
-        Z_AXIS_SHAPE = Stream.of(
-                Block.box(2, 2, 5, 14, 14, 11),
-                Block.box(0, 0, 2, 16, 4, 14)
-        ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
-
-        X_AXIS_SHAPE = Stream.of(
-                Block.box(5, 2, 2, 11, 14, 14),
-                Block.box(2, 0, 0, 14, 4, 16)
-        ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
-
-    }
+    private static final VoxelShape X_AXIS_SHAPE = Shapes.or(
+            box(5, 2, 2, 11, 14, 14),
+            box(2, 0, 0, 14, 4, 16)
+    );
+    private static final VoxelShape Z_AXIS_SHAPE = Shapes.or(
+                box(2, 2, 5, 14, 14, 11),
+                box(0, 0, 2, 16, 4, 14)
+    );
 
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {

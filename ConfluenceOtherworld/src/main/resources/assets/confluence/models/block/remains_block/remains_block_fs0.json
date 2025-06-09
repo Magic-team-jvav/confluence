@@ -1,7 +1,7 @@
 {
 	"credit": "Made with Blockbench",
-	"texture_size": [64, 64],
 	"render_type": "cutout_mipped",
+	"texture_size": [64, 64],
 	"textures": {
 		"1": "confluence:block/remains_block"
 	},
@@ -92,8 +92,8 @@
 		},
 		{
 			"name": "Body",
-			"from": [4.01, 1.01, 12.01],
-			"to": [11.99, 16.99, 15.99],
+			"from": [4.01, 1.01, 11.994],
+			"to": [11.99, 16.99, 15.974],
 			"rotation": {"angle": 0, "axis": "x", "origin": [8, 1, 14]},
 			"faces": {
 				"north": {"uv": [1, 5, 3, 9], "texture": "#1"},
@@ -106,8 +106,8 @@
 		},
 		{
 			"name": "Body",
-			"from": [12.01, 17.01, 16.01],
-			"to": [3.99, 0.99, 11.99],
+			"from": [12.01, 17.01, 15.994],
+			"to": [3.99, 0.99, 11.974],
 			"rotation": {"angle": 0, "axis": "x", "origin": [8, 1, 14]},
 			"faces": {
 				"north": {"uv": [4, 9, 6, 5], "texture": "#1"},

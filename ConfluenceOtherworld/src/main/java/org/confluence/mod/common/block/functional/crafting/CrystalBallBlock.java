@@ -26,15 +26,14 @@ public class CrystalBallBlock extends Block {
     public CrystalBallBlock(Properties properties) {
         super(properties);
     }
-    private static final VoxelShape SHAPE = Stream.of(
-            Block.box(4.375, 4.032, 4.375, 11.625, 10.125, 11.625),
-            Block.box(2, 0, 2, 14, 4, 14),
-            Block.box(1, 1.5, 1, 3, 3.5, 3),
-            Block.box(13, 1.5, 1, 15, 3.5, 3),
-            Block.box(13, 1.5, 13, 15, 3.5, 15),
-            Block.box(1, 1.5, 13, 3, 3.5, 15),
-            Block.box(4.5, 3, 4.5, 11.5, 10, 11.5)
-    ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
+    private static final VoxelShape SHAPE = Shapes.or(
+            box(2, 0, 2, 14, 4, 14),
+            box(1, 1.5, 1, 3, 3.5, 3),
+            box(13, 1.5, 1, 15, 3.5, 3),
+            box(13, 1.5, 13, 15, 3.5, 15),
+            box(1, 1.5, 13, 3, 3.5, 15),
+            box(4.5, 3, 4.5, 11.5, 10, 11.5)
+    );
 
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {

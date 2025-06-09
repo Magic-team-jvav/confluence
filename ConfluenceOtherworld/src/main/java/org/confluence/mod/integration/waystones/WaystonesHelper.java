@@ -1,8 +1,14 @@
 package org.confluence.mod.integration.waystones;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.datafixers.DSL;
+import net.blay09.mods.waystones.block.WaystoneBlock;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.BlockItem;
@@ -10,10 +16,14 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModList;
-import net.neoforged.neoforge.event.BlockEntityTypeAddBlocksEvent;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -24,14 +34,19 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTabs;
+import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
 import java.util.function.BiConsumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class WaystonesHelper {
     public static final boolean LOADED = ModList.get().isLoaded("waystones");
-    private static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Confluence.MODID);
+    static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Confluence.MODID);
+    private static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, Confluence.MODID);
     private static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
+    private static int count = 0;
 
     private static final DeferredBlock<Block> FOREST_PYLON = register("forest_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.CYAN));
     private static final DeferredBlock<Block> SNOW_PYLON = register("snow_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.WHITE));
@@ -43,10 +58,12 @@ public class WaystonesHelper {
     private static final DeferredBlock<Block> MUSHROOM_PYLON = register("mushroom_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.PURPLE));
     private static final DeferredBlock<Block> UNIVERSAL_PYLON = register("universal_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.BROWN));
 
+    public static final Supplier<BlockEntityType<PylonBlock.Entity>> PYLON_ENTITY = BLOCK_ENTITY_TYPES.register("pylon_entity", () -> BlockEntityType.Builder.of(PylonBlock.Entity::new, BLOCKS.getEntries().stream().map(DeferredHolder::get).toArray(Block[]::new)).build(DSL.remainderType()));
+
     private static DeferredBlock<Block> register(String name, BlockBehaviour.Properties properties) {
         DeferredBlock<Block> block = BLOCKS.register(name, () -> {
             try {
-                return PylonBlock.class.getDeclaredConstructor(BlockBehaviour.Properties.class).newInstance(properties);
+                return PylonBlock.class.getDeclaredConstructor(int.class, BlockBehaviour.Properties.class).newInstance(count++, properties);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -58,17 +75,10 @@ public class WaystonesHelper {
     public static void register(IEventBus eventBus) {
         if (LOADED) {
             BLOCKS.register(eventBus);
+            BLOCK_ENTITY_TYPES.register(eventBus);
             ITEMS.register(eventBus);
-            eventBus.addListener(WaystonesHelper::blockEntityTypeAddBlocks);
             eventBus.addListener(WaystonesHelper::buildCreativeModeTabContents);
         }
-    }
-
-    private static void blockEntityTypeAddBlocks(BlockEntityTypeAddBlocksEvent event) {
-        event.modify(
-                ResourceKey.create(Registries.BLOCK_ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath("waystones", "waystone")),
-                BLOCKS.getEntries().stream().map(DeferredHolder::get).toArray(Block[]::new)
-        );
     }
 
     private static void buildCreativeModeTabContents(BuildCreativeModeTabContentsEvent event) {
@@ -101,5 +111,17 @@ public class WaystonesHelper {
             consumer.accept(MUSHROOM_PYLON, "蘑菇晶塔");
             consumer.accept(UNIVERSAL_PYLON, "万能晶塔");
         }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerBlockEntityRenderer(PYLON_ENTITY.get(), context -> new GeoBlockRenderer<>(new PylonModel()) {
+            @Override
+            public void defaultRender(PoseStack poseStack, PylonBlock.Entity animatable, MultiBufferSource bufferSource, @Nullable RenderType renderType, @Nullable VertexConsumer buffer, float yaw, float partialTick, int packedLight) {
+                if (animatable.getBlockState().getValue(WaystoneBlock.HALF) == DoubleBlockHalf.LOWER) {
+                    super.defaultRender(poseStack, animatable, bufferSource, renderType, buffer, yaw, partialTick, packedLight);
+                }
+            }
+        });
     }
 }

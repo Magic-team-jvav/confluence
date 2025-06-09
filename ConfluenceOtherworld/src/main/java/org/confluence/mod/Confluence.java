@@ -60,6 +60,7 @@ public class Confluence {
         ModHookTypes.TYPES.register(eventBus);
         ModLootTables.ItemConditions.TYPES.register(eventBus);
         RegistriesFixer.init();
+
         WaystonesHelper.register(eventBus);
     }
 

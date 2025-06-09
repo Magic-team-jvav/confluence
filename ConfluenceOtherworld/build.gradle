@@ -226,6 +226,7 @@ dependencies {
     }
 
     compileOnly "maven.modrinth:waystones:zKuhJ4Vo"
+    compileOnly "maven.modrinth:balm:YgPFqhlP"
     if (true) {
         runtimeOnly "maven.modrinth:waystones:zKuhJ4Vo"
         runtimeOnly "maven.modrinth:balm:YgPFqhlP"

@@ -74,6 +74,7 @@
         "integration.terrablender.MixinMultiNoiseBiomeSourceSquared",
         "integration.touhoulittlemaid.EntityMaidMixin",
         "integration.touhoulittlemaid.MaidFishingHookMixin",
+        "integration.waystones.WaystoneBlockEntityMixin",
         "item.ArrowItemMixin",
         "item.BowItemMixin",
         "item.ContainerMixin",

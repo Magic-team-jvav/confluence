@@ -260,6 +260,8 @@ public final class ModBiomes {
                 .generationSettings(Util.make(new BiomeGenerationSettings.Builder(placedFeature, configuredWorldCarver), builder -> {
                     builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Placed.FIREBLOSSOM);
                     builder.addFeature(GenerationStep.Decoration.SURFACE_STRUCTURES, Placed.ASH_HELLSTONE_GENERATES);
+                    builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Placed.ASH_GRASS);
+                    builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Placed.ASH_TREE);
                 }).build())
                 .build()
         );
@@ -279,8 +281,6 @@ public final class ModBiomes {
                 .mobSpawnSettings(MobSpawnSettings.EMPTY)
                 .generationSettings(Util.make(new BiomeGenerationSettings.Builder(placedFeature, configuredWorldCarver), builder -> {
                     builder.addFeature(GenerationStep.Decoration.SURFACE_STRUCTURES, Placed.ASH_HELLSTONE_GENERATES);
-                    builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Placed.ASH_GRASS);
-                    builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Placed.ASH_TREE);
                     builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Placed.FIREBLOSSOM);
                 }).build())
                 .build()

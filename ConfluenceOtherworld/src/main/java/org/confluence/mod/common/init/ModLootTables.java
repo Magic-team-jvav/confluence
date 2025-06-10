@@ -65,6 +65,8 @@ public final class ModLootTables {
 
     public static final ResourceKey<LootTable> CAVE_CHESTS = register("chests/cave_chests");
 
+    public static final ResourceKey<LootTable> LIVING_MAHOGANY_CARRY = register("gameplay/living_mahogany_carry");
+
     public static final ResourceKey<LootTable> OPAL_BLOCK = register("archaeology/opal_ore");
 
     public static final ResourceKey<LootTable> GOLDEN_LOCK_BOX = register("gameplay/crate/golden_lock_box");

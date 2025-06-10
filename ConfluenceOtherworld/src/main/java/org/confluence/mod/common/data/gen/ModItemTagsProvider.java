@@ -43,6 +43,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
     @Override
     protected void addTags(HolderLookup.Provider provider) {
         HookItems.acceptTag(tag(ModTags.Items.HOOK));
+        PotionItems.acceptTag(tag(Tags.Items.POTIONS));
         IntrinsicTagAppender<Item> minecart = tag(ModTags.Items.MINECART);
         minecart.add(Items.MINECART);
         MinecartItems.ITEMS.getEntries().forEach(item -> minecart.add(item.get()));
@@ -325,6 +326,10 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FoodItems.TILAPIA.get()
         );
         // neoforge
+        tag(Tags.Items.POTION_BOTTLE).add(
+                PotionItems.BOTTLE.get(),
+                PotionItems.BOTTLED_WATER.get()
+        );
         tag(Tags.Items.BONES).add(
                 MaterialItems.ROTTEN_BONE.get(),
                 MaterialItems.VERTEBRA.get()

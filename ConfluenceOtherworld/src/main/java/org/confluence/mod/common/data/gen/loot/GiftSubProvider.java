@@ -821,6 +821,67 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(LootItem.lootTableItem(PotionItems.WORMHOLE_POTION).setWeight(24))
                 )
         );
+        // 提炼机
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/extract/with_silt_block"),extractCommon()
+        );
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/extract/with_desert_fossil"),extractCommon()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(MaterialItems.STURDY_FOSSIL))
+                        .add(EmptyLootItem.emptyItem().setWeight(9))
+                )
+        );
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/extract/with_slush"),extractCommon()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(Items.SNOWBALL))
+                        .add(EmptyLootItem.emptyItem().setWeight(9))
+                )
+        );
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/extract/with_marine_gravel"),extractCommon()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(Items.PRISMARINE_SHARD))
+                        .add(EmptyLootItem.emptyItem().setWeight(19))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(Items.PRISMARINE_CRYSTALS))
+                        .add(EmptyLootItem.emptyItem().setWeight(19))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(Items.NAUTILUS_SHELL))
+                        .add(EmptyLootItem.emptyItem().setWeight(19))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(Items.SNIFFER_EGG))
+                        .add(EmptyLootItem.emptyItem().setWeight(99))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(MaterialItems.HEIM))
+                        .add(EmptyLootItem.emptyItem().setWeight(9))
+                )
+        );
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/extract/with_junk"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(BaitItems.SNAIL).setWeight(1667))
+                        .add(LootItem.lootTableItem(BaitItems.APPRENTICE_BAIT).setWeight(7500))
+                        .add(LootItem.lootTableItem(BaitItems.WORM).setWeight(5560))
+                        .add(LootItem.lootTableItem(BaitItems.SNAIL).setWeight(2780))
+                )
+        );
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/extract/with_gravel"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(Items.FLINT))
+                        .add(EmptyLootItem.emptyItem().setWeight(9))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(ModItems.SILVER_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4))).setWeight(13534))
+                        .add(LootItem.lootTableItem(ModItems.COPPER_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 15))).setWeight(642145))
+                        .add(LootItem.lootTableItem(Items.RAW_COPPER).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(39192))
+                        .add(LootItem.lootTableItem(MaterialItems.RAW_TIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(39192))
+                        .add(LootItem.lootTableItem(Items.RAW_IRON).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(39192))
+                        .add(LootItem.lootTableItem(Items.RAW_GOLD).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(39192))
+                        .add(LootItem.lootTableItem(MaterialItems.RAW_LEAD).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(39192))
+                        .add(LootItem.lootTableItem(MaterialItems.RAW_PLATINUM).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(39192))
+                )
+        );
         // 宝藏袋
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/wall_of_flesh/classic"), wallOfFleshTreasureBagCommon());
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/wall_of_flesh/expert"), wallOfFleshTreasureBagCommon());
@@ -1167,6 +1228,32 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(PotionItems.LESSER_HEALING_POTION)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 15)))
                 ));
+    }
+
+    // 提炼机
+    private static LootTable.Builder extractCommon() {
+        return LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(ModItems.PLATINUM_COIN).setWeight(73))
+                        .add(LootItem.lootTableItem(ModItems.GOLDEN_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(1017))
+                        .add(LootItem.lootTableItem(ModItems.SILVER_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4))).setWeight(13534))
+                        .add(LootItem.lootTableItem(ModItems.COPPER_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 15))).setWeight(642145))
+                        .add(LootItem.lootTableItem(MaterialItems.AMETHYST).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(3333))
+                        .add(LootItem.lootTableItem(MaterialItems.SAPPHIRE).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(3333))
+                        .add(LootItem.lootTableItem(MaterialItems.TOPAZ).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(3333))
+                        .add(LootItem.lootTableItem(MaterialItems.AMBER).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(9598))
+                        .add(LootItem.lootTableItem(MaterialItems.RUBY).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(3333))
+                        .add(LootItem.lootTableItem(MaterialItems.JADE).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(3333))
+                        .add(LootItem.lootTableItem(Items.DIAMOND).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(3333))
+                        .add(LootItem.lootTableItem(Items.RAW_COPPER).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(39192))
+                        .add(LootItem.lootTableItem(MaterialItems.RAW_TIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(39192))
+                        .add(LootItem.lootTableItem(Items.RAW_IRON).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(39192))
+                        .add(LootItem.lootTableItem(Items.RAW_GOLD).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(39192))
+                        .add(LootItem.lootTableItem(MaterialItems.RAW_LEAD).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(39192))
+                        .add(LootItem.lootTableItem(MaterialItems.RAW_SILVER).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(39192))
+                        .add(LootItem.lootTableItem(MaterialItems.RAW_TUNGSTEN).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(39192))
+                        .add(LootItem.lootTableItem(MaterialItems.RAW_PLATINUM).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(39192))
+                );
     }
     // 困难模式前匣子通用
     private static LootTable.Builder environmentCrateCommon() {

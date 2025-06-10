@@ -44,6 +44,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
     protected void addTags(HolderLookup.Provider provider) {
         HookItems.acceptTag(tag(ModTags.Items.HOOK));
         PotionItems.acceptTag(tag(Tags.Items.POTIONS));
+        FoodItems.acceptTag(tag(Tags.Items.FOODS));
         IntrinsicTagAppender<Item> minecart = tag(ModTags.Items.MINECART);
         minecart.add(Items.MINECART);
         MinecartItems.ITEMS.getEntries().forEach(item -> minecart.add(item.get()));
@@ -876,6 +877,9 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 HammerItems.PWNHAMMER.get(),
                 HammerItems.HAMMUSH.get()
         );
+        tag(Tags.Items.FOODS).add(
+                PotionItems.ALE.get()
+        );
         tag(Tags.Items.FOODS_SOUP).add(
                 FoodItems.BOWL_OF_SOUP.get(),
                 FoodItems.GRUB_SOUP.get()
@@ -1301,8 +1305,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ManaWeaponItems.CRYSTAL_STORM.get(),
                 ManaWeaponItems.CURSED_FLAMES.get(),
                 ManaWeaponItems.FLOWER_OF_FROST.get(),
-                PotionItems.MUG.get(),
-                PotionItems.ALE.get(),
                 PotionItems.RED_POTION.get(),
                 PotionItems.FLASK_OF_FIRE.get(),
                 PotionItems.FLASK_OF_GOLD.get(),

@@ -65,6 +65,40 @@ public class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem())
                 )
         );
+        add(TEBossEntities.EATER_OF_WORLDS_SEGMENT.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/eater_of_worlds_segment"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(AlternativesEntry.alternatives(
+                                LootItem.lootTableItem(ModItems.HEART).when(AllOfCondition.allOf(halloweens, christmas).invert()),
+                                LootItem.lootTableItem(ModItems.CANDY_APPLE).when(halloweens),
+                                LootItem.lootTableItem(ModItems.CANDY_CANE).when(christmas)
+                        ).append(EmptyLootItem.emptyItem().setWeight(3)))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(RAW_DEMONITE).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 5))))
+                        .add(EmptyLootItem.emptyItem())
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(SHADOW_SCALE).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
+                        .add(EmptyLootItem.emptyItem())
+                )
+        );
+        add(TEMonsterEntities.VISUAL_NEURON.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/visual_neuron"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(AlternativesEntry.alternatives(
+                                LootItem.lootTableItem(ModItems.HEART).when(AllOfCondition.allOf(halloweens, christmas).invert()),
+                                LootItem.lootTableItem(ModItems.CANDY_APPLE).when(halloweens),
+                                LootItem.lootTableItem(ModItems.CANDY_CANE).when(christmas)
+                        ).append(EmptyLootItem.emptyItem()))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(MaterialItems.RAW_CRIMTANE).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 12))))
+                        .add(EmptyLootItem.emptyItem())
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(MaterialItems.TISSUE_SAMPLE).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 5))))
+                        .add(EmptyLootItem.emptyItem())
+                )
+        );
         add(TEMonsterEntities.GOBLIN_SCOUT.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/goblin_scout"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.TATTERED_CLOTH).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
@@ -256,25 +290,9 @@ public class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(9981))
                 )
         );
-        add(TEMonsterEntities.CAVE_BAT.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/cave_bat"), LootTable.lootTable()
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.DEPTH_METER))
-                        .add(EmptyLootItem.emptyItem().setWeight(99))
-                )
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(SwordItems.BAT_BAT).setWeight(4).setQuality(1))
-                        .add(EmptyLootItem.emptyItem().setWeight(996))
-                )
+        add(TEMonsterEntities.CAVE_BAT.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/cave_bat"),batCommon()
         );
-        add(TEMonsterEntities.SPORE_BAT.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/spore_bat"), LootTable.lootTable()
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TCItems.DEPTH_METER))
-                        .add(EmptyLootItem.emptyItem().setWeight(99))
-                )
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(SwordItems.BAT_BAT).setWeight(4).setQuality(1))
-                        .add(EmptyLootItem.emptyItem().setWeight(996))
-                )
+        add(TEMonsterEntities.SPORE_BAT.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/spore_bat"),batCommon()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TEBoomerangItems.SHROOMERANG).setWeight(5).setQuality(1))
                         .add(EmptyLootItem.emptyItem().setWeight(195))
@@ -411,7 +429,87 @@ public class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(9981))
                 )
         );
+        add(TEMonsterEntities.GIANT_SHELLY.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/giant_shelly"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TCItems.COMPASS).setWeight(123))
+                        .add(EmptyLootItem.emptyItem().setWeight(9877))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TCItems.DEPTH_METER).setWeight(125))
+                        .add(EmptyLootItem.emptyItem().setWeight(9875))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FoodItems.POTATO_CHIPS).setWeight(133))
+                        .apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F)))
+                        .add(EmptyLootItem.emptyItem().setWeight(9867))
+                )
+        );
+        add(TEMonsterEntities.GIANT_WORM.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/giant_worm"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(ModItems.WHOOPIE_CUSHION).setWeight(2))
+                        .add(EmptyLootItem.emptyItem().setWeight(98))
+                )
+        );
+        add(TEMonsterEntities.HARPY.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/harpy"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(MaterialItems.GIANT_HARPY_FEATHER))
+                        .add(EmptyLootItem.emptyItem().setWeight(149))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(MaterialItems.HARPY_FEATHER))
+                        .add(EmptyLootItem.emptyItem())
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FoodItems.CHICKEN_NUGGET))
+                        .apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F)))
+                        .add(EmptyLootItem.emptyItem().setWeight(98))
+                )
+        );
+        add(TEMonsterEntities.HELL_BAT.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/hell_bat"), batCommon()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TCItems.MAGMA_STONE).setWeight(34))
+                        .add(EmptyLootItem.emptyItem().setWeight(966))
+                )
+        );
+        add(TEMonsterEntities.HORNET.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/hornet"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(MaterialItems.STINGER))
+                        .apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F)))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TCItems.BEZOAR).setWeight(2))
+                        .add(EmptyLootItem.emptyItem().setWeight(98))
+                )
+        );
+        add(TEMonsterEntities.ICE_BAT.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/ice_bat"),batCommon()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FoodItems.ICE_CREAM))
+                        .apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F)))
+                        .add(EmptyLootItem.emptyItem().setWeight(149))
+                )
+        );
+        add(TEMonsterEntities.JUNGLE_BAT.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/jungle_bat"),batCommon()
+        );
+        add(TEMonsterEntities.TOMB_CRAWLER.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/tomb_crawler"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(MaterialItems.STURDY_FOSSIL))
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))
+                        .apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.registries, UniformGenerator.between(0.0F, 1.0F)))
+                )
+        );
     }
+    private static LootTable.Builder batCommon() {
+        return LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TCItems.DEPTH_METER))
+                        .add(EmptyLootItem.emptyItem().setWeight(99))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(SwordItems.BAT_BAT).setWeight(4).setQuality(1))
+                        .add(EmptyLootItem.emptyItem().setWeight(996))
+                );
+    }
+
 
     @Override
     protected Stream<EntityType<?>> getKnownEntityTypes() {

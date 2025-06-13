@@ -701,6 +701,24 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                                                 .setWeight(7).setQuality(2)
                                 )
                                 .add(
+                                        LootItem.lootTableItem(AccessoryItems.NATURES_GIFT)
+                                                .when(
+                                                        LocationCheck.checkLocation(
+                                                                LocationPredicate.Builder.location()
+                                                                        .setBiomes(
+                                                                                HolderSet.direct(
+                                                                                        registrylookup.getOrThrow(Biomes.JUNGLE),
+                                                                                        registrylookup.getOrThrow(Biomes.SPARSE_JUNGLE),
+                                                                                        registrylookup.getOrThrow(Biomes.BAMBOO_JUNGLE),
+                                                                                        registrylookup.getOrThrow(Biomes.LUSH_CAVES)
+                                                                                )
+                                                                        )
+                                                                        .setY(MinMaxBounds.Doubles.between(-64.0, 260.0))
+                                                        )
+                                                )
+                                                .setWeight(25)
+                                )
+                                .add(
                                         LootItem.lootTableItem(SwordItems.PURPLE_CLUBBERFISH)
                                                 .when(
                                                         LocationCheck.checkLocation(

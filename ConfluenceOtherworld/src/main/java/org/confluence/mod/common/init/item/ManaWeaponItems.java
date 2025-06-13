@@ -32,7 +32,7 @@ public class ManaWeaponItems {
     public static final DeferredItem<ManaStaffItem<HurtnadoProjectile>> WEATHER_PAIN = ITEMS.register("weather_pain", WeatherPainItem::new);
     /* 魔法飞弹 */
     public static final DeferredItem<ManaStaffItem<WaterStreamProjectile>> AQUA_SCEPTER = ITEMS.register("aqua_scepter", () -> new ManaStaffItem<>(ModRarity.GREEN, WaterStreamProjectile::new, 8, 7, 32.0F, 3, 0.04));
-    public static final DeferredItem<ManaStaffItem<BallOfFireProjectile>> FLOWER_OF_FIRE = ITEMS.register("flower_of_fire", () -> new ManaStaffItem<>(ModRarity.ORANGE, BallOfFireProjectile::new, 25.6F, 12, 7.5F, 14, 0.04));
+    public static final DeferredItem<ManaStaffItem<BallOfFireProjectile>> FLOWER_OF_FIRE = ITEMS.register("flower_of_fire", () -> new ManaStaffItem<>(ModRarity.ORANGE, BallOfFireProjectile::new, 25.6F, 12, 7.5F, 7, 0.04));
     /* 烈焰火鞭 */
     public static final DeferredItem<ManaStaffItem<WaterBoltProjectile>> WATER_BOLT = ITEMS.register("water_bolt", () -> new ManaStaffItem<>(ModRarity.GREEN, WaterBoltProjectile::new, 14.5F, 10, 4.5F, 10, 0.04));
 

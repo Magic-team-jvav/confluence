@@ -62,6 +62,9 @@ public class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(DEMONITE_BLOCK.get());
         dropSelf(RAW_DEMONITE_BLOCK.get());
         dropSelf(CRIMTANE_BLOCK.get());
+        dropSelf(METEORITE_BLOCK.get());
+        dropSelf(RAW_METEORITE_BLOCK.get());
+        dropSelf(HELLSTONE_BLOCK.get());
         dropSelf(RAW_CRIMTANE_BLOCK.get());
         dropSelf(COBALT_BLOCK.get());
         dropSelf(RAW_COBALT_BLOCK.get());
@@ -79,8 +82,8 @@ public class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(RAW_CHLOROPHYTE_BLOCK.get());
         dropSelf(LUMINITE_BLOCK.get());
         dropSelf(RAW_LUMINITE_BLOCK.get());
-        dropSelf(HELLSTONE_BLOCK.get());
         dropSelf(RAW_HELLSTONE_BLOCK.get());
+        dropSelf(HELLSTONE_BRICKS.get());
         dropSelf(DESERT_FOSSIL.get());
         dropSelf(SLUSH.get());
         dropSelf(SILT_BLOCK.get());

@@ -27,7 +27,7 @@ public class CoconutBlock extends Block {
 
     @Override
     public boolean canBeReplaced(BlockState state, BlockPlaceContext UseContext) {
-        return !UseContext.isSecondaryUseActive() && UseContext.getItemInHand().is(asItem()) && state.getValue(PIECE) < 4 || super.canBeReplaced(state, UseContext);
+        return !UseContext.isSecondaryUseActive() && UseContext.getItemInHand().is(asItem()) && state.getValue(PIECE) < 3 || super.canBeReplaced(state, UseContext);
     }
 
     @Override
@@ -35,8 +35,8 @@ public class CoconutBlock extends Block {
         BlockState clickedBlockState = context.getLevel().getBlockState(context.getClickedPos());
         if (clickedBlockState.is(this)) {
             int currentPiece = clickedBlockState.getValue(PIECE);
-            if (currentPiece < 5) {
-                return clickedBlockState.cycle(PIECE);
+            if (currentPiece < 3) {
+                return clickedBlockState.setValue(PIECE, currentPiece + 1);
             }
         }
         return this.defaultBlockState();

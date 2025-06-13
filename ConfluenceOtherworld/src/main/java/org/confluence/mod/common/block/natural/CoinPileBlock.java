@@ -75,7 +75,8 @@ public class CoinPileBlock extends FallingBlock {
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         BlockState clickedBlockState = context.getLevel().getBlockState(context.getClickedPos());
         if (clickedBlockState.is(this) && clickedBlockState.getValue(HEAPS) < 12) {
-            return clickedBlockState.cycle(HEAPS);
+            int currentHeaps = clickedBlockState.getValue(HEAPS);
+            return clickedBlockState.setValue(HEAPS, currentHeaps + 1);
         }
         return defaultBlockState().setValue(ISBASE, !isCoinPileBlock(context.getLevel().getBlockState(context.getClickedPos().below())));
     }

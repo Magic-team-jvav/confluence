@@ -30,14 +30,22 @@ public class ModFoodProperties {
     //自填效果食物
     public static FoodProperties hasEffectProperties(int nutrition, float saturation, EffectData... effects) {
         FoodProperties.Builder builder = new FoodProperties.Builder().nutrition(nutrition).saturationModifier(saturation).fast().alwaysEdible();
-        Arrays.stream(effects).forEach(e -> builder.effect(() -> new MobEffectInstance(e.effect, e.duration, e.level), 1.0f));
+        Arrays.stream(effects).forEach(e -> builder.effect(() -> new MobEffectInstance(e.effect, e.duration, e.level), e.probability));
         return builder.build();
     }
 
-    public record EffectData(Holder<MobEffect> effect, int duration, int level) {
+    public record EffectData(Holder<MobEffect> effect, int duration, int level, float probability) {
 
         public static EffectData of(Holder<MobEffect> effect, int duration) {
-            return new EffectData(effect, duration, 0);
+            return new EffectData(effect, duration, 0, 1.0f);
+        }
+
+        public static EffectData of(Holder<MobEffect> effect, int duration, float probability) {
+            return new EffectData(effect, duration, 0, probability);
+        }
+
+        public static EffectData of(Holder<MobEffect> effect, int duration, int level, float probability) {
+            return new EffectData(effect, duration, level, probability);
         }
     }
 

@@ -116,7 +116,7 @@ public class DecorativeBlocks {
     public static final DeferredBlock<Block> RED_CANDY_BLOCK = copyBlockRegister("red_candy_block", Blocks.STONE_BRICKS);
     public static final DeferredBlock<Block> FROZEN_GEL_BLOCK = registerWithItem("frozen_gel_block", () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_LIGHT_BLUE).sound(SoundType.SLIME_BLOCK)));
     public static final DeferredBlock<Block> BLUE_GEL_BLOCK = registerWithItem("blue_gel_block", () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLUE).sound(SoundType.SLIME_BLOCK)));
-    public static final DeferredBlock<Block> PINK_GEL_BLOCK = registerWithItem("pink_gel_block", () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PINK).sound(SoundType.SLIME_BLOCK)));
+    public static final DeferredBlock<Block> PINK_GEL_BLOCK = registerWithItem("pink_gel_block", () -> new HalfTransparentBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PINK).sound(SoundType.SLIME_BLOCK).noOcclusion()));
 
     // 天域
     public static final DeferredBlock<StairBlock> SUN_PLATE_STAIRS = registerWithItem("sun_plate_stairs", () -> new StairBlock(TUFF.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.STONE)));

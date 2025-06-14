@@ -72,8 +72,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.encumbering_stone.1", "“你负重过多”");
         add("tooltip.item.confluence.encumbering_stone.2", "背包内右键点击可开关");
         add("tooltip.item.confluence.super_absorbant_sponge.0", "能够吸收无限多水");
-        add("tooltip.item.confluence.honey_absorbant_sponge.0", "能够吸收无限多熔岩");
-        add("tooltip.item.confluence.lava_absorbant_sponge.0", "能够吸收无限多蜂蜜");
+        add("tooltip.item.confluence.honey_absorbant_sponge.0", "能够吸收无限多蜂蜜");
+        add("tooltip.item.confluence.lava_absorbant_sponge.0", "能够吸收无限多熔岩");
         add("tooltip.item.confluence.ultra_absorbant_sponge.0", "能够吸收无限多液体");
         add("tooltip.item.confluence.wire_cutter.0", "移除电线");
         add("tooltip.item.confluence.extractinator.0", "将泥沙/雪泥/化石/沙砾/海洋沙砾堆放到提炼机中可将其变成更有用的东西");
@@ -208,6 +208,10 @@ public class ModChineseProvider extends LanguageProvider {
         add("death.attack.falling_star", "%1$s 得到了流星的回应");
         add("death.attack.boulder", "%1$s 被巨石均匀地涂抹在地上");
         add("death.attack.darkness", "%1$s 被黑暗中的什么东西杀死了！");
+        add("death.attack.summon_damage_type", "%1$s 被抽得皮开肉绽");
+        add("death.attack.summoner_damage_type", "%1$s 没能及时沟通");
+        add("death.attack.frost_burn_damage_type", "%1$s 至少死前觉得很温暖");
+        add("death.attack.pass_armor_damage_type", "%1$s 和他悲哀的护甲一同被击穿了");
 
         add("selections.confluence.magic_conch", "回应海的召唤[%s]");
         add("selections.confluence.demon_conch", "回应熔岩的召唤[%s]");
@@ -2464,6 +2468,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.SPELL_TOME.get(), "魔法书");
         add(MaterialItems.HARPY_FEATHER.get(), "鸟妖之羽");
         add(MaterialItems.GIANT_HARPY_FEATHER.get(), "巨型鸟妖之羽");
+        add(MaterialItems.AETHERIUM_SHARD.get(), "以太碎片");
         add(MaterialItems.CHINA_PLATE.get(), "陶瓷盘");
         add(MaterialItems.CHINA_BOWL.get(), "陶瓷碗");
         // 植物
@@ -2569,6 +2574,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(HamaxeItems.VORTEX_HAMAXE.get(), "星旋锤斧");
         add(HamaxeItems.NEBULA_HAMAXE.get(), "星云锤斧");
         add(HamaxeItems.STARDUST_HAMAXE.get(), "星尘锤斧");
+        add(HamaxeItems.HAEMORRHAXE.get(), "血锤斧");
+        add(HamaxeItems.THE_AXE.get(), "吉他斧");
+        add(AxeItems.LUCY_THE_AXE.get(), "露西斧");
 
         add(HoeItems.COPPER_HOE.get(), "铜锄");
         add(HoeItems.TIN_HOE.get(), "锡锄");
@@ -2658,6 +2666,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(HammerItems.PWNHAMMER.get(), "神锤");
         add(HammerItems.HAMMUSH.get(), "蘑菇锤");
         add(HammerItems.CHLOROPHYTE_WARHAMMER.get(), "叶绿战锤");
+        add(HammerItems.ROCKFISH.get(), "岩鱼锤");
+        add(HammerItems.CHLOROPHYTE_JACKHAMMER.get(), "叶绿手提钻");
 
         // 杂项
         add(ToolItems.ICE_MIRROR.get(), "冰雪镜");
@@ -2694,6 +2704,11 @@ public class ModChineseProvider extends LanguageProvider {
         add(ToolItems.WEB_ROPE_COIL.get(), "蛛丝绳圈");
         add(ToolItems.METEOR_COMPASS.get(), "陨石指南针");
         add(ToolItems.NPC_INVITATION.get(), "NPC请柬");
+        add(ToolItems.BINOCULARS.get(), "望远镜");
+        add(ToolItems.SUPER_ABSORBANT_SPONGE.get(), "超级吸收棉");
+        add(ToolItems.HONEY_ABSORBANT_SPONGE.get(), "蜂蜜吸收棉");
+        add(ToolItems.LAVA_ABSORBANT_SPONGE.get(), "岩浆吸收棉");
+        add(ToolItems.ULTRA_ABSORBANT_SPONGE.get(), "超强吸收棉");
 
 
         add(ConsumableItems.SHURIKEN.get(), "手里剑");
@@ -2739,6 +2754,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(ConsumableItems.GRENADE.get(), "手榴弹");
         add(ConsumableItems.BOUNCY_GRENADE.get(), "弹力手榴弹");
         add(ConsumableItems.STICKY_GRENADE.get(), "黏性手榴弹");
+        add(ConsumableItems.BEENADE.get(), "蜜蜂手榴弹");
+        add(ConsumableItems.SMOKE_BOMB.get(), "烟雾弹");
         add(ConsumableItems.DIRT_BOMB.get(), "土炸弹");
         add(ConsumableItems.STICKY_DIRT_BOMB.get(), "黏性土炸弹");
         add(ConsumableItems.DRY_BOMB.get(), "干炸弹");
@@ -3510,6 +3527,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(PotionItems.ALE.get(), "麦芽酒");
         add(PotionItems.LESSER_HEALING_POTION.get(), "弱效治疗药水");
         add(PotionItems.HEALING_POTION.get(), "治疗药水");
+        add(PotionItems.RESTORATION_POTION.get(), "恢复药水");
         add(PotionItems.GREATER_HEALING_POTION.get(), "强效治疗药水");
         add(PotionItems.SUPER_HEALING_POTION.get(), "超级治疗药水");
         add(PotionItems.LESSER_MANA_POTION.get(), "弱效魔力药水");

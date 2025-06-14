@@ -82,8 +82,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.encumbering_stone.1", "Right click in inventory to unlock");
         add("tooltip.item.confluence.encumbering_stone.2", "'You are over-encumbered'");
         add("tooltip.item.confluence.super_absorbant_sponge.0", "Capable of soaking up an endless amount of water");
-        add("tooltip.item.confluence.honey_absorbant_sponge.0", "Capable of soaking up an endless amount of lava");
-        add("tooltip.item.confluence.lava_absorbant_sponge.0", "Capable of soaking up an endless amount of honey");
+        add("tooltip.item.confluence.honey_absorbant_sponge.0", "Capable of soaking up an endless amount of honey");
+        add("tooltip.item.confluence.lava_absorbant_sponge.0", "Capable of soaking up an endless amount of lava");
         add("tooltip.item.confluence.ultra_absorbant_sponge.0", "Capable of soaking up an endless amount of liquid");
         add("tooltip.item.confluence.wire_cutter.0", "Removes wire");
         add("tooltip.item.confluence.extractinator.0", "Placing silt/slush/fossil/gravel/marine_gravel piles into the extractinator turns them into something more useful");
@@ -243,6 +243,10 @@ public class ModEnglishProvider extends LanguageProvider {
         add("death.attack.falling_star", "%1$s got a response from a meteor");
         add("death.attack.boulder", "%1$s is crushed by boulder");
         add("death.attack.darkness", "%1$s was killed by something in the dark!");
+        add("death.attack.summon_damage_type", "%1$s was flogged mercilessly");
+        add("death.attack.summoner_damage_type", "%1$s failed to communicate in time");
+        add("death.attack.frost_burn_damage_type", "%1$s felt warm before the end");
+        add("death.attack.pass_armor_damage_type", "%1$s was pierced through along with their armor");
 
         add("selections.confluence.magic_conch", "Responding to the call of The Ocean [%s]");
         add("selections.confluence.demon_conch", "Responding to the call of The Lava [%s]");

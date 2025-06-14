@@ -16,6 +16,7 @@ import org.confluence.lib.common.recipe.AmountIngredient;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
+import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.StatueBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.recipe.HeavyWorkBenchRecipe;
@@ -343,6 +344,24 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "#a#",
                 "###"
         )), ArmorItems.MOLTEN_CHESTPLATE.toStack());
+        // 巨石
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                '/', Ingredient.of(Items.COBBLESTONE)
+        ), List.of(
+                " // ",
+                "////",
+                "////",
+                " // "
+        )), FunctionalBlocks.NORMAL_BOULDER.toStack());
+        // 巨石面包
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                '/', Ingredient.of(Items.BREAD)
+        ), List.of(
+                " // ",
+                "////",
+                "////",
+                " // "
+        )), FoodItems.BOULDER_BREAD.toStack());
     }
 
     private void buildBaseStatues(RecipeOutput recipeOutput) {

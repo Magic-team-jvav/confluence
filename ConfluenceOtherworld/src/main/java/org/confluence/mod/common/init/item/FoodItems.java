@@ -80,9 +80,9 @@ public class FoodItems {
     public static final DeferredItem<BaseFoodItem> PHO = registerDrinkingFood("pho", ModFoodProperties.PlentySatisfiedProperties(12000, 6, 3.5f), 20, UseAnim.DRINK, SoundEvents.HONEY_DRINK, SoundEvents.HONEY_DRINK); //河粉
     public static final DeferredItem<BaseFoodItem> CLOUD_DOUGH = registerNormalFood("cloud_dough", ModFoodProperties.WellFedProperties(1200, 4, 1.5f)); // 粗制云朵面包
     public static final DeferredItem<BaseFoodItem> CLOUD_BREAD = registerNormalFood("cloud_bread", ModFoodProperties.hasEffectProperties(5, 0.6f,
-            new EffectData(ModEffects.EXQUISITELY_STUFFED, 6000, 1),
-            new EffectData(MobEffects.SLOW_FALLING, 600, 1),
-            new EffectData(MobEffects.LEVITATION, 300, 1))); // 云朵面包
+            EffectData.of(ModEffects.EXQUISITELY_STUFFED, 6000, 1),
+            EffectData.of(MobEffects.SLOW_FALLING, 600, 1),
+            EffectData.of(MobEffects.LEVITATION, 300, 1))); // 云朵面包
     public static final DeferredItem<BaseFoodItem> FLUTTERING_LAMB_CHOPS = registerNormalFood("fluttering_lamb_chops", ModFoodProperties.noEffectProperties(3, 1.8f));
     public static final DeferredItem<BaseFoodItem> COOKED_FLUTTERING_LAMB_CHOPS = registerNormalFood("cooked_fluttering_lamb_chops", ModFoodProperties.preparedMeatProperties(8, 12.8f));
     public static final DeferredItem<BaseFoodItem> BAOBAB_FRUIT = registerNormalFood("baobab_fruit", ModFoodProperties.noEffectProperties(3, 1.8f)); //猴面包果
@@ -171,7 +171,7 @@ public class FoodItems {
             EffectData.of(MobEffects.REGENERATION, 1200))
     ).drinkingSound(s -> SoundEvents.GENERIC_DRINK).duration(d -> 15).useAnim(u -> UseAnim.DRINK), 1, ChatFormatting.GRAY);
     public static final DeferredItem<BaseFoodItem> DONGDONGS_FLATBREAD = registerToolTipFood("dongdongs_flatbread", builder -> builder.food(ModFoodProperties.hasEffectProperties(5, 0.2f, EffectData.of(ModEffects.EXQUISITELY_STUFFED, 3000))).eatingSound(s -> SoundEvents.GENERIC_EAT).duration(d -> 15).useAnim(u -> UseAnim.EAT), 1, ChatFormatting.GRAY);
-    public static final DeferredItem<BaseFoodItem> PIGLIN_STEW = registerToolTipFood("piglin_stew", builder -> builder.food(ModFoodProperties.hasEffectProperties(20, 80.0f, new EffectData(MobEffects.DAMAGE_RESISTANCE, 1200, 4))).eatingSound(s -> SoundEvents.GENERIC_EAT).duration(d -> 15).useAnim(u -> UseAnim.EAT), 1, ChatFormatting.GRAY);
+    public static final DeferredItem<BaseFoodItem> PIGLIN_STEW = registerToolTipFood("piglin_stew", builder -> builder.food(ModFoodProperties.hasEffectProperties(20, 80.0f, EffectData.of(MobEffects.DAMAGE_RESISTANCE, 1200, 4))).eatingSound(s -> SoundEvents.GENERIC_EAT).duration(d -> 15).useAnim(u -> UseAnim.EAT), 1, ChatFormatting.GRAY);
     //节日特有
     public static final DeferredItem<BaseFoodItem> ZONGZI = registerFood("zongzi", builder -> builder.food(ModFoodProperties.WellFedProperties(6000, 4, 1.5f)).isFireResistant());
     public static final DeferredItem<BaseFoodItem> MEAT_STUFFED_ZONGZI = registerFood("meat_stuffed_zongzi", builder -> builder.food(ModFoodProperties.WellFedProperties(6000, 5, 3f)).isFireResistant());

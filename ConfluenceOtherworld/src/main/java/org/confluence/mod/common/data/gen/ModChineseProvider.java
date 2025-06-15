@@ -163,6 +163,18 @@ public class ModChineseProvider extends LanguageProvider {
         add("item.confluence.mysterious_note.name_4", "被啃一半的小纸条");
         add("lore.confluence.mysterious_note_4", "汇流乐事什么时候才开始制作啊，我都已经等的变成傻子了");
 
+
+        add("lore.confluence.mysterious_note.handwriting_0", "✒潦草的笔迹");
+        add("lore.confluence.mysterious_note.handwriting_1", "✒工整的笔迹");
+        add("lore.confluence.mysterious_note.handwriting_2", "✒清晰的笔迹");
+        add("lore.confluence.mysterious_note.handwriting_3", "✒捉摸不透的笔迹");
+
+        add("item.confluence.mysterious_note.name_structure_0", "地牢中的遗落纸条");
+
+        add("lore.confluence.mysterious_note_structure_0_0", "我暗中调查了整个地牢…与其说是地牢，它却更像一座深埋在地下的城市。除了咯咯作响的骷髅们，这里有不少看起来像是居民楼以及各类公共设施的建筑；有迹象表明，那些骷髅曾是这里的原住民，真不知道它们究竟经历了什么才堕落到如此地步…");
+        add("lore.confluence.mysterious_note_structure_0_1", "而真正异乎寻常的是那些少见的，装潢看上去像是军械库一样的建筑，它们的顶部插着巨剑，每一座“军械库”都包含着大量的武器装备，还有一个上了锁的箱子……我暂时还没法打开它，但我知道里面的东西绝对不简单…");
+        add("lore.confluence.mysterious_note_structure_1_0", "那些可怕的怪物实在是太疯狂了！我想离开这里…但我在类似教堂的奇怪建筑和那些恶心的粘液生物里发现了一些钥匙…这里一定有宝藏，只是我暂时还没有找到…");
+
         add("item.confluence.mysterious_slate.name_0", "认真的石板");
         add("lore.confluence.mysterious_slate_0", "“冷知识：其实召唤师要和召唤物进行心灵沟通，盔甲防护不能太厚否则会影响沟通。”");
         add("item.confluence.mysterious_slate.name_1", "异常古老的石板");

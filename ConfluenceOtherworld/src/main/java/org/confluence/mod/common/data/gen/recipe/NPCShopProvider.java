@@ -1,13 +1,18 @@
 package org.confluence.mod.common.data.gen.recipe;
 
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.HolderSet;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.conditions.ModLoadedCondition;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.Keys;
@@ -16,9 +21,14 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.integration.terra_entity.npc_trade.DeferredMoneyTradeItem;
 import org.confluence.mod.integration.terra_entity.npc_trade.MoneyTradeHealthFull;
 import org.confluence.mod.integration.terra_entity.npc_trade.MoneyTradeItem;
 import org.confluence.mod.integration.terra_entity.npc_trade.SellTrade;
+import org.confluence.mod.integration.terra_entity.npc_trade_lock.ConditionsLock;
+import org.confluence.mod.integration.terra_entity.npc_trade_lock.SecretFlagLock;
+import org.confluence.mod.integration.waystones.WaystonesHelper;
+import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.TerraEntity;
@@ -26,8 +36,11 @@ import org.confluence.terraentity.entity.npc.trade.NPCTradeManager;
 import org.confluence.terraentity.init.entity.TENpcEntities;
 import org.confluence.terraentity.init.item.TEWhipItems;
 import org.confluence.terraentity.registries.npc_trade.ITrade;
+import org.confluence.terraentity.registries.npc_trade.TradeProperties;
 import org.confluence.terraentity.registries.npc_trade.variant.ItemTradeLootTable;
 import org.confluence.terraentity.registries.npc_trade.variant.TradeTask;
+import org.confluence.terraentity.registries.npc_trade_lock.ITradeLock;
+import org.confluence.terraentity.registries.npc_trade_lock.variant.BiomeLock;
 import org.confluence.terraentity.registries.npc_trade_task.variant.DynamicAnglerTradeTask;
 
 import java.util.ArrayList;
@@ -51,6 +64,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
 
     @Override
     public void buildRecipes(RecipeOutput recipeOutput, HolderLookup.Provider holderLookup) {
+        TradeProperties hardmodeLock = TradeProperties.builder().setLock(new SecretFlagLock(IWorldOptions.HARDMODE, false)).build();
         // 女仆商店
         shop(Keys.MAID_SHOP).addRecipe(new Builder()
                 .add(TCItems.PORTABLE_CEMENT_MIXER)
@@ -117,11 +131,17 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(MoneyTradeHealthFull.create())
                 .build());
 
-        shop(TENpcEntities.ARMS_DEALER.getId()).addRecipe(new Builder()
+        shop(TENpcEntities.ARMS_DEALER.getId()).addRecipe(withDefaultPylon(holderLookup)
                 .add(TGItems.MUSKET_BULLET)
                 .add(TGItems.MUSKET_BULLET, 100)
-//                .add(new SecretFlagMoneyTradeItem(TGItems.SILVER_BULLET.toStack(), null, IWorldOptions.HARDMODE, false))
-//                .add(new SecretFlagMoneyTradeItem(TGItems.SILVER_BULLET.toStack(100), null, IWorldOptions.HARDMODE, false))
+                .add(new MoneyTradeItem.Builder()
+                        .setResult(TGItems.SILVER_BULLET.toStack())
+                        .setProperties(hardmodeLock)
+                        .build())
+                .add(new MoneyTradeItem.Builder()
+                        .setResult(TGItems.SILVER_BULLET.toStack(100))
+                        .setProperties(hardmodeLock)
+                        .build())
                 .add(TGItems.FLINTLOCK_PISTOL)
                 .add(TGItems.MINISHARK)
                 .add(SellTrade.INSTANCE)
@@ -206,6 +226,18 @@ public class NPCShopProvider extends AbstractRecipeProvider {
         return recipe(NPCTradeManager.CODEC, pathProvider().json(Confluence.asResource(id.getPath())));
     }
 
+    protected Builder withDefaultPylon(HolderLookup.Provider provider) {
+        HolderLookup.RegistryLookup<Biome> lookup = provider.lookupOrThrow(Registries.BIOME);
+        HolderSet.Named<Biome> forest = lookup.get(Tags.Biomes.IS_FOREST).orElseThrow();
+        HolderSet.Named<Biome> plains = lookup.get(Tags.Biomes.IS_PLAINS).orElseThrow();
+        return new Builder()
+                .add(new DeferredMoneyTradeItem(WaystonesHelper.FOREST_PYLON.getId(), 1, withModLoaded(BiomeLock.or(forest, plains), WaystonesHelper.MODID)))
+                ;
+    }
+
+    protected ITradeLock withModLoaded(ITradeLock subLock, String modid) {
+        return new ConditionsLock(subLock, new ModLoadedCondition(modid));
+    }
 
     @Override
     protected PackOutput.PathProvider pathProvider() {

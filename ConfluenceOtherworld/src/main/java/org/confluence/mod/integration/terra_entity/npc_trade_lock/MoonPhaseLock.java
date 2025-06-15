@@ -1,4 +1,4 @@
-package org.confluence.mod.integration.terra_entity.npc_trade;
+package org.confluence.mod.integration.terra_entity.npc_trade_lock;
 
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
@@ -7,50 +7,38 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import org.confluence.mod.integration.terra_entity.init.ModTradeProviders;
+import org.confluence.mod.integration.terra_entity.init.ModTradeLockProviderTypes;
 import org.confluence.terraentity.entity.npc.trade.ITradeHolder;
-import org.confluence.terraentity.registries.npc_trade.TradeProperties;
-import org.confluence.terraentity.registries.npc_trade.TradeProvider;
-import org.jetbrains.annotations.Nullable;
+import org.confluence.terraentity.registries.npc_trade_lock.ITradeLock;
+import org.confluence.terraentity.registries.npc_trade_lock.TradeLockProvider;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.function.Function;
 
-public class MoonPhaseMoneyTradeItem extends MoneyTradeItem {
-    public static final MapCodec<MoonPhaseMoneyTradeItem> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            MoneyTradeItem.CODEC.forGetter(moonPhaseMoneyTradeItem -> moonPhaseMoneyTradeItem),
+public record MoonPhaseLock(List<MoonPhase> moonPhases) implements ITradeLock {
+    public static final MapCodec<MoonPhaseLock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             Codec.either(ExtraCodecs.nonEmptyList(MoonPhase.CODEC.listOf()), MoonPhase.CODEC).xmap(
                     either -> either.map(Function.identity(), List::of),
                     moonPhases -> moonPhases.size() == 1 ? Either.right(moonPhases.getFirst()) : Either.left(moonPhases)
-            ).fieldOf("moon_phases").forGetter(MoonPhaseMoneyTradeItem::moonPhases)
-    ).apply(instance, MoonPhaseMoneyTradeItem::new));
-    private final List<MoonPhase> moonPhases;
+            ).fieldOf("moon_phases").forGetter(MoonPhaseLock::moonPhases)
+    ).apply(instance, MoonPhaseLock::new));
 
-    public MoonPhaseMoneyTradeItem(ItemStack result, @Nullable TradeProperties properties, List<MoonPhase> moonPhases) {
-        super(result, properties);
-        this.moonPhases = moonPhases;
-    }
-
-    public MoonPhaseMoneyTradeItem(MoneyTradeItem moneyTradeItem, List<MoonPhase> moonPhases) {
-        this(moneyTradeItem.result(), moneyTradeItem.properties(), moonPhases);
-    }
-
-    public List<MoonPhase> moonPhases() {
-        return moonPhases;
+    public MoonPhaseLock(MoonPhase... moonPhases) {
+        this(Arrays.stream(moonPhases).toList());
     }
 
     @Override
     public boolean canTrade(Player player, ITradeHolder npc, int index) {
         int phase = player.level().getMoonPhase();
-        return moonPhases.stream().anyMatch(moonPhase -> moonPhase.match(phase)) && super.canTrade(player, npc, index);
+        return moonPhases.stream().anyMatch(moonPhase -> moonPhase.match(phase));
     }
 
     @Override
-    public TradeProvider getCodec() {
-        return ModTradeProviders.MOON_PHASE_MONEY_TRADE_ITEM.get();
+    public TradeLockProvider getCodec() {
+        return ModTradeLockProviderTypes.MOON_PHASE_LOCK.get();
     }
 
     public enum MoonPhase implements StringRepresentable {

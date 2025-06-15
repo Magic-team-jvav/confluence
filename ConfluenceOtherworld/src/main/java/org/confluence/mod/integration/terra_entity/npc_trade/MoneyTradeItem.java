@@ -14,18 +14,11 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public class MoneyTradeItem implements ITradeItem, IMoneyTrade {
+public record MoneyTradeItem(ItemStack result, @Nullable TradeProperties properties) implements ITradeItem, IMoneyTrade {
     public static final MapCodec<MoneyTradeItem> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             ItemStack.CODEC.fieldOf("result").forGetter(MoneyTradeItem::result),
             TradeProperties.CODEC.optionalFieldOf("properties").forGetter(i -> Optional.ofNullable(i.properties))
     ).apply(instance, (result, properties) -> new MoneyTradeItem(result, properties.orElse(null))));
-    private final ItemStack result;
-    private final @Nullable TradeProperties properties;
-
-    public MoneyTradeItem(ItemStack result, @Nullable TradeProperties properties) {
-        this.result = result;
-        this.properties = properties;
-    }
 
     public static class Builder {
         private ItemStack result;
@@ -67,15 +60,5 @@ public class MoneyTradeItem implements ITradeItem, IMoneyTrade {
     @Override
     public TradeProvider getCodec() {
         return ModTradeProviders.MONEY_TRADE_ITEM.get();
-    }
-
-    @Override
-    public ItemStack result() {
-        return result;
-    }
-
-    @Override
-    public @Nullable TradeProperties properties() {
-        return properties;
     }
 }

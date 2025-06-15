@@ -15,8 +15,7 @@ public class ModTradeProviders {
     public static final DeferredRegister<TradeProvider> TYPES = DeferredRegister.create(TERegistries.TradeProviders.REGISTRY, Confluence.MODID);
 
     public static final Supplier<TradeProvider> MONEY_TRADE_ITEM = register("money_trade_item", MoneyTradeItem.CODEC);
-    public static final Supplier<TradeProvider> MOON_PHASE_MONEY_TRADE_ITEM = register("moon_phase_money_trade_item", MoonPhaseMoneyTradeItem.CODEC);
-    public static final Supplier<TradeProvider> SECRET_FLAG_MONEY_TRADE_ITEM = register("secret_flag_money_trade_item", SecretFlagMoneyTradeItem.CODEC);
+    public static final Supplier<TradeProvider> DEFERRED_MONEY_TRADE_ITEM = register("deferred_money_trade_item", DeferredMoneyTradeItem.CODEC);
     public static final Supplier<TradeProvider> MONEY_TRADE_HEALTH = register("money_trade_health", MoneyTradeHealth.CODEC);
     public static final Supplier<TradeProvider> MONEY_TRADE_HEALTH_FULL = register("money_trade_health_full", MoneyTradeHealthFull.CODEC);
     public static final Supplier<TradeProvider> SELL_TRADE = register("sell_trade", SellTrade.CODEC);

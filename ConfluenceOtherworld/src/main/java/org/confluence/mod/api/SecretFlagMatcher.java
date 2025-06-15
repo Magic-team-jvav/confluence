@@ -25,10 +25,6 @@ public interface SecretFlagMatcher {
         return IMinecraftServer.matchesSecretFlag(secretFlag()) != flipMatch();
     }
 
-    default Impl asImpl() {
-        return new Impl(secretFlag(), flipMatch());
-    }
-
     static <M extends SecretFlagMatcher> MapCodec<M> createMapCodec(BiFunction<Long, Boolean, M> factory) {
         return RecordCodecBuilder.mapCodec(instance -> instance.group(
                 Codec.either(Codec.LONG, Codec.STRING).fieldOf("flag").forGetter(matcher -> Either.left(matcher.secretFlag())),
@@ -53,9 +49,5 @@ public interface SecretFlagMatcher {
             }
             return ret;
         }), b)));
-    }
-
-    record Impl(long secretFlag, boolean flipMatch) implements SecretFlagMatcher {
-        public static final MapCodec<Impl> CODEC = SecretFlagMatcher.createMapCodec(Impl::new);
     }
 }

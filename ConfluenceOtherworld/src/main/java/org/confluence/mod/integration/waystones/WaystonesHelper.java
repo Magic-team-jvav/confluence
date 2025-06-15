@@ -47,23 +47,25 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class WaystonesHelper {
-    public static final boolean IS_LOADED = ModList.get().isLoaded("waystones");
+    public static final String MODID = "waystones";
+    public static final boolean IS_LOADED = ModList.get().isLoaded(MODID);
     static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Confluence.MODID);
     private static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, Confluence.MODID);
     private static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
 
-    private static final DeferredBlock<Block> FOREST_PYLON = register("forest_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.CYAN), (world, pos) -> {
+    // 确保不要在任何地方直接调用它们！在没安装指路石模组时这些注册项不会被注册
+    public static final DeferredBlock<Block> FOREST_PYLON = register("forest_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.CYAN), (world, pos) -> {
         Holder<Biome> biome = world.getBiome(pos);
         return biome.is(Tags.Biomes.IS_FOREST) || biome.is(Tags.Biomes.IS_PLAINS);
     });
-    private static final DeferredBlock<Block> SNOW_PYLON = register("snow_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.WHITE), (world, pos) -> world.getBiome(pos).is(Tags.Biomes.IS_SNOWY));
-    private static final DeferredBlock<Block> DESERT_PYLON = register("desert_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.YELLOW), (world, pos) -> world.getBiome(pos).is(Tags.Biomes.IS_DESERT));
-    private static final DeferredBlock<Block> CAVERN_PYLON = register("cavern_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.GRAY), (world, pos) -> world.dimensionType().bedWorks() && pos.getY() < world.getMinBuildHeight() + 104);
-    private static final DeferredBlock<Block> OCEAN_PYLON = register("ocean_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.BLUE), (world, pos) -> world.getBiome(pos).is(Tags.Biomes.IS_OCEAN));
-    private static final DeferredBlock<Block> JUNGLE_PYLON = register("jungle_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.GREEN), (world, pos) -> world.getBiome(pos).is(Tags.Biomes.IS_JUNGLE));
-    private static final DeferredBlock<Block> HALLOW_PYLON = register("hallow_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.LIGHT_BLUE), (world, pos) -> world.getBiome(pos).is(ModTags.Biomes.THE_HALLOW));
-    private static final DeferredBlock<Block> MUSHROOM_PYLON = register("mushroom_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.PURPLE), (world, pos) -> world.getBiome(pos).is(ModBiomes.GLOWING_MUSHROOM));
-    private static final DeferredBlock<Block> UNIVERSAL_PYLON = register("universal_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.BROWN), (world, pos) -> true);
+    public static final DeferredBlock<Block> SNOW_PYLON = register("snow_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.WHITE), (world, pos) -> world.getBiome(pos).is(Tags.Biomes.IS_SNOWY));
+    public static final DeferredBlock<Block> DESERT_PYLON = register("desert_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.YELLOW), (world, pos) -> world.getBiome(pos).is(Tags.Biomes.IS_DESERT));
+    public static final DeferredBlock<Block> CAVERN_PYLON = register("cavern_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.GRAY), (world, pos) -> world.dimensionType().bedWorks() && pos.getY() < world.getMinBuildHeight() + 104);
+    public static final DeferredBlock<Block> OCEAN_PYLON = register("ocean_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.BLUE), (world, pos) -> world.getBiome(pos).is(Tags.Biomes.IS_OCEAN));
+    public static final DeferredBlock<Block> JUNGLE_PYLON = register("jungle_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.GREEN), (world, pos) -> world.getBiome(pos).is(Tags.Biomes.IS_JUNGLE));
+    public static final DeferredBlock<Block> HALLOW_PYLON = register("hallow_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.LIGHT_BLUE), (world, pos) -> world.getBiome(pos).is(ModTags.Biomes.THE_HALLOW));
+    public static final DeferredBlock<Block> MUSHROOM_PYLON = register("mushroom_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.PURPLE), (world, pos) -> world.getBiome(pos).is(ModBiomes.GLOWING_MUSHROOM));
+    public static final DeferredBlock<Block> UNIVERSAL_PYLON = register("universal_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.BROWN), (world, pos) -> true);
 
     public static final Supplier<BlockEntityType<PylonBlock.Entity>> PYLON_ENTITY = BLOCK_ENTITY_TYPES.register("pylon_entity", () -> BlockEntityType.Builder.of(PylonBlock.Entity::new, BLOCKS.getEntries().stream().map(DeferredHolder::get).toArray(Block[]::new)).build(DSL.remainderType()));
 
@@ -96,7 +98,7 @@ public class WaystonesHelper {
     }
 
     public static void blockTag(Function<TagKey<Block>, IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block>> consumer) {
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> isTeleportTarget = consumer.apply(TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("waystones", "is_teleport_target")));
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> isTeleportTarget = consumer.apply(TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(MODID, "is_teleport_target")));
         BLOCKS.getEntries().forEach(block -> isTeleportTarget.addOptional(block.getId()));
     }
 

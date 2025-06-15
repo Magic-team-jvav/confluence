@@ -46,7 +46,6 @@ public class WaystonesHelper {
     static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Confluence.MODID);
     private static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, Confluence.MODID);
     private static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
-    private static int count = 0;
 
     private static final DeferredBlock<Block> FOREST_PYLON = register("forest_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.CYAN));
     private static final DeferredBlock<Block> SNOW_PYLON = register("snow_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.WHITE));
@@ -61,9 +60,10 @@ public class WaystonesHelper {
     public static final Supplier<BlockEntityType<PylonBlock.Entity>> PYLON_ENTITY = BLOCK_ENTITY_TYPES.register("pylon_entity", () -> BlockEntityType.Builder.of(PylonBlock.Entity::new, BLOCKS.getEntries().stream().map(DeferredHolder::get).toArray(Block[]::new)).build(DSL.remainderType()));
 
     private static DeferredBlock<Block> register(String name, BlockBehaviour.Properties properties) {
+        int count = BLOCKS.getEntries().size();
         DeferredBlock<Block> block = BLOCKS.register(name, () -> {
             try {
-                return PylonBlock.class.getDeclaredConstructor(int.class, BlockBehaviour.Properties.class).newInstance(count++, properties);
+                return PylonBlock.class.getDeclaredConstructor(int.class, BlockBehaviour.Properties.class).newInstance(count, properties);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

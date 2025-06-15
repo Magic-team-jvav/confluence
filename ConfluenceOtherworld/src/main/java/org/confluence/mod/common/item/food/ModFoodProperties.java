@@ -44,6 +44,10 @@ public class ModFoodProperties {
             return new EffectData(effect, duration, 0, probability);
         }
 
+        public static EffectData of(Holder<MobEffect> effect, int duration, int level) {
+            return new EffectData(effect, duration, level, 1.0f);
+        }
+
         public static EffectData of(Holder<MobEffect> effect, int duration, int level, float probability) {
             return new EffectData(effect, duration, level, probability);
         }

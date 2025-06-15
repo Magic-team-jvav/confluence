@@ -2,7 +2,10 @@ package org.confluence.mod.common.block.natural;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -15,6 +18,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -25,21 +29,17 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.confluence.mod.Confluence;
+import org.confluence.mod.common.init.block.NatureBlocks;
 
-public class LostPaperBlock extends Block {
+public class LostPaperBlock extends Block implements EntityBlock {
     private static final IntegerProperty LAYER = IntegerProperty.create("layer", 0, 3);
-    private static final VoxelShape[] SHAPE_BY_LAYER = new VoxelShape[]{
-            box(3.0, 0.0, 3.0, 13.0, 3.0, 13.0),
-            box(3.0, 0.0, 3.0, 13.0, 4.0, 13.0),
-            box(3.0, 0.0, 3.0, 13.0, 5.0, 13.0),
-            box(3.0, 0.0, 3.0, 13.0, 9.0, 13.0)
-    };
+    private static final VoxelShape SHAPE = Block.box(1, 0, 1, 15, 1, 15);
 
     public LostPaperBlock() {
-        super(BlockBehaviour.Properties.of().pushReaction(PushReaction.DESTROY));
+        super(BlockBehaviour.Properties.of().pushReaction(PushReaction.DESTROY).noCollission());
         registerDefaultState(stateDefinition.any().setValue(LAYER, 0));
     }
 
@@ -62,7 +62,7 @@ public class LostPaperBlock extends Block {
 
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
-        return SHAPE_BY_LAYER[state.getValue(LAYER)];
+        return SHAPE;
     }
 
     @Override
@@ -74,30 +74,13 @@ public class LostPaperBlock extends Block {
 
     @Override
     public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, BlockEntity blockEntity, ItemStack tool) {
-        int layer = state.getValue(LAYER);
-        int dropTimes = layer + 1;
-        if (level instanceof ServerLevel serverLevel) {
-            LootTable lootTable = serverLevel.getServer().reloadableRegistries().getLootTable(ResourceKey.create(Registries.LOOT_TABLE, getLootTableId()));
-            if (lootTable != LootTable.EMPTY) {
-                LootParams params = new LootParams.Builder(serverLevel)
-                        .withParameter(LootContextParams.ORIGIN, player.position())
-                        .withOptionalParameter(LootContextParams.THIS_ENTITY, player)
-                        .withLuck(player.getLuck())
-                        .create(LootContextParamSets.GIFT);
-                for (int i = 0; i < dropTimes; i++) {
-                    for (ItemStack drop : lootTable.getRandomItems(params)) {
-                        popResource(level, pos, drop);
-                    }
-                }
-            }
-            popResource(level, pos, new ItemStack(Items.PAPER, dropTimes));
+        if (blockEntity instanceof Entity entity) {
+            int layer = state.getValue(LAYER);
+            entity.dropLoot(level, pos, player, layer);
         }
         super.playerDestroy(level, player, pos, state, blockEntity, tool);
     }
 
-    private ResourceLocation getLootTableId() {
-        return Confluence.asResource("blocks/lost_paper");
-    }
 
     @Override
     protected BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
@@ -108,5 +91,66 @@ public class LostPaperBlock extends Block {
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(LAYER);
+    }
+
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new Entity(pos, state);
+    }
+
+    public static class Entity extends BlockEntity {
+        private ResourceLocation lootTable = null;
+
+        public Entity(BlockPos pos, BlockState state) {
+            super(NatureBlocks.LOST_PAPER_ENTITY.get(), pos, state);
+        }
+
+        public void setLootTable(ResourceLocation lootTable) {
+            this.lootTable = lootTable;
+            setChanged();
+        }
+
+        public ResourceLocation getLootTable() {
+            return lootTable;
+        }
+
+        @Override
+        protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+            super.loadAdditional(tag, registries);
+            if (tag.contains("LootTable", Tag.TAG_STRING)) {
+                this.lootTable = ResourceLocation.tryParse(tag.getString("LootTable"));
+            }
+        }
+
+        @Override
+        protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+            super.saveAdditional(tag, registries);
+            if (lootTable != null) {
+                tag.putString("LootTable", lootTable.toString());
+            }
+        }
+
+        public void dropLoot(Level level, BlockPos pos, Player player, int layer) {
+            if (!(level instanceof ServerLevel serverLevel)) return;
+            int count = layer + 1;
+            if (lootTable != null) {
+                LootTable table = serverLevel.getServer().reloadableRegistries().getLootTable(ResourceKey.create(Registries.LOOT_TABLE, lootTable));
+                if (table != LootTable.EMPTY) {
+                    LootParams params = new LootParams.Builder(serverLevel)
+                            .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos))
+                            .withOptionalParameter(LootContextParams.THIS_ENTITY, player)
+                            .withLuck(player.getLuck())
+                            .create(LootContextParamSets.GIFT);
+                    for (int i = 0; i < count; i++) {
+                        for (ItemStack stack : table.getRandomItems(params)) {
+                            popResource(level, pos, stack);
+                        }
+                    }
+                    return;
+                }
+            }
+            ItemStack paperStack = new ItemStack(Items.PAPER, count);
+            popResource(level, pos, paperStack);
+        }
     }
 }

@@ -42,11 +42,6 @@ public class ShimmerCrystalslBlock extends Block {
         }
     }
 
-    @Override
-    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-
-    }
-
     private boolean isFullMoonNight(ServerLevel level) {
         long time = level.getDayTime() % 24000L;
         boolean isNight = time >= 13000L && time <= 23000L;
@@ -71,7 +66,6 @@ public class ShimmerCrystalslBlock extends Block {
     protected boolean canBeReplaced(BlockState state, BlockPlaceContext useContext) {
         return !state.getValue(VISIBLE);
     }
-
 
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {

@@ -301,13 +301,14 @@ public class NatureBlocks {
     public static final DeferredBlock<CoconutBlock> COCONUT_BLOCK = registerWithItem("coconut_block", CoconutBlock::new);
     public static final DeferredBlock<CrimsonVenusFlytrapBlock> CRIMSON_VENUS_FLYTRAP_BLOCK = registerWithItem("crimson_venus_flytrap_block", CrimsonVenusFlytrapBlock::new);
     public static final DeferredBlock<BloodthirstCrystallizedBlock> BLOODTHIRST_CRYSTALLIZED_BLOCK = registerWithItem("bloodthirst_crystallized_block", BloodthirstCrystallizedBlock::new);
-    public static final Supplier<BlockEntityType<BloodthirstCrystallizedBlock.Entity>> BLOODTHIRST_CRYSTALLIZED_ENTITY = ModBlocks.BLOCK_ENTITIES.register("bloodthirst_crystallized_entity", () -> BlockEntityType.Builder.of(BloodthirstCrystallizedBlock.Entity::new, BLOODTHIRST_CRYSTALLIZED_BLOCK.get()).build(DSL.remainderType()));
+    public static final Supplier<BlockEntityType<BloodthirstCrystallizedBlock.Entity>> BLOODTHIRST_CRYSTALLIZED_ENTITY = ModBlocks.BLOCK_ENTITIES.register("bloodthirst_crystallized_entity", () -> BlockEntityType.Builder.of(BloodthirstCrystallizedBlock.Entity::new, BLOODTHIRST_CRYSTALLIZED_BLOCK.get()).build(null));
     public static final DeferredBlock<CorrodedWormRootsBlock> CORRODED_WORM_ROOTS_BLOCK = registerWithItem("corroded_worm_roots_block", CorrodedWormRootsBlock::new);
     public static final DeferredBlock<CorruptedOvariesBlock> CORRUPTED_OVARIES_BLOCK = registerWithItem("corrupted_ovaries_block", CorruptedOvariesBlock::new);
     public static final DeferredBlock<DecomposeTheSourceExtractBlock> DECOMPOSE_THE_SOURCE_EXTRACT_BLOCK = registerWithItem("decompose_the_source_extract_block", DecomposeTheSourceExtractBlock::new);
-    public static final Supplier<BlockEntityType<DecomposeTheSourceExtractBlock.Entity>> DECOMPOSE_THE_SOURCE_EXTRACT_ENTITY = ModBlocks.BLOCK_ENTITIES.register("decompose_the_source_extract_entity", () -> BlockEntityType.Builder.of(DecomposeTheSourceExtractBlock.Entity::new, DECOMPOSE_THE_SOURCE_EXTRACT_BLOCK.get()).build(DSL.remainderType()));
+    public static final Supplier<BlockEntityType<DecomposeTheSourceExtractBlock.Entity>> DECOMPOSE_THE_SOURCE_EXTRACT_ENTITY = ModBlocks.BLOCK_ENTITIES.register("decompose_the_source_extract_entity", () -> BlockEntityType.Builder.of(DecomposeTheSourceExtractBlock.Entity::new, DECOMPOSE_THE_SOURCE_EXTRACT_BLOCK.get()).build(null));
     public static final DeferredBlock<ShimmerCrystalslBlock> SHIMMER_CRYSTALS_BLOCK = registerWithItem("shimmer_crystals_block", ShimmerCrystalslBlock::new);
     public static final DeferredBlock<LostPaperBlock> LOST_PAPER_BLOCK = registerWithItem("lost_paper", LostPaperBlock::new);
+    public static final Supplier<BlockEntityType<LostPaperBlock.Entity>> LOST_PAPER_ENTITY = ModBlocks.BLOCK_ENTITIES.register("lost_paper", () -> BlockEntityType.Builder.of(LostPaperBlock.Entity::new, LOST_PAPER_BLOCK.get()).build(null));
 
 
     private static <B extends Block> DeferredBlock<B> registerWithoutItem(String id, Supplier<B> block) {

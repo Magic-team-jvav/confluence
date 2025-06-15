@@ -1,29 +1,35 @@
 package org.confluence.mod.integration.jei;
 
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotView;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IJeiHelpers;
+import mezz.jei.api.helpers.IStackHelper;
 import mezz.jei.api.ingredients.IIngredientHelper;
-import mezz.jei.api.ingredients.IIngredientRenderer;
 import mezz.jei.api.ingredients.ITypedIngredient;
+import mezz.jei.api.ingredients.subtypes.UidContext;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import mezz.jei.api.recipe.transfer.IRecipeTransferError;
 import mezz.jei.api.recipe.transfer.IRecipeTransferHandler;
+import mezz.jei.api.recipe.transfer.IRecipeTransferHandlerHelper;
 import mezz.jei.api.runtime.IIngredientManager;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.ShapedRecipePattern;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModMenuTypes;
@@ -81,11 +87,7 @@ public class HeavyWorkBenchCategory implements IRecipeCategory<RecipeHolder<Heav
         boolean symmetrical = pattern.symmetrical;
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                if (symmetrical) {
-                    addInput(builder, j * 18 + 6, i * 18 + 5, recipe.value().ingredients.get(width - j - 1 + i * width));
-                } else {
-                    addInput(builder, j * 18 + 6, i * 18 + 5, recipe.value().ingredients.get(j + i * width));
-                }
+                addInput(builder, j * 18 + 6, i * 18 + 5, recipe.value().ingredients.get(symmetrical ? width - j - 1 + i * width : j + i * width));
             }
         }
         builder.addSlot(RecipeIngredientRole.OUTPUT, 117, 33).addItemStack(recipe.value().getResultItem(null));
@@ -98,16 +100,11 @@ public class HeavyWorkBenchCategory implements IRecipeCategory<RecipeHolder<Heav
             guiGraphics.pose().pushPose();
             guiGraphics.pose().translate(0, 80, 0);
             for (ImmutableTriple<ITypedIngredient<Object>, Object, Integer> entry : summary(recipeSlotsView)) {
-                render(entry.getLeft(), entry.getMiddle(), guiGraphics);
+                ingredientManager.getIngredientRenderer(entry.getLeft().getType()).render(guiGraphics, entry.getMiddle());
                 guiGraphics.pose().translate(16, 0, 0);
             }
             guiGraphics.pose().popPose();
         }
-    }
-
-    private <T> void render(ITypedIngredient<T> typedIngredient, T ingredient, GuiGraphics guiGraphics) {
-        IIngredientRenderer<T> renderer = ingredientManager.getIngredientRenderer(typedIngredient.getType());
-        renderer.render(guiGraphics, ingredient);
     }
 
     private <T> List<ImmutableTriple<ITypedIngredient<T>, T, Integer>> summary(IRecipeSlotsView recipeSlotsView) {
@@ -134,6 +131,14 @@ public class HeavyWorkBenchCategory implements IRecipeCategory<RecipeHolder<Heav
     }
 
     public static class RecipeTransfer implements IRecipeTransferHandler<HeavyWorkBenchMenu, RecipeHolder<HeavyWorkBenchRecipe>> {
+        private final IJeiHelpers jeiHelpers;
+        private final IRecipeTransferHandlerHelper transferHelper;
+
+        public RecipeTransfer(IJeiHelpers jeiHelpers, IRecipeTransferHandlerHelper transferHelper) {
+            this.jeiHelpers = jeiHelpers;
+            this.transferHelper = transferHelper;
+        }
+
         @Override
         public Class<? extends HeavyWorkBenchMenu> getContainerClass() {
             return HeavyWorkBenchMenu.class;
@@ -149,9 +154,75 @@ public class HeavyWorkBenchCategory implements IRecipeCategory<RecipeHolder<Heav
             return TYPE;
         }
 
+
+        /**
+         * mezz.jei.common.transfer.RecipeTransferUtil#getRecipeTransferOperations(IStackHelper, Map, List, List)
+         */
         @Override
         public @Nullable IRecipeTransferError transferRecipe(HeavyWorkBenchMenu container, RecipeHolder<HeavyWorkBenchRecipe> recipe, IRecipeSlotsView recipeSlots, Player player, boolean maxTransfer, boolean doTransfer) {
+            IStackHelper stackHelper = jeiHelpers.getStackHelper();
+            List<IRecipeSlotView> slotViews = recipeSlots.getSlotViews(RecipeIngredientRole.INPUT);
+            Map<IRecipeSlotView, Set<Object>> slotUidCache = new IdentityHashMap<>();
+
+            Object2IntOpenHashMap<Object> total = new Object2IntOpenHashMap<>();
+            int[] requires = new int[slotViews.size()];
+            Arrays.fill(requires, -1);
+            for (Slot slot : container.slots) {
+                if (slot.isFake() || slot.getItem().isEmpty()) continue;
+                ItemStack slotItemStack = slot.getItem();
+                for (int i = 0; i < slotViews.size(); i++) {
+                    IRecipeSlotView slotView = slotViews.get(i);
+                    Object slotItemStackUid = stackHelper.getUidForStack(slotItemStack, UidContext.Ingredient);
+                    if (slotUidCache.computeIfAbsent(slotView, s -> calculateUids(s, stackHelper)).contains(slotItemStackUid)) {
+                        total.put(slotItemStackUid, slot.getItem().getCount());
+                        requires[i] = slotView.getItemStacks().findAny().map(ItemStack::getCount).orElse(1);
+                    }
+                }
+            }
+            if (total.isEmpty()) {
+                return transferHelper.createUserErrorForMissingSlots(Component.translatable("jei.tooltip.error.recipe.transfer.missing"), slotViews);
+            }
+
+            List<IRecipeSlotView> missing = new ArrayList<>();
+            for (int i = 0; i < slotViews.size(); i++) {
+                IRecipeSlotView slotView = slotViews.get(i);
+                int require = requires[i];
+                if (require < 0) {
+                    missing.add(slotView);
+                    continue;
+                }
+                Set<Object> objects = slotUidCache.computeIfAbsent(slotView, s -> calculateUids(s, stackHelper));
+                for (Object object : objects) {
+                    if (total.containsKey(object)) {
+                        if (total.getInt(object) < require) {
+                            missing.add(slotView);
+                        }
+                        total.addTo(object, -require);
+                        break;
+                    }
+                }
+            }
+            if (!missing.isEmpty()) {
+                return transferHelper.createUserErrorForMissingSlots(Component.translatable("jei.tooltip.error.recipe.transfer.missing"), missing);
+            }
+
+            if (doTransfer) {
+                PacketDistributor.sendToServer(new RecipeTransferPacketC2S(recipe.id(), maxTransfer));
+            }
             return null;
+        }
+
+        private static Set<Object> calculateUids(IRecipeSlotView recipeSlotView, IStackHelper stackhelper) {
+            List<@Nullable ITypedIngredient<?>> allIngredientsList = recipeSlotView.getAllIngredientsList();
+            Set<Object> uids = new HashSet<>(allIngredientsList.size());
+            for (ITypedIngredient<?> typedIngredient : allIngredientsList) {
+                if (typedIngredient == null) continue;
+                ITypedIngredient<ItemStack> typedItemStack = typedIngredient.cast(VanillaTypes.ITEM_STACK);
+                if (typedItemStack != null) {
+                    uids.add(stackhelper.getUidForStack(typedItemStack, UidContext.Ingredient));
+                }
+            }
+            return uids;
         }
     }
 }

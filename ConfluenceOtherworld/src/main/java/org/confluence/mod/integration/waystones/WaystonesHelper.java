@@ -47,7 +47,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class WaystonesHelper {
-    public static final boolean LOADED = ModList.get().isLoaded("waystones");
+    public static final boolean IS_LOADED = ModList.get().isLoaded("waystones");
     static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Confluence.MODID);
     private static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, Confluence.MODID);
     private static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
@@ -81,7 +81,7 @@ public class WaystonesHelper {
     }
 
     public static void register(IEventBus eventBus) {
-        if (LOADED) {
+        if (IS_LOADED) {
             BLOCKS.register(eventBus);
             BLOCK_ENTITY_TYPES.register(eventBus);
             ITEMS.register(eventBus);

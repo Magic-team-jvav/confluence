@@ -108,7 +108,7 @@ public final class ModJeiPlugin implements IModPlugin {
 
     @Override
     public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
-        // todo
+        registration.addRecipeTransferHandler(new HeavyWorkBenchCategory.RecipeTransfer(registration.getJeiHelpers(), registration.getTransferHelper()), HeavyWorkBenchCategory.TYPE);
     }
 
     public static void drawArrowDown(GuiGraphics guiGraphics, int x, int y, boolean usable) {

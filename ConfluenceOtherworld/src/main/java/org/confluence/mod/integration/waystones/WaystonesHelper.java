@@ -6,6 +6,7 @@ import com.mojang.datafixers.DSL;
 import net.blay09.mods.waystones.block.WaystoneBlock;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
@@ -14,6 +15,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -24,6 +26,7 @@ import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -33,7 +36,9 @@ import org.confluence.lib.common.LibTags;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModTabs;
+import org.confluence.mod.common.init.ModTags;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
@@ -47,23 +52,26 @@ public class WaystonesHelper {
     private static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, Confluence.MODID);
     private static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
 
-    private static final DeferredBlock<Block> FOREST_PYLON = register("forest_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.CYAN));
-    private static final DeferredBlock<Block> SNOW_PYLON = register("snow_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.WHITE));
-    private static final DeferredBlock<Block> DESERT_PYLON = register("desert_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.YELLOW));
-    private static final DeferredBlock<Block> CAVERN_PYLON = register("cavern_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.GRAY));
-    private static final DeferredBlock<Block> OCEAN_PYLON = register("ocean_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.BLUE));
-    private static final DeferredBlock<Block> JUNGLE_PYLON = register("jungle_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.GREEN));
-    private static final DeferredBlock<Block> HALLOW_PYLON = register("hallow_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.LIGHT_BLUE));
-    private static final DeferredBlock<Block> MUSHROOM_PYLON = register("mushroom_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.PURPLE));
-    private static final DeferredBlock<Block> UNIVERSAL_PYLON = register("universal_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.BROWN));
+    private static final DeferredBlock<Block> FOREST_PYLON = register("forest_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.CYAN), (world, pos) -> {
+        Holder<Biome> biome = world.getBiome(pos);
+        return biome.is(Tags.Biomes.IS_FOREST) || biome.is(Tags.Biomes.IS_PLAINS);
+    });
+    private static final DeferredBlock<Block> SNOW_PYLON = register("snow_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.WHITE), (world, pos) -> world.getBiome(pos).is(Tags.Biomes.IS_SNOWY));
+    private static final DeferredBlock<Block> DESERT_PYLON = register("desert_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.YELLOW), (world, pos) -> world.getBiome(pos).is(Tags.Biomes.IS_DESERT));
+    private static final DeferredBlock<Block> CAVERN_PYLON = register("cavern_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.GRAY), (world, pos) -> world.dimensionType().bedWorks() && pos.getY() < world.getMinBuildHeight() + 104);
+    private static final DeferredBlock<Block> OCEAN_PYLON = register("ocean_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.BLUE), (world, pos) -> world.getBiome(pos).is(Tags.Biomes.IS_OCEAN));
+    private static final DeferredBlock<Block> JUNGLE_PYLON = register("jungle_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.GREEN), (world, pos) -> world.getBiome(pos).is(Tags.Biomes.IS_JUNGLE));
+    private static final DeferredBlock<Block> HALLOW_PYLON = register("hallow_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.LIGHT_BLUE), (world, pos) -> world.getBiome(pos).is(ModTags.Biomes.THE_HALLOW));
+    private static final DeferredBlock<Block> MUSHROOM_PYLON = register("mushroom_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.PURPLE), (world, pos) -> world.getBiome(pos).is(ModBiomes.GLOWING_MUSHROOM));
+    private static final DeferredBlock<Block> UNIVERSAL_PYLON = register("universal_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.BROWN), (world, pos) -> true);
 
     public static final Supplier<BlockEntityType<PylonBlock.Entity>> PYLON_ENTITY = BLOCK_ENTITY_TYPES.register("pylon_entity", () -> BlockEntityType.Builder.of(PylonBlock.Entity::new, BLOCKS.getEntries().stream().map(DeferredHolder::get).toArray(Block[]::new)).build(DSL.remainderType()));
 
-    private static DeferredBlock<Block> register(String name, BlockBehaviour.Properties properties) {
+    private static DeferredBlock<Block> register(String name, BlockBehaviour.Properties properties, PylonBlock.Survive survive) {
         int count = BLOCKS.getEntries().size();
         DeferredBlock<Block> block = BLOCKS.register(name, () -> {
             try {
-                return PylonBlock.class.getDeclaredConstructor(int.class, BlockBehaviour.Properties.class).newInstance(count, properties);
+                return PylonBlock.class.getDeclaredConstructor(int.class, BlockBehaviour.Properties.class, PylonBlock.Survive.class).newInstance(count, properties, survive);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

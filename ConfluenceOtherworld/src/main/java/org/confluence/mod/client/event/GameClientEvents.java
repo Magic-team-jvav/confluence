@@ -51,7 +51,6 @@ import org.confluence.mod.common.init.ModEquipmentSets;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.item.accessory.MusicBoxItem;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
-import org.confluence.mod.integration.touhou_little_maid.ExtraButton;
 import org.confluence.mod.mixed.IInventoryScreen;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.ILocalPlayer;
@@ -242,9 +241,6 @@ public final class GameClientEvents {
             }
             event.addListener(extraInventoryButton);
         }
-
-        // 联动车万女仆
-        ExtraButton.addButton(event);
     }
 
     @SubscribeEvent

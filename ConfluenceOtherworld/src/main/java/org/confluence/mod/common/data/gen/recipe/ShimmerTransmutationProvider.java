@@ -87,6 +87,11 @@ public class ShimmerTransmutationProvider extends AbstractRecipeProvider {
         item(recipeOutput, PaintItems.NEGATIVE_PAINT, PaintItems.SHADOW_PAINT);
         item(recipeOutput, PaintItems.SHADOW_PAINT, PaintItems.ECHO_COATING);
         item(recipeOutput, AccessoryItems.MECHANICAL_LENS, AccessoryItems.SPECTRE_GOGGLES);
+        // 腐化与猩红转化
+        item(recipeOutput,"raw_demonite_from_raw_crimtane", addItem(MaterialItems.RAW_CRIMTANE, MaterialItems.RAW_DEMONITE));
+        item(recipeOutput,"raw_crimtane_from_raw_demonite", addItem(MaterialItems.RAW_DEMONITE, MaterialItems.RAW_CRIMTANE));
+        item(recipeOutput, ModItems.CORRUPT_SEED, ModItems.CRIMSON_SEED);
+        item(recipeOutput, ModItems.CRIMSON_SEED, ModItems.CORRUPT_SEED);
         // 微光箭转化
         item(recipeOutput, "shimmer_arrow", addItem(ItemTags.ARROWS, ArrowItems.SHIMMER_ARROW.get(), 1));
         // 匣子转化

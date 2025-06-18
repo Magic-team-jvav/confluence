@@ -154,15 +154,6 @@ public final class ModEvents {
                 );
                 if (pack != null) consumer.accept(pack);
             });
-            event.addRepositorySource(consumer -> {
-                Pack pack = Pack.readMetaAndCreate(
-                        new PackLocationInfo("confluence:otherworldly_music", Component.translatable("resourcepack.otherworldly_music"), PackSource.BUILT_IN, Optional.empty()),
-                        new ConfluenceResources(modFile, "resourcepacks/otherworldly_music"),
-                        PackType.CLIENT_RESOURCES,
-                        new PackSelectionConfig(false, Pack.Position.TOP, false)
-                );
-                if (pack != null) consumer.accept(pack);
-            });
         }
     }
 

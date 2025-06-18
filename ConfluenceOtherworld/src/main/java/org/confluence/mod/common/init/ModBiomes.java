@@ -253,7 +253,6 @@ public final class ModBiomes {
                         .waterColor(-10541025)
                         .waterFogColor(4159204)
                         .skyColor(-4592650)
-                        //.backgroundMusic(ModMusics.UNDERWORLD)
                         .build())
                 .mobSpawnSettings(MobSpawnSettings.EMPTY)
                 .generationSettings(Util.make(new BiomeGenerationSettings.Builder(placedFeature, configuredWorldCarver), builder -> {
@@ -275,7 +274,6 @@ public final class ModBiomes {
                         .waterColor(-10541025)
                         .waterFogColor(4159204)
                         .skyColor(-4592650)
-                        //.backgroundMusic(ModMusics.UNDERWORLD)
                         .build())
                 .mobSpawnSettings(MobSpawnSettings.EMPTY)
                 .generationSettings(Util.make(new BiomeGenerationSettings.Builder(placedFeature, configuredWorldCarver), builder -> {

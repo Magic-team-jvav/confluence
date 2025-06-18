@@ -438,8 +438,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.alertPlayerDungeon.tooltip", "启用时，地牢守卫出现前将有三次吼叫警告");
         add("confluence.configuration.achievementToast", "启用泰拉样式成就");
         add("confluence.configuration.achievementToast.tooltip", "如果想使用原版样式进度的话就关闭它");
-        add("confluence.configuration.playerOurMusic", "启用泰拉音乐");
-        add("confluence.configuration.playerOurMusic.tooltip", "启用泰拉的音乐，它会在合适的环境播放");
         add("confluence.configuration.dropsMoney", "钱币掉落");
         add("confluence.configuration.dropsMoney.tooltip", "启用时，生物死亡后会掉落钱币");
         add("confluence.configuration.Paints", "油漆功能设置");

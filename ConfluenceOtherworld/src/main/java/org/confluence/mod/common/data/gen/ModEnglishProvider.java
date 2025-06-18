@@ -469,8 +469,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.configuration.alertPlayerDungeon.tooltip", "When enabled, there will be three roars as warnings before the dungeon guardian appears.");
         add("confluence.configuration.achievementToast", "Enable Terra Style Achievements");
         add("confluence.configuration.achievementToast.tooltip", "Disable it if you want to use the default progress style.");
-        add("confluence.configuration.playerOurMusic", "Enable Terra Music");
-        add("confluence.configuration.playerOurMusic.tooltip", "Enable Terra's music, it will play in appropriate environments");
         add("confluence.configuration.dropsMoney", "Coin Drops");
         add("confluence.configuration.dropsMoney.tooltip", "When enabled, characters will drop coins upon death.");
         add("confluence.configuration.Paints", "Paint Function Settings");

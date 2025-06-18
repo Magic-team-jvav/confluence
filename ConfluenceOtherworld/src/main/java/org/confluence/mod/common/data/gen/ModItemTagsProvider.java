@@ -917,7 +917,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FoodItems.DAYBLOOM_SEED.get(),
                 FoodItems.DEATHWEED_SEED.get()
         );
-        tag(Tags.Items.MUSIC_DISCS).add(ModItems.ALPHA.get());
         tag(ItemTags.VILLAGER_PLANTABLE_SEEDS).add(
                 FoodItems.STELLAR_BLOSSOM_SEED.get(),
                 FoodItems.CLOUDWEAVER_SEED.get(),

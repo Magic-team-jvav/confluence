@@ -51,7 +51,6 @@ public class Confluence {
         ModSoundEvents.EVENTS.register(eventBus);
         ModAttachmentTypes.TYPES.register(eventBus);
         ModEffects.EFFECTS.register(eventBus);
-        ModJukeboxSongs.SONGS.register(eventBus);
         ModMenuTypes.TYPES.register(eventBus);
         ModParticleTypes.TYPES.register(eventBus);
         ModChunkGenerators.GENERATORS.register(eventBus);

@@ -1534,7 +1534,6 @@ public class ModEnglishProvider extends LanguageProvider {
         DecorativeBlocks.BLOCKS.getEntries().forEach(blockAction);
         FunctionalBlocks.BLOCKS.getEntries().forEach(blockAction);
         ModBlocks.BLOCKS.getEntries().forEach(blockAction);
-        MusicBoxBlocks.BLOCKS.getEntries().forEach(blockAction);
         NatureBlocks.BLOCKS.getEntries().forEach(blockAction);
         OreBlocks.BLOCKS.getEntries().forEach(blockAction);
         PotBlocks.BLOCKS.getEntries().forEach(blockAction);

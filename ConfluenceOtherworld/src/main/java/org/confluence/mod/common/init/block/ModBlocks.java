@@ -136,7 +136,6 @@ public final class ModBlocks {
         CrateBlocks.BLOCKS.register(eventBus);
         DecorativeBlocks.BLOCKS.register(eventBus);
         FunctionalBlocks.BLOCKS.register(eventBus);
-        MusicBoxBlocks.BLOCKS.register(eventBus);
         NatureBlocks.BLOCKS.register(eventBus);
         OreBlocks.BLOCKS.register(eventBus);
         PotBlocks.BLOCKS.register(eventBus);

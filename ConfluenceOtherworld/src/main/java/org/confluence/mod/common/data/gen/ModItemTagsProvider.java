@@ -61,6 +61,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 Blocks.DEAD_BUBBLE_CORAL.asItem(), Blocks.DEAD_BUBBLE_CORAL_FAN.asItem(), Blocks.DEAD_BUBBLE_CORAL_BLOCK.asItem(), Blocks.DEAD_FIRE_CORAL.asItem(), Blocks.DEAD_FIRE_CORAL_FAN.asItem(), Blocks.DEAD_FIRE_CORAL_BLOCK.asItem(), Blocks.DEAD_HORN_CORAL.asItem(), Blocks.DEAD_HORN_CORAL_FAN.asItem(), Blocks.DEAD_HORN_CORAL_BLOCK.asItem());
         tag(ModTags.Items.EVIL_MATERIAL).add(
                 MaterialItems.CRIMTANE_INGOT.get(),
+                MaterialItems.CRIMTANE_INGOT.get(),
                 MaterialItems.DEMONITE_INGOT.get(),
                 MaterialItems.WORM_TOOTH.get(),
                 MaterialItems.VERTEBRA.get(),
@@ -1178,14 +1179,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 AccessoryItems.VORTEX_BOOSTER.get(),
                 AccessoryItems.SOLAR_WINGS.get(),
                 AccessoryItems.STARDUST_WINGS.get(),
-                AccessoryItems.MUSIC_BOX_OTHERWORLD_DAY.get(),
-                AccessoryItems.MUSIC_BOX_NIGHT.get(),
-                AccessoryItems.MUSIC_BOX_UNDERGROUND.get(),
-                AccessoryItems.MUSIC_BOX_JUNGLE.get(),
-                AccessoryItems.MUSIC_BOX_CORRUPTION.get(),
-                AccessoryItems.MUSIC_BOX_UNDERGROUND_CORRUPTION.get(),
-                AccessoryItems.MUSIC_BOX_THE_HALLOW.get(),
-                AccessoryItems.MUSIC_BOX_UNDERGROUND_HALLOW.get(),
                 TCItems.EVERLASTING.get(),
                 TCItems.BASE_POINT.get(),
                 AxeItems.COBALT_WARAXE.get(),

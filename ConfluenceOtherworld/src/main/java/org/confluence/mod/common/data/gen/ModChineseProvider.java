@@ -3686,19 +3686,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(AccessoryItems.SPECTRE_GOGGLES.get(), "幽灵护目镜");
         add(AccessoryItems.FLEDGLING_WINGS.get(), "雏翼");
         add(AccessoryItems.CHROMATIC_CLOAK.get(), "炫彩斗篷");
-        add(AccessoryItems.MUSIC_BOX.get(), "八音盒");
         add(AccessoryItems.PAINT_SPRAYER.get(), "喷漆器");
         add(AccessoryItems.RADIO_THING.get(), "收音机");
-
-
-        add(AccessoryItems.MUSIC_BOX_OTHERWORLD_DAY.get(), "八音盒（地表世界）");
-        add(AccessoryItems.MUSIC_BOX_NIGHT.get(), "八音盒（夜间）");
-        add(AccessoryItems.MUSIC_BOX_UNDERGROUND.get(), "八音盒（地下）");
-        add(AccessoryItems.MUSIC_BOX_JUNGLE.get(), "八音盒（丛林）");
-        add(AccessoryItems.MUSIC_BOX_CORRUPTION.get(), "八音盒（腐化之地）");
-        add(AccessoryItems.MUSIC_BOX_UNDERGROUND_CORRUPTION.get(), "八音盒（地下腐化之地）");
-        add(AccessoryItems.MUSIC_BOX_THE_HALLOW.get(), "八音盒（神圣之地）");
-        add(AccessoryItems.MUSIC_BOX_UNDERGROUND_HALLOW.get(), "八音盒（地下神圣之地）");
 
         add(AccessoryItems.ANGEL_WINGS.get(), "天使之翼");
         add(AccessoryItems.DEMON_WINGS.get(), "恶魔之翼");

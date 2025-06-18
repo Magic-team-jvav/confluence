@@ -60,7 +60,6 @@ import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.ToolItems;
-import org.confluence.mod.common.item.accessory.MusicBoxItem;
 import org.confluence.mod.integration.jei.RecipeTransferPacketC2S;
 import org.confluence.mod.integration.terra_entity.TEItemComponentModify;
 import org.confluence.mod.integration.terra_entity.TERemoval;
@@ -113,7 +112,6 @@ public final class ModEvents {
             LogBlockSet.wrapStrip();
             LogBlockSet.setFlammable();
             ISpreadable.Type.buildMap();
-            MusicBoxItem.initialize();
             ModRecipes.Brewing.initialize();
             CauldronInteraction.INTERACTIONS.values().forEach(map -> {
                 Map<Item, CauldronInteraction> interactionMap = map.map();
@@ -191,7 +189,6 @@ public final class ModEvents {
         registrar.playToServer(HookThrowingPacketC2S.TYPE, HookThrowingPacketC2S.STREAM_CODEC, HookThrowingPacketC2S::handle);
         registrar.playToServer(KeyRequestPacketC2S.TYPE, KeyRequestPacketC2S.STREAM_CODEC, KeyRequestPacketC2S::handle);
         registrar.playToServer(OpenMenuPacketC2S.TYPE, OpenMenuPacketC2S.STREAM_CODEC, OpenMenuPacketC2S::handle);
-        registrar.playToServer(ReplaceMusicBoxItemPacketC2S.TYPE, ReplaceMusicBoxItemPacketC2S.STREAM_CODEC, ReplaceMusicBoxItemPacketC2S::handle);
         registrar.playToServer(SwordShootingPacketC2S.TYPE, SwordShootingPacketC2S.STREAM_CODEC, SwordShootingPacketC2S::handle);
         registrar.playToServer(WormholeToPlayerPacketC2S.TYPE, WormholeToPlayerPacketC2S.STREAM_CODEC, WormholeToPlayerPacketC2S::handle);
         registrar.playToServer(SellTradePacketC2S.TYPE, SellTradePacketC2S.STREAM_CODEC, SellTradePacketC2S::handle);

@@ -24,7 +24,6 @@ import java.util.Locale;
 public final class ClientConfigs {
     public static int showWindParticles = 90;
     public static boolean achievementToast = true;
-    public static boolean playerOurMusic = false;
     public static SellPriceDisplay sellPriceDisplay = SellPriceDisplay.EVERYWHERE;
 
     public static boolean terraStyleHealth = true;
@@ -43,7 +42,6 @@ public final class ClientConfigs {
 
     private static IntValue SHOW_WIND_PARTICLES;
     private static BooleanValue ACHIEVEMENT_TOAST;
-    private static BooleanValue PLAY_OUR_MUSIC;
     private static EnumValue<SellPriceDisplay> SELL_PRICE_DISPLAY;
 
     private static BooleanValue TERRA_STYLE_HEALTH;
@@ -63,7 +61,6 @@ public final class ClientConfigs {
     public static void onLoad() {
         showWindParticles = SHOW_WIND_PARTICLES.get();
         achievementToast = ACHIEVEMENT_TOAST.get();
-        playerOurMusic = PLAY_OUR_MUSIC.get();
         sellPriceDisplay = SELL_PRICE_DISPLAY.get();
 
         terraStyleHealth = TERRA_STYLE_HEALTH.get();
@@ -87,7 +84,6 @@ public final class ClientConfigs {
 
         SHOW_WIND_PARTICLES = BUILDER.defineInRange("showWindParticles", 90, 0, 100);
         ACHIEVEMENT_TOAST = BUILDER.define("achievementToast", true);
-        PLAY_OUR_MUSIC = BUILDER.define("playerOurMusic", false);
         SELL_PRICE_DISPLAY = BUILDER.defineEnum("sellPriceDisplay", SellPriceDisplay.EVERYWHERE);
 
         BUILDER.push("HUD");

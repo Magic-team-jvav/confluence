@@ -1313,7 +1313,6 @@ public class ValueSubProvider {
                 .add(AccessoryItems.SPECTRE_GOGGLES, wrap(2, 0,0))
                 .add(AccessoryItems.FLEDGLING_WINGS, wrap(4,0))
                 .add(AccessoryItems.CHROMATIC_CLOAK, wrap(2, 0,0))
-                .add(AccessoryItems.MUSIC_BOX, wrap(2, 0,0))
                 .add(AccessoryItems.RADIO_THING, wrap(1, 0,0));
         appender.create()
                 .add(BaitItems.APPRENTICE_BAIT, wrap(1,0))

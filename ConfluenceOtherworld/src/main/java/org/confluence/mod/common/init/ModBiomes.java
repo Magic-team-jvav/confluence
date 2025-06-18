@@ -17,7 +17,6 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.ModMusics;
 import org.confluence.mod.common.init.ModFeatures.Placed;
 import org.confluence.mod.common.worldgen.biome.*;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
@@ -254,7 +253,7 @@ public final class ModBiomes {
                         .waterColor(-10541025)
                         .waterFogColor(4159204)
                         .skyColor(-4592650)
-                        .backgroundMusic(ModMusics.UNDERWORLD)
+                        //.backgroundMusic(ModMusics.UNDERWORLD)
                         .build())
                 .mobSpawnSettings(MobSpawnSettings.EMPTY)
                 .generationSettings(Util.make(new BiomeGenerationSettings.Builder(placedFeature, configuredWorldCarver), builder -> {
@@ -276,7 +275,7 @@ public final class ModBiomes {
                         .waterColor(-10541025)
                         .waterFogColor(4159204)
                         .skyColor(-4592650)
-                        .backgroundMusic(ModMusics.UNDERWORLD)
+                        //.backgroundMusic(ModMusics.UNDERWORLD)
                         .build())
                 .mobSpawnSettings(MobSpawnSettings.EMPTY)
                 .generationSettings(Util.make(new BiomeGenerationSettings.Builder(placedFeature, configuredWorldCarver), builder -> {

@@ -97,7 +97,6 @@
         "client.ClientLevelMixin",
         "client.MinecraftMixin",
         "client.MouseHandlerMixin",
-        "client.MusicManagerMixin",
         "client.SpriteLoaderMixin",
         "client.WorldCreationUiStateMixin",
         "client.accessor.AgeableListModelAccessor",

@@ -22,7 +22,6 @@ import org.confluence.mod.common.data.gen.ModItemTagsProvider;
 import org.confluence.mod.common.entity.fishing.CurioFishingHook;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.common.init.block.MusicBoxBlocks;
 import org.confluence.mod.common.item.accessory.*;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.api.primitive.*;
@@ -171,21 +170,6 @@ public class AccessoryItems {
     public static final DeferredItem<BaseCurioItem> VORTEX_BOOSTER = registerWings("vortex_booster", RED, 0.85F, 92, true, true); // 飞行高度：95
     public static final DeferredItem<BaseCurioItem> SOLAR_WINGS = registerWings("solar_wings", RED, 0.85F, 92, true, false); // 飞行高度：95
     public static final DeferredItem<BaseCurioItem> STARDUST_WINGS = registerWings("stardust", RED, 0.85F, 92, true, false); // 飞行高度：95
-
-    public static final DeferredItem<MusicBoxItem> MUSIC_BOX = ITEMS.register("music_box", () -> new MusicBoxItem(MusicBoxBlocks.MUSIC_BOX.get()));
-    public static final DeferredItem<MusicBoxItem> MUSIC_BOX_OTHERWORLD_DAY = ITEMS.register("music_box_otherworld_day", () -> new MusicBoxItem(MusicBoxBlocks.MUSIC_BOX_OTHERWORLD_DAY.get()));
-    // todo eerie
-    public static final DeferredItem<MusicBoxItem> MUSIC_BOX_NIGHT = ITEMS.register("music_box_night", () -> new MusicBoxItem(MusicBoxBlocks.MUSIC_BOX_NIGHT.get()));
-    // todo title
-    public static final DeferredItem<MusicBoxItem> MUSIC_BOX_UNDERGROUND = ITEMS.register("music_box_underground", () -> new MusicBoxItem(MusicBoxBlocks.MUSIC_BOX_UNDERGROUND.get()));
-    // todo boss1
-    public static final DeferredItem<MusicBoxItem> MUSIC_BOX_JUNGLE = ITEMS.register("music_box_jungle", () -> new MusicBoxItem(MusicBoxBlocks.MUSIC_BOX_JUNGLE.get()));
-    public static final DeferredItem<MusicBoxItem> MUSIC_BOX_CORRUPTION = ITEMS.register("music_box_corruption", () -> new MusicBoxItem(MusicBoxBlocks.MUSIC_BOX_CORRUPTION.get()));
-    public static final DeferredItem<MusicBoxItem> MUSIC_BOX_UNDERGROUND_CORRUPTION = ITEMS.register("music_box_underground_corruption", () -> new MusicBoxItem(MusicBoxBlocks.MUSIC_BOX_UNDERGROUND_CORRUPTION.get()));
-    public static final DeferredItem<MusicBoxItem> MUSIC_BOX_THE_HALLOW = ITEMS.register("music_box_the_hallow", () -> new MusicBoxItem(MusicBoxBlocks.MUSIC_BOX_THE_HALLOW.get()));
-    // todo boss2
-    public static final DeferredItem<MusicBoxItem> MUSIC_BOX_UNDERGROUND_HALLOW = ITEMS.register("music_box_underground_hallow", () -> new MusicBoxItem(MusicBoxBlocks.MUSIC_BOX_UNDERGROUND_HALLOW.get()));
-    // todo boss3
 
     private static DeferredItem<BaseCurioItem> registerCurio(String name, Consumer<BaseCurioItem.Builder> consumer) {
         return ITEMS.register(name, () -> {

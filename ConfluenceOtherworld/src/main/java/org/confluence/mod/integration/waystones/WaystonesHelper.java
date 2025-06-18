@@ -125,6 +125,7 @@ public class WaystonesHelper {
 
     @OnlyIn(Dist.CLIENT)
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        if (!IS_LOADED) return;
         event.registerBlockEntityRenderer(PYLON_ENTITY.get(), context -> new GeoBlockRenderer<>(new PylonModel()) {
             @Override
             public void defaultRender(PoseStack poseStack, PylonBlock.Entity animatable, MultiBufferSource bufferSource, @Nullable RenderType renderType, @Nullable VertexConsumer buffer, float yaw, float partialTick, int packedLight) {

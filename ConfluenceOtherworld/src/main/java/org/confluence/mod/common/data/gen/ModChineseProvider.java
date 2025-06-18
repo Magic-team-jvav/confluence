@@ -201,6 +201,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("info.confluence.weather_radio.rain", "天气: 下雨, 风速: %s");
         add("info.confluence.weather_radio.snow", "天气: 下雪, 风速: %s");
         add("info.confluence.weather_radio.thunder", "天气: 雷暴, 风速: %s");
+        add("info.confluence.weather_radio.thunder_snow", "天气: 雷打雪, 风速: %s");
         add("info.confluence.bait", "鱼饵力: %s%%");
         add("info.confluence.network", "#%s 信号: %s");
         add("info.confluence.respawn_time", "复活剩余时间: %s秒");

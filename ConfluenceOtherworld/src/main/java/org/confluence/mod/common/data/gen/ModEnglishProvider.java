@@ -236,6 +236,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("info.confluence.weather_radio.rain", "Weather: Rain, Wind Speed: %s");
         add("info.confluence.weather_radio.snow", "Weather: Snow, Wind Speed: %s");
         add("info.confluence.weather_radio.thunder", "Weather: Thunder, Wind Speed: %s");
+        add("info.confluence.weather_radio.thunder_snow", "Weather: Thunder Snow, Wind Speed: %s");
         add("info.confluence.bait", "Bait Power: %s%%");
         add("info.confluence.network", "#%s Signal: %s");
         add("info.confluence.respawn_time", "Respawn Time: %ss");

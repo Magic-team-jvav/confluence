@@ -1,0 +1,9 @@
+{
+  "parent": "block/cube_bottom_top",
+  "textures": {
+    "bottom": "confluence:block/tin_bricks",
+    "top": "confluence:block/tin_bricks",
+    "side": "confluence:block/tin_bricks"
+  },
+  "render_type": "solid"
+}

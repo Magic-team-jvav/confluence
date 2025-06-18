@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/stairs",
+  "textures": {
+    "bottom": "confluence:block/golden_bricks",
+    "side": "confluence:block/golden_bricks",
+    "top": "confluence:block/golden_bricks"
+  }
+}

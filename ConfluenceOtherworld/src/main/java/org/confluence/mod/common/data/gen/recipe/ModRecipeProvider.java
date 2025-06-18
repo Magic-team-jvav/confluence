@@ -11,6 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.block.Blocks;
+import net.neoforged.neoforge.common.Tags;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.lib.common.recipe.AmountIngredient;
 import org.confluence.mod.Confluence;
@@ -34,6 +35,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
     protected void buildRecipes(RecipeOutput recipeOutput, HolderLookup.Provider holderLookup) {
         cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.AMBER_ORE_SMELTING), MaterialItems.AMBER.toStack(), 0.4F, 100);
         cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.AMBER_ORE_SMELTING), MaterialItems.AMBER.toStack(), 0.5F, 200);
+        cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(Tags.Items.GLASS_BLOCKS_COLORLESS), PotionItems.MUG.toStack(), 0.5F, 200);
         cooking(recipeOutput, SmokingRecipe::new, "smoking/", "", Ingredient.of(FoodItems.BAOBAB_FRUIT), FoodItems.COOKED_BAOBAB_FRUIT.toStack(), 0.1F, 100);
         cooking(recipeOutput, CampfireCookingRecipe::new, "campfire_cooking/", "_from_atlantic_cod", Ingredient.of(FoodItems.ATLANTIC_COD), Items.COOKED_COD.getDefaultInstance(), 0.1F, 200);
 
@@ -154,6 +156,115 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
                 "HHS "
         )));
         hardmodeAnvil(recipeOutput, FunctionalBlocks.CHLOROPHYTE_EXTRACTINATOR.toStack(), AmountIngredient.of(18, MaterialItems.CHLOROPHYTE_INGOT), Ingredient.of(FunctionalBlocks.EXTRACTINATOR));
+
+        sawmill(recipeOutput, FunctionalBlocks.KEG.toStack(), ShapedRecipePattern.of(Map.of(
+                'A', Ingredient.of(Tags.Items.BARRELS_WOODEN),
+                'B', Ingredient.of(Tags.Items.FENCES_WOODEN),
+                'C', Ingredient.of(Tags.Items.INGOTS_COPPER)
+        ), List.of(
+                "AC",
+                "B "
+        )));
+        sawmill(recipeOutput, new ItemStack(Items.OAK_PLANKS, 9), ShapedRecipePattern.of(Map.of(
+                'A', Ingredient.of(Items.OAK_LOG,Items.OAK_WOOD,Items.STRIPPED_OAK_LOG,Items.STRIPPED_OAK_WOOD)
+        ), List.of(
+                "A"
+        )));
+        sawmill(recipeOutput, new ItemStack(Items.ACACIA_PLANKS, 9), ShapedRecipePattern.of(Map.of(
+                'A', Ingredient.of(Items.ACACIA_LOG,Items.ACACIA_WOOD,Items.STRIPPED_ACACIA_LOG,Items.STRIPPED_ACACIA_WOOD)
+        ), List.of(
+                "A"
+        )));
+        sawmill(recipeOutput, new ItemStack(Items.BAMBOO_PLANKS), ShapedRecipePattern.of(Map.of(
+                'A', Ingredient.of(Items.BAMBOO)
+        ), List.of(
+                "A"
+        )));
+        sawmill(recipeOutput, new ItemStack(Items.CHERRY_PLANKS, 9), ShapedRecipePattern.of(Map.of(
+                'A', Ingredient.of(Items.CHERRY_LOG,Items.CHERRY_WOOD,Items.STRIPPED_CHERRY_LOG,Items.STRIPPED_CHERRY_WOOD)
+        ), List.of(
+                "A"
+        )));
+        sawmill(recipeOutput, new ItemStack(Items.CRIMSON_PLANKS, 9), ShapedRecipePattern.of(Map.of(
+                'A', Ingredient.of(Items.CRIMSON_STEM,Items.STRIPPED_CRIMSON_STEM)
+        ), List.of(
+                "A"
+        )));
+        sawmill(recipeOutput, new ItemStack(Items.DARK_OAK_PLANKS, 9), ShapedRecipePattern.of(Map.of(
+                'A', Ingredient.of(Items.DARK_OAK_LOG,Items.DARK_OAK_WOOD,Items.STRIPPED_DARK_OAK_LOG,Items.STRIPPED_DARK_OAK_WOOD)
+        ), List.of(
+                "A"
+        )));
+        sawmill(recipeOutput, new ItemStack(Items.JUNGLE_PLANKS, 9), ShapedRecipePattern.of(Map.of(
+                'A', Ingredient.of(Items.JUNGLE_LOG,Items.JUNGLE_WOOD,Items.STRIPPED_JUNGLE_LOG,Items.STRIPPED_JUNGLE_WOOD)
+        ), List.of(
+                "A"
+        )));
+        sawmill(recipeOutput, new ItemStack(Items.BIRCH_PLANKS, 9), ShapedRecipePattern.of(Map.of(
+                'A', Ingredient.of(Items.BIRCH_LOG,Items.BIRCH_WOOD,Items.STRIPPED_BIRCH_LOG,Items.STRIPPED_BIRCH_WOOD)
+        ), List.of(
+                "A"
+        )));
+        sawmill(recipeOutput, new ItemStack(Items.MANGROVE_PLANKS, 9), ShapedRecipePattern.of(Map.of(
+                'A', Ingredient.of(Items.MANGROVE_LOG,Items.MANGROVE_WOOD,Items.STRIPPED_MANGROVE_LOG,Items.STRIPPED_MANGROVE_WOOD)
+        ), List.of(
+                "A"
+        )));
+        sawmill(recipeOutput, new ItemStack(Items.SPRUCE_PLANKS, 9), ShapedRecipePattern.of(Map.of(
+                'A', Ingredient.of(Items.SPRUCE_LOG,Items.SPRUCE_WOOD,Items.STRIPPED_SPRUCE_LOG,Items.STRIPPED_SPRUCE_WOOD)
+        ), List.of(
+                "A"
+        )));
+        sawmill(recipeOutput, new ItemStack(Items.WARPED_PLANKS, 9), ShapedRecipePattern.of(Map.of(
+                'A', Ingredient.of(Items.WARPED_STEM,Items.STRIPPED_WARPED_STEM)
+        ), List.of(
+                "A"
+        )));
+        sawmill(recipeOutput, new ItemStack(NatureBlocks.EBONY_LOG_BLOCKS.getPlanks(), 9), ShapedRecipePattern.of(Map.of(
+                'A', Ingredient.of(NatureBlocks.EBONY_LOG_BLOCKS.getLog(),NatureBlocks.EBONY_LOG_BLOCKS.getStrippedLog(),NatureBlocks.EBONY_LOG_BLOCKS.getWood(),NatureBlocks.EBONY_LOG_BLOCKS.getStrippedWood())
+        ), List.of(
+                "A"
+        )));
+        sawmill(recipeOutput, new ItemStack(NatureBlocks.SHADOW_LOG_BLOCKS.getPlanks(), 9), ShapedRecipePattern.of(Map.of(
+                'A', Ingredient.of(NatureBlocks.SHADOW_LOG_BLOCKS.getLog(),NatureBlocks.SHADOW_LOG_BLOCKS.getStrippedLog(),NatureBlocks.SHADOW_LOG_BLOCKS.getWood(),NatureBlocks.SHADOW_LOG_BLOCKS.getStrippedWood())
+        ), List.of(
+                "A"
+        )));
+        sawmill(recipeOutput, new ItemStack(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getPlanks(), 9), ShapedRecipePattern.of(Map.of(
+                'A', Ingredient.of(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getLog(),NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getStrippedLog(),NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getWood(),NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getStrippedWood())
+        ), List.of(
+                "A"
+        )));
+        sawmill(recipeOutput, new ItemStack(NatureBlocks.LIVING_LOG_BLOCKS.getPlanks(), 9), ShapedRecipePattern.of(Map.of(
+                'A', Ingredient.of(NatureBlocks.LIVING_LOG_BLOCKS.getLog(),NatureBlocks.LIVING_LOG_BLOCKS.getStrippedLog(),NatureBlocks.LIVING_LOG_BLOCKS.getWood(),NatureBlocks.LIVING_LOG_BLOCKS.getStrippedWood())
+        ), List.of(
+                "A"
+        )));
+        sawmill(recipeOutput, new ItemStack(NatureBlocks.ASH_LOG_BLOCKS.getPlanks(), 9), ShapedRecipePattern.of(Map.of(
+                'A', Ingredient.of(NatureBlocks.ASH_LOG_BLOCKS.getLog(),NatureBlocks.ASH_LOG_BLOCKS.getStrippedLog(),NatureBlocks.ASH_LOG_BLOCKS.getWood(),NatureBlocks.ASH_LOG_BLOCKS.getStrippedWood())
+        ), List.of(
+                "A"
+        )));
+        sawmill(recipeOutput, new ItemStack(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getPlanks(), 9), ShapedRecipePattern.of(Map.of(
+                'A', Ingredient.of(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getLog(),NatureBlocks.LIVING_MAHOGANY_BLOCKS.getStrippedLog(),NatureBlocks.LIVING_MAHOGANY_BLOCKS.getWood(),NatureBlocks.LIVING_MAHOGANY_BLOCKS.getStrippedWood())
+        ), List.of(
+                "A"
+        )));
+        sawmill(recipeOutput, new ItemStack(NatureBlocks.BAOBAB_LOG_BLOCKS.getPlanks(), 9), ShapedRecipePattern.of(Map.of(
+                'A', Ingredient.of(NatureBlocks.BAOBAB_LOG_BLOCKS.getLog(),NatureBlocks.BAOBAB_LOG_BLOCKS.getStrippedLog(),NatureBlocks.BAOBAB_LOG_BLOCKS.getWood(),NatureBlocks.BAOBAB_LOG_BLOCKS.getStrippedWood())
+        ), List.of(
+                "A"
+        )));
+        sawmill(recipeOutput, new ItemStack(NatureBlocks.PALM_LOG_BLOCKS.getPlanks(), 9), ShapedRecipePattern.of(Map.of(
+                'A', Ingredient.of(NatureBlocks.PALM_LOG_BLOCKS.getLog(),NatureBlocks.PALM_LOG_BLOCKS.getStrippedLog(),NatureBlocks.PALM_LOG_BLOCKS.getWood(),NatureBlocks.PALM_LOG_BLOCKS.getStrippedWood())
+        ), List.of(
+                "A"
+        )));
+        sawmill(recipeOutput, new ItemStack(NatureBlocks.PEARL_LOG_BLOCKS.getPlanks(), 9), ShapedRecipePattern.of(Map.of(
+                'A', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.getLog(),NatureBlocks.PEARL_LOG_BLOCKS.getStrippedLog(),NatureBlocks.PEARL_LOG_BLOCKS.getWood(),NatureBlocks.PEARL_LOG_BLOCKS.getStrippedWood())
+        ), List.of(
+                "A"
+        )));
     }
 
     protected void stonecutting(RecipeOutput recipeOutput, String suffix, ItemStack result, Ingredient ingredient) {
@@ -169,6 +280,11 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
     protected void skyMill(RecipeOutput recipeOutput, ItemStack result, Ingredient... ingredients) {
         ResourceLocation id = Confluence.asResource("sky_mill/" + getItemName(result.getItem()));
         recipeOutput.accept(id, new SkyMillRecipe(result, NonNullList.of(Ingredient.EMPTY, ingredients)), null);
+    }
+
+    protected void sawmill(RecipeOutput recipeOutput, ItemStack result, ShapedRecipePattern pattern) {
+        ResourceLocation id = Confluence.asResource("sawmill/" + getItemName(result.getItem()));
+        recipeOutput.accept(id, new SawmillRecipe(result, pattern), null);
     }
 
     protected void workshop(RecipeOutput recipeOutput, ItemStack result, Ingredient... ingredients) {

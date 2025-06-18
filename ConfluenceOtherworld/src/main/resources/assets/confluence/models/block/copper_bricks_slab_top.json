@@ -1,0 +1,9 @@
+{
+  "parent": "block/slab_top",
+  "textures": {
+    "bottom": "confluence:block/copper_bricks",
+    "top": "confluence:block/copper_bricks",
+    "side": "confluence:block/copper_bricks"
+  },
+  "render_type": "solid"
+}

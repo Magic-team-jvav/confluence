@@ -21,7 +21,9 @@ import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.recipe.*;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.recipe.WorkshopRecipe;
+import org.jetbrains.annotations.NotNull;
 
+import javax.print.attribute.standard.MediaSize;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -47,6 +49,13 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         ), null);
 
         stonecutting(recipeOutput, "", DecorativeBlocks.BLUE_ICE_BRICKS.toStack(4), Ingredient.of(Blocks.BLUE_ICE));
+        stonecutting(recipeOutput, "", DecorativeBlocks.BLUE_ICE_BRICKS_SLAB.toStack(2), Ingredient.of(DecorativeBlocks.BLUE_ICE_BRICKS));
+        stonecutting(recipeOutput, "", DecorativeBlocks.BLUE_ICE_BRICKS_STAIRS.toStack(1), Ingredient.of(DecorativeBlocks.BLUE_ICE_BRICKS));
+        stonecutting(recipeOutput, "", DecorativeBlocks.PACKED_ICE_BRICKS.toStack(4), Ingredient.of(Blocks.PACKED_ICE));
+        stonecutting(recipeOutput, "", DecorativeBlocks.PACKED_ICE_BRICKS_SLAB.toStack(2), Ingredient.of(DecorativeBlocks.PACKED_ICE_BRICKS));
+        stonecutting(recipeOutput, "", DecorativeBlocks.PACKED_ICE_BRICKS_STAIRS.toStack(1), Ingredient.of(DecorativeBlocks.PACKED_ICE_BRICKS));
+
+
         stonecutting(recipeOutput, "", MaterialItems.CHINA_BOWL.toStack(1), Ingredient.of(Items.WHITE_TERRACOTTA));
         stonecutting(recipeOutput, "", MaterialItems.CHINA_PLATE.toStack(1), Ingredient.of(Items.WHITE_TERRACOTTA));
         stonecutting(recipeOutput, "", DecorativeBlocks.OBSIDIAN_BRICKS.toStack(1), Ingredient.of(DecorativeBlocks.CHISELED_OBSIDIAN_BRICKS));
@@ -54,18 +63,52 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         stonecutting(recipeOutput, "", DecorativeBlocks.OBSIDIAN_SMALL_BRICKS.toStack(1), Ingredient.of(DecorativeBlocks.OBSIDIAN_BRICKS));
         stonecutting(recipeOutput, "", DecorativeBlocks.SMOOTH_OBSIDIAN.toStack(1), Ingredient.of(DecorativeBlocks.OBSIDIAN_BRICKS));
         stonecutting(recipeOutput, "", DecorativeBlocks.SNOW_BRICKS.toStack(1), Ingredient.of(Items.SNOW_BLOCK));
-
+        stonecutting(recipeOutput, "", DecorativeBlocks.SNOW_BRICKS_SLAB.toStack(2), Ingredient.of(DecorativeBlocks.SNOW_BRICKS));
+        stonecutting(recipeOutput, "", DecorativeBlocks.SNOW_BRICKS_STAIRS.toStack(1), Ingredient.of(DecorativeBlocks.SNOW_BRICKS));
 
         stonecutting(recipeOutput, "", DecorativeBlocks.GOLDEN_BRICKS.toStack(9), Ingredient.of(Items.GOLD_BLOCK));
+        stonecutting(recipeOutput, "", DecorativeBlocks.GOLDEN_BRICKS_SLAB.toStack(2), Ingredient.of(DecorativeBlocks.GOLDEN_BRICKS));
+        stonecutting(recipeOutput, "", DecorativeBlocks.GOLDEN_BRICKS_STAIRS.toStack(1), Ingredient.of(DecorativeBlocks.GOLDEN_BRICKS));
         stonecutting(recipeOutput, "", DecorativeBlocks.COPPER_BRICKS.toStack(9), Ingredient.of(Items.COPPER_BLOCK));
+        stonecutting(recipeOutput, "", DecorativeBlocks.COPPER_BRICKS_SLAB.toStack(2), Ingredient.of(DecorativeBlocks.COPPER_BRICKS));
+        stonecutting(recipeOutput, "", DecorativeBlocks.COPPER_BRICKS_STAIRS.toStack(1), Ingredient.of(DecorativeBlocks.COPPER_BRICKS));
         stonecutting(recipeOutput, "", DecorativeBlocks.IRON_BRICKS.toStack(9), Ingredient.of(Items.IRON_BLOCK));
+        stonecutting(recipeOutput, "", DecorativeBlocks.IRON_BRICKS_SLAB.toStack(2), Ingredient.of(DecorativeBlocks.IRON_BRICKS));
+        stonecutting(recipeOutput, "", DecorativeBlocks.IRON_BRICKS_STAIRS.toStack(1), Ingredient.of(DecorativeBlocks.IRON_BRICKS));
         stonecutting(recipeOutput, "", DecorativeBlocks.TIN_BRICKS.toStack(9), Ingredient.of(OreBlocks.TIN_BLOCK));
+        stonecutting(recipeOutput, "", DecorativeBlocks.TIN_BRICKS_SLAB.toStack(2), Ingredient.of(DecorativeBlocks.TIN_BRICKS));
+        stonecutting(recipeOutput, "", DecorativeBlocks.TIN_BRICKS_STAIRS.toStack(1), Ingredient.of(DecorativeBlocks.TIN_BRICKS));
         stonecutting(recipeOutput, "", DecorativeBlocks.LEAD_BRICKS.toStack(9), Ingredient.of(OreBlocks.LEAD_BLOCK));
+        stonecutting(recipeOutput, "", DecorativeBlocks.LEAD_BRICKS_SLAB.toStack(2), Ingredient.of(DecorativeBlocks.LEAD_BRICKS));
+        stonecutting(recipeOutput, "", DecorativeBlocks.LEAD_BRICKS_STAIRS.toStack(1), Ingredient.of(DecorativeBlocks.LEAD_BRICKS));
         stonecutting(recipeOutput, "", DecorativeBlocks.SILVER_BRICKS.toStack(9), Ingredient.of(OreBlocks.SILVER_BLOCK));
+        stonecutting(recipeOutput, "", DecorativeBlocks.SILVER_BRICKS_SLAB.toStack(2), Ingredient.of(DecorativeBlocks.SILVER_BRICKS));
+        stonecutting(recipeOutput, "", DecorativeBlocks.SILVER_BRICKS_STAIRS.toStack(1), Ingredient.of(DecorativeBlocks.SILVER_BRICKS));
         stonecutting(recipeOutput, "", DecorativeBlocks.TUNGSTEN_BRICKS.toStack(9), Ingredient.of(OreBlocks.TUNGSTEN_BLOCK));
+        stonecutting(recipeOutput, "", DecorativeBlocks.TUNGSTEN_BRICKS_SLAB.toStack(2), Ingredient.of(DecorativeBlocks.TUNGSTEN_BRICKS));
+        stonecutting(recipeOutput, "", DecorativeBlocks.TUNGSTEN_BRICKS_STAIRS.toStack(1), Ingredient.of(DecorativeBlocks.TUNGSTEN_BRICKS));
         stonecutting(recipeOutput, "", DecorativeBlocks.PLATINUM_BRICKS.toStack(9), Ingredient.of(OreBlocks.PLATINUM_BLOCK));
+        stonecutting(recipeOutput, "", DecorativeBlocks.PLATINUM_BRICKS_SLAB.toStack(2), Ingredient.of(DecorativeBlocks.PLATINUM_BRICKS));
+        stonecutting(recipeOutput, "", DecorativeBlocks.PLATINUM_BRICKS_STAIRS.toStack(1), Ingredient.of(DecorativeBlocks.PLATINUM_BRICKS));
         stonecutting(recipeOutput, "", DecorativeBlocks.DEMONITE_ORE_BRICKS.toStack(9), Ingredient.of(OreBlocks.DEMONITE_BLOCK));
+        stonecutting(recipeOutput, "", DecorativeBlocks.DEMONITE_ORE_BRICKS_SLAB.toStack(2), Ingredient.of(DecorativeBlocks.DEMONITE_ORE_BRICKS));
+        stonecutting(recipeOutput, "", DecorativeBlocks.DEMONITE_ORE_BRICKS_STAIRS.toStack(1), Ingredient.of(DecorativeBlocks.DEMONITE_ORE_BRICKS));
         stonecutting(recipeOutput, "", DecorativeBlocks.CRIMTANE_ORE_BRICKS.toStack(9), Ingredient.of(OreBlocks.CRIMTANE_BLOCK));
+        stonecutting(recipeOutput, "", DecorativeBlocks.CRIMTANE_ORE_BRICKS_SLAB.toStack(2), Ingredient.of(DecorativeBlocks.CRIMTANE_ORE_BRICKS));
+        stonecutting(recipeOutput, "", DecorativeBlocks.CRIMTANE_ORE_BRICKS_STAIRS.toStack(1), Ingredient.of(DecorativeBlocks.CRIMTANE_ORE_BRICKS));
+        stonecutting(recipeOutput, "", DecorativeBlocks.METEORITE_BRICKS.toStack(9), Ingredient.of(OreBlocks.METEORITE_BLOCK));
+        stonecutting(recipeOutput, "", DecorativeBlocks.METEORITE_BRICKS_SLAB.toStack(2), Ingredient.of(DecorativeBlocks.METEORITE_BRICKS));
+        stonecutting(recipeOutput, "", DecorativeBlocks.METEORITE_BRICKS_STAIRS.toStack(1), Ingredient.of(DecorativeBlocks.METEORITE_BRICKS));
+
+        stonecutting(recipeOutput, "", DecorativeBlocks.EBONSTONE_BRICKS.toStack(1), Ingredient.of(NatureBlocks.EBONSTONE));
+        stonecutting(recipeOutput, "", DecorativeBlocks.EBONSTONE_BRICKS_SLAB.toStack(2), Ingredient.of(DecorativeBlocks.EBONSTONE_BRICKS));
+        stonecutting(recipeOutput, "", DecorativeBlocks.EBONSTONE_BRICKS_STAIRS.toStack(1), Ingredient.of(DecorativeBlocks.EBONSTONE_BRICKS));
+        stonecutting(recipeOutput, "", DecorativeBlocks.CRIMSTONE_BRICKS.toStack(9), Ingredient.of(NatureBlocks.CRIMSTONE));
+        stonecutting(recipeOutput, "", DecorativeBlocks.CRIMSTONE_BRICKS_SLAB.toStack(2), Ingredient.of(DecorativeBlocks.CRIMSTONE_BRICKS));
+        stonecutting(recipeOutput, "", DecorativeBlocks.CRIMSTONE_BRICKS_STAIRS.toStack(1), Ingredient.of(DecorativeBlocks.CRIMSTONE_BRICKS));
+        stonecutting(recipeOutput, "", DecorativeBlocks.PEARLSTONE_BRICKS.toStack(9), Ingredient.of(NatureBlocks.PEARLSTONE));
+        stonecutting(recipeOutput, "", DecorativeBlocks.PEARLSTONE_BRICKS_SLAB.toStack(2), Ingredient.of(DecorativeBlocks.PEARLSTONE_BRICKS));
+        stonecutting(recipeOutput, "", DecorativeBlocks.PEARLSTONE_BRICKS_STAIRS.toStack(1), Ingredient.of(DecorativeBlocks.PEARLSTONE_BRICKS));
 
 
         skyMill(recipeOutput, DecorativeBlocks.BOUNCY_CLOUD_BLOCK.toStack(), Ingredient.of(MaterialItems.PINK_GEL), Ingredient.of(NatureBlocks.CLOUD_BLOCK));
@@ -265,6 +308,48 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         ), List.of(
                 "A"
         )));
+
+        baseWooden(recipeOutput, new ItemStack(Items.OAK_SLAB, 4), Ingredient.of(Items.OAK_PLANKS), List.of("A"));
+        baseWooden(recipeOutput, new ItemStack(Items.ACACIA_SLAB, 4), Ingredient.of(Items.ACACIA_PLANKS), List.of("A"));
+        baseWooden(recipeOutput, new ItemStack(Items.BAMBOO_SLAB, 4), Ingredient.of(Items.BAMBOO_PLANKS), List.of("A"));
+        baseWooden(recipeOutput, new ItemStack(Items.CHERRY_SLAB, 4), Ingredient.of(Items.CHERRY_PLANKS), List.of("A"));
+        baseWooden(recipeOutput, new ItemStack(Items.CRIMSON_SLAB, 4), Ingredient.of(Items.CRIMSON_PLANKS), List.of("A"));
+        baseWooden(recipeOutput, new ItemStack(Items.DARK_OAK_SLAB, 4), Ingredient.of(Items.DARK_OAK_PLANKS), List.of("A"));
+        baseWooden(recipeOutput, new ItemStack(Items.JUNGLE_SLAB, 4), Ingredient.of(Items.JUNGLE_PLANKS), List.of("A"));
+        baseWooden(recipeOutput, new ItemStack(Items.BIRCH_SLAB, 4), Ingredient.of(Items.BIRCH_PLANKS), List.of("A"));
+        baseWooden(recipeOutput, new ItemStack(Items.MANGROVE_SLAB, 4), Ingredient.of(Items.MANGROVE_PLANKS), List.of("A"));
+        baseWooden(recipeOutput, new ItemStack(Items.SPRUCE_SLAB, 4), Ingredient.of(Items.SPRUCE_PLANKS), List.of("A"));
+        baseWooden(recipeOutput, new ItemStack(Items.WARPED_SLAB, 4), Ingredient.of(Items.WARPED_PLANKS), List.of("A"));
+        baseWooden(recipeOutput, new ItemStack(NatureBlocks.EBONY_LOG_BLOCKS.getSlab(), 4), Ingredient.of(NatureBlocks.EBONY_LOG_BLOCKS.getPlanks()), List.of("A"));
+        baseWooden(recipeOutput, new ItemStack(NatureBlocks.SHADOW_LOG_BLOCKS.getSlab(), 4), Ingredient.of(NatureBlocks.SHADOW_LOG_BLOCKS.getPlanks()), List.of("A"));
+        baseWooden(recipeOutput, new ItemStack(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getSlab(), 4), Ingredient.of(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getPlanks()), List.of("A"));
+        baseWooden(recipeOutput, new ItemStack(NatureBlocks.LIVING_LOG_BLOCKS.getSlab(), 4), Ingredient.of(NatureBlocks.LIVING_LOG_BLOCKS.getPlanks()), List.of("A"));
+        baseWooden(recipeOutput, new ItemStack(NatureBlocks.ASH_LOG_BLOCKS.getSlab(), 4), Ingredient.of(NatureBlocks.ASH_LOG_BLOCKS.getPlanks()), List.of("A"));
+        baseWooden(recipeOutput, new ItemStack(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getSlab(), 4), Ingredient.of(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getPlanks()), List.of("A"));
+        baseWooden(recipeOutput, new ItemStack(NatureBlocks.BAOBAB_LOG_BLOCKS.getSlab(), 4), Ingredient.of(NatureBlocks.BAOBAB_LOG_BLOCKS.getPlanks()), List.of("A"));
+        baseWooden(recipeOutput, new ItemStack(NatureBlocks.PALM_LOG_BLOCKS.getSlab(), 4), Ingredient.of(NatureBlocks.PALM_LOG_BLOCKS.getPlanks()), List.of("A"));
+        baseWooden(recipeOutput, new ItemStack(NatureBlocks.PEARL_LOG_BLOCKS.getSlab(), 4), Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.getPlanks()), List.of("A"));
+
+        baseWooden(recipeOutput, new ItemStack(Items.OAK_STAIRS, 2), Ingredient.of(Items.OAK_PLANKS), List.of("A"));
+        baseWooden(recipeOutput, new ItemStack(Items.ACACIA_STAIRS, 2), Ingredient.of(Items.ACACIA_PLANKS), List.of("A"));
+        baseWooden(recipeOutput, new ItemStack(Items.BAMBOO_STAIRS, 2), Ingredient.of(Items.BAMBOO_PLANKS), List.of("A"));
+        baseWooden(recipeOutput, new ItemStack(Items.CHERRY_STAIRS, 2), Ingredient.of(Items.CHERRY_PLANKS), List.of("A"));
+        baseWooden(recipeOutput, new ItemStack(Items.CRIMSON_STAIRS, 2), Ingredient.of(Items.CRIMSON_PLANKS), List.of("A"));
+        baseWooden(recipeOutput, new ItemStack(Items.DARK_OAK_STAIRS, 2), Ingredient.of(Items.DARK_OAK_PLANKS), List.of("A"));
+        baseWooden(recipeOutput, new ItemStack(Items.JUNGLE_STAIRS, 2), Ingredient.of(Items.JUNGLE_PLANKS), List.of("A"));
+        baseWooden(recipeOutput, new ItemStack(Items.BIRCH_STAIRS, 2), Ingredient.of(Items.BIRCH_PLANKS), List.of("A"));
+        baseWooden(recipeOutput, new ItemStack(Items.MANGROVE_STAIRS, 2), Ingredient.of(Items.MANGROVE_PLANKS), List.of("A"));
+        baseWooden(recipeOutput, new ItemStack(Items.SPRUCE_STAIRS, 2), Ingredient.of(Items.SPRUCE_PLANKS), List.of("A"));
+        baseWooden(recipeOutput, new ItemStack(Items.WARPED_STAIRS, 2), Ingredient.of(Items.WARPED_PLANKS), List.of("A"));
+        baseWooden(recipeOutput, new ItemStack(NatureBlocks.EBONY_LOG_BLOCKS.getStairs(), 2), Ingredient.of(NatureBlocks.EBONY_LOG_BLOCKS.getPlanks()), List.of("A"));
+        baseWooden(recipeOutput, new ItemStack(NatureBlocks.SHADOW_LOG_BLOCKS.getStairs(), 2), Ingredient.of(NatureBlocks.SHADOW_LOG_BLOCKS.getPlanks()), List.of("A"));
+        baseWooden(recipeOutput, new ItemStack(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getStairs(), 2), Ingredient.of(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getPlanks()), List.of("A"));
+        baseWooden(recipeOutput, new ItemStack(NatureBlocks.LIVING_LOG_BLOCKS.getStairs(), 2), Ingredient.of(NatureBlocks.LIVING_LOG_BLOCKS.getPlanks()), List.of("A"));
+        baseWooden(recipeOutput, new ItemStack(NatureBlocks.ASH_LOG_BLOCKS.getStairs(), 2), Ingredient.of(NatureBlocks.ASH_LOG_BLOCKS.getPlanks()), List.of("A"));
+        baseWooden(recipeOutput, new ItemStack(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getStairs(), 2), Ingredient.of(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getPlanks()), List.of("A"));
+        baseWooden(recipeOutput, new ItemStack(NatureBlocks.BAOBAB_LOG_BLOCKS.getStairs(), 2), Ingredient.of(NatureBlocks.BAOBAB_LOG_BLOCKS.getPlanks()), List.of("A"));
+        baseWooden(recipeOutput, new ItemStack(NatureBlocks.PALM_LOG_BLOCKS.getStairs(), 2), Ingredient.of(NatureBlocks.PALM_LOG_BLOCKS.getPlanks()), List.of("A"));
+        baseWooden(recipeOutput, new ItemStack(NatureBlocks.PEARL_LOG_BLOCKS.getStairs(), 2), Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.getPlanks()), List.of("A"));
     }
 
     protected void stonecutting(RecipeOutput recipeOutput, String suffix, ItemStack result, Ingredient ingredient) {
@@ -287,6 +372,13 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         recipeOutput.accept(id, new SawmillRecipe(result, pattern), null);
     }
 
+    protected void baseWooden(RecipeOutput recipeOutput, ItemStack result, Ingredient wooden, List<String> pattern) {
+        ResourceLocation id = Confluence.asResource("sawmill/" + getItemName(result.getItem()));
+        recipeOutput.accept(id, new SawmillRecipe(
+                result,
+                ShapedRecipePattern.of(Map.of('A', wooden), pattern)
+        ), null);
+    }
     protected void workshop(RecipeOutput recipeOutput, ItemStack result, Ingredient... ingredients) {
         ResourceLocation id = Confluence.asResource("workshop/" + getItemName(result.getItem()));
         recipeOutput.accept(id, new WorkshopRecipe(result, NonNullList.of(Ingredient.EMPTY, ingredients)), null);

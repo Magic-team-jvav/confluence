@@ -35,11 +35,11 @@
 | `moist_sand_block`               | `moistened_sand_block`        |
 | `red_moist_sand_block`           | `moistened_red_sand_block`    |
 | `tr_lava_bricks`                 | `hellstone_bricks`            |
-| `tr_emerald_ore`                 | `emerald_ore`                 |
-| `deepslate_tr_emerald_ore`       | `deepslate_emerald_ore`       |
-| `sanctification_tr_emerald_ore`  | `sanctification_emerald_ore`  |
-| `corruption_tr_emerald_ore`      | `corruption_emerald_ore`      |
-| `fleshification_tr_emerald_ore`  | `fleshification_emerald_ore`  |
+| `tr_emerald_ore`                 | `jade_ore`                    |
+| `deepslate_tr_emerald_ore`       | `deepslate_jade_ore`          |
+| `sanctification_tr_emerald_ore`  | `sanctification_jade_ore`     |
+| `corruption_tr_emerald_ore`      | `corruption_jade_ore`         |
+| `fleshification_tr_emerald_ore`  | `fleshification_jade_ore`     |
 | `tr_amethyst_ore`                | `amethyst_ore`                |
 | `deepslate_tr_amethyst_ore`      | `deepslate_amethyst_ore`      |
 | `sanctification_tr_amethyst_ore` | `sanctification_amethyst_ore` |
@@ -59,7 +59,7 @@
 | `tr_amethyst_sapling`            | `amethyst_sapling`            |
 | `tr_crimson_grass`               | `crimson_grass`               |
 | `tr_crimson_cattails_body`       | `crimson_cattails_body`       |
-| `tr_emerald_block`               | `emerald_block`               |
+| `tr_emerald_block`               | `jade_block`                  |
 | `tr_amethyst_block`              | `amethyst_block`              |
 | `tr_polished_granite`            | `polished_granite`            |
 | `tr_copper_bricks`               | `copper_bricks`               |
@@ -77,6 +77,10 @@
 | `tr_crimson_pot`                 | `crimson_pot`                 |
 | `tr_crimson_crate`               | `crimson_crate`               |
 | `tr_crimson_cattails`            | `crimson_cattails`            |
+| `emerald_branches`               | `jade_sapling`                |
+| `emerald_chain`                  | `jade_chain`                  |
+| `pearl_rock_bricks`              | `pearlstone_bricks`           |
+| `freeze_crate`                   | `frozen_crate`                |
 
 ## 物品(Items)
 
@@ -87,6 +91,7 @@
 - `tr_crimson_seed` → `crimson_seed`
 - `tr_clownfish` → `clownfish`
 - `tr_salmon` → `salmon`
+- `demon_ocnch` → `demon_conch`
 - `red_light_saber` → `red_phaseblade`
 - `orange_light_saber` → `orange_phaseblade`
 - `yellow_light_saber` → `yellow_phaseblade`
@@ -94,3 +99,15 @@
 - `blue_light_saber` → `blue_phaseblade`
 - `purple_light_saber` → `purple_phaseblade`
 - `white_light_saber` → `white_phaseblade`
+- `copper_board_sword` → `copper_broadsword`
+- `tin_board_sword` → `tin_broadsword`
+- `lead_board_sword` → `lead_broadsword`
+- `silver_board_sword` → `silver_broadsword`
+- `tungsten_board_sword` → `tungsten_broadsword`
+- `golden_board_sword` → `golden_broadsword`
+- `platinum_board_sword` → `platinum_broadsword`
+- `tr_emerald` → `jade`
+- `emerald_whip` → `terra_entity:jade_whip`
+- `emerald_minecart` → `confluence:jade_minecart`
+- `emerald_hook` → `confluence:jade_hook`
+- `emerald_staff` → `confluence:jade_staff`

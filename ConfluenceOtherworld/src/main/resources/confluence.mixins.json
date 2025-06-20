@@ -134,6 +134,7 @@
         "integration.jei.FurnaceFuelCategoryMixin",
         "integration.jei.ScreenHelperMixin",
         "integration.journeymap.EffectMixin",
+        "integration.loot_beams_refork.ConfigHandlersMixin",
         "integration.patchouli.BookPageMixin",
         "integration.patchouli.GuiBookLandingMixin",
         "integration.sodium.BlockOcclusionCacheMixin",

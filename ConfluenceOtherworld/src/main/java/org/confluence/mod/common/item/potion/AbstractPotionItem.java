@@ -57,10 +57,10 @@ public abstract class AbstractPotionItem extends Item {
         }
         if (CommonConfigs.RETURN_POTION_GLASS_BOTTLE.get()) {
             if (itemStack.isEmpty()) {
-                return PotionItems.BOTTLE.toStack();
+                return getReturnItem();
             } else {
                 if (living instanceof Player player && !player.hasInfiniteMaterials()) {
-                    ItemStack itemstack = PotionItems.BOTTLE.toStack();
+                    ItemStack itemstack = getReturnItem();
                     if (!player.getInventory().add(itemstack)) {
                         player.drop(itemstack, false);
                     }
@@ -69,6 +69,10 @@ public abstract class AbstractPotionItem extends Item {
             }
         }
         return itemStack.isEmpty() ? ItemStack.EMPTY : itemStack;
+    }
+
+    protected ItemStack getReturnItem() {
+        return PotionItems.BOTTLE.toStack();
     }
 
     protected boolean canUse(ItemStack itemStack, Level level, Player player) {

@@ -29,7 +29,7 @@ import java.util.concurrent.Executor;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class AchievementOffsetLoader extends ContextAwareReloadListener implements PreparableReloadListener {
+public class AchievementOffsetLoader extends ContextAwareReloadListener {
     public static volatile CompletableFuture<Void> WAITING_FOR = CompletableFuture.completedFuture(null);
     private static AchievementOffsetLoader INSTANCE;
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
@@ -100,5 +100,4 @@ public class AchievementOffsetLoader extends ContextAwareReloadListener implemen
     public static Map<ResourceLocation, Vec2> getDisplayOffset() {
         return getInstance().getRegisteredAchievements();
     }
-
 }

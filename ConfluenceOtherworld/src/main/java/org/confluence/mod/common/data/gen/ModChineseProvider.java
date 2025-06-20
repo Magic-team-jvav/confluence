@@ -53,7 +53,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("message.confluence.hoe_shovel.mode.1", "锄");
         add("message.confluence.altar_tips.0", "右键存入物品，潜行右键以拿出物品。");
         add("message.confluence.altar_tips.1", "左键以合成，潜行左键以快速合成。");
-        add("jukebox_song.confluence.alpha", "C418 - alpha");
 
         add("gamerule.confluenceSpreadableChance", "邪恶群系蔓延设置");
         add("generator.confluence.the_corruption", "腐化之地");

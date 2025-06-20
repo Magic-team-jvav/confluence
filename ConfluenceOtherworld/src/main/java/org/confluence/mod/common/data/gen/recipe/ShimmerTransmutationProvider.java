@@ -56,7 +56,7 @@ public class ShimmerTransmutationProvider extends AbstractRecipeProvider {
         item(recipeOutput, "replace_cherry_planks", addItem(Items.CHERRY_PLANKS, Items.CHERRY_LOG, 9));
         item(recipeOutput, "replace_crimson_planks", addItem(Items.CRIMSON_PLANKS, Items.CRIMSON_STEM, 9));
         item(recipeOutput, "replace_warped_planks", addItem(Items.WARPED_PLANKS, Items.WARPED_STEM, 9));
-        
+
         item(recipeOutput, "replace_oak_planks_from_wood", addItem(Items.OAK_PLANKS, Items.OAK_WOOD, 9));
         item(recipeOutput, "replace_acacia_planks_from_wood", addItem(Items.ACACIA_PLANKS, Items.ACACIA_WOOD, 9));
         item(recipeOutput, "replace_birch_planks_from_wood", addItem(Items.BIRCH_PLANKS, Items.BIRCH_WOOD, 9));
@@ -65,7 +65,7 @@ public class ShimmerTransmutationProvider extends AbstractRecipeProvider {
         item(recipeOutput, "replace_mangrove_planks_from_wood", addItem(Items.MANGROVE_PLANKS, Items.MANGROVE_WOOD, 9));
         item(recipeOutput, "replace_spruce_planks_from_wood", addItem(Items.SPRUCE_PLANKS, Items.SPRUCE_WOOD, 9));
         item(recipeOutput, "replace_cherry_planks_from_wood", addItem(Items.CHERRY_PLANKS, Items.CHERRY_WOOD, 9));
-        
+
         item(recipeOutput, "replace_oak_planks_from_stripped_log", addItem(Items.OAK_PLANKS, Items.STRIPPED_OAK_LOG, 9));
         item(recipeOutput, "replace_acacia_planks_from_stripped_log", addItem(Items.ACACIA_PLANKS, Items.STRIPPED_ACACIA_LOG, 9));
         item(recipeOutput, "replace_birch_planks_from_stripped_log", addItem(Items.BIRCH_PLANKS, Items.STRIPPED_BIRCH_LOG, 9));
@@ -76,7 +76,7 @@ public class ShimmerTransmutationProvider extends AbstractRecipeProvider {
         item(recipeOutput, "replace_cherry_planks_from_stripped_log", addItem(Items.CHERRY_PLANKS, Items.STRIPPED_CHERRY_LOG, 9));
         item(recipeOutput, "replace_crimson_planks_from_stripped_log", addItem(Items.CRIMSON_PLANKS, Items.STRIPPED_CRIMSON_STEM, 9));
         item(recipeOutput, "replace_warped_planks_from_stripped_log", addItem(Items.WARPED_PLANKS, Items.STRIPPED_WARPED_STEM, 9));
-        
+
         item(recipeOutput, "replace_oak_planks_from_stripped_wood", addItem(Items.OAK_PLANKS, Items.STRIPPED_OAK_WOOD, 9));
         item(recipeOutput, "replace_acacia_planks_from_stripped_wood", addItem(Items.ACACIA_PLANKS, Items.STRIPPED_ACACIA_WOOD, 9));
         item(recipeOutput, "replace_birch_planks_from_stripped_wood", addItem(Items.BIRCH_PLANKS, Items.STRIPPED_BIRCH_WOOD, 9));
@@ -85,46 +85,46 @@ public class ShimmerTransmutationProvider extends AbstractRecipeProvider {
         item(recipeOutput, "replace_mangrove_planks_from_stripped_wood", addItem(Items.MANGROVE_PLANKS, Items.STRIPPED_MANGROVE_WOOD, 9));
         item(recipeOutput, "replace_spruce_planks_from_stripped_wood", addItem(Items.SPRUCE_PLANKS, Items.STRIPPED_SPRUCE_WOOD, 9));
         item(recipeOutput, "replace_cherry_planks_from_stripped_wood", addItem(Items.CHERRY_PLANKS, Items.STRIPPED_CHERRY_WOOD, 9));
-        
-        item(recipeOutput, "replace_ebony_planks", addItem(NatureBlocks.EBONY_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.EBONY_LOG_BLOCKS.getLog().asItem(),  9));
-        item(recipeOutput, "replace_shadow_planks", addItem(NatureBlocks.SHADOW_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.SHADOW_LOG_BLOCKS.getLog().asItem(), 9));
-        item(recipeOutput, "replace_yellow_willow_planks", addItem(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getLog().asItem(), 9));
-        item(recipeOutput, "replace_living_planks", addItem(NatureBlocks.LIVING_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getLog().asItem(), 9));
-        item(recipeOutput, "replace_ash_planks", addItem(NatureBlocks.ASH_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.ASH_LOG_BLOCKS.getLog().asItem(), 9));
-        item(recipeOutput, "replace_living_mahogany_planks", addItem(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getPlanks().asItem(), NatureBlocks.LIVING_MAHOGANY_BLOCKS.getLog().asItem(), 9));
-        item(recipeOutput, "replace_baobab_planks", addItem(NatureBlocks.BAOBAB_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.BAOBAB_LOG_BLOCKS.getLog().asItem(), 9));
-        item(recipeOutput, "replace_palm_planks", addItem(NatureBlocks.PALM_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.PALM_LOG_BLOCKS.getLog().asItem(), 9));
-        item(recipeOutput, "replace_pearl_planks", addItem(NatureBlocks.PEARL_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getLog().asItem(), 9));
-        
-        item(recipeOutput, "replace_ebony_planks_from_wood", addItem(NatureBlocks.EBONY_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.EBONY_LOG_BLOCKS.getWood().asItem(), 9));
-        item(recipeOutput, "replace_shadow_planks_from_wood", addItem(NatureBlocks.SHADOW_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.SHADOW_LOG_BLOCKS.getWood().asItem(), 9));
-        item(recipeOutput, "replace_yellow_willow_planks_from_wood", addItem(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getWood().asItem(), 9));
-        item(recipeOutput, "replace_living_planks_from_wood", addItem(NatureBlocks.LIVING_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getWood().asItem(), 9));
-        item(recipeOutput, "replace_ash_planks_from_wood", addItem(NatureBlocks.ASH_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.ASH_LOG_BLOCKS.getWood().asItem(), 9));
-        item(recipeOutput, "replace_living_mahogany_planks_from_wood", addItem(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getPlanks().asItem(), NatureBlocks.LIVING_MAHOGANY_BLOCKS.getWood().asItem(), 9));
-        item(recipeOutput, "replace_baobab_planks_from_wood", addItem(NatureBlocks.BAOBAB_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.BAOBAB_LOG_BLOCKS.getWood().asItem(), 9));
-        item(recipeOutput, "replace_palm_planks_from_wood", addItem(NatureBlocks.PALM_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.PALM_LOG_BLOCKS.getWood().asItem(), 9));
-        item(recipeOutput, "replace_pearl_planks_from_wood", addItem(NatureBlocks.PEARL_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getWood().asItem(), 9));
-        
-        item(recipeOutput, "replace_ebony_planks_from_stripped_log", addItem(NatureBlocks.EBONY_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.EBONY_LOG_BLOCKS.getStrippedLog().asItem(), 9));
-        item(recipeOutput, "replace_shadow_planks_from_stripped_log", addItem(NatureBlocks.SHADOW_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.SHADOW_LOG_BLOCKS.getStrippedLog().asItem(), 9));
-        item(recipeOutput, "replace_yellow_willow_planks_from_stripped_log", addItem(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getStrippedLog().asItem(), 9));
-        item(recipeOutput, "replace_living_planks_from_stripped_log", addItem(NatureBlocks.LIVING_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getStrippedLog().asItem(), 9));
-        item(recipeOutput, "replace_ash_planks_from_stripped_log", addItem(NatureBlocks.ASH_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.ASH_LOG_BLOCKS.getStrippedLog().asItem(), 9));
-        item(recipeOutput, "replace_living_mahogany_planks_from_stripped_log", addItem(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getPlanks().asItem(), NatureBlocks.LIVING_MAHOGANY_BLOCKS.getStrippedLog().asItem(), 9));
-        item(recipeOutput, "replace_baobab_planks_from_stripped_log", addItem(NatureBlocks.BAOBAB_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.BAOBAB_LOG_BLOCKS.getStrippedLog().asItem(), 9));
-        item(recipeOutput, "replace_palm_planks_from_stripped_log", addItem(NatureBlocks.PALM_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.PALM_LOG_BLOCKS.getStrippedLog().asItem(), 9));
-        item(recipeOutput, "replace_pearl_planks_from_stripped_log", addItem(NatureBlocks.PEARL_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getStrippedLog().asItem(), 9));
-        
-        item(recipeOutput, "replace_ebony_planks_from_stripped_wood", addItem(NatureBlocks.EBONY_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.EBONY_LOG_BLOCKS.getStrippedWood().asItem(), 9));
-        item(recipeOutput, "replace_shadow_planks_from_stripped_wood", addItem(NatureBlocks.SHADOW_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.SHADOW_LOG_BLOCKS.getStrippedWood().asItem(), 9));
-        item(recipeOutput, "replace_yellow_willow_planks_from_stripped_wood", addItem(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getStrippedWood().asItem(), 9));
-        item(recipeOutput, "replace_living_planks_from_stripped_wood", addItem(NatureBlocks.LIVING_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getStrippedWood().asItem(), 9));
-        item(recipeOutput, "replace_ash_planks_from_stripped_wood", addItem(NatureBlocks.ASH_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.ASH_LOG_BLOCKS.getStrippedWood().asItem(), 9));
-        item(recipeOutput, "replace_living_mahogany_planks_from_stripped_wood", addItem(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getPlanks().asItem(), NatureBlocks.LIVING_MAHOGANY_BLOCKS.getStrippedWood().asItem(), 9));
-        item(recipeOutput, "replace_baobab_planks_from_stripped_wood", addItem(NatureBlocks.BAOBAB_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.BAOBAB_LOG_BLOCKS.getStrippedWood().asItem(), 9));
-        item(recipeOutput, "replace_palm_planks_from_stripped_wood", addItem(NatureBlocks.PALM_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.PALM_LOG_BLOCKS.getStrippedWood().asItem(), 9));
-        item(recipeOutput, "replace_pearl_planks_from_stripped_wood", addItem(NatureBlocks.PEARL_LOG_BLOCKS.getPlanks().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getStrippedWood().asItem(), 9));
+
+        item(recipeOutput, "replace_ebony_planks", addItem(NatureBlocks.EBONY_LOG_BLOCKS.getPlanks(), NatureBlocks.EBONY_LOG_BLOCKS.getLog(), 9));
+        item(recipeOutput, "replace_shadow_planks", addItem(NatureBlocks.SHADOW_LOG_BLOCKS.getPlanks(), NatureBlocks.SHADOW_LOG_BLOCKS.getLog(), 9));
+        item(recipeOutput, "replace_yellow_willow_planks", addItem(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getPlanks(), NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getLog(), 9));
+        item(recipeOutput, "replace_living_planks", addItem(NatureBlocks.LIVING_LOG_BLOCKS.getPlanks(), NatureBlocks.LIVING_LOG_BLOCKS.getLog(), 9));
+        item(recipeOutput, "replace_ash_planks", addItem(NatureBlocks.ASH_LOG_BLOCKS.getPlanks(), NatureBlocks.ASH_LOG_BLOCKS.getLog(), 9));
+        item(recipeOutput, "replace_living_mahogany_planks", addItem(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getPlanks(), NatureBlocks.LIVING_MAHOGANY_BLOCKS.getLog(), 9));
+        item(recipeOutput, "replace_baobab_planks", addItem(NatureBlocks.BAOBAB_LOG_BLOCKS.getPlanks(), NatureBlocks.BAOBAB_LOG_BLOCKS.getLog(), 9));
+        item(recipeOutput, "replace_palm_planks", addItem(NatureBlocks.PALM_LOG_BLOCKS.getPlanks(), NatureBlocks.PALM_LOG_BLOCKS.getLog(), 9));
+        item(recipeOutput, "replace_pearl_planks", addItem(NatureBlocks.PEARL_LOG_BLOCKS.getPlanks(), NatureBlocks.PEARL_LOG_BLOCKS.getLog(), 9));
+
+        item(recipeOutput, "replace_ebony_planks_from_wood", addItem(NatureBlocks.EBONY_LOG_BLOCKS.getPlanks(), NatureBlocks.EBONY_LOG_BLOCKS.getWood(), 9));
+        item(recipeOutput, "replace_shadow_planks_from_wood", addItem(NatureBlocks.SHADOW_LOG_BLOCKS.getPlanks(), NatureBlocks.SHADOW_LOG_BLOCKS.getWood(), 9));
+        item(recipeOutput, "replace_yellow_willow_planks_from_wood", addItem(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getPlanks(), NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getWood(), 9));
+        item(recipeOutput, "replace_living_planks_from_wood", addItem(NatureBlocks.LIVING_LOG_BLOCKS.getPlanks(), NatureBlocks.LIVING_LOG_BLOCKS.getWood(), 9));
+        item(recipeOutput, "replace_ash_planks_from_wood", addItem(NatureBlocks.ASH_LOG_BLOCKS.getPlanks(), NatureBlocks.ASH_LOG_BLOCKS.getWood(), 9));
+        item(recipeOutput, "replace_living_mahogany_planks_from_wood", addItem(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getPlanks(), NatureBlocks.LIVING_MAHOGANY_BLOCKS.getWood(), 9));
+        item(recipeOutput, "replace_baobab_planks_from_wood", addItem(NatureBlocks.BAOBAB_LOG_BLOCKS.getPlanks(), NatureBlocks.BAOBAB_LOG_BLOCKS.getWood(), 9));
+        item(recipeOutput, "replace_palm_planks_from_wood", addItem(NatureBlocks.PALM_LOG_BLOCKS.getPlanks(), NatureBlocks.PALM_LOG_BLOCKS.getWood(), 9));
+        item(recipeOutput, "replace_pearl_planks_from_wood", addItem(NatureBlocks.PEARL_LOG_BLOCKS.getPlanks(), NatureBlocks.PEARL_LOG_BLOCKS.getWood(), 9));
+
+        item(recipeOutput, "replace_ebony_planks_from_stripped_log", addItem(NatureBlocks.EBONY_LOG_BLOCKS.getPlanks(), NatureBlocks.EBONY_LOG_BLOCKS.getStrippedLog(), 9));
+        item(recipeOutput, "replace_shadow_planks_from_stripped_log", addItem(NatureBlocks.SHADOW_LOG_BLOCKS.getPlanks(), NatureBlocks.SHADOW_LOG_BLOCKS.getStrippedLog(), 9));
+        item(recipeOutput, "replace_yellow_willow_planks_from_stripped_log", addItem(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getPlanks(), NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getStrippedLog(), 9));
+        item(recipeOutput, "replace_living_planks_from_stripped_log", addItem(NatureBlocks.LIVING_LOG_BLOCKS.getPlanks(), NatureBlocks.LIVING_LOG_BLOCKS.getStrippedLog(), 9));
+        item(recipeOutput, "replace_ash_planks_from_stripped_log", addItem(NatureBlocks.ASH_LOG_BLOCKS.getPlanks(), NatureBlocks.ASH_LOG_BLOCKS.getStrippedLog(), 9));
+        item(recipeOutput, "replace_living_mahogany_planks_from_stripped_log", addItem(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getPlanks(), NatureBlocks.LIVING_MAHOGANY_BLOCKS.getStrippedLog(), 9));
+        item(recipeOutput, "replace_baobab_planks_from_stripped_log", addItem(NatureBlocks.BAOBAB_LOG_BLOCKS.getPlanks(), NatureBlocks.BAOBAB_LOG_BLOCKS.getStrippedLog(), 9));
+        item(recipeOutput, "replace_palm_planks_from_stripped_log", addItem(NatureBlocks.PALM_LOG_BLOCKS.getPlanks(), NatureBlocks.PALM_LOG_BLOCKS.getStrippedLog(), 9));
+        item(recipeOutput, "replace_pearl_planks_from_stripped_log", addItem(NatureBlocks.PEARL_LOG_BLOCKS.getPlanks(), NatureBlocks.PEARL_LOG_BLOCKS.getStrippedLog(), 9));
+
+        item(recipeOutput, "replace_ebony_planks_from_stripped_wood", addItem(NatureBlocks.EBONY_LOG_BLOCKS.getPlanks(), NatureBlocks.EBONY_LOG_BLOCKS.getStrippedWood(), 9));
+        item(recipeOutput, "replace_shadow_planks_from_stripped_wood", addItem(NatureBlocks.SHADOW_LOG_BLOCKS.getPlanks(), NatureBlocks.SHADOW_LOG_BLOCKS.getStrippedWood(), 9));
+        item(recipeOutput, "replace_yellow_willow_planks_from_stripped_wood", addItem(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getPlanks(), NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getStrippedWood(), 9));
+        item(recipeOutput, "replace_living_planks_from_stripped_wood", addItem(NatureBlocks.LIVING_LOG_BLOCKS.getPlanks(), NatureBlocks.LIVING_LOG_BLOCKS.getStrippedWood(), 9));
+        item(recipeOutput, "replace_ash_planks_from_stripped_wood", addItem(NatureBlocks.ASH_LOG_BLOCKS.getPlanks(), NatureBlocks.ASH_LOG_BLOCKS.getStrippedWood(), 9));
+        item(recipeOutput, "replace_living_mahogany_planks_from_stripped_wood", addItem(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getPlanks(), NatureBlocks.LIVING_MAHOGANY_BLOCKS.getStrippedWood(), 9));
+        item(recipeOutput, "replace_baobab_planks_from_stripped_wood", addItem(NatureBlocks.BAOBAB_LOG_BLOCKS.getPlanks(), NatureBlocks.BAOBAB_LOG_BLOCKS.getStrippedWood(), 9));
+        item(recipeOutput, "replace_palm_planks_from_stripped_wood", addItem(NatureBlocks.PALM_LOG_BLOCKS.getPlanks(), NatureBlocks.PALM_LOG_BLOCKS.getStrippedWood(), 9));
+        item(recipeOutput, "replace_pearl_planks_from_stripped_wood", addItem(NatureBlocks.PEARL_LOG_BLOCKS.getPlanks(), NatureBlocks.PEARL_LOG_BLOCKS.getStrippedWood(), 9));
 
         item(recipeOutput, "oak_slab_to_planks", addItem(Items.OAK_SLAB, Items.OAK_PLANKS, 4));
         item(recipeOutput, "acacia_slab_to_planks", addItem(Items.ACACIA_SLAB, Items.ACACIA_PLANKS, 4));
@@ -137,15 +137,15 @@ public class ShimmerTransmutationProvider extends AbstractRecipeProvider {
         item(recipeOutput, "crimson_slab_to_planks", addItem(Items.CRIMSON_SLAB, Items.CRIMSON_PLANKS, 4));
         item(recipeOutput, "warped_slab_to_planks", addItem(Items.WARPED_SLAB, Items.WARPED_PLANKS, 4));
 
-        item(recipeOutput, "ebony_slab_to_planks", addItem(NatureBlocks.EBONY_LOG_BLOCKS.getSlab().asItem(), NatureBlocks.EBONY_LOG_BLOCKS.getPlanks().asItem(), 4));
-        item(recipeOutput, "shadow_slab_to_planks", addItem(NatureBlocks.SHADOW_LOG_BLOCKS.getSlab().asItem(), NatureBlocks.SHADOW_LOG_BLOCKS.getPlanks().asItem(), 4));
-        item(recipeOutput, "yellow_willow_slab_to_planks", addItem(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getSlab().asItem(), NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getPlanks().asItem(), 4));
-        item(recipeOutput, "living_slab_to_planks", addItem(NatureBlocks.LIVING_LOG_BLOCKS.getSlab().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getPlanks().asItem(), 4));
-        item(recipeOutput, "ash_slab_to_planks", addItem(NatureBlocks.ASH_LOG_BLOCKS.getSlab().asItem(), NatureBlocks.ASH_LOG_BLOCKS.getPlanks().asItem(), 4));
-        item(recipeOutput, "living_mahogany_slab_to_planks", addItem(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getSlab().asItem(), NatureBlocks.LIVING_MAHOGANY_BLOCKS.getPlanks().asItem(), 4));
-        item(recipeOutput, "baobab_slab_to_planks", addItem(NatureBlocks.BAOBAB_LOG_BLOCKS.getSlab().asItem(), NatureBlocks.BAOBAB_LOG_BLOCKS.getPlanks().asItem(), 4));
-        item(recipeOutput, "palm_slab_to_planks", addItem(NatureBlocks.PALM_LOG_BLOCKS.getSlab().asItem(), NatureBlocks.PALM_LOG_BLOCKS.getPlanks().asItem(), 4));
-        item(recipeOutput, "pearl_slab_to_planks", addItem(NatureBlocks.PEARL_LOG_BLOCKS.getSlab().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getPlanks().asItem(), 4));
+        item(recipeOutput, "ebony_slab_to_planks", addItem(NatureBlocks.EBONY_LOG_BLOCKS.getSlab(), NatureBlocks.EBONY_LOG_BLOCKS.getPlanks(), 4));
+        item(recipeOutput, "shadow_slab_to_planks", addItem(NatureBlocks.SHADOW_LOG_BLOCKS.getSlab(), NatureBlocks.SHADOW_LOG_BLOCKS.getPlanks(), 4));
+        item(recipeOutput, "yellow_willow_slab_to_planks", addItem(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getSlab(), NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getPlanks(), 4));
+        item(recipeOutput, "living_slab_to_planks", addItem(NatureBlocks.LIVING_LOG_BLOCKS.getSlab(), NatureBlocks.LIVING_LOG_BLOCKS.getPlanks(), 4));
+        item(recipeOutput, "ash_slab_to_planks", addItem(NatureBlocks.ASH_LOG_BLOCKS.getSlab(), NatureBlocks.ASH_LOG_BLOCKS.getPlanks(), 4));
+        item(recipeOutput, "living_mahogany_slab_to_planks", addItem(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getSlab(), NatureBlocks.LIVING_MAHOGANY_BLOCKS.getPlanks(), 4));
+        item(recipeOutput, "baobab_slab_to_planks", addItem(NatureBlocks.BAOBAB_LOG_BLOCKS.getSlab(), NatureBlocks.BAOBAB_LOG_BLOCKS.getPlanks(), 4));
+        item(recipeOutput, "palm_slab_to_planks", addItem(NatureBlocks.PALM_LOG_BLOCKS.getSlab(), NatureBlocks.PALM_LOG_BLOCKS.getPlanks(), 4));
+        item(recipeOutput, "pearl_slab_to_planks", addItem(NatureBlocks.PEARL_LOG_BLOCKS.getSlab(), NatureBlocks.PEARL_LOG_BLOCKS.getPlanks(), 4));
 
         item(recipeOutput, "oak_stairs_to_planks", addItem(Items.OAK_STAIRS, Items.OAK_PLANKS, 2));
         item(recipeOutput, "acacia_stairs_to_planks", addItem(Items.ACACIA_STAIRS, Items.ACACIA_PLANKS, 2));
@@ -158,15 +158,15 @@ public class ShimmerTransmutationProvider extends AbstractRecipeProvider {
         item(recipeOutput, "crimson_stairs_to_planks", addItem(Items.CRIMSON_STAIRS, Items.CRIMSON_PLANKS, 2));
         item(recipeOutput, "warped_stairs_to_planks", addItem(Items.WARPED_STAIRS, Items.WARPED_PLANKS, 2));
 
-        item(recipeOutput, "ebony_stairs_to_planks", addItem(NatureBlocks.EBONY_LOG_BLOCKS.getStairs().asItem(), NatureBlocks.EBONY_LOG_BLOCKS.getPlanks().asItem(), 2));
-        item(recipeOutput, "shadow_stairs_to_planks", addItem(NatureBlocks.SHADOW_LOG_BLOCKS.getStairs().asItem(), NatureBlocks.SHADOW_LOG_BLOCKS.getPlanks().asItem(), 2));
-        item(recipeOutput, "yellow_willow_stairs_to_planks", addItem(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getStairs().asItem(), NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getPlanks().asItem(), 2));
-        item(recipeOutput, "living_stairs_to_planks", addItem(NatureBlocks.LIVING_LOG_BLOCKS.getStairs().asItem(), NatureBlocks.LIVING_LOG_BLOCKS.getPlanks().asItem(), 2));
-        item(recipeOutput, "ash_stairs_to_planks", addItem(NatureBlocks.ASH_LOG_BLOCKS.getStairs().asItem(), NatureBlocks.ASH_LOG_BLOCKS.getPlanks().asItem(), 2));
-        item(recipeOutput, "living_mahogany_stairs_to_planks", addItem(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getStairs().asItem(), NatureBlocks.LIVING_MAHOGANY_BLOCKS.getPlanks().asItem(), 2));
-        item(recipeOutput, "baobab_stairs_to_planks", addItem(NatureBlocks.BAOBAB_LOG_BLOCKS.getStairs().asItem(), NatureBlocks.BAOBAB_LOG_BLOCKS.getPlanks().asItem(), 2));
-        item(recipeOutput, "palm_stairs_to_planks", addItem(NatureBlocks.PALM_LOG_BLOCKS.getStairs().asItem(), NatureBlocks.PALM_LOG_BLOCKS.getPlanks().asItem(), 2));
-        item(recipeOutput, "pearl_stairs_to_planks", addItem(NatureBlocks.PEARL_LOG_BLOCKS.getStairs().asItem(), NatureBlocks.PEARL_LOG_BLOCKS.getPlanks().asItem(), 2));
+        item(recipeOutput, "ebony_stairs_to_planks", addItem(NatureBlocks.EBONY_LOG_BLOCKS.getStairs(), NatureBlocks.EBONY_LOG_BLOCKS.getPlanks(), 2));
+        item(recipeOutput, "shadow_stairs_to_planks", addItem(NatureBlocks.SHADOW_LOG_BLOCKS.getStairs(), NatureBlocks.SHADOW_LOG_BLOCKS.getPlanks(), 2));
+        item(recipeOutput, "yellow_willow_stairs_to_planks", addItem(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getStairs(), NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getPlanks(), 2));
+        item(recipeOutput, "living_stairs_to_planks", addItem(NatureBlocks.LIVING_LOG_BLOCKS.getStairs(), NatureBlocks.LIVING_LOG_BLOCKS.getPlanks(), 2));
+        item(recipeOutput, "ash_stairs_to_planks", addItem(NatureBlocks.ASH_LOG_BLOCKS.getStairs(), NatureBlocks.ASH_LOG_BLOCKS.getPlanks(), 2));
+        item(recipeOutput, "living_mahogany_stairs_to_planks", addItem(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getStairs(), NatureBlocks.LIVING_MAHOGANY_BLOCKS.getPlanks(), 2));
+        item(recipeOutput, "baobab_stairs_to_planks", addItem(NatureBlocks.BAOBAB_LOG_BLOCKS.getStairs(), NatureBlocks.BAOBAB_LOG_BLOCKS.getPlanks(), 2));
+        item(recipeOutput, "palm_stairs_to_planks", addItem(NatureBlocks.PALM_LOG_BLOCKS.getStairs(), NatureBlocks.PALM_LOG_BLOCKS.getPlanks(), 2));
+        item(recipeOutput, "pearl_stairs_to_planks", addItem(NatureBlocks.PEARL_LOG_BLOCKS.getStairs(), NatureBlocks.PEARL_LOG_BLOCKS.getPlanks(), 2));
         // 下界合金装备嬗变
         item(recipeOutput, "netherite_ingot_from_chestplate", addItem(Items.NETHERITE_CHESTPLATE, Items.NETHERITE_INGOT));
         item(recipeOutput, "netherite_ingot_from_helmet", addItem(Items.NETHERITE_HELMET, Items.NETHERITE_INGOT));
@@ -211,10 +211,10 @@ public class ShimmerTransmutationProvider extends AbstractRecipeProvider {
         item(recipeOutput, PaintItems.SHADOW_PAINT, PaintItems.ECHO_COATING);
         item(recipeOutput, AccessoryItems.MECHANICAL_LENS, AccessoryItems.SPECTRE_GOGGLES);
         // 腐化与猩红转化
-        item(recipeOutput,"raw_demonite_from_raw_crimtane", addItem(MaterialItems.RAW_CRIMTANE.asItem(), MaterialItems.RAW_DEMONITE.asItem(),3));
-        item(recipeOutput,"raw_crimtane_from_raw_demonite", addItem(MaterialItems.RAW_DEMONITE.asItem(), MaterialItems.RAW_CRIMTANE.asItem(),3));
-        item(recipeOutput,"vertebra_from_rotten_bone", addItem(MaterialItems.ROTTEN_BONE.asItem(), MaterialItems.VERTEBRA.asItem().asItem(),3));
-        item(recipeOutput,"rotten_bone_from_vertebra", addItem(MaterialItems.VERTEBRA.asItem(), MaterialItems.ROTTEN_BONE.asItem().asItem(),3));
+        item(recipeOutput, "raw_demonite_from_raw_crimtane", addItem(MaterialItems.RAW_CRIMTANE, MaterialItems.RAW_DEMONITE, 3));
+        item(recipeOutput, "raw_crimtane_from_raw_demonite", addItem(MaterialItems.RAW_DEMONITE, MaterialItems.RAW_CRIMTANE, 3));
+        item(recipeOutput, "vertebra_from_rotten_bone", addItem(MaterialItems.ROTTEN_BONE, MaterialItems.VERTEBRA, 3));
+        item(recipeOutput, "rotten_bone_from_vertebra", addItem(MaterialItems.VERTEBRA, MaterialItems.ROTTEN_BONE, 3));
         item(recipeOutput, ModItems.CORRUPT_SEED, ModItems.CRIMSON_SEED);
         item(recipeOutput, ModItems.CRIMSON_SEED, ModItems.CORRUPT_SEED);
         // 微光箭转化
@@ -324,12 +324,16 @@ public class ShimmerTransmutationProvider extends AbstractRecipeProvider {
         return new ItemTransmutationRecipe(Ingredient.of(source), Collections.singletonList(target.getDefaultInstance()), shrink, GamePhase.BEFORE_SKELETRON);
     }
 
-    public static ItemTransmutationRecipe addItem(ItemLike source, ItemLike target) {
-        return new ItemTransmutationRecipe(Ingredient.of(source), Collections.singletonList(target.asItem().getDefaultInstance()), 1, GamePhase.BEFORE_SKELETRON);
-    }
-
     public static ItemTransmutationRecipe addItem(Item source, Item target) {
         return new ItemTransmutationRecipe(Ingredient.of(source), Collections.singletonList(target.getDefaultInstance()), 1, GamePhase.BEFORE_SKELETRON);
+    }
+
+    public static ItemTransmutationRecipe addItem(ItemLike source, ItemLike target, int shrink) {
+        return new ItemTransmutationRecipe(Ingredient.of(source), Collections.singletonList(target.asItem().getDefaultInstance()), shrink, GamePhase.BEFORE_SKELETRON);
+    }
+
+    public static ItemTransmutationRecipe addItem(ItemLike source, ItemLike target) {
+        return new ItemTransmutationRecipe(Ingredient.of(source), Collections.singletonList(target.asItem().getDefaultInstance()), 1, GamePhase.BEFORE_SKELETRON);
     }
 
     public static ItemTransmutationRecipe addItem(TagKey<Item> source, List<ItemStack> target, int shrink, GamePhase gamePhase) {

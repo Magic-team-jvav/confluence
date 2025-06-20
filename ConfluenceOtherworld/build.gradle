@@ -54,11 +54,6 @@ neoForge {
         "${mod_id}" {
             sourceSet(sourceSets.main)
         }
-//        projectName.forEach {name -> {
-//            create(name) {
-//                sourceSet(project(":" + name).sourceSets["main"])
-//            }
-//        }}
     }
 }
 

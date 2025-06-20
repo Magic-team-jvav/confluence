@@ -97,7 +97,7 @@ public final class LivingEntityEvents {
                 PlayerUtils.dropMoney(serverPlayer);
                 TombstoneBoulder.createTombstone(serverPlayer);
             }
-            if (living.getRandom().nextFloat() < 0.011F) {
+            if (true/*living.getRandom().nextFloat() < 0.011F*/) {
                 Item holidayGift = DateUtils.getHolidayGift(living.getRandom());
                 if (holidayGift != Items.AIR) {
                     LibUtils.createItemEntity(holidayGift.getDefaultInstance(), living.position(), level, 0);

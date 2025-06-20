@@ -10,7 +10,6 @@ public class ConfigModRarity extends ModifyingConfigHandler {
     @Override
     public LBItemEntity modify(LBItemEntity lbItemEntity) {
         ModRarity rarity = lbItemEntity.item().getItem().get(ConfluenceMagicLib.MOD_RARITY);
-        if (rarity == null) return lbItemEntity;
-        return lbItemEntity.to(lbItemEntity.rarity().modifyColor(LBColor.of(rarity.color())));
+        return rarity == null ? lbItemEntity : lbItemEntity.to(lbItemEntity.rarity().modifyColor(LBColor.of(rarity.color())));
     }
 }

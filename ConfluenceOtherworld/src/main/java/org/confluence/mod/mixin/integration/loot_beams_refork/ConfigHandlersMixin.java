@@ -19,6 +19,8 @@ public abstract class ConfigHandlersMixin {
 
     @Inject(method = "registerAll", at = @At("TAIL"))
     private void registerModRarity(CallbackInfo ci) {
-        this.handlers = ImmutableList.<ModifyingConfigHandler>builder().addAll(handlers).add(new ConfigModRarity()).build();
+        if (handlers.stream().noneMatch(handler -> handler.getClass() == ConfigModRarity.class)) {
+            this.handlers = ImmutableList.<ModifyingConfigHandler>builder().addAll(handlers).add(new ConfigModRarity()).build();
+        }
     }
 }

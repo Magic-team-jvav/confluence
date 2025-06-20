@@ -19,6 +19,7 @@
 | 官方附属                                                                | 备注   |
 |---------------------------------------------------------------------|------|
 | [ConfluenceDelight](https://github.com/XiaoHuNao/ConfluenceDelight) | 汇流乐事 |
+| [ConfluenceMusic](https://github.com/westernat/Confluence-Music)    | 汇流音乐 |
 
 ## 构建项目
 

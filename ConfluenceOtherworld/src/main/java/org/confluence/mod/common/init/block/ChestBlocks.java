@@ -47,7 +47,13 @@ public class ChestBlocks {
     public static final DeferredBlock<DeathChestBlock> DEATH_WOODEN_CHEST = registerDeath("death_wooden_chest");
     public static final DeferredBlock<BaseChestBlock> SANDSTONE_CHEST = registerNormal("sandstone_chest", null);
     public static final DeferredBlock<BaseChestBlock> LIVING_WOOD_CHEST = registerNormal("living_wood_chest", null);
-    public static final DeferredBlock<BaseChestBlock> DUNGEON_CHEST = registerNormal("dungeon_chest", stack -> stack.is(ToolItems.GOLDEN_DUNGEON_KEY));
+    public static final DeferredBlock<BaseChestBlock> DUNGEON_CHEST = registerNormal("dungeon_chest", stack -> {
+        if (stack.is(ToolItems.GOLDEN_DUNGEON_KEY)) {
+            stack.shrink(1);
+            return true;
+        }
+        return false;
+    });
 
     public static final Supplier<BlockEntityType<BaseChestBlock.Entity>> BASE_CHEST_ENTITY = ModBlocks.BLOCK_ENTITIES.register("base_chest_entity", () -> BlockEntityType.Builder.of(BaseChestBlock.Entity::new, NORMAL_CHESTS.stream().map(DeferredBlock::get).toArray(Block[]::new)).build(DSL.remainderType()));
     public static final Supplier<BlockEntityType<DeathChestBlock.Entity>> DEATH_CHEST_ENTITY = ModBlocks.BLOCK_ENTITIES.register("death_chest_entity", () -> BlockEntityType.Builder.of(DeathChestBlock.Entity::new, DEATH_CHESTS.stream().map(DeferredBlock::get).toArray(Block[]::new)).build(DSL.remainderType()));

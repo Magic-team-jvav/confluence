@@ -37,6 +37,7 @@ public final class CommonConfigs {
     public static BooleanValue INSTANTLY_HARDMODE_CONVERSION;
 
     public static BooleanValue ARS_NOUVEAU_COMPATIBILITY;
+    public static BooleanValue IRONS_SPELL_COMPATIBILITY;
 
     public static void register(ModContainer container) {
         Builder BUILDER = new Builder();
@@ -95,6 +96,7 @@ public final class CommonConfigs {
         {
             BUILDER.push("Compatibility");
             ARS_NOUVEAU_COMPATIBILITY = BUILDER.define("arsNouveauCompatibility", false);
+            IRONS_SPELL_COMPATIBILITY = BUILDER.define("ironsSpellCompatibility", false);
             BUILDER.pop();
         }
         container.registerConfig(ModConfig.Type.COMMON, BUILDER.build());

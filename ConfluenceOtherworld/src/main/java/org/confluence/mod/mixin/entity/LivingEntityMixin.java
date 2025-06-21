@@ -15,6 +15,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -30,6 +31,7 @@ import org.confluence.mod.common.init.ModHookTypes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.worldgen.secret_seed.NoTraps;
+import org.confluence.mod.integration.irons_spell.IronSpellHelper;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.terra_curio.common.effect.HoneyEffect;
@@ -187,5 +189,10 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
     @Inject(method = "addAdditionalSaveData", at = @At("TAIL"))
     private void saveData(CompoundTag compound, CallbackInfo ci) {
         compound.putInt("ExtraInvulnerableTicks", confluence$extraInvulnerableTicks);
+    }
+
+    @Inject(method = "onAttributeUpdated", at = @At("TAIL"))
+    private void updateMana(Holder<Attribute> attribute, CallbackInfo ci) {
+        IronSpellHelper.updateMana(confluence$self(), attribute);
     }
 }

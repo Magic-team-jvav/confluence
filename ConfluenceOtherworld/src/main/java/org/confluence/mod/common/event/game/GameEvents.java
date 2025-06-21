@@ -25,6 +25,7 @@ import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.lib.common.item.ColoredItem;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.api.event.AdditionalManaEvent;
 import org.confluence.mod.api.event.ShimmerItemTransmutationEvent;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.component.LootComponent;
@@ -37,6 +38,8 @@ import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.init.item.ToolItems;
+import org.confluence.mod.integration.ars_nouveau.ArsNouveauHelper;
+import org.confluence.mod.integration.irons_spell.IronSpellHelper;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.network.s2c.AchievementOffsetSyncPacketS2C;
@@ -202,5 +205,11 @@ public final class GameEvents {
     @SubscribeEvent
     public static void addReloadListener(AddReloadListenerEvent event) {
         event.addListener(AchievementOffsetLoader.getInstance());
+    }
+
+    @SubscribeEvent
+    public static void additionalMana(AdditionalManaEvent event) {
+        ArsNouveauHelper.additionalMana(event);
+        IronSpellHelper.additionalMana(event);
     }
 }

@@ -46,6 +46,8 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEquipmentSets;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
+import org.confluence.mod.integration.ars_nouveau.ArsNouveauHelper;
+import org.confluence.mod.integration.irons_spell.IronSpellHelper;
 import org.confluence.mod.mixed.IInventoryScreen;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.ILocalPlayer;
@@ -97,11 +99,13 @@ public final class GameClientEvents {
 
     @SubscribeEvent
     public static void renderGuiOverlay$Pre(RenderGuiLayerEvent.Pre event) {
-        if (ClientConfigs.terraStyleHealth && VanillaGuiLayers.PLAYER_HEALTH.equals(event.getName())) {
-            event.setCanceled(true);
-        } else if (ClientConfigs.terraStyleFood && VanillaGuiLayers.FOOD_LEVEL.equals(event.getName())) {
-            event.setCanceled(true);
-        } else if (ClientConfigs.terraStyleArmor && VanillaGuiLayers.ARMOR_LEVEL.equals(event.getName())) {
+        ResourceLocation name = event.getName();
+        if ((ClientConfigs.terraStyleHealth && VanillaGuiLayers.PLAYER_HEALTH.equals(name)) ||
+                (ClientConfigs.terraStyleFood && VanillaGuiLayers.FOOD_LEVEL.equals(name)) ||
+                (ClientConfigs.terraStyleArmor && VanillaGuiLayers.ARMOR_LEVEL.equals(name)) ||
+                ArsNouveauHelper.cancelRenderManaBar(name) ||
+                IronSpellHelper.cancelRenderManaOverlay(name)
+        ) {
             event.setCanceled(true);
         }
     }

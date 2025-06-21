@@ -1,8 +1,5 @@
 package org.confluence.mod.mixin.integration.ars_nouveau;
 
-import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import com.llamalad7.mixinextras.sugar.Local;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -27,12 +24,6 @@ public abstract class ManaCapMixin {
     @Shadow
     LivingEntity entity;
 
-    @Shadow
-    public abstract int getMaxMana();
-
-    @Shadow
-    public abstract double getCurrentMana();
-
     @Unique
     private Optional<ManaStorage> confluence$manaStorage = Optional.empty();
     @Unique
@@ -46,34 +37,15 @@ public abstract class ManaCapMixin {
         }
     }
 
-    @ModifyReturnValue(method = "getCurrentMana", at = @At("RETURN"))
-    private double getCurrentMana(double original) {
-        if (confluence$isServerSide) {
-            return confluence$manaStorage.map(storage -> ArsNouveauHelper.getCurrentMana(original, storage)).orElse(original);
-        }
-        return original;
-    }
-
-    @ModifyReturnValue(method = "getMaxMana", at = @At("RETURN"))
-    private int getMaxMana(int original) {
-        if (confluence$isServerSide) {
-            return confluence$manaStorage.map(storage -> ArsNouveauHelper.getMaxMana(original, storage)).orElse(original);
-        }
-        return original;
+    @Inject(method = "setMaxMana", at = @At("TAIL"))
+    private void updateMana(int maxMana, CallbackInfo ci) {
+        ArsNouveauHelper.updateMana(entity);
     }
 
     @Inject(method = "removeMana", at = @At("RETURN"))
     private void removeData(double manaToRemove, CallbackInfoReturnable<Double> cir) {
         if (confluence$isServerSide) {
             confluence$manaStorage.ifPresent(storage -> ArsNouveauHelper.extractMana((ServerPlayer) entity, storage, manaToRemove));
-        }
-    }
-
-    @Inject(method = "syncToClient", at = @At(value = "INVOKE", target = "Lcom/hollingsworth/arsnouveau/common/network/Networking;sendToPlayerClient(Lnet/minecraft/network/protocol/common/custom/CustomPacketPayload;Lnet/minecraft/server/level/ServerPlayer;)V"))
-    private void syncToClient(ServerPlayer player, CallbackInfo ci, @Local CompoundTag tag) {
-        if (confluence$isServerSide) {
-            tag.putDouble("current", getCurrentMana());
-            tag.putInt("max", getMaxMana());
         }
     }
 }

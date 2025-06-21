@@ -64,11 +64,10 @@ repositories {
     flatDir {
         dirs 'libs'
     }
-    maven { // Registrate
-        url "https://maven.ithundxr.dev/snapshots"
-    }
+    maven { url = "https://www.cursemaven.com" }
     maven {
-        url = "https://www.cursemaven.com"
+        name = "Modrinth"
+        url = "https://api.modrinth.com/maven"
     }
     maven {
         // location of the maven that hosts JEI files since January 2023
@@ -94,41 +93,39 @@ repositories {
             includeGroup "dev.architectury"
         }
     }
-
     maven {
-        name = "LatvianMaven"
+        name = "LatvianMaven" // KubeJS
         url = "https://maven.latvian.dev/releases"
         content {
             includeGroup "dev.latvian.mods"
             includeGroup "dev.latvian.apps"
         }
     }
-
     maven {
         url = 'https://jitpack.io'
         content {
             includeGroup "com.github.rtyley"
         }
     }
-
-    maven {
-        url = "https://maven.bawnorton.com/releases"
-    }
-
+    maven { url = "https://maven.bawnorton.com/releases" }
     maven { url = 'https://maven.minecraftforge.net/' }
-
     maven {
         name = "Curios"
         url = uri("https://maven.theillusivec4.top/")
     }
     maven { url = "https://maven.createmod.net" } // Create
+    maven { url "https://maven.ithundxr.dev/snapshots" } // Registrate
     maven {
         name = "Fuzs Mod Resources"
         url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
     }
     maven {
-        name = "Modrinth"
-        url = "https://api.modrinth.com/maven"
+        name = "Iron's Maven - Release" // Iron's Spell n Spellbooks
+        url = "https://code.redspace.io/releases"
+    }
+    maven {
+        name "KosmX's maven" // Player Animator
+        url 'https://maven.kosmx.dev/'
     }
 }
 
@@ -136,7 +133,7 @@ boolean vanillin = false // 香兰素
 boolean observable = false // 可视性能侦测
 boolean ftb = false
 boolean ipn = false // 一键背包整理Next
-boolean mmmmmmmmmmmm = true // 试验假人
+boolean mmmmmmmmmmmm = false // 试验假人
 boolean supplementaries = false // 锦致装饰
 boolean lootBeams = false
 
@@ -239,6 +236,12 @@ dependencies {
     compileOnly "com.hollingsworth.ars_nouveau:ars_nouveau-${minecraft_version}:${ars_nouveau_version}"
     runtimeOnly "com.hollingsworth.ars_nouveau:ars_nouveau-${minecraft_version}:${ars_nouveau_version}"
 
+    compileOnly "io.redspace:irons_spellbooks:${irons_spells_version}:api"
+    if (true) {
+        runtimeOnly "io.redspace:irons_spellbooks:${irons_spells_version}"
+        runtimeOnly "dev.kosmx.player-anim:player-animation-lib-forge:${player_animator_version}"
+    }
+
     /**********************************************************/
 
     runtimeOnly "curse.maven:worldedit-225608:5830452"
@@ -271,7 +274,7 @@ dependencies {
     if (observable || ipn || lootBeams) {
         runtimeOnly "curse.maven:kotlin-for-forge-351264:5978393"
     }
-    if (true) {
+    if (false) {
         runtimeOnly "curse.maven:tweakerge-915857:6387063"
         runtimeOnly "curse.maven:mafglib-910766:6416901"
     }

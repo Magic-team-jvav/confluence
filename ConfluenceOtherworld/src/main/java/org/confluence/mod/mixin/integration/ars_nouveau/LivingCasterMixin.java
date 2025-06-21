@@ -1,9 +1,8 @@
 package org.confluence.mod.mixin.integration.ars_nouveau;
 
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
-import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.common.init.ModAttachmentTypes;
+import net.neoforged.neoforge.common.util.TriState;
+import org.confluence.mod.integration.ars_nouveau.ArsNouveauHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.Shadow;
@@ -19,8 +18,9 @@ public abstract class LivingCasterMixin {
 
     @Inject(method = "enoughMana", at = @At("HEAD"), cancellable = true)
     private void enoughMana(int totalCost, CallbackInfoReturnable<Boolean> cir) {
-        if (CommonConfigs.ARS_NOUVEAU_COMPATIBILITY.get() && livingEntity instanceof Player player) {
-            cir.setReturnValue(totalCost <= player.getData(ModAttachmentTypes.MANA_STORAGE).getCurrentMana());
+        TriState triState = ArsNouveauHelper.enoughMana(livingEntity, totalCost);
+        if (!triState.isDefault()) {
+            cir.setReturnValue(triState.isTrue());
         }
     }
 }

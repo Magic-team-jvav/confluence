@@ -1,4 +1,4 @@
-package org.confluence.mod.common.event.game.entity;
+package org.confluence.mod.common.event.game;
 
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;

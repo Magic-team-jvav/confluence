@@ -5,7 +5,9 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.INBTSerializable;
+import org.confluence.mod.api.event.AdditionalManaEvent;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModHookTypes;
 import org.confluence.mod.common.init.item.AccessoryItems;
@@ -136,8 +138,9 @@ public class ManaStorage implements INBTSerializable<CompoundTag> {
         int value = TCUtils.getAccessoriesValue(serverPlayer, AccessoryItems.ADDITIONAL$MANA);
         if (serverPlayer.hasEffect(ModEffects.CLAIRVOYANCE)) value += 20;
         int posted = HookMapManager.postHooks(ModHookTypes.ADDITIONAL_MANA.get(), (owner, hook, original) -> hook.additional(owner, serverPlayer, original), serverPlayer, value);
-        if (posted != additionalMana) {
-            this.additionalMana = posted;
+        AdditionalManaEvent event = NeoForge.EVENT_BUS.post(new AdditionalManaEvent(serverPlayer, this, posted, additionalMana));
+        if (!event.isCanceled() && event.getNeoValue() != additionalMana) {
+            this.additionalMana = event.getNeoValue();
             freshMaxMana();
             PlayerUtils.syncMana2Client(serverPlayer, this);
         }

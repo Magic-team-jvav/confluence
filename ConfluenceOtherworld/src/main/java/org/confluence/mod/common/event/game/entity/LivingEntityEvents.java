@@ -79,16 +79,13 @@ public final class LivingEntityEvents {
         DamageSource damageSource = event.getSource();
 
         if (living.level() instanceof ServerLevel level) {
-            // 未知模组导致的null
-            if (damageSource != null) {
-                if (living instanceof Enemy && damageSource.getEntity() instanceof ServerPlayer) {
-                    if (CommonConfigs.DROP_MONEY.get() && level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)) {
-                        ModUtils.enemyDropMoney(living, level);
-                    }
+            if (living instanceof Enemy && damageSource.getEntity() instanceof ServerPlayer) {
+                if (CommonConfigs.DROP_MONEY.get() && level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)) {
+                    ModUtils.enemyDropMoney(living, level);
                 }
-                if (damageSource.getEntity() != null && damageSource.getEntity().getType().is(TETags.EntityTypes.CORRUPT)) {
-                    NatureBlocks.DECOMPOSE_THE_SOURCE_EXTRACT_BLOCK.get().checkVisibilityAndSummonEntity(level, living);
-                }
+            }
+            if (damageSource.getEntity() != null && damageSource.getEntity().getType().is(TETags.EntityTypes.CORRUPT)) {
+                NatureBlocks.DECOMPOSE_THE_SOURCE_EXTRACT_BLOCK.get().checkVisibilityAndSummonEntity(level, living);
             }
             if (living instanceof Boss boss && boss.shouldShowMessage()) {
                 ModUtils.bossDeath(level, living);

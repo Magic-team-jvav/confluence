@@ -317,6 +317,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 ANNOUNCEMENT_BOX.get(),
                 WALL_ANNOUNCEMENT_BOX.get(),
                 GRANITE.get(),
+                AETHERIUM_BRICKS.get(),
 
                 TOMBSTONE.get(),
                 GRAVE_MARKER.get(),
@@ -560,8 +561,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 SKYWARE_DOOR.get(),
                 DISC_BLOCK.get(),
                 SKYWARE_GLASS_DOOR.get(),
-                OBSIDIAN_BRICKS.get(),
                 OBSIDIAN_SMALL_BRICKS.get(),
+                AETHERIUM_BRICKS.get(),
                 SMOOTH_OBSIDIAN.get(),
                 POLISHED_GRANITE.get(),
                 GRANITE_COLUMN.get(),

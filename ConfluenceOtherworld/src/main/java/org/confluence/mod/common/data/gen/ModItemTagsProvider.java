@@ -1342,7 +1342,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 DecorativeBlocks.ENCHANTED_PINK_BRICKS.asItem(),
                 DecorativeBlocks.LIHZAHRD_DOOR.asItem(),
                 DecorativeBlocks.LIHZAHRD_BRICKS.asItem(),
-                DecorativeBlocks.AETHERIUM_BRICKS.asItem(),
                 DecorativeBlocks.RAINBOW_BRICKS.asItem(),
                 DecorativeBlocks.CLOUD_BLOCK_TRAMPOLINE.asItem(),
                 DecorativeBlocks.ASPHALT_BLOCK.asItem(),

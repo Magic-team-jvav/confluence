@@ -2516,6 +2516,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.HARPY_FEATHER.get(), "鸟妖之羽");
         add(MaterialItems.GIANT_HARPY_FEATHER.get(), "巨型鸟妖之羽");
         add(MaterialItems.AETHERIUM_SHARD.get(), "以太碎片");
+        add(MaterialItems.AETHERIUM_GOLD.get(), "嬗金");
         add(MaterialItems.CHINA_PLATE.get(), "陶瓷盘");
         add(MaterialItems.CHINA_BOWL.get(), "陶瓷碗");
         // 植物
@@ -3623,6 +3624,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(PotionItems.RED_POTION.get(), "红药水");
         add(PotionItems.AMMO_RESERVATION_POTION.get(), "弹药储备药水");
         add(PotionItems.SUMMONING_POTION.get(), "召唤药水");
+        add(PotionItems.SHIMMER_POTION.get(), "微光药水");
         add(PotionItems.STRANGE_BREW.get(), "诡药");
         add(PotionItems.FLASK_OF_FIRE.get(), "烈火药剂");
         add(PotionItems.FLASK_OF_GOLD.get(), "金药剂");

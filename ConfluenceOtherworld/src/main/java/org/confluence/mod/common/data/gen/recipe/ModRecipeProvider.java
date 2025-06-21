@@ -54,7 +54,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         stonecutting(recipeOutput, "", DecorativeBlocks.PACKED_ICE_BRICKS.toStack(4), Ingredient.of(Blocks.PACKED_ICE));
         stonecutting(recipeOutput, "", DecorativeBlocks.PACKED_ICE_BRICKS_SLAB.toStack(2), Ingredient.of(DecorativeBlocks.PACKED_ICE_BRICKS));
         stonecutting(recipeOutput, "", DecorativeBlocks.PACKED_ICE_BRICKS_STAIRS.toStack(1), Ingredient.of(DecorativeBlocks.PACKED_ICE_BRICKS));
-
+        stonecutting(recipeOutput, "", DecorativeBlocks.AETHERIUM_BRICKS.toStack(4), Ingredient.of(NatureBlocks.AETHERIUM_BLOCK));
 
         stonecutting(recipeOutput, "", MaterialItems.CHINA_BOWL.toStack(1), Ingredient.of(Items.WHITE_TERRACOTTA));
         stonecutting(recipeOutput, "", MaterialItems.CHINA_PLATE.toStack(1), Ingredient.of(Items.WHITE_TERRACOTTA));

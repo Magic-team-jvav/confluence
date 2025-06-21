@@ -15,7 +15,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.util.PlayerUtils;
-import org.jetbrains.annotations.NotNull;
 
 public record PlayerDeathInfoPacketS2C(Component deathMessage, int respawnTime, short platinum, byte gold, byte silver, byte copper) implements CustomPacketPayload {
     public static final Type<PlayerDeathInfoPacketS2C> TYPE = new Type<>(Confluence.asResource("player_death_info"));
@@ -30,7 +29,7 @@ public record PlayerDeathInfoPacketS2C(Component deathMessage, int respawnTime, 
     );
 
     @Override
-    public @NotNull Type<PlayerDeathInfoPacketS2C> type() {
+    public Type<PlayerDeathInfoPacketS2C> type() {
         return TYPE;
     }
 

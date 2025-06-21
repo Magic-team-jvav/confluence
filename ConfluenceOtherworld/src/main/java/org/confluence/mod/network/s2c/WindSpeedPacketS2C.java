@@ -11,7 +11,6 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.WeatherHandler;
-import org.jetbrains.annotations.NotNull;
 
 public record WindSpeedPacketS2C(float x, float z) implements CustomPacketPayload {
     public static final Type<WindSpeedPacketS2C> TYPE = new Type<>(Confluence.asResource("wind_speed"));
@@ -22,7 +21,7 @@ public record WindSpeedPacketS2C(float x, float z) implements CustomPacketPayloa
     );
 
     @Override
-    public @NotNull Type<WindSpeedPacketS2C> type() {
+    public Type<WindSpeedPacketS2C> type() {
         return TYPE;
     }
 

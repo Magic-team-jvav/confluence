@@ -12,7 +12,6 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.MeteorLandingHandler;
-import org.jetbrains.annotations.NotNull;
 
 public record MeteoriteLocationPacketS2C(BlockPos location, int tickUntilLanding) implements CustomPacketPayload {
     public static final Type<MeteoriteLocationPacketS2C> TYPE = new Type<>(Confluence.asResource("meteorite_location"));
@@ -23,7 +22,7 @@ public record MeteoriteLocationPacketS2C(BlockPos location, int tickUntilLanding
     );
 
     @Override
-    public @NotNull Type<MeteoriteLocationPacketS2C> type() {
+    public Type<MeteoriteLocationPacketS2C> type() {
         return TYPE;
     }
 

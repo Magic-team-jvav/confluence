@@ -11,14 +11,13 @@ import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.common.data.saved.GamePhase;
-import org.jetbrains.annotations.NotNull;
 
 public record GamePhasePacketS2C(GamePhase gamePhase) implements CustomPacketPayload {
     public static final Type<GamePhasePacketS2C> TYPE = new Type<>(Confluence.asResource("game_phase"));
     public static final StreamCodec<ByteBuf, GamePhasePacketS2C> STREAM_CODEC = GamePhase.STREAM_CODEC.map(GamePhasePacketS2C::new, GamePhasePacketS2C::gamePhase);
 
     @Override
-    public @NotNull Type<GamePhasePacketS2C> type() {
+    public Type<GamePhasePacketS2C> type() {
         return TYPE;
     }
 

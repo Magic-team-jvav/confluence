@@ -32,7 +32,7 @@ public interface IMinecraftServer {
     }
 
     static boolean matchesSecretFlag(long flag) {
-        if (LibUtils.isLogicalAndPhysicalClient()) {
+        if (LibUtils.isLogicalClient()) {
             return matchesSecretFlag(ClientPacketHandler.getSecretFlag(), flag);
         }
         MinecraftServer server = ServerLifecycleHooks.getCurrentServer();

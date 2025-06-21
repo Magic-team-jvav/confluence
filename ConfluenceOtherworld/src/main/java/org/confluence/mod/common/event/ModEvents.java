@@ -43,7 +43,6 @@ import net.neoforged.neoforgespi.locating.IModFile;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.util.ConfluenceResources;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.block.common.AetheriumCauldronBlock;
 import org.confluence.mod.common.block.common.BaseChestBlock;
 import org.confluence.mod.common.block.common.HoneyCauldronBlock;
@@ -82,7 +81,6 @@ public final class ModEvents {
     @SubscribeEvent
     public static void commonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
-            CommonConfigs.onLoad();
             ModGunProperties.init();
             Confluence.registerGameRules();
             ModFluids.registerInteraction();

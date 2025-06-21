@@ -36,7 +36,7 @@ public final class CommonConfigs {
     public static BooleanValue WRAPPED_CRIMSON_HEART;
     public static BooleanValue INSTANTLY_HARDMODE_CONVERSION;
 
-    public static void onLoad() {}
+    public static BooleanValue ARS_NOUVEAU_COMPATIBILITY;
 
     public static void register(ModContainer container) {
         Builder BUILDER = new Builder();
@@ -90,6 +90,11 @@ public final class CommonConfigs {
             BUILDER.push("WorldGeneration");
             WRAPPED_CRIMSON_HEART = BUILDER.define("wrappedCrimsonHeart", false);
             INSTANTLY_HARDMODE_CONVERSION = BUILDER.define("instantlyHardmodeConversion", false);
+            BUILDER.pop();
+        }
+        {
+            BUILDER.push("Compatibility");
+            ARS_NOUVEAU_COMPATIBILITY = BUILDER.define("arsNouveauCompatibility", false);
             BUILDER.pop();
         }
         container.registerConfig(ModConfig.Type.COMMON, BUILDER.build());

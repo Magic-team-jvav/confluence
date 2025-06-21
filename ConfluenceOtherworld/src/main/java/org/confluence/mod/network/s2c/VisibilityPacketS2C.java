@@ -18,7 +18,6 @@ import org.confluence.terra_curio.common.component.AccessoriesComponent;
 import org.confluence.terra_curio.common.item.IFunctionCouldEnable;
 import org.confluence.terra_curio.util.CuriosUtils;
 import org.confluence.terra_curio.util.TCUtils;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Predicate;
 
@@ -34,7 +33,7 @@ public record VisibilityPacketS2C(byte mask) implements CustomPacketPayload {
     }
 
     @Override
-    public @NotNull Type<VisibilityPacketS2C> type() {
+    public Type<VisibilityPacketS2C> type() {
         return TYPE;
     }
 

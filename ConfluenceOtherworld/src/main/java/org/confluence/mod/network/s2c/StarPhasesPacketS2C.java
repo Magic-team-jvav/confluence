@@ -14,7 +14,6 @@ import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.StarPhaseHandler;
 import org.confluence.mod.common.data.saved.StarPhase;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
@@ -24,7 +23,7 @@ public record StarPhasesPacketS2C(Either<Map<Integer, StarPhase>, Map.Entry<Inte
     public static final Type<StarPhasesPacketS2C> TYPE = new Type<>(Confluence.asResource("star_phases"));
     public static final StreamCodec<ByteBuf, StarPhasesPacketS2C> STREAM_CODEC = StreamCodec.composite(
             new StreamCodec<>() {
-                public @NotNull Either<Map<Integer, StarPhase>, Map.Entry<Integer, StarPhase>> decode(@NotNull ByteBuf buffer) {
+                public Either<Map<Integer, StarPhase>, Map.Entry<Integer, StarPhase>> decode(ByteBuf buffer) {
                     boolean isLeft = buffer.readBoolean();
                     if (isLeft) {
                         int length = buffer.readInt();
@@ -37,7 +36,7 @@ public record StarPhasesPacketS2C(Either<Map<Integer, StarPhase>, Map.Entry<Inte
                     return Either.right(new AbstractInt2ObjectMap.BasicEntry<>(buffer.readInt(), new StarPhase(buffer)));
                 }
 
-                public void encode(@NotNull ByteBuf buffer, @NotNull Either<Map<Integer, StarPhase>, Map.Entry<Integer, StarPhase>> value) {
+                public void encode(ByteBuf buffer, Either<Map<Integer, StarPhase>, Map.Entry<Integer, StarPhase>> value) {
                     value.ifLeft(map -> {
                         buffer.writeBoolean(true);
                         buffer.writeInt(STAR_PHASES_SIZE);
@@ -56,7 +55,7 @@ public record StarPhasesPacketS2C(Either<Map<Integer, StarPhase>, Map.Entry<Inte
     );
 
     @Override
-    public @NotNull Type<StarPhasesPacketS2C> type() {
+    public Type<StarPhasesPacketS2C> type() {
         return TYPE;
     }
 

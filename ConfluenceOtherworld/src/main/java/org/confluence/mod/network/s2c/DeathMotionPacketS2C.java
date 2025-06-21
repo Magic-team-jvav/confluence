@@ -14,7 +14,6 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.mixed.IEntity;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 public record DeathMotionPacketS2C(int entityId, float x,float y, float z) implements CustomPacketPayload {
@@ -33,7 +32,7 @@ public record DeathMotionPacketS2C(int entityId, float x,float y, float z) imple
     }
 
     @Override
-    public @NotNull Type<DeathMotionPacketS2C> type() {
+    public Type<DeathMotionPacketS2C> type() {
         return TYPE;
     }
 

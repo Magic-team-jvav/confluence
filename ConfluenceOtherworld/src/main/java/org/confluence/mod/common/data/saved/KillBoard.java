@@ -75,7 +75,7 @@ public class KillBoard implements IGlobalData {
     }
 
     public GamePhase getGamePhase() {
-        if (LibUtils.isLogicalAndPhysicalClient()) {
+        if (LibUtils.isLogicalClient()) {
             return ClientPacketHandler.getGamePhase();
         }
         return gamePhase;

@@ -20,7 +20,7 @@ public class ManaStorage implements INBTSerializable<CompoundTag> {
     private int additionalMana;
     private int currentMana;
     private transient int regenerateDelay;
-    private transient Integer maxMana;
+    private transient int maxMana;
     private boolean fastManaRegeneration;
 
     private boolean arcaneCrystalUsed;
@@ -30,6 +30,7 @@ public class ManaStorage implements INBTSerializable<CompoundTag> {
         this.additionalMana = 0;
         this.currentMana = 20;
         this.regenerateDelay = 0;
+        this.maxMana = -1;
         this.fastManaRegeneration = false;
 
         this.arcaneCrystalUsed = false;
@@ -96,7 +97,7 @@ public class ManaStorage implements INBTSerializable<CompoundTag> {
     }
 
     public int getMaxMana() {
-        if (maxMana == null) {
+        if (maxMana < 0) {
             freshMaxMana();
         }
         return maxMana;

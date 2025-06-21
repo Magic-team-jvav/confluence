@@ -18,7 +18,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.client.textures.LocalBrushData;
 import org.confluence.mod.common.data.saved.BrushData;
 import org.confluence.mod.common.init.ModAttachmentTypes;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Hashtable;
@@ -28,7 +27,7 @@ public record BrushingColorPacketS2C(ChunkPos chunkPos, BrushData data) implemen
     public static final Type<BrushingColorPacketS2C> TYPE = new Type<>(Confluence.asResource("brushing_color"));
     public static final StreamCodec<RegistryFriendlyByteBuf, BrushingColorPacketS2C> STREAM_CODEC = new StreamCodec<>() {
         @Override
-        public @NotNull BrushingColorPacketS2C decode(RegistryFriendlyByteBuf buffer) {
+        public BrushingColorPacketS2C decode(RegistryFriendlyByteBuf buffer) {
             ChunkPos chunkPos = buffer.readChunkPos();
             int size = buffer.readVarInt();
             Map<BlockPos, int[]> map = new Hashtable<>();
@@ -71,7 +70,7 @@ public record BrushingColorPacketS2C(ChunkPos chunkPos, BrushData data) implemen
     public static final int[] CLEAR_COLORS = BrushData.createColor(BrushData.CLEAR_COLOR);
 
     @Override
-    public @NotNull Type<BrushingColorPacketS2C> type() {
+    public Type<BrushingColorPacketS2C> type() {
         return TYPE;
     }
 

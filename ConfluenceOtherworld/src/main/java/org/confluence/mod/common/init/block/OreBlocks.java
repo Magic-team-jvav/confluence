@@ -172,11 +172,11 @@ public class OreBlocks {
     public static final DeferredBlock<Block> SPORE_ROOT_BLOCK = copyBlockRegister("spore_root_block", Blocks.IRON_ORE);
     public static final DeferredBlock<Block> WINTER_MARROW_BLOCK = copyBlockRegister("winter_marrow_block", Blocks.IRON_ORE);
     public static final DeferredBlock<Block> COLD_CRYSTAL_ORE = registerWithItem("cold_crystal_ore", () -> new TransparentBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_ORE).noOcclusion()));
-    public static final DeferredBlock<Block> HELLSTONE = registerWithItem("hellstone", HellStoneBlock::new, block -> new BlockItem(block, new Item.Properties().fireResistant()));
-    public static final DeferredBlock<Block> ASH_HELLSTONE = registerWithItem("ash_hellstone", HellStoneBlock::new, block -> new BlockItem(block, new Item.Properties().fireResistant()));
-    public static final DeferredBlock<Block> HELLSTONE_BRICKS = registerWithItem("hellstone_bricks", HellStoneBlock::new, block -> new BlockItem(block, new Item.Properties().fireResistant()));
-    public static final DeferredBlock<Block> RAW_HELLSTONE_BLOCK = registerWithItem("raw_hellstone_block", HellStoneBlock::new, block -> new BlockItem(block, new Item.Properties().fireResistant()));
-    public static final DeferredBlock<Block> HELLSTONE_BLOCK = registerWithItem("hellstone_block", HellStoneBlock::new, block -> new BlockItem(block, new Item.Properties().fireResistant()));
+    public static final DeferredBlock<Block> HELLSTONE = registerWithItem("hellstone", () -> new HellStoneBlock(true), block -> new BlockItem(block, new Item.Properties().fireResistant()));
+    public static final DeferredBlock<Block> ASH_HELLSTONE = registerWithItem("ash_hellstone", () -> new HellStoneBlock(false), block -> new BlockItem(block, new Item.Properties().fireResistant()));
+    public static final DeferredBlock<Block> HELLSTONE_BRICKS = registerWithItem("hellstone_bricks", () -> new HellStoneBlock(false), block -> new BlockItem(block, new Item.Properties().fireResistant()));
+    public static final DeferredBlock<Block> RAW_HELLSTONE_BLOCK = registerWithItem("raw_hellstone_block", () -> new HellStoneBlock(false), block -> new BlockItem(block, new Item.Properties().fireResistant()));
+    public static final DeferredBlock<Block> HELLSTONE_BLOCK = registerWithItem("hellstone_block", () -> new HellStoneBlock(false), block -> new BlockItem(block, new Item.Properties().fireResistant()));
 
     // 红石矿
     public static final DeferredBlock<Block> SANCTIFICATION_REDSTONE_ORE = simpleBlockRegister("sanctification_redstone_ore", () -> new RedStoneOreBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_REDSTONE_ORE)));

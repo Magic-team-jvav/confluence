@@ -79,6 +79,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.sky_mill.0", "用于特殊制作");
         add("tooltip.item.confluence.heavy_work_bench.0", "用于高级制作");
         add("tooltip.item.confluence.sawmill.0", "用于高级木工制作");
+        add("tooltip.item.confluence.hellforge.0", "用于狱石类烧炼制作，烧炼常规矿物具有余温效果");
         add("tooltip.item.confluence.alchemy_table.0", "33%几率不消耗药水的制作材料");
         add("tooltip.item.confluence.solidifier.0", "用于制作物件");
         add("tooltip.item.confluence.hardmode_anvil.0", "用于制作以秘银锭、山铜锭、精金锭和钛金锭为原料的物品");
@@ -105,7 +106,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.meteor_compass.0", "仅保存上一次陨石的坐标");
         add("tooltip.item.confluence.mug.0", "在酒桶处接取麦芽酒");
         add("tooltip.item.confluence.magic_conch.0", "右键海滩群系的方块以让大海记住你");
-        add("tooltip.item.confluence.demon_conch.0", "右键传送门方块以让地狱记住你");
+        add("tooltip.item.confluence.demon_conch.0", "右键下界传送门方块以让地狱记住你");
+        add("tooltip.item.confluence.bait.common.0", "放入背包即可钓鱼时自动使用，优先使用副手的鱼饵");
         add("tooltip.item.confluence.gel.0", "“既好吃，又易燃”");
         add("tooltip.item.confluence.npc_invitation.0", "使用它，在当前区域邀请一批新的NPC吧！");
         add("tooltip.item.confluence.red_potion.0", "“仅献给配得上的人”");
@@ -266,7 +268,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.philosophers_stone.0", "减少治疗药水的冷却时间");
         add("tooltip.item.confluence.charm_of_myths.0", "提供生命恢复，减少治疗药水的冷却时间");
         add("tooltip.item.confluence.mechanical_lens.0", "给予改良的布线视野");
-        add("tooltip.item.confluence.mechanical_lens.1", "背包内右键点击可开关");
+        add("tooltip.item.terra_curio.mechanical_lens.1", "背包内右键点击可开关");
         add("tooltip.item.confluence.high_test_fishing_line.0", "鱼线永远不会断");
         add("tooltip.item.confluence.angler_earring.0", "增加渔力");
         add("tooltip.item.confluence.fishing_bobber.0", "增加渔力");
@@ -288,7 +290,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.coin_ring.0", "击中敌人有时会掉落额外的钱币，扩大钱币的拾取范围");
         add("tooltip.item.confluence.greedy_ring.0", "击中敌人有时会掉落额外的钱币，扩大钱币的拾取范围，商店价格降低20%");
         add("tooltip.item.confluence.spectre_goggles.0", "提供幽灵视觉以与回声块交互");
-        add("tooltip.item.confluence.spectre_goggles.1", "背包内右键点击可开关");
+        add("tooltip.item.terra_curio.spectre_goggles.1", "背包内右键点击可开关");
         add("tooltip.item.confluence.guide_to_plant_fiber_cordage.0", "可从藤蔓收集藤蔓绳");
         add("tooltip.item.confluence.fledgling_wings.0", "可飞行和缓慢坠落");
         add("tooltip.item.confluence.chromatic_cloak.0", "对微光相位化免疫，当淹没在微光中时潜行可以相位化");

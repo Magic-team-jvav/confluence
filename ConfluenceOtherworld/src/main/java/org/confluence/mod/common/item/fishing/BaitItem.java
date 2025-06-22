@@ -8,16 +8,26 @@ import net.minecraft.world.item.TooltipFlag;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static net.minecraft.world.item.component.ItemAttributeModifiers.ATTRIBUTE_MODIFIER_FORMAT;
 
 public class BaitItem extends Item implements IBait {
     private final float bonus;
+    private final List<Component> commonTooltips;
 
     public BaitItem(ModRarity rarity, float bonus) {
         super(new Properties().component(ConfluenceMagicLib.MOD_RARITY, rarity).stacksTo(9999));
         this.bonus = bonus;
+        this.commonTooltips = createCommonTooltips();
+    }
+
+    private List<Component> createCommonTooltips() {
+        List<Component> tooltips = new ArrayList<>();
+        tooltips.add(Component.translatable("tooltip.item.confluence.bait.common.0")
+                .withStyle(ChatFormatting.GRAY));
+        return tooltips;
     }
 
     @Override
@@ -27,6 +37,12 @@ public class BaitItem extends Item implements IBait {
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        tooltipComponents.add(Component.translatable("info.confluence.bait", ATTRIBUTE_MODIFIER_FORMAT.format(getBaitBonus() * 100.0)).withStyle(style -> style.withColor(ChatFormatting.BLUE)));
+        tooltipComponents.addAll(commonTooltips);
+
+        tooltipComponents.add(Component.translatable("info.confluence.bait",
+                        ATTRIBUTE_MODIFIER_FORMAT.format(getBaitBonus() * 100.0))
+                .withStyle(style -> style.withColor(ChatFormatting.BLUE)));
+
+        super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
     }
 }

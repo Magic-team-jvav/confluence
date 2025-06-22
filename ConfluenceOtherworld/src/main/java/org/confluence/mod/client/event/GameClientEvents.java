@@ -13,8 +13,10 @@ import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
@@ -33,11 +35,13 @@ import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import org.confluence.lib.client.AntiPushPoseStack;
 import org.confluence.lib.common.component.ModRarity;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.effect.SpelunkerHelper;
 import org.confluence.mod.client.gui.TooltipManager;
 import org.confluence.mod.client.handler.*;
+import org.confluence.mod.client.renderer.item.ZombieArmRenderer;
 import org.confluence.mod.client.textures.LocalBrushData;
 import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
@@ -45,6 +49,7 @@ import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEquipmentSets;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.init.item.SwordItems;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.integration.ars_nouveau.ArsNouveauHelper;
 import org.confluence.mod.integration.irons_spell.IronSpellHelper;
@@ -274,5 +279,21 @@ public final class GameClientEvents {
         EquipmentSetBranch branch = EquipmentSetManager.getInstance().getBranchResource(Confluence.asResource("crystal_assassin_set/full_set"));
         boolean contains = equipmentSetBranches.contains(branch);
         ClientPacketHandler.handleSprintable(contains);
+    }
+
+    @SubscribeEvent
+    public static void renderPlayer$Pre(RenderPlayerEvent.Pre event) {
+        ZombieArmRenderer.getInstance().render(event.getRenderer(), event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight(), event.getEntity(), event.getPartialTick());
+    }
+
+    @SubscribeEvent
+    public static void renderArm(RenderArmEvent event) {
+        AbstractClientPlayer player = event.getPlayer();
+        if (LibUtils.anyHandHasItem(player, SwordItems.ZOMBIE_ARM.get())) {
+            if (Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player) instanceof PlayerRenderer playerRenderer) {
+                ZombieArmRenderer.getInstance().renderHand(playerRenderer, event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight(), player, event.getArm());
+                event.setCanceled(true);
+            }
+        }
     }
 }

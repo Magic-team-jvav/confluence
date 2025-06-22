@@ -121,6 +121,7 @@
         "client.model.HumanoidArmorLayerMixin",
         "client.model.ModelPartMixin",
         "client.renderer.GameRendererMixin",
+        "client.renderer.ItemInHandRendererMixin",
         "client.renderer.ItemRendererMixin",
         "client.renderer.LevelRendererMixin",
         "client.renderer.LivingEntityRendererMixin",

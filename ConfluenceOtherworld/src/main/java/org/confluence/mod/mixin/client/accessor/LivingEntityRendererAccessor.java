@@ -20,4 +20,7 @@ public interface LivingEntityRendererAccessor {
 
     @Invoker
     void callScale(LivingEntity livingEntity, PoseStack poseStack, float partialTickTime);
+
+    @Invoker
+    float callGetBob(LivingEntity livingBase, float partialTick);
 }

@@ -1,0 +1,36 @@
+{
+  "base": {
+    "parent": "builtin/entity",
+    "textures": {
+      "layer0": "confluence:item/sword/zombie_arm"
+    }
+  },
+  "gui_light": "front",
+  "loader": "neoforge:separate_transforms",
+  "perspectives": {
+    "fixed": {
+      "parent": "minecraft:item/handheld",
+      "textures": {
+        "layer0": "confluence:item/sword/zombie_arm"
+      }
+    },
+    "ground": {
+      "parent": "minecraft:item/handheld",
+      "textures": {
+        "layer0": "confluence:item/sword/zombie_arm"
+      }
+    },
+    "gui": {
+      "parent": "minecraft:item/handheld",
+      "textures": {
+        "layer0": "confluence:item/sword/zombie_arm"
+      }
+    },
+    "head": {
+      "parent": "minecraft:item/handheld",
+      "textures": {
+        "layer0": "confluence:item/sword/zombie_arm"
+      }
+    }
+  }
+}

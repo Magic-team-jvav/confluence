@@ -175,7 +175,7 @@ public final class LivingEntityEvents {
 
         // 芦苇呼吸管对溺水伤害减半
         if (damageSource.is(DamageTypes.DROWN)) {
-            if (LibUtils.anyHandHasItem(living, itemStack -> itemStack.is(SwordItems.BREATHING_REED))) {
+            if (LibUtils.anyHandHasItem(living, SwordItems.BREATHING_REED.get())) {
                 amount *= 0.5F;
             }
         }

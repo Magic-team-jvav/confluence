@@ -434,6 +434,12 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 NatureBlocks.LIFE_MUSHROOM_PILEUS_BLOCK.get()
 
         );
+        tag(BlockTags.INCORRECT_FOR_WOODEN_TOOL).addTag(ModTags.Blocks.NEEDS_2_LEVEL);
+        tag(BlockTags.INCORRECT_FOR_GOLD_TOOL).addTag(ModTags.Blocks.NEEDS_2_LEVEL);
+        tag(BlockTags.INCORRECT_FOR_STONE_TOOL).addTag(ModTags.Blocks.NEEDS_2_LEVEL);
+        tag(BlockTags.INCORRECT_FOR_IRON_TOOL).addTag(ModTags.Blocks.NEEDS_3_LEVEL);
+        tag(BlockTags.INCORRECT_FOR_DIAMOND_TOOL).addTag(ModTags.Blocks.NEEDS_4_LEVEL);
+        tag(BlockTags.INCORRECT_FOR_NETHERITE_TOOL).addTag(ModTags.Blocks.NEEDS_6_LEVEL);
         tag(ModTags.Blocks.NEEDS_1_LEVEL).add(
                 RAW_TIN_BLOCK.get(),
                 DEEPSLATE_TIN_ORE.get(),

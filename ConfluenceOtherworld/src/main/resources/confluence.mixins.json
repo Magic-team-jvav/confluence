@@ -135,6 +135,7 @@
         "integration.ftbchunks.TrackedPlayerMapIconMixin",
         "integration.geckolib.GeoCubeMixin",
         "integration.geckolib.InternalUtilMixin",
+        "integration.jade.HarvestToolProviderMixin",
         "integration.jei.FurnaceFuelCategoryMixin",
         "integration.jei.ScreenHelperMixin",
         "integration.journeymap.EffectMixin",

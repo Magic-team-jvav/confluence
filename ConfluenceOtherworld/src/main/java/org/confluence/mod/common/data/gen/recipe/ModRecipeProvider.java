@@ -48,6 +48,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
                 HookItems.AMBER_HOOK.toStack()
         ), null);
 
+
         stonecutting(recipeOutput, "", DecorativeBlocks.BLUE_ICE_BRICKS.toStack(4), Ingredient.of(Blocks.BLUE_ICE));
         stonecutting(recipeOutput, "", DecorativeBlocks.BLUE_ICE_BRICKS_SLAB.toStack(2), Ingredient.of(DecorativeBlocks.BLUE_ICE_BRICKS));
         stonecutting(recipeOutput, "", DecorativeBlocks.BLUE_ICE_BRICKS_STAIRS.toStack(1), Ingredient.of(DecorativeBlocks.BLUE_ICE_BRICKS));
@@ -55,10 +56,23 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         stonecutting(recipeOutput, "", DecorativeBlocks.PACKED_ICE_BRICKS_SLAB.toStack(2), Ingredient.of(DecorativeBlocks.PACKED_ICE_BRICKS));
         stonecutting(recipeOutput, "", DecorativeBlocks.PACKED_ICE_BRICKS_STAIRS.toStack(1), Ingredient.of(DecorativeBlocks.PACKED_ICE_BRICKS));
         stonecutting(recipeOutput, "", DecorativeBlocks.AETHERIUM_BRICKS.toStack(4), Ingredient.of(NatureBlocks.AETHERIUM_BLOCK));
+        stonecutting(recipeOutput, "", DecorativeBlocks.OBSIDIAN_BRICKS.toStack(4), Ingredient.of(Blocks.OBSIDIAN));
+        stonecutting(recipeOutput, "", DecorativeBlocks.OBSIDIAN_BRICKS_SLAB.toStack(2), Ingredient.of(DecorativeBlocks.OBSIDIAN_BRICKS));
+        stonecutting(recipeOutput, "", DecorativeBlocks.OBSIDIAN_BRICKS_STAIRS.toStack(1), Ingredient.of(DecorativeBlocks.OBSIDIAN_BRICKS));
+        stonecutting(recipeOutput, "", DecorativeBlocks.BLUE_BRICK_COLUMN.toStack(1), Ingredient.of(DecorativeBlocks.BLUE_BRICKS));
+        stonecutting(recipeOutput, "", DecorativeBlocks.BLUE_BRICK_SLAB.toStack(2), Ingredient.of(DecorativeBlocks.BLUE_BRICKS));
+        stonecutting(recipeOutput, "", DecorativeBlocks.BLUE_BRICK_STAIRS.toStack(1), Ingredient.of(DecorativeBlocks.BLUE_BRICKS));
+        stonecutting(recipeOutput, "", DecorativeBlocks.GREEN_BRICK_COLUMN.toStack(1), Ingredient.of(DecorativeBlocks.GREEN_BRICKS));
+        stonecutting(recipeOutput, "", DecorativeBlocks.GREEN_BRICK_SLAB.toStack(2), Ingredient.of(DecorativeBlocks.GREEN_BRICKS));
+        stonecutting(recipeOutput, "", DecorativeBlocks.GREEN_BRICK_STAIRS.toStack(1), Ingredient.of(DecorativeBlocks.GREEN_BRICKS));
+        stonecutting(recipeOutput, "", DecorativeBlocks.PINK_BRICK_COLUMN.toStack(1), Ingredient.of(DecorativeBlocks.PINK_BRICKS));
+        stonecutting(recipeOutput, "", DecorativeBlocks.PINK_BRICK_SLAB.toStack(2), Ingredient.of(DecorativeBlocks.PINK_BRICKS));
+        stonecutting(recipeOutput, "", DecorativeBlocks.PINK_BRICK_STAIRS.toStack(1), Ingredient.of(DecorativeBlocks.PINK_BRICKS));
+
 
         stonecutting(recipeOutput, "", MaterialItems.CHINA_BOWL.toStack(1), Ingredient.of(Items.WHITE_TERRACOTTA));
         stonecutting(recipeOutput, "", MaterialItems.CHINA_PLATE.toStack(1), Ingredient.of(Items.WHITE_TERRACOTTA));
-        stonecutting(recipeOutput, "", DecorativeBlocks.OBSIDIAN_BRICKS.toStack(1), Ingredient.of(DecorativeBlocks.CHISELED_OBSIDIAN_BRICKS));
+        stonecutting(recipeOutput, "", DecorativeBlocks.CHISELED_OBSIDIAN_BRICKS.toStack(1), Ingredient.of(DecorativeBlocks.OBSIDIAN_BRICKS));
         stonecutting(recipeOutput, "", DecorativeBlocks.GRANITE_COLUMN.toStack(1), Ingredient.of(DecorativeBlocks.POLISHED_GRANITE));
         stonecutting(recipeOutput, "", DecorativeBlocks.OBSIDIAN_SMALL_BRICKS.toStack(1), Ingredient.of(DecorativeBlocks.OBSIDIAN_BRICKS));
         stonecutting(recipeOutput, "", DecorativeBlocks.SMOOTH_OBSIDIAN.toStack(1), Ingredient.of(DecorativeBlocks.OBSIDIAN_BRICKS));

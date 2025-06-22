@@ -20,8 +20,9 @@
 |     魔法考官Leo      |         Tester         |         ?          |       ?        |
 |     魔法神吞awa      |         Tester         |         ?          |       ?        |
 |      MazurB      |       Translator       |       Russia       |       ?        |
-|     AdriMark     |      Contributor       | Discord & Youtube  |       ?        |
+|     AdriMark     |      Contributor       |     Community      |       ?        |
 |  **SquidSine**   |        Musician        |        Main        |      All       |
+|       花草忍        |         Artist         |        Misc        |    Delight     |
 
 ## 长时间没干活的
 

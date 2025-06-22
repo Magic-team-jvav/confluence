@@ -27,6 +27,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.conditions.ModLoadedCondition;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -36,6 +37,8 @@ import org.confluence.lib.common.LibTags;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.component.ValueComponent;
+import org.confluence.mod.common.data.gen.data_map.ValueSubProvider;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModTabs;
 import org.confluence.mod.common.init.ModTags;
@@ -104,7 +107,14 @@ public class WaystonesHelper {
 
     public static void itemTag(Function<TagKey<Item>, IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item>> consumer) {
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> wip = consumer.apply(LibTags.Items.WIP);
-        ITEMS.getEntries().forEach(item -> wip.addOptional(item.getId()));
+        wip.addOptional(SNOW_PYLON.getId());
+        wip.addOptional(DESERT_PYLON.getId());
+        wip.addOptional(CAVERN_PYLON.getId());
+        wip.addOptional(OCEAN_PYLON.getId());
+        wip.addOptional(JUNGLE_PYLON.getId());
+        wip.addOptional(HALLOW_PYLON.getId());
+        wip.addOptional(MUSHROOM_PYLON.getId());
+        wip.addOptional(UNIVERSAL_PYLON.getId());
     }
 
     public static void addTranslateKeys(BiConsumer<DeferredHolder<Block, ? extends Block>, String> consumer, boolean en) {
@@ -134,5 +144,19 @@ public class WaystonesHelper {
                 }
             }
         });
+    }
+
+    public static void appendValue(ValueSubProvider.Builder builder) {
+        ValueComponent value = new ValueComponent(20000);
+        ModLoadedCondition condition = new ModLoadedCondition(MODID);
+        builder.add(FOREST_PYLON.getId(), value, false, condition);
+        builder.add(SNOW_PYLON.getId(), value, false, condition);
+        builder.add(DESERT_PYLON.getId(), value, false, condition);
+        builder.add(CAVERN_PYLON.getId(), value, false, condition);
+        builder.add(OCEAN_PYLON.getId(), value, false, condition);
+        builder.add(JUNGLE_PYLON.getId(), value, false, condition);
+        builder.add(HALLOW_PYLON.getId(), value, false, condition);
+        builder.add(MUSHROOM_PYLON.getId(), value, false, condition);
+        builder.add(UNIVERSAL_PYLON.getId(), new ValueComponent(200000), false, condition);
     }
 }

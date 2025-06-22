@@ -357,15 +357,7 @@ public class NPCSpawner implements IGlobalData {
     private boolean trySpawnPainter(ServerPlayer serverPlayer, BlockPos pos, Region region) {
         Object2BooleanMap<EntityType<?>> map = npcAlive.get(region);
         if (map != null && !map.getOrDefault(TENpcEntities.PAINTER.get(), false)) {
-            if (map.getOrDefault(TENpcEntities.GUIDE.get(), false) &&
-                    map.getOrDefault(TENpcEntities.MERCHANT.get(), false) &&
-                    map.getOrDefault(TENpcEntities.NURSE.get(), false) &&
-                    map.getOrDefault(TENpcEntities.DEMOLITIONIST.get(), false) &&
-                    map.getOrDefault(TENpcEntities.DYE_TRADER.get(), false) &&
-                    map.getOrDefault(TENpcEntities.ANGLER.get(), false) &&
-                    // todo 还差动物学家
-                    map.getOrDefault(TENpcEntities.DRYAD.get(), false)
-            ) {
+            if (map.size() >= 8) {
                 return spawnAtPos(serverPlayer.serverLevel(), pos, TENpcEntities.PAINTER.get());
             }
         }

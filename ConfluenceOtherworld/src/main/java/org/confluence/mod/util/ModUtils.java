@@ -35,6 +35,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.data.saved.GamePhase;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.data.saved.MeteoriteTracker;
 import org.confluence.mod.common.init.ModEffects;
@@ -42,6 +43,7 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.init.item.PotionItems;
 import org.confluence.mod.common.item.common.TreasureBagItem;
+import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.common.init.TCEffects;
 import org.confluence.terra_guns.TerraGuns;
@@ -147,6 +149,12 @@ public final class ModUtils {
         if (living.hasEffect(ModEffects.MIDAS)) {
             amount *= Mth.nextDouble(living.getRandom(), 1.1, 1.49);
         }
+        if (IMinecraftServer.isHardmode(level.getServer())) {
+            amount *= 1.6;
+        }
+        if (KillBoard.INSTANCE.getGamePhase().isAboveThan(GamePhase.PLANTERA)) {
+            amount *= 1.5;
+        }
 
         dropMoney((int) amount, living.getX(), living.getEyeY() - 0.3, living.getZ(), level);
     }
@@ -233,14 +241,10 @@ public final class ModUtils {
      * 不可破坏物品无法附魔耐久与经验修补
      */
     public static boolean supportsEnchantment(ItemStack stack, Holder<Enchantment> enchantment) {
-        boolean supportedItem = enchantment.value().isSupportedItem(stack);
+        boolean supportedItem = stack.is(enchantment.value().definition().supportedItems());
         if (stack.has(DataComponents.UNBREAKABLE)) {
             return supportedItem && !enchantment.is(Enchantments.UNBREAKING) && !enchantment.is(Enchantments.MENDING);
         }
         return supportedItem;
     }
-
-//    public static long getVendorFreq() {
-//        return new SystemInfo().getHardware().getProcessor().getProcessorIdentifier().getVendorFreq();
-//    }
 }

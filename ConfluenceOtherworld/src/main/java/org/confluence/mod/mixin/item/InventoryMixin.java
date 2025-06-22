@@ -1,5 +1,8 @@
 package org.confluence.mod.mixin.item;
 
+import com.llamalad7.mixinextras.sugar.Local;
+import net.minecraft.world.Container;
+import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -21,6 +24,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import static org.confluence.mod.common.attachment.ExtraInventory.*;
 import static org.confluence.mod.common.item.common.CoinItem.UPGRADES_COUNT;
@@ -80,6 +84,11 @@ public abstract class InventoryMixin {
         if (!stack.isEmpty() && PrefixUtils.canInit(stack)) {
             PrefixUtils.initPrefix(player.getRandom(), stack);
         }
+    }
+
+    @Inject(method = "clearOrCountMatchingItems", at = @At("RETURN"), cancellable = true)
+    private void withExtra(Predicate<ItemStack> stackPredicate, int maxCount, Container inventory, CallbackInfoReturnable<Integer> cir, @Local boolean flag) {
+        cir.setReturnValue(ContainerHelper.clearOrCountMatchingItems(player.getData(ModAttachmentTypes.EXTRA_INVENTORY), stackPredicate, maxCount - cir.getReturnValue(), flag));
     }
 
     @Unique

@@ -7,8 +7,11 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.fml.ModList;
 import org.confluence.mod.api.event.AdditionalManaEvent;
+import org.confluence.mod.client.handler.CompatibilityHandler;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.init.ModAttachmentTypes;
@@ -28,14 +31,14 @@ public class IronSpellHelper {
     }
 
     public static float getMana(float original, Player player) {
-        if (CommonConfigs.IRONS_SPELL_COMPATIBILITY.get()) {
+        if (CommonConfigs.CONVERT_IRONS_SPELL_MANA.get()) {
             return player.getData(ModAttachmentTypes.MANA_STORAGE).getCurrentMana();
         }
         return original;
     }
 
     public static void extractMana(float manaCost, ServerPlayer serverPlayer) {
-        if (CommonConfigs.IRONS_SPELL_COMPATIBILITY.get()) {
+        if (CommonConfigs.CONVERT_IRONS_SPELL_MANA.get()) {
             if (manaCost > 0) {
                 ManaStorage manaStorage = serverPlayer.getData(ModAttachmentTypes.MANA_STORAGE);
                 PlayerUtils.extractAndDelayAndSync(manaStorage, () -> (int) (manaCost * toConfluence()), serverPlayer);
@@ -43,12 +46,13 @@ public class IronSpellHelper {
         }
     }
 
+    @OnlyIn(Dist.CLIENT)
     public static boolean cancelRenderManaOverlay(ResourceLocation name) {
-        return IS_LOADED && CommonConfigs.IRONS_SPELL_COMPATIBILITY.get() && MANA_OVERLAY_NAME.equals(name);
+        return IS_LOADED && CompatibilityHandler.isConvertIronsSpellMana() && MANA_OVERLAY_NAME.equals(name);
     }
 
     public static void additionalMana(AdditionalManaEvent event) {
-        if (IS_LOADED && CommonConfigs.IRONS_SPELL_COMPATIBILITY.get()) {
+        if (IS_LOADED && CommonConfigs.CONVERT_IRONS_SPELL_MANA.get()) {
             int value = event.getNeoValue();
             double maxMana = event.getEntity().getAttributeValue(AttributeRegistry.MAX_MANA);
             event.setNeoValue(value + (int) ((maxMana - getInitMaxMana()) / toConfluence()));
@@ -56,7 +60,7 @@ public class IronSpellHelper {
     }
 
     public static void updateMana(LivingEntity living, Holder<Attribute> attribute) {
-        if (IS_LOADED && CommonConfigs.IRONS_SPELL_COMPATIBILITY.get() && living instanceof ServerPlayer serverPlayer) {
+        if (IS_LOADED && CommonConfigs.CONVERT_IRONS_SPELL_MANA.get() && living instanceof ServerPlayer serverPlayer) {
             if (attribute == AttributeRegistry.MAX_MANA.getDelegate()) {
                 serverPlayer.getData(ModAttachmentTypes.MANA_STORAGE).flushAbility(serverPlayer);
             }

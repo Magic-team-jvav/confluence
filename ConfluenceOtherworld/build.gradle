@@ -25,7 +25,7 @@ neoForge {
     runs {
         client {
             client()
-            programArguments.addAll '--username', 'Tester'
+            programArguments.addAll '--username', 'Confluence'
         }
         server {
             server()
@@ -182,6 +182,7 @@ dependencies {
         runtimeOnly "curse.maven:ftb-teams-forge-404468:5882217"
     }
 
+    compileOnly "curse.maven:xaeros-minimap-263420:6184458"
     compileOnly "curse.maven:xaeros-world-map-317780:6212662"
     if (true) {
         runtimeOnly "curse.maven:xaeros-minimap-263420:6184458"

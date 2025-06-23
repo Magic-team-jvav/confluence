@@ -31,7 +31,7 @@ public abstract class ManaCapMixin {
 
     @Inject(method = "<init>", at = @At("TAIL"))
     private void init(LivingEntity livingEntity, CallbackInfo ci) {
-        if (CommonConfigs.ARS_NOUVEAU_COMPATIBILITY.get() && livingEntity instanceof Player player) {
+        if (CommonConfigs.CONVERT_ARS_NOUVEAU_MANA.get() && livingEntity instanceof Player player) {
             this.confluence$manaStorage = Optional.of(player.getData(ModAttachmentTypes.MANA_STORAGE));
             this.confluence$isServerSide = player instanceof ServerPlayer;
         }

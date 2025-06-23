@@ -79,6 +79,8 @@
         "integration.touhoulittlemaid.EntityMaidMixin",
         "integration.touhoulittlemaid.MaidFishingHookMixin",
         "integration.waystones.WaystoneBlockEntityMixin",
+        "integration.xaero.MinecraftServerDataInitializerMixin",
+        "integration.xaero.SyncedPlayerTrackerMixin",
         "item.ArrowItemMixin",
         "item.BowItemMixin",
         "item.ContainerMixin",
@@ -152,7 +154,8 @@
         "integration.terra_curio.ScopeFovHandlerMixin",
         "integration.terra_curio.TCClientPacketHandlerMixin",
         "integration.terra_curio.TCUtilsMixin",
-        "integration.xaeros.GuiMapMixin"
+        "integration.xaero.GuiMapMixin",
+        "integration.xaero.RadarStateUpdaterMixin"
     ],
     "server": [
         "server.DedicatedServerMixin",

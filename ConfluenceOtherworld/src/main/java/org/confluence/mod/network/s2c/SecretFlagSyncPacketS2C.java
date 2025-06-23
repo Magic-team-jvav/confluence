@@ -13,10 +13,7 @@ import org.confluence.mod.client.handler.ClientPacketHandler;
 
 public record SecretFlagSyncPacketS2C(long flag) implements CustomPacketPayload {
     public static final Type<SecretFlagSyncPacketS2C> TYPE = new Type<>(Confluence.asResource("secret_flag_sync"));
-    public static final StreamCodec<ByteBuf, SecretFlagSyncPacketS2C> STREAM_CODEC = StreamCodec.composite(
-            ExtraByteBufCodecs.LONG, p -> p.flag,
-            SecretFlagSyncPacketS2C::new
-    );
+    public static final StreamCodec<ByteBuf, SecretFlagSyncPacketS2C> STREAM_CODEC = ExtraByteBufCodecs.LONG.map(SecretFlagSyncPacketS2C::new, SecretFlagSyncPacketS2C::flag);
 
     @Override
     public Type<SecretFlagSyncPacketS2C> type() {

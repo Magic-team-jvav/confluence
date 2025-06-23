@@ -129,17 +129,17 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(MoneyTradeHealthFull.create())
                 .build());
 
-        shop(TENpcEntities.ARMS_DEALER.getId()).addRecipe(new Builder()
+        shop(TENpcEntities.ARMS_DEALER.getId()).addRecipe(withDefaultPylon()
                 .add(TGItems.MUSKET_BULLET)
                 .add(TGItems.MUSKET_BULLET, 100)
-//                .add(new MoneyTradeItem.Builder()
-//                        .setResult(TGItems.SILVER_BULLET.toStack())
-//                        .setProperties(hardmodeLock)
-//                        .build())
-//                .add(new MoneyTradeItem.Builder()
-//                        .setResult(TGItems.SILVER_BULLET.toStack(100))
-//                        .setProperties(hardmodeLock)
-//                        .build())
+                .add(new MoneyTradeItem.Builder()
+                        .setResult(TGItems.SILVER_BULLET.toStack())
+                        .setProperties(hardmodeLock)
+                        .build())
+                .add(new MoneyTradeItem.Builder()
+                        .setResult(TGItems.SILVER_BULLET.toStack(100))
+                        .setProperties(hardmodeLock)
+                        .build())
                 .add(TGItems.FLINTLOCK_PISTOL)
                 .add(TGItems.MINISHARK)
                 .add(SellTrade.INSTANCE)
@@ -224,7 +224,6 @@ public class NPCShopProvider extends AbstractRecipeProvider {
         return recipe(NPCTradeManager.CODEC, pathProvider().json(Confluence.asResource(id.getPath())));
     }
 
-    // todo 等待商品可以隐藏
     protected Builder withDefaultPylon() {
         return new Builder()
                 .add(new DeferredMoneyTradeItem(WaystonesHelper.FOREST_PYLON.getId(), 1, withModLoaded(new BiomeLock(Optional.empty(), Optional.of(List.of(Tags.Biomes.IS_FOREST, Tags.Biomes.IS_PLAINS))), WaystonesHelper.MODID)))

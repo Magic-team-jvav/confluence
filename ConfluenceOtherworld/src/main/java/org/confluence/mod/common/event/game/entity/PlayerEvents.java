@@ -54,10 +54,7 @@ import org.confluence.mod.mixed.IAbstractMinecart;
 import org.confluence.mod.mixed.IFishingHook;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IServerPlayer;
-import org.confluence.mod.network.s2c.ExtraInventorySyncPacketS2C;
-import org.confluence.mod.network.s2c.FishingPowerInfoPacketS2C;
-import org.confluence.mod.network.s2c.SecretFlagSyncPacketS2C;
-import org.confluence.mod.network.s2c.VisibilityPacketS2C;
+import org.confluence.mod.network.s2c.*;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
@@ -88,6 +85,7 @@ public final class PlayerEvents {
             if (CommonConfigs.DO_NPC_SPAWNING.get() && serverPlayer.serverLevel().getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)) {
                 NPCSpawner.INSTANCE.trySpawnGuide(serverPlayer);
             }
+            CompatibilitySyncPacketS2c.sendToAll();
         }
     }
 

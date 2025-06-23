@@ -82,6 +82,7 @@ public final class GameClientEvents {
         if (player == null) {
             LocalBrushData.clear();
             ClientPacketHandler.reset();
+            CompatibilityHandler.reset();
         } else {
             BaseSwordItem.swordProjectileHandle(minecraft, player);
             HookThrowingHandler.handle(player);

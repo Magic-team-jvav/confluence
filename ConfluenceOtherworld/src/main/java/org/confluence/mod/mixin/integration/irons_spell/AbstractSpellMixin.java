@@ -29,7 +29,7 @@ public abstract class AbstractSpellMixin {
 
     @ModifyReturnValue(method = "getManaCost", at = @At("RETURN"))
     private int getManaCost(int original) {
-        if (CommonConfigs.IRONS_SPELL_COMPATIBILITY.get()) {
+        if (CommonConfigs.CONVERT_IRONS_SPELL_MANA.get()) {
             return (int) (original * IronSpellHelper.toConfluence());
         }
         return original;

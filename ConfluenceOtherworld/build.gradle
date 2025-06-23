@@ -25,6 +25,7 @@ neoForge {
     runs {
         client {
             client()
+            programArguments.addAll '--username', 'Tester'
         }
         server {
             server()
@@ -131,11 +132,11 @@ repositories {
 
 boolean vanillin = false // 香兰素
 boolean observable = false // 可视性能侦测
-boolean ftb = false
+boolean ftb = false // feed the beast
 boolean ipn = false // 一键背包整理Next
 boolean mmmmmmmmmmmm = false // 试验假人
 boolean supplementaries = false // 锦致装饰
-boolean lootBeams = false
+boolean lootBeams = false // 战利品光束
 
 dependencies {
     projectName.forEach { name -> implementation jarJar(project(":" + name)) }
@@ -179,6 +180,12 @@ dependencies {
         runtimeOnly "curse.maven:ftb-library-forge-404465:6016745"
         runtimeOnly "curse.maven:ftb-ultimine-forge-386134:5671703"
         runtimeOnly "curse.maven:ftb-teams-forge-404468:5882217"
+    }
+
+    compileOnly "curse.maven:xaeros-world-map-317780:6212662"
+    if (true) {
+        runtimeOnly "curse.maven:xaeros-minimap-263420:6184458"
+        runtimeOnly "curse.maven:xaeros-world-map-317780:6212662"
     }
 
     compileOnly "curse.maven:better-advancements-272515:5850587"
@@ -234,10 +241,10 @@ dependencies {
     }
 
     compileOnly "com.hollingsworth.ars_nouveau:ars_nouveau-${minecraft_version}:${ars_nouveau_version}"
-    runtimeOnly "com.hollingsworth.ars_nouveau:ars_nouveau-${minecraft_version}:${ars_nouveau_version}"
+    //runtimeOnly "com.hollingsworth.ars_nouveau:ars_nouveau-${minecraft_version}:${ars_nouveau_version}"
 
     compileOnly "io.redspace:irons_spellbooks:${irons_spells_version}:api"
-    if (true) {
+    if (false) {
         runtimeOnly "io.redspace:irons_spellbooks:${irons_spells_version}"
         runtimeOnly "dev.kosmx.player-anim:player-animation-lib-forge:${player_animator_version}"
     }
@@ -280,10 +287,6 @@ dependencies {
     }
     if (vanillin) {
         runtimeOnly "curse.maven:vanillin-965702:6446560"
-    }
-    if (false) {
-        runtimeOnly "curse.maven:xaeros-minimap-263420:6184458"
-        runtimeOnly "curse.maven:xaeros-world-map-317780:6212662"
     }
     if (false) {
         runtimeOnly "maven.modrinth:ae2:juQOuKVW"

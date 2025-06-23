@@ -151,7 +151,8 @@
         "integration.terra_curio.InformationHandlerMixin",
         "integration.terra_curio.ScopeFovHandlerMixin",
         "integration.terra_curio.TCClientPacketHandlerMixin",
-        "integration.terra_curio.TCUtilsMixin"
+        "integration.terra_curio.TCUtilsMixin",
+        "integration.xaeros.GuiMapMixin"
     ],
     "server": [
         "server.DedicatedServerMixin",

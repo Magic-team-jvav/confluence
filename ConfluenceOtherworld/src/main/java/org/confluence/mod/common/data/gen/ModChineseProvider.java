@@ -1967,6 +1967,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.CRIMSON_JUNGLE_GRASS_BLOCK.get(), "猩红丛林草方块");
         add(NatureBlocks.MUSHROOM_GRASS_BLOCK.get(), "蘑菇草方块");
         add(NatureBlocks.JUNGLE_GRASS_BLOCK.get(), "丛林草方块");
+        add(NatureBlocks.JUNGLE_PATH.get(), "丛林草径");
+        add(NatureBlocks.MUSHROOM_PATH.get(), "蘑菇径");
+        add(NatureBlocks.ASH_PATH.get(), "灰径");
         add(NatureBlocks.ASH_BLOCK.get(), "灰烬块");
         add(NatureBlocks.ASH_GRASS_BLOCK.get(), "灰烬草方块");
         add(NatureBlocks.ASH_GRASS.get(), "灰烬草");

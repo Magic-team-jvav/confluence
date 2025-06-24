@@ -3,10 +3,12 @@ package org.confluence.mod.integration.waystones;
 import net.blay09.mods.waystones.block.WaystoneBlock;
 import net.blay09.mods.waystones.block.entity.WaystoneBlockEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -34,7 +36,7 @@ public class PylonBlock extends WaystoneBlock {
 
     @Override
     public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos) {
-        return super.canSurvive(state, world, pos) && survive.canSurvive(world, pos);
+        return super.canSurvive(state, world, pos) && survive.canSurvive(world, pos, world.getBiome(pos));
     }
 
     @Override
@@ -79,6 +81,6 @@ public class PylonBlock extends WaystoneBlock {
 
     @FunctionalInterface
     public interface Survive {
-        boolean canSurvive(LevelReader world, BlockPos pos);
+        boolean canSurvive(LevelReader world, BlockPos pos, Holder<Biome> biome);
     }
 }

@@ -3,6 +3,7 @@ package org.confluence.mod.integration.waystones;
 import net.blay09.mods.waystones.block.WaystoneBlock;
 import net.blay09.mods.waystones.block.entity.WaystoneBlockEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
@@ -53,14 +54,16 @@ public class PylonBlock extends WaystoneBlock {
 
     public static class Entity extends WaystoneBlockEntity implements GeoBlockEntity {
         private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+        private final ResourceLocation waystoneType;
 
         public Entity(BlockPos blockPos, BlockState blockState) {
             super(blockPos, blockState);
+            this.waystoneType = BuiltInRegistries.BLOCK.getKey(blockState.getBlock());
         }
 
         @Override
         protected ResourceLocation getWaystoneType() {
-            return WaystonesHelper.WAYSTONE_TYPE;
+            return waystoneType;
         }
 
         @Override

@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.datafixers.DSL;
 import net.blay09.mods.waystones.block.WaystoneBlock;
+import net.minecraft.Util;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Holder;
@@ -45,6 +46,8 @@ import org.confluence.mod.common.init.ModTags;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -52,9 +55,6 @@ import java.util.function.Supplier;
 public class WaystonesHelper {
     public static final String MODID = "waystones";
     public static final boolean IS_LOADED = ModList.get().isLoaded(MODID);
-    public static final ResourceLocation WAYSTONE_TYPE = Confluence.asResource("pylon");
-    public static final ResourceLocation FOREST_PYLON_TEXTURE = Confluence.asResource("textures/gui/pylon/forest_pylon.png");
-
     static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Confluence.MODID);
     private static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, Confluence.MODID);
     private static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
@@ -74,6 +74,12 @@ public class WaystonesHelper {
     public static final DeferredBlock<Block> UNIVERSAL_PYLON = register("universal_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.BROWN), (world, pos) -> true);
 
     public static final Supplier<BlockEntityType<PylonBlock.Entity>> PYLON_ENTITY = BLOCK_ENTITY_TYPES.register("pylon_entity", () -> BlockEntityType.Builder.of(PylonBlock.Entity::new, BLOCKS.getEntries().stream().map(DeferredHolder::get).toArray(Block[]::new)).build(DSL.remainderType()));
+
+    public static final Map<ResourceLocation, ResourceLocation> TYPE_TO_TEXTURE = Util.make(new HashMap<>(), map -> {
+        for (DeferredHolder<Block, ? extends Block> entry : BLOCKS.getEntries()) {
+            map.put(entry.getId(), Confluence.asResource("textures/gui/pylon/" + entry.getId().getPath() + ".png"));
+        }
+    });
 
     private static DeferredBlock<Block> register(String name, BlockBehaviour.Properties properties, PylonBlock.Survive survive) {
         int count = BLOCKS.getEntries().size();

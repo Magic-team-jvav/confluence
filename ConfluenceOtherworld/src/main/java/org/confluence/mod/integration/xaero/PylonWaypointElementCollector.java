@@ -4,7 +4,7 @@ import net.blay09.mods.waystones.api.Waystone;
 import net.blay09.mods.waystones.core.IPlayerWaystoneData;
 import net.blay09.mods.waystones.core.PlayerWaystoneManager;
 import net.minecraft.client.Minecraft;
-import org.confluence.mod.integration.waystones.WaystonesHelper;
+import org.confluence.mod.Confluence;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +25,7 @@ public class PylonWaypointElementCollector {
         Map<UUID, PylonWaypointElement> neoElements = null;
         IPlayerWaystoneData playerWaystoneData = PlayerWaystoneManager.getPlayerWaystoneData(minecraft.level);
         for (Waystone waystone : playerWaystoneData.getWaystones(minecraft.player)) {
-            if (WaystonesHelper.WAYSTONE_TYPE.equals(waystone.getWaystoneType())) {
+            if (Confluence.MODID.equals(waystone.getWaystoneType().getNamespace())) {
                 if (neoElements == null) neoElements = new HashMap<>();
                 neoElements.put(waystone.getWaystoneUid(), new PylonWaypointElement(waystone));
             }

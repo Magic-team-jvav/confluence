@@ -1,6 +1,9 @@
 package org.confluence.mod.common.block.natural.spreadable;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.DyeColor;
@@ -9,6 +12,12 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
+import net.minecraft.world.level.levelgen.placement.PlacedFeature;
+
+import java.util.List;
+import java.util.Optional;
 
 public class JungleGrassBlock extends SpreadingGrassBlock implements BonemealableBlock {
     public JungleGrassBlock(ISpreadable.Type type, Properties properties) {
@@ -36,35 +45,55 @@ public class JungleGrassBlock extends SpreadingGrassBlock implements Bonemealabl
     }
 
     @Override
-    public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
-        BlockPos blockpos = pos.above();
+    public void performBonemeal(ServerLevel serverLevel, RandomSource random, BlockPos pos, BlockState state) {
+        BlockPos startPos = pos.above();
+        BlockState shortGrassState = Blocks.SHORT_GRASS.defaultBlockState();
+        Optional<Holder.Reference<PlacedFeature>> grassFeatureOpt = serverLevel.registryAccess()
+                .registryOrThrow(Registries.PLACED_FEATURE)
+                .getHolder(VegetationPlacements.GRASS_BONEMEAL);
         for (int i = 0; i < 128; i++) {
-            BlockPos blockpos1 = blockpos;
+            BlockPos targetPos = startPos;
+            boolean validPosition = true;
             for (int j = 0; j < i / 16; j++) {
-                blockpos1 = blockpos1.offset(random.nextInt(3) - 1, (random.nextInt(3) - 1) * random.nextInt(3) / 2, random.nextInt(3) - 1);
-                if (level.getBlockState(blockpos1).isCollisionShapeFullBlock(level, blockpos1)) {
+                int offsetX = random.nextInt(3) - 1;
+                int offsetY = (random.nextInt(3) - 1) * random.nextInt(3) / 2;
+                int offsetZ = random.nextInt(3) - 1;
+                targetPos = targetPos.offset(offsetX, offsetY, offsetZ);
+                BlockState belowState = serverLevel.getBlockState(targetPos.below());
+                BlockState currentState = serverLevel.getBlockState(targetPos);
+                if (!belowState.is(this) || currentState.isCollisionShapeFullBlock(serverLevel, targetPos)) {
+                    validPosition = false;
                     break;
                 }
             }
-            BlockState blockstate1 = level.getBlockState(blockpos1);
-            if (blockstate1.isAir()) {
-                BlockState plantState = selectJunglePlant(random);
-                if (plantState.canSurvive(level, blockpos1)) {
-                    level.setBlock(blockpos1, plantState, 3);
+            if (!validPosition) {
+                continue;
+            }
+            BlockState targetState = serverLevel.getBlockState(targetPos);
+            if (targetState.is(shortGrassState.getBlock()) && random.nextInt(10) == 0) {
+                ((BonemealableBlock) shortGrassState.getBlock()).performBonemeal(serverLevel, random, targetPos, targetState);
+            }
+            if (targetState.isAir()) {
+                Holder<PlacedFeature> featureHolder;
+                if (random.nextInt(8) == 0) {
+                    List<ConfiguredFeature<?, ?>> flowerFeatures = serverLevel.getBiome(targetPos).value().getGenerationSettings().getFlowerFeatures();
+                    if (flowerFeatures.isEmpty()) {
+                        continue;
+                    }
+                    featureHolder = ((RandomPatchConfiguration) flowerFeatures.get(0).config()).feature();
+                } else {
+                    if (!grassFeatureOpt.isPresent()) {
+                        continue;
+                    }
+                    featureHolder = grassFeatureOpt.get();
                 }
+                featureHolder.value().place(serverLevel, serverLevel.getChunkSource().getGenerator(), random, targetPos);
             }
         }
     }
 
-    private BlockState selectJunglePlant(RandomSource random) {
-        int chance = random.nextInt(100);
-        if (chance < 40) {
-            return Blocks.FERN.defaultBlockState();
-        } else if (chance < 70) {
-            return Blocks.SHORT_GRASS.defaultBlockState();
-        } else if (chance < 85) {
-            return Blocks.RED_MUSHROOM.defaultBlockState();
-        }
-        return Blocks.AIR.defaultBlockState();
+    @Override
+    public BonemealableBlock.Type getType() {
+        return BonemealableBlock.Type.NEIGHBOR_SPREADER;
     }
 }

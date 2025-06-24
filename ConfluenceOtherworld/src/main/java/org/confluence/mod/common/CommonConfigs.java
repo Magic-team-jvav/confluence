@@ -40,6 +40,7 @@ public final class CommonConfigs {
     public static BooleanValue CONVERT_IRONS_SPELL_MANA;
     public static BooleanValue FTB_CHUNKS_WORMHOLE_POTION;
     public static BooleanValue XAEROS_MAP_WORMHOLE_POTION;
+    public static BooleanValue XAEROS_MAP_PYLON_WAYPOINT;
 
     public static void register(ModContainer container) {
         Builder BUILDER = new Builder();
@@ -101,6 +102,7 @@ public final class CommonConfigs {
             CONVERT_IRONS_SPELL_MANA = BUILDER.define("convertIronsSpellMana", false);
             FTB_CHUNKS_WORMHOLE_POTION = BUILDER.define("ftbChunksWormholePotion", true);
             XAEROS_MAP_WORMHOLE_POTION = BUILDER.define("xaerosMapWormholePotion", true);
+            XAEROS_MAP_PYLON_WAYPOINT = BUILDER.define("xaerosMapPylonWaypoint", true);
             BUILDER.pop();
         }
         container.registerConfig(ModConfig.Type.COMMON, BUILDER.build());

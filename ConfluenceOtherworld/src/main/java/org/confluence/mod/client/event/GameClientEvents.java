@@ -53,6 +53,7 @@ import org.confluence.mod.common.init.item.SwordItems;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.integration.ars_nouveau.ArsNouveauHelper;
 import org.confluence.mod.integration.irons_spell.IronSpellHelper;
+import org.confluence.mod.integration.xaero.XaeroHelper;
 import org.confluence.mod.mixed.IInventoryScreen;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.ILocalPlayer;
@@ -87,6 +88,7 @@ public final class GameClientEvents {
             BaseSwordItem.swordProjectileHandle(minecraft, player);
             HookThrowingHandler.handle(player);
             KeyRequestHandler.handle();
+            XaeroHelper.tick(minecraft);
         }
     }
 

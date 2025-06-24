@@ -51,7 +51,8 @@ public record CompatibilitySyncPacketS2c(int data) implements CustomPacketPayloa
                     CommonConfigs.CONVERT_ARS_NOUVEAU_MANA,
                     CommonConfigs.CONVERT_IRONS_SPELL_MANA,
                     CommonConfigs.FTB_CHUNKS_WORMHOLE_POTION,
-                    CommonConfigs.XAEROS_MAP_WORMHOLE_POTION
+                    CommonConfigs.XAEROS_MAP_WORMHOLE_POTION,
+                    CommonConfigs.XAEROS_MAP_PYLON_WAYPOINT
             };
         }
         return configs;

@@ -52,6 +52,9 @@ import java.util.function.Supplier;
 public class WaystonesHelper {
     public static final String MODID = "waystones";
     public static final boolean IS_LOADED = ModList.get().isLoaded(MODID);
+    public static final ResourceLocation WAYSTONE_TYPE = Confluence.asResource("pylon");
+    public static final ResourceLocation FOREST_PYLON_TEXTURE = Confluence.asResource("textures/gui/pylon/forest_pylon.png");
+
     static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Confluence.MODID);
     private static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, Confluence.MODID);
     private static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);

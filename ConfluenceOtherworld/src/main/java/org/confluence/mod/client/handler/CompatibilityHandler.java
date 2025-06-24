@@ -24,6 +24,10 @@ public final class CompatibilityHandler {
         return configs == null || configs[3];
     }
 
+    public static boolean isXaerosMapPylonWaypoint() {
+        return configs == null || configs[4];
+    }
+
     public static void reset() {
         configs = null;
     }

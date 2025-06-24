@@ -3,84 +3,84 @@ package org.confluence.mod.integration.xaero;
 import net.minecraft.client.Minecraft;
 import xaero.map.element.MapElementReader;
 
-public class PylonWaypointElementRenderReader extends MapElementReader<PylonWaypointElement, PylonWaypointContext, PylonWaypointElementRenderer> {
+public class PylonWaypointElementRenderReader extends MapElementReader<PylonWaypointElement, PylonWaypointElementRenderContext, PylonWaypointElementRenderer> {
     @Override
-    public boolean isHidden(PylonWaypointElement pylonWaypointElement, PylonWaypointContext pylonWaypointContext) {
-        return false;
+    public boolean isHidden(PylonWaypointElement element, PylonWaypointElementRenderContext context) {
+        return element.getWaystone().getDimension() != Minecraft.getInstance().level.dimension();
     }
 
     @Override
-    public double getRenderX(PylonWaypointElement pylonWaypointElement, PylonWaypointContext pylonWaypointContext, float v) {
+    public double getRenderX(PylonWaypointElement element, PylonWaypointElementRenderContext context, float partialTicks) {
+        return element.getX();
+    }
+
+    @Override
+    public double getRenderZ(PylonWaypointElement element, PylonWaypointElementRenderContext context, float partialTicks) {
+        return element.getZ();
+    }
+
+    @Override
+    public int getInteractionBoxLeft(PylonWaypointElement element, PylonWaypointElementRenderContext context, float partialTicks) {
         return 0;
     }
 
     @Override
-    public double getRenderZ(PylonWaypointElement pylonWaypointElement, PylonWaypointContext pylonWaypointContext, float v) {
+    public int getInteractionBoxRight(PylonWaypointElement element, PylonWaypointElementRenderContext context, float partialTicks) {
         return 0;
     }
 
     @Override
-    public int getInteractionBoxLeft(PylonWaypointElement pylonWaypointElement, PylonWaypointContext pylonWaypointContext, float v) {
+    public int getInteractionBoxTop(PylonWaypointElement element, PylonWaypointElementRenderContext context, float partialTicks) {
         return 0;
     }
 
     @Override
-    public int getInteractionBoxRight(PylonWaypointElement pylonWaypointElement, PylonWaypointContext pylonWaypointContext, float v) {
+    public int getInteractionBoxBottom(PylonWaypointElement element, PylonWaypointElementRenderContext context, float partialTicks) {
         return 0;
     }
 
     @Override
-    public int getInteractionBoxTop(PylonWaypointElement pylonWaypointElement, PylonWaypointContext pylonWaypointContext, float v) {
+    public int getRenderBoxLeft(PylonWaypointElement element, PylonWaypointElementRenderContext context, float partialTicks) {
         return 0;
     }
 
     @Override
-    public int getInteractionBoxBottom(PylonWaypointElement pylonWaypointElement, PylonWaypointContext pylonWaypointContext, float v) {
+    public int getRenderBoxRight(PylonWaypointElement element, PylonWaypointElementRenderContext context, float partialTicks) {
         return 0;
     }
 
     @Override
-    public int getRenderBoxLeft(PylonWaypointElement pylonWaypointElement, PylonWaypointContext pylonWaypointContext, float v) {
+    public int getRenderBoxTop(PylonWaypointElement element, PylonWaypointElementRenderContext context, float partialTicks) {
         return 0;
     }
 
     @Override
-    public int getRenderBoxRight(PylonWaypointElement pylonWaypointElement, PylonWaypointContext pylonWaypointContext, float v) {
+    public int getRenderBoxBottom(PylonWaypointElement element, PylonWaypointElementRenderContext context, float partialTicks) {
         return 0;
     }
 
     @Override
-    public int getRenderBoxTop(PylonWaypointElement pylonWaypointElement, PylonWaypointContext pylonWaypointContext, float v) {
+    public int getLeftSideLength(PylonWaypointElement element, Minecraft minecraft) {
         return 0;
     }
 
     @Override
-    public int getRenderBoxBottom(PylonWaypointElement pylonWaypointElement, PylonWaypointContext pylonWaypointContext, float v) {
-        return 0;
-    }
-
-    @Override
-    public int getLeftSideLength(PylonWaypointElement pylonWaypointElement, Minecraft minecraft) {
-        return 0;
-    }
-
-    @Override
-    public String getMenuName(PylonWaypointElement pylonWaypointElement) {
+    public String getMenuName(PylonWaypointElement element) {
         return "";
     }
 
     @Override
-    public String getFilterName(PylonWaypointElement pylonWaypointElement) {
+    public String getFilterName(PylonWaypointElement element) {
         return "";
     }
 
     @Override
-    public int getMenuTextFillLeftPadding(PylonWaypointElement pylonWaypointElement) {
+    public int getMenuTextFillLeftPadding(PylonWaypointElement element) {
         return 0;
     }
 
     @Override
-    public int getRightClickTitleBackgroundColor(PylonWaypointElement pylonWaypointElement) {
+    public int getRightClickTitleBackgroundColor(PylonWaypointElement element) {
         return 0;
     }
 

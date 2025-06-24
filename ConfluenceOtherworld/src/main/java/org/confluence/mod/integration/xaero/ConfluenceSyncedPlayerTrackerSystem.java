@@ -10,8 +10,7 @@ public class ConfluenceSyncedPlayerTrackerSystem implements ISyncedPlayerTracker
         PlayerTeam trackerTeam = tracker.getTeam();
         PlayerTeam trackedTeam = tracked.getTeam();
         if (trackerTeam == trackedTeam) return 2;
-        if (trackerTeam == null) return 0;
-        if (trackedTeam == null) return 0;
+        if (trackerTeam == null || trackedTeam == null) return 0;
         return 1;
     }
 

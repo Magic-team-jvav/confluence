@@ -78,6 +78,7 @@
         "integration.terrablender.MixinMultiNoiseBiomeSourceSquared",
         "integration.touhoulittlemaid.EntityMaidMixin",
         "integration.touhoulittlemaid.MaidFishingHookMixin",
+        "integration.waystones.PlayerWaystoneManagerMixin",
         "integration.waystones.WaystoneBlockEntityMixin",
         "integration.xaero.MinecraftServerDataInitializerMixin",
         "integration.xaero.SyncedPlayerTrackerMixin",

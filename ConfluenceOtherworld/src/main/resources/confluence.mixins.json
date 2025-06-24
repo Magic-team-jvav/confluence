@@ -155,6 +155,7 @@
         "integration.terra_curio.TCClientPacketHandlerMixin",
         "integration.terra_curio.TCUtilsMixin",
         "integration.xaero.GuiMapMixin",
+        "integration.xaero.MapElementRenderHandler$BuilderMixin",
         "integration.xaero.RadarStateUpdaterMixin"
     ],
     "server": [

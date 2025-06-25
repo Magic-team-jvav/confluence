@@ -1,6 +1,6 @@
 package org.confluence.mod.integration.xaero;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.player.RemotePlayer;
 import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -21,9 +21,9 @@ public class XaeroHelper {
         return collector;
     }
 
-    public static void tick(Minecraft minecraft) {
+    public static void tick(LocalPlayer player) {
         if (IS_LOADED && WaystonesHelper.IS_LOADED) {
-            ((PylonWaypointElementCollector) getCollector()).update(minecraft);
+            ((PylonWaypointElementCollector) getCollector()).update(player);
         }
     }
 

@@ -3,11 +3,10 @@ package org.confluence.mod.integration.waystones;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.datafixers.DSL;
-import net.blay09.mods.waystones.api.Waystone;
+import net.blay09.mods.waystones.api.WaystonesAPI;
 import net.blay09.mods.waystones.block.WaystoneBlock;
-import net.blay09.mods.waystones.core.WaystoneManagerImpl;
-import net.blay09.mods.waystones.core.WaystoneTeleportContextImpl;
-import net.blay09.mods.waystones.core.WaystoneTeleportManager;
+import net.blay09.mods.waystones.requirement.NoRequirement;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -16,7 +15,6 @@ import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
@@ -177,10 +175,13 @@ public class WaystonesHelper {
 
     public static void handle(ServerPlayer serverPlayer, UUID uuid) {
         // todo 检查NPC
-        WaystoneManagerImpl.get(serverPlayer.server).getWaystoneById(uuid).ifPresent(waystone -> {
-            try {
-                WaystoneTeleportManager.tryTeleport(WaystoneTeleportContextImpl.class.getDeclaredConstructor(Entity.class, Waystone.class).newInstance(serverPlayer, waystone));
-            } catch (Exception ignored) {}
+        WaystonesAPI.getWaystone(serverPlayer.server, uuid).ifPresent(waystone -> {
+            WaystonesAPI.createDefaultTeleportContext(serverPlayer, waystone, context -> {
+                context.setRequirements(NoRequirement.INSTANCE);
+            }).ifLeft(WaystonesAPI::tryTeleport).ifRight(error -> {
+                serverPlayer.sendSystemMessage(error.getComponent().copy().withStyle(ChatFormatting.DARK_RED), false);
+                WaystonesAPI.removeWaystoneFromDatabase(serverPlayer.server, waystone);
+            });
         });
     }
 

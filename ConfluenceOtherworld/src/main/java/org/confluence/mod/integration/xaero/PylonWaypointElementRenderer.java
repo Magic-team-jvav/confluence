@@ -9,11 +9,9 @@ import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.client.handler.CompatibilityHandler;
 import org.confluence.mod.integration.waystones.WaystonesHelper;
-import xaero.map.MapProcessor;
 import xaero.map.WorldMapSession;
 import xaero.map.element.MapElementRenderer;
 import xaero.map.graphics.renderer.multitexture.MultiTextureRenderTypeRendererProvider;
-import xaero.map.gui.GuiMap;
 
 public class PylonWaypointElementRenderer extends MapElementRenderer<PylonWaypointElement, PylonWaypointElementRenderContext, PylonWaypointElementRenderer> {
     public PylonWaypointElementRenderer() {
@@ -22,10 +20,7 @@ public class PylonWaypointElementRenderer extends MapElementRenderer<PylonWaypoi
 
     @Override
     public void beforeRender(int location, Minecraft minecraft, GuiGraphics guiGraphics, double cameraX, double cameraZ, double mouseX, double mouseZ, float brightness, double scale, double guiBasedScale, TextureManager textureManager, Font font, MultiBufferSource.BufferSource bufferSource, MultiTextureRenderTypeRendererProvider multiTextureRenderTypeRendererProvider, boolean pre) {
-        WorldMapSession mapSession = WorldMapSession.getCurrentSession();
-        MapProcessor mapProcessor = mapSession.getMapProcessor();
-        context.mapDimId = mapProcessor.getMapWorld().getCurrentDimensionId();
-        context.userScale = minecraft.screen instanceof GuiMap guiMap ? guiMap.getUserScale() : 1.0;
+        context.mapDimId = WorldMapSession.getCurrentSession().getMapProcessor().getMapWorld().getCurrentDimensionId();
     }
 
     @Override
@@ -40,7 +35,8 @@ public class PylonWaypointElementRenderer extends MapElementRenderer<PylonWaypoi
         if (texture == null) return false;
         PoseStack poseStack = guiGraphics.pose();
         poseStack.pushPose();
-        poseStack.scale(3, 3, 1);
+        float iconScale = minecraft.screen instanceof IGuiMap guiMap && guiMap.confluence$getHovered() instanceof PylonWaypointElement e && e.getWaystone() == element.getWaystone() ? 5 : 3;
+        poseStack.scale(iconScale, iconScale, 1);
         poseStack.translate(partialX - 7, partialY - 9.5, 0);
         guiGraphics.blit(texture, 0, 0, 0, 0, 14, 19, 14, 19);
         poseStack.popPose();

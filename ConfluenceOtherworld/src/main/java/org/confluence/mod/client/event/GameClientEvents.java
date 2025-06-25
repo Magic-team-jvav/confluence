@@ -88,7 +88,7 @@ public final class GameClientEvents {
             BaseSwordItem.swordProjectileHandle(minecraft, player);
             HookThrowingHandler.handle(player);
             KeyRequestHandler.handle();
-            XaeroHelper.tick(minecraft);
+            XaeroHelper.tick(player);
         }
     }
 

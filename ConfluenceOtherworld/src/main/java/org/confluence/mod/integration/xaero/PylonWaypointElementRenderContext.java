@@ -5,5 +5,4 @@ import net.minecraft.world.level.Level;
 
 public class PylonWaypointElementRenderContext {
     public ResourceKey<Level> mapDimId;
-    public double userScale;
 }

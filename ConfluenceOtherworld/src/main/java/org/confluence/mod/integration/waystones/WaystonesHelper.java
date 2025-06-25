@@ -3,15 +3,20 @@ package org.confluence.mod.integration.waystones;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.datafixers.DSL;
+import net.blay09.mods.waystones.api.Waystone;
 import net.blay09.mods.waystones.block.WaystoneBlock;
-import net.minecraft.Util;
+import net.blay09.mods.waystones.core.WaystoneManagerImpl;
+import net.blay09.mods.waystones.core.WaystoneTeleportContextImpl;
+import net.blay09.mods.waystones.core.WaystoneTeleportManager;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
@@ -28,6 +33,8 @@ import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.conditions.ModLoadedCondition;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -41,11 +48,13 @@ import org.confluence.mod.common.data.gen.data_map.ValueSubProvider;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModTabs;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.integration.xaero.PylonWaypointElement;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -53,6 +62,7 @@ import java.util.function.Supplier;
 public class WaystonesHelper {
     public static final String MODID = "waystones";
     public static final boolean IS_LOADED = ModList.get().isLoaded(MODID);
+    public static final Map<ResourceLocation, ResourceLocation> TYPE_TO_TEXTURE = new HashMap<>();
     static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Confluence.MODID);
     private static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, Confluence.MODID);
     private static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
@@ -70,12 +80,6 @@ public class WaystonesHelper {
 
     public static final Supplier<BlockEntityType<PylonBlock.Entity>> PYLON_ENTITY = BLOCK_ENTITY_TYPES.register("pylon_entity", () -> BlockEntityType.Builder.of(PylonBlock.Entity::new, BLOCKS.getEntries().stream().map(DeferredHolder::get).toArray(Block[]::new)).build(DSL.remainderType()));
 
-    public static final Map<ResourceLocation, ResourceLocation> TYPE_TO_TEXTURE = Util.make(new HashMap<>(), map -> {
-        for (DeferredHolder<Block, ? extends Block> entry : BLOCKS.getEntries()) {
-            map.put(entry.getId(), Confluence.asResource("textures/gui/pylon/" + entry.getId().getPath() + ".png"));
-        }
-    });
-
     private static DeferredBlock<Block> register(String name, BlockBehaviour.Properties properties, PylonBlock.Survive survive) {
         int count = BLOCKS.getEntries().size();
         DeferredBlock<Block> block = BLOCKS.register(name, () -> {
@@ -86,6 +90,7 @@ public class WaystonesHelper {
             }
         });
         ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE)));
+        TYPE_TO_TEXTURE.put(block.getId(), Confluence.asResource("textures/gui/pylon/" + block.getId().getPath() + ".png"));
         return block;
     }
 
@@ -162,5 +167,28 @@ public class WaystonesHelper {
         builder.add(HALLOW_PYLON.getId(), value, false, condition);
         builder.add(MUSHROOM_PYLON.getId(), value, false, condition);
         builder.add(UNIVERSAL_PYLON.getId(), new ValueComponent(200000), false, condition);
+    }
+
+    public static void registerPayload(PayloadRegistrar registrar) {
+        if (IS_LOADED) {
+            registrar.playToServer(PlayerToPylonPacketC2S.TYPE, PlayerToPylonPacketC2S.STREAM_CODEC, PlayerToPylonPacketC2S::handle);
+        }
+    }
+
+    public static void handle(ServerPlayer serverPlayer, UUID uuid) {
+        // todo 检查NPC
+        WaystoneManagerImpl.get(serverPlayer.server).getWaystoneById(uuid).ifPresent(waystone -> {
+            try {
+                WaystoneTeleportManager.tryTeleport(WaystoneTeleportContextImpl.class.getDeclaredConstructor(Entity.class, Waystone.class).newInstance(serverPlayer, waystone));
+            } catch (Exception ignored) {}
+        });
+    }
+
+    public static boolean teleport(Object o) {
+        if (o instanceof PylonWaypointElement element) {
+            PacketDistributor.sendToServer(new PlayerToPylonPacketC2S(element.getWaystone().getWaystoneUid()));
+            return true;
+        }
+        return false;
     }
 }

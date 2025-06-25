@@ -100,9 +100,17 @@ public final class CommonConfigs {
             BUILDER.push("Compatibility");
             CONVERT_ARS_NOUVEAU_MANA = BUILDER.define("convertArsNouveauMana", false);
             CONVERT_IRONS_SPELL_MANA = BUILDER.define("convertIronsSpellMana", false);
-            FTB_CHUNKS_WORMHOLE_POTION = BUILDER.define("ftbChunksWormholePotion", true);
-            XAEROS_MAP_WORMHOLE_POTION = BUILDER.define("xaerosMapWormholePotion", true);
-            XAEROS_MAP_PYLON_WAYPOINT = BUILDER.define("xaerosMapPylonWaypoint", true);
+            {
+                BUILDER.push("FTB");
+                FTB_CHUNKS_WORMHOLE_POTION = BUILDER.define("ftbChunksWormholePotion", true);
+                BUILDER.pop();
+            }
+            {
+                BUILDER.push("Xaero");
+                XAEROS_MAP_WORMHOLE_POTION = BUILDER.define("xaerosMapWormholePotion", true);
+                XAEROS_MAP_PYLON_WAYPOINT = BUILDER.define("xaerosMapPylonWaypoint", true);
+                BUILDER.pop();
+            }
             BUILDER.pop();
         }
         container.registerConfig(ModConfig.Type.COMMON, BUILDER.build());

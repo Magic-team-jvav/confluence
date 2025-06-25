@@ -63,6 +63,7 @@ import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.integration.jei.RecipeTransferPacketC2S;
 import org.confluence.mod.integration.terra_entity.TEItemComponentModify;
 import org.confluence.mod.integration.terra_entity.TERemoval;
+import org.confluence.mod.integration.waystones.WaystonesHelper;
 import org.confluence.mod.network.c2s.*;
 import org.confluence.mod.network.s2c.*;
 import org.confluence.mod.util.DateUtils;
@@ -191,6 +192,7 @@ public final class ModEvents {
         registrar.playToServer(WormholeToPlayerPacketC2S.TYPE, WormholeToPlayerPacketC2S.STREAM_CODEC, WormholeToPlayerPacketC2S::handle);
         registrar.playToServer(SellTradePacketC2S.TYPE, SellTradePacketC2S.STREAM_CODEC, SellTradePacketC2S::handle);
         registrar.playToServer(RecipeTransferPacketC2S.TYPE, RecipeTransferPacketC2S.STREAM_CODEC, RecipeTransferPacketC2S::handle);
+        WaystonesHelper.registerPayload(registrar);
     }
 
     @SubscribeEvent

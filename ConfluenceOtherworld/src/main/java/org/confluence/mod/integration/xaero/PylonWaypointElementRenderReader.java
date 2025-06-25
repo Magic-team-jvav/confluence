@@ -6,7 +6,7 @@ import xaero.map.element.MapElementReader;
 public class PylonWaypointElementRenderReader extends MapElementReader<PylonWaypointElement, PylonWaypointElementRenderContext, PylonWaypointElementRenderer> {
     @Override
     public boolean isHidden(PylonWaypointElement element, PylonWaypointElementRenderContext context) {
-        return element.getWaystone().getDimension() != Minecraft.getInstance().level.dimension();
+        return context.mapDimId != element.getWaystone().getDimension();
     }
 
     @Override
@@ -21,42 +21,42 @@ public class PylonWaypointElementRenderReader extends MapElementReader<PylonWayp
 
     @Override
     public int getInteractionBoxLeft(PylonWaypointElement element, PylonWaypointElementRenderContext context, float partialTicks) {
-        return 0;
+        return -28;
     }
 
     @Override
     public int getInteractionBoxRight(PylonWaypointElement element, PylonWaypointElementRenderContext context, float partialTicks) {
-        return 0;
+        return 28;
     }
 
     @Override
     public int getInteractionBoxTop(PylonWaypointElement element, PylonWaypointElementRenderContext context, float partialTicks) {
-        return 0;
+        return -21;
     }
 
     @Override
     public int getInteractionBoxBottom(PylonWaypointElement element, PylonWaypointElementRenderContext context, float partialTicks) {
-        return 0;
+        return 21;
     }
 
     @Override
     public int getRenderBoxLeft(PylonWaypointElement element, PylonWaypointElementRenderContext context, float partialTicks) {
-        return 0;
+        return -30;
     }
 
     @Override
     public int getRenderBoxRight(PylonWaypointElement element, PylonWaypointElementRenderContext context, float partialTicks) {
-        return 0;
+        return 30;
     }
 
     @Override
     public int getRenderBoxTop(PylonWaypointElement element, PylonWaypointElementRenderContext context, float partialTicks) {
-        return 0;
+        return -23;
     }
 
     @Override
     public int getRenderBoxBottom(PylonWaypointElement element, PylonWaypointElementRenderContext context, float partialTicks) {
-        return 0;
+        return 23;
     }
 
     @Override
@@ -86,6 +86,11 @@ public class PylonWaypointElementRenderReader extends MapElementReader<PylonWayp
 
     @Override
     public boolean shouldScaleBoxWithOptionalScale() {
-        return false;
+        return true;
+    }
+
+    @Override
+    public boolean isInteractable(int location, PylonWaypointElement element) {
+        return true;
     }
 }

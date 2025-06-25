@@ -22,6 +22,7 @@ import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
 import org.confluence.mod.common.init.ModAttachmentTypes;
+import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.common.init.item.GunItems;
@@ -62,6 +63,8 @@ public final class ItemEvents {
             event.setCanceled(true);
         } else if (itemStack.is(ConsumableItems.GUIDE_VOODOO_DOLL)) {
             LibUtils.updateItemStackNbt(itemStack, tag -> tag.put("Direction", Direction.CODEC.encodeStart(NbtOps.INSTANCE, event.getPlayer().getDirection()).getOrThrow()));
+        } else if (itemStack.is(ModTags.Items.COINS)) {
+            itemEntity.playSound(ModSoundEvents.COINS_SMALL.get());
         }
     }
 

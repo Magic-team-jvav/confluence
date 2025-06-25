@@ -40,10 +40,7 @@ import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
 import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
 import org.confluence.mod.common.init.*;
-import org.confluence.mod.common.init.item.AccessoryItems;
-import org.confluence.mod.common.init.item.MaterialItems;
-import org.confluence.mod.common.init.item.MinecartItems;
-import org.confluence.mod.common.init.item.PotionItems;
+import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.axe.BaseAxeItem;
 import org.confluence.mod.common.item.common.BaseMinecartItem;
 import org.confluence.mod.common.item.common.EverBeneficialItem;
@@ -175,6 +172,21 @@ public final class PlayerEvents {
             event.setCanPickup(TriState.FALSE);
         } else if (itemEntity instanceof TreasureBagItemEntity entity) {
             if (!entity.isOwner(player)) event.setCanPickup(TriState.FALSE);
+        }
+    }
+
+    @SubscribeEvent
+    public static void itemEntityPickup$Post(ItemEntityPickupEvent.Post event) {
+        ItemEntity itemEntity = event.getItemEntity();
+        ItemStack itemStack = event.getOriginalStack();
+        if (itemStack.is(ModTags.Items.COINS)) {
+            if (itemStack.is(ModItems.COPPER_COIN)) {
+                itemEntity.playSound(ModSoundEvents.COINS_SMALL.get());
+            } else if (itemStack.is(ModItems.SILVER_COIN)) {
+                itemEntity.playSound(ModSoundEvents.COINS_MEDIUM.get());
+            } else {
+                itemEntity.playSound(ModSoundEvents.COINS_LARGE.get());
+            }
         }
     }
 

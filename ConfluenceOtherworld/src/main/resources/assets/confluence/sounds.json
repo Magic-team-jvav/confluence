@@ -312,5 +312,26 @@
         "sounds": [
             "confluence:aether"
         ]
+    },
+    "coins_large": {
+        "sounds": [
+            "confluence:coins_large_0",
+            "confluence:coins_large_1",
+            "confluence:coins_large_2"
+        ]
+    },
+    "coins_medium": {
+        "sounds": [
+            "confluence:coins_medium_0",
+            "confluence:coins_medium_1",
+            "confluence:coins_medium_2"
+        ]
+    },
+    "coins_small": {
+        "sounds": [
+            "confluence:coins_small_0",
+            "confluence:coins_small_1",
+            "confluence:coins_small_2"
+        ]
     }
 }

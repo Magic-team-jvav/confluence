@@ -18,6 +18,9 @@ public final class ModSoundEvents {
     public static final DeferredHolder<SoundEvent, SoundEvent> LIFE_CRYSTAL_USE = register("life_crystal_use");// 生命水晶
     public static final DeferredHolder<SoundEvent, SoundEvent> MANA_STAR_USE = register("mana_star_use"); // 魔力水晶
     public static final DeferredHolder<SoundEvent, SoundEvent> COINS = register("coins"); // 币
+    public static final DeferredHolder<SoundEvent, SoundEvent> COINS_LARGE = register("coins_large"); // 捡起一堆钱
+    public static final DeferredHolder<SoundEvent, SoundEvent> COINS_MEDIUM = register("coins_medium"); // 捡起适量钱
+    public static final DeferredHolder<SoundEvent, SoundEvent> COINS_SMALL = register("coins_small"); // 捡起一点钱
     public static final DeferredHolder<SoundEvent, SoundEvent> COOLDOWN_RECOVERY = register("cooldown_recovery"); // CD冷却
     public static final DeferredHolder<SoundEvent, SoundEvent> BOW_COOLDOWN_RECOVERY = register("bow_cooldown_recovery"); // CD冷却-弓箭
     public static final DeferredHolder<SoundEvent, SoundEvent> FROZEN_ARROW = register("frozen_arrow"); // 冰雪射弹

@@ -11,6 +11,12 @@
     "minecraft:snowy_slopes",
     "minecraft:snowy_taiga"
   ],
-  "features": "confluence:tundra_pot",
+  "features": [
+    "confluence:tundra_pot",
+    "confluence:cave_chests_small",
+    "confluence:cave_frozen_chests",
+    "confluence:underground_chests_small",
+    "confluence:underground_frozen_chests"
+  ],
   "step": "underground_decoration"
 }

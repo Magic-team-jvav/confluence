@@ -133,6 +133,7 @@ public final class ModFeatures {
         public static final ResourceKey<PlacedFeature> THE_CORRUPTION_TREE_CHECKED_0 = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("the_corruption_tree_checked_0"));
         public static final ResourceKey<PlacedFeature> THE_CORRUPTION_TREE_CHECKED_1 = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("the_corruption_tree_checked_1"));
         public static final ResourceKey<PlacedFeature> THE_CORRUPTION_TREE_CHECKED_2 = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("the_corruption_tree_checked_2"));
+        public static final ResourceKey<PlacedFeature> CORRUPT_DROOPING_VINE = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("corrupt_drooping_vine"));
 
         public static final ResourceKey<PlacedFeature> TREES_CRIMSON = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("trees_crimson"));
         public static final ResourceKey<PlacedFeature> CRIMSON_ALTAR = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("crimson_altar"));
@@ -140,6 +141,7 @@ public final class ModFeatures {
         public static final ResourceKey<PlacedFeature> CRIMSON_GRASS = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("crimson_grass"));
         public static final ResourceKey<PlacedFeature> CRIMSON_TREE_CHECKED_0 = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("crimson_tree_checked_0"));
         public static final ResourceKey<PlacedFeature> CRIMSON_TREE_CHECKED_1 = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("crimson_tree_checked_1"));
+        public static final ResourceKey<PlacedFeature> CRIMSON_DROOPING_VINE = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("crimson_drooping_vine"));
         public static final ResourceKey<PlacedFeature> VICIOUS_MUSHROOM = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("vicious_mushroom"));
 
         public static final ResourceKey<PlacedFeature> GLOWING_MUSHROOM = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("glowing_mushroom"));

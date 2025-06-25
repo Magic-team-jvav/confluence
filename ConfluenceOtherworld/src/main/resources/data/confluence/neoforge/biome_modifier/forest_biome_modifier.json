@@ -22,26 +22,12 @@
     "minecraft:windswept_gravelly_hills",
     "minecraft:windswept_hills",
     "minecraft:windswept_savanna",
-    "minecraft:old_growth_pine_taiga",
-    "minecraft:frozen_peaks",
-    "minecraft:frozen_river",
-    "minecraft:grove",
-    "minecraft:ice_spikes",
-    "minecraft:jagged_peaks",
-    "minecraft:snowy_beach",
-    "minecraft:snowy_plains",
-    "minecraft:snowy_slopes",
-    "minecraft:snowy_taiga",
-    "minecraft:jungle",
-    "minecraft:sparse_jungle",
-    "minecraft:bamboo_jungle",
-    "minecraft:lush_caves",
-    "minecraft:dripstone_caves"
+    "minecraft:old_growth_pine_taiga"
   ],
   "features": [
+    "confluence:forest_pot",
     "confluence:cave_chests",
-    "confluence:underground_chests",
-    "confluence:surface_chests"
+    "confluence:underground_chests"
   ],
   "step": "underground_decoration"
 }

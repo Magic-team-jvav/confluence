@@ -84,6 +84,7 @@ public final class ModBiomes {
                     builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Placed.THE_CORRUPTION_TREE_CHECKED_0);
                     builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Placed.THE_CORRUPTION_TREE_CHECKED_1);
                     builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Placed.THE_CORRUPTION_TREE_CHECKED_2);
+                    builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Placed.CORRUPT_DROOPING_VINE);
                     builder.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, Placed.CORRUPTION_POT);
                     builder.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, Placed.DEMON_ALTAR);
                 }).build())
@@ -153,6 +154,7 @@ public final class ModBiomes {
                     builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Placed.CRIMSON_GRASS);
                     builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Placed.CRIMSON_TREE_CHECKED_0);
                     builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Placed.CRIMSON_TREE_CHECKED_1);
+                    builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Placed.CRIMSON_DROOPING_VINE);
                     builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Placed.VICIOUS_MUSHROOM);
                 }).build())
                 .build()

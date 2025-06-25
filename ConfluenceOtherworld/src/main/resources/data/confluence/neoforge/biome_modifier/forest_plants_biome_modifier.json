@@ -24,6 +24,7 @@
     "minecraft:windswept_savanna",
     "minecraft:old_growth_pine_taiga"
   ],
-  "features": "confluence:forest_pot",
-  "step": "underground_decoration"
+  "features":
+    "confluence:forest_drooping_vine",
+  "step": "vegetal_decoration"
 }

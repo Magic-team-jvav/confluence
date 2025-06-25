@@ -1,0 +1,14 @@
+{
+  "type": "confluence:drooping_block",
+  "config": {
+    "drooping_block": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "confluence:crimson_drooping_vine"
+      }
+    },
+    "height": 1,
+    "extra_height": 9,
+    "to_ground": false
+  }
+}

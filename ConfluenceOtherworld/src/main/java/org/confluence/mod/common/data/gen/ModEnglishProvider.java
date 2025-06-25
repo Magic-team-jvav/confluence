@@ -430,6 +430,26 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.solar_wings.0", "Allows flight and slow fall");
         add("tooltip.item.confluence.stardust.0", "Allows flight and slow fall");
 
+
+        add("confluence.configuration.Compatibility", "Compatibility Mechanism");
+        add("confluence.configuration.Compatibility.button", "Settings for compatibility with other mods");
+        add("confluence.configuration.ArsNouveau", "Ars Nouveau");
+        add("confluence.configuration.ArsNouveau.button", "Compatibility settings with mod - Ars Nouveau");
+        add("confluence.configuration.IronsSpell", "Iron's Spells 'n Spellbooks");
+        add("confluence.configuration.IronsSpell.button", "Compatibility settings with mod - Iron's Spells 'n Spellbooks");
+        add("confluence.configuration.FTB", "FTB Chunks");
+        add("confluence.configuration.FTB.button", "Compatibility settings with mod - FTB Chunks");
+        add("confluence.configuration.Xaero", "Xaero's Minimap");
+        add("confluence.configuration.Xaero.button", "Compatibility settings with mod - Xaero's Minimap");
+        add("confluence.configuration.Waystones", "Waystones");
+        add("confluence.configuration.Waystones.button", "Compatibility settings with Waystones");
+        add("confluence.configuration.convertArsNouveauMana", "Use Confluence's mana system when enabled");
+        add("confluence.configuration.convertIronsSpellMana", "Use Confluence's mana system when enabled");
+        add("confluence.configuration.ftbChunksWormholePotion", "Enable wormhole potion functionality");
+        add("confluence.configuration.xaerosMapWormholePotion", "Enable wormhole potion functionality");
+        add("confluence.configuration.xaerosMapPylonWaypoint", "Enable pylon waypoint display");
+        add("confluence.configuration.waystonesPylonNonCost", "Enable pylons to not consume experience");
+
         add("confluence.configuration.instantlyHardmodeConversion", "Instant Hard Mode Conversion");
         add("confluence.configuration.instantlyHardmodeConversion.tooltip", "When enabled, the transition to Hard Mode will be accelerated and occur with a complete freeze. Please assess your computer's performance before enabling this configuration.");
         add("confluence.configuration.wrappedCrimson_heart", "Exposed Crimson Heart");
@@ -465,7 +485,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.configuration.WorldGeneration.button", "World Generation Mechanism");
         add("confluence.configuration.WorldGeneration.tooltip", "Settings related to world generation");
         add("confluence.configuration.brewing_stand_recipe", "Terra Potion Brewing Stand Recipe");
-        add("confluence.configuration.brewing_stand_recipe.tooltip", "When enabled, the brewing stand can brew Terra potions.");
+        add("confluence.configuration.brewing_stand_recipe.tooltip", "When enabled, the brewing stand can brew Terra potions.(This configuration change requires a game restart!)");
         add("confluence.configuration.alertPlayerDungeon", "Dungeon Guardian Warning");
         add("confluence.configuration.alertPlayerDungeon.tooltip", "When enabled, there will be three roars as warnings before the dungeon guardian appears.");
         add("confluence.configuration.achievementToast", "Enable Terra Style Achievements");
@@ -1035,6 +1055,12 @@ public class ModEnglishProvider extends LanguageProvider {
         add("equipment_benediction.set_switcher.confluence.jungle_set.data.2", "Increases maximum mana by 10,3% increased magic critical strike chance");
         add("equipment_benediction.set_switcher.confluence.jungle_set.data.3", "Increases maximum mana by 10,3% increased magic critical strike chance");
         add("equipment_benediction.set_switcher.confluence.jungle_set.data.4", "16% reduced mana costs");
+
+        add("equipment_benediction.set_switcher.confluence.ash_set", "Ash set");
+        add("equipment_benediction.set_switcher.confluence.ash_set.data.0", "Reduce fire damage by 50%");
+
+        add("equipment_benediction.set_switcher.confluence.pumpkin_set", "Pumpkin set");
+        add("equipment_benediction.set_switcher.confluence.pumpkin_set.data.0", "Damage increased by 10%");
         // npc dialogs
         add("dialogs.confluence.guide.0", "My job is to offer suggestions for your upcoming tasks. I recommend that you come and talk to me whenever you encounter any difficulties.");
         add("dialogs.confluence.guide.1", "They said there would be someone to tell you how to survive in this place... Oh, wait a moment. That person is me.");

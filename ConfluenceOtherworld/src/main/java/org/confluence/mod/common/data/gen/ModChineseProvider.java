@@ -399,6 +399,25 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.stardust.0", "可飞行和缓慢坠落");
 
         //设置
+        add("confluence.configuration.Compatibility", "兼容性机制");
+        add("confluence.configuration.Compatibility.button", "关于与其他模组的兼容性设置");
+        add("confluence.configuration.ArsNouveau", "新生魔艺(Ars Nouveau)");
+        add("confluence.configuration.ArsNouveau.button", "与模组-新生魔艺(Ars Nouveau)的兼容性设置");
+        add("confluence.configuration.IronsSpell", "Iron的法术与魔法书(Iron's Spells 'n Spellbooks)");
+        add("confluence.configuration.IronsSpell.button", "与模组-Iron的法术与魔法书(Iron's Spells 'n Spellbooks)的兼容性设置");
+        add("confluence.configuration.FTB", "FTB 区块(FTB Chunks)");
+        add("confluence.configuration.FTB.button", "与模组-FTB 区块(FTB Chunks)的兼容性设置");
+        add("confluence.configuration.Xaero", "Xaero的小地图(Xaero's Minimap)");
+        add("confluence.configuration.Xaero.button", "与模组-Xaero的小地图(Xaero's Minimap)的兼容性设置");
+        add("confluence.configuration.Waystones", "传送石碑/指路石(Waystones)");
+        add("confluence.configuration.Waystones.button", "与传送石碑/指路石(Waystones)的兼容性设置");
+        add("confluence.configuration.convertArsNouveauMana", "开启后将使用汇流来世的魔力");
+        add("confluence.configuration.convertIronsSpellMana", "开启后将使用汇流来世的魔力");
+        add("confluence.configuration.ftbChunksWormholePotion", "启用虫洞药水功能");
+        add("confluence.configuration.xaerosMapWormholePotion", "启用虫洞药水功能");
+        add("confluence.configuration.xaerosMapPylonWaypoint", "启用显示晶塔点位功能");
+        add("confluence.configuration.waystonesPylonNonCost", "启用晶塔不花费经验功能");
+
         add("confluence.configuration.wrappedCrimsonHeart", "被包裹的猩红心脏");
         add("confluence.configuration.wrappedCrimsonHeart.tooltip", "启用后，新生成的猩红洞穴将会生成被包裹的猩红心脏");
         add("confluence.configuration.instantlyHardmodeConversion", "困难模式快速转换");
@@ -434,7 +453,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.WorldGeneration.button", "世界生成机制");
         add("confluence.configuration.WorldGeneration.tooltip", "一些世界生成相关设置");
         add("confluence.configuration.brewingStandRecipe", "泰拉药水酿造台配方");
-        add("confluence.configuration.brewingStandRecipe.tooltip", "启用时，酿造台可以酿造泰拉药水");
+        add("confluence.configuration.brewingStandRecipe.tooltip", "启用时，酿造台可以酿造泰拉药水（该配置更换需要重启游戏！）");
         add("confluence.configuration.alertPlayerDungeon", "地牢守卫警告");
         add("confluence.configuration.alertPlayerDungeon.tooltip", "启用时，地牢守卫出现前将有三次吼叫警告");
         add("confluence.configuration.achievementToast", "启用泰拉样式成就");
@@ -1063,6 +1082,12 @@ public class ModChineseProvider extends LanguageProvider {
         add("equipment_benediction.set_switcher.confluence.jungle_set.data.2", "最大魔力增加10，暴击率提高3%");
         add("equipment_benediction.set_switcher.confluence.jungle_set.data.3", "最大魔力增加10，暴击率提高3%");
         add("equipment_benediction.set_switcher.confluence.jungle_set.data.4", "魔力消耗降低16%");
+
+        add("equipment_benediction.set_switcher.confluence.ash_set", "白蜡木套装");
+        add("equipment_benediction.set_switcher.confluence.ash_set.data.0", "受到的火焰伤害降低50%");
+
+        add("equipment_benediction.set_switcher.confluence.pumpkin_set", "南瓜套装");
+        add("equipment_benediction.set_switcher.confluence.pumpkin_set.data.0", "伤害提高10%");
 
         // npc对话
         add("dialogs.confluence.guide.0", "我的工作是为你接下来的任务提供建议。建议你遇到任何困难时都来和我谈谈。");

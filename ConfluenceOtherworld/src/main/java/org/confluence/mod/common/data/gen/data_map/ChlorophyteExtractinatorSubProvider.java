@@ -5,7 +5,7 @@ import net.neoforged.neoforge.common.data.DataMapProvider;
 import org.confluence.mod.common.data.gen.ModDataMapProvider;
 import org.confluence.mod.common.data.map.ExtractinatorData;
 
-public class ChlorophyteExtractinatorSubProvider {
+public final class ChlorophyteExtractinatorSubProvider {
     public static void gather(ModDataMapProvider.Appender<DataMapProvider.Builder<ExtractinatorData, Item>> appender) {
         appender.create();
     }

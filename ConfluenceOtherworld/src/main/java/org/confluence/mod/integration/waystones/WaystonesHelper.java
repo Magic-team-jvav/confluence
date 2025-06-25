@@ -41,6 +41,7 @@ import org.confluence.lib.common.LibTags;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.data.gen.data_map.ValueSubProvider;
 import org.confluence.mod.common.init.ModBiomes;
@@ -177,7 +178,9 @@ public class WaystonesHelper {
         // todo 检查NPC
         WaystonesAPI.getWaystone(serverPlayer.server, uuid).ifPresent(waystone -> {
             WaystonesAPI.createDefaultTeleportContext(serverPlayer, waystone, context -> {
-                context.setRequirements(NoRequirement.INSTANCE);
+                if (CommonConfigs.WAYSTONES_PYLON_NON_COST.get()) {
+                    context.setRequirements(NoRequirement.INSTANCE);
+                }
             }).ifLeft(WaystonesAPI::tryTeleport).ifRight(error -> {
                 serverPlayer.sendSystemMessage(error.getComponent().copy().withStyle(ChatFormatting.DARK_RED), false);
                 WaystonesAPI.removeWaystoneFromDatabase(serverPlayer.server, waystone);

@@ -41,6 +41,7 @@ public final class CommonConfigs {
     public static BooleanValue FTB_CHUNKS_WORMHOLE_POTION;
     public static BooleanValue XAEROS_MAP_WORMHOLE_POTION;
     public static BooleanValue XAEROS_MAP_PYLON_WAYPOINT;
+    public static BooleanValue WAYSTONES_PYLON_NON_COST;
 
     public static void register(ModContainer container) {
         Builder BUILDER = new Builder();
@@ -98,8 +99,16 @@ public final class CommonConfigs {
         }
         {
             BUILDER.push("Compatibility");
-            CONVERT_ARS_NOUVEAU_MANA = BUILDER.define("convertArsNouveauMana", false);
-            CONVERT_IRONS_SPELL_MANA = BUILDER.define("convertIronsSpellMana", false);
+            {
+                BUILDER.push("ArsNouveau");
+                CONVERT_ARS_NOUVEAU_MANA = BUILDER.define("convertArsNouveauMana", false);
+                BUILDER.pop();
+            }
+            {
+                BUILDER.push("IronsSpell");
+                CONVERT_IRONS_SPELL_MANA = BUILDER.define("convertIronsSpellMana", false);
+                BUILDER.pop();
+            }
             {
                 BUILDER.push("FTB");
                 FTB_CHUNKS_WORMHOLE_POTION = BUILDER.define("ftbChunksWormholePotion", true);
@@ -109,6 +118,11 @@ public final class CommonConfigs {
                 BUILDER.push("Xaero");
                 XAEROS_MAP_WORMHOLE_POTION = BUILDER.define("xaerosMapWormholePotion", true);
                 XAEROS_MAP_PYLON_WAYPOINT = BUILDER.define("xaerosMapPylonWaypoint", true);
+                BUILDER.pop();
+            }
+            {
+                BUILDER.push("Waystones");
+                WAYSTONES_PYLON_NON_COST = BUILDER.define("waystonesPylonNonCost", true);
                 BUILDER.pop();
             }
             BUILDER.pop();

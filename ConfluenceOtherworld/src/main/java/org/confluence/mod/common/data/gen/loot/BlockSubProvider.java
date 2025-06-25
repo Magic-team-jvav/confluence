@@ -16,6 +16,7 @@ import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
@@ -41,13 +42,15 @@ import static org.confluence.mod.common.init.block.OreBlocks.*;
 import static org.confluence.mod.common.init.item.ConsumableItems.LIFE_CRYSTAL;
 import static org.confluence.mod.common.init.item.MaterialItems.*;
 
-public class BlockSubProvider extends BlockLootSubProvider {
+public final class BlockSubProvider extends BlockLootSubProvider {
     public BlockSubProvider(HolderLookup.Provider provider) {
         super(Set.of(), FeatureFlags.REGISTRY.allFlags(), provider);
     }
 
     @Override
     protected void generate() {
+        LootPoolSingletonContainer.Builder<?> emptyWeight59 = EmptyLootItem.emptyItem().setWeight(59);
+
         // region ore
         dropSelf(TIN_BLOCK.get());
         dropSelf(RAW_TIN_BLOCK.get());
@@ -530,58 +533,58 @@ public class BlockSubProvider extends BlockLootSubProvider {
         add(NatureBlocks.AMBER_BRANCHES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(AMBER))
-                        .add(EmptyLootItem.emptyItem().setWeight(59)))
+                        .add(emptyWeight59))
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(AMBER_SAPLING))
-                        .add(EmptyLootItem.emptyItem().setWeight(59)))
+                        .add(emptyWeight59))
         );
         add(NatureBlocks.RUBY_BRANCHES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(RUBY))
-                        .add(EmptyLootItem.emptyItem().setWeight(59)))
+                        .add(emptyWeight59))
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(RUBY_SAPLING))
-                        .add(EmptyLootItem.emptyItem().setWeight(59)))
+                        .add(emptyWeight59))
         );
         add(NatureBlocks.TOPAZ_BRANCHES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TOPAZ))
-                        .add(EmptyLootItem.emptyItem().setWeight(59)))
+                        .add(emptyWeight59))
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TOPAZ_SAPLING))
-                        .add(EmptyLootItem.emptyItem().setWeight(59)))
+                        .add(emptyWeight59))
         );
         add(NatureBlocks.JADE_BRANCHES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(JADE))
-                        .add(EmptyLootItem.emptyItem().setWeight(59)))
+                        .add(emptyWeight59))
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(JADE_SAPLING))
-                        .add(EmptyLootItem.emptyItem().setWeight(59)))
+                        .add(emptyWeight59))
         );
         add(NatureBlocks.DIAMOND_BRANCHES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.DIAMOND))
-                        .add(EmptyLootItem.emptyItem().setWeight(59)))
+                        .add(emptyWeight59))
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(DIAMOND_SAPLING))
-                        .add(EmptyLootItem.emptyItem().setWeight(59)))
+                        .add(emptyWeight59))
         );
         add(NatureBlocks.SAPPHIRE_BRANCHES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(SAPPHIRE))
-                        .add(EmptyLootItem.emptyItem().setWeight(59)))
+                        .add(emptyWeight59))
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(SAPPHIRE_SAPLING))
-                        .add(EmptyLootItem.emptyItem().setWeight(59)))
+                        .add(emptyWeight59))
         );
         add(NatureBlocks.AMETHYST_BRANCHES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(AMETHYST))
-                        .add(EmptyLootItem.emptyItem().setWeight(59)))
+                        .add(emptyWeight59))
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(AMETHYST_SAPLING))
-                        .add(EmptyLootItem.emptyItem().setWeight(59)))
+                        .add(emptyWeight59))
         );
         add(NatureBlocks.ASH_BRANCHES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()

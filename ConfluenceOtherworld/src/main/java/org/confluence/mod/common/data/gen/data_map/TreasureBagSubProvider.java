@@ -7,7 +7,7 @@ import org.confluence.mod.common.data.map.TreasureBagDrop;
 import org.confluence.mod.common.init.item.TreasureBagItems;
 import org.confluence.terraentity.init.entity.TEBossEntities;
 
-public class TreasureBagSubProvider {
+public final class TreasureBagSubProvider {
     public static void gather(ModDataMapProvider.Appender<DataMapProvider.Builder<TreasureBagDrop, EntityType<?>>> appender) {
         appender.create()
                 .add(TEBossEntities.KING_SLIME, new TreasureBagDrop(TreasureBagItems.KING_SLIME_TREASURE_BAG.get()), false)

@@ -10,7 +10,7 @@ import org.confluence.mod.common.data.gen.ModDataMapProvider;
 import org.confluence.mod.common.data.map.ExtractinatorData;
 import org.confluence.mod.common.init.ModTags;
 
-public class ExtractinatorSubProvider {
+public final class ExtractinatorSubProvider {
     public static void gather(ModDataMapProvider.Appender<DataMapProvider.Builder<ExtractinatorData, Item>> appender) {
         appender.create()
                 .add(ModTags.Items.DESERT_FOSSIL, data("with_desert_fossil"), false)

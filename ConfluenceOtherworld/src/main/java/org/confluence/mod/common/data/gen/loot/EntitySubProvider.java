@@ -38,7 +38,7 @@ import java.util.stream.Stream;
 import static org.confluence.mod.common.init.item.MaterialItems.RAW_DEMONITE;
 import static org.confluence.mod.common.init.item.MaterialItems.SHADOW_SCALE;
 
-public class EntitySubProvider extends EntityLootSubProvider {
+public final class EntitySubProvider extends EntityLootSubProvider {
     public EntitySubProvider(HolderLookup.Provider registries) {
         super(FeatureFlags.REGISTRY.allFlags(), registries);
     }
@@ -514,7 +514,7 @@ public class EntitySubProvider extends EntityLootSubProvider {
     @Override
     public void generate(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> output) {
         generate();
-        EntityLootSubProviderAccessor accessor = (EntityLootSubProviderAccessor) this;
+        EntityLootSubProviderAccessor accessor = (EntityLootSubProviderAccessor) (Object) this;
         Set<ResourceKey<LootTable>> set = new HashSet<>();
         getKnownEntityTypes().map(EntityType::builtInRegistryHolder).forEach(holder -> {
             EntityType<?> entityType = holder.value();

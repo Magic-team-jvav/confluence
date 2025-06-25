@@ -5,6 +5,7 @@ import net.blay09.mods.waystones.block.entity.WaystoneBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
@@ -66,6 +67,11 @@ public class PylonBlock extends WaystoneBlock {
         @Override
         protected ResourceLocation getWaystoneType() {
             return waystoneType;
+        }
+
+        @Override
+        public Component getName() {
+            return Component.translatable("container.confluence.pylon");
         }
 
         @Override

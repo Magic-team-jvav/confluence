@@ -17,7 +17,7 @@ import org.confluence.terraentity.init.item.TERideableItems;
 import org.confluence.terraentity.init.item.TESummonItems;
 import org.confluence.terraentity.init.item.TEWhipItems;
 
-public class ValueSubProvider {
+public final class ValueSubProvider {
     public static void gather(ModDataMapProvider.Appender<Builder> appender) {
         appender.create()
                 .add(Items.DRAGON_EGG, 2000)

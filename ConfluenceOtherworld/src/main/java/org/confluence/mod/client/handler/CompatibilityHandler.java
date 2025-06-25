@@ -28,6 +28,10 @@ public final class CompatibilityHandler {
         return configs == null || configs[4];
     }
 
+    public static boolean isWaystonesPylonNonCost() {
+        return configs != null && configs[5];
+    }
+
     public static void reset() {
         configs = null;
     }

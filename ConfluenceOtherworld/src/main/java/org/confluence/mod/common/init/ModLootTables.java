@@ -52,11 +52,13 @@ public final class ModLootTables {
     public static final ResourceKey<LootTable> CAN_OF_WORMS = register("gameplay/can_of_worms");
 
     public static final ResourceKey<LootTable> FISHING_LAVA = register("gameplay/fishing/lava");
+    public static final ResourceKey<LootTable> FISHING_HONEY = register("gameplay/fishing/honey");
     public static final ResourceKey<LootTable> FISHING = register("gameplay/fishing");
     public static final ResourceKey<LootTable> FISH = register("gameplay/fishing/fish");
     public static final ResourceKey<LootTable> JUNK = register("gameplay/fishing/junk");
     public static final ResourceKey<LootTable> TREASURE = register("gameplay/fishing/treasure");
     public static final ResourceKey<LootTable> CRATE = register("gameplay/crate");
+    public static final ResourceKey<LootTable> CRATE_HARDMODE = register("gameplay/crate_hardmode");
 
     public static final ResourceKey<LootTable> CORRUPTION_CARRY = register("gameplay/corruption_carry");
     public static final ResourceKey<LootTable> SLIME_CARRY = register("gameplay/slime_carry");

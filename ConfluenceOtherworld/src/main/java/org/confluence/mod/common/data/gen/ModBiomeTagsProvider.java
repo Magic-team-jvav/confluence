@@ -21,6 +21,16 @@ public class ModBiomeTagsProvider extends BiomeTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
+        tag(Tags.Biomes.IS_ICY).add(
+                ModBiomes.THE_CORRUPTION_TUNDRA,
+                ModBiomes.THE_CRIMSON_TUNDRA,
+                ModBiomes.THE_HALLOW_TUNDRA
+        );
+        tag(Tags.Biomes.IS_DESERT).add(
+                ModBiomes.THE_CORRUPTION_DESERT,
+                ModBiomes.THE_CRIMSON_DESERT,
+                ModBiomes.THE_HALLOW_DESERT
+        );
         tag(ModTags.Biomes.THE_CORRUPTION).add(
                 ModBiomes.THE_CORRUPTION,
                 ModBiomes.THE_CORRUPTION_DESERT,

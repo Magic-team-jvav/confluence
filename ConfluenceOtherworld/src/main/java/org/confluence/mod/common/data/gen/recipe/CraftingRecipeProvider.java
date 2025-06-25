@@ -17,6 +17,7 @@ import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.init.item.PotionItems;
@@ -125,6 +126,37 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 new ItemStack(PotionItems.BOTTLE.get()),
                 Ingredient.of(Items.GLASS_BOTTLE)
         );
+
+        // 各种片
+        shaped(output, "", "", ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(Blocks.SAND)
+        ), List.of(
+                "###"
+        )), NatureBlocks.SAND_LAYER_BLOCK.toStack(6));
+
+        shaped(output, "", "", ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(Blocks.RED_SAND)
+        ), List.of(
+                "###"
+        )), NatureBlocks.RED_SAND_LAYER_BLOCK.toStack(6));
+
+        shaped(output, "", "", ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(NatureBlocks.EBONSAND)
+        ), List.of(
+                "###"
+        )), NatureBlocks.EBONSAND_LAYER_BLOCK.toStack(6));
+
+        shaped(output, "", "", ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(NatureBlocks.CRIMSAND)
+        ), List.of(
+                "###"
+        )), NatureBlocks.CRIMSAND_LAYER_BLOCK.toStack(6));
+
+        shaped(output, "", "", ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(NatureBlocks.PEARLSAND)
+        ), List.of(
+                "###"
+        )), NatureBlocks.PEARLSAND_LAYER_BLOCK.toStack(6));
 
         // 石头及深板岩压力板
         shaped(output, "", "", ShapedRecipePattern.of(Map.of('#', Ingredient.of(Blocks.STONE)), List.of("##")), new ItemStack(FunctionalBlocks.STONE_PRESSURE_PLATE));

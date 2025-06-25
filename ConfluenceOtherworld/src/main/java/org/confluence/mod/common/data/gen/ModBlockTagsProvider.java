@@ -358,7 +358,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 CrateBlocks.HELLSTONE_CRATE.get(),
                 CrateBlocks.SEASIDE_CRATE.get()
         );
-        // 铲子
+        // 锹
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithShovel = tag(BlockTags.MINEABLE_WITH_SHOVEL);
         mineableWithShovel.add(
                 SLUSH.get(),
@@ -371,6 +371,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 EBONSAND_LAYER_BLOCK.get(),
                 PEARLSAND_LAYER_BLOCK.get(),
                 CRIMSAND_LAYER_BLOCK.get(),
+                SAND_LAYER_BLOCK.get(),
+                RED_SAND_LAYER_BLOCK.get(),
                 ASH_BLOCK.get(),
                 MUSHROOM_GRASS_BLOCK.get(),
                 JUNGLE_GRASS_BLOCK.get(),
@@ -384,7 +386,10 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 MOISTENED_RED_SAND_BLOCK.get(),
                 MOISTENED_CRIMSAND_BLOCK.get(),
                 MOISTENED_PEARLSAND_BLOCK.get(),
-                MOISTENED_EBONSAND_BLOCK.get()
+                MOISTENED_EBONSAND_BLOCK.get(),
+                ASH_PATH.get(),
+                JUNGLE_PATH.get(),
+                MUSHROOM_PATH.get()
         );
         // 锄头
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithHoe = tag(BlockTags.MINEABLE_WITH_HOE);
@@ -750,7 +755,10 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 HELLSTONE.get(),
                 ASH_HELLSTONE.get(),
                 RAW_HELLSTONE_BLOCK.get(),
-                HELLSTONE_BLOCK.get()
+                HELLSTONE_BLOCK.get(),
+                ASH_PATH.get(),
+                JUNGLE_PATH.get(),
+                MUSHROOM_PATH.get()
         ).addTag(BlockTags.LEAVES);
         tag(ModTags.Blocks.COINS).add(COPPER_COIN.get(), SILVER_COIN.get(), GOLDEN_COIN.get(), PLATINUM_COIN.get()); // 绿宝石币不要放进去
 

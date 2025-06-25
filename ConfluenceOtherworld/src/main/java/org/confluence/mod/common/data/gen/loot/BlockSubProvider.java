@@ -459,9 +459,17 @@ public class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(SAPPHIRE_CHAIN.get());
         dropSelf(DIAMOND_CHAIN.get());
         dropSelf(AMETHYST_CHAIN.get());
+        // 片
+        dropWhenSilkTouch(SAND_LAYER_BLOCK.get());
+        dropWhenSilkTouch(RED_SAND_LAYER_BLOCK.get());
+        dropWhenSilkTouch(EBONSAND_LAYER_BLOCK.get());
+        dropWhenSilkTouch(CRIMSAND_LAYER_BLOCK.get());
+        dropWhenSilkTouch(PEARLSAND_LAYER_BLOCK.get());
 
-
-
+        // 径
+        this.add(ASH_PATH.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, ASH_BLOCK));
+        this.add(JUNGLE_PATH.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, Blocks.MUD));
+        this.add(MUSHROOM_PATH.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, Blocks.MUD));
 
         //door
         this.add(OBSIDIAN_BRICKS_DOOR.get(), this::createDoorTable);

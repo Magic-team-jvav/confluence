@@ -167,12 +167,12 @@ public class HeavyWorkBenchMenu extends EitherAmountContainerMenu4x<EnvironmentR
         @Override
         public void setCurrentRecipe(@Nullable HeavyWorkBenchRecipe recipe) {
             super.setCurrentRecipe(recipe);
-            if (this.altRecipe != null) throw new RuntimeException();
+            this.altRecipe = null;
         }
 
         public void setAltRecipe(CraftingRecipe recipe) {
             this.altRecipe = recipe;
-            if (this.recipe != null) throw new RuntimeException();
+            this.recipe = null;
         }
     }
 }

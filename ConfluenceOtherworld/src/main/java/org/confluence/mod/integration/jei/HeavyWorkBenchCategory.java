@@ -18,6 +18,7 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import mezz.jei.api.recipe.transfer.IRecipeTransferError;
 import mezz.jei.api.recipe.transfer.IRecipeTransferHandler;
 import mezz.jei.api.recipe.transfer.IRecipeTransferHandlerHelper;
+import mezz.jei.api.recipe.transfer.IUniversalRecipeTransferHandler;
 import mezz.jei.api.runtime.IIngredientManager;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -27,6 +28,7 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -107,6 +109,7 @@ public class HeavyWorkBenchCategory implements IRecipeCategory<RecipeHolder<Heav
         }
     }
 
+    @SuppressWarnings("unchecked")
     private <T> List<ImmutableTriple<ITypedIngredient<T>, T, Integer>> summary(IRecipeSlotsView recipeSlotsView) {
         Map<Item, ImmutableTriple<ITypedIngredient<T>, T, Integer>> pairMap = new HashMap<>();
         recipeSlotsView.getSlotViews(RecipeIngredientRole.INPUT).stream()
@@ -130,11 +133,11 @@ public class HeavyWorkBenchCategory implements IRecipeCategory<RecipeHolder<Heav
         return pairMap.values().stream().sorted(comparator.reversed()).toList();
     }
 
-    public static class RecipeTransfer implements IRecipeTransferHandler<HeavyWorkBenchMenu, RecipeHolder<HeavyWorkBenchRecipe>> {
+    public static class HeavyRecipeTransferHandler implements IRecipeTransferHandler<HeavyWorkBenchMenu, RecipeHolder<HeavyWorkBenchRecipe>> {
         private final IJeiHelpers jeiHelpers;
         private final IRecipeTransferHandlerHelper transferHelper;
 
-        public RecipeTransfer(IJeiHelpers jeiHelpers, IRecipeTransferHandlerHelper transferHelper) {
+        public HeavyRecipeTransferHandler(IJeiHelpers jeiHelpers, IRecipeTransferHandlerHelper transferHelper) {
             this.jeiHelpers = jeiHelpers;
             this.transferHelper = transferHelper;
         }
@@ -161,7 +164,7 @@ public class HeavyWorkBenchCategory implements IRecipeCategory<RecipeHolder<Heav
         @Override
         public @Nullable IRecipeTransferError transferRecipe(HeavyWorkBenchMenu container, RecipeHolder<HeavyWorkBenchRecipe> recipe, IRecipeSlotsView recipeSlots, Player player, boolean maxTransfer, boolean doTransfer) {
             IStackHelper stackHelper = jeiHelpers.getStackHelper();
-            List<IRecipeSlotView> slotViews = recipeSlots.getSlotViews(RecipeIngredientRole.INPUT);
+            List<IRecipeSlotView> slotViews = recipeSlots.getSlotViews(RecipeIngredientRole.INPUT).stream().filter(view -> !view.isEmpty()).toList();
             Map<IRecipeSlotView, Set<Object>> slotUidCache = new IdentityHashMap<>();
 
             Object2IntOpenHashMap<Object> total = new Object2IntOpenHashMap<>();
@@ -207,7 +210,7 @@ public class HeavyWorkBenchCategory implements IRecipeCategory<RecipeHolder<Heav
             }
 
             if (doTransfer) {
-                PacketDistributor.sendToServer(new RecipeTransferPacketC2S(recipe.id(), maxTransfer));
+                PacketDistributor.sendToServer(new RecipeTransferPacketC2S(recipe.id(), maxTransfer, false));
             }
             return null;
         }
@@ -223,6 +226,35 @@ public class HeavyWorkBenchCategory implements IRecipeCategory<RecipeHolder<Heav
                 }
             }
             return uids;
+        }
+    }
+
+    public static class CraftingRecipeTransferHandler implements IUniversalRecipeTransferHandler<HeavyWorkBenchMenu> {
+        private final HeavyRecipeTransferHandler heavyRecipeTransferHandler;
+
+        public CraftingRecipeTransferHandler(HeavyWorkBenchCategory.HeavyRecipeTransferHandler heavyRecipeTransferHandler) {
+            this.heavyRecipeTransferHandler = heavyRecipeTransferHandler;
+        }
+
+        @Override
+        public Class<? extends HeavyWorkBenchMenu> getContainerClass() {
+            return HeavyWorkBenchMenu.class;
+        }
+
+        @Override
+        public Optional<MenuType<HeavyWorkBenchMenu>> getMenuType() {
+            return Optional.of(ModMenuTypes.HEAVY_WORK_BENCH.get());
+        }
+
+        @Override
+        public @Nullable IRecipeTransferError transferRecipe(HeavyWorkBenchMenu container, Object o, IRecipeSlotsView recipeSlots, Player player, boolean maxTransfer, boolean doTransfer) {
+            if (o instanceof RecipeHolder(ResourceLocation id, Recipe<?> value)) {
+                HeavyWorkBenchRecipe recipe4x = RecipeTransferPacketC2S.getRecipe4x(HeavyWorkBenchRecipe.class, value, either -> new HeavyWorkBenchRecipe(value.getResultItem(player.registryAccess()), either));
+                if (recipe4x != null) {
+                    return heavyRecipeTransferHandler.transferRecipe(container, new RecipeHolder<>(id, recipe4x), recipeSlots, player, maxTransfer, doTransfer);
+                }
+            }
+            return heavyRecipeTransferHandler.transferHelper.createInternalError();
         }
     }
 }

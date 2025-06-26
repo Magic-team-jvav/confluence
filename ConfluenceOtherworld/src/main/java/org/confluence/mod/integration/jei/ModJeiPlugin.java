@@ -4,6 +4,7 @@ import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.helpers.IJeiHelpers;
+import mezz.jei.api.recipe.transfer.IRecipeTransferHandlerHelper;
 import mezz.jei.api.registration.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -86,7 +87,7 @@ public final class ModJeiPlugin implements IModPlugin {
         registration.addRecipeCatalyst(FunctionalBlocks.DEMON_ALTAR.toStack(), AltarCategory.TYPE);
         registration.addRecipeCatalyst(FunctionalBlocks.CRIMSON_ALTAR.toStack(), AltarCategory.TYPE);
         registration.addRecipeCatalyst(FunctionalBlocks.HELLFORGE.toStack(), HellforgeCategory.TYPE, RecipeTypes.BLASTING);
-        registration.addRecipeCatalyst(FunctionalBlocks.HEAVY_WORK_BENCH.toStack(), HeavyWorkBenchCategory.TYPE);
+        registration.addRecipeCatalyst(FunctionalBlocks.HEAVY_WORK_BENCH.toStack(), HeavyWorkBenchCategory.TYPE, RecipeTypes.CRAFTING);
         registration.addRecipeCatalyst(FunctionalBlocks.ALCHEMY_TABLE.toStack(), AlchemyTableCategory.TYPE);
         if (CommonConfigs.FLETCHING_MENU.get()) {
             registration.addRecipeCatalyst(new ItemStack(Blocks.FLETCHING_TABLE), FletchingTableCategory.TYPE);
@@ -119,7 +120,10 @@ public final class ModJeiPlugin implements IModPlugin {
 
     @Override
     public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
-        registration.addRecipeTransferHandler(new HeavyWorkBenchCategory.RecipeTransfer(registration.getJeiHelpers(), registration.getTransferHelper()), HeavyWorkBenchCategory.TYPE);
+        IRecipeTransferHandlerHelper transferHelper = registration.getTransferHelper();
+        HeavyWorkBenchCategory.HeavyRecipeTransferHandler heavyRecipeTransferHandler = new HeavyWorkBenchCategory.HeavyRecipeTransferHandler(registration.getJeiHelpers(), transferHelper);
+        registration.addRecipeTransferHandler(heavyRecipeTransferHandler, HeavyWorkBenchCategory.TYPE);
+        registration.addUniversalRecipeTransferHandler(new HeavyWorkBenchCategory.CraftingRecipeTransferHandler(heavyRecipeTransferHandler));
     }
 
     public static void drawArrowDown(GuiGraphics guiGraphics, int x, int y, boolean usable) {

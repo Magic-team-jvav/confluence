@@ -171,6 +171,9 @@ public class NatureBlocks {
     public static final DeferredBlock<DesertPlantBlock> SMALL_DESERT_PLANT = registerWithItem("small_desert_plant", () -> new DesertPlantBlock(Block.box(4.0D, 0.0D, 4.0D, 12.0D, 16.0D, 12.0D)));
     public static final DeferredBlock<DesertPlantBlock> BIG_DESERT_PLANT = registerWithItem("big_desert_plant", () -> new DesertPlantBlock(Block.box(4.0D, 0.0D, 4.0D, 12.0D, 16.0D, 12.0D)));
     public static final DeferredBlock<SmallCactusBlock> SMALL_CACTUS = registerWithItem("small_cactus", SmallCactusBlock::new);
+    public static final DeferredBlock<Block> DESERT_GRASS = registerWithItem("desert_grass", () -> new BasePlantBlock(Blocks.SAND,Blocks.RED_SAND));
+    public static final DeferredBlock<Block> DESERT_TALL_GRASS = registerWithItem("desert_tall_grass", () -> new BaseTallPlantBlock(Blocks.SAND,Blocks.RED_SAND));
+
     // 萨瓦纳草原
     public static final LogBlockSet BAOBAB_LOG_BLOCKS = LogBlockSet.builder("baobab", true).createDefault(BAOBAB, true).build();
 

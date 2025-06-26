@@ -614,6 +614,18 @@ public final class BlockSubProvider extends BlockLootSubProvider {
                         .when(this.hasSilkTouch())
                         .when(HAS_SHEARS))
         );
+        add(DESERT_GRASS.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(DESERT_GRASS.get()))
+                        .when(this.hasSilkTouch())
+                        .when(HAS_SHEARS))
+        );
+        add(DESERT_TALL_GRASS.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(DESERT_TALL_GRASS.get()))
+                        .when(this.hasSilkTouch())
+                        .when(HAS_SHEARS))
+        );
         add(CORRUPT_GRASS.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(CORRUPT_GRASS.get()))

@@ -69,6 +69,17 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                 )
         );
 
+        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/water_chests"), initialWorldUndergroundCommon()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(SwordItems.BREATHING_REED).setWeight(3))
+                        .add(LootItem.lootTableItem(TCItems.FLIPPER).setWeight(3))
+                        .add(LootItem.lootTableItem(TCItems.INNER_TUBE).setWeight(3))
+                        .add(LootItem.lootTableItem(TCItems.WATER_WALKING_BOOTS).setWeight(3))
+                        .add(LootItem.lootTableItem(Items.TRIDENT).setWeight(3))
+                )
+        );
+
+
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/underground_chests"), initialWorldUndergroundCommon()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.BAND_OF_REGENERATION).setWeight(3))

@@ -14,14 +14,11 @@ import org.confluence.mod.integration.terra_entity.brain.ConfluenceDemolitionist
 import org.confluence.mod.integration.terra_entity.init.ModEffectStrategies;
 import org.confluence.mod.integration.terra_entity.init.ModTradeProviders;
 import org.confluence.mod.util.AchievementUtils;
-import org.confluence.terraentity.api.event.LoadResourceEvent;
 import org.confluence.terraentity.api.event.NPCEvent;
 import org.confluence.terraentity.api.event.SummonEvent;
 import org.confluence.terraentity.api.event.WhipRegisterModifyEvent;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 import org.confluence.terraentity.entity.npc.brain.NurseAi;
-import org.confluence.terraentity.entity.npc.misc.NPCDialogs;
-import org.confluence.terraentity.entity.npc.mood.NPCMoods;
 import org.confluence.terraentity.init.TEAttachments;
 import org.confluence.terraentity.init.entity.TENpcEntities;
 
@@ -82,17 +79,6 @@ public class TEEvents {
             // todo 针管
             collector.setReplace(new NurseAi(collector.getNPC()));
         });
-    }
-
-    @SubscribeEvent
-    public static void onLoadResource(LoadResourceEvent event) {
-        if (event.getType() == LoadResourceEvent.Type.NPC_DIALOGS) {
-            event.setReplace(true);
-            event.addFile(Confluence.asResource(NPCDialogs.KEY + "/" + NPCDialogs.FILE_NAME + ".json"));
-        } else if (event.getType() == LoadResourceEvent.Type.NPC_MOODS) {
-            event.setReplace(true);
-            event.addFile(Confluence.asResource(NPCMoods.KEY + "/" + NPCMoods.FILE_NAME + ".json"));
-        }
     }
 
     @SubscribeEvent

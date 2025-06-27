@@ -42,6 +42,7 @@ import org.confluence.terraentity.registries.npc_trade.variant.ItemTradeLootTabl
 import org.confluence.terraentity.registries.npc_trade.variant.TradeTask;
 import org.confluence.terraentity.registries.npc_trade_lock.ITradeLock;
 import org.confluence.terraentity.registries.npc_trade_lock.variant.BiomeLock;
+import org.confluence.terraentity.registries.npc_trade_lock.variant.MoodLock;
 import org.confluence.terraentity.registries.npc_trade_task.variant.DynamicAnglerTradeTask;
 
 import java.util.ArrayList;
@@ -228,20 +229,24 @@ public class NPCShopProvider extends AbstractRecipeProvider {
         return recipe(NPCTradeManager.CODEC, pathProvider().json(Confluence.asResource(id.getPath())));
     }
 
-    protected Builder withDefaultPylon() { // todo 心情
+    protected Builder withDefaultPylon() {
         return new Builder()
-                .add(new DeferredMoneyTradeItem(WaystonesHelper.FOREST_PYLON.getId(), 1, withModLoaded(new BiomeLock(Optional.empty(), Optional.of(List.of(Tags.Biomes.IS_FOREST, Tags.Biomes.IS_PLAINS))), WaystonesHelper.MODID)))
-                .add(new DeferredMoneyTradeItem(WaystonesHelper.SNOW_PYLON.getId(), 1, withModLoaded(new BiomeLock(Optional.empty(), Optional.of(List.of(Tags.Biomes.IS_SNOWY, Tags.Biomes.IS_ICY))), WaystonesHelper.MODID)))
-                .add(new DeferredMoneyTradeItem(WaystonesHelper.DESERT_PYLON.getId(), 1, withModLoaded(new BiomeLock(Optional.empty(), Optional.of(List.of(Tags.Biomes.IS_DESERT, Tags.Biomes.IS_BADLANDS))), WaystonesHelper.MODID)))
-                .add(new DeferredMoneyTradeItem(WaystonesHelper.CAVERN_PYLON.getId(), 1, withModLoaded(new PositionLock(MinMaxBounds.Ints.ANY, MinMaxBounds.Ints.atMost(40), MinMaxBounds.Ints.ANY), WaystonesHelper.MODID)))
-                .add(new DeferredMoneyTradeItem(WaystonesHelper.OCEAN_PYLON.getId(), 1, withModLoaded(new BiomeLock(Optional.empty(), Optional.of(Collections.singletonList(Tags.Biomes.IS_OCEAN))), WaystonesHelper.MODID)))
-                .add(new DeferredMoneyTradeItem(WaystonesHelper.JUNGLE_PYLON.getId(), 1, withModLoaded(new BiomeLock(Optional.empty(), Optional.of(Collections.singletonList(Tags.Biomes.IS_JUNGLE))), WaystonesHelper.MODID)))
-                .add(new DeferredMoneyTradeItem(WaystonesHelper.HALLOW_PYLON.getId(), 1, withModLoaded(new BiomeLock(Optional.empty(), Optional.of(Collections.singletonList(ModTags.Biomes.THE_HALLOW))), WaystonesHelper.MODID)))
-                .add(new DeferredMoneyTradeItem(WaystonesHelper.MUSHROOM_PYLON.getId(), 1, withModLoaded(new BiomeLock(Optional.of(Collections.singletonList(ModBiomes.GLOWING_MUSHROOM)), Optional.empty()), WaystonesHelper.MODID)));
+                .add(new DeferredMoneyTradeItem(WaystonesHelper.FOREST_PYLON.getId(), 1, withModLoadedGreaterMood( new BiomeLock(Optional.empty(), Optional.of(List.of(Tags.Biomes.IS_FOREST, Tags.Biomes.IS_PLAINS))), WaystonesHelper.MODID)))
+                .add(new DeferredMoneyTradeItem(WaystonesHelper.SNOW_PYLON.getId(), 1, withModLoadedGreaterMood(new BiomeLock(Optional.empty(), Optional.of(List.of(Tags.Biomes.IS_SNOWY, Tags.Biomes.IS_ICY))), WaystonesHelper.MODID)))
+                .add(new DeferredMoneyTradeItem(WaystonesHelper.DESERT_PYLON.getId(), 1, withModLoadedGreaterMood(new BiomeLock(Optional.empty(), Optional.of(List.of(Tags.Biomes.IS_DESERT, Tags.Biomes.IS_BADLANDS))), WaystonesHelper.MODID)))
+                .add(new DeferredMoneyTradeItem(WaystonesHelper.CAVERN_PYLON.getId(), 1, withModLoadedGreaterMood(new PositionLock(MinMaxBounds.Ints.ANY, MinMaxBounds.Ints.atMost(40), MinMaxBounds.Ints.ANY), WaystonesHelper.MODID)))
+                .add(new DeferredMoneyTradeItem(WaystonesHelper.OCEAN_PYLON.getId(), 1, withModLoadedGreaterMood(new BiomeLock(Optional.empty(), Optional.of(Collections.singletonList(Tags.Biomes.IS_OCEAN))), WaystonesHelper.MODID)))
+                .add(new DeferredMoneyTradeItem(WaystonesHelper.JUNGLE_PYLON.getId(), 1, withModLoadedGreaterMood(new BiomeLock(Optional.empty(), Optional.of(Collections.singletonList(Tags.Biomes.IS_JUNGLE))), WaystonesHelper.MODID)))
+                .add(new DeferredMoneyTradeItem(WaystonesHelper.HALLOW_PYLON.getId(), 1, withModLoadedGreaterMood(new BiomeLock(Optional.empty(), Optional.of(Collections.singletonList(ModTags.Biomes.THE_HALLOW))), WaystonesHelper.MODID)))
+                .add(new DeferredMoneyTradeItem(WaystonesHelper.MUSHROOM_PYLON.getId(), 1, withModLoadedGreaterMood(new BiomeLock(Optional.of(Collections.singletonList(ModBiomes.GLOWING_MUSHROOM)), Optional.empty()), WaystonesHelper.MODID)));
     }
 
     protected ITradeLock withModLoaded(ITradeLock subLock, String modid) {
         return new ConditionsLock(subLock, new ModLoadedCondition(modid));
+    }
+
+    protected ITradeLock withModLoadedGreaterMood(ITradeLock subLock, String modid) {
+        return new ConditionsLock(ITradeLock.and(MoodLock.greater(120), subLock), new ModLoadedCondition(modid));
     }
 
     @Override

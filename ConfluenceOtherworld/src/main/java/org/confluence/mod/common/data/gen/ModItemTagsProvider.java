@@ -1089,9 +1089,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         wip.add(
                 ConsumableItems.ARTISAN_LOAF.get(),
                 ConsumableItems.SMOKE_BOMB.get(),
-                ConsumableItems.BEENADE.get(),
                 ConsumableItems.SPIKY_BALL.get(),
-                ConsumableItems.BEENADE.get(),
                 ConsumableItems.HOLY_WATER.get(),
                 ConsumableItems.UNHOLY_WATER.get(),
                 ConsumableItems.BLOOD_WATER.get(),

@@ -53,25 +53,6 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
             "a   "
     );
 
-    private final List<String> baseHelmetPattern = List.of(
-            "###",
-            "# #"
-    );
-    private final List<String> baseChestplatePattern = List.of(
-            "# #",
-            "###",
-            "###"
-    );
-    private final List<String> baseLeggingsPattern = List.of(
-            "###",
-            "# #",
-            "# #"
-    );
-    private final List<String> baseBootsPattern = List.of(
-            "# #",
-            "# #"
-    );
-
 
     public HeavyWorkBenchProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookup) {
         super(output, lookup);
@@ -130,81 +111,6 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         basePhaseblade(recipeOutput, AmountIngredient.of(5, MaterialItems.JADE), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.GREEN_PHASEBLADE.toStack());
         basePhaseblade(recipeOutput, AmountIngredient.of(5, MaterialItems.SAPPHIRE), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.BLUE_PHASEBLADE.toStack());
         basePhaseblade(recipeOutput, AmountIngredient.of(5, MaterialItems.AMETHYST), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.PURPLE_PHASEBLADE.toStack());
-
-        // 单个物品合成的套装
-        baseHelmetPattern(recipeOutput, Ingredient.of(NatureBlocks.ASH_LOG_BLOCKS.getPlanks()), ArmorItems.ASH_HELMET.toStack());
-        baseChestplatePattern(recipeOutput, Ingredient.of(NatureBlocks.ASH_LOG_BLOCKS.getPlanks()), ArmorItems.ASH_CHESTPLATE.toStack());
-        baseLeggingsPattern(recipeOutput, Ingredient.of(NatureBlocks.ASH_LOG_BLOCKS.getPlanks()), ArmorItems.ASH_LEGGINGS.toStack());
-        baseBootsPattern(recipeOutput, Ingredient.of(NatureBlocks.ASH_LOG_BLOCKS.getPlanks()), ArmorItems.ASH_BOOTS.toStack());
-
-        baseHelmetPattern(recipeOutput, Ingredient.of(NatureBlocks.EBONY_LOG_BLOCKS.getPlanks()), ArmorItems.EBONY_HELMET.toStack());
-        baseChestplatePattern(recipeOutput, Ingredient.of(NatureBlocks.EBONY_LOG_BLOCKS.getPlanks()), ArmorItems.EBONY_CHESTPLATE.toStack());
-        baseLeggingsPattern(recipeOutput, Ingredient.of(NatureBlocks.EBONY_LOG_BLOCKS.getPlanks()), ArmorItems.EBONY_LEGGINGS.toStack());
-        baseBootsPattern(recipeOutput, Ingredient.of(NatureBlocks.EBONY_LOG_BLOCKS.getPlanks()), ArmorItems.EBONY_BOOTS.toStack());
-
-        baseHelmetPattern(recipeOutput, Ingredient.of(NatureBlocks.SHADOW_LOG_BLOCKS.getPlanks()), ArmorItems.SHADOW_PLANK_HELMET.toStack());
-        baseChestplatePattern(recipeOutput, Ingredient.of(NatureBlocks.SHADOW_LOG_BLOCKS.getPlanks()), ArmorItems.SHADOW_PLANK_CHESTPLATE.toStack());
-        baseLeggingsPattern(recipeOutput, Ingredient.of(NatureBlocks.SHADOW_LOG_BLOCKS.getPlanks()), ArmorItems.SHADOW_PLANK_LEGGINGS.toStack());
-        baseBootsPattern(recipeOutput, Ingredient.of(NatureBlocks.SHADOW_LOG_BLOCKS.getPlanks()), ArmorItems.SHADOW_PLANK_BOOTS.toStack());
-        
-        baseHelmetPattern(recipeOutput, Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.getPlanks()), ArmorItems.PEARL_HELMET.toStack());
-        baseChestplatePattern(recipeOutput, Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.getPlanks()), ArmorItems.PEARL_CHESTPLATE.toStack());
-        baseLeggingsPattern(recipeOutput, Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.getPlanks()), ArmorItems.PEARL_LEGGINGS.toStack());
-        baseBootsPattern(recipeOutput, Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.getPlanks()), ArmorItems.PEARL_BOOTS.toStack());
-
-        baseHelmetPattern(recipeOutput, Ingredient.of(ModTags.Items.INITIAL_WOOD), ArmorItems.PLANK_HELMET.toStack());
-        baseChestplatePattern(recipeOutput, Ingredient.of(ModTags.Items.INITIAL_WOOD), ArmorItems.PLANK_CHESTPLATE.toStack());
-        baseLeggingsPattern(recipeOutput, Ingredient.of(ModTags.Items.INITIAL_WOOD), ArmorItems.PLANK_LEGGINGS.toStack());
-        baseBootsPattern(recipeOutput, Ingredient.of(ModTags.Items.INITIAL_WOOD), ArmorItems.PLANK_BOOTS.toStack());
-
-        baseHelmetPattern(recipeOutput, Ingredient.of(Items.CACTUS), ArmorItems.CACTUS_HELMET.toStack());
-        baseChestplatePattern(recipeOutput, Ingredient.of((Items.CACTUS)), ArmorItems.CACTUS_CHESTPLATE.toStack());
-        baseLeggingsPattern(recipeOutput, Ingredient.of((Items.CACTUS)), ArmorItems.CACTUS_LEGGINGS.toStack());
-        baseBootsPattern(recipeOutput, Ingredient.of((Items.CACTUS)), ArmorItems.CACTUS_BOOTS.toStack());
-
-        baseHelmetPattern(recipeOutput, Ingredient.of(Items.COPPER_INGOT), ArmorItems.COPPER_HELMET.toStack());
-        baseChestplatePattern(recipeOutput, Ingredient.of((Items.COPPER_INGOT)), ArmorItems.COPPER_CHESTPLATE.toStack());
-        baseLeggingsPattern(recipeOutput, Ingredient.of((Items.COPPER_INGOT)), ArmorItems.COPPER_LEGGINGS.toStack());
-        baseBootsPattern(recipeOutput, Ingredient.of((Items.COPPER_INGOT)), ArmorItems.COPPER_BOOTS.toStack());
-        
-        baseHelmetPattern(recipeOutput, Ingredient.of(Items.IRON_INGOT), Items.IRON_HELMET.getDefaultInstance());
-        baseChestplatePattern(recipeOutput, Ingredient.of((Items.IRON_INGOT)), Items.IRON_CHESTPLATE.getDefaultInstance());
-        baseLeggingsPattern(recipeOutput, Ingredient.of((Items.IRON_INGOT)), Items.IRON_LEGGINGS.getDefaultInstance());
-        baseBootsPattern(recipeOutput, Ingredient.of((Items.IRON_INGOT)), Items.IRON_BOOTS.getDefaultInstance());
-
-        baseHelmetPattern(recipeOutput, Ingredient.of(Items.GOLD_INGOT), Items.GOLDEN_HELMET.getDefaultInstance());
-        baseChestplatePattern(recipeOutput, Ingredient.of((Items.GOLD_INGOT)), Items.GOLDEN_CHESTPLATE.getDefaultInstance());
-        baseLeggingsPattern(recipeOutput, Ingredient.of((Items.GOLD_INGOT)), Items.GOLDEN_LEGGINGS.getDefaultInstance());
-        baseBootsPattern(recipeOutput, Ingredient.of((Items.GOLD_INGOT)), Items.GOLDEN_BOOTS.getDefaultInstance());
-
-        baseHelmetPattern(recipeOutput, Ingredient.of(Items.DIAMOND), Items.DIAMOND_HELMET.getDefaultInstance());
-        baseChestplatePattern(recipeOutput, Ingredient.of((Items.DIAMOND)), Items.DIAMOND_CHESTPLATE.getDefaultInstance());
-        baseLeggingsPattern(recipeOutput, Ingredient.of((Items.DIAMOND)), Items.DIAMOND_LEGGINGS.getDefaultInstance());
-        baseBootsPattern(recipeOutput, Ingredient.of((Items.DIAMOND)), Items.DIAMOND_BOOTS.getDefaultInstance());
-        
-        baseHelmetPattern(recipeOutput, Ingredient.of(MaterialItems.TIN_INGOT), ArmorItems.TIN_HELMET.toStack());
-        baseChestplatePattern(recipeOutput, Ingredient.of((MaterialItems.TIN_INGOT)), ArmorItems.TIN_CHESTPLATE.toStack());
-        baseLeggingsPattern(recipeOutput, Ingredient.of((MaterialItems.TIN_INGOT)), ArmorItems.TIN_LEGGINGS.toStack());
-
-        baseHelmetPattern(recipeOutput, Ingredient.of(MaterialItems.LEAD_INGOT), ArmorItems.LEAD_HELMET.toStack());
-        baseChestplatePattern(recipeOutput, Ingredient.of((MaterialItems.LEAD_INGOT)), ArmorItems.LEAD_CHESTPLATE.toStack());
-        baseLeggingsPattern(recipeOutput, Ingredient.of((MaterialItems.LEAD_INGOT)), ArmorItems.LEAD_LEGGINGS.toStack());
-        baseBootsPattern(recipeOutput, Ingredient.of((MaterialItems.LEAD_INGOT)), ArmorItems.LEAD_BOOTS.toStack());
-
-        baseHelmetPattern(recipeOutput, Ingredient.of(MaterialItems.SILVER_INGOT), ArmorItems.SILVER_HELMET.toStack());
-        baseChestplatePattern(recipeOutput, Ingredient.of((MaterialItems.SILVER_INGOT)), ArmorItems.SILVER_CHESTPLATE.toStack());
-        baseLeggingsPattern(recipeOutput, Ingredient.of((MaterialItems.SILVER_INGOT)), ArmorItems.SILVER_LEGGINGS.toStack());
-        baseBootsPattern(recipeOutput, Ingredient.of((MaterialItems.SILVER_INGOT)), ArmorItems.SILVER_BOOTS.toStack());
-
-        baseHelmetPattern(recipeOutput, Ingredient.of(MaterialItems.TUNGSTEN_INGOT), ArmorItems.TUNGSTEN_HELMET.toStack());
-        baseChestplatePattern(recipeOutput, Ingredient.of((MaterialItems.TUNGSTEN_INGOT)), ArmorItems.TUNGSTEN_CHESTPLATE.toStack());
-        baseLeggingsPattern(recipeOutput, Ingredient.of((MaterialItems.TUNGSTEN_INGOT)), ArmorItems.TUNGSTEN_LEGGINGS.toStack());
-        baseBootsPattern(recipeOutput, Ingredient.of((MaterialItems.TUNGSTEN_INGOT)), ArmorItems.TUNGSTEN_BOOTS.toStack());
-
-        baseHelmetPattern(recipeOutput, Ingredient.of(MaterialItems.PLATINUM_INGOT), ArmorItems.PLATINUM_HELMET.toStack());
-        baseChestplatePattern(recipeOutput, Ingredient.of((MaterialItems.PLATINUM_INGOT)), ArmorItems.PLATINUM_CHESTPLATE.toStack());
-        baseLeggingsPattern(recipeOutput, Ingredient.of((MaterialItems.PLATINUM_INGOT)), ArmorItems.PLATINUM_LEGGINGS.toStack());
-        baseBootsPattern(recipeOutput, Ingredient.of((MaterialItems.PLATINUM_INGOT)), ArmorItems.PLATINUM_BOOTS.toStack());
 
         // 金系列
         heavyWorkBench(recipeOutput, "golden_helmet_from_reinforce", ShapedRecipePattern.of(Map.of(
@@ -458,6 +364,14 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "////",
                 " // "
         )), FoodItems.BOULDER_BREAD.toStack());
+        // 蜜蜂手榴弹
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(ConsumableItems.GRENADE),
+                '/', Ingredient.of(MaterialItems.ROYAL_WAX)
+        ), List.of(
+                "/",
+                "a"
+        )), ConsumableItems.BEENADE.toStack());
     }
 
     private void buildBaseStatues(RecipeOutput recipeOutput) {
@@ -516,34 +430,5 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 '#', gem,
                 'a', handle
         ), basePhasebladePattern)), null);
-    }
-    protected void baseHelmetPattern(RecipeOutput recipeOutput, Ingredient gem, ItemStack result) {
-        ResourceLocation id = Confluence.asResource("heavy_work_bench/" + getItemName(result.getItem()));
-        recipeOutput.accept(id, new HeavyWorkBenchRecipe(result, ShapedRecipePattern.of(Map.of(
-                '#', gem
-        ), baseHelmetPattern)), null);
-    }
-
-    protected void baseChestplatePattern(RecipeOutput recipeOutput, Ingredient gem,  ItemStack result) {
-        ResourceLocation id = Confluence.asResource("heavy_work_bench/" + getItemName(result.getItem()));
-        recipeOutput.accept(id, new HeavyWorkBenchRecipe(result, ShapedRecipePattern.of(Map.of(
-                '#', gem
-        ), baseChestplatePattern)), null);
-    }
-
-    protected void baseLeggingsPattern(RecipeOutput recipeOutput, Ingredient gem, ItemStack result) {
-        ResourceLocation id = Confluence.asResource("heavy_work_bench/" + getItemName(result.getItem()));
-        recipeOutput.accept(id, new HeavyWorkBenchRecipe(result, ShapedRecipePattern.of(Map.of(
-                '#', gem
-        ), baseLeggingsPattern)), null);
-    }
-
-
-
-    protected void baseBootsPattern(RecipeOutput recipeOutput, Ingredient gem, ItemStack result) {
-        ResourceLocation id = Confluence.asResource("heavy_work_bench/" + getItemName(result.getItem()));
-        recipeOutput.accept(id, new HeavyWorkBenchRecipe(result, ShapedRecipePattern.of(Map.of(
-                '#', gem
-        ), baseBootsPattern)), null);
     }
 }

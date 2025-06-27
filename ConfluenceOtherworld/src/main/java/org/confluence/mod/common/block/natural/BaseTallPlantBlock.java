@@ -14,6 +14,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BushBlock;
+import net.minecraft.world.level.block.TallGrassBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -23,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
-public class BaseTallPlantBlock extends BushBlock {
+public class BaseTallPlantBlock extends TallGrassBlock {
     public static final MapCodec<BaseTallPlantBlock> CODEC = RecordCodecBuilder.mapCodec(
             builder -> builder.group(propertiesCodec(),
                             BuiltInRegistries.BLOCK.byNameCodec().listOf().fieldOf("ground").forGetter(basePlantBlock ->
@@ -42,18 +43,6 @@ public class BaseTallPlantBlock extends BushBlock {
         super(prop);
         this.survive = survive;
     }
-    @Override
-    @NotNull
-    protected MapCodec<? extends BushBlock> codec(){
-        return CODEC;
-    }
-    @Override
-    @NotNull
-    public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context){
-        Vec3 offset = state.getOffset(world, pos);
-        return box(2, 0, 2, 14, 24, 14).move(offset.x, offset.y, offset.z);
-    }
-
     @Override
     public boolean mayPlaceOn(BlockState groundState, BlockGetter worldIn, BlockPos pos){
         return Arrays.stream(survive).anyMatch(state -> state == groundState.getBlock());

@@ -65,6 +65,9 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.price.sell", "售价：");
 
         add("tooltip.jei.state_properties", "需要的方块属性：");
+        add("tooltip.jei.count_range", "数量：%s-%s");
+        add("tooltip.jei.count_exact", "数量：%s");
+        add("tooltip.jei.drop_chance", "爆率：%s%%");
 
         add("tooltip.item.confluence.meteorite_ingot.0", "摸起来是温的");
         add("tooltip.item.confluence.encumbering_stone.0", "锁上时能防止拾取物品");

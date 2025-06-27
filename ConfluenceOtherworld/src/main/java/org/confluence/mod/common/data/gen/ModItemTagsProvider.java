@@ -1078,7 +1078,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         copy(Tags.Blocks.SANDSTONE_BLOCKS, Tags.Items.SANDSTONE_BLOCKS);
         copy(Tags.Blocks.FENCE_GATES_WOODEN, Tags.Items.FENCE_GATES_WOODEN);
         copy(Tags.Blocks.PLAYER_WORKSTATIONS_FURNACES, Tags.Items.PLAYER_WORKSTATIONS_FURNACES);
-        copy(Tags.Blocks.GRAVELS, Tags.Items.GRAVELS);
         copy(Tags.Blocks.CHAINS, Tags.Items.CHAINS);
         copy(Tags.Blocks.ROPES, Tags.Items.ROPES);
         copy(Tags.Blocks.VILLAGER_JOB_SITES, Tags.Items.VILLAGER_JOB_SITES);

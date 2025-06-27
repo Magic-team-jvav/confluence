@@ -947,11 +947,6 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 MAGENTA_PURE_GLASS.get(),
                 PINK_PURE_GLASS.get()
         );
-        tag(Tags.Blocks.GRAVELS).add(
-                SLUSH.get(),
-                SILT_BLOCK.get(),
-                MARINE_GRAVEL.get()
-        );
         tag(Tags.Blocks.HIDDEN_FROM_RECIPE_VIEWERS).add(
                 DEEPSLATE_COBALT_ORE.get(),
                 RAW_COBALT_BLOCK.get(),

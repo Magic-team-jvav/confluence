@@ -75,6 +75,9 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.price.sell", "Sell: ");
 
         add("tooltip.jei.state_properties", "Required State Properties:");
+        add("tooltip.jei.count_range", "Count: %s-%s");
+        add("tooltip.jei.count_exact", "Count: %s");
+        add("tooltip.jei.drop_chance", "Chance: %s%%");
 
         add("tooltip.item.confluence.meteorite_ingot.0", "Warm to the touch");
         add("tooltip.item.confluence.encumbering_stone.0", "Prevents item pickups while locked");

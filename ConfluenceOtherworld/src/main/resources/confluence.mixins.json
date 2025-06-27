@@ -142,6 +142,8 @@
         "integration.jade.HarvestToolProviderMixin",
         "integration.jei.FurnaceFuelCategoryMixin",
         "integration.jei.ScreenHelperMixin",
+        "integration.jei.TypedItemStackMixin",
+        "integration.jei.TypedItemStackMixin$S1Mixin",
         "integration.journeymap.EffectMixin",
         "integration.loot_beams_refork.ConfigHandlersMixin",
         "integration.patchouli.BookPageMixin",

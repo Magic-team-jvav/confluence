@@ -13,6 +13,7 @@ import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.data.map.ExtractinatorData;
+import org.confluence.mod.common.data.map.ImmunityDataMap;
 import org.confluence.mod.common.data.map.TreasureBagDrop;
 
 import java.util.LinkedList;
@@ -20,12 +21,13 @@ import java.util.List;
 
 @EventBusSubscriber(modid = Confluence.MODID, bus = EventBusSubscriber.Bus.MOD)
 public final class ModDataMaps {
-    private static List<DataMapType<?,?>> types = new LinkedList<>();
+    private static List<DataMapType<?, ?>> types = new LinkedList<>();
 
     public static final DataMapType<Item, ValueComponent> VALUE = register("value", Registries.ITEM, ValueComponent.CODEC, true);
     public static final DataMapType<Item, ExtractinatorData> EXTRACTINATOR = register("extractinator", Registries.ITEM, ExtractinatorData.CODEC, false);
     public static final DataMapType<Item, ExtractinatorData> CHLOROPHYTE_EXTRACTINATOR = register("chlorophyte_extractinator", Registries.ITEM, ExtractinatorData.CODEC, false);
     public static final DataMapType<EntityType<?>, TreasureBagDrop> TREASURE_BAG = register("treasure_bag", Registries.ENTITY_TYPE, TreasureBagDrop.CODEC, false);
+    public static final DataMapType<EntityType<?>, ImmunityDataMap> IMMUNITY = register("immunity", Registries.ENTITY_TYPE, ImmunityDataMap.CODEC, true);
 
     private static <R, T> DataMapType<R, T> register(String path, ResourceKey<Registry<R>> resourceKey, Codec<T> codec, boolean synced) {
         DataMapType.Builder<T, R> builder = DataMapType.builder(Confluence.asResource(path), resourceKey, codec);

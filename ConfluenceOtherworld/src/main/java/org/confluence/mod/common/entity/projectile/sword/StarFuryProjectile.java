@@ -21,8 +21,8 @@ public class StarFuryProjectile extends SwordProjectile<StarFuryProjectile> impl
     }
 
     @Override
-    public Types confluence$getImmunityType(){
-        return Types.LOCAL;
+    public Type confluence$getImmunityType(){
+        return Type.LOCAL;
     }
 
     @Override

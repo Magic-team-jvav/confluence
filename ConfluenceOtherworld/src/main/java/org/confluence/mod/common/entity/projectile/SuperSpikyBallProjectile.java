@@ -87,8 +87,8 @@ public class SuperSpikyBallProjectile extends Projectile implements Immunity, IA
     }
 
     @Override
-    public Immunity.Types confluence$getImmunityType() {
-        return Immunity.Types.STATIC;
+    public Type confluence$getImmunityType() {
+        return Type.STATIC;
     }
 
     @Override

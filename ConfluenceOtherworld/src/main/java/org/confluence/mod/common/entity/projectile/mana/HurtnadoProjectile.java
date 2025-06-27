@@ -96,8 +96,8 @@ public class HurtnadoProjectile extends AbstractManaProjectile implements Immuni
     }
 
     @Override
-    public Types confluence$getImmunityType() {
-        return Types.STATIC;
+    public Type confluence$getImmunityType() {
+        return Type.STATIC;
     }
 
     @Override

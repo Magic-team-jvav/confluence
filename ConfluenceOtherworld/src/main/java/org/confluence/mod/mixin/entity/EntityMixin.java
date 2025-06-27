@@ -18,7 +18,6 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.entity.PartEntity;
 import net.neoforged.neoforge.fluids.FluidType;
-import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.api.event.ShimmerEntityTransmutationEvent;
 import org.confluence.mod.common.data.saved.GamePhase;
 import org.confluence.mod.common.data.saved.KillBoard;
@@ -41,7 +40,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import static org.confluence.mod.api.event.ShimmerEntityTransmutationEvent.ENTITY_TRANSMUTATION;
 
 @Mixin(Entity.class)
-public abstract class EntityMixin implements IEntity, SelfGetter<Entity> {
+public abstract class EntityMixin implements IEntity {
     @Unique
     private static final Vec3 ANTI_GRAVITY = new Vec3(0.0, -5.0E-4F, 0.0);
 

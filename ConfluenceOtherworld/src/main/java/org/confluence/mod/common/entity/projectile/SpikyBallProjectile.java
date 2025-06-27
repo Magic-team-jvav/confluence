@@ -94,8 +94,8 @@ public class SpikyBallProjectile extends Projectile implements Immunity, IAxisZR
     }
 
     @Override
-    public Types confluence$getImmunityType() {
-        return Types.STATIC;
+    public Type confluence$getImmunityType() {
+        return Type.STATIC;
     }
 
     @Override

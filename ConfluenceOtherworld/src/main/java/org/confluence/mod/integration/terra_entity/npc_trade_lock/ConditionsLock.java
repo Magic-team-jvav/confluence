@@ -12,19 +12,18 @@ import org.confluence.terraentity.registries.npc_trade_lock.TradeLockProvider;
 import java.util.Arrays;
 import java.util.List;
 
-public record ConditionsLock(ITradeLock subLock, List<ICondition> conditions) implements ITradeLock {
+public record ConditionsLock(List<ICondition> conditions) implements ITradeLock {
     public static final MapCodec<ConditionsLock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            ITradeLock.TYPED_CODEC.fieldOf("sub_lock").forGetter(ConditionsLock::subLock),
             ICondition.LIST_CODEC.fieldOf("conditions").forGetter(ConditionsLock::conditions)
     ).apply(instance, ConditionsLock::new));
 
-    public ConditionsLock(ITradeLock subLock, ICondition... conditions) {
-        this(subLock, Arrays.stream(conditions).toList());
+    public ConditionsLock(ICondition... conditions) {
+        this(Arrays.stream(conditions).toList());
     }
 
     @Override
     public boolean canTrade(Player player, ITradeHolder npc, int index) {
-        return conditions.stream().allMatch(condition -> condition.test(ICondition.IContext.TAGS_INVALID)) && subLock.canTrade(player, npc, index);
+        return conditions.stream().allMatch(condition -> condition.test(ICondition.IContext.TAGS_INVALID));
     }
 
     @Override

@@ -241,12 +241,12 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(new DeferredMoneyTradeItem(WaystonesHelper.MUSHROOM_PYLON.getId(), 1, withModLoadedGreaterMood(new BiomeLock(Optional.of(Collections.singletonList(ModBiomes.GLOWING_MUSHROOM)), Optional.empty()), WaystonesHelper.MODID)));
     }
 
-    protected ITradeLock withModLoaded(ITradeLock subLock, String modid) {
-        return new ConditionsLock(subLock, new ModLoadedCondition(modid));
+    protected ITradeLock withModLoaded(String modid) {
+        return new ConditionsLock(new ModLoadedCondition(modid));
     }
 
     protected ITradeLock withModLoadedGreaterMood(ITradeLock subLock, String modid) {
-        return new ConditionsLock(ITradeLock.and(MoodLock.greater(120), subLock), new ModLoadedCondition(modid));
+        return ITradeLock.and(MoodLock.greater(120), withModLoaded(modid), subLock);
     }
 
     @Override

@@ -21,7 +21,6 @@ import org.confluence.terraentity.api.event.WhipRegisterModifyEvent;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 import org.confluence.terraentity.entity.npc.brain.NurseAi;
 import org.confluence.terraentity.entity.npc.misc.NPCDialogs;
-import org.confluence.terraentity.entity.npc.misc.NPCNames;
 import org.confluence.terraentity.entity.npc.mood.NPCMoods;
 import org.confluence.terraentity.init.TEAttachments;
 import org.confluence.terraentity.init.entity.TENpcEntities;
@@ -87,10 +86,7 @@ public class TEEvents {
 
     @SubscribeEvent
     public static void onLoadResource(LoadResourceEvent event) {
-        if (event.getType() == LoadResourceEvent.Type.NPC_NAMES) {
-            event.setReplace(true);
-            event.addFile(Confluence.asResource(NPCNames.KEY + "/" + NPCNames.FILE_NAME + ".json"));
-        } else if (event.getType() == LoadResourceEvent.Type.NPC_DIALOGS) {
+        if (event.getType() == LoadResourceEvent.Type.NPC_DIALOGS) {
             event.setReplace(true);
             event.addFile(Confluence.asResource(NPCDialogs.KEY + "/" + NPCDialogs.FILE_NAME + ".json"));
         } else if (event.getType() == LoadResourceEvent.Type.NPC_MOODS) {

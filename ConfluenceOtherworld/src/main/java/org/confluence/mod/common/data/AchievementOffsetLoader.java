@@ -1,70 +1,26 @@
 package org.confluence.mod.common.data;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.PreparableReloadListener;
-import net.minecraft.server.packs.resources.Resource;
-import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.util.GsonHelper;
-import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.phys.Vec2;
-import net.neoforged.neoforge.resource.ContextAwareReloadListener;
+import org.confluence.lib.common.data.SingleJsonFileReloadListener;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.AchievementToast;
 
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.io.IOException;
-import java.io.Reader;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class AchievementOffsetLoader extends ContextAwareReloadListener {
+public class AchievementOffsetLoader extends SingleJsonFileReloadListener {
     public static volatile CompletableFuture<Void> WAITING_FOR = CompletableFuture.completedFuture(null);
     private static AchievementOffsetLoader INSTANCE;
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
     private Map<ResourceLocation, Vec2> registeredAchievements = ImmutableMap.of();
-
-    @Override
-    public final CompletableFuture<Void> reload(
-            PreparableReloadListener.PreparationBarrier stage,
-            ResourceManager resourceManager,
-            ProfilerFiller preparationsProfiler,
-            ProfilerFiller reloadProfiler,
-            Executor backgroundExecutor,
-            Executor gameExecutor
-    ) {
-        return WAITING_FOR = CompletableFuture.supplyAsync(
-                () -> prepare(resourceManager), backgroundExecutor
-        ).thenCompose(stage::wait).thenAcceptAsync(this::apply, gameExecutor);
-    }
-
-    protected Map<ResourceLocation, JsonElement> prepare(ResourceManager resourceManager) {
-        Map<ResourceLocation, JsonElement> map = new HashMap<>();
-        ResourceLocation resourceLocation = Confluence.asResource("achievement_offset.json");
-        for (Resource resource : resourceManager.getResourceStack(resourceLocation)) {
-            try (Reader reader = resource.openAsReader()) {
-                JsonObject jsonobject = GsonHelper.fromJson(GSON, reader, JsonObject.class);
-                for (Map.Entry<String, JsonElement> entry : jsonobject.entrySet()) {
-                    ResourceLocation loc = ResourceLocation.parse(entry.getKey());
-                    map.put(loc, entry.getValue());
-                }
-            } catch (RuntimeException | IOException ioexception) {
-                Confluence.LOGGER.error("Couldn't read achievement offset {} in data pack {}", resourceLocation, resource.sourcePackId(), ioexception);
-            }
-        }
-        return map;
-    }
 
     protected void apply(Map<ResourceLocation, JsonElement> resourceList) {
         ImmutableMap.Builder<ResourceLocation, Vec2> builder = ImmutableMap.builder();
@@ -76,6 +32,16 @@ public class AchievementOffsetLoader extends ContextAwareReloadListener {
                     .ifPresent(vec2 -> builder.put(location, vec2));
         }
         this.registeredAchievements = builder.build();
+    }
+
+    @Override
+    protected ResourceLocation resourcePath() {
+        return Confluence.asResource("achievement_offset.json");
+    }
+
+    @Override
+    protected String identifier() {
+        return "Achievement Offset";
     }
 
     public Map<ResourceLocation, Vec2> getRegisteredAchievements() {

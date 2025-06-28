@@ -50,6 +50,9 @@ public final class ValueSubProvider {
                 .add(MaterialItems.PALLADIUM_INGOT, 2700)
                 .add(MaterialItems.HALLOWED_INGOT, 4000);
         appender.create()
+                .add(Items.IRON_NUGGET, 33)
+                .add(Items.GOLD_NUGGET, 133);
+        appender.create()
                 .add(Items.COPPER_BLOCK, 150 * 9)
                 .add(OreBlocks.CRIMTANE_BLOCK, 3900 * 9)
                 .add(OreBlocks.DEMONITE_BLOCK, 3000 * 9)
@@ -85,6 +88,8 @@ public final class ValueSubProvider {
                 .add(MaterialItems.TOPAZ, wrap(7, 50))
                 .add(Items.LAPIS_LAZULI, 50)
                 .add(Items.REDSTONE, 40)
+                .add(Items.GLOWSTONE_DUST, 20)
+                .add(Items.NETHERITE_SCRAP, wrap(10, 0))
                 .add(Items.COAL, 40)
                 .add(Items.CHARCOAL, 40);
         appender.create()
@@ -1098,6 +1103,7 @@ public final class ValueSubProvider {
                 // teleportation
                 .add(PotionItems.WORMHOLE_POTION, wrap(2, 0));
         appender.create()
+                .add(Items.ENCHANTED_GOLDEN_APPLE, wrap(50, 0))
                 .add(FoodItems.PAD_THAI, 5500)
                 .add(FoodItems.HONEYFIN, wrap(15, 0));
         appender.create()

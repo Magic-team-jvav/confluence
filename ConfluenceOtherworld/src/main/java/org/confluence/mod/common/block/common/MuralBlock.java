@@ -7,6 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
@@ -94,13 +95,6 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
             decode(tag, registries);
         }
 
-        public void markUpdated() {
-            setChanged();
-            if (level != null) {
-                level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), UPDATE_CLIENTS);
-            }
-        }
-
         @Override
         protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
             super.loadAdditional(tag, registries);
@@ -121,10 +115,10 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
         }
 
         private void decode(CompoundTag tag, HolderLookup.Provider registries) {
-            this.back = MuralData.decode(tag.getCompound("back"), registries);
-            this.left = MuralData.decode(tag.getCompound("left"), registries);
-            this.right = MuralData.decode(tag.getCompound("right"), registries);
-            this.front = MuralData.decode(tag.getCompound("front"), registries);
+            this.back = MuralData.decode(tag.getList("back", Tag.TAG_COMPOUND), registries);
+            this.left = MuralData.decode(tag.getList("left", Tag.TAG_COMPOUND), registries);
+            this.right = MuralData.decode(tag.getList("right", Tag.TAG_COMPOUND), registries);
+            this.front = MuralData.decode(tag.getList("front", Tag.TAG_COMPOUND), registries);
         }
 
         @Override
@@ -146,10 +140,10 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
         public static final Codec<List<MuralData>> LIST_CODEC = CODEC.listOf();
 
         public static Tag encode(Optional<List<MuralData>> data, HolderLookup.Provider registries) {
-            return data.flatMap(muralData -> LIST_CODEC.encodeStart(registries.createSerializationContext(NbtOps.INSTANCE), muralData).result()).orElseGet(CompoundTag::new);
+            return data.flatMap(muralData -> LIST_CODEC.encodeStart(registries.createSerializationContext(NbtOps.INSTANCE), muralData).result()).orElseGet(ListTag::new);
         }
 
-        public static Optional<List<MuralData>> decode(CompoundTag tag, HolderLookup.Provider registries) {
+        public static Optional<List<MuralData>> decode(ListTag tag, HolderLookup.Provider registries) {
             return LIST_CODEC.parse(registries.createSerializationContext(NbtOps.INSTANCE), tag).result();
         }
     }

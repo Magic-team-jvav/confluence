@@ -289,7 +289,7 @@ public final class ClientUtils {
                 boneOffset.div(16);
                 for (GeoCube cube : bone.getCubes()) {
 //                    GeoCube copyCube = DeathAnimUtils.duplicateGeoCube(cube);
-                    GeoCube copyCube = ((IGeoCube) (Object) cube).confluence$getCopy();
+                    GeoCube copyCube = IGeoCube.of(cube).confluence$getCopy();
                     if (copyCube == null) continue;
 
                     DeadBodyPartEntity part = new DeadBodyPartEntity(ModEntities.BODY_PART.get(), level, entity, copyCube, deathSpeed);

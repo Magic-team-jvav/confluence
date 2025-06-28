@@ -1,16 +1,26 @@
 {
     "providers": [
         {
-            "type": "reference",
-            "id": "minecraft:include/space"
+            "type": "bitmap",
+            "file": "confluence:font/palat.png",
+            "height": 9,
+            "ascent": 8,
+            "chars": [
+                "abcdefghijklmnopqrstuvwxyz"
+            ]
         },
         {
             "type": "bitmap",
             "file": "confluence:font/palat.png",
-            "ascent": 7,
+            "height": 9,
+            "ascent": 8,
             "chars": [
-                "abcdefghijklmnopqrstuvwxyz,.'\u0000"
+                "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
             ]
+        },
+        {
+            "type": "reference",
+            "id": "minecraft:default"
         }
     ]
 }

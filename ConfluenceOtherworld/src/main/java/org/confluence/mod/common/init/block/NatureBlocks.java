@@ -173,6 +173,7 @@ public class NatureBlocks {
     public static final DeferredBlock<SmallCactusBlock> SMALL_CACTUS = registerWithItem("small_cactus", SmallCactusBlock::new);
     public static final DeferredBlock<Block> DESERT_GRASS = registerWithItem("desert_grass", () -> new BasePlantBlock(Blocks.SAND,Blocks.RED_SAND));
     public static final DeferredBlock<Block> DESERT_TALL_GRASS = registerWithItem("desert_tall_grass", () -> new BaseTallPlantBlock(Blocks.SAND,Blocks.RED_SAND));
+    public static final DeferredBlock<Block> PACKED_DIRT = registerWithItem("packed_dirt", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).strength(1.0F, 1.0F).sound(SoundType.STONE).mapColor(MapColor.COLOR_BROWN)));
 
     // 萨瓦纳草原
     public static final LogBlockSet BAOBAB_LOG_BLOCKS = LogBlockSet.builder("baobab", true).createDefault(BAOBAB, true).build();

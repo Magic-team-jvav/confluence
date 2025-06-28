@@ -127,7 +127,7 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
         }
     }
 
-    public record MuralData(float x, float y, float z, float roll, float scale, Optional<Icon> icon, Optional<Component> text) {
+    public record MuralData(float x, float y, float z, float roll, float scale, Optional<Icon> icon, Optional<Text> text) {
         public static final Codec<MuralData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 Codec.FLOAT.lenientOptionalFieldOf("x", 0.0F).forGetter(MuralData::x),
                 Codec.FLOAT.lenientOptionalFieldOf("y", 0.0F).forGetter(MuralData::y),
@@ -135,12 +135,12 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
                 Codec.FLOAT.lenientOptionalFieldOf("roll", 0.0F).forGetter(MuralData::roll),
                 Codec.FLOAT.lenientOptionalFieldOf("scale", 1.0F).forGetter(MuralData::scale),
                 Icon.CODEC.lenientOptionalFieldOf("icon").forGetter(MuralData::icon),
-                ComponentSerialization.CODEC.lenientOptionalFieldOf("text").forGetter(MuralData::text)
+                Text.CODEC.lenientOptionalFieldOf("text").forGetter(MuralData::text)
         ).apply(instance, MuralData::new));
         public static final Codec<List<MuralData>> LIST_CODEC = CODEC.listOf();
 
-        public static Tag encode(Optional<List<MuralData>> data, HolderLookup.Provider registries) {
-            return data.flatMap(muralData -> LIST_CODEC.encodeStart(registries.createSerializationContext(NbtOps.INSTANCE), muralData).result()).orElseGet(ListTag::new);
+        public static Tag encode(Optional<List<MuralData>> datas, HolderLookup.Provider registries) {
+            return datas.flatMap(data -> LIST_CODEC.encodeStart(registries.createSerializationContext(NbtOps.INSTANCE), data).result()).orElseGet(ListTag::new);
         }
 
         public static Optional<List<MuralData>> decode(ListTag tag, HolderLookup.Provider registries) {
@@ -160,5 +160,16 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
                 Codec.INT.lenientOptionalFieldOf("textureWidth", 256).forGetter(Icon::textureWidth),
                 Codec.INT.lenientOptionalFieldOf("textureHeight", 256).forGetter(Icon::textureHeight)
         ).apply(instance, Icon::new));
+    }
+
+    public record Text(Component component, float x, float y, int color, int backgroundColor, boolean dropShadow) {
+        public static final Codec<Text> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                ComponentSerialization.CODEC.fieldOf("component").forGetter(Text::component),
+                Codec.FLOAT.lenientOptionalFieldOf("x", 0.0F).forGetter(Text::x),
+                Codec.FLOAT.lenientOptionalFieldOf("y", 0.0F).forGetter(Text::y),
+                Codec.INT.lenientOptionalFieldOf("color", -1).forGetter(Text::color),
+                Codec.INT.lenientOptionalFieldOf("backgroundColor", 0).forGetter(Text::backgroundColor),
+                Codec.BOOL.lenientOptionalFieldOf("dropShadow", false).forGetter(Text::dropShadow)
+        ).apply(instance, Text::new));
     }
 }

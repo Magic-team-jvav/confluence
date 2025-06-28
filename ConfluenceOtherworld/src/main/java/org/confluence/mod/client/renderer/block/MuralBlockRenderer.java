@@ -42,15 +42,22 @@ public class MuralBlockRenderer implements BlockEntityRenderer<MuralBlock.Entity
             poseStack.mulPose(Axis.ZP.rotation(Mth.PI + data.roll()));
             poseStack.scale(data.scale(), data.scale(), data.scale());
             data.text().ifPresent(text -> {
-                FormattedCharSequence visualOrderText = text.getVisualOrderText();
+                FormattedCharSequence visualOrderText = text.component().getVisualOrderText();
                 Font font = Minecraft.getInstance().font;
-                font.drawInBatch(
-                        visualOrderText,
-                        0, 0, -1, false,
-                        poseStack.last().pose(),
+                Matrix4f matrix = poseStack.last().pose();
+                int color = (text.color() & -67108864) == 0 ? text.color() | 0xFF000000 : text.color();
+                if (text.dropShadow()) {
+                    font.renderText(
+                            visualOrderText, text.x(), text.y(), color, true, matrix,
+                            Minecraft.getInstance().renderBuffers().bufferSource(),
+                            Font.DisplayMode.NORMAL, text.backgroundColor(), packedLight
+                    );
+                    matrix = matrix.translate(0, 0, -0.03F, new Matrix4f());
+                }
+                font.renderText(
+                        visualOrderText, text.x(), text.y(), color, false, matrix,
                         Minecraft.getInstance().renderBuffers().bufferSource(),
-                        Font.DisplayMode.NORMAL,
-                        0, packedLight
+                        Font.DisplayMode.NORMAL, text.backgroundColor(), packedLight
                 );
             });
             data.icon().ifPresent(icon -> {

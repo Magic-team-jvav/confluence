@@ -1,0 +1,184 @@
+package org.confluence.mod.common.block.common;
+
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentSerialization;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import org.confluence.mod.common.init.block.DecorativeBlocks;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
+
+public class MuralBlock extends HorizontalDirectionalBlock implements EntityBlock {
+    public static final MapCodec<MuralBlock> CODEC = simpleCodec(MuralBlock::new);
+
+    public MuralBlock(Properties properties) {
+        super(properties);
+        registerDefaultState(stateDefinition.any().setValue(FACING, Direction.WEST));
+    }
+
+    @Override
+    protected MapCodec<MuralBlock> codec() {
+        return CODEC;
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(FACING);
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        return defaultBlockState().setValue(FACING, context.getHorizontalDirection());
+    }
+
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new Entity(pos, state);
+    }
+
+    public static class Entity extends BlockEntity {
+        private Optional<MuralData> back = Optional.empty();
+        private Optional<MuralData> left = Optional.empty();
+        private Optional<MuralData> right = Optional.empty();
+        private Optional<MuralData> front = Optional.empty();
+
+        public Entity(BlockPos pos, BlockState blockState) {
+            super(DecorativeBlocks.MURAL_ENTITY_BLOCK.get(), pos, blockState);
+        }
+
+        public Optional<MuralData> getBack() {
+            return back;
+        }
+
+        public void setBack(@Nullable MuralData data) {
+            this.back = Optional.ofNullable(data);
+        }
+
+        public Optional<MuralData> getLeft() {
+            return left;
+        }
+
+        public void setLeft(@Nullable MuralData data) {
+            this.left = Optional.ofNullable(data);
+        }
+
+        public Optional<MuralData> getRight() {
+            return right;
+        }
+
+        public void setRight(@Nullable MuralData data) {
+            this.right = Optional.ofNullable(data);
+        }
+
+        public Optional<MuralData> getFront() {
+            return front;
+        }
+
+        public void setFront(@Nullable MuralData data) {
+            this.front = Optional.ofNullable(data);
+        }
+
+        @Override
+        public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+            CompoundTag tag = new CompoundTag();
+            encode(tag, registries);
+            return tag;
+        }
+
+        @Override
+        public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider registries) {
+            decode(tag, registries);
+        }
+
+        public void markUpdated() {
+            setChanged();
+            if (level != null) {
+                level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), UPDATE_CLIENTS);
+            }
+        }
+
+        @Override
+        protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+            super.loadAdditional(tag, registries);
+            decode(tag, registries);
+        }
+
+        @Override
+        protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+            super.saveAdditional(tag, registries);
+            encode(tag, registries);
+        }
+
+        private void encode(CompoundTag tag, HolderLookup.Provider registries) {
+            tag.put("back", MuralData.encode(back, registries));
+            tag.put("left", MuralData.encode(left, registries));
+            tag.put("right", MuralData.encode(right, registries));
+            tag.put("front", MuralData.encode(front, registries));
+        }
+
+        private void decode(CompoundTag tag, HolderLookup.Provider registries) {
+            this.back = MuralData.decode(tag.getCompound("back"), registries);
+            this.left = MuralData.decode(tag.getCompound("left"), registries);
+            this.right = MuralData.decode(tag.getCompound("right"), registries);
+            this.front = MuralData.decode(tag.getCompound("front"), registries);
+        }
+
+        @Override
+        public @Nullable Packet<ClientGamePacketListener> getUpdatePacket() {
+            return ClientboundBlockEntityDataPacket.create(this);
+        }
+    }
+
+    public record MuralData(float x, float y, float z, float roll, float scale, Optional<Icon> icon, Optional<Component> text) {
+        public static final Codec<MuralData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                Codec.FLOAT.lenientOptionalFieldOf("x", 0.0F).forGetter(MuralData::x),
+                Codec.FLOAT.lenientOptionalFieldOf("y", 0.0F).forGetter(MuralData::y),
+                Codec.FLOAT.lenientOptionalFieldOf("z", 0.0F).forGetter(MuralData::z),
+                Codec.FLOAT.lenientOptionalFieldOf("roll", 0.0F).forGetter(MuralData::roll),
+                Codec.FLOAT.lenientOptionalFieldOf("scale", 1.0F).forGetter(MuralData::scale),
+                Icon.CODEC.lenientOptionalFieldOf("icon").forGetter(MuralData::icon),
+                ComponentSerialization.CODEC.lenientOptionalFieldOf("text").forGetter(MuralData::text)
+        ).apply(instance, MuralData::new));
+
+        public static Tag encode(Optional<MuralData> data, HolderLookup.Provider registries) {
+            return data.flatMap(muralData -> CODEC.encodeStart(registries.createSerializationContext(NbtOps.INSTANCE), muralData).result()).orElseGet(CompoundTag::new);
+        }
+
+        public static Optional<MuralData> decode(CompoundTag tag, HolderLookup.Provider registries) {
+            return CODEC.parse(registries.createSerializationContext(NbtOps.INSTANCE), tag).result();
+        }
+    }
+
+    public record Icon(ResourceLocation atlasLocation, int x, int y, float uOffset, float vOffset, int uWidth, int vHeight, int textureWidth, int textureHeight) {
+        public static final Codec<Icon> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                ResourceLocation.CODEC.fieldOf("atlasLocation").forGetter(Icon::atlasLocation),
+                Codec.INT.lenientOptionalFieldOf("x", 0).forGetter(Icon::x),
+                Codec.INT.lenientOptionalFieldOf("y", 0).forGetter(Icon::y),
+                Codec.FLOAT.lenientOptionalFieldOf("uOffset", 0.0F).forGetter(Icon::uOffset),
+                Codec.FLOAT.lenientOptionalFieldOf("vOffset", 0.0F).forGetter(Icon::vOffset),
+                Codec.INT.fieldOf("uWidth").forGetter(Icon::uWidth),
+                Codec.INT.fieldOf("vHeight").forGetter(Icon::vHeight),
+                Codec.INT.lenientOptionalFieldOf("textureWidth", 256).forGetter(Icon::textureWidth),
+                Codec.INT.lenientOptionalFieldOf("textureHeight", 256).forGetter(Icon::textureHeight)
+        ).apply(instance, Icon::new));
+    }
+}

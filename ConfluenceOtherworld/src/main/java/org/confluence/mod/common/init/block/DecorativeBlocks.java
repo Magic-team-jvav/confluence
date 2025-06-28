@@ -1,8 +1,10 @@
 package org.confluence.mod.common.init.block;
 
+import com.mojang.datafixers.DSL;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
@@ -14,6 +16,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.common.CrackedBricksBlock;
 import org.confluence.mod.common.block.common.EnchantedBricksBlock;
 import org.confluence.mod.common.block.common.LihzahrdDoorBlock;
+import org.confluence.mod.common.block.common.MuralBlock;
 import org.confluence.mod.common.block.natural.*;
 import org.confluence.mod.common.block.palettes.ConnectedGlassBlock;
 import org.confluence.mod.common.block.palettes.ConnectedStainedGlassBlock;
@@ -24,11 +27,12 @@ import java.util.function.Supplier;
 
 import static net.minecraft.world.level.block.Blocks.*;
 
-
 public class DecorativeBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Confluence.MODID);
 
     // 杂项
+    public static final DeferredBlock<MuralBlock> MURAL_BLOCK = registerWithItem("mural_block", () -> new MuralBlock(BlockBehaviour.Properties.ofFullCopy(STONE)));
+    public static final Supplier<BlockEntityType<MuralBlock.Entity>> MURAL_ENTITY_BLOCK = ModBlocks.BLOCK_ENTITIES.register("mural_entity_block", () ->BlockEntityType.Builder.of(MuralBlock.Entity::new, MURAL_BLOCK.get()).build(DSL.remainderType()));
     public static final DeferredBlock<Block> CHISELED_OAK_PLANKS = copyBlockRegister("chiseled_oak_planks", OAK_PLANKS);
     public static final DeferredBlock<Block> CHISELED_SPRUCE_PLANKS = copyBlockRegister("chiseled_spruce_planks", SPRUCE_PLANKS);
     public static final DeferredBlock<Block> CHISELED_EBONY_PLANKS = copyBlockRegister("chiseled_ebony_planks", OAK_PLANKS);
@@ -72,7 +76,7 @@ public class DecorativeBlocks {
     public static final DeferredBlock<StairBlock> CRIMSANDSTONE_BRICKS_STAIRS = registerWithItem("crimsandstone_bricks_stairs", () -> new StairBlock(SANDSTONE.defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(SANDSTONE).mapColor(MapColor.TERRACOTTA_GRAY)));
     public static final DeferredBlock<SlabBlock> CRIMSANDSTONE_BRICKS_SLAB = registerWithItem("crimsandstone_bricks_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(SANDSTONE).mapColor(MapColor.TERRACOTTA_GRAY)));
     public static final DeferredBlock<WallBlock> CRIMSANDSTONE_BRICKS_WALL = registerWithItem("crimsandstone_bricks_wall", () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(SANDSTONE).mapColor(MapColor.TERRACOTTA_GRAY)));
-    
+
     public static final DeferredBlock<Block> SNOW_BRICKS = registerWithItem("snow_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_WHITE)));
     public static final DeferredBlock<StairBlock> SNOW_BRICKS_STAIRS = registerWithItem("snow_bricks_stairs", () -> new StairBlock(SNOW_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_WHITE)));
     public static final DeferredBlock<SlabBlock> SNOW_BRICKS_SLAB = registerWithItem("snow_bricks_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_WHITE)));
@@ -129,7 +133,6 @@ public class DecorativeBlocks {
     public static final DeferredBlock<Block> PURPLE_PURE_GLASS = registerWithItem("purple_pure_glass", () -> new ConnectedStainedGlassBlock(DyeColor.PURPLE, BlockBehaviour.Properties.ofFullCopy(PURPLE_STAINED_GLASS).mapColor(MapColor.COLOR_PURPLE)));
     public static final DeferredBlock<Block> MAGENTA_PURE_GLASS = registerWithItem("magenta_pure_glass", () -> new ConnectedStainedGlassBlock(DyeColor.MAGENTA, BlockBehaviour.Properties.ofFullCopy(MAGENTA_STAINED_GLASS).mapColor(MapColor.TERRACOTTA_MAGENTA)));
     public static final DeferredBlock<Block> PINK_PURE_GLASS = registerWithItem("pink_pure_glass", () -> new ConnectedStainedGlassBlock(DyeColor.PINK, BlockBehaviour.Properties.ofFullCopy(PINK_STAINED_GLASS).mapColor(MapColor.COLOR_PINK)));
-
 
 
     // 矿砖

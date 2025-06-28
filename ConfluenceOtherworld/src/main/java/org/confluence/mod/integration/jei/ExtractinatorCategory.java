@@ -28,7 +28,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -39,8 +38,9 @@ import org.confluence.mod.common.data.map.ExtractinatorData;
 import org.confluence.mod.common.init.ModTags;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
+import java.util.IdentityHashMap;
 import java.util.List;
+import java.util.Map;
 
 import static net.minecraft.world.item.component.ItemAttributeModifiers.ATTRIBUTE_MODIFIER_FORMAT;
 
@@ -111,7 +111,7 @@ public class ExtractinatorCategory implements IRecipeCategory<ExtractinatorCateg
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, IngredientPair recipe, IFocusGroup focuses) {
         builder.addInputSlot()
-                .addIngredients(recipe.ingredient)
+                .addItemStack(recipe.ingredient)
                 .setStandardSlotBackground();
         for (ExtractinatorData.Pool pool : recipe.data.pools()) {
             for (ExtractinatorData.Entry entry : pool.entries) {
@@ -143,25 +143,27 @@ public class ExtractinatorCategory implements IRecipeCategory<ExtractinatorCateg
 
     public static List<IngredientPair> collectAll(DataMapType<Item, ExtractinatorData> type, RegistryAccess registryAccess) {
         HolderLookup.RegistryLookup<Item> lookup = registryAccess.lookupOrThrow(Registries.ITEM);
-        List<IngredientPair> datas = new ArrayList<>();
-        collectAny(datas, type, lookup, Tags.Items.GRAVELS);
-        collectAny(datas, type, lookup, ModTags.Items.DESERT_FOSSIL);
-        collectAny(datas, type, lookup, ModTags.Items.JUNK);
-        collectAny(datas, type, lookup, ModTags.Items.MARINE_GRAVEL);
-        collectAny(datas, type, lookup, ModTags.Items.SILT_BLOCK);
-        collectAny(datas, type, lookup, ModTags.Items.SLUSH);
-        return datas;
+        Map<Item, ExtractinatorData> map = new IdentityHashMap<>();
+        collectAny(map, type, lookup, Tags.Items.GRAVELS);
+        collectAny(map, type, lookup, ModTags.Items.DESERT_FOSSIL);
+        collectAny(map, type, lookup, ModTags.Items.JUNK);
+        collectAny(map, type, lookup, ModTags.Items.MARINE_GRAVEL);
+        collectAny(map, type, lookup, ModTags.Items.SILT_BLOCK);
+        collectAny(map, type, lookup, ModTags.Items.SLUSH);
+        List<IngredientPair> list = Lists.newArrayListWithExpectedSize(map.size());
+        map.forEach((item, data) -> list.add(new IngredientPair(item.getDefaultInstance(), data)));
+        return list;
     }
 
-    // 没有合并多个表
-    private static void collectAny(List<IngredientPair> datas, DataMapType<Item, ExtractinatorData> type, HolderLookup.RegistryLookup<Item> lookup, TagKey<Item> tagKey) {
-        lookup.get(tagKey).flatMap(holders -> holders.stream().findAny()).ifPresent(itemHolder -> {
+    // 没有合并多个Data
+    private static void collectAny(Map<Item, ExtractinatorData> map, DataMapType<Item, ExtractinatorData> type, HolderLookup.RegistryLookup<Item> lookup, TagKey<Item> tagKey) {
+        lookup.get(tagKey).ifPresent(holders -> holders.stream().forEach(itemHolder -> {
             ExtractinatorData data = itemHolder.getData(type);
-            if (data != null) datas.add(new IngredientPair(Ingredient.of(tagKey), data));
-        });
+            if (data != null) map.put(itemHolder.value(), data);
+        }));
     }
 
-    public record IngredientPair(Ingredient ingredient, ExtractinatorData data) {}
+    public record IngredientPair(ItemStack ingredient, ExtractinatorData data) {}
 
     @OnlyIn(Dist.CLIENT)
     public static class DataItemStack extends ItemStack {

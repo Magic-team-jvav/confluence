@@ -35,9 +35,81 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
 
     @Override
     protected void buildRecipes(RecipeOutput recipeOutput, HolderLookup.Provider holderLookup) {
-        cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.AMBER_ORE_SMELTING), MaterialItems.AMBER.toStack(), 0.4F, 100);
-        cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.AMBER_ORE_SMELTING), MaterialItems.AMBER.toStack(), 0.5F, 200);
-        cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(Tags.Items.GLASS_BLOCKS_COLORLESS), PotionItems.MUG.toStack(), 0.5F, 200);
+        //高炉
+        cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.AMBER_ORE_SMELTING), MaterialItems.AMBER.toStack(), 1.0F, 100);
+        cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.RUBY_ORE_SMELTING), MaterialItems.RUBY.toStack(), 1.0F, 100);
+        cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.TOPAZ_ORE_SMELTING), MaterialItems.TOPAZ.toStack(), 1.0F, 100);
+        cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.JADE_ORE_SMELTING), MaterialItems.JADE.toStack(), 1.0F, 100);
+        cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.SAPPHIRE_ORE_SMELTING), MaterialItems.SAPPHIRE.toStack(), 1.0F, 100);
+        cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.AMBER_ORE_SMELTING), MaterialItems.AMETHYST.toStack(), 1.0F, 100);
+        
+        cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.COAL_ORE_SMELTING), Items.COAL.getDefaultInstance(), 0.1F, 100);
+        cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.COPPER_ORE_SMELTING), Items.COPPER_INGOT.getDefaultInstance(), 0.7F, 100);
+        cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.IRON_ORE_SMELTING), Items.IRON_INGOT.getDefaultInstance(), 0.7F, 100);
+        cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.GOLD_ORE_SMELTING), Items.GOLD_INGOT.getDefaultInstance(), 1.0F, 100);
+        cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.DIAMOND_ORE_SMELTING), Items.DIAMOND.getDefaultInstance(), 1.0F, 100);
+        cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.EMERALD_ORE_SMELTING), Items.EMERALD.getDefaultInstance(), 1.0F, 100);
+        cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.REDSTONE_ORE_SMELTING), Items.REDSTONE.getDefaultInstance(), 0.7F, 100);
+
+        cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.TIN_ORE_SMELTING), MaterialItems.TIN_INGOT.toStack(), 0.7F, 100);
+        cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.LEAD_ORE_SMELTING), MaterialItems.LEAD_INGOT.toStack(), 0.7F, 100);
+        cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.SILVER_ORE_SMELTING), MaterialItems.SILVER_INGOT.toStack(), 0.7F, 100);
+        cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.TUNGSTEN_ORE_SMELTING), MaterialItems.TUNGSTEN_INGOT.toStack(), 0.7F, 100);
+        cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.PLATINUM_ORE_SMELTING), MaterialItems.PLATINUM_INGOT.toStack(), 1.0F, 100);
+        cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.CRIMTANE_ORE_SMELTING), MaterialItems.CRIMTANE_INGOT.toStack(), 1.0F, 100);
+        cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.DEMONITE_ORE_SMELTING), MaterialItems.DEMONITE_INGOT.toStack(), 1.0F, 100);
+        cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(OreBlocks.METEORITE_ORE), MaterialItems.METEORITE_INGOT.toStack(), 1.0F, 100);
+        cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(OreBlocks.COLD_CRYSTAL_ORE), MaterialItems.COLD_CRYSTAL.toStack(), 1.0F, 100);
+        cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(OreBlocks.GELSTONE_ORE), MaterialItems.GELSTONE.toStack(), 1.0F, 100);
+        cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(OreBlocks.SPORE_ROOT_BLOCK), MaterialItems.SPORE_ROOT.toStack(), 1.0F, 100);
+        cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(OreBlocks.OPAL_ORE), MaterialItems.OPAL.toStack(), 1.0F, 100);
+        cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(OreBlocks.WINTER_MARROW_BLOCK), MaterialItems.WINTER_MARROW.toStack(), 1.0F, 100);
+        // 熔炉
+        cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.AMBER_ORE_SMELTING), MaterialItems.AMBER.toStack(), 1.0F, 200);
+        cooking(recipeOutput, BlastingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.RUBY_ORE_SMELTING), MaterialItems.RUBY.toStack(), 1.0F, 200);
+        cooking(recipeOutput, BlastingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.TOPAZ_ORE_SMELTING), MaterialItems.TOPAZ.toStack(), 1.0F, 200);
+        cooking(recipeOutput, BlastingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.JADE_ORE_SMELTING), MaterialItems.JADE.toStack(), 1.0F, 200);
+        cooking(recipeOutput, BlastingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.SAPPHIRE_ORE_SMELTING), MaterialItems.SAPPHIRE.toStack(), 1.0F, 200);
+        cooking(recipeOutput, BlastingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.AMBER_ORE_SMELTING), MaterialItems.AMETHYST.toStack(), 1.0F, 200);
+
+        cooking(recipeOutput, BlastingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.COAL_ORE_SMELTING), Items.COAL.getDefaultInstance(), 0.1F, 200);
+        cooking(recipeOutput, BlastingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.COPPER_ORE_SMELTING), Items.COPPER_INGOT.getDefaultInstance(), 0.7F, 200);
+        cooking(recipeOutput, BlastingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.IRON_ORE_SMELTING), Items.IRON_INGOT.getDefaultInstance(), 0.7F, 200);
+        cooking(recipeOutput, BlastingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.GOLD_ORE_SMELTING), Items.GOLD_INGOT.getDefaultInstance(), 1.0F, 200);
+        cooking(recipeOutput, BlastingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.DIAMOND_ORE_SMELTING), Items.DIAMOND.getDefaultInstance(), 1.0F, 200);
+        cooking(recipeOutput, BlastingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.EMERALD_ORE_SMELTING), Items.EMERALD.getDefaultInstance(), 1.0F, 200);
+        cooking(recipeOutput, BlastingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.REDSTONE_ORE_SMELTING), Items.REDSTONE.getDefaultInstance(), 0.7F, 200);
+
+        cooking(recipeOutput, BlastingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.TIN_ORE_SMELTING), MaterialItems.TIN_INGOT.toStack(), 0.7F, 200);
+        cooking(recipeOutput, BlastingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.LEAD_ORE_SMELTING), MaterialItems.LEAD_INGOT.toStack(), 0.7F, 200);
+        cooking(recipeOutput, BlastingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.SILVER_ORE_SMELTING), MaterialItems.SILVER_INGOT.toStack(), 0.7F, 200);
+        cooking(recipeOutput, BlastingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.TUNGSTEN_ORE_SMELTING), MaterialItems.TUNGSTEN_INGOT.toStack(), 0.7F, 200);
+        cooking(recipeOutput, BlastingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.PLATINUM_ORE_SMELTING), MaterialItems.PLATINUM_INGOT.toStack(), 1.0F, 200);
+        cooking(recipeOutput, BlastingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.CRIMTANE_ORE_SMELTING), MaterialItems.CRIMTANE_INGOT.toStack(), 1.0F, 200);
+        cooking(recipeOutput, BlastingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.DEMONITE_ORE_SMELTING), MaterialItems.DEMONITE_INGOT.toStack(), 1.0F, 200);
+        cooking(recipeOutput, BlastingRecipe::new, "smelting/", "", Ingredient.of(OreBlocks.METEORITE_ORE), MaterialItems.METEORITE_INGOT.toStack(), 1.0F, 200);
+        cooking(recipeOutput, BlastingRecipe::new, "smelting/", "", Ingredient.of(OreBlocks.COLD_CRYSTAL_ORE), MaterialItems.COLD_CRYSTAL.toStack(), 1.0F, 200);
+        cooking(recipeOutput, BlastingRecipe::new, "smelting/", "", Ingredient.of(OreBlocks.GELSTONE_ORE), MaterialItems.GELSTONE.toStack(), 1.0F, 200);
+        cooking(recipeOutput, BlastingRecipe::new, "smelting/", "", Ingredient.of(OreBlocks.SPORE_ROOT_BLOCK), MaterialItems.SPORE_ROOT.toStack(), 1.0F, 200);
+        cooking(recipeOutput, BlastingRecipe::new, "smelting/", "", Ingredient.of(OreBlocks.OPAL_ORE), MaterialItems.OPAL.toStack(), 1.0F, 200);
+        cooking(recipeOutput, BlastingRecipe::new, "smelting/", "", Ingredient.of(OreBlocks.WINTER_MARROW_BLOCK), MaterialItems.WINTER_MARROW.toStack(), 1.0F, 200);
+
+        cooking(recipeOutput, BlastingRecipe::new, "smelting/", "", Ingredient.of(NatureBlocks.MOISTENED_CRIMSAND_BLOCK), NatureBlocks.CRIMSAND.toStack(), 0.15F, 200);
+        cooking(recipeOutput, BlastingRecipe::new, "smelting/", "", Ingredient.of(NatureBlocks.MOISTENED_EBONSAND_BLOCK), NatureBlocks.EBONSAND.toStack(), 0.15F, 200);
+        cooking(recipeOutput, BlastingRecipe::new, "smelting/", "", Ingredient.of(NatureBlocks.MOISTENED_PEARLSAND_BLOCK), NatureBlocks.PEARLSAND.toStack(), 0.15F, 200);
+        cooking(recipeOutput, BlastingRecipe::new, "smelting/", "", Ingredient.of(NatureBlocks.MOISTENED_RED_SAND_BLOCK), Items.RED_SAND.getDefaultInstance(), 0.15F, 200);
+        cooking(recipeOutput, BlastingRecipe::new, "smelting/", "", Ingredient.of(NatureBlocks.MOISTENED_SAND_BLOCK), Items.SAND.getDefaultInstance(), 0.15F, 200);
+        cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(Tags.Items.GLASS_BLOCKS_COLORLESS), PotionItems.MUG.toStack(), 1.0F, 200);
+        cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(NatureBlocks.DIATOMACEOUS), DecorativeBlocks.PURE_GLASS.toStack(), 0.3F, 200);
+        cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.GOLD_COOKING), Items.GOLD_NUGGET.getDefaultInstance(), 0.1F, 200);
+
+
+        cooking(recipeOutput, BlastingRecipe::new, "smelting/", "", Ingredient.of(FoodItems.BAOBAB_FRUIT), FoodItems.COOKED_BAOBAB_FRUIT.toStack(), 0.2F, 200);
+        cooking(recipeOutput, BlastingRecipe::new, "smelting/", "", Ingredient.of(FoodItems.CLOUD_DOUGH), FoodItems.CLOUD_BREAD.toStack(), 0.2F, 200);
+        cooking(recipeOutput, BlastingRecipe::new, "smelting/", "", Ingredient.of(FoodItems.FLUTTERING_LAMB_CHOPS), FoodItems.COOKED_FLUTTERING_LAMB_CHOPS.toStack(), 0.35F, 200);
+        cooking(recipeOutput, BlastingRecipe::new, "smelting/", "", Ingredient.of(FoodItems.SALMON), Items.COOKED_SALMON.getDefaultInstance(), 0.2F, 200);
+        cooking(recipeOutput, BlastingRecipe::new, "smelting/", "", Ingredient.of(FoodItems.ATLANTIC_COD,FoodItems.PISCES_FIN_COD,FoodItems.SEA_BASS,FoodItems.TROUT), Items.COOKED_COD.getDefaultInstance(), 0.35F, 200);
+
         cooking(recipeOutput, SmokingRecipe::new, "smoking/", "", Ingredient.of(FoodItems.BAOBAB_FRUIT), FoodItems.COOKED_BAOBAB_FRUIT.toStack(), 0.1F, 100);
         cooking(recipeOutput, CampfireCookingRecipe::new, "campfire_cooking/", "_from_atlantic_cod", Ingredient.of(FoodItems.ATLANTIC_COD), Items.COOKED_COD.getDefaultInstance(), 0.1F, 200);
 
@@ -157,7 +229,11 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         fletchingTable(recipeOutput, "", ArrowItems.UNHOLY_ARROW.toStack(5), Ingredient.of(), AmountIngredient.of(5, Items.ARROW), Ingredient.of(ModTags.Items.EVIL_MATERIAL));
 
         altar(recipeOutput, ConsumableItems.BLOODY_SPINE.toStack(), AmountIngredient.of(30, ConsumableItems.VICIOUS_POWDER), AmountIngredient.of(15, MaterialItems.VERTEBRA));
+        altar(recipeOutput, ConsumableItems.WORM_FOOD.toStack(), AmountIngredient.of(30, ConsumableItems.VILE_POWDER), AmountIngredient.of(15, MaterialItems.ROTTEN_BONE));
+        altar(recipeOutput, ConsumableItems.SUSPICIOUS_LOOKING_EYE.toStack(), AmountIngredient.of(6, MaterialItems.LENS));
         altar(recipeOutput, SwordItems.NIGHT_EDGE.toStack(), Ingredient.of(SwordItems.BLOOD_BUTCHERER, SwordItems.LIGHTS_BANE), Ingredient.of(SwordItems.MURAMASA), Ingredient.of(SwordItems.BLADE_OF_GRASS), Ingredient.of(SwordItems.VOLCANO));
+        altar(recipeOutput, ToolItems.METEOR_COMPASS.toStack(), AmountIngredient.of(4,ModTags.Items.EVIL_INGOT),AmountIngredient.of(4,MaterialItems.FALLING_STAR));
+        altar(recipeOutput, ConsumableItems.SLIME_CROWN.toStack(), AmountIngredient.of(20,MaterialItems.GEL),Ingredient.of(VanityArmorItems.GOLD_CROWN,VanityArmorItems.PLATINUM_CROWN));
 
         alchemyTable(recipeOutput, PotionItems.ARCHERY_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.LENS), Ingredient.of(MaterialItems.DAYBLOOM));
         alchemyTable(recipeOutput, PotionItems.SWIFTNESS_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.BLINKROOT), Ingredient.of(Items.CACTUS));

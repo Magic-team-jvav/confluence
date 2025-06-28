@@ -16,10 +16,7 @@ import net.minecraft.world.level.block.Blocks;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.common.init.block.ChestBlocks;
-import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.common.init.block.NatureBlocks;
-import org.confluence.mod.common.init.block.OreBlocks;
+import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.init.item.PotionItems;
@@ -47,6 +44,13 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         compressAndDecompressNine(output, MaterialItems.DEMONITE_INGOT, ModTags.Items.INGOTS_DEMONITE, OreBlocks.DEMONITE_BLOCK, ModTags.Items.DEMONITE_BLOCK);
         compressAndDecompressNine(output, MaterialItems.CRIMTANE_INGOT, ModTags.Items.INGOTS_CRIMTANE, OreBlocks.CRIMTANE_BLOCK, ModTags.Items.CRIMTANE_BLOCK);
         compressAndDecompressNine(output, MaterialItems.HELLSTONE_INGOT, ModTags.Items.INGOTS_HELLSTONE, OreBlocks.HELLSTONE_BLOCK, ModTags.Items.HELLSTONE_BLOCK);
+
+        compressAndDecompressNine(output, MaterialItems.RUBY, ModTags.Items.GEMS_RUBY, DecorativeBlocks.RUBY_BLOCK, ModTags.Items.RUBY_BLOCK);
+        compressAndDecompressNine(output, MaterialItems.AMBER, ModTags.Items.GEMS_AMBER, DecorativeBlocks.AMBER_BLOCK, ModTags.Items.AMBER_BLOCK);
+        compressAndDecompressNine(output, MaterialItems.TOPAZ, ModTags.Items.GEMS_TOPAZ, DecorativeBlocks.TOPAZ_BLOCK, ModTags.Items.TOPAZ_BLOCK);
+        compressAndDecompressNine(output, MaterialItems.JADE, ModTags.Items.GEMS_JADE, DecorativeBlocks.JADE_BLOCK, ModTags.Items.JADE_BLOCK);
+        compressAndDecompressNine(output, MaterialItems.SAPPHIRE, ModTags.Items.GEMS_SAPPHIRE, DecorativeBlocks.SAPPHIRE_BLOCK, ModTags.Items.SAPPHIRE_BLOCK);
+        compressAndDecompressNine(output, MaterialItems.AMETHYST, ModTags.Items.GEMS_AMETHYST, DecorativeBlocks.AMETHYST_BLOCK, ModTags.Items.AMETHYST_BLOCK);
         // 粗矿
         compressAndDecompressNine(output, MaterialItems.RAW_TIN, ModTags.Items.RAW_MATERIALS_TIN, OreBlocks.RAW_TIN_BLOCK, ModTags.Items.RAW_MATERIALS_TIN_BLOCK);
         compressAndDecompressNine(output, MaterialItems.RAW_LEAD, ModTags.Items.RAW_MATERIALS_LEAD, OreBlocks.RAW_LEAD_BLOCK, ModTags.Items.RAW_MATERIALS_LEAD_BLOCK);
@@ -159,7 +163,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         ), List.of(
                 "###"
         )), NatureBlocks.PEARLSAND_LAYER_BLOCK.toStack(6));
-
+        // 砂岩箱
         shaped(output, "", "", ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(Blocks.SANDSTONE)
         ), List.of(

@@ -305,6 +305,9 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.DIAMOND_ORE_SMELTING).add(
                 OreBlocks.SANCTIFICATION_DIAMOND_ORE.asItem(), OreBlocks.CORRUPTION_DIAMOND_ORE.asItem(), OreBlocks.FLESHIFICATION_DIAMOND_ORE.asItem()
         );
+        tag(ModTags.Items.EMERALD_ORE_SMELTING).add(
+                OreBlocks.SANCTIFICATION_EMERALD_ORE.asItem(), OreBlocks.CORRUPTION_EMERALD_ORE.asItem(), OreBlocks.FLESHIFICATION_EMERALD_ORE.asItem()
+        );
         tag(ModTags.Items.SAPPHIRE_ORE_SMELTING).add(
                 OreBlocks.SAPPHIRE_ORE.asItem(), OreBlocks.DEEPSLATE_SAPPHIRE_ORE.asItem(), OreBlocks.SANCTIFICATION_SAPPHIRE_ORE.asItem(), OreBlocks.CORRUPTION_SAPPHIRE_ORE.asItem(), OreBlocks.FLESHIFICATION_SAPPHIRE_ORE.asItem()
         );
@@ -583,6 +586,13 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.CRIMTANE_BLOCK).add(OreBlocks.CRIMTANE_BLOCK.asItem());
         tag(ModTags.Items.INGOTS_HELLSTONE).add(MaterialItems.HELLSTONE_INGOT.get());
         tag(ModTags.Items.HELLSTONE_BLOCK).add(OreBlocks.HELLSTONE_BLOCK.asItem());
+
+        tag(ModTags.Items.RUBY_BLOCK).add(DecorativeBlocks.RUBY_BLOCK.asItem());
+        tag(ModTags.Items.AMBER_BLOCK).add(DecorativeBlocks.AMBER_BLOCK.asItem());
+        tag(ModTags.Items.TOPAZ_BLOCK).add(DecorativeBlocks.TOPAZ_BLOCK.asItem());
+        tag(ModTags.Items.JADE_BLOCK).add(DecorativeBlocks.JADE_BLOCK.asItem());
+        tag(ModTags.Items.SAPPHIRE_BLOCK).add(DecorativeBlocks.SAPPHIRE_BLOCK.asItem());
+        tag(ModTags.Items.AMETHYST_BLOCK).add(DecorativeBlocks.AMETHYST_BLOCK.asItem());
 
         tag(ModTags.Items.RAW_MATERIALS_TIN).add(MaterialItems.RAW_TIN.get());
         tag(ModTags.Items.RAW_MATERIALS_TIN_BLOCK).add(OreBlocks.RAW_TIN_BLOCK.asItem());

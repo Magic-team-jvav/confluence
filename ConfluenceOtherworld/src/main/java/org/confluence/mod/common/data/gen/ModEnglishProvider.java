@@ -440,7 +440,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.configuration.ArsNouveau", "Ars Nouveau");
         add("confluence.configuration.IronsSpell", "Iron's Spells 'n Spellbooks");
         add("confluence.configuration.FTB", "FTB Chunks");
-        add("confluence.configuration.Xaero", "Xaero's Minimap");
+        add("confluence.configuration.Xaero", "Xaero's World Map");
         add("confluence.configuration.Waystones", "Waystones");
         add("confluence.configuration.convertArsNouveauMana", "Use Confluence's mana system when enabled");
         add("confluence.configuration.convertIronsSpellMana", "Use Confluence's mana system when enabled");

@@ -3,7 +3,7 @@
 	"texture_size": [64, 64],
 	"textures": {
 		"2": "confluence:block/crystal_ball",
-		"particle": "confluence:block/crystal_ball"
+		"particle": "confluence:block/particle/crystal_ball_particle"
 	},
 	"elements": [
 		{

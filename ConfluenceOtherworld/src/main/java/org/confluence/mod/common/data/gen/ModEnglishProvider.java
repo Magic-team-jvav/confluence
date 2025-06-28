@@ -124,6 +124,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.magic_conch.0", "Right-click a block in the Beach biome to make the sea remember you");
         add("tooltip.item.confluence.demon_conch.0", "Right-click a Nether Portal block to make the Nether remember you.");
         add("tooltip.item.confluence.bait.common.0", "When placed in the inventory, it will be automatically used while fishing, prioritizing the bait in the off-hand.");
+        add("tooltip.item.confluence.crate.common.0", "Hold the right mouse button to open, and hold Shift while clicking the right mouse button to place.");
 
         add("tooltip.item.confluence.slime_crown.0", "Right - click to summon the King Slime");
         add("tooltip.item.confluence.slime_crown.1", "A small crown that seems to be prepared for the coronation ceremony of those cute and harmless gel - like creatures.");
@@ -437,15 +438,10 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.configuration.Compatibility", "Compatibility Mechanism");
         add("confluence.configuration.Compatibility.button", "Settings for compatibility with other mods");
         add("confluence.configuration.ArsNouveau", "Ars Nouveau");
-        add("confluence.configuration.ArsNouveau.button", "Compatibility settings with mod - Ars Nouveau");
         add("confluence.configuration.IronsSpell", "Iron's Spells 'n Spellbooks");
-        add("confluence.configuration.IronsSpell.button", "Compatibility settings with mod - Iron's Spells 'n Spellbooks");
         add("confluence.configuration.FTB", "FTB Chunks");
-        add("confluence.configuration.FTB.button", "Compatibility settings with mod - FTB Chunks");
         add("confluence.configuration.Xaero", "Xaero's Minimap");
-        add("confluence.configuration.Xaero.button", "Compatibility settings with mod - Xaero's Minimap");
         add("confluence.configuration.Waystones", "Waystones");
-        add("confluence.configuration.Waystones.button", "Compatibility settings with Waystones");
         add("confluence.configuration.convertArsNouveauMana", "Use Confluence's mana system when enabled");
         add("confluence.configuration.convertIronsSpellMana", "Use Confluence's mana system when enabled");
         add("confluence.configuration.ftbChunksWormholePotion", "Enable wormhole potion functionality");

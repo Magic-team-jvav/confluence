@@ -5,7 +5,7 @@
 	"textures": {
 		"0": "confluence:block/arrow",
 		"1": "confluence:block/ammo_box",
-		"particle": "confluence:block/ammo_box"
+		"particle": "confluence:block/particle/ammo_box_particle"
 	},
 	"elements": [
 		{

@@ -4,7 +4,7 @@
 	"texture_size": [64, 64],
 	"textures": {
 		"1": "confluence:block/keg",
-		"particle": "confluence:block/keg"
+		"particle": "confluence:block/particle/keg_particle"
 	},
 	"elements": [
 		{

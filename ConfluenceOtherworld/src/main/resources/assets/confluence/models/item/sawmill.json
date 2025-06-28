@@ -4,7 +4,7 @@
 	"textures": {
 		"1": "confluence:block/sawmill",
 		"2": "block/stonecutter_saw",
-		"particle": "block/stonecutter_saw"
+		"particle": "confluence:block/particle/sawmill_particle"
 	},
 	"elements": [
 		{

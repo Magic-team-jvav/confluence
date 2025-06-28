@@ -237,7 +237,10 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                         )).setWeight(25))
                         .add(LootItem.lootTableItem(PickaxeItems.REAVER_SHARK_PICKAXE).when(LocationCheck.checkLocation(
                                 LocationPredicate.Builder.location().setBiomes(isOceanOrBeach).setY(belowSpace)
-                        )).setWeight(7).setQuality(2))
+                        )).setWeight(7))
+                        .add(LootItem.lootTableItem(HammerItems.ROCKFISH).when(LocationCheck.checkLocation(
+                                LocationPredicate.Builder.location().setBiomes(isOceanOrBeach).setY(belowSpace)
+                        )).setWeight(7))
                 )
         );
         // 钓鱼总战利品表

@@ -111,6 +111,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.magic_conch.0", "右键海滩群系的方块以让大海记住你");
         add("tooltip.item.confluence.demon_conch.0", "右键下界传送门方块以让地狱记住你");
         add("tooltip.item.confluence.bait.common.0", "放入背包即可钓鱼时自动使用，优先使用副手的鱼饵");
+        add("tooltip.item.confluence.crate.common.0", "手持右键打开，shift键右键可放置");
         add("tooltip.item.confluence.gel.0", "“既好吃，又易燃”");
         add("tooltip.item.confluence.npc_invitation.0", "使用它，在当前区域邀请一批新的NPC吧！");
         add("tooltip.item.confluence.red_potion.0", "“仅献给配得上的人”");
@@ -404,16 +405,16 @@ public class ModChineseProvider extends LanguageProvider {
         //设置
         add("confluence.configuration.Compatibility", "兼容性机制");
         add("confluence.configuration.Compatibility.button", "关于与其他模组的兼容性设置");
-        add("confluence.configuration.ArsNouveau", "新生魔艺(Ars Nouveau)");
-        add("confluence.configuration.ArsNouveau.button", "与模组-新生魔艺(Ars Nouveau)的兼容性设置");
-        add("confluence.configuration.IronsSpell", "Iron的法术与魔法书(Iron's Spells 'n Spellbooks)");
-        add("confluence.configuration.IronsSpell.button", "与模组-Iron的法术与魔法书(Iron's Spells 'n Spellbooks)的兼容性设置");
-        add("confluence.configuration.FTB", "FTB 区块(FTB Chunks)");
-        add("confluence.configuration.FTB.button", "与模组-FTB 区块(FTB Chunks)的兼容性设置");
-        add("confluence.configuration.Xaero", "Xaero的小地图(Xaero's Minimap)");
-        add("confluence.configuration.Xaero.button", "与模组-Xaero的小地图(Xaero's Minimap)的兼容性设置");
-        add("confluence.configuration.Waystones", "传送石碑/指路石(Waystones)");
-        add("confluence.configuration.Waystones.button", "与传送石碑/指路石(Waystones)的兼容性设置");
+        add("confluence.configuration.ArsNouveau", "新生魔艺");
+        add("confluence.configuration.ArsNouveau.tooltip", "Ars Nouveau");
+        add("confluence.configuration.IronsSpell", "Iron的法术与魔法书");
+        add("confluence.configuration.IronsSpell.tooltip", "Iron's Spells 'n Spellbooks");
+        add("confluence.configuration.FTB", "FTB 区块");
+        add("confluence.configuration.FTB.tooltip", "FTB Chunks");
+        add("confluence.configuration.Xaero", "Xaero的世界地图");
+        add("confluence.configuration.Xaero.tooltip", "Xaero's World Map");
+        add("confluence.configuration.Waystones", "传送石碑/指路石");
+        add("confluence.configuration.Waystones.tooltip", "Waystones");
         add("confluence.configuration.convertArsNouveauMana", "开启后将使用汇流来世的魔力");
         add("confluence.configuration.convertIronsSpellMana", "开启后将使用汇流来世的魔力");
         add("confluence.configuration.ftbChunksWormholePotion", "启用虫洞药水功能");

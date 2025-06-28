@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.Blocks;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.block.ChestBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
@@ -158,6 +159,14 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         ), List.of(
                 "###"
         )), NatureBlocks.PEARLSAND_LAYER_BLOCK.toStack(6));
+
+        shaped(output, "", "", ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(Blocks.SANDSTONE)
+        ), List.of(
+                "###",
+                "# #",
+                "###"
+        )), ChestBlocks.SANDSTONE_CHEST.toStack());
 
         // 石头及深板岩压力板
         shaped(output, "", "", ShapedRecipePattern.of(Map.of('#', Ingredient.of(Blocks.STONE)), List.of("##")), new ItemStack(FunctionalBlocks.STONE_PRESSURE_PLATE));

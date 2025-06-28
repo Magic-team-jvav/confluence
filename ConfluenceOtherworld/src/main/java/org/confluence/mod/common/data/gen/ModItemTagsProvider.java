@@ -1135,7 +1135,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 HammerItems.SHADEWOOD_HAMMER.get(),
                 HammerItems.ASH_WOOD_HAMMER.get(),
                 HammerItems.PEARLWOOD_HAMMER.get(),
-                HammerItems.ROCKFISH.get(),
                 HammerItems.HAMMUSH.get(),
                 HammerItems.CHLOROPHYTE_WARHAMMER.get(),
                 HammerItems.CHLOROPHYTE_JACKHAMMER.get(),

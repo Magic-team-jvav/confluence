@@ -51,6 +51,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         separateModel(SwordItems.KATANA, templateReverse24x, "sword/");
         separateModel(HammerItems.THE_BREAKER, templateReverse24x, "hammer/");
         separateModel(HammerItems.FLESH_GRINDER, templateNormal24x, "hammer/");
+        separateModel(HammerItems.ROCKFISH, templateNormal24x, "hammer/");
         separateModel(HamaxeItems.METEOR_HAMAXE, templateNormal24x, "hamaxe/");
         separateModel(HamaxeItems.MOLTEN_HAMAXE, templateNormal24x, "hamaxe/");
         separateModel(AxeItems.WAR_AXE_OF_THE_NIGHT, templateReverse24x, "axe/");

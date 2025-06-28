@@ -25,6 +25,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Optional;
 
 public class MuralBlock extends HorizontalDirectionalBlock implements EntityBlock {
@@ -56,45 +57,29 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
     }
 
     public static class Entity extends BlockEntity {
-        private Optional<MuralData> back = Optional.empty();
-        private Optional<MuralData> left = Optional.empty();
-        private Optional<MuralData> right = Optional.empty();
-        private Optional<MuralData> front = Optional.empty();
+        private Optional<List<MuralData>> back = Optional.empty();
+        private Optional<List<MuralData>> left = Optional.empty();
+        private Optional<List<MuralData>> right = Optional.empty();
+        private Optional<List<MuralData>> front = Optional.empty();
 
         public Entity(BlockPos pos, BlockState blockState) {
             super(DecorativeBlocks.MURAL_ENTITY_BLOCK.get(), pos, blockState);
         }
 
-        public Optional<MuralData> getBack() {
+        public Optional<List<MuralData>> getBack() {
             return back;
         }
 
-        public void setBack(@Nullable MuralData data) {
-            this.back = Optional.ofNullable(data);
-        }
-
-        public Optional<MuralData> getLeft() {
+        public Optional<List<MuralData>> getLeft() {
             return left;
         }
 
-        public void setLeft(@Nullable MuralData data) {
-            this.left = Optional.ofNullable(data);
-        }
-
-        public Optional<MuralData> getRight() {
+        public Optional<List<MuralData>> getRight() {
             return right;
         }
 
-        public void setRight(@Nullable MuralData data) {
-            this.right = Optional.ofNullable(data);
-        }
-
-        public Optional<MuralData> getFront() {
+        public Optional<List<MuralData>> getFront() {
             return front;
-        }
-
-        public void setFront(@Nullable MuralData data) {
-            this.front = Optional.ofNullable(data);
         }
 
         @Override
@@ -158,13 +143,14 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
                 Icon.CODEC.lenientOptionalFieldOf("icon").forGetter(MuralData::icon),
                 ComponentSerialization.CODEC.lenientOptionalFieldOf("text").forGetter(MuralData::text)
         ).apply(instance, MuralData::new));
+        public static final Codec<List<MuralData>> LIST_CODEC = CODEC.listOf();
 
-        public static Tag encode(Optional<MuralData> data, HolderLookup.Provider registries) {
-            return data.flatMap(muralData -> CODEC.encodeStart(registries.createSerializationContext(NbtOps.INSTANCE), muralData).result()).orElseGet(CompoundTag::new);
+        public static Tag encode(Optional<List<MuralData>> data, HolderLookup.Provider registries) {
+            return data.flatMap(muralData -> LIST_CODEC.encodeStart(registries.createSerializationContext(NbtOps.INSTANCE), muralData).result()).orElseGet(CompoundTag::new);
         }
 
-        public static Optional<MuralData> decode(CompoundTag tag, HolderLookup.Provider registries) {
-            return CODEC.parse(registries.createSerializationContext(NbtOps.INSTANCE), tag).result();
+        public static Optional<List<MuralData>> decode(CompoundTag tag, HolderLookup.Provider registries) {
+            return LIST_CODEC.parse(registries.createSerializationContext(NbtOps.INSTANCE), tag).result();
         }
     }
 

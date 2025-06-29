@@ -1,5 +1,6 @@
 package org.confluence.mod.mixin.entity;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -30,6 +31,7 @@ import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.ModHookTypes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.item.hook.BaseHookItem;
 import org.confluence.mod.common.worldgen.secret_seed.NoTraps;
 import org.confluence.mod.integration.irons_spell.IronSpellHelper;
 import org.confluence.mod.mixed.ILivingEntity;
@@ -194,5 +196,10 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
     @Inject(method = "onAttributeUpdated", at = @At("TAIL"))
     private void updateMana(Holder<Attribute> attribute, CallbackInfo ci) {
         IronSpellHelper.updateMana(confluence$self(), attribute);
+    }
+
+    @ModifyExpressionValue(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;shouldDiscardFriction()Z"))
+    private boolean discardWhenHasAnyHooked(boolean original) {
+        return original || (confluence$self() instanceof Player player && BaseHookItem.hasAnyHooked(player));
     }
 }

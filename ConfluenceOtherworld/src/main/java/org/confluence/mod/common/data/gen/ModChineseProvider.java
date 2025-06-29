@@ -3501,6 +3501,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.POMEGRANATE.get(), "番石榴");
         add(FoodItems.RAMBUTAN.get(), "红毛丹");
         add(FoodItems.PEELED_SUGAR_TANGERINE.get(), "剥开的砂糖橘");
+        add(FoodItems.SHIMMER_BERRIES.get(), "微光浆果");
         add(FoodItems.COOKED_SHRIMP.get(), "熟虾");
         add(FoodItems.ESCARGOT.get(), "食用蜗牛");
         add(FoodItems.FROGGLE_BUNWICH.get(), "蛙腿三明治");

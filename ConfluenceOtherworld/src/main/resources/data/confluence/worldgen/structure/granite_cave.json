@@ -2,5 +2,5 @@
     "type": "confluence:granite_cave",
     "biomes": "#confluence:has_structure/mine_tunnels",
     "spawn_overrides": {},
-    "step": "top_layer_modification"
+    "step": "local_modifications"
 }

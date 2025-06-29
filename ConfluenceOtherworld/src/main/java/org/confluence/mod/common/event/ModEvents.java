@@ -43,6 +43,7 @@ import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforgespi.locating.IModFile;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.util.ConfluenceResources;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.common.AetheriumCauldronBlock;
 import org.confluence.mod.common.block.common.BaseChestBlock;
@@ -271,7 +272,7 @@ public final class ModEvents {
     @SubscribeEvent
     public static void modifyDefaultComponents(ModifyDefaultComponentsEvent event) {
         TEItemComponentModify.modifyDefaultComponents(event);
-        event.modify(Items.SNOWBALL, builder -> builder.set(DataComponents.MAX_STACK_SIZE, 9999));
+        event.modify(Items.SNOWBALL, builder -> builder.set(DataComponents.MAX_STACK_SIZE, LibUtils.MAX_STACK_SIZE));
     }
 
     @SubscribeEvent

@@ -51,7 +51,7 @@ public record HookThrowingPacketC2S(boolean throwing, int id) implements CustomP
                     BaseHookItem.HookType hookType = item.getHookType();
                     if (hookType == BaseHookItem.HookType.SINGLE) {
                         LibUtils.updateItemStackNbt(itemStack, nbt -> {
-                            BaseHookItem.removeAll(listTag, level);
+                            BaseHookItem.discardAllHooks(listTag, level);
                             nbt.put("hooks", listTag);
                             extraInventory.setChanged();
                         });

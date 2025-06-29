@@ -303,6 +303,7 @@ public final class ModBiomes {
                     builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Placed.GLOWING_MUSHROOM_LIFE_CRYSTAL);
                     builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Placed.GLOWING_MUSHROOM_TREE);
                     builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Placed.GLOWING_MUSHROOM_VINE);
+                    builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, Placed.GLOWING_MUSHROOM_CATTAILS);
                 }).build())
                 .build()
         );

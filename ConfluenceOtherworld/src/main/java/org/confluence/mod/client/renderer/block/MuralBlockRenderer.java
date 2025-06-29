@@ -8,6 +8,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.core.Direction;
@@ -24,18 +25,19 @@ public class MuralBlockRenderer implements BlockEntityRenderer<MuralBlock.Entity
         ClientLevel level = Minecraft.getInstance().level;
         Direction direction = blockEntity.getBlockState().getValue(MuralBlock.FACING);
         int light = level == null ? packedLight : LevelRenderer.getLightColor(level, blockEntity.getBlockPos().relative(direction.getOpposite()));
-        poseStack.pushPose();
-        poseStack.translate(0.5F, 0.0F, 0.5F);
-        poseStack.mulPose(Axis.YP.rotationDegrees(360.0F - direction.toYRot()));
-        poseStack.translate(0.5F, 1.0F, -0.5F);
-        blockEntity.getBack().ifPresent(datas -> renderData(datas, poseStack, light));
-        blockEntity.getLeft().ifPresent(datas -> renderData(datas, poseStack, light));
-        blockEntity.getRight().ifPresent(datas -> renderData(datas, poseStack, light));
-        blockEntity.getFront().ifPresent(datas -> renderData(datas, poseStack, light));
-        poseStack.popPose();
+        blockEntity.getBack().ifPresent(datas -> renderData(datas, poseStack, light, 180 - direction.toYRot()));
+        blockEntity.getLeft().ifPresent(datas -> renderData(datas, poseStack, light, 270 - direction.toYRot()));
+        blockEntity.getRight().ifPresent(datas -> renderData(datas, poseStack, light, 90 - direction.toYRot()));
+        blockEntity.getFront().ifPresent(datas -> renderData(datas, poseStack, light, 360 - direction.toYRot()));
     }
 
-    private static void renderData(List<MuralBlock.MuralData> datas, PoseStack poseStack, int packedLight) {
+    private void renderData(List<MuralBlock.MuralData> datas, PoseStack poseStack, int packedLight, float angle) {
+        Font font = Minecraft.getInstance().font;
+        LightTexture lightTexture = Minecraft.getInstance().gameRenderer.lightTexture();
+        poseStack.pushPose();
+        poseStack.translate(0.5F, 0.0F, 0.5F);
+        poseStack.mulPose(Axis.YP.rotationDegrees(angle));
+        poseStack.translate(0.5F, 1.0F, -0.5F);
         for (MuralBlock.MuralData data : datas) {
             poseStack.pushPose();
             poseStack.translate(data.x(), data.y(), data.z());
@@ -43,25 +45,23 @@ public class MuralBlockRenderer implements BlockEntityRenderer<MuralBlock.Entity
             poseStack.scale(data.scale(), data.scale(), data.scale());
             data.text().ifPresent(text -> {
                 FormattedCharSequence visualOrderText = text.component().getVisualOrderText();
-                Font font = Minecraft.getInstance().font;
                 Matrix4f matrix = poseStack.last().pose();
                 int color = (text.color() & -67108864) == 0 ? text.color() | 0xFF000000 : text.color();
+                MultiBufferSource.BufferSource buffer = Minecraft.getInstance().renderBuffers().bufferSource();
                 if (text.dropShadow()) {
                     font.renderText(
                             visualOrderText, text.x(), text.y(), color, true, matrix,
-                            Minecraft.getInstance().renderBuffers().bufferSource(),
-                            Font.DisplayMode.NORMAL, text.backgroundColor(), packedLight
+                            buffer, Font.DisplayMode.NORMAL, text.backgroundColor(), packedLight
                     );
                     matrix = matrix.translate(0, 0, -0.03F, new Matrix4f());
                 }
                 font.renderText(
                         visualOrderText, text.x(), text.y(), color, false, matrix,
-                        Minecraft.getInstance().renderBuffers().bufferSource(),
-                        Font.DisplayMode.NORMAL, text.backgroundColor(), packedLight
+                        buffer, Font.DisplayMode.NORMAL, text.backgroundColor(), packedLight
                 );
             });
             data.icon().ifPresent(icon -> {
-                Minecraft.getInstance().gameRenderer.lightTexture().turnOnLightLayer();
+                lightTexture.turnOnLightLayer();
                 RenderSystem.enableDepthTest();
                 RenderSystem.setShader(GameRenderer::getParticleShader);
                 RenderSystem.setShaderTexture(0, icon.atlasLocation());
@@ -81,9 +81,10 @@ public class MuralBlockRenderer implements BlockEntityRenderer<MuralBlock.Entity
                 builder.addVertex(matrix4f, x2, y1, 0).setUv(maxU, minV).setColor(-1).setLight(packedLight);
                 BufferUploader.drawWithShader(builder.buildOrThrow());
                 RenderSystem.disableDepthTest();
-                Minecraft.getInstance().gameRenderer.lightTexture().turnOffLightLayer();
+                lightTexture.turnOffLightLayer();
             });
             poseStack.popPose();
         }
+        poseStack.popPose();
     }
 }

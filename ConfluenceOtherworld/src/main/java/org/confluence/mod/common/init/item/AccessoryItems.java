@@ -185,7 +185,7 @@ public class AccessoryItems {
 
     private static DeferredItem<BaseCurioItem> registerWings(String name, ModRarity rarity, float flySpeed, int flyTicks, boolean couldGlide, boolean horizontalFlight) {
         DeferredItem<BaseCurioItem> item = registerCurio(name, builder -> builder.rarity(rarity)
-                .accessories(of(TCItems.MAY$FLY, new MayFlyAbilityValue.Storage(flySpeed, flyTicks, couldGlide, horizontalFlight)))
+                .accessories(of(TCItems.MAY$FLY, MayFlyAbilityValue.of(name, flySpeed, flyTicks, couldGlide, horizontalFlight)))
                 .attribute(Attributes.FALL_DAMAGE_MULTIPLIER, -100, ADD_VALUE));
         WINGS.add(item);
         return item;

@@ -16,17 +16,17 @@ public final class ModSecretSeeds {
     public static final Map<ResourceLocation, SecretSeed> BY_ID = new Hashtable<>();
     public static final Codec<SecretSeed> CODEC = ResourceLocation.CODEC.xmap(BY_ID::get, SecretSeed::getId);
 
-    public static final SecretSeed DRUNK_WORLD = register(Confluence.asResource("drunk_world"), DrunkWorld::new); // 0b1_00000000
-    public static final SecretSeed NOT_THE_BEES = register(Confluence.asResource("not_the_bees"), NotTheBees::new); // 0b10_00000000
-    public static final SecretSeed FOR_THE_WORTHY = register(Confluence.asResource("for_the_worthy"), ForTheWorthy::new); // 0b100_00000000
-    public static final SecretSeed CELEBRATIONMK10 = register(Confluence.asResource("celebrationmk10"), Celebrationmk10::new); // 0b1000_00000000
-    public static final SecretSeed THE_CONSTANT = register(Confluence.asResource("the_constant"), TheConstant::new); // 0b10000_00000000
-    public static final SecretSeed NO_TRAPS = register(Confluence.asResource("no_traps"), NoTraps::new); // 0b100000_00000000
-    public static final SecretSeed DONT_DIG_UP = register(Confluence.asResource("dont_dig_up"), DontDigUp::new); // 0b1000000_00000000
-    public static final SecretSeed GET_FIXED_BOI = register(Confluence.asResource("get_fixed_boi"), GetFixedBoi::new); // 0b10000000_00000000
+    public static final SecretSeed DRUNK_WORLD = register(Confluence.asResource("drunk_world"), DrunkWorld::new); //                 1_00000000
+    public static final SecretSeed NOT_THE_BEES = register(Confluence.asResource("not_the_bees"), NotTheBees::new); //              10_00000000
+    public static final SecretSeed FOR_THE_WORTHY = register(Confluence.asResource("for_the_worthy"), ForTheWorthy::new); //       100_00000000
+    public static final SecretSeed CELEBRATIONMK10 = register(Confluence.asResource("celebrationmk10"), Celebrationmk10::new); // 1000_00000000
+    public static final SecretSeed THE_CONSTANT = register(Confluence.asResource("the_constant"), TheConstant::new); //          10000_00000000
+    public static final SecretSeed NO_TRAPS = register(Confluence.asResource("no_traps"), NoTraps::new); //                     100000_00000000
+    public static final SecretSeed DONT_DIG_UP = register(Confluence.asResource("dont_dig_up"), DontDigUp::new); //            1000000_00000000
+    public static final SecretSeed GET_FIXED_BOI = register(Confluence.asResource("get_fixed_boi"), GetFixedBoi::new); //     10000000_00000000
 
     // 新增的
-    public static final SecretSeed BOULDER_WORLD = register(Confluence.asResource("boulder_world"), BoulderWorld::new); // 0b100000000_00000000
+    public static final SecretSeed BOULDER_WORLD = register(Confluence.asResource("boulder_world"), BoulderWorld::new); //   100000000_00000000
 
     /**
      * 0b00000001: 1.腐化<br>

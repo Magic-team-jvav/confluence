@@ -916,6 +916,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add(StatueBlocks.N8_STATUE.get(), "'8' Statue");
         add(StatueBlocks.N9_STATUE.get(), "'9' Statue");
         add(VanityArmorItems.DEAD_MANS_SWEATER.get(), "Dead Man's Sweater");
+        add(SwordItems.NIGHTS_EDGE.get(), "Night's Edge");
 
         add("block.confluence.timers_block_1_1", "1 Second Timer");
         add("block.confluence.timers_block_3_1", "3 Second Timer");

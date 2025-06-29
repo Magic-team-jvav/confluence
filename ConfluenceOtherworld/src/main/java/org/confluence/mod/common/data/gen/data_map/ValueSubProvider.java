@@ -245,7 +245,7 @@ public final class ValueSubProvider {
                 // Meowmere 20 gold
                 .add(SwordItems.MURAMASA, wrap(1, 75, 0))
                 // Mythril Sword 2 gold 7 silver
-                // Night's Edge 4 gold
+                .add(SwordItems.NIGHTS_EDGE, wrap(4, 0, 0))
                 .add(SwordItems.ORANGE_PHASEBLADE, wrap(54, 0))
                 // Orange Phasesaber 1 gold
                 // Orichalcum Sword 2 gold 53 silver

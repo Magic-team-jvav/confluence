@@ -111,3 +111,11 @@
 - `emerald_minecart` → `confluence:jade_minecart`
 - `emerald_hook` → `confluence:jade_hook`
 - `emerald_staff` → `confluence:jade_staff`
+
+# 从1.1.3到1.1.4
+
+## 物品
+
+| 原名称                     | 修改后名称                    |
+|-------------------------|--------------------------|
+| `confluence:night_edge` | `confluence:nights_edge` |

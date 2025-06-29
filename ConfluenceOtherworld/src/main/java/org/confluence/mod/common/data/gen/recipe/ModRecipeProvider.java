@@ -21,9 +21,7 @@ import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.recipe.*;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.recipe.WorkshopRecipe;
-import org.jetbrains.annotations.NotNull;
 
-import javax.print.attribute.standard.MediaSize;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -231,7 +229,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         altar(recipeOutput, ConsumableItems.BLOODY_SPINE.toStack(), AmountIngredient.of(30, ConsumableItems.VICIOUS_POWDER), AmountIngredient.of(15, MaterialItems.VERTEBRA));
         altar(recipeOutput, ConsumableItems.WORM_FOOD.toStack(), AmountIngredient.of(30, ConsumableItems.VILE_POWDER), AmountIngredient.of(15, MaterialItems.ROTTEN_BONE));
         altar(recipeOutput, ConsumableItems.SUSPICIOUS_LOOKING_EYE.toStack(), AmountIngredient.of(6, MaterialItems.LENS));
-        altar(recipeOutput, SwordItems.NIGHT_EDGE.toStack(), Ingredient.of(SwordItems.BLOOD_BUTCHERER, SwordItems.LIGHTS_BANE), Ingredient.of(SwordItems.MURAMASA), Ingredient.of(SwordItems.BLADE_OF_GRASS), Ingredient.of(SwordItems.VOLCANO));
+        altar(recipeOutput, SwordItems.NIGHTS_EDGE.toStack(), Ingredient.of(SwordItems.BLOOD_BUTCHERER, SwordItems.LIGHTS_BANE), Ingredient.of(SwordItems.MURAMASA), Ingredient.of(SwordItems.BLADE_OF_GRASS), Ingredient.of(SwordItems.VOLCANO));
         altar(recipeOutput, ToolItems.METEOR_COMPASS.toStack(), AmountIngredient.of(4,ModTags.Items.EVIL_INGOT),AmountIngredient.of(4,MaterialItems.FALLING_STAR));
         altar(recipeOutput, ConsumableItems.SLIME_CROWN.toStack(), AmountIngredient.of(20,MaterialItems.GEL),Ingredient.of(VanityArmorItems.GOLD_CROWN,VanityArmorItems.PLATINUM_CROWN));
 

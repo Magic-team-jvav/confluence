@@ -107,10 +107,9 @@ public class SwordItems {
             .apply(SwordProjectileComponent.ENCHANTED_SWORD_PROJ).addTooltip(p -> p.withColor(0x4156e4)).addTooltip(p -> p.withColor(0x4156e4)));
     public static final DeferredItem<SwordItem> BLADE_OF_GRASS = register("blade_of_grass", ModTiers.UNBREAKABLE, 7, 2.9F, ModRarity.GREEN, PROJ_SWORD
             .apply(SwordProjectileComponent.GRASS_PROJ));
-    public static final DeferredItem<SwordItem> NIGHT_EDGE = register("night_edge", ModTiers.UNBREAKABLE, 25, 2.5F, ModRarity.GREEN, PROJ_SWORD
+    public static final DeferredItem<SwordItem> NIGHTS_EDGE = register("nights_edge", ModTiers.UNBREAKABLE, 25, 2.5F, ModRarity.GREEN, PROJ_SWORD
             .apply(SwordProjectileComponent.NIGHT_PROJ));
 
-    // 光剑 todo 重命名为phaseblade
     public static final DeferredItem<SwordItem> RED_PHASEBLADE = register("red_phaseblade", () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, "red"));
     public static final DeferredItem<SwordItem> ORANGE_PHASEBLADE = register("orange_phaseblade", () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, "orange"));
     public static final DeferredItem<SwordItem> YELLOW_PHASEBLADE = register("yellow_phaseblade", () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, "yellow"));

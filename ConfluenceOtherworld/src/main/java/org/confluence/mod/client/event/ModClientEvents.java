@@ -239,7 +239,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(LIGHTS_BANE_PROJECTILE.get(), LightsBaneProjectileRenderer::new);
         event.registerEntityRenderer(GRASS_PROJECTILE.get(), c -> new ForwardProjRenderer<>(c, null, null));
         event.registerEntityRenderer(BEE_PROJECTILE.get(), c -> new ForwardProjRenderer<>(c, new BeeProjectileModel(c.bakeLayer(BeeProjectileModel.LAYER_LOCATION)), TerraCurio.asResource("textures/entity/bee_projectile.png")));
-        event.registerEntityRenderer(NIGHT_EDGE_PROJECTILE.get(), NightEdgeProjectileRenderer::new);
+        event.registerEntityRenderer(NIGHTS_EDGE_PROJECTILE.get(), NightEdgeProjectileRenderer::new);
 
         event.registerEntityRenderer(ARROW_PROJECTILE.get(), TerraArrowRenderer::new);
         event.registerEntityRenderer(BEE_ARROW.get(), c -> new ForwardProjRenderer<>(c, new BeeProjectileModel(c.bakeLayer(BeeProjectileModel.LAYER_LOCATION)), TerraCurio.asResource("textures/entity/bee_projectile.png")));

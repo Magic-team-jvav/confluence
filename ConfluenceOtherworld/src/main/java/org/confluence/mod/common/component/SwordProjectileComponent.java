@@ -96,7 +96,7 @@ public record SwordProjectileComponent (
 
     public static final Supplier<SwordProjectileComponent> NIGHT_PROJ =
             ()->new SwordProjectileComponent(1,0.8f,0.9f,20, 0, 10,
-                    ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.NIGHT_EDGE_PROJECTILE.getId(),
+                    ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.NIGHTS_EDGE_PROJECTILE.getId(),
                     Optional.empty(), ForwardGeneration.of(0,20),
                     Optional.empty());
 

@@ -44,6 +44,11 @@ public class HeavyWorkBenchMenu extends EitherAmountContainerMenu4x<EnvironmentR
     }
 
     @Override
+    public int getRecipesAmount() {
+        return recipes.size() + craftingRecipes.size();
+    }
+
+    @Override
     public ItemStack getUpResult() {
         int index = getUpIndex();
         if (index == -1) return result.getItem(0);
@@ -55,22 +60,6 @@ public class HeavyWorkBenchMenu extends EitherAmountContainerMenu4x<EnvironmentR
     }
 
     @Override
-    public int getUpIndex() {
-        int totalSize = recipes.size() + craftingRecipes.size();
-        if (totalSize == 0) return -1;
-        if (totalSize == 1) {
-            return 0;
-        } else if (isValidRecipeIndex(selectedRecipeIndex.get())) {
-            if (selectedRecipeIndex.get() == 0) {
-                return totalSize - 1;
-            } else {
-                return selectedRecipeIndex.get() - 1;
-            }
-        }
-        return -1;
-    }
-
-    @Override
     public ItemStack getDownResult() {
         int index = getDownIndex();
         if (index == -1) return result.getItem(0);
@@ -79,28 +68,6 @@ public class HeavyWorkBenchMenu extends EitherAmountContainerMenu4x<EnvironmentR
             return recipes.get(index).value().getResultItem(player.registryAccess());
         }
         return craftingRecipes.get(index - recipesSize).value().getResultItem(player.registryAccess());
-    }
-
-    @Override
-    public int getDownIndex() {
-        int totalSize = recipes.size() + craftingRecipes.size();
-        if (totalSize == 0) return -1;
-        if (totalSize == 1) {
-            return 0;
-        } else if (isValidRecipeIndex(selectedRecipeIndex.get())) {
-            int next = selectedRecipeIndex.get() + 1;
-            if (next == totalSize) {
-                return 0;
-            } else {
-                return next;
-            }
-        }
-        return -1;
-    }
-
-    @Override
-    protected boolean isValidRecipeIndex(int recipeIndex) {
-        return recipeIndex >= 0 && recipeIndex < recipes.size() + craftingRecipes.size();
     }
 
     @Override
@@ -134,6 +101,32 @@ public class HeavyWorkBenchMenu extends EitherAmountContainerMenu4x<EnvironmentR
                 if (selectedRecipeIndex.get() == -1) selectedRecipeIndex.set(0);
             }
         });
+    }
+
+    @Override
+    public void setupResultSlot() {
+        inner: {
+            int index = selectedRecipeIndex.get();
+            if (isValidRecipeIndex(index)) {
+                int recipesSize = recipes.size();
+                ItemStack itemStack;
+                if (index < recipesSize) {
+                    HeavyWorkBenchRecipe recipe = recipes.get(index).value();
+                    itemStack = recipe.getResultItem(player.registryAccess());
+                    if (!itemStack.isItemEnabled(player.level().enabledFeatures())) break inner;
+                    resultSlot.setCurrentRecipe(recipe);
+                } else {
+                    CraftingRecipe recipe = craftingRecipes.get(index - recipesSize).value();
+                    itemStack = recipe.getResultItem(player.registryAccess());
+                    if (!itemStack.isItemEnabled(player.level().enabledFeatures())) break inner;
+                    resultSlot.setAltRecipe(recipe);
+                }
+                result.setItem(0, itemStack.copy());
+                broadcastChanges();
+                return;
+            }
+        }
+        result.setItem(0, ItemStack.EMPTY);
     }
 
     @Override

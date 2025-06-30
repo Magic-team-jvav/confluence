@@ -17,7 +17,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.StatueBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.recipe.HeavyWorkBenchRecipe;
@@ -113,72 +112,55 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         basePhaseblade(recipeOutput, AmountIngredient.of(5, MaterialItems.AMETHYST), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.PURPLE_PHASEBLADE.toStack());
 
         // 金系列
-        heavyWorkBench(recipeOutput, "golden_helmet_from_reinforce", ShapedRecipePattern.of(Map.of(
-                '#', AmountIngredient.of(2, Items.GOLD_INGOT),
+        Map<Character, Ingredient> goldWithGems = Map.of(
+                '#', Ingredient.of(Tags.Items.GEMS),
                 'a', Ingredient.of(Items.GOLD_INGOT)
-        ), List.of(
+        );
+        heavyWorkBench(recipeOutput, "golden_helmet_from_reinforce", ShapedRecipePattern.of(goldWithGems, List.of(
                 "a#a",
                 "a a"
         )), ArmorItems.GOLDEN_HELMET.toStack());
-        heavyWorkBench(recipeOutput, "golden_leggings_from_reinforce", ShapedRecipePattern.of(Map.of(
-                '#', AmountIngredient.of(2, Items.GOLD_INGOT),
-                'a', Ingredient.of(Items.GOLD_INGOT)
-        ), List.of(
-                "#a#",
+        heavyWorkBench(recipeOutput, "golden_leggings_from_reinforce", ShapedRecipePattern.of(goldWithGems, List.of(
+                "a#a",
                 "a a",
                 "a a"
         )), ArmorItems.GOLDEN_LEGGINGS.toStack());
-        heavyWorkBench(recipeOutput, "golden_boots_from_reinforce", ShapedRecipePattern.of(Map.of(
-                '#', AmountIngredient.of(1, Items.GOLD_INGOT)
-        ), List.of(
-                "# #",
-                "# #"
+        heavyWorkBench(recipeOutput, "golden_boots_from_reinforce", ShapedRecipePattern.of(goldWithGems, List.of(
+                "a a",
+                "a#a"
         )), ArmorItems.GOLDEN_BOOTS.toStack());
-        heavyWorkBench(recipeOutput, "golden_chestplate_from_reinforce", ShapedRecipePattern.of(Map.of(
-                '#', AmountIngredient.of(2, Items.GOLD_INGOT),
-                'a', Ingredient.of(Items.GOLD_INGOT)
-        ), List.of(
+        heavyWorkBench(recipeOutput, "golden_chestplate_from_reinforce", ShapedRecipePattern.of(goldWithGems, List.of(
                 "a a",
                 "a#a",
                 "aaa"
         )), ArmorItems.GOLDEN_CHESTPLATE.toStack());
-        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
-                '#', AmountIngredient.of(2, Items.GOLD_INGOT),
+        Map<Character, Ingredient> goldWithGemsAndStick = Map.of(
+                '#', Ingredient.of(Tags.Items.GEMS),
+                'a', Ingredient.of(Items.GOLD_INGOT),
                 '/', Ingredient.of(Items.STICK)
-        ), List.of(
-                "#",
+        );
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(goldWithGemsAndStick, List.of(
+                "a",
                 "#",
                 "/"
         )), SwordItems.GOLDEN_BROADSWORD.toStack());
-        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
-                '#', AmountIngredient.of(2, Items.GOLD_INGOT),
-                '/', Ingredient.of(Items.STICK)
-        ), List.of(
-                "###",
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(goldWithGemsAndStick, List.of(
+                "a#a",
                 " / ",
                 " / "
         )), PickaxeItems.GOLDEN_PICKAXE.toStack());
-        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
-                '#', AmountIngredient.of(2, Items.GOLD_INGOT),
-                '/', Ingredient.of(Items.STICK)
-        ), List.of(
-                "##",
-                "#/",
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(goldWithGemsAndStick, List.of(
+                "a#",
+                "a/",
                 " /"
         )), AxeItems.GOLDEN_AXE.toStack());
-        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
-                '#', AmountIngredient.of(2, Items.GOLD_INGOT),
-                '/', Ingredient.of(Items.STICK)
-        ), List.of(
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(goldWithGemsAndStick, List.of(
+                "a",
                 "#",
-                "/",
                 "/"
         )), ShovelItems.GOLDEN_SHOVEL.toStack());
-        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
-                '#', AmountIngredient.of(2, Items.GOLD_INGOT),
-                '/', Ingredient.of(Items.STICK)
-        ), List.of(
-                "##",
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(goldWithGemsAndStick, List.of(
+                "a#",
                 " /",
                 " /"
         )), HoeItems.GOLDEN_HOE.toStack());

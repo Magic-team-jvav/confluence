@@ -4,6 +4,8 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import org.confluence.mod.common.entity.projectile.ThrowableDropSelfProjectile;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEntities;
@@ -20,5 +22,12 @@ public class MagicDaggerProjectile extends ThrowableDropSelfProjectile {
     @Override
     protected DamageSource getDamageSource() {
         return ModDamageTypes.of(level(), ModDamageTypes.MAGICAL_PROJECTILE, this, getOwner());
+    }
+
+    @Override
+    protected void onHitBlock(BlockHitResult result) {
+        BlockState blockstate = level().getBlockState(result.getBlockPos());
+        blockstate.onProjectileHit(level(), blockstate, result, this);
+        discard();
     }
 }

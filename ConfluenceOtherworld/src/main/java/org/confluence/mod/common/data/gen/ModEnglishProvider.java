@@ -568,6 +568,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.configuration.showMoneyDrops.tooltip", "Enable to display the amount of coins dropped on the death screen");
         add("confluence.configuration.altarTips", "Altar Tips");
         add("confluence.configuration.altarTips.tooltip", "You can turn off the tips by yourself after learning");
+        add("confluence.configuration.ammoSlotsBlacklist", "Ammo Slot Automatically Picks-up Blacklist");
+        add("confluence.configuration.ammoSlotsBlacklist.tooltip", "Items with IDs or tags in the blacklist will not automatically enter the ammo slot");
         // Separator
         add("confluence.configuration.Mana.button", "Mana");
         add("confluence.configuration.Armor.button", "Armor");

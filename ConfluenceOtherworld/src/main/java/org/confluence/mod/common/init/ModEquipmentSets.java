@@ -39,4 +39,5 @@ public final class ModEquipmentSets {
     public static final EBDeferredHolder<EquipmentSet> HALLOWED_SET = SETS.register("hallowed_set", HallowedSet::new);
     public static final EBDeferredHolder<EquipmentSet> PUMPKIN_SET = SETS.register("pumpkin_set", PumpkinSet::new);
     public static final EBDeferredHolder<EquipmentSet> ASH_SET = SETS.register("ash_set", AshSet::new);
+    public static final EBDeferredHolder<EquipmentSet> OBSIDIAN_SET = SETS.register("obsidian_set", ObsidianSet::new);
 }

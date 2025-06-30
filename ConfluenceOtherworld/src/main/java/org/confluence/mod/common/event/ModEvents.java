@@ -24,6 +24,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
@@ -45,6 +46,7 @@ import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.util.ConfluenceResources;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.block.common.AetheriumCauldronBlock;
 import org.confluence.mod.common.block.common.BaseChestBlock;
 import org.confluence.mod.common.block.common.HoneyCauldronBlock;
@@ -108,8 +110,16 @@ public final class ModEvents {
     }
 
     @SubscribeEvent
+    public static void modConfig$Loading(ModConfigEvent.Loading event) {
+        if (event.getConfig().getType() == ModConfig.Type.COMMON && MODID.equals(event.getConfig().getModId())) {
+            CommonConfigs.onLoad();
+        }
+    }
+
+    @SubscribeEvent
     public static void modConfig$Reloading(ModConfigEvent.Reloading event) {
-        if (MODID.equals(event.getConfig().getModId())) {
+        if (event.getConfig().getType() == ModConfig.Type.COMMON && MODID.equals(event.getConfig().getModId())) {
+            CommonConfigs.onLoad();
             CompatibilitySyncPacketS2c.sendToAll();
         }
     }

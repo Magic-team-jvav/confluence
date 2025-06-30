@@ -1,10 +1,22 @@
 package org.confluence.mod.common;
 
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
 import net.neoforged.neoforge.common.ModConfigSpec.Builder;
+import net.neoforged.neoforge.common.ModConfigSpec.ConfigValue;
 import net.neoforged.neoforge.common.ModConfigSpec.IntValue;
+import net.neoforged.neoforge.common.Tags;
+import org.confluence.mod.Confluence;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public final class CommonConfigs {
     public static BooleanValue DROP_MONEY;
@@ -14,6 +26,7 @@ public final class CommonConfigs {
     public static IntValue ANNOUNCEMENT_BOX_DISTANCE;
     public static BooleanValue ALERT_PLAYER_IN_DUNGEON;
     public static BooleanValue STAR_PHASE;
+    private static ConfigValue<List<? extends String>> AMMO_SLOTS_BLACKLIST;
 
     public static BooleanValue FLETCHING_MENU;
     public static BooleanValue SHIMMER_DECOMPOSE;
@@ -43,6 +56,23 @@ public final class CommonConfigs {
     public static BooleanValue XAEROS_MAP_PYLON_WAYPOINT;
     public static BooleanValue WAYSTONES_PYLON_NON_COST;
 
+    public static Set<ResourceKey<Item>> ammoSlotsItemBlackList = Set.of(Confluence.asResourceKey(Registries.ITEM, "falling_star"));
+    public static Set<TagKey<Item>> ammoSlotsTagBlackList = Set.of(Tags.Items.SEEDS);
+
+    public static void onLoad() {
+        Set<ResourceKey<Item>> a = new HashSet<>();
+        Set<TagKey<Item>> b = new HashSet<>();
+        for (String s : AMMO_SLOTS_BLACKLIST.get()) {
+            if (s.startsWith("#")) {
+                b.add(TagKey.create(Registries.ITEM, ResourceLocation.parse(s.substring(1))));
+            } else {
+                a.add(ResourceKey.create(Registries.ITEM, ResourceLocation.parse(s)));
+            }
+        }
+        ammoSlotsItemBlackList = a;
+        ammoSlotsTagBlackList = b;
+    }
+
     public static void register(ModContainer container) {
         Builder BUILDER = new Builder();
         {
@@ -54,6 +84,15 @@ public final class CommonConfigs {
             ANNOUNCEMENT_BOX_DISTANCE = BUILDER.defineInRange("announcementBoxDistance", 128, 0, Integer.MAX_VALUE);
             ALERT_PLAYER_IN_DUNGEON = BUILDER.define("alertPlayerDungeon", false);
             STAR_PHASE = BUILDER.define("starPhase", false);
+            AMMO_SLOTS_BLACKLIST = BUILDER.defineListAllowEmpty("ammoSlotsBlacklist", () -> List.of("confluence:falling_star", "#c:seeds"), () -> "[#]namespace:path", o -> {
+                if (o instanceof String s) {
+                    if (s.startsWith("#")) {
+                        return ResourceLocation.tryParse(s.substring(1)) != null;
+                    }
+                    return ResourceLocation.tryParse(s) != null;
+                }
+                return false;
+            });
             BUILDER.pop();
         }
         {

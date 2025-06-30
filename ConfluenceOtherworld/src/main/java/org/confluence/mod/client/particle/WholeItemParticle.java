@@ -25,11 +25,11 @@ public class WholeItemParticle extends TextureSheetParticle {
     private final float yaw;
     private final float pitch;
 
-    public WholeItemParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, ItemStack item) {
+    public WholeItemParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, ItemStack item, float gravity, int life) {
         super(level, x, y, z, xSpeed, ySpeed, zSpeed);
         this.item = item;
-        this.gravity = 1;
-        this.lifetime = 60 + this.random.nextInt(10);
+        this.gravity = gravity;
+        this.lifetime = life;
 
         this.roll = random.nextFloat() * Mth.TWO_PI;
         this.yaw = random.nextFloat() * Mth.TWO_PI;
@@ -82,7 +82,7 @@ public class WholeItemParticle extends TextureSheetParticle {
         @Nullable
         @Override
         public Particle createParticle(WholeItemParticleOptions options, @NotNull ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            return new WholeItemParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, options.item());
+            return new WholeItemParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, options.item(), options.gravity(), options.life());
         }
     }
 }

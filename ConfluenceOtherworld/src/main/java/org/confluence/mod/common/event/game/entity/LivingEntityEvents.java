@@ -161,7 +161,7 @@ public final class LivingEntityEvents {
             for (int i = 0; i < 3; i++) {
                 CoinItem item = PlayerUtils.INDEX_2_COIN.apply(i);
                 serverLevel.sendParticles(
-                        new WholeItemParticleOptions(item.getDefaultInstance()),
+                        new WholeItemParticleOptions(item.getDefaultInstance(), 1f, 60 + living.getRandom().nextInt(10)),
                         living.getX(), living.getY() + living.getBbHeight() / 2.0, living.getZ(),
                         2, 0.0, 0.5, 0.0, 0.1
                 );

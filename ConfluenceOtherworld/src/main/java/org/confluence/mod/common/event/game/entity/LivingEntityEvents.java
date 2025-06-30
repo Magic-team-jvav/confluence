@@ -3,7 +3,10 @@ package org.confluence.mod.common.event.game.entity;
 import com.xiaohunao.equipment_benediction.common.hook.HookMapManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
@@ -15,6 +18,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.Item;
@@ -23,6 +27,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Biomes;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -40,15 +45,13 @@ import org.confluence.mod.common.effect.flask.FlaskEffect;
 import org.confluence.mod.common.effect.harmful.ManaSicknessEffect;
 import org.confluence.mod.common.effect.neutral.LoveEffect;
 import org.confluence.mod.common.entity.projectile.boulder.TombstoneBoulder;
-import org.confluence.mod.common.init.ModAttachmentTypes;
-import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.init.ModHookTypes;
-import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.common.item.sword.SweetSword;
 import org.confluence.mod.common.particle.DamageIndicatorOptions;
+import org.confluence.mod.common.particle.WholeItemParticleOptions;
 import org.confluence.mod.common.worldgen.secret_seed.NoTraps;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
 import org.confluence.mod.common.worldgen.structure.DungeonStructure;
@@ -63,11 +66,14 @@ import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terraentity.entity.ai.Boss;
+import org.confluence.terraentity.entity.monster.slime.GoldenSlime;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 import org.confluence.terraentity.init.TETags;
+import org.confluence.terraentity.init.entity.TEMonsterEntities;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import static org.confluence.mod.util.PlayerUtils.receiveMana;
 
@@ -153,6 +159,17 @@ public final class LivingEntityEvents {
         }
         if (cause != null) {
             event.getContainer().setPostAttackInvulnerabilityTicks(event.getEntity().invulnerableTime);
+        }
+        if (event.getEntity() instanceof GoldenSlime goldenSlime && goldenSlime.level() instanceof ServerLevel serverLevel) {
+            Stream.of(ModItems.COPPER_COIN, ModItems.SILVER_COIN, ModItems.GOLDEN_COIN).forEach(e -> {
+                serverLevel.sendParticles(
+                        new WholeItemParticleOptions(new ItemStack(e.asItem())),
+                        goldenSlime.getX(), goldenSlime.getY() + goldenSlime.getBbHeight() / 2.0, goldenSlime.getZ(),
+                        2,
+                        0.0, 0.5, 0.0,
+                        0.1
+                );
+            });
         }
     }
 
@@ -340,6 +357,20 @@ public final class LivingEntityEvents {
                 LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.MAINHAND, PickaxeItems.BONE_PICKAXE.get(), 0.25F);
                 //mob.setCustomName(Component.translatable("entity.confluence.undead_miner"));
                 event.setCanceled(true);
+            }
+        } else if (event.getEntity() instanceof Slime slime && mob.level() instanceof ServerLevel serverLevel) {
+            if (ModSecretSeeds.CELEBRATIONMK10.match(serverLevel) || ModSecretSeeds.GET_FIXED_BOI.match(serverLevel)) {
+                if (event.getSpawnType().equals(MobSpawnType.NATURAL)) {
+                    if (mob.getRandom().nextInt(140) == 1) {
+                        event.setCanceled(true);
+
+                        GoldenSlime goldenSlime = TEMonsterEntities.GOLDEN_SLIME.get().create(serverLevel);
+                        if (goldenSlime != null) {
+                            goldenSlime.moveTo(slime.getX(), slime.getY(), slime.getZ(), slime.getYRot(), slime.getXRot());
+                            level.addFreshEntity(goldenSlime);
+                        }
+                    }
+                }
             }
         }
     }

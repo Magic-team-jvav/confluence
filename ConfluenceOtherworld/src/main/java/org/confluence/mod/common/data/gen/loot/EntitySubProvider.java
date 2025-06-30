@@ -15,6 +15,7 @@ import net.minecraft.world.level.storage.loot.functions.EnchantedCountIncreaseFu
 import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.AllOfCondition;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import org.confluence.mod.Confluence;
@@ -366,6 +367,12 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ToolItems.GOLDEN_DUNGEON_KEY))
                         .apply(random0To1)
+                )
+        );
+        add(TEMonsterEntities.GOLDEN_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/golden_slime"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(ModItems.GOLDEN_COIN))
+                        .apply(SetItemCountFunction.setCount(ConstantValue.exactly(15)))
                 )
         );
         add(TEMonsterEntities.NYMPH.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/nymph"), LootTable.lootTable()

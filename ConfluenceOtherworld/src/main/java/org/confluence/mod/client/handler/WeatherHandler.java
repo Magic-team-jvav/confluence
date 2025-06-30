@@ -29,6 +29,7 @@ import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.fluids.FluidType;
 import org.confluence.mod.common.init.ModParticleTypes;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.network.s2c.WindSpeedPacketS2C;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2f;

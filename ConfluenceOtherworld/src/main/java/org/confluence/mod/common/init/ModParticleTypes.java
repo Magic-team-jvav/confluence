@@ -10,6 +10,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.particle.DamageIndicatorOptions;
+import org.confluence.mod.common.particle.WholeItemParticleOptions;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
@@ -19,6 +20,7 @@ public final class ModParticleTypes {
     public static final DeferredRegister<ParticleType<?>> TYPES = DeferredRegister.create(BuiltInRegistries.PARTICLE_TYPE, Confluence.MODID);
 
     public static final Supplier<ParticleType<DamageIndicatorOptions>> DAMAGE_INDICATOR = register("damage_indicator", true, DamageIndicatorOptions.CODEC, DamageIndicatorOptions.STREAM_CODEC);
+    public static final Supplier<ParticleType<WholeItemParticleOptions>> WHOLE_ITEM = register("whole_item", true, WholeItemParticleOptions.CODEC, WholeItemParticleOptions.STREAM_CODEC);
     public static final Supplier<SimpleParticleType> LEAVES = register("leaves", true);
     public static final Supplier<SimpleParticleType> RED_SAND = register("red_sand", true);
     public static final Supplier<SimpleParticleType> SAND = register("sand", true);

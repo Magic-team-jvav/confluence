@@ -51,10 +51,7 @@ import org.confluence.mod.client.model.entity.hook.BaseHookModel;
 import org.confluence.mod.client.model.entity.hook.SkeletronHandModel;
 import org.confluence.mod.client.model.entity.hook.WebSlingerModel;
 import org.confluence.mod.client.model.entity.projectile.*;
-import org.confluence.mod.client.particle.BiomeColorParticle;
-import org.confluence.mod.client.particle.DamageIndicatorParticle;
-import org.confluence.mod.client.particle.LightBaneParticle;
-import org.confluence.mod.client.particle.SimpleTextureSheetParticle;
+import org.confluence.mod.client.particle.*;
 import org.confluence.mod.client.renderer.block.*;
 import org.confluence.mod.client.renderer.entity.BodyPartRenderer;
 import org.confluence.mod.client.renderer.entity.FallingStarRenderer;
@@ -355,6 +352,7 @@ public final class ModClientEvents {
     @SubscribeEvent
     public static void registerParticles(RegisterParticleProvidersEvent event) {
         event.registerSpecial(ModParticleTypes.DAMAGE_INDICATOR.get(), new DamageIndicatorParticle.Provider());
+        event.registerSpecial(ModParticleTypes.WHOLE_ITEM.get(), new WholeItemParticle.Provider());
         event.registerSpriteSet(ModParticleTypes.LEAVES.get(), BiomeColorParticle.Provider::new);
         event.registerSpriteSet(ModParticleTypes.RED_SAND.get(), SimpleTextureSheetParticle.Provider::new);
         event.registerSpriteSet(ModParticleTypes.SAND.get(), SimpleTextureSheetParticle.Provider::new);

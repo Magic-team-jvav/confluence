@@ -3,10 +3,7 @@ package org.confluence.mod.common.event.game.entity;
 import com.xiaohunao.equipment_benediction.common.hook.HookMapManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.core.particles.ItemParticleOption;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
@@ -27,7 +24,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.Biomes;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -48,6 +44,7 @@ import org.confluence.mod.common.entity.projectile.boulder.TombstoneBoulder;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.common.item.sword.SweetSword;
 import org.confluence.mod.common.particle.DamageIndicatorOptions;
@@ -73,7 +70,6 @@ import org.confluence.terraentity.init.entity.TEMonsterEntities;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 import static org.confluence.mod.util.PlayerUtils.receiveMana;
 
@@ -149,27 +145,27 @@ public final class LivingEntityEvents {
     @SubscribeEvent
     public static void livingIncomingDamage(LivingIncomingDamageEvent event) {
         DamageSource damageSource = event.getSource();
-        if (event.getEntity() instanceof ServerPlayer serverPlayer) {
+        LivingEntity living = event.getEntity();
+        if (living instanceof ServerPlayer serverPlayer) {
             float amount = event.getAmount();
             AccessoryItems.applyHurtGetMana(serverPlayer, damageSource, (int) amount);
         }
         Immunity cause = Immunity.getCause(event.getSource());
-        if (((ILivingEntity) event.getEntity()).confluence$getImmunityTicks().containsKey(cause)) {
+        if (((ILivingEntity) living).confluence$getImmunityTicks().containsKey(cause)) {
             event.setCanceled(true);
         }
         if (cause != null) {
-            event.getContainer().setPostAttackInvulnerabilityTicks(event.getEntity().invulnerableTime);
+            event.getContainer().setPostAttackInvulnerabilityTicks(living.invulnerableTime);
         }
-        if (event.getEntity() instanceof GoldenSlime goldenSlime && goldenSlime.level() instanceof ServerLevel serverLevel) {
-            Stream.of(ModItems.COPPER_COIN, ModItems.SILVER_COIN, ModItems.GOLDEN_COIN).forEach(e -> {
+        if (living.getType() == TEMonsterEntities.GOLDEN_SLIME.get() && living.level() instanceof ServerLevel serverLevel) {
+            for (int i = 0; i < 3; i++) {
+                CoinItem item = PlayerUtils.INDEX_2_COIN.apply(i);
                 serverLevel.sendParticles(
-                        new WholeItemParticleOptions(new ItemStack(e.asItem())),
-                        goldenSlime.getX(), goldenSlime.getY() + goldenSlime.getBbHeight() / 2.0, goldenSlime.getZ(),
-                        2,
-                        0.0, 0.5, 0.0,
-                        0.1
+                        new WholeItemParticleOptions(item.getDefaultInstance()),
+                        living.getX(), living.getY() + living.getBbHeight() / 2.0, living.getZ(),
+                        2, 0.0, 0.5, 0.0, 0.1
                 );
-            });
+            }
         }
     }
 

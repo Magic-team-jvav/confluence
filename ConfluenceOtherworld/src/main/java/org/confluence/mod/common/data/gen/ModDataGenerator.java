@@ -40,15 +40,9 @@ public final class ModDataGenerator {
         generator.addProvider(client, new ModBlockStateProvider(output, helper));
         generator.addProvider(client, new ModItemModelProvider(output, helper));
 
-
         boolean server = event.includeServer();
-
-        DatapackBuiltinEntriesProvider provider = new DatapackBuiltinEntriesProvider(output, lookup, DATA_BUILDER, Set.of(Confluence.MODID));
-        lookup = provider.getRegistryProvider();
-        generator.addProvider(server, provider);
-
-        ModBlockTagsProvider blockTagsProvider = new ModBlockTagsProvider(output, lookup, helper);
-        generator.addProvider(server, blockTagsProvider);
+        lookup = generator.addProvider(server, new DatapackBuiltinEntriesProvider(output, lookup, DATA_BUILDER, Set.of(Confluence.MODID))).getRegistryProvider();
+        ModBlockTagsProvider blockTagsProvider = generator.addProvider(server, new ModBlockTagsProvider(output, lookup, helper));
         generator.addProvider(server, new ModItemTagsProvider(output, lookup, blockTagsProvider.contentsGetter(), helper));
         generator.addProvider(server, new ModDamageTypeTagsProvider(output, lookup, helper));
         generator.addProvider(server, new ModPoiTypeTagsProvider(output, lookup, helper));

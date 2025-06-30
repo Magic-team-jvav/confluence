@@ -6,7 +6,10 @@ import com.mojang.math.Axis;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.*;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.ParticleRenderType;
+import net.minecraft.client.particle.TextureSheetParticle;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.Mth;
@@ -22,17 +25,15 @@ public class WholeItemParticle extends TextureSheetParticle {
     private final float yaw;
     private final float pitch;
 
-    public WholeItemParticle(ClientLevel level, double x, double y, double z,
-                             double xSpeed, double ySpeed, double zSpeed,
-                             ItemStack item) {
+    public WholeItemParticle(ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, ItemStack item) {
         super(level, x, y, z, xSpeed, ySpeed, zSpeed);
         this.item = item;
         this.gravity = 1;
         this.lifetime = 60 + this.random.nextInt(10);
 
-        this.roll = (float) (random.nextFloat() * (Math.PI * 2));
-        this.yaw = (float) (random.nextFloat() * (Math.PI * 2));
-        this.pitch = (float) (random.nextFloat() * (Math.PI * 2));
+        this.roll = random.nextFloat() * Mth.TWO_PI;
+        this.yaw = random.nextFloat() * Mth.TWO_PI;
+        this.pitch = random.nextFloat() * Mth.TWO_PI;
     }
 
     @Override
@@ -60,9 +61,7 @@ public class WholeItemParticle extends TextureSheetParticle {
         poseStack.pushPose();
         poseStack.translate(x - camera.getPosition().x, y - camera.getPosition().y, z - camera.getPosition().z);
         poseStack.scale(0.5f, 0.5f, 0.5f);
-        poseStack.mulPose(Axis.ZP.rotation(this.roll));
-        poseStack.mulPose(Axis.XP.rotation(this.pitch));
-        poseStack.mulPose(Axis.YP.rotation(this.yaw));
+        poseStack.mulPose(Axis.ZP.rotation(this.roll).rotateX(this.pitch).rotateY(this.yaw));
 
         mc.getItemRenderer().renderStatic(
                 item,
@@ -83,8 +82,7 @@ public class WholeItemParticle extends TextureSheetParticle {
         @Nullable
         @Override
         public Particle createParticle(WholeItemParticleOptions options, @NotNull ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            WholeItemParticle particle = new WholeItemParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, options.getItem());
-            return particle;
+            return new WholeItemParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, options.item());
         }
     }
 }

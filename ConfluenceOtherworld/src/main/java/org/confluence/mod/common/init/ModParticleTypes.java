@@ -30,8 +30,6 @@ public final class ModParticleTypes {
     public static final Supplier<SimpleParticleType> LIGHT_BANE_DUST = register("lights_bane_dust", true);
     public static final Supplier<SimpleParticleType> LIGHT_BANE_FADE = register("lights_bane_fade", true);
 
-
-
     // 原版用了Function获取codec，现在自己的用不到，要用了再改
     private static <T extends ParticleOptions> Supplier<ParticleType<T>> register(String id, boolean overrideLimiter, MapCodec<T> mapCodec, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec) {
         return TYPES.register(id, () -> new ParticleType<>(overrideLimiter) {

@@ -137,7 +137,7 @@ public class BaseFoodItem extends Item {
         }
 
         public BaseFoodItem build() {
-            return new BaseFoodItem(builder());
+            return new BaseFoodItem(this);
         }
     }
 

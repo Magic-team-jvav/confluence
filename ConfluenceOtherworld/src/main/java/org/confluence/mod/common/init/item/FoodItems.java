@@ -160,8 +160,8 @@ public class FoodItems {
     public static final DeferredItem<BaseFoodItem> YELLOW_EEL = registerNormalFood("yellow_eel", ModFoodProperties.noEffectProperties(2, 0.4f));
     public static final DeferredItem<BaseFoodItem> TILAPIA = registerNormalFood("tilapia", ModFoodProperties.noEffectProperties(2, 0.4f));
     public static final DeferredItem<BaseFoodItem> GOLDEN_CARP = registerNormalFood("golden_carp", ModFoodProperties.GOLDEN_CARP);
-    public static final DeferredItem<BaseFoodItem> OBSIDIAN_FISH = registerFood("obsidian_fish", builder -> builder.food(ModFoodProperties.noEffectProperties(2, 0.4f)).isFireResistant());
-    public static final DeferredItem<BaseFoodItem> FLASHFIN_KOI = registerFood("flashfin_koi", builder -> builder.food(ModFoodProperties.noEffectProperties(2, 0.4f)).isFireResistant());
+    public static final DeferredItem<BaseFoodItem> OBSIDIAN_FISH = registerFood("obsidian_fish", builder -> builder.food(ModFoodProperties.noEffectProperties(2, 0.4f)).duration(d -> 15).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT).isFireResistant());
+    public static final DeferredItem<BaseFoodItem> FLASHFIN_KOI = registerFood("flashfin_koi", builder -> builder.food(ModFoodProperties.noEffectProperties(2, 0.4f)).duration(d -> 15).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT).isFireResistant());
     public static final DeferredItem<BaseFoodItem> HONEYFIN = registerFood("honeyfin", builder -> builder.food(new FoodProperties(1, 1, true, 1, Optional.empty(), Collections.singletonList(new FoodProperties.PossibleEffect(() -> new MobEffectInstance(ModEffects.POTION_SICKNESS, 1200), 1.0F)))).setFinishUsingCallback((k, v, s) -> {
         if (!s.level().isClientSide) s.heal(24);
     }));
@@ -174,8 +174,8 @@ public class FoodItems {
     public static final DeferredItem<BaseFoodItem> DONGDONGS_FLATBREAD = registerToolTipFood("dongdongs_flatbread", builder -> builder.food(ModFoodProperties.hasEffectProperties(5, 0.2f, EffectData.of(ModEffects.EXQUISITELY_STUFFED, 3000))).eatingSound(s -> SoundEvents.GENERIC_EAT).duration(d -> 15).useAnim(u -> UseAnim.EAT), 1, ChatFormatting.GRAY);
     public static final DeferredItem<BaseFoodItem> PIGLIN_STEW = registerToolTipFood("piglin_stew", builder -> builder.food(ModFoodProperties.hasEffectProperties(20, 80.0f, EffectData.of(MobEffects.DAMAGE_RESISTANCE, 1200, 4))).eatingSound(s -> SoundEvents.GENERIC_EAT).duration(d -> 15).useAnim(u -> UseAnim.EAT), 1, ChatFormatting.GRAY);
     //节日特有
-    public static final DeferredItem<BaseFoodItem> ZONGZI = registerFood("zongzi", builder -> builder.food(ModFoodProperties.WellFedProperties(6000, 4, 1.5f)).isFireResistant());
-    public static final DeferredItem<BaseFoodItem> MEAT_STUFFED_ZONGZI = registerFood("meat_stuffed_zongzi", builder -> builder.food(ModFoodProperties.WellFedProperties(6000, 5, 3f)).isFireResistant());
+    public static final DeferredItem<BaseFoodItem> ZONGZI = registerFood("zongzi", builder -> builder.food(ModFoodProperties.WellFedProperties(6000, 4, 1.5f)).duration(d -> 15).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT).isFireResistant());
+    public static final DeferredItem<BaseFoodItem> MEAT_STUFFED_ZONGZI = registerFood("meat_stuffed_zongzi", builder -> builder.food(ModFoodProperties.WellFedProperties(6000, 5, 3f)).duration(d -> 15).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT).isFireResistant());
 
     public static final DeferredItem<BaseFoodItem> HONEY_MOONCAKES = registerFood("honey_mooncakes", builder -> builder.food(ModFoodProperties.PlentySatisfiedProperties(6000, 6, 3.5f)).duration(d -> 15).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT).isFireResistant());
     public static final DeferredItem<BaseFoodItem> HONEY_MOONCAKES_CHUNKS = registerFood("honey_mooncakes_chunks", builder -> builder.food(ModFoodProperties.noEffectProperties(1, 0.75f)).duration(d -> 15).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT).isFireResistant());

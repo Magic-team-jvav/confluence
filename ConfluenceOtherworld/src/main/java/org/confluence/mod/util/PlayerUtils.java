@@ -32,6 +32,7 @@ import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.util.TCUtils;
 import org.confluence.terraentity.entity.ai.Boss;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.IntFunction;
 import java.util.function.IntSupplier;
@@ -197,16 +198,13 @@ public final class PlayerUtils {
     public static int[] getCoins(Player player) {
         ExtraInventory extraInventory = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
         int[] coins = new int[SIZE_COINS];
+        List<ItemStack> haves = new ArrayList<>(player.getInventory().items);
         for (int i = 0; i < SIZE_COINS; i++) {
             ItemStack stack = extraInventory.getCoins(i);
-            if (!stack.isEmpty() && stack.is(ModTags.Items.COINS)) {
-                int index = COIN_2_INDEX.applyAsInt(stack.getItem());
-                if (index != -1) {
-                    coins[index] += stack.getCount();
-                }
-            }
+            haves.add(stack);
         }
-        for (ItemStack stack : player.getInventory().items) {
+        haves.addAll(player.getData(ModAttachmentTypes.PIGGY_BANK).getItems());
+        for (ItemStack stack : haves) {
             if (!stack.isEmpty() && stack.is(ModTags.Items.COINS)) {
                 int index = COIN_2_INDEX.applyAsInt(stack.getItem());
                 if (index != -1) {
@@ -233,7 +231,9 @@ public final class PlayerUtils {
     public static boolean tryCostMoney(long have, Player player, long cost) {
         if (have < cost) return false;
 
-        for (ItemStack itemStack : player.getInventory().items) {
+        List<ItemStack> stacks = new ArrayList<>(player.getInventory().items);
+        stacks.addAll(player.getData(ModAttachmentTypes.PIGGY_BANK).getItems());
+        for (ItemStack itemStack : stacks) {
             if (!itemStack.isEmpty() && itemStack.is(ModTags.Items.COINS)) {
                 itemStack.setCount(0);
             }

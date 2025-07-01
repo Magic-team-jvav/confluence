@@ -4,7 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.datafixers.DSL;
 import net.blay09.mods.waystones.api.WaystonesAPI;
-import net.blay09.mods.waystones.block.WaystoneBlock;
 import net.blay09.mods.waystones.requirement.NoRequirement;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -22,7 +21,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.IEventBus;
@@ -147,7 +145,7 @@ public class WaystonesHelper {
         event.registerBlockEntityRenderer(PYLON_ENTITY.get(), context -> new GeoBlockRenderer<>(new PylonModel()) {
             @Override
             public void defaultRender(PoseStack poseStack, PylonBlock.Entity animatable, MultiBufferSource bufferSource, @Nullable RenderType renderType, @Nullable VertexConsumer buffer, float yaw, float partialTick, int packedLight) {
-                if (animatable.getBlockState().getValue(WaystoneBlock.HALF) == DoubleBlockHalf.LOWER) {
+                if (animatable.isBase) {
                     super.defaultRender(poseStack, animatable, bufferSource, renderType, buffer, yaw, partialTick, packedLight);
                 }
             }

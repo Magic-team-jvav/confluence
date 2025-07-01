@@ -79,6 +79,7 @@ public class FunctionalBlocks {
     public static final DeferredBlock<SharpeningStationBlock> SHARPENING_STATION = registerWithItem("sharpening_station", () -> new SharpeningStationBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STONECUTTER)), block -> new TooltipBlockItem(block, new Item.Properties(), ModRarity.BLUE, "tooltip.item.confluence.sharpening_station.0"));
     public static final DeferredBlock<AmmoBoxBlock> AMMO_BOX = registerWithItem("ammo_box", () -> new AmmoBoxBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CHEST)), block -> new TooltipBlockItem(block, new Item.Properties(), ModRarity.LIGHT_PURPLE, "tooltip.item.confluence.ammo_box.0"));
     public static final DeferredBlock<BewitchingTableBlock> BEWITCHING_TABLE = registerWithItem("bewitching_table", () -> new BewitchingTableBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ENCHANTING_TABLE).lightLevel(state -> 0)), block -> new TooltipBlockItem(block, new Item.Properties(), ModRarity.BLUE, "tooltip.item.confluence.bewitching_table.0"));
+    public static final Supplier<BlockEntityType<BewitchingTableBlock.Entity>> BEWITCHING_TABLE_ENTITY = BLOCK_ENTITIES.register("bewitching_table_entity", () -> BlockEntityType.Builder.of(BewitchingTableBlock.Entity::new, BEWITCHING_TABLE.get()).build(DSL.remainderType()));
     public static final DeferredBlock<KegBlock> KEG = registerWithItem("keg", () -> new KegBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BARREL)), block -> new TooltipBlockItem(block, new Item.Properties(), ModRarity.WHITE, "tooltip.item.confluence.keg.0"));
     public static final DeferredBlock<CrystalBallBlock> CRYSTAL_BALL = registerWithItem("crystal_ball", () -> new CrystalBallBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BEACON)), block -> new BlockItem(block, new Item.Properties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.ORANGE)));
     public static final DeferredBlock<HardmodeAnvilBlock> MYTHRIL_ANVIL = registerWithItem("mythril_anvil", () -> new HardmodeAnvilBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ANVIL)), block -> new TooltipBlockItem(block, new Item.Properties(), ModRarity.ORANGE, "tooltip.item.confluence.hardmode_anvil.0"));
@@ -163,7 +164,7 @@ public class FunctionalBlocks {
 
     public static final DeferredBlock<TreeHolesBlock> TREE_HOLES_BLOCK = registerWithItem("tree_holes", () -> new TreeHolesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BARREL)));
     public static final Supplier<BlockEntityType<TreeHolesBlock.Entity>> TREE_HOLES_ENTITY = BLOCK_ENTITIES.register("tree_holes", () -> BlockEntityType.Builder.of(TreeHolesBlock.Entity::new, TREE_HOLES_BLOCK.get()).build(DSL.remainderType()));
-    public static final DeferredBlock<MagicMailBox>  MAGIC_MAIL_BOX = registerWithItem("magic_mail_box", MagicMailBox::new);
+    public static final DeferredBlock<MagicMailBox> MAGIC_MAIL_BOX = registerWithItem("magic_mail_box", MagicMailBox::new);
 
     private static <B extends Block> DeferredBlock<B> registerWithItem(String id, Supplier<B> block) {
         DeferredBlock<B> object = BLOCKS.register(id, block);

@@ -22,7 +22,7 @@ import org.confluence.lib.common.block.HorizontalDirectionalWithHorizontalTwoPar
 import org.confluence.lib.common.block.StateProperties;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipBlockItem;
-import org.confluence.mod.client.model.block.ExtractinatorBlockModel;
+import org.confluence.mod.client.renderer.block.ExtractinatorBlockRenderer;
 import org.confluence.mod.client.renderer.item.SimpleGeoItemRenderer;
 import org.confluence.mod.common.data.map.ExtractinatorData;
 import org.confluence.mod.common.init.ModDataMaps;
@@ -53,8 +53,8 @@ public class ExtractinatorBlock extends HorizontalDirectionalWithHorizontalTwoPa
     private static final VoxelShape[] BASE_SHAPES = new VoxelShape[]{BASE_SHAPE_SOUTH, BASE_SHAPE_WEST, BASE_SHAPE_NORTH, BASE_SHAPE_EAST};
     private static final VoxelShape[] RIGHT_SHAPES = new VoxelShape[]{RIGHT_SHAPE_SOUTH, RIGHT_SHAPE_WEST, RIGHT_SHAPE_NORTH, RIGHT_SHAPE_EAST};
 
-    public ExtractinatorBlock(Properties pProperties) {
-        super(pProperties);
+    public ExtractinatorBlock(Properties properties) {
+        super(properties);
     }
 
     @Override
@@ -63,15 +63,15 @@ public class ExtractinatorBlock extends HorizontalDirectionalWithHorizontalTwoPa
     }
 
     @Override
-    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        int index = pState.getValue(FACING).get2DDataValue();
-        return pState.getValue(StateProperties.HORIZONTAL_TWO_PART).isBase() ? BASE_SHAPES[index] : RIGHT_SHAPES[index];
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        int index = state.getValue(FACING).get2DDataValue();
+        return state.getValue(StateProperties.HORIZONTAL_TWO_PART).isBase() ? BASE_SHAPES[index] : RIGHT_SHAPES[index];
     }
 
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return new Entity(pPos, pState);
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new Entity(pos, state);
     }
 
     @Override
@@ -94,9 +94,11 @@ public class ExtractinatorBlock extends HorizontalDirectionalWithHorizontalTwoPa
 
     public static class Entity extends BlockEntity implements GeoBlockEntity {
         private final AnimatableInstanceCache CACHE = GeckoLibUtil.createInstanceCache(this);
+        public final boolean isBase;
 
-        public Entity(BlockPos pPos, BlockState pBlockState) {
-            super(FunctionalBlocks.EXTRACTINATOR_ENTITY.get(), pPos, pBlockState);
+        public Entity(BlockPos pos, BlockState blockState) {
+            super(FunctionalBlocks.EXTRACTINATOR_ENTITY.get(), pos, blockState);
+            this.isBase = blockState.getValue(StateProperties.HORIZONTAL_TWO_PART).isBase();
         }
 
         @Override
@@ -115,13 +117,13 @@ public class ExtractinatorBlock extends HorizontalDirectionalWithHorizontalTwoPa
     public static class Item extends TooltipBlockItem implements GeoItem {
         private final AnimatableInstanceCache CACHE = GeckoLibUtil.createInstanceCache(this);
 
-        public Item(ExtractinatorBlock pBlock) {
-            super(pBlock, new Properties(), ModRarity.WHITE, "tooltip.item.confluence.extractinator.0");
+        public Item(ExtractinatorBlock block) {
+            super(block, new Properties(), ModRarity.WHITE, "tooltip.item.confluence.extractinator.0");
         }
 
         @Override
         public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
-            consumer.accept(new SimpleGeoItemRenderer<>(ExtractinatorBlockModel.MODEL, ExtractinatorBlockModel.TEXTURE, ExtractinatorBlockModel.ANIMATION));
+            consumer.accept(new SimpleGeoItemRenderer<>(ExtractinatorBlockRenderer.MODEL, ExtractinatorBlockRenderer.TEXTURE, ExtractinatorBlockRenderer.ANIMATION));
         }
 
         @Override

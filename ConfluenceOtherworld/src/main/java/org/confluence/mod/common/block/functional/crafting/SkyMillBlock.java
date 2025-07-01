@@ -29,7 +29,7 @@ import net.neoforged.neoforge.fluids.FluidType;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipBlockItem;
 import org.confluence.lib.common.recipe.EnvironmentLevelAccess;
-import org.confluence.mod.client.model.block.SkyMillBlockModel;
+import org.confluence.mod.client.renderer.block.SkyMillBlockRenderer;
 import org.confluence.mod.client.renderer.item.SimpleGeoItemRenderer;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
@@ -129,7 +129,7 @@ public class SkyMillBlock extends HorizontalDirectionalBlock implements EntityBl
 
         @Override
         public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
-            consumer.accept(new SimpleGeoItemRenderer<>(SkyMillBlockModel.MODEL, SkyMillBlockModel.TEXTURE, SkyMillBlockModel.ANIMATION));
+            consumer.accept(new SimpleGeoItemRenderer<>(SkyMillBlockRenderer.MODEL, SkyMillBlockRenderer.TEXTURE, SkyMillBlockRenderer.ANIMATION));
         }
 
         @Override

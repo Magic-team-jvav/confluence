@@ -13,6 +13,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
@@ -58,10 +59,12 @@ public class PylonBlock extends WaystoneBlock {
     public static class Entity extends WaystoneBlockEntity implements GeoBlockEntity {
         private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
         private final ResourceLocation waystoneType;
+        public final boolean isBase;
 
         public Entity(BlockPos blockPos, BlockState blockState) {
             super(blockPos, blockState);
             this.waystoneType = BuiltInRegistries.BLOCK.getKey(blockState.getBlock());
+            this.isBase = blockState.getValue(WaystoneBlock.HALF) == DoubleBlockHalf.LOWER;
         }
 
         @Override

@@ -16,7 +16,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.common.block.HorizontalDirectionalWithVerticalFourPartBlock;
-import org.confluence.lib.common.block.StateProperties;
 import org.confluence.mod.common.menu.AlchemyTableMenu;
 import org.jetbrains.annotations.Nullable;
 
@@ -70,7 +69,7 @@ public class AlchemyTableBlock extends HorizontalDirectionalWithVerticalFourPart
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         int index = pState.getValue(FACING).get2DDataValue();
-        return switch (pState.getValue(StateProperties.VERTICAL_FOUR_PART)) {
+        return switch (pState.getValue(PART)) {
             case BASE -> BASE_SHAPES[index];
             case RIGHT -> RIGHT_SHAPES[index];
             case UP -> UP_SHAPES[index];

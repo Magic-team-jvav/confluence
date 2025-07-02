@@ -44,7 +44,7 @@ import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.common.worldgen.structure.DungeonStructure;
 import org.confluence.mod.integration.terra_entity.IAbstractTerraNPC;
 import org.confluence.mod.mixin.integration.terra_entity.AnglerNPCMixin;
-import org.confluence.mod.util.ModUtils;
+import org.confluence.mod.util.OverworldUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_guns.common.init.TGTags;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
@@ -226,7 +226,7 @@ public class NPCSpawner implements IGlobalData {
 
     public void trySpawnGuide(ServerPlayer serverPlayer) {
         ServerLevel serverLevel = serverPlayer.serverLevel();
-        if (serverLevel.dimension() == ModUtils.dimension()) {
+        if (serverLevel.dimension() == OverworldUtils.dimension()) {
             BlockPos pos = getNpcSpawnPos(serverPlayer);
             if (!hasNPCAlive(new Region(pos), TENpcEntities.GUIDE.get())) {
                 spawnAtPos(serverLevel, pos, TENpcEntities.GUIDE.get());

@@ -26,7 +26,7 @@ import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.util.AchievementUtils;
-import org.confluence.mod.util.ModUtils;
+import org.confluence.mod.util.OverworldUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terraentity.entity.boss.EyeOfCthulhu;
 import org.confluence.terraentity.init.entity.TEBossEntities;
@@ -37,7 +37,7 @@ public final class TickEvents {
     public static void levelTick$Post(LevelTickEvent.Post event) {
         if (!(event.getLevel() instanceof ServerLevel serverLevel)) return;
         PathService.INSTANCE.pathFindingTick();
-        if (serverLevel.dimension() != ModUtils.dimension()) return;
+        if (serverLevel.dimension() != OverworldUtils.dimension()) return;
         FallingStarItemEntity.summon(serverLevel);
         MeteoriteTracker.INSTANCE.tick(serverLevel);
         BossDelaySpawner.INSTANCE.tick(serverLevel);

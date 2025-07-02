@@ -1,5 +1,6 @@
 package org.confluence.mod.util;
 
+import com.google.common.collect.Iterables;
 import com.xiaohunao.equipment_benediction.common.hook.HookMapManager;
 import com.xiaohunao.heaven_destiny_moment.common.moment.MomentInstanceManager;
 import com.xiaohunao.terra_moment.common.init.TMMoments;
@@ -196,15 +197,8 @@ public final class PlayerUtils {
     }
 
     public static int[] getCoins(Player player) {
-        ExtraInventory extraInventory = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
         int[] coins = new int[SIZE_COINS];
-        List<ItemStack> haves = new ArrayList<>(player.getInventory().items);
-        for (int i = 0; i < SIZE_COINS; i++) {
-            ItemStack stack = extraInventory.getCoins(i);
-            haves.add(stack);
-        }
-        haves.addAll(player.getData(ModAttachmentTypes.PIGGY_BANK).getItems());
-        for (ItemStack stack : haves) {
+        for (ItemStack stack : Iterables.concat(player.getInventory().items, player.getData(ModAttachmentTypes.PIGGY_BANK).getItems(), player.getData(ModAttachmentTypes.EXTRA_INVENTORY).getCoins())) {
             if (!stack.isEmpty() && stack.is(ModTags.Items.COINS)) {
                 int index = COIN_2_INDEX.applyAsInt(stack.getItem());
                 if (index != -1) {
@@ -240,8 +234,8 @@ public final class PlayerUtils {
         }
 
         ExtraInventory extraInventory = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
-        for (int i = 0; i < SIZE_COINS; i++) {
-            extraInventory.getCoins(i).setCount(0);
+        for (int i = COINS_START; i < COINS_START + SIZE_COINS; i++) {
+            extraInventory.setItem(i, ItemStack.EMPTY);
         }
         int[] coins = decodeCoin(have - cost);
 

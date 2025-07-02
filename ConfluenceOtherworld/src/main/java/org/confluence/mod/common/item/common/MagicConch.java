@@ -25,7 +25,7 @@ import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.network.c2s.ApplySelectionPacketC2S;
 import org.confluence.mod.network.s2c.OpenSelectionsScreenPacketS2C;
-import org.confluence.mod.util.ModUtils;
+import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -104,7 +104,7 @@ public class MagicConch extends CustomRarityItem implements ApplySelectionPacket
     protected boolean checkAvailable(UseOnContext pContext) {
         Level level = pContext.getLevel();
         Holder<Biome> biome = level.getBiome(pContext.getClickedPos());
-        return pContext.getClickedFace() == Direction.UP && level.dimension() == ModUtils.dimension() &&
+        return pContext.getClickedFace() == Direction.UP && level.dimension() == OverworldUtils.dimension() &&
                 (biome.is(BiomeTags.IS_OCEAN) || biome.is(BiomeTags.IS_BEACH) || biome.is(Tags.Biomes.IS_STONY_SHORES));
     }
 

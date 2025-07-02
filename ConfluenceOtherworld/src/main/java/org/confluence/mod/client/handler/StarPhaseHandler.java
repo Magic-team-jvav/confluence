@@ -14,7 +14,7 @@ import net.minecraft.util.Mth;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.StarPhase;
-import org.confluence.mod.util.ModUtils;
+import org.confluence.mod.util.OverworldUtils;
 import org.joml.Matrix4f;
 
 import java.util.ArrayList;
@@ -47,7 +47,7 @@ public final class StarPhaseHandler {
 
         Minecraft minecraft = Minecraft.getInstance();
         ClientLevel level = minecraft.level;
-        if (level == null || level.dimension() != ModUtils.dimension()) return;
+        if (level == null || level.dimension() != OverworldUtils.dimension()) return;
         Tesselator tesselator = Tesselator.getInstance();
         PoseStack poseStack = new PoseStack();
         poseStack.mulPose(event.getModelViewMatrix());

@@ -84,14 +84,26 @@ public class ExtraInventory extends ItemStackHandler implements Container {
         return getItem(index);
     }
 
+    public List<ItemStack> getVanityArmor() {
+        return stacks.subList(0, SIZE_VANITY_ARMOR);
+    }
+
     public ItemStack getCoins(int index) {
         validateIndex(index, SIZE_COINS);
         return getItem(COINS_START + index);
     }
 
+    public List<ItemStack> getCoins() {
+        return stacks.subList(COINS_START, COINS_START + SIZE_COINS);
+    }
+
     public ItemStack getAmmo(int index) {
         validateIndex(index, SIZE_AMMO);
         return getItem(AMMO_START + index);
+    }
+
+    public List<ItemStack> getAmmo() {
+        return stacks.subList(AMMO_START, AMMO_START + SIZE_AMMO);
     }
 
     public List<ItemStack> getAllAmmo() {
@@ -123,6 +135,10 @@ public class ExtraInventory extends ItemStackHandler implements Container {
         return getItem(DYE_START + index);
     }
 
+    public List<ItemStack> getVanityArmorDye() {
+        return stacks.subList(DYE_START, DYE_START + SIZE_VANITY_ARMOR);
+    }
+
     public ItemStack getPetDye() {
         return getItem(DYE_START + EQUIPMENT_START);
     }
@@ -144,7 +160,7 @@ public class ExtraInventory extends ItemStackHandler implements Container {
         return getItem(DYE_START + SIZE_DYE_EXCEPT_ACCESSORY_DYE + index);
     }
 
-    private void validateIndex(int index, int size) {
+    private static void validateIndex(int index, int size) {
         if (index < 0 || index >= size) {
             throw new RuntimeException("Slot " + index + " not in valid range - [0," + size + ")");
         }

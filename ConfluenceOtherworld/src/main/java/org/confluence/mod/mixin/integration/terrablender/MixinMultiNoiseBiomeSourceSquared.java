@@ -2,7 +2,6 @@ package org.confluence.mod.mixin.integration.terrablender;
 
 import com.bawnorton.mixinsquared.TargetHandler;
 import com.mojang.datafixers.util.Pair;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
@@ -20,10 +19,10 @@ import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.worldgen.BannedBiomeMultiNoiseBiomeSource;
-import org.confluence.mod.common.worldgen.secret_seed.NotTheBees;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IMultiNoiseBiomeSource;
 import org.confluence.mod.mixed.IWorldOptions;
+import org.confluence.mod.util.OverworldUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -48,41 +47,19 @@ public abstract class MixinMultiNoiseBiomeSourceSquared implements SelfGetter<Mu
     @TargetHandler(mixin = "terrablender.mixin.MixinMultiNoiseBiomeSource", name = "getNoiseBiome")
     @Inject(method = "@MixinSquared:Handler", at = @At("TAIL"))
     private void replaceBiome(int x, int y, int z, Climate.Sampler sampler, CallbackInfoReturnable<Holder<Biome>> cir, CallbackInfo ci) {
-        Holder<Biome> replaced = cir.getReturnValue();
-        if (replaced != null) {
-            if (ModSecretSeeds.NOT_THE_BEES.match()) {
-                List<Holder<Biome>> jungle = confluence$getJungle();
-                if (!jungle.isEmpty()) {
-                    replaced = NotTheBees.replaceBiome(x, y, z, replaced, jungle);
-                }
-            } else {
-                Pair<Holder<Biome>, Holder<Biome>> pair = confluence$getBiomePair();
-                if (pair != null && replaced == pair.getFirst()) {
-                    replaced = pair.getSecond();
-                }
+        OverworldUtils.replaceBiome(confluence$self(), x, y, z, cir, () -> {
+            if (confluence$jungle == null) {
+                this.confluence$jungle = new ArrayList<>();
+                Set<Holder<Biome>> set = confluence$self().possibleBiomes().stream().filter(holder -> holder.is(Tags.Biomes.IS_JUNGLE)).collect(Collectors.toSet());
+                confluence$jungle.addAll(set);
             }
-            MinecraftServer currentServer = ServerLifecycleHooks.getCurrentServer();
-            if (currentServer != null && (replaced.is(ModBiomes.THE_CORRUPTION) || replaced.is(ModBiomes.THE_CRIMSON))) {
-                BlockPos spawnPos = currentServer.getWorldData().overworldData().getSpawnPos();
-                if (Math.abs((spawnPos.getX() >> 2) - x) <= 50 || Math.abs((spawnPos.getZ() >> 2) - z) <= 50) {
-                    if (confluence$protection == null) {
-                        this.confluence$protection = currentServer.registryAccess().holderOrThrow(Biomes.PLAINS);
-                    }
-                    replaced = confluence$protection;
-                }
+            return confluence$jungle;
+        }, this::confluence$getBiomePair, registryAccess -> {
+            if (confluence$protection == null) {
+                this.confluence$protection = registryAccess.holderOrThrow(Biomes.PLAINS);
             }
-            cir.setReturnValue(replaced);
-        }
-    }
-
-    @Unique
-    private List<Holder<Biome>> confluence$getJungle() {
-        if (confluence$jungle == null) {
-            this.confluence$jungle = new ArrayList<>();
-            Set<Holder<Biome>> set = confluence$self().possibleBiomes().stream().filter(holder -> holder.is(Tags.Biomes.IS_JUNGLE)).collect(Collectors.toSet());
-            confluence$jungle.addAll(set);
-        }
-        return confluence$jungle;
+            return confluence$protection;
+        });
     }
 
     @Override

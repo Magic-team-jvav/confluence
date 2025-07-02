@@ -363,7 +363,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
         Item item;
         if (this == UNDERGROUND_DESERT_POT.get()) {
             item = ConsumableItems.SCARAB_BOMB.get();
-        } else if (level.dimension() == Level.OVERWORLD) {
+        } else if (level.dimension() == ModUtils.dimension()) {
             item = ConsumableItems.BOMB.get();
         } else {
             return dropRope(level, blockPos, center);

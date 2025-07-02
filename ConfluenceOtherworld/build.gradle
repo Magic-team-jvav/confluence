@@ -375,3 +375,8 @@ tasks.register("genVoilaRun") {
 jar {
     exclude 'org/confluence/mod/common/data/gen'
 }
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allJava
+    archiveClassifier = 'sources'
+}

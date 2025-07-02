@@ -247,4 +247,8 @@ public final class ModUtils {
         }
         return supportedItem;
     }
+
+    public static ResourceKey<Level> dimension() {
+        return Level.OVERWORLD;
+    }
 }

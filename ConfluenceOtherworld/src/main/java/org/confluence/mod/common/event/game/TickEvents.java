@@ -8,7 +8,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameRules;
-import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
@@ -27,6 +26,7 @@ import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.util.AchievementUtils;
+import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terraentity.entity.boss.EyeOfCthulhu;
 import org.confluence.terraentity.init.entity.TEBossEntities;
@@ -37,7 +37,7 @@ public final class TickEvents {
     public static void levelTick$Post(LevelTickEvent.Post event) {
         if (!(event.getLevel() instanceof ServerLevel serverLevel)) return;
         PathService.INSTANCE.pathFindingTick();
-        if (serverLevel.dimension() != Level.OVERWORLD) return;
+        if (serverLevel.dimension() != ModUtils.dimension()) return;
         FallingStarItemEntity.summon(serverLevel);
         MeteoriteTracker.INSTANCE.tick(serverLevel);
         BossDelaySpawner.INSTANCE.tick(serverLevel);

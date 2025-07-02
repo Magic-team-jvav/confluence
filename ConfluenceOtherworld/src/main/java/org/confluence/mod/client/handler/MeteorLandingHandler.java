@@ -10,12 +10,12 @@ import net.minecraft.core.GlobalPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.network.s2c.MeteoriteLocationPacketS2C;
+import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 
@@ -58,7 +58,7 @@ public final class MeteorLandingHandler {
     }
 
     public static void handlePacket(MeteoriteLocationPacketS2C packet, Player player) {
-        globalPos = GlobalPos.of(Level.OVERWORLD, packet.location());
+        globalPos = GlobalPos.of(ModUtils.dimension(), packet.location());
         if (packet.tickUntilLanding() <= 0) {
             location = null;
             tickUntilLanding = 0;
@@ -87,7 +87,7 @@ public final class MeteorLandingHandler {
         if (location == null || vector == null) return;
         Minecraft minecraft = Minecraft.getInstance();
         LocalPlayer player = minecraft.player;
-        if (player == null || player.level().dimension() != Level.OVERWORLD) return;
+        if (player == null || player.level().dimension() != ModUtils.dimension()) return;
         if (distance < event.getLevelRenderer().getLastViewDistance()) return;
         float partialTick = minecraft.getTimer().getGameTimeDeltaPartialTick(false);
         Tesselator tesselator = Tesselator.getInstance();

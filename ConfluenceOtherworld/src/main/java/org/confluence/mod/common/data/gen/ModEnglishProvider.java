@@ -307,6 +307,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.philosophers_stone.0", "Reduces healing potion cooldown");
         add("tooltip.item.confluence.charm_of_myths.0", "Provides health regeneration, reduces healing potion cooldown");
         add("tooltip.item.confluence.mechanical_lens.0", "Gives enhanced wiring vision");
+        add("tooltip.item.terra_curio.mechanical_lens.1", "Right-click in the backpack to toggle on/off.");
         add("tooltip.item.confluence.high_test_fishing_line.0", "Fishing line will never break");
         add("tooltip.item.confluence.angler_earring.0", "Increases fishing power");
         add("tooltip.item.confluence.fishing_bobber.0", "Increases fishing power");
@@ -328,6 +329,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.coin_ring.0", "Hitting enemies may drop extra coins, increases coin pickup range");
         add("tooltip.item.confluence.greedy_ring.0", "Hitting enemies may drop extra coins, increases coin pickup range, reduces shop prices by 20%");
         add("tooltip.item.confluence.spectre_goggles.0", "Provides ghost vision to interact with echo blocks");
+        add("tooltip.item.terra_curio.spectre_goggles.1", "Right-click in the backpack to toggle on/off.");
         add("tooltip.item.confluence.guide_to_plant_fiber_cordage.0", "Allows the collection of Vine Rope from vines");
         add("tooltip.item.confluence.fledgling_wings.0", "Allows flight and slow fall");
         add("tooltip.item.confluence.chromatic_cloak.0", "Immunity to Shimmer Phasing.Hold Shift to Phase while submerged in Shimmer");

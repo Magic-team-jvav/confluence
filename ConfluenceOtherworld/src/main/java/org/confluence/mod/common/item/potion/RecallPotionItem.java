@@ -25,6 +25,7 @@ public class RecallPotionItem extends AbstractPotionItem {
             if (serverPlayer.getVehicle() != null) {
                 serverPlayer.removeVehicle();
             }
+            serverPlayer.getCooldowns().addCooldown(this, 5);
             serverPlayer.changeDimension(serverPlayer.findRespawnPositionAndUseSpawnBlock(true, DimensionTransition.DO_NOTHING));
         }
         living.playSound(TCSoundEvents.TRANSMISSION.get());

@@ -40,7 +40,7 @@ import org.confluence.mod.common.effect.beneficial.LuckEffect;
 import org.confluence.mod.common.effect.flask.FlaskEffect;
 import org.confluence.mod.common.effect.harmful.ManaSicknessEffect;
 import org.confluence.mod.common.effect.neutral.LoveEffect;
-import org.confluence.mod.common.entity.projectile.boulder.TombstoneBoulder;
+import org.confluence.mod.common.entity.projectile.boulder.TombstoneBoulderEntity;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
@@ -94,7 +94,7 @@ public final class LivingEntityEvents {
             }
             if (living instanceof ServerPlayer serverPlayer) {
                 PlayerUtils.dropMoney(serverPlayer);
-                TombstoneBoulder.createTombstone(serverPlayer);
+                TombstoneBoulderEntity.createTombstone(serverPlayer);
             }
             if (living.getRandom().nextFloat() < 0.011F) {
                 Item holidayGift = DateUtils.getHolidayGift(living.getRandom());

@@ -23,17 +23,17 @@ import org.confluence.mod.util.PlayerUtils;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class TombstoneBoulder extends BoulderEntity {
+public class TombstoneBoulderEntity extends BoulderEntity {
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private SignText text = new SignText();
 
-    public TombstoneBoulder(EntityType<TombstoneBoulder> entityType, Level pLevel) {
+    public TombstoneBoulderEntity(EntityType<TombstoneBoulderEntity> entityType, Level pLevel) {
         super(entityType, pLevel);
         this.minimumBreakSpeed = 0.1;
         this.speed = 0.2;
     }
 
-    public TombstoneBoulder(Level level, Vec3 pos, BlockState blockState) {
+    public TombstoneBoulderEntity(Level level, Vec3 pos, BlockState blockState) {
         super(ModEntities.TOMBSTONE_BOULDER.get(), level, pos, blockState);
         this.minimumBreakSpeed = 0.1;
         this.speed = 0.2;
@@ -58,15 +58,15 @@ public class TombstoneBoulder extends BoulderEntity {
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundTag pCompound) {
-        super.addAdditionalSaveData(pCompound);
-        pCompound.put("text", SignText.DIRECT_CODEC.encodeStart(NbtOps.INSTANCE, text).getOrThrow());
+    protected void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.put("text", SignText.DIRECT_CODEC.encodeStart(NbtOps.INSTANCE, text).getOrThrow());
     }
 
     @Override
-    protected void readAdditionalSaveData(CompoundTag pCompound) {
-        super.readAdditionalSaveData(pCompound);
-        this.text = SignText.DIRECT_CODEC.parse(NbtOps.INSTANCE, pCompound.get("text")).getOrThrow();
+    protected void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        this.text = SignText.DIRECT_CODEC.parse(NbtOps.INSTANCE, tag.get("text")).getOrThrow();
     }
 
     public static void createTombstone(ServerPlayer serverPlayer) {
@@ -78,7 +78,7 @@ public class TombstoneBoulder extends BoulderEntity {
                     .toArray(BlockState[]::new), serverPlayer.getRandom());
             Level level = serverPlayer.level();
             Vec3 position = serverPlayer.position();
-            TombstoneBoulder entity = new TombstoneBoulder(level, position, blockState);
+            TombstoneBoulderEntity entity = new TombstoneBoulderEntity(level, position, blockState);
             entity.text = entity.text
                     .setMessage(0, serverPlayer.getCombatTracker().getDeathMessage())
                     .setMessage(1, Component.literal(DATE_FORMAT.format(Calendar.getInstance().getTime())));

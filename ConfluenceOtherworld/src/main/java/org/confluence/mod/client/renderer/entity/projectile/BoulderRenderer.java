@@ -27,13 +27,18 @@ public class BoulderRenderer extends EntityRenderer<BoulderEntity> {
     }
 
     @Override
-    public void render(BoulderEntity pEntity, float pEntityYaw, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) {
-        pPoseStack.pushPose();
-        pPoseStack.mulPose(Axis.YP.rotationDegrees(pEntity.getYRot() - 90.0F));
-        pPoseStack.translate(0.0F, 0.5F, 0.0F);
-        pPoseStack.mulPose(Axis.ZP.rotation(-Mth.lerp(pPartialTick, pEntity.rotateO, pEntity.rotate)));
-        pPoseStack.translate(-0.5F, -0.5F, -0.5F);
-        dispatcher.renderSingleBlock(pEntity.getBlockState(), pPoseStack, pBuffer, pPackedLight, OverlayTexture.NO_OVERLAY);
-        pPoseStack.popPose();
+    public void render(BoulderEntity entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+        poseStack.pushPose();
+        poseStack.mulPose(Axis.YP.rotationDegrees(entity.getYRot() - 90.0F));
+        float radius = entity.radius;
+        poseStack.translate(0, radius, 0);
+        poseStack.mulPose(Axis.ZP.rotation(-Mth.lerp(partialTick, entity.rotateO, entity.rotate)));
+        poseStack.translate(-radius, -radius, -radius);
+        if (radius != 0.5F) {
+            float scale = radius * 2;
+            poseStack.scale(scale, scale, scale);
+        }
+        dispatcher.renderSingleBlock(entity.getBlockState(), poseStack, bufferSource, packedLight, OverlayTexture.NO_OVERLAY);
+        poseStack.popPose();
     }
 }

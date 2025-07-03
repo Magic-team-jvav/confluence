@@ -96,13 +96,13 @@ public class BehaviourPressurePlateBlock extends BasePressurePlateBlock implemen
     }
 
     @Override
-    public void onExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {
-        behaviour.onExecute(pState, pLevel, pPos, pColor, pEntity);
+    public void onExecute(BlockState state, ServerLevel level, BlockPos pos, int color, INetworkEntity networkEntity) {
+        behaviour.onExecute(state, level, pos, color, networkEntity);
     }
 
     @Override
-    public void onUnExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {
-        behaviour.onUnExecute(pState, pLevel, pPos, pColor, pEntity);
+    public void onUnExecute(BlockState state, ServerLevel level, BlockPos pos, int color, INetworkEntity networkEntity) {
+        behaviour.onUnExecute(state, level, pos, color, networkEntity);
     }
 
     @Override

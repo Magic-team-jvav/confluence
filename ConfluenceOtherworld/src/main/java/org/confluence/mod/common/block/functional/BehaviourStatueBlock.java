@@ -1,5 +1,6 @@
 package org.confluence.mod.common.block.functional;
 
+import com.mojang.datafixers.util.Function3;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -35,7 +36,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -51,8 +51,7 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        super.createBlockStateDefinition(builder);
-        builder.add(StateProperties.DRIVE);
+        super.createBlockStateDefinition(builder.add(StateProperties.DRIVE));
     }
 
     @Override
@@ -75,15 +74,15 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
     }
 
     @Override
-    public void onExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {
-        behaviour.onExecute(pState, pLevel, pPos, pColor, pEntity);
-        execution(pState, pLevel, pPos, pColor, true);
+    public void onExecute(BlockState state, ServerLevel level, BlockPos pos, int color, INetworkEntity networkEntity) {
+        behaviour.onExecute(state, level, pos, color, networkEntity);
+        execution(state, level, pos, color, true);
     }
 
     @Override
-    public void onUnExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {
-        behaviour.onUnExecute(pState, pLevel, pPos, pColor, pEntity);
-        execution(pState, pLevel, pPos, pColor, false);
+    public void onUnExecute(BlockState state, ServerLevel level, BlockPos pos, int color, INetworkEntity networkEntity) {
+        behaviour.onUnExecute(state, level, pos, color, networkEntity);
+        execution(state, level, pos, color, false);
     }
 
     private void execution(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, boolean hasSignal) {
@@ -146,9 +145,9 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
             return new Entity(pos, state);
         }
 
-        public void onExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {}
+        public void onExecute(BlockState state, ServerLevel level, BlockPos pos, int color, INetworkEntity networkEntity) {}
 
-        public void onUnExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {}
+        public void onUnExecute(BlockState state, ServerLevel level, BlockPos pos, int color, INetworkEntity networkEntity) {}
 
         public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
             if (state.getValue(StateProperties.DRIVE)) {
@@ -178,22 +177,22 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
 
         private final boolean noDrops;
         private final int cooldown;
-        private final BiFunction<Level, Vec3, E> factory;
+        private final Function3<BlockState, Level, Vec3, E> factory;
         private final Consumer<E> afterSummon;
 
-        public SummonBehaviour(boolean noDrops, BiFunction<Level, Vec3, E> factory) {
+        public SummonBehaviour(boolean noDrops, Function3<BlockState, Level, Vec3, E> factory) {
             this(noDrops, 10, factory, entity -> {});
         }
 
-        public SummonBehaviour(boolean noDrops, BiFunction<Level, Vec3, E> factory, Consumer<E> afterSummon) {
+        public SummonBehaviour(boolean noDrops, Function3<BlockState, Level, Vec3, E> factory, Consumer<E> afterSummon) {
             this(noDrops, 10, factory, afterSummon);
         }
 
-        public SummonBehaviour(boolean noDrops, int cooldown, BiFunction<Level, Vec3, E> factory) {
+        public SummonBehaviour(boolean noDrops, int cooldown, Function3<BlockState, Level, Vec3, E> factory) {
             this(noDrops, cooldown, factory, entity -> {});
         }
 
-        public SummonBehaviour(boolean noDrops, int cooldown, BiFunction<Level, Vec3, E> factory, Consumer<E> afterSummon) {
+        public SummonBehaviour(boolean noDrops, int cooldown, Function3<BlockState, Level, Vec3, E> factory, Consumer<E> afterSummon) {
             this.noDrops = noDrops;
             this.cooldown = cooldown;
             this.factory = factory;
@@ -201,24 +200,24 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
         }
 
         @Override
-        public void onExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {
-            if (!pState.getValue(StateProperties.DRIVE) && pState.getValue(StateProperties.VERTICAL_TWO_PART).isBase()) {
+        public void onExecute(BlockState state, ServerLevel level, BlockPos pos, int color, INetworkEntity networkEntity) {
+            if (!state.getValue(StateProperties.DRIVE) && state.getValue(StateProperties.VERTICAL_TWO_PART).isBase()) {
                 entities.removeIf(entity -> {
-                    net.minecraft.world.entity.Entity entity1 = pLevel.getEntity(entity);
+                    net.minecraft.world.entity.Entity entity1 = level.getEntity(entity);
                     return entity1 == null || entity1.isRemoved();
                 });
                 if (entities.size() >= 3) return;
-                BlockPos relative = pPos.relative(Util.getRandom(LibUtils.HORIZONTAL, pLevel.random));
-                E entity = factory.apply(pLevel, relative.getCenter());
-                pLevel.addFreshEntity(entity);
+                BlockPos relative = pos.relative(Util.getRandom(LibUtils.HORIZONTAL, level.random));
+                E entity = factory.apply(state, level, relative.getCenter());
+                level.addFreshEntity(entity);
                 afterSummon.accept(entity);
                 if (noDrops) {
                     entity.addTag(LibUtils.NO_DROPS_TAG);
                 }
                 entities.add(entity.getUUID());
-                pLevel.setBlockAndUpdate(pPos, pState.setValue(StateProperties.DRIVE, true));
-                pLevel.scheduleTick(pPos, pState.getBlock(), cooldown);
-                pEntity.getSelf().setChanged();
+                level.setBlockAndUpdate(pos, state.setValue(StateProperties.DRIVE, true));
+                level.scheduleTick(pos, state.getBlock(), cooldown);
+                networkEntity.getSelf().setChanged();
             }
         }
 

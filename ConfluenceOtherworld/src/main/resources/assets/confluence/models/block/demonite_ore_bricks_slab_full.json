@@ -1,0 +1,9 @@
+{
+  "parent": "block/cube_bottom_top",
+  "textures": {
+    "bottom": "confluence:block/demonite_ore_bricks",
+    "top": "confluence:block/demonite_ore_bricks",
+    "side": "confluence:block/demonite_ore_bricks"
+  },
+  "render_type": "solid"
+}

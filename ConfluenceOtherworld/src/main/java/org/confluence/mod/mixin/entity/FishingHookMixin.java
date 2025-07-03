@@ -22,13 +22,14 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.neoforged.neoforge.common.Tags;
 import org.confluence.lib.mixed.IExtraSyncedData;
 import org.confluence.lib.network.SetEntityDataPacketS2C;
-import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.ModTags;
@@ -36,6 +37,7 @@ import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.item.fishing.IBait;
 import org.confluence.mod.mixed.IFishingHook;
+import org.confluence.mod.util.AchievementUtils;
 import org.confluence.terra_curio.util.TCUtils;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -115,7 +117,7 @@ public abstract class FishingHookMixin implements IFishingHook, IExtraSyncedData
     @Inject(method = "tick", at = @At("TAIL"))
     private void achievement(CallbackInfo ci, @Share("isLavaHook") LocalBooleanRef isLavaHook) {
         if (!confluence$achievement && isLavaHook.get() && confluence$isInLava() && getPlayerOwner() instanceof ServerPlayer serverPlayer) {
-            ModAchievements.awardAchievement(serverPlayer, "hot_reels");
+            AchievementUtils.awardAchievement(serverPlayer, "hot_reels");
             this.confluence$achievement = true;
         }
     }
@@ -203,7 +205,9 @@ public abstract class FishingHookMixin implements IFishingHook, IExtraSyncedData
 
     @ModifyArg(method = "retrieve", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/ReloadableServerRegistries$Holder;getLootTable(Lnet/minecraft/resources/ResourceKey;)Lnet/minecraft/world/level/storage/loot/LootTable;"))
     private ResourceKey<LootTable> modifyLoot(ResourceKey<LootTable> lootTableKey) {
-        if (confluence$isInLava()) return ModLootTables.FISHING_LAVA;
+        FluidState fluidState = confluence$self().getInBlockState().getFluidState();
+        if (fluidState.is(FluidTags.LAVA)) return ModLootTables.FISHING_LAVA;
+        if (fluidState.is(Tags.Fluids.HONEY)) return ModLootTables.FISHING_HONEY;
         if (confluence$self().getType() == EntityType.FISHING_BOBBER) return lootTableKey;
         return ModLootTables.FISHING;
     }

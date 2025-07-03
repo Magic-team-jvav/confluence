@@ -1,8 +1,0 @@
-{
-  "parent": "block/cross",
-  "textures": {
-    "cross": "confluence:block/tr_crimson_cattails_head",
-    "particle": "confluence:block/tr_crimson_cattails_head"
-  },
-  "render_type": "cutout"
-}

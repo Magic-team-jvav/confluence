@@ -1,6 +1,7 @@
 package org.confluence.mod.integration.jade;
 
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import org.confluence.lib.common.block.ISimulatorBlock;
 import org.confluence.mod.common.block.common.TombstoneBlock;
@@ -10,6 +11,7 @@ import org.confluence.mod.common.block.functional.DeathChestBlock;
 import org.confluence.mod.common.block.functional.SignalPressurePlateBlock;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
+import org.confluence.mod.common.init.block.ChestBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.integration.create.ponder.PonderHelper;
 import snownee.jade.api.*;
@@ -37,13 +39,14 @@ public class ModJadePlugin implements IWailaPlugin {
             if (accessor instanceof BlockAccessor blockAccessor) {
                 Player player = accessor.getPlayer();
                 if (player.isCreative()) return accessor;
-                if (blockAccessor.getBlock() == FunctionalBlocks.OAK_LOG_BOULDER.get()) {
+                Block block = blockAccessor.getBlock();
+                if (block == FunctionalBlocks.OAK_LOG_BOULDER.get()) {
                     return registration.blockAccessor().from(blockAccessor).blockState(Blocks.OAK_LOG.defaultBlockState()).build();
-                }
-                if (blockAccessor.getBlock() instanceof ISimulatorBlock simulatorBlock) {
+                } else if (block == ChestBlocks.DEATH_WOODEN_CHEST.get()) {
+                    return registration.blockAccessor().from(blockAccessor).blockState(Blocks.CHEST.defaultBlockState()).build();
+                } else if (block instanceof ISimulatorBlock simulatorBlock) {
                     return registration.blockAccessor().from(blockAccessor).blockState(simulatorBlock.getSimulatedBlock(true)).build();
                 }
-
             } else if (accessor instanceof EntityAccessor entityAccessor) {
                 if (entityAccessor.getEntity() instanceof TreasureBagItemEntity entity && !entity.isOwner(accessor.getPlayer())) {
                     return null;

@@ -7,7 +7,7 @@
         "item": "confluence:amethyst_chain"
     },
     "addition": {
-        "item": "confluence:tr_amethyst_block"
+        "item": "confluence:amethyst_block"
     },
     "result": {
         "id": "confluence:amethyst_hook"

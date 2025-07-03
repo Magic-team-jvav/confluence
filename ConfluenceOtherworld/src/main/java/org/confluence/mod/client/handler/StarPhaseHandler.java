@@ -4,21 +4,21 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.datafixers.util.Either;
 import com.mojang.math.Axis;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.StarPhase;
+import org.confluence.mod.util.OverworldUtils;
 import org.joml.Matrix4f;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static org.confluence.mod.common.data.saved.ConfluenceData.STAR_PHASES_SIZE;
 
@@ -47,7 +47,7 @@ public final class StarPhaseHandler {
 
         Minecraft minecraft = Minecraft.getInstance();
         ClientLevel level = minecraft.level;
-        if (level == null || level.dimension() != Level.OVERWORLD) return;
+        if (level == null || level.dimension() != OverworldUtils.dimension()) return;
         Tesselator tesselator = Tesselator.getInstance();
         PoseStack poseStack = new PoseStack();
         poseStack.mulPose(event.getModelViewMatrix());
@@ -118,13 +118,12 @@ public final class StarPhaseHandler {
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
-    public static void handleStarPhases(Either<Map<Integer, StarPhase>, Map.Entry<Integer, StarPhase>> packet) {
+    public static void handleStarPhases(Either<Int2ObjectMap<StarPhase>, Int2ObjectMap.Entry<StarPhase>> packet) {
         packet.ifLeft(map -> {
             STAR_PHASES.clear();
             for (int i = 0; i < STAR_PHASES_SIZE; i++) {
                 STAR_PHASES.add(map.getOrDefault(i, StarPhase.DEFAULT));
             }
-        });
-        packet.ifRight(triple -> STAR_PHASES.set(triple.getKey(), triple.getValue()));
+        }).ifRight(triple -> STAR_PHASES.set(triple.getIntKey(), triple.getValue()));
     }
 }

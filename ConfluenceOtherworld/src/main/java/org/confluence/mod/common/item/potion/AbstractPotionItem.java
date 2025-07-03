@@ -57,10 +57,10 @@ public abstract class AbstractPotionItem extends Item {
         }
         if (CommonConfigs.RETURN_POTION_GLASS_BOTTLE.get()) {
             if (itemStack.isEmpty()) {
-                return PotionItems.BOTTLE.toStack();
+                return getReturnItem();
             } else {
                 if (living instanceof Player player && !player.hasInfiniteMaterials()) {
-                    ItemStack itemstack = PotionItems.BOTTLE.toStack();
+                    ItemStack itemstack = getReturnItem();
                     if (!player.getInventory().add(itemstack)) {
                         player.drop(itemstack, false);
                     }
@@ -69,6 +69,10 @@ public abstract class AbstractPotionItem extends Item {
             }
         }
         return itemStack.isEmpty() ? ItemStack.EMPTY : itemStack;
+    }
+
+    protected ItemStack getReturnItem() {
+        return PotionItems.BOTTLE.toStack();
     }
 
     protected boolean canUse(ItemStack itemStack, Level level, Player player) {
@@ -86,11 +90,11 @@ public abstract class AbstractPotionItem extends Item {
         if (!level.isClientSide && player != null && stack.is(PotionItems.BOTTLED_WATER.get())) {
             Block block = state.getBlock();
             Block newBlock = null;
-            if (block == Blocks.SAND) newBlock = NatureBlocks.MOIST_SAND_BLOCK.get();
-            else if (block == Blocks.RED_SAND) newBlock = NatureBlocks.RED_MOIST_SAND_BLOCK.get();
-            else if (block == NatureBlocks.EBONY_SAND.get()) newBlock = NatureBlocks.EBONY_MOIST_SAND_BLOCK.get();
-            else if (block == NatureBlocks.PEARL_SAND.get()) newBlock = NatureBlocks.PEARL_MOIST_SAND_BLOCK.get();
-            else if (block == NatureBlocks.TR_CRIMSON_SAND.get()) newBlock = NatureBlocks.TR_CRIMSON_MOIST_SAND_BLOCK.get();
+            if (block == Blocks.SAND) newBlock = NatureBlocks.MOISTENED_SAND_BLOCK.get();
+            else if (block == Blocks.RED_SAND) newBlock = NatureBlocks.MOISTENED_RED_SAND_BLOCK.get();
+            else if (block == NatureBlocks.EBONSAND.get()) newBlock = NatureBlocks.MOISTENED_EBONSAND_BLOCK.get();
+            else if (block == NatureBlocks.PEARLSAND.get()) newBlock = NatureBlocks.MOISTENED_PEARLSAND_BLOCK.get();
+            else if (block == NatureBlocks.CRIMSAND.get()) newBlock = NatureBlocks.MOISTENED_CRIMSAND_BLOCK.get();
             if (newBlock != null) {
                 level.playSound(null, pos, SoundEvents.GENERIC_SPLASH, SoundSource.BLOCKS, 1.0F, 1.0F);
                 player.setItemInHand(context.getHand(), ItemUtils.createFilledResult(stack, player, PotionItems.BOTTLE.toStack()));

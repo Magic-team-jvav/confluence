@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "confluence:block/pearlstone_bricks",
+    "side": "confluence:block/pearlstone_bricks",
+    "top": "confluence:block/pearlstone_bricks"
+  }
+}

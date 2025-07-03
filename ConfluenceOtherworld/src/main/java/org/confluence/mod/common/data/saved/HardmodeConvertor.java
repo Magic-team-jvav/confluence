@@ -1,8 +1,10 @@
 package org.confluence.mod.common.data.saved;
 
+import com.google.common.base.Stopwatch;
 import com.google.common.collect.AbstractIterator;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.*;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
@@ -28,18 +30,20 @@ import org.apache.commons.lang3.mutable.MutableInt;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.EnterHardmodeEvent;
-import org.confluence.mod.common.init.ModAchievements;
+import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.mixed.IDedicatedServer;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.network.s2c.SecretFlagSyncPacketS2C;
+import org.confluence.mod.util.AchievementUtils;
 
 import javax.annotation.CheckForNull;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 /**
@@ -87,6 +91,9 @@ public class HardmodeConvertor implements IGlobalData {
 
     public void start(MinecraftServer server, boolean debug) {
         if (started || completed) return;
+        if (server instanceof IDedicatedServer dedicatedServer) {
+            dedicatedServer.confluence$setOnHardmodeConversation(true);
+        }
         this.shouldContinue = false;
         this.started = true;
         print(server, Component.translatable("event.confluence.hardmode_conversion.starting"), debug);
@@ -104,14 +111,17 @@ public class HardmodeConvertor implements IGlobalData {
     }
 
     public void scheduleRefill(ServerLevel serverLevel) {
-        if (!shouldContinue) return;
+        if (completed || !shouldContinue) return;
         if (sanctification.isEmpty()) {
             if (started) {
                 this.completed = true;
                 MinecraftServer server = serverLevel.getServer();
+                if (server instanceof IDedicatedServer dedicatedServer) {
+                    dedicatedServer.confluence$setOnHardmodeConversation(false);
+                }
                 SecretFlagSyncPacketS2C.sendToAll(((IMinecraftServer) server).confluence$getSecretFlag());
                 for (ServerPlayer serverPlayer : server.getPlayerList().getPlayers()) {
-                    ModAchievements.awardAchievement(serverPlayer, "its_hard");
+                    AchievementUtils.awardAchievement(serverPlayer, "its_hard");
                 }
                 ((IMinecraftServer) server).confluence$updateSecretFlag(IWorldOptions.HARDMODE);
                 print(server, Component.translatable("event.confluence.hardmode_conversion.hardmode"), !FMLEnvironment.production);
@@ -121,16 +131,35 @@ public class HardmodeConvertor implements IGlobalData {
             }
             this.started = false;
             theHallowConversionTable.clear();
-        } else if (serverLevel.getGameTime() % 5 == 0) {
-            Tuple<ChunkPos, BlockPosColumn[][]> entry = sanctification.getFirst();
-            ChunkPos chunkPos = entry.getA();
+        } else {
+            if (serverLevel.getServer() instanceof IDedicatedServer dedicatedServer && !dedicatedServer.confluence$isOnHardmodeConversation()) {
+                dedicatedServer.confluence$setOnHardmodeConversation(true);
+            }
+            if (CommonConfigs.INSTANTLY_HARDMODE_CONVERSION.get()) {
+                Confluence.LOGGER.info("Starting hardmode conversion ...");
+                Stopwatch stopwatch = Stopwatch.createStarted();
+                sanctification.removeIf(entry -> {
+                    ChunkPos chunkPos = entry.getA();
 
-            boolean noForceBefore = !serverLevel.getForcedChunks().contains(chunkPos.toLong());
-            if (noForceBefore) serverLevel.setChunkForced(chunkPos.x, chunkPos.z, true);
-            boolean refilled = refill(serverLevel, chunkPos, entry.getB());
-            if (noForceBefore) serverLevel.setChunkForced(chunkPos.x, chunkPos.z, false);
+                    boolean noForceBefore = !serverLevel.getForcedChunks().contains(chunkPos.toLong());
+                    if (noForceBefore) serverLevel.setChunkForced(chunkPos.x, chunkPos.z, true);
+                    boolean refilled = refill(serverLevel, chunkPos, entry.getB());
+                    if (noForceBefore) serverLevel.setChunkForced(chunkPos.x, chunkPos.z, false);
 
-            if (refilled) sanctification.removeFirst();
+                    return refilled;
+                });
+                Confluence.LOGGER.info("Hardmode conversion took {}", stopwatch.stop());
+            } else if (serverLevel.getGameTime() % 5 == 0) {
+                Tuple<ChunkPos, BlockPosColumn[][]> entry = sanctification.getFirst();
+                ChunkPos chunkPos = entry.getA();
+
+                boolean noForceBefore = !serverLevel.getForcedChunks().contains(chunkPos.toLong());
+                if (noForceBefore) serverLevel.setChunkForced(chunkPos.x, chunkPos.z, true);
+                boolean refilled = refill(serverLevel, chunkPos, entry.getB());
+                if (noForceBefore) serverLevel.setChunkForced(chunkPos.x, chunkPos.z, false);
+
+                if (refilled) sanctification.removeFirst();
+            }
         }
     }
 
@@ -293,11 +322,14 @@ public class HardmodeConvertor implements IGlobalData {
     }
 
     public static class TheHallowConversionTable {
-        private final Map<BlockState, BlockState> cache = new ConcurrentHashMap<>();
+        private final Map<BlockState, BlockState> cache = new Object2ObjectOpenHashMap<>();
+        private BlockState lastCheck;
+        private BlockState lastTarget;
 
         @SuppressWarnings("unchecked")
         public <T extends Comparable<T>, V extends T> BlockState get(BlockState blockState) {
-            return cache.computeIfAbsent(blockState, source -> {
+            if (lastTarget != null && blockState == lastCheck) return lastTarget;
+            BlockState computed = cache.computeIfAbsent(blockState, source -> {
                 Block target = null;
 
                 if (source.is(BlockTags.LOGS)) {
@@ -305,7 +337,7 @@ public class HardmodeConvertor implements IGlobalData {
                 } else if (source.is(BlockTags.LEAVES)) {
                     target = NatureBlocks.PEARL_LOG_BLOCKS.getLeaves().get();
                 } else if (source.is(BlockTags.BASE_STONE_OVERWORLD)) {
-                    target = NatureBlocks.PEARL_STONE.get();
+                    target = NatureBlocks.PEARLSTONE.get();
                 } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_GRASS_BLOCK)) {
                     target = NatureBlocks.HALLOW_GRASS_BLOCK.get();
                 } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_JUNGLE_GRASS_BLOCK)) {
@@ -317,13 +349,13 @@ public class HardmodeConvertor implements IGlobalData {
                 } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_ICE)) {
                     target = NatureBlocks.PINK_ICE.get();
                 } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_SAND)) {
-                    target = NatureBlocks.PEARL_SAND.get();
+                    target = NatureBlocks.PEARLSAND.get();
                 } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_SANDSTONE)) {
-                    target = NatureBlocks.PEARL_SANDSTONE.get();
+                    target = NatureBlocks.PEARLSANDSTONE.get();
                 } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_HARDENED_SAND_BLOCK)) {
-                    target = NatureBlocks.PEARL_HARDENED_SAND_BLOCK.get();
+                    target = NatureBlocks.HARDENED_PEARLSAND_BLOCK.get();
                 } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_MOIST_SAND_BLOCK)) {
-                    target = NatureBlocks.PEARL_MOIST_SAND_BLOCK.get();
+                    target = NatureBlocks.MOISTENED_PEARLSAND_BLOCK.get();
                 }
 
                 if (target == null) return null;
@@ -335,6 +367,11 @@ public class HardmodeConvertor implements IGlobalData {
                 }
                 return targetState;
             });
+            if (blockState != lastCheck) {
+                this.lastCheck = blockState;
+                this.lastTarget = computed;
+            }
+            return computed;
         }
 
         public void clear() {

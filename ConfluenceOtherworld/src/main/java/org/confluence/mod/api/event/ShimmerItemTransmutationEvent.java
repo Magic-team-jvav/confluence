@@ -1,25 +1,17 @@
 package org.confluence.mod.api.event;
 
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.bus.api.Event;
 import net.neoforged.bus.api.ICancellableEvent;
-import org.confluence.mod.common.data.saved.GamePhase;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
  * This event is Server side only.
  */
 public abstract class ShimmerItemTransmutationEvent extends Event {
-    public static final List<Ingredient> BLACK_LIST = new ArrayList<>();
-    public static final List<ItemTransmutation> ITEM_TRANSMUTATION = new ArrayList<>();
     protected final ItemEntity source;
     protected int coolDown;
     protected int shrink = 0;
@@ -113,59 +105,5 @@ public abstract class ShimmerItemTransmutationEvent extends Event {
         public @Nullable List<ItemStack> getTargets() {
             return targets;
         }
-    }
-
-    public static void addItem(TagKey<Item> source, List<ItemStack> target, int shrink) {
-        ITEM_TRANSMUTATION.add(new ItemTransmutation(Ingredient.of(source), target, shrink, GamePhase.BEFORE_SKELETRON));
-    }
-
-    public static void addItem(TagKey<Item> source, Item target, int shrink) {
-        ITEM_TRANSMUTATION.add(new ItemTransmutation(Ingredient.of(source), Collections.singletonList(target.getDefaultInstance()), shrink, GamePhase.BEFORE_SKELETRON));
-    }
-
-    public static void addItem(Ingredient source, List<ItemStack> target, int shrink) {
-        ITEM_TRANSMUTATION.add(new ItemTransmutation(source, target, shrink, GamePhase.BEFORE_SKELETRON));
-    }
-
-    public static void addItem(Item source, Item target, int shrink) {
-        ITEM_TRANSMUTATION.add(new ItemTransmutation(Ingredient.of(source), Collections.singletonList(target.getDefaultInstance()), shrink, GamePhase.BEFORE_SKELETRON));
-    }
-
-    public static void addItem(Item source, Item target) {
-        ITEM_TRANSMUTATION.add(new ItemTransmutation(Ingredient.of(source), Collections.singletonList(target.getDefaultInstance()), 1, GamePhase.BEFORE_SKELETRON));
-    }
-
-    public static void addItem(TagKey<Item> source, List<ItemStack> target, int shrink, GamePhase gamePhase) {
-        ITEM_TRANSMUTATION.add(new ItemTransmutation(Ingredient.of(source), target, shrink, gamePhase));
-    }
-
-    public static void addItem(Ingredient source, List<ItemStack> target, int shrink, GamePhase gamePhase) {
-        ITEM_TRANSMUTATION.add(new ItemTransmutation(source, target, shrink, gamePhase));
-    }
-
-    public static void addItem(Item source, Item target, int shrink, GamePhase gamePhase) {
-        ITEM_TRANSMUTATION.add(new ItemTransmutation(Ingredient.of(source), Collections.singletonList(target.getDefaultInstance()), shrink, gamePhase));
-    }
-
-    public static void addItem(Item source, Item target, GamePhase gamePhase) {
-        ITEM_TRANSMUTATION.add(new ItemTransmutation(Ingredient.of(source), Collections.singletonList(target.getDefaultInstance()), 1, gamePhase));
-    }
-
-    public static void addItem(TagKey<Item> source, Item target, int shrink, GamePhase gamePhase) {
-        ITEM_TRANSMUTATION.add(new ItemTransmutation(Ingredient.of(source), Collections.singletonList(target.getDefaultInstance()), shrink, gamePhase));
-    }
-
-    public record ItemTransmutation(Ingredient source, List<ItemStack> target, int shrink, GamePhase gamePhase) {}
-
-    public static void blackList(Ingredient ingredient) {
-        BLACK_LIST.add(ingredient);
-    }
-
-    public static void blackList(TagKey<Item> tagKey) {
-        BLACK_LIST.add(Ingredient.of(tagKey));
-    }
-
-    public static void blackList(Item item) {
-        BLACK_LIST.add(Ingredient.of(item));
     }
 }

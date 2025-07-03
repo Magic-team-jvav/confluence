@@ -20,7 +20,7 @@ public class AltarRecipe extends AbstractAmountRecipe<ItemStackHandlerRecipeInpu
 
     @Override
     protected int maxIngredientSize() {
-        return 4;
+        return 5;
     }
 
     @Override

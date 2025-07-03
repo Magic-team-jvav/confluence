@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "confluence:block/orichalcum_anvil",
+      "y": 180
+    },
+    "facing=north": {
+      "model": "confluence:block/orichalcum_anvil",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "confluence:block/orichalcum_anvil",
+      "y": 270
+    },
+    "facing=west": {
+      "model": "confluence:block/orichalcum_anvil"
+    }
+  }
+}

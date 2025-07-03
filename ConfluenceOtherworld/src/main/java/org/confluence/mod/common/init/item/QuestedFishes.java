@@ -24,7 +24,7 @@ public class QuestedFishes {
             MUDFISH = register("mudfish"), // 泥鱼
             MUTANT_FLINXFIN = register("mutant_flinxfin"), // 突变弗林鱼
             CLOUDFISH = register("cloudfish"), // 云朵鱼
-            TR_CLOWNFISH = register("tr_clownfish"), // 异域小丑鱼
+            CLOWNFISH = register("clownfish"), // 异域小丑鱼
             DEMONIC_HELLFISH = register("demonic_hellfish"), // 地狱恶魔鱼
             DERPFISH = register("derpfish"), // 跳跳鱼
             ICHORFISH = register("ichorfish"), // 灵液鱼

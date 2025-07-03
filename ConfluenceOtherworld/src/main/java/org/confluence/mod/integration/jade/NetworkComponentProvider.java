@@ -6,9 +6,9 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.block.functional.DeathChestBlock;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.block.functional.network.NetworkNode;
-import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.terra_curio.client.handler.InformationHandler;
 import snownee.jade.api.BlockAccessor;
 import snownee.jade.api.IBlockComponentProvider;
@@ -47,7 +47,7 @@ public class NetworkComponentProvider implements IBlockComponentProvider, IServe
 
     @Override
     public void appendServerData(CompoundTag compoundTag, BlockAccessor blockAccessor) {
-        if (!blockAccessor.getPlayer().isCreative() && blockAccessor.getBlock() == FunctionalBlocks.DEATH_CHEST_BLOCK.get()) return;
+        if (!blockAccessor.getPlayer().isCreative() && blockAccessor.getBlock() instanceof DeathChestBlock) return;
         if (blockAccessor.getBlockEntity() instanceof INetworkEntity entity) {
             NetworkNode networkNode = entity.getOrCreateNetworkNode();
             ListTag listTag = new ListTag();

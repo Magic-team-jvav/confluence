@@ -8,7 +8,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameRules;
-import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
@@ -20,13 +19,14 @@ import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.block.functional.network.PathService;
 import org.confluence.mod.common.data.saved.*;
 import org.confluence.mod.common.entity.FallingStarItemEntity;
-import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
 import org.confluence.mod.common.worldgen.structure.DungeonStructure;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.mixed.Immunity;
+import org.confluence.mod.util.AchievementUtils;
+import org.confluence.mod.util.OverworldUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terraentity.entity.boss.EyeOfCthulhu;
 import org.confluence.terraentity.init.entity.TEBossEntities;
@@ -37,10 +37,10 @@ public final class TickEvents {
     public static void levelTick$Post(LevelTickEvent.Post event) {
         if (!(event.getLevel() instanceof ServerLevel serverLevel)) return;
         PathService.INSTANCE.pathFindingTick();
-        if (serverLevel.dimension() != Level.OVERWORLD) return;
+        if (serverLevel.dimension() != OverworldUtils.dimension()) return;
         FallingStarItemEntity.summon(serverLevel);
         MeteoriteTracker.INSTANCE.tick(serverLevel);
-        EntityDelaySpawner.INSTANCE.tick(serverLevel);
+        BossDelaySpawner.INSTANCE.tick(serverLevel);
 
         long dayTime = serverLevel.getDayTime() % 24000L;
         if (dayTime == 0L) { // 6:00
@@ -57,7 +57,7 @@ public final class TickEvents {
                     if (attributeFactor && npcFactor) break;
                 }
                 if (attributeFactor && npcFactor && serverLevel.random.nextFloat() < 0.3333F) {
-                    EntityDelaySpawner.INSTANCE.pushBoss(1350, new EyeOfCthulhu(serverLevel));
+                    BossDelaySpawner.INSTANCE.pushBoss(1350, new EyeOfCthulhu(serverLevel), level -> level.getDayTime() % 24000 > 12000);
                     serverLevel.getServer().getPlayerList().broadcastSystemMessage(Component.translatable("event.confluence.eye_of_cthulhu").withColor(GlobalColors.MESSAGE.get()), false);
                 }
             }
@@ -84,7 +84,7 @@ public final class TickEvents {
             ((IServerPlayer) serverPlayer).confluence$setCouldPickupItem(true);
             serverPlayer.getData(ModAttachmentTypes.EXTRA_INVENTORY).sync(serverPlayer);
             ServerLevel serverLevel = serverPlayer.serverLevel();
-            ModAchievements.youCanDoIt(serverPlayer, serverLevel);
+            AchievementUtils.youCanDoIt(serverPlayer, serverLevel);
             TheConstant.applyDarkness(serverPlayer, serverLevel);
             DungeonStructure.checkSkeletronDefeated(serverPlayer, serverLevel);
         }

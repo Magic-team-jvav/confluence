@@ -3,6 +3,7 @@ package org.confluence.mod.client.renderer.block;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BeaconRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -41,7 +42,7 @@ public class MechanicalBlockRenderer<E extends AbstractMechanicalBlock.Entity> i
 
     @Override
     public void render(E pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
-        long gameTime = System.currentTimeMillis() / 50;
+        long gameTime = Minecraft.getInstance().level == null ? System.currentTimeMillis() / 50 : Minecraft.getInstance().level.getGameTime();
         Vec3 vec31 = pBlockEntity.getBlockPos().getCenter();
         for (Int2ObjectMap.Entry<Set<BlockPos>> entry : pBlockEntity.getConnectedPoses().int2ObjectEntrySet()) {
             int color = entry.getIntKey();

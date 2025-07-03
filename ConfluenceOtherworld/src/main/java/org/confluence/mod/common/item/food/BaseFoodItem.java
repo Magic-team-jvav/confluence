@@ -137,7 +137,7 @@ public class BaseFoodItem extends Item {
         }
 
         public BaseFoodItem build() {
-            return new BaseFoodItem(stackTo(64));
+            return new BaseFoodItem(this);
         }
     }
 

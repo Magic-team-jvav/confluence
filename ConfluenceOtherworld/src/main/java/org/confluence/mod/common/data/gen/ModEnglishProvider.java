@@ -1,6 +1,7 @@
 package org.confluence.mod.common.data.gen;
 
 import com.google.common.collect.Iterables;
+import net.minecraft.Util;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
@@ -17,6 +18,7 @@ import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.integration.create.ponder.PonderHelper;
+import org.confluence.mod.integration.waystones.WaystonesHelper;
 
 import java.util.function.Consumer;
 
@@ -61,11 +63,10 @@ public class ModEnglishProvider extends LanguageProvider {
         add("message.confluence.hoe_shovel.mode.1", "Hoe");
         add("message.confluence.altar_tips.0", "Right-click to put in an item, right-click crouching to take out an item.");
         add("message.confluence.altar_tips.1", "Left-click to craft, left-click crouching to quickly craft.");
-        add("jukebox_song.confluence.alpha", "C418 - alpha");
 
         add("gamerule.confluenceSpreadableChance", "Confluence Spreadable Chance");
         add("generator.confluence.the_corruption", "The Corruption");
-        add("generator.confluence.tr_crimson", "The Crimson");
+        add("generator.confluence.the_crimson", "The Crimson");
 
         add("tooltip.price.platinum", "Platinum");
         add("tooltip.price.gold", "Gold");
@@ -74,14 +75,17 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.price.sell", "Sell: ");
 
         add("tooltip.jei.state_properties", "Required State Properties:");
+        add("tooltip.jei.count_range", "Count: %s-%s");
+        add("tooltip.jei.count_exact", "Count: %s");
+        add("tooltip.jei.drop_chance", "Chance: %s%%");
 
         add("tooltip.item.confluence.meteorite_ingot.0", "Warm to the touch");
         add("tooltip.item.confluence.encumbering_stone.0", "Prevents item pickups while locked");
         add("tooltip.item.confluence.encumbering_stone.1", "Right click in inventory to unlock");
         add("tooltip.item.confluence.encumbering_stone.2", "'You are over-encumbered'");
         add("tooltip.item.confluence.super_absorbant_sponge.0", "Capable of soaking up an endless amount of water");
-        add("tooltip.item.confluence.honey_absorbant_sponge.0", "Capable of soaking up an endless amount of lava");
-        add("tooltip.item.confluence.lava_absorbant_sponge.0", "Capable of soaking up an endless amount of honey");
+        add("tooltip.item.confluence.honey_absorbant_sponge.0", "Capable of soaking up an endless amount of honey");
+        add("tooltip.item.confluence.lava_absorbant_sponge.0", "Capable of soaking up an endless amount of lava");
         add("tooltip.item.confluence.ultra_absorbant_sponge.0", "Capable of soaking up an endless amount of liquid");
         add("tooltip.item.confluence.wire_cutter.0", "Removes wire");
         add("tooltip.item.confluence.extractinator.0", "Placing silt/slush/fossil/gravel/marine_gravel piles into the extractinator turns them into something more useful");
@@ -111,10 +115,16 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.advanced_combat_techniques_volume_two.0", "Increases the defense and strength of all villagers");
         add("tooltip.item.confluence.advanced_combat_techniques_volume_two.1", "'Contains offensive and defensive fighting techniques, volume two!'");
         add("tooltip.item.confluence.binoculars.0", "Expand the FOV when in use, and adjust the zoom with the mouse wheel");
-        add("tooltip.item.confluence.meteor_compass.0", "Exiting the level will result in the loss of previously recorded position");
+        add("tooltip.item.confluence.meteor_compass.0", "Only the position of the last meteorite are saved");
         add("tooltip.item.confluence.gel.0", "'Both tasty and flammable'");
         add("tooltip.item.confluence.npc_invitation.0", "Use it to invite a new batch of NPCs in the current area!");
         add("tooltip.item.confluence.red_potion.0", "'Only for those who are worthy'");
+        add("tooltip.item.confluence.mug.0", "Collect ale at the barrel");
+        add("tooltip.item.confluence.hellforge.0", "Used for smelting hellstone materials. Smelting regular minerals has a residual heat effect.");
+        add("tooltip.item.confluence.magic_conch.0", "Right-click a block in the Beach biome to make the sea remember you");
+        add("tooltip.item.confluence.demon_conch.0", "Right-click a Nether Portal block to make the Nether remember you.");
+        add("tooltip.item.confluence.bait.common.0", "When placed in the inventory, it will be automatically used while fishing, prioritizing the bait in the off-hand.");
+        add("tooltip.item.confluence.crate.common.0", "Hold the right mouse button to open, and hold Shift while clicking the right mouse button to place.");
 
         add("tooltip.item.confluence.slime_crown.0", "Right - click to summon the King Slime");
         add("tooltip.item.confluence.slime_crown.1", "A small crown that seems to be prepared for the coronation ceremony of those cute and harmless gel - like creatures.");
@@ -178,6 +188,18 @@ public class ModEnglishProvider extends LanguageProvider {
         add("item.confluence.mysterious_note.name_4", "Half-Eaten Small Note");
         add("lore.confluence.mysterious_note_4", "When will Confluence Fun Stuff start production? I've been waiting until I'm stupid.");
 
+
+        add("lore.confluence.mysterious_note.handwriting_0", "✒Rushed handwriting");
+        add("lore.confluence.mysterious_note.handwriting_1", "✒Neat handwriting");
+        add("lore.confluence.mysterious_note.handwriting_2", "✒Graceful handwriting");
+        add("lore.confluence.mysterious_note.handwriting_3", "✒Mysterious handwriting");
+
+        add("item.confluence.mysterious_note.name_structure_0", "The note left in the dungeon");
+
+        add("lore.confluence.mysterious_note_structure_0_0", "I have secretly investigated this dungeon... Instead of being considered a dungeon, it is rather seen as a long lost city. Besides the creaking skeletons, there are several buildings like apartments and a wide variety of public structures. These skeletons are said to be the locals here but nobody knows how they could've fallen into this situation...");
+        add("lore.confluence.mysterious_note_structure_0_1", "However, indeed, the wonder is those rare rooms which look like armories with a huge sword on top. Each \"armory\" contains plenty equipment, with a locked chest... which I am unable to open but it lets me know that it contains valuables.");
+        add("lore.confluence.mysterious_note_structure_1_0", "Those terrifying monsters are truly mad! I wish to leave this place... However, I found some keys in these strange structures resembling churches and those disgusting slimy monsters... There must be treasure here, but I haven't found it yet...");
+
         add("item.confluence.mysterious_slate.name_0", "Serious Slate");
         add("lore.confluence.mysterious_slate_0", "“A fun fact: In fact, summoners need to communicate with their summoned creatures spiritually. The armor protection can't be too thick, otherwise it will affect the communication.”");
         add("item.confluence.mysterious_slate.name_1", "Exceptionally Ancient Slate");
@@ -222,6 +244,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("info.confluence.weather_radio.rain", "Weather: Rain, Wind Speed: %s");
         add("info.confluence.weather_radio.snow", "Weather: Snow, Wind Speed: %s");
         add("info.confluence.weather_radio.thunder", "Weather: Thunder, Wind Speed: %s");
+        add("info.confluence.weather_radio.thunder_snow", "Weather: Thunder Snow, Wind Speed: %s");
         add("info.confluence.bait", "Bait Power: %s%%");
         add("info.confluence.network", "#%s Signal: %s");
         add("info.confluence.respawn_time", "Respawn Time: %ss");
@@ -241,6 +264,10 @@ public class ModEnglishProvider extends LanguageProvider {
         add("death.attack.falling_star", "%1$s got a response from a meteor");
         add("death.attack.boulder", "%1$s is crushed by boulder");
         add("death.attack.darkness", "%1$s was killed by something in the dark!");
+        add("death.attack.summon_damage_type", "%1$s was flogged mercilessly");
+        add("death.attack.summoner_damage_type", "%1$s failed to communicate in time");
+        add("death.attack.frost_burn_damage_type", "%1$s felt warm before the end");
+        add("death.attack.pass_armor_damage_type", "%1$s was pierced through along with their armor");
 
         add("selections.confluence.magic_conch", "Responding to the call of The Ocean [%s]");
         add("selections.confluence.demon_conch", "Responding to the call of The Lava [%s]");
@@ -248,7 +275,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.adhesive_bandage.0", "Immune to bleeding");
         add("tooltip.item.confluence.medicated_bandage.0", "Immune to poison and bleeding");
         add("tooltip.item.confluence.pocket_mirror.0", "Immune to petrification");
-        add("tooltip.item.confluence.reflective_shades.0", "Immune to darkness and petrification");
+        add("tooltip.item.confluence.reflective_shades.0", "Immune to blindness and petrification");
         add("tooltip.item.confluence.armor_polish.0", "Immune to armor degradation");
         add("tooltip.item.confluence.armor_bracing.0", "Immune to armor degradation and weakness");
         add("tooltip.item.confluence.megaphone.0", "Immune to silence");
@@ -306,7 +333,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.chromatic_cloak.0", "Immunity to Shimmer Phasing.Hold Shift to Phase while submerged in Shimmer");
         add("tooltip.item.confluence.paint_scraper", "Used to remove paint or coatings.Press Shift + Right-click to remove only one side.");
         add("tooltip.item.confluence.paint_sprayer.0", "Automatically paints or coats placed objects.");
-        add("tooltip.item.confluence.coin", "Using it while crouch to upgrade tier");
+        add("tooltip.item.confluence.coin", "Sneak through the air and right-click to merge into a primary coin");
         add("tooltip.item.confluence.hardmode_convertor.0", "Right-clicking on the ground immediately turns the current world into Hardmode");
         add("tooltip.item.confluence.life_crystal.0", "Permanently increases maximum life by 4");
         add("tooltip.item.confluence.life_fruit.0", "Permanently increases maximum life by 1");
@@ -407,10 +434,30 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.solar_wings.0", "Allows flight and slow fall");
         add("tooltip.item.confluence.stardust.0", "Allows flight and slow fall");
 
+
+        add("confluence.configuration.Compatibility", "Compatibility Mechanism");
+        add("confluence.configuration.Compatibility.button", "Settings for compatibility with other mods");
+        add("confluence.configuration.ArsNouveau", "Ars Nouveau");
+        add("confluence.configuration.IronsSpell", "Iron's Spells 'n Spellbooks");
+        add("confluence.configuration.FTB", "FTB Chunks");
+        add("confluence.configuration.Xaero", "Xaero's World Map");
+        add("confluence.configuration.Waystones", "Waystones");
+        add("confluence.configuration.convertArsNouveauMana", "Use Confluence's mana system when enabled");
+        add("confluence.configuration.convertIronsSpellMana", "Use Confluence's mana system when enabled");
+        add("confluence.configuration.ftbChunksWormholePotion", "Enable wormhole potion functionality");
+        add("confluence.configuration.xaerosMapWormholePotion", "Enable wormhole potion functionality");
+        add("confluence.configuration.xaerosMapPylonWaypoint", "Enable pylon waypoint display");
+        add("confluence.configuration.waystonesPylonNonCost", "Enable pylons to not consume experience");
+
+        add("confluence.configuration.instantlyHardmodeConversion", "Instant Hard Mode Conversion");
+        add("confluence.configuration.instantlyHardmodeConversion.tooltip", "When enabled, the transition to Hard Mode will be accelerated and occur with a complete freeze. Please assess your computer's performance before enabling this configuration.");
         add("confluence.configuration.wrappedCrimson_heart", "Exposed Crimson Heart");
         add("confluence.configuration.wrappedCrimson_heart.tooltip", "When enabled, newly generated Crimson Caverns will spawn exposed Crimson Hearts");
-        add("confluence.configuration.showItemPrice", "Show Item Price");
-        add("confluence.configuration.showItemPrice.tooltip", "Enable to view the price when selling items to NPCs");
+        add("confluence.configuration.sellPriceDisplay", "Sell Price Display");
+        add("confluence.configuration.sellPriceDisplay.tooltip", "Toggles the timing to see the price of the item when it is sold to NPCs");
+        add("confluence.configuration.sellPriceDisplay.never", "Not displayed at any time");
+        add("confluence.configuration.sellPriceDisplay.everywhere", "Displayed at all times");
+        add("confluence.configuration.sellPriceDisplay.trade_screen", "Only displayed in the trading screen");
         add("confluence.configuration.Recipe", "Crafting Recipe System");
         add("confluence.configuration.Recipe.button", "Crafting Recipe System");
         add("confluence.configuration.Recipe.tooltip", "Settings related to crafting recipes");
@@ -437,13 +484,11 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.configuration.WorldGeneration.button", "World Generation Mechanism");
         add("confluence.configuration.WorldGeneration.tooltip", "Settings related to world generation");
         add("confluence.configuration.brewing_stand_recipe", "Terra Potion Brewing Stand Recipe");
-        add("confluence.configuration.brewing_stand_recipe.tooltip", "When enabled, the brewing stand can brew Terra potions.");
+        add("confluence.configuration.brewing_stand_recipe.tooltip", "When enabled, the brewing stand can brew Terra potions.(This configuration change requires a game restart!)");
         add("confluence.configuration.alertPlayerDungeon", "Dungeon Guardian Warning");
         add("confluence.configuration.alertPlayerDungeon.tooltip", "When enabled, there will be three roars as warnings before the dungeon guardian appears.");
         add("confluence.configuration.achievementToast", "Enable Terra Style Achievements");
         add("confluence.configuration.achievementToast.tooltip", "Disable it if you want to use the default progress style.");
-        add("confluence.configuration.playerOurMusic", "Enable Terra Music");
-        add("confluence.configuration.playerOurMusic.tooltip", "Enable Terra's music, it will play in appropriate environments");
         add("confluence.configuration.dropsMoney", "Coin Drops");
         add("confluence.configuration.dropsMoney.tooltip", "When enabled, characters will drop coins upon death.");
         add("confluence.configuration.Paints", "Paint Function Settings");
@@ -523,6 +568,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.configuration.showMoneyDrops.tooltip", "Enable to display the amount of coins dropped on the death screen");
         add("confluence.configuration.altarTips", "Altar Tips");
         add("confluence.configuration.altarTips.tooltip", "You can turn off the tips by yourself after learning");
+        add("confluence.configuration.ammoSlotsBlacklist", "Ammo Slot Automatically Picks-up Blacklist");
+        add("confluence.configuration.ammoSlotsBlacklist.tooltip", "Items with IDs or tags in the blacklist will not automatically enter the ammo slot");
         // Separator
         add("confluence.configuration.Mana.button", "Mana");
         add("confluence.configuration.Armor.button", "Armor");
@@ -557,9 +604,9 @@ public class ModEnglishProvider extends LanguageProvider {
         add("biome.confluence.the_hallow", "The Hallow");
         add("biome.confluence.the_hallow_desert", "The Hallow Desert");
         add("biome.confluence.the_hallow_tundra", "The Hallow Tundra");
-        add("biome.confluence.tr_crimson", "The Crimson");
-        add("biome.confluence.tr_crimson_desert", "The Crimson Desert");
-        add("biome.confluence.tr_crimson_tundra", "The Crimson Tundra");
+        add("biome.confluence.the_crimson", "The Crimson");
+        add("biome.confluence.the_crimson_desert", "The Crimson Desert");
+        add("biome.confluence.the_crimson_tundra", "The Crimson Tundra");
 
         // new
         add("achievements.toast.complete", "Achievement achieved!");
@@ -836,6 +883,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("container.confluence.tree_holes", "Tree Holes");
         add("container.confluence.npc_shop", "Npc Shop");
         add("container.confluence.solidifier", "Solidifier");
+        add("container.confluence.mythril_anvil", "Mythril Anvil");
+        add("container.confluence.orichalcum_anvil", "Orichalcum Anvil");
 
         add("title.confluence.shimmer_transmutation", "Shimmer Transmutation");
         add("title.confluence.altar", "Altar");
@@ -849,17 +898,14 @@ public class ModEnglishProvider extends LanguageProvider {
         add("title.confluence.touhoulittlemaid", "Touhou Little Maid Supplies");
         add("title.confluence.npc_trade", "NPC Trading");
         add("title.confluence.sawmill", "Sawmill");
+        add("title.confluence.mythril_anvil", "Mythril Anvil");
+        add("title.confluence.orichalcum_anvil", "Orichalcum Anvil");
 
         // Override
         add("item.confluence.encumbering_stone.disable", "Encumbering Stone: Disable");
         add("item.confluence.paint", "Paint");
         add(AccessoryItems.PHILOSOPHERS_STONE.get(), "Philosopher's Stone");
         add(ModItems.BOREDOMS_PACT_FALLING_RESOLVE.get(), "Boredom's Pact - Falling Resolve");
-        add(ModBlocks.COPPER_COIN_PILE.get(), "Copper Coin");
-        add(ModBlocks.SILVER_COIN_PILE.get(), "Silver Coin");
-        add(ModBlocks.GOLDEN_COIN_PILE.get(), "Golden Coin");
-        add(ModBlocks.PLATINUM_COIN_PILE.get(), "Platinum Coin");
-        add(ModBlocks.EMERALD_COIN_PILE.get(), "Emerald Coin");
         add(FunctionalBlocks.BLEND_O_MATIC.get(), "Blend-O-Matic");
         add(StatueBlocks.N0_STATUE.get(), "'0' Statue");
         add(StatueBlocks.N1_STATUE.get(), "'1' Statue");
@@ -872,35 +918,13 @@ public class ModEnglishProvider extends LanguageProvider {
         add(StatueBlocks.N8_STATUE.get(), "'8' Statue");
         add(StatueBlocks.N9_STATUE.get(), "'9' Statue");
         add(VanityArmorItems.DEAD_MANS_SWEATER.get(), "Dead Man's Sweater");
+        add(SwordItems.NIGHTS_EDGE.get(), "Night's Edge");
 
         add("block.confluence.timers_block_1_1", "1 Second Timer");
         add("block.confluence.timers_block_3_1", "3 Second Timer");
         add("block.confluence.timers_block_5_1", "5 Second TImer");
         add("block.confluence.timers_block_1_2", "1/2 Second Timer");
         add("block.confluence.timers_block_1_4", "1/4 Second TImer");
-        add("block.confluence.base_chest_block.locked_golden", "§rLocked Golden Chest");
-        add("block.confluence.base_chest_block.unlocked_golden", "§rGolden Chest");
-        add("block.confluence.base_chest_block.death_golden", "§rDeath Golden Chest");
-        add("block.confluence.base_chest_block.locked_shadow", "§rLocked Shadow Chest");
-        add("block.confluence.base_chest_block.unlocked_shadow", "§rShadow Chest");
-        add("block.confluence.base_chest_block.death_shadow", "§rDeath Shadow Chest");
-        add("block.confluence.base_chest_block.unlocked_lvy", "§rLvy Chest");
-        add("block.confluence.base_chest_block.death_lvy", "§rDeath Lvy Chest");
-        add("block.confluence.base_chest_block.unlocked_frozen", "§rFrozen Chest");
-        add("block.confluence.base_chest_block.death_frozen", "§rDeath Frozen Chest");
-        add("block.confluence.base_chest_block.unlocked_water", "§rWater Chest");
-        add("block.confluence.base_chest_block.death_water", "§rDeath Water Chest");
-        add("block.confluence.base_chest_block.unlocked_skyware", "§rSkyware Chest");
-        add("block.confluence.base_chest_block.death_skyware", "§rDeath Skyware Chest");
-        add("block.confluence.base_chest_block.unlocked_normal", "§rWooden Chest");
-        add("block.confluence.base_chest_block.death_normal", "§rDeath Wooden Chest");
-        add("block.confluence.base_chest_block.unlocked_sandstone", "§rSandstone Chest");
-        add("block.confluence.base_chest_block.death_sandstone", "§rDeath Sandstone Chest");
-        add("block.confluence.base_chest_block.unlocked_living_wood", "§rLiving Wood Chest");
-        add("block.confluence.base_chest_block.death_living_wood", "§rDeath Living Wood Chest");
-        add("block.confluence.base_chest_block.locked_dungeon", "§rLocked Dungeon Chest");
-        add("block.confluence.base_chest_block.unlocked_dungeon", "§rDungeon Chest");
-        add("block.confluence.base_chest_block.death_dungeon", "§rDeath Dungeon Chest");
 
         add("resourcepack.terraria_art", "Terraria Art");
         add("resourcepack.terraria_armor", "Terraria-Like Armor");
@@ -1033,6 +1057,12 @@ public class ModEnglishProvider extends LanguageProvider {
         add("equipment_benediction.set_switcher.confluence.jungle_set.data.2", "Increases maximum mana by 10,3% increased magic critical strike chance");
         add("equipment_benediction.set_switcher.confluence.jungle_set.data.3", "Increases maximum mana by 10,3% increased magic critical strike chance");
         add("equipment_benediction.set_switcher.confluence.jungle_set.data.4", "16% reduced mana costs");
+
+        add("equipment_benediction.set_switcher.confluence.ash_set", "Ash set");
+        add("equipment_benediction.set_switcher.confluence.ash_set.data.0", "Reduce fire damage by 50%");
+
+        add("equipment_benediction.set_switcher.confluence.pumpkin_set", "Pumpkin set");
+        add("equipment_benediction.set_switcher.confluence.pumpkin_set.data.0", "Damage increased by 10%");
         // npc dialogs
         add("dialogs.confluence.guide.0", "My job is to offer suggestions for your upcoming tasks. I recommend that you come and talk to me whenever you encounter any difficulties.");
         add("dialogs.confluence.guide.1", "They said there would be someone to tell you how to survive in this place... Oh, wait a moment. That person is me.");
@@ -1135,15 +1165,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("mood.terra_entity.nurse.dislike.dryad", "I don't like Dryad that much, kinda weirds me out.");
 
         // Patchouli Guide
-        // - A selection of alternative translations is provided here, which are commented out.
-        // - Hope to carefully consider the choice of translation results.
-        // - I can't split which are human translations and which are machine translations (or even AI translations?!).
-        // - If machine/AI translation, I hope to directly replace it with the alternative translation.
-        // - 中文：拜托别用AI翻译...*
         add("patchouli.confluence.otherworld_note.name", "Otherworld Note");
         add("patchouli.confluence.otherworld_note.landing_text", "*bHave you felt the dark undercurrents surging?*bThe fate of your world is at stake, but not only yours.*bThe shadow of evil forces shrouds two worlds, their fates converging.*bThe era of confluence has arrived.*bYou begin your adventure as these two worlds collide: challenge the unknown, save the world, or seek power for yourself.");
-        //"Undercurrents are surging, the fate of the world is at stake, and the shadow of evil forces looms over the two worlds. When fate converges, the era of fusion quietly arrives. You will embark on a brand new adventure in the fusion of these two worlds, challenge the unknown, save the world, or seek power for yourself."
-
         add("patchouli.confluence.otherworld_note.appearance", "Appearance");
         add("patchouli.confluence.otherworld_note.example", "Example");
         add("patchouli.confluence.otherworld_note.gui", "GUI");
@@ -1502,13 +1525,42 @@ public class ModEnglishProvider extends LanguageProvider {
         add("patchouli.confluence.otherworld_note.world.the_crimson.1", "*z$(#AA0000)“Making the world bloody”");
         add("patchouli.confluence.otherworld_note.world.the_crimson.2", "*o*tIn ancient times, the people of Terraria made a foolish mistake: they succumbed to scarlet, regarded it as a god, and sacrificed their flesh and blood.*b*tEventually, they are assimilated into twisted lives, spreading across the earth with scarlet ambitions.");
 
+        // Tags
+        add("tag.fluid.confluence.fishing_able", "Can Fishing Fluid");
+        add("tag.fluid.confluence.not_lava", "Not Lava");
+        add("tag.item.confluence.ammo", "Ammo");
+        add("tag.item.confluence.boss_summoning", "Boss Summoning");
+        add("tag.item.confluence.bottomless", "Bottomless");
+        add("tag.item.confluence.coins", "Coins");
+        add("tag.item.confluence.corals", "Corals");
+        add("tag.item.confluence.crop_fortune", "Crop Fortune");
+        add("tag.item.confluence.demonite_and_crimson_ingot", "Evil Ingot");
+        add("tag.item.confluence.dye", "Dye");
+        add("tag.item.confluence.evil_meterial", "Evil Meterial");
+        add("tag.item.confluence.fast_bow", "Fast Bow");
+        add("tag.item.confluence.gold_cooking", "Golden Cooking");
+        add("tag.item.confluence.hardmode_ores", "Haed-Mode Ores");
+        add("tag.item.confluence.hook", "Hook");
+        add("tag.item.confluence.lead_and_iron", "Lead and Iron");
+        add("tag.item.confluence.light_pets", "Light Pets");
+        add("tag.item.confluence.mana_weapon", "Magic Weapon");
+        add("tag.item.confluence.minecart", "Minecart");
+        add("tag.item.confluence.moss_item", "Moss");
+        add("tag.item.confluence.provide_life", "Provide Life");
+        add("tag.item.confluence.provide_light", "Provide Light");
+        add("tag.item.confluence.provide_mana", "Provide Mana");
+        add("tag.item.confluence.shadow_scale_and_tissue_sample", "Shadow Scale and Tissue Sample");
+        add("tag.item.confluence.summoner_weapon", "Summoner Weapon");
+        add("tag.item.confluence.torch", "Torch");
+        add("tag.item.confluence.treasure_bag", "Treasure Bag");
+        add("tag.item.confluence.wings", "Wings");
 
         Consumer<DeferredHolder<Block, ? extends Block>> blockAction = block -> add(block.get(), LibUtils.toTitleCase(block.getId().getPath()));
+        ChestBlocks.BLOCKS.getEntries().forEach(blockAction);
         CrateBlocks.BLOCKS.getEntries().forEach(blockAction);
         DecorativeBlocks.BLOCKS.getEntries().forEach(blockAction);
         FunctionalBlocks.BLOCKS.getEntries().forEach(blockAction);
         ModBlocks.BLOCKS.getEntries().forEach(blockAction);
-        MusicBoxBlocks.BLOCKS.getEntries().forEach(blockAction);
         NatureBlocks.BLOCKS.getEntries().forEach(blockAction);
         OreBlocks.BLOCKS.getEntries().forEach(blockAction);
         PotBlocks.BLOCKS.getEntries().forEach(blockAction);
@@ -1564,6 +1616,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("task.confluence.use_life_crystal.condition.has_life_crystal", "Mainhand holds life crystal");
 
         PonderHelper.addTranslateKeys(this::add, true);
+        WaystonesHelper.addTranslateKeys((block, s) -> add(Util.makeDescriptionId("block", block.getId()), s), true);
     }
 
     @Override

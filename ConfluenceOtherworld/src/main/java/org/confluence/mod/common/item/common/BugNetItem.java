@@ -40,7 +40,9 @@ public class BugNetItem extends CustomRarityItem {
             if (interactionTarget.hasCustomName()) {
                 itemStack.set(DataComponents.CUSTOM_NAME, interactionTarget.getCustomName());
             }
-            player.addItem(itemStack);
+            if (!player.addItem(itemStack)) {
+                player.drop(itemStack, false);
+            }
             interactionTarget.discard();
             return InteractionResult.SUCCESS;
         }

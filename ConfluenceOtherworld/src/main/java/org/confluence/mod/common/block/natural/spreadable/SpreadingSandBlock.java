@@ -27,7 +27,7 @@ public class SpreadingSandBlock extends ColoredFallingBlock implements ISpreadab
     }
 
     @Override
-    public Type getType() {
+    public Type getSpreadType() {
         return type;
     }
 

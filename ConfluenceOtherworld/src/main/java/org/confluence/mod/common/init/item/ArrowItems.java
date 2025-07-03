@@ -14,23 +14,23 @@ public class ArrowItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
 
     public static final DeferredItem<BaseArrowItem> FLAMING_ARROW = ITEMS.register("flaming_arrow", () -> new  BaseArrowItem(ModRarity.WHITE,
-            BaseArrowEntity.Tuple.create("textures/entity/arrow/flaming_arrow.png",()->new BaseArrowEntity.Builder()
+            BaseArrowEntity.Factory.create("textures/entity/arrow/flaming_arrow.png",()->new BaseArrowEntity.Builder()
                     .setDamage(4.5f).setCauseFire(10*20))
     ));
     public static final DeferredItem<BaseArrowItem> UNHOLY_ARROW = ITEMS.register("unholy_arrow", () -> new  BaseArrowItem(ModRarity.BLUE,
-            BaseArrowEntity.Tuple.create("textures/entity/arrow/unholy_arrow.png",()->new BaseArrowEntity.Builder()
+            BaseArrowEntity.Factory.create("textures/entity/arrow/unholy_arrow.png",()->new BaseArrowEntity.Builder()
                     .setDamage(4.5f).setPenetration(5).setKnockBack(1.5f))
     ));
     public static final DeferredItem<BaseArrowItem> STAR_ARROW = ITEMS.register("star_arrow", () -> new  BaseArrowItem(ModRarity.BLUE,
-            BaseArrowEntity.Tuple.create("textures/entity/arrow/star_arrow.png", ()->new BaseArrowEntity.Builder()
+            BaseArrowEntity.Factory.create("textures/entity/arrow/star_arrow.png", ()->new BaseArrowEntity.Builder()
                     .setDamage(4f).setPenetration(99).setKnockBack(2).setSpeedFactor(0.8f).setAutoDiscard(50).setGravity(0))
     ));
     public static final DeferredItem<BaseArrowItem> HELLFIRE_ARROW = ITEMS.register("hellfire_arrow", () -> new  BaseArrowItem(ModRarity.GREEN,
-            BaseArrowEntity.Tuple.create("textures/entity/arrow/hellfire_arrow.png",()->new BaseArrowEntity.Builder()
+            BaseArrowEntity.Factory.create("textures/entity/arrow/hellfire_arrow.png",()->new BaseArrowEntity.Builder()
                     .setDamage(5.5f).setCauseFire(5*20).addOnHitEffect(TEEffectStrategies.Components.HELL_FIRE_EFFECT.get()))
     ));
     public static final DeferredItem<BaseArrowItem> FROSTBURN_ARROW = ITEMS.register("frostburn_arrow", () -> new  BaseArrowItem(ModRarity.WHITE,
-            BaseArrowEntity.Tuple.create("textures/entity/arrow/frostburn_arrow.png",()->new BaseArrowEntity.Builder()
+            BaseArrowEntity.Factory.create("textures/entity/arrow/frostburn_arrow.png",()->new BaseArrowEntity.Builder()
                     .setDamage(4.5f).addOnHitEffect(TEEffectStrategies.Components.FROST_BURN_EFFECT.get()))
     ));
     public static final DeferredItem<BaseArrowItem> BONE_ARROW = ITEMS.register("bone_arrow", () -> new  BaseArrowItem(ModRarity.WHITE
@@ -42,11 +42,11 @@ public class ArrowItems {
 
     ));
     public static final DeferredItem<BaseArrowItem> FOSSIL_ARROW = ITEMS.register("fossil_arrow", () -> new BaseArrowItem(ModRarity.WHITE,
-            BaseArrowEntity.Tuple.create("textures/entity/arrow/fossil_arrow.png",()->new BaseArrowEntity.Builder()
+            BaseArrowEntity.Factory.create("textures/entity/arrow/fossil_arrow.png",()->new BaseArrowEntity.Builder()
                     .setDamage(4f).setPenetration(2))
     ));
     public static final DeferredItem<BaseArrowItem> FLY_FISH_ARROW = ITEMS.register("fly_fish_arrow", () -> new BaseArrowItem(ModRarity.WHITE,
-            BaseArrowEntity.Tuple.create("textures/entity/arrow/fly_fish_arrow.png",()->new BaseArrowEntity.Builder()
+            BaseArrowEntity.Factory.create("textures/entity/arrow/fly_fish_arrow.png",()->new BaseArrowEntity.Builder()
                     .setDamage(2f).setDamageInRain(3).setSpeedUpInRain(1.5f).setSpeedInertiaInWater(0.8f))
     ));
 

@@ -61,6 +61,9 @@ public class MineTunnelsStructure extends Structure {
             ResourceLocation rail = Confluence.asResource("to_structure/rail_support");
             ResourceLocation railBoulder = Confluence.asResource("to_structure/rail_boulder");
             ResourceLocation railDart = Confluence.asResource("to_structure/rail_dart");
+            ResourceLocation stoneBricks = Confluence.asResource("to_structure/rail_stone_bricks");
+            ResourceLocation tuffBricks = Confluence.asResource("to_structure/rail_tuff_bricks");
+            ResourceLocation spruceLog = Confluence.asResource("to_structure/rail_spruce_log");
 
             boolean setGate = 0.1666666F >= random.nextFloat();
             //setGate = true;
@@ -159,21 +162,20 @@ public class MineTunnelsStructure extends Structure {
                 rectangular(centerPos.offset(3, 0, 3), underPos.offset(-3, 1, -3), 0, blockMap, 0);
 
                 rectangular(centerPos.offset(3, 0, 3), underPos.offset(-3, 3, -3), 15, blockMap, 0);
-                rectangular(underPos.offset(2, -2, 2), centerPos.offset(-2, minY - centerPos.getY(), -2), 15, blockMap, 0);
 
-                rectangular(centerPos.offset(3, 0, 3), centerPos.offset(2, minY - centerPos.getY(), 2), 16, blockMap, 0);
-                rectangular(centerPos.offset(3, 0, -3), centerPos.offset(2, minY - centerPos.getY(), -2), 16, blockMap, 0);
-                rectangular(centerPos.offset(-3, 0, 3), centerPos.offset(-2, minY - centerPos.getY(), 2), 16, blockMap, 0);
-                rectangular(centerPos.offset(-3, 0, -3), centerPos.offset(-2, minY - centerPos.getY(), -2), 16, blockMap, 0);
+                rectangular(centerPos.offset(3, 0, 3), underPos.offset(2, 0, 2), 16, blockMap, 0);
+                rectangular(centerPos.offset(3, 0, -3), underPos.offset(2, 0, -2), 16, blockMap, 0);
+                rectangular(centerPos.offset(-3, 0, 3), underPos.offset(-2, 0, 2), 16, blockMap, 0);
+                rectangular(centerPos.offset(-3, 0, -3), underPos.offset(-2, 0, -2), 16, blockMap, 0);
                 rectangular(underPos.offset(3, -1, 3), underPos.offset(-3, -1, -3), 16, blockMap, 0);
                 rectangular(underPos.offset(2, -1, 2), underPos.offset(-2, -1, -2), 15, blockMap, 0);
                 rectangular(underPos.offset(2, 1, 2), underPos.offset(-2, 4, -2), 0, blockMap, 0);
                 rectangular(underPos.offset(1, 1, 1), centerPos.offset(-1, 0, -1), 0, blockMap, 0);
 
-                rectangular(centerPos.offset(3, 0, 3), centerPos.offset(3, minY - centerPos.getY(), 3), 14, blockMap, 0);
-                rectangular(centerPos.offset(3, 0, -3), centerPos.offset(3, minY - centerPos.getY(), -3), 14, blockMap, 0);
-                rectangular(centerPos.offset(-3, 0, 3), centerPos.offset(-3, minY - centerPos.getY(), 3), 14, blockMap, 0);
-                rectangular(centerPos.offset(-3, 0, -3), centerPos.offset(-3, minY - centerPos.getY(), -3), 14, blockMap, 0);
+                rectangular(centerPos.offset(3, 0, 3), underPos.offset(3, 0, 3), 14, blockMap, 0);
+                rectangular(centerPos.offset(3, 0, -3), underPos.offset(3, 0, -3), 14, blockMap, 0);
+                rectangular(centerPos.offset(-3, 0, 3), underPos.offset(-3, 0, 3), 14, blockMap, 0);
+                rectangular(centerPos.offset(-3, 0, -3), underPos.offset(-3, 0, -3), 14, blockMap, 0);
 
                 if (gateType == 0) {
                     rectangular(centerPos.offset(1, 0, 0), centerPos.offset(1, -lengthGate, 0), 19, blockMap, 0);
@@ -185,45 +187,54 @@ public class MineTunnelsStructure extends Structure {
                     rectangular(centerPos.offset(0, -lengthGate, 1), centerPos.offset(0, -lengthGate, -1), 18, blockMap, 0);
                 }
             } else {
-                rectangular(underPos.offset(3, -2, 3), centerPos.offset(2, minY - centerPos.getY(), 2), 16, blockMap, 0);
-                rectangular(underPos.offset(3, -2, -3), centerPos.offset(2, minY - centerPos.getY(), -2), 16, blockMap, 0);
-                rectangular(underPos.offset(-3, -2, 3), centerPos.offset(-2, minY - centerPos.getY(), 2), 16, blockMap, 0);
-                rectangular(underPos.offset(-3, -2, -3), centerPos.offset(-2, minY - centerPos.getY(), -2), 16, blockMap, 0);
                 rectangular(underPos.offset(3, -1, 3), underPos.offset(-3, -1, -3), 16, blockMap, 0);
-                rectangular(underPos.offset(2, -1, 2), underPos.offset(-2, minY - underPos.getY(), -2), 15, blockMap, 0);
-
-                rectangular(underPos.offset(3, -2, 3), centerPos.offset(3, minY - centerPos.getY(), 3), 14, blockMap, 0);
-                rectangular(underPos.offset(3, -2, -3), centerPos.offset(3, minY - centerPos.getY(), -3), 14, blockMap, 0);
-                rectangular(underPos.offset(-3, -2, 3), centerPos.offset(-3, minY - centerPos.getY(), 3), 14, blockMap, 0);
-                rectangular(underPos.offset(-3, -2, -3), centerPos.offset(-3, minY - centerPos.getY(), -3), 14, blockMap, 0);
+                rectangular(underPos.offset(2, -1, 2), underPos.offset(-2, -1, -2), 15, blockMap, 0);
             }
 
+            for (int xF = -2; xF < 3; xF++) {
+                for (int zF = -2; zF < 3; zF++) {
+                    featureMap.put(underPos.offset(xF, -2, zF), stoneBricks);
+                }
+            }
+            featureMap.put(underPos.offset(3, -2, 3), spruceLog);
+            featureMap.put(underPos.offset(3, -2, -3), spruceLog);
+            featureMap.put(underPos.offset(-3, -2, 3), spruceLog);
+            featureMap.put(underPos.offset(-3, -2, -3), spruceLog);
+            featureMap.put(underPos.offset(3, -2, 2), tuffBricks);
+            featureMap.put(underPos.offset(3, -2, -2), tuffBricks);
+            featureMap.put(underPos.offset(-3, -2, 2), tuffBricks);
+            featureMap.put(underPos.offset(-3, -2, -2), tuffBricks);
+            featureMap.put(underPos.offset(2, -2, 3), tuffBricks);
+            featureMap.put(underPos.offset(2, -2, -3), tuffBricks);
+            featureMap.put(underPos.offset(-2, -2, 3), tuffBricks);
+            featureMap.put(underPos.offset(-2, -2, -3), tuffBricks);
+
             GridPiece.addPieces(blockMap, Lists.newArrayList(
-                    Blocks.AIR.defaultBlockState(),
-                    Blocks.OAK_PLANKS.defaultBlockState(),
-                    FunctionalBlocks.EVER_POWERED_RAIL.get().defaultBlockState().setValue(SHAPE, RailShape.NORTH_SOUTH),
-                    FunctionalBlocks.EVER_POWERED_RAIL.get().defaultBlockState().setValue(SHAPE, RailShape.EAST_WEST),
-                    FunctionalBlocks.EVER_POWERED_RAIL.get().defaultBlockState().setValue(SHAPE, RailShape.ASCENDING_EAST),
-                    FunctionalBlocks.EVER_POWERED_RAIL.get().defaultBlockState().setValue(SHAPE, RailShape.ASCENDING_WEST),
-                    FunctionalBlocks.EVER_POWERED_RAIL.get().defaultBlockState().setValue(SHAPE, RailShape.ASCENDING_SOUTH),
-                    FunctionalBlocks.EVER_POWERED_RAIL.get().defaultBlockState().setValue(SHAPE, RailShape.ASCENDING_NORTH),
-                    Blocks.RAIL.defaultBlockState().setValue(RailBlock.SHAPE, RailShape.NORTH_EAST),
-                    Blocks.RAIL.defaultBlockState().setValue(RailBlock.SHAPE, RailShape.SOUTH_WEST),
-                    Blocks.RAIL.defaultBlockState().setValue(RailBlock.SHAPE, RailShape.SOUTH_EAST),
-                    Blocks.RAIL.defaultBlockState().setValue(RailBlock.SHAPE, RailShape.NORTH_WEST),
-                    Blocks.CHISELED_TUFF_BRICKS.defaultBlockState(),
-                    Blocks.LEVER.defaultBlockState().setValue(FaceAttachedHorizontalDirectionalBlock.FACE, AttachFace.FLOOR),
-                    Blocks.SPRUCE_LOG.defaultBlockState(),
-                    Blocks.STONE_BRICKS.defaultBlockState(),
-                    Blocks.TUFF_BRICKS.defaultBlockState(),
-                    Blocks.LANTERN.defaultBlockState(),
-                    Blocks.SPRUCE_TRAPDOOR.defaultBlockState().setValue(TrapDoorBlock.HALF, Half.TOP),
-                    Blocks.CHAIN.defaultBlockState(),
-                    Blocks.DETECTOR_RAIL.defaultBlockState().setValue(DetectorRailBlock.SHAPE, RailShape.EAST_WEST),
-                    Blocks.DETECTOR_RAIL.defaultBlockState().setValue(DetectorRailBlock.SHAPE, RailShape.NORTH_SOUTH),
-                    Blocks.STONE.defaultBlockState(),
-                    Blocks.LAVA.defaultBlockState(),
-                    FunctionalBlocks.INSTANTANEOUS_EXPLOSION_TNT.get().defaultBlockState()
+                    /* 0  */  Blocks.AIR.defaultBlockState(),
+                    /* 1  */  Blocks.OAK_PLANKS.defaultBlockState(),
+                    /* 2  */  FunctionalBlocks.EVER_POWERED_RAIL.get().defaultBlockState().setValue(SHAPE, RailShape.NORTH_SOUTH),
+                    /* 3  */  FunctionalBlocks.EVER_POWERED_RAIL.get().defaultBlockState().setValue(SHAPE, RailShape.EAST_WEST),
+                    /* 4  */  FunctionalBlocks.EVER_POWERED_RAIL.get().defaultBlockState().setValue(SHAPE, RailShape.ASCENDING_EAST),
+                    /* 5  */  FunctionalBlocks.EVER_POWERED_RAIL.get().defaultBlockState().setValue(SHAPE, RailShape.ASCENDING_WEST),
+                    /* 6  */  FunctionalBlocks.EVER_POWERED_RAIL.get().defaultBlockState().setValue(SHAPE, RailShape.ASCENDING_SOUTH),
+                    /* 7  */  FunctionalBlocks.EVER_POWERED_RAIL.get().defaultBlockState().setValue(SHAPE, RailShape.ASCENDING_NORTH),
+                    /* 8  */  Blocks.RAIL.defaultBlockState().setValue(RailBlock.SHAPE, RailShape.NORTH_EAST),
+                    /* 9  */  Blocks.RAIL.defaultBlockState().setValue(RailBlock.SHAPE, RailShape.SOUTH_WEST),
+                    /* 10 */  Blocks.RAIL.defaultBlockState().setValue(RailBlock.SHAPE, RailShape.SOUTH_EAST),
+                    /* 11 */  Blocks.RAIL.defaultBlockState().setValue(RailBlock.SHAPE, RailShape.NORTH_WEST),
+                    /* 12 */  Blocks.CHISELED_TUFF_BRICKS.defaultBlockState(),
+                    /* 13 */  Blocks.LEVER.defaultBlockState().setValue(FaceAttachedHorizontalDirectionalBlock.FACE, AttachFace.FLOOR),
+                    /* 14 */  Blocks.SPRUCE_LOG.defaultBlockState(),
+                    /* 15 */  Blocks.STONE_BRICKS.defaultBlockState(),
+                    /* 16 */  Blocks.TUFF_BRICKS.defaultBlockState(),
+                    /* 17 */  Blocks.LANTERN.defaultBlockState(),
+                    /* 18 */  Blocks.SPRUCE_TRAPDOOR.defaultBlockState().setValue(TrapDoorBlock.HALF, Half.TOP),
+                    /* 19 */  Blocks.CHAIN.defaultBlockState(),
+                    /* 20 */  Blocks.DETECTOR_RAIL.defaultBlockState().setValue(DetectorRailBlock.SHAPE, RailShape.EAST_WEST),
+                    /* 21 */  Blocks.DETECTOR_RAIL.defaultBlockState().setValue(DetectorRailBlock.SHAPE, RailShape.NORTH_SOUTH),
+                    /* 22 */  Blocks.STONE.defaultBlockState(),
+                    /* 23 */  Blocks.LAVA.defaultBlockState(),
+                    /* 24 */  FunctionalBlocks.INSTANTANEOUS_EXPLOSION_TNT.get().defaultBlockState()
             ), featureMap, builder);
             if (setGate) {
                 if (gateType == 0) {

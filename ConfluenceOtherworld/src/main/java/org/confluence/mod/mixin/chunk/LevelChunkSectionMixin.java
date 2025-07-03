@@ -118,14 +118,14 @@ public abstract class LevelChunkSectionMixin implements IChunkSection {
     @Inject(method = "setBlockState(IIILnet/minecraft/world/level/block/state/BlockState;Z)Lnet/minecraft/world/level/block/state/BlockState;", at = @At("RETURN"))
     private void setBlockState(int pX, int pY, int pZ, BlockState targetState, boolean pUseLocks, CallbackInfoReturnable<BlockState> cir, @Local(ordinal = 1) BlockState beforeState) {
         if (beforeState.getBlock() instanceof ISpreadable spreadable) {
-            switch (spreadable.getType()) {
+            switch (spreadable.getSpreadType()) {
                 case CRIMSON -> confluence$crimsonCount--;
                 case CORRUPT -> confluence$corruptCount--;
                 case HALLOW -> confluence$hallowCount--;
             }
         }
         if (targetState.getBlock() instanceof ISpreadable spreadable) {
-            switch (spreadable.getType()) {
+            switch (spreadable.getSpreadType()) {
                 case CRIMSON -> confluence$crimsonCount++;
                 case CORRUPT -> confluence$corruptCount++;
                 case HALLOW -> confluence$hallowCount++;

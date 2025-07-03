@@ -45,12 +45,12 @@ public class CrimsonCaveStructure extends Structure {
     protected Optional<GenerationStub> findGenerationPoint(GenerationContext context) {
         if (context.chunkGenerator().getBiomeSource() instanceof MultiNoiseBiomeSource multi) {
             if (multi instanceof BannedBiomeMultiNoiseBiomeSource banned) {
-                if (banned.getBannedBiome() == ModBiomes.TR_CRIMSON) {
+                if (banned.getBannedBiome() == ModBiomes.THE_CRIMSON) {
                     return Optional.empty();
                 }
             } else {
                 Pair<Holder<Biome>, Holder<Biome>> pair = ((IMultiNoiseBiomeSource) multi).confluence$getBiomePair();
-                if (pair != null && pair.getFirst() != null && pair.getFirst().is(ModBiomes.TR_CRIMSON)) {
+                if (pair != null && pair.getFirst() != null && pair.getFirst().is(ModBiomes.THE_CRIMSON)) {
                     return Optional.empty();
                 }
             }
@@ -113,7 +113,7 @@ public class CrimsonCaveStructure extends Structure {
                 VectorUtils.lightningPathList(VctList, 1, 5, random);
                 lineSet(VctList, 4, 8, 1, false, blockMap);
                 lineSet(VctList, 2, 6, 0, true, blockMap);
-                pos = new BlockPos((int) VctList.getFirst().x, (int) VctList.getFirst().y, (int) VctList.getFirst().z);
+                pos = VectorUtils.fromVector3d(VctList.getFirst());
                 if (wrappedCrimsonHeart) {
                     StructureUtils.ball(4, pos, 1, true, blockMap);
                     StructureUtils.ball(2, pos, 0, true, blockMap);
@@ -123,7 +123,7 @@ public class CrimsonCaveStructure extends Structure {
 
             GridPiece.addPieces(blockMap, Lists.newArrayList(
                     Blocks.AIR.defaultBlockState(),
-                    NatureBlocks.TR_CRIMSON_STONE.get().defaultBlockState(),
+                    NatureBlocks.CRIMSTONE.get().defaultBlockState(),
                     NatureBlocks.CRIMSON_HEART.get().defaultBlockState()
             ), builder);
         });

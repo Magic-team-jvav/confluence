@@ -5,9 +5,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.stats.Stat;
@@ -15,10 +13,8 @@ import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
@@ -26,41 +22,27 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.ChestType;
-import net.minecraft.world.level.storage.loot.LootParams;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
-import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.block.common.BaseChestBlock;
 import org.confluence.mod.common.block.functional.network.INetworkBlock;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.block.functional.network.Network;
 import org.confluence.mod.common.block.functional.network.NetworkNode;
-import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.common.init.block.ChestBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.VanityArmorItems;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class DeathChestBlock extends BaseChestBlock implements INetworkBlock {
     public DeathChestBlock() {
-        super(Properties.ofFullCopy(Blocks.TRAPPED_CHEST).explosionResistance(ModBlocks.getObsidianBasedExplosionResistance(0.0F)), FunctionalBlocks.DEATH_CHEST_BLOCK_ENTITY::get);
+        super(Properties.ofFullCopy(Blocks.TRAPPED_CHEST).explosionResistance(ModBlocks.getObsidianBasedExplosionResistance(0.0F)), ChestBlocks.DEATH_CHEST_ENTITY::get, null);
     }
 
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
         return new Entity(pPos, pState);
-    }
-
-    @Override
-    protected List<ItemStack> getDrops(BlockState state, LootParams.Builder params) {
-        if (params.getOptionalParameter(LootContextParams.BLOCK_ENTITY) instanceof Entity entity) {
-            return Collections.singletonList(setData(FunctionalBlocks.DEATH_CHEST_BLOCK.toStack(), entity.variant));
-        }
-        return Collections.emptyList();
     }
 
     protected Stat<ResourceLocation> getOpenChestStat() {
@@ -94,15 +76,6 @@ public class DeathChestBlock extends BaseChestBlock implements INetworkBlock {
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
-        ItemStack itemStack = new ItemStack(this);
-        if (level.getBlockEntity(pos) instanceof Entity entity) {
-            return setData(itemStack, entity.variant);
-        }
-        return itemStack;
-    }
-
-    @Override
     public void onExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {
         execution(pState, pLevel, pPos, pColor, true);
     }
@@ -127,19 +100,13 @@ public class DeathChestBlock extends BaseChestBlock implements INetworkBlock {
         }
     }
 
-    public static ItemStack setData(ItemStack itemStack, Variant variant) {
-        LibUtils.updateItemStackNbt(itemStack, tag -> tag.putInt("VariantId", variant.getId()));
-        itemStack.set(DataComponents.CUSTOM_NAME, Component.translatable("block.confluence.base_chest_block." + variant.getSerializedName().replace("unlocked", "death")).withStyle(style -> style.withItalic(false)));
-        return itemStack;
-    }
-
     public static class Entity extends BaseChestBlock.Entity implements INetworkEntity {
         private NetworkNode networkNode;
         private final Int2ObjectMap<Set<BlockPos>> connectedPoses;
         private final Int2ObjectMap<Set<BlockPos>> relativePoses;
 
         public Entity(BlockPos pPos, BlockState pBlockState) {
-            super(FunctionalBlocks.DEATH_CHEST_BLOCK_ENTITY.get(), pPos, pBlockState);
+            super(ChestBlocks.DEATH_CHEST_ENTITY.get(), pPos, pBlockState);
             this.connectedPoses = new Int2ObjectOpenHashMap<>();
             this.relativePoses = new Int2ObjectOpenHashMap<>();
         }

@@ -10,24 +10,19 @@ import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
-import net.minecraft.world.item.component.Unbreakable;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.SwordProjectileComponent;
-import org.confluence.mod.common.init.ModDataComponentTypes;
-import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.init.ModEntities;
-import org.confluence.mod.common.init.ModTiers;
+import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
-import org.confluence.mod.common.item.sword.LightSaber;
+import org.confluence.mod.common.item.sword.Phaseblade;
 import org.confluence.mod.common.item.sword.SweetSword;
 import org.confluence.mod.common.item.sword.legacy.InventoryTickStrategy;
 import org.confluence.mod.common.item.sword.legacy.SwordPrefabs;
 import org.confluence.mod.integration.terra_entity.init.ModEffectStrategies;
 import org.confluence.terraentity.init.TEEffectStrategies;
-import org.confluence.terraentity.init.TESounds;
 import org.confluence.terraentity.registries.generation.variant.ForwardGeneration;
 import org.confluence.terraentity.registries.track.variant.SimpleTrack;
 
@@ -59,14 +54,14 @@ public class SwordItems {
 
     //普通宽剑 默认横扫*1.5
     public static final DeferredItem<SwordItem> CACTUS_SWORD = register("cactus_sword", ModTiers.CACTUS, 5, 1.6F, NORMAL_SWORD.get());
-    public static final DeferredItem<SwordItem> COPPER_BOARD_SWORD = register("copper_board_sword", ModTiers.COPPER, 5, 1.6F, NORMAL_SWORD.get());
-    public static final DeferredItem<SwordItem> TIN_BOARD_SWORD = register("tin_board_sword", ModTiers.TIN, 5, 1.6F, NORMAL_SWORD.get());
-    public static final DeferredItem<SwordItem> LEAD_BOARD_SWORD = register("lead_board_sword", ModTiers.LEAD, 6, 1.6F, NORMAL_SWORD.get());
-    public static final DeferredItem<SwordItem> SILVER_BOARD_SWORD = register("silver_board_sword", ModTiers.SILVER, 6, 1.6F, NORMAL_SWORD.get());
-    public static final DeferredItem<SwordItem> TUNGSTEN_BOARD_SWORD = register("tungsten_board_sword", ModTiers.TUNGSTEN, 6, 1.6F, NORMAL_SWORD.get());
-    public static final DeferredItem<SwordItem> GOLDEN_BOARD_SWORD = register("golden_board_sword", ModTiers.GOLD, 7, 1.6F, NORMAL_SWORD.get());
-    public static final DeferredItem<SwordItem> PLATINUM_BOARD_SWORD = register("platinum_board_sword", ModTiers.PLATINUM, 8, 1.6F, NORMAL_SWORD.get());
-    public static final DeferredItem<SwordItem> MURAMASA = register("muramasa", ModTiers.UNBREAKABLE, 12, 3, NORMAL_SWORD.get()
+    public static final DeferredItem<SwordItem> COPPER_BROADSWORD = register("copper_broadsword", ModTiers.COPPER, 5, 1.6F, NORMAL_SWORD.get());
+    public static final DeferredItem<SwordItem> TIN_BROADSWORD = register("tin_broadsword", ModTiers.TIN, 5, 1.6F, NORMAL_SWORD.get());
+    public static final DeferredItem<SwordItem> LEAD_BROADSWORD = register("lead_broadsword", ModTiers.LEAD, 6, 1.6F, NORMAL_SWORD.get());
+    public static final DeferredItem<SwordItem> SILVER_BROADSWORD = register("silver_broadsword", ModTiers.SILVER, 6, 1.6F, NORMAL_SWORD.get());
+    public static final DeferredItem<SwordItem> TUNGSTEN_BROADSWORD = register("tungsten_broadsword", ModTiers.TUNGSTEN, 6, 1.6F, NORMAL_SWORD.get());
+    public static final DeferredItem<SwordItem> GOLDEN_BROADSWORD = register("golden_broadsword", ModTiers.GOLD, 7, 1.6F, NORMAL_SWORD.get());
+    public static final DeferredItem<SwordItem> PLATINUM_BROADSWORD = register("platinum_broadsword", ModTiers.PLATINUM, 8, 1.6F, NORMAL_SWORD.get());
+    public static final DeferredItem<SwordItem> MURAMASA = register("muramasa", ModTiers.UNBREAKABLE, 14, 3, NORMAL_SWORD.get()
             .setSweepRange(2.5F).addAttributeModifier(Attributes.ATTACK_KNOCKBACK, 0.2f, AttributeModifier.Operation.ADD_VALUE));
 
 
@@ -112,17 +107,16 @@ public class SwordItems {
             .apply(SwordProjectileComponent.ENCHANTED_SWORD_PROJ).addTooltip(p -> p.withColor(0x4156e4)).addTooltip(p -> p.withColor(0x4156e4)));
     public static final DeferredItem<SwordItem> BLADE_OF_GRASS = register("blade_of_grass", ModTiers.UNBREAKABLE, 7, 2.9F, ModRarity.GREEN, PROJ_SWORD
             .apply(SwordProjectileComponent.GRASS_PROJ));
-    public static final DeferredItem<SwordItem> NIGHT_EDGE = register("night_edge", ModTiers.UNBREAKABLE, 25, 2.5F, ModRarity.GREEN, PROJ_SWORD
+    public static final DeferredItem<SwordItem> NIGHTS_EDGE = register("nights_edge", ModTiers.UNBREAKABLE, 25, 2.5F, ModRarity.GREEN, PROJ_SWORD
             .apply(SwordProjectileComponent.NIGHT_PROJ));
 
-    // 光剑 todo 重命名为phaseblade
-    public static final DeferredItem<SwordItem> RED_LIGHT_SABER = register("red_light_saber", () -> new LightSaber(ModTiers.UNBREAKABLE, ModRarity.BLUE, 10, 2, "red"));
-    public static final DeferredItem<SwordItem> ORANGE_LIGHT_SABER = register("orange_light_saber", () -> new LightSaber(ModTiers.UNBREAKABLE, ModRarity.BLUE, 10, 2, "orange"));
-    public static final DeferredItem<SwordItem> YELLOW_LIGHT_SABER = register("yellow_light_saber", () -> new LightSaber(ModTiers.UNBREAKABLE, ModRarity.BLUE, 10, 2, "yellow"));
-    public static final DeferredItem<SwordItem> GREEN_LIGHT_SABER = register("green_light_saber", () -> new LightSaber(ModTiers.UNBREAKABLE, ModRarity.BLUE, 10, 2, "green"));
-    public static final DeferredItem<SwordItem> BLUE_LIGHT_SABER = register("blue_light_saber", () -> new LightSaber(ModTiers.UNBREAKABLE, ModRarity.BLUE, 10, 2, "blue"));
-    public static final DeferredItem<SwordItem> PURPLE_LIGHT_SABER = register("purple_light_saber", () -> new LightSaber(ModTiers.UNBREAKABLE, ModRarity.BLUE, 10, 2, "purple"));
-    public static final DeferredItem<SwordItem> WHITE_LIGHT_SABER = register("white_light_saber", () -> new LightSaber(ModTiers.UNBREAKABLE, ModRarity.BLUE, 10, 2, "white"));
+    public static final DeferredItem<SwordItem> RED_PHASEBLADE = register("red_phaseblade", () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, "red"));
+    public static final DeferredItem<SwordItem> ORANGE_PHASEBLADE = register("orange_phaseblade", () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, "orange"));
+    public static final DeferredItem<SwordItem> YELLOW_PHASEBLADE = register("yellow_phaseblade", () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, "yellow"));
+    public static final DeferredItem<SwordItem> GREEN_PHASEBLADE = register("green_phaseblade", () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, "green"));
+    public static final DeferredItem<SwordItem> BLUE_PHASEBLADE = register("blue_phaseblade", () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, "blue"));
+    public static final DeferredItem<SwordItem> PURPLE_PHASEBLADE = register("purple_phaseblade", () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, "purple"));
+    public static final DeferredItem<SwordItem> WHITE_PHASEBLADE = register("white_phaseblade", () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, "white"));
 
 
     // 特殊剑
@@ -132,7 +126,7 @@ public class SwordItems {
             .addAttributeModifier(Attributes.MOVEMENT_SPEED, 1.5f, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)        //手持属性加成
             .setInventoryTick(InventoryTickStrategy.INVINCIBLE)             //背包每刻效果
             .modifyProperties(p -> p.component(ModDataComponentTypes.SWORD_PROJECTILE, new SwordProjectileComponent(
-                    1, 1, 1, 50, 0.05f, 20, TESounds.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.ENCHANTED_SWORD_PROJECTILE.getId(),
+                    1, 1, 1, 50, 0.05f, 20, ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.ENCHANTED_SWORD_PROJECTILE.getId(),
                     Optional.of(new SimpleTrack(Mth.HALF_PI, 0.5f, 0.1f, Optional.empty(), 0.1)),
                     ForwardGeneration.of(0, 0), Optional.empty()
             ))));
@@ -156,7 +150,7 @@ public class SwordItems {
 
     public static DeferredItem<SwordItem> register(String name, Tier tier, int rawDamage, float rawSpeed, ModRarity rarity, BaseSwordItem.ModifierBuilder modifierBuilder) {
         if (tier == ModTiers.UNBREAKABLE) {
-            modifierBuilder.modifyProperties(p -> p.component(DataComponents.UNBREAKABLE, new Unbreakable(true)));
+            modifierBuilder.modifyProperties(p -> p.component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE));
         }
         return register(name, () -> new BaseSwordItem(tier, rarity, rawDamage, rawSpeed, modifierBuilder));
     }

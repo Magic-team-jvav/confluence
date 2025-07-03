@@ -8,9 +8,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.mod.Confluence;
-import org.confluence.mod.common.init.ModAchievements;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.item.ArmorItems;
+import org.confluence.mod.util.AchievementUtils;
 import org.confluence.terra_curio.common.entity.BeeProjectile;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.util.TCUtils;
@@ -43,14 +43,14 @@ public class BeeGunItem extends ManaGunItem {
     }
 
     private static void notTheBees(Player player) {
-        CompoundTag data = player.getPersistentData();
+        CompoundTag data = LibUtils.getOrCreatePersistedData(player);
         if (!data.getBoolean("confluence:not_the_bees")) {
             if (player.getItemBySlot(EquipmentSlot.HEAD).is(ArmorItems.BEE_HELMET.get()) ||
                     player.getItemBySlot(EquipmentSlot.CHEST).is(ArmorItems.BEE_CHESTPLATE.get()) ||
                     player.getItemBySlot(EquipmentSlot.LEGS).is(ArmorItems.BEE_LEGGINGS.get()) ||
                     player.getItemBySlot(EquipmentSlot.FEET).is(ArmorItems.BEE_BOOTS.get())) {
                 ServerPlayer serverPlayer = (ServerPlayer) player;
-                AdvancementHolder advancement = serverPlayer.server.getAdvancements().get(Confluence.asResource(ModAchievements.PREFIX + "not_the_bees"));
+                AdvancementHolder advancement = serverPlayer.server.getAdvancements().get(AchievementUtils.asAchievement("not_the_bees"));
                 if (advancement != null) {
                     serverPlayer.getAdvancements().award(advancement, "never");
                 }

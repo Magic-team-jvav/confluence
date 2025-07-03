@@ -9,6 +9,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.HalfTransparentBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
@@ -19,7 +20,7 @@ public class ThinHoneyBlock extends HalfTransparentBlock {
 
     @Override
     protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-        return Shapes.empty();
+        return context != CollisionContext.empty() && context instanceof EntityCollisionContext ? Shapes.empty() : Shapes.block();
     }
 
     @Override
@@ -42,5 +43,10 @@ public class ThinHoneyBlock extends HalfTransparentBlock {
         if (entity.causeFallDamage(fallDistance, 0.2F, level.damageSources().fall())) {
             entity.playSound(soundType.getFallSound(), soundType.getVolume() * 0.5F, soundType.getPitch() * 0.75F);
         }
+    }
+
+    @Override
+    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+        super.onRemove(state, level, pos, newState, movedByPiston);
     }
 }

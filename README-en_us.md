@@ -15,9 +15,10 @@
 | [IsekaiInvaded](IsekaiInvaded)               | Dimensional Invasion Event | depends on HeavenDestinyMoment |
 | [TerraFurniture](TerraFurniture)             | Terra's Furniture          | yes                            |
 
-| Official Integrations                                               | Description                  |
-|---------------------------------------------------------------------|------------------------------|
-| [ConfluenceDelight](https://github.com/XiaoHuNao/ConfluenceDelight) | Farmer's Delight integration |
+| Official Integrations                                              | Description                  |
+|--------------------------------------------------------------------|------------------------------|
+| [ConfluenceDelight](https://github.com/cooobird/ConfluenceDelight) | Farmer's Delight integration |
+| [ConfluenceMusic](https://github.com/westernat/Confluence-Music)   | Extra music                  |
 
 ## Build the Project
 

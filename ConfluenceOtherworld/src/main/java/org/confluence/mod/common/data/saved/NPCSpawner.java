@@ -42,8 +42,9 @@ import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.common.worldgen.structure.DungeonStructure;
-import org.confluence.mod.mixed.IAbstractTerraNPC;
+import org.confluence.mod.integration.terra_entity.IAbstractTerraNPC;
 import org.confluence.mod.mixin.integration.terra_entity.AnglerNPCMixin;
+import org.confluence.mod.util.OverworldUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_guns.common.init.TGTags;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
@@ -127,6 +128,10 @@ public class NPCSpawner implements IGlobalData {
         return count;
     }
 
+    public Object2BooleanMap<EntityType<?>> getRegionAliveDetails(Region region) {
+        return npcAlive.computeIfAbsent(region, region1 -> new Object2BooleanOpenHashMap<>());
+    }
+
     public boolean hasNPCAlive(Region region, EntityType<?> entityType) {
         Object2BooleanMap<EntityType<?>> map = npcAlive.get(region);
         return map != null && map.getOrDefault(entityType, false);
@@ -134,7 +139,7 @@ public class NPCSpawner implements IGlobalData {
 
     public void setNPCAlive(Region region, EntityType<?> entityType, boolean alive) {
         if (alive) {
-            npcAlive.computeIfAbsent(region, area -> new Object2BooleanOpenHashMap<>()).put(entityType, true);
+            getRegionAliveDetails(region).put(entityType, true);
             npcSpawned.add(entityType);
         } else {
             Object2BooleanMap<EntityType<?>> map = npcAlive.get(region);
@@ -221,7 +226,7 @@ public class NPCSpawner implements IGlobalData {
 
     public void trySpawnGuide(ServerPlayer serverPlayer) {
         ServerLevel serverLevel = serverPlayer.serverLevel();
-        if (serverLevel.dimension() == Level.OVERWORLD) {
+        if (serverLevel.dimension() == OverworldUtils.dimension()) {
             BlockPos pos = getNpcSpawnPos(serverPlayer);
             if (!hasNPCAlive(new Region(pos), TENpcEntities.GUIDE.get())) {
                 spawnAtPos(serverLevel, pos, TENpcEntities.GUIDE.get());
@@ -328,7 +333,7 @@ public class NPCSpawner implements IGlobalData {
                     npc.setPos(closestBiome3d.getFirst().atY(level.getSeaLevel()).offset(dx, 0, dz).getCenter());
                     level.addFreshEntity(npc);
                     IAbstractTerraNPC.of(npc).confluence$setRegion(playerRegion);
-                    npcAlive.computeIfAbsent(playerRegion, region1 -> new Object2BooleanOpenHashMap<>()).put(TENpcEntities.ANGLER.get(), true);
+                    getRegionAliveDetails(playerRegion).put(TENpcEntities.ANGLER.get(), true);
                     return true;
                 }
             }
@@ -353,15 +358,7 @@ public class NPCSpawner implements IGlobalData {
     private boolean trySpawnPainter(ServerPlayer serverPlayer, BlockPos pos, Region region) {
         Object2BooleanMap<EntityType<?>> map = npcAlive.get(region);
         if (map != null && !map.getOrDefault(TENpcEntities.PAINTER.get(), false)) {
-            if (map.getOrDefault(TENpcEntities.GUIDE.get(), false) &&
-                    map.getOrDefault(TENpcEntities.MERCHANT.get(), false) &&
-                    map.getOrDefault(TENpcEntities.NURSE.get(), false) &&
-                    map.getOrDefault(TENpcEntities.DEMOLITIONIST.get(), false) &&
-                    map.getOrDefault(TENpcEntities.DYE_TRADER.get(), false) &&
-                    map.getOrDefault(TENpcEntities.ANGLER.get(), false) &&
-                    // todo 还差动物学家
-                    map.getOrDefault(TENpcEntities.DRYAD.get(), false)
-            ) {
+            if (map.size() >= 8) {
                 return spawnAtPos(serverPlayer.serverLevel(), pos, TENpcEntities.PAINTER.get());
             }
         }
@@ -424,7 +421,7 @@ public class NPCSpawner implements IGlobalData {
                                 npc.setPos(offset.getBottomCenter());
                                 level.addFreshEntity(npc);
                                 IAbstractTerraNPC.of(npc).confluence$setRegion(npcRegion);
-                                npcAlive.computeIfAbsent(npcRegion, region1 -> new Object2BooleanOpenHashMap<>()).put(TENpcEntities.OLD_MAN.get(), true);
+                                getRegionAliveDetails(npcRegion).put(TENpcEntities.OLD_MAN.get(), true);
                                 return true;
                             }
                             return false;

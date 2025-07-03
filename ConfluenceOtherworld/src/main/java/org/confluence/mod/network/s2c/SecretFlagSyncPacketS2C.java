@@ -10,17 +10,13 @@ import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.lib.network.ExtraByteBufCodecs;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.ClientPacketHandler;
-import org.jetbrains.annotations.NotNull;
 
 public record SecretFlagSyncPacketS2C(long flag) implements CustomPacketPayload {
     public static final Type<SecretFlagSyncPacketS2C> TYPE = new Type<>(Confluence.asResource("secret_flag_sync"));
-    public static final StreamCodec<ByteBuf, SecretFlagSyncPacketS2C> STREAM_CODEC = StreamCodec.composite(
-            ExtraByteBufCodecs.LONG, p -> p.flag,
-            SecretFlagSyncPacketS2C::new
-    );
+    public static final StreamCodec<ByteBuf, SecretFlagSyncPacketS2C> STREAM_CODEC = ExtraByteBufCodecs.LONG.map(SecretFlagSyncPacketS2C::new, SecretFlagSyncPacketS2C::flag);
 
     @Override
-    public @NotNull Type<SecretFlagSyncPacketS2C> type() {
+    public Type<SecretFlagSyncPacketS2C> type() {
         return TYPE;
     }
 

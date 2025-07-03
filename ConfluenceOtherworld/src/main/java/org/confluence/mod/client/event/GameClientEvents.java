@@ -13,9 +13,10 @@ import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.core.BlockPos;
+import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
@@ -25,8 +26,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -36,33 +35,34 @@ import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import org.confluence.lib.client.AntiPushPoseStack;
 import org.confluence.lib.common.component.ModRarity;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.effect.SpelunkerHelper;
 import org.confluence.mod.client.gui.TooltipManager;
 import org.confluence.mod.client.handler.*;
+import org.confluence.mod.client.renderer.item.ZombieArmRenderer;
 import org.confluence.mod.client.textures.LocalBrushData;
-import org.confluence.mod.common.block.functional.MusicBoxBlock;
 import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEquipmentSets;
 import org.confluence.mod.common.init.block.NatureBlocks;
-import org.confluence.mod.common.item.accessory.MusicBoxItem;
+import org.confluence.mod.common.init.item.SwordItems;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
-import org.confluence.mod.integration.touhou_little_maid.ExtraButton;
+import org.confluence.mod.integration.ars_nouveau.ArsNouveauHelper;
+import org.confluence.mod.integration.irons_spell.IronSpellHelper;
+import org.confluence.mod.integration.xaero.XaeroHelper;
 import org.confluence.mod.mixed.IInventoryScreen;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.ILocalPlayer;
-import org.confluence.mod.mixed.IMusicManager;
 import org.confluence.mod.network.c2s.OpenMenuPacketC2S;
 import org.confluence.mod.util.ClientUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.api.event.PerformJumpingEvent;
 import software.bernie.geckolib.event.GeoRenderEvent;
-import top.theillusivec4.curios.api.SlotContext;
 
 import java.util.Collection;
 import java.util.List;
@@ -78,20 +78,17 @@ public final class GameClientEvents {
         LocalPlayer player = minecraft.player;
 
         WeatherHandler.initialize(player);
-        /**
-         * @see MusicBoxItem#curioTick(SlotContext, ItemStack) 2nd
-         * @see MusicBoxBlock.Entity#clientTick(Level, BlockPos, BlockState, MusicBoxBlock.Entity) 3rd
-         */
-        IMusicManager.reset(minecraft.getMusicManager()); // 1st
         MeteorLandingHandler.handle(minecraft, player);
 
         if (player == null) {
             LocalBrushData.clear();
             ClientPacketHandler.reset();
+            CompatibilityHandler.reset();
         } else {
             BaseSwordItem.swordProjectileHandle(minecraft, player);
             HookThrowingHandler.handle(player);
             KeyRequestHandler.handle();
+            XaeroHelper.tick(player);
         }
     }
 
@@ -110,11 +107,13 @@ public final class GameClientEvents {
 
     @SubscribeEvent
     public static void renderGuiOverlay$Pre(RenderGuiLayerEvent.Pre event) {
-        if (ClientConfigs.terraStyleHealth && VanillaGuiLayers.PLAYER_HEALTH.equals(event.getName())) {
-            event.setCanceled(true);
-        } else if (ClientConfigs.terraStyleFood && VanillaGuiLayers.FOOD_LEVEL.equals(event.getName())) {
-            event.setCanceled(true);
-        } else if (ClientConfigs.terraStyleArmor && VanillaGuiLayers.ARMOR_LEVEL.equals(event.getName())) {
+        ResourceLocation name = event.getName();
+        if ((ClientConfigs.terraStyleHealth && VanillaGuiLayers.PLAYER_HEALTH.equals(name)) ||
+                (ClientConfigs.terraStyleFood && VanillaGuiLayers.FOOD_LEVEL.equals(name)) ||
+                (ClientConfigs.terraStyleArmor && VanillaGuiLayers.ARMOR_LEVEL.equals(name)) ||
+                ArsNouveauHelper.cancelRenderManaBar(name) ||
+                IronSpellHelper.cancelRenderManaOverlay(name)
+        ) {
             event.setCanceled(true);
         }
     }
@@ -182,7 +181,7 @@ public final class GameClientEvents {
                 }
             }
         }
-        if (ClientConfigs.showItemPrice) {
+        if (ClientConfigs.sellPriceDisplay.test()) {
             int price = ValueComponent.getValue(itemStack, 0);
             if (price > 0) {
                 event.getToolTip().add(Component.translatable("tooltip.price.sell").withStyle(ChatFormatting.GRAY).append(ModUtils.formatPrice(price)));
@@ -242,9 +241,6 @@ public final class GameClientEvents {
             }
             event.addListener(extraInventoryButton);
         }
-
-        // 联动车万女仆
-        ExtraButton.addButton(event);
     }
 
     @SubscribeEvent
@@ -280,23 +276,27 @@ public final class GameClientEvents {
     }
 
     @SubscribeEvent
-    public static void selectMusic(SelectMusicEvent event) {
-        if (event.isCanceled()) return;
-        Minecraft minecraft = Minecraft.getInstance();
-        LocalPlayer player = minecraft.player;
-        if (player == null) {
-            MusicHandler.clear();
-        } else {
-            MusicHandler.handle(event, player, minecraft);
-        }
-    }
-
-    @SubscribeEvent
     public static void afterEquipmentBenedictionUpdated(AfterEquipmentBenedictionUpdatedEvent event) {
         Collection<EquipmentSetBranch> equipmentSetBranches = event.getEntity().getData(EBAttachments.ENTITY_HOOK_MANAGER)
                 .getSetHookManager().getActivatedSetBranch().get(ModEquipmentSets.CRYSTAL_ASSASSIN_SET.get());
         EquipmentSetBranch branch = EquipmentSetManager.getInstance().getBranchResource(Confluence.asResource("crystal_assassin_set/full_set"));
         boolean contains = equipmentSetBranches.contains(branch);
         ClientPacketHandler.handleSprintable(contains);
+    }
+
+    @SubscribeEvent
+    public static void renderPlayer$Pre(RenderPlayerEvent.Pre event) {
+        ZombieArmRenderer.getInstance().render(event.getRenderer(), event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight(), event.getEntity(), event.getPartialTick());
+    }
+
+    @SubscribeEvent
+    public static void renderArm(RenderArmEvent event) {
+        AbstractClientPlayer player = event.getPlayer();
+        if (LibUtils.anyHandHasItem(player, SwordItems.ZOMBIE_ARM.get())) {
+            if (Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player) instanceof PlayerRenderer playerRenderer) {
+                ZombieArmRenderer.getInstance().renderHand(playerRenderer, event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight(), player, event.getArm());
+                event.setCanceled(true);
+            }
+        }
     }
 }

@@ -126,7 +126,7 @@
             {
               "function": "minecraft:set_components",
               "components": {
-                "terra_curio:nbt": "{color:-13631506}"
+                "confluence_magic_lib:nbt": "{color:-13631506}"
               }
             }
           ],

@@ -11,10 +11,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ProjectileWeaponItem;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.apache.commons.lang3.stream.Streams;
-import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.item.hook.BaseHookItem;
 import org.confluence.mod.network.s2c.ExtraInventoryStackPacketS2C;
+import org.confluence.mod.util.AchievementUtils;
 import org.confluence.terra_curio.TerraCurio;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
@@ -84,14 +84,26 @@ public class ExtraInventory extends ItemStackHandler implements Container {
         return getItem(index);
     }
 
+    public List<ItemStack> getVanityArmor() {
+        return stacks.subList(0, SIZE_VANITY_ARMOR);
+    }
+
     public ItemStack getCoins(int index) {
         validateIndex(index, SIZE_COINS);
         return getItem(COINS_START + index);
     }
 
+    public List<ItemStack> getCoins() {
+        return stacks.subList(COINS_START, COINS_START + SIZE_COINS);
+    }
+
     public ItemStack getAmmo(int index) {
         validateIndex(index, SIZE_AMMO);
         return getItem(AMMO_START + index);
+    }
+
+    public List<ItemStack> getAmmo() {
+        return stacks.subList(AMMO_START, AMMO_START + SIZE_AMMO);
     }
 
     public List<ItemStack> getAllAmmo() {
@@ -123,6 +135,10 @@ public class ExtraInventory extends ItemStackHandler implements Container {
         return getItem(DYE_START + index);
     }
 
+    public List<ItemStack> getVanityArmorDye() {
+        return stacks.subList(DYE_START, DYE_START + SIZE_VANITY_ARMOR);
+    }
+
     public ItemStack getPetDye() {
         return getItem(DYE_START + EQUIPMENT_START);
     }
@@ -144,7 +160,7 @@ public class ExtraInventory extends ItemStackHandler implements Container {
         return getItem(DYE_START + SIZE_DYE_EXCEPT_ACCESSORY_DYE + index);
     }
 
-    private void validateIndex(int index, int size) {
+    private static void validateIndex(int index, int size) {
         if (index < 0 || index >= size) {
             throw new RuntimeException("Slot " + index + " not in valid range - [0," + size + ")");
         }
@@ -174,17 +190,17 @@ public class ExtraInventory extends ItemStackHandler implements Container {
             }
             this.dirty = false;
 
-            if (dyeHard) ModAchievements.awardAchievement(serverPlayer, "dye_hard");
+            if (dyeHard) AchievementUtils.awardAchievement(serverPlayer, "dye_hard");
             if (fashionStatement && Streams.of(serverPlayer.getArmorSlots()).noneMatch(ItemStack::isEmpty)) {
-                ModAchievements.awardAchievement(serverPlayer, "fashion_statement");
+                AchievementUtils.awardAchievement(serverPlayer, "fashion_statement");
             }
-            if (holdOnTight) ModAchievements.awardAchievement(serverPlayer, "hold_on_tight");
+            if (holdOnTight) AchievementUtils.awardAchievement(serverPlayer, "hold_on_tight");
         }
     }
 
-    public void initialize(ServerPlayer serverPlayer) {
+    public void initialize(ServerPlayer player) {
         if (!initialized) {
-            updateAccessorySize(CuriosApi.getCuriosInventory(serverPlayer).map(handler -> {
+            updateAccessorySize(player, CuriosApi.getCuriosInventory(player).map(handler -> {
                 ICurioStacksHandler accessory = handler.getCurios().get(TerraCurio.CURIO_SLOT);
                 return accessory == null ? 0 : accessory.getSlots();
             }).orElse(0));
@@ -192,15 +208,22 @@ public class ExtraInventory extends ItemStackHandler implements Container {
         }
     }
 
-    public void updateAccessorySize(int accessoryDye) {
-        setAccessoryDyes(accessoryDye);
+    public void updateAccessorySize(Player player, int accessoryDye) {
+        setAccessoryDyes(player, accessoryDye);
         this.previousStacks = NonNullList.withSize(SIZE_EXCEPT_ACCESSORY_DYE + accessoryDye, ItemStack.EMPTY);
     }
 
-    public void setAccessoryDyes(int size) {
-        int all = SIZE_EXCEPT_ACCESSORY_DYE + size;
-        NonNullList<ItemStack> itemStacks = NonNullList.withSize(all, ItemStack.EMPTY);
-        for (int i = 0; i < stacks.size(); i++) {
+    public void setAccessoryDyes(Player player, int size) {
+        int sizeCurrent = SIZE_EXCEPT_ACCESSORY_DYE + size;
+        int sizeBefore = stacks.size();
+        NonNullList<ItemStack> itemStacks = NonNullList.withSize(sizeCurrent, ItemStack.EMPTY);
+        if (!player.isLocalPlayer() && sizeBefore > sizeCurrent) {
+            for (ItemStack remain : stacks.subList(sizeCurrent, sizeBefore)) {
+                if (!remain.isEmpty()) player.drop(remain, true);
+            }
+        }
+        for (int i = 0; i < sizeCurrent; i++) {
+            if (i >= sizeBefore) continue;
             itemStacks.set(i, stacks.get(i));
         }
         this.stacks = itemStacks;

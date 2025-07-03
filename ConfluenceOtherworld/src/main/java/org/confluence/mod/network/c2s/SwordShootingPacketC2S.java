@@ -1,38 +1,36 @@
 package org.confluence.mod.network.c2s;
 
-import net.minecraft.network.FriendlyByteBuf;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
 
-public class SwordShootingPacketC2S implements CustomPacketPayload {
+public record SwordShootingPacketC2S() implements CustomPacketPayload {
+    public static final SwordShootingPacketC2S INSTANCE = new SwordShootingPacketC2S();
+    public static final Type<SwordShootingPacketC2S> TYPE = new Type<>(Confluence.asResource("sword_shooting"));
+    public static final StreamCodec<ByteBuf, SwordShootingPacketC2S> STREAM_CODEC = StreamCodec.unit(INSTANCE);
 
-    public static final StreamCodec<FriendlyByteBuf, SwordShootingPacketC2S> STREAM_CODEC =
-            CustomPacketPayload.codec(SwordShootingPacketC2S::write,SwordShootingPacketC2S::new);
-    public SwordShootingPacketC2S(FriendlyByteBuf friendlyByteBuf) {}
-    public SwordShootingPacketC2S() {}
-    private void write(FriendlyByteBuf buf) {}
-    public static final Type<SwordShootingPacketC2S> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(Confluence.MODID, "sword_proj"));
-    public Type<? extends CustomPacketPayload> type() {return TYPE;}
-    public static void receive(SwordShootingPacketC2S packet, final IPayloadContext context) {
+    @Override
+    public Type<SwordShootingPacketC2S> type() {
+        return TYPE;
+    }
+
+    public void handle(IPayloadContext context) {
         context.enqueueWork(() -> {
-            ServerPlayer player = (ServerPlayer) context.player();
-            ItemStack mainHandItem = player.getMainHandItem();
-            if (mainHandItem.getItem() instanceof BaseSwordItem sword) {
-                var data = mainHandItem.get(ModDataComponentTypes.SWORD_PROJECTILE);
-                if(data!=null){
+            if (context.player() instanceof ServerPlayer player) {
+                ItemStack mainHandItem = player.getMainHandItem();
+                if (mainHandItem.getItem() instanceof BaseSwordItem sword) {
                     sword.genProjectile(player, mainHandItem);
                 }
-//                if(item.modifier.proj!=null){
-//                    item.modifier.proj.get().genProjectile(player,mainHandItem);
-//                }
             }
+        }).exceptionally(e -> {
+            context.disconnect(Component.translatable("neoforge.network.invalid_flow", e.getMessage()));
+            return null;
         });
     }
 }

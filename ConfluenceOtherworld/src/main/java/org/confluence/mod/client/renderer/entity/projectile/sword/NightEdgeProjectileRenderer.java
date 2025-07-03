@@ -51,7 +51,7 @@ public class NightEdgeProjectileRenderer extends EntityRenderer<NightEdgeProject
         poseStack.mulPose(Axis.ZN.rotationDegrees(-45));
 
 
-        Minecraft.getInstance().getItemRenderer().renderStatic(SwordItems.NIGHT_EDGE.toStack(), ItemDisplayContext.FIXED, packedLight, OverlayTexture.NO_OVERLAY, poseStack, bufferSource, entity.level(), 0);
+        Minecraft.getInstance().getItemRenderer().renderStatic(SwordItems.NIGHTS_EDGE.toStack(), ItemDisplayContext.FIXED, packedLight, OverlayTexture.NO_OVERLAY, poseStack, bufferSource, entity.level(), 0);
         super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
         poseStack.popPose();
 

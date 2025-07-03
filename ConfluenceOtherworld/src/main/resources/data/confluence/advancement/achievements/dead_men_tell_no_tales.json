@@ -24,7 +24,7 @@
                         "condition": "minecraft:location_check",
                         "predicate": {
                             "block": {
-                                "blocks": "confluence:death_chest_block"
+                                "blocks": "confluence:death_golden_chest"
                             }
                         }
                     }

@@ -1,0 +1,18 @@
+{
+  "type": "confluence:heavy_work_bench",
+  "key": {
+    "#": {
+      "item": "minecraft:sandstone"
+    },
+    "$": {
+      "item": "minecraft:chest"
+    }
+  },
+  "pattern": [
+    "#$#"
+  ],
+  "result": {
+    "count": 1,
+    "id": "confluence:sandstone_chest"
+  }
+}

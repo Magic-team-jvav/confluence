@@ -1,5 +1,6 @@
 package org.confluence.mod.mixin.entity;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -15,8 +16,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.monster.piglin.AbstractPiglin;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -31,10 +31,12 @@ import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.ModHookTypes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.item.hook.BaseHookItem;
 import org.confluence.mod.common.worldgen.secret_seed.NoTraps;
+import org.confluence.mod.integration.irons_spell.IronSpellHelper;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.Immunity;
-import org.confluence.terra_curio.common.init.TCEffects;
+import org.confluence.terra_curio.common.effect.HoneyEffect;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.util.TCUtils;
 import org.spongepowered.asm.mixin.Mixin;
@@ -121,14 +123,7 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
         FluidType fluidType = self.getBlockStateOn().getFluidState().getType().getFluidType();
         if (fluidType == ModFluids.HONEY.type().get()) {
             if (!self.level().isClientSide) {
-                if (self instanceof Animal || self instanceof Player) {
-                    MobEffectInstance effect = self.getEffect(TCEffects.HONEY);
-                    if (effect == null || effect.getDuration() < 220) {
-                        self.addEffect(new MobEffectInstance(TCEffects.HONEY, 600));
-                    }
-                } else if (self instanceof AbstractPiglin piglin) {
-                    piglin.setImmuneToZombification(true);
-                }
+                HoneyEffect.applyHoneyEffect(self);
             }
             instance = instance.scale(0.8);
         } else if (fluidType == ModFluids.SHIMMER.type().get()) {
@@ -196,5 +191,15 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
     @Inject(method = "addAdditionalSaveData", at = @At("TAIL"))
     private void saveData(CompoundTag compound, CallbackInfo ci) {
         compound.putInt("ExtraInvulnerableTicks", confluence$extraInvulnerableTicks);
+    }
+
+    @Inject(method = "onAttributeUpdated", at = @At("TAIL"))
+    private void updateMana(Holder<Attribute> attribute, CallbackInfo ci) {
+        IronSpellHelper.updateMana(confluence$self(), attribute);
+    }
+
+    @ModifyExpressionValue(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;shouldDiscardFriction()Z"))
+    private boolean discardWhenHasAnyHooked(boolean original) {
+        return original || (confluence$self() instanceof Player player && BaseHookItem.hasAnyHooked(player));
     }
 }

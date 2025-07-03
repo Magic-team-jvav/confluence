@@ -52,7 +52,7 @@ public class BallOfFrostProjectile extends AbstractManaProjectile {
             if (entity instanceof LivingEntity living) {
                 living.addEffect(new MobEffectInstance(ModEffects.FROSTBITE, Mth.randomBetweenInclusive(living.getRandom(), 100, 280)));
             }
-            if (entity.hurt(getDamagesource(), 12)) {
+            if (entity.hurt(getDamagesource(), getCalculatedDamage())) {
                 VectorUtils.knockBackA2B(this, entity, 0.65, 0.2);
             }
         }

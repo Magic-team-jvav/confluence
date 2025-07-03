@@ -4,6 +4,7 @@ import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.block.Rotation;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -111,5 +112,15 @@ public record BrushData(Map<BlockPos, int[]> colors) {
 
     public static int[] createColor(int color) {
         return new int[]{color, color, color, color, color, color};
+    }
+
+    public static int[] rotateColor(int[] colors, Rotation rotation) {
+        if (rotation == Rotation.NONE) return colors;
+        int[] rotated = new int[6];
+        for (int i = 0; i < 6; i++) {
+            int j = rotation.rotate(Direction.from3DDataValue(i)).get3DDataValue();
+            rotated[j] = colors[i];
+        }
+        return rotated;
     }
 }

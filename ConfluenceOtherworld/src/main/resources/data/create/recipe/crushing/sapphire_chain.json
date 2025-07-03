@@ -1,0 +1,25 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "create"
+    }
+  ],
+  "type": "create:crushing",
+  "ingredients": [
+    {
+      "item": "confluence:amethyst_chain"
+    }
+  ],
+  "processing_time": 100,
+  "results": [
+    {
+      "count": 2,
+      "id": "confluence:amethyst"
+    },
+    {
+      "chance": 0.5,
+      "id": "confluence:amethyst"
+    }
+  ]
+}

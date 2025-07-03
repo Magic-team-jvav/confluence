@@ -1,0 +1,26 @@
+{
+    "providers": [
+        {
+            "type": "reference",
+            "id": "minecraft:include/space"
+        },
+        {
+            "type": "bitmap",
+            "file": "confluence:paper_image/armory.png",
+            "height": 65,
+            "ascent": 64,
+            "chars": [
+                "1"
+            ]
+        },
+        {
+            "type": "bitmap",
+            "file": "confluence:paper_image/dungeon_key.png",
+            "height": 99,
+            "ascent": 98,
+            "chars": [
+                "2"
+            ]
+        }
+    ]
+}

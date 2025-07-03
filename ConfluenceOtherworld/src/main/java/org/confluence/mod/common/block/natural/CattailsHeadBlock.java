@@ -82,8 +82,8 @@ public class CattailsHeadBlock extends GrowingPlantHeadBlock implements SimpleWa
             return NatureBlocks.HALLOW_CATTAILS_BODY.get();
         } else if (state.is(NatureBlocks.EBONY_CATTAILS_HEAD.get())) {
             return NatureBlocks.EBONY_CATTAILS_BODY.get();
-        } else if (state.is(NatureBlocks.TR_CRIMSON_CATTAILS_HEAD.get())) {
-            return NatureBlocks.TR_CRIMSON_CATTAILS_BODY.get();
+        } else if (state.is(NatureBlocks.CRIMSON_CATTAILS_HEAD.get())) {
+            return NatureBlocks.CRIMSON_CATTAILS_BODY.get();
         } else {
             return NatureBlocks.CATTAILS_BODY.get();
         }

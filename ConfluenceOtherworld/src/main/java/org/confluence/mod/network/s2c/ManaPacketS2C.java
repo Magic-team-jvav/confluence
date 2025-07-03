@@ -8,7 +8,6 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.ClientPacketHandler;
-import org.jetbrains.annotations.NotNull;
 
 public record ManaPacketS2C(int maxMana, int currentMana) implements CustomPacketPayload {
     public static final Type<ManaPacketS2C> TYPE = new Type<>(Confluence.asResource("mana"));
@@ -21,7 +20,7 @@ public record ManaPacketS2C(int maxMana, int currentMana) implements CustomPacke
     );
 
     @Override
-    public @NotNull Type<ManaPacketS2C> type() {
+    public Type<ManaPacketS2C> type() {
         return TYPE;
     }
 

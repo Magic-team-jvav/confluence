@@ -3,8 +3,6 @@ package org.confluence.mod.common.event.game.entity;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -36,25 +34,25 @@ import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
+import org.confluence.mod.common.data.AchievementOffsetLoader;
+import org.confluence.mod.common.data.saved.HardmodeConvertor;
 import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
 import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
 import org.confluence.mod.common.init.*;
-import org.confluence.mod.common.init.item.AccessoryItems;
-import org.confluence.mod.common.init.item.MaterialItems;
-import org.confluence.mod.common.init.item.MinecartItems;
-import org.confluence.mod.common.init.item.PotionItems;
+import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.axe.BaseAxeItem;
 import org.confluence.mod.common.item.common.BaseMinecartItem;
 import org.confluence.mod.common.item.common.EverBeneficialItem;
 import org.confluence.mod.common.item.drill.DrillItem;
 import org.confluence.mod.common.menu.FletchingTableMenu;
 import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
-import org.confluence.mod.mixed.*;
-import org.confluence.mod.network.s2c.ExtraInventorySyncPacketS2C;
-import org.confluence.mod.network.s2c.FishingPowerInfoPacketS2C;
-import org.confluence.mod.network.s2c.SecretFlagSyncPacketS2C;
-import org.confluence.mod.network.s2c.VisibilityPacketS2C;
+import org.confluence.mod.mixed.IAbstractMinecart;
+import org.confluence.mod.mixed.IFishingHook;
+import org.confluence.mod.mixed.IMinecraftServer;
+import org.confluence.mod.mixed.IServerPlayer;
+import org.confluence.mod.network.s2c.*;
+import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.util.TCUtils;
@@ -77,14 +75,14 @@ public final class PlayerEvents {
             VisibilityPacketS2C.sendEcho(serverPlayer);
             BoulderWorld.forceSetAccessory(serverPlayer);
             VisibilityPacketS2C.sendTheConstantPostEffect(serverPlayer);
-            long secretFlag = ((IMinecraftServer) serverPlayer.server).confluence$getSecretFlag();
-            SecretFlagSyncPacketS2C.sendToAll(secretFlag);
-            if ((secretFlag & IWorldOptions.HARDMODE) != 0) {
-                ModAchievements.awardAchievement(serverPlayer, "its_hard");
+            SecretFlagSyncPacketS2C.sendToAll(((IMinecraftServer) serverPlayer.server).confluence$getSecretFlag());
+            if (HardmodeConvertor.INSTANCE.isCompleted()) {
+                AchievementUtils.awardAchievement(serverPlayer, "its_hard");
             }
             if (CommonConfigs.DO_NPC_SPAWNING.get() && serverPlayer.serverLevel().getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)) {
                 NPCSpawner.INSTANCE.trySpawnGuide(serverPlayer);
             }
+            CompatibilitySyncPacketS2c.sendToAll();
         }
     }
 
@@ -178,6 +176,21 @@ public final class PlayerEvents {
     }
 
     @SubscribeEvent
+    public static void itemEntityPickup$Post(ItemEntityPickupEvent.Post event) {
+        ItemEntity itemEntity = event.getItemEntity();
+        ItemStack itemStack = event.getOriginalStack();
+        if (itemStack.is(ModTags.Items.COINS)) {
+            if (itemStack.is(ModItems.COPPER_COIN)) {
+                itemEntity.playSound(ModSoundEvents.COINS_SMALL.get());
+            } else if (itemStack.is(ModItems.SILVER_COIN)) {
+                itemEntity.playSound(ModSoundEvents.COINS_MEDIUM.get());
+            } else {
+                itemEntity.playSound(ModSoundEvents.COINS_LARGE.get());
+            }
+        }
+    }
+
+    @SubscribeEvent
     public static void itemFished(ItemFishedEvent event) {
         Player player = event.getEntity();
         Level level = player.level();
@@ -228,7 +241,7 @@ public final class PlayerEvents {
     @SubscribeEvent
     public static void rightClickRailBlock(RightClickRailBlock event) {
         AbstractMinecart minecart = event.getMinecart();
-        if (event.isCanceled() || minecart != null) return;
+        if (minecart != null) return;
 
         ServerLevel level = (ServerLevel) event.getEntity().level();
         BlockPos blockPos = event.getBlockPos();
@@ -250,7 +263,7 @@ public final class PlayerEvents {
 
     @SubscribeEvent
     public static void dismountOnMinecart(DismountOnMinecart event) {
-        if (event.isCanceled() || event.getMinecartItem() != null) return;
+        if (event.getMinecartItem() != null) return;
         AbstractMinecart.Type type = event.getMinecart().getMinecartType();
 
         if (type == AbstractMinecart.Type.RIDEABLE) {
@@ -258,25 +271,13 @@ public final class PlayerEvents {
         }
     }
 
-    @SubscribeEvent // 可以拿到复制前的玩家
+    @SubscribeEvent
     public static void clone(PlayerEvent.Clone event) {
         Player old = event.getOriginal();
         Player neo = event.getEntity();
 
         for (MobEffectInstance activeEffect : old.getActiveEffects()) {
             neo.forceAddEffect(activeEffect, null);
-        }
-
-        CompoundTag oldTag = old.getPersistentData();
-        CompoundTag neoTag = neo.getPersistentData();
-        for (String key : oldTag.getAllKeys()) {
-            if (key.startsWith(Confluence.MODID)) {
-                Tag value = oldTag.get(key);
-                if (value != null) neoTag.put(key, value);
-            }
-        }
-        if (!event.isWasDeath()) {
-            neoTag.putFloat("confluence:cached_health", old.getHealth());
         }
     }
 
@@ -290,10 +291,7 @@ public final class PlayerEvents {
         EverBeneficialItem.AMBROSIA.recovery(everBeneficial, EverBeneficial::isAmbrosiaUsed, serverPlayer);
         EverBeneficialItem.GALAXY_PEARL.recovery(everBeneficial, EverBeneficial::isGalaxyPearlUsed, serverPlayer);
         EverBeneficialItem.ARTISAN_LOAF.recovery(everBeneficial, EverBeneficial::isArtisanLoafUsed, serverPlayer);
-        if (event.isEndConquered()) {
-            float health = serverPlayer.getPersistentData().getFloat("confluence:cached_health");
-            serverPlayer.setHealth(health <= 0.0F ? 20.0F : health);
-        }
+
         BoulderWorld.forceSetAccessory(serverPlayer);
         ExtraInventorySyncPacketS2C.sendToClient(serverPlayer, serverPlayer, serverPlayer.getData(ModAttachmentTypes.EXTRA_INVENTORY));
     }
@@ -340,7 +338,7 @@ public final class PlayerEvents {
     @SubscribeEvent
     public static void advancementEarn(AdvancementEvent.AdvancementEarnEvent event) {
         AdvancementHolder advancement = event.getAdvancement();
-        if (event.getEntity() instanceof ServerPlayer player && ModAchievements.DISPLAY_OFFSET.containsKey(advancement.id())) {
+        if (event.getEntity() instanceof ServerPlayer player && AchievementOffsetLoader.getDisplayOffset().containsKey(advancement.id())) {
             player.server.getPlayerList().broadcastSystemMessage(Component.translatable("chat.type.advancement.achievement", player.getDisplayName(), Advancement.name(advancement)), false);
         }
     }

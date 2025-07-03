@@ -17,7 +17,7 @@ public class HamaxeItems {
 
     public static final DeferredItem<HamaxeItem> METEOR_HAMAXE = ITEMS.register("meteor_hamaxe", () -> new HamaxeItem(ModTiers.METEOR, 20, 0.8F, unbreakable(), attributes(0, 0.7), ModRarity.BLUE));
     public static final DeferredItem<HamaxeItem> MOLTEN_HAMAXE = ITEMS.register("molten_hamaxe", () -> new HamaxeItem(ModTiers.HELLSTONE, 23, 0.8F, unbreakable(), attributes(0, 0.7), ModRarity.ORANGE));
-    public static final DeferredItem<HamaxeItem> HAEMORRHAXE = ITEMS.register("haemorrhaxe", () -> new HamaxeItem(ModTiers.TR_CRIMSON, 30, 0.9F, unbreakable(), attributes(0, 0.7), ModRarity.LIGHT_RED));
+    public static final DeferredItem<HamaxeItem> HAEMORRHAXE = ITEMS.register("haemorrhaxe", () -> new HamaxeItem(ModTiers.CRIMTANE, 30, 0.9F, unbreakable(), attributes(0, 0.7), ModRarity.LIGHT_RED));
     public static final DeferredItem<HamaxeItem> SPECTRE_HAMAXE = ITEMS.register("spectre_hamaxe", () -> new HamaxeItem(ModTiers.SPECTRE, 45, 1.0F, unbreakable(), attributes(3, 0.7), ModRarity.YELLOW));
     public static final DeferredItem<HamaxeItem> SOLAR_FLARE_HAMAXE = ITEMS.register("solar_flare_hamaxe", () -> new HamaxeItem(ModTiers.LUMINITE, 60, 1.2F, unbreakable(), attributes(4, 0.7), ModRarity.RED));
     public static final DeferredItem<HamaxeItem> VORTEX_HAMAXE = ITEMS.register("vortex_hamaxe", () -> new HamaxeItem(ModTiers.LUMINITE, 60, 1.3F, unbreakable(), attributes(4, 0.7), ModRarity.RED));

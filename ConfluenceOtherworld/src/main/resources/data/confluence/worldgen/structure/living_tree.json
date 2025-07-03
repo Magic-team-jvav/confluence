@@ -2,5 +2,5 @@
   "type": "confluence:living_tree",
   "biomes": "#c:is_forest",
   "spawn_overrides": {},
-  "step": "top_layer_modification"
+  "step": "vegetal_decoration"
 }

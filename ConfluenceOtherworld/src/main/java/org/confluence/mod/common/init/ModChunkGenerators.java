@@ -18,7 +18,7 @@ public final class ModChunkGenerators {
     public static final DeferredRegister<MapCodec<? extends ChunkGenerator>> GENERATORS = DeferredRegister.create(BuiltInRegistries.CHUNK_GENERATOR, MODID);
 
     public static final ResourceKey<WorldPreset> THE_CORRUPTION = ResourceKey.create(Registries.WORLD_PRESET, Confluence.asResource("the_corruption"));
-    public static final ResourceKey<WorldPreset> TR_CRIMSON = ResourceKey.create(Registries.WORLD_PRESET, Confluence.asResource("tr_crimson"));
+    public static final ResourceKey<WorldPreset> THE_CRIMSON = ResourceKey.create(Registries.WORLD_PRESET, Confluence.asResource("the_crimson"));
 
     public static final Supplier<MapCodec<BannedBiomeNoiseBasedChunkGenerator>> BANNED_BIOME = GENERATORS.register("banned_biome", () -> BannedBiomeNoiseBasedChunkGenerator.CODEC);
 }

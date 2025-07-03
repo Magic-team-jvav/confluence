@@ -1,0 +1,21 @@
+{
+  "textures": {
+    "texture": "confluence:block/glowing_mushroom_pileus_block_bottom",
+    "particle": "confluence:block/glowing_mushroom_pileus_block_bottom"
+  },
+  "elements": [
+    {
+      "from": [0, 16, 0],
+      "to": [16, 16, 16],
+      "rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+      "faces": {
+        "up": {"uv": [4, 4, 8, 8],"texture": "#texture", "cullface": "up"}
+      },
+      "neoforge_data": {
+        "block_light": 15,
+        "sky_light": 15
+      },
+      "shade": false
+    }
+  ]
+}

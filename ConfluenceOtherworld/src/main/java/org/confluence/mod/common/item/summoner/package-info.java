@@ -1,4 +1,0 @@
-@javax.annotation.ParametersAreNonnullByDefault
-@net.minecraft.MethodsReturnNonnullByDefault
-package org.confluence.mod.common.item.summoner;
-// 召唤师

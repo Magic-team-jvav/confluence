@@ -20,6 +20,7 @@ import net.minecraft.world.level.Level;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.entity.projectile.DamageSettableProjectile;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
@@ -28,37 +29,34 @@ import org.confluence.terra_curio.common.init.TCAttributes;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class ManaStaffItem<E extends Projectile> extends CustomRarityItem {
+public class ManaStaffItem<E extends DamageSettableProjectile> extends CustomRarityItem {
     public static final ResourceLocation ID = Confluence.asResource("mana_staff");
     protected final ProjectileFactory<E> factory;
-    protected float fakeDamage;
+    protected final float damage;
     protected final int manaCost;
     protected final float velocity;
     protected final int cooldown;
-    protected double critChance;
 
-    public ManaStaffItem(Properties properties, ModRarity rarity, ProjectileFactory<E> factory, float fakeDamage, int manaCost, float rawVelocity, int cooldown) {
+    public ManaStaffItem(Properties properties, ModRarity rarity, ProjectileFactory<E> factory, float damage, int manaCost, float rawVelocity, int cooldown) {
         super(properties, rarity);
-        this.fakeDamage = fakeDamage;
+        this.damage = damage;
         this.factory = factory;
         this.manaCost = manaCost;
         this.velocity = rawVelocity / 8.0F;
         this.cooldown = cooldown;
-        this.critChance = 0.0;
     }
 
-    public ManaStaffItem(ModRarity rarity, ProjectileFactory<E> factory, float fakeDamage, int manaCost, float rawVelocity, int cooldown, Consumer<ItemAttributeModifiers.Builder> consumer) {
-        this(new Properties().stacksTo(1), rarity, factory, fakeDamage, manaCost, rawVelocity, cooldown);
+    public ManaStaffItem(ModRarity rarity, ProjectileFactory<E> factory, float damage, int manaCost, float rawVelocity, int cooldown, Consumer<ItemAttributeModifiers.Builder> consumer) {
+        this(new Properties().stacksTo(1), rarity, factory, damage, manaCost, rawVelocity, cooldown);
         addAttributeModifiers(consumer);
     }
 
     /**
      * @param rawVelocity 换算前的射弹速度
      */
-    public ManaStaffItem(ModRarity rarity, ProjectileFactory<E> factory, float fakeDamage, int manaCost, float rawVelocity, int cooldown, double critChance) {
-        this(new Properties().stacksTo(1), rarity, factory, fakeDamage, manaCost, rawVelocity, cooldown);
+    public ManaStaffItem(ModRarity rarity, ProjectileFactory<E> factory, float damage, int manaCost, float rawVelocity, int cooldown, double critChance) {
+        this(new Properties().stacksTo(1), rarity, factory, damage, manaCost, rawVelocity, cooldown);
         if (critChance == 0.0) return;
-        this.critChance = critChance;
         addAttributeModifiers(builder -> builder.add(TCAttributes.getCriticalChance(), new AttributeModifier(ID, critChance, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND));
     }
 
@@ -73,6 +71,7 @@ public class ManaStaffItem<E extends Projectile> extends CustomRarityItem {
         if (player instanceof ServerPlayer serverPlayer && couldShoot(serverPlayer, itemStack)) {
             serverPlayer.awardStat(Stats.ITEM_USED.get(this));
             E projectile = factory.create(serverPlayer);
+            projectile.setDamage(damage);
             beforeShoot(serverPlayer, itemStack, projectile);
             level.addFreshEntity(projectile);
             afterShoot(serverPlayer, itemStack, projectile);
@@ -103,7 +102,7 @@ public class ManaStaffItem<E extends Projectile> extends CustomRarityItem {
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        tooltipComponents.add(Component.translatable("tooltip.confluence.damage", fakeDamage).withStyle(ChatFormatting.GRAY));
+        tooltipComponents.add(Component.translatable("tooltip.confluence.damage", damage).withStyle(ChatFormatting.GRAY));
         tooltipComponents.add(Component.translatable("tooltip.confluence.mana_cost", manaCost).withStyle(ChatFormatting.GRAY));
         tooltipComponents.add(Component.translatable("tooltip.confluence.velocity", velocity).withStyle(ChatFormatting.GRAY));
         tooltipComponents.add(Component.translatable("tooltip.confluence.cooldown", cooldown).withStyle(ChatFormatting.GRAY));

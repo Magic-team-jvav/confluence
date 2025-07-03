@@ -1,0 +1,15 @@
+{
+  "type": "confluence:heavy_work_bench",
+  "key": {
+    "#": {
+      "item": "confluence:life_crystal"
+    }
+  },
+  "pattern": [
+    "#"
+  ],
+  "result": {
+    "count": 1,
+    "id": "confluence:life_crystal_block"
+  }
+}

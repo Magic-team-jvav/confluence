@@ -1,0 +1,17 @@
+{
+  "type": "confluence:cattails",
+  "config": {
+    "cattails_head": {
+      "type": "simple_state_provider",
+      "state": {
+        "Name": "confluence:glowing_mushroom_cattails_head"
+      }
+    },
+    "cattails_body": {
+      "type": "simple_state_provider",
+      "state": {
+        "Name": "confluence:glowing_mushroom_cattails_body"
+      }
+    }
+  }
+}

@@ -9,6 +9,7 @@ import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.data.gen.ModDataMapProvider;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.integration.waystones.WaystonesHelper;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.init.item.TEBoomerangItems;
@@ -16,7 +17,7 @@ import org.confluence.terraentity.init.item.TERideableItems;
 import org.confluence.terraentity.init.item.TESummonItems;
 import org.confluence.terraentity.init.item.TEWhipItems;
 
-public class ValueSubProvider {
+public final class ValueSubProvider {
     public static void gather(ModDataMapProvider.Appender<Builder> appender) {
         appender.create()
                 .add(Items.DRAGON_EGG, 2000)
@@ -25,7 +26,7 @@ public class ValueSubProvider {
                 .add(Items.TORCH, 10);
         appender.create()
                 .add(Items.COPPER_INGOT, wrap(1, 50))
-                .add(MaterialItems.TR_CRIMSON_INGOT, 3900)
+                .add(MaterialItems.CRIMTANE_INGOT, 3900)
                 .add(MaterialItems.DEMONITE_INGOT, 3000)
                 .add(Items.GOLD_INGOT, 1200)
                 .add(Items.IRON_INGOT, 300)
@@ -49,8 +50,11 @@ public class ValueSubProvider {
                 .add(MaterialItems.PALLADIUM_INGOT, 2700)
                 .add(MaterialItems.HALLOWED_INGOT, 4000);
         appender.create()
+                .add(Items.IRON_NUGGET, 33)
+                .add(Items.GOLD_NUGGET, 133);
+        appender.create()
                 .add(Items.COPPER_BLOCK, 150 * 9)
-                .add(OreBlocks.TR_CRIMSON_BLOCK, 3900 * 9)
+                .add(OreBlocks.CRIMTANE_BLOCK, 3900 * 9)
                 .add(OreBlocks.DEMONITE_BLOCK, 3000 * 9)
                 .add(Items.GOLD_BLOCK, 1200 * 9)
                 .add(Items.IRON_BLOCK, 300 * 9)
@@ -78,23 +82,25 @@ public class ValueSubProvider {
                 .add(MaterialItems.AMBER, wrap(30, 0))
                 .add(MaterialItems.RUBY, wrap(22, 50))
                 .add(Items.EMERALD, 1500)
-                .add(MaterialItems.TR_EMERALD, 1500)
+                .add(MaterialItems.JADE, 1500)
                 .add(MaterialItems.SAPPHIRE, wrap(11, 25))
-                .add(MaterialItems.SAPPHIRE, wrap(7, 50))
-                .add(MaterialItems.TR_AMETHYST, wrap(3, 75))
+                .add(MaterialItems.AMETHYST, wrap(3, 75))
                 .add(MaterialItems.TOPAZ, wrap(7, 50))
                 .add(Items.LAPIS_LAZULI, 50)
                 .add(Items.REDSTONE, 40)
+                .add(Items.GLOWSTONE_DUST, 20)
+                .add(Items.NETHERITE_SCRAP, wrap(10, 0))
                 .add(Items.COAL, 40)
                 .add(Items.CHARCOAL, 40);
         appender.create()
                 .add(Items.DIAMOND_BLOCK, wrap(30, 0) * 9)
                 .add(DecorativeBlocks.AMBER_BLOCK, wrap(30, 0) * 9)
-                .add(MaterialItems.RUBY, wrap(22, 50) * 9)
+                .add(DecorativeBlocks.RUBY_BLOCK, wrap(22, 50) * 9)
                 .add(Items.EMERALD_BLOCK, 1500 * 9)
+                .add(DecorativeBlocks.JADE_BLOCK, 1500 * 9)
                 .add(DecorativeBlocks.SAPPHIRE_BLOCK, wrap(11, 25) * 9)
-                .add(DecorativeBlocks.SAPPHIRE_BLOCK, wrap(7, 50) * 9)
-                .add(DecorativeBlocks.TR_AMETHYST_BLOCK, wrap(3, 75) * 9)
+                .add(DecorativeBlocks.AMETHYST_BLOCK, wrap(3, 75) * 9)
+                .add(DecorativeBlocks.TOPAZ_BLOCK, wrap(7, 50) * 9)
                 .add(Items.LAPIS_BLOCK, 50 * 9)
                 .add(Items.REDSTONE_BLOCK, 40 * 9)
                 .add(Items.COAL_BLOCK, 40 * 9);
@@ -109,7 +115,7 @@ public class ValueSubProvider {
                 .add(MaterialItems.RAW_PLATINUM, 450)
                 .add(MaterialItems.RAW_METEORITE, 200)
                 .add(MaterialItems.RAW_DEMONITE, 1000)
-                .add(MaterialItems.RAW_TR_CRIMSON, 1300)
+                .add(MaterialItems.RAW_CRIMTANE, 1300)
                 .add(MaterialItems.RAW_HELLSTONE, 250)
                 .add(MaterialItems.RAW_COBALT, 700)
                 .add(MaterialItems.RAW_PALLADIUM, 900)
@@ -130,7 +136,7 @@ public class ValueSubProvider {
                 .add(OreBlocks.RAW_PLATINUM_BLOCK, 450 * 9)
                 .add(OreBlocks.RAW_METEORITE_BLOCK, 200 * 9)
                 .add(OreBlocks.RAW_DEMONITE_BLOCK, 1000 * 9)
-                .add(OreBlocks.RAW_TR_CRIMSON_BLOCK, 1300 * 9)
+                .add(OreBlocks.RAW_CRIMTANE_BLOCK, 1300 * 9)
                 .add(OreBlocks.RAW_HELLSTONE_BLOCK, 250 * 9)
                 .add(OreBlocks.RAW_COBALT_BLOCK, 700 * 9)
                 .add(OreBlocks.RAW_PALLADIUM_BLOCK, 900 * 9)
@@ -144,8 +150,45 @@ public class ValueSubProvider {
                 .add(MaterialItems.GEL, 1)
                 .add(MaterialItems.PINK_GEL, 3)
                 .add(MaterialItems.SILK, 200)
-                .add(MaterialItems.RAW_ASPHALT, 1)
                 .add(MaterialItems.FALLING_STAR, wrap(5, 0))
+                .add(MaterialItems.FLOATING_WHEAT_HEADS, 50)
+                .add(MaterialItems.ROTTEN_CHUNK, 2)
+                .add(MaterialItems.WORM_TOOTH, 20)
+                .add(MaterialItems.ROTTEN_CHUNK, 2)
+                .add(MaterialItems.BLOOD_CLOT_POWDER, 3)
+                .add(MaterialItems.ROTTEN_BONE, 3)
+                .add(MaterialItems.STINGER, 40)
+                .add(MaterialItems.MAN_EATER_VINE, 0)
+                .add(MaterialItems.BLACK_INK, wrap(20, 0))
+                .add(MaterialItems.SHADOW_SCALE, 40)
+                .add(MaterialItems.ANTLION_MANDIBLE, 10)
+                .add(MaterialItems.HOOK, wrap(2, 0))
+                .add(MaterialItems.FILAMENTOUS_FIN, 2)
+                .add(MaterialItems.TATTERED_CLOTH, 6)
+                .add(MaterialItems.LENS, wrap(2, 0))
+                .add(MaterialItems.BLACK_LENS, wrap(10, 0))
+                .add(MaterialItems.HARPY_FEATHER, 10)
+                .add(MaterialItems.GIANT_HARPY_FEATHER, wrap(2, 50, 0))
+                .add(MaterialItems.STURDY_FOSSIL, wrap(5, 0))
+                .add(MaterialItems.OPAL, wrap(10, 0))
+                .add(MaterialItems.HEIM, wrap(5, 0))
+                .add(MaterialItems.GELSTONE, wrap(10, 0))
+                .add(MaterialItems.SPORE_ROOT, wrap(5, 0))
+                .add(MaterialItems.WINTER_MARROW, wrap(5, 0))
+                .add(MaterialItems.COLD_CRYSTAL, wrap(10, 0))
+                .add(MaterialItems.SHADOW_SCALE, wrap(1, 0))
+                .add(MaterialItems.TISSUE_SAMPLE, wrap(1, 50))
+                .add(MaterialItems.ROYAL_WAX, wrap(1, 0))
+                .add(MaterialItems.PEARL, wrap(1, 0, 0))
+                .add(MaterialItems.BLACK_PEARL, wrap(3, 0, 0))
+                .add(MaterialItems.PINK_PEARL, wrap(15, 0, 0))
+                .add(MaterialItems.JUNGLE_SPORE, 20)
+                .add(MaterialItems.CRYSTAL_SHARDS_ITEM, wrap(16, 0))
+                .add(MaterialItems.CURSED_FLAME, wrap(8, 0))
+                .add(MaterialItems.ICHOR, wrap(9, 0))
+                .add(MaterialItems.PIXIE_DUST, wrap(1, 0))
+
+
         ;
         appender.create()
                 // Adamantite Sword 2 gold 76 silver
@@ -157,7 +200,7 @@ public class ValueSubProvider {
                 // Bladed Glove 1 gold
                 // Bladetongue 4 gold
                 .add(SwordItems.BLOOD_BUTCHERER, wrap(27, 0))
-                .add(SwordItems.BLUE_LIGHT_SABER, wrap(54, 0))
+                .add(SwordItems.BLUE_PHASEBLADE, wrap(54, 0))
                 // Blue Phasesaber 1 gold
                 .add(SwordItems.BONE_SWORD, wrap(18, 0))
                 // Boreal Wood Sword 20 copper
@@ -170,7 +213,7 @@ public class ValueSubProvider {
                 // Christmas Tree Sword 10 gold
                 // Classy Cane 50 silver
                 // Cobalt Sword 1 gold 38 silver
-                .add(SwordItems.COPPER_BOARD_SWORD, 90)
+                .add(SwordItems.COPPER_BROADSWORD, 90)
                 .add(SwordItems.COPPER_SHORT_SWORD, 70)
                 // Cutlass 3 gold 60 silver
                 // Death Sickle 7 gold 50 silver
@@ -183,9 +226,9 @@ public class ValueSubProvider {
                 // Flymeal 35 silver
                 // Frostbrand 5 gold
                 // Gladius 30 silver
-                .add(SwordItems.GOLDEN_BOARD_SWORD, wrap(18, 0))
+                .add(SwordItems.GOLDEN_BROADSWORD, wrap(18, 0))
                 .add(SwordItems.GOLDEN_SHORT_SWORD, wrap(14, 0))
-                .add(SwordItems.GREEN_LIGHT_SABER, wrap(54, 0))
+                .add(SwordItems.GREEN_PHASEBLADE, wrap(54, 0))
                 // Green Phasesaber 1 gold
                 // Ham Bat 1 gold
                 .add(SwordItems.ICE_BLADE, wrap(40, 0))
@@ -195,33 +238,33 @@ public class ValueSubProvider {
                 .add(SwordItems.IRON_SHORT_SWORD, wrap(2, 80))
                 .add(SwordItems.KATANA, wrap(2, 50, 0))
                 // Keybrand 4 gold
-                .add(SwordItems.LEAD_BOARD_SWORD, wrap(5, 40))
+                .add(SwordItems.LEAD_BROADSWORD, wrap(5, 40))
                 .add(SwordItems.LEAD_SHORT_SWORD, wrap(4, 20))
                 .add(SwordItems.LIGHTS_BANE, wrap(27, 0))
                 .add(SwordItems.MANDIBLE_BLADE, wrap(10, 0))
                 // Meowmere 20 gold
                 .add(SwordItems.MURAMASA, wrap(1, 75, 0))
                 // Mythril Sword 2 gold 7 silver
-                // Night's Edge 4 gold
-                .add(SwordItems.ORANGE_LIGHT_SABER, wrap(54, 0))
+                .add(SwordItems.NIGHTS_EDGE, wrap(4, 0, 0))
+                .add(SwordItems.ORANGE_PHASEBLADE, wrap(54, 0))
                 // Orange Phasesaber 1 gold
                 // Orichalcum Sword 2 gold 53 silver
                 // Palladium Sword 1 gold 84 silver
                 // Palm Wood Sword 20 copper
                 // Pearlwood Sword 20 copper
-                .add(SwordItems.PLATINUM_BOARD_SWORD, wrap(27, 0))
+                .add(SwordItems.PLATINUM_BROADSWORD, wrap(27, 0))
                 .add(SwordItems.PLATINUM_SHORT_SWORD, wrap(21, 0))
                 // Psycho Knife 10 gold
                 .add(SwordItems.PURPLE_CLUBBERFISH, wrap(1, 0, 0))
-                .add(SwordItems.PURPLE_LIGHT_SABER, wrap(54, 0))
+                .add(SwordItems.PURPLE_PHASEBLADE, wrap(54, 0))
                 // Purple Phasesaber 1 gold
-                .add(SwordItems.RED_LIGHT_SABER, wrap(54, 0))
+                .add(SwordItems.RED_PHASEBLADE, wrap(54, 0))
                 // Red Phasesaber 1 gold
                 // Rich Mahogany Sword 20 copper
                 // Ruler 2 silver
                 // Seedler 10 gold
                 // Shadewood Sword 20 copper
-                .add(SwordItems.SILVER_BOARD_SWORD, wrap(9, 0))
+                .add(SwordItems.SILVER_BROADSWORD, wrap(9, 0))
                 .add(SwordItems.SILVER_SHORT_SWORD, wrap(7, 0))
                 // Slap Hand 5 gold
                 // Star Wrath 20 gold
@@ -230,18 +273,18 @@ public class ValueSubProvider {
                 .add(SwordItems.TENTACLE_MACE, wrap(50, 0))
                 // Terra Blade 20 gold
                 // The Horseman's Blade 10 gold
-                .add(SwordItems.TIN_BOARD_SWORD, wrap(1, 35))
+                .add(SwordItems.TIN_BROADSWORD, wrap(1, 35))
                 .add(SwordItems.TIN_SHORT_SWORD, wrap(1, 5))
                 // Titanium Sword 3 gold 22 silver
                 // True Excalibur 10 gold
                 // True Night's Edge 10 gold
-                .add(SwordItems.TUNGSTEN_BOARD_SWORD, wrap(13, 50))
+                .add(SwordItems.TUNGSTEN_BROADSWORD, wrap(13, 50))
                 .add(SwordItems.TUNGSTEN_SHORT_SWORD, wrap(10, 50))
                 .add(SwordItems.VOLCANO, wrap(54, 0))
-                .add(SwordItems.WHITE_LIGHT_SABER, wrap(54, 0))
+                .add(SwordItems.WHITE_PHASEBLADE, wrap(54, 0))
                 // White Phasesaber 1 gold
                 .add(Items.WOODEN_SWORD, 20)
-                .add(SwordItems.YELLOW_LIGHT_SABER, wrap(54, 0))
+                .add(SwordItems.YELLOW_PHASEBLADE, wrap(54, 0))
                 // Yellow Phasesaber 1 gold
                 .add(SwordItems.ZOMBIE_ARM, wrap(4, 0))
 
@@ -520,7 +563,7 @@ public class ValueSubProvider {
                 .add(ManaWeaponItems.AMETHYST_STAFF, 2800)
                 .add(ManaWeaponItems.TOPAZ_STAFF, 2800)
                 .add(ManaWeaponItems.SAPPHIRE_STAFF, 2800)
-                .add(ManaWeaponItems.EMERALD_STAFF, 2800)
+                .add(ManaWeaponItems.JADE_STAFF, 2800)
                 .add(ManaWeaponItems.RUBY_STAFF, 2800)
                 .add(ManaWeaponItems.DIAMOND_STAFF, 2800)
                 .add(ManaWeaponItems.AMBER_STAFF, 2800)
@@ -574,6 +617,7 @@ public class ValueSubProvider {
                 .add(TCItems.BLIZZARD_IN_A_BALLOON, 30000)
                 .add(TCItems.BLIZZARD_IN_A_BOTTLE, 10000)
                 .add(TCItems.BLUE_HORSESHOE_BALLOON, 30000)
+                .add(TCItems.BONE_GLOVE, 20000)
                 .add(TCItems.BRAIN_OF_CONFUSION, 20000)
                 .add(TCItems.BRICK_LAYER, 100000)
                 .add(TCItems.BUNDLE_OF_BALLOONS, 30000)
@@ -791,11 +835,13 @@ public class ValueSubProvider {
                 .add(ConsumableItems.BOMB, 60)
                 .add(ConsumableItems.STICKY_BOMB, wrap(1, 0))
                 .add(ConsumableItems.BOUNCY_BOMB, 80)
+                .add(ConsumableItems.DIRT_BOMB, wrap(1, 0))
                 .add(ConsumableItems.STICKY_DIRT_BOMB, wrap(1, 0))
                 .add(ConsumableItems.DYNAMITE, wrap(4, 0))
                 .add(ConsumableItems.STICKY_DYNAMITE, wrap(4, 0))
                 .add(ConsumableItems.BOUNCY_DYNAMITE, wrap(4, 0))
-                .add(ConsumableItems.BOMB_FISH, wrap(2, 0));
+                .add(ConsumableItems.BOMB_FISH, wrap(2, 0))
+                .add(ConsumableItems.SCARAB_BOMB, wrap(3, 0));
         // 快乐手榴弹
         appender.create()
                 .add(Items.ARROW, 1)
@@ -812,7 +858,8 @@ public class ValueSubProvider {
                 .add(ArrowItems.BONE_ARROW, 3)
                 // Endless Quiver 1 gold
                 // Luminite Arrow 2 copper
-                .add(ArrowItems.SHIMMER_ARROW, 3);
+                .add(ArrowItems.SHIMMER_ARROW, 3)
+                .add(ArrowItems.FLY_FISH_ARROW, 2);
         appender.create() // 其它
                 .add(ConsumableItems.DRY_BOMB, wrap(5, 0))
                 .add(ConsumableItems.WET_BOMB, wrap(5, 0))
@@ -979,7 +1026,7 @@ public class ValueSubProvider {
                 .add(ArmorItems.AMETHYST_ROBE, wrap(50, 0))
                 .add(ArmorItems.TOPAZ_ROBE, wrap(1, 0, 0))
                 .add(ArmorItems.SAPPHIRE_ROBE, wrap(1, 50, 0))
-                .add(ArmorItems.EMERALD_ROBE, wrap(2, 0, 0))
+                .add(ArmorItems.JADE_ROBE, wrap(2, 0, 0))
                 .add(ArmorItems.RUBY_ROBE, wrap(2, 50, 0))
                 .add(ArmorItems.MYSTIC_ROBE, wrap(70, 0))
                 .add(ArmorItems.DIAMOND_ROBE, wrap(3, 0, 0))
@@ -1056,6 +1103,7 @@ public class ValueSubProvider {
                 // teleportation
                 .add(PotionItems.WORMHOLE_POTION, wrap(2, 0));
         appender.create()
+                .add(Items.ENCHANTED_GOLDEN_APPLE, wrap(50, 0))
                 .add(FoodItems.PAD_THAI, 5500)
                 .add(FoodItems.HONEYFIN, wrap(15, 0));
         appender.create()
@@ -1131,18 +1179,19 @@ public class ValueSubProvider {
                 .add(ModItems.GRASS_SEED, 4)
                 .add(ModItems.ASH_GRASS_SEED, 30)
                 .add(ModItems.CORRUPT_SEED, wrap(1, 0))
-                .add(ModItems.TR_CRIMSON_SEED, wrap(1, 0))
+                .add(ModItems.CRIMSON_SEED, wrap(1, 0))
                 .add(Items.SUNFLOWER, wrap(10, 0))
                 .add(Items.OAK_SAPLING, 2)
                 .add(Items.PUMPKIN_SEEDS, 50)
                 .add(ModItems.HALLOWED_SEED, wrap(4, 0))
-                .add(ModItems.MUSHROOM_GRASS_SEED, 30);
+                .add(ModItems.MUSHROOM_GRASS_SEED, 30)
+                .add(ModItems.JUNGLE_GRASS_SEED, 30);
         appender.create()
                 .add(HookItems.GRAPPLING_HOOK, wrap(40, 0))
                 .add(HookItems.AMETHYST_HOOK, wrap(40, 0))
                 .add(HookItems.TOPAZ_HOOK, wrap(40, 0))
                 .add(HookItems.SAPPHIRE_HOOK, wrap(40, 0))
-                .add(HookItems.EMERALD_HOOK, wrap(40, 0))
+                .add(HookItems.JADE_HOOK, wrap(40, 0))
                 .add(HookItems.RUBY_HOOK, wrap(40, 0))
                 .add(HookItems.AMBER_HOOK, wrap(40, 0))
                 .add(HookItems.DIAMOND_HOOK, wrap(40, 0))
@@ -1181,7 +1230,7 @@ public class ValueSubProvider {
                 .add(MinecartItems.AMETHYST_MINECART, wrap(1, 0, 0))
                 .add(MinecartItems.TOPAZ_MINECART, wrap(1, 0, 0))
                 .add(MinecartItems.SAPPHIRE_MINECART, wrap(1, 0, 0))
-                .add(MinecartItems.EMERALD_MINECART, wrap(1, 0, 0))
+                .add(MinecartItems.JADE_MINECART, wrap(1, 0, 0))
                 .add(MinecartItems.RUBY_MINECART, wrap(1, 0, 0))
                 .add(MinecartItems.DIAMOND_MINECART, wrap(1, 0, 0))
                 .add(MinecartItems.AMBER_MINECART, wrap(1, 0, 0))
@@ -1214,8 +1263,7 @@ public class ValueSubProvider {
                 .add(TreasureBagItems.EATER_OF_WORLDS_TREASURE_BAG, wrap(5, 0, 0))
                 .add(TreasureBagItems.QUEEN_BEE_TREASURE_BAG, wrap(7, 0, 0))
                 .add(TreasureBagItems.SKELETRON_TREASURE_BAG, wrap(3, 0, 0))
-                .add(TreasureBagItems.WALL_OF_FLESH_TREASURE_BAG, wrap(9, 50, 0))
-        ;
+                .add(TreasureBagItems.WALL_OF_FLESH_TREASURE_BAG, wrap(9, 50, 0));
         appender.create()
                 .add(AccessoryItems.LUCKY_COIN, wrap(1, 0, 0))
                 .add(AccessoryItems.ADHESIVE_BANDAGE, wrap(2, 0, 0))
@@ -1253,28 +1301,119 @@ public class ValueSubProvider {
                 .add(AccessoryItems.BAND_OF_STARPOWER, wrap(1, 50, 0))
                 .add(AccessoryItems.MANA_REGENERATION_BAND, wrap(1, 0, 0))
                 .add(AccessoryItems.NATURES_GIFT, wrap(54, 0))
-                .add(AccessoryItems.PHILOSOPHERS_STONE, wrap(2,0, 0))
+                .add(AccessoryItems.PHILOSOPHERS_STONE, wrap(2, 0, 0))
                 .add(AccessoryItems.MECHANICAL_LENS, wrap(20, 0))
-                .add(AccessoryItems.GOLD_RING, wrap(1,0, 0))
-                .add(AccessoryItems.DISCOUNT_CARD, wrap(1,0, 0))
-                .add(AccessoryItems.GREEDY_RING, wrap(3,0, 0))
+                .add(AccessoryItems.GOLD_RING, wrap(1, 0, 0))
+                .add(AccessoryItems.DISCOUNT_CARD, wrap(1, 0, 0))
+                .add(AccessoryItems.GREEDY_RING, wrap(3, 0, 0))
                 .add(AccessoryItems.GUIDE_TO_PLANT_FIBER_CORDAGE, wrap(50, 0))
-                .add(AccessoryItems.SUMMONER_EMBLEM, wrap(2, 0,0))
-                .add(AccessoryItems.APPRENTICES_SCARF, wrap(3, 0,0))
-                .add(AccessoryItems.SQUIRES_SHIELD, wrap(3, 0,0))
-                .add(AccessoryItems.HUNTRESSS_BUCKLER, wrap(3, 0,0))
-                .add(AccessoryItems.MONKS_BELT, wrap(3, 0,0))
-                .add(AccessoryItems.HERCULES_BEETLE, wrap(8, 0,0))
-                .add(AccessoryItems.NECROMANTIC_SCROLL, wrap(4, 0,0))
-                .add(AccessoryItems.PAPYRUS_SCARAB, wrap(5, 0,0))
-                .add(AccessoryItems.PYGMY_NECKLACE, wrap(4, 0,0))
-                .add(AccessoryItems.SPECTRE_GOGGLES, wrap(2, 0,0))
-                .add(AccessoryItems.FLEDGLING_WINGS, wrap(4,0))
-                .add(AccessoryItems.CHROMATIC_CLOAK, wrap(2, 0,0))
-                .add(AccessoryItems.MUSIC_BOX, wrap(2, 0,0))
-                .add(AccessoryItems.RADIO_THING, wrap(1, 0,0));
+                .add(AccessoryItems.SUMMONER_EMBLEM, wrap(2, 0, 0))
+                .add(AccessoryItems.APPRENTICES_SCARF, wrap(3, 0, 0))
+                .add(AccessoryItems.SQUIRES_SHIELD, wrap(3, 0, 0))
+                .add(AccessoryItems.HUNTRESSS_BUCKLER, wrap(3, 0, 0))
+                .add(AccessoryItems.MONKS_BELT, wrap(3, 0, 0))
+                .add(AccessoryItems.HERCULES_BEETLE, wrap(8, 0, 0))
+                .add(AccessoryItems.NECROMANTIC_SCROLL, wrap(4, 0, 0))
+                .add(AccessoryItems.PAPYRUS_SCARAB, wrap(5, 0, 0))
+                .add(AccessoryItems.PYGMY_NECKLACE, wrap(4, 0, 0))
+                .add(AccessoryItems.SPECTRE_GOGGLES, wrap(2, 0, 0))
+                .add(AccessoryItems.FLEDGLING_WINGS, wrap(4, 0))
+                .add(AccessoryItems.CHROMATIC_CLOAK, wrap(2, 0, 0))
+                .add(AccessoryItems.RADIO_THING, wrap(1, 0, 0));
+        appender.create()
+                .add(BaitItems.APPRENTICE_BAIT, wrap(1, 0))
+                .add(BaitItems.JOURNEYMAN_BAIT, wrap(3, 0))
+                .add(BaitItems.MASTER_BAIT, wrap(10, 0))
+                .add(BaitItems.BLACK_DRAGONFLY, wrap(10, 0))
+                .add(BaitItems.BLACK_SCORPION, wrap(15, 0))
+                .add(BaitItems.BLUE_DRAGONFLY, wrap(10, 0))
+                .add(BaitItems.BLUE_JELLYFISH, wrap(3, 50, 0))
+                .add(BaitItems.BUGGY, wrap(10, 0))
+                .add(BaitItems.ENCHANTED_NIGHTCRAWLER, wrap(20, 0))
+                .add(BaitItems.FIREFLY, wrap(3, 0))
+                .add(BaitItems.GLOWING_SNAIL, wrap(50, 0))
+                .add(BaitItems.GOLD_BUTTERFLY, wrap(10, 0, 0))
+                .add(BaitItems.GOLD_DRAGONFLY, wrap(10, 0, 0))
+                .add(BaitItems.GOLD_GRASSHOPPER, wrap(10, 0, 0))
+                .add(BaitItems.GOLD_LADYBUG, wrap(10, 0, 0))
+                .add(BaitItems.GOLD_WATER_STRIDER, wrap(10, 0, 0))
+                .add(BaitItems.GOLD_WORM, wrap(10, 0, 0))
+                .add(BaitItems.GRASSHOPPER, wrap(2, 50))
+                .add(BaitItems.GREEN_DRAGONFLY, wrap(10, 0))
+                .add(BaitItems.GREEN_JELLYFISH, wrap(3, 50, 0))
+                .add(BaitItems.GRUBBY, wrap(2, 50))
+                .add(BaitItems.HELL_BUTTERFLY, wrap(20, 0))
+                .add(BaitItems.JULIA_BUTTERFLY, wrap(30, 0))
+                .add(BaitItems.LADYBUG, wrap(20, 0))
+                .add(BaitItems.LAVAFLY, wrap(10, 0))
+                .add(BaitItems.LIGHTNING_BUG, wrap(5, 0))
+                .add(BaitItems.MAGGOT, wrap(5, 0))
+                .add(BaitItems.MAGMA_SNAIL, wrap(50, 0))
+                .add(BaitItems.MONARCH_BUTTERFLY, wrap(5, 0))
+                .add(BaitItems.ORANGE_DRAGONFLY, wrap(10, 0))
+                .add(BaitItems.PINK_JELLYFISH, wrap(3, 50, 0))
+                .add(BaitItems.PURPLE_EMPEROR_BUTTERFLY, wrap(75, 0))
+                .add(BaitItems.RED_ADMIRAL_BUTTERFLY, wrap(40, 0))
+                .add(BaitItems.RED_DRAGONFLY, wrap(10, 0))
+                .add(BaitItems.SCORPION, wrap(15, 0))
+                .add(BaitItems.SLUGGY, wrap(5, 0))
+                .add(BaitItems.SNAIL, wrap(10, 0))
+                .add(BaitItems.SULPHUR_BUTTERFLY, wrap(10, 0))
+                .add(BaitItems.TREE_NYMPH_BUTTERFLY, wrap(1, 0, 0))
+                .add(BaitItems.TRUFFLE_WORM, wrap(10, 0, 0))
+                .add(BaitItems.ULYSSES_BUTTERFLY, wrap(20, 0))
+                .add(BaitItems.WATER_STRIDER, wrap(10, 0))
+                .add(BaitItems.WORM, wrap(5, 0))
+                .add(BaitItems.YELLOW_DRAGONFLY, wrap(10, 0))
+                .add(BaitItems.ZEBRA_SWALLOWTAIL_BUTTERFLY, wrap(15, 0));
+        appender.create()
+                .add(CrateBlocks.WOODEN_CRATE, wrap(10, 0))
+                .add(CrateBlocks.IRON_CRATE, wrap(50, 0))
+                .add(CrateBlocks.GOLDEN_CRATE, wrap(2, 0, 0))
+                .add(CrateBlocks.JUNGLE_CRATE, wrap(1, 0, 0))
+                .add(CrateBlocks.SKY_CRATE, wrap(1, 0, 0))
+                .add(CrateBlocks.CORRUPT_CRATE, wrap(1, 0, 0))
+                .add(CrateBlocks.CRIMSON_CRATE, wrap(1, 0, 0))
+                .add(CrateBlocks.HALLOWED_CRATE, wrap(1, 0, 0))
+                .add(CrateBlocks.DUNGEON_CRATE, wrap(1, 0, 0))
+                .add(CrateBlocks.FROZEN_CRATE, wrap(1, 0, 0))
+                .add(CrateBlocks.OASIS_CRATE, wrap(1, 0, 0))
+                .add(CrateBlocks.OBSIDIAN_CRATE, wrap(1, 0, 0))
+                .add(CrateBlocks.OCEAN_CRATE, wrap(1, 0, 0))
+                .add(CrateBlocks.PEARLWOOD_CRATE, wrap(10, 0))
+                .add(CrateBlocks.MYTHRIL_CRATE, wrap(50, 0))
+                .add(CrateBlocks.TITANIUM_CRATE, wrap(2, 0, 0))
+                .add(CrateBlocks.BRAMBLE_CRATE, wrap(1, 0, 0))
+                .add(CrateBlocks.AZURE_CRATE, wrap(1, 0, 0))
+                .add(CrateBlocks.DEFILED_CRATE, wrap(1, 0, 0))
+                .add(CrateBlocks.HEMATIC_CRATE, wrap(1, 0, 0))
+                .add(CrateBlocks.DIVINE_CRATE, wrap(1, 0, 0))
+                .add(CrateBlocks.STOCKADE_CRATE, wrap(1, 0, 0))
+                .add(CrateBlocks.BOREAL_CRATE, wrap(1, 0, 0))
+                .add(CrateBlocks.MIRAGE_CRATE, wrap(1, 0, 0))
+                .add(CrateBlocks.HELLSTONE_CRATE, wrap(1, 0, 0))
+                .add(CrateBlocks.SEASIDE_CRATE, wrap(1, 0, 0));
+        appender.create()
+                .add(MaterialItems.BLINKROOT, 20)
+                .add(MaterialItems.DAYBLOOM, 20)
+                .add(MaterialItems.DEATHWEED, 20)
+                .add(MaterialItems.FIREBLOSSOM, 20)
+                .add(MaterialItems.MOONGLOW, 20)
+                .add(MaterialItems.SHIVERTHORN, 20)
+                .add(MaterialItems.WATERLEAF, 20);
+        appender.create()
+                .add(FoodItems.BLINKROOT_SEED.get(), 16)
+                .add(FoodItems.CLOUDWEAVER_SEED.get(), wrap(5, 0))
+                .add(FoodItems.DAYBLOOM_SEED.get(), 16)
+                .add(FoodItems.DEATHWEED_SEED.get(), 16)
+                .add(FoodItems.FIREBLOSSOM_SEED.get(), 16)
+                .add(FoodItems.FLOATING_WHEAT_SEED.get(), wrap(15, 0))
+                .add(FoodItems.MOONGLOW_SEED.get(), 16)
+                .add(FoodItems.SHIVERTHORN_SEED.get(), 16)
+                .add(FoodItems.STELLAR_BLOSSOM_SEED.get(), wrap(5, 0))
+                .add(FoodItems.WATERLEAF_SEED.get(), 16);
+        WaystonesHelper.appendValue(appender.create());
     }
-
 
     private static int wrap(int platinum, int gold, int silver, int copper) {
         return platinum * 1000000 + gold * 10000 + silver * 100 + copper;

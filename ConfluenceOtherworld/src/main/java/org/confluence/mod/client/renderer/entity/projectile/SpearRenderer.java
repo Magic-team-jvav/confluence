@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.projectile.ThrowableDropSelfProjectile;
@@ -31,8 +32,8 @@ public class SpearRenderer extends EntityRenderer<ThrowableDropSelfProjectile> {
         poseStack.pushPose();
         Vec3 v = entity.getDeltaMovement();
         float yaw = (float) Math.atan2(v.z, v.x);
-        float pitch = (float) (Math.atan2(v.y, Math.sqrt(v.x * v.x + v.z * v.z)) + zRotate);
-        poseStack.mulPose(Axis.YN.rotation((yaw + (float) Math.PI)));
+        float pitch = (float) (Math.atan2(v.y, v.horizontalDistance()) + zRotate);
+        poseStack.mulPose(Axis.YN.rotation(yaw + Mth.PI));
         poseStack.mulPose(Axis.ZN.rotation(pitch));
         Minecraft.getInstance().getItemRenderer().renderStatic(
                 entity.getItem(),

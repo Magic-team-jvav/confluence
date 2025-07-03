@@ -14,6 +14,7 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.entity.hook.AbstractHookEntity;
+import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.jetbrains.annotations.Nullable;
 
 public class BaseHookItem extends Item {
@@ -57,30 +58,27 @@ public class BaseHookItem extends Item {
     }
 
     public boolean canHook(ServerLevel level, ExtraInventory extraInventory, ItemStack itemStack) {
-        CompoundTag nbt = LibUtils.getItemStackNbt(itemStack);
-        ListTag list = nbt.getList("hooks", Tag.TAG_COMPOUND);
-        list.removeIf(tag -> getHookEntity(tag, level) == null);
+        ListTag list = LibUtils.getItemStackNbt(itemStack).getList("hooks", Tag.TAG_COMPOUND);
+        if (!list.isEmpty()) list.removeIf(tag -> getHookEntity(tag, level) == null);
         LibUtils.updateItemStackNbt(itemStack, tag -> {
             tag.put("hooks", list);
             extraInventory.setChanged();
         });
         if (this instanceof IHookFastThrow) return list.size() <= getHookAmount();
-        if (list.isEmpty()) return true;
-        return list.stream().allMatch(tag -> {
+        return !list.isEmpty() && list.stream().allMatch(tag -> {
             AbstractHookEntity hookEntity = getHookEntity(tag, level);
             return hookEntity == null || hookEntity.getHookState() == AbstractHookEntity.HookState.HOOKED;
         });
     }
 
     public void onUnequip(ServerPlayer serverPlayer, ItemStack newStack, ItemStack stack) {
-        if (ItemStack.isSameItem(newStack, stack)) return;
-        if (LibUtils.getItemStackNbt(stack).get("hooks") instanceof ListTag list) {
-            removeAll(list, serverPlayer.serverLevel());
+        if (!ItemStack.isSameItem(newStack, stack) && LibUtils.getItemStackNbt(stack).get("hooks") instanceof ListTag list) {
+            discardAllHooks(list, serverPlayer.serverLevel());
         }
     }
 
-    public static void removeAll(ListTag list, ServerLevel level) {
-        list.removeIf(tag -> {
+    public static void discardAllHooks(ListTag list, ServerLevel level) {
+        if (!list.isEmpty()) list.removeIf(tag -> {
             AbstractHookEntity hookEntity = getHookEntity(tag, level);
             if (hookEntity != null) hookEntity.discard();
             return true;
@@ -88,11 +86,20 @@ public class BaseHookItem extends Item {
     }
 
     @Nullable
-    public static AbstractHookEntity getHookEntity(Tag tag, ServerLevel level) {
-        if (tag instanceof CompoundTag compoundTag) {
-            return level.getEntity(compoundTag.getInt("id")) instanceof AbstractHookEntity hookEntity ? hookEntity : null;
-        }
-        return null;
+    public static AbstractHookEntity getHookEntity(Tag tag, Level level) {
+        return level.getEntity(((CompoundTag) tag).getInt("id")) instanceof AbstractHookEntity hookEntity ? hookEntity : null;
+    }
+
+    public static boolean hasAnyHooked(Player player) {
+        ItemStack hook = player.getData(ModAttachmentTypes.EXTRA_INVENTORY).getHook();
+        if (hook.isEmpty()) return false;
+        CompoundTag nbt = LibUtils.getItemStackNbtIfPresent(hook);
+        if (nbt == null) return false;
+        ListTag list = nbt.getList("hooks", Tag.TAG_COMPOUND);
+        return !list.isEmpty() && list.stream().anyMatch(tag -> {
+            AbstractHookEntity hookEntity = getHookEntity(tag, player.level());
+            return hookEntity != null && hookEntity.getHookState() == AbstractHookEntity.HookState.HOOKED;
+        });
     }
 
     public enum HookType {

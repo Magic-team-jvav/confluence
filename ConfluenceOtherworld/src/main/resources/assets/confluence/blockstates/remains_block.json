@@ -1,0 +1,204 @@
+{
+  "variants": {
+    "facing=north,is_face_sturdy=true": [
+      {
+        "model": "confluence:block/remains_block/remains_block_fs0"
+      },
+      {
+        "model": "confluence:block/remains_block/remains_block_fs1"
+      },
+      {
+        "model": "confluence:block/remains_block/remains_block_fs2"
+      }
+    ],
+    "facing=east,is_face_sturdy=true": [
+      {
+        "model": "confluence:block/remains_block/remains_block_fs0",
+        "y": 90
+      },
+      {
+        "model": "confluence:block/remains_block/remains_block_fs1",
+        "y": 90
+      },
+      {
+        "model": "confluence:block/remains_block/remains_block_fs2",
+        "y": 90
+      }
+    ],
+    "facing=west,is_face_sturdy=true": [
+      {
+        "model": "confluence:block/remains_block/remains_block_fs0",
+        "y": 270
+      },
+      {
+        "model": "confluence:block/remains_block/remains_block_fs1",
+        "y": 270
+      },
+      {
+        "model": "confluence:block/remains_block/remains_block_fs2",
+        "y": 270
+      }
+    ],
+    "facing=south,is_face_sturdy=true": [
+      {
+        "model": "confluence:block/remains_block/remains_block_fs0",
+        "y": 180
+      },
+      {
+        "model": "confluence:block/remains_block/remains_block_fs1",
+        "y": 180
+      },
+      {
+        "model": "confluence:block/remains_block/remains_block_fs2",
+        "y": 180
+      }
+    ],
+    "facing=north,is_face_sturdy=false": [
+      {
+        "model": "confluence:block/remains_block/remains_block_s0"
+      },
+      {
+        "model": "confluence:block/remains_block/remains_block_s1"
+      },
+      {
+        "model": "confluence:block/remains_block/remains_block_s2"
+      }
+    ],
+    "facing=east,is_face_sturdy=false": [
+      {
+        "model": "confluence:block/remains_block/remains_block_s0",
+        "y": 90
+      },
+      {
+        "model": "confluence:block/remains_block/remains_block_s1",
+        "y": 90
+      },
+      {
+        "model": "confluence:block/remains_block/remains_block_s2",
+        "y": 90
+      }
+    ],
+    "facing=west,is_face_sturdy=false": [
+      {
+        "model": "confluence:block/remains_block/remains_block_s0",
+        "y": 270
+      },
+      {
+        "model": "confluence:block/remains_block/remains_block_s1",
+        "y": 270
+      },
+      {
+        "model": "confluence:block/remains_block/remains_block_s2",
+        "y": 270
+      }
+    ],
+    "facing=south,is_face_sturdy=false": [
+      {
+        "model": "confluence:block/remains_block/remains_block_s0",
+        "y": 180
+      },
+      {
+        "model": "confluence:block/remains_block/remains_block_s1",
+        "y": 180
+      },
+      {
+        "model": "confluence:block/remains_block/remains_block_s2",
+        "y": 180
+      }
+    ],
+    "facing=up": [
+      {
+        "model": "confluence:block/remains_block/remains_block_f0"
+      },
+      {
+        "model": "confluence:block/remains_block/remains_block_f1"
+      },
+      {
+        "model": "confluence:block/remains_block/remains_block_f2"
+      },
+      {
+        "model": "confluence:block/remains_block/remains_block_f0",
+        "y": 90
+      },
+      {
+        "model": "confluence:block/remains_block/remains_block_f1",
+        "y": 90
+      },
+      {
+        "model": "confluence:block/remains_block/remains_block_f2",
+        "y": 90
+      },
+      {
+        "model": "confluence:block/remains_block/remains_block_f0",
+        "y": 180
+      },
+      {
+        "model": "confluence:block/remains_block/remains_block_f1",
+        "y": 180
+      },
+      {
+        "model": "confluence:block/remains_block/remains_block_f2",
+        "y": 180
+      },
+      {
+        "model": "confluence:block/remains_block/remains_block_f0",
+        "y": 270
+      },
+      {
+        "model": "confluence:block/remains_block/remains_block_f1",
+        "y": 270
+      },
+      {
+        "model": "confluence:block/remains_block/remains_block_f2",
+        "y": 270
+      }
+    ],
+    "facing=down": [
+      {
+        "model": "confluence:block/remains_block/remains_block_u0"
+      },
+      {
+        "model": "confluence:block/remains_block/remains_block_u1"
+      },
+      {
+        "model": "confluence:block/remains_block/remains_block_u2"
+      },
+      {
+        "model": "confluence:block/remains_block/remains_block_u0",
+        "y": 90
+      },
+      {
+        "model": "confluence:block/remains_block/remains_block_u1",
+        "y": 90
+      },
+      {
+        "model": "confluence:block/remains_block/remains_block_u2",
+        "y": 90
+      },
+      {
+        "model": "confluence:block/remains_block/remains_block_u0",
+        "y": 180
+      },
+      {
+        "model": "confluence:block/remains_block/remains_block_u1",
+        "y": 180
+      },
+      {
+        "model": "confluence:block/remains_block/remains_block_u2",
+        "y": 180
+      },
+      {
+        "model": "confluence:block/remains_block/remains_block_u0",
+        "y": 270
+      },
+      {
+        "model": "confluence:block/remains_block/remains_block_u1",
+        "y": 270
+      },
+      {
+        "model": "confluence:block/remains_block/remains_block_u2",
+        "y": 270
+      }
+    ]
+  }
+}

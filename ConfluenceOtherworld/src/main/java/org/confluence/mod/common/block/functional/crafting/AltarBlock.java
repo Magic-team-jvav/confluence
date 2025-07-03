@@ -3,7 +3,6 @@ package org.confluence.mod.common.block.functional.crafting;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -47,17 +46,16 @@ import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.recipe.ItemStackHandlerRecipeInput;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.block.AltarBlockModel;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.saved.ConfluenceData;
-import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.item.HammerItems;
 import org.confluence.mod.common.recipe.AltarRecipe;
 import org.confluence.mod.mixed.IMinecraftServer;
+import org.confluence.mod.util.AchievementUtils;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.GeoItem;
@@ -99,13 +97,13 @@ public class AltarBlock extends BaseEntityBlock {
     }
 
     @Override
-    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return SHAPE;
     }
 
     @Override
-    public float getDestroyProgress(BlockState pState, Player pPlayer, BlockGetter pLevel, BlockPos pPos) {
-        return pPlayer.getMainHandItem().is(ModTags.Items.HAMMERS) ? super.getDestroyProgress(pState, pPlayer, pLevel, pPos) : 0.0F;
+    public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
+        return player.getMainHandItem().is(ModTags.Items.HAMMERS) ? super.getDestroyProgress(state, player, level, pos) : 0.0F;
     }
 
     @Override
@@ -114,9 +112,9 @@ public class AltarBlock extends BaseEntityBlock {
     }
 
     @Override
-    public void playerDestroy(Level pLevel, Player pPlayer, BlockPos pPos, BlockState pState, @Nullable BlockEntity pBlockEntity, ItemStack pTool) {
-        super.playerDestroy(pLevel, pPlayer, pPos, pState, pBlockEntity, pTool);
-        if (pPlayer instanceof ServerPlayer serverPlayer && IMinecraftServer.isHardmode(serverPlayer.server)) {
+    public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack tool) {
+        super.playerDestroy(level, player, pos, state, blockEntity, tool);
+        if (player instanceof ServerPlayer serverPlayer && IMinecraftServer.isHardmode(serverPlayer.server)) {
             ServerLevel serverLevel = serverPlayer.serverLevel();
             ConfluenceData data = ConfluenceData.get(serverLevel);
             if (data.increaseRevealStep(serverLevel)) {
@@ -124,20 +122,17 @@ public class AltarBlock extends BaseEntityBlock {
                         "event.confluence.reveal_step" + data.getRevealStep()
                 ).withColor(GlobalColors.MESSAGE.get()), false);
             }
-            if (serverPlayer.getMainHandItem().is(HammerItems.PWNHAMMER)) {
-                AdvancementHolder holder = serverLevel.getServer().getAdvancements().get(Confluence.asResource(ModAchievements.PREFIX + "begone_evil"));
-                if (holder != null) {
-                    serverPlayer.getAdvancements().award(holder, "never");
-                }
+            if (tool.is(HammerItems.PWNHAMMER)) {
+                AchievementUtils.awardAchievement(serverPlayer, "begone_evil");
             }
         }
     }
 
     @Override
-    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
-        if (pLevel.getBlockEntity(pPos) instanceof Entity entity) {
-            Containers.dropContents(pLevel, pPos, entity.itemHandler.getItems());
-            pLevel.removeBlockEntity(pPos);
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+        if (level.getBlockEntity(pos) instanceof Entity entity) {
+            Containers.dropContents(level, pos, entity.itemHandler.getItems());
+            level.removeBlockEntity(pos);
         }
     }
 
@@ -157,34 +152,34 @@ public class AltarBlock extends BaseEntityBlock {
         return ItemInteractionResult.sidedSuccess(level.isClientSide);
     }
 
-    public static void onLeftClick(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer) { // 合成
-        if (pLevel instanceof ServerLevel serverLevel && pState.getBlock() instanceof AltarBlock && pLevel.getBlockEntity(pPos) instanceof Entity entity) {
+    public static void onLeftClick(BlockState state, Level level, BlockPos pos, Player player) { // 合成
+        if (level instanceof ServerLevel serverLevel && state.getBlock() instanceof AltarBlock && level.getBlockEntity(pos) instanceof Entity entity) {
             RecipeManager recipeManager = serverLevel.getServer().getRecipeManager();
-            if (pPlayer.isCrouching()) { // 全部合成
+            if (player.isCrouching()) { // 全部合成
                 List<RecipeHolder<AltarRecipe>> recipes;
                 boolean crafted = false;
-                while (!(recipes = recipeManager.getRecipesFor(ModRecipes.ALTAR_TYPE.get(), entity.itemHandler, pLevel)).isEmpty()) {
+                while (!(recipes = recipeManager.getRecipesFor(ModRecipes.ALTAR_TYPE.get(), entity.itemHandler, level)).isEmpty()) {
                     crafted = true;
                     AltarRecipe recipe = recipes.getFirst().value(); // 先只取第一个合成表
-                    ItemStack result = recipe.assembleAndExtract(entity.itemHandler, pLevel.registryAccess());
-                    LibUtils.createItemEntity(result, pPos.getX() + 0.5, pPos.getY() + 0.75, pPos.getZ() + 0.5, pLevel, 0);
+                    ItemStack result = recipe.assembleAndExtract(entity.itemHandler, level.registryAccess());
+                    LibUtils.createItemEntity(result, pos.getX() + 0.5, pos.getY() + 0.75, pos.getZ() + 0.5, level, 0);
                 }
-                if (crafted) entity.playAnimation(serverLevel, pPos);
+                if (crafted) entity.playAnimation(serverLevel, pos);
             } else { // 合成一个
-                List<RecipeHolder<AltarRecipe>> recipes = recipeManager.getRecipesFor(ModRecipes.ALTAR_TYPE.get(), entity.itemHandler, pLevel); // todo 多态合成
+                List<RecipeHolder<AltarRecipe>> recipes = recipeManager.getRecipesFor(ModRecipes.ALTAR_TYPE.get(), entity.itemHandler, level); // todo 多态合成
                 if (recipes.isEmpty()) return;
                 AltarRecipe recipe = recipes.getFirst().value(); // 先只取第一个合成表
-                ItemStack result = recipe.assembleAndExtract(entity.itemHandler, pLevel.registryAccess());
-                LibUtils.createItemEntity(result, pPos.getX() + 0.5, pPos.getY() + 0.75, pPos.getZ() + 0.5, pLevel, 0);
-                entity.playAnimation(serverLevel, pPos);
+                ItemStack result = recipe.assembleAndExtract(entity.itemHandler, level.registryAccess());
+                LibUtils.createItemEntity(result, pos.getX() + 0.5, pos.getY() + 0.75, pos.getZ() + 0.5, level, 0);
+                entity.playAnimation(serverLevel, pos);
             }
         }
     }
 
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return new Entity(pPos, pState).setVariant(variant);
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new Entity(pos, state).setVariant(variant);
     }
 
     public static boolean hurtPlayerIfBrokenNotAllowed(Player player, BlockState blockState) {
@@ -204,8 +199,8 @@ public class AltarBlock extends BaseEntityBlock {
         private final ItemStackHandlerRecipeInput itemHandler; // 5 Inputs and 1 Output.
         private Variant variant;
 
-        public Entity(BlockPos pPos, BlockState pBlockState) {
-            super(FunctionalBlocks.ALTAR_BLOCK_ENTITY.get(), pPos, pBlockState);
+        public Entity(BlockPos pos, BlockState blockState) {
+            super(FunctionalBlocks.ALTAR_BLOCK_ENTITY.get(), pos, blockState);
             this.itemHandler = new ItemStackHandlerRecipeInput(this, CONTAINER_SIZE);
             SingletonGeoAnimatable.registerSyncedAnimatable(this);
         }
@@ -357,8 +352,8 @@ public class AltarBlock extends BaseEntityBlock {
     public static class Item extends BlockItem implements GeoItem {
         private final AnimatableInstanceCache CACHE = GeckoLibUtil.createInstanceCache(this);
 
-        public Item(AltarBlock pBlock) {
-            super(pBlock, new Properties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.PURPLE));
+        public Item(AltarBlock block) {
+            super(block, new Properties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.PURPLE));
         }
 
         @Override

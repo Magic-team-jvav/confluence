@@ -12,6 +12,8 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.entity.EntityType;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.lib.common.data.saved.IGlobalData;
+import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.network.s2c.GamePhasePacketS2C;
@@ -73,6 +75,9 @@ public class KillBoard implements IGlobalData {
     }
 
     public GamePhase getGamePhase() {
+        if (LibUtils.isLogicalClient()) {
+            return ClientPacketHandler.getGamePhase();
+        }
         return gamePhase;
     }
 

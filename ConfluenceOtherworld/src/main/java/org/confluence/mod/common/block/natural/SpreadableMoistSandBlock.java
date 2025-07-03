@@ -93,7 +93,7 @@ public class SpreadableMoistSandBlock extends Block implements ISpreadable {
     }
 
     @Override
-    public Type getType() {
+    public Type getSpreadType() {
         return type;
     }
 
@@ -104,14 +104,14 @@ public class SpreadableMoistSandBlock extends Block implements ISpreadable {
     @Override
     protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
         if (level.dimensionType().ultraWarm()) {
-            if (state.is(NatureBlocks.EBONY_MOIST_SAND_BLOCK.get())) {
-                level.setBlock(pos, NatureBlocks.EBONY_SAND.get().defaultBlockState(), 3);
+            if (state.is(NatureBlocks.MOISTENED_EBONSAND_BLOCK.get())) {
+                level.setBlock(pos, NatureBlocks.EBONSAND.get().defaultBlockState(), 3);
             }
-            else if (state.is(NatureBlocks.TR_CRIMSON_MOIST_SAND_BLOCK.get())) {
-                level.setBlock(pos, NatureBlocks.TR_CRIMSON_SAND.get().defaultBlockState(), 3);
+            else if (state.is(NatureBlocks.MOISTENED_CRIMSAND_BLOCK.get())) {
+                level.setBlock(pos, NatureBlocks.CRIMSAND.get().defaultBlockState(), 3);
             }
-            else if (state.is(NatureBlocks.PEARL_MOIST_SAND_BLOCK.get())) {
-                level.setBlock(pos, NatureBlocks.PEARL_SAND.get().defaultBlockState(), 3);
+            else if (state.is(NatureBlocks.MOISTENED_PEARLSAND_BLOCK.get())) {
+                level.setBlock(pos, NatureBlocks.PEARLSAND.get().defaultBlockState(), 3);
             }
 
             level.levelEvent(2009, pos, 0);

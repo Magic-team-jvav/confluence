@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "confluence:block/keg",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "confluence:block/keg"
+    },
+    "facing=south": {
+      "model": "confluence:block/keg",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "confluence:block/keg",
+      "y": 270
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "confluence:simple_block_nbt",
+  "config": {
+    "to_place": {
+      "type": "simple_state_provider",
+      "state": {
+        "Name": "confluence:sandstone_chest",
+        "Properties": {
+          "unlocked": "true"
+        }
+      }
+    },
+    "nbt": {
+      "LootTable": "confluence:chests/cave_sandstone_chests"
+    }
+  }
+}

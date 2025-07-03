@@ -70,12 +70,13 @@ public class CoinPileBlock extends FallingBlock {
         return !UseContext.isSecondaryUseActive() && UseContext.getItemInHand().is(asItem()) && state.getValue(HEAPS) < 12 || super.canBeReplaced(state, UseContext);
     }
 
-
+    @Override
     @Nullable
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         BlockState clickedBlockState = context.getLevel().getBlockState(context.getClickedPos());
         if (clickedBlockState.is(this) && clickedBlockState.getValue(HEAPS) < 12) {
-            return clickedBlockState.cycle(HEAPS);
+            int currentHeaps = clickedBlockState.getValue(HEAPS);
+            return clickedBlockState.setValue(HEAPS, currentHeaps + 1);
         }
         return defaultBlockState().setValue(ISBASE, !isCoinPileBlock(context.getLevel().getBlockState(context.getClickedPos().below())));
     }
@@ -104,7 +105,7 @@ public class CoinPileBlock extends FallingBlock {
     }
 
     private boolean isCoinPileBlock(BlockState blockState) {
-        return blockState.is(this) || blockState.is(ModTags.Blocks.COIN_PILE);
+        return blockState.is(this) || blockState.is(ModTags.Blocks.COINS);
     }
 
     @Override

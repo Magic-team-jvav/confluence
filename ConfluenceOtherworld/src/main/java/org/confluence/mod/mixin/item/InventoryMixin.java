@@ -1,13 +1,16 @@
 package org.confluence.mod.mixin.item;
 
+import com.llamalad7.mixinextras.sugar.Local;
+import net.minecraft.world.Container;
+import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
@@ -21,6 +24,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import static org.confluence.mod.common.attachment.ExtraInventory.*;
 import static org.confluence.mod.common.item.common.CoinItem.UPGRADES_COUNT;
@@ -34,7 +38,7 @@ public abstract class InventoryMixin {
     @Shadow
     protected abstract boolean hasRemainingSpaceForItem(ItemStack destination, ItemStack origin);
 
-    @Inject(method = "add(ILnet/minecraft/world/item/ItemStack;)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;isDamaged()Z"), cancellable = true)
+    @Inject(method = "add(ILnet/minecraft/world/item/ItemStack;)Z", at = @At("HEAD"), cancellable = true)
     private void add2Extra(int slot, ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
         if (stack.is(ModTags.Items.COINS)) {
             ExtraInventory extraInventory = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
@@ -65,21 +69,27 @@ public abstract class InventoryMixin {
                 cir.setReturnValue(true);
             }
         } else if (stack.is(ModTags.Items.AMMO)) {
-            if (stack.is(MaterialItems.FALLING_STAR.get())) return;
+            if (CommonConfigs.ammoSlotsItemBlackList.stream().anyMatch(stack.getItem().builtInRegistryHolder()::is) ||
+                    CommonConfigs.ammoSlotsTagBlackList.stream().anyMatch(stack::is)) return;
             ExtraInventory extraInventory = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
             if (confluence$insert2Extra(AMMO_START, SIZE_AMMO, extraInventory, stack, extraInventory2 -> {})) {
                 cir.setReturnValue(true);
             }
-        } else if (PrefixUtils.canInit(stack)) {
+        } else if (!stack.isEmpty() && PrefixUtils.canInit(stack)) {
             PrefixUtils.initPrefix(player.getRandom(), stack);
         }
     }
 
     @Inject(method = "setItem", at = @At("HEAD"))
     private void initPrefix(int index, ItemStack stack, CallbackInfo ci) {
-        if (PrefixUtils.canInit(stack)) {
+        if (!stack.isEmpty() && PrefixUtils.canInit(stack)) {
             PrefixUtils.initPrefix(player.getRandom(), stack);
         }
+    }
+
+    @Inject(method = "clearOrCountMatchingItems", at = @At("RETURN"), cancellable = true)
+    private void withExtra(Predicate<ItemStack> stackPredicate, int maxCount, Container inventory, CallbackInfoReturnable<Integer> cir, @Local boolean flag) {
+        cir.setReturnValue(ContainerHelper.clearOrCountMatchingItems(player.getData(ModAttachmentTypes.EXTRA_INVENTORY), stackPredicate, maxCount - cir.getReturnValue(), flag));
     }
 
     @Unique

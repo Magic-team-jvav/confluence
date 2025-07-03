@@ -15,14 +15,16 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.api.event.ShimmerItemTransmutationEvent;
 import org.confluence.mod.client.handler.ClientPacketHandler;
+import org.confluence.mod.common.data.saved.GamePhase;
 import org.confluence.mod.common.init.item.ToolItems;
+import org.confluence.mod.common.recipe.ItemTransmutationRecipe;
 
-public class ShimmerItemTransmutationCategory implements IRecipeCategory<ShimmerItemTransmutationEvent.ItemTransmutation> {
-    public static final RecipeType<ShimmerItemTransmutationEvent.ItemTransmutation> TYPE = RecipeType.create(Confluence.MODID, "item_transmutation", ShimmerItemTransmutationEvent.ItemTransmutation.class);
-    private static final Component SHIMMER_TRANSMUTATION_TITLE = Component.translatable("title.confluence.shimmer_transmutation");
+public class ShimmerItemTransmutationCategory implements IRecipeCategory<RecipeHolder<ItemTransmutationRecipe>> {
+    public static final RecipeType<RecipeHolder<ItemTransmutationRecipe>> TYPE = RecipeType.createRecipeHolderType(Confluence.asResource("item_transmutation"));
+    private static final Component TITLE = Component.translatable("title.confluence.shimmer_transmutation");
     private final IDrawable icon;
 
     public ShimmerItemTransmutationCategory(IJeiHelpers jeiHelpers) {
@@ -30,19 +32,23 @@ public class ShimmerItemTransmutationCategory implements IRecipeCategory<Shimmer
     }
 
     @Override
-    public RecipeType<ShimmerItemTransmutationEvent.ItemTransmutation> getRecipeType() {
+    public RecipeType<RecipeHolder<ItemTransmutationRecipe>> getRecipeType() {
         return TYPE;
     }
 
     @Override
     public Component getTitle() {
-        return SHIMMER_TRANSMUTATION_TITLE;
+        return TITLE;
     }
 
-    @SuppressWarnings("removal")
     @Override
-    public IDrawable getBackground() {
-        return ModJeiPlugin.FULL_BACKGROUND;
+    public int getWidth() {
+        return 128;
+    }
+
+    @Override
+    public int getHeight() {
+        return 128;
     }
 
     @Override
@@ -51,31 +57,37 @@ public class ShimmerItemTransmutationCategory implements IRecipeCategory<Shimmer
     }
 
     @Override
-    public void setRecipe(IRecipeLayoutBuilder builder, ShimmerItemTransmutationEvent.ItemTransmutation recipe, IFocusGroup focuses) {
+    public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<ItemTransmutationRecipe> recipe, IFocusGroup focuses) {
         // input
-        ItemStack[] items = recipe.source().getItems();
+        ItemTransmutationRecipe value = recipe.value();
+        ItemStack[] items = value.source().getItems();
         IRecipeSlotBuilder inputSlot = builder.addSlot(RecipeIngredientRole.INPUT, 56, 16);
         if (items.length > 1) {
-            inputSlot.addIngredients(recipe.source());
+            inputSlot.addIngredients(value.source());
         } else {
             ItemStack input = items.length == 0 ? new ItemStack(Items.BARRIER) : items[0].copy();
-            input.setCount(recipe.shrink());
+            input.setCount(value.shrink());
             inputSlot.addItemStack(input);
         }
         // output
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 56, 88).addItemStacks(recipe.target());
+        if (value.isValid()) {
+            builder.addSlot(RecipeIngredientRole.OUTPUT, 56, 88).addItemStacks(value.target());
+        } else {
+            builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 56, 88).addItemStack(Items.BARRIER.getDefaultInstance());
+        }
     }
 
     @Override
-    public void draw(ShimmerItemTransmutationEvent.ItemTransmutation recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
-        if (ClientPacketHandler.getGamePhase().ordinal() < recipe.gamePhase().ordinal()) {
+    public void draw(RecipeHolder<ItemTransmutationRecipe> recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+        GamePhase gamePhase = recipe.value().gamePhase();
+        if (gamePhase.isAboveThan(ClientPacketHandler.getGamePhase())) {
             ModJeiPlugin.drawArrowDown(guiGraphics, 54, 46, false);
             if (mouseX >= 54 && mouseX <= 75 && mouseY >= 46 && mouseY <= 74) {
-                Component text = Component.translatable("condition.confluence.shimmer_transmutation." + recipe.gamePhase().getSerializedName()).withStyle(style -> style.withColor(ChatFormatting.RED));
+                Component text = Component.translatable("condition.confluence.shimmer_transmutation." + gamePhase.getSerializedName()).withStyle(style -> style.withColor(ChatFormatting.RED));
                 guiGraphics.renderTooltip(Minecraft.getInstance().font, text, (int) mouseX, (int) mouseY);
             }
         } else {
-            ModJeiPlugin.drawArrowDown(guiGraphics, 54, 46, true);
+            ModJeiPlugin.drawArrowDown(guiGraphics, 54, 46, recipe.value().isValid());
         }
     }
 }

@@ -16,13 +16,15 @@ import net.minecraft.world.level.material.MapColor;
 import javax.annotation.Nullable;
 
 public class HellStoneBlock extends Block {
+    private final boolean lava;
 
-    public HellStoneBlock() {
+    public HellStoneBlock(boolean lava) {
         super(BlockBehaviour.Properties
                 .ofFullCopy(Blocks.ANCIENT_DEBRIS)
                 .mapColor(MapColor.COLOR_RED)
                 .lightLevel(value -> 10)
                 .requiresCorrectToolForDrops());
+        this.lava = lava;
     }
 
     public void stepOn(Level level, BlockPos blockPos, BlockState blockState, Entity entity) {
@@ -36,7 +38,7 @@ public class HellStoneBlock extends Block {
     @Override
     public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack tool) {
         super.playerDestroy(level, player, pos, state, blockEntity, tool);
-        if (!level.isClientSide && !player.hasInfiniteMaterials()) {
+        if (lava && !level.isClientSide && !player.hasInfiniteMaterials()) {
             level.setBlockAndUpdate(pos, Blocks.LAVA.defaultBlockState());
         }
     }

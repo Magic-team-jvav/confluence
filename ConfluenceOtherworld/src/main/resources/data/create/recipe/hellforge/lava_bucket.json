@@ -1,0 +1,26 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "create"
+    }
+  ],
+  "type": "confluence:hellforge",
+  "ingredients": [
+    {
+      "type": "confluence_magic_lib:amount_ingredient",
+      "count": 32,
+      "ingredient": {
+        "tag": "c:cobblestones"
+      }
+    },
+    {
+      "item": "minecraft:bucket"
+    }
+  ],
+  "requires_fuel": true,
+  "result": {
+    "count": 1,
+    "id": "minecraft:lava_bucket"
+  }
+}

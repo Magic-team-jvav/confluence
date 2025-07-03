@@ -5,7 +5,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.natural.LifeCrystalBlock;
 import software.bernie.geckolib.model.GeoModel;
 
-@SuppressWarnings("removal")
 public class LifeCrystalBlockModel extends GeoModel<LifeCrystalBlock.Entity> {
     public static final ResourceLocation MODEL = Confluence.asResource("geo/block/life_crystal_block.geo.json");
     public static final ResourceLocation TEXTURE = Confluence.asResource("textures/block/life_crystal_block.png");

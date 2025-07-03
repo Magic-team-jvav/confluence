@@ -22,7 +22,7 @@ public class SpreadingBlock extends Block implements ISpreadable {
     }
 
     @Override
-    public Type getType() {
+    public Type getSpreadType() {
         return type;
     }
 

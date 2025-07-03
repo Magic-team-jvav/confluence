@@ -1,6 +1,0 @@
-{
-    "type": "neoforge:add_features",
-    "biomes": "confluence:the_corruption",
-    "features": "confluence:demon_altar",
-    "step": "underground_decoration"
-}

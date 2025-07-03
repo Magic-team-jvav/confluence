@@ -1,0 +1,137 @@
+{
+	"credit": "Made with Blockbench",
+	"render_type": "cutout",
+	"textures": {
+		"2": "confluence:block/glowing_mushroom_vine_light_1",
+		"3": "confluence:block/glowing_mushroom_vine_light",
+		"vine": "confluence:block/glowing_mushroom_vine",
+		"particle": "confluence:block/glowing_mushroom_vine_1",
+		"vine_1": "confluence:block/glowing_mushroom_vine_1"
+	},
+	"elements": [
+		{
+			"from": [8, 16, -2],
+			"to": [8, 32, 18],
+			"rotation": {"angle": 45, "axis": "y", "origin": [8, 16, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 0, 16], "texture": "#missing", "cullface": "up"},
+				"east": {"uv": [0, 0, 16, 16], "texture": "#vine", "cullface": "up"},
+				"south": {"uv": [0, 0, 0, 16], "texture": "#missing", "cullface": "up"},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#vine", "cullface": "up"},
+				"up": {"uv": [0, 0, 0, 16], "texture": "#missing", "cullface": "up"},
+				"down": {"uv": [0, 0, 0, 16], "texture": "#missing", "cullface": "up"}
+			}
+		},
+		{
+			"from": [-2, 16, 8],
+			"to": [18, 32, 8],
+			"rotation": {"angle": 45, "axis": "y", "origin": [8, 16, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#vine", "cullface": "up"},
+				"east": {"uv": [0, 0, 0, 16], "texture": "#missing", "cullface": "up"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#vine", "cullface": "up"},
+				"west": {"uv": [0, 0, 0, 16], "texture": "#missing", "cullface": "up"},
+				"up": {"uv": [0, 0, 0, 16], "rotation": 270, "texture": "#missing", "cullface": "up"},
+				"down": {"uv": [0, 0, 0, 16], "rotation": 90, "texture": "#missing", "cullface": "up"}
+			}
+		},
+		{
+			"from": [-2, 0, 8],
+			"to": [18, 16, 8],
+			"rotation": {"angle": 45, "axis": "y", "origin": [8, 0, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#vine_1"},
+				"east": {"uv": [0, 0, 0, 16], "texture": "#missing"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#vine_1"},
+				"west": {"uv": [0, 0, 0, 16], "texture": "#missing"},
+				"up": {"uv": [0, 0, 0, 16], "rotation": 270, "texture": "#missing"},
+				"down": {"uv": [0, 0, 0, 16], "rotation": 90, "texture": "#missing"}
+			}
+		},
+		{
+			"from": [8, 0, -2],
+			"to": [8, 16, 18],
+			"rotation": {"angle": 45, "axis": "y", "origin": [8, 0, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 0, 16], "texture": "#missing"},
+				"east": {"uv": [0, 0, 16, 16], "texture": "#vine_1"},
+				"south": {"uv": [0, 0, 0, 16], "texture": "#missing"},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#vine_1"},
+				"up": {"uv": [0, 0, 0, 16], "texture": "#missing"},
+				"down": {"uv": [0, 0, 0, 16], "texture": "#missing"}
+			}
+		},
+		{
+			"from": [8, 16, -2],
+			"to": [8, 32, 18],
+			"rotation": {"angle": 45, "axis": "y", "origin": [8, 16, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 0, 16], "texture": "#missing", "cullface": "up"},
+				"east": {"uv": [0, 0, 16, 16], "texture": "#3", "cullface": "up"},
+				"south": {"uv": [0, 0, 0, 16], "texture": "#missing", "cullface": "up"},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#3", "cullface": "up"},
+				"up": {"uv": [0, 0, 0, 16], "texture": "#missing", "cullface": "up"},
+				"down": {"uv": [0, 0, 0, 16], "texture": "#missing", "cullface": "up"}
+			},
+			"neoforge_data": {
+				"block_light": 15,
+				"sky_light": 15
+			},
+			"shade": false
+		},
+		{
+			"from": [-2, 16, 8],
+			"to": [18, 32, 8],
+			"rotation": {"angle": 45, "axis": "y", "origin": [8, 16, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#3", "cullface": "up"},
+				"east": {"uv": [0, 0, 0, 16], "texture": "#missing", "cullface": "up"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#3", "cullface": "up"},
+				"west": {"uv": [0, 0, 0, 16], "texture": "#missing", "cullface": "up"},
+				"up": {"uv": [0, 0, 0, 16], "rotation": 270, "texture": "#missing", "cullface": "up"},
+				"down": {"uv": [0, 0, 0, 16], "rotation": 90, "texture": "#missing", "cullface": "up"}
+			},
+			"neoforge_data": {
+				"block_light": 15,
+				"sky_light": 15
+			},
+			"shade": false
+		},
+		{
+			"from": [-2, 0, 8],
+			"to": [18, 16, 8],
+			"rotation": {"angle": 45, "axis": "y", "origin": [8, 0, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#2"},
+				"east": {"uv": [0, 0, 0, 16], "texture": "#missing"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#2"},
+				"west": {"uv": [0, 0, 0, 16], "texture": "#missing"},
+				"up": {"uv": [0, 0, 0, 16], "rotation": 270, "texture": "#missing"},
+				"down": {"uv": [0, 0, 0, 16], "rotation": 90, "texture": "#missing"}
+			},
+			"neoforge_data": {
+				"block_light": 15,
+				"sky_light": 15
+			},
+			"shade": false
+		},
+		{
+			"from": [8, 0, -2],
+			"to": [8, 16, 18],
+			"rotation": {"angle": 45, "axis": "y", "origin": [8, 0, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 0, 16], "texture": "#missing"},
+				"east": {"uv": [0, 0, 16, 16], "texture": "#2"},
+				"south": {"uv": [0, 0, 0, 16], "texture": "#missing"},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#2"},
+				"up": {"uv": [0, 0, 0, 16], "texture": "#missing"},
+				"down": {"uv": [0, 0, 0, 16], "texture": "#missing"}
+			},
+			"neoforge_data": {
+				"block_light": 15,
+				"sky_light": 15
+			},
+			"shade": false
+		}
+	]
+}

@@ -29,6 +29,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import org.confluence.lib.common.worldgen.structure.GridPiece;
 import org.confluence.lib.common.worldgen.structure.SimpleTemplatePiece;
 import org.confluence.lib.util.BooleanStorage4;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.saved.GamePhase;
@@ -415,15 +416,15 @@ public class DungeonStructure extends Structure {
                 if (boundingBox.isInside(player.blockPosition()) && player.getY() <= boundingBox.minY() + 51) {
                     level.playSound(null, player.blockPosition(), TESounds.ROAR.get(), SoundSource.HOSTILE);
                     if (shouldAlert) {
-                        byte alert = player.getPersistentData().getByte("confluence:dungeon_guardian_alert");
-                        player.getPersistentData().putByte("confluence:dungeon_guardian_alert", (byte) (alert + 1));
+                        byte alert = LibUtils.getOrCreatePersistedData(player).getByte("confluence:dungeon_guardian_alert");
+                        LibUtils.getOrCreatePersistedData(player).putByte("confluence:dungeon_guardian_alert", (byte) (alert + 1));
                         if (alert < 3) return;
                     }
                     ModUtils.summonBoss(level, player.position(), new DungeonGuardian(TEBossEntities.DUNGEON_GUARDIAN.get(), level));
-                    if (shouldAlert) player.getPersistentData().putByte("confluence:dungeon_guardian_alert", (byte) 0);
+                    if (shouldAlert) LibUtils.getOrCreatePersistedData(player).putByte("confluence:dungeon_guardian_alert", (byte) 0);
                     return;
                 }
-                if (shouldAlert) player.getPersistentData().putByte("confluence:dungeon_guardian_alert", (byte) 0);
+                if (shouldAlert) LibUtils.getOrCreatePersistedData(player).putByte("confluence:dungeon_guardian_alert", (byte) 0);
             }
         }
     }

@@ -2,6 +2,7 @@ package org.confluence.mod.mixin.integration.ftbchunks;
 
 import dev.ftb.mods.ftblibrary.ui.BaseScreen;
 import dev.ftb.mods.ftblibrary.ui.input.MouseButton;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.world.entity.Entity;
 import org.confluence.mod.integration.ftbchunks.FTBChunksHelper;
 import org.spongepowered.asm.mixin.Final;
@@ -21,6 +22,8 @@ public abstract class EntityMapIconMixin {
 
     @Inject(method = "onMousePressed", at = @At("HEAD"))
     private void click(BaseScreen screen, MouseButton button, CallbackInfoReturnable<Boolean> cir) {
-        FTBChunksHelper.onMouseClicked(screen, button, entity);
+        if (entity instanceof AbstractClientPlayer player) {
+            FTBChunksHelper.onMouseClicked(screen, button, player.getGameProfile().getId());
+        }
     }
 }

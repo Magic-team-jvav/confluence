@@ -14,7 +14,7 @@ public class BaseHookRenderer extends AbstractHookRenderer<BaseHookEntity> {
         Confluence.asResource("textures/entity/hook/amethyst_hook.png"),
         Confluence.asResource("textures/entity/hook/topaz_hook.png"),
         Confluence.asResource("textures/entity/hook/sapphire_hook.png"),
-        Confluence.asResource("textures/entity/hook/emerald_hook.png"),
+        Confluence.asResource("textures/entity/hook/jade_hook.png"),
         Confluence.asResource("textures/entity/hook/ruby_hook.png"),
         Confluence.asResource("textures/entity/hook/amber_hook.png"),
         Confluence.asResource("textures/entity/hook/diamond_hook.png")
@@ -28,7 +28,7 @@ public class BaseHookRenderer extends AbstractHookRenderer<BaseHookEntity> {
             DecorativeBlocks.AMETHYST_CHAIN.get().defaultBlockState(),
             DecorativeBlocks.TOPAZ_CHAIN.get().defaultBlockState(),
             DecorativeBlocks.SAPPHIRE_CHAIN.get().defaultBlockState(),
-            DecorativeBlocks.EMERALD_CHAIN.get().defaultBlockState(),
+            DecorativeBlocks.JADE_CHAIN.get().defaultBlockState(),
             DecorativeBlocks.RUBY_CHAIN.get().defaultBlockState(),
             DecorativeBlocks.AMBER_CHAIN.get().defaultBlockState(),
             DecorativeBlocks.DIAMOND_CHAIN.get().defaultBlockState()

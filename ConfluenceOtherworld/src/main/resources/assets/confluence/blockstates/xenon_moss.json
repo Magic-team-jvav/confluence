@@ -102,7 +102,7 @@
           "weight": 2
         },
         {
-          "model": "confluence:block/none",
+          "model": "confluence:block/none_cutout_mipped",
           "weight": 1
         }
       ],
@@ -141,7 +141,7 @@
           "weight": 2
         },
         {
-          "model": "confluence:block/none",
+          "model": "confluence:block/none_cutout_mipped",
           "weight": 1
         }
       ],

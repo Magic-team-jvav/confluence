@@ -1,9 +1,0 @@
-{
-    "type": "minecraft:stonecutting",
-    "ingredient": {
-        "item": "confluence:tr_obsidian_bricks"
-    },
-    "result": {
-        "id": "confluence:chiseled_tr_obsidian_bricks"
-    }
-}

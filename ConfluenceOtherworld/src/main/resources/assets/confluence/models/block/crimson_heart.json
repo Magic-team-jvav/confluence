@@ -15,6 +15,10 @@
 			"faces": {
 				"north": {"uv": [0.5, 13.5, 2.5, 15.25], "texture": "#0"},
 				"south": {"uv": [0.5, 15.25, 2.5, 13.5], "rotation": 180, "texture": "#0"}
+			},
+			"neoforge_data": {
+				"block_light": 15,
+				"ambient_occlusion": false
 			}
 		},
 		{
@@ -28,6 +32,10 @@
 				"west": {"uv": [14.75, 0, 16, 1.75], "texture": "#0"},
 				"up": {"uv": [16, 5.25, 14.75, 7], "texture": "#0"},
 				"down": {"uv": [16, 3.5, 14.75, 5.25], "rotation": 90, "texture": "#0"}
+			},
+			"neoforge_data": {
+				"block_light": 15,
+				"ambient_occlusion": false
 			}
 		},
 		{
@@ -40,6 +48,10 @@
 				"south": {"uv": [5, 0, 7.5, 1.75], "texture": "#0"},
 				"up": {"uv": [9.75, 6.5, 7.25, 5.25], "texture": "#0"},
 				"down": {"uv": [9.75, 6.5, 7.25, 7.75], "texture": "#0"}
+			},
+			"neoforge_data": {
+				"block_light": 15,
+				"ambient_occlusion": false
 			}
 		},
 		{
@@ -52,6 +64,10 @@
 				"east": {"uv": [9.25, 0, 10.5, 1.5], "texture": "#0"},
 				"south": {"uv": [0, 8.25, 1.5, 9.75], "texture": "#0"},
 				"up": {"uv": [10.75, 2.75, 9.25, 1.5], "texture": "#0"}
+			},
+			"neoforge_data": {
+				"block_light": 15,
+				"ambient_occlusion": false
 			}
 		},
 		{
@@ -64,6 +80,10 @@
 				"east": {"uv": [7.75, 3.5, 9.5, 5.25], "texture": "#0"},
 				"south": {"uv": [7.25, 7.75, 9, 9.5], "texture": "#0"},
 				"up": {"uv": [3.5, 9.75, 1.75, 8], "texture": "#0"}
+			},
+			"neoforge_data": {
+				"block_light": 15,
+				"ambient_occlusion": false
 			}
 		},
 		{
@@ -77,6 +97,10 @@
 				"west": {"uv": [5, 1.75, 7.25, 3.5], "texture": "#0"},
 				"up": {"uv": [5, 2.25, 3, 0], "texture": "#0"},
 				"down": {"uv": [5, 2.25, 3, 4.5], "texture": "#0"}
+			},
+			"neoforge_data": {
+				"block_light": 15,
+				"ambient_occlusion": false
 			}
 		},
 		{
@@ -90,6 +114,10 @@
 				"west": {"uv": [5.5, 3.5, 7.75, 5.25], "texture": "#0"},
 				"up": {"uv": [7.25, 7.5, 5.5, 5.25], "texture": "#0"},
 				"down": {"uv": [1.75, 6, 0, 8.25], "texture": "#0"}
+			},
+			"neoforge_data": {
+				"block_light": 15,
+				"ambient_occlusion": false
 			}
 		},
 		{
@@ -104,6 +132,10 @@
 				"west": {"uv": [0, 0, 0, 6], "texture": "#1"},
 				"up": {"uv": [6, 0, 0, 0], "texture": "#1"},
 				"down": {"uv": [6, 0, 0, 0], "texture": "#1"}
+			},
+			"neoforge_data": {
+				"block_light": 15,
+				"ambient_occlusion": false
 			}
 		}
 	]

@@ -23,7 +23,7 @@ public abstract class BlockCounterMixin {
     private void accept(BlockState state, int count, CallbackInfo ci) {
         if (confluence$section == null) return;
         if (state.getBlock() instanceof ISpreadable spreadable) {
-            switch (spreadable.getType()) {
+            switch (spreadable.getSpreadType()) {
                 case CRIMSON -> confluence$section.confluence$countCrimson(count);
                 case CORRUPT -> confluence$section.confluence$countCorrupt(count);
                 case HALLOW -> confluence$section.confluence$countHallow(count);

@@ -47,7 +47,7 @@ public class WaterStreamProjectile extends AbstractManaProjectile {
             } else if (hitResult instanceof EntityHitResult entityHitResult) {
                 Entity entity = entityHitResult.getEntity();
                 if (passThrough.add(entity)) {
-                    if (entity.hurt(getDamagesource(), 8F)) {
+                    if (entity.hurt(getDamagesource(), getCalculatedDamage())) {
                         VectorUtils.knockBackA2B(this, entity, 3.5, 0.2);
                     }
                     if (passThrough.size() >= 5) {

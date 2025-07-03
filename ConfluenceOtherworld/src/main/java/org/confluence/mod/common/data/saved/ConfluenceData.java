@@ -1,5 +1,7 @@
 package org.confluence.mod.common.data.saved;
 
+import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -20,16 +22,14 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.List;
-import java.util.Map;
 
 public class ConfluenceData extends SavedData {
     public static final int STAR_PHASES_SIZE = 10;
 
     private boolean initialized = false;
     private final Vector3f windSpeed = new Vector3f();
-    private final Map<Integer, StarPhase> starPhases = new Hashtable<>();
+    private final Int2ObjectMap<StarPhase> starPhases = new Int2ObjectArrayMap<>();
     private int revealStep = -1;
     private final MeteoriteTracker meteoriteTracker = MeteoriteTracker.INSTANCE;
     private int evilBrokenCount = 0;
@@ -128,12 +128,12 @@ public class ConfluenceData extends SavedData {
         return starPhases.getOrDefault(index, StarPhase.DEFAULT);
     }
 
-    public Map<Integer, StarPhase> getStarPhases() {
+    public Int2ObjectMap<StarPhase> getStarPhases() {
         return starPhases;
     }
 
     public boolean increaseRevealStep(ServerLevel serverLevel) {
-        if (revealStep < 9) {
+        if (revealStep < 8) {
             serverLevel.players().forEach(serverPlayer -> PhaseUtils.achievePhase(serverPlayer, Confluence.asResource("reveal_step_" + this.revealStep++), true));
             setDirty();
             return true;
@@ -147,9 +147,13 @@ public class ConfluenceData extends SavedData {
 
     public void setMeteorite(BlockPos location, int tickUntilLanding) {
         this.meteoriteTracker.location = location;
-        this.meteoriteTracker.tickUntilLanding.set(tickUntilLanding);
+        this.meteoriteTracker.tickUntilLanding = tickUntilLanding;
         MeteoriteLocationPacketS2C.sendToAll(location, tickUntilLanding);
         setDirty();
+    }
+
+    public BlockPos getMeteoriteLocation() {
+        return meteoriteTracker.location;
     }
 
     public boolean updateEvilBrokenCount() {

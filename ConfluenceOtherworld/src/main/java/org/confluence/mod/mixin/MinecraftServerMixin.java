@@ -35,11 +35,6 @@ public abstract class MinecraftServerMixin implements IMinecraftServer {
     }
 
     @Override
-    public boolean confluence$matchesSecretFlag(long flag) {
-        return (confluence$secretFlag & flag) != 0;
-    }
-
-    @Override
     public long confluence$getSecretFlag() {
         return confluence$secretFlag;
     }

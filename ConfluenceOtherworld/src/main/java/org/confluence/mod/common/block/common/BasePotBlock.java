@@ -51,6 +51,7 @@ import org.confluence.mod.common.init.item.PotionItems;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.util.DateUtils;
 import org.confluence.mod.util.ModUtils;
+import org.confluence.mod.util.OverworldUtils;
 import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.jetbrains.annotations.Nullable;
@@ -363,7 +364,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
         Item item;
         if (this == UNDERGROUND_DESERT_POT.get()) {
             item = ConsumableItems.SCARAB_BOMB.get();
-        } else if (level.dimension() == Level.OVERWORLD) {
+        } else if (level.dimension() == OverworldUtils.dimension()) {
             item = ConsumableItems.BOMB.get();
         } else {
             return dropRope(level, blockPos, center);

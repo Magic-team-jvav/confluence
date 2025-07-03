@@ -6,6 +6,7 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
@@ -53,8 +54,8 @@ public class QueenBeeHiveStructure extends Structure {
             double r2 = ((double) random.nextInt(30) + 165) / 180 * Math.PI + r1;
             float chance;
 
-            BlockPos hight1 = new BlockPos((int) (radius * Math.sin(r1)), centerPos.getY(), (int) (radius * Math.cos(r1)));
-            BlockPos hight2 = new BlockPos((int) (radius * Math.sin(r2)), centerPos.getY(), (int) (radius * Math.cos(r2)));
+            BlockPos hight1 = new BlockPos(Mth.floor(radius * Math.sin(r1)), centerPos.getY(), Mth.floor(radius * Math.cos(r1)));
+            BlockPos hight2 = new BlockPos(Mth.floor(radius * Math.sin(r2)), centerPos.getY(), Mth.floor(radius * Math.cos(r2)));
 
             ball(radius, 3, centerPos, blockMap, 0.02F, random, 1, 0, 3, centerPos.getY() - radius + 1);
 

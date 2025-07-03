@@ -1,0 +1,42 @@
+{
+    "feature": "confluence:glowing_mushroom_tree",
+    "placement": [
+        {
+            "type": "minecraft:count_on_every_layer",
+            "predicate": {
+                "type": "minecraft:would_survive",
+                "state": {
+                    "Name": "confluence:glowing_mushroom",
+                    "Properties": {
+                        "stage": "0"
+                    }
+                }
+            },
+            "count": 3
+        },
+        {
+            "type": "minecraft:biome"
+        },
+        {
+            "type": "minecraft:environment_scan",
+            "allowed_search_condition": {
+                "type": "minecraft:matching_blocks",
+                "blocks": "minecraft:air"
+            },
+            "direction_of_search": "down",
+            "max_steps": 12,
+            "target_condition": {
+                "type": "minecraft:matching_blocks",
+                "offset": [
+                    0,
+                    -1,
+                    0
+                ],
+                "blocks": [
+                    "minecraft:mud",
+                    "confluence:mushroom_grass_block"
+                ]
+            }
+        }
+    ]
+}

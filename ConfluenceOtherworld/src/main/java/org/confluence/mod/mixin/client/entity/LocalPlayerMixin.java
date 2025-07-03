@@ -27,6 +27,9 @@ public abstract class LocalPlayerMixin implements ILocalPlayer {
     @Shadow
     public Input input;
 
+//    @Shadow
+//    public abstract boolean isUnderWater();
+
     @Unique
     private boolean confluence$canMove = true;
 
@@ -51,4 +54,16 @@ public abstract class LocalPlayerMixin implements ILocalPlayer {
             ci.cancel();
         }
     }
+// 全向冲刺核心代码
+//    @ModifyReturnValue(method = "hasEnoughImpulseToStartSprinting", at = @At("RETURN"))
+//    private boolean omni(boolean original, @Local double d0) {
+//        if (original) return true;
+//        if (isUnderWater()) return input.forwardImpulse < -Mth.EPSILON || input.leftImpulse > Mth.EPSILON || input.leftImpulse < -Mth.EPSILON;
+//        return input.forwardImpulse < -d0 || input.leftImpulse > d0 || input.leftImpulse < -d0;
+//    }
+//
+//    @ModifyExpressionValue(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/Input;hasForwardImpulse()Z"))
+//    private boolean omni(boolean original) {
+//        return original || input.forwardImpulse < -Mth.EPSILON || input.leftImpulse > Mth.EPSILON || input.leftImpulse < -Mth.EPSILON;
+//    }
 }

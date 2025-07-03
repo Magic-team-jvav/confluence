@@ -29,7 +29,7 @@ public class TreasureBagItems {
             biome = "_double_evil";
         } else if ((secretFlag & IWorldOptions.THE_CORRUPTION) != 0) {
             biome = "_corruption";
-        } else if ((secretFlag & IWorldOptions.TR_CRIMSON) != 0) {
+        } else if ((secretFlag & IWorldOptions.THE_CRIMSON) != 0) {
             biome = "_crimson";
         } else {
             biome = "";

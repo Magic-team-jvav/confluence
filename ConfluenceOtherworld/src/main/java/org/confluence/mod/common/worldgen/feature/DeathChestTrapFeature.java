@@ -5,12 +5,12 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.RandomizableContainer;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Column;
@@ -26,8 +26,8 @@ import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.init.ModFeatures;
 import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.ModSecretSeeds;
+import org.confluence.mod.common.init.block.ChestBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.mixed.IBaseContainerBlockEntity;
 
 import java.util.Optional;
 
@@ -51,17 +51,17 @@ public class DeathChestTrapFeature extends Feature<DeathChestTrapFeature.Config>
         if (level.isStateAtPosition(mutablePos, BlockBehaviour.BlockStateBase::liquid)) return false;
 
         BlockPos chestPos = mutablePos.above();
-        BlockState chestState = StructurePiece.reorient(level, chestPos, FunctionalBlocks.DEATH_CHEST_BLOCK.get().defaultBlockState().setValue(BaseChestBlock.UNLOCKED, true));
+        Block deathChest;
+        if (ModSecretSeeds.NO_TRAPS.match(level.getLevel().getServer()) && random.nextBoolean()) {
+            deathChest = ChestBlocks.DEATH_WOODEN_CHEST.get();
+        } else {
+            deathChest = ChestBlocks.DEATH_GOLDEN_CHEST.get();
+        }
+        BlockState chestState = StructurePiece.reorient(level, chestPos, deathChest.defaultBlockState().setValue(BaseChestBlock.UNLOCKED, true));
         if (FeatureUtils.safeSetBlock(level, chestPos, chestState, ModFeatures.IS_REPLACEABLE)) {
             RandomizableContainer.setBlockEntityLootTable(level, random, chestPos, config.lootTable);
             INetworkEntity chest = ModFeatures.getNetworkEntity(level, chestPos);
             if (chest != null && chest.getSelf() instanceof BaseChestBlock.Entity entity) {
-                if (ModSecretSeeds.NO_TRAPS.match(level.getLevel().getServer()) && random.nextBoolean()) {
-                    entity.variant = BaseChestBlock.Variant.UNLOCKED_NORMAL;
-                } else {
-                    entity.variant = BaseChestBlock.Variant.UNLOCKED_GOLDEN;
-                }
-                ((IBaseContainerBlockEntity) entity).confluence$setCustomName(Component.translatable("block.confluence.base_chest_block." + entity.variant.getSerializedName()));
                 boolean b = placeDartTraps(config, level, chestPos, chest);
                 boolean b1 = placeBoulders(config, random, level, chestPos, chest);
                 boolean b2 = placeTNTs(config, random, level, chestPos, chest);

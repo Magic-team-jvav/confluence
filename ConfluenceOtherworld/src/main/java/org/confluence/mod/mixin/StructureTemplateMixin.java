@@ -90,6 +90,7 @@ public abstract class StructureTemplateMixin {
         int[] colors = IStructureTemplate$StructureBlockInfo.of(structuretemplate$structureblockinfo).confluence$getColors();
         if (colors != null) {
             BlockPos pos1 = structuretemplate$structureblockinfo.pos();
+            colors = BrushData.rotateColor(colors, settings.getRotation());
             brushData.get().computeIfAbsent(new ChunkPos(pos1), pos3 -> new BrushData(new Hashtable<>())).put(pos1, colors);
         }
     }

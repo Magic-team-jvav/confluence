@@ -13,9 +13,9 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.attachment.ManaStorage;
-import org.confluence.mod.common.init.ModAchievements;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.util.AchievementUtils;
 
 public class ManaCrystalItem extends TooltipItem {
     public ManaCrystalItem() {
@@ -34,7 +34,7 @@ public class ManaCrystalItem extends TooltipItem {
             }
             EverBeneficial data;
             if (data1.isStarMaximum() && (data = serverPlayer.getData(ModAttachmentTypes.EVER_BENEFICIAL)).isLifeCrystalsMaximum() && data.isLifeFruitsMaximum()) {
-                ModAchievements.awardAchievement(serverPlayer, "topped_off");
+                AchievementUtils.awardAchievement(serverPlayer, "topped_off");
             }
         }
         return InteractionResultHolder.sidedSuccess(itemStack, level.isClientSide);

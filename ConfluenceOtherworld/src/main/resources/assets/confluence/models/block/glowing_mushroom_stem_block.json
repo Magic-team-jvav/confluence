@@ -1,0 +1,31 @@
+{
+  "parent": "block/block",
+  "textures": {
+    "down": "confluence:block/glowing_mushroom_stem_block_top",
+    "up": "confluence:block/glowing_mushroom_stem_block_top",
+    "north": "confluence:block/glowing_mushroom_stem_block_side",
+    "east": "confluence:block/glowing_mushroom_stem_block_side",
+    "south": "confluence:block/glowing_mushroom_stem_block_side",
+    "west": "confluence:block/glowing_mushroom_stem_block_side",
+    "particle": "confluence:block/glowing_mushroom_stem_block_top"
+  },
+  "render_type": "solid",
+  "elements": [
+    {
+      "from": [ 0, 0, 0 ],
+      "to": [ 16, 16, 16 ],
+      "faces": {
+        "down":  { "texture": "#down", "cullface": "down" },
+        "up":    { "texture": "#up", "cullface": "up" },
+        "north": { "texture": "#north", "cullface": "north" },
+        "south": { "texture": "#south", "cullface": "south" },
+        "west":  { "texture": "#west", "cullface": "west" },
+        "east":  { "texture": "#east", "cullface": "east" }
+      },
+      "neoforge_data": {
+        "block_light": 10,
+        "sky_light": 10
+      }
+    }
+  ]
+}

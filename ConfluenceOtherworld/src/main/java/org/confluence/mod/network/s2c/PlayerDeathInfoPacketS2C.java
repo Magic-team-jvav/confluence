@@ -7,13 +7,14 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.util.PlayerUtils;
-import org.jetbrains.annotations.NotNull;
 
 public record PlayerDeathInfoPacketS2C(Component deathMessage, int respawnTime, short platinum, byte gold, byte silver, byte copper) implements CustomPacketPayload {
     public static final Type<PlayerDeathInfoPacketS2C> TYPE = new Type<>(Confluence.asResource("player_death_info"));
@@ -28,7 +29,7 @@ public record PlayerDeathInfoPacketS2C(Component deathMessage, int respawnTime, 
     );
 
     @Override
-    public @NotNull Type<PlayerDeathInfoPacketS2C> type() {
+    public Type<PlayerDeathInfoPacketS2C> type() {
         return TYPE;
     }
 
@@ -43,9 +44,12 @@ public record PlayerDeathInfoPacketS2C(Component deathMessage, int respawnTime, 
         });
     }
 
+    /**
+     * @see PlayerUtils#dropMoney(Player)
+     */
     public static boolean replaceCombatKillPacket(ServerPlayer player, Component message) {
         if (CommonConfigs.SHOW_MONEY_DROPS.get()) {
-            long drops = player.getPersistentData().getLong("confluence:drops_money");
+            long drops = LibUtils.getOrCreatePersistedData(player).getLong("confluence:drops_money");
             int[] coins = PlayerUtils.decodeCoin(drops);
             PacketDistributor.sendToPlayer(player, new PlayerDeathInfoPacketS2C(message, PlayerUtils.getRespawnWaitTime(player), (short) coins[3], (byte) coins[2], (byte) coins[1], (byte) coins[0]));
             return false;

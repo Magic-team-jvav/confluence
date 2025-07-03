@@ -17,7 +17,7 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.client.DummyMultiBufferSource;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.mixed.IGeoCube;
+import org.confluence.mod.integration.geckolib.IGeoCube;
 import org.confluence.mod.mixed.IModelPart;
 import org.confluence.terraentity.entity.util.DeathAnimOptions;
 import org.jetbrains.annotations.Nullable;

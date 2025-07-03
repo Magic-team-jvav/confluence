@@ -1,9 +1,12 @@
 package org.confluence.mod.common.recipe;
 
+import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.MapCodec;
+import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.ShapedRecipePattern;
@@ -14,6 +17,10 @@ import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 
 public class HeavyWorkBenchRecipe extends EitherAmountRecipe4x<EnvironmentRecipeInput> {
+    public HeavyWorkBenchRecipe(ItemStack pResult, Either<ShapedRecipePattern, NonNullList<Ingredient>> either) {
+        super(pResult, either);
+    }
+
     public HeavyWorkBenchRecipe(ItemStack pResult, ShapedRecipePattern pattern) {
         super(pResult, pattern);
     }
@@ -45,7 +52,7 @@ public class HeavyWorkBenchRecipe extends EitherAmountRecipe4x<EnvironmentRecipe
 
     public static class Serializer implements RecipeSerializer<HeavyWorkBenchRecipe> {
         public static final MapCodec<HeavyWorkBenchRecipe> CODEC = EitherAmountRecipe4x.shapedSerializerMapCodec(HeavyWorkBenchRecipe::new);
-        public static final StreamCodec<RegistryFriendlyByteBuf, HeavyWorkBenchRecipe> STREAM_CODEC = EitherAmountRecipe4x.shapedSerializerSteamCodec(HeavyWorkBenchRecipe::new);
+        public static final StreamCodec<RegistryFriendlyByteBuf, HeavyWorkBenchRecipe> STREAM_CODEC = EitherAmountRecipe4x.eitherSerializerSteamCodec(HeavyWorkBenchRecipe::new);
 
         @Override
         public MapCodec<HeavyWorkBenchRecipe> codec() {

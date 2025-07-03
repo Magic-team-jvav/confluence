@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.mod.common.effect.harmful.PotionSicknessEffect;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.item.food.ModFoodProperties;
 
@@ -26,7 +27,7 @@ public class MushroomItem extends BlockItem {
 
     @Override
     protected boolean canPlace(BlockPlaceContext pContext, BlockState pState) {
-        return false;
+        return pState.is(NatureBlocks.GLOWING_MUSHROOM);
     }
 
     @Override

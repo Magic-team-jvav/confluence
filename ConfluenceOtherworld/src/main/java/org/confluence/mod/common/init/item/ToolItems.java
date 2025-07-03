@@ -51,7 +51,7 @@ public class ToolItems {
     public static final DeferredItem<EncumberingStoneItem> ENCUMBERING_STONE = ITEMS.register("encumbering_stone", EncumberingStoneItem::new);
     public static final DeferredItem<MagicMirror> ICE_MIRROR = ITEMS.register("ice_mirror", () -> new MagicMirror(ModRarity.BLUE));
     public static final DeferredItem<MagicConch> MAGIC_CONCH = ITEMS.register("magic_conch", () -> new MagicConch(new Item.Properties().stacksTo(1), ModRarity.BLUE));
-    public static final DeferredItem<DemonConch> DEMON_CONCH = ITEMS.register("demon_ocnch", DemonConch::new);
+    public static final DeferredItem<DemonConch> DEMON_CONCH = ITEMS.register("demon_conch", DemonConch::new);
 
     public static final DeferredItem<BugNetItem> BUG_NET = ITEMS.register("bug_net", () -> new BugNetItem(ModRarity.BLUE, 0.5, living -> living instanceof Animal));
     public static final DeferredItem<BugNetItem> GOLDEN_BUG_NET = ITEMS.register("golden_bug_net", () -> new BugNetItem(ModRarity.QUEST, 1.1, living -> living instanceof Animal));

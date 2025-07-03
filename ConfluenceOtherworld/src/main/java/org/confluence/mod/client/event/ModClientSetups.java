@@ -2,8 +2,10 @@ package org.confluence.mod.client.event;
 
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.Camera;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.WidgetSprites;
@@ -11,10 +13,8 @@ import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.ParticleEngine;
-import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
-import net.minecraft.client.renderer.FogRenderer;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.item.CompassItemPropertyFunction;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.item.ItemPropertyFunction;
@@ -26,7 +26,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.Level;
@@ -144,6 +146,30 @@ public final class ModClientSetups {
             return ModArmPoses.LANCE.getValue();
         }
     };
+    public static final IClientItemExtensions NOOP_ITEM = new IClientItemExtensions() {
+        private BlockEntityWithoutLevelRenderer renderer;
+
+        @Override
+        public boolean applyForgeHandTransform(PoseStack poseStack, LocalPlayer player, HumanoidArm arm, ItemStack itemInHand, float partialTick, float equipProcess, float swingProcess) {
+            return true;
+        }
+
+        @Override
+        public HumanoidModel.ArmPose getArmPose(LivingEntity entityLiving, InteractionHand hand, ItemStack itemStack) {
+            return HumanoidModel.ArmPose.EMPTY;
+        }
+
+        @Override
+        public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+            if (renderer == null) {
+                this.renderer = new BlockEntityWithoutLevelRenderer(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels()){
+                    @Override
+                    public void renderByItem(ItemStack stack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {}
+                };
+            }
+            return renderer;
+        }
+    };
     static final IClientMobEffectExtensions TRANSLUCENT_EFFECT_ICON = new IClientMobEffectExtensions() {
         @Override
         public boolean renderInventoryIcon(MobEffectInstance instance, EffectRenderingInventoryScreen<?> screen, GuiGraphics guiGraphics, int x, int y, int blitOffset) {
@@ -194,6 +220,7 @@ public final class ModClientSetups {
         ItemBlockRenderTypes.setRenderLayer(DecorativeBlocks.PURPLE_PURE_GLASS.get(), translucent);
         ItemBlockRenderTypes.setRenderLayer(DecorativeBlocks.MAGENTA_PURE_GLASS.get(), translucent);
         ItemBlockRenderTypes.setRenderLayer(DecorativeBlocks.PINK_PURE_GLASS.get(), translucent);
+        ItemBlockRenderTypes.setRenderLayer(DecorativeBlocks.PACKED_ICE_BRICKS.get(), translucent);
         RenderType cutout = RenderType.cutout();
         ItemBlockRenderTypes.setRenderLayer(NatureBlocks.EBONY_LOG_BLOCKS.getDoor().get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(NatureBlocks.EBONY_LOG_BLOCKS.getTrapdoor().get(), cutout);
@@ -202,19 +229,7 @@ public final class ModClientSetups {
         ItemBlockRenderTypes.setRenderLayer(DecorativeBlocks.PURE_GLASS.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(FunctionalBlocks.ECHO_BLOCK.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(ModBlocks.CURSED_FLAME_BLOCK.get(), cutout);
-        RenderType cutoutMipped = RenderType.cutoutMipped();
-        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.GREEN_MOSS.get(), cutoutMipped);
-        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.BROWN_MOSS.get(), cutoutMipped);
-        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.RED_MOSS.get(), cutoutMipped);
-        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.BLUE_MOSS.get(), cutoutMipped);
-        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.PURPLE_MOSS.get(), cutoutMipped);
-        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.LAVA_MOSS.get(), cutoutMipped);
-        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.KRYPTON_MOSS.get(), cutoutMipped);
-        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.XENON_MOSS.get(), cutoutMipped);
-        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.ARGON_MOSS.get(), cutoutMipped);
-        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.NEON_MOSS.get(), cutoutMipped);
-        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.HELIUM_MOSS.get(), cutoutMipped);
-        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.GLOWING_MUSHROOM_MOSS.get(), cutoutMipped);
+        // 如果方块没有如期cutout渲染，请检查blockstate里是否调用了没有cutout的模型
     }
 
     static void registerItemProperties() {
@@ -227,14 +242,6 @@ public final class ModClientSetups {
         ItemProperties.register(AccessoryItems.SPECTRE_GOGGLES.get(), enable, enableFunction);
         ItemProperties.register(AccessoryItems.MECHANICAL_LENS.get(), enable, enableFunction);
         ItemProperties.register(ToolItems.ENCUMBERING_STONE.get(), enable, enableFunction);
-        ResourceLocation variant = Confluence.asResource("variant");
-        ItemPropertyFunction variantFunction = (itemStack, level, living, speed) -> {
-            CompoundTag tag = LibUtils.getItemStackNbtIfPresent(itemStack);
-            if (tag == null) return 0;
-            return tag.getInt("VariantId");
-        };
-        ItemProperties.register(FunctionalBlocks.BASE_CHEST_BLOCK.get().asItem(), variant, variantFunction);
-        ItemProperties.register(FunctionalBlocks.DEATH_CHEST_BLOCK.get().asItem(), variant, variantFunction);
         ItemProperties.register(ToolItems.METEOR_COMPASS.get(), ResourceLocation.withDefaultNamespace("angle"), new CompassItemPropertyFunction((level, stack, entity) -> MeteorLandingHandler.getGlobalPos()));
     }
 

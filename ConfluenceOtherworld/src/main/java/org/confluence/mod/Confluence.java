@@ -14,10 +14,13 @@ import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.data.fixer.RegistriesFixer;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.integration.terra_entity.TEEvents;
+import org.confluence.mod.integration.terra_entity.init.ModTradeLockProviderTypes;
+import org.confluence.mod.integration.waystones.WaystonesHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,7 +51,6 @@ public class Confluence {
         ModSoundEvents.EVENTS.register(eventBus);
         ModAttachmentTypes.TYPES.register(eventBus);
         ModEffects.EFFECTS.register(eventBus);
-        ModJukeboxSongs.SONGS.register(eventBus);
         ModMenuTypes.TYPES.register(eventBus);
         ModParticleTypes.TYPES.register(eventBus);
         ModChunkGenerators.GENERATORS.register(eventBus);
@@ -57,6 +59,10 @@ public class Confluence {
         ModEquipmentSets.SETS.register(eventBus);
         ModHookTypes.TYPES.register(eventBus);
         ModLootTables.ItemConditions.TYPES.register(eventBus);
+        ModTradeLockProviderTypes.TYPES.register(eventBus);
+        RegistriesFixer.init();
+
+        WaystonesHelper.register(eventBus);
     }
 
     public static void registerGameRules() {

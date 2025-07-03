@@ -1,0 +1,12 @@
+{
+  "type": "confluence:ground_block",
+  "config": {
+    "block": {
+      "type": "simple_state_provider",
+      "state": {
+        "Name": "confluence:marble_cave_pot"
+      }
+    },
+    "max_down": 20
+  }
+}

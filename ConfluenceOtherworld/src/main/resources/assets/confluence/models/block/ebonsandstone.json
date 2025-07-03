@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "confluence:block/ebonsandstone_bottom",
+    "side": "confluence:block/ebonsandstone",
+    "top": "confluence:block/ebonsandstone_top"
+  }
+}

@@ -23,7 +23,7 @@ import java.util.concurrent.CompletableFuture;
 @EventBusSubscriber(modid = Confluence.MODID, bus = EventBusSubscriber.Bus.MOD)
 public final class ModDataGenerator {
     private static final RegistrySetBuilder DATA_BUILDER = new RegistrySetBuilder()
-            .add(Registries.DAMAGE_TYPE, ModDamageTypes::createDamageTypes)
+            .add(Registries.DAMAGE_TYPE, ModDamageTypes::bootstrap)
             .add(Registries.BIOME, ModBiomes::boostrap)
             .add(Registries.STRUCTURE, ModStructures::boostrap);
 
@@ -40,15 +40,9 @@ public final class ModDataGenerator {
         generator.addProvider(client, new ModBlockStateProvider(output, helper));
         generator.addProvider(client, new ModItemModelProvider(output, helper));
 
-
         boolean server = event.includeServer();
-
-        DatapackBuiltinEntriesProvider provider = new DatapackBuiltinEntriesProvider(output, lookup, DATA_BUILDER, Set.of(Confluence.MODID));
-        lookup = provider.getRegistryProvider();
-        generator.addProvider(server, provider);
-
-        ModBlockTagsProvider blockTagsProvider = new ModBlockTagsProvider(output, lookup, helper);
-        generator.addProvider(server, blockTagsProvider);
+        lookup = generator.addProvider(server, new DatapackBuiltinEntriesProvider(output, lookup, DATA_BUILDER, Set.of(Confluence.MODID))).getRegistryProvider();
+        ModBlockTagsProvider blockTagsProvider = generator.addProvider(server, new ModBlockTagsProvider(output, lookup, helper));
         generator.addProvider(server, new ModItemTagsProvider(output, lookup, blockTagsProvider.contentsGetter(), helper));
         generator.addProvider(server, new ModDamageTypeTagsProvider(output, lookup, helper));
         generator.addProvider(server, new ModPoiTypeTagsProvider(output, lookup, helper));
@@ -59,7 +53,9 @@ public final class ModDataGenerator {
                 ModRecipeProvider::new,
                 CraftingRecipeProvider::new,
                 HeavyWorkBenchProvider::new,
-                CookingPotProvider::new
+                CookingPotProvider::new,
+                ShimmerTransmutationProvider::new,
+                ModAchievementOffsetProvider::new
         ));
         generator.addProvider(server, new ModDataMapProvider(output, lookup));
         generator.addProvider(server, new ModLootTableProvider(output, lookup));

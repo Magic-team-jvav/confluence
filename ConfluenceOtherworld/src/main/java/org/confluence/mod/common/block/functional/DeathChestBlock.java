@@ -76,13 +76,13 @@ public class DeathChestBlock extends BaseChestBlock implements INetworkBlock {
     }
 
     @Override
-    public void onExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {
-        execution(pState, pLevel, pPos, pColor, true);
+    public void onExecute(BlockState state, ServerLevel level, BlockPos pos, int color, INetworkEntity networkEntity) {
+        execution(state, level, pos, color, true);
     }
 
     @Override
-    public void onUnExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {
-        execution(pState, pLevel, pPos, pColor, false);
+    public void onUnExecute(BlockState state, ServerLevel level, BlockPos pos, int color, INetworkEntity networkEntity) {
+        execution(state, level, pos, color, false);
     }
 
     private void execution(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, boolean hasSignal) {

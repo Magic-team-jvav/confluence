@@ -1652,6 +1652,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEntities.ROLLING_CACTUS_BOULDER.get(), "仙人球");
         add(ModEntities.ROLLING_CACTUS_SPIKE.get(), "仙人球尖刺");
         add(ModEntities.TOMBSTONE_BOULDER.get(), "墓石巨石");
+        add(ModEntities.BOULDER_3X.get(), "3x3巨石");
         add(ModEntities.SPIKY_BALL_PROJECTILE.get(), "尖球");
         add(ModEntities.THROWN_WATER_PROJECTILE.get(), "掷出的液体瓶");
         add(ModEntities.FLOWER_PETAL_PROJECTILE.get(), "花瓣射弹");

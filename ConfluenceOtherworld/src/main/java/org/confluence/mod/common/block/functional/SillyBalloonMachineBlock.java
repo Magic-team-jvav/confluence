@@ -32,8 +32,8 @@ public class SillyBalloonMachineBlock extends Block implements EntityBlock, INet
     }
 
     @Override
-    public void onExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {
-        pLevel.setBlockAndUpdate(pPos, pState.cycle(StateProperties.DRIVE));
+    public void onExecute(BlockState state, ServerLevel level, BlockPos pos, int color, INetworkEntity networkEntity) {
+        level.setBlockAndUpdate(pos, state.cycle(StateProperties.DRIVE));
     }
 
     @Override

@@ -37,23 +37,23 @@ import org.jetbrains.annotations.Nullable;
 public class BoulderEntity extends Projectile {
     private static final EntityDataAccessor<Boolean> DATA_VERTICAL = SynchedEntityData.defineId(BoulderEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<BlockState> DATA_BLOCK_STATE = SynchedEntityData.defineId(BoulderEntity.class, EntityDataSerializers.BLOCK_STATE);
-    public static final float DIAMETER = 1.0F;
     public static final float SEARCH_RANGE = 31.5F;
     protected double speed = 0.7;
     protected double minimumBreakSpeed = 0.007;
     public float rotateO = 0.0F;
     public float rotate = 0.0F;
+    public float radius = 0.5F;
 
-    public BoulderEntity(EntityType<? extends BoulderEntity> pEntityType, Level pLevel) {
-        super(pEntityType, pLevel);
+    public BoulderEntity(EntityType<? extends BoulderEntity> entityType, Level level) {
+        super(entityType, level);
     }
 
     public BoulderEntity(Level level, Vec3 pos, BlockState blockState) {
         this(ModEntities.BOULDER.get(), level, pos, blockState);
     }
 
-    public BoulderEntity(EntityType<? extends BoulderEntity> pEntityType, Level level, Vec3 pos, BlockState blockState) {
-        super(pEntityType, level);
+    public BoulderEntity(EntityType<? extends BoulderEntity> entityType, Level level, Vec3 pos, BlockState blockState) {
+        super(entityType, level);
         setPos(pos);
         entityData.set(DATA_BLOCK_STATE, blockState);
     }
@@ -83,32 +83,17 @@ public class BoulderEntity extends Projectile {
     @Override
     public void tick() {
         super.tick();
-        Vec3 vec3 = getDeltaMovement();
-        setYRot((float) (Mth.atan2(vec3.x, vec3.z) * Mth.RAD_TO_DEG));
-        setDeltaMovement(vec3.x, onGround() ? 0.0 : vec3.y - 0.08, vec3.z);
-        vec3 = getDeltaMovement();
-        move(MoverType.SELF, vec3);
-        if (!level().isClientSide) {
-            Vec3 motion = getDeltaMovement();
-            if (motion.x != vec3.x || motion.y != vec3.y || motion.z != vec3.z) {
-                for (Direction dir : LibUtils.DIRECTIONS) {
-                    BlockPos blockPos = blockPosition().relative(dir);
-                    BlockState blockState = level().getBlockState(blockPos);
-                    if (blockState.getBlock() instanceof BoulderBlock block) {
-                        block.onProjectileHit(level(), blockState, new BlockHitResult(blockPos.getCenter(), dir, blockPos, false), this);
-                    }
-                }
-            }
-        }
+        moveAndUpdateNeighbors();
 
         Vec3 delta = getDeltaMovement().scale(0.99);
         setDeltaMovement(delta);
         float s = (float) delta.length();
-        float r = 2.0F * s / DIAMETER;
+        float r = s / radius;
         if (rotate > Mth.TWO_PI) this.rotate -= Mth.TWO_PI;
         this.rotateO = rotate;
         this.rotate += r;
 
+        delta = delta.add(Mth.sign(delta.x) * radius, Mth.sign(delta.y) * radius, Mth.sign(delta.z) * radius);
         Vec3 start = position();
         Vec3 end = start.add(delta);
         HitResult hitResult = level().clip(new ClipContext(start, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
@@ -131,6 +116,31 @@ public class BoulderEntity extends Projectile {
                 onRemove();
             }
         }
+    }
+
+    protected void moveAndUpdateNeighbors() {
+        Vec3 vec3 = getDeltaMovement();
+        setYRot((float) (Mth.atan2(vec3.x, vec3.z) * Mth.RAD_TO_DEG));
+        setDeltaMovement(vec3.x, onGround() ? 0.0 : vec3.y - getGravity(), vec3.z);
+        vec3 = getDeltaMovement();
+        move(MoverType.SELF, vec3);
+        if (!level().isClientSide) {
+            Vec3 motion = getDeltaMovement();
+            if (motion.x != vec3.x || motion.y != vec3.y || motion.z != vec3.z) {
+                for (Direction dir : LibUtils.DIRECTIONS) {
+                    BlockPos blockPos = blockPosition().relative(dir);
+                    BlockState blockState = level().getBlockState(blockPos);
+                    if (blockState.getBlock() instanceof BoulderBlock block) {
+                        block.onProjectileHit(level(), blockState, new BlockHitResult(blockPos.getCenter(), dir, blockPos, false), this);
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    protected double getDefaultGravity() {
+        return 0.08;
     }
 
     @Override
@@ -167,12 +177,12 @@ public class BoulderEntity extends Projectile {
     }
 
     @Override
-    protected void readAdditionalSaveData(CompoundTag pCompound) {
-        entityData.set(DATA_BLOCK_STATE, BlockState.CODEC.parse(NbtOps.INSTANCE, pCompound.get("BlockState")).getOrThrow());
+    protected void readAdditionalSaveData(CompoundTag tag) {
+        entityData.set(DATA_BLOCK_STATE, BlockState.CODEC.parse(NbtOps.INSTANCE, tag.get("BlockState")).getOrThrow());
     }
 
     @Override
-    protected void addAdditionalSaveData(CompoundTag pCompound) {
-        pCompound.put("BlockState", BlockState.CODEC.encodeStart(NbtOps.INSTANCE, entityData.get(DATA_BLOCK_STATE)).getOrThrow());
+    protected void addAdditionalSaveData(CompoundTag tag) {
+        tag.put("BlockState", BlockState.CODEC.encodeStart(NbtOps.INSTANCE, entityData.get(DATA_BLOCK_STATE)).getOrThrow());
     }
 }

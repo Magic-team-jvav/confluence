@@ -62,10 +62,10 @@ public class AnnouncementBoxBlock extends StandingSignBlock implements INetworkB
     }
 
     @Override
-    public void onExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {
-        Entity entity = (Entity) pEntity;
-        if (!pLevel.isClientSide) {
-            Entity.sendMessages(pLevel, pPos, entity.getText(true).getMessages(false));
+    public void onExecute(BlockState state, ServerLevel level, BlockPos pos, int color, INetworkEntity networkEntity) {
+        Entity entity = (Entity) networkEntity;
+        if (!level.isClientSide) {
+            Entity.sendMessages(level, pos, entity.getText(true).getMessages(false));
         }
     }
 
@@ -94,10 +94,10 @@ public class AnnouncementBoxBlock extends StandingSignBlock implements INetworkB
         }
 
         @Override
-        public void onExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {
-            Entity entity = (Entity) pEntity;
-            if (!pLevel.isClientSide) {
-                Entity.sendMessages(pLevel, pPos, entity.getText(true).getMessages(false));
+        public void onExecute(BlockState state, ServerLevel level, BlockPos pos, int color, INetworkEntity networkEntity) {
+            Entity entity = (Entity) networkEntity;
+            if (!level.isClientSide) {
+                Entity.sendMessages(level, pos, entity.getText(true).getMessages(false));
             }
         }
     }

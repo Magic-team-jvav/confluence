@@ -61,8 +61,8 @@ public class LarvaBlock extends HorizontalDirectionalWithVerticalTwoPartBlock {
     }
 
     @Override
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState pNewState, boolean pMovedByPiston) {
-        super.onRemove(state, level, pos, pNewState, pMovedByPiston);
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+        super.onRemove(state, level, pos, newState, movedByPiston);
         if (state.getValue(PART).isBase()) {
             ModUtils.summonBoss(level, pos.getCenter(), new QueenBee(TEBossEntities.QUEEN_BEE.get(), level));
         }

@@ -40,9 +40,9 @@ public class StatueBlock extends HorizontalDirectionalWithVerticalTwoPartBlock {
     }
 
     @Override
-    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        boolean base = pState.getValue(StateProperties.VERTICAL_TWO_PART).isBase();
-        return switch (pState.getValue(FACING)) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        boolean base = state.getValue(StateProperties.VERTICAL_TWO_PART).isBase();
+        return switch (state.getValue(FACING)) {
             case NORTH, SOUTH -> base ? LOWER_SHAPE_Z : UPPER_SHAPE_Z;
             default -> base ? LOWER_SHAPE_X : UPPER_SHAPE_X;
         };

@@ -37,6 +37,7 @@ import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.common.worldgen.structure.SimpleTemplatePiece;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.ModTags;
@@ -179,15 +180,15 @@ public class NPCSpawner implements IGlobalData {
 
     public void onNPCRemoved(AbstractTerraNPC living) {
         setNPCAlive(((IAbstractTerraNPC) living).confluence$getRegion(), living.getType(), false);
-
-        if (living.getType() == TENpcEntities.OLD_MAN.get()) return; // 老人不用广播死亡信息
-        MutableComponent message;
-        if (living instanceof AnglerNPC /* todo 或宠物/公主 */) {
-            message = Component.translatable("event.confluence.npc.left", living.getName());
-        } else { // todo 旅商已离去！
-            message = Component.translatable("event.confluence.npc.slain", living.getType().getDescription(), living.getName());
+        if (CommonConfigs.BROADCAST_NPC_MSG.get() && living.getType() != TENpcEntities.OLD_MAN.get()) { // 老人不用广播死亡信息
+            MutableComponent message;
+            if (living instanceof AnglerNPC /* todo 或宠物/公主 */) {
+                message = Component.translatable("event.confluence.npc.left", living.getName());
+            } else { // todo 旅商已离去！
+                message = Component.translatable("event.confluence.npc.slain", living.getType().getDescription(), living.getName());
+            }
+            broadcastMessageToRegion(living.level(), living, message.withColor(GlobalColors.NPC_SLAIN.get()));
         }
-        broadcastMessageToRegion(living.level(), living, message.withColor(GlobalColors.NPC_SLAIN.get()));
     }
 
     @Override

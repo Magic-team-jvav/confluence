@@ -128,7 +128,7 @@ public class StatueBlocks {
     public static final DeferredBlock<StatueBlock> LIHZAHRD_WATCHER_STATUE = register("lihzahrd_watcher_statue");
 
 
-    public static final DeferredBlock<BehaviourStatueBlock> ARMED_ZOMBIE_STATUE = registerBehaviour("armed_zombie_statue", new BehaviourStatueBlock.SummonBehaviour<>(false, (state, level, pos) -> {
+    public static final DeferredBlock<BehaviourStatueBlock> ARMED_ZOMBIE_STATUE = registerBehaviour("armed_zombie_statue", new BehaviourStatueBlock.SummonBehaviour<>(true, false, (state, level, pos) -> {
         Zombie zombie = new Zombie(level);
         zombie.setPos(pos);
         zombie.setItemInHand(InteractionHand.MAIN_HAND, SwordItems.ZOMBIE_ARM.toStack());
@@ -153,7 +153,7 @@ public class StatueBlocks {
     // Pigron Statue
     // Piranha Statue
     // Shark Statue
-    public static final DeferredBlock<BehaviourStatueBlock> SKELETON_STATUE = registerBehaviour("skeleton_statue", new BehaviourStatueBlock.SummonBehaviour<>(true, (state, level, pos) -> {
+    public static final DeferredBlock<BehaviourStatueBlock> SKELETON_STATUE = registerBehaviour("skeleton_statue", new BehaviourStatueBlock.SummonBehaviour<>(true, true, (state, level, pos) -> {
         Skeleton skeleton = new Skeleton(EntityType.SKELETON, level);
         skeleton.setPos(pos);
         return skeleton;
@@ -191,27 +191,27 @@ public class StatueBlocks {
 
     // King Statue
     // Queen Statue
-    public static final DeferredBlock<BehaviourStatueBlock> BOMB_STATUE = registerBehaviour("bomb_statue", new BehaviourStatueBlock.SummonBehaviour<>(false, 200, (state, level, pos) -> {
+    public static final DeferredBlock<BehaviourStatueBlock> BOMB_STATUE = registerBehaviour("bomb_statue", new BehaviourStatueBlock.SummonBehaviour<>(true, false, 200, (state, level, pos) -> {
         ItemEntity itemEntity = new ItemEntity(level, pos.x, pos.y, pos.z, ConsumableItems.BOMB.get().getDefaultInstance());
         itemEntity.setPickUpDelay(0);
         return itemEntity;
     }));
-    public static final DeferredBlock<BehaviourStatueBlock> HEART_STATUE = registerBehaviour("heart_statue", new BehaviourStatueBlock.SummonBehaviour<>(false, 200, (state, level, pos) -> {
+    public static final DeferredBlock<BehaviourStatueBlock> HEART_STATUE = registerBehaviour("heart_statue", new BehaviourStatueBlock.SummonBehaviour<>(true, false, 200, (state, level, pos) -> {
         ItemEntity itemEntity = new ItemEntity(level, pos.x, pos.y, pos.z, DateUtils.getHeartItem().getDefaultInstance());
         itemEntity.setPickUpDelay(0);
         return itemEntity;
     }));
-    public static final DeferredBlock<BehaviourStatueBlock> STAR_STATUE = registerBehaviour("star_statue", new BehaviourStatueBlock.SummonBehaviour<>(false, 200, (state, level, pos) -> {
+    public static final DeferredBlock<BehaviourStatueBlock> STAR_STATUE = registerBehaviour("star_statue", new BehaviourStatueBlock.SummonBehaviour<>(true, false, 200, (state, level, pos) -> {
         ItemEntity itemEntity = new ItemEntity(level, pos.x, pos.y, pos.z, DateUtils.getStarItem().getDefaultInstance());
         itemEntity.setPickUpDelay(0);
         return itemEntity;
     }));
     // Mushroom Statue
     // Boulder Statue
-    public static final DeferredBlock<BehaviourStatueBlock> BOULDER_3X_STATUE = registerBehaviour("boulder_3x_statue", new BehaviourStatueBlock.SummonBehaviour<>(true, 200, (state, level, pos) -> {
+    public static final DeferredBlock<BehaviourStatueBlock> BOULDER_3X_STATUE = registerBehaviour("boulder_3x_statue", new BehaviourStatueBlock.SummonBehaviour<>(false, true, 200, (state, level, pos) -> {
         Direction facing = state.getValue(StatueBlock.FACING);
         Boulder3x3Entity entity = new Boulder3x3Entity(level, pos.relative(facing, 1).add(0, Mth.EPSILON - 0.5, 0), FunctionalBlocks.NORMAL_BOULDER.get().defaultBlockState());
-        entity.shoot(facing, 0.3);
+        entity.shoot(facing, 0.4);
         return entity;
     }));
     public static final DeferredBlock<BehaviourStatueBlock> BAST_STATUE = registerBehaviour("bast_statue", new BehaviourStatueBlock.Behaviour() {
@@ -235,8 +235,8 @@ public class StatueBlocks {
         }
 
         @Override
-        public BlockState getStateForPlacement(BlockPlaceContext pContext, BlockState original) {
-            return original.setValue(StateProperties.DRIVE, true);
+        public BlockState getStateForPlacement(BlockPlaceContext context, BlockState state) {
+            return state.setValue(StateProperties.DRIVE, true);
         }
     });
     // Angel Statue
@@ -261,7 +261,7 @@ public class StatueBlocks {
     }
 
     private static DeferredBlock<BehaviourStatueBlock> registerSimpleSummon(String id, boolean noDrops, Function<Level, Entity> factory) {
-        DeferredBlock<BehaviourStatueBlock> block = BLOCKS.register(id, () -> new BehaviourStatueBlock(new BehaviourStatueBlock.SummonBehaviour<>(noDrops, (state, level, pos) -> {
+        DeferredBlock<BehaviourStatueBlock> block = BLOCKS.register(id, () -> new BehaviourStatueBlock(new BehaviourStatueBlock.SummonBehaviour<>(true, noDrops, (state, level, pos) -> {
             Entity entity = factory.apply(level);
             entity.setPos(pos);
             return entity;

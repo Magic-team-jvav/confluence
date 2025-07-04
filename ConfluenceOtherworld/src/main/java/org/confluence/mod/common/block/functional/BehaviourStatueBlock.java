@@ -55,21 +55,22 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
     }
 
     @Override
-    public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        return behaviour.getStateForPlacement(pContext, super.getStateForPlacement(pContext));
+    public @Nullable BlockState getStateForPlacement(BlockPlaceContext context) {
+        BlockState original = super.getStateForPlacement(context);
+        return original == null ? null : behaviour.getStateForPlacement(context, original);
     }
 
     @Override
-    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        VoxelShape shape = behaviour.getShape(pState, pLevel, pPos, pContext);
-        return shape == null ? super.getShape(pState, pLevel, pPos, pContext) : shape;
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        VoxelShape shape = behaviour.getShape(state, level, pos, context);
+        return shape == null ? super.getShape(state, level, pos, context) : shape;
     }
 
     @Override
-    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
-        if (pState.getBlock() != pNewState.getBlock()) {
-            onNodeRemove(pState, pLevel, pPos, pNewState);
-            super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+        if (state.getBlock() != newState.getBlock()) {
+            onNodeRemove(state, level, pos, newState);
+            super.onRemove(state, level, pos, newState, movedByPiston);
         }
     }
 
@@ -85,16 +86,16 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
         execution(state, level, pos, color, false);
     }
 
-    private void execution(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, boolean hasSignal) {
-        BlockPos relative = pPos.relative(StateProperties.VerticalTwoPart.getConnectedDirection(pState));
-        if (pLevel.getBlockEntity(relative) instanceof INetworkEntity entity) {
-            Network network = entity.getOrCreateNetworkNode().getNetwork(pColor);
+    private void execution(BlockState state, ServerLevel level, BlockPos pos, int color, boolean hasSignal) {
+        BlockPos relative = pos.relative(StateProperties.VerticalTwoPart.getConnectedDirection(state));
+        if (level.getBlockEntity(relative) instanceof INetworkEntity entity) {
+            Network network = entity.getOrCreateNetworkNode().getNetwork(color);
             if (network != null && hasSignal != network.hasSignal()) {
                 network.setSignal(hasSignal);
                 network.getNodes().stream()
                         .map(NetworkNode::getEntity)
                         .collect(Collectors.toSet())
-                        .forEach(entity1 -> INetworkBlock.internalExecute(pLevel, relative, pColor, hasSignal, entity1));
+                        .forEach(entity1 -> INetworkBlock.internalExecute(level, relative, color, hasSignal, entity1));
             }
         }
     }
@@ -115,8 +116,8 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
     }
 
     public static class Entity extends AbstractMechanicalBlock.Entity {
-        public Entity(BlockPos pPos, BlockState pBlockState) {
-            super(StatueBlocks.BLOCK_ENTITY.get(), pPos, pBlockState);
+        public Entity(BlockPos pos, BlockState state) {
+            super(StatueBlocks.BLOCK_ENTITY.get(), pos, state);
         }
 
         @Override
@@ -159,11 +160,11 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
 
         public void entityTick(Level level, BlockPos pos, BlockState blockState, Entity entity) {}
 
-        public BlockState getStateForPlacement(BlockPlaceContext pContext, BlockState original) {
-            return original;
+        public BlockState getStateForPlacement(BlockPlaceContext context, BlockState state) {
+            return state;
         }
 
-        public @Nullable VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+        public @Nullable VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
             return null;
         }
 
@@ -174,25 +175,26 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
 
     public static class SummonBehaviour<E extends net.minecraft.world.entity.Entity> extends Behaviour {
         private final List<UUID> entities = new ArrayList<>();
-
+        private final boolean randomPos;
         private final boolean noDrops;
         private final int cooldown;
         private final Function3<BlockState, Level, Vec3, E> factory;
         private final Consumer<E> afterSummon;
 
-        public SummonBehaviour(boolean noDrops, Function3<BlockState, Level, Vec3, E> factory) {
-            this(noDrops, 10, factory, entity -> {});
+        public SummonBehaviour(boolean randomPos, boolean noDrops, Function3<BlockState, Level, Vec3, E> factory) {
+            this(randomPos, noDrops, 10, factory, entity -> {});
         }
 
-        public SummonBehaviour(boolean noDrops, Function3<BlockState, Level, Vec3, E> factory, Consumer<E> afterSummon) {
-            this(noDrops, 10, factory, afterSummon);
+        public SummonBehaviour(boolean randomPos, boolean noDrops, Function3<BlockState, Level, Vec3, E> factory, Consumer<E> afterSummon) {
+            this(randomPos, noDrops, 10, factory, afterSummon);
         }
 
-        public SummonBehaviour(boolean noDrops, int cooldown, Function3<BlockState, Level, Vec3, E> factory) {
-            this(noDrops, cooldown, factory, entity -> {});
+        public SummonBehaviour(boolean randomPos, boolean noDrops, int cooldown, Function3<BlockState, Level, Vec3, E> factory) {
+            this(randomPos, noDrops, cooldown, factory, entity -> {});
         }
 
-        public SummonBehaviour(boolean noDrops, int cooldown, Function3<BlockState, Level, Vec3, E> factory, Consumer<E> afterSummon) {
+        public SummonBehaviour(boolean randomPos, boolean noDrops, int cooldown, Function3<BlockState, Level, Vec3, E> factory, Consumer<E> afterSummon) {
+            this.randomPos = randomPos;
             this.noDrops = noDrops;
             this.cooldown = cooldown;
             this.factory = factory;
@@ -207,7 +209,7 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
                     return entity1 == null || entity1.isRemoved();
                 });
                 if (entities.size() >= 3) return;
-                BlockPos relative = pos.relative(Util.getRandom(LibUtils.HORIZONTAL, level.random));
+                BlockPos relative = randomPos ? pos.relative(Util.getRandom(LibUtils.HORIZONTAL, level.random)) : pos;
                 E entity = factory.apply(state, level, relative.getCenter());
                 level.addFreshEntity(entity);
                 afterSummon.accept(entity);

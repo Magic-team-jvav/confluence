@@ -38,6 +38,7 @@ public final class CommonConfigs {
     public static BooleanValue DO_NPC_SPAWNING;
     public static IntValue NPC_SPAWN_INTERVAL;
     public static BooleanValue DO_METEORITE_SPAWNING;
+    public static BooleanValue BROADCAST_NPC_MSG;
 
     public static BooleanValue SHOW_MONEY_DROPS;
     public static BooleanValue DROPS_TOMBSTONE;
@@ -115,6 +116,7 @@ public final class CommonConfigs {
                 BUILDER.push("NPC");
                 DO_NPC_SPAWNING = BUILDER.define("doNPCSpawning", true);
                 NPC_SPAWN_INTERVAL = BUILDER.defineInRange("npcSpawnInterval", 2400, 20, 20000);
+                BROADCAST_NPC_MSG = BUILDER.define("broadcastNpcMsg", true);
                 BUILDER.pop();
             }
             DO_METEORITE_SPAWNING = BUILDER.define("doMeteoriteSpawning", true);

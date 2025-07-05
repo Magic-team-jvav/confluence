@@ -43,6 +43,7 @@ import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.axe.BaseAxeItem;
 import org.confluence.mod.common.item.common.BaseMinecartItem;
+import org.confluence.mod.common.item.common.DungeonCompass;
 import org.confluence.mod.common.item.common.EverBeneficialItem;
 import org.confluence.mod.common.item.drill.DrillItem;
 import org.confluence.mod.common.menu.FletchingTableMenu;
@@ -129,16 +130,18 @@ public final class PlayerEvents {
 
         if (CommonConfigs.FLETCHING_MENU.get() && blockState.is(Blocks.FLETCHING_TABLE)) {
             if (!level.isClientSide) {
-                player.swing(InteractionHand.MAIN_HAND, true);
                 player.openMenu(new FletchingTableMenu.Provider(level, blockPos));
             }
+            player.swing(InteractionHand.MAIN_HAND);
             event.setCanceled(true);
         }
 
         // 再生之斧/再生法杖 右键自动收获
         if (!level.isClientSide && itemStack.is(ModTags.Items.CROP_FORTUNE)) {
-            BaseAxeItem.dropAndPlaceOnRightClick(event.getEntity(), event.getItemStack(), event.getPos());
+            BaseAxeItem.dropAndPlaceOnRightClick(player, itemStack, blockPos);
         }
+
+        DungeonCompass.matches(player, event.getHand(), level, itemStack, blockState, blockPos);
     }
 
     @SubscribeEvent

@@ -12,6 +12,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.network.protocol.game.ClientboundSetActionBarTextPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -46,6 +47,7 @@ import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.recipe.ItemStackHandlerRecipeInput;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.block.AltarBlockModel;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.saved.ConfluenceData;
@@ -138,14 +140,31 @@ public class AltarBlock extends BaseEntityBlock {
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        Component part0 = Component.literal("2").withStyle(style -> style.withFont(Confluence.asResource("button")));
+        Component part1 = Component.translatable("message.confluence.altar_tips.0").withStyle(style -> style.withFont(ResourceLocation.withDefaultNamespace("default")));
+        Component part2 = Component.literal("23").withStyle(style -> style.withFont(Confluence.asResource("button")));
+        Component part3 = Component.translatable("message.confluence.altar_tips.1").withStyle(style -> style.withFont(ResourceLocation.withDefaultNamespace("default")));
+        Component part4 = Component.literal("1").withStyle(style -> style.withFont(Confluence.asResource("button")));
+        Component part5 = Component.translatable("message.confluence.altar_tips.2").withStyle(style -> style.withFont(ResourceLocation.withDefaultNamespace("default")));
+        Component part6 = Component.literal("13").withStyle(style -> style.withFont(Confluence.asResource("button")));
+        Component part7 = Component.translatable("message.confluence.altar_tips.3").withStyle(style -> style.withFont(ResourceLocation.withDefaultNamespace("default")));
+        Component component = Component.empty()
+                .append(part0)
+                .append(part1)
+                .append(part2)
+                .append(part3)
+                .append(part4)
+                .append(part5)
+                .append(part6)
+                .append(part7);
+
         if (!level.isClientSide && level.getBlockEntity(pos) instanceof Entity entity) { // 放/取物品
             if (player.isCrouching()) { // 取物品
                 player.addItem(entity.takeItem(-1));
             } else { // 存物品
                 player.setItemInHand(hand, entity.addItem(player.getItemInHand(hand)));
                 if (CommonConfigs.ALTAR_TIPS.get()) {
-                    player.sendSystemMessage(Component.translatable("message.confluence.altar_tips.0"));
-                    player.sendSystemMessage(Component.translatable("message.confluence.altar_tips.1"));
+                    player.displayClientMessage(component, true);
                 }
             }
         }

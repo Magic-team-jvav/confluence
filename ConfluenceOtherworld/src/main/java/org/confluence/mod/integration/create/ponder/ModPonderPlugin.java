@@ -43,7 +43,7 @@ public final class ModPonderPlugin implements PonderPlugin {
         PonderSceneRegistrationHelper<Item> HELPER = helper.withKeyFunction(BuiltInRegistries.ITEM::getKey);
         HELPER.forComponents(FunctionalBlocks.DEMON_ALTAR.asItem(), FunctionalBlocks.CRIMSON_ALTAR.asItem())
                 .addStoryBoard(Confluence.asResource("gameplay/altar"), ModPonderPlugin::altar, TAG_GAMEPLAY);
-        HELPER.forComponents(ToolItems.DUNGEON_COMPASS.get())
+        HELPER.forComponents(ToolItems.METEOR_COMPASS.get())
                 .addStoryBoard(Confluence.asResource("gameplay/dungeon"), ModPonderPlugin::dungeon, TAG_GAMEPLAY);
         HELPER.forComponents(ToolItems.RED_WRENCH.get())
                 .addStoryBoard(Confluence.asResource("mechanical/connect"), ModPonderPlugin::connect, TAG_MECHANICAL);

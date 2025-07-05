@@ -2,10 +2,10 @@ package org.confluence.mod.common.init.item;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.ArmorMaterial;
-import net.minecraft.world.item.Item;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.*;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.ConfluenceMagicLib;
@@ -14,10 +14,21 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModArmorMaterials;
 import org.confluence.mod.common.item.armor.NormalArmorItem;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.List;
+
 public class ArmorItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
 
-    public static final DeferredItem<ArmorItem> MINING_HELMET = registerNormalArmor("mining_helmet", "mining_armor", ModArmorMaterials.MINING_ARMOR_MATERIALS, ArmorItem.Type.HELMET);
+    public static final DeferredItem<ArmorItem> MINING_HELMET = ITEMS.register("mining_helmet", () -> new NormalArmorItem("armor/mining_armor", ModArmorMaterials.MINING_ARMOR_MATERIALS, ArmorItem.Type.HELMET, new Item.Properties().stacksTo(1).component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE)) {
+        private final boolean noneLoaded = !ModList.get().isLoaded("sodiumdynamiclights");
+
+        @ParametersAreNonnullByDefault
+        @Override
+        public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+            if (noneLoaded) tooltipComponents.add(Component.translatable("tooltip.terra_curio.requires_mod_loaded", "sodiumdynamiclights"));
+        }
+    });
     public static final DeferredItem<ArmorItem> MINING_CHESTPLATE = registerNormalArmor("mining_chestplate", "mining_armor", ModArmorMaterials.MINING_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE);
     public static final DeferredItem<ArmorItem> MINING_LEGGINGS = registerNormalArmor("mining_leggings", "mining_armor", ModArmorMaterials.MINING_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS);
     public static final DeferredItem<ArmorItem> MINING_BOOTS = registerNormalArmor("mining_boots", "mining_armor", ModArmorMaterials.MINING_ARMOR_MATERIALS, ArmorItem.Type.BOOTS);

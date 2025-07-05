@@ -2993,12 +2993,12 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.MECHANICAL_FRAGILE_SANDSTONE.get(), "机械易碎砂岩");
         add(FunctionalBlocks.MECHANICAL_FRAGILE_OBSIDIAN_BRICKS.get(), "机械易碎黑曜石砖");
         add(FunctionalBlocks.DETONATOR.get(), "引爆器");
-        add(FunctionalBlocks.CRIMSON_CHEST.get(), "猩红箱");
-        add(FunctionalBlocks.CORRUPTION_CHEST.get(), "腐化箱");
-        add(FunctionalBlocks.JUNGLE_CHEST.get(), "丛林箱");
-        add(FunctionalBlocks.ICE_CHEST.get(), "冰雪箱");
-        add(FunctionalBlocks.DESERT_CHEST.get(), "沙漠箱");
-        add(FunctionalBlocks.HALLOWED_CHEST.get(), "神圣箱");
+        add(ChestBlocks.CRIMSON_CHEST.get(), "猩红箱");
+        add(ChestBlocks.CORRUPTION_CHEST.get(), "腐化箱");
+        add(ChestBlocks.JUNGLE_CHEST.get(), "丛林箱");
+        add(ChestBlocks.ICE_CHEST.get(), "冰雪箱");
+        add(ChestBlocks.DESERT_CHEST.get(), "沙漠箱");
+        add(ChestBlocks.HALLOWED_CHEST.get(), "神圣箱");
         add(FunctionalBlocks.SCULK_TRAP.get(), "幽匿陷阱");
         add(FunctionalBlocks.ROLLING_CACTUS_BOULDER.get(), "仙人球");
         add(FunctionalBlocks.PIGGY_BANK.get(), "猪猪存钱罐");

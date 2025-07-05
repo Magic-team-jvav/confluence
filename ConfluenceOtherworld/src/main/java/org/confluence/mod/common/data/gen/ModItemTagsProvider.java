@@ -440,6 +440,18 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.GEMS_AMETHYST).add(
                 MaterialItems.AMETHYST.get()
         );
+        tag(ModTags.Items.RAW_MATERIALS_STURDY_FOSSIL).add(
+                MaterialItems.STURDY_FOSSIL.get()
+        );
+        tag(ModTags.Items.RAW_MATERIALS_OPAL).add(
+                MaterialItems.OPAL.get()
+        );
+        tag(ModTags.Items.RAW_MATERIALS_GELSTONE).add(
+                MaterialItems.GELSTONE.get()
+        );
+        tag(ModTags.Items.RAW_MATERIALS_COLD_CRYSTAL).add(
+                MaterialItems.COLD_CRYSTAL.get()
+        );
 
         tag(ModTags.Items.NUGGETS_TIN).add(
                 MaterialItems.LEAD_NUGGET.get()
@@ -595,6 +607,11 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.JADE_BLOCK).add(DecorativeBlocks.JADE_BLOCK.asItem());
         tag(ModTags.Items.SAPPHIRE_BLOCK).add(DecorativeBlocks.SAPPHIRE_BLOCK.asItem());
         tag(ModTags.Items.AMETHYST_BLOCK).add(DecorativeBlocks.AMETHYST_BLOCK.asItem());
+
+        tag(ModTags.Items.STURDY_FOSSIL_BLOCK).add(OreBlocks.STURDY_FOSSIL_BLOCK.asItem());
+        tag(ModTags.Items.OPAL_BLOCK).add(OreBlocks.OPAL_BLOCK.asItem());
+        tag(ModTags.Items.GELSTONE_BLOCK).add(OreBlocks.GELSTONE_BLOCK.asItem());
+        tag(ModTags.Items.COLD_CRYSTAL_BLOCK).add(OreBlocks.COLD_CRYSTAL_BLOCK.asItem());
 
         tag(ModTags.Items.RAW_MATERIALS_TIN).add(MaterialItems.RAW_TIN.get());
         tag(ModTags.Items.RAW_MATERIALS_TIN_BLOCK).add(OreBlocks.RAW_TIN_BLOCK.asItem());

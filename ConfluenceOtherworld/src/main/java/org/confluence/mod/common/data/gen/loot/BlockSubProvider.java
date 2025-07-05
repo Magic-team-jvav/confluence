@@ -103,6 +103,9 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(PALM_SAPLING.get());
         dropSelf(ASH_SAPLING.get());
         dropSelf(STURDY_FOSSIL_BLOCK.get());
+        dropSelf(OPAL_BLOCK.get());
+        dropSelf(GELSTONE_BLOCK.get());
+        dropSelf(COLD_CRYSTAL_BLOCK.get());
 
         dropSelf(EXTRACTINATOR.get());
         dropSelf(SKY_MILL.get());

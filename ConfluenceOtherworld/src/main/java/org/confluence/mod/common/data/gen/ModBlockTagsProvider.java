@@ -130,7 +130,11 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 JADE_BLOCK.get(),
                 RUBY_BLOCK.get(),
                 SAPPHIRE_BLOCK.get(),
-                TOPAZ_BLOCK.get()
+                TOPAZ_BLOCK.get(),
+                OPAL_BLOCK.get(),
+                GELSTONE_BLOCK.get(),
+                STURDY_FOSSIL_BLOCK.get(),
+                COLD_CRYSTAL_BLOCK.get()
 
         );
         tag(BlockTags.SCULK_REPLACEABLE).add(
@@ -356,7 +360,11 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 CrateBlocks.STOCKADE_CRATE.get(),
                 CrateBlocks.MIRAGE_CRATE.get(),
                 CrateBlocks.HELLSTONE_CRATE.get(),
-                CrateBlocks.SEASIDE_CRATE.get()
+                CrateBlocks.SEASIDE_CRATE.get(),
+                OPAL_BLOCK.get(),
+                GELSTONE_BLOCK.get(),
+                STURDY_FOSSIL_BLOCK.get(),
+                COLD_CRYSTAL_BLOCK.get()
         );
         // 锹
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithShovel = tag(BlockTags.MINEABLE_WITH_SHOVEL);
@@ -634,7 +642,11 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 SAFE.get(),
 
                 AETHERIUM_BLOCK.get(),
-                DARK_AETHERIUM_BLOCK.get()
+                DARK_AETHERIUM_BLOCK.get(),
+                OPAL_BLOCK.get(),
+                GELSTONE_BLOCK.get(),
+                STURDY_FOSSIL_BLOCK.get(),
+                COLD_CRYSTAL_BLOCK.get()
         );
         tag(ModTags.Blocks.NEEDS_2_LEVEL).add(
                 METEORITE_ORE.get(),

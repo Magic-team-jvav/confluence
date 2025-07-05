@@ -115,6 +115,11 @@ public final class ModTags {
         public static final TagKey<Item> SAPPHIRE_BLOCK = c("storage_blocks/sapphire");
         public static final TagKey<Item> AMETHYST_BLOCK = c("storage_blocks/amethyst");
 
+        public static final TagKey<Item> STURDY_FOSSIL_BLOCK = c("storage_blocks/sturdy_fossil");
+        public static final TagKey<Item> OPAL_BLOCK = c("storage_blocks/opal");
+        public static final TagKey<Item> GELSTONE_BLOCK = c("storage_blocks/gelstone");
+        public static final TagKey<Item> COLD_CRYSTAL_BLOCK = c("storage_blocks/cold_crystal");
+
         public static final TagKey<Item> RAW_MATERIALS_TIN = c("raw_materials/tin");
         public static final TagKey<Item> RAW_MATERIALS_TIN_BLOCK = c("storage_blocks/raw_tin");
         public static final TagKey<Item> RAW_MATERIALS_LEAD = c("raw_materials/lead");
@@ -140,6 +145,11 @@ public final class ModTags {
         public static final TagKey<Item> GEMS_JADE = c("gems/jade");
         public static final TagKey<Item> GEMS_SAPPHIRE = c("gems/sapphire");
         public static final TagKey<Item> GEMS_AMETHYST = c("gems/amethyst");
+
+        public static final TagKey<Item> RAW_MATERIALS_STURDY_FOSSIL = c("raw_materials/sturdy_fossil");
+        public static final TagKey<Item> RAW_MATERIALS_OPAL = c("raw_materials/opal");
+        public static final TagKey<Item> RAW_MATERIALS_GELSTONE = c("raw_materials/gelstone");
+        public static final TagKey<Item> RAW_MATERIALS_COLD_CRYSTAL = c("raw_materials/cold_crystal");
 
         public static final TagKey<Item> NUGGETS_TIN = c("nuggets/lead");
 

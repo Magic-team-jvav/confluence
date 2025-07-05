@@ -87,6 +87,9 @@ public class OreBlocks {
     public static final DeferredBlock<Block> METEORITE_BLOCK = registerWithItem("meteorite_block", MeteoriteOre::new, block -> new BlockItem(block, new Item.Properties().fireResistant()));
 
     public static final DeferredBlock<Block> STURDY_FOSSIL_BLOCK = copyBlockRegister("sturdy_fossil_block", Blocks.DIAMOND_BLOCK);
+    public static final DeferredBlock<Block> OPAL_BLOCK = copyBlockRegister("opal_block", Blocks.DIAMOND_BLOCK);
+    public static final DeferredBlock<Block> GELSTONE_BLOCK = copyBlockRegister("gelstone_block", Blocks.DIAMOND_BLOCK);
+    public static final DeferredBlock<Block> COLD_CRYSTAL_BLOCK = copyBlockRegister("cold_crystal_block", Blocks.DIAMOND_BLOCK);
 
     public static final DeferredBlock<Block> SANCTIFICATION_EMERALD_ORE = copyBlockRegister("sanctification_emerald_ore", Blocks.EMERALD_ORE);
     public static final DeferredBlock<Block> CORRUPTION_EMERALD_ORE = copyBlockRegister("corruption_emerald_ore", Blocks.EMERALD_ORE);

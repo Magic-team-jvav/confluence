@@ -21,27 +21,22 @@ import javax.annotation.Nullable;
 import java.util.function.ToIntFunction;
 
 public class ShimmerDroopingVines implements CaveVines {
-    static BooleanProperty BERRIES = BlockStateProperties.BERRIES;
-
-    static InteractionResult use(@Nullable Entity entity, BlockState state, Level level, BlockPos pos) {
-        if ((Boolean)state.getValue(BERRIES)) {
+    public static InteractionResult useShimmerBerries(@Nullable Entity entity, BlockState state, Level level, BlockPos pos) {
+        if (state.hasProperty(BERRIES) && state.getValue(BERRIES)) {
+            // 掉落微光浆果而非原版发光浆果
             Block.popResource(level, pos, new ItemStack(FoodItems.SHIMMER_BERRIES.get(), 1));
             float f = Mth.randomBetween(level.random, 0.8F, 1.2F);
             level.playSound((Player)null, pos, SoundEvents.CAVE_VINES_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, f);
-            BlockState blockstate = (BlockState)state.setValue(BERRIES, false);
-            level.setBlock(pos, blockstate, 2);
-            level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(entity, blockstate));
+            BlockState newState = state.setValue(BERRIES, false);
+            level.setBlock(pos, newState, 2);
+            level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(entity, newState));
             return InteractionResult.sidedSuccess(level.isClientSide);
-        } else {
-            return InteractionResult.PASS;
         }
+        return InteractionResult.PASS;
     }
 
-    static boolean hasShimmerBerries(BlockState state) {
-        return state.hasProperty(BERRIES) && (Boolean)state.getValue(BERRIES);
-    }
-
-    static ToIntFunction<BlockState> emission(int berries) {
-        return (p_181216_) -> (Boolean)p_181216_.getValue(BlockStateProperties.BERRIES) ? berries : 0;
+    // 发光等级方法（复用原版逻辑）
+    public static ToIntFunction<BlockState> shimmerEmission(int lightLevel) {
+        return (state) -> state.getValue(BERRIES) ? lightLevel : 0;
     }
 }

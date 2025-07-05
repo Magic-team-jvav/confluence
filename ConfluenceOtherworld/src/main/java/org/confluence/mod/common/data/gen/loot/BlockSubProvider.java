@@ -12,6 +12,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.CaveVines;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
@@ -265,6 +266,9 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         this.add(MUSHROOM_GRASS_BLOCK.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, Blocks.MUD));
         this.add(HALLOW_GRASS_BLOCK.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, Blocks.DIRT));
 
+        this.add(SHIMMER_DROOPING_VINE.get(), this::createShimmerBerriesDrop);
+        this.add(SHIMMER_DROOPING_VINE_PLANT.get(), this::createShimmerBerriesDrop);
+
         dropSelf(EBONY_LOG_BLOCKS.getLog().get());
         dropSelf(YELLOW_WILLOW_LOG_BLOCKS.getLog().get());
         dropSelf(BAOBAB_LOG_BLOCKS.getLog().get());
@@ -307,6 +311,9 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropOther(NATURES_GIFT.get(), AccessoryItems.NATURES_GIFT.get());
         add(JUNGLE_ROSE.get(), LootTable.lootTable().withPool(LootPool.lootPool()
                 .add(LootItem.lootTableItem(JUNGLE_ROSE.get()).when(LootItemRandomChanceCondition.randomChance(0.05f)))));
+
+
+
         // endregion natural
 
         dropSelf(RUBY_BLOCK.get());
@@ -696,5 +703,17 @@ public final class BlockSubProvider extends BlockLootSubProvider {
                         .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block)
                                 .setProperties(StatePropertiesPredicate.Builder.properties()
                                         .hasProperty(BaseHerbBlock.AGE, 1)))));
+    }
+
+    private LootTable.Builder createShimmerBerriesDrop(Block block) {
+        return LootTable.lootTable()
+                .withPool(
+                        LootPool.lootPool()
+                                .add(LootItem.lootTableItem(FoodItems.SHIMMER_BERRIES))
+                                .when(
+                                        LootItemBlockStatePropertyCondition.hasBlockStateProperties(block)
+                                                .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(CaveVines.BERRIES, true))
+                                )
+                );
     }
 }

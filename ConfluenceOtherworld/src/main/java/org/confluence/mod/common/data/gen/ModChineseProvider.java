@@ -2098,7 +2098,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.CORRUPT_DROOPING_VINE.get(), "腐化垂藤");
         add(NatureBlocks.CRIMSON_DROOPING_VINE.get(), "猩红垂藤");
         add(NatureBlocks.HALLOW_DROOPING_VINE.get(), "神圣垂藤");
-        add(NatureBlocks.SHIMMER_DROOPING_VINE.get(), "微光垂藤");
+        add(NatureBlocks.SHIMMER_DROOPING_VINE_PLANT.get(), "微光垂藤");
 
         add(NatureBlocks.GREEN_MOSS.get(), "绿苔藓");
         add(NatureBlocks.BROWN_MOSS.get(), "棕苔藓");

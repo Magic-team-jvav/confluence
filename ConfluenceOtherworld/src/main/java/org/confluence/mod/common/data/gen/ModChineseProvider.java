@@ -448,6 +448,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.doNPCSpawning.tooltip", "启用时，NPC将会生成");
         add("confluence.configuration.npcSpawnInterval", "NPC生成间隔");
         add("confluence.configuration.npcSpawnInterval.tooltip", "定义NPC生成间隔");
+        add("confluence.configuration.broadcastNpcMsg", "广播NPC消息");
+        add("confluence.configuration.broadcastNpcMsg.tooltip", "启用后，NPC相关信息将会广播在聊天框");
         add("confluence.configuration.doMeteoriteSpawning", "陨石生成");
         add("confluence.configuration.doMeteoriteSpawning.tooltip", "启用时，天空将会对未加载区域砸下陨石");
         add("confluence.configuration.doFallingStarSpawning", "坠落之星生成");
@@ -2096,6 +2098,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.CORRUPT_DROOPING_VINE.get(), "腐化垂藤");
         add(NatureBlocks.CRIMSON_DROOPING_VINE.get(), "猩红垂藤");
         add(NatureBlocks.HALLOW_DROOPING_VINE.get(), "神圣垂藤");
+        add(NatureBlocks.SHIMMER_DROOPING_VINE.get(), "微光垂藤");
 
         add(NatureBlocks.GREEN_MOSS.get(), "绿苔藓");
         add(NatureBlocks.BROWN_MOSS.get(), "棕苔藓");
@@ -3019,6 +3022,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.FRAGILE_BLUE_BRICKS.get(), "易碎蓝色地牢砖");
         add(FunctionalBlocks.FRAGILE_GREEN_BRICKS.get(), "易碎绿色地牢砖");
         add(FunctionalBlocks.FRAGILE_PINK_BRICKS.get(), "易碎粉色地牢砖");
+        add(FunctionalBlocks.ENCHANTED_FRAGILE_BLUE_BRICKS.get(), "蕴魔易碎蓝色地牢砖");
+        add(FunctionalBlocks.ENCHANTED_FRAGILE_GREEN_BRICKS.get(), "蕴魔易碎绿色地牢砖");
+        add(FunctionalBlocks.ENCHANTED_FRAGILE_PINK_BRICKS.get(), "蕴魔易碎粉色地牢砖");
         add(FunctionalBlocks.LAND_MINE.get(), "地雷");
         add(FunctionalBlocks.SUPER_DART_TRAP.get(), "超级飞镖机关");
         add(FunctionalBlocks.FLAME_TRAP.get(), "烈焰机关");

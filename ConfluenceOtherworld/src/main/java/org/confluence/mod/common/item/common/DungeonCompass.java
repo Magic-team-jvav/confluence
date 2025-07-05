@@ -14,7 +14,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -29,14 +28,7 @@ import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.item.ToolItems;
 
 public class DungeonCompass extends TooltipItem {
-    private static final BlockPattern PATTERN = BlockPatternBuilder.start()
-            .aisle("   A   ", " A   A ", "       ", "A     A", "       ", " A   A ", "   A   ")
-            .aisle("   T   ", " T   T ", "   O   ", "T O O T", "   O   ", " T   T ", "   T   ")
-            .where('A', BlockInWorld.hasState(state -> state.is(Blocks.AMETHYST_BLOCK)))
-            .where('T', BlockInWorld.hasState(state -> state.is(Blocks.CHISELED_TUFF)))
-            .where('O', BlockInWorld.hasState(state -> state.is(Blocks.CRYING_OBSIDIAN)))
-            .build();
-    private static final int[][] CRYSTALS = {
+    public static final int[][] CRYSTALS = {
             new int[]{3, 0},
             new int[]{2, 2},
             new int[]{0, 3},
@@ -46,6 +38,13 @@ public class DungeonCompass extends TooltipItem {
             new int[]{0, -3},
             new int[]{2, -2}
     };
+    private static final BlockPattern PATTERN = BlockPatternBuilder.start()
+            .aisle("   A   ", " A   A ", "       ", "A     A", "       ", " A   A ", "   A   ")
+            .aisle("   T   ", " T   T ", "   O   ", "T O O T", "   O   ", " T   T ", "   T   ")
+            .where('A', BlockInWorld.hasState(state -> state.is(Blocks.AMETHYST_BLOCK)))
+            .where('T', BlockInWorld.hasState(state -> state.is(Blocks.CHISELED_TUFF)))
+            .where('O', BlockInWorld.hasState(state -> state.is(Blocks.CRYING_OBSIDIAN)))
+            .build();
 
     public DungeonCompass() {
         super(new Properties().fireResistant().stacksTo(1), ModRarity.GREEN, Component.translatable("tooltip.item.confluence.dungeon_compass.0").withStyle(ChatFormatting.GRAY));
@@ -57,7 +56,7 @@ public class DungeonCompass extends TooltipItem {
     }
 
     public static void matches(Player player, InteractionHand hand, Level level, ItemStack itemStack, BlockState blockState, BlockPos blockPos) {
-        if (itemStack.is(Items.COMPASS) && blockState.is(Blocks.CHISELED_TUFF)) {
+        if (itemStack.is(ToolItems.METEOR_COMPASS) && blockState.is(Blocks.CHISELED_TUFF)) {
             BlockPattern.BlockPatternMatch matches = PATTERN.matches(level, blockPos.offset(3, 1, 3), Direction.DOWN, Direction.SOUTH);
             if (matches == null) return;
             if (level.isClientSide) {
@@ -72,7 +71,7 @@ public class DungeonCompass extends TooltipItem {
                 HolderSet<Structure> dungeon = HolderSet.direct(serverlevel.registryAccess().holderOrThrow(ModStructures.DUNGEON_KEY));
                 Pair<BlockPos, Holder<Structure>> pair = serverlevel.getChunkSource().getGenerator().findNearestMapStructure(serverlevel, dungeon, blockPos, 100, false);
                 if (pair == null) {
-                    player.displayClientMessage(Component.translatable("confluence.dungeon.not_found"), true);
+                    player.displayClientMessage(Component.translatable("message.confluence.dungeon_not_found").withStyle(ChatFormatting.RED), true);
                 } else {
                     player.setItemInHand(hand, ItemStack.EMPTY);
                     ItemStack stack = ToolItems.DUNGEON_COMPASS.toStack();

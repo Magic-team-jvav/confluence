@@ -63,6 +63,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("message.confluence.hoe_shovel.mode.1", "Hoe");
         add("message.confluence.altar_tips.0", "Right-click to put in an item, right-click crouching to take out an item.");
         add("message.confluence.altar_tips.1", "Left-click to craft, left-click crouching to quickly craft.");
+        add("message.confluence.dungeon_not_found", "Failed to find the Dungeon");
 
         add("gamerule.confluenceSpreadableChance", "Confluence Spreadable Chance");
         add("generator.confluence.the_corruption", "The Corruption");

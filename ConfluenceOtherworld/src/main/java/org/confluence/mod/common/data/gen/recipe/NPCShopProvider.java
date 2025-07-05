@@ -221,6 +221,8 @@ public class NPCShopProvider extends AbstractRecipeProvider {
 
         shop(TENpcEntities.OLD_MAN.getId()).addRecipe(new Builder()
                 .build());
+
+        shop(TENpcEntities.MECHANIC.getId()).addRecipe(new Builder().build());
     }
 
 

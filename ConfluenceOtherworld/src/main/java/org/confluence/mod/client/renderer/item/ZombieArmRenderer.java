@@ -25,7 +25,7 @@ public class ZombieArmRenderer {
     private static final ResourceLocation ZOMBIE_LOCATION = ResourceLocation.withDefaultNamespace("textures/entity/zombie/zombie.png");
     private final HumanoidModel<AbstractClientPlayer> zombieModel;
 
-    public ZombieArmRenderer() {
+    private ZombieArmRenderer() {
         this.zombieModel = new HumanoidModel<>(Minecraft.getInstance().getEntityModels().bakeLayer(ModelLayers.ZOMBIE));
     }
 

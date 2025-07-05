@@ -18,10 +18,12 @@ import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.Item;
@@ -41,6 +43,7 @@ import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.effect.SpelunkerHelper;
 import org.confluence.mod.client.gui.TooltipManager;
 import org.confluence.mod.client.handler.*;
+import org.confluence.mod.client.renderer.item.DungeonCompassRenderer;
 import org.confluence.mod.client.renderer.item.ZombieArmRenderer;
 import org.confluence.mod.client.textures.LocalBrushData;
 import org.confluence.mod.common.component.ValueComponent;
@@ -50,6 +53,7 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEquipmentSets;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.SwordItems;
+import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.integration.ars_nouveau.ArsNouveauHelper;
 import org.confluence.mod.integration.irons_spell.IronSpellHelper;
@@ -209,7 +213,9 @@ public final class GameClientEvents {
 
     @SubscribeEvent
     public static void renderLevelStage(RenderLevelStageEvent event) {
-        ClientLevel level = Minecraft.getInstance().level;
+        LocalPlayer player = Minecraft.getInstance().player;
+        if (player == null) return;
+        ClientLevel level = player.clientLevel;
         level.getProfiler().push("Spelunker");
         SpelunkerHelper.renderLevel(event);
         level.getProfiler().pop();
@@ -218,6 +224,17 @@ public final class GameClientEvents {
             StarPhaseHandler.render(event);
             level.getProfiler().pop();
             MeteorLandingHandler.render(event);
+        } else if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
+            ItemStack headItem = player.getItemBySlot(EquipmentSlot.HEAD);
+            if (!headItem.isEmpty() && headItem.is(ToolItems.DUNGEON_COMPASS)) {
+                CompoundTag tag = LibUtils.getItemStackNbtIfPresent(headItem);
+                if (tag != null) {
+                    int[] pos = tag.getIntArray("pos");
+                    if (pos.length == 3) {
+                        DungeonCompassRenderer.getInstance().render(event.getPoseStack(), Minecraft.getInstance().renderBuffers().bufferSource(), player, pos[0], pos[1], pos[2]);
+                    }
+                }
+            }
         }
     }
 

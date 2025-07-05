@@ -377,6 +377,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.terra_curio.radio_thing.1", "'Forbidden Knowledge echoes from the radio...'");
 
         add("tooltip.item.confluence.sweet_sword.0", "au'undertale: above nothingness' written by 一只屑水缡");
+        add("tooltip.item.confluence.piglin_stew.0", "The last thing a Piglin would crave before starving, yet they never got to taste it...");
 
         add("tooltip.item.confluence.copper_short_sword.0", "The smallest fragment of the divine weapon's power has been with you since the convergence of the two worlds... until the journey's end.");
         add("tooltip.item.confluence.copper_short_sword.1", "\"We are so awesome!\" said the copper short sword.");
@@ -477,6 +478,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.configuration.doNPCSpawning.tooltip", "When enabled, NPCs will spawn");
         add("confluence.configuration.npcSpawnInterval", "NPC Spawn Interval");
         add("confluence.configuration.npcSpawnInterval.tooltip", "Defines the interval between NPC spawns");
+        add("confluence.configuration.broadcastNpcMsg", "Broadcast NPC Messages");
+        add("confluence.configuration.broadcastNpcMsg.tooltip", "When enabled, NPC-related messages will be broadcast in the chat window.");
         add("confluence.configuration.doMeteoriteSpawning", "Meteorite Spawning");
         add("confluence.configuration.doMeteoriteSpawning.tooltip", "When enabled, meteorites will fall on unloaded areas");
         add("confluence.configuration.doFallingStarSpawning", "Falling Star Spawning");
@@ -524,6 +527,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.configuration.bossRespawnTimeMax", "Maximum Respawn Time (Boss Battle)");
         add("confluence.configuration.bossRespawnTimeMax.tooltip", "Maximum respawn time for when dying in a boss battle");
         add("confluence.configuration.bossRespawnTimeMin.tooltip", "Minimum respawn time for when dying in a boss battle");
+        add("confluence.configuration.brewingStandRecipe", "Terra Potion Brewing Stand Recipes");
+        add("confluence.configuration.brewingStandRecipe.tooltip", "When enabled, the Brewing Stand can craft Terra Potions. (Restart the game after changing this setting!)");
         add("confluence.configuration.showWindParticles", "Wind Particles Ratio");
         add("confluence.configuration.HUD", "HUD");
         add("confluence.configuration.Mana", "Mana");
@@ -573,6 +578,12 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.configuration.altarTips.tooltip", "You can turn off the tips by yourself after learning");
         add("confluence.configuration.ammoSlotsBlacklist", "Ammo Slot Automatically Picks-up Blacklist");
         add("confluence.configuration.ammoSlotsBlacklist.tooltip", "Items with IDs or tags in the blacklist will not automatically enter the ammo slot");
+        add("confluence.configuration.shimmerDecompose", "Shimmer Decomposition");
+        add("confluence.configuration.shimmerDecompose.tooltip", "When enabled, Shimmer can decompose items into raw materials.");
+        add("confluence.configuration.starPhase", "Stellar Phase");
+        add("confluence.configuration.starPhase.tooltip", "Currently has no function. Not recommended to enable.");
+        add("confluence.configuration.wrappedCrimsonHeart", "Wrapped Crimson Heart");
+        add("confluence.configuration.wrappedCrimsonHeart.tooltip", "When enabled, newly generated Crimson Caverns will contain Wrapped Crimson Hearts.");
         // Separator
         add("confluence.configuration.Mana.button", "Mana");
         add("confluence.configuration.Armor.button", "Armor");
@@ -897,6 +908,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("title.confluence.crystal_ball", "Crystal Ball");
         add("title.confluence.alchemy_table", "Alchemy Table");
         add("title.confluence.cooking_pot", "Cooking Pot");
+        add("title.confluence.solidifier", "Solidifier");
         add("title.confluence.fletching_table", "Fletching Table");
         add("title.confluence.touhoulittlemaid", "Touhou Little Maid Supplies");
         add("title.confluence.npc_trade", "NPC Trading");
@@ -1539,13 +1551,13 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tag.item.confluence.crop_fortune", "Crop Fortune");
         add("tag.item.confluence.demonite_and_crimson_ingot", "Evil Ingot");
         add("tag.item.confluence.dye", "Dye");
-        add("tag.item.confluence.evil_meterial", "Evil Meterial");
+        add("tag.item.confluence.evil_material", "Evil Material");
         add("tag.item.confluence.fast_bow", "Fast Bow");
         add("tag.item.confluence.gold_cooking", "Golden Cooking");
         add("tag.item.confluence.hardmode_ores", "Haed-Mode Ores");
         add("tag.item.confluence.hook", "Hook");
         add("tag.item.confluence.lead_and_iron", "Lead and Iron");
-        add("tag.item.confluence.light_pets", "Light Pets");
+        add("tag.item.confluence.light_pet", "Light Pet");
         add("tag.item.confluence.mana_weapon", "Magic Weapon");
         add("tag.item.confluence.minecart", "Minecart");
         add("tag.item.confluence.moss_item", "Moss");

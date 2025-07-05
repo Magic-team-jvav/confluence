@@ -166,6 +166,9 @@ public class FunctionalBlocks {
     public static final Supplier<BlockEntityType<TreeHolesBlock.Entity>> TREE_HOLES_ENTITY = BLOCK_ENTITIES.register("tree_holes", () -> BlockEntityType.Builder.of(TreeHolesBlock.Entity::new, TREE_HOLES_BLOCK.get()).build(DSL.remainderType()));
     public static final DeferredBlock<MagicMailBox> MAGIC_MAIL_BOX = registerWithItem("magic_mail_box", MagicMailBox::new);
 
+    public static final DeferredBlock<LockBlock> LOCK_BLOCK = registerWithItem("lock_block", () -> new LockBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BRICKS)));
+    public static final Supplier<BlockEntityType<LockBlock.Entity>> LOCK_BLOCK_ENTITY = BLOCK_ENTITIES.register("lock_block_entity", () -> BlockEntityType.Builder.of(LockBlock.Entity::new, LOCK_BLOCK.get()).build(DSL.remainderType()));
+
     private static <B extends Block> DeferredBlock<B> registerWithItem(String id, Supplier<B> block) {
         DeferredBlock<B> object = BLOCKS.register(id, block);
         ModItems.BLOCK_ITEMS.registerSimpleBlockItem(object);

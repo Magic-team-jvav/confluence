@@ -811,6 +811,11 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 NatureBlocks.HELIUM_MOSS.asItem(),
                 NatureBlocks.GLOWING_MUSHROOM_MOSS.asItem()
         );
+
+        tag(ModTags.Items.EVIL_KEY).add(
+                ToolItems.CRIMSON_KEY.asItem(),
+                ToolItems.CORRUPTION_KEY.asItem()
+        );
         // 农作物掉落提升 再生法杖/再生之斧
         tag(ModTags.Items.CROP_FORTUNE).add(AxeItems.STAFF_OF_REGROWTH.get(), AxeItems.AXE_OF_REGROWTH.get());
         // 速发弓：恶魔弓、肌腱弓

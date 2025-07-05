@@ -51,8 +51,10 @@ public class ModChineseProvider extends LanguageProvider {
         add("message.confluence.hamaxe.mode.1", "斧");
         add("message.confluence.hoe_shovel.mode.0", "锹");
         add("message.confluence.hoe_shovel.mode.1", "锄");
-        add("message.confluence.altar_tips.0", "右键存入物品，潜行右键以拿出物品。");
-        add("message.confluence.altar_tips.1", "左键以合成，潜行左键以快速合成。");
+        add("message.confluence.altar_tips.0", " 存入，");
+        add("message.confluence.altar_tips.1", " 取出，");
+        add("message.confluence.altar_tips.2", " 合成，");
+        add("message.confluence.altar_tips.3", " 批量合成");
         add("message.confluence.dungeon_not_found", "未成功找到地牢");
 
         add("gamerule.confluenceSpreadableChance", "邪恶群系蔓延设置");
@@ -2806,6 +2808,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(ToolItems.HALLOWED_KEY.get(), "神圣钥匙");
         add(ToolItems.FROZEN_KEY.get(), "冰冻钥匙");
         add(ToolItems.DESERT_KEY.get(), "沙漠钥匙");
+        add(ToolItems.OCEAN_KEY.get(), "海洋钥匙");
+        add(ToolItems.UNIVERSE_KEY.get(), "太空钥匙");
+        add(ToolItems.RUST_IRON_KEY.get(), "生锈的铁钥匙");
         add(ToolItems.TARGET_DUMMY.get(), "训练假人");
         add(ToolItems.ENCUMBERING_STONE.get(), "负重石");
         add(ToolItems.MAGIC_CONCH.get(), "魔法海螺");

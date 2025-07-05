@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "berries=false": {
+      "model": "confluence:block/shimmer_drooping_vine_plant"
+    },
+    "berries=true": {
+      "model": "confluence:block/shimmer_drooping_vine_plant_lit"
+    }
+  }
+}

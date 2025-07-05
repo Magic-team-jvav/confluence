@@ -9,6 +9,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemNameBlockItem;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -109,7 +110,13 @@ public class FoodItems {
     public static final DeferredItem<BaseFoodItem> ELDERBERRY = registerNormalFood("elderberry", ModFoodProperties.WellFedProperties(6000, 4, 1.5f));
     public static final DeferredItem<BaseFoodItem> BLACKCURRANT = registerNormalFood("blackcurrant", ModFoodProperties.WellFedProperties(6000, 4, 1.5f));
     public static final DeferredItem<BaseFoodItem> PEELED_SUGAR_TANGERINE = registerNormalFood("peeled_sugar_tangerine", ModFoodProperties.WellFedProperties(6000, 4, 1.5f));
-    public static final DeferredItem<BaseFoodItem> SHIMMER_BERRIES = registerNormalFood("shimmer_berries", ModFoodProperties.noEffectProperties(3,  1.8f));
+    public static final DeferredItem<BaseFoodItem.BlockItem> SHIMMER_BERRIES = registerBlockItemFood("shimmer_berries",
+            builder -> builder
+                    .food(ModFoodProperties.noEffectProperties(3, 1.8f))
+                    .duration(d -> 15)
+                    .useAnim(u -> UseAnim.EAT)
+                    .eatingSound(s -> SoundEvents.GENERIC_EAT),
+            NatureBlocks.SHIMMER_DROOPING_VINE);
     //返还容器
     public static final DeferredItem<BaseFoodItem> FRUIT_JUICE = registerDrinkingFood("fruit_juice", ModFoodProperties.WellFedProperties(18000, 4, 1.5f, GLASS_BOTTLE), 20, UseAnim.DRINK, SoundEvents.HONEY_DRINK, SoundEvents.HONEY_DRINK); //混合果汁
     public static final DeferredItem<BaseFoodItem> APPLE_JUICE = registerDrinkingFood("apple_juice", ModFoodProperties.WellFedProperties(12000, 4, 1.5f, GLASS_BOTTLE), 20, UseAnim.DRINK, SoundEvents.HONEY_DRINK, SoundEvents.HONEY_DRINK);

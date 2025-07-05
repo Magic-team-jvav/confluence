@@ -50,7 +50,7 @@ public final class ModEffects {
     public static final DeferredHolder<MobEffect, MobEffect> HEART_REACH = EFFECTS.register("heart_reach", HeartReachEffect::new);
     public static final DeferredHolder<MobEffect, MobEffect> ARCHERY = EFFECTS.register("archery", ArcheryEffect::new);
     public static final DeferredHolder<MobEffect, MobEffect> FLIPPER = EFFECTS.register("flipper", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x000088));
-    public static final DeferredHolder<MobEffect, MobEffect> SHINE = EFFECTS.register("shine", ShineEffect::new);
+    public static final DeferredHolder<MobEffect, MobEffect> SHINE = EFFECTS.register("shine", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFFFF66));
     public static final DeferredHolder<MobEffect, MobEffect> SPELUNKER = EFFECTS.register("spelunker", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFFFF00));
     public static final DeferredHolder<MobEffect, MobEffect> HUNTER = EFFECTS.register("hunter", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFFC800));
     public static final DeferredHolder<MobEffect, MobEffect> DANGER_SENSE = EFFECTS.register("danger_sense", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFFAFAF));

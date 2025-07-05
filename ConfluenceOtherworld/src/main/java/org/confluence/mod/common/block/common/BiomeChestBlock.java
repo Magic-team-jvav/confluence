@@ -29,7 +29,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import org.confluence.lib.common.block.StateProperties;
-import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.common.init.block.ChestBlocks;
 import org.confluence.mod.util.AchievementUtils;
 import org.jetbrains.annotations.Nullable;
 
@@ -40,7 +40,7 @@ public class BiomeChestBlock extends ChestBlock {
     private final Predicate<ItemStack> isKey;
 
     public BiomeChestBlock(Predicate<ItemStack> isKey) {
-        super(BlockBehaviour.Properties.ofFullCopy(Blocks.CHEST).explosionResistance(18000), FunctionalBlocks.BIOME_CHEST_ENTITY::get);
+        super(BlockBehaviour.Properties.ofFullCopy(Blocks.CHEST).explosionResistance(18000), ChestBlocks.BIOME_CHEST_ENTITY::get);
         this.isKey = isKey;
         registerDefaultState(defaultBlockState().setValue(UNLOCKED, false));
     }
@@ -106,7 +106,7 @@ public class BiomeChestBlock extends ChestBlock {
 
     public static class Entity extends ChestBlockEntity {
         public Entity(BlockPos pos, BlockState blockState) {
-            super(FunctionalBlocks.BIOME_CHEST_ENTITY.get(), pos, blockState);
+            super(ChestBlocks.BIOME_CHEST_ENTITY.get(), pos, blockState);
         }
 
         @Override

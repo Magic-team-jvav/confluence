@@ -20,7 +20,6 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipBlockItem;
 import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.block.common.BiomeChestBlock;
 import org.confluence.mod.common.block.common.EnchantedFragileBricksBlock;
 import org.confluence.mod.common.block.functional.*;
 import org.confluence.mod.common.block.functional.crafting.*;
@@ -31,7 +30,6 @@ import org.confluence.mod.common.entity.projectile.boulder.ExplodeBoulderEntity;
 import org.confluence.mod.common.entity.projectile.boulder.FollowerBoulderEntity;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.init.item.ModItems;
-import org.confluence.mod.common.init.item.ToolItems;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,13 +42,6 @@ public class FunctionalBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Confluence.MODID);
     static List<DeferredBlock<? extends Block>> MECHANICAL_BLOCKS = new ArrayList<>();
 
-    public static final DeferredBlock<BiomeChestBlock> JUNGLE_CHEST = registerWithItem("jungle_chest", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.JUNGLE_KEY)));
-    public static final DeferredBlock<BiomeChestBlock> CORRUPTION_CHEST = registerWithItem("corruption_chest", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.CORRUPTION_KEY)));
-    public static final DeferredBlock<BiomeChestBlock> CRIMSON_CHEST = registerWithItem("crimson_chest", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.CRIMSON_KEY)));
-    public static final DeferredBlock<BiomeChestBlock> HALLOWED_CHEST = registerWithItem("hallowed_chest", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.HALLOWED_KEY)));
-    public static final DeferredBlock<BiomeChestBlock> ICE_CHEST = registerWithItem("ice_chest", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.FROZEN_KEY)));
-    public static final DeferredBlock<BiomeChestBlock> DESERT_CHEST = registerWithItem("desert_chest", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.DESERT_KEY)));
-    public static final Supplier<BlockEntityType<BiomeChestBlock.Entity>> BIOME_CHEST_ENTITY = BLOCK_ENTITIES.register("biome_chest_entity", () -> BlockEntityType.Builder.of(BiomeChestBlock.Entity::new, JUNGLE_CHEST.get(), CORRUPTION_CHEST.get(), CRIMSON_CHEST.get(), HALLOWED_CHEST.get(), ICE_CHEST.get(), DESERT_CHEST.get()).build(DSL.remainderType()));
     public static final DeferredBlock<ExtractinatorBlock> EXTRACTINATOR = registerWithItem("extractinator", () -> new ExtractinatorBlock(BlockBehaviour.Properties.of().strength(2.2F, 5.0F).requiresCorrectToolForDrops()), ExtractinatorBlock.Item::new);
     public static final Supplier<BlockEntityType<ExtractinatorBlock.Entity>> EXTRACTINATOR_ENTITY = BLOCK_ENTITIES.register("extractinator_entity", () -> BlockEntityType.Builder.of(ExtractinatorBlock.Entity::new, EXTRACTINATOR.get()).build(DSL.remainderType()));
     public static final DeferredBlock<AltarBlock> DEMON_ALTAR = registerWithItem("demon_altar", () -> new AltarBlock(BlockBehaviour.Properties.of().strength(3.0F, 18000.0F).lightLevel(state -> 5), AltarBlock.Variant.DEMON), AltarBlock.Item::new);
@@ -169,16 +160,16 @@ public class FunctionalBlocks {
     public static final DeferredBlock<LockBlock> LOCK_BLOCK = registerWithItem("lock_block", () -> new LockBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BRICKS)));
     public static final Supplier<BlockEntityType<LockBlock.Entity>> LOCK_BLOCK_ENTITY = BLOCK_ENTITIES.register("lock_block_entity", () -> BlockEntityType.Builder.of(LockBlock.Entity::new, LOCK_BLOCK.get()).build(DSL.remainderType()));
 
-    private static <B extends Block> DeferredBlock<B> registerWithItem(String id, Supplier<B> block) {
-        DeferredBlock<B> object = BLOCKS.register(id, block);
-        ModItems.BLOCK_ITEMS.registerSimpleBlockItem(object);
-        return object;
+    private static <B extends Block> DeferredBlock<B> registerWithItem(String id, Supplier<B> supplier) {
+        DeferredBlock<B> block = BLOCKS.register(id, supplier);
+        ModItems.BLOCK_ITEMS.registerSimpleBlockItem(block);
+        return block;
     }
 
-    private static <B extends Block> DeferredBlock<B> registerWithItem(String id, Supplier<B> block, Function<B, BlockItem> function) {
-        DeferredBlock<B> object = BLOCKS.register(id, block);
-        ModItems.BLOCK_ITEMS.register(id, () -> function.apply(object.get()));
-        return object;
+    private static <B extends Block> DeferredBlock<B> registerWithItem(String id, Supplier<B> supplier, Function<B, BlockItem> function) {
+        DeferredBlock<B> block = BLOCKS.register(id, supplier);
+        ModItems.BLOCK_ITEMS.register(id, () -> function.apply(block.get()));
+        return block;
     }
 
     static <B extends Block & EntityBlock & INetworkBlock> DeferredBlock<B> registerWithEntity(String id, Supplier<B> supplier) {

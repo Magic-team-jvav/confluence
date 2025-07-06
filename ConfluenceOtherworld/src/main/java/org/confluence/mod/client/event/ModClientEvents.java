@@ -368,7 +368,7 @@ public final class ModClientEvents {
     @SubscribeEvent
     public static void textureAtlasStitched(TextureAtlasStitchedEvent event) {
         TextureAtlas atlas = event.getAtlas();
-        if (atlas.location().equals(TextureAtlas.LOCATION_BLOCKS)) {
+        if (TextureAtlas.LOCATION_BLOCKS.equals(atlas.location())) {
             Map<ResourceLocation, TextureAtlasSprite> textures = atlas.getTextures();
             for (ResourceLocation key : ClientUtils.ORIGINAL) {
                 TextureAtlasSprite sprite = textures.get(key);

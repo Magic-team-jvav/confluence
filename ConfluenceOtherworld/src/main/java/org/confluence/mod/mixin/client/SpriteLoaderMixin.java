@@ -1,5 +1,6 @@
 package org.confluence.mod.mixin.client;
 
+import com.google.common.collect.Lists;
 import com.mojang.blaze3d.platform.NativeImage;
 import net.minecraft.client.renderer.texture.SpriteContents;
 import net.minecraft.client.renderer.texture.SpriteLoader;
@@ -16,7 +17,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -31,9 +31,9 @@ public abstract class SpriteLoaderMixin {
     private List<SpriteContents> generateGraySprites(List<SpriteContents> contents) {
         if (ModClientSetups.SHOULD_NOT_GENERATE_BLOCK_GRAY_TEXTURE || !StartupConfigs.paintsReplaceTexture()) return contents;
 
-        if (location.equals(TextureAtlas.LOCATION_BLOCKS)) {
+        if (TextureAtlas.LOCATION_BLOCKS.equals(location)) {
             ClientUtils.clearCache();
-            List<SpriteContents> neoContents = new ArrayList<>();
+            List<SpriteContents> neoContents = Lists.newArrayListWithExpectedSize(contents.size() * 2);
             Set<String> bannedModForPaints = new HashSet<>(StartupConfigs.bannedModForPaints());
             for (SpriteContents content : contents) {
                 neoContents.add(content);

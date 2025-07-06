@@ -1,8 +1,8 @@
 package org.confluence.mod.common.equipment_set;
 
 import com.xiaohunao.equipment_benediction.common.equipment_set.EquipmentSet;
-import com.xiaohunao.equipment_benediction.common.equipment_set.EquippableGroup;
 import com.xiaohunao.equipment_benediction.common.equipment_set.EquipmentSetBranch;
+import com.xiaohunao.equipment_benediction.common.equipment_set.EquippableGroup;
 import com.xiaohunao.equipment_benediction.common.equippable.VanillaEquippable;
 import com.xiaohunao.equipment_benediction.common.hook.HookMap;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -29,7 +29,7 @@ public class MeteorSet extends EquipmentSet {
                         VanillaEquippable.FEET, ArmorItems.METEOR_BOOTS
                 ).bindHook(ModHookTypes.MANA_CONSUME.get(), (owner, itemStack, original) -> {
                     if (itemStack.is(ManaWeaponItems.SPACE_GUN.get())) {
-                        return () -> 0;
+                        return () -> 0.0F;
                     }
                     return original;
                 }).build());

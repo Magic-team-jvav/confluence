@@ -147,8 +147,7 @@ public final class LivingEntityEvents {
         DamageSource damageSource = event.getSource();
         LivingEntity living = event.getEntity();
         if (living instanceof ServerPlayer serverPlayer) {
-            float amount = event.getAmount();
-            AccessoryItems.applyHurtGetMana(serverPlayer, damageSource, (int) amount);
+            AccessoryItems.applyHurtGetMana(serverPlayer, damageSource, event.getAmount());
         }
         Immunity cause = Immunity.getCause(event.getSource());
         if (((ILivingEntity) living).confluence$getImmunityTicks().containsKey(cause)) {
@@ -400,7 +399,7 @@ public final class LivingEntityEvents {
             player.setHealth(player.getMaxHealth());
             player.getFoodData().setFoodLevel(20);
             player.getFoodData().setSaturation(20.0f);
-            receiveMana(player, () -> 1000);
+            receiveMana(player, () -> 1000.0F);
             List<Holder<MobEffect>> negativeEffects = player.getActiveEffects().stream()
                     .map(MobEffectInstance::getEffect)
                     .filter(effect -> !effect.value().isBeneficial())

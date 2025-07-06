@@ -1,8 +1,8 @@
 package org.confluence.mod.common.equipment_set;
 
 import com.xiaohunao.equipment_benediction.common.equipment_set.EquipmentSet;
-import com.xiaohunao.equipment_benediction.common.equipment_set.EquippableGroup;
 import com.xiaohunao.equipment_benediction.common.equipment_set.EquipmentSetBranch;
+import com.xiaohunao.equipment_benediction.common.equipment_set.EquippableGroup;
 import com.xiaohunao.equipment_benediction.common.equippable.VanillaEquippable;
 import com.xiaohunao.equipment_benediction.common.hook.HookMap;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -66,7 +66,7 @@ public class MythrilSet extends EquipmentSet {
                         VanillaEquippable.LEGS, ArmorItems.MYTHRIL_LEGGINGS,
                         VanillaEquippable.FEET, ArmorItems.MYTHRIL_BOOTS
                 )
-                .bindHook(ModHookTypes.MANA_CONSUME.get(), (owner, itemStack, original) -> () -> (int) (original.getAsInt() * 0.83))
+                .bindHook(ModHookTypes.MANA_CONSUME.get(), (owner, itemStack, original) -> () -> original.get() * 0.83F)
                 .build());
         equippableGroup.addEquippableSet("hat_set", new EquipmentSetBranch.Builder()
                 .addEquippable(

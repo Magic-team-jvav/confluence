@@ -4,8 +4,8 @@ import com.xiaohunao.equipment_benediction.common.hook.IHook;
 import com.xiaohunao.equipment_benediction.common.interfaces.IBenediction;
 import net.minecraft.world.item.ItemStack;
 
-import java.util.function.IntSupplier;
+import java.util.function.Supplier;
 
 public interface ManaConsumeHook extends IHook {
-    IntSupplier onManaConsume(IBenediction owner, ItemStack itemStack, IntSupplier original);
+    Supplier<Float> onManaConsume(IBenediction owner, ItemStack itemStack, Supplier<Float> original);
 }

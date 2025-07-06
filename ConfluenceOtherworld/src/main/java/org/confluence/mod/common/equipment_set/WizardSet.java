@@ -1,8 +1,8 @@
 package org.confluence.mod.common.equipment_set;
 
 import com.xiaohunao.equipment_benediction.common.equipment_set.EquipmentSet;
-import com.xiaohunao.equipment_benediction.common.equipment_set.EquippableGroup;
 import com.xiaohunao.equipment_benediction.common.equipment_set.EquipmentSetBranch;
+import com.xiaohunao.equipment_benediction.common.equipment_set.EquippableGroup;
 import com.xiaohunao.equipment_benediction.common.equippable.VanillaEquippable;
 import com.xiaohunao.equipment_benediction.common.hook.HookMap;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -39,7 +39,7 @@ public class WizardSet extends EquipmentSet {
                         .addBonus(TCAttributes.getMagicDamage(), new AttributeModifier(ArmorItems.MYSTIC_ROBE.getId(), 0.06, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
                         .addBonus(TCAttributes.getCriticalChance(), new AttributeModifier(ArmorItems.MYSTIC_ROBE.getId(), 0.06, AttributeModifier.Operation.ADD_VALUE))
                 )
-                .bindHook(ModHookTypes.MANA_CONSUME.get(), (owner, itemStack, original) -> () -> (int) (original.getAsInt() * 0.9F))
+                .bindHook(ModHookTypes.MANA_CONSUME.get(), (owner, itemStack, original) -> () -> original.get() * 0.9F)
                 .build());
         equippableGroup.addEquippableSet("diamond_robe", robeBonus(ArmorItems.DIAMOND_ROBE, 80, 0.85F));
         equippableGroup.addEquippableSet("amber_robe", robeBonus(ArmorItems.AMBER_ROBE, 60, 0.87F));
@@ -73,7 +73,7 @@ public class WizardSet extends EquipmentSet {
     private static EquipmentSetBranch robeBonus(DeferredItem<ArmorItem> item, int additionalMana, float manaConsume) {
         return new EquipmentSetBranch.Builder().addEquippable(VanillaEquippable.CHEST, item)
                 .bindHook(ModHookTypes.ADDITIONAL_MANA.get(), (owner, player, original) -> original + additionalMana)
-                .bindHook(ModHookTypes.MANA_CONSUME.get(), (owner, itemStack, original) -> () -> (int) (original.getAsInt() * manaConsume))
+                .bindHook(ModHookTypes.MANA_CONSUME.get(), (owner, itemStack, original) -> () -> original.get() * manaConsume)
                 .build();
     }
 }

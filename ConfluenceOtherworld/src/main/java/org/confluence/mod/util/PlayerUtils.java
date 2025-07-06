@@ -36,7 +36,6 @@ import org.confluence.terraentity.entity.ai.Boss;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.IntFunction;
-import java.util.function.IntSupplier;
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
 
@@ -73,7 +72,7 @@ public final class PlayerUtils {
         ManaStorage manaStorage = serverPlayer.getData(ModAttachmentTypes.MANA_STORAGE);
 
         int delay = manaStorage.getRegenerateDelay();
-        boolean notMove = Math.abs(serverPlayer.xCloak - serverPlayer.xCloakO) < 1.0E-7;
+        boolean notMove = Math.abs(serverPlayer.walkDist - serverPlayer.walkDistO) < Mth.EPSILON;
         if (delay > 0) {
             if (manaStorage.isArcaneCrystalUsed()) delay = (int) ((float) delay * (notMove ? 0.975F : 0.95F));
             if (delay > 20 && serverPlayer.hasEffect(ModEffects.MANA_REGENERATION)) delay = 20;
@@ -83,18 +82,18 @@ public final class PlayerUtils {
             return;
         }
 
-        IntSupplier receive = () -> {
+        Supplier<Float> receive = () -> {
             // 1.0F / 7.0F = 0.14285715F
             float a = manaStorage.getMaxMana() * 0.14285715F + (manaStorage.isFastManaRegeneration() ? 25 : 0) + 1;
-            float b = manaStorage.getCurrentMana() * 0.8F / manaStorage.getMaxMana() + 0.2F;
             if (notMove) a += manaStorage.getMaxMana() * 0.5F;
-            return Math.max(Math.round(a * b * 0.0115F), 1);
+            float b = manaStorage.getCurrentMana() * 0.8F / manaStorage.getMaxMana() + 0.2F;
+            return a * b * 0.0115F * EnchantmentUtils.processManaRegenerationBoost(serverPlayer);
         };
 
         if (manaStorage.receiveMana(receive)) syncMana2Client(serverPlayer, manaStorage);
     }
 
-    public static boolean extractMana(ServerPlayer serverPlayer, ItemStack itemStack, IntSupplier sup) {
+    public static boolean extractMana(ServerPlayer serverPlayer, ItemStack itemStack, Supplier<Float> sup) {
         if (serverPlayer.isCreative()) return true;
         return extractAndDelayAndSync(
                 serverPlayer.getData(ModAttachmentTypes.MANA_STORAGE),
@@ -103,16 +102,16 @@ public final class PlayerUtils {
         );
     }
 
-    public static boolean extractAndDelayAndSync(ManaStorage manaStorage, IntSupplier sup, ServerPlayer serverPlayer) {
+    public static boolean extractAndDelayAndSync(ManaStorage manaStorage, Supplier<Float> sup, ServerPlayer serverPlayer) {
         if (manaStorage.extractMana(sup, serverPlayer)) {
-            manaStorage.setRegenerateDelay(Mth.ceil(0.7F * ((1 - (float) manaStorage.getCurrentMana() / manaStorage.getMaxMana()) * 240 + 45)));
+            manaStorage.setRegenerateDelay(Mth.ceil(0.7F * ((1 - manaStorage.getCurrentMana() / manaStorage.getMaxMana()) * 240 + 45)));
             syncMana2Client(serverPlayer, manaStorage);
             return true;
         }
         return false;
     }
 
-    public static void receiveMana(ServerPlayer serverPlayer, IntSupplier sup) {
+    public static void receiveMana(ServerPlayer serverPlayer, Supplier<Float> sup) {
         ManaStorage manaStorage = serverPlayer.getData(ModAttachmentTypes.MANA_STORAGE);
         if (manaStorage.receiveMana(sup)) syncMana2Client(serverPlayer, manaStorage);
     }

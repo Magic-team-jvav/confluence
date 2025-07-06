@@ -222,7 +222,7 @@ public class AccessoryItems {
         }
     }
 
-    public static void applyHurtGetMana(ServerPlayer serverPlayer, DamageSource damageSource, int amount) {
+    public static void applyHurtGetMana(ServerPlayer serverPlayer, DamageSource damageSource, float amount) {
         if (TCUtils.hasAccessoriesType(serverPlayer, HURT$GET$MANA)) {
             if (!damageSource.is(DamageTypes.DROWN) && !damageSource.is(TCTags.HARMFUL_EFFECT)) {
                 PlayerUtils.receiveMana(serverPlayer, () -> amount);

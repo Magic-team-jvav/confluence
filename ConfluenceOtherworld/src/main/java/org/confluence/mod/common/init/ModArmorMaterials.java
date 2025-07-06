@@ -189,6 +189,7 @@ public final class ModArmorMaterials {
 
     public static final Holder<ArmorMaterial> WIZARD_HAT_MATERIAL = registerSingletonMaterial("wizard_hat_material", ArmorItem.Type.HELMET, 4, 10, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.EMPTY, "wizard_hat", 0, 0);
     public static final Holder<ArmorMaterial> MAGIC_HAT_ARMOR_MATERIAL = registerSingletonMaterial("magic_hat_material", ArmorItem.Type.HELMET, 2, 10, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.EMPTY, "magic_hat", 0, 0);
+    public static final Holder<ArmorMaterial> VIKING_ARMOR_MATERIAL = registerSingletonMaterial("viking_helmet_material", ArmorItem.Type.HELMET, 4, 10, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.EMPTY, "viking_helmet", 0, 0);
     public static final Holder<ArmorMaterial> AMETHYST_ROBE_ARMOR_MATERIAL = registerSingletonMaterial("amethyst_robe_material", ArmorItem.Type.CHESTPLATE, 0, 10, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.AMETHYST), "amethyst_robe", 0, 0);
     public static final Holder<ArmorMaterial> TOPAZ_ROBE_ARMOR_MATERIAL = registerSingletonMaterial("topaz_robe_material", ArmorItem.Type.CHESTPLATE, 1, 10, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.TOPAZ), "topaz_robe", 0, 0);
     public static final Holder<ArmorMaterial> SAPPHIRE_ROBE_ARMOR_MATERIAL = registerSingletonMaterial("sapphire_robe_material", ArmorItem.Type.CHESTPLATE, 1, 10, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.of(MaterialItems.SAPPHIRE), "sapphire_robe", 0, 0);

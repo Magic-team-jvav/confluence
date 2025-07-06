@@ -313,7 +313,6 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 TIMERS_BLOCK_1_2.get(),
                 TIMERS_BLOCK_1_4.get(),
                 EVER_POWERED_RAIL.get(),
-                SILLY_BALLOON_MACHINE.get(),
                 JUNGLE_HIVE_BLOCK.get(),
                 THIN_ICE_BLOCK.get(),
                 WINTER_MARROW_BLOCK.get(),
@@ -364,7 +363,14 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 OPAL_BLOCK.get(),
                 GELSTONE_BLOCK.get(),
                 STURDY_FOSSIL_BLOCK.get(),
-                COLD_CRYSTAL_BLOCK.get()
+                COLD_CRYSTAL_BLOCK.get(),
+
+                AMMO_BOX.get(),
+                BEWITCHING_TABLE.get(),
+                SHARPENING_STATION.get(),
+                SILLY_BALLOON_MACHINE.get(),
+                PIGGY_BANK.get()
+
         );
         // 锹
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithShovel = tag(BlockTags.MINEABLE_WITH_SHOVEL);

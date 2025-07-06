@@ -14,7 +14,10 @@ import net.minecraft.world.level.storage.loot.entries.*;
 import net.minecraft.world.level.storage.loot.functions.EnchantedCountIncreaseFunction;
 import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.functions.SmeltItemFunction;
 import net.minecraft.world.level.storage.loot.predicates.AllOfCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemKilledByPlayerCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceWithEnchantedBonusCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -255,6 +258,46 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TEBoomerangItems.SHROOMERANG).setWeight(5).setQuality(1))
                         .add(EmptyLootItem.emptyItem().setWeight(195))
+                )
+        );
+        add(TEMonsterEntities.SPORE_ZOMBIE.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/spore_zombie"), batCommon()
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(Items.ROTTEN_FLESH).apply(count1To2).apply(random0To1))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(Items.IRON_INGOT))
+                        .add(LootItem.lootTableItem(MaterialItems.GLOWING_MUSHROOM).apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot())))
+                        .when(LootItemKilledByPlayerCondition.killedByPlayer())
+                        .when(LootItemRandomChanceWithEnchantedBonusCondition.randomChanceAndLootingBoost(this.registries, 0.025F, 0.01F))
+                )
+        );
+        add(TEMonsterEntities.SPORE_SKELETON.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/spore_skeleton"), batCommon()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(Items.BONE).apply(random0To1).apply(count1To2))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FoodItems.CARTON_OF_MILK).setWeight(67).apply(random0To1))
+                        .add(EmptyLootItem.emptyItem().setWeight(9933))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(SwordItems.BONE_SWORD).setQuality(1).setWeight(5))
+                        .add(EmptyLootItem.emptyItem().setWeight(9995))
+                )
+        );
+        add(TEMonsterEntities.UNDEAD_VIKING.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/undead_viking"), batCommon()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(Items.BONE).apply(random0To1).apply(count1To2))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(ArmorItems.VIKING_HELMET).setWeight(2))
+                        .add(EmptyLootItem.emptyItem().setWeight(98))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TCItems.COMPASS).setWeight(2))
+                        .add(EmptyLootItem.emptyItem().setWeight(98))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(MaterialItems.HOOK).setWeight(4))
+                        .add(EmptyLootItem.emptyItem().setWeight(96))
                 )
         );
         add(TEMonsterEntities.CRIMSON_KEMERA.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/crimson_kemera"), LootTable.lootTable()

@@ -275,7 +275,7 @@ public class ShimmerTransmutationProvider extends AbstractRecipeProvider {
         item(recipeOutput, MaterialItems.RAW_LEAD, Items.RAW_IRON);
         item(recipeOutput, Items.RAW_IRON, MaterialItems.RAW_TIN);
         item(recipeOutput, MaterialItems.RAW_TIN, Items.RAW_COPPER);
-
+        // 其余转化
         item(recipeOutput, Items.WATER_BUCKET, Items.LAVA_BUCKET);
         item(recipeOutput, Items.LAVA_BUCKET, ToolItems.HONEY_BUCKET);
         item(recipeOutput, ToolItems.HONEY_BUCKET, Items.WATER_BUCKET);
@@ -291,6 +291,8 @@ public class ShimmerTransmutationProvider extends AbstractRecipeProvider {
         item(recipeOutput, MaterialItems.GEL, Items.SLIME_BALL);
         item(recipeOutput, ConsumableItems.HERB_BAG, ConsumableItems.CAN_OF_WORMS);
         item(recipeOutput, ConsumableItems.CAN_OF_WORMS, ConsumableItems.HERB_BAG);
+        item(recipeOutput, FunctionalBlocks.ALCHEMY_TABLE, FunctionalBlocks.BEWITCHING_TABLE);
+        item(recipeOutput, FunctionalBlocks.BEWITCHING_TABLE, FunctionalBlocks.ALCHEMY_TABLE);
         item(recipeOutput, "purification_powder_from_vile_powder", addItem(ConsumableItems.VILE_POWDER, ConsumableItems.PURIFICATION_POWDER));
         item(recipeOutput, "purification_powder_from_vicious_powder", addItem(ConsumableItems.VICIOUS_POWDER, ConsumableItems.PURIFICATION_POWDER));
 

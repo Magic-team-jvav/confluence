@@ -22,6 +22,8 @@ import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.recipe.HeavyWorkBenchRecipe;
 import org.confluence.terra_furniture.common.init.TFBlocks;
 import org.confluence.terra_guns.common.init.TGItems;
+import org.confluence.terraentity.init.TEItems;
+import org.confluence.terraentity.init.item.TESummonItems;
 import org.confluence.terraentity.init.item.TEWhipItems;
 import org.jetbrains.annotations.NotNull;
 
@@ -354,6 +356,19 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "/",
                 "a"
         )), ConsumableItems.BEENADE.toStack());
+        // 铁傀儡法杖
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(ConsumableItems.LIFE_CRYSTAL),
+                'b', Ingredient.of(Items.CARVED_PUMPKIN),
+                'c', Ingredient.of(Items.REDSTONE_BLOCK),
+                'e', Ingredient.of(ConsumableItems.MANA_CRYSTAL),
+                '#', Ingredient.of(Items.IRON_BLOCK)
+        ), List.of(
+                "ebe",
+                "#a#",
+                " # ",
+                "ccc"
+        )), TESummonItems.IRON_GOLEM_STAFF.toStack());
     }
 
     private void buildBaseStatues(RecipeOutput recipeOutput) {

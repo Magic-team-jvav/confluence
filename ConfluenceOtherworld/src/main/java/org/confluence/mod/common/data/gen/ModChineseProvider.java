@@ -117,6 +117,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.demon_conch.0", "右键下界传送门方块以让地狱记住你");
         add("tooltip.item.confluence.bait.common.0", "放入背包即可钓鱼时自动使用，优先使用副手的鱼饵");
         add("tooltip.item.confluence.crate.common.0", "手持右键打开，shift键右键可放置");
+        add("tooltip.item.confluence.right_click.common.0", "手持右键打开");
         add("tooltip.item.confluence.gel.0", "“既好吃，又易燃”");
         add("tooltip.item.confluence.npc_invitation.0", "使用它，在当前区域邀请一批新的NPC吧！");
         add("tooltip.item.confluence.red_potion.0", "“仅献给配得上的人”");
@@ -349,6 +350,9 @@ public class ModChineseProvider extends LanguageProvider {
 
         add("tooltip.item.confluence.copper_short_sword.0", "神兵最微末的那部分力量自两世汇流之初就伴随着你…直至旅途的终点");
         add("tooltip.item.confluence.copper_short_sword.1", "“我们十个真厉害！”铜短剑说。");
+        add("tooltip.item.confluence.umbrella.0", "持有此物可减缓掉落速度");
+        add("tooltip.item.confluence.tragic_umbrella.0", "持有此物可减缓掉落速度");
+        add("tooltip.item.confluence.breathing_reed.0", "延长呼吸时间并可在水中呼吸");
         add("tooltip.item.confluence.starfury.0", "神兵的一小部分力量凝聚在云团间，化为晶莹剔透的闪星");
         add("tooltip.item.confluence.starfury.1", "“天域的怒火倾泻而下”");
         add("tooltip.item.confluence.enchanted_sword.0", "神兵的一小部分力量埋藏在洞穴中，凝成了寒碜碜的剑意");
@@ -366,12 +370,16 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.golden_key.0", "“打开一个锁住的金箱”");
         add("tooltip.item.confluence.shadow_key.0", "“打开所有暗影箱和黑曜石锁盒”");
         add("tooltip.item.confluence.temple_key.0", "“打开丛林神庙的大门”");
-        add("tooltip.item.confluence.jungle_key.0", "“打开地牢中的丛林箱”");
-        add("tooltip.item.confluence.corruption_key.0", "“打开地牢中的腐化箱”");
-        add("tooltip.item.confluence.crimson_key.0", "“打开地牢中的猩红箱”");
-        add("tooltip.item.confluence.hallowed_key.0", "“打开地牢中的神圣箱”");
-        add("tooltip.item.confluence.frozen_key.0", "“打开地牢中的冰雪箱”");
-        add("tooltip.item.confluence.desert_key.0", "“打开地牢中的沙漠箱”");
+        add("tooltip.item.confluence.jungle_key.0", "“打开地牢中的丛林房间门和丛林箱”");
+        add("tooltip.item.confluence.corruption_key.0", "“打开地牢中的邪恶房间门和腐化箱”");
+        add("tooltip.item.confluence.crimson_key.0", "“打开地牢中的邪恶房间门和猩红箱”");
+        add("tooltip.item.confluence.hallowed_key.0", "“打开地牢中的神圣房间门和神圣箱”");
+        add("tooltip.item.confluence.frozen_key.0", "“打开地牢中的冰雪房间门和冰雪箱”");
+        add("tooltip.item.confluence.desert_key.0", "“打开地牢中的沙漠房间门和沙漠箱”");
+        add("tooltip.item.confluence.ocean_key.0", "“打开地牢中的海洋房间门和海洋箱”");
+        add("tooltip.item.confluence.universe_key.0", "“打开地牢中的太空房间门和太空箱”");
+        add("tooltip.item.confluence.rust_iron_key.0", "“打开地牢中的实验室房间门”");
+        add("tooltip.item.confluence.dungeon_compass.0", "“戴上它，诡异的头骨会为你指引方向”");
         add("tooltip.item.confluence.golden_lock_box.0", "“使用钥匙在背包中右键打开”");
         add("tooltip.item.confluence.golden_lock_box.1", "“需要地牢金钥匙”");
         add("tooltip.item.confluence.obsidian_lock_box.0", "“使用钥匙在背包中右键打开”");

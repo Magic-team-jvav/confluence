@@ -46,10 +46,13 @@ public class SwordItems {
     public static final DeferredItem<SwordItem> TUNGSTEN_SHORT_SWORD = register("tungsten_short_sword", ModTiers.TUNGSTEN, 5, 3, SHORT_SWORD.get());
     public static final DeferredItem<SwordItem> GOLDEN_SHORT_SWORD = register("golden_short_sword", ModTiers.GOLD, 6, 3, SHORT_SWORD.get());
     public static final DeferredItem<SwordItem> PLATINUM_SHORT_SWORD = register("platinum_short_sword", ModTiers.PLATINUM, 7, 3, SHORT_SWORD.get());
-    public static final DeferredItem<SwordItem> BREATHING_REED = register("breathing_reed", ModTiers.UNBREAKABLE, 2, 1.6F, SHORT_SWORD.get());
+    public static final DeferredItem<SwordItem> BREATHING_REED = register("breathing_reed", ModTiers.UNBREAKABLE, 2, 1.6F, ModRarity.BLUE, SHORT_SWORD.get()
+            .addTooltip(p -> p.withColor(11184810)));
     public static final DeferredItem<SwordItem> GLADIUS = register("gladius", ModTiers.UNBREAKABLE, 6, 3, SHORT_SWORD.get());
-    public static final DeferredItem<SwordItem> UMBRELLA = register("umbrella", ModTiers.UNBREAKABLE, 2, 1.6F, ModRarity.BLUE, UMBRELLA_SWORD.get());
-    public static final DeferredItem<SwordItem> TRAGIC_UMBRELLA = register("tragic_umbrella", ModTiers.UNBREAKABLE, 2, 1.6F, ModRarity.BLUE, UMBRELLA_SWORD.get());
+    public static final DeferredItem<SwordItem> UMBRELLA = register("umbrella", ModTiers.UNBREAKABLE, 2, 1.6F, ModRarity.BLUE, UMBRELLA_SWORD.get()
+            .addTooltip(p -> p.withColor(11184810)));
+    public static final DeferredItem<SwordItem> TRAGIC_UMBRELLA = register("tragic_umbrella", ModTiers.UNBREAKABLE, 2, 1.6F, ModRarity.BLUE, UMBRELLA_SWORD.get()
+            .addTooltip(p -> p.withColor(11184810)));
 
 
     //普通宽剑 默认横扫*1.5

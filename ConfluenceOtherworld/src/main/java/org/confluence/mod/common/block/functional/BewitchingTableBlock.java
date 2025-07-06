@@ -4,6 +4,9 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
@@ -21,6 +24,7 @@ import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
@@ -43,6 +47,8 @@ public class BewitchingTableBlock extends HorizontalDirectionalWithVerticalFourP
             BlockPos basePos = part.isBase() ? pos : StateProperties.VerticalFourPart.getRelatives(part, state.getValue(FACING), pos).get(StateProperties.VerticalFourPart.BASE);
             if (level.getBlockEntity(basePos) instanceof Entity entity && level.getGameTime() - entity.lastClickTime > 110) {
                 entity.lastClickTime = level.getGameTime();
+                entity.setChanged();
+                level.sendBlockUpdated(basePos, state, state, UPDATE_CLIENTS);
                 player.addEffect(new MobEffectInstance(ModEffects.BEWITCHED, MobEffectInstance.INFINITE_DURATION));
                 return InteractionResult.SUCCESS_NO_ITEM_USED;
             }
@@ -83,14 +89,32 @@ public class BewitchingTableBlock extends HorizontalDirectionalWithVerticalFourP
         }
 
         @Override
+        public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+            CompoundTag tag = new CompoundTag();
+            tag.putLong("LastClickTime", lastClickTime);
+            return tag;
+        }
+
+        @Override
+        public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+            this.lastClickTime = tag.getLong("LastClickTime");
+        }
+
+        @Override
+        public Packet<ClientGamePacketListener> getUpdatePacket() {
+            return ClientboundBlockEntityDataPacket.create(this);
+        }
+
+        @Override
         public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
             RawAnimation driving = RawAnimation.begin().thenPlay("driving");
             RawAnimation idling = RawAnimation.begin().thenLoop("idling");
             controllers.add(new AnimationController<>(this, state -> {
-                if (level != null && level.getGameTime() - lastClickTime <= 110) {
+                if (level != null && level.getGameTime() - lastClickTime < 110) {
                     if (state.isCurrentAnimation(idling)) {
                         return state.setAndContinue(driving);
                     }
+                    return PlayState.CONTINUE;
                 }
                 return state.setAndContinue(idling);
             }));

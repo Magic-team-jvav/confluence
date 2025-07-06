@@ -71,7 +71,12 @@ public final class ItemEvents {
     @SubscribeEvent
     public static void gunFire(GunEvent.GunFireEvent event) {
         if (event.getGun() instanceof ManaGunItem manaGunItem) {
-            int currentMana = ClientPacketHandler.getCurrentMana();
+            float currentMana;
+            if (event.getPlayer().isLocalPlayer()) {
+                currentMana = ClientPacketHandler.getCurrentMana();
+            } else {
+                currentMana = event.getPlayer().getData(ModAttachmentTypes.MANA_STORAGE).getCurrentMana();
+            }
             event.setFire(currentMana >= manaGunItem.getManaCost());
         }
     }

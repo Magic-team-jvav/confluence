@@ -166,7 +166,7 @@ public final class PlayerEvents {
         ItemStack itemStack = itemEntity.getItem();
         Player player = event.getPlayer();
         if (itemStack.is(ModTags.Items.PROVIDE_MANA)) {
-            player.getData(ModAttachmentTypes.MANA_STORAGE).receiveMana(() -> itemStack.getCount() * 100);
+            player.getData(ModAttachmentTypes.MANA_STORAGE).receiveMana(() -> itemStack.getCount() * 100.0F);
             itemEntity.discard();
             event.setCanPickup(TriState.FALSE);
         } else if (itemStack.is(ModTags.Items.PROVIDE_LIFE)) {

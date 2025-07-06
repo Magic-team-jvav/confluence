@@ -48,7 +48,7 @@ public class TerraStyleManaHud implements LayeredDraw.Layer {
             public void render(GuiGraphics guiGraphics, Minecraft minecraft) {
                 int widthMana = guiGraphics.guiWidth() - 21;
                 int heightMana = 4;
-                int currentMana = ClientPacketHandler.getCurrentMana();
+                int currentMana = (int) ClientPacketHandler.getCurrentMana();
                 int maxManaCount = ClientPacketHandler.getMaxMana() / 20;
                 int currentManaToBlit;
                 float ts;

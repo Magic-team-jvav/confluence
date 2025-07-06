@@ -15,6 +15,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.gen.recipe.*;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModDamageTypes;
+import org.confluence.mod.common.init.ModEnchantments;
 import org.confluence.mod.common.init.ModStructures;
 
 import java.util.Set;
@@ -25,7 +26,8 @@ public final class ModDataGenerator {
     private static final RegistrySetBuilder DATA_BUILDER = new RegistrySetBuilder()
             .add(Registries.DAMAGE_TYPE, ModDamageTypes::bootstrap)
             .add(Registries.BIOME, ModBiomes::boostrap)
-            .add(Registries.STRUCTURE, ModStructures::boostrap);
+            .add(Registries.STRUCTURE, ModStructures::boostrap)
+            .add(Registries.ENCHANTMENT, ModEnchantments::bootstrap);
 
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event) {

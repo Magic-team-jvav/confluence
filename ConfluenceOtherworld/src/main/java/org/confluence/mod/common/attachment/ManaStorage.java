@@ -15,12 +15,12 @@ import org.confluence.mod.common.item.potion.ManaPotionItem;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.util.TCUtils;
 
-import java.util.function.IntSupplier;
+import java.util.function.Supplier;
 
 public class ManaStorage implements INBTSerializable<CompoundTag> {
     private int stars;
     private int additionalMana;
-    private int currentMana;
+    private float currentMana;
     private transient int regenerateDelay;
     private transient int maxMana;
     private boolean fastManaRegeneration;
@@ -43,7 +43,7 @@ public class ManaStorage implements INBTSerializable<CompoundTag> {
         CompoundTag nbt = new CompoundTag();
         nbt.putInt("stars", stars);
         nbt.putInt("additionalMana", additionalMana);
-        nbt.putInt("currentMana", currentMana);
+        nbt.putFloat("currentMana", currentMana);
         nbt.putBoolean("fastManaRegeneration", fastManaRegeneration);
         nbt.putBoolean("arcaneCrystalUsed", arcaneCrystalUsed);
         return nbt;
@@ -58,16 +58,15 @@ public class ManaStorage implements INBTSerializable<CompoundTag> {
         this.arcaneCrystalUsed = nbt.getBoolean("arcaneCrystalUsed");
     }
 
-    public boolean receiveMana(IntSupplier sup) {
+    public boolean receiveMana(Supplier<Float> sup) {
         if (!canReceive()) return false;
-        int received = Math.min(sup.getAsInt(), getMaxMana() - currentMana);
-        this.currentMana += received;
+        this.currentMana = Math.min(getMaxMana(), sup.get() + currentMana);
         return true;
     }
 
-    public boolean extractMana(IntSupplier sup, ServerPlayer serverPlayer) {
+    public boolean extractMana(Supplier<Float> sup, ServerPlayer serverPlayer) {
         if (!canExtract()) return false;
-        int extract = (int) (sup.getAsInt() * (1.0F - TCUtils.getAccessoriesValue(serverPlayer, AccessoryItems.MANA$USE$REDUCE)));
+        float extract = sup.get() * (1.0F - TCUtils.getAccessoriesValue(serverPlayer, AccessoryItems.MANA$USE$REDUCE));
         if (currentMana < extract) {
             if (!TCUtils.hasAccessoriesType(serverPlayer, AccessoryItems.AUTO$GET$MANA)) return false;
             ItemStack toUse = null;
@@ -86,7 +85,7 @@ public class ManaStorage implements INBTSerializable<CompoundTag> {
         return true;
     }
 
-    public int getCurrentMana() {
+    public float getCurrentMana() {
         return currentMana;
     }
 

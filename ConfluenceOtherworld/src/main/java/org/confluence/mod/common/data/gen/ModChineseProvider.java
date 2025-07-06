@@ -2828,6 +2828,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ToolItems.SILK_ROPE_COIL.get(), "丝绸绳圈");
         add(ToolItems.WEB_ROPE_COIL.get(), "蛛丝绳圈");
         add(ToolItems.METEOR_COMPASS.get(), "陨石指南针");
+        add(ToolItems.DUNGEON_COMPASS.get(), "地牢指南针");
         add(ToolItems.NPC_INVITATION.get(), "NPC请柬");
         add(ToolItems.BINOCULARS.get(), "望远镜");
         add(ToolItems.SUPER_ABSORBANT_SPONGE.get(), "超级吸收棉");
@@ -3179,6 +3180,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(HookItems.LUNAR_HOOK.get(), "月钩");
         add(HookItems.SPOOKY_HOOK.get(), "阴森钩");
         add(HookItems.TENDON_HOOK.get(), "肌腱钩");
+        add(HookItems.STATIC_HOOK.get(), "静止钩");
 
         // 法杖
         add(ManaWeaponItems.RUBY_STAFF.get(), "红玉法杖");

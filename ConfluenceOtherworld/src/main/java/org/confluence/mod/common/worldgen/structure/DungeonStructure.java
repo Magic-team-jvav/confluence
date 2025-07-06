@@ -605,7 +605,7 @@ public class DungeonStructure extends Structure {
                 if (structureStart == null || !structureStart.isValid()) continue;
 
                 BoundingBox boundingBox = structureStart.getBoundingBox(); // getBoundingBox已优化过缓存
-                if (mob.getY() >= boundingBox.minY() + 51) {
+                if (mob.getY() >= boundingBox.minY() + 84) {
                     return true;
                 }
             }

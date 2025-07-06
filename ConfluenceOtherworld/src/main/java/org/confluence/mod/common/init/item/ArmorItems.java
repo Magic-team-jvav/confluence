@@ -269,6 +269,7 @@ public class ArmorItems {
     // 其它盔甲
     public static final DeferredItem<ArmorItem> GOGGLES = ITEMS.register("goggles", () -> new ArmorItem(ModArmorMaterials.GOGGLES_MATERIAL, ArmorItem.Type.HELMET, new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.WHITE)));
     public static final DeferredItem<ArmorItem> GREEN_CAP = ITEMS.register("green_cap", () -> new ArmorItem(ModArmorMaterials.GREEN_CAP_MATERIAL, ArmorItem.Type.HELMET, new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.WHITE)));
+    public static final DeferredItem<ArmorItem> VIKING_HELMET = registerNormalArmor("viking_helmet","viking_armor", ModRarity.BLUE,ModArmorMaterials.VIKING_ARMOR_MATERIAL, ArmorItem.Type.HELMET);
 
     private static DeferredItem<ArmorItem> registerNormalArmor(String name, String geoName, Holder<ArmorMaterial> material, ArmorItem.Type type, int durability) {
         return ITEMS.register(name, () -> new NormalArmorItem("armor/" + geoName, material, type, new Item.Properties().stacksTo(1).durability(durability)));

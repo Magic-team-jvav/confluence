@@ -3458,6 +3458,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.HALLOWED_BOOTS.get(), "神圣靴子");
 
         add(ArmorItems.GOGGLES.get(), "护目镜");
+        add(ArmorItems.GREEN_CAP.get(), "绿帽子");
+        add(ArmorItems.VIKING_HELMET.get(), "维京头盔");
         add(ArmorItems.WIZARD_HAT.get(), "巫师帽");
         add(ArmorItems.MAGIC_HAT.get(), "魔法帽");
         add(ArmorItems.AMETHYST_ROBE.get(), "紫晶长袍");

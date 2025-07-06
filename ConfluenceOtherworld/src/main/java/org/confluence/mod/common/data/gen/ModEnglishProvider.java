@@ -130,6 +130,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.demon_conch.0", "Right-click a Nether Portal block to make the Nether remember you.");
         add("tooltip.item.confluence.bait.common.0", "When placed in the inventory, it will be automatically used while fishing, prioritizing the bait in the off-hand.");
         add("tooltip.item.confluence.crate.common.0", "Hold the right mouse button to open, and hold Shift while clicking the right mouse button to place.");
+        add("tooltip.item.confluence.right_click.common.0", "Hold the right mouse button to open.");
 
         add("tooltip.item.confluence.slime_crown.0", "Right - click to summon the King Slime");
         add("tooltip.item.confluence.slime_crown.1", "A small crown that seems to be prepared for the coronation ceremony of those cute and harmless gel - like creatures.");
@@ -385,6 +386,9 @@ public class ModEnglishProvider extends LanguageProvider {
 
         add("tooltip.item.confluence.copper_short_sword.0", "The smallest fragment of the divine weapon's power has been with you since the convergence of the two worlds... until the journey's end.");
         add("tooltip.item.confluence.copper_short_sword.1", "\"We are so awesome!\" said the copper short sword.");
+        add("tooltip.item.confluence.umbrella.0", "You will fall slower while holding this");
+        add("tooltip.item.confluence.tragic_umbrella.0", "You will fall slower while holding this");
+        add("tooltip.item.confluence.breathing_reed.0", "Increases breath time and allows breathing in water");
         add("tooltip.item.confluence.starfury.0", "A small part of the divine weapon's power is condensed within the clouds, transforming into a crystalline and sparkling star.");
         add("tooltip.item.confluence.starfury.1", "\"The wrath of the heavens pours down.\"");
         add("tooltip.item.confluence.enchanted_sword.0", "A small part of the divine weapon's power is buried in a cave, condensed into a bleak sword intent.");
@@ -402,12 +406,16 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.golden_dungeon_key.0", "“Open a locked dungeon chest or a golden lockbox”");
         add("tooltip.item.confluence.shadow_key.0", "“Opens all Shadow Chests and Obsidian Lock Boxes”");
         add("tooltip.item.confluence.temple_key.0", "“Opens the jungle temple door”");
-        add("tooltip.item.confluence.jungle_key.0", "“Unlocks a Jungle Chest in the dungeon”");
-        add("tooltip.item.confluence.corruption_key.0", "“Unlocks a Corruption Chest in the dungeon”");
-        add("tooltip.item.confluence.crimson_key.0", "“Unlocks a Crimson Chest in the dungeon”");
-        add("tooltip.item.confluence.hallowed_key.0", "“Unlocks a Hallowed Chest in the dungeon”");
-        add("tooltip.item.confluence.frozen_key.0", "“Unlocks an Ice Chest in the dungeon”");
-        add("tooltip.item.confluence.desert_key.0", "“Unlocks a Desert Chest in the dungeon”");
+        add("tooltip.item.confluence.jungle_key.0", "“Opens the jungle room door and jungle chest in the dungeon”");
+        add("tooltip.item.confluence.corruption_key.0", "“Opens the evil room door and corruption chest in the dungeon”");
+        add("tooltip.item.confluence.crimson_key.0", "“Opens the evil room door and crimson chest in the dungeon”");
+        add("tooltip.item.confluence.hallowed_key.0", "“Opens the hallowed room door and hallowed chest in the dungeon”");
+        add("tooltip.item.confluence.frozen_key.0", "“Opens the ice room door and ice chest in the dungeon”");
+        add("tooltip.item.confluence.desert_key.0", "“Opens the desert room door and desert chest in the dungeon”");
+        add("tooltip.item.confluence.ocean_key.0", "“Opens the ocean room door and ocean chest in the dungeon”");
+        add("tooltip.item.confluence.universe_key.0", "“Opens the space room door and space chest in the dungeon”");
+        add("tooltip.item.confluence.rust_iron_key.0", "“Opens the laboratory room door in the dungeon”");
+        add("tooltip.item.confluence.dungeon_compass.0", "“Wear it, and the eerie skull will guide your way”");
         add("tooltip.item.confluence.golden_lock_box.0", "“Right click to open”");
         add("tooltip.item.confluence.golden_lock_box.1", "“Requires a Dungeon Golden Key”");
         add("tooltip.item.confluence.obsidian_lock_box.0", "“Right click to open”");

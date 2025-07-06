@@ -20,28 +20,14 @@ import org.confluence.mod.common.component.LootComponent;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModSoundEvents;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RightClickLootItem extends CustomRarityItem {
-    private final List<Component> commonTooltips;
     public RightClickLootItem(ModRarity rarity, ResourceKey<LootTable> lootTable) {
         super(new Properties().component(ModDataComponentTypes.LOOT.get(), new LootComponent(lootTable)), rarity);
-        this.commonTooltips = createCommonTooltips();
     }
-    private List<Component> createCommonTooltips() {
-        List<Component> tooltips = new ArrayList<>();
-        tooltips.add(Component.translatable("tooltip.item.confluence.right_click.common.0")
-                .withStyle(ChatFormatting.GRAY));
-        return tooltips;
-    }
+
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        tooltipComponents.addAll(commonTooltips);
-
-        super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
-    }
-
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack itemStack = player.getItemInHand(hand);
         if (level instanceof ServerLevel serverLevel) {
@@ -63,5 +49,10 @@ public class RightClickLootItem extends CustomRarityItem {
             player.playSound(ModSoundEvents.TERRA_OPERATION.get(), 0.5F, 1.0F);
         }
         return InteractionResultHolder.success(itemStack);
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+        tooltipComponents.add(Component.translatable("tooltip.item.confluence.right_click.common.0").withStyle(ChatFormatting.GRAY));
     }
 }

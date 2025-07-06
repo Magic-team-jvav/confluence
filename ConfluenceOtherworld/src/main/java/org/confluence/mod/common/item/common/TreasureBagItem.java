@@ -32,12 +32,10 @@ import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
 
 public class TreasureBagItem extends CustomRarityItem {
-    private final List<Component> commonTooltips;
     private final ResourceLocation lootTable;
     private final BiFunction<ServerLevel, BlockPos, String> suffix;
 
@@ -45,24 +43,13 @@ public class TreasureBagItem extends CustomRarityItem {
         super(new Properties().fireResistant(), ModRarity.EXPERT);
         this.lootTable = lootTable;
         this.suffix = suffix;
-        this.commonTooltips = createCommonTooltips();
     }
-    private List<Component> createCommonTooltips() {
-        List<Component> tooltips = new ArrayList<>();
-        tooltips.add(Component.translatable("tooltip.item.confluence.right_click.common.0")
-                .withStyle(ChatFormatting.GRAY));
-        return tooltips;
-    }
-    @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        tooltipComponents.addAll(commonTooltips);
 
-        super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
-    }
     public TreasureBagItem(ResourceLocation lootTable) {
         this(lootTable, (level, pos) -> LibUtils.switchByDifficulty(level, pos, "/classic", "/expert", "/master"));
     }
 
+    @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack itemStack = player.getItemInHand(hand);
         if (level instanceof ServerLevel serverLevel) {
@@ -100,6 +87,11 @@ public class TreasureBagItem extends CustomRarityItem {
     }
 
     protected void collectItems(ServerLevel serverLevel, Player player, ItemStack itemStack, ObjectArrayList<ItemStack> items) {}
+
+    @Override
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+        tooltipComponents.add(Component.translatable("tooltip.item.confluence.right_click.common.0").withStyle(ChatFormatting.GRAY));
+    }
 
     public static @Nullable ItemStack getTreasureBag(LivingEntity living) {
         if (!(living.level() instanceof ServerLevel serverLevel)) return null;

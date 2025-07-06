@@ -55,6 +55,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("message.confluence.altar_tips.1", " 取出，");
         add("message.confluence.altar_tips.2", " 合成，");
         add("message.confluence.altar_tips.3", " 批量合成");
+        add("message.confluence.lock.need", "需要：");
+        add("message.confluence.lock.or", " 或 ");
         add("message.confluence.dungeon_not_found", "未成功找到地牢");
 
         add("gamerule.confluenceSpreadableChance", "邪恶群系蔓延设置");
@@ -2811,6 +2813,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ToolItems.OCEAN_KEY.get(), "海洋钥匙");
         add(ToolItems.UNIVERSE_KEY.get(), "太空钥匙");
         add(ToolItems.RUST_IRON_KEY.get(), "生锈的铁钥匙");
+        add(ToolItems.MECHANIC_SAFE_KEY.get(), "机械师安全钥匙");
         add(ToolItems.TARGET_DUMMY.get(), "训练假人");
         add(ToolItems.ENCUMBERING_STONE.get(), "负重石");
         add(ToolItems.MAGIC_CONCH.get(), "魔法海螺");
@@ -3011,7 +3014,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(ChestBlocks.JUNGLE_CHEST.get(), "丛林箱");
         add(ChestBlocks.ICE_CHEST.get(), "冰雪箱");
         add(ChestBlocks.DESERT_CHEST.get(), "沙漠箱");
+        add(ChestBlocks.OCEAN_CHEST.get(), "海洋箱");
+        add(ChestBlocks.UNIVERSE_CHEST.get(), "太空箱");
         add(ChestBlocks.HALLOWED_CHEST.get(), "神圣箱");
+        add(ChestBlocks.MECHANIC_SAFE_CHEST.get(), "机械保险箱");
         add(FunctionalBlocks.SCULK_TRAP.get(), "幽匿陷阱");
         add(FunctionalBlocks.ROLLING_CACTUS_BOULDER.get(), "仙人球");
         add(FunctionalBlocks.PIGGY_BANK.get(), "猪猪存钱罐");

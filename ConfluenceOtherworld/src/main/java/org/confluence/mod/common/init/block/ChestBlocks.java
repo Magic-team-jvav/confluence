@@ -66,7 +66,10 @@ public class ChestBlocks {
     public static final DeferredBlock<BiomeChestBlock> HALLOWED_CHEST = registerWithItem("hallowed_chest", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.HALLOWED_KEY)));
     public static final DeferredBlock<BiomeChestBlock> ICE_CHEST = registerWithItem("ice_chest", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.FROZEN_KEY)));
     public static final DeferredBlock<BiomeChestBlock> DESERT_CHEST = registerWithItem("desert_chest", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.DESERT_KEY)));
-    public static final Supplier<BlockEntityType<BiomeChestBlock.Entity>> BIOME_CHEST_ENTITY = BLOCK_ENTITIES.register("biome_chest_entity", () -> BlockEntityType.Builder.of(BiomeChestBlock.Entity::new, JUNGLE_CHEST.get(), CORRUPTION_CHEST.get(), CRIMSON_CHEST.get(), HALLOWED_CHEST.get(), ICE_CHEST.get(), DESERT_CHEST.get()).build(DSL.remainderType()));
+    public static final DeferredBlock<BiomeChestBlock> OCEAN_CHEST = registerWithItem("ocean_chest", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.OCEAN_KEY)));
+    public static final DeferredBlock<BiomeChestBlock> UNIVERSE_CHEST = registerWithItem("universe_chest", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.UNIVERSE_KEY)));
+    public static final DeferredBlock<BiomeChestBlock> MECHANIC_SAFE_CHEST = registerWithItem("mechanic_safe_chest", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.MECHANIC_SAFE_KEY)));
+    public static final Supplier<BlockEntityType<BiomeChestBlock.Entity>> BIOME_CHEST_ENTITY = BLOCK_ENTITIES.register("biome_chest_entity", () -> BlockEntityType.Builder.of(BiomeChestBlock.Entity::new, JUNGLE_CHEST.get(), CORRUPTION_CHEST.get(), CRIMSON_CHEST.get(), HALLOWED_CHEST.get(), ICE_CHEST.get(), DESERT_CHEST.get(), OCEAN_CHEST.get(), UNIVERSE_CHEST.get(), MECHANIC_SAFE_CHEST.get()).build(DSL.remainderType()));
 
     private static DeferredBlock<BaseChestBlock> registerNormal(String id, @Nullable Predicate<ItemStack> predicate) {
         DeferredBlock<BaseChestBlock> block = BLOCKS.register(id, () -> new BaseChestBlock(predicate == null ? null : (stack, state, level, pos, player, hand, hitResult) -> {

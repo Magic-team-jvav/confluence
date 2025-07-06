@@ -65,6 +65,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("message.confluence.altar_tips.1", " take out an item, ");
         add("message.confluence.altar_tips.2", " craft, ");
         add("message.confluence.altar_tips.3", " quickly craft");
+        add("message.confluence.lock.need", "need: ");
+        add("message.confluence.lock.or", " or ");
         add("message.confluence.dungeon_not_found", "Failed to find the Dungeon");
 
         add("gamerule.confluenceSpreadableChance", "Confluence Spreadable Chance");

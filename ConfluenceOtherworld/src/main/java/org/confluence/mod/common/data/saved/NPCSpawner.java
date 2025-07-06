@@ -408,7 +408,7 @@ public class NPCSpawner implements IGlobalData {
                 BoundingBox boundingBox = structureStart.getBoundingBox(); // getBoundingBox已优化过缓存
                 if (boundingBox.isInside(serverPlayer.blockPosition())) {
                     for (StructurePiece piece : structureStart.getPieces()) {
-                        if (piece instanceof SimpleTemplatePiece templatePiece && DungeonStructure.gate.equals(templatePiece.templateName)) {
+                        if (piece instanceof SimpleTemplatePiece templatePiece && DungeonStructure.GATE.equals(templatePiece.templateName)) {
                             BlockPos offset = switch (templatePiece.getRotation()) {
                                 case CLOCKWISE_90 -> templatePiece.templatePosition().offset(-15, 6, 15);
                                 case CLOCKWISE_180 -> templatePiece.templatePosition().offset(-15, 6, -15);

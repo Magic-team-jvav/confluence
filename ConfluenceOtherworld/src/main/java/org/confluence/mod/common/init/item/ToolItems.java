@@ -45,6 +45,7 @@ public class ToolItems {
     public static final DeferredItem<TooltipItem> OCEAN_KEY = ITEMS.register("ocean_key", () -> new TooltipItem(new Item.Properties(), ModRarity.YELLOW, TooltipItem.getTooltipsFromString("ocean_key", 1, ChatFormatting.GRAY)));
     public static final DeferredItem<TooltipItem> UNIVERSE_KEY = ITEMS.register("universe_key", () -> new TooltipItem(new Item.Properties(), ModRarity.YELLOW, TooltipItem.getTooltipsFromString("universe_key", 1, ChatFormatting.GRAY)));
     public static final DeferredItem<TooltipItem> RUST_IRON_KEY = ITEMS.register("rust_iron_key", () -> new TooltipItem(new Item.Properties(), ModRarity.YELLOW, TooltipItem.getTooltipsFromString("rust_iron_key", 1, ChatFormatting.GRAY)));
+    public static final DeferredItem<TooltipItem> MECHANIC_SAFE_KEY = ITEMS.register("mechanic_safe_key", () -> new TooltipItem(new Item.Properties(), ModRarity.YELLOW, TooltipItem.getTooltipsFromString("mechanic_safe_key", 1, ChatFormatting.GRAY)));
 
     public static final DeferredItem<WrenchItem> RED_WRENCH = ITEMS.register("red_wrench", () -> new WrenchItem(0xFF0000));
     public static final DeferredItem<WrenchItem> GREEN_WRENCH = ITEMS.register("green_wrench", () -> new WrenchItem(0x00FF00));

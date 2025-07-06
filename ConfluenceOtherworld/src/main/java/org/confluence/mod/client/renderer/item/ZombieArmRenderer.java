@@ -36,7 +36,8 @@ public class ZombieArmRenderer {
             playerModel.rightArm.visible = false;
             playerModel.rightSleeve.visible = false;
             zombieModel.rightArm.visible = true;
-        } else if (player.getItemInHand(InteractionHand.OFF_HAND).is(SwordItems.ZOMBIE_ARM)) {
+        }
+        if (player.getItemInHand(InteractionHand.OFF_HAND).is(SwordItems.ZOMBIE_ARM)) {
             playerModel.leftArm.visible = false;
             playerModel.leftSleeve.visible = false;
             zombieModel.leftArm.visible = true;
@@ -57,8 +58,15 @@ public class ZombieArmRenderer {
         poseStack.popPose();
     }
 
-    public void renderHand(PlayerRenderer playerRenderer, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, AbstractClientPlayer player, HumanoidArm humanoidArm) {
-        ModelPart rendererArm = humanoidArm == HumanoidArm.RIGHT ? zombieModel.rightArm : zombieModel.leftArm;
+    public boolean renderHand(PlayerRenderer playerRenderer, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, AbstractClientPlayer player, HumanoidArm humanoidArm) {
+        ModelPart rendererArm;
+        if (humanoidArm == HumanoidArm.RIGHT && player.getItemInHand(InteractionHand.MAIN_HAND).is(SwordItems.ZOMBIE_ARM)) {
+            rendererArm = zombieModel.rightArm;
+        } else if (humanoidArm == HumanoidArm.LEFT && player.getItemInHand(InteractionHand.OFF_HAND).is(SwordItems.ZOMBIE_ARM)) {
+            rendererArm = zombieModel.leftArm;
+        } else {
+            return false;
+        }
         PlayerModel<AbstractClientPlayer> playermodel = playerRenderer.getModel();
         playerRenderer.setModelProperties(player);
         playermodel.attackTime = 0.0F;
@@ -67,6 +75,7 @@ public class ZombieArmRenderer {
         playermodel.setupAnim(player, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F);
         rendererArm.xRot = 0.0F;
         rendererArm.render(poseStack, buffer.getBuffer(RenderType.entitySolid(ZOMBIE_LOCATION)), combinedLight, OverlayTexture.NO_OVERLAY);
+        return true;
     }
 
     public static ZombieArmRenderer getInstance() {

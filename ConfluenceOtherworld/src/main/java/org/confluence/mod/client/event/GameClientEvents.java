@@ -52,7 +52,6 @@ import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEquipmentSets;
 import org.confluence.mod.common.init.block.NatureBlocks;
-import org.confluence.mod.common.init.item.SwordItems;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.integration.ars_nouveau.ArsNouveauHelper;
@@ -309,11 +308,9 @@ public final class GameClientEvents {
     @SubscribeEvent
     public static void renderArm(RenderArmEvent event) {
         AbstractClientPlayer player = event.getPlayer();
-        if (LibUtils.anyHandHasItem(player, SwordItems.ZOMBIE_ARM.get())) {
-            if (Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player) instanceof PlayerRenderer playerRenderer) {
-                ZombieArmRenderer.getInstance().renderHand(playerRenderer, event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight(), player, event.getArm());
-                event.setCanceled(true);
-            }
+        if (Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player) instanceof PlayerRenderer playerRenderer) {
+            boolean b = ZombieArmRenderer.getInstance().renderHand(playerRenderer, event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight(), player, event.getArm());
+            if (b) event.setCanceled(true);
         }
     }
 }

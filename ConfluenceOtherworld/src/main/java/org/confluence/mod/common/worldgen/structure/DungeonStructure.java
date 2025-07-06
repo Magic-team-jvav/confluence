@@ -593,7 +593,7 @@ public class DungeonStructure extends Structure {
      * 不允许生成在地牢主体之外的地方
      */
     public static boolean skipSpawn(Mob mob, ServerLevel level) {
-        if (mob.getType().is(ModTags.SPAWN_AT_DUNGEON)) {
+        if (mob.getType().is(ModTags.EntityTypes.SPAWN_AT_DUNGEON)) {
             Structure structure = level.registryAccess().registryOrThrow(Registries.STRUCTURE).get(ModStructures.DUNGEON_KEY);
             if (structure == null) return false;
 

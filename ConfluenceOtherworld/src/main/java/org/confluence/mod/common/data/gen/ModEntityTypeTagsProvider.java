@@ -18,7 +18,7 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        tag(ModTags.SPAWN_AT_DUNGEON).add(
+        tag(ModTags.EntityTypes.SPAWN_AT_DUNGEON).add(
                 TEMonsterEntities.ANGER_BONES.get(),
                 TEMonsterEntities.SHORT_BONES.get(),
                 TEMonsterEntities.BIG_BONES.get(),

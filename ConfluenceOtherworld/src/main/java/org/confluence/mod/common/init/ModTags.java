@@ -8,6 +8,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
@@ -248,12 +249,20 @@ public final class ModTags {
         public static final TagKey<Biome> VANITY_TREES_REPLACEABLE = register("vanity_trees_replaceable");
 
         private static TagKey<Biome> register(String id) {
-            return TagKey.create(Registries.BIOME, Confluence.asResource(id));
+            return Confluence.asTagKey(Registries.BIOME, id);
         }
     }
 
-    public static final TagKey<Fluid> FISHING_ABLE = FluidTags.create(Confluence.asResource("fishing_able"));
-    public static final TagKey<Fluid> NOT_LAVA = FluidTags.create(Confluence.asResource("not_lava"));
+    public static class Fluids {
+        public static final TagKey<Fluid> FISHING_ABLE = FluidTags.create(Confluence.asResource("fishing_able"));
+        public static final TagKey<Fluid> NOT_LAVA = FluidTags.create(Confluence.asResource("not_lava"));
+    }
 
-    public static final TagKey<EntityType<?>> SPAWN_AT_DUNGEON = TagKey.create(Registries.ENTITY_TYPE, Confluence.asResource("spawn_at_dungeon")); // 允许生成在地牢的生物
+    public static class EntityTypes {
+        public static final TagKey<EntityType<?>> SPAWN_AT_DUNGEON = Confluence.asTagKey(Registries.ENTITY_TYPE, "spawn_at_dungeon"); // 允许生成在地牢的生物
+    }
+
+    public static class Enchantments {
+        public static final TagKey<Enchantment> MANA_IO_EXCLUSIVE = Confluence.asTagKey(Registries.ENCHANTMENT, "mana_io_exclusive");
+    }
 }

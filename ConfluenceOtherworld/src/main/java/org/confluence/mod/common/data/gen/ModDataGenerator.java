@@ -61,5 +61,6 @@ public final class ModDataGenerator {
         ));
         generator.addProvider(server, new ModDataMapProvider(output, lookup));
         generator.addProvider(server, new ModLootTableProvider(output, lookup));
+        generator.addProvider(server, new ModEnchantmentTagsProvider(output, lookup, helper));
     }
 }

@@ -2,11 +2,15 @@ package org.confluence.mod.util;
 
 import com.google.common.collect.Streams;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.enchantment.ConditionalEffect;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.effects.EnchantmentValueEffect;
 import net.minecraft.world.level.storage.loot.LootContext;
 import org.apache.commons.lang3.mutable.MutableFloat;
+import org.confluence.mod.common.attachment.ManaStorage;
+import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModEnchantments;
 
 import java.util.*;
@@ -38,7 +42,7 @@ public final class EnchantmentUtils {
     };
     public static final EquipmentSlot[] HUMANOID_ARMOR_AND_MAIN_HAND = Streams.concat(Arrays.stream(slotsByType.apply(EquipmentSlot.Type.HUMANOID_ARMOR)), Stream.of(EquipmentSlot.MAINHAND)).toArray(EquipmentSlot[]::new);
 
-    public static float processManaRegenerationBoost(ServerPlayer player) {
+    public static float processManaRegeneration(ServerPlayer player) {
         MutableFloat value = new MutableFloat(1);
         for (EquipmentSlot slot : HUMANOID_ARMOR_AND_MAIN_HAND) {
             runIterationOnItem(player.getItemBySlot(slot), slot, player, (enchantment, level, item) -> {
@@ -48,5 +52,13 @@ public final class EnchantmentUtils {
             });
         }
         return value.floatValue();
+    }
+
+    public static float processEfficientMagic(ServerPlayer player) {
+        if (EnchantmentHelper.has(player.getMainHandItem(), ModEnchantments.EffectComponentTypes.EFFICIENT_MAGIC.get())) {
+            ManaStorage manaStorage = player.getData(ModAttachmentTypes.MANA_STORAGE);
+            return Mth.lerp(manaStorage.getCurrentMana() / manaStorage.getMaxMana(), 0.5F, 1.0F);
+        }
+        return 1.0F;
     }
 }

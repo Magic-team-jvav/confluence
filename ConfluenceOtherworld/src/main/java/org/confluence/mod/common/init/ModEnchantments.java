@@ -5,6 +5,7 @@ import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.util.Unit;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.enchantment.ConditionalEffect;
@@ -24,13 +25,15 @@ import java.util.List;
 import java.util.function.UnaryOperator;
 
 public final class ModEnchantments {
-    public static final ResourceKey<Enchantment> MANA_REGENERATION_BOOST = Confluence.asResourceKey(Registries.ENCHANTMENT, "mana_regeneration_boost");
+    public static final ResourceKey<Enchantment> MANA_REGENERATION = Confluence.asResourceKey(Registries.ENCHANTMENT, "mana_regeneration");
+    public static final ResourceKey<Enchantment> EFFICIENT_MAGIC = Confluence.asResourceKey(Registries.ENCHANTMENT, "efficient_magic");
 
     public static void bootstrap(BootstrapContext<Enchantment> context) {
-        HolderGetter<Item> lookup = context.lookup(Registries.ITEM);
-        register(context, MANA_REGENERATION_BOOST, Enchantment.enchantment(
+        HolderGetter<Item> item = context.lookup(Registries.ITEM);
+        HolderGetter<Enchantment> enchantment = context.lookup(Registries.ENCHANTMENT);
+        register(context, MANA_REGENERATION, Enchantment.enchantment(
                         Enchantment.definition(
-                                new OrHolderSet<>(lookup.getOrThrow(Tags.Items.ARMORS), lookup.getOrThrow(ModTags.Items.MANA_WEAPON)),
+                                new OrHolderSet<>(item.getOrThrow(Tags.Items.ARMORS), item.getOrThrow(ModTags.Items.MANA_WEAPON)),
                                 10,
                                 3,
                                 Enchantment.dynamicCost(15, 15),
@@ -38,7 +41,21 @@ public final class ModEnchantments {
                                 1,
                                 EquipmentSlotGroup.ARMOR, EquipmentSlotGroup.MAINHAND
                         ))
+                .exclusiveWith(enchantment.getOrThrow(ModTags.Enchantments.MANA_IO_EXCLUSIVE))
                 .withEffect(EffectComponentTypes.MANA_REGENERATION.get(), new AddValue(LevelBasedValue.perLevel(0.1F)))
+        );
+        register(context, EFFICIENT_MAGIC, Enchantment.enchantment(
+                        Enchantment.definition(
+                                item.getOrThrow(ModTags.Items.MANA_WEAPON),
+                                10,
+                                1,
+                                Enchantment.dynamicCost(15, 15),
+                                Enchantment.dynamicCost(45, 15),
+                                1,
+                                EquipmentSlotGroup.MAINHAND
+                        ))
+                .exclusiveWith(enchantment.getOrThrow(ModTags.Enchantments.MANA_IO_EXCLUSIVE))
+                .withEffect(EffectComponentTypes.EFFICIENT_MAGIC.get())
         );
     }
 
@@ -50,6 +67,7 @@ public final class ModEnchantments {
         public static final DeferredRegister.DataComponents TYPES = DeferredRegister.createDataComponents(Registries.ENCHANTMENT_EFFECT_COMPONENT_TYPE, Confluence.MODID);
 
         public static final DeferredHolder<DataComponentType<?>, DataComponentType<List<ConditionalEffect<EnchantmentValueEffect>>>> MANA_REGENERATION = register("mana_regeneration", builder -> builder.persistent(ConditionalEffect.codec(EnchantmentValueEffect.CODEC, LootContextParamSets.ENCHANTED_DAMAGE).listOf()));
+        public static final DeferredHolder<DataComponentType<?>, DataComponentType<Unit>> EFFICIENT_MAGIC = register("efficient_magic", builder -> builder.persistent(Unit.CODEC));
 
         private static <T> DeferredHolder<DataComponentType<?>, DataComponentType<T>> register(String name, UnaryOperator<DataComponentType.Builder<T>> operator) {
             return TYPES.register(name, () -> operator.apply(DataComponentType.builder()).build());

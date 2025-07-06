@@ -87,7 +87,7 @@ public final class PlayerUtils {
             float a = manaStorage.getMaxMana() * 0.14285715F + (manaStorage.isFastManaRegeneration() ? 25 : 0) + 1;
             if (notMove) a += manaStorage.getMaxMana() * 0.5F;
             float b = manaStorage.getCurrentMana() * 0.8F / manaStorage.getMaxMana() + 0.2F;
-            return a * b * 0.0115F * EnchantmentUtils.processManaRegenerationBoost(serverPlayer);
+            return a * b * 0.0115F * EnchantmentUtils.processManaRegeneration(serverPlayer);
         };
 
         if (manaStorage.receiveMana(receive)) syncMana2Client(serverPlayer, manaStorage);
@@ -97,7 +97,12 @@ public final class PlayerUtils {
         if (serverPlayer.isCreative()) return true;
         return extractAndDelayAndSync(
                 serverPlayer.getData(ModAttachmentTypes.MANA_STORAGE),
-                HookMapManager.postHooks(ModHookTypes.MANA_CONSUME.get(), (owner, hook, original) -> hook.onManaConsume(owner, itemStack, original), serverPlayer, sup),
+                HookMapManager.postHooks(
+                        ModHookTypes.MANA_CONSUME.get(),
+                        (owner, hook, original) -> hook.onManaConsume(owner, itemStack, original),
+                        serverPlayer,
+                        () -> sup.get() * EnchantmentUtils.processEfficientMagic(serverPlayer)
+                ),
                 serverPlayer
         );
     }

@@ -110,8 +110,8 @@ public abstract class FishingHookMixin implements IFishingHook, IExtraSyncedData
 
     @ModifyArg(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/material/FluidState;is(Lnet/minecraft/tags/TagKey;)Z"))
     private TagKey<Fluid> isLavaTag(TagKey<Fluid> pTag, @Share("isLavaHook") LocalBooleanRef isLavaHook) {
-        if (isLavaHook.get()) return ModTags.FISHING_ABLE;
-        return ModTags.NOT_LAVA;
+        if (isLavaHook.get()) return ModTags.Fluids.FISHING_ABLE;
+        return ModTags.Fluids.NOT_LAVA;
     }
 
     @Inject(method = "tick", at = @At("TAIL"))
@@ -131,8 +131,8 @@ public abstract class FishingHookMixin implements IFishingHook, IExtraSyncedData
 
     @ModifyArg(method = "getOpenWaterTypeForBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/material/FluidState;is(Lnet/minecraft/tags/TagKey;)Z"))
     private TagKey<Fluid> fluidType(TagKey<Fluid> pTag) {
-        if (confluence$isLavaHook()) return ModTags.FISHING_ABLE;
-        return ModTags.NOT_LAVA;
+        if (confluence$isLavaHook()) return ModTags.Fluids.FISHING_ABLE;
+        return ModTags.Fluids.NOT_LAVA;
     }
 
     @ModifyArg(method = "catchingFish", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerLevel;sendParticles(Lnet/minecraft/core/particles/ParticleOptions;DDDIDDDD)I", ordinal = 0), index = 0)

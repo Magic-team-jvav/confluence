@@ -169,8 +169,10 @@ public class DungeonStructure extends Structure {
 
             Map<Vector3d, BooleanStorage4> mazeMap = mazePos(new Vector3d(underCenter.getX(), underCenter.getY(), underCenter.getZ()), 40, 2, random, 1.0F);
 
-            rectangular(underCenter.offset(-103, -4, -103), underCenter.offset(103, 49, 103), 1, blockMap, 0);
-            rectangular(underCenter.offset(-10, 49, -10), underCenter.offset(10, 55, 10), 1, blockMap, 0);
+            rectangular(underCenter.offset(-103, -4, -103), underCenter.offset(103, 51, 103), 1, blockMap, 0);
+            rectangular(underCenter.offset(-99, 47, -99), underCenter.offset(99, 47, 99), 15, blockMap, 0);
+            rectangular(underCenter.offset(-99, 46, -99), underCenter.offset(99, 46, 99), 2, blockMap, 0);
+            rectangular(underCenter.offset(-10, 46, -10), underCenter.offset(10, 55, 10), 1, blockMap, 0);
             rectangular(underCenter.offset(-99, 0, -99), underCenter.offset(99, 45, 99), 0, blockMap, 0);
             rectangular(underCenter.offset(-6, 45, -6), underCenter.offset(6, 51, 6), 0, blockMap, 0);
 
@@ -290,7 +292,7 @@ public class DungeonStructure extends Structure {
             }
 
             StructureTemplateManager manager = context.structureTemplateManager();
-
+/*
             builder.addPiece(new SimpleTemplatePiece(manager, UG_0_1, underCenter.offset(96, -41, 70), true, true, Rotation.CLOCKWISE_180));
             builder.addPiece(new SimpleTemplatePiece(manager, UG_0_2, underCenter.offset(96, -41, 23), true, true, Rotation.CLOCKWISE_180));
             builder.addPiece(new SimpleTemplatePiece(manager, UG_0_3, underCenter.offset(96, -41, -24), true, true, Rotation.CLOCKWISE_180));
@@ -312,12 +314,12 @@ public class DungeonStructure extends Structure {
             builder.addPiece(new SimpleTemplatePiece(manager, UG_4_1, underCenter.offset(-71, -41, 70), true, true, Rotation.CLOCKWISE_180));
             builder.addPiece(new SimpleTemplatePiece(manager, UG_4_2, underCenter.offset(-71, -41, 23), true, true, Rotation.CLOCKWISE_180));
             builder.addPiece(new SimpleTemplatePiece(manager, UG_4_3, underCenter.offset(-71, -41, -24), true, true, Rotation.CLOCKWISE_180));
-
+*/
             lineSet(firstChannel, 2.5, 2.5, 0, true, blockMap);
             rectangular(underCenter.offset(-2, 48, -2), underCenter.offset(2, 48, 2), 6, blockMap, 0);
             rectangular(underCenter.offset(-1, 48, -1), underCenter.offset(1, 48, 1), 1, blockMap, 0);
             rectangular(underCenter.offset(-6, -1, -6), underCenter.offset(6, -5, 6), 7, blockMap, 0);
-
+/*
             blockMap.put(underCenter.offset(22, -26, 22), 14);
             blockMap.put(underCenter.offset(22, -26, -22), 14);
             blockMap.put(underCenter.offset(-22, -26, 22), 14);
@@ -416,7 +418,7 @@ public class DungeonStructure extends Structure {
             rectangular(underCenter.offset(-23, -25, 21), underCenter.offset(-23, -23, 21), 9, blockMap, 0);
             rectangular(underCenter.offset(-21, -25, -23), underCenter.offset(-21, -23, -23), 9, blockMap, 0);
             rectangular(underCenter.offset(-23, -25, -21), underCenter.offset(-23, -23, -21), 9, blockMap, 0);
-
+*/
             GridPiece.addPieces(blockMap, Lists.newArrayList(
                     /*00*/Blocks.AIR.defaultBlockState(),
                     /*01*/DecorativeBlocks.BLUE_BRICKS.get().defaultBlockState(),
@@ -432,8 +434,11 @@ public class DungeonStructure extends Structure {
                     /*11*/FunctionalBlocks.ENCHANTED_FRAGILE_BLUE_BRICKS.get().defaultBlockState().setValue(BlockStateProperties.FACING, Direction.NORTH).setValue(StateProperties.IS_SUPPORTING, false),
                     /*12*/FunctionalBlocks.ENCHANTED_FRAGILE_BLUE_BRICKS.get().defaultBlockState().setValue(BlockStateProperties.FACING, Direction.EAST).setValue(StateProperties.IS_SUPPORTING, false),
                     /*13*/FunctionalBlocks.ENCHANTED_FRAGILE_BLUE_BRICKS.get().defaultBlockState().setValue(BlockStateProperties.FACING, Direction.WEST).setValue(StateProperties.IS_SUPPORTING, false),
-                    /*14*/FunctionalBlocks.ENCHANTED_FRAGILE_BLUE_BRICKS.get().defaultBlockState().setValue(BlockStateProperties.FACING, Direction.UP).setValue(StateProperties.IS_SUPPORTING, true)
+                    /*14*/FunctionalBlocks.ENCHANTED_FRAGILE_BLUE_BRICKS.get().defaultBlockState().setValue(BlockStateProperties.FACING, Direction.UP).setValue(StateProperties.IS_SUPPORTING, true),
+                    /*15*/FunctionalBlocks.SPIKE.get().defaultBlockState()
             ), builder);
+
+/*
             switch (rotation) {
                 case CLOCKWISE_90 -> builder.addPiece(new SimpleTemplatePiece(manager, GATE, centerPos.offset(15, -3, -23), true, false, Rotation.CLOCKWISE_90));
                 case CLOCKWISE_180 -> builder.addPiece(new SimpleTemplatePiece(manager, GATE, centerPos.offset(23, -3, 15), true, false, Rotation.CLOCKWISE_180));
@@ -551,6 +556,8 @@ public class DungeonStructure extends Structure {
                     builder.addPiece(new SimpleTemplatePiece(manager, STAIRS, underCenter.offset(13, 0, -13), false, true, Rotation.CLOCKWISE_90));
             }
             //builder.addPiece(new SimpleTemplatePiece(manager, STAIRS_DOWN, underCenter.offset(-13, -11, -13), false, false, Rotation.NONE));
+
+ */
         });
     }
 

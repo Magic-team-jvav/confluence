@@ -1200,7 +1200,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add("dialogs.confluence.witch_doctor.2", "The heart of magic is nature. The nature of hearts is magic.");
         add("dialogs.confluence.witch_doctor.3", "I sense a kindred spirit in the Etherian Dark Mages. A pity they are our enemies, I would have liked to learn from them.");
 
-
         add("dialogs.confluence.clothier.0", "Thanks again for freeing me from my curse. Felt like something jumped up and bit me.");
         add("dialogs.confluence.clothier.1", "Mama always said I would make a great tailor.");
         add("dialogs.confluence.clothier.2", "Life's like a box of clothes; you never know what you are gonna wear!");
@@ -1226,19 +1225,34 @@ public class ModEnglishProvider extends LanguageProvider {
         add("dialogs.confluence.truffle.6", "I feel there are more of my kind here...");
 
         add("mood.terra_entity.goblin_tinkerer.like.dye_trader", "Dye Trader understands how fun it is to mix things together, I can respect that!");
+        add("mood.terra_entity.goblin_tinkerer.love.mechanic", "Mechanic makes my cardiac core function improperly, it appears I love how that feels!");
+        add("mood.terra_entity.goblin_tinkerer.dislike.clothier", "I detect eerie vibes from <name of Clothier>, as if they contain dark secrets. I don't like the feeling.");
         add("mood.terra_entity.guide.hate.painter", "I hate that Painter is around. The world is fine the way it was made!");
+        add("mood.terra_entity.guide.like.clothier", "I'm quite fond of Clothier, we have a lot in common.");
         add("mood.terra_entity.arms_dealer.hate.demolitionist", "I'd REALLY like to use the Demolitionist as a range target sometime.");
         add("mood.terra_entity.arms_dealer.love.nurse", "Think Nurse the Nurse ever, ya know, checks me out?");
         add("mood.terra_entity.angler.like.demolitionist", "the Demolitionist actually knows what they're doing, unlike some OTHER people! I kinda like that!");
+        add("mood.terra_entity.angler.like.party_girl", "the Party Girl actually knows what they're doing, unlike some OTHER people! I kinda like that!");
+        add("mood.terra_entity.female_angler.dislike.demolitionist", "The Demolitionist is too noisy! No one comes to see my fish anymore!");
+        add("mood.terra_entity.female_angler.dislike.party_girl", "The Party Girl always steals the spotlight at parties. No one notices my fish!");
         add("mood.terra_entity.dye_trader.like.arms_dealer", "Arms Dealer has good eyes for vividness and business, I like it, yes?");
         add("mood.terra_entity.dye_trader.like.painter", "Painter has good eyes for vividness and business, I like it, yes?");
         add("mood.terra_entity.demolitionist.dislike.arms_dealer", "I wanna strap Arms Dealer to a rocket and watch what happens!");
         add("mood.terra_entity.demolitionist.dislike.goblin_tinkerer", "I wanna strap Goblin Tinkerer to a rocket and watch what happens!");
+        add("mood.terra_entity.demolitionist.like.mechanic", "Mechanic is a good friend I like, helps me load the gunpowder!");
         add("mood.terra_entity.painter.love.dryad", "I would really love to paint Dryad... because of the vivid colors, of course!");
+        add("mood.terra_entity.painter.like.party_girl", "Party Girl and I like the same shade of pink! That's a friend, in my book!");
+        add("mood.terra_entity.painter.dislike.truffle", "Truffle is just too bland for my tastes, I dislike associating with dull types.");
         add("mood.terra_entity.dryad.dislike.angler", "I don't like that Angler has no respect for other beings.");
+        add("mood.terra_entity.dryad.like.female_angler", "She catches those fish to better study nature and tries not to harm them. That's good.");
+        add("mood.terra_entity.dryad.like.witch_doctor", "I like that Witch Doctor resonates with every fiber of my being");
+        add("mood.terra_entity.dryad.like.truffle", "I like that Truffle resonates with every fiber of my being");
         add("mood.terra_entity.merchant.like.nurse", "Nurse makes loads of money, I like deep pockets.");
+        add("mood.terra_entity.merchant.hate.angler", "I hate Angler's terrible personality!");
+        add("mood.terra_entity.merchant.like.female_angler", "She may seem all looks, but she's actually quite nice!");
         add("mood.terra_entity.nurse.love.arms_dealer", "What? Arms Dealer? I don't have a crush! I don't! Shut up!");
         add("mood.terra_entity.nurse.dislike.dryad", "I don't like Dryad that much, kinda weirds me out.");
+        add("mood.terra_entity.nurse.dislike.party_girl", "I don't like Party Girl that much, kinda weirds me out.");
         add("mood.terra_entity.truffle.love.guide", "I love Guide for being able to talk to me without mysteriously getting hungry.");
         add("mood.terra_entity.truffle.like.dye_trader", " Dryad treats me with respect, as though I'm a true part of nature. I don't know how to feel about that, except I like it.");
         add("mood.terra_entity.truffle.dislike.clothier", " Clothier has tried to eat me so many times. I swear, one time they weren't even human! I, obviously, dislike it.");

@@ -1347,7 +1347,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 NatureBlocks.LIFE_MUSHROOM_INDUSIUM_BLOCK.asItem(),
                 NatureBlocks.LIFE_MUSHROOM_STEM_BLOCK.asItem(),
                 NatureBlocks.LIFE_MUSHROOM_PILEUS_BLOCK.asItem(),
-                NatureBlocks.DESERT_TAPERED_BLOCK.asItem(),
                 NatureBlocks.SMALL_DESERT_PLANT.asItem(),
                 NatureBlocks.BIG_DESERT_PLANT.asItem(),
                 NatureBlocks.SMALL_CACTUS.asItem(),

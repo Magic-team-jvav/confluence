@@ -201,10 +201,12 @@ public class ModEnglishProvider extends LanguageProvider {
         add("lore.confluence.mysterious_note.handwriting_3", "✒Mysterious handwriting");
 
         add("item.confluence.mysterious_note.name_structure_0", "The note left in the dungeon");
+        add("item.confluence.mysterious_note.name_structure_1", "The note left in the chest");
 
         add("lore.confluence.mysterious_note_structure_0_0", "I have secretly investigated this dungeon... Instead of being considered a dungeon, it is rather seen as a long lost city. Besides the creaking skeletons, there are several buildings like apartments and a wide variety of public structures. These skeletons are said to be the locals here but nobody knows how they could've fallen into this situation...");
         add("lore.confluence.mysterious_note_structure_0_1", "However, indeed, the wonder is those rare rooms which look like armories with a huge sword on top. Each \"armory\" contains plenty equipment, with a locked chest... which I am unable to open but it lets me know that it contains valuables.");
         add("lore.confluence.mysterious_note_structure_1_0", "Those terrifying monsters are truly mad! I wish to leave this place... However, I found some keys in these strange structures resembling churches and those disgusting slimy monsters... There must be treasure here, but I haven't found it yet...");
+        add("lore.confluence.mysterious_note_structure_2_0", "Mysterious clues of an evil ritual were etched into the enigmatic murals I found within the ancient ruins… I sketched them down. I had no idea what these so-called \"Crying Obsidian\" were before, but now I’ve finally found them on these towering, ancient doorframes… There must be countless secrets in this world that I still don’t know about. Additionally, near the patterns of the murals, I discovered several inscriptions. \"Confusion, confusion, look towards the direction of the falling entity. The guide that directs you to the extraterrestrial object can still offer you new guidance. Sacrifice, using the weeping stone deity. Behold, its deep, lifeless eye sockets, pointing towards its homeland, long since departed.\"");
 
         add("item.confluence.mysterious_slate.name_0", "Serious Slate");
         add("lore.confluence.mysterious_slate_0", "“A fun fact: In fact, summoners need to communicate with their summoned creatures spiritually. The armor protection can't be too thick, otherwise it will affect the communication.”");

@@ -7,7 +7,7 @@
         {
             "type": "bitmap",
             "file": "confluence:paper_image/armory.png",
-            "height": 65,
+            "height": 64,
             "ascent": 64,
             "chars": [
                 "1"
@@ -16,10 +16,28 @@
         {
             "type": "bitmap",
             "file": "confluence:paper_image/dungeon_key.png",
-            "height": 99,
+            "height": 98,
             "ascent": 98,
             "chars": [
                 "2"
+            ]
+        },
+        {
+            "type": "bitmap",
+            "file": "confluence:paper_image/dungeon_altar.png",
+            "height": 90,
+            "ascent": 0,
+            "chars": [
+                "3a"
+            ]
+        },
+        {
+            "type": "bitmap",
+            "file": "confluence:paper_image/dungeon_altar.png",
+            "height": 90,
+            "ascent": 10,
+            "chars": [
+                "a4"
             ]
         }
     ]

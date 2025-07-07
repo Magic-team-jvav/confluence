@@ -4,7 +4,9 @@ import com.google.common.collect.Streams;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.ConditionalEffect;
+import net.minecraft.world.item.enchantment.EnchantedItemInUse;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.effects.EnchantmentValueEffect;
 import net.minecraft.world.level.storage.loot.LootContext;
@@ -45,7 +47,7 @@ public final class EnchantmentUtils {
     public static float processManaRegeneration(ServerPlayer player) {
         MutableFloat value = new MutableFloat(1);
         for (EquipmentSlot slot : HUMANOID_ARMOR_AND_MAIN_HAND) {
-            runIterationOnItem(player.getItemBySlot(slot), slot, player, (enchantment, level, item) -> {
+            runIterationOnItem(player.getItemBySlot(slot), (enchantment, level) -> {
                 List<ConditionalEffect<EnchantmentValueEffect>> effects = enchantment.value().getEffects(ModEnchantments.EffectComponentTypes.MANA_REGENERATION.get());
                 LootContext context = entityContext(player.serverLevel(), level, player, player.position());
                 applyEffects(effects, context, effect -> value.setValue(effect.process(level, player.getRandom(), value.floatValue())));
@@ -60,5 +62,18 @@ public final class EnchantmentUtils {
             return Mth.lerp(manaStorage.getCurrentMana() / manaStorage.getMaxMana(), 0.5F, 1.0F);
         }
         return 1.0F;
+    }
+
+    public static void repairPlayerItems(ServerPlayer player, float consumedManaAmount) {
+        Optional<EnchantedItemInUse> optional = EnchantmentHelper.getRandomItemWith(ModEnchantments.EffectComponentTypes.MANA_MENDING.get(), player, ItemStack::isDamaged);
+        if (optional.isPresent()) {
+            ItemStack stack = optional.get().itemStack();
+            MutableFloat threshold = new MutableFloat();
+            runIterationOnItem(stack, (enchantment, level) -> enchantment.value().modifyItemFilteredCount(ModEnchantments.EffectComponentTypes.MANA_MENDING.get(), player.serverLevel(), level, stack, threshold));
+            int delta = (int) (consumedManaAmount - threshold.floatValue());
+            if (delta > 1) {
+                stack.setDamageValue(stack.getDamageValue() - delta);
+            }
+        }
     }
 }

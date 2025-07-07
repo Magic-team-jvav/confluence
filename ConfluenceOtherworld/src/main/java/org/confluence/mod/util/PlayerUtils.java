@@ -28,6 +28,7 @@ import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.common.CoinItem;
+import org.confluence.mod.common.item.potion.ManaPotionItem;
 import org.confluence.mod.network.s2c.*;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.util.TCUtils;
@@ -353,5 +354,26 @@ public final class PlayerUtils {
         }
         if (min == max) return min;
         return player.getRandom().nextInt(Math.min(min, max), Math.max(min, max));
+    }
+
+    /**
+     * @return true表示魔力值不够
+     */
+    public static boolean applyAutoGetMana(ServerPlayer serverPlayer, float currentMana, float extract) {
+        if (currentMana < extract) {
+            if (!TCUtils.hasAccessoriesType(serverPlayer, AccessoryItems.AUTO$GET$MANA)) return true;
+            ItemStack toUse = null;
+            for (ItemStack itemStack : serverPlayer.getInventory().items) {
+                if (itemStack.getItem() instanceof ManaPotionItem manaPotion) {
+                    int amount = manaPotion.getAmount();
+                    if (currentMana + amount < extract) continue;
+                    if (toUse == null || amount < ((ManaPotionItem) toUse.getItem()).getAmount()) toUse = itemStack;
+                    if (amount == 50) break;
+                }
+            }
+            if (toUse == null) return true;
+            toUse.finishUsingItem(serverPlayer.level(), serverPlayer);
+        }
+        return false;
     }
 }

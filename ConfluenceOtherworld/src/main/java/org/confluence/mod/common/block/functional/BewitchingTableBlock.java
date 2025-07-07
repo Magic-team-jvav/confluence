@@ -47,8 +47,7 @@ public class BewitchingTableBlock extends HorizontalDirectionalWithVerticalFourP
             BlockPos basePos = part.isBase() ? pos : StateProperties.VerticalFourPart.getRelatives(part, state.getValue(FACING), pos).get(StateProperties.VerticalFourPart.BASE);
             if (level.getBlockEntity(basePos) instanceof Entity entity && level.getGameTime() - entity.lastClickTime > 110) {
                 entity.lastClickTime = level.getGameTime();
-                entity.setChanged();
-                level.sendBlockUpdated(basePos, state, state, UPDATE_CLIENTS);
+                entity.markUpdated();
                 player.addEffect(new MobEffectInstance(ModEffects.BEWITCHED, MobEffectInstance.INFINITE_DURATION));
                 return InteractionResult.SUCCESS_NO_ITEM_USED;
             }
@@ -98,6 +97,13 @@ public class BewitchingTableBlock extends HorizontalDirectionalWithVerticalFourP
         @Override
         public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
             this.lastClickTime = tag.getLong("LastClickTime");
+        }
+
+        public void markUpdated() {
+            setChanged();
+            if (level != null) {
+                level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), UPDATE_CLIENTS);
+            }
         }
 
         @Override

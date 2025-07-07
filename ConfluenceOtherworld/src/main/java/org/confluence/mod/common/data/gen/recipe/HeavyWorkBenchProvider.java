@@ -20,6 +20,7 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.StatueBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.recipe.HeavyWorkBenchRecipe;
+import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_furniture.common.init.TFBlocks;
 import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.init.TEItems;
@@ -369,6 +370,46 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 " # ",
                 "ccc"
         )), TESummonItems.IRON_GOLEM_STAFF.toStack());
+        // 计时器
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(TCItems.GOLD_WATCH,TCItems.PLATINUM_WATCH),
+                'b', Ingredient.of(Items.REDSTONE),
+                'c', Ingredient.of(ModTags.Items.LEAD_AND_IRON)
+        ), List.of(
+                "cbc",
+                "cac",
+                "cbc"
+        )), FunctionalBlocks.TIMERS_BLOCK_1_1.toStack());
+
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(TCItems.SILVER_WATCH,TCItems.TUNGSTEN_WATCH),
+                'b', Ingredient.of(Items.REDSTONE),
+                'c', Ingredient.of(ModTags.Items.LEAD_AND_IRON)
+        ), List.of(
+                "cbc",
+                "cac",
+                "cbc"
+        )), FunctionalBlocks.TIMERS_BLOCK_3_1.toStack());
+
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(TCItems.COPPER_WATCH,TCItems.TIN_WATCH),
+                'b', Ingredient.of(Items.REDSTONE),
+                'c', Ingredient.of(ModTags.Items.LEAD_AND_IRON)
+        ), List.of(
+                "cbc",
+                "cac",
+                "cbc"
+        )), FunctionalBlocks.TIMERS_BLOCK_5_1.toStack());
+
+        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(MaterialItems.TIN_INGOT,Items.COPPER_INGOT),
+                'b', Ingredient.of(Items.REDSTONE_BLOCK),
+                'c', Ingredient.of(Tags.Items.STONES)
+        ), List.of(
+                "bbb",
+                "cac",
+                "ccc"
+        )), FunctionalBlocks.SIGNAL_ADAPTER.toStack());
     }
 
     private void buildBaseStatues(RecipeOutput recipeOutput) {

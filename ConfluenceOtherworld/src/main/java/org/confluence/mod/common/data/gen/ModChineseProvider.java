@@ -1196,6 +1196,52 @@ public class ModChineseProvider extends LanguageProvider {
         add("dialogs.confluence.old_man.2", "打败我的主人，我就让你进入地牢。");
         add("dialogs.confluence.old_man.3", "你要想进去的话就晚上再来。");
 
+        add("dialogs.confluence.traveling_merchant.0", "嗯，看上去你会使用天使雕像！他们切片，又切丁，让一切都如此美好！");
+        add("dialogs.confluence.traveling_merchant.1", "我不会因“买家后悔……”或者任何其它原因退款，绝不退。");
+        add("dialogs.confluence.traveling_merchant.2", "现在购买还包邮！");
+        add("dialogs.confluence.traveling_merchant.3", "我卖的商品来自可能根本就不存在的地方！");
+        add("dialogs.confluence.traveling_merchant.4", "你想要两文钱！？一文钱就成交。");
+        add("dialogs.confluence.traveling_merchant.5", "既能抽水烟，也能煮咖啡！还能炸切丝薯条！");
+        add("dialogs.confluence.traveling_merchant.6", "看一看，瞧一瞧！一斤重的鱼！新鲜味美！一斤重的鱼！");
+        add("dialogs.confluence.traveling_merchant.7", "如果你是在找垃圾，那就来错地方了。");
+        add("dialogs.confluence.traveling_merchant.8", "旧货店？不，我只卖市场上的尖货。");
+
+        add("dialogs.confluence.mechanic.0", "你确定你的设备插好电源了？");
+        add("dialogs.confluence.mechanic.1", "哦，你知道这个房屋需要什么？需要更多的闪光信号灯。");
+        add("dialogs.confluence.mechanic.2", "别动。我的隐形眼镜掉了。");
+        add("dialogs.confluence.mechanic.3", "谢谢！迟早有一天，我的结局也会和地牢里的其他骷髅一样。");
+        add("dialogs.confluence.mechanic.4", "我记不太清楚里面发生过什么了，三个还是四个很重要的东西...");
+        add("dialogs.confluence.mechanic.5", "噢是的，信号适配器！它可以很好地把这里的红石和电线连接起来。");
+
+        add("dialogs.confluence.witch_doctor.0", "我是啥医？我是巫医。");
+        add("dialogs.confluence.witch_doctor.1", "认真选，我的商品不稳定，我的黑魔法很神秘。");
+        add("dialogs.confluence.witch_doctor.2", "魔法的心脏是本质。心脏的本质是魔法。");
+        add("dialogs.confluence.witch_doctor.3", "我感觉与埃特尼亚黑暗魔法师志趣相投。可惜他们是我们的敌人，我本来希望向他们学习来着。");
+
+        add("dialogs.confluence.clothier.0", "再次感谢你帮我解了诅咒。感觉像是什么东西跳起来咬了我一口。");
+        add("dialogs.confluence.clothier.1", "妈妈总是说我会成为一位伟大的裁缝。");
+        add("dialogs.confluence.clothier.2", "生活就像一箱衣服；你永远也不知道自己要穿什么！");
+        add("dialogs.confluence.clothier.3", "刺绣当然难了！如果不难，就没人绣了！所以刺绣是件难能可贵的事。");
+        add("dialogs.confluence.clothier.4", "他们想了解服装行业，而我无所不知。");
+        add("dialogs.confluence.clothier.5", "被诅咒后很孤独，于是我用皮革制作了一个朋友。我叫他威尔森。");
+        add("dialogs.confluence.clothier.6", "我依稀记得把一个女人捆了起来，然后扔到了地牢里。");
+
+        add("dialogs.confluence.party_girl.0", "我们得谈谈。这……聚会的事。");
+        add("dialogs.confluence.party_girl.1", "我不知道我是更喜欢派对还是余兴派对。");
+        add("dialogs.confluence.party_girl.2", "我们应该办一个闪耀根派对，而且我们还应该办一个余兴派对。");
+        add("dialogs.confluence.party_girl.3", "装个迪斯科球，我会让你知道怎么开派对。");
+        add("dialogs.confluence.party_girl.4", "我去过一次瑞典，他们经常开派对，你怎么和他们不一样？");
+        add("dialogs.confluence.party_girl.5", "我叫派对女孩，但人们叫我派对扫把星。我也搞不懂为啥这样叫我，但听起来酷酷的。");
+        add("dialogs.confluence.party_girl.6", "你开派对吗？有时开？好吧，那我们谈谈……");
+
+        add("dialogs.confluence.truffle.0", "生活在地下已经够惨的了，像你这样的败类还要趁我睡觉来偷我的孩子。");
+        add("dialogs.confluence.truffle.1", "有一天，我试着舔了舔自己，看看会发生什么大不了的事，然后全身都开始发蓝光。");
+        add("dialogs.confluence.truffle.2", "每次看到蓝色，我都感到郁闷和懒散。");
+        add("dialogs.confluence.truffle.3", "你在这附近看到过猪吗？我弟弟的一条腿被猪叼走了。");
+        add("dialogs.confluence.truffle.4", "我不知道什么是“肚皮波浪”，所以别问了！");
+        add("dialogs.confluence.truffle.5", "有个关于我的谣言正在盛传：“如果打不过他，那就吃掉他！");
+        add("dialogs.confluence.truffle.6", "我感觉这里有更多同类...");
+
         add("mood.terra_entity.goblin_tinkerer.like.dye_trader", "染料商知道把东西混在一起是多么有趣，我能理解！");
         add("mood.terra_entity.guide.hate.painter", "我讨厌油漆工在附近。世界本来挺美好的！");
         add("mood.terra_entity.arms_dealer.hate.demolitionist", "爆破专家怎么回事啊？难道他没发现我们卖的东西完全不同？");
@@ -1210,6 +1256,21 @@ public class ModChineseProvider extends LanguageProvider {
         add("mood.terra_entity.merchant.like.nurse", "护士赚了很多钱，我喜欢有钱人。");
         add("mood.terra_entity.nurse.love.arms_dealer", "什么？军火商？我才没有暗恋他！我没有！闭嘴！");
         add("mood.terra_entity.nurse.dislike.dryad", "我不太喜欢树妖，这个人有点奇怪。");
+        add("mood.terra_entity.truffle.love.guide", "我非常喜欢向导，因为能好好和我说话，而不会莫名其妙地就想吃我。");
+        add("mood.terra_entity.truffle.like.dye_trader", "树妖对我很尊重，把我当作大自然的一部分。除了喜欢，我不知道该如何形容这种感觉。");
+        add("mood.terra_entity.truffle.dislike.clothier", "服装商很多次想吃掉我。我发誓，有一次他们甚至毫无人性！很显然，我不喜欢这样。");
+        add("mood.terra_entity.truffle.hate.witch_doctor", "巫医曾试图把我扔进一个锅里，里头装着其他不寻常的原料。我讨厌这样。");
+        add("mood.terra_entity.clothier.love.truffle", "松露人？我从未吃过这么好吃的东西。");
+        add("mood.terra_entity.clothier.dislike.nurse", "不知什么原因，和护士在一起会让我感到不安。");
+        add("mood.terra_entity.clothier.hate.mechanic", "我讨厌机械师，我也不知道为什么。");
+        add("mood.terra_entity.party_girl.dislike.merchant", "我觉得商人在派对上很扫兴。");
+        add("mood.terra_entity.witch_doctor.like.dryad", "树妖是志同道合的大自然精灵，有他们在，我的心灵就能得到安宁。");
+        add("mood.terra_entity.witch_doctor.like.guide", "向导是志同道合的大自然精灵，有他们在，我的心灵就能得到安宁。");
+        add("mood.terra_entity.witch_doctor.dislike.nurse", "我不喜欢护士的做法。用金属和玻璃是做不到真正地治愈的。");
+        add("mood.terra_entity.witch_doctor.hate.truffle", "愤怒侵占了我的身体，就像邪恶的种子从污秽的大地中萌芽——我说的是松露人。");
+        add("mood.terra_entity.mechanic.love.goblin_tinkerer", "嗯……哥布林工匠让我心跳加速，我要去检查一下！");
+        add("mood.terra_entity.mechanic.dislike.arms_dealer", "我真的不喜欢军火商对我的纠缠！");
+        add("mood.terra_entity.mechanic.hate.clothier", "我讨厌服装商，他不懂得该如何对待女人！");
 
         // 帕秋莉手册
         add("patchouli.confluence.otherworld_note.name", "来世手记");
@@ -3767,7 +3828,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(AccessoryItems.MANA_REGENERATION_BAND.get(), "魔力再生手环");
         add(AccessoryItems.NATURES_GIFT.get(), "大自然的恩赐");
         add(AccessoryItems.PHILOSOPHERS_STONE.get(), "点金石");
-        add(AccessoryItems.MECHANICAL_LENS.get(), "机械晶状体");
+        add(AccessoryItems.MECHANICAL_LENS.get(), "机械透镜");
         add(AccessoryItems.GOLD_RING.get(), "金戒指");
         add(AccessoryItems.DISCOUNT_CARD.get(), "优惠卡");
         add(AccessoryItems.GREEDY_RING.get(), "贪婪戒指");

@@ -121,5 +121,69 @@
       "dialogs.confluence.old_man.2",
       "dialogs.confluence.old_man.3"
     ]
+  },
+  "terra_entity:mechanic": {
+    "dialogs": [
+      "dialogs.confluence.mechanic.0",
+      "dialogs.confluence.mechanic.1",
+      "dialogs.confluence.mechanic.2",
+      "dialogs.confluence.mechanic.3",
+      "dialogs.confluence.mechanic.4",
+      "dialogs.confluence.mechanic.5"
+    ]
+  },
+  "terra_entity:traveling_merchant": {
+    "dialogs": [
+      "dialogs.confluence.traveling_merchant.0",
+      "dialogs.confluence.traveling_merchant.1",
+      "dialogs.confluence.traveling_merchant.2",
+      "dialogs.confluence.traveling_merchant.3",
+      "dialogs.confluence.traveling_merchant.4",
+      "dialogs.confluence.traveling_merchant.5",
+      "dialogs.confluence.traveling_merchant.6",
+      "dialogs.confluence.traveling_merchant.7",
+      "dialogs.confluence.traveling_merchant.8"
+    ]
+  },
+  "terra_entity:witch_doctor": {
+    "dialogs": [
+      "dialogs.confluence.witch_doctor.0",
+      "dialogs.confluence.witch_doctor.1",
+      "dialogs.confluence.witch_doctor.2",
+      "dialogs.confluence.witch_doctor.3"
+    ]
+  },
+  "terra_entity:party_girl": {
+    "dialogs": [
+      "dialogs.confluence.party_girl.0",
+      "dialogs.confluence.party_girl.1",
+      "dialogs.confluence.party_girl.2",
+      "dialogs.confluence.party_girl.3",
+      "dialogs.confluence.party_girl.4",
+      "dialogs.confluence.party_girl.5",
+      "dialogs.confluence.party_girl.6"
+    ]
+  },
+  "terra_entity:clothier": {
+    "dialogs": [
+      "dialogs.confluence.clothier.0",
+      "dialogs.confluence.clothier.1",
+      "dialogs.confluence.clothier.2",
+      "dialogs.confluence.clothier.3",
+      "dialogs.confluence.clothier.4",
+      "dialogs.confluence.clothier.5",
+      "dialogs.confluence.clothier.6"
+    ]
+  },
+  "terra_entity:truffle": {
+    "dialogs": [
+      "dialogs.confluence.truffle.0",
+      "dialogs.confluence.truffle.1",
+      "dialogs.confluence.truffle.2",
+      "dialogs.confluence.truffle.3",
+      "dialogs.confluence.truffle.4",
+      "dialogs.confluence.truffle.5",
+      "dialogs.confluence.truffle.6"
+    ]
   }
 }

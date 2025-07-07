@@ -38,7 +38,7 @@ public class NightEdgeProjectileRenderer extends EntityRenderer<NightEdgeProject
         double lerpY = Mth.lerp(partialTick, entity.yo - entity.getOwner().yo, entity.getY() - entity.getOwner().getY());
         double lerpZ = Mth.lerp(partialTick, entity.zo - entity.getOwner().zo, entity.getZ() - entity.getOwner().getZ());
 
-        entity.trail.renderTrail(entity, entity.trailQueue, new Vec3(lerpX, lerpY, lerpZ), poseStack, bufferSource);
+        entity.trail.renderTrail(entity, entity.trailQueue, new Vec3(lerpX, lerpY, lerpZ), poseStack, bufferSource, packedLight);
 
         poseStack.pushPose();
 
@@ -51,7 +51,7 @@ public class NightEdgeProjectileRenderer extends EntityRenderer<NightEdgeProject
         poseStack.mulPose(Axis.ZN.rotationDegrees(-45));
 
 
-        Minecraft.getInstance().getItemRenderer().renderStatic(SwordItems.NIGHTS_EDGE.toStack(), ItemDisplayContext.FIXED, packedLight, OverlayTexture.NO_OVERLAY, poseStack, bufferSource, entity.level(), 0);
+//        Minecraft.getInstance().getItemRenderer().renderStatic(SwordItems.NIGHTS_EDGE.toStack(), ItemDisplayContext.FIXED, packedLight, OverlayTexture.NO_OVERLAY, poseStack, bufferSource, entity.level(), 0);
         super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
         poseStack.popPose();
 

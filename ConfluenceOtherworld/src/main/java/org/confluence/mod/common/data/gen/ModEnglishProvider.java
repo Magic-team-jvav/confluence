@@ -1176,6 +1176,53 @@ public class ModEnglishProvider extends LanguageProvider {
         add("dialogs.confluence.old_man.2", "Defeat my master, and I will grant you passage into the Dungeon.。");
         add("dialogs.confluence.old_man.3", "Come back at night if you wish to enter.");
 
+        add("dialogs.confluence.traveling_merchant.0", "Hmm, you look like you could use an Angel Statue! They slice, and dice, and make everything nice!");
+        add("dialogs.confluence.traveling_merchant.1", "I don't refund for \"buyer's remorse...\" Or for any other reason, really.");
+        add("dialogs.confluence.traveling_merchant.2", "Buy now and get free shipping!");
+        add("dialogs.confluence.traveling_merchant.3", "I sell wares from places that might not even exist!");
+        add("dialogs.confluence.traveling_merchant.4", "You want two penny farthings!? Make it one and we have a deal.");
+        add("dialogs.confluence.traveling_merchant.5", "Combination hookah and coffee maker! Also makes julienne fries!");
+        add("dialogs.confluence.traveling_merchant.6", "Come and have a look! One pound fish! Very, very good! One pound fish!");
+        add("dialogs.confluence.traveling_merchant.7", "If you're looking for junk, you've come to the wrong place.");
+        add("dialogs.confluence.traveling_merchant.8", "A thrift shop?  No, I am only selling the highest quality items on the market.");
+
+        add("dialogs.confluence.mechanic.0", "Did you make sure your device was plugged in?");
+        add("dialogs.confluence.mechanic.1", "Oh, you know what this house needs? More blinking lights.");
+        add("dialogs.confluence.mechanic.2", "DON'T MOVE. I DROPPED MY CONTACT.");
+        add("dialogs.confluence.mechanic.3", "Thank you! Sooner or later, I'll end up like the other skeletons in the dungeon.");
+        add("dialogs.confluence.mechanic.4", "I don't quite remember what happened in there. Three, maybe four important things...");
+        add("dialogs.confluence.mechanic.5", "Oh yes, the Signal Adapter! It can connect the redstone here to the wires perfectly.");
+
+        add("dialogs.confluence.witch_doctor.0", "Which doctor am I? The Witch Doctor am I.");
+        add("dialogs.confluence.witch_doctor.1", "Choose wisely, my commodities are volatile and my dark arts, mysterious.");
+        add("dialogs.confluence.witch_doctor.2", "The heart of magic is nature. The nature of hearts is magic.");
+        add("dialogs.confluence.witch_doctor.3", "I sense a kindred spirit in the Etherian Dark Mages. A pity they are our enemies, I would have liked to learn from them.");
+
+
+        add("dialogs.confluence.clothier.0", "Thanks again for freeing me from my curse. Felt like something jumped up and bit me.");
+        add("dialogs.confluence.clothier.1", "Mama always said I would make a great tailor.");
+        add("dialogs.confluence.clothier.2", "Life's like a box of clothes; you never know what you are gonna wear!");
+        add("dialogs.confluence.clothier.3", "Of course embroidery is hard! If it wasn't hard, no one would do it! That's what makes it great.");
+        add("dialogs.confluence.clothier.4", "I know everything they is to know about the clothierin' business.");
+        add("dialogs.confluence.clothier.5", "Being cursed was lonely, so I once made a friend out of leather. I named him Wilson.");
+        add("dialogs.confluence.clothier.6", "I keep having vague memories of tying up a woman and throwing her in a dungeon.");
+
+        add("dialogs.confluence.party_girl.0", "We have to talk. It's... it's about parties.");
+        add("dialogs.confluence.party_girl.1", "I can't decide what I like more: parties, or after-parties.");
+        add("dialogs.confluence.party_girl.2", "We should set up a blinkroot party, and we should also set up an after-party.");
+        add("dialogs.confluence.party_girl.3", "Put up a disco ball and then I'll show you how to party.");
+        add("dialogs.confluence.party_girl.4", "I went to Sweden once, they party hard, why aren't you like that?");
+        add("dialogs.confluence.party_girl.5", "My name's Party Girl but people call me party pooper. Yeah I don't know, it sounds cool though.");
+        add("dialogs.confluence.party_girl.6", "Do you party? Sometimes? Hm, okay then we can talk...");
+
+        add("dialogs.confluence.truffle.0", "As if living underground wasn't bad enough, jerks like you come in while I'm sleeping and steal my children.");
+        add("dialogs.confluence.truffle.1", "I tried to lick myself the other day to see what the big deal was, everything started glowing blue.");
+        add("dialogs.confluence.truffle.2", "Everytime I see the color blue, it makes me depressed and lazy.");
+        add("dialogs.confluence.truffle.3", "You haven't seen any pigs around here have you? My brother lost his leg to one.");
+        add("dialogs.confluence.truffle.4", "I don't know the 'Truffle Shuffle,' so stop asking!");
+        add("dialogs.confluence.truffle.5", "There's been such a huge rumor that's being spread about me, 'If you can't beat him, eat him!'");
+        add("dialogs.confluence.truffle.6", "I feel there are more of my kind here...");
+
         add("mood.terra_entity.goblin_tinkerer.like.dye_trader", "Dye Trader understands how fun it is to mix things together, I can respect that!");
         add("mood.terra_entity.guide.hate.painter", "I hate that Painter is around. The world is fine the way it was made!");
         add("mood.terra_entity.arms_dealer.hate.demolitionist", "I'd REALLY like to use the Demolitionist as a range target sometime.");
@@ -1190,6 +1237,21 @@ public class ModEnglishProvider extends LanguageProvider {
         add("mood.terra_entity.merchant.like.nurse", "Nurse makes loads of money, I like deep pockets.");
         add("mood.terra_entity.nurse.love.arms_dealer", "What? Arms Dealer? I don't have a crush! I don't! Shut up!");
         add("mood.terra_entity.nurse.dislike.dryad", "I don't like Dryad that much, kinda weirds me out.");
+        add("mood.terra_entity.truffle.love.guide", "I love Guide for being able to talk to me without mysteriously getting hungry.");
+        add("mood.terra_entity.truffle.like.dye_trader", " Dryad treats me with respect, as though I'm a true part of nature. I don't know how to feel about that, except I like it.");
+        add("mood.terra_entity.truffle.dislike.clothier", " Clothier has tried to eat me so many times. I swear, one time they weren't even human! I, obviously, dislike it.");
+        add("mood.terra_entity.truffle.hate.witch_doctor", "Witch Doctor has tried to throw me into a pot filled with other unusual ingredients. I hate that.");
+        add("mood.terra_entity.clothier.love.truffle", "Truffle? I hadn't seen anything so delicious in my life.");
+        add("mood.terra_entity.clothier.dislike.nurse", "For some reason, being around Nurse makes me feel uneasy.");
+        add("mood.terra_entity.clothier.hate.mechanic", "I hate Mechanic and I don't know why.");
+        add("mood.terra_entity.party_girl.dislike.merchant", "I think Merchant is a killjoy at parties.");
+        add("mood.terra_entity.witch_doctor.like.dryad", "the Dryad is a kindred spirit of nature, my soul is at peace in their presence.");
+        add("mood.terra_entity.witch_doctor.like.guide", "the Guide is a kindred spirit of nature, my soul is at peace in their presence.");
+        add("mood.terra_entity.witch_doctor.dislike.nurse", "I dislike the practices of the Nurse. True healing cannot come from metal and glass.");
+        add("mood.terra_entity.witch_doctor.hate.truffle", "Fury fills my being as abominations sprout from tainted earth - I speak of the Truffle.");
+        add("mood.terra_entity.mechanic.love.goblin_tinkerer", "Umm...Goblin Tinkerer makes my heart flutter, I need to get that checked!");
+        add("mood.terra_entity.mechanic.dislike.arms_dealer", "I don't really like that Arms Dealer won't leave me alone!");
+        add("mood.terra_entity.mechanic.hate.clothier", "I hate how Clothier doesn't know how to treat a woman!");
 
         // Patchouli Guide
         add("patchouli.confluence.otherworld_note.name", "Otherworld Note");

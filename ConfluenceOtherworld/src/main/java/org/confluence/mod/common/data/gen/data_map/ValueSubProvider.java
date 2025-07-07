@@ -89,6 +89,7 @@ public final class ValueSubProvider {
                 .add(Items.LAPIS_LAZULI, 50)
                 .add(Items.REDSTONE, 40)
                 .add(Items.GLOWSTONE_DUST, 20)
+                .add(Items.QUARTZ, 20)
                 .add(Items.NETHERITE_SCRAP, wrap(10, 0))
                 .add(Items.COAL, 40)
                 .add(Items.CHARCOAL, 40);
@@ -104,6 +105,11 @@ public final class ValueSubProvider {
                 .add(Items.LAPIS_BLOCK, 50 * 9)
                 .add(Items.REDSTONE_BLOCK, 40 * 9)
                 .add(Items.COAL_BLOCK, 40 * 9);
+        appender.create()
+                .add(Items.REDSTONE_LAMP, wrap(2, 0))
+                .add(Items.PISTON, wrap(4, 0))
+                .add(Items.STICKY_PISTON, wrap(6, 0))
+                .add(Items.DAYLIGHT_DETECTOR, wrap(2, 0));
         appender.create()
                 .add(Items.RAW_COPPER, 50)
                 .add(MaterialItems.RAW_TIN, 75)
@@ -1412,6 +1418,17 @@ public final class ValueSubProvider {
                 .add(FoodItems.SHIVERTHORN_SEED.get(), 16)
                 .add(FoodItems.STELLAR_BLOSSOM_SEED.get(), wrap(5, 0))
                 .add(FoodItems.WATERLEAF_SEED.get(), 16);
+        // 电器元件
+        appender.create()
+                .add(FunctionalBlocks.SWITCH.get(), wrap(4, 0))
+                .add(FunctionalBlocks.LEVER.get(), wrap(6, 0))
+                .add(FunctionalBlocks.SIGNAL_ADAPTER.get(), wrap(8, 0))
+                .add(FunctionalBlocks.EVER_POWERED_RAIL.get(), 40)
+                .add(FunctionalBlocks.TIMERS_BLOCK_1_1.get(),wrap(20, 0))
+                .add(FunctionalBlocks.TIMERS_BLOCK_3_1.get(),wrap(20, 0))
+                .add(FunctionalBlocks.TIMERS_BLOCK_5_1.get(),wrap(20, 0))
+                .add(FunctionalBlocks.TIMERS_BLOCK_1_2.get(),wrap(40, 0))
+                .add(FunctionalBlocks.TIMERS_BLOCK_1_4.get(),wrap(40, 0));
         WaystonesHelper.appendValue(appender.create());
     }
 

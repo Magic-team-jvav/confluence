@@ -85,15 +85,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .build());
 
         shop(TENpcEntities.GUIDE.getId()).addRecipe(new Builder()
-                //旅商的       .add(AccessoryItems.PAINT_SPRAYER)
-                //.add(TCItems.PORTABLE_CEMENT_MIXER)
-                //.add(TCItems.EXTENDO_GRIP)
-                //.add(TCItems.BRICK_LAYER)
-                //.add(TCItems.STOPWATCH)
-                // .add(TCItems.LIFE_FORM_ANALYZER)
-                // .add(TCItems.DPS_METER)
-                // .add(SwordItems.KATANA)
-                // .add(FoodItems.PAD_THAI)
+                //旅商的       
                 //动物学家的              .add(TEWhipItems.LEATHER_WHIP)
                 .build());
 
@@ -222,7 +214,60 @@ public class NPCShopProvider extends AbstractRecipeProvider {
         shop(TENpcEntities.OLD_MAN.getId()).addRecipe(new Builder()
                 .build());
 
-        shop(TENpcEntities.MECHANIC.getId()).addRecipe(new Builder().build());
+        shop(TENpcEntities.MECHANIC.getId()).addRecipe(withDefaultPylon()
+                .add(ToolItems.RED_WRENCH)
+                .add(ToolItems.BLUE_WRENCH)
+                .add(ToolItems.GREEN_WRENCH)
+                .add(ToolItems.YELLOW_WRENCH)
+                .add(ToolItems.WIRE_CUTTER)
+                .add(FishingPoleItems.MECHANICS_ROD) //todo 月相条件
+                .add(FunctionalBlocks.SWITCH)
+                .add(FunctionalBlocks.SIGNAL_ADAPTER)
+                .add(FunctionalBlocks.TIMERS_BLOCK_1_1)
+                .add(FunctionalBlocks.TIMERS_BLOCK_3_1)
+                .add(FunctionalBlocks.TIMERS_BLOCK_5_1)
+                .add(FunctionalBlocks.TIMERS_BLOCK_1_2)
+                .add(FunctionalBlocks.TIMERS_BLOCK_1_4)
+                .add(FunctionalBlocks.EVER_POWERED_RAIL)
+                .add(AccessoryItems.MECHANICAL_LENS)
+                .add(Items.PISTON)
+                .add(Items.STICKY_PISTON)
+                .add(Items.REDSTONE_LAMP)
+                .add(Items.DAYLIGHT_DETECTOR)
+                .add(SellTrade.INSTANCE)
+                .build());
+
+        shop(TENpcEntities.TRAVELING_MERCHANT.getId()).addRecipe(withDefaultPylon()
+                .add(AccessoryItems.PAINT_SPRAYER)
+                .add(TCItems.PORTABLE_CEMENT_MIXER)
+                .add(TCItems.EXTENDO_GRIP)
+                .add(TCItems.BRICK_LAYER)
+                .add(TCItems.STOPWATCH)
+                .add(TCItems.LIFE_FORM_ANALYZER)
+                .add(TCItems.DPS_METER)
+                .add(SwordItems.KATANA)
+                .add(FoodItems.PAD_THAI)
+                .add(SellTrade.INSTANCE)
+                .build());
+
+        shop(TENpcEntities.CLOTHIER.getId()).addRecipe(withDefaultPylon()
+                .add(VanityArmorItems.FAMILIAR_WIG)
+                .add(VanityArmorItems.FAMILIAR_SHIRT)
+                .add(VanityArmorItems.FAMILIAR_PANTS)
+                .add(VanityArmorItems.FAMILIAR_SHOES)
+                .add(SellTrade.INSTANCE)
+                .build());
+
+        shop(TENpcEntities.PARTY_GIRL.getId()).addRecipe(withDefaultPylon()
+                .add(FunctionalBlocks.SILLY_BALLOON_MACHINE)
+                .add(ConsumableItems.SMOKE_BOMB)
+                .add(SellTrade.INSTANCE)
+                .build());
+
+        shop(TENpcEntities.WITCH_DOCTOR.getId()).addRecipe(withDefaultPylon()
+                .add(FunctionalBlocks.CAULDRON) //todo 万圣节条件
+                .add(SellTrade.INSTANCE)
+                .build());
     }
 
 

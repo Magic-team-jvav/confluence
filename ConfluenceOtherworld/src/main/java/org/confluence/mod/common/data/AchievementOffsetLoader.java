@@ -5,6 +5,9 @@ import com.google.gson.JsonElement;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.phys.Vec2;
 import org.confluence.lib.common.data.SingleJsonFileReloadListener;
 import org.confluence.lib.util.LibUtils;
@@ -14,6 +17,7 @@ import org.confluence.mod.client.gui.AchievementToast;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -21,6 +25,18 @@ public class AchievementOffsetLoader extends SingleJsonFileReloadListener {
     public static volatile CompletableFuture<Void> WAITING_FOR = CompletableFuture.completedFuture(null);
     private static AchievementOffsetLoader INSTANCE;
     private Map<ResourceLocation, Vec2> registeredAchievements = ImmutableMap.of();
+
+    @Override
+    public final CompletableFuture<Void> reload(
+            PreparableReloadListener.PreparationBarrier stage,
+            ResourceManager resourceManager,
+            ProfilerFiller preparationsProfiler,
+            ProfilerFiller reloadProfiler,
+            Executor backgroundExecutor,
+            Executor gameExecutor
+    ) {
+        return WAITING_FOR = super.reload(stage, resourceManager, preparationsProfiler, reloadProfiler, backgroundExecutor, gameExecutor);
+    }
 
     protected void apply(Map<ResourceLocation, JsonElement> resourceList) {
         ImmutableMap.Builder<ResourceLocation, Vec2> builder = ImmutableMap.builder();

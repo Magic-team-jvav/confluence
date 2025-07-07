@@ -68,7 +68,7 @@ public final class EnchantmentUtils {
         Optional<EnchantedItemInUse> optional = EnchantmentHelper.getRandomItemWith(ModEnchantments.EffectComponentTypes.MANA_MENDING.get(), player, ItemStack::isDamaged);
         if (optional.isPresent()) {
             ItemStack stack = optional.get().itemStack();
-            MutableFloat threshold = new MutableFloat(8);
+            MutableFloat threshold = new MutableFloat(10);
             runIterationOnItem(stack, (enchantment, level) -> enchantment.value().modifyItemFilteredCount(
                     ModEnchantments.EffectComponentTypes.MANA_MENDING.get(), player.serverLevel(), level, stack, threshold
             ));

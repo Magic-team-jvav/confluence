@@ -25,23 +25,24 @@ public class NightEdgeProjectile extends SwordProjectile<NightEdgeProjectile> im
         this.hitCount = 9999;
         this.posAnimation = Vec3KeyframeAnimation.Builder()
                 .addKeyframe(0, new Vec3(-0.8,0.3,1))
-                .addKeyframe(5, new Vec3(1.5,-0.4,1))
-                .addKeyframe(10, new Vec3(1.5,-0.8,-2))
-                .addKeyframe(15, new Vec3(-0.8,-0.4,-2))
-                .addKeyframe(20, new Vec3(-0.8,0.3,1))
+                .addKeyframe(3, new Vec3(1.5,-0.4,1))
+                .addKeyframe(6, new Vec3(1.5,-0.8,-2))
+                .addKeyframe(9, new Vec3(-0.8,-0.4,-2))
+                .addKeyframe(12, new Vec3(-0.8,0.3,0.1))
                 .build();
 
 
         this.rotAnimation = Vec3KeyframeAnimation.Builder()
                 .addKeyframe(0, new Vec3(0,70,120))
-                .addKeyframe(5, new Vec3(0,-70,120))
-                .addKeyframe(10, new Vec3(0,-140,120))
-                .addKeyframe(15, new Vec3(0,-280,120))
-                .addKeyframe(20, new Vec3(0,-360,120))
+                .addKeyframe(3, new Vec3(0,-70,120))
+                .addKeyframe(6, new Vec3(0,-140,120))
+                .addKeyframe(9, new Vec3(0,-280,120))
+                .addKeyframe(12, new Vec3(0,-360,120))
                 .build();
 
         this.trail = new TerraSwordTrail(1, 0.15f, 0x121212);
         this.trailQueue = new LinkedList<>();
+        this.setExistTime(11);
 
     }
 

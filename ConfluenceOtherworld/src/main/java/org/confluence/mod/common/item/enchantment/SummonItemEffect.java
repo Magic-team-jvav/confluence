@@ -14,13 +14,13 @@ import net.minecraft.world.item.enchantment.LevelBasedValue;
 import net.minecraft.world.item.enchantment.effects.EnchantmentEntityEffect;
 import net.minecraft.world.phys.Vec3;
 
-public record SummonItemEntityEffect(Holder<Item> item, LevelBasedValue count) implements EnchantmentEntityEffect {
-    public static final MapCodec<SummonItemEntityEffect> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-            BuiltInRegistries.ITEM.holderByNameCodec().fieldOf("item").forGetter(SummonItemEntityEffect::item),
-            LevelBasedValue.CODEC.fieldOf("count").orElseGet(() -> LevelBasedValue.constant(1)).forGetter(SummonItemEntityEffect::count)
-    ).apply(instance, SummonItemEntityEffect::new));
+public record SummonItemEffect(Holder<Item> item, LevelBasedValue count) implements EnchantmentEntityEffect {
+    public static final MapCodec<SummonItemEffect> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+            BuiltInRegistries.ITEM.holderByNameCodec().fieldOf("item").forGetter(SummonItemEffect::item),
+            LevelBasedValue.CODEC.fieldOf("count").orElseGet(() -> LevelBasedValue.constant(1)).forGetter(SummonItemEffect::count)
+    ).apply(instance, SummonItemEffect::new));
 
-    public SummonItemEntityEffect(Holder<Item> item) {
+    public SummonItemEffect(Holder<Item> item) {
         this(item, LevelBasedValue.constant(1));
     }
 
@@ -36,7 +36,7 @@ public record SummonItemEntityEffect(Holder<Item> item, LevelBasedValue count) i
     }
 
     @Override
-    public MapCodec<SummonItemEntityEffect> codec() {
+    public MapCodec<SummonItemEffect> codec() {
         return CODEC;
     }
 }

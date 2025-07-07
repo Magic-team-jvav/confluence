@@ -68,11 +68,11 @@ public final class EnchantmentUtils {
         Optional<EnchantedItemInUse> optional = EnchantmentHelper.getRandomItemWith(ModEnchantments.EffectComponentTypes.MANA_MENDING.get(), player, ItemStack::isDamaged);
         if (optional.isPresent()) {
             ItemStack stack = optional.get().itemStack();
-            MutableFloat threshold = new MutableFloat();
+            MutableFloat threshold = new MutableFloat(8);
             runIterationOnItem(stack, (enchantment, level) -> enchantment.value().modifyItemFilteredCount(
                     ModEnchantments.EffectComponentTypes.MANA_MENDING.get(), player.serverLevel(), level, stack, threshold
             ));
-            int delta = (int) (consumedManaAmount - threshold.floatValue());
+            int delta = (int) (consumedManaAmount - Math.max(0, threshold.floatValue()));
             if (delta > 1) {
                 stack.setDamageValue(stack.getDamageValue() - delta);
             }
@@ -89,5 +89,14 @@ public final class EnchantmentUtils {
                 }
             }
         });
+    }
+
+    public static int processManaSicknessDuration(ServerPlayer player, int duration) {
+        MutableFloat ratio = new MutableFloat(1);
+        ItemStack itemStack = player.getMainHandItem();
+        runIterationOnItem(itemStack, (enchantment, level) -> enchantment.value().modifyEntityFilteredValue(
+                ModEnchantments.EffectComponentTypes.MANA_SICKNESS_DURATION_REDUCE.get(), player.serverLevel(), level, itemStack, player, ratio
+        ));
+        return (int) (duration * Math.max(0, ratio.floatValue()));
     }
 }

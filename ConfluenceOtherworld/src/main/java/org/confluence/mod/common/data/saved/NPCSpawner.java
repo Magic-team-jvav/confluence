@@ -263,7 +263,7 @@ public class NPCSpawner implements IGlobalData {
             // 发型师
             if (trySpawnGoblinTinkerer(player, pos, region)) continue;
             // 巫医
-            // 机械师
+            if (trySpawnMechanic(player, pos, region)) continue;
             // 派对女孩
             // 巫师
             // 税收官
@@ -431,6 +431,11 @@ public class NPCSpawner implements IGlobalData {
                 }
             }
         }
+        return false;
+    }
+
+    // todo
+    private boolean trySpawnMechanic(ServerPlayer serverPlayer, BlockPos pos, Region region) {
         return false;
     }
 

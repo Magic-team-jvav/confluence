@@ -30,7 +30,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.holdersets.OrHolderSet;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.item.ModItems;
-import org.confluence.mod.common.item.enchantment.SummonItemEntityEffect;
+import org.confluence.mod.common.item.enchantment.SummonItemEffect;
 
 import java.util.List;
 
@@ -39,6 +39,7 @@ public final class ModEnchantments {
     public static final ResourceKey<Enchantment> EFFICIENT_MAGIC = Confluence.asResourceKey(Registries.ENCHANTMENT, "efficient_magic");
     public static final ResourceKey<Enchantment> MANA_MENDING = Confluence.asResourceKey(Registries.ENCHANTMENT, "mana_mending");
     public static final ResourceKey<Enchantment> CELESTIAL_ABSORPTION = Confluence.asResourceKey(Registries.ENCHANTMENT, "celestial_absorption");
+    public static final ResourceKey<Enchantment> SOOTHED_MANA = Confluence.asResourceKey(Registries.ENCHANTMENT, "soothed_mana");
 
     public static void bootstrap(BootstrapContext<Enchantment> context) {
         HolderGetter<Item> item = context.lookup(Registries.ITEM);
@@ -80,27 +81,40 @@ public final class ModEnchantments {
                                 EquipmentSlotGroup.ANY
                         ))
                 .exclusiveWith(enchantment.getOrThrow(ModTags.Enchantments.MENDING_EXCLUSIVE))
-                .withEffect(EffectComponentTypes.MANA_MENDING.get(), new AddValue(LevelBasedValue.perLevel(8, -2)))
+                .withEffect(EffectComponentTypes.MANA_MENDING.get(), new AddValue(LevelBasedValue.perLevel(-2)))
         );
         register(context, CELESTIAL_ABSORPTION, Enchantment.enchantment(
                         Enchantment.definition(
                                 item.getOrThrow(ModTags.Items.MANA_WEAPON),
                                 2,
-                                3,
+                                2,
                                 Enchantment.dynamicCost(25, 25),
                                 Enchantment.dynamicCost(75, 25),
                                 4,
                                 EquipmentSlotGroup.MAINHAND
                         ))
-                .exclusiveWith(enchantment.getOrThrow(ModTags.Enchantments.MENDING_EXCLUSIVE))
+                .exclusiveWith(enchantment.getOrThrow(ModTags.Enchantments.MANA_AFFECTIVE_EXCLUSIVE))
                 .withEffect(
                         EffectComponentTypes.ATTACK_DROPS_STAR.get(),
                         EnchantmentTarget.ATTACKER,
                         EnchantmentTarget.VICTIM,
-                        new SummonItemEntityEffect(item.getOrThrow(ModItems.STAR.getKey()), LevelBasedValue.perLevel(0.1F, 0.2F)),
+                        new SummonItemEffect(item.getOrThrow(ModItems.STAR.getKey()), LevelBasedValue.perLevel(0.1F)),
                         LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity())
                                 .and(DamageSourceCondition.hasDamageSource(DamageSourcePredicate.Builder.damageType().tag(TagPredicate.is(Tags.DamageTypes.IS_MAGIC))))
                 )
+        );
+        register(context, SOOTHED_MANA, Enchantment.enchantment(
+                        Enchantment.definition(
+                                item.getOrThrow(ModTags.Items.MANA_WEAPON),
+                                2,
+                                2,
+                                Enchantment.dynamicCost(25, 25),
+                                Enchantment.dynamicCost(75, 25),
+                                4,
+                                EquipmentSlotGroup.MAINHAND
+                        ))
+                .exclusiveWith(enchantment.getOrThrow(ModTags.Enchantments.MANA_AFFECTIVE_EXCLUSIVE))
+                .withEffect(EffectComponentTypes.MANA_SICKNESS_DURATION_REDUCE.get(), new AddValue(LevelBasedValue.perLevel(-0.1F)))
         );
     }
 
@@ -115,6 +129,7 @@ public final class ModEnchantments {
         public static final DeferredHolder<DataComponentType<?>, DataComponentType<Unit>> EFFICIENT_MAGIC = registerUnit("efficient_magic");
         public static final DeferredHolder<DataComponentType<?>, DataComponentType<List<ConditionalEffect<EnchantmentValueEffect>>>> MANA_MENDING = registerCommon("mana_mending", LootContextParamSets.ENCHANTED_ITEM);
         public static final DeferredHolder<DataComponentType<?>, DataComponentType<List<TargetedConditionalEffect<EnchantmentEntityEffect>>>> ATTACK_DROPS_STAR = registerTargeted("drops_star", LootContextParamSets.ENCHANTED_DAMAGE);
+        public static final DeferredHolder<DataComponentType<?>, DataComponentType<List<ConditionalEffect<EnchantmentValueEffect>>>> MANA_SICKNESS_DURATION_REDUCE = registerCommon("mana_sickness_duration_reduce", LootContextParamSets.ENCHANTED_ENTITY);
 
         private static DeferredHolder<DataComponentType<?>, DataComponentType<List<ConditionalEffect<EnchantmentValueEffect>>>> registerCommon(String name, LootContextParamSet paramSet) {
             return TYPES.register(name, () -> DataComponentType.<List<ConditionalEffect<EnchantmentValueEffect>>>builder().persistent(ConditionalEffect.codec(EnchantmentValueEffect.CODEC, paramSet).listOf()).build());
@@ -133,7 +148,7 @@ public final class ModEnchantments {
         public static final DeferredRegister<MapCodec<? extends EnchantmentEntityEffect>> TYPES = DeferredRegister.create(BuiltInRegistries.ENCHANTMENT_ENTITY_EFFECT_TYPE, Confluence.MODID);
 
         static {
-            TYPES.register("summon_item", () -> SummonItemEntityEffect.CODEC);
+            TYPES.register("summon_item", () -> SummonItemEffect.CODEC);
         }
     }
 

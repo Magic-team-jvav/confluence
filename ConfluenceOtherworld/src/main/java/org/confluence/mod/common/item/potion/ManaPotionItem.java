@@ -11,6 +11,7 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.util.EnchantmentUtils;
 import org.confluence.mod.util.PlayerUtils;
 
 public class ManaPotionItem extends AbstractPotionItem {
@@ -32,9 +33,9 @@ public class ManaPotionItem extends AbstractPotionItem {
             PlayerUtils.receiveMana(serverPlayer, () -> (float) amount);
             MobEffectInstance instance = serverPlayer.getEffect(ModEffects.MANA_SICKNESS);
             if (instance == null) {
-                serverPlayer.addEffect(new MobEffectInstance(ModEffects.MANA_SICKNESS, 100));
+                serverPlayer.addEffect(new MobEffectInstance(ModEffects.MANA_SICKNESS, EnchantmentUtils.processManaSicknessDuration(serverPlayer, 100)));
             } else {
-                instance.mapDuration(raw -> Math.min(raw + 100, 200));
+                instance.mapDuration(raw -> EnchantmentUtils.processManaSicknessDuration(serverPlayer, Math.min(raw + 100, 200)));
                 serverPlayer.addEffect(instance);
             }
         }

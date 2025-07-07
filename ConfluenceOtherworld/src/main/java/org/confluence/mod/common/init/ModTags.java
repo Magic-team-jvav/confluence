@@ -265,5 +265,6 @@ public final class ModTags {
     public static class Enchantments {
         public static final TagKey<Enchantment> MANA_IO_EXCLUSIVE = Confluence.asTagKey(Registries.ENCHANTMENT, "mana_io_exclusive");
         public static final TagKey<Enchantment> MENDING_EXCLUSIVE = Confluence.asTagKey(Registries.ENCHANTMENT, "mending_exclusive");
+        public static final TagKey<Enchantment> MANA_AFFECTIVE_EXCLUSIVE = Confluence.asTagKey(Registries.ENCHANTMENT, "mana_affective_exclusive");
     }
 }

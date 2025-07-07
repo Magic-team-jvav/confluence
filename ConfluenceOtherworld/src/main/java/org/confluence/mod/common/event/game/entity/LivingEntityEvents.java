@@ -57,10 +57,7 @@ import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.network.s2c.DeathMotionPacketS2C;
 import org.confluence.mod.network.s2c.VisibilityPacketS2C;
-import org.confluence.mod.util.AchievementUtils;
-import org.confluence.mod.util.DateUtils;
-import org.confluence.mod.util.ModUtils;
-import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.util.*;
 import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terraentity.entity.ai.Boss;
 import org.confluence.terraentity.entity.monster.slime.GoldenSlime;
@@ -184,6 +181,10 @@ public final class LivingEntityEvents {
 
         ModUtils.applyBrainOfCthulhuDebuff(level, attacker, living);
         ModUtils.applyCursedSkullDebuff(attacker, living);
+
+        if (attacker instanceof ServerPlayer player) {
+            EnchantmentUtils.dropsStar(player, living, damageSource);
+        }
 
         // 芦苇呼吸管对溺水伤害减半
         if (damageSource.is(DamageTypes.DROWN)) {

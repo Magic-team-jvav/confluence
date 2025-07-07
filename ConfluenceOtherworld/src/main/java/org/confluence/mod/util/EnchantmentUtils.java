@@ -3,11 +3,12 @@ package org.confluence.mod.util;
 import com.google.common.collect.Streams;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.ConditionalEffect;
-import net.minecraft.world.item.enchantment.EnchantedItemInUse;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.*;
+import net.minecraft.world.item.enchantment.effects.EnchantmentEntityEffect;
 import net.minecraft.world.item.enchantment.effects.EnchantmentValueEffect;
 import net.minecraft.world.level.storage.loot.LootContext;
 import org.apache.commons.lang3.mutable.MutableFloat;
@@ -19,8 +20,7 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import static net.minecraft.world.item.enchantment.Enchantment.applyEffects;
-import static net.minecraft.world.item.enchantment.Enchantment.entityContext;
+import static net.minecraft.world.item.enchantment.Enchantment.*;
 import static net.minecraft.world.item.enchantment.EnchantmentHelper.runIterationOnItem;
 
 public final class EnchantmentUtils {
@@ -69,11 +69,25 @@ public final class EnchantmentUtils {
         if (optional.isPresent()) {
             ItemStack stack = optional.get().itemStack();
             MutableFloat threshold = new MutableFloat();
-            runIterationOnItem(stack, (enchantment, level) -> enchantment.value().modifyItemFilteredCount(ModEnchantments.EffectComponentTypes.MANA_MENDING.get(), player.serverLevel(), level, stack, threshold));
+            runIterationOnItem(stack, (enchantment, level) -> enchantment.value().modifyItemFilteredCount(
+                    ModEnchantments.EffectComponentTypes.MANA_MENDING.get(), player.serverLevel(), level, stack, threshold
+            ));
             int delta = (int) (consumedManaAmount - threshold.floatValue());
             if (delta > 1) {
                 stack.setDamageValue(stack.getDamageValue() - delta);
             }
         }
+    }
+
+    public static void dropsStar(ServerPlayer player, LivingEntity victim, DamageSource damageSource) {
+        ItemStack itemStack = player.getMainHandItem();
+        EnchantedItemInUse item = new EnchantedItemInUse(itemStack, EquipmentSlot.MAINHAND, player);
+        runIterationOnItem(itemStack, (enchantment, level) -> {
+            for (TargetedConditionalEffect<EnchantmentEntityEffect> effect : enchantment.value().getEffects(ModEnchantments.EffectComponentTypes.ATTACK_DROPS_STAR.get())) {
+                if (effect.enchanted() == EnchantmentTarget.ATTACKER) {
+                    doPostAttack(effect, player.serverLevel(), level, item, victim, damageSource);
+                }
+            }
+        });
     }
 }

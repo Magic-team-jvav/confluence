@@ -85,7 +85,12 @@ public abstract class AbstractMechanicalBlock extends Block implements EntityBlo
 
         @Override
         public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-            return serializePoses(super.getUpdateTag(registries), "connectedPoses", connectedPoses);
+            return serializePoses(new CompoundTag(), "connectedPoses", connectedPoses);
+        }
+
+        @Override
+        public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+            deserializePoses(tag, "connectedPoses", connectedPoses);
         }
 
         @Override

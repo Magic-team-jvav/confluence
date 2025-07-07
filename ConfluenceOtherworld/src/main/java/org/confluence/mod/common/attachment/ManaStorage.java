@@ -4,14 +4,13 @@ import com.xiaohunao.equipment_benediction.common.hook.HookMapManager;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.INBTSerializable;
 import org.confluence.mod.api.event.AdditionalManaEvent;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModHookTypes;
 import org.confluence.mod.common.init.item.AccessoryItems;
-import org.confluence.mod.common.item.potion.ManaPotionItem;
+import org.confluence.mod.util.EnchantmentUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.util.TCUtils;
 
@@ -67,21 +66,9 @@ public class ManaStorage implements INBTSerializable<CompoundTag> {
     public boolean extractMana(Supplier<Float> sup, ServerPlayer serverPlayer) {
         if (!canExtract()) return false;
         float extract = sup.get() * (1.0F - TCUtils.getAccessoriesValue(serverPlayer, AccessoryItems.MANA$USE$REDUCE));
-        if (currentMana < extract) {
-            if (!TCUtils.hasAccessoriesType(serverPlayer, AccessoryItems.AUTO$GET$MANA)) return false;
-            ItemStack toUse = null;
-            for (ItemStack itemStack : serverPlayer.getInventory().items) {
-                if (itemStack.getItem() instanceof ManaPotionItem manaPotion) {
-                    int amount = manaPotion.getAmount();
-                    if (currentMana + amount < extract) continue;
-                    if (toUse == null || amount < ((ManaPotionItem) toUse.getItem()).getAmount()) toUse = itemStack;
-                    if (amount == 50) break;
-                }
-            }
-            if (toUse == null) return false;
-            toUse.finishUsingItem(serverPlayer.level(), serverPlayer);
-        }
+        if (PlayerUtils.applyAutoGetMana(serverPlayer, currentMana, extract)) return false;
         this.currentMana -= extract;
+        EnchantmentUtils.repairPlayerItems(serverPlayer, extract);
         return true;
     }
 

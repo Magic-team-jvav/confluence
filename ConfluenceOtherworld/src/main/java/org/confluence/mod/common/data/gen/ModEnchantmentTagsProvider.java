@@ -3,6 +3,8 @@ package org.confluence.mod.common.data.gen;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.EnchantmentTagsProvider;
+import net.minecraft.tags.EnchantmentTags;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEnchantments;
@@ -17,6 +19,17 @@ public class ModEnchantmentTagsProvider extends EnchantmentTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
+        tag(EnchantmentTags.TOOLTIP_ORDER).add(
+                ModEnchantments.MANA_REGENERATION,
+                ModEnchantments.EFFICIENT_MAGIC,
+                ModEnchantments.MANA_MENDING
+        );
+
         tag(ModTags.Enchantments.MANA_IO_EXCLUSIVE).add(ModEnchantments.MANA_REGENERATION, ModEnchantments.EFFICIENT_MAGIC);
+        tag(ModTags.Enchantments.MENDING_EXCLUSIVE).add(ModEnchantments.MANA_MENDING, Enchantments.MENDING);
+        tag(EnchantmentTags.TREASURE).add(ModEnchantments.MANA_MENDING);
+        tag(EnchantmentTags.ON_RANDOM_LOOT).add(ModEnchantments.MANA_MENDING);
+        tag(EnchantmentTags.TRADEABLE).add(ModEnchantments.MANA_MENDING);
+        tag(EnchantmentTags.NON_TREASURE).add(ModEnchantments.MANA_REGENERATION, ModEnchantments.EFFICIENT_MAGIC);
     }
 }

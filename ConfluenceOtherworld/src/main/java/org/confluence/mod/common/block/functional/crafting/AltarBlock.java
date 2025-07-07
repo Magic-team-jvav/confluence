@@ -12,7 +12,6 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.network.protocol.game.ClientboundSetActionBarTextPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -276,7 +275,7 @@ public class AltarBlock extends BaseEntityBlock {
         @Override
         public void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
             super.loadAdditional(nbt, registries);
-            variant = Variant.byId(nbt.getInt("variant"));
+            this.variant = Variant.byId(nbt.getInt("variant"));
             itemHandler.setItems(NonNullList.withSize(CONTAINER_SIZE, ItemStack.EMPTY));
             ContainerHelper.loadAllItems(nbt, itemHandler.getItems(), registries);
         }
@@ -324,6 +323,13 @@ public class AltarBlock extends BaseEntityBlock {
             nbt.putInt("variant", variant.id);
             ContainerHelper.saveAllItems(nbt, itemHandler.getItems(), registries);
             return nbt;
+        }
+
+        @Override
+        public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+            this.variant = Variant.byId(tag.getInt("variant"));
+            itemHandler.setItems(NonNullList.withSize(CONTAINER_SIZE, ItemStack.EMPTY));
+            ContainerHelper.loadAllItems(tag, itemHandler.getItems(), lookupProvider);
         }
 
         public void markUpdated() {

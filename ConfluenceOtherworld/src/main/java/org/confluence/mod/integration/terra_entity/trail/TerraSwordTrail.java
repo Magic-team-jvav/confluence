@@ -57,25 +57,28 @@ public class TerraSwordTrail implements ITrail<NightEdgeProjectile> {
 
     @OnlyIn(Dist.CLIENT)
     public void renderTrail(NightEdgeProjectile holder, Queue<Vec3> trailsQueue, Vec3 entityPos, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
-        RenderType main = RenderType.create("entity_cutout_no_cull_custom", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 1536, true, false,
+        RenderType main = RenderType.create("entity_cutout_no_cull_custom", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 1536, false, false,
                 RenderType.CompositeState.builder()
                         .setShaderState(RENDERTYPE_ENTITY_CUTOUT_NO_CULL_SHADER)
-                        .setTextureState(new RenderStateShard.TextureStateShard(Confluence.asResource("textures/mask/sword.png"), false, false))
+                        .setTextureState(new RenderStateShard.TextureStateShard(Confluence.asResource("textures/mask/sword.png"), true, false))
                         .setTransparencyState(NO_TRANSPARENCY)
                         .setCullState(NO_CULL)
                         .setLightmapState(LIGHTMAP)
                         .setOverlayState(OVERLAY)
+                        .setWriteMaskState(COLOR_WRITE)
                         .createCompositeState(true));
+
         this.actualRender(holder, trailsQueue, entityPos, poseStack, bufferSource, packedLight, main);
-        RenderType glow = RenderType.create("entity_cutout_no_cull_glow", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 1536, true, false,
+        RenderType glow = RenderType.create("entity_translucent_emissive", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 1536, true, false,
                 RenderType.CompositeState.builder()
-                        .setShaderState(RENDERTYPE_ENTITY_CUTOUT_NO_CULL_SHADER)
-                        .setTextureState(new RenderStateShard.TextureStateShard(Confluence.asResource("textures/mask/sword.png"), false, false))
-                        .setTransparencyState(ADDITIVE_TRANSPARENCY)
+                        .setShaderState(RENDERTYPE_ENTITY_TRANSLUCENT_EMISSIVE_SHADER)
+                        .setTextureState(new RenderStateShard.TextureStateShard(Confluence.asResource("textures/mask/sword.png"), true, false))
+                        .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
+                        .setWriteMaskState(COLOR_WRITE)
                         .setCullState(NO_CULL)
-                        .setLightmapState(LIGHTMAP)
+//                        .setLightmapState(LIGHTMAP)
                         .setOverlayState(OVERLAY)
-                        .createCompositeState(true));
+                        .createCompositeState(false));
         poseStack.scale(1.1f, 1.1f, 1.1f);
         this.actualRender(holder, trailsQueue, entityPos, poseStack, bufferSource, packedLight, glow);
     }

@@ -13,6 +13,7 @@ import net.minecraft.data.worldgen.Carvers;
 import net.minecraft.data.worldgen.placement.MiscOverworldPlacements;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.*;
+import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.Item;
@@ -24,12 +25,16 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.biome.BiomeSpecialEffects;
 import net.minecraft.world.level.biome.MobSpawnSettings;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
+import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.placement.*;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockMatchTest;
 import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
@@ -50,6 +55,7 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.worldgen.SecretFlagPlacement;
+import org.confluence.mod.common.worldgen.feature.BranchTreeFeature;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
 
@@ -144,6 +150,13 @@ public class ModDataProvider {
             ore(context, TIN_ORE, 10, OreConfiguration.target(stoneOreReplaceables, OreBlocks.TIN_ORE.get().defaultBlockState()));
             ore(context, TOPAZ_ORE, 8, OreConfiguration.target(stoneOreReplaceables, OreBlocks.TOPAZ_ORE.get().defaultBlockState()), OreConfiguration.target(deepslateOreReplaceables, OreBlocks.DEEPSLATE_TOPAZ_ORE.get().defaultBlockState()));
             ore(context, TUNGSTEN_ORE, 5, OreConfiguration.target(stoneOreReplaceables, OreBlocks.TUNGSTEN_ORE.get().defaultBlockState()), OreConfiguration.target(deepslateOreReplaceables, OreBlocks.DEEPSLATE_TUNGSTEN_ORE.get().defaultBlockState()));
+            gemTree(context, ModFeatures.Configured.AMBER, NatureBlocks.AMBER_BRANCHES.get());
+            gemTree(context, ModFeatures.Configured.AMETHYST, NatureBlocks.AMETHYST_BRANCHES.get());
+            gemTree(context, ModFeatures.Configured.DIAMOND, NatureBlocks.DIAMOND_BRANCHES.get());
+            gemTree(context, ModFeatures.Configured.JADE, NatureBlocks.JADE_BRANCHES.get());
+            gemTree(context, ModFeatures.Configured.RUBY, NatureBlocks.RUBY_BRANCHES.get());
+            gemTree(context, ModFeatures.Configured.SAPPHIRE, NatureBlocks.SAPPHIRE_BRANCHES.get());
+            gemTree(context, ModFeatures.Configured.TOPAZ, NatureBlocks.TOPAZ_BRANCHES.get());
         }
 
         private static void ore(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, int size, OreConfiguration.TargetBlockState... targets) {
@@ -156,6 +169,10 @@ public class ModDataProvider {
 
         private static void scatteredOre(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, int size, OreConfiguration.TargetBlockState... targets) {
             context.register(key, new ConfiguredFeature<>(Feature.SCATTERED_ORE, new OreConfiguration(Arrays.stream(targets).toList(), size)));
+        }
+
+        private static void gemTree(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, Block branchesBlock) {
+            context.register(key, new ConfiguredFeature<>(ModFeatures.BRANCH_TREE.get(), new BranchTreeFeature.Config(BlockStateProvider.simple(NatureBlocks.STONY_LOG.get()), BlockStateProvider.simple(branchesBlock), 6, 2)));
         }
     }
 
@@ -194,6 +211,13 @@ public class ModDataProvider {
         private static final ResourceKey<PlacedFeature> TIN_ORE = key("tin_ore");
         private static final ResourceKey<PlacedFeature> TOPAZ_ORE = key("topaz_ore");
         private static final ResourceKey<PlacedFeature> TUNGSTEN_ORE = key("tungsten_ore");
+        private static final ResourceKey<PlacedFeature> AMBER_TREE = key("amber_tree");
+        private static final ResourceKey<PlacedFeature> AMETHYST_TREE = key("amethyst_tree");
+        private static final ResourceKey<PlacedFeature> DIAMOND_TREE = key("diamond_tree");
+        private static final ResourceKey<PlacedFeature> JADE_TREE = key("jade_tree");
+        private static final ResourceKey<PlacedFeature> RUBY_TREE = key("ruby_tree");
+        private static final ResourceKey<PlacedFeature> SAPPHIRE_TREE = key("sapphire_tree");
+        private static final ResourceKey<PlacedFeature> TOPAZ_TREE = key("topaz_tree");
 
         private static ResourceKey<PlacedFeature> key(String path) {
             return Confluence.asResourceKey(Registries.PLACED_FEATURE, path);
@@ -242,10 +266,21 @@ public class ModDataProvider {
             register(context, TIN_ORE, configured.getOrThrow(ConfiguredFeatures.TIN_ORE), CountPlacement.of(16), inSquare, biome, heightRangeTriangle(0, 128));
             register(context, TOPAZ_ORE, configured.getOrThrow(ConfiguredFeatures.TOPAZ_ORE), count1, inSquare, biome, heightRangeTriangle(-52, 10));
             register(context, TUNGSTEN_ORE, configured.getOrThrow(ConfiguredFeatures.TUNGSTEN_ORE), SecretFlagPlacement.of(IWorldOptions.TC_MASK, true), count4, inSquare, biome, heightRangeTriangle(-38, 20));
+            registerGemTree(context, AMBER_TREE, configured.getOrThrow(ModFeatures.Configured.AMBER), NatureBlocks.AMBER_SAPLING.get());
+            registerGemTree(context, AMETHYST_TREE, configured.getOrThrow(ModFeatures.Configured.AMETHYST), NatureBlocks.AMETHYST_SAPLING.get());
+            registerGemTree(context, DIAMOND_TREE, configured.getOrThrow(ModFeatures.Configured.DIAMOND), NatureBlocks.DIAMOND_SAPLING.get());
+            registerGemTree(context, JADE_TREE, configured.getOrThrow(ModFeatures.Configured.JADE), NatureBlocks.JADE_SAPLING.get());
+            registerGemTree(context, RUBY_TREE, configured.getOrThrow(ModFeatures.Configured.RUBY), NatureBlocks.RUBY_SAPLING.get());
+            registerGemTree(context, SAPPHIRE_TREE, configured.getOrThrow(ModFeatures.Configured.SAPPHIRE), NatureBlocks.SAPPHIRE_SAPLING.get());
+            registerGemTree(context, TOPAZ_TREE, configured.getOrThrow(ModFeatures.Configured.TOPAZ), NatureBlocks.TOPAZ_SAPLING.get());
         }
 
         private static void register(BootstrapContext<PlacedFeature> context, ResourceKey<PlacedFeature> key, Holder<ConfiguredFeature<?, ?>> feature, PlacementModifier... modifiers) {
             context.register(key, new PlacedFeature(feature, Arrays.stream(modifiers).toList()));
+        }
+
+        private static void registerGemTree(BootstrapContext<PlacedFeature> context, ResourceKey<PlacedFeature> key, Holder<ConfiguredFeature<?, ?>> feature, Block saplingBlock) {
+            register(context, key, feature, RarityFilter.onAverageOnceEvery(10), InSquarePlacement.spread(), BiomeFilter.biome(), HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(0), VerticalAnchor.absolute(60)), EnvironmentScanPlacement.scanningFor(Direction.DOWN, BlockPredicate.solid(), BlockPredicate.matchesBlocks(Blocks.AIR), 12), RandomOffsetPlacement.vertical(ConstantInt.of(1)), BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(saplingBlock.defaultBlockState(), Vec3i.ZERO)));
         }
 
         private static PlacementModifier heightRangeTriangle(int min, int max) {

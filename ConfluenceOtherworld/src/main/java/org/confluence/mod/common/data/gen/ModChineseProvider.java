@@ -179,6 +179,14 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.9", "而灵魂早被碾成岩缝里的尘，比魔像的空壳更荒芜。");
 
         // 文本物品↓
+        add("item.confluence.afterlife_notes", "来世手记");
+        add("item.confluence.village_exploration", "村庄环游起源");
+        add("item.confluence.research_on_wheat_mutation", "关于小麦异变的研究");
+        add("item.confluence.research_on_cloud_blocks_1", "关于对云块的研究 I");
+        add("item.confluence.research_on_cloud_blocks_2", "关于对云块的研究 II");
+        add("item.confluence.meteor_diary", "流星日记");
+
+        // 小纸条
         add("item.confluence.mysterious_note.name_0", "带牙印的小纸条");
         add("lore.confluence.mysterious_note_0", "呜被你发现了，不要告诉别人小狗藏在这里UQYQU");
         add("item.confluence.mysterious_note.name_1", "带橘子气息的小纸条");
@@ -213,6 +221,21 @@ public class ModChineseProvider extends LanguageProvider {
         add("text.building_1", "预计版本%s完成");
         add("text.building_2", "请勿靠近!");
 
+        add("text.confluence.afterlife_notes", "  冒险者，新的天地充满了无尽的挑战与机遇，这本手记将帮助你了解这个世界的奥秘，指引你面对怪物和困境，只有不断探索，你才能发现更多的力量与宝藏，你的旅途才刚刚开始。                            —— 向导");
+        add("text.confluence.village_exploration", "世界异变悄然降临，生灵阴暗的邪念纷纷爆发，外界的肉体侵扰接踵而至。所有可用的资源，皆被唤醒。新世界的降临，既带来了毁灭的阴影，也打开了新的可能。建筑如腾飞的鸟儿，直抵苍穹，令人惊叹。曾经无法触及的云彩，如今化作实体的方块，映衬出人们心中的渴望。在探索的旅程中，他们掌握了前所未有的知识，发现了新的植物，仿佛在喧嚣中寻得了一隅宁静。在那片");
+        add("text.confluence.village_exploration_0", "净土上，新的希望悄然滋生，带来了久违的安详。");
+        add("text.confluence.research_on_wheat_mutation", "我们发现，带来的小麦竟开始发白、发黄。起初，我们以为它们无法适应这陌生的环境，直到一块云块轻盈飘过，它把小麦染上了彩霞的色彩，幻化为一种全新的植物。对这异变的产物，我们心中难免生出怀疑——直到有人忍饥挨饿，迫切渴望食物。奇怪的是，明明吃饱了，身体却似乎愈发轻盈，仿佛与大地的重负渐行渐远。在这奇异的世界里，变化与困惑交织，我们开始重新审");
+        add("text.confluence.research_on_wheat_mutation_0", "视，食物的本质和生命的奇迹。");
+        add("text.confluence.research_on_cloud_blocks_1", "云块，无毒的存在，成分为天际凝结的冰晶，含量各异。随着与异星的长时间接触，这些云彩逐渐实体化，能够承载成年人的重量，护佑他们免受强烈动能的冲击。然而，靠近的植物却开始出现异变，我们对此仍感到困惑，不知这奇异的变迁何以而生。在这神秘的交汇处，云与植物编织出未知的故事，仿佛大自然正悄然书写着新篇章。");
+        add("text.confluence.research_on_cloud_blocks_2", "随着研究的深入，我们渐渐发现，云块与一种名为云织草的植物其实是同质的存在。云织草在云块之上生长，静静收集高空的水汽，直到孕育出全新的云块。如今，这种植物已被移植到云的花圃中，成为我们重要的建筑资源。在这神秘的空间里，植物与云彩交融，编织出无尽的可能，将构筑梦想的力量交付于大地。");
+        add("text.confluence.meteor_diary", "它们划破夜空，令怪物们心生畏惧；而我们却常常对着流星，静静许下愿望。或许，它们真的拥有无形的魔力。孩子们仰望，满怀喜悦，追逐着那微弱的光辉；它们从云间悄然生长，又轻盈地从云中坠落。在这夜的舞台上，流星闪烁着希望的光芒，温暖着每一个期待的心灵。");
+
+        add("lore.confluence.village_exploration", "看不出详细的年代，但是感觉包装很精良的样子......");
+        add("lore.confluence.research_on_wheat_mutation", "书页中混杂着一些粉末，但是好像并不是书页老化出来的粉末......");
+        add("lore.confluence.research_on_cloud_blocks_1", "明明很厚一本书，拿在手上却轻飘飘的。看标题的样子好像还有另一本？");
+        add("lore.confluence.research_on_cloud_blocks_2", "书页摸起来非常柔软，就好像丝绸一样。看标题的样子好像还有另一本？");
+        add("lore.confluence.meteor_diary", "很薄的书，但似乎有些荧荧微光。");
+
         add("author.confluence.the_ancestor_of_explorers", "最初的发起人");
         add("author.confluence.sheila", "希尔娜");
         add("author.confluence.lorissa", "洛丽莎");
@@ -246,6 +269,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("key.confluence.extra_inventory", "快捷打开额外栏");
         add("key.confluence.hook", "使用钩爪");
         add("key.confluence.specular_detail", "视觉药水细节观测");
+
+        add("death.attack.dungeon_altar", "Steve在准备用陨石指南针右键祭坛时死于非命");
 
         add("death.attack.falling_star", "%1$s 得到了流星的回应");
         add("death.attack.boulder", "%1$s 被巨石均匀地涂抹在地上");

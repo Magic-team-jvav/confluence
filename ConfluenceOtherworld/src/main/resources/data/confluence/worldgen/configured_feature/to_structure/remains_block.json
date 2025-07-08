@@ -1,0 +1,16 @@
+{
+  "type": "confluence:ground_block",
+  "config": {
+    "block": {
+      "type": "simple_state_provider",
+      "state": {
+        "Name": "confluence:remains_block",
+        "Properties": {
+          "facing":"up",
+          "is_face_sturdy":"true"
+        }
+      }
+    },
+    "max_down": 3
+  }
+}

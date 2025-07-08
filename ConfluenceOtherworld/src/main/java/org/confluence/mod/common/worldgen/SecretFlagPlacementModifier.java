@@ -22,6 +22,21 @@ public class SecretFlagPlacementModifier extends PlacementModifier implements Se
         this.flip = flip;
     }
 
+    /**
+     * @see org.confluence.mod.mixed.IWorldOptions
+     */
+    public static SecretFlagPlacementModifier of(long flag) {
+        return new SecretFlagPlacementModifier(flag, false);
+    }
+
+    /**
+     * @param flip 反向判断
+     * @see org.confluence.mod.mixed.IWorldOptions
+     */
+    public static SecretFlagPlacementModifier of(long flag, boolean flip) {
+        return new SecretFlagPlacementModifier(flag, flip);
+    }
+
     @Override
     public Stream<BlockPos> getPositions(PlacementContext context, RandomSource random, BlockPos pos) {
         return matchesSecretFlag() ? Stream.of(pos) : Stream.empty();

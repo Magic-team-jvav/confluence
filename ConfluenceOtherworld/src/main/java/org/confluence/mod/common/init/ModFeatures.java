@@ -151,7 +151,6 @@ public final class ModFeatures {
         public static final ResourceKey<PlacedFeature> GLOWING_MUSHROOM_VINE = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("glowing_mushroom_vine"));
         public static final ResourceKey<PlacedFeature> GLOWING_MUSHROOM_CATTAILS = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("glowing_mushroom_cattails"));
 
-        public static final ResourceKey<PlacedFeature> ASH_HELLSTONE_GENERATES = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("ash_hellstone_generates"));
         public static final ResourceKey<PlacedFeature> ASH_GRASS = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("ash_grass"));
         public static final ResourceKey<PlacedFeature> ASH_TREE = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("ash_tree"));
         public static final ResourceKey<PlacedFeature> FIREBLOSSOM = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("fireblossom"));

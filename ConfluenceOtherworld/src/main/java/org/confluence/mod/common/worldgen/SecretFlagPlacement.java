@@ -11,13 +11,13 @@ import org.confluence.mod.common.init.ModFeatures;
 
 import java.util.stream.Stream;
 
-public class SecretFlagPlacementModifier extends PlacementModifier implements SecretFlagMatcher {
-    public static final MapCodec<SecretFlagPlacementModifier> CODEC = SecretFlagMatcher.createMapCodec(SecretFlagPlacementModifier::new);
+public class SecretFlagPlacement extends PlacementModifier implements SecretFlagMatcher {
+    public static final MapCodec<SecretFlagPlacement> CODEC = SecretFlagMatcher.createMapCodec(SecretFlagPlacement::new);
 
     private final long flag;
     private final boolean flip;
 
-    public SecretFlagPlacementModifier(long flag, boolean flip) {
+    public SecretFlagPlacement(long flag, boolean flip) {
         this.flag = flag;
         this.flip = flip;
     }
@@ -25,16 +25,16 @@ public class SecretFlagPlacementModifier extends PlacementModifier implements Se
     /**
      * @see org.confluence.mod.mixed.IWorldOptions
      */
-    public static SecretFlagPlacementModifier of(long flag) {
-        return new SecretFlagPlacementModifier(flag, false);
+    public static SecretFlagPlacement of(long flag) {
+        return new SecretFlagPlacement(flag, false);
     }
 
     /**
      * @param flip 反向判断
      * @see org.confluence.mod.mixed.IWorldOptions
      */
-    public static SecretFlagPlacementModifier of(long flag, boolean flip) {
-        return new SecretFlagPlacementModifier(flag, flip);
+    public static SecretFlagPlacement of(long flag, boolean flip) {
+        return new SecretFlagPlacement(flag, flip);
     }
 
     @Override

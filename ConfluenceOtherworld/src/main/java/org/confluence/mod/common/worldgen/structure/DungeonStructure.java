@@ -317,27 +317,27 @@ public class DungeonStructure extends Structure {
 
             StructureTemplateManager manager = context.structureTemplateManager();
 
-            builder.addPiece(new SimpleTemplatePiece(manager, UG_0_1, underCenter.offset(96, -41, 70), true, true, Rotation.CLOCKWISE_180));
-            builder.addPiece(new SimpleTemplatePiece(manager, UG_0_2, underCenter.offset(96, -41, 23), true, true, Rotation.CLOCKWISE_180));
-            builder.addPiece(new SimpleTemplatePiece(manager, UG_0_3, underCenter.offset(96, -41, -24), true, true, Rotation.CLOCKWISE_180));
-            builder.addPiece(new SimpleTemplatePiece(manager, UG_1_0, underCenter.offset(70, -41, 96), true, true, Rotation.CLOCKWISE_180));
-            builder.addPiece(new SimpleTemplatePiece(manager, UG_1_1, underCenter.offset(70, -41, 70), true, true, Rotation.CLOCKWISE_180));
-            builder.addPiece(new SimpleTemplatePiece(manager, UG_1_2, underCenter.offset(70, -41, 23), true, true, Rotation.CLOCKWISE_180));
-            builder.addPiece(new SimpleTemplatePiece(manager, UG_1_3, underCenter.offset(70, -41, -24), true, true, Rotation.CLOCKWISE_180));
-            builder.addPiece(new SimpleTemplatePiece(manager, UG_1_4, underCenter.offset(70, -41, -71), true, true, Rotation.CLOCKWISE_180));
-            builder.addPiece(new SimpleTemplatePiece(manager, UG_2_0, underCenter.offset(23, -41, 96), true, true, Rotation.CLOCKWISE_180));
-            builder.addPiece(new SimpleTemplatePiece(manager, UG_2_1, underCenter.offset(23, -41, 70), true, true, Rotation.CLOCKWISE_180));
-            builder.addPiece(new SimpleTemplatePiece(manager, UG_2_2, underCenter.offset(23, -41, 23), true, true, Rotation.CLOCKWISE_180));
-            builder.addPiece(new SimpleTemplatePiece(manager, UG_2_3, underCenter.offset(23, -41, -24), true, true, Rotation.CLOCKWISE_180));
-            builder.addPiece(new SimpleTemplatePiece(manager, UG_2_4, underCenter.offset(23, -41, -71), true, true, Rotation.CLOCKWISE_180));
-            builder.addPiece(new SimpleTemplatePiece(manager, UG_3_0, underCenter.offset(-24, -41, 96), true, true, Rotation.CLOCKWISE_180));
-            builder.addPiece(new SimpleTemplatePiece(manager, UG_3_1, underCenter.offset(-24, -41, 70), true, true, Rotation.CLOCKWISE_180));
-            builder.addPiece(new SimpleTemplatePiece(manager, UG_3_2, underCenter.offset(-24, -41, 23), true, true, Rotation.CLOCKWISE_180));
-            builder.addPiece(new SimpleTemplatePiece(manager, UG_3_3, underCenter.offset(-24, -41, -24), true, true, Rotation.CLOCKWISE_180));
-            builder.addPiece(new SimpleTemplatePiece(manager, UG_3_4, underCenter.offset(-24, -41, -71), true, true, Rotation.CLOCKWISE_180));
-            builder.addPiece(new SimpleTemplatePiece(manager, UG_4_1, underCenter.offset(-71, -41, 70), true, true, Rotation.CLOCKWISE_180));
-            builder.addPiece(new SimpleTemplatePiece(manager, UG_4_2, underCenter.offset(-71, -41, 23), true, true, Rotation.CLOCKWISE_180));
-            builder.addPiece(new SimpleTemplatePiece(manager, UG_4_3, underCenter.offset(-71, -41, -24), true, true, Rotation.CLOCKWISE_180));
+            builder.addPiece(new SimpleTemplatePiece(manager, UG_4_3, underCenter.offset(-96, -41, -70), true, true, Rotation.NONE));
+            builder.addPiece(new SimpleTemplatePiece(manager, UG_4_2, underCenter.offset(-96, -41, -23), true, true, Rotation.NONE));
+            builder.addPiece(new SimpleTemplatePiece(manager, UG_4_1, underCenter.offset(-96, -41, 24), true, true, Rotation.NONE));
+            builder.addPiece(new SimpleTemplatePiece(manager, UG_3_4, underCenter.offset(-70, -41, -96), true, true, Rotation.NONE));
+            builder.addPiece(new SimpleTemplatePiece(manager, UG_3_3, underCenter.offset(-70, -41, -70), true, true, Rotation.NONE));
+            builder.addPiece(new SimpleTemplatePiece(manager, UG_3_2, underCenter.offset(-70, -41, -23), true, true, Rotation.NONE));
+            builder.addPiece(new SimpleTemplatePiece(manager, UG_3_1, underCenter.offset(-70, -41, 24), true, false, Rotation.NONE));
+            builder.addPiece(new SimpleTemplatePiece(manager, UG_3_0, underCenter.offset(-70, -41, 71), true, true, Rotation.NONE));
+            builder.addPiece(new SimpleTemplatePiece(manager, UG_2_4, underCenter.offset(-23, -41, -96), true, true, Rotation.NONE));
+            builder.addPiece(new SimpleTemplatePiece(manager, UG_2_3, underCenter.offset(-23, -41, -70), true, true, Rotation.NONE));
+            builder.addPiece(new SimpleTemplatePiece(manager, UG_2_2, underCenter.offset(-23, -41, -23), true, true, Rotation.NONE));
+            builder.addPiece(new SimpleTemplatePiece(manager, UG_2_1, underCenter.offset(-23, -41, 24), true, true, Rotation.NONE));
+            builder.addPiece(new SimpleTemplatePiece(manager, UG_2_0, underCenter.offset(-23, -41, 71), true, true, Rotation.NONE));
+            builder.addPiece(new SimpleTemplatePiece(manager, UG_1_4, underCenter.offset(24, -41, -96), true, true, Rotation.NONE));
+            builder.addPiece(new SimpleTemplatePiece(manager, UG_1_3, underCenter.offset(24, -41, -70), true, true, Rotation.NONE));
+            builder.addPiece(new SimpleTemplatePiece(manager, UG_1_2, underCenter.offset(24, -41, -23), true, true, Rotation.NONE));
+            builder.addPiece(new SimpleTemplatePiece(manager, UG_1_1, underCenter.offset(24, -41, 24), true, true, Rotation.NONE));
+            builder.addPiece(new SimpleTemplatePiece(manager, UG_1_0, underCenter.offset(24, -41, 71), true, true, Rotation.NONE));
+            builder.addPiece(new SimpleTemplatePiece(manager, UG_0_3, underCenter.offset(71, -41, -70), true, true, Rotation.NONE));
+            builder.addPiece(new SimpleTemplatePiece(manager, UG_0_2, underCenter.offset(71, -41, -23), true, true, Rotation.NONE));
+            builder.addPiece(new SimpleTemplatePiece(manager, UG_0_1, underCenter.offset(71, -41, 24), true, true, Rotation.NONE));
 
             lineSet(firstChannel, 2.5, 2.5, 0, true, blockMap);
             rectangular(underCenter.offset(-2, 48, -2), underCenter.offset(2, 48, 2), 6, blockMap, 0);

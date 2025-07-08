@@ -1,38 +1,23 @@
 package org.confluence.mod.common.init;
 
 import com.mojang.serialization.MapCodec;
-import net.minecraft.advancements.critereon.DamageSourcePredicate;
-import net.minecraft.advancements.critereon.EntityPredicate;
-import net.minecraft.advancements.critereon.TagPredicate;
-import net.minecraft.core.HolderGetter;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.tags.DamageTypeTags;
-import net.minecraft.tags.EnchantmentTags;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Unit;
-import net.minecraft.world.entity.EquipmentSlotGroup;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.enchantment.*;
-import net.minecraft.world.item.enchantment.effects.AddValue;
+import net.minecraft.world.item.enchantment.ConditionalEffect;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.TargetedConditionalEffect;
 import net.minecraft.world.item.enchantment.effects.EnchantmentEntityEffect;
 import net.minecraft.world.item.enchantment.effects.EnchantmentValueEffect;
-import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
-import net.minecraft.world.level.storage.loot.predicates.DamageSourceCondition;
-import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import net.neoforged.neoforge.registries.holdersets.OrHolderSet;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.enchantment.SummonItemEffect;
-import org.confluence.mod.common.init.item.ModItems;
 
 import java.util.List;
 
@@ -43,106 +28,6 @@ public final class ModEnchantments {
     public static final ResourceKey<Enchantment> CELESTIAL_ABSORPTION = Confluence.asResourceKey(Registries.ENCHANTMENT, "celestial_absorption");
     public static final ResourceKey<Enchantment> SOOTHED_MANA = Confluence.asResourceKey(Registries.ENCHANTMENT, "soothed_mana");
     public static final ResourceKey<Enchantment> ARCANE_PROTECTION = Confluence.asResourceKey(Registries.ENCHANTMENT, "arcane_protection");
-
-    public static void bootstrap(BootstrapContext<Enchantment> context) {
-        HolderGetter<Item> item = context.lookup(Registries.ITEM);
-        HolderGetter<Enchantment> enchantment = context.lookup(Registries.ENCHANTMENT);
-        register(context, MANA_REGENERATION, Enchantment.enchantment(
-                        Enchantment.definition(
-                                new OrHolderSet<>(item.getOrThrow(Tags.Items.ARMORS), item.getOrThrow(ModTags.Items.MANA_WEAPON)),
-                                2,
-                                3,
-                                Enchantment.dynamicCost(25, 25),
-                                Enchantment.dynamicCost(75, 25),
-                                4,
-                                EquipmentSlotGroup.ARMOR, EquipmentSlotGroup.MAINHAND
-                        ))
-                .exclusiveWith(enchantment.getOrThrow(ModTags.Enchantments.MANA_IO_EXCLUSIVE))
-                .withEffect(EffectComponentTypes.MANA_REGENERATION.get(), new AddValue(LevelBasedValue.perLevel(0.1F)))
-        );
-        register(context, EFFICIENT_MAGIC, Enchantment.enchantment(
-                        Enchantment.definition(
-                                item.getOrThrow(ModTags.Items.MANA_WEAPON),
-                                2,
-                                1,
-                                Enchantment.dynamicCost(25, 25),
-                                Enchantment.dynamicCost(75, 25),
-                                4,
-                                EquipmentSlotGroup.MAINHAND
-                        ))
-                .exclusiveWith(enchantment.getOrThrow(ModTags.Enchantments.MANA_IO_EXCLUSIVE))
-                .withEffect(EffectComponentTypes.EFFICIENT_MAGIC.get())
-        );
-        register(context, MANA_MENDING, Enchantment.enchantment(
-                        Enchantment.definition(
-                                item.getOrThrow(ItemTags.DURABILITY_ENCHANTABLE),
-                                2,
-                                3,
-                                Enchantment.dynamicCost(25, 25),
-                                Enchantment.dynamicCost(75, 25),
-                                4,
-                                EquipmentSlotGroup.ANY
-                        ))
-                .exclusiveWith(enchantment.getOrThrow(ModTags.Enchantments.MENDING_EXCLUSIVE))
-                .withEffect(EffectComponentTypes.MANA_MENDING.get(), new AddValue(LevelBasedValue.perLevel(-2)))
-        );
-        register(context, CELESTIAL_ABSORPTION, Enchantment.enchantment(
-                        Enchantment.definition(
-                                item.getOrThrow(ModTags.Items.MANA_WEAPON),
-                                2,
-                                2,
-                                Enchantment.dynamicCost(25, 25),
-                                Enchantment.dynamicCost(75, 25),
-                                4,
-                                EquipmentSlotGroup.MAINHAND
-                        ))
-                .exclusiveWith(enchantment.getOrThrow(ModTags.Enchantments.MANA_AFFECTIVE_EXCLUSIVE))
-                .withEffect(
-                        EffectComponentTypes.ATTACK_DROPS_MANA.get(),
-                        EnchantmentTarget.ATTACKER,
-                        EnchantmentTarget.VICTIM,
-                        new SummonItemEffect(item.getOrThrow(ModItems.STAR.getKey()), LevelBasedValue.perLevel(0.1F)),
-                        LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity())
-                                .and(DamageSourceCondition.hasDamageSource(DamageSourcePredicate.Builder.damageType().tag(TagPredicate.is(Tags.DamageTypes.IS_MAGIC))))
-                )
-        );
-        register(context, SOOTHED_MANA, Enchantment.enchantment(
-                        Enchantment.definition(
-                                item.getOrThrow(ModTags.Items.MANA_WEAPON),
-                                2,
-                                2,
-                                Enchantment.dynamicCost(25, 25),
-                                Enchantment.dynamicCost(75, 25),
-                                4,
-                                EquipmentSlotGroup.MAINHAND
-                        ))
-                .exclusiveWith(enchantment.getOrThrow(ModTags.Enchantments.MANA_AFFECTIVE_EXCLUSIVE))
-                .withEffect(EffectComponentTypes.MANA_SICKNESS_DURATION_REDUCE.get(), new AddValue(LevelBasedValue.perLevel(-0.1F)))
-        );
-        register(context, ARCANE_PROTECTION, Enchantment.enchantment(
-                        Enchantment.definition(
-                                item.getOrThrow(ItemTags.ARMOR_ENCHANTABLE),
-                                2,
-                                4,
-                                Enchantment.dynamicCost(25, 25),
-                                Enchantment.dynamicCost(75, 25),
-                                4,
-                                EquipmentSlotGroup.HEAD, EquipmentSlotGroup.CHEST, EquipmentSlotGroup.LEGS, EquipmentSlotGroup.FEET
-                        ))
-                .exclusiveWith(enchantment.getOrThrow(EnchantmentTags.ARMOR_EXCLUSIVE))
-                .withEffect(
-                        EffectComponentTypes.MANA_PROTECTION.get(),
-                        new AddValue(LevelBasedValue.perLevel(0.05F)),
-                        DamageSourceCondition.hasDamageSource(
-                                DamageSourcePredicate.Builder.damageType().tag(TagPredicate.isNot(DamageTypeTags.BYPASSES_INVULNERABILITY))
-                        )
-                )
-        );
-    }
-
-    private static void register(BootstrapContext<Enchantment> context, ResourceKey<Enchantment> key, Enchantment.Builder builder) {
-        context.register(key, builder.build(key.location()));
-    }
 
     public static final class EffectComponentTypes {
         public static final DeferredRegister.DataComponents TYPES = DeferredRegister.createDataComponents(Registries.ENCHANTMENT_EFFECT_COMPONENT_TYPE, Confluence.MODID);

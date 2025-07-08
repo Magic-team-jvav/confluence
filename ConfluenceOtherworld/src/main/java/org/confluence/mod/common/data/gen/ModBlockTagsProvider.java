@@ -321,6 +321,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 WALL_ANNOUNCEMENT_BOX.get(),
                 GRANITE.get(),
                 AETHERIUM_BRICKS.get(),
+                SPIKE.get(),
 
                 TOMBSTONE.get(),
                 GRAVE_MARKER.get(),
@@ -646,6 +647,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 GOLDEN_GRAVESTONE.get(),
 
                 SAFE.get(),
+                SPIKE.get(),
 
                 AETHERIUM_BLOCK.get(),
                 DARK_AETHERIUM_BLOCK.get(),
@@ -700,7 +702,13 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 HELLSTONE_BLOCK.get(),
                 RAW_HELLSTONE_BLOCK.get(),
                 ASH_HELLSTONE.get(),
-                HELLSTONE_BRICKS.get(),
+                HELLSTONE_BRICKS.get()
+        );
+        tag(ModTags.Blocks.NEEDS_5_LEVEL).add(
+                DEEPSLATE_COBALT_ORE.get(),
+                RAW_COBALT_BLOCK.get(),
+                DEEPSLATE_PALLADIUM_ORE.get(),
+                RAW_PALLADIUM_BLOCK.get(),
                 BLUE_BRICKS.get(),
                 GREEN_BRICKS.get(),
                 PINK_BRICKS.get(),
@@ -712,13 +720,10 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 PINK_BRICK_STAIRS.get(),
                 BLUE_BRICK_SLAB.get(),
                 GREEN_BRICK_SLAB.get(),
-                PINK_BRICK_SLAB.get()
-        );
-        tag(ModTags.Blocks.NEEDS_5_LEVEL).add(
-                DEEPSLATE_COBALT_ORE.get(),
-                RAW_COBALT_BLOCK.get(),
-                DEEPSLATE_PALLADIUM_ORE.get(),
-                RAW_PALLADIUM_BLOCK.get()
+                PINK_BRICK_SLAB.get(),
+                BLUE_BRICK_COLUMN.get(),
+                GREEN_BRICK_COLUMN.get(),
+                PINK_BRICK_COLUMN.get()
         );
         tag(ModTags.Blocks.NEEDS_6_LEVEL).add(
                 DEEPSLATE_MYTHRIL_ORE.get(),
@@ -824,7 +829,13 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 SHADOW_ORB.get(),
                 CRIMSON_HEART.get(),
                 DEMON_ALTAR.get(),
-                CRIMSON_ALTAR.get()
+                CRIMSON_ALTAR.get(),
+                ENCHANTED_BLUE_BRICKS.get(),
+                ENCHANTED_FRAGILE_BLUE_BRICKS.get(),
+                ENCHANTED_GREEN_BRICKS.get(),
+                ENCHANTED_FRAGILE_GREEN_BRICKS.get(),
+                ENCHANTED_PINK_BRICKS.get(),
+                ENCHANTED_FRAGILE_PINK_BRICKS.get()
         );
         tag(ModTags.Blocks.MINEABLE_WITH_HAMAXE).addTag(ModTags.Blocks.MINEABLE_WITH_HAMMER).addTag(BlockTags.MINEABLE_WITH_AXE);
         tag(ModTags.Blocks.MINEABLE_WITH_HOE_SHOVEL).addTag(BlockTags.MINEABLE_WITH_SHOVEL).addTag(BlockTags.MINEABLE_WITH_HOE);

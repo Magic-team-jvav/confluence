@@ -242,6 +242,7 @@ public final class ModTags {
 
     public static class Biomes {
         public static final TagKey<Biome> IS_CONFLUENCE = register("is_confluence");
+        public static final TagKey<Biome> IS_FOREST = register("is_forest");
         public static final TagKey<Biome> SPREADABLE = register("spreadable");
         public static final TagKey<Biome> THE_CORRUPTION = register("the_corruption");
         public static final TagKey<Biome> THE_CRIMSON = register("the_crimson");

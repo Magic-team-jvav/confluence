@@ -429,6 +429,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.ocean_key.0", "“Opens the ocean room door and ocean chest in the dungeon”");
         add("tooltip.item.confluence.universe_key.0", "“Opens the space room door and space chest in the dungeon”");
         add("tooltip.item.confluence.rust_iron_key.0", "“Opens the laboratory room door in the dungeon”");
+        add("tooltip.item.confluence.mechanic_safe_key.0", "“Opens mechanic safe chest in the dungeon”");
         add("tooltip.item.confluence.dungeon_compass.0", "“Wear it, and the eerie skull will guide your way”");
         add("tooltip.item.confluence.golden_lock_box.0", "“Right click to open”");
         add("tooltip.item.confluence.golden_lock_box.1", "“Requires a Dungeon Golden Key”");

@@ -419,6 +419,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.ocean_key.0", "“打开地牢中的海洋房间门和海洋箱”");
         add("tooltip.item.confluence.universe_key.0", "“打开地牢中的太空房间门和太空箱”");
         add("tooltip.item.confluence.rust_iron_key.0", "“打开地牢中的实验室房间门”");
+        add("tooltip.item.confluence.mechanic_safe_key.0", "“打开地牢中的机械保险箱”");
         add("tooltip.item.confluence.dungeon_compass.0", "“戴上它，诡异的头骨会为你指引方向”");
         add("tooltip.item.confluence.golden_lock_box.0", "“使用钥匙在背包中右键打开”");
         add("tooltip.item.confluence.golden_lock_box.1", "“需要地牢金钥匙”");

@@ -59,6 +59,19 @@ public class ModChineseProvider extends LanguageProvider {
         add("message.confluence.lock.or", " 或 ");
         add("message.confluence.dungeon_not_found", "未成功找到地牢");
 
+        add("enchantment.confluence.mana_regeneration", "魔力再生");
+        add("enchantment.confluence.mana_regeneration.desc", "提升魔力自然再生时的量");
+        add("enchantment.confluence.efficient_magic", "高效魔能");
+        add("enchantment.confluence.efficient_magic.desc", "魔力值越少，魔力消耗越少");
+        add("enchantment.confluence.mana_mending", "魔力修补");
+        add("enchantment.confluence.mana_mending.desc", "一次使用的魔力超过阈值时恢复物品耐久，恢复的量为超过阈值的量向下取整");
+        add("enchantment.confluence.celestial_absorption", "天穹纳元");
+        add("enchantment.confluence.celestial_absorption.desc", "使用魔法类武器造成魔法伤害时有概率掉落星星");
+        add("enchantment.confluence.soothed_mana", "魔症缓释");
+        add("enchantment.confluence.soothed_mana.desc", "减小魔力病持续时间");
+        add("enchantment.confluence.arcane_protection", "奥术防护");
+        add("enchantment.confluence.arcane_protection.desc", "受到伤害时抽取的魔力为最大魔力值乘积一定比率的值，抵消的伤害为受到的伤害乘积该比率的值");
+
         add("gamerule.confluenceSpreadableChance", "邪恶群系蔓延设置");
         add("generator.confluence.the_corruption", "腐化之地");
         add("generator.confluence.the_crimson", "猩红之地");

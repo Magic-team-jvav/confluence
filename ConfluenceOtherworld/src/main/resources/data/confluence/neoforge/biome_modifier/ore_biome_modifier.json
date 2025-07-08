@@ -29,7 +29,7 @@
         "confluence:silver_ore_generates",
         "confluence:ruby_ore_generates",
         "confluence:topaz_ore_generates",
-        "confluence:amethyst_ore_generates",
+        "confluence:amethyst_ore",
         "confluence:jade_ore_generates",
         "confluence:sapphire_ore_generates",
         "confluence:lead_ore_generates",

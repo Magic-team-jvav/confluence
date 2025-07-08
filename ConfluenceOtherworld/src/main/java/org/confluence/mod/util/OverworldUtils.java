@@ -11,6 +11,7 @@ import net.minecraft.data.worldgen.features.TreeFeatures;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
@@ -96,5 +97,13 @@ public final class OverworldUtils {
             }
         }
         return original.call(instance, blockPos, blockState, i);
+    }
+
+    public static int getSurfaceY() {
+        return 40;
+    }
+
+    public static boolean onSurface(Entity entity) {
+        return entity.getY() > getSurfaceY();
     }
 }

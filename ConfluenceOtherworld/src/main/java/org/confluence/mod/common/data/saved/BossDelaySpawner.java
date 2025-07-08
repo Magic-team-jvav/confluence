@@ -3,8 +3,8 @@ package org.confluence.mod.common.data.saved;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.util.ModUtils;
+import org.confluence.mod.util.OverworldUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,10 +18,10 @@ public class BossDelaySpawner {
         if (!bossQueue.isEmpty()) {
             bossQueue.removeIf(mobDelayed -> {
                 if (mobDelayed.delay-- <= 0 && mobDelayed.predicate.test(serverLevel)) {
-                    Vec3 vec3 = serverLevel.players().stream().findAny().map(Entity::position)
-                            .orElseGet(serverLevel.getLevelData().getSpawnPos()::getCenter);
-                    ModUtils.summonBoss(serverLevel, vec3, mobDelayed.entity);
-                    return true;
+                    serverLevel.players().stream().filter(OverworldUtils::onSurface).findAny().ifPresentOrElse(player -> {
+                        ModUtils.summonBoss(serverLevel, player.position(), mobDelayed.entity);
+                    }, () -> mobDelayed.delay = 20);
+                    return mobDelayed.delay <= 0;
                 }
                 return false;
             });

@@ -30,7 +30,6 @@ import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import org.confluence.lib.common.block.StateProperties;
 import org.confluence.lib.common.worldgen.structure.GridPiece;
-import org.confluence.lib.common.worldgen.structure.SimpleTemplatePiece;
 import org.confluence.lib.util.BooleanStorage4;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.VectorUtils;
@@ -580,7 +579,7 @@ public class DungeonStructure extends Structure {
 
                 BoundingBox boundingBox = structureStart.getBoundingBox(); // getBoundingBox已优化过缓存
                 boolean shouldAlert = CommonConfigs.ALERT_PLAYER_IN_DUNGEON.get();
-                if (boundingBox.isInside(player.blockPosition()) && player.getY() <= boundingBox.minY() + 51) {
+                if (boundingBox.isInside(player.blockPosition()) && player.getY() <= boundingBox.minY() + 84) {
                     level.playSound(null, player.blockPosition(), TESounds.ROAR.get(), SoundSource.HOSTILE);
                     if (shouldAlert) {
                         byte alert = LibUtils.getOrCreatePersistedData(player).getByte("confluence:dungeon_guardian_alert");

@@ -17,12 +17,16 @@ import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 
 public class HeavyWorkBenchRecipe extends EitherAmountRecipe4x<EnvironmentRecipeInput> {
-    public HeavyWorkBenchRecipe(ItemStack pResult, Either<ShapedRecipePattern, NonNullList<Ingredient>> either) {
-        super(pResult, either);
+    public HeavyWorkBenchRecipe(ItemStack result, Either<ShapedRecipePattern, NonNullList<Ingredient>> either) {
+        super(result, either);
     }
 
-    public HeavyWorkBenchRecipe(ItemStack pResult, ShapedRecipePattern pattern) {
-        super(pResult, pattern);
+    public HeavyWorkBenchRecipe(ItemStack result, NonNullList<Ingredient> ingredients) {
+        super(result, ingredients);
+    }
+
+    public HeavyWorkBenchRecipe(ItemStack result, ShapedRecipePattern pattern) {
+        super(result, pattern);
     }
 
     @Override
@@ -51,8 +55,8 @@ public class HeavyWorkBenchRecipe extends EitherAmountRecipe4x<EnvironmentRecipe
     }
 
     public static class Serializer implements RecipeSerializer<HeavyWorkBenchRecipe> {
-        public static final MapCodec<HeavyWorkBenchRecipe> CODEC = EitherAmountRecipe4x.shapedSerializerMapCodec(HeavyWorkBenchRecipe::new);
-        public static final StreamCodec<RegistryFriendlyByteBuf, HeavyWorkBenchRecipe> STREAM_CODEC = EitherAmountRecipe4x.eitherSerializerSteamCodec(HeavyWorkBenchRecipe::new);
+        public static final MapCodec<HeavyWorkBenchRecipe> CODEC = EitherAmountRecipe4x.eitherSerializerMapCodec(HeavyWorkBenchRecipe::new);
+        public static final StreamCodec<RegistryFriendlyByteBuf, HeavyWorkBenchRecipe> STREAM_CODEC = EitherAmountRecipe4x.eitherSerializerStreamCodec(HeavyWorkBenchRecipe::new);
 
         @Override
         public MapCodec<HeavyWorkBenchRecipe> codec() {

@@ -1,6 +1,7 @@
 package org.confluence.mod.common.data.gen.recipe;
 
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.NonNullList;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -17,16 +18,15 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.StatueBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.recipe.HeavyWorkBenchRecipe;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_furniture.common.init.TFBlocks;
 import org.confluence.terra_guns.common.init.TGItems;
-import org.confluence.terraentity.init.TEItems;
 import org.confluence.terraentity.init.item.TESummonItems;
 import org.confluence.terraentity.init.item.TEWhipItems;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Map;
@@ -36,7 +36,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
     private final List<String> baseHookPattern = List.of(
             "aa#"
     );
-    private final List<@NotNull String> baseWhipPattern = List.of(
+    private final List<String> baseWhipPattern = List.of(
             "  a ",
             " a a",
             " # a",
@@ -65,7 +65,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         buildBaseStatues(recipeOutput);
 
         // 玻璃窑
-        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 '#', AmountIngredient.of(2, ModTags.Items.LEAD_AND_IRON),
                 'a', Ingredient.of(Items.TORCH)
         ), List.of(
@@ -119,20 +119,20 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 '#', Ingredient.of(Tags.Items.GEMS),
                 'a', Ingredient.of(Items.GOLD_INGOT)
         );
-        heavyWorkBench(recipeOutput, "golden_helmet_from_reinforce", ShapedRecipePattern.of(goldWithGems, List.of(
+        shaped(recipeOutput, "golden_helmet_from_reinforce", ShapedRecipePattern.of(goldWithGems, List.of(
                 "a#a",
                 "a a"
         )), ArmorItems.GOLDEN_HELMET.toStack());
-        heavyWorkBench(recipeOutput, "golden_leggings_from_reinforce", ShapedRecipePattern.of(goldWithGems, List.of(
+        shaped(recipeOutput, "golden_leggings_from_reinforce", ShapedRecipePattern.of(goldWithGems, List.of(
                 "a#a",
                 "a a",
                 "a a"
         )), ArmorItems.GOLDEN_LEGGINGS.toStack());
-        heavyWorkBench(recipeOutput, "golden_boots_from_reinforce", ShapedRecipePattern.of(goldWithGems, List.of(
+        shaped(recipeOutput, "golden_boots_from_reinforce", ShapedRecipePattern.of(goldWithGems, List.of(
                 "a a",
                 "a#a"
         )), ArmorItems.GOLDEN_BOOTS.toStack());
-        heavyWorkBench(recipeOutput, "golden_chestplate_from_reinforce", ShapedRecipePattern.of(goldWithGems, List.of(
+        shaped(recipeOutput, "golden_chestplate_from_reinforce", ShapedRecipePattern.of(goldWithGems, List.of(
                 "a a",
                 "a#a",
                 "aaa"
@@ -142,33 +142,33 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 'a', Ingredient.of(Items.GOLD_INGOT),
                 '/', Ingredient.of(Items.STICK)
         );
-        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(goldWithGemsAndStick, List.of(
+        shaped(recipeOutput, ShapedRecipePattern.of(goldWithGemsAndStick, List.of(
                 "a",
                 "#",
                 "/"
         )), SwordItems.GOLDEN_BROADSWORD.toStack());
-        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(goldWithGemsAndStick, List.of(
+        shaped(recipeOutput, ShapedRecipePattern.of(goldWithGemsAndStick, List.of(
                 "a#a",
                 " / ",
                 " / "
         )), PickaxeItems.GOLDEN_PICKAXE.toStack());
-        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(goldWithGemsAndStick, List.of(
+        shaped(recipeOutput, ShapedRecipePattern.of(goldWithGemsAndStick, List.of(
                 "a#",
                 "a/",
                 " /"
         )), AxeItems.GOLDEN_AXE.toStack());
-        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(goldWithGemsAndStick, List.of(
+        shaped(recipeOutput, ShapedRecipePattern.of(goldWithGemsAndStick, List.of(
                 "a",
                 "#",
                 "/"
         )), ShovelItems.GOLDEN_SHOVEL.toStack());
-        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(goldWithGemsAndStick, List.of(
+        shaped(recipeOutput, ShapedRecipePattern.of(goldWithGemsAndStick, List.of(
                 "a#",
                 " /",
                 " /"
         )), HoeItems.GOLDEN_HOE.toStack());
         // 星星炮
-        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 '#', AmountIngredient.of(4, MaterialItems.METEORITE_INGOT),
                 'A', Ingredient.of(TGItems.MINISHARK),
                 '/', AmountIngredient.of(5, MaterialItems.FALLING_STAR)
@@ -178,14 +178,14 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 " ## "
         )), GunItems.STAR_CANNON.toStack());
         // 死灵套装
-        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 'A', AmountIngredient.of(10, MaterialItems.DUNGEON_DEMON_BONE),
                 '/', AmountIngredient.of(10, Items.COBWEB)
         ), List.of(
                 "/A/",
                 "A A"
         )), ArmorItems.NECRO_HELMET.toStack());
-        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 'A', AmountIngredient.of(10, MaterialItems.DUNGEON_DEMON_BONE),
                 '/', AmountIngredient.of(5, Items.COBWEB)
         ), List.of(
@@ -193,7 +193,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "/A/",
                 "AAA"
         )), ArmorItems.NECRO_CHESTPLATE.toStack());
-        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 'A', AmountIngredient.of(10, MaterialItems.DUNGEON_DEMON_BONE),
                 '/', AmountIngredient.of(5, Items.COBWEB)
         ), List.of(
@@ -201,7 +201,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "/ /",
                 "A A"
         )), ArmorItems.NECRO_LEGGINGS.toStack());
-        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 'A', AmountIngredient.of(10, MaterialItems.DUNGEON_DEMON_BONE),
                 '/', AmountIngredient.of(10, Items.COBWEB)
         ), List.of(
@@ -209,13 +209,13 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "A A"
         )), ArmorItems.NECRO_BOOTS.toStack());
         // 丛林套装
-        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 'A', AmountIngredient.of(2, MaterialItems.JUNGLE_SPORE)
         ), List.of(
                 "AAA",
                 "A A"
         )), ArmorItems.JUNGLE_HELMET.toStack());
-        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 'A', AmountIngredient.of(2, MaterialItems.JUNGLE_SPORE),
                 '/', AmountIngredient.of(2, MaterialItems.STINGER)
         ), List.of(
@@ -223,7 +223,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "/A/",
                 "/A/"
         )), ArmorItems.JUNGLE_CHESTPLATE.toStack());
-        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 'A', AmountIngredient.of(2, MaterialItems.JUNGLE_SPORE),
                 '/', Ingredient.of(MaterialItems.STINGER),
                 'b', Ingredient.of(MaterialItems.MAN_EATER_VINE)
@@ -232,7 +232,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "/ /",
                 "A A"
         )), ArmorItems.JUNGLE_LEGGINGS.toStack());
-        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 'A', Ingredient.of(MaterialItems.JUNGLE_SPORE),
                 '/', Ingredient.of(MaterialItems.STINGER)
         ), List.of(
@@ -240,7 +240,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "A A"
         )), ArmorItems.JUNGLE_BOOTS.toStack());
         // 草剑
-        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 'a', AmountIngredient.of(7, MaterialItems.JUNGLE_SPORE),
                 'b', Ingredient.of(MaterialItems.MAN_EATER_VINE),
                 'c', AmountIngredient.of(4, MaterialItems.STINGER)
@@ -251,7 +251,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "ba  "
         )), SwordItems.BLADE_OF_GRASS.toStack());
         // 邪恶工具
-        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 'a', AmountIngredient.of(4, MaterialItems.DEMONITE_INGOT),
                 '/', AmountIngredient.of(2, MaterialItems.ROTTEN_BONE)
         ), List.of(
@@ -259,7 +259,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "/",
                 "/"
         )), ShovelItems.SHADOW_SHOVEL.toStack());
-        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 'a', AmountIngredient.of(4, MaterialItems.CRIMTANE_INGOT),
                 '/', AmountIngredient.of(2, MaterialItems.VERTEBRA)
         ), List.of(
@@ -267,7 +267,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "/",
                 "/"
         )), ShovelItems.MINER.toStack());
-        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 'a', AmountIngredient.of(2, MaterialItems.DEMONITE_INGOT),
                 '/', AmountIngredient.of(2, MaterialItems.ROTTEN_BONE)
         ), List.of(
@@ -275,7 +275,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 " /",
                 " /"
         )), HoeItems.SHADOW_HOE.toStack());
-        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 'a', AmountIngredient.of(2, MaterialItems.CRIMTANE_INGOT),
                 '/', AmountIngredient.of(2, MaterialItems.VERTEBRA)
         ), List.of(
@@ -284,7 +284,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 " /"
         )), HoeItems.CULTIVATOR.toStack());
         // 锄锹
-        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 'a', AmountIngredient.of(2, MaterialItems.METEORITE_INGOT),
                 '/', Ingredient.of(MaterialItems.METEORITE_INGOT)
         ), List.of(
@@ -293,7 +293,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 " /  ",
                 "/   "
         )), HoeShovelItems.METEOR_HOE_SHOVEL.toStack());
-        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 'a', AmountIngredient.of(2, MaterialItems.HELLSTONE_INGOT),
                 '/', Ingredient.of(Items.BLAZE_ROD)
         ), List.of(
@@ -303,13 +303,13 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "/   "
         )), HoeShovelItems.MOLTEN_HOE_SHOVEL.toStack());
         // 熔岩套
-        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 '#', AmountIngredient.of(2, MaterialItems.HELLSTONE_INGOT)
         ), List.of(
                 "###",
                 "# #"
         )), ArmorItems.MOLTEN_HELMET.toStack());
-        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 '#', AmountIngredient.of(2, MaterialItems.HELLSTONE_INGOT),
                 'a', Ingredient.of(MaterialItems.HELLSTONE_INGOT)
         ), List.of(
@@ -317,13 +317,13 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "# #",
                 "a a"
         )), ArmorItems.MOLTEN_LEGGINGS.toStack());
-        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 '#', AmountIngredient.of(2, MaterialItems.HELLSTONE_INGOT)
         ), List.of(
                 "# #",
                 "# #"
         )), ArmorItems.MOLTEN_BOOTS.toStack());
-        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 '#', AmountIngredient.of(2, MaterialItems.HELLSTONE_INGOT),
                 'a', Ingredient.of(MaterialItems.HELLSTONE_INGOT)
         ), List.of(
@@ -332,7 +332,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "###"
         )), ArmorItems.MOLTEN_CHESTPLATE.toStack());
         // 巨石
-        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 '/', Ingredient.of(Items.COBBLESTONE)
         ), List.of(
                 " // ",
@@ -341,7 +341,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 " // "
         )), FunctionalBlocks.NORMAL_BOULDER.toStack());
         // 巨石面包
-        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 '/', Ingredient.of(Items.BREAD)
         ), List.of(
                 " // ",
@@ -350,7 +350,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 " // "
         )), FoodItems.BOULDER_BREAD.toStack());
         // 蜜蜂手榴弹
-        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 'a', Ingredient.of(ConsumableItems.GRENADE),
                 '/', Ingredient.of(MaterialItems.ROYAL_WAX)
         ), List.of(
@@ -358,7 +358,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "a"
         )), ConsumableItems.BEENADE.toStack());
         // 铁傀儡法杖
-        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 'a', Ingredient.of(ConsumableItems.LIFE_CRYSTAL),
                 'b', Ingredient.of(Items.CARVED_PUMPKIN),
                 'c', Ingredient.of(Items.REDSTONE_BLOCK),
@@ -371,7 +371,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "ccc"
         )), TESummonItems.IRON_GOLEM_STAFF.toStack());
         // 计时器
-        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 'a', Ingredient.of(TCItems.GOLD_WATCH,TCItems.PLATINUM_WATCH),
                 'b', Ingredient.of(Items.REDSTONE),
                 'c', Ingredient.of(ModTags.Items.LEAD_AND_IRON)
@@ -381,7 +381,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "cbc"
         )), FunctionalBlocks.TIMERS_BLOCK_1_1.toStack());
 
-        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 'a', Ingredient.of(TCItems.SILVER_WATCH,TCItems.TUNGSTEN_WATCH),
                 'b', Ingredient.of(Items.REDSTONE),
                 'c', Ingredient.of(ModTags.Items.LEAD_AND_IRON)
@@ -391,7 +391,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "cbc"
         )), FunctionalBlocks.TIMERS_BLOCK_3_1.toStack());
 
-        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 'a', Ingredient.of(TCItems.COPPER_WATCH,TCItems.TIN_WATCH),
                 'b', Ingredient.of(Items.REDSTONE),
                 'c', Ingredient.of(ModTags.Items.LEAD_AND_IRON)
@@ -401,7 +401,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "cbc"
         )), FunctionalBlocks.TIMERS_BLOCK_5_1.toStack());
 
-        heavyWorkBench(recipeOutput, "", ShapedRecipePattern.of(Map.of(
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 'a', Ingredient.of(MaterialItems.TIN_INGOT,Items.COPPER_INGOT),
                 'b', Ingredient.of(Items.REDSTONE_BLOCK),
                 'c', Ingredient.of(Tags.Items.STONES)
@@ -410,6 +410,9 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "cac",
                 "ccc"
         )), FunctionalBlocks.SIGNAL_ADAPTER.toStack());
+
+        shapeless(recipeOutput, NatureBlocks.THIN_ICE_BLOCK.toStack(), Ingredient.of(Items.ICE));
+        shapeless(recipeOutput, ConsumableItems.ROTTEN_BONE_DUST.toStack(2), AmountIngredient.of(4, MaterialItems.ROTTEN_BONE), AmountIngredient.of(4, MaterialItems.WORM_TOOTH), AmountIngredient.of(8, MaterialItems.ROTTEN_CHUNK));
     }
 
     private void buildBaseStatues(RecipeOutput recipeOutput) {
@@ -430,13 +433,24 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         };
         // 雕像
         for (ItemLike statueItem : statueItems) {
-            heavyWorkBench(recipeOutput, "", baseStatuePattern, statueItem.asItem().getDefaultInstance());
+            shaped(recipeOutput, baseStatuePattern, statueItem.asItem().getDefaultInstance());
         }
     }
 
-    protected void heavyWorkBench(RecipeOutput recipeOutput, String suffix, ShapedRecipePattern pattern, ItemStack result) {
+    protected void shaped(RecipeOutput recipeOutput, String suffix, ShapedRecipePattern pattern, ItemStack result) {
         ResourceLocation id = Confluence.asResource("heavy_work_bench/" + getItemName(result.getItem()) + suffix);
         recipeOutput.accept(id, new HeavyWorkBenchRecipe(result, pattern), null);
+    }
+
+    protected void shaped(RecipeOutput recipeOutput, ShapedRecipePattern pattern, ItemStack result) {
+        ResourceLocation id = Confluence.asResource("heavy_work_bench/" + getItemName(result.getItem()));
+        recipeOutput.accept(id, new HeavyWorkBenchRecipe(result, pattern), null);
+    }
+
+    protected void shapeless(RecipeOutput recipeOutput, ItemStack result, Ingredient... ingredients) {
+        ResourceLocation id = Confluence.asResource("heavy_work_bench/" + getItemName(result.getItem()));
+        NonNullList<Ingredient> ingredientz = NonNullList.of(Ingredient.EMPTY, ingredients);
+        recipeOutput.accept(id, new HeavyWorkBenchRecipe(result, ingredientz), null);
     }
 
     protected void baseHook(RecipeOutput recipeOutput, Ingredient hook, Ingredient chain, ItemStack result) {

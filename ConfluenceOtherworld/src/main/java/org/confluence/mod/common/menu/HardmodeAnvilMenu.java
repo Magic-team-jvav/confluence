@@ -30,8 +30,9 @@ public class HardmodeAnvilMenu extends EitherAmountContainerMenu4x<MenuRecipeInp
                     @Override
                     public void onTake(Player player, ItemStack stack) {
                         if (recipe != null) {
-                            recipe.either.ifLeft(shaped -> AbstractAmountRecipe.consumeShaped(input, 4, 4, shaped));
-                            recipe.either.ifRight(shapeless -> AbstractAmountRecipe.consumeShapeless(input, shapeless));
+                            recipe.either
+                                    .ifLeft(shaped -> AbstractAmountRecipe.consumeShaped(input, 4, 4, shaped))
+                                    .ifRight(shapeless -> AbstractAmountRecipe.consumeShapeless(input, shapeless));
                             input.setChanged();
                             updateMenu();
                         }

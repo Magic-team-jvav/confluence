@@ -411,6 +411,10 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(BLUE_BRICKS.get());
         dropSelf(GREEN_BRICKS.get());
         dropSelf(PINK_BRICKS.get());
+        dropSelf(SPIKE.get());
+        dropSelf(ENCHANTED_BLUE_BRICKS.get());
+        dropSelf(ENCHANTED_GREEN_BRICKS.get());
+        dropSelf(ENCHANTED_PINK_BRICKS.get());
         dropSelf(BLUE_BRICK_STAIRS.get());
         dropSelf(GREEN_BRICK_STAIRS.get());
         dropSelf(PINK_BRICK_STAIRS.get());
@@ -420,6 +424,9 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(CHISELED_BLUE_BRICKS.get());
         dropSelf(CHISELED_GREEN_BRICKS.get());
         dropSelf(CHISELED_PINK_BRICKS.get());
+        dropSelf(BLUE_BRICK_COLUMN.get());
+        dropSelf(GREEN_BRICK_COLUMN.get());
+        dropSelf(PINK_BRICK_COLUMN.get());
         dropSelf(AETHERIUM_BRICKS.get());
         dropSelf(CRYSTAL_BLOCK.get());
         dropSelf(RAINBOW_BRICKS.get());

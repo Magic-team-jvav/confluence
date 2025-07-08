@@ -69,6 +69,34 @@ public class ModBiomeTagsProvider extends BiomeTagsProvider {
 
                 ModBiomes.GLOWING_MUSHROOM
         );
+        tag(ModTags.Biomes.IS_FOREST).add(  // 出现较大群系内容扩展时更改此标签(当对应群系同时具有专属群系地下宝箱，渔获，敌怪时）
+                Biomes.BIRCH_FOREST,
+                Biomes.CHERRY_GROVE,
+                Biomes.DARK_FOREST,
+                Biomes.DEEP_DARK,
+                Biomes.DRIPSTONE_CAVES,
+                Biomes.FLOWER_FOREST,
+                Biomes.FOREST,
+                Biomes.MEADOW,
+                Biomes.MUSHROOM_FIELDS,
+                Biomes.OLD_GROWTH_BIRCH_FOREST,
+                Biomes.OLD_GROWTH_PINE_TAIGA,
+                Biomes.OLD_GROWTH_SPRUCE_TAIGA,
+                Biomes.PLAINS,
+                Biomes.RIVER,
+                Biomes.SAVANNA,
+                Biomes.SAVANNA_PLATEAU,
+                Biomes.STONY_PEAKS,
+                Biomes.STONY_SHORE,
+                Biomes.SUNFLOWER_PLAINS,
+                Biomes.SWAMP,
+                Biomes.MANGROVE_SWAMP,
+                Biomes.TAIGA,
+                Biomes.WINDSWEPT_FOREST,
+                Biomes.WINDSWEPT_GRAVELLY_HILLS,
+                Biomes.WINDSWEPT_HILLS,
+                Biomes.WINDSWEPT_SAVANNA
+        );
         tag(Tags.Biomes.IS_OVERWORLD).add(
                 ModBiomes.THE_CORRUPTION,
                 ModBiomes.THE_CORRUPTION_DESERT,

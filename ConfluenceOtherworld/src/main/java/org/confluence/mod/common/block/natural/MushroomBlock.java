@@ -1,8 +1,6 @@
 package org.confluence.mod.common.block.natural;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
@@ -11,7 +9,6 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -20,19 +17,18 @@ import org.confluence.mod.common.init.ModFeatures;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Optional;
-
 public class MushroomBlock extends BasePlantBlock implements ISpreadable, BonemealableBlock {
-    private static final VoxelShape SHAPE=Block.box(5.0D, 0.0D, 5.0D, 11.0D, 6.0D, 11.0D);
+    private static final VoxelShape SHAPE = Block.box(5.0D, 0.0D, 5.0D, 11.0D, 6.0D, 11.0D);
     public ISpreadable.Type type;
-    public MushroomBlock(ISpreadable.Type type, Block... surviveBlock){
+
+    public MushroomBlock(ISpreadable.Type type, Block... surviveBlock) {
         super(surviveBlock);
         this.type = type;
     }
 
     @Override
     @NotNull
-    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext){
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         Vec3 vec3 = pState.getOffset(pLevel, pPos);
         return SHAPE.move(vec3.x, vec3.y, vec3.z);
     }
@@ -58,13 +54,14 @@ public class MushroomBlock extends BasePlantBlock implements ISpreadable, Boneme
 
     @Override
     public boolean isBonemealSuccess(Level level, RandomSource random, BlockPos pos, BlockState state) {
-        if (state.is(NatureBlocks.GLOWING_MUSHROOM)) return (double)random.nextFloat() < 0.4;
+        if (state.is(NatureBlocks.GLOWING_MUSHROOM)) return (double) random.nextFloat() < 0.4;
         return false;
     }
 
     @Override
     public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
-        Optional<Holder.Reference<ConfiguredFeature<?, ?>>> featureHolder = level.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE).getHolder(ModFeatures.GLOWING_MUSHROOM);
-        featureHolder.ifPresent(holder -> holder.value().place(level, level.getChunkSource().getGenerator(), random, pos));
+        level.registryAccess().holder(ModFeatures.Configured.GLOWING_MUSHROOM).ifPresent(holder ->
+                holder.value().place(level, level.getChunkSource().getGenerator(), random, pos)
+        );
     }
 }

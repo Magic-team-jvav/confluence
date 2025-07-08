@@ -12,10 +12,12 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.CaveVines;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
@@ -41,13 +43,15 @@ import static org.confluence.mod.common.init.block.OreBlocks.*;
 import static org.confluence.mod.common.init.item.ConsumableItems.LIFE_CRYSTAL;
 import static org.confluence.mod.common.init.item.MaterialItems.*;
 
-public class BlockSubProvider extends BlockLootSubProvider {
+public final class BlockSubProvider extends BlockLootSubProvider {
     public BlockSubProvider(HolderLookup.Provider provider) {
         super(Set.of(), FeatureFlags.REGISTRY.allFlags(), provider);
     }
 
     @Override
     protected void generate() {
+        LootPoolSingletonContainer.Builder<?> emptyWeight59 = EmptyLootItem.emptyItem().setWeight(59);
+
         // region ore
         dropSelf(TIN_BLOCK.get());
         dropSelf(RAW_TIN_BLOCK.get());
@@ -61,8 +65,11 @@ public class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(RAW_PLATINUM_BLOCK.get());
         dropSelf(DEMONITE_BLOCK.get());
         dropSelf(RAW_DEMONITE_BLOCK.get());
-        dropSelf(TR_CRIMSON_BLOCK.get());
-        dropSelf(RAW_TR_CRIMSON_BLOCK.get());
+        dropSelf(CRIMTANE_BLOCK.get());
+        dropSelf(METEORITE_BLOCK.get());
+        dropSelf(RAW_METEORITE_BLOCK.get());
+        dropSelf(HELLSTONE_BLOCK.get());
+        dropSelf(RAW_CRIMTANE_BLOCK.get());
         dropSelf(COBALT_BLOCK.get());
         dropSelf(RAW_COBALT_BLOCK.get());
         dropSelf(PALLADIUM_BLOCK.get());
@@ -79,8 +86,8 @@ public class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(RAW_CHLOROPHYTE_BLOCK.get());
         dropSelf(LUMINITE_BLOCK.get());
         dropSelf(RAW_LUMINITE_BLOCK.get());
-        dropSelf(HELLSTONE_BLOCK.get());
         dropSelf(RAW_HELLSTONE_BLOCK.get());
+        dropSelf(HELLSTONE_BRICKS.get());
         dropSelf(DESERT_FOSSIL.get());
         dropSelf(SLUSH.get());
         dropSelf(SILT_BLOCK.get());
@@ -96,6 +103,9 @@ public class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(PALM_SAPLING.get());
         dropSelf(ASH_SAPLING.get());
         dropSelf(STURDY_FOSSIL_BLOCK.get());
+        dropSelf(OPAL_BLOCK.get());
+        dropSelf(GELSTONE_BLOCK.get());
+        dropSelf(COLD_CRYSTAL_BLOCK.get());
 
         dropSelf(EXTRACTINATOR.get());
         dropSelf(SKY_MILL.get());
@@ -194,21 +204,21 @@ public class BlockSubProvider extends BlockLootSubProvider {
         add(CORRUPTION_TOPAZ_ORE.get(), block -> createOreDrop(block, TOPAZ.get()));
         add(FLESHIFICATION_TOPAZ_ORE.get(), block -> createOreDrop(block, TOPAZ.get()));
         add(DEEPSLATE_TOPAZ_ORE.get(), block -> createOreDrop(block, TOPAZ.get()));
-        add(TR_EMERALD_ORE.get(), block -> createOreDrop(block, TR_EMERALD.get()));
+        add(JADE_ORE.get(), block -> createOreDrop(block, JADE.get()));
 //            add(SANCTIFICATION_TR_EMERALD_ORE.get(), block -> createOreDrop(block, TR_EMERALD.get()));
 //            add(CORRUPTION_TR_EMERALD_ORE.get(), block -> createOreDrop(block, TR_EMERALD.get()));
 //            add(FLESHIFICATION_TR_EMERALD_ORE.get(), block -> createOreDrop(block, TR_EMERALD.get()));
-        add(DEEPSLATE_TR_EMERALD_ORE.get(), block -> createOreDrop(block, TR_EMERALD.get()));
+        add(DEEPSLATE_JADE_ORE.get(), block -> createOreDrop(block, JADE.get()));
         add(SAPPHIRE_ORE.get(), block -> createOreDrop(block, SAPPHIRE.get()));
         add(SANCTIFICATION_SAPPHIRE_ORE.get(), block -> createOreDrop(block, SAPPHIRE.get()));
         add(CORRUPTION_SAPPHIRE_ORE.get(), block -> createOreDrop(block, SAPPHIRE.get()));
         add(FLESHIFICATION_SAPPHIRE_ORE.get(), block -> createOreDrop(block, SAPPHIRE.get()));
         add(DEEPSLATE_SAPPHIRE_ORE.get(), block -> createOreDrop(block, SAPPHIRE.get()));
-        add(TR_AMETHYST_ORE.get(), block -> createOreDrop(block, TR_AMETHYST.get()));
-        add(SANCTIFICATION_TR_AMETHYST_ORE.get(), block -> createOreDrop(block, TR_AMETHYST.get()));
-        add(CORRUPTION_TR_AMETHYST_ORE.get(), block -> createOreDrop(block, TR_AMETHYST.get()));
-        add(FLESHIFICATION_TR_AMETHYST_ORE.get(), block -> createOreDrop(block, TR_AMETHYST.get()));
-        add(DEEPSLATE_TR_AMETHYST_ORE.get(), block -> createOreDrop(block, TR_AMETHYST.get()));
+        add(AMETHYST_ORE.get(), block -> createOreDrop(block, AMETHYST.get()));
+        add(SANCTIFICATION_AMETHYST_ORE.get(), block -> createOreDrop(block, AMETHYST.get()));
+        add(CORRUPTION_AMETHYST_ORE.get(), block -> createOreDrop(block, AMETHYST.get()));
+        add(FLESHIFICATION_AMETHYST_ORE.get(), block -> createOreDrop(block, AMETHYST.get()));
+        add(DEEPSLATE_AMETHYST_ORE.get(), block -> createOreDrop(block, AMETHYST.get()));
         add(SANCTIFICATION_EMERALD_ORE.get(), block -> createOreDrop(block, Items.EMERALD));
         add(CORRUPTION_EMERALD_ORE.get(), block -> createOreDrop(block, Items.EMERALD));
         add(FLESHIFICATION_EMERALD_ORE.get(), block -> createOreDrop(block, Items.EMERALD));
@@ -222,8 +232,8 @@ public class BlockSubProvider extends BlockLootSubProvider {
         add(SANCTIFICATION_DEMONITE_ORE.get(), block -> createOreDrop(block, RAW_DEMONITE.get()));
         add(CORRUPTION_DEMONITE_ORE.get(), block -> createOreDrop(block, RAW_DEMONITE.get()));
         add(FLESHIFICATION_DEMONITE_ORE.get(), block -> createOreDrop(block, RAW_DEMONITE.get()));
-        add(TR_CRIMSON_ORE.get(), block -> createOreDrop(block, RAW_TR_CRIMSON.get()));
-        add(DEEPSLATE_TR_CRIMSON_ORE.get(), block -> createOreDrop(block, RAW_TR_CRIMSON.get()));
+        add(CRIMTANE_ORE.get(), block -> createOreDrop(block, RAW_CRIMTANE.get()));
+        add(DEEPSLATE_CRIMTANE_ORE.get(), block -> createOreDrop(block, RAW_CRIMTANE.get()));
         add(DEEPSLATE_COBALT_ORE.get(), block -> createOreDrop(block, RAW_COBALT.get()));
         add(DEEPSLATE_PALLADIUM_ORE.get(), block -> createOreDrop(block, RAW_PALLADIUM.get()));
         add(DEEPSLATE_MYTHRIL_ORE.get(), block -> createOreDrop(block, RAW_MYTHRIL.get()));
@@ -239,24 +249,28 @@ public class BlockSubProvider extends BlockLootSubProvider {
         // endregion ore
 
         // region natural
-        dropSelf(EBONY_COBBLESTONE.get());
-        dropSelf(EBONY_SAND.get());
-        dropSelf(PEARL_COBBLESTONE.get());
-        dropSelf(PEARL_SAND.get());
-        dropSelf(TR_CRIMSON_COBBLESTONE.get());
-        dropSelf(TR_CRIMSON_SAND.get());
+        dropSelf(COBBLED_EBONSTONE.get());
+        dropSelf(EBONSAND.get());
+        dropSelf(COBBLED_PEARLSTONE.get());
+        dropSelf(PEARLSAND.get());
+        dropSelf(COBBLED_CRIMSTONE.get());
+        dropSelf(CRIMSAND.get());
         dropSelf(ASH_BLOCK.get());
-        this.add(TR_CRIMSON_STONE.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, TR_CRIMSON_COBBLESTONE));
-        this.add(EBONY_STONE.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, EBONY_COBBLESTONE));
-        this.add(PEARL_STONE.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, PEARL_COBBLESTONE));
+        dropSelf(PACKED_DIRT.get());
+        this.add(CRIMSTONE.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, COBBLED_CRIMSTONE));
+        this.add(EBONSTONE.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, COBBLED_EBONSTONE));
+        this.add(PEARLSTONE.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, COBBLED_PEARLSTONE));
         this.add(ASH_GRASS_BLOCK.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, ASH_BLOCK));
         this.add(CORRUPT_GRASS_BLOCK.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, Blocks.DIRT));
         this.add(CORRUPT_JUNGLE_GRASS_BLOCK.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, Blocks.MUD));
         this.add(JUNGLE_GRASS_BLOCK.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, Blocks.MUD));
-        this.add(TR_CRIMSON_GRASS_BLOCK.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, Blocks.DIRT));
-        this.add(TR_CRIMSON_JUNGLE_GRASS_BLOCK.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, Blocks.MUD));
+        this.add(CRIMSON_GRASS_BLOCK.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, Blocks.DIRT));
+        this.add(CRIMSON_JUNGLE_GRASS_BLOCK.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, Blocks.MUD));
         this.add(MUSHROOM_GRASS_BLOCK.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, Blocks.MUD));
         this.add(HALLOW_GRASS_BLOCK.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, Blocks.DIRT));
+
+        this.add(SHIMMER_DROOPING_VINE.get(), this::createShimmerBerriesDrop);
+        this.add(SHIMMER_DROOPING_VINE_PLANT.get(), this::createShimmerBerriesDrop);
 
         dropSelf(EBONY_LOG_BLOCKS.getLog().get());
         dropSelf(YELLOW_WILLOW_LOG_BLOCKS.getLog().get());
@@ -300,18 +314,21 @@ public class BlockSubProvider extends BlockLootSubProvider {
         dropOther(NATURES_GIFT.get(), AccessoryItems.NATURES_GIFT.get());
         add(JUNGLE_ROSE.get(), LootTable.lootTable().withPool(LootPool.lootPool()
                 .add(LootItem.lootTableItem(JUNGLE_ROSE.get()).when(LootItemRandomChanceCondition.randomChance(0.05f)))));
+
+
+
         // endregion natural
 
         dropSelf(RUBY_BLOCK.get());
         dropSelf(AMBER_BLOCK.get());
         dropSelf(TOPAZ_BLOCK.get());
         dropSelf(SAPPHIRE_BLOCK.get());
-        dropSelf(TR_AMETHYST_BLOCK.get());
-        dropSelf(TR_EMERALD_BLOCK.get());
+        dropSelf(AMETHYST_BLOCK.get());
+        dropSelf(JADE_BLOCK.get());
 
         // decorative block
-        dropSelf(TR_OAK_PLANKS.get());
-        dropSelf(TR_NORTHLAND_PLANKS.get());
+        dropSelf(CHISELED_OAK_PLANKS.get());
+        dropSelf(CHISELED_SPRUCE_PLANKS.get());
         dropSelf(CHISELED_EBONY_PLANKS.get());
         dropSelf(CHISELED_SHADOW_PLANKS.get());
         dropSelf(CHISELED_PEARL_PLANKS.get());
@@ -322,24 +339,56 @@ public class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(CHISELED_ASH_PLANKS.get());
         dropSelf(WOOD_STONE_SLATTED_BLOCKS.get());
         dropSelf(BLUE_ICE_BRICKS.get());
+        dropSelf(BLUE_ICE_BRICKS_STAIRS.get());
+        dropSelf(BLUE_ICE_BRICKS_SLAB.get());
         dropSelf(PACKED_ICE_BRICKS.get());
+        dropSelf(PACKED_ICE_BRICKS_STAIRS.get());
+        dropSelf(PACKED_ICE_BRICKS_SLAB.get());
         dropSelf(SNOW_BRICKS.get());
-        dropSelf(TR_STONE_BRICKS.get());
-        dropSelf(TR_COPPER_BRICKS.get());
+        dropSelf(SNOW_BRICKS_STAIRS.get());
+        dropSelf(SNOW_BRICKS_SLAB.get());
+        dropSelf(COPPER_BRICKS.get());
+        dropSelf(COPPER_BRICKS_STAIRS.get());
+        dropSelf(COPPER_BRICKS_SLAB.get());
         dropSelf(TIN_BRICKS.get());
-        dropSelf(TR_IRON_BRICKS.get());
-
+        dropSelf(TIN_BRICKS_STAIRS.get());
+        dropSelf(TIN_BRICKS_SLAB.get());
+        dropSelf(IRON_BRICKS.get());
+        dropSelf(IRON_BRICKS_STAIRS.get());
+        dropSelf(IRON_BRICKS_SLAB.get());
         dropSelf(LEAD_BRICKS.get());
+        dropSelf(LEAD_BRICKS_STAIRS.get());
+        dropSelf(LEAD_BRICKS_SLAB.get());
         dropSelf(SILVER_BRICKS.get());
+        dropSelf(SILVER_BRICKS_STAIRS.get());
+        dropSelf(SILVER_BRICKS_SLAB.get());
         dropSelf(TUNGSTEN_BRICKS.get());
-        dropSelf(TR_GOLD_BRICKS.get());
+        dropSelf(TUNGSTEN_BRICKS_STAIRS.get());
+        dropSelf(TUNGSTEN_BRICKS_SLAB.get());
+        dropSelf(GOLDEN_BRICKS.get());
+        dropSelf(GOLDEN_BRICKS_STAIRS.get());
+        dropSelf(GOLDEN_BRICKS_SLAB.get());
         dropSelf(PLATINUM_BRICKS.get());
+        dropSelf(PLATINUM_BRICKS_STAIRS.get());
+        dropSelf(PLATINUM_BRICKS_SLAB.get());
         dropSelf(DEMONITE_ORE_BRICKS.get());
-        dropSelf(EBONY_ROCK_BRICKS.get());
+        dropSelf(DEMONITE_ORE_BRICKS_STAIRS.get());
+        dropSelf(DEMONITE_ORE_BRICKS_SLAB.get());
+        dropSelf(EBONSTONE_BRICKS.get());
+        dropSelf(EBONSTONE_BRICKS_STAIRS.get());
+        dropSelf(EBONSTONE_BRICKS_SLAB.get());
         dropSelf(METEORITE_BRICKS.get());
-        dropSelf(TR_CRIMSON_ORE_BRICKS.get());
-        dropSelf(TR_CRIMSON_ROCK_BRICKS.get());
-        dropSelf(PEARL_ROCK_BRICKS.get());
+        dropSelf(METEORITE_BRICKS_STAIRS.get());
+        dropSelf(METEORITE_BRICKS_SLAB.get());
+        dropSelf(CRIMTANE_ORE_BRICKS.get());
+        dropSelf(CRIMTANE_ORE_BRICKS_STAIRS.get());
+        dropSelf(CRIMTANE_ORE_BRICKS_SLAB.get());
+        dropSelf(CRIMSTONE_BRICKS.get());
+        dropSelf(CRIMSTONE_BRICKS_STAIRS.get());
+        dropSelf(CRIMSTONE_BRICKS_SLAB.get());
+        dropSelf(PEARLSTONE_BRICKS.get());
+        dropSelf(PEARLSTONE_BRICKS_STAIRS.get());
+        dropSelf(PEARLSTONE_BRICKS_SLAB.get());
         dropSelf(GREEN_CANDY_BLOCK.get());
         dropSelf(RED_CANDY_BLOCK.get());
         dropSelf(FROZEN_GEL_BLOCK.get());
@@ -349,17 +398,16 @@ public class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(SUN_PLATE_SLAB.get());
         dropSelf(SUN_PLATE_STAIRS.get());
         dropSelf(DISC_BLOCK.get());
-        dropSelf(TR_LAVA_BRICKS.get());
-        dropSelf(TR_OBSIDIAN_BRICKS.get());
+        dropSelf(OBSIDIAN_BRICKS.get());
         dropSelf(OBSIDIAN_BRICKS_SLAB.get());
         dropSelf(OBSIDIAN_BRICKS_STAIRS.get());
 
-        dropSelf(TR_OBSIDIAN_SMALL_BRICKS.get());
-        dropSelf(TR_SMOOTH_OBSIDIAN.get());
-        dropSelf(TR_POLISHED_GRANITE.get());
-        dropSelf(TR_GRANITE_COLUMN.get());
+        dropSelf(OBSIDIAN_SMALL_BRICKS.get());
+        dropSelf(SMOOTH_OBSIDIAN.get());
+        dropSelf(POLISHED_GRANITE.get());
+        dropSelf(GRANITE_COLUMN.get());
 
-        dropSelf(CHISELED_TR_OBSIDIAN_BRICKS.get());
+        dropSelf(CHISELED_OBSIDIAN_BRICKS.get());
         dropSelf(BLUE_BRICKS.get());
         dropSelf(GREEN_BRICKS.get());
         dropSelf(PINK_BRICKS.get());
@@ -379,15 +427,17 @@ public class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(BOUNCY_CLOUD_BLOCK.get());
 
         dropSelf(HARDENED_SAND_BLOCK.get());
-        dropSelf(MOIST_SAND_BLOCK.get());
-        dropSelf(RED_HARDENED_SAND_BLOCK.get());
-        dropSelf(RED_MOIST_SAND_BLOCK.get());
-        dropSelf(EBONY_HARDENED_SAND_BLOCK.get());
-        dropSelf(EBONY_MOIST_SAND_BLOCK.get());
-        dropSelf(PEARL_HARDENED_SAND_BLOCK.get());
-        dropSelf(PEARL_MOIST_SAND_BLOCK.get());
-        dropSelf(TR_CRIMSON_HARDENED_SAND_BLOCK.get());
-        dropSelf(TR_CRIMSON_MOIST_SAND_BLOCK.get());
+        dropSelf(MOISTENED_SAND_BLOCK.get());
+        dropSelf(HARDENED_RED_SAND_BLOCK.get());
+        dropSelf(MOISTENED_RED_SAND_BLOCK.get());
+        dropSelf(HARDENED_EBONSAND_BLOCK.get());
+        dropSelf(MOISTENED_EBONSAND_BLOCK.get());
+        dropSelf(HARDENED_PEARLSAND_BLOCK.get());
+        dropSelf(MOISTENED_PEARLSAND_BLOCK.get());
+        dropSelf(HARDENED_CRIMSAND_BLOCK.get());
+        dropSelf(MOISTENED_CRIMSAND_BLOCK.get());
+
+        dropSelf(GRANITE.get());
 
         dropSelf(AETHERIUM_BLOCK.get());
         dropSelf(DARK_AETHERIUM_BLOCK.get());
@@ -419,11 +469,21 @@ public class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(RUBY_CHAIN.get());
         dropSelf(AMBER_CHAIN.get());
         dropSelf(TOPAZ_CHAIN.get());
-        dropSelf(EMERALD_CHAIN.get());
+        dropSelf(JADE_CHAIN.get());
         dropSelf(SAPPHIRE_CHAIN.get());
         dropSelf(DIAMOND_CHAIN.get());
         dropSelf(AMETHYST_CHAIN.get());
+        // 片
+        dropWhenSilkTouch(SAND_LAYER_BLOCK.get());
+        dropWhenSilkTouch(RED_SAND_LAYER_BLOCK.get());
+        dropWhenSilkTouch(EBONSAND_LAYER_BLOCK.get());
+        dropWhenSilkTouch(CRIMSAND_LAYER_BLOCK.get());
+        dropWhenSilkTouch(PEARLSAND_LAYER_BLOCK.get());
 
+        // 径
+        this.add(ASH_PATH.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, ASH_BLOCK));
+        this.add(JUNGLE_PATH.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, Blocks.MUD));
+        this.add(MUSHROOM_PATH.get(), p_251015_ -> this.createSingleItemTableWithSilkTouch(p_251015_, Blocks.MUD));
 
         //door
         this.add(OBSIDIAN_BRICKS_DOOR.get(), this::createDoorTable);
@@ -436,8 +496,12 @@ public class BlockSubProvider extends BlockLootSubProvider {
         this.add(GLOWING_MUSHROOM_VINE.get(), p_249169_ -> this.createMushroomBlockDrop(p_249169_, MaterialItems.GLOWING_MUSHROOM));
         this.add(GLOWING_MUSHROOM_CATTAILS_HEAD.get(), p_249169_ -> this.createMushroomBlockDrop(p_249169_, MaterialItems.GLOWING_MUSHROOM));
         this.add(GLOWING_MUSHROOM_PILEUS_BLOCK.get(), p_249169_ -> this.createMushroomBlockDrop(p_249169_, MaterialItems.GLOWING_MUSHROOM));
-        this.add(GLOWING_MUSHROOM_STEM_BLOCK.get(), p_249169_ -> this.createMushroomBlockDrop(p_249169_, MaterialItems.GLOWING_MUSHROOM));
+        dropSelf(GLOWING_MUSHROOM_STEM_BLOCK.get());
         dropWhenSilkTouch(GLOWING_MUSHROOM_CATTAILS_BODY.get());
+
+        this.add(LIFE_MUSHROOM_INDUSIUM_BLOCK.get(), p_249169_ -> this.createMushroomBlockDrop(p_249169_, MaterialItems.LIFE_MUSHROOM));
+        this.add(LIFE_MUSHROOM_PILEUS_BLOCK.get(), p_249169_ -> this.createMushroomBlockDrop(p_249169_, MaterialItems.LIFE_MUSHROOM));
+        dropSelf(LIFE_MUSHROOM_STEM_BLOCK.get());
 
 
         for (LogBlockSet logBlocks : LogBlockSet.LOG_BLOCK_SETS) {
@@ -480,58 +544,58 @@ public class BlockSubProvider extends BlockLootSubProvider {
         add(NatureBlocks.AMBER_BRANCHES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(AMBER))
-                        .add(EmptyLootItem.emptyItem().setWeight(59)))
+                        .add(emptyWeight59))
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(AMBER_SAPLING))
-                        .add(EmptyLootItem.emptyItem().setWeight(59)))
+                        .add(emptyWeight59))
         );
         add(NatureBlocks.RUBY_BRANCHES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(RUBY))
-                        .add(EmptyLootItem.emptyItem().setWeight(59)))
+                        .add(emptyWeight59))
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(RUBY_SAPLING))
-                        .add(EmptyLootItem.emptyItem().setWeight(59)))
+                        .add(emptyWeight59))
         );
         add(NatureBlocks.TOPAZ_BRANCHES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TOPAZ))
-                        .add(EmptyLootItem.emptyItem().setWeight(59)))
+                        .add(emptyWeight59))
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TOPAZ_SAPLING))
-                        .add(EmptyLootItem.emptyItem().setWeight(59)))
+                        .add(emptyWeight59))
         );
-        add(NatureBlocks.EMERALD_BRANCHES.get(), LootTable.lootTable()
+        add(NatureBlocks.JADE_BRANCHES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TR_EMERALD))
-                        .add(EmptyLootItem.emptyItem().setWeight(59)))
+                        .add(LootItem.lootTableItem(JADE))
+                        .add(emptyWeight59))
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(EMERALD_SAPLING))
-                        .add(EmptyLootItem.emptyItem().setWeight(59)))
+                        .add(LootItem.lootTableItem(JADE_SAPLING))
+                        .add(emptyWeight59))
         );
         add(NatureBlocks.DIAMOND_BRANCHES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.DIAMOND))
-                        .add(EmptyLootItem.emptyItem().setWeight(59)))
+                        .add(emptyWeight59))
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(DIAMOND_SAPLING))
-                        .add(EmptyLootItem.emptyItem().setWeight(59)))
+                        .add(emptyWeight59))
         );
         add(NatureBlocks.SAPPHIRE_BRANCHES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(SAPPHIRE))
-                        .add(EmptyLootItem.emptyItem().setWeight(59)))
+                        .add(emptyWeight59))
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(SAPPHIRE_SAPLING))
-                        .add(EmptyLootItem.emptyItem().setWeight(59)))
+                        .add(emptyWeight59))
         );
-        add(NatureBlocks.TR_AMETHYST_BRANCHES.get(), LootTable.lootTable()
+        add(NatureBlocks.AMETHYST_BRANCHES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TR_AMETHYST))
-                        .add(EmptyLootItem.emptyItem().setWeight(59)))
+                        .add(LootItem.lootTableItem(AMETHYST))
+                        .add(emptyWeight59))
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TR_AMETHYST_SAPLING))
-                        .add(EmptyLootItem.emptyItem().setWeight(59)))
+                        .add(LootItem.lootTableItem(AMETHYST_SAPLING))
+                        .add(emptyWeight59))
         );
         add(NatureBlocks.ASH_BRANCHES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
@@ -561,6 +625,18 @@ public class BlockSubProvider extends BlockLootSubProvider {
                         .when(this.hasSilkTouch())
                         .when(HAS_SHEARS))
         );
+        add(DESERT_GRASS.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(DESERT_GRASS.get()))
+                        .when(this.hasSilkTouch())
+                        .when(HAS_SHEARS))
+        );
+        add(DESERT_TALL_GRASS.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(DESERT_TALL_GRASS.get()))
+                        .when(this.hasSilkTouch())
+                        .when(HAS_SHEARS))
+        );
         add(CORRUPT_GRASS.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(CORRUPT_GRASS.get()))
@@ -573,9 +649,9 @@ public class BlockSubProvider extends BlockLootSubProvider {
                         .when(this.hasSilkTouch())
                         .when(HAS_SHEARS))
         );
-        add(TR_CRIMSON_GRASS.get(), LootTable.lootTable()
+        add(CRIMSON_GRASS.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TR_CRIMSON_GRASS.get()))
+                        .add(LootItem.lootTableItem(CRIMSON_GRASS.get()))
                         .when(this.hasSilkTouch())
                         .when(HAS_SHEARS))
         );
@@ -630,5 +706,17 @@ public class BlockSubProvider extends BlockLootSubProvider {
                         .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block)
                                 .setProperties(StatePropertiesPredicate.Builder.properties()
                                         .hasProperty(BaseHerbBlock.AGE, 1)))));
+    }
+
+    private LootTable.Builder createShimmerBerriesDrop(Block block) {
+        return LootTable.lootTable()
+                .withPool(
+                        LootPool.lootPool()
+                                .add(LootItem.lootTableItem(FoodItems.SHIMMER_BERRIES))
+                                .when(
+                                        LootItemBlockStatePropertyCondition.hasBlockStateProperties(block)
+                                                .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(CaveVines.BERRIES, true))
+                                )
+                );
     }
 }

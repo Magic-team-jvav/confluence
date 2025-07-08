@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "confluence:block/ebonstone_bricks_slab"
+    },
+    "type=top": {
+      "model": "confluence:block/ebonstone_bricks_slab_top"
+    },
+    "type=double": {
+      "model": "confluence:block/ebonstone_bricks_slab_full"
+    }
+  }
+}

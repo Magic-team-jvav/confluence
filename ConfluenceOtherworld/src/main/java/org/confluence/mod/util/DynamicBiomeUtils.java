@@ -82,7 +82,7 @@ public final class DynamicBiomeUtils {
         if(corrupt >= BIOME_THRESHOLD && corrupt >= crimson){
             return biomeSource.confluence$getBiomeByKey(ModBiomes.THE_CORRUPTION);
         }else if(crimson >= BIOME_THRESHOLD){
-            return biomeSource.confluence$getBiomeByKey(ModBiomes.TR_CRIMSON);
+            return biomeSource.confluence$getBiomeByKey(ModBiomes.THE_CRIMSON);
         }else if(hallow >= BIOME_THRESHOLD){
             return biomeSource.confluence$getBiomeByKey(ModBiomes.THE_HALLOW);
         }else{

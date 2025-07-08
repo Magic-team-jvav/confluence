@@ -1,0 +1,18 @@
+{
+    "variants": {
+        "": [
+            {
+                "model": "confluence:block/crimstone",
+                "weight": 12
+            },
+            {
+                "model": "confluence:block/crimstone_0",
+                "weight": 1
+            },
+            {
+                "model": "confluence:block/crimstone_1",
+                "weight": 1
+            }
+        ]
+    }
+}

@@ -5,7 +5,7 @@
 	"textures": {
 		"2": "block/campfire_fire",
 		"3": "confluence:block/items_on_alchemy_table",
-		"particle": "confluence:block/alchemy_table_particle"
+		"particle": "confluence:block/particle/alchemy_table_particle"
 	},
 	"elements": [
 		{

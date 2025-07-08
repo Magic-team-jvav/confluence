@@ -1,15 +1,19 @@
 package org.confluence.mod.common.item.gun;
 
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.NeoForge;
 import org.confluence.lib.common.component.ModRarity;
+import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.util.PlayerUtils;
-import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_guns.api.event.GunEvent;
+import org.confluence.terra_guns.common.entity.bullet.BaseBulletEntity;
 import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terra_guns.common.item.gun.BaseGun;
+
+import java.util.List;
 
 
 public class ManaGunItem extends BaseGun {
@@ -46,6 +50,16 @@ public class ManaGunItem extends BaseGun {
             baseBulletEntities.forEach(player.serverLevel()::addFreshEntity);
             baseBulletEntities.clear();
         }
+    }
+
+    @Override
+    protected BaseBulletEntity createBulletEntity(List<Projectile> baseBulletEntities, ServerPlayer player, ItemStack bullet, ItemStack gun, float damage, float knockback, float velocity, int penetrate, float inaccuracy) {
+        return new BaseBulletEntity(player, bullet) {
+            @Override
+            public DamageSource getDamageSource() {
+                return ModDamageTypes.of(level(), ModDamageTypes.MAGICAL_PROJECTILE, this, getOwner());
+            }
+        };
     }
 
     public float getDamage() {

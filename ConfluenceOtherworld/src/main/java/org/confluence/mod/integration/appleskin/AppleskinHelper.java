@@ -13,12 +13,22 @@ public class AppleskinHelper {
 
     public static void addListeners() {
         if (IS_LOADED) {
+            NeoForge.EVENT_BUS.addListener((Consumer<HUDOverlayEvent.Exhaustion>) event -> {
+                if (ClientConfigs.terraStyleFood && ClientConfigs.foodStyle == TerraStyleFoodHud.Food.LEGACY) {
+                    event.setCanceled(true);
+                }
+            });
             NeoForge.EVENT_BUS.addListener((Consumer<HUDOverlayEvent.Saturation>) event -> {
                 if (ClientConfigs.terraStyleFood) {
                     event.setCanceled(true);
                 }
             });
-            NeoForge.EVENT_BUS.addListener((Consumer<HUDOverlayEvent.Exhaustion>) event -> {
+            NeoForge.EVENT_BUS.addListener((Consumer<HUDOverlayEvent.HungerRestored>) event -> {
+                if (ClientConfigs.terraStyleFood && ClientConfigs.foodStyle == TerraStyleFoodHud.Food.LEGACY) {
+                    event.setCanceled(true);
+                }
+            });
+            NeoForge.EVENT_BUS.addListener((Consumer<HUDOverlayEvent.HealthRestored>) event -> {
                 if (ClientConfigs.terraStyleFood && ClientConfigs.foodStyle == TerraStyleFoodHud.Food.LEGACY) {
                     event.setCanceled(true);
                 }

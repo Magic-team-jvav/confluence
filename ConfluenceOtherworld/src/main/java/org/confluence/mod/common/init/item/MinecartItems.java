@@ -32,7 +32,7 @@ public class MinecartItems {
     public static final DeferredItem<BaseMinecartItem> AMETHYST_MINECART = registerGeneric("amethyst_minecart", Types.AMETHYST, Variant.AMETHYST);
     public static final DeferredItem<BaseMinecartItem> TOPAZ_MINECART = registerGeneric("topaz_minecart", Types.TOPAZ, Variant.TOPAZ);
     public static final DeferredItem<BaseMinecartItem> SAPPHIRE_MINECART = registerGeneric("sapphire_minecart", Types.SAPPHIRE, Variant.SAPPHIRE);
-    public static final DeferredItem<BaseMinecartItem> EMERALD_MINECART = registerGeneric("emerald_minecart", Types.EMERALD, Variant.EMERALD);
+    public static final DeferredItem<BaseMinecartItem> JADE_MINECART = registerGeneric("jade_minecart", Types.JADE, Variant.JADE);
     public static final DeferredItem<BaseMinecartItem> RUBY_MINECART = registerGeneric("ruby_minecart", Types.RUBY, Variant.RUBY);
     public static final DeferredItem<BaseMinecartItem> DIAMOND_MINECART = registerGeneric("diamond_minecart", Types.DIAMOND, Variant.DIAMOND);
     public static final DeferredItem<BaseMinecartItem> AMBER_MINECART = registerGeneric("amber_minecart", Types.AMBER, Variant.AMBER);
@@ -64,7 +64,7 @@ public class MinecartItems {
         public static final Abilities<GenericMinecartEntity> AMETHYST = registerGeneric(Confluence.asResource("amethyst_minecart"));
         public static final Abilities<GenericMinecartEntity> TOPAZ = registerGeneric(Confluence.asResource("topaz_minecart"));
         public static final Abilities<GenericMinecartEntity> SAPPHIRE = registerGeneric(Confluence.asResource("sapphire_minecart"));
-        public static final Abilities<GenericMinecartEntity> EMERALD = registerGeneric(Confluence.asResource("emerald_minecart"));
+        public static final Abilities<GenericMinecartEntity> JADE = registerGeneric(Confluence.asResource("jade_minecart"));
         public static final Abilities<GenericMinecartEntity> RUBY = registerGeneric(Confluence.asResource("ruby_minecart"));
         public static final Abilities<GenericMinecartEntity> DIAMOND = registerGeneric(Confluence.asResource("diamond_minecart"));
         public static final Abilities<GenericMinecartEntity> AMBER = registerGeneric(Confluence.asResource("amber_minecart"));

@@ -1,21 +1,29 @@
 package org.confluence.mod.common.init.item;
 
+import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
+import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.item.potion.*;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.terra_curio.common.init.TCEffects;
 import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.List;
 
 public class PotionItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
@@ -29,8 +37,14 @@ public class PotionItems {
             }
         }
     });
-    public static final DeferredItem<Item> MUG = ITEMS.register("mug", () -> new Item(new Item.Properties()));
-    public static final DeferredItem<AbstractPotionItem> ALE = ITEMS.register("ale", () -> new EffectPotionItem(ModEffects.TIPSY, 2400));
+
+    public static final DeferredItem<TooltipItem> MUG = ITEMS.register("mug", () -> new TooltipItem(new Item.Properties(), ModRarity.GRAY, Component.translatable("tooltip.item.confluence.mug.0")));
+    public static final DeferredItem<AbstractPotionItem> ALE = ITEMS.register("ale", () -> new EffectPotionItem(ModEffects.TIPSY, 2400) {
+        @Override
+        protected @NotNull ItemStack getReturnItem() {
+            return MUG.toStack();
+        }
+    });
     public static final DeferredItem<AbstractPotionItem> ARCHERY_POTION = ITEMS.register("archery_potion", () -> new EffectPotionItem(ModEffects.ARCHERY, 9600));
     public static final DeferredItem<AbstractPotionItem> BUILDER_POTION = ITEMS.register("builder_potion", () -> new EffectPotionItem(ModEffects.BUILDER, 54000));
     public static final DeferredItem<AbstractPotionItem> DANGERSENSE_POTION = ITEMS.register("dangersense_potion", () -> new EffectPotionItem(ModEffects.DANGER_SENSE, 4800));
@@ -58,7 +72,15 @@ public class PotionItems {
     public static final DeferredItem<AbstractPotionItem> RAGE_POTION = ITEMS.register("rage_potion", () -> new EffectPotionItem(ModEffects.RAGE, 4800));
     public static final DeferredItem<AbstractPotionItem> RECALL_POTION = ITEMS.register("recall_potion", RecallPotionItem::new);
     public static final DeferredItem<AbstractPotionItem> REGENERATION_POTION = ITEMS.register("regeneration_potion", () -> new EffectPotionItem(MobEffects.REGENERATION, 9600));
-    public static final DeferredItem<AbstractPotionItem> SHINE_POTION = ITEMS.register("shine_potion", () -> new EffectPotionItem(ModEffects.SHINE, 12000));
+    public static final DeferredItem<AbstractPotionItem> SHINE_POTION = ITEMS.register("shine_potion", () -> new EffectPotionItem(ModEffects.SHINE, 12000) {
+        private final boolean noneLoaded = !ModList.get().isLoaded("sodiumdynamiclights");
+
+        @ParametersAreNonnullByDefault
+        @Override
+        public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+            if (noneLoaded) tooltipComponents.add(Component.translatable("tooltip.terra_curio.requires_mod_loaded", "sodiumdynamiclights"));
+        }
+    });
     public static final DeferredItem<AbstractPotionItem> SPELUNKER_POTION = ITEMS.register("spelunker_potion", () -> new EffectPotionItem(ModEffects.SPELUNKER, 6000));
     public static final DeferredItem<AbstractPotionItem> SWIFTNESS_POTION = ITEMS.register("swiftness_potion", () -> new EffectPotionItem(MobEffects.MOVEMENT_SPEED, 9600));
     public static final DeferredItem<AbstractPotionItem> THORNS_POTION = ITEMS.register("thorns_potion", () -> new EffectPotionItem(ModEffects.THORNS, 9600));
@@ -81,6 +103,7 @@ public class PotionItems {
     public static final DeferredItem<CustomRarityItem> WORMHOLE_POTION = ITEMS.register("wormhole_potion", () -> new CustomRarityItem(new Item.Properties().stacksTo(16), ModRarity.BLUE));
     public static final DeferredItem<AbstractPotionItem> AMMO_RESERVATION_POTION = ITEMS.register("ammo_reservation_potion", () -> new EffectPotionItem(ModEffects.AMMO_BOX, 9600));
     public static final DeferredItem<AbstractPotionItem> SUMMONING_POTION = ITEMS.register("summoning_potion", () -> new EffectPotionItem(ModEffects.SUMMONING, 9600));
+    public static final DeferredItem<AbstractPotionItem> SHIMMER_POTION = ITEMS.register("shimmer_potion", () -> new EffectPotionItem(ModEffects.SHIMMER, 1200));
 
     public static final DeferredItem<AbstractPotionItem> RED_POTION = ITEMS.register("red_potion", RedPotionItem::new);
     public static final DeferredItem<AbstractPotionItem> CHAOS_POTION = ITEMS.register("chaos_potion", ChaosPotionItem::new);
@@ -88,4 +111,12 @@ public class PotionItems {
 
     public static final DeferredItem<AbstractPotionItem> FLASK_OF_FIRE = ITEMS.register("flask_of_fire", () -> new EffectPotionItem(ModRarity.LIGHT_RED, ModEffects.WEAPON_IMBUE_FIRE, 24000));
     public static final DeferredItem<AbstractPotionItem> FLASK_OF_GOLD = ITEMS.register("flask_of_gold", () -> new EffectPotionItem(ModRarity.LIGHT_RED, ModEffects.WEAPON_IMBUE_GOLD, 24000));
+
+    public static void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> tag) {
+        ITEMS.getEntries().forEach(item -> {
+            if (item.get() instanceof AbstractPotionItem item1) {
+                tag.add(item1);
+            }
+        });
+    }
 }

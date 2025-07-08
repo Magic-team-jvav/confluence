@@ -4,6 +4,7 @@ import com.google.common.base.Suppliers;
 import net.minecraft.core.Holder;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
@@ -23,5 +24,10 @@ public class BaseVanityArmorItem extends ArmorItem {
     public BaseVanityArmorItem(Holder<ArmorMaterial> material, ArmorItem.Type type, Properties properties, ModRarity rarity) {
         super(material, type, properties.stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, rarity));
         this.defaultModifiers = Suppliers.memoize(() -> new ItemAttributeModifiers(Collections.emptyList(), false));
+    }
+
+    @Override
+    public boolean isEnchantable(ItemStack stack) {
+        return false;
     }
 }

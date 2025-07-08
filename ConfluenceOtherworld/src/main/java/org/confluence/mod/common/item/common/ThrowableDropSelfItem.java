@@ -42,7 +42,6 @@ public class ThrowableDropSelfItem extends Item {
             ThrowableDropSelfProjectile projectile = entityType.create(pLevel);
             if (projectile != null) {
                 projectile.setOwner(pPlayer);
-                projectile.setItem(getDefaultInstance());
                 if (dropSelf) {
                     projectile.setItem(getDefaultInstance());
                 }

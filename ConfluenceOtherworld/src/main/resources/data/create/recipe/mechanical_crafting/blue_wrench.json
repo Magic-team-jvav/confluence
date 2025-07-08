@@ -1,0 +1,29 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "create"
+    }
+  ],
+  "type": "create:mechanical_crafting",
+  "accept_mirrored": false,
+  "key": {
+    "#": {
+      "item": "confluence:platinum_ingot"
+    },
+    "$": {
+      "item": "minecraft:blue_dye"
+    }
+  },
+  "pattern": [
+    "  ##",
+    "  #$",
+    " #  ",
+    "#   "
+  ],
+  "result": {
+    "count": 1,
+    "id": "confluence:blue_wrench"
+  },
+  "show_notification": false
+}

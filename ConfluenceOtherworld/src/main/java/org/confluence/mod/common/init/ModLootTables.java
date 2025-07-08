@@ -12,8 +12,6 @@ import org.confluence.mod.common.loot.DateLootItemCondition;
 import java.util.function.Supplier;
 
 public final class ModLootTables {
-    public static final ResourceKey<LootTable> ENVIRONMENT_CRATE = register("gameplay/crate/environment_crate");
-    public static final ResourceKey<LootTable> ENVIRONMENT_CRATE_HARDMODE = register("gameplay/crate/environment_crate_hardmode");
     public static final ResourceKey<LootTable> WOODEN_CRATE = register("gameplay/crate/wooden_crate");
     public static final ResourceKey<LootTable> IRON_CRATE = register("gameplay/crate/iron_crate");
     public static final ResourceKey<LootTable> GOLDEN_CRATE = register("gameplay/crate/golden_crate");
@@ -21,10 +19,10 @@ public final class ModLootTables {
     public static final ResourceKey<LootTable> SAVANNA_CRATE = register("gameplay/crate/savanna_crate");
     public static final ResourceKey<LootTable> SKY_CRATE = register("gameplay/crate/sky_crate");
     public static final ResourceKey<LootTable> CORRUPT_CRATE = register("gameplay/crate/corrupt_crate");
-    public static final ResourceKey<LootTable> TR_CRIMSON_CRATE = register("gameplay/crate/tr_crimson_crate");
+    public static final ResourceKey<LootTable> CRIMSON_CRATE = register("gameplay/crate/crimson_crate");
     public static final ResourceKey<LootTable> SACRED_CRATE = register("gameplay/crate/sacred_crate");
     public static final ResourceKey<LootTable> DUNGEON_CRATE = register("gameplay/crate/dungeon_crate");
-    public static final ResourceKey<LootTable> FREEZE_CRATE = register("gameplay/crate/freeze_crate");
+    public static final ResourceKey<LootTable> FROZEN_CRATE = register("gameplay/crate/frozen_crate");
     public static final ResourceKey<LootTable> OASIS_CRATE = register("gameplay/crate/oasis_crate");
     public static final ResourceKey<LootTable> OBSIDIAN_CRATE = register("gameplay/crate/obsidian_crate");
     public static final ResourceKey<LootTable> OCEAN_CRATE = register("gameplay/crate/ocean_crate");
@@ -32,17 +30,17 @@ public final class ModLootTables {
     public static final ResourceKey<LootTable> PEARLWOOD_CRATE = register("gameplay/crate/pearlwood_crate");
     public static final ResourceKey<LootTable> MYTHRIL_CRATE = register("gameplay/crate/mythril_crate");
     public static final ResourceKey<LootTable> TITANIUM_CRATE = register("gameplay/crate/titanium_crate");
-    public static final ResourceKey<LootTable> THORNS_CRATE = register("gameplay/crate/thorns_crate");
+    public static final ResourceKey<LootTable> BRAMBLE_CRATE = register("gameplay/crate/bramble_crate");
     public static final ResourceKey<LootTable> WILD_CRATE = register("gameplay/crate/wild_crate");
-    public static final ResourceKey<LootTable> SPACE_CRATE = register("gameplay/crate/space_crate");
-    public static final ResourceKey<LootTable> DEFACED_CRATE = register("gameplay/crate/defaced_crate");
-    public static final ResourceKey<LootTable> BLOOD_CRATE = register("gameplay/crate/blood_crate");
-    public static final ResourceKey<LootTable> PROVIDENTIAL_CRATE = register("gameplay/crate/providential_crate");
-    public static final ResourceKey<LootTable> FENCING_CRATE = register("gameplay/crate/fencing_crate");
-    public static final ResourceKey<LootTable> CONIFEROUS_WOOD_CRATE = register("gameplay/crate/coniferous_wood_crate");
-    public static final ResourceKey<LootTable> ILLUSION_CRATE = register("gameplay/crate/illusion_crate");
-    public static final ResourceKey<LootTable> HELL_STONE_CRATE = register("gameplay/crate/hell_stone_crate");
-    public static final ResourceKey<LootTable> BEACH_CRATE = register("gameplay/crate/beach_crate");
+    public static final ResourceKey<LootTable> AZURE_CRATE = register("gameplay/crate/azure_crate");
+    public static final ResourceKey<LootTable> DEFILED_CRATE = register("gameplay/crate/defiled_crate");
+    public static final ResourceKey<LootTable> HEMATIC_CRATE = register("gameplay/crate/hematic_crate");
+    public static final ResourceKey<LootTable> DIVINE_CRATE = register("gameplay/crate/divine_crate");
+    public static final ResourceKey<LootTable> STOCKADE_CRATE = register("gameplay/crate/stockade_crate");
+    public static final ResourceKey<LootTable> BOREAL_CRATE = register("gameplay/crate/boreal_crate");
+    public static final ResourceKey<LootTable> MIRAGE_CRATE = register("gameplay/crate/mirage_crate");
+    public static final ResourceKey<LootTable> HELLSTONE_CRATE = register("gameplay/crate/hellstone_crate");
+    public static final ResourceKey<LootTable> SEASIDE_CRATE = register("gameplay/crate/seaside_crate");
 
     public static final ResourceKey<LootTable> CLAM = register("gameplay/clam");
     public static final ResourceKey<LootTable> CHRISTMAS_GIFT = register("gameplay/christmas_gift");
@@ -54,19 +52,22 @@ public final class ModLootTables {
     public static final ResourceKey<LootTable> CAN_OF_WORMS = register("gameplay/can_of_worms");
 
     public static final ResourceKey<LootTable> FISHING_LAVA = register("gameplay/fishing/lava");
+    public static final ResourceKey<LootTable> FISHING_HONEY = register("gameplay/fishing/honey");
     public static final ResourceKey<LootTable> FISHING = register("gameplay/fishing");
     public static final ResourceKey<LootTable> FISH = register("gameplay/fishing/fish");
     public static final ResourceKey<LootTable> JUNK = register("gameplay/fishing/junk");
     public static final ResourceKey<LootTable> TREASURE = register("gameplay/fishing/treasure");
     public static final ResourceKey<LootTable> CRATE = register("gameplay/crate");
+    public static final ResourceKey<LootTable> CRATE_HARDMODE = register("gameplay/crate_hardmode");
 
     public static final ResourceKey<LootTable> CORRUPTION_CARRY = register("gameplay/corruption_carry");
     public static final ResourceKey<LootTable> SLIME_CARRY = register("gameplay/slime_carry");
 
     public static final ResourceKey<LootTable> HERB_BAG_INNER = register("gameplay/herb_bag_inner");
 
-    public static final ResourceKey<LootTable> INITIAL_WORLD_UNDERGROUND_CHEST = register("chests/initial_world_underground_chest");
     public static final ResourceKey<LootTable> CAVE_CHESTS = register("chests/cave_chests");
+
+    public static final ResourceKey<LootTable> LIVING_MAHOGANY_CARRY = register("gameplay/living_mahogany_carry");
 
     public static final ResourceKey<LootTable> OPAL_BLOCK = register("archaeology/opal_ore");
 

@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "": {
+            "model": "confluence:block/boulder_bread_block"
+        }
+    }
+}

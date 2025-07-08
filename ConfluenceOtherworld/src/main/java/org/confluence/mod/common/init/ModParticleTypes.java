@@ -10,6 +10,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.particle.DamageIndicatorOptions;
+import org.confluence.mod.common.particle.WholeItemParticleOptions;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
@@ -19,6 +20,7 @@ public final class ModParticleTypes {
     public static final DeferredRegister<ParticleType<?>> TYPES = DeferredRegister.create(BuiltInRegistries.PARTICLE_TYPE, Confluence.MODID);
 
     public static final Supplier<ParticleType<DamageIndicatorOptions>> DAMAGE_INDICATOR = register("damage_indicator", true, DamageIndicatorOptions.CODEC, DamageIndicatorOptions.STREAM_CODEC);
+    public static final Supplier<ParticleType<WholeItemParticleOptions>> WHOLE_ITEM = register("whole_item", true, WholeItemParticleOptions.CODEC, WholeItemParticleOptions.STREAM_CODEC);
     public static final Supplier<SimpleParticleType> LEAVES = register("leaves", true);
     public static final Supplier<SimpleParticleType> RED_SAND = register("red_sand", true);
     public static final Supplier<SimpleParticleType> SAND = register("sand", true);
@@ -27,8 +29,6 @@ public final class ModParticleTypes {
     public static final Supplier<SimpleParticleType> LIGHT_BANE = register("lights_bane", true);
     public static final Supplier<SimpleParticleType> LIGHT_BANE_DUST = register("lights_bane_dust", true);
     public static final Supplier<SimpleParticleType> LIGHT_BANE_FADE = register("lights_bane_fade", true);
-
-
 
     // 原版用了Function获取codec，现在自己的用不到，要用了再改
     private static <T extends ParticleOptions> Supplier<ParticleType<T>> register(String id, boolean overrideLimiter, MapCodec<T> mapCodec, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec) {

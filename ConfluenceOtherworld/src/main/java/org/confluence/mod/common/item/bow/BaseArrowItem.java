@@ -17,19 +17,19 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class BaseArrowItem extends ArrowItem {
-    private final BaseArrowEntity.Tuple modifier;
+    private final BaseArrowEntity.Factory modifier;
     BaseArrowEntity.Builder attributes;
     public BaseArrowItem(ModRarity rarity) {
         this(rarity,null);
     }
-    public BaseArrowItem(ModRarity rarity,@Nullable BaseArrowEntity.Tuple modifier) {
+    public BaseArrowItem(ModRarity rarity,@Nullable BaseArrowEntity.Factory modifier) {
         super(new Properties().component(ConfluenceMagicLib.MOD_RARITY, rarity));
         this.modifier=modifier;
         if(modifier!=null)
             attributes = modifier.attr.get();
     }
 
-    public BaseArrowEntity.Tuple getModifier() {
+    public BaseArrowEntity.Factory getModifier() {
         return modifier;
     }
 

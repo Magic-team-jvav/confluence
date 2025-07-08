@@ -19,7 +19,7 @@ import org.confluence.phase_journey.mixed.ILevelRenderer;
 @OnlyIn(Dist.CLIENT)
 public final class ClientPacketHandler {
     private static int maxMana = 20;
-    private static int currentMana = 20;
+    private static float currentMana = 20;
     private static GamePhase gamePhase = GamePhase.BEFORE_SKELETRON;
     private static float fishingPower = 0.0F;
     private static boolean echoVisible = false;
@@ -27,7 +27,7 @@ public final class ClientPacketHandler {
     private static boolean sprintable = false;
     private static boolean showSignal = false;
 
-    public static int getCurrentMana() {
+    public static float getCurrentMana() {
         return currentMana;
     }
 
@@ -73,7 +73,7 @@ public final class ClientPacketHandler {
     public static void handleMana(ManaPacketS2C packet, Player player) {
         maxMana = packet.maxMana();
         currentMana = packet.currentMana();
-        if (currentMana == maxMana) {
+        if (currentMana >= maxMana) {
             player.playSound(ModSoundEvents.COOLDOWN_RECOVERY.get());
         }
     }

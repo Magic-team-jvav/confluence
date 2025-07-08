@@ -26,10 +26,13 @@ public final class ModStructures {
     public static final DeferredHolder<StructureType<?>, StructureType<IceThornStructure>> ICE_THORN = TYPES.register("ice_thorn", () -> () -> IceThornStructure.CODEC);
     public static final DeferredHolder<StructureType<?>, StructureType<MineTunnelsStructure>> MINE_TUNNELS = TYPES.register("mine_tunnels", () -> () -> MineTunnelsStructure.CODEC);
     public static final DeferredHolder<StructureType<?>, StructureType<PyramidStructure>> PYRAMID = TYPES.register("pyramid", () -> () -> PyramidStructure.CODEC);
+    public static final DeferredHolder<StructureType<?>, StructureType<OasisStructure>> OASIS = TYPES.register("oasis", () -> () -> OasisStructure.CODEC);
+    public static final DeferredHolder<StructureType<?>, StructureType<MarbleCaveStructure>> MARBLE_CAVE = TYPES.register("marble_cave", () -> () -> MarbleCaveStructure.CODEC);
+    public static final DeferredHolder<StructureType<?>, StructureType<GraniteCaveStructure>> GRANITE_CAVE = TYPES.register("granite_cave", () -> () -> GraniteCaveStructure.CODEC);
 
     public static final ResourceKey<Structure> DUNGEON_KEY = Confluence.asResourceKey(Registries.STRUCTURE, "dungeon");
 
-    public static void boostrap(BootstrapContext<Structure> context) {
+    public static void boostrap(BootstrapContext<Structure> context) { // todo
         context.register(DUNGEON_KEY, new DungeonStructure(new Structure.StructureSettings(HolderSet.empty())));
     }
 }

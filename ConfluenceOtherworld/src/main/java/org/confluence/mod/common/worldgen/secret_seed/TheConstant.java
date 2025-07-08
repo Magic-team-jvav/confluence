@@ -43,7 +43,7 @@ public class TheConstant extends SecretSeed {
     public static void applyDarkness(ServerPlayer player, ServerLevel level) {
         if (player.gameMode.getGameModeForPlayer().isSurvival() && level.getGameTime() % 20 == 0 && ModSecretSeeds.THE_CONSTANT.match(level)) {
             if (player.hasEffect(ModEffects.SHINE) || player.hasEffect(MobEffects.GLOWING)) return;
-            if (LibUtils.anyHandHasItem(player, itemStack -> itemStack.is(ModTags.Items.PROVIDE_LIGHT))) return;
+            if (LibUtils.anyHandHasItem(player, ModTags.Items.PROVIDE_LIGHT)) return;
             CompoundTag data = LibUtils.getOrCreatePersistedData(player);
             int tick = data.getInt("confluence:in_darkness_tick");
             BlockPos eyePos = BlockPos.containing(player.getEyePosition());

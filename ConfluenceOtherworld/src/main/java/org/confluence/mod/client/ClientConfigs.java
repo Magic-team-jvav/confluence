@@ -1,5 +1,6 @@
 package org.confluence.mod.client;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModList;
@@ -15,6 +16,7 @@ import org.confluence.mod.client.gui.hud.TerraStyleHealthHud;
 import org.confluence.mod.client.gui.hud.TerraStyleManaHud;
 import org.confluence.mod.client.handler.StarPhaseHandler;
 import org.confluence.mod.common.CommonConfigs;
+import org.confluence.terraentity.client.gui.container.TETradeScreen;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Locale;
@@ -22,8 +24,7 @@ import java.util.Locale;
 public final class ClientConfigs {
     public static int showWindParticles = 90;
     public static boolean achievementToast = true;
-    public static boolean playerOurMusic = false;
-    public static boolean showItemPrice = true;
+    public static SellPriceDisplay sellPriceDisplay = SellPriceDisplay.EVERYWHERE;
 
     public static boolean terraStyleHealth = true;
     public static TerraStyleHealthHud.Health healthStyle = TerraStyleHealthHud.Health.OVERLAY;
@@ -41,8 +42,7 @@ public final class ClientConfigs {
 
     private static IntValue SHOW_WIND_PARTICLES;
     private static BooleanValue ACHIEVEMENT_TOAST;
-    private static BooleanValue PLAY_OUR_MUSIC;
-    private static BooleanValue SHOW_ITEM_PRICE;
+    private static EnumValue<SellPriceDisplay> SELL_PRICE_DISPLAY;
 
     private static BooleanValue TERRA_STYLE_HEALTH;
     private static EnumValue<TerraStyleHealthHud.Health> HEALTH_STYLE;
@@ -61,8 +61,7 @@ public final class ClientConfigs {
     public static void onLoad() {
         showWindParticles = SHOW_WIND_PARTICLES.get();
         achievementToast = ACHIEVEMENT_TOAST.get();
-        playerOurMusic = PLAY_OUR_MUSIC.get();
-        showItemPrice = SHOW_ITEM_PRICE.get();
+        sellPriceDisplay = SELL_PRICE_DISPLAY.get();
 
         terraStyleHealth = TERRA_STYLE_HEALTH.get();
         healthStyle = HEALTH_STYLE.get();
@@ -85,8 +84,7 @@ public final class ClientConfigs {
 
         SHOW_WIND_PARTICLES = BUILDER.defineInRange("showWindParticles", 90, 0, 100);
         ACHIEVEMENT_TOAST = BUILDER.define("achievementToast", true);
-        PLAY_OUR_MUSIC = BUILDER.define("playerOurMusic", false);
-        SHOW_ITEM_PRICE = BUILDER.define("showItemPrice", true);
+        SELL_PRICE_DISPLAY = BUILDER.defineEnum("sellPriceDisplay", SellPriceDisplay.EVERYWHERE);
 
         BUILDER.push("HUD");
         BUILDER.push("Health");
@@ -114,7 +112,7 @@ public final class ClientConfigs {
 
         BUILDER.push("Entity");
         BLOODY_EFFECT = BUILDER.define("bloodyEffect", true);
-        if(!ModList.get().isLoaded("yes_steve_model")) {
+        if (!ModList.get().isLoaded("yes_steve_model")) {
             GORE_EFFECT = BUILDER.defineEnum("goreEffect", GoreEffect.CONFLUENCE_VANILLA);
         }
         DAMAGE_INDICATOR = BUILDER.define("damageIndicator", true);
@@ -126,12 +124,42 @@ public final class ClientConfigs {
     }
 
     public enum GoreEffect implements TranslatableEnum {
-        OFF, CONFLUENCE, CONFLUENCE_VANILLA, ALL;
+        OFF,
+        CONFLUENCE,
+        CONFLUENCE_VANILLA,
+        ALL;
 
         @Override
-        @NotNull
-        public Component getTranslatedName() {
+        public @NotNull Component getTranslatedName() {
             return Component.translatable("confluence.configuration.goreEffect." + name().toLowerCase(Locale.ROOT));
+        }
+    }
+
+    public enum SellPriceDisplay implements TranslatableEnum {
+        NEVER {
+            @Override
+            public boolean test() {
+                return false;
+            }
+        },
+        EVERYWHERE {
+            @Override
+            public boolean test() {
+                return true;
+            }
+        },
+        TRADE_SCREEN {
+            @Override
+            public boolean test() {
+                return Minecraft.getInstance().screen instanceof TETradeScreen<?>;
+            }
+        };
+
+        public abstract boolean test();
+
+        @Override
+        public @NotNull Component getTranslatedName() {
+            return Component.translatable("confluence.configuration.sellPriceDisplay." + name().toLowerCase(Locale.ROOT));
         }
     }
 }

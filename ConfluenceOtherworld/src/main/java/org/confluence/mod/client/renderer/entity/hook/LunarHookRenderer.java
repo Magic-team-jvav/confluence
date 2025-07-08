@@ -12,7 +12,7 @@ public class LunarHookRenderer extends AbstractHookRenderer<LunarHookEntity> {
         Confluence.asResource("textures/entity/hook/amethyst_hook.png"),
         Confluence.asResource("textures/entity/hook/amber_hook.png"),
         Confluence.asResource("textures/entity/hook/sapphire_hook.png"),
-        Confluence.asResource("textures/entity/hook/emerald_hook.png")
+        Confluence.asResource("textures/entity/hook/jade_hook.png")
     };
     private final BlockState[] CHAINS;
 
@@ -22,7 +22,7 @@ public class LunarHookRenderer extends AbstractHookRenderer<LunarHookEntity> {
             DecorativeBlocks.AMETHYST_CHAIN.get().defaultBlockState(),
             DecorativeBlocks.AMBER_CHAIN.get().defaultBlockState(),
             DecorativeBlocks.SAPPHIRE_CHAIN.get().defaultBlockState(),
-            DecorativeBlocks.EMERALD_CHAIN.get().defaultBlockState()
+            DecorativeBlocks.JADE_CHAIN.get().defaultBlockState()
         };
     }
 

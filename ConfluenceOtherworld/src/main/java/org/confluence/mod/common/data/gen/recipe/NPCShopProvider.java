@@ -1,5 +1,6 @@
 package org.confluence.mod.common.data.gen.recipe;
 
+import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeOutput;
@@ -8,30 +9,47 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.conditions.ModLoadedCondition;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.Keys;
+import org.confluence.mod.common.init.ModBiomes;
+import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.CrateBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.integration.terra_entity.npc_trade.DeferredMoneyTradeItem;
 import org.confluence.mod.integration.terra_entity.npc_trade.MoneyTradeHealthFull;
 import org.confluence.mod.integration.terra_entity.npc_trade.MoneyTradeItem;
 import org.confluence.mod.integration.terra_entity.npc_trade.SellTrade;
+import org.confluence.mod.integration.terra_entity.npc_trade_lock.ConditionsLock;
+import org.confluence.mod.integration.terra_entity.npc_trade_lock.PositionLock;
+import org.confluence.mod.integration.terra_entity.npc_trade_lock.SecretFlagLock;
+import org.confluence.mod.integration.waystones.WaystonesHelper;
+import org.confluence.mod.mixed.IWorldOptions;
+import org.confluence.mod.util.OverworldUtils;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.TerraEntity;
 import org.confluence.terraentity.entity.npc.trade.NPCTradeManager;
 import org.confluence.terraentity.init.entity.TENpcEntities;
+import org.confluence.terraentity.init.item.TEWhipItems;
 import org.confluence.terraentity.registries.npc_trade.ITrade;
+import org.confluence.terraentity.registries.npc_trade.TradeProperties;
 import org.confluence.terraentity.registries.npc_trade.variant.ItemTradeLootTable;
 import org.confluence.terraentity.registries.npc_trade.variant.TradeTask;
+import org.confluence.terraentity.registries.npc_trade_lock.ITradeLock;
+import org.confluence.terraentity.registries.npc_trade_lock.variant.BiomeLock;
+import org.confluence.terraentity.registries.npc_trade_lock.variant.MoodLock;
 import org.confluence.terraentity.registries.npc_trade_task.variant.DynamicAnglerTradeTask;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -45,50 +63,47 @@ public class NPCShopProvider extends AbstractRecipeProvider {
 
     public NPCShopProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookup) {
         super(output, lookup);
-        this.npcShopPathProvider = output.createPathProvider(PackOutput.Target.DATA_PACK, "npc_shop");
+        this.npcShopPathProvider = output.createPathProvider(PackOutput.Target.DATA_PACK, "npc/shop");
     }
 
     @Override
     public void buildRecipes(RecipeOutput recipeOutput, HolderLookup.Provider holderLookup) {
+        TradeProperties hardmodeLock = TradeProperties.builder().setLock(new SecretFlagLock(IWorldOptions.HARDMODE, false)).build();
         // 女仆商店
-        shop(Keys.MAID_SHOP).addRecipe(new Builder()
+        shop(Keys.MAID_SHOP).addRecipe(withDefaultPylon()
                 .add(TCItems.PORTABLE_CEMENT_MIXER)
                 .add(TCItems.EXTENDO_GRIP)
                 .add(TCItems.BRICK_LAYER)
                 .add(TCItems.STOPWATCH)
                 .add(TCItems.LIFE_FORM_ANALYZER)
                 .add(TCItems.DPS_METER)
+                .add(TCItems.DPS_METER)
+                .add(AccessoryItems.PAINT_SPRAYER)
+                .add(TEWhipItems.LEATHER_WHIP)
                 .add(SwordItems.KATANA)
                 .add(FoodItems.PAD_THAI)
                 .add(SellTrade.INSTANCE)
                 .build());
 
         shop(TENpcEntities.GUIDE.getId()).addRecipe(new Builder()
-                //旅商的       .add(AccessoryItems.PAINT_SPRAYER)
-                //.add(TCItems.PORTABLE_CEMENT_MIXER)
-                //.add(TCItems.EXTENDO_GRIP)
-                //.add(TCItems.BRICK_LAYER)
-                //.add(TCItems.STOPWATCH)
-                // .add(TCItems.LIFE_FORM_ANALYZER)
-                // .add(TCItems.DPS_METER)
-                // .add(SwordItems.KATANA)
-                // .add(FoodItems.PAD_THAI)
+                //旅商的       
                 //动物学家的              .add(TEWhipItems.LEATHER_WHIP)
                 .build());
 
-        shop(TENpcEntities.DEMOLITIONIST.getId()).addRecipe(new Builder()
+        shop(TENpcEntities.DEMOLITIONIST.getId()).addRecipe(withDefaultPylon()
                 .add(ConsumableItems.GRENADE)
                 .add(ConsumableItems.BOMB)
                 .add(ConsumableItems.DYNAMITE)
                 .add(SellTrade.INSTANCE)
                 .build());
 
-        shop(TENpcEntities.MERCHANT.getId()).addRecipe(new Builder()
+        shop(TENpcEntities.MERCHANT.getId()).addRecipe(withDefaultPylon()
                 .add(ToolItems.BUG_NET)
                 .add(ArmorItems.MINING_HELMET)
                 .add(Blocks.ANVIL)
                 .add(Blocks.TORCH)
                 .add(Items.ARROW)
+                .add(Items.ARROW, 100)
                 .add(ModBlocks.ROPE)
                 .add(ConsumableItems.SHURIKEN)
                 .add(FunctionalBlocks.PIGGY_BANK)
@@ -100,7 +115,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(SellTrade.INSTANCE)
                 .build());
 
-        shop(TENpcEntities.GOBLIN_TINKERER.getId()).addRecipe(new Builder()
+        shop(TENpcEntities.GOBLIN_TINKERER.getId()).addRecipe(withDefaultPylon()
                 .add(HookItems.GRAPPLING_HOOK)
                 .add(TCItems.ROCKET_BOOTS)
                 .add(TCItems.TOOLBELT)
@@ -108,19 +123,27 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(SellTrade.INSTANCE)
                 .build());
 
-        shop(TENpcEntities.NURSE.getId()).addRecipe(new Builder()
+        shop(TENpcEntities.NURSE.getId()).addRecipe(withDefaultPylon()
                 .add(MoneyTradeHealthFull.create())
                 .build());
 
-        shop(TENpcEntities.ARMS_DEALER.getId()).addRecipe(new Builder()
+        shop(TENpcEntities.ARMS_DEALER.getId()).addRecipe(withDefaultPylon()
                 .add(TGItems.MUSKET_BULLET)
                 .add(TGItems.MUSKET_BULLET, 100)
+                .add(new MoneyTradeItem.Builder()
+                        .setResult(TGItems.SILVER_BULLET.toStack())
+                        .setProperties(hardmodeLock)
+                        .build())
+                .add(new MoneyTradeItem.Builder()
+                        .setResult(TGItems.SILVER_BULLET.toStack(100))
+                        .setProperties(hardmodeLock)
+                        .build())
                 .add(TGItems.FLINTLOCK_PISTOL)
-                .add(TGItems.MINISHARK)         //先不管晚上的条件，迷你鲨塞一手
+                .add(TGItems.MINISHARK)
                 .add(SellTrade.INSTANCE)
                 .build());
 
-        shop(TENpcEntities.DRYAD.getId()).addRecipe(new Builder()
+        shop(TENpcEntities.DRYAD.getId()).addRecipe(withDefaultPylon()
                 .add(ConsumableItems.PURIFICATION_POWDER)
                 .add(NatureBlocks.YELLOW_WILLOW_SAPLING)
                 .add(Blocks.OAK_SAPLING)
@@ -129,7 +152,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(SellTrade.INSTANCE)
                 .build());
 
-        shop(TENpcEntities.DYE_TRADER.getId()).addRecipe(new Builder()
+        shop(TENpcEntities.DYE_TRADER.getId()).addRecipe(withDefaultPylon()
                 .add(VanityArmorItems.SILVER_DYE)
                 .add(VanityArmorItems.BROWN_DYE)
                 .add(VanityArmorItems.TEAM_DYE)
@@ -137,7 +160,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .build());
 
 
-        shop(TENpcEntities.PAINTER.getId()).addRecipe(new Builder()
+        shop(TENpcEntities.PAINTER.getId()).addRecipe(withDefaultPylon()
                 .add(PaintItems.PAINTBRUSH)
                 .add(PaintItems.PAINT_ROLLER)
                 .add(PaintItems.PAINT_SCRAPER)
@@ -172,7 +195,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(SellTrade.INSTANCE)
                 .build());
 
-        shop(TENpcEntities.ANGLER.getId()).addRecipe(new Builder()
+        NPCTradeManager angler = new Builder()
                 .add(TradeTask.create(DynamicAnglerTradeTask.builder(ItemTradeLootTable.builder()
                                 .addCost(CrateBlocks.WOODEN_CRATE.toStack()) // 在没有任务鱼机制前，用木匣代替
                                 .setLootTable(Confluence.asResource("gameplay/fishing_quests_0"))
@@ -185,9 +208,66 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                         .addResult(30, Collections.singletonList(FishingPoleItems.GOLDEN_FISHING_ROD.toStack()))
 //                        .setTitle("title.terra_entity.npc_trade.task.fishman")
                         .build()))
-                .build());
+                .build();
+        shop(TENpcEntities.ANGLER.getId()).addRecipe(angler);
+        shop(TENpcEntities.FEMALE_ANGLER.getId()).addRecipe(angler);
 
         shop(TENpcEntities.OLD_MAN.getId()).addRecipe(new Builder()
+                .build());
+
+        shop(TENpcEntities.MECHANIC.getId()).addRecipe(withDefaultPylon()
+                .add(ToolItems.RED_WRENCH)
+                .add(ToolItems.BLUE_WRENCH)
+                .add(ToolItems.GREEN_WRENCH)
+                .add(ToolItems.YELLOW_WRENCH)
+                .add(ToolItems.WIRE_CUTTER)
+                .add(FishingPoleItems.MECHANICS_ROD) //todo 月相条件
+                .add(FunctionalBlocks.SWITCH)
+                .add(FunctionalBlocks.SIGNAL_ADAPTER)
+                .add(FunctionalBlocks.TIMERS_BLOCK_1_1)
+                .add(FunctionalBlocks.TIMERS_BLOCK_3_1)
+                .add(FunctionalBlocks.TIMERS_BLOCK_5_1)
+                .add(FunctionalBlocks.TIMERS_BLOCK_1_2)
+                .add(FunctionalBlocks.TIMERS_BLOCK_1_4)
+                .add(FunctionalBlocks.EVER_POWERED_RAIL)
+                .add(AccessoryItems.MECHANICAL_LENS)
+                .add(Items.PISTON)
+                .add(Items.STICKY_PISTON)
+                .add(Items.REDSTONE_LAMP)
+                .add(Items.DAYLIGHT_DETECTOR)
+                .add(SellTrade.INSTANCE)
+                .build());
+
+        shop(TENpcEntities.TRAVELING_MERCHANT.getId()).addRecipe(withDefaultPylon()
+                .add(AccessoryItems.PAINT_SPRAYER)
+                .add(TCItems.PORTABLE_CEMENT_MIXER)
+                .add(TCItems.EXTENDO_GRIP)
+                .add(TCItems.BRICK_LAYER)
+                .add(TCItems.STOPWATCH)
+                .add(TCItems.LIFE_FORM_ANALYZER)
+                .add(TCItems.DPS_METER)
+                .add(SwordItems.KATANA)
+                .add(FoodItems.PAD_THAI)
+                .add(SellTrade.INSTANCE)
+                .build());
+
+        shop(TENpcEntities.CLOTHIER.getId()).addRecipe(withDefaultPylon()
+                .add(VanityArmorItems.FAMILIAR_WIG)
+                .add(VanityArmorItems.FAMILIAR_SHIRT)
+                .add(VanityArmorItems.FAMILIAR_PANTS)
+                .add(VanityArmorItems.FAMILIAR_SHOES)
+                .add(SellTrade.INSTANCE)
+                .build());
+
+        shop(TENpcEntities.PARTY_GIRL.getId()).addRecipe(withDefaultPylon()
+                .add(FunctionalBlocks.SILLY_BALLOON_MACHINE)
+                .add(ConsumableItems.SMOKE_BOMB)
+                .add(SellTrade.INSTANCE)
+                .build());
+
+        shop(TENpcEntities.WITCH_DOCTOR.getId()).addRecipe(withDefaultPylon()
+                .add(FunctionalBlocks.CAULDRON) //todo 万圣节条件
+                .add(SellTrade.INSTANCE)
                 .build());
     }
 
@@ -197,6 +277,25 @@ public class NPCShopProvider extends AbstractRecipeProvider {
         return recipe(NPCTradeManager.CODEC, pathProvider().json(Confluence.asResource(id.getPath())));
     }
 
+    protected Builder withDefaultPylon() {
+        return new Builder()
+                .add(new DeferredMoneyTradeItem(WaystonesHelper.FOREST_PYLON.getId(), 1, withModLoadedGreaterMood( new BiomeLock(Optional.empty(), Optional.of(List.of(Tags.Biomes.IS_FOREST, Tags.Biomes.IS_PLAINS))), WaystonesHelper.MODID)))
+                .add(new DeferredMoneyTradeItem(WaystonesHelper.SNOW_PYLON.getId(), 1, withModLoadedGreaterMood(new BiomeLock(Optional.empty(), Optional.of(List.of(Tags.Biomes.IS_SNOWY, Tags.Biomes.IS_ICY))), WaystonesHelper.MODID)))
+                .add(new DeferredMoneyTradeItem(WaystonesHelper.DESERT_PYLON.getId(), 1, withModLoadedGreaterMood(new BiomeLock(Optional.empty(), Optional.of(List.of(Tags.Biomes.IS_DESERT, Tags.Biomes.IS_BADLANDS))), WaystonesHelper.MODID)))
+                .add(new DeferredMoneyTradeItem(WaystonesHelper.CAVERN_PYLON.getId(), 1, withModLoadedGreaterMood(new PositionLock(MinMaxBounds.Ints.ANY, MinMaxBounds.Ints.atMost(OverworldUtils.getSurfaceY()), MinMaxBounds.Ints.ANY), WaystonesHelper.MODID)))
+                .add(new DeferredMoneyTradeItem(WaystonesHelper.OCEAN_PYLON.getId(), 1, withModLoadedGreaterMood(new BiomeLock(Optional.empty(), Optional.of(Collections.singletonList(Tags.Biomes.IS_OCEAN))), WaystonesHelper.MODID)))
+                .add(new DeferredMoneyTradeItem(WaystonesHelper.JUNGLE_PYLON.getId(), 1, withModLoadedGreaterMood(new BiomeLock(Optional.empty(), Optional.of(Collections.singletonList(Tags.Biomes.IS_JUNGLE))), WaystonesHelper.MODID)))
+                .add(new DeferredMoneyTradeItem(WaystonesHelper.HALLOW_PYLON.getId(), 1, withModLoadedGreaterMood(new BiomeLock(Optional.empty(), Optional.of(Collections.singletonList(ModTags.Biomes.THE_HALLOW))), WaystonesHelper.MODID)))
+                .add(new DeferredMoneyTradeItem(WaystonesHelper.MUSHROOM_PYLON.getId(), 1, withModLoadedGreaterMood(new BiomeLock(Optional.of(Collections.singletonList(ModBiomes.GLOWING_MUSHROOM)), Optional.empty()), WaystonesHelper.MODID)));
+    }
+
+    protected ITradeLock withModLoaded(String modid) {
+        return new ConditionsLock(new ModLoadedCondition(modid));
+    }
+
+    protected ITradeLock withModLoadedGreaterMood(ITradeLock subLock, String modid) {
+        return ITradeLock.and(MoodLock.greater(120), withModLoaded(modid), subLock);
+    }
 
     @Override
     protected PackOutput.PathProvider pathProvider() {

@@ -1,0 +1,9 @@
+{
+  "parent": "block/cube_bottom_top",
+  "textures": {
+    "bottom": "confluence:block/meteorite_bricks",
+    "top": "confluence:block/meteorite_bricks",
+    "side": "confluence:block/meteorite_bricks"
+  },
+  "render_type": "solid"
+}

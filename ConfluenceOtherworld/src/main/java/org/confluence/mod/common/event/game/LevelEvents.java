@@ -26,6 +26,7 @@ import org.confluence.mod.common.entity.projectile.bomb.BaseBombEntity;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.ModBlocks;
+import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.item.axe.BaseAxeItem;
 import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
@@ -48,6 +49,16 @@ public final class LevelEvents {
             Block block = LogBlockSet.WRAPPED_STRIP_TABLE.get(originalState.getBlock());
             if (block != null) {
                 event.setFinalState(block.defaultBlockState().setValue(RotatedPillarBlock.AXIS, originalState.getValue(RotatedPillarBlock.AXIS)));
+            }
+        }
+        if (event.getItemAbility() == ItemAbilities.SHOVEL_FLATTEN) {
+            BlockState originalState = event.getState();
+            if (originalState.is(NatureBlocks.JUNGLE_GRASS_BLOCK.get())) {
+                event.setFinalState(NatureBlocks.JUNGLE_PATH.get().defaultBlockState());
+            } else if (originalState.is(NatureBlocks.MUSHROOM_GRASS_BLOCK.get())) {
+                event.setFinalState(NatureBlocks.MUSHROOM_PATH.get().defaultBlockState());
+            } else if (originalState.is(NatureBlocks.ASH_GRASS_BLOCK.get())) {
+                event.setFinalState(NatureBlocks.ASH_PATH.get().defaultBlockState());
             }
         }
     }
@@ -80,7 +91,7 @@ public final class LevelEvents {
 
     @SubscribeEvent
     public static void block$Break(BlockEvent.BreakEvent event) {
-        if (event.isCanceled() || !(event.getPlayer() instanceof ServerPlayer serverPlayer)) return;
+        if (!(event.getPlayer() instanceof ServerPlayer serverPlayer)) return;
         BlockState blockState = event.getState();
 
         if (AltarBlock.hurtPlayerIfBrokenNotAllowed(serverPlayer, blockState)) {

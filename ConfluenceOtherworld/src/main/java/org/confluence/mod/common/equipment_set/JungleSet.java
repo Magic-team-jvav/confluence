@@ -1,8 +1,8 @@
 package org.confluence.mod.common.equipment_set;
 
 import com.xiaohunao.equipment_benediction.common.equipment_set.EquipmentSet;
-import com.xiaohunao.equipment_benediction.common.equipment_set.EquippableGroup;
 import com.xiaohunao.equipment_benediction.common.equipment_set.EquipmentSetBranch;
+import com.xiaohunao.equipment_benediction.common.equipment_set.EquippableGroup;
 import com.xiaohunao.equipment_benediction.common.equippable.VanillaEquippable;
 import com.xiaohunao.equipment_benediction.common.hook.HookMap;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -41,7 +41,7 @@ public class JungleSet extends EquipmentSet {
                         VanillaEquippable.LEGS, ArmorItems.JUNGLE_LEGGINGS,
                         VanillaEquippable.FEET, ArmorItems.JUNGLE_BOOTS
                 )
-                .bindHook(ModHookTypes.MANA_CONSUME.get(), (owner, itemStack, original) -> () -> (int) (original.getAsInt() * 0.84F))
+                .bindHook(ModHookTypes.MANA_CONSUME.get(), (owner, itemStack, original) -> () -> original.getAsFloat() * 0.84F)
                 .build());
     }
 }

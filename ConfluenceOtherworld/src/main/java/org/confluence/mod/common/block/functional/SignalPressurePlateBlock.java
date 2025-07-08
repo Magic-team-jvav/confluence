@@ -57,7 +57,7 @@ public class SignalPressurePlateBlock extends PressurePlateBlock implements Enti
     }
 
     @Override
-    public void onExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {}
+    public void onExecute(BlockState state, ServerLevel level, BlockPos pos, int color, INetworkEntity networkEntity) {}
 
     @Override
     protected int getSignalStrength(Level level, BlockPos pos) {

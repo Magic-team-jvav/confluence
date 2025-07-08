@@ -75,7 +75,7 @@ public class BallOfFireProjectile extends AbstractManaProjectile {
                     entity.setRemainingFireTicks(100);
                 }
             }
-            if (entity.hurt(getDamagesource(), ddu ? getDamage() * 1.5F : getDamage())) {
+            if (entity.hurt(getDamagesource(), ddu ? getCalculatedDamage() * 1.5F : getCalculatedDamage())) {
                 VectorUtils.knockBackA2B(this, entity, 0.6, 0.2);
             }
         }

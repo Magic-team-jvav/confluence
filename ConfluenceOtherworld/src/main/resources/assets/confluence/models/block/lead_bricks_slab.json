@@ -1,0 +1,9 @@
+{
+  "parent": "block/slab",
+  "textures": {
+    "bottom": "confluence:block/lead_bricks",
+    "top": "confluence:block/lead_bricks",
+    "side": "confluence:block/lead_bricks"
+  },
+  "render_type": "solid"
+}

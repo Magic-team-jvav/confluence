@@ -22,8 +22,8 @@ public abstract class ItemStackMixin implements Immunity, SelfGetter<ItemStack> 
     public abstract Item getItem();
 
     @Override
-    public Types confluence$getImmunityType() {
-        return Types.LOCAL;
+    public Type confluence$getImmunityType() {
+        return Type.LOCAL;
     }
 
     @Override

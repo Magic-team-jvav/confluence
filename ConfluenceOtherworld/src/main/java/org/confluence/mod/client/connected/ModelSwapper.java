@@ -1,11 +1,13 @@
 package org.confluence.mod.client.connected;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.client.renderer.block.BlockModelShaper;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.client.event.ModelEvent;
 
@@ -23,7 +25,7 @@ public class ModelSwapper {
 
 	public void onModelBake(ModelEvent.ModifyBakingResult event) {
 		Map<ModelResourceLocation, BakedModel> modelRegistry = event.getModels();
-		customBlockModels.forEach((block, modelFunc) -> swapModels(modelRegistry, getAllBlockStateModelLocations(block), modelFunc));
+		customBlockModels.forEach((block, modelFunc) -> swapModels(modelRegistry, getAllBlockStateModelLocations(BuiltInRegistries.BLOCK.getKey(block), block), modelFunc));
 	}
 
 	public void registerListeners(IEventBus modEventBus) {
@@ -38,10 +40,11 @@ public class ModelSwapper {
 		modelRegistry.put(location, factory.apply(modelRegistry.get(location)));
 	}
 
-	public static List<ModelResourceLocation> getAllBlockStateModelLocations(Block block) {
-		List<ModelResourceLocation> models = new ArrayList<>();
-		ResourceLocation blockRl = BuiltInRegistries.BLOCK.getKey(block);
-		block.getStateDefinition().getPossibleStates().forEach(state -> models.add(BlockModelShaper.stateToModelLocation(blockRl, state)));
+	public static List<ModelResourceLocation> getAllBlockStateModelLocations(ResourceLocation id, Block block) {
+		ImmutableList<BlockState> possibleStates = block.getStateDefinition().getPossibleStates();
+		int arraySize = possibleStates.size();
+		List<ModelResourceLocation> models = new ArrayList<>(5 + arraySize + (arraySize / 10));
+		possibleStates.forEach(state -> models.add(BlockModelShaper.stateToModelLocation(id, state)));
 		return models;
 	}
 }

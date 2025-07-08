@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/stairs",
+  "textures": {
+    "bottom": "confluence:block/crimtane_ore_bricks",
+    "side": "confluence:block/crimtane_ore_bricks",
+    "top": "confluence:block/crimtane_ore_bricks"
+  }
+}

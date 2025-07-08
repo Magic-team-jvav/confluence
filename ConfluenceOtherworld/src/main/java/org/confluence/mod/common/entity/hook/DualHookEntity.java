@@ -4,7 +4,6 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.ByIdMap;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.EntityType;
@@ -52,7 +51,7 @@ public class DualHookEntity extends AbstractHookEntity implements VariantHolder<
         super.onHooked(hitResult, itemStack);
         if (LibUtils.getItemStackNbt(itemStack).get("hooks") instanceof ListTag list) {
             list.forEach(tag -> {
-                AbstractHookEntity hookEntity = BaseHookItem.getHookEntity(tag, (ServerLevel) level());
+                AbstractHookEntity hookEntity = BaseHookItem.getHookEntity(tag, level());
                 if (hookEntity != null && hookEntity != this) hookEntity.setHookState(HookState.POP);
             });
         }

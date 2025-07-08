@@ -47,7 +47,7 @@ public class BaseHookEntity extends AbstractHookEntity implements VariantHolder<
         AMETHYST(1, "amethyst"), // 紫晶钩
         TOPAZ(2, "topaz"), // 黄玉钩
         SAPPHIRE(3, "sapphire"), // 蓝玉钩
-        EMERALD(4, "emerald"), // 翡翠钩
+        JADE(4, "jade"), // 翡翠钩
         RUBY(5, "ruby"), // 红玉钩
         AMBER(6, "amber"), // 琥珀钩
         DIAMOND(7, "diamond"); // 钻石钩

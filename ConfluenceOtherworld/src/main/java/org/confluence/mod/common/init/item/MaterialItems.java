@@ -35,8 +35,8 @@ public class MaterialItems {
     public static final DeferredItem<Item> METEORITE_INGOT = register("meteorite_ingot", ModRarity.BLUE);
     public static final DeferredItem<Item> RAW_DEMONITE = register("raw_demonite", ModRarity.BLUE);
     public static final DeferredItem<Item> DEMONITE_INGOT = register("demonite_ingot", ModRarity.BLUE);
-    public static final DeferredItem<Item> RAW_TR_CRIMSON = register("raw_tr_crimson", ModRarity.BLUE);
-    public static final DeferredItem<Item> TR_CRIMSON_INGOT = register("tr_crimson_ingot", ModRarity.BLUE);
+    public static final DeferredItem<Item> RAW_CRIMTANE = register("raw_crimtane", ModRarity.BLUE);
+    public static final DeferredItem<Item> CRIMTANE_INGOT = register("crimtane_ingot", ModRarity.BLUE);
     public static final DeferredItem<Item> RAW_HELLSTONE = ITEMS.registerSimpleItem("raw_hellstone", new Item.Properties().fireResistant());
     public static final DeferredItem<Item> HELLSTONE_INGOT = ITEMS.registerSimpleItem("hellstone_ingot", new Item.Properties().fireResistant());
 
@@ -62,8 +62,8 @@ public class MaterialItems {
     public static final DeferredItem<Item> LUMINITE_INGOT = register("luminite_ingot", ModRarity.ORANGE);
 
     public static final DeferredItem<Item> AMBER = register("amber");
-    public static final DeferredItem<Item> TR_AMETHYST = register("tr_amethyst");
-    public static final DeferredItem<Item> TR_EMERALD = register("tr_emerald");
+    public static final DeferredItem<Item> AMETHYST = register("amethyst");
+    public static final DeferredItem<Item> JADE = register("jade");
     public static final DeferredItem<Item> RUBY = register("ruby");
     public static final DeferredItem<Item> SAPPHIRE = register("sapphire");
     public static final DeferredItem<Item> TOPAZ = register("topaz");
@@ -101,6 +101,8 @@ public class MaterialItems {
     public static final DeferredItem<Item> DUNGEON_DEMON_BONE = register("dungeon_demon_bone", ModRarity.BLUE);
     public static final DeferredItem<Item> HARPY_FEATHER = register("harpy_feather", ModRarity.BLUE);
     public static final DeferredItem<Item> GIANT_HARPY_FEATHER = register("giant_harpy_feather", ModRarity.BLUE);
+    public static final DeferredItem<Item> AETHERIUM_SHARD = register("aetherium_shard", ModRarity.ORANGE);
+    public static final DeferredItem<Item> AETHERIUM_GOLD = register("aetherium_gold", ModRarity.ORANGE);
 
     public static final DeferredItem<Item> PEARL = register("pearl", ModRarity.BLUE);
     public static final DeferredItem<Item> BLACK_PEARL = register("black_pearl", ModRarity.BLUE);

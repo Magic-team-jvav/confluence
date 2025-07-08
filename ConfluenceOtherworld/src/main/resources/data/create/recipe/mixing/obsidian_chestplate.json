@@ -1,0 +1,126 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "create"
+    }
+  ],
+  "type": "create:mixing",
+  "heat_requirement": "superheated",
+  "ingredients": [
+    {
+      "item": "confluence:silk"
+    },
+    {
+      "item": "confluence:silk"
+    },
+    {
+      "item": "confluence:silk"
+    },
+    {
+      "item": "confluence:silk"
+    },
+    {
+      "item": "confluence:silk"
+    },
+    {
+      "item": "confluence:silk"
+    },
+    {
+      "item": "confluence:silk"
+    },
+    {
+      "item": "confluence:silk"
+    },
+    {
+      "item": "confluence:silk"
+    },
+    {
+      "item": "confluence:silk"
+    },
+    {
+      "tag": "confluence:shadow_scale_and_tissue_sample"
+    },
+    {
+      "tag": "confluence:shadow_scale_and_tissue_sample"
+    },
+    {
+      "tag": "confluence:shadow_scale_and_tissue_sample"
+    },
+    {
+      "tag": "confluence:shadow_scale_and_tissue_sample"
+    },
+    {
+      "tag": "confluence:shadow_scale_and_tissue_sample"
+    },
+    {
+      "item": "minecraft:obsidian"
+    },
+    {
+      "item": "minecraft:obsidian"
+    },
+    {
+      "item": "minecraft:obsidian"
+    },
+    {
+      "item": "minecraft:obsidian"
+    },
+    {
+      "item": "minecraft:obsidian"
+    },
+    {
+      "item": "minecraft:obsidian"
+    },
+    {
+      "item": "minecraft:obsidian"
+    },
+    {
+      "item": "minecraft:obsidian"
+    },
+    {
+      "item": "minecraft:obsidian"
+    },
+    {
+      "item": "minecraft:obsidian"
+    },
+    {
+      "item": "minecraft:obsidian"
+    },
+    {
+      "item": "minecraft:obsidian"
+    },
+    {
+      "item": "minecraft:obsidian"
+    },
+    {
+      "item": "minecraft:obsidian"
+    },
+    {
+      "item": "minecraft:obsidian"
+    },
+    {
+      "item": "minecraft:obsidian"
+    },
+    {
+      "item": "minecraft:obsidian"
+    },
+    {
+      "item": "minecraft:obsidian"
+    },
+    {
+      "item": "minecraft:obsidian"
+    },
+    {
+      "item": "minecraft:obsidian"
+    },
+    {
+      "item": "minecraft:iron_chestplate"
+    }
+  ],
+  "results": [
+    {
+      "count": 1,
+      "id": "confluence:obsidian_chestplate"
+    }
+  ]
+}

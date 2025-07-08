@@ -1,0 +1,35 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "confluence:block/lost_paper",
+		"particle": "confluence:block/lost_paper"
+	},
+	"elements": [
+		{
+			"from": [1, 0.016, 0.5],
+			"to": [13, 0.016, 9.5],
+			"rotation": {"angle": -22.5, "axis": "y", "origin": [7, 0.016, 5]},
+			"faces": {
+				"north": {"uv": [0, 0, 12, 0], "texture": "#missing"},
+				"east": {"uv": [0, 0, 9, 0], "texture": "#missing"},
+				"south": {"uv": [0, 0, 12, 0], "texture": "#missing"},
+				"west": {"uv": [0, 0, 9, 0], "texture": "#missing"},
+				"up": {"uv": [0, 0, 9, 12], "rotation": 90, "texture": "#0"},
+				"down": {"uv": [9, 0, 0, 12], "rotation": 90, "texture": "#0"}
+			}
+		},
+		{
+			"from": [4.5, 0.032, 4],
+			"to": [13.5, 0.032, 16],
+			"rotation": {"angle": 45, "axis": "y", "origin": [9, 0.016, 10]},
+			"faces": {
+				"north": {"uv": [0, 0, 9, 0], "texture": "#missing"},
+				"east": {"uv": [0, 0, 12, 0], "texture": "#missing"},
+				"south": {"uv": [0, 0, 9, 0], "texture": "#missing"},
+				"west": {"uv": [0, 0, 12, 0], "texture": "#missing"},
+				"up": {"uv": [0, 0, 9, 12], "texture": "#0"},
+				"down": {"uv": [9, 0, 0, 12], "rotation": 180, "texture": "#0"}
+			}
+		}
+	]
+}

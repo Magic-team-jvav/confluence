@@ -1,0 +1,22 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": [
+    "minecraft:frozen_peaks",
+    "minecraft:frozen_river",
+    "minecraft:grove",
+    "minecraft:ice_spikes",
+    "minecraft:jagged_peaks",
+    "minecraft:snowy_beach",
+    "minecraft:snowy_plains",
+    "minecraft:snowy_slopes",
+    "minecraft:snowy_taiga"
+  ],
+  "features": [
+    "confluence:tundra_pot",
+    "confluence:cave_chests_small",
+    "confluence:cave_frozen_chests",
+    "confluence:underground_chests_small",
+    "confluence:underground_frozen_chests"
+  ],
+  "step": "underground_decoration"
+}

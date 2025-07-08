@@ -53,8 +53,14 @@ public class BoulderBlock extends AbstractMechanicalBlock {
     }
 
     @Override
-    public void playerDestroy(Level pLevel, Player pPlayer, BlockPos pPos, BlockState pState, @Nullable BlockEntity pBlockEntity, ItemStack pTool) {
-        summon(pLevel, pPos, pState, entity -> pPlayer);
+    public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack tool) {
+        summon(level, pos, state, entity -> player);
+    }
+
+    @Override
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+        super.onRemove(state, level, pos, newState, movedByPiston);
+        summon(level, pos, state, entity -> level.getNearestPlayer(entity, BoulderEntity.SEARCH_RANGE));
     }
 
     @Override
@@ -85,9 +91,9 @@ public class BoulderBlock extends AbstractMechanicalBlock {
     }
 
     @Override
-    public void onExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {
-        pLevel.removeBlock(pPos, false);
-        summon(pLevel, pPos, pState, entity -> pLevel.getNearestPlayer(entity, BoulderEntity.SEARCH_RANGE));
+    public void onExecute(BlockState state, ServerLevel level, BlockPos pos, int color, INetworkEntity networkEntity) {
+        level.removeBlock(pos, false);
+        summon(level, pos, state, entity -> level.getNearestPlayer(entity, BoulderEntity.SEARCH_RANGE));
     }
 
     protected void summon(Level level, BlockPos pos, BlockState blockState, Function<BoulderEntity, Player> function) {

@@ -1,0 +1,14 @@
+{
+    "type": "confluence:altar",
+    "result": {
+        "id": "confluence:explode_boulder"
+    },
+    "ingredients": [
+        {
+            "item": "confluence:normal_boulder"
+        },
+        {
+            "item": "minecraft:tnt"
+        }
+    ]
+}

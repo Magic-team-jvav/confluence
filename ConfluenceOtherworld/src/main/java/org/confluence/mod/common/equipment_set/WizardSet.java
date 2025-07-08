@@ -1,8 +1,8 @@
 package org.confluence.mod.common.equipment_set;
 
 import com.xiaohunao.equipment_benediction.common.equipment_set.EquipmentSet;
-import com.xiaohunao.equipment_benediction.common.equipment_set.EquippableGroup;
 import com.xiaohunao.equipment_benediction.common.equipment_set.EquipmentSetBranch;
+import com.xiaohunao.equipment_benediction.common.equipment_set.EquippableGroup;
 import com.xiaohunao.equipment_benediction.common.equippable.VanillaEquippable;
 import com.xiaohunao.equipment_benediction.common.hook.HookMap;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -31,7 +31,7 @@ public class WizardSet extends EquipmentSet {
         equippableGroup.addEquippableSet("amethyst_robe", robeBonus(ArmorItems.AMETHYST_ROBE, 20, 0.95F));
         equippableGroup.addEquippableSet("topaz_robe", robeBonus(ArmorItems.TOPAZ_ROBE, 40, 0.93F));
         equippableGroup.addEquippableSet("sapphire_robe", robeBonus(ArmorItems.SAPPHIRE_ROBE, 40, 0.91F));
-        equippableGroup.addEquippableSet("emerald_robe", robeBonus(ArmorItems.EMERALD_ROBE, 60, 0.89F));
+        equippableGroup.addEquippableSet("emerald_robe", robeBonus(ArmorItems.JADE_ROBE, 60, 0.89F));
         equippableGroup.addEquippableSet("ruby_robe", robeBonus(ArmorItems.RUBY_ROBE, 60, 0.87F));
         equippableGroup.addEquippableSet("amethyst_robe", new EquipmentSetBranch.Builder()
                 .addEquippable(VanillaEquippable.CHEST, ArmorItems.MYSTIC_ROBE)
@@ -39,7 +39,7 @@ public class WizardSet extends EquipmentSet {
                         .addBonus(TCAttributes.getMagicDamage(), new AttributeModifier(ArmorItems.MYSTIC_ROBE.getId(), 0.06, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
                         .addBonus(TCAttributes.getCriticalChance(), new AttributeModifier(ArmorItems.MYSTIC_ROBE.getId(), 0.06, AttributeModifier.Operation.ADD_VALUE))
                 )
-                .bindHook(ModHookTypes.MANA_CONSUME.get(), (owner, itemStack, original) -> () -> (int) (original.getAsInt() * 0.9F))
+                .bindHook(ModHookTypes.MANA_CONSUME.get(), (owner, itemStack, original) -> () -> original.getAsFloat() * 0.9F)
                 .build());
         equippableGroup.addEquippableSet("diamond_robe", robeBonus(ArmorItems.DIAMOND_ROBE, 80, 0.85F));
         equippableGroup.addEquippableSet("amber_robe", robeBonus(ArmorItems.AMBER_ROBE, 60, 0.87F));
@@ -48,7 +48,7 @@ public class WizardSet extends EquipmentSet {
                 ArmorItems.AMETHYST_ROBE,
                 ArmorItems.TOPAZ_ROBE,
                 ArmorItems.SAPPHIRE_ROBE,
-                ArmorItems.EMERALD_ROBE,
+                ArmorItems.JADE_ROBE,
                 ArmorItems.RUBY_ROBE,
                 ArmorItems.MYSTIC_ROBE,
                 ArmorItems.DIAMOND_ROBE,
@@ -73,7 +73,7 @@ public class WizardSet extends EquipmentSet {
     private static EquipmentSetBranch robeBonus(DeferredItem<ArmorItem> item, int additionalMana, float manaConsume) {
         return new EquipmentSetBranch.Builder().addEquippable(VanillaEquippable.CHEST, item)
                 .bindHook(ModHookTypes.ADDITIONAL_MANA.get(), (owner, player, original) -> original + additionalMana)
-                .bindHook(ModHookTypes.MANA_CONSUME.get(), (owner, itemStack, original) -> () -> (int) (original.getAsInt() * manaConsume))
+                .bindHook(ModHookTypes.MANA_CONSUME.get(), (owner, itemStack, original) -> () -> original.getAsFloat() * manaConsume)
                 .build();
     }
 }

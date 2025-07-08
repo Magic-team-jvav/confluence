@@ -14,7 +14,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -25,6 +24,8 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -35,13 +36,15 @@ import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.ModifyDefaultComponentsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
+import net.neoforged.neoforge.fluids.FluidType;
+import net.neoforged.neoforge.fluids.RegisterCauldronFluidContentEvent;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
-import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforgespi.locating.IModFile;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.util.ConfluenceResources;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.block.common.AetheriumCauldronBlock;
@@ -57,17 +60,13 @@ import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.entity.TargetDummyEntity;
 import org.confluence.mod.common.init.*;
-import org.confluence.mod.common.init.block.ChestBlocks;
-import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.common.init.block.NatureBlocks;
-import org.confluence.mod.common.init.block.OreBlocks;
+import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.ToolItems;
-import org.confluence.mod.common.item.accessory.MusicBoxItem;
-import org.confluence.mod.integration.patchouli.PatchouliEntityEntriesPacketS2C;
-import org.confluence.mod.integration.patchouli.PatchouliHelper;
+import org.confluence.mod.integration.jei.RecipeTransferPacketC2S;
 import org.confluence.mod.integration.terra_entity.TEItemComponentModify;
 import org.confluence.mod.integration.terra_entity.TERemoval;
+import org.confluence.mod.integration.waystones.WaystonesHelper;
 import org.confluence.mod.network.c2s.*;
 import org.confluence.mod.network.s2c.*;
 import org.confluence.mod.util.DateUtils;
@@ -87,7 +86,6 @@ public final class ModEvents {
     @SubscribeEvent
     public static void commonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
-            CommonConfigs.onLoad();
             ModGunProperties.init();
             Confluence.registerGameRules();
             ModFluids.registerInteraction();
@@ -104,8 +102,26 @@ public final class ModEvents {
                 if (Attributes.MAX_HEALTH.value() instanceof RangedAttribute rangedAttribute) {
                     rangedAttribute.maxValue = 32768;
                 }
+                if (Attributes.ATTACK_DAMAGE.value() instanceof RangedAttribute rangedAttribute) {
+                    rangedAttribute.maxValue = 32768;
+                }
             }
         });
+    }
+
+    @SubscribeEvent
+    public static void modConfig$Loading(ModConfigEvent.Loading event) {
+        if (event.getConfig().getType() == ModConfig.Type.COMMON && MODID.equals(event.getConfig().getModId())) {
+            CommonConfigs.onLoad();
+        }
+    }
+
+    @SubscribeEvent
+    public static void modConfig$Reloading(ModConfigEvent.Reloading event) {
+        if (event.getConfig().getType() == ModConfig.Type.COMMON && MODID.equals(event.getConfig().getModId())) {
+            CommonConfigs.onLoad();
+            CompatibilitySyncPacketS2c.sendToAll();
+        }
     }
 
     @SubscribeEvent
@@ -114,7 +130,6 @@ public final class ModEvents {
             LogBlockSet.wrapStrip();
             LogBlockSet.setFlammable();
             ISpreadable.Type.buildMap();
-            MusicBoxItem.initialize();
             ModRecipes.Brewing.initialize();
             CauldronInteraction.INTERACTIONS.values().forEach(map -> {
                 Map<Item, CauldronInteraction> interactionMap = map.map();
@@ -128,6 +143,11 @@ public final class ModEvents {
             TERemoval.redirectLootTable();
             IGlobalData.registerGlobalData(KillBoard.INSTANCE, HardmodeConvertor.INSTANCE, NPCSpawner.INSTANCE);
         });
+    }
+
+    @SubscribeEvent
+    public static void registerCauldronFluidContent(RegisterCauldronFluidContentEvent event) {
+        event.register(ModBlocks.HONEY_CAULDRON.get(), ModFluids.HONEY.fluid().get(), FluidType.BUCKET_VOLUME, null);
     }
 
     @SubscribeEvent
@@ -147,15 +167,6 @@ public final class ModEvents {
                 Pack pack = Pack.readMetaAndCreate(
                         new PackLocationInfo("confluence:terraria_armor", Component.translatable("resourcepack.terraria_armor"), PackSource.BUILT_IN, Optional.empty()),
                         new ConfluenceResources(modFile, "resourcepacks/terraria_armor"),
-                        PackType.CLIENT_RESOURCES,
-                        new PackSelectionConfig(false, Pack.Position.TOP, false)
-                );
-                if (pack != null) consumer.accept(pack);
-            });
-            event.addRepositorySource(consumer -> {
-                Pack pack = Pack.readMetaAndCreate(
-                        new PackLocationInfo("confluence:otherworldly_music", Component.translatable("resourcepack.otherworldly_music"), PackSource.BUILT_IN, Optional.empty()),
-                        new ConfluenceResources(modFile, "resourcepacks/otherworldly_music"),
                         PackType.CLIENT_RESOURCES,
                         new PackSelectionConfig(false, Pack.Position.TOP, false)
                 );
@@ -181,27 +192,24 @@ public final class ModEvents {
         registrar.playToClient(SecretFlagSyncPacketS2C.TYPE, SecretFlagSyncPacketS2C.STREAM_CODEC, SecretFlagSyncPacketS2C::handle);
         registrar.playToClient(StarPhasesPacketS2C.TYPE, StarPhasesPacketS2C.STREAM_CODEC, StarPhasesPacketS2C::handle);
         registrar.playToClient(WindSpeedPacketS2C.TYPE, WindSpeedPacketS2C.STREAM_CODEC, WindSpeedPacketS2C::handle);
-        if (PatchouliHelper.IS_LOADED) {
-            registrar.playToClient(PatchouliEntityEntriesPacketS2C.TYPE, PatchouliEntityEntriesPacketS2C.STREAM_CODEC, PatchouliEntityEntriesPacketS2C::handle);
-        }
         registrar.playToClient(AchievementOffsetSyncPacketS2C.TYPE, AchievementOffsetSyncPacketS2C.STREAM_CODEC, AchievementOffsetSyncPacketS2C::handle);
+        registrar.playToClient(CompatibilitySyncPacketS2c.TYPE, CompatibilitySyncPacketS2c.STREAM_CODEC, CompatibilitySyncPacketS2c::handle);
 
         registrar.playToServer(ApplySelectionPacketC2S.TYPE, ApplySelectionPacketC2S.STREAM_CODEC, ApplySelectionPacketC2S::handle);
         registrar.playToServer(HookThrowingPacketC2S.TYPE, HookThrowingPacketC2S.STREAM_CODEC, HookThrowingPacketC2S::handle);
         registrar.playToServer(KeyRequestPacketC2S.TYPE, KeyRequestPacketC2S.STREAM_CODEC, KeyRequestPacketC2S::handle);
         registrar.playToServer(OpenMenuPacketC2S.TYPE, OpenMenuPacketC2S.STREAM_CODEC, OpenMenuPacketC2S::handle);
-        registrar.playToServer(ReplaceMusicBoxItemPacketC2S.TYPE, ReplaceMusicBoxItemPacketC2S.STREAM_CODEC, ReplaceMusicBoxItemPacketC2S::handle);
-        registrar.playToServer(SwordShootingPacketC2S.TYPE, SwordShootingPacketC2S.STREAM_CODEC, SwordShootingPacketC2S::receive);
+        registrar.playToServer(SwordShootingPacketC2S.TYPE, SwordShootingPacketC2S.STREAM_CODEC, SwordShootingPacketC2S::handle);
         registrar.playToServer(WormholeToPlayerPacketC2S.TYPE, WormholeToPlayerPacketC2S.STREAM_CODEC, WormholeToPlayerPacketC2S::handle);
         registrar.playToServer(SellTradePacketC2S.TYPE, SellTradePacketC2S.STREAM_CODEC, SellTradePacketC2S::handle);
-
+        registrar.playToServer(RecipeTransferPacketC2S.TYPE, RecipeTransferPacketC2S.STREAM_CODEC, RecipeTransferPacketC2S::handle);
+        WaystonesHelper.registerPayload(registrar);
     }
 
     @SubscribeEvent
     public static void registerAttributes(EntityAttributeCreationEvent event) {
         event.put(ModEntities.TARGET_DUMMY.get(), TargetDummyEntity.createAttributes().build());
     }
-
 
     @SubscribeEvent
     public static void registerUnitType(RegisterAccessoriesComponentUpdateEvent.UnitType event) {
@@ -233,13 +241,9 @@ public final class ModEvents {
     public static void buildCreativeModeTabContents(BuildCreativeModeTabContentsEvent event) {
         CreativeModeTab.TabVisibility visibility = CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS;
         if (event.getTab() == TCTabs.ACCESSORIES.get()) {
-            ItemStack everlasting = TCItems.EVERLASTING.get().getDefaultInstance();
-            event.insertFirst(TCItems.BASE_POINT.get().getDefaultInstance(), visibility);
-            event.insertFirst(everlasting, visibility);
-
-            for (DeferredHolder<Item, ? extends Item> entry : AccessoryItems.ITEMS.getEntries()) {
-                event.insertBefore(everlasting, entry.get().getDefaultInstance(), visibility);
-            }
+            event.accept(TCItems.EVERLASTING.get().getDefaultInstance(), visibility);
+            event.accept(TCItems.BASE_POINT.get().getDefaultInstance(), visibility);
+            AccessoryItems.ITEMS.getEntries().forEach(item -> event.accept(item.get()));
         }
     }
 
@@ -278,7 +282,7 @@ public final class ModEvents {
     @SubscribeEvent
     public static void modifyDefaultComponents(ModifyDefaultComponentsEvent event) {
         TEItemComponentModify.modifyDefaultComponents(event);
-        event.modify(Items.SNOWBALL, builder -> builder.set(DataComponents.MAX_STACK_SIZE, 9999));
+        event.modify(Items.SNOWBALL, builder -> builder.set(DataComponents.MAX_STACK_SIZE, LibUtils.MAX_STACK_SIZE));
     }
 
     @SubscribeEvent

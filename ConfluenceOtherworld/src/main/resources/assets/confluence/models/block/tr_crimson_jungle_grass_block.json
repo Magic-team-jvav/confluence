@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/cube_bottom_top",
-  "textures": {
-    "bottom": "minecraft:block/mud",
-    "side": "confluence:block/tr_crimson_jungle_grass_block",
-    "top": "confluence:block/tr_crimson_grass_block_top"
-  }
-}

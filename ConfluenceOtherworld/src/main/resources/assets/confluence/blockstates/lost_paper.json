@@ -1,0 +1,72 @@
+{
+  "variants": {
+    "layer=0": [
+      {
+        "model": "confluence:block/lost_paper_0",
+        "y": 270
+      },
+      {
+        "model": "confluence:block/lost_paper_0",
+        "y": 180
+      },
+      {
+        "model": "confluence:block/lost_paper_0",
+        "y": 90
+      },
+      {
+        "model": "confluence:block/lost_paper_0"
+      }
+    ],
+    "layer=1": [
+      {
+        "model": "confluence:block/lost_paper_1",
+        "y": 270
+      },
+      {
+        "model": "confluence:block/lost_paper_1",
+        "y": 180
+      },
+      {
+        "model": "confluence:block/lost_paper_1",
+        "y": 90
+      },
+      {
+        "model": "confluence:block/lost_paper_1"
+      }
+    ],
+    "layer=2": [
+      {
+        "model": "confluence:block/lost_paper_2",
+        "y": 270
+      },
+      {
+        "model": "confluence:block/lost_paper_2",
+        "y": 180
+      },
+      {
+        "model": "confluence:block/lost_paper_2",
+        "y": 90
+      },
+      {
+        "model": "confluence:block/lost_paper_2"
+      }
+    ],
+    "layer=3": [
+      {
+        "model": "confluence:block/lost_paper_3",
+        "y": 270
+      },
+      {
+        "model": "confluence:block/lost_paper_3",
+        "y": 180
+      },
+      {
+        "model": "confluence:block/lost_paper_3",
+        "y": 90
+      },
+      {
+        "model": "confluence:block/lost_paper_3"
+      }
+    ]
+  }
+}

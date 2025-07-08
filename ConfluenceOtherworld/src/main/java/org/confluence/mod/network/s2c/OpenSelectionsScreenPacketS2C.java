@@ -10,7 +10,6 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.SelectionsScreen;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * @see SelectionsScreen
@@ -20,7 +19,7 @@ public record OpenSelectionsScreenPacketS2C(Component[] selections, boolean[] en
     public static final Type<OpenSelectionsScreenPacketS2C> TYPE = new Type<>(Confluence.asResource("open_selections_screen_s2c"));
     public static final StreamCodec<RegistryFriendlyByteBuf, OpenSelectionsScreenPacketS2C> STREAM_CODEC = new StreamCodec<>() {
         @Override
-        public @NotNull OpenSelectionsScreenPacketS2C decode(RegistryFriendlyByteBuf buffer) {
+        public OpenSelectionsScreenPacketS2C decode(RegistryFriendlyByteBuf buffer) {
             int length = buffer.readInt();
             Component[] selections = new Component[length];
             boolean[] enables = new boolean[length];
@@ -32,7 +31,7 @@ public record OpenSelectionsScreenPacketS2C(Component[] selections, boolean[] en
         }
 
         @Override
-        public void encode(@NotNull RegistryFriendlyByteBuf buffer, @NotNull OpenSelectionsScreenPacketS2C value) {
+        public void encode(RegistryFriendlyByteBuf buffer, OpenSelectionsScreenPacketS2C value) {
             int length = value.selections.length;
             buffer.writeInt(length);
             for (int i = 0; i < length; i++) {
@@ -43,7 +42,7 @@ public record OpenSelectionsScreenPacketS2C(Component[] selections, boolean[] en
     };
 
     @Override
-    public @NotNull Type<OpenSelectionsScreenPacketS2C> type() {
+    public Type<OpenSelectionsScreenPacketS2C> type() {
         return TYPE;
     }
 

@@ -8,6 +8,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
@@ -67,7 +68,7 @@ public final class ModTags {
         public static final TagKey<Block> PLATINUM_BLOCK = c("storage_blocks/platinum");
         public static final TagKey<Block> METEORITE_BLOCK = c("storage_blocks/meteorite");
         public static final TagKey<Block> DEMONITE_BLOCK = c("storage_blocks/demonite");
-        public static final TagKey<Block> CRIMSON_BLOCK = c("storage_blocks/crimson");
+        public static final TagKey<Block> CRIMTANE_BLOCK = c("storage_blocks/crimtane");
         public static final TagKey<Block> HELLSTONE_BLOCK = c("storage_blocks/hellstone");
         public static final TagKey<Block> RAW_TIN_BLOCK = c("storage_blocks/raw_tin");
         public static final TagKey<Block> RAW_LEAD_BLOCK = c("storage_blocks/raw_lead");
@@ -76,7 +77,7 @@ public final class ModTags {
         public static final TagKey<Block> RAW_PLATINUM_BLOCK = c("storage_blocks/raw_platinum");
         public static final TagKey<Block> RAW_METEORITE_BLOCK = c("storage_blocks/raw_meteorite");
         public static final TagKey<Block> RAW_DEMONITE_BLOCK = c("storage_blocks/raw_demonite");
-        public static final TagKey<Block> RAW_CRIMSON_BLOCK = c("storage_blocks/raw_crimson");
+        public static final TagKey<Block> RAW_CRIMTANE_BLOCK = c("storage_blocks/raw_crimtane");
         public static final TagKey<Block> RAW_HELLSTONE_BLOCK = c("storage_blocks/raw_hellstone");
 
         private static TagKey<Block> c(String name) {
@@ -103,10 +104,22 @@ public final class ModTags {
         public static final TagKey<Item> METEORITE_BLOCK = c("storage_blocks/meteorite");
         public static final TagKey<Item> INGOTS_DEMONITE = c("ingots/demonite");
         public static final TagKey<Item> DEMONITE_BLOCK = c("storage_blocks/demonite");
-        public static final TagKey<Item> INGOTS_CRIMSON = c("ingots/crimson");
-        public static final TagKey<Item> CRIMSON_BLOCK = c("storage_blocks/crimson");
+        public static final TagKey<Item> INGOTS_CRIMTANE = c("ingots/crimtane");
+        public static final TagKey<Item> CRIMTANE_BLOCK = c("storage_blocks/crimtane");
         public static final TagKey<Item> INGOTS_HELLSTONE = c("ingots/hellstone");
         public static final TagKey<Item> HELLSTONE_BLOCK = c("storage_blocks/hellstone");
+
+        public static final TagKey<Item> RUBY_BLOCK = c("storage_blocks/ruby");
+        public static final TagKey<Item> AMBER_BLOCK = c("storage_blocks/amber");
+        public static final TagKey<Item> TOPAZ_BLOCK = c("storage_blocks/topaz");
+        public static final TagKey<Item> JADE_BLOCK = c("storage_blocks/jade");
+        public static final TagKey<Item> SAPPHIRE_BLOCK = c("storage_blocks/sapphire");
+        public static final TagKey<Item> AMETHYST_BLOCK = c("storage_blocks/amethyst");
+
+        public static final TagKey<Item> STURDY_FOSSIL_BLOCK = c("storage_blocks/sturdy_fossil");
+        public static final TagKey<Item> OPAL_BLOCK = c("storage_blocks/opal");
+        public static final TagKey<Item> GELSTONE_BLOCK = c("storage_blocks/gelstone");
+        public static final TagKey<Item> COLD_CRYSTAL_BLOCK = c("storage_blocks/cold_crystal");
 
         public static final TagKey<Item> RAW_MATERIALS_TIN = c("raw_materials/tin");
         public static final TagKey<Item> RAW_MATERIALS_TIN_BLOCK = c("storage_blocks/raw_tin");
@@ -122,17 +135,22 @@ public final class ModTags {
         public static final TagKey<Item> RAW_MATERIALS_METEORITE_BLOCK = c("storage_blocks/raw_meteorite");
         public static final TagKey<Item> RAW_MATERIALS_DEMONITE = c("raw_materials/demonite");
         public static final TagKey<Item> RAW_MATERIALS_DEMONITE_BLOCK = c("storage_blocks/raw_demonite");
-        public static final TagKey<Item> RAW_MATERIALS_CRIMSON = c("raw_materials/crimson");
-        public static final TagKey<Item> RAW_MATERIALS_CRIMSON_BLOCK = c("storage_blocks/raw_crimson");
+        public static final TagKey<Item> RAW_MATERIALS_CRIMTANE = c("raw_materials/crimtane");
+        public static final TagKey<Item> RAW_MATERIALS_CRIMTANE_BLOCK = c("storage_blocks/raw_crimtane");
         public static final TagKey<Item> RAW_MATERIALS_HELLSTONE = c("raw_materials/hellstone");
         public static final TagKey<Item> RAW_MATERIALS_HELLSTONE_BLOCK = c("storage_blocks/raw_hellstone");
 
         public static final TagKey<Item> GEMS_RUBY = c("gems/ruby");
         public static final TagKey<Item> GEMS_AMBER = c("gems/amber");
         public static final TagKey<Item> GEMS_TOPAZ = c("gems/topaz");
-        public static final TagKey<Item> GEMS_TR_EMERALD = c("gems/tr_emerald");
+        public static final TagKey<Item> GEMS_JADE = c("gems/jade");
         public static final TagKey<Item> GEMS_SAPPHIRE = c("gems/sapphire");
-        public static final TagKey<Item> GEMS_TR_AMETHYST = c("gems/tr_amethyst");
+        public static final TagKey<Item> GEMS_AMETHYST = c("gems/amethyst");
+
+        public static final TagKey<Item> RAW_MATERIALS_STURDY_FOSSIL = c("raw_materials/sturdy_fossil");
+        public static final TagKey<Item> RAW_MATERIALS_OPAL = c("raw_materials/opal");
+        public static final TagKey<Item> RAW_MATERIALS_GELSTONE = c("raw_materials/gelstone");
+        public static final TagKey<Item> RAW_MATERIALS_COLD_CRYSTAL = c("raw_materials/cold_crystal");
 
         public static final TagKey<Item> NUGGETS_TIN = c("nuggets/lead");
 
@@ -191,18 +209,20 @@ public final class ModTags {
         public static final TagKey<Item> GOLD_ORE_SMELTING = register("gold_ore_smelting");
         public static final TagKey<Item> PLATINUM_ORE_SMELTING = register("platinum_ore_smelting");
         public static final TagKey<Item> DEMONITE_ORE_SMELTING = register("demonite_ore_smelting");
-        public static final TagKey<Item> TR_CRIMSON_ORE_SMELTING = register("tr_crimson_ore_smelting");
+        public static final TagKey<Item> CRIMTANE_ORE_SMELTING = register("crimtane_ore_smelting");
         public static final TagKey<Item> RUBY_ORE_SMELTING = register("ruby_ore_smelting");
         public static final TagKey<Item> TOPAZ_ORE_SMELTING = register("topaz_ore_smelting");
         public static final TagKey<Item> AMBER_ORE_SMELTING = register("amber_ore_smelting");
-        public static final TagKey<Item> TR_EMERALD_ORE_SMELTING = register("tr_emerald_ore_smelting");
+        public static final TagKey<Item> JADE_ORE_SMELTING = register("jade_ore_smelting");
         public static final TagKey<Item> DIAMOND_ORE_SMELTING = register("diamond_ore_smelting");
+        public static final TagKey<Item> EMERALD_ORE_SMELTING = register("emerald_ore_smelting");
         public static final TagKey<Item> SAPPHIRE_ORE_SMELTING = register("sapphire_ore_smelting");
-        public static final TagKey<Item> TR_AMETHYST_ORE_SMELTING = register("tr_amethyst_ore_smelting");
+        public static final TagKey<Item> AMETHYST_ORE_SMELTING = register("amethyst_ore_smelting");
         public static final TagKey<Item> REDSTONE_ORE_SMELTING = register("redstone_ore_smelting");
         public static final TagKey<Item> MOSS_ITEM = register("moss_item");
         public static final TagKey<Item> SUMMONER_WEAPON = register("summoner_weapon");
         public static final TagKey<Item> CROP_FORTUNE = register("crop_fortune");
+        public static final TagKey<Item> EVIL_KEY = register("evil_key");
         public static final TagKey<Item> TREASURE_BAG = register("treasure_bag");
         public static final TagKey<Item> FAST_BOW = register("fast_bow");
         public static final TagKey<Item> ABLE_TO_DESTROY_ALTAR = register("able_to_destroy_altar");
@@ -224,17 +244,27 @@ public final class ModTags {
         public static final TagKey<Biome> IS_CONFLUENCE = register("is_confluence");
         public static final TagKey<Biome> SPREADABLE = register("spreadable");
         public static final TagKey<Biome> THE_CORRUPTION = register("the_corruption");
-        public static final TagKey<Biome> TR_CRIMSON = register("tr_crimson");
+        public static final TagKey<Biome> THE_CRIMSON = register("the_crimson");
         public static final TagKey<Biome> THE_HALLOW = register("the_hallow");
         public static final TagKey<Biome> VANITY_TREES_REPLACEABLE = register("vanity_trees_replaceable");
 
         private static TagKey<Biome> register(String id) {
-            return TagKey.create(Registries.BIOME, Confluence.asResource(id));
+            return Confluence.asTagKey(Registries.BIOME, id);
         }
     }
 
-    public static final TagKey<Fluid> FISHING_ABLE = FluidTags.create(Confluence.asResource("fishing_able"));
-    public static final TagKey<Fluid> NOT_LAVA = FluidTags.create(Confluence.asResource("not_lava"));
+    public static class Fluids {
+        public static final TagKey<Fluid> FISHING_ABLE = FluidTags.create(Confluence.asResource("fishing_able"));
+        public static final TagKey<Fluid> NOT_LAVA = FluidTags.create(Confluence.asResource("not_lava"));
+    }
 
-    public static final TagKey<EntityType<?>> SPAWN_AT_DUNGEON = TagKey.create(Registries.ENTITY_TYPE, Confluence.asResource("spawn_at_dungeon")); // 允许生成在地牢的生物
+    public static class EntityTypes {
+        public static final TagKey<EntityType<?>> SPAWN_AT_DUNGEON = Confluence.asTagKey(Registries.ENTITY_TYPE, "spawn_at_dungeon"); // 允许生成在地牢的生物
+    }
+
+    public static class Enchantments {
+        public static final TagKey<Enchantment> MANA_IO_EXCLUSIVE = Confluence.asTagKey(Registries.ENCHANTMENT, "mana_io_exclusive");
+        public static final TagKey<Enchantment> MENDING_EXCLUSIVE = Confluence.asTagKey(Registries.ENCHANTMENT, "mending_exclusive");
+        public static final TagKey<Enchantment> MANA_AFFECTIVE_EXCLUSIVE = Confluence.asTagKey(Registries.ENCHANTMENT, "mana_affective_exclusive");
+    }
 }

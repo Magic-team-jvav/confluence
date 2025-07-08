@@ -5,11 +5,12 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.MapColor;
 import org.confluence.mod.common.init.block.NatureBlocks;
 
 public class AshGrassBlock extends SpreadingGrassBlock {
     public AshGrassBlock(){
-        super(Type.PURE, Properties.ofFullCopy(Blocks.GRASS_BLOCK));
+        super(Type.PURE, Properties.ofFullCopy(Blocks.GRASS_BLOCK).mapColor(MapColor.TERRACOTTA_ORANGE));
     }
 
     @Override

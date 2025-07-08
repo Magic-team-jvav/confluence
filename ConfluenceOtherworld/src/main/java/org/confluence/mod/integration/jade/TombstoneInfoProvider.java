@@ -2,6 +2,8 @@ package org.confluence.mod.integration.jade;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.StringTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.SignText;
@@ -13,23 +15,22 @@ import snownee.jade.api.IServerDataProvider;
 import snownee.jade.api.ITooltip;
 import snownee.jade.api.config.IPluginConfig;
 
-import java.util.Arrays;
-
 public class TombstoneInfoProvider implements IBlockComponentProvider, IServerDataProvider<BlockAccessor> {
     public static final TombstoneInfoProvider INSTANCE = new TombstoneInfoProvider();
     public static final ResourceLocation UID = Confluence.asResource("jade_tombstone_info");
+
     @Override
     public void appendTooltip(ITooltip iTooltip, BlockAccessor blockAccessor, IPluginConfig iPluginConfig) {
         CompoundTag compoundTag = blockAccessor.getServerData();
         if (compoundTag.get("tombInfo") instanceof ListTag listTag) {
-            listTag.forEach(tag -> {
-                if (tag instanceof CompoundTag tag0) {
-                    String info = tag0.getString("info");
-                    if(!info.isEmpty()){
-                        iTooltip.add(Component.nullToEmpty(info));
+            for (Tag tag : listTag) {
+                if (tag instanceof StringTag stringTag) {
+                    String info = stringTag.getAsString();
+                    if (!info.isEmpty()) {
+                        iTooltip.add(Component.literal(info));
                     }
                 }
-            });
+            }
         }
     }
 
@@ -38,13 +39,10 @@ public class TombstoneInfoProvider implements IBlockComponentProvider, IServerDa
         if (blockAccessor.getBlockEntity() instanceof TombstoneBlock.Entity entity) {
             SignText signText = entity.getFrontText();
             ListTag listTag = new ListTag();
-            Arrays.stream(signText.getMessages(false))
-                    .forEach(component -> {
-                        CompoundTag tag = new CompoundTag();
-                        tag.putString("info",component.getString());
-                        listTag.add(tag);
-                    });
-            compoundTag.put("tombInfo",listTag);
+            for (Component message : signText.getMessages(false)) {
+                listTag.add(StringTag.valueOf(message.getString()));
+            }
+            compoundTag.put("tombInfo", listTag);
         }
     }
 

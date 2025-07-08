@@ -2,10 +2,10 @@ package org.confluence.mod.common.init.item;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.ArmorMaterial;
-import net.minecraft.world.item.Item;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.*;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.ConfluenceMagicLib;
@@ -14,10 +14,21 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModArmorMaterials;
 import org.confluence.mod.common.item.armor.NormalArmorItem;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.List;
+
 public class ArmorItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
 
-    public static final DeferredItem<ArmorItem> MINING_HELMET = registerNormalArmor("mining_helmet", "mining_armor", ModArmorMaterials.MINING_ARMOR_MATERIALS, ArmorItem.Type.HELMET);
+    public static final DeferredItem<ArmorItem> MINING_HELMET = ITEMS.register("mining_helmet", () -> new NormalArmorItem("armor/mining_armor", ModArmorMaterials.MINING_ARMOR_MATERIALS, ArmorItem.Type.HELMET, new Item.Properties().stacksTo(1).component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE)) {
+        private final boolean noneLoaded = !ModList.get().isLoaded("sodiumdynamiclights");
+
+        @ParametersAreNonnullByDefault
+        @Override
+        public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+            if (noneLoaded) tooltipComponents.add(Component.translatable("tooltip.terra_curio.requires_mod_loaded", "sodiumdynamiclights"));
+        }
+    });
     public static final DeferredItem<ArmorItem> MINING_CHESTPLATE = registerNormalArmor("mining_chestplate", "mining_armor", ModArmorMaterials.MINING_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE);
     public static final DeferredItem<ArmorItem> MINING_LEGGINGS = registerNormalArmor("mining_leggings", "mining_armor", ModArmorMaterials.MINING_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS);
     public static final DeferredItem<ArmorItem> MINING_BOOTS = registerNormalArmor("mining_boots", "mining_armor", ModArmorMaterials.MINING_ARMOR_MATERIALS, ArmorItem.Type.BOOTS);
@@ -244,20 +255,20 @@ public class ArmorItems {
     public static final DeferredItem<ArmorItem> HALLOWED_BOOTS = registerNormalArmor("hallowed_boots", "hallowed_armor", ModRarity.PINK, ModArmorMaterials.HALLOWED_ARMOR_MATERIALS, ArmorItem.Type.BOOTS);
 
     // 巫师套装
-    public static final DeferredItem<ArmorItem> WIZARD_HAT = ITEMS.register("wizard_hat", () -> new ArmorItem(ModArmorMaterials.WIZARD_HAT_MATERIAL, ArmorItem.Type.HELMET, new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.GREEN)));
-    public static final DeferredItem<ArmorItem> MAGIC_HAT = ITEMS.register("magic_hat", () -> new ArmorItem(ModArmorMaterials.MAGIC_HAT_ARMOR_MATERIAL, ArmorItem.Type.HELMET, new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.GREEN)));
-    public static final DeferredItem<ArmorItem> AMETHYST_ROBE = ITEMS.register("amethyst_robe", () -> new ArmorItem(ModArmorMaterials.AMETHYST_ROBE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.WHITE)));
-    public static final DeferredItem<ArmorItem> TOPAZ_ROBE = ITEMS.register("topaz_robe", () -> new ArmorItem(ModArmorMaterials.TOPAZ_ROBE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.WHITE)));
-    public static final DeferredItem<ArmorItem> SAPPHIRE_ROBE = ITEMS.register("sapphire_robe", () -> new ArmorItem(ModArmorMaterials.SAPPHIRE_ROBE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE)));
-    public static final DeferredItem<ArmorItem> EMERALD_ROBE = ITEMS.register("emerald_robe", () -> new ArmorItem(ModArmorMaterials.EMERALD_ROBE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE)));
-    public static final DeferredItem<ArmorItem> RUBY_ROBE = ITEMS.register("ruby_robe", () -> new ArmorItem(ModArmorMaterials.RUBY_ROBE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE)));
-    public static final DeferredItem<ArmorItem> MYSTIC_ROBE = ITEMS.register("mystic_robe", () -> new ArmorItem(ModArmorMaterials.MYSTIC_ROBE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE)));
-    public static final DeferredItem<ArmorItem> DIAMOND_ROBE = ITEMS.register("diamond_robe", () -> new ArmorItem(ModArmorMaterials.DIAMOND_ROBE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.GREEN)));
-    public static final DeferredItem<ArmorItem> AMBER_ROBE = ITEMS.register("amber_robe", () -> new ArmorItem(ModArmorMaterials.AMBER_ROBE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.GREEN)));
-
+    public static final DeferredItem<ArmorItem> WIZARD_HAT = registerNormalArmor("wizard_hat", "wizard_hat", ModRarity.GREEN, ModArmorMaterials.WIZARD_HAT_MATERIAL, ArmorItem.Type.HELMET);
+    public static final DeferredItem<ArmorItem> MAGIC_HAT = registerNormalArmor("magic_hat", "magic_hat", ModRarity.GREEN, ModArmorMaterials.MAGIC_HAT_ARMOR_MATERIAL, ArmorItem.Type.HELMET);
+    public static final DeferredItem<ArmorItem> AMETHYST_ROBE = registerNormalArmor("amethyst_robe", "amethyst_robe", ModRarity.WHITE, ModArmorMaterials.AMETHYST_ROBE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE);
+    public static final DeferredItem<ArmorItem> TOPAZ_ROBE = registerNormalArmor("topaz_robe", "topaz_robe", ModRarity.WHITE, ModArmorMaterials.TOPAZ_ROBE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE);
+    public static final DeferredItem<ArmorItem> SAPPHIRE_ROBE = registerNormalArmor("sapphire_robe", "sapphire_robe", ModRarity.BLUE, ModArmorMaterials.SAPPHIRE_ROBE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE);
+    public static final DeferredItem<ArmorItem> JADE_ROBE = registerNormalArmor("jade_robe", "jade_robe", ModRarity.BLUE, ModArmorMaterials.EMERALD_ROBE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE);
+    public static final DeferredItem<ArmorItem> RUBY_ROBE = registerNormalArmor("ruby_robe", "ruby_robe", ModRarity.BLUE, ModArmorMaterials.RUBY_ROBE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE);
+    public static final DeferredItem<ArmorItem> MYSTIC_ROBE = registerNormalArmor("mystic_robe", "mystic_robe", ModRarity.BLUE, ModArmorMaterials.MYSTIC_ROBE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE);
+    public static final DeferredItem<ArmorItem> DIAMOND_ROBE = registerNormalArmor("diamond_robe", "diamond_robe", ModRarity.GREEN, ModArmorMaterials.DIAMOND_ROBE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE);
+    public static final DeferredItem<ArmorItem> AMBER_ROBE = registerNormalArmor("amber_robe", "amber_robe", ModRarity.GREEN, ModArmorMaterials.AMBER_ROBE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE);
     // 其它盔甲
     public static final DeferredItem<ArmorItem> GOGGLES = ITEMS.register("goggles", () -> new ArmorItem(ModArmorMaterials.GOGGLES_MATERIAL, ArmorItem.Type.HELMET, new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.WHITE)));
     public static final DeferredItem<ArmorItem> GREEN_CAP = ITEMS.register("green_cap", () -> new ArmorItem(ModArmorMaterials.GREEN_CAP_MATERIAL, ArmorItem.Type.HELMET, new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.WHITE)));
+    public static final DeferredItem<ArmorItem> VIKING_HELMET = registerNormalArmor("viking_helmet","viking_armor", ModRarity.BLUE,ModArmorMaterials.VIKING_ARMOR_MATERIAL, ArmorItem.Type.HELMET);
 
     private static DeferredItem<ArmorItem> registerNormalArmor(String name, String geoName, Holder<ArmorMaterial> material, ArmorItem.Type type, int durability) {
         return ITEMS.register(name, () -> new NormalArmorItem("armor/" + geoName, material, type, new Item.Properties().stacksTo(1).durability(durability)));

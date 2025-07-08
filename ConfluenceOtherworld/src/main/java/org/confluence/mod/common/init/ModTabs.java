@@ -187,7 +187,7 @@ public final class ModTabs {
             () -> CreativeModeTab.builder().icon(() -> IconItems.DEVELOPER_ICON.get().getDefaultInstance())
                     .title(Component.translatable("creativetab.confluence.developer"))
                     .displayItems((parameters, output) -> {
-                        output.accept(FunctionalBlocks.ANDESITE_CASING.get());
+                        output.accept(ModBlocks.ANDESITE_CASING.get());
                         ModItems.HIDDEN.getEntries().forEach(item -> output.accept(item.get()));
                         output.accept(FoodItems.PINK_COLA.get());
                         output.accept(FoodItems.DONGDONGS_FLATBREAD.get());

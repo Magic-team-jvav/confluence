@@ -8,20 +8,17 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.ClientPacketHandler;
-import org.jetbrains.annotations.NotNull;
 
-public record ManaPacketS2C(int maxMana, int currentMana) implements CustomPacketPayload {
+public record ManaPacketS2C(int maxMana, float currentMana) implements CustomPacketPayload {
     public static final Type<ManaPacketS2C> TYPE = new Type<>(Confluence.asResource("mana"));
     public static final StreamCodec<ByteBuf, ManaPacketS2C> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.INT,
-            ManaPacketS2C::maxMana,
-            ByteBufCodecs.INT,
-            ManaPacketS2C::currentMana,
+            ByteBufCodecs.INT, ManaPacketS2C::maxMana,
+            ByteBufCodecs.FLOAT, ManaPacketS2C::currentMana,
             ManaPacketS2C::new
     );
 
     @Override
-    public @NotNull Type<ManaPacketS2C> type() {
+    public Type<ManaPacketS2C> type() {
         return TYPE;
     }
 

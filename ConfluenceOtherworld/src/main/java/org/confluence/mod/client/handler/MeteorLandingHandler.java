@@ -10,20 +10,20 @@ import net.minecraft.core.GlobalPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.network.s2c.MeteoriteLocationPacketS2C;
+import org.confluence.mod.util.OverworldUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 
 public final class MeteorLandingHandler {
     private static final ResourceLocation TEXTURE = Confluence.asResource("textures/environment/meteor.png");
     private static final float RADIUS = 5.0F;
-    private static GlobalPos globalPos = null;
-    private static Vec3 location = null;
+    private static @Nullable GlobalPos globalPos = null;
+    private static @Nullable Vec3 location = null;
     private static int tickUntilLanding = 0;
 
     private static int totalLandingTick = 0;
@@ -32,10 +32,10 @@ public final class MeteorLandingHandler {
     private static float pitchO = -Mth.HALF_PI;
     private static float yaw = Mth.HALF_PI;
     private static float yawO = Mth.HALF_PI;
-    private static Vec3 vector = null;
+    private static @Nullable Vec3 vector = null;
     private static double distance = 0.0;
-    private static float v0;
-    private static float v1;
+    private static float v0 = 0;
+    private static float v1 = 0;
 
     public static void handle(Minecraft minecraft, @Nullable Player player) {
         if (player == null) {
@@ -58,9 +58,14 @@ public final class MeteorLandingHandler {
     }
 
     public static void handlePacket(MeteoriteLocationPacketS2C packet, Player player) {
-        globalPos = GlobalPos.of(Level.OVERWORLD, packet.location());
+        globalPos = GlobalPos.of(OverworldUtils.dimension(), packet.location());
+        if (packet.tickUntilLanding() <= 0) {
+            location = null;
+            tickUntilLanding = 0;
+            return;
+        }
         location = packet.location().getCenter();
-        tickUntilLanding = Math.max(packet.tickUntilLanding(), 1);
+        tickUntilLanding = packet.tickUntilLanding();
 
         totalLandingTick = tickUntilLanding;
         calculate(player);
@@ -82,7 +87,7 @@ public final class MeteorLandingHandler {
         if (location == null || vector == null) return;
         Minecraft minecraft = Minecraft.getInstance();
         LocalPlayer player = minecraft.player;
-        if (player == null || player.level().dimension() != Level.OVERWORLD) return;
+        if (player == null || player.level().dimension() != OverworldUtils.dimension()) return;
         if (distance < event.getLevelRenderer().getLastViewDistance()) return;
         float partialTick = minecraft.getTimer().getGameTimeDeltaPartialTick(false);
         Tesselator tesselator = Tesselator.getInstance();

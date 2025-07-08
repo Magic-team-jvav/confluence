@@ -33,6 +33,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.common.BaseChestBlock;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.block.ChestBlocks;
+import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.terraentity.client.buffer.AbstractBufferManager;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
@@ -170,11 +171,11 @@ public class SpelunkerHelper extends AbstractBufferManager {
         putTarget(FLESHIFICATION_TOPAZ_ORE.get(), Color.CYAN, true, ShowType.SPELUNKER);
 
         //翡翠矿
-        putTarget(TR_EMERALD_ORE.get(), Color.CYAN, true, ShowType.SPELUNKER);
-        putTarget(DEEPSLATE_TR_EMERALD_ORE.get(), Color.CYAN, true, ShowType.SPELUNKER);
-        putTarget(CORRUPTION_TR_EMERALD_ORE.get(), Color.CYAN, true, ShowType.SPELUNKER);
-        putTarget(SANCTIFICATION_TR_EMERALD_ORE.get(), Color.CYAN, true, ShowType.SPELUNKER);
-        putTarget(FLESHIFICATION_TR_EMERALD_ORE.get(), Color.CYAN, true, ShowType.SPELUNKER);
+        putTarget(OreBlocks.JADE_ORE.get(), Color.CYAN, true, ShowType.SPELUNKER);
+        putTarget(OreBlocks.DEEPSLATE_JADE_ORE.get(), Color.CYAN, true, ShowType.SPELUNKER);
+        putTarget(OreBlocks.CORRUPTION_JADE_ORE.get(), Color.CYAN, true, ShowType.SPELUNKER);
+        putTarget(OreBlocks.SANCTIFICATION_JADE_ORE.get(), Color.CYAN, true, ShowType.SPELUNKER);
+        putTarget(OreBlocks.FLESHIFICATION_JADE_ORE.get(), Color.CYAN, true, ShowType.SPELUNKER);
 
 
         //蓝玉矿
@@ -185,11 +186,11 @@ public class SpelunkerHelper extends AbstractBufferManager {
         putTarget(FLESHIFICATION_SAPPHIRE_ORE.get(), Color.CYAN, true, ShowType.SPELUNKER);
 
         //紫晶矿
-        putTarget(TR_AMETHYST_ORE.get(), Color.CYAN, true, ShowType.SPELUNKER);
-        putTarget(DEEPSLATE_TR_AMETHYST_ORE.get(), Color.CYAN, true, ShowType.SPELUNKER);
-        putTarget(CORRUPTION_TR_AMETHYST_ORE.get(), Color.CYAN, true, ShowType.SPELUNKER);
-        putTarget(SANCTIFICATION_TR_AMETHYST_ORE.get(), Color.CYAN, true, ShowType.SPELUNKER);
-        putTarget(FLESHIFICATION_TR_AMETHYST_ORE.get(), Color.CYAN, true, ShowType.SPELUNKER);
+        putTarget(OreBlocks.AMETHYST_ORE.get(), Color.CYAN, true, ShowType.SPELUNKER);
+        putTarget(OreBlocks.DEEPSLATE_AMETHYST_ORE.get(), Color.CYAN, true, ShowType.SPELUNKER);
+        putTarget(OreBlocks.CORRUPTION_AMETHYST_ORE.get(), Color.CYAN, true, ShowType.SPELUNKER);
+        putTarget(OreBlocks.SANCTIFICATION_AMETHYST_ORE.get(), Color.CYAN, true, ShowType.SPELUNKER);
+        putTarget(OreBlocks.FLESHIFICATION_AMETHYST_ORE.get(), Color.CYAN, true, ShowType.SPELUNKER);
 
 
         //绿宝石矿

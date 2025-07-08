@@ -2,7 +2,7 @@
 	"credit": "Made with Blockbench",
 	"textures": {
 		"0": "confluence:block/fragile_sandstone_background",
-		"4": "confluence:block/tr_obsidian_bricks",
+		"4": "confluence:block/obsidian_bricks",
 		"particle": "confluence:block/fragile_sandstone_background"
 	},
 	"elements": [

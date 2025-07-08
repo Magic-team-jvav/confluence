@@ -19,19 +19,19 @@ public class SurfaceRuleData {
     private static final SurfaceRules.RuleSource SANDSTONE = makeStateRule(Blocks.SANDSTONE);
     //private static final SurfaceRules.RuleSource RED_SANDSTONE = makeStateRule(Blocks.RED_SANDSTONE);
     private static final SurfaceRules.RuleSource HARDENED_SAND = makeStateRule(NatureBlocks.HARDENED_SAND_BLOCK.get());
-    private static final SurfaceRules.RuleSource RED_HARDENED_SAND = makeStateRule(NatureBlocks.RED_HARDENED_SAND_BLOCK.get());
-    private static final SurfaceRules.RuleSource MOIST_SAND = makeStateRule(NatureBlocks.MOIST_SAND_BLOCK.get());
+    private static final SurfaceRules.RuleSource RED_HARDENED_SAND = makeStateRule(NatureBlocks.HARDENED_RED_SAND_BLOCK.get());
+    private static final SurfaceRules.RuleSource MOIST_SAND = makeStateRule(NatureBlocks.MOISTENED_SAND_BLOCK.get());
     private static final SurfaceRules.RuleSource GRASS_BLOCK = makeStateRule(Blocks.GRASS_BLOCK);
     private static final SurfaceRules.RuleSource JUNGLE_GRASS_BLOCK = makeStateRule(NatureBlocks.JUNGLE_GRASS_BLOCK.get());
     //private static final SurfaceRules.RuleSource CLAY = makeStateRule(Blocks.CLAY);
 
     private static final SurfaceRules.RuleSource CORRUPT_GRASS_BLOCK = makeStateRule(NatureBlocks.CORRUPT_GRASS_BLOCK.get());
-    private static final SurfaceRules.RuleSource EBONY_STONE = makeStateRule(NatureBlocks.EBONY_STONE.get());
-    private static final SurfaceRules.RuleSource EBONY_SAND = makeStateRule(NatureBlocks.EBONY_SAND.get());
+    private static final SurfaceRules.RuleSource EBONSTONE = makeStateRule(NatureBlocks.EBONSTONE.get());
+    private static final SurfaceRules.RuleSource EBONSAND = makeStateRule(NatureBlocks.EBONSAND.get());
 
-    private static final SurfaceRules.RuleSource TR_CRIMSON_GRASS_BLOCK = makeStateRule(NatureBlocks.TR_CRIMSON_GRASS_BLOCK.get());
-    private static final SurfaceRules.RuleSource TR_CRIMSON_STONE = makeStateRule(NatureBlocks.TR_CRIMSON_STONE.get());
-    private static final SurfaceRules.RuleSource TR_CRIMSON_SAND = makeStateRule(NatureBlocks.TR_CRIMSON_SAND.get());
+    private static final SurfaceRules.RuleSource CRIMSON_GRASS_BLOCK = makeStateRule(NatureBlocks.CRIMSON_GRASS_BLOCK.get());
+    private static final SurfaceRules.RuleSource CRIMSTONE = makeStateRule(NatureBlocks.CRIMSTONE.get());
+    private static final SurfaceRules.RuleSource CRIMSAND = makeStateRule(NatureBlocks.CRIMSAND.get());
 
     private static final SurfaceRules.RuleSource MUSHROOM_GRASS_BLOCK = makeStateRule(NatureBlocks.MUSHROOM_GRASS_BLOCK.get());
     private static final SurfaceRules.RuleSource MUD = makeStateRule(Blocks.MUD);
@@ -52,6 +52,7 @@ public class SurfaceRuleData {
     private static final SurfaceRules.ConditionSource sandSeed = SurfaceRules.verticalGradient("minecraft:deepslate", VerticalAnchor.absolute(20), VerticalAnchor.absolute(25));
     private static final SurfaceRules.ConditionSource redSandSeed = SurfaceRules.verticalGradient("minecraft:deepslate", VerticalAnchor.absolute(74), VerticalAnchor.absolute(76));
     private static final SurfaceRules.ConditionSource iceSeed = SurfaceRules.verticalGradient("minecraft:deepslate", VerticalAnchor.absolute(20), VerticalAnchor.absolute(35));
+    private static final SurfaceRules.ConditionSource mushroomSeed = SurfaceRules.verticalGradient("minecraft:deepslate", VerticalAnchor.absolute(40), VerticalAnchor.absolute(42));
     //群系组合
     private static final SurfaceRules.ConditionSource isOcean = SurfaceRules.isBiome(Biomes.OCEAN, Biomes.WARM_OCEAN, Biomes.LUKEWARM_OCEAN, Biomes.COLD_OCEAN, Biomes.FROZEN_OCEAN, Biomes.DEEP_OCEAN, Biomes.DEEP_FROZEN_OCEAN, Biomes.DEEP_LUKEWARM_OCEAN, Biomes.DEEP_COLD_OCEAN);
     private static final SurfaceRules.ConditionSource sandOcean = SurfaceRules.isBiome(Biomes.WARM_OCEAN, Biomes.DEEP_LUKEWARM_OCEAN);
@@ -59,8 +60,8 @@ public class SurfaceRuleData {
     private static final SurfaceRules.ConditionSource dirtSnowy = SurfaceRules.isBiome(Biomes.SNOWY_PLAINS, Biomes.SNOWY_TAIGA);
 
     // 生成 =============================================================
-    private static final SurfaceRules.RuleSource corruptGrassSurface = SurfaceRules.sequence(SurfaceRules.ifTrue(isAtOrAboveWaterLevel, CORRUPT_GRASS_BLOCK), EBONY_SAND);
-    private static final SurfaceRules.RuleSource trCrimsonGrassSurface = SurfaceRules.sequence(SurfaceRules.ifTrue(isAtOrAboveWaterLevel, TR_CRIMSON_GRASS_BLOCK), TR_CRIMSON_SAND);
+    private static final SurfaceRules.RuleSource corruptGrassSurface = SurfaceRules.sequence(SurfaceRules.ifTrue(isAtOrAboveWaterLevel, CORRUPT_GRASS_BLOCK), EBONSAND);
+    private static final SurfaceRules.RuleSource crimsonGrassSurface = SurfaceRules.sequence(SurfaceRules.ifTrue(isAtOrAboveWaterLevel, CRIMSON_GRASS_BLOCK), CRIMSAND);
     private static final SurfaceRules.RuleSource mushroomSurface = SurfaceRules.sequence(SurfaceRules.ifTrue(isAtOrAboveWaterLevel, MUSHROOM_GRASS_BLOCK), MUD);
     private static final SurfaceRules.RuleSource ashGrassSurface = SurfaceRules.sequence(SurfaceRules.ifTrue(isAtOrAboveWaterLevel, ASH_GRASS_BLOCK), ASH_BLOCK);
     private static final SurfaceRules.RuleSource jungleGrassSurface = SurfaceRules.sequence(SurfaceRules.ifTrue(isAtOrAboveWaterLevel, JUNGLE_GRASS_BLOCK), MUD);
@@ -86,19 +87,19 @@ public class SurfaceRuleData {
                                         )
                                 ),
                                 SurfaceRules.ifTrue(SurfaceRules.not(deepslateSeed),
-                                        EBONY_STONE
+                                        EBONSTONE
                                 )
                         )
                 ),
 
                 //猩红
-                SurfaceRules.ifTrue(SurfaceRules.isBiome(ModBiomes.TR_CRIMSON),
+                SurfaceRules.ifTrue(SurfaceRules.isBiome(ModBiomes.THE_CRIMSON),
                         SurfaceRules.sequence(
                                 SurfaceRules.ifTrue(SurfaceRules.not(grassSeed),
                                         SurfaceRules.ifTrue(SurfaceRules.not(isHole),
                                                 SurfaceRules.sequence(
                                                         SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR,
-                                                                trCrimsonGrassSurface
+                                                                crimsonGrassSurface
                                                         ),
                                                         SurfaceRules.ifTrue(SurfaceRules.stoneDepthCheck(4, false, 1, CaveSurface.FLOOR),
                                                                 DIRT
@@ -107,19 +108,23 @@ public class SurfaceRuleData {
                                         )
                                 ),
                                 SurfaceRules.ifTrue(SurfaceRules.not(deepslateSeed),
-                                        TR_CRIMSON_STONE
+                                        CRIMSTONE
                                 )
                         )
                 ),
 
                 //发光蘑菇地
                 SurfaceRules.ifTrue(SurfaceRules.isBiome(ModBiomes.GLOWING_MUSHROOM),
-                        SurfaceRules.sequence(
-                                SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR,
-                                        mushroomSurface
-                                ),
-                                SurfaceRules.ifTrue(SurfaceRules.UNDER_FLOOR,
-                                        MUD
+                        SurfaceRules.ifTrue(
+                                mushroomSeed,
+                                SurfaceRules.ifTrue(
+                                        SurfaceRules.not(bedrockFloorSeed),
+                                        SurfaceRules.sequence(
+                                                SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR,
+                                                        mushroomSurface
+                                                ),
+                                                MUD
+                                        )
                                 )
                         )
                 )

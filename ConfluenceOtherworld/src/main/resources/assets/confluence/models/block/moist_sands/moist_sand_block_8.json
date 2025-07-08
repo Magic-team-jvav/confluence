@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/template_single_face",
-  "textures": {
-    "texture": "confluence:block/moist_sands/moist_sand_block_8"
-  }
-}

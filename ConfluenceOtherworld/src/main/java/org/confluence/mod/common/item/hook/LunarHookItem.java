@@ -2,7 +2,6 @@ package org.confluence.mod.common.item.hook;
 
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.server.level.ServerLevel;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.entity.hook.AbstractHookEntity;
@@ -19,7 +18,7 @@ public class LunarHookItem extends BaseHookItem implements IHookFastThrow {
             AtomicBoolean stardust = new AtomicBoolean(true);
             AtomicBoolean vortex = new AtomicBoolean(true);
             list.forEach(tag -> {
-                AbstractHookEntity hookEntity = getHookEntity(tag, (ServerLevel) level);
+                AbstractHookEntity hookEntity = getHookEntity(tag, level);
                 if (hookEntity instanceof LunarHookEntity lunarHookEntity) {
                     switch (lunarHookEntity.getVariant()) {
                         case NEBULA -> nebula.set(false);

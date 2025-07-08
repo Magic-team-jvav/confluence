@@ -28,26 +28,26 @@ public class ModAchievementOffsetProvider extends AbstractRecipeProvider {
      * 1 Colle |   | Explo |
      * 2 -ctor |   | -rer  |
      * 3       |   |       |
-     * 4 ----- *   |       |
-     * 5           * ----- *
-     * 6 ----- *
-     * 7 Slaye |   * ----- *
-     * 8 -r    |   | Chall |
-     * 9       |   | -enge |
+     * 4       |   |       |
+     * 5 ----- *   * ----- *
+     * 6
+     * 7 ----- *   * ----- *
+     * 8 Slaye |   | Chall |
+     * 9 -r    |   | -enge |
      * 10      |   | -r    |
      * 11      |   |       |
-     * 12 ---- *   * ----- *
+     * 12      |   * ----- *
+     * 13 ---- *
      */
     @Override
     protected void buildRecipes(RecipeOutput recipeOutput) {
         recipe(Codec.unboundedMap(ResourceLocation.CODEC, LibUtils.VEC_2_CODEC), pathProvider().json(Confluence.asResource("achievement_offset"))).addRecipe(new Builder()
-                // Collector [0, 0] -> [4, 4]
+                // Collector [0, 0] -> [4, 5]
                 .offset("new_world", 0, 0)
                 .offset("timber", 1, 0)
                 .offset("benched", 2, 0)
                 .offset("hammer_time", 3, 0)
                 .offset("heavy_metal", 4, 0)
-                .offset("star_power", 5, 0)
                 .offset("hold_on_tight", 0, 1)
                 .offset("miner_for_fire", 1, 1)
                 .offset("head_in_the_clouds", 2, 1)
@@ -68,6 +68,7 @@ public class ModAchievementOffsetProvider extends AbstractRecipeProvider {
                 .offset("feast_of_midas", 2, 4)
                 .offset("black_mirror", 3, 4)
                 .offset("ankhumulation_complete", 4, 4)
+                .offset("star_power", 2, 5)
 
 
                 // Explorer [6, 0] -> [10, 5]
@@ -102,39 +103,39 @@ public class ModAchievementOffsetProvider extends AbstractRecipeProvider {
                 .offset("a_shimmer_in_the_dark", 9.5F, 5)
 
 
-                // Slayer [0, 6] -> [4, 12]
-                .offset("eye_on_you", 0, 6)
-                .offset("worm_fodder", 1, 6)
-                .offset("mastermind", 2, 6)
-                .offset("sting_operation", 3, 6)
-                .offset("boned", 4, 6)
-                .offset("still_hungry", 0, 7)
-                .offset("buckets_of_bolts", 1, 7)
-                .offset("the_great_southern_plantkill", 2, 7)
-                .offset("lihzahrdian_idol", 3, 7)
-                .offset("fish_out_of_water", 4, 7)
-                .offset("obsessive_devotion", 0, 8)
-                .offset("star_destroyer", 1, 8)
-                .offset("champion_of_terraria", 2, 8)
-                .offset("slippery_shinobi", 3, 8)
-                .offset("goblin_punter", 4, 8)
-                .offset("walk_the_plank", 0, 9)
-                .offset("do_you_want_to_slay_a_snowman", 1, 9)
-                .offset("tin_foil_hatter", 2, 9)
-                .offset("baleful_harvest", 3, 9)
-                .offset("ice_scream", 4, 9)
-                .offset("vehicular_manslaughter", 0, 10)
-                .offset("there_are_some_who_call_him", 1, 10)
-                .offset("deceiver_of_fools", 2, 10)
-                .offset("til_death", 3, 10)
-                .offset("archaeologist", 4, 10)
-                .offset("pretty_in_pink", 0, 11)
-                .offset("fae_flayer", 1, 11)
-                .offset("just_desserts", 2, 11)
-                .offset("dont_dread_on_me", 3, 11)
-                .offset("hero_of_etheria", 4, 11)
-                .offset("an_eye_for_an_eye", 1.5F, 12)
-                .offset("torch_god", 2.5F, 12)
+                // Slayer [0, 7] -> [4, 13]
+                .offset("eye_on_you", 0, 7)
+                .offset("worm_fodder", 1, 7)
+                .offset("mastermind", 2, 7)
+                .offset("sting_operation", 3, 7)
+                .offset("boned", 4, 7)
+                .offset("still_hungry", 0, 8)
+                .offset("buckets_of_bolts", 1, 8)
+                .offset("the_great_southern_plantkill", 2, 8)
+                .offset("lihzahrdian_idol", 3, 8)
+                .offset("fish_out_of_water", 4, 8)
+                .offset("obsessive_devotion", 0, 9)
+                .offset("star_destroyer", 1, 9)
+                .offset("champion_of_terraria", 2, 9)
+                .offset("slippery_shinobi", 3, 9)
+                .offset("goblin_punter", 4, 9)
+                .offset("walk_the_plank", 0, 10)
+                .offset("do_you_want_to_slay_a_snowman", 1, 10)
+                .offset("tin_foil_hatter", 2, 10)
+                .offset("baleful_harvest", 3, 10)
+                .offset("ice_scream", 4, 10)
+                .offset("vehicular_manslaughter", 0, 11)
+                .offset("there_are_some_who_call_him", 1, 11)
+                .offset("deceiver_of_fools", 2, 11)
+                .offset("til_death", 3, 11)
+                .offset("archaeologist", 4, 11)
+                .offset("pretty_in_pink", 0, 12)
+                .offset("fae_flayer", 1, 12)
+                .offset("just_desserts", 2, 12)
+                .offset("dont_dread_on_me", 3, 12)
+                .offset("hero_of_etheria", 4, 12)
+                .offset("an_eye_for_an_eye", 1.5F, 13)
+                .offset("torch_god", 2.5F, 13)
 
 
                 // Challenger [6, 7] -> [10, 12]

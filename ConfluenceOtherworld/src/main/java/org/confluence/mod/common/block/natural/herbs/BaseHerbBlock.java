@@ -48,8 +48,8 @@ public abstract class BaseHerbBlock extends CropBlock implements EntityBlock {
             .put(NatureBlocks.STELLAR_BLOSSOM.get(), Set.of(NatureBlocks.CLOUD_BLOCK.get(), NatureBlocks.RAIN_CLOUD_BLOCK.get()))
             .put(ModBlocks.SHIVERTHORN.get(), Set.of(Blocks.GRASS_BLOCK, Blocks.ICE, NatureBlocks.RED_ICE.get(), NatureBlocks.RED_PACKED_ICE.get(), NatureBlocks.PINK_PACKED_ICE.get(), NatureBlocks.PINK_ICE.get(), NatureBlocks.PURPLE_ICE.get(), NatureBlocks.PURPLE_PACKED_ICE.get()))
             .put(ModBlocks.BLINKROOT.get(), Set.of(Blocks.DIRT, Blocks.MUD, Blocks.STONE, Blocks.DEEPSLATE))
-            .put(ModBlocks.DEATHWEED.get(), Set.of(NatureBlocks.CORRUPT_GRASS_BLOCK.get(), NatureBlocks.EBONY_STONE.get(), NatureBlocks.TR_CRIMSON_GRASS_BLOCK.get(), NatureBlocks.TR_CRIMSON_STONE.get()))
-            .put(ModBlocks.WATERLEAF.get(), Set.of(Blocks.SAND, Blocks.RED_SAND, NatureBlocks.PEARL_SAND.get()))
+            .put(ModBlocks.DEATHWEED.get(), Set.of(NatureBlocks.CORRUPT_GRASS_BLOCK.get(), NatureBlocks.EBONSTONE.get(), NatureBlocks.CRIMSON_GRASS_BLOCK.get(), NatureBlocks.CRIMSTONE.get()))
+            .put(ModBlocks.WATERLEAF.get(), Set.of(Blocks.SAND, Blocks.RED_SAND, NatureBlocks.PEARLSAND.get()))
             .put(ModBlocks.FIREBLOSSOM.get(), Set.of(NatureBlocks.ASH_BLOCK.get(), NatureBlocks.ASH_GRASS_BLOCK.get()))
             .build());
 

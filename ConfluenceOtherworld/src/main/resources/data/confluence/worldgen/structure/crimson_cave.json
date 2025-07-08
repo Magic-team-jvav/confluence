@@ -1,6 +1,6 @@
 {
     "type": "confluence:crimson_cave",
-    "biomes": "confluence:tr_crimson",
+    "biomes": "confluence:the_crimson",
     "spawn_overrides": {},
     "step": "top_layer_modification"
 }

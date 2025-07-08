@@ -52,7 +52,7 @@ public class GenericMinecartEntity extends BaseMinecartEntity implements Variant
                 AMETHYST = register("amethyst"),
                 TOPAZ = register("topaz"),
                 SAPPHIRE = register("sapphire"),
-                EMERALD = register("emerald"),
+                JADE = register("jade"),
                 RUBY = register("ruby"),
                 DIAMOND = register("diamond"),
                 AMBER = register("amber"),

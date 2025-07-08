@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "confluence:block/packed_ice_bricks_slab"
+    },
+    "type=top": {
+      "model": "confluence:block/packed_ice_bricks_slab_top"
+    },
+    "type=double": {
+      "model": "confluence:block/packed_ice_bricks_slab_full"
+    }
+  }
+}

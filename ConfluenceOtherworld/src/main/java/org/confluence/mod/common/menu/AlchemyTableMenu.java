@@ -190,5 +190,10 @@ public class AlchemyTableMenu extends AbstractContainerMenu {
                 input.setChanged();
             }
         }
+
+        @Override
+        public boolean isFake() {
+            return true;
+        }
     }
 }

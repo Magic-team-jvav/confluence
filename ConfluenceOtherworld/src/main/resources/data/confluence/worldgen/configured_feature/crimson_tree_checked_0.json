@@ -1,0 +1,24 @@
+{
+  "type": "confluence:drooping_vine_tree",
+  "config": {
+    "trunk_block": {
+      "type": "simple_state_provider",
+      "state": {
+        "Name": "confluence:shadow_log"
+      }
+    },
+    "leaves_block": {
+      "type": "simple_state_provider",
+      "state": {
+        "Name": "confluence:shadow_leaves"
+      }
+    },
+    "drooping_vine_block": {
+      "type": "simple_state_provider",
+      "state": {
+        "Name": "confluence:crimson_drooping_vine"
+      }
+    },
+    "height": 5
+  }
+}

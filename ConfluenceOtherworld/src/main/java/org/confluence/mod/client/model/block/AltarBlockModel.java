@@ -5,7 +5,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import software.bernie.geckolib.model.GeoModel;
 
-@SuppressWarnings("removal")
 public class AltarBlockModel extends GeoModel<AltarBlock.Entity> {
     public static final ResourceLocation[] MODELS = new ResourceLocation[]{
             Confluence.asResource("geo/block/demon_altar.geo.json"),

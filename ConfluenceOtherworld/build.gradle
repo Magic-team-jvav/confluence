@@ -14,6 +14,8 @@ base {
     archivesName = "ConfluenceOtherworld"
 }
 
+boolean isRunningInIdea = System.getProperty("idea.active") == "true"
+
 neoForge {
     version = project.neo_version
     parchment {
@@ -23,6 +25,7 @@ neoForge {
     runs {
         client {
             client()
+            programArguments.addAll '--username', 'Confluence'
         }
         server {
             server()
@@ -42,7 +45,7 @@ neoForge {
                     // 启用 JetBrain Runtime 热重载功能
                     "-XX:+AllowEnhancedClassRedefinition"
             ])
-            if (isRunningInIdea()) {
+            if (isRunningInIdea) {
                 systemProperty "terminal.jline", "true"
             }
         }
@@ -52,11 +55,6 @@ neoForge {
         "${mod_id}" {
             sourceSet(sourceSets.main)
         }
-//        projectName.forEach {name -> {
-//            create(name) {
-//                sourceSet(project(":" + name).sourceSets["main"])
-//            }
-//        }}
     }
 }
 
@@ -67,11 +65,10 @@ repositories {
     flatDir {
         dirs 'libs'
     }
-    maven { // Registrate
-        url "https://maven.ithundxr.dev/snapshots"
-    }
+    maven { url = "https://www.cursemaven.com" }
     maven {
-        url = "https://www.cursemaven.com"
+        name = "Modrinth"
+        url = "https://api.modrinth.com/maven"
     }
     maven {
         // location of the maven that hosts JEI files since January 2023
@@ -97,58 +94,49 @@ repositories {
             includeGroup "dev.architectury"
         }
     }
-
     maven {
-        name = "LatvianMaven"
+        name = "LatvianMaven" // KubeJS
         url = "https://maven.latvian.dev/releases"
         content {
             includeGroup "dev.latvian.mods"
             includeGroup "dev.latvian.apps"
         }
     }
-
     maven {
         url = 'https://jitpack.io'
         content {
             includeGroup "com.github.rtyley"
         }
     }
-
-    maven {
-        url 'https://jitpack.io'
-        content {
-            includeGroup "com.github.rtyley"
-        }
-    }
-
-
-    maven {
-        url = "https://maven.bawnorton.com/releases"
-    }
-
-    repositories {
-        maven { url = 'https://maven.minecraftforge.net/' }
-    }
-
+    maven { url = "https://maven.bawnorton.com/releases" }
+    maven { url = 'https://maven.minecraftforge.net/' }
     maven {
         name = "Curios"
         url = uri("https://maven.theillusivec4.top/")
     }
     maven { url = "https://maven.createmod.net" } // Create
+    maven { url "https://maven.ithundxr.dev/snapshots" } // Registrate
     maven {
         name = "Fuzs Mod Resources"
         url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
     }
     maven {
-        name = "Modrinth"
-        url = "https://api.modrinth.com/maven"
+        name = "Iron's Maven - Release" // Iron's Spell n Spellbooks
+        url = "https://code.redspace.io/releases"
+    }
+    maven {
+        name "KosmX's maven" // Player Animator
+        url 'https://maven.kosmx.dev/'
     }
 }
 
 boolean vanillin = false // 香兰素
 boolean observable = false // 可视性能侦测
-boolean ftb = true
-boolean ipn = true
+boolean ftb = false // feed the beast
+boolean ipn = false // 一键背包整理Next
+boolean mmmmmmmmmmmm = false // 试验假人
+boolean supplementaries = false // 锦致装饰
+boolean lootBeams = false // 战利品光束
 
 dependencies {
     projectName.forEach { name -> implementation jarJar(project(":" + name)) }
@@ -160,11 +148,11 @@ dependencies {
     implementation "top.theillusivec4.curios:curios-neoforge:${curios_version}"
     implementation jarJar('com.github.glitchfiend:TerraBlender-neoforge:' + minecraft_version + '-' + terrablender_version)
 
-    compileOnly(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-common:0.2.0"))
-    implementation(jarJar(group: 'com.github.bawnorton.mixinsquared', name: 'mixinsquared-neoforge', version: '[0.2.0,)'))
+    compileOnly(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-common:0.3.3"))
+    implementation(jarJar(group: 'com.github.bawnorton.mixinsquared', name: 'mixinsquared-neoforge', version: '[0.3.3,)'))
 
-    implementation(jarJar('cn.6tail:lunar:1.4.0')) // 农历
-    additionalRuntimeClasspath 'cn.6tail:lunar:1.4.0'
+    implementation(files('libs/lunar-1.7.4.jar')) // 使用修改了MANIFEST.MF的农历库，以防止有些服务端无法识别
+    jarJar('cn.6tail:lunar:1.7.4')
 
     compileOnly "net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}"
     if (false) {
@@ -210,8 +198,8 @@ dependencies {
     compileOnly "curse.maven:journeymap-32274:6213329"
     //runtimeOnly "curse.maven:journeymap-32274:6213329"
 
-    compileOnly "curse.maven:touhou-little-maid-355044:6302619"
-    //runtimeOnly "curse.maven:touhou-little-maid-355044:6302619"
+    compileOnly "curse.maven:touhou-little-maid-355044:6613831-sources-6613865"
+    runtimeOnly "curse.maven:touhou-little-maid-355044:6613831-sources-6613865"
 
     compileOnly "curse.maven:carry-on-274259:5649344"
     //runtimeOnly "curse.maven:carry-on-274259:5649344"
@@ -225,16 +213,46 @@ dependencies {
     compileOnly "curse.maven:appleskin-248787:5586600"
     runtimeOnly "curse.maven:appleskin-248787:5586600"
 
-    api("dev.latvian.mods:kubejs-neoforge:$kubejs_version")
+    api("dev.latvian.mods:kubejs-neoforge:${kubejs_version}")
     if (false) {
-        runtimeOnly "dev.latvian.mods:kubejs-neoforge:$kubejs_version"
-        runtimeOnly "dev.latvian.mods:rhino:$rhino_version"
+        runtimeOnly "dev.latvian.mods:kubejs-neoforge:${kubejs_version}"
+        runtimeOnly "dev.latvian.mods:rhino:${rhino_version}"
+    }
+
+    compileOnly "maven.modrinth:waystones:zKuhJ4Vo"
+    compileOnly "maven.modrinth:balm:YgPFqhlP"
+    if (true) {
+        runtimeOnly "maven.modrinth:waystones:zKuhJ4Vo"
+        runtimeOnly "maven.modrinth:balm:YgPFqhlP"
+    }
+
+    compileOnly "curse.maven:xaeros-minimap-263420:6184458"
+    compileOnly "curse.maven:xaeros-world-map-317780:6212662"
+    if (true) {
+        runtimeOnly "curse.maven:xaeros-minimap-263420:6184458"
+        runtimeOnly "curse.maven:xaeros-world-map-317780:6212662"
+    }
+
+    compileOnly "maven.modrinth:loot-beams-refork:neoforge-1.21.1-3.2.5"
+    if (lootBeams) {
+        runtimeOnly "maven.modrinth:loot-beams-refork:neoforge-1.21.1-3.2.5"
+        runtimeOnly "maven.modrinth:nirvana-library:neoforge-1.21.1-2.0.13"
+        runtimeOnly "maven.modrinth:common-network:QYLtKTFr"
+        runtimeOnly "maven.modrinth:fzzy-config:0.7.0+1.21+neoforge"
+    }
+
+    compileOnly "com.hollingsworth.ars_nouveau:ars_nouveau-${minecraft_version}:${ars_nouveau_version}"
+    //runtimeOnly "com.hollingsworth.ars_nouveau:ars_nouveau-${minecraft_version}:${ars_nouveau_version}"
+
+    compileOnly "io.redspace:irons_spellbooks:${irons_spells_version}:api"
+    if (false) {
+        runtimeOnly "io.redspace:irons_spellbooks:${irons_spells_version}"
+        runtimeOnly "dev.kosmx.player-anim:player-animation-lib-forge:${player_animator_version}"
     }
 
     /**********************************************************/
 
     runtimeOnly "curse.maven:worldedit-225608:5830452"
-    //runtimeOnly "curse.maven:ars-nouveau-401955:6228434"
     //runtimeOnly "curse.maven:spark-361579:6225208"
     //runtimeOnly "curse.maven:lithium-360438:6290413"
     //runtimeOnly "curse.maven:dynamiclights-reforged-551736:5807536"
@@ -247,6 +265,15 @@ dependencies {
     //runtimeOnly "curse.maven:display-delight-1144296:5964213"
     //runtimeOnly "curse.maven:dynamictrees-252818:6360173"
     //runtimeOnly "maven.modrinth:modernfix:JNjN5X7g"
+    if (true) {
+        runtimeOnly "curse.maven:enchantment-descriptions-250419:6348560"
+        runtimeOnly "curse.maven:bookshelf-228525:6717571"
+        runtimeOnly "curse.maven:prickle-1023259:6546240"
+    }
+    if (false) {
+        runtimeOnly "curse.maven:immersive-portals-for-forge-355440:6013197"
+        runtimeOnly "curse.maven:cloth-config-348521:5729127"
+    }
     if (observable) {
         runtimeOnly "curse.maven:observable-509575:5733591"
     }
@@ -257,10 +284,10 @@ dependencies {
     if (observable || ftb) {
         runtimeOnly "dev.architectury:architectury-neoforge:${architectury_version}"
     }
-    if (observable || ipn) {
+    if (observable || ipn || lootBeams) {
         runtimeOnly "curse.maven:kotlin-for-forge-351264:5978393"
     }
-    if (true) {
+    if (false) {
         runtimeOnly "curse.maven:tweakerge-915857:6387063"
         runtimeOnly "curse.maven:mafglib-910766:6416901"
     }
@@ -268,21 +295,22 @@ dependencies {
         runtimeOnly "curse.maven:vanillin-965702:6446560"
     }
     if (false) {
-        runtimeOnly "curse.maven:xaeros-minimap-263420:6184458"
-        runtimeOnly "curse.maven:xaeros-world-map-317780:6212662"
+        runtimeOnly "maven.modrinth:ae2:juQOuKVW"
+        runtimeOnly "maven.modrinth:guideme:9aIv5HxH"
     }
-    if (false) {
-        runtimeOnly "curse.maven:applied-energistics-2-223794:6237438"
-        runtimeOnly "curse.maven:guideme-1173950:6283609"
-    }
-    if (false) {
+    if (supplementaries) {
         runtimeOnly "curse.maven:supplementaries-412082:6284266"
-        runtimeOnly "curse.maven:selene-499980:6302654"
     }
     if (false) {
         runtimeOnly "curse.maven:oh-the-biomes-weve-gone-1070751:6298837"
         runtimeOnly "curse.maven:corgilib-693313:6002859"
         runtimeOnly "curse.maven:oh-the-trees-youll-grow-962544:6294221"
+    }
+    if (mmmmmmmmmmmm) {
+        runtimeOnly "maven.modrinth:mmmmmmmmmmmm:neoforge_1.21-2.0.8"
+    }
+    if (supplementaries || mmmmmmmmmmmm) {
+        runtimeOnly "maven.modrinth:moonlight:1.21-2.18.18-neoforge"
     }
 }
 
@@ -349,10 +377,11 @@ tasks.register("genVoilaRun") {
     new File(runConfigDir, "GeneratedRunConfig.xml").text = runConfig
 }
 
-def isRunningInIdea() {
-    return System.getProperty("idea.active") == "true"
-}
-
 jar {
     exclude 'org/confluence/mod/common/data/gen'
+}
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allJava
+    archiveClassifier = 'sources'
 }

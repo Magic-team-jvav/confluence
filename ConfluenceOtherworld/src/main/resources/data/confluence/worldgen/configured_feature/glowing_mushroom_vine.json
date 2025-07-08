@@ -1,25 +1,14 @@
 {
-  "type": "minecraft:block_column",
+  "type": "confluence:drooping_block",
   "config": {
-    "direction": "down",
-    "allowed_placement": {
-      "type": "minecraft:true"
-    },
-    "prioritize_tip": true,
-    "layers": [
-      {
-        "height": {
-          "type": "minecraft:uniform",
-          "min_inclusive": 1,
-          "max_inclusive": 10
-        },
-        "provider": {
-          "type": "minecraft:simple_state_provider",
-          "state": {
-            "Name": "confluence:glowing_mushroom_vine"
-          }
-        }
+    "drooping_block": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "confluence:glowing_mushroom_vine"
       }
-    ]
+    },
+    "height": 1,
+    "extra_height": 9,
+    "to_ground": false
   }
 }

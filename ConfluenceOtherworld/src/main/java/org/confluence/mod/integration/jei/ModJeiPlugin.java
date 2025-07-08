@@ -3,27 +3,47 @@ package org.confluence.mod.integration.jei;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
+import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.helpers.IJeiHelpers;
+import mezz.jei.api.recipe.RecipeIngredientRole;
+import mezz.jei.api.recipe.transfer.IRecipeTransferHandlerHelper;
 import mezz.jei.api.registration.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.toasts.ToastComponent;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.block.Blocks;
+import org.confluence.lib.common.recipe.EitherAmountRecipe4x;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.gui.AchievementToast;
 import org.confluence.mod.client.gui.container.*;
 import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.item.ToolItems;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.confluence.terra_curio.integration.jei.ModJeiPlugin.addInput;
 
 @JeiPlugin
 public final class ModJeiPlugin implements IModPlugin {
     public static final ResourceLocation UID = Confluence.asResource("jei_plugin");
     public static final ResourceLocation ARROW_DOWN = Confluence.asResource("textures/gui/arrow_down.png");
     public static final ResourceLocation ARROW_RIGHT = Confluence.asResource("textures/gui/arrow_right.png");
+
+    public static List<ToastComponent.ToastInstance<?>> filterAchievements(List<ToastComponent.ToastInstance<?>> original) {
+        List<ToastComponent.ToastInstance<?>> list = new ArrayList<>(original);
+        list.removeIf(toastInstance -> toastInstance.getToast() instanceof AchievementToast);
+        return list;
+    }
 
     @Override
     public ResourceLocation getPluginUid() {
@@ -46,6 +66,7 @@ public final class ModJeiPlugin implements IModPlugin {
         registration.addRecipeCategories(new SawmillCategory(jeiHelpers));
         registration.addRecipeCategories(new SolidifierCategory(jeiHelpers));
         registration.addRecipeCategories(new HardmodeAnvilCategory(jeiHelpers));
+        registration.addRecipeCategories(new ExtractinatorCategory(jeiHelpers, ExtractinatorCategory.EXTRACTINATOR, FunctionalBlocks.EXTRACTINATOR.get()));
     }
 
     @Override
@@ -66,6 +87,7 @@ public final class ModJeiPlugin implements IModPlugin {
         registration.addRecipes(SawmillCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.SAWMILL_TYPE.get()));
         registration.addRecipes(SolidifierCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.SOLIDIFIER_TYPE.get()));
         registration.addRecipes(HardmodeAnvilCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.HARDMODE_ANVIL_TYPE.get()));
+        registration.addRecipes(ExtractinatorCategory.EXTRACTINATOR, ExtractinatorCategory.collectAll(ModDataMaps.EXTRACTINATOR, level.registryAccess()));
     }
 
     @Override
@@ -75,7 +97,7 @@ public final class ModJeiPlugin implements IModPlugin {
         registration.addRecipeCatalyst(FunctionalBlocks.DEMON_ALTAR.toStack(), AltarCategory.TYPE);
         registration.addRecipeCatalyst(FunctionalBlocks.CRIMSON_ALTAR.toStack(), AltarCategory.TYPE);
         registration.addRecipeCatalyst(FunctionalBlocks.HELLFORGE.toStack(), HellforgeCategory.TYPE, RecipeTypes.BLASTING);
-        registration.addRecipeCatalyst(FunctionalBlocks.HEAVY_WORK_BENCH.toStack(), HeavyWorkBenchCategory.TYPE);
+        registration.addRecipeCatalyst(FunctionalBlocks.HEAVY_WORK_BENCH.toStack(), HeavyWorkBenchCategory.TYPE, RecipeTypes.CRAFTING);
         registration.addRecipeCatalyst(FunctionalBlocks.ALCHEMY_TABLE.toStack(), AlchemyTableCategory.TYPE);
         if (CommonConfigs.FLETCHING_MENU.get()) {
             registration.addRecipeCatalyst(new ItemStack(Blocks.FLETCHING_TABLE), FletchingTableCategory.TYPE);
@@ -87,6 +109,7 @@ public final class ModJeiPlugin implements IModPlugin {
         registration.addRecipeCatalyst(FunctionalBlocks.SOLIDIFIER.toStack(), SolidifierCategory.TYPE);
         registration.addRecipeCatalyst(FunctionalBlocks.MYTHRIL_ANVIL.toStack(), HardmodeAnvilCategory.TYPE);
         registration.addRecipeCatalyst(FunctionalBlocks.ORICHALCUM_ANVIL.toStack(), HardmodeAnvilCategory.TYPE);
+        registration.addRecipeCatalyst(FunctionalBlocks.EXTRACTINATOR.toStack(), ExtractinatorCategory.EXTRACTINATOR);
     }
 
     @Override
@@ -108,7 +131,10 @@ public final class ModJeiPlugin implements IModPlugin {
 
     @Override
     public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
-        // todo
+        IRecipeTransferHandlerHelper transferHelper = registration.getTransferHelper();
+        HeavyWorkBenchCategory.HeavyRecipeTransferHandler heavyRecipeTransferHandler = new HeavyWorkBenchCategory.HeavyRecipeTransferHandler(registration.getJeiHelpers(), transferHelper);
+        registration.addRecipeTransferHandler(heavyRecipeTransferHandler, HeavyWorkBenchCategory.TYPE);
+        registration.addUniversalRecipeTransferHandler(new HeavyWorkBenchCategory.CraftingRecipeTransferHandler(heavyRecipeTransferHandler));
     }
 
     public static void drawArrowDown(GuiGraphics guiGraphics, int x, int y, boolean usable) {
@@ -117,5 +143,33 @@ public final class ModJeiPlugin implements IModPlugin {
 
     public static void drawArrowRight(GuiGraphics guiGraphics, int x, int y, boolean usable) {
         guiGraphics.blit(ARROW_RIGHT, x, y, 0, usable ? 0 : 21, 28, 21, 42, 42);
+    }
+
+    public static void setEitherRecipe4x(IRecipeLayoutBuilder builder, RecipeHolder<? extends EitherAmountRecipe4x<?>> recipe) {
+        recipe.value().either.ifLeft(shaped -> {
+            int width = shaped.width();
+            int height = shaped.height();
+            boolean symmetrical = shaped.symmetrical;
+            for (int i = 0; i < height; i++) {
+                for (int j = 0; j < width; j++) {
+                    if (symmetrical) {
+                        addInput(builder, j * 18 + 6, i * 18 + 5, shaped.ingredients().get(width - j - 1 + i * width));
+                    } else {
+                        addInput(builder, j * 18 + 6, i * 18 + 5, shaped.ingredients().get(j + i * width));
+                    }
+                }
+            }
+        }).ifRight(shapeless -> {
+            builder.setShapeless();
+            int i = 0, j = 0;
+            for (Ingredient ingredient : shapeless) {
+                addInput(builder, j * 18 + 6, i * 18 + 5, ingredient);
+                if (++j >= 4) {
+                    j = 0;
+                    i++;
+                }
+            }
+        });
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 117, 33).addItemStack(recipe.value().getResultItem(null));
     }
 }

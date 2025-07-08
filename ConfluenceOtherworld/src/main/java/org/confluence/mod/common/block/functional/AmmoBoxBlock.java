@@ -7,16 +7,33 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.init.ModEffects;
+
+import java.util.stream.Stream;
 
 public class AmmoBoxBlock extends HorizontalDirectionalBlock {
     public static final MapCodec<AmmoBoxBlock> CODEC = simpleCodec(AmmoBoxBlock::new);
+    private static final VoxelShape SHAPE = Shapes.or(
+            box(2, 0, 2, 14, 6, 14),
+            box(1, 6, 1, 15, 9, 15)
+    );
+
+    @Override
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+        return SHAPE;
+    }
+
 
     public AmmoBoxBlock(Properties properties) {
         super(properties);
@@ -42,8 +59,7 @@ public class AmmoBoxBlock extends HorizontalDirectionalBlock {
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
         if (!level.isClientSide) {
             player.addEffect(new MobEffectInstance(ModEffects.AMMO_BOX, 600 * 20));
-            return InteractionResult.SUCCESS;
         }
-        return InteractionResult.PASS;
+        return InteractionResult.SUCCESS;
     }
 }

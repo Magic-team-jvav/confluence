@@ -29,11 +29,11 @@ public class ShimmerLakeStructure extends Structure {
     private static final ResourceLocation[] feature = new ResourceLocation[]{
             Confluence.asResource("amber_tree"),
             Confluence.asResource("diamond_tree"),
-            Confluence.asResource("emerald_tree"),
+            Confluence.asResource("jade_tree"),
             Confluence.asResource("ruby_tree"),
             Confluence.asResource("sapphire_tree"),
             Confluence.asResource("topaz_tree"),
-            Confluence.asResource("tr_amethyst_tree")
+            Confluence.asResource("amethyst_tree")
     };
 
     protected ShimmerLakeStructure(StructureSettings settings) {

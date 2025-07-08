@@ -1,9 +1,11 @@
 package org.confluence.mod.util;
 
+import com.google.common.collect.Iterables;
 import com.xiaohunao.equipment_benediction.common.hook.HookMapManager;
 import com.xiaohunao.heaven_destiny_moment.common.moment.MomentInstanceManager;
 import com.xiaohunao.terra_moment.common.init.TMMoments;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.util.Tuple;
@@ -26,17 +28,15 @@ import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.common.CoinItem;
-import org.confluence.mod.network.s2c.GamePhasePacketS2C;
-import org.confluence.mod.network.s2c.ManaPacketS2C;
-import org.confluence.mod.network.s2c.StarPhasesPacketS2C;
-import org.confluence.mod.network.s2c.WindSpeedPacketS2C;
+import org.confluence.mod.common.item.potion.ManaPotionItem;
+import org.confluence.mod.network.s2c.*;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.util.TCUtils;
 import org.confluence.terraentity.entity.ai.Boss;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.IntFunction;
-import java.util.function.IntSupplier;
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
 
@@ -73,7 +73,7 @@ public final class PlayerUtils {
         ManaStorage manaStorage = serverPlayer.getData(ModAttachmentTypes.MANA_STORAGE);
 
         int delay = manaStorage.getRegenerateDelay();
-        boolean notMove = Math.abs(serverPlayer.xCloak - serverPlayer.xCloakO) < 1.0E-7;
+        boolean notMove = Math.abs(serverPlayer.walkDist - serverPlayer.walkDistO) < Mth.EPSILON;
         if (delay > 0) {
             if (manaStorage.isArcaneCrystalUsed()) delay = (int) ((float) delay * (notMove ? 0.975F : 0.95F));
             if (delay > 20 && serverPlayer.hasEffect(ModEffects.MANA_REGENERATION)) delay = 20;
@@ -83,30 +83,41 @@ public final class PlayerUtils {
             return;
         }
 
-        IntSupplier receive = () -> {
+        FloatSupplier receive = () -> {
             // 1.0F / 7.0F = 0.14285715F
             float a = manaStorage.getMaxMana() * 0.14285715F + (manaStorage.isFastManaRegeneration() ? 25 : 0) + 1;
-            float b = manaStorage.getCurrentMana() * 0.8F / manaStorage.getMaxMana() + 0.2F;
             if (notMove) a += manaStorage.getMaxMana() * 0.5F;
-            return Math.max(Math.round(a * b * 0.0115F), 1);
+            float b = manaStorage.getCurrentMana() * 0.8F / manaStorage.getMaxMana() + 0.2F;
+            return a * b * 0.0115F * EnchantmentUtils.processManaRegeneration(serverPlayer);
         };
 
         if (manaStorage.receiveMana(receive)) syncMana2Client(serverPlayer, manaStorage);
     }
 
-    public static boolean extractMana(ServerPlayer serverPlayer, ItemStack itemStack, IntSupplier sup) {
+    public static boolean extractMana(ServerPlayer serverPlayer, ItemStack itemStack, FloatSupplier sup) {
         if (serverPlayer.isCreative()) return true;
-        IntSupplier posted = HookMapManager.postHooks(ModHookTypes.MANA_CONSUME.get(), (owner, hook, original) -> hook.onManaConsume(owner, itemStack, original), serverPlayer, sup);
-        ManaStorage manaStorage = serverPlayer.getData(ModAttachmentTypes.MANA_STORAGE);
-        if (manaStorage.extractMana(posted, serverPlayer)) {
-            manaStorage.setRegenerateDelay(Mth.ceil(0.7F * ((1 - (float) manaStorage.getCurrentMana() / manaStorage.getMaxMana()) * 240 + 45)));
+        return extractAndDelayAndSync(
+                serverPlayer.getData(ModAttachmentTypes.MANA_STORAGE),
+                HookMapManager.postHooks(
+                        ModHookTypes.MANA_CONSUME.get(),
+                        (owner, hook, original) -> hook.onManaConsume(owner, itemStack, original),
+                        serverPlayer,
+                        () -> sup.getAsFloat() * EnchantmentUtils.processEfficientMagic(serverPlayer)
+                ),
+                serverPlayer
+        );
+    }
+
+    public static boolean extractAndDelayAndSync(ManaStorage manaStorage, FloatSupplier sup, ServerPlayer serverPlayer) {
+        if (manaStorage.extractMana(sup, serverPlayer)) {
+            manaStorage.setRegenerateDelay();
             syncMana2Client(serverPlayer, manaStorage);
             return true;
         }
         return false;
     }
 
-    public static void receiveMana(ServerPlayer serverPlayer, IntSupplier sup) {
+    public static void receiveMana(ServerPlayer serverPlayer, FloatSupplier sup) {
         ManaStorage manaStorage = serverPlayer.getData(ModAttachmentTypes.MANA_STORAGE);
         if (manaStorage.receiveMana(sup)) syncMana2Client(serverPlayer, manaStorage);
     }
@@ -118,6 +129,7 @@ public final class PlayerUtils {
             StarPhasesPacketS2C.sendToClient(serverPlayer, data.getStarPhases());
         }
         GamePhasePacketS2C.sendToClient(serverPlayer, KillBoard.INSTANCE.getGamePhase());
+        MeteoriteLocationPacketS2C.sendToAll(data.getMeteoriteLocation(), 0);
     }
 
     public static float getFishingPower(ServerPlayer player) {
@@ -190,18 +202,8 @@ public final class PlayerUtils {
     }
 
     public static int[] getCoins(Player player) {
-        ExtraInventory extraInventory = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
         int[] coins = new int[SIZE_COINS];
-        for (int i = 0; i < SIZE_COINS; i++) {
-            ItemStack stack = extraInventory.getCoins(i);
-            if (!stack.isEmpty() && stack.is(ModTags.Items.COINS)) {
-                int index = COIN_2_INDEX.applyAsInt(stack.getItem());
-                if (index != -1) {
-                    coins[index] += stack.getCount();
-                }
-            }
-        }
-        for (ItemStack stack : player.getInventory().items) {
+        for (ItemStack stack : Iterables.concat(player.getInventory().items, player.getData(ModAttachmentTypes.PIGGY_BANK).getItems(), player.getData(ModAttachmentTypes.EXTRA_INVENTORY).getCoins())) {
             if (!stack.isEmpty() && stack.is(ModTags.Items.COINS)) {
                 int index = COIN_2_INDEX.applyAsInt(stack.getItem());
                 if (index != -1) {
@@ -228,15 +230,17 @@ public final class PlayerUtils {
     public static boolean tryCostMoney(long have, Player player, long cost) {
         if (have < cost) return false;
 
-        for (ItemStack itemStack : player.getInventory().items) {
+        List<ItemStack> stacks = new ArrayList<>(player.getInventory().items);
+        stacks.addAll(player.getData(ModAttachmentTypes.PIGGY_BANK).getItems());
+        for (ItemStack itemStack : stacks) {
             if (!itemStack.isEmpty() && itemStack.is(ModTags.Items.COINS)) {
                 itemStack.setCount(0);
             }
         }
 
         ExtraInventory extraInventory = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
-        for (int i = 0; i < SIZE_COINS; i++) {
-            extraInventory.getCoins(i).setCount(0);
+        for (int i = COINS_START; i < COINS_START + SIZE_COINS; i++) {
+            extraInventory.setItem(i, ItemStack.EMPTY);
         }
         int[] coins = decodeCoin(have - cost);
 
@@ -312,6 +316,9 @@ public final class PlayerUtils {
         }
     }
 
+    /**
+     * @see PlayerDeathInfoPacketS2C#replaceCombatKillPacket(ServerPlayer, Component)
+     */
     public static void dropMoney(Player player) {
         long money = getMoney(player);
         long drops;
@@ -347,5 +354,26 @@ public final class PlayerUtils {
         }
         if (min == max) return min;
         return player.getRandom().nextInt(Math.min(min, max), Math.max(min, max));
+    }
+
+    /**
+     * @return true表示魔力值不够
+     */
+    public static boolean applyAutoGetMana(ServerPlayer serverPlayer, float currentMana, float extract) {
+        if (currentMana < extract) {
+            if (!TCUtils.hasAccessoriesType(serverPlayer, AccessoryItems.AUTO$GET$MANA)) return true;
+            ItemStack toUse = null;
+            for (ItemStack itemStack : serverPlayer.getInventory().items) {
+                if (itemStack.getItem() instanceof ManaPotionItem manaPotion) {
+                    int amount = manaPotion.getAmount();
+                    if (currentMana + amount < extract) continue;
+                    if (toUse == null || amount < ((ManaPotionItem) toUse.getItem()).getAmount()) toUse = itemStack;
+                    if (amount == 50) break;
+                }
+            }
+            if (toUse == null) return true;
+            toUse.finishUsingItem(serverPlayer.level(), serverPlayer);
+        }
+        return false;
     }
 }

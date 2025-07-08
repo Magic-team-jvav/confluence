@@ -20,7 +20,6 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipBlockItem;
 import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.block.common.BiomeChestBlock;
 import org.confluence.mod.common.block.common.EnchantedFragileBricksBlock;
 import org.confluence.mod.common.block.functional.*;
 import org.confluence.mod.common.block.functional.crafting.*;
@@ -31,7 +30,6 @@ import org.confluence.mod.common.entity.projectile.boulder.ExplodeBoulderEntity;
 import org.confluence.mod.common.entity.projectile.boulder.FollowerBoulderEntity;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.init.item.ModItems;
-import org.confluence.mod.common.init.item.ToolItems;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,15 +42,6 @@ public class FunctionalBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Confluence.MODID);
     static List<DeferredBlock<? extends Block>> MECHANICAL_BLOCKS = new ArrayList<>();
 
-    public static final DeferredBlock<Block> ANDESITE_CASING = registerWithItem("andesite_casing", () -> new Block(BlockBehaviour.Properties.of()));
-
-    public static final DeferredBlock<BiomeChestBlock> JUNGLE_CHEST = registerWithItem("jungle_chest", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.JUNGLE_KEY)));
-    public static final DeferredBlock<BiomeChestBlock> CORRUPTION_CHEST = registerWithItem("corruption_chest", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.CORRUPTION_KEY)));
-    public static final DeferredBlock<BiomeChestBlock> CRIMSON_CHEST = registerWithItem("crimson_chest", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.CRIMSON_KEY)));
-    public static final DeferredBlock<BiomeChestBlock> HALLOWED_CHEST = registerWithItem("hallowed_chest", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.HALLOWED_KEY)));
-    public static final DeferredBlock<BiomeChestBlock> ICE_CHEST = registerWithItem("ice_chest", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.FROZEN_KEY)));
-    public static final DeferredBlock<BiomeChestBlock> DESERT_CHEST = registerWithItem("desert_chest", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.DESERT_KEY)));
-    public static final Supplier<BlockEntityType<BiomeChestBlock.Entity>> BIOME_CHEST_ENTITY = BLOCK_ENTITIES.register("biome_chest_entity", () -> BlockEntityType.Builder.of(BiomeChestBlock.Entity::new, JUNGLE_CHEST.get(), CORRUPTION_CHEST.get(), CRIMSON_CHEST.get(), HALLOWED_CHEST.get(), ICE_CHEST.get(), DESERT_CHEST.get()).build(DSL.remainderType()));
     public static final DeferredBlock<ExtractinatorBlock> EXTRACTINATOR = registerWithItem("extractinator", () -> new ExtractinatorBlock(BlockBehaviour.Properties.of().strength(2.2F, 5.0F).requiresCorrectToolForDrops()), ExtractinatorBlock.Item::new);
     public static final Supplier<BlockEntityType<ExtractinatorBlock.Entity>> EXTRACTINATOR_ENTITY = BLOCK_ENTITIES.register("extractinator_entity", () -> BlockEntityType.Builder.of(ExtractinatorBlock.Entity::new, EXTRACTINATOR.get()).build(DSL.remainderType()));
     public static final DeferredBlock<AltarBlock> DEMON_ALTAR = registerWithItem("demon_altar", () -> new AltarBlock(BlockBehaviour.Properties.of().strength(3.0F, 18000.0F).lightLevel(state -> 5), AltarBlock.Variant.DEMON), AltarBlock.Item::new);
@@ -62,7 +51,7 @@ public class FunctionalBlocks {
     public static final Supplier<BlockEntityType<SkyMillBlock.Entity>> SKY_MILL_ENTITY = BLOCK_ENTITIES.register("sky_mill_entity", () -> BlockEntityType.Builder.of(SkyMillBlock.Entity::new, SKY_MILL.get()).build(DSL.remainderType()));
     public static final DeferredBlock<HeavyWorkBenchBlock> HEAVY_WORK_BENCH = registerWithItem("heavy_work_bench", () -> new HeavyWorkBenchBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_BRICKS)), block -> new TooltipBlockItem(block, new Item.Properties(), ModRarity.WHITE, "tooltip.item.confluence.heavy_work_bench.0"));
     public static final DeferredBlock<SawmillBlock> SAWMILL = registerWithItem("sawmill", () -> new SawmillBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_WOOD)), block -> new TooltipBlockItem(block, new Item.Properties(), ModRarity.WHITE, "tooltip.item.confluence.sawmill.0"));
-    public static final DeferredBlock<HellforgeBlock> HELLFORGE = registerWithItem("hellforge", () -> new HellforgeBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MAGMA_BLOCK).lightLevel(state -> state.getValue(BlockStateProperties.LIT) ? 15 : 7)));
+    public static final DeferredBlock<HellforgeBlock> HELLFORGE = registerWithItem("hellforge", () -> new HellforgeBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MAGMA_BLOCK).lightLevel(state -> state.getValue(BlockStateProperties.LIT) ? 15 : 7)), block -> new TooltipBlockItem(block, new Item.Properties(), ModRarity.WHITE, "tooltip.item.confluence.hellforge.0"));
     public static final Supplier<BlockEntityType<HellforgeBlock.Entity>> HELLFORGE_ENTITY = BLOCK_ENTITIES.register("hellforge_entity", () -> BlockEntityType.Builder.of(HellforgeBlock.Entity::new, HELLFORGE.get()).build(DSL.remainderType()));
     public static final DeferredBlock<CookingPotBlock> COOKING_POT = registerWithItem("cooking_pot", () -> new CookingPotBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CAULDRON)), block -> new CookingPotBlock.Item(block, new Item.Properties()));
     public static final Supplier<BlockEntityType<CookingPotBlock.Entity>> COOKING_POT_ENTITY = BLOCK_ENTITIES.register("cooking_pot_entity", () -> BlockEntityType.Builder.of(CookingPotBlock.Entity::new, COOKING_POT.get()).build(DSL.remainderType()));
@@ -81,6 +70,7 @@ public class FunctionalBlocks {
     public static final DeferredBlock<SharpeningStationBlock> SHARPENING_STATION = registerWithItem("sharpening_station", () -> new SharpeningStationBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STONECUTTER)), block -> new TooltipBlockItem(block, new Item.Properties(), ModRarity.BLUE, "tooltip.item.confluence.sharpening_station.0"));
     public static final DeferredBlock<AmmoBoxBlock> AMMO_BOX = registerWithItem("ammo_box", () -> new AmmoBoxBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CHEST)), block -> new TooltipBlockItem(block, new Item.Properties(), ModRarity.LIGHT_PURPLE, "tooltip.item.confluence.ammo_box.0"));
     public static final DeferredBlock<BewitchingTableBlock> BEWITCHING_TABLE = registerWithItem("bewitching_table", () -> new BewitchingTableBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ENCHANTING_TABLE).lightLevel(state -> 0)), block -> new TooltipBlockItem(block, new Item.Properties(), ModRarity.BLUE, "tooltip.item.confluence.bewitching_table.0"));
+    public static final Supplier<BlockEntityType<BewitchingTableBlock.Entity>> BEWITCHING_TABLE_ENTITY = BLOCK_ENTITIES.register("bewitching_table_entity", () -> BlockEntityType.Builder.of(BewitchingTableBlock.Entity::new, BEWITCHING_TABLE.get()).build(DSL.remainderType()));
     public static final DeferredBlock<KegBlock> KEG = registerWithItem("keg", () -> new KegBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BARREL)), block -> new TooltipBlockItem(block, new Item.Properties(), ModRarity.WHITE, "tooltip.item.confluence.keg.0"));
     public static final DeferredBlock<CrystalBallBlock> CRYSTAL_BALL = registerWithItem("crystal_ball", () -> new CrystalBallBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BEACON)), block -> new BlockItem(block, new Item.Properties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.ORANGE)));
     public static final DeferredBlock<HardmodeAnvilBlock> MYTHRIL_ANVIL = registerWithItem("mythril_anvil", () -> new HardmodeAnvilBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ANVIL)), block -> new TooltipBlockItem(block, new Item.Properties(), ModRarity.ORANGE, "tooltip.item.confluence.hardmode_anvil.0"));
@@ -88,9 +78,9 @@ public class FunctionalBlocks {
     public static final DeferredBlock<ChlorophyteExtractinatorBlock> CHLOROPHYTE_EXTRACTINATOR = registerWithItem("chlorophyte_extractinator", () -> new ChlorophyteExtractinatorBlock(BlockBehaviour.Properties.of().strength(4.4F, 10.0F).requiresCorrectToolForDrops()), block -> new TooltipBlockItem(block, new Item.Properties(), ModRarity.LIME, TooltipItem.getTooltipsFromString("chlorophyte_extractinator", 3, ChatFormatting.GRAY)));
     public static final DeferredBlock<SingleItemStackSwapperBlock> BLEND_O_MATIC = registerWithItem("blend_o_matic", () -> new SingleItemStackSwapperBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CAULDRON), 1, itemStack -> itemStack.is(MaterialItems.RAW_ASPHALT) ? DecorativeBlocks.ASPHALT_BLOCK.toStack() : ItemStack.EMPTY), block -> new TooltipBlockItem(block, new Item.Properties(), ModRarity.WHITE, "tooltip.item.confluence.blend_o_matic.0"));
     public static final DeferredBlock<SingleItemStackSwapperBlock> MEAT_GRINDER = registerWithItem("meat_grinder", () -> new SingleItemStackSwapperBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CAULDRON), 2, itemStack -> {
-        if (itemStack.is(NatureBlocks.TR_CRIMSON_COBBLESTONE.asItem())) {
+        if (itemStack.is(NatureBlocks.COBBLED_CRIMSTONE.asItem())) {
             return DecorativeBlocks.FLESH_BLOCK.toStack();
-        } else if (itemStack.is(NatureBlocks.EBONY_COBBLESTONE.asItem())) {
+        } else if (itemStack.is(NatureBlocks.COBBLED_EBONSTONE.asItem())) {
             return DecorativeBlocks.LESION_BLOCK.toStack();
         }
         return ItemStack.EMPTY;
@@ -113,9 +103,9 @@ public class FunctionalBlocks {
     public static final DeferredBlock<FragileBlock> FRAGILE_BLUE_BRICKS = registerWithItem("fragile_blue_bricks", () -> new FragileBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS), () -> DecorativeBlocks.BLUE_BRICKS.get().defaultBlockState()));
     public static final DeferredBlock<FragileBlock> FRAGILE_GREEN_BRICKS = registerWithItem("fragile_green_bricks", () -> new FragileBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS), () -> DecorativeBlocks.GREEN_BRICKS.get().defaultBlockState()));
     public static final DeferredBlock<FragileBlock> FRAGILE_PINK_BRICKS = registerWithItem("fragile_pink_bricks", () -> new FragileBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS), () -> DecorativeBlocks.PINK_BRICKS.get().defaultBlockState()));
-    public static final DeferredBlock<EnchantedFragileBricksBlock> ENCHANTED_FRAGILE_BLUE_BRICKS = registerWithItem("enchanted_fragile_blue_bricks", () -> new EnchantedFragileBricksBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS), () -> DecorativeBlocks.BLUE_BRICKS.get().defaultBlockState()));
-    public static final DeferredBlock<EnchantedFragileBricksBlock> ENCHANTED_FRAGILE_GREEN_BRICKS = registerWithItem("enchanted_fragile_green_bricks", () -> new EnchantedFragileBricksBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS), () -> DecorativeBlocks.GREEN_BRICKS.get().defaultBlockState()));
-    public static final DeferredBlock<EnchantedFragileBricksBlock> ENCHANTED_FRAGILE_PINK_BRICKS = registerWithItem("enchanted_fragile_pink_bricks", () -> new EnchantedFragileBricksBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS), () -> DecorativeBlocks.PINK_BRICKS.get().defaultBlockState()));
+    public static final DeferredBlock<EnchantedFragileBricksBlock> ENCHANTED_FRAGILE_BLUE_BRICKS = registerWithItem("enchanted_fragile_blue_bricks", () -> new EnchantedFragileBricksBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS), () -> DecorativeBlocks.ENCHANTED_BLUE_BRICKS.get().defaultBlockState()));
+    public static final DeferredBlock<EnchantedFragileBricksBlock> ENCHANTED_FRAGILE_GREEN_BRICKS = registerWithItem("enchanted_fragile_green_bricks", () -> new EnchantedFragileBricksBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS), () -> DecorativeBlocks.ENCHANTED_GREEN_BRICKS.get().defaultBlockState()));
+    public static final DeferredBlock<EnchantedFragileBricksBlock> ENCHANTED_FRAGILE_PINK_BRICKS = registerWithItem("enchanted_fragile_pink_bricks", () -> new EnchantedFragileBricksBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS), () -> DecorativeBlocks.ENCHANTED_PINK_BRICKS.get().defaultBlockState()));
     public static final DeferredBlock<SculkTrapBlock> SCULK_TRAP = registerWithItem("sculk_trap", () -> new SculkTrapBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SCULK_SENSOR)));
 
     public static final DeferredBlock<SillyBalloonMachineBlock> SILLY_BALLOON_MACHINE = registerWithItem("silly_balloon_machine", () -> new SillyBalloonMachineBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)));
@@ -146,7 +136,7 @@ public class FunctionalBlocks {
     public static final DeferredBlock<BoulderBlock> ROLLING_CACTUS_BOULDER = registerWithEntity("rolling_cactus_boulder", RollingCactusBoulderBlock::new);
     public static final DeferredBlock<DetonatorBlock> DETONATOR = registerWithEntity("detonator", () -> new DetonatorBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_TRAPDOOR)));
     public static final DeferredBlock<MechanicalFragileBlock> MECHANICAL_FRAGILE_SANDSTONE = registerWithEntity("mechanical_fragile_sandstone", () -> new MechanicalFragileBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SANDSTONE), Blocks.SANDSTONE::defaultBlockState));
-    public static final DeferredBlock<MechanicalFragileBlock> MECHANICAL_FRAGILE_OBSIDIAN_BRICKS = registerWithEntity("mechanical_fragile_obsidian_bricks", () -> new MechanicalFragileBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BRICKS), DecorativeBlocks.TR_OBSIDIAN_BRICKS.get()::defaultBlockState));
+    public static final DeferredBlock<MechanicalFragileBlock> MECHANICAL_FRAGILE_OBSIDIAN_BRICKS = registerWithEntity("mechanical_fragile_obsidian_bricks", () -> new MechanicalFragileBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BRICKS), DecorativeBlocks.OBSIDIAN_BRICKS.get()::defaultBlockState));
     public static final DeferredBlock<LandMineBlock> LAND_MINE = registerWithEntity("land_mine", () -> new LandMineBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.TNT)));
     public static final DeferredBlock<SuperDartTrapBlock> SUPER_DART_TRAP = registerWithEntity("super_dart_trap", () -> new SuperDartTrapBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).requiresCorrectToolForDrops().strength(100.0F, ModBlocks.getObsidianBasedExplosionResistance(1000.0F))));
     public static final DeferredBlock<FlameTrapBlock> FLAME_TRAP = registerWithEntity("flame_trap", () -> new FlameTrapBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).requiresCorrectToolForDrops().strength(100.0F, ModBlocks.getObsidianBasedExplosionResistance(1000.0F))));
@@ -165,18 +155,21 @@ public class FunctionalBlocks {
 
     public static final DeferredBlock<TreeHolesBlock> TREE_HOLES_BLOCK = registerWithItem("tree_holes", () -> new TreeHolesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BARREL)));
     public static final Supplier<BlockEntityType<TreeHolesBlock.Entity>> TREE_HOLES_ENTITY = BLOCK_ENTITIES.register("tree_holes", () -> BlockEntityType.Builder.of(TreeHolesBlock.Entity::new, TREE_HOLES_BLOCK.get()).build(DSL.remainderType()));
-    public static final DeferredBlock<MagicMailBox>  MAGIC_MAIL_BOX = registerWithItem("magic_mail_box", MagicMailBox::new);
+    public static final DeferredBlock<MagicMailBox> MAGIC_MAIL_BOX = registerWithItem("magic_mail_box", MagicMailBox::new);
 
-    private static <B extends Block> DeferredBlock<B> registerWithItem(String id, Supplier<B> block) {
-        DeferredBlock<B> object = BLOCKS.register(id, block);
-        ModItems.BLOCK_ITEMS.registerSimpleBlockItem(object);
-        return object;
+    public static final DeferredBlock<LockBlock> LOCK_BLOCK = registerWithItem("lock_block", () -> new LockBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BRICKS)));
+    public static final Supplier<BlockEntityType<LockBlock.Entity>> LOCK_BLOCK_ENTITY = BLOCK_ENTITIES.register("lock_block_entity", () -> BlockEntityType.Builder.of(LockBlock.Entity::new, LOCK_BLOCK.get()).build(DSL.remainderType()));
+
+    private static <B extends Block> DeferredBlock<B> registerWithItem(String id, Supplier<B> supplier) {
+        DeferredBlock<B> block = BLOCKS.register(id, supplier);
+        ModItems.BLOCK_ITEMS.registerSimpleBlockItem(block);
+        return block;
     }
 
-    private static <B extends Block> DeferredBlock<B> registerWithItem(String id, Supplier<B> block, Function<B, BlockItem> function) {
-        DeferredBlock<B> object = BLOCKS.register(id, block);
-        ModItems.BLOCK_ITEMS.register(id, () -> function.apply(object.get()));
-        return object;
+    private static <B extends Block> DeferredBlock<B> registerWithItem(String id, Supplier<B> supplier, Function<B, BlockItem> function) {
+        DeferredBlock<B> block = BLOCKS.register(id, supplier);
+        ModItems.BLOCK_ITEMS.register(id, () -> function.apply(block.get()));
+        return block;
     }
 
     static <B extends Block & EntityBlock & INetworkBlock> DeferredBlock<B> registerWithEntity(String id, Supplier<B> supplier) {

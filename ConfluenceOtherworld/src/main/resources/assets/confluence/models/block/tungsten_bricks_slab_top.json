@@ -1,0 +1,9 @@
+{
+  "parent": "block/slab_top",
+  "textures": {
+    "bottom": "confluence:block/tungsten_bricks",
+    "top": "confluence:block/tungsten_bricks",
+    "side": "confluence:block/tungsten_bricks"
+  },
+  "render_type": "solid"
+}

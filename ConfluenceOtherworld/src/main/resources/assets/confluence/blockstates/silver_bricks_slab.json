@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "confluence:block/silver_bricks_slab"
+    },
+    "type=top": {
+      "model": "confluence:block/silver_bricks_slab_top"
+    },
+    "type=double": {
+      "model": "confluence:block/silver_bricks_slab_full"
+    }
+  }
+}

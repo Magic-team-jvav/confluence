@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "": {
+      "model": "confluence:block/packed_dirt",
+      "uvlock": false
+    }
+  }
+}

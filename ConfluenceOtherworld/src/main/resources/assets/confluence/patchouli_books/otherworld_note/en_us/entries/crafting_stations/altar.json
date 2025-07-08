@@ -9,9 +9,23 @@
             "text": "patchouli.confluence.otherworld_note.crafting_stations.altar.0"
         },
         {
-            "type": "patchouli:text",
-            "text": "patchouli.confluence.otherworld_note.crafting_stations.altar.1",
-            "title": "patchouli.confluence.otherworld_note.how_to_use"
+            "type": "confluence:altar",
+            "title": "patchouli.confluence.otherworld_note.how_to_use",
+            "input0": "confluence:blood_butcherer,confluence:lights_bane",
+            "input1": "confluence:muramasa",
+            "input2": "confluence:blade_of_grass",
+            "input3": "confluence:volcano",
+            "result": "confluence:nights_edge",
+            "text": "patchouli.confluence.otherworld_note.crafting_stations.altar.1"
+        },
+        {
+            "type": "confluence:altar",
+            "title": "patchouli.confluence.otherworld_note.how_to_use",
+            "input0e": "confluence:demonite_ingot#4,confluence:crimtane_ingot#4",
+            "input1e": "minecraft:compass",
+            "input2e": "confluence:falling_star#4",
+            "result": "confluence:meteor_compass",
+            "text": "patchouli.confluence.otherworld_note.crafting_stations.altar.1"
         },
         {
             "type": "patchouli:image",

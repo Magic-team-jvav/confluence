@@ -1,8 +1,0 @@
-{
-    "parent": "block/chain",
-    "render_type": "cutout",
-    "textures": {
-        "particle": "confluence:block/chain/emerald_chain",
-        "all": "confluence:block/chain/emerald_chain"
-    }
-}

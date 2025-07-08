@@ -1,0 +1,128 @@
+{
+  "components": [
+    {
+      "type": "patchouli:header",
+      "text": "#title",
+      "x": -1,
+      "y": -3
+    },
+    {
+      "type": "patchouli:image",
+      "image": "confluence:textures/gui/heavy_work_bench_guide.png",
+      "x": -2,
+      "y": 5,
+      "width": 120,
+      "height": 82,
+      "texture_width": 120,
+      "texture_height": 82
+    },
+    {
+      "type": "patchouli:item",
+      "item": "#input00",
+      "x": 3,
+      "y": 10
+    },
+    {
+      "type": "patchouli:item",
+      "item": "#input01",
+      "x": 22,
+      "y": 10
+    },
+    {
+      "type": "patchouli:item",
+      "item": "#input02",
+      "x": 41,
+      "y": 10
+    },
+    {
+      "type": "patchouli:item",
+      "item": "#input03",
+      "x": 60,
+      "y": 10
+    },
+    {
+      "type": "patchouli:item",
+      "item": "#input10",
+      "x": 3,
+      "y": 29
+    },
+    {
+      "type": "patchouli:item",
+      "item": "#input11",
+      "x": 22,
+      "y": 29
+    },
+    {
+      "type": "patchouli:item",
+      "item": "#input12",
+      "x": 41,
+      "y": 29
+    },
+    {
+      "type": "patchouli:item",
+      "item": "#input13",
+      "x": 60,
+      "y": 29
+    },
+    {
+      "type": "patchouli:item",
+      "item": "#input20",
+      "x": 3,
+      "y": 48
+    },
+    {
+      "type": "patchouli:item",
+      "item": "#input21",
+      "x": 22,
+      "y": 48
+    },
+    {
+      "type": "patchouli:item",
+      "item": "#input22",
+      "x": 41,
+      "y": 48
+    },
+    {
+      "type": "patchouli:item",
+      "item": "#input23",
+      "x": 60,
+      "y": 48
+    },
+    {
+      "type": "patchouli:item",
+      "item": "#input30",
+      "x": 3,
+      "y": 67
+    },
+    {
+      "type": "patchouli:item",
+      "item": "#input31",
+      "x": 22,
+      "y": 67
+    },
+    {
+      "type": "patchouli:item",
+      "item": "#input32",
+      "x": 41,
+      "y": 67
+    },
+    {
+      "type": "patchouli:item",
+      "item": "#input33",
+      "x": 60,
+      "y": 67
+    },
+    {
+      "type": "patchouli:item",
+      "item": "#result",
+      "x": 98,
+      "y": 39
+    },
+    {
+      "type": "patchouli:text",
+      "text": "#text",
+      "x": 0,
+      "y": 87
+    }
+  ]
+}

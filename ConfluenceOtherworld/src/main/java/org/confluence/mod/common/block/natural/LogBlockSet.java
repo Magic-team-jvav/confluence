@@ -309,7 +309,7 @@ public class LogBlockSet {
     }
 
     public static void setFlammable() {
-        FireBlock fireblock = (FireBlock)Blocks.FIRE;
+        FireBlock fireblock = (FireBlock) Blocks.FIRE;
         for (LogBlockSet logBlocks : LOG_BLOCK_SETS) {
             Builder builder1 = logBlocks.builder;
             fireblock.setFlammable(builder1.PLANKS.get(), 5, 20);

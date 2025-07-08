@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/cube_all",
-  "textures": {
-    "all": "confluence:block/red_hardened_sand_block"
-  }
-}

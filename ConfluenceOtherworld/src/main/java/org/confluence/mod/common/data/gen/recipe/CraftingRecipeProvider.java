@@ -16,9 +16,9 @@ import net.minecraft.world.level.block.Blocks;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.common.init.block.OreBlocks;
+import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.MaterialItems;
+import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.init.item.PotionItems;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.terraentity.init.TEItems;
@@ -42,8 +42,20 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         compressAndDecompressNine(output, MaterialItems.PLATINUM_INGOT, ModTags.Items.INGOTS_PLATINUM, OreBlocks.PLATINUM_BLOCK, ModTags.Items.PLATINUM_BLOCK);
         compressAndDecompressNine(output, MaterialItems.METEORITE_INGOT, ModTags.Items.INGOTS_METEORITE, OreBlocks.METEORITE_BLOCK, ModTags.Items.METEORITE_BLOCK);
         compressAndDecompressNine(output, MaterialItems.DEMONITE_INGOT, ModTags.Items.INGOTS_DEMONITE, OreBlocks.DEMONITE_BLOCK, ModTags.Items.DEMONITE_BLOCK);
-        compressAndDecompressNine(output, MaterialItems.TR_CRIMSON_INGOT, ModTags.Items.INGOTS_CRIMSON, OreBlocks.TR_CRIMSON_BLOCK, ModTags.Items.CRIMSON_BLOCK);
+        compressAndDecompressNine(output, MaterialItems.CRIMTANE_INGOT, ModTags.Items.INGOTS_CRIMTANE, OreBlocks.CRIMTANE_BLOCK, ModTags.Items.CRIMTANE_BLOCK);
         compressAndDecompressNine(output, MaterialItems.HELLSTONE_INGOT, ModTags.Items.INGOTS_HELLSTONE, OreBlocks.HELLSTONE_BLOCK, ModTags.Items.HELLSTONE_BLOCK);
+
+        compressAndDecompressNine(output, MaterialItems.RUBY, ModTags.Items.GEMS_RUBY, DecorativeBlocks.RUBY_BLOCK, ModTags.Items.RUBY_BLOCK);
+        compressAndDecompressNine(output, MaterialItems.AMBER, ModTags.Items.GEMS_AMBER, DecorativeBlocks.AMBER_BLOCK, ModTags.Items.AMBER_BLOCK);
+        compressAndDecompressNine(output, MaterialItems.TOPAZ, ModTags.Items.GEMS_TOPAZ, DecorativeBlocks.TOPAZ_BLOCK, ModTags.Items.TOPAZ_BLOCK);
+        compressAndDecompressNine(output, MaterialItems.JADE, ModTags.Items.GEMS_JADE, DecorativeBlocks.JADE_BLOCK, ModTags.Items.JADE_BLOCK);
+        compressAndDecompressNine(output, MaterialItems.SAPPHIRE, ModTags.Items.GEMS_SAPPHIRE, DecorativeBlocks.SAPPHIRE_BLOCK, ModTags.Items.SAPPHIRE_BLOCK);
+        compressAndDecompressNine(output, MaterialItems.AMETHYST, ModTags.Items.GEMS_AMETHYST, DecorativeBlocks.AMETHYST_BLOCK, ModTags.Items.AMETHYST_BLOCK);
+
+        compressAndDecompressNine(output, MaterialItems.STURDY_FOSSIL, ModTags.Items.RAW_MATERIALS_STURDY_FOSSIL, OreBlocks.STURDY_FOSSIL_BLOCK, ModTags.Items.STURDY_FOSSIL_BLOCK);
+        compressAndDecompressNine(output, MaterialItems.OPAL, ModTags.Items.RAW_MATERIALS_OPAL, OreBlocks.OPAL_BLOCK, ModTags.Items.OPAL_BLOCK);
+        compressAndDecompressNine(output, MaterialItems.GELSTONE, ModTags.Items.RAW_MATERIALS_GELSTONE, OreBlocks.GELSTONE_BLOCK, ModTags.Items.GELSTONE_BLOCK);
+        compressAndDecompressNine(output, MaterialItems.COLD_CRYSTAL, ModTags.Items.RAW_MATERIALS_COLD_CRYSTAL, OreBlocks.COLD_CRYSTAL_BLOCK, ModTags.Items.COLD_CRYSTAL_BLOCK);
         // 粗矿
         compressAndDecompressNine(output, MaterialItems.RAW_TIN, ModTags.Items.RAW_MATERIALS_TIN, OreBlocks.RAW_TIN_BLOCK, ModTags.Items.RAW_MATERIALS_TIN_BLOCK);
         compressAndDecompressNine(output, MaterialItems.RAW_LEAD, ModTags.Items.RAW_MATERIALS_LEAD, OreBlocks.RAW_LEAD_BLOCK, ModTags.Items.RAW_MATERIALS_LEAD_BLOCK);
@@ -52,11 +64,11 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         compressAndDecompressNine(output, MaterialItems.RAW_PLATINUM, ModTags.Items.RAW_MATERIALS_PLATINUM, OreBlocks.RAW_PLATINUM_BLOCK, ModTags.Items.RAW_MATERIALS_PLATINUM_BLOCK);
         compressAndDecompressNine(output, MaterialItems.RAW_METEORITE, ModTags.Items.RAW_MATERIALS_METEORITE, OreBlocks.RAW_METEORITE_BLOCK, ModTags.Items.RAW_MATERIALS_METEORITE_BLOCK);
         compressAndDecompressNine(output, MaterialItems.RAW_DEMONITE, ModTags.Items.RAW_MATERIALS_DEMONITE, OreBlocks.RAW_DEMONITE_BLOCK, ModTags.Items.RAW_MATERIALS_DEMONITE_BLOCK);
-        compressAndDecompressNine(output, MaterialItems.RAW_TR_CRIMSON, ModTags.Items.RAW_MATERIALS_CRIMSON, OreBlocks.RAW_TR_CRIMSON_BLOCK, ModTags.Items.RAW_MATERIALS_CRIMSON_BLOCK);
+        compressAndDecompressNine(output, MaterialItems.RAW_CRIMTANE, ModTags.Items.RAW_MATERIALS_CRIMTANE, OreBlocks.RAW_CRIMTANE_BLOCK, ModTags.Items.RAW_MATERIALS_CRIMTANE_BLOCK);
         compressAndDecompressNine(output, MaterialItems.RAW_HELLSTONE, ModTags.Items.RAW_MATERIALS_HELLSTONE, OreBlocks.RAW_HELLSTONE_BLOCK, ModTags.Items.RAW_MATERIALS_HELLSTONE_BLOCK);
 
         // 铅砧
-        shaped(output, "", "", ShapedRecipePattern.of(Map.of(
+        shaped(output, ShapedRecipePattern.of(Map.of(
                 'I', Ingredient.of(ModTags.Items.LEAD_BLOCK),
                 'i', Ingredient.of(ModTags.Items.INGOTS_LEAD)
         ), List.of(
@@ -65,7 +77,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 "iii"
         )), FunctionalBlocks.LEAD_ANVIL.toStack());
         // 房屋探测器
-        shaped(output, "", "", ShapedRecipePattern.of(Map.of(
+        shaped(output, ShapedRecipePattern.of(Map.of(
                 'B', Ingredient.of(ItemTags.PLANKS),
                 '/', Ingredient.of(Items.STICK)
         ), List.of(
@@ -74,7 +86,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 "/ /"
         )), TEItems.HOUSE_DETECTOR.toStack());
         // 蛛网
-        shaped(output, "", "", ShapedRecipePattern.of(Map.of(
+        shaped(output, ShapedRecipePattern.of(Map.of(
                 '/', Ingredient.of(Items.STRING)
         ), List.of(
                 "/ /",
@@ -92,7 +104,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 "XSX"
         )), new ItemStack(Items.ACTIVATOR_RAIL, 6));
         // 广播盒
-        shaped(output, "", "", ShapedRecipePattern.of(Map.of(
+        shaped(output, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(ItemTags.SIGNS),
                 'I', Ingredient.of(ModTags.Items.LEAD_AND_IRON),
                 'R', Ingredient.of(Items.REDSTONE)
@@ -116,12 +128,64 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 Ingredient.of(PotionItems.BOTTLE),
                 Ingredient.of(PotionItems.BOTTLE)
         );
+        // 玻璃瓶互换
+        shapeless(output, "", "_from_bottle",
+                new ItemStack(Items.GLASS_BOTTLE),
+                Ingredient.of(PotionItems.BOTTLE)
+        );
+        shapeless(output, "", "_from_glass_bottle",
+                new ItemStack(PotionItems.BOTTLE.get()),
+                Ingredient.of(Items.GLASS_BOTTLE)
+        );
+
+        // 各种片
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(Blocks.SAND)
+        ), List.of(
+                "###"
+        )), NatureBlocks.SAND_LAYER_BLOCK.toStack(6));
+
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(Blocks.RED_SAND)
+        ), List.of(
+                "###"
+        )), NatureBlocks.RED_SAND_LAYER_BLOCK.toStack(6));
+
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(NatureBlocks.EBONSAND)
+        ), List.of(
+                "###"
+        )), NatureBlocks.EBONSAND_LAYER_BLOCK.toStack(6));
+
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(NatureBlocks.CRIMSAND)
+        ), List.of(
+                "###"
+        )), NatureBlocks.CRIMSAND_LAYER_BLOCK.toStack(6));
+
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(NatureBlocks.PEARLSAND)
+        ), List.of(
+                "###"
+        )), NatureBlocks.PEARLSAND_LAYER_BLOCK.toStack(6));
+        // 砂岩箱
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(Blocks.SANDSTONE)
+        ), List.of(
+                "###",
+                "# #",
+                "###"
+        )), ChestBlocks.SANDSTONE_CHEST.toStack());
 
         // 石头及深板岩压力板
-        shaped(output, "", "", ShapedRecipePattern.of(Map.of('#', Ingredient.of(Blocks.STONE)), List.of("##")), new ItemStack(FunctionalBlocks.STONE_PRESSURE_PLATE));
-        shaped(output, "", "", ShapedRecipePattern.of(Map.of('#', Ingredient.of(Blocks.DEEPSLATE)), List.of("##")), new ItemStack(FunctionalBlocks.DEEPSLATE_PRESSURE_PLATE));
+        shaped(output, ShapedRecipePattern.of(Map.of('#', Ingredient.of(Blocks.STONE)), List.of("##")), new ItemStack(FunctionalBlocks.STONE_PRESSURE_PLATE));
+        shaped(output, ShapedRecipePattern.of(Map.of('#', Ingredient.of(Blocks.DEEPSLATE)), List.of("##")), new ItemStack(FunctionalBlocks.DEEPSLATE_PRESSURE_PLATE));
 
-        shapeless(output, "", "", ToolItems.NPC_INVITATION.toStack(), Ingredient.of(Items.PAPER), Ingredient.of(Items.HONEYCOMB, MaterialItems.ROYAL_WAX));
+        shapeless(output, ToolItems.NPC_INVITATION.toStack(), Ingredient.of(Items.PAPER), Ingredient.of(Items.HONEYCOMB, MaterialItems.ROYAL_WAX));
+
+        shapeless(output, ModItems.COPPER_COIN.toStack(100), Ingredient.of(ModItems.SILVER_COIN));
+        shapeless(output, ModItems.SILVER_COIN.toStack(100), Ingredient.of(ModItems.GOLDEN_COIN));
+        shapeless(output, ModItems.GOLDEN_COIN.toStack(100), Ingredient.of(ModItems.PLATINUM_COIN));
     }
 
     protected void shaped(RecipeOutput recipeOutput, String prefix, String suffix, ShapedRecipePattern pattern, ItemStack result) {
@@ -129,8 +193,19 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         recipeOutput.accept(id, new ShapedRecipe("", CraftingBookCategory.MISC, pattern, result, true), null);
     }
 
+    protected void shaped(RecipeOutput recipeOutput, ShapedRecipePattern pattern, ItemStack result) {
+        ResourceLocation id = Confluence.asResource(getItemName(result.getItem()));
+        recipeOutput.accept(id, new ShapedRecipe("", CraftingBookCategory.MISC, pattern, result, true), null);
+    }
+
     protected void shapeless(RecipeOutput recipeOutput, String prefix, String suffix, ItemStack result, Ingredient... ingredients) {
         ResourceLocation id = Confluence.asResource(prefix + getItemName(result.getItem()) + suffix);
+        NonNullList<Ingredient> zingredients = NonNullList.of(Ingredient.EMPTY, ingredients);
+        recipeOutput.accept(id, new ShapelessRecipe("", CraftingBookCategory.MISC, result, zingredients), null);
+    }
+
+    protected void shapeless(RecipeOutput recipeOutput, ItemStack result, Ingredient... ingredients) {
+        ResourceLocation id = Confluence.asResource(getItemName(result.getItem()));
         NonNullList<Ingredient> zingredients = NonNullList.of(Ingredient.EMPTY, ingredients);
         recipeOutput.accept(id, new ShapelessRecipe("", CraftingBookCategory.MISC, result, zingredients), null);
     }

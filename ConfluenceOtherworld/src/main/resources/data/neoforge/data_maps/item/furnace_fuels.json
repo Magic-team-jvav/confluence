@@ -6,10 +6,10 @@
         "confluence:pink_gel": {
             "burn_time": 320
         },
-        "confluence:tr_oak_planks": {
+        "confluence:chiseled_oak_planks": {
             "burn_time": 300
         },
-        "confluence:tr_northland_planks": {
+        "confluence:chiseled_spruce_planks": {
             "burn_time": 300
         },
         "#confluence:wooden_combustibles": {

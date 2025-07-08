@@ -15,9 +15,11 @@
 | [IsekaiInvaded](IsekaiInvaded)               | Dimensional Invasion Event | depends on HeavenDestinyMoment |
 | [TerraFurniture](TerraFurniture)             | Terra's Furniture          | yes                            |
 
-| Official Integrations                                               | Description                  |
-|---------------------------------------------------------------------|------------------------------|
-| [ConfluenceDelight](https://github.com/XiaoHuNao/ConfluenceDelight) | Farmer's Delight integration |
+| Official Integrations                                                               | Description                                                                            |
+|-------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------|
+| [ConfluenceDelight](https://github.com/cooobird/ConfluenceDelight)                  | Farmer's Delight integration                                                           |
+| [ConfluenceMusic](https://github.com/westernat/Confluence-Music)                    | Extra music                                                                            |
+| [ConfluenceDimensionPatch](https://github.com/westernat/Confluence-Dimension-Patch) | Transfer the Confluence Otherworld's modifications to the Overworld to a new dimension |
 
 ## Build the Project
 

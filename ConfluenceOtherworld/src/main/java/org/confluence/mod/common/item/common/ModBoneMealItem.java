@@ -74,8 +74,8 @@ public class ModBoneMealItem extends Item {
                 if (targetState.isAir()) {
                     String blockType = null;
                     if (stack.is(ConsumableItems.BLOODSTAINED_POWDER.get()) &&
-                            (state.is(NatureBlocks.TR_CRIMSON_GRASS_BLOCK) || state.is(NatureBlocks.TR_CRIMSON_JUNGLE_GRASS_BLOCK))) {
-                        blockType = "tr_crimson";
+                            (state.is(NatureBlocks.CRIMSON_GRASS_BLOCK) || state.is(NatureBlocks.CRIMSON_JUNGLE_GRASS_BLOCK))) {
+                        blockType = "crimson";
                     } else if (stack.is(ConsumableItems.ROTTEN_BONE_DUST.get()) &&
                             (state.is(NatureBlocks.CORRUPT_GRASS_BLOCK) || state.is(NatureBlocks.CORRUPT_JUNGLE_GRASS_BLOCK))) {
                         blockType = "corrupt";
@@ -98,18 +98,18 @@ public class ModBoneMealItem extends Item {
         BlockState blockState = Blocks.AIR.defaultBlockState();
         if (random < 90) {
             blockState = switch (blockType) {
-                case "tr_crimson" -> NatureBlocks.TR_CRIMSON_GRASS.get().defaultBlockState();
+                case "crimson" -> NatureBlocks.CRIMSON_GRASS.get().defaultBlockState();
                 case "corrupt" -> NatureBlocks.CORRUPT_GRASS.get().defaultBlockState();
                 default -> blockState;
             };
         } else if (random < 98) {
             blockState = switch (blockType) {
-                case "tr_crimson" -> NatureBlocks.VICIOUS_MUSHROOM.get().defaultBlockState();
+                case "crimson" -> NatureBlocks.VICIOUS_MUSHROOM.get().defaultBlockState();
                 case "corrupt" -> NatureBlocks.VILE_MUSHROOM.get().defaultBlockState();
                 default -> blockState;
             };
         } else {
-            if ("tr_crimson".equals(blockType) || "corrupt".equals(blockType)) {
+            if ("crimson".equals(blockType) || "corrupt".equals(blockType)) {
                 blockState = ModBlocks.DEATHWEED.get().defaultBlockState();
             }
         }

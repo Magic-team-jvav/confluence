@@ -10,7 +10,7 @@
         "c": {
             "type": "confluence_magic_lib:amount_ingredient",
             "ingredient": {
-                "item": "confluence:tr_crimson_ingot"
+                "item": "confluence:crimtane_ingot"
             },
             "count": 2
         },

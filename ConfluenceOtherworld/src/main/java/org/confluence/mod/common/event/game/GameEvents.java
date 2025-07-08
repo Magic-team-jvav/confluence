@@ -25,6 +25,7 @@ import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.lib.common.item.ColoredItem;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.api.event.AdditionalManaEvent;
 import org.confluence.mod.api.event.ShimmerItemTransmutationEvent;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.component.LootComponent;
@@ -37,6 +38,8 @@ import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.init.item.ToolItems;
+import org.confluence.mod.integration.ars_nouveau.ArsNouveauHelper;
+import org.confluence.mod.integration.irons_spell.IronSpellHelper;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.network.s2c.AchievementOffsetSyncPacketS2C;
@@ -171,14 +174,14 @@ public final class GameEvents {
         MinecraftServer currentServer;
         if (event.getTargets() != null && (currentServer = ServerLifecycleHooks.getCurrentServer()) != null) {
             boolean corruption = IMinecraftServer.matchesSecretFlag(currentServer, IWorldOptions.THE_CORRUPTION);
-            boolean crimson = IMinecraftServer.matchesSecretFlag(currentServer, IWorldOptions.TR_CRIMSON);
+            boolean crimson = IMinecraftServer.matchesSecretFlag(currentServer, IWorldOptions.THE_CRIMSON);
             if (corruption != crimson) {
                 List<ItemStack> targets = new ArrayList<>();
                 for (ItemStack target : event.getTargets()) {
-                    if (corruption && target.is(MaterialItems.TR_CRIMSON_INGOT)) {
+                    if (corruption && target.is(MaterialItems.CRIMTANE_INGOT)) {
                         targets.add(MaterialItems.DEMONITE_INGOT.toStack(target.getCount()));
                     } else if (crimson && target.is(MaterialItems.DEMONITE_INGOT)) {
-                        targets.add(MaterialItems.TR_CRIMSON_INGOT.toStack(target.getCount()));
+                        targets.add(MaterialItems.CRIMTANE_INGOT.toStack(target.getCount()));
                     } else {
                         targets.add(target);
                     }
@@ -190,7 +193,7 @@ public final class GameEvents {
 
     @SubscribeEvent
     public static void gun$ShrinkBullet(GunEvent.ShrinkBulletEvent event) {
-        if (event.isCanceled() || event.isInfinity()) return;
+        if (event.isInfinity()) return;
         HookMapManager.postHooks(ModHookTypes.SKIP_AMMO_CONSUME.get(), (owner, hook, original) -> {
             if (hook.shouldSkipConsume(owner, original.getPlayer(), original.getBulletStack())) {
                 original.setCanceled(true);
@@ -202,5 +205,11 @@ public final class GameEvents {
     @SubscribeEvent
     public static void addReloadListener(AddReloadListenerEvent event) {
         event.addListener(AchievementOffsetLoader.getInstance());
+    }
+
+    @SubscribeEvent
+    public static void additionalMana(AdditionalManaEvent event) {
+        ArsNouveauHelper.additionalMana(event);
+        IronSpellHelper.additionalMana(event);
     }
 }

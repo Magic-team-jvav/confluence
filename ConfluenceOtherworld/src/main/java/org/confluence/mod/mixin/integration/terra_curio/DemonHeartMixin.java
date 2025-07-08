@@ -20,7 +20,7 @@ public abstract class DemonHeartMixin {
     private static void update(ItemStack itemStack, ServerPlayer serverPlayer, ICuriosItemHandler iCuriosItemHandler, CallbackInfo ci, @Local ICurioStacksHandler iCurioStacksHandler) {
         int slots = iCurioStacksHandler.getSlots();
         serverPlayer.playSound(ModSoundEvents.TRANSMUTATION_USE.get());
-        serverPlayer.getData(ModAttachmentTypes.EXTRA_INVENTORY).updateAccessorySize(slots);
+        serverPlayer.getData(ModAttachmentTypes.EXTRA_INVENTORY).updateAccessorySize(serverPlayer, slots);
         ExtraInventoryStackPacketS2C.sendToPlayersTrackingEntityAndSelf(serverPlayer, serverPlayer, slots, slots - 1, ItemStack.EMPTY);
     }
 }

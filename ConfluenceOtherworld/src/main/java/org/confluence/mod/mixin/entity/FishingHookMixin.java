@@ -22,10 +22,12 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.neoforged.neoforge.common.Tags;
 import org.confluence.lib.mixed.IExtraSyncedData;
 import org.confluence.lib.network.SetEntityDataPacketS2C;
 import org.confluence.mod.common.init.ModEffects;
@@ -108,8 +110,8 @@ public abstract class FishingHookMixin implements IFishingHook, IExtraSyncedData
 
     @ModifyArg(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/material/FluidState;is(Lnet/minecraft/tags/TagKey;)Z"))
     private TagKey<Fluid> isLavaTag(TagKey<Fluid> pTag, @Share("isLavaHook") LocalBooleanRef isLavaHook) {
-        if (isLavaHook.get()) return ModTags.FISHING_ABLE;
-        return ModTags.NOT_LAVA;
+        if (isLavaHook.get()) return ModTags.Fluids.FISHING_ABLE;
+        return ModTags.Fluids.NOT_LAVA;
     }
 
     @Inject(method = "tick", at = @At("TAIL"))
@@ -129,8 +131,8 @@ public abstract class FishingHookMixin implements IFishingHook, IExtraSyncedData
 
     @ModifyArg(method = "getOpenWaterTypeForBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/material/FluidState;is(Lnet/minecraft/tags/TagKey;)Z"))
     private TagKey<Fluid> fluidType(TagKey<Fluid> pTag) {
-        if (confluence$isLavaHook()) return ModTags.FISHING_ABLE;
-        return ModTags.NOT_LAVA;
+        if (confluence$isLavaHook()) return ModTags.Fluids.FISHING_ABLE;
+        return ModTags.Fluids.NOT_LAVA;
     }
 
     @ModifyArg(method = "catchingFish", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerLevel;sendParticles(Lnet/minecraft/core/particles/ParticleOptions;DDDIDDDD)I", ordinal = 0), index = 0)
@@ -203,7 +205,9 @@ public abstract class FishingHookMixin implements IFishingHook, IExtraSyncedData
 
     @ModifyArg(method = "retrieve", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/ReloadableServerRegistries$Holder;getLootTable(Lnet/minecraft/resources/ResourceKey;)Lnet/minecraft/world/level/storage/loot/LootTable;"))
     private ResourceKey<LootTable> modifyLoot(ResourceKey<LootTable> lootTableKey) {
-        if (confluence$isInLava()) return ModLootTables.FISHING_LAVA;
+        FluidState fluidState = confluence$self().getInBlockState().getFluidState();
+        if (fluidState.is(FluidTags.LAVA)) return ModLootTables.FISHING_LAVA;
+        if (fluidState.is(Tags.Fluids.HONEY)) return ModLootTables.FISHING_HONEY;
         if (confluence$self().getType() == EntityType.FISHING_BOBBER) return lootTableKey;
         return ModLootTables.FISHING;
     }

@@ -1,14 +1,17 @@
 package org.confluence.mod.common.block.common;
 
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.BlockItemStateProperties;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Explosion;
@@ -28,12 +31,12 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import org.confluence.lib.common.block.StateProperties;
-import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.block.ChestBlocks;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 
 public class BaseChestBlock extends ChestBlock {
@@ -42,7 +45,7 @@ public class BaseChestBlock extends ChestBlock {
     private final Key key;
 
     public BaseChestBlock(@Nullable Key key) {
-        this(Properties.ofFullCopy(Blocks.CHEST), ChestBlocks.BASE_CHEST_BLOCK_ENTITY::get, key);
+        this(Properties.ofFullCopy(Blocks.CHEST), ChestBlocks.BASE_CHEST_ENTITY::get, key);
     }
 
     public BaseChestBlock(Properties properties, Supplier<BlockEntityType<? extends ChestBlockEntity>> supplier, @Nullable Key key) {
@@ -63,12 +66,9 @@ public class BaseChestBlock extends ChestBlock {
 
     @Override
     protected List<ItemStack> getDrops(BlockState state, LootParams.Builder params) {
-        if (state.getValue(UNLOCKED)) {
-            ItemStack stack = asItem().getDefaultInstance();
-            LibUtils.updateItemStackNbt(stack, tag -> tag.putBoolean("Locked", !state.getValue(UNLOCKED)));
-            return Collections.singletonList(stack);
-        }
-        return Collections.emptyList();
+        ItemStack stack = asItem().getDefaultInstance();
+        stack.set(DataComponents.BLOCK_STATE, new BlockItemStateProperties(Map.of("unlocked", state.getValue(UNLOCKED) ? "true" : "false")));
+        return Collections.singletonList(stack);
     }
 
     @Override
@@ -92,9 +92,7 @@ public class BaseChestBlock extends ChestBlock {
     }
 
     protected boolean unlocked(ItemStack stack) {
-        CompoundTag tag = LibUtils.getItemStackNbt(stack);
-        if (key == null) return !tag.getBoolean("Locked");
-        return tag.contains("Locked") && !tag.getBoolean("Locked");
+        return stack.getOrDefault(DataComponents.BLOCK_STATE, BlockItemStateProperties.EMPTY).properties().getOrDefault("unlocked", "true").equals("true");
     }
 
     @Override
@@ -105,13 +103,16 @@ public class BaseChestBlock extends ChestBlock {
             }
             return ItemInteractionResult.SUCCESS;
         }
+        if (player instanceof ServerPlayer serverPlayer) {
+            CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger(serverPlayer, pos, stack);
+        }
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     @Override
     public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
         ItemStack stack = super.getCloneItemStack(state, target, level, pos, player);
-        LibUtils.updateItemStackNbt(stack, tag -> tag.putBoolean("Locked", !state.getValue(UNLOCKED)));
+        stack.set(DataComponents.BLOCK_STATE, new BlockItemStateProperties(Map.of("unlocked", state.getValue(UNLOCKED) ? "true" : "false")));
         return stack;
     }
 
@@ -127,7 +128,7 @@ public class BaseChestBlock extends ChestBlock {
 
     public static class Entity extends ChestBlockEntity {
         public Entity(BlockPos pPos, BlockState pBlockState) {
-            this(ChestBlocks.BASE_CHEST_BLOCK_ENTITY.get(), pPos, pBlockState);
+            this(ChestBlocks.BASE_CHEST_ENTITY.get(), pPos, pBlockState);
         }
 
         public Entity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {

@@ -51,14 +51,17 @@ public class ModItemModelProvider extends ItemModelProvider {
         separateModel(SwordItems.KATANA, templateReverse24x, "sword/");
         separateModel(HammerItems.THE_BREAKER, templateReverse24x, "hammer/");
         separateModel(HammerItems.FLESH_GRINDER, templateNormal24x, "hammer/");
+        separateModel(HammerItems.ROCKFISH, templateNormal24x, "hammer/");
         separateModel(HamaxeItems.METEOR_HAMAXE, templateNormal24x, "hamaxe/");
         separateModel(HamaxeItems.MOLTEN_HAMAXE, templateNormal24x, "hamaxe/");
         separateModel(AxeItems.WAR_AXE_OF_THE_NIGHT, templateReverse24x, "axe/");
         separateModel(AxeItems.BLOOD_LUST_CLUSTER, templateNormal24x, "axe/");
+        separateModel(AxeItems.AXE_OF_REGROWTH, templateNormal24x, "axe/");
+        separateModel(AxeItems.STAFF_OF_REGROWTH, templateNormal24x, "axe/");
         separateModel(PickaxeItems.REAVER_SHARK_PICKAXE, templateReverse24x, "pickaxe/");
 
-        getBuilder(SwordItems.NIGHT_EDGE.getId().getPath()).parent(templateReverse24x).texture("layer0", SwordItems.NIGHT_EDGE.getId().withPrefix("item/sword/"));
-        skip.add(SwordItems.NIGHT_EDGE);
+        getBuilder(SwordItems.NIGHTS_EDGE.getId().getPath()).parent(templateReverse24x).texture("layer0", SwordItems.NIGHTS_EDGE.getId().withPrefix("item/sword/"));
+        skip.add(SwordItems.NIGHTS_EDGE);
 
         ResourceLocation templateDye = Confluence.asResource("item/template_dye");
         for (DeferredHolder<Item, ? extends Item> item : VanityArmorItems.DYE_ITEMS) {

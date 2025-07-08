@@ -25,6 +25,8 @@ import net.minecraft.world.entity.npc.Npc;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -33,6 +35,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.data.saved.GamePhase;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.data.saved.MeteoriteTracker;
 import org.confluence.mod.common.init.ModEffects;
@@ -40,12 +43,14 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.init.item.PotionItems;
 import org.confluence.mod.common.item.common.TreasureBagItem;
+import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.common.init.TCEffects;
 import org.confluence.terra_guns.TerraGuns;
 import org.confluence.terraentity.TerraEntity;
 import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
@@ -144,6 +149,12 @@ public final class ModUtils {
         if (living.hasEffect(ModEffects.MIDAS)) {
             amount *= Mth.nextDouble(living.getRandom(), 1.1, 1.49);
         }
+        if (IMinecraftServer.isHardmode(level.getServer())) {
+            amount *= 1.6;
+        }
+        if (KillBoard.INSTANCE.getGamePhase().isAboveThan(GamePhase.PLANTERA)) {
+            amount *= 1.5;
+        }
 
         dropMoney((int) amount, living.getX(), living.getEyeY() - 0.3, living.getZ(), level);
     }
@@ -195,9 +206,9 @@ public final class ModUtils {
         }
     }
 
-    public static boolean canHitEntity(Entity target, Entity owner) {
-        if (!target.canBeHitByProjectile() || target instanceof ArmorStand || target instanceof Npc) return false;
-        return owner == null || (owner != target && !owner.isPassengerOfSameVehicle(target));
+    public static boolean canHitEntity(@NotNull Entity target, @Nullable Entity owner) {
+        if (owner == target || !target.isAttackable() || !target.canBeHitByProjectile() || target instanceof ArmorStand || target instanceof Npc) return false;
+        return owner == null || (!owner.isPassengerOfSameVehicle(target) && !target.skipAttackInteraction(owner));
     }
 
     public static Component formatPrice(int price) {
@@ -226,7 +237,14 @@ public final class ModUtils {
         return cmp;
     }
 
-//    public static long getVendorFreq() {
-//        return new SystemInfo().getHardware().getProcessor().getProcessorIdentifier().getVendorFreq();
-//    }
+    /**
+     * 不可破坏物品无法附魔耐久与经验修补
+     */
+    public static boolean supportsEnchantment(ItemStack stack, Holder<Enchantment> enchantment) {
+        boolean supportedItem = stack.is(enchantment.value().definition().supportedItems());
+        if (stack.has(DataComponents.UNBREAKABLE)) {
+            return supportedItem && !enchantment.is(Enchantments.UNBREAKING) && !enchantment.is(Enchantments.MENDING);
+        }
+        return supportedItem;
+    }
 }

@@ -23,7 +23,7 @@ public class NaturesGiftBlock extends BasePlantBlock {
     private static final VoxelShape SHAPE = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 10.0D, 12.0D);
 
     public NaturesGiftBlock() {
-        super(Blocks.GRASS_BLOCK, Blocks.MOSS_BLOCK, Blocks.CLAY, NatureBlocks.JUNGLE_SPORE.get());
+        super(Blocks.GRASS_BLOCK, Blocks.MOSS_BLOCK, Blocks.CLAY, NatureBlocks.JUNGLE_GRASS_BLOCK.get());
     }
 
     @Override

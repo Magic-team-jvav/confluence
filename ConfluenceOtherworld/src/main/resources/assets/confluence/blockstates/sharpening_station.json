@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "confluence:block/sharpening_station",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "confluence:block/sharpening_station"
+    },
+    "facing=south": {
+      "model": "confluence:block/sharpening_station",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "confluence:block/sharpening_station",
+      "y": 270
+    }
+  }
+}

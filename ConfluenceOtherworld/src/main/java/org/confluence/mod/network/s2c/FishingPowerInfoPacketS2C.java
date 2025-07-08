@@ -11,7 +11,6 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.util.PlayerUtils;
-import org.jetbrains.annotations.NotNull;
 
 public record FishingPowerInfoPacketS2C(float value) implements CustomPacketPayload {
     public static final Type<FishingPowerInfoPacketS2C> TYPE = new Type<>(Confluence.asResource("fishing_power_info"));
@@ -21,7 +20,7 @@ public record FishingPowerInfoPacketS2C(float value) implements CustomPacketPayl
     );
 
     @Override
-    public @NotNull Type<FishingPowerInfoPacketS2C> type() {
+    public Type<FishingPowerInfoPacketS2C> type() {
         return TYPE;
     }
 

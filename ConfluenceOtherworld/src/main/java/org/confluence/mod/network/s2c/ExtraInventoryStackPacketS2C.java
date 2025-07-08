@@ -15,7 +15,6 @@ import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.init.ModAttachmentTypes;
-import org.jetbrains.annotations.NotNull;
 
 public record ExtraInventoryStackPacketS2C(long packedData, ItemStack itemStack) implements CustomPacketPayload {
     public static final Type<ExtraInventoryStackPacketS2C> TYPE = new Type<>(Confluence.asResource("extra_inventory_stack"));
@@ -26,7 +25,7 @@ public record ExtraInventoryStackPacketS2C(long packedData, ItemStack itemStack)
     );
 
     @Override
-    public @NotNull Type<ExtraInventoryStackPacketS2C> type() {
+    public Type<ExtraInventoryStackPacketS2C> type() {
         return TYPE;
     }
 
@@ -35,7 +34,7 @@ public record ExtraInventoryStackPacketS2C(long packedData, ItemStack itemStack)
             Player player = context.player();
             if (player.isLocalPlayer() && player.level().getEntity(getEntityId()) instanceof Player entity) {
                 ExtraInventory extraInventory = entity.getData(ModAttachmentTypes.EXTRA_INVENTORY);
-                extraInventory.setAccessoryDyes(getSizeAccessoryDye());
+                extraInventory.setAccessoryDyes(player, getSizeAccessoryDye());
                 extraInventory.setItem(getSlot(), itemStack);
             }
         }).exceptionally(e -> {

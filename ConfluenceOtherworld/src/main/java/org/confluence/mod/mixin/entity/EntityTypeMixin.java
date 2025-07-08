@@ -8,8 +8,8 @@ import org.spongepowered.asm.mixin.Mixin;
 @Mixin(EntityType.class)
 public class EntityTypeMixin implements Immunity {
     @Override
-    public Types confluence$getImmunityType() {
-        return Types.STATIC;
+    public Type confluence$getImmunityType() {
+        return Type.STATIC;
     }
 
     @Override

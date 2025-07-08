@@ -1,0 +1,9 @@
+{
+  "parent": "block/slab",
+  "textures": {
+    "bottom": "confluence:block/platinum_bricks",
+    "top": "confluence:block/platinum_bricks",
+    "side": "confluence:block/platinum_bricks"
+  },
+  "render_type": "solid"
+}

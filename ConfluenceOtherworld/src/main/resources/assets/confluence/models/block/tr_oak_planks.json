@@ -1,8 +1,0 @@
-{
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "confluence:block/tr_oak_planks",
-    "particle": "confluence:block/tr_oak_planks"
-  },
-  "render_type": "solid"
-}

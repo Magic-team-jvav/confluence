@@ -26,6 +26,8 @@ public interface ModPrefix {
 
     boolean canBeMercy();
 
+    ResourceLocation getModifierId();
+
     record Accessory(String name, float armor, float criticalChance, float attackDamage, float attackSpeed, float movementSpeed, int additionalMana, int tier, float value) implements ModPrefix {
         public static final List<Accessory> VALUES = new ArrayList<>();
         public static final ResourceLocation ID = Confluence.asResource("accessory_prefix");
@@ -64,6 +66,11 @@ public interface ModPrefix {
         @Override
         public boolean canBeMercy() {
             return false;
+        }
+
+        @Override
+        public ResourceLocation getModifierId() {
+            return ID;
         }
 
         private static Accessory register(String name, float armor, float criticalChance, float attackDamage, float attackSpeed, float movementSpeed, int additionalMana, int tier, float value) {
@@ -106,6 +113,11 @@ public interface ModPrefix {
             return tier < 0;
         }
 
+        @Override
+        public ResourceLocation getModifierId() {
+            return ID;
+        }
+
         private static Universal register(String name, float attackDamage, float criticalChance, float knockBack, int tier, float value) {
             Universal universal = new Universal(name, attackDamage, criticalChance, knockBack, tier, value);
             VALUES.add(universal);
@@ -141,6 +153,11 @@ public interface ModPrefix {
         @Override
         public boolean canBeMercy() {
             return tier < 0 && this != ANNOYING;
+        }
+
+        @Override
+        public ResourceLocation getModifierId() {
+            return ID;
         }
 
         private static Common register(String name, float attackDamage, float attackSpeed, float criticalChance, float knockBack, int tier, float value) {
@@ -188,6 +205,11 @@ public interface ModPrefix {
             return tier < 0 && this != SHAMEFUL;
         }
 
+        @Override
+        public ResourceLocation getModifierId() {
+            return ID;
+        }
+
         private static Melee register(String name, float attackDamage, float attackSpeed, float criticalChance, float size, float knockBack, int tier, float value) {
             Melee melee = new Melee(name, attackDamage, attackSpeed, criticalChance, size, knockBack, tier, value);
             VALUES.add(melee);
@@ -228,6 +250,11 @@ public interface ModPrefix {
             return tier < 0 && this != FRENZYING;
         }
 
+        @Override
+        public ResourceLocation getModifierId() {
+            return ID;
+        }
+
         private static Ranged register(String name, float rangedDamage, float attackSpeed, float criticalChance, float velocity, float knockBack, int tier, float value) {
             Ranged ranged = new Ranged(name, rangedDamage, attackSpeed, criticalChance, velocity, knockBack, tier, value);
             VALUES.add(ranged);
@@ -265,6 +292,11 @@ public interface ModPrefix {
         @Override
         public boolean canBeMercy() {
             return tier < 0 && this != INTENSE;
+        }
+
+        @Override
+        public ResourceLocation getModifierId() {
+            return ID;
         }
 
         private static Magic register(String name, float rangedDamage, float attackSpeed, float criticalChance, float manaCost, float knockBack, int tier, float value) {

@@ -1,6 +1,7 @@
 package org.confluence.mod.common.item.fishing;
 
 import com.google.common.collect.ImmutableMultimap;
+import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -17,6 +18,7 @@ import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.item.FishingRodItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -28,6 +30,7 @@ import org.confluence.mod.common.init.item.FishingPoleItems;
 import org.confluence.mod.common.item.accessory.FishingBobber;
 import org.confluence.mod.mixed.IFishingHook;
 import org.confluence.mod.network.s2c.FishingPowerInfoPacketS2C;
+import org.confluence.mod.util.ModUtils;
 import org.confluence.terra_curio.util.CuriosUtils;
 import org.confluence.terra_curio.util.TCUtils;
 
@@ -49,6 +52,7 @@ public abstract class AbstractFishingPole extends FishingRodItem {
         super(properties.component(ConfluenceMagicLib.MOD_RARITY.get(), rarity));
     }
 
+    @Override
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pHand) {
         ItemStack itemstack = pPlayer.getItemInHand(pHand);
         if (pPlayer.fishing != null) {
@@ -104,6 +108,11 @@ public abstract class AbstractFishingPole extends FishingRodItem {
         ItemAttributeModifiers.Builder builder = ItemAttributeModifiers.builder();
         consumer.accept(builder);
         this.modifiers = builder.build();
+    }
+
+    @Override
+    public boolean supportsEnchantment(ItemStack stack, Holder<Enchantment> enchantment) {
+        return ModUtils.supportsEnchantment(stack, enchantment);
     }
 
     @Override

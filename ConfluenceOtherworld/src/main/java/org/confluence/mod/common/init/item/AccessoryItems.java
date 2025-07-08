@@ -22,7 +22,6 @@ import org.confluence.mod.common.data.gen.ModItemTagsProvider;
 import org.confluence.mod.common.entity.fishing.CurioFishingHook;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.common.init.block.MusicBoxBlocks;
 import org.confluence.mod.common.item.accessory.*;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.api.primitive.*;
@@ -109,7 +108,7 @@ public class AccessoryItems {
             XENON_MOSS_FISHING_BOBBER = ITEMS.register("xenon_moss_fishing_bobber", () -> new FishingBobber(CurioFishingHook.Variant.XENON)); // 氙苔藓钓鱼浮标
 
 
-    public static final DeferredItem<BaseCurioItem> MECHANICAL_LENS = registerDirectly("mechanical_lens", name -> new MechanicalLens(BaseCurioItem.builder("mechanical_lens").rarity(ORANGE).accessories(of(TCItems.INFORMATION, List.of(TCItems.MECHANICAL$LENS))))); //机械晶状体
+    public static final DeferredItem<BaseCurioItem> MECHANICAL_LENS = registerDirectly("mechanical_lens", name -> new MechanicalLens(BaseCurioItem.builder("mechanical_lens").rarity(ORANGE).tooltips(1).accessories(of(TCItems.INFORMATION, List.of(TCItems.MECHANICAL$LENS))))); //机械晶状体
     /* 标尺 */
     /* 机械标尺 */
 
@@ -129,7 +128,7 @@ public class AccessoryItems {
                     .attribute(Attributes.LUCK, 0.05, ADD_VALUE)), // 贪婪戒指
             GUIDE_TO_PLANT_FIBER_CORDAGE = registerCurio("guide_to_plant_fiber_cordage", builder -> builder.accessories(units(VINE$ROPE))), // 植物纤维绳索宝典
             RADIO_THING = registerDirectly("radio_thing", name -> new RadioThing(BaseCurioItem.builder(name).rarity(BLUE).tooltips(1))), // 收音机
-            SPECTRE_GOGGLES = registerDirectly("spectre_goggles", name -> new SpectreGoggles(BaseCurioItem.builder(name).rarity(PINK).accessories(units(SPECTRE$GOGGLES)))), // 幽灵护目镜
+            SPECTRE_GOGGLES = registerDirectly("spectre_goggles", name -> new SpectreGoggles(BaseCurioItem.builder(name).rarity(PINK).tooltips(1).accessories(units(SPECTRE$GOGGLES)))), // 幽灵护目镜
             CHROMATIC_CLOAK = registerCurio("chromatic_cloak", builder -> builder.rarity(PINK).accessories(of(TCItems.EFFECT$IMMUNITIES, Set.of(ModEffects.SHIMMER)))); // 炫彩斗篷
 
     public static final DeferredItem<BaseCurioItem> SUMMONER_EMBLEM = registerCurio("summoner_emblem", builder -> builder.noTooltip().rarity(LIGHT_RED).attribute(TEAttributes.SUMMON_DAMAGE, 0.15, ADD_MULTIPLIED_TOTAL)), // 召唤师徽章
@@ -172,21 +171,6 @@ public class AccessoryItems {
     public static final DeferredItem<BaseCurioItem> SOLAR_WINGS = registerWings("solar_wings", RED, 0.85F, 92, true, false); // 飞行高度：95
     public static final DeferredItem<BaseCurioItem> STARDUST_WINGS = registerWings("stardust", RED, 0.85F, 92, true, false); // 飞行高度：95
 
-    public static final DeferredItem<MusicBoxItem> MUSIC_BOX = ITEMS.register("music_box", () -> new MusicBoxItem(MusicBoxBlocks.MUSIC_BOX.get()));
-    public static final DeferredItem<MusicBoxItem> MUSIC_BOX_OTHERWORLD_DAY = ITEMS.register("music_box_otherworld_day", () -> new MusicBoxItem(MusicBoxBlocks.MUSIC_BOX_OTHERWORLD_DAY.get()));
-    // todo eerie
-    public static final DeferredItem<MusicBoxItem> MUSIC_BOX_NIGHT = ITEMS.register("music_box_night", () -> new MusicBoxItem(MusicBoxBlocks.MUSIC_BOX_NIGHT.get()));
-    // todo title
-    public static final DeferredItem<MusicBoxItem> MUSIC_BOX_UNDERGROUND = ITEMS.register("music_box_underground", () -> new MusicBoxItem(MusicBoxBlocks.MUSIC_BOX_UNDERGROUND.get()));
-    // todo boss1
-    public static final DeferredItem<MusicBoxItem> MUSIC_BOX_JUNGLE = ITEMS.register("music_box_jungle", () -> new MusicBoxItem(MusicBoxBlocks.MUSIC_BOX_JUNGLE.get()));
-    public static final DeferredItem<MusicBoxItem> MUSIC_BOX_CORRUPTION = ITEMS.register("music_box_corruption", () -> new MusicBoxItem(MusicBoxBlocks.MUSIC_BOX_CORRUPTION.get()));
-    public static final DeferredItem<MusicBoxItem> MUSIC_BOX_UNDERGROUND_CORRUPTION = ITEMS.register("music_box_underground_corruption", () -> new MusicBoxItem(MusicBoxBlocks.MUSIC_BOX_UNDERGROUND_CORRUPTION.get()));
-    public static final DeferredItem<MusicBoxItem> MUSIC_BOX_THE_HALLOW = ITEMS.register("music_box_the_hallow", () -> new MusicBoxItem(MusicBoxBlocks.MUSIC_BOX_THE_HALLOW.get()));
-    // todo boss2
-    public static final DeferredItem<MusicBoxItem> MUSIC_BOX_UNDERGROUND_HALLOW = ITEMS.register("music_box_underground_hallow", () -> new MusicBoxItem(MusicBoxBlocks.MUSIC_BOX_UNDERGROUND_HALLOW.get()));
-    // todo boss3
-
     private static DeferredItem<BaseCurioItem> registerCurio(String name, Consumer<BaseCurioItem.Builder> consumer) {
         return ITEMS.register(name, () -> {
             BaseCurioItem.Builder builder = BaseCurioItem.builder(name);
@@ -201,7 +185,7 @@ public class AccessoryItems {
 
     private static DeferredItem<BaseCurioItem> registerWings(String name, ModRarity rarity, float flySpeed, int flyTicks, boolean couldGlide, boolean horizontalFlight) {
         DeferredItem<BaseCurioItem> item = registerCurio(name, builder -> builder.rarity(rarity)
-                .accessories(of(TCItems.MAY$FLY, new MayFlyAbilityValue.Storage(flySpeed, flyTicks, couldGlide, horizontalFlight)))
+                .accessories(of(TCItems.MAY$FLY, MayFlyAbilityValue.of(name, 1100, flySpeed, flyTicks, couldGlide, horizontalFlight)))
                 .attribute(Attributes.FALL_DAMAGE_MULTIPLIER, -100, ADD_VALUE));
         WINGS.add(item);
         return item;
@@ -238,7 +222,7 @@ public class AccessoryItems {
         }
     }
 
-    public static void applyHurtGetMana(ServerPlayer serverPlayer, DamageSource damageSource, int amount) {
+    public static void applyHurtGetMana(ServerPlayer serverPlayer, DamageSource damageSource, float amount) {
         if (TCUtils.hasAccessoriesType(serverPlayer, HURT$GET$MANA)) {
             if (!damageSource.is(DamageTypes.DROWN) && !damageSource.is(TCTags.HARMFUL_EFFECT)) {
                 PlayerUtils.receiveMana(serverPlayer, () -> amount);

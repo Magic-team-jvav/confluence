@@ -337,7 +337,7 @@ public class HardmodeConvertor implements IGlobalData {
                 } else if (source.is(BlockTags.LEAVES)) {
                     target = NatureBlocks.PEARL_LOG_BLOCKS.getLeaves().get();
                 } else if (source.is(BlockTags.BASE_STONE_OVERWORLD)) {
-                    target = NatureBlocks.PEARL_STONE.get();
+                    target = NatureBlocks.PEARLSTONE.get();
                 } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_GRASS_BLOCK)) {
                     target = NatureBlocks.HALLOW_GRASS_BLOCK.get();
                 } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_JUNGLE_GRASS_BLOCK)) {
@@ -349,13 +349,13 @@ public class HardmodeConvertor implements IGlobalData {
                 } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_ICE)) {
                     target = NatureBlocks.PINK_ICE.get();
                 } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_SAND)) {
-                    target = NatureBlocks.PEARL_SAND.get();
+                    target = NatureBlocks.PEARLSAND.get();
                 } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_SANDSTONE)) {
-                    target = NatureBlocks.PEARL_SANDSTONE.get();
+                    target = NatureBlocks.PEARLSANDSTONE.get();
                 } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_HARDENED_SAND_BLOCK)) {
-                    target = NatureBlocks.PEARL_HARDENED_SAND_BLOCK.get();
+                    target = NatureBlocks.HARDENED_PEARLSAND_BLOCK.get();
                 } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_MOIST_SAND_BLOCK)) {
-                    target = NatureBlocks.PEARL_MOIST_SAND_BLOCK.get();
+                    target = NatureBlocks.MOISTENED_PEARLSAND_BLOCK.get();
                 }
 
                 if (target == null) return null;

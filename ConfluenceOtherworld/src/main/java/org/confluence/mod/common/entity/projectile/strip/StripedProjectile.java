@@ -21,18 +21,19 @@ import net.neoforged.api.distmarker.OnlyIn;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.entity.projectile.DamageSettableProjectile;
 import org.confluence.mod.common.init.ModDamageTypes;
-import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.util.ModUtils;
 
 /**
- * 长条形射弹
+ * 长条形射弹<p>
+ * 需要设置immunity type为local
+ *
+ * @see org.confluence.mod.common.data.map.ImmunityDataMap
  */
-public abstract class StripedProjectile extends DamageSettableProjectile implements Immunity {
+public abstract class StripedProjectile extends DamageSettableProjectile {
     private static final EntityDataAccessor<Boolean> DATA_IS_HEAD = SynchedEntityData.defineId(StripedProjectile.class, EntityDataSerializers.BOOLEAN);
     protected double distForHeadRemove = 10.0;
     protected double distForCreateBody = 0.95;
     protected int ticksForBodyRemove = 28;
-    protected int frequencyForBodyCheckTouch = 5;
     private Vec3 startPos = Vec3.ZERO;
     private double distO = -0.5;
     @OnlyIn(Dist.CLIENT)
@@ -79,7 +80,7 @@ public abstract class StripedProjectile extends DamageSettableProjectile impleme
                         StripedProjectile body = createBody(living);
                         body.setDeltaMovement(vec3);
                         body.setHead(false);
-                        body.setDamage(getDamage());
+                        body.setDamage(getCalculatedDamage());
                         level().addFreshEntity(body);
                         this.distO = dist;
                     }
@@ -107,7 +108,7 @@ public abstract class StripedProjectile extends DamageSettableProjectile impleme
     @Override
     protected void onHitEntity(EntityHitResult result) {
         Entity entity = result.getEntity();
-        if (entity.hurt(getDamageSource(), getDamage())) {
+        if (entity.hurt(getDamageSource(), getCalculatedDamage())) {
             VectorUtils.knockBackA2B(this, entity, 0.5, 0.2);
         }
     }
@@ -160,15 +161,5 @@ public abstract class StripedProjectile extends DamageSettableProjectile impleme
         this.startPos = Vec3.CODEC.parse(NbtOps.INSTANCE, compound.get("StartPos")).getOrThrow();
         this.tickCount = compound.getInt("Age");
         setHead(compound.getBoolean("IsHead"));
-    }
-
-    @Override
-    public Types confluence$getImmunityType(){
-        return Types.STATIC;
-    }
-
-    @Override
-    public int confluence$getImmunityDuration(DamageSource damageSource){
-        return frequencyForBodyCheckTouch;
     }
 }

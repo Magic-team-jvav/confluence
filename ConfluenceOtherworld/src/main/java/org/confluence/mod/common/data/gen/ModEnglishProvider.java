@@ -69,6 +69,19 @@ public class ModEnglishProvider extends LanguageProvider {
         add("message.confluence.lock.or", " or ");
         add("message.confluence.dungeon_not_found", "Failed to find the Dungeon");
 
+        add("enchantment.confluence.mana_regeneration", "Mana Regeneration");
+        add("enchantment.confluence.mana_regeneration.desc", "Increases the amount of mana that naturally regenerates");
+        add("enchantment.confluence.efficient_magic", "Efficient Magic");
+        add("enchantment.confluence.efficient_magic.desc", "The less mana, the less mana is consumed");
+        add("enchantment.confluence.mana_mending", "Mana Mending");
+        add("enchantment.confluence.mana_mending.desc", "When the mana used once exceeds the threshold, the item's durability is restored, and the amount recovered is rounded down to the amount above the threshold");
+        add("enchantment.confluence.celestial_absorption", "Celestial Absorption");
+        add("enchantment.confluence.celestial_absorption.desc", "Magic weapons that deal magic damage have a chance to drop stars");
+        add("enchantment.confluence.soothed_mana", "Soothed Mana");
+        add("enchantment.confluence.soothed_mana.desc", "Reduces the duration of Mana Sickness");
+        add("enchantment.confluence.arcane_protection", "Arcane Protection");
+        add("enchantment.confluence.arcane_protection.desc", "The mana drawn when taking damage is the value of the maximum mana value multiplied by a certain ratio, and the damage canceled is the value of the product of the damage taken by that ratio");
+
         add("gamerule.confluenceSpreadableChance", "Confluence Spreadable Chance");
         add("generator.confluence.the_corruption", "The Corruption");
         add("generator.confluence.the_crimson", "The Crimson");

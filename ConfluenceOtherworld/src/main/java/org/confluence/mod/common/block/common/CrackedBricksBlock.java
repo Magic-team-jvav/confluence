@@ -7,6 +7,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -45,6 +46,14 @@ public class CrackedBricksBlock extends Block {
     public void onDestroyedByPushReaction(BlockState state, Level level, BlockPos pos, Direction pushDirection, FluidState fluid) {
         scheduleTick(level, pos);
         super.onDestroyedByPushReaction(state, level, pos, pushDirection, fluid);
+    }
+
+    @Override
+    public void updateEntityAfterFallOn(BlockGetter level, Entity entity) {
+        if (entity.getDeltaMovement().y > 0 && level instanceof Level level1) {
+            scheduleTick(level1, entity.getOnPosLegacy());
+        }
+        super.updateEntityAfterFallOn(level, entity);
     }
 
     @Override

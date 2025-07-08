@@ -83,7 +83,7 @@ public final class PlayerUtils {
             return;
         }
 
-        Supplier<Float> receive = () -> {
+        FloatSupplier receive = () -> {
             // 1.0F / 7.0F = 0.14285715F
             float a = manaStorage.getMaxMana() * 0.14285715F + (manaStorage.isFastManaRegeneration() ? 25 : 0) + 1;
             if (notMove) a += manaStorage.getMaxMana() * 0.5F;
@@ -94,7 +94,7 @@ public final class PlayerUtils {
         if (manaStorage.receiveMana(receive)) syncMana2Client(serverPlayer, manaStorage);
     }
 
-    public static boolean extractMana(ServerPlayer serverPlayer, ItemStack itemStack, Supplier<Float> sup) {
+    public static boolean extractMana(ServerPlayer serverPlayer, ItemStack itemStack, FloatSupplier sup) {
         if (serverPlayer.isCreative()) return true;
         return extractAndDelayAndSync(
                 serverPlayer.getData(ModAttachmentTypes.MANA_STORAGE),
@@ -102,22 +102,22 @@ public final class PlayerUtils {
                         ModHookTypes.MANA_CONSUME.get(),
                         (owner, hook, original) -> hook.onManaConsume(owner, itemStack, original),
                         serverPlayer,
-                        () -> sup.get() * EnchantmentUtils.processEfficientMagic(serverPlayer)
+                        () -> sup.getAsFloat() * EnchantmentUtils.processEfficientMagic(serverPlayer)
                 ),
                 serverPlayer
         );
     }
 
-    public static boolean extractAndDelayAndSync(ManaStorage manaStorage, Supplier<Float> sup, ServerPlayer serverPlayer) {
+    public static boolean extractAndDelayAndSync(ManaStorage manaStorage, FloatSupplier sup, ServerPlayer serverPlayer) {
         if (manaStorage.extractMana(sup, serverPlayer)) {
-            manaStorage.setRegenerateDelay(Mth.ceil(0.7F * ((1 - manaStorage.getCurrentMana() / manaStorage.getMaxMana()) * 240 + 45)));
+            manaStorage.setRegenerateDelay();
             syncMana2Client(serverPlayer, manaStorage);
             return true;
         }
         return false;
     }
 
-    public static void receiveMana(ServerPlayer serverPlayer, Supplier<Float> sup) {
+    public static void receiveMana(ServerPlayer serverPlayer, FloatSupplier sup) {
         ManaStorage manaStorage = serverPlayer.getData(ModAttachmentTypes.MANA_STORAGE);
         if (manaStorage.receiveMana(sup)) syncMana2Client(serverPlayer, manaStorage);
     }

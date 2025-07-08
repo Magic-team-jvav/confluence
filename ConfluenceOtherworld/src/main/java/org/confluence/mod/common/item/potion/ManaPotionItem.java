@@ -30,7 +30,7 @@ public class ManaPotionItem extends AbstractPotionItem {
     protected void apply(ItemStack itemStack, Level level, LivingEntity living) {
         if (level.isClientSide) return;
         if (living instanceof ServerPlayer serverPlayer) {
-            PlayerUtils.receiveMana(serverPlayer, () -> (float) amount);
+            PlayerUtils.receiveMana(serverPlayer, () -> amount);
             MobEffectInstance instance = serverPlayer.getEffect(ModEffects.MANA_SICKNESS);
             if (instance == null) {
                 serverPlayer.addEffect(new MobEffectInstance(ModEffects.MANA_SICKNESS, EnchantmentUtils.processManaSicknessDuration(serverPlayer, 100)));

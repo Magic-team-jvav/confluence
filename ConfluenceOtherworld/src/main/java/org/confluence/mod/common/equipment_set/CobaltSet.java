@@ -78,7 +78,7 @@ public class CobaltSet extends EquipmentSet {
                         VanillaEquippable.LEGS, ArmorItems.COBALT_LEGGINGS,
                         VanillaEquippable.FEET, ArmorItems.COBALT_BOOTS
                 )
-                .bindHook(ModHookTypes.MANA_CONSUME.get(), (owner, itemStack, original) -> () -> original.get() * 0.86F)
+                .bindHook(ModHookTypes.MANA_CONSUME.get(), (owner, itemStack, original) -> () -> original.getAsFloat() * 0.86F)
                 .build());
     }
 }

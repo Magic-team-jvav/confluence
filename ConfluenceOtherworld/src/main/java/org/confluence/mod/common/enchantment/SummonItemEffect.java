@@ -1,4 +1,4 @@
-package org.confluence.mod.common.item.enchantment;
+package org.confluence.mod.common.enchantment;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

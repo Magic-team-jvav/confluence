@@ -66,7 +66,7 @@ public class MythrilSet extends EquipmentSet {
                         VanillaEquippable.LEGS, ArmorItems.MYTHRIL_LEGGINGS,
                         VanillaEquippable.FEET, ArmorItems.MYTHRIL_BOOTS
                 )
-                .bindHook(ModHookTypes.MANA_CONSUME.get(), (owner, itemStack, original) -> () -> original.get() * 0.83F)
+                .bindHook(ModHookTypes.MANA_CONSUME.get(), (owner, itemStack, original) -> () -> original.getAsFloat() * 0.83F)
                 .build());
         equippableGroup.addEquippableSet("hat_set", new EquipmentSetBranch.Builder()
                 .addEquippable(

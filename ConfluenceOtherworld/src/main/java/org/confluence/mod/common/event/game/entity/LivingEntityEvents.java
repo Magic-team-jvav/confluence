@@ -6,6 +6,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
@@ -169,40 +170,43 @@ public final class LivingEntityEvents {
     public static void livingDamage$Pre(LivingDamageEvent.Pre event) {
         float amount = event.getNewDamage();
         if (amount <= 0.0F) return; // 防止莫名的负数伤害
-        LivingEntity living = event.getEntity();
-        if (!(living.level() instanceof ServerLevel level)) return;
+        LivingEntity victim = event.getEntity();
+        if (!(victim.level() instanceof ServerLevel level)) return;
         DamageSource damageSource = event.getSource();
-        if (damageSource.is(DamageTypes.FELL_OUT_OF_WORLD) || damageSource.is(DamageTypes.GENERIC_KILL)) return;
+        if (damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) return;
         @Nullable Entity attacker = damageSource.getEntity();
 
-        amount = ArcheryEffect.apply(living, damageSource, amount);
+        amount = ArcheryEffect.apply(victim, damageSource, amount);
         amount = ManaSicknessEffect.apply(damageSource, amount);
         amount = TheConstant.applyAttackDamage(attacker, amount);
 
-        ModUtils.applyBrainOfCthulhuDebuff(level, attacker, living);
-        ModUtils.applyCursedSkullDebuff(attacker, living);
+        ModUtils.applyBrainOfCthulhuDebuff(level, attacker, victim);
+        ModUtils.applyCursedSkullDebuff(attacker, victim);
 
         if (attacker instanceof ServerPlayer player) {
-            EnchantmentUtils.dropsStar(player, living, damageSource);
+            EnchantmentUtils.dropsStar(player, victim, damageSource);
+        }
+        if (victim instanceof ServerPlayer player) {
+            amount = EnchantmentUtils.processManaProtection(player, damageSource, amount);
         }
 
         // 芦苇呼吸管对溺水伤害减半
         if (damageSource.is(DamageTypes.DROWN)) {
-            if (LibUtils.anyHandHasItem(living, SwordItems.BREATHING_REED.get())) {
+            if (LibUtils.anyHandHasItem(victim, SwordItems.BREATHING_REED.get())) {
                 amount *= 0.5F;
             }
         }
         // 剑命中效果
         ItemStack weapon = damageSource.getWeaponItem();
         if (weapon != null && weapon.getItem() instanceof BaseSwordItem sword) {
-            sword.applyHitEffects(weapon, attacker, living, damageSource, amount);
+            sword.applyHitEffects(weapon, attacker, victim, damageSource, amount);
         }
         // 暴击判定和伤害显示
         boolean crit = false;
         if (!TCAttributes.hasCustomAttribute(TCAttributes.CRIT_CHANCE) && attacker instanceof Player player) {
-            if (living.getRandom().nextFloat() < player.getAttributeValue(TCAttributes.CRIT_CHANCE)) {
+            if (victim.getRandom().nextFloat() < player.getAttributeValue(TCAttributes.CRIT_CHANCE)) {
                 amount *= 1.5F;
-                player.crit(living);
+                player.crit(victim);
                 crit = true;
             }
         }
@@ -400,7 +404,7 @@ public final class LivingEntityEvents {
             player.setHealth(player.getMaxHealth());
             player.getFoodData().setFoodLevel(20);
             player.getFoodData().setSaturation(20.0f);
-            receiveMana(player, () -> 1000.0F);
+            receiveMana(player, () -> 1000);
             List<Holder<MobEffect>> negativeEffects = player.getActiveEffects().stream()
                     .map(MobEffectInstance::getEffect)
                     .filter(effect -> !effect.value().isBeneficial())

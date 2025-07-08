@@ -1,8 +1,8 @@
 {
   "placement": {
     "type": "minecraft:random_spread",
-    "salt": 56817723,
-    "separation": 2,
+    "salt": 69021806,
+    "separation": 8,
     "spacing": 10,
     "spread_type": "triangular",
     "exclusion_zone": {
@@ -11,7 +11,7 @@
     }
   },
   "structures": [{
-    "structure": "confluence:ebony_stone_thorn",
+    "structure": "confluence:dungeon_altar",
     "weight": 1
   }]
 }

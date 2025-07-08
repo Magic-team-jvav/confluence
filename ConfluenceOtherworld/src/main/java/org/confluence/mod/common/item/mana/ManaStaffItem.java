@@ -95,9 +95,9 @@ public class ManaStaffItem<E extends DamageSettableProjectile> extends CustomRar
         player.level().playSound(null, player.getX(), player.getY(), player.getZ(), ModSoundEvents.REGULAR_STAFF_SHOOT.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
     }
 
-    @FunctionalInterface
-    public interface ProjectileFactory<E extends Projectile> {
-        E create(ServerPlayer serverPlayer);
+    @Override
+    public boolean isEnchantable(ItemStack stack) {
+        return stack.getMaxStackSize() == 1;
     }
 
     @Override
@@ -106,5 +106,10 @@ public class ManaStaffItem<E extends DamageSettableProjectile> extends CustomRar
         tooltipComponents.add(Component.translatable("tooltip.confluence.mana_cost", manaCost).withStyle(ChatFormatting.GRAY));
         tooltipComponents.add(Component.translatable("tooltip.confluence.velocity", velocity).withStyle(ChatFormatting.GRAY));
         tooltipComponents.add(Component.translatable("tooltip.confluence.cooldown", cooldown).withStyle(ChatFormatting.GRAY));
+    }
+
+    @FunctionalInterface
+    public interface ProjectileFactory<E extends Projectile> {
+        E create(ServerPlayer serverPlayer);
     }
 }

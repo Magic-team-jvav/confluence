@@ -3,7 +3,9 @@ package org.confluence.mod.integration.jei;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
+import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.helpers.IJeiHelpers;
+import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.transfer.IRecipeTransferHandlerHelper;
 import mezz.jei.api.registration.*;
 import net.minecraft.client.Minecraft;
@@ -12,8 +14,11 @@ import net.minecraft.client.gui.components.toasts.ToastComponent;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.block.Blocks;
+import org.confluence.lib.common.recipe.EitherAmountRecipe4x;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.AchievementToast;
 import org.confluence.mod.client.gui.container.*;
@@ -25,6 +30,8 @@ import org.confluence.mod.common.init.item.ToolItems;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.confluence.terra_curio.integration.jei.ModJeiPlugin.addInput;
 
 @JeiPlugin
 public final class ModJeiPlugin implements IModPlugin {
@@ -136,5 +143,33 @@ public final class ModJeiPlugin implements IModPlugin {
 
     public static void drawArrowRight(GuiGraphics guiGraphics, int x, int y, boolean usable) {
         guiGraphics.blit(ARROW_RIGHT, x, y, 0, usable ? 0 : 21, 28, 21, 42, 42);
+    }
+
+    public static void setEitherRecipe4x(IRecipeLayoutBuilder builder, RecipeHolder<? extends EitherAmountRecipe4x<?>> recipe) {
+        recipe.value().either.ifLeft(shaped -> {
+            int width = shaped.width();
+            int height = shaped.height();
+            boolean symmetrical = shaped.symmetrical;
+            for (int i = 0; i < height; i++) {
+                for (int j = 0; j < width; j++) {
+                    if (symmetrical) {
+                        addInput(builder, j * 18 + 6, i * 18 + 5, shaped.ingredients().get(width - j - 1 + i * width));
+                    } else {
+                        addInput(builder, j * 18 + 6, i * 18 + 5, shaped.ingredients().get(j + i * width));
+                    }
+                }
+            }
+        }).ifRight(shapeless -> {
+            builder.setShapeless();
+            int i = 0, j = 0;
+            for (Ingredient ingredient : shapeless) {
+                addInput(builder, j * 18 + 6, i * 18 + 5, ingredient);
+                if (++j >= 4) {
+                    j = 0;
+                    i++;
+                }
+            }
+        });
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 117, 33).addItemStack(recipe.value().getResultItem(null));
     }
 }

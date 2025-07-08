@@ -30,7 +30,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.confluence.mod.Confluence;
@@ -41,8 +40,6 @@ import org.confluence.mod.common.recipe.HeavyWorkBenchRecipe;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
-
-import static org.confluence.terra_curio.integration.jei.ModJeiPlugin.addInput;
 
 public class HeavyWorkBenchCategory implements IRecipeCategory<RecipeHolder<HeavyWorkBenchRecipe>> {
     public static final RecipeType<RecipeHolder<HeavyWorkBenchRecipe>> TYPE = RecipeType.createRecipeHolderType(Confluence.asResource("heavy_work_bench"));
@@ -83,16 +80,7 @@ public class HeavyWorkBenchCategory implements IRecipeCategory<RecipeHolder<Heav
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<HeavyWorkBenchRecipe> recipe, IFocusGroup focuses) {
-        ShapedRecipePattern pattern = recipe.value().either.orThrow();
-        int width = pattern.width();
-        int height = pattern.height();
-        boolean symmetrical = pattern.symmetrical;
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                addInput(builder, j * 18 + 6, i * 18 + 5, recipe.value().ingredients.get(symmetrical ? width - j - 1 + i * width : j + i * width));
-            }
-        }
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 117, 33).addItemStack(recipe.value().getResultItem(null));
+        ModJeiPlugin.setEitherRecipe4x(builder, recipe);
     }
 
     @Override

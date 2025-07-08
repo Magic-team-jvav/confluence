@@ -105,7 +105,8 @@ public class HeavyWorkBenchMenu extends EitherAmountContainerMenu4x<EnvironmentR
 
     @Override
     public void setupResultSlot() {
-        inner: {
+        inner:
+        {
             int index = selectedRecipeIndex.get();
             if (isValidRecipeIndex(index)) {
                 int recipesSize = recipes.size();
@@ -144,7 +145,9 @@ public class HeavyWorkBenchMenu extends EitherAmountContainerMenu4x<EnvironmentR
         @Override
         public void onTake(Player player, ItemStack stack) {
             if (recipe != null) {
-                AbstractAmountRecipe.consumeShaped(input, 4, 4, recipe.either.orThrow());
+                recipe.either
+                        .ifLeft(pattern -> AbstractAmountRecipe.consumeShaped(input, 4, 4, pattern))
+                        .ifRight(ingredients -> AbstractAmountRecipe.consumeShapeless(input, ingredients));
                 input.setChanged();
                 updateMenu();
             }

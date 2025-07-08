@@ -29,7 +29,7 @@ public class MeteorSet extends EquipmentSet {
                         VanillaEquippable.FEET, ArmorItems.METEOR_BOOTS
                 ).bindHook(ModHookTypes.MANA_CONSUME.get(), (owner, itemStack, original) -> {
                     if (itemStack.is(ManaWeaponItems.SPACE_GUN.get())) {
-                        return () -> 0.0F;
+                        return () -> 0;
                     }
                     return original;
                 }).build());

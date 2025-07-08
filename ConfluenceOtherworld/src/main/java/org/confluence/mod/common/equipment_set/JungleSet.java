@@ -41,7 +41,7 @@ public class JungleSet extends EquipmentSet {
                         VanillaEquippable.LEGS, ArmorItems.JUNGLE_LEGGINGS,
                         VanillaEquippable.FEET, ArmorItems.JUNGLE_BOOTS
                 )
-                .bindHook(ModHookTypes.MANA_CONSUME.get(), (owner, itemStack, original) -> () -> original.get() * 0.84F)
+                .bindHook(ModHookTypes.MANA_CONSUME.get(), (owner, itemStack, original) -> () -> original.getAsFloat() * 0.84F)
                 .build());
     }
 }

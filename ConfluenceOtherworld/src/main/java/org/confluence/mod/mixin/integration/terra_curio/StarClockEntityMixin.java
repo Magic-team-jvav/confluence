@@ -14,7 +14,7 @@ public abstract class StarClockEntityMixin {
     @Inject(method = "onHitEntity", at= @At(value = "INVOKE", target = "Lorg/confluence/lib/util/LibUtils;forMixin$Inject()V"))
     private void receiveMana(EntityHitResult pResult, CallbackInfo ci) {
         if (pResult.getEntity() instanceof ServerPlayer serverPlayer) {
-            PlayerUtils.receiveMana(serverPlayer, () -> 50.0F);
+            PlayerUtils.receiveMana(serverPlayer, () -> 50);
         }
     }
 }

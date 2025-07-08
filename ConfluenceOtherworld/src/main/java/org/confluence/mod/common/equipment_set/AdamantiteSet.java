@@ -80,7 +80,7 @@ public class AdamantiteSet extends EquipmentSet {
                         VanillaEquippable.LEGS, ArmorItems.ADAMANTITE_LEGGINGS,
                         VanillaEquippable.FEET, ArmorItems.ADAMANTITE_BOOTS
                 )
-                .bindHook(ModHookTypes.MANA_CONSUME.get(), (owner, itemStack, original) -> () -> original.get() * 0.81F)
+                .bindHook(ModHookTypes.MANA_CONSUME.get(), (owner, itemStack, original) -> () -> original.getAsFloat() * 0.81F)
                 .build());
     }
 }

@@ -1,7 +1,7 @@
 package org.confluence.mod.util;
 
-import com.google.common.collect.Streams;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -16,33 +16,26 @@ import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModEnchantments;
 
-import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Stream;
+import java.util.List;
+import java.util.Optional;
 
 import static net.minecraft.world.item.enchantment.Enchantment.*;
 import static net.minecraft.world.item.enchantment.EnchantmentHelper.runIterationOnItem;
 
 public final class EnchantmentUtils {
-    public static final Function<EquipmentSlot.Type, EquipmentSlot[]> slotsByType = new Function<>() {
-        private final EnumMap<EquipmentSlot.Type, EquipmentSlot[]> cache = createCache();
-
-        @Override
-        public EquipmentSlot[] apply(EquipmentSlot.Type type) {
-            return cache.get(type);
-        }
-
-        private static EnumMap<EquipmentSlot.Type, EquipmentSlot[]> createCache() {
-            Map<EquipmentSlot.Type, ArrayList<EquipmentSlot>> map = new HashMap<>();
-            for (EquipmentSlot slot : EquipmentSlot.values()) {
-                map.computeIfAbsent(slot.getType(), type -> new ArrayList<>()).add(slot);
-            }
-            EnumMap<EquipmentSlot.Type, EquipmentSlot[]> enumMap = new EnumMap<>(EquipmentSlot.Type.class);
-            map.forEach((type, slots) -> enumMap.put(type, slots.toArray(EquipmentSlot[]::new)));
-            return enumMap;
-        }
+    public static final EquipmentSlot[] HUMANOID_ARMOR = new EquipmentSlot[]{
+            EquipmentSlot.HEAD,
+            EquipmentSlot.CHEST,
+            EquipmentSlot.LEGS,
+            EquipmentSlot.FEET
     };
-    public static final EquipmentSlot[] HUMANOID_ARMOR_AND_MAIN_HAND = Streams.concat(Arrays.stream(slotsByType.apply(EquipmentSlot.Type.HUMANOID_ARMOR)), Stream.of(EquipmentSlot.MAINHAND)).toArray(EquipmentSlot[]::new);
+    public static final EquipmentSlot[] HUMANOID_ARMOR_AND_MAIN_HAND = new EquipmentSlot[]{
+            EquipmentSlot.HEAD,
+            EquipmentSlot.CHEST,
+            EquipmentSlot.LEGS,
+            EquipmentSlot.FEET,
+            EquipmentSlot.MAINHAND
+    };
 
     public static float processManaRegeneration(ServerPlayer player) {
         MutableFloat value = new MutableFloat(1);
@@ -83,7 +76,7 @@ public final class EnchantmentUtils {
         ItemStack itemStack = player.getMainHandItem();
         EnchantedItemInUse item = new EnchantedItemInUse(itemStack, EquipmentSlot.MAINHAND, player);
         runIterationOnItem(itemStack, (enchantment, level) -> {
-            for (TargetedConditionalEffect<EnchantmentEntityEffect> effect : enchantment.value().getEffects(ModEnchantments.EffectComponentTypes.ATTACK_DROPS_STAR.get())) {
+            for (TargetedConditionalEffect<EnchantmentEntityEffect> effect : enchantment.value().getEffects(ModEnchantments.EffectComponentTypes.ATTACK_DROPS_MANA.get())) {
                 if (effect.enchanted() == EnchantmentTarget.ATTACKER) {
                     doPostAttack(effect, player.serverLevel(), level, item, victim, damageSource);
                 }
@@ -98,5 +91,25 @@ public final class EnchantmentUtils {
                 ModEnchantments.EffectComponentTypes.MANA_SICKNESS_DURATION_REDUCE.get(), player.serverLevel(), level, itemStack, player, ratio
         ));
         return (int) (duration * Math.max(0, ratio.floatValue()));
+    }
+
+    public static float processManaProtection(ServerPlayer player, DamageSource damageSource, float amount) {
+        if (damageSource.is(DamageTypeTags.BYPASSES_ENCHANTMENTS)) return amount;
+        MutableFloat ratio = new MutableFloat();
+        for (EquipmentSlot slot : HUMANOID_ARMOR) {
+            ItemStack itemStack = player.getItemBySlot(slot);
+            runIterationOnItem(itemStack, (enchantment, level) -> enchantment.value().modifyDamageFilteredValue(
+                    ModEnchantments.EffectComponentTypes.MANA_PROTECTION.get(), player.serverLevel(), level, itemStack, player, damageSource, ratio
+            ));
+        }
+        if (ratio.floatValue() <= 0) return amount;
+        ManaStorage manaStorage = player.getData(ModAttachmentTypes.MANA_STORAGE);
+        float clamp = 1 - Mth.clamp(ratio.floatValue(), 0, 0.8F);
+        if (manaStorage.forceExtractMana(() -> manaStorage.getMaxMana() * clamp)) {
+            manaStorage.setRegenerateDelay();
+            PlayerUtils.syncMana2Client(player, manaStorage);
+            return amount * clamp;
+        }
+        return amount;
     }
 }

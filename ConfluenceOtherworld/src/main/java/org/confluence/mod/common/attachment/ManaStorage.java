@@ -4,6 +4,7 @@ import com.xiaohunao.equipment_benediction.common.hook.HookMapManager;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.INBTSerializable;
 import org.confluence.mod.api.event.AdditionalManaEvent;
@@ -11,10 +12,9 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModHookTypes;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.util.EnchantmentUtils;
+import org.confluence.mod.util.FloatSupplier;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.util.TCUtils;
-
-import java.util.function.Supplier;
 
 public class ManaStorage implements INBTSerializable<CompoundTag> {
     private int stars;
@@ -57,18 +57,26 @@ public class ManaStorage implements INBTSerializable<CompoundTag> {
         this.arcaneCrystalUsed = nbt.getBoolean("arcaneCrystalUsed");
     }
 
-    public boolean receiveMana(Supplier<Float> sup) {
+    public boolean receiveMana(FloatSupplier sup) {
         if (!canReceive()) return false;
-        this.currentMana = Math.min(getMaxMana(), sup.get() + currentMana);
+        this.currentMana = Math.min(getMaxMana(), sup.getAsFloat() + currentMana);
         return true;
     }
 
-    public boolean extractMana(Supplier<Float> sup, ServerPlayer serverPlayer) {
+    public boolean extractMana(FloatSupplier sup, ServerPlayer serverPlayer) {
         if (!canExtract()) return false;
-        float extract = sup.get() * (1.0F - TCUtils.getAccessoriesValue(serverPlayer, AccessoryItems.MANA$USE$REDUCE));
+        float extract = sup.getAsFloat() * (1.0F - TCUtils.getAccessoriesValue(serverPlayer, AccessoryItems.MANA$USE$REDUCE));
         if (PlayerUtils.applyAutoGetMana(serverPlayer, currentMana, extract)) return false;
         this.currentMana -= extract;
         EnchantmentUtils.repairPlayerItems(serverPlayer, extract);
+        return true;
+    }
+
+    public boolean forceExtractMana(FloatSupplier sup) {
+        if (!canExtract()) return false;
+        float extract = sup.getAsFloat();
+        if (currentMana < extract) return false;
+        this.currentMana -= extract;
         return true;
     }
 
@@ -82,6 +90,10 @@ public class ManaStorage implements INBTSerializable<CompoundTag> {
 
     public void setRegenerateDelay(int regenerateDelay) {
         this.regenerateDelay = regenerateDelay;
+    }
+
+    public void setRegenerateDelay() {
+        this.regenerateDelay = Mth.ceil(0.7F * ((1 - currentMana / getMaxMana()) * 240 + 45));
     }
 
     public int getMaxMana() {

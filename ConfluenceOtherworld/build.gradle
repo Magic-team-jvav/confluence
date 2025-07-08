@@ -265,6 +265,11 @@ dependencies {
     //runtimeOnly "curse.maven:display-delight-1144296:5964213"
     //runtimeOnly "curse.maven:dynamictrees-252818:6360173"
     //runtimeOnly "maven.modrinth:modernfix:JNjN5X7g"
+    if (true) {
+        runtimeOnly "curse.maven:enchantment-descriptions-250419:6348560"
+        runtimeOnly "curse.maven:bookshelf-228525:6717571"
+        runtimeOnly "curse.maven:prickle-1023259:6546240"
+    }
     if (false) {
         runtimeOnly "curse.maven:immersive-portals-for-forge-355440:6013197"
         runtimeOnly "curse.maven:cloth-config-348521:5729127"

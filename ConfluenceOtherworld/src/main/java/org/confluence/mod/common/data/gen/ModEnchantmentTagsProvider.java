@@ -22,7 +22,10 @@ public class ModEnchantmentTagsProvider extends EnchantmentTagsProvider {
         tag(EnchantmentTags.TOOLTIP_ORDER).add(
                 ModEnchantments.MANA_REGENERATION,
                 ModEnchantments.EFFICIENT_MAGIC,
-                ModEnchantments.MANA_MENDING
+                ModEnchantments.MANA_MENDING,
+                ModEnchantments.CELESTIAL_ABSORPTION,
+                ModEnchantments.SOOTHED_MANA,
+                ModEnchantments.ARCANE_PROTECTION
         );
 
         tag(ModTags.Enchantments.MANA_IO_EXCLUSIVE).add(ModEnchantments.MANA_REGENERATION, ModEnchantments.EFFICIENT_MAGIC);
@@ -31,6 +34,11 @@ public class ModEnchantmentTagsProvider extends EnchantmentTagsProvider {
         tag(EnchantmentTags.TREASURE).add(ModEnchantments.MANA_MENDING, ModEnchantments.CELESTIAL_ABSORPTION);
         tag(EnchantmentTags.ON_RANDOM_LOOT).add(ModEnchantments.MANA_MENDING);
         tag(EnchantmentTags.TRADEABLE).add(ModEnchantments.MANA_MENDING);
-        tag(EnchantmentTags.NON_TREASURE).add(ModEnchantments.MANA_REGENERATION, ModEnchantments.EFFICIENT_MAGIC);
+        tag(EnchantmentTags.NON_TREASURE).add(
+                ModEnchantments.MANA_REGENERATION,
+                ModEnchantments.EFFICIENT_MAGIC,
+                ModEnchantments.ARCANE_PROTECTION
+        );
+        tag(EnchantmentTags.ARMOR_EXCLUSIVE).add(ModEnchantments.ARCANE_PROTECTION);
     }
 }

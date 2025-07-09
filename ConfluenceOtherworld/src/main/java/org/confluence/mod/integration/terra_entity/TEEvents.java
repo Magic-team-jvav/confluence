@@ -4,12 +4,15 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.CrossbowItem;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import org.confluence.lib.color.GlobalColors;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.menu.NPCTradesForgeMenu;
 import org.confluence.mod.integration.terra_entity.brain.ConfluenceDemolitionistNPCAi;
 import org.confluence.mod.integration.terra_entity.init.ModEffectStrategies;
@@ -37,8 +40,17 @@ public class TEEvents {
             if (npc.getTradeManager() != null) {
                 npc.getTradeManager().reCheckAvailableTrades(player);
             }
-            boolean canForge = npc.getType() == TENpcEntities.GOBLIN_TINKERER.get();
-            player.openMenu(new SimpleMenuProvider((id, inventory, player1) -> new NPCTradesForgeMenu(id, inventory, npc, canForge), Component.translatable("container.confluence.npc_shop")));
+            EntityType<?> type = npc.getType();
+            player.openMenu(new SimpleMenuProvider((id, inventory, player1) -> new NPCTradesForgeMenu(id, inventory, npc, type == TENpcEntities.GOBLIN_TINKERER.get()), Component.translatable("container.confluence.npc_shop")));
+            IAbstractTerraNPC terraNPC = IAbstractTerraNPC.of(npc);
+            if (terraNPC.confluence$shouldInteract()) {
+                terraNPC.confluence$setShouldInteract(false);
+                if (type == TENpcEntities.MECHANIC.get()) { // 仅设置NPC的区域，不标记alive（机械师不在区域内时会自动移除）
+                    terraNPC.confluence$setRegion(new NPCSpawner.Region(NPCSpawner.getNpcSpawnPos(player)));
+                    NPCSpawner.INSTANCE.applyBenedictions(npc);
+                    NPCSpawner.broadcastMessageToRegion(player.level(), npc, Component.translatable("event.confluence.npc.arrived", type.getDescription(), npc.getName()).withColor(GlobalColors.NPC_ARRIVED.get()));
+                }
+            }
             event.setResult(InteractionResult.CONSUME_PARTIAL);
         });
     }

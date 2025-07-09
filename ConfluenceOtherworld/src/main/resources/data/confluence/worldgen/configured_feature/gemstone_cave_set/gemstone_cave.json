@@ -1,0 +1,60 @@
+{
+  "type": "minecraft:random_selector",
+  "config": {
+    "default": "confluence:gemstone_cave_checked_0",
+    "features": [
+      {
+        "chance": 0.07,
+        "feature": "confluence:gemstone_cave_checked_1"
+      },
+      {
+        "chance": 0.07,
+        "feature": "confluence:gemstone_cave_checked_2"
+      },
+      {
+        "chance": 0.07,
+        "feature": "confluence:gemstone_cave_checked_3"
+      },
+      {
+        "chance": 0.07,
+        "feature": "confluence:gemstone_cave_checked_4"
+      },
+      {
+        "chance": 0.07,
+        "feature": "confluence:gemstone_cave_checked_5"
+      },
+      {
+        "chance": 0.07,
+        "feature": "confluence:gemstone_cave_checked_6"
+      },
+      {
+        "chance": 0.07,
+        "feature": "confluence:gemstone_cave_checked_7"
+      },
+      {
+        "chance": 0.07,
+        "feature": "confluence:gemstone_cave_checked_8"
+      },
+      {
+        "chance": 0.07,
+        "feature": "confluence:gemstone_cave_checked_9"
+      },
+      {
+        "chance": 0.07,
+        "feature": "confluence:gemstone_cave_checked_10"
+      },
+      {
+        "chance": 0.07,
+        "feature": "confluence:gemstone_cave_checked_11"
+      },
+      {
+        "chance": 0.07,
+        "feature": "confluence:gemstone_cave_checked_12"
+      },
+      {
+        "chance": 0.07,
+        "feature": "confluence:gemstone_cave_checked_13"
+      }
+    ]
+  }
+}

@@ -407,6 +407,8 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(POLISHED_GRANITE.get());
         dropSelf(GRANITE_COLUMN.get());
 
+        dropSelf(ASPHALT_BLOCK.get());
+
         dropSelf(CHISELED_OBSIDIAN_BRICKS.get());
         dropSelf(BLUE_BRICKS.get());
         dropSelf(GREEN_BRICKS.get());

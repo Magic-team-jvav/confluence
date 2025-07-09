@@ -1,0 +1,12 @@
+{
+    "type": "neoforge:add_spawns",
+    "biomes": "#c:is_river",
+    "spawners": [
+        {
+            "type": "terra_entity:duck",
+            "weight": 30,
+            "minCount": 1,
+            "maxCount": 4
+        }
+    ]
+}

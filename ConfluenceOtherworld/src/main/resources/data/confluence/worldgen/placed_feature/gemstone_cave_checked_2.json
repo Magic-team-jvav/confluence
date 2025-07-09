@@ -1,0 +1,20 @@
+{
+  "feature": "confluence:gemstone_cave_checked_2",
+  "placement": [
+    {
+      "type": "minecraft:block_predicate_filter",
+      "predicate": {
+        "type": "minecraft:matching_blocks",
+        "blocks": [
+          "minecraft:stone",
+          "minecraft:diorite",
+          "minecraft:tuff",
+          "minecraft:granite",
+          "minecraft:deepslate",
+          "minecraft:andesite",
+          "minecraft:dirt"
+        ]
+      }
+    }
+  ]
+}

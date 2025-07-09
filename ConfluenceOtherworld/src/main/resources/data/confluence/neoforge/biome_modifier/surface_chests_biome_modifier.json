@@ -39,7 +39,8 @@
     "minecraft:dripstone_caves"
   ],
   "features": [
-    "confluence:surface_chests"
+    "confluence:surface_chests",
+    "confluence:gemstone_cave"
   ],
   "step": "underground_decoration"
 }

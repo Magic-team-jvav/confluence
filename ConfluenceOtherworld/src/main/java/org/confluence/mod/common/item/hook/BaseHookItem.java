@@ -65,7 +65,7 @@ public class BaseHookItem extends Item {
             extraInventory.setChanged();
         });
         if (this instanceof IHookFastThrow) return list.size() <= getHookAmount();
-        return !list.isEmpty() && list.stream().allMatch(tag -> {
+        return list.isEmpty() || list.stream().allMatch(tag -> {
             AbstractHookEntity hookEntity = getHookEntity(tag, level);
             return hookEntity == null || hookEntity.getHookState() == AbstractHookEntity.HookState.HOOKED;
         });

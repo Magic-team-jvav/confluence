@@ -112,4 +112,22 @@ public final class EnchantmentUtils {
         }
         return amount;
     }
+
+    public static float processMagicAttack(ServerPlayer player, DamageSource damageSource, float amount) {
+        ItemStack itemStack = player.getMainHandItem();
+        MutableFloat lm = new MutableFloat();
+        runIterationOnItem(itemStack, (enchantment, level) -> enchantment.value().modifyDamageFilteredValue(
+                ModEnchantments.EffectComponentTypes.LESS_MANA_MORE_ATTACK.get(), player.serverLevel(), level, itemStack, player, damageSource, lm
+        ));
+        MutableFloat mm = new MutableFloat();
+        runIterationOnItem(itemStack, (enchantment, level) -> enchantment.value().modifyDamageFilteredValue(
+                ModEnchantments.EffectComponentTypes.MORE_MANA_MORE_ATTACK.get(), player.serverLevel(), level, itemStack, player, damageSource, mm
+        ));
+        if (lm.floatValue() > 0 || mm.floatValue() > 0) {
+            ManaStorage manaStorage = player.getData(ModAttachmentTypes.MANA_STORAGE);
+            float ratio = manaStorage.getCurrentMana() / manaStorage.getMaxMana();
+            return amount + amount * ((1 - ratio) * lm.floatValue() + ratio * mm.floatValue());
+        }
+        return amount;
+    }
 }

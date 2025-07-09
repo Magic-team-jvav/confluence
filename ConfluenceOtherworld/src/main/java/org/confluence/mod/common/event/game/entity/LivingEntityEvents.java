@@ -185,6 +185,7 @@ public final class LivingEntityEvents {
 
         if (attacker instanceof ServerPlayer player) {
             EnchantmentUtils.dropsStar(player, victim, damageSource);
+            amount = EnchantmentUtils.processMagicAttack(player, damageSource, amount);
         }
         if (victim instanceof ServerPlayer player) {
             amount = EnchantmentUtils.processManaProtection(player, damageSource, amount);

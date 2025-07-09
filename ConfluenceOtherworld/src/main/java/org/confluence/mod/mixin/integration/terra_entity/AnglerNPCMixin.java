@@ -29,10 +29,10 @@ public abstract class AnglerNPCMixin implements SelfGetter<AnglerNPC> {
     }
 
     @Inject(method = "checkDespawn", at = @At("TAIL"))
-    private void onRemove(CallbackInfo ci) {
+    private void onRemove(CallbackInfo ci) { // 由于未交互的渔夫会被自然刷新走，因此不会触发setNPCAlive，需手动触发
         AnglerNPC npc = confluence$self();
         if (npc.isRemoved()) {
-            NPCSpawner.INSTANCE.setNPCAlive(((IAbstractTerraNPC) npc).confluence$getRegion(), npc.getType(), false);
+            NPCSpawner.INSTANCE.setNPCAlive(IAbstractTerraNPC.of(npc).confluence$getRegion(), npc.getType(), false);
         }
     }
 }

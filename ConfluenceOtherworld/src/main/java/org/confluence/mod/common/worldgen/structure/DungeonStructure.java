@@ -43,6 +43,7 @@ import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.mixed.IStructureStart;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terraentity.entity.boss.DungeonGuardian;
 import org.confluence.terraentity.init.TESounds;
@@ -50,73 +51,74 @@ import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.joml.Vector3d;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 import static org.confluence.lib.util.StructureUtils.*;
 import static org.confluence.lib.util.VectorUtils.*;
 
 public class DungeonStructure extends Structure {
     public static final String[] TYPES = new String[]{
-            "blue",
-            "green",
-            "pink"
+            "dungeon/blue",
+            "dungeon/green",
+            "dungeon/pink"
     };
     public static final String TYPE = TYPES[0];
     public static final MapCodec<DungeonStructure> CODEC = simpleCodec(DungeonStructure::new);
     public static final String[] HOUSES = new String[]{
-            "dungeon/" + TYPE + "_house_0",
-            "dungeon/" + TYPE + "_house_1",
-            "dungeon/" + TYPE + "_house_2",
-            "dungeon/" + TYPE + "_house_3",
-            "dungeon/" + TYPE + "_house_4",
-            "dungeon/" + TYPE + "_house_5",
-            "dungeon/" + TYPE + "_house_6"
+            TYPE + "_house_0",
+            TYPE + "_house_1",
+            TYPE + "_house_2",
+            TYPE + "_house_3",
+            TYPE + "_house_4",
+            TYPE + "_house_5",
+            TYPE + "_house_6"
     };
     public static final String[] CORNERS = new String[]{
-            "dungeon/" + TYPE + "_house_corner_0",
-            "dungeon/" + TYPE + "_house_corner_1"
+            TYPE + "_house_corner_0",
+            TYPE + "_house_corner_1"
     };
     public static final String[] CORNERS_IN = new String[]{
-            "dungeon/" + TYPE + "_house_corner_in_0",
-            "dungeon/" + TYPE + "_house_corner_in_1",
-            "dungeon/" + TYPE + "_house_corner_in_2",
-            "dungeon/" + TYPE + "_house_corner_in_3",
-            "dungeon/" + TYPE + "_house_corner_in_4",
-            "dungeon/" + TYPE + "_house_corner_in_5"
+            TYPE + "_house_corner_in_0",
+            TYPE + "_house_corner_in_1",
+            TYPE + "_house_corner_in_2",
+            TYPE + "_house_corner_in_3",
+            TYPE + "_house_corner_in_4",
+            TYPE + "_house_corner_in_5"
     };
     public static final String[] BRIDGE = new String[]{
-            "dungeon/" + TYPE + "_bridge_0",
-            "dungeon/" + TYPE + "_bridge_1"
+            TYPE + "_bridge_0",
+            TYPE + "_bridge_1"
     };
-    public static final String STAIRS = "dungeon/" + TYPE + "_stairs";
-    public static final String STAIRS_DOWN = "dungeon/" + TYPE + "_stairs_down";
-    public static final String GATE = "dungeon/" + TYPE + "_dungeon_gate";
+    public static final String STAIRS = TYPE + "_stairs";
+    public static final String STAIRS_DOWN = TYPE + "_stairs_down";
+    public static final String GATE = TYPE + "_dungeon_gate";
     private static final ResourceLocation[] GROUND_FEATURE = new ResourceLocation[]{
             Confluence.asResource("to_structure/dungeon_lost_paper"),
             Confluence.asResource("to_structure/dungeon_pot"),
             Confluence.asResource("to_structure/remains_block")
     };
 
-    public static final String UG_0_1 = "dungeon/" + TYPE + "_dungeon_underground_0_1";
-    public static final String UG_0_2 = "dungeon/" + TYPE + "_dungeon_underground_0_2";
-    public static final String UG_0_3 = "dungeon/" + TYPE + "_dungeon_underground_0_3";
-    public static final String UG_1_0 = "dungeon/" + TYPE + "_dungeon_underground_1_0";
-    public static final String UG_1_1 = "dungeon/" + TYPE + "_dungeon_underground_1_1";
-    public static final String UG_1_2 = "dungeon/" + TYPE + "_dungeon_underground_1_2";
-    public static final String UG_1_3 = "dungeon/" + TYPE + "_dungeon_underground_1_3";
-    public static final String UG_1_4 = "dungeon/" + TYPE + "_dungeon_underground_1_4";
-    public static final String UG_2_0 = "dungeon/" + TYPE + "_dungeon_underground_2_0";
-    public static final String UG_2_1 = "dungeon/" + TYPE + "_dungeon_underground_2_1";
-    public static final String UG_2_2 = "dungeon/" + TYPE + "_dungeon_underground_2_2";
-    public static final String UG_2_3 = "dungeon/" + TYPE + "_dungeon_underground_2_3";
-    public static final String UG_2_4 = "dungeon/" + TYPE + "_dungeon_underground_2_4";
-    public static final String UG_3_0 = "dungeon/" + TYPE + "_dungeon_underground_3_0";
-    public static final String UG_3_1 = "dungeon/" + TYPE + "_dungeon_underground_3_1";
-    public static final String UG_3_2 = "dungeon/" + TYPE + "_dungeon_underground_3_2";
-    public static final String UG_3_3 = "dungeon/" + TYPE + "_dungeon_underground_3_3";
-    public static final String UG_3_4 = "dungeon/" + TYPE + "_dungeon_underground_3_4";
-    public static final String UG_4_1 = "dungeon/" + TYPE + "_dungeon_underground_4_1";
-    public static final String UG_4_2 = "dungeon/" + TYPE + "_dungeon_underground_4_2";
-    public static final String UG_4_3 = "dungeon/" + TYPE + "_dungeon_underground_4_3";
+    public static final String UG_0_1 = TYPE + "_dungeon_underground_0_1";
+    public static final String UG_0_2 = TYPE + "_dungeon_underground_0_2";
+    public static final String UG_0_3 = TYPE + "_dungeon_underground_0_3";
+    public static final String UG_1_0 = TYPE + "_dungeon_underground_1_0";
+    public static final String UG_1_1 = TYPE + "_dungeon_underground_1_1";
+    public static final String UG_1_2 = TYPE + "_dungeon_underground_1_2";
+    public static final String UG_1_3 = TYPE + "_dungeon_underground_1_3";
+    public static final String UG_1_4 = TYPE + "_dungeon_underground_1_4";
+    public static final String UG_2_0 = TYPE + "_dungeon_underground_2_0";
+    public static final String UG_2_1 = TYPE + "_dungeon_underground_2_1";
+    public static final String UG_2_2 = TYPE + "_dungeon_underground_2_2";
+    public static final String UG_2_3 = TYPE + "_dungeon_underground_2_3";
+    public static final String UG_2_4 = TYPE + "_dungeon_underground_2_4";
+    public static final String UG_3_0 = TYPE + "_dungeon_underground_3_0";
+    public static final String UG_3_1 = TYPE + "_dungeon_underground_3_1";
+    public static final String UG_3_2 = TYPE + "_dungeon_underground_3_2";
+    public static final String UG_3_3 = TYPE + "_dungeon_underground_3_3";
+    public static final String UG_3_4 = TYPE + "_dungeon_underground_3_4";
+    public static final String UG_4_1 = TYPE + "_dungeon_underground_4_1";
+    public static final String UG_4_2 = TYPE + "_dungeon_underground_4_2";
+    public static final String UG_4_3 = TYPE + "_dungeon_underground_4_3";
 
     public DungeonStructure(StructureSettings settings) {
         super(settings);
@@ -149,7 +151,6 @@ public class DungeonStructure extends Structure {
 
             Rotation rotation = Util.getRandom(Rotation.values(), random);
             List<Vector3d> firstChannel = new ArrayList<>();
-            List<Vector3d> tntPos = new ArrayList<>();
             IntArrayList housesList = new IntArrayList();
             int goldenCount = random.nextInt(7, 9);
             int commonCount = random.nextInt(5, 7);
@@ -199,34 +200,25 @@ public class DungeonStructure extends Structure {
                 rectangular(mazeRotatePos.offset(-6, -1, -6), mazeRotatePos.offset(6, -1, 6), 4, blockMap, 0);
                 rectangular(mazeRotatePos.offset(-6, -1, -6), mazeRotatePos.offset(6, -1, 6), 16, blockMap, 0, 0.03F, random);
                 rectangular(mazeRotatePos.offset(-5, -1, -5), mazeRotatePos.offset(5, -1, 5), 5, blockMap, 0);
-                tntPos.addAll(rectangularPos(mazeRotatePos.offset(-5, -1, -5), mazeRotatePos.offset(5, -1, 5), 0.005F, random));
                 if (value.get(0)) {
                     rectangular(mazeRotatePos.offset(7, -1, -6), mazeRotatePos.offset(20, -1, 6), 4, blockMap, 0);
                     rectangular(mazeRotatePos.offset(7, -1, -6), mazeRotatePos.offset(20, -1, 6), 16, blockMap, 0, 0.03F, random);
                     rectangular(mazeRotatePos.offset(6, -1, -5), mazeRotatePos.offset(20, -1, 5), 5, blockMap, 0);
-                    tntPos.addAll(rectangularPos(mazeRotatePos.offset(6, -1, -5), mazeRotatePos.offset(20, -1, 5), 0.005F, random));
                 }
                 if (value.get(1)) {
                     rectangular(mazeRotatePos.offset(-6, -1, 7), mazeRotatePos.offset(6, -1, 20), 4, blockMap, 0);
                     rectangular(mazeRotatePos.offset(-6, -1, 7), mazeRotatePos.offset(6, -1, 20), 16, blockMap, 0, 0.03F, random);
                     rectangular(mazeRotatePos.offset(-5, -1, 6), mazeRotatePos.offset(5, -1, 20), 5, blockMap, 0);
-                    tntPos.addAll(rectangularPos(mazeRotatePos.offset(-5, -1, 6), mazeRotatePos.offset(5, -1, 20), 0.005F, random));
                 }
                 if (value.get(2)) {
                     rectangular(mazeRotatePos.offset(-7, -1, -6), mazeRotatePos.offset(-20, -1, 6), 4, blockMap, 0);
                     rectangular(mazeRotatePos.offset(-7, -1, -6), mazeRotatePos.offset(-20, -1, 6), 16, blockMap, 0, 0.03F, random);
                     rectangular(mazeRotatePos.offset(-6, -1, -5), mazeRotatePos.offset(-20, -1, 5), 5, blockMap, 0);
-                    tntPos.addAll(rectangularPos(mazeRotatePos.offset(-6, -1, -5), mazeRotatePos.offset(-20, -1, 5), 0.005F, random));
                 }
                 if (value.get(3)) {
                     rectangular(mazeRotatePos.offset(-6, -1, -7), mazeRotatePos.offset(6, -1, -20), 4, blockMap, 0);
                     rectangular(mazeRotatePos.offset(-6, -1, -7), mazeRotatePos.offset(6, -1, -20), 16, blockMap, 0, 0.03F, random);
                     rectangular(mazeRotatePos.offset(-5, -1, -6), mazeRotatePos.offset(5, -1, -20), 5, blockMap, 0);
-                    tntPos.addAll(rectangularPos(mazeRotatePos.offset(-5, -1, -6), mazeRotatePos.offset(5, -1, -20), 0.005F, random));
-                }
-                for (Vector3d pos : tntPos) {
-                    blockMap.put(BlockPos.containing(pos.x, pos.y + 1, pos.z), 17);
-                    blockMap.put(BlockPos.containing(pos.x, pos.y, pos.z), 18);
                 }
 
                 if (!value.get(0)) {
@@ -594,54 +586,43 @@ public class DungeonStructure extends Structure {
 
     public static void checkSkeletronDefeated(ServerPlayer player, ServerLevel level) {
         if (KillBoard.INSTANCE.getGamePhase() == GamePhase.BEFORE_SKELETRON && player.isAlive() && player.gameMode.getGameModeForPlayer().isSurvival() && level.getGameTime() % 100 == 1) {
-            Structure structure = level.registryAccess().registryOrThrow(Registries.STRUCTURE).get(ModStructures.DUNGEON_KEY);
-            if (structure == null) return;
-
-            ChunkPos chunkPos = player.chunkPosition();
-            LongSet structureRefs = level.getChunk(chunkPos.x, chunkPos.z, ChunkStatus.STRUCTURE_REFERENCES).getReferencesForStructure(structure);
-            for (long packed : structureRefs) {
-                SectionPos sectionPos = SectionPos.of(ChunkPos.getX(packed), level.getMinSection(), ChunkPos.getZ(packed));
-                StructureStart structureStart = level.structureManager().getStartForStructure(sectionPos, structure, level.getChunk(sectionPos.x(), sectionPos.z(), ChunkStatus.STRUCTURE_STARTS));
-                if (structureStart == null || !structureStart.isValid()) continue;
-
-                BoundingBox boundingBox = structureStart.getBoundingBox(); // getBoundingBox已优化过缓存
+            iterateDungeon(level, player.chunkPosition(), structureStart -> {
+                BoundingBox boundingBox = IStructureStart.of(structureStart).confluence$cachedBoundingBox();
                 boolean shouldAlert = CommonConfigs.ALERT_PLAYER_IN_DUNGEON.get();
                 if (boundingBox.isInside(player.blockPosition()) && player.getY() <= boundingBox.minY() + 84) {
                     level.playSound(null, player.blockPosition(), TESounds.ROAR.get(), SoundSource.HOSTILE);
                     if (shouldAlert) {
                         byte alert = LibUtils.getOrCreatePersistedData(player).getByte("confluence:dungeon_guardian_alert");
                         LibUtils.getOrCreatePersistedData(player).putByte("confluence:dungeon_guardian_alert", (byte) (alert + 1));
-                        if (alert < 3) return;
+                        if (alert < 3) return true;
                     }
                     ModUtils.summonBoss(level, player.position(), new DungeonGuardian(TEBossEntities.DUNGEON_GUARDIAN.get(), level));
-                    if (shouldAlert) LibUtils.getOrCreatePersistedData(player).putByte("confluence:dungeon_guardian_alert", (byte) 0);
-                    return;
                 }
                 if (shouldAlert) LibUtils.getOrCreatePersistedData(player).putByte("confluence:dungeon_guardian_alert", (byte) 0);
-            }
+                return true;
+            });
         }
     }
 
     /**
-     * 不允许生成在地牢主体之外的地方
+     * 不允许地牢生物生成在地牢主体之外的地方
      */
     public static boolean skipSpawn(Mob mob, ServerLevel level) {
         if (mob.getType().is(ModTags.EntityTypes.SPAWN_AT_DUNGEON)) {
-            Structure structure = level.registryAccess().registryOrThrow(Registries.STRUCTURE).get(ModStructures.DUNGEON_KEY);
-            if (structure == null) return false;
+            return iterateDungeon(level, mob.chunkPosition(), structureStart -> mob.getY() >= IStructureStart.of(structureStart).confluence$cachedBoundingBox().minY() + 84);
+        }
+        return false;
+    }
 
-            ChunkPos chunkPos = mob.chunkPosition();
-            LongSet structureRefs = level.getChunk(chunkPos.x, chunkPos.z, ChunkStatus.STRUCTURE_REFERENCES).getReferencesForStructure(structure);
-            for (long packed : structureRefs) {
-                SectionPos sectionPos = SectionPos.of(ChunkPos.getX(packed), level.getMinSection(), ChunkPos.getZ(packed));
-                StructureStart structureStart = level.structureManager().getStartForStructure(sectionPos, structure, level.getChunk(sectionPos.x(), sectionPos.z(), ChunkStatus.STRUCTURE_STARTS));
-                if (structureStart == null || !structureStart.isValid()) continue;
-
-                BoundingBox boundingBox = structureStart.getBoundingBox(); // getBoundingBox已优化过缓存
-                if (mob.getY() >= boundingBox.minY() + 84) {
-                    return true;
-                }
-            }
+    public static boolean iterateDungeon(ServerLevel level, ChunkPos chunkPos, Predicate<StructureStart> consumer) {
+        Structure structure = level.registryAccess().registryOrThrow(Registries.STRUCTURE).get(ModStructures.DUNGEON_KEY);
+        if (structure == null) return false;
+        LongSet structureRefs = level.getChunk(chunkPos.x, chunkPos.z, ChunkStatus.STRUCTURE_REFERENCES).getReferencesForStructure(structure);
+        for (long packed : structureRefs) {
+            SectionPos sectionPos = SectionPos.of(ChunkPos.getX(packed), level.getMinSection(), ChunkPos.getZ(packed));
+            StructureStart structureStart = level.structureManager().getStartForStructure(sectionPos, structure, level.getChunk(sectionPos.x(), sectionPos.z(), ChunkStatus.STRUCTURE_STARTS));
+            if (structureStart == null || !structureStart.isValid()) continue;
+            if (consumer.test(structureStart)) return true;
         }
         return false;
     }

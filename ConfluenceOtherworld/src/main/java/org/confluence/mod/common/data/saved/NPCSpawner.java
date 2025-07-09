@@ -2,14 +2,12 @@ package org.confluence.mod.common.data.saved;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.*;
-import it.unimi.dsi.fastutil.longs.LongSet;
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
 import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
@@ -27,11 +25,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.chunk.status.ChunkStatus;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
-import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.neoforged.neoforge.common.Tags;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.common.data.saved.IGlobalData;
@@ -39,15 +33,18 @@ import org.confluence.lib.common.worldgen.structure.SimpleTemplatePiece;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.init.ModAttachmentTypes;
-import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.common.worldgen.structure.DungeonStructure;
 import org.confluence.mod.integration.terra_entity.IAbstractTerraNPC;
+import org.confluence.mod.integration.terra_entity.TEEvents;
+import org.confluence.mod.mixed.IStructureStart;
 import org.confluence.mod.mixin.integration.terra_entity.AnglerNPCMixin;
+import org.confluence.mod.mixin.integration.terra_entity.MechanicNPCMixin;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_guns.common.init.TGTags;
+import org.confluence.terraentity.api.event.NPCEvent;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 import org.confluence.terraentity.entity.npc.AnglerNPC;
 import org.confluence.terraentity.init.entity.TEBossEntities;
@@ -151,7 +148,7 @@ public class NPCSpawner implements IGlobalData {
     }
 
     public void moveNPCToAnotherRegion(AbstractTerraNPC living, Region from, Region to) {
-        IAbstractTerraNPC npc = (IAbstractTerraNPC) living;
+        IAbstractTerraNPC npc = IAbstractTerraNPC.of(living);
         EntityType<?> entityType = living.getType();
         if (hasNPCAlive(from, entityType)) {
             setNPCAlive(from, entityType, false);
@@ -162,7 +159,7 @@ public class NPCSpawner implements IGlobalData {
     }
 
     public void onNPCAdded(AbstractTerraNPC living) {
-        IAbstractTerraNPC npc = (IAbstractTerraNPC) living;
+        IAbstractTerraNPC npc = IAbstractTerraNPC.of(living);
         npc.confluence$setRegion(new Region(living.chunkPosition()));
         setNPCAlive(npc.confluence$getRegion(), living.getType(), true);
         applyBenedictions(living);
@@ -198,6 +195,7 @@ public class NPCSpawner implements IGlobalData {
         npcSpawned.clear();
         tag.get("npc_spawned").orElseEmptyList().read(NPC_SPAWNED_CODEC).ifSuccess(npcSpawned::addAll);
         this.isAdvancedCombatTechniquesUsed = tag.get("advanced_combat_techniques").asBoolean(false);
+        this.isAdvancedCombatTechniquesVolumeTwoUsed = tag.get("advanced_combat_techniques_volume_two").asBoolean(false);
     }
 
     @Override
@@ -211,6 +209,7 @@ public class NPCSpawner implements IGlobalData {
         tag.put("npc_alive", NPC_ALIVE_CODEC.encodeStart(NbtOps.INSTANCE, npcAlive).getOrThrow());
         tag.put("npc_spawned", NPC_SPAWNED_CODEC.encodeStart(NbtOps.INSTANCE, npcSpawned).getOrThrow());
         tag.putBoolean("advanced_combat_techniques", isAdvancedCombatTechniquesUsed);
+        tag.putBoolean("advanced_combat_techniques_volume_two", isAdvancedCombatTechniquesVolumeTwoUsed);
     }
 
     @Override
@@ -223,6 +222,7 @@ public class NPCSpawner implements IGlobalData {
         npcAlive.clear();
         npcSpawned.clear();
         this.isAdvancedCombatTechniquesUsed = false;
+        this.isAdvancedCombatTechniquesVolumeTwoUsed = false;
     }
 
     public void trySpawnGuide(ServerPlayer serverPlayer) {
@@ -244,6 +244,7 @@ public class NPCSpawner implements IGlobalData {
             BlockPos pos = getNpcSpawnPos(player);
             Region region = new Region(pos);
             if (trySpawnClothier(player, pos, region)) continue;
+            if (trySpawnMechanic(player, pos, region)) continue;
             for (EntityType<?> entityType : npcSpawned) {
                 if (!hasNPCAlive(region, entityType) && spawnAtPos(serverLevel, pos, entityType)) {
                     continue outer;
@@ -263,7 +264,6 @@ public class NPCSpawner implements IGlobalData {
             // 发型师
             if (trySpawnGoblinTinkerer(player, pos, region)) continue;
             // 巫医
-            if (trySpawnMechanic(player, pos, region)) continue;
             // 派对女孩
             // 巫师
             // 税收官
@@ -386,27 +386,15 @@ public class NPCSpawner implements IGlobalData {
         return false;
     }
 
-    // todo 等服装商做好
     private boolean trySpawnClothier(ServerPlayer serverPlayer, BlockPos pos, Region region) {
-//        if (!hasNPCAlive(region, TENpcEntities.CLOTHIER.get())) {
-//            if (KillBoard.INSTANCE.getGamePhase().isAboveThan(GamePhase.BEFORE_SKELETRON)) {
-//                return spawnAtPos(serverPlayer.serverLevel(), pos, TENpcEntities.CLOTHIER.get());
-//            }
-//        }
-        if (!KillBoard.INSTANCE.getGamePhase().isAboveThan(GamePhase.BEFORE_SKELETRON)) {
+        if (KillBoard.INSTANCE.getGamePhase().isAboveThan(GamePhase.BEFORE_SKELETRON)) {
+            if (!hasNPCAlive(region, TENpcEntities.CLOTHIER.get())) {
+                return spawnAtPos(serverPlayer.serverLevel(), pos, TENpcEntities.CLOTHIER.get());
+            }
+        } else {
             ServerLevel level = serverPlayer.serverLevel();
-            Structure structure = level.registryAccess().registryOrThrow(Registries.STRUCTURE).get(ModStructures.DUNGEON_KEY);
-            if (structure == null) return false;
-
-            ChunkPos chunkPos = serverPlayer.chunkPosition();
-            LongSet structureRefs = level.getChunk(chunkPos.x, chunkPos.z, ChunkStatus.STRUCTURE_REFERENCES).getReferencesForStructure(structure);
-            for (long packed : structureRefs) {
-                SectionPos sectionPos = SectionPos.of(ChunkPos.getX(packed), level.getMinSection(), ChunkPos.getZ(packed));
-                StructureStart structureStart = level.structureManager().getStartForStructure(sectionPos, structure, level.getChunk(sectionPos.x(), sectionPos.z(), ChunkStatus.STRUCTURE_STARTS));
-                if (structureStart == null || !structureStart.isValid()) continue;
-
-                BoundingBox boundingBox = structureStart.getBoundingBox(); // getBoundingBox已优化过缓存
-                if (boundingBox.isInside(serverPlayer.blockPosition())) {
+            return DungeonStructure.iterateDungeon(level, serverPlayer.chunkPosition(), structureStart -> {
+                if (IStructureStart.of(structureStart).confluence$cachedBoundingBox().isInside(serverPlayer.blockPosition())) {
                     for (StructurePiece piece : structureStart.getPieces()) {
                         if (piece instanceof SimpleTemplatePiece templatePiece && DungeonStructure.GATE.equals(templatePiece.templateName)) {
                             BlockPos offset = switch (templatePiece.getRotation()) {
@@ -429,13 +417,49 @@ public class NPCSpawner implements IGlobalData {
                         }
                     }
                 }
-            }
+                return false;
+            });
         }
         return false;
     }
 
-    // todo
+    /**
+     * 未在区域内的机械师会自动移除（因为机械师距离玩家基地可能很远）
+     *
+     * @see TEEvents#onInteractNpc(NPCEvent.InteractNPCEvent)
+     * @see MechanicNPCMixin
+     */
     private boolean trySpawnMechanic(ServerPlayer serverPlayer, BlockPos pos, Region region) {
+        if (KillBoard.INSTANCE.getGamePhase().isAboveThan(GamePhase.BEFORE_SKELETRON)) {
+            if (!hasNPCAlive(region, TENpcEntities.MECHANIC.get())) {
+                return spawnAtPos(serverPlayer.serverLevel(), pos, TENpcEntities.MECHANIC.get());
+            }
+        } else {
+            ServerLevel level = serverPlayer.serverLevel();
+            return DungeonStructure.iterateDungeon(level, serverPlayer.chunkPosition(), structureStart -> {
+                if (IStructureStart.of(structureStart).confluence$cachedBoundingBox().isInside(serverPlayer.blockPosition())) {
+                    for (StructurePiece piece : structureStart.getPieces()) {
+                        if (piece instanceof SimpleTemplatePiece templatePiece && templatePiece.templateName.endsWith("_dungeon_underground_2_2")) {
+                            BlockPos offset = templatePiece.templatePosition().offset(46, 6, -11);
+                            Region npcRegion = new Region(offset);
+                            if (!hasNPCAlive(npcRegion, TENpcEntities.MECHANIC.get())) {
+                                AbstractTerraNPC npc = TENpcEntities.MECHANIC.get().create(level);
+                                if (npc == null) return false;
+                                npc.setPos(offset.getBottomCenter());
+                                level.addFreshEntity(npc);
+                                IAbstractTerraNPC terraNPC = IAbstractTerraNPC.of(npc);
+                                terraNPC.confluence$setRegion(npcRegion);
+                                terraNPC.confluence$setShouldInteract(true); // 标记需要交互
+                                getRegionAliveDetails(npcRegion).put(TENpcEntities.MECHANIC.get(), true);
+                                return true;
+                            }
+                            return false;
+                        }
+                    }
+                }
+                return false;
+            });
+        }
         return false;
     }
 

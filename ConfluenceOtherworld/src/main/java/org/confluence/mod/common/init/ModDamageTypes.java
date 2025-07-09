@@ -36,7 +36,7 @@ public final class ModDamageTypes {
         return level.damageSources().source(key, direct, causing);
     }
 
-    public static void bootstrap(BootstrapContext<DamageType> context) {
+    public static void bootstrap(BootstrapContext<DamageType> context) { // todo
         TETags.DamageTypes.createDamageTypes(context);
         context.register(SWORD_PROJECTILE, new DamageType("sword_projectile_damage_type", 0.1F));
 

@@ -11,6 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
@@ -30,9 +31,11 @@ import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import org.confluence.lib.common.block.StateProperties;
 import org.confluence.lib.common.worldgen.structure.GridPiece;
+import org.confluence.lib.common.worldgen.structure.SimpleTemplatePiece;
 import org.confluence.lib.util.BooleanStorage4;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.VectorUtils;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.saved.GamePhase;
 import org.confluence.mod.common.data.saved.KillBoard;
@@ -46,14 +49,10 @@ import org.confluence.terraentity.init.TESounds;
 import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.joml.Vector3d;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static org.confluence.lib.util.StructureUtils.*;
-import static org.confluence.lib.util.VectorUtils.listRandom;
-import static org.confluence.lib.util.VectorUtils.mazePos;
+import static org.confluence.lib.util.VectorUtils.*;
 
 public class DungeonStructure extends Structure {
     public static final String[] TYPES = new String[]{
@@ -91,6 +90,11 @@ public class DungeonStructure extends Structure {
     public static final String STAIRS = "dungeon/" + TYPE + "_stairs";
     public static final String STAIRS_DOWN = "dungeon/" + TYPE + "_stairs_down";
     public static final String GATE = "dungeon/" + TYPE + "_dungeon_gate";
+    private static final ResourceLocation[] GROUND_FEATURE = new ResourceLocation[]{
+            Confluence.asResource("to_structure/dungeon_lost_paper"),
+            Confluence.asResource("to_structure/dungeon_pot"),
+            Confluence.asResource("to_structure/remains_block")
+    };
 
     public static final String UG_0_1 = "dungeon/" + TYPE + "_dungeon_underground_0_1";
     public static final String UG_0_2 = "dungeon/" + TYPE + "_dungeon_underground_0_2";
@@ -141,8 +145,11 @@ public class DungeonStructure extends Structure {
             int outRoomSizeHeight = 24;
             int stairsFacing = 0;
 
+            Map<BlockPos, ResourceLocation> featureMap = new HashMap<>();
+
             Rotation rotation = Util.getRandom(Rotation.values(), random);
             List<Vector3d> firstChannel = new ArrayList<>();
+            List<Vector3d> tntPos = new ArrayList<>();
             IntArrayList housesList = new IntArrayList();
             int goldenCount = random.nextInt(7, 9);
             int commonCount = random.nextInt(5, 7);
@@ -174,6 +181,10 @@ public class DungeonStructure extends Structure {
             rectangular(underCenter.offset(-10, 46, -10), underCenter.offset(10, 55, 10), 1, blockMap, 0);
             rectangular(underCenter.offset(-99, 0, -99), underCenter.offset(99, 45, 99), 0, blockMap, 0);
             rectangular(underCenter.offset(-6, 45, -6), underCenter.offset(6, 51, 6), 0, blockMap, 0);
+            List<Vector3d> groundFeaturePos = rectangularPos(underCenter.offset(-99, 0, -99), underCenter.offset(99, 0, 99), 0.03F, random);
+            for (Vector3d pos : groundFeaturePos) {
+                featureMap.put(BlockPos.containing(pos.x, pos.y, pos.z), GROUND_FEATURE[random.nextInt(GROUND_FEATURE.length)]);
+            }
 
             for (Map.Entry<Vector3d, BooleanStorage4> entry : mazeMap.entrySet()) {
                 Vector3d key = entry.getKey();
@@ -186,22 +197,36 @@ public class DungeonStructure extends Structure {
                 if ((mazeRotatePos.getX() == underCenter.getX()) && (mazeRotatePos.getZ() == underCenter.getZ())) stairsFacing = listRandom(valueB, random);
 
                 rectangular(mazeRotatePos.offset(-6, -1, -6), mazeRotatePos.offset(6, -1, 6), 4, blockMap, 0);
+                rectangular(mazeRotatePos.offset(-6, -1, -6), mazeRotatePos.offset(6, -1, 6), 16, blockMap, 0, 0.03F, random);
                 rectangular(mazeRotatePos.offset(-5, -1, -5), mazeRotatePos.offset(5, -1, 5), 5, blockMap, 0);
+                tntPos.addAll(rectangularPos(mazeRotatePos.offset(-5, -1, -5), mazeRotatePos.offset(5, -1, 5), 0.005F, random));
                 if (value.get(0)) {
                     rectangular(mazeRotatePos.offset(7, -1, -6), mazeRotatePos.offset(20, -1, 6), 4, blockMap, 0);
+                    rectangular(mazeRotatePos.offset(7, -1, -6), mazeRotatePos.offset(20, -1, 6), 16, blockMap, 0, 0.03F, random);
                     rectangular(mazeRotatePos.offset(6, -1, -5), mazeRotatePos.offset(20, -1, 5), 5, blockMap, 0);
+                    tntPos.addAll(rectangularPos(mazeRotatePos.offset(6, -1, -5), mazeRotatePos.offset(20, -1, 5), 0.005F, random));
                 }
                 if (value.get(1)) {
                     rectangular(mazeRotatePos.offset(-6, -1, 7), mazeRotatePos.offset(6, -1, 20), 4, blockMap, 0);
+                    rectangular(mazeRotatePos.offset(-6, -1, 7), mazeRotatePos.offset(6, -1, 20), 16, blockMap, 0, 0.03F, random);
                     rectangular(mazeRotatePos.offset(-5, -1, 6), mazeRotatePos.offset(5, -1, 20), 5, blockMap, 0);
+                    tntPos.addAll(rectangularPos(mazeRotatePos.offset(-5, -1, 6), mazeRotatePos.offset(5, -1, 20), 0.005F, random));
                 }
                 if (value.get(2)) {
                     rectangular(mazeRotatePos.offset(-7, -1, -6), mazeRotatePos.offset(-20, -1, 6), 4, blockMap, 0);
+                    rectangular(mazeRotatePos.offset(-7, -1, -6), mazeRotatePos.offset(-20, -1, 6), 16, blockMap, 0, 0.03F, random);
                     rectangular(mazeRotatePos.offset(-6, -1, -5), mazeRotatePos.offset(-20, -1, 5), 5, blockMap, 0);
+                    tntPos.addAll(rectangularPos(mazeRotatePos.offset(-6, -1, -5), mazeRotatePos.offset(-20, -1, 5), 0.005F, random));
                 }
                 if (value.get(3)) {
                     rectangular(mazeRotatePos.offset(-6, -1, -7), mazeRotatePos.offset(6, -1, -20), 4, blockMap, 0);
+                    rectangular(mazeRotatePos.offset(-6, -1, -7), mazeRotatePos.offset(6, -1, -20), 16, blockMap, 0, 0.03F, random);
                     rectangular(mazeRotatePos.offset(-5, -1, -6), mazeRotatePos.offset(5, -1, -20), 5, blockMap, 0);
+                    tntPos.addAll(rectangularPos(mazeRotatePos.offset(-5, -1, -6), mazeRotatePos.offset(5, -1, -20), 0.005F, random));
+                }
+                for (Vector3d pos : tntPos) {
+                    blockMap.put(BlockPos.containing(pos.x, pos.y + 1, pos.z), 17);
+                    blockMap.put(BlockPos.containing(pos.x, pos.y, pos.z), 18);
                 }
 
                 if (!value.get(0)) {
@@ -291,34 +316,34 @@ public class DungeonStructure extends Structure {
             }
 
             StructureTemplateManager manager = context.structureTemplateManager();
-/*
-            builder.addPiece(new SimpleTemplatePiece(manager, UG_0_1, underCenter.offset(96, -41, 70), true, true, Rotation.CLOCKWISE_180));
-            builder.addPiece(new SimpleTemplatePiece(manager, UG_0_2, underCenter.offset(96, -41, 23), true, true, Rotation.CLOCKWISE_180));
-            builder.addPiece(new SimpleTemplatePiece(manager, UG_0_3, underCenter.offset(96, -41, -24), true, true, Rotation.CLOCKWISE_180));
-            builder.addPiece(new SimpleTemplatePiece(manager, UG_1_0, underCenter.offset(70, -41, 96), true, true, Rotation.CLOCKWISE_180));
-            builder.addPiece(new SimpleTemplatePiece(manager, UG_1_1, underCenter.offset(70, -41, 70), true, true, Rotation.CLOCKWISE_180));
-            builder.addPiece(new SimpleTemplatePiece(manager, UG_1_2, underCenter.offset(70, -41, 23), true, true, Rotation.CLOCKWISE_180));
-            builder.addPiece(new SimpleTemplatePiece(manager, UG_1_3, underCenter.offset(70, -41, -24), true, true, Rotation.CLOCKWISE_180));
-            builder.addPiece(new SimpleTemplatePiece(manager, UG_1_4, underCenter.offset(70, -41, -71), true, true, Rotation.CLOCKWISE_180));
-            builder.addPiece(new SimpleTemplatePiece(manager, UG_2_0, underCenter.offset(23, -41, 96), true, true, Rotation.CLOCKWISE_180));
-            builder.addPiece(new SimpleTemplatePiece(manager, UG_2_1, underCenter.offset(23, -41, 70), true, true, Rotation.CLOCKWISE_180));
-            builder.addPiece(new SimpleTemplatePiece(manager, UG_2_2, underCenter.offset(23, -41, 23), true, true, Rotation.CLOCKWISE_180));
-            builder.addPiece(new SimpleTemplatePiece(manager, UG_2_3, underCenter.offset(23, -41, -24), true, true, Rotation.CLOCKWISE_180));
-            builder.addPiece(new SimpleTemplatePiece(manager, UG_2_4, underCenter.offset(23, -41, -71), true, true, Rotation.CLOCKWISE_180));
-            builder.addPiece(new SimpleTemplatePiece(manager, UG_3_0, underCenter.offset(-24, -41, 96), true, true, Rotation.CLOCKWISE_180));
-            builder.addPiece(new SimpleTemplatePiece(manager, UG_3_1, underCenter.offset(-24, -41, 70), true, true, Rotation.CLOCKWISE_180));
-            builder.addPiece(new SimpleTemplatePiece(manager, UG_3_2, underCenter.offset(-24, -41, 23), true, true, Rotation.CLOCKWISE_180));
-            builder.addPiece(new SimpleTemplatePiece(manager, UG_3_3, underCenter.offset(-24, -41, -24), true, true, Rotation.CLOCKWISE_180));
-            builder.addPiece(new SimpleTemplatePiece(manager, UG_3_4, underCenter.offset(-24, -41, -71), true, true, Rotation.CLOCKWISE_180));
-            builder.addPiece(new SimpleTemplatePiece(manager, UG_4_1, underCenter.offset(-71, -41, 70), true, true, Rotation.CLOCKWISE_180));
-            builder.addPiece(new SimpleTemplatePiece(manager, UG_4_2, underCenter.offset(-71, -41, 23), true, true, Rotation.CLOCKWISE_180));
-            builder.addPiece(new SimpleTemplatePiece(manager, UG_4_3, underCenter.offset(-71, -41, -24), true, true, Rotation.CLOCKWISE_180));
-*/
+
+            builder.addPiece(new SimpleTemplatePiece(manager, UG_4_3, underCenter.offset(-96, -41, -70), true, true, Rotation.NONE));
+            builder.addPiece(new SimpleTemplatePiece(manager, UG_4_2, underCenter.offset(-96, -41, -23), true, true, Rotation.NONE));
+            builder.addPiece(new SimpleTemplatePiece(manager, UG_4_1, underCenter.offset(-96, -41, 24), true, true, Rotation.NONE));
+            builder.addPiece(new SimpleTemplatePiece(manager, UG_3_4, underCenter.offset(-70, -41, -96), true, true, Rotation.NONE));
+            builder.addPiece(new SimpleTemplatePiece(manager, UG_3_3, underCenter.offset(-70, -41, -70), true, true, Rotation.NONE));
+            builder.addPiece(new SimpleTemplatePiece(manager, UG_3_2, underCenter.offset(-70, -41, -23), true, true, Rotation.NONE));
+            builder.addPiece(new SimpleTemplatePiece(manager, UG_3_1, underCenter.offset(-70, -41, 24), true, false, Rotation.NONE));
+            builder.addPiece(new SimpleTemplatePiece(manager, UG_3_0, underCenter.offset(-70, -41, 71), true, true, Rotation.NONE));
+            builder.addPiece(new SimpleTemplatePiece(manager, UG_2_4, underCenter.offset(-23, -41, -96), true, true, Rotation.NONE));
+            builder.addPiece(new SimpleTemplatePiece(manager, UG_2_3, underCenter.offset(-23, -41, -70), true, true, Rotation.NONE));
+            builder.addPiece(new SimpleTemplatePiece(manager, UG_2_2, underCenter.offset(-23, -41, -23), true, true, Rotation.NONE));
+            builder.addPiece(new SimpleTemplatePiece(manager, UG_2_1, underCenter.offset(-23, -41, 24), true, true, Rotation.NONE));
+            builder.addPiece(new SimpleTemplatePiece(manager, UG_2_0, underCenter.offset(-23, -41, 71), true, true, Rotation.NONE));
+            builder.addPiece(new SimpleTemplatePiece(manager, UG_1_4, underCenter.offset(24, -41, -96), true, true, Rotation.NONE));
+            builder.addPiece(new SimpleTemplatePiece(manager, UG_1_3, underCenter.offset(24, -41, -70), true, true, Rotation.NONE));
+            builder.addPiece(new SimpleTemplatePiece(manager, UG_1_2, underCenter.offset(24, -41, -23), true, true, Rotation.NONE));
+            builder.addPiece(new SimpleTemplatePiece(manager, UG_1_1, underCenter.offset(24, -41, 24), true, true, Rotation.NONE));
+            builder.addPiece(new SimpleTemplatePiece(manager, UG_1_0, underCenter.offset(24, -41, 71), true, true, Rotation.NONE));
+            builder.addPiece(new SimpleTemplatePiece(manager, UG_0_3, underCenter.offset(71, -41, -70), true, true, Rotation.NONE));
+            builder.addPiece(new SimpleTemplatePiece(manager, UG_0_2, underCenter.offset(71, -41, -23), true, true, Rotation.NONE));
+            builder.addPiece(new SimpleTemplatePiece(manager, UG_0_1, underCenter.offset(71, -41, 24), true, true, Rotation.NONE));
+
             lineSet(firstChannel, 2.5, 2.5, 0, true, blockMap);
             rectangular(underCenter.offset(-2, 48, -2), underCenter.offset(2, 48, 2), 6, blockMap, 0);
             rectangular(underCenter.offset(-1, 48, -1), underCenter.offset(1, 48, 1), 1, blockMap, 0);
             rectangular(underCenter.offset(-6, -1, -6), underCenter.offset(6, -5, 6), 7, blockMap, 0);
-/*
+
             blockMap.put(underCenter.offset(22, -26, 22), 14);
             blockMap.put(underCenter.offset(22, -26, -22), 14);
             blockMap.put(underCenter.offset(-22, -26, 22), 14);
@@ -417,7 +442,7 @@ public class DungeonStructure extends Structure {
             rectangular(underCenter.offset(-23, -25, 21), underCenter.offset(-23, -23, 21), 9, blockMap, 0);
             rectangular(underCenter.offset(-21, -25, -23), underCenter.offset(-21, -23, -23), 9, blockMap, 0);
             rectangular(underCenter.offset(-23, -25, -21), underCenter.offset(-23, -23, -21), 9, blockMap, 0);
-*/
+
             GridPiece.addPieces(blockMap, Lists.newArrayList(
                     /*00*/Blocks.AIR.defaultBlockState(),
                     /*01*/DecorativeBlocks.BLUE_BRICKS.get().defaultBlockState(),
@@ -434,10 +459,13 @@ public class DungeonStructure extends Structure {
                     /*12*/FunctionalBlocks.ENCHANTED_FRAGILE_BLUE_BRICKS.get().defaultBlockState().setValue(BlockStateProperties.FACING, Direction.EAST).setValue(StateProperties.IS_SUPPORTING, false),
                     /*13*/FunctionalBlocks.ENCHANTED_FRAGILE_BLUE_BRICKS.get().defaultBlockState().setValue(BlockStateProperties.FACING, Direction.WEST).setValue(StateProperties.IS_SUPPORTING, false),
                     /*14*/FunctionalBlocks.ENCHANTED_FRAGILE_BLUE_BRICKS.get().defaultBlockState().setValue(BlockStateProperties.FACING, Direction.UP).setValue(StateProperties.IS_SUPPORTING, true),
-                    /*15*/FunctionalBlocks.SPIKE.get().defaultBlockState()
-            ), builder);
+                    /*15*/FunctionalBlocks.SPIKE.get().defaultBlockState(),
+                    /*16*/FunctionalBlocks.GRAVITATION_TRAP.get().defaultBlockState(),
+                    /*17*/FunctionalBlocks.DEEPSLATE_PRESSURE_PLATE.get().defaultBlockState(),
+                    /*18*/FunctionalBlocks.INSTANTANEOUS_EXPLOSION_TNT.get().defaultBlockState()
+            ), featureMap, builder);
 
-/*
+
             switch (rotation) {
                 case CLOCKWISE_90 -> builder.addPiece(new SimpleTemplatePiece(manager, GATE, centerPos.offset(15, -3, -23), true, false, Rotation.CLOCKWISE_90));
                 case CLOCKWISE_180 -> builder.addPiece(new SimpleTemplatePiece(manager, GATE, centerPos.offset(23, -3, 15), true, false, Rotation.CLOCKWISE_180));
@@ -556,7 +584,6 @@ public class DungeonStructure extends Structure {
             }
             //builder.addPiece(new SimpleTemplatePiece(manager, STAIRS_DOWN, underCenter.offset(-13, -11, -13), false, false, Rotation.NONE));
 
- */
         });
     }
 

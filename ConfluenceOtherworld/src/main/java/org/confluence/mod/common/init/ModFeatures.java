@@ -23,7 +23,7 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.common.worldgen.SecretFlagPlacementModifier;
+import org.confluence.mod.common.worldgen.SecretFlagPlacement;
 import org.confluence.mod.common.worldgen.feature.*;
 import org.jetbrains.annotations.Nullable;
 
@@ -46,7 +46,6 @@ public final class ModFeatures {
     public static final Supplier<FallingSandTrapFeature> FALLING_SAND_TRAP = FEATURES.register("falling_sand_trap", () -> new FallingSandTrapFeature(FallingSandTrapFeature.Config.CODEC));
     public static final Supplier<SculkSensorWithTNTFeature> SCULK_SENSOR_WITH_TNT = FEATURES.register("sculk_sensor_with_tnt", () -> new SculkSensorWithTNTFeature(SculkSensorWithTNTFeature.Config.CODEC));
 
-    public static final Supplier<JewelryTreeFeature> JEWELRY_TREE = FEATURES.register("jewelry_tree", () -> new JewelryTreeFeature(JewelryTreeFeature.Config.CODEC));
     public static final Supplier<SimpleBlockNBTFeature> SIMPLE_BLOCK_NBT = FEATURES.register("simple_block_nbt", () -> new SimpleBlockNBTFeature(SimpleBlockNBTFeature.Config.CODEC));
     public static final Supplier<PalmTreeFeature> PALM_TREE = FEATURES.register("palm_tree", () -> new PalmTreeFeature(PalmTreeFeature.Config.CODEC));
     public static final Supplier<QueenBeeHiveFeature> QUEEN_BEE_HIVE = FEATURES.register("queen_bee_hive", () -> new QueenBeeHiveFeature(QueenBeeHiveFeature.Config.CODEC));
@@ -60,8 +59,9 @@ public final class ModFeatures {
     public static final Supplier<RailSupportFeature> RAIL_SUPPORT = FEATURES.register("rail_support", () -> new RailSupportFeature(RailSupportFeature.Config.CODEC));
     public static final Supplier<RailTrapFeature> RAIL_TRAP = FEATURES.register("rail_trap", () -> new RailTrapFeature(RailTrapFeature.Config.CODEC));
     public static final Supplier<GroundBlockFeature> GROUND_BLOCK = FEATURES.register("ground_block", () -> new GroundBlockFeature(GroundBlockFeature.Config.CODEC));
+    public static final Supplier<GroundBlockNBTFeature> GROUND_BLOCK_NBT = FEATURES.register("ground_block_nbt", () -> new GroundBlockNBTFeature(GroundBlockNBTFeature.Config.CODEC));
 
-    public static final Supplier<PlacementModifierType<SecretFlagPlacementModifier>> SECRET_FLAG_PLACEMENT_MODIFIER = MODIFIER_TYPES.register("secret_flag", () -> () -> SecretFlagPlacementModifier.CODEC);
+    public static final Supplier<PlacementModifierType<SecretFlagPlacement>> SECRET_FLAG_PLACEMENT_MODIFIER = MODIFIER_TYPES.register("secret_flag", () -> () -> SecretFlagPlacement.CODEC);
 
     public static Tuple<BlockPos, BlockState> getPressurePlate(WorldGenLevel level, BlockPos supportPos) {
         boolean isDeepslate = level.isStateAtPosition(supportPos, blockState -> blockState.is(Blocks.DEEPSLATE));
@@ -151,7 +151,6 @@ public final class ModFeatures {
         public static final ResourceKey<PlacedFeature> GLOWING_MUSHROOM_VINE = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("glowing_mushroom_vine"));
         public static final ResourceKey<PlacedFeature> GLOWING_MUSHROOM_CATTAILS = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("glowing_mushroom_cattails"));
 
-        public static final ResourceKey<PlacedFeature> ASH_HELLSTONE_GENERATES = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("ash_hellstone_generates"));
         public static final ResourceKey<PlacedFeature> ASH_GRASS = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("ash_grass"));
         public static final ResourceKey<PlacedFeature> ASH_TREE = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("ash_tree"));
         public static final ResourceKey<PlacedFeature> FIREBLOSSOM = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("fireblossom"));

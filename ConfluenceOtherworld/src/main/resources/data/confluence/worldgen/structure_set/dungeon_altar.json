@@ -1,0 +1,17 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 69021806,
+    "separation": 8,
+    "spacing": 10,
+    "spread_type": "triangular",
+    "exclusion_zone": {
+      "other_set": "minecraft:villages",
+      "chunk_count": 8
+    }
+  },
+  "structures": [{
+    "structure": "confluence:dungeon_altar",
+    "weight": 1
+  }]
+}

@@ -22,6 +22,7 @@ import org.confluence.mod.common.init.item.*;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.init.item.TEBoomerangItems;
+import org.confluence.terraentity.init.item.TESummonItems;
 
 import java.util.function.BiConsumer;
 
@@ -60,6 +61,10 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ModItems.LIVING_WOOD_WAND).setWeight(2))
                         .add(EmptyLootItem.emptyItem())
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TESummonItems.FINCH_STAFF))
+                        .add(EmptyLootItem.emptyItem().setWeight(2))
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ModItems.LEAF_WAND).setWeight(2))

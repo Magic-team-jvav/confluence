@@ -308,6 +308,7 @@ public final class ValueSubProvider {
                 .add(TEBoomerangItems.SHROOMERANG, wrap(60, 0))
                 // Thorn Chakram 1 gold
                 .add(TEBoomerangItems.TRIMARANG, wrap(2, 0, 0))
+                .add(TEBoomerangItems.COMBAT_WRENCH, wrap(50, 0))
                 .add(TEBoomerangItems.WOOD_BOOMERANG, wrap(20, 0));
         appender.create() // 探索
                 .add(ModBlocks.ROPE, 2)

@@ -17,7 +17,7 @@ public abstract class MechanicNPCMixin implements SelfGetter<MechanicNPC> {
         return !IAbstractTerraNPC.of(confluence$self()).confluence$getRegion().isOnRegion(confluence$self().chunkPosition());
     }
 
-    @Inject(method = "checkDespawn",at=@At("TAIL"))
+    @Inject(method = "checkDespawn", at = @At("TAIL"))
     private void onRemove(CallbackInfo ci) { // 由于不在区域内的机械师会被自然刷新走，因此不会触发setNPCAlive，需手动触发
         MechanicNPC npc = confluence$self();
         if (npc.isRemoved()) {

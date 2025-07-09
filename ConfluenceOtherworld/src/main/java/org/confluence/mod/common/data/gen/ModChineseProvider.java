@@ -71,6 +71,10 @@ public class ModChineseProvider extends LanguageProvider {
         add("enchantment.confluence.soothed_mana.desc", "减小魔力病持续时间");
         add("enchantment.confluence.arcane_protection", "奥术防护");
         add("enchantment.confluence.arcane_protection.desc", "受到伤害时抽取的魔力为最大魔力值乘积一定比率的值，抵消的伤害为受到的伤害乘积该比率的值");
+        add("enchantment.confluence.spell_desperation", "逆魔狂暴");
+        add("enchantment.confluence.spell_desperation.desc", "剩余魔力比值越低攻击力越高");
+        add("enchantment.confluence.mystic_surge", "秘能激涌");
+        add("enchantment.confluence.mystic_surge.desc", "剩余魔力比值越高攻击力越高");
 
         add("gamerule.confluenceSpreadableChance", "邪恶群系蔓延设置");
         add("generator.confluence.the_corruption", "腐化之地");

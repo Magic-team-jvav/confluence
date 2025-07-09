@@ -40,6 +40,7 @@ import net.minecraft.world.level.levelgen.placement.*;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockMatchTest;
 import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.predicates.AllOfCondition;
 import net.minecraft.world.level.storage.loot.predicates.DamageSourceCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
 import net.neoforged.neoforge.common.Tags;
@@ -67,9 +68,9 @@ import java.util.stream.Stream;
 
 public class ModDataProvider {
     public static final RegistrySetBuilder DATA_BUILDER = new RegistrySetBuilder()
-            .add(Registries.DAMAGE_TYPE, ModDamageTypes::bootstrap)
+            .add(Registries.DAMAGE_TYPE, ModDamageTypes::bootstrap) // todo
             .add(Registries.BIOME, Biomes::boostrap)
-            .add(Registries.STRUCTURE, ModStructures::boostrap)
+            .add(Registries.STRUCTURE, ModStructures::boostrap) // todo
             .add(Registries.ENCHANTMENT, Enchantments::bootstrap)
             .add(Registries.CONFIGURED_FEATURE, ConfiguredFeatures::bootstrap)
             .add(Registries.PLACED_FEATURE, PlacedFeatures::bootstrap)
@@ -213,7 +214,7 @@ public class ModDataProvider {
             )));
         }
 
-        private static void glowingMushroomTree(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, Block stem, Block pileus, Block indusium, int height, int heightMore){
+        private static void glowingMushroomTree(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, Block stem, Block pileus, Block indusium, int height, int heightMore) {
             context.register(key, new ConfiguredFeature<>(ModFeatures.MUSHROOM_TREE.get(), new MushroomTreeFeature.Config(
                     BlockStateProvider.simple(stem),
                     BlockStateProvider.simple(pileus),
@@ -668,6 +669,8 @@ public class ModDataProvider {
         private static void bootstrap(BootstrapContext<Enchantment> context) {
             HolderGetter<Item> item = context.lookup(Registries.ITEM);
             HolderGetter<Enchantment> enchantment = context.lookup(Registries.ENCHANTMENT);
+            AllOfCondition.Builder isMagic = LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity())
+                    .and(DamageSourceCondition.hasDamageSource(DamageSourcePredicate.Builder.damageType().tag(TagPredicate.is(Tags.DamageTypes.IS_MAGIC))));
             register(context, ModEnchantments.MANA_REGENERATION, Enchantment.enchantment(
                             Enchantment.definition(
                                     new OrHolderSet<>(item.getOrThrow(Tags.Items.ARMORS), item.getOrThrow(ModTags.Items.MANA_WEAPON)),
@@ -723,8 +726,7 @@ public class ModDataProvider {
                             EnchantmentTarget.ATTACKER,
                             EnchantmentTarget.VICTIM,
                             new SummonItemEffect(item.getOrThrow(ModItems.STAR.getKey()), LevelBasedValue.perLevel(0.1F)),
-                            LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity())
-                                    .and(DamageSourceCondition.hasDamageSource(DamageSourcePredicate.Builder.damageType().tag(TagPredicate.is(Tags.DamageTypes.IS_MAGIC))))
+                            isMagic
                     )
             );
             register(context, ModEnchantments.SOOTHED_MANA, Enchantment.enchantment(
@@ -758,6 +760,34 @@ public class ModDataProvider {
                                     DamageSourcePredicate.Builder.damageType().tag(TagPredicate.isNot(DamageTypeTags.BYPASSES_INVULNERABILITY))
                             )
                     )
+            );
+            register(context, ModEnchantments.SPELL_DESPERATION, Enchantment.enchantment(
+                            Enchantment.definition(
+                                    item.getOrThrow(ModTags.Items.MANA_WEAPON),
+                                    2,
+                                    2,
+                                    Enchantment.dynamicCost(25, 25),
+                                    Enchantment.dynamicCost(75, 25),
+                                    4,
+                                    EquipmentSlotGroup.MAINHAND
+                            )
+                    )
+                    .exclusiveWith(enchantment.getOrThrow(ModTags.Enchantments.MAGIC_ATTACK_EXCLUSIVE))
+                    .withEffect(ModEnchantments.EffectComponentTypes.LESS_MANA_MORE_ATTACK.get(),new AddValue(LevelBasedValue.perLevel(1)), isMagic)
+            );
+            register(context, ModEnchantments.MYSTIC_SURGE, Enchantment.enchantment(
+                            Enchantment.definition(
+                                    item.getOrThrow(ModTags.Items.MANA_WEAPON),
+                                    2,
+                                    2,
+                                    Enchantment.dynamicCost(25, 25),
+                                    Enchantment.dynamicCost(75, 25),
+                                    4,
+                                    EquipmentSlotGroup.MAINHAND
+                            )
+                    )
+                    .exclusiveWith(enchantment.getOrThrow(ModTags.Enchantments.MAGIC_ATTACK_EXCLUSIVE))
+                    .withEffect(ModEnchantments.EffectComponentTypes.MORE_MANA_MORE_ATTACK.get(), new AddValue(LevelBasedValue.perLevel(1)), isMagic)
             );
         }
 

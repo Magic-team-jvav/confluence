@@ -32,7 +32,7 @@ public final class ModStructures {
 
     public static final ResourceKey<Structure> DUNGEON_KEY = Confluence.asResourceKey(Registries.STRUCTURE, "dungeon");
 
-    public static void boostrap(BootstrapContext<Structure> context) { // todo
+    public static void boostrap(BootstrapContext<Structure> context) {
         context.register(DUNGEON_KEY, new DungeonStructure(new Structure.StructureSettings(HolderSet.empty())));
     }
 }

@@ -27,6 +27,7 @@ import net.minecraft.world.level.biome.BiomeSpecialEffects;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
@@ -48,6 +49,7 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import net.neoforged.neoforge.registries.holdersets.AnyHolderSet;
 import net.neoforged.neoforge.registries.holdersets.OrHolderSet;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.block.natural.PalmLeaves;
 import org.confluence.mod.common.block.natural.StepRevealingBlock;
 import org.confluence.mod.common.enchantment.SummonItemEffect;
 import org.confluence.mod.common.init.*;
@@ -55,7 +57,7 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.worldgen.SecretFlagPlacement;
-import org.confluence.mod.common.worldgen.feature.BranchTreeFeature;
+import org.confluence.mod.common.worldgen.feature.*;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
 
@@ -157,6 +159,14 @@ public class ModDataProvider {
             gemTree(context, ModFeatures.Configured.RUBY, NatureBlocks.RUBY_BRANCHES.get());
             gemTree(context, ModFeatures.Configured.SAPPHIRE, NatureBlocks.SAPPHIRE_BRANCHES.get());
             gemTree(context, ModFeatures.Configured.TOPAZ, NatureBlocks.TOPAZ_BRANCHES.get());
+            baobabTree(context, ModFeatures.Configured.BAOBAB, NatureBlocks.BAOBAB_LOG_BLOCKS.getLog().get(), NatureBlocks.BAOBAB_LOG_BLOCKS.getWood().get(), NatureBlocks.BAOBAB_LOG_BLOCKS.getWood().get(), NatureBlocks.BAOBAB_LOG_BLOCKS.getLeaves().get(), NatureBlocks.BAOBAB_LOG_BLOCKS.getStrippedLog().get(), 8);
+            baobabTree(context, ModFeatures.Configured.BAOBAB_AIR, NatureBlocks.BAOBAB_LOG_BLOCKS.getLog().get(), NatureBlocks.BAOBAB_LOG_BLOCKS.getWood().get(), NatureBlocks.BAOBAB_LOG_BLOCKS.getWood().get(), NatureBlocks.BAOBAB_LOG_BLOCKS.getLeaves().get(), Blocks.AIR, 8);
+            baobabTree(context, ModFeatures.Configured.BAOBAB_WATER, NatureBlocks.BAOBAB_LOG_BLOCKS.getLog().get(), NatureBlocks.BAOBAB_LOG_BLOCKS.getWood().get(), NatureBlocks.BAOBAB_LOG_BLOCKS.getWood().get(), NatureBlocks.BAOBAB_LOG_BLOCKS.getLeaves().get(), Blocks.WATER, 8);
+            palmTree(context, ModFeatures.Configured.PALM, NatureBlocks.PALM_LOG_BLOCKS.getLog().get(), NatureBlocks.PALM_LOG_BLOCKS.getLeaves().get(), NatureBlocks.PALM_LOG_BLOCKS.getLeaves().get(), NatureBlocks.PALM_LOG_BLOCKS.getLeaves().get());
+            droopingVineTree(context, ModFeatures.Configured.CONFIGURED_CRIMSON_TREE_CHECKED_0, NatureBlocks.SHADOW_LOG_BLOCKS.getLog().get(), NatureBlocks.SHADOW_LOG_BLOCKS.getLeaves().get(), NatureBlocks.CRIMSON_DROOPING_VINE.get(), 5);
+            droopingVineTree(context, ModFeatures.Configured.CONFIGURED_THE_CORRUPTION_TREE_CHECKED_2, NatureBlocks.EBONY_LOG_BLOCKS.getLog().get(), NatureBlocks.EBONY_LOG_BLOCKS.getLeaves().get(), NatureBlocks.CRIMSON_DROOPING_VINE.get(), 5);
+            droopingVineTree(context, ModFeatures.Configured.CONFIGURED_YELLOW_WILLOW, NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getLog().get(), NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getLeaves().get(), NatureBlocks.YELLOW_WILLOW_DROOPING_LEAVES.get(), 6);
+            glowingMushroomTree(context, ModFeatures.Configured.GLOWING_MUSHROOM, NatureBlocks.GLOWING_MUSHROOM_STEM_BLOCK.get(), NatureBlocks.GLOWING_MUSHROOM_PILEUS_BLOCK.get(), NatureBlocks.GLOWING_MUSHROOM_INDUSIUM_BLOCK.get(), 4, 1);
         }
 
         private static void ore(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, int size, OreConfiguration.TargetBlockState... targets) {
@@ -173,6 +183,44 @@ public class ModDataProvider {
 
         private static void gemTree(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, Block branchesBlock) {
             context.register(key, new ConfiguredFeature<>(ModFeatures.BRANCH_TREE.get(), new BranchTreeFeature.Config(BlockStateProvider.simple(NatureBlocks.STONY_LOG.get()), BlockStateProvider.simple(branchesBlock), 6, 2)));
+        }
+
+        private static void baobabTree(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, Block trunk, Block branch, Block root, Block leaves, Block inner, int height) {
+            context.register(key, new ConfiguredFeature<>(ModFeatures.BAOBAB_TREE.get(), new BaobabTreeFeature.Config(
+                    BlockStateProvider.simple(trunk),
+                    BlockStateProvider.simple(branch),
+                    BlockStateProvider.simple(root),
+                    BlockStateProvider.simple(leaves),
+                    BlockStateProvider.simple(inner),
+                    height)));
+        }
+
+        private static void palmTree(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, Block trunk, Block leaves1, Block leaves2, Block leaves3) {
+            context.register(key, new ConfiguredFeature<>(ModFeatures.PALM_TREE.get(), new PalmTreeFeature.Config(
+                    BlockStateProvider.simple(trunk),
+                    BlockStateProvider.simple(leaves1.defaultBlockState().setValue(PalmLeaves.TYPE, SlabType.BOTTOM)),
+                    BlockStateProvider.simple(leaves2.defaultBlockState().setValue(PalmLeaves.TYPE, SlabType.TOP)),
+                    BlockStateProvider.simple(leaves3.defaultBlockState().setValue(PalmLeaves.TYPE, SlabType.DOUBLE))
+            )));
+        }
+
+        private static void droopingVineTree(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, Block trunk, Block leaves, Block drooping_leave, int height) {
+            context.register(key, new ConfiguredFeature<>(ModFeatures.DROOPING_VINE_TREE.get(), new DroopingVineTreeFeature.Config(
+                    BlockStateProvider.simple(trunk),
+                    BlockStateProvider.simple(leaves),
+                    BlockStateProvider.simple(drooping_leave),
+                    height
+            )));
+        }
+
+        private static void glowingMushroomTree(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, Block stem, Block pileus, Block indusium, int height, int heightMore){
+            context.register(key, new ConfiguredFeature<>(ModFeatures.MUSHROOM_TREE.get(), new MushroomTreeFeature.Config(
+                    BlockStateProvider.simple(stem),
+                    BlockStateProvider.simple(pileus),
+                    BlockStateProvider.simple(indusium),
+                    height,
+                    heightMore
+            )));
         }
     }
 

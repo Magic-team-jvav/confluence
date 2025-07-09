@@ -120,8 +120,12 @@ public final class ModFeatures {
         public static final ResourceKey<ConfiguredFeature<?, ?>> AMETHYST = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("amethyst_tree"));
         public static final ResourceKey<ConfiguredFeature<?, ?>> ASH = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("ash_tree"));
         public static final ResourceKey<ConfiguredFeature<?, ?>> LIVING = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("living_tree"));
+        public static final ResourceKey<ConfiguredFeature<?, ?>> CONFIGURED_CRIMSON_TREE_CHECKED_0 = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("crimson_tree_checked_0"));
+        public static final ResourceKey<ConfiguredFeature<?, ?>> CONFIGURED_THE_CORRUPTION_TREE_CHECKED_2 = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("the_corruption_tree_checked_2"));
         public static final ResourceKey<ConfiguredFeature<?, ?>> CONFIGURED_YELLOW_WILLOW = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("yellow_willow"));
         public static final ResourceKey<ConfiguredFeature<?, ?>> BAOBAB = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("baobab_tree"));
+        public static final ResourceKey<ConfiguredFeature<?, ?>> BAOBAB_AIR = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("baobab_tree_air"));
+        public static final ResourceKey<ConfiguredFeature<?, ?>> BAOBAB_WATER = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("baobab_tree_water"));
         public static final ResourceKey<ConfiguredFeature<?, ?>> GLOWING_MUSHROOM = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("glowing_mushroom_tree"));
     }
 

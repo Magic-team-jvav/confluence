@@ -111,6 +111,7 @@ public class ModDataProvider {
         private static final ResourceKey<ConfiguredFeature<?, ?>> TIN_ORE = key("tin_ore");
         private static final ResourceKey<ConfiguredFeature<?, ?>> TOPAZ_ORE = key("topaz_ore");
         private static final ResourceKey<ConfiguredFeature<?, ?>> TUNGSTEN_ORE = key("tungsten_ore");
+        private static final ResourceKey<ConfiguredFeature<?, ?>> GEMSTONE_CAVE = key("gemstone_cave");
 
         private static ResourceKey<ConfiguredFeature<?, ?>> key(String path) {
             return Confluence.asResourceKey(Registries.CONFIGURED_FEATURE, path);
@@ -163,11 +164,11 @@ public class ModDataProvider {
             baobabTree(context, ModFeatures.Configured.BAOBAB, NatureBlocks.BAOBAB_LOG_BLOCKS.getLog().get(), NatureBlocks.BAOBAB_LOG_BLOCKS.getWood().get(), NatureBlocks.BAOBAB_LOG_BLOCKS.getWood().get(), NatureBlocks.BAOBAB_LOG_BLOCKS.getLeaves().get(), NatureBlocks.BAOBAB_LOG_BLOCKS.getStrippedLog().get(), 8);
             baobabTree(context, ModFeatures.Configured.BAOBAB_AIR, NatureBlocks.BAOBAB_LOG_BLOCKS.getLog().get(), NatureBlocks.BAOBAB_LOG_BLOCKS.getWood().get(), NatureBlocks.BAOBAB_LOG_BLOCKS.getWood().get(), NatureBlocks.BAOBAB_LOG_BLOCKS.getLeaves().get(), Blocks.AIR, 8);
             baobabTree(context, ModFeatures.Configured.BAOBAB_WATER, NatureBlocks.BAOBAB_LOG_BLOCKS.getLog().get(), NatureBlocks.BAOBAB_LOG_BLOCKS.getWood().get(), NatureBlocks.BAOBAB_LOG_BLOCKS.getWood().get(), NatureBlocks.BAOBAB_LOG_BLOCKS.getLeaves().get(), Blocks.WATER, 8);
-            palmTree(context, ModFeatures.Configured.PALM, NatureBlocks.PALM_LOG_BLOCKS.getLog().get(), NatureBlocks.PALM_LOG_BLOCKS.getLeaves().get(), NatureBlocks.PALM_LOG_BLOCKS.getLeaves().get(), NatureBlocks.PALM_LOG_BLOCKS.getLeaves().get());
+            context.register(ModFeatures.Configured.PALM, new ConfiguredFeature<>(ModFeatures.PALM_TREE.get(), new PalmTreeFeature.Config(BlockStateProvider.simple(NatureBlocks.PALM_LOG_BLOCKS.getLog().get()), BlockStateProvider.simple(NatureBlocks.PALM_LOG_BLOCKS.getLeaves().get().defaultBlockState().setValue(PalmLeaves.TYPE, SlabType.BOTTOM)), BlockStateProvider.simple(NatureBlocks.PALM_LOG_BLOCKS.getLeaves().get().defaultBlockState().setValue(PalmLeaves.TYPE, SlabType.TOP)), BlockStateProvider.simple(NatureBlocks.PALM_LOG_BLOCKS.getLeaves().get().defaultBlockState().setValue(PalmLeaves.TYPE, SlabType.DOUBLE)))));
             droopingVineTree(context, ModFeatures.Configured.CONFIGURED_CRIMSON_TREE_CHECKED_0, NatureBlocks.SHADOW_LOG_BLOCKS.getLog().get(), NatureBlocks.SHADOW_LOG_BLOCKS.getLeaves().get(), NatureBlocks.CRIMSON_DROOPING_VINE.get(), 5);
             droopingVineTree(context, ModFeatures.Configured.CONFIGURED_THE_CORRUPTION_TREE_CHECKED_2, NatureBlocks.EBONY_LOG_BLOCKS.getLog().get(), NatureBlocks.EBONY_LOG_BLOCKS.getLeaves().get(), NatureBlocks.CRIMSON_DROOPING_VINE.get(), 5);
             droopingVineTree(context, ModFeatures.Configured.CONFIGURED_YELLOW_WILLOW, NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getLog().get(), NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getLeaves().get(), NatureBlocks.YELLOW_WILLOW_DROOPING_LEAVES.get(), 6);
-            glowingMushroomTree(context, ModFeatures.Configured.GLOWING_MUSHROOM, NatureBlocks.GLOWING_MUSHROOM_STEM_BLOCK.get(), NatureBlocks.GLOWING_MUSHROOM_PILEUS_BLOCK.get(), NatureBlocks.GLOWING_MUSHROOM_INDUSIUM_BLOCK.get(), 4, 1);
+            context.register(ModFeatures.Configured.GLOWING_MUSHROOM, new ConfiguredFeature<>(ModFeatures.MUSHROOM_TREE.get(), new MushroomTreeFeature.Config(BlockStateProvider.simple(NatureBlocks.GLOWING_MUSHROOM_STEM_BLOCK.get()), BlockStateProvider.simple(NatureBlocks.GLOWING_MUSHROOM_PILEUS_BLOCK.get()), BlockStateProvider.simple(NatureBlocks.GLOWING_MUSHROOM_INDUSIUM_BLOCK.get()), 4, 1)));
         }
 
         private static void ore(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, int size, OreConfiguration.TargetBlockState... targets) {
@@ -187,41 +188,11 @@ public class ModDataProvider {
         }
 
         private static void baobabTree(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, Block trunk, Block branch, Block root, Block leaves, Block inner, int height) {
-            context.register(key, new ConfiguredFeature<>(ModFeatures.BAOBAB_TREE.get(), new BaobabTreeFeature.Config(
-                    BlockStateProvider.simple(trunk),
-                    BlockStateProvider.simple(branch),
-                    BlockStateProvider.simple(root),
-                    BlockStateProvider.simple(leaves),
-                    BlockStateProvider.simple(inner),
-                    height)));
-        }
-
-        private static void palmTree(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, Block trunk, Block leaves1, Block leaves2, Block leaves3) {
-            context.register(key, new ConfiguredFeature<>(ModFeatures.PALM_TREE.get(), new PalmTreeFeature.Config(
-                    BlockStateProvider.simple(trunk),
-                    BlockStateProvider.simple(leaves1.defaultBlockState().setValue(PalmLeaves.TYPE, SlabType.BOTTOM)),
-                    BlockStateProvider.simple(leaves2.defaultBlockState().setValue(PalmLeaves.TYPE, SlabType.TOP)),
-                    BlockStateProvider.simple(leaves3.defaultBlockState().setValue(PalmLeaves.TYPE, SlabType.DOUBLE))
-            )));
+            context.register(key, new ConfiguredFeature<>(ModFeatures.BAOBAB_TREE.get(), new BaobabTreeFeature.Config(BlockStateProvider.simple(trunk), BlockStateProvider.simple(branch), BlockStateProvider.simple(root), BlockStateProvider.simple(leaves), BlockStateProvider.simple(inner), height)));
         }
 
         private static void droopingVineTree(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, Block trunk, Block leaves, Block drooping_leave, int height) {
-            context.register(key, new ConfiguredFeature<>(ModFeatures.DROOPING_VINE_TREE.get(), new DroopingVineTreeFeature.Config(
-                    BlockStateProvider.simple(trunk),
-                    BlockStateProvider.simple(leaves),
-                    BlockStateProvider.simple(drooping_leave),
-                    height
-            )));
-        }
-
-        private static void glowingMushroomTree(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, Block stem, Block pileus, Block indusium, int height, int heightMore) {
-            context.register(key, new ConfiguredFeature<>(ModFeatures.MUSHROOM_TREE.get(), new MushroomTreeFeature.Config(
-                    BlockStateProvider.simple(stem),
-                    BlockStateProvider.simple(pileus),
-                    BlockStateProvider.simple(indusium),
-                    height,
-                    heightMore
-            )));
+            context.register(key, new ConfiguredFeature<>(ModFeatures.DROOPING_VINE_TREE.get(), new DroopingVineTreeFeature.Config(BlockStateProvider.simple(trunk), BlockStateProvider.simple(leaves), BlockStateProvider.simple(drooping_leave), height)));
         }
     }
 
@@ -763,32 +734,32 @@ public class ModDataProvider {
                     )
             );
             register(context, ModEnchantments.SPELL_DESPERATION, Enchantment.enchantment(
-                            Enchantment.definition(
-                                    item.getOrThrow(ModTags.Items.MANA_WEAPON),
-                                    2,
-                                    2,
-                                    Enchantment.dynamicCost(25, 25),
-                                    Enchantment.dynamicCost(75, 25),
-                                    4,
-                                    EquipmentSlotGroup.MAINHAND
+                                    Enchantment.definition(
+                                            item.getOrThrow(ModTags.Items.MANA_WEAPON),
+                                            2,
+                                            2,
+                                            Enchantment.dynamicCost(25, 25),
+                                            Enchantment.dynamicCost(75, 25),
+                                            4,
+                                            EquipmentSlotGroup.MAINHAND
+                                    )
                             )
-                    )
-                    .exclusiveWith(enchantment.getOrThrow(ModTags.Enchantments.MAGIC_ATTACK_EXCLUSIVE))
-                    .withEffect(ModEnchantments.EffectComponentTypes.LESS_MANA_MORE_ATTACK.get(),new AddValue(LevelBasedValue.perLevel(1)), isMagic)
+                            .exclusiveWith(enchantment.getOrThrow(ModTags.Enchantments.MAGIC_ATTACK_EXCLUSIVE))
+                            .withEffect(ModEnchantments.EffectComponentTypes.LESS_MANA_MORE_ATTACK.get(), new AddValue(LevelBasedValue.perLevel(1)), isMagic)
             );
             register(context, ModEnchantments.MYSTIC_SURGE, Enchantment.enchantment(
-                            Enchantment.definition(
-                                    item.getOrThrow(ModTags.Items.MANA_WEAPON),
-                                    2,
-                                    2,
-                                    Enchantment.dynamicCost(25, 25),
-                                    Enchantment.dynamicCost(75, 25),
-                                    4,
-                                    EquipmentSlotGroup.MAINHAND
+                                    Enchantment.definition(
+                                            item.getOrThrow(ModTags.Items.MANA_WEAPON),
+                                            2,
+                                            2,
+                                            Enchantment.dynamicCost(25, 25),
+                                            Enchantment.dynamicCost(75, 25),
+                                            4,
+                                            EquipmentSlotGroup.MAINHAND
+                                    )
                             )
-                    )
-                    .exclusiveWith(enchantment.getOrThrow(ModTags.Enchantments.MAGIC_ATTACK_EXCLUSIVE))
-                    .withEffect(ModEnchantments.EffectComponentTypes.MORE_MANA_MORE_ATTACK.get(), new AddValue(LevelBasedValue.perLevel(1)), isMagic)
+                            .exclusiveWith(enchantment.getOrThrow(ModTags.Enchantments.MAGIC_ATTACK_EXCLUSIVE))
+                            .withEffect(ModEnchantments.EffectComponentTypes.MORE_MANA_MORE_ATTACK.get(), new AddValue(LevelBasedValue.perLevel(1)), isMagic)
             );
         }
 

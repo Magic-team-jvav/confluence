@@ -1,6 +1,0 @@
-{
-    "type": "neoforge:add_carvers",
-    "biomes": "#c:is_desert",
-    "carvers": "confluence:desert_cave_carver",
-    "step": "air"
-}

@@ -1,9 +1,9 @@
 {
-  "feature": "confluence:under_ground_jungle_tree",
+  "feature": "confluence:underground_jungle_grass",
   "placement": [
     {
       "type": "minecraft:count",
-      "count": 2
+      "count": 125
     },
     {
       "type": "minecraft:in_square"

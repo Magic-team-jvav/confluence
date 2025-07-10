@@ -1155,6 +1155,25 @@ public class ModChineseProvider extends LanguageProvider {
         add("equipment_benediction.set_switcher.confluence.pumpkin_set", "南瓜套装");
         add("equipment_benediction.set_switcher.confluence.pumpkin_set.data.0", "伤害提高10%");
 
+        add("equipment_benediction.set_switcher.confluence.obsidian_set", "黑曜石套装");
+        add("equipment_benediction.set_switcher.confluence.obsidian_set.data.0", "召唤伤害提高8%");
+        add("equipment_benediction.set_switcher.confluence.obsidian_set.data.1", "仆从数量上限增加1");
+        add("equipment_benediction.set_switcher.confluence.obsidian_set.data.2", "召唤伤害提高4%");
+        add("equipment_benediction.set_switcher.confluence.obsidian_set.data.3", "召唤伤害提高4%");
+        add("equipment_benediction.set_switcher.confluence.obsidian_set.data.4", "鞭子攻击范围扩大30%，鞭子攻击速度提高15%，召唤伤害提高15%");
+
+        add("equipment_benediction.set_switcher.confluence.wizard_set", "巫师套装");
+        add("equipment_benediction.set_switcher.confluence.wizard_set.data.0", "魔法伤害提高5%");
+        add("equipment_benediction.set_switcher.confluence.wizard_set.data.1", "魔法伤害和魔法暴击率各提高6%");
+        add("equipment_benediction.set_switcher.confluence.wizard_set.data.2", "最大魔力增加20，魔力消耗降低5%");
+        add("equipment_benediction.set_switcher.confluence.wizard_set.data.3", "最大魔力增加40，魔力消耗降低7%");
+        add("equipment_benediction.set_switcher.confluence.wizard_set.data.4", "最大魔力增加40，魔力消耗降低9%");
+        add("equipment_benediction.set_switcher.confluence.wizard_set.data.5", "最大魔力增加60，魔力消耗降低11%");
+        add("equipment_benediction.set_switcher.confluence.wizard_set.data.6", "最大魔力增加60，魔力消耗降低13%");
+        add("equipment_benediction.set_switcher.confluence.wizard_set.data.7", "最大魔力增加80，魔力消耗降低15%");
+        add("equipment_benediction.set_switcher.confluence.wizard_set.data.8", "最大魔力增加60，魔力消耗降低13%");
+
+
         // npc对话
         add("dialogs.confluence.guide.0", "我的工作是为你接下来的任务提供建议。建议你遇到任何困难时都来和我谈谈。");
         add("dialogs.confluence.guide.1", "他们说，有个人会告诉你如何在这地方上生存……哦等下。那个人就是我。");

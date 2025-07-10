@@ -33,14 +33,14 @@ public class WizardSet extends EquipmentSet {
         equippableGroup.addEquippableSet("sapphire_robe", robeBonus(ArmorItems.SAPPHIRE_ROBE, 40, 0.91F));
         equippableGroup.addEquippableSet("emerald_robe", robeBonus(ArmorItems.JADE_ROBE, 60, 0.89F));
         equippableGroup.addEquippableSet("ruby_robe", robeBonus(ArmorItems.RUBY_ROBE, 60, 0.87F));
-        equippableGroup.addEquippableSet("amethyst_robe", new EquipmentSetBranch.Builder()
+        /*equippableGroup.addEquippableSet("amethyst_robe", new EquipmentSetBranch.Builder()
                 .addEquippable(VanillaEquippable.CHEST, ArmorItems.MYSTIC_ROBE)
                 .bindHook(builder -> builder
                         .addBonus(TCAttributes.getMagicDamage(), new AttributeModifier(ArmorItems.MYSTIC_ROBE.getId(), 0.06, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
                         .addBonus(TCAttributes.getCriticalChance(), new AttributeModifier(ArmorItems.MYSTIC_ROBE.getId(), 0.06, AttributeModifier.Operation.ADD_VALUE))
                 )
                 .bindHook(ModHookTypes.MANA_CONSUME.get(), (owner, itemStack, original) -> () -> original.getAsFloat() * 0.9F)
-                .build());
+                .build());*/
         equippableGroup.addEquippableSet("diamond_robe", robeBonus(ArmorItems.DIAMOND_ROBE, 80, 0.85F));
         equippableGroup.addEquippableSet("amber_robe", robeBonus(ArmorItems.AMBER_ROBE, 60, 0.87F));
 

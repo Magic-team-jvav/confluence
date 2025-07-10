@@ -9,14 +9,13 @@ import org.confluence.terraentity.init.TESounds;
 
 public class MagicDaggerItem extends ManaStaffItem<MagicDaggerProjectile> {
     public MagicDaggerItem() {
-        super(ModRarity.LIGHT_RED, MagicDaggerProjectile::new, 4.2F, 6, 12, 8, 0.04);
+        super(ModRarity.LIGHT_RED, MagicDaggerProjectile::new, 7, 6, 12, 8, 0.04);
     }
 
     @Override
     protected void beforeShoot(ServerPlayer player, ItemStack itemStack, MagicDaggerProjectile projectile) {
         projectile.setPos(player.getX(), player.getEyeY() - 0.1, player.getZ());
         projectile.setItem(itemStack);
-        projectile.setDamage(7);
         projectile.setFlyTicks(10);
         super.beforeShoot(player, itemStack, projectile);
     }

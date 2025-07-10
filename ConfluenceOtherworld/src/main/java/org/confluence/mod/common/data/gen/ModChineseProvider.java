@@ -71,6 +71,10 @@ public class ModChineseProvider extends LanguageProvider {
         add("enchantment.confluence.soothed_mana.desc", "减小魔力病持续时间");
         add("enchantment.confluence.arcane_protection", "奥术防护");
         add("enchantment.confluence.arcane_protection.desc", "受到伤害时抽取的魔力为最大魔力值乘积一定比率的值，抵消的伤害为受到的伤害乘积该比率的值");
+        add("enchantment.confluence.spell_desperation", "逆魔狂暴");
+        add("enchantment.confluence.spell_desperation.desc", "剩余魔力比值越低攻击力越高");
+        add("enchantment.confluence.mystic_surge", "秘能激涌");
+        add("enchantment.confluence.mystic_surge.desc", "剩余魔力比值越高攻击力越高");
 
         add("gamerule.confluenceSpreadableChance", "邪恶群系蔓延设置");
         add("generator.confluence.the_corruption", "腐化之地");
@@ -2372,6 +2376,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.CHISELED_OBSIDIAN_BRICKS.get(), "雕纹黑曜石块");
         add(DecorativeBlocks.CRYSTAL_BLOCK.get(), "水晶块");
         add(DecorativeBlocks.RAINBOW_BRICKS.get(), "彩虹砖");
+        add(DecorativeBlocks.ASPHALT_BLOCK.get(), "沥青块");
         add(DecorativeBlocks.CHISELED_OAK_PLANKS.get(), "雕纹橡木木板");
         add(DecorativeBlocks.CHISELED_SPRUCE_PLANKS.get(), "雕纹云杉木板");
         add(DecorativeBlocks.CHISELED_EBONY_PLANKS.get(), "雕纹乌木木板");
@@ -3771,6 +3776,11 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.RAW_SQUIRREL.get(), "生松鼠肉");
         add(FoodItems.RAW_BIRD.get(), "生鸟肉");
         add(FoodItems.RAW_DUCK.get(), "生鸭肉");
+
+        add(FoodItems.COOKED_FROG.get(), "熟青蛙肉");
+        add(FoodItems.COOKED_SQUIRREL.get(), "熟松鼠肉");
+        add(FoodItems.COOKED_BIRD.get(), "熟鸟肉");
+        add(FoodItems.COOKED_DUCK.get(), "熟鸭肉");
 
         add(FoodItems.WATERLEAF_SEED.get(), "水叶草种子");
         add(FoodItems.FIREBLOSSOM_SEED.get(), "火焰花种子");

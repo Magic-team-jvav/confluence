@@ -1,9 +1,7 @@
 package org.confluence.mod.common.init;
 
-import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
@@ -31,8 +29,4 @@ public final class ModStructures {
     public static final DeferredHolder<StructureType<?>, StructureType<GraniteCaveStructure>> GRANITE_CAVE = TYPES.register("granite_cave", () -> () -> GraniteCaveStructure.CODEC);
 
     public static final ResourceKey<Structure> DUNGEON_KEY = Confluence.asResourceKey(Registries.STRUCTURE, "dungeon");
-
-    public static void boostrap(BootstrapContext<Structure> context) { // todo
-        context.register(DUNGEON_KEY, new DungeonStructure(new Structure.StructureSettings(HolderSet.empty())));
-    }
 }

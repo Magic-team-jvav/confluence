@@ -8,6 +8,10 @@ public interface IAbstractTerraNPC {
 
     NPCSpawner.Region confluence$getRegion();
 
+    void confluence$setShouldInteract(boolean should);
+
+    boolean confluence$shouldInteract();
+
     static IAbstractTerraNPC of(AbstractTerraNPC npc) {
         return (IAbstractTerraNPC) npc;
     }

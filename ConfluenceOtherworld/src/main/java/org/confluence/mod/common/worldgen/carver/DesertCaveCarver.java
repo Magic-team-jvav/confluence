@@ -24,13 +24,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-public class DesertCaveCarver extends WorldCarver<DesertCaveCarver.Config> {
-    public DesertCaveCarver(Codec<Config> codec) {
+public class DesertCaveCarver extends WorldCarver<CarverConfiguration> {
+    public DesertCaveCarver(Codec<CarverConfiguration> codec) {
         super(codec);
     }
 
     @Override
-    public boolean carve(CarvingContext context, Config config, ChunkAccess chunk, Function<BlockPos, Holder<Biome>> biomeAccessor, RandomSource random, Aquifer aquifer, ChunkPos chunkPos, CarvingMask carvingMask) {
+    public boolean carve(CarvingContext context, CarverConfiguration config, ChunkAccess chunk, Function<BlockPos, Holder<Biome>> biomeAccessor, RandomSource random, Aquifer aquifer, ChunkPos chunkPos, CarvingMask carvingMask) {
         float y = config.y.sample(random, context);
         float yScale = config.yScale.sample(random);
         BlockPos position = chunkPos.getMiddleBlockPosition((int) y);
@@ -107,15 +107,7 @@ public class DesertCaveCarver extends WorldCarver<DesertCaveCarver.Config> {
     }
 
     @Override
-    public boolean isStartChunk(Config config, RandomSource random) {
+    public boolean isStartChunk(CarverConfiguration config, RandomSource random) {
         return true;
-    }
-
-    public static class Config extends CarverConfiguration {
-        public static final Codec<Config> CODEC = CarverConfiguration.CODEC.codec().xmap(Config::new, Function.identity());
-
-        public Config(CarverConfiguration configuration) {
-            super(configuration.probability, configuration.y, configuration.yScale, configuration.lavaLevel, configuration.debugSettings, configuration.replaceable);
-        }
     }
 }

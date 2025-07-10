@@ -339,6 +339,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 CRISPY_HONEY_BLOCK.get(),
 
                 POLISHED_GRANITE.get(),
+                ASPHALT_BLOCK.get(),
 
                 CrateBlocks.IRON_CRATE.get(),
                 CrateBlocks.GOLDEN_CRATE.get(),
@@ -648,6 +649,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 
                 SAFE.get(),
                 SPIKE.get(),
+                ASPHALT_BLOCK.get(),
 
                 AETHERIUM_BLOCK.get(),
                 DARK_AETHERIUM_BLOCK.get(),

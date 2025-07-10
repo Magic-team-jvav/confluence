@@ -22,13 +22,13 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-public class WavyCaveCarver extends WorldCarver<WavyCaveCarver.Config> {
-    public WavyCaveCarver(Codec<Config> codec) {
+public class WavyCaveCarver extends WorldCarver<CarverConfiguration> {
+    public WavyCaveCarver(Codec<CarverConfiguration> codec) {
         super(codec);
     }
 
     @Override
-    public boolean carve(CarvingContext context, Config config, ChunkAccess chunk, Function<BlockPos, Holder<Biome>> biomeAccessor, RandomSource random, Aquifer aquifer, ChunkPos chunkPos, CarvingMask carvingMask) {
+    public boolean carve(CarvingContext context, CarverConfiguration config, ChunkAccess chunk, Function<BlockPos, Holder<Biome>> biomeAccessor, RandomSource random, Aquifer aquifer, ChunkPos chunkPos, CarvingMask carvingMask) {
         BlockPos start = chunkPos.getBlockAt(random.nextInt(16, 32) * (random.nextBoolean() ? -1 : 1), config.y.sample(random, context) - random.nextInt(Math.abs(context.getMinGenY())), random.nextInt(16, 32) * (random.nextBoolean() ? -1 : 1));
         BlockPos end = chunkPos.getBlockAt(random.nextInt(32, 48) * (random.nextBoolean() ? -1 : 1), config.y.sample(random, context) - random.nextInt(Math.abs(context.getMinGenY())), random.nextInt(32, 48) * (random.nextBoolean() ? -1 : 1));
         BlockPos deltaPos = end.subtract(start);
@@ -52,18 +52,10 @@ public class WavyCaveCarver extends WorldCarver<WavyCaveCarver.Config> {
     }
 
     @Override
-    public boolean isStartChunk(Config config, RandomSource random) {
+    public boolean isStartChunk(CarverConfiguration config, RandomSource random) {
         if (ModSecretSeeds.THE_CONSTANT.match()) {
             return random.nextFloat() < config.probability;
         }
         return false;
-    }
-
-    public static class Config extends CarverConfiguration {
-        public static final Codec<Config> CODEC = CarverConfiguration.CODEC.codec().xmap(Config::new, Function.identity());
-
-        public Config(CarverConfiguration configuration) {
-            super(configuration.probability, configuration.y, configuration.yScale, configuration.lavaLevel, configuration.debugSettings, configuration.replaceable);
-        }
     }
 }

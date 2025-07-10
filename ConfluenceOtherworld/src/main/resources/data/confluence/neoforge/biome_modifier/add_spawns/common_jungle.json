@@ -1,11 +1,12 @@
 {
     "type": "neoforge:add_spawns",
-    "biomes": [
-        "minecraft:jungle",
-        "minecraft:lush_caves",
-        "minecraft:sparse_jungle",
-        "minecraft:bamboo_jungle"
-    ],
+    "biomes": {
+        "type": "neoforge:or",
+        "values": [
+            "#c:is_jungle",
+            "#c:is_lush"
+        ]
+    },
     "spawners": [
         {
             "type": "terra_entity:hornet",

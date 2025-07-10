@@ -25,19 +25,24 @@ public class ModEnchantmentTagsProvider extends EnchantmentTagsProvider {
                 ModEnchantments.MANA_MENDING,
                 ModEnchantments.CELESTIAL_ABSORPTION,
                 ModEnchantments.SOOTHED_MANA,
-                ModEnchantments.ARCANE_PROTECTION
+                ModEnchantments.ARCANE_PROTECTION,
+                ModEnchantments.SPELL_DESPERATION,
+                ModEnchantments.MYSTIC_SURGE
         );
 
         tag(ModTags.Enchantments.MANA_IO_EXCLUSIVE).add(ModEnchantments.MANA_REGENERATION, ModEnchantments.EFFICIENT_MAGIC);
         tag(ModTags.Enchantments.MENDING_EXCLUSIVE).add(ModEnchantments.MANA_MENDING, Enchantments.MENDING);
         tag(ModTags.Enchantments.MANA_AFFECTIVE_EXCLUSIVE).add(ModEnchantments.CELESTIAL_ABSORPTION);
+        tag(ModTags.Enchantments.MAGIC_ATTACK_EXCLUSIVE).add(ModEnchantments.SPELL_DESPERATION, ModEnchantments.MYSTIC_SURGE);
         tag(EnchantmentTags.TREASURE).add(ModEnchantments.MANA_MENDING, ModEnchantments.CELESTIAL_ABSORPTION);
         tag(EnchantmentTags.ON_RANDOM_LOOT).add(ModEnchantments.MANA_MENDING);
         tag(EnchantmentTags.TRADEABLE).add(ModEnchantments.MANA_MENDING);
         tag(EnchantmentTags.NON_TREASURE).add(
                 ModEnchantments.MANA_REGENERATION,
                 ModEnchantments.EFFICIENT_MAGIC,
-                ModEnchantments.ARCANE_PROTECTION
+                ModEnchantments.ARCANE_PROTECTION,
+                ModEnchantments.SPELL_DESPERATION,
+                ModEnchantments.MYSTIC_SURGE
         );
         tag(EnchantmentTags.ARMOR_EXCLUSIVE).add(ModEnchantments.ARCANE_PROTECTION);
     }

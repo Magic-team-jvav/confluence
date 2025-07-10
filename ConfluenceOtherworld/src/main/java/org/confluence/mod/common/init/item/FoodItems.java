@@ -36,10 +36,14 @@ public class FoodItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
     //常规食物
     public static final DeferredItem<BaseFoodItem> COOKED_SHRIMP = registerNormalFood("cooked_shrimp", ModFoodProperties.PlentySatisfiedProperties(6000, 6, 3.5f));
-    public static final DeferredItem<BaseFoodItem> RAW_FROG = registerNormalFood("raw_frog", ModFoodProperties.noEffectProperties(3, 1.8f));
-    public static final DeferredItem<BaseFoodItem> RAW_SQUIRREL = registerNormalFood("raw_squirrel", ModFoodProperties.noEffectProperties(3, 1.8f));
-    public static final DeferredItem<BaseFoodItem> RAW_BIRD = registerNormalFood("raw_bird", ModFoodProperties.noEffectProperties(3, 1.8f));
+    public static final DeferredItem<BaseFoodItem> RAW_FROG = registerNormalFood("raw_frog", ModFoodProperties.noEffectProperties(2, 1.8f));
+    public static final DeferredItem<BaseFoodItem> RAW_SQUIRREL = registerNormalFood("raw_squirrel", ModFoodProperties.noEffectProperties(2, 1.8f));
+    public static final DeferredItem<BaseFoodItem> RAW_BIRD = registerNormalFood("raw_bird", ModFoodProperties.noEffectProperties(2, 1.8f));
     public static final DeferredItem<BaseFoodItem> RAW_DUCK = registerNormalFood("raw_duck", ModFoodProperties.noEffectProperties(3, 1.8f));
+    public static final DeferredItem<BaseFoodItem> COOKED_FROG = registerNormalFood("cooked_frog", ModFoodProperties.noEffectProperties(4, 3.6f));
+    public static final DeferredItem<BaseFoodItem> COOKED_SQUIRREL = registerNormalFood("cooked_squirrel", ModFoodProperties.noEffectProperties(4, 3.6f));
+    public static final DeferredItem<BaseFoodItem> COOKED_BIRD = registerNormalFood("cooked_bird", ModFoodProperties.noEffectProperties(4, 3.6f));
+    public static final DeferredItem<BaseFoodItem> COOKED_DUCK = registerNormalFood("cooked_duck", ModFoodProperties.noEffectProperties(6, 7.2f));
     public static final DeferredItem<BaseFoodItem> ESCARGOT = registerNormalFood("escargot", ModFoodProperties.PlentySatisfiedProperties(6000, 6, 3.5f));
     public static final DeferredItem<BaseFoodItem> FROGGLE_BUNWICH = registerNormalFood("froggle_bunwich", ModFoodProperties.PlentySatisfiedProperties(7200, 6, 3.5f));
     public static final DeferredItem<BaseFoodItem> GOLDEN_DELIGHT = registerNormalFood("golden_delight", ModFoodProperties.GOLDEN_CARP); //金美味

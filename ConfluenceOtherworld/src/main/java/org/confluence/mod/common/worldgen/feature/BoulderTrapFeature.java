@@ -56,7 +56,7 @@ public class BoulderTrapFeature extends Feature<BoulderTrapFeature.Config> {
     public record Config(BlockState boulder, int maxBoulderHeight) implements FeatureConfiguration {
         public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 BlockState.CODEC.fieldOf("boulder").orElseGet(() -> FunctionalBlocks.NORMAL_BOULDER.get().defaultBlockState()).forGetter(Config::boulder),
-                ExtraCodecs.POSITIVE_INT.fieldOf("max_boulder_height").orElse(64).forGetter(Config::maxBoulderHeight)
+                ExtraCodecs.POSITIVE_INT.lenientOptionalFieldOf("max_boulder_height", 64).forGetter(Config::maxBoulderHeight)
         ).apply(instance, Config::new));
     }
 }

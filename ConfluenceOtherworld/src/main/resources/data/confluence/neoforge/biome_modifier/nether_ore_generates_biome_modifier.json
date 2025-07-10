@@ -10,7 +10,7 @@
     "minecraft:soul_sand_valley"
   ],
   "features": [
-    "confluence:hellstone_generates",
+    "confluence:netherrack_hellstone",
     "confluence:ore_ancient_debris_add"
   ],
   "step": "underground_ores"

@@ -77,7 +77,7 @@ public final class OverworldUtils {
             if (random.nextFloat() < v) {
                 if (random.nextFloat() < 0.75F) {
                     boolean placed = level.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE)
-                            .getHolder(ModFeatures.Configured.CONFIGURED_YELLOW_WILLOW).orElseThrow().value()
+                            .getHolder(ModFeatures.Configured.YELLOW_WILLOW).orElseThrow().value()
                             .place(level, context.chunkGenerator(), random, origin);
                     if (placed) cir.setReturnValue(true);
                 } else {

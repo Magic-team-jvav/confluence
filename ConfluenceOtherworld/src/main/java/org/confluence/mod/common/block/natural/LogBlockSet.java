@@ -424,6 +424,22 @@ public class LogBlockSet {
             return this;
         }
 
+        public Builder createDefaultWithoutLogs(WoodSetType woodSetType, boolean requireTree) {
+            button(properties -> new ButtonBlock(woodSetType.SET, 30, properties))
+                    .fence(FenceBlock::new)
+                    .fenceGate(properties -> new FenceGateBlock(woodSetType.TYPE, properties))
+                    .pressurePlate(properties -> new PressurePlateBlock(woodSetType.SET, properties))
+                    .slab(SlabBlock::new)
+                    .stair(StairBlock::new)
+                    .sign(properties -> new StandingSignBlock(woodSetType.TYPE, properties),
+                            properties -> new WallSignBlock(woodSetType.TYPE, properties),
+                            SignItem::new)
+                    .trapdoor(properties -> new TrapDoorBlock(woodSetType.SET, properties))
+                    .door(properties -> new DoorBlock(woodSetType.SET, properties));
+            return this;
+        }
+
+
         public Builder log(Function<BlockBehaviour.Properties, ? extends RotatedPillarBlock> function) {
             BlockBehaviour.Properties log = BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASS).strength(2.0F).sound(SoundType.WOOD);
             this.LOG = registerWithItem(id + "_log", () -> function.apply(ignitedByLava ? log.ignitedByLava() : log));
@@ -555,6 +571,7 @@ public class LogBlockSet {
         SHADOW("shadow"),
         PALM("palm"),
         BAOBAB("baobab"),
+        GLOWING_MUSHROOM("glowing_mushroom"),
         YELLOW_WILLOW("yellow_willow"),
         LIVING("living"),
         LIVING_MAHOGANY("living_mahogany"),

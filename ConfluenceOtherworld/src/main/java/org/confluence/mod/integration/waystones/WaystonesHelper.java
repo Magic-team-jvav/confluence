@@ -113,10 +113,6 @@ public class WaystonesHelper {
 
     public static void itemTag(Function<TagKey<Item>, IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item>> consumer) {
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> wip = consumer.apply(LibTags.Items.WIP);
-        wip.addOptional(SNOW_PYLON.getId());
-        wip.addOptional(DESERT_PYLON.getId());
-        wip.addOptional(CAVERN_PYLON.getId());
-        wip.addOptional(OCEAN_PYLON.getId());
         wip.addOptional(JUNGLE_PYLON.getId());
         wip.addOptional(HALLOW_PYLON.getId());
         wip.addOptional(MUSHROOM_PYLON.getId());

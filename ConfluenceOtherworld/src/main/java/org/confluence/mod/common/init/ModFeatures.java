@@ -59,6 +59,7 @@ public final class ModFeatures {
     public static final Supplier<RailTrapFeature> RAIL_TRAP = FEATURES.register("rail_trap", () -> new RailTrapFeature(RailTrapFeature.Config.CODEC));
     public static final Supplier<GroundBlockFeature> GROUND_BLOCK = FEATURES.register("ground_block", () -> new GroundBlockFeature(GroundBlockFeature.Config.CODEC));
     public static final Supplier<GroundBlockNBTFeature> GROUND_BLOCK_NBT = FEATURES.register("ground_block_nbt", () -> new GroundBlockNBTFeature(GroundBlockNBTFeature.Config.CODEC));
+    public static final Supplier<GemstoneCaveFeature> GEMSTONE_CAVE = FEATURES.register("gemstone_cave", () -> new GemstoneCaveFeature(GemstoneCaveFeature.Config.CODEC));
 
     public static final Supplier<PlacementModifierType<SecretFlagPlacement>> SECRET_FLAG_PLACEMENT_MODIFIER = MODIFIER_TYPES.register("secret_flag", () -> () -> SecretFlagPlacement.CODEC);
 

@@ -17,6 +17,7 @@
         "confluence:entities/slime",
         "confluence:entities/frog",
         "confluence:entities/parrot",
+        "confluence:entities/warden",
         "confluence:entities/wither_skeleton",
         "confluence:entities/elder_guardian",
         "confluence:entities/piglin",

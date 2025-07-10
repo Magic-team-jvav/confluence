@@ -477,7 +477,6 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         add(TEMonsterEntities.VOODOO_DEMON.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/voodoo_demon"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ConsumableItems.GUIDE_VOODOO_DOLL))
-                        .add(EmptyLootItem.emptyItem().setWeight(19))
                 )
         );
         add(TEMonsterEntities.HORNET.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/hornet"), LootTable.lootTable()

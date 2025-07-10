@@ -11,12 +11,11 @@ import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.Carvers;
 import net.minecraft.data.worldgen.placement.MiscOverworldPlacements;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.DamageTypeTags;
-import net.minecraft.tags.EnchantmentTags;
-import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.*;
+import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.util.valueproviders.ConstantFloat;
 import net.minecraft.util.valueproviders.ConstantInt;
+import net.minecraft.util.valueproviders.UniformFloat;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.item.Item;
@@ -37,6 +36,7 @@ import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.carver.CarverConfiguration;
 import net.minecraft.world.level.levelgen.carver.CarverDebugSettings;
+import net.minecraft.world.level.levelgen.carver.CaveCarverConfiguration;
 import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -46,6 +46,9 @@ import net.minecraft.world.level.levelgen.feature.configurations.SimpleBlockConf
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.heightproviders.UniformHeight;
 import net.minecraft.world.level.levelgen.placement.*;
+import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraft.world.level.levelgen.structure.StructureSpawnOverride;
+import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockMatchTest;
 import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
 import net.minecraft.world.level.storage.loot.LootContext;
@@ -67,19 +70,22 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.worldgen.SecretFlagPlacement;
-import org.confluence.mod.common.worldgen.carver.DesertCaveCarver;
+import org.confluence.mod.common.worldgen.carver.DemonicCaveCarver;
+import org.confluence.mod.common.worldgen.carver.GlowingMushroomCaveCarver;
 import org.confluence.mod.common.worldgen.feature.*;
+import org.confluence.mod.common.worldgen.structure.DungeonStructure;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
 
 import java.util.Arrays;
+import java.util.Map;
 import java.util.function.Function;
 
 public class ModDataProvider {
     public static final RegistrySetBuilder DATA_BUILDER = new RegistrySetBuilder()
             .add(Registries.DAMAGE_TYPE, ModDamageTypes::bootstrap) // todo
             .add(Registries.BIOME, Biomes::boostrap)
-            .add(Registries.STRUCTURE, ModStructures::boostrap) // todo
+            .add(Registries.STRUCTURE, Structures::boostrap)
             .add(Registries.ENCHANTMENT, Enchantments::bootstrap)
             .add(Registries.CONFIGURED_FEATURE, ConfiguredFeatures::bootstrap)
             .add(Registries.PLACED_FEATURE, PlacedFeatures::bootstrap)
@@ -367,7 +373,11 @@ public class ModDataProvider {
     }
 
     private static class ConfiguredWorldCarvers {
-        public static final ResourceKey<ConfiguredWorldCarver<?>> DESERT_CAVE_CARVER = key("desert_cave_carver");
+        private static final ResourceKey<ConfiguredWorldCarver<?>> DESERT_CAVE_CARVER = key("desert_cave_carver");
+        private static final ResourceKey<ConfiguredWorldCarver<?>> DEMONIC_CAVE_CARVER = key("demonic_cave_carver");
+        private static final ResourceKey<ConfiguredWorldCarver<?>> GLOWING_MUSHROOM_CAVE_CARVER = key("glowing_mushroom_cave_carver");
+        private static final ResourceKey<ConfiguredWorldCarver<?>> JUNGLE_CAVE_CARVER = key("jungle_cave_carver");
+        private static final ResourceKey<ConfiguredWorldCarver<?>> WAVY_CAVE_CARVER = key("wavy_cave_carver");
 
         private static ResourceKey<ConfiguredWorldCarver<?>> key(String path) {
             return Confluence.asResourceKey(Registries.CONFIGURED_CARVER, path);
@@ -375,7 +385,14 @@ public class ModDataProvider {
 
         private static void bootstrap(BootstrapContext<ConfiguredWorldCarver<?>> context) {
             HolderGetter<Block> block = context.lookup(Registries.BLOCK);
-            context.register(DESERT_CAVE_CARVER, new ConfiguredWorldCarver<>(ModCarvers.DESERT_CAVE_CARVER.get(), new DesertCaveCarver.Config(new CarverConfiguration(1, UniformHeight.of(VerticalAnchor.aboveBottom(8), VerticalAnchor.absolute(80)), ConstantFloat.of(8), VerticalAnchor.aboveBottom(8), CarverDebugSettings.DEFAULT, block.getOrThrow(BlockTags.OVERWORLD_CARVER_REPLACEABLES)))));
+            VerticalAnchor aboveBottom8 = VerticalAnchor.aboveBottom(8);
+            VerticalAnchor absolute80 = VerticalAnchor.absolute(80);
+            HolderSet.Named<Block> replaceable = block.getOrThrow(BlockTags.OVERWORLD_CARVER_REPLACEABLES);
+            context.register(DESERT_CAVE_CARVER, new ConfiguredWorldCarver<>(ModCarvers.DESERT_CAVE_CARVER.get(), new CarverConfiguration(1, UniformHeight.of(aboveBottom8, absolute80), ConstantFloat.of(8), aboveBottom8, CarverDebugSettings.DEFAULT, replaceable)));
+            context.register(DEMONIC_CAVE_CARVER, new ConfiguredWorldCarver<>(ModCarvers.DEMONIC_CAVE_CARVER.get(), new DemonicCaveCarver.Config(new CarverConfiguration(0.2F, UniformHeight.of(VerticalAnchor.aboveBottom(40), absolute80), ConstantFloat.of(4), aboveBottom8, CarverDebugSettings.DEFAULT, replaceable), UniformFloat.of(24, 48))));
+            context.register(GLOWING_MUSHROOM_CAVE_CARVER, new ConfiguredWorldCarver<>(ModCarvers.GLOWING_MUSHROOM_CAVE_CARVER.get(), new GlowingMushroomCaveCarver.Config(new CarverConfiguration(0.6F, UniformHeight.of(VerticalAnchor.absolute(-40), VerticalAnchor.absolute(-10)), ConstantFloat.of(6), aboveBottom8, CarverDebugSettings.DEFAULT, replaceable))));
+            context.register(JUNGLE_CAVE_CARVER, new ConfiguredWorldCarver<>(ModCarvers.JUNGLE_CAVE_CARVER.get(), new CaveCarverConfiguration(0.5F, UniformHeight.of(aboveBottom8, VerticalAnchor.absolute(100)), UniformFloat.of(0.1F, 0.9F), aboveBottom8, CarverDebugSettings.DEFAULT, replaceable, UniformFloat.of(2.8F, 5.6F), UniformFloat.of(1.6F, 2.6F), UniformFloat.of(-1, -0.4F))));
+            context.register(WAVY_CAVE_CARVER, new ConfiguredWorldCarver<>(ModCarvers.WAVY_CAVE_CARVER.get(), new CarverConfiguration(0.2F, UniformHeight.of(VerticalAnchor.absolute(-40), absolute80), ConstantFloat.of(4), aboveBottom8, CarverDebugSettings.DEFAULT, replaceable)));
         }
     }
 
@@ -388,10 +405,10 @@ public class ModDataProvider {
 
             HolderGetter<PlacedFeature> placedFeature = context.lookup(Registries.PLACED_FEATURE);
             Function<ResourceKey<PlacedFeature>, Holder<PlacedFeature>> factory = placedFeature::getOrThrow;
-            addFeatures(context, "desert_ores", desert, HolderSet.direct(placedFeature.getOrThrow(PlacedFeatures.AMBER_ORE)), GenerationStep.Decoration.UNDERGROUND_ORES);
-            addFeatures(context, "snowy_icy_ores", snowyIcy, HolderSet.direct(placedFeature.getOrThrow(PlacedFeatures.COLD_CRYSTAL_ORE)), GenerationStep.Decoration.UNDERGROUND_ORES);
-            addFeatures(context, "swamp_ores", biome.getOrThrow(Tags.Biomes.IS_SWAMP), HolderSet.direct(placedFeature.getOrThrow(PlacedFeatures.GELSTONE_ORE)), GenerationStep.Decoration.UNDERGROUND_ORES);
-            addFeatures(context, "overworld_ores", biome.getOrThrow(Tags.Biomes.IS_OVERWORLD), HolderSet.direct(factory,
+            addFeatures(context, "desert_uo", desert, HolderSet.direct(placedFeature.getOrThrow(PlacedFeatures.AMBER_ORE)), GenerationStep.Decoration.UNDERGROUND_ORES);
+            addFeatures(context, "snowy_icy_uo", snowyIcy, HolderSet.direct(placedFeature.getOrThrow(PlacedFeatures.COLD_CRYSTAL_ORE)), GenerationStep.Decoration.UNDERGROUND_ORES);
+            addFeatures(context, "swamp_uo", biome.getOrThrow(Tags.Biomes.IS_SWAMP), HolderSet.direct(placedFeature.getOrThrow(PlacedFeatures.GELSTONE_ORE)), GenerationStep.Decoration.UNDERGROUND_ORES);
+            addFeatures(context, "overworld_uo", biome.getOrThrow(Tags.Biomes.IS_OVERWORLD), HolderSet.direct(factory,
                     PlacedFeatures.DEEPSLATE_ADAMANTITE_ORE_STEP_0, PlacedFeatures.DEEPSLATE_ADAMANTITE_ORE_STEP_1, PlacedFeatures.DEEPSLATE_ADAMANTITE_ORE_STEP_2,
                     PlacedFeatures.DEEPSLATE_MYTHRIL_ORE_STEP_0, PlacedFeatures.DEEPSLATE_MYTHRIL_ORE_STEP_1, PlacedFeatures.DEEPSLATE_MYTHRIL_ORE_STEP_2,
                     PlacedFeatures.DEEPSLATE_ORICHALCUM_ORE_STEP_0, PlacedFeatures.DEEPSLATE_ORICHALCUM_ORE_STEP_1, PlacedFeatures.DEEPSLATE_ORICHALCUM_ORE_STEP_2,
@@ -405,13 +422,13 @@ public class ModDataProvider {
                     PlacedFeatures.AMBER_TREE, PlacedFeatures.AMETHYST_TREE, PlacedFeatures.DIAMOND_TREE, PlacedFeatures.JADE_TREE, PlacedFeatures.RUBY_TREE, PlacedFeatures.SAPPHIRE_TREE, PlacedFeatures.TOPAZ_TREE,
                     PlacedFeatures.CRIMSON_ALTAR_WORLD, PlacedFeatures.DEMON_ALTAR_WORLD
             ), GenerationStep.Decoration.UNDERGROUND_DECORATION);
-            addFeatures(context, "beach_ocean_ores", new OrHolderSet<>(biome.getOrThrow(Tags.Biomes.IS_BEACH), biome.getOrThrow(Tags.Biomes.IS_OCEAN)), HolderSet.direct(factory,
+            addFeatures(context, "beach_ocean_uo", new OrHolderSet<>(biome.getOrThrow(Tags.Biomes.IS_BEACH), biome.getOrThrow(Tags.Biomes.IS_OCEAN)), HolderSet.direct(factory,
                     PlacedFeatures.MARINE_GRAVEL, PlacedFeatures.OPAL_ORE
             ), GenerationStep.Decoration.UNDERGROUND_ORES);
             addFeatures(context, "snowy_icy_ud", snowyIcy, HolderSet.direct(factory,
                     PlacedFeatures.THIN_ICE_PATCH, PlacedFeatures.POWDER_SNOW_PATCH
             ), GenerationStep.Decoration.UNDERGROUND_DECORATION);
-            addFeatures(context, "desert_badlands_ores", desertBadlands, HolderSet.direct(placedFeature.getOrThrow(PlacedFeatures.DESERT_FOSSIL)), GenerationStep.Decoration.UNDERGROUND_ORES);
+            addFeatures(context, "desert_badlands_uo", desertBadlands, HolderSet.direct(placedFeature.getOrThrow(PlacedFeatures.DESERT_FOSSIL)), GenerationStep.Decoration.UNDERGROUND_ORES);
             addFeatures(context, "desert_ud", desert, HolderSet.direct(placedFeature.getOrThrow(PlacedFeatures.FALLING_SAND_TRAP)), GenerationStep.Decoration.UNDERGROUND_DECORATION);
 
             HolderGetter<ConfiguredWorldCarver<?>> configuredWorldCarver = context.lookup(Registries.CONFIGURED_CARVER);
@@ -432,18 +449,8 @@ public class ModDataProvider {
             HolderGetter<ConfiguredWorldCarver<?>> configuredWorldCarver = context.lookup(Registries.CONFIGURED_CARVER);
             HolderGetter<PlacedFeature> placedFeature = context.lookup(Registries.PLACED_FEATURE);
 
-            context.register(ModBiomes.THE_CORRUPTION, new Biome.BiomeBuilder()
-                    .hasPrecipitation(true)
-                    .temperature(1)
-                    .downfall(0)
-                    .specialEffects(new BiomeSpecialEffects.Builder()
-                            .foliageColorOverride(-9030507)
-                            .grassColorOverride(-9351806)
-                            .skyColor(-10726554)
-                            .fogColor(-10726554)
-                            .waterColor(-12837542)
-                            .waterFogColor(-11055776)
-                            .build())
+            context.register(ModBiomes.THE_CORRUPTION, new Biome.BiomeBuilder().hasPrecipitation(true).temperature(1).downfall(0)
+                    .specialEffects(new BiomeSpecialEffects.Builder().foliageColorOverride(-9030507).grassColorOverride(-9351806).skyColor(-10726554).fogColor(-10726554).waterColor(-12837542).waterFogColor(-11055776).build())
                     .mobSpawnSettings(new MobSpawnSettings.Builder()
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.DECAYEDER.get(), 22, 1, 1))
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.DEVOURER.get(), 3, 1, 1))
@@ -463,17 +470,8 @@ public class ModDataProvider {
                         builder.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, PlacedFeatures.DEMON_ALTAR_BIOME);
                     }).build())
                     .build());
-            context.register(ModBiomes.THE_CORRUPTION_DESERT, new Biome.BiomeBuilder()
-                    .temperature(1)
-                    .downfall(0)
-                    .specialEffects(new BiomeSpecialEffects.Builder()
-                            .foliageColorOverride(-10271373)
-                            .grassColorOverride(-10207626)
-                            .skyColor(-8161900)
-                            .fogColor(-8161900)
-                            .waterColor(-11061641)
-                            .waterFogColor(-9083007)
-                            .build())
+            context.register(ModBiomes.THE_CORRUPTION_DESERT, new Biome.BiomeBuilder().temperature(1).downfall(0)
+                    .specialEffects(new BiomeSpecialEffects.Builder().foliageColorOverride(-10271373).grassColorOverride(-10207626).skyColor(-8161900).fogColor(-8161900).waterColor(-11061641).waterFogColor(-9083007).build())
                     .mobSpawnSettings(new MobSpawnSettings.Builder()
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.DECAYEDER.get(), 22, 1, 1))
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.DEVOURER.get(), 3, 1, 1))
@@ -482,17 +480,8 @@ public class ModDataProvider {
                     .generationSettings(BiomeGenerationSettings.EMPTY)
                     .build()
             );
-            context.register(ModBiomes.THE_CORRUPTION_TUNDRA, new Biome.BiomeBuilder()
-                    .temperature(0)
-                    .downfall(0)
-                    .specialEffects(new BiomeSpecialEffects.Builder()
-                            .foliageColorOverride(-9939839)
-                            .grassColorOverride(-9415030)
-                            .skyColor(-8948332)
-                            .fogColor(-8948332)
-                            .waterColor(-9876078)
-                            .waterFogColor(-9869439)
-                            .build())
+            context.register(ModBiomes.THE_CORRUPTION_TUNDRA, new Biome.BiomeBuilder().temperature(0).downfall(0)
+                    .specialEffects(new BiomeSpecialEffects.Builder().foliageColorOverride(-9939839).grassColorOverride(-9415030).skyColor(-8948332).fogColor(-8948332).waterColor(-9876078).waterFogColor(-9869439).build())
                     .mobSpawnSettings(new MobSpawnSettings.Builder()
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.DECAYEDER.get(), 22, 1, 1))
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.DEVOURER.get(), 3, 1, 1))
@@ -502,18 +491,8 @@ public class ModDataProvider {
                     .generationSettings(BiomeGenerationSettings.EMPTY)
                     .build()
             );
-            context.register(ModBiomes.THE_CRIMSON, new Biome.BiomeBuilder()
-                    .hasPrecipitation(true)
-                    .temperature(0.5F)
-                    .downfall(0.5F)
-                    .specialEffects(new BiomeSpecialEffects.Builder()
-                            .foliageColorOverride(-2282195)
-                            .grassColorOverride(-4436402)
-                            .skyColor(-8827314)
-                            .fogColor(-8827314)
-                            .waterColor(-7069664)
-                            .waterFogColor(-7451572)
-                            .build())
+            context.register(ModBiomes.THE_CRIMSON, new Biome.BiomeBuilder().hasPrecipitation(true).temperature(0.5F).downfall(0.5F)
+                    .specialEffects(new BiomeSpecialEffects.Builder().foliageColorOverride(-2282195).grassColorOverride(-4436402).skyColor(-8827314).fogColor(-8827314).waterColor(-7069664).waterFogColor(-7451572).build())
                     .mobSpawnSettings(new MobSpawnSettings.Builder()
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.BLOOD_CRAWLER.get(), 60, 1, 1))
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.BLOODY_SPORE.get(), 30, 1, 1))
@@ -533,17 +512,8 @@ public class ModDataProvider {
                     }).build())
                     .build()
             );
-            context.register(ModBiomes.THE_CRIMSON_DESERT, new Biome.BiomeBuilder()
-                    .temperature(0)
-                    .downfall(0)
-                    .specialEffects(new BiomeSpecialEffects.Builder()
-                            .foliageColorOverride(-6669252)
-                            .grassColorOverride(-7915464)
-                            .skyColor(-6331292)
-                            .fogColor(-6331292)
-                            .waterColor(-5294281)
-                            .waterFogColor(-5674390)
-                            .build())
+            context.register(ModBiomes.THE_CRIMSON_DESERT, new Biome.BiomeBuilder().temperature(0).downfall(0)
+                    .specialEffects(new BiomeSpecialEffects.Builder().foliageColorOverride(-6669252).grassColorOverride(-7915464).skyColor(-6331292).fogColor(-6331292).waterColor(-5294281).waterFogColor(-5674390).build())
                     .mobSpawnSettings(new MobSpawnSettings.Builder()
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.BLOOD_CRAWLER.get(), 60, 1, 1))
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.BLOODY_SPORE.get(), 30, 1, 1))
@@ -553,17 +523,8 @@ public class ModDataProvider {
                     .generationSettings(BiomeGenerationSettings.EMPTY)
                     .build()
             );
-            context.register(ModBiomes.THE_CRIMSON_TUNDRA, new Biome.BiomeBuilder()
-                    .temperature(0.5f)
-                    .downfall(0.5f)
-                    .specialEffects(new BiomeSpecialEffects.Builder()
-                            .foliageColorOverride(-6664389)
-                            .grassColorOverride(-7915464)
-                            .skyColor(-6327708)
-                            .fogColor(-6327708)
-                            .waterColor(-5286090)
-                            .waterFogColor(-5671318)
-                            .build())
+            context.register(ModBiomes.THE_CRIMSON_TUNDRA, new Biome.BiomeBuilder().temperature(0.5f).downfall(0.5f)
+                    .specialEffects(new BiomeSpecialEffects.Builder().foliageColorOverride(-6664389).grassColorOverride(-7915464).skyColor(-6327708).fogColor(-6327708).waterColor(-5286090).waterFogColor(-5671318).build())
                     .mobSpawnSettings(new MobSpawnSettings.Builder()
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.BLOOD_CRAWLER.get(), 60, 1, 1))
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.BLOODY_SPORE.get(), 30, 1, 1))
@@ -573,63 +534,26 @@ public class ModDataProvider {
                     .generationSettings(BiomeGenerationSettings.EMPTY)
                     .build()
             );
-            context.register(ModBiomes.THE_HALLOW, new Biome.BiomeBuilder()
-                    .temperature(0.5f)
-                    .downfall(0.5f)
-                    .specialEffects(new BiomeSpecialEffects.Builder()
-                            .foliageColorOverride(-16711703)
-                            .grassColorOverride(-3999757)
-                            .fogColor(-3346188)
-                            .waterColor(-1554953)
-                            .waterFogColor(-3345167)
-                            .skyColor(-3346188)
-                            .build())
+            context.register(ModBiomes.THE_HALLOW, new Biome.BiomeBuilder().temperature(0.5f).downfall(0.5f)
+                    .specialEffects(new BiomeSpecialEffects.Builder().foliageColorOverride(-16711703).grassColorOverride(-3999757).fogColor(-3346188).waterColor(-1554953).waterFogColor(-3345167).skyColor(-3346188).build())
                     .mobSpawnSettings(MobSpawnSettings.EMPTY)
                     .generationSettings(BiomeGenerationSettings.EMPTY)
                     .build()
             );
-            context.register(ModBiomes.THE_HALLOW_DESERT, new Biome.BiomeBuilder()
-                    .temperature(0)
-                    .downfall(0)
-                    .specialEffects(new BiomeSpecialEffects.Builder()
-                            .foliageColorOverride(-11084592)
-                            .grassColorOverride(-4005129)
-                            .fogColor(-3347468)
-                            .waterColor(-3347468)
-                            .waterFogColor(-1554953)
-                            .skyColor(-4592650)
-                            .build())
+            context.register(ModBiomes.THE_HALLOW_DESERT, new Biome.BiomeBuilder().temperature(0).downfall(0)
+                    .specialEffects(new BiomeSpecialEffects.Builder().foliageColorOverride(-11084592).grassColorOverride(-4005129).fogColor(-3347468).waterColor(-3347468).waterFogColor(-1554953).skyColor(-4592650).build())
                     .mobSpawnSettings(MobSpawnSettings.EMPTY)
                     .generationSettings(BiomeGenerationSettings.EMPTY)
                     .build()
             );
-            context.register(ModBiomes.THE_HALLOW_TUNDRA, new Biome.BiomeBuilder()
-                    .temperature(0.5f)
-                    .downfall(0.5f)
-                    .specialEffects(new BiomeSpecialEffects.Builder()
-                            .foliageColorOverride(-11084592)
-                            .grassColorOverride(-4005129)
-                            .fogColor(-3347468)
-                            .waterColor(-3347468)
-                            .waterFogColor(-1554953)
-                            .skyColor(-4592650)
-                            .build())
+            context.register(ModBiomes.THE_HALLOW_TUNDRA, new Biome.BiomeBuilder().temperature(0.5f).downfall(0.5f)
+                    .specialEffects(new BiomeSpecialEffects.Builder().foliageColorOverride(-11084592).grassColorOverride(-4005129).fogColor(-3347468).waterColor(-3347468).waterFogColor(-1554953).skyColor(-4592650).build())
                     .mobSpawnSettings(MobSpawnSettings.EMPTY)
                     .generationSettings(BiomeGenerationSettings.EMPTY)
                     .build()
             );
-            context.register(ModBiomes.ASH_FOREST, new Biome.BiomeBuilder()
-                    .hasPrecipitation(false)
-                    .temperature(2)
-                    .downfall(0)
-                    .specialEffects(new BiomeSpecialEffects.Builder()
-                            .foliageColorOverride(10387789)
-                            .grassColorOverride(9470285)
-                            .fogColor(-10541025)
-                            .waterColor(-10541025)
-                            .waterFogColor(4159204)
-                            .skyColor(-4592650)
-                            .build())
+            context.register(ModBiomes.ASH_FOREST, new Biome.BiomeBuilder().hasPrecipitation(false).temperature(2).downfall(0)
+                    .specialEffects(new BiomeSpecialEffects.Builder().foliageColorOverride(10387789).grassColorOverride(9470285).fogColor(-10541025).waterColor(-10541025).waterFogColor(4159204).skyColor(-4592650).build())
                     .mobSpawnSettings(MobSpawnSettings.EMPTY)
                     .generationSettings(Util.make(new BiomeGenerationSettings.Builder(placedFeature, configuredWorldCarver), builder -> {
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, ModFeatures.Placed.FIREBLOSSOM);
@@ -639,18 +563,8 @@ public class ModDataProvider {
                     }).build())
                     .build()
             );
-            context.register(ModBiomes.ASH_WASTELAND, new Biome.BiomeBuilder()
-                    .hasPrecipitation(false)
-                    .temperature(2)
-                    .downfall(0)
-                    .specialEffects(new BiomeSpecialEffects.Builder()
-                            .foliageColorOverride(10387789)
-                            .grassColorOverride(9470285)
-                            .fogColor(-10541025)
-                            .waterColor(-10541025)
-                            .waterFogColor(4159204)
-                            .skyColor(-4592650)
-                            .build())
+            context.register(ModBiomes.ASH_WASTELAND, new Biome.BiomeBuilder().hasPrecipitation(false).temperature(2).downfall(0)
+                    .specialEffects(new BiomeSpecialEffects.Builder().foliageColorOverride(10387789).grassColorOverride(9470285).fogColor(-10541025).waterColor(-10541025).waterFogColor(4159204).skyColor(-4592650).build())
                     .mobSpawnSettings(MobSpawnSettings.EMPTY)
                     .generationSettings(Util.make(new BiomeGenerationSettings.Builder(placedFeature, configuredWorldCarver), builder -> {
                         builder.addFeature(GenerationStep.Decoration.SURFACE_STRUCTURES, PlacedFeatures.ASH_HELLSTONE);
@@ -658,15 +572,8 @@ public class ModDataProvider {
                     }).build())
                     .build()
             );
-            context.register(ModBiomes.GLOWING_MUSHROOM, new Biome.BiomeBuilder()
-                    .temperature(0.5f)
-                    .downfall(0.5f)
-                    .specialEffects(new BiomeSpecialEffects.Builder()
-                            .fogColor(12638463)
-                            .waterColor(4159204)
-                            .waterFogColor(329011)
-                            .skyColor(8103167)
-                            .build())
+            context.register(ModBiomes.GLOWING_MUSHROOM, new Biome.BiomeBuilder().temperature(0.5f).downfall(0.5f)
+                    .specialEffects(new BiomeSpecialEffects.Builder().fogColor(12638463).waterColor(4159204).waterFogColor(329011).skyColor(8103167).build())
                     .mobSpawnSettings(new MobSpawnSettings.Builder()
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.SPORE_BAT.get(), 60, 1, 2))
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.SPORE_SKELETON.get(), 60, 1, 2))
@@ -795,37 +702,56 @@ public class ModDataProvider {
                     )
             );
             register(context, ModEnchantments.SPELL_DESPERATION, Enchantment.enchantment(
-                                    Enchantment.definition(
-                                            item.getOrThrow(ModTags.Items.MANA_WEAPON),
-                                            2,
-                                            2,
-                                            Enchantment.dynamicCost(25, 25),
-                                            Enchantment.dynamicCost(75, 25),
-                                            4,
-                                            EquipmentSlotGroup.MAINHAND
-                                    )
-                            )
-                            .exclusiveWith(enchantment.getOrThrow(ModTags.Enchantments.MAGIC_ATTACK_EXCLUSIVE))
-                            .withEffect(ModEnchantments.EffectComponentTypes.LESS_MANA_MORE_ATTACK.get(), new AddValue(LevelBasedValue.perLevel(1)), isMagic)
+                            Enchantment.definition(
+                                    item.getOrThrow(ModTags.Items.MANA_WEAPON),
+                                    2,
+                                    2,
+                                    Enchantment.dynamicCost(25, 25),
+                                    Enchantment.dynamicCost(75, 25),
+                                    4,
+                                    EquipmentSlotGroup.MAINHAND
+                            ))
+                    .exclusiveWith(enchantment.getOrThrow(ModTags.Enchantments.MAGIC_ATTACK_EXCLUSIVE))
+                    .withEffect(ModEnchantments.EffectComponentTypes.LESS_MANA_MORE_ATTACK.get(), new AddValue(LevelBasedValue.perLevel(1)), isMagic)
             );
             register(context, ModEnchantments.MYSTIC_SURGE, Enchantment.enchantment(
-                                    Enchantment.definition(
-                                            item.getOrThrow(ModTags.Items.MANA_WEAPON),
-                                            2,
-                                            2,
-                                            Enchantment.dynamicCost(25, 25),
-                                            Enchantment.dynamicCost(75, 25),
-                                            4,
-                                            EquipmentSlotGroup.MAINHAND
-                                    )
-                            )
-                            .exclusiveWith(enchantment.getOrThrow(ModTags.Enchantments.MAGIC_ATTACK_EXCLUSIVE))
-                            .withEffect(ModEnchantments.EffectComponentTypes.MORE_MANA_MORE_ATTACK.get(), new AddValue(LevelBasedValue.perLevel(1)), isMagic)
+                            Enchantment.definition(
+                                    item.getOrThrow(ModTags.Items.MANA_WEAPON),
+                                    2,
+                                    2,
+                                    Enchantment.dynamicCost(25, 25),
+                                    Enchantment.dynamicCost(75, 25),
+                                    4,
+                                    EquipmentSlotGroup.MAINHAND
+                            ))
+                    .exclusiveWith(enchantment.getOrThrow(ModTags.Enchantments.MAGIC_ATTACK_EXCLUSIVE))
+                    .withEffect(ModEnchantments.EffectComponentTypes.MORE_MANA_MORE_ATTACK.get(), new AddValue(LevelBasedValue.perLevel(1)), isMagic)
             );
         }
 
         private static void register(BootstrapContext<Enchantment> context, ResourceKey<Enchantment> key, Enchantment.Builder builder) {
             context.register(key, builder.build(key.location()));
+        }
+    }
+
+    public static class Structures {
+        private static final TagKey<Biome> HAS_STRUCTURE_$_SHIMMER_LAKE = Confluence.asTagKey(Registries.BIOME, "has_structure/shimmer_lake");
+
+        public static void boostrap(BootstrapContext<Structure> context) {
+            HolderGetter<Biome> biome = context.lookup(Registries.BIOME);
+            context.register(ModStructures.DUNGEON_KEY, new DungeonStructure(new Structure.StructureSettings(biome.getOrThrow(HAS_STRUCTURE_$_SHIMMER_LAKE), Map.of(
+                    MobCategory.MONSTER, new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create(
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.ANGER_BONES.get(), 240, 8, 9),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.BIG_ANGER_BONES.get(), 240, 8, 9),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.BIG_BONES.get(), 240, 8, 9),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.BIG_HELMET_ANGER_BONES.get(), 240, 8, 9),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.BIG_MUSCLE_ANGER_BONES.get(), 240, 8, 9),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.SHORT_BONES.get(), 240, 8, 9),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.DARK_CASTER.get(), 240, 2, 3),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.CURSED_SKULL.get(), 120, 3, 4),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.DUNGEON_SLIME.get(), 120, 1, 2)
+                    ))
+            ), GenerationStep.Decoration.TOP_LAYER_MODIFICATION, TerrainAdjustment.NONE)));
         }
     }
 }

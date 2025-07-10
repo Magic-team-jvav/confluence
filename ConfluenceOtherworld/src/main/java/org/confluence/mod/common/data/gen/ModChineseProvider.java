@@ -2047,6 +2047,20 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.BAOBAB_LOG_BLOCKS.getFenceGate().get(), "猴面包木栅栏门");
         add(NatureBlocks.BAOBAB_LOG_BLOCKS.getPressurePlate().get(), "猴面包木压力板");
 
+        add(NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.getButton().get(), "发光蘑菇按钮");
+        add(NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.getPlanks().get(), "发光蘑菇木板");
+        add(NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.getDoor().get(), "发光蘑菇门");
+        add(NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.getTrapdoor().get(), "发光蘑菇活板门");
+        add(NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.getSign().get(), "发光蘑菇告示牌");
+        add(NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.getStairs().get(), "发光蘑菇楼梯");
+        add(NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.getSlab().get(), "发光蘑菇台阶");
+        add(NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.getFence().get(), "发光蘑菇栅栏");
+        add(NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.getFenceGate().get(), "发光蘑菇栅栏门");
+        add(NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.getPressurePlate().get(), "发光蘑菇压力板");
+
+
+
+
         add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getButton().get(), "黄柳木按钮");
         add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getPlanks().get(), "黄柳木板");
         add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getLog().get(), "黄柳木原木");

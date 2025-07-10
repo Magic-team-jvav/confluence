@@ -1,0 +1,7 @@
+{
+  "parent": "block/template_fence_gate_wall_open",
+  "textures": {
+    "texture": "confluence:block/glowing_mushroom_planks"
+  },
+  "render_type": "solid"
+}

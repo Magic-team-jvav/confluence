@@ -1,0 +1,8 @@
+{
+  "parent": "block/door_top_left",
+  "textures": {
+    "bottom": "confluence:block/glowing_mushroom_door_bottom",
+    "top": "confluence:block/glowing_mushroom_door_top"
+  },
+  "render_type": "cutout"
+}

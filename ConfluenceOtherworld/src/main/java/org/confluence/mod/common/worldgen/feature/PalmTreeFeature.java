@@ -44,9 +44,9 @@ public class PalmTreeFeature extends Feature<PalmTreeFeature.Config> {
         BlockPos trunkBlockPos = pContext.origin();
         BlockPos leavesBlockPos = pContext.origin();
         BlockState trunkBlockState = config.trunk().getState(random, trunkBlockPos);
-        BlockState leavesBlockState1 = config.leaves1().getState(random, leavesBlockPos);
-        BlockState leavesBlockState2 = config.leaves2().getState(random, leavesBlockPos);
-        BlockState leavesBlockState3 = config.leaves3().getState(random, leavesBlockPos);
+        BlockState leavesBlockState1 = config.leavesBlockBottom().getState(random, leavesBlockPos);
+        BlockState leavesBlockState2 = config.leavesBlockTop().getState(random, leavesBlockPos);
+        BlockState leavesBlockState3 = config.leaveBlockDouble().getState(random, leavesBlockPos);
         List<BlockState> leavesBlocks = Lists.newArrayList(leavesBlockState1, leavesBlockState2, leavesBlockState3);
 
         boolean placed = true;
@@ -103,12 +103,12 @@ public class PalmTreeFeature extends Feature<PalmTreeFeature.Config> {
         return false;
     }
 
-    public record Config(BlockStateProvider trunk, BlockStateProvider leaves1, BlockStateProvider leaves2, BlockStateProvider leaves3) implements FeatureConfiguration {
+    public record Config(BlockStateProvider trunk, BlockStateProvider leavesBlockBottom, BlockStateProvider leavesBlockTop, BlockStateProvider leaveBlockDouble) implements FeatureConfiguration {
         public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 BlockStateProvider.CODEC.fieldOf("trunk_block").forGetter(Config::trunk),
-                BlockStateProvider.CODEC.fieldOf("leaves_block_bottom").forGetter(Config::leaves1),
-                BlockStateProvider.CODEC.fieldOf("leaves_block_top").forGetter(Config::leaves2),
-                BlockStateProvider.CODEC.fieldOf("leaves_block_double").forGetter(Config::leaves3)
+                BlockStateProvider.CODEC.fieldOf("leaves_block_bottom").forGetter(Config::leavesBlockBottom),
+                BlockStateProvider.CODEC.fieldOf("leaves_block_top").forGetter(Config::leavesBlockTop),
+                BlockStateProvider.CODEC.fieldOf("leaves_block_double").forGetter(Config::leaveBlockDouble)
         ).apply(instance, Config::new));
     }
 }

@@ -66,7 +66,7 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                 registrylookup.getOrThrow(Tags.Biomes.IS_BADLANDS)
         );
         MinMaxBounds.Doubles belowSpace = MinMaxBounds.Doubles.between(-64.0, 260.0);
-        HolderSet<Structure> isDungeon = HolderSet.direct(registrystrcturelookup.getOrThrow(ModStructures.DUNGEON_KEY));
+        HolderSet<Structure> isDungeon = HolderSet.direct(registrystrcturelookup.getOrThrow(ModStructures.Keys.DUNGEON));
         // 基础鱼
         output.accept(ModLootTables.FISH, LootTable.lootTable()
                 .withPool(LootPool.lootPool()

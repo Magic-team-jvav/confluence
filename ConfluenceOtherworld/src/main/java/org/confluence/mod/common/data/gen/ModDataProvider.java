@@ -29,6 +29,7 @@ import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
+import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.block.state.properties.SlabType;
@@ -56,8 +57,11 @@ import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlac
 import net.minecraft.world.level.levelgen.heightproviders.UniformHeight;
 import net.minecraft.world.level.levelgen.placement.*;
 import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraft.world.level.levelgen.structure.StructureSet;
 import net.minecraft.world.level.levelgen.structure.StructureSpawnOverride;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
+import net.minecraft.world.level.levelgen.structure.placement.ConcentricRingsStructurePlacement;
+import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockMatchTest;
 import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
 import net.minecraft.world.level.storage.loot.LootContext;
@@ -79,16 +83,12 @@ import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.worldgen.SecretFlagPlacement;
 import org.confluence.mod.common.worldgen.carver.DemonicCaveCarver;
-import org.confluence.mod.common.worldgen.carver.GlowingMushroomCaveCarver;
 import org.confluence.mod.common.worldgen.feature.*;
 import org.confluence.mod.common.worldgen.structure.DungeonStructure;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 
 public class ModDataProvider {
@@ -96,6 +96,7 @@ public class ModDataProvider {
             .add(Registries.DAMAGE_TYPE, ModDamageTypes::bootstrap) // todo
             .add(Registries.BIOME, Biomes::boostrap)
             .add(Registries.STRUCTURE, Structures::boostrap)
+            .add(Registries.STRUCTURE_SET, StructureSets::bootstrap)
             .add(Registries.ENCHANTMENT, Enchantments::bootstrap)
             .add(Registries.CONFIGURED_FEATURE, ConfiguredFeatures::bootstrap)
             .add(Registries.PLACED_FEATURE, PlacedFeatures::bootstrap)
@@ -165,15 +166,8 @@ public class ModDataProvider {
         private static final ResourceKey<ConfiguredFeature<?, ?>> TUNDRA_POT = key("tundra_pot");
 
         private static final ResourceKey<ConfiguredFeature<?, ?>> CORRUPT_DROOPING_VINE = key("corrupt_drooping_vine");
-        private static final ResourceKey<ConfiguredFeature<?, ?>> THE_CORRUPTION_TREE_CHECKED_0 = key("the_corruption_tree_checked_0");
-        private static final ResourceKey<ConfiguredFeature<?, ?>> THE_CORRUPTION_TREE_CHECKED_1 = key("the_corruption_tree_checked_1");
-        private static final ResourceKey<ConfiguredFeature<?, ?>> THE_CORRUPTION_TREE_CHECKED_2 = key("the_corruption_tree_checked_2");
-        private static final ResourceKey<ConfiguredFeature<?, ?>> TREES_CORRUPTION = key("trees_corruption");
         private static final ResourceKey<ConfiguredFeature<?, ?>> CORRUPT_GRASS = key("corrupt_grass");
         private static final ResourceKey<ConfiguredFeature<?, ?>> VILE_MUSHROOM = key("vile_mushroom");
-        private static final ResourceKey<ConfiguredFeature<?, ?>> CRIMSON_TREE_CHECKED_0 = key("crimson_tree_checked_0");
-        private static final ResourceKey<ConfiguredFeature<?, ?>> CRIMSON_TREE_CHECKED_1 = key("crimson_tree_checked_1");
-        private static final ResourceKey<ConfiguredFeature<?, ?>> TREES_CRIMSON = key("trees_crimson");
         private static final ResourceKey<ConfiguredFeature<?, ?>> CRIMSON_GRASS = key("crimson_grass");
         private static final ResourceKey<ConfiguredFeature<?, ?>> CRIMSON_DROOPING_VINE = key("crimson_drooping_vine");
         private static final ResourceKey<ConfiguredFeature<?, ?>> VICIOUS_MUSHROOM = key("vicious_mushroom");
@@ -207,6 +201,7 @@ public class ModDataProvider {
         private static final ResourceKey<ConfiguredFeature<?, ?>> SURFACE_CHESTS = key("surface_chests");
         private static final ResourceKey<ConfiguredFeature<?, ?>> CAVE_FROZEN_CHESTS = key("cave_frozen_chests");
         private static final ResourceKey<ConfiguredFeature<?, ?>> UNDERGROUND_FROZEN_CHESTS = key("underground_frozen_chests");
+        private static final ResourceKey<ConfiguredFeature<?, ?>> GEMSTONE_CAVE = key("gemstone_cave");
 
         private static ResourceKey<ConfiguredFeature<?, ?>> key(String path) {
             return Confluence.asResourceKey(Registries.CONFIGURED_FEATURE, path);
@@ -215,12 +210,30 @@ public class ModDataProvider {
         private static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
             TagMatchTest stoneOreReplaceables = new TagMatchTest(BlockTags.STONE_ORE_REPLACEABLES);
             TagMatchTest deepslateOreReplaceables = new TagMatchTest(BlockTags.DEEPSLATE_ORE_REPLACEABLES);
+
             ore(context, AMBER_ORE, 8, OreConfiguration.target(new TagMatchTest(ModTags.Blocks.DESERT_FOSSIL_REPLACEMENT), OreBlocks.AMBER_ORE.get().defaultBlockState()));
             ore(context, AMETHYST_ORE, 8, OreConfiguration.target(stoneOreReplaceables, OreBlocks.AMETHYST_ORE.get().defaultBlockState()), OreConfiguration.target(deepslateOreReplaceables, OreBlocks.DEEPSLATE_AMETHYST_ORE.get().defaultBlockState()));
             ore(context, ASH_HELLSTONE, 16, OreConfiguration.target(new BlockMatchTest(NatureBlocks.ASH_BLOCK.get()), OreBlocks.ASH_HELLSTONE.get().defaultBlockState()));
             ore(context, NETHERRACK_HELLSTONE, 10, OreConfiguration.target(new BlockMatchTest(Blocks.NETHERRACK), OreBlocks.ASH_HELLSTONE.get().defaultBlockState()));
             ore(context, COLD_CRYSTAL_ORE, 8, OreConfiguration.target(new TagMatchTest(ModTags.Blocks.COLD_CRYSTAL_ORE_REPLACEMENT), OreBlocks.COLD_CRYSTAL_ORE.get().defaultBlockState()));
             ore(context, CRIMTANE_ORE, 7, 1, OreConfiguration.target(stoneOreReplaceables, OreBlocks.CRIMTANE_ORE.get().defaultBlockState()), OreConfiguration.target(deepslateOreReplaceables, OreBlocks.DEEPSLATE_CRIMTANE_ORE.get().defaultBlockState()));
+            ore(context, DEMONITE_ORE, 7, 1, OreConfiguration.target(stoneOreReplaceables, OreBlocks.DEMONITE_ORE.get().defaultBlockState()), OreConfiguration.target(deepslateOreReplaceables, OreBlocks.DEEPSLATE_DEMONITE_ORE.get().defaultBlockState()));
+            ore(context, GELSTONE_ORE, 8, OreConfiguration.target(new TagMatchTest(ModTags.Blocks.GELSTONE_ORE_REPLACEMENT), OreBlocks.GELSTONE_ORE.get().defaultBlockState()));
+            ore(context, JADE_ORE, 8, OreConfiguration.target(stoneOreReplaceables, OreBlocks.JADE_ORE.get().defaultBlockState()), OreConfiguration.target(deepslateOreReplaceables, OreBlocks.DEEPSLATE_JADE_ORE.get().defaultBlockState()));
+            ore(context, LEAD_ORE, 7, OreConfiguration.target(stoneOreReplaceables, OreBlocks.LEAD_ORE.get().defaultBlockState()), OreConfiguration.target(deepslateOreReplaceables, OreBlocks.DEEPSLATE_LEAD_ORE.get().defaultBlockState()));
+            ore(context, PLATINUM_ORE, 5, OreConfiguration.target(stoneOreReplaceables, OreBlocks.PLATINUM_ORE.get().defaultBlockState()), OreConfiguration.target(deepslateOreReplaceables, OreBlocks.DEEPSLATE_PLATINUM_ORE.get().defaultBlockState()));
+            ore(context, RUBY_ORE, 8, OreConfiguration.target(stoneOreReplaceables, OreBlocks.RUBY_ORE.get().defaultBlockState()), OreConfiguration.target(deepslateOreReplaceables, OreBlocks.DEEPSLATE_RUBY_ORE.get().defaultBlockState()));
+            ore(context, SAPPHIRE_ORE, 8, OreConfiguration.target(stoneOreReplaceables, OreBlocks.SAPPHIRE_ORE.get().defaultBlockState()), OreConfiguration.target(deepslateOreReplaceables, OreBlocks.DEEPSLATE_SAPPHIRE_ORE.get().defaultBlockState()));
+            ore(context, SILVER_ORE, 6, OreConfiguration.target(stoneOreReplaceables, OreBlocks.SILVER_ORE.get().defaultBlockState()), OreConfiguration.target(deepslateOreReplaceables, OreBlocks.DEEPSLATE_SILVER_ORE.get().defaultBlockState()));
+            ore(context, TIN_ORE, 10, OreConfiguration.target(stoneOreReplaceables, OreBlocks.TIN_ORE.get().defaultBlockState()));
+            ore(context, TOPAZ_ORE, 8, OreConfiguration.target(stoneOreReplaceables, OreBlocks.TOPAZ_ORE.get().defaultBlockState()), OreConfiguration.target(deepslateOreReplaceables, OreBlocks.DEEPSLATE_TOPAZ_ORE.get().defaultBlockState()));
+            ore(context, TUNGSTEN_ORE, 5, OreConfiguration.target(stoneOreReplaceables, OreBlocks.TUNGSTEN_ORE.get().defaultBlockState()), OreConfiguration.target(deepslateOreReplaceables, OreBlocks.DEEPSLATE_TUNGSTEN_ORE.get().defaultBlockState()));
+            ore(context, MARINE_GRAVEL, 33, OreConfiguration.target(new TagMatchTest(ModTags.Blocks.MARINE_GRAVEL_REPLACEMENT), NatureBlocks.MARINE_GRAVEL.get().defaultBlockState()));
+            ore(context, OPAL_ORE, 4, 0.5F, OreConfiguration.target(new TagMatchTest(ModTags.Blocks.OPAL_ORE_REPLACEMENT), OreBlocks.OPAL_ORE.get().defaultBlockState()));
+            ore(context, DESERT_FOSSIL, 33, OreConfiguration.target(new TagMatchTest(ModTags.Blocks.DESERT_FOSSIL_REPLACEMENT), NatureBlocks.DESERT_FOSSIL.get().defaultBlockState()));
+            ore(context, SILT_BLOCK, 33, OreConfiguration.target(stoneOreReplaceables, NatureBlocks.SILT_BLOCK.get().defaultBlockState()), OreConfiguration.target(deepslateOreReplaceables, NatureBlocks.SILT_BLOCK.get().defaultBlockState()));
+            ore(context, SLUSH, 33, OreConfiguration.target(new TagMatchTest(ModTags.Blocks.SLUSH_REPLACEMENT), NatureBlocks.SLUSH.get().defaultBlockState()));
+
             scatteredOre(context, DEEPSLATE_ADAMANTITE_ORE_STEP_0, 5, OreConfiguration.target(deepslateOreReplaceables, OreBlocks.DEEPSLATE_ADAMANTITE_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, 0)));
             scatteredOre(context, DEEPSLATE_ADAMANTITE_ORE_STEP_1, 5, OreConfiguration.target(deepslateOreReplaceables, OreBlocks.DEEPSLATE_ADAMANTITE_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, 1)));
             scatteredOre(context, DEEPSLATE_ADAMANTITE_ORE_STEP_2, 5, OreConfiguration.target(deepslateOreReplaceables, OreBlocks.DEEPSLATE_ADAMANTITE_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, 2)));
@@ -239,17 +252,7 @@ public class ModDataProvider {
             scatteredOre(context, DEEPSLATE_TITANIUM_ORE_STEP_0, 5, OreConfiguration.target(deepslateOreReplaceables, OreBlocks.DEEPSLATE_TITANIUM_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, 0)));
             scatteredOre(context, DEEPSLATE_TITANIUM_ORE_STEP_1, 5, OreConfiguration.target(deepslateOreReplaceables, OreBlocks.DEEPSLATE_TITANIUM_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, 1)));
             scatteredOre(context, DEEPSLATE_TITANIUM_ORE_STEP_2, 5, OreConfiguration.target(deepslateOreReplaceables, OreBlocks.DEEPSLATE_TITANIUM_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, 2)));
-            ore(context, DEMONITE_ORE, 7, 1, OreConfiguration.target(stoneOreReplaceables, OreBlocks.DEMONITE_ORE.get().defaultBlockState()), OreConfiguration.target(deepslateOreReplaceables, OreBlocks.DEEPSLATE_DEMONITE_ORE.get().defaultBlockState()));
-            ore(context, GELSTONE_ORE, 8, OreConfiguration.target(new TagMatchTest(ModTags.Blocks.GELSTONE_ORE_REPLACEMENT), OreBlocks.GELSTONE_ORE.get().defaultBlockState()));
-            ore(context, JADE_ORE, 8, OreConfiguration.target(stoneOreReplaceables, OreBlocks.JADE_ORE.get().defaultBlockState()), OreConfiguration.target(deepslateOreReplaceables, OreBlocks.DEEPSLATE_JADE_ORE.get().defaultBlockState()));
-            ore(context, LEAD_ORE, 7, OreConfiguration.target(stoneOreReplaceables, OreBlocks.LEAD_ORE.get().defaultBlockState()), OreConfiguration.target(deepslateOreReplaceables, OreBlocks.DEEPSLATE_LEAD_ORE.get().defaultBlockState()));
-            ore(context, PLATINUM_ORE, 5, OreConfiguration.target(stoneOreReplaceables, OreBlocks.PLATINUM_ORE.get().defaultBlockState()), OreConfiguration.target(deepslateOreReplaceables, OreBlocks.DEEPSLATE_PLATINUM_ORE.get().defaultBlockState()));
-            ore(context, RUBY_ORE, 8, OreConfiguration.target(stoneOreReplaceables, OreBlocks.RUBY_ORE.get().defaultBlockState()), OreConfiguration.target(deepslateOreReplaceables, OreBlocks.DEEPSLATE_RUBY_ORE.get().defaultBlockState()));
-            ore(context, SAPPHIRE_ORE, 8, OreConfiguration.target(stoneOreReplaceables, OreBlocks.SAPPHIRE_ORE.get().defaultBlockState()), OreConfiguration.target(deepslateOreReplaceables, OreBlocks.DEEPSLATE_SAPPHIRE_ORE.get().defaultBlockState()));
-            ore(context, SILVER_ORE, 6, OreConfiguration.target(stoneOreReplaceables, OreBlocks.SILVER_ORE.get().defaultBlockState()), OreConfiguration.target(deepslateOreReplaceables, OreBlocks.DEEPSLATE_SILVER_ORE.get().defaultBlockState()));
-            ore(context, TIN_ORE, 10, OreConfiguration.target(stoneOreReplaceables, OreBlocks.TIN_ORE.get().defaultBlockState()));
-            ore(context, TOPAZ_ORE, 8, OreConfiguration.target(stoneOreReplaceables, OreBlocks.TOPAZ_ORE.get().defaultBlockState()), OreConfiguration.target(deepslateOreReplaceables, OreBlocks.DEEPSLATE_TOPAZ_ORE.get().defaultBlockState()));
-            ore(context, TUNGSTEN_ORE, 5, OreConfiguration.target(stoneOreReplaceables, OreBlocks.TUNGSTEN_ORE.get().defaultBlockState()), OreConfiguration.target(deepslateOreReplaceables, OreBlocks.DEEPSLATE_TUNGSTEN_ORE.get().defaultBlockState()));
+
             gemTree(context, ModFeatures.Configured.AMBER_TREE, NatureBlocks.AMBER_BRANCHES.get());
             gemTree(context, ModFeatures.Configured.AMETHYST_TREE, NatureBlocks.AMETHYST_BRANCHES.get());
             gemTree(context, ModFeatures.Configured.DIAMOND_TREE, NatureBlocks.DIAMOND_BRANCHES.get());
@@ -257,22 +260,23 @@ public class ModDataProvider {
             gemTree(context, ModFeatures.Configured.RUBY_TREE, NatureBlocks.RUBY_BRANCHES.get());
             gemTree(context, ModFeatures.Configured.SAPPHIRE_TREE, NatureBlocks.SAPPHIRE_BRANCHES.get());
             gemTree(context, ModFeatures.Configured.TOPAZ_TREE, NatureBlocks.TOPAZ_BRANCHES.get());
-            baobabTree(context, ModFeatures.Configured.BAOBAB_TREE, NatureBlocks.BAOBAB_LOG_BLOCKS.getLog().get(), NatureBlocks.BAOBAB_LOG_BLOCKS.getWood().get(), NatureBlocks.BAOBAB_LOG_BLOCKS.getWood().get(), NatureBlocks.BAOBAB_LOG_BLOCKS.getLeaves().get(), NatureBlocks.BAOBAB_LOG_BLOCKS.getStrippedLog().get(), 8);
-            baobabTree(context, ModFeatures.Configured.BAOBAB_TREE_AIR, NatureBlocks.BAOBAB_LOG_BLOCKS.getLog().get(), NatureBlocks.BAOBAB_LOG_BLOCKS.getWood().get(), NatureBlocks.BAOBAB_LOG_BLOCKS.getWood().get(), NatureBlocks.BAOBAB_LOG_BLOCKS.getLeaves().get(), Blocks.AIR, 8);
-            baobabTree(context, ModFeatures.Configured.BAOBAB_TREE_WATER, NatureBlocks.BAOBAB_LOG_BLOCKS.getLog().get(), NatureBlocks.BAOBAB_LOG_BLOCKS.getWood().get(), NatureBlocks.BAOBAB_LOG_BLOCKS.getWood().get(), NatureBlocks.BAOBAB_LOG_BLOCKS.getLeaves().get(), Blocks.WATER, 8);
-            register(context, ModFeatures.Configured.PALM, ModFeatures.PALM_TREE.get(), new PalmTreeFeature.Config(BlockStateProvider.simple(NatureBlocks.PALM_LOG_BLOCKS.getLog().get()), BlockStateProvider.simple(NatureBlocks.PALM_LOG_BLOCKS.getLeaves().get().defaultBlockState().setValue(PalmLeaves.TYPE, SlabType.BOTTOM)), BlockStateProvider.simple(NatureBlocks.PALM_LOG_BLOCKS.getLeaves().get().defaultBlockState().setValue(PalmLeaves.TYPE, SlabType.TOP)), BlockStateProvider.simple(NatureBlocks.PALM_LOG_BLOCKS.getLeaves().get().defaultBlockState().setValue(PalmLeaves.TYPE, SlabType.DOUBLE))));
-            droopingVineTree(context, ModFeatures.Configured.YELLOW_WILLOW, NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getLog().get(), NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getLeaves().get(), NatureBlocks.YELLOW_WILLOW_DROOPING_LEAVES.get(), 6);
-            ore(context, MARINE_GRAVEL, 33, OreConfiguration.target(new TagMatchTest(ModTags.Blocks.MARINE_GRAVEL_REPLACEMENT), NatureBlocks.MARINE_GRAVEL.get().defaultBlockState()));
-            ore(context, OPAL_ORE, 4, 0.5F, OreConfiguration.target(new TagMatchTest(ModTags.Blocks.OPAL_ORE_REPLACEMENT), OreBlocks.OPAL_ORE.get().defaultBlockState()));
-            register(context, THIN_ICE_PATCH, ModFeatures.COLUMN_PATCH.get(), new ColumnPatchFeature.Config(3, 4, 32, 32, 0.5F, BlockStateProvider.simple(NatureBlocks.THIN_ICE_BLOCK.get())));
-            register(context, POWDER_SNOW_PATCH, ModFeatures.COLUMN_PATCH.get(), new ColumnPatchFeature.Config(0, 2, 10, 32, 0.3F, BlockStateProvider.simple(Blocks.POWDER_SNOW)));
+
             simple(context, CRIMSON_ALTAR, FunctionalBlocks.CRIMSON_ALTAR.get());
             simple(context, DEMON_ALTAR, FunctionalBlocks.DEMON_ALTAR.get());
-            ore(context, DESERT_FOSSIL, 33, OreConfiguration.target(new TagMatchTest(ModTags.Blocks.DESERT_FOSSIL_REPLACEMENT), NatureBlocks.DESERT_FOSSIL.get().defaultBlockState()));
-            register(context, FALLING_SAND_TRAP, ModFeatures.FALLING_SAND_TRAP.get(), new FallingSandTrapFeature.Config(BlockStateProvider.simple(Blocks.SAND), 4, 4, 4, 16));
-            register(context, CAVE_CHESTS, ModFeatures.SIMPLE_BLOCK_NBT.get(), new SimpleBlockNBTFeature.Config(new WeightedStateProvider(randomState(ChestBlocks.GOLDEN_CHEST.get().defaultBlockState().setValue(BaseChestBlock.UNLOCKED, true), ChestBlock.FACING)), tag -> tag.putString("LootTable", "confluence:chests/cave_chests")));
-            register(context, UNDERGROUND_CHESTS, ModFeatures.SIMPLE_BLOCK_NBT.get(), new SimpleBlockNBTFeature.Config(new WeightedStateProvider(randomState(Blocks.CHEST.defaultBlockState(), ChestBlock.FACING)), tag -> tag.putString("LootTable", "confluence:chests/underground_chests")));
-            register(context, FOREST_DROOPING_VINE, ModFeatures.DROOPING_BLOCK.get(), new DroopingBlockFeature.Config(BlockStateProvider.simple(NatureBlocks.FOREST_DROOPING_VINE.get()), false, 1, 9));
+            simple(context, FOREST_POT, PotBlocks.FOREST_POT.get());
+            simple(context, JUNGLE_POT, PotBlocks.JUNGLE_POT.get());
+            simple(context, CORRUPTION_POT, PotBlocks.CORRUPTION_POT.get());
+            simple(context, CRIMSON_POT, PotBlocks.CRIMSON_POT.get());
+            simple(context, UNDERGROUND_DESERT_POT, PotBlocks.UNDERGROUND_DESERT_POT.get());
+            simple(context, TUNDRA_POT, PotBlocks.TUNDRA_POT.get());
+            simple(context, JUNGLE_SPORE, NatureBlocks.JUNGLE_SPORE.get());
+            simple(context, GRAVITATION_TRAP, FunctionalBlocks.GRAVITATION_TRAP.value());
+            simple(context, PNEUMATIC_TRAP, FunctionalBlocks.PNEUMATIC_TRAP.value());
+            simple(context, SCULK_TRAP, FunctionalBlocks.SCULK_TRAP.value());
+            simple(context, SHIMMER_TRAP, FunctionalBlocks.SHIMMER_TRAP.value());
+            simple(context, LIFE_CRYSTAL, NatureBlocks.LIFE_CRYSTAL_BLOCK.get());
+            simple(context, ROLLING_CACTUS, FunctionalBlocks.ROLLING_CACTUS_BOULDER.get());
+
             herb(context, LIFE_MUSHROOM, 12, NatureBlocks.LIFE_MUSHROOM.get());
             herb(context, BLINKROOT, 50, ModBlocks.BLINKROOT.get());
             herb(context, DAYBLOOM, 32, ModBlocks.DAYBLOOM.get());
@@ -281,59 +285,149 @@ public class ModDataProvider {
             herb(context, MOONGLOW, 32, ModBlocks.MOONGLOW.get());
             herb(context, FIREBLOSSOM, 40, ModBlocks.FIREBLOSSOM.get());
             herb(context, SHIVERTHORN, 32, ModBlocks.SHIVERTHORN.get());
-            simple(context, FOREST_POT, PotBlocks.FOREST_POT.get());
-            simple(context, JUNGLE_POT, PotBlocks.JUNGLE_POT.get());
-            simple(context, CORRUPTION_POT, PotBlocks.CORRUPTION_POT.get());
-            simple(context, CRIMSON_POT, PotBlocks.CRIMSON_POT.get());
-            simple(context, UNDERGROUND_DESERT_POT, PotBlocks.UNDERGROUND_DESERT_POT.get());
-            simple(context, TUNDRA_POT, PotBlocks.TUNDRA_POT.get());
-
-            HolderGetter<PlacedFeature> placedFeature = context.lookup(Registries.PLACED_FEATURE);
-            register(context, CORRUPT_DROOPING_VINE, ModFeatures.DROOPING_BLOCK.get(), new DroopingBlockFeature.Config(BlockStateProvider.simple(NatureBlocks.CORRUPT_DROOPING_VINE.get()), false, 1, 9));
-            register(context, THE_CORRUPTION_TREE_CHECKED_0, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(BlockStateProvider.simple(NatureBlocks.EBONY_LOG_BLOCKS.getLog().get()), new StraightTrunkPlacer(6, 0, 0), BlockStateProvider.simple(Blocks.AIR), new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.ZERO, 3), new TwoLayersFeatureSize(1, 0, 1)).ignoreVines().dirt(BlockStateProvider.simple(Blocks.DIRT)).build());
-            register(context, THE_CORRUPTION_TREE_CHECKED_1, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(BlockStateProvider.simple(NatureBlocks.EBONY_LOG_BLOCKS.getLog().get()), new StraightTrunkPlacer(5, 2, 0), BlockStateProvider.simple(Blocks.AIR), new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.ZERO, 3), new TwoLayersFeatureSize(1, 0, 1)).ignoreVines().dirt(BlockStateProvider.simple(NatureBlocks.CORRUPT_GRASS_BLOCK.get())).build());
-            droopingVineTree(context, THE_CORRUPTION_TREE_CHECKED_2, NatureBlocks.EBONY_LOG_BLOCKS.getLog().get(), NatureBlocks.EBONY_LOG_BLOCKS.getLeaves().get(), NatureBlocks.CRIMSON_DROOPING_VINE.get(), 5);
-            register(context, TREES_CORRUPTION, Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(List.of(new WeightedPlacedFeature(placedFeature.getOrThrow(PlacedFeatures.THE_CORRUPTION_TREE_CHECKED_1), 0.5F), new WeightedPlacedFeature(placedFeature.getOrThrow(PlacedFeatures.THE_CORRUPTION_TREE_CHECKED_2), 0.5F)), placedFeature.getOrThrow(PlacedFeatures.THE_CORRUPTION_TREE_CHECKED_0)));
             herb(context, CORRUPT_GRASS, 45, NatureBlocks.CORRUPT_GRASS.get());
             herb(context, VILE_MUSHROOM, 12, NatureBlocks.VILE_MUSHROOM.get());
-            droopingVineTree(context, CRIMSON_TREE_CHECKED_0, NatureBlocks.SHADOW_LOG_BLOCKS.getLog().get(), NatureBlocks.SHADOW_LOG_BLOCKS.getLeaves().get(), NatureBlocks.CRIMSON_DROOPING_VINE.get(), 5);
-            register(context, CRIMSON_TREE_CHECKED_1, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(BlockStateProvider.simple(NatureBlocks.SHADOW_LOG_BLOCKS.getLog().get()), new StraightTrunkPlacer(5, 2, 0), BlockStateProvider.simple(NatureBlocks.SHADOW_LOG_BLOCKS.getLeaves().get()), new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.ZERO, 3), new TwoLayersFeatureSize(1, 0, 1)).ignoreVines().dirt(BlockStateProvider.simple(NatureBlocks.CRIMSON_GRASS_BLOCK.get())).build());
-            register(context, TREES_CRIMSON, Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(List.of(new WeightedPlacedFeature(placedFeature.getOrThrow(PlacedFeatures.CRIMSON_TREE_CHECKED_1), 0.5F)), placedFeature.getOrThrow(PlacedFeatures.CRIMSON_TREE_CHECKED_0)));
             herb(context, CRIMSON_GRASS, 28, NatureBlocks.CRIMSON_GRASS.get());
-            register(context, CRIMSON_DROOPING_VINE, ModFeatures.DROOPING_BLOCK.get(), new DroopingBlockFeature.Config(BlockStateProvider.simple(NatureBlocks.CRIMSON_DROOPING_VINE.get()), false, 1, 9));
             herb(context, VICIOUS_MUSHROOM, 12, NatureBlocks.VICIOUS_MUSHROOM.get());
             herb(context, GLOWING_MUSHROOM, 180, NatureBlocks.GLOWING_MUSHROOM.get());
-            register(context, ModFeatures.Configured.GLOWING_MUSHROOM_TREE, ModFeatures.MUSHROOM_TREE.get(), new MushroomTreeFeature.Config(BlockStateProvider.simple(NatureBlocks.GLOWING_MUSHROOM_STEM_BLOCK.get()), BlockStateProvider.simple(NatureBlocks.GLOWING_MUSHROOM_PILEUS_BLOCK.get()), BlockStateProvider.simple(NatureBlocks.GLOWING_MUSHROOM_INDUSIUM_BLOCK.get()), 4, 1));
-            register(context, GLOWING_MUSHROOM_VINE, ModFeatures.DROOPING_BLOCK.get(), new DroopingBlockFeature.Config(BlockStateProvider.simple(NatureBlocks.GLOWING_MUSHROOM_VINE.get()), false, 1, 9));
-            register(context, GLOWING_MUSHROOM_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.GLOWING_MUSHROOM_CATTAILS_HEAD.get()), BlockStateProvider.simple(NatureBlocks.GLOWING_MUSHROOM_CATTAILS_BODY.get())));
-
-            register(context, ModFeatures.Configured.ASH_TREE, ModFeatures.BRANCH_TREE.get(), new BranchTreeFeature.Config(BlockStateProvider.simple(NatureBlocks.ASH_LOG_BLOCKS.getLog().get()), BlockStateProvider.simple(NatureBlocks.ASH_BRANCHES.get()), 7, 3));
             herb(context, ASH_GRASS, 180, NatureBlocks.ASH_GRASS.get());
             herb(context, JUNGLE_ROSE, 16, NatureBlocks.JUNGLE_ROSE.get());
-            simple(context, JUNGLE_SPORE, NatureBlocks.JUNGLE_SPORE.get());
-            register(context, JUNGLE_DROOPING_VINE, ModFeatures.DROOPING_BLOCK.get(), new DroopingBlockFeature.Config(BlockStateProvider.simple(NatureBlocks.JUNGLE_DROOPING_VINE.get()), false, 1, 9));
-            register(context, UNDERGROUND_JUNGLE_GRASS, Feature.RANDOM_PATCH, new RandomPatchConfiguration(32, 7, 3, Holder.direct(new PlacedFeature(Holder.direct(new ConfiguredFeature<>(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(new WeightedStateProvider(SimpleWeightedRandomList.<BlockState>builder().add(Blocks.SHORT_GRASS.defaultBlockState(), 3).add(Blocks.FERN.defaultBlockState(), 1).build())))), Collections.singletonList(BlockPredicateFilter.forPredicate(BlockPredicate.allOf(BlockPredicate.matchesBlocks(Blocks.AIR), BlockPredicate.not(BlockPredicate.matchesBlocks(new Vec3i(0, -1, 0), Blocks.PODZOL)))))))));
-            register(context, UNDERGROUND_JUNGLE_BUSH, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(BlockStateProvider.simple(Blocks.JUNGLE_LOG), new StraightTrunkPlacer(1, 0, 0), BlockStateProvider.simple(Blocks.OAK_LEAVES), new BushFoliagePlacer(ConstantInt.of(2), ConstantInt.of(1), 2), new TwoLayersFeatureSize(0, 0, 0)).build());
-            register(context, UNDERGROUND_JUNGLE_TREE, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(BlockStateProvider.simple(Blocks.JUNGLE_LOG), new StraightTrunkPlacer(4, 8, 0), BlockStateProvider.simple(Blocks.JUNGLE_LEAVES), new BushFoliagePlacer(ConstantInt.of(2), ConstantInt.ZERO, 3), new TwoLayersFeatureSize(1, 0, 1)).ignoreVines().decorators(List.of(new CocoaDecorator(0.2F), TrunkVineDecorator.INSTANCE, new LeaveVineDecorator(0.25F))).build());
             herb(context, NATURES_GIFT, 4, NatureBlocks.NATURES_GIFT.get());
-            simple(context, GRAVITATION_TRAP, FunctionalBlocks.GRAVITATION_TRAP.value());
-            simple(context, PNEUMATIC_TRAP, FunctionalBlocks.PNEUMATIC_TRAP.value());
-            simple(context, SCULK_TRAP, FunctionalBlocks.SCULK_TRAP.value());
-            simple(context, SHIMMER_TRAP, FunctionalBlocks.SHIMMER_TRAP.value());
+
+            droopingVineTree(context, ModFeatures.Configured.YELLOW_WILLOW_TREE, NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getLog().get(), NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getLeaves().get(), NatureBlocks.YELLOW_WILLOW_DROOPING_LEAVES.get(), 6);
+
+            register(context, CORRUPT_DROOPING_VINE, ModFeatures.DROOPING_BLOCK.get(), new DroopingBlockFeature.Config(BlockStateProvider.simple(NatureBlocks.CORRUPT_DROOPING_VINE.get()), false, 1, 9));
+            register(context, ModFeatures.Configured.EBONY_TREE, Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(List.of(
+                    new WeightedPlacedFeature(direct(
+                            Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
+                                    BlockStateProvider.simple(NatureBlocks.EBONY_LOG_BLOCKS.getLog().get()),
+                                    new StraightTrunkPlacer(6, 0, 0),
+                                    BlockStateProvider.simple(Blocks.AIR),
+                                    new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.ZERO, 3),
+                                    new TwoLayersFeatureSize(1, 0, 1)
+                            ).ignoreVines().dirt(BlockStateProvider.simple(Blocks.DIRT)).build(),
+                            BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.EBONY_SAPLING.get().defaultBlockState(), Vec3i.ZERO))
+                    ), 0.5F),
+                    new WeightedPlacedFeature(direct(
+                            Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
+                                    BlockStateProvider.simple(NatureBlocks.EBONY_LOG_BLOCKS.getLog().get()),
+                                    new StraightTrunkPlacer(5, 2, 0),
+                                    BlockStateProvider.simple(Blocks.AIR),
+                                    new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.ZERO, 3),
+                                    new TwoLayersFeatureSize(1, 0, 1)
+                            ).ignoreVines().dirt(BlockStateProvider.simple(NatureBlocks.CORRUPT_GRASS_BLOCK.get())).build(),
+                            BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.EBONY_SAPLING.get().defaultBlockState(), Vec3i.ZERO))
+                    ), 0.5F)
+            ), direct(
+                    ModFeatures.DROOPING_VINE_TREE.get(), new DroopingVineTreeFeature.Config(BlockStateProvider.simple(NatureBlocks.EBONY_LOG_BLOCKS.getLog().get()), BlockStateProvider.simple(NatureBlocks.EBONY_LOG_BLOCKS.getLeaves().get()), BlockStateProvider.simple(NatureBlocks.CORRUPT_DROOPING_VINE.get()), 5),
+                    BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.EBONY_SAPLING.get().defaultBlockState(), Vec3i.ZERO))
+            )));
+            register(context, ModFeatures.Configured.SHADOW_TREE, Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(Collections.singletonList(
+                    new WeightedPlacedFeature(direct(
+                            Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
+                                    BlockStateProvider.simple(NatureBlocks.SHADOW_LOG_BLOCKS.getLog().get()),
+                                    new StraightTrunkPlacer(5, 2, 0),
+                                    BlockStateProvider.simple(NatureBlocks.SHADOW_LOG_BLOCKS.getLeaves().get()),
+                                    new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.ZERO, 3),
+                                    new TwoLayersFeatureSize(1, 0, 1)
+                            ).ignoreVines().dirt(BlockStateProvider.simple(NatureBlocks.CRIMSON_GRASS_BLOCK.get())).build(),
+                            BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.SHADOW_SAPLING.get().defaultBlockState(), Vec3i.ZERO))
+                    ), 0.5F)
+            ), direct(
+                    ModFeatures.DROOPING_VINE_TREE.get(), new DroopingVineTreeFeature.Config(BlockStateProvider.simple(NatureBlocks.SHADOW_LOG_BLOCKS.getLog().get()), BlockStateProvider.simple(NatureBlocks.SHADOW_LOG_BLOCKS.getLeaves().get()), BlockStateProvider.simple(NatureBlocks.CRIMSON_DROOPING_VINE.get()), 5),
+                    BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.SHADOW_SAPLING.get().defaultBlockState(), Vec3i.ZERO))
+            )));
+            register(context, CRIMSON_DROOPING_VINE, ModFeatures.DROOPING_BLOCK.get(), new DroopingBlockFeature.Config(BlockStateProvider.simple(NatureBlocks.CRIMSON_DROOPING_VINE.get()), false, 1, 9));
+            register(context, ModFeatures.Configured.GLOWING_MUSHROOM_TREE, ModFeatures.MUSHROOM_TREE.get(), new MushroomTreeFeature.Config(
+                    BlockStateProvider.simple(NatureBlocks.GLOWING_MUSHROOM_STEM_BLOCK.get()),
+                    BlockStateProvider.simple(NatureBlocks.GLOWING_MUSHROOM_PILEUS_BLOCK.get()),
+                    BlockStateProvider.simple(NatureBlocks.GLOWING_MUSHROOM_INDUSIUM_BLOCK.get()),
+                    4,
+                    1
+            ));
+            register(context, GLOWING_MUSHROOM_VINE, ModFeatures.DROOPING_BLOCK.get(), new DroopingBlockFeature.Config(BlockStateProvider.simple(NatureBlocks.GLOWING_MUSHROOM_VINE.get()), false, 1, 9));
+            register(context, GLOWING_MUSHROOM_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.GLOWING_MUSHROOM_CATTAILS_HEAD.get()), BlockStateProvider.simple(NatureBlocks.GLOWING_MUSHROOM_CATTAILS_BODY.get())));
+            register(context, ModFeatures.Configured.BAOBAB_TREE, Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(List.of(
+                    new WeightedPlacedFeature(direct(
+                            ModFeatures.BAOBAB_TREE.get(), new BaobabTreeFeature.Config(
+                                    BlockStateProvider.simple(NatureBlocks.BAOBAB_LOG_BLOCKS.getLog().get()),
+                                    BlockStateProvider.simple(NatureBlocks.BAOBAB_LOG_BLOCKS.getWood().get()),
+                                    BlockStateProvider.simple(NatureBlocks.BAOBAB_LOG_BLOCKS.getWood().get()),
+                                    BlockStateProvider.simple(NatureBlocks.BAOBAB_LOG_BLOCKS.getLeaves().get()),
+                                    BlockStateProvider.simple(Blocks.AIR),
+                                    8
+                            ),
+                            BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.BAOBAB_SAPLING.get().defaultBlockState(), Vec3i.ZERO))
+                    ), 0.5F),
+                    new WeightedPlacedFeature(direct(
+                            ModFeatures.BAOBAB_TREE.get(), new BaobabTreeFeature.Config(
+                                    BlockStateProvider.simple(NatureBlocks.BAOBAB_LOG_BLOCKS.getLog().get()),
+                                    BlockStateProvider.simple(NatureBlocks.BAOBAB_LOG_BLOCKS.getWood().get()),
+                                    BlockStateProvider.simple(NatureBlocks.BAOBAB_LOG_BLOCKS.getWood().get()),
+                                    BlockStateProvider.simple(NatureBlocks.BAOBAB_LOG_BLOCKS.getLeaves().get()),
+                                    BlockStateProvider.simple(Blocks.WATER),
+                                    8
+                            ),
+                            BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.BAOBAB_SAPLING.get().defaultBlockState(), Vec3i.ZERO))
+                    ), 0.5F)
+            ), direct(
+                    ModFeatures.BAOBAB_TREE.get(), new BaobabTreeFeature.Config(
+                            BlockStateProvider.simple(NatureBlocks.BAOBAB_LOG_BLOCKS.getLog().get()),
+                            BlockStateProvider.simple(NatureBlocks.BAOBAB_LOG_BLOCKS.getWood().get()),
+                            BlockStateProvider.simple(NatureBlocks.BAOBAB_LOG_BLOCKS.getWood().get()),
+                            BlockStateProvider.simple(NatureBlocks.BAOBAB_LOG_BLOCKS.getLeaves().get()),
+                            BlockStateProvider.simple(NatureBlocks.BAOBAB_LOG_BLOCKS.getStrippedLog().get()),
+                            8
+                    ),
+                    BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.BAOBAB_SAPLING.get().defaultBlockState(), Vec3i.ZERO))
+            )));
+            register(context, THIN_ICE_PATCH, ModFeatures.COLUMN_PATCH.get(), new ColumnPatchFeature.Config(3, 4, 32, 32, 0.5F, BlockStateProvider.simple(NatureBlocks.THIN_ICE_BLOCK.get())));
+            register(context, POWDER_SNOW_PATCH, ModFeatures.COLUMN_PATCH.get(), new ColumnPatchFeature.Config(0, 2, 10, 32, 0.3F, BlockStateProvider.simple(Blocks.POWDER_SNOW)));
+            register(context, FALLING_SAND_TRAP, ModFeatures.FALLING_SAND_TRAP.get(), new FallingSandTrapFeature.Config(BlockStateProvider.simple(Blocks.SAND), 4, 4, 4, 16));
+            register(context, CAVE_CHESTS, ModFeatures.SIMPLE_BLOCK_NBT.get(), new SimpleBlockNBTFeature.Config(new WeightedStateProvider(randomState(ChestBlocks.GOLDEN_CHEST.get().defaultBlockState().setValue(BaseChestBlock.UNLOCKED, true), ChestBlock.FACING)), tag -> tag.putString("LootTable", "confluence:chests/cave_chests")));
+            register(context, UNDERGROUND_CHESTS, ModFeatures.SIMPLE_BLOCK_NBT.get(), new SimpleBlockNBTFeature.Config(new WeightedStateProvider(randomState(Blocks.CHEST.defaultBlockState(), ChestBlock.FACING)), tag -> tag.putString("LootTable", "confluence:chests/underground_chests")));
+            register(context, FOREST_DROOPING_VINE, ModFeatures.DROOPING_BLOCK.get(), new DroopingBlockFeature.Config(BlockStateProvider.simple(NatureBlocks.FOREST_DROOPING_VINE.get()), false, 1, 9));
+            register(context, ModFeatures.Configured.ASH_TREE, ModFeatures.BRANCH_TREE.get(), new BranchTreeFeature.Config(BlockStateProvider.simple(NatureBlocks.ASH_LOG_BLOCKS.getLog().get()), BlockStateProvider.simple(NatureBlocks.ASH_BRANCHES.get()), 7, 3));
+            register(context, JUNGLE_DROOPING_VINE, ModFeatures.DROOPING_BLOCK.get(), new DroopingBlockFeature.Config(BlockStateProvider.simple(NatureBlocks.JUNGLE_DROOPING_VINE.get()), false, 1, 9));
+            register(context, UNDERGROUND_JUNGLE_GRASS, Feature.RANDOM_PATCH, new RandomPatchConfiguration(32, 7, 3, direct(
+                    Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(new WeightedStateProvider(SimpleWeightedRandomList.<BlockState>builder().add(Blocks.SHORT_GRASS.defaultBlockState(), 3).add(Blocks.FERN.defaultBlockState(), 1).build())),
+                    BlockPredicateFilter.forPredicate(BlockPredicate.allOf(BlockPredicate.matchesBlocks(Blocks.AIR), BlockPredicate.not(BlockPredicate.matchesBlocks(new Vec3i(0, -1, 0), Blocks.PODZOL))))
+            )));
+            register(context, UNDERGROUND_JUNGLE_BUSH, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
+                    BlockStateProvider.simple(Blocks.JUNGLE_LOG),
+                    new StraightTrunkPlacer(1, 0, 0),
+                    BlockStateProvider.simple(Blocks.OAK_LEAVES),
+                    new BushFoliagePlacer(ConstantInt.of(2), ConstantInt.of(1), 2),
+                    new TwoLayersFeatureSize(0, 0, 0)
+            ).build());
+            register(context, UNDERGROUND_JUNGLE_TREE, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
+                    BlockStateProvider.simple(Blocks.JUNGLE_LOG),
+                    new StraightTrunkPlacer(4, 8, 0),
+                    BlockStateProvider.simple(Blocks.JUNGLE_LEAVES),
+                    new BushFoliagePlacer(ConstantInt.of(2), ConstantInt.ZERO, 3),
+                    new TwoLayersFeatureSize(1, 0, 1)
+            ).decorators(List.of(
+                    new CocoaDecorator(0.2F),
+                    TrunkVineDecorator.INSTANCE,
+                    new LeaveVineDecorator(0.25F))
+            ).ignoreVines().build());
             register(context, SCULK_SENSOR_WITH_TNT, ModFeatures.SCULK_SENSOR_WITH_TNT.get(), new SculkSensorWithTNTFeature.Config(64));
             register(context, DART_TRAP, ModFeatures.DART_TRAP.get(), new DartTrapFeature.Config(24, 32));
             register(context, BOULDER_TRAP, ModFeatures.BOULDER_TRAP.get(), new BoulderTrapFeature.Config(FunctionalBlocks.NORMAL_BOULDER.get().defaultBlockState(), 64));
             register(context, DEATH_CHEST_TRAP, ModFeatures.DEATH_CHEST_TRAP.get(), new DeathChestTrapFeature.Config(24, FunctionalBlocks.NORMAL_BOULDER.get().defaultBlockState(), 5, 64, 3, 32, ModLootTables.CAVE_CHESTS));
-            simple(context, LIFE_CRYSTAL, NatureBlocks.LIFE_CRYSTAL_BLOCK.get());
             register(context, WATER_CHESTS, ModFeatures.SIMPLE_BLOCK_NBT.get(), new SimpleBlockNBTFeature.Config(BlockStateProvider.simple(ChestBlocks.WATER_CHEST.get().defaultBlockState().setValue(BaseChestBlock.UNLOCKED, true).setValue(ChestBlock.WATERLOGGED, true)), tag -> tag.putString("LootTable", "confluence:chests/water_chests")));
-            simple(context, ROLLING_CACTUS, FunctionalBlocks.ROLLING_CACTUS_BOULDER.get());
-            ore(context, SILT_BLOCK, 33, OreConfiguration.target(stoneOreReplaceables, NatureBlocks.SILT_BLOCK.get().defaultBlockState()), OreConfiguration.target(deepslateOreReplaceables, NatureBlocks.SILT_BLOCK.get().defaultBlockState()));
-            ore(context, SLUSH, 33, OreConfiguration.target(new TagMatchTest(ModTags.Blocks.SLUSH_REPLACEMENT), NatureBlocks.SLUSH.get().defaultBlockState()));
             register(context, CAVE_SANDSTONE_CHESTS, ModFeatures.SIMPLE_BLOCK_NBT.get(), new SimpleBlockNBTFeature.Config(BlockStateProvider.simple(ChestBlocks.SANDSTONE_CHEST.get().defaultBlockState().setValue(BaseChestBlock.UNLOCKED, true)), tag -> tag.putString("LootTable", "confluence:chests/cave_sandstone_chests")));
             register(context, UNDERGROUND_SANDSTONE_CHESTS, ModFeatures.SIMPLE_BLOCK_NBT.get(), new SimpleBlockNBTFeature.Config(BlockStateProvider.simple(ChestBlocks.SANDSTONE_CHEST.get().defaultBlockState().setValue(BaseChestBlock.UNLOCKED, true)), tag -> tag.putString("LootTable", "confluence:chests/sandstone_chests")));
             register(context, SURFACE_CHESTS, ModFeatures.SIMPLE_BLOCK_NBT.get(), new SimpleBlockNBTFeature.Config(BlockStateProvider.simple(Blocks.CHEST), tag -> tag.putString("LootTable", "confluence:chests/surface_chests")));
             register(context, CAVE_FROZEN_CHESTS, ModFeatures.SIMPLE_BLOCK_NBT.get(), new SimpleBlockNBTFeature.Config(BlockStateProvider.simple(ChestBlocks.FROZEN_CHEST.get().defaultBlockState().setValue(BaseChestBlock.UNLOCKED, true)), tag -> tag.putString("LootTable", "confluence:chests/cave_frozen_chests")));
             register(context, UNDERGROUND_FROZEN_CHESTS, ModFeatures.SIMPLE_BLOCK_NBT.get(), new SimpleBlockNBTFeature.Config(BlockStateProvider.simple(ChestBlocks.FROZEN_CHEST.get().defaultBlockState().setValue(BaseChestBlock.UNLOCKED, true)), tag -> tag.putString("LootTable", "confluence:chests/frozen_chests")));
+            register(context, ModFeatures.Configured.PALM_TREE, ModFeatures.PALM_TREE.get(), new PalmTreeFeature.Config(
+                    BlockStateProvider.simple(NatureBlocks.PALM_LOG_BLOCKS.getLog().get()),
+                    BlockStateProvider.simple(NatureBlocks.PALM_LOG_BLOCKS.getLeaves().get().defaultBlockState().setValue(LeavesBlock.DISTANCE, 1).setValue(PalmLeaves.TYPE, SlabType.BOTTOM)),
+                    BlockStateProvider.simple(NatureBlocks.PALM_LOG_BLOCKS.getLeaves().get().defaultBlockState().setValue(LeavesBlock.DISTANCE, 1).setValue(PalmLeaves.TYPE, SlabType.TOP)),
+                    BlockStateProvider.simple(NatureBlocks.PALM_LOG_BLOCKS.getLeaves().get().defaultBlockState().setValue(LeavesBlock.DISTANCE, 1).setValue(PalmLeaves.TYPE, SlabType.DOUBLE))
+            ));
+            register(context, GEMSTONE_CAVE, ModFeatures.GEMSTONE_CAVE.get(), new GemstoneCaveFeature.Config(3));
         }
 
         private static <FC extends FeatureConfiguration, F extends Feature<FC>> void register(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, F feature, FC config) {
@@ -356,16 +450,12 @@ public class ModDataProvider {
             register(context, key, ModFeatures.BRANCH_TREE.get(), new BranchTreeFeature.Config(BlockStateProvider.simple(NatureBlocks.STONY_LOG.get()), BlockStateProvider.simple(branchesBlock), 6, 2));
         }
 
-        private static void baobabTree(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, Block trunk, Block branch, Block root, Block leaves, Block inner, int height) {
-            register(context, key, ModFeatures.BAOBAB_TREE.get(), new BaobabTreeFeature.Config(BlockStateProvider.simple(trunk), BlockStateProvider.simple(branch), BlockStateProvider.simple(root), BlockStateProvider.simple(leaves), BlockStateProvider.simple(inner), height));
-        }
-
         private static void droopingVineTree(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, Block trunk, Block leaves, Block drooping_leave, int height) {
             register(context, key, ModFeatures.DROOPING_VINE_TREE.get(), new DroopingVineTreeFeature.Config(BlockStateProvider.simple(trunk), BlockStateProvider.simple(leaves), BlockStateProvider.simple(drooping_leave), height));
         }
 
         private static void herb(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, int tries, Block herbBlock) {
-            register(context, key, Feature.RANDOM_PATCH, new RandomPatchConfiguration(tries, 7, 3, Holder.direct(new PlacedFeature(Holder.direct(new ConfiguredFeature<>(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(herbBlock)))), Collections.singletonList(BlockPredicateFilter.forPredicate(BlockPredicate.matchesBlocks(Blocks.AIR)))))));
+            register(context, key, Feature.RANDOM_PATCH, new RandomPatchConfiguration(tries, 7, 3, direct(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(herbBlock)), BlockPredicateFilter.forPredicate(BlockPredicate.matchesBlocks(Blocks.AIR)))));
         }
 
         private static void simple(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, Block block) {
@@ -382,6 +472,10 @@ public class ModDataProvider {
                 builder.add(blockState.setValue(property, (V) value), 1);
             }
             return builder.build();
+        }
+
+        private static <FC extends FeatureConfiguration, F extends Feature<FC>> Holder<PlacedFeature> direct(F feature, FC config, PlacementModifier... modifiers) {
+            return Holder.direct(new PlacedFeature(Holder.direct(new ConfiguredFeature<>(feature, config)), Arrays.stream(modifiers).toList()));
         }
     }
 
@@ -445,9 +539,9 @@ public class ModDataProvider {
         private static final ResourceKey<PlacedFeature> UNDERGROUND_DESERT_POT = key("underground_desert_pot");
         private static final ResourceKey<PlacedFeature> TUNDRA_POT = key("tundra_pot");
         private static final ResourceKey<PlacedFeature> CAVE_CHESTS = key("cave_chests");
-        private static final ResourceKey<PlacedFeature> CAVE_CHESTS_SMALL = key("cave_chests_small"); // todo
+        private static final ResourceKey<PlacedFeature> CAVE_CHESTS_SMALL = key("cave_chests_small");
         private static final ResourceKey<PlacedFeature> UNDERGROUND_CHESTS = key("underground_chests");
-        private static final ResourceKey<PlacedFeature> UNDERGROUND_CHESTS_SMALL = key("underground_chests_small"); // todo
+        private static final ResourceKey<PlacedFeature> UNDERGROUND_CHESTS_SMALL = key("underground_chests_small");
         private static final ResourceKey<PlacedFeature> FOREST_DROOPING_VINE = key("forest_drooping_vine");
         private static final ResourceKey<PlacedFeature> BLINKROOT = key("blinkroot");
         private static final ResourceKey<PlacedFeature> DAYBLOOM = key("daybloom");
@@ -458,18 +552,12 @@ public class ModDataProvider {
         private static final ResourceKey<PlacedFeature> UNDERGROUND_MOONGLOW = key("underground_moonglow");
         private static final ResourceKey<PlacedFeature> FIREBLOSSOM = key("fireblossom");
         private static final ResourceKey<PlacedFeature> SHIVERTHORN = key("shiverthorn");
-
         private static final ResourceKey<PlacedFeature> CORRUPT_DROOPING_VINE = key("corrupt_drooping_vine");
-        private static final ResourceKey<PlacedFeature> TREES_CORRUPTION = key("trees_corruption");
+        private static final ResourceKey<PlacedFeature> EBONY_TREE = key("ebony_tree");
         private static final ResourceKey<PlacedFeature> CORRUPT_GRASS = key("corrupt_grass");
         private static final ResourceKey<PlacedFeature> VILE_MUSHROOM = key("vile_mushroom");
-        private static final ResourceKey<PlacedFeature> THE_CORRUPTION_TREE_CHECKED_0 = key("the_corruption_tree_checked_0");
-        private static final ResourceKey<PlacedFeature> THE_CORRUPTION_TREE_CHECKED_1 = key("the_corruption_tree_checked_1");
-        private static final ResourceKey<PlacedFeature> THE_CORRUPTION_TREE_CHECKED_2 = key("the_corruption_tree_checked_2");
-        private static final ResourceKey<PlacedFeature> TREES_CRIMSON = key("trees_crimson");
+        private static final ResourceKey<PlacedFeature> SHADOW_TREE = key("shadow_tree");
         private static final ResourceKey<PlacedFeature> CRIMSON_GRASS = key("crimson_grass");
-        private static final ResourceKey<PlacedFeature> CRIMSON_TREE_CHECKED_0 = key("crimson_tree_checked_0");
-        private static final ResourceKey<PlacedFeature> CRIMSON_TREE_CHECKED_1 = key("crimson_tree_checked_1");
         private static final ResourceKey<PlacedFeature> CRIMSON_DROOPING_VINE = key("crimson_drooping_vine");
         private static final ResourceKey<PlacedFeature> VICIOUS_MUSHROOM = key("vicious_mushroom");
         private static final ResourceKey<PlacedFeature> GLOWING_MUSHROOM = key("glowing_mushroom");
@@ -477,7 +565,6 @@ public class ModDataProvider {
         private static final ResourceKey<PlacedFeature> GLOWING_MUSHROOM_TREE = key("glowing_mushroom_tree");
         private static final ResourceKey<PlacedFeature> GLOWING_MUSHROOM_VINE = key("glowing_mushroom_vine");
         private static final ResourceKey<PlacedFeature> GLOWING_MUSHROOM_CATTAILS = key("glowing_mushroom_cattails");
-
         private static final ResourceKey<PlacedFeature> ASH_TREE = key("ash_tree");
         private static final ResourceKey<PlacedFeature> ASH_GRASS = key("ash_grass");
         private static final ResourceKey<PlacedFeature> JUNGLE_ROSE = key("jungle_rose");
@@ -505,16 +592,17 @@ public class ModDataProvider {
         private static final ResourceKey<PlacedFeature> SURFACE_CHESTS = key("surface_chests");
         private static final ResourceKey<PlacedFeature> CAVE_FROZEN_CHESTS = key("cave_frozen_chests");
         private static final ResourceKey<PlacedFeature> UNDERGROUND_FROZEN_CHESTS = key("underground_frozen_chests");
-
-        private static final ResourceKey<PlacedFeature> PALM_TREE_CHECKED = key("palm_tree_checked");
-        private static final ResourceKey<PlacedFeature> TREES_BAOBAB = key("trees_baobab");
+        private static final ResourceKey<PlacedFeature> PALM_TREE = key("palm_tree");
+        private static final ResourceKey<PlacedFeature> BAOBAB_TREE = key("baobab_tree");
         private static final ResourceKey<PlacedFeature> GEMSTONE_CAVE = key("gemstone_cave");
 
         private static ResourceKey<PlacedFeature> key(String path) {
             return Confluence.asResourceKey(Registries.PLACED_FEATURE, path);
         }
 
+        private static final SurfaceWaterDepthFilter surfaceWaterDepth0 = SurfaceWaterDepthFilter.forMaxDepth(0);
         private static final SecretFlagPlacement noTraps = SecretFlagPlacement.of(IWorldOptions.NT_MASK);
+        private static final HeightmapPlacement oceanFloor = HeightmapPlacement.onHeightmap(Heightmap.Types.OCEAN_FLOOR);
         private static final HeightmapPlacement worldSurfaceWG = HeightmapPlacement.onHeightmap(Heightmap.Types.WORLD_SURFACE_WG);
         private static final BlockPredicate air = BlockPredicate.matchesBlocks(Blocks.AIR);
         private static final EnvironmentScanPlacement targetSolidAllowedAir = EnvironmentScanPlacement.scanningFor(Direction.DOWN, BlockPredicate.solid(), air, 12);
@@ -571,33 +659,13 @@ public class ModDataProvider {
             register(context, TIN_ORE, configured.getOrThrow(ConfiguredFeatures.TIN_ORE), biome, CountPlacement.of(16), inSquare, heightRangeTriangle(0, 128));
             register(context, TOPAZ_ORE, configured.getOrThrow(ConfiguredFeatures.TOPAZ_ORE), biome, inSquare, heightRangeTriangle(-52, 10));
             register(context, TUNGSTEN_ORE, configured.getOrThrow(ConfiguredFeatures.TUNGSTEN_ORE), SecretFlagPlacement.of(IWorldOptions.TC_MASK, true), biome, count4, inSquare, heightRangeTriangle(-38, 20));
-            gemTree(context, AMBER_TREE, configured.getOrThrow(ModFeatures.Configured.AMBER_TREE), NatureBlocks.AMBER_SAPLING.get());
-            gemTree(context, AMETHYST_TREE, configured.getOrThrow(ModFeatures.Configured.AMETHYST_TREE), NatureBlocks.AMETHYST_SAPLING.get());
-            gemTree(context, DIAMOND_TREE, configured.getOrThrow(ModFeatures.Configured.DIAMOND_TREE), NatureBlocks.DIAMOND_SAPLING.get());
-            gemTree(context, JADE_TREE, configured.getOrThrow(ModFeatures.Configured.JADE_TREE), NatureBlocks.JADE_SAPLING.get());
-            gemTree(context, RUBY_TREE, configured.getOrThrow(ModFeatures.Configured.RUBY_TREE), NatureBlocks.RUBY_SAPLING.get());
-            gemTree(context, SAPPHIRE_TREE, configured.getOrThrow(ModFeatures.Configured.SAPPHIRE_TREE), NatureBlocks.SAPPHIRE_SAPLING.get());
-            gemTree(context, TOPAZ_TREE, configured.getOrThrow(ModFeatures.Configured.TOPAZ_TREE), NatureBlocks.TOPAZ_SAPLING.get());
             register(context, MARINE_GRAVEL, configured.getOrThrow(ConfiguredFeatures.MARINE_GRAVEL), biome, CountPlacement.of(10), inSquare, bottomThroughTop);
             register(context, OPAL_ORE, configured.getOrThrow(ConfiguredFeatures.OPAL_ORE), biome, CountPlacement.of(7), inSquare, HeightRangePlacement.uniform(VerticalAnchor.absolute(0), VerticalAnchor.absolute(50)));
             register(context, THIN_ICE_PATCH, configured.getOrThrow(ConfiguredFeatures.THIN_ICE_PATCH), RarityFilter.onAverageOnceEvery(2), biome, inSquare, throughUnderground);
             register(context, POWDER_SNOW_PATCH, configured.getOrThrow(ConfiguredFeatures.POWDER_SNOW_PATCH), RarityFilter.onAverageOnceEvery(2), biome, inSquare, throughUnderground);
-            evilAltar(context, CRIMSON_ALTAR_BIOME, configured.getOrThrow(ConfiguredFeatures.CRIMSON_ALTAR), false, 12);
-            evilAltar(context, CRIMSON_ALTAR_WORLD, configured.getOrThrow(ConfiguredFeatures.CRIMSON_ALTAR), false, 1);
-            evilAltar(context, DEMON_ALTAR_BIOME, configured.getOrThrow(ConfiguredFeatures.DEMON_ALTAR), true, 12);
-            evilAltar(context, DEMON_ALTAR_WORLD, configured.getOrThrow(ConfiguredFeatures.DEMON_ALTAR), true, 1);
             register(context, DESERT_FOSSIL, configured.getOrThrow(ConfiguredFeatures.DESERT_FOSSIL), biome, CountPlacement.of(14), inSquare, bottomThroughTop);
             register(context, FALLING_SAND_TRAP, configured.getOrThrow(ConfiguredFeatures.FALLING_SAND_TRAP), biome, inSquare, bottomThroughUnderground);
-            pot(context, FOREST_POT, configured.getOrThrow(ConfiguredFeatures.FOREST_POT));
-            pot(context, JUNGLE_POT, configured.getOrThrow(ConfiguredFeatures.JUNGLE_POT));
-            pot(context, CORRUPTION_POT, configured.getOrThrow(ConfiguredFeatures.CORRUPTION_POT));
-            pot(context, CRIMSON_POT, configured.getOrThrow(ConfiguredFeatures.CRIMSON_POT));
-            pot(context, UNDERGROUND_DESERT_POT, configured.getOrThrow(ConfiguredFeatures.UNDERGROUND_DESERT_POT));
-            pot(context, TUNDRA_POT, configured.getOrThrow(ConfiguredFeatures.TUNDRA_POT));
-            chest(context, CAVE_CHESTS, configured.getOrThrow(ConfiguredFeatures.CAVE_CHESTS), count3, -110, -80);
             register(context, UNDERGROUND_CHESTS, configured.getOrThrow(ConfiguredFeatures.UNDERGROUND_CHESTS), biome, inSquare, bottomThroughSurface, targetSturdyAllowedAir, SurfaceRelativeThresholdFilter.of(Heightmap.Types.WORLD_SURFACE_WG, -110, -80));
-            chest(context, CAVE_CHESTS_SMALL, configured.getOrThrow(ConfiguredFeatures.CAVE_CHESTS), count5, -80, -23);
-            chest(context, UNDERGROUND_CHESTS_SMALL, configured.getOrThrow(ConfiguredFeatures.UNDERGROUND_CHESTS), count3, -80, -23);
             register(context, FOREST_DROOPING_VINE, configured.getOrThrow(ConfiguredFeatures.FOREST_DROOPING_VINE), biome, CountPlacement.of(60), inSquare, throughSurface, EnvironmentScanPlacement.scanningFor(Direction.UP, BlockPredicate.matchesBlocks(Blocks.DIRT, Blocks.STONE), air, 12), ySpreadN1);
             register(context, LIFE_MUSHROOM, configured.getOrThrow(ConfiguredFeatures.LIFE_MUSHROOM), RarityFilter.onAverageOnceEvery(32), biome, count3, inSquare, worldSurfaceWG);
             register(context, BLINKROOT, configured.getOrThrow(ConfiguredFeatures.BLINKROOT), biome, count3, inSquare, bottomThroughUnderground);
@@ -608,26 +676,37 @@ public class ModDataProvider {
             register(context, UNDERGROUND_MOONGLOW, configured.getOrThrow(ConfiguredFeatures.MOONGLOW), biome, count4, inSquare, bottomThroughUnderground);
             register(context, FIREBLOSSOM, configured.getOrThrow(ConfiguredFeatures.FIREBLOSSOM), biome, count3, inSquare, bottomThroughTop);
             register(context, SHIVERTHORN, configured.getOrThrow(ConfiguredFeatures.SHIVERTHORN), RarityFilter.onAverageOnceEvery(32), biome, count5, inSquare, worldSurfaceWG);
-
             register(context, CORRUPT_DROOPING_VINE, configured.getOrThrow(ConfiguredFeatures.CORRUPT_DROOPING_VINE), biome, CountPlacement.of(60), inSquare, throughSurface, EnvironmentScanPlacement.scanningFor(Direction.UP, BlockPredicate.matchesBlocks(Blocks.DIRT, NatureBlocks.EBONSTONE.get()), air, 12), ySpreadN1);
-            register(context, TREES_CORRUPTION, configured.getOrThrow(ConfiguredFeatures.TREES_CORRUPTION), biome, CountPlacement.of(new WeightedListInt(SimpleWeightedRandomList.<IntProvider>builder().add(ConstantInt.of(1), 9).add(ConstantInt.of(2), 1).build())), inSquare, SurfaceWaterDepthFilter.forMaxDepth(0), HeightmapPlacement.onHeightmap(Heightmap.Types.OCEAN_FLOOR));
+            register(context, EBONY_TREE, configured.getOrThrow(ModFeatures.Configured.EBONY_TREE),
+                    biome,
+                    CountPlacement.of(new WeightedListInt(SimpleWeightedRandomList.<IntProvider>builder()
+                            .add(ConstantInt.of(1), 9)
+                            .add(ConstantInt.of(2), 1)
+                            .build())),
+                    inSquare,
+                    surfaceWaterDepth0,
+                    oceanFloor
+            );
             register(context, CORRUPT_GRASS, configured.getOrThrow(ConfiguredFeatures.CORRUPT_GRASS), biome, CountPlacement.of(10), inSquare, HeightmapPlacement.onHeightmap(Heightmap.Types.MOTION_BLOCKING));
             register(context, VILE_MUSHROOM, configured.getOrThrow(ConfiguredFeatures.VILE_MUSHROOM), RarityFilter.onAverageOnceEvery(32), biome, count3, HeightmapPlacement.onHeightmap(Heightmap.Types.WORLD_SURFACE_WG));
-            register(context, THE_CORRUPTION_TREE_CHECKED_0, configured.getOrThrow(ConfiguredFeatures.THE_CORRUPTION_TREE_CHECKED_0), BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.EBONY_SAPLING.get().defaultBlockState(), Vec3i.ZERO)));
-            register(context, THE_CORRUPTION_TREE_CHECKED_1, configured.getOrThrow(ConfiguredFeatures.THE_CORRUPTION_TREE_CHECKED_1), BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.EBONY_SAPLING.get().defaultBlockState(), Vec3i.ZERO)));
-            register(context, THE_CORRUPTION_TREE_CHECKED_2, configured.getOrThrow(ConfiguredFeatures.THE_CORRUPTION_TREE_CHECKED_2), BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.EBONY_SAPLING.get().defaultBlockState(), Vec3i.ZERO)));
-            register(context, TREES_CRIMSON, configured.getOrThrow(ConfiguredFeatures.TREES_CRIMSON), biome, CountPlacement.of(new WeightedListInt(SimpleWeightedRandomList.<IntProvider>builder().add(ConstantInt.of(1), 9).add(ConstantInt.of(2), 1).build())), inSquare, SurfaceWaterDepthFilter.forMaxDepth(0), HeightmapPlacement.onHeightmap(Heightmap.Types.OCEAN_FLOOR));
+            register(context, SHADOW_TREE, configured.getOrThrow(ModFeatures.Configured.SHADOW_TREE),
+                    biome,
+                    CountPlacement.of(new WeightedListInt(SimpleWeightedRandomList.<IntProvider>builder()
+                            .add(ConstantInt.of(1), 9)
+                            .add(ConstantInt.of(2), 1)
+                            .build())),
+                    inSquare,
+                    surfaceWaterDepth0,
+                    oceanFloor
+            );
             register(context, CRIMSON_GRASS, configured.getOrThrow(ConfiguredFeatures.CRIMSON_GRASS), biome, CountPlacement.of(10), inSquare, HeightmapPlacement.onHeightmap(Heightmap.Types.MOTION_BLOCKING));
-            register(context, CRIMSON_TREE_CHECKED_0, configured.getOrThrow(ConfiguredFeatures.CRIMSON_TREE_CHECKED_0), BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.SHADOW_SAPLING.get().defaultBlockState(), Vec3i.ZERO)));
-            register(context, CRIMSON_TREE_CHECKED_1, configured.getOrThrow(ConfiguredFeatures.CRIMSON_TREE_CHECKED_1), BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.SHADOW_SAPLING.get().defaultBlockState(), Vec3i.ZERO)));
             register(context, CRIMSON_DROOPING_VINE, configured.getOrThrow(ConfiguredFeatures.CRIMSON_DROOPING_VINE), biome, CountPlacement.of(60), inSquare, throughSurface, EnvironmentScanPlacement.scanningFor(Direction.UP, BlockPredicate.matchesBlocks(Blocks.DIRT, NatureBlocks.CRIMSTONE.get()), air, 12), ySpreadN1);
             register(context, VICIOUS_MUSHROOM, configured.getOrThrow(ConfiguredFeatures.VICIOUS_MUSHROOM), RarityFilter.onAverageOnceEvery(32), biome, count3, HeightmapPlacement.onHeightmap(Heightmap.Types.WORLD_SURFACE_WG));
-            register(context, GLOWING_MUSHROOM, configured.getOrThrow(ConfiguredFeatures.GLOWING_MUSHROOM), biome, CountPlacement.of(80), inSquare, bottomThroughUnderground);
+            register(context, GLOWING_MUSHROOM, configured.getOrThrow(ConfiguredFeatures.GLOWING_MUSHROOM), biome, CountPlacement.of(40), inSquare, bottomThroughUnderground);
             register(context, GLOWING_MUSHROOM_LIFE_CRYSTAL, configured.getOrThrow(ConfiguredFeatures.LIFE_CRYSTAL), biome, CountPlacement.of(8), inSquare, bottomThroughUnderground, targetSturdyAllowedAir, SurfaceRelativeThresholdFilter.of(Heightmap.Types.WORLD_SURFACE_WG, -110, -70));
             register(context, GLOWING_MUSHROOM_TREE, configured.getOrThrow(ModFeatures.Configured.GLOWING_MUSHROOM_TREE), biome, CountOnEveryLayerPlacement.of(3), EnvironmentScanPlacement.scanningFor(Direction.DOWN, BlockPredicate.matchesBlocks(new Vec3i(0, -1, 0), Blocks.MUD, NatureBlocks.MUSHROOM_GRASS_BLOCK.get()), air, 12));
-            register(context, GLOWING_MUSHROOM_VINE, configured.getOrThrow(ConfiguredFeatures.GLOWING_MUSHROOM_VINE), biome, CountPlacement.of(188), inSquare, bottomThroughUnderground, EnvironmentScanPlacement.scanningFor(Direction.DOWN, BlockPredicate.matchesBlocks(Blocks.MUD, NatureBlocks.MUSHROOM_GRASS_BLOCK.get()), air, 12), ySpreadN1);
+            register(context, GLOWING_MUSHROOM_VINE, configured.getOrThrow(ConfiguredFeatures.GLOWING_MUSHROOM_VINE), biome, CountPlacement.of(188), inSquare, bottomThroughUnderground, EnvironmentScanPlacement.scanningFor(Direction.UP, BlockPredicate.matchesBlocks(Blocks.MUD, NatureBlocks.MUSHROOM_GRASS_BLOCK.get()), air, 12), ySpreadN1);
             register(context, GLOWING_MUSHROOM_CATTAILS, configured.getOrThrow(ConfiguredFeatures.GLOWING_MUSHROOM_CATTAILS), biome, CountPlacement.of(188), inSquare, HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(-32), VerticalAnchor.absolute(40)), ySpreadN1);
-
             register(context, ASH_TREE, configured.getOrThrow(ModFeatures.Configured.ASH_TREE), biome, CountOnEveryLayerPlacement.of(4), targetSturdyAllowedAir);
             register(context, ASH_GRASS, configured.getOrThrow(ConfiguredFeatures.ASH_GRASS), biome, CountPlacement.of(20), inSquare, bottomThroughTop);
             register(context, JUNGLE_ROSE, configured.getOrThrow(ConfiguredFeatures.JUNGLE_ROSE), biome, count4, inSquare, bottomThroughSurface);
@@ -639,17 +718,86 @@ public class ModDataProvider {
             register(context, NATURES_GIFT, configured.getOrThrow(ConfiguredFeatures.NATURES_GIFT), biome, count3, inSquare, bottomThroughSurface);
             register(context, NO_TRAPS_GRAVITATION_TRAP, configured.getOrThrow(ConfiguredFeatures.GRAVITATION_TRAP), noTraps, biome, inSquare, bottomThroughUnderground, EnvironmentScanPlacement.scanningFor(Direction.DOWN, BlockPredicate.solid(), BlockPredicate.matchesBlocks(new Vec3i(0, 1, 0), Blocks.AIR), 12));
             register(context, NO_TRAPS_PNEUMATIC_TRAP, configured.getOrThrow(ConfiguredFeatures.PNEUMATIC_TRAP), noTraps, biome, inSquare, bottomThroughUnderground, EnvironmentScanPlacement.scanningFor(Direction.DOWN, BlockPredicate.solid(), BlockPredicate.matchesBlocks(new Vec3i(0, 1, 0), Blocks.AIR), 12));
-            register(context, NO_TRAPS_SCULK_TRAP, configured.getOrThrow(ConfiguredFeatures.SCULK_TRAP), noTraps, RarityFilter.onAverageOnceEvery(10), biome, inSquare, bottomThroughUnderground, EnvironmentScanPlacement.scanningFor(Direction.DOWN, BlockPredicate.solid(), BlockPredicate.matchesBlocks(new Vec3i(0, 1, 0), Blocks.AIR), 12));
+            register(context, NO_TRAPS_SCULK_TRAP, configured.getOrThrow(ConfiguredFeatures.SCULK_TRAP),
+                    noTraps,
+                    RarityFilter.onAverageOnceEvery(10),
+                    biome,
+                    inSquare,
+                    bottomThroughUnderground,
+                    EnvironmentScanPlacement.scanningFor(
+                            Direction.DOWN,
+                            BlockPredicate.solid(),
+                            BlockPredicate.matchesBlocks(new Vec3i(0, 1, 0), Blocks.AIR),
+                            12
+                    )
+            );
             register(context, NO_TRAPS_SHIMMER_TRAP, configured.getOrThrow(ConfiguredFeatures.SHIMMER_TRAP), noTraps, biome, inSquare, bottomThroughUnderground, EnvironmentScanPlacement.scanningFor(Direction.DOWN, BlockPredicate.solid(), BlockPredicate.matchesBlocks(new Vec3i(0, 1, 0), Blocks.AIR), 12));
-            register(context, NO_TRAPS_SCULK_SENSOR_WITH_TNT, configured.getOrThrow(ConfiguredFeatures.SCULK_SENSOR_WITH_TNT), RarityFilter.onAverageOnceEvery(127), biome, inSquare, throughSurface);
+            register(context, NO_TRAPS_SCULK_SENSOR_WITH_TNT, configured.getOrThrow(ConfiguredFeatures.SCULK_SENSOR_WITH_TNT), noTraps, RarityFilter.onAverageOnceEvery(127), biome, inSquare, throughSurface);
             register(context, DART_TRAP, configured.getOrThrow(ConfiguredFeatures.DART_TRAP), biome, inSquare, bottomThroughUnderground);
             register(context, BOULDER_TRAP, configured.getOrThrow(ConfiguredFeatures.BOULDER_TRAP), biome, inSquare, bottomThroughUnderground);
             register(context, DEATH_CHEST_TRAP, configured.getOrThrow(ConfiguredFeatures.DEATH_CHEST_TRAP), RarityFilter.onAverageOnceEvery(20), biome, inSquare, throughCave);
             register(context, LIFE_CRYSTAL, configured.getOrThrow(ConfiguredFeatures.LIFE_CRYSTAL), biome, count5, inSquare, bottomThroughUnderground, targetSturdyAllowedAir, SurfaceRelativeThresholdFilter.of(Heightmap.Types.WORLD_SURFACE_WG, -110, -70));
-            register(context, WATER_CHESTS, configured.getOrThrow(ConfiguredFeatures.WATER_CHESTS), biome, CountPlacement.of(8), inSquare, bottomThroughSurface, EnvironmentScanPlacement.scanningFor(Direction.DOWN, BlockPredicate.hasSturdyFace(new Vec3i(0, -1, 0), Direction.UP), BlockPredicate.matchesBlocks(Blocks.WATER), 12), SurfaceRelativeThresholdFilter.of(Heightmap.Types.WORLD_SURFACE_WG, -80, 320));
+            register(context, WATER_CHESTS, configured.getOrThrow(ConfiguredFeatures.WATER_CHESTS),
+                    biome, CountPlacement.of(8),
+                    inSquare,
+                    bottomThroughSurface,
+                    EnvironmentScanPlacement.scanningFor(
+                            Direction.DOWN,
+                            BlockPredicate.hasSturdyFace(new Vec3i(0, -1, 0), Direction.UP),
+                            BlockPredicate.matchesBlocks(Blocks.WATER),
+                            12
+                    ),
+                    SurfaceRelativeThresholdFilter.of(Heightmap.Types.WORLD_SURFACE_WG, -80, 320)
+            );
             register(context, ROLLING_CACTUS, configured.getOrThrow(ConfiguredFeatures.ROLLING_CACTUS), biome, CountPlacement.of(90), inSquare, bottomThroughSurface, targetSturdyAllowedAir, SurfaceRelativeThresholdFilter.of(Heightmap.Types.OCEAN_FLOOR, -110, -30));
             register(context, SILT_BLOCK, configured.getOrThrow(ConfiguredFeatures.SILT_BLOCK), biome, CountPlacement.of(14), inSquare, bottomThroughTop);
             register(context, SLUSH, configured.getOrThrow(ConfiguredFeatures.SLUSH), biome, CountPlacement.of(10), inSquare, bottomThroughTop);
+            register(context, PALM_TREE, configured.getOrThrow(ModFeatures.Configured.PALM_TREE),
+                    RarityFilter.onAverageOnceEvery(3),
+                    biome,
+                    CountPlacement.of(new WeightedListInt(SimpleWeightedRandomList.<IntProvider>builder()
+                            .add(ConstantInt.of(1), 9)
+                            .add(ConstantInt.of(2), 1)
+                            .build())),
+                    inSquare,
+                    surfaceWaterDepth0,
+                    oceanFloor,
+                    BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.PALM_SAPLING.get().defaultBlockState(), Vec3i.ZERO)));
+            register(context, BAOBAB_TREE, configured.getOrThrow(ModFeatures.Configured.BAOBAB_TREE),
+                    biome,
+                    CountPlacement.of(new WeightedListInt(SimpleWeightedRandomList.<IntProvider>builder()
+                            .add(ConstantInt.of(1), 9)
+                            .add(ConstantInt.of(2), 1)
+                            .build())),
+                    inSquare,
+                    surfaceWaterDepth0,
+                    oceanFloor
+            );
+            register(context, GEMSTONE_CAVE, configured.getOrThrow(ConfiguredFeatures.GEMSTONE_CAVE), RarityFilter.onAverageOnceEvery(30), biome, inSquare, HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(14), VerticalAnchor.absolute(30)));
+
+            gemTree(context, AMBER_TREE, configured.getOrThrow(ModFeatures.Configured.AMBER_TREE), NatureBlocks.AMBER_SAPLING.get());
+            gemTree(context, AMETHYST_TREE, configured.getOrThrow(ModFeatures.Configured.AMETHYST_TREE), NatureBlocks.AMETHYST_SAPLING.get());
+            gemTree(context, DIAMOND_TREE, configured.getOrThrow(ModFeatures.Configured.DIAMOND_TREE), NatureBlocks.DIAMOND_SAPLING.get());
+            gemTree(context, JADE_TREE, configured.getOrThrow(ModFeatures.Configured.JADE_TREE), NatureBlocks.JADE_SAPLING.get());
+            gemTree(context, RUBY_TREE, configured.getOrThrow(ModFeatures.Configured.RUBY_TREE), NatureBlocks.RUBY_SAPLING.get());
+            gemTree(context, SAPPHIRE_TREE, configured.getOrThrow(ModFeatures.Configured.SAPPHIRE_TREE), NatureBlocks.SAPPHIRE_SAPLING.get());
+            gemTree(context, TOPAZ_TREE, configured.getOrThrow(ModFeatures.Configured.TOPAZ_TREE), NatureBlocks.TOPAZ_SAPLING.get());
+
+            evilAltar(context, CRIMSON_ALTAR_BIOME, configured.getOrThrow(ConfiguredFeatures.CRIMSON_ALTAR), false, 5);
+            evilAltar(context, CRIMSON_ALTAR_WORLD, configured.getOrThrow(ConfiguredFeatures.CRIMSON_ALTAR), false, 1);
+            evilAltar(context, DEMON_ALTAR_BIOME, configured.getOrThrow(ConfiguredFeatures.DEMON_ALTAR), true, 5);
+            evilAltar(context, DEMON_ALTAR_WORLD, configured.getOrThrow(ConfiguredFeatures.DEMON_ALTAR), true, 1);
+
+            pot(context, FOREST_POT, configured.getOrThrow(ConfiguredFeatures.FOREST_POT));
+            pot(context, JUNGLE_POT, configured.getOrThrow(ConfiguredFeatures.JUNGLE_POT));
+            pot(context, CORRUPTION_POT, configured.getOrThrow(ConfiguredFeatures.CORRUPTION_POT));
+            pot(context, CRIMSON_POT, configured.getOrThrow(ConfiguredFeatures.CRIMSON_POT));
+            pot(context, UNDERGROUND_DESERT_POT, configured.getOrThrow(ConfiguredFeatures.UNDERGROUND_DESERT_POT));
+            pot(context, TUNDRA_POT, configured.getOrThrow(ConfiguredFeatures.TUNDRA_POT));
+
+            chest(context, CAVE_CHESTS, configured.getOrThrow(ConfiguredFeatures.CAVE_CHESTS), count3, -110, -80);
+            chest(context, CAVE_CHESTS_SMALL, configured.getOrThrow(ConfiguredFeatures.CAVE_CHESTS), count5, -80, -23);
+            chest(context, UNDERGROUND_CHESTS_SMALL, configured.getOrThrow(ConfiguredFeatures.UNDERGROUND_CHESTS), count3, -80, -23);
             chest(context, CAVE_SANDSTONE_CHESTS, configured.getOrThrow(ConfiguredFeatures.CAVE_SANDSTONE_CHESTS), count2, -110, -80);
             chest(context, UNDERGROUND_SANDSTONE_CHESTS, configured.getOrThrow(ConfiguredFeatures.UNDERGROUND_SANDSTONE_CHESTS), count2, -80, -23);
             chest(context, SURFACE_CHESTS, configured.getOrThrow(ConfiguredFeatures.SURFACE_CHESTS), CountPlacement.of(24), -23, -2);
@@ -699,9 +847,33 @@ public class ModDataProvider {
             VerticalAnchor absolute80 = VerticalAnchor.absolute(80);
             HolderSet<Block> replaceable = block.getOrThrow(BlockTags.OVERWORLD_CARVER_REPLACEABLES);
             context.register(DESERT_CAVE_CARVER, new ConfiguredWorldCarver<>(ModCarvers.DESERT_CAVE_CARVER.get(), new CarverConfiguration(1, UniformHeight.of(aboveBottom8, absolute80), ConstantFloat.of(8), aboveBottom8, CarverDebugSettings.DEFAULT, replaceable)));
-            context.register(DEMONIC_CAVE_CARVER, new ConfiguredWorldCarver<>(ModCarvers.DEMONIC_CAVE_CARVER.get(), new DemonicCaveCarver.Config(new CarverConfiguration(0.2F, UniformHeight.of(VerticalAnchor.aboveBottom(40), absolute80), ConstantFloat.of(4), aboveBottom8, CarverDebugSettings.DEFAULT, replaceable), UniformFloat.of(24, 48))));
-            context.register(GLOWING_MUSHROOM_CAVE_CARVER, new ConfiguredWorldCarver<>(ModCarvers.GLOWING_MUSHROOM_CAVE_CARVER.get(), new GlowingMushroomCaveCarver.Config(new CarverConfiguration(0.6F, UniformHeight.of(VerticalAnchor.absolute(-40), VerticalAnchor.absolute(-10)), ConstantFloat.of(6), aboveBottom8, CarverDebugSettings.DEFAULT, replaceable))));
-            context.register(JUNGLE_CAVE_CARVER, new ConfiguredWorldCarver<>(ModCarvers.JUNGLE_CAVE_CARVER.get(), new CaveCarverConfiguration(0.5F, UniformHeight.of(aboveBottom8, VerticalAnchor.absolute(100)), UniformFloat.of(0.1F, 0.9F), aboveBottom8, CarverDebugSettings.DEFAULT, replaceable, UniformFloat.of(2.8F, 5.6F), UniformFloat.of(1.6F, 2.6F), UniformFloat.of(-1, -0.4F))));
+            context.register(DEMONIC_CAVE_CARVER, new ConfiguredWorldCarver<>(ModCarvers.DEMONIC_CAVE_CARVER.get(), new DemonicCaveCarver.Config(new CarverConfiguration(
+                    0.2F,
+                    UniformHeight.of(VerticalAnchor.aboveBottom(40), absolute80),
+                    ConstantFloat.of(4),
+                    aboveBottom8,
+                    CarverDebugSettings.DEFAULT,
+                    replaceable
+            ), UniformFloat.of(24, 48))));
+            context.register(GLOWING_MUSHROOM_CAVE_CARVER, new ConfiguredWorldCarver<>(ModCarvers.GLOWING_MUSHROOM_CAVE_CARVER.get(), new CarverConfiguration(
+                    0.6F,
+                    UniformHeight.of(VerticalAnchor.absolute(-40), VerticalAnchor.absolute(-10)),
+                    ConstantFloat.of(6),
+                    aboveBottom8,
+                    CarverDebugSettings.DEFAULT,
+                    replaceable
+            )));
+            context.register(JUNGLE_CAVE_CARVER, new ConfiguredWorldCarver<>(ModCarvers.JUNGLE_CAVE_CARVER.get(), new CaveCarverConfiguration(
+                    0.5F,
+                    UniformHeight.of(aboveBottom8, VerticalAnchor.absolute(100)),
+                    UniformFloat.of(0.1F, 0.9F),
+                    aboveBottom8,
+                    CarverDebugSettings.DEFAULT,
+                    replaceable,
+                    UniformFloat.of(2.8F, 5.6F),
+                    UniformFloat.of(1.6F, 2.6F),
+                    UniformFloat.of(-1, -0.4F)
+            )));
             context.register(WAVY_CAVE_CARVER, new ConfiguredWorldCarver<>(ModCarvers.WAVY_CAVE_CARVER.get(), new CarverConfiguration(0.2F, UniformHeight.of(VerticalAnchor.absolute(-40), absolute80), ConstantFloat.of(4), aboveBottom8, CarverDebugSettings.DEFAULT, replaceable)));
         }
     }
@@ -741,7 +913,7 @@ public class ModDataProvider {
             ), GenerationStep.Decoration.UNDERGROUND_DECORATION);
 
             addFeatures(context, "savana_vd", biome.getOrThrow(Tags.Biomes.IS_SAVANNA), HolderSet.direct(factory,
-                    PlacedFeatures.TREES_BAOBAB
+                    PlacedFeatures.BAOBAB_TREE
             ), GenerationStep.Decoration.VEGETAL_DECORATION);
 
             addFeatures(context, "snowy_icy_uo", snowyIcy, HolderSet.direct(factory,
@@ -818,7 +990,7 @@ public class ModDataProvider {
             ), GenerationStep.Decoration.VEGETAL_DECORATION);
 
             addFeatures(context, "beach_vd", biome.getOrThrow(Tags.Biomes.IS_BEACH), HolderSet.direct(factory,
-                    PlacedFeatures.PALM_TREE_CHECKED
+                    PlacedFeatures.PALM_TREE
             ), GenerationStep.Decoration.VEGETAL_DECORATION);
 
             HolderGetter<ConfiguredWorldCarver<?>> configuredWorldCarver = context.lookup(Registries.CONFIGURED_CARVER);
@@ -851,12 +1023,9 @@ public class ModDataProvider {
                     .generationSettings(Util.make(new BiomeGenerationSettings.Builder(placedFeature, configuredWorldCarver), builder -> {
                         addDefaultGenerations(builder);
                         builder.addCarver(GenerationStep.Carving.AIR, ConfiguredWorldCarvers.DEMONIC_CAVE_CARVER);
-                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.TREES_CORRUPTION);
+                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.EBONY_TREE);
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.CORRUPT_GRASS);
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.VILE_MUSHROOM);
-                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.THE_CORRUPTION_TREE_CHECKED_0);
-                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.THE_CORRUPTION_TREE_CHECKED_1);
-                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.THE_CORRUPTION_TREE_CHECKED_2);
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.CORRUPT_DROOPING_VINE);
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.DEATHWEED);
                         builder.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, PlacedFeatures.CORRUPTION_POT);
@@ -894,10 +1063,8 @@ public class ModDataProvider {
                             .build())
                     .generationSettings(Util.make(new BiomeGenerationSettings.Builder(placedFeature, configuredWorldCarver), builder -> {
                         addDefaultGenerations(builder);
-                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.TREES_CRIMSON);
+                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.SHADOW_TREE);
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.CRIMSON_GRASS);
-                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.CRIMSON_TREE_CHECKED_0);
-                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.CRIMSON_TREE_CHECKED_1);
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.CRIMSON_DROOPING_VINE);
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.VICIOUS_MUSHROOM);
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.DEATHWEED);
@@ -1131,9 +1298,9 @@ public class ModDataProvider {
     public static class Structures {
         private static final TagKey<Biome> HAS_STRUCTURE_$_SHIMMER_LAKE = Confluence.asTagKey(Registries.BIOME, "has_structure/shimmer_lake");
 
-        public static void boostrap(BootstrapContext<Structure> context) {
+        private static void boostrap(BootstrapContext<Structure> context) {
             HolderGetter<Biome> biome = context.lookup(Registries.BIOME);
-            context.register(ModStructures.DUNGEON_KEY, new DungeonStructure(new Structure.StructureSettings(biome.getOrThrow(HAS_STRUCTURE_$_SHIMMER_LAKE), Map.of(
+            context.register(ModStructures.Keys.DUNGEON, new DungeonStructure(new Structure.StructureSettings(biome.getOrThrow(HAS_STRUCTURE_$_SHIMMER_LAKE), Map.of(
                     MobCategory.MONSTER, new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create(
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.ANGER_BONES.get(), 240, 8, 9),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.BIG_ANGER_BONES.get(), 240, 8, 9),
@@ -1146,6 +1313,28 @@ public class ModDataProvider {
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.DUNGEON_SLIME.get(), 120, 1, 2)
                     ))
             ), GenerationStep.Decoration.TOP_LAYER_MODIFICATION, TerrainAdjustment.NONE)));
+        }
+    }
+
+    public static class StructureSets {
+        private static void bootstrap(BootstrapContext<StructureSet> context) {
+            HolderGetter<Structure> structure = context.lookup(Registries.STRUCTURE);
+            HolderGetter<Biome> biome = context.lookup(Registries.BIOME);
+            register(context, "dungeon", new StructureSet(structure.getOrThrow(ModStructures.Keys.DUNGEON), new ConcentricRingsStructurePlacement(
+                    Vec3i.ZERO,
+                    StructurePlacement.FrequencyReductionMethod.DEFAULT,
+                    1.0F,
+                    0,
+                    Optional.empty(),
+                    48,
+                    1,
+                    128,
+                    biome.getOrThrow(BiomeTags.STRONGHOLD_BIASED_TO)
+            )));
+        }
+
+        private static void register(BootstrapContext<StructureSet> context, String path, StructureSet set) {
+            context.register(Confluence.asResourceKey(Registries.STRUCTURE_SET, path), set);
         }
     }
 }

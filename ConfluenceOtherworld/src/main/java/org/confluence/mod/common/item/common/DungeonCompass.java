@@ -68,7 +68,7 @@ public class DungeonCompass extends TooltipItem {
                 }
             } else {
                 ServerLevel serverlevel = (ServerLevel) level;
-                HolderSet<Structure> dungeon = HolderSet.direct(serverlevel.registryAccess().holderOrThrow(ModStructures.DUNGEON_KEY));
+                HolderSet<Structure> dungeon = HolderSet.direct(serverlevel.registryAccess().holderOrThrow(ModStructures.Keys.DUNGEON));
                 Pair<BlockPos, Holder<Structure>> pair = serverlevel.getChunkSource().getGenerator().findNearestMapStructure(serverlevel, dungeon, blockPos, 100, false);
                 if (pair == null) {
                     player.displayClientMessage(Component.translatable("message.confluence.dungeon_not_found").withStyle(ChatFormatting.RED), true);

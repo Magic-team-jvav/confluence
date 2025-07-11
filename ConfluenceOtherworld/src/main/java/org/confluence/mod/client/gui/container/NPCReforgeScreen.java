@@ -81,7 +81,7 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
 
     protected void init() {
         super.init();
-        this.interpolator = KeyframeAnimation.Builder()
+        this.interpolator = KeyframeAnimation.builder()
                 .addKeyframe(0,0)
                 .addKeyframe(15, 55)
                 .addKeyframe(20, 60)

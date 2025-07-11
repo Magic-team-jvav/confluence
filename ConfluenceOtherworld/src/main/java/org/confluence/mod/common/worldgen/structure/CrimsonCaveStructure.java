@@ -37,7 +37,7 @@ import static org.confluence.lib.util.StructureUtils.lineSet;
 public class CrimsonCaveStructure extends Structure {
     public static final MapCodec<CrimsonCaveStructure> CODEC = simpleCodec(CrimsonCaveStructure::new);
 
-    protected CrimsonCaveStructure(StructureSettings settings) {
+    public CrimsonCaveStructure(StructureSettings settings) {
         super(settings);
     }
 

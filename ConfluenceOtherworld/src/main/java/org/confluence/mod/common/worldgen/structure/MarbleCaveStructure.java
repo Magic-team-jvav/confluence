@@ -32,7 +32,7 @@ public class MarbleCaveStructure extends Structure {
     public static final MapCodec<MarbleCaveStructure> CODEC = simpleCodec(MarbleCaveStructure::new);
     public static final ResourceKey<ConfiguredFeature<?, ?>> MARBLE_CAVE_POT = Confluence.asResourceKey(Registries.CONFIGURED_FEATURE, "marble_cave_pot");
 
-    protected MarbleCaveStructure(StructureSettings settings) {
+    public MarbleCaveStructure(StructureSettings settings) {
         super(settings);
     }
 

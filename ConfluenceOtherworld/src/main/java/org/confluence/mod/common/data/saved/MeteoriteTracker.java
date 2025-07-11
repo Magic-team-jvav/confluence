@@ -6,6 +6,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ChunkHolder;
 import net.minecraft.server.level.ChunkMap;
 import net.minecraft.server.level.ServerLevel;
@@ -13,6 +14,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
@@ -25,6 +27,7 @@ import java.util.List;
 
 public class MeteoriteTracker {
     public static final MeteoriteTracker INSTANCE = new MeteoriteTracker();
+    public static final ResourceKey<ConfiguredFeature<?, ?>> METEORITE = Confluence.asResourceKey(Registries.CONFIGURED_FEATURE, "meteorite");
 
     private transient boolean shouldGenerate = true;
     public boolean spawnAtNextNight = false;
@@ -127,9 +130,7 @@ public class MeteoriteTracker {
         boolean placed = false;
         if (withForceChunk) level.setChunkForced(chunkX, chunkZ, true);
         try {
-            level.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE)
-                    .getHolder(Confluence.asResource("normal_meteorite")).orElseThrow().value()
-                    .place(level, level.getChunkSource().getGenerator(), level.random, origin);
+            level.registryAccess().holderOrThrow(METEORITE).value().place(level, level.getChunkSource().getGenerator(), level.random, origin);
             placed = true;
         } catch (Exception ignored) {}
         if (withForceChunk) level.setChunkForced(chunkX, chunkZ, false);

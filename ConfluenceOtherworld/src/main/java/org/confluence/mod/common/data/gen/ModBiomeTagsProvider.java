@@ -3,7 +3,6 @@ package org.confluence.mod.common.data.gen;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.BiomeTagsProvider;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
@@ -106,8 +105,8 @@ public class ModBiomeTagsProvider extends BiomeTagsProvider {
                 ModBiomes.ASH_WASTELAND
         );
         tag(Tags.Biomes.IS_NETHER_FOREST).add(ModBiomes.ASH_FOREST);
-        TagAppender<Biome> yellowWillowReplaceable = tag(ModTags.Biomes.VANITY_TREES_REPLACEABLE);
-        yellowWillowReplaceable.add(Biomes.PLAINS, Biomes.FOREST, Biomes.FLOWER_FOREST);
-        yellowWillowReplaceable.addTag(Tags.Biomes.IS_BIRCH_FOREST);
+        tag(ModTags.Biomes.VANITY_TREES_REPLACEABLE)
+                .add(Biomes.PLAINS, Biomes.FOREST, Biomes.FLOWER_FOREST)
+                .addTag(Tags.Biomes.IS_BIRCH_FOREST);
     }
 }

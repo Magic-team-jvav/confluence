@@ -14,6 +14,8 @@ import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfigur
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import org.confluence.lib.util.FeatureUtils;
 
+import java.util.function.Consumer;
+
 public class GroundBlockNBTFeature extends Feature<GroundBlockNBTFeature.Config> {
     public GroundBlockNBTFeature(Codec<Config> pCodec) {
         super(pCodec);
@@ -51,15 +53,21 @@ public class GroundBlockNBTFeature extends Feature<GroundBlockNBTFeature.Config>
         return false;
     }
 
-    public record Config(
-            BlockStateProvider block,
-            int max_down,
-            CompoundTag nbt
-    ) implements FeatureConfiguration {
+    public record Config(BlockStateProvider block, int max_down, CompoundTag nbt) implements FeatureConfiguration {
         public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 BlockStateProvider.CODEC.fieldOf("block").forGetter(Config::block),
                 Codec.INT.fieldOf("max_down").forGetter(GroundBlockNBTFeature.Config::max_down),
                 CompoundTag.CODEC.fieldOf("nbt").forGetter(GroundBlockNBTFeature.Config::nbt)
         ).apply(instance, Config::new));
+
+        public Config(BlockStateProvider block, int max_down, Consumer<CompoundTag> consumer) {
+            this(block, max_down, tag(consumer));
+        }
+
+        private static CompoundTag tag(Consumer<CompoundTag> consumer) {
+            CompoundTag nbt = new CompoundTag();
+            consumer.accept(nbt);
+            return nbt;
+        }
     }
 }

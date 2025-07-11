@@ -13,6 +13,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import org.confluence.lib.common.worldgen.structure.GridPiece;
 import org.confluence.lib.common.worldgen.structure.SimpleTemplatePiece;
 import org.confluence.mod.Confluence;
@@ -102,12 +103,12 @@ public class LivingTreeStructure extends Structure {
             ), Map.of(
                     chestPos.offset(0, -3, 3), Confluence.asResource("surface_chests")
             ), builder);
+            StructureTemplateManager manager = context.structureTemplateManager();
             switch (rotation) {
-                case CLOCKWISE_90 -> builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), "living_room", centerPos.offset(5, 0, 1), true, true, Rotation.CLOCKWISE_90));
-                case CLOCKWISE_180 -> builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), "living_room", centerPos.offset(-1, 0, 5), true, true, Rotation.CLOCKWISE_180));
-                case COUNTERCLOCKWISE_90 ->
-                        builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), "living_room", centerPos.offset(-5, 0, -1), true, true, Rotation.COUNTERCLOCKWISE_90));
-                default -> builder.addPiece(new SimpleTemplatePiece(context.structureTemplateManager(), "living_room", centerPos.offset(1, 0, -5), true, true, Rotation.NONE));
+                case CLOCKWISE_90 -> builder.addPiece(new SimpleTemplatePiece(manager, "living_room", centerPos.offset(5, 0, 1), true, true, rotation));
+                case CLOCKWISE_180 -> builder.addPiece(new SimpleTemplatePiece(manager, "living_room", centerPos.offset(-1, 0, 5), true, true, rotation));
+                case COUNTERCLOCKWISE_90 -> builder.addPiece(new SimpleTemplatePiece(manager, "living_room", centerPos.offset(-5, 0, -1), true, true, rotation));
+                default -> builder.addPiece(new SimpleTemplatePiece(manager, "living_room", centerPos.offset(1, 0, -5), true, true, rotation));
             }
         });
     }

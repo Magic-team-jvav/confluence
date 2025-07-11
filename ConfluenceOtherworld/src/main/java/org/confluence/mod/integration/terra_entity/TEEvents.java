@@ -46,8 +46,10 @@ public class TEEvents {
             if (terraNPC.confluence$shouldInteract()) {
                 terraNPC.confluence$setShouldInteract(false);
                 if (type == TENpcEntities.MECHANIC.get()) { // 仅设置NPC的区域，不标记alive（机械师不在区域内时会自动移除）
-                    terraNPC.confluence$setRegion(new NPCSpawner.Region(NPCSpawner.getNpcSpawnPos(player)));
+                    NPCSpawner.Region region = new NPCSpawner.Region(NPCSpawner.getNpcSpawnPos(player));
+                    terraNPC.confluence$setRegion(region);
                     NPCSpawner.INSTANCE.applyBenedictions(npc);
+                    NPCSpawner.INSTANCE.addSpawned(type);
                     NPCSpawner.broadcastMessageToRegion(player.level(), npc, Component.translatable("event.confluence.npc.arrived", type.getDescription(), npc.getName()).withColor(GlobalColors.NPC_ARRIVED.get()));
                 }
             }

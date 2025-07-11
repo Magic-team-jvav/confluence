@@ -1,14 +1,14 @@
 package org.confluence.mod.common.data.gen;
 
+import com.mojang.datafixers.util.Pair;
+import com.mojang.serialization.Lifecycle;
 import net.minecraft.Util;
 import net.minecraft.advancements.critereon.DamageSourcePredicate;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.TagPredicate;
 import net.minecraft.core.*;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BiomeDefaultFeatures;
-import net.minecraft.data.worldgen.BootstrapContext;
-import net.minecraft.data.worldgen.Carvers;
+import net.minecraft.data.worldgen.*;
 import net.minecraft.data.worldgen.placement.MiscOverworldPlacements;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.*;
@@ -56,16 +56,18 @@ import net.minecraft.world.level.levelgen.feature.treedecorators.TrunkVineDecora
 import net.minecraft.world.level.levelgen.feature.trunkplacers.FancyTrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.ForkingTrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer;
+import net.minecraft.world.level.levelgen.heightproviders.ConstantHeight;
 import net.minecraft.world.level.levelgen.heightproviders.UniformHeight;
 import net.minecraft.world.level.levelgen.placement.*;
-import net.minecraft.world.level.levelgen.structure.Structure;
-import net.minecraft.world.level.levelgen.structure.StructureSet;
-import net.minecraft.world.level.levelgen.structure.StructureSpawnOverride;
-import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
+import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.placement.ConcentricRingsStructurePlacement;
+import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadStructurePlacement;
+import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadType;
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;
-import net.minecraft.world.level.levelgen.structure.templatesystem.BlockMatchTest;
-import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
+import net.minecraft.world.level.levelgen.structure.pools.SinglePoolElement;
+import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
+import net.minecraft.world.level.levelgen.structure.structures.JigsawStructure;
+import net.minecraft.world.level.levelgen.structure.templatesystem.*;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.AllOfCondition;
 import net.minecraft.world.level.storage.loot.predicates.DamageSourceCondition;
@@ -74,6 +76,7 @@ import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.world.BiomeModifier;
 import net.neoforged.neoforge.common.world.BiomeModifiers;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
+import net.neoforged.neoforge.registries.holdersets.NotHolderSet;
 import net.neoforged.neoforge.registries.holdersets.OrHolderSet;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.common.BaseChestBlock;
@@ -88,20 +91,20 @@ import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.worldgen.SecretFlagPlacement;
 import org.confluence.mod.common.worldgen.carver.DemonicCaveCarver;
 import org.confluence.mod.common.worldgen.feature.*;
-import org.confluence.mod.common.worldgen.structure.DungeonStructure;
-import org.confluence.mod.common.worldgen.structure.LivingMahoganyTreeStructure;
-import org.confluence.mod.common.worldgen.structure.MarbleCaveStructure;
-import org.confluence.mod.common.worldgen.structure.MineTunnelsStructure;
+import org.confluence.mod.common.worldgen.structure.*;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
 
 import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 public class ModDataProvider {
     public static final RegistrySetBuilder DATA_BUILDER = new RegistrySetBuilder()
             .add(Registries.DAMAGE_TYPE, ModDamageTypes::bootstrap) // todo
             .add(Registries.BIOME, Biomes::boostrap)
+            .add(Registries.PROCESSOR_LIST, ProcessorListz::bootstrap)
+            .add(Registries.TEMPLATE_POOL, TemplatePools::bootstrap)
             .add(Registries.STRUCTURE, Structures::boostrap)
             .add(Registries.STRUCTURE_SET, StructureSets::bootstrap)
             .add(Registries.ENCHANTMENT, Enchantments::bootstrap)
@@ -109,6 +112,40 @@ public class ModDataProvider {
             .add(Registries.PLACED_FEATURE, PlacedFeatures::bootstrap)
             .add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, BiomeModifierz::bootstrap)
             .add(Registries.CONFIGURED_CARVER, ConfiguredWorldCarvers::bootstrap);
+
+    private static <T> HolderLookup.RegistryLookup<T> registryLookup(ResourceKey<Registry<T>> key, HolderGetter<T> holderGetter) {
+        return new HolderLookup.RegistryLookup<>() {
+            @Override
+            public ResourceKey<? extends Registry<? extends T>> key() {
+                return key;
+            }
+
+            @Override
+            public Lifecycle registryLifecycle() {
+                return Lifecycle.experimental();
+            }
+
+            @Override
+            public Stream<Holder.Reference<T>> listElements() {
+                return Stream.empty();
+            }
+
+            @Override
+            public Stream<HolderSet.Named<T>> listTags() {
+                return Stream.empty();
+            }
+
+            @Override
+            public Optional<Holder.Reference<T>> get(ResourceKey<T> resourceKey) {
+                return holderGetter.get(resourceKey);
+            }
+
+            @Override
+            public Optional<HolderSet.Named<T>> get(TagKey<T> tagKey) {
+                return holderGetter.get(tagKey);
+            }
+        };
+    }
 
     private static class ConfiguredFeatures {
         private static final ResourceKey<ConfiguredFeature<?, ?>> AMBER_ORE = key("amber_ore");
@@ -1335,12 +1372,128 @@ public class ModDataProvider {
         }
     }
 
-    public static class Structures {
-        private static final TagKey<Biome> HAS_STRUCTURE_$_SHIMMER_LAKE = Confluence.asTagKey(Registries.BIOME, "has_structure/shimmer_lake");
+    public static class ProcessorListz {
+        private static final ResourceKey<StructureProcessorList> DESERT_UNDERGROUND_CABINS = key("desert_underground_cabins");
+        private static final ResourceKey<StructureProcessorList> SHIMMER_LAKE = key("shimmer_lake");
 
+        private static ResourceKey<StructureProcessorList> key(String path) {
+            return Confluence.asResourceKey(Registries.PROCESSOR_LIST, path);
+        }
+
+        private static void bootstrap(BootstrapContext<StructureProcessorList> context) {
+            BlockMatchTest stoneMatchTest = new BlockMatchTest(Blocks.STONE);
+            BlockState stone = Blocks.STONE.defaultBlockState();
+            BlockMatchTest deepslateMatchTest = new BlockMatchTest(Blocks.DEEPSLATE);
+            BlockState deepslate = Blocks.DEEPSLATE.defaultBlockState();
+
+            context.register(DESERT_UNDERGROUND_CABINS, new StructureProcessorList(List.of(new RuleProcessor(List.of(
+                    new ProcessorRule(new BlockMatchTest(Blocks.OAK_STAIRS), stoneMatchTest, stone),
+                    new ProcessorRule(new BlockMatchTest(Blocks.OAK_STAIRS), deepslateMatchTest, deepslate),
+                    new ProcessorRule(new BlockMatchTest(Blocks.SPRUCE_STAIRS), stoneMatchTest, stone),
+                    new ProcessorRule(new BlockMatchTest(Blocks.SPRUCE_STAIRS), deepslateMatchTest, deepslate),
+                    new ProcessorRule(new BlockMatchTest(Blocks.SPRUCE_SLAB), stoneMatchTest, stone),
+                    new ProcessorRule(new BlockMatchTest(Blocks.SPRUCE_SLAB), deepslateMatchTest, deepslate),
+                    new ProcessorRule(new BlockMatchTest(Blocks.WAXED_OXIDIZED_CUT_COPPER_STAIRS), AlwaysTrueTest.INSTANCE, Blocks.SPRUCE_PLANKS.defaultBlockState())
+            )))));
+            context.register(SHIMMER_LAKE, new StructureProcessorList(List.of(new RuleProcessor(List.of(
+                    new ProcessorRule(new RandomBlockMatchTest(Blocks.DIAMOND_BLOCK, 0.3F), AlwaysTrueTest.INSTANCE, stone),
+                    new ProcessorRule(new BlockMatchTest(Blocks.DIAMOND_BLOCK), AlwaysTrueTest.INSTANCE, Blocks.AIR.defaultBlockState()),
+                    new ProcessorRule(new RandomBlockMatchTest(Blocks.EMERALD_BLOCK, 0.05F), AlwaysTrueTest.INSTANCE, NatureBlocks.AETHERIUM_BLOCK.get().defaultBlockState()),
+                    new ProcessorRule(new RandomBlockMatchTest(Blocks.EMERALD_BLOCK, 0.3F), AlwaysTrueTest.INSTANCE, stone),
+                    new ProcessorRule(new BlockMatchTest(Blocks.EMERALD_BLOCK), AlwaysTrueTest.INSTANCE, ModBlocks.SHIMMER.get().defaultBlockState())
+            )))));
+        }
+    }
+
+    public static class TemplatePools {
+        private static final ResourceKey<StructureTemplatePool> AIR$AIR = key("air/air");
+        private static final ResourceKey<StructureTemplatePool> CRIMSON_FOSSIL$START = key("crimson_fossil/start");
+        private static final ResourceKey<StructureTemplatePool> CRIMSON_FOSSIL$BEHIND = key("crimson_fossil/behind");
+        private static final ResourceKey<StructureTemplatePool> CRIMSON_FOSSIL$FRONT = key("crimson_fossil/front");
+        private static final ResourceKey<StructureTemplatePool> CRIMSON_FOSSIL$MAIN = key("crimson_fossil/main");
+        private static final ResourceKey<StructureTemplatePool> DUNGEON_ALTAR$DUNGEON_ALTAR = key("dungeon_altar/dungeon_altar");
+        private static final ResourceKey<StructureTemplatePool> DESERT_UNDERGROUND_CABINS$DESERT_UNDERGROUND_CABINS = key("desert_underground_cabins/desert_underground_cabins");
+        private static final ResourceKey<StructureTemplatePool> EBONY_STONE_THORN$EBONY_STONE_THORN = key("ebony_stone_thorn/ebony_stone_thorn");
+
+        private static ResourceKey<StructureTemplatePool> key(String path) {
+            return Confluence.asResourceKey(Registries.TEMPLATE_POOL, path);
+        }
+
+        private static void bootstrap(BootstrapContext<StructureTemplatePool> context) {
+            HolderGetter<StructureTemplatePool> templatePool = context.lookup(Registries.TEMPLATE_POOL);
+            HolderGetter<StructureProcessorList> processorList = context.lookup(Registries.PROCESSOR_LIST);
+            Holder<StructureTemplatePool> emptyTemplatePool = templatePool.getOrThrow(Pools.EMPTY);
+            Holder<StructureProcessorList> emptyProcessorList = processorList.getOrThrow(ProcessorLists.EMPTY);
+
+            register(context, AIR$AIR, "confluence:air/air", emptyTemplatePool, emptyProcessorList);
+            register(context, CRIMSON_FOSSIL$START, "confluence:crimson_fossil/dgh_0", emptyTemplatePool, emptyProcessorList);
+            register(context, CRIMSON_FOSSIL$BEHIND, "confluence:crimson_fossil/dgh_1", emptyTemplatePool, emptyProcessorList);
+            register(context, CRIMSON_FOSSIL$FRONT, "confluence:crimson_fossil/dgh_2", emptyTemplatePool, emptyProcessorList);
+            register(context, CRIMSON_FOSSIL$MAIN, "confluence:crimson_fossil/crimson_fossil_start", emptyTemplatePool, emptyProcessorList);
+            register(context, DUNGEON_ALTAR$DUNGEON_ALTAR, "confluence:dungeon_altar/dungeon_altar", emptyTemplatePool, emptyProcessorList);
+            register(context, DESERT_UNDERGROUND_CABINS$DESERT_UNDERGROUND_CABINS, "confluence:desert_underground_cabins/desert_underground_cabins", emptyTemplatePool, processorList.getOrThrow(ProcessorListz.DESERT_UNDERGROUND_CABINS));
+            register(context, EBONY_STONE_THORN$EBONY_STONE_THORN, "confluence:ebony_stone_thorn/ebony_stone_thorn", emptyTemplatePool, emptyProcessorList);
+        }
+
+        private static void register(BootstrapContext<StructureTemplatePool> context, ResourceKey<StructureTemplatePool> key, String location, Holder<StructureTemplatePool> fallback, Holder<StructureProcessorList> processors) {
+            context.register(key, new StructureTemplatePool(fallback, Collections.singletonList(new Pair<>(SinglePoolElement.single(location, processors).apply(StructureTemplatePool.Projection.RIGID), 1))));
+        }
+    }
+
+    public static class Structures {
         private static void boostrap(BootstrapContext<Structure> context) {
             HolderGetter<Biome> biome = context.lookup(Registries.BIOME);
-            context.register(ModStructures.Keys.DUNGEON, new DungeonStructure(new Structure.StructureSettings(biome.getOrThrow(HAS_STRUCTURE_$_SHIMMER_LAKE), Map.of(
+            HolderLookup.RegistryLookup<Biome> biomeLookup = registryLookup(Registries.BIOME, biome);
+            HolderGetter<StructureTemplatePool> templatePool = context.lookup(Registries.TEMPLATE_POOL);
+            HolderSet<Biome> notAquatic = new NotHolderSet<>(biomeLookup, biome.getOrThrow(Tags.Biomes.IS_AQUATIC));
+            HolderSet<Biome> crimson = HolderSet.direct(biome.getOrThrow(ModBiomes.THE_CRIMSON));
+            HolderSet<Biome> overworld = biome.getOrThrow(Tags.Biomes.IS_OVERWORLD);
+            HolderSet<Biome> desertBadlands = new OrHolderSet<>(biome.getOrThrow(Tags.Biomes.IS_DESERT), biome.getOrThrow(Tags.Biomes.IS_BADLANDS));
+            Optional<Heightmap.Types> worldSurfaceWg = Optional.of(Heightmap.Types.WORLD_SURFACE_WG);
+
+            context.register(ModStructures.Keys.AIR, new JigsawStructure(
+                    new Structure.StructureSettings(overworld),
+                    templatePool.getOrThrow(TemplatePools.CRIMSON_FOSSIL$START),
+                    Optional.empty(),
+                    7,
+                    UniformHeight.of(VerticalAnchor.absolute(64), VerticalAnchor.absolute(80)),
+                    false,
+                    Optional.empty(),
+                    116,
+                    List.of(),
+                    JigsawStructure.DEFAULT_DIMENSION_PADDING,
+                    LiquidSettings.IGNORE_WATERLOGGING
+            ));
+            context.register(ModStructures.Keys.CRIMSON_CAVE, new CrimsonCaveStructure(new Structure.StructureSettings(crimson, Map.of(), GenerationStep.Decoration.TOP_LAYER_MODIFICATION, TerrainAdjustment.NONE)));
+            context.register(ModStructures.Keys.CRIMSON_FOSSIL, new JigsawStructure(
+                    new Structure.StructureSettings(crimson, Map.of(), GenerationStep.Decoration.TOP_LAYER_MODIFICATION, TerrainAdjustment.NONE),
+                    templatePool.getOrThrow(TemplatePools.CRIMSON_FOSSIL$START),
+                    Optional.empty(),
+                    7,
+                    ConstantHeight.of(VerticalAnchor.absolute(-10)),
+                    false,
+                    worldSurfaceWg,
+                    116,
+                    List.of(),
+                    JigsawStructure.DEFAULT_DIMENSION_PADDING,
+                    LiquidSettings.APPLY_WATERLOGGING
+            ));
+            context.register(ModStructures.Keys.GRANITE_CAVE, new GraniteCaveStructure(new Structure.StructureSettings(overworld, Map.of(), GenerationStep.Decoration.LOCAL_MODIFICATIONS, TerrainAdjustment.NONE)));
+            context.register(ModStructures.Keys.MARBLE_CAVE, new MarbleCaveStructure(new Structure.StructureSettings(overworld, Map.of(), GenerationStep.Decoration.LOCAL_MODIFICATIONS, TerrainAdjustment.NONE)));
+            context.register(ModStructures.Keys.DESERT_UNDERGROUND_CABINS, new JigsawStructure(
+                    new Structure.StructureSettings(desertBadlands, Map.of(), GenerationStep.Decoration.UNDERGROUND_STRUCTURES, TerrainAdjustment.BEARD_THIN),
+                    templatePool.getOrThrow(TemplatePools.CRIMSON_FOSSIL$START),
+                    Optional.empty(),
+                    7,
+                    UniformHeight.of(VerticalAnchor.absolute(-50), VerticalAnchor.absolute(10)),
+                    false,
+                    worldSurfaceWg,
+                    116,
+                    List.of(),
+                    JigsawStructure.DEFAULT_DIMENSION_PADDING,
+                    LiquidSettings.IGNORE_WATERLOGGING
+            ));
+            context.register(ModStructures.Keys.DUNGEON, new DungeonStructure(new Structure.StructureSettings(notAquatic, Map.of(
                     MobCategory.MONSTER, new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create(
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.ANGER_BONES.get(), 240, 8, 9),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.BIG_ANGER_BONES.get(), 240, 8, 9),
@@ -1353,23 +1506,112 @@ public class ModDataProvider {
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.DUNGEON_SLIME.get(), 120, 1, 2)
                     ))
             ), GenerationStep.Decoration.TOP_LAYER_MODIFICATION, TerrainAdjustment.NONE)));
+            context.register(ModStructures.Keys.DUNGEON_ALTAR, new JigsawStructure(
+                    new Structure.StructureSettings(overworld, Map.of(), GenerationStep.Decoration.TOP_LAYER_MODIFICATION, TerrainAdjustment.BEARD_THIN),
+                    templatePool.getOrThrow(TemplatePools.DUNGEON_ALTAR$DUNGEON_ALTAR),
+                    Optional.empty(),
+                    7,
+                    ConstantHeight.of(VerticalAnchor.absolute(0)),
+                    false,
+                    worldSurfaceWg,
+                    116,
+                    List.of(),
+                    JigsawStructure.DEFAULT_DIMENSION_PADDING,
+                    LiquidSettings.APPLY_WATERLOGGING
+            ));
+            context.register(ModStructures.Keys.EBONY_STONE_THORN, new JigsawStructure(
+                    new Structure.StructureSettings(HolderSet.direct(biome.getOrThrow(ModBiomes.THE_CORRUPTION)), Map.of(), GenerationStep.Decoration.TOP_LAYER_MODIFICATION, TerrainAdjustment.NONE),
+                    templatePool.getOrThrow(TemplatePools.EBONY_STONE_THORN$EBONY_STONE_THORN),
+                    Optional.empty(),
+                    7,
+                    ConstantHeight.of(VerticalAnchor.absolute(-10)),
+                    false,
+                    worldSurfaceWg,
+                    116,
+                    List.of(),
+                    JigsawStructure.DEFAULT_DIMENSION_PADDING,
+                    LiquidSettings.APPLY_WATERLOGGING
+            ));
+            context.register(ModStructures.Keys.SHIMMER_LAKE, new ShimmerLakeStructure(new Structure.StructureSettings(overworld, Map.of(), GenerationStep.Decoration.VEGETAL_DECORATION, TerrainAdjustment.NONE)));
         }
     }
 
     public static class StructureSets {
+        private static final ResourceKey<StructureSet> AIR = Confluence.asResourceKey(Registries.STRUCTURE_SET, "air");
+        private static final ResourceKey<StructureSet> SHIMMER_LAKE = Confluence.asResourceKey(Registries.STRUCTURE_SET, "shimmer_lake");
+
         private static void bootstrap(BootstrapContext<StructureSet> context) {
             HolderGetter<Structure> structure = context.lookup(Registries.STRUCTURE);
+            HolderGetter<StructureSet> structureSet = context.lookup(Registries.STRUCTURE_SET);
             HolderGetter<Biome> biome = context.lookup(Registries.BIOME);
+            Holder<StructureSet> villages = structureSet.getOrThrow(BuiltinStructureSets.VILLAGES);
+            Holder<StructureSet> air = structureSet.getOrThrow(AIR);
+
+            context.register(AIR, new StructureSet(structure.getOrThrow(ModStructures.Keys.AIR), new ConcentricRingsStructurePlacement(
+                    Vec3i.ZERO, StructurePlacement.FrequencyReductionMethod.DEFAULT, 1.0F,
+                    11231243,
+                    Optional.empty(),
+                    1, 40, 10,
+                    biome.getOrThrow(Tags.Biomes.IS_OVERWORLD)
+            )));
+            register(context, "crimson_cave", new StructureSet(structure.getOrThrow(ModStructures.Keys.CRIMSON_CAVE), new RandomSpreadStructurePlacement(
+                    Vec3i.ZERO, StructurePlacement.FrequencyReductionMethod.DEFAULT, 1.0F,
+                    22331363,
+                    Optional.of(new StructurePlacement.ExclusionZone(villages, 8)),
+                    10, 8,
+                    RandomSpreadType.TRIANGULAR
+            )));
+            register(context, "crimson_fossil", new StructureSet(structure.getOrThrow(ModStructures.Keys.CRIMSON_FOSSIL), new RandomSpreadStructurePlacement(
+                    Vec3i.ZERO, StructurePlacement.FrequencyReductionMethod.DEFAULT, 1.0F,
+                    98522334,
+                    Optional.of(new StructurePlacement.ExclusionZone(villages, 8)),
+                    34, 8,
+                    RandomSpreadType.TRIANGULAR
+            )));
+            register(context, "caves", new StructureSet(List.of(
+                    new StructureSet.StructureSelectionEntry(structure.getOrThrow(ModStructures.Keys.GRANITE_CAVE), 1),
+                    new StructureSet.StructureSelectionEntry(structure.getOrThrow(ModStructures.Keys.MARBLE_CAVE), 1)
+            ), new RandomSpreadStructurePlacement(
+                    Vec3i.ZERO, StructurePlacement.FrequencyReductionMethod.DEFAULT, 1.0F,
+                    85917378,
+                    Optional.of(new StructurePlacement.ExclusionZone(villages, 8)),
+                    40, 20,
+                    RandomSpreadType.TRIANGULAR
+            )));
+            register(context, "desert_underground_cabins", new StructureSet(structure.getOrThrow(ModStructures.Keys.DESERT_UNDERGROUND_CABINS), new RandomSpreadStructurePlacement(
+                    Vec3i.ZERO, StructurePlacement.FrequencyReductionMethod.DEFAULT, 1.0F,
+                    97960771,
+                    Optional.of(new StructurePlacement.ExclusionZone(structureSet.getOrThrow(SHIMMER_LAKE), 10)),
+                    5, 3,
+                    RandomSpreadType.TRIANGULAR
+            )));
             register(context, "dungeon", new StructureSet(structure.getOrThrow(ModStructures.Keys.DUNGEON), new ConcentricRingsStructurePlacement(
-                    Vec3i.ZERO,
-                    StructurePlacement.FrequencyReductionMethod.DEFAULT,
-                    1.0F,
+                    Vec3i.ZERO, StructurePlacement.FrequencyReductionMethod.DEFAULT, 1.0F,
                     0,
                     Optional.empty(),
-                    48,
-                    1,
-                    128,
+                    48, 1, 128,
                     biome.getOrThrow(BiomeTags.STRONGHOLD_BIASED_TO)
+            )));
+            register(context, "dungeon_altar", new StructureSet(structure.getOrThrow(ModStructures.Keys.DUNGEON_ALTAR), new RandomSpreadStructurePlacement(
+                    Vec3i.ZERO, StructurePlacement.FrequencyReductionMethod.DEFAULT, 1.0F,
+                    69021806,
+                    Optional.of(new StructurePlacement.ExclusionZone(air, 12)),
+                    10, 8,
+                    RandomSpreadType.TRIANGULAR
+            )));
+            register(context, "ebony_stone_thorn", new StructureSet(structure.getOrThrow(ModStructures.Keys.EBONY_STONE_THORN), new RandomSpreadStructurePlacement(
+                    Vec3i.ZERO, StructurePlacement.FrequencyReductionMethod.DEFAULT, 1.0F,
+                    56817723,
+                    Optional.of(new StructurePlacement.ExclusionZone(villages, 8)),
+                    10, 2,
+                    RandomSpreadType.TRIANGULAR
+            )));
+            context.register(SHIMMER_LAKE, new StructureSet(structure.getOrThrow(ModStructures.Keys.SHIMMER_LAKE), new RandomSpreadStructurePlacement(
+                    Vec3i.ZERO, StructurePlacement.FrequencyReductionMethod.DEFAULT, 1.0F,
+                    66243647,
+                    Optional.of(new StructurePlacement.ExclusionZone(air, 16)),
+                    50, 30,
+                    RandomSpreadType.TRIANGULAR
             )));
         }
 

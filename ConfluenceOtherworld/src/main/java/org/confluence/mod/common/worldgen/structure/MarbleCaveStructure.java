@@ -4,27 +4,25 @@ import com.google.common.collect.Lists;
 import com.mojang.serialization.MapCodec;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import org.confluence.lib.common.worldgen.structure.GridPiece;
-import org.confluence.lib.common.worldgen.structure.SimpleTemplatePiece;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModStructures;
-import org.confluence.mod.common.init.block.NatureBlocks;
 import org.joml.Vector3d;
 
 import java.util.*;
 
-import static net.minecraft.world.level.block.LeavesBlock.PERSISTENT;
 import static org.confluence.lib.util.StructureUtils.ellipsoid;
 import static org.confluence.lib.util.StructureUtils.getHeight;
 import static org.confluence.lib.util.VectorUtils.ellipsoidPos;
@@ -32,6 +30,7 @@ import static org.confluence.lib.util.VectorUtils.frustumSetPos;
 
 public class MarbleCaveStructure extends Structure {
     public static final MapCodec<MarbleCaveStructure> CODEC = simpleCodec(MarbleCaveStructure::new);
+    public static final ResourceKey<ConfiguredFeature<?, ?>> MARBLE_CAVE_POT = Confluence.asResourceKey(Registries.CONFIGURED_FEATURE, "marble_cave_pot");
 
     protected MarbleCaveStructure(StructureSettings settings) {
         super(settings);
@@ -73,7 +72,7 @@ public class MarbleCaveStructure extends Structure {
             for (Vector3d vector3d : listPos2) {
                 checkPos = VectorUtils.fromVector3d(vector3d);
                 ellipsoid(random.nextInt(4, 12) + 0.5, random.nextInt(4, 12) + 0.5, random.nextInt(4, 12) + 0.5, checkPos, 0, true, blockMap);
-                if (0.1F > random.nextFloat()) featureMap.put(checkPos, Confluence.asResource("marble_cave_pot"));
+                if (0.1F > random.nextFloat()) featureMap.put(checkPos, MARBLE_CAVE_POT.location());
             }
 
             GridPiece.addPieces(blockMap, Lists.newArrayList(

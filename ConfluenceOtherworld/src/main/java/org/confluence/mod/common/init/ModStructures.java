@@ -28,5 +28,7 @@ public final class ModStructures {
     public static final DeferredHolder<StructureType<?>, StructureType<MarbleCaveStructure>> MARBLE_CAVE = TYPES.register("marble_cave", () -> () -> MarbleCaveStructure.CODEC);
     public static final DeferredHolder<StructureType<?>, StructureType<GraniteCaveStructure>> GRANITE_CAVE = TYPES.register("granite_cave", () -> () -> GraniteCaveStructure.CODEC);
 
-    public static final ResourceKey<Structure> DUNGEON_KEY = Confluence.asResourceKey(Registries.STRUCTURE, "dungeon");
+    public static class Keys {
+        public static final ResourceKey<Structure> DUNGEON = Confluence.asResourceKey(Registries.STRUCTURE, "dungeon");
+    }
 }

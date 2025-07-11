@@ -21,13 +21,13 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 
 import java.util.function.Function;
 
-public class GlowingMushroomCaveCarver extends WorldCarver<GlowingMushroomCaveCarver.Config> {
-    public GlowingMushroomCaveCarver(Codec<Config> codec) {
+public class GlowingMushroomCaveCarver extends WorldCarver<CarverConfiguration> {
+    public GlowingMushroomCaveCarver(Codec<CarverConfiguration> codec) {
         super(codec);
     }
 
     @Override
-    public boolean carve(CarvingContext context, Config config, ChunkAccess chunk, Function<BlockPos, Holder<Biome>> biomeAccessor, RandomSource random, Aquifer aquifer, ChunkPos chunkPos, CarvingMask carvingMask) {
+    public boolean carve(CarvingContext context, CarverConfiguration config, ChunkAccess chunk, Function<BlockPos, Holder<Biome>> biomeAccessor, RandomSource random, Aquifer aquifer, ChunkPos chunkPos, CarvingMask carvingMask) {
         CarveSkipChecker checker = (context1, relativeX, relativeY, relativeZ, y) -> {
             if (relativeY < -0.25) return true;
             return relativeX * relativeX + relativeY * relativeY + relativeZ * relativeZ > 1;
@@ -80,15 +80,7 @@ public class GlowingMushroomCaveCarver extends WorldCarver<GlowingMushroomCaveCa
     }
 
     @Override
-    public boolean isStartChunk(Config config, RandomSource random) {
+    public boolean isStartChunk(CarverConfiguration config, RandomSource random) {
         return random.nextFloat() < config.probability;
-    }
-
-    public static class Config extends CarverConfiguration {
-        public static final Codec<Config> CODEC = CarverConfiguration.CODEC.codec().xmap(Config::new, Function.identity());
-
-        public Config(CarverConfiguration configuration) {
-            super(configuration.probability, configuration.y, configuration.yScale, configuration.lavaLevel, configuration.debugSettings, configuration.replaceable);
-        }
     }
 }

@@ -170,8 +170,7 @@ public class BaobabTreeFeature extends Feature<BaobabTreeFeature.Config> {
         return false;
     }
 
-    public record Config(BlockStateProvider trunk, BlockStateProvider branch, BlockStateProvider root, BlockStateProvider leaves, BlockStateProvider inner,
-                         int height) implements FeatureConfiguration {
+    public record Config(BlockStateProvider trunk, BlockStateProvider branch, BlockStateProvider root, BlockStateProvider leaves, BlockStateProvider inner, int height) implements FeatureConfiguration {
         public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 BlockStateProvider.CODEC.fieldOf("trunk_block").forGetter(Config::trunk),
                 BlockStateProvider.CODEC.fieldOf("branch_block").forGetter(Config::branch),

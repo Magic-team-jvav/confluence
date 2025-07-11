@@ -615,7 +615,7 @@ public class DungeonStructure extends Structure {
     }
 
     public static boolean iterateDungeon(ServerLevel level, ChunkPos chunkPos, Predicate<StructureStart> consumer) {
-        Structure structure = level.registryAccess().registryOrThrow(Registries.STRUCTURE).get(ModStructures.DUNGEON_KEY);
+        Structure structure = level.registryAccess().registryOrThrow(Registries.STRUCTURE).get(ModStructures.Keys.DUNGEON);
         if (structure == null) return false;
         LongSet structureRefs = level.getChunk(chunkPos.x, chunkPos.z, ChunkStatus.STRUCTURE_REFERENCES).getReferencesForStructure(structure);
         for (long packed : structureRefs) {

@@ -107,10 +107,10 @@ public final class ModFeatures {
     }
 
     public static class Configured {
-        public static final ResourceKey<ConfiguredFeature<?, ?>> SHADOW = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("trees_set/trees_crimson"));
-        public static final ResourceKey<ConfiguredFeature<?, ?>> EBONY = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("trees_set/trees_corruption"));
-        public static final ResourceKey<ConfiguredFeature<?, ?>> PALM = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("palm_tree_checked"));
-        public static final ResourceKey<ConfiguredFeature<?, ?>> PEARL = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("trees_set/trees_hallow"));
+        public static final ResourceKey<ConfiguredFeature<?, ?>> SHADOW_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("crimson_tree"));
+        public static final ResourceKey<ConfiguredFeature<?, ?>> EBONY_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("corruption_tree"));
+        public static final ResourceKey<ConfiguredFeature<?, ?>> PALM_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("palm_tree"));
+        public static final ResourceKey<ConfiguredFeature<?, ?>> PEARL_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("hallow_tree")); // todo
         public static final ResourceKey<ConfiguredFeature<?, ?>> RUBY_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("ruby_tree"));
         public static final ResourceKey<ConfiguredFeature<?, ?>> AMBER_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("amber_tree"));
         public static final ResourceKey<ConfiguredFeature<?, ?>> TOPAZ_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("topaz_tree"));
@@ -119,19 +119,17 @@ public final class ModFeatures {
         public static final ResourceKey<ConfiguredFeature<?, ?>> SAPPHIRE_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("sapphire_tree"));
         public static final ResourceKey<ConfiguredFeature<?, ?>> AMETHYST_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("amethyst_tree"));
         public static final ResourceKey<ConfiguredFeature<?, ?>> ASH_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("ash_tree"));
-        public static final ResourceKey<ConfiguredFeature<?, ?>> LIVING_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("living_tree"));
-        public static final ResourceKey<ConfiguredFeature<?, ?>> YELLOW_WILLOW = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("yellow_willow"));
+        public static final ResourceKey<ConfiguredFeature<?, ?>> LIVING_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("living_tree")); // todo
+        public static final ResourceKey<ConfiguredFeature<?, ?>> YELLOW_WILLOW_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("yellow_willow_tree"));
         public static final ResourceKey<ConfiguredFeature<?, ?>> BAOBAB_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("baobab_tree"));
-        public static final ResourceKey<ConfiguredFeature<?, ?>> BAOBAB_TREE_AIR = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("baobab_tree_air"));
-        public static final ResourceKey<ConfiguredFeature<?, ?>> BAOBAB_TREE_WATER = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("baobab_tree_water"));
         public static final ResourceKey<ConfiguredFeature<?, ?>> GLOWING_MUSHROOM_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("glowing_mushroom_tree"));
     }
 
     public static final class TreeGrowers {
-        public static final TreeGrower SHADOW_GROWER = registerSmallTree("shadow", Configured.SHADOW);
-        public static final TreeGrower EBONY_GROWER = registerSmallTree("ebony", Configured.EBONY);
-        public static final TreeGrower PALM_GROWER = registerSmallTree("palm", Configured.PALM);
-        public static final TreeGrower PEARL_GROWER = registerSmallTree("pearl", Configured.PEARL);
+        public static final TreeGrower SHADOW_GROWER = registerSmallTree("shadow", Configured.SHADOW_TREE);
+        public static final TreeGrower EBONY_GROWER = registerSmallTree("ebony", Configured.EBONY_TREE);
+        public static final TreeGrower PALM_GROWER = registerSmallTree("palm", Configured.PALM_TREE);
+        public static final TreeGrower PEARL_GROWER = registerSmallTree("pearl", Configured.PEARL_TREE);
         public static final TreeGrower RUBY_GROWER = registerSmallTree("ruby", Configured.RUBY_TREE);
         public static final TreeGrower AMBER_GROWER = registerSmallTree("amber", Configured.AMBER_TREE);
         public static final TreeGrower TOPAZ_GROWER = registerSmallTree("topaz", Configured.TOPAZ_TREE);
@@ -141,8 +139,8 @@ public final class ModFeatures {
         public static final TreeGrower AMETHYST_GROWER = registerSmallTree("amethyst", Configured.AMETHYST_TREE);
         public static final TreeGrower ASH_GROWER = registerSmallTree("ash", Configured.ASH_TREE);
         public static final TreeGrower LIVING_GROWER = registerSmallTree("living", Configured.LIVING_TREE);
-        public static final TreeGrower YELLOW_WILLOW_GROWER = registerSmallTree("yellow_willow_grower", Configured.YELLOW_WILLOW);
-        public static final TreeGrower BAOBAB_GROWER = registerBigTree("baobab_grower", Configured.BAOBAB_TREE);
+        public static final TreeGrower YELLOW_WILLOW_GROWER = registerSmallTree("yellow_willow", Configured.YELLOW_WILLOW_TREE);
+        public static final TreeGrower BAOBAB_GROWER = registerBigTree("baobab", Configured.BAOBAB_TREE);
 
         private static TreeGrower registerSmallTree(String name, ResourceKey<ConfiguredFeature<?, ?>> tree) {
             return new TreeGrower(Confluence.MODID + ":" + name, Optional.empty(), Optional.of(tree), Optional.empty());

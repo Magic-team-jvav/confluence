@@ -176,7 +176,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
 
     private boolean dropGoldKey(ServerLevel level, BlockPos blockPos, Vec3 center) {
         if (level.random.nextFloat() < 0.0286F) {
-            Structure structure = level.registryAccess().registryOrThrow(Registries.STRUCTURE).get(ModStructures.DUNGEON_KEY);
+            Structure structure = level.registryAccess().registryOrThrow(Registries.STRUCTURE).get(ModStructures.Keys.DUNGEON);
             if (structure != null) {
                 int chunkX = SectionPos.blockToSectionCoord(blockPos.getX());
                 int chunkZ = SectionPos.blockToSectionCoord(blockPos.getZ());

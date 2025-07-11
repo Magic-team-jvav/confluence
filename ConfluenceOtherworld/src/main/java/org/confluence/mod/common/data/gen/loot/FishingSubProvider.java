@@ -239,7 +239,7 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                                 LocationPredicate.Builder.location().setBiomes(isOceanOrBeach).setY(belowSpace)
                         )).setWeight(7))
                         .add(LootItem.lootTableItem(HammerItems.ROCKFISH).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setBiomes(isOceanOrBeach).setY(belowSpace)
+                                LocationPredicate.Builder.location().setY(MinMaxBounds.Doubles.between(-64.0, 40.0))
                         )).setWeight(7))
                 )
         );

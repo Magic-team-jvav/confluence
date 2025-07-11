@@ -29,6 +29,7 @@ public class DungeonCompassRenderer {
     }
 
     public void render(PoseStack poseStack, MultiBufferSource bufferSource, AbstractClientPlayer player, int x, int y, int z) {
+        if (!Minecraft.getInstance().options.getCameraType().isFirstPerson()) return;
         RenderSystem.enableDepthTest();
         poseStack.pushPose();
         poseStack.scale(-1, -1, 1);

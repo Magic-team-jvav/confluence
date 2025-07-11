@@ -1453,7 +1453,7 @@ public class ModDataProvider {
 
             context.register(ModStructures.Keys.AIR, new JigsawStructure(
                     new Structure.StructureSettings(overworld),
-                    templatePool.getOrThrow(TemplatePools.CRIMSON_FOSSIL$START),
+                    templatePool.getOrThrow(TemplatePools.AIR$AIR),
                     Optional.empty(),
                     7,
                     UniformHeight.of(VerticalAnchor.absolute(64), VerticalAnchor.absolute(80)),
@@ -1482,7 +1482,7 @@ public class ModDataProvider {
             context.register(ModStructures.Keys.MARBLE_CAVE, new MarbleCaveStructure(new Structure.StructureSettings(overworld, Map.of(), GenerationStep.Decoration.LOCAL_MODIFICATIONS, TerrainAdjustment.NONE)));
             context.register(ModStructures.Keys.DESERT_UNDERGROUND_CABINS, new JigsawStructure(
                     new Structure.StructureSettings(desertBadlands, Map.of(), GenerationStep.Decoration.UNDERGROUND_STRUCTURES, TerrainAdjustment.BEARD_THIN),
-                    templatePool.getOrThrow(TemplatePools.CRIMSON_FOSSIL$START),
+                    templatePool.getOrThrow(TemplatePools.DESERT_UNDERGROUND_CABINS$DESERT_UNDERGROUND_CABINS),
                     Optional.empty(),
                     7,
                     UniformHeight.of(VerticalAnchor.absolute(-50), VerticalAnchor.absolute(10)),
@@ -1507,7 +1507,7 @@ public class ModDataProvider {
                     ))
             ), GenerationStep.Decoration.TOP_LAYER_MODIFICATION, TerrainAdjustment.NONE)));
             context.register(ModStructures.Keys.DUNGEON_ALTAR, new JigsawStructure(
-                    new Structure.StructureSettings(overworld, Map.of(), GenerationStep.Decoration.TOP_LAYER_MODIFICATION, TerrainAdjustment.BEARD_THIN),
+                    new Structure.StructureSettings(notAquatic, Map.of(), GenerationStep.Decoration.TOP_LAYER_MODIFICATION, TerrainAdjustment.BEARD_THIN),
                     templatePool.getOrThrow(TemplatePools.DUNGEON_ALTAR$DUNGEON_ALTAR),
                     Optional.empty(),
                     7,

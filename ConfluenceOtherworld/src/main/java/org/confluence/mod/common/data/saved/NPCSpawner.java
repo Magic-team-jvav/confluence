@@ -138,13 +138,17 @@ public class NPCSpawner implements IGlobalData {
     public void setNPCAlive(Region region, EntityType<?> entityType, boolean alive) {
         if (alive) {
             getRegionAliveDetails(region).put(entityType, true);
-            npcSpawned.add(entityType);
+            addSpawned(entityType);
         } else {
             Object2BooleanMap<EntityType<?>> map = npcAlive.get(region);
             if (map != null && map.getBoolean(entityType)) {
                 map.put(entityType, false);
             }
         }
+    }
+
+    public void addSpawned(EntityType<?> entityType) {
+        npcSpawned.add(entityType);
     }
 
     public void moveNPCToAnotherRegion(AbstractTerraNPC living, Region from, Region to) {
@@ -430,7 +434,7 @@ public class NPCSpawner implements IGlobalData {
      * @see MechanicNPCMixin
      */
     private boolean trySpawnMechanic(ServerPlayer serverPlayer, BlockPos pos, Region region) {
-        if (KillBoard.INSTANCE.getGamePhase().isAboveThan(GamePhase.BEFORE_SKELETRON)) {
+        if (KillBoard.INSTANCE.getGamePhase().isAboveThan(GamePhase.BEFORE_SKELETRON) && npcSpawned.contains(TENpcEntities.MECHANIC.get())) {
             if (!hasNPCAlive(region, TENpcEntities.MECHANIC.get())) {
                 return spawnAtPos(serverPlayer.serverLevel(), pos, TENpcEntities.MECHANIC.get());
             }

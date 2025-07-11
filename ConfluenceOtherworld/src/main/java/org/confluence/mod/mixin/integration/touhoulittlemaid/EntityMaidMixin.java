@@ -56,7 +56,7 @@ public abstract class EntityMaidMixin implements ITradeHolder, SelfGetter<Entity
     private void onAddedToLevel(CallbackInfo ci) {
 
         // 如果是第一次生成
-        if (trades == null) {
+        if (trades == null && !level().isClientSide) {
             DynamicOps<JsonElement> ops = this.level().registryAccess().createSerializationContext(JsonOps.INSTANCE);
             trades = NPCTradeManager.getCopy(Keys.MAID_SHOP,ops);
             if (trades != null) {

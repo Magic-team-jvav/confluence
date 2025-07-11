@@ -36,7 +36,7 @@ public class ShimmerLakeStructure extends Structure {
             Confluence.asResource("amethyst_tree")
     };
 
-    protected ShimmerLakeStructure(StructureSettings settings) {
+    public ShimmerLakeStructure(StructureSettings settings) {
         super(settings);
     }
 

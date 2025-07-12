@@ -56,7 +56,7 @@ import org.confluence.mod.common.block.common.HoneyCauldronBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.block.natural.StepRevealingBlock;
 import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
-import org.confluence.mod.common.capacity.FluidBottomlessBucketWrapper;
+import org.confluence.mod.common.capability.FluidBottomlessBucketWrapper;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.data.saved.HardmodeConvertor;
 import org.confluence.mod.common.data.saved.KillBoard;

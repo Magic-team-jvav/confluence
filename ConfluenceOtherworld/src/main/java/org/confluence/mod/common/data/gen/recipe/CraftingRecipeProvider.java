@@ -26,90 +26,90 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
+@SuppressWarnings("all")
 public class CraftingRecipeProvider extends AbstractRecipeProvider {
     public CraftingRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, registries);
     }
-    // 木头配方
-    private void registerWoodRecipes(RecipeOutput output, LogBlockSet woodSet, TagKey<Item> woodLogTag) {
-        shapeless(output, woodSet.getPlanks().toStack(4), Ingredient.of(woodLogTag));
-        shapeless(output, woodSet.getButton().toStack(), Ingredient.of(woodSet.getPlanks()));
-        if (!isGlowingMushroom(woodSet)) {
-            shaped(output, ShapedRecipePattern.of(Map.of(
-                    '#', Ingredient.of(woodSet.getLog())
-            ), List.of(
-                    "##",
-                    "##"
-            )), woodSet.getWood().toStack(3));
 
-            shaped(output, ShapedRecipePattern.of(Map.of(
-                    '#', Ingredient.of(woodSet.getStrippedLog())
-            ), List.of(
-                    "##",
-                    "##"
-            )), woodSet.getStrippedWood().toStack(3));
-        }
-        shaped(output, ShapedRecipePattern.of(Map.of(
-                '#', Ingredient.of(woodSet.getPlanks())
+    // 木头配方
+    private void registerWoodRecipes(RecipeOutput output, LogBlockSet logBlockSet, TagKey<Item> woodLogTag) {
+        shapeless(output, logBlockSet.getPlanks().toStack(4), Ingredient.of(woodLogTag));
+        shapeless(output, logBlockSet.getButton().toStack(), Ingredient.of(logBlockSet.getPlanks()));
+        if (logBlockSet.getLog() != null && logBlockSet.getWood() != null) shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(logBlockSet.getLog())
+        ), List.of(
+                "##",
+                "##"
+        )), logBlockSet.getWood().toStack(3));
+        if (logBlockSet.getStrippedLog() != null && logBlockSet.getStrippedWood() != null) shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(logBlockSet.getStrippedLog())
+        ), List.of(
+                "##",
+                "##"
+        )), logBlockSet.getStrippedWood().toStack(3));
+        if (logBlockSet.getStairs() != null) shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(logBlockSet.getPlanks())
         ), List.of(
                 "#  ",
                 "## ",
                 "###"
-        )), woodSet.getStairs().toStack(4));
-        shaped(output, ShapedRecipePattern.of(Map.of(
-                '#', Ingredient.of(woodSet.getPlanks())
+        )), logBlockSet.getStairs().toStack(4));
+        if (logBlockSet.getSlab() != null) shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(logBlockSet.getPlanks())
         ), List.of(
                 "###"
-        )), woodSet.getSlab().toStack(6));
-        shaped(output, ShapedRecipePattern.of(Map.of(
-                '#', Ingredient.of(woodSet.getPlanks()),
+        )), logBlockSet.getSlab().toStack(6));
+        if (logBlockSet.getFence() != null) shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(logBlockSet.getPlanks()),
                 '/', Ingredient.of(Items.STICK)
         ), List.of(
                 "#/#",
                 "#/#"
-        )), woodSet.getFence().toStack(3));
-        shaped(output, ShapedRecipePattern.of(Map.of(
-                '#', Ingredient.of(woodSet.getPlanks()),
+        )), logBlockSet.getFence().toStack(3));
+        if (logBlockSet.getFenceGate() != null) shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(logBlockSet.getPlanks()),
                 '/', Ingredient.of(Items.STICK)
         ), List.of(
                 "/#/",
                 "/#/"
-        )), woodSet.getFenceGate().toStack());
-        shaped(output, ShapedRecipePattern.of(Map.of(
-                '#', Ingredient.of(woodSet.getPlanks())
+        )), logBlockSet.getFenceGate().toStack());
+        if (logBlockSet.getDoor() != null) shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(logBlockSet.getPlanks())
         ), List.of(
                 "##",
                 "##",
                 "##"
-        )), woodSet.getDoor().toStack(3));
-        shaped(output, ShapedRecipePattern.of(Map.of(
-                '#', Ingredient.of(woodSet.getPlanks())
+        )), logBlockSet.getDoor().toStack(3));
+        if (logBlockSet.getTrapdoor() != null) shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(logBlockSet.getPlanks())
         ), List.of(
                 "###",
                 "###"
-        )), woodSet.getTrapdoor().toStack(2));
-
-        shaped(output, ShapedRecipePattern.of(Map.of(
-                '#', Ingredient.of(woodSet.getPlanks())
+        )), logBlockSet.getTrapdoor().toStack(2));
+        if (logBlockSet.getPressurePlate() != null) shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(logBlockSet.getPlanks())
         ), List.of(
                 "##"
-        )), woodSet.getPressurePlate().toStack());
-
-        shaped(output, ShapedRecipePattern.of(Map.of(
-                '#', Ingredient.of(woodSet.getPlanks()),
+        )), logBlockSet.getPressurePlate().toStack());
+        if (logBlockSet.getSignItem() != null) shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(logBlockSet.getPlanks()),
                 '/', Ingredient.of(Items.STICK)
         ), List.of(
                 "###",
                 "###",
                 " / "
-        )), woodSet.getSignItem().toStack());
+        )), logBlockSet.getSignItem().toStack());
+        if (logBlockSet.getHangingSignItem() != null && logBlockSet.getStrippedLog() != null) shaped(output, ShapedRecipePattern.of(Map.of(
+                '|', Ingredient.of(Blocks.CHAIN),
+                '#', Ingredient.of(logBlockSet.getStrippedLog())
+        ), List.of(
+                "| |",
+                "###",
+                "###"
+        )), logBlockSet.getHangingSignItem().toStack(6));
     }
-    private boolean isGlowingMushroom(LogBlockSet woodSet) {
-        ResourceLocation id = woodSet.getPlanks().getId();
-        return id.getPath().contains("glowing_mushroom") ||
-                id.getPath().contains("fungus") ||
-                woodSet == NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS;
-    }
+
     private void registerBoatRecipes(RecipeOutput output, LogBlockSet woodSet, ItemLike boatItem, ItemLike chestBoatItem) {
         shaped(output, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(woodSet.getPlanks())

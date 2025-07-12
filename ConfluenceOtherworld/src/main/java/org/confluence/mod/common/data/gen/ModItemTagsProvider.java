@@ -1,5 +1,6 @@
 package org.confluence.mod.common.data.gen;
 
+import com.google.common.collect.Streams;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
@@ -178,16 +179,17 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         );
 
         // 可烧的木材
-        tag(ModTags.Items.WOODEN_COMBUSTIBLES)
-                .add(NatureBlocks.EBONY_LOG_BLOCKS.getAllItems().stream().map(Supplier::get).toArray(Item[]::new))
-                .add(NatureBlocks.PEARL_LOG_BLOCKS.getAllItems().stream().map(Supplier::get).toArray(Item[]::new))
-                .add(NatureBlocks.SHADOW_LOG_BLOCKS.getAllItems().stream().map(Supplier::get).toArray(Item[]::new))
-                .add(NatureBlocks.PALM_LOG_BLOCKS.getAllItems().stream().map(Supplier::get).toArray(Item[]::new))
-                .add(NatureBlocks.BAOBAB_LOG_BLOCKS.getAllItems().stream().map(Supplier::get).toArray(Item[]::new))
-                .add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getAllItems().stream().map(Supplier::get).toArray(Item[]::new))
-                .add(NatureBlocks.LIVING_LOG_BLOCKS.getAllItems().stream().map(Supplier::get).toArray(Item[]::new))
-                .add(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getAllItems().stream().map(Supplier::get).toArray(Item[]::new))
-                .add(NatureBlocks.SPOOKY_LOG_BLOCKS.getAllItems().stream().map(Supplier::get).toArray(Item[]::new));
+        tag(ModTags.Items.WOODEN_COMBUSTIBLES).add(Streams.concat(
+                NatureBlocks.EBONY_LOG_BLOCKS.getAllItems().stream(),
+                NatureBlocks.PEARL_LOG_BLOCKS.getAllItems().stream(),
+                NatureBlocks.SHADOW_LOG_BLOCKS.getAllItems().stream(),
+                NatureBlocks.PALM_LOG_BLOCKS.getAllItems().stream(),
+                NatureBlocks.BAOBAB_LOG_BLOCKS.getAllItems().stream(),
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getAllItems().stream(),
+                NatureBlocks.LIVING_LOG_BLOCKS.getAllItems().stream(),
+                NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getAllItems().stream(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.getAllItems().stream()
+        ).map(Supplier::get).toArray(Item[]::new));
         tag(ItemTags.BEACON_PAYMENT_ITEMS).add(
                 MaterialItems.LEAD_INGOT.get(),
                 MaterialItems.SILVER_INGOT.get(),
@@ -1156,7 +1158,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
         copy(Tags.Blocks.FENCE_GATES, Tags.Items.FENCE_GATES);
         copy(Tags.Blocks.STRIPPED_LOGS, Tags.Items.STRIPPED_LOGS);
-        copy(BlockTags.SIGNS, ItemTags.SIGNS);
+        copy(BlockTags.STANDING_SIGNS, ItemTags.SIGNS);
+        copy(BlockTags.CEILING_HANGING_SIGNS, ItemTags.HANGING_SIGNS);
         copy(BlockTags.WOODEN_BUTTONS, ItemTags.WOODEN_BUTTONS);
         copy(Tags.Blocks.STORAGE_BLOCKS, Tags.Items.STORAGE_BLOCKS);
         copy(BlockTags.PLANKS, ItemTags.PLANKS);

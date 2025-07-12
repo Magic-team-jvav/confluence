@@ -43,6 +43,7 @@ import static org.confluence.mod.common.init.block.OreBlocks.*;
 import static org.confluence.mod.common.init.item.ConsumableItems.LIFE_CRYSTAL;
 import static org.confluence.mod.common.init.item.MaterialItems.*;
 
+@SuppressWarnings("all")
 public final class BlockSubProvider extends BlockLootSubProvider {
     public BlockSubProvider(HolderLookup.Provider provider) {
         super(Set.of(), FeatureFlags.REGISTRY.allFlags(), provider);
@@ -529,6 +530,7 @@ public final class BlockSubProvider extends BlockLootSubProvider {
             if (logBlocks.getSign() != null) dropSelf(logBlocks.getSign().get());
             if (logBlocks.getTrapdoor() != null) dropSelf(logBlocks.getTrapdoor().get());
             if (logBlocks.getDoor() != null) add(logBlocks.getDoor().get(), this::createDoorTable);
+            if (logBlocks.getHangingSign() != null) dropSelf(logBlocks.getHangingSign().get());
         }
 
         CrateBlocks.BLOCKS.getEntries().forEach(block -> dropSelf(block.get()));

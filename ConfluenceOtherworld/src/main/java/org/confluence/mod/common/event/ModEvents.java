@@ -16,6 +16,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -38,22 +39,24 @@ import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.fluids.RegisterCauldronFluidContentEvent;
+import net.neoforged.neoforge.fluids.capability.wrappers.FluidBucketWrapper;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforgespi.locating.IModFile;
+import org.confluence.lib.common.block.StateProperties;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.util.ConfluenceResources;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.block.common.AetheriumCauldronBlock;
-import org.confluence.mod.common.block.common.BaseChestBlock;
 import org.confluence.mod.common.block.common.HoneyCauldronBlock;
-import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.block.natural.StepRevealingBlock;
 import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
+import org.confluence.mod.common.capacity.FluidBottomlessBucketWrapper;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.data.saved.HardmodeConvertor;
 import org.confluence.mod.common.data.saved.KillBoard;
@@ -288,17 +291,30 @@ public final class ModEvents {
     @SubscribeEvent
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.registerBlock(Capabilities.ItemHandler.BLOCK, (level, pos, state, blockEntity, side) -> {
-            if (!state.getValue(BaseChestBlock.UNLOCKED)) return null;
+            if (state.hasProperty(StateProperties.UNLOCKED) && !state.getValue(StateProperties.UNLOCKED)) return null;
             Container container = ChestBlock.getContainer((ChestBlock) state.getBlock(), state, level, pos, true);
-            if (container == null) return null;
-            return new InvWrapper(container);
-        }, ChestBlocks.GOLDEN_CHEST.get(), ChestBlocks.DEATH_GOLDEN_CHEST.get());
-        event.registerBlock(Capabilities.ItemHandler.BLOCK, (level, pos, state, blockEntity, context) -> {
-            if (blockEntity instanceof AltarBlock.Entity entity) {
-                return new InvWrapper(entity);
-            }
-            return null;
-        }, FunctionalBlocks.DEMON_ALTAR.get(), FunctionalBlocks.CRIMSON_ALTAR.get());
+            return container == null ? null : new InvWrapper(container);
+        }, ChestBlocks.BLOCKS.getEntries().stream().map(DeferredHolder::get).toArray(Block[]::new));
+
+//        List<BlockEntityType<? extends BaseContainerBlockEntity>> invBlockEntities = List.of(
+//                FunctionalBlocks.ALTAR_BLOCK_ENTITY.get(),
+//                FunctionalBlocks.CAULDRON_ENTITY.get(),
+//                FunctionalBlocks.TREE_HOLES_ENTITY.get()
+//        );
+//        for (BlockEntityType<? extends BaseContainerBlockEntity> type : invBlockEntities) {
+//            event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, type, (container, side) -> new InvWrapper(container));
+//        }
+//        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, FunctionalBlocks.HELLFORGE_ENTITY.get(), SidedInvWrapper::new);
+
+        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBottomlessBucketWrapper(stack),
+                ToolItems.BOTTOMLESS_WATER_BUCKET,
+                ToolItems.BOTTOMLESS_LAVA_BUCKET,
+                ToolItems.BOTTOMLESS_HONEY_BUCKET,
+                ToolItems.BOTTOMLESS_SHIMMER_BUCKET
+        );
+        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBucketWrapper(stack), ToolItems.HONEY_BUCKET);
+
+//        event.registerEntity(Capabilities.ItemHandler.ENTITY, EntityType.PLAYER, (player, context) -> player.getData(ModAttachmentTypes.EXTRA_INVENTORY));
     }
 
     @SubscribeEvent

@@ -2,6 +2,8 @@ package org.confluence.mod.common.data.saved;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.*;
+import com.xiaohunao.heaven_destiny_moment.common.moment.MomentInstanceManager;
+import com.xiaohunao.terra_moment.common.init.TMMoments;
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
 import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
 import net.minecraft.core.BlockPos;
@@ -319,14 +321,17 @@ public class NPCSpawner implements IGlobalData {
     }
 
     /**
-     * todo 他不会在日食，哥布林军队，雪人军团，海盗入侵或火星暴乱期间生成。
+     * todo 他不会在日食，雪人军团，海盗入侵或火星暴乱期间生成。
      */
     private boolean trySpawnTravelingMerchant(ServerPlayer player, BlockPos pos, Region region) {
         if (!hasNPCAlive(region, TENpcEntities.TRAVELING_MERCHANT.get())) {
-            if (DateUtils.isWithinDayTime(22500, 6000, player.level().getDayTime())) { // 04:30 -> 12:00
-                int bound = 30000 / CommonConfigs.NPC_SPAWN_INTERVAL.get(); // 6.25分钟内生成期望为22.12%
-                if (player.getRandom().nextInt(bound) == 0 && getAliveNpcCount(region, entityType -> entityType != TENpcEntities.OLD_MAN.get() /* todo 骷髅商人不计入 */) >= 2) {
-                    return spawnAtPos(player.serverLevel(), pos, TENpcEntities.TRAVELING_MERCHANT.get());
+            MomentInstanceManager manager = MomentInstanceManager.of(player.level());
+            if (!manager.hasMoment(TMMoments.GOBLIN_ARMY.getKey())) {
+                if (DateUtils.isWithinDayTime(22500, 6000, player.level().getDayTime())) { // 04:30 -> 12:00
+                    int bound = 30000 / CommonConfigs.NPC_SPAWN_INTERVAL.get(); // 6.25分钟内生成期望为22.12%
+                    if (player.getRandom().nextInt(bound) == 0 && getAliveNpcCount(region, entityType -> entityType != TENpcEntities.OLD_MAN.get() /* todo 骷髅商人不计入 */) >= 2) {
+                        return spawnAtPos(player.serverLevel(), pos, TENpcEntities.TRAVELING_MERCHANT.get());
+                    }
                 }
             }
         }
@@ -437,8 +442,7 @@ public class NPCSpawner implements IGlobalData {
 
     private boolean trySpawnGoblinTinkerer(ServerPlayer player, BlockPos pos, Region region) {
         if (!hasNPCAlive(region, TENpcEntities.GOBLIN_TINKERER.get())) {
-            // todo 等哥布林入侵事件
-            if (KillBoard.INSTANCE.isAnyDefeated(TEBossEntities.EATER_OF_WORLDS.get(), TEBossEntities.BRAIN_OF_CTHULHU.get())) {
+            if (KillBoard.INSTANCE.isDefeated(TMMoments.GOBLIN_ARMY.get())) {
                 return spawnAtPos(player.serverLevel(), pos, TENpcEntities.GOBLIN_TINKERER.get());
             }
         }

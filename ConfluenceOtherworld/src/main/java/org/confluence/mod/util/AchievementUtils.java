@@ -31,6 +31,17 @@ public final class AchievementUtils {
         return Confluence.asResource(PREFIX + path);
     }
 
+    public static boolean achievedAchievement(ServerPlayer player, String path) {
+        CompoundTag data = LibUtils.getOrCreatePersistedData(player);
+        String key = Confluence.MODID + ':' + path;
+        if (data.getBoolean(key)) return true;
+        AdvancementHolder advancement = player.server.getAdvancements().get(asAchievement(path));
+        if (advancement != null) {
+            return player.getAdvancements().getOrStartProgress(advancement).isDone();
+        }
+        return false;
+    }
+
     public static void awardAchievement(ServerPlayer player, String path) {
         CompoundTag data = LibUtils.getOrCreatePersistedData(player);
         String key = Confluence.MODID + ':' + path;

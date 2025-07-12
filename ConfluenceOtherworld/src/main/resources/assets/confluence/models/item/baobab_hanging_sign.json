@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "confluence:item/sign/baobab_hanging_sign"
+  }
+}

@@ -1,4 +1,4 @@
-package org.confluence.mod.common.capacity;
+package org.confluence.mod.common.capability;
 
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.FluidStack;

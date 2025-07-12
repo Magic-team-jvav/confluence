@@ -3002,6 +3002,26 @@ public class ModChineseProvider extends LanguageProvider {
         add(ToolItems.LAVA_ABSORBANT_SPONGE.get(), "岩浆吸收棉");
         add(ToolItems.ULTRA_ABSORBANT_SPONGE.get(), "超强吸收棉");
 
+        add(BoatItems.ASH_BOAT.get(), "白蜡木船");
+        add(BoatItems.ASH_CHEST_BOAT.get(), "白蜡木运输船");
+        add(BoatItems.BAOBAB_BOAT.get(), "猴面包木船");
+        add(BoatItems.BAOBAB_CHEST_BOAT.get(), "猴面包木运输船");
+        add(BoatItems.EBONY_BOAT.get(), "乌木船");
+        add(BoatItems.EBONY_CHEST_BOAT.get(), "乌木运输船");
+        add(BoatItems.GLOWING_MUSHROOM_BOAT.get(), "发光蘑菇船");
+        add(BoatItems.GLOWING_MUSHROOM_CHEST_BOAT.get(), "发光蘑菇运输船");
+        add(BoatItems.LIVING_BOAT.get(), "生命木船");
+        add(BoatItems.LIVING_CHEST_BOAT.get(), "生命木运输船");
+        add(BoatItems.LIVING_MAHOGANY_BOAT.get(), "生命红木船");
+        add(BoatItems.LIVING_MAHOGANY_CHEST_BOAT.get(), "生命红木运输船");
+        add(BoatItems.PALM_BOAT.get(), "棕榈木船");
+        add(BoatItems.PALM_CHEST_BOAT.get(), "棕榈木运输船");
+        add(BoatItems.SHADOW_BOAT.get(), "暗影木船");
+        add(BoatItems.SHADOW_CHEST_BOAT.get(), "暗影木运输船");
+        add(BoatItems.SPOOKY_BOAT.get(), "阴森木船");
+        add(BoatItems.SPOOKY_CHEST_BOAT.get(), "阴森木运输船");
+        add(BoatItems.YELLOW_WILLOW_BOAT.get(), "黄柳木船");
+        add(BoatItems.YELLOW_WILLOW_CHEST_BOAT.get(), "黄柳木运输船");
 
         add(ConsumableItems.SHURIKEN.get(), "手里剑");
         add(ConsumableItems.THROWING_KNIVES.get(), "投刀");

@@ -1543,7 +1543,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         MinecartItems.ITEMS.getEntries().forEach(wipAction);
         DrillItems.ITEMS.getEntries().forEach(wipAction);
         LightPetItems.ITEMS.getEntries().forEach(wipAction);
-        BoatItems.forEach(wipAction);
 
         tag(TGTags.GUN).add(
                 GunItems.STAR_CANNON.get()

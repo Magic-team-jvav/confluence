@@ -4,8 +4,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.data.models.blockstates.PropertyDispatch;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.HangingSignItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SignItem;
 import net.minecraft.world.level.BlockGetter;
@@ -21,7 +23,6 @@ import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredItem;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.data.gen.ModBlockTagsProvider;
 import org.confluence.mod.common.init.item.ModItems;
 
 import java.util.*;
@@ -37,6 +38,7 @@ public class LogBlockSet {
     public static final Map<Block, Block> WRAPPED_STRIP_TABLE = new Hashtable<>();
     public static final List<LogBlockSet> LOG_BLOCK_SETS = new ArrayList<>();
     private static SignBlock[] SIGN_BLOCKS;
+    private static SignBlock[] HANGING_SIGN_BLOCKS;
 
     private final Builder builder;
 
@@ -120,36 +122,53 @@ public class LogBlockSet {
         return builder.DOOR;
     }
 
+    public DeferredBlock<CeilingHangingSignBlock> getHangingSign() {
+        return builder.HANGING_SIGN;
+    }
+
+    public DeferredBlock<WallHangingSignBlock> getWallHangingSign() {
+        return builder.WALL_HANGING_SIGN;
+    }
+
+    public DeferredItem<HangingSignItem> getHangingSignItem() {
+        return builder.HANGING_SIGN_ITEM;
+    }
+
     public List<Supplier<? extends Item>> getAllItems() {
         return builder.allItems;
     }
 
-    public static void acceptTags(ModBlockTagsProvider provider) {
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> completes = provider.tag(BlockTags.COMPLETES_FIND_TREE_TUTORIAL);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> burn = provider.tag(BlockTags.LOGS_THAT_BURN);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> logs = provider.tag(BlockTags.LOGS);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> planks = provider.tag(BlockTags.PLANKS);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> buttons = provider.tag(BlockTags.BUTTONS);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> woodenButtons = provider.tag(BlockTags.WOODEN_BUTTONS);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> stairs = provider.tag(BlockTags.STAIRS);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> woodenStairs = provider.tag(BlockTags.WOODEN_STAIRS);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> slabs = provider.tag(BlockTags.SLABS);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> woodenSlabs = provider.tag(BlockTags.WOODEN_SLABS);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> fences = provider.tag(BlockTags.FENCES);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> woodenFences = provider.tag(BlockTags.WOODEN_FENCES);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> cFences = provider.tag(Tags.Blocks.FENCES);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> cFencesWooden = provider.tag(Tags.Blocks.FENCES_WOODEN);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> fenceGates = provider.tag(BlockTags.FENCE_GATES);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> cFenceGates = provider.tag(Tags.Blocks.FENCE_GATES);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> cFenceGatesWooden = provider.tag(Tags.Blocks.FENCE_GATES_WOODEN);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> trapdoors = provider.tag(BlockTags.TRAPDOORS);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> woodenTrapdoors = provider.tag(BlockTags.WOODEN_TRAPDOORS);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> woodenPressurePlates = provider.tag(BlockTags.WOODEN_PRESSURE_PLATES);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> doors = provider.tag(BlockTags.DOORS);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> woodenDoors = provider.tag(BlockTags.WOODEN_DOORS);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> leaves = provider.tag(BlockTags.LEAVES);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> signs = provider.tag(BlockTags.SIGNS);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> cStrippedLogs = provider.tag(Tags.Blocks.STRIPPED_LOGS);
+    public static void acceptTags(Function<TagKey<Block>, IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block>> provider) {
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> completes = provider.apply(BlockTags.COMPLETES_FIND_TREE_TUTORIAL);
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> burn = provider.apply(BlockTags.LOGS_THAT_BURN);
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> logs = provider.apply(BlockTags.LOGS);
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> planks = provider.apply(BlockTags.PLANKS);
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> buttons = provider.apply(BlockTags.BUTTONS);
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> woodenButtons = provider.apply(BlockTags.WOODEN_BUTTONS);
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> stairs = provider.apply(BlockTags.STAIRS);
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> woodenStairs = provider.apply(BlockTags.WOODEN_STAIRS);
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> slabs = provider.apply(BlockTags.SLABS);
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> woodenSlabs = provider.apply(BlockTags.WOODEN_SLABS);
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> fences = provider.apply(BlockTags.FENCES);
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> woodenFences = provider.apply(BlockTags.WOODEN_FENCES);
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> cFences = provider.apply(Tags.Blocks.FENCES);
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> cFencesWooden = provider.apply(Tags.Blocks.FENCES_WOODEN);
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> fenceGates = provider.apply(BlockTags.FENCE_GATES);
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> cFenceGates = provider.apply(Tags.Blocks.FENCE_GATES);
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> cFenceGatesWooden = provider.apply(Tags.Blocks.FENCE_GATES_WOODEN);
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> trapdoors = provider.apply(BlockTags.TRAPDOORS);
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> woodenTrapdoors = provider.apply(BlockTags.WOODEN_TRAPDOORS);
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> woodenPressurePlates = provider.apply(BlockTags.WOODEN_PRESSURE_PLATES);
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> doors = provider.apply(BlockTags.DOORS);
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> woodenDoors = provider.apply(BlockTags.WOODEN_DOORS);
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> leaves = provider.apply(BlockTags.LEAVES);
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> standingSigns = provider.apply(BlockTags.STANDING_SIGNS);
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> wallSigns = provider.apply(BlockTags.WALL_SIGNS);
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> signs = provider.apply(BlockTags.SIGNS);
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> cStrippedLogs = provider.apply(Tags.Blocks.STRIPPED_LOGS);
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> ceilingHangingSigns = provider.apply(BlockTags.CEILING_HANGING_SIGNS);
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> wallHangingSigns = provider.apply(BlockTags.WALL_HANGING_SIGNS);
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> allHangingSigns = provider.apply(BlockTags.ALL_HANGING_SIGNS);
         for (LogBlockSet logBlocks : LOG_BLOCK_SETS) {
             Builder builder1 = logBlocks.builder;
             planks.add(builder1.PLANKS.get());
@@ -216,7 +235,14 @@ public class LogBlockSet {
                 woodenStairs.add(stairBlock);
             }
             if (builder1.SIGN != null) {
-                signs.add(builder1.SIGN.get());
+                StandingSignBlock signBlock = builder1.SIGN.get();
+                standingSigns.add(signBlock);
+                signs.add(signBlock);
+            }
+            if (builder1.WALL_SIGN != null) {
+                WallSignBlock wallSignBlock = builder1.WALL_SIGN.get();
+                wallSigns.add(wallSignBlock);
+                signs.add(wallSignBlock);
             }
             if (builder1.TRAPDOOR != null) {
                 TrapDoorBlock trapDoorBlock = builder1.TRAPDOOR.get();
@@ -228,6 +254,17 @@ public class LogBlockSet {
                 doors.add(doorBlock);
                 woodenDoors.add(doorBlock);
             }
+            if (builder1.HANGING_SIGN != null) {
+                CeilingHangingSignBlock hangingSignBlock = builder1.HANGING_SIGN.get();
+                ceilingHangingSigns.add(hangingSignBlock);
+                allHangingSigns.add(hangingSignBlock);
+                //burn.add(hangingSignBlock);
+            }
+            if (builder1.WALL_HANGING_SIGN != null) {
+                WallHangingSignBlock wallHangingSignBlock = builder1.WALL_HANGING_SIGN.get();
+                wallHangingSigns.add(wallHangingSignBlock);
+                allHangingSigns.add(wallHangingSignBlock);
+            }
         }
     }
 
@@ -235,42 +272,19 @@ public class LogBlockSet {
         for (LogBlockSet logBlocks : LOG_BLOCK_SETS) {
             Builder builder1 = logBlocks.builder;
             output.accept(builder1.PLANKS.get());
-            if (builder1.STRIPPED_LOG != null) {
-                output.accept(builder1.STRIPPED_LOG.get());
-            }
-            if (builder1.WOOD != null) {
-                output.accept(builder1.WOOD.get());
-            }
-            if (builder1.STRIPPED_WOOD != null) {
-                output.accept(builder1.STRIPPED_WOOD.get());
-            }
-            if (builder1.BUTTON != null) {
-                output.accept(builder1.BUTTON.get());
-            }
-            if (builder1.FENCE != null) {
-                output.accept(builder1.FENCE.get());
-            }
-            if (builder1.FENCE_GATE != null) {
-                output.accept(builder1.FENCE_GATE.get());
-            }
-            if (builder1.PRESSURE_PLATE != null) {
-                output.accept(builder1.PRESSURE_PLATE.get());
-            }
-            if (builder1.SLAB != null) {
-                output.accept(builder1.SLAB.get());
-            }
-            if (builder1.STAIRS != null) {
-                output.accept(builder1.STAIRS.get());
-            }
-            if (builder1.SIGN_ITEM != null) {
-                output.accept(builder1.SIGN_ITEM.get());
-            }
-            if (builder1.TRAPDOOR != null) {
-                output.accept(builder1.TRAPDOOR.get());
-            }
-            if (builder1.DOOR != null) {
-                output.accept(builder1.DOOR.get());
-            }
+            if (builder1.STRIPPED_LOG != null) output.accept(builder1.STRIPPED_LOG.get());
+            if (builder1.WOOD != null) output.accept(builder1.WOOD.get());
+            if (builder1.STRIPPED_WOOD != null) output.accept(builder1.STRIPPED_WOOD.get());
+            if (builder1.BUTTON != null) output.accept(builder1.BUTTON.get());
+            if (builder1.FENCE != null) output.accept(builder1.FENCE.get());
+            if (builder1.FENCE_GATE != null) output.accept(builder1.FENCE_GATE.get());
+            if (builder1.PRESSURE_PLATE != null) output.accept(builder1.PRESSURE_PLATE.get());
+            if (builder1.SLAB != null) output.accept(builder1.SLAB.get());
+            if (builder1.STAIRS != null) output.accept(builder1.STAIRS.get());
+            if (builder1.SIGN_ITEM != null) output.accept(builder1.SIGN_ITEM.get());
+            if (builder1.TRAPDOOR != null) output.accept(builder1.TRAPDOOR.get());
+            if (builder1.DOOR != null) output.accept(builder1.DOOR.get());
+            if (builder1.HANGING_SIGN_ITEM != null) output.accept(builder1.HANGING_SIGN_ITEM.get());
         }
     }
 
@@ -296,16 +310,25 @@ public class LogBlockSet {
             List<SignBlock> list = new ArrayList<>();
             for (LogBlockSet logBlockSet : LOG_BLOCK_SETS) {
                 Builder builder1 = logBlockSet.builder;
-                if (builder1.SIGN != null) {
-                    list.add(builder1.SIGN.get());
-                }
-                if (builder1.WALL_SIGN != null) {
-                    list.add(builder1.WALL_SIGN.get());
-                }
+                if (builder1.SIGN != null) list.add(builder1.SIGN.get());
+                if (builder1.WALL_SIGN != null) list.add(builder1.WALL_SIGN.get());
             }
             SIGN_BLOCKS = list.toArray(SignBlock[]::new);
         }
         return SIGN_BLOCKS;
+    }
+
+    public static SignBlock[] getHangingSignBlocks() {
+        if (HANGING_SIGN_BLOCKS == null) {
+            List<SignBlock> list = new ArrayList<>();
+            for (LogBlockSet logBlockSet : LOG_BLOCK_SETS) {
+                Builder builder1 = logBlockSet.builder;
+                if (builder1.HANGING_SIGN != null) list.add(builder1.HANGING_SIGN.get());
+                if (builder1.WALL_HANGING_SIGN != null) list.add(builder1.WALL_HANGING_SIGN.get());
+            }
+            HANGING_SIGN_BLOCKS = list.toArray(SignBlock[]::new);
+        }
+        return HANGING_SIGN_BLOCKS;
     }
 
     public static void setFlammable() {
@@ -390,6 +413,9 @@ public class LogBlockSet {
         private DeferredItem<SignItem> SIGN_ITEM;
         private DeferredBlock<TrapDoorBlock> TRAPDOOR;
         private DeferredBlock<DoorBlock> DOOR;
+        private DeferredBlock<CeilingHangingSignBlock> HANGING_SIGN;
+        private DeferredBlock<WallHangingSignBlock> WALL_HANGING_SIGN;
+        private DeferredItem<HangingSignItem> HANGING_SIGN_ITEM;
         private Set<DeferredBlock<? extends Block>> blockCache = new HashSet<>();
         private final List<Supplier<? extends Item>> allItems = new ArrayList<>();
 
@@ -411,8 +437,9 @@ public class LogBlockSet {
                     .strippedLog(RotatedPillarBlock::new)
                     .wood(RotatedPillarBlock::new)
                     .strippedWood(RotatedPillarBlock::new)
-                    .leaves(LeavesBlock::new);
-            button(properties -> new ButtonBlock(woodSetType.SET, 30, properties))
+                    .leaves(LeavesBlock::new)
+                    .hangingSign(properties -> new CeilingHangingSignBlock(woodSetType.TYPE, properties), properties -> new WallHangingSignBlock(woodSetType.TYPE, properties), HangingSignItem::new);
+            return button(properties -> new ButtonBlock(woodSetType.SET, 30, properties))
                     .fence(FenceBlock::new)
                     .fenceGate(properties -> new FenceGateBlock(woodSetType.TYPE, properties))
                     .pressurePlate(properties -> new PressurePlateBlock(woodSetType.SET, properties))
@@ -421,12 +448,10 @@ public class LogBlockSet {
                     .sign(properties -> new StandingSignBlock(woodSetType.TYPE, properties), properties -> new WallSignBlock(woodSetType.TYPE, properties), SignItem::new)
                     .trapdoor(properties -> new TrapDoorBlock(woodSetType.SET, properties))
                     .door(properties -> new DoorBlock(woodSetType.SET, properties));
-            return this;
         }
 
-
-
         public Builder log(Function<BlockBehaviour.Properties, ? extends RotatedPillarBlock> function) {
+            if (LOG != null) return this;
             BlockBehaviour.Properties log = BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASS).strength(2.0F).sound(SoundType.WOOD);
             this.LOG = registerWithItem(id + "_log", () -> function.apply(ignitedByLava ? log.ignitedByLava() : log));
             blockCache.add(LOG);
@@ -434,7 +459,8 @@ public class LogBlockSet {
         }
 
         public Builder strippedLog(Function<BlockBehaviour.Properties, ? extends RotatedPillarBlock> function) {
-            if (LOG == null) log(function);
+            log(function);
+            if (STRIPPED_LOG != null) return this;
             this.STRIPPED_LOG = registerWithItem("stripped_" + id + "_log", () -> function.apply(BlockBehaviour.Properties.ofFullCopy(LOG.get())));
             STRIP_TABLE.put(LOG, STRIPPED_LOG);
             blockCache.add(STRIPPED_LOG);
@@ -442,6 +468,7 @@ public class LogBlockSet {
         }
 
         public Builder leaves(Function<BlockBehaviour.Properties, ? extends LeavesBlock> function) {
+            if (LEAVES != null) return this;
             BlockBehaviour.Properties leaves = BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).strength(0.2F).randomTicks().sound(SoundType.GRASS).noOcclusion().isValidSpawn(Builder::valid).isSuffocating(Builder::never).isViewBlocking(Builder::never).pushReaction(PushReaction.DESTROY).isRedstoneConductor(Builder::never);
             this.LEAVES = registerWithItem(id + "_leaves", () -> function.apply(ignitedByLava ? leaves.ignitedByLava() : leaves));
             blockCache.add(LEAVES);
@@ -449,6 +476,7 @@ public class LogBlockSet {
         }
 
         public Builder wood(Function<BlockBehaviour.Properties, ? extends RotatedPillarBlock> function) {
+            if (WOOD != null) return this;
             BlockBehaviour.Properties wood = BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).instrument(NoteBlockInstrument.BASS).strength(2.0F).sound(SoundType.WOOD);
             this.WOOD = registerWithItem(id + "_wood", () -> function.apply(ignitedByLava ? wood.ignitedByLava() : wood));
             blockCache.add(WOOD);
@@ -456,7 +484,8 @@ public class LogBlockSet {
         }
 
         public Builder strippedWood(Function<BlockBehaviour.Properties, ? extends RotatedPillarBlock> function) {
-            if (WOOD == null) wood(function);
+            wood(function);
+            if (STRIPPED_WOOD != null) return this;
             this.STRIPPED_WOOD = registerWithItem("stripped_" + id + "_wood", () -> function.apply(BlockBehaviour.Properties.ofFullCopy(WOOD.get())));
             STRIP_TABLE.put(WOOD, STRIPPED_WOOD);
             blockCache.add(STRIPPED_WOOD);
@@ -464,6 +493,7 @@ public class LogBlockSet {
         }
 
         public Builder button(Function<BlockBehaviour.Properties, ? extends ButtonBlock> function) {
+            if (BUTTON != null) return this;
             BlockBehaviour.Properties button = BlockBehaviour.Properties.of().noCollission().strength(0.5F).pushReaction(PushReaction.DESTROY);
             this.BUTTON = registerWithItem(id + "_button", () -> function.apply(button));
             blockCache.add(BUTTON);
@@ -471,6 +501,7 @@ public class LogBlockSet {
         }
 
         public Builder fence(Function<BlockBehaviour.Properties, ? extends FenceBlock> function) {
+            if (FENCE != null) return this;
             BlockBehaviour.Properties fence = BlockBehaviour.Properties.of().forceSolidOn().instrument(NoteBlockInstrument.BASS).strength(2.0F, 3.0F).sound(SoundType.WOOD);
             this.FENCE = registerWithItem(id + "_fence", () -> function.apply(ignitedByLava ? fence.mapColor(PLANKS.get().defaultMapColor()).ignitedByLava() : fence.mapColor(PLANKS.get().defaultMapColor())));
             blockCache.add(FENCE);
@@ -478,6 +509,7 @@ public class LogBlockSet {
         }
 
         public Builder fenceGate(Function<BlockBehaviour.Properties, ? extends FenceGateBlock> function) {
+            if (FENCE_GATE != null) return this;
             BlockBehaviour.Properties fence_gate = BlockBehaviour.Properties.of().forceSolidOn().instrument(NoteBlockInstrument.BASS).strength(2.0F, 3.0F);
             this.FENCE_GATE = registerWithItem(id + "_fence_gate", () -> function.apply(ignitedByLava ? fence_gate.mapColor(PLANKS.get().defaultMapColor()).ignitedByLava() : fence_gate.mapColor(PLANKS.get().defaultMapColor())));
             blockCache.add(FENCE_GATE);
@@ -485,6 +517,7 @@ public class LogBlockSet {
         }
 
         public Builder pressurePlate(Function<BlockBehaviour.Properties, ? extends PressurePlateBlock> function) {
+            if (PRESSURE_PLATE != null) return this;
             BlockBehaviour.Properties pressure_plate = BlockBehaviour.Properties.of().forceSolidOn().instrument(NoteBlockInstrument.BASS).noCollission().strength(0.5F).pushReaction(PushReaction.DESTROY);
             this.PRESSURE_PLATE = registerWithItem(id + "_pressure_plate", () -> function.apply(ignitedByLava ? pressure_plate.mapColor(PLANKS.get().defaultMapColor()).ignitedByLava() : pressure_plate.mapColor(PLANKS.get().defaultMapColor())));
             blockCache.add(PRESSURE_PLATE);
@@ -492,6 +525,7 @@ public class LogBlockSet {
         }
 
         public Builder slab(Function<BlockBehaviour.Properties, ? extends SlabBlock> function) {
+            if (SLAB != null) return this;
             BlockBehaviour.Properties slab = BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).instrument(NoteBlockInstrument.BASS).strength(2.0F, 3.0F).sound(SoundType.WOOD);
             this.SLAB = registerWithItem(id + "_slab", () -> function.apply(ignitedByLava ? slab.ignitedByLava() : slab));
             blockCache.add(SLAB);
@@ -499,12 +533,14 @@ public class LogBlockSet {
         }
 
         public Builder stair(BiFunction<BlockState, BlockBehaviour.Properties, ? extends StairBlock> function) {
+            if (STAIRS != null) return this;
             this.STAIRS = registerWithItem(id + "_stairs", () -> function.apply(PLANKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(PLANKS.get())));
             blockCache.add(STAIRS);
             return this;
         }
 
         public Builder sign(Function<BlockBehaviour.Properties, ? extends StandingSignBlock> standingSign, Function<BlockBehaviour.Properties, ? extends WallSignBlock> wallSign, PropertyDispatch.TriFunction<Item.Properties, StandingSignBlock, WallSignBlock, ? extends SignItem> signItem) {
+            if (SIGN != null) return this;
             BlockBehaviour.Properties sign = BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).forceSolidOn().instrument(NoteBlockInstrument.BASS).noCollission().strength(1.0F);
             this.SIGN = registerWithoutItem(id + "_sign", () -> standingSign.apply(ignitedByLava ? sign.ignitedByLava() : sign));
             BlockBehaviour.Properties wall_sign = BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).forceSolidOn().instrument(NoteBlockInstrument.BASS).noCollission().strength(1.0F).lootFrom(SIGN);
@@ -515,6 +551,7 @@ public class LogBlockSet {
         }
 
         public Builder trapdoor(Function<BlockBehaviour.Properties, ? extends TrapDoorBlock> function) {
+            if (TRAPDOOR != null) return this;
             BlockBehaviour.Properties trapdoor = BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).instrument(NoteBlockInstrument.BASS).strength(3.0F).noOcclusion().isValidSpawn(Builder::never).ignitedByLava();
             this.TRAPDOOR = registerWithItem(id + "_trapdoor", () -> function.apply(trapdoor));
             blockCache.add(TRAPDOOR);
@@ -522,9 +559,21 @@ public class LogBlockSet {
         }
 
         public Builder door(Function<BlockBehaviour.Properties, ? extends DoorBlock> function) {
+            if (DOOR != null) return this;
             BlockBehaviour.Properties door = BlockBehaviour.Properties.of().instrument(NoteBlockInstrument.BASS).strength(3.0F).noOcclusion().pushReaction(PushReaction.DESTROY).ignitedByLava();
             this.DOOR = registerWithItem(id + "_door", () -> function.apply(door.mapColor(PLANKS.get().defaultMapColor())));
             blockCache.add(DOOR);
+            return this;
+        }
+
+        public Builder hangingSign(Function<BlockBehaviour.Properties, ? extends CeilingHangingSignBlock> ceilingHangingSign, Function<BlockBehaviour.Properties, ? extends WallHangingSignBlock> wallHangingSign, PropertyDispatch.TriFunction<CeilingHangingSignBlock, WallHangingSignBlock, Item.Properties, ? extends HangingSignItem> hangingSignItem) {
+            if (HANGING_SIGN != null) return this;
+            BlockBehaviour.Properties ceiling_hanging_sign = BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).forceSolidOn().instrument(NoteBlockInstrument.BASS).noCollission().strength(1.0F).ignitedByLava();
+            this.HANGING_SIGN = registerWithoutItem(id + "_hanging_sign", () -> ceilingHangingSign.apply(ceiling_hanging_sign));
+            BlockBehaviour.Properties wall_hanging_sign = BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).forceSolidOn().instrument(NoteBlockInstrument.BASS).noCollission().strength(1.0F).ignitedByLava();
+            this.WALL_HANGING_SIGN = registerWithoutItem(id + "_wall_hanging_sign", () -> wallHangingSign.apply(wall_hanging_sign.dropsLike(HANGING_SIGN.get())));
+            this.HANGING_SIGN_ITEM = ModItems.BLOCK_ITEMS.register(id+"_hanging_sign", () -> hangingSignItem.apply(HANGING_SIGN.get(), WALL_HANGING_SIGN.get(), new Item.Properties().stacksTo(16)));
+            allItems.add(HANGING_SIGN_ITEM);
             return this;
         }
 

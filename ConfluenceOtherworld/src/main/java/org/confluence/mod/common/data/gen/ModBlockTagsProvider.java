@@ -4,7 +4,6 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
@@ -40,7 +39,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        LogBlockSet.acceptTags(this);
+        LogBlockSet.acceptTags(this::tag);
         IntrinsicTagAppender<Block> mineableWithPickaxe = tag(BlockTags.MINEABLE_WITH_PICKAXE);
         OreBlocks.acceptTag(mineableWithPickaxe);
         OreBlocks.acceptTag(tag(Tags.Blocks.ORES));
@@ -1365,10 +1364,5 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 Blocks.STRUCTURE_BLOCK
         );
         WaystonesHelper.blockTag(this::tag);
-    }
-
-    @Override
-    public IntrinsicTagAppender<Block> tag(TagKey<Block> tag) {
-        return super.tag(tag);
     }
 }

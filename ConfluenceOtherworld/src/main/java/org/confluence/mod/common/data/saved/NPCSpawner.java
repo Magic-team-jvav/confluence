@@ -48,6 +48,7 @@ import org.confluence.terra_guns.common.init.TGTags;
 import org.confluence.terraentity.api.event.NPCEvent;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 import org.confluence.terraentity.entity.npc.AnglerNPC;
+import org.confluence.terraentity.entity.npc.TravelingMerchantNPC;
 import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.confluence.terraentity.init.entity.TENpcEntities;
 
@@ -198,7 +199,9 @@ public class NPCSpawner implements IGlobalData {
             MutableComponent message;
             if (living instanceof AnglerNPC /* todo 或宠物/公主 */) {
                 message = Component.translatable("event.confluence.npc.left", living.getName());
-            } else { // todo 旅商已离去！
+            } else if (living instanceof TravelingMerchantNPC) {
+                message = Component.translatable("event.confluence.traveling_merchant.departed", living.getName());
+            } else {
                 message = Component.translatable("event.confluence.npc.slain", living.getType().getDescription(), living.getName());
             }
             broadcastMessageToRegion(living.level(), living, message.withColor(GlobalColors.NPC_SLAIN.get()));
@@ -298,8 +301,8 @@ public class NPCSpawner implements IGlobalData {
     private boolean trySpawnTravelingMerchant(ServerPlayer player, BlockPos pos, Region region) {
         if (!hasNPCAlive(region, TENpcEntities.TRAVELING_MERCHANT.get())) {
             if (DateUtils.isWithinDayTime(22500, 6000, player.level().getDayTime())) { // 04:30 -> 12:00
-                float chance = CommonConfigs.NPC_SPAWN_INTERVAL.get() / 30000.0F; // 6.25分钟内生成期望为22.12%
-                if (player.getRandom().nextFloat() < chance && getAliveNpcCount(region) >= 2 /* todo 事件期间不生成 */) {
+                int bound = 30000 / CommonConfigs.NPC_SPAWN_INTERVAL.get(); // 6.25分钟内生成期望为22.12%
+                if (player.getRandom().nextInt(bound) == 0 && getAliveNpcCount(region) >= 2 /* todo 事件期间不生成 */) {
                     return spawnAtPos(player.serverLevel(), pos, TENpcEntities.TRAVELING_MERCHANT.get());
                 }
             }

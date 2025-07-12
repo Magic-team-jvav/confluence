@@ -1034,10 +1034,10 @@ public class ModChineseProvider extends LanguageProvider {
         add("event.confluence.hardmode_conversion.started", "转换数据准备完毕，正在开始转换");
         add("event.confluence.hardmode_conversion.finished", "“古老的光明与黑暗之魂已经释放。”");
         add("event.confluence.hardmode_conversion.welcome", "欢迎来到泰拉瑞亚");
-        add("event.confluence.npc.arrived", "%s%s已到达！");
-        add("event.confluence.npc.slain", "%s%s被杀死了……");
+        add("event.confluence.npc.arrived", "%2$s%1$s已到达！");
+        add("event.confluence.npc.slain", "%2$s%1$s被杀死了……");
         add("event.confluence.npc.left", "%s已离开！");
-        add("event.confluence.npc.departed", "旅商%s已离去！");
+        add("event.confluence.traveling_merchant.departed", "旅商%s已离去！");
 
         add("entity.minecraft.villager.confluence.sky_miller", "天师");
         add("entity.minecraft.villager.confluence.chef", "厨师");

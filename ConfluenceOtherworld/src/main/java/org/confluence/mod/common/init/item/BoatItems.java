@@ -39,6 +39,9 @@ public class BoatItems {
     public static final DeferredItem<BoatItem> PALM_BOAT = boat("palm_boat", () -> ModBoatTypes.PALM.getValue());
     public static final DeferredItem<BoatItem> PALM_CHEST_BOAT = chestBoat("palm_chest_boat", () -> ModBoatTypes.PALM.getValue());
 
+    public static final DeferredItem<BoatItem> PEARL_BOAT = boat("pearl_boat", () -> ModBoatTypes.PEARL.getValue());
+    public static final DeferredItem<BoatItem> PEARL_CHEST_BOAT = chestBoat("pearl_chest_boat", () -> ModBoatTypes.PEARL.getValue());
+
     public static final DeferredItem<BoatItem> SHADOW_BOAT = boat("shadow_boat", () -> ModBoatTypes.SHADOW.getValue());
     public static final DeferredItem<BoatItem> SHADOW_CHEST_BOAT = chestBoat("shadow_chest_boat", () -> ModBoatTypes.SHADOW.getValue());
 

@@ -65,7 +65,7 @@ public final class TickEvents {
             }
         }
         if (CommonConfigs.DO_NPC_SPAWNING.get() &&
-                dayTime < 12000 &&
+                (dayTime < 12000 || dayTime > 22500) &&
                 serverLevel.getGameTime() % CommonConfigs.NPC_SPAWN_INTERVAL.get() == 0 &&
                 serverLevel.getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)
         ) {

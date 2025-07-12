@@ -69,6 +69,14 @@ public final class ModBoatTypes {
             () -> Items.STICK,
             false
     );
+    public static final EnumProxy<Boat.Type> PEARL = register(
+            NatureBlocks.PEARL_LOG_BLOCKS.getPlanks(),
+            "pearl",
+            BoatItems.PEARL_BOAT,
+            BoatItems.PEARL_CHEST_BOAT,
+            () -> Items.STICK,
+            false
+    );
     public static final EnumProxy<Boat.Type> SHADOW = register(
             NatureBlocks.SHADOW_LOG_BLOCKS.getPlanks(),
             "shadow",

@@ -13,14 +13,13 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
+import net.neoforged.neoforge.common.Tags;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.*;
-import org.confluence.mod.common.init.item.MaterialItems;
-import org.confluence.mod.common.init.item.ModItems;
-import org.confluence.mod.common.init.item.PotionItems;
-import org.confluence.mod.common.init.item.ToolItems;
+import org.confluence.mod.common.init.item.*;
 import org.confluence.terraentity.init.TEItems;
 
 import java.util.List;
@@ -30,6 +29,99 @@ import java.util.concurrent.CompletableFuture;
 public class CraftingRecipeProvider extends AbstractRecipeProvider {
     public CraftingRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, registries);
+    }
+    // 木头配方
+    private void registerWoodRecipes(RecipeOutput output, LogBlockSet woodSet, TagKey<Item> woodLogTag) {
+        shapeless(output, woodSet.getPlanks().toStack(4), Ingredient.of(woodLogTag));
+        shapeless(output, woodSet.getButton().toStack(), Ingredient.of(woodSet.getPlanks()));
+        if (!isGlowingMushroom(woodSet)) {
+            shaped(output, ShapedRecipePattern.of(Map.of(
+                    '#', Ingredient.of(woodSet.getLog())
+            ), List.of(
+                    "##",
+                    "##"
+            )), woodSet.getWood().toStack(3));
+
+            shaped(output, ShapedRecipePattern.of(Map.of(
+                    '#', Ingredient.of(woodSet.getStrippedLog())
+            ), List.of(
+                    "##",
+                    "##"
+            )), woodSet.getStrippedWood().toStack(3));
+        }
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(woodSet.getPlanks())
+        ), List.of(
+                "#  ",
+                "## ",
+                "###"
+        )), woodSet.getStairs().toStack(4));
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(woodSet.getPlanks())
+        ), List.of(
+                "###"
+        )), woodSet.getSlab().toStack(6));
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(woodSet.getPlanks()),
+                '/', Ingredient.of(Items.STICK)
+        ), List.of(
+                "#/#",
+                "#/#"
+        )), woodSet.getFence().toStack(3));
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(woodSet.getPlanks()),
+                '/', Ingredient.of(Items.STICK)
+        ), List.of(
+                "/#/",
+                "/#/"
+        )), woodSet.getFenceGate().toStack());
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(woodSet.getPlanks())
+        ), List.of(
+                "##",
+                "##",
+                "##"
+        )), woodSet.getDoor().toStack(3));
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(woodSet.getPlanks())
+        ), List.of(
+                "###",
+                "###"
+        )), woodSet.getTrapdoor().toStack(2));
+
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(woodSet.getPlanks())
+        ), List.of(
+                "##"
+        )), woodSet.getPressurePlate().toStack());
+
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(woodSet.getPlanks()),
+                '/', Ingredient.of(Items.STICK)
+        ), List.of(
+                "###",
+                "###",
+                " / "
+        )), woodSet.getSignItem().toStack());
+    }
+    private boolean isGlowingMushroom(LogBlockSet woodSet) {
+        ResourceLocation id = woodSet.getPlanks().getId();
+        return id.getPath().contains("glowing_mushroom") ||
+                id.getPath().contains("fungus") ||
+                woodSet == NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS;
+    }
+    private void registerBoatRecipes(RecipeOutput output, LogBlockSet woodSet, ItemLike boatItem, ItemLike chestBoatItem) {
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(woodSet.getPlanks())
+        ), List.of(
+                "# #",
+                "###"
+        )), boatItem.asItem().getDefaultInstance());
+
+        shapeless(output, chestBoatItem.asItem().getDefaultInstance(),
+                Ingredient.of(boatItem),
+                Ingredient.of(Tags.Items.CHESTS_WOODEN)
+        );
     }
 
     @Override
@@ -176,6 +268,31 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 "# #",
                 "###"
         )), ChestBlocks.SANDSTONE_CHEST.toStack());
+        // 木头系列
+        registerWoodRecipes(output, NatureBlocks.EBONY_LOG_BLOCKS, ModTags.Items.EBONY_LOGS);
+        registerWoodRecipes(output, NatureBlocks.PEARL_LOG_BLOCKS, ModTags.Items.PEARL_LOGS);
+        registerWoodRecipes(output, NatureBlocks.SHADOW_LOG_BLOCKS, ModTags.Items.SHADOW_LOGS);
+        registerWoodRecipes(output, NatureBlocks.PALM_LOG_BLOCKS, ModTags.Items.PALM_LOGS);
+        registerWoodRecipes(output, NatureBlocks.BAOBAB_LOG_BLOCKS, ModTags.Items.BAOBAB_LOGS);
+        registerWoodRecipes(output, NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS, ModTags.Items.GLOWING_MUSHROOM_STEMS);
+        registerWoodRecipes(output, NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS, ModTags.Items.YELLOW_WILLOW_LOGS);
+        registerWoodRecipes(output, NatureBlocks.LIVING_LOG_BLOCKS, ModTags.Items.LIVING_LOGS);
+        registerWoodRecipes(output, NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS, ModTags.Items.LIVING_MAHOGANY_LOGS);
+        registerWoodRecipes(output, NatureBlocks.ASH_LOG_BLOCKS, ModTags.Items.ASH_LOGS);
+        registerWoodRecipes(output, NatureBlocks.SPOOKY_LOG_BLOCKS, ModTags.Items.SPOOKY_LOGS);
+
+        // 船
+        registerBoatRecipes(output, NatureBlocks.EBONY_LOG_BLOCKS, BoatItems.EBONY_BOAT, BoatItems.EBONY_CHEST_BOAT);
+        registerBoatRecipes(output, NatureBlocks.PEARL_LOG_BLOCKS, BoatItems.PEARL_BOAT, BoatItems.PEARL_CHEST_BOAT);
+        registerBoatRecipes(output, NatureBlocks.SHADOW_LOG_BLOCKS, BoatItems.SHADOW_BOAT, BoatItems.SHADOW_CHEST_BOAT);
+        registerBoatRecipes(output, NatureBlocks.PALM_LOG_BLOCKS, BoatItems.PALM_BOAT, BoatItems.PALM_CHEST_BOAT);
+        registerBoatRecipes(output, NatureBlocks.BAOBAB_LOG_BLOCKS, BoatItems.BAOBAB_BOAT, BoatItems.BAOBAB_CHEST_BOAT);
+        registerBoatRecipes(output, NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS, BoatItems.GLOWING_MUSHROOM_BOAT, BoatItems.GLOWING_MUSHROOM_CHEST_BOAT);
+        registerBoatRecipes(output, NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS, BoatItems.YELLOW_WILLOW_BOAT, BoatItems.YELLOW_WILLOW_CHEST_BOAT);
+        registerBoatRecipes(output, NatureBlocks.LIVING_LOG_BLOCKS, BoatItems.LIVING_BOAT, BoatItems.LIVING_CHEST_BOAT);
+        registerBoatRecipes(output, NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS, BoatItems.LIVING_MAHOGANY_BOAT, BoatItems.LIVING_MAHOGANY_CHEST_BOAT);
+        registerBoatRecipes(output, NatureBlocks.ASH_LOG_BLOCKS, BoatItems.ASH_BOAT, BoatItems.ASH_CHEST_BOAT);
+        registerBoatRecipes(output, NatureBlocks.SPOOKY_LOG_BLOCKS, BoatItems.SPOOKY_BOAT, BoatItems.SPOOKY_CHEST_BOAT);
 
         // 石头及深板岩压力板
         shaped(output, ShapedRecipePattern.of(Map.of('#', Ingredient.of(Blocks.STONE)), List.of("##")), new ItemStack(FunctionalBlocks.STONE_PRESSURE_PLATE));

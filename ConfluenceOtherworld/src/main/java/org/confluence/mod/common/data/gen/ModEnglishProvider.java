@@ -1128,6 +1128,11 @@ public class ModEnglishProvider extends LanguageProvider {
         add("equipment_benediction.set_switcher.confluence.wizard_set.data.7", "Increases maximum mana by 80,15% reduced mana cost");
         add("equipment_benediction.set_switcher.confluence.wizard_set.data.8", "Increases maximum mana by 60,13% reduced mana cost");
 
+        add("equipment_benediction.set_switcher.confluence.flinx_set", "Flinx set");
+        add("equipment_benediction.set_switcher.confluence.flinx_set.data.0", "Increases summon damage by 5%,Increases your max number of minions by 1");
+
+
+
 
         // npc dialogs
         add("dialogs.confluence.guide.0", "My job is to offer suggestions for your upcoming tasks. I recommend that you come and talk to me whenever you encounter any difficulties.");

@@ -175,6 +175,7 @@ public final class ValueSubProvider {
                 .add(MaterialItems.BLACK_LENS, wrap(10, 0))
                 .add(MaterialItems.HARPY_FEATHER, 10)
                 .add(MaterialItems.GIANT_HARPY_FEATHER, wrap(2, 50, 0))
+                .add(MaterialItems.FLINX_FUR, wrap(1, 0))
                 .add(MaterialItems.STURDY_FOSSIL, wrap(5, 0))
                 .add(MaterialItems.OPAL, wrap(10, 0))
                 .add(MaterialItems.HEIM, wrap(5, 0))
@@ -591,10 +592,10 @@ public final class ValueSubProvider {
         appender.create()
                 .add(TESummonItems.SLIME_STAFF, wrap(2, 0, 0))
                 .add(TESummonItems.HORNET_STAFF, wrap(70, 0))
-                // 小鬼法杖
+                .add(TESummonItems.IMP_STAFF, wrap(54, 0))
                 // 吸血鬼青蛙法杖
-                .add(TESummonItems.FINCH_STAFF, wrap(1, 0, 0));
-        // 小雪怪法杖
+                .add(TESummonItems.FINCH_STAFF, wrap(1, 0, 0))
+                .add(TESummonItems.SNOW_FLINX_STAFF, wrap(1, 50, 0));
         // 阿比盖尔的花
         // 眼球激光塔
         appender.create()

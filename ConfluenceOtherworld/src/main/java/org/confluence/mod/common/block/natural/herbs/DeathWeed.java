@@ -39,7 +39,7 @@ public class DeathWeed extends BaseHerbBlock {
 
     @Override
     public boolean canBloom(ServerLevel world, BlockState state) {
-        return world.isNight() && (world.getMoonPhase() == 0 || MomentInstanceManager.of(world).hasMoment(TMMoments.BLOOD_MOON.getKey().location()));
+        return world.isNight() && (world.getMoonPhase() == 0 || MomentInstanceManager.of(world).hasMoment(TMMoments.BLOOD_MOON.getKey()));
     }
 
     @Override

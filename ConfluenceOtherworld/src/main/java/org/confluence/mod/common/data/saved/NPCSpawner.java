@@ -38,7 +38,9 @@ import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.common.worldgen.structure.DungeonStructure;
 import org.confluence.mod.integration.terra_entity.IAbstractTerraNPC;
 import org.confluence.mod.integration.terra_entity.TEEvents;
+import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IStructureStart;
+import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.mixin.integration.terra_entity.AnglerNPCMixin;
 import org.confluence.mod.mixin.integration.terra_entity.MechanicNPCMixin;
 import org.confluence.mod.util.DateUtils;
@@ -120,15 +122,12 @@ public class NPCSpawner implements IGlobalData {
         return isAdvancedCombatTechniquesVolumeTwoUsed;
     }
 
-    /**
-     * 不计入老人
-     */
-    public int getAliveNpcCount(Region region) {
+    public int getAliveNpcCount(Region region, Predicate<EntityType<?>> filter) {
         Object2BooleanMap<EntityType<?>> map = npcAlive.get(region);
         if (map == null) return 0;
         int count = 0;
         for (Object2BooleanMap.Entry<EntityType<?>> entry : map.object2BooleanEntrySet()) {
-            if (entry.getBooleanValue() && entry.getKey() != TENpcEntities.OLD_MAN.get()) {
+            if (entry.getBooleanValue() && filter.test(entry.getKey())) {
                 count++;
             }
         }
@@ -245,19 +244,27 @@ public class NPCSpawner implements IGlobalData {
         this.isAdvancedCombatTechniquesVolumeTwoUsed = false;
     }
 
+    /**
+     * 醉酒世界则会生成派对女孩<p>
+     * todo 其它秘密种子的特殊生成
+     */
     public void trySpawnGuide(ServerPlayer player) {
         ServerLevel serverLevel = player.serverLevel();
         if (serverLevel.dimension() == OverworldUtils.dimension()) {
             BlockPos pos = getNpcSpawnPos(player);
-            if (!hasNPCAlive(new Region(pos), TENpcEntities.GUIDE.get())) {
-                spawnAtPos(serverLevel, pos, TENpcEntities.GUIDE.get());
+            Region region = new Region(pos);
+            if (IMinecraftServer.matchesSecretFlag(player.server, IWorldOptions.DW_MASK)) {
+                if (!hasNPCAlive(region, TENpcEntities.PARTY_GIRL.get())) {
+                    spawnAtPos(serverLevel, pos, TENpcEntities.PARTY_GIRL.get());
+                }
+            } else {
+                if (!hasNPCAlive(region, TENpcEntities.GUIDE.get())) {
+                    spawnAtPos(serverLevel, pos, TENpcEntities.GUIDE.get());
+                }
             }
         }
     }
 
-    /**
-     * 每两分钟生成一位NPC
-     */
     public void checkNpcRespawn(ServerLevel serverLevel) {
         outer:
         for (ServerPlayer player : serverLevel.players()) {
@@ -285,7 +292,7 @@ public class NPCSpawner implements IGlobalData {
             // 发型师
             if (trySpawnGoblinTinkerer(player, pos, region)) continue;
             // 巫医
-            // 派对女孩
+            if (trySpawnPartyGirl(player, pos, region)) continue;
             // 巫师
             // 税收官
             // 松露人
@@ -296,13 +303,29 @@ public class NPCSpawner implements IGlobalData {
     }
 
     /**
-     * 他不会在日食，哥布林军队，雪人军团，海盗入侵或火星暴乱期间生成。
+     * 醉酒世界则会生成向导
+     */
+    private boolean trySpawnPartyGirl(ServerPlayer player, BlockPos pos, Region region) {
+        if (IMinecraftServer.matchesSecretFlag(player.server, IWorldOptions.DW_MASK)) {
+            if (!hasNPCAlive(region, TENpcEntities.GUIDE.get())) {
+                return spawnAtPos(player.serverLevel(), pos, TENpcEntities.GUIDE.get());
+            }
+        } else if (!hasNPCAlive(region, TENpcEntities.PARTY_GIRL.get())) {
+            if (player.getRandom().nextInt(40) == 0 && getAliveNpcCount(region, entityType -> true/* todo 骷髅商人不计入 */) >= 14) {
+                return spawnAtPos(player.serverLevel(), pos, TENpcEntities.PARTY_GIRL.get());
+            }
+        }
+        return false;
+    }
+
+    /**
+     * todo 他不会在日食，哥布林军队，雪人军团，海盗入侵或火星暴乱期间生成。
      */
     private boolean trySpawnTravelingMerchant(ServerPlayer player, BlockPos pos, Region region) {
         if (!hasNPCAlive(region, TENpcEntities.TRAVELING_MERCHANT.get())) {
             if (DateUtils.isWithinDayTime(22500, 6000, player.level().getDayTime())) { // 04:30 -> 12:00
                 int bound = 30000 / CommonConfigs.NPC_SPAWN_INTERVAL.get(); // 6.25分钟内生成期望为22.12%
-                if (player.getRandom().nextInt(bound) == 0 && getAliveNpcCount(region) >= 2 /* todo 事件期间不生成 */) {
+                if (player.getRandom().nextInt(bound) == 0 && getAliveNpcCount(region, entityType -> entityType != TENpcEntities.OLD_MAN.get() /* todo 骷髅商人不计入 */) >= 2) {
                     return spawnAtPos(player.serverLevel(), pos, TENpcEntities.TRAVELING_MERCHANT.get());
                 }
             }

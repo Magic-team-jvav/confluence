@@ -337,6 +337,8 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(CHISELED_YELLOW_WILLOW_PLANKS.get());
         dropSelf(CHISELED_LIVING_PLANKS.get());
         dropSelf(CHISELED_ASH_PLANKS.get());
+        dropSelf(CHISELED_LIVING_MAHOGANY_PLANKS.get());
+        dropSelf(CHISELED_GLOWING_MUSHROOM_PLANKS.get());
         dropSelf(WOOD_STONE_SLATTED_BLOCKS.get());
         dropSelf(BLUE_ICE_BRICKS.get());
         dropSelf(BLUE_ICE_BRICKS_STAIRS.get());

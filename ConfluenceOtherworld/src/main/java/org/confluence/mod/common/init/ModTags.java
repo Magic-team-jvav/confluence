@@ -147,6 +147,7 @@ public final class ModTags {
         public static final TagKey<Item> GEMS_SAPPHIRE = c("gems/sapphire");
         public static final TagKey<Item> GEMS_AMETHYST = c("gems/amethyst");
 
+
         public static final TagKey<Item> RAW_MATERIALS_STURDY_FOSSIL = c("raw_materials/sturdy_fossil");
         public static final TagKey<Item> RAW_MATERIALS_OPAL = c("raw_materials/opal");
         public static final TagKey<Item> RAW_MATERIALS_GELSTONE = c("raw_materials/gelstone");
@@ -188,6 +189,17 @@ public final class ModTags {
         public static final TagKey<Item> SEAFOOD_DINNER_MATERIALS = register("seafood_dinner_materials");// 制作海鲜大餐
         public static final TagKey<Item> GOLD_COOKING = register("gold_cooking");// 制作金美味
         public static final TagKey<Item> WOODEN_COMBUSTIBLES = register("wooden_combustibles");  // 可燃木材系列
+        public static final TagKey<Item> EBONY_LOGS = register("ebony_logs");
+        public static final TagKey<Item> PEARL_LOGS = register("pearl_logs");
+        public static final TagKey<Item> SHADOW_LOGS = register("shadow_logs");
+        public static final TagKey<Item> PALM_LOGS = register("palm_logs");
+        public static final TagKey<Item> BAOBAB_LOGS = register("baobab_logs");
+        public static final TagKey<Item> GLOWING_MUSHROOM_STEMS = register("glowing_mushroom_stems");
+        public static final TagKey<Item> YELLOW_WILLOW_LOGS = register("yellow_willow_logs");
+        public static final TagKey<Item> LIVING_LOGS = register("living_logs");
+        public static final TagKey<Item> LIVING_MAHOGANY_LOGS = register("living_mahogany_logs");
+        public static final TagKey<Item> ASH_LOGS = register("ash_logs");
+        public static final TagKey<Item> SPOOKY_LOGS = register("spooky_logs");
         public static final TagKey<Item> INITIAL_WOOD = register("initial_wood");  // 木套tag，用于合成木套而分离其他套装
         public static final TagKey<Item> QUESTED_FISHES = register("quested_fishes");  // 任务鱼
         public static final TagKey<Item> EMBLEM = register("emblem");  // 徽章

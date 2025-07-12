@@ -2421,6 +2421,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.CHISELED_BAOBAB_PLANKS.get(), "雕纹猴面包木木板");
         add(DecorativeBlocks.CHISELED_LIVING_PLANKS.get(), "雕纹生命木板");
         add(DecorativeBlocks.CHISELED_LIVING_MAHOGANY_PLANKS.get(), "雕纹生命红木板");
+        add(DecorativeBlocks.CHISELED_GLOWING_MUSHROOM_PLANKS.get(), "雕纹发光蘑菇木板");
         add(DecorativeBlocks.GRANITE_COLUMN.get(), "花岗岩梁");
         add(DecorativeBlocks.PURE_GLASS.get(), "纯净玻璃");
         add(DecorativeBlocks.WHITE_PURE_GLASS.get(), "白色纯净玻璃");
@@ -3008,6 +3009,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(BoatItems.BAOBAB_CHEST_BOAT.get(), "猴面包木运输船");
         add(BoatItems.EBONY_BOAT.get(), "乌木船");
         add(BoatItems.EBONY_CHEST_BOAT.get(), "乌木运输船");
+        add(BoatItems.PEARL_BOAT.get(), "珍珠木船");
+        add(BoatItems.PEARL_CHEST_BOAT.get(), "珍珠木运输船");
         add(BoatItems.GLOWING_MUSHROOM_BOAT.get(), "发光蘑菇船");
         add(BoatItems.GLOWING_MUSHROOM_CHEST_BOAT.get(), "发光蘑菇运输船");
         add(BoatItems.LIVING_BOAT.get(), "生命木船");

@@ -1,5 +1,7 @@
 package org.confluence.mod.util;
 
+import net.minecraft.core.HolderLookup;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
@@ -7,6 +9,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.*;
 import net.minecraft.world.item.enchantment.effects.EnchantmentEntityEffect;
 import net.minecraft.world.item.enchantment.effects.EnchantmentValueEffect;
@@ -129,5 +132,11 @@ public final class EnchantmentUtils {
             return amount + amount * ((1 - ratio) * lm.floatValue() + ratio * mm.floatValue());
         }
         return amount;
+    }
+
+    public static ItemStack enchantedBook(HolderLookup.RegistryLookup<Enchantment> registryLookup, ResourceKey<Enchantment> key, int level) {
+        ItemStack book = Items.ENCHANTED_BOOK.getDefaultInstance();
+        book.enchant(registryLookup.getOrThrow(key), level);
+        return book;
     }
 }

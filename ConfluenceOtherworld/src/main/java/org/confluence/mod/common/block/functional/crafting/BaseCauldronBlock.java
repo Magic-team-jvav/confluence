@@ -7,6 +7,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionResult;
@@ -95,21 +96,21 @@ public class BaseCauldronBlock extends HorizontalDirectionalBlock implements Ent
     }
 
     @Override
-    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
-        if (!pState.is(pNewState.getBlock())) {
-            if (pLevel.getBlockEntity(pPos) instanceof CookingPotBlock.Entity entity) {
-                if (!pLevel.isClientSide) {
-                    Containers.dropContents(pLevel, pPos, entity);
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+        if (!state.is(newState.getBlock())) {
+            if (level.getBlockEntity(pos) instanceof Container container) {
+                if (!level.isClientSide) {
+                    Containers.dropContents(level, pos, container);
                 }
-                pLevel.updateNeighbourForOutputSignal(pPos, this);
+                level.updateNeighbourForOutputSignal(pos, state.getBlock());
             }
-            super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
+            super.onRemove(state, level, pos, newState, movedByPiston);
         }
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(BlockStateProperties.LIT, FACING);
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(BlockStateProperties.LIT, FACING);
     }
 
     @Override
@@ -168,6 +169,17 @@ public class BaseCauldronBlock extends HorizontalDirectionalBlock implements Ent
         public Entity(BlockPos pos, BlockState blockState) {
             this(FunctionalBlocks.CAULDRON_ENTITY.get(), pos, blockState);
         }
+
+//        @Override
+//        public void onLoad() {
+//            super.onLoad();
+//            invalidateCapabilities();
+//        }
+//
+//        @Override
+//        public void onChunkUnloaded() {
+//            invalidateCapabilities();
+//        }
 
         public static void serverTick(Level level, BlockPos pos, BlockState state, Entity blockEntity) {
             BlockInWorld heatSource = new BlockInWorld(level, pos.below(), true);

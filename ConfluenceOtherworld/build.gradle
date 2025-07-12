@@ -155,11 +155,9 @@ dependencies {
     jarJar('cn.6tail:lunar:1.7.4')
 
     compileOnly "net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}"
-    if (false) {
-        runtimeOnly("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
-        runtimeOnly("net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}")
-        runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}")
-        runtimeOnly("com.tterrag.registrate:Registrate:${registrate_version}")
+    if (true) {
+        runtimeOnly("com.simibubi.create:create-${minecraft_version}:${create_version}") { transitive = false }
+        //runtimeOnly("net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}")
     }
 
     compileOnly "curse.maven:jade-324717:6011258"

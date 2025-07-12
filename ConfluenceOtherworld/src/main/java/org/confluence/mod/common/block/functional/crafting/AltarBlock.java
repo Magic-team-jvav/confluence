@@ -223,6 +223,17 @@ public class AltarBlock extends BaseEntityBlock {
             SingletonGeoAnimatable.registerSyncedAnimatable(this);
         }
 
+//        @Override
+//        public void onLoad() {
+//            super.onLoad();
+//            invalidateCapabilities();
+//        }
+//
+//        @Override
+//        public void onChunkUnloaded() {
+//            invalidateCapabilities();
+//        }
+
         public ItemStack addItem(ItemStack toAdd) {
             int firstEmptySlot = -1;
             for (int i = 0; i < 5; i++) {

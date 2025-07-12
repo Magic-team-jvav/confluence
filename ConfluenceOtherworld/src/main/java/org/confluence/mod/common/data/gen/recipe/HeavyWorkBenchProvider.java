@@ -381,6 +381,28 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 " # ",
                 "ccc"
         )), TESummonItems.IRON_GOLEM_STAFF.toStack());
+        // 小雪怪法杖
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(2,MaterialItems.FLINX_FUR),
+                '#', AmountIngredient.of(2,ModTags.Items.GOLD_AND_PLATINUM)
+        ), List.of(
+                "  aa",
+                " a##",
+                " # #",
+                "#   "
+        )), TESummonItems.SNOW_FLINX_STAFF.toStack());
+
+        // 小雪怪皮毛外套
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(4,MaterialItems.FLINX_FUR),
+                'b', AmountIngredient.of(2,MaterialItems.SILK),
+                '#', AmountIngredient.of(8,ModTags.Items.GOLD_AND_PLATINUM)
+        ), List.of(
+                "a#a",
+                "bbb",
+                "b b"
+        )), ArmorItems.FLINX_FUR_COAT.toStack());
+
         // 计时器
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 'a', Ingredient.of(TCItems.GOLD_WATCH,TCItems.PLATINUM_WATCH),

@@ -301,6 +301,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 "# #",
                 "###"
         )), ChestBlocks.SANDSTONE_CHEST.toStack());
+
         // 木头系列
         registerWoodRecipes(output, NatureBlocks.EBONY_LOG_BLOCKS, ModTags.Items.EBONY_LOGS);
         registerWoodRecipes(output, NatureBlocks.PEARL_LOG_BLOCKS, ModTags.Items.PEARL_LOGS);

@@ -1173,6 +1173,11 @@ public class ModChineseProvider extends LanguageProvider {
         add("equipment_benediction.set_switcher.confluence.wizard_set.data.7", "最大魔力增加80，魔力消耗降低15%");
         add("equipment_benediction.set_switcher.confluence.wizard_set.data.8", "最大魔力增加60，魔力消耗降低13%");
 
+        add("equipment_benediction.set_switcher.confluence.flinx_set", "雪怪套装");
+        add("equipment_benediction.set_switcher.confluence.flinx_set.data.0", "召唤伤害提高5%，仆从数量上限增加1");
+
+
+
 
         // npc对话
         add("dialogs.confluence.guide.0", "我的工作是为你接下来的任务提供建议。建议你遇到任何困难时都来和我谈谈。");
@@ -2766,6 +2771,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.SPELL_TOME.get(), "魔法书");
         add(MaterialItems.HARPY_FEATHER.get(), "鸟妖之羽");
         add(MaterialItems.GIANT_HARPY_FEATHER.get(), "巨型鸟妖之羽");
+        add(MaterialItems.FLINX_FUR.get(), "小雪怪皮毛");
         add(MaterialItems.AETHERIUM_SHARD.get(), "以太碎片");
         add(MaterialItems.AETHERIUM_GOLD.get(), "嬗金");
         add(MaterialItems.CHINA_PLATE.get(), "陶瓷盘");
@@ -3649,6 +3655,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.GOGGLES.get(), "护目镜");
         add(ArmorItems.GREEN_CAP.get(), "绿帽子");
         add(ArmorItems.VIKING_HELMET.get(), "维京头盔");
+        add(ArmorItems.FLINX_FUR_COAT.get(), "小雪怪皮毛外套");
         add(ArmorItems.WIZARD_HAT.get(), "巫师帽");
         add(ArmorItems.MAGIC_HAT.get(), "魔法帽");
         add(ArmorItems.AMETHYST_ROBE.get(), "紫晶长袍");
@@ -3659,6 +3666,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.MYSTIC_ROBE.get(), "神秘长袍");
         add(ArmorItems.DIAMOND_ROBE.get(), "钻石长袍");
         add(ArmorItems.AMBER_ROBE.get(), "琥珀长袍");
+
 
 
         // 任务鱼

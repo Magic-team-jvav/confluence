@@ -1162,7 +1162,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ModItems.FERTILE_SINGULARITY.get(),
                 ModItems.PERPLEXED_CAT_MEDAL.get(),
                 ModItems.PULSAR.get(),
-                ModItems.HIVE_WAND.get(),
                 HamaxeItems.HAEMORRHAXE.get(),
                 HamaxeItems.SPECTRE_HAMAXE.get(),
                 HamaxeItems.SOLAR_FLARE_HAMAXE.get(),

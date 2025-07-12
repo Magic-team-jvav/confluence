@@ -427,7 +427,6 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ManaWeaponItems.FLOWER_OF_FIRE))
                         .add(LootItem.lootTableItem(LanceItems.DARK_LANCE))
-                        .add(LootItem.lootTableItem(TCItems.OBSIDIAN_ROSE))
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MinecartItems.DEMONIC_HELLCART))

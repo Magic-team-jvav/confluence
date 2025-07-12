@@ -2109,21 +2109,21 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.LIVING_LOG_BLOCKS.getFenceGate().get(), "生命木栅栏门");
         add(NatureBlocks.LIVING_LOG_BLOCKS.getPressurePlate().get(), "生命木压力板");
 
-        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getButton().get(), "生命红木按钮");
-        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getPlanks().get(), "生命红木板");
-        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getLog().get(), "生命红木原木");
-        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getStrippedLog().get(), "去皮生命红原木");
-        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getStrippedWood().get(), "去皮生命红木");
-        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getDoor().get(), "生命红木门");
-        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getTrapdoor().get(), "生命红木活板门");
-        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getSign().get(), "生命红木告示牌");
-        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getStairs().get(), "生命红木楼梯");
-        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getSlab().get(), "生命红木台阶");
-        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getWood().get(), "生命红木");
-        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getLeaves().get(), "生命红木树叶");
-        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getFence().get(), "生命红木栅栏");
-        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getFenceGate().get(), "生命红木栅栏门");
-        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getPressurePlate().get(), "生命红木压力板");
+        add(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getButton().get(), "生命红木按钮");
+        add(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getPlanks().get(), "生命红木板");
+        add(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getLog().get(), "生命红木原木");
+        add(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getStrippedLog().get(), "去皮生命红原木");
+        add(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getStrippedWood().get(), "去皮生命红木");
+        add(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getDoor().get(), "生命红木门");
+        add(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getTrapdoor().get(), "生命红木活板门");
+        add(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getSign().get(), "生命红木告示牌");
+        add(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getStairs().get(), "生命红木楼梯");
+        add(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getSlab().get(), "生命红木台阶");
+        add(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getWood().get(), "生命红木");
+        add(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getLeaves().get(), "生命红木树叶");
+        add(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getFence().get(), "生命红木栅栏");
+        add(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getFenceGate().get(), "生命红木栅栏门");
+        add(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getPressurePlate().get(), "生命红木压力板");
 
         add(NatureBlocks.DESERT_FOSSIL.get(), "沙漠化石");
         add(NatureBlocks.HARDENED_SAND_BLOCK.get(), "硬化沙块");

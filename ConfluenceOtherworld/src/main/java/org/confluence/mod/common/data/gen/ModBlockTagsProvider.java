@@ -172,7 +172,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 PEARL_LOG_BLOCKS.getLog().get(),
                 YELLOW_WILLOW_LOG_BLOCKS.getLog().get(),
                 LIVING_LOG_BLOCKS.getLog().get(),
-                LIVING_MAHOGANY_BLOCKS.getLog().get(),
+                LIVING_MAHOGANY_LOG_BLOCKS.getLog().get(),
                 BAOBAB_LOG_BLOCKS.getLog().get()
         );
         // 镐子

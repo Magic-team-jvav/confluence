@@ -276,7 +276,7 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(YELLOW_WILLOW_LOG_BLOCKS.getLog().get());
         dropSelf(BAOBAB_LOG_BLOCKS.getLog().get());
         dropSelf(LIVING_LOG_BLOCKS.getLog().get());
-        dropSelf(LIVING_MAHOGANY_BLOCKS.getLog().get());
+        dropSelf(LIVING_MAHOGANY_LOG_BLOCKS.getLog().get());
         dropSelf(SHADOW_LOG_BLOCKS.getLog().get());
         dropSelf(PEARL_LOG_BLOCKS.getLog().get());
         dropSelf(PALM_LOG_BLOCKS.getLog().get());

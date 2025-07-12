@@ -98,8 +98,8 @@ public class LivingMahoganyTreeStructure extends Structure {
 
             GridPiece.addPieces(blockMap, Lists.newArrayList(
                     Blocks.AIR.defaultBlockState(),
-                    NatureBlocks.LIVING_MAHOGANY_BLOCKS.getWood().get().defaultBlockState(),
-                    NatureBlocks.LIVING_MAHOGANY_BLOCKS.getLeaves().get().defaultBlockState().setValue(PERSISTENT, true),
+                    NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getWood().get().defaultBlockState(),
+                    NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getLeaves().get().defaultBlockState().setValue(PERSISTENT, true),
                     OreBlocks.SPORE_ROOT_BLOCK.get().defaultBlockState()
             ), Map.of(
                     centerPos, LIVING_IVY_CHESTS.location()

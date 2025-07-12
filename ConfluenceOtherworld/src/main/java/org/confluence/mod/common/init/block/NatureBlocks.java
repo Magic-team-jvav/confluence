@@ -203,7 +203,7 @@ public class NatureBlocks {
             .trapdoor(properties -> new TrapDoorBlock(LIVING.SET, properties))
             .door(properties -> new DoorBlock(LIVING.SET, properties)).build();
     // 生命红木
-    public static final LogBlockSet LIVING_MAHOGANY_BLOCKS = LogBlockSet.builder("living_mahogany", true)
+    public static final LogBlockSet LIVING_MAHOGANY_LOG_BLOCKS = LogBlockSet.builder("living_mahogany", true)
             .log(RotatedPillarBlock::new)
             .strippedLog(RotatedPillarBlock::new)
             .wood(RotatedPillarBlock::new)

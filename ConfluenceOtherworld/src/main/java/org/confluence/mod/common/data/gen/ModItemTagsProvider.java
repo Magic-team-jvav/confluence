@@ -47,6 +47,11 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         HookItems.acceptTag(tag(ModTags.Items.HOOK));
         PotionItems.acceptTag(tag(Tags.Items.POTIONS));
         FoodItems.acceptTag(tag(Tags.Items.FOODS));
+
+        IntrinsicTagAppender<Item> boats = tag(ItemTags.BOATS);
+        BoatItems.BOAT_ITEMS.getEntries().forEach(item -> boats.add(item.get()));
+        IntrinsicTagAppender<Item> chestBoats = tag(ItemTags.CHEST_BOATS);
+        BoatItems.CHEST_BOAT_ITEMS.getEntries().forEach(item -> chestBoats.add(item.get()));
         IntrinsicTagAppender<Item> minecart = tag(ModTags.Items.MINECART);
         minecart.add(Items.MINECART);
         MinecartItems.ITEMS.getEntries().forEach(item -> minecart.add(item.get()));
@@ -98,7 +103,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.INITIAL_WOOD).add(
                 NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getPlanks().asItem(),
                 NatureBlocks.LIVING_LOG_BLOCKS.getPlanks().asItem(),
-                NatureBlocks.LIVING_MAHOGANY_BLOCKS.getPlanks().asItem(),
+                NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getPlanks().asItem(),
                 NatureBlocks.BAOBAB_LOG_BLOCKS.getPlanks().asItem(),
                 Blocks.OAK_PLANKS.asItem(),
                 Blocks.ACACIA_PLANKS.asItem(),
@@ -181,7 +186,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 .add(NatureBlocks.BAOBAB_LOG_BLOCKS.getAllItems().stream().map(Supplier::get).toArray(Item[]::new))
                 .add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getAllItems().stream().map(Supplier::get).toArray(Item[]::new))
                 .add(NatureBlocks.LIVING_LOG_BLOCKS.getAllItems().stream().map(Supplier::get).toArray(Item[]::new))
-                .add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getAllItems().stream().map(Supplier::get).toArray(Item[]::new))
+                .add(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getAllItems().stream().map(Supplier::get).toArray(Item[]::new))
                 .add(NatureBlocks.SPOOKY_LOG_BLOCKS.getAllItems().stream().map(Supplier::get).toArray(Item[]::new));
         tag(ItemTags.BEACON_PAYMENT_ITEMS).add(
                 MaterialItems.LEAD_INGOT.get(),
@@ -1538,6 +1543,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         MinecartItems.ITEMS.getEntries().forEach(wipAction);
         DrillItems.ITEMS.getEntries().forEach(wipAction);
         LightPetItems.ITEMS.getEntries().forEach(wipAction);
+        BoatItems.forEach(wipAction);
 
         tag(TGTags.GUN).add(
                 GunItems.STAR_CANNON.get()

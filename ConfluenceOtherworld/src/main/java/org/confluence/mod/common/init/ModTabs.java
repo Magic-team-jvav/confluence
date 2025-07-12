@@ -137,6 +137,7 @@ public final class ModTabs {
                         FishingPoleItems.ITEMS.getEntries().forEach(action);
                         HoeItems.ITEMS.getEntries().forEach(action);
                         ShovelItems.ITEMS.getEntries().forEach(action);
+                        BoatItems.forEach(action);
                     }).withTabsAfter(TCTabs.ACCESSORIES.getId()).withTabsBefore(FOOD_AND_POTIONS.getId()).build());
     /* 饰品 */
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> ARMORS = TABS.register("armors",

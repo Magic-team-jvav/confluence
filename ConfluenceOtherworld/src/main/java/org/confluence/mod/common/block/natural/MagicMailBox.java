@@ -63,7 +63,7 @@ public class MagicMailBox extends Block {
         BLOCK_TO_VARIANT.put(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getPlanks().get(), 15);
         BLOCK_TO_VARIANT.put(NatureBlocks.SPOOKY_LOG_BLOCKS.getPlanks().get(), 16);
         BLOCK_TO_VARIANT.put(NatureBlocks.LIVING_LOG_BLOCKS.getPlanks().get(), 17);
-        BLOCK_TO_VARIANT.put(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getPlanks().get(), 18);
+        BLOCK_TO_VARIANT.put(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getPlanks().get(), 18);
         BLOCK_TO_VARIANT.put(NatureBlocks.ASH_LOG_BLOCKS.getPlanks().get(), 19);
     }
 

@@ -81,6 +81,10 @@ public class ModEnglishProvider extends LanguageProvider {
         add("enchantment.confluence.soothed_mana.desc", "Reduces the duration of Mana Sickness");
         add("enchantment.confluence.arcane_protection", "Arcane Protection");
         add("enchantment.confluence.arcane_protection.desc", "The mana drawn when taking damage is the value of the maximum mana value multiplied by a certain ratio, and the damage canceled is the value of the product of the damage taken by that ratio");
+        add("enchantment.confluence.spell_desperation", "Spell Desperation");
+        add("enchantment.confluence.spell_desperation.desc", "The lower the remaining mana ratio, the higher the attack");
+        add("enchantment.confluence.mystic_surge", "Mystic Surge");
+        add("enchantment.confluence.mystic_surge.desc", "The higher the remaining mana ratio, the higher the attack");
 
         add("gamerule.confluenceSpreadableChance", "Confluence Spreadable Chance");
         add("generator.confluence.the_corruption", "The Corruption");

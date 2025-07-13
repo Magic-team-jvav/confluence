@@ -1,31 +1,16 @@
 {
 	"credit": "Made with Blockbench",
-	"texture_size": [64, 64],
 	"render_type": "cutout_mipped",
+	"texture_size": [64, 64],
 	"textures": {
-		"1": "confluence:block/remains_block",
-		"particle": "confluence:block/particle/remains_block_particle"
+		"1": "confluence:block/remains_block"
 	},
 	"elements": [
 		{
-			"name": "RightArm",
-			"from": [1, 0.016, -1],
-			"to": [3, 2.016, 11],
-			"rotation": {"angle": -22.5, "axis": "y", "origin": [1, 1, 10]},
-			"faces": {
-				"north": {"uv": [7.5, 7.5, 7, 8], "rotation": 180, "texture": "#1"},
-				"east": {"uv": [6, 8, 6.5, 11], "rotation": 270, "texture": "#1"},
-				"south": {"uv": [7, 8, 6.5, 7.5], "texture": "#1"},
-				"west": {"uv": [7, 8, 7.5, 11], "rotation": 90, "texture": "#1"},
-				"up": {"uv": [6.5, 8, 7, 11], "rotation": 180, "texture": "#1"},
-				"down": {"uv": [7.5, 8, 8, 11], "texture": "#1"}
-			}
-		},
-		{
 			"name": "Head",
-			"from": [6, -1.624, 4.984],
-			"to": [14, 6.376, 12.984],
-			"rotation": {"angle": 22.5, "axis": "x", "origin": [10, -0.624, 9]},
+			"from": [4, -1.624, 3.984],
+			"to": [12, 6.376, 11.984],
+			"rotation": {"angle": 22.5, "axis": "x", "origin": [8, -0.624, 8]},
 			"faces": {
 				"north": {"uv": [2, 2, 4, 4], "texture": "#1"},
 				"east": {"uv": [0, 2, 2, 4], "texture": "#1"},
@@ -37,9 +22,9 @@
 		},
 		{
 			"name": "Head",
-			"from": [14, 6.376, 12.984],
-			"to": [6, -1.624, 4.984],
-			"rotation": {"angle": 22.5, "axis": "x", "origin": [10, -0.624, 9]},
+			"from": [12, 6.376, 11.984],
+			"to": [4, -1.624, 3.984],
+			"rotation": {"angle": 22.5, "axis": "x", "origin": [8, -0.624, 8]},
 			"faces": {
 				"north": {"uv": [6, 4, 8, 2], "texture": "#1"},
 				"east": {"uv": [4, 4, 6, 2], "texture": "#1"},
@@ -50,6 +35,39 @@
 			}
 		}
 	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [75, 45, 0],
+			"translation": [0, 2.5, 0],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [75, 45, 0],
+			"translation": [0, 2.5, 4.75],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"firstperson_righthand": {
+			"rotation": [0, 45, 0],
+			"translation": [0, 6.5, -1]
+		},
+		"firstperson_lefthand": {
+			"translation": [0, 6, 0]
+		},
+		"ground": {
+			"translation": [0, 5.25, 0]
+		},
+		"gui": {
+			"rotation": [-135, -45, -155],
+			"translation": [2.5, 3.25, 0]
+		},
+		"head": {
+			"translation": [0, 15, 0]
+		},
+		"fixed": {
+			"rotation": [-21.5, 0, 0],
+			"translation": [0, 4.25, -2.5]
+		}
+	},
 	"groups": [
 		{
 			"name": "bone",
@@ -60,13 +78,13 @@
 					"name": "RightArm",
 					"origin": [13, 22, 8],
 					"color": 0,
-					"children": [0]
+					"children": []
 				},
 				{
 					"name": "Head",
 					"origin": [8, 24, 8],
 					"color": 0,
-					"children": [1, 2]
+					"children": [0, 1]
 				}
 			]
 		}

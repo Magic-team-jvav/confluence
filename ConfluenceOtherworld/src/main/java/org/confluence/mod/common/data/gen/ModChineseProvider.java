@@ -973,11 +973,11 @@ public class ModChineseProvider extends LanguageProvider {
 
         add("condition.confluence.shimmer_transmutation.before_skeletron", "需要的游戏阶段：骷髅王前");
         add("condition.confluence.shimmer_transmutation.after_skeletron", "需要的游戏阶段：骷髅王后");
-        add("condition.confluence.shimmer_transmutation.wall_of_flesh", "需要的游戏阶段：肉后");
-        add("condition.confluence.shimmer_transmutation.mechanical_bosses", "需要的游戏阶段：新三王后");
-        add("condition.confluence.shimmer_transmutation.plantera", "需要的游戏阶段：世花后");
+        add("condition.confluence.shimmer_transmutation.wall_of_flesh", "需要的游戏阶段：血肉墙或血肉山后");
+        add("condition.confluence.shimmer_transmutation.mechanical_bosses", "需要的游戏阶段：机械boss后");
+        add("condition.confluence.shimmer_transmutation.plantera", "需要的游戏阶段：世纪之花后");
         add("condition.confluence.shimmer_transmutation.golem", "需要的游戏阶段：石巨人后");
-        add("condition.confluence.shimmer_transmutation.moon_lord", "需要的游戏阶段：月后");
+        add("condition.confluence.shimmer_transmutation.moon_lord", "需要的游戏阶段：月亮领主后");
         add("condition.confluence.requires_fuel", "需要燃料");
 
         add("container.confluence.sky_mill", "天磨");

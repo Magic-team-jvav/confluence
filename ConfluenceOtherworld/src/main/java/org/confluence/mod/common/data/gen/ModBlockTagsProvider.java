@@ -320,6 +320,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 WALL_ANNOUNCEMENT_BOX.get(),
                 GRANITE.get(),
                 AETHERIUM_BRICKS.get(),
+                REMAINS_BLOCK.get(),
                 SPIKE.get(),
 
                 TOMBSTONE.get(),
@@ -648,6 +649,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 SAFE.get(),
                 SPIKE.get(),
                 ASPHALT_BLOCK.get(),
+                REMAINS_BLOCK.get(),
 
                 AETHERIUM_BLOCK.get(),
                 DARK_AETHERIUM_BLOCK.get(),

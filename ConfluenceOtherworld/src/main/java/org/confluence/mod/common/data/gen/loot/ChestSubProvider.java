@@ -1,21 +1,27 @@
 package org.confluence.mod.common.data.gen.loot;
 
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
 import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
+import net.minecraft.world.level.storage.loot.functions.EnchantRandomlyFunction;
 import net.minecraft.world.level.storage.loot.functions.EnchantWithLevelsFunction;
+import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.init.ModEnchantments;
 import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
@@ -31,8 +37,21 @@ import java.util.function.BiConsumer;
 public record ChestSubProvider(HolderLookup.Provider registries) implements LootTableSubProvider {
     @Override
     public void generate(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> output) {
-        // VanillaChestLoot
         HolderLookup.RegistryLookup<Enchantment> registrylookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
+        // VanillaChestLoot
+        EnchantRandomlyFunction.Builder manaEnchantmentBuilder = new EnchantRandomlyFunction.Builder()
+                .withOneOf(HolderSet.direct(
+                        registrylookup.getOrThrow(ModEnchantments.MANA_REGENERATION),
+                        registrylookup.getOrThrow(ModEnchantments.EFFICIENT_MAGIC),
+                        registrylookup.getOrThrow(ModEnchantments.MANA_MENDING),
+                        registrylookup.getOrThrow(ModEnchantments.CELESTIAL_ABSORPTION),
+                        registrylookup.getOrThrow(ModEnchantments.SOOTHED_MANA),
+                        registrylookup.getOrThrow(ModEnchantments.ARCANE_PROTECTION),
+                        registrylookup.getOrThrow(ModEnchantments.SPELL_DESPERATION),
+                        registrylookup.getOrThrow(ModEnchantments.MYSTIC_SURGE)
+                ));
+        LootPoolSingletonContainer.Builder<?> manaEnchantedBookBuilder = LootItem.lootTableItem(Items.BOOK)
+                .apply(manaEnchantmentBuilder);
 
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/surface_chests"), initialWorldSurfaceCommon()
                 .withPool(LootPool.lootPool()
@@ -350,6 +369,9 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.ARROW)).apply(SetItemCountFunction.setCount(UniformGenerator.between(10, 25)))
                 )
+                .withPool(LootPool.lootPool()
+                        .add(manaEnchantedBookBuilder)
+                )
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/dungeon_golden_chest"), initialWorldCaveCommon()
                 .withPool(LootPool.lootPool()
@@ -421,6 +443,9 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.COOKED_PORKCHOP)).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 9)))
                 )
+                .withPool(LootPool.lootPool()
+                        .add(manaEnchantedBookBuilder)
+                )
         );
 
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/shadow_chests"),LootTable.lootTable()
@@ -490,6 +515,9 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(LootItem.lootTableItem(ModItems.GOLDEN_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
                         .add(EmptyLootItem.emptyItem())
                 )
+                .withPool(LootPool.lootPool()
+                        .add(manaEnchantedBookBuilder)
+                )
         );
         // 空岛村
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "chests/sky_village_chests"),LootTable.lootTable()
@@ -524,13 +552,18 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(LootItem.lootTableItem(ToolItems.METEOR_COMPASS))
                         .add(EmptyLootItem.emptyItem())
                 )
+                .withPool(LootPool.lootPool()
+                        .add(manaEnchantedBookBuilder)
+                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                )
         );
     }
 
 
 
     // 困难模式前箱子地下通用
-    private static LootTable.Builder initialWorldUndergroundCommon() {
+    private LootTable.Builder initialWorldUndergroundCommon() {
+        HolderLookup.RegistryLookup<Enchantment> registrylookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
         return LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ConsumableItems.BOMB).apply(SetItemCountFunction.setCount(UniformGenerator.between(10, 19))))
@@ -578,12 +611,33 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(EmptyLootItem.emptyItem())
                 )
                 .withPool(LootPool.lootPool()
+                        .add(
+                                LootItem.lootTableItem(Items.BOOK)
+                                        .apply(EnchantWithLevelsFunction.enchantWithLevels(this.registries, ConstantValue.exactly(15.0F)))
+                        )
+                        .add(EmptyLootItem.emptyItem().setWeight(19))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withOneOf(HolderSet.direct(
+                                registrylookup.getOrThrow(ModEnchantments.MANA_REGENERATION),
+                                registrylookup.getOrThrow(ModEnchantments.EFFICIENT_MAGIC),
+                                registrylookup.getOrThrow(ModEnchantments.MANA_MENDING),
+                                registrylookup.getOrThrow(ModEnchantments.CELESTIAL_ABSORPTION),
+                                registrylookup.getOrThrow(ModEnchantments.SOOTHED_MANA),
+                                registrylookup.getOrThrow(ModEnchantments.ARCANE_PROTECTION),
+                                registrylookup.getOrThrow(ModEnchantments.SPELL_DESPERATION),
+                                registrylookup.getOrThrow(ModEnchantments.MYSTIC_SURGE))))
+                        )
+                        .add(EmptyLootItem.emptyItem().setWeight(9))
+                )
+                .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ModItems.SILVER_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(50, 89))))
                         .add(EmptyLootItem.emptyItem())
                 );
     }
     // 困难模式前箱子地表通用
-    private static LootTable.Builder initialWorldSurfaceCommon() {
+    private LootTable.Builder initialWorldSurfaceCommon() {
+        HolderLookup.RegistryLookup<Enchantment> registrylookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
         return LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ConsumableItems.THROWING_KNIVES).apply(SetItemCountFunction.setCount(UniformGenerator.between(75, 150))))
@@ -638,6 +692,26 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(EmptyLootItem.emptyItem())
                 )
                 .withPool(LootPool.lootPool()
+                        .add(
+                                LootItem.lootTableItem(Items.BOOK)
+                                        .apply(EnchantWithLevelsFunction.enchantWithLevels(this.registries, ConstantValue.exactly(10.0F)))
+                        )
+                        .add(EmptyLootItem.emptyItem().setWeight(29))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withOneOf(HolderSet.direct(
+                                registrylookup.getOrThrow(ModEnchantments.MANA_REGENERATION),
+                                registrylookup.getOrThrow(ModEnchantments.EFFICIENT_MAGIC),
+                                registrylookup.getOrThrow(ModEnchantments.MANA_MENDING),
+                                registrylookup.getOrThrow(ModEnchantments.CELESTIAL_ABSORPTION),
+                                registrylookup.getOrThrow(ModEnchantments.SOOTHED_MANA),
+                                registrylookup.getOrThrow(ModEnchantments.ARCANE_PROTECTION),
+                                registrylookup.getOrThrow(ModEnchantments.SPELL_DESPERATION),
+                                registrylookup.getOrThrow(ModEnchantments.MYSTIC_SURGE))))
+                        )
+                        .add(EmptyLootItem.emptyItem().setWeight(19))
+                )
+                .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(PotionItems.IRON_SKIN_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(2))
                         .add(LootItem.lootTableItem(PotionItems.SHINE_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(2))
                         .add(LootItem.lootTableItem(PotionItems.NIGHT_OWL_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(2))
@@ -646,10 +720,12 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(LootItem.lootTableItem(PotionItems.SWIFTNESS_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))).setWeight(2))
                         .add(EmptyLootItem.emptyItem().setWeight(6))
                 );
+
     }
 
     // 困难模式前箱子洞穴通用
-    private static LootTable.Builder initialWorldCaveCommon() {
+    private LootTable.Builder initialWorldCaveCommon() {
+        HolderLookup.RegistryLookup<Enchantment> registrylookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
         return LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.SILVER_INGOT).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 8))))
@@ -704,6 +780,26 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(PotionItems.RECALL_POTION).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
                         .add(EmptyLootItem.emptyItem())
+                )
+                .withPool(LootPool.lootPool()
+                        .add(
+                                LootItem.lootTableItem(Items.BOOK)
+                                        .apply(EnchantWithLevelsFunction.enchantWithLevels(this.registries, ConstantValue.exactly(20.0F)))
+                        )
+                        .add(EmptyLootItem.emptyItem().setWeight(14))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(Items.BOOK).apply(new EnchantRandomlyFunction.Builder().withOneOf(HolderSet.direct(
+                                registrylookup.getOrThrow(ModEnchantments.MANA_REGENERATION),
+                                registrylookup.getOrThrow(ModEnchantments.EFFICIENT_MAGIC),
+                                registrylookup.getOrThrow(ModEnchantments.MANA_MENDING),
+                                registrylookup.getOrThrow(ModEnchantments.CELESTIAL_ABSORPTION),
+                                registrylookup.getOrThrow(ModEnchantments.SOOTHED_MANA),
+                                registrylookup.getOrThrow(ModEnchantments.ARCANE_PROTECTION),
+                                registrylookup.getOrThrow(ModEnchantments.SPELL_DESPERATION),
+                                registrylookup.getOrThrow(ModEnchantments.MYSTIC_SURGE))))
+                        )
+                        .add(EmptyLootItem.emptyItem().setWeight(9))
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ModItems.GOLDEN_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))

@@ -21,12 +21,9 @@ public class HammerItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
 
     public static final DeferredItem<HammerItem> WOODEN_HAMMER = ITEMS.register("wooden_hammer", () -> new HammerItem(Tiers.WOOD, 2, 0.8F, new Item.Properties(), attributes(-1, 0.55), ModRarity.WHITE));
-    public static final DeferredItem<HammerItem> RICH_MAHOGANY_HAMMER = ITEMS.register("rich_mahogany_hammer", () -> new HammerItem(Tiers.WOOD, 4, 0.8F, new Item.Properties(), attributes(0, 0.55), ModRarity.WHITE));
-    public static final DeferredItem<HammerItem> PALM_WOOD_HAMMER = ITEMS.register("palm_wood_hammer", () -> new HammerItem(Tiers.WOOD, 4, 0.8F, new Item.Properties(), attributes(0, 0.55), ModRarity.WHITE));
-    public static final DeferredItem<HammerItem> SPRUCE_WOOD_HAMMER = ITEMS.register("spruce_wood_hammer", () -> new HammerItem(Tiers.WOOD, 4, 0.8F, new Item.Properties(), attributes(0, 0.55), ModRarity.WHITE)); // 直接用原版云杉当针叶
-    public static final DeferredItem<HammerItem> EBONWOOD_HAMMER = ITEMS.register("ebonwood_hammer", () -> new HammerItem(Tiers.WOOD, 7, 0.8F, new Item.Properties(), attributes(0, 0.55), ModRarity.WHITE));
-    public static final DeferredItem<HammerItem> SHADEWOOD_HAMMER = ITEMS.register("shadewood_hammer", () -> new HammerItem(Tiers.WOOD, 7, 0.8F, new Item.Properties(), attributes(0, 0.55), ModRarity.WHITE));
-    public static final DeferredItem<HammerItem> ASH_WOOD_HAMMER = ITEMS.register("ash_wood_hammer", () -> new HammerItem(Tiers.WOOD, 9, 0.8F, new Item.Properties(), attributes(0, 0.55), ModRarity.WHITE));
+    public static final DeferredItem<HammerItem> EBONWOOD_HAMMER = ITEMS.register("ebonwood_hammer", () -> new HammerItem(Tiers.WOOD, 5, 0.8F, new Item.Properties(), attributes(0, 0.55), ModRarity.WHITE));
+    public static final DeferredItem<HammerItem> SHADEWOOD_HAMMER = ITEMS.register("shadewood_hammer", () -> new HammerItem(Tiers.WOOD, 6, 0.8F, new Item.Properties(), attributes(0, 0.55), ModRarity.WHITE));
+    public static final DeferredItem<HammerItem> ASH_WOOD_HAMMER = ITEMS.register("ash_wood_hammer", () -> new HammerItem(Tiers.WOOD, 6, 0.8F, new Item.Properties(), attributes(0, 0.55), ModRarity.WHITE));
     public static final DeferredItem<HammerItem> PEARLWOOD_HAMMER = ITEMS.register("pearlwood_hammer", () -> new HammerItem(Tiers.WOOD, 10, 0.8F, new Item.Properties(), attributes(0, 0.55), ModRarity.WHITE));
 
     public static final DeferredItem<HammerItem> COPPER_HAMMER = ITEMS.register("copper_hammer", () -> new HammerItem(ModTiers.COPPER, 4, 0.9F, new Item.Properties(), attributes(-1, 0.55), ModRarity.WHITE));

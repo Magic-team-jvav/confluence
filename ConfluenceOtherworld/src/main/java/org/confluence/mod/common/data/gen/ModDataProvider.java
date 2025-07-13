@@ -828,7 +828,7 @@ public class ModDataProvider {
             register(context, DEATH_CHEST_TRAP, configured.getOrThrow(ConfiguredFeatures.DEATH_CHEST_TRAP), RarityFilter.onAverageOnceEvery(20), biome, inSquare, throughCave);
             register(context, LIFE_CRYSTAL, configured.getOrThrow(ConfiguredFeatures.LIFE_CRYSTAL), biome, count5, inSquare, bottomThroughUnderground, targetSturdyAllowedAir, SurfaceRelativeThresholdFilter.of(Heightmap.Types.WORLD_SURFACE_WG, -110, -70));
             register(context, WATER_CHESTS, configured.getOrThrow(ConfiguredFeatures.WATER_CHESTS),
-                    biome, CountPlacement.of(8), inSquare, bottomThroughSurface,
+                    biome, RarityFilter.onAverageOnceEvery(8), inSquare, bottomThroughSurface,
                     EnvironmentScanPlacement.scanningFor(
                             Direction.DOWN,
                             BlockPredicate.hasSturdyFace(new Vec3i(0, -1, 0), Direction.UP),

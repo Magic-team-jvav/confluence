@@ -3589,18 +3589,22 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.ANGLER_HAT.get(), "渔夫帽");
         add(ArmorItems.ANGLER_VEST.get(), "渔夫背心");
         add(ArmorItems.ANGLER_PANTS.get(), "渔夫裤");
-        add(ArmorItems.MOLTEN_CHESTPLATE.get(), "熔岩胸甲");
         add(ArmorItems.MOLTEN_HELMET.get(), "熔岩头盔");
+        add(ArmorItems.MOLTEN_CHESTPLATE.get(), "熔岩胸甲");
         add(ArmorItems.MOLTEN_LEGGINGS.get(), "熔岩护腿");
         add(ArmorItems.MOLTEN_BOOTS.get(), "熔岩靴子");
-        add(ArmorItems.NECRO_CHESTPLATE.get(), "死灵胸甲");
         add(ArmorItems.NECRO_HELMET.get(), "死灵头盔");
+        add(ArmorItems.NECRO_CHESTPLATE.get(), "死灵胸甲");
         add(ArmorItems.NECRO_LEGGINGS.get(), "死灵护腿");
         add(ArmorItems.NECRO_BOOTS.get(), "死灵靴子");
-        add(ArmorItems.JUNGLE_CHESTPLATE.get(), "丛林胸甲");
         add(ArmorItems.JUNGLE_HELMET.get(), "丛林头盔");
+        add(ArmorItems.JUNGLE_CHESTPLATE.get(), "丛林胸甲");
         add(ArmorItems.JUNGLE_LEGGINGS.get(), "丛林护腿");
         add(ArmorItems.JUNGLE_BOOTS.get(), "丛林靴子");
+        add(ArmorItems.SPIDER_HELMET.get(), "蜘蛛头盔");
+        add(ArmorItems.SPIDER_CHESTPLATE.get(), "蜘蛛胸甲");
+        add(ArmorItems.SPIDER_LEGGINGS.get(), "蜘蛛护腿");
+        add(ArmorItems.SPIDER_BOOTS.get(), "蜘蛛靴子");
 
         add(ArmorItems.COBALT_MASK.get(), "钴面具");
         add(ArmorItems.COBALT_HAT.get(), "钴帽");
@@ -3643,6 +3647,11 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.TITANIUM_CHESTPLATE.get(), "钛金胸甲");
         add(ArmorItems.TITANIUM_LEGGINGS.get(), "钛金护腿");
         add(ArmorItems.TITANIUM_BOOTS.get(), "钛金靴子");
+
+        add(ArmorItems.CRYSTAL_ASSASSIN_HELMET.get(), "水晶刺客头盔");
+        add(ArmorItems.CRYSTAL_ASSASSIN_CHESTPLATE.get(), "水晶刺客胸甲");
+        add(ArmorItems.CRYSTAL_ASSASSIN_LEGGINGS.get(), "水晶刺客护腿");
+        add(ArmorItems.CRYSTAL_ASSASSIN_BOOTS.get(), "水晶刺客靴子");
 
         add(ArmorItems.HALLOWED_HEADGEAR.get(), "神圣头饰");
         add(ArmorItems.HALLOWED_HOOD.get(), "神圣兜帽");

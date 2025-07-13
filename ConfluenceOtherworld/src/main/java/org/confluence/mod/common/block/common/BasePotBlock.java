@@ -1,5 +1,6 @@
 package org.confluence.mod.common.block.common;
 
+import com.xiaohunao.terra_moment.common.init.TMMoments;
 import it.unimi.dsi.fastutil.longs.LongSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -176,7 +177,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
 
     private boolean dropGoldKey(ServerLevel level, BlockPos blockPos, Vec3 center) {
         if (level.random.nextFloat() < 0.0286F) {
-            Structure structure = level.registryAccess().registryOrThrow(Registries.STRUCTURE).get(ModStructures.DUNGEON_KEY);
+            Structure structure = level.registryAccess().registryOrThrow(Registries.STRUCTURE).get(ModStructures.Keys.DUNGEON);
             if (structure != null) {
                 int chunkX = SectionPos.blockToSectionCoord(blockPos.getX());
                 int chunkZ = SectionPos.blockToSectionCoord(blockPos.getZ());
@@ -420,9 +421,11 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
                 TEBossEntities.EATER_OF_WORLDS.get(),
                 TEBossEntities.BRAIN_OF_CTHULHU.get(),
                 TEBossEntities.SKELETRON.get()
+        ) + KillBoard.INSTANCE.countDefeated(
+                TMMoments.GOBLIN_ARMY.get()
         );
         for (int i = 0; i < defeated; i++) {
-            ratio *= 1.1F; // todo 毁灭者、双子魔眼、机械骷髅王、世纪之花、蜂王、石巨人、海盗入侵、哥布林入侵、雪人军团
+            ratio *= 1.1F; // todo 毁灭者、双子魔眼、机械骷髅王、世纪之花、蜂王、石巨人、海盗入侵、雪人军团
         }
         ratio *= moneyRatio;
         int amount = (int) Math.ceil(level.random.nextInt(80, 358) * ratio);

@@ -11,6 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -24,6 +25,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.chunk.status.ChunkStatus;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
@@ -57,6 +59,9 @@ import static org.confluence.lib.util.StructureUtils.*;
 import static org.confluence.lib.util.VectorUtils.*;
 
 public class DungeonStructure extends Structure {
+    public static final ResourceKey<ConfiguredFeature<?,?>> DUNGEON_LOST_PAPER = Confluence.asResourceKey(Registries.CONFIGURED_FEATURE, "dungeon_lost_paper");
+    public static final ResourceKey<ConfiguredFeature<?,?>> DUNGEON_POT = Confluence.asResourceKey(Registries.CONFIGURED_FEATURE, "dungeon_pot");
+    public static final ResourceKey<ConfiguredFeature<?,?>> DUNGEON_REMAINS = Confluence.asResourceKey(Registries.CONFIGURED_FEATURE, "dungeon_remains");
     public static final String[] TYPES = new String[]{
             "dungeon/blue",
             "dungeon/green",
@@ -93,9 +98,9 @@ public class DungeonStructure extends Structure {
     public static final String STAIRS_DOWN = TYPE + "_stairs_down";
     public static final String GATE = TYPE + "_dungeon_gate";
     private static final ResourceLocation[] GROUND_FEATURE = new ResourceLocation[]{
-            Confluence.asResource("to_structure/dungeon_lost_paper"),
-            Confluence.asResource("to_structure/dungeon_pot"),
-            Confluence.asResource("to_structure/remains_block")
+            DUNGEON_LOST_PAPER.location(),
+            DUNGEON_POT.location(),
+            DUNGEON_REMAINS.location()
     };
 
     public static final String UG_0_1 = TYPE + "_dungeon_underground_0_1";
@@ -184,7 +189,7 @@ public class DungeonStructure extends Structure {
             rectangular(underCenter.offset(-6, 45, -6), underCenter.offset(6, 51, 6), 0, blockMap, 0);
             List<Vector3d> groundFeaturePos = rectangularPos(underCenter.offset(-99, 0, -99), underCenter.offset(99, 0, 99), 0.03F, random);
             for (Vector3d pos : groundFeaturePos) {
-                featureMap.put(BlockPos.containing(pos.x, pos.y, pos.z), GROUND_FEATURE[random.nextInt(GROUND_FEATURE.length)]);
+                featureMap.put(VectorUtils.fromVector3d(pos), Util.getRandom(GROUND_FEATURE, random));
             }
 
             for (Map.Entry<Vector3d, BooleanStorage4> entry : mazeMap.entrySet()) {
@@ -615,7 +620,7 @@ public class DungeonStructure extends Structure {
     }
 
     public static boolean iterateDungeon(ServerLevel level, ChunkPos chunkPos, Predicate<StructureStart> consumer) {
-        Structure structure = level.registryAccess().registryOrThrow(Registries.STRUCTURE).get(ModStructures.DUNGEON_KEY);
+        Structure structure = level.registryAccess().registryOrThrow(Registries.STRUCTURE).get(ModStructures.Keys.DUNGEON);
         if (structure == null) return false;
         LongSet structureRefs = level.getChunk(chunkPos.x, chunkPos.z, ChunkStatus.STRUCTURE_REFERENCES).getReferencesForStructure(structure);
         for (long packed : structureRefs) {

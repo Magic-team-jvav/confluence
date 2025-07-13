@@ -8,7 +8,7 @@ import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.terra_curio.common.init.TCEntities;
 
-public class ImmunitySubProvider {
+public final class ImmunitySubProvider {
     public static void gather(ModDataMapProvider.Appender<DataMapProvider.Builder<ImmunityDataMap, EntityType<?>>> appender) {
         appender.create()
                 .add(ModEntities.VILETHRON_PROJECTILE, new ImmunityDataMap(Immunity.Type.STATIC, 5), false)

@@ -37,6 +37,12 @@
             "weight": 40,
             "minCount": 1,
             "maxCount": 1
+        },
+        {
+            "type": "terra_entity:piranha",
+            "weight": 40,
+            "minCount": 2,
+            "maxCount": 3
         }
     ]
 }

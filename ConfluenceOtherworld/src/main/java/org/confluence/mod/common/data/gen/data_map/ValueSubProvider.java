@@ -175,6 +175,7 @@ public final class ValueSubProvider {
                 .add(MaterialItems.BLACK_LENS, wrap(10, 0))
                 .add(MaterialItems.HARPY_FEATHER, 10)
                 .add(MaterialItems.GIANT_HARPY_FEATHER, wrap(2, 50, 0))
+                .add(MaterialItems.FLINX_FUR, wrap(1, 0))
                 .add(MaterialItems.STURDY_FOSSIL, wrap(5, 0))
                 .add(MaterialItems.OPAL, wrap(10, 0))
                 .add(MaterialItems.HEIM, wrap(5, 0))
@@ -591,10 +592,10 @@ public final class ValueSubProvider {
         appender.create()
                 .add(TESummonItems.SLIME_STAFF, wrap(2, 0, 0))
                 .add(TESummonItems.HORNET_STAFF, wrap(70, 0))
-                // 小鬼法杖
+                .add(TESummonItems.IMP_STAFF, wrap(54, 0))
                 // 吸血鬼青蛙法杖
-                .add(TESummonItems.FINCH_STAFF, wrap(1, 0, 0));
-        // 小雪怪法杖
+                .add(TESummonItems.FINCH_STAFF, wrap(1, 0, 0))
+                .add(TESummonItems.SNOW_FLINX_STAFF, wrap(1, 50, 0));
         // 阿比盖尔的花
         // 眼球激光塔
         appender.create()
@@ -779,7 +780,6 @@ public final class ValueSubProvider {
                 .add(TCItems.WORM_SCARF, 20000)
                 .add(TCItems.YELLOW_HORSESHOE_BALLOON, 30000)
                 .add(TCItems.WORKSHOP, wrap(2, 0, 0));
-        // todo AccessoryItems
         appender.create()
                 .add(TGItems.BOOMSTICK, wrap(2, 0, 0))
                 // Candy Corn Rifle 10 gold
@@ -1272,6 +1272,7 @@ public final class ValueSubProvider {
                 .add(TreasureBagItems.SKELETRON_TREASURE_BAG, wrap(3, 0, 0))
                 .add(TreasureBagItems.WALL_OF_FLESH_TREASURE_BAG, wrap(9, 50, 0));
         appender.create()
+                .add(AccessoryItems.PAINT_SPRAYER, wrap(2, 0, 0))
                 .add(AccessoryItems.LUCKY_COIN, wrap(1, 0, 0))
                 .add(AccessoryItems.ADHESIVE_BANDAGE, wrap(2, 0, 0))
                 .add(AccessoryItems.MEDICATED_BANDAGE, wrap(2, 0, 0))
@@ -1425,11 +1426,11 @@ public final class ValueSubProvider {
                 .add(FunctionalBlocks.LEVER.get(), wrap(6, 0))
                 .add(FunctionalBlocks.SIGNAL_ADAPTER.get(), wrap(8, 0))
                 .add(FunctionalBlocks.EVER_POWERED_RAIL.get(), 40)
-                .add(FunctionalBlocks.TIMERS_BLOCK_1_1.get(),wrap(20, 0))
-                .add(FunctionalBlocks.TIMERS_BLOCK_3_1.get(),wrap(20, 0))
-                .add(FunctionalBlocks.TIMERS_BLOCK_5_1.get(),wrap(20, 0))
-                .add(FunctionalBlocks.TIMERS_BLOCK_1_2.get(),wrap(40, 0))
-                .add(FunctionalBlocks.TIMERS_BLOCK_1_4.get(),wrap(40, 0));
+                .add(FunctionalBlocks.TIMERS_BLOCK_1_1.get(), wrap(20, 0))
+                .add(FunctionalBlocks.TIMERS_BLOCK_3_1.get(), wrap(20, 0))
+                .add(FunctionalBlocks.TIMERS_BLOCK_5_1.get(), wrap(20, 0))
+                .add(FunctionalBlocks.TIMERS_BLOCK_1_2.get(), wrap(40, 0))
+                .add(FunctionalBlocks.TIMERS_BLOCK_1_4.get(), wrap(40, 0));
         WaystonesHelper.appendValue(appender.create());
     }
 

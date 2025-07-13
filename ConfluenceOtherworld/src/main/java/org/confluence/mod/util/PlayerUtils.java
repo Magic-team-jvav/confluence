@@ -152,7 +152,7 @@ public final class PlayerUtils {
             case 4 -> 0.9F; // 新月
             default -> 1.0F;
         };
-        if (MomentInstanceManager.of(level).hasMoment(TMMoments.BLOOD_MOON.getKey().location())) {
+        if (MomentInstanceManager.of(level).hasMoment(TMMoments.BLOOD_MOON.getKey())) {
             base *= 1.1F;
         }
         base = HookMapManager.postHooks(ModHookTypes.FISHING_POWER.get(), (owner, hook, original) -> hook.modifyFishingPower(owner, player, original), player, base);

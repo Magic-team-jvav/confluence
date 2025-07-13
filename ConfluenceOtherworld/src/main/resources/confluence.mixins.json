@@ -77,6 +77,7 @@
         "integration.terra_entity.SkeletronMixin",
         "integration.terra_entity.TEBossEntitiesMixin",
         "integration.terra_entity.TEUtilsMixin",
+        "integration.terra_entity.TravelingMerchantNPCMixin",
         "integration.terrablender.MixinMultiNoiseBiomeSourceSquared",
         "integration.touhoulittlemaid.EntityMaidMixin",
         "integration.touhoulittlemaid.MaidFishingHookMixin",

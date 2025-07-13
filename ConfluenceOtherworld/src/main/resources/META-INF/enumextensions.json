@@ -17,6 +17,105 @@
                 "class": "org/confluence/mod/common/init/ModArmPoses",
                 "field": "LANCE"
             }
+        },
+        {
+            "enum": "net/minecraft/world/entity/vehicle/Boat$Type",
+            "name": "CONFLUENCE_ASH",
+            "constructor": "(Ljava/util/function/Supplier;Ljava/lang/String;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Z)V",
+            "parameters": {
+                "class": "org/confluence/mod/common/init/ModBoatTypes",
+                "field": "ASH"
+            }
+        },
+        {
+            "enum": "net/minecraft/world/entity/vehicle/Boat$Type",
+            "name": "CONFLUENCE_BAOBAB",
+            "constructor": "(Ljava/util/function/Supplier;Ljava/lang/String;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Z)V",
+            "parameters": {
+                "class": "org/confluence/mod/common/init/ModBoatTypes",
+                "field": "BAOBAB"
+            }
+        },
+        {
+            "enum": "net/minecraft/world/entity/vehicle/Boat$Type",
+            "name": "CONFLUENCE_EBONY",
+            "constructor": "(Ljava/util/function/Supplier;Ljava/lang/String;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Z)V",
+            "parameters": {
+                "class": "org/confluence/mod/common/init/ModBoatTypes",
+                "field": "EBONY"
+            }
+        },
+        {
+            "enum": "net/minecraft/world/entity/vehicle/Boat$Type",
+            "name": "CONFLUENCE_GLOWING_MUSHROOM",
+            "constructor": "(Ljava/util/function/Supplier;Ljava/lang/String;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Z)V",
+            "parameters": {
+                "class": "org/confluence/mod/common/init/ModBoatTypes",
+                "field": "GLOWING_MUSHROOM"
+            }
+        },
+        {
+            "enum": "net/minecraft/world/entity/vehicle/Boat$Type",
+            "name": "CONFLUENCE_LIVING",
+            "constructor": "(Ljava/util/function/Supplier;Ljava/lang/String;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Z)V",
+            "parameters": {
+                "class": "org/confluence/mod/common/init/ModBoatTypes",
+                "field": "LIVING"
+            }
+        },
+        {
+            "enum": "net/minecraft/world/entity/vehicle/Boat$Type",
+            "name": "CONFLUENCE_LIVING_MAHOGANY",
+            "constructor": "(Ljava/util/function/Supplier;Ljava/lang/String;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Z)V",
+            "parameters": {
+                "class": "org/confluence/mod/common/init/ModBoatTypes",
+                "field": "LIVING_MAHOGANY"
+            }
+        },
+        {
+            "enum": "net/minecraft/world/entity/vehicle/Boat$Type",
+            "name": "CONFLUENCE_PALM",
+            "constructor": "(Ljava/util/function/Supplier;Ljava/lang/String;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Z)V",
+            "parameters": {
+                "class": "org/confluence/mod/common/init/ModBoatTypes",
+                "field": "PALM"
+            }
+        },
+        {
+            "enum": "net/minecraft/world/entity/vehicle/Boat$Type",
+            "name": "CONFLUENCE_PEARL",
+            "constructor": "(Ljava/util/function/Supplier;Ljava/lang/String;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Z)V",
+            "parameters": {
+                "class": "org/confluence/mod/common/init/ModBoatTypes",
+                "field": "PEARL"
+            }
+        },
+        {
+            "enum": "net/minecraft/world/entity/vehicle/Boat$Type",
+            "name": "CONFLUENCE_SHADOW",
+            "constructor": "(Ljava/util/function/Supplier;Ljava/lang/String;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Z)V",
+            "parameters": {
+                "class": "org/confluence/mod/common/init/ModBoatTypes",
+                "field": "SHADOW"
+            }
+        },
+        {
+            "enum": "net/minecraft/world/entity/vehicle/Boat$Type",
+            "name": "CONFLUENCE_SPOOKY",
+            "constructor": "(Ljava/util/function/Supplier;Ljava/lang/String;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Z)V",
+            "parameters": {
+                "class": "org/confluence/mod/common/init/ModBoatTypes",
+                "field": "SPOOKY"
+            }
+        },
+        {
+            "enum": "net/minecraft/world/entity/vehicle/Boat$Type",
+            "name": "CONFLUENCE_YELLOW_WILLOW",
+            "constructor": "(Ljava/util/function/Supplier;Ljava/lang/String;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Z)V",
+            "parameters": {
+                "class": "org/confluence/mod/common/init/ModBoatTypes",
+                "field": "YELLOW_WILLOW"
+            }
         }
     ]
 }

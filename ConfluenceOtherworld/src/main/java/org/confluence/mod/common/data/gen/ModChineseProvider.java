@@ -1034,10 +1034,10 @@ public class ModChineseProvider extends LanguageProvider {
         add("event.confluence.hardmode_conversion.started", "转换数据准备完毕，正在开始转换");
         add("event.confluence.hardmode_conversion.finished", "“古老的光明与黑暗之魂已经释放。”");
         add("event.confluence.hardmode_conversion.welcome", "欢迎来到泰拉瑞亚");
-        add("event.confluence.npc.arrived", "%s%s已到达！");
-        add("event.confluence.npc.slain", "%s%s被杀死了……");
+        add("event.confluence.npc.arrived", "%2$s%1$s已到达！");
+        add("event.confluence.npc.slain", "%2$s%1$s被杀死了……");
         add("event.confluence.npc.left", "%s已离开！");
-        add("event.confluence.npc.departed", "旅商%s已离去！");
+        add("event.confluence.traveling_merchant.departed", "旅商%s已离去！");
 
         add("entity.minecraft.villager.confluence.sky_miller", "天师");
         add("entity.minecraft.villager.confluence.chef", "厨师");
@@ -1154,6 +1154,30 @@ public class ModChineseProvider extends LanguageProvider {
 
         add("equipment_benediction.set_switcher.confluence.pumpkin_set", "南瓜套装");
         add("equipment_benediction.set_switcher.confluence.pumpkin_set.data.0", "伤害提高10%");
+
+        add("equipment_benediction.set_switcher.confluence.obsidian_set", "黑曜石套装");
+        add("equipment_benediction.set_switcher.confluence.obsidian_set.data.0", "召唤伤害提高8%");
+        add("equipment_benediction.set_switcher.confluence.obsidian_set.data.1", "仆从数量上限增加1");
+        add("equipment_benediction.set_switcher.confluence.obsidian_set.data.2", "召唤伤害提高4%");
+        add("equipment_benediction.set_switcher.confluence.obsidian_set.data.3", "召唤伤害提高4%");
+        add("equipment_benediction.set_switcher.confluence.obsidian_set.data.4", "鞭子攻击范围扩大30%，鞭子攻击速度提高15%，召唤伤害提高15%");
+
+        add("equipment_benediction.set_switcher.confluence.wizard_set", "巫师套装");
+        add("equipment_benediction.set_switcher.confluence.wizard_set.data.0", "魔法伤害提高5%");
+        add("equipment_benediction.set_switcher.confluence.wizard_set.data.1", "魔法伤害和魔法暴击率各提高6%");
+        add("equipment_benediction.set_switcher.confluence.wizard_set.data.2", "最大魔力增加20，魔力消耗降低5%");
+        add("equipment_benediction.set_switcher.confluence.wizard_set.data.3", "最大魔力增加40，魔力消耗降低7%");
+        add("equipment_benediction.set_switcher.confluence.wizard_set.data.4", "最大魔力增加40，魔力消耗降低9%");
+        add("equipment_benediction.set_switcher.confluence.wizard_set.data.5", "最大魔力增加60，魔力消耗降低11%");
+        add("equipment_benediction.set_switcher.confluence.wizard_set.data.6", "最大魔力增加60，魔力消耗降低13%");
+        add("equipment_benediction.set_switcher.confluence.wizard_set.data.7", "最大魔力增加80，魔力消耗降低15%");
+        add("equipment_benediction.set_switcher.confluence.wizard_set.data.8", "最大魔力增加60，魔力消耗降低13%");
+
+        add("equipment_benediction.set_switcher.confluence.flinx_set", "雪怪套装");
+        add("equipment_benediction.set_switcher.confluence.flinx_set.data.0", "召唤伤害提高5%，仆从数量上限增加1");
+
+
+
 
         // npc对话
         add("dialogs.confluence.guide.0", "我的工作是为你接下来的任务提供建议。建议你遇到任何困难时都来和我谈谈。");
@@ -1955,6 +1979,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.EBONY_LOG_BLOCKS.getStrippedWood().get(), "去皮乌木");
         add(NatureBlocks.EBONY_LOG_BLOCKS.getDoor().get(), "乌木门");
         add(NatureBlocks.EBONY_LOG_BLOCKS.getSign().get(), "乌木告示牌");
+        add(NatureBlocks.EBONY_LOG_BLOCKS.getHangingSign().get(), "乌木悬挂告示牌");
         add(NatureBlocks.EBONY_LOG_BLOCKS.getStairs().get(), "乌木楼梯");
         add(NatureBlocks.EBONY_LOG_BLOCKS.getSlab().get(), "乌木台阶");
         add(NatureBlocks.EBONY_LOG_BLOCKS.getTrapdoor().get(), "乌木活板门");
@@ -1971,6 +1996,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.PEARL_LOG_BLOCKS.getStrippedWood().get(), "去皮珍珠木");
         add(NatureBlocks.PEARL_LOG_BLOCKS.getDoor().get(), "珍珠木门");
         add(NatureBlocks.PEARL_LOG_BLOCKS.getSign().get(), "珍珠木告示牌");
+        add(NatureBlocks.PEARL_LOG_BLOCKS.getHangingSign().get(), "暗影木悬挂告示牌");
         add(NatureBlocks.PEARL_LOG_BLOCKS.getStairs().get(), "珍珠木楼梯");
         add(NatureBlocks.PEARL_LOG_BLOCKS.getSlab().get(), "珍珠木台阶");
         add(NatureBlocks.PEARL_LOG_BLOCKS.getTrapdoor().get(), "珍珠木活板门");
@@ -1988,6 +2014,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.SHADOW_LOG_BLOCKS.getDoor().get(), "暗影木门");
         add(NatureBlocks.SHADOW_LOG_BLOCKS.getTrapdoor().get(), "暗影木活板门");
         add(NatureBlocks.SHADOW_LOG_BLOCKS.getSign().get(), "暗影木告示牌");
+        add(NatureBlocks.SHADOW_LOG_BLOCKS.getHangingSign().get(), "暗影木悬挂告示牌");
         add(NatureBlocks.SHADOW_LOG_BLOCKS.getStairs().get(), "暗影木楼梯");
         add(NatureBlocks.SHADOW_LOG_BLOCKS.getSlab().get(), "暗影木台阶");
         add(NatureBlocks.SHADOW_LOG_BLOCKS.getWood().get(), "暗影木");
@@ -2002,6 +2029,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.PALM_LOG_BLOCKS.getDoor().get(), "棕榈木木门");
         add(NatureBlocks.PALM_LOG_BLOCKS.getTrapdoor().get(), "棕榈木活板门");
         add(NatureBlocks.PALM_LOG_BLOCKS.getSign().get(), "棕榈木告示牌");
+        add(NatureBlocks.PALM_LOG_BLOCKS.getHangingSign().get(), "棕榈木悬挂告示牌");
         add(NatureBlocks.PALM_LOG_BLOCKS.getStairs().get(), "棕榈木楼梯");
         add(NatureBlocks.PALM_LOG_BLOCKS.getSlab().get(), "棕榈木台阶");
         add(NatureBlocks.PALM_LOG_BLOCKS.getWood().get(), "棕榈木");
@@ -2020,6 +2048,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.BAOBAB_LOG_BLOCKS.getDoor().get(), "猴面包木门");
         add(NatureBlocks.BAOBAB_LOG_BLOCKS.getTrapdoor().get(), "猴面包木活板门");
         add(NatureBlocks.BAOBAB_LOG_BLOCKS.getSign().get(), "猴面包木告示牌");
+        add(NatureBlocks.BAOBAB_LOG_BLOCKS.getHangingSign().get(), "猴面包木悬挂告示牌");
         add(NatureBlocks.BAOBAB_LOG_BLOCKS.getStairs().get(), "猴面包木楼梯");
         add(NatureBlocks.BAOBAB_LOG_BLOCKS.getSlab().get(), "猴面包木台阶");
         add(NatureBlocks.BAOBAB_LOG_BLOCKS.getWood().get(), "猴面包木");
@@ -2027,6 +2056,21 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.BAOBAB_LOG_BLOCKS.getFence().get(), "猴面包木栅栏");
         add(NatureBlocks.BAOBAB_LOG_BLOCKS.getFenceGate().get(), "猴面包木栅栏门");
         add(NatureBlocks.BAOBAB_LOG_BLOCKS.getPressurePlate().get(), "猴面包木压力板");
+
+        add(NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.getButton().get(), "发光蘑菇按钮");
+        add(NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.getPlanks().get(), "发光蘑菇木板");
+        add(NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.getDoor().get(), "发光蘑菇门");
+        add(NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.getTrapdoor().get(), "发光蘑菇活板门");
+        add(NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.getSign().get(), "发光蘑菇告示牌");
+        add(NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.getHangingSign().get(), "发光蘑菇悬挂告示牌");
+        add(NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.getStairs().get(), "发光蘑菇楼梯");
+        add(NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.getSlab().get(), "发光蘑菇台阶");
+        add(NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.getFence().get(), "发光蘑菇栅栏");
+        add(NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.getFenceGate().get(), "发光蘑菇栅栏门");
+        add(NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.getPressurePlate().get(), "发光蘑菇压力板");
+
+
+
 
         add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getButton().get(), "黄柳木按钮");
         add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getPlanks().get(), "黄柳木板");
@@ -2036,6 +2080,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getDoor().get(), "黄柳木门");
         add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getTrapdoor().get(), "黄柳木活板门");
         add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getSign().get(), "黄柳木告示牌");
+        add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getHangingSign().get(), "黄柳木悬挂告示牌");
         add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getStairs().get(), "黄柳木楼梯");
         add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getSlab().get(), "黄柳木台阶");
         add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getWood().get(), "黄柳木");
@@ -2052,6 +2097,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.ASH_LOG_BLOCKS.getDoor().get(), "白蜡木门");
         add(NatureBlocks.ASH_LOG_BLOCKS.getTrapdoor().get(), "白蜡木活板门");
         add(NatureBlocks.ASH_LOG_BLOCKS.getSign().get(), "白蜡木告示牌");
+        add(NatureBlocks.ASH_LOG_BLOCKS.getHangingSign().get(), "白蜡木悬挂告示牌");
         add(NatureBlocks.ASH_LOG_BLOCKS.getStairs().get(), "白蜡木楼梯");
         add(NatureBlocks.ASH_LOG_BLOCKS.getSlab().get(), "白蜡木台阶");
         add(NatureBlocks.ASH_LOG_BLOCKS.getWood().get(), "白蜡木");
@@ -2068,6 +2114,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.LIVING_LOG_BLOCKS.getDoor().get(), "生命木门");
         add(NatureBlocks.LIVING_LOG_BLOCKS.getTrapdoor().get(), "生命木活板门");
         add(NatureBlocks.LIVING_LOG_BLOCKS.getSign().get(), "生命木告示牌");
+        add(NatureBlocks.LIVING_LOG_BLOCKS.getHangingSign().get(), "生命木悬挂告示牌");
         add(NatureBlocks.LIVING_LOG_BLOCKS.getStairs().get(), "生命木楼梯");
         add(NatureBlocks.LIVING_LOG_BLOCKS.getSlab().get(), "生命木台阶");
         add(NatureBlocks.LIVING_LOG_BLOCKS.getWood().get(), "生命木");
@@ -2076,21 +2123,22 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.LIVING_LOG_BLOCKS.getFenceGate().get(), "生命木栅栏门");
         add(NatureBlocks.LIVING_LOG_BLOCKS.getPressurePlate().get(), "生命木压力板");
 
-        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getButton().get(), "生命红木按钮");
-        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getPlanks().get(), "生命红木板");
-        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getLog().get(), "生命红木原木");
-        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getStrippedLog().get(), "去皮生命红原木");
-        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getStrippedWood().get(), "去皮生命红木");
-        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getDoor().get(), "生命红木门");
-        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getTrapdoor().get(), "生命红木活板门");
-        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getSign().get(), "生命红木告示牌");
-        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getStairs().get(), "生命红木楼梯");
-        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getSlab().get(), "生命红木台阶");
-        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getWood().get(), "生命红木");
-        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getLeaves().get(), "生命红木树叶");
-        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getFence().get(), "生命红木栅栏");
-        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getFenceGate().get(), "生命红木栅栏门");
-        add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getPressurePlate().get(), "生命红木压力板");
+        add(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getButton().get(), "生命红木按钮");
+        add(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getPlanks().get(), "生命红木板");
+        add(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getLog().get(), "生命红木原木");
+        add(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getStrippedLog().get(), "去皮生命红原木");
+        add(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getStrippedWood().get(), "去皮生命红木");
+        add(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getDoor().get(), "生命红木门");
+        add(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getTrapdoor().get(), "生命红木活板门");
+        add(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getSign().get(), "生命红木告示牌");
+        add(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getHangingSign().get(), "生命红悬挂告示牌");
+        add(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getStairs().get(), "生命红木楼梯");
+        add(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getSlab().get(), "生命红木台阶");
+        add(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getWood().get(), "生命红木");
+        add(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getLeaves().get(), "生命红木树叶");
+        add(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getFence().get(), "生命红木栅栏");
+        add(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getFenceGate().get(), "生命红木栅栏门");
+        add(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getPressurePlate().get(), "生命红木压力板");
 
         add(NatureBlocks.DESERT_FOSSIL.get(), "沙漠化石");
         add(NatureBlocks.HARDENED_SAND_BLOCK.get(), "硬化沙块");
@@ -2181,10 +2229,11 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.SPOOKY_LOG_BLOCKS.getButton().get(), "阴森按钮");
         add(NatureBlocks.SPOOKY_LOG_BLOCKS.getDoor().get(), "阴森木门");
         add(NatureBlocks.SPOOKY_LOG_BLOCKS.getTrapdoor().get(), "阴森木活板门");
-        add(NatureBlocks.SPOOKY_LOG_BLOCKS.getSign().get(), "阴森告示牌");
-        add(NatureBlocks.SPOOKY_LOG_BLOCKS.getStairs().get(), "阴森楼梯");
-        add(NatureBlocks.SPOOKY_LOG_BLOCKS.getSlab().get(), "阴森台阶");
-        add(NatureBlocks.SPOOKY_LOG_BLOCKS.getLeaves().get(), "阴森树叶");
+        add(NatureBlocks.SPOOKY_LOG_BLOCKS.getSign().get(), "阴森木告示牌");
+        add(NatureBlocks.SPOOKY_LOG_BLOCKS.getHangingSign().get(), "阴森木悬挂告示牌");
+        add(NatureBlocks.SPOOKY_LOG_BLOCKS.getStairs().get(), "阴森木楼梯");
+        add(NatureBlocks.SPOOKY_LOG_BLOCKS.getSlab().get(), "阴森木台阶");
+        add(NatureBlocks.SPOOKY_LOG_BLOCKS.getLeaves().get(), "阴森木树叶");
 
 
         add(NatureBlocks.STELLAR_BLOSSOM.get(), "星辰花");
@@ -2388,6 +2437,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.CHISELED_BAOBAB_PLANKS.get(), "雕纹猴面包木木板");
         add(DecorativeBlocks.CHISELED_LIVING_PLANKS.get(), "雕纹生命木板");
         add(DecorativeBlocks.CHISELED_LIVING_MAHOGANY_PLANKS.get(), "雕纹生命红木板");
+        add(DecorativeBlocks.CHISELED_GLOWING_MUSHROOM_PLANKS.get(), "雕纹发光蘑菇木板");
         add(DecorativeBlocks.GRANITE_COLUMN.get(), "花岗岩梁");
         add(DecorativeBlocks.PURE_GLASS.get(), "纯净玻璃");
         add(DecorativeBlocks.WHITE_PURE_GLASS.get(), "白色纯净玻璃");
@@ -2721,6 +2771,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.SPELL_TOME.get(), "魔法书");
         add(MaterialItems.HARPY_FEATHER.get(), "鸟妖之羽");
         add(MaterialItems.GIANT_HARPY_FEATHER.get(), "巨型鸟妖之羽");
+        add(MaterialItems.FLINX_FUR.get(), "小雪怪皮毛");
         add(MaterialItems.AETHERIUM_SHARD.get(), "以太碎片");
         add(MaterialItems.AETHERIUM_GOLD.get(), "嬗金");
         add(MaterialItems.CHINA_PLATE.get(), "陶瓷盘");
@@ -2969,6 +3020,28 @@ public class ModChineseProvider extends LanguageProvider {
         add(ToolItems.LAVA_ABSORBANT_SPONGE.get(), "岩浆吸收棉");
         add(ToolItems.ULTRA_ABSORBANT_SPONGE.get(), "超强吸收棉");
 
+        add(BoatItems.ASH_BOAT.get(), "白蜡木船");
+        add(BoatItems.ASH_CHEST_BOAT.get(), "白蜡木运输船");
+        add(BoatItems.BAOBAB_BOAT.get(), "猴面包木船");
+        add(BoatItems.BAOBAB_CHEST_BOAT.get(), "猴面包木运输船");
+        add(BoatItems.EBONY_BOAT.get(), "乌木船");
+        add(BoatItems.EBONY_CHEST_BOAT.get(), "乌木运输船");
+        add(BoatItems.PEARL_BOAT.get(), "珍珠木船");
+        add(BoatItems.PEARL_CHEST_BOAT.get(), "珍珠木运输船");
+        add(BoatItems.GLOWING_MUSHROOM_BOAT.get(), "发光蘑菇船");
+        add(BoatItems.GLOWING_MUSHROOM_CHEST_BOAT.get(), "发光蘑菇运输船");
+        add(BoatItems.LIVING_BOAT.get(), "生命木船");
+        add(BoatItems.LIVING_CHEST_BOAT.get(), "生命木运输船");
+        add(BoatItems.LIVING_MAHOGANY_BOAT.get(), "生命红木船");
+        add(BoatItems.LIVING_MAHOGANY_CHEST_BOAT.get(), "生命红木运输船");
+        add(BoatItems.PALM_BOAT.get(), "棕榈木船");
+        add(BoatItems.PALM_CHEST_BOAT.get(), "棕榈木运输船");
+        add(BoatItems.SHADOW_BOAT.get(), "暗影木船");
+        add(BoatItems.SHADOW_CHEST_BOAT.get(), "暗影木运输船");
+        add(BoatItems.SPOOKY_BOAT.get(), "阴森木船");
+        add(BoatItems.SPOOKY_CHEST_BOAT.get(), "阴森木运输船");
+        add(BoatItems.YELLOW_WILLOW_BOAT.get(), "黄柳木船");
+        add(BoatItems.YELLOW_WILLOW_CHEST_BOAT.get(), "黄柳木运输船");
 
         add(ConsumableItems.SHURIKEN.get(), "手里剑");
         add(ConsumableItems.THROWING_KNIVES.get(), "投刀");
@@ -3582,6 +3655,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.GOGGLES.get(), "护目镜");
         add(ArmorItems.GREEN_CAP.get(), "绿帽子");
         add(ArmorItems.VIKING_HELMET.get(), "维京头盔");
+        add(ArmorItems.FLINX_FUR_COAT.get(), "小雪怪皮毛外套");
         add(ArmorItems.WIZARD_HAT.get(), "巫师帽");
         add(ArmorItems.MAGIC_HAT.get(), "魔法帽");
         add(ArmorItems.AMETHYST_ROBE.get(), "紫晶长袍");
@@ -3592,6 +3666,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.MYSTIC_ROBE.get(), "神秘长袍");
         add(ArmorItems.DIAMOND_ROBE.get(), "钻石长袍");
         add(ArmorItems.AMBER_ROBE.get(), "琥珀长袍");
+
 
 
         // 任务鱼

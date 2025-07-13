@@ -13,23 +13,148 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
+import net.neoforged.neoforge.common.Tags;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.*;
-import org.confluence.mod.common.init.item.MaterialItems;
-import org.confluence.mod.common.init.item.ModItems;
-import org.confluence.mod.common.init.item.PotionItems;
-import org.confluence.mod.common.init.item.ToolItems;
+import org.confluence.mod.common.init.item.*;
 import org.confluence.terraentity.init.TEItems;
 
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
+@SuppressWarnings("all")
 public class CraftingRecipeProvider extends AbstractRecipeProvider {
     public CraftingRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, registries);
+    }
+
+    // 木头配方
+    private void registerWoodRecipes(RecipeOutput output, LogBlockSet logBlockSet, TagKey<Item> woodLogTag) {
+        shapeless(output, logBlockSet.getPlanks().toStack(4), Ingredient.of(woodLogTag));
+        shapeless(output, logBlockSet.getButton().toStack(), Ingredient.of(logBlockSet.getPlanks()));
+        if (logBlockSet.getLog() != null && logBlockSet.getWood() != null) shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(logBlockSet.getLog())
+        ), List.of(
+                "##",
+                "##"
+        )), logBlockSet.getWood().toStack(3));
+        if (logBlockSet.getStrippedLog() != null && logBlockSet.getStrippedWood() != null) shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(logBlockSet.getStrippedLog())
+        ), List.of(
+                "##",
+                "##"
+        )), logBlockSet.getStrippedWood().toStack(3));
+        if (logBlockSet.getStairs() != null) shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(logBlockSet.getPlanks())
+        ), List.of(
+                "#  ",
+                "## ",
+                "###"
+        )), logBlockSet.getStairs().toStack(4));
+        if (logBlockSet.getSlab() != null) shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(logBlockSet.getPlanks())
+        ), List.of(
+                "###"
+        )), logBlockSet.getSlab().toStack(6));
+        if (logBlockSet.getFence() != null) shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(logBlockSet.getPlanks()),
+                '/', Ingredient.of(Items.STICK)
+        ), List.of(
+                "#/#",
+                "#/#"
+        )), logBlockSet.getFence().toStack(3));
+        if (logBlockSet.getFenceGate() != null) shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(logBlockSet.getPlanks()),
+                '/', Ingredient.of(Items.STICK)
+        ), List.of(
+                "/#/",
+                "/#/"
+        )), logBlockSet.getFenceGate().toStack());
+        if (logBlockSet.getDoor() != null) shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(logBlockSet.getPlanks())
+        ), List.of(
+                "##",
+                "##",
+                "##"
+        )), logBlockSet.getDoor().toStack(3));
+        if (logBlockSet.getTrapdoor() != null) shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(logBlockSet.getPlanks())
+        ), List.of(
+                "###",
+                "###"
+        )), logBlockSet.getTrapdoor().toStack(2));
+        if (logBlockSet.getPressurePlate() != null) shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(logBlockSet.getPlanks())
+        ), List.of(
+                "##"
+        )), logBlockSet.getPressurePlate().toStack());
+        if (logBlockSet.getSignItem() != null) shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(logBlockSet.getPlanks()),
+                '/', Ingredient.of(Items.STICK)
+        ), List.of(
+                "###",
+                "###",
+                " / "
+        )), logBlockSet.getSignItem().toStack());
+        if (logBlockSet.getHangingSignItem() != null && logBlockSet.getStrippedLog() != null) shaped(output, ShapedRecipePattern.of(Map.of(
+                '|', Ingredient.of(Blocks.CHAIN),
+                '#', Ingredient.of(logBlockSet.getStrippedLog())
+        ), List.of(
+                "| |",
+                "###",
+                "###"
+        )), logBlockSet.getHangingSignItem().toStack(6));
+    }
+
+    private void registerBoatRecipes(RecipeOutput output, LogBlockSet woodSet, ItemLike boatItem, ItemLike chestBoatItem) {
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(woodSet.getPlanks())
+        ), List.of(
+                "# #",
+                "###"
+        )), boatItem.asItem().getDefaultInstance());
+
+        shapeless(output, chestBoatItem.asItem().getDefaultInstance(),
+                Ingredient.of(boatItem),
+                Ingredient.of(Tags.Items.CHESTS_WOODEN)
+        );
+    }
+
+    private void registerArmorRecipes(RecipeOutput output, Ingredient materialIngredient,
+                                      ItemLike helmet, ItemLike chestplate, ItemLike leggings, ItemLike boots) {
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', materialIngredient
+        ), List.of(
+                "###",
+                "# #"
+        )), helmet.asItem().getDefaultInstance());
+
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', materialIngredient
+        ), List.of(
+                "# #",
+                "# #"
+        )), boots.asItem().getDefaultInstance());
+
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', materialIngredient
+        ), List.of(
+                "###",
+                "# #",
+                "# #"
+        )), leggings.asItem().getDefaultInstance());
+
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', materialIngredient
+        ), List.of(
+                "# #",
+                "###",
+                "###"
+        )), chestplate.asItem().getDefaultInstance());
     }
 
     @Override
@@ -176,6 +301,46 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 "# #",
                 "###"
         )), ChestBlocks.SANDSTONE_CHEST.toStack());
+
+        // 木头系列
+        registerWoodRecipes(output, NatureBlocks.EBONY_LOG_BLOCKS, ModTags.Items.EBONY_LOGS);
+        registerWoodRecipes(output, NatureBlocks.PEARL_LOG_BLOCKS, ModTags.Items.PEARL_LOGS);
+        registerWoodRecipes(output, NatureBlocks.SHADOW_LOG_BLOCKS, ModTags.Items.SHADOW_LOGS);
+        registerWoodRecipes(output, NatureBlocks.PALM_LOG_BLOCKS, ModTags.Items.PALM_LOGS);
+        registerWoodRecipes(output, NatureBlocks.BAOBAB_LOG_BLOCKS, ModTags.Items.BAOBAB_LOGS);
+        registerWoodRecipes(output, NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS, ModTags.Items.GLOWING_MUSHROOM_STEMS);
+        registerWoodRecipes(output, NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS, ModTags.Items.YELLOW_WILLOW_LOGS);
+        registerWoodRecipes(output, NatureBlocks.LIVING_LOG_BLOCKS, ModTags.Items.LIVING_LOGS);
+        registerWoodRecipes(output, NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS, ModTags.Items.LIVING_MAHOGANY_LOGS);
+        registerWoodRecipes(output, NatureBlocks.ASH_LOG_BLOCKS, ModTags.Items.ASH_LOGS);
+        registerWoodRecipes(output, NatureBlocks.SPOOKY_LOG_BLOCKS, ModTags.Items.SPOOKY_LOGS);
+
+        // 船
+        registerBoatRecipes(output, NatureBlocks.EBONY_LOG_BLOCKS, BoatItems.EBONY_BOAT, BoatItems.EBONY_CHEST_BOAT);
+        registerBoatRecipes(output, NatureBlocks.PEARL_LOG_BLOCKS, BoatItems.PEARL_BOAT, BoatItems.PEARL_CHEST_BOAT);
+        registerBoatRecipes(output, NatureBlocks.SHADOW_LOG_BLOCKS, BoatItems.SHADOW_BOAT, BoatItems.SHADOW_CHEST_BOAT);
+        registerBoatRecipes(output, NatureBlocks.PALM_LOG_BLOCKS, BoatItems.PALM_BOAT, BoatItems.PALM_CHEST_BOAT);
+        registerBoatRecipes(output, NatureBlocks.BAOBAB_LOG_BLOCKS, BoatItems.BAOBAB_BOAT, BoatItems.BAOBAB_CHEST_BOAT);
+        registerBoatRecipes(output, NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS, BoatItems.GLOWING_MUSHROOM_BOAT, BoatItems.GLOWING_MUSHROOM_CHEST_BOAT);
+        registerBoatRecipes(output, NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS, BoatItems.YELLOW_WILLOW_BOAT, BoatItems.YELLOW_WILLOW_CHEST_BOAT);
+        registerBoatRecipes(output, NatureBlocks.LIVING_LOG_BLOCKS, BoatItems.LIVING_BOAT, BoatItems.LIVING_CHEST_BOAT);
+        registerBoatRecipes(output, NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS, BoatItems.LIVING_MAHOGANY_BOAT, BoatItems.LIVING_MAHOGANY_CHEST_BOAT);
+        registerBoatRecipes(output, NatureBlocks.ASH_LOG_BLOCKS, BoatItems.ASH_BOAT, BoatItems.ASH_CHEST_BOAT);
+        registerBoatRecipes(output, NatureBlocks.SPOOKY_LOG_BLOCKS, BoatItems.SPOOKY_BOAT, BoatItems.SPOOKY_CHEST_BOAT);
+
+        // 基础盔甲
+        registerArmorRecipes(output, Ingredient.of(NatureBlocks.ASH_LOG_BLOCKS.getPlanks()), ArmorItems.ASH_HELMET, ArmorItems.ASH_CHESTPLATE, ArmorItems.ASH_LEGGINGS, ArmorItems.ASH_BOOTS);
+        registerArmorRecipes(output, Ingredient.of(NatureBlocks.EBONY_LOG_BLOCKS.getPlanks()), ArmorItems.EBONY_HELMET, ArmorItems.EBONY_CHESTPLATE, ArmorItems.EBONY_LEGGINGS, ArmorItems.EBONY_BOOTS);
+        registerArmorRecipes(output, Ingredient.of(NatureBlocks.SHADOW_LOG_BLOCKS.getPlanks()), ArmorItems.SHADOW_PLANK_HELMET, ArmorItems.SHADOW_PLANK_CHESTPLATE, ArmorItems.SHADOW_PLANK_LEGGINGS, ArmorItems.SHADOW_PLANK_BOOTS);
+        registerArmorRecipes(output, Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.getPlanks()), ArmorItems.PEARL_HELMET, ArmorItems.PEARL_CHESTPLATE, ArmorItems.PEARL_LEGGINGS, ArmorItems.PEARL_BOOTS);
+        registerArmorRecipes(output, Ingredient.of(ModTags.Items.INITIAL_WOOD), ArmorItems.PLANK_HELMET, ArmorItems.PLANK_CHESTPLATE, ArmorItems.PLANK_LEGGINGS, ArmorItems.PLANK_BOOTS);
+        registerArmorRecipes(output, Ingredient.of(Items.CACTUS), ArmorItems.CACTUS_HELMET, ArmorItems.CACTUS_CHESTPLATE, ArmorItems.CACTUS_LEGGINGS, ArmorItems.CACTUS_BOOTS);
+        registerArmorRecipes(output, Ingredient.of(Tags.Items.INGOTS_COPPER), ArmorItems.COPPER_HELMET, ArmorItems.COPPER_CHESTPLATE, ArmorItems.COPPER_LEGGINGS, ArmorItems.COPPER_BOOTS);
+        registerArmorRecipes(output, Ingredient.of(ModTags.Items.INGOTS_TIN), ArmorItems.TIN_HELMET, ArmorItems.TIN_CHESTPLATE, ArmorItems.TIN_LEGGINGS, ArmorItems.TIN_BOOTS);
+        registerArmorRecipes(output, Ingredient.of(ModTags.Items.INGOTS_LEAD), ArmorItems.LEAD_HELMET, ArmorItems.LEAD_CHESTPLATE, ArmorItems.LEAD_LEGGINGS, ArmorItems.LEAD_BOOTS);
+        registerArmorRecipes(output, Ingredient.of(ModTags.Items.INGOTS_SILVER), ArmorItems.SILVER_HELMET, ArmorItems.SILVER_CHESTPLATE, ArmorItems.SILVER_LEGGINGS, ArmorItems.SILVER_BOOTS);
+        registerArmorRecipes(output, Ingredient.of(ModTags.Items.INGOTS_TUNGSTEN), ArmorItems.TUNGSTEN_HELMET, ArmorItems.TUNGSTEN_CHESTPLATE, ArmorItems.TUNGSTEN_LEGGINGS, ArmorItems.TUNGSTEN_BOOTS);
+        registerArmorRecipes(output, Ingredient.of(ModTags.Items.INGOTS_PLATINUM), ArmorItems.PLATINUM_HELMET, ArmorItems.PLATINUM_CHESTPLATE, ArmorItems.PLATINUM_LEGGINGS, ArmorItems.PLATINUM_BOOTS);
 
         // 石头及深板岩压力板
         shaped(output, ShapedRecipePattern.of(Map.of('#', Ingredient.of(Blocks.STONE)), List.of("##")), new ItemStack(FunctionalBlocks.STONE_PRESSURE_PLATE));

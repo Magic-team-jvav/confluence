@@ -1,25 +1,23 @@
 package org.confluence.mod.mixin.integration.xaero;
 
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import org.confluence.mod.integration.waystones.WaystonesHelper;
 import org.confluence.mod.integration.xaero.PylonWaypointElementRenderer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
-import xaero.map.element.MapElementRenderHandler;
-import xaero.map.element.MapElementRenderer;
+import xaero.map.element.render.ElementRenderer;
 
-import java.util.List;
+import java.util.ArrayList;
 
 @Pseudo
 @Mixin(targets = "xaero.map.element.MapElementRenderHandler$Builder", remap = false)
 public abstract class MapElementRenderHandler$BuilderMixin {
-    @WrapOperation(method = "build", at = @At(value = "NEW", target = "(Ljava/util/List;I)Lxaero/map/element/MapElementRenderHandler;"))
-    private MapElementRenderHandler appendRenderer(List<MapElementRenderer<?, ?, ?>> renderers, int location, Operation<MapElementRenderHandler> original) {
+    @ModifyExpressionValue(method = "build", at = @At(value = "NEW", target = "()Ljava/util/ArrayList;"))
+    private ArrayList<ElementRenderer<?, ?, ?>> appendRenderer(ArrayList<ElementRenderer<?, ?, ?>> original) {
         if (WaystonesHelper.IS_LOADED) {
-            renderers.add(new PylonWaypointElementRenderer());
+            original.add(new PylonWaypointElementRenderer());
         }
-        return original.call(renderers, location);
+        return original;
     }
 }

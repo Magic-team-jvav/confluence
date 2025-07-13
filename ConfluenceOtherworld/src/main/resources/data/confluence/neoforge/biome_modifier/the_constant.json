@@ -1,6 +1,0 @@
-{
-    "type": "neoforge:add_carvers",
-    "biomes": "#minecraft:is_overworld",
-    "carvers": "confluence:wavy_cave_carver",
-    "step": "air"
-}

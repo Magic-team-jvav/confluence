@@ -26,9 +26,9 @@ public class DaedalusStormbow extends TerraBowItem {
             generation.genProjectile(player, weapon, 2f, () -> {
                 ItemStack itemstack = owner.getProjectile(weapon);
                 if (itemstack.isEmpty()) return null;
-//            if(player.getRandom().nextFloat() < 0.66f)
+                ItemStack ammo = itemstack.copyWithCount(1);
                 itemstack.shrink(1);
-                return createProjectile(owner.level(), owner, weapon, itemstack, true);
+                return createProjectile(owner.level(), owner, weapon, ammo, true);
             });
         }
     }

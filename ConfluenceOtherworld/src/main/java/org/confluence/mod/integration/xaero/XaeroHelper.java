@@ -12,6 +12,7 @@ import java.util.UUID;
 
 public class XaeroHelper {
     public static final boolean IS_LOADED = ModList.get().isLoaded("xaeroworldmap");
+    public static final String versionRange = "[1.39.9,)";
     private static Object collector;
 
     public static Object getCollector() {

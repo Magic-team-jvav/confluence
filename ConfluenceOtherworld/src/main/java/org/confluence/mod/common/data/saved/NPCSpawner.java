@@ -2,6 +2,8 @@ package org.confluence.mod.common.data.saved;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.*;
+import com.xiaohunao.heaven_destiny_moment.common.moment.MomentInstanceManager;
+import com.xiaohunao.terra_moment.common.init.TMMoments;
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
 import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
 import net.minecraft.core.BlockPos;
@@ -38,15 +40,19 @@ import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.common.worldgen.structure.DungeonStructure;
 import org.confluence.mod.integration.terra_entity.IAbstractTerraNPC;
 import org.confluence.mod.integration.terra_entity.TEEvents;
+import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IStructureStart;
+import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.mixin.integration.terra_entity.AnglerNPCMixin;
 import org.confluence.mod.mixin.integration.terra_entity.MechanicNPCMixin;
+import org.confluence.mod.util.DateUtils;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_guns.common.init.TGTags;
 import org.confluence.terraentity.api.event.NPCEvent;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 import org.confluence.terraentity.entity.npc.AnglerNPC;
+import org.confluence.terraentity.entity.npc.TravelingMerchantNPC;
 import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.confluence.terraentity.init.entity.TENpcEntities;
 
@@ -118,11 +124,15 @@ public class NPCSpawner implements IGlobalData {
         return isAdvancedCombatTechniquesVolumeTwoUsed;
     }
 
-    public int getAliveNpcCount(Region region) {
+    public int getAliveNpcCount(Region region, Predicate<EntityType<?>> filter) {
         Object2BooleanMap<EntityType<?>> map = npcAlive.get(region);
         if (map == null) return 0;
         int count = 0;
-        for (boolean alive : map.values()) if (alive) count++;
+        for (Object2BooleanMap.Entry<EntityType<?>> entry : map.object2BooleanEntrySet()) {
+            if (entry.getBooleanValue() && filter.test(entry.getKey())) {
+                count++;
+            }
+        }
         return count;
     }
 
@@ -138,12 +148,21 @@ public class NPCSpawner implements IGlobalData {
     public void setNPCAlive(Region region, EntityType<?> entityType, boolean alive) {
         if (alive) {
             getRegionAliveDetails(region).put(entityType, true);
-            npcSpawned.add(entityType);
+            addSpawned(entityType);
         } else {
             Object2BooleanMap<EntityType<?>> map = npcAlive.get(region);
             if (map != null && map.getBoolean(entityType)) {
                 map.put(entityType, false);
             }
+        }
+    }
+
+    /**
+     * 旅商与老人不会加进去
+     */
+    public void addSpawned(EntityType<?> entityType) {
+        if (entityType != TENpcEntities.TRAVELING_MERCHANT.get() && entityType != TENpcEntities.OLD_MAN.get()) {
+            npcSpawned.add(entityType);
         }
     }
 
@@ -181,7 +200,9 @@ public class NPCSpawner implements IGlobalData {
             MutableComponent message;
             if (living instanceof AnglerNPC /* todo 或宠物/公主 */) {
                 message = Component.translatable("event.confluence.npc.left", living.getName());
-            } else { // todo 旅商已离去！
+            } else if (living instanceof TravelingMerchantNPC) {
+                message = Component.translatable("event.confluence.traveling_merchant.departed", living.getName());
+            } else {
                 message = Component.translatable("event.confluence.npc.slain", living.getType().getDescription(), living.getName());
             }
             broadcastMessageToRegion(living.level(), living, message.withColor(GlobalColors.NPC_SLAIN.get()));
@@ -225,24 +246,33 @@ public class NPCSpawner implements IGlobalData {
         this.isAdvancedCombatTechniquesVolumeTwoUsed = false;
     }
 
-    public void trySpawnGuide(ServerPlayer serverPlayer) {
-        ServerLevel serverLevel = serverPlayer.serverLevel();
+    /**
+     * 醉酒世界则会生成派对女孩<p>
+     * todo 其它秘密种子的特殊生成
+     */
+    public void trySpawnGuide(ServerPlayer player) {
+        ServerLevel serverLevel = player.serverLevel();
         if (serverLevel.dimension() == OverworldUtils.dimension()) {
-            BlockPos pos = getNpcSpawnPos(serverPlayer);
-            if (!hasNPCAlive(new Region(pos), TENpcEntities.GUIDE.get())) {
-                spawnAtPos(serverLevel, pos, TENpcEntities.GUIDE.get());
+            BlockPos pos = getNpcSpawnPos(player);
+            Region region = new Region(pos);
+            if (IMinecraftServer.matchesSecretFlag(player.server, IWorldOptions.DW_MASK)) {
+                if (!hasNPCAlive(region, TENpcEntities.PARTY_GIRL.get())) {
+                    spawnAtPos(serverLevel, pos, TENpcEntities.PARTY_GIRL.get());
+                }
+            } else {
+                if (!hasNPCAlive(region, TENpcEntities.GUIDE.get())) {
+                    spawnAtPos(serverLevel, pos, TENpcEntities.GUIDE.get());
+                }
             }
         }
     }
 
-    /**
-     * 每两分钟生成一位NPC
-     */
     public void checkNpcRespawn(ServerLevel serverLevel) {
         outer:
         for (ServerPlayer player : serverLevel.players()) {
             BlockPos pos = getNpcSpawnPos(player);
             Region region = new Region(pos);
+            if (trySpawnTravelingMerchant(player, pos, region)) continue;
             if (trySpawnClothier(player, pos, region)) continue;
             if (trySpawnMechanic(player, pos, region)) continue;
             for (EntityType<?> entityType : npcSpawned) {
@@ -264,7 +294,7 @@ public class NPCSpawner implements IGlobalData {
             // 发型师
             if (trySpawnGoblinTinkerer(player, pos, region)) continue;
             // 巫医
-            // 派对女孩
+            if (trySpawnPartyGirl(player, pos, region)) continue;
             // 巫师
             // 税收官
             // 松露人
@@ -275,40 +305,74 @@ public class NPCSpawner implements IGlobalData {
     }
 
     /**
+     * 醉酒世界则会生成向导
+     */
+    private boolean trySpawnPartyGirl(ServerPlayer player, BlockPos pos, Region region) {
+        if (IMinecraftServer.matchesSecretFlag(player.server, IWorldOptions.DW_MASK)) {
+            if (!hasNPCAlive(region, TENpcEntities.GUIDE.get())) {
+                return spawnAtPos(player.serverLevel(), pos, TENpcEntities.GUIDE.get());
+            }
+        } else if (!hasNPCAlive(region, TENpcEntities.PARTY_GIRL.get())) {
+            if (player.getRandom().nextInt(40) == 0 && getAliveNpcCount(region, entityType -> true/* todo 骷髅商人不计入 */) >= 14) {
+                return spawnAtPos(player.serverLevel(), pos, TENpcEntities.PARTY_GIRL.get());
+            }
+        }
+        return false;
+    }
+
+    /**
+     * todo 他不会在日食，雪人军团，海盗入侵或火星暴乱期间生成。
+     */
+    private boolean trySpawnTravelingMerchant(ServerPlayer player, BlockPos pos, Region region) {
+        if (!hasNPCAlive(region, TENpcEntities.TRAVELING_MERCHANT.get())) {
+            MomentInstanceManager manager = MomentInstanceManager.of(player.level());
+            if (!manager.hasMoment(TMMoments.GOBLIN_ARMY.getKey())) {
+                if (DateUtils.isWithinDayTime(22500, 6000, player.level().getDayTime())) { // 04:30 -> 12:00
+                    int bound = 30000 / CommonConfigs.NPC_SPAWN_INTERVAL.get(); // 6.25分钟内生成期望为22.12%
+                    if (player.getRandom().nextInt(bound) == 0 && getAliveNpcCount(region, entityType -> entityType != TENpcEntities.OLD_MAN.get() /* todo 骷髅商人不计入 */) >= 2) {
+                        return spawnAtPos(player.serverLevel(), pos, TENpcEntities.TRAVELING_MERCHANT.get());
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
      * 省去“所有玩家钱币总和50银”的条件，改为单玩家
      */
-    private boolean trySpawnMerchant(ServerPlayer serverPlayer, BlockPos pos, Region region) {
+    private boolean trySpawnMerchant(ServerPlayer player, BlockPos pos, Region region) {
         if (!hasNPCAlive(region, TENpcEntities.MERCHANT.get())) {
-            if (PlayerUtils.getMoney(serverPlayer) >= 50 * CoinItem.UPGRADES_COUNT) {
-                return spawnAtPos(serverPlayer.serverLevel(), pos, TENpcEntities.MERCHANT.get());
+            if (PlayerUtils.getMoney(player) >= 50 * CoinItem.UPGRADES_COUNT) {
+                return spawnAtPos(player.serverLevel(), pos, TENpcEntities.MERCHANT.get());
             }
         }
         return false;
     }
 
-    private boolean trySpawnNurse(ServerPlayer serverPlayer, BlockPos pos, Region region) {
+    private boolean trySpawnNurse(ServerPlayer player, BlockPos pos, Region region) {
         if (!hasNPCAlive(region, TENpcEntities.NURSE.get())) {
-            if (serverPlayer.getMaxHealth() > 20 && hasNPCAlive(region, TENpcEntities.MERCHANT.get())) {
-                return spawnAtPos(serverPlayer.serverLevel(), pos, TENpcEntities.NURSE.get());
+            if (player.getMaxHealth() > 20 && hasNPCAlive(region, TENpcEntities.MERCHANT.get())) {
+                return spawnAtPos(player.serverLevel(), pos, TENpcEntities.NURSE.get());
             }
         }
         return false;
     }
 
-    private boolean trySpawnDemolitionist(ServerPlayer serverPlayer, BlockPos pos, Region region) {
+    private boolean trySpawnDemolitionist(ServerPlayer player, BlockPos pos, Region region) {
         if (!hasNPCAlive(region, TENpcEntities.DEMOLITIONIST.get())) {
-            if (serverPlayer.getInventory().hasAnyMatching(stack -> stack.is(ModTags.Items.EXPLOSIVE)) && hasNPCAlive(region, TENpcEntities.MERCHANT.get())) {
-                return spawnAtPos(serverPlayer.serverLevel(), pos, TENpcEntities.DEMOLITIONIST.get());
+            if (player.getInventory().hasAnyMatching(stack -> stack.is(ModTags.Items.EXPLOSIVE)) && hasNPCAlive(region, TENpcEntities.MERCHANT.get())) {
+                return spawnAtPos(player.serverLevel(), pos, TENpcEntities.DEMOLITIONIST.get());
             }
         }
         return false;
     }
 
     // todo 可用于做染料的物品
-    private boolean trySpawnDyeTrader(ServerPlayer serverPlayer, BlockPos pos, Region region) {
+    private boolean trySpawnDyeTrader(ServerPlayer player, BlockPos pos, Region region) {
         if (!hasNPCAlive(region, TENpcEntities.DYE_TRADER.get())) {
-            if (hasNPCAlive(region, TENpcEntities.MERCHANT.get()) && serverPlayer.getInventory().hasAnyMatching(stack -> stack.is(Tags.Items.DYES))) {
-                return spawnAtPos(serverPlayer.serverLevel(), pos, TENpcEntities.DYE_TRADER.get());
+            if (hasNPCAlive(region, TENpcEntities.MERCHANT.get()) && player.getInventory().hasAnyMatching(stack -> stack.is(Tags.Items.DYES))) {
+                return spawnAtPos(player.serverLevel(), pos, TENpcEntities.DYE_TRADER.get());
             }
         }
         return false;
@@ -319,12 +383,12 @@ public class NPCSpawner implements IGlobalData {
      *
      * @see AnglerNPCMixin
      */
-    private boolean trySpawnAngler(ServerPlayer serverPlayer, Region region) {
-        BlockPos playerPos = serverPlayer.blockPosition();
+    private boolean trySpawnAngler(ServerPlayer player, Region region) {
+        BlockPos playerPos = player.blockPosition();
         Region playerRegion = new Region(playerPos);
         if (!hasNPCAlive(playerRegion, TENpcEntities.ANGLER.get()) && !hasNPCAlive(region, TENpcEntities.ANGLER.get())) { // 保证玩家转移渔夫区域时不再生成新的
-            Level level = serverPlayer.serverLevel();
-            Pair<BlockPos, Holder<Biome>> closestBiome3d = serverPlayer.serverLevel().findClosestBiome3d(biome -> biome.is(Tags.Biomes.IS_OCEAN), playerPos, 64, 8, 64);
+            Level level = player.serverLevel();
+            Pair<BlockPos, Holder<Biome>> closestBiome3d = player.serverLevel().findClosestBiome3d(biome -> biome.is(Tags.Biomes.IS_OCEAN), playerPos, 64, 8, 64);
             if (closestBiome3d != null) {
                 AbstractTerraNPC npc = TENpcEntities.ANGLER.get().create(level);
                 if (npc != null) {
@@ -342,7 +406,7 @@ public class NPCSpawner implements IGlobalData {
         return false;
     }
 
-    private boolean trySpawnDryad(ServerPlayer serverPlayer, BlockPos pos, Region region) {
+    private boolean trySpawnDryad(ServerPlayer player, BlockPos pos, Region region) {
         if (!hasNPCAlive(region, TENpcEntities.DRYAD.get())) {
             if (KillBoard.INSTANCE.isAnyDefeated(
                     TEBossEntities.EYE_OF_CTHULHU.get(),
@@ -350,51 +414,50 @@ public class NPCSpawner implements IGlobalData {
                     TEBossEntities.BRAIN_OF_CTHULHU.get(),
                     TEBossEntities.SKELETRON.get()
             )) {
-                return spawnAtPos(serverPlayer.serverLevel(), pos, TENpcEntities.DRYAD.get());
+                return spawnAtPos(player.serverLevel(), pos, TENpcEntities.DRYAD.get());
             }
         }
         return false;
     }
 
-    private boolean trySpawnPainter(ServerPlayer serverPlayer, BlockPos pos, Region region) {
+    private boolean trySpawnPainter(ServerPlayer player, BlockPos pos, Region region) {
         Object2BooleanMap<EntityType<?>> map = npcAlive.get(region);
         if (map != null && !map.getOrDefault(TENpcEntities.PAINTER.get(), false)) {
             if (map.size() >= 8) {
-                return spawnAtPos(serverPlayer.serverLevel(), pos, TENpcEntities.PAINTER.get());
+                return spawnAtPos(player.serverLevel(), pos, TENpcEntities.PAINTER.get());
             }
         }
         return false;
     }
 
-    private boolean trySpawnArmsDealer(ServerPlayer serverPlayer, BlockPos pos, Region region) {
+    private boolean trySpawnArmsDealer(ServerPlayer player, BlockPos pos, Region region) {
         if (!hasNPCAlive(region, TENpcEntities.ARMS_DEALER.get())) {
             Predicate<ItemStack> predicate = stack -> stack.is(TGTags.BULLET) || stack.is(TGTags.GUN);
-            if (serverPlayer.getInventory().hasAnyMatching(predicate) || serverPlayer.getData(ModAttachmentTypes.EXTRA_INVENTORY).hasAnyMatching(predicate)) {
-                return spawnAtPos(serverPlayer.serverLevel(), pos, TENpcEntities.ARMS_DEALER.get());
+            if (player.getInventory().hasAnyMatching(predicate) || player.getData(ModAttachmentTypes.EXTRA_INVENTORY).hasAnyMatching(predicate)) {
+                return spawnAtPos(player.serverLevel(), pos, TENpcEntities.ARMS_DEALER.get());
             }
         }
         return false;
     }
 
-    private boolean trySpawnGoblinTinkerer(ServerPlayer serverPlayer, BlockPos pos, Region region) {
+    private boolean trySpawnGoblinTinkerer(ServerPlayer player, BlockPos pos, Region region) {
         if (!hasNPCAlive(region, TENpcEntities.GOBLIN_TINKERER.get())) {
-            // todo 等哥布林入侵事件
-            if (KillBoard.INSTANCE.isAnyDefeated(TEBossEntities.EATER_OF_WORLDS.get(), TEBossEntities.BRAIN_OF_CTHULHU.get())) {
-                return spawnAtPos(serverPlayer.serverLevel(), pos, TENpcEntities.GOBLIN_TINKERER.get());
+            if (KillBoard.INSTANCE.isDefeated(TMMoments.GOBLIN_ARMY.get())) {
+                return spawnAtPos(player.serverLevel(), pos, TENpcEntities.GOBLIN_TINKERER.get());
             }
         }
         return false;
     }
 
-    private boolean trySpawnClothier(ServerPlayer serverPlayer, BlockPos pos, Region region) {
+    private boolean trySpawnClothier(ServerPlayer player, BlockPos pos, Region region) {
         if (KillBoard.INSTANCE.getGamePhase().isAboveThan(GamePhase.BEFORE_SKELETRON)) {
             if (!hasNPCAlive(region, TENpcEntities.CLOTHIER.get())) {
-                return spawnAtPos(serverPlayer.serverLevel(), pos, TENpcEntities.CLOTHIER.get());
+                return spawnAtPos(player.serverLevel(), pos, TENpcEntities.CLOTHIER.get());
             }
         } else {
-            ServerLevel level = serverPlayer.serverLevel();
-            return DungeonStructure.iterateDungeon(level, serverPlayer.chunkPosition(), structureStart -> {
-                if (IStructureStart.of(structureStart).confluence$cachedBoundingBox().isInside(serverPlayer.blockPosition())) {
+            ServerLevel level = player.serverLevel();
+            return DungeonStructure.iterateDungeon(level, player.chunkPosition(), structureStart -> {
+                if (IStructureStart.of(structureStart).confluence$cachedBoundingBox().isInside(player.blockPosition())) {
                     for (StructurePiece piece : structureStart.getPieces()) {
                         if (piece instanceof SimpleTemplatePiece templatePiece && DungeonStructure.GATE.equals(templatePiece.templateName)) {
                             BlockPos offset = switch (templatePiece.getRotation()) {
@@ -411,6 +474,7 @@ public class NPCSpawner implements IGlobalData {
                                 level.addFreshEntity(npc);
                                 IAbstractTerraNPC.of(npc).confluence$setRegion(npcRegion);
                                 getRegionAliveDetails(npcRegion).put(TENpcEntities.OLD_MAN.get(), true);
+                                // 没有计入spawned列表
                                 return true;
                             }
                             return false;
@@ -429,15 +493,15 @@ public class NPCSpawner implements IGlobalData {
      * @see TEEvents#onInteractNpc(NPCEvent.InteractNPCEvent)
      * @see MechanicNPCMixin
      */
-    private boolean trySpawnMechanic(ServerPlayer serverPlayer, BlockPos pos, Region region) {
-        if (KillBoard.INSTANCE.getGamePhase().isAboveThan(GamePhase.BEFORE_SKELETRON)) {
+    private boolean trySpawnMechanic(ServerPlayer player, BlockPos pos, Region region) {
+        if (KillBoard.INSTANCE.getGamePhase().isAboveThan(GamePhase.BEFORE_SKELETRON) && npcSpawned.contains(TENpcEntities.MECHANIC.get())) {
             if (!hasNPCAlive(region, TENpcEntities.MECHANIC.get())) {
-                return spawnAtPos(serverPlayer.serverLevel(), pos, TENpcEntities.MECHANIC.get());
+                return spawnAtPos(player.serverLevel(), pos, TENpcEntities.MECHANIC.get());
             }
         } else {
-            ServerLevel level = serverPlayer.serverLevel();
-            return DungeonStructure.iterateDungeon(level, serverPlayer.chunkPosition(), structureStart -> {
-                if (IStructureStart.of(structureStart).confluence$cachedBoundingBox().isInside(serverPlayer.blockPosition())) {
+            ServerLevel level = player.serverLevel();
+            return DungeonStructure.iterateDungeon(level, player.chunkPosition(), structureStart -> {
+                if (IStructureStart.of(structureStart).confluence$cachedBoundingBox().isInside(player.blockPosition())) {
                     for (StructurePiece piece : structureStart.getPieces()) {
                         if (piece instanceof SimpleTemplatePiece templatePiece && templatePiece.templateName.endsWith("_dungeon_underground_2_2")) {
                             BlockPos offset = templatePiece.templatePosition().offset(46, 6, -11);

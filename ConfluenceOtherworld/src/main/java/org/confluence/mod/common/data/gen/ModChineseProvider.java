@@ -2803,6 +2803,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(SwordItems.GOLDEN_SHORT_SWORD.get(), "金短剑");
         add(SwordItems.GOLDEN_BROADSWORD.get(), "金阔剑");
         add(SwordItems.CACTUS_SWORD.get(), "仙人掌剑");
+        add(SwordItems.EBONWOOD_SWORD.get(), "乌木剑");
+        add(SwordItems.SHADEWOOD_SWORD.get(), "暗影木剑");
+        add(SwordItems.ASH_WOOD_SWORD.get(), "白蜡木剑");
+        add(SwordItems.PEARLWOOD_SWORD.get(), "珍珠木剑");
         add(SwordItems.MURAMASA.get(), "村正大刀");
 
 
@@ -2951,9 +2955,6 @@ public class ModChineseProvider extends LanguageProvider {
 
         // Hammers
         add(HammerItems.WOODEN_HAMMER.get(), "木锤");
-        add(HammerItems.RICH_MAHOGANY_HAMMER.get(), "红木锤");
-        add(HammerItems.PALM_WOOD_HAMMER.get(), "棕榈木锤");
-        add(HammerItems.SPRUCE_WOOD_HAMMER.get(), "云杉木锤");
         add(HammerItems.EBONWOOD_HAMMER.get(), "乌木锤");
         add(HammerItems.SHADEWOOD_HAMMER.get(), "暗影木锤");
         add(HammerItems.ASH_WOOD_HAMMER.get(), "白蜡木锤");
@@ -3442,6 +3443,10 @@ public class ModChineseProvider extends LanguageProvider {
 
         // 弓
         add(BowItems.WOODEN_SHORT_BOW.get(), "木短弓");
+        add(BowItems.EBONWOOD_SHORT_BOW.get(), "乌木短弓");
+        add(BowItems.SHADEWOOD_SHORT_BOW.get(), "暗影木短弓");
+        add(BowItems.ASH_WOOD_SHORT_BOW.get(), "白蜡木短弓");
+        add(BowItems.PEARLWOOD_SHORT_BOW.get(), "珍珠木短弓");
         add(BowItems.COPPER_SHORT_BOW.get(), "铜短弓");
         add(BowItems.TIN_SHORT_BOW.get(), "锡短弓");
         add(BowItems.IRON_SHORT_BOW.get(), "铁短弓");
@@ -3451,6 +3456,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(BowItems.GOLDEN_SHORT_BOW.get(), "金短弓");
         add(BowItems.PLATINUM_SHORT_BOW.get(), "铂金短弓");
 
+        add(BowItems.EBONWOOD_BOW.get(), "乌木弓");
+        add(BowItems.SHADEWOOD_BOW.get(), "暗影木弓");
+        add(BowItems.ASH_WOOD_BOW.get(), "白蜡木弓");
+        add(BowItems.PEARLWOOD_BOW.get(), "珍珠木弓");
         add(BowItems.COPPER_BOW.get(), "铜弓");
         add(BowItems.TIN_BOW.get(), "锡弓");
         add(BowItems.IRON_BOW.get(), "铁弓");

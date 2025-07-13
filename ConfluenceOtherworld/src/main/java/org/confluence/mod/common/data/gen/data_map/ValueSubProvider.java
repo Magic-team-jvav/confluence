@@ -455,9 +455,6 @@ public final class ValueSubProvider {
                 .add(PickaxeAxeItems.PICKSAW, wrap(4, 32, 0));
         appender.create()
                 .add(HammerItems.WOODEN_HAMMER, 10)
-                .add(HammerItems.RICH_MAHOGANY_HAMMER, 10)
-                .add(HammerItems.PALM_WOOD_HAMMER, 10)
-                .add(HammerItems.SPRUCE_WOOD_HAMMER, 10)
                 .add(HammerItems.COPPER_HAMMER, 80)
                 .add(HammerItems.TIN_HAMMER, wrap(1, 20))
                 .add(HammerItems.IRON_HAMMER, wrap(3, 20))

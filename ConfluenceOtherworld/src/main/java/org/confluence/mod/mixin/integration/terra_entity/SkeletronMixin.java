@@ -28,7 +28,14 @@ public abstract class SkeletronMixin {
 
     @WrapOperation(method = "hurt", at = @At(value = "INVOKE", target = "Lorg/confluence/terraentity/entity/boss/AbstractTerraBossBase;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z"))
     private boolean limitDamage(Skeletron instance, DamageSource damageSource, float amount, Operation<Boolean> original) {
-        if (instance.hands.isEmpty() || damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) return original.call(instance, damageSource, amount);
-        return original.call(instance, damageSource, ((IDamageSource) damageSource).confluence$isCritical() ? 2.0F : 1.0F);
+        if (!damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+            int size = instance.hands.size();
+            if (size > 2) {
+                amount = ((IDamageSource) damageSource).confluence$isCritical() ? 2.0F : 1.0F;
+            } else if (size != 0) {
+                amount = amount * (1 - size * 0.45F);
+            }
+        }
+        return original.call(instance, damageSource, amount);
     }
 }

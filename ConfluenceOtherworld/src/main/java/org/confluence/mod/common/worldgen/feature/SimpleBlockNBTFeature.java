@@ -13,6 +13,8 @@ import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfigur
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import org.confluence.lib.util.FeatureUtils;
 
+import java.util.function.Consumer;
+
 public class SimpleBlockNBTFeature extends Feature<SimpleBlockNBTFeature.Config> {
     public SimpleBlockNBTFeature(Codec<Config> pCodec) {
         super(pCodec);
@@ -38,5 +40,16 @@ public class SimpleBlockNBTFeature extends Feature<SimpleBlockNBTFeature.Config>
                 BlockStateProvider.CODEC.fieldOf("to_place").forGetter(Config::toPlace),
                 CompoundTag.CODEC.fieldOf("nbt").forGetter(Config::nbt)
         ).apply(instance, Config::new));
+
+        public Config(BlockStateProvider toPlace, Consumer<CompoundTag> consumer) {
+            this(toPlace, tag(consumer));
+
+        }
+
+        private static CompoundTag tag(Consumer<CompoundTag> consumer) {
+            CompoundTag tag = new CompoundTag();
+            consumer.accept(tag);
+            return tag;
+        }
     }
 }

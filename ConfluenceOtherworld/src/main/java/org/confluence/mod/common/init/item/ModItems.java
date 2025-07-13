@@ -119,8 +119,8 @@ public final class ModItems {
 
     public static final DeferredItem<BlockPlacingWandItem> LIVING_WOOD_WAND = ITEMS.register("living_wood_wand", () -> new BlockPlacingWandItem(BlockTags.LOGS, NatureBlocks.LIVING_LOG_BLOCKS.getLog().get()));
     public static final DeferredItem<BlockPlacingWandItem> LEAF_WAND = ITEMS.register("leaf_wand", () -> new BlockPlacingWandItem(BlockTags.LEAVES, NatureBlocks.LIVING_LOG_BLOCKS.getLeaves().get()));
-    public static final DeferredItem<BlockPlacingWandItem> LIVING_MAHOGANY_WAND = ITEMS.register("living_mahogany_wand", () -> new BlockPlacingWandItem(BlockTags.LOGS, NatureBlocks.LIVING_MAHOGANY_BLOCKS.getLog().get()));
-    public static final DeferredItem<BlockPlacingWandItem> RICH_MAHOGANY_LEAF_WAND = ITEMS.register("rich_mahogany_leaf_wand", () -> new BlockPlacingWandItem(BlockTags.LEAVES, NatureBlocks.LIVING_MAHOGANY_BLOCKS.getLeaves().get()));
+    public static final DeferredItem<BlockPlacingWandItem> LIVING_MAHOGANY_WAND = ITEMS.register("living_mahogany_wand", () -> new BlockPlacingWandItem(BlockTags.LOGS, NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getLog().get()));
+    public static final DeferredItem<BlockPlacingWandItem> RICH_MAHOGANY_LEAF_WAND = ITEMS.register("rich_mahogany_leaf_wand", () -> new BlockPlacingWandItem(BlockTags.LEAVES, NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getLeaves().get()));
     public static final DeferredItem<BlockPlacingWandItem> HIVE_WAND = ITEMS.register("hive_wand", () -> new BlockPlacingWandItem(null, NatureBlocks.JUNGLE_HIVE_BLOCK.get(), (context, state) -> state.setValue(JungleHiveBlock.NATURAL, true)));
 
     public static void register(IEventBus eventBus) {
@@ -132,6 +132,7 @@ public final class ModItems {
         ArrowItems.ITEMS.register(eventBus);
         AxeItems.ITEMS.register(eventBus);
         BaitItems.ITEMS.register(eventBus);
+        BoatItems.register(eventBus);
         BowItems.ITEMS.register(eventBus);
         ConsumableItems.ITEMS.register(eventBus);
         DrillItems.ITEMS.register(eventBus);

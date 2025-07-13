@@ -1,5 +1,6 @@
 package org.confluence.mod.common.data.gen;
 
+import com.google.common.collect.Streams;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
@@ -47,6 +48,11 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         HookItems.acceptTag(tag(ModTags.Items.HOOK));
         PotionItems.acceptTag(tag(Tags.Items.POTIONS));
         FoodItems.acceptTag(tag(Tags.Items.FOODS));
+
+        IntrinsicTagAppender<Item> boats = tag(ItemTags.BOATS);
+        BoatItems.BOAT_ITEMS.getEntries().forEach(item -> boats.add(item.get()));
+        IntrinsicTagAppender<Item> chestBoats = tag(ItemTags.CHEST_BOATS);
+        BoatItems.CHEST_BOAT_ITEMS.getEntries().forEach(item -> chestBoats.add(item.get()));
         IntrinsicTagAppender<Item> minecart = tag(ModTags.Items.MINECART);
         minecart.add(Items.MINECART);
         MinecartItems.ITEMS.getEntries().forEach(item -> minecart.add(item.get()));
@@ -98,7 +104,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.INITIAL_WOOD).add(
                 NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getPlanks().asItem(),
                 NatureBlocks.LIVING_LOG_BLOCKS.getPlanks().asItem(),
-                NatureBlocks.LIVING_MAHOGANY_BLOCKS.getPlanks().asItem(),
+                NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getPlanks().asItem(),
                 NatureBlocks.BAOBAB_LOG_BLOCKS.getPlanks().asItem(),
                 Blocks.OAK_PLANKS.asItem(),
                 Blocks.ACACIA_PLANKS.asItem(),
@@ -173,16 +179,17 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         );
 
         // 可烧的木材
-        tag(ModTags.Items.WOODEN_COMBUSTIBLES)
-                .add(NatureBlocks.EBONY_LOG_BLOCKS.getAllItems().stream().map(Supplier::get).toArray(Item[]::new))
-                .add(NatureBlocks.PEARL_LOG_BLOCKS.getAllItems().stream().map(Supplier::get).toArray(Item[]::new))
-                .add(NatureBlocks.SHADOW_LOG_BLOCKS.getAllItems().stream().map(Supplier::get).toArray(Item[]::new))
-                .add(NatureBlocks.PALM_LOG_BLOCKS.getAllItems().stream().map(Supplier::get).toArray(Item[]::new))
-                .add(NatureBlocks.BAOBAB_LOG_BLOCKS.getAllItems().stream().map(Supplier::get).toArray(Item[]::new))
-                .add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getAllItems().stream().map(Supplier::get).toArray(Item[]::new))
-                .add(NatureBlocks.LIVING_LOG_BLOCKS.getAllItems().stream().map(Supplier::get).toArray(Item[]::new))
-                .add(NatureBlocks.LIVING_MAHOGANY_BLOCKS.getAllItems().stream().map(Supplier::get).toArray(Item[]::new))
-                .add(NatureBlocks.SPOOKY_LOG_BLOCKS.getAllItems().stream().map(Supplier::get).toArray(Item[]::new));
+        tag(ModTags.Items.WOODEN_COMBUSTIBLES).add(Streams.concat(
+                NatureBlocks.EBONY_LOG_BLOCKS.getAllItems().stream(),
+                NatureBlocks.PEARL_LOG_BLOCKS.getAllItems().stream(),
+                NatureBlocks.SHADOW_LOG_BLOCKS.getAllItems().stream(),
+                NatureBlocks.PALM_LOG_BLOCKS.getAllItems().stream(),
+                NatureBlocks.BAOBAB_LOG_BLOCKS.getAllItems().stream(),
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getAllItems().stream(),
+                NatureBlocks.LIVING_LOG_BLOCKS.getAllItems().stream(),
+                NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getAllItems().stream(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.getAllItems().stream()
+        ).map(Supplier::get).toArray(Item[]::new));
         tag(ItemTags.BEACON_PAYMENT_ITEMS).add(
                 MaterialItems.LEAD_INGOT.get(),
                 MaterialItems.SILVER_INGOT.get(),
@@ -227,6 +234,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
         tag(ModTags.Items.EVIL_INGOT).add(MaterialItems.DEMONITE_INGOT.get(), MaterialItems.CRIMTANE_INGOT.get());
         tag(ModTags.Items.LEAD_AND_IRON).addTags(Tags.Items.INGOTS_IRON, ModTags.Items.INGOTS_LEAD);
+        tag(ModTags.Items.GOLD_AND_PLATINUM).addTags(Tags.Items.INGOTS_GOLD, ModTags.Items.INGOTS_PLATINUM);
         IntrinsicTagAppender<Item> torch = tag(ModTags.Items.TORCH);
         torch.add(Items.TORCH, Items.SOUL_TORCH);
 //        for (Torches torches : Torches.values()) torch.add(torches.item.get());
@@ -318,6 +326,69 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         );
         tag(ModTags.Items.REDSTONE_ORE_SMELTING).add(
                 OreBlocks.SANCTIFICATION_REDSTONE_ORE.asItem(), OreBlocks.CORRUPTION_REDSTONE_ORE.asItem(), OreBlocks.FLESHIFICATION_REDSTONE_ORE.asItem()
+        );
+        tag(ModTags.Items.EBONY_LOGS).add(
+                NatureBlocks.EBONY_LOG_BLOCKS.getLog().asItem(),
+                NatureBlocks.EBONY_LOG_BLOCKS.getStrippedLog().asItem(),
+                NatureBlocks.EBONY_LOG_BLOCKS.getWood().asItem(),
+                NatureBlocks.EBONY_LOG_BLOCKS.getStrippedWood().asItem()
+        );
+        tag(ModTags.Items.PEARL_LOGS).add(
+                NatureBlocks.PEARL_LOG_BLOCKS.getLog().asItem(),
+                NatureBlocks.PEARL_LOG_BLOCKS.getStrippedLog().asItem(),
+                NatureBlocks.PEARL_LOG_BLOCKS.getWood().asItem(),
+                NatureBlocks.PEARL_LOG_BLOCKS.getStrippedWood().asItem()
+        );
+        tag(ModTags.Items.SHADOW_LOGS).add(
+                NatureBlocks.SHADOW_LOG_BLOCKS.getLog().asItem(),
+                NatureBlocks.SHADOW_LOG_BLOCKS.getStrippedLog().asItem(),
+                NatureBlocks.SHADOW_LOG_BLOCKS.getWood().asItem(),
+                NatureBlocks.SHADOW_LOG_BLOCKS.getStrippedWood().asItem()
+        );
+        tag(ModTags.Items.PALM_LOGS).add(
+                NatureBlocks.PALM_LOG_BLOCKS.getLog().asItem(),
+                NatureBlocks.PALM_LOG_BLOCKS.getStrippedLog().asItem(),
+                NatureBlocks.PALM_LOG_BLOCKS.getWood().asItem(),
+                NatureBlocks.PALM_LOG_BLOCKS.getStrippedWood().asItem()
+        );
+        tag(ModTags.Items.BAOBAB_LOGS).add(
+                NatureBlocks.BAOBAB_LOG_BLOCKS.getLog().asItem(),
+                NatureBlocks.BAOBAB_LOG_BLOCKS.getStrippedLog().asItem(),
+                NatureBlocks.BAOBAB_LOG_BLOCKS.getWood().asItem(),
+                NatureBlocks.BAOBAB_LOG_BLOCKS.getStrippedWood().asItem()
+        );
+        tag(ModTags.Items.YELLOW_WILLOW_LOGS).add(
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getLog().asItem(),
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getStrippedLog().asItem(),
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getWood().asItem(),
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getStrippedWood().asItem()
+        );
+        tag(ModTags.Items.LIVING_LOGS).add(
+                NatureBlocks.LIVING_LOG_BLOCKS.getLog().asItem(),
+                NatureBlocks.LIVING_LOG_BLOCKS.getStrippedLog().asItem(),
+                NatureBlocks.LIVING_LOG_BLOCKS.getWood().asItem(),
+                NatureBlocks.LIVING_LOG_BLOCKS.getStrippedWood().asItem()
+        );
+        tag(ModTags.Items.LIVING_MAHOGANY_LOGS).add(
+                NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getLog().asItem(),
+                NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getStrippedLog().asItem(),
+                NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getWood().asItem(),
+                NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getStrippedWood().asItem()
+        );
+        tag(ModTags.Items.ASH_LOGS).add(
+                NatureBlocks.ASH_LOG_BLOCKS.getLog().asItem(),
+                NatureBlocks.ASH_LOG_BLOCKS.getStrippedLog().asItem(),
+                NatureBlocks.ASH_LOG_BLOCKS.getWood().asItem(),
+                NatureBlocks.ASH_LOG_BLOCKS.getStrippedWood().asItem()
+        );
+        tag(ModTags.Items.SPOOKY_LOGS).add(
+                NatureBlocks.SPOOKY_LOG_BLOCKS.getLog().asItem(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.getStrippedLog().asItem(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.getWood().asItem(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.getStrippedWood().asItem()
+        );
+        tag(ModTags.Items.GLOWING_MUSHROOM_STEMS).add(
+                NatureBlocks.GLOWING_MUSHROOM_STEM_BLOCK.asItem()
         );
         tag(ItemTags.BOOKSHELF_BOOKS).add(
                 ManaWeaponItems.WATER_BOLT.get()
@@ -1088,7 +1159,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
         copy(Tags.Blocks.FENCE_GATES, Tags.Items.FENCE_GATES);
         copy(Tags.Blocks.STRIPPED_LOGS, Tags.Items.STRIPPED_LOGS);
-        copy(BlockTags.SIGNS, ItemTags.SIGNS);
+        copy(BlockTags.STANDING_SIGNS, ItemTags.SIGNS);
+        copy(BlockTags.CEILING_HANGING_SIGNS, ItemTags.HANGING_SIGNS);
         copy(BlockTags.WOODEN_BUTTONS, ItemTags.WOODEN_BUTTONS);
         copy(Tags.Blocks.STORAGE_BLOCKS, Tags.Items.STORAGE_BLOCKS);
         copy(BlockTags.PLANKS, ItemTags.PLANKS);
@@ -1121,15 +1193,9 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
         IntrinsicTagAppender<Item> wip = tag(LibTags.Items.WIP);
         wip.add(
-                ConsumableItems.ARTISAN_LOAF.get(),
                 ConsumableItems.SMOKE_BOMB.get(),
                 ConsumableItems.SPIKY_BALL.get(),
-                ConsumableItems.HOLY_WATER.get(),
-                ConsumableItems.UNHOLY_WATER.get(),
-                ConsumableItems.BLOOD_WATER.get(),
                 ConsumableItems.GOODIE_BAG.get(),
-                ConsumableItems.ADVANCED_COMBAT_TECHNIQUES.get(),
-                ConsumableItems.ADVANCED_COMBAT_TECHNIQUES_VOLUME_TWO.get(),
                 ConsumableItems.GUIDE_VOODOO_DOLL.get(),
                 ConsumableItems.CLOTHIER_VOODOO_DOLL.get(),
                 PaintItems.ECHO_COATING.get(),
@@ -1157,7 +1223,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ModItems.FERTILE_SINGULARITY.get(),
                 ModItems.PERPLEXED_CAT_MEDAL.get(),
                 ModItems.PULSAR.get(),
-                ModItems.HIVE_WAND.get(),
                 HamaxeItems.HAEMORRHAXE.get(),
                 HamaxeItems.SPECTRE_HAMAXE.get(),
                 HamaxeItems.SOLAR_FLARE_HAMAXE.get(),
@@ -1225,14 +1290,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ArmorItems.GREEN_CAP.get(),
                 ArmorItems.WIZARD_HAT.get(),
                 ArmorItems.MAGIC_HAT.get(),
-                ArmorItems.AMETHYST_ROBE.get(),
-                ArmorItems.TOPAZ_ROBE.get(),
-                ArmorItems.SAPPHIRE_ROBE.get(),
-                ArmorItems.JADE_ROBE.get(),
-                ArmorItems.RUBY_ROBE.get(),
                 ArmorItems.MYSTIC_ROBE.get(),
-                ArmorItems.DIAMOND_ROBE.get(),
-                ArmorItems.AMBER_ROBE.get(),
                 ArmorItems.COBALT_MASK.get(),
                 ArmorItems.COBALT_HAT.get(),
                 ArmorItems.COBALT_HELMET.get(),
@@ -1353,6 +1411,13 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 NatureBlocks.SMALL_DESERT_PLANT.asItem(),
                 NatureBlocks.BIG_DESERT_PLANT.asItem(),
                 NatureBlocks.SMALL_CACTUS.asItem(),
+                NatureBlocks.MUSHROOM_PATH.asItem(),
+                NatureBlocks.MUSHROOM_PATH.asItem(),
+                NatureBlocks.ASH_PATH.asItem(),
+                NatureBlocks.SHIMMER_CRYSTALS_BLOCK.asItem(),
+                NatureBlocks.LOST_PAPER_BLOCK.asItem(),
+                NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.getTrapdoor().asItem(),
+                NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.getDoor().asItem(),
                 PotBlocks.OCEAN_POT.asItem(),
                 OreBlocks.METEORITE_BLOCK.asItem(),
                 OreBlocks.HALLOWED_BLOCK.asItem(),
@@ -1405,7 +1470,9 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 DecorativeBlocks.CRIMSANDSTONE_BRICKS_STAIRS.asItem(),
                 DecorativeBlocks.CRIMSANDSTONE_BRICKS_SLAB.asItem(),
                 DecorativeBlocks.CRIMSANDSTONE_BRICKS_WALL.asItem(),
+                DecorativeBlocks.CHISELED_GLOWING_MUSHROOM_PLANKS.asItem(),
                 DecorativeBlocks.SNOW_BRICKS_WALL.asItem(),
+                DecorativeBlocks.REMAINS_BLOCK.asItem(),
                 StatueBlocks.ARMOR_STATUE.asItem(),
                 StatueBlocks.AXE_STATUE.asItem(),
                 StatueBlocks.BOOMERANG_STATUE.asItem(),
@@ -1501,6 +1568,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.SOUL_OF_MIGHT.get(),
                 MaterialItems.SOUL_OF_SIGHT.get(),
                 MaterialItems.SPELL_TOME.get(),
+                MaterialItems.FLINX_FUR.get(),
                 CrateBlocks.HALLOWED_CRATE.asItem(),
                 CrateBlocks.OBSIDIAN_CRATE.asItem(),
                 CrateBlocks.PEARLWOOD_CRATE.asItem(),
@@ -1539,7 +1607,11 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 TEItems.DEBUG_ITEM.get(),
                 TEFigureBlocks.FIGURE.asItem(),
                 TEFigureBlocks.FIGURE2.asItem(),
-                TEFigureBlocks.FIGURE3.asItem()
+                TEFigureBlocks.FIGURE3.asItem(),
+                FoodItems.COOKED_FROG.get(),
+                FoodItems.COOKED_SQUIRREL.get(),
+                FoodItems.COOKED_BIRD.get(),
+                FoodItems.COOKED_DUCK.get()
         );
         Consumer<DeferredHolder<Item, ? extends Item>> wipAction = item -> wip.add(item.get());
         MinecartItems.ITEMS.getEntries().forEach(wipAction);

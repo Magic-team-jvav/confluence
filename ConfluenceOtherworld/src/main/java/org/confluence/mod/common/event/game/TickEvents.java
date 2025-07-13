@@ -50,7 +50,7 @@ public final class TickEvents {
             if (!KillBoard.INSTANCE.isDefeated(TEBossEntities.EYE_OF_CTHULHU.get())) {
                 for (ServerPlayer player : serverLevel.players()) {
                     boolean attributeFactor = player.getMaxHealth() >= 40 && player.getArmorValue() >= 10;
-                    boolean npcFactor = NPCSpawner.INSTANCE.getAliveNpcCount(new NPCSpawner.Region(NPCSpawner.getNpcSpawnPos(player))) >= 4;
+                    boolean npcFactor = NPCSpawner.INSTANCE.getAliveNpcCount(new NPCSpawner.Region(NPCSpawner.getNpcSpawnPos(player)), entityType -> true/* todo 骷髅商人不计入 */) >= 4;
                     if (attributeFactor && npcFactor) {
                         if (serverLevel.random.nextFloat() < 0.3333F) {
                             BossDelaySpawner.INSTANCE.pushBoss(1350, new EyeOfCthulhu(serverLevel), level -> level.getDayTime() % 24000 > 12000);
@@ -65,7 +65,7 @@ public final class TickEvents {
             }
         }
         if (CommonConfigs.DO_NPC_SPAWNING.get() &&
-                dayTime < 12000 &&
+                (dayTime < 12000 || dayTime > 22500) &&
                 serverLevel.getGameTime() % CommonConfigs.NPC_SPAWN_INTERVAL.get() == 0 &&
                 serverLevel.getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)
         ) {

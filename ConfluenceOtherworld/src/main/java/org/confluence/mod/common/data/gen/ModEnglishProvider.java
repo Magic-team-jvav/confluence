@@ -81,6 +81,10 @@ public class ModEnglishProvider extends LanguageProvider {
         add("enchantment.confluence.soothed_mana.desc", "Reduces the duration of Mana Sickness");
         add("enchantment.confluence.arcane_protection", "Arcane Protection");
         add("enchantment.confluence.arcane_protection.desc", "The mana drawn when taking damage is the value of the maximum mana value multiplied by a certain ratio, and the damage canceled is the value of the product of the damage taken by that ratio");
+        add("enchantment.confluence.spell_desperation", "Spell Desperation");
+        add("enchantment.confluence.spell_desperation.desc", "The lower the remaining mana ratio, the higher the attack");
+        add("enchantment.confluence.mystic_surge", "Mystic Surge");
+        add("enchantment.confluence.mystic_surge.desc", "The higher the remaining mana ratio, the higher the attack");
 
         add("gamerule.confluenceSpreadableChance", "Confluence Spreadable Chance");
         add("generator.confluence.the_corruption", "The Corruption");
@@ -985,10 +989,10 @@ public class ModEnglishProvider extends LanguageProvider {
         add("event.confluence.hardmode_conversion.started", "Conversation data is ready, and the conversion is begining");
         add("event.confluence.hardmode_conversion.finished", "\"The ancient spirits of light and dark have been released.\"");
         add("event.confluence.hardmode_conversion.welcome", "Welcome to Terraria");
-        add("event.confluence.npc.arrived", "The %s, %s has arrived!");
-        add("event.confluence.npc.slain", "The %s, %s was slain...");
+        add("event.confluence.npc.arrived", "%1$s the %2$s has arrived!");
+        add("event.confluence.npc.slain", "%1$s the %2$s was slain...");
         add("event.confluence.npc.left", "%s has left!");
-        add("event.confluence.npc.departed", "%s the Traveling Merchant has departed!");
+        add("event.confluence.traveling_merchant.departed", "%s the Traveling Merchant has departed!");
 
         add("entity.minecraft.villager.confluence.sky_miller", "Sky Miller");
         add("entity.minecraft.villager.confluence.chef", "Chef");
@@ -1105,6 +1109,31 @@ public class ModEnglishProvider extends LanguageProvider {
 
         add("equipment_benediction.set_switcher.confluence.pumpkin_set", "Pumpkin set");
         add("equipment_benediction.set_switcher.confluence.pumpkin_set.data.0", "Damage increased by 10%");
+
+        add("equipment_benediction.set_switcher.confluence.obsidian_set", "Obsidian Set");
+        add("equipment_benediction.set_switcher.confluence.obsidian_set.data.0", "Increases summon damage by 8%");
+        add("equipment_benediction.set_switcher.confluence.obsidian_set.data.1", "Increases your max number of minions by 1");
+        add("equipment_benediction.set_switcher.confluence.obsidian_set.data.2", "Increases summon damage by 4%");
+        add("equipment_benediction.set_switcher.confluence.obsidian_set.data.3", "Increases summon damage by 4%");
+        add("equipment_benediction.set_switcher.confluence.obsidian_set.data.4", "Increases whip range by 30% and speed by 15%,Increases summon damage by 15%");
+
+        add("equipment_benediction.set_switcher.confluence.wizard_set", "Wizard Set");
+        add("equipment_benediction.set_switcher.confluence.wizard_set.data.0", "5% increased magic damage");
+        add("equipment_benediction.set_switcher.confluence.wizard_set.data.1", "6% increased magic damage and critical strike chance");
+        add("equipment_benediction.set_switcher.confluence.wizard_set.data.2", "Increases maximum mana by 20,5% reduced mana cost");
+        add("equipment_benediction.set_switcher.confluence.wizard_set.data.3", "Increases maximum mana by 40,7% reduced mana cost");
+        add("equipment_benediction.set_switcher.confluence.wizard_set.data.4", "Increases maximum mana by 40,9% reduced mana cost");
+        add("equipment_benediction.set_switcher.confluence.wizard_set.data.5", "Increases maximum mana by 60,11% reduced mana cost");
+        add("equipment_benediction.set_switcher.confluence.wizard_set.data.6", "Increases maximum mana by 60,13% reduced mana cost");
+        add("equipment_benediction.set_switcher.confluence.wizard_set.data.7", "Increases maximum mana by 80,15% reduced mana cost");
+        add("equipment_benediction.set_switcher.confluence.wizard_set.data.8", "Increases maximum mana by 60,13% reduced mana cost");
+
+        add("equipment_benediction.set_switcher.confluence.flinx_set", "Flinx set");
+        add("equipment_benediction.set_switcher.confluence.flinx_set.data.0", "Increases summon damage by 5%,Increases your max number of minions by 1");
+
+
+
+
         // npc dialogs
         add("dialogs.confluence.guide.0", "My job is to offer suggestions for your upcoming tasks. I recommend that you come and talk to me whenever you encounter any difficulties.");
         add("dialogs.confluence.guide.1", "They said there would be someone to tell you how to survive in this place... Oh, wait a moment. That person is me.");
@@ -1690,6 +1719,7 @@ public class ModEnglishProvider extends LanguageProvider {
         ArrowItems.ITEMS.getEntries().forEach(itemAction);
         AxeItems.ITEMS.getEntries().forEach(itemAction);
         BaitItems.ITEMS.getEntries().forEach(itemAction);
+        BoatItems.forEach(itemAction);
         BowItems.ITEMS.getEntries().forEach(itemAction);
         ConsumableItems.ITEMS.getEntries().forEach(itemAction);
         VanityArmorItems.ITEMS.getEntries().forEach(itemAction);

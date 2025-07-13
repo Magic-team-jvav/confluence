@@ -120,7 +120,7 @@ public final class ModUtils {
                 MeteoriteTracker.INSTANCE.spawnAtNextNight = level.random.nextBoolean();
             }
         }
-        boolean stickySituation = type == TEBossEntities.KING_SLIME.get() && MomentInstanceManager.of(level).hasMoment(TMMoments.SLIME_RAIN.getKey().location());
+        boolean stickySituation = type == TEBossEntities.KING_SLIME.get() && MomentInstanceManager.of(level).hasMoment(TMMoments.SLIME_RAIN.getKey());
         boolean is$WallOrMountain$OfFlesh = type == TEBossEntities.WALL_OF_FLESH.get(); // todo 肉山
         ResourceKey<Level> dimension = living.level().dimension();
         level.players().stream().filter(player -> player.level().dimension() == dimension).forEach(player -> {

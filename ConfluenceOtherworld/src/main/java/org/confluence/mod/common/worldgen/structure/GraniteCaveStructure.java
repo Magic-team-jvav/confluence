@@ -29,7 +29,7 @@ import static org.confluence.lib.util.VectorUtils.frustumSetPos;
 public class GraniteCaveStructure extends Structure {
     public static final MapCodec<GraniteCaveStructure> CODEC = simpleCodec(GraniteCaveStructure::new);
 
-    protected GraniteCaveStructure(StructureSettings settings) {
+    public GraniteCaveStructure(StructureSettings settings) {
         super(settings);
     }
 

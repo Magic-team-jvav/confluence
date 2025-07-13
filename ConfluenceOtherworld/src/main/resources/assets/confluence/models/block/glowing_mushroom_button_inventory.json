@@ -1,0 +1,7 @@
+{
+  "parent": "block/button_inventory",
+  "textures": {
+    "texture": "confluence:block/glowing_mushroom_planks"
+  },
+  "render_type": "solid"
+}

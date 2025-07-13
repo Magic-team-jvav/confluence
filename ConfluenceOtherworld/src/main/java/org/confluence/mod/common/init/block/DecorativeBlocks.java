@@ -44,6 +44,7 @@ public class DecorativeBlocks {
     public static final DeferredBlock<Block> CHISELED_LIVING_PLANKS = copyBlockRegister("chiseled_living_planks", OAK_PLANKS);
     public static final DeferredBlock<Block> CHISELED_LIVING_MAHOGANY_PLANKS = copyBlockRegister("chiseled_living_mahogany_planks", OAK_PLANKS);
     public static final DeferredBlock<Block> CHISELED_ASH_PLANKS = copyBlockRegister("chiseled_ash_planks", OAK_PLANKS);
+    public static final DeferredBlock<Block> CHISELED_GLOWING_MUSHROOM_PLANKS = copyBlockRegister("chiseled_glowing_mushroom_planks", OAK_PLANKS);
     public static final DeferredBlock<Block> WOOD_STONE_SLATTED_BLOCKS = copyBlockRegister("wood_stone_slatted_blocks", OAK_PLANKS);
     public static final DeferredBlock<Block> BLUE_ICE_BRICKS = registerWithItem("blue_ice_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(BLUE_ICE).mapColor(MapColor.COLOR_LIGHT_BLUE)));
     public static final DeferredBlock<StairBlock> BLUE_ICE_BRICKS_STAIRS = registerWithItem("blue_ice_bricks_stairs", () -> new StairBlock(BLUE_ICE_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(BLUE_ICE).mapColor(MapColor.COLOR_LIGHT_BLUE)));

@@ -104,29 +104,28 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
     }
 
     @Override
-    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        int index = pState.getValue(FACING).get2DDataValue();
-        return pState.getValue(StateProperties.HORIZONTAL_TWO_PART).isBase() ? BASE_SHAPES[index] : RIGHT_SHAPES[index];
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        int index = state.getValue(FACING).get2DDataValue();
+        return state.getValue(StateProperties.HORIZONTAL_TWO_PART).isBase() ? BASE_SHAPES[index] : RIGHT_SHAPES[index];
     }
 
     @Override
-    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
-        if (!pState.is(pNewState.getBlock())) {
-            if (pLevel.getBlockEntity(pPos) instanceof Entity entity && pState.getValue(StateProperties.HORIZONTAL_TWO_PART).isBase()) {
-                if (pLevel instanceof ServerLevel serverLevel) {
-                    Containers.dropContents(pLevel, pPos, entity);
-                    entity.getRecipesToAwardAndPopExperience(serverLevel, Vec3.atCenterOf(pPos));
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean moveByPiston) {
+        if (!state.is(newState.getBlock())) {
+            if (level.getBlockEntity(pos) instanceof Entity entity && state.getValue(StateProperties.HORIZONTAL_TWO_PART).isBase()) {
+                if (level instanceof ServerLevel serverLevel) {
+                    Containers.dropContents(level, pos, entity);
+                    entity.getRecipesToAwardAndPopExperience(serverLevel, Vec3.atCenterOf(pos));
                 }
-                pLevel.updateNeighbourForOutputSignal(pPos, this);
+                level.updateNeighbourForOutputSignal(pos, this);
             }
-            super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
+            super.onRemove(state, level, pos, newState, moveByPiston);
         }
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        super.createBlockStateDefinition(pBuilder);
-        pBuilder.add(BlockStateProperties.LIT);
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder.add(BlockStateProperties.LIT));
     }
 
     @Override
@@ -234,6 +233,17 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
             this.blasting = RecipeManager.createCheck(RecipeType.BLASTING);
         }
 
+//        @Override
+//        public void onLoad() {
+//            super.onLoad();
+//            invalidateCapabilities();
+//        }
+//
+//        @Override
+//        public void onChunkUnloaded() {
+//            invalidateCapabilities();
+//        }
+
         public static void serverTick(Level level, BlockPos pos, BlockState state, Entity blockEntity) {
             boolean isLit = blockEntity.isLit();
             boolean[] data = new boolean[2];
@@ -244,7 +254,8 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
 
             ItemStack[] itemStacks = blockEntity.getItemStacks();
             ItemStack fuel = blockEntity.items.get(FUEL_SLOT);
-            boolean hasItem = !itemStacks[0].isEmpty() || !itemStacks[1].isEmpty() || !itemStacks[2].isEmpty() || !itemStacks[3].isEmpty();;
+            boolean hasItem = !itemStacks[0].isEmpty() || !itemStacks[1].isEmpty() || !itemStacks[2].isEmpty() || !itemStacks[3].isEmpty();
+            ;
             boolean hellforgeMatched = false;
 
             if (hasItem) {

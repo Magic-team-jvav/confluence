@@ -93,14 +93,15 @@ public class MaterialItems {
     public static final DeferredItem<Item> HEIM = register("heim", ModRarity.BLUE);
     public static final DeferredItem<Item> GELSTONE = register("gelstone", ModRarity.BLUE);
     public static final DeferredItem<Item> SPORE_ROOT = register("spore_root", ModRarity.BLUE);
-    public static final DeferredItem<Item> WINTER_MARROW = register("winter_marrow", ModRarity.BLUE);
     public static final DeferredItem<Item> COLD_CRYSTAL = register("cold_crystal", ModRarity.BLUE);
+    public static final DeferredItem<Item> WINTER_MARROW = register("winter_marrow", ModRarity.BLUE);
     public static final DeferredItem<Item> SHADOW_SCALE = register("shadow_scale", ModRarity.BLUE);
     public static final DeferredItem<Item> TISSUE_SAMPLE = register("tissue_sample", ModRarity.BLUE);
     public static final DeferredItem<Item> ROYAL_WAX = register("royal_wax", ModRarity.BLUE);
     public static final DeferredItem<Item> DUNGEON_DEMON_BONE = register("dungeon_demon_bone", ModRarity.BLUE);
     public static final DeferredItem<Item> HARPY_FEATHER = register("harpy_feather", ModRarity.BLUE);
     public static final DeferredItem<Item> GIANT_HARPY_FEATHER = register("giant_harpy_feather", ModRarity.BLUE);
+    public static final DeferredItem<Item> FLINX_FUR = register("flinx_fur", ModRarity.BLUE);
     public static final DeferredItem<Item> AETHERIUM_SHARD = register("aetherium_shard", ModRarity.ORANGE);
     public static final DeferredItem<Item> AETHERIUM_GOLD = register("aetherium_gold", ModRarity.ORANGE);
 

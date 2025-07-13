@@ -15,7 +15,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -42,13 +41,12 @@ public final class ModFeatures {
     public static final Supplier<DartTrapFeature> DART_TRAP = FEATURES.register("dart_trap", () -> new DartTrapFeature(DartTrapFeature.Config.CODEC));
     public static final Supplier<ColumnPatchFeature> COLUMN_PATCH = FEATURES.register("column_patch", () -> new ColumnPatchFeature(ColumnPatchFeature.Config.CODEC));
     public static final Supplier<DeathChestTrapFeature> DEATH_CHEST_TRAP = FEATURES.register("death_chest_trap", () -> new DeathChestTrapFeature(DeathChestTrapFeature.Config.CODEC));
-    public static final Supplier<WithDetonatorFeature> WITH_DETONATOR = FEATURES.register("with_detonator", () -> new WithDetonatorFeature(WithDetonatorFeature.Config.CODEC));
+    public static final Supplier<WithDetonatorFeature> WITH_DETONATOR = FEATURES.register("with_detonator", () -> new WithDetonatorFeature(WithDetonatorFeature.Config.CODEC)); // todo 等方块模型
     public static final Supplier<FallingSandTrapFeature> FALLING_SAND_TRAP = FEATURES.register("falling_sand_trap", () -> new FallingSandTrapFeature(FallingSandTrapFeature.Config.CODEC));
     public static final Supplier<SculkSensorWithTNTFeature> SCULK_SENSOR_WITH_TNT = FEATURES.register("sculk_sensor_with_tnt", () -> new SculkSensorWithTNTFeature(SculkSensorWithTNTFeature.Config.CODEC));
 
     public static final Supplier<SimpleBlockNBTFeature> SIMPLE_BLOCK_NBT = FEATURES.register("simple_block_nbt", () -> new SimpleBlockNBTFeature(SimpleBlockNBTFeature.Config.CODEC));
     public static final Supplier<PalmTreeFeature> PALM_TREE = FEATURES.register("palm_tree", () -> new PalmTreeFeature(PalmTreeFeature.Config.CODEC));
-    public static final Supplier<QueenBeeHiveFeature> QUEEN_BEE_HIVE = FEATURES.register("queen_bee_hive", () -> new QueenBeeHiveFeature(QueenBeeHiveFeature.Config.CODEC));
     public static final Supplier<DroopingVineTreeFeature> DROOPING_VINE_TREE = FEATURES.register("drooping_vine_tree", () -> new DroopingVineTreeFeature(DroopingVineTreeFeature.Config.CODEC));
     public static final Supplier<DroopingBlockFeature> DROOPING_BLOCK = FEATURES.register("drooping_block", () -> new DroopingBlockFeature(DroopingBlockFeature.Config.CODEC));
     public static final Supplier<CattailsFeature> CATTAILS = FEATURES.register("cattails", () -> new CattailsFeature(CattailsFeature.Config.CODEC));
@@ -60,6 +58,7 @@ public final class ModFeatures {
     public static final Supplier<RailTrapFeature> RAIL_TRAP = FEATURES.register("rail_trap", () -> new RailTrapFeature(RailTrapFeature.Config.CODEC));
     public static final Supplier<GroundBlockFeature> GROUND_BLOCK = FEATURES.register("ground_block", () -> new GroundBlockFeature(GroundBlockFeature.Config.CODEC));
     public static final Supplier<GroundBlockNBTFeature> GROUND_BLOCK_NBT = FEATURES.register("ground_block_nbt", () -> new GroundBlockNBTFeature(GroundBlockNBTFeature.Config.CODEC));
+    public static final Supplier<GemstoneCaveFeature> GEMSTONE_CAVE = FEATURES.register("gemstone_cave", () -> new GemstoneCaveFeature(GemstoneCaveFeature.Config.CODEC));
 
     public static final Supplier<PlacementModifierType<SecretFlagPlacement>> SECRET_FLAG_PLACEMENT_MODIFIER = MODIFIER_TYPES.register("secret_flag", () -> () -> SecretFlagPlacement.CODEC);
 
@@ -107,73 +106,40 @@ public final class ModFeatures {
     }
 
     public static class Configured {
-        public static final ResourceKey<ConfiguredFeature<?, ?>> SHADOW = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("trees_set/trees_crimson"));
-        public static final ResourceKey<ConfiguredFeature<?, ?>> EBONY = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("trees_set/trees_corruption"));
-        public static final ResourceKey<ConfiguredFeature<?, ?>> PALM = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("palm_tree_checked"));
-        public static final ResourceKey<ConfiguredFeature<?, ?>> PEARL = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("trees_set/trees_hallow"));
-        public static final ResourceKey<ConfiguredFeature<?, ?>> RUBY = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("ruby_tree"));
-        public static final ResourceKey<ConfiguredFeature<?, ?>> AMBER = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("amber_tree"));
-        public static final ResourceKey<ConfiguredFeature<?, ?>> TOPAZ = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("topaz_tree"));
-        public static final ResourceKey<ConfiguredFeature<?, ?>> JADE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("jade_tree"));
-        public static final ResourceKey<ConfiguredFeature<?, ?>> DIAMOND = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("diamond_tree"));
-        public static final ResourceKey<ConfiguredFeature<?, ?>> SAPPHIRE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("sapphire_tree"));
-        public static final ResourceKey<ConfiguredFeature<?, ?>> AMETHYST = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("amethyst_tree"));
-        public static final ResourceKey<ConfiguredFeature<?, ?>> ASH = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("ash_tree"));
-        public static final ResourceKey<ConfiguredFeature<?, ?>> LIVING = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("living_tree"));
-        public static final ResourceKey<ConfiguredFeature<?, ?>> CONFIGURED_CRIMSON_TREE_CHECKED_0 = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("crimson_tree_checked_0"));
-        public static final ResourceKey<ConfiguredFeature<?, ?>> CONFIGURED_THE_CORRUPTION_TREE_CHECKED_2 = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("the_corruption_tree_checked_2"));
-        public static final ResourceKey<ConfiguredFeature<?, ?>> CONFIGURED_YELLOW_WILLOW = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("yellow_willow"));
-        public static final ResourceKey<ConfiguredFeature<?, ?>> BAOBAB = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("baobab_tree"));
-        public static final ResourceKey<ConfiguredFeature<?, ?>> BAOBAB_AIR = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("baobab_tree_air"));
-        public static final ResourceKey<ConfiguredFeature<?, ?>> BAOBAB_WATER = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("baobab_tree_water"));
-        public static final ResourceKey<ConfiguredFeature<?, ?>> GLOWING_MUSHROOM = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("glowing_mushroom_tree"));
-    }
-
-    public static class Placed {
-        public static final ResourceKey<PlacedFeature> TREES_CORRUPTION = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("trees_corruption"));
-        public static final ResourceKey<PlacedFeature> CORRUPTION_POT = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("corruption_pot"));
-        public static final ResourceKey<PlacedFeature> CORRUPT_GRASS = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("corrupt_grass"));
-        public static final ResourceKey<PlacedFeature> VILE_MUSHROOM = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("vile_mushroom"));
-        public static final ResourceKey<PlacedFeature> THE_CORRUPTION_TREE_CHECKED_0 = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("the_corruption_tree_checked_0"));
-        public static final ResourceKey<PlacedFeature> THE_CORRUPTION_TREE_CHECKED_1 = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("the_corruption_tree_checked_1"));
-        public static final ResourceKey<PlacedFeature> THE_CORRUPTION_TREE_CHECKED_2 = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("the_corruption_tree_checked_2"));
-        public static final ResourceKey<PlacedFeature> CORRUPT_DROOPING_VINE = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("corrupt_drooping_vine"));
-
-        public static final ResourceKey<PlacedFeature> TREES_CRIMSON = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("trees_crimson"));
-        public static final ResourceKey<PlacedFeature> CRIMSON_POT = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("crimson_pot"));
-        public static final ResourceKey<PlacedFeature> CRIMSON_GRASS = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("crimson_grass"));
-        public static final ResourceKey<PlacedFeature> CRIMSON_TREE_CHECKED_0 = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("crimson_tree_checked_0"));
-        public static final ResourceKey<PlacedFeature> CRIMSON_TREE_CHECKED_1 = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("crimson_tree_checked_1"));
-        public static final ResourceKey<PlacedFeature> CRIMSON_DROOPING_VINE = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("crimson_drooping_vine"));
-        public static final ResourceKey<PlacedFeature> VICIOUS_MUSHROOM = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("vicious_mushroom"));
-
-        public static final ResourceKey<PlacedFeature> GLOWING_MUSHROOM = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("glowing_mushroom"));
-        public static final ResourceKey<PlacedFeature> GLOWING_MUSHROOM_LIFE_CRYSTAL = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("glowing_mushroom_life_crystal"));
-        public static final ResourceKey<PlacedFeature> GLOWING_MUSHROOM_TREE = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("glowing_mushroom_tree"));
-        public static final ResourceKey<PlacedFeature> GLOWING_MUSHROOM_VINE = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("glowing_mushroom_vine"));
-        public static final ResourceKey<PlacedFeature> GLOWING_MUSHROOM_CATTAILS = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("glowing_mushroom_cattails"));
-
-        public static final ResourceKey<PlacedFeature> ASH_GRASS = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("ash_grass"));
-        public static final ResourceKey<PlacedFeature> ASH_TREE = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("ash_tree"));
-        public static final ResourceKey<PlacedFeature> FIREBLOSSOM = ResourceKey.create(Registries.PLACED_FEATURE, Confluence.asResource("fireblossom"));
+        public static final ResourceKey<ConfiguredFeature<?, ?>> SHADOW_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("crimson_tree"));
+        public static final ResourceKey<ConfiguredFeature<?, ?>> EBONY_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("corruption_tree"));
+        public static final ResourceKey<ConfiguredFeature<?, ?>> PALM_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("palm_tree"));
+        public static final ResourceKey<ConfiguredFeature<?, ?>> PEARL_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("pearl_tree")); // todo
+        public static final ResourceKey<ConfiguredFeature<?, ?>> RUBY_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("ruby_tree"));
+        public static final ResourceKey<ConfiguredFeature<?, ?>> AMBER_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("amber_tree"));
+        public static final ResourceKey<ConfiguredFeature<?, ?>> TOPAZ_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("topaz_tree"));
+        public static final ResourceKey<ConfiguredFeature<?, ?>> JADE_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("jade_tree"));
+        public static final ResourceKey<ConfiguredFeature<?, ?>> DIAMOND_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("diamond_tree"));
+        public static final ResourceKey<ConfiguredFeature<?, ?>> SAPPHIRE_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("sapphire_tree"));
+        public static final ResourceKey<ConfiguredFeature<?, ?>> AMETHYST_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("amethyst_tree"));
+        public static final ResourceKey<ConfiguredFeature<?, ?>> ASH_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("ash_tree"));
+        public static final ResourceKey<ConfiguredFeature<?, ?>> LIVING_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("living_tree")); // todo
+        public static final ResourceKey<ConfiguredFeature<?, ?>> YELLOW_WILLOW_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("yellow_willow_tree"));
+        public static final ResourceKey<ConfiguredFeature<?, ?>> BAOBAB_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("baobab_tree"));
+        public static final ResourceKey<ConfiguredFeature<?, ?>> GLOWING_MUSHROOM_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("glowing_mushroom_tree"));
     }
 
     public static final class TreeGrowers {
-        public static final TreeGrower SHADOW_GROWER = registerSmallTree("shadow", Configured.SHADOW);
-        public static final TreeGrower EBONY_GROWER = registerSmallTree("ebony", Configured.EBONY);
-        public static final TreeGrower PALM_GROWER = registerSmallTree("palm", Configured.PALM);
-        public static final TreeGrower PEARL_GROWER = registerSmallTree("pearl", Configured.PEARL);
-        public static final TreeGrower RUBY_GROWER = registerSmallTree("ruby", Configured.RUBY);
-        public static final TreeGrower AMBER_GROWER = registerSmallTree("amber", Configured.AMBER);
-        public static final TreeGrower TOPAZ_GROWER = registerSmallTree("topaz", Configured.TOPAZ);
-        public static final TreeGrower JADE_GROWER = registerSmallTree("jade", Configured.JADE);
-        public static final TreeGrower DIAMOND_GROWER = registerSmallTree("diamond", Configured.DIAMOND);
-        public static final TreeGrower SAPPHIRE_GROWER = registerSmallTree("sapphire", Configured.SAPPHIRE);
-        public static final TreeGrower AMETHYST_GROWER = registerSmallTree("amethyst", Configured.AMETHYST);
-        public static final TreeGrower ASH_GROWER = registerSmallTree("ash", Configured.ASH);
-        public static final TreeGrower LIVING_GROWER = registerSmallTree("living", Configured.LIVING);
-        public static final TreeGrower YELLOW_WILLOW_GROWER = registerSmallTree("yellow_willow_grower", Configured.CONFIGURED_YELLOW_WILLOW);
-        public static final TreeGrower BAOBAB_GROWER = registerBigTree("baobab_grower", Configured.BAOBAB);
+        public static final TreeGrower SHADOW_GROWER = registerSmallTree("shadow", Configured.SHADOW_TREE);
+        public static final TreeGrower EBONY_GROWER = registerSmallTree("ebony", Configured.EBONY_TREE);
+        public static final TreeGrower PALM_GROWER = registerSmallTree("palm", Configured.PALM_TREE);
+        public static final TreeGrower PEARL_GROWER = registerSmallTree("pearl", Configured.PEARL_TREE);
+        public static final TreeGrower RUBY_GROWER = registerSmallTree("ruby", Configured.RUBY_TREE);
+        public static final TreeGrower AMBER_GROWER = registerSmallTree("amber", Configured.AMBER_TREE);
+        public static final TreeGrower TOPAZ_GROWER = registerSmallTree("topaz", Configured.TOPAZ_TREE);
+        public static final TreeGrower JADE_GROWER = registerSmallTree("jade", Configured.JADE_TREE);
+        public static final TreeGrower DIAMOND_GROWER = registerSmallTree("diamond", Configured.DIAMOND_TREE);
+        public static final TreeGrower SAPPHIRE_GROWER = registerSmallTree("sapphire", Configured.SAPPHIRE_TREE);
+        public static final TreeGrower AMETHYST_GROWER = registerSmallTree("amethyst", Configured.AMETHYST_TREE);
+        public static final TreeGrower ASH_GROWER = registerSmallTree("ash", Configured.ASH_TREE);
+        public static final TreeGrower LIVING_GROWER = registerSmallTree("living", Configured.LIVING_TREE);
+        public static final TreeGrower YELLOW_WILLOW_GROWER = registerSmallTree("yellow_willow", Configured.YELLOW_WILLOW_TREE);
+        public static final TreeGrower BAOBAB_GROWER = registerBigTree("baobab", Configured.BAOBAB_TREE);
 
         private static TreeGrower registerSmallTree(String name, ResourceKey<ConfiguredFeature<?, ?>> tree) {
             return new TreeGrower(Confluence.MODID + ":" + name, Optional.empty(), Optional.of(tree), Optional.empty());

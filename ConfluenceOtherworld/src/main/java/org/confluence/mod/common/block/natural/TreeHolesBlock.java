@@ -17,7 +17,9 @@ import net.minecraft.world.inventory.DispenserMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -98,6 +100,17 @@ public class TreeHolesBlock extends BaseEntityBlock {
         public Entity(BlockPos pos, BlockState blockState) {
             super(FunctionalBlocks.TREE_HOLES_ENTITY.get(), pos, blockState);
         }
+
+//        @Override
+//        public void onLoad() {
+//            super.onLoad();
+//            invalidateCapabilities();
+//        }
+//
+//        @Override
+//        public void onChunkUnloaded() {
+//            invalidateCapabilities();
+//        }
 
         @Override
         protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {

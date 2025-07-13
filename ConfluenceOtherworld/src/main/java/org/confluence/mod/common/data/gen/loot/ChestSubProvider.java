@@ -17,7 +17,9 @@ import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModLootTables;
-import org.confluence.mod.common.init.block.*;
+import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.common.init.block.ModBlocks;
+import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_guns.common.init.TGItems;
@@ -425,7 +427,6 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ManaWeaponItems.FLOWER_OF_FIRE))
                         .add(LootItem.lootTableItem(LanceItems.DARK_LANCE))
-                        .add(LootItem.lootTableItem(TCItems.OBSIDIAN_ROSE))
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MinecartItems.DEMONIC_HELLCART))

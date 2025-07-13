@@ -4,7 +4,6 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
@@ -40,7 +39,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        LogBlockSet.acceptTags(this);
+        LogBlockSet.acceptTags(this::tag);
         IntrinsicTagAppender<Block> mineableWithPickaxe = tag(BlockTags.MINEABLE_WITH_PICKAXE);
         OreBlocks.acceptTag(mineableWithPickaxe);
         OreBlocks.acceptTag(tag(Tags.Blocks.ORES));
@@ -172,7 +171,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 PEARL_LOG_BLOCKS.getLog().get(),
                 YELLOW_WILLOW_LOG_BLOCKS.getLog().get(),
                 LIVING_LOG_BLOCKS.getLog().get(),
-                LIVING_MAHOGANY_BLOCKS.getLog().get(),
+                LIVING_MAHOGANY_LOG_BLOCKS.getLog().get(),
                 BAOBAB_LOG_BLOCKS.getLog().get()
         );
         // 镐子
@@ -453,7 +452,6 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 NatureBlocks.LIFE_MUSHROOM_INDUSIUM_BLOCK.get(),
                 NatureBlocks.LIFE_MUSHROOM_STEM_BLOCK.get(),
                 NatureBlocks.LIFE_MUSHROOM_PILEUS_BLOCK.get()
-
         );
         tag(BlockTags.INCORRECT_FOR_WOODEN_TOOL).addTag(ModTags.Blocks.NEEDS_2_LEVEL);
         tag(BlockTags.INCORRECT_FOR_GOLD_TOOL).addTag(ModTags.Blocks.NEEDS_2_LEVEL);
@@ -1365,10 +1363,5 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 Blocks.STRUCTURE_BLOCK
         );
         WaystonesHelper.blockTag(this::tag);
-    }
-
-    @Override
-    public IntrinsicTagAppender<Block> tag(TagKey<Block> tag) {
-        return super.tag(tag);
     }
 }

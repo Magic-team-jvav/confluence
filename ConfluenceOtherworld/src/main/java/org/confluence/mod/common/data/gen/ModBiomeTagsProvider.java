@@ -3,7 +3,6 @@ package org.confluence.mod.common.data.gen;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.BiomeTagsProvider;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
@@ -69,33 +68,22 @@ public class ModBiomeTagsProvider extends BiomeTagsProvider {
 
                 ModBiomes.GLOWING_MUSHROOM
         );
-        tag(ModTags.Biomes.IS_FOREST).add(  // 出现较大群系内容扩展时更改此标签(当对应群系同时具有专属群系地下宝箱，渔获，敌怪时）
-                Biomes.BIRCH_FOREST,
-                Biomes.CHERRY_GROVE,
-                Biomes.DARK_FOREST,
-                Biomes.DEEP_DARK,
-                Biomes.DRIPSTONE_CAVES,
-                Biomes.FLOWER_FOREST,
-                Biomes.FOREST,
-                Biomes.MEADOW,
-                Biomes.MUSHROOM_FIELDS,
-                Biomes.OLD_GROWTH_BIRCH_FOREST,
-                Biomes.OLD_GROWTH_PINE_TAIGA,
-                Biomes.OLD_GROWTH_SPRUCE_TAIGA,
-                Biomes.PLAINS,
-                Biomes.RIVER,
-                Biomes.SAVANNA,
-                Biomes.SAVANNA_PLATEAU,
-                Biomes.STONY_PEAKS,
-                Biomes.STONY_SHORE,
-                Biomes.SUNFLOWER_PLAINS,
-                Biomes.SWAMP,
-                Biomes.MANGROVE_SWAMP,
-                Biomes.TAIGA,
-                Biomes.WINDSWEPT_FOREST,
-                Biomes.WINDSWEPT_GRAVELLY_HILLS,
-                Biomes.WINDSWEPT_HILLS,
-                Biomes.WINDSWEPT_SAVANNA
+        tag(ModTags.Biomes.IS_FOREST).addTags(
+                // 出现较大群系内容扩展时更改此标签(当对应群系同时具有专属群系地下宝箱，渔获，敌怪时）
+                Tags.Biomes.IS_FOREST,
+                Tags.Biomes.IS_PLAINS,
+                Tags.Biomes.IS_MUSHROOM,
+                Tags.Biomes.IS_TAIGA,
+                Tags.Biomes.IS_SAVANNA,
+                Tags.Biomes.IS_WINDSWEPT,
+                Tags.Biomes.IS_OLD_GROWTH,
+                Tags.Biomes.IS_SWAMP,
+                Tags.Biomes.IS_STONY_SHORES
+        );
+        tag(ModTags.Biomes.IS_FOREST)
+                // 出现较大群系内容扩展时更改此标签(当对应群系同时具有专属群系地下宝箱，渔获，敌怪时）
+                .add(Biomes.DRIPSTONE_CAVES,
+                Biomes.DEEP_DARK
         );
         tag(Tags.Biomes.IS_OVERWORLD).add(
                 ModBiomes.THE_CORRUPTION,
@@ -117,8 +105,8 @@ public class ModBiomeTagsProvider extends BiomeTagsProvider {
                 ModBiomes.ASH_WASTELAND
         );
         tag(Tags.Biomes.IS_NETHER_FOREST).add(ModBiomes.ASH_FOREST);
-        TagAppender<Biome> yellowWillowReplaceable = tag(ModTags.Biomes.VANITY_TREES_REPLACEABLE);
-        yellowWillowReplaceable.add(Biomes.PLAINS, Biomes.FOREST, Biomes.FLOWER_FOREST);
-        yellowWillowReplaceable.addTag(Tags.Biomes.IS_BIRCH_FOREST);
+        tag(ModTags.Biomes.VANITY_TREES_REPLACEABLE)
+                .add(Biomes.PLAINS, Biomes.FOREST, Biomes.FLOWER_FOREST)
+                .addTag(Tags.Biomes.IS_BIRCH_FOREST);
     }
 }

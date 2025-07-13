@@ -5,10 +5,13 @@ import com.mojang.serialization.MapCodec;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import org.confluence.lib.common.worldgen.structure.GridPiece;
@@ -26,6 +29,7 @@ import static org.confluence.lib.util.StructureUtils.rectangular;
 
 public class LivingMahoganyTreeStructure extends Structure {
     public static final MapCodec<LivingMahoganyTreeStructure> CODEC = simpleCodec(LivingMahoganyTreeStructure::new);
+    public static final ResourceKey<ConfiguredFeature<?, ?>> LIVING_IVY_CHESTS = Confluence.asResourceKey(Registries.CONFIGURED_FEATURE, "living_ivy_chests");
 
     protected LivingMahoganyTreeStructure(StructureSettings settings) {
         super(settings);
@@ -94,11 +98,11 @@ public class LivingMahoganyTreeStructure extends Structure {
 
             GridPiece.addPieces(blockMap, Lists.newArrayList(
                     Blocks.AIR.defaultBlockState(),
-                    NatureBlocks.LIVING_MAHOGANY_BLOCKS.getWood().get().defaultBlockState(),
-                    NatureBlocks.LIVING_MAHOGANY_BLOCKS.getLeaves().get().defaultBlockState().setValue(PERSISTENT, true),
+                    NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getWood().get().defaultBlockState(),
+                    NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getLeaves().get().defaultBlockState().setValue(PERSISTENT, true),
                     OreBlocks.SPORE_ROOT_BLOCK.get().defaultBlockState()
             ), Map.of(
-                    centerPos, Confluence.asResource("living_lvy_chests")
+                    centerPos, LIVING_IVY_CHESTS.location()
             ), builder);
         });
     }

@@ -1,0 +1,38 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"animation.model.new": {
+			"loop": true,
+			"animation_length": 3,
+			"bones": {
+				"bone": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"3.0": {
+							"vector": [0, -360, 0]
+						}
+					},
+					"position": {
+						"0.0": {
+							"vector": [0, 9, 0]
+						},
+						"1.5": {
+							"vector": [0, 15, 0],
+							"easing": "easeInOutQuad"
+						},
+						"3.0": {
+							"vector": [0, 9, 0],
+							"easing": "easeInOutQuad"
+						}
+					},
+					"scale": {
+						"vector": [1, 1.8, 1]
+					}
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}

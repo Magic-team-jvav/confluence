@@ -1,0 +1,8 @@
+{
+  "parent": "block/template_orientable_trapdoor_open",
+  "textures": {
+    "texture": "confluence:block/glowing_mushroom_trapdoor",
+    "particle": "confluence:block/glowing_mushroom_trapdoor"
+  },
+  "render_type": "cutout"
+}

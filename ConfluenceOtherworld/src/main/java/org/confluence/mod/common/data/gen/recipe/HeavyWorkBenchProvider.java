@@ -16,10 +16,7 @@ import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.lib.common.recipe.AmountIngredient;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.common.init.block.DecorativeBlocks;
-import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.common.init.block.NatureBlocks;
-import org.confluence.mod.common.init.block.StatueBlocks;
+import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.recipe.HeavyWorkBenchRecipe;
 import org.confluence.terra_curio.common.init.TCItems;
@@ -54,6 +51,11 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
             "aa  ",
             "a   "
     );
+    private final List<String> baseRobePattern = List.of(
+            "bbb",
+            "a#a",
+            "a a"
+    );
 
 
     public HeavyWorkBenchProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookup) {
@@ -81,7 +83,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         baseHook(recipeOutput, Ingredient.of(DecorativeBlocks.AMBER_BLOCK), Ingredient.of(DecorativeBlocks.AMBER_CHAIN), HookItems.AMBER_HOOK.toStack());
         baseHook(recipeOutput, Ingredient.of(DecorativeBlocks.TOPAZ_BLOCK), Ingredient.of(DecorativeBlocks.TOPAZ_CHAIN), HookItems.TOPAZ_HOOK.toStack());
         baseHook(recipeOutput, Ingredient.of(DecorativeBlocks.JADE_BLOCK), Ingredient.of(DecorativeBlocks.JADE_CHAIN), HookItems.JADE_HOOK.toStack());
-        baseHook(recipeOutput, Ingredient.of(Items.DIAMOND_BLOCK), Ingredient.of(DecorativeBlocks.DIAMOND_CHAIN), HookItems.DIAMOND_HOOK.toStack());
+        baseHook(recipeOutput, Ingredient.of(Tags.Items.STORAGE_BLOCKS_DIAMOND), Ingredient.of(DecorativeBlocks.DIAMOND_CHAIN), HookItems.DIAMOND_HOOK.toStack());
         baseHook(recipeOutput, Ingredient.of(DecorativeBlocks.SAPPHIRE_BLOCK), Ingredient.of(DecorativeBlocks.SAPPHIRE_CHAIN), HookItems.SAPPHIRE_HOOK.toStack());
         baseHook(recipeOutput, Ingredient.of(DecorativeBlocks.AMETHYST_BLOCK), Ingredient.of(DecorativeBlocks.AMETHYST_CHAIN), HookItems.AMETHYST_HOOK.toStack());
 
@@ -94,25 +96,34 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         baseWhip(recipeOutput, AmountIngredient.of(4, ModTags.Items.INGOTS_PLATINUM), Ingredient.of(DecorativeBlocks.DIAMOND_CHAIN), TEWhipItems.DIAMOND_WHIP.toStack());
         baseWhip(recipeOutput, AmountIngredient.of(4, ModTags.Items.INGOTS_SILVER), Ingredient.of(DecorativeBlocks.SAPPHIRE_CHAIN), TEWhipItems.SAPPHIRE_WHIP.toStack());
         baseWhip(recipeOutput, AmountIngredient.of(4, Tags.Items.INGOTS_COPPER), Ingredient.of(DecorativeBlocks.AMETHYST_CHAIN), TEWhipItems.AMETHYST_WHIP.toStack());
-        baseWhip(recipeOutput, AmountIngredient.of(4, MaterialItems.SPORE_ROOT), Ingredient.of(MaterialItems.GELSTONE), TEWhipItems.SWAMP_WHIP.toStack());
+        baseWhip(recipeOutput, AmountIngredient.of(4, MaterialItems.SPORE_ROOT), Ingredient.of(ModTags.Items.RAW_MATERIALS_GELSTONE), TEWhipItems.SWAMP_WHIP.toStack());
 
         // 基础法杖
-        baseStaff(recipeOutput, AmountIngredient.of(5, Items.DIAMOND), AmountIngredient.of(2, ModTags.Items.INGOTS_PLATINUM), ManaWeaponItems.DIAMOND_STAFF.toStack());
-        baseStaff(recipeOutput, AmountIngredient.of(5, MaterialItems.RUBY), AmountIngredient.of(2, Tags.Items.INGOTS_GOLD), ManaWeaponItems.RUBY_STAFF.toStack());
-        baseStaff(recipeOutput, AmountIngredient.of(5, MaterialItems.AMBER), AmountIngredient.of(2, MaterialItems.STURDY_FOSSIL), ManaWeaponItems.AMBER_STAFF.toStack());
-        baseStaff(recipeOutput, AmountIngredient.of(5, MaterialItems.TOPAZ), AmountIngredient.of(2, ModTags.Items.INGOTS_TIN), ManaWeaponItems.TOPAZ_STAFF.toStack());
-        baseStaff(recipeOutput, AmountIngredient.of(5, MaterialItems.JADE), AmountIngredient.of(2, ModTags.Items.INGOTS_TUNGSTEN), ManaWeaponItems.JADE_STAFF.toStack());
-        baseStaff(recipeOutput, AmountIngredient.of(5, MaterialItems.SAPPHIRE), AmountIngredient.of(2, ModTags.Items.INGOTS_SILVER), ManaWeaponItems.SAPPHIRE_STAFF.toStack());
-        baseStaff(recipeOutput, AmountIngredient.of(5, MaterialItems.AMETHYST), AmountIngredient.of(2, Tags.Items.INGOTS_COPPER), ManaWeaponItems.AMETHYST_STAFF.toStack());
+        baseStaff(recipeOutput, AmountIngredient.of(5, Tags.Items.GEMS_DIAMOND), AmountIngredient.of(2, ModTags.Items.INGOTS_PLATINUM), ManaWeaponItems.DIAMOND_STAFF.toStack());
+        baseStaff(recipeOutput, AmountIngredient.of(5, ModTags.Items.GEMS_RUBY), AmountIngredient.of(2, Tags.Items.INGOTS_GOLD), ManaWeaponItems.RUBY_STAFF.toStack());
+        baseStaff(recipeOutput, AmountIngredient.of(5, ModTags.Items.GEMS_AMBER), AmountIngredient.of(2, MaterialItems.STURDY_FOSSIL), ManaWeaponItems.AMBER_STAFF.toStack());
+        baseStaff(recipeOutput, AmountIngredient.of(5, ModTags.Items.GEMS_TOPAZ), AmountIngredient.of(2, ModTags.Items.INGOTS_TIN), ManaWeaponItems.TOPAZ_STAFF.toStack());
+        baseStaff(recipeOutput, AmountIngredient.of(5, ModTags.Items.GEMS_JADE), AmountIngredient.of(2, ModTags.Items.INGOTS_TUNGSTEN), ManaWeaponItems.JADE_STAFF.toStack());
+        baseStaff(recipeOutput, AmountIngredient.of(5, ModTags.Items.GEMS_SAPPHIRE), AmountIngredient.of(2, ModTags.Items.INGOTS_SILVER), ManaWeaponItems.SAPPHIRE_STAFF.toStack());
+        baseStaff(recipeOutput, AmountIngredient.of(5, ModTags.Items.GEMS_AMETHYST), AmountIngredient.of(2, Tags.Items.INGOTS_COPPER), ManaWeaponItems.AMETHYST_STAFF.toStack());
 
         // 基础光剑
-        basePhaseblade(recipeOutput, AmountIngredient.of(5, Items.DIAMOND), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.WHITE_PHASEBLADE.toStack());
-        basePhaseblade(recipeOutput, AmountIngredient.of(5, MaterialItems.RUBY), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.RED_PHASEBLADE.toStack());
-        basePhaseblade(recipeOutput, AmountIngredient.of(5, MaterialItems.AMBER), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.ORANGE_PHASEBLADE.toStack());
-        basePhaseblade(recipeOutput, AmountIngredient.of(5, MaterialItems.TOPAZ), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.YELLOW_PHASEBLADE.toStack());
-        basePhaseblade(recipeOutput, AmountIngredient.of(5, MaterialItems.JADE), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.GREEN_PHASEBLADE.toStack());
-        basePhaseblade(recipeOutput, AmountIngredient.of(5, MaterialItems.SAPPHIRE), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.BLUE_PHASEBLADE.toStack());
-        basePhaseblade(recipeOutput, AmountIngredient.of(5, MaterialItems.AMETHYST), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.PURPLE_PHASEBLADE.toStack());
+        basePhaseblade(recipeOutput, AmountIngredient.of(5, Tags.Items.GEMS_DIAMOND), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.WHITE_PHASEBLADE.toStack());
+        basePhaseblade(recipeOutput, AmountIngredient.of(5, ModTags.Items.GEMS_RUBY), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.RED_PHASEBLADE.toStack());
+        basePhaseblade(recipeOutput, AmountIngredient.of(5, ModTags.Items.GEMS_AMBER), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.ORANGE_PHASEBLADE.toStack());
+        basePhaseblade(recipeOutput, AmountIngredient.of(5, ModTags.Items.GEMS_TOPAZ), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.YELLOW_PHASEBLADE.toStack());
+        basePhaseblade(recipeOutput, AmountIngredient.of(5, ModTags.Items.GEMS_JADE), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.GREEN_PHASEBLADE.toStack());
+        basePhaseblade(recipeOutput, AmountIngredient.of(5, ModTags.Items.GEMS_SAPPHIRE), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.BLUE_PHASEBLADE.toStack());
+        basePhaseblade(recipeOutput, AmountIngredient.of(5, ModTags.Items.GEMS_AMETHYST), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.PURPLE_PHASEBLADE.toStack());
+
+        // 基础长袍
+        baseRobe(recipeOutput, Ingredient.of(VanityArmorItems.ROBE), AmountIngredient.of(2, Tags.Items.GEMS_DIAMOND),Ingredient.of(Tags.Items.GEMS_DIAMOND),ArmorItems.DIAMOND_ROBE.toStack());
+        baseRobe(recipeOutput, Ingredient.of(VanityArmorItems.ROBE), AmountIngredient.of(2, ModTags.Items.GEMS_RUBY),Ingredient.of(ModTags.Items.GEMS_RUBY), ArmorItems.RUBY_ROBE.toStack());
+        baseRobe(recipeOutput, Ingredient.of(VanityArmorItems.ROBE), AmountIngredient.of(2, ModTags.Items.GEMS_AMBER),Ingredient.of(ModTags.Items.GEMS_AMBER), ArmorItems.AMBER_ROBE.toStack());
+        baseRobe(recipeOutput, Ingredient.of(VanityArmorItems.ROBE), AmountIngredient.of(2, ModTags.Items.GEMS_TOPAZ),Ingredient.of(ModTags.Items.GEMS_TOPAZ), ArmorItems.TOPAZ_ROBE.toStack());
+        baseRobe(recipeOutput, Ingredient.of(VanityArmorItems.ROBE), AmountIngredient.of(2, ModTags.Items.GEMS_JADE),Ingredient.of(ModTags.Items.GEMS_JADE), ArmorItems.JADE_ROBE.toStack());
+        baseRobe(recipeOutput, Ingredient.of(VanityArmorItems.ROBE), AmountIngredient.of(2, ModTags.Items.GEMS_SAPPHIRE),Ingredient.of(ModTags.Items.GEMS_SAPPHIRE), ArmorItems.SAPPHIRE_ROBE.toStack());
+        baseRobe(recipeOutput, Ingredient.of(VanityArmorItems.ROBE), AmountIngredient.of(2, ModTags.Items.GEMS_AMETHYST),Ingredient.of(ModTags.Items.GEMS_AMETHYST), ArmorItems.AMETHYST_ROBE.toStack());
 
         // 金系列
         Map<Character, Ingredient> goldWithGems = Map.of(
@@ -370,6 +381,28 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 " # ",
                 "ccc"
         )), TESummonItems.IRON_GOLEM_STAFF.toStack());
+        // 小雪怪法杖
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(2,MaterialItems.FLINX_FUR),
+                '#', AmountIngredient.of(2,ModTags.Items.GOLD_AND_PLATINUM)
+        ), List.of(
+                "  aa",
+                " a##",
+                " # #",
+                "#   "
+        )), TESummonItems.SNOW_FLINX_STAFF.toStack());
+
+        // 小雪怪皮毛外套
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(4,MaterialItems.FLINX_FUR),
+                'b', AmountIngredient.of(2,MaterialItems.SILK),
+                '#', AmountIngredient.of(8,ModTags.Items.GOLD_AND_PLATINUM)
+        ), List.of(
+                "a#a",
+                "bbb",
+                "b b"
+        )), ArmorItems.FLINX_FUR_COAT.toStack());
+
         // 计时器
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 'a', Ingredient.of(TCItems.GOLD_WATCH,TCItems.PLATINUM_WATCH),
@@ -410,6 +443,26 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "cac",
                 "ccc"
         )), FunctionalBlocks.SIGNAL_ADAPTER.toStack());
+        // 小鬼法杖
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(2, MaterialItems.HELLSTONE_INGOT),
+                'a', Ingredient.of(OreBlocks.HELLSTONE_BLOCK)
+        ), List.of(
+                "  # ",
+                "  a#",
+                " #  ",
+                "#   "
+        )), TESummonItems.IMP_STAFF.toStack());
+
+        // 长袍
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(3, MaterialItems.SILK),
+                'a', AmountIngredient.of(2, MaterialItems.SILK)
+        ), List.of(
+                "#a#",
+                "# #",
+                "# #"
+        )), VanityArmorItems.ROBE.toStack());
 
         shapeless(recipeOutput, NatureBlocks.THIN_ICE_BLOCK.toStack(), Ingredient.of(Items.ICE));
         shapeless(recipeOutput, ConsumableItems.ROTTEN_BONE_DUST.toStack(2), AmountIngredient.of(4, MaterialItems.ROTTEN_BONE), AmountIngredient.of(4, MaterialItems.WORM_TOOTH), AmountIngredient.of(8, MaterialItems.ROTTEN_CHUNK));
@@ -482,5 +535,13 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 '#', gem,
                 'a', handle
         ), basePhasebladePattern)), null);
+    }
+    protected void baseRobe(RecipeOutput recipeOutput, Ingredient robe, Ingredient gem, Ingredient handle,ItemStack result) {
+        ResourceLocation id = Confluence.asResource("heavy_work_bench/" + getItemName(result.getItem()));
+        recipeOutput.accept(id, new HeavyWorkBenchRecipe(result, ShapedRecipePattern.of(Map.of(
+                '#', robe,
+                'b', gem,
+                'a', handle
+        ), baseRobePattern)), null);
     }
 }

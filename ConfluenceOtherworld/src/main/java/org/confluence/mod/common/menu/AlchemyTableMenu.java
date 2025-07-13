@@ -24,6 +24,7 @@ import org.confluence.mod.common.recipe.AlchemyTableRecipe;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class AlchemyTableMenu extends AbstractContainerMenu {
@@ -73,7 +74,8 @@ public class AlchemyTableMenu extends AbstractContainerMenu {
                 List<RecipeHolder<AlchemyTableRecipe>> recipes = player.level().getRecipeManager().getRecipesFor(ModRecipes.ALCHEMY_TABLE_TYPE.get(), input, player.level());
                 ItemStack itemStack = ItemStack.EMPTY;
                 if (!recipes.isEmpty()) {
-                    AlchemyTableRecipe recipe = recipes.getFirst().value();
+                    AlchemyTableRecipe recipe = recipes.stream().max(Comparator.comparingInt(holder -> holder.value().getIngredients().size()))
+                            .orElseGet(recipes::getFirst).value();
                     itemStack = recipe.getResultItem(null).copy();
                     setCurrentRecipe(recipe);
                 }

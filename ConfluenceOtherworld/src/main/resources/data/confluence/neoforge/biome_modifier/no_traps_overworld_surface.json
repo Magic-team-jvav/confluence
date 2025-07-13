@@ -1,8 +1,0 @@
-{
-    "type": "neoforge:add_features",
-    "biomes": "#minecraft:is_overworld",
-    "features": [
-        "confluence:no_traps_sculk_sensor_with_tnt"
-    ],
-    "step": "top_layer_modification"
-}

@@ -2,6 +2,8 @@ package org.confluence.mod.common.data.saved;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.*;
+import com.xiaohunao.heaven_destiny_moment.common.init.HDMRegistries;
+import com.xiaohunao.heaven_destiny_moment.common.moment.Moment;
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
 import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -21,7 +23,7 @@ import org.confluence.terraentity.init.entity.TEBossEntities;
 
 public class KillBoard implements IGlobalData {
     public static final KillBoard INSTANCE = new KillBoard();
-    public static final Codec<Object2BooleanMap<EntityType<?>>> DEFEATED_MAP_CODEC = new Codec<>() {
+    public static final Codec<Object2BooleanMap<EntityType<?>>> DEFEATED_BOSSES_CODEC = new Codec<>() {
         @Override
         public <T> DataResult<Pair<Object2BooleanMap<EntityType<?>>, T>> decode(DynamicOps<T> ops, T input) {
             Object2BooleanMap<EntityType<?>> map = new Object2BooleanOpenHashMap<>();
@@ -42,12 +44,38 @@ public class KillBoard implements IGlobalData {
             })), Lifecycle.stable());
         }
     };
+    public static final Codec<Object2BooleanMap<Moment>> DEFEATED_EVENTS_CODEC = new Codec<>() {
+        @Override
+        public <T> DataResult<Pair<Object2BooleanMap<Moment>, T>> decode(DynamicOps<T> ops, T input) {
+            Object2BooleanMap<Moment> map = new Object2BooleanOpenHashMap<>();
+            ops.getMap(input).getOrThrow().entries().forEach(pair -> {
+                Moment key = HDMRegistries.MOMENT.get(ResourceLocation.parse(ops.getStringValue(pair.getFirst()).getOrThrow()));
+                boolean defeated = ops.getBooleanValue(pair.getSecond()).getOrThrow();
+                map.put(key, defeated);
+            });
+            return DataResult.success(new Pair<>(map, input), Lifecycle.stable());
+        }
 
-    private final Object2BooleanMap<EntityType<?>> defeatedMap = new Object2BooleanOpenHashMap<>();
+        @Override
+        public <T> DataResult<T> encode(Object2BooleanMap<Moment> input, DynamicOps<T> ops, T prefix) {
+            return DataResult.success(ops.createMap(input.object2BooleanEntrySet().stream().map(entry -> {
+                T string = ops.createString(HDMRegistries.MOMENT.getKey(entry.getKey()).toString());
+                T defeated = ops.createBoolean(entry.getBooleanValue());
+                return new Pair<>(string, defeated);
+            })), Lifecycle.stable());
+        }
+    };
+
+    private final Object2BooleanMap<EntityType<?>> defeatedBosses = new Object2BooleanOpenHashMap<>();
+    private final Object2BooleanMap<Moment> defeatedEvents = new Object2BooleanOpenHashMap<>();
     private GamePhase gamePhase = GamePhase.BEFORE_SKELETRON;
 
     public boolean isDefeated(EntityType<?> entityType) {
-        return defeatedMap.getBoolean(entityType);
+        return defeatedBosses.getBoolean(entityType);
+    }
+
+    public boolean isDefeated(Moment moment) {
+        return defeatedEvents.getBoolean(moment);
     }
 
     public boolean isAnyDefeated(EntityType<?>... entityTypes) {
@@ -65,13 +93,25 @@ public class KillBoard implements IGlobalData {
         return count;
     }
 
+    public int countDefeated(Moment... moments) {
+        int count = 0;
+        for (Moment moment : moments) {
+            if (isDefeated(moment)) count++;
+        }
+        return count;
+    }
+
     public void defeat(EntityType<?> entityType) {
-        defeatedMap.put(entityType, true);
+        defeatedBosses.put(entityType, true);
         if (entityType == TEBossEntities.SKELETRON.get()) {
             setGamePhase(ServerLifecycleHooks.getCurrentServer(), GamePhase.AFTER_SKELETRON);
         } else if (entityType == TEBossEntities.WALL_OF_FLESH.get()) {
             setGamePhase(ServerLifecycleHooks.getCurrentServer(), GamePhase.WALL_OF_FLESH);
         }
+    }
+
+    public void defeat(Moment moment) {
+        defeatedEvents.put(moment, true);
     }
 
     public GamePhase getGamePhase() {
@@ -94,14 +134,19 @@ public class KillBoard implements IGlobalData {
 
     @Override
     public <T> void decode(Dynamic<T> tag) {
-        defeatedMap.clear();
-        tag.get("defeated_map").orElseEmptyMap().read(DEFEATED_MAP_CODEC).ifSuccess(defeatedMap::putAll);
+        defeatedBosses.clear();
+        defeatedEvents.clear();
+        //tag.get("defeated_map").orElseEmptyMap().read(DEFEATED_MAP_CODEC).ifSuccess(defeatedMap::putAll);
+        tag.get("defeated_bosses").result().or(() -> tag.get("defeated_map").result()).orElseGet(tag::emptyMap).read(DEFEATED_BOSSES_CODEC).ifSuccess(defeatedBosses::putAll);
+        tag.get("defeated_events").orElseEmptyMap().read(DEFEATED_EVENTS_CODEC).ifSuccess(defeatedEvents::putAll);
         this.gamePhase = GamePhase.getById(tag.get("game_phase").asInt(0));
     }
 
     @Override
     public void encode(CompoundTag tag) {
-        tag.put("defeated_map", DEFEATED_MAP_CODEC.encodeStart(NbtOps.INSTANCE, defeatedMap).getOrThrow());
+        //tag.put("defeated_map", DEFEATED_MAP_CODEC.encodeStart(NbtOps.INSTANCE, defeatedMap).getOrThrow());
+        tag.put("defeated_bosses", DEFEATED_BOSSES_CODEC.encodeStart(NbtOps.INSTANCE, defeatedBosses).result().orElseGet(CompoundTag::new));
+        tag.put("defeated_events", DEFEATED_EVENTS_CODEC.encodeStart(NbtOps.INSTANCE, defeatedEvents).result().orElseGet(CompoundTag::new));
         tag.putInt("game_phase", gamePhase.ordinal());
     }
 
@@ -112,7 +157,8 @@ public class KillBoard implements IGlobalData {
 
     @Override
     public void clear() {
-        defeatedMap.clear();
+        defeatedBosses.clear();
+        defeatedEvents.clear();
         this.gamePhase = GamePhase.BEFORE_SKELETRON;
     }
 }

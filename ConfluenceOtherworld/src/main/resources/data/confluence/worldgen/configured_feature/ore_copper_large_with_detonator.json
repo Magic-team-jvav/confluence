@@ -1,6 +1,0 @@
-{
-    "type": "confluence:with_detonator",
-    "config": {
-        "sub_feature": "minecraft:ore_copper_large"
-    }
-}

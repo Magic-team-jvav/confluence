@@ -3,6 +3,7 @@ package org.confluence.mod.mixin.integration.terra_entity;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.core.Holder;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -27,7 +28,7 @@ public abstract class SkeletronMixin {
 
     @WrapOperation(method = "hurt", at = @At(value = "INVOKE", target = "Lorg/confluence/terraentity/entity/boss/AbstractTerraBossBase;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z"))
     private boolean limitDamage(Skeletron instance, DamageSource damageSource, float amount, Operation<Boolean> original) {
-        if (instance.hands.isEmpty()) return original.call(instance, damageSource, amount);
+        if (instance.hands.isEmpty() || damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) return original.call(instance, damageSource, amount);
         return original.call(instance, damageSource, ((IDamageSource) damageSource).confluence$isCritical() ? 2.0F : 1.0F);
     }
 }

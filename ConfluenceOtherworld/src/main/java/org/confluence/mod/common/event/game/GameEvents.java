@@ -32,6 +32,7 @@ import org.confluence.mod.common.component.LootComponent;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.data.AchievementOffsetLoader;
 import org.confluence.mod.common.data.ConfluenceCommand;
+import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModHookTypes;
 import org.confluence.mod.common.init.ModRecipes;
@@ -158,6 +159,12 @@ public final class GameEvents {
                 for (Player player : momentInstance.getPlayers()) {
                     AchievementUtils.awardAchievement((ServerPlayer) player, "bloodbath");
                 }
+                KillBoard.INSTANCE.defeat(momentInstance.getMoment());
+            } else if (momentInstance.getMoment() == TMMoments.GOBLIN_ARMY.get()) {
+                for (Player player : momentInstance.getPlayers()) {
+                    AchievementUtils.awardAchievement((ServerPlayer) player, "goblin_punter");
+                }
+                KillBoard.INSTANCE.defeat(momentInstance.getMoment());
             }
         }
     }

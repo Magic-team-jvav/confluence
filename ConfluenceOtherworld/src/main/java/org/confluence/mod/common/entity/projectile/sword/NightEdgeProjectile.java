@@ -2,12 +2,17 @@ package org.confluence.mod.common.entity.projectile.sword;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.integration.terra_entity.trail.TerraSwordTrail;
 import org.confluence.terraentity.entity.ai.IOBBProjectile;
+import org.confluence.terraentity.entity.ai.keyframe.Keyframe;
 import org.confluence.terraentity.entity.ai.keyframe.animation.Vec3KeyframeAnimation;
+import org.confluence.terraentity.entity.util.trail.PositionPoseProperties;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 public class NightEdgeProjectile extends SwordProjectile<NightEdgeProjectile> implements IOBBProjectile<NightEdgeProjectile> {
@@ -15,7 +20,7 @@ public class NightEdgeProjectile extends SwordProjectile<NightEdgeProjectile> im
     Vec3KeyframeAnimation posAnimation;
     Vec3KeyframeAnimation rotAnimation;
     public TerraSwordTrail trail;
-    public Queue<Vec3> trailQueue;
+    public Queue<PositionPoseProperties> trailQueue;
 
 
     public NightEdgeProjectile(EntityType<? extends SwordProjectile> entityType, Level pLevel) {
@@ -23,27 +28,45 @@ public class NightEdgeProjectile extends SwordProjectile<NightEdgeProjectile> im
 
         this.canPenalize = true;
         this.hitCount = 9999;
-        this.posAnimation = Vec3KeyframeAnimation.Builder()
-                .addKeyframe(0, new Vec3(-0.8,0.3,1))
-                .addKeyframe(3, new Vec3(1.5,-0.4,1))
-                .addKeyframe(6, new Vec3(1.5,-0.8,-2))
-                .addKeyframe(9, new Vec3(-0.8,-0.4,-2))
-                .addKeyframe(12, new Vec3(-0.8,0.3,0.1))
-                .build();
+
+        this.posAnimation = new Vec3KeyframeAnimation(List.of(
+                new Keyframe(0, -1.2, 1, 1),
+                new Keyframe(3, 1.5, 0.5, 1),
+                new Keyframe(6, 1.5, -0.5, 1),
+                new Keyframe(9, -0.8, -0.5, 1),
+                new Keyframe(12, -0.8)
+        ), List.of(
+                new Keyframe(0, 0.3),
+                new Keyframe(3, -0.4),
+                new Keyframe(6, -0.8),
+                new Keyframe(9, -0.4),
+                new Keyframe(12, 0.3)
+        ), List.of(
+                new Keyframe(0, 1, 1,1),
+                new Keyframe(3, 1, -1,1),
+                new Keyframe(6, -2, -1, 1),
+                new Keyframe(9, -2, 1, 1),
+                new Keyframe(12, 0.1)
+        ));
 
 
         this.rotAnimation = Vec3KeyframeAnimation.Builder()
-                .addKeyframe(0, new Vec3(0,70,120))
-                .addKeyframe(3, new Vec3(0,-70,120))
-                .addKeyframe(6, new Vec3(0,-140,120))
-                .addKeyframe(9, new Vec3(0,-280,120))
-                .addKeyframe(12, new Vec3(0,-360,120))
+                .addKeyframe(new Keyframe(0, 0, 0,1,0,1), new Vec3(0,70,120))
+                .addKeyframe(new Keyframe(3, 0, 0,1,0,1), new Vec3(0,-70,120))
+                .addKeyframe(new Keyframe(6, 0, 0,1,0,1), new Vec3(0,-140,120))
+                .addKeyframe(new Keyframe(9, 0, 0,1,0,1), new Vec3(0,-280,120))
+                .addKeyframe(new Keyframe(12, 0, 0,1,0,1), new Vec3(0,-360,120))
                 .build();
 
-        this.trail = new TerraSwordTrail(1, 0.15f, 0x121212);
+        this.trail = new TerraSwordTrail(1.5F, 0.15f, 0x121212);
         this.trailQueue = new LinkedList<>();
         this.setExistTime(11);
 
+    }
+
+    @Override
+    public @NotNull AABB getBoundingBoxForCulling() {
+        return super.getBoundingBoxForCulling().inflate(3); // 让第一人称可以看到刀光
     }
 
     @Override
@@ -71,9 +94,11 @@ public class NightEdgeProjectile extends SwordProjectile<NightEdgeProjectile> im
 
     }
 
+
+    // 调整攻击范围
     @Override
     public float lengthScale() {
-        return 2f;
+        return 3f;
     }
 
     /**

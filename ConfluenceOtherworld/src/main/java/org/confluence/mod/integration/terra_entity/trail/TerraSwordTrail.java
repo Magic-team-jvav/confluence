@@ -18,6 +18,9 @@ import net.neoforged.api.distmarker.OnlyIn;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.projectile.sword.NightEdgeProjectile;
 import org.confluence.terraentity.entity.util.trail.ITrail;
+import org.confluence.terraentity.entity.util.trail.ITrailKind;
+import org.confluence.terraentity.entity.util.trail.PositionPoseProperties;
+import org.confluence.terraentity.entity.util.trail.TrailProperties;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
@@ -27,10 +30,10 @@ import java.util.Queue;
 
 import static net.minecraft.client.renderer.RenderStateShard.*;
 
-public class TerraSwordTrail implements ITrail<NightEdgeProjectile> {
+public class TerraSwordTrail implements ITrailKind<NightEdgeProjectile, PositionPoseProperties> {
     TrailProperties properties;
 
-    public TerraSwordTrail(int size, float widthScale, int color) {
+    public TerraSwordTrail(float size, float widthScale, int color) {
         this.properties = new TrailProperties(size, widthScale, 5, color, color);
 
     }
@@ -46,7 +49,8 @@ public class TerraSwordTrail implements ITrail<NightEdgeProjectile> {
         }
 
         if(ticks > 1 && holder.getOwner() != null) {
-            holder.trailQueue.add(holder.position().subtract(holder.getOwner().position()));
+            holder.trailQueue.add(new PositionPoseProperties(holder.position().subtract(holder.getOwner().position()),
+                    holder.getXRot() * 0.017453292F, holder.getYRot() * 0.017453292F));
         }
     }
 
@@ -56,7 +60,7 @@ public class TerraSwordTrail implements ITrail<NightEdgeProjectile> {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public void renderTrail(NightEdgeProjectile holder, Queue<Vec3> trailsQueue, Vec3 entityPos, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+    public void renderTrail(NightEdgeProjectile holder, Queue<PositionPoseProperties> trailsQueue, Vec3 entityPos, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         RenderType main = RenderType.create("entity_cutout_no_cull_custom", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 1536, false, false,
                 RenderType.CompositeState.builder()
                         .setShaderState(RENDERTYPE_ENTITY_CUTOUT_NO_CULL_SHADER)
@@ -84,8 +88,9 @@ public class TerraSwordTrail implements ITrail<NightEdgeProjectile> {
     }
 
     @OnlyIn(Dist.CLIENT)
-    protected void actualRender(NightEdgeProjectile holder, Queue<Vec3> trailsQueue, Vec3 entityPos, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, RenderType renderType){
-        Iterator<Vec3> trails = trailsQueue.iterator();
+    protected void actualRender(NightEdgeProjectile holder, Queue<PositionPoseProperties> trailsQueue, Vec3 entityPos, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, RenderType renderType){
+        Iterator<PositionPoseProperties> trails = trailsQueue.iterator();
+
         int size = trailsQueue.size();
 
         TrailProperties properties = getTrailProperties();
@@ -117,15 +122,15 @@ public class TerraSwordTrail implements ITrail<NightEdgeProjectile> {
         Vec3 o2 = null;
         Vec3 o3 = null;
         float _progress = 0;
-
-        Vec3 lastPos = trails.next().subtract(entityPos);
+        PositionPoseProperties lastTrail = trails.next();
+        Vec3 lastPos = lastTrail.position.subtract(entityPos);
         int i = 0;
 
         while (trails.hasNext()) {
             Vec3 pos0 = lastPos;
-            Vec3 pos1 = trails.next().subtract(entityPos);
+            Vec3 pos1 = lastTrail.position.subtract(entityPos);
 
-            float progress = i / (float) size * 0.6f + 0.4f;
+            float progress = i / (float) size;
             float width = properties.widthScale() * progress;
             int alpha = (int) (200 * progress);
             if(!trails.hasNext()){
@@ -137,8 +142,11 @@ public class TerraSwordTrail implements ITrail<NightEdgeProjectile> {
             int argb = FastColor.ARGB32.color(alpha, lerpRed, lerpGreen, lerpBlue);
 
 //            Vec3 side = dir.cross(camDir).normalize();
-            float rotx = holder.getXRot() * 0.017453292F;
-            float roty = -holder.getYRot() * 0.017453292F;
+            float rotx = lastTrail.xrot;
+            float roty = -lastTrail.yrot;
+
+            lastTrail = trails.next();
+
             Vector3f d = new Vector3f(0,0,1);
             new Quaternionf().rotateY(roty).rotateX(rotx).transform(d);
 

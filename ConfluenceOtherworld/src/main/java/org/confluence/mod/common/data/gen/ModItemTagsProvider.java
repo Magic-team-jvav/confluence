@@ -1568,7 +1568,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.SOUL_OF_MIGHT.get(),
                 MaterialItems.SOUL_OF_SIGHT.get(),
                 MaterialItems.SPELL_TOME.get(),
-                MaterialItems.FLINX_FUR.get(),
                 CrateBlocks.HALLOWED_CRATE.asItem(),
                 CrateBlocks.OBSIDIAN_CRATE.asItem(),
                 CrateBlocks.PEARLWOOD_CRATE.asItem(),

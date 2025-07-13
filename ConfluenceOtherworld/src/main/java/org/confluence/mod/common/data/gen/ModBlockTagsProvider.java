@@ -452,7 +452,6 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 NatureBlocks.LIFE_MUSHROOM_INDUSIUM_BLOCK.get(),
                 NatureBlocks.LIFE_MUSHROOM_STEM_BLOCK.get(),
                 NatureBlocks.LIFE_MUSHROOM_PILEUS_BLOCK.get()
-
         );
         tag(BlockTags.INCORRECT_FOR_WOODEN_TOOL).addTag(ModTags.Blocks.NEEDS_2_LEVEL);
         tag(BlockTags.INCORRECT_FOR_GOLD_TOOL).addTag(ModTags.Blocks.NEEDS_2_LEVEL);

@@ -1193,15 +1193,9 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
         IntrinsicTagAppender<Item> wip = tag(LibTags.Items.WIP);
         wip.add(
-                ConsumableItems.ARTISAN_LOAF.get(),
                 ConsumableItems.SMOKE_BOMB.get(),
                 ConsumableItems.SPIKY_BALL.get(),
-                ConsumableItems.HOLY_WATER.get(),
-                ConsumableItems.UNHOLY_WATER.get(),
-                ConsumableItems.BLOOD_WATER.get(),
                 ConsumableItems.GOODIE_BAG.get(),
-                ConsumableItems.ADVANCED_COMBAT_TECHNIQUES.get(),
-                ConsumableItems.ADVANCED_COMBAT_TECHNIQUES_VOLUME_TWO.get(),
                 ConsumableItems.GUIDE_VOODOO_DOLL.get(),
                 ConsumableItems.CLOTHIER_VOODOO_DOLL.get(),
                 PaintItems.ECHO_COATING.get(),
@@ -1417,6 +1411,13 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 NatureBlocks.SMALL_DESERT_PLANT.asItem(),
                 NatureBlocks.BIG_DESERT_PLANT.asItem(),
                 NatureBlocks.SMALL_CACTUS.asItem(),
+                NatureBlocks.MUSHROOM_PATH.asItem(),
+                NatureBlocks.MUSHROOM_PATH.asItem(),
+                NatureBlocks.ASH_PATH.asItem(),
+                NatureBlocks.SHIMMER_CRYSTALS_BLOCK.asItem(),
+                NatureBlocks.LOST_PAPER_BLOCK.asItem(),
+                NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.getTrapdoor().asItem(),
+                NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.getDoor().asItem(),
                 PotBlocks.OCEAN_POT.asItem(),
                 OreBlocks.METEORITE_BLOCK.asItem(),
                 OreBlocks.HALLOWED_BLOCK.asItem(),
@@ -1469,7 +1470,9 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 DecorativeBlocks.CRIMSANDSTONE_BRICKS_STAIRS.asItem(),
                 DecorativeBlocks.CRIMSANDSTONE_BRICKS_SLAB.asItem(),
                 DecorativeBlocks.CRIMSANDSTONE_BRICKS_WALL.asItem(),
+                DecorativeBlocks.CHISELED_GLOWING_MUSHROOM_PLANKS.asItem(),
                 DecorativeBlocks.SNOW_BRICKS_WALL.asItem(),
+                DecorativeBlocks.REMAINS_BLOCK.asItem(),
                 StatueBlocks.ARMOR_STATUE.asItem(),
                 StatueBlocks.AXE_STATUE.asItem(),
                 StatueBlocks.BOOMERANG_STATUE.asItem(),
@@ -1565,6 +1568,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.SOUL_OF_MIGHT.get(),
                 MaterialItems.SOUL_OF_SIGHT.get(),
                 MaterialItems.SPELL_TOME.get(),
+                MaterialItems.FLINX_FUR.get(),
                 CrateBlocks.HALLOWED_CRATE.asItem(),
                 CrateBlocks.OBSIDIAN_CRATE.asItem(),
                 CrateBlocks.PEARLWOOD_CRATE.asItem(),
@@ -1603,7 +1607,11 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 TEItems.DEBUG_ITEM.get(),
                 TEFigureBlocks.FIGURE.asItem(),
                 TEFigureBlocks.FIGURE2.asItem(),
-                TEFigureBlocks.FIGURE3.asItem()
+                TEFigureBlocks.FIGURE3.asItem(),
+                FoodItems.COOKED_FROG.get(),
+                FoodItems.COOKED_SQUIRREL.get(),
+                FoodItems.COOKED_BIRD.get(),
+                FoodItems.COOKED_DUCK.get()
         );
         Consumer<DeferredHolder<Item, ? extends Item>> wipAction = item -> wip.add(item.get());
         MinecartItems.ITEMS.getEntries().forEach(wipAction);

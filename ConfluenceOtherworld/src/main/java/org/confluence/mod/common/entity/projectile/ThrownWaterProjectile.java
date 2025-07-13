@@ -6,6 +6,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
 import org.confluence.mod.common.init.ModEntities;
@@ -39,6 +40,14 @@ public class ThrownWaterProjectile extends ThrowableItemProjectile {
             for (BlockPos pos : BlockPos.betweenClosed(blockPos.offset(-2, -2, -2), blockPos.offset(2, 2, 2))) {
                 if (pos.distSqr(blockPos) <= 25) type.spread(level(), pos);
             }
+            level().levelEvent(LevelEvent.PARTICLES_SPELL_POTION_SPLASH, blockPosition(), getColor());
+            discard();
         }
+    }
+
+    protected int getColor() {
+        if (type == ISpreadable.Type.CORRUPT) return 0xFF00FF;
+        if (type == ISpreadable.Type.CRIMSON) return 0xFF0000;
+        return 0x0000FF;
     }
 }

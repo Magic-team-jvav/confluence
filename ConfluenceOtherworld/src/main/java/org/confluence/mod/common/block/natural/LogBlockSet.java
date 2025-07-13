@@ -169,9 +169,11 @@ public class LogBlockSet {
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> ceilingHangingSigns = provider.apply(BlockTags.CEILING_HANGING_SIGNS);
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> wallHangingSigns = provider.apply(BlockTags.WALL_HANGING_SIGNS);
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> allHangingSigns = provider.apply(BlockTags.ALL_HANGING_SIGNS);
+
         for (LogBlockSet logBlocks : LOG_BLOCK_SETS) {
             Builder builder1 = logBlocks.builder;
-            planks.add(builder1.PLANKS.get());
+            Block planksBlock = builder1.PLANKS.get();
+            planks.add(planksBlock);
             if (builder1.LOG != null) {
                 RotatedPillarBlock value = builder1.LOG.get();
                 completes.add(value);
@@ -198,72 +200,71 @@ public class LogBlockSet {
                 logs.add(value);
             }
             if (builder1.LEAVES != null) {
-                LeavesBlock leavesBlock = builder1.LEAVES.get();
-                completes.add(leavesBlock);
-                leaves.add(leavesBlock);
+                LeavesBlock value = builder1.LEAVES.get();
+                completes.add(value);
+                leaves.add(value);
             }
             if (builder1.BUTTON != null) {
-                ButtonBlock buttonBlock = builder1.BUTTON.get();
-                buttons.add(buttonBlock);
-                woodenButtons.add(buttonBlock);
+                ButtonBlock value = builder1.BUTTON.get();
+                buttons.add(value);
+                woodenButtons.add(value);
             }
             if (builder1.FENCE != null) {
-                FenceBlock fenceBlock = builder1.FENCE.get();
-                fences.add(fenceBlock);
-                woodenFences.add(fenceBlock);
-                cFences.add(fenceBlock);
-                cFencesWooden.add(fenceBlock);
+                FenceBlock value = builder1.FENCE.get();
+                fences.add(value);
+                woodenFences.add(value);
+                cFences.add(value);
+                cFencesWooden.add(value);
             }
             if (builder1.FENCE_GATE != null) {
-                FenceGateBlock fenceGateBlock = builder1.FENCE_GATE.get();
-                fenceGates.add(fenceGateBlock);
-                cFenceGates.add(fenceGateBlock);
-                cFenceGatesWooden.add(fenceGateBlock);
+                FenceGateBlock value = builder1.FENCE_GATE.get();
+                fenceGates.add(value);
+                cFenceGates.add(value);
+                cFenceGatesWooden.add(value);
             }
             if (builder1.PRESSURE_PLATE != null) {
-                PressurePlateBlock pressurePlateBlock = builder1.PRESSURE_PLATE.get();
-                woodenPressurePlates.add(pressurePlateBlock);
+                PressurePlateBlock value = builder1.PRESSURE_PLATE.get();
+                woodenPressurePlates.add(value);
             }
             if (builder1.SLAB != null) {
-                SlabBlock slabBlock = builder1.SLAB.get();
-                slabs.add(slabBlock);
-                woodenSlabs.add(slabBlock);
+                SlabBlock value = builder1.SLAB.get();
+                slabs.add(value);
+                woodenSlabs.add(value);
             }
             if (builder1.STAIRS != null) {
-                StairBlock stairBlock = builder1.STAIRS.get();
-                stairs.add(stairBlock);
-                woodenStairs.add(stairBlock);
+                StairBlock value = builder1.STAIRS.get();
+                stairs.add(value);
+                woodenStairs.add(value);
             }
             if (builder1.SIGN != null) {
-                StandingSignBlock signBlock = builder1.SIGN.get();
-                standingSigns.add(signBlock);
-                signs.add(signBlock);
+                StandingSignBlock value = builder1.SIGN.get();
+                standingSigns.add(value);
+                signs.add(value);
             }
             if (builder1.WALL_SIGN != null) {
-                WallSignBlock wallSignBlock = builder1.WALL_SIGN.get();
-                wallSigns.add(wallSignBlock);
-                signs.add(wallSignBlock);
+                WallSignBlock value = builder1.WALL_SIGN.get();
+                wallSigns.add(value);
+                signs.add(value);
             }
             if (builder1.TRAPDOOR != null) {
-                TrapDoorBlock trapDoorBlock = builder1.TRAPDOOR.get();
-                trapdoors.add(trapDoorBlock);
-                woodenTrapdoors.add(trapDoorBlock);
+                TrapDoorBlock value = builder1.TRAPDOOR.get();
+                trapdoors.add(value);
+                woodenTrapdoors.add(value);
             }
             if (builder1.DOOR != null) {
-                DoorBlock doorBlock = builder1.DOOR.get();
-                doors.add(doorBlock);
-                woodenDoors.add(doorBlock);
+                DoorBlock value = builder1.DOOR.get();
+                doors.add(value);
+                woodenDoors.add(value);
             }
             if (builder1.HANGING_SIGN != null) {
-                CeilingHangingSignBlock hangingSignBlock = builder1.HANGING_SIGN.get();
-                ceilingHangingSigns.add(hangingSignBlock);
-                allHangingSigns.add(hangingSignBlock);
-                //burn.add(hangingSignBlock);
+                CeilingHangingSignBlock value = builder1.HANGING_SIGN.get();
+                ceilingHangingSigns.add(value);
+                allHangingSigns.add(value);
             }
             if (builder1.WALL_HANGING_SIGN != null) {
-                WallHangingSignBlock wallHangingSignBlock = builder1.WALL_HANGING_SIGN.get();
-                wallHangingSigns.add(wallHangingSignBlock);
-                allHangingSigns.add(wallHangingSignBlock);
+                WallHangingSignBlock value = builder1.WALL_HANGING_SIGN.get();
+                wallHangingSigns.add(value);
+                allHangingSigns.add(value);
             }
         }
     }

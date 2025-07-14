@@ -54,24 +54,24 @@ public class MarbleCaveStructure extends Structure {
             Vector3d end = new Vector3d(centerPos.getX() + random.nextInt(-3, 4), centerPos.getY() - 10, centerPos.getZ() + random.nextInt(-3, 4));
             BlockPos checkPos;
 
-            List<Vector3d> listPos = frustumSetPos(start, end, random.nextInt(53, 56) + 0.5, random.nextInt(53, 56) + 0.5, 0.0002F, random);
+            List<Vector3d> listPos = frustumSetPos(start, end, random.nextInt(38, 41) + 0.5, random.nextInt(38, 41) + 0.5, 0.0002F, random);
             List<Vector3d> listPos1 = new ArrayList<>();
             List<Vector3d> listPos2 = new ArrayList<>();
             for (Vector3d vector3d : listPos) {
-                listPos1.addAll(ellipsoidPos(15.5, 9.5, 15.5, VectorUtils.fromVector3d(vector3d), 0.002F, random));
+                listPos1.addAll(ellipsoidPos(11.5, 9.5, 11.5, VectorUtils.fromVector3d(vector3d), 0.002F, random));
             }
 
             for (Vector3d vector3d : listPos1) {
                 checkPos = VectorUtils.fromVector3d(vector3d);
-                listPos2.addAll(ellipsoidPos(15.5, 4.5, 15.5, checkPos, 0.002F, random));
+                listPos2.addAll(ellipsoidPos(11.5, 4.5, 11.5, checkPos, 0.002F, random));
             }
             for (Vector3d vector3d : listPos2) {
                 checkPos = VectorUtils.fromVector3d(vector3d);
-                ellipsoid(13.5, 13.5, 13.5, checkPos, 1, true, blockMap);
+                ellipsoid(9.5, 9.5, 9.5, checkPos, 1, true, blockMap);
             }
             for (Vector3d vector3d : listPos2) {
                 checkPos = VectorUtils.fromVector3d(vector3d);
-                ellipsoid(random.nextInt(4, 12) + 0.5, random.nextInt(4, 12) + 0.5, random.nextInt(4, 12) + 0.5, checkPos, 0, true, blockMap);
+                ellipsoid(random.nextInt(4, 10) + 0.5, random.nextInt(4, 10) + 0.5, random.nextInt(4, 12) + 0.5, checkPos, 0, true, blockMap);
                 if (0.1F > random.nextFloat()) featureMap.put(checkPos, MARBLE_CAVE_POT.location());
             }
 

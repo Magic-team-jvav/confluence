@@ -36,21 +36,40 @@ public class CattailsFeature extends Feature<CattailsFeature.Config> {
         int checkY = baseBlockPos.getY();
         int endY = baseBlockPos.getY();
 
+
+        final int MAX_SEARCH_DEPTH = 5;
+        int searchDepth = 0;
+
         if (placed) {
-            while ((checkY >= minY) && placed) {
-                placed = placed && !(checkY == minY);
+            while ((checkY >= minY) && placed && searchDepth <= MAX_SEARCH_DEPTH) {
+                placed
+                        = placed && !(checkY == minY);
                 if (!level.getBlockState(new BlockPos(baseBlockPos.getX(), checkY, baseBlockPos.getZ())).canBeReplaced()) {
-                    placed = false;
+                    placed
+                            = false;
                     break;
                 }
-                if (level.getBlockState(new BlockPos(baseBlockPos.getX(), checkY, baseBlockPos.getZ())).is(Blocks.WATER) && level.getBlockState(new BlockPos(baseBlockPos.getX(), checkY - 1, baseBlockPos.getZ())).isFaceSturdy(level, new BlockPos(baseBlockPos.getX(), checkY - 1, baseBlockPos.getZ()), Direction.UP)) {
-                    endY = checkY;
+                if (level.getBlockState(new BlockPos(baseBlockPos.getX(), checkY, baseBlockPos.getZ())).is(Blocks.WATER) &&
+                        level
+                                .getBlockState(new BlockPos(baseBlockPos.getX(), checkY - 1, baseBlockPos.getZ())).isFaceSturdy(level, new BlockPos(baseBlockPos.getX(), checkY - 1, baseBlockPos.getZ()), Direction.UP)) {
+                    endY
+                            = checkY;
                     break;
-                } else if (level.getBlockState(new BlockPos(baseBlockPos.getX(), checkY, baseBlockPos.getZ())).canBeReplaced() && !level.getBlockState(new BlockPos(baseBlockPos.getX(), checkY - 1, baseBlockPos.getZ())).canBeReplaced()) {
-                    placed = false;
+                } else if (level.getBlockState(new BlockPos(baseBlockPos.getX(), checkY, baseBlockPos.getZ())).canBeReplaced() &&
+                        !level.getBlockState(new BlockPos(baseBlockPos.getX(), checkY - 1, baseBlockPos.getZ())).canBeReplaced()) {
+                    placed
+                            = false;
                     break;
                 }
-                checkY--;
+                checkY
+                        --;
+                searchDepth
+                        ++;
+            }
+
+            if (searchDepth > MAX_SEARCH_DEPTH) {
+                placed
+                        = false;
             }
         }
 

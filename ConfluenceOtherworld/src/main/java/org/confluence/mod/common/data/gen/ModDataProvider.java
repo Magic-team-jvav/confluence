@@ -22,10 +22,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentTarget;
 import net.minecraft.world.item.enchantment.LevelBasedValue;
 import net.minecraft.world.item.enchantment.effects.AddValue;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.BiomeGenerationSettings;
-import net.minecraft.world.level.biome.BiomeSpecialEffects;
-import net.minecraft.world.level.biome.MobSpawnSettings;
+import net.minecraft.world.level.biome.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
@@ -34,9 +31,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.block.state.properties.SlabType;
-import net.minecraft.world.level.levelgen.GenerationStep;
-import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.levelgen.VerticalAnchor;
+import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
+import net.minecraft.world.level.dimension.DimensionType;
+import net.minecraft.world.level.dimension.LevelStem;
+import net.minecraft.world.level.levelgen.*;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.carver.CarverConfiguration;
 import net.minecraft.world.level.levelgen.carver.CarverDebugSettings;
@@ -59,6 +57,7 @@ import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlac
 import net.minecraft.world.level.levelgen.heightproviders.ConstantHeight;
 import net.minecraft.world.level.levelgen.heightproviders.UniformHeight;
 import net.minecraft.world.level.levelgen.placement.*;
+import net.minecraft.world.level.levelgen.presets.WorldPreset;
 import net.minecraft.world.level.levelgen.structure.*;
 import net.minecraft.world.level.levelgen.structure.placement.ConcentricRingsStructurePlacement;
 import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadStructurePlacement;
@@ -88,6 +87,7 @@ import org.confluence.mod.common.enchantment.SummonItemEffect;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.ModItems;
+import org.confluence.mod.common.worldgen.BannedBiomeNoiseBasedChunkGenerator;
 import org.confluence.mod.common.worldgen.SecretFlagPlacement;
 import org.confluence.mod.common.worldgen.carver.DemonicCaveCarver;
 import org.confluence.mod.common.worldgen.feature.*;
@@ -111,7 +111,8 @@ public class ModDataProvider {
             .add(Registries.CONFIGURED_FEATURE, ConfiguredFeatures::bootstrap)
             .add(Registries.PLACED_FEATURE, PlacedFeatures::bootstrap)
             .add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, BiomeModifierz::bootstrap)
-            .add(Registries.CONFIGURED_CARVER, ConfiguredWorldCarvers::bootstrap);
+            .add(Registries.CONFIGURED_CARVER, ConfiguredWorldCarvers::bootstrap)
+            .add(Registries.WORLD_PRESET, WorldPresetz::bootstrap);
 
     private static <T> HolderLookup.RegistryLookup<T> registryLookup(ResourceKey<Registry<T>> key, HolderGetter<T> holderGetter) {
         return new HolderLookup.RegistryLookup<>() {
@@ -145,6 +146,45 @@ public class ModDataProvider {
                 return holderGetter.get(tagKey);
             }
         };
+    }
+
+    public static class WorldPresetz {
+        private static void bootstrap(BootstrapContext<WorldPreset> context) {
+            HolderGetter<DimensionType> dimensionType = context.lookup(Registries.DIMENSION_TYPE);
+            HolderGetter<MultiNoiseBiomeSourceParameterList> multiNoiseBiomeSourceParameterList = context.lookup(Registries.MULTI_NOISE_BIOME_SOURCE_PARAMETER_LIST);
+            HolderGetter<NoiseGeneratorSettings> noiseGeneratorSettings = context.lookup(Registries.NOISE_SETTINGS);
+            Holder<NoiseGeneratorSettings> overworldNoiseGeneratorSettings = noiseGeneratorSettings.getOrThrow(NoiseGeneratorSettings.OVERWORLD);
+            MultiNoiseBiomeSource overworldMultiNoiseBiomeSource = MultiNoiseBiomeSource.createFromPreset(multiNoiseBiomeSourceParameterList.getOrThrow(MultiNoiseBiomeSourceParameterLists.OVERWORLD));
+            LevelStem nether = new LevelStem(dimensionType.getOrThrow(BuiltinDimensionTypes.NETHER), new NoiseBasedChunkGenerator(
+                    MultiNoiseBiomeSource.createFromPreset(multiNoiseBiomeSourceParameterList.getOrThrow(MultiNoiseBiomeSourceParameterLists.NETHER)),
+                    noiseGeneratorSettings.getOrThrow(NoiseGeneratorSettings.NETHER)
+            ));
+            LevelStem end = new LevelStem(dimensionType.getOrThrow(BuiltinDimensionTypes.END), new NoiseBasedChunkGenerator(
+                    TheEndBiomeSource.create(context.lookup(Registries.BIOME)),
+                    noiseGeneratorSettings.getOrThrow(NoiseGeneratorSettings.END)
+            ));
+
+            context.register(Confluence.asResourceKey(Registries.WORLD_PRESET, "the_corruption"), new WorldPreset(Map.of(
+                    LevelStem.OVERWORLD, new LevelStem(dimensionType.getOrThrow(BuiltinDimensionTypes.OVERWORLD), new BannedBiomeNoiseBasedChunkGenerator(
+                            overworldMultiNoiseBiomeSource,
+                            overworldNoiseGeneratorSettings,
+                            ModBiomes.THE_CRIMSON,
+                            ModBiomes.THE_CORRUPTION
+                    )),
+                    LevelStem.NETHER, nether,
+                    LevelStem.END, end
+            )));
+            context.register(Confluence.asResourceKey(Registries.WORLD_PRESET, "the_crimson"), new WorldPreset(Map.of(
+                    LevelStem.OVERWORLD, new LevelStem(dimensionType.getOrThrow(BuiltinDimensionTypes.OVERWORLD), new BannedBiomeNoiseBasedChunkGenerator(
+                            overworldMultiNoiseBiomeSource,
+                            overworldNoiseGeneratorSettings,
+                            ModBiomes.THE_CORRUPTION,
+                            ModBiomes.THE_CRIMSON
+                    )),
+                    LevelStem.NETHER, nether,
+                    LevelStem.END, end
+            )));
+        }
     }
 
     private static class ConfiguredFeatures {

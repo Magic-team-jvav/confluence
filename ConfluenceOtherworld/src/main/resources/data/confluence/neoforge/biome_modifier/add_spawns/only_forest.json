@@ -4,37 +4,37 @@
     "spawners": [
         {
             "type": "terra_entity:bunny",
-            "weight": 15,
+            "weight": 10,
             "minCount": 1,
             "maxCount": 2
         },
         {
             "type": "terra_entity:squirrel",
-            "weight": 15,
+            "weight": 10,
             "minCount": 1,
             "maxCount": 2
         },
         {
             "type": "terra_entity:duck",
-            "weight": 15,
+            "weight": 10,
             "minCount": 1,
             "maxCount": 2
         },
         {
             "type": "terra_entity:bird",
-            "weight": 15,
+            "weight": 10,
             "minCount": 1,
             "maxCount": 2
         },
         {
             "type": "terra_entity:blue_jay",
-            "weight": 15,
+            "weight": 10,
             "minCount": 1,
             "maxCount": 2
         },
         {
             "type": "terra_entity:cardinal",
-            "weight": 15,
+            "weight": 10,
             "minCount": 1,
             "maxCount": 2
         }

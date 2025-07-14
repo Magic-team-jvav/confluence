@@ -869,8 +869,8 @@ public final class ValueSubProvider {
                 .add(ConsumableItems.WET_BOMB, wrap(5, 0))
                 .add(ConsumableItems.LAVA_BOMB, wrap(5, 0))
                 .add(ConsumableItems.HONEY_BOMB, wrap(5, 0))
-                .add(ConsumableItems.CLOTHIER_VOODOO_DOLL, wrap(2, 0))
-                .add(ConsumableItems.GUIDE_VOODOO_DOLL, wrap(2, 0))
+                .add(AccessoryItems.CLOTHIER_VOODOO_DOLL, wrap(2, 0))
+                .add(AccessoryItems.GUIDE_VOODOO_DOLL, wrap(2, 0))
                 .add(ToolItems.BUG_NET, wrap(5, 0))
                 .add(ToolItems.GOLDEN_BUG_NET, wrap(5, 0, 0));
         appender.create()

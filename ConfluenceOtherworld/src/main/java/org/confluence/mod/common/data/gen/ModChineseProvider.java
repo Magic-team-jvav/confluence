@@ -1203,6 +1203,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("dialogs.confluence.nurse.3", "又惹上混混了？");
         add("dialogs.confluence.nurse.4", "别像个孩子似的！我见过更糟的。");
         add("dialogs.confluence.nurse.5", "你这么做的时候疼吗？别那么做。");
+        add("dialogs.confluence.nurse.player_killed_by", "你已经被%1$s杀死%2$s次了？我很好奇是谁拿走了你的旗子。");
 
         add("dialogs.confluence.demolitionist.0", "炸药如今十分火爆。马上买一些！");
         add("dialogs.confluence.demolitionist.1", "今天是个找死的好日子！");

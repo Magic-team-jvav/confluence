@@ -22,7 +22,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.stats.Stat;
+import net.minecraft.stats.Stats;
+import net.minecraft.stats.StatsCounter;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
@@ -65,6 +69,8 @@ import org.confluence.mod.util.ClientUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.api.event.PerformJumpingEvent;
+import org.confluence.terraentity.api.event.NPCEvent;
+import org.confluence.terraentity.init.entity.TENpcEntities;
 import software.bernie.geckolib.event.GeoRenderEvent;
 
 import java.util.Collection;
@@ -311,6 +317,22 @@ public final class GameClientEvents {
         if (Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player) instanceof PlayerRenderer playerRenderer) {
             boolean b = ZombieArmRenderer.getInstance().renderHand(playerRenderer, event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight(), player, event.getArm());
             if (b) event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    public static void npc$Dialog(NPCEvent.NPCDialogEvent event) {
+        LocalPlayer player = Minecraft.getInstance().player;
+        if (player == null) return;
+        if (event.getNPC().getType() == TENpcEntities.NURSE.get() && event.getNPC().getRandom().nextInt(25) == 0) {
+            StatsCounter stats = player.getStats();
+            for (Stat<EntityType<?>> stat : Stats.ENTITY_KILLED_BY) {
+                int value = stats.getValue(stat);
+                if (value >= 50) {
+                    event.setNeoDialog(Component.translatable("dialogs.confluence.nurse.player_killed_by", stat.getValue().getDescription(), value));
+                    break;
+                }
+            }
         }
     }
 }

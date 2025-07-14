@@ -1158,6 +1158,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("dialogs.confluence.nurse.3", "Got into trouble with the thugs again?");
         add("dialogs.confluence.nurse.4", "Don't be such a child! I've seen worse.");
         add("dialogs.confluence.nurse.5", "Did it hurt when you did that? Don't do that.");
+        add("dialogs.confluence.nurse.player_killed_by", "Have you been killed %2$s times by %1$s? I'm curious who took your flag");
 
         add("dialogs.confluence.demolitionist.0", "Explosives are really popular nowadays. Buy some right away!");
         add("dialogs.confluence.demolitionist.1", "Today is a great day to court death!");

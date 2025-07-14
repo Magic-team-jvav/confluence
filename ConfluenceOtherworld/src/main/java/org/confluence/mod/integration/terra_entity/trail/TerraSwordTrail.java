@@ -18,7 +18,6 @@ import net.neoforged.api.distmarker.OnlyIn;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.projectile.sword.NightEdgeProjectile;
 import org.confluence.terraentity.entity.util.trail.ITrail;
-import org.confluence.terraentity.entity.util.trail.ITrailKind;
 import org.confluence.terraentity.entity.util.trail.PositionPoseProperties;
 import org.confluence.terraentity.entity.util.trail.TrailProperties;
 import org.joml.Matrix4f;
@@ -30,26 +29,27 @@ import java.util.Queue;
 
 import static net.minecraft.client.renderer.RenderStateShard.*;
 
-public class TerraSwordTrail implements ITrailKind<NightEdgeProjectile, PositionPoseProperties> {
+public class TerraSwordTrail implements ITrail<NightEdgeProjectile> {
     TrailProperties properties;
+    public Queue<PositionPoseProperties> trailsQueue;
 
     public TerraSwordTrail(float size, float widthScale, int color) {
         this.properties = new TrailProperties(size, widthScale, 5, color, color);
-
+        this.trailsQueue = new java.util.LinkedList<>();
     }
 
     @Override
     public void generateTrail(NightEdgeProjectile holder, int ticks) {
-        if(holder.trailQueue.size() >= 8){
-            holder.trailQueue.poll();
+        if(trailsQueue.size() >= 8){
+            trailsQueue.poll();
         }
 
         if(holder.TIME_EXISTENCE - ticks < 4){
-            holder.trailQueue.poll();
+            trailsQueue.poll();
         }
 
         if(ticks > 1 && holder.getOwner() != null) {
-            holder.trailQueue.add(new PositionPoseProperties(holder.position().subtract(holder.getOwner().position()),
+            trailsQueue.add(new PositionPoseProperties(holder.position().subtract(holder.getOwner().position()),
                     holder.getXRot() * 0.017453292F, holder.getYRot() * 0.017453292F));
         }
     }
@@ -60,7 +60,7 @@ public class TerraSwordTrail implements ITrailKind<NightEdgeProjectile, Position
     }
 
     @OnlyIn(Dist.CLIENT)
-    public void renderTrail(NightEdgeProjectile holder, Queue<PositionPoseProperties> trailsQueue, Vec3 entityPos, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+    public void renderTrail(NightEdgeProjectile holder, Vec3 entityPos, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         RenderType main = RenderType.create("entity_cutout_no_cull_custom", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 1536, false, false,
                 RenderType.CompositeState.builder()
                         .setShaderState(RENDERTYPE_ENTITY_CUTOUT_NO_CULL_SHADER)

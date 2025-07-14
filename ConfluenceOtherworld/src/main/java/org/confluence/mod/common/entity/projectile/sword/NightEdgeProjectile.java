@@ -20,7 +20,6 @@ public class NightEdgeProjectile extends SwordProjectile<NightEdgeProjectile> im
     Vec3KeyframeAnimation posAnimation;
     Vec3KeyframeAnimation rotAnimation;
     public TerraSwordTrail trail;
-    public Queue<PositionPoseProperties> trailQueue;
 
 
     public NightEdgeProjectile(EntityType<? extends SwordProjectile> entityType, Level pLevel) {
@@ -59,7 +58,6 @@ public class NightEdgeProjectile extends SwordProjectile<NightEdgeProjectile> im
                 .build();
 
         this.trail = new TerraSwordTrail(1.5F, 0.15f, 0x121212);
-        this.trailQueue = new LinkedList<>();
         this.setExistTime(11);
 
     }

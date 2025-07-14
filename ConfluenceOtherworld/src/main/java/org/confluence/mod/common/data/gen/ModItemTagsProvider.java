@@ -650,7 +650,9 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ConsumableItems.SLIME_CROWN.get(),
                 ConsumableItems.WORM_FOOD.get(),
                 ConsumableItems.BLOODY_SPINE.get(),
-                ConsumableItems.ABEEMINATION.get()
+                ConsumableItems.ABEEMINATION.get(),
+                AccessoryItems.CLOTHIER_VOODOO_DOLL.get(),
+                AccessoryItems.GUIDE_VOODOO_DOLL.get()
         );
 
         tag(ModTags.Items.INGOTS_TIN).add(MaterialItems.TIN_INGOT.get());
@@ -1642,6 +1644,11 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         for (DeferredBlock<DeathChestBlock> deathChest : ChestBlocks.DEATH_CHESTS) {
             death.add(deathChest.asItem());
         }
+
+        tag(ModTags.Items.UNABLE_TO_APPLY_PREFIX).add(
+                AccessoryItems.CLOTHIER_VOODOO_DOLL.get(),
+                AccessoryItems.GUIDE_VOODOO_DOLL.get()
+        );
 
         IntrinsicTagAppender<Item> skipResetStrength = tag(LibTags.Items.SKIP_RESET_STRENGTH);
         DrillItems.ITEMS.getEntries().forEach(item -> skipResetStrength.add(item.get()));

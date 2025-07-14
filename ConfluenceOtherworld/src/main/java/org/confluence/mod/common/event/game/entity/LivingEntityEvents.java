@@ -116,6 +116,7 @@ public final class LivingEntityEvents {
                 NPCSpawner.INSTANCE.onNPCRemoved(npc);
                 if (attacker != null && npc.getType() == TENpcEntities.CLOTHIER.get() &&
                         attacker instanceof Player player &&
+                        level.getDayTime() % 24000 > 12000 && // 晚上杀死才生成
                         TCUtils.hasAccessoriesType(player, AccessoryItems.CLOTHIER$KILLER)
                 ) {
                     ModUtils.summonBoss(level, attacker.position(), new Skeletron(TEBossEntities.SKELETRON.get(), level));

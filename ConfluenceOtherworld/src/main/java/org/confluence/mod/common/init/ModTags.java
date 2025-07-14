@@ -243,6 +243,7 @@ public final class ModTags {
         public static final TagKey<Item> SHOW_SIGNAL = register("show_signal"); // 手持可以显示信号连线
 
         public static final TagKey<Item> DEATH = register("death");
+        public static final TagKey<Item> UNABLE_TO_APPLY_PREFIX = register("unable_to_apply_prefix"); // 不能上词缀
 
         private static TagKey<Item> c(String name) {
             return ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", name));

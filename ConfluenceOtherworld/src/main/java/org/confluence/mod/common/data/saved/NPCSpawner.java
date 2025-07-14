@@ -195,7 +195,7 @@ public class NPCSpawner implements IGlobalData {
     }
 
     public void onNPCRemoved(AbstractTerraNPC living) {
-        setNPCAlive(((IAbstractTerraNPC) living).confluence$getRegion(), living.getType(), false);
+        setNPCAlive(IAbstractTerraNPC.of(living).confluence$getRegion(), living.getType(), false);
         if (CommonConfigs.BROADCAST_NPC_MSG.get() && living.getType() != TENpcEntities.OLD_MAN.get()) { // 老人不用广播死亡信息
             MutableComponent message;
             if (living instanceof AnglerNPC /* todo 或宠物/公主 */) {

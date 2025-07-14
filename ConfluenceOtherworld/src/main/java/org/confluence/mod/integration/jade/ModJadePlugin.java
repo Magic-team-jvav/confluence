@@ -17,7 +17,7 @@ import org.confluence.mod.integration.create.ponder.PonderHelper;
 import snownee.jade.api.*;
 
 @WailaPlugin
-public class ModJadePlugin implements IWailaPlugin {
+public final class ModJadePlugin implements IWailaPlugin {
     @Override
     public void register(IWailaCommonRegistration registration) {
         registration.registerBlockDataProvider(NetworkComponentProvider.INSTANCE, AbstractMechanicalBlock.Entity.class);

@@ -523,8 +523,13 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.RAW_MATERIALS_COLD_CRYSTAL).add(
                 MaterialItems.COLD_CRYSTAL.get()
         );
-
-        tag(ModTags.Items.NUGGETS_TIN).add(
+        tag(ModTags.Items.RAW_MATERIALS_FLOATING_WHEAT).add(
+                MaterialItems.FLOATING_WHEAT_HEADS.get()
+        );
+        tag(ModTags.Items.RAW_MATERIALS_FLOATING_WHEAT_BALE).add(
+                DecorativeBlocks.FLOATING_WHEAT_BALE.asItem()
+        );
+        tag(ModTags.Items.NUGGETS_LEAD).add(
                 MaterialItems.LEAD_NUGGET.get()
         );
         tag(Tags.Items.INGOTS).add(

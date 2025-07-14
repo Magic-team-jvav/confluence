@@ -22,6 +22,7 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.terraentity.init.TEItems;
+import org.confluence.terraentity.init.item.TEBoomerangItems;
 
 import java.util.List;
 import java.util.Map;
@@ -157,7 +158,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 "###"
         )), chestplate.asItem().getDefaultInstance());
     }
-
+    // 基础弓
     private static final List<String> BOW_PATTERN = List.of(" #/", "# /", " #/");
     private static final List<String> SHORT_BOW_PATTERN = List.of(" #", "#/", " #");
     private void registerBowRecipes(RecipeOutput output, Ingredient material,
@@ -172,7 +173,52 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 '/', Ingredient.of(Items.STRING)
         ), SHORT_BOW_PATTERN), shortBow.asItem().getDefaultInstance());
     }
+    //  基础工具，阔剑短剑
+    private static final List<String> AXE_PATTERN = List.of("##", "#/", " /");
+    private static final List<String> PICKAXE_PATTERN = List.of("###", " / ", " / ");
+    private static final List<String> HAMMER_PATTERN = List.of("###", "#/#", " / ");
+    private static final List<String> BROADSWORD_PATTERN = List.of("#", "#", "/");
+    private static final List<String> SHORT_SWORD_PATTERN = List.of(" #", "/ ");
+    private static final List<String> SHOVEL_PATTERN = List.of("#", "/", "/");
+    private static final List<String> HOE_PATTERN = List.of("##", " /", " /");
+    private void registerToolRecipes(RecipeOutput output, Ingredient material,
+                                     ItemLike axe, ItemLike pickaxe, ItemLike hammer,
+                                     ItemLike broadsword,ItemLike shortsword, ItemLike shovel, ItemLike hoe) {
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', material,
+                '/', Ingredient.of(Items.STICK)
+        ), AXE_PATTERN), axe.asItem().getDefaultInstance());
 
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', material,
+                '/', Ingredient.of(Items.STICK)
+        ), PICKAXE_PATTERN), pickaxe.asItem().getDefaultInstance());
+
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', material,
+                '/', Ingredient.of(Items.STICK)
+        ), HAMMER_PATTERN), hammer.asItem().getDefaultInstance());
+
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', material,
+                '/', Ingredient.of(Items.STICK)
+        ), BROADSWORD_PATTERN), broadsword.asItem().getDefaultInstance());
+
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', material,
+                '/', Ingredient.of(Items.STICK)
+        ), SHORT_SWORD_PATTERN), shortsword.asItem().getDefaultInstance());
+
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', material,
+                '/', Ingredient.of(Items.STICK)
+        ), SHOVEL_PATTERN), shovel.asItem().getDefaultInstance());
+
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', material,
+                '/', Ingredient.of(Items.STICK)
+        ), HOE_PATTERN), hoe.asItem().getDefaultInstance());
+    }
     @Override
     protected void buildRecipes(RecipeOutput output, HolderLookup.Provider holderLookup) {
         // 注册矿物块的合成与分解配方
@@ -207,7 +253,9 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         compressAndDecompressNine(output, MaterialItems.RAW_DEMONITE, ModTags.Items.RAW_MATERIALS_DEMONITE, OreBlocks.RAW_DEMONITE_BLOCK, ModTags.Items.RAW_MATERIALS_DEMONITE_BLOCK);
         compressAndDecompressNine(output, MaterialItems.RAW_CRIMTANE, ModTags.Items.RAW_MATERIALS_CRIMTANE, OreBlocks.RAW_CRIMTANE_BLOCK, ModTags.Items.RAW_MATERIALS_CRIMTANE_BLOCK);
         compressAndDecompressNine(output, MaterialItems.RAW_HELLSTONE, ModTags.Items.RAW_MATERIALS_HELLSTONE, OreBlocks.RAW_HELLSTONE_BLOCK, ModTags.Items.RAW_MATERIALS_HELLSTONE_BLOCK);
-
+        // 飘飘麦捆
+        compressAndDecompressNine(output, MaterialItems.FLOATING_WHEAT_HEADS, ModTags.Items.RAW_MATERIALS_FLOATING_WHEAT, DecorativeBlocks.FLOATING_WHEAT_BALE, ModTags.Items.RAW_MATERIALS_FLOATING_WHEAT_BALE);
+        // 矿物粒
         // 铅砧
         shaped(output, ShapedRecipePattern.of(Map.of(
                 'I', Ingredient.of(ModTags.Items.LEAD_BLOCK),
@@ -269,7 +317,14 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 Ingredient.of(PotionItems.BOTTLE),
                 Ingredient.of(PotionItems.BOTTLE)
         );
-        // 玻璃瓶互换
+        // 玻璃瓶
+        // 广播盒
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(DecorativeBlocks.PURE_GLASS)
+        ), List.of(
+                "# #",
+                " # "
+        )), PotionItems.BOTTLE.toStack(3));
         shapeless(output, "", "_from_bottle",
                 new ItemStack(Items.GLASS_BOTTLE),
                 Ingredient.of(PotionItems.BOTTLE)
@@ -439,16 +494,251 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 " #"
         )), BowItems.PEARLWOOD_SHORT_BOW.toStack());
         // 基础工具，阔剑短剑
+        registerToolRecipes(output, Ingredient.of(Tags.Items.INGOTS_COPPER),AxeItems.COPPER_AXE,PickaxeItems.COPPER_PICKAXE,HammerItems.COPPER_HAMMER,SwordItems.COPPER_BROADSWORD,SwordItems.COPPER_SHORT_SWORD,ShovelItems.COPPER_SHOVEL,HoeItems.COPPER_HOE);
+        registerToolRecipes(output, Ingredient.of(ModTags.Items.INGOTS_TIN),AxeItems.TIN_AXE,PickaxeItems.TIN_PICKAXE,HammerItems.TIN_HAMMER,SwordItems.TIN_BROADSWORD,SwordItems.TIN_SHORT_SWORD,ShovelItems.TIN_SHOVEL,HoeItems.TIN_HOE);
+        registerToolRecipes(output, Ingredient.of(ModTags.Items.INGOTS_LEAD),AxeItems.LEAD_AXE,PickaxeItems.LEAD_PICKAXE,HammerItems.LEAD_HAMMER,SwordItems.LEAD_BROADSWORD,SwordItems.LEAD_SHORT_SWORD,ShovelItems.LEAD_SHOVEL,HoeItems.LEAD_HOE);
+        registerToolRecipes(output, Ingredient.of(ModTags.Items.INGOTS_SILVER),AxeItems.SILVER_AXE,PickaxeItems.SILVER_PICKAXE,HammerItems.SILVER_HAMMER,SwordItems.SILVER_BROADSWORD,SwordItems.SILVER_SHORT_SWORD,ShovelItems.SILVER_SHOVEL,HoeItems.SILVER_HOE);
+        registerToolRecipes(output, Ingredient.of(ModTags.Items.INGOTS_TUNGSTEN),AxeItems.TUNGSTEN_AXE,PickaxeItems.TUNGSTEN_PICKAXE,HammerItems.TUNGSTEN_HAMMER,SwordItems.TUNGSTEN_BROADSWORD,SwordItems.TUNGSTEN_SHORT_SWORD,ShovelItems.TUNGSTEN_SHOVEL,HoeItems.TUNGSTEN_HOE);
+        registerToolRecipes(output, Ingredient.of(ModTags.Items.INGOTS_PLATINUM),AxeItems.PLATINUM_AXE,PickaxeItems.PLATINUM_PICKAXE,HammerItems.PLATINUM_HAMMER,SwordItems.PLATINUM_BROADSWORD,SwordItems.PLATINUM_SHORT_SWORD,ShovelItems.PLATINUM_SHOVEL,HoeItems.PLATINUM_HOE);
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(Tags.Items.INGOTS_IRON),
+                '/', Ingredient.of(Items.STICK)
+        ), List.of(
+                " #",
+                "/ "
+        )), SwordItems.IRON_SHORT_SWORD.toStack());
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(Tags.Items.INGOTS_GOLD),
+                '/', Ingredient.of(Items.STICK)
+        ), List.of(
+                " #",
+                "/ "
+        )), SwordItems.GOLDEN_SHORT_SWORD.toStack());
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(ModTags.Items.INITIAL_WOOD),
+                '/', Ingredient.of(Items.STICK)
+        ), List.of(
+                "###",
+                "#/#",
+                " / "
+        )), HammerItems.WOODEN_HAMMER.toStack());
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(NatureBlocks.EBONY_LOG_BLOCKS.getPlanks()),
+                '/', Ingredient.of(Items.STICK)
+        ), List.of(
+                "###",
+                "#/#",
+                " / "
+        )), HammerItems.EBONWOOD_HAMMER.toStack());
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(NatureBlocks.SHADOW_LOG_BLOCKS.getPlanks()),
+                '/', Ingredient.of(Items.STICK)
+        ), List.of(
+                "###",
+                "#/#",
+                " / "
+        )), HammerItems.SHADEWOOD_HAMMER.toStack());
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(NatureBlocks.ASH_LOG_BLOCKS.getPlanks()),
+                '/', Ingredient.of(Items.STICK)
+        ), List.of(
+                "###",
+                "#/#",
+                " / "
+        )), HammerItems.ASH_WOOD_HAMMER.toStack());
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.getPlanks()),
+                '/', Ingredient.of(Items.STICK)
+        ), List.of(
+                "###",
+                "#/#",
+                " / "
+        )), HammerItems.PEARLWOOD_HAMMER.toStack());
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(Tags.Items.INGOTS_GOLD),
+                '/', Ingredient.of(Items.STICK)
+        ), List.of(
+                "###",
+                "#/#",
+                " / "
+        )), HammerItems.GOLDEN_HAMMER.toStack());
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(Tags.Items.INGOTS_IRON),
+                '/', Ingredient.of(Items.STICK)
+        ), List.of(
+                "###",
+                "#/#",
+                " / "
+        )), HammerItems.IRON_HAMMER.toStack());
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(Items.CACTUS),
+                '/', Ingredient.of(Items.STICK)
+        ), List.of(
+                "#",
+                "#",
+                "/"
+        )), SwordItems.CACTUS_SWORD.toStack());
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(Items.CACTUS),
+                '/', Ingredient.of(Items.STICK)
+        ), List.of(
+                "###",
+                " / ",
+                " / "
+        )), PickaxeItems.CACTUS_PICKAXE.toStack());
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(NatureBlocks.EBONY_LOG_BLOCKS.getPlanks()),
+                '/', Ingredient.of(Items.STICK)
+        ), List.of(
+                "#",
+                "#",
+                "/"
+        )), SwordItems.EBONWOOD_SWORD.toStack());
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(NatureBlocks.SHADOW_LOG_BLOCKS.getPlanks()),
+                '/', Ingredient.of(Items.STICK)
+        ), List.of(
+                "#",
+                "#",
+                "/"
+        )), SwordItems.SHADEWOOD_SWORD.toStack());
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(NatureBlocks.ASH_LOG_BLOCKS.getPlanks()),
+                '/', Ingredient.of(Items.STICK)
+        ), List.of(
+                "#",
+                "#",
+                "/"
+        )), SwordItems.ASH_WOOD_SWORD.toStack());
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.getPlanks()),
+                '/', Ingredient.of(Items.STICK)
+        ), List.of(
+                "#",
+                "#",
+                "/"
+        )), SwordItems.PEARLWOOD_SWORD.toStack());
+        // 鱼竿
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                'S', Ingredient.of(Items.STRING),
+                '/', Ingredient.of(Items.STICK)
+        ), List.of(
+                "/ S",
+                " /S",
+                "  /"
+        )), FishingPoleItems.WOOD_FISHING_POLE.toStack());
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                'S', Ingredient.of(Items.STRING),
+                '/', Ingredient.of(ModTags.Items.LEAD_AND_IRON)
+        ), List.of(
+                "  /",
+                " /S",
+                "/ S"
+        )), FishingPoleItems.REINFORCED_FISHING_POLE.toStack());
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                'S', Ingredient.of(Items.STRING),
+                '/', Ingredient.of(ModTags.Items.INGOTS_DEMONITE)
+        ), List.of(
+                "  /",
+                " /S",
+                "/ S"
+        )), FishingPoleItems.FISHER_OF_SOULS.toStack());
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                'S', Ingredient.of(Items.STRING),
+                '/', Ingredient.of(ModTags.Items.INGOTS_CRIMTANE)
+        ), List.of(
+                "  /",
+                " /S",
+                "/ S"
+        )), FishingPoleItems.FLESHCATCHER.toStack());
+        // 便捷合成，无序合成
+        shapeless(output, "", "_from_raw_copper",
+                new ItemStack(Items.COPPER_INGOT),
+                Ingredient.of(Items.RAW_COPPER),
+                Ingredient.of(Items.RAW_COPPER),
+                Ingredient.of(Items.RAW_COPPER)
+        );
+        shapeless(output, "", "_from_raw_tin",
+                new ItemStack(MaterialItems.TIN_INGOT.get()),
+                Ingredient.of(MaterialItems.RAW_TIN),
+                Ingredient.of(MaterialItems.RAW_TIN),
+                Ingredient.of(MaterialItems.RAW_TIN)
+        );
+        shapeless(output, "", "_from_raw_copper",
+                new ItemStack(Items.IRON_INGOT),
+                Ingredient.of(Items.RAW_IRON),
+                Ingredient.of(Items.RAW_IRON),
+                Ingredient.of(Items.RAW_IRON)
+        );
+        shapeless(output, "", "_from_raw_lead",
+                new ItemStack(MaterialItems.LEAD_INGOT.get()),
+                Ingredient.of(MaterialItems.RAW_LEAD),
+                Ingredient.of(MaterialItems.RAW_LEAD),
+                Ingredient.of(MaterialItems.RAW_LEAD),
+                Ingredient.of(MaterialItems.RAW_LEAD)
+        );
+        shapeless(output, "", "_from_raw_silver",
+                new ItemStack(MaterialItems.SILVER_INGOT.get()),
+                Ingredient.of(MaterialItems.RAW_SILVER),
+                Ingredient.of(MaterialItems.RAW_SILVER),
+                Ingredient.of(MaterialItems.RAW_SILVER),
+                Ingredient.of(MaterialItems.RAW_SILVER)
+        );
+        shapeless(output, "", "_from_raw_tungsten",
+                new ItemStack(MaterialItems.TUNGSTEN_INGOT.get()),
+                Ingredient.of(MaterialItems.RAW_TUNGSTEN),
+                Ingredient.of(MaterialItems.RAW_TUNGSTEN),
+                Ingredient.of(MaterialItems.RAW_TUNGSTEN),
+                Ingredient.of(MaterialItems.RAW_TUNGSTEN)
+        );
+        shapeless(output, ToolItems.VINE_ROPE_COIL.toStack(),Ingredient.of(ModBlocks.VINE_ROPE),Ingredient.of(ModBlocks.VINE_ROPE),Ingredient.of(ModBlocks.VINE_ROPE),Ingredient.of(ModBlocks.VINE_ROPE));
+        shapeless(output, ToolItems.WEB_ROPE_COIL.toStack(),Ingredient.of(ModBlocks.WEB_ROPE),Ingredient.of(ModBlocks.WEB_ROPE),Ingredient.of(ModBlocks.WEB_ROPE),Ingredient.of(ModBlocks.WEB_ROPE));
+        shapeless(output, ToolItems.SILK_ROPE_COIL.toStack(),Ingredient.of(ModBlocks.SILK_ROPE),Ingredient.of(ModBlocks.SILK_ROPE),Ingredient.of(ModBlocks.SILK_ROPE),Ingredient.of(ModBlocks.SILK_ROPE));
+        shapeless(output, ToolItems.ROPE_COIL.toStack(),Ingredient.of(ModBlocks.ROPE),Ingredient.of(ModBlocks.ROPE),Ingredient.of(ModBlocks.ROPE),Ingredient.of(ModBlocks.ROPE));
+        shapeless(output, ConsumableItems.MANA_CRYSTAL.toStack(),Ingredient.of(MaterialItems.FALLING_STAR),Ingredient.of(MaterialItems.FALLING_STAR),Ingredient.of(MaterialItems.FALLING_STAR),Ingredient.of(MaterialItems.FALLING_STAR),Ingredient.of(MaterialItems.FALLING_STAR));
+        shapeless(output, MaterialItems.FALLING_STAR.toStack(),Ingredient.of(MaterialItems.STAR_PETALS),Ingredient.of(MaterialItems.STAR_PETALS),Ingredient.of(MaterialItems.STAR_PETALS),Ingredient.of(MaterialItems.STAR_PETALS),Ingredient.of(MaterialItems.STAR_PETALS));
+        shapeless(output, FoodItems.CLOUD_DOUGH.toStack(),Ingredient.of(MaterialItems.FLOATING_WHEAT_HEADS),Ingredient.of(MaterialItems.FLOATING_WHEAT_HEADS),Ingredient.of(MaterialItems.FLOATING_WHEAT_HEADS));
+
+        shapeless(output, ConsumableItems.VILE_POWDER.toStack(5), Ingredient.of(NatureBlocks.VILE_MUSHROOM));
+        shapeless(output, ConsumableItems.VICIOUS_POWDER.toStack(5), Ingredient.of(NatureBlocks.VICIOUS_MUSHROOM));
+        shapeless(output, DecorativeBlocks.WOOD_STONE_SLATTED_BLOCKS.toStack(4), Ingredient.of(ItemTags.STONE_CRAFTING_MATERIALS), Ingredient.of(ItemTags.PLANKS));
+        shapeless(output, ConsumableItems.BOUNCY_BOMB.toStack(), Ingredient.of(ConsumableItems.BOMB), Ingredient.of(MaterialItems.PINK_GEL));
+        shapeless(output, ConsumableItems.BOUNCY_DYNAMITE.toStack(), Ingredient.of(ConsumableItems.DYNAMITE), Ingredient.of(MaterialItems.PINK_GEL));
+        shapeless(output, ConsumableItems.BOUNCY_GRENADE.toStack(), Ingredient.of(ConsumableItems.GRENADE), Ingredient.of(MaterialItems.PINK_GEL));
+        shapeless(output, ConsumableItems.STICKY_BOMB.toStack(), Ingredient.of(ConsumableItems.BOMB), Ingredient.of(MaterialItems.GEL));
+        shapeless(output, ConsumableItems.STICKY_DIRT_BOMB.toStack(), Ingredient.of(ConsumableItems.DIRT_BOMB), Ingredient.of(MaterialItems.GEL));
+        shapeless(output, ConsumableItems.STICKY_DYNAMITE.toStack(), Ingredient.of(ConsumableItems.DYNAMITE), Ingredient.of(MaterialItems.GEL));
+        shapeless(output, ConsumableItems.STICKY_GRENADE.toStack(), Ingredient.of(ConsumableItems.GRENADE), Ingredient.of(MaterialItems.GEL));
+        shapeless(output, ConsumableItems.SCARAB_BOMB.toStack(), Ingredient.of(ConsumableItems.BOMB), Ingredient.of(MaterialItems.STURDY_FOSSIL));
+        shapeless(output, TEBoomerangItems.TRIMARANG.toStack(), Ingredient.of(TEBoomerangItems.ENCHANTED_BOOMERANG),Ingredient.of(TEBoomerangItems.ICE_BOOMERANG),Ingredient.of(TEBoomerangItems.SHROOMERANG));
+        shapeless(output, TEBoomerangItems.ENCHANTED_BOOMERANG.toStack(), Ingredient.of(TEBoomerangItems.WOOD_BOOMERANG),Ingredient.of(MaterialItems.FALLING_STAR));
+        shapeless(output, BaitItems.ENCHANTED_NIGHTCRAWLER.toStack(), Ingredient.of(BaitItems.WORM),Ingredient.of(MaterialItems.FALLING_STAR));
+
+
+
+        // 铅铁共用相关
+        shaped(output, "", "_from_nuggets_lead",
+                ShapedRecipePattern.of(Map.of(
+                        'S', Ingredient.of(ModTags.Items.NUGGETS_LEAD)
+                ), List.of(
+                        "SSS",
+                        "SSS",
+                        "SSS"
+                )),
+                MaterialItems.LEAD_INGOT.toStack()
+        );
+        shapeless(output, MaterialItems.LEAD_NUGGET.toStack(9));
 
         // 石头及深板岩压力板
         shaped(output, ShapedRecipePattern.of(Map.of('#', Ingredient.of(Blocks.STONE)), List.of("##")), new ItemStack(FunctionalBlocks.STONE_PRESSURE_PLATE));
         shaped(output, ShapedRecipePattern.of(Map.of('#', Ingredient.of(Blocks.DEEPSLATE)), List.of("##")), new ItemStack(FunctionalBlocks.DEEPSLATE_PRESSURE_PLATE));
 
         shapeless(output, ToolItems.NPC_INVITATION.toStack(), Ingredient.of(Items.PAPER), Ingredient.of(Items.HONEYCOMB, MaterialItems.ROYAL_WAX));
-
+        // 钱币
         shapeless(output, ModItems.COPPER_COIN.toStack(100), Ingredient.of(ModItems.SILVER_COIN));
         shapeless(output, ModItems.SILVER_COIN.toStack(100), Ingredient.of(ModItems.GOLDEN_COIN));
         shapeless(output, ModItems.GOLDEN_COIN.toStack(100), Ingredient.of(ModItems.PLATINUM_COIN));
+
     }
 
     protected void shaped(RecipeOutput recipeOutput, String prefix, String suffix, ShapedRecipePattern pattern, ItemStack result) {

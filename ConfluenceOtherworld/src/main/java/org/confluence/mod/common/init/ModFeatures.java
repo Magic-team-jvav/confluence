@@ -106,10 +106,10 @@ public final class ModFeatures {
     }
 
     public static class Configured {
-        public static final ResourceKey<ConfiguredFeature<?, ?>> SHADOW_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("crimson_tree"));
-        public static final ResourceKey<ConfiguredFeature<?, ?>> EBONY_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("corruption_tree"));
+        public static final ResourceKey<ConfiguredFeature<?, ?>> SHADOW_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("shadow_tree"));
+        public static final ResourceKey<ConfiguredFeature<?, ?>> EBONY_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("ebony_tree"));
         public static final ResourceKey<ConfiguredFeature<?, ?>> PALM_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("palm_tree"));
-        public static final ResourceKey<ConfiguredFeature<?, ?>> PEARL_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("pearl_tree")); // todo
+        public static final ResourceKey<ConfiguredFeature<?, ?>> PEARL_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("pearl_tree"));
         public static final ResourceKey<ConfiguredFeature<?, ?>> RUBY_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("ruby_tree"));
         public static final ResourceKey<ConfiguredFeature<?, ?>> AMBER_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("amber_tree"));
         public static final ResourceKey<ConfiguredFeature<?, ?>> TOPAZ_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("topaz_tree"));

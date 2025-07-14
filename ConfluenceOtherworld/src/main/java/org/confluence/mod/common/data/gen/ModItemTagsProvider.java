@@ -1539,7 +1539,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FunctionalBlocks.SPEAR_TRAP.asItem(),
                 FunctionalBlocks.TREE_HOLES_BLOCK.asItem(),
                 FunctionalBlocks.MAGIC_MAIL_BOX.asItem(),
-                MaterialItems.RAW_ASPHALT.get(),
                 MaterialItems.SOUL_OF_LIGHT.get(),
                 MaterialItems.SOUL_OF_NIGHT.get(),
                 MaterialItems.SOUL_OF_FLIGHT.get(),
@@ -1581,15 +1580,10 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 HookItems.ANTI_GRAVITY_HOOK.get(),
                 HookItems.LUNAR_HOOK.get(),
                 HookItems.STATIC_HOOK.get(),
-                TreasureBagItems.WALL_OF_FLESH_TREASURE_BAG.get(),
                 TEItems.DEBUG_ITEM.get(),
                 TEFigureBlocks.FIGURE.asItem(),
                 TEFigureBlocks.FIGURE2.asItem(),
-                TEFigureBlocks.FIGURE3.asItem(),
-                FoodItems.COOKED_FROG.get(),
-                FoodItems.COOKED_SQUIRREL.get(),
-                FoodItems.COOKED_BIRD.get(),
-                FoodItems.COOKED_DUCK.get()
+                TEFigureBlocks.FIGURE3.asItem()
         );
         Consumer<DeferredHolder<Item, ? extends Item>> wipAction = item -> wip.add(item.get());
         MinecartItems.ITEMS.getEntries().forEach(wipAction);

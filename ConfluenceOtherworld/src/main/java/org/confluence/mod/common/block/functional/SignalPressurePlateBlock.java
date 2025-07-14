@@ -65,7 +65,7 @@ public class SignalPressurePlateBlock extends PressurePlateBlock implements Enti
         try {
             ((LevelAccessor) level).callGetEntities().get(TOUCH_AABB.move(pos), entity -> {
                 if (test.test(entity)) {
-                    throw new ReturnException(0);
+                    throw new ReturnException();
                 }
             });
         } catch (ReturnException e) {

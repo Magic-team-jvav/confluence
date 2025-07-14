@@ -10,19 +10,28 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.DyedItemColor;
+import net.minecraft.world.level.BaseCommandBlock;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.level.chunk.LevelChunkSection;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.server.command.EnumArgument;
 import org.confluence.mod.common.data.saved.*;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.item.PaintItems;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
+import org.confluence.mod.util.DynamicBiomeUtils;
 
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -142,7 +151,31 @@ public class ConfluenceCommand {
                             ReloadResource.execute(context.getArgument("resource", ReloadResource.class));
                             return 1;
                         }))
-                )
+                ).then(Commands.literal("judgeBiome").executes(context -> {
+                Level level;
+                BlockPos pos;
+                if (context.getSource().source instanceof Entity entity) {
+                    level = entity.level();
+                    pos = entity.blockPosition();
+                } else if (context.getSource().source instanceof BaseCommandBlock commandBlock) {
+                    level = commandBlock.getLevel();
+                    Vec3 position = commandBlock.getPosition();
+                    pos = new BlockPos((int) position.x, (int) position.y, (int) position.z);
+                }else {
+                    return 1;
+                }
+                LevelChunk chunk = level.getChunkAt(pos);
+                LevelChunkSection section = chunk.getSection(chunk.getSectionIndex(pos.getY()));
+                Holder<Biome> result = DynamicBiomeUtils.judgeSection(section);
+                context.getSource().sendSuccess(() -> {
+                    if (result == null) {
+                        return Component.literal(pos + " pure");
+                    }else{
+                        return Component.literal(pos + " " + result);
+                    }
+                }, true);
+                return 0;
+            }))
         );
     }
 

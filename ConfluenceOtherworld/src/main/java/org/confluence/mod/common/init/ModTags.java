@@ -61,6 +61,18 @@ public final class ModTags {
         public static final TagKey<Block> CORRODED_WORM_ROOTS_BASE_BLOCK = register("corroded_worm_roots_base_block");
         public static final TagKey<Block> DECOMPOSE_THE_SOURCE_EXTRACT_BASE_BLOCK = register("decompose_the_source_extract_base_block");
 
+        //
+        public static final TagKey<Block> CRIMSON = register("crimson");
+        public static final TagKey<Block> CRIMSON_DESERT = register("crimson_desert");
+        public static final TagKey<Block> CRIMSON_TUNDRA = register("crimson_tundra");
+        public static final TagKey<Block> CORRUPTION = register("corruption");
+        public static final TagKey<Block> CORRUPTED_DESERT = register("corrupted_desert");
+        public static final TagKey<Block> CORRUPTED_TUNDRA = register("corrupted_tundra");
+        public static final TagKey<Block> HALLOW = register("hallow");
+        public static final TagKey<Block> HALLOW_DESERT = register("hallow_desert");
+        public static final TagKey<Block> HALLOW_TUNDRA = register("hallow_tundra");
+        public static final TagKey<Block> GLOWING_MUSHROOM = register("glowing_mushroom");
+
         public static final TagKey<Block> TIN_BLOCK = c("storage_blocks/tin");
         public static final TagKey<Block> LEAD_BLOCK = c("storage_blocks/lead");
         public static final TagKey<Block> SLIVER_BLOCK = c("storage_blocks/silver");

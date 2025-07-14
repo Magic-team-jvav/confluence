@@ -75,6 +75,7 @@ import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.world.BiomeModifier;
 import net.neoforged.neoforge.common.world.BiomeModifiers;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
+import net.neoforged.neoforge.registries.holdersets.AndHolderSet;
 import net.neoforged.neoforge.registries.holdersets.NotHolderSet;
 import net.neoforged.neoforge.registries.holdersets.OrHolderSet;
 import org.confluence.mod.Confluence;
@@ -1485,9 +1486,9 @@ public class ModDataProvider {
             HolderGetter<Biome> biome = context.lookup(Registries.BIOME);
             HolderLookup.RegistryLookup<Biome> biomeLookup = registryLookup(Registries.BIOME, biome);
             HolderGetter<StructureTemplatePool> templatePool = context.lookup(Registries.TEMPLATE_POOL);
-            HolderSet<Biome> notAquatic = new NotHolderSet<>(biomeLookup, biome.getOrThrow(Tags.Biomes.IS_AQUATIC));
-            HolderSet<Biome> crimson = HolderSet.direct(biome.getOrThrow(ModBiomes.THE_CRIMSON));
             HolderSet<Biome> overworld = biome.getOrThrow(Tags.Biomes.IS_OVERWORLD);
+            HolderSet<Biome> notAquatic = new AndHolderSet<>(overworld, new NotHolderSet<>(biomeLookup, biome.getOrThrow(Tags.Biomes.IS_AQUATIC)));
+            HolderSet<Biome> crimson = HolderSet.direct(biome.getOrThrow(ModBiomes.THE_CRIMSON));
             HolderSet<Biome> desertBadlands = new OrHolderSet<>(biome.getOrThrow(Tags.Biomes.IS_DESERT), biome.getOrThrow(Tags.Biomes.IS_BADLANDS));
             Optional<Heightmap.Types> worldSurfaceWg = Optional.of(Heightmap.Types.WORLD_SURFACE_WG);
 

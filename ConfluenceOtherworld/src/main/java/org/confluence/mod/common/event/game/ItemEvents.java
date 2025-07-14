@@ -1,8 +1,6 @@
 package org.confluence.mod.common.event.game;
 
-import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -14,7 +12,6 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.ItemAttributeModifierEvent;
 import net.neoforged.neoforge.event.entity.item.ItemTossEvent;
-import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.common.attachment.ExtraInventory;
@@ -24,9 +21,10 @@ import org.confluence.mod.common.entity.TreasureBagItemEntity;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.common.init.item.ConsumableItems;
+import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.GunItems;
 import org.confluence.mod.common.init.item.MaterialItems;
+import org.confluence.mod.common.item.common.GuideVooDooDollItem;
 import org.confluence.mod.common.item.gun.ManaGunItem;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.common.init.TCAttributes;
@@ -61,8 +59,8 @@ public final class ItemEvents {
             itemEntity.level().addFreshEntity(entity);
             itemEntity.discard();
             event.setCanceled(true);
-        } else if (itemStack.is(ConsumableItems.GUIDE_VOODOO_DOLL)) {
-            LibUtils.updateItemStackNbt(itemStack, tag -> tag.put("Direction", Direction.CODEC.encodeStart(NbtOps.INSTANCE, event.getPlayer().getDirection()).getOrThrow()));
+        } else if (itemStack.is(AccessoryItems.GUIDE_VOODOO_DOLL)) {
+            GuideVooDooDollItem.setDirection(itemStack, event.getPlayer());
         } else if (itemStack.is(ModTags.Items.COINS)) {
             itemEntity.playSound(ModSoundEvents.COINS_SMALL.get());
         }

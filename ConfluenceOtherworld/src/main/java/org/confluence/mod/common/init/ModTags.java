@@ -140,6 +140,7 @@ public final class ModTags {
         public static final TagKey<Item> RAW_MATERIALS_HELLSTONE = c("raw_materials/hellstone");
         public static final TagKey<Item> RAW_MATERIALS_HELLSTONE_BLOCK = c("storage_blocks/raw_hellstone");
 
+
         public static final TagKey<Item> GEMS_RUBY = c("gems/ruby");
         public static final TagKey<Item> GEMS_AMBER = c("gems/amber");
         public static final TagKey<Item> GEMS_TOPAZ = c("gems/topaz");
@@ -153,7 +154,10 @@ public final class ModTags {
         public static final TagKey<Item> RAW_MATERIALS_GELSTONE = c("raw_materials/gelstone");
         public static final TagKey<Item> RAW_MATERIALS_COLD_CRYSTAL = c("raw_materials/cold_crystal");
 
-        public static final TagKey<Item> NUGGETS_TIN = c("nuggets/lead");
+        public static final TagKey<Item> RAW_MATERIALS_FLOATING_WHEAT= c("raw_materials/raw_materials_floating_wheat");
+        public static final TagKey<Item> RAW_MATERIALS_FLOATING_WHEAT_BALE = c("storage_blocks/floating_wheat_bale");
+
+        public static final TagKey<Item> NUGGETS_LEAD = c("nuggets/lead");
 
         public static final TagKey<Item> ORES_TIN = c("ores/tin");
         public static final TagKey<Item> ORES_LEAD = c("ores/lead");

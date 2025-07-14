@@ -1520,7 +1520,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ChestBlocks.OCEAN_CHEST.asItem(),
                 ChestBlocks.UNIVERSE_CHEST.asItem(),
                 ChestBlocks.MECHANIC_SAFE_CHEST.asItem(),
-                FunctionalBlocks.BEWITCHING_TABLE.asItem(),
                 FunctionalBlocks.CHLOROPHYTE_EXTRACTINATOR.asItem(),
                 FunctionalBlocks.BLEND_O_MATIC.asItem(),
                 FunctionalBlocks.MEAT_GRINDER.asItem(),

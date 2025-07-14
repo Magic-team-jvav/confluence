@@ -156,7 +156,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.abeemination.2", "一团尚未成型的幼蜂，摸上去感觉像黏稠的蜂蜜……蜂王与她的下属们对它们甜蜜领地的保护欲不知何时渐渐发展为对非同类生物的极度排斥与憎恶。");
         add("tooltip.item.confluence.abeemination.3", "“群蜂振翅之声憾动了丛林中最为厚重的叶片”");
         add("tooltip.item.confluence.clothier_voodoo_doll.0", "“你这人真可怕”");
-        add("tooltip.item.confluence.guide_voodoo_doll.0", "“你这人真可怕。”");
+        add("tooltip.item.confluence.guide_voodoo_doll.0", "“你这人真可怕”");
 
         add("tooltip.item.confluence.tokyo_teddy_bear.0", "一位自卑的少女如破碎的泰迪熊般说到：");
         add("tooltip.item.confluence.tokyo_teddy_bear.1", "           来让你听听");

@@ -528,80 +528,39 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                 )
         );
         add(TEAnimals.DUCK.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/duck"), LootTable.lootTable()
-                .withPool(
-                        LootPool.lootPool()
-                                .setRolls(ConstantValue.exactly(1.0F))
-                                .add(
-                                        LootItem.lootTableItem(FoodItems.RAW_DUCK)
-                                                .apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot()))
-                                                .apply(random0To1)
-                                )
-                )
-        );
-        add(TEAnimals.DUCK.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/duck"), LootTable.lootTable()
-                .withPool(
-                        LootPool.lootPool()
-                                .setRolls(ConstantValue.exactly(1.0F))
-                                .add(
-                                        LootItem.lootTableItem(FoodItems.RAW_DUCK)
-                                                .apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot()))
-                                                .apply(random0To1)
-                                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FoodItems.RAW_DUCK).apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot())).apply(random0To1)
+                        )
                 )
         );
         add(TEAnimals.BIRD.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/bird"), LootTable.lootTable()
-                .withPool(
-                        LootPool.lootPool()
-                                .setRolls(ConstantValue.exactly(1.0F))
-                                .add(
-                                        LootItem.lootTableItem(FoodItems.RAW_BIRD)
-                                                .apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot()))
-                                                .apply(random0To1)
-                                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FoodItems.RAW_BIRD).apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot())).apply(random0To1)
+                        )
                 )
         );
         add(TEAnimals.BLUE_JAY.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/blue_jay"), LootTable.lootTable()
-                .withPool(
-                        LootPool.lootPool()
-                                .setRolls(ConstantValue.exactly(1.0F))
-                                .add(
-                                        LootItem.lootTableItem(FoodItems.RAW_BIRD)
-                                                .apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot()))
-                                                .apply(random0To1)
-                                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FoodItems.RAW_BIRD).apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot())).apply(random0To1)
+                        )
                 )
         );
         add(TEAnimals.CARDINAL.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/cardinal"), LootTable.lootTable()
-                .withPool(
-                        LootPool.lootPool()
-                                .setRolls(ConstantValue.exactly(1.0F))
-                                .add(
-                                        LootItem.lootTableItem(FoodItems.RAW_BIRD)
-                                                .apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot()))
-                                                .apply(random0To1)
-                                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FoodItems.RAW_BIRD).apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot())).apply(random0To1)
+                        )
                 )
         );
         add(TEAnimals.BUNNY.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/bunny"), LootTable.lootTable()
-                .withPool(
-                        LootPool.lootPool()
-                                .setRolls(ConstantValue.exactly(1.0F))
-                                .add(
-                                        LootItem.lootTableItem(Items.RABBIT)
-                                                .apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot()))
-                                                .apply(random0To1)
-                                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(Items.RABBIT).apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot())).apply(random0To1)
+                        )
                 )
         );
         add(TEAnimals.SQUIRREL.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/squirrel"), LootTable.lootTable()
-                .withPool(
-                        LootPool.lootPool()
-                                .setRolls(ConstantValue.exactly(1.0F))
-                                .add(
-                                        LootItem.lootTableItem(FoodItems.RAW_SQUIRREL)
-                                                .apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot()))
-                                                .apply(random0To1)
-                                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FoodItems.RAW_SQUIRREL).apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot())).apply(random0To1)
+                        )
                 )
         );
     }

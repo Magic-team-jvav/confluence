@@ -7,6 +7,7 @@ import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.inventory.ItemCombinerMenuSlotDefinition;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -155,6 +156,21 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 "###",
                 "###"
         )), chestplate.asItem().getDefaultInstance());
+    }
+
+    private static final List<String> BOW_PATTERN = List.of(" #/", "# /", " #/");
+    private static final List<String> SHORT_BOW_PATTERN = List.of(" #", "#/", " #");
+    private void registerBowRecipes(RecipeOutput output, Ingredient material,
+                                    ItemLike normalBow, ItemLike shortBow) {
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', material,
+                '/', Ingredient.of(Items.STRING)
+        ), BOW_PATTERN), normalBow.asItem().getDefaultInstance());
+
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', material,
+                '/', Ingredient.of(Items.STRING)
+        ), SHORT_BOW_PATTERN), shortBow.asItem().getDefaultInstance());
     }
 
     @Override
@@ -341,6 +357,88 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         registerArmorRecipes(output, Ingredient.of(ModTags.Items.INGOTS_SILVER), ArmorItems.SILVER_HELMET, ArmorItems.SILVER_CHESTPLATE, ArmorItems.SILVER_LEGGINGS, ArmorItems.SILVER_BOOTS);
         registerArmorRecipes(output, Ingredient.of(ModTags.Items.INGOTS_TUNGSTEN), ArmorItems.TUNGSTEN_HELMET, ArmorItems.TUNGSTEN_CHESTPLATE, ArmorItems.TUNGSTEN_LEGGINGS, ArmorItems.TUNGSTEN_BOOTS);
         registerArmorRecipes(output, Ingredient.of(ModTags.Items.INGOTS_PLATINUM), ArmorItems.PLATINUM_HELMET, ArmorItems.PLATINUM_CHESTPLATE, ArmorItems.PLATINUM_LEGGINGS, ArmorItems.PLATINUM_BOOTS);
+        // 基础弓
+        registerBowRecipes(output, Ingredient.of(Tags.Items.INGOTS_COPPER),BowItems.COPPER_BOW,BowItems.COPPER_SHORT_BOW);
+        registerBowRecipes(output, Ingredient.of(Tags.Items.INGOTS_GOLD),BowItems.GOLDEN_BOW,BowItems.GOLDEN_SHORT_BOW);
+        registerBowRecipes(output, Ingredient.of(Tags.Items.INGOTS_IRON),BowItems.IRON_BOW,BowItems.IRON_SHORT_BOW);
+        registerBowRecipes(output, Ingredient.of(ModTags.Items.INGOTS_TIN),BowItems.TIN_BOW,BowItems.TIN_SHORT_BOW);
+        registerBowRecipes(output, Ingredient.of(ModTags.Items.INGOTS_LEAD),BowItems.LEAD_BOW,BowItems.LEAD_SHORT_BOW);
+        registerBowRecipes(output, Ingredient.of(ModTags.Items.INGOTS_SILVER),BowItems.SILVER_BOW,BowItems.SILVER_SHORT_BOW);
+        registerBowRecipes(output, Ingredient.of(ModTags.Items.INGOTS_TUNGSTEN),BowItems.TUNGSTEN_BOW,BowItems.TUNGSTEN_SHORT_BOW);
+        registerBowRecipes(output, Ingredient.of(ModTags.Items.INGOTS_PLATINUM),BowItems.PLATINUM_BOW,BowItems.PLATINUM_SHORT_BOW);
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(Items.STICK),
+                '/', Ingredient.of(Items.STRING)
+        ), List.of(
+                " #",
+                "#/",
+                " #"
+        )), BowItems.WOODEN_SHORT_BOW.toStack());
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(NatureBlocks.EBONY_LOG_BLOCKS.getPlanks()),
+                '/', Ingredient.of(Items.BOW)
+                ), List.of(
+                " #",
+                "#/",
+                " #"
+        )), BowItems.EBONWOOD_BOW.toStack());
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(NatureBlocks.EBONY_LOG_BLOCKS.getPlanks()),
+                '/', Ingredient.of(BowItems.WOODEN_SHORT_BOW)
+        ), List.of(
+                " #",
+                "#/",
+                " #"
+        )), BowItems.EBONWOOD_SHORT_BOW.toStack());
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(NatureBlocks.SHADOW_LOG_BLOCKS.getPlanks()),
+                '/', Ingredient.of(Items.BOW)
+        ), List.of(
+                " #",
+                "#/",
+                " #"
+        )), BowItems.SHADEWOOD_BOW.toStack());
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(NatureBlocks.SHADOW_LOG_BLOCKS.getPlanks()),
+                '/', Ingredient.of(BowItems.WOODEN_SHORT_BOW)
+        ), List.of(
+                " #",
+                "#/",
+                " #"
+        )), BowItems.SHADEWOOD_SHORT_BOW.toStack());
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(NatureBlocks.ASH_LOG_BLOCKS.getPlanks()),
+                '/', Ingredient.of(Items.BOW)
+        ), List.of(
+                " #",
+                "#/",
+                " #"
+        )), BowItems.ASH_WOOD_BOW.toStack());
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(NatureBlocks.ASH_LOG_BLOCKS.getPlanks()),
+                '/', Ingredient.of(BowItems.WOODEN_SHORT_BOW)
+        ), List.of(
+                " #",
+                "#/",
+                " #"
+        )), BowItems.ASH_WOOD_SHORT_BOW.toStack());
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.getPlanks()),
+                '/', Ingredient.of(Items.BOW)
+        ), List.of(
+                " #",
+                "#/",
+                " #"
+        )), BowItems.PEARLWOOD_BOW.toStack());
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.getPlanks()),
+                '/', Ingredient.of(BowItems.WOODEN_SHORT_BOW)
+        ), List.of(
+                " #",
+                "#/",
+                " #"
+        )), BowItems.PEARLWOOD_SHORT_BOW.toStack());
+        // 基础工具，阔剑短剑
 
         // 石头及深板岩压力板
         shaped(output, ShapedRecipePattern.of(Map.of('#', Ingredient.of(Blocks.STONE)), List.of("##")), new ItemStack(FunctionalBlocks.STONE_PRESSURE_PLATE));

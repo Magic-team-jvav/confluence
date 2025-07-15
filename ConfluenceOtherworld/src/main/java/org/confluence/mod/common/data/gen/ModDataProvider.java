@@ -1654,10 +1654,10 @@ public class ModDataProvider {
                     biome.getOrThrow(BiomeTags.STRONGHOLD_BIASED_TO)
             )));
             register(context, "dungeon_altar", new StructureSet(structure.getOrThrow(ModStructures.Keys.DUNGEON_ALTAR), new RandomSpreadStructurePlacement(
-                    Vec3i.ZERO, StructurePlacement.FrequencyReductionMethod.DEFAULT, 1.0F,
+                    Vec3i.ZERO, StructurePlacement.FrequencyReductionMethod.DEFAULT, 0.6F,
                     69021806,
                     Optional.of(new StructurePlacement.ExclusionZone(air, 12)),
-                    10, 8,
+                    16, 8,
                     RandomSpreadType.TRIANGULAR
             )));
             register(context, "ebony_stone_thorn", new StructureSet(structure.getOrThrow(ModStructures.Keys.EBONY_STONE_THORN), new RandomSpreadStructurePlacement(

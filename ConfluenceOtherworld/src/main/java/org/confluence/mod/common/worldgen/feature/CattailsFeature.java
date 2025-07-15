@@ -12,8 +12,6 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import org.confluence.lib.util.FeatureUtils;
 import org.confluence.mod.common.block.natural.CattailsHeadBlock;
 
 import static org.confluence.mod.common.block.common.BaseRopeBlock.WATERLOGGED;
@@ -39,37 +37,30 @@ public class CattailsFeature extends Feature<CattailsFeature.Config> {
 
         final int MAX_SEARCH_DEPTH = 5;
         int searchDepth = 0;
+        BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos(baseBlockPos.getX(), 0, baseBlockPos.getZ());
 
         if (placed) {
-            while ((checkY >= minY) && placed && searchDepth <= MAX_SEARCH_DEPTH) {
-                placed
-                        = placed && !(checkY == minY);
-                if (!level.getBlockState(new BlockPos(baseBlockPos.getX(), checkY, baseBlockPos.getZ())).canBeReplaced()) {
-                    placed
-                            = false;
+            while (checkY >= minY && placed && searchDepth <= MAX_SEARCH_DEPTH) {
+                placed = checkY != minY;
+                if (!level.getBlockState(mutable.setY(checkY)).canBeReplaced()) {
+                    placed = false;
                     break;
                 }
-                if (level.getBlockState(new BlockPos(baseBlockPos.getX(), checkY, baseBlockPos.getZ())).is(Blocks.WATER) &&
-                        level
-                                .getBlockState(new BlockPos(baseBlockPos.getX(), checkY - 1, baseBlockPos.getZ())).isFaceSturdy(level, new BlockPos(baseBlockPos.getX(), checkY - 1, baseBlockPos.getZ()), Direction.UP)) {
-                    endY
-                            = checkY;
+                if (level.getBlockState(mutable.setY(checkY)).is(Blocks.WATER) &&
+                        level.getBlockState(mutable.setY(checkY - 1)).isFaceSturdy(level, mutable.setY(checkY - 1), Direction.UP)) {
+                    endY = checkY;
                     break;
-                } else if (level.getBlockState(new BlockPos(baseBlockPos.getX(), checkY, baseBlockPos.getZ())).canBeReplaced() &&
-                        !level.getBlockState(new BlockPos(baseBlockPos.getX(), checkY - 1, baseBlockPos.getZ())).canBeReplaced()) {
-                    placed
-                            = false;
+                } else if (level.getBlockState(mutable.setY(checkY)).canBeReplaced() &&
+                        !level.getBlockState(mutable.setY(checkY - 1)).canBeReplaced()) {
+                    placed = false;
                     break;
                 }
-                checkY
-                        --;
-                searchDepth
-                        ++;
+                checkY--;
+                searchDepth++;
             }
 
             if (searchDepth > MAX_SEARCH_DEPTH) {
-                placed
-                        = false;
+                placed = false;
             }
         }
 
@@ -77,15 +68,15 @@ public class CattailsFeature extends Feature<CattailsFeature.Config> {
             boolean than = true;
             checkY = endY;
             while (than) {
-                BlockPos checkPos = new BlockPos(baseBlockPos.getX(), checkY, baseBlockPos.getZ());
-                if (!level.getBlockState(checkPos.offset(0, 1, 0)).canBeReplaced()) {
-                    level.setBlock(checkPos, cattailsHeadBlockState.trySetValue(WATERLOGGED, true), 3);
+                mutable.setY(checkY);
+                if (!level.getBlockState(mutable.setY(checkY + 1)).canBeReplaced()) {
+                    level.setBlock(mutable.setY(checkY), cattailsHeadBlockState.trySetValue(WATERLOGGED, true), 3);
                     than = false;
-                } else if ((level.getBlockState(checkPos.offset(0, 1, 0)).isAir() && level.getBlockState(checkPos).is(Blocks.WATER))) {
+                } else if ((level.getBlockState(mutable.setY(checkY + 1)).isAir() && level.getBlockState(mutable.setY(checkY)).is(Blocks.WATER))) {
                     int length = random.nextInt(1, 5);
-                    level.setBlock(checkPos, cattailsBodyBlockState.trySetValue(WATERLOGGED, true), 3);
+                    level.setBlock(mutable.setY(checkY), cattailsBodyBlockState.trySetValue(WATERLOGGED, true), 3);
                     for (int i = 1; i <= length; i++) {
-                        BlockPos checkThan = checkPos.offset(0, i, 0);
+                        BlockPos checkThan = mutable.setY(checkY + i);
                         if ((!level.getBlockState(checkThan.offset(0, 1, 0)).canBeReplaced()) || (i == length)) {
                             level.setBlock(checkThan, cattailsHeadBlockState.trySetValue(CattailsHeadBlock.AGE, 3), 3);
                             break;
@@ -95,7 +86,7 @@ public class CattailsFeature extends Feature<CattailsFeature.Config> {
                     }
                     than = false;
                 } else {
-                    level.setBlock(checkPos, cattailsBodyBlockState.trySetValue(WATERLOGGED, true), 3);
+                    level.setBlock(mutable.setY(checkY), cattailsBodyBlockState.trySetValue(WATERLOGGED, true), 3);
                 }
                 checkY++;
             }

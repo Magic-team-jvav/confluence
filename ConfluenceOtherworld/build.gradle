@@ -243,7 +243,7 @@ dependencies {
     //runtimeOnly "com.hollingsworth.ars_nouveau:ars_nouveau-${minecraft_version}:${ars_nouveau_version}"
 
     compileOnly "io.redspace:irons_spellbooks:${irons_spells_version}:api"
-    if (false) {
+    if (true) {
         runtimeOnly "io.redspace:irons_spellbooks:${irons_spells_version}"
         runtimeOnly "dev.kosmx.player-anim:player-animation-lib-forge:${player_animator_version}"
     }

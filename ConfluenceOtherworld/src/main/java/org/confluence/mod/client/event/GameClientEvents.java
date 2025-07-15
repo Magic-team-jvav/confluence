@@ -35,6 +35,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
@@ -320,11 +321,17 @@ public final class GameClientEvents {
         }
     }
 
+    private static boolean jeiChecked = ModList.get().isLoaded("jei") || ModList.get().isLoaded("emi");
+
     @SubscribeEvent
     public static void npc$Dialog(NPCEvent.NPCDialogEvent event) {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player == null) return;
-        if (event.getNPC().getType() == TENpcEntities.NURSE.get() && event.getNPC().getRandom().nextInt(25) == 0) {
+        EntityType<?> type = event.getNPC().getType();
+        if (!jeiChecked && type == TENpcEntities.GUIDE.get()) {
+            event.setNeoDialog(Component.translatable("dialogs.confluence.guide.jei_check"));
+            jeiChecked = true;
+        } else if (type == TENpcEntities.NURSE.get() && event.getNPC().getRandom().nextInt(25) == 0) {
             StatsCounter stats = player.getStats();
             for (Stat<EntityType<?>> stat : Stats.ENTITY_KILLED_BY) {
                 int value = stats.getValue(stat);

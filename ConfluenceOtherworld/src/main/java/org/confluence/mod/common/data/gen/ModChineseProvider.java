@@ -1196,6 +1196,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("dialogs.confluence.guide.13", "拥有一把剑后，你可以试试从史莱姆身上收集一些凝胶。用木棍和凝胶制作火把！");
         add("dialogs.confluence.guide.14", "如果你拥有了一些矿石，你需要将它铸成矿锭，才能用来制作物品。这需要熔炉！");
         add("dialogs.confluence.guide.15", "如果在祭坛上合成晶状体，你也许能够找到方法来召唤一个强大的怪物。不过，最好等到夜晚再用它。");
+        add("dialogs.confluence.guide.jei_check", "在Minecraft里，我帮不到你查询配方，但是我知道一个叫JEI的模组可以帮到你。");
 
         add("dialogs.confluence.nurse.0", "我要和向导认真谈一谈。你一周到底有多少次被熔岩烫成重伤？");
         add("dialogs.confluence.nurse.1", "看到那个在地牢周围转来转去的老人没？他看上去遇到麻烦了。");

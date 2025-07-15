@@ -1151,6 +1151,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("dialogs.confluence.guide.13", "After you have a sword, you can try to collect some gel from slimes. Use wooden sticks and gel to make torches!");
         add("dialogs.confluence.guide.14", "If you have some ores, you need to smelt them into ingots before you can use them to make items. This requires a furnace!");
         add("dialogs.confluence.guide.15", "If you combine lenses on the altar, you may be able to find a way to summon a powerful monster. However, it's better to use it at night.");
+        add("dialogs.confluence.guide.jei_check", "In Minecraft, I can't help you look up recipes, but I know a mod called JEI that can help you.");
 
         add("dialogs.confluence.nurse.0", "I need to have a serious talk with the Guide. How many times a week do you get severely burned by lava exactly?");
         add("dialogs.confluence.nurse.1", "See that old man wandering around the dungeon? He looks like he's in trouble.");

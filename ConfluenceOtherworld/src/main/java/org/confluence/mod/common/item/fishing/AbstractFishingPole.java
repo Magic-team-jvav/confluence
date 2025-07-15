@@ -102,7 +102,7 @@ public abstract class AbstractFishingPole extends FishingRodItem {
         return SoundEvents.FISHING_BOBBER_THROW;
     }
 
-    protected abstract FishingHook getHook(ItemStack itemStack, Player player, Level level, int luckBonus, int speedBonus);
+    public abstract FishingHook getHook(ItemStack itemStack, Player player, Level level, int luckBonus, int speedBonus);
 
     protected void addAttributeModifiers(Consumer<ItemAttributeModifiers.Builder> consumer) {
         ItemAttributeModifiers.Builder builder = ItemAttributeModifiers.builder();

@@ -15,6 +15,7 @@ import org.confluence.mod.util.EnchantmentUtils;
 import org.confluence.mod.util.FloatSupplier;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.util.TCUtils;
+import org.jetbrains.annotations.ApiStatus;
 
 public class ManaStorage implements INBTSerializable<CompoundTag> {
     private int stars;
@@ -125,6 +126,12 @@ public class ManaStorage implements INBTSerializable<CompoundTag> {
             return true;
         }
         return false;
+    }
+
+    @ApiStatus.Internal
+    public void clearStars() {
+        this.stars = 1;
+        freshMaxMana();
     }
 
     public boolean isStarMaximum() {

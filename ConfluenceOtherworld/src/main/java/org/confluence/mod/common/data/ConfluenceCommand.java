@@ -14,6 +14,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -27,11 +28,13 @@ import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.server.command.EnumArgument;
+import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.data.saved.*;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.item.PaintItems;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
 import org.confluence.mod.util.DynamicBiomeUtils;
+import org.confluence.mod.util.PlayerUtils;
 
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -145,37 +148,60 @@ public class ConfluenceCommand {
                             return 0;
                         })))
                 )
-                .then(Commands.literal("reload")
-                        .then(Commands.argument("resource", EnumArgument.enumArgument(ReloadResource.class)).executes(context -> {
-
-                            ReloadResource.execute(context.getArgument("resource", ReloadResource.class));
+                .then(Commands.literal("reload").then(Commands.argument("resource", EnumArgument.enumArgument(ReloadResource.class)).executes(context -> {
+                    ReloadResource.execute(context.getArgument("resource", ReloadResource.class));
+                    return 1;
+                })))
+                .then(Commands.literal("judgeBiome").executes(context -> {
+                    Level level;
+                    BlockPos pos;
+                    if (context.getSource().source instanceof Entity entity) {
+                        level = entity.level();
+                        pos = entity.blockPosition();
+                    } else if (context.getSource().source instanceof BaseCommandBlock commandBlock) {
+                        level = commandBlock.getLevel();
+                        Vec3 position = commandBlock.getPosition();
+                        pos = new BlockPos((int) position.x, (int) position.y, (int) position.z);
+                    } else {
+                        return 1;
+                    }
+                    LevelChunk chunk = level.getChunkAt(pos);
+                    LevelChunkSection section = chunk.getSection(chunk.getSectionIndex(pos.getY()));
+                    Holder<Biome> result = DynamicBiomeUtils.judgeSection(section);
+                    context.getSource().sendSuccess(() -> {
+                        if (result == null) {
+                            return Component.literal(pos + " pure");
+                        } else {
+                            return Component.literal(pos + " " + result);
+                        }
+                    }, true);
+                    return 0;
+                }))
+                .then(Commands.literal("mana")
+                        .then(Commands.literal("receive").then(Commands.argument("value", FloatArgumentType.floatArg(0.0F, Float.MAX_VALUE)).executes(context -> {
+                            ServerPlayer player = context.getSource().getPlayer();
+                            if (player == null) return 0;
+                            ManaStorage manaStorage = player.getData(ModAttachmentTypes.MANA_STORAGE);
+                            boolean value = manaStorage.receiveMana(() -> FloatArgumentType.getFloat(context, "value"));
+                            PlayerUtils.syncMana2Client(player);
+                            return value ? 1 : 0;
+                        })))
+                        .then(Commands.literal("extract").then(Commands.argument("value", FloatArgumentType.floatArg(0.0F, Float.MAX_VALUE)).executes(context -> {
+                            ServerPlayer player = context.getSource().getPlayer();
+                            if (player == null) return 0;
+                            ManaStorage manaStorage = player.getData(ModAttachmentTypes.MANA_STORAGE);
+                            boolean value = manaStorage.extractMana(() -> FloatArgumentType.getFloat(context, "value"), player);
+                            PlayerUtils.syncMana2Client(player);
+                            return value ? 1 : 0;
+                        })))
+                        .then(Commands.literal("clearStars").executes(context -> {
+                            ServerPlayer player = context.getSource().getPlayer();
+                            if (player == null) return 0;
+                            player.getData(ModAttachmentTypes.MANA_STORAGE).clearStars();
+                            PlayerUtils.syncMana2Client(player);
                             return 1;
                         }))
-                ).then(Commands.literal("judgeBiome").executes(context -> {
-                Level level;
-                BlockPos pos;
-                if (context.getSource().source instanceof Entity entity) {
-                    level = entity.level();
-                    pos = entity.blockPosition();
-                } else if (context.getSource().source instanceof BaseCommandBlock commandBlock) {
-                    level = commandBlock.getLevel();
-                    Vec3 position = commandBlock.getPosition();
-                    pos = new BlockPos((int) position.x, (int) position.y, (int) position.z);
-                }else {
-                    return 1;
-                }
-                LevelChunk chunk = level.getChunkAt(pos);
-                LevelChunkSection section = chunk.getSection(chunk.getSectionIndex(pos.getY()));
-                Holder<Biome> result = DynamicBiomeUtils.judgeSection(section);
-                context.getSource().sendSuccess(() -> {
-                    if (result == null) {
-                        return Component.literal(pos + " pure");
-                    }else{
-                        return Component.literal(pos + " " + result);
-                    }
-                }, true);
-                return 0;
-            }))
+                )
         );
     }
 

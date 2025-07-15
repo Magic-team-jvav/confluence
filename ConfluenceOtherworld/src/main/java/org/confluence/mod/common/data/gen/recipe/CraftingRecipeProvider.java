@@ -7,7 +7,6 @@ import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.inventory.ItemCombinerMenuSlotDefinition;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -27,6 +26,8 @@ import org.confluence.terraentity.init.item.TEBoomerangItems;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+
+import static org.confluence.mod.common.data.gen.recipe.ModRecipeProvider.createAdvancementHolder;
 
 @SuppressWarnings("all")
 public class CraftingRecipeProvider extends AbstractRecipeProvider {
@@ -743,29 +744,33 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
 
     protected void shaped(RecipeOutput recipeOutput, String prefix, String suffix, ShapedRecipePattern pattern, ItemStack result) {
         ResourceLocation id = Confluence.asResource(prefix + getItemName(result.getItem()) + suffix);
-        recipeOutput.accept(id, new ShapedRecipe("", CraftingBookCategory.MISC, pattern, result, true), null);
+        recipeOutput.accept(id, new ShapedRecipe("", CraftingBookCategory.MISC, pattern, result, true), createAdvancementHolder(recipeOutput, id, pattern.ingredients()));
     }
 
     protected void shaped(RecipeOutput recipeOutput, ShapedRecipePattern pattern, ItemStack result) {
         ResourceLocation id = Confluence.asResource(getItemName(result.getItem()));
-        recipeOutput.accept(id, new ShapedRecipe("", CraftingBookCategory.MISC, pattern, result, true), null);
+        recipeOutput.accept(id, new ShapedRecipe("", CraftingBookCategory.MISC, pattern, result, true), createAdvancementHolder(recipeOutput, id, pattern.ingredients()));
     }
 
     protected void shapeless(RecipeOutput recipeOutput, String prefix, String suffix, ItemStack result, Ingredient... ingredients) {
         ResourceLocation id = Confluence.asResource(prefix + getItemName(result.getItem()) + suffix);
         NonNullList<Ingredient> zingredients = NonNullList.of(Ingredient.EMPTY, ingredients);
-        recipeOutput.accept(id, new ShapelessRecipe("", CraftingBookCategory.MISC, result, zingredients), null);
+        recipeOutput.accept(id, new ShapelessRecipe("", CraftingBookCategory.MISC, result, zingredients), createAdvancementHolder(recipeOutput, id, zingredients));
     }
 
     protected void shapeless(RecipeOutput recipeOutput, ItemStack result, Ingredient... ingredients) {
         ResourceLocation id = Confluence.asResource(getItemName(result.getItem()));
         NonNullList<Ingredient> zingredients = NonNullList.of(Ingredient.EMPTY, ingredients);
-        recipeOutput.accept(id, new ShapelessRecipe("", CraftingBookCategory.MISC, result, zingredients), null);
+        recipeOutput.accept(id, new ShapelessRecipe("", CraftingBookCategory.MISC, result, zingredients), createAdvancementHolder(recipeOutput, id, zingredients));
     }
 
     // 九原料合成一块的合成及分解配方
-    protected void compressAndDecompressNine(RecipeOutput output, ItemLike decompressed, TagKey<Item> decompressedTag, ItemLike compressed, TagKey<Item> compressedTag) {
-        output.accept(Confluence.asResource(getItemName(decompressed)), new ShapelessRecipe("", CraftingBookCategory.BUILDING, new ItemStack(decompressed, 9), NonNullList.of(Ingredient.EMPTY, Ingredient.of(compressedTag))), null);
-        output.accept(Confluence.asResource(getItemName(compressed)), new ShapedRecipe("", CraftingBookCategory.BUILDING, ShapedRecipePattern.of(Map.of('A', Ingredient.of(decompressedTag)), List.of("AAA", "AAA", "AAA")), compressed.asItem().getDefaultInstance()), null);
+    protected void compressAndDecompressNine(RecipeOutput recipeOutput, ItemLike decompressed, TagKey<Item> decompressedTag, ItemLike compressed, TagKey<Item> compressedTag) {
+        ResourceLocation id1 = Confluence.asResource(getItemName(decompressed));
+        NonNullList<Ingredient> ingredients = NonNullList.of(Ingredient.EMPTY, Ingredient.of(compressedTag));
+        recipeOutput.accept(id1, new ShapelessRecipe("", CraftingBookCategory.BUILDING, new ItemStack(decompressed, 9), ingredients), createAdvancementHolder(recipeOutput, id1, ingredients));
+        ResourceLocation id2 = Confluence.asResource(getItemName(compressed));
+        ShapedRecipePattern pattern = ShapedRecipePattern.of(Map.of('A', Ingredient.of(decompressedTag)), List.of("AAA", "AAA", "AAA"));
+        recipeOutput.accept(id2, new ShapedRecipe("", CraftingBookCategory.BUILDING, pattern, compressed.asItem().getDefaultInstance()), createAdvancementHolder(recipeOutput, id2, pattern.ingredients()));
     }
 }

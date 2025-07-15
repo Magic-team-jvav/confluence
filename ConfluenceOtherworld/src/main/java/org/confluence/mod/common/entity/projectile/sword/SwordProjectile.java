@@ -84,6 +84,11 @@ public abstract class SwordProjectile<T extends SwordProjectile<T>> extends Abst
     }
 
     @Override
+    public boolean fireImmune() {
+        return true;
+    }
+
+    @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(DATA_INIT_SPEED, new Vector3f(0, 0, 0));

@@ -565,7 +565,11 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.terraStyleArmor", "泰拉样式护甲值");
         add("confluence.configuration.terraStyleFood", "泰拉样式饱食度");
         add("confluence.configuration.healthStyle", "生命值样式");
+        add("confluence.configuration.healthPositionX", "生命条相对位置 X");
+        add("confluence.configuration.healthPositionY", "生命条相对位置 Y");
         add("confluence.configuration.manaStyle", "魔力值样式");
+        add("confluence.configuration.manaPositionX", "魔力条相对位置 X");
+        add("confluence.configuration.manaPositionY", "魔力条相对位置 Y");
         add("confluence.configuration.armorStyle", "护甲值样式");
         add("confluence.configuration.foodStyle", "饱食度样式");
         add("confluence.configuration.armorStyle.legacy_horizontal", "护甲值样式:精致-水平");

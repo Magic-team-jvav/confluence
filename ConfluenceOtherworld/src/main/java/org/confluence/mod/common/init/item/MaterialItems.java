@@ -7,6 +7,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.lib.common.item.TooltipItem;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.item.common.CursedFlameItem;
@@ -19,7 +20,7 @@ public class MaterialItems {
     public static final DeferredItem<Item> GEL = ITEMS.register("gel", GelItem::new);
     public static final DeferredItem<Item> PINK_GEL = register("pink_gel", ModRarity.PINK);
     public static final DeferredItem<Item> SILK = register("silk", ModRarity.BLUE);
-    public static final DeferredItem<Item> RAW_ASPHALT = register("raw_asphalt", ModRarity.WHITE); // 生沥青
+    public static final DeferredItem<Item> RAW_ASPHALT = ITEMS.register("raw_asphalt", () -> new TooltipItem(new Item.Properties().stacksTo(LibUtils.MAX_STACK_SIZE), ModRarity.WHITE, "tooltip.item.confluence.raw_asphalt.0"));
 
     public static final DeferredItem<Item> RAW_TIN = register("raw_tin");
     public static final DeferredItem<Item> TIN_INGOT = register("tin_ingot");

@@ -776,6 +776,7 @@ public class ModDataProvider {
         private static final CountPlacement count3 = CountPlacement.of(3);
         private static final CountPlacement count4 = CountPlacement.of(4);
         private static final CountPlacement count5 = CountPlacement.of(5);
+        private static final CountPlacement count14 = CountPlacement.of(14);
         private static final InSquarePlacement inSquare = InSquarePlacement.spread();
         private static final BiomeFilter biome = BiomeFilter.biome();
         private static final HeightRangePlacement bottomThroughTop = HeightRangePlacement.uniform(VerticalAnchor.BOTTOM, VerticalAnchor.TOP); // 所有高度
@@ -829,11 +830,11 @@ public class ModDataProvider {
             register(context, OPAL_ORE, configured.getOrThrow(ConfiguredFeatures.OPAL_ORE), biome, CountPlacement.of(7), inSquare, HeightRangePlacement.uniform(VerticalAnchor.absolute(0), VerticalAnchor.absolute(50)));
             register(context, THIN_ICE_PATCH, configured.getOrThrow(ConfiguredFeatures.THIN_ICE_PATCH), RarityFilter.onAverageOnceEvery(2), biome, inSquare, throughUnderground);
             register(context, POWDER_SNOW_PATCH, configured.getOrThrow(ConfiguredFeatures.POWDER_SNOW_PATCH), RarityFilter.onAverageOnceEvery(2), biome, inSquare, throughUnderground);
-            register(context, DESERT_FOSSIL, configured.getOrThrow(ConfiguredFeatures.DESERT_FOSSIL), biome, CountPlacement.of(14), inSquare, bottomThroughTop);
+            register(context, DESERT_FOSSIL, configured.getOrThrow(ConfiguredFeatures.DESERT_FOSSIL), biome, count14, inSquare, bottomThroughTop);
             register(context, FALLING_SAND_TRAP, configured.getOrThrow(ConfiguredFeatures.FALLING_SAND_TRAP), biome, inSquare, bottomThroughUnderground);
             register(context, UNDERGROUND_CHESTS, configured.getOrThrow(ConfiguredFeatures.UNDERGROUND_CHESTS), biome, inSquare, bottomThroughSurface, targetSturdyAllowedAir, SurfaceRelativeThresholdFilter.of(Heightmap.Types.WORLD_SURFACE_WG, -110, -80));
             register(context, FOREST_DROOPING_VINE, configured.getOrThrow(ConfiguredFeatures.FOREST_DROOPING_VINE), biome, CountPlacement.of(60), inSquare, throughSurface, EnvironmentScanPlacement.scanningFor(Direction.UP, BlockPredicate.matchesBlocks(Blocks.DIRT, Blocks.STONE), air, 12), ySpreadN1);
-            register(context, FOREST_CATTAILS, configured.getOrThrow(ConfiguredFeatures.FOREST_CATTAILS), biome, CountPlacement.of(14),count4,inSquare, HeightRangePlacement.uniform(VerticalAnchor.absolute(OverworldUtils.getSurfaceY()-5), VerticalAnchor.absolute(260)), ySpreadN1);
+            register(context, FOREST_CATTAILS, configured.getOrThrow(ConfiguredFeatures.FOREST_CATTAILS), biome, count14, inSquare, HeightRangePlacement.uniform(VerticalAnchor.absolute(OverworldUtils.getSurfaceY() - 5), VerticalAnchor.absolute(260)), ySpreadN1);
             register(context, LIFE_MUSHROOM, configured.getOrThrow(ConfiguredFeatures.LIFE_MUSHROOM), RarityFilter.onAverageOnceEvery(32), biome, count3, inSquare, worldSurfaceWG);
             register(context, BLINKROOT, configured.getOrThrow(ConfiguredFeatures.BLINKROOT), biome, count3, inSquare, bottomThroughUnderground);
             register(context, DAYBLOOM, configured.getOrThrow(ConfiguredFeatures.DAYBLOOM), RarityFilter.onAverageOnceEvery(32), biome, count2, inSquare, worldSurfaceWG);
@@ -844,26 +845,26 @@ public class ModDataProvider {
             register(context, FIREBLOSSOM, configured.getOrThrow(ConfiguredFeatures.FIREBLOSSOM), biome, count3, inSquare, bottomThroughTop);
             register(context, SHIVERTHORN, configured.getOrThrow(ConfiguredFeatures.SHIVERTHORN), RarityFilter.onAverageOnceEvery(32), biome, count5, inSquare, worldSurfaceWG);
             register(context, CORRUPT_DROOPING_VINE, configured.getOrThrow(ConfiguredFeatures.CORRUPT_DROOPING_VINE), biome, CountPlacement.of(60), inSquare, throughSurface, EnvironmentScanPlacement.scanningFor(Direction.UP, BlockPredicate.matchesBlocks(Blocks.DIRT, NatureBlocks.EBONSTONE.get()), air, 12), ySpreadN1);
-            register(context, CORRUPT_CATTAILS, configured.getOrThrow(ConfiguredFeatures.CORRUPT_CATTAILS) ,biome, CountPlacement.of(14),count4,inSquare, HeightRangePlacement.uniform(VerticalAnchor.absolute(OverworldUtils.getSurfaceY()-5), VerticalAnchor.absolute(260)), ySpreadN1);
+            register(context, CORRUPT_CATTAILS, configured.getOrThrow(ConfiguredFeatures.CORRUPT_CATTAILS), biome, count14, inSquare, HeightRangePlacement.uniform(VerticalAnchor.absolute(OverworldUtils.getSurfaceY() - 5), VerticalAnchor.absolute(260)), ySpreadN1);
             register(context, EBONY_TREE, configured.getOrThrow(ModFeatures.Configured.EBONY_TREE), biome, count1_9$2_1, inSquare, surfaceWaterDepth0, oceanFloor);
             register(context, CORRUPT_GRASS, configured.getOrThrow(ConfiguredFeatures.CORRUPT_GRASS), biome, CountPlacement.of(10), inSquare, HeightmapPlacement.onHeightmap(Heightmap.Types.MOTION_BLOCKING));
             register(context, VILE_MUSHROOM, configured.getOrThrow(ConfiguredFeatures.VILE_MUSHROOM), RarityFilter.onAverageOnceEvery(32), biome, count3, HeightmapPlacement.onHeightmap(Heightmap.Types.WORLD_SURFACE_WG));
             register(context, SHADOW_TREE, configured.getOrThrow(ModFeatures.Configured.SHADOW_TREE), biome, count1_9$2_1, inSquare, surfaceWaterDepth0, oceanFloor);
             register(context, CRIMSON_GRASS, configured.getOrThrow(ConfiguredFeatures.CRIMSON_GRASS), biome, CountPlacement.of(10), inSquare, HeightmapPlacement.onHeightmap(Heightmap.Types.MOTION_BLOCKING));
             register(context, CRIMSON_DROOPING_VINE, configured.getOrThrow(ConfiguredFeatures.CRIMSON_DROOPING_VINE), biome, CountPlacement.of(60), inSquare, throughSurface, EnvironmentScanPlacement.scanningFor(Direction.UP, BlockPredicate.matchesBlocks(Blocks.DIRT, NatureBlocks.CRIMSTONE.get()), air, 12), ySpreadN1);
-            register(context, CRIMSON_CATTAILS, configured.getOrThrow(ConfiguredFeatures.CRIMSON_CATTAILS), biome, CountPlacement.of(14),count4,inSquare, HeightRangePlacement.uniform(VerticalAnchor.absolute(OverworldUtils.getSurfaceY()-5), VerticalAnchor.absolute(260)), ySpreadN1);
+            register(context, CRIMSON_CATTAILS, configured.getOrThrow(ConfiguredFeatures.CRIMSON_CATTAILS), biome, count14, inSquare, HeightRangePlacement.uniform(VerticalAnchor.absolute(OverworldUtils.getSurfaceY() - 5), VerticalAnchor.absolute(260)), ySpreadN1);
             register(context, VICIOUS_MUSHROOM, configured.getOrThrow(ConfiguredFeatures.VICIOUS_MUSHROOM), RarityFilter.onAverageOnceEvery(32), biome, count3, HeightmapPlacement.onHeightmap(Heightmap.Types.WORLD_SURFACE_WG));
             register(context, GLOWING_MUSHROOM, configured.getOrThrow(ConfiguredFeatures.GLOWING_MUSHROOM), biome, CountPlacement.of(40), inSquare, bottomThroughUnderground);
             register(context, GLOWING_MUSHROOM_LIFE_CRYSTAL, configured.getOrThrow(ConfiguredFeatures.LIFE_CRYSTAL), biome, CountPlacement.of(8), inSquare, bottomThroughUnderground, targetSturdyAllowedAir, SurfaceRelativeThresholdFilter.of(Heightmap.Types.WORLD_SURFACE_WG, -110, -70));
             register(context, GLOWING_MUSHROOM_TREE, configured.getOrThrow(ModFeatures.Configured.GLOWING_MUSHROOM_TREE), biome, CountOnEveryLayerPlacement.of(3), EnvironmentScanPlacement.scanningFor(Direction.DOWN, BlockPredicate.matchesBlocks(new Vec3i(0, -1, 0), Blocks.MUD, NatureBlocks.MUSHROOM_GRASS_BLOCK.get()), air, 12));
             register(context, GLOWING_MUSHROOM_VINE, configured.getOrThrow(ConfiguredFeatures.GLOWING_MUSHROOM_VINE), biome, CountPlacement.of(188), inSquare, bottomThroughUnderground, EnvironmentScanPlacement.scanningFor(Direction.UP, BlockPredicate.matchesBlocks(Blocks.MUD, NatureBlocks.MUSHROOM_GRASS_BLOCK.get()), air, 12), ySpreadN1);
-            register(context, GLOWING_MUSHROOM_CATTAILS, configured.getOrThrow(ConfiguredFeatures.GLOWING_MUSHROOM_CATTAILS), biome, CountPlacement.of(14),count4,inSquare, bottomThroughUnderground, ySpreadN1);
+            register(context, GLOWING_MUSHROOM_CATTAILS, configured.getOrThrow(ConfiguredFeatures.GLOWING_MUSHROOM_CATTAILS), biome, count14, inSquare, bottomThroughUnderground, ySpreadN1);
             register(context, ASH_TREE, configured.getOrThrow(ModFeatures.Configured.ASH_TREE), biome, CountOnEveryLayerPlacement.of(4), targetSturdyAllowedAir);
             register(context, ASH_GRASS, configured.getOrThrow(ConfiguredFeatures.ASH_GRASS), biome, CountPlacement.of(20), inSquare, bottomThroughTop);
             register(context, JUNGLE_ROSE, configured.getOrThrow(ConfiguredFeatures.JUNGLE_ROSE), biome, count4, inSquare, bottomThroughSurface);
-            register(context, JUNGLE_SPORE, configured.getOrThrow(ConfiguredFeatures.JUNGLE_SPORE), biome, CountPlacement.of(14), inSquare, bottomThroughSurface, targetSturdyAllowedAir, SurfaceRelativeThresholdFilter.of(Heightmap.Types.OCEAN_FLOOR, -110, -70));
+            register(context, JUNGLE_SPORE, configured.getOrThrow(ConfiguredFeatures.JUNGLE_SPORE), biome, count14, inSquare, bottomThroughSurface, targetSturdyAllowedAir, SurfaceRelativeThresholdFilter.of(Heightmap.Types.OCEAN_FLOOR, -110, -70));
             register(context, JUNGLE_DROOPING_VINE, configured.getOrThrow(ConfiguredFeatures.JUNGLE_DROOPING_VINE), biome, CountPlacement.of(90), inSquare, bottomThroughSurface, EnvironmentScanPlacement.scanningFor(Direction.UP, BlockPredicate.matchesBlocks(Blocks.MUD, NatureBlocks.JUNGLE_GRASS_BLOCK.get()), air, 12), ySpreadN1);
-            register(context, JUNGLE_CATTAILS, configured.getOrThrow(ConfiguredFeatures.JUNGLE_CATTAILS),  biome, CountPlacement.of(14),count4,inSquare, HeightRangePlacement.uniform(VerticalAnchor.absolute(OverworldUtils.getSurfaceY()-5), VerticalAnchor.absolute(260)), ySpreadN1);
+            register(context, JUNGLE_CATTAILS, configured.getOrThrow(ConfiguredFeatures.JUNGLE_CATTAILS), biome, count14, inSquare, HeightRangePlacement.uniform(VerticalAnchor.absolute(OverworldUtils.getSurfaceY() - 5), VerticalAnchor.absolute(260)), ySpreadN1);
             register(context, UNDERGROUND_JUNGLE_GRASS, configured.getOrThrow(ConfiguredFeatures.UNDERGROUND_JUNGLE_GRASS), biome, CountPlacement.of(125), inSquare, bottomThroughUnderground, targetSolidAllowedAir, ySpread1);
             register(context, UNDERGROUND_JUNGLE_BUSH, configured.getOrThrow(ConfiguredFeatures.UNDERGROUND_JUNGLE_BUSH), biome, count4, inSquare, bottomThroughUnderground, targetSolidAllowedAir, ySpread1);
             register(context, UNDERGROUND_JUNGLE_TREE, configured.getOrThrow(ConfiguredFeatures.UNDERGROUND_JUNGLE_TREE), biome, count2, inSquare, bottomThroughUnderground, targetSolidAllowedAir, ySpread1);
@@ -896,7 +897,7 @@ public class ModDataProvider {
                     SurfaceRelativeThresholdFilter.of(Heightmap.Types.WORLD_SURFACE_WG, -80, 320)
             );
             register(context, ROLLING_CACTUS, configured.getOrThrow(ConfiguredFeatures.ROLLING_CACTUS), biome, CountPlacement.of(90), inSquare, bottomThroughSurface, targetSturdyAllowedAir, SurfaceRelativeThresholdFilter.of(Heightmap.Types.OCEAN_FLOOR, -110, -30));
-            register(context, SILT_BLOCK, configured.getOrThrow(ConfiguredFeatures.SILT_BLOCK), biome, CountPlacement.of(14), inSquare, bottomThroughTop);
+            register(context, SILT_BLOCK, configured.getOrThrow(ConfiguredFeatures.SILT_BLOCK), biome, count14, inSquare, bottomThroughTop);
             register(context, SLUSH, configured.getOrThrow(ConfiguredFeatures.SLUSH), biome, CountPlacement.of(10), inSquare, bottomThroughTop);
             register(context, PALM_TREE, configured.getOrThrow(ModFeatures.Configured.PALM_TREE),
                     RarityFilter.onAverageOnceEvery(3), biome, count1_9$2_1, inSquare, surfaceWaterDepth0, oceanFloor,
@@ -1099,7 +1100,7 @@ public class ModDataProvider {
                     PlacedFeatures.SURFACE_CHESTS, PlacedFeatures.GEMSTONE_CAVE
             ), GenerationStep.Decoration.UNDERGROUND_DECORATION);
             addFeatures(context, "forest_like_vd", forestLike, HolderSet.direct(factory,
-                    PlacedFeatures.FOREST_DROOPING_VINE, PlacedFeatures.FOREST_CATTAILS,PlacedFeatures.DAYBLOOM
+                    PlacedFeatures.FOREST_DROOPING_VINE, PlacedFeatures.FOREST_CATTAILS, PlacedFeatures.DAYBLOOM
             ), GenerationStep.Decoration.VEGETAL_DECORATION);
             addFeatures(context, "forest_like_uo", forestLike, HolderSet.direct(factory,
                     PlacedFeatures.SILT_BLOCK
@@ -1117,7 +1118,7 @@ public class ModDataProvider {
             ), GenerationStep.Decoration.UNDERGROUND_DECORATION);
 
             addFeatures(context, "jungle_lush_vd", new OrHolderSet<>(jungle, lush), HolderSet.direct(factory,
-                    PlacedFeatures.JUNGLE_ROSE, PlacedFeatures.JUNGLE_SPORE, PlacedFeatures.JUNGLE_DROOPING_VINE, PlacedFeatures.JUNGLE_CATTAILS,PlacedFeatures.UNDERGROUND_JUNGLE_GRASS, PlacedFeatures.UNDERGROUND_JUNGLE_BUSH, PlacedFeatures.UNDERGROUND_JUNGLE_TREE, PlacedFeatures.NATURES_GIFT
+                    PlacedFeatures.JUNGLE_ROSE, PlacedFeatures.JUNGLE_SPORE, PlacedFeatures.JUNGLE_DROOPING_VINE, PlacedFeatures.JUNGLE_CATTAILS, PlacedFeatures.UNDERGROUND_JUNGLE_GRASS, PlacedFeatures.UNDERGROUND_JUNGLE_BUSH, PlacedFeatures.UNDERGROUND_JUNGLE_TREE, PlacedFeatures.NATURES_GIFT
             ), GenerationStep.Decoration.VEGETAL_DECORATION);
 
             addFeatures(context, "beach_vd", biome.getOrThrow(Tags.Biomes.IS_BEACH), HolderSet.direct(factory,

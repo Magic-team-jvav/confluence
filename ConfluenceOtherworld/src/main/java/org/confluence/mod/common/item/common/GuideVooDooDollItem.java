@@ -8,12 +8,13 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.terra_curio.common.item.curio.BaseCurioItem;
 
 public class GuideVooDooDollItem extends BaseCurioItem {
     public GuideVooDooDollItem(String name) {
-        super(builder(name));
+        super(builder(name).rarity(ModRarity.WHITE));
     }
 
     @Override

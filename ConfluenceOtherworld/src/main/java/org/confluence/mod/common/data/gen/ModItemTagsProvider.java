@@ -298,7 +298,9 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.CRIMTANE_ORE_SMELTING).add(
                 OreBlocks.CRIMTANE_ORE.asItem(), OreBlocks.DEEPSLATE_CRIMTANE_ORE.asItem(), OreBlocks.SANCTIFICATION_CRIMTANE_ORE.asItem(), OreBlocks.CORRUPTION_CRIMTANE_ORE.asItem(), OreBlocks.FLESHIFICATION_CRIMTANE_ORE.asItem(),
                 MaterialItems.RAW_CRIMTANE.get()
-
+        );
+        tag(ModTags.Items.METEORITE_ORE_SMELTING).add(
+                OreBlocks.METEORITE_ORE.asItem(),MaterialItems.RAW_METEORITE.get()
         );
         tag(ModTags.Items.RUBY_ORE_SMELTING).add(
                 OreBlocks.RUBY_ORE.asItem(), OreBlocks.DEEPSLATE_RUBY_ORE.asItem(), OreBlocks.SANCTIFICATION_RUBY_ORE.asItem(), OreBlocks.CORRUPTION_RUBY_ORE.asItem(), OreBlocks.FLESHIFICATION_RUBY_ORE.asItem()

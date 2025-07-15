@@ -1713,6 +1713,34 @@ public class ModChineseProvider extends LanguageProvider {
         add("patchouli.confluence.otherworld_note.world.the_crimson.1", "*z$(#AA0000)“正在使世界变得血腥”");
         add("patchouli.confluence.otherworld_note.world.the_crimson.2", "*o*t古时，泰拉瑞亚的人民犯下了愚昧的错误：他们屈服于猩红，视其为神明，并献祭自己的血肉。*b*t最终，他们被同化成扭曲的生命，与猩红的野心一同蔓延在大地上。");
 
+        //音效
+        add("confluence.subtitle.transmission", "传送魔法：开启");
+        add("confluence.subtitle.lightsaber_open", "光剑：开启");
+        add("confluence.subtitle.regular_staff_shoot", "魔法：发射");
+        add("confluence.subtitle.regular_staff_shoot_2", "魔法：迸发");
+        add("confluence.subtitle.frozen_broken", "霜冻魔法：破裂");
+        add("confluence.subtitle.frozen_arrow", "霜冻魔法：发射");
+        add("confluence.subtitle.cooldown_recovery", "冷却：准备就绪");
+        add("confluence.subtitle.bow_cooldown_recovery", "弓冷却：蓄力就绪");
+        add("confluence.subtitle.decoupling", "鱼钩：脱钩");
+        add("confluence.subtitle.achievements", "成就：达成");
+        add("confluence.subtitle.shimmer_detachment", "生物：浸出微光");
+        add("confluence.subtitle.shimmer_evolution", "微光：嬗变");
+        add("confluence.subtitle.shimmer_immersion", "生物：浸入微光");
+        add("confluence.subtitle.transmutation_use", "神秘力量：汲取");
+        add("confluence.subtitle.hook_attach", "钩爪：攀附");
+        add("confluence.subtitle.hook_shoot", "钩爪：发射");
+        add("confluence.subtitle.shimmer_item_interactions", "物品：浸入微光");
+        add("confluence.subtitle.star", "坠落之星：闪耀");
+        add("confluence.subtitle.star_lands", "坠落之星：落地");
+        add("confluence.subtitle.terra_operation", "行动：操作");
+        add("confluence.subtitle.life_crystal_use", "生命水晶：汲取");
+        add("confluence.subtitle.mana_star_use", "魔力水晶：汲取");
+        add("confluence.subtitle.coins", "钱币堆：叮当作响");
+        add("confluence.subtitle.coins_small", "少量钱币:拾起");
+        add("confluence.subtitle.coins_medium", "中量钱币:拾起");
+        add("confluence.subtitle.coins_large", "大量钱币:拾起");
+
         //标签
         add("tag.fluid.confluence.fishing_able", "可钓鱼液体");
         add("tag.fluid.confluence.not_lava", "无熔岩");
@@ -3252,6 +3280,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.SPEAR_TRAP.get(), "长矛机关");
         add(FunctionalBlocks.LEVER.get(), "控制杆");
         add(FunctionalBlocks.WOODEN_SPIKE.get(), "木尖刺");
+        add(ModBlocks.AETHERIUM_CAULDRON.get(), "微光炼药锅");
+        add(ModBlocks.HONEY_CAULDRON.get(), "蜂蜜炼药锅");
 
         add(ChestBlocks.GOLDEN_CHEST.get(), "金箱");
         add(ChestBlocks.DEATH_GOLDEN_CHEST.get(), "死人金箱");

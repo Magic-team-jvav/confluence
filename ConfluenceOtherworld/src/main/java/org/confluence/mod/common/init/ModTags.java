@@ -239,6 +239,7 @@ public final class ModTags {
         public static final TagKey<Item> PLATINUM_ORE_SMELTING = register("platinum_ore_smelting");
         public static final TagKey<Item> DEMONITE_ORE_SMELTING = register("demonite_ore_smelting");
         public static final TagKey<Item> CRIMTANE_ORE_SMELTING = register("crimtane_ore_smelting");
+        public static final TagKey<Item> METEORITE_ORE_SMELTING = register("meteorite_ore_smelting");
         public static final TagKey<Item> RUBY_ORE_SMELTING = register("ruby_ore_smelting");
         public static final TagKey<Item> TOPAZ_ORE_SMELTING = register("topaz_ore_smelting");
         public static final TagKey<Item> AMBER_ORE_SMELTING = register("amber_ore_smelting");

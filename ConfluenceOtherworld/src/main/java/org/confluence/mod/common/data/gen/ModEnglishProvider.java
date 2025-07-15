@@ -571,7 +571,11 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.configuration.terraStyleArmor", "Terra Style Armor");
         add("confluence.configuration.terraStyleFood", "Terra Style Food Saturation");
         add("confluence.configuration.healthStyle", "Health Style");
+        add("confluence.configuration.healthPositionX", "Health Relative Position X");
+        add("confluence.configuration.healthPositionY", "Health Relative Position Y");
         add("confluence.configuration.manaStyle", "Mana Style");
+        add("confluence.configuration.manaPositionX", "Mana Relative Position X");
+        add("confluence.configuration.manaPositionY", "Mana Relative Position Y");
         add("confluence.configuration.armorStyle", "Armor Style");
         add("confluence.configuration.foodStyle", "Food Saturation Style");
         add("confluence.configuration.armorStyle.legacy_horizontal", "Armor Style: Elegant - Horizontal");

@@ -5,6 +5,7 @@ import net.minecraft.network.chat.Component;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.config.ModConfig;
+import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.common.ModConfigSpec.BooleanValue;
 import net.neoforged.neoforge.common.ModConfigSpec.Builder;
 import net.neoforged.neoforge.common.ModConfigSpec.EnumValue;
@@ -28,9 +29,13 @@ public final class ClientConfigs {
 
     public static boolean terraStyleHealth = true;
     public static TerraStyleHealthHud.Health healthStyle = TerraStyleHealthHud.Health.OVERLAY;
+    public static double healthPositionX = 0.5;
+    public static double healthPositionY = 0.5;
     public static boolean terraStyleFood = true;
     public static TerraStyleFoodHud.Food foodStyle = TerraStyleFoodHud.Food.OVERLAY;
     public static TerraStyleManaHud.Mana manaStyle = TerraStyleManaHud.Mana.OVERLAY;
+    public static double manaPositionX = 0.5;
+    public static double manaPositionY = 0.5;
     public static boolean terraStyleArmor = true;
     public static TerraStyleArmorHud.Armor armorStyle = TerraStyleArmorHud.Armor.OVERLAY;
     public static boolean leftEffectIcon = true;
@@ -46,9 +51,13 @@ public final class ClientConfigs {
 
     private static BooleanValue TERRA_STYLE_HEALTH;
     private static EnumValue<TerraStyleHealthHud.Health> HEALTH_STYLE;
+    private static IntValue HEALTH_POSITION_X;
+    private static IntValue HEALTH_POSITION_Y;
     private static BooleanValue TERRA_STYLE_FOOD;
     private static EnumValue<TerraStyleFoodHud.Food> FOOD_STYLE;
     private static EnumValue<TerraStyleManaHud.Mana> MANA_STYLE;
+    private static ModConfigSpec.IntValue MANA_POSITION_X;
+    private static ModConfigSpec.IntValue MANA_POSITION_Y;
     private static BooleanValue TERRA_STYLE_ARMOR;
     private static EnumValue<TerraStyleArmorHud.Armor> ARMOR_STYLE;
     private static BooleanValue LEFT_EFFECT_ICON;
@@ -65,9 +74,13 @@ public final class ClientConfigs {
 
         terraStyleHealth = TERRA_STYLE_HEALTH.get();
         healthStyle = HEALTH_STYLE.get();
+        healthPositionX = HEALTH_POSITION_X.get();
+        healthPositionY = HEALTH_POSITION_Y.get();
         leftEffectIcon = LEFT_EFFECT_ICON.get();
         foodStyle = FOOD_STYLE.get();
         manaStyle = MANA_STYLE.get();
+        manaPositionX = MANA_POSITION_X.get();
+        manaPositionY = MANA_POSITION_Y.get();
         terraStyleArmor = TERRA_STYLE_ARMOR.get();
         armorStyle = ARMOR_STYLE.get();
         terraStyleFood = TERRA_STYLE_FOOD.get();
@@ -90,6 +103,8 @@ public final class ClientConfigs {
         BUILDER.push("Health");
         TERRA_STYLE_HEALTH = BUILDER.define("terraStyleHealth", true);
         HEALTH_STYLE = BUILDER.defineEnum("healthStyle", TerraStyleHealthHud.Health.OVERLAY);
+        HEALTH_POSITION_X = BUILDER.defineInRange("healthPositionX", 0, -100, 100);
+        HEALTH_POSITION_Y = BUILDER.defineInRange("healthPositionY", 0, -100, 100);
         BUILDER.pop();
 
         BUILDER.push("Food");
@@ -99,6 +114,8 @@ public final class ClientConfigs {
 
         BUILDER.push("Mana");
         MANA_STYLE = BUILDER.defineEnum("manaStyle", TerraStyleManaHud.Mana.OVERLAY);
+        MANA_POSITION_X = BUILDER.defineInRange("manaPositionX", 0, -100, 100);
+        MANA_POSITION_Y = BUILDER.defineInRange("manaPositionY", 0, -100, 100);
         BUILDER.pop();
 
         BUILDER.push("Armor");

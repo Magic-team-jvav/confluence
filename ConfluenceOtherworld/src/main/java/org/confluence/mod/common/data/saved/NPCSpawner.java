@@ -442,7 +442,7 @@ public class NPCSpawner implements IGlobalData {
 
     private boolean trySpawnGoblinTinkerer(ServerPlayer player, BlockPos pos, Region region) {
         if (!hasNPCAlive(region, TENpcEntities.GOBLIN_TINKERER.get())) {
-            if (KillBoard.INSTANCE.isDefeated(TMMoments.GOBLIN_ARMY.get())) {
+            if (KillBoard.INSTANCE.isDefeated(TMMoments.GOBLIN_ARMY.getKey())) {
                 return spawnAtPos(player.serverLevel(), pos, TENpcEntities.GOBLIN_TINKERER.get());
             }
         }

@@ -9,12 +9,14 @@ import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.entity.EntityType;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
@@ -27,11 +29,11 @@ public class KillBoard implements IGlobalData {
         @Override
         public <T> DataResult<Pair<Object2BooleanMap<EntityType<?>>, T>> decode(DynamicOps<T> ops, T input) {
             Object2BooleanMap<EntityType<?>> map = new Object2BooleanOpenHashMap<>();
-            ops.getMap(input).getOrThrow().entries().forEach(pair -> {
-                EntityType<?> entityType = BuiltInRegistries.ENTITY_TYPE.get(ResourceLocation.parse(ops.getStringValue(pair.getFirst()).getOrThrow()));
-                boolean defeated = ops.getBooleanValue(pair.getSecond()).getOrThrow();
+            ops.getMap(input).getOrThrow().entries().forEach(pair -> ops.getStringValue(pair.getFirst()).ifSuccess(id -> {
+                EntityType<?> entityType = BuiltInRegistries.ENTITY_TYPE.get(ResourceLocation.parse(id));
+                boolean defeated = ops.getBooleanValue(pair.getSecond()).result().orElse(false);
                 map.put(entityType, defeated);
-            });
+            }));
             return DataResult.success(new Pair<>(map, input), Lifecycle.stable());
         }
 
@@ -44,22 +46,22 @@ public class KillBoard implements IGlobalData {
             })), Lifecycle.stable());
         }
     };
-    public static final Codec<Object2BooleanMap<Moment>> DEFEATED_EVENTS_CODEC = new Codec<>() {
+    public static final Codec<Object2BooleanMap<ResourceKey<Moment>>> DEFEATED_EVENTS_CODEC = new Codec<>() {
         @Override
-        public <T> DataResult<Pair<Object2BooleanMap<Moment>, T>> decode(DynamicOps<T> ops, T input) {
-            Object2BooleanMap<Moment> map = new Object2BooleanOpenHashMap<>();
-            ops.getMap(input).getOrThrow().entries().forEach(pair -> {
-                Moment key = HDMRegistries.MOMENT.get(ResourceLocation.parse(ops.getStringValue(pair.getFirst()).getOrThrow()));
-                boolean defeated = ops.getBooleanValue(pair.getSecond()).getOrThrow();
+        public <T> DataResult<Pair<Object2BooleanMap<ResourceKey<Moment>>, T>> decode(DynamicOps<T> ops, T input) {
+            Object2BooleanMap<ResourceKey<Moment>> map = new Object2BooleanOpenHashMap<>();
+            ops.getMap(input).getOrThrow().entries().forEach(pair -> ops.getStringValue(pair.getFirst()).ifSuccess(id -> {
+                ResourceKey<Moment> key = ResourceKey.create(HDMRegistries.Keys.MOMENT, ResourceLocation.parse(id));
+                boolean defeated = ops.getBooleanValue(pair.getSecond()).result().orElse(false);
                 map.put(key, defeated);
-            });
+            }));
             return DataResult.success(new Pair<>(map, input), Lifecycle.stable());
         }
 
         @Override
-        public <T> DataResult<T> encode(Object2BooleanMap<Moment> input, DynamicOps<T> ops, T prefix) {
+        public <T> DataResult<T> encode(Object2BooleanMap<ResourceKey<Moment>> input, DynamicOps<T> ops, T prefix) {
             return DataResult.success(ops.createMap(input.object2BooleanEntrySet().stream().map(entry -> {
-                T string = ops.createString(HDMRegistries.MOMENT.getKey(entry.getKey()).toString());
+                T string = ops.createString(entry.getKey().location().toString());
                 T defeated = ops.createBoolean(entry.getBooleanValue());
                 return new Pair<>(string, defeated);
             })), Lifecycle.stable());
@@ -67,14 +69,14 @@ public class KillBoard implements IGlobalData {
     };
 
     private final Object2BooleanMap<EntityType<?>> defeatedBosses = new Object2BooleanOpenHashMap<>();
-    private final Object2BooleanMap<Moment> defeatedEvents = new Object2BooleanOpenHashMap<>();
+    private final Object2BooleanMap<ResourceKey<Moment>> defeatedEvents = new Object2BooleanOpenHashMap<>();
     private GamePhase gamePhase = GamePhase.BEFORE_SKELETRON;
 
     public boolean isDefeated(EntityType<?> entityType) {
         return defeatedBosses.getBoolean(entityType);
     }
 
-    public boolean isDefeated(Moment moment) {
+    public boolean isDefeated(ResourceKey<Moment> moment) {
         return defeatedEvents.getBoolean(moment);
     }
 
@@ -93,10 +95,11 @@ public class KillBoard implements IGlobalData {
         return count;
     }
 
-    public int countDefeated(Moment... moments) {
+    @SafeVarargs
+    public final int countDefeated(ResourceKey<Moment>... keys) {
         int count = 0;
-        for (Moment moment : moments) {
-            if (isDefeated(moment)) count++;
+        for (ResourceKey<Moment> key : keys) {
+            if (isDefeated(key)) count++;
         }
         return count;
     }
@@ -111,7 +114,7 @@ public class KillBoard implements IGlobalData {
     }
 
     public void defeat(Moment moment) {
-        defeatedEvents.put(moment, true);
+        HDMRegistries.MOMENT.getResourceKey(moment).ifPresentOrElse(key -> defeatedEvents.put(key, true), () -> Confluence.LOGGER.warn("Unknown moment: {}", moment));
     }
 
     public GamePhase getGamePhase() {

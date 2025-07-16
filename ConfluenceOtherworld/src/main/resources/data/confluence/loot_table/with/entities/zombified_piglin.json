@@ -7,21 +7,11 @@
                 {
                     "type": "minecraft:item",
                     "name": "terra_curio:energy_bar",
-                    "conditions": [
-                        {
-                            "condition": "minecraft:random_chance",
-                            "chance": 0.03
-                        },
-                        {
-                            "condition": "minecraft:damage_source_properties",
-                            "predicate": {
-                                "direct_entity": {
-                                    "type": "minecraft:player"
-                                },
-                                "is_direct": true
-                            }
-                        }
-                    ]
+                    "weight": 2
+                },
+                {
+                    "type": "minecraft:empty",
+                    "weight": 98
                 }
             ]
         }

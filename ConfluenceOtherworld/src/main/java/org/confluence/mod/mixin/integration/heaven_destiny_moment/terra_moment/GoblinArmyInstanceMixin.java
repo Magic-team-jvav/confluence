@@ -2,6 +2,7 @@ package org.confluence.mod.mixin.integration.heaven_destiny_moment.terra_moment;
 
 import com.xiaohunao.heaven_destiny_moment.common.context.condition.player.PlayerCondition;
 import com.xiaohunao.heaven_destiny_moment.common.moment.MomentInstance;
+import com.xiaohunao.heaven_destiny_moment.common.moment.MomentInstanceBuilder;
 import com.xiaohunao.heaven_destiny_moment.common.moment.MomentInstanceManager;
 import com.xiaohunao.heaven_destiny_moment.compat.phase_journey.condition.PhaseJourneyCondition;
 import com.xiaohunao.terra_moment.common.event.PatrolSpawnEvent;
@@ -61,7 +62,7 @@ public class GoblinArmyInstanceMixin {
         if (level.random.nextFloat() < spawnChance) {
             event.setCanceled(true);
             BlockPos spawnPos = event.getInitialSpawnPos();
-            MomentInstanceManager.of(level).createMomentInstance(TMMoments.GOBLIN_ARMY.get(),spawnPos, (ServerPlayer) event.getTargetPlayer());
+            MomentInstanceBuilder.create(level,TMMoments.GOBLIN_ARMY.get(),spawnPos, (ServerPlayer) event.getTargetPlayer());
         }
     }
 

@@ -15,9 +15,9 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.common.particle.DamageIndicatorOptions;
-import org.confluence.mod.util.DeathAnimUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
@@ -82,9 +82,9 @@ public class DamageIndicatorParticle extends TextureSheetParticle {
         yo = y;
         if(age <= 4){
             transparency =Math.min(transparency + 80, 255);
-            factor = DeathAnimUtils.cubicBezier(age / 5f, 0, 1, 1, 1) * (big ? 0.06f : 0.04f);
+            factor = LibUtils.cubicBezier(age / 5f, 0, 1, 1, 1) * (big ? 0.06f : 0.04f);
         }
-        float add=DeathAnimUtils.cubicBezier(age / (float)lifetime, 0,0.8f,1f,1) * 0.1f;
+        float add= LibUtils.cubicBezier(age / (float)lifetime, 0,0.8f,1f,1) * 0.1f;
         float yOffset = 0.1f - add;
         y += yOffset;
         if(age >= lifetime - 3){

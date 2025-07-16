@@ -1,5 +1,6 @@
 package org.confluence.mod.mixin.integration.heaven_destiny_moment.terra_moment;
 
+import com.xiaohunao.heaven_destiny_moment.common.context.condition.common.WorldUniqueMomentCondition;
 import com.xiaohunao.heaven_destiny_moment.common.context.condition.player.PlayerCondition;
 import com.xiaohunao.heaven_destiny_moment.common.moment.MomentInstance;
 import com.xiaohunao.heaven_destiny_moment.common.moment.MomentInstanceBuilder;
@@ -40,6 +41,13 @@ public class GoblinArmyInstanceMixin {
 
         boolean hasEvilEverBeenBroken = PhaseJourneyCondition.of(PhaseJourneyCondition.Type.LEVEL, Confluence.asResource("has_evil_ever_been_broken")).matches(goblinArmyInstance, pos, player);
         cir.setReturnValue(everBeneficial && hasEvilEverBeenBroken);
+    }
+
+    @Inject(method = "checkGeneralConditions", at = @At("HEAD"), cancellable = true)
+    public void  checkGeneralConditions(BlockPos pos, ServerPlayer serverPlayer, CallbackInfoReturnable<Boolean> cir) {
+        MomentInstance instance = (GoblinArmyInstance)(Object) this;
+        boolean matches = WorldUniqueMomentCondition.DEFAULT.matches(instance, pos, serverPlayer);
+        cir.setReturnValue(matches);
     }
 
     @Inject(method = "onPatrolSpawn", at = @At("HEAD"), cancellable = true)

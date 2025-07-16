@@ -3,8 +3,6 @@ package org.confluence.mod.common.data.gen;
 import com.google.common.collect.Iterables;
 import net.minecraft.Util;
 import net.minecraft.data.PackOutput;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.LanguageProvider;
@@ -973,11 +971,11 @@ public class ModEnglishProvider extends LanguageProvider {
         add(VanityArmorItems.DEAD_MANS_SWEATER.get(), "Dead Man's Sweater");
         add(SwordItems.NIGHTS_EDGE.get(), "Night's Edge");
 
-        add("block.confluence.timers_block_1_1", "1 Second Timer");
-        add("block.confluence.timers_block_3_1", "3 Second Timer");
-        add("block.confluence.timers_block_5_1", "5 Second TImer");
-        add("block.confluence.timers_block_1_2", "1/2 Second Timer");
-        add("block.confluence.timers_block_1_4", "1/4 Second TImer");
+        add("block.confluence.timers_1_1", "1 Second Timer");
+        add("block.confluence.timers_3_1", "3 Second Timer");
+        add("block.confluence.timers_5_1", "5 Second TImer");
+        add("block.confluence.timers_1_2", "1/2 Second Timer");
+        add("block.confluence.timers_1_4", "1/4 Second TImer");
 
         add("resourcepack.terraria_art", "Terraria Art");
         add("resourcepack.terraria_armor", "Terraria-Like Armor");
@@ -1803,34 +1801,9 @@ public class ModEnglishProvider extends LanguageProvider {
     }
 
     @Override
-    public void add(Block key, String name) {
-        String descriptionId = key.getDescriptionId();
-        if (!((LanguageProviderAccessor) this).getData().containsKey(descriptionId)) {
-            super.add(descriptionId, name);
-        }
-    }
-
-    @Override
-    public void add(Item key, String name) {
-        String descriptionId = key.getDescriptionId();
-        if (!((LanguageProviderAccessor) this).getData().containsKey(descriptionId)) {
-            super.add(descriptionId, name);
-        }
-    }
-
-    @Override
-    public void add(MobEffect key, String name) {
-        String descriptionId = key.getDescriptionId();
-        if (!((LanguageProviderAccessor) this).getData().containsKey(descriptionId)) {
-            super.add(descriptionId, name);
-        }
-    }
-
-    @Override
-    public void add(EntityType<?> key, String name) {
-        String descriptionId = key.getDescriptionId();
-        if (!((LanguageProviderAccessor) this).getData().containsKey(descriptionId)) {
-            super.add(descriptionId, name);
+    public void add(String key, String value) {
+        if (!((LanguageProviderAccessor) this).getData().containsKey(key)) {
+            super.add(key, value);
         }
     }
 }

@@ -52,7 +52,7 @@ public class ShadowOrbBlock extends Block {
             Vec3 center = pos.getCenter();
             ConfluenceData data = ConfluenceData.get(serverLevel);
             int count = data.getEvilBrokenCount() % 3;
-            PhaseUtils.achieveLevelPhase(serverLevel, Confluence.asResource("hasItEvilEverBeenBroken"), true);
+            PhaseUtils.achieveLevelPhase(serverLevel, Confluence.asResource("has_it_evil_ever_been_broken"), true);
 
             if (count == 0 || level.random.nextFloat() < 0.2F) {
                 LibUtils.createItemEntity(TGItems.MUSKET.toStack(), center.x, center.y, center.z, level, 0);

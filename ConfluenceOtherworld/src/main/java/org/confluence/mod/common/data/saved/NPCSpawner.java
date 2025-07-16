@@ -195,17 +195,17 @@ public class NPCSpawner implements IGlobalData {
     }
 
     public void onNPCRemoved(AbstractTerraNPC living) {
-        setNPCAlive(((IAbstractTerraNPC) living).confluence$getRegion(), living.getType(), false);
+        setNPCAlive(IAbstractTerraNPC.of(living).confluence$getRegion(), living.getType(), false);
         if (CommonConfigs.BROADCAST_NPC_MSG.get() && living.getType() != TENpcEntities.OLD_MAN.get()) { // 老人不用广播死亡信息
             MutableComponent message;
             if (living instanceof AnglerNPC /* todo 或宠物/公主 */) {
-                message = Component.translatable("event.confluence.npc.left", living.getName());
+                message = Component.translatable("event.confluence.npc.left", living.getName()).withColor(GlobalColors.NPC_SLAIN.get());
             } else if (living instanceof TravelingMerchantNPC) {
-                message = Component.translatable("event.confluence.traveling_merchant.departed", living.getName());
+                message = Component.translatable("event.confluence.traveling_merchant.departed", living.getName()).withColor(GlobalColors.NPC_ARRIVED.get());
             } else {
-                message = Component.translatable("event.confluence.npc.slain", living.getType().getDescription(), living.getName());
+                message = Component.translatable("event.confluence.npc.slain", living.getType().getDescription(), living.getName()).withColor(GlobalColors.NPC_SLAIN.get());
             }
-            broadcastMessageToRegion(living.level(), living, message.withColor(GlobalColors.NPC_SLAIN.get()));
+            broadcastMessageToRegion(living.level(), living, message);
         }
     }
 
@@ -442,7 +442,7 @@ public class NPCSpawner implements IGlobalData {
 
     private boolean trySpawnGoblinTinkerer(ServerPlayer player, BlockPos pos, Region region) {
         if (!hasNPCAlive(region, TENpcEntities.GOBLIN_TINKERER.get())) {
-            if (KillBoard.INSTANCE.isDefeated(TMMoments.GOBLIN_ARMY.get())) {
+            if (KillBoard.INSTANCE.isDefeated(TMMoments.GOBLIN_ARMY.getKey())) {
                 return spawnAtPos(player.serverLevel(), pos, TENpcEntities.GOBLIN_TINKERER.get());
             }
         }

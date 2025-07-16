@@ -50,7 +50,6 @@ import org.confluence.terra_guns.TerraGuns;
 import org.confluence.terraentity.TerraEntity;
 import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
@@ -206,7 +205,8 @@ public final class ModUtils {
         }
     }
 
-    public static boolean canHitEntity(@NotNull Entity target, @Nullable Entity owner) {
+    public static boolean canHitEntity(@Nullable Entity target, @Nullable Entity owner) {
+        if (target == null) return false; // 有模组把target写成了null
         if (owner == target || !target.isAttackable() || !target.canBeHitByProjectile() || target instanceof ArmorStand || target instanceof Npc) return false;
         return owner == null || (!owner.isPassengerOfSameVehicle(target) && !target.skipAttackInteraction(owner));
     }

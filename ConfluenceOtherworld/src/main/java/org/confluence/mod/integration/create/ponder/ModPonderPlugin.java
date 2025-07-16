@@ -69,7 +69,7 @@ public final class ModPonderPlugin implements PonderPlugin {
         HELPER.addToTag(TAG_GAMEPLAY)
                 .add(FunctionalBlocks.DEMON_ALTAR.asItem())
                 .add(FunctionalBlocks.CRIMSON_ALTAR.asItem())
-                .add(ToolItems.DUNGEON_COMPASS.get());
+                .add(ToolItems.METEOR_COMPASS.get());
     }
 
     private static void connect(SceneBuilder scene, SceneBuildingUtil util) {
@@ -145,12 +145,15 @@ public final class ModPonderPlugin implements PonderPlugin {
         scene.world().showSection(util.select().fromTo(2, 1, 2, 4, 1, 4), Direction.DOWN);
         scene.idle(20);
         for (int[] crystal : DungeonCompass.CRYSTALS) {
-            scene.world().showSection(util.select().fromTo(crystal[0], 1, crystal[1], crystal[0], 2, crystal[1]), Direction.DOWN);
+            int x = 3 - crystal[0];
+            int z = 3 - crystal[1];
+            scene.world().showSection(util.select().fromTo(x, 1, z, x, 2, z), Direction.DOWN);
             scene.idle(5);
         }
         scene.idle(15);
         scene.overlay().showControls(new Vec3(3.5, 1.5, 3.5), Pointing.DOWN, 20).withItem(ToolItems.METEOR_COMPASS.toStack());
-        scene.world().createItemEntity(new Vec3(3.5, 2, 3.5), new Vec3(0, 0.1, 0), ToolItems.DUNGEON_COMPASS.toStack());
+        scene.idle(40);
+        scene.world().createItemEntity(new Vec3(3.5, 2, 3.5), new Vec3(0, 0.2, 0), ToolItems.DUNGEON_COMPASS.toStack());
         scene.idle(20);
     }
 }

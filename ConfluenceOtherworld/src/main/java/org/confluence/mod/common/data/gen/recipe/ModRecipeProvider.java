@@ -1,16 +1,24 @@
 package org.confluence.mod.common.data.gen.recipe;
 
 import com.mojang.datafixers.util.Either;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.advancements.AdvancementRequirements;
+import net.minecraft.advancements.AdvancementRewards;
+import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.crafting.ICustomIngredient;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.lib.common.recipe.AmountIngredient;
 import org.confluence.mod.Confluence;
@@ -21,8 +29,10 @@ import org.confluence.mod.common.recipe.*;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.recipe.WorkshopRecipe;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 public class ModRecipeProvider extends AbstractRecipeProvider {
@@ -39,7 +49,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.JADE_ORE_SMELTING), MaterialItems.JADE.toStack(), 1.0F, 100);
         cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.SAPPHIRE_ORE_SMELTING), MaterialItems.SAPPHIRE.toStack(), 1.0F, 100);
         cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.AMBER_ORE_SMELTING), MaterialItems.AMETHYST.toStack(), 1.0F, 100);
-        
+
         cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.COAL_ORE_SMELTING), Items.COAL.getDefaultInstance(), 0.1F, 100);
         cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.COPPER_ORE_SMELTING), Items.COPPER_INGOT.getDefaultInstance(), 0.7F, 100);
         cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.IRON_ORE_SMELTING), Items.IRON_INGOT.getDefaultInstance(), 0.7F, 100);
@@ -55,7 +65,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.PLATINUM_ORE_SMELTING), MaterialItems.PLATINUM_INGOT.toStack(), 1.0F, 100);
         cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.CRIMTANE_ORE_SMELTING), MaterialItems.CRIMTANE_INGOT.toStack(), 1.0F, 100);
         cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.DEMONITE_ORE_SMELTING), MaterialItems.DEMONITE_INGOT.toStack(), 1.0F, 100);
-        cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(OreBlocks.METEORITE_ORE), MaterialItems.METEORITE_INGOT.toStack(), 1.0F, 100);
+        cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.METEORITE_ORE_SMELTING), MaterialItems.METEORITE_INGOT.toStack(), 1.0F, 100);
         cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(OreBlocks.COLD_CRYSTAL_ORE), MaterialItems.COLD_CRYSTAL.toStack(), 1.0F, 100);
         cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(OreBlocks.GELSTONE_ORE), MaterialItems.GELSTONE.toStack(), 1.0F, 100);
         cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(OreBlocks.SPORE_ROOT_BLOCK), MaterialItems.SPORE_ROOT.toStack(), 1.0F, 100);
@@ -84,7 +94,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.PLATINUM_ORE_SMELTING), MaterialItems.PLATINUM_INGOT.toStack(), 1.0F, 200);
         cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.CRIMTANE_ORE_SMELTING), MaterialItems.CRIMTANE_INGOT.toStack(), 1.0F, 200);
         cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.DEMONITE_ORE_SMELTING), MaterialItems.DEMONITE_INGOT.toStack(), 1.0F, 200);
-        cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(OreBlocks.METEORITE_ORE), MaterialItems.METEORITE_INGOT.toStack(), 1.0F, 200);
+        cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.METEORITE_ORE_SMELTING), MaterialItems.METEORITE_INGOT.toStack(), 1.0F, 200);
         cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(OreBlocks.COLD_CRYSTAL_ORE), MaterialItems.COLD_CRYSTAL.toStack(), 1.0F, 200);
         cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(OreBlocks.GELSTONE_ORE), MaterialItems.GELSTONE.toStack(), 1.0F, 200);
         cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(OreBlocks.SPORE_ROOT_BLOCK), MaterialItems.SPORE_ROOT.toStack(), 1.0F, 200);
@@ -103,11 +113,31 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(FoodItems.BAOBAB_FRUIT), FoodItems.COOKED_BAOBAB_FRUIT.toStack(), 0.2F, 200);
         cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(FoodItems.CLOUD_DOUGH), FoodItems.CLOUD_BREAD.toStack(), 0.2F, 200);
         cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(FoodItems.FLUTTERING_LAMB_CHOPS), FoodItems.COOKED_FLUTTERING_LAMB_CHOPS.toStack(), 0.35F, 200);
+        cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(FoodItems.RAW_DUCK), FoodItems.COOKED_DUCK.toStack(), 0.35F, 200);
+        cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(FoodItems.RAW_BIRD), FoodItems.COOKED_BIRD.toStack(), 0.35F, 200);
+        cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(FoodItems.RAW_FROG), FoodItems.COOKED_FROG.toStack(), 0.35F, 200);
+        cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(FoodItems.RAW_SQUIRREL), FoodItems.COOKED_SQUIRREL.toStack(), 0.35F, 200);
         cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(FoodItems.SALMON), Items.COOKED_SALMON.getDefaultInstance(), 0.2F, 200);
-        cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(FoodItems.ATLANTIC_COD,FoodItems.PISCES_FIN_COD,FoodItems.SEA_BASS,FoodItems.TROUT), Items.COOKED_COD.getDefaultInstance(), 0.35F, 200);
+        cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(FoodItems.ATLANTIC_COD, FoodItems.PISCES_FIN_COD, FoodItems.SEA_BASS, FoodItems.TROUT), Items.COOKED_COD.getDefaultInstance(), 0.35F, 200);
 
-        cooking(recipeOutput, SmokingRecipe::new, "smoking/", "", Ingredient.of(FoodItems.BAOBAB_FRUIT), FoodItems.COOKED_BAOBAB_FRUIT.toStack(), 0.1F, 100);
-        cooking(recipeOutput, CampfireCookingRecipe::new, "campfire_cooking/", "_from_atlantic_cod", Ingredient.of(FoodItems.ATLANTIC_COD), Items.COOKED_COD.getDefaultInstance(), 0.1F, 200);
+        cooking(recipeOutput, SmokingRecipe::new, "smoking/", "", Ingredient.of(FoodItems.BAOBAB_FRUIT), FoodItems.COOKED_BAOBAB_FRUIT.toStack(), 0.35F, 100);
+        cooking(recipeOutput, SmokingRecipe::new, "smoking/", "", Ingredient.of(FoodItems.FLUTTERING_LAMB_CHOPS), FoodItems.COOKED_FLUTTERING_LAMB_CHOPS.toStack(), 0.35F, 100);
+        cooking(recipeOutput, SmokingRecipe::new, "smoking/", "", Ingredient.of(FoodItems.RAW_DUCK), FoodItems.COOKED_DUCK.toStack(), 0.35F, 100);
+        cooking(recipeOutput, SmokingRecipe::new, "smoking/", "", Ingredient.of(FoodItems.RAW_BIRD), FoodItems.COOKED_BIRD.toStack(), 0.35F, 100);
+        cooking(recipeOutput, SmokingRecipe::new, "smoking/", "", Ingredient.of(FoodItems.RAW_FROG), FoodItems.COOKED_FROG.toStack(), 0.35F, 100);
+        cooking(recipeOutput, SmokingRecipe::new, "smoking/", "", Ingredient.of(FoodItems.RAW_SQUIRREL), FoodItems.COOKED_SQUIRREL.toStack(), 0.35F, 100);
+        cooking(recipeOutput, SmokingRecipe::new, "smoking/", "", Ingredient.of(FoodItems.SALMON), Items.COOKED_SALMON.getDefaultInstance(), 0.2F, 100);
+        cooking(recipeOutput, SmokingRecipe::new, "smoking/", "", Ingredient.of(FoodItems.ATLANTIC_COD, FoodItems.PISCES_FIN_COD, FoodItems.SEA_BASS, FoodItems.TROUT), Items.COOKED_COD.getDefaultInstance(), 0.35F, 200);
+        cooking(recipeOutput, CampfireCookingRecipe::new, "campfire_cooking/", "_from_atlantic_cod", Ingredient.of(FoodItems.ATLANTIC_COD), Items.COOKED_COD.getDefaultInstance(), 0.35F, 200);
+        cooking(recipeOutput, CampfireCookingRecipe::new, "campfire_cooking/", "", Ingredient.of(FoodItems.BAOBAB_FRUIT), FoodItems.COOKED_BAOBAB_FRUIT.toStack(), 0.35F, 200);
+        cooking(recipeOutput, CampfireCookingRecipe::new, "campfire_cooking/", "", Ingredient.of(FoodItems.FLUTTERING_LAMB_CHOPS), FoodItems.COOKED_FLUTTERING_LAMB_CHOPS.toStack(), 0.35F, 200);
+        cooking(recipeOutput, CampfireCookingRecipe::new, "campfire_cooking/", "", Ingredient.of(FoodItems.RAW_DUCK), FoodItems.COOKED_DUCK.toStack(), 0.35F, 200);
+        cooking(recipeOutput, CampfireCookingRecipe::new, "campfire_cooking/", "", Ingredient.of(FoodItems.RAW_BIRD), FoodItems.COOKED_BIRD.toStack(), 0.35F, 200);
+        cooking(recipeOutput, CampfireCookingRecipe::new, "campfire_cooking/", "", Ingredient.of(FoodItems.RAW_FROG), FoodItems.COOKED_FROG.toStack(), 0.35F, 200);
+        cooking(recipeOutput, CampfireCookingRecipe::new, "campfire_cooking/", "", Ingredient.of(FoodItems.RAW_SQUIRREL), FoodItems.COOKED_SQUIRREL.toStack(), 0.35F, 200);
+        cooking(recipeOutput, CampfireCookingRecipe::new, "campfire_cooking/", "", Ingredient.of(FoodItems.SALMON), Items.COOKED_SALMON.getDefaultInstance(), 0.2F, 200);
+        cooking(recipeOutput, CampfireCookingRecipe::new, "campfire_cooking/", "", Ingredient.of(FoodItems.ATLANTIC_COD, FoodItems.PISCES_FIN_COD, FoodItems.SEA_BASS, FoodItems.TROUT), Items.COOKED_COD.getDefaultInstance(), 0.35F, 200);
+
 
         recipeOutput.accept(Confluence.asResource("smithing/amber_hook"), new SmithingTransformRecipe(
                 Ingredient.of(DecorativeBlocks.AMBER_CHAIN),
@@ -117,7 +147,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         ), null);
 
         skyMill(recipeOutput, DecorativeBlocks.BOUNCY_CLOUD_BLOCK.toStack(), Ingredient.of(MaterialItems.PINK_GEL), Ingredient.of(NatureBlocks.CLOUD_BLOCK));
-        skyMill(recipeOutput, ChestBlocks.SKYWARE_CHEST.toStack(), AmountIngredient.of(5,DecorativeBlocks.SUN_PLATE));
+        skyMill(recipeOutput, ChestBlocks.SKYWARE_CHEST.toStack(), AmountIngredient.of(5, DecorativeBlocks.SUN_PLATE));
 
         workshop(recipeOutput, AccessoryItems.ANGLER_TACKLE_BAG.toStack(), Ingredient.of(AccessoryItems.HIGH_TEST_FISHING_LINE), Ingredient.of(AccessoryItems.TACKLE_BOX), Ingredient.of(TCItems.ANGLER_EARRING));
         workshop(recipeOutput, AccessoryItems.MAGIC_CUFFS.toStack(), Ingredient.of(AccessoryItems.MANA_REGENERATION_BAND), Ingredient.of(TCItems.SHACKLE));
@@ -134,6 +164,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         workshop(recipeOutput, AccessoryItems.REFLECTIVE_SHADES.toStack(), Ingredient.of(AccessoryItems.POCKET_MIRROR), Ingredient.of(TCItems.BLINDFOLD));
         workshop(recipeOutput, AccessoryItems.ARMOR_BRACING.toStack(), Ingredient.of(AccessoryItems.ARMOR_POLISH), Ingredient.of(TCItems.VITAMINS));
         workshop(recipeOutput, AccessoryItems.COUNTERCURSE_MANTRA.toStack(), Ingredient.of(AccessoryItems.MEGAPHONE), Ingredient.of(AccessoryItems.NAZAR));
+        workshop(recipeOutput, AccessoryItems.MANA_FLOWER.toStack(), Ingredient.of(PotionItems.MANA_POTION), Ingredient.of(AccessoryItems.NATURES_GIFT));
         workshop(recipeOutput, TCItems.ANKH_CHARM.toStack(), Ingredient.of(AccessoryItems.ARMOR_BRACING), Ingredient.of(AccessoryItems.MEDICATED_BANDAGE), Ingredient.of(TCItems.THE_PLAN), Ingredient.of(AccessoryItems.COUNTERCURSE_MANTRA), Ingredient.of(AccessoryItems.REFLECTIVE_SHADES));
 
         hellforge(recipeOutput, MaterialItems.HELLSTONE_INGOT.toStack(), 0.2f, 100, true, AmountIngredient.of(3, MaterialItems.RAW_HELLSTONE), Ingredient.of(Items.OBSIDIAN));
@@ -151,45 +182,45 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         altar(recipeOutput, ConsumableItems.WORM_FOOD.toStack(), AmountIngredient.of(30, ConsumableItems.VILE_POWDER), AmountIngredient.of(15, MaterialItems.ROTTEN_BONE));
         altar(recipeOutput, ConsumableItems.SUSPICIOUS_LOOKING_EYE.toStack(), AmountIngredient.of(6, MaterialItems.LENS));
         altar(recipeOutput, SwordItems.NIGHTS_EDGE.toStack(), Ingredient.of(SwordItems.BLOOD_BUTCHERER, SwordItems.LIGHTS_BANE), Ingredient.of(SwordItems.MURAMASA), Ingredient.of(SwordItems.BLADE_OF_GRASS), Ingredient.of(SwordItems.VOLCANO));
-        altar(recipeOutput, ToolItems.METEOR_COMPASS.toStack(), AmountIngredient.of(4,ModTags.Items.EVIL_INGOT),AmountIngredient.of(4,MaterialItems.FALLING_STAR));
-        altar(recipeOutput, ConsumableItems.SLIME_CROWN.toStack(), AmountIngredient.of(20,MaterialItems.GEL),Ingredient.of(VanityArmorItems.GOLD_CROWN,VanityArmorItems.PLATINUM_CROWN));
+        altar(recipeOutput, ToolItems.METEOR_COMPASS.toStack(), AmountIngredient.of(4, ModTags.Items.EVIL_INGOT), AmountIngredient.of(4, MaterialItems.FALLING_STAR));
+        altar(recipeOutput, ConsumableItems.SLIME_CROWN.toStack(), AmountIngredient.of(20, MaterialItems.GEL), Ingredient.of(VanityArmorItems.GOLD_CROWN, VanityArmorItems.PLATINUM_CROWN));
 
         alchemyTable(recipeOutput, PotionItems.ARCHERY_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.LENS), Ingredient.of(MaterialItems.DAYBLOOM));
         alchemyTable(recipeOutput, PotionItems.SWIFTNESS_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.BLINKROOT), Ingredient.of(Items.CACTUS));
         alchemyTable(recipeOutput, PotionItems.THORNS_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.DEATHWEED), Ingredient.of(Items.CACTUS));
         alchemyTable(recipeOutput, PotionItems.BUILDER_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.BLINKROOT), Ingredient.of(MaterialItems.SHIVERTHORN), Ingredient.of(MaterialItems.MOONGLOW));
-        alchemyTable(recipeOutput, PotionItems.CRATE_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.AMBER),Ingredient.of(MaterialItems.MOONGLOW), Ingredient.of(MaterialItems.SHIVERTHORN),Ingredient.of(MaterialItems.WATERLEAF));
+        alchemyTable(recipeOutput, PotionItems.CRATE_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.AMBER), Ingredient.of(MaterialItems.MOONGLOW), Ingredient.of(MaterialItems.SHIVERTHORN), Ingredient.of(MaterialItems.WATERLEAF));
         alchemyTable(recipeOutput, PotionItems.DANGERSENSE_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.SHIVERTHORN), Ingredient.of(Items.COBWEB));
         alchemyTable(recipeOutput, PotionItems.ENDURANCE_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(FoodItems.ARMORED_CAVE_FISH), Ingredient.of(MaterialItems.BLINKROOT));
-        alchemyTable(recipeOutput, PotionItems.FEATHERFALL_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.DAYBLOOM),Ingredient.of(MaterialItems.MOONGLOW), Ingredient.of(MaterialItems.BLINKROOT),Ingredient.of(Items.FEATHER));
-        alchemyTable(recipeOutput, ConsumableItems.FERTILIZER.toStack(), Ingredient.of(ModBlocks.POO.get()), AmountIngredient.of(3,NatureBlocks.ASH_BLOCK),AmountIngredient.of(3,Items.BONE));
-        alchemyTable(recipeOutput, PotionItems.FISHING_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(DecorativeBlocks.CRISPY_HONEY_BLOCK),Ingredient.of(MaterialItems.WATERLEAF));
+        alchemyTable(recipeOutput, PotionItems.FEATHERFALL_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.DAYBLOOM), Ingredient.of(MaterialItems.MOONGLOW), Ingredient.of(MaterialItems.BLINKROOT), Ingredient.of(Items.FEATHER));
+        alchemyTable(recipeOutput, ConsumableItems.FERTILIZER.toStack(), Ingredient.of(ModBlocks.POO.get()), AmountIngredient.of(3, NatureBlocks.ASH_BLOCK), AmountIngredient.of(3, Items.BONE));
+        alchemyTable(recipeOutput, PotionItems.FISHING_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(DecorativeBlocks.CRISPY_HONEY_BLOCK), Ingredient.of(MaterialItems.WATERLEAF));
         alchemyTable(recipeOutput, PotionItems.FLIPPER_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.SHIVERTHORN), Ingredient.of(MaterialItems.WATERLEAF));
         alchemyTable(recipeOutput, PotionItems.GILLS_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.WATERLEAF), Ingredient.of(ModTags.Items.CORALS));
-        alchemyTable(recipeOutput, PotionItems.GRAVITATION_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.FIREBLOSSOM), Ingredient.of(MaterialItems.DEATHWEED), Ingredient.of(MaterialItems.BLINKROOT),Ingredient.of(Items.FEATHER));
+        alchemyTable(recipeOutput, PotionItems.GRAVITATION_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.FIREBLOSSOM), Ingredient.of(MaterialItems.DEATHWEED), Ingredient.of(MaterialItems.BLINKROOT), Ingredient.of(Items.FEATHER));
         alchemyTable(recipeOutput, PotionItems.GREATER_LUCK_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.WATERLEAF), Ingredient.of(BaitItems.LADYBUG), Ingredient.of(MaterialItems.PINK_PEARL));
         alchemyTable(recipeOutput, PotionItems.HEALING_POTION.toStack(), Ingredient.of(PotionItems.LESSER_HEALING_POTION), Ingredient.of(MaterialItems.GLOWING_MUSHROOM), Ingredient.of(PotionItems.LESSER_HEALING_POTION));
         alchemyTable(recipeOutput, PotionItems.HEART_REACH_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(FoodItems.SCARLET_TIGER_FISH), Ingredient.of(MaterialItems.DAYBLOOM));
-        alchemyTable(recipeOutput, PotionItems.HUNTER_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.DAYBLOOM),Ingredient.of(MaterialItems.BLINKROOT),Ingredient.of(MaterialItems.SHARK_FIN));
-        alchemyTable(recipeOutput, PotionItems.INFERNO_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(FoodItems.FLASHFIN_KOI),AmountIngredient.of(2,FoodItems.OBSIDIAN_FISH),Ingredient.of(MaterialItems.FIREBLOSSOM));
-        alchemyTable(recipeOutput, PotionItems.INVISIBILITY_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(FoodItems.MIRROR_FISH),Ingredient.of(MaterialItems.BLINKROOT));
-        alchemyTable(recipeOutput, PotionItems.IRON_SKIN_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.DAYBLOOM),Ingredient.of(Items.RAW_IRON,MaterialItems.RAW_LEAD));
-        alchemyTable(recipeOutput, PotionItems.LESSER_HEALING_POTION.toStack(), Ingredient.of(PotionItems.BOTTLE), Ingredient.of(MaterialItems.LIFE_MUSHROOM),AmountIngredient.of(2,MaterialItems.GEL));
+        alchemyTable(recipeOutput, PotionItems.HUNTER_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.DAYBLOOM), Ingredient.of(MaterialItems.BLINKROOT), Ingredient.of(MaterialItems.SHARK_FIN));
+        alchemyTable(recipeOutput, PotionItems.INFERNO_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(FoodItems.FLASHFIN_KOI), AmountIngredient.of(2, FoodItems.OBSIDIAN_FISH), Ingredient.of(MaterialItems.FIREBLOSSOM));
+        alchemyTable(recipeOutput, PotionItems.INVISIBILITY_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(FoodItems.MIRROR_FISH), Ingredient.of(MaterialItems.BLINKROOT));
+        alchemyTable(recipeOutput, PotionItems.IRON_SKIN_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.DAYBLOOM), Ingredient.of(Items.RAW_IRON, MaterialItems.RAW_LEAD));
+        alchemyTable(recipeOutput, PotionItems.LESSER_HEALING_POTION.toStack(), Ingredient.of(PotionItems.BOTTLE), Ingredient.of(MaterialItems.LIFE_MUSHROOM), AmountIngredient.of(2, MaterialItems.GEL));
         alchemyTable(recipeOutput, PotionItems.LESSER_LUCK_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.WATERLEAF), Ingredient.of(BaitItems.LADYBUG), Ingredient.of(MaterialItems.PEARL));
-        alchemyTable(recipeOutput, PotionItems.LIFEFORCE_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(FoodItems.COLORFUL_MINERAL_FISH),Ingredient.of(MaterialItems.MOONGLOW),Ingredient.of(MaterialItems.SHIVERTHORN),Ingredient.of(MaterialItems.WATERLEAF));
-        alchemyTable(recipeOutput, PotionItems.LOVE_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(FoodItems.PRINCESS_FISH),Ingredient.of(MaterialItems.SHIVERTHORN));
+        alchemyTable(recipeOutput, PotionItems.LIFEFORCE_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(FoodItems.COLORFUL_MINERAL_FISH), Ingredient.of(MaterialItems.MOONGLOW), Ingredient.of(MaterialItems.SHIVERTHORN), Ingredient.of(MaterialItems.WATERLEAF));
+        alchemyTable(recipeOutput, PotionItems.LOVE_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(FoodItems.PRINCESS_FISH), Ingredient.of(MaterialItems.SHIVERTHORN));
         alchemyTable(recipeOutput, PotionItems.LUCK_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.WATERLEAF), Ingredient.of(BaitItems.LADYBUG), Ingredient.of(MaterialItems.BLACK_PEARL));
         alchemyTable(recipeOutput, PotionItems.MAGIC_POWER_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.MOONGLOW), Ingredient.of(MaterialItems.DEATHWEED), Ingredient.of(MaterialItems.FALLING_STAR));
         alchemyTable(recipeOutput, PotionItems.MANA_REGENERATION_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.MOONGLOW), Ingredient.of(MaterialItems.DAYBLOOM), Ingredient.of(MaterialItems.FALLING_STAR));
         alchemyTable(recipeOutput, PotionItems.MINING_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.ANTLION_MANDIBLE), Ingredient.of(MaterialItems.BLINKROOT));
         alchemyTable(recipeOutput, PotionItems.NIGHT_OWL_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.DAYBLOOM), Ingredient.of(MaterialItems.BLINKROOT));
-        alchemyTable(recipeOutput, PotionItems.OBSIDIAN_SKIN_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.FIREBLOSSOM), Ingredient.of(MaterialItems.WATERLEAF),Ingredient.of(Items.OBSIDIAN));
+        alchemyTable(recipeOutput, PotionItems.OBSIDIAN_SKIN_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.FIREBLOSSOM), Ingredient.of(MaterialItems.WATERLEAF), Ingredient.of(Items.OBSIDIAN));
         alchemyTable(recipeOutput, PotionItems.RAGE_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(FoodItems.BLOODY_PIRANHAS), Ingredient.of(MaterialItems.DEATHWEED));
         alchemyTable(recipeOutput, PotionItems.RANDOM_TELEPORT_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(FoodItems.CHAOS_FISH), Ingredient.of(MaterialItems.FIREBLOSSOM));
         alchemyTable(recipeOutput, PotionItems.RECALL_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(FoodItems.MIRROR_FISH), Ingredient.of(MaterialItems.DAYBLOOM));
         alchemyTable(recipeOutput, PotionItems.REGENERATION_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.DAYBLOOM), Ingredient.of(MaterialItems.LIFE_MUSHROOM));
         alchemyTable(recipeOutput, PotionItems.SHINE_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.DAYBLOOM), Ingredient.of(MaterialItems.GLOWING_MUSHROOM));
-        alchemyTable(recipeOutput, PotionItems.SPELUNKER_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.BLINKROOT), Ingredient.of(MaterialItems.MOONGLOW),Ingredient.of(MaterialItems.RAW_PLATINUM,Items.RAW_GOLD));
+        alchemyTable(recipeOutput, PotionItems.SPELUNKER_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.BLINKROOT), Ingredient.of(MaterialItems.MOONGLOW), Ingredient.of(MaterialItems.RAW_PLATINUM, Items.RAW_GOLD));
         alchemyTable(recipeOutput, PotionItems.STINK_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(FoodItems.STINKY_FISH), Ingredient.of(MaterialItems.DEATHWEED));
         alchemyTable(recipeOutput, PotionItems.TITAN_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.DUNGEON_DEMON_BONE), Ingredient.of(MaterialItems.DEATHWEED), Ingredient.of(MaterialItems.SHIVERTHORN));
         alchemyTable(recipeOutput, PotionItems.WATER_WALKING_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.WATERLEAF), Ingredient.of(MaterialItems.SHARK_FIN));
@@ -213,13 +244,14 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
 
     protected <T extends AbstractCookingRecipe> void cooking(RecipeOutput recipeOutput, AbstractCookingRecipe.Factory<T> factory, String prefix, String suffix, Ingredient ingredient, ItemStack result, float experience, int cookingTime) {
         ResourceLocation id = Confluence.asResource(prefix + getItemName(result.getItem()) + suffix);
-        recipeOutput.accept(id, factory.create("", CookingBookCategory.MISC, ingredient, result, experience, cookingTime), null);
+        recipeOutput.accept(id, factory.create("", CookingBookCategory.MISC, ingredient, result, experience, cookingTime), createAdvancementHolder(recipeOutput, id, ingredient));
     }
 
     protected void skyMill(RecipeOutput recipeOutput, ItemStack result, Ingredient... ingredients) {
         ResourceLocation id = Confluence.asResource("sky_mill/" + getItemName(result.getItem()));
         recipeOutput.accept(id, new SkyMillRecipe(result, NonNullList.of(Ingredient.EMPTY, ingredients)), null);
     }
+
     protected void workshop(RecipeOutput recipeOutput, ItemStack result, Ingredient... ingredients) {
         ResourceLocation id = Confluence.asResource("workshop/" + getItemName(result.getItem()));
         recipeOutput.accept(id, new WorkshopRecipe(result, NonNullList.of(Ingredient.EMPTY, ingredients)), null);
@@ -257,5 +289,65 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         ResourceLocation id = Confluence.asResource("hardmode_anvil/" + getItemName(result.getItem()));
         NonNullList<Ingredient> zingredients = NonNullList.of(Ingredient.EMPTY, ingredients);
         recipeOutput.accept(id, new HardmodeAnvilRecipe(result, Either.right(zingredients)), null);
+    }
+
+    public static AdvancementHolder createAdvancementHolder(RecipeOutput recipeOutput, ResourceLocation id, NonNullList<Ingredient> ingredients) {
+        Set<Item> itemCounter = new HashSet<>();
+        Set<TagKey<Item>> tagCounter = new HashSet<>();
+        Advancement.Builder builder = recipeOutput.advancement()
+                .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(id))
+                .rewards(AdvancementRewards.Builder.recipe(id))
+                .requirements(AdvancementRequirements.Strategy.OR);
+        for (Ingredient ingredient : ingredients) {
+            Ingredient.Value[] values;
+            ICustomIngredient customIngredient = ingredient.getCustomIngredient();
+            if (customIngredient == null) {
+                values = ingredient.getValues();
+            } else {
+                values = customIngredient.getItems().map(Ingredient.ItemValue::new).toArray(Ingredient.Value[]::new);
+            }
+            for (Ingredient.Value value : values) {
+                if (value instanceof Ingredient.ItemValue(ItemStack itemStack)) {
+                    Item item = itemStack.getItem();
+                    if (itemCounter.contains(item)) continue;
+                    itemCounter.add(item);
+                    builder.addCriterion(getHasName(item), has(item));
+                } else if (value instanceof Ingredient.TagValue(TagKey<Item> tag)) {
+                    if (tagCounter.contains(tag)) continue;
+                    tagCounter.add(tag);
+                    builder.addCriterion("has_tag_" + tag.location().getPath(), has(tag));
+                }
+            }
+        }
+        return builder.build(id.withPrefix("recipes/confluence/"));
+    }
+
+    public static AdvancementHolder createAdvancementHolder(RecipeOutput recipeOutput, ResourceLocation id, Ingredient ingredient) {
+        Set<Item> itemCounter = new HashSet<>();
+        Set<TagKey<Item>> tagCounter = new HashSet<>();
+        Advancement.Builder builder = recipeOutput.advancement()
+                .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(id))
+                .rewards(AdvancementRewards.Builder.recipe(id))
+                .requirements(AdvancementRequirements.Strategy.OR);
+        Ingredient.Value[] values;
+        ICustomIngredient customIngredient = ingredient.getCustomIngredient();
+        if (customIngredient == null) {
+            values = ingredient.getValues();
+        } else {
+            values = customIngredient.getItems().map(Ingredient.ItemValue::new).toArray(Ingredient.Value[]::new);
+        }
+        for (Ingredient.Value value : values) {
+            if (value instanceof Ingredient.ItemValue(ItemStack itemStack)) {
+                Item item = itemStack.getItem();
+                if (itemCounter.contains(item)) continue;
+                itemCounter.add(item);
+                builder.addCriterion(getHasName(item), has(item));
+            } else if (value instanceof Ingredient.TagValue(TagKey<Item> tag)) {
+                if (tagCounter.contains(tag)) continue;
+                tagCounter.add(tag);
+                builder.addCriterion("has_tag_" + tag.location().getPath(), has(tag));
+            }
+        }
+        return builder.build(id.withPrefix("recipes/confluence/"));
     }
 }

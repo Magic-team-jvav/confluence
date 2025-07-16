@@ -422,7 +422,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
                 TEBossEntities.BRAIN_OF_CTHULHU.get(),
                 TEBossEntities.SKELETRON.get()
         ) + KillBoard.INSTANCE.countDefeated(
-                TMMoments.GOBLIN_ARMY.get()
+                TMMoments.GOBLIN_ARMY.getKey()
         );
         for (int i = 0; i < defeated; i++) {
             ratio *= 1.1F; // todo 毁灭者、双子魔眼、机械骷髅王、世纪之花、蜂王、石巨人、海盗入侵、雪人军团

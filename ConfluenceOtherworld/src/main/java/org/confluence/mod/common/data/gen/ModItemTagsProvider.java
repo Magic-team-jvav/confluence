@@ -298,7 +298,9 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.CRIMTANE_ORE_SMELTING).add(
                 OreBlocks.CRIMTANE_ORE.asItem(), OreBlocks.DEEPSLATE_CRIMTANE_ORE.asItem(), OreBlocks.SANCTIFICATION_CRIMTANE_ORE.asItem(), OreBlocks.CORRUPTION_CRIMTANE_ORE.asItem(), OreBlocks.FLESHIFICATION_CRIMTANE_ORE.asItem(),
                 MaterialItems.RAW_CRIMTANE.get()
-
+        );
+        tag(ModTags.Items.METEORITE_ORE_SMELTING).add(
+                OreBlocks.METEORITE_ORE.asItem(),MaterialItems.RAW_METEORITE.get()
         );
         tag(ModTags.Items.RUBY_ORE_SMELTING).add(
                 OreBlocks.RUBY_ORE.asItem(), OreBlocks.DEEPSLATE_RUBY_ORE.asItem(), OreBlocks.SANCTIFICATION_RUBY_ORE.asItem(), OreBlocks.CORRUPTION_RUBY_ORE.asItem(), OreBlocks.FLESHIFICATION_RUBY_ORE.asItem()
@@ -523,8 +525,13 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.RAW_MATERIALS_COLD_CRYSTAL).add(
                 MaterialItems.COLD_CRYSTAL.get()
         );
-
-        tag(ModTags.Items.NUGGETS_TIN).add(
+        tag(ModTags.Items.RAW_MATERIALS_FLOATING_WHEAT).add(
+                MaterialItems.FLOATING_WHEAT_HEADS.get()
+        );
+        tag(ModTags.Items.RAW_MATERIALS_FLOATING_WHEAT_BALE).add(
+                DecorativeBlocks.FLOATING_WHEAT_BALE.asItem()
+        );
+        tag(ModTags.Items.NUGGETS_LEAD).add(
                 MaterialItems.LEAD_NUGGET.get()
         );
         tag(Tags.Items.INGOTS).add(
@@ -650,7 +657,9 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ConsumableItems.SLIME_CROWN.get(),
                 ConsumableItems.WORM_FOOD.get(),
                 ConsumableItems.BLOODY_SPINE.get(),
-                ConsumableItems.ABEEMINATION.get()
+                ConsumableItems.ABEEMINATION.get(),
+                AccessoryItems.CLOTHIER_VOODOO_DOLL.get(),
+                AccessoryItems.GUIDE_VOODOO_DOLL.get()
         );
 
         tag(ModTags.Items.INGOTS_TIN).add(MaterialItems.TIN_INGOT.get());
@@ -1193,32 +1202,11 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
         IntrinsicTagAppender<Item> wip = tag(LibTags.Items.WIP);
         wip.add(
-                ConsumableItems.ARTISAN_LOAF.get(),
                 ConsumableItems.SMOKE_BOMB.get(),
                 ConsumableItems.SPIKY_BALL.get(),
-                ConsumableItems.HOLY_WATER.get(),
-                ConsumableItems.UNHOLY_WATER.get(),
-                ConsumableItems.BLOOD_WATER.get(),
                 ConsumableItems.GOODIE_BAG.get(),
-                ConsumableItems.ADVANCED_COMBAT_TECHNIQUES.get(),
-                ConsumableItems.ADVANCED_COMBAT_TECHNIQUES_VOLUME_TWO.get(),
-                ConsumableItems.GUIDE_VOODOO_DOLL.get(),
-                ConsumableItems.CLOTHIER_VOODOO_DOLL.get(),
+                AccessoryItems.GUIDE_VOODOO_DOLL.get(),
                 PaintItems.ECHO_COATING.get(),
-                ToolItems.SUPER_ABSORBANT_SPONGE.get(),
-                ToolItems.HONEY_ABSORBANT_SPONGE.get(),
-                ToolItems.LAVA_ABSORBANT_SPONGE.get(),
-                ToolItems.ULTRA_ABSORBANT_SPONGE.get(),
-                ToolItems.TEMPLE_KEY.get(),
-                ToolItems.JUNGLE_KEY.get(),
-                ToolItems.CORRUPTION_KEY.get(),
-                ToolItems.CRIMSON_KEY.get(),
-                ToolItems.HALLOWED_KEY.get(),
-                ToolItems.FROZEN_KEY.get(),
-                ToolItems.DESERT_KEY.get(),
-                ToolItems.OCEAN_KEY.get(),
-                ToolItems.MECHANIC_SAFE_KEY.get(),
-                ToolItems.UNIVERSE_KEY.get(),
                 ToolItems.TARGET_DUMMY.get(),
                 ToolItems.BINOCULARS.get(),
                 ModItems.WHOOPIE_CUSHION.get(),
@@ -1236,13 +1224,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 HamaxeItems.NEBULA_HAMAXE.get(),
                 HamaxeItems.STARDUST_HAMAXE.get(),
                 HamaxeItems.THE_AXE.get(),
-                HammerItems.RICH_MAHOGANY_HAMMER.get(),
-                HammerItems.PALM_WOOD_HAMMER.get(),
-                HammerItems.SPRUCE_WOOD_HAMMER.get(),
-                HammerItems.EBONWOOD_HAMMER.get(),
-                HammerItems.SHADEWOOD_HAMMER.get(),
-                HammerItems.ASH_WOOD_HAMMER.get(),
-                HammerItems.PEARLWOOD_HAMMER.get(),
                 HammerItems.HAMMUSH.get(),
                 HammerItems.CHLOROPHYTE_WARHAMMER.get(),
                 HammerItems.CHLOROPHYTE_JACKHAMMER.get(),
@@ -1417,6 +1398,13 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 NatureBlocks.SMALL_DESERT_PLANT.asItem(),
                 NatureBlocks.BIG_DESERT_PLANT.asItem(),
                 NatureBlocks.SMALL_CACTUS.asItem(),
+                NatureBlocks.MUSHROOM_PATH.asItem(),
+                NatureBlocks.MUSHROOM_PATH.asItem(),
+                NatureBlocks.ASH_PATH.asItem(),
+                NatureBlocks.SHIMMER_CRYSTALS_BLOCK.asItem(),
+                NatureBlocks.LOST_PAPER_BLOCK.asItem(),
+                NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.getTrapdoor().asItem(),
+                NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.getDoor().asItem(),
                 PotBlocks.OCEAN_POT.asItem(),
                 OreBlocks.METEORITE_BLOCK.asItem(),
                 OreBlocks.HALLOWED_BLOCK.asItem(),
@@ -1469,6 +1457,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 DecorativeBlocks.CRIMSANDSTONE_BRICKS_STAIRS.asItem(),
                 DecorativeBlocks.CRIMSANDSTONE_BRICKS_SLAB.asItem(),
                 DecorativeBlocks.CRIMSANDSTONE_BRICKS_WALL.asItem(),
+                DecorativeBlocks.CHISELED_GLOWING_MUSHROOM_PLANKS.asItem(),
                 DecorativeBlocks.SNOW_BRICKS_WALL.asItem(),
                 StatueBlocks.ARMOR_STATUE.asItem(),
                 StatueBlocks.AXE_STATUE.asItem(),
@@ -1533,7 +1522,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ChestBlocks.OCEAN_CHEST.asItem(),
                 ChestBlocks.UNIVERSE_CHEST.asItem(),
                 ChestBlocks.MECHANIC_SAFE_CHEST.asItem(),
-                FunctionalBlocks.BEWITCHING_TABLE.asItem(),
                 FunctionalBlocks.CHLOROPHYTE_EXTRACTINATOR.asItem(),
                 FunctionalBlocks.BLEND_O_MATIC.asItem(),
                 FunctionalBlocks.MEAT_GRINDER.asItem(),
@@ -1557,7 +1545,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FunctionalBlocks.SPEAR_TRAP.asItem(),
                 FunctionalBlocks.TREE_HOLES_BLOCK.asItem(),
                 FunctionalBlocks.MAGIC_MAIL_BOX.asItem(),
-                MaterialItems.RAW_ASPHALT.get(),
                 MaterialItems.SOUL_OF_LIGHT.get(),
                 MaterialItems.SOUL_OF_NIGHT.get(),
                 MaterialItems.SOUL_OF_FLIGHT.get(),
@@ -1599,7 +1586,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 HookItems.ANTI_GRAVITY_HOOK.get(),
                 HookItems.LUNAR_HOOK.get(),
                 HookItems.STATIC_HOOK.get(),
-                TreasureBagItems.WALL_OF_FLESH_TREASURE_BAG.get(),
                 TEItems.DEBUG_ITEM.get(),
                 TEFigureBlocks.FIGURE.asItem(),
                 TEFigureBlocks.FIGURE2.asItem(),
@@ -1658,6 +1644,11 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         for (DeferredBlock<DeathChestBlock> deathChest : ChestBlocks.DEATH_CHESTS) {
             death.add(deathChest.asItem());
         }
+
+        tag(ModTags.Items.UNABLE_TO_APPLY_PREFIX).add(
+                AccessoryItems.CLOTHIER_VOODOO_DOLL.get(),
+                AccessoryItems.GUIDE_VOODOO_DOLL.get()
+        );
 
         IntrinsicTagAppender<Item> skipResetStrength = tag(LibTags.Items.SKIP_RESET_STRENGTH);
         DrillItems.ITEMS.getEntries().forEach(item -> skipResetStrength.add(item.get()));

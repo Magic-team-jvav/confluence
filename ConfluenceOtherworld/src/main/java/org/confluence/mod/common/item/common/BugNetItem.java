@@ -8,6 +8,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.lib.util.LibUtils;
@@ -40,12 +41,13 @@ public class BugNetItem extends CustomRarityItem {
             if (interactionTarget.hasCustomName()) {
                 itemStack.set(DataComponents.CUSTOM_NAME, interactionTarget.getCustomName());
             }
+            itemStack.remove(ConfluenceMagicLib.MOD_RARITY);
             if (!player.addItem(itemStack)) {
                 player.drop(itemStack, false);
             }
             interactionTarget.discard();
-            return InteractionResult.SUCCESS;
+            return InteractionResult.SUCCESS_NO_ITEM_USED;
         }
-        return InteractionResult.PASS;
+        return InteractionResult.SUCCESS;
     }
 }

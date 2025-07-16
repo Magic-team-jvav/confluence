@@ -151,6 +151,8 @@ public interface ISpreadable {
     }
 
     // 到时候溶液也用这个
+    /** @deprecated 迁移到标签 */
+    @Deprecated
     enum Type implements StringRepresentable {
         HALLOW(
                 getSupplier(DIRT), NatureBlocks.HALLOW_GRASS_BLOCK,
@@ -292,9 +294,9 @@ public interface ISpreadable {
                 OreBlocks.FLESHIFICATION_REDSTONE_ORE, OreBlocks.SANCTIFICATION_REDSTONE_ORE,
                 OreBlocks.DEMONITE_ORE, OreBlocks.SANCTIFICATION_DEMONITE_ORE,
                 OreBlocks.CRIMTANE_ORE, OreBlocks.SANCTIFICATION_CRIMTANE_ORE,
-                OreBlocks.FLESHIFICATION_DEMONITE_ORE, OreBlocks.FLESHIFICATION_DEMONITE_ORE,
+                OreBlocks.FLESHIFICATION_DEMONITE_ORE, OreBlocks.SANCTIFICATION_DEMONITE_ORE,
                 OreBlocks.FLESHIFICATION_CRIMTANE_ORE, OreBlocks.SANCTIFICATION_CRIMTANE_ORE,
-                OreBlocks.CORRUPTION_DEMONITE_ORE, OreBlocks.FLESHIFICATION_DEMONITE_ORE,
+                OreBlocks.CORRUPTION_DEMONITE_ORE, OreBlocks.SANCTIFICATION_DEMONITE_ORE,
                 OreBlocks.CORRUPTION_CRIMTANE_ORE, OreBlocks.SANCTIFICATION_CRIMTANE_ORE,
                 // 植物
                 NatureBlocks.CORRUPT_GRASS, NatureBlocks.HALLOW_GRASS,

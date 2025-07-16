@@ -255,7 +255,6 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
             ItemStack[] itemStacks = blockEntity.getItemStacks();
             ItemStack fuel = blockEntity.items.get(FUEL_SLOT);
             boolean hasItem = !itemStacks[0].isEmpty() || !itemStacks[1].isEmpty() || !itemStacks[2].isEmpty() || !itemStacks[3].isEmpty();
-            ;
             boolean hellforgeMatched = false;
 
             if (hasItem) {

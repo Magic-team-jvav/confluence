@@ -1,0 +1,92 @@
+{
+	"credit": "Made with Blockbench",
+	"render_type": "cutout_mipped",
+	"texture_size": [64, 64],
+	"textures": {
+		"1": "confluence:block/remains_block"
+	},
+	"elements": [
+		{
+			"name": "Head",
+			"from": [4, -1.624, 3.984],
+			"to": [12, 6.376, 11.984],
+			"rotation": {"angle": 22.5, "axis": "x", "origin": [8, -0.624, 8]},
+			"faces": {
+				"north": {"uv": [2, 2, 4, 4], "texture": "#1"},
+				"east": {"uv": [0, 2, 2, 4], "texture": "#1"},
+				"south": {"uv": [6, 2, 8, 4], "texture": "#1"},
+				"west": {"uv": [4, 2, 6, 4], "texture": "#1"},
+				"up": {"uv": [4, 2, 2, 0], "texture": "#1"},
+				"down": {"uv": [6, 0, 4, 2], "texture": "#1"}
+			}
+		},
+		{
+			"name": "Head",
+			"from": [12, 6.376, 11.984],
+			"to": [4, -1.624, 3.984],
+			"rotation": {"angle": 22.5, "axis": "x", "origin": [8, -0.624, 8]},
+			"faces": {
+				"north": {"uv": [6, 4, 8, 2], "texture": "#1"},
+				"east": {"uv": [4, 4, 6, 2], "texture": "#1"},
+				"south": {"uv": [2, 4, 4, 2], "texture": "#1"},
+				"west": {"uv": [0, 4, 2, 2], "texture": "#1"},
+				"up": {"uv": [4, 0, 6, 2], "texture": "#1"},
+				"down": {"uv": [2, 2, 4, 0], "texture": "#1"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [75, 45, 0],
+			"translation": [0, 2.5, 0],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [75, 45, 0],
+			"translation": [0, 2.5, 4.75],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"firstperson_righthand": {
+			"rotation": [0, 45, 0],
+			"translation": [0, 6.5, -1]
+		},
+		"firstperson_lefthand": {
+			"translation": [0, 6, 0]
+		},
+		"ground": {
+			"translation": [0, 5.25, 0]
+		},
+		"gui": {
+			"rotation": [-135, -45, -155],
+			"translation": [2.5, 3.25, 0]
+		},
+		"head": {
+			"translation": [0, 15, 0]
+		},
+		"fixed": {
+			"rotation": [-21.5, 0, 0],
+			"translation": [0, 4.25, -2.5]
+		}
+	},
+	"groups": [
+		{
+			"name": "bone",
+			"origin": [8, 0, 8],
+			"color": 0,
+			"children": [
+				{
+					"name": "RightArm",
+					"origin": [13, 22, 8],
+					"color": 0,
+					"children": []
+				},
+				{
+					"name": "Head",
+					"origin": [8, 24, 8],
+					"color": 0,
+					"children": [0, 1]
+				}
+			]
+		}
+	]
+}

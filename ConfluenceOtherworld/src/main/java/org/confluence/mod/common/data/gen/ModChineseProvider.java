@@ -138,6 +138,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.gel.0", "“既好吃，又易燃”");
         add("tooltip.item.confluence.npc_invitation.0", "使用它，在当前区域邀请一批新的NPC吧！");
         add("tooltip.item.confluence.red_potion.0", "“仅献给配得上的人”");
+        add("tooltip.item.confluence.raw_asphalt.0", "使用搅拌机以制成沥青块");
 
         add("tooltip.item.confluence.slime_crown.0", "右键使用以召唤史莱姆王");
         add("tooltip.item.confluence.slime_crown.1", "一只小巧的王冠，看上去是为那些人畜无害的可爱凝胶生物的加冕仪式所准备的。");
@@ -564,7 +565,11 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.terraStyleArmor", "泰拉样式护甲值");
         add("confluence.configuration.terraStyleFood", "泰拉样式饱食度");
         add("confluence.configuration.healthStyle", "生命值样式");
+        add("confluence.configuration.healthPositionX", "生命条相对位置 X");
+        add("confluence.configuration.healthPositionY", "生命条相对位置 Y");
         add("confluence.configuration.manaStyle", "魔力值样式");
+        add("confluence.configuration.manaPositionX", "魔力条相对位置 X");
+        add("confluence.configuration.manaPositionY", "魔力条相对位置 Y");
         add("confluence.configuration.armorStyle", "护甲值样式");
         add("confluence.configuration.foodStyle", "饱食度样式");
         add("confluence.configuration.armorStyle.legacy_horizontal", "护甲值样式:精致-水平");
@@ -973,11 +978,11 @@ public class ModChineseProvider extends LanguageProvider {
 
         add("condition.confluence.shimmer_transmutation.before_skeletron", "需要的游戏阶段：骷髅王前");
         add("condition.confluence.shimmer_transmutation.after_skeletron", "需要的游戏阶段：骷髅王后");
-        add("condition.confluence.shimmer_transmutation.wall_of_flesh", "需要的游戏阶段：肉后");
-        add("condition.confluence.shimmer_transmutation.mechanical_bosses", "需要的游戏阶段：新三王后");
-        add("condition.confluence.shimmer_transmutation.plantera", "需要的游戏阶段：世花后");
+        add("condition.confluence.shimmer_transmutation.wall_of_flesh", "需要的游戏阶段：血肉墙或血肉山后");
+        add("condition.confluence.shimmer_transmutation.mechanical_bosses", "需要的游戏阶段：机械boss后");
+        add("condition.confluence.shimmer_transmutation.plantera", "需要的游戏阶段：世纪之花后");
         add("condition.confluence.shimmer_transmutation.golem", "需要的游戏阶段：石巨人后");
-        add("condition.confluence.shimmer_transmutation.moon_lord", "需要的游戏阶段：月后");
+        add("condition.confluence.shimmer_transmutation.moon_lord", "需要的游戏阶段：月亮领主后");
         add("condition.confluence.requires_fuel", "需要燃料");
 
         add("container.confluence.sky_mill", "天磨");
@@ -1196,6 +1201,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("dialogs.confluence.guide.13", "拥有一把剑后，你可以试试从史莱姆身上收集一些凝胶。用木棍和凝胶制作火把！");
         add("dialogs.confluence.guide.14", "如果你拥有了一些矿石，你需要将它铸成矿锭，才能用来制作物品。这需要熔炉！");
         add("dialogs.confluence.guide.15", "如果在祭坛上合成晶状体，你也许能够找到方法来召唤一个强大的怪物。不过，最好等到夜晚再用它。");
+        add("dialogs.confluence.guide.jei_check", "在Minecraft里，我帮不到你查询配方，但是我知道一个叫JEI的模组可以帮到你。");
 
         add("dialogs.confluence.nurse.0", "我要和向导认真谈一谈。你一周到底有多少次被熔岩烫成重伤？");
         add("dialogs.confluence.nurse.1", "看到那个在地牢周围转来转去的老人没？他看上去遇到麻烦了。");
@@ -1203,6 +1209,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("dialogs.confluence.nurse.3", "又惹上混混了？");
         add("dialogs.confluence.nurse.4", "别像个孩子似的！我见过更糟的。");
         add("dialogs.confluence.nurse.5", "你这么做的时候疼吗？别那么做。");
+        add("dialogs.confluence.nurse.player_killed_by", "你已经被%1$s杀死%2$s次了？我很好奇是谁拿走了你的旗子。");
 
         add("dialogs.confluence.demolitionist.0", "炸药如今十分火爆。马上买一些！");
         add("dialogs.confluence.demolitionist.1", "今天是个找死的好日子！");
@@ -1709,6 +1716,34 @@ public class ModChineseProvider extends LanguageProvider {
         add("patchouli.confluence.otherworld_note.world.the_crimson.0", "猩红之地是一种邪恶生物群系，有着肉体感染的红色血腥主题，会生成血腥主题的敌怪。*b猩红之地群系会在邪恶生物群系为猩红的世界中自然生成。也可以自行创造猩红之地，当一个区块内的猩红系邪恶方块（例如猩红石块）超过 256 个时，这个区块的生物群系会变为猩红之地。*b相应的，当邪恶方块不足 256 个时，这个区块的群系会变为原本的生物群系。");
         add("patchouli.confluence.otherworld_note.world.the_crimson.1", "*z$(#AA0000)“正在使世界变得血腥”");
         add("patchouli.confluence.otherworld_note.world.the_crimson.2", "*o*t古时，泰拉瑞亚的人民犯下了愚昧的错误：他们屈服于猩红，视其为神明，并献祭自己的血肉。*b*t最终，他们被同化成扭曲的生命，与猩红的野心一同蔓延在大地上。");
+
+        //音效
+        add("confluence.subtitle.transmission", "传送魔法：开启");
+        add("confluence.subtitle.lightsaber_open", "光剑：开启");
+        add("confluence.subtitle.regular_staff_shoot", "魔法：发射");
+        add("confluence.subtitle.regular_staff_shoot_2", "魔法：迸发");
+        add("confluence.subtitle.frozen_broken", "霜冻魔法：破裂");
+        add("confluence.subtitle.frozen_arrow", "霜冻魔法：发射");
+        add("confluence.subtitle.cooldown_recovery", "冷却：准备就绪");
+        add("confluence.subtitle.bow_cooldown_recovery", "弓冷却：蓄力就绪");
+        add("confluence.subtitle.decoupling", "鱼钩：脱钩");
+        add("confluence.subtitle.achievements", "成就：达成");
+        add("confluence.subtitle.shimmer_detachment", "生物：浸出微光");
+        add("confluence.subtitle.shimmer_evolution", "微光：嬗变");
+        add("confluence.subtitle.shimmer_immersion", "生物：浸入微光");
+        add("confluence.subtitle.transmutation_use", "神秘力量：汲取");
+        add("confluence.subtitle.hook_attach", "钩爪：攀附");
+        add("confluence.subtitle.hook_shoot", "钩爪：发射");
+        add("confluence.subtitle.shimmer_item_interactions", "物品：浸入微光");
+        add("confluence.subtitle.star", "坠落之星：闪耀");
+        add("confluence.subtitle.star_lands", "坠落之星：落地");
+        add("confluence.subtitle.terra_operation", "行动：操作");
+        add("confluence.subtitle.life_crystal_use", "生命水晶：汲取");
+        add("confluence.subtitle.mana_star_use", "魔力水晶：汲取");
+        add("confluence.subtitle.coins", "钱币堆：叮当作响");
+        add("confluence.subtitle.coins_small", "少量钱币:拾起");
+        add("confluence.subtitle.coins_medium", "中量钱币:拾起");
+        add("confluence.subtitle.coins_large", "大量钱币:拾起");
 
         //标签
         add("tag.fluid.confluence.fishing_able", "可钓鱼液体");
@@ -2803,6 +2838,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(SwordItems.GOLDEN_SHORT_SWORD.get(), "金短剑");
         add(SwordItems.GOLDEN_BROADSWORD.get(), "金阔剑");
         add(SwordItems.CACTUS_SWORD.get(), "仙人掌剑");
+        add(SwordItems.EBONWOOD_SWORD.get(), "乌木剑");
+        add(SwordItems.SHADEWOOD_SWORD.get(), "暗影木剑");
+        add(SwordItems.ASH_WOOD_SWORD.get(), "白蜡木剑");
+        add(SwordItems.PEARLWOOD_SWORD.get(), "珍珠木剑");
         add(SwordItems.MURAMASA.get(), "村正大刀");
 
 
@@ -2951,9 +2990,6 @@ public class ModChineseProvider extends LanguageProvider {
 
         // Hammers
         add(HammerItems.WOODEN_HAMMER.get(), "木锤");
-        add(HammerItems.RICH_MAHOGANY_HAMMER.get(), "红木锤");
-        add(HammerItems.PALM_WOOD_HAMMER.get(), "棕榈木锤");
-        add(HammerItems.SPRUCE_WOOD_HAMMER.get(), "云杉木锤");
         add(HammerItems.EBONWOOD_HAMMER.get(), "乌木锤");
         add(HammerItems.SHADEWOOD_HAMMER.get(), "暗影木锤");
         add(HammerItems.ASH_WOOD_HAMMER.get(), "白蜡木锤");
@@ -3103,8 +3139,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(ConsumableItems.ADVANCED_COMBAT_TECHNIQUES_VOLUME_TWO.get(), "先进战斗技术：卷二");
         add(ConsumableItems.GOLDEN_LOCK_BOX.get(), "金锁盒");
         add(ConsumableItems.OBSIDIAN_LOCK_BOX.get(), "黑曜石锁盒");
-        add(ConsumableItems.CLOTHIER_VOODOO_DOLL.get(), "服装商巫毒玩偶");
-        add(ConsumableItems.GUIDE_VOODOO_DOLL.get(), "向导巫毒玩偶");
 
         add(TreasureBagItems.KING_SLIME_TREASURE_BAG.get(), "史莱姆王宝藏袋");
         add(TreasureBagItems.EYE_OF_CTHULHU_TREASURE_BAG.get(), "克苏鲁之眼宝藏袋");
@@ -3250,6 +3284,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.SPEAR_TRAP.get(), "长矛机关");
         add(FunctionalBlocks.LEVER.get(), "控制杆");
         add(FunctionalBlocks.WOODEN_SPIKE.get(), "木尖刺");
+        add(ModBlocks.AETHERIUM_CAULDRON.get(), "微光炼药锅");
+        add(ModBlocks.HONEY_CAULDRON.get(), "蜂蜜炼药锅");
 
         add(ChestBlocks.GOLDEN_CHEST.get(), "金箱");
         add(ChestBlocks.DEATH_GOLDEN_CHEST.get(), "死人金箱");
@@ -3442,6 +3478,10 @@ public class ModChineseProvider extends LanguageProvider {
 
         // 弓
         add(BowItems.WOODEN_SHORT_BOW.get(), "木短弓");
+        add(BowItems.EBONWOOD_SHORT_BOW.get(), "乌木短弓");
+        add(BowItems.SHADEWOOD_SHORT_BOW.get(), "暗影木短弓");
+        add(BowItems.ASH_WOOD_SHORT_BOW.get(), "白蜡木短弓");
+        add(BowItems.PEARLWOOD_SHORT_BOW.get(), "珍珠木短弓");
         add(BowItems.COPPER_SHORT_BOW.get(), "铜短弓");
         add(BowItems.TIN_SHORT_BOW.get(), "锡短弓");
         add(BowItems.IRON_SHORT_BOW.get(), "铁短弓");
@@ -3451,6 +3491,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(BowItems.GOLDEN_SHORT_BOW.get(), "金短弓");
         add(BowItems.PLATINUM_SHORT_BOW.get(), "铂金短弓");
 
+        add(BowItems.EBONWOOD_BOW.get(), "乌木弓");
+        add(BowItems.SHADEWOOD_BOW.get(), "暗影木弓");
+        add(BowItems.ASH_WOOD_BOW.get(), "白蜡木弓");
+        add(BowItems.PEARLWOOD_BOW.get(), "珍珠木弓");
         add(BowItems.COPPER_BOW.get(), "铜弓");
         add(BowItems.TIN_BOW.get(), "锡弓");
         add(BowItems.IRON_BOW.get(), "铁弓");
@@ -3589,18 +3633,22 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.ANGLER_HAT.get(), "渔夫帽");
         add(ArmorItems.ANGLER_VEST.get(), "渔夫背心");
         add(ArmorItems.ANGLER_PANTS.get(), "渔夫裤");
-        add(ArmorItems.MOLTEN_CHESTPLATE.get(), "熔岩胸甲");
         add(ArmorItems.MOLTEN_HELMET.get(), "熔岩头盔");
+        add(ArmorItems.MOLTEN_CHESTPLATE.get(), "熔岩胸甲");
         add(ArmorItems.MOLTEN_LEGGINGS.get(), "熔岩护腿");
         add(ArmorItems.MOLTEN_BOOTS.get(), "熔岩靴子");
-        add(ArmorItems.NECRO_CHESTPLATE.get(), "死灵胸甲");
         add(ArmorItems.NECRO_HELMET.get(), "死灵头盔");
+        add(ArmorItems.NECRO_CHESTPLATE.get(), "死灵胸甲");
         add(ArmorItems.NECRO_LEGGINGS.get(), "死灵护腿");
         add(ArmorItems.NECRO_BOOTS.get(), "死灵靴子");
-        add(ArmorItems.JUNGLE_CHESTPLATE.get(), "丛林胸甲");
         add(ArmorItems.JUNGLE_HELMET.get(), "丛林头盔");
+        add(ArmorItems.JUNGLE_CHESTPLATE.get(), "丛林胸甲");
         add(ArmorItems.JUNGLE_LEGGINGS.get(), "丛林护腿");
         add(ArmorItems.JUNGLE_BOOTS.get(), "丛林靴子");
+        add(ArmorItems.SPIDER_HELMET.get(), "蜘蛛头盔");
+        add(ArmorItems.SPIDER_CHESTPLATE.get(), "蜘蛛胸甲");
+        add(ArmorItems.SPIDER_LEGGINGS.get(), "蜘蛛护腿");
+        add(ArmorItems.SPIDER_BOOTS.get(), "蜘蛛靴子");
 
         add(ArmorItems.COBALT_MASK.get(), "钴面具");
         add(ArmorItems.COBALT_HAT.get(), "钴帽");
@@ -3643,6 +3691,11 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.TITANIUM_CHESTPLATE.get(), "钛金胸甲");
         add(ArmorItems.TITANIUM_LEGGINGS.get(), "钛金护腿");
         add(ArmorItems.TITANIUM_BOOTS.get(), "钛金靴子");
+
+        add(ArmorItems.CRYSTAL_ASSASSIN_HELMET.get(), "水晶刺客头盔");
+        add(ArmorItems.CRYSTAL_ASSASSIN_CHESTPLATE.get(), "水晶刺客胸甲");
+        add(ArmorItems.CRYSTAL_ASSASSIN_LEGGINGS.get(), "水晶刺客护腿");
+        add(ArmorItems.CRYSTAL_ASSASSIN_BOOTS.get(), "水晶刺客靴子");
 
         add(ArmorItems.HALLOWED_HEADGEAR.get(), "神圣头饰");
         add(ArmorItems.HALLOWED_HOOD.get(), "神圣兜帽");
@@ -4017,6 +4070,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(AccessoryItems.VORTEX_BOOSTER.get(), "星旋强化翼");
         add(AccessoryItems.SOLAR_WINGS.get(), "日耀之翼");
         add(AccessoryItems.STARDUST_WINGS.get(), "星尘之翼");
+        add(AccessoryItems.CLOTHIER_VOODOO_DOLL.get(), "服装商巫毒玩偶");
+        add(AccessoryItems.GUIDE_VOODOO_DOLL.get(), "向导巫毒玩偶");
 
 
         // 染料

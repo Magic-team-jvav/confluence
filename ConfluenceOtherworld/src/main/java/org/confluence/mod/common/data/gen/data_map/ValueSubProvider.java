@@ -455,9 +455,6 @@ public final class ValueSubProvider {
                 .add(PickaxeAxeItems.PICKSAW, wrap(4, 32, 0));
         appender.create()
                 .add(HammerItems.WOODEN_HAMMER, 10)
-                .add(HammerItems.RICH_MAHOGANY_HAMMER, 10)
-                .add(HammerItems.PALM_WOOD_HAMMER, 10)
-                .add(HammerItems.SPRUCE_WOOD_HAMMER, 10)
                 .add(HammerItems.COPPER_HAMMER, 80)
                 .add(HammerItems.TIN_HAMMER, wrap(1, 20))
                 .add(HammerItems.IRON_HAMMER, wrap(3, 20))
@@ -780,7 +777,6 @@ public final class ValueSubProvider {
                 .add(TCItems.WORM_SCARF, 20000)
                 .add(TCItems.YELLOW_HORSESHOE_BALLOON, 30000)
                 .add(TCItems.WORKSHOP, wrap(2, 0, 0));
-        // todo AccessoryItems
         appender.create()
                 .add(TGItems.BOOMSTICK, wrap(2, 0, 0))
                 // Candy Corn Rifle 10 gold
@@ -873,8 +869,8 @@ public final class ValueSubProvider {
                 .add(ConsumableItems.WET_BOMB, wrap(5, 0))
                 .add(ConsumableItems.LAVA_BOMB, wrap(5, 0))
                 .add(ConsumableItems.HONEY_BOMB, wrap(5, 0))
-                .add(ConsumableItems.CLOTHIER_VOODOO_DOLL, wrap(2, 0))
-                .add(ConsumableItems.GUIDE_VOODOO_DOLL, wrap(2, 0))
+                .add(AccessoryItems.CLOTHIER_VOODOO_DOLL, wrap(2, 0))
+                .add(AccessoryItems.GUIDE_VOODOO_DOLL, wrap(2, 0))
                 .add(ToolItems.BUG_NET, wrap(5, 0))
                 .add(ToolItems.GOLDEN_BUG_NET, wrap(5, 0, 0));
         appender.create()
@@ -939,6 +935,10 @@ public final class ValueSubProvider {
                 .add(ArmorItems.PLATINUM_CHESTPLATE, wrap(75, 0))
                 .add(ArmorItems.PLATINUM_LEGGINGS, wrap(60, 0))
                 .add(ArmorItems.PLATINUM_BOOTS, wrap(60, 0))
+                .add(Items.DIAMOND_HELMET, wrap(60, 0))
+                .add(Items.DIAMOND_CHESTPLATE, wrap(60, 0))
+                .add(Items.DIAMOND_LEGGINGS, wrap(60, 0))
+                .add(Items.DIAMOND_BOOTS, wrap(60, 0))
                 .add(ArmorItems.FOSSIL_HELMET, wrap(30, 0))
                 .add(ArmorItems.FOSSIL_CHESTPLATE, wrap(50, 0))
                 .add(ArmorItems.FOSSIL_LEGGINGS, wrap(40, 0))
@@ -1273,6 +1273,7 @@ public final class ValueSubProvider {
                 .add(TreasureBagItems.SKELETRON_TREASURE_BAG, wrap(3, 0, 0))
                 .add(TreasureBagItems.WALL_OF_FLESH_TREASURE_BAG, wrap(9, 50, 0));
         appender.create()
+                .add(AccessoryItems.PAINT_SPRAYER, wrap(2, 0, 0))
                 .add(AccessoryItems.LUCKY_COIN, wrap(1, 0, 0))
                 .add(AccessoryItems.ADHESIVE_BANDAGE, wrap(2, 0, 0))
                 .add(AccessoryItems.MEDICATED_BANDAGE, wrap(2, 0, 0))
@@ -1426,11 +1427,11 @@ public final class ValueSubProvider {
                 .add(FunctionalBlocks.LEVER.get(), wrap(6, 0))
                 .add(FunctionalBlocks.SIGNAL_ADAPTER.get(), wrap(8, 0))
                 .add(FunctionalBlocks.EVER_POWERED_RAIL.get(), 40)
-                .add(FunctionalBlocks.TIMERS_BLOCK_1_1.get(),wrap(20, 0))
-                .add(FunctionalBlocks.TIMERS_BLOCK_3_1.get(),wrap(20, 0))
-                .add(FunctionalBlocks.TIMERS_BLOCK_5_1.get(),wrap(20, 0))
-                .add(FunctionalBlocks.TIMERS_BLOCK_1_2.get(),wrap(40, 0))
-                .add(FunctionalBlocks.TIMERS_BLOCK_1_4.get(),wrap(40, 0));
+                .add(FunctionalBlocks.TIMERS_BLOCK_1_1.get(), wrap(20, 0))
+                .add(FunctionalBlocks.TIMERS_BLOCK_3_1.get(), wrap(20, 0))
+                .add(FunctionalBlocks.TIMERS_BLOCK_5_1.get(), wrap(20, 0))
+                .add(FunctionalBlocks.TIMERS_BLOCK_1_2.get(), wrap(40, 0))
+                .add(FunctionalBlocks.TIMERS_BLOCK_1_4.get(), wrap(40, 0));
         WaystonesHelper.appendValue(appender.create());
     }
 

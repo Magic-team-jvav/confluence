@@ -28,7 +28,7 @@ public class HotlineFishingHookItem extends AbstractFishingPole {
     }
 
     @Override
-    protected FishingHook getHook(ItemStack itemStack, Player player, Level level, int luckBonus, int speedBonus) {
+    public FishingHook getHook(ItemStack itemStack, Player player, Level level, int luckBonus, int speedBonus) {
         return new HotlineFishingHook(player, level, luckBonus, speedBonus);
     }
 }

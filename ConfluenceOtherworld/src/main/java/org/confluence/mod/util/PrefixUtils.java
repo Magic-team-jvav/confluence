@@ -30,13 +30,14 @@ public final class PrefixUtils {
     }
 
     public static boolean couldReforge(ItemStack itemStack) {
-        return itemStack.is(Tags.Items.MELEE_WEAPON_TOOLS) ||
-                itemStack.is(Tags.Items.MINING_TOOL_TOOLS) ||
-                itemStack.is(Tags.Items.RANGED_WEAPON_TOOLS) ||
-                itemStack.is(TCTags.ACCESSORY) ||
-                itemStack.is(ModTags.Items.MANA_WEAPON) ||
-                itemStack.is(TGTags.GUN) ||
-                itemStack.is(ModTags.Items.PREFIX_UNIVERSAL_ONLY);
+        return !itemStack.is(ModTags.Items.UNABLE_TO_APPLY_PREFIX) &&
+                (itemStack.is(Tags.Items.MELEE_WEAPON_TOOLS) ||
+                        itemStack.is(Tags.Items.MINING_TOOL_TOOLS) ||
+                        itemStack.is(Tags.Items.RANGED_WEAPON_TOOLS) ||
+                        itemStack.is(TCTags.ACCESSORY) ||
+                        itemStack.is(ModTags.Items.MANA_WEAPON) ||
+                        itemStack.is(TGTags.GUN) ||
+                        itemStack.is(ModTags.Items.PREFIX_UNIVERSAL_ONLY));
     }
 
     public static void initPrefix(RandomSource random, ItemStack itemStack) {

@@ -29,6 +29,7 @@ import org.confluence.mod.common.loot.DateLootItemCondition;
 import org.confluence.mod.mixin.accessor.EntityLootSubProviderAccessor;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terraentity.init.TEEntities;
+import org.confluence.terraentity.init.entity.TEAnimals;
 import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
 import org.confluence.terraentity.init.entity.TENpcEntities;
@@ -137,6 +138,10 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(TCItems.TALLY_COUNTER))
                 )
                 .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(AccessoryItems.CLOTHIER_VOODOO_DOLL).setWeight(33))
+                        .add(EmptyLootItem.emptyItem().setWeight(9967))
+                )
+                .withPool(LootPool.lootPool()
                         .add(boneWeight2).apply(count1To2).apply(random0To1)
                 )
         );
@@ -145,6 +150,10 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(MaterialItems.DUNGEON_DEMON_BONE).apply(count2To6).setWeight(97)).apply(random0To1)
                         .add(LootItem.lootTableItem(ToolItems.GOLDEN_DUNGEON_KEY).setWeight(2))
                         .add(LootItem.lootTableItem(TCItems.TALLY_COUNTER))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(AccessoryItems.CLOTHIER_VOODOO_DOLL).setWeight(33))
+                        .add(EmptyLootItem.emptyItem().setWeight(9967))
                 )
                 .withPool(LootPool.lootPool()
                         .add(boneWeight2).apply(count1To2).apply(random0To1)
@@ -157,6 +166,10 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(TCItems.TALLY_COUNTER))
                 )
                 .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(AccessoryItems.CLOTHIER_VOODOO_DOLL).setWeight(33))
+                        .add(EmptyLootItem.emptyItem().setWeight(9967))
+                )
+                .withPool(LootPool.lootPool()
                         .add(boneWeight2).apply(count1To2).apply(random0To1)
                 )
         );
@@ -165,6 +178,10 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(MaterialItems.DUNGEON_DEMON_BONE).apply(count2To6).setWeight(97)).apply(random0To1)
                         .add(LootItem.lootTableItem(ToolItems.GOLDEN_DUNGEON_KEY).setWeight(2))
                         .add(LootItem.lootTableItem(TCItems.TALLY_COUNTER))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(AccessoryItems.CLOTHIER_VOODOO_DOLL).setWeight(33))
+                        .add(EmptyLootItem.emptyItem().setWeight(9967))
                 )
                 .withPool(LootPool.lootPool()
                         .add(boneWeight2).apply(count1To2).apply(random0To1)
@@ -177,6 +194,10 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(TCItems.TALLY_COUNTER))
                 )
                 .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(AccessoryItems.CLOTHIER_VOODOO_DOLL).setWeight(33))
+                        .add(EmptyLootItem.emptyItem().setWeight(9967))
+                )
+                .withPool(LootPool.lootPool()
                         .add(boneWeight2).apply(count1To2).apply(random0To1)
                 )
         );
@@ -187,6 +208,10 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(TCItems.TALLY_COUNTER))
                 )
                 .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(AccessoryItems.CLOTHIER_VOODOO_DOLL).setWeight(33))
+                        .add(EmptyLootItem.emptyItem().setWeight(9967))
+                )
+                .withPool(LootPool.lootPool()
                         .add(boneWeight2).apply(count1To2).apply(random0To1)
                 )
         );
@@ -195,6 +220,10 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(MaterialItems.DUNGEON_DEMON_BONE).apply(count2To6).setWeight(97)).apply(random0To1)
                         .add(LootItem.lootTableItem(ToolItems.GOLDEN_DUNGEON_KEY).setWeight(2))
                         .add(LootItem.lootTableItem(TCItems.TALLY_COUNTER))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(AccessoryItems.CLOTHIER_VOODOO_DOLL).setWeight(33))
+                        .add(EmptyLootItem.emptyItem().setWeight(9967))
                 )
                 .withPool(LootPool.lootPool()
                         .add(boneWeight2).apply(count1To2).apply(random0To1)
@@ -476,7 +505,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         );
         add(TEMonsterEntities.VOODOO_DEMON.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/voodoo_demon"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ConsumableItems.GUIDE_VOODOO_DOLL))
+                        .add(LootItem.lootTableItem(AccessoryItems.GUIDE_VOODOO_DOLL))
                 )
         );
         add(TEMonsterEntities.HORNET.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/hornet"), LootTable.lootTable()
@@ -524,6 +553,42 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TEBoomerangItems.COMBAT_WRENCH))
                         .add(EmptyLootItem.emptyItem().setWeight(7))
+                )
+        );
+        add(TEAnimals.DUCK.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/duck"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FoodItems.RAW_DUCK).apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot())).apply(random0To1)
+                        )
+                )
+        );
+        add(TEAnimals.BIRD.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/bird"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FoodItems.RAW_BIRD).apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot())).apply(random0To1)
+                        )
+                )
+        );
+        add(TEAnimals.BLUE_JAY.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/blue_jay"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FoodItems.RAW_BIRD).apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot())).apply(random0To1)
+                        )
+                )
+        );
+        add(TEAnimals.CARDINAL.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/cardinal"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FoodItems.RAW_BIRD).apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot())).apply(random0To1)
+                        )
+                )
+        );
+        add(TEAnimals.BUNNY.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/bunny"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(Items.RABBIT).apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot())).apply(random0To1)
+                        )
+                )
+        );
+        add(TEAnimals.SQUIRREL.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/squirrel"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FoodItems.RAW_SQUIRREL).apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot())).apply(random0To1)
+                        )
                 )
         );
     }

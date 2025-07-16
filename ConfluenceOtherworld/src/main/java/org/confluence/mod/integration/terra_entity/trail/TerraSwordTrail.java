@@ -1,5 +1,6 @@
 package org.confluence.mod.integration.terra_entity.trail;
 
+import com.github.tartaricacid.touhoulittlemaid.geckolib3.core.controller.AnimationController;
 import com.mojang.blaze3d.platform.GlConst;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
@@ -18,6 +19,8 @@ import net.neoforged.api.distmarker.OnlyIn;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.projectile.sword.NightEdgeProjectile;
 import org.confluence.terraentity.entity.util.trail.ITrail;
+import org.confluence.terraentity.entity.util.trail.PositionPoseProperties;
+import org.confluence.terraentity.entity.util.trail.TrailProperties;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
@@ -29,24 +32,47 @@ import static net.minecraft.client.renderer.RenderStateShard.*;
 
 public class TerraSwordTrail implements ITrail<NightEdgeProjectile> {
     TrailProperties properties;
+    public Queue<PositionPoseProperties> trailsQueue;
 
-    public TerraSwordTrail(int size, float widthScale, int color) {
+    public TerraSwordTrail(float size, float widthScale, int color) {
         this.properties = new TrailProperties(size, widthScale, 5, color, color);
-
+        this.trailsQueue = new java.util.LinkedList<>();
     }
 
     @Override
     public void generateTrail(NightEdgeProjectile holder, int ticks) {
-        if(holder.trailQueue.size() >= 8){
-            holder.trailQueue.poll();
+        if(trailsQueue.size() >= 100){
+            trailsQueue.poll();
         }
 
-        if(holder.TIME_EXISTENCE - ticks < 4){
-            holder.trailQueue.poll();
+        if(holder.TIME_EXISTENCE - ticks <= 0){
+            trailsQueue.poll();
+        }else {
+
+            if (ticks > 1 && holder.getOwner() != null) {
+                trailsQueue.add(new PositionPoseProperties(holder.position().subtract(holder.getOwner().position()),
+                        holder.getXRot() * 0.017453292F, holder.getYRot() * 0.017453292F));
+            }
+        }
+    }
+
+
+    public void generateTrail(NightEdgeProjectile holder, int ticks, Vec3 entityPos, float partialTicks) {
+        if(trailsQueue.size() >= 100){
+            trailsQueue.poll();
         }
 
-        if(ticks > 1 && holder.getOwner() != null) {
-            holder.trailQueue.add(holder.position().subtract(holder.getOwner().position()));
+        if(holder.TIME_EXISTENCE - ticks <= 4){
+            trailsQueue.poll();
+        }else {
+
+            float lerpRotx = Mth.lerp(partialTicks, holder.xRotO, holder.getXRot());
+            float lerpRoty = Mth.lerp(partialTicks, holder.yRotO, holder.getYRot());
+
+            if (ticks > 1 && holder.getOwner() != null) {
+                trailsQueue.add(new PositionPoseProperties(entityPos,
+                        lerpRotx * 0.017453292F, lerpRoty * 0.017453292F));
+            }
         }
     }
 
@@ -56,19 +82,9 @@ public class TerraSwordTrail implements ITrail<NightEdgeProjectile> {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public void renderTrail(NightEdgeProjectile holder, Queue<Vec3> trailsQueue, Vec3 entityPos, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
-        RenderType main = RenderType.create("entity_cutout_no_cull_custom", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 1536, false, false,
-                RenderType.CompositeState.builder()
-                        .setShaderState(RENDERTYPE_ENTITY_CUTOUT_NO_CULL_SHADER)
-                        .setTextureState(new RenderStateShard.TextureStateShard(Confluence.asResource("textures/mask/sword.png"), true, false))
-                        .setTransparencyState(NO_TRANSPARENCY)
-                        .setCullState(NO_CULL)
-                        .setLightmapState(LIGHTMAP)
-                        .setOverlayState(OVERLAY)
-                        .setWriteMaskState(COLOR_WRITE)
-                        .createCompositeState(true));
+    public void renderTrail(NightEdgeProjectile holder, Vec3 entityPos, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
 
-        this.actualRender(holder, trailsQueue, entityPos, poseStack, bufferSource, packedLight, main);
+
         RenderType glow = RenderType.create("entity_translucent_emissive", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 1536, true, false,
                 RenderType.CompositeState.builder()
                         .setShaderState(RENDERTYPE_ENTITY_TRANSLUCENT_EMISSIVE_SHADER)
@@ -79,13 +95,15 @@ public class TerraSwordTrail implements ITrail<NightEdgeProjectile> {
 //                        .setLightmapState(LIGHTMAP)
                         .setOverlayState(OVERLAY)
                         .createCompositeState(false));
-        poseStack.scale(1.1f, 1.1f, 1.1f);
         this.actualRender(holder, trailsQueue, entityPos, poseStack, bufferSource, packedLight, glow);
+//        poseStack.scale(1.2f, 1.2f, 1.2f);
+//        this.actualRender(holder, trailsQueue, entityPos, poseStack, bufferSource, packedLight, glow);
     }
 
     @OnlyIn(Dist.CLIENT)
-    protected void actualRender(NightEdgeProjectile holder, Queue<Vec3> trailsQueue, Vec3 entityPos, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, RenderType renderType){
-        Iterator<Vec3> trails = trailsQueue.iterator();
+    protected void actualRender(NightEdgeProjectile holder, Queue<PositionPoseProperties> trailsQueue, Vec3 entityPos, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, RenderType renderType){
+        Iterator<PositionPoseProperties> trails = trailsQueue.iterator();
+
         int size = trailsQueue.size();
 
         TrailProperties properties = getTrailProperties();
@@ -93,7 +111,6 @@ public class TerraSwordTrail implements ITrail<NightEdgeProjectile> {
 
         poseStack.pushPose();
         Matrix4f matrix4f = poseStack.last().pose();
-//        VertexConsumer buffer = bufferSource.getBuffer(ShaderUtil.TRAIL_RENDER_TYPE);
         VertexConsumer buffer = bufferSource.getBuffer(renderType);
 
         int color = 0XFFFFFF;
@@ -117,15 +134,16 @@ public class TerraSwordTrail implements ITrail<NightEdgeProjectile> {
         Vec3 o2 = null;
         Vec3 o3 = null;
         float _progress = 0;
-
-        Vec3 lastPos = trails.next().subtract(entityPos);
+        PositionPoseProperties p = trails.next();
+        Vec3 lastPos = p.position.subtract(entityPos);
         int i = 0;
 
         while (trails.hasNext()) {
             Vec3 pos0 = lastPos;
-            Vec3 pos1 = trails.next().subtract(entityPos);
+            p = trails.next();
+            Vec3 pos1 = p.position.subtract(entityPos);
 
-            float progress = i / (float) size * 0.6f + 0.4f;
+            float progress = i / (float) size;
             float width = properties.widthScale() * progress;
             int alpha = (int) (200 * progress);
             if(!trails.hasNext()){
@@ -137,8 +155,9 @@ public class TerraSwordTrail implements ITrail<NightEdgeProjectile> {
             int argb = FastColor.ARGB32.color(alpha, lerpRed, lerpGreen, lerpBlue);
 
 //            Vec3 side = dir.cross(camDir).normalize();
-            float rotx = holder.getXRot() * 0.017453292F;
-            float roty = -holder.getYRot() * 0.017453292F;
+            float rotx = p.xrot;
+            float roty = -p.yrot;
+
             Vector3f d = new Vector3f(0,0,1);
             new Quaternionf().rotateY(roty).rotateX(rotx).transform(d);
 

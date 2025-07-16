@@ -21,7 +21,7 @@ public class ReinforcedFishingPole extends AbstractFishingPole {
     }
 
     @Override
-    protected FishingHook getHook(ItemStack itemStack, Player player, Level level, int luckBonus, int speedBonus) {
+    public FishingHook getHook(ItemStack itemStack, Player player, Level level, int luckBonus, int speedBonus) {
         return new BaseFishingHook(player, level, luckBonus, speedBonus, BaseFishingHook.Variant.REINFORCED);
     }
 }

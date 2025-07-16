@@ -10,11 +10,14 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.ai.village.poi.PoiManager;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.Biomes;
-import net.minecraft.world.level.chunk.*;
+import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.chunk.LevelChunkSection;
+import net.minecraft.world.level.chunk.PalettedContainerRO;
+import net.minecraft.world.level.chunk.ProtoChunk;
 import net.minecraft.world.level.chunk.storage.ChunkSerializer;
 import net.minecraft.world.level.chunk.storage.RegionStorageInfo;
 import org.confluence.mod.mixed.IChunkSection;
+import org.confluence.mod.util.DynamicBiomeUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -40,7 +43,7 @@ public abstract class ChunkSerializerMixin {
                 logErrors(pos, k, p_188274_);
             }).getOrThrow(ChunkSerializer.ChunkReadException::new);
         } else {
-            bakBiome = new PalettedContainer<>(registry.asHolderIdMap(), registry.getHolderOrThrow(Biomes.PLAINS), PalettedContainer.Strategy.SECTION_BIOMES);
+            bakBiome = DynamicBiomeUtils.judgeBackupBiome(levelchunksection);
         }
         ((IChunkSection) levelchunksection).confluence$setBackupBiome(bakBiome);
     }

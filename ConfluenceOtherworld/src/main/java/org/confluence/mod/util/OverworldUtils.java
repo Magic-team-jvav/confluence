@@ -10,6 +10,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.features.TreeFeatures;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
@@ -69,6 +70,7 @@ public final class OverworldUtils {
 
     public static void replaceTree(FeaturePlaceContext<TreeConfiguration> context, CallbackInfoReturnable<Boolean> cir) {
         WorldGenLevel level = context.level();
+        if (!(level instanceof WorldGenRegion)) return;
         BlockPos origin = context.origin();
         if (level.getBiome(origin).is(ModTags.Biomes.VANITY_TREES_REPLACEABLE)) {
             RandomSource random = context.random();

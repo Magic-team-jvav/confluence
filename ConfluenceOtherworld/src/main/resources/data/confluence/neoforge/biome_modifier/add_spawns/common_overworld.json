@@ -88,31 +88,37 @@
         },
         {
             "type": "terra_entity:bunny",
-            "weight": 25,
+            "weight": 10,
             "minCount": 1,
             "maxCount": 2
         },
         {
             "type": "terra_entity:squirrel",
-            "weight": 25,
+            "weight": 10,
+            "minCount": 1,
+            "maxCount": 2
+        },
+        {
+            "type": "terra_entity:duck",
+            "weight": 10,
             "minCount": 1,
             "maxCount": 2
         },
         {
             "type": "terra_entity:bird",
-            "weight": 25,
+            "weight": 10,
             "minCount": 1,
             "maxCount": 2
         },
         {
             "type": "terra_entity:blue_jay",
-            "weight": 25,
+            "weight": 10,
             "minCount": 1,
             "maxCount": 2
         },
         {
             "type": "terra_entity:cardinal",
-            "weight": 25,
+            "weight": 10,
             "minCount": 1,
             "maxCount": 2
         }

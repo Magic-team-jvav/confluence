@@ -141,13 +141,14 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.gel.0", "'Both tasty and flammable'");
         add("tooltip.item.confluence.npc_invitation.0", "Use it to invite a new batch of NPCs in the current area!");
         add("tooltip.item.confluence.red_potion.0", "'Only for those who are worthy'");
-        add("tooltip.item.confluence.mug.0", "Collect ale at the barrel");
+        add("tooltip.item.confluence.mug.0", "Collect ale at the Keg");
         add("tooltip.item.confluence.hellforge.0", "Used for smelting hellstone materials. Smelting regular minerals has a residual heat effect.");
         add("tooltip.item.confluence.magic_conch.0", "Right-click a block in the Beach biome to make the sea remember you");
         add("tooltip.item.confluence.demon_conch.0", "Right-click a Nether Portal block to make the Nether remember you.");
         add("tooltip.item.confluence.bait.common.0", "When placed in the inventory, it will be automatically used while fishing, prioritizing the bait in the off-hand.");
         add("tooltip.item.confluence.crate.common.0", "Hold the right mouse button to open, and hold Shift while clicking the right mouse button to place.");
         add("tooltip.item.confluence.right_click.common.0", "Hold the right mouse button to open.");
+        add("tooltip.item.confluence.raw_asphalt.0", "Use a Blend-O-Matic to make asphalt blocks");
 
         add("tooltip.item.confluence.slime_crown.0", "Right - click to summon the King Slime");
         add("tooltip.item.confluence.slime_crown.1", "A small crown that seems to be prepared for the coronation ceremony of those cute and harmless gel - like creatures.");
@@ -570,7 +571,11 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.configuration.terraStyleArmor", "Terra Style Armor");
         add("confluence.configuration.terraStyleFood", "Terra Style Food Saturation");
         add("confluence.configuration.healthStyle", "Health Style");
+        add("confluence.configuration.healthPositionX", "Health Relative Position X");
+        add("confluence.configuration.healthPositionY", "Health Relative Position Y");
         add("confluence.configuration.manaStyle", "Mana Style");
+        add("confluence.configuration.manaPositionX", "Mana Relative Position X");
+        add("confluence.configuration.manaPositionY", "Mana Relative Position Y");
         add("confluence.configuration.armorStyle", "Armor Style");
         add("confluence.configuration.foodStyle", "Food Saturation Style");
         add("confluence.configuration.armorStyle.legacy_horizontal", "Armor Style: Elegant - Horizontal");
@@ -1151,6 +1156,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("dialogs.confluence.guide.13", "After you have a sword, you can try to collect some gel from slimes. Use wooden sticks and gel to make torches!");
         add("dialogs.confluence.guide.14", "If you have some ores, you need to smelt them into ingots before you can use them to make items. This requires a furnace!");
         add("dialogs.confluence.guide.15", "If you combine lenses on the altar, you may be able to find a way to summon a powerful monster. However, it's better to use it at night.");
+        add("dialogs.confluence.guide.jei_check", "In Minecraft, I can't help you look up recipes, but I know a mod called JEI that can help you.");
 
         add("dialogs.confluence.nurse.0", "I need to have a serious talk with the Guide. How many times a week do you get severely burned by lava exactly?");
         add("dialogs.confluence.nurse.1", "See that old man wandering around the dungeon? He looks like he's in trouble.");
@@ -1158,6 +1164,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("dialogs.confluence.nurse.3", "Got into trouble with the thugs again?");
         add("dialogs.confluence.nurse.4", "Don't be such a child! I've seen worse.");
         add("dialogs.confluence.nurse.5", "Did it hurt when you did that? Don't do that.");
+        add("dialogs.confluence.nurse.player_killed_by", "Have you been killed %2$s times by %1$s? I'm curious who took your flag");
 
         add("dialogs.confluence.demolitionist.0", "Explosives are really popular nowadays. Buy some right away!");
         add("dialogs.confluence.demolitionist.1", "Today is a great day to court death!");
@@ -1671,7 +1678,33 @@ public class ModEnglishProvider extends LanguageProvider {
         add("patchouli.confluence.otherworld_note.world.the_crimson.0", "The Crimson is an evil biome with a red bloody theme of physical infection that generates bloody enemies.*bThe Crimson group will naturally spawn in a world where the evil biome is scarlet. You can also create The Crimson by yourself. When there are more than 256 scarlet evil blocks (such as scarlet stones) in a block, the biome of this block will become The Crimson.*bCorrespondingly, when there are less than 256 evil blocks, the cluster of this block will become the original biome.");
         add("patchouli.confluence.otherworld_note.world.the_crimson.1", "*z$(#AA0000)“Making the world bloody”");
         add("patchouli.confluence.otherworld_note.world.the_crimson.2", "*o*tIn ancient times, the people of Terraria made a foolish mistake: they succumbed to scarlet, regarded it as a god, and sacrificed their flesh and blood.*b*tEventually, they are assimilated into twisted lives, spreading across the earth with scarlet ambitions.");
-
+        // sound
+        add("confluence.subtitle.transmission", "Transmission Magic: Activated");
+        add("confluence.subtitle.lightsaber_open", "Lightsaber: Activated");
+        add("confluence.subtitle.regular_staff_shoot", "Magic: Cast");
+        add("confluence.subtitle.regular_staff_shoot_2", "Magic: Burst");
+        add("confluence.subtitle.frozen_broken", "Frost Magic: Shatter");
+        add("confluence.subtitle.frozen_arrow", "Frost Magic: Fire");
+        add("confluence.subtitle.cooldown_recovery", "Cooldown: Ready");
+        add("confluence.subtitle.bow_cooldown_recovery", "Bow Cooldown: Charged");
+        add("confluence.subtitle.decoupling", "Hook: Detach");
+        add("confluence.subtitle.achievements", "Achievement: Unlocked");
+        add("confluence.subtitle.shimmer_detachment", "Creature: Exuding Shimmer");
+        add("confluence.subtitle.shimmer_evolution", "Shimmer: Transmute");
+        add("confluence.subtitle.shimmer_immersion", "Creature: Immersed in Shimmer");
+        add("confluence.subtitle.transmutation_use", "Mystic Power: Channel");
+        add("confluence.subtitle.hook_attach", "Grappling Hook: Attached");
+        add("confluence.subtitle.hook_shoot", "Grappling Hook: Fired");
+        add("confluence.subtitle.shimmer_item_interactions", "Item: Immersed in Shimmer");
+        add("confluence.subtitle.star", "Falling Star: Shine");
+        add("confluence.subtitle.star_lands", "Falling Star: Landed");
+        add("confluence.subtitle.terra_operation", "Action: Operate");
+        add("confluence.subtitle.life_crystal_use", "Life Crystal: Consume");
+        add("confluence.subtitle.mana_star_use", "Mana Star: Consume");
+        add("confluence.subtitle.coins", "Coins: Jingle");
+        add("confluence.subtitle.coins_small", "Small Coins: Collected");
+        add("confluence.subtitle.coins_medium", "Medium Coins: Collected");
+        add("confluence.subtitle.coins_large", "Large Coins: Collected");
         // Tags
         add("tag.fluid.confluence.fishing_able", "Can Fishing Fluid");
         add("tag.fluid.confluence.not_lava", "Not Lava");

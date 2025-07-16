@@ -87,6 +87,11 @@ public class BewitchingTableBlock extends HorizontalDirectionalWithVerticalFourP
         };
     }
 
+    @Override
+    protected RenderShape getRenderShape(BlockState state) {
+        return RenderShape.ENTITYBLOCK_ANIMATED;
+    }
+
     public static class Entity extends BlockEntity implements GeoBlockEntity {
         private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
         public final boolean isBase;

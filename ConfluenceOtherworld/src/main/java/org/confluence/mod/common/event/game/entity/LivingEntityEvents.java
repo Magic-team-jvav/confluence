@@ -60,11 +60,15 @@ import org.confluence.mod.network.s2c.DeathMotionPacketS2C;
 import org.confluence.mod.network.s2c.VisibilityPacketS2C;
 import org.confluence.mod.util.*;
 import org.confluence.terra_curio.common.init.TCAttributes;
+import org.confluence.terra_curio.util.TCUtils;
 import org.confluence.terraentity.entity.ai.Boss;
+import org.confluence.terraentity.entity.boss.Skeletron;
 import org.confluence.terraentity.entity.monster.slime.GoldenSlime;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 import org.confluence.terraentity.init.TETags;
+import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
+import org.confluence.terraentity.init.entity.TENpcEntities;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -75,46 +79,54 @@ import static org.confluence.mod.util.PlayerUtils.receiveMana;
 public final class LivingEntityEvents {
     @SubscribeEvent
     public static void livingDeath(LivingDeathEvent event) {
-        LivingEntity living = event.getEntity();
+        LivingEntity victom = event.getEntity();
         DamageSource damageSource = event.getSource();
 
-        if (living.level() instanceof ServerLevel level) {
-            if (living instanceof Enemy && damageSource.getEntity() instanceof ServerPlayer) {
+        if (victom.level() instanceof ServerLevel level) {
+            Entity attacker = damageSource.getEntity();
+            if (victom instanceof Enemy && attacker instanceof ServerPlayer) {
                 if (CommonConfigs.DROP_MONEY.get() && level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)) {
-                    ModUtils.enemyDropMoney(living, level);
+                    ModUtils.enemyDropMoney(victom, level);
                 }
             }
-            if (damageSource.getEntity() != null && damageSource.getEntity().getType().is(TETags.EntityTypes.CORRUPT)) {
-                NatureBlocks.DECOMPOSE_THE_SOURCE_EXTRACT_BLOCK.get().checkVisibilityAndSummonEntity(level, living);
+            if (attacker != null && attacker.getType().is(TETags.EntityTypes.CORRUPT)) {
+                NatureBlocks.DECOMPOSE_THE_SOURCE_EXTRACT_BLOCK.get().checkVisibilityAndSummonEntity(level, victom);
             }
-            if (living instanceof Boss boss && boss.shouldShowMessage()) {
-                ModUtils.bossDeath(level, living);
+            if (victom instanceof Boss boss && boss.shouldShowMessage()) {
+                ModUtils.bossDeath(level, victom);
             }
-            if (living instanceof ServerPlayer serverPlayer) {
+            if (victom instanceof ServerPlayer serverPlayer) {
                 PlayerUtils.dropMoney(serverPlayer);
                 TombstoneBoulderEntity.createTombstone(serverPlayer);
             }
-            if (living.getRandom().nextFloat() < 0.011F) {
-                Item holidayGift = DateUtils.getHolidayGift(living.getRandom());
+            if (victom.getRandom().nextFloat() < 0.011F) {
+                Item holidayGift = DateUtils.getHolidayGift(victom.getRandom());
                 if (holidayGift != Items.AIR) {
-                    LibUtils.createItemEntity(holidayGift.getDefaultInstance(), living.position(), level, 0);
+                    LibUtils.createItemEntity(holidayGift.getDefaultInstance(), victom.position(), level, 0);
                 }
             }
             for (ServerPlayer serverPlayer : level.players()) {
-                if (serverPlayer.position().distanceToSqr(living.position()) > 32 * 32) continue;
+                if (serverPlayer.position().distanceToSqr(victom.position()) > 32 * 32) continue;
                 if (serverPlayer.getData(ModAttachmentTypes.MANA_STORAGE).canReceive() && serverPlayer.getRandom().nextFloat() < 0.083F) {
-                    LibUtils.createItemEntity(DateUtils.getStarItem().getDefaultInstance(), living.position(), level, 0);
+                    LibUtils.createItemEntity(DateUtils.getStarItem().getDefaultInstance(), victom.position(), level, 0);
                     break;
                 }
             }
-            if (living instanceof AbstractTerraNPC npc) {
+            if (victom instanceof AbstractTerraNPC npc) {
                 NPCSpawner.INSTANCE.onNPCRemoved(npc);
+                if (attacker != null && npc.getType() == TENpcEntities.CLOTHIER.get() &&
+                        attacker instanceof Player player &&
+                        level.getDayTime() % 24000 > 12000 && // 晚上杀死才生成
+                        TCUtils.hasAccessoriesType(player, AccessoryItems.CLOTHIER$KILLER)
+                ) {
+                    ModUtils.summonBoss(level, attacker.position(), new Skeletron(TEBossEntities.SKELETRON.get(), level));
+                }
             }
-            if (living.hasEffect(ModEffects.BLOOD_BUTCHERED)) {
-                NatureBlocks.BLOODTHIRST_CRYSTALLIZED_BLOCK.get().checkVisibility(level, living);
+            if (victom.hasEffect(ModEffects.BLOOD_BUTCHERED)) {
+                NatureBlocks.BLOODTHIRST_CRYSTALLIZED_BLOCK.get().checkVisibility(level, victom);
             }
-            DeathMotionPacketS2C.sendToAll(living);
-            NoTraps.entityDropsGrenade(living);
+            DeathMotionPacketS2C.sendToAll(victom);
+            NoTraps.entityDropsGrenade(victom);
         }
     }
 

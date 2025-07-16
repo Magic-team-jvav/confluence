@@ -451,6 +451,8 @@ public final class BlockSubProvider extends BlockLootSubProvider {
 
         dropSelf(GRANITE.get());
 
+        dropSelf(REMAINS_BLOCK.get());
+
         dropSelf(AETHERIUM_BLOCK.get());
         dropSelf(DARK_AETHERIUM_BLOCK.get());
 

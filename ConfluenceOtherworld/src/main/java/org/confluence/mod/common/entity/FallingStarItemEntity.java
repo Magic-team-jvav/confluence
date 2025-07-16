@@ -23,6 +23,7 @@ import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.item.MaterialItems;
+import org.confluence.mod.util.OverworldUtils;
 import org.mesdag.particlestorm.PSGameClient;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 
@@ -122,6 +123,7 @@ public class FallingStarItemEntity extends ItemEntity {
             RandomSource random = level.random;
             Set<Vec3> cache = new HashSet<>();
             for (ServerPlayer serverPlayer : level.players()) {
+                if (serverPlayer.level().dimension() != OverworldUtils.dimension()) continue;
                 if (cache.stream().anyMatch(pos -> serverPlayer.distanceToSqr(pos) < Mth.square(serverPlayer.requestedViewDistance() * 16))) {
                     continue;
                 }

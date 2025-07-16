@@ -61,6 +61,18 @@ public final class ModTags {
         public static final TagKey<Block> CORRODED_WORM_ROOTS_BASE_BLOCK = register("corroded_worm_roots_base_block");
         public static final TagKey<Block> DECOMPOSE_THE_SOURCE_EXTRACT_BASE_BLOCK = register("decompose_the_source_extract_base_block");
 
+        //
+        public static final TagKey<Block> CRIMSON = register("crimson");
+        public static final TagKey<Block> CRIMSON_DESERT = register("crimson_desert");
+        public static final TagKey<Block> CRIMSON_TUNDRA = register("crimson_tundra");
+        public static final TagKey<Block> CORRUPTION = register("corruption");
+        public static final TagKey<Block> CORRUPTED_DESERT = register("corrupted_desert");
+        public static final TagKey<Block> CORRUPTED_TUNDRA = register("corrupted_tundra");
+        public static final TagKey<Block> HALLOW = register("hallow");
+        public static final TagKey<Block> HALLOW_DESERT = register("hallow_desert");
+        public static final TagKey<Block> HALLOW_TUNDRA = register("hallow_tundra");
+        public static final TagKey<Block> GLOWING_MUSHROOM = register("glowing_mushroom");
+
         public static final TagKey<Block> TIN_BLOCK = c("storage_blocks/tin");
         public static final TagKey<Block> LEAD_BLOCK = c("storage_blocks/lead");
         public static final TagKey<Block> SLIVER_BLOCK = c("storage_blocks/silver");
@@ -140,6 +152,7 @@ public final class ModTags {
         public static final TagKey<Item> RAW_MATERIALS_HELLSTONE = c("raw_materials/hellstone");
         public static final TagKey<Item> RAW_MATERIALS_HELLSTONE_BLOCK = c("storage_blocks/raw_hellstone");
 
+
         public static final TagKey<Item> GEMS_RUBY = c("gems/ruby");
         public static final TagKey<Item> GEMS_AMBER = c("gems/amber");
         public static final TagKey<Item> GEMS_TOPAZ = c("gems/topaz");
@@ -153,7 +166,10 @@ public final class ModTags {
         public static final TagKey<Item> RAW_MATERIALS_GELSTONE = c("raw_materials/gelstone");
         public static final TagKey<Item> RAW_MATERIALS_COLD_CRYSTAL = c("raw_materials/cold_crystal");
 
-        public static final TagKey<Item> NUGGETS_TIN = c("nuggets/lead");
+        public static final TagKey<Item> RAW_MATERIALS_FLOATING_WHEAT= c("raw_materials/raw_materials_floating_wheat");
+        public static final TagKey<Item> RAW_MATERIALS_FLOATING_WHEAT_BALE = c("storage_blocks/floating_wheat_bale");
+
+        public static final TagKey<Item> NUGGETS_LEAD = c("nuggets/lead");
 
         public static final TagKey<Item> ORES_TIN = c("ores/tin");
         public static final TagKey<Item> ORES_LEAD = c("ores/lead");
@@ -223,6 +239,7 @@ public final class ModTags {
         public static final TagKey<Item> PLATINUM_ORE_SMELTING = register("platinum_ore_smelting");
         public static final TagKey<Item> DEMONITE_ORE_SMELTING = register("demonite_ore_smelting");
         public static final TagKey<Item> CRIMTANE_ORE_SMELTING = register("crimtane_ore_smelting");
+        public static final TagKey<Item> METEORITE_ORE_SMELTING = register("meteorite_ore_smelting");
         public static final TagKey<Item> RUBY_ORE_SMELTING = register("ruby_ore_smelting");
         public static final TagKey<Item> TOPAZ_ORE_SMELTING = register("topaz_ore_smelting");
         public static final TagKey<Item> AMBER_ORE_SMELTING = register("amber_ore_smelting");
@@ -243,6 +260,7 @@ public final class ModTags {
         public static final TagKey<Item> SHOW_SIGNAL = register("show_signal"); // 手持可以显示信号连线
 
         public static final TagKey<Item> DEATH = register("death");
+        public static final TagKey<Item> UNABLE_TO_APPLY_PREFIX = register("unable_to_apply_prefix"); // 不能上词缀
 
         private static TagKey<Item> c(String name) {
             return ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", name));

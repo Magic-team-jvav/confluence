@@ -35,7 +35,7 @@ import java.util.Comparator;
 public abstract class SwordProjectile<T extends SwordProjectile<T>> extends AbstractHurtingProjectile implements ICollisionAttackEntity<T> {
 
     // 可调参数
-    public int TIME_EXISTENCE = 40;
+    public int lifetime = 40;
     public int hitCount = 1;
     protected float attackDamageFactor = 1F;
     protected float baseAttackDamage = 0;
@@ -127,7 +127,7 @@ public abstract class SwordProjectile<T extends SwordProjectile<T>> extends Abst
     public void setProjComponent(SwordProjectileComponent projComponent) {
         this.projComponent = projComponent;
         this.gravity = projComponent.gravity();
-        this.TIME_EXISTENCE = projComponent.existTicks();
+        this.lifetime = projComponent.existTicks();
         this.entityData.set(DATA_INIT_GRAVITY, gravity);
     }
 
@@ -185,7 +185,7 @@ public abstract class SwordProjectile<T extends SwordProjectile<T>> extends Abst
                 }
             }
         }
-        if (!level().isClientSide &&tickCount >= TIME_EXISTENCE)
+        if (!level().isClientSide && tickCount >= lifetime)
             discard();
 //        this.applyGravity();
         doCollisionAttack(this::canHitEntity,
@@ -298,7 +298,7 @@ public abstract class SwordProjectile<T extends SwordProjectile<T>> extends Abst
     }
 
     public SwordProjectile setExistTime(int time){
-        TIME_EXISTENCE = time;
+        lifetime = time;
         return this;
     }
 

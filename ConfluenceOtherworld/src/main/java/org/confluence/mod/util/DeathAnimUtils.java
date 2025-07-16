@@ -15,6 +15,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.client.DummyMultiBufferSource;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.integration.geckolib.IGeoCube;
@@ -250,17 +251,6 @@ public final class DeathAnimUtils {
         return Vec3.directionFromRotation(0, rots[0]).normalize().scale(1.2).toVector3f();
     }
 
-    /** @author ChatGPT */
-    public static float cubicBezier(float t, float p0, float p1, float p2, float p3){
-        float u = 1 - t;
-        float tt = t * t;
-        float uu = u * u;
-        float uuu = uu * u;
-        float ttt = tt * t;
-
-        return uuu * p0 + 3 * uu * t * p1 + 3 * u * tt * p2 + ttt * p3;
-    }
-
     /** @author voila, ChatGPT */
     public static float getPosition(int tick, float max){
         if(tick < 0) tick = 0;
@@ -272,7 +262,7 @@ public final class DeathAnimUtils {
         float p1 = 1f;
         float p2 = 1f;
         float p3 = 1f;
-        float bezierValue = cubicBezier(t, p0, p1, p2, p3);
+        float bezierValue = LibUtils.cubicBezier(t, p0, p1, p2, p3);
         return bezierValue * max;
     }
 

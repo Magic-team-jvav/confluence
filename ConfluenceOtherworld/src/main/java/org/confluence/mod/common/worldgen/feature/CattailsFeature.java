@@ -14,6 +14,9 @@ import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfigur
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import org.confluence.mod.common.block.natural.CattailsHeadBlock;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.confluence.mod.common.block.common.BaseRopeBlock.WATERLOGGED;
 
 public class CattailsFeature extends Feature<CattailsFeature.Config> {
@@ -29,76 +32,94 @@ public class CattailsFeature extends Feature<CattailsFeature.Config> {
         BlockPos baseBlockPos = context.origin();
         BlockState cattailsHeadBlockState = config.cattailsHead.getState(random, baseBlockPos);
         BlockState cattailsBodyBlockState = config.cattailsBody.getState(random, baseBlockPos);
-        int minY = level.getMinBuildHeight();
-        boolean placed = level.getBlockState(baseBlockPos).canBeReplaced() && baseBlockPos.getY() > minY;
-        int checkY = baseBlockPos.getY();
-        int endY = baseBlockPos.getY();
-
-
-        final int MAX_SEARCH_DEPTH = 5;
-        int searchDepth = 0;
-        BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos(baseBlockPos.getX(), 0, baseBlockPos.getZ());
-
-        if (placed) {
-            while (checkY >= minY && placed && searchDepth <= MAX_SEARCH_DEPTH) {
-                placed = checkY != minY;
-                if (!level.getBlockState(mutable.setY(checkY)).canBeReplaced()) {
-                    placed = false;
+        int radius = config.radius;
+        int count = Math.min(random.nextInt(config.minCount, config.maxCount + 1), (radius * 2 + 1) * (radius * 2 + 1));
+        int maxLength = config.maxLength;
+        List<BlockPos> posList = new ArrayList<>();
+        posList.add(baseBlockPos);
+        while (posList.size() < count) {
+            BlockPos newPos = baseBlockPos.offset(random.nextInt(-radius, radius + 1), 0, random.nextInt(-radius, radius + 1));
+            boolean addThis = true;
+            for (BlockPos blockPos : posList) {
+                if ((newPos.getX() == blockPos.getX()) && (newPos.getY() == blockPos.getY()) && (newPos.getZ() == blockPos.getZ())) {
+                    addThis = false;
                     break;
                 }
-                if (level.getBlockState(mutable.setY(checkY)).is(Blocks.WATER) &&
-                        level.getBlockState(mutable.setY(checkY - 1)).isFaceSturdy(level, mutable.setY(checkY - 1), Direction.UP)) {
-                    endY = checkY;
-                    break;
-                } else if (level.getBlockState(mutable.setY(checkY)).canBeReplaced() &&
-                        !level.getBlockState(mutable.setY(checkY - 1)).canBeReplaced()) {
-                    placed = false;
-                    break;
-                }
-                checkY--;
-                searchDepth++;
             }
-
-            if (searchDepth > MAX_SEARCH_DEPTH) {
-                placed = false;
-            }
+            if (addThis) posList.add(newPos);
         }
+        boolean placeSuccess = false;
 
-        if (placed) {
-            boolean than = true;
-            checkY = endY;
-            while (than) {
-                mutable.setY(checkY);
-                if (!level.getBlockState(mutable.setY(checkY + 1)).canBeReplaced()) {
-                    level.setBlock(mutable.setY(checkY), cattailsHeadBlockState.trySetValue(WATERLOGGED, true), 3);
-                    than = false;
-                } else if ((level.getBlockState(mutable.setY(checkY + 1)).isAir() && level.getBlockState(mutable.setY(checkY)).is(Blocks.WATER))) {
-                    int length = random.nextInt(1, 5);
-                    level.setBlock(mutable.setY(checkY), cattailsBodyBlockState.trySetValue(WATERLOGGED, true), 3);
-                    for (int i = 1; i <= length; i++) {
-                        BlockPos checkThan = mutable.setY(checkY + i);
-                        if ((!level.getBlockState(checkThan.offset(0, 1, 0)).canBeReplaced()) || (i == length)) {
-                            level.setBlock(checkThan, cattailsHeadBlockState.trySetValue(CattailsHeadBlock.AGE, 3), 3);
-                            break;
-                        } else {
-                            level.setBlock(checkThan, cattailsBodyBlockState, 3);
-                        }
+        for (BlockPos blockPos : posList) {
+            int minY = level.getMinBuildHeight();
+            boolean placed = level.getBlockState(blockPos).canBeReplaced() && blockPos.getY() > minY;
+            int checkY = blockPos.getY();
+            int endY = blockPos.getY();
+
+            BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos(blockPos.getX(), 0, blockPos.getZ());
+
+            int searchY = 0;
+
+            if (placed) {
+                while ((checkY >= minY) && (searchY < maxLength)) {
+                    placed = placed && !(checkY == minY);
+                    if (!level.getBlockState(new BlockPos(baseBlockPos.getX(), checkY, baseBlockPos.getZ())).canBeReplaced()) {
+                        placed = false;
+                        break;
                     }
-                    than = false;
-                } else {
-                    level.setBlock(mutable.setY(checkY), cattailsBodyBlockState.trySetValue(WATERLOGGED, true), 3);
+                    if (level.getBlockState(new BlockPos(baseBlockPos.getX(), checkY, baseBlockPos.getZ())).is(Blocks.WATER) && level.getBlockState(new BlockPos(baseBlockPos.getX(), checkY - 1, baseBlockPos.getZ())).isFaceSturdy(level, new BlockPos(baseBlockPos.getX(), checkY - 1, baseBlockPos.getZ()), Direction.UP)) {
+                        endY = checkY;
+                        break;
+                    } else if (level.getBlockState(new BlockPos(baseBlockPos.getX(), checkY, baseBlockPos.getZ())).canBeReplaced() && !level.getBlockState(new BlockPos(baseBlockPos.getX(), checkY - 1, baseBlockPos.getZ())).canBeReplaced()) {
+                        placed = false;
+                        break;
+                    }
+                    if (level.getBlockState(new BlockPos(baseBlockPos.getX(), checkY, baseBlockPos.getZ())).is(Blocks.WATER)) searchY++;
+                    checkY--;
                 }
-                checkY++;
             }
-            return true;
+
+            if (placed) {
+                boolean than = true;
+                checkY = endY;
+                while (than) {
+                    mutable.setY(checkY);
+                    if (!level.getBlockState(mutable.setY(checkY + 1)).canBeReplaced()) {
+                        level.setBlock(mutable.setY(checkY), cattailsHeadBlockState.trySetValue(WATERLOGGED, true), 3);
+                        than = false;
+                    } else if ((level.getBlockState(mutable.setY(checkY + 1)).isAir() && level.getBlockState(mutable.setY(checkY)).is(Blocks.WATER))) {
+                        int length = random.nextInt(1, 5);
+                        level.setBlock(mutable.setY(checkY), cattailsBodyBlockState.trySetValue(WATERLOGGED, true), 3);
+                        for (int i = 1; i <= length; i++) {
+                            BlockPos checkThan = mutable.setY(checkY + i);
+                            if ((!level.getBlockState(checkThan.offset(0, 1, 0)).canBeReplaced()) || (i == length)) {
+                                level.setBlock(checkThan, cattailsHeadBlockState.trySetValue(CattailsHeadBlock.AGE, 3), 3);
+                                break;
+                            } else {
+                                level.setBlock(checkThan, cattailsBodyBlockState, 3);
+                            }
+                        }
+                        than = false;
+                    } else {
+                        level.setBlock(mutable.setY(checkY), cattailsBodyBlockState.trySetValue(WATERLOGGED, true), 3);
+                    }
+                    checkY++;
+                }
+                placeSuccess = true;
+            }
         }
-        return false;
+
+        return placeSuccess;
     }
 
-    public record Config(BlockStateProvider cattailsHead, BlockStateProvider cattailsBody) implements FeatureConfiguration {
+    public record Config(BlockStateProvider cattailsHead, BlockStateProvider cattailsBody, int radius, int minCount, int maxCount, int maxLength) implements FeatureConfiguration {
         public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 BlockStateProvider.CODEC.fieldOf("cattails_head").forGetter(Config::cattailsHead),
-                BlockStateProvider.CODEC.fieldOf("cattails_body").forGetter(Config::cattailsBody)
+                BlockStateProvider.CODEC.fieldOf("cattails_body").forGetter(Config::cattailsBody),
+                Codec.INT.fieldOf("radius").forGetter(CattailsFeature.Config::radius),
+                Codec.INT.fieldOf("min_count").forGetter(CattailsFeature.Config::minCount),
+                Codec.INT.fieldOf("max_count").forGetter(CattailsFeature.Config::maxCount),
+                Codec.INT.fieldOf("max_length").forGetter(CattailsFeature.Config::maxLength)
         ).apply(instance, Config::new));
     }
 }

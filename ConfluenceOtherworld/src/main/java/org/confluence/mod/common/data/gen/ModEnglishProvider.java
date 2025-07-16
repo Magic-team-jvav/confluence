@@ -3,8 +3,6 @@ package org.confluence.mod.common.data.gen;
 import com.google.common.collect.Iterables;
 import net.minecraft.Util;
 import net.minecraft.data.PackOutput;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.LanguageProvider;
@@ -571,7 +569,11 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.configuration.terraStyleArmor", "Terra Style Armor");
         add("confluence.configuration.terraStyleFood", "Terra Style Food Saturation");
         add("confluence.configuration.healthStyle", "Health Style");
+        add("confluence.configuration.healthOffsetX", "Health Offset X");
+        add("confluence.configuration.healthOffsetY", "Health Offset Y");
         add("confluence.configuration.manaStyle", "Mana Style");
+        add("confluence.configuration.manaOffsetX", "Mana Offset X");
+        add("confluence.configuration.manaOffsetY", "Mana Offset Y");
         add("confluence.configuration.armorStyle", "Armor Style");
         add("confluence.configuration.foodStyle", "Food Saturation Style");
         add("confluence.configuration.armorStyle.legacy_horizontal", "Armor Style: Elegant - Horizontal");
@@ -585,6 +587,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.configuration.foodStyle.legacy", "Food Saturation Style: Elegant");
         add("confluence.configuration.foodStyle.overlay", "Food Saturation Style: Overlay");
         add("confluence.configuration.leftEffectIcon", "Left Potion Effect Icon");
+        add("confluence.configuration.extraInventoryButtonOffsetX", "Extra Inventory Button Offset X");
+        add("confluence.configuration.extraInventoryButtonOffsetY", "Extra Inventory Button Offset Y");
         add("confluence.configuration.Entity", "Entity Effects");
         add("confluence.configuration.bloodyEffect", "Blood Effect");
         add("confluence.configuration.bloodyEffect.tooltip", "Blood particle splashing");
@@ -967,11 +971,11 @@ public class ModEnglishProvider extends LanguageProvider {
         add(VanityArmorItems.DEAD_MANS_SWEATER.get(), "Dead Man's Sweater");
         add(SwordItems.NIGHTS_EDGE.get(), "Night's Edge");
 
-        add("block.confluence.timers_block_1_1", "1 Second Timer");
-        add("block.confluence.timers_block_3_1", "3 Second Timer");
-        add("block.confluence.timers_block_5_1", "5 Second TImer");
-        add("block.confluence.timers_block_1_2", "1/2 Second Timer");
-        add("block.confluence.timers_block_1_4", "1/4 Second TImer");
+        add("block.confluence.timers_1_1", "1 Second Timer");
+        add("block.confluence.timers_3_1", "3 Second Timer");
+        add("block.confluence.timers_5_1", "5 Second TImer");
+        add("block.confluence.timers_1_2", "1/2 Second Timer");
+        add("block.confluence.timers_1_4", "1/4 Second TImer");
 
         add("resourcepack.terraria_art", "Terraria Art");
         add("resourcepack.terraria_armor", "Terraria-Like Armor");
@@ -1674,7 +1678,33 @@ public class ModEnglishProvider extends LanguageProvider {
         add("patchouli.confluence.otherworld_note.world.the_crimson.0", "The Crimson is an evil biome with a red bloody theme of physical infection that generates bloody enemies.*bThe Crimson group will naturally spawn in a world where the evil biome is scarlet. You can also create The Crimson by yourself. When there are more than 256 scarlet evil blocks (such as scarlet stones) in a block, the biome of this block will become The Crimson.*bCorrespondingly, when there are less than 256 evil blocks, the cluster of this block will become the original biome.");
         add("patchouli.confluence.otherworld_note.world.the_crimson.1", "*z$(#AA0000)“Making the world bloody”");
         add("patchouli.confluence.otherworld_note.world.the_crimson.2", "*o*tIn ancient times, the people of Terraria made a foolish mistake: they succumbed to scarlet, regarded it as a god, and sacrificed their flesh and blood.*b*tEventually, they are assimilated into twisted lives, spreading across the earth with scarlet ambitions.");
-
+        // sound
+        add("confluence.subtitle.transmission", "Transmission Magic: Activated");
+        add("confluence.subtitle.lightsaber_open", "Lightsaber: Activated");
+        add("confluence.subtitle.regular_staff_shoot", "Magic: Cast");
+        add("confluence.subtitle.regular_staff_shoot_2", "Magic: Burst");
+        add("confluence.subtitle.frozen_broken", "Frost Magic: Shatter");
+        add("confluence.subtitle.frozen_arrow", "Frost Magic: Fire");
+        add("confluence.subtitle.cooldown_recovery", "Cooldown: Ready");
+        add("confluence.subtitle.bow_cooldown_recovery", "Bow Cooldown: Charged");
+        add("confluence.subtitle.decoupling", "Hook: Detach");
+        add("confluence.subtitle.achievements", "Achievement: Unlocked");
+        add("confluence.subtitle.shimmer_detachment", "Creature: Exuding Shimmer");
+        add("confluence.subtitle.shimmer_evolution", "Shimmer: Transmute");
+        add("confluence.subtitle.shimmer_immersion", "Creature: Immersed in Shimmer");
+        add("confluence.subtitle.transmutation_use", "Mystic Power: Channel");
+        add("confluence.subtitle.hook_attach", "Grappling Hook: Attached");
+        add("confluence.subtitle.hook_shoot", "Grappling Hook: Fired");
+        add("confluence.subtitle.shimmer_item_interactions", "Item: Immersed in Shimmer");
+        add("confluence.subtitle.star", "Falling Star: Shine");
+        add("confluence.subtitle.star_lands", "Falling Star: Landed");
+        add("confluence.subtitle.terra_operation", "Action: Operate");
+        add("confluence.subtitle.life_crystal_use", "Life Crystal: Consume");
+        add("confluence.subtitle.mana_star_use", "Mana Star: Consume");
+        add("confluence.subtitle.coins", "Coins: Jingle");
+        add("confluence.subtitle.coins_small", "Small Coins: Collected");
+        add("confluence.subtitle.coins_medium", "Medium Coins: Collected");
+        add("confluence.subtitle.coins_large", "Large Coins: Collected");
         // Tags
         add("tag.fluid.confluence.fishing_able", "Can Fishing Fluid");
         add("tag.fluid.confluence.not_lava", "Not Lava");
@@ -1771,34 +1801,9 @@ public class ModEnglishProvider extends LanguageProvider {
     }
 
     @Override
-    public void add(Block key, String name) {
-        String descriptionId = key.getDescriptionId();
-        if (!((LanguageProviderAccessor) this).getData().containsKey(descriptionId)) {
-            super.add(descriptionId, name);
-        }
-    }
-
-    @Override
-    public void add(Item key, String name) {
-        String descriptionId = key.getDescriptionId();
-        if (!((LanguageProviderAccessor) this).getData().containsKey(descriptionId)) {
-            super.add(descriptionId, name);
-        }
-    }
-
-    @Override
-    public void add(MobEffect key, String name) {
-        String descriptionId = key.getDescriptionId();
-        if (!((LanguageProviderAccessor) this).getData().containsKey(descriptionId)) {
-            super.add(descriptionId, name);
-        }
-    }
-
-    @Override
-    public void add(EntityType<?> key, String name) {
-        String descriptionId = key.getDescriptionId();
-        if (!((LanguageProviderAccessor) this).getData().containsKey(descriptionId)) {
-            super.add(descriptionId, name);
+    public void add(String key, String value) {
+        if (!((LanguageProviderAccessor) this).getData().containsKey(key)) {
+            super.add(key, value);
         }
     }
 }

@@ -46,8 +46,8 @@ public class TerraStyleManaHud implements LayeredDraw.Layer {
         LEGACY {
             @Override
             public void render(GuiGraphics guiGraphics, Minecraft minecraft) {
-                int widthMana = guiGraphics.guiWidth() - 21;
-                int heightMana = 4;
+                int widthMana = guiGraphics.guiWidth() - 21 + ClientConfigs.manaOffsetX;
+                int heightMana = 4 + ClientConfigs.manaOffsetY;
                 float currentMana = ClientPacketHandler.getCurrentMana();
                 int maxManaCount = ClientPacketHandler.getMaxMana() / 20;
                 float currentManaToBlit;
@@ -73,8 +73,8 @@ public class TerraStyleManaHud implements LayeredDraw.Layer {
             public void render(GuiGraphics guiGraphics, Minecraft minecraft) {
                 float currentMana = ClientPacketHandler.getCurrentMana() / 10.0F;
                 float maxMana = ClientPacketHandler.getMaxMana() / 10.0F;
-                int widthMana = guiGraphics.guiWidth() / 2 + 10;
-                int heightMana = guiGraphics.guiHeight() - minecraft.gui.rightHeight;
+                int widthMana = guiGraphics.guiWidth() / 2 + 10 + ClientConfigs.manaOffsetX;
+                int heightMana = guiGraphics.guiHeight() - minecraft.gui.rightHeight + ClientConfigs.manaOffsetY;
                 minecraft.gui.rightHeight += 10;
                 RandomSource random = RandomSource.create(1919810);
                 colorDraw(guiGraphics, minecraft, random, OVERLAY_TEXTURE, MANA, MANA_HIGH, MANA_LOW, maxMana, currentMana, widthMana, heightMana, OVERLAY_SIZE, 10, false);

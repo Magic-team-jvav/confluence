@@ -1,14 +1,10 @@
 package org.confluence.mod.integration.terra_entity.trail;
 
-import com.github.tartaricacid.touhoulittlemaid.geckolib3.core.controller.AnimationController;
 import com.mojang.blaze3d.platform.GlConst;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.FastColor;
@@ -16,7 +12,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import org.confluence.mod.Confluence;
+import org.confluence.mod.client.event.ModClientSetups;
 import org.confluence.mod.common.entity.projectile.sword.NightEdgeProjectile;
 import org.confluence.terraentity.entity.util.trail.ITrail;
 import org.confluence.terraentity.entity.util.trail.PositionPoseProperties;
@@ -27,8 +23,6 @@ import org.joml.Vector3f;
 
 import java.util.Iterator;
 import java.util.Queue;
-
-import static net.minecraft.client.renderer.RenderStateShard.*;
 
 public class TerraSwordTrail implements ITrail<NightEdgeProjectile> {
     TrailProperties properties;
@@ -83,19 +77,7 @@ public class TerraSwordTrail implements ITrail<NightEdgeProjectile> {
 
     @OnlyIn(Dist.CLIENT)
     public void renderTrail(NightEdgeProjectile holder, Vec3 entityPos, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
-
-
-        RenderType glow = RenderType.create("entity_translucent_emissive", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 1536, true, false,
-                RenderType.CompositeState.builder()
-                        .setShaderState(RENDERTYPE_ENTITY_TRANSLUCENT_EMISSIVE_SHADER)
-                        .setTextureState(new RenderStateShard.TextureStateShard(Confluence.asResource("textures/mask/sword.png"), true, false))
-                        .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
-                        .setWriteMaskState(COLOR_WRITE)
-                        .setCullState(NO_CULL)
-//                        .setLightmapState(LIGHTMAP)
-                        .setOverlayState(OVERLAY)
-                        .createCompositeState(false));
-        this.actualRender(holder, trailsQueue, entityPos, poseStack, bufferSource, packedLight, glow);
+        this.actualRender(holder, trailsQueue, entityPos, poseStack, bufferSource, packedLight, ModClientSetups.TERRA_SWORD_RENDER_TYPE);
 //        poseStack.scale(1.2f, 1.2f, 1.2f);
 //        this.actualRender(holder, trailsQueue, entityPos, poseStack, bufferSource, packedLight, glow);
     }

@@ -8,13 +8,10 @@ import org.confluence.mod.integration.terra_entity.trail.TerraSwordTrail;
 import org.confluence.terraentity.entity.ai.IOBBProjectile;
 import org.confluence.terraentity.entity.ai.keyframe.Keyframe;
 import org.confluence.terraentity.entity.ai.keyframe.animation.Vec3KeyframeAnimation;
-import org.confluence.terraentity.entity.util.trail.PositionPoseProperties;
 import org.confluence.terraentity.utils.OBB;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 public class NightEdgeProjectile extends SwordProjectile<NightEdgeProjectile> implements IOBBProjectile<NightEdgeProjectile> {
 

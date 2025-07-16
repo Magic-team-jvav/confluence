@@ -565,11 +565,11 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.terraStyleArmor", "泰拉样式护甲值");
         add("confluence.configuration.terraStyleFood", "泰拉样式饱食度");
         add("confluence.configuration.healthStyle", "生命值样式");
-        add("confluence.configuration.healthPositionX", "生命条相对位置 X");
-        add("confluence.configuration.healthPositionY", "生命条相对位置 Y");
+        add("confluence.configuration.healthOffsetX", "生命值X轴偏移");
+        add("confluence.configuration.healthOffsetY", "生命值Y轴偏移");
         add("confluence.configuration.manaStyle", "魔力值样式");
-        add("confluence.configuration.manaPositionX", "魔力条相对位置 X");
-        add("confluence.configuration.manaPositionY", "魔力条相对位置 Y");
+        add("confluence.configuration.manaOffsetX", "魔力值X轴偏移");
+        add("confluence.configuration.manaOffsetY", "魔力值Y轴偏移");
         add("confluence.configuration.armorStyle", "护甲值样式");
         add("confluence.configuration.foodStyle", "饱食度样式");
         add("confluence.configuration.armorStyle.legacy_horizontal", "护甲值样式:精致-水平");
@@ -583,6 +583,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.foodStyle.legacy", "饱食度样式:精致");
         add("confluence.configuration.foodStyle.overlay", "饱食度样式:叠加");
         add("confluence.configuration.leftEffectIcon", "左侧药水效果标识");
+        add("confluence.configuration.extraInventoryButtonOffsetX", "额外物品栏按钮X轴偏移");
+        add("confluence.configuration.extraInventoryButtonOffsetY", "额外物品栏按钮Y轴偏移");
         add("confluence.configuration.Entity", "生物效果");
         add("confluence.configuration.bloodyEffect", "血效果");
         add("confluence.configuration.bloodyEffect.tooltip", "血的粒子飞溅");

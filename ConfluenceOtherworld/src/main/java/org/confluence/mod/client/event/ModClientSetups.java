@@ -2,7 +2,9 @@ package org.confluence.mod.client.event;
 
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -59,6 +61,8 @@ import org.joml.Vector3f;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.function.Consumer;
+
+import static net.minecraft.client.renderer.RenderStateShard.*;
 
 @SuppressWarnings("deprecation")
 @ParametersAreNonnullByDefault
@@ -202,8 +206,8 @@ public final class ModClientSetups {
         RenderType translucent = RenderType.translucent();
         ItemBlockRenderTypes.setRenderLayer(ModFluids.SHIMMER.fluid().get(), translucent);
         ItemBlockRenderTypes.setRenderLayer(ModFluids.SHIMMER.flowing().get(), translucent);
-        ItemBlockRenderTypes.setRenderLayer(ModFluids.HONEY.fluid().get(), translucent);
-        ItemBlockRenderTypes.setRenderLayer(ModFluids.HONEY.flowing().get(), translucent);
+// todo 等蜂蜜贴图被画成半透明       ItemBlockRenderTypes.setRenderLayer(ModFluids.HONEY.fluid().get(), translucent);
+//        ItemBlockRenderTypes.setRenderLayer(ModFluids.HONEY.flowing().get(), translucent);
         ItemBlockRenderTypes.setRenderLayer(DecorativeBlocks.WHITE_PURE_GLASS.get(), translucent);
         ItemBlockRenderTypes.setRenderLayer(DecorativeBlocks.LIGHT_GRAY_PURE_GLASS.get(), translucent);
         ItemBlockRenderTypes.setRenderLayer(DecorativeBlocks.GRAY_PURE_GLASS.get(), translucent);
@@ -258,4 +262,15 @@ public final class ModClientSetups {
         ModList modList = ModList.get();
         SHOULD_NOT_GENERATE_BLOCK_GRAY_TEXTURE = modList.isLoaded("ctm") || modList.isLoaded("fusion") || modList.isLoaded("continuity");
     }
+
+    public static final RenderType TERRA_SWORD_RENDER_TYPE = RenderType.create("entity_translucent_emissive", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 1536, true, false,
+            RenderType.CompositeState.builder()
+                    .setShaderState(RENDERTYPE_ENTITY_TRANSLUCENT_EMISSIVE_SHADER)
+                    .setTextureState(new RenderStateShard.TextureStateShard(Confluence.asResource("textures/mask/sword.png"), true, false))
+                    .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
+                    .setWriteMaskState(COLOR_WRITE)
+                    .setCullState(NO_CULL)
+//                        .setLightmapState(LIGHTMAP)
+                    .setOverlayState(OVERLAY)
+                    .createCompositeState(false));
 }

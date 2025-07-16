@@ -7,7 +7,6 @@ import com.xiaohunao.equipment_benediction.common.event.AfterEquipmentBenedictio
 import com.xiaohunao.equipment_benediction.common.init.EBAttachments;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
@@ -47,6 +46,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.effect.SpelunkerHelper;
 import org.confluence.mod.client.gui.TooltipManager;
+import org.confluence.mod.client.gui.container.ExtraInventoryScreen;
 import org.confluence.mod.client.handler.*;
 import org.confluence.mod.client.renderer.item.DungeonCompassRenderer;
 import org.confluence.mod.client.renderer.item.ZombieArmRenderer;
@@ -62,10 +62,8 @@ import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.integration.ars_nouveau.ArsNouveauHelper;
 import org.confluence.mod.integration.irons_spell.IronSpellHelper;
 import org.confluence.mod.integration.xaero.XaeroHelper;
-import org.confluence.mod.mixed.IInventoryScreen;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.ILocalPlayer;
-import org.confluence.mod.network.c2s.OpenMenuPacketC2S;
 import org.confluence.mod.util.ClientUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PrefixUtils;
@@ -250,19 +248,7 @@ public final class GameClientEvents {
         boolean isInventoryScreen = screen instanceof InventoryScreen;
         // 额外槽
         if (isInventoryScreen || screen instanceof CreativeModeInventoryScreen) {
-            EffectRenderingInventoryScreen<?> screen1 = (EffectRenderingInventoryScreen<?>) screen;
-            ImageButton extraInventoryButton = new ImageButton(screen1.getGuiLeft() - 16, screen1.getGuiTop() + 2, 16, 16, ModClientSetups.EXTRA_INVENTORY_BUTTON, button -> {
-                LocalPlayer player = Minecraft.getInstance().player;
-                if (player != null) {
-                    ItemStack stack = player.containerMenu.getCarried();
-                    player.containerMenu.setCarried(ItemStack.EMPTY);
-                    OpenMenuPacketC2S.sendToServer(OpenMenuPacketC2S.EXTRA_INVENTORY, stack);
-                }
-            });
-            if (isInventoryScreen) {
-                ((IInventoryScreen) screen).confluence$setExtraButton(extraInventoryButton);
-            }
-            event.addListener(extraInventoryButton);
+            event.addListener(ExtraInventoryScreen.getExtraInventoryButton((EffectRenderingInventoryScreen<?>) screen, isInventoryScreen));
         }
     }
 

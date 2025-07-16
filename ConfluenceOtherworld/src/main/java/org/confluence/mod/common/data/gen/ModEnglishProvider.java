@@ -571,11 +571,11 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.configuration.terraStyleArmor", "Terra Style Armor");
         add("confluence.configuration.terraStyleFood", "Terra Style Food Saturation");
         add("confluence.configuration.healthStyle", "Health Style");
-        add("confluence.configuration.healthPositionX", "Health Relative Position X");
-        add("confluence.configuration.healthPositionY", "Health Relative Position Y");
+        add("confluence.configuration.healthOffsetX", "Health Offset X");
+        add("confluence.configuration.healthOffsetY", "Health Offset Y");
         add("confluence.configuration.manaStyle", "Mana Style");
-        add("confluence.configuration.manaPositionX", "Mana Relative Position X");
-        add("confluence.configuration.manaPositionY", "Mana Relative Position Y");
+        add("confluence.configuration.manaOffsetX", "Mana Offset X");
+        add("confluence.configuration.manaOffsetY", "Mana Offset Y");
         add("confluence.configuration.armorStyle", "Armor Style");
         add("confluence.configuration.foodStyle", "Food Saturation Style");
         add("confluence.configuration.armorStyle.legacy_horizontal", "Armor Style: Elegant - Horizontal");
@@ -589,6 +589,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.configuration.foodStyle.legacy", "Food Saturation Style: Elegant");
         add("confluence.configuration.foodStyle.overlay", "Food Saturation Style: Overlay");
         add("confluence.configuration.leftEffectIcon", "Left Potion Effect Icon");
+        add("confluence.configuration.extraInventoryButtonOffsetX", "Extra Inventory Button Offset X");
+        add("confluence.configuration.extraInventoryButtonOffsetY", "Extra Inventory Button Offset Y");
         add("confluence.configuration.Entity", "Entity Effects");
         add("confluence.configuration.bloodyEffect", "Blood Effect");
         add("confluence.configuration.bloodyEffect.tooltip", "Blood particle splashing");

@@ -2,10 +2,12 @@ package org.confluence.mod.client.gui.container;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -18,9 +20,13 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.common.menu.IToggleSlot;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.event.ModClientSetups;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.menu.ExtraInventoryMenu;
 import org.confluence.mod.integration.mine_team.ExtraTeamRender;
+import org.confluence.mod.mixed.IInventoryScreen;
+import org.confluence.mod.network.c2s.OpenMenuPacketC2S;
 import org.confluence.terra_curio.TerraCurio;
 import top.theillusivec4.curios.common.network.client.CPacketOpenVanilla;
 
@@ -165,5 +171,22 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
     @Override
     public <T extends GuiEventListener & Renderable & NarratableEntry> T addRenderableWidget(T widget) {
         return super.addRenderableWidget(widget);
+    }
+
+    public static ImageButton getExtraInventoryButton(EffectRenderingInventoryScreen<?> screen, boolean isInventoryScreen) {
+        int x = screen.getGuiLeft() - 16 + ClientConfigs.extraInventoryButtonOffsetX;
+        int y = screen.getGuiTop() + 2 + ClientConfigs.extraInventoryButtonOffsetY;
+        ImageButton extraInventoryButton = new ImageButton(x, y, 16, 16, ModClientSetups.EXTRA_INVENTORY_BUTTON, button -> {
+            LocalPlayer player = Minecraft.getInstance().player;
+            if (player != null) {
+                ItemStack stack = player.containerMenu.getCarried();
+                player.containerMenu.setCarried(ItemStack.EMPTY);
+                OpenMenuPacketC2S.sendToServer(OpenMenuPacketC2S.EXTRA_INVENTORY, stack);
+            }
+        });
+        if (isInventoryScreen) {
+            ((IInventoryScreen) screen).confluence$setExtraButton(extraInventoryButton);
+        }
+        return extraInventoryButton;
     }
 }

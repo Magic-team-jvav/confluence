@@ -53,8 +53,8 @@ public class TerraStyleHealthHud implements LayeredDraw.Layer {
         LEGACY {
             @Override
             public void render(GuiGraphics guiGraphics, Minecraft minecraft) {
-                int widthHealth = (int) (guiGraphics.guiWidth() * ( 1 + ClientConfigs.healthPositionX * 0.01f) - 128);
-                int heightHealth = (int) (4 + guiGraphics.guiHeight() * ClientConfigs.healthPositionY * 0.01f);
+                int widthHealth = guiGraphics.guiWidth() - 128 + ClientConfigs.healthOffsetX;
+                int heightHealth = 4 + ClientConfigs.healthOffsetY;
                 float maxHealth = 0.0F;
                 float currentHealth = 0.0F;
                 int heartBuff = 0;
@@ -164,8 +164,8 @@ public class TerraStyleHealthHud implements LayeredDraw.Layer {
                     currentHealth = player.getHealth();
                     absorptionHealth = player.getAbsorptionAmount();
                 }
-                int widthHealth = (int) (guiGraphics.guiWidth() * (0.5f + ClientConfigs.healthPositionX * 0.01f) - 91);
-                int heightHealth = (int) (guiGraphics.guiHeight() * (1 + ClientConfigs.healthPositionY * 0.01f) - minecraft.gui.leftHeight);
+                int widthHealth = guiGraphics.guiWidth() / 2 - 91 + ClientConfigs.healthOffsetX;
+                int heightHealth = guiGraphics.guiHeight() - minecraft.gui.leftHeight + ClientConfigs.healthOffsetY;
                 String abHealth = String.format("%.1f", absorptionHealth);
                 minecraft.gui.leftHeight += 10;
                 RandomSource random = RandomSource.create(114514);

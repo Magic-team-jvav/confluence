@@ -72,7 +72,6 @@ public class ModBiomeTagsProvider extends BiomeTagsProvider {
                 // 出现较大群系内容扩展时更改此标签(当对应群系同时具有专属群系地下宝箱，渔获，敌怪时）
                 Tags.Biomes.IS_FOREST,
                 Tags.Biomes.IS_PLAINS,
-                Tags.Biomes.IS_MUSHROOM,
                 Tags.Biomes.IS_TAIGA,
                 Tags.Biomes.IS_SAVANNA,
                 Tags.Biomes.IS_WINDSWEPT,

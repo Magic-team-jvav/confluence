@@ -8,8 +8,6 @@ plugins {
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
-tasks.withType(Copy).configureEach { duplicatesStrategy = DuplicatesStrategy.EXCLUDE }
-
 idea {
     module {
         downloadSources = true

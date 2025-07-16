@@ -1398,7 +1398,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 NatureBlocks.SMALL_DESERT_PLANT.asItem(),
                 NatureBlocks.BIG_DESERT_PLANT.asItem(),
                 NatureBlocks.SMALL_CACTUS.asItem(),
-                NatureBlocks.MUSHROOM_PATH.asItem(),
+                NatureBlocks.JUNGLE_PATH.asItem(),
                 NatureBlocks.MUSHROOM_PATH.asItem(),
                 NatureBlocks.ASH_PATH.asItem(),
                 NatureBlocks.SHIMMER_CRYSTALS_BLOCK.asItem(),

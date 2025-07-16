@@ -1,10 +1,7 @@
 package org.confluence.mod.client.handler;
 
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import org.confluence.mod.network.s2c.CompatibilitySyncPacketS2c;
 
-@OnlyIn(Dist.CLIENT)
 public final class CompatibilityHandler {
     private static boolean[] configs;
 

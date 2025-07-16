@@ -19,7 +19,7 @@ public class BeeKeeperProjectile extends SwordProjectile<BeeKeeperProjectile> {
 
     public BeeKeeperProjectile(EntityType<? extends SwordProjectile> entityType, Level pLevel) {
         super(entityType, pLevel);
-        this.TIME_EXISTENCE = 100;
+        this.lifetime = 100;
         trackType = new BasisTrack(90, 0.3f);
 
     }

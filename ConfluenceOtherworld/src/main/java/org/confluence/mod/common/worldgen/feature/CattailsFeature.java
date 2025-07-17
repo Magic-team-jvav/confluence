@@ -61,20 +61,27 @@ public class CattailsFeature extends Feature<CattailsFeature.Config> {
             int searchY = 0;
 
             if (placed) {
-                while ((checkY >= minY) && (searchY < maxLength)) {
-                    placed = placed && !(checkY == minY);
-                    if (!level.getBlockState(new BlockPos(baseBlockPos.getX(), checkY, baseBlockPos.getZ())).canBeReplaced()) {
+                while (checkY >= minY && placed) {
+                    placed = checkY != minY;
+                    if (!level.getBlockState(mutable.setY(checkY)).canBeReplaced()) {
                         placed = false;
                         break;
                     }
-                    if (level.getBlockState(new BlockPos(baseBlockPos.getX(), checkY, baseBlockPos.getZ())).is(Blocks.WATER) && level.getBlockState(new BlockPos(baseBlockPos.getX(), checkY - 1, baseBlockPos.getZ())).isFaceSturdy(level, new BlockPos(baseBlockPos.getX(), checkY - 1, baseBlockPos.getZ()), Direction.UP)) {
+                    if (level.getBlockState(mutable.setY(checkY)).is(Blocks.WATER) &&
+                            level.getBlockState(mutable.setY(checkY - 1)).isFaceSturdy(level, mutable.setY(checkY - 1), Direction.UP)) {
                         endY = checkY;
                         break;
-                    } else if (level.getBlockState(new BlockPos(baseBlockPos.getX(), checkY, baseBlockPos.getZ())).canBeReplaced() && !level.getBlockState(new BlockPos(baseBlockPos.getX(), checkY - 1, baseBlockPos.getZ())).canBeReplaced()) {
+                    } else if (level.getBlockState(mutable.setY(checkY)).canBeReplaced() &&
+                            !level.getBlockState(mutable.setY(checkY - 1)).canBeReplaced()) {
                         placed = false;
                         break;
                     }
-                    if (level.getBlockState(new BlockPos(baseBlockPos.getX(), checkY, baseBlockPos.getZ())).is(Blocks.WATER)) searchY++;
+                    if (level.getBlockState(mutable.setY(checkY)).is(Blocks.WATER)) searchY++;
+                    else searchY = 0;
+                    if (searchY > maxLength) {
+                        placed = false;
+                        break;
+                    }
                     checkY--;
                 }
             }

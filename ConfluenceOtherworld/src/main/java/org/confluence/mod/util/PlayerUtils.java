@@ -10,6 +10,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.GameRules;
@@ -22,6 +23,7 @@ import org.confluence.mod.api.event.GetCustomDiggingPowerEvent;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.ManaStorage;
+import org.confluence.mod.common.attachment.PlayerPiggyBankContainer;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.init.*;
@@ -34,7 +36,6 @@ import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.util.TCUtils;
 import org.confluence.terraentity.entity.ai.Boss;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.IntFunction;
 import java.util.function.Supplier;
@@ -203,7 +204,12 @@ public final class PlayerUtils {
 
     public static int[] getCoins(Player player) {
         int[] coins = new int[SIZE_COINS];
-        for (ItemStack stack : Iterables.concat(player.getInventory().items, player.getData(ModAttachmentTypes.PIGGY_BANK).getItems(), player.getData(ModAttachmentTypes.EXTRA_INVENTORY).getCoins())) {
+        int[] ints = decodeCoin(PlayerPiggyBankContainer.of(player).getTotalMoney());
+        coins[0] = ints[3];
+        coins[1] = ints[2];
+        coins[2] = ints[1];
+        coins[3] = ints[0];
+        for (ItemStack stack : Iterables.concat(player.getInventory().items, player.getData(ModAttachmentTypes.EXTRA_INVENTORY).getCoins())) {
             if (!stack.isEmpty() && stack.is(ModTags.Items.COINS)) {
                 int index = COIN_2_INDEX.applyAsInt(stack.getItem());
                 if (index != -1) {
@@ -215,10 +221,14 @@ public final class PlayerUtils {
     }
 
     public static long getMoney(Player player) {
-        int[] coins = getCoins(player);
-        long res = 0;
-        for (int i = 0; i < SIZE_COINS; i++) {
-            res += (long) (coins[i] * Math.pow(UPGRADES_COUNT, 3 - i));
+        long res = PlayerPiggyBankContainer.of(player).getTotalMoney();
+        for (ItemStack stack : Iterables.concat(player.getInventory().items, player.getData(ModAttachmentTypes.EXTRA_INVENTORY).getCoins())) {
+            if (!stack.isEmpty() && stack.is(ModTags.Items.COINS)) {
+                int index = COIN_2_INDEX.applyAsInt(stack.getItem());
+                if (index != -1) {
+                    res += (long) (stack.getCount() * Math.pow(UPGRADES_COUNT, 3 - index));
+                }
+            }
         }
         return res;
     }
@@ -230,11 +240,13 @@ public final class PlayerUtils {
     public static boolean tryCostMoney(long have, Player player, long cost) {
         if (have < cost) return false;
 
-        List<ItemStack> stacks = new ArrayList<>(player.getInventory().items);
-        stacks.addAll(player.getData(ModAttachmentTypes.PIGGY_BANK).getItems());
-        for (ItemStack itemStack : stacks) {
-            if (!itemStack.isEmpty() && itemStack.is(ModTags.Items.COINS)) {
-                itemStack.setCount(0);
+        if ((cost = PlayerPiggyBankContainer.of(player).tryCostMoney(cost)) == 0) return true;
+
+        Inventory inventory = player.getInventory();
+        for (int i = 0; i < inventory.getContainerSize(); i++) {
+            ItemStack stack = inventory.getItem(i);
+            if (!stack.isEmpty() && stack.is(ModTags.Items.COINS)) {
+                inventory.setItem(i, ItemStack.EMPTY);
             }
         }
 
@@ -246,14 +258,13 @@ public final class PlayerUtils {
 
         for (int i = 0; i < SIZE_COINS; i++) {
             int coin = coins[i];
-            if (coin > 0) {
-                CoinItem coinItem = INDEX_2_COIN.apply(i);
-                while (coin > UPGRADES_COUNT) {
-                    player.getInventory().add(new ItemStack(coinItem, UPGRADES_COUNT));
-                    coin -= UPGRADES_COUNT;
-                }
-                player.getInventory().add(new ItemStack(coinItem, coin));
+            if (coin <= 0) continue;
+            CoinItem coinItem = INDEX_2_COIN.apply(i);
+            while (coin > UPGRADES_COUNT) {
+                inventory.add(new ItemStack(coinItem, UPGRADES_COUNT));
+                coin -= UPGRADES_COUNT;
             }
+            inventory.add(new ItemStack(coinItem, coin));
         }
         return true;
     }

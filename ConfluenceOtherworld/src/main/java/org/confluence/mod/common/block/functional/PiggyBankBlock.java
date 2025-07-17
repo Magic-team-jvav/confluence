@@ -24,7 +24,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.common.PlayerContainer;
 import org.confluence.lib.common.block.HorizontalDirectionalWaterloggedBlock;
 import org.confluence.mod.common.attachment.PlayerPiggyBankContainer;
-import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 
 public class PiggyBankBlock extends HorizontalDirectionalWaterloggedBlock implements EntityBlock {
@@ -57,7 +56,7 @@ public class PiggyBankBlock extends HorizontalDirectionalWaterloggedBlock implem
             if (level.isClientSide) {
                 return InteractionResult.SUCCESS;
             }
-            PlayerPiggyBankContainer container = player.getData(ModAttachmentTypes.PIGGY_BANK);
+            PlayerPiggyBankContainer container = PlayerPiggyBankContainer.of(player);
             container.setActiveContainer(entity);
             player.openMenu(new SimpleMenuProvider((id, inventory, player1) -> new ChestMenu(MenuType.GENERIC_9x6, id, inventory, container, 6), Component.translatable("container.confluence.piggy_bank")));
             PiglinAi.angerNearbyPiglins(player, true);

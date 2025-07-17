@@ -39,7 +39,7 @@ public class TerraSwordTrail implements ITrail<NightEdgeProjectile> {
             trailsQueue.poll();
         }
 
-        if(holder.TIME_EXISTENCE - ticks <= 0){
+        if(holder.lifetime - ticks <= 0){
             trailsQueue.poll();
         }else {
 
@@ -56,7 +56,7 @@ public class TerraSwordTrail implements ITrail<NightEdgeProjectile> {
             trailsQueue.poll();
         }
 
-        if(holder.TIME_EXISTENCE - ticks <= 4){
+        if(holder.lifetime - ticks <= 4){
             trailsQueue.poll();
         }else {
 

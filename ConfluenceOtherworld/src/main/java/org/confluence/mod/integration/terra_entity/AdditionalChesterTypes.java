@@ -7,6 +7,7 @@ import net.minecraft.world.inventory.MenuType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.attachment.PlayerPiggyBankContainer;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.terraentity.registries.TERegistries;
 import org.confluence.terraentity.registries.chester.ChesterType;
@@ -20,7 +21,7 @@ public class AdditionalChesterTypes {
     public static final Supplier<ChesterType> PIGGY_BANK = TYPES.register("piggy_bank", ()->new ChesterType(
             Component.translatable("container.confluence.piggy_bank"),
             ()->new SimpleMenuProvider((id, inventory, player1) ->
-                    new ChestMenu(MenuType.GENERIC_9x6, id, inventory, player1.getData(ModAttachmentTypes.PIGGY_BANK), 6),
+                    new ChestMenu(MenuType.GENERIC_9x6, id, inventory, PlayerPiggyBankContainer.of(player1), 6),
                     Component.translatable("container.confluence.piggy_bank"))
     ));
 

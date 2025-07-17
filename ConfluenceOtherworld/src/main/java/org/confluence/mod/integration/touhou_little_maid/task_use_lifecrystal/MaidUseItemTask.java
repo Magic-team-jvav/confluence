@@ -4,10 +4,12 @@ import com.github.tartaricacid.touhoulittlemaid.entity.passive.EntityMaid;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.item.ItemStack;
+import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.item.ConsumableItems;
@@ -41,11 +43,12 @@ public class MaidUseItemTask extends Behavior<EntityMaid> {
     protected void start(ServerLevel worldIn, EntityMaid entityIn, long gameTimeIn) {
         ItemStack stack = entityIn.getItemBySlot(EquipmentSlot.MAINHAND);
         if (stack.getItem() == ConsumableItems.LIFE_CRYSTAL.get()) {
-            var data = entityIn.getData(ModAttachmentTypes.EVER_BENEFICIAL.get());
+            EverBeneficial data = entityIn.getData(ModAttachmentTypes.EVER_BENEFICIAL.get());
             if (data.increaseCrystals()) {
-                var att = entityIn.getAttribute(Attributes.MAX_HEALTH);
+                AttributeInstance att = entityIn.getAttribute(Attributes.MAX_HEALTH);
                 if (att != null) {
-                    att.addOrReplacePermanentModifier(new AttributeModifier(EverBeneficialItem.LIFE_CRYSTAL.id(), getStepIncrement(), AttributeModifier.Operation.ADD_VALUE));
+                    AttributeModifier modifier = att.getModifier(EverBeneficialItem.LIFE_CRYSTAL.id());
+                    att.addOrReplacePermanentModifier(new AttributeModifier(EverBeneficialItem.LIFE_CRYSTAL.id(), modifier==null? getStepIncrement():modifier.amount() + getStepIncrement(), AttributeModifier.Operation.ADD_VALUE));
                     entityIn.playSound(ModSoundEvents.LIFE_CRYSTAL_USE.get());
                     entityIn.heal(getStepIncrement());
                     stack.shrink(1);

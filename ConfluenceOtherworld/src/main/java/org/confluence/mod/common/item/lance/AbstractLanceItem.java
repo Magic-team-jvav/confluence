@@ -1,5 +1,6 @@
 package org.confluence.mod.common.item.lance;
 
+import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -91,16 +92,23 @@ public abstract class AbstractLanceItem extends CustomRarityItem implements GeoI
                 Vec3 startVec = position.add(viewVector.scale(-0.5));
                 Vec3 endVec = position.add(viewVector.scale(getDistance(tickCount, owner)));
                 AABB boundingBox = new AABB(startVec, endVec);
-                for (Entity victim : level.getEntitiesOfClass(Entity.class, boundingBox, target -> canHitEntity(target, owner))) {
-                    AABB aabb = victim.getBoundingBox().inflate(0.3);
-                    if (aabb.clip(startVec, endVec).isPresent()) {
-                        owner.setLastHurtMob(victim);
-                        if (victim instanceof PartEntity<?> partEntity) {
-                            victim = partEntity.getParent();
+
+                ImmutableList<Entity> entities = ImmutableList.copyOf(
+                        level.getEntitiesOfClass(Entity.class, boundingBox, target -> canHitEntity(target, owner))
+                );
+
+                for (Entity victim : entities) {
+                    if (!victim.isRemoved()) {
+                        AABB aabb = victim.getBoundingBox().inflate(0.3);
+                        if (aabb.clip(startVec, endVec).isPresent()) {
+                            owner.setLastHurtMob(victim);
+                            if (victim instanceof PartEntity<?> partEntity) {
+                                victim = partEntity.getParent();
+                            }
+                            DamageSource damageSource = getDamageSource(serverLevel, owner);
+                            onHitEntity(damageSource, entity, owner, victim);
+                            EnchantmentHelper.doPostAttackEffects(serverLevel, victim, damageSource);
                         }
-                        DamageSource damageSource = getDamageSource(serverLevel, owner);
-                        onHitEntity(damageSource, entity, owner, victim);
-                        EnchantmentHelper.doPostAttackEffects(serverLevel, victim, damageSource);
                     }
                 }
             }

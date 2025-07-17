@@ -1549,7 +1549,7 @@ public class ModDataProvider {
                     7,
                     UniformHeight.of(VerticalAnchor.absolute(-50), VerticalAnchor.absolute(10)),
                     false,
-                    worldSurfaceWg,
+                    Optional.empty(),
                     116,
                     List.of(),
                     JigsawStructure.DEFAULT_DIMENSION_PADDING,

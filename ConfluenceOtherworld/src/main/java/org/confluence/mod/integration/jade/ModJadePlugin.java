@@ -3,6 +3,7 @@ package org.confluence.mod.integration.jade;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.lib.common.block.ISimulatorBlock;
 import org.confluence.mod.common.block.common.TombstoneBlock;
 import org.confluence.mod.common.block.functional.AbstractMechanicalBlock;
@@ -15,6 +16,9 @@ import org.confluence.mod.common.init.block.ChestBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.integration.create.ponder.PonderHelper;
 import snownee.jade.api.*;
+
+import java.util.IdentityHashMap;
+import java.util.Map;
 
 @WailaPlugin
 public final class ModJadePlugin implements IWailaPlugin {
@@ -35,17 +39,22 @@ public final class ModJadePlugin implements IWailaPlugin {
             registration.registerBlockComponent(PonderComponentProvider.INSTANCE, AltarBlock.class);
         }
         registration.registerBlockComponent(TombstoneInfoProvider.INSTANCE, TombstoneBlock.class);
+
+        Map<Block, BlockState> hideMap = new IdentityHashMap<>();
+        hideMap.put(ChestBlocks.DEATH_GOLDEN_CHEST.get(), ChestBlocks.GOLDEN_CHEST.get().defaultBlockState());
+        hideMap.put(ChestBlocks.DEATH_WOODEN_CHEST.get(), Blocks.CHEST.defaultBlockState());
+        hideMap.put(FunctionalBlocks.OAK_LOG_BOULDER.get(), Blocks.OAK_LOG.defaultBlockState());
         registration.addRayTraceCallback((hitResult, accessor, originalAccessor) -> {
             if (accessor instanceof BlockAccessor blockAccessor) {
                 Player player = accessor.getPlayer();
                 if (player.isCreative()) return accessor;
                 Block block = blockAccessor.getBlock();
-                if (block == FunctionalBlocks.OAK_LOG_BOULDER.get()) {
-                    return registration.blockAccessor().from(blockAccessor).blockState(Blocks.OAK_LOG.defaultBlockState()).build();
-                } else if (block == ChestBlocks.DEATH_WOODEN_CHEST.get()) {
-                    return registration.blockAccessor().from(blockAccessor).blockState(Blocks.CHEST.defaultBlockState()).build();
-                } else if (block instanceof ISimulatorBlock simulatorBlock) {
+                if (block instanceof ISimulatorBlock simulatorBlock) {
                     return registration.blockAccessor().from(blockAccessor).blockState(simulatorBlock.getSimulatedBlock(true)).build();
+                }
+                BlockState blockState = hideMap.get(block);
+                if (blockState != null) {
+                    return registration.blockAccessor().from(blockAccessor).blockState(blockState).build();
                 }
             } else if (accessor instanceof EntityAccessor entityAccessor) {
                 if (entityAccessor.getEntity() instanceof TreasureBagItemEntity entity && !entity.isOwner(accessor.getPlayer())) {

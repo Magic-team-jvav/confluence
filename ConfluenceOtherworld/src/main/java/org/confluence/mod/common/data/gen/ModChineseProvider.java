@@ -1747,6 +1747,47 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.subtitle.coins_medium", "中量钱币:拾起");
         add("confluence.subtitle.coins_large", "大量钱币:拾起");
 
+        add("terra_curio.subtitle.transmission", "传送魔法：开启");
+        add("terra_curio.subtitle.fart_sound", "玩家：放屁声");
+        add("terra_curio.subtitle.double_jump", "玩家：二段跳");
+        add("terra_curio.subtitle.shoes_walk", "鞋：跑动");
+        add("terra_curio.subtitle.rocket_boots_boost", "火箭靴：助推");
+        add("terra_curio.subtitle.rocket_boots_stop", "火箭靴：关闭");
+
+        add("terra_entity.subtitle.routine_hurt", "怪物：受伤");
+        add("terra_entity.subtitle.routine_death", "怪物：死亡");
+        add("terra_entity.subtitle.roar", "BOSS：吼叫");
+        add("terra_entity.subtitle.hurried_roaring", "BOSS：急促吼叫");
+        add("terra_entity.subtitle.blood_crawler_death", "血爬虫：死亡");
+        add("terra_entity.subtitle.blood_crawler_free", "血爬虫：血液流动");
+        add("terra_entity.subtitle.blood_crawler_hurt", "血爬虫：受伤");
+        add("terra_entity.subtitle.bloody_spore_death", "血腥芽孢：死亡");
+        add("terra_entity.subtitle.bloody_spore_fuse", "血腥芽孢：孕育");
+        add("terra_entity.subtitle.bloody_spore_hit", "血腥芽孢：受伤");
+        add("terra_entity.subtitle.drippler_death", "滴滴怪：死亡");
+        add("terra_entity.subtitle.drippler_hurt", "滴滴怪：受伤");
+        add("terra_entity.subtitle.metal_death", "机械怪物：死亡");
+        add("terra_entity.subtitle.metal_hurt", "机械怪物：受伤");
+        add("terra_entity.subtitle.visual_neuron_death", "视神经元：死亡");
+        add("terra_entity.subtitle.visual_neuron_hurt", "视神经元：受伤");
+        add("terra_entity.subtitle.dig_sound", "蠕虫生物：挖掘");
+        add("terra_entity.subtitle.giant_shelly_death", "巨型卷壳怪：死亡");
+        add("terra_entity.subtitle.giant_shelly_free_0", "巨型卷壳怪：滚动");
+        add("terra_entity.subtitle.giant_shelly_free_1", "巨型卷壳怪：爬行");
+        add("terra_entity.subtitle.giant_shelly_hurt", "巨型卷壳怪：受伤");
+        add("terra_entity.subtitle.tr_zombie_death", "僵尸：死亡");
+        add("terra_entity.subtitle.tr_skeleton_hurt", "骷髅：受伤");
+        add("terra_entity.subtitle.waving", "玩家：挥动");
+        add("terra_entity.subtitle.use_mounts", "玩家：召唤坐骑");
+        add("terra_entity.subtitle.decayeder_ambient", "腐骴：摩擦身体");
+        add("terra_entity.subtitle.decayeder_death", "腐骴：死亡");
+        add("terra_entity.subtitle.decayeder_hurt", "腐骴：受伤");
+        add("terra_entity.subtitle.decayeder_step", "腐骴：脚步声");
+        add("terra_entity.subtitle.whip_attack", "鞭子：抽打");
+        add("terra_entity.subtitle.routine_summon", "召唤物：召唤");
+        add("terra_entity.subtitle.summon_hornet", "黄蜂：召唤");
+        add("terra_entity.subtitle.summon_eye", "飞行召唤物：召唤");
+        add("terra_entity.subtitle.summon_imp", "小鬼：召唤");
         //标签
         add("tag.fluid.confluence.fishing_able", "可钓鱼液体");
         add("tag.fluid.confluence.not_lava", "无熔岩");

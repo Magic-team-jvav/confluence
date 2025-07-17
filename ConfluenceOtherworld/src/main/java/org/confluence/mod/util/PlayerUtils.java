@@ -231,7 +231,7 @@ public final class PlayerUtils {
         if (have < cost) return false;
 
         List<ItemStack> stacks = new ArrayList<>(player.getInventory().items);
-        stacks.addAll(player.getData(ModAttachmentTypes.PIGGY_BANK).getItems());
+        // todo stacks.addAll(player.getData(ModAttachmentTypes.PIGGY_BANK).getItems());
         for (ItemStack itemStack : stacks) {
             if (!itemStack.isEmpty() && itemStack.is(ModTags.Items.COINS)) {
                 itemStack.setCount(0);

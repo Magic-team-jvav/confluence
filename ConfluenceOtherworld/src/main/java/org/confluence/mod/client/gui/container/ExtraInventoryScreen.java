@@ -175,6 +175,7 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
 
     public static ImageButton getExtraInventoryButton(EffectRenderingInventoryScreen<?> screen, boolean isInventoryScreen) {
         int x = screen.getGuiLeft() - 16 + ClientConfigs.extraInventoryButtonOffsetX;
+        if (!isInventoryScreen && ClientConfigs.extraInventoryButtonOffsetX >= 192) x += 19;
         int y = screen.getGuiTop() + 2 + ClientConfigs.extraInventoryButtonOffsetY;
         ImageButton extraInventoryButton = new ImageButton(x, y, 16, 16, ModClientSetups.EXTRA_INVENTORY_BUTTON, button -> {
             LocalPlayer player = Minecraft.getInstance().player;

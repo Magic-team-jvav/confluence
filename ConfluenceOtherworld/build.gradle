@@ -43,7 +43,9 @@ neoForge {
                     // 忽略无效指令，避免有的人没安装 JetBrain Runtime 无法启动游戏
                     "-XX:+IgnoreUnrecognizedVMOptions",
                     // 启用 JetBrain Runtime 热重载功能
-                    "-XX:+AllowEnhancedClassRedefinition"
+                    "-XX:+AllowEnhancedClassRedefinition",
+                    // 并发修改检测
+                    "-Dcme_suck_my_duck.inject_method=true -javaagent:mods/CMESuckMyDuck-1.0.5.jar=net/minecraft/world/level/entity/EntitySection;getEntities(Lnet/minecraft/world/phys/AABB;Lnet/minecraft/util/AbortableIterationConsumer;)Lnet/minecraft/util/AbortableIterationConsumer\$Continuation;"
             ])
             if (isRunningInIdea) {
                 systemProperty "terminal.jline", "true"

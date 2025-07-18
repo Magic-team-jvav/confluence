@@ -96,13 +96,15 @@ public record RecipeTransferPacketC2S(ResourceLocation recipeId, boolean maxTran
     @SuppressWarnings("unchecked")
     public static <R extends EitherAmountRecipe4x<?>> @Nullable R getRecipe4x(Class<R> clazz, Recipe<?> recipe, Function<Either<ShapedRecipePattern, NonNullList<Ingredient>>, R> factory) {
         R recipe4x = null;
-        Class<?> clazz1 = recipe.getClass();
-        if (clazz1 == clazz) {
+        if (clazz.isInstance(recipe)) {
             recipe4x = (R) recipe;
-        } else if (clazz1 == ShapedRecipe.class) {
-            recipe4x = factory.apply(Either.left(((ShapedRecipe) recipe).pattern));
-        } else if (clazz1 == ShapelessRecipe.class) {
-            recipe4x = factory.apply(Either.right(recipe.getIngredients()));
+        } else {
+            Class<?> clazz1 = recipe.getClass();
+            if (clazz1 == ShapedRecipe.class) {
+                recipe4x = factory.apply(Either.left(((ShapedRecipe) recipe).pattern));
+            } else if (clazz1 == ShapelessRecipe.class) {
+                recipe4x = factory.apply(Either.right(recipe.getIngredients()));
+            }
         }
         return recipe4x;
     }

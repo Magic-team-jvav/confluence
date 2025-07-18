@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.lance;
 
-import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -93,11 +92,7 @@ public abstract class AbstractLanceItem extends CustomRarityItem implements GeoI
                 Vec3 endVec = position.add(viewVector.scale(getDistance(tickCount, owner)));
                 AABB boundingBox = new AABB(startVec, endVec);
 
-                ImmutableList<Entity> entities = ImmutableList.copyOf(
-                        level.getEntitiesOfClass(Entity.class, boundingBox, target -> canHitEntity(target, owner))
-                );
-
-                for (Entity victim : entities) {
+                for (Entity victim : level.getEntities(entity, boundingBox, target -> canHitEntity(target, owner))) {
                     if (!victim.isRemoved()) {
                         AABB aabb = victim.getBoundingBox().inflate(0.3);
                         if (aabb.clip(startVec, endVec).isPresent()) {

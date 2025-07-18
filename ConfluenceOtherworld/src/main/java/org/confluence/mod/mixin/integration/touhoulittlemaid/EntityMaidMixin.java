@@ -60,7 +60,7 @@ public abstract class EntityMaidMixin implements ITradeHolder, SelfGetter<Entity
             DynamicOps<Tag> ops = this.level().registryAccess().createSerializationContext(NbtOps.INSTANCE);
             trades = NPCTradeManager.getCopy(Keys.MAID_SHOP,ops);
             if (trades != null) {
-                trades.initTrades(this);
+                trades.initTrades(this, Keys.MAID_SHOP);
             }
         }
     }

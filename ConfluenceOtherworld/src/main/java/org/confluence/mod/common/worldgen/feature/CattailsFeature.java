@@ -33,22 +33,16 @@ public class CattailsFeature extends Feature<CattailsFeature.Config> {
         BlockState cattailsHeadBlockState = config.cattailsHead.getState(random, baseBlockPos);
         BlockState cattailsBodyBlockState = config.cattailsBody.getState(random, baseBlockPos);
         int radius = config.radius;
-        int count = Math.min(random.nextInt(config.minCount, config.maxCount + 1), (radius * 2 + 1) * (radius * 2 + 1));
+        int width = config.radius * 2 + 1;
+        float chance = config.chance;
         int maxLength = config.maxLength;
         List<BlockPos> posList = new ArrayList<>();
-        posList.add(baseBlockPos);
-        while (posList.size() < count) {
-            BlockPos newPos = baseBlockPos.offset(random.nextInt(-radius, radius + 1), 0, random.nextInt(-radius, radius + 1));
-            boolean addThis = true;
-            for (BlockPos blockPos : posList) {
-                if ((newPos.getX() == blockPos.getX()) && (newPos.getY() == blockPos.getY()) && (newPos.getZ() == blockPos.getZ())) {
-                    addThis = false;
-                    break;
-                }
-            }
-            if (addThis) posList.add(newPos);
-        }
         boolean placeSuccess = false;
+        for (int x = -radius; x < width; x++){
+            for (int z = -radius; z < width; z++){
+                if (chance > random.nextFloat()) posList.add(baseBlockPos.offset(x, 0, z));
+            }
+        }
 
         for (BlockPos blockPos : posList) {
             int minY = level.getMinBuildHeight();
@@ -119,13 +113,12 @@ public class CattailsFeature extends Feature<CattailsFeature.Config> {
         return placeSuccess;
     }
 
-    public record Config(BlockStateProvider cattailsHead, BlockStateProvider cattailsBody, int radius, int minCount, int maxCount, int maxLength) implements FeatureConfiguration {
+    public record Config(BlockStateProvider cattailsHead, BlockStateProvider cattailsBody, int radius, float chance, int maxLength) implements FeatureConfiguration {
         public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 BlockStateProvider.CODEC.fieldOf("cattails_head").forGetter(Config::cattailsHead),
                 BlockStateProvider.CODEC.fieldOf("cattails_body").forGetter(Config::cattailsBody),
                 Codec.INT.fieldOf("radius").forGetter(CattailsFeature.Config::radius),
-                Codec.INT.fieldOf("min_count").forGetter(CattailsFeature.Config::minCount),
-                Codec.INT.fieldOf("max_count").forGetter(CattailsFeature.Config::maxCount),
+                Codec.FLOAT.fieldOf("chance").forGetter(CattailsFeature.Config::chance),
                 Codec.INT.fieldOf("max_length").forGetter(CattailsFeature.Config::maxLength)
         ).apply(instance, Config::new));
     }

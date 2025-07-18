@@ -1,6 +1,5 @@
 package org.confluence.mod.common.entity.projectile.sword;
 
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -84,10 +83,11 @@ public class NightEdgeProjectile extends SwordProjectile<NightEdgeProjectile> im
     @Override
     public void tick() {
         super.tick();
-        if (level().isClientSide) {
+        Level level = level();
+        if (level.isClientSide) {
             this.trail.generateTrail(this, tickCount);
         }
-        if (level() instanceof ClientLevel level && tickCount <= 14 && level.random.nextBoolean()) {
+        if (level.isClientSide() && tickCount <= 14 && level.random.nextBoolean()) {
             Vec3 pos = position().offsetRandom(level.random, 0.3f);
             Entity owner = getOwner();
             if (owner != null) {

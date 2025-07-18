@@ -397,7 +397,7 @@ public class ModDataProvider {
                                     new TwoLayersFeatureSize(1, 0, 1)
                             ).ignoreVines().dirt(BlockStateProvider.simple(Blocks.DIRT)).build(),
                             BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.EBONY_SAPLING.get().defaultBlockState(), Vec3i.ZERO))
-                    ), 0.5F),
+                    ), 0.05F),
                     new WeightedPlacedFeature(direct(
                             Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
                                     BlockStateProvider.simple(NatureBlocks.EBONY_LOG_BLOCKS.getLog().get()),
@@ -407,7 +407,7 @@ public class ModDataProvider {
                                     new TwoLayersFeatureSize(1, 0, 1)
                             ).ignoreVines().dirt(BlockStateProvider.simple(NatureBlocks.CORRUPT_GRASS_BLOCK.get())).build(),
                             BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.EBONY_SAPLING.get().defaultBlockState(), Vec3i.ZERO))
-                    ), 0.5F)
+                    ), 0.05F)
             ), direct(
                     ModFeatures.DROOPING_VINE_TREE.get(), new DroopingVineTreeFeature.Config(BlockStateProvider.simple(NatureBlocks.EBONY_LOG_BLOCKS.getLog().get()), BlockStateProvider.simple(NatureBlocks.EBONY_LOG_BLOCKS.getLeaves().get()), BlockStateProvider.simple(NatureBlocks.CORRUPT_DROOPING_VINE.get()), 5),
                     BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.EBONY_SAPLING.get().defaultBlockState(), Vec3i.ZERO))
@@ -453,7 +453,7 @@ public class ModDataProvider {
                                     8
                             ),
                             BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.BAOBAB_SAPLING.get().defaultBlockState(), Vec3i.ZERO))
-                    ), 0.5F),
+                    ), 0.05F),
                     new WeightedPlacedFeature(direct(
                             ModFeatures.BAOBAB_TREE.get(), new BaobabTreeFeature.Config(
                                     BlockStateProvider.simple(NatureBlocks.BAOBAB_LOG_BLOCKS.getLog().get()),
@@ -464,7 +464,7 @@ public class ModDataProvider {
                                     8
                             ),
                             BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.BAOBAB_SAPLING.get().defaultBlockState(), Vec3i.ZERO))
-                    ), 0.5F)
+                    ), 0.05F)
             ), direct(
                     ModFeatures.BAOBAB_TREE.get(), new BaobabTreeFeature.Config(
                             BlockStateProvider.simple(NatureBlocks.BAOBAB_LOG_BLOCKS.getLog().get()),

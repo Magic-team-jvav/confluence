@@ -319,7 +319,6 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 Ingredient.of(PotionItems.BOTTLE),
                 Ingredient.of(PotionItems.BOTTLE)
         );
-        // 玻璃瓶
         // 广播盒
         shaped(output, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(DecorativeBlocks.PURE_GLASS)
@@ -327,6 +326,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 "# #",
                 " # "
         )), PotionItems.BOTTLE.toStack(3));
+        // 玻璃瓶
         shapeless(output, "", "_from_bottle",
                 new ItemStack(Items.GLASS_BOTTLE),
                 Ingredient.of(PotionItems.BOTTLE)
@@ -387,6 +387,15 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         registerWoodRecipes(output, NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS, ModTags.Items.LIVING_MAHOGANY_LOGS);
         registerWoodRecipes(output, NatureBlocks.ASH_LOG_BLOCKS, ModTags.Items.ASH_LOGS);
         registerWoodRecipes(output, NatureBlocks.SPOOKY_LOG_BLOCKS, ModTags.Items.SPOOKY_LOGS);
+
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '|', Ingredient.of(Items.CHAIN),
+                '#', Ingredient.of(ModTags.Items.GLOWING_MUSHROOM_STEMS)
+        ), List.of(
+                "| |",
+                "###",
+                "###"
+        )), NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.getHangingSignItem().toStack());
 
         // 船
         registerBoatRecipes(output, NatureBlocks.EBONY_LOG_BLOCKS, BoatItems.EBONY_BOAT, BoatItems.EBONY_CHEST_BOAT);

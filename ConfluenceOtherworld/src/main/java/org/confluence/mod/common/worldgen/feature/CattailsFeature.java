@@ -52,11 +52,15 @@ public class CattailsFeature extends Feature<CattailsFeature.Config> {
 
             BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos(blockPos.getX(), 0, blockPos.getZ());
 
-            int searchY = 0;
-
             if (placed) {
+                int searchY = 1;
                 while (checkY >= minY && placed) {
                     placed = checkY != minY;
+                    if (level.getBlockState(mutable.setY(checkY)).is(Blocks.WATER)) {
+                        searchY++;
+                    } else {
+                        searchY = 0;
+                    }
                     if (!level.getBlockState(mutable.setY(checkY)).canBeReplaced()) {
                         placed = false;
                         break;
@@ -70,8 +74,6 @@ public class CattailsFeature extends Feature<CattailsFeature.Config> {
                         placed = false;
                         break;
                     }
-                    if (level.getBlockState(mutable.setY(checkY)).is(Blocks.WATER)) searchY++;
-                    else searchY = 0;
                     if (searchY > maxLength) {
                         placed = false;
                         break;

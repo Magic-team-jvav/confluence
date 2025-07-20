@@ -1,6 +1,10 @@
 package org.confluence.mod.mixin.integration.heaven_destiny_moment.terra_moment;
 
+import com.xiaohunao.heaven_destiny_moment.common.context.condition.common.InvertCondition;
+import com.xiaohunao.heaven_destiny_moment.common.context.condition.common.ListCondition;
+import com.xiaohunao.heaven_destiny_moment.common.context.condition.common.LocationCondition;
 import com.xiaohunao.heaven_destiny_moment.common.context.condition.common.WorldUniqueMomentCondition;
+import com.xiaohunao.heaven_destiny_moment.common.context.condition.level.DifficultyCondition;
 import com.xiaohunao.heaven_destiny_moment.common.context.condition.player.PlayerCondition;
 import com.xiaohunao.heaven_destiny_moment.common.moment.MomentInstance;
 import com.xiaohunao.heaven_destiny_moment.common.moment.MomentInstanceBuilder;
@@ -32,11 +36,11 @@ import java.util.UUID;
 @Mixin(value = GoblinArmyInstance.class, remap = false)
 public class GoblinArmyInstanceMixin {
     @Inject(method = "canCreate", at = @At("HEAD"), cancellable = true)
-    public void canCreate(Map<UUID, MomentInstance> runMoments, Level level, @Nullable BlockPos pos, @Nullable ServerPlayer player, CallbackInfoReturnable<Boolean> cir) {
+    public void confluence$canCreate(Map<UUID, MomentInstance> runMoments, Level level, @Nullable BlockPos pos, @Nullable ServerPlayer player, CallbackInfoReturnable<Boolean> cir) {
         GoblinArmyInstance goblinArmyInstance = (GoblinArmyInstance)(Object) this;
         boolean everBeneficial = PlayerCondition.Type.ANY.matches(goblinArmyInstance, pos, player, (momentInstance, pos1, serverPlayer) -> {
             EverBeneficial data = serverPlayer.getData(ModAttachmentTypes.EVER_BENEFICIAL);
-            return data != null && data.getUsedLifeFruits() >= 5;
+            return data != null && data.getUsedLifeCrystals() >= 5;
         });
 
         boolean hasEvilEverBeenBroken = PhaseJourneyCondition.of(PhaseJourneyCondition.Type.LEVEL, Confluence.asResource("has_evil_ever_been_broken")).matches(goblinArmyInstance, pos, player);
@@ -44,38 +48,31 @@ public class GoblinArmyInstanceMixin {
     }
 
     @Inject(method = "checkGeneralConditions", at = @At("HEAD"), cancellable = true)
-    public void  checkGeneralConditions(BlockPos pos, ServerPlayer serverPlayer, CallbackInfoReturnable<Boolean> cir) {
+    public void  confluence$checkGeneralConditions(BlockPos pos, ServerPlayer serverPlayer, CallbackInfoReturnable<Boolean> cir) {
         MomentInstance instance = (GoblinArmyInstance)(Object) this;
-        boolean matches = WorldUniqueMomentCondition.DEFAULT.matches(instance, pos, serverPlayer);
-        cir.setReturnValue(matches);
-    }
+        Level level = instance.getLevel();
+        ListCondition listCondition = ListCondition.of(
+                WorldUniqueMomentCondition.DEFAULT,
+                LocationCondition.Builder.inDimension(Level.OVERWORLD).build(),
+                InvertCondition.of(DifficultyCondition.PEACEFUL)
+        );
 
-    @Inject(method = "onPatrolSpawn", at = @At("HEAD"), cancellable = true)
-    private static void onPatrolSpawn(PatrolSpawnEvent event, CallbackInfo ci) {
-        ci.cancel();
-        ServerLevel level = event.getLevel();
-
-        //未击败前的概率为10%,击败后的概率为3%,如果是肉后阶段的话,概率分别为3%和1%
-        float spawnChance = PhaseUtils.getValueBasedOnPhase(Confluence.asResource("goblin_army_spawn_chance"), level, 0.03F, 0.1F);
-
-        if (KillBoard.INSTANCE.getGamePhase().isAboveThan(GamePhase.WALL_OF_FLESH)) {
-            if (spawnChance == 0.1F) {
-                spawnChance = 0.03F;
-            }
-            if (spawnChance == 0.03F) {
-                spawnChance = 0.01F;
-            }
+        //未击败前的概率为33%,击败后的概率为3%,如果是肉前后阶段的话,概率分别为3%和1.67%
+        float spawnChance = PhaseUtils.getValueBasedOnPhase(Confluence.asResource("goblin_army_victory"), level, 0.03F, 0.33F);
+        if (KillBoard.INSTANCE.getGamePhase().isAboveThan(GamePhase.WALL_OF_FLESH) && spawnChance == 0.03F) {
+            spawnChance = 0.0167F; //在肉后阶段,概率降低到1.67%
         }
 
         if (level.random.nextFloat() < spawnChance) {
-            event.setCanceled(true);
-            BlockPos spawnPos = event.getInitialSpawnPos();
-            MomentInstanceBuilder.create(level,TMMoments.GOBLIN_ARMY.get(),spawnPos, (ServerPlayer) event.getTargetPlayer());
+            if (listCondition.matches(instance, pos, serverPlayer)) {
+                MomentInstanceBuilder.create(level,TMMoments.GOBLIN_ARMY.get(),pos, serverPlayer);
+            }
         }
     }
 
+
     @Inject(method = "victory", at = @At("RETURN"))
-    public void victory(CallbackInfo ci) {
+    public void confluence$victory(CallbackInfo ci) {
         GoblinArmyInstance instance = (GoblinArmyInstance)(Object) this;
         Level level = instance.getLevel();
 

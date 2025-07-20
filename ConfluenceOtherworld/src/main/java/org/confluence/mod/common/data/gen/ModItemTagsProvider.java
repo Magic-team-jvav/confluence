@@ -1379,7 +1379,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 NatureBlocks.NEON_MOSS.asItem(),
                 NatureBlocks.HELIUM_MOSS.asItem(),
                 NatureBlocks.GLOWING_MUSHROOM_MOSS.asItem(),
-                NatureBlocks.COCONUT_BLOCK.asItem(),
                 NatureBlocks.CRIMSON_VENUS_FLYTRAP_BLOCK.asItem(),
                 NatureBlocks.BLOODTHIRST_CRYSTALLIZED_BLOCK.asItem(),
                 NatureBlocks.CORRODED_WORM_ROOTS_BLOCK.asItem(),

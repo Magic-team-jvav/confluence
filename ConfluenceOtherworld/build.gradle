@@ -139,6 +139,7 @@ boolean ipn = false // 一键背包整理Next
 boolean mmmmmmmmmmmm = false // 试验假人
 boolean supplementaries = false // 锦致装饰
 boolean lootBeams = false // 战利品光束
+boolean spark = false // 火花
 
 dependencies {
     projectName.forEach { name -> implementation jarJar(project(":" + name)) }
@@ -313,6 +314,12 @@ dependencies {
     if (supplementaries || mmmmmmmmmmmm) {
         runtimeOnly "maven.modrinth:moonlight:1.21-2.18.18-neoforge"
     }
+
+    if(spark){
+        implementation "curse.maven:spark-361579:6225208"
+
+    }
+
 }
 
 tasks.withType(ProcessResources).configureEach {

@@ -236,7 +236,7 @@ public class ModDataProvider {
         private static final ResourceKey<ConfiguredFeature<?, ?>> CAVE_CHESTS = key("cave_chests"); // 洞穴金箱
         private static final ResourceKey<ConfiguredFeature<?, ?>> UNDERGROUND_CHESTS = key("underground_chests"); // 地下木箱
         private static final ResourceKey<ConfiguredFeature<?, ?>> FOREST_DROOPING_VINE = key("forest_drooping_vine");
-        /*private static final ResourceKey<ConfiguredFeature<?, ?>> FOREST_CATTAILS = key("forest_cattails");*/ // todo 香蒲地物
+        private static final ResourceKey<ConfiguredFeature<?, ?>> FOREST_CATTAILS = key("forest_cattails");
         private static final ResourceKey<ConfiguredFeature<?, ?>> LIFE_MUSHROOM = key("life_mushroom");
         private static final ResourceKey<ConfiguredFeature<?, ?>> BLINKROOT = key("blinkroot");
         private static final ResourceKey<ConfiguredFeature<?, ?>> DAYBLOOM = key("daybloom");
@@ -253,21 +253,21 @@ public class ModDataProvider {
         private static final ResourceKey<ConfiguredFeature<?, ?>> TUNDRA_POT = key("tundra_pot");
 
         private static final ResourceKey<ConfiguredFeature<?, ?>> CORRUPT_DROOPING_VINE = key("corrupt_drooping_vine");
-        /*private static final ResourceKey<ConfiguredFeature<?, ?>> CORRUPT_CATTAILS = key("corrupt_cattails");*/ // todo 香蒲地物
+        private static final ResourceKey<ConfiguredFeature<?, ?>> CORRUPT_CATTAILS = key("corrupt_cattails");
         private static final ResourceKey<ConfiguredFeature<?, ?>> CORRUPT_GRASS = key("corrupt_grass");
         private static final ResourceKey<ConfiguredFeature<?, ?>> VILE_MUSHROOM = key("vile_mushroom");
         private static final ResourceKey<ConfiguredFeature<?, ?>> CRIMSON_GRASS = key("crimson_grass");
         private static final ResourceKey<ConfiguredFeature<?, ?>> CRIMSON_DROOPING_VINE = key("crimson_drooping_vine");
-        /*private static final ResourceKey<ConfiguredFeature<?, ?>> CRIMSON_CATTAILS = key("crimson_cattails");*/ // todo 香蒲地物
+        private static final ResourceKey<ConfiguredFeature<?, ?>> CRIMSON_CATTAILS = key("crimson_cattails");
         private static final ResourceKey<ConfiguredFeature<?, ?>> VICIOUS_MUSHROOM = key("vicious_mushroom");
         private static final ResourceKey<ConfiguredFeature<?, ?>> GLOWING_MUSHROOM = key("glowing_mushroom");
         private static final ResourceKey<ConfiguredFeature<?, ?>> GLOWING_MUSHROOM_VINE = key("glowing_mushroom_vine");
-       /* private static final ResourceKey<ConfiguredFeature<?, ?>> GLOWING_MUSHROOM_CATTAILS = key("glowing_mushroom_cattails");*/ // todo 香蒲地物
+        private static final ResourceKey<ConfiguredFeature<?, ?>> GLOWING_MUSHROOM_CATTAILS = key("glowing_mushroom_cattails");
         private static final ResourceKey<ConfiguredFeature<?, ?>> ASH_GRASS = key("ash_grass");
         private static final ResourceKey<ConfiguredFeature<?, ?>> JUNGLE_ROSE = key("jungle_rose");
         private static final ResourceKey<ConfiguredFeature<?, ?>> JUNGLE_SPORE = key("jungle_spore");
         private static final ResourceKey<ConfiguredFeature<?, ?>> JUNGLE_DROOPING_VINE = key("jungle_drooping_vine");
-        /*private static final ResourceKey<ConfiguredFeature<?, ?>> JUNGLE_CATTAILS = key("jungle_cattails");*/ // todo 香蒲地物
+        private static final ResourceKey<ConfiguredFeature<?, ?>> JUNGLE_CATTAILS = key("jungle_cattails");
         private static final ResourceKey<ConfiguredFeature<?, ?>> UNDERGROUND_JUNGLE_GRASS = key("underground_jungle_grass");
         private static final ResourceKey<ConfiguredFeature<?, ?>> UNDERGROUND_JUNGLE_BUSH = key("underground_jungle_bush");
         private static final ResourceKey<ConfiguredFeature<?, ?>> UNDERGROUND_JUNGLE_TREE = key("underground_jungle_tree");
@@ -411,7 +411,7 @@ public class ModDataProvider {
             ), direct(
                     ModFeatures.DROOPING_VINE_TREE.get(), new DroopingVineTreeFeature.Config(BlockStateProvider.simple(NatureBlocks.EBONY_LOG_BLOCKS.getLog().get()), BlockStateProvider.simple(NatureBlocks.EBONY_LOG_BLOCKS.getLeaves().get()), BlockStateProvider.simple(NatureBlocks.CORRUPT_DROOPING_VINE.get()), 5),
                     BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.EBONY_SAPLING.get().defaultBlockState(), Vec3i.ZERO))
-            )));
+            )));    // todo腐化区块不生成
             register(context, ModFeatures.Configured.SHADOW_TREE, Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(Collections.singletonList(
                     new WeightedPlacedFeature(direct(
                             Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
@@ -426,7 +426,7 @@ public class ModDataProvider {
             ), direct(
                     ModFeatures.DROOPING_VINE_TREE.get(), new DroopingVineTreeFeature.Config(BlockStateProvider.simple(NatureBlocks.SHADOW_LOG_BLOCKS.getLog().get()), BlockStateProvider.simple(NatureBlocks.SHADOW_LOG_BLOCKS.getLeaves().get()), BlockStateProvider.simple(NatureBlocks.CRIMSON_DROOPING_VINE.get()), 5),
                     BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.SHADOW_SAPLING.get().defaultBlockState(), Vec3i.ZERO))
-            )));
+            )));    // todo猩红区块不生成
             register(context, CRIMSON_DROOPING_VINE, ModFeatures.DROOPING_BLOCK.get(), new DroopingBlockFeature.Config(BlockStateProvider.simple(NatureBlocks.CRIMSON_DROOPING_VINE.get()), false, 1, 9));
             register(context, ModFeatures.Configured.GLOWING_MUSHROOM_TREE, ModFeatures.MUSHROOM_TREE.get(), new MushroomTreeFeature.Config(
                     BlockStateProvider.simple(NatureBlocks.GLOWING_MUSHROOM_STEM_BLOCK.get()),
@@ -436,12 +436,11 @@ public class ModDataProvider {
                     1
             ));
             register(context, GLOWING_MUSHROOM_VINE, ModFeatures.DROOPING_BLOCK.get(), new DroopingBlockFeature.Config(BlockStateProvider.simple(NatureBlocks.GLOWING_MUSHROOM_VINE.get()), false, 1, 9));
-           /* register(context, GLOWING_MUSHROOM_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.GLOWING_MUSHROOM_CATTAILS_HEAD.get()), BlockStateProvider.simple(NatureBlocks.GLOWING_MUSHROOM_CATTAILS_BODY.get()), 1, 1, 4, 12));
-            register(context, JUNGLE_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.JUNGLE_CATTAILS_HEAD.get()), BlockStateProvider.simple(NatureBlocks.JUNGLE_CATTAILS_BODY.get()), 1, 1, 4, 7));
-            register(context, CORRUPT_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.EBONY_CATTAILS_HEAD.get()), BlockStateProvider.simple(NatureBlocks.EBONY_CATTAILS_BODY.get()), 1, 1, 4, 5));
-            register(context, CRIMSON_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.CRIMSON_CATTAILS_HEAD.get()), BlockStateProvider.simple(NatureBlocks.CRIMSON_CATTAILS_BODY.get()), 1, 1, 4, 5));
-            register(context, FOREST_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.CATTAILS_HEAD.get()), BlockStateProvider.simple(NatureBlocks.CATTAILS_BODY.get()),1,1,4,5));
-           */ // todo 香蒲地物
+            register(context, GLOWING_MUSHROOM_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.GLOWING_MUSHROOM_CATTAILS_HEAD.get()), BlockStateProvider.simple(NatureBlocks.GLOWING_MUSHROOM_CATTAILS_BODY.get()), 0, 1.0F, 16));
+            register(context, JUNGLE_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.JUNGLE_CATTAILS_HEAD.get()), BlockStateProvider.simple(NatureBlocks.JUNGLE_CATTAILS_BODY.get()), 2, 0.5F, 7));
+            register(context, CORRUPT_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.EBONY_CATTAILS_HEAD.get()), BlockStateProvider.simple(NatureBlocks.EBONY_CATTAILS_BODY.get()), 2, 0.5F, 5));
+            register(context, CRIMSON_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.CRIMSON_CATTAILS_HEAD.get()), BlockStateProvider.simple(NatureBlocks.CRIMSON_CATTAILS_BODY.get()), 2, 0.5F, 5));
+            register(context, FOREST_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.CATTAILS_HEAD.get()), BlockStateProvider.simple(NatureBlocks.CATTAILS_BODY.get()),2,0.5F,5));
             register(context, ModFeatures.Configured.BAOBAB_TREE, Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(List.of(
                     new WeightedPlacedFeature(direct(
                             ModFeatures.BAOBAB_TREE.get(), new BaobabTreeFeature.Config(
@@ -702,7 +701,7 @@ public class ModDataProvider {
         private static final ResourceKey<PlacedFeature> UNDERGROUND_CHESTS = key("underground_chests");
         private static final ResourceKey<PlacedFeature> UNDERGROUND_CHESTS_SMALL = key("underground_chests_small");
         private static final ResourceKey<PlacedFeature> FOREST_DROOPING_VINE = key("forest_drooping_vine");
-        /*private static final ResourceKey<PlacedFeature> FOREST_CATTAILS = key("forest_cattails");*/ // todo 香蒲地物
+        private static final ResourceKey<PlacedFeature> FOREST_CATTAILS = key("forest_cattails");
         private static final ResourceKey<PlacedFeature> BLINKROOT = key("blinkroot");
         private static final ResourceKey<PlacedFeature> DAYBLOOM = key("daybloom");
         private static final ResourceKey<PlacedFeature> DEATHWEED = key("deathweed");
@@ -713,26 +712,26 @@ public class ModDataProvider {
         private static final ResourceKey<PlacedFeature> FIREBLOSSOM = key("fireblossom");
         private static final ResourceKey<PlacedFeature> SHIVERTHORN = key("shiverthorn");
         private static final ResourceKey<PlacedFeature> CORRUPT_DROOPING_VINE = key("corrupt_drooping_vine");
-        /*private static final ResourceKey<PlacedFeature> CORRUPT_CATTAILS = key("corrupt_cattails");*/ // todo 香蒲地物
-        private static final ResourceKey<PlacedFeature> EBONY_TREE = key("ebony_tree");
+        private static final ResourceKey<PlacedFeature> CORRUPT_CATTAILS = key("corrupt_cattails");
+        private static final ResourceKey<PlacedFeature> EBONY_TREE = key("ebony_tree"); // todo腐化区块不生成
         private static final ResourceKey<PlacedFeature> CORRUPT_GRASS = key("corrupt_grass");
         private static final ResourceKey<PlacedFeature> VILE_MUSHROOM = key("vile_mushroom");
-        private static final ResourceKey<PlacedFeature> SHADOW_TREE = key("shadow_tree");
+        private static final ResourceKey<PlacedFeature> SHADOW_TREE = key("shadow_tree");  // todo猩红区块不生成
         private static final ResourceKey<PlacedFeature> CRIMSON_GRASS = key("crimson_grass");
         private static final ResourceKey<PlacedFeature> CRIMSON_DROOPING_VINE = key("crimson_drooping_vine");
-        /*private static final ResourceKey<PlacedFeature> CRIMSON_CATTAILS = key("crimson_cattails");*/ // todo 香蒲地物
+        private static final ResourceKey<PlacedFeature> CRIMSON_CATTAILS = key("crimson_cattails");
         private static final ResourceKey<PlacedFeature> VICIOUS_MUSHROOM = key("vicious_mushroom");
         private static final ResourceKey<PlacedFeature> GLOWING_MUSHROOM = key("glowing_mushroom");
         private static final ResourceKey<PlacedFeature> GLOWING_MUSHROOM_LIFE_CRYSTAL = key("glowing_mushroom_life_crystal");
         private static final ResourceKey<PlacedFeature> GLOWING_MUSHROOM_TREE = key("glowing_mushroom_tree");
         private static final ResourceKey<PlacedFeature> GLOWING_MUSHROOM_VINE = key("glowing_mushroom_vine");
-        /*private static final ResourceKey<PlacedFeature> GLOWING_MUSHROOM_CATTAILS = key("glowing_mushroom_cattails");*/ // todo 香蒲地物
+        private static final ResourceKey<PlacedFeature> GLOWING_MUSHROOM_CATTAILS = key("glowing_mushroom_cattails");
         private static final ResourceKey<PlacedFeature> ASH_TREE = key("ash_tree");
         private static final ResourceKey<PlacedFeature> ASH_GRASS = key("ash_grass");
         private static final ResourceKey<PlacedFeature> JUNGLE_ROSE = key("jungle_rose");
         private static final ResourceKey<PlacedFeature> JUNGLE_SPORE = key("jungle_spore");
         private static final ResourceKey<PlacedFeature> JUNGLE_DROOPING_VINE = key("jungle_drooping_vine");
-        /*private static final ResourceKey<PlacedFeature> JUNGLE_CATTAILS = key("jungle_cattails");*/ // todo 香蒲地物
+        private static final ResourceKey<PlacedFeature> JUNGLE_CATTAILS = key("jungle_cattails");
         private static final ResourceKey<PlacedFeature> UNDERGROUND_JUNGLE_GRASS = key("underground_jungle_grass");
         private static final ResourceKey<PlacedFeature> UNDERGROUND_JUNGLE_BUSH = key("underground_jungle_bush");
         private static final ResourceKey<PlacedFeature> UNDERGROUND_JUNGLE_TREE = key("underground_jungle_tree");
@@ -834,7 +833,7 @@ public class ModDataProvider {
             register(context, FALLING_SAND_TRAP, configured.getOrThrow(ConfiguredFeatures.FALLING_SAND_TRAP), biome, inSquare, bottomThroughUnderground);
             register(context, UNDERGROUND_CHESTS, configured.getOrThrow(ConfiguredFeatures.UNDERGROUND_CHESTS), biome, inSquare, bottomThroughSurface, targetSturdyAllowedAir, SurfaceRelativeThresholdFilter.of(Heightmap.Types.WORLD_SURFACE_WG, -110, -80));
             register(context, FOREST_DROOPING_VINE, configured.getOrThrow(ConfiguredFeatures.FOREST_DROOPING_VINE), biome, CountPlacement.of(60), inSquare, throughSurface, EnvironmentScanPlacement.scanningFor(Direction.UP, BlockPredicate.matchesBlocks(Blocks.DIRT, Blocks.STONE), air, 12), ySpreadN1);
-            /*register(context, FOREST_CATTAILS, configured.getOrThrow(ConfiguredFeatures.FOREST_CATTAILS), biome, RarityFilter.onAverageOnceEvery(2) , inSquare, HeightRangePlacement.uniform(VerticalAnchor.absolute(OverworldUtils.getSurfaceY() - 5), VerticalAnchor.absolute(260)), ySpreadN1);  // todo 香蒲地物*/
+            register(context, FOREST_CATTAILS, configured.getOrThrow(ConfiguredFeatures.FOREST_CATTAILS), biome, inSquare, RarityFilter.onAverageOnceEvery(4) , worldSurfaceWG, BlockPredicateFilter.forPredicate(BlockPredicate.matchesBlocks(new Vec3i(0, -1, 0), Blocks.WATER)));
             register(context, LIFE_MUSHROOM, configured.getOrThrow(ConfiguredFeatures.LIFE_MUSHROOM), RarityFilter.onAverageOnceEvery(32), biome, count3, inSquare, worldSurfaceWG);
             register(context, BLINKROOT, configured.getOrThrow(ConfiguredFeatures.BLINKROOT), biome, count3, inSquare, bottomThroughUnderground);
             register(context, DAYBLOOM, configured.getOrThrow(ConfiguredFeatures.DAYBLOOM), RarityFilter.onAverageOnceEvery(32), biome, count2, inSquare, worldSurfaceWG);
@@ -845,26 +844,26 @@ public class ModDataProvider {
             register(context, FIREBLOSSOM, configured.getOrThrow(ConfiguredFeatures.FIREBLOSSOM), biome, count3, inSquare, bottomThroughTop);
             register(context, SHIVERTHORN, configured.getOrThrow(ConfiguredFeatures.SHIVERTHORN), RarityFilter.onAverageOnceEvery(32), biome, count5, inSquare, worldSurfaceWG);
             register(context, CORRUPT_DROOPING_VINE, configured.getOrThrow(ConfiguredFeatures.CORRUPT_DROOPING_VINE), biome, CountPlacement.of(60), inSquare, throughSurface, EnvironmentScanPlacement.scanningFor(Direction.UP, BlockPredicate.matchesBlocks(Blocks.DIRT, NatureBlocks.EBONSTONE.get()), air, 12), ySpreadN1);
-            /*register(context, CORRUPT_CATTAILS, configured.getOrThrow(ConfiguredFeatures.CORRUPT_CATTAILS), biome, RarityFilter.onAverageOnceEvery(2) , inSquare, HeightRangePlacement.uniform(VerticalAnchor.absolute(OverworldUtils.getSurfaceY() - 5), VerticalAnchor.absolute(260)), ySpreadN1);*/ // todo 香蒲地物
-            register(context, EBONY_TREE, configured.getOrThrow(ModFeatures.Configured.EBONY_TREE), biome, count1_9$2_1, inSquare, surfaceWaterDepth0, oceanFloor);
+            register(context, CORRUPT_CATTAILS, configured.getOrThrow(ConfiguredFeatures.CORRUPT_CATTAILS), biome, inSquare, RarityFilter.onAverageOnceEvery(4) , worldSurfaceWG, BlockPredicateFilter.forPredicate(BlockPredicate.matchesBlocks(new Vec3i(0, -1, 0), Blocks.WATER)));
+            register(context, EBONY_TREE, configured.getOrThrow(ModFeatures.Configured.EBONY_TREE), biome, count1_9$2_1, inSquare, surfaceWaterDepth0, oceanFloor);  // todo腐化树木区块不生成
             register(context, CORRUPT_GRASS, configured.getOrThrow(ConfiguredFeatures.CORRUPT_GRASS), biome, CountPlacement.of(10), inSquare, HeightmapPlacement.onHeightmap(Heightmap.Types.MOTION_BLOCKING));
             register(context, VILE_MUSHROOM, configured.getOrThrow(ConfiguredFeatures.VILE_MUSHROOM), RarityFilter.onAverageOnceEvery(32), biome, count3, HeightmapPlacement.onHeightmap(Heightmap.Types.WORLD_SURFACE_WG));
-            register(context, SHADOW_TREE, configured.getOrThrow(ModFeatures.Configured.SHADOW_TREE), biome, count1_9$2_1, inSquare, surfaceWaterDepth0, oceanFloor);
+            register(context, SHADOW_TREE, configured.getOrThrow(ModFeatures.Configured.SHADOW_TREE), biome, count1_9$2_1, inSquare, surfaceWaterDepth0, oceanFloor);  // todo猩红树木区块不生成
             register(context, CRIMSON_GRASS, configured.getOrThrow(ConfiguredFeatures.CRIMSON_GRASS), biome, CountPlacement.of(10), inSquare, HeightmapPlacement.onHeightmap(Heightmap.Types.MOTION_BLOCKING));
             register(context, CRIMSON_DROOPING_VINE, configured.getOrThrow(ConfiguredFeatures.CRIMSON_DROOPING_VINE), biome, CountPlacement.of(60), inSquare, throughSurface, EnvironmentScanPlacement.scanningFor(Direction.UP, BlockPredicate.matchesBlocks(Blocks.DIRT, NatureBlocks.CRIMSTONE.get()), air, 12), ySpreadN1);
-            /*register(context, CRIMSON_CATTAILS, configured.getOrThrow(ConfiguredFeatures.CRIMSON_CATTAILS), biome, RarityFilter.onAverageOnceEvery(2),  inSquare, HeightRangePlacement.uniform(VerticalAnchor.absolute(OverworldUtils.getSurfaceY() - 5), VerticalAnchor.absolute(260)), ySpreadN1);*/ // todo 香蒲地物
+            register(context, CRIMSON_CATTAILS, configured.getOrThrow(ConfiguredFeatures.CRIMSON_CATTAILS), biome, inSquare, RarityFilter.onAverageOnceEvery(4) , worldSurfaceWG, BlockPredicateFilter.forPredicate(BlockPredicate.matchesBlocks(new Vec3i(0, -1, 0), Blocks.WATER)));
             register(context, VICIOUS_MUSHROOM, configured.getOrThrow(ConfiguredFeatures.VICIOUS_MUSHROOM), RarityFilter.onAverageOnceEvery(32), biome, count3, HeightmapPlacement.onHeightmap(Heightmap.Types.WORLD_SURFACE_WG));
             register(context, GLOWING_MUSHROOM, configured.getOrThrow(ConfiguredFeatures.GLOWING_MUSHROOM), biome, CountPlacement.of(40), inSquare, bottomThroughUnderground);
             register(context, GLOWING_MUSHROOM_LIFE_CRYSTAL, configured.getOrThrow(ConfiguredFeatures.LIFE_CRYSTAL), biome, CountPlacement.of(8), inSquare, bottomThroughUnderground, targetSturdyAllowedAir, SurfaceRelativeThresholdFilter.of(Heightmap.Types.WORLD_SURFACE_WG, -110, -70));
             register(context, GLOWING_MUSHROOM_TREE, configured.getOrThrow(ModFeatures.Configured.GLOWING_MUSHROOM_TREE), biome, CountOnEveryLayerPlacement.of(3), EnvironmentScanPlacement.scanningFor(Direction.DOWN, BlockPredicate.matchesBlocks(new Vec3i(0, -1, 0), Blocks.MUD, NatureBlocks.MUSHROOM_GRASS_BLOCK.get()), air, 12));
             register(context, GLOWING_MUSHROOM_VINE, configured.getOrThrow(ConfiguredFeatures.GLOWING_MUSHROOM_VINE), biome, CountPlacement.of(188), inSquare, bottomThroughUnderground, EnvironmentScanPlacement.scanningFor(Direction.UP, BlockPredicate.matchesBlocks(Blocks.MUD, NatureBlocks.MUSHROOM_GRASS_BLOCK.get()), air, 12), ySpreadN1);
-            /*register(context, GLOWING_MUSHROOM_CATTAILS, configured.getOrThrow(ConfiguredFeatures.GLOWING_MUSHROOM_CATTAILS), biome, RarityFilter.onAverageOnceEvery(2),  inSquare, bottomThroughUnderground, ySpreadN1);*/ // todo 香蒲地物
+            register(context, GLOWING_MUSHROOM_CATTAILS, configured.getOrThrow(ConfiguredFeatures.GLOWING_MUSHROOM_CATTAILS), biome, CountOnEveryLayerPlacement.of(60),  inSquare, bottomThroughUnderground, ySpreadN1);
             register(context, ASH_TREE, configured.getOrThrow(ModFeatures.Configured.ASH_TREE), biome, CountOnEveryLayerPlacement.of(4), targetSturdyAllowedAir);
             register(context, ASH_GRASS, configured.getOrThrow(ConfiguredFeatures.ASH_GRASS), biome, CountPlacement.of(20), inSquare, bottomThroughTop);
             register(context, JUNGLE_ROSE, configured.getOrThrow(ConfiguredFeatures.JUNGLE_ROSE), biome, count4, inSquare, bottomThroughSurface);
             register(context, JUNGLE_SPORE, configured.getOrThrow(ConfiguredFeatures.JUNGLE_SPORE), biome, count14, inSquare, bottomThroughSurface, targetSturdyAllowedAir, SurfaceRelativeThresholdFilter.of(Heightmap.Types.OCEAN_FLOOR, -110, -70));
             register(context, JUNGLE_DROOPING_VINE, configured.getOrThrow(ConfiguredFeatures.JUNGLE_DROOPING_VINE), biome, CountPlacement.of(90), inSquare, bottomThroughSurface, EnvironmentScanPlacement.scanningFor(Direction.UP, BlockPredicate.matchesBlocks(Blocks.MUD, NatureBlocks.JUNGLE_GRASS_BLOCK.get()), air, 12), ySpreadN1);
-            /*register(context, JUNGLE_CATTAILS, configured.getOrThrow(ConfiguredFeatures.JUNGLE_CATTAILS), biome, RarityFilter.onAverageOnceEvery(2),  inSquare, HeightRangePlacement.uniform(VerticalAnchor.absolute(OverworldUtils.getSurfaceY() - 5), VerticalAnchor.absolute(260)), ySpreadN1);*/ // todo 香蒲地物
+            register(context, JUNGLE_CATTAILS, configured.getOrThrow(ConfiguredFeatures.JUNGLE_CATTAILS), biome, inSquare, RarityFilter.onAverageOnceEvery(4) , worldSurfaceWG, BlockPredicateFilter.forPredicate(BlockPredicate.matchesBlocks(new Vec3i(0, -1, 0), Blocks.WATER)));
             register(context, UNDERGROUND_JUNGLE_GRASS, configured.getOrThrow(ConfiguredFeatures.UNDERGROUND_JUNGLE_GRASS), biome, CountPlacement.of(125), inSquare, bottomThroughUnderground, targetSolidAllowedAir, ySpread1);
             register(context, UNDERGROUND_JUNGLE_BUSH, configured.getOrThrow(ConfiguredFeatures.UNDERGROUND_JUNGLE_BUSH), biome, count4, inSquare, bottomThroughUnderground, targetSolidAllowedAir, ySpread1);
             register(context, UNDERGROUND_JUNGLE_TREE, configured.getOrThrow(ConfiguredFeatures.UNDERGROUND_JUNGLE_TREE), biome, count2, inSquare, bottomThroughUnderground, targetSolidAllowedAir, ySpread1);
@@ -1101,7 +1100,8 @@ public class ModDataProvider {
                     PlacedFeatures.SURFACE_CHESTS, PlacedFeatures.GEMSTONE_CAVE
             ), GenerationStep.Decoration.UNDERGROUND_DECORATION);
             addFeatures(context, "forest_like_vd", forestLike, HolderSet.direct(factory,
-                    PlacedFeatures.FOREST_DROOPING_VINE, /*PlacedFeatures.FOREST_CATTAILS,*/ // todo 香蒲地物
+                    PlacedFeatures.FOREST_DROOPING_VINE,
+                    PlacedFeatures.FOREST_CATTAILS,
                     PlacedFeatures.DAYBLOOM
             ), GenerationStep.Decoration.VEGETAL_DECORATION);
             addFeatures(context, "forest_like_uo", forestLike, HolderSet.direct(factory,
@@ -1119,7 +1119,14 @@ public class ModDataProvider {
             ), GenerationStep.Decoration.UNDERGROUND_DECORATION);
 
             addFeatures(context, "jungle_lush_vd", new OrHolderSet<>(jungle, lush), HolderSet.direct(factory,
-                    PlacedFeatures.JUNGLE_ROSE, PlacedFeatures.JUNGLE_SPORE, PlacedFeatures.JUNGLE_DROOPING_VINE,  /*PlacedFeatures.JUNGLE_CATTAILS, // todo 香蒲地物 */ PlacedFeatures.UNDERGROUND_JUNGLE_GRASS, PlacedFeatures.UNDERGROUND_JUNGLE_BUSH, PlacedFeatures.UNDERGROUND_JUNGLE_TREE, PlacedFeatures.NATURES_GIFT
+                    PlacedFeatures.JUNGLE_ROSE,
+                    PlacedFeatures.JUNGLE_SPORE,
+                    PlacedFeatures.JUNGLE_DROOPING_VINE,
+                    PlacedFeatures.JUNGLE_CATTAILS,
+                    PlacedFeatures.UNDERGROUND_JUNGLE_GRASS,
+                    PlacedFeatures.UNDERGROUND_JUNGLE_BUSH,
+                    PlacedFeatures.UNDERGROUND_JUNGLE_TREE,
+                    PlacedFeatures.NATURES_GIFT
             ), GenerationStep.Decoration.VEGETAL_DECORATION);
 
             addFeatures(context, "beach_vd", biome.getOrThrow(Tags.Biomes.IS_BEACH), HolderSet.direct(factory,
@@ -1160,11 +1167,11 @@ public class ModDataProvider {
                     .generationSettings(Util.make(new BiomeGenerationSettings.Builder(placedFeature, configuredWorldCarver), builder -> {
                         addDefaultGenerations(builder);
                         builder.addCarver(GenerationStep.Carving.AIR, ConfiguredWorldCarvers.DEMONIC_CAVE_CARVER);
-                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.EBONY_TREE);
+                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.EBONY_TREE);  // todo腐化区块不生成
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.CORRUPT_GRASS);
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.VILE_MUSHROOM);
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.CORRUPT_DROOPING_VINE);
-                       /* builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.CORRUPT_CATTAILS);*/ // todo 香蒲地物
+                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.CORRUPT_CATTAILS);
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.DEATHWEED);
                         builder.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, PlacedFeatures.CORRUPTION_POT);
                         builder.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, PlacedFeatures.DEMON_ALTAR_BIOME);
@@ -1201,10 +1208,10 @@ public class ModDataProvider {
                             .build())
                     .generationSettings(Util.make(new BiomeGenerationSettings.Builder(placedFeature, configuredWorldCarver), builder -> {
                         addDefaultGenerations(builder);
-                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.SHADOW_TREE);
+                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.SHADOW_TREE);  // todo猩红区块不生成
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.CRIMSON_GRASS);
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.CRIMSON_DROOPING_VINE);
-                       /* builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.CRIMSON_CATTAILS);*/ //todo 香蒲地物
+                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.CRIMSON_CATTAILS);
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.VICIOUS_MUSHROOM);
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.DEATHWEED);
                         builder.addFeature(GenerationStep.Decoration.UNDERGROUND_DECORATION, PlacedFeatures.CRIMSON_ALTAR_BIOME);
@@ -1287,7 +1294,7 @@ public class ModDataProvider {
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.GLOWING_MUSHROOM_LIFE_CRYSTAL);
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.GLOWING_MUSHROOM_TREE);
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.GLOWING_MUSHROOM_VINE);
-                      /*  builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.GLOWING_MUSHROOM_CATTAILS);*/ //todo 香蒲地物
+                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.GLOWING_MUSHROOM_CATTAILS);
                     }).build())
                     .build()
             );

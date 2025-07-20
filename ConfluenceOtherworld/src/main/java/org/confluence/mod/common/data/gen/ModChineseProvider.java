@@ -2382,7 +2382,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.EBONY_CATTAILS_BODY.get(), "腐化香蒲");
         add(NatureBlocks.CRIMSON_CATTAILS_BODY.get(), "猩红香蒲");
         add(NatureBlocks.FLOATING_WHEAT.get(), "飘飘麦");
-        add(NatureBlocks.COCONUT_BLOCK.get(), "椰子方块");
         add(NatureBlocks.CRIMSON_VENUS_FLYTRAP_BLOCK.get(), "猩红捕蝇草");
         add(NatureBlocks.BLOODTHIRST_CRYSTALLIZED_BLOCK.get(), "嗜血结晶");
         add(NatureBlocks.DECOMPOSE_THE_SOURCE_EXTRACT_BLOCK.get(), "分解源萃");

@@ -6,8 +6,10 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import org.confluence.lib.common.recipe.AmountIngredient;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terraentity.entity.npc.mood.NPCMood;
@@ -17,6 +19,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import static org.confluence.mod.integration.terra_entity.npc_trade.Util.coinItem;
 import static org.confluence.terraentity.client.gui.container.TETradeScreen.MENU_LOCATION;
@@ -114,6 +117,10 @@ public interface IMoneyTrade extends ITrade {
     }
 
 
+    @Override
+    default List<Ingredient> normalizeCost(){
+        int []coins = PlayerUtils.decodeCoin(this.cost());
+        return IntStream.range(0,coins.length).mapToObj(i-> AmountIngredient.of(coins[i], PlayerUtils.INDEX_2_COIN.apply(i))).filter(i->!i.isEmpty()).toList();
 
-
+    }
 }

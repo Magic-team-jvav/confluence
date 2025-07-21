@@ -13,6 +13,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -66,6 +67,21 @@ public class SellTrade implements ITrade {
     // 因为复用的slot，所以不能复用onTrade函数，用onSell代替
     @Override
     public void onTrade(ServerPlayer player, ITradeHolder npc, int index) {
+    }
+
+    @Override
+    public List<ITrade> getAllSupportedTrades(){
+        return List.of();
+    }
+
+    @Override
+    public List<Ingredient> normalizeCost() {
+        return List.of();
+    }
+
+    @Override
+    public List<ItemStack> normalizeResult() {
+        return List.of();
     }
 
     public void onSell(ServerPlayer player, ITradeHolder npc, int index) {

@@ -267,6 +267,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
 
         shop(TENpcEntities.WITCH_DOCTOR.getId()).addRecipe(withDefaultPylon()
                 .add(FunctionalBlocks.CAULDRON) //todo 万圣节条件
+                .add(AccessoryItems.PYGMY_NECKLACE) //todo 夜晚条件
                 .add(SellTrade.INSTANCE)
                 .build());
     }

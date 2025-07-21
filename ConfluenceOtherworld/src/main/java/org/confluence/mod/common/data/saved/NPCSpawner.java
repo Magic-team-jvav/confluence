@@ -293,7 +293,7 @@ public class NPCSpawner implements IGlobalData {
             // 酒馆老板
             // 发型师
             if (trySpawnGoblinTinkerer(player, pos, region)) continue;
-            // 巫医
+            if (trySpawnWitchDoctor(player, pos, region)) continue;
             if (trySpawnPartyGirl(player, pos, region)) continue;
             // 巫师
             // 税收官
@@ -420,6 +420,17 @@ public class NPCSpawner implements IGlobalData {
         return false;
     }
 
+    private boolean trySpawnWitchDoctor(ServerPlayer player, BlockPos pos, Region region) {
+        if (!hasNPCAlive(region, TENpcEntities.WITCH_DOCTOR.get())) {
+            if (KillBoard.INSTANCE.isAnyDefeated(
+                    TEBossEntities.QUEEN_BEE.get()
+            )) {
+                return spawnAtPos(player.serverLevel(), pos, TENpcEntities.WITCH_DOCTOR.get());
+            }
+        }
+        return false;
+    }
+
     private boolean trySpawnPainter(ServerPlayer player, BlockPos pos, Region region) {
         Object2BooleanMap<EntityType<?>> map = npcAlive.get(region);
         if (map != null && !map.getOrDefault(TENpcEntities.PAINTER.get(), false)) {
@@ -485,6 +496,7 @@ public class NPCSpawner implements IGlobalData {
             });
         }
         return false;
+
     }
 
     /**

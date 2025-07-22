@@ -3311,6 +3311,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.MYTHRIL_ANVIL.get(), "秘银砧");
         add(FunctionalBlocks.ORICHALCUM_ANVIL.get(), "山铜砧");
         add(FunctionalBlocks.CHLOROPHYTE_EXTRACTINATOR.get(), "叶绿提炼机");
+        add(FunctionalBlocks.LOCK_BLOCK.get(), "门锁方块");
         add(FunctionalBlocks.BLEND_O_MATIC.get(), "搅拌机");
         add(FunctionalBlocks.MEAT_GRINDER.get(), "搅肉机");
         add(FunctionalBlocks.FRAGILE_BLUE_BRICKS.get(), "易碎蓝色地牢砖");

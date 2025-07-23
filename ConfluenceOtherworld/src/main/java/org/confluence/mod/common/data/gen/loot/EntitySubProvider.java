@@ -1,6 +1,7 @@
 package org.confluence.mod.common.data.gen.loot;
 
 import com.google.common.collect.Streams;
+import com.xiaohunao.terra_moment.common.init.TMItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.loot.EntityLootSubProvider;
@@ -262,11 +263,19 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(TCItems.SHARK_TOOTH_NECKLACE).setWeight(67).setQuality(1))
                         .add(EmptyLootItem.emptyItem().setWeight(9933))
                 )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TMItems.BLOOD_TEAR.get()))
+                        .add(EmptyLootItem.emptyItem().setWeight(99))
+                )
         );
         add(TEMonsterEntities.DRIPPLER.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/drippler"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.SHARK_TOOTH_NECKLACE).setWeight(67).setQuality(1))
                         .add(EmptyLootItem.emptyItem().setWeight(9933))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TMItems.BLOOD_TEAR.get()))
+                        .add(EmptyLootItem.emptyItem().setWeight(99))
                 )
         );
         add(TEMonsterEntities.BLOODY_SPORE.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/bloody_spore"), LootTable.lootTable()

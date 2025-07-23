@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class BossDelaySpawner {
+public final class BossDelaySpawner {
     public static final BossDelaySpawner INSTANCE = new BossDelaySpawner();
     private final List<Delayed<Mob>> bossQueue = new ArrayList<>();
 

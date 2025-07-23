@@ -14,6 +14,7 @@ import net.neoforged.neoforge.common.conditions.ModLoadedCondition;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.Keys;
+import org.confluence.mod.common.data.saved.MoonPhase;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.CrateBlocks;
@@ -25,11 +26,10 @@ import org.confluence.mod.integration.terra_entity.npc_trade.DeferredMoneyTradeI
 import org.confluence.mod.integration.terra_entity.npc_trade.MoneyTradeHealthFull;
 import org.confluence.mod.integration.terra_entity.npc_trade.MoneyTradeItem;
 import org.confluence.mod.integration.terra_entity.npc_trade.SellTrade;
-import org.confluence.mod.integration.terra_entity.npc_trade_lock.ConditionsLock;
-import org.confluence.mod.integration.terra_entity.npc_trade_lock.PositionLock;
-import org.confluence.mod.integration.terra_entity.npc_trade_lock.SecretFlagLock;
+import org.confluence.mod.integration.terra_entity.npc_trade_lock.*;
 import org.confluence.mod.integration.waystones.WaystonesHelper;
 import org.confluence.mod.mixed.IWorldOptions;
+import org.confluence.mod.util.DateUtils;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_guns.common.init.TGItems;
@@ -44,6 +44,7 @@ import org.confluence.terraentity.registries.npc_trade.variant.TradeTask;
 import org.confluence.terraentity.registries.npc_trade_lock.ITradeLock;
 import org.confluence.terraentity.registries.npc_trade_lock.variant.BiomeLock;
 import org.confluence.terraentity.registries.npc_trade_lock.variant.MoodLock;
+import org.confluence.terraentity.registries.npc_trade_lock.variant.TimeLock;
 import org.confluence.terraentity.registries.npc_trade_task.variant.DynamicAnglerTradeTask;
 
 import java.util.ArrayList;
@@ -69,6 +70,8 @@ public class NPCShopProvider extends AbstractRecipeProvider {
     @Override
     public void buildRecipes(RecipeOutput recipeOutput, HolderLookup.Provider holderLookup) {
         TradeProperties hardmodeLock = TradeProperties.builder().setLock(new SecretFlagLock(IWorldOptions.HARDMODE, false)).build();
+        TradeProperties halloweensLock = TradeProperties.builder().setLock(DateLock.HALLOWEENS).build();
+        TradeProperties nightLock = TradeProperties.builder().setLock(new TimeLock(DateUtils._19$30, DateUtils._04$30, false)).build();
         // 女仆商店
         shop(Keys.MAID_SHOP).addRecipe(withDefaultPylon()
                 .add(TCItems.PORTABLE_CEMENT_MIXER)
@@ -212,8 +215,8 @@ public class NPCShopProvider extends AbstractRecipeProvider {
         shop(TENpcEntities.ANGLER.getId()).addRecipe(angler);
         shop(TENpcEntities.FEMALE_ANGLER.getId()).addRecipe(angler);
 
-        shop(TENpcEntities.OLD_MAN.getId()).addRecipe(new Builder()
-                .build());
+//        shop(TENpcEntities.OLD_MAN.getId()).addRecipe(new Builder()
+//                .build());
 
         shop(TENpcEntities.MECHANIC.getId()).addRecipe(withDefaultPylon()
                 .add(ToolItems.RED_WRENCH)
@@ -221,7 +224,15 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(ToolItems.GREEN_WRENCH)
                 .add(ToolItems.YELLOW_WRENCH)
                 .add(ToolItems.WIRE_CUTTER)
-                .add(FishingPoleItems.MECHANICS_ROD) //todo 月相条件
+                .add(new MoneyTradeItem.Builder()
+                        .setResult(FishingPoleItems.MECHANICS_ROD.toStack())
+                        .setProperties(TradeProperties.builder().setLock(new MoonPhaseLock(
+                                MoonPhase.WANING_GIBBOUS,
+                                MoonPhase.WANING_CRESCENT,
+                                MoonPhase.WAXING_CRESCENT,
+                                MoonPhase.WAXING_GIBBOUS
+                        )).build())
+                        .build())
                 .add(FunctionalBlocks.SWITCH)
                 .add(FunctionalBlocks.SIGNAL_ADAPTER)
                 .add(FunctionalBlocks.TIMERS_BLOCK_1_1)
@@ -266,7 +277,15 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .build());
 
         shop(TENpcEntities.WITCH_DOCTOR.getId()).addRecipe(withDefaultPylon()
-                .add(FunctionalBlocks.CAULDRON) //todo 万圣节条件
+                .add(TGItems.BLOWGUN)
+                .add(new MoneyTradeItem.Builder()
+                        .setResult(FunctionalBlocks.CAULDRON.toStack())
+                        .setProperties(halloweensLock)
+                        .build())
+                .add(new MoneyTradeItem.Builder()
+                        .setResult(AccessoryItems.PYGMY_NECKLACE.toStack())
+                        .setProperties(nightLock)
+                        .build())
                 .add(SellTrade.INSTANCE)
                 .build());
     }
@@ -279,7 +298,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
 
     protected Builder withDefaultPylon() {
         return new Builder()
-                .add(new DeferredMoneyTradeItem(WaystonesHelper.FOREST_PYLON.getId(), 1, withModLoadedGreaterMood( new BiomeLock(Optional.empty(), Optional.of(List.of(Tags.Biomes.IS_FOREST, Tags.Biomes.IS_PLAINS))), WaystonesHelper.MODID)))
+                .add(new DeferredMoneyTradeItem(WaystonesHelper.FOREST_PYLON.getId(), 1, withModLoadedGreaterMood(new BiomeLock(Optional.empty(), Optional.of(List.of(Tags.Biomes.IS_FOREST, Tags.Biomes.IS_PLAINS))), WaystonesHelper.MODID)))
                 .add(new DeferredMoneyTradeItem(WaystonesHelper.SNOW_PYLON.getId(), 1, withModLoadedGreaterMood(new BiomeLock(Optional.empty(), Optional.of(List.of(Tags.Biomes.IS_SNOWY, Tags.Biomes.IS_ICY))), WaystonesHelper.MODID)))
                 .add(new DeferredMoneyTradeItem(WaystonesHelper.DESERT_PYLON.getId(), 1, withModLoadedGreaterMood(new BiomeLock(Optional.empty(), Optional.of(List.of(Tags.Biomes.IS_DESERT, Tags.Biomes.IS_BADLANDS))), WaystonesHelper.MODID)))
                 .add(new DeferredMoneyTradeItem(WaystonesHelper.CAVERN_PYLON.getId(), 1, withModLoadedGreaterMood(new PositionLock(MinMaxBounds.Ints.ANY, MinMaxBounds.Ints.atMost(OverworldUtils.getSurfaceY()), MinMaxBounds.Ints.ANY), WaystonesHelper.MODID)))

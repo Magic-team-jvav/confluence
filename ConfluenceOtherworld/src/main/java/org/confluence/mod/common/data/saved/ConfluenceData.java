@@ -24,7 +24,7 @@ import org.joml.Vector3f;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ConfluenceData extends SavedData {
+public final class ConfluenceData extends SavedData {
     public static final int STAR_PHASES_SIZE = 10;
 
     private boolean initialized = false;

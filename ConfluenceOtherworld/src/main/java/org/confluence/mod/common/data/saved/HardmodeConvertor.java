@@ -49,7 +49,7 @@ import java.util.function.Function;
 /**
  * <a href="https://terraria.wiki.gg/zh/wiki/%E5%9B%B0%E9%9A%BE%E6%A8%A1%E5%BC%8F%E8%BD%AC%E6%8D%A2">困难模式转换</a>
  */
-public class HardmodeConvertor implements IGlobalData {
+public final class HardmodeConvertor implements IGlobalData {
     public static final HardmodeConvertor INSTANCE = new HardmodeConvertor();
     public static final Codec<List<Tuple<ChunkPos, BlockPosColumn[][]>>> SANCTIFICATION_CODEC = Codec.lazyInitialized(() -> {
         Codec<BlockPosColumn[][]> codec = new Codec<>() {

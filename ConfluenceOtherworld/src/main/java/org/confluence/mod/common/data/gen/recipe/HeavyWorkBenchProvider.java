@@ -1,5 +1,6 @@
 package org.confluence.mod.common.data.gen.recipe;
 
+import com.xiaohunao.terra_moment.common.init.TMItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.data.PackOutput;
@@ -463,6 +464,17 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "# #",
                 "# #"
         )), VanityArmorItems.ROBE.toStack());
+
+        // 哥布林战旗
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(3, MaterialItems.TATTERED_CLOTH),
+                'b', Ingredient.of(MaterialItems.TATTERED_CLOTH),
+                'a', AmountIngredient.of(2, ItemTags.PLANKS)
+        ), List.of(
+                "###",
+                " b ",
+                "aaa"
+        )), TMItems.GOBLIN_BATTLE_STANDARD.get().getDefaultInstance());
 
         shapeless(recipeOutput, NatureBlocks.THIN_ICE_BLOCK.toStack(), Ingredient.of(Items.ICE));
         shapeless(recipeOutput, ConsumableItems.ROTTEN_BONE_DUST.toStack(2), AmountIngredient.of(4, MaterialItems.ROTTEN_BONE), AmountIngredient.of(4, MaterialItems.WORM_TOOTH), AmountIngredient.of(8, MaterialItems.ROTTEN_CHUNK));

@@ -622,7 +622,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         AxeItems.acceptTag(tools);
         PickaxeItems.acceptTag(tools);
         HamaxeItems.acceptTag(tools);
-        HoeShovelItems.acceptTag(hammer);
         HammerItems.acceptTag(tools);
         FishingPoleItems.acceptTag(tools);
 

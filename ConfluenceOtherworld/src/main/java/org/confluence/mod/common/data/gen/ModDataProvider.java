@@ -411,7 +411,7 @@ public class ModDataProvider {
             ), direct(
                     ModFeatures.DROOPING_VINE_TREE.get(), new DroopingVineTreeFeature.Config(BlockStateProvider.simple(NatureBlocks.EBONY_LOG_BLOCKS.getLog().get()), BlockStateProvider.simple(NatureBlocks.EBONY_LOG_BLOCKS.getLeaves().get()), BlockStateProvider.simple(NatureBlocks.CORRUPT_DROOPING_VINE.get()), 5),
                     BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.EBONY_SAPLING.get().defaultBlockState(), Vec3i.ZERO))
-            )));    // todo腐化区块不生成
+            )));
             register(context, ModFeatures.Configured.SHADOW_TREE, Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(Collections.singletonList(
                     new WeightedPlacedFeature(direct(
                             Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
@@ -426,7 +426,7 @@ public class ModDataProvider {
             ), direct(
                     ModFeatures.DROOPING_VINE_TREE.get(), new DroopingVineTreeFeature.Config(BlockStateProvider.simple(NatureBlocks.SHADOW_LOG_BLOCKS.getLog().get()), BlockStateProvider.simple(NatureBlocks.SHADOW_LOG_BLOCKS.getLeaves().get()), BlockStateProvider.simple(NatureBlocks.CRIMSON_DROOPING_VINE.get()), 5),
                     BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.SHADOW_SAPLING.get().defaultBlockState(), Vec3i.ZERO))
-            )));    // todo猩红区块不生成
+            )));
             register(context, CRIMSON_DROOPING_VINE, ModFeatures.DROOPING_BLOCK.get(), new DroopingBlockFeature.Config(BlockStateProvider.simple(NatureBlocks.CRIMSON_DROOPING_VINE.get()), false, 1, 9));
             register(context, ModFeatures.Configured.GLOWING_MUSHROOM_TREE, ModFeatures.MUSHROOM_TREE.get(), new MushroomTreeFeature.Config(
                     BlockStateProvider.simple(NatureBlocks.GLOWING_MUSHROOM_STEM_BLOCK.get()),
@@ -713,10 +713,10 @@ public class ModDataProvider {
         private static final ResourceKey<PlacedFeature> SHIVERTHORN = key("shiverthorn");
         private static final ResourceKey<PlacedFeature> CORRUPT_DROOPING_VINE = key("corrupt_drooping_vine");
         private static final ResourceKey<PlacedFeature> CORRUPT_CATTAILS = key("corrupt_cattails");
-        private static final ResourceKey<PlacedFeature> EBONY_TREE = key("ebony_tree"); // todo腐化区块不生成
+        private static final ResourceKey<PlacedFeature> EBONY_TREE = key("ebony_tree");
         private static final ResourceKey<PlacedFeature> CORRUPT_GRASS = key("corrupt_grass");
         private static final ResourceKey<PlacedFeature> VILE_MUSHROOM = key("vile_mushroom");
-        private static final ResourceKey<PlacedFeature> SHADOW_TREE = key("shadow_tree");  // todo猩红区块不生成
+        private static final ResourceKey<PlacedFeature> SHADOW_TREE = key("shadow_tree");
         private static final ResourceKey<PlacedFeature> CRIMSON_GRASS = key("crimson_grass");
         private static final ResourceKey<PlacedFeature> CRIMSON_DROOPING_VINE = key("crimson_drooping_vine");
         private static final ResourceKey<PlacedFeature> CRIMSON_CATTAILS = key("crimson_cattails");
@@ -845,10 +845,10 @@ public class ModDataProvider {
             register(context, SHIVERTHORN, configured.getOrThrow(ConfiguredFeatures.SHIVERTHORN), RarityFilter.onAverageOnceEvery(32), biome, count5, inSquare, worldSurfaceWG);
             register(context, CORRUPT_DROOPING_VINE, configured.getOrThrow(ConfiguredFeatures.CORRUPT_DROOPING_VINE), biome, CountPlacement.of(60), inSquare, throughSurface, EnvironmentScanPlacement.scanningFor(Direction.UP, BlockPredicate.matchesBlocks(Blocks.DIRT, NatureBlocks.EBONSTONE.get()), air, 12), ySpreadN1);
             register(context, CORRUPT_CATTAILS, configured.getOrThrow(ConfiguredFeatures.CORRUPT_CATTAILS), biome, inSquare, RarityFilter.onAverageOnceEvery(4) , worldSurfaceWG, BlockPredicateFilter.forPredicate(BlockPredicate.matchesBlocks(new Vec3i(0, -1, 0), Blocks.WATER)));
-            register(context, EBONY_TREE, configured.getOrThrow(ModFeatures.Configured.EBONY_TREE), biome, count1_9$2_1, inSquare, surfaceWaterDepth0, oceanFloor);  // todo腐化树木区块不生成
+            register(context, EBONY_TREE, configured.getOrThrow(ModFeatures.Configured.EBONY_TREE), count1_9$2_1, inSquare, surfaceWaterDepth0, oceanFloor, biome);
             register(context, CORRUPT_GRASS, configured.getOrThrow(ConfiguredFeatures.CORRUPT_GRASS), biome, CountPlacement.of(10), inSquare, HeightmapPlacement.onHeightmap(Heightmap.Types.MOTION_BLOCKING));
             register(context, VILE_MUSHROOM, configured.getOrThrow(ConfiguredFeatures.VILE_MUSHROOM), RarityFilter.onAverageOnceEvery(32), biome, count3, HeightmapPlacement.onHeightmap(Heightmap.Types.WORLD_SURFACE_WG));
-            register(context, SHADOW_TREE, configured.getOrThrow(ModFeatures.Configured.SHADOW_TREE), biome, count1_9$2_1, inSquare, surfaceWaterDepth0, oceanFloor);  // todo猩红树木区块不生成
+            register(context, SHADOW_TREE, configured.getOrThrow(ModFeatures.Configured.SHADOW_TREE), count1_9$2_1, inSquare, surfaceWaterDepth0, oceanFloor, biome);
             register(context, CRIMSON_GRASS, configured.getOrThrow(ConfiguredFeatures.CRIMSON_GRASS), biome, CountPlacement.of(10), inSquare, HeightmapPlacement.onHeightmap(Heightmap.Types.MOTION_BLOCKING));
             register(context, CRIMSON_DROOPING_VINE, configured.getOrThrow(ConfiguredFeatures.CRIMSON_DROOPING_VINE), biome, CountPlacement.of(60), inSquare, throughSurface, EnvironmentScanPlacement.scanningFor(Direction.UP, BlockPredicate.matchesBlocks(Blocks.DIRT, NatureBlocks.CRIMSTONE.get()), air, 12), ySpreadN1);
             register(context, CRIMSON_CATTAILS, configured.getOrThrow(ConfiguredFeatures.CRIMSON_CATTAILS), biome, inSquare, RarityFilter.onAverageOnceEvery(4) , worldSurfaceWG, BlockPredicateFilter.forPredicate(BlockPredicate.matchesBlocks(new Vec3i(0, -1, 0), Blocks.WATER)));
@@ -1167,7 +1167,7 @@ public class ModDataProvider {
                     .generationSettings(Util.make(new BiomeGenerationSettings.Builder(placedFeature, configuredWorldCarver), builder -> {
                         addDefaultGenerations(builder);
                         builder.addCarver(GenerationStep.Carving.AIR, ConfiguredWorldCarvers.DEMONIC_CAVE_CARVER);
-                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.EBONY_TREE);  // todo腐化区块不生成
+                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.EBONY_TREE);
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.CORRUPT_GRASS);
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.VILE_MUSHROOM);
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.CORRUPT_DROOPING_VINE);
@@ -1208,7 +1208,7 @@ public class ModDataProvider {
                             .build())
                     .generationSettings(Util.make(new BiomeGenerationSettings.Builder(placedFeature, configuredWorldCarver), builder -> {
                         addDefaultGenerations(builder);
-                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.SHADOW_TREE);  // todo猩红区块不生成
+                        builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.SHADOW_TREE);
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.CRIMSON_GRASS);
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.CRIMSON_DROOPING_VINE);
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.CRIMSON_CATTAILS);

@@ -62,7 +62,7 @@ import java.util.function.Predicate;
 /**
  * 注：NPC默认生成在对应玩家出生点
  */
-public class NPCSpawner implements IGlobalData {
+public final class NPCSpawner implements IGlobalData {
     public static final NPCSpawner INSTANCE = new NPCSpawner();
     public static final Codec<Map<Region, Object2BooleanMap<EntityType<?>>>> NPC_ALIVE_CODEC = new Codec<>() {
         @Override
@@ -293,7 +293,7 @@ public class NPCSpawner implements IGlobalData {
             // 酒馆老板
             // 发型师
             if (trySpawnGoblinTinkerer(player, pos, region)) continue;
-            // 巫医
+            if (trySpawnWitchDoctor(player, pos, region)) continue;
             if (trySpawnPartyGirl(player, pos, region)) continue;
             // 巫师
             // 税收官
@@ -415,6 +415,15 @@ public class NPCSpawner implements IGlobalData {
                     TEBossEntities.SKELETRON.get()
             )) {
                 return spawnAtPos(player.serverLevel(), pos, TENpcEntities.DRYAD.get());
+            }
+        }
+        return false;
+    }
+
+    private boolean trySpawnWitchDoctor(ServerPlayer player, BlockPos pos, Region region) {
+        if (!hasNPCAlive(region, TENpcEntities.WITCH_DOCTOR.get())) {
+            if (KillBoard.INSTANCE.isDefeated(TEBossEntities.QUEEN_BEE.get())) {
+                return spawnAtPos(player.serverLevel(), pos, TENpcEntities.WITCH_DOCTOR.get());
             }
         }
         return false;

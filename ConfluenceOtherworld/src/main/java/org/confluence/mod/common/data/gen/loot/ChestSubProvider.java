@@ -7,7 +7,6 @@ import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
@@ -16,7 +15,6 @@ import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer
 import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
 import net.minecraft.world.level.storage.loot.functions.EnchantRandomlyFunction;
 import net.minecraft.world.level.storage.loot.functions.EnchantWithLevelsFunction;
-import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
@@ -57,7 +55,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(SwordItems.UMBRELLA))
                         .add(LootItem.lootTableItem(TEBoomerangItems.WOOD_BOOMERANG))
-                        .add(LootItem.lootTableItem(TGItems.BLOWPIPE))
+                        .add(LootItem.lootTableItem(TGItems.BLOWGUN))
                         .add(LootItem.lootTableItem(TCItems.AGLET))
                         .add(LootItem.lootTableItem(TCItems.CLIMBING_CLAWS))
                         .add(LootItem.lootTableItem(ManaWeaponItems.WAND_OF_SPARKING))
@@ -71,7 +69,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(SwordItems.UMBRELLA))
                         .add(LootItem.lootTableItem(TEBoomerangItems.WOOD_BOOMERANG))
-                        .add(LootItem.lootTableItem(TGItems.BLOWPIPE))
+                        .add(LootItem.lootTableItem(TGItems.BLOWGUN))
                         .add(LootItem.lootTableItem(TCItems.AGLET))
                         .add(LootItem.lootTableItem(TCItems.CLIMBING_CLAWS))
                         .add(LootItem.lootTableItem(ManaWeaponItems.WAND_OF_SPARKING))

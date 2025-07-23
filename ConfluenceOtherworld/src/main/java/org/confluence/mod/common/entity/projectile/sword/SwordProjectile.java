@@ -221,7 +221,7 @@ public abstract class SwordProjectile<T extends SwordProjectile<T>> extends Abst
 
     public DamageSource damageSource(){
         if(getOwner() instanceof LivingEntity living)
-            return ModDamageTypes.of(level(), ModDamageTypes.SWORD_PROJECTILE, living);
+            return ModDamageTypes.of(level(), ModDamageTypes.SWORD_PROJECTILE, living); // 剑气默认有无敌帧
         else return damageSources().magic();
     }
 

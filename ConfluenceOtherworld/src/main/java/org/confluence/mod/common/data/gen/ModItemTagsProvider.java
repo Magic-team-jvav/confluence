@@ -1207,7 +1207,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 AccessoryItems.GUIDE_VOODOO_DOLL.get(),
                 PaintItems.ECHO_COATING.get(),
                 ToolItems.TARGET_DUMMY.get(),
-                ToolItems.BINOCULARS.get(),
                 ModItems.WHOOPIE_CUSHION.get(),
                 ModItems.TOKYO_TEDDY_BEAR.get(),
                 ModItems.ICE_TOFU_BRICK.get(),

@@ -995,22 +995,31 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
         );
 
 
+        LootPool.Builder binoculars_1$40 = LootPool.lootPool()
+                .add(LootItem.lootTableItem(ToolItems.BINOCULARS))
+                .add(EmptyLootItem.emptyItem().setWeight(39));
+        LootPool.Builder binoculars_1$30 = LootPool.lootPool()
+                .add(LootItem.lootTableItem(ToolItems.BINOCULARS))
+                .add(EmptyLootItem.emptyItem().setWeight(29));
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/eye_of_cthulhu/classic_corruption"), eyeOfCthulhuTreasureBagCorruption()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLDEN_COIN)
                         .apply(SetItemCountFunction.setCount(new ConstantValue(3)))
                 ))
+                .withPool(binoculars_1$40)
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/eye_of_cthulhu/expert_corruption"), eyeOfCthulhuTreasureBagCorruption()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(TCItems.SHIELD_OF_CTHULHU)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLDEN_COIN)
                         .apply(SetItemCountFunction.setCount(new ConstantValue(7)))
                 ))
+                .withPool(binoculars_1$30)
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/eye_of_cthulhu/master_corruption"), eyeOfCthulhuTreasureBagCorruption()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(TCItems.SHIELD_OF_CTHULHU)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLDEN_COIN)
                         .apply(SetItemCountFunction.setCount(new ConstantValue(7)))
                 ))
+                .withPool(binoculars_1$30)
         );
 
 
@@ -1018,18 +1027,21 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLDEN_COIN)
                         .apply(SetItemCountFunction.setCount(new ConstantValue(3)))
                 ))
+                .withPool(binoculars_1$40)
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/eye_of_cthulhu/expert_crimson"), eyeOfCthulhuTreasureBagCrimson()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(TCItems.SHIELD_OF_CTHULHU)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLDEN_COIN)
                         .apply(SetItemCountFunction.setCount(new ConstantValue(7))))
                 )
+                .withPool(binoculars_1$30)
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/eye_of_cthulhu/master_crimson"), eyeOfCthulhuTreasureBagCrimson()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(TCItems.SHIELD_OF_CTHULHU)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLDEN_COIN)
                         .apply(SetItemCountFunction.setCount(new ConstantValue(7)))
                 ))
+                .withPool(binoculars_1$30)
         );
 
 
@@ -1037,18 +1049,21 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLDEN_COIN)
                         .apply(SetItemCountFunction.setCount(new ConstantValue(3)))
                 ))
+                .withPool(binoculars_1$40)
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/eye_of_cthulhu/expert_double_evil"), eyeOfCthulhuTreasureBagDoubleEvil()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(TCItems.SHIELD_OF_CTHULHU)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLDEN_COIN)
                         .apply(SetItemCountFunction.setCount(new ConstantValue(7)))
                 ))
+                .withPool(binoculars_1$30)
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/eye_of_cthulhu/master_double_evil"), eyeOfCthulhuTreasureBagDoubleEvil()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(TCItems.SHIELD_OF_CTHULHU)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLDEN_COIN)
                         .apply(SetItemCountFunction.setCount(new ConstantValue(7)))
                 ))
+                .withPool(binoculars_1$30)
         );
     }
 

@@ -1,10 +1,14 @@
 package org.confluence.mod.common.init.item;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -17,6 +21,10 @@ import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.item.common.*;
 import org.confluence.terra_curio.common.item.MagicMirror;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.List;
+
+@ParametersAreNonnullByDefault
 public class ToolItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
 
@@ -72,4 +80,15 @@ public class ToolItems {
     public static final DeferredItem<BinocularsItem> BINOCULARS = ITEMS.register("binoculars", BinocularsItem::new);
     public static final DeferredItem<NPCInvitationItem> NPC_INVITATION = ITEMS.register("npc_invitation", NPCInvitationItem::new);
     public static final DeferredItem<DungeonCompass> DUNGEON_COMPASS = ITEMS.register("dungeon_compass", DungeonCompass::new);
+
+    public static final DeferredItem<MagicDropperItem> EMPTY_DROPPER = ITEMS.register("empty_dropper", () -> new MagicDropperItem(null){
+        @Override
+        public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+            tooltipComponents.add(Component.translatable("tooltip.item.confluence.empty_dropper.0"));
+        }
+    });
+    public static final DeferredItem<MagicDropperItem> MAGIC_SAND_DROPPER = ITEMS.register("magic_sand_dropper", () -> new MagicDropperItem(new BlockParticleOption(ParticleTypes.FALLING_DUST, Blocks.SAND.defaultBlockState())));
+    public static final DeferredItem<MagicDropperItem> MAGIC_HONEY_DROPPER = ITEMS.register("magic_honey_dropper", () -> new MagicDropperItem(ParticleTypes.DRIPPING_HONEY));
+    public static final DeferredItem<MagicDropperItem> MAGIC_LAVA_DROPPER = ITEMS.register("magic_lava_dropper", () -> new MagicDropperItem(ParticleTypes.DRIPPING_LAVA));
+    public static final DeferredItem<MagicDropperItem> MAGIC_WATER_DROPPER = ITEMS.register("magic_water_dropper", () -> new MagicDropperItem(ParticleTypes.DRIPPING_WATER));
 }

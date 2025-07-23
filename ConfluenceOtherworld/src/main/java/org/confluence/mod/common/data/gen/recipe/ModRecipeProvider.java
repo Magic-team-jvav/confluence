@@ -240,6 +240,12 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
                 "HHS "
         )));
         hardmodeAnvil(recipeOutput, FunctionalBlocks.CHLOROPHYTE_EXTRACTINATOR.toStack(), AmountIngredient.of(18, MaterialItems.CHLOROPHYTE_INGOT), Ingredient.of(FunctionalBlocks.EXTRACTINATOR));
+
+        Ingredient emptyDropper = Ingredient.of(ToolItems.EMPTY_DROPPER);
+        crystalBlock(recipeOutput, ToolItems.MAGIC_SAND_DROPPER.toStack(3), AmountIngredient.of(3, emptyDropper), Ingredient.of(Tags.Items.SANDS));
+        crystalBlock(recipeOutput, ToolItems.MAGIC_HONEY_DROPPER.toStack(), emptyDropper);
+        crystalBlock(recipeOutput, ToolItems.MAGIC_LAVA_DROPPER.toStack(), emptyDropper);
+        crystalBlock(recipeOutput, ToolItems.MAGIC_WATER_DROPPER.toStack(), emptyDropper);
     }
 
     protected <T extends AbstractCookingRecipe> void cooking(RecipeOutput recipeOutput, AbstractCookingRecipe.Factory<T> factory, String prefix, String suffix, Ingredient ingredient, ItemStack result, float experience, int cookingTime) {
@@ -289,6 +295,12 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         ResourceLocation id = Confluence.asResource("hardmode_anvil/" + getItemName(result.getItem()));
         NonNullList<Ingredient> zingredients = NonNullList.of(Ingredient.EMPTY, ingredients);
         recipeOutput.accept(id, new HardmodeAnvilRecipe(result, Either.right(zingredients)), null);
+    }
+
+    protected void crystalBlock(RecipeOutput recipeOutput, ItemStack result, Ingredient... ingredients) {
+        ResourceLocation id = Confluence.asResource("crystal_block/" + getItemName(result.getItem()));
+        NonNullList<Ingredient> zingredients = NonNullList.of(Ingredient.EMPTY, ingredients);
+        recipeOutput.accept(id, new CrystalBallRecipe(result, zingredients), null);
     }
 
     public static AdvancementHolder createAdvancementHolder(RecipeOutput recipeOutput, ResourceLocation id, NonNullList<Ingredient> ingredients) {

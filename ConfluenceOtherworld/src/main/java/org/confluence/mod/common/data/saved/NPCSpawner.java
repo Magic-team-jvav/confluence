@@ -62,7 +62,7 @@ import java.util.function.Predicate;
 /**
  * 注：NPC默认生成在对应玩家出生点
  */
-public class NPCSpawner implements IGlobalData {
+public final class NPCSpawner implements IGlobalData {
     public static final NPCSpawner INSTANCE = new NPCSpawner();
     public static final Codec<Map<Region, Object2BooleanMap<EntityType<?>>>> NPC_ALIVE_CODEC = new Codec<>() {
         @Override
@@ -422,9 +422,7 @@ public class NPCSpawner implements IGlobalData {
 
     private boolean trySpawnWitchDoctor(ServerPlayer player, BlockPos pos, Region region) {
         if (!hasNPCAlive(region, TENpcEntities.WITCH_DOCTOR.get())) {
-            if (KillBoard.INSTANCE.isAnyDefeated(
-                    TEBossEntities.QUEEN_BEE.get()
-            )) {
+            if (KillBoard.INSTANCE.isDefeated(TEBossEntities.QUEEN_BEE.get())) {
                 return spawnAtPos(player.serverLevel(), pos, TENpcEntities.WITCH_DOCTOR.get());
             }
         }
@@ -496,7 +494,6 @@ public class NPCSpawner implements IGlobalData {
             });
         }
         return false;
-
     }
 
     /**

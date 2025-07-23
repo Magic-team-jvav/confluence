@@ -82,7 +82,7 @@ public class TEEvents {
         });
         event.register(TENpcEntities.GOBLIN_TINKERER.get(), (collector) -> {
             AbstractTerraNPC npc = collector.getNPC();
-            // todo 尖钉球
+            // todo 尖钉球没模型
             npc.setCanPerformerAttackTest(e -> e.getMainHandItem().getItem() instanceof BowItem);
         });
         event.register(TENpcEntities.NURSE.get(), (collector) -> {

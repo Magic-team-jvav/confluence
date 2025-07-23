@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = ServerBoundEventPacket.class, remap = false)
 public abstract class ServerBoundEventPacketMixin {
-    @Inject(method = "lambda$handle$0", at = @At(value = "INVOKE", target = "Lorg/confluence/terraentity/entity/npc/AbstractTerraNPC;discard()V"))
+    @Inject(method = "lambda$handle$2", at = @At(value = "INVOKE", target = "Lorg/confluence/terraentity/entity/npc/AbstractTerraNPC;discard()V"))
     private static void removeRegion(IPayloadContext context, ServerBoundEventPacket packet, CallbackInfo ci, @Local AbstractTerraNPC npc) {
         NPCSpawner.INSTANCE.onNPCRemoved(npc);
     }

@@ -23,7 +23,7 @@ import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.network.s2c.GamePhasePacketS2C;
 import org.confluence.terraentity.init.entity.TEBossEntities;
 
-public class KillBoard implements IGlobalData {
+public final class KillBoard implements IGlobalData {
     public static final KillBoard INSTANCE = new KillBoard();
     public static final Codec<Object2BooleanMap<EntityType<?>>> DEFEATED_BOSSES_CODEC = new Codec<>() {
         @Override

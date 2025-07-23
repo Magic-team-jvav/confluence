@@ -25,6 +25,7 @@ import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.util.AchievementUtils;
+import org.confluence.mod.util.DateUtils;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terraentity.entity.boss.EyeOfCthulhu;
@@ -42,11 +43,11 @@ public final class TickEvents {
         BossDelaySpawner.INSTANCE.tick(serverLevel);
 
         long dayTime = serverLevel.getDayTime() % 24000L;
-        if (dayTime == 0L) { // 6:00
+        if (dayTime == DateUtils._06$00) {
             float factorX = Mth.nextFloat(serverLevel.random, -1.0F, 1.0F);
             float factorZ = Mth.nextFloat(serverLevel.random, -1.0F, 1.0F);
             ConfluenceData.get(serverLevel).setWindSpeed(factorX, factorZ);
-        } else if (dayTime == 13500L) { // 19:30
+        } else if (dayTime == DateUtils._19$30) {
             if (!KillBoard.INSTANCE.isDefeated(TEBossEntities.EYE_OF_CTHULHU.get())) {
                 for (ServerPlayer player : serverLevel.players()) {
                     boolean attributeFactor = player.getMaxHealth() >= 40 && player.getArmorValue() >= 10;

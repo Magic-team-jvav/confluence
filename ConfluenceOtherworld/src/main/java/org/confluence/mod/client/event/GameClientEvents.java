@@ -92,11 +92,13 @@ public final class GameClientEvents {
             LocalBrushData.clear();
             ClientPacketHandler.reset();
             CompatibilityHandler.reset();
+            DropletsHandler.clear();
         } else {
             BaseSwordItem.swordProjectileHandle(minecraft, player);
             HookThrowingHandler.handle(player);
             KeyRequestHandler.handle();
             XaeroHelper.tick(player);
+            DropletsHandler.handle(minecraft, player);
         }
     }
 

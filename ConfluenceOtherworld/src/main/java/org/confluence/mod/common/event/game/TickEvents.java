@@ -2,19 +2,24 @@ package org.confluence.mod.common.event.game;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.ObjectIterator;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.GameRules;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.attachment.ChunkDropletsData;
 import org.confluence.mod.common.block.functional.network.PathService;
 import org.confluence.mod.common.data.saved.*;
 import org.confluence.mod.common.entity.FallingStarItemEntity;
@@ -24,12 +29,16 @@ import org.confluence.mod.common.worldgen.structure.DungeonStructure;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.mixed.Immunity;
+import org.confluence.mod.network.s2c.DropletsSyncPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.DateUtils;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terraentity.entity.boss.EyeOfCthulhu;
 import org.confluence.terraentity.init.entity.TEBossEntities;
+
+import java.util.HashSet;
+import java.util.Map;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
 public final class TickEvents {
@@ -80,12 +89,20 @@ public final class TickEvents {
     public static void playerTick$Post(PlayerTickEvent.Post event) {
         if (event.getEntity() instanceof ServerPlayer serverPlayer) {
             PlayerUtils.regenerateMana(serverPlayer);
-            ((IServerPlayer) serverPlayer).confluence$setCouldPickupItem(true);
+            IServerPlayer player = IServerPlayer.of(serverPlayer);
+            player.confluence$setCouldPickupItem(true);
             serverPlayer.getData(ModAttachmentTypes.EXTRA_INVENTORY).sync(serverPlayer);
             ServerLevel serverLevel = serverPlayer.serverLevel();
             AchievementUtils.youCanDoIt(serverPlayer, serverLevel);
             TheConstant.applyDarkness(serverPlayer, serverLevel);
             DungeonStructure.checkSkeletronDefeated(serverPlayer, serverLevel);
+            if (player.confluence$chunkPosChanged()) {
+                ChunkDropletsData data = serverLevel.getData(ModAttachmentTypes.CHUNK_DROPLETS_DATA);
+                Map<ChunkPos, Map<BlockPos, ParticleOptions>> dataMap = data.getDataMap(serverPlayer, false);
+                if (!dataMap.isEmpty() || data.getLastSync().computeIfAbsent(serverPlayer.getUUID(), uuid -> new HashSet<>()).stream().anyMatch(dataMap.keySet()::contains)) {
+                    PacketDistributor.sendToPlayer(serverPlayer, new DropletsSyncPacketS2C(dataMap));
+                }
+            }
         }
     }
 

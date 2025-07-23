@@ -11,6 +11,7 @@ import net.minecraft.server.PlayerAdvancements;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.stats.ServerStatsCounter;
+import net.minecraft.world.level.ChunkPos;
 import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.network.s2c.PlayerDeathInfoPacketS2C;
@@ -42,6 +43,8 @@ public abstract class ServerPlayerMixin implements IServerPlayer, SelfGetter<Ser
     private boolean confluence$marathon_medalist = false;
     @Unique
     private short confluence$bulldozer = 0;
+    @Unique
+    private ChunkPos confluence$lastChunkPosition;
 
     @Override
     public void confluence$setCouldPickupItem(boolean enable) {
@@ -63,6 +66,16 @@ public abstract class ServerPlayerMixin implements IServerPlayer, SelfGetter<Ser
             }
             this.confluence$bulldozer = -1;
         }
+    }
+
+    @Override
+    public boolean confluence$chunkPosChanged() {
+        ChunkPos pos = confluence$self().chunkPosition();
+        if (confluence$lastChunkPosition != pos) {
+            this.confluence$lastChunkPosition = pos;
+            return true;
+        }
+        return false;
     }
 
     @Inject(method = "checkMovementStatistics", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;isSprinting()Z"))

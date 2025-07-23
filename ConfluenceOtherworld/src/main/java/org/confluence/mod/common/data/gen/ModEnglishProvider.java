@@ -147,6 +147,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.crate.common.0", "Hold the right mouse button to open, and hold Shift while clicking the right mouse button to place.");
         add("tooltip.item.confluence.right_click.common.0", "Hold the right mouse button to open.");
         add("tooltip.item.confluence.raw_asphalt.0", "Use a Blend-O-Matic to make asphalt blocks");
+        add("tooltip.item.confluence.empty_dropper.0", "Right-click on the droplet to remove it (requires block assist aiming)");
 
         add("tooltip.item.confluence.slime_crown.0", "Right - click to summon the King Slime");
         add("tooltip.item.confluence.slime_crown.1", "A small crown that seems to be prepared for the coronation ceremony of those cute and harmless gel - like creatures.");

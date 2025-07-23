@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class MeteoriteTracker {
+public final class MeteoriteTracker {
     public static final MeteoriteTracker INSTANCE = new MeteoriteTracker();
     public static final ResourceKey<ConfiguredFeature<?, ?>> METEORITE = Confluence.asResourceKey(Registries.CONFIGURED_FEATURE, "meteorite");
 

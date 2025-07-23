@@ -26,7 +26,7 @@ public class MeteoriteFeature extends Feature<MeteoriteFeature.Config> {
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<Config> context) { // todo 调整大小
+    public boolean place(FeaturePlaceContext<Config> context) {
         WorldGenLevel level = context.level();
         BlockPos origin = context.origin();
         RandomSource random = context.random();

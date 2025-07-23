@@ -170,23 +170,23 @@ public class AltarBlock extends BaseEntityBlock {
         return ItemInteractionResult.sidedSuccess(level.isClientSide);
     }
 
-    public static void onLeftClick(BlockState state, Level level, BlockPos pos, Player player) { // 合成
+    public static void onLeftClick(BlockState state, Level level, BlockPos pos, Player player) {
         if (level instanceof ServerLevel serverLevel && state.getBlock() instanceof AltarBlock && level.getBlockEntity(pos) instanceof Entity entity) {
             RecipeManager recipeManager = serverLevel.getServer().getRecipeManager();
-            if (player.isCrouching()) { // 全部合成
+            if (player.isCrouching()) {
                 List<RecipeHolder<AltarRecipe>> recipes;
                 boolean crafted = false;
                 while (!(recipes = recipeManager.getRecipesFor(ModRecipes.ALTAR_TYPE.get(), entity.itemHandler, level)).isEmpty()) {
                     crafted = true;
-                    AltarRecipe recipe = recipes.getFirst().value(); // 先只取第一个合成表
+                    AltarRecipe recipe = recipes.getFirst().value();
                     ItemStack result = recipe.assembleAndExtract(entity.itemHandler, level.registryAccess());
                     LibUtils.createItemEntity(result, pos.getX() + 0.5, pos.getY() + 0.75, pos.getZ() + 0.5, level, 0);
                 }
                 if (crafted) entity.playAnimation(serverLevel, pos);
-            } else { // 合成一个
-                List<RecipeHolder<AltarRecipe>> recipes = recipeManager.getRecipesFor(ModRecipes.ALTAR_TYPE.get(), entity.itemHandler, level); // todo 多态合成
+            } else {
+                List<RecipeHolder<AltarRecipe>> recipes = recipeManager.getRecipesFor(ModRecipes.ALTAR_TYPE.get(), entity.itemHandler, level);
                 if (recipes.isEmpty()) return;
-                AltarRecipe recipe = recipes.getFirst().value(); // 先只取第一个合成表
+                AltarRecipe recipe = recipes.getFirst().value();
                 ItemStack result = recipe.assembleAndExtract(entity.itemHandler, level.registryAccess());
                 LibUtils.createItemEntity(result, pos.getX() + 0.5, pos.getY() + 0.75, pos.getZ() + 0.5, level, 0);
                 entity.playAnimation(serverLevel, pos);

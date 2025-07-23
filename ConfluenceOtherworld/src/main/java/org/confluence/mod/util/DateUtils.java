@@ -13,6 +13,10 @@ import java.util.Calendar;
 import java.util.Date;
 
 public final class DateUtils {
+    public static final int _06$00 = getDayTime(6,0);
+    public static final int _04$30 = getDayTime(4, 30);
+    public static final int _19$30 = getDayTime(19, 30);
+
     private static long lastCacheTime = 0;
     private static final Calendar calendar = Calendar.getInstance();
     private static Lunar lunar;
@@ -102,20 +106,28 @@ public final class DateUtils {
     }
 
     /**
-     * @param start 开始的dayTime
-     * @param end   结束的dayTime
-     * @param time  判断的dayTime
-     * @return start <= time <= end
+     * @param start   开始的dayTime
+     * @param end     结束的dayTime
+     * @param dayTime 判断的dayTime
+     * @return start <= dayTime <= end
      */
-    public static boolean isWithinDayTime(int start, int end, long time) {
-        time %= 24000L;
+    public static boolean isWithinDayTime(int start, int end, long dayTime) {
+        int time = (int) (dayTime % 24000);
         if (start > end) {
             return time >= start || time <= end;
         }
         return time >= start && time <= end;
     }
 
-    public static boolean isWithinDayTime(int startHour, int startMinute, int endHour, int endMinute, long time) {
-        return isWithinDayTime(getDayTime(startHour, startMinute), getDayTime(endHour, endMinute), time);
+    public static boolean isWithinDayTime(int startHour, int startMinute, int endHour, int endMinute, long dayTime) {
+        return isWithinDayTime(getDayTime(startHour, startMinute), getDayTime(endHour, endMinute), dayTime);
+    }
+
+    public static boolean isDay(long dayTime) {
+        return isWithinDayTime(_04$30, _19$30, dayTime);
+    }
+
+    public static boolean isNight(long dayTime) {
+        return isWithinDayTime(_19$30, _04$30, dayTime);
     }
 }

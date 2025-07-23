@@ -29,7 +29,7 @@ public abstract class LevelRendererMixin {
         BoulderWorld.renderBoulderSun(minecraft);
     }
 
-    // todo 在解决空指针前先这样
+    // fixme 在解决空指针前先这样
     @ModifyExpressionValue(method = "renderLevel", at = @At(value = "INVOKE", target = "Ljava/lang/Iterable;iterator()Ljava/util/Iterator;"))
     private Iterator<Entity> filterNull(Iterator<Entity> original) {
         return Iterators.filter(original, Objects::nonNull);

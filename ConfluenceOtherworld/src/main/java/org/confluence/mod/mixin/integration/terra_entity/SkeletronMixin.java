@@ -7,6 +7,7 @@ import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.mixed.IDamageSource;
@@ -21,7 +22,7 @@ public abstract class SkeletronMixin {
     @Inject(method = "addEffect", at = @At("HEAD"), cancellable = true)
     private void invulnerable(MobEffectInstance effectInstance, Entity entity, CallbackInfoReturnable<Boolean> cir) {
         Holder<MobEffect> effect = effectInstance.getEffect();
-        if (effect == ModEffects.TENTACLE_SPIKES || effect == ModEffects.BLOOD_BUTCHERED) { // todo 穿透
+        if (effect == ModEffects.TENTACLE_SPIKES || effect == ModEffects.BLOOD_BUTCHERED || effect == MobEffects.POISON) { // todo 穿透效果 https://terraria.wiki.gg/zh/wiki/%E9%AA%A8%E5%A4%B4%E6%A0%87%E6%9E%AA?variant=zh
             cir.setReturnValue(false);
         }
     }

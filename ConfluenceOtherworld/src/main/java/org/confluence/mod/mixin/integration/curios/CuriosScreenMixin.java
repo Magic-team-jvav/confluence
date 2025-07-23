@@ -15,7 +15,7 @@ import top.theillusivec4.curios.client.gui.CuriosScreen;
 import java.util.List;
 import java.util.Optional;
 
-// todo 等待curios作者答复，如果curios作者不修，那么将其添加到mixin.json
+// todo 等待curios作者将issue解决后移除，目前作者已确认该bug
 @Mixin(value = CuriosScreen.class, remap = false)
 public abstract class CuriosScreenMixin {
     @WrapOperation(method = "renderTooltip", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;renderTooltip(Lnet/minecraft/client/gui/Font;Ljava/util/List;Ljava/util/Optional;II)V"))

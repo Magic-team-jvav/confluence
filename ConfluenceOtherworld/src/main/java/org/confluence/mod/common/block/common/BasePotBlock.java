@@ -420,12 +420,13 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
                 TEBossEntities.EYE_OF_CTHULHU.get(),
                 TEBossEntities.EATER_OF_WORLDS.get(),
                 TEBossEntities.BRAIN_OF_CTHULHU.get(),
+                TEBossEntities.QUEEN_BEE.get(),
                 TEBossEntities.SKELETRON.get()
         ) + KillBoard.INSTANCE.countDefeated(
                 TMMoments.GOBLIN_ARMY.getKey()
         );
         for (int i = 0; i < defeated; i++) {
-            ratio *= 1.1F; // todo 毁灭者、双子魔眼、机械骷髅王、世纪之花、蜂王、石巨人、海盗入侵、雪人军团
+            ratio *= 1.1F; // todo 毁灭者、双子魔眼、机械骷髅王、世纪之花、石巨人、海盗入侵、雪人军团
         }
         ratio *= moneyRatio;
         int amount = (int) Math.ceil(level.random.nextInt(80, 358) * ratio);

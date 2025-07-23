@@ -8,6 +8,7 @@ import com.nlf.calendar.Lunar;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
+import org.confluence.mod.common.data.saved.DateStamp;
 import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.util.DateUtils;
 
@@ -47,10 +48,6 @@ public record DateLootItemCondition(boolean isLunar, DateStamp fromInclusive, Da
             month = calendar.get(Calendar.MONTH);
             day = calendar.get(Calendar.DATE);
         }
-//        if (toInclusive.month() - fromInclusive.month() == 1) {
-//            return (month == fromInclusive.month() && day >= fromInclusive.day()) ||
-//                    (month == toInclusive.month() && day >= toInclusive.day());
-//        }
         return month >= fromInclusive.month() && month <= toInclusive.month() &&
                 day >= fromInclusive.day() && day <= toInclusive.day();
     }

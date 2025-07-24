@@ -14,7 +14,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.confluence.mod.client.event.ModClientSetups;
 import org.confluence.mod.common.entity.projectile.sword.NightEdgeProjectile;
-import org.confluence.terraentity.entity.util.trail.ITrail;
+import org.confluence.terraentity.api.entity.trail.ITrail;
 import org.confluence.terraentity.entity.util.trail.PositionPoseProperties;
 import org.confluence.terraentity.entity.util.trail.TrailProperties;
 import org.joml.Matrix4f;

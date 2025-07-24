@@ -12,7 +12,7 @@ import org.confluence.mod.integration.terra_entity.npc_trade.SellTrade;
 import org.confluence.terraentity.client.gui.container.TETradeScreen;
 import org.confluence.mod.common.menu.NPCTradesForgeMenu;
 import org.confluence.mod.network.c2s.OpenMenuPacketC2S;
-import org.confluence.terraentity.registries.npc_trade.ITrade;
+import org.confluence.terraentity.api.trade.ITrade;
 
 
 public class WithForgeTradeScreen extends TETradeScreen<NPCTradesForgeMenu> {

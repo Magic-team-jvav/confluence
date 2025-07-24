@@ -17,7 +17,7 @@ import org.confluence.terra_curio.api.primitive.AttributeModifiersValue;
 import org.confluence.terra_curio.common.init.TCTags;
 import org.confluence.terra_curio.util.TCUtils;
 import org.confluence.terra_guns.common.init.TGTags;
-import org.confluence.terraentity.entity.npc.trade.ITradeHolder;
+import org.confluence.terraentity.api.trade.ITradeHolder;
 import org.confluence.terraentity.mixed.IPlayer;
 import org.jetbrains.annotations.Nullable;
 

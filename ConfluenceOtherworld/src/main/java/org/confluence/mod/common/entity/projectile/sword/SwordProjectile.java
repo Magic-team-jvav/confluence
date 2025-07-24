@@ -22,7 +22,7 @@ import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.component.SwordProjectileComponent;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.terra_curio.common.init.TCAttributes;
-import org.confluence.terraentity.entity.ai.ICollisionAttackEntity;
+import org.confluence.terraentity.api.entity.ICollisionAttackEntity;
 import org.confluence.terraentity.utils.TEUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;

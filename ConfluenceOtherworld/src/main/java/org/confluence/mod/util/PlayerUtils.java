@@ -34,7 +34,7 @@ import org.confluence.mod.common.item.potion.ManaPotionItem;
 import org.confluence.mod.network.s2c.*;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.util.TCUtils;
-import org.confluence.terraentity.entity.ai.Boss;
+import org.confluence.terraentity.api.entity.Boss;
 
 import java.util.List;
 import java.util.function.IntFunction;

@@ -7,7 +7,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.particle.CrossDustParticleOptions;
 import org.confluence.mod.integration.terra_entity.trail.TerraSwordTrail;
-import org.confluence.terraentity.entity.ai.IOBBProjectile;
+import org.confluence.terraentity.api.entity.IOBBProjectile;
 import org.confluence.terraentity.entity.ai.keyframe.Keyframe;
 import org.confluence.terraentity.entity.ai.keyframe.animation.Vec3KeyframeAnimation;
 import org.confluence.terraentity.utils.OBB;

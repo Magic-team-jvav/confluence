@@ -7,7 +7,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.terra_curio.common.init.TCAttributes;
-import org.confluence.terraentity.registries.generation.IGeneration;
+import org.confluence.terraentity.api.entity.IGeneration;
 
 /**
  * 使用{@link IGeneration}和{@link org.confluence.mod.common.component.SwordProjectileComponent}替换

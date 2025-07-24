@@ -18,11 +18,11 @@ import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terraentity.data.component.EffectStrategyComponent;
-import org.confluence.terraentity.registries.generation.IGeneration;
+import org.confluence.terraentity.api.entity.IGeneration;
 import org.confluence.terraentity.registries.generation.variant.AboveFallenGeneration;
 import org.confluence.terraentity.registries.generation.variant.ForwardGeneration;
 import org.confluence.terraentity.registries.hit_effect.variant.TimePossibilityAmplifierEffect;
-import org.confluence.terraentity.registries.track.ITrackType;
+import org.confluence.terraentity.api.entity.ITrackType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

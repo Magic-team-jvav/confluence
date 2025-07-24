@@ -13,8 +13,8 @@ import org.confluence.lib.common.recipe.AmountIngredient;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terraentity.entity.npc.mood.NPCMood;
-import org.confluence.terraentity.entity.npc.trade.ITradeHolder;
-import org.confluence.terraentity.registries.npc_trade.ITrade;
+import org.confluence.terraentity.api.trade.ITradeHolder;
+import org.confluence.terraentity.api.trade.ITrade;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;

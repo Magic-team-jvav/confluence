@@ -9,8 +9,8 @@ import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.common.data.saved.DateStamp;
 import org.confluence.mod.integration.terra_entity.init.ModTradeLockProviderTypes;
 import org.confluence.mod.util.DateUtils;
-import org.confluence.terraentity.entity.npc.trade.ITradeHolder;
-import org.confluence.terraentity.registries.npc_trade_lock.ITradeLock;
+import org.confluence.terraentity.api.trade.ITradeHolder;
+import org.confluence.terraentity.api.trade.ITradeLock;
 import org.confluence.terraentity.registries.npc_trade_lock.TradeLockProvider;
 
 import java.util.Calendar;

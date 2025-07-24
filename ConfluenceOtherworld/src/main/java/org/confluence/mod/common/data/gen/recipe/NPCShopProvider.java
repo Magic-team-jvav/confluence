@@ -37,11 +37,11 @@ import org.confluence.terraentity.TerraEntity;
 import org.confluence.terraentity.entity.npc.trade.NPCTradeManager;
 import org.confluence.terraentity.init.entity.TENpcEntities;
 import org.confluence.terraentity.init.item.TEWhipItems;
-import org.confluence.terraentity.registries.npc_trade.ITrade;
+import org.confluence.terraentity.api.trade.ITrade;
 import org.confluence.terraentity.registries.npc_trade.TradeProperties;
 import org.confluence.terraentity.registries.npc_trade.variant.ItemTradeLootTable;
 import org.confluence.terraentity.registries.npc_trade.variant.TradeTask;
-import org.confluence.terraentity.registries.npc_trade_lock.ITradeLock;
+import org.confluence.terraentity.api.trade.ITradeLock;
 import org.confluence.terraentity.registries.npc_trade_lock.variant.BiomeLock;
 import org.confluence.terraentity.registries.npc_trade_lock.variant.MoodLock;
 import org.confluence.terraentity.registries.npc_trade_lock.variant.TimeLock;
@@ -56,7 +56,7 @@ import java.util.concurrent.CompletableFuture;
 /**
  * 生成单个NPC单个配方
  *
- * @see org.confluence.terraentity.registries.npc_trade.ITrade 生成配方
+ * @see ITrade 生成配方
  * @see NPCTradeManager 读取配方
  */
 public class NPCShopProvider extends AbstractRecipeProvider {

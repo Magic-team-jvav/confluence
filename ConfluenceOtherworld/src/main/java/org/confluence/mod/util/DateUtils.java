@@ -1,9 +1,11 @@
 package org.confluence.mod.util;
 
 import com.nlf.calendar.Lunar;
+import net.minecraft.Util;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
 import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.common.init.item.FoodItems;
 import org.confluence.mod.common.init.item.ModItems;
@@ -13,8 +15,20 @@ import java.util.Calendar;
 import java.util.Date;
 
 public final class DateUtils {
-    public static final int _06$00 = getDayTime(6,0);
+    private static final short[] TIMES = Util.make(new short[24 * 60], times -> {
+        for (int h = 0; h < 24; h++) {
+            int t = h * 60;
+            for (int m = 0; m < 60; m++) {
+                int i = (h - 6) * 1000;
+                int j = (int) (m / 0.06F);
+                if (i < 0) i += 24000;
+                times[t + m] = (short) (i + j);
+            }
+        }
+    });
+    public static final int _00$00 = getDayTime(0, 0);
     public static final int _04$30 = getDayTime(4, 30);
+    public static final int _06$00 = getDayTime(6, 0);
     public static final int _19$30 = getDayTime(19, 30);
 
     private static long lastCacheTime = 0;
@@ -93,16 +107,21 @@ public final class DateUtils {
         return ModItems.STAR.get();
     }
 
+    public static int getDayTime(Level level) {
+        return getDayTime(level.getDayTime());
+    }
+
+    public static int getDayTime(long dayTime) {
+        return (int) (dayTime % 24000L);
+    }
+
     /**
      * 映射到游戏内的dayTime
      */
     public static int getDayTime(int hour, int minute) {
         if (hour < 0 || hour > 23) throw new DateTimeParseException("hour bounds is [0, 23], currently is " + hour, "", 0);
         if (minute < 0 || minute > 59) throw new DateTimeParseException("minute bounds is [0, 59], currently is " + minute, "", 0);
-        int i = (hour - 6) * 1000;
-        int j = (int) (minute / 0.06F);
-        if (i < 0) i += 24000;
-        return i + j;
+        return TIMES[hour * 60 + minute];
     }
 
     /**
@@ -111,23 +130,22 @@ public final class DateUtils {
      * @param dayTime 判断的dayTime
      * @return start <= dayTime <= end
      */
-    public static boolean isWithinDayTime(int start, int end, long dayTime) {
-        int time = (int) (dayTime % 24000);
+    public static boolean isWithinDayTime(int start, int end, int dayTime) {
         if (start > end) {
-            return time >= start || time <= end;
+            return dayTime >= start || dayTime <= end;
         }
-        return time >= start && time <= end;
+        return dayTime >= start && dayTime <= end;
     }
 
-    public static boolean isWithinDayTime(int startHour, int startMinute, int endHour, int endMinute, long dayTime) {
+    public static boolean isWithinDayTime(int startHour, int startMinute, int endHour, int endMinute, int dayTime) {
         return isWithinDayTime(getDayTime(startHour, startMinute), getDayTime(endHour, endMinute), dayTime);
     }
 
-    public static boolean isDay(long dayTime) {
+    public static boolean isDay(int dayTime) {
         return isWithinDayTime(_04$30, _19$30, dayTime);
     }
 
-    public static boolean isNight(long dayTime) {
+    public static boolean isNight(int dayTime) {
         return isWithinDayTime(_19$30, _04$30, dayTime);
     }
 }

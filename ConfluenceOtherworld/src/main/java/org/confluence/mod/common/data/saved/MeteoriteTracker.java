@@ -19,6 +19,7 @@ import org.confluence.lib.color.GlobalColors;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.network.s2c.MeteoriteLocationPacketS2C;
+import org.confluence.mod.util.DateUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public final class MeteoriteTracker {
 
     public void tick(ServerLevel level) {
         if (!CommonConfigs.DO_METEORITE_SPAWNING.get()) return;
-        if (spawnAtNextNight && level.getDayTime() % 24000L == 18000L) { // midnight
+        if (spawnAtNextNight && DateUtils.getDayTime(level) == DateUtils._00$00) {
             this.spawnAtNextNight = false;
             generateLandingDetail(level, Mth.randomBetweenInclusive(level.random, 200, 400));
             Component message = Component.translatable("event.confluence.meteorite.ready").withColor(GlobalColors.EVENT.get());

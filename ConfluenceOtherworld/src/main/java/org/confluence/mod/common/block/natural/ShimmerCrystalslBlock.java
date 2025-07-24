@@ -17,6 +17,8 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.common.block.StateProperties;
+import org.confluence.mod.common.data.saved.MoonPhase;
+import org.confluence.mod.util.DateUtils;
 
 public class ShimmerCrystalslBlock extends Block {
     public static final BooleanProperty VISIBLE = StateProperties.VISIBLE;
@@ -43,11 +45,7 @@ public class ShimmerCrystalslBlock extends Block {
     }
 
     private boolean isFullMoonNight(ServerLevel level) {
-        long time = level.getDayTime() % 24000L;
-        boolean isNight = time >= 13000L && time <= 23000L;
-        int moonPhase = level.getMoonPhase();
-        boolean isFullMoon = moonPhase == 0;
-        return isNight && isFullMoon;
+        return DateUtils.isNight(DateUtils.getDayTime(level)) && level.getMoonPhase() == MoonPhase.FULL_MOON.ordinal();
     }
 
     @Override

@@ -51,7 +51,7 @@ public final class TickEvents {
         MeteoriteTracker.INSTANCE.tick(serverLevel);
         BossDelaySpawner.INSTANCE.tick(serverLevel);
 
-        long dayTime = serverLevel.getDayTime() % 24000L;
+        int dayTime = DateUtils.getDayTime(serverLevel);
         if (dayTime == DateUtils._06$00) {
             float factorX = Mth.nextFloat(serverLevel.random, -1.0F, 1.0F);
             float factorZ = Mth.nextFloat(serverLevel.random, -1.0F, 1.0F);
@@ -63,7 +63,7 @@ public final class TickEvents {
                     boolean npcFactor = NPCSpawner.INSTANCE.getAliveNpcCount(new NPCSpawner.Region(NPCSpawner.getNpcSpawnPos(player)), entityType -> true/* todo 骷髅商人不计入 */) >= 4;
                     if (attributeFactor && npcFactor) {
                         if (serverLevel.random.nextFloat() < 0.3333F) {
-                            BossDelaySpawner.INSTANCE.pushBoss(1350, new EyeOfCthulhu(serverLevel), level -> level.getDayTime() % 24000 > 12000);
+                            BossDelaySpawner.INSTANCE.pushBoss(1350, new EyeOfCthulhu(serverLevel), level -> DateUtils.isNight(DateUtils.getDayTime(level)));
                             serverLevel.getServer().getPlayerList().broadcastSystemMessage(Component.translatable("event.confluence.eye_of_cthulhu").withColor(GlobalColors.MESSAGE.get()), false);
                         }
                         break;
@@ -75,7 +75,7 @@ public final class TickEvents {
             }
         }
         if (CommonConfigs.DO_NPC_SPAWNING.get() &&
-                (dayTime < 12000 || dayTime > 22500) &&
+                DateUtils.isDay(dayTime) &&
                 serverLevel.getGameTime() % CommonConfigs.NPC_SPAWN_INTERVAL.get() == 0 &&
                 serverLevel.getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)
         ) {

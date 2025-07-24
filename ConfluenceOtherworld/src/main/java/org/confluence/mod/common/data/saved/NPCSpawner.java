@@ -327,7 +327,7 @@ public final class NPCSpawner implements IGlobalData {
         if (!hasNPCAlive(region, TENpcEntities.TRAVELING_MERCHANT.get())) {
             MomentInstanceManager manager = MomentInstanceManager.of(player.level());
             if (!manager.hasMoment(TMMoments.GOBLIN_ARMY.getKey())) {
-                if (DateUtils.isWithinDayTime(22500, 6000, player.level().getDayTime())) { // 04:30 -> 12:00
+                if (DateUtils.isWithinDayTime(4, 30, 12, 0, DateUtils.getDayTime(player.level()))) {
                     int bound = 30000 / CommonConfigs.NPC_SPAWN_INTERVAL.get(); // 6.25分钟内生成期望为22.12%
                     if (player.getRandom().nextInt(bound) == 0 && getAliveNpcCount(region, entityType -> entityType != TENpcEntities.OLD_MAN.get() /* todo 骷髅商人不计入 */) >= 2) {
                         return spawnAtPos(player.serverLevel(), pos, TENpcEntities.TRAVELING_MERCHANT.get());

@@ -9,6 +9,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.mod.common.init.item.FoodItems;
+import org.confluence.mod.util.DateUtils;
 import org.jetbrains.annotations.NotNull;
 
 public class Fireblossom extends BaseHerbBlock {
@@ -24,8 +25,7 @@ public class Fireblossom extends BaseHerbBlock {
     @Override
     public boolean canBloom(ServerLevel world, BlockState state){
         if (world.dimensionType().natural()) {
-            long dayTime = world.dayTime() % 24000;
-            return dayTime >= 9760L && world.isDay() && !world.isRaining();
+            return DateUtils.isWithinDayTime(15, 45, 19, 30, DateUtils.getDayTime(world)) && !world.isRaining();
         }
         return true;
     }

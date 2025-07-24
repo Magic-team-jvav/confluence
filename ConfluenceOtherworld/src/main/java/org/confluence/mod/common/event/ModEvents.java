@@ -55,7 +55,6 @@ import org.confluence.mod.common.block.common.AetheriumCauldronBlock;
 import org.confluence.mod.common.block.common.HoneyCauldronBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.block.natural.StepRevealingBlock;
-import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
 import org.confluence.mod.common.capability.FluidBottomlessBucketWrapper;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.data.saved.HardmodeConvertor;
@@ -132,7 +131,6 @@ public final class ModEvents {
         event.enqueueWork(() -> {
             LogBlockSet.wrapStrip();
             LogBlockSet.setFlammable();
-            ISpreadable.Type.buildMap();
             ModRecipes.Brewing.initialize();
             CauldronInteraction.INTERACTIONS.values().forEach(map -> {
                 Map<Item, CauldronInteraction> interactionMap = map.map();

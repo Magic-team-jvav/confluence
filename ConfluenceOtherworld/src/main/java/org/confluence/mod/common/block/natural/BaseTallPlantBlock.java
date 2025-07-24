@@ -13,12 +13,8 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.TallGrassBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
 import org.jetbrains.annotations.NotNull;
 
@@ -75,8 +71,7 @@ public class BaseTallPlantBlock extends TallGrassBlock {
         }
         if(pFacing != Direction.DOWN) return after;
         ISpreadable.Type type = pFacingState.getBlock() instanceof ISpreadable sp ? sp.getSpreadType() : ISpreadable.Type.PURE;
-        Block b = type.getBlockMap().get(originState.getBlock());
-        BlockState transformResult = b == null ? originState : b.defaultBlockState();
+        BlockState transformResult = type.getNotNull(originState);
         return transformResult.canSurvive(pLevel, pCurrentPos) ? transformResult : Blocks.AIR.defaultBlockState();
     }
 

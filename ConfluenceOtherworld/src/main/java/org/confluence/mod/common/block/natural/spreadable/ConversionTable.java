@@ -9,15 +9,17 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 
 public abstract class ConversionTable {
-    private final Map<BlockState, BlockState> cache = new Object2ObjectOpenHashMap<>();
-    private BlockState lastCheck;
-    private BlockState lastTarget;
+    protected final Map<BlockState, BlockState> cache = new Object2ObjectOpenHashMap<>();
+    protected boolean allowsAir = false;
+    protected BlockState lastCheck;
+    protected BlockState lastTarget;
 
-    public @Nullable BlockState get(BlockState blockState) {
-        if (lastTarget != null && blockState == lastCheck) return lastTarget;
-        BlockState computed = cache.computeIfAbsent(blockState, this::getTargetState);
-        if (blockState != lastCheck) {
-            this.lastCheck = blockState;
+    public @Nullable BlockState get(BlockState source) {
+        if (!allowsAir && source.isAir()) return null;
+        if (lastTarget != null && source == lastCheck) return lastTarget;
+        BlockState computed = cache.computeIfAbsent(source, this::getTargetState);
+        if (source != lastCheck) {
+            this.lastCheck = source;
             this.lastTarget = computed;
         }
         return computed;
@@ -28,7 +30,7 @@ public abstract class ConversionTable {
     @SuppressWarnings("unchecked")
     protected <T extends Comparable<T>, V extends T> @Nullable BlockState getTargetState(BlockState source) {
         Block target = getTarget(source);
-        if (target == null) return null;
+        if (target == null || source.is(target)) return null;
         BlockState targetState = target.defaultBlockState();
         for (Map.Entry<Property<?>, Comparable<?>> entry1 : source.getValues().entrySet()) {
             if (targetState.hasProperty(entry1.getKey())) {

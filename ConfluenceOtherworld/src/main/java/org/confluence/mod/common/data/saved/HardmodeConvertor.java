@@ -4,7 +4,6 @@ import com.google.common.base.Stopwatch;
 import com.google.common.collect.AbstractIterator;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.*;
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
@@ -15,13 +14,10 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ChunkMap;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.status.ChunkStatus;
 import net.neoforged.fml.loading.FMLEnvironment;
@@ -33,8 +29,7 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.EnterHardmodeEvent;
 import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.block.natural.spreadable.TheHallowConversionTable;
 import org.confluence.mod.mixed.IDedicatedServer;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
@@ -105,7 +100,11 @@ public final class HardmodeConvertor implements IGlobalData {
         }, Util.backgroundExecutor()).thenAccept(list -> {
             this.sanctification = list;
             this.shouldContinue = true;
-            print(server, Component.translatable("event.confluence.hardmode_conversion.generate_data.sanctification", sanctification.size(), sanctification.size() / 4), debug);
+            if (CommonConfigs.INSTANTLY_HARDMODE_CONVERSION.get()) {
+                print(server, Component.translatable("event.confluence.hardmode_conversion.instantly"), debug);
+            } else {
+                print(server, Component.translatable("event.confluence.hardmode_conversion.generate_data.sanctification", sanctification.size(), sanctification.size() / 4), debug);
+            }
             print(server, Component.translatable("event.confluence.hardmode_conversion.started"), debug);
         });
     }
@@ -318,64 +317,6 @@ public final class HardmodeConvertor implements IGlobalData {
 
         public static BlockPosColumn of(long packedPos) {
             return new BlockPosColumn(ChunkPos.getX(packedPos), ChunkPos.getZ(packedPos));
-        }
-    }
-
-    public static class TheHallowConversionTable {
-        private final Map<BlockState, BlockState> cache = new Object2ObjectOpenHashMap<>();
-        private BlockState lastCheck;
-        private BlockState lastTarget;
-
-        @SuppressWarnings("unchecked")
-        public <T extends Comparable<T>, V extends T> BlockState get(BlockState blockState) {
-            if (lastTarget != null && blockState == lastCheck) return lastTarget;
-            BlockState computed = cache.computeIfAbsent(blockState, source -> {
-                Block target = null;
-
-                if (source.is(BlockTags.LOGS)) {
-                    target = NatureBlocks.PEARL_LOG_BLOCKS.getLog().get();
-                } else if (source.is(BlockTags.LEAVES)) {
-                    target = NatureBlocks.PEARL_LOG_BLOCKS.getLeaves().get();
-                } else if (source.is(BlockTags.BASE_STONE_OVERWORLD)) {
-                    target = NatureBlocks.PEARLSTONE.get();
-                } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_GRASS_BLOCK)) {
-                    target = NatureBlocks.HALLOW_GRASS_BLOCK.get();
-                } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_JUNGLE_GRASS_BLOCK)) {
-                    target = NatureBlocks.JUNGLE_GRASS_BLOCK.get();
-                } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_SHORT_GRASS)) {
-                    target = NatureBlocks.HALLOW_GRASS.get();
-                } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_PACKED_ICE)) {
-                    target = NatureBlocks.PINK_PACKED_ICE.get();
-                } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_ICE)) {
-                    target = NatureBlocks.PINK_ICE.get();
-                } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_SAND)) {
-                    target = NatureBlocks.PEARLSAND.get();
-                } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_SANDSTONE)) {
-                    target = NatureBlocks.PEARLSANDSTONE.get();
-                } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_HARDENED_SAND_BLOCK)) {
-                    target = NatureBlocks.HARDENED_PEARLSAND_BLOCK.get();
-                } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_MOIST_SAND_BLOCK)) {
-                    target = NatureBlocks.MOISTENED_PEARLSAND_BLOCK.get();
-                }
-
-                if (target == null) return null;
-                BlockState targetState = target.defaultBlockState();
-                for (Map.Entry<Property<?>, Comparable<?>> entry1 : source.getValues().entrySet()) {
-                    if (targetState.hasProperty(entry1.getKey())) {
-                        targetState = targetState.setValue((Property<T>) entry1.getKey(), (V) entry1.getValue());
-                    }
-                }
-                return targetState;
-            });
-            if (blockState != lastCheck) {
-                this.lastCheck = blockState;
-                this.lastTarget = computed;
-            }
-            return computed;
-        }
-
-        public void clear() {
-            cache.clear();
         }
     }
 }

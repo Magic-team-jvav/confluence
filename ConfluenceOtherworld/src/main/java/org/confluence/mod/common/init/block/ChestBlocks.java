@@ -57,9 +57,9 @@ public class ChestBlocks {
         }
         return false;
     });
-
     public static final Supplier<BlockEntityType<BaseChestBlock.Entity>> BASE_CHEST_ENTITY = ModBlocks.BLOCK_ENTITIES.register("base_chest_entity", () -> BlockEntityType.Builder.of(BaseChestBlock.Entity::new, NORMAL_CHESTS.stream().map(DeferredBlock::get).toArray(Block[]::new)).build(DSL.remainderType()));
     public static final Supplier<BlockEntityType<DeathChestBlock.Entity>> DEATH_CHEST_ENTITY = ModBlocks.BLOCK_ENTITIES.register("death_chest_entity", () -> BlockEntityType.Builder.of(DeathChestBlock.Entity::new, DEATH_CHESTS.stream().map(DeferredBlock::get).toArray(Block[]::new)).build(DSL.remainderType()));
+
     public static final DeferredBlock<BiomeChestBlock> JUNGLE_CHEST = registerWithItem("jungle_chest", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.JUNGLE_KEY)));
     public static final DeferredBlock<BiomeChestBlock> CORRUPTION_CHEST = registerWithItem("corruption_chest", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.CORRUPTION_KEY)));
     public static final DeferredBlock<BiomeChestBlock> CRIMSON_CHEST = registerWithItem("crimson_chest", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.CRIMSON_KEY)));

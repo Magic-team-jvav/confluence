@@ -224,43 +224,43 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
     @Override
     protected void buildRecipes(RecipeOutput output, HolderLookup.Provider holderLookup) {
         // 注册矿物块的合成与分解配方
-        compressAndDecompressNine(output, MaterialItems.TIN_INGOT, ModTags.Items.INGOTS_TIN, OreBlocks.TIN_BLOCK, ModTags.Items.TIN_BLOCK);
-        compressAndDecompressNine(output, MaterialItems.LEAD_INGOT, ModTags.Items.INGOTS_LEAD, OreBlocks.LEAD_BLOCK, ModTags.Items.LEAD_BLOCK);
-        compressAndDecompressNine(output, MaterialItems.SILVER_INGOT, ModTags.Items.INGOTS_SILVER, OreBlocks.SILVER_BLOCK, ModTags.Items.SILVER_BLOCK);
-        compressAndDecompressNine(output, MaterialItems.TUNGSTEN_INGOT, ModTags.Items.INGOTS_TUNGSTEN, OreBlocks.TUNGSTEN_BLOCK, ModTags.Items.TUNGSTEN_BLOCK);
-        compressAndDecompressNine(output, MaterialItems.PLATINUM_INGOT, ModTags.Items.INGOTS_PLATINUM, OreBlocks.PLATINUM_BLOCK, ModTags.Items.PLATINUM_BLOCK);
-        compressAndDecompressNine(output, MaterialItems.METEORITE_INGOT, ModTags.Items.INGOTS_METEORITE, OreBlocks.METEORITE_BLOCK, ModTags.Items.METEORITE_BLOCK);
-        compressAndDecompressNine(output, MaterialItems.DEMONITE_INGOT, ModTags.Items.INGOTS_DEMONITE, OreBlocks.DEMONITE_BLOCK, ModTags.Items.DEMONITE_BLOCK);
-        compressAndDecompressNine(output, MaterialItems.CRIMTANE_INGOT, ModTags.Items.INGOTS_CRIMTANE, OreBlocks.CRIMTANE_BLOCK, ModTags.Items.CRIMTANE_BLOCK);
-        compressAndDecompressNine(output, MaterialItems.HELLSTONE_INGOT, ModTags.Items.INGOTS_HELLSTONE, OreBlocks.HELLSTONE_BLOCK, ModTags.Items.HELLSTONE_BLOCK);
+        compressAndDecompressNine(output, MaterialItems.TIN_INGOT, ModTags.Items.INGOTS_TIN, OreBlocks.TIN_BLOCK, ModTags.Items.STORAGE_BLOCKS_TIN);
+        compressAndDecompressNine(output, MaterialItems.LEAD_INGOT, ModTags.Items.INGOTS_LEAD, OreBlocks.LEAD_BLOCK, ModTags.Items.STORAGE_BLOCKS_LEAD);
+        compressAndDecompressNine(output, MaterialItems.SILVER_INGOT, ModTags.Items.INGOTS_SILVER, OreBlocks.SILVER_BLOCK, ModTags.Items.STORAGE_BLOCKS_SILVER);
+        compressAndDecompressNine(output, MaterialItems.TUNGSTEN_INGOT, ModTags.Items.INGOTS_TUNGSTEN, OreBlocks.TUNGSTEN_BLOCK, ModTags.Items.STORAGE_BLOCKS_TUNGSTEN);
+        compressAndDecompressNine(output, MaterialItems.PLATINUM_INGOT, ModTags.Items.INGOTS_PLATINUM, OreBlocks.PLATINUM_BLOCK, ModTags.Items.STORAGE_BLOCKS_PLATINUM);
+        compressAndDecompressNine(output, MaterialItems.METEORITE_INGOT, ModTags.Items.INGOTS_METEORITE, OreBlocks.METEORITE_BLOCK, ModTags.Items.STORAGE_BLOCKS_METEORITE);
+        compressAndDecompressNine(output, MaterialItems.DEMONITE_INGOT, ModTags.Items.INGOTS_DEMONITE, OreBlocks.DEMONITE_BLOCK, ModTags.Items.STORAGE_BLOCKS_DEMONITE);
+        compressAndDecompressNine(output, MaterialItems.CRIMTANE_INGOT, ModTags.Items.INGOTS_CRIMTANE, OreBlocks.CRIMTANE_BLOCK, ModTags.Items.STORAGE_BLOCKS_CRIMTANE);
+        compressAndDecompressNine(output, MaterialItems.HELLSTONE_INGOT, ModTags.Items.INGOTS_HELLSTONE, OreBlocks.HELLSTONE_BLOCK, ModTags.Items.STORAGE_BLOCKS_HELLSTONE);
 
-        compressAndDecompressNine(output, MaterialItems.RUBY, ModTags.Items.GEMS_RUBY, DecorativeBlocks.RUBY_BLOCK, ModTags.Items.RUBY_BLOCK);
-        compressAndDecompressNine(output, MaterialItems.AMBER, ModTags.Items.GEMS_AMBER, DecorativeBlocks.AMBER_BLOCK, ModTags.Items.AMBER_BLOCK);
-        compressAndDecompressNine(output, MaterialItems.TOPAZ, ModTags.Items.GEMS_TOPAZ, DecorativeBlocks.TOPAZ_BLOCK, ModTags.Items.TOPAZ_BLOCK);
-        compressAndDecompressNine(output, MaterialItems.JADE, ModTags.Items.GEMS_JADE, DecorativeBlocks.JADE_BLOCK, ModTags.Items.JADE_BLOCK);
-        compressAndDecompressNine(output, MaterialItems.SAPPHIRE, ModTags.Items.GEMS_SAPPHIRE, DecorativeBlocks.SAPPHIRE_BLOCK, ModTags.Items.SAPPHIRE_BLOCK);
-        compressAndDecompressNine(output, MaterialItems.AMETHYST, ModTags.Items.GEMS_AMETHYST, DecorativeBlocks.AMETHYST_BLOCK, ModTags.Items.AMETHYST_BLOCK);
+        compressAndDecompressNine(output, MaterialItems.RUBY, ModTags.Items.GEMS_RUBY, DecorativeBlocks.RUBY_BLOCK, ModTags.Items.STORAGE_BLOCKS_RUBY);
+        compressAndDecompressNine(output, MaterialItems.AMBER, ModTags.Items.GEMS_AMBER, DecorativeBlocks.AMBER_BLOCK, ModTags.Items.STORAGE_BLOCKS_AMBER);
+        compressAndDecompressNine(output, MaterialItems.TOPAZ, ModTags.Items.GEMS_TOPAZ, DecorativeBlocks.TOPAZ_BLOCK, ModTags.Items.STORAGE_BLOCKS_TOPAZ);
+        compressAndDecompressNine(output, MaterialItems.JADE, ModTags.Items.GEMS_JADE, DecorativeBlocks.JADE_BLOCK, ModTags.Items.STORAGE_BLOCKS_JADE);
+        compressAndDecompressNine(output, MaterialItems.SAPPHIRE, ModTags.Items.GEMS_SAPPHIRE, DecorativeBlocks.SAPPHIRE_BLOCK, ModTags.Items.STORAGE_BLOCKS_SAPPHIRE);
+        compressAndDecompressNine(output, MaterialItems.AMETHYST, ModTags.Items.GEMS_AMETHYST, DecorativeBlocks.AMETHYST_BLOCK, ModTags.Items.STORAGE_BLOCKS_AMETHYST);
 
-        compressAndDecompressNine(output, MaterialItems.STURDY_FOSSIL, ModTags.Items.RAW_MATERIALS_STURDY_FOSSIL, OreBlocks.STURDY_FOSSIL_BLOCK, ModTags.Items.STURDY_FOSSIL_BLOCK);
-        compressAndDecompressNine(output, MaterialItems.OPAL, ModTags.Items.RAW_MATERIALS_OPAL, OreBlocks.OPAL_BLOCK, ModTags.Items.OPAL_BLOCK);
-        compressAndDecompressNine(output, MaterialItems.GELSTONE, ModTags.Items.RAW_MATERIALS_GELSTONE, OreBlocks.GELSTONE_BLOCK, ModTags.Items.GELSTONE_BLOCK);
-        compressAndDecompressNine(output, MaterialItems.COLD_CRYSTAL, ModTags.Items.RAW_MATERIALS_COLD_CRYSTAL, OreBlocks.COLD_CRYSTAL_BLOCK, ModTags.Items.COLD_CRYSTAL_BLOCK);
+        compressAndDecompressNine(output, MaterialItems.STURDY_FOSSIL, ModTags.Items.RAW_MATERIALS_STURDY_FOSSIL, OreBlocks.STURDY_FOSSIL_BLOCK, ModTags.Items.STORAGE_BLOCKS_STURDY_FOSSIL);
+        compressAndDecompressNine(output, MaterialItems.OPAL, ModTags.Items.RAW_MATERIALS_OPAL, OreBlocks.OPAL_BLOCK, ModTags.Items.STORAGE_BLOCKS_OPAL);
+        compressAndDecompressNine(output, MaterialItems.GELSTONE, ModTags.Items.RAW_MATERIALS_GELSTONE, OreBlocks.GELSTONE_BLOCK, ModTags.Items.STORAGE_BLOCKS_GELSTONE);
+        compressAndDecompressNine(output, MaterialItems.COLD_CRYSTAL, ModTags.Items.RAW_MATERIALS_COLD_CRYSTAL, OreBlocks.COLD_CRYSTAL_BLOCK, ModTags.Items.STORAGE_BLOCKS_COLD_CRYSTAL);
         // 粗矿
-        compressAndDecompressNine(output, MaterialItems.RAW_TIN, ModTags.Items.RAW_MATERIALS_TIN, OreBlocks.RAW_TIN_BLOCK, ModTags.Items.RAW_MATERIALS_TIN_BLOCK);
-        compressAndDecompressNine(output, MaterialItems.RAW_LEAD, ModTags.Items.RAW_MATERIALS_LEAD, OreBlocks.RAW_LEAD_BLOCK, ModTags.Items.RAW_MATERIALS_LEAD_BLOCK);
-        compressAndDecompressNine(output, MaterialItems.RAW_SILVER, ModTags.Items.RAW_MATERIALS_SILVER, OreBlocks.RAW_SILVER_BLOCK, ModTags.Items.RAW_MATERIALS_SILVER_BLOCK);
-        compressAndDecompressNine(output, MaterialItems.RAW_TUNGSTEN, ModTags.Items.RAW_MATERIALS_TUNGSTEN, OreBlocks.RAW_TUNGSTEN_BLOCK, ModTags.Items.RAW_MATERIALS_TUNGSTEN_BLOCK);
-        compressAndDecompressNine(output, MaterialItems.RAW_PLATINUM, ModTags.Items.RAW_MATERIALS_PLATINUM, OreBlocks.RAW_PLATINUM_BLOCK, ModTags.Items.RAW_MATERIALS_PLATINUM_BLOCK);
-        compressAndDecompressNine(output, MaterialItems.RAW_METEORITE, ModTags.Items.RAW_MATERIALS_METEORITE, OreBlocks.RAW_METEORITE_BLOCK, ModTags.Items.RAW_MATERIALS_METEORITE_BLOCK);
-        compressAndDecompressNine(output, MaterialItems.RAW_DEMONITE, ModTags.Items.RAW_MATERIALS_DEMONITE, OreBlocks.RAW_DEMONITE_BLOCK, ModTags.Items.RAW_MATERIALS_DEMONITE_BLOCK);
-        compressAndDecompressNine(output, MaterialItems.RAW_CRIMTANE, ModTags.Items.RAW_MATERIALS_CRIMTANE, OreBlocks.RAW_CRIMTANE_BLOCK, ModTags.Items.RAW_MATERIALS_CRIMTANE_BLOCK);
-        compressAndDecompressNine(output, MaterialItems.RAW_HELLSTONE, ModTags.Items.RAW_MATERIALS_HELLSTONE, OreBlocks.RAW_HELLSTONE_BLOCK, ModTags.Items.RAW_MATERIALS_HELLSTONE_BLOCK);
+        compressAndDecompressNine(output, MaterialItems.RAW_TIN, ModTags.Items.RAW_MATERIALS_TIN, OreBlocks.RAW_TIN_BLOCK, ModTags.Items.STORAGE_BLOCKS_RAW_TIN);
+        compressAndDecompressNine(output, MaterialItems.RAW_LEAD, ModTags.Items.RAW_MATERIALS_LEAD, OreBlocks.RAW_LEAD_BLOCK, ModTags.Items.STORAGE_BLOCKS_RAW_LEAD);
+        compressAndDecompressNine(output, MaterialItems.RAW_SILVER, ModTags.Items.RAW_MATERIALS_SILVER, OreBlocks.RAW_SILVER_BLOCK, ModTags.Items.STORAGE_BLOCKS_RAW_SILVER);
+        compressAndDecompressNine(output, MaterialItems.RAW_TUNGSTEN, ModTags.Items.RAW_MATERIALS_TUNGSTEN, OreBlocks.RAW_TUNGSTEN_BLOCK, ModTags.Items.STORAGE_BLOCKS_RAW_TUNGSTEN);
+        compressAndDecompressNine(output, MaterialItems.RAW_PLATINUM, ModTags.Items.RAW_MATERIALS_PLATINUM, OreBlocks.RAW_PLATINUM_BLOCK, ModTags.Items.STORAGE_BLOCKS_RAW_PLATINUM);
+        compressAndDecompressNine(output, MaterialItems.RAW_METEORITE, ModTags.Items.RAW_MATERIALS_METEORITE, OreBlocks.RAW_METEORITE_BLOCK, ModTags.Items.STORAGE_BLOCKS_RAW_METEORITE);
+        compressAndDecompressNine(output, MaterialItems.RAW_DEMONITE, ModTags.Items.RAW_MATERIALS_DEMONITE, OreBlocks.RAW_DEMONITE_BLOCK, ModTags.Items.STORAGE_BLOCKS_RAW_DEMONITE);
+        compressAndDecompressNine(output, MaterialItems.RAW_CRIMTANE, ModTags.Items.RAW_MATERIALS_CRIMTANE, OreBlocks.RAW_CRIMTANE_BLOCK, ModTags.Items.STORAGE_BLOCKS_RAW_CRIMTANE);
+        compressAndDecompressNine(output, MaterialItems.RAW_HELLSTONE, ModTags.Items.RAW_MATERIALS_HELLSTONE, OreBlocks.RAW_HELLSTONE_BLOCK, ModTags.Items.STORAGE_BLOCKS_RAW_HELLSTONE);
         // 飘飘麦捆
-        compressAndDecompressNine(output, MaterialItems.FLOATING_WHEAT_HEADS, ModTags.Items.RAW_MATERIALS_FLOATING_WHEAT, DecorativeBlocks.FLOATING_WHEAT_BALE, ModTags.Items.RAW_MATERIALS_FLOATING_WHEAT_BALE);
+        compressAndDecompressNine(output, MaterialItems.FLOATING_WHEAT_HEADS, ModTags.Items.RAW_MATERIALS_FLOATING_WHEAT, DecorativeBlocks.FLOATING_WHEAT_BALE, ModTags.Items.STORAGE_BLOCKS_FLOATING_WHEAT_BALE);
         // 矿物粒
         // 铅砧
         shaped(output, ShapedRecipePattern.of(Map.of(
-                'I', Ingredient.of(ModTags.Items.LEAD_BLOCK),
+                'I', Ingredient.of(ModTags.Items.STORAGE_BLOCKS_LEAD),
                 'i', Ingredient.of(ModTags.Items.INGOTS_LEAD)
         ), List.of(
                 "III",

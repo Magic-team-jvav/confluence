@@ -33,6 +33,9 @@ import java.util.function.Supplier;
 
 import static net.minecraft.world.level.block.Blocks.*;
 
+/**
+ * <a href="https://terraria.wiki.gg/zh/wiki/%E7%94%9F%E7%89%A9%E7%BE%A4%E7%B3%BB%E8%94%93%E5%BB%B6">生物群系蔓延</a>
+ */
 public interface ISpreadable {
     // That was a joke haha!
     BooleanProperty STILL_ALIVE = BooleanProperty.create("still_alive");
@@ -42,17 +45,18 @@ public interface ISpreadable {
     default void spread(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource) {
         if (!blockState.getValue(STILL_ALIVE)) return;
         int chance = serverLevel.getGameRules().getInt(Confluence.SPREADABLE_CHANCE);
-        if (chance == 0 || randomSource.nextInt(100) >= chance) return;
+        if (chance != 100 && (chance == 0 || randomSource.nextInt(100) >= chance)) return;
+
         int phase = KillBoard.INSTANCE.getGamePhase().ordinal();
         for (int i = 0; i < 4; ++i) {
             BlockPos targetPos = blockPos.offset(randomSource.nextInt(3) - 1, randomSource.nextInt(5) - 3, randomSource.nextInt(3) - 1);
             if (!serverLevel.isLoaded(targetPos)) continue;
-            BlockState beforeTransformState = serverLevel.getBlockState(targetPos);
-            Block targetBlock = getSpreadType().blockMap.get(beforeTransformState.getBlock());
-            if (targetBlock == null || beforeTransformState.is(SHORT_GRASS) || beforeTransformState.is(FERN) || beforeTransformState.is(TALL_GRASS)) {
-                continue; // 不要直接传播草
-            }
-            if (beforeTransformState.is(DIRT) || beforeTransformState.is(NatureBlocks.ASH_BLOCK.get())) {
+
+            BlockState sourceState = serverLevel.getBlockState(targetPos);
+            Block targetBlock = getSpreadType().blockMap.get(sourceState.getBlock());
+            if (targetBlock == null) continue;
+
+            if (sourceState.is(DIRT) || sourceState.is(NatureBlocks.ASH_BLOCK.get())) {
                 if (!isFullBlock(serverLevel, targetPos.above())) {
                     spreadOrDie(phase, blockState, serverLevel, blockPos, randomSource, targetBlock.defaultBlockState(), targetPos);
                 }

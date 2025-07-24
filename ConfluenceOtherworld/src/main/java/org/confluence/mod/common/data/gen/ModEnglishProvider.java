@@ -990,9 +990,10 @@ public class ModEnglishProvider extends LanguageProvider {
         add("event.confluence.eye_of_cthulhu", "You feel an evil presence watching you...");
         add("event.confluence.hardmode_conversion.pass", "There is a conversion mission in the world!");
         add("event.confluence.hardmode_conversion.hardmode", "The world type has been changed to Hardmode");
-        add("event.confluence.hardmode_conversion.starting", "Conversation data preparation, please wait");
+        add("event.confluence.hardmode_conversion.starting", "Conversion data preparation, please wait");
+        add("event.confluence.hardmode_conversion.instantly", "The conversion time will depend on your computer's performance, usually 90 seconds");
         add("event.confluence.hardmode_conversion.generate_data.sanctification", "Sanctification data: %s entries, estimated to take %s seconds");
-        add("event.confluence.hardmode_conversion.started", "Conversation data is ready, and the conversion is begining");
+        add("event.confluence.hardmode_conversion.started", "Conversion data is ready, and the conversion is begining");
         add("event.confluence.hardmode_conversion.finished", "\"The ancient spirits of light and dark have been released.\"");
         add("event.confluence.hardmode_conversion.welcome", "Welcome to Terraria");
         add("event.confluence.npc.arrived", "%2$s the %1$s has arrived!");

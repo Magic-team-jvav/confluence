@@ -624,7 +624,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.Food.tooltip", "关于饱食度显示");
         add("confluence.configuration.section.confluence.client.toml", "个人显示设定");
         add("confluence.configuration.section.confluence.common.toml", "游戏机制设定");
-        add("confluence.configuration.leftEffectIcon.tooltip", "开启后，药水效果图标显示与屏幕左侧");
+        add("confluence.configuration.leftEffectIcon.tooltip", "开启后，药水效果图标显示屏幕左侧");
         add("confluence.configuration.Entity.button", "与生物有关的视觉效果");
         add("confluence.configuration.HUD.tooltip", "关于HUD显示");
         add("confluence.configuration.showWindParticles.tooltip", "通过调整数值，来决定你能看见风粒子的数量");

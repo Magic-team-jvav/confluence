@@ -249,7 +249,7 @@ public final class ClientUtils {
     public static void livingDeath(LivingEntity entity) {
         if (!(entity.level() instanceof ClientLevel level)) return;
 //        DecimalFormat df = new DecimalFormat("#.####");
-        Minecraft.getInstance().executeIfPossible(entity::discard);
+        DeathAnimUtils.tellDiscardEntity(entity);
         EntityRenderer<? super LivingEntity> renderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(entity);
         Vec3 deathMotion;
         if (entity instanceof Mob mob && mob.isNoAi()) {
@@ -315,7 +315,7 @@ public final class ClientUtils {
 
                     part.setPos(entityPos.add(transformed.x, transformed.y, transformed.z));
                     part.setDeltaMovement(deathMotion.offsetRandom(level.random, (float) (deathMotion.length() * 0.5 + 0.2)).multiply(1, 1.05f, 1));
-                    Minecraft.getInstance().executeIfPossible(() -> level.addEntity(part));
+                    DeathAnimUtils.tellAddEntity(level, part);
                 }
             }
         } else if (renderer instanceof LivingEntityRenderer<?, ?> livingRenderer) {

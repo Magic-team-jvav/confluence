@@ -1,11 +1,8 @@
 package org.confluence.mod.mixin.client.renderer;
 
-import com.google.common.collect.Iterators;
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
-import net.minecraft.world.entity.Entity;
 import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
 import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Final;
@@ -14,9 +11,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.util.Iterator;
-import java.util.Objects;
 
 @Mixin(LevelRenderer.class)
 public abstract class LevelRendererMixin {
@@ -30,8 +24,8 @@ public abstract class LevelRendererMixin {
     }
 
     // fixme 在解决空指针前先这样
-    @ModifyExpressionValue(method = "renderLevel", at = @At(value = "INVOKE", target = "Ljava/lang/Iterable;iterator()Ljava/util/Iterator;"))
-    private Iterator<Entity> filterNull(Iterator<Entity> original) {
-        return Iterators.filter(original, Objects::nonNull);
-    }
+//    @ModifyExpressionValue(method = "renderLevel", at = @At(value = "INVOKE", target = "Ljava/lang/Iterable;iterator()Ljava/util/Iterator;"))
+//    private Iterator<Entity> filterNull(Iterator<Entity> original) {
+//        return Iterators.filter(original, Objects::nonNull);
+//    }
 }

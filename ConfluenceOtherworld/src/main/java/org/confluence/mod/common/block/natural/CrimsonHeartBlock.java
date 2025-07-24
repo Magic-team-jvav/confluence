@@ -82,7 +82,7 @@ public class CrimsonHeartBlock extends Block {
             }
 
             if (data.updateEvilBrokenCount()) {
-                ModUtils.summonBoss(level, center, new BrainOfCthulhu(TEBossEntities.BRAIN_OF_CTHULHU.get(), level));
+                ModUtils.summonBoss(serverLevel, pos, new BrainOfCthulhu(TEBossEntities.BRAIN_OF_CTHULHU.get(), level));
             }
         }
     }

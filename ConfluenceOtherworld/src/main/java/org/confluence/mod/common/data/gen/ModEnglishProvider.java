@@ -92,6 +92,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.price.gold", "Gold");
         add("tooltip.price.silver", "Silver");
         add("tooltip.price.copper", "Copper");
+        add("tooltip.price.buy", "Buy:  ");
         add("tooltip.price.sell", "Sell: ");
 
         add("tooltip.jei.state_properties", "Required State Properties:");

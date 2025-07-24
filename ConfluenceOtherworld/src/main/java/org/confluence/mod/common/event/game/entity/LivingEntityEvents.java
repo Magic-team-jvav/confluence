@@ -121,7 +121,7 @@ public final class LivingEntityEvents {
                 ) {
                     Skeletron skeletron = new Skeletron(TEBossEntities.SKELETRON.get(), level);
                     skeletron.finalizeSpawn(level, level.getCurrentDifficultyAt(skeletron.blockPosition()), MobSpawnType.EVENT, null);
-                    ModUtils.summonBoss(level, attacker.position(), skeletron);
+                    ModUtils.summonBoss(level, attacker.blockPosition(), skeletron);
                 }
             }
             if (victom.hasEffect(ModEffects.BLOOD_BUTCHERED)) {

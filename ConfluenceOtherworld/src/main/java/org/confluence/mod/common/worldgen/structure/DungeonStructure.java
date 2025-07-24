@@ -601,7 +601,7 @@ public class DungeonStructure extends Structure {
                         LibUtils.getOrCreatePersistedData(player).putByte("confluence:dungeon_guardian_alert", (byte) (alert + 1));
                         if (alert < 3) return true;
                     }
-                    ModUtils.summonBoss(level, player.position(), new DungeonGuardian(TEBossEntities.DUNGEON_GUARDIAN.get(), level));
+                    ModUtils.summonBoss(level, player.blockPosition(), new DungeonGuardian(TEBossEntities.DUNGEON_GUARDIAN.get(), level));
                 }
                 if (shouldAlert) LibUtils.getOrCreatePersistedData(player).putByte("confluence:dungeon_guardian_alert", (byte) 0);
                 return true;

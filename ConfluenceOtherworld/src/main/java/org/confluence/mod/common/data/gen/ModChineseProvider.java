@@ -1038,6 +1038,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("event.confluence.hardmode_conversion.pass", "世界中已有转换任务！");
         add("event.confluence.hardmode_conversion.hardmode", "世界类型已转换为困难模式");
         add("event.confluence.hardmode_conversion.starting", "转换数据准备中，请稍等");
+        add("event.confluence.hardmode_conversion.instantly", "转换耗时将取决于您的电脑性能，一般为90秒");
         add("event.confluence.hardmode_conversion.generate_data.sanctification", "神圣化数据：%s条，预计耗时%s秒");
         add("event.confluence.hardmode_conversion.started", "转换数据准备完毕，正在开始转换");
         add("event.confluence.hardmode_conversion.finished", "“古老的光明与黑暗之魂已经释放。”");

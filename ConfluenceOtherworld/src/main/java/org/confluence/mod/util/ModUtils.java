@@ -210,7 +210,7 @@ public final class ModUtils {
     public static boolean canHitEntity(@Nullable Entity target, @Nullable Entity owner) {
         if (target == null) return false; // 有模组把target写成了null
         if (owner == target || !target.isAttackable() || !target.canBeHitByProjectile() || target instanceof ArmorStand || target instanceof Npc) return false;
-        return owner == null || (!owner.isPassengerOfSameVehicle(target) && !target.skipAttackInteraction(owner));
+        return owner == null || (!owner.isPassengerOfSameVehicle(target)/* && !target.skipAttackInteraction(owner)*/);
     }
 
     public static Component formatPrice(int price) {

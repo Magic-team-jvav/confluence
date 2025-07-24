@@ -16,13 +16,11 @@ import java.util.Date;
 
 public final class DateUtils {
     private static final short[] TIMES = Util.make(new short[24 * 60], times -> {
-        for (int h = 0; h < 24; h++) {
-            int t = h * 60;
+        for (int h = -120; h < 360; h += 20) {
+            int t = h + h + h + 360;
+            int i = h * 50 + 24000;
             for (int m = 0; m < 60; m++) {
-                int i = (h - 6) * 1000;
-                int j = (int) (m / 0.06F);
-                if (i < 0) i += 24000;
-                times[t + m] = (short) (i + j);
+                times[t + m] = (short) (i + (int) (m * 16.666668F));
             }
         }
     });

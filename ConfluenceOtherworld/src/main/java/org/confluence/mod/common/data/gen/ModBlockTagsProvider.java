@@ -1179,7 +1179,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         }
         {
             tag(ModTags.Blocks.CORRUPTION_CONVERSION_DIRT).add(Blocks.MUD);
-            tag(ModTags.Blocks.CORRUPTION_CONVERSION_GRASS_BLOCK).add(Blocks.GRASS_BLOCK, HALLOW_GRASS_BLOCK.get(), CRIMSON_GRASS.get());
+            tag(ModTags.Blocks.CORRUPTION_CONVERSION_GRASS_BLOCK).addTag(BlockTags.CONVERTABLE_TO_MUD).add(Blocks.GRASS_BLOCK, HALLOW_GRASS_BLOCK.get(), CRIMSON_GRASS.get());
             tag(ModTags.Blocks.CORRUPTION_CONVERSION_JUNGLE_GRASS_BLOCK).add(JUNGLE_GRASS_BLOCK.get(), CRIMSON_JUNGLE_GRASS_BLOCK.get());
             tag(ModTags.Blocks.CORRUPTION_CONVERSION_SHORT_GRASS).add(Blocks.SHORT_GRASS, Blocks.FERN, HALLOW_GRASS.get(), CRIMSON_GRASS.get());
             tag(ModTags.Blocks.CORRUPTION_CONVERSION_PACKED_ICE).add(Blocks.PACKED_ICE, RED_PACKED_ICE.get(), PINK_PACKED_ICE.get());
@@ -1191,7 +1191,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         }
         {
             tag(ModTags.Blocks.CRIMSON_CONVERSION_DIRT).add(Blocks.MUD);
-            tag(ModTags.Blocks.CRIMSON_CONVERSION_GRASS_BLOCK).add(Blocks.GRASS_BLOCK, CORRUPT_GRASS_BLOCK.get(), HALLOW_GRASS.get());
+            tag(ModTags.Blocks.CRIMSON_CONVERSION_GRASS_BLOCK).addTag(BlockTags.CONVERTABLE_TO_MUD).add(Blocks.GRASS_BLOCK, CORRUPT_GRASS_BLOCK.get(), HALLOW_GRASS.get());
             tag(ModTags.Blocks.CRIMSON_CONVERSION_JUNGLE_GRASS_BLOCK).add(JUNGLE_GRASS_BLOCK.get(), CORRUPT_JUNGLE_GRASS_BLOCK.get());
             tag(ModTags.Blocks.CRIMSON_CONVERSION_SHORT_GRASS).add(Blocks.SHORT_GRASS, Blocks.FERN, CORRUPT_GRASS.get(), HALLOW_GRASS.get());
             tag(ModTags.Blocks.CRIMSON_CONVERSION_PACKED_ICE).add(Blocks.PACKED_ICE, PURPLE_PACKED_ICE.get(), PINK_PACKED_ICE.get());
@@ -1202,7 +1202,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
             tag(ModTags.Blocks.CRIMSON_CONVERSION_MOIST_SAND_BLOCK).add(MOISTENED_SAND_BLOCK.get(), MOISTENED_RED_SAND_BLOCK.get(), MOISTENED_EBONSAND_BLOCK.get(), MOISTENED_PEARLSAND_BLOCK.get());
         }
         {
-            tag(ModTags.Blocks.HALLOW_CONVERSION_GRASS_BLOCK).add(Blocks.GRASS_BLOCK, CORRUPT_GRASS_BLOCK.get(), CRIMSON_GRASS.get());
+            tag(ModTags.Blocks.HALLOW_CONVERSION_GRASS_BLOCK).addTag(BlockTags.CONVERTABLE_TO_MUD).add(Blocks.GRASS_BLOCK, CORRUPT_GRASS_BLOCK.get(), CRIMSON_GRASS.get());
             tag(ModTags.Blocks.HALLOW_CONVERSION_SHORT_GRASS).add(Blocks.SHORT_GRASS, Blocks.FERN, CORRUPT_GRASS.get(), CRIMSON_GRASS.get());
             tag(ModTags.Blocks.HALLOW_CONVERSION_PACKED_ICE).add(Blocks.PACKED_ICE, PURPLE_PACKED_ICE.get(), RED_PACKED_ICE.get());
             tag(ModTags.Blocks.HALLOW_CONVERSION_ICE).add(Blocks.ICE, PURPLE_ICE.get(), RED_ICE.get());
@@ -1236,6 +1236,14 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 Blocks.REPEATING_COMMAND_BLOCK,
                 Blocks.BARRIER,
                 Blocks.STRUCTURE_BLOCK
+        );
+        tag(ModTags.Blocks.SPREADABLE_GRASS_BLOCK).add(
+                Blocks.GRASS_BLOCK,
+                JUNGLE_GRASS_BLOCK.get(),
+                CORRUPT_JUNGLE_GRASS_BLOCK.get(),
+                CRIMSON_JUNGLE_GRASS_BLOCK.get(),
+                MUSHROOM_GRASS_BLOCK.get(),
+                ASH_GRASS_BLOCK.get()
         );
         tag(ModTags.Blocks.CRIMSON_BLOCKS).addTags(
                 ModTags.Blocks.CRIMSON_DESERT_BLOCKS,

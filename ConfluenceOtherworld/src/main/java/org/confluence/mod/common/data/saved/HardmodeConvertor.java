@@ -29,7 +29,7 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.EnterHardmodeEvent;
 import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.common.block.natural.spreadable.TheHallowConversionTable;
+import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
 import org.confluence.mod.mixed.IDedicatedServer;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
@@ -74,7 +74,6 @@ public final class HardmodeConvertor implements IGlobalData {
     private volatile List<Tuple<ChunkPos, BlockPosColumn[][]>> sanctification = new LinkedList<>();
     private volatile boolean completed = false;
     private transient volatile boolean shouldContinue = true;
-    private transient final TheHallowConversionTable theHallowConversionTable = new TheHallowConversionTable();
 
     public boolean isStarted() {
         return started;
@@ -129,7 +128,6 @@ public final class HardmodeConvertor implements IGlobalData {
                 NeoForge.EVENT_BUS.post(new EnterHardmodeEvent(server));
             }
             this.started = false;
-            theHallowConversionTable.clear();
         } else {
             if (serverLevel.getServer() instanceof IDedicatedServer dedicatedServer && !dedicatedServer.confluence$isOnHardmodeConversation()) {
                 dedicatedServer.confluence$setOnHardmodeConversation(true);
@@ -173,11 +171,9 @@ public final class HardmodeConvertor implements IGlobalData {
                 BlockPosColumn column = columns[z];
                 if (column == null || column == BlockPosColumn.ZERO) continue;
                 for (BlockPos blockPos : column.iterable(cx + x, cz + z)) {
-                    BlockState sourceState = chunkAccess.getBlockState(blockPos);
-                    if (sourceState.isAir()) continue;
-                    BlockState targetState = theHallowConversionTable.get(sourceState);
-                    if (targetState != null) {
-                        chunkAccess.setBlockState(blockPos, targetState, false);
+                    BlockState target = ISpreadable.Type.HALLOW.getNullable(chunkAccess.getBlockState(blockPos));
+                    if (target != null) {
+                        chunkAccess.setBlockState(blockPos, target, false);
                     }
                 }
             }
@@ -269,7 +265,6 @@ public final class HardmodeConvertor implements IGlobalData {
         this.completed = false;
         sanctification.clear();
         this.shouldContinue = true;
-        theHallowConversionTable.clear();
     }
 
     public static class BlockPosColumn {
@@ -290,7 +285,7 @@ public final class HardmodeConvertor implements IGlobalData {
         }
 
         public long asLong() {
-            return ChunkPos.asLong(minY, maxY);
+            return (long) minY & 4294967295L | ((long) maxY & 4294967295L) << 32;
         }
 
         public Iterable<BlockPos> iterable(int x, int z) {
@@ -316,7 +311,7 @@ public final class HardmodeConvertor implements IGlobalData {
         }
 
         public static BlockPosColumn of(long packedPos) {
-            return new BlockPosColumn(ChunkPos.getX(packedPos), ChunkPos.getZ(packedPos));
+            return new BlockPosColumn((int) (packedPos & 4294967295L), (int) (packedPos >>> 32 & 4294967295L));
         }
     }
 }

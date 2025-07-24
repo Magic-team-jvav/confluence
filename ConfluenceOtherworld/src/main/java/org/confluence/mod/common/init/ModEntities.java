@@ -121,7 +121,7 @@ public final class ModEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<AbstractHookEntity.Impl>> BAT_HOOK = registerHook("bat_hook", AbstractHookEntity.Impl::new);
     public static final DeferredHolder<EntityType<?>, EntityType<AbstractHookEntity.Impl>> CANDY_CANE_HOOK = registerHook("candy_cane_hook", AbstractHookEntity.Impl::new);
     public static final DeferredHolder<EntityType<?>, EntityType<DualHookEntity>> DUAL_HOOK = registerHook("dual_hook", DualHookEntity::new);
-    public static final DeferredHolder<EntityType<?>, EntityType<AbstractHookEntity.Impl>> HOOK_OF_DISSONANCE = registerHook("hook_of_dissonance", AbstractHookEntity.Impl::new);
+    public static final DeferredHolder<EntityType<?>, EntityType<HookOfDissonanceEntity>> HOOK_OF_DISSONANCE = registerHook("hook_of_dissonance", HookOfDissonanceEntity::new);
     public static final DeferredHolder<EntityType<?>, EntityType<AbstractHookEntity.Impl>> THORN_HOOK = registerHook("thorn_hook", AbstractHookEntity.Impl::new);
     public static final DeferredHolder<EntityType<?>, EntityType<MimicHookEntity>> MIMIC_HOOK = registerHook("mimic_hook", MimicHookEntity::new);
     public static final DeferredHolder<EntityType<?>, EntityType<AbstractHookEntity.Impl>> ANTI_GRAVITY_HOOK = registerHook("anti_gravity_hook", AbstractHookEntity.Impl::new);

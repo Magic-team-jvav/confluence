@@ -10,7 +10,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.item.bow.BaseArrowItem;
 import org.confluence.mod.common.item.bow.TerraBowItem;
-import org.confluence.terraentity.registries.track.ITrackType;
+import org.confluence.terraentity.api.entity.ITrackType;
 import org.confluence.terraentity.registries.track.variant.BasisTrack;
 import org.confluence.terraentity.utils.TEUtils;
 import org.jetbrains.annotations.Nullable;

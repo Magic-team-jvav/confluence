@@ -5,7 +5,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.integration.terra_entity.npc_trade.*;
 import org.confluence.terraentity.registries.TERegistries;
-import org.confluence.terraentity.registries.npc_trade.ITrade;
+import org.confluence.terraentity.api.trade.ITrade;
 import org.confluence.terraentity.registries.npc_trade.TradeProvider;
 
 import java.util.function.Supplier;

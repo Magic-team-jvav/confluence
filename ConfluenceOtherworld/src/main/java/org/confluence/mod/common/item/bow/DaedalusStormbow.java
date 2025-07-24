@@ -7,7 +7,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.terraentity.registries.generation.IGeneration;
+import org.confluence.terraentity.api.entity.IGeneration;
 import org.confluence.terraentity.registries.generation.variant.AboveFallenGeneration;
 import org.jetbrains.annotations.NotNull;
 

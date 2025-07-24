@@ -329,7 +329,12 @@ public final class ValueSubProvider {
                 .add(ToolItems.MAGIC_CONCH, wrap(1, 0, 0))
                 .add(ToolItems.DEMON_CONCH, wrap(1, 0, 0))
                 .add(TCItems.CELL_PHONE, wrap(8, 0, 0))
-                .add(ToolItems.ENCUMBERING_STONE, wrap(1, 0, 0));
+                .add(ToolItems.ENCUMBERING_STONE, wrap(1, 0, 0))
+                .add(ToolItems.EMPTY_DROPPER, 20)
+                .add(ToolItems.MAGIC_SAND_DROPPER, 40)
+                .add(ToolItems.MAGIC_HONEY_DROPPER, 40)
+                .add(ToolItems.MAGIC_LAVA_DROPPER, 40)
+                .add(ToolItems.MAGIC_WATER_DROPPER, 40);
         // 贝壳电话
         appender.create()
                 .add(ToolItems.SHADOW_KEY, wrap(1, 75, 0));

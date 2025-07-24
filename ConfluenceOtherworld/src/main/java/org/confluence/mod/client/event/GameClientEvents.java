@@ -1,5 +1,6 @@
 package org.confluence.mod.client.event;
 
+import com.ibm.icu.impl.Pair;
 import com.mojang.datafixers.util.Either;
 import com.xiaohunao.equipment_benediction.api.manager.EquipmentSetManager;
 import com.xiaohunao.equipment_benediction.common.equipment_set.EquipmentSetBranch;
@@ -65,6 +66,7 @@ import org.confluence.mod.integration.xaero.XaeroHelper;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.ILocalPlayer;
 import org.confluence.mod.util.ClientUtils;
+import org.confluence.mod.util.DeathAnimUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.api.event.PerformJumpingEvent;
@@ -92,12 +94,22 @@ public final class GameClientEvents {
             LocalBrushData.clear();
             ClientPacketHandler.reset();
             CompatibilityHandler.reset();
+            DropletsHandler.clear();
         } else {
             BaseSwordItem.swordProjectileHandle(minecraft, player);
             HookThrowingHandler.handle(player);
             KeyRequestHandler.handle();
             XaeroHelper.tick(player);
+            DropletsHandler.handle(minecraft, player);
+            for (Pair<ClientLevel, Entity> pair : DeathAnimUtils.toBeAdded) {
+                pair.first.addEntity(pair.second);
+            }
+            for (Entity entity : DeathAnimUtils.toBeDiscarded) {
+                entity.discard();
+            }
         }
+        DeathAnimUtils.toBeAdded.clear();
+        DeathAnimUtils.toBeDiscarded.clear();
     }
 
     @SubscribeEvent

@@ -7,7 +7,7 @@ import net.minecraft.nbt.Tag;
 import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.common.data.Keys;
 import org.confluence.terraentity.entity.npc.mood.NPCMood;
-import org.confluence.terraentity.entity.npc.trade.ITradeHolder;
+import org.confluence.terraentity.api.trade.ITradeHolder;
 import org.confluence.terraentity.entity.npc.trade.NPCTradeManager;
 import org.confluence.terraentity.entity.npc.trade.TradeParams;
 import org.confluence.terraentity.network.s2c.UpdateNPCTradePacket;

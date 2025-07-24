@@ -61,7 +61,7 @@ import org.confluence.mod.network.s2c.VisibilityPacketS2C;
 import org.confluence.mod.util.*;
 import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terra_curio.util.TCUtils;
-import org.confluence.terraentity.entity.ai.Boss;
+import org.confluence.terraentity.api.entity.Boss;
 import org.confluence.terraentity.entity.boss.Skeletron;
 import org.confluence.terraentity.entity.monster.slime.GoldenSlime;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;

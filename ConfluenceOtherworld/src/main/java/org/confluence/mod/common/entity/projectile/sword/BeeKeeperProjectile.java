@@ -8,7 +8,7 @@ import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.init.ModDamageTypes;
-import org.confluence.terraentity.registries.track.ITrackType;
+import org.confluence.terraentity.api.entity.ITrackType;
 import org.confluence.terraentity.registries.track.variant.BasisTrack;
 import org.confluence.terraentity.registries.track.variant.SimpleTrack;
 import org.confluence.terraentity.utils.TEUtils;

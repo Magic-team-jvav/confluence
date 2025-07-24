@@ -139,6 +139,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.npc_invitation.0", "使用它，在当前区域邀请一批新的NPC吧！");
         add("tooltip.item.confluence.red_potion.0", "“仅献给配得上的人”");
         add("tooltip.item.confluence.raw_asphalt.0", "使用搅拌机以制成沥青块");
+        add("tooltip.item.confluence.empty_dropper.0", "右击液滴以去除（需要有方块辅助瞄准）");
 
         add("tooltip.item.confluence.slime_crown.0", "右键使用以召唤史莱姆王");
         add("tooltip.item.confluence.slime_crown.1", "一只小巧的王冠，看上去是为那些人畜无害的可爱凝胶生物的加冕仪式所准备的。");
@@ -3097,6 +3098,11 @@ public class ModChineseProvider extends LanguageProvider {
         add(ToolItems.HONEY_ABSORBANT_SPONGE.get(), "蜂蜜吸收棉");
         add(ToolItems.LAVA_ABSORBANT_SPONGE.get(), "岩浆吸收棉");
         add(ToolItems.ULTRA_ABSORBANT_SPONGE.get(), "超强吸收棉");
+        add(ToolItems.EMPTY_DROPPER.get(), "空滴管");
+        add(ToolItems.MAGIC_SAND_DROPPER.get(), "魔法沙粒滴管");
+        add(ToolItems.MAGIC_HONEY_DROPPER.get(), "魔法蜂蜜滴管");
+        add(ToolItems.MAGIC_LAVA_DROPPER.get(), "魔法熔岩滴管");
+        add(ToolItems.MAGIC_WATER_DROPPER.get(), "魔法水滴管");
 
         add(BoatItems.ASH_BOAT.get(), "白蜡木船");
         add(BoatItems.ASH_CHEST_BOAT.get(), "白蜡木运输船");

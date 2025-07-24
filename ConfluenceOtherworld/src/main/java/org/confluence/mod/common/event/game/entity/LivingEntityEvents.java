@@ -119,7 +119,9 @@ public final class LivingEntityEvents {
                         level.getDayTime() % 24000 > 12000 && // 晚上杀死才生成
                         TCUtils.hasAccessoriesType(player, AccessoryItems.CLOTHIER$KILLER)
                 ) {
-                    ModUtils.summonBoss(level, attacker.position(), new Skeletron(TEBossEntities.SKELETRON.get(), level));
+                    Skeletron skeletron = new Skeletron(TEBossEntities.SKELETRON.get(), level);
+                    skeletron.finalizeSpawn(level, level.getCurrentDifficultyAt(skeletron.blockPosition()), MobSpawnType.EVENT, null);
+                    ModUtils.summonBoss(level, attacker.position(), skeletron);
                 }
             }
             if (victom.hasEffect(ModEffects.BLOOD_BUTCHERED)) {

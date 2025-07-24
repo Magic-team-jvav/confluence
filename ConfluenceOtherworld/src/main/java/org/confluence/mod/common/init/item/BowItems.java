@@ -13,6 +13,7 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.hud.ArrowInBowHud;
 import org.confluence.mod.common.entity.projectile.range.arrow.BeeArrow;
+import org.confluence.mod.common.entity.projectile.range.arrow.HellBatArrowEntity;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.item.bow.BaseArrowItem;
 import org.confluence.mod.common.item.bow.DaedalusStormbow;
@@ -85,11 +86,15 @@ public class BowItems {
             .setRarity(ModRarity.ORANGE)
             .setArrowTransform(ArrowItems.HELLFIRE_ARROW.get())
     );
-    public static final DeferredItem<TerraBowItem> THE_BEES_KNEES = register("the_bees_knees",  2.0F, m->m
+    public static final DeferredItem<TerraBowItem> THE_BEES_KNEES = register("the_bees_knees",  6.0F, m->m
             .setRarity(ModRarity.YELLOW)
             .setMultiShoot(3, (i, c)->new Vec3(-i*0.25f,0,0))
             .setCanMultiShoot(ammo->!(ammo.getItem() instanceof BaseArrowItem))
             .setEntityTransform(TerraBowItem.EntityTransform.create(ModEntities.BEE_ARROW.get(), BeeArrow::new))
+    );
+    public static final DeferredItem<TerraBowItem> HELLWING_BOW = register("hellwing_bow",  7.0F, m->m
+            .setRarity(ModRarity.RED)
+            .setEntityTransform(TerraBowItem.EntityTransform.create(ModEntities.HELL_BAT_ARROW.get(), HellBatArrowEntity::new))
     );
 
     // 代达罗斯风暴弓

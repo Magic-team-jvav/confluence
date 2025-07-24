@@ -69,7 +69,7 @@ public class TerraBowItem extends BowItem {
         int multiShoot = modifyArrowBuilder.multiShoot;
         if(!modifyArrowBuilder.canMultiShoot.test(projectileStack)) {
             // 可以分裂但不满足条件没有分裂的箭伤害合成一支箭
-            float damage = baseDamage * multiShoot;
+            float damage = baseDamage / multiShoot;
             arrow.setBaseDamage(damage);
         }else{
             arrow.setBaseDamage(baseDamage);
@@ -221,6 +221,10 @@ public class TerraBowItem extends BowItem {
         return f;
     }
 
+    /**
+     * <p>弓的属性修饰</p>
+     * <p>若注册在弓里面，则是弓的属性；若注册在箭里面，则是箭的属性。二者可以叠加</p>
+     */
     public static class Builder{
         List<Function<Item.Properties, Item.Properties>> modifyProperties = new ArrayList<>();
         List<Consumer<BaseArrowEntity.Builder>> modifyArrowBuilder = new ArrayList<>();

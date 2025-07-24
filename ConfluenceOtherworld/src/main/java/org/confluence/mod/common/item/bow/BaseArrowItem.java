@@ -35,7 +35,6 @@ public class BaseArrowItem extends ArrowItem {
 
     @Override
     public AbstractArrow createArrow(Level pLevel, ItemStack pStack, LivingEntity pShooter,ItemStack weapon) {
-        // todo 到时候做自定义箭矢的时候再改
         if(pStack.getItem() instanceof BaseArrowItem arrowItem && arrowItem.modifier != null){
             BaseArrowEntity arrow;
             if(weapon.getItem() instanceof TerraBowItem item){

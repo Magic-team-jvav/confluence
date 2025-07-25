@@ -232,10 +232,10 @@ public final class ModUtils {
         }
         copper = price;
         MutableComponent cmp = Component.empty();
-        if (platinum > 0) cmp.append(Component.literal(" " + platinum + " ").withColor(-4996668)).append(Component.translatable("tooltip.price.platinum").withColor(-4996668));
-        if (gold > 0) cmp.append(Component.literal(" " + gold + " ").withColor(-3891380)).append(Component.translatable("tooltip.price.gold").withColor(-3891380));
-        if (silver > 0) cmp.append(Component.literal(" " + silver + " ").withColor(-4532777)).append(Component.translatable("tooltip.price.silver").withColor(-4532777));
-        if (copper > 0) cmp.append(Component.literal(" " + copper + " ").withColor(-3837899)).append(Component.translatable("tooltip.price.copper").withColor(-3837899));
+        if (platinum > 0) cmp.append(Component.literal(platinum + " ").withColor(-4996668)).append(Component.translatable("tooltip.price.platinum").withColor(-4996668));
+        if (gold > 0) cmp.append(Component.literal(gold + " ").withColor(-3891380)).append(Component.translatable("tooltip.price.gold").withColor(-3891380));
+        if (silver > 0) cmp.append(Component.literal(silver + " ").withColor(-4532777)).append(Component.translatable("tooltip.price.silver").withColor(-4532777));
+        if (copper > 0) cmp.append(Component.literal(copper + " ").withColor(-3837899)).append(Component.translatable("tooltip.price.copper").withColor(-3837899));
         return cmp;
     }
 

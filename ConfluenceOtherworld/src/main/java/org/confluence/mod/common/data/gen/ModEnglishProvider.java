@@ -88,11 +88,11 @@ public class ModEnglishProvider extends LanguageProvider {
         add("generator.confluence.the_corruption", "The Corruption");
         add("generator.confluence.the_crimson", "The Crimson");
 
-        add("tooltip.price.platinum", "Platinum");
-        add("tooltip.price.gold", "Gold");
-        add("tooltip.price.silver", "Silver");
-        add("tooltip.price.copper", "Copper");
-        add("tooltip.price.buy", "Buy:  ");
+        add("tooltip.price.platinum", "Platinum ");
+        add("tooltip.price.gold", "Gold ");
+        add("tooltip.price.silver", "Silver ");
+        add("tooltip.price.copper", "Copper ");
+        add("tooltip.price.buy", "Buy: ");
         add("tooltip.price.sell", "Sell: ");
 
         add("tooltip.jei.state_properties", "Required State Properties:");

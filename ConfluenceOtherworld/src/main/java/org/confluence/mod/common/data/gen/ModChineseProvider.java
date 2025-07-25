@@ -80,10 +80,10 @@ public class ModChineseProvider extends LanguageProvider {
         add("generator.confluence.the_corruption", "腐化之地");
         add("generator.confluence.the_crimson", "猩红之地");
 
-        add("tooltip.price.platinum", "铂");
-        add("tooltip.price.gold", "金");
-        add("tooltip.price.silver", "银");
-        add("tooltip.price.copper", "铜");
+        add("tooltip.price.platinum", "铂 ");
+        add("tooltip.price.gold", "金 ");
+        add("tooltip.price.silver", "银 ");
+        add("tooltip.price.copper", "铜 ");
         add("tooltip.price.buy", "买入：");
         add("tooltip.price.sell", "卖出：");
 

@@ -54,6 +54,9 @@
         "integration.carryon.PickupHandlerMixin",
         "integration.curios.CuriosServerPayloadHandlerMixin",
         "integration.ftbchunks.LongRangePlayerTrackerMixin",
+        "integration.heaven_destiny_moment.terra_moment.BloodMoonInstanceMixin",
+        "integration.heaven_destiny_moment.terra_moment.GoblinArmyInstanceMixin",
+        "integration.heaven_destiny_moment.terra_moment.SlimeRainInstanceMixin",
         "integration.irons_spell.AbstractSpellMixin",
         "integration.irons_spell.MagicManagerMixin",
         "integration.terra_curio.AccessoriesAttachmentMixin",
@@ -138,6 +141,7 @@
         "integration.betteradvancements.BetterAdvancementWidgetMixin",
         "integration.betteradvancements.BetterDisplayInfoMixin",
         "integration.create.ponder.PonderTooltipHandlerMixin",
+        "integration.curios.CuriosScreenMixin",
         "integration.ftbchunks.EntityMapIconMixin",
         "integration.ftbchunks.TrackedPlayerMapIconMixin",
         "integration.geckolib.GeoCubeMixin",
@@ -173,5 +177,5 @@
     ],
     "injectors": {
         "defaultRequire": 1
-    }
+  }
 }

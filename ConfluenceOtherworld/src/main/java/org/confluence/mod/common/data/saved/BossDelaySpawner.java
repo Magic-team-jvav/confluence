@@ -18,7 +18,7 @@ public final class BossDelaySpawner {
         if (!bossQueue.isEmpty()) {
             bossQueue.removeIf(mobDelayed -> {
                 if (mobDelayed.delay-- <= 0 && mobDelayed.predicate.test(serverLevel)) {
-                    serverLevel.players().stream().filter(OverworldUtils::onSurface).findAny().ifPresentOrElse(player -> {
+                    serverLevel.players().stream().filter(player -> player.getY() > OverworldUtils.getSurfaceY()).findAny().ifPresentOrElse(player -> {
                         ModUtils.summonBoss(serverLevel, player.blockPosition(), mobDelayed.entity);
                     }, () -> mobDelayed.delay = 20);
                     return mobDelayed.delay <= 0;

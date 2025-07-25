@@ -12,7 +12,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
@@ -101,11 +100,23 @@ public final class OverworldUtils {
         return original.call(instance, blockPos, blockState, i);
     }
 
+    public static int getUltraY() {
+        return 320;
+    }
+
+    public static int getSpaceY() {
+        return 260;
+    }
+
     public static int getSurfaceY() {
         return 40;
     }
 
-    public static boolean onSurface(Entity entity) {
-        return entity.getY() > getSurfaceY();
+    public static int getUndergroundY() {
+        return 0;
+    }
+
+    public static int getCaveY() {
+        return -64;
     }
 }

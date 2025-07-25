@@ -59,9 +59,9 @@ import static org.confluence.lib.util.StructureUtils.*;
 import static org.confluence.lib.util.VectorUtils.*;
 
 public class DungeonStructure extends Structure {
-    public static final ResourceKey<ConfiguredFeature<?,?>> DUNGEON_LOST_PAPER = Confluence.asResourceKey(Registries.CONFIGURED_FEATURE, "dungeon_lost_paper");
-    public static final ResourceKey<ConfiguredFeature<?,?>> DUNGEON_POT = Confluence.asResourceKey(Registries.CONFIGURED_FEATURE, "dungeon_pot");
-    public static final ResourceKey<ConfiguredFeature<?,?>> DUNGEON_REMAINS = Confluence.asResourceKey(Registries.CONFIGURED_FEATURE, "dungeon_remains");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> DUNGEON_LOST_PAPER = Confluence.asResourceKey(Registries.CONFIGURED_FEATURE, "dungeon_lost_paper");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> DUNGEON_POT = Confluence.asResourceKey(Registries.CONFIGURED_FEATURE, "dungeon_pot");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> DUNGEON_REMAINS = Confluence.asResourceKey(Registries.CONFIGURED_FEATURE, "dungeon_remains");
     public static final String[] TYPES = new String[]{
             "dungeon/blue",
             "dungeon/green",
@@ -594,7 +594,7 @@ public class DungeonStructure extends Structure {
             iterateDungeon(level, player.chunkPosition(), structureStart -> {
                 BoundingBox boundingBox = IStructureStart.of(structureStart).confluence$cachedBoundingBox();
                 boolean shouldAlert = CommonConfigs.ALERT_PLAYER_IN_DUNGEON.get();
-                if (boundingBox.isInside(player.blockPosition()) && player.getY() <= boundingBox.minY() + 84) {
+                if (boundingBox.isInside(player.blockPosition()) && player.getY() <= boundingBox.minY() + getUpperBoundsFloor1()) {
                     level.playSound(null, player.blockPosition(), TESounds.ROAR.get(), SoundSource.HOSTILE);
                     if (shouldAlert) {
                         byte alert = LibUtils.getOrCreatePersistedData(player).getByte("confluence:dungeon_guardian_alert");
@@ -614,7 +614,7 @@ public class DungeonStructure extends Structure {
      */
     public static boolean skipSpawn(Mob mob, ServerLevel level) {
         if (mob.getType().is(ModTags.EntityTypes.SPAWN_AT_DUNGEON)) {
-            return iterateDungeon(level, mob.chunkPosition(), structureStart -> mob.getY() >= IStructureStart.of(structureStart).confluence$cachedBoundingBox().minY() + 84);
+            return iterateDungeon(level, mob.chunkPosition(), structureStart -> mob.getY() >= IStructureStart.of(structureStart).confluence$cachedBoundingBox().minY() + getUpperBoundsFloor1());
         }
         return false;
     }
@@ -630,5 +630,13 @@ public class DungeonStructure extends Structure {
             if (consumer.test(structureStart)) return true;
         }
         return false;
+    }
+
+    public static int getUpperBoundsFloor1() {
+        return 90;
+    }
+
+    public static int getUpperBoundsFloor2() {
+        return 32;
     }
 }

@@ -70,6 +70,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 .withPool(LootPool.lootPool()
                         // todo .add(LootItem.lootTableItem(LanceItems.DARK_LANCE))
                         .add(LootItem.lootTableItem(ManaWeaponItems.FLOWER_OF_FIRE))
+                        .add(LootItem.lootTableItem(BowItems.HELLWING_BOW))
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.TREASURE_MAGNET))

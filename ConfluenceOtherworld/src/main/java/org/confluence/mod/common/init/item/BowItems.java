@@ -92,7 +92,7 @@ public class BowItems {
             .setCanMultiShoot(ammo->!(ammo.getItem() instanceof BaseArrowItem))
             .setEntityTransform(TerraBowItem.EntityTransform.create(ModEntities.BEE_ARROW.get(), BeeArrow::new))
     );
-    public static final DeferredItem<TerraBowItem> HELLWING_BOW = register("hellwing_bow",  5.0f, m->m
+    public static final DeferredItem<TerraBowItem> HELLWING_BOW = register("hellwing_bow",  6.3f, m->m
             .setRarity(ModRarity.RED)
             .setEntityTransform(TerraBowItem.EntityTransform.create(ModEntities.HELL_BAT_ARROW.get(), HellBatArrowEntity::new))
     );

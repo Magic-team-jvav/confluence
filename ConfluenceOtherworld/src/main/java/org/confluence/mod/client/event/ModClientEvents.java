@@ -208,7 +208,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(BOUNCY_BOMB_ENTITY.get(), BouncyBombEntityRenderer::new);
         event.registerEntityRenderer(SCARAB_BOMB_ENTITY.get(), ScarabBombEntityRenderer::new);
         event.registerEntityRenderer(STICKY_BOMB_ENTITY.get(), StickyBombEntityRenderer::new);
-        event.registerEntityRenderer(SMOKE_BOMB_ENTITY.get(), NoopRenderer::new); // todo 模型
+        event.registerEntityRenderer(SMOKE_BOMB_ENTITY.get(), NoopRenderer::new);
         event.registerEntityRenderer(BOMB_FISH_ENTITY.get(), BombFishEntityRenderer::new);
         event.registerEntityRenderer(DIRT_BOMB.get(), DirtBombEntityRenderer::new);
         event.registerEntityRenderer(STICKY_DIRT_BOMB.get(), StickyDirtBombEntityRenderer::new);
@@ -271,6 +271,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(SUPER_SPIKY_BALL_PROJECTILE.get(), NoopRenderer::new); // todo 模型
         event.registerEntityRenderer(SPEAR.get(), NoopRenderer::new); // todo 模型
         event.registerEntityRenderer(BALL_OF_FROST_PROJECTILE.get(), NoopRenderer::new); // todo 模型
+        event.registerEntityRenderer(DEMON_SCYTHE_PROJECTILE.get(), NoopRenderer::new); // todo 模型
 
         event.registerEntityRenderer(HOTLINE_FISHING_HOOK.get(), HotlineFishingHookRenderer::new);
         event.registerEntityRenderer(BASE_FISHING_HOOK.get(), BaseFishingHookRenderer::new);

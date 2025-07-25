@@ -35,6 +35,7 @@ public class ManaWeaponItems {
     public static final DeferredItem<ManaStaffItem<BallOfFireProjectile>> FLOWER_OF_FIRE = ITEMS.register("flower_of_fire", () -> new ManaStaffItem<>(ModRarity.ORANGE, BallOfFireProjectile::new, 28.6F, 12, 7.5F, 7, 0.04));
     /* 烈焰火鞭 */
     public static final DeferredItem<ManaStaffItem<WaterBoltProjectile>> WATER_BOLT = ITEMS.register("water_bolt", () -> new ManaStaffItem<>(ModRarity.GREEN, WaterBoltProjectile::new, 19.5F, 10, 4.5F, 7, 0.04));
+    public static final DeferredItem<ManaStaffItem<DemonScytheProjectile>> DEMON_SCYTHE = ITEMS.register("demon_scythe", () -> new ManaStaffItem<>(ModRarity.ORANGE, DemonScytheProjectile::new, 35, 14, 0.2F, 3, 0.04));
 
     public static final DeferredItem<ManaStaffItem<MagicDaggerProjectile>> MAGIC_DAGGER = ITEMS.register("magic_dagger", MagicDaggerItem::new);
     public static final DeferredItem<ManaStaffItem<CrystalStormProjectile>> CRYSTAL_STORM = ITEMS.register("crystal_storm", () -> new ManaStaffItem<>(ModRarity.LIGHT_RED, CrystalStormProjectile::new, 1.6F, 5, 16, 7, 0.04));

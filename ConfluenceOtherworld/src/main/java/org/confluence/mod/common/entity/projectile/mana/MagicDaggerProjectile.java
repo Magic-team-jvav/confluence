@@ -2,7 +2,7 @@ package org.confluence.mod.common.entity.projectile.mana;
 
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
@@ -15,8 +15,8 @@ public class MagicDaggerProjectile extends ThrowableDropSelfProjectile {
         super(pEntityType, pLevel);
     }
 
-    public MagicDaggerProjectile(Player player) {
-        super(ModEntities.MAGIC_DAGGER_PROJECTILE.get(), player.level());
+    public MagicDaggerProjectile(LivingEntity living) {
+        super(ModEntities.MAGIC_DAGGER_PROJECTILE.get(), living.level());
     }
 
     @Override

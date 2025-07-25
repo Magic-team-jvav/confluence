@@ -51,6 +51,7 @@ import org.confluence.terraentity.TerraEntity;
 import org.confluence.terraentity.entity.boss.AbstractTerraBossBase;
 import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
+import org.confluence.terraentity.utils.TEUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
@@ -94,8 +95,9 @@ public final class ModUtils {
         double x = pos.getX() + 0.5 + level.random.nextInt(-50, 51);
         double z = pos.getZ() + 0.5 + level.random.nextInt(-50, 51);
         boss.setPos(x, pos.getY() + 0.5 + level.getHeight(Heightmap.Types.MOTION_BLOCKING, Mth.floor(x), Mth.floor(z)), z);
-        boss.finalizeSpawn(level, level.getCurrentDifficultyAt(pos), MobSpawnType.MOB_SUMMONED, null);
-        level.addFreshEntity(boss);
+        if(TEUtils.internalSpawnEntity(boss, level)){
+            level.addFreshEntityWithPassengers(boss);
+        }
     }
 
     public static @Nullable BlockState getLeadAnvilDamage(BlockState state, DirectionProperty FACING) {

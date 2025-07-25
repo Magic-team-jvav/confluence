@@ -115,7 +115,7 @@ public final class ModUtils {
         KillBoard.INSTANCE.defeat(type);
         boolean isEaterOfWorlds = type == TEBossEntities.EATER_OF_WORLDS.get();
         if (isEaterOfWorlds || type == TEBossEntities.BRAIN_OF_CTHULHU.get()) {
-            if (DateUtils.isWithinDayTime(0, 0, 4, 30, DateUtils.getDayTime(level))) {
+            if (DateUtils.isWithinDayTime(DateUtils._00$00, DateUtils._04$30, DateUtils.getDayTime(level))) {
                 MeteoriteTracker.INSTANCE.spawnAtNextNight = true;
             } else if (!MeteoriteTracker.INSTANCE.spawnAtNextNight) {
                 MeteoriteTracker.INSTANCE.spawnAtNextNight = level.random.nextBoolean();

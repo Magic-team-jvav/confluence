@@ -74,23 +74,27 @@ public class ModItemModelProvider extends ItemModelProvider {
         ResourceLocation pull = ResourceLocation.withDefaultNamespace("pull");
         for (DeferredHolder<Item, ? extends Item> item : BowItems.ITEMS.getEntries()) {
             String path = item.getId().getPath();
-            ResourceLocation texture = Confluence.asResource("item/bow/" + path);
-            ItemModelBuilder builder = withExistingParent(path, handheldRod).texture("layer0", texture)
-                    .transforms()
-                    .transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).rotation(-80, 260, -40).translation(-1, -2, 2.5F).scale(0.9F, 0.9F, 0.9F).end()
-                    .transform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND).rotation(-80, -280, 40).translation(-1, -2, 2.5F).scale(0.9F, 0.9F, 0.9F).end()
-                    .transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).rotation(0, -90, 25).translation(1.13F, 3.2F, 1.13F).scale(0.68F, 0.68F, 0.68F).end()
-                    .transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND).rotation(0, 90, -25).translation(1.13F, 3.2F, 1.13F).scale(0.68F, 0.68F, 0.68F).end()
-                    .end()
-                    .override().predicate(pulling, 1).model(new ModelFile.UncheckedModelFile(Confluence.asResource("item/" + path + "_pulling_0"))).end();
-            ResourceLocation parent = Confluence.asResource("item/" + path);
-            withExistingParent(path + "_pulling_0", parent).texture("layer0", texture.withSuffix("_pulling_0"));
-            if (!path.endsWith("short_bow")) {
-                builder
-                        .override().predicate(pulling, 1).predicate(pull, 0.65F).model(new ModelFile.UncheckedModelFile(Confluence.asResource("item/" + path + "_pulling_1"))).end()
-                        .override().predicate(pulling, 1).predicate(pull, 0.9F).model(new ModelFile.UncheckedModelFile(Confluence.asResource("item/" + path + "_pulling_2"))).end();
-                withExistingParent(path + "_pulling_1", parent).texture("layer0", texture.withSuffix("_pulling_1"));
-                withExistingParent(path + "_pulling_2", parent).texture("layer0", texture.withSuffix("_pulling_2"));
+            try {
+                ResourceLocation texture = Confluence.asResource("item/bow/" + path);
+                ItemModelBuilder builder = withExistingParent(path, handheldRod).texture("layer0", texture)
+                        .transforms()
+                        .transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).rotation(-80, 260, -40).translation(-1, -2, 2.5F).scale(0.9F, 0.9F, 0.9F).end()
+                        .transform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND).rotation(-80, -280, 40).translation(-1, -2, 2.5F).scale(0.9F, 0.9F, 0.9F).end()
+                        .transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).rotation(0, -90, 25).translation(1.13F, 3.2F, 1.13F).scale(0.68F, 0.68F, 0.68F).end()
+                        .transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND).rotation(0, 90, -25).translation(1.13F, 3.2F, 1.13F).scale(0.68F, 0.68F, 0.68F).end()
+                        .end()
+                        .override().predicate(pulling, 1).model(new ModelFile.UncheckedModelFile(Confluence.asResource("item/" + path + "_pulling_0"))).end();
+                ResourceLocation parent = Confluence.asResource("item/" + path);
+                withExistingParent(path + "_pulling_0", parent).texture("layer0", texture.withSuffix("_pulling_0"));
+                if (!path.endsWith("short_bow")) {
+                    builder
+                            .override().predicate(pulling, 1).predicate(pull, 0.65F).model(new ModelFile.UncheckedModelFile(Confluence.asResource("item/" + path + "_pulling_1"))).end()
+                            .override().predicate(pulling, 1).predicate(pull, 0.9F).model(new ModelFile.UncheckedModelFile(Confluence.asResource("item/" + path + "_pulling_2"))).end();
+                    withExistingParent(path + "_pulling_1", parent).texture("layer0", texture.withSuffix("_pulling_1"));
+                    withExistingParent(path + "_pulling_2", parent).texture("layer0", texture.withSuffix("_pulling_2"));
+                }
+            } catch (Exception e) {
+                withExistingParent(path, MISSING_ITEM);
             }
             skip.add(item);
         }

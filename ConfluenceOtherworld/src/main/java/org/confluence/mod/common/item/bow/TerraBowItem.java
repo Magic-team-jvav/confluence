@@ -111,7 +111,7 @@ public class TerraBowItem extends BowItem {
                 for(int k = 0; k < count; k++) {
 //                    float f0 = count * 5 - k * 10f;
                     Projectile projectile = this.createProjectile(level, shooter, weapon, itemstack, isCrit);
-                    this.shootProjectile(shooter, projectile, i, velocity, inaccuracy, f4 + 0, target);
+                    this.shootProjectile(shooter, projectile, i, velocity, inaccuracy + modifyArrowBuilder.inaccuracy, f4 + 0, target);
 
                     if(modifyArrowBuilder.multiShootOffset!=null) {
                         // 多重射击初始位置偏移
@@ -232,6 +232,7 @@ public class TerraBowItem extends BowItem {
         Predicate<ItemStack> canMultiShoot = ammo->true;
         BiFunction<Integer, Integer, Vec3> multiShootOffset;
         public EntityTransform entityTransform;
+        float inaccuracy;
 
         /**
          * 应用属性修改器
@@ -332,6 +333,14 @@ public class TerraBowItem extends BowItem {
          */
         public Builder addModifyArrowBuilder(Consumer<BaseArrowEntity.Builder> modifyArrowBuilder){
             this.modifyArrowBuilder.add(modifyArrowBuilder);
+            return this;
+        }
+
+        /**
+         * 设置额外不准确度
+         */
+        public Builder setInaccuracy(float inaccuracy){
+            this.inaccuracy = inaccuracy;
             return this;
         }
 

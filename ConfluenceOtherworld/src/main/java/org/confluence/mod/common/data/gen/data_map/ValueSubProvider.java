@@ -12,10 +12,7 @@ import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.integration.waystones.WaystonesHelper;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_guns.common.init.TGItems;
-import org.confluence.terraentity.init.item.TEBoomerangItems;
-import org.confluence.terraentity.init.item.TERideableItems;
-import org.confluence.terraentity.init.item.TESummonItems;
-import org.confluence.terraentity.init.item.TEWhipItems;
+import org.confluence.terraentity.init.item.*;
 
 public final class ValueSubProvider {
     public static void gather(ModDataMapProvider.Appender<Builder> appender) {
@@ -1415,6 +1412,17 @@ public final class ValueSubProvider {
                 .add(MaterialItems.MOONGLOW, 20)
                 .add(MaterialItems.SHIVERTHORN, 20)
                 .add(MaterialItems.WATERLEAF, 20);
+        // 悠悠球
+        appender.create()
+                .add(TEYoyosItems.WOODEN_YOYO.get(), 100)
+                .add(TEYoyosItems.RALLY.get(), 5000)
+                .add(TEYoyosItems.MALAISE.get(), 10000)
+                .add(TEYoyosItems.ARTERY.get(), 10000)
+                .add(TEYoyosItems.AMAZON.get(), 13000)
+                .add(TEYoyosItems.CODE_1.get(), 10000)
+                .add(TEYoyosItems.HIVE_FIVE.get(), 7000)
+                .add(TEYoyosItems.CASCADE.get(), 18000)
+                .add(TEYoyosItems.VALOR.get(), 17500);
         appender.create()
                 .add(FoodItems.BLINKROOT_SEED.get(), 16)
                 .add(FoodItems.CLOUDWEAVER_SEED.get(), wrap(5, 0))

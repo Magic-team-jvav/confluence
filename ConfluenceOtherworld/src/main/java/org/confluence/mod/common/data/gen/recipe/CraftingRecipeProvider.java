@@ -23,6 +23,7 @@ import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.terraentity.init.TEItems;
 import org.confluence.terraentity.init.item.TEBoomerangItems;
+import org.confluence.terraentity.init.item.TEYoyosItems;
 
 import java.util.List;
 import java.util.Map;
@@ -662,6 +663,15 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 " /S",
                 "/ S"
         )), FishingPoleItems.FLESHCATCHER.toStack());
+        // 木悠悠球
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                'S', Ingredient.of(ItemTags.LOGS),
+                '/', Ingredient.of(Items.COBWEB)
+        ), List.of(
+                " SS",
+                "/SS",
+                "/  "
+        )), TEYoyosItems.WOODEN_YOYO.toStack());
         // 便捷合成，无序合成
         shapeless(output, "", "_from_raw_copper",
                 new ItemStack(Items.COPPER_INGOT),
@@ -739,6 +749,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 MaterialItems.LEAD_INGOT.toStack()
         );
         shapeless(output, MaterialItems.LEAD_NUGGET.toStack(9));
+
 
         // 石头及深板岩压力板
         shaped(output, ShapedRecipePattern.of(Map.of('#', Ingredient.of(Blocks.STONE)), List.of("##")), new ItemStack(FunctionalBlocks.STONE_PRESSURE_PLATE));

@@ -35,6 +35,7 @@ import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
 import org.confluence.terraentity.init.entity.TENpcEntities;
 import org.confluence.terraentity.init.item.TEBoomerangItems;
+import org.confluence.terraentity.init.item.TEYoyosItems;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -477,6 +478,10 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(FoodItems.POTATO_CHIPS).setWeight(133)).apply(random0To1)
                         .add(EmptyLootItem.emptyItem().setWeight(9867))
                 )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TEYoyosItems.RALLY).setWeight(39))
+                        .add(EmptyLootItem.emptyItem().setWeight(961))
+                )
         );
         add(TEMonsterEntities.GIANT_WORM.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/giant_worm"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
@@ -503,19 +508,35 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(TCItems.MAGMA_STONE).setWeight(34))
                         .add(EmptyLootItem.emptyItem().setWeight(966))
                 )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TEYoyosItems.CASCADE))
+                        .add(EmptyLootItem.emptyItem().setWeight(399))
+                )  //todo 限制阶段骷髅王后而肉山前
         );
         add(TEMonsterEntities.FIRE_IMP.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/fire_imp"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.OBSIDIAN_ROSE))
                         .add(EmptyLootItem.emptyItem().setWeight(19))
                 )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TEYoyosItems.CASCADE))
+                        .add(EmptyLootItem.emptyItem().setWeight(399))
+                )  //todo 限制阶段骷髅王后而肉山前
         );
         add(TEMonsterEntities.DEMON.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/demon"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TEYoyosItems.CASCADE))
+                        .add(EmptyLootItem.emptyItem().setWeight(399))
+                )  //todo 限制阶段骷髅王后而肉山前
         );
         add(TEMonsterEntities.VOODOO_DEMON.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/voodoo_demon"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(AccessoryItems.GUIDE_VOODOO_DOLL))
                 )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TEYoyosItems.CASCADE))
+                        .add(EmptyLootItem.emptyItem().setWeight(399))
+                )  //todo 限制阶段骷髅王后而肉山前
         );
         add(TEMonsterEntities.HORNET.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/hornet"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()

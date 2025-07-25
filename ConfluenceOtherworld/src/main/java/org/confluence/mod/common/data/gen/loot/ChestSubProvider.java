@@ -29,6 +29,7 @@ import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.init.item.TEBoomerangItems;
 import org.confluence.terraentity.init.item.TESummonItems;
+import org.confluence.terraentity.init.item.TEYoyosItems;
 
 import java.util.function.BiConsumer;
 
@@ -377,6 +378,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(LootItem.lootTableItem(SwordItems.MURAMASA))
                         .add(LootItem.lootTableItem(ManaWeaponItems.AQUA_SCEPTER))
                         .add(LootItem.lootTableItem(TGItems.HAND_GUN))
+                        .add(LootItem.lootTableItem(TEYoyosItems.VALOR))
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ToolItems.SHADOW_KEY))

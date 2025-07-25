@@ -25,6 +25,7 @@ import org.confluence.terra_furniture.common.init.TFBlocks;
 import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.init.item.TESummonItems;
 import org.confluence.terraentity.init.item.TEWhipItems;
+import org.confluence.terraentity.init.item.TEYoyosItems;
 
 import java.util.List;
 import java.util.Map;
@@ -464,6 +465,48 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "# #",
                 "# #"
         )), VanityArmorItems.ROBE.toStack());
+
+        // 抑郁球
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'S', AmountIngredient.of(3,ModTags.Items.INGOTS_DEMONITE),
+                '/', Ingredient.of(Items.STRING)
+        ), List.of(
+                " SS",
+                "/SS",
+                "/  "
+        )), TEYoyosItems.MALAISE.toStack());
+
+        // 血脉球
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'S', AmountIngredient.of(3,ModTags.Items.INGOTS_CRIMTANE),
+                '/', Ingredient.of(Items.STRING)
+        ), List.of(
+                " SS",
+                "/SS",
+                "/  "
+        )), TEYoyosItems.ARTERY.toStack());
+
+        // 蜂巢球
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'S', AmountIngredient.of(3,MaterialItems.ROYAL_WAX),
+                '/', Ingredient.of(Items.STRING)
+        ), List.of(
+                " SS",
+                "/SS",
+                "/  "
+        )), TEYoyosItems.HIVE_FIVE.toStack());
+
+        // 亚马逊球
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'S', AmountIngredient.of(4,NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getPlanks()),
+                'A', AmountIngredient.of(12,MaterialItems.STINGER),
+                'B', AmountIngredient.of(9,MaterialItems.JUNGLE_SPORE),
+                '/', Ingredient.of(MaterialItems.MAN_EATER_VINE)
+        ), List.of(
+                " AS",
+                " /S",
+                "B  "
+        )), TEYoyosItems.AMAZON.toStack());
 
         // 哥布林战旗
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(

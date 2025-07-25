@@ -38,6 +38,7 @@ import org.confluence.terraentity.entity.npc.trade.NPCTradeManager;
 import org.confluence.terraentity.init.entity.TENpcEntities;
 import org.confluence.terraentity.init.item.TEWhipItems;
 import org.confluence.terraentity.api.trade.ITrade;
+import org.confluence.terraentity.init.item.TEYoyosItems;
 import org.confluence.terraentity.registries.npc_trade.TradeProperties;
 import org.confluence.terraentity.registries.npc_trade.variant.ItemTradeLootTable;
 import org.confluence.terraentity.registries.npc_trade.variant.TradeTask;
@@ -259,6 +260,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(TCItems.DPS_METER)
                 .add(SwordItems.KATANA)
                 .add(FoodItems.PAD_THAI)
+                .add(TEYoyosItems.CODE_1)
                 .add(SellTrade.INSTANCE)
                 .build());
 

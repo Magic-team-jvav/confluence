@@ -11,6 +11,7 @@ import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -73,6 +74,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.IntFunction;
+import java.util.function.UnaryOperator;
 
 public class AltarBlock extends BaseEntityBlock {
     public static final MapCodec<AltarBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
@@ -80,6 +82,22 @@ public class AltarBlock extends BaseEntityBlock {
             Variant.CODEC.fieldOf("variant").orElse(Variant.DEMON).forGetter(block -> block.variant)
     ).apply(instance, AltarBlock::new));
     public static final VoxelShape SHAPE = Shapes.box(-0.125, 0.0, -0.125, 1.125, 0.8, 1.125);
+    private static final Component TIPS;
+
+    static {
+        ResourceLocation fontId = Confluence.asResource("button");
+        UnaryOperator<Style> button = style -> style.withFont(fontId);
+        TIPS = Component.empty()
+                .append(Component.literal("2").withStyle(button))
+                .append(Component.translatable("message.confluence.altar_tips.0"))
+                .append(Component.literal("23").withStyle(button))
+                .append(Component.translatable("message.confluence.altar_tips.1"))
+                .append(Component.literal("1").withStyle(button))
+                .append(Component.translatable("message.confluence.altar_tips.2"))
+                .append(Component.literal("13").withStyle(button))
+                .append(Component.translatable("message.confluence.altar_tips.3"));
+    }
+
     private final Variant variant;
 
     public AltarBlock(Properties properties, Variant variant) {
@@ -139,31 +157,13 @@ public class AltarBlock extends BaseEntityBlock {
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        Component part0 = Component.literal("2").withStyle(style -> style.withFont(Confluence.asResource("button")));
-        Component part1 = Component.translatable("message.confluence.altar_tips.0").withStyle(style -> style.withFont(ResourceLocation.withDefaultNamespace("default")));
-        Component part2 = Component.literal("23").withStyle(style -> style.withFont(Confluence.asResource("button")));
-        Component part3 = Component.translatable("message.confluence.altar_tips.1").withStyle(style -> style.withFont(ResourceLocation.withDefaultNamespace("default")));
-        Component part4 = Component.literal("1").withStyle(style -> style.withFont(Confluence.asResource("button")));
-        Component part5 = Component.translatable("message.confluence.altar_tips.2").withStyle(style -> style.withFont(ResourceLocation.withDefaultNamespace("default")));
-        Component part6 = Component.literal("13").withStyle(style -> style.withFont(Confluence.asResource("button")));
-        Component part7 = Component.translatable("message.confluence.altar_tips.3").withStyle(style -> style.withFont(ResourceLocation.withDefaultNamespace("default")));
-        Component component = Component.empty()
-                .append(part0)
-                .append(part1)
-                .append(part2)
-                .append(part3)
-                .append(part4)
-                .append(part5)
-                .append(part6)
-                .append(part7);
-
-        if (!level.isClientSide && level.getBlockEntity(pos) instanceof Entity entity) { // 放/取物品
-            if (player.isCrouching()) { // 取物品
+        if (!level.isClientSide && level.getBlockEntity(pos) instanceof Entity entity) {
+            if (player.isCrouching()) {
                 player.addItem(entity.takeItem(-1));
-            } else { // 存物品
+            } else {
                 player.setItemInHand(hand, entity.addItem(player.getItemInHand(hand)));
                 if (CommonConfigs.ALTAR_TIPS.get()) {
-                    player.displayClientMessage(component, true);
+                    player.displayClientMessage(TIPS, true);
                 }
             }
         }

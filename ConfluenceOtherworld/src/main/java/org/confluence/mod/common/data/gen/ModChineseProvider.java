@@ -3560,6 +3560,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(BowItems.TENDON_BOW.get(), "肌腱弓");
         add(BowItems.THE_BEES_KNEES.get(), "蜂膝弓");
         add(BowItems.MOLTEN_FURY.get(), "熔火之怒");
+        add(BowItems.HELLWING_BOW.get(), "地狱之翼弓");
 
 
         add(BowItems.DAEDALUS_STORM_BOW.get(), "代达罗斯风暴弓");

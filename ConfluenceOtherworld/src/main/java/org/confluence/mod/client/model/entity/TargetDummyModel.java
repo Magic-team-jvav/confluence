@@ -59,66 +59,6 @@ public class TargetDummyModel<T extends TargetDummyEntity> extends HumanoidModel
         return LayerDefinition.create(meshdefinition, 64, textHeight);
     }
 
-    //TODO: 量子纠缠.mp4
-    @Override
-    public void setupAnim(TargetDummyEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (!entity.shouldPlayAnimation && !entity.shouldPlayAnimationBack){
-            head.xRot = 0f;
-            body.xRot = 0f;
-            leftLeg.xRot = 0f;
-            leftLeg.z = 0f;
-            rightLeg.xRot = 0f;
-            rightLeg.z = 0f;
-            leftArm.xRot = 0f;
-            rightArm.xRot = 0f;
-        }
-        if (entity.shouldPlayAnimation){
-            head.xRot += getXRot(entity) / 10;
-            body.xRot += getXRot(entity) / 10;
-            leftLeg.xRot -= getXRot(entity) / 10;
-            rightLeg.xRot -= getXRot(entity) / 10;
-            leftLeg.z += getXRot(entity);
-            rightLeg.z += getXRot(entity);
-            leftArm.xRot -= getXRot(entity) / 10;
-            rightArm.xRot -= getXRot(entity) / 10;
-            if (head.xRot >= getXRot(entity)) {
-                entity.shouldPlayAnimation = false;
-                entity.shouldPlayAnimationBack = true;
-            }
-        }
-        if (entity.shouldPlayAnimationBack){
-            float slow = getSlowSpeed(entity);
-            head.xRot -= getXRot(entity) / 10 / slow;
-            body.xRot -= getXRot(entity) / 10 / slow;
-            leftLeg.xRot += getXRot(entity) / 10 / slow;
-            rightLeg.xRot += getXRot(entity) / 10 / slow;
-            leftLeg.z -= getXRot(entity) / slow;
-            rightLeg.z -= getXRot(entity) / slow;
-            leftArm.xRot += getXRot(entity) / 10 / slow;
-            rightArm.xRot += getXRot(entity) / 10 / slow;
-            if (head.xRot <= 0f){
-                head.xRot = 0f;
-                body.xRot = 0f;
-                leftLeg.xRot = 0f;
-                leftLeg.z = 0f;
-                rightLeg.xRot = 0f;
-                rightLeg.z = 0f;
-                leftArm.xRot = 0f;
-                rightArm.xRot = 0f;
-                entity.shouldPlayAnimationBack = false;
-            }
-        }
-    }
-
-    public static float getSlowSpeed(TargetDummyEntity entity) {
-        float speed = Math.max((entity.damage - 10f) / 7f, 1);
-        return Math.min(speed, 20f);
-    }
-
-    public static float getXRot(TargetDummyEntity entity){
-        float rot = Math.max((entity.damage - 10f) / 27f, 0.1f);
-        return Math.min(rot, 1f);
-    }
 
     @Override
     public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
@@ -131,5 +71,4 @@ public class TargetDummyModel<T extends TargetDummyEntity> extends HumanoidModel
         leftLeg.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
         poseStack.popPose();
     }
-
 }

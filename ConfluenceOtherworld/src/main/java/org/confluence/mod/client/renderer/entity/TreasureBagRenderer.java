@@ -13,6 +13,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
+import org.confluence.mod.util.DateUtils;
 import org.joml.Matrix4f;
 
 import java.util.Calendar;
@@ -26,7 +27,7 @@ public class TreasureBagRenderer extends ItemEntityRenderer {
 
     public TreasureBagRenderer(EntityRendererProvider.Context context) {
         super(context);
-        Calendar instance = Calendar.getInstance();
+        Calendar instance = DateUtils.getCalendar();
         int year = instance.get(Calendar.YEAR);
         int month = instance.get(Calendar.MONTH) + 1;
         int day = instance.get(Calendar.DAY_OF_MONTH);

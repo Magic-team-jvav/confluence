@@ -59,6 +59,12 @@ public class ModChineseProvider extends LanguageProvider {
         add("message.confluence.lock.or", " 或 ");
         add("message.confluence.dungeon_not_found", "未成功找到地牢");
 
+        add("commands.confluence.reforge.cannot_be_reforged", "该物品无法被重铸（或无法找到需要重铸的物品）！");
+        add("commands.confluence.reforge.unknown_prefix_type", "未知重铸类型（或重铸失败）！");
+        add("commands.confluence.reforge.success", "已成功重铸为：%s");
+        add("commands.confluence.reforge.clear.success", "已成功清除词缀");
+        add("commands.confluence.reforge.set.unavailable_group", "该物品不能应用该词缀！");
+
         add("enchantment.confluence.mana_regeneration", "魔力再生");
         add("enchantment.confluence.mana_regeneration.desc", "提升魔力自然再生时的量");
         add("enchantment.confluence.efficient_magic", "高效魔能");
@@ -84,7 +90,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.price.gold", "金 ");
         add("tooltip.price.silver", "银 ");
         add("tooltip.price.copper", "铜 ");
-        add("tooltip.price.buy", "买入：");
         add("tooltip.price.sell", "卖出：");
 
         add("tooltip.jei.state_properties", "需要的方块属性：");

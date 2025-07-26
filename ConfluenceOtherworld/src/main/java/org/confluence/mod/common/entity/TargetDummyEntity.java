@@ -1,5 +1,6 @@
 package org.confluence.mod.common.entity;
 
+import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -8,9 +9,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -24,18 +23,13 @@ import org.confluence.mod.common.init.item.ToolItems;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class TargetDummyEntity extends Mob {
-    public TargetDummyEntity(EntityType<TargetDummyEntity> type, Level level) {
-        super(type, level);
+public class TargetDummyEntity extends LivingEntity {
+    public TargetDummyEntity(EntityType<? extends LivingEntity> entityType, Level level) {
+        super(entityType, level);
     }
-
-    public boolean shouldPlayAnimation;
-    public boolean shouldPlayAnimationBack;
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        if (!super.hurt(source, amount) && shouldPlayAnimation /*???*/) return false;
-        shouldPlayAnimation = true;
         if (source.getEntity() instanceof Player player) {
             if (player.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof PickaxeItem && player.isShiftKeyDown()) {
                 this.remove(RemovalReason.DISCARDED);
@@ -61,87 +55,27 @@ public class TargetDummyEntity extends Mob {
                     this.getBbHeight() / 4.0F,
                     this.getBbWidth() / 4.0F, 0.05
             );
-        }  // showParticles
-        return true;
+        }
+        return super.hurt(source, amount);
     }
 
     @Override
-    public void remove(RemovalReason reason) {
-        for (var armor : this.getArmorSlots()){
-            LibUtils.createItemEntity(armor, getX(), getY(), getZ(), level(), 0);
-        }
-        LibUtils.createItemEntity(this.getMainHandItem(), getX(), getY(), getZ(), level(), 0);
-        LibUtils.createItemEntity(this.getOffhandItem(), getX(), getY(), getZ(), level(), 0);
-        super.remove(reason);
+    public Iterable<ItemStack> getArmorSlots() {
+        return NonNullList.create();
     }
 
     @Override
-    public InteractionResult interactAt(Player player, Vec3 vec, InteractionHand hand) {
-        //TODO: 额外执行穿上盔甲（生存无影响）
-        if (!player.isSpectator() && player.getAbilities().mayBuild && !level().isClientSide) {
-            ItemStack itemstack = player.getItemInHand(hand);
-            EquipmentSlot equipmentSlot = getEquipmentSlotForItem(itemstack);
-
-            Level level = player.level();
-            if (itemstack.isEmpty() && hand == InteractionHand.MAIN_HAND) {
-                equipmentSlot = this.getClickedSlot(vec);
-                if (equipmentSlot == null) {
-                    if (hasItemInSlot(EquipmentSlot.MAINHAND)) {
-                        equipmentSlot = EquipmentSlot.MAINHAND;
-                    } else {
-                        equipmentSlot = EquipmentSlot.OFFHAND;
-                    }
-                }
-                if (this.hasItemInSlot(equipmentSlot)) {
-                    if (level.isClientSide) return InteractionResult.CONSUME;
-                    this.swapItem(player, equipmentSlot, ItemStack.EMPTY, hand);
-                }
-            } else if (equipmentSlot.getType() == EquipmentSlot.Type.HUMANOID_ARMOR) {
-                if (level.isClientSide) return InteractionResult.CONSUME;
-                this.swapItem(player, equipmentSlot, itemstack, hand);
-            }
-        }
-
-        return InteractionResult.PASS;
+    public ItemStack getItemBySlot(EquipmentSlot slot) {
+        return ItemStack.EMPTY;
     }
 
-    private void swapItem(Player player, EquipmentSlot slot, ItemStack armor, InteractionHand hand) {
-        ItemStack oldArmor = this.getItemBySlot(slot);
-        player.setItemInHand(hand, oldArmor.copy());
-        this.setItemSlotAndDropWhenKilled(slot, armor);
-    }
-
-    @Nullable
-    private EquipmentSlot getClickedSlot(Vec3 vec3) {
-        EquipmentSlot equipmentSlot = null;
-        double d0 = vec3.y;
-        double d1 = vec3.x;
-        EquipmentSlot slot = EquipmentSlot.FEET;
-        if (d0 >= 0.1D && d0 < 0.1D + (0.45D) && this.hasItemInSlot(slot)) {
-            equipmentSlot = EquipmentSlot.FEET;
-        } else if (d1 >= -0.3D && d0 >= 0.9D + (0.0D) && d0 < 0.9D + (0.7D) && this.hasItemInSlot(EquipmentSlot.CHEST)) {
-            equipmentSlot = EquipmentSlot.CHEST;
-        } else if (d0 >= 0.4D && d0 < 0.4D + (0.8D) && this.hasItemInSlot(EquipmentSlot.LEGS)) {
-            equipmentSlot = EquipmentSlot.LEGS;
-        } else if (d0 >= 1.6D && this.hasItemInSlot(EquipmentSlot.HEAD)) {
-            equipmentSlot = EquipmentSlot.HEAD;
-        }
-        return equipmentSlot;
-    }
-
-    //@Override
-    //public @Nullable Component getCustomName() {
-    //    return Component.literal("go: " + shouldPlayAnimation + "  back: " + shouldPlayAnimationBack);
-    //}
+    @Override
+    public void setItemSlot(EquipmentSlot slot, ItemStack stack) {}
 
     public float damage;
 
     @Override
     public void tick() {
-        if (shouldPlayAnimation && shouldPlayAnimationBack){
-            shouldPlayAnimation = false;
-            shouldPlayAnimationBack = false;
-        }
         if (getHealth() != getMaxHealth()) {
             damage = getMaxHealth() - getHealth();
             setHealth(getMaxHealth());
@@ -165,5 +99,10 @@ public class TargetDummyEntity extends Mob {
     @Override
     public boolean isPushable() {
         return false;
+    }
+
+    @Override
+    public HumanoidArm getMainArm() {
+        return HumanoidArm.RIGHT;
     }
 }

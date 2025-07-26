@@ -22,13 +22,12 @@ import org.confluence.mod.common.init.ModEntities;
 import org.mesdag.particlestorm.PSGameClient;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
     private static final EntityDataAccessor<Integer> DATA_VARIANT_ID = SynchedEntityData.defineId(BaseManaStaffProjectileEntity.class, EntityDataSerializers.INT);
     protected int penetrateCount = 2;
-    protected List<Entity> penetrateList = new ArrayList<>();
+    protected final Set<UUID> penetrateSet = new HashSet<>();
 
     protected ParticleEmitter emitter;
 
@@ -74,6 +73,7 @@ public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
             return;
         } else if (hitresult$type == HitResult.Type.ENTITY) {
             onHitEntity((EntityHitResult) hitresult);
+            if (isRemoved()) return;
         }
 
         Vec3 vec3 = getDeltaMovement();
@@ -98,7 +98,7 @@ public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
     protected void onHitEntity(EntityHitResult entityHitResult) {
         if (level().isClientSide) return;
         Entity entity = entityHitResult.getEntity();
-        if (canAttack(entity)) {
+        if (!penetrateSet.contains(entity.getUUID())) {
             float damage = getCalculatedDamage() * (1.0F + getAttackBonus());
             if (entity.hurt(getDamagesource(), damage)) {
                 float attackKnockback = getBaseKnockBack() * (1.0F + getKnockbackBonus());
@@ -106,8 +106,8 @@ public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
                     VectorUtils.knockBackA2B(this, entity, attackKnockback * 0.5, 0.2);
                 }
             }
-            penetrateList.add(entity);
-            if (penetrateCount == penetrateList.size()) discard();
+            penetrateSet.add(entity.getUUID());
+            if (penetrateSet.size() == penetrateCount) discard();
         }
     }
 
@@ -121,10 +121,6 @@ public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
 
     protected ResourceLocation getParticleId() {
         return getVariant().particleId;
-    }
-
-    public boolean canAttack(Entity entity) {
-        return entity != getOwner() && !penetrateList.contains(entity);
     }
 
     @Override

@@ -11,10 +11,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.block.natural.HellStoneBlock;
-import org.confluence.mod.common.block.natural.MeteoriteOre;
-import org.confluence.mod.common.block.natural.OpalOreBlock;
-import org.confluence.mod.common.block.natural.StepRevealingBlock;
+import org.confluence.mod.common.block.natural.*;
 import org.confluence.mod.common.init.item.ModItems;
 
 import java.util.function.Function;
@@ -159,7 +156,7 @@ public class OreBlocks {
 
     public static final DeferredBlock<Block> HALLOWED_BLOCK = copyBlockRegister("hallowed_block", Blocks.IRON_BLOCK);
 
-    public static final DeferredBlock<Block> CHLOROPHYTE_ORE = copyBlockRegister("chlorophyte_ore", Blocks.IRON_ORE);
+    public static final DeferredBlock<Block> CHLOROPHYTE_ORE = registerWithItem("chlorophyte_ore", ChlorophyteOreBlock::new);
     public static final DeferredBlock<Block> RAW_CHLOROPHYTE_BLOCK = copyBlockRegister("raw_chlorophyte_block", Blocks.IRON_BLOCK);
     public static final DeferredBlock<Block> CHLOROPHYTE_BLOCK = copyBlockRegister("chlorophyte_block", Blocks.RAW_IRON_BLOCK);
 

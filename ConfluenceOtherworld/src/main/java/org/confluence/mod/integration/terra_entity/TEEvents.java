@@ -98,7 +98,7 @@ public class TEEvents {
         }
     }
 
-    public static void init(IEventBus eventBus) {
+    public static void register(IEventBus eventBus) {
         ModTradeProviders.TYPES.register(eventBus);
         ModEffectStrategies.EFFECT_STRATEGY.register(eventBus);
         AdditionalChesterTypes.register(eventBus);

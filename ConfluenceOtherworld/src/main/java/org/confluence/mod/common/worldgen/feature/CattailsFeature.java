@@ -36,6 +36,7 @@ public class CattailsFeature extends Feature<CattailsFeature.Config> {
         int width = config.radius * 2 + 1;
         float chance = config.chance;
         int maxLength = config.maxLength;
+        int maxCheck = config.maxCheck;
         List<BlockPos> posList = new ArrayList<>();
         boolean placeSuccess = false;
         for (int x = -radius; x < width; x++){
@@ -54,7 +55,8 @@ public class CattailsFeature extends Feature<CattailsFeature.Config> {
 
             if (placed) {
                 int searchY = 1;
-                while (checkY >= minY && placed) {
+                int checkCount = 0;
+                while (checkY >= minY && placed && (checkCount < maxCheck)) {
                     placed = checkY != minY;
                     if (level.getBlockState(mutable.setY(checkY)).is(Blocks.WATER)) {
                         searchY++;
@@ -79,13 +81,15 @@ public class CattailsFeature extends Feature<CattailsFeature.Config> {
                         break;
                     }
                     checkY--;
+                    checkCount++;
                 }
             }
 
             if (placed) {
                 boolean than = true;
                 checkY = endY;
-                while (than) {
+                int checkCount = 0;
+                while (than && (checkCount < maxCheck)) {
                     mutable.setY(checkY);
                     if (!level.getBlockState(mutable.setY(checkY + 1)).canBeReplaced()) {
                         level.setBlock(mutable.setY(checkY), cattailsHeadBlockState.trySetValue(WATERLOGGED, true), 3);
@@ -107,6 +111,7 @@ public class CattailsFeature extends Feature<CattailsFeature.Config> {
                         level.setBlock(mutable.setY(checkY), cattailsBodyBlockState.trySetValue(WATERLOGGED, true), 3);
                     }
                     checkY++;
+                    checkCount++;
                 }
                 placeSuccess = true;
             }
@@ -115,13 +120,14 @@ public class CattailsFeature extends Feature<CattailsFeature.Config> {
         return placeSuccess;
     }
 
-    public record Config(BlockStateProvider cattailsHead, BlockStateProvider cattailsBody, int radius, float chance, int maxLength) implements FeatureConfiguration {
+    public record Config(BlockStateProvider cattailsHead, BlockStateProvider cattailsBody, int radius, float chance, int maxLength, int maxCheck) implements FeatureConfiguration {
         public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 BlockStateProvider.CODEC.fieldOf("cattails_head").forGetter(Config::cattailsHead),
                 BlockStateProvider.CODEC.fieldOf("cattails_body").forGetter(Config::cattailsBody),
                 Codec.INT.fieldOf("radius").forGetter(CattailsFeature.Config::radius),
                 Codec.FLOAT.fieldOf("chance").forGetter(CattailsFeature.Config::chance),
-                Codec.INT.fieldOf("max_length").forGetter(CattailsFeature.Config::maxLength)
+                Codec.INT.fieldOf("max_length").forGetter(CattailsFeature.Config::maxLength),
+                Codec.INT.fieldOf("max_check").forGetter(CattailsFeature.Config::maxCheck)
         ).apply(instance, Config::new));
     }
 }

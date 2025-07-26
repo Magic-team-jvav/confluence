@@ -1,17 +1,22 @@
-package org.confluence.mod.common.data;
+package org.confluence.mod.common.init;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.FloatArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
+import net.minecraft.commands.synchronization.ArgumentTypeInfo;
+import net.minecraft.commands.synchronization.ArgumentTypeInfos;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -27,14 +32,21 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.server.command.EnumArgument;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ManaStorage;
+import org.confluence.mod.common.component.prefix.ModPrefix;
+import org.confluence.mod.common.component.prefix.PrefixComponent;
+import org.confluence.mod.common.component.prefix.PrefixType;
+import org.confluence.mod.common.data.PrefixArgument;
 import org.confluence.mod.common.data.saved.*;
-import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.item.PaintItems;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
 import org.confluence.mod.util.DynamicBiomeUtils;
 import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.util.PrefixUtils;
+import org.jetbrains.annotations.Contract;
 
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -42,7 +54,12 @@ import java.util.Map;
 
 import static org.confluence.mod.common.data.saved.ConfluenceData.STAR_PHASES_SIZE;
 
-public class ConfluenceCommand {
+@SuppressWarnings("unused")
+public final class ModCommands {
+    public static final DeferredRegister<ArgumentTypeInfo<?, ?>> ARGUMENT_TYPE_INFOS = DeferredRegister.create(Registries.COMMAND_ARGUMENT_TYPE, Confluence.MODID);
+
+    public static final Holder<ArgumentTypeInfo<?, ?>> PREFIX_ARGUMENT_TYPE = ARGUMENT_TYPE_INFOS.register("prefix", () -> ArgumentTypeInfos.registerByClass(PrefixArgument.class, new PrefixArgument.Info()));
+
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("confluence").requires(sourceStack -> sourceStack.hasPermission(2))
                 .then(Commands.literal("starPhases")
@@ -66,7 +83,7 @@ public class ConfluenceCommand {
                                 context.getSource().sendFailure(Component.literal("Can not set StarPhase!"));
                                 return 0;
                             }
-                            context.getSource().sendSuccess(() -> Component.literal("Has been set to " + data.getStarPhase(index).toString()), true);
+                            context.getSource().sendSuccess(() -> Component.literal("Has been set to " + data.getStarPhase(index)), true);
                             return 1;
                         }))))))
                 )
@@ -202,7 +219,76 @@ public class ConfluenceCommand {
                             return 1;
                         }))
                 )
+                .then(Commands.literal("reforge")
+                        .then(Commands.literal("random").executes(context -> {
+                            CommandSourceStack source = context.getSource();
+                            ServerPlayer player = source.getPlayer();
+                            if (cannotBeReforged(source, player)) return 0;
+                            PrefixComponent prefix = PrefixUtils.random(player.getRandom(), player.getMainHandItem());
+                            if (unknownPrefixType(source, prefix)) return 0;
+                            source.sendSuccess(() -> Component.translatable("commands.confluence.reforge.success", prefix.getName()), false);
+                            return 1;
+                        }))
+                        .then(Commands.literal("best").executes(context -> {
+                            CommandSourceStack source = context.getSource();
+                            ServerPlayer player = source.getPlayer();
+                            if (cannotBeReforged(source, player)) return 0;
+                            PrefixComponent prefix = PrefixUtils.best(player.getRandom(), player.getMainHandItem());
+                            if (unknownPrefixType(source, prefix)) return 0;
+                            source.sendSuccess(() -> Component.translatable("commands.confluence.reforge.success", prefix.getName()), false);
+                            return 1;
+                        }))
+                        .then(Commands.literal("clear").executes(context -> {
+                            CommandSourceStack source = context.getSource();
+                            ServerPlayer player = source.getPlayer();
+                            if (cannotBeReforged(source, player)) return 0;
+                            PrefixUtils.unknown(player.getMainHandItem());
+                            source.sendSuccess(() -> Component.translatable("commands.confluence.reforge.clear.success"), false);
+                            return 1;
+                        }))
+                        .then(setPrefixBuilder())
+                )
         );
+    }
+
+    private static LiteralArgumentBuilder<CommandSourceStack> setPrefixBuilder() {
+        LiteralArgumentBuilder<CommandSourceStack> builder = Commands.literal("set");
+        for (String group : ModPrefix.GROUPS.keySet()) {
+            builder.then(Commands.literal(group).then(Commands.argument("group", new PrefixArgument(group)).executes(context -> {
+                CommandSourceStack source = context.getSource();
+                ServerPlayer player = source.getPlayer();
+                if (cannotBeReforged(source, player)) return 0;
+                ItemStack itemStack = player.getMainHandItem();
+                PrefixType type = PrefixUtils.getPrefixType(itemStack);
+                if (!type.isGroupAvailable(group)) {
+                    source.sendFailure(Component.translatable("commands.confluence.reforge.set.unavailable_group").withStyle(ChatFormatting.RED));
+                    return 0;
+                }
+                PrefixComponent prefix = PrefixUtils.setAndUpdate(itemStack, type, context.getArgument("group", ModPrefix.class));
+                if (unknownPrefixType(source, prefix)) return 0;
+                source.sendSuccess(() -> Component.translatable("commands.confluence.reforge.success", prefix.name()), false);
+                return 1;
+            })));
+        }
+        return builder;
+    }
+
+    private static boolean cannotBeReforged(CommandSourceStack source, ServerPlayer player) {
+        if (player == null) return true;
+        if (!PrefixUtils.couldReforge(player.getMainHandItem())) {
+            source.sendFailure(Component.translatable("commands.confluence.reforge.cannot_be_reforged").withStyle(ChatFormatting.RED));
+            return true;
+        }
+        return false;
+    }
+
+    @Contract("_, null -> true")
+    private static boolean unknownPrefixType(CommandSourceStack source, PrefixComponent prefix) {
+        if (prefix == null) {
+            source.sendFailure(Component.translatable("commands.confluence.reforge.unknown_prefix_type").withStyle(ChatFormatting.RED));
+            return true;
+        }
+        return false;
     }
 
     private static int fillPaints(CommandContext<CommandSourceStack> context, int[] list) throws CommandSyntaxException {

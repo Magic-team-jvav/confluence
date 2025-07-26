@@ -94,6 +94,7 @@ public class BowItems {
     );
     public static final DeferredItem<TerraBowItem> HELLWING_BOW = register("hellwing_bow",  6.3f, m->m
             .setRarity(ModRarity.RED)
+            .setInaccuracy(1f)
             .setEntityTransform(TerraBowItem.EntityTransform.create(ModEntities.HELL_BAT_ARROW.get(), HellBatArrowEntity::new))
     );
 

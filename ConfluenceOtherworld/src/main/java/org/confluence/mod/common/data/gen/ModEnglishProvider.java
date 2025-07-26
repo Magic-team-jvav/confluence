@@ -1,6 +1,5 @@
 package org.confluence.mod.common.data.gen;
 
-import com.google.common.collect.Iterables;
 import net.minecraft.Util;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.Item;
@@ -20,7 +19,7 @@ import org.confluence.mod.integration.waystones.WaystonesHelper;
 
 import java.util.function.Consumer;
 
-import static org.confluence.mod.common.component.prefix.ModPrefix.*;
+import static org.confluence.mod.common.component.prefix.ModPrefix.GROUPS;
 
 public class ModEnglishProvider extends LanguageProvider {
     public ModEnglishProvider(PackOutput output) {
@@ -67,6 +66,12 @@ public class ModEnglishProvider extends LanguageProvider {
         add("message.confluence.lock.or", " or ");
         add("message.confluence.dungeon_not_found", "Failed to find the Dungeon");
 
+        add("commands.confluence.reforge.cannot_be_reforged", "This item cannot be reforged (or cannot find an item that needs to be reforged)!");
+        add("commands.confluence.reforge.unknown_prefix_type", "Unknown prefix type (or reforge failure)!");
+        add("commands.confluence.reforge.success", "Successfully reforged to: %s");
+        add("commands.confluence.reforge.clear.success", "The prefix has been successfully cleared");
+        add("commands.confluence.reforge.set.unavailable_group", "This item cannot have this prefix applied!");
+
         add("enchantment.confluence.mana_regeneration", "Mana Regeneration");
         add("enchantment.confluence.mana_regeneration.desc", "Increases the amount of mana that naturally regenerates");
         add("enchantment.confluence.efficient_magic", "Efficient Magic");
@@ -92,7 +97,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.price.gold", "Gold ");
         add("tooltip.price.silver", "Silver ");
         add("tooltip.price.copper", "Copper ");
-        add("tooltip.price.buy", "Buy: ");
         add("tooltip.price.sell", "Sell: ");
 
         add("tooltip.jei.state_properties", "Required State Properties:");
@@ -903,7 +907,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("prefix.confluence.quick", "Quick");
         add("prefix.confluence.hasty", "Hasty");
         add("prefix.confluence.deadly", "Deadly");
-        Iterables.concat(Universal.VALUES, Common.VALUES, Melee.VALUES, Ranged.VALUES, Magic.VALUES, Accessory.VALUES).forEach(prefix -> {
+        GROUPS.values().stream().flatMap(map -> map.values().stream()).forEach(prefix -> {
             String name = prefix.name();
             if ("quick".equals(name) || "deadly".equals(name) || "hasty".equals(name)) return;
             add("prefix.confluence." + name, LibUtils.toTitleCase(name));

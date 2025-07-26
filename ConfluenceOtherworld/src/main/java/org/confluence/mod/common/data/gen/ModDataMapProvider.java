@@ -21,6 +21,7 @@ public class ModDataMapProvider extends DataMapProvider {
         ExtractinatorSubProvider.gather(() -> builder(ModDataMaps.EXTRACTINATOR));
         ChlorophyteExtractinatorSubProvider.gather(() -> builder(ModDataMaps.CHLOROPHYTE_EXTRACTINATOR));
         ImmunitySubProvider.gather(() -> builder(ModDataMaps.IMMUNITY));
+        DiggingPowerProvider.gather(() -> builder(ModDataMaps.DIGGING_POWER));
     }
 
     @FunctionalInterface

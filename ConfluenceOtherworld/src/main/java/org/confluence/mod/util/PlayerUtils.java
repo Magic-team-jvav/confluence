@@ -7,26 +7,30 @@ import com.xiaohunao.terra_moment.common.init.TMMoments;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
-import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.mod.api.event.GetCustomDiggingPowerEvent;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.attachment.PlayerPiggyBankContainer;
+import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.data.saved.KillBoard;
-import org.confluence.mod.common.init.*;
+import org.confluence.mod.common.init.ModAttachmentTypes;
+import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.ModHookTypes;
+import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.common.CoinItem;
@@ -163,27 +167,10 @@ public final class PlayerUtils {
         int max = -1;
         ItemStack ret = ItemStack.EMPTY;
         for (ItemStack itemStack : player.getInventory().items) {
-            if (itemStack.isEmpty()) continue;
-            if (itemStack.getItem() instanceof PickaxeItem pickaxeItem) {
-                Tier tier = pickaxeItem.getTier();
-                if (tier instanceof ModTiers.PoweredTier poweredTier) {
-                    if (poweredTier.getPower() > max) {
-                        max = poweredTier.getPower();
-                        ret = itemStack;
-                        continue;
-                    }
-                } else if (tier instanceof Tiers tiers) {
-                    int power = ModTiers.getPowerForVanillaTiers(tiers);
-                    if (power > max) {
-                        max = power;
-                        ret = itemStack;
-                        continue;
-                    }
-                }
-            }
-            GetCustomDiggingPowerEvent e = NeoForge.EVENT_BUS.post(new GetCustomDiggingPowerEvent(itemStack, max));
-            if (e.getPower() > max) {
-                max = e.getPower();
+            if (itemStack.isEmpty() || !itemStack.is(ItemTags.PICKAXES)) continue;
+            int power = DiggingPower.getPower(itemStack);
+            if (power > max) {
+                max = power;
                 ret = itemStack;
             }
         }

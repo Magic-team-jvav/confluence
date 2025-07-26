@@ -13,6 +13,7 @@ import net.neoforged.neoforge.registries.datamaps.DataMapType;
 import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.ValueComponent;
+import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.data.map.ExtractinatorData;
 import org.confluence.mod.common.data.map.ImmunityDataMap;
 import org.confluence.mod.common.data.map.TreasureBagDrop;
@@ -28,6 +29,7 @@ public final class ModDataMaps {
     public static final DataMapType<Item, ValueComponent> VALUE = register("value", Registries.ITEM, ValueComponent.CODEC, true);
     public static final DataMapType<Item, ExtractinatorData> EXTRACTINATOR = register("extractinator", Registries.ITEM, ExtractinatorData.CODEC, jei);
     public static final DataMapType<Item, ExtractinatorData> CHLOROPHYTE_EXTRACTINATOR = register("chlorophyte_extractinator", Registries.ITEM, ExtractinatorData.CODEC, jei);
+    public static final DataMapType<Item, DiggingPower> DIGGING_POWER = register("digging_power", Registries.ITEM, DiggingPower.CODEC, true);
     public static final DataMapType<EntityType<?>, TreasureBagDrop> TREASURE_BAG = register("treasure_bag", Registries.ENTITY_TYPE, TreasureBagDrop.CODEC, false);
     public static final DataMapType<EntityType<?>, ImmunityDataMap> IMMUNITY = register("immunity", Registries.ENTITY_TYPE, ImmunityDataMap.CODEC, true);
 

@@ -157,7 +157,7 @@ public final class GameClientEvents {
             PrefixComponent prefix = PrefixUtils.getPrefix(event.getItemStack());
             if (prefix != null && prefix.type() != PrefixType.UNKNOWN) {
                 tooltipElements.set(0, Either.left(
-                        Component.translatable("prefix.confluence." + prefix.name()).setStyle(component.getStyle()).append(" ").append(component)
+                        prefix.getName().setStyle(component.getStyle()).append(" ").append(component)
                 ));
             }
         }
@@ -204,10 +204,7 @@ public final class GameClientEvents {
         if (ClientConfigs.sellPriceDisplay.test()) {
             int price = ValueComponent.getValue(itemStack, 0);
             if (price > 0) {
-                event.getToolTip().add(Component.translatable("tooltip.price.buy").withStyle(ChatFormatting.GRAY)
-                        .append(ModUtils.formatPrice(price * 5))
-                        .append(Component.translatable("tooltip.price.sell").withStyle(ChatFormatting.GRAY).append(ModUtils.formatPrice(price)))
-                );
+                event.getToolTip().add(Component.translatable("tooltip.price.sell").withStyle(ChatFormatting.GRAY).append(ModUtils.formatPrice(price)));
             }
         }
     }

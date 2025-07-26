@@ -40,27 +40,29 @@ public final class PrefixUtils {
                         itemStack.is(ModTags.Items.PREFIX_UNIVERSAL_ONLY));
     }
 
-    public static void initPrefix(RandomSource random, ItemStack itemStack) {
+    public static @Nullable PrefixComponent initPrefix(RandomSource random, ItemStack itemStack) {
         if (random.nextFloat() < 0.75F) {
             PrefixType prefixType = getPrefixType(itemStack);
             if (prefixType != PrefixType.UNKNOWN) {
-                createWithMercy(random, itemStack, prefixType);
+                return createWithMercy(random, itemStack, prefixType);
             }
         } else {
             unknown(itemStack);
         }
+        return null;
     }
 
-    public static void best(RandomSource random, ItemStack itemStack) {
+    public static @Nullable PrefixComponent best(RandomSource random, ItemStack itemStack) {
         PrefixType prefixType = getPrefixType(itemStack);
         if (prefixType != PrefixType.UNKNOWN) {
             ModPrefix modPrefix = prefixType.bestPrefix(random, itemStack);
             if (modPrefix == null) {
                 unknown(itemStack);
             } else {
-                setAndUpdate(itemStack, prefixType, modPrefix);
+                return setAndUpdate(itemStack, prefixType, modPrefix);
             }
         }
+        return null;
     }
 
     public static PrefixType getPrefixType(ItemStack itemStack) {
@@ -78,25 +80,36 @@ public final class PrefixUtils {
         return PrefixType.UNKNOWN;
     }
 
-    public static void createWithMercy(RandomSource random, ItemStack itemStack, PrefixType prefixType) {
+    public static @Nullable PrefixComponent createWithMercy(RandomSource random, ItemStack itemStack, PrefixType prefixType) {
         ModPrefix modPrefix = prefixType.randomPrefix(random);
         if (modPrefix.canBeMercy() && random.nextFloat() < MERCY) {
             unknown(itemStack);
         } else {
-            setAndUpdate(itemStack, prefixType, modPrefix);
+            return setAndUpdate(itemStack, prefixType, modPrefix);
         }
+        return null;
     }
 
     public static @Nullable PrefixComponent getPrefix(ItemStack itemStack) {
         return itemStack.get(ModDataComponentTypes.PREFIX);
     }
 
-    public static void random(RandomSource random, ItemStack itemStack, PrefixType prefixType) {
-        setAndUpdate(itemStack, prefixType, prefixType.randomPrefix(random));
+    public static @Nullable PrefixComponent random(RandomSource random, ItemStack itemStack) {
+        PrefixType prefixType = getPrefixType(itemStack);
+        if (prefixType != PrefixType.UNKNOWN) {
+            return random(random, itemStack, prefixType);
+        }
+        return null;
     }
 
-    public static void setAndUpdate(ItemStack itemStack, PrefixType prefixType, ModPrefix modPrefix) {
-        itemStack.set(ModDataComponentTypes.PREFIX, modPrefix.createComponent(prefixType));
+    public static @Nullable PrefixComponent random(RandomSource random, ItemStack itemStack, PrefixType prefixType) {
+        return setAndUpdate(itemStack, prefixType, prefixType.randomPrefix(random));
+    }
+
+    public static @Nullable PrefixComponent setAndUpdate(ItemStack itemStack, PrefixType prefixType, ModPrefix modPrefix) {
+        if (prefixType == null) return null;
+        PrefixComponent prefix = modPrefix.createComponent(prefixType);
+        itemStack.set(ModDataComponentTypes.PREFIX, prefix);
         int num1 = ModPrefix.ID_MAP.inverse().getOrDefault(modPrefix, 0);
         float num2 = 1;
         float num3 = 1;
@@ -378,8 +391,7 @@ public final class PrefixUtils {
         if (num1 == 64 || num1 == 71 || num1 == 75 || num1 == 79 || num1 == 66) num14 *= 1.15f;
         if (num1 == 65 || num1 == 72 || num1 == 76 || num1 == 80 || num1 == 68) num14 *= 1.2f;
 
-        ItemStack copy = itemStack.getItem().getDefaultInstance();
-        int rarity = ModRarity.ID_MAP.inverse().getOrDefault(ModRarity.getRarity(copy), 0);
+        int rarity = ModRarity.ID_MAP.inverse().getOrDefault(ModRarity.getRarity(itemStack, true), 0);
         if (rarity > -11) {
             if (rarity == -10) rarity = 0;
             else if (rarity == -9) rarity = 2;
@@ -394,11 +406,14 @@ public final class PrefixUtils {
             else if (rarity > 11) rarity = 11;
         }
         itemStack.set(ConfluenceMagicLib.MOD_RARITY, ModRarity.ID_MAP.getOrDefault(rarity, ModRarity.WHITE));
-        itemStack.set(ModDataComponentTypes.VALUE, new ValueComponent((int) (ValueComponent.getValue(copy, 50) * num14 * num14)));
+        itemStack.set(ModDataComponentTypes.VALUE, new ValueComponent((int) (ValueComponent.getValue(itemStack, 50, true) * num14 * num14)));
+        return prefix;
     }
 
     public static void unknown(ItemStack itemStack) {
         itemStack.set(ModDataComponentTypes.PREFIX, new PrefixComponent(PrefixType.UNKNOWN, "unknown", AttributeModifiersValue.EMPTY, 0.0F, 0, 0, 0.0F));
+        itemStack.remove(ConfluenceMagicLib.MOD_RARITY);
+        itemStack.remove(ModDataComponentTypes.VALUE);
     }
 
     public static float calculateManaCost(ItemStack itemStack, float amount) {

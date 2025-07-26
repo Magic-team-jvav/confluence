@@ -31,12 +31,17 @@ public record ValueComponent(int value) implements DataComponentType<ValueCompon
         return obj instanceof ValueComponent(int value1) && value1 == value;
     }
 
-    public static int getValue(ItemStack itemStack, int defaultValue) {
-        ValueComponent value = itemStack.get(ModDataComponentTypes.VALUE);
+    public static int getValue(ItemStack itemStack, int defaultValue, boolean prototype) {
+        DataComponentType<ValueComponent> type = ModDataComponentTypes.VALUE.get();
+        ValueComponent value = prototype ? itemStack.getPrototype().get(type) : itemStack.get(type);
         if (value == null) {
             value = itemStack.getItemHolder().getData(ModDataMaps.VALUE);
             return (value == null ? defaultValue : value.value()) * itemStack.getCount();
         }
         return value.value() * itemStack.getCount();
+    }
+
+    public static int getValue(ItemStack itemStack, int defaultValue) {
+        return getValue(itemStack, defaultValue, false);
     }
 }

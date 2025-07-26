@@ -31,9 +31,9 @@ import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.component.LootComponent;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.data.AchievementOffsetLoader;
-import org.confluence.mod.common.data.ConfluenceCommand;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.init.ModAttachmentTypes;
+import org.confluence.mod.common.init.ModCommands;
 import org.confluence.mod.common.init.ModHookTypes;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.item.ConsumableItems;
@@ -115,7 +115,7 @@ public final class GameEvents {
 
     @SubscribeEvent
     public static void command(RegisterCommandsEvent event) {
-        ConfluenceCommand.register(event.getDispatcher());
+        ModCommands.register(event.getDispatcher());
     }
 
     @SubscribeEvent

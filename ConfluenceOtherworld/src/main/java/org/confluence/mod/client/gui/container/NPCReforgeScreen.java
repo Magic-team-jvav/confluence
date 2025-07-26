@@ -107,7 +107,7 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
                 double v = interpolator.cal(clickTime + pPartialTick);
                 pGuiGraphics.pose().pushPose();
 
-                MutableComponent component = Component.translatable("prefix.confluence." + prefix.name()).append(" ").append(Component.translatable(itemStack.getItem().getDescriptionId()));
+                MutableComponent component = prefix.getName().append(" ").append(Component.translatable(itemStack.getItem().getDescriptionId()));
                 ModRarity rarity = ModRarity.getRarity(itemStack);
                 if (rarity != null) {
                     component.withColor(rarity.color());
@@ -132,7 +132,7 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
             ItemStack itemStack = menu.getReforgeItem();
             PrefixComponent prefix = PrefixUtils.getPrefix(itemStack);
             if (prefix != null && prefix.type() != PrefixType.UNKNOWN) {
-                MutableComponent component = Component.translatable("prefix.confluence." + prefix.name());
+                MutableComponent component = prefix.getName();
                 ModRarity rarity = ModRarity.getRarity(itemStack);
                 if (rarity != null) {
                     component.withColor(rarity.color());

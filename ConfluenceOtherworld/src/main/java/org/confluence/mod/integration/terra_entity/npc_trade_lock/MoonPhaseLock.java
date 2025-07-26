@@ -8,8 +8,8 @@ import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.common.data.saved.MoonPhase;
 import org.confluence.mod.integration.terra_entity.init.ModTradeLockProviderTypes;
-import org.confluence.terraentity.api.trade.ITradeHolder;
-import org.confluence.terraentity.api.trade.ITradeLock;
+import org.confluence.terraentity.api.npc.trade.ITradeHolder;
+import org.confluence.terraentity.api.npc.trade.ITradeLock;
 import org.confluence.terraentity.registries.npc_trade_lock.TradeLockProvider;
 
 import java.util.Arrays;

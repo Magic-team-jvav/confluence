@@ -26,7 +26,7 @@ public enum PrefixType implements StringRepresentable {
     RANGED("universal", "common", "ranged"),
     MAGIC("universal", "common", "magic"),
     ACCESSORY("accessory"),
-    UNKNOWN() {
+    UNKNOWN {
         @Override
         public boolean isGroupAvailable(String group) {
             return false;
@@ -43,7 +43,7 @@ public enum PrefixType implements StringRepresentable {
 
     public static final Codec<PrefixType> CODEC = StringRepresentable.fromEnum(PrefixType::values);
     public static final StreamCodec<ByteBuf, PrefixType> STREAM_CODEC = StreamCodec.composite(ByteBufCodecs.INT, PrefixType::ordinal, PrefixType::byId);
-    private static final PrefixType[] VALUES = values();
+    private static PrefixType[] VALUES;
     public final String[] groups;
     private ModPrefix[] available;
 
@@ -109,6 +109,7 @@ public enum PrefixType implements StringRepresentable {
     }
 
     public static PrefixType byId(int id) {
+        if (VALUES == null) VALUES = values();
         if (id < 0 || id >= VALUES.length) return UNKNOWN;
         return VALUES[id];
     }

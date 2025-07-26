@@ -18,9 +18,12 @@ import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.ClientPacketHandler;
+import org.confluence.mod.common.block.natural.ChlorophyteOreBlock;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.network.s2c.GamePhasePacketS2C;
+import org.confluence.mod.util.OverworldUtils;
+import org.confluence.phase_journey.common.util.PhaseUtils;
 import org.confluence.terraentity.init.entity.TEBossEntities;
 
 public final class KillBoard implements IGlobalData {
@@ -131,6 +134,7 @@ public final class KillBoard implements IGlobalData {
             ((IMinecraftServer) server).confluence$updateSecretFlag(IWorldOptions.GRADUATED);
         } else if (gamePhase.isHardmode()) {
             ((IMinecraftServer) server).confluence$updateSecretFlag(IWorldOptions.HARDMODE);
+            PhaseUtils.achieveLevelPhase(OverworldUtils.getLevel(server), ChlorophyteOreBlock.PHASE, true);
             HardmodeConvertor.INSTANCE.start(server, false);
         }
     }
@@ -142,7 +146,7 @@ public final class KillBoard implements IGlobalData {
         //tag.get("defeated_map").orElseEmptyMap().read(DEFEATED_MAP_CODEC).ifSuccess(defeatedMap::putAll);
         tag.get("defeated_bosses").result().or(() -> tag.get("defeated_map").result()).orElseGet(tag::emptyMap).read(DEFEATED_BOSSES_CODEC).ifSuccess(defeatedBosses::putAll);
         tag.get("defeated_events").orElseEmptyMap().read(DEFEATED_EVENTS_CODEC).ifSuccess(defeatedEvents::putAll);
-        this.gamePhase = GamePhase.getById(tag.get("game_phase").asInt(0));
+        this.gamePhase = GamePhase.getByOrder(tag.get("game_phase").asInt(0));
     }
 
     @Override
@@ -150,7 +154,7 @@ public final class KillBoard implements IGlobalData {
         //tag.put("defeated_map", DEFEATED_MAP_CODEC.encodeStart(NbtOps.INSTANCE, defeatedMap).getOrThrow());
         tag.put("defeated_bosses", DEFEATED_BOSSES_CODEC.encodeStart(NbtOps.INSTANCE, defeatedBosses).result().orElseGet(CompoundTag::new));
         tag.put("defeated_events", DEFEATED_EVENTS_CODEC.encodeStart(NbtOps.INSTANCE, defeatedEvents).result().orElseGet(CompoundTag::new));
-        tag.putInt("game_phase", gamePhase.ordinal());
+        tag.putInt("game_phase", gamePhase.getOrder());
     }
 
     @Override

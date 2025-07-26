@@ -43,8 +43,8 @@ public interface ISpreadable {
     default void spread(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource) {
         if (!blockState.getValue(STILL_ALIVE)) return;
         int chance = serverLevel.getGameRules().getInt(Confluence.SPREADABLE_CHANCE);
-        int phase = KillBoard.INSTANCE.getGamePhase().ordinal();
-        if (phase >= GamePhase.PLANTERA.ordinal()) {
+        int phase = KillBoard.INSTANCE.getGamePhase().getOrder();
+        if (phase >= GamePhase.PLANTERA.getOrder()) {
             chance /= 2;
         }
         if (chance != 100 && (chance == 0 || randomSource.nextInt(100) >= chance)) return;

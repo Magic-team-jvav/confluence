@@ -6,6 +6,9 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.ByIdMap;
 import net.minecraft.util.StringRepresentable;
+import net.neoforged.fml.common.asm.enumextension.ExtensionInfo;
+import net.neoforged.fml.common.asm.enumextension.IExtensibleEnum;
+import net.neoforged.fml.common.asm.enumextension.NetworkedEnum;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Locale;
@@ -21,40 +24,54 @@ import java.util.function.IntFunction;
  * GOLEM:石巨人后 <p>
  * MOON_LORD:月后 <p>
  */
-public enum GamePhase implements StringRepresentable {
-    BEFORE_SKELETRON,
-    AFTER_SKELETRON,
-    WALL_OF_FLESH,
-    MECHANICAL_BOSSES,
-    PLANTERA,
-    GOLEM,
-    MOON_LORD;
+@NetworkedEnum(NetworkedEnum.NetworkCheck.BIDIRECTIONAL)
+public enum GamePhase implements StringRepresentable, IExtensibleEnum {
+    BEFORE_SKELETRON(0),
+    AFTER_SKELETRON(100),
+    WALL_OF_FLESH(200),
+    MECHANICAL_BOSSES(300),
+    PLANTERA(400),
+    GOLEM(500),
+    MOON_LORD(600);
 
     public static final Codec<GamePhase> CODEC = StringRepresentable.fromValues(GamePhase::values);
-    public static final IntFunction<GamePhase> BY_ID = ByIdMap.continuous(GamePhase::ordinal, values(), ByIdMap.OutOfBoundsStrategy.WRAP);
-    public static final StreamCodec<ByteBuf, GamePhase> STREAM_CODEC = ByteBufCodecs.idMapper(BY_ID, GamePhase::ordinal);
+    public static final IntFunction<GamePhase> BY_ORDER = ByIdMap.sparse(GamePhase::getOrder, values(), AFTER_SKELETRON);
+    public static final StreamCodec<ByteBuf, GamePhase> STREAM_CODEC = ByteBufCodecs.idMapper(BY_ORDER, GamePhase::getOrder);
+    private final int order;
+
+    GamePhase(int order) {
+        this.order = order;
+    }
 
     @Override
     public @NotNull String getSerializedName() {
         return name().toLowerCase(Locale.ROOT);
     }
 
-    public static GamePhase getById(int id) {
-        return BY_ID.apply(id);
-    }
-
     public boolean isHardmode() {
-        return ordinal() >= WALL_OF_FLESH.ordinal();
+        return getOrder() >= WALL_OF_FLESH.getOrder();
     }
 
     public boolean isGraduated() {
-        return this == MOON_LORD;
+        return getOrder() >= MOON_LORD.getOrder();
     }
 
     /**
      * 判断阶段是否高于other
      */
     public boolean isAboveThan(GamePhase other) {
-        return ordinal() > other.ordinal();
+        return getOrder() > other.getOrder();
+    }
+
+    public int getOrder() {
+        return order;
+    }
+
+    public static GamePhase getByOrder(int order) {
+        return BY_ORDER.apply(order);
+    }
+
+    public static ExtensionInfo getExtensionInfo() {
+        return ExtensionInfo.nonExtended(GamePhase.class);
     }
 }

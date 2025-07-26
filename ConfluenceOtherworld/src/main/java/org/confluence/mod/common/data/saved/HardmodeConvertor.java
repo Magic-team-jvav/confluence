@@ -35,6 +35,7 @@ import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.network.s2c.SecretFlagSyncPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
+import org.confluence.mod.util.OverworldUtils;
 
 import javax.annotation.CheckForNull;
 import java.util.*;
@@ -92,7 +93,7 @@ public final class HardmodeConvertor implements IGlobalData {
         this.started = true;
         print(server, Component.translatable("event.confluence.hardmode_conversion.starting"), debug);
         CompletableFuture.supplyAsync(() -> {
-            ServerLevel overworld = server.overworld();
+            ServerLevel overworld = OverworldUtils.getLevel(server);
             BlockPos startPos = server.getWorldData().overworldData().getSpawnPos().atY(overworld.getMinBuildHeight());
             int height = overworld.getMaxBuildHeight() - overworld.getMinBuildHeight(), startRadius = 32, thickness = 64;
             return generateConicalCylinder(startPos, height, startRadius, startRadius + height, thickness);

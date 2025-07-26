@@ -31,6 +31,11 @@ public record ValueComponent(int value) implements DataComponentType<ValueCompon
         return obj instanceof ValueComponent(int value1) && value1 == value;
     }
 
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(value);
+    }
+
     public static int getValue(ItemStack itemStack, int defaultValue, boolean prototype) {
         DataComponentType<ValueComponent> type = ModDataComponentTypes.VALUE.get();
         ValueComponent value = prototype ? itemStack.getPrototype().get(type) : itemStack.get(type);

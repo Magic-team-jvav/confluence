@@ -10,6 +10,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.features.TreeFeatures;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
@@ -98,6 +99,10 @@ public final class OverworldUtils {
             }
         }
         return original.call(instance, blockPos, blockState, i);
+    }
+
+    public static ServerLevel getLevel(MinecraftServer server) {
+        return server.getLevel(dimension());
     }
 
     public static int getUltraY() {

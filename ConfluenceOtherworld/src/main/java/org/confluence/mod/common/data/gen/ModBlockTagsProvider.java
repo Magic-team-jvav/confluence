@@ -315,6 +315,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 
                 ASPHALT_BLOCK.get(),
 
+                GRANITE.get(),
+
                 CrateBlocks.IRON_CRATE.get(),
                 CrateBlocks.GOLDEN_CRATE.get(),
                 CrateBlocks.SKY_CRATE.get(),
@@ -586,7 +588,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 WINTER_MARROW_BLOCK.get(),
                 THIN_ICE_BLOCK.get(),
                 CRISPY_HONEY_BLOCK.get(),
-                GRANITE.get(),
+                NatureBlocks.GRANITE.get(),
                 POLISHED_GRANITE.get(),
 
                 SAFE.get(),

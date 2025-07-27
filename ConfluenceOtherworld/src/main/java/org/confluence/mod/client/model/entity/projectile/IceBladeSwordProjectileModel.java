@@ -22,9 +22,9 @@ public class IceBladeSwordProjectileModel extends EntityModel<SwordProjectile> {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
-        PartDefinition bb_main = partdefinition.addOrReplaceChild("bb_main", CubeListBuilder.create().texOffs(0, 0).addBox(-0.5F, -2.0F, -15.0F, 1.0F, 4.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
-        PartDefinition cube_r1 = bb_main.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(7, 5).addBox(0.0F, 0.0F, 0.0F, 1.0F, 3.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.5F, 0.0F, -13.0F, -0.7854F, 0.0F, 0.0F));
-        PartDefinition cube_r2 = bb_main.addOrReplaceChild("cube_r2", CubeListBuilder.create().texOffs(0, 8).addBox(-0.5F, -1.0F, -1.0F, 1.0F, 3.0F, 3.0F, new CubeDeformation(0.01F)), PartPose.offsetAndRotation(0.0F, 0.0F, -15.75F, -0.7854F, 0.0F, 0.0F));
+        PartDefinition bb_main = partdefinition.addOrReplaceChild("bb_main", CubeListBuilder.create().texOffs(0, 0).addBox(-0.5F, -2.0F, -15.0F, 1.0F, 4.0F, 4.0F, CubeDeformation.NONE), PartPose.offset(0.0F, 0.0F, 0.0F));
+        bb_main.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(7, 5).addBox(0.0F, 0.0F, 0.0F, 1.0F, 3.0F, 3.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(-0.5F, 0.0F, -13.0F, -0.7854F, 0.0F, 0.0F));
+        bb_main.addOrReplaceChild("cube_r2", CubeListBuilder.create().texOffs(0, 8).addBox(-0.5F, -1.0F, -1.0F, 1.0F, 3.0F, 3.0F, new CubeDeformation(0.01F)), PartPose.offsetAndRotation(0.0F, 0.0F, -15.75F, -0.7854F, 0.0F, 0.0F));
 
         return LayerDefinition.create(meshdefinition, 16, 16);
     }

@@ -16,18 +16,18 @@ public class ForwardProjRenderer<T extends Entity, S extends Entity, M extends E
     protected boolean rotateZ;
     protected float rotateZSpeed;
 
-    public ForwardProjRenderer(EntityRendererProvider.Context context, M pModel, ResourceLocation texture, float size, float offsetY, float rotateZSpeed) {
-        super(context, pModel, size, offsetY);
+    public ForwardProjRenderer(EntityRendererProvider.Context context, M model, ResourceLocation texture, float size, float offsetY, float rotateZSpeed) {
+        super(context, model, size, offsetY);
         this.texture = texture;
         this.rotateZ = rotateZSpeed > 0;
         this.rotateZSpeed = rotateZSpeed;
     }
-    public ForwardProjRenderer(EntityRendererProvider.Context context, M pModel, ResourceLocation texture, float size, float offsetY) {
-        this(context, pModel, texture, size , offsetY, 0);
+    public ForwardProjRenderer(EntityRendererProvider.Context context, M model, ResourceLocation texture, float size, float offsetY) {
+        this(context, model, texture, size , offsetY, 0);
     }
 
-    public ForwardProjRenderer(EntityRendererProvider.Context context, M pModel, ResourceLocation texture) {
-        this(context, pModel, texture, 1 , 0);
+    public ForwardProjRenderer(EntityRendererProvider.Context context, M model, ResourceLocation texture) {
+        this(context, model, texture, 1 , 0);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class ForwardProjRenderer<T extends Entity, S extends Entity, M extends E
 
         float yaw = (float) Math.atan2(v.z, v.x);
         poseStack.mulPose(Axis.YN.rotation(yaw + Mth.HALF_PI));
-        float pitch = -(float) Math.atan2(v.y, Math.sqrt(v.x * v.x + v.z * v.z));
+        float pitch = -(float) Math.atan2(v.y, v.horizontalDistance());
         poseStack.mulPose(Axis.XN.rotation(pitch));
         if(rotateZ) {
             poseStack.mulPose(Axis.ZN.rotation((entity.tickCount + partialTick) * rotateZSpeed));

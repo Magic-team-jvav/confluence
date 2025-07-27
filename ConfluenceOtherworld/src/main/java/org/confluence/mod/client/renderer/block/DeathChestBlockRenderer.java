@@ -19,8 +19,8 @@ import java.util.function.BiFunction;
 public class DeathChestBlockRenderer extends ChestRenderer<DeathChestBlock.Entity> {
     private final BiFunction<Block, ChestType, Material> function;
 
-    public DeathChestBlockRenderer(BlockEntityRendererProvider.Context pContext) {
-        super(pContext);
+    public DeathChestBlockRenderer(BlockEntityRendererProvider.Context context) {
+        super(context);
         this.function = new BiFunction<>() {
             private final Material[] defaultMaterials = new Material[]{
                     Sheets.CHEST_TRAP_LOCATION,

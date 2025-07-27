@@ -7,7 +7,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BeaconRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
@@ -18,10 +17,8 @@ import org.confluence.terra_curio.client.handler.InformationHandler;
 import java.util.Set;
 
 public class MechanicalBlockRenderer<E extends AbstractMechanicalBlock.Entity> implements BlockEntityRenderer<E> {
-    public MechanicalBlockRenderer(BlockEntityRendererProvider.Context context) {}
-
     @Override
-    public boolean shouldRenderOffScreen(E pBlockEntity) {
+    public boolean shouldRenderOffScreen(E blockEntity) {
         return InformationHandler.hasMechanicalView();
     }
 
@@ -31,8 +28,8 @@ public class MechanicalBlockRenderer<E extends AbstractMechanicalBlock.Entity> i
     }
 
     @Override
-    public boolean shouldRender(AbstractMechanicalBlock.Entity pBlockEntity, Vec3 pCameraPos) {
-        return InformationHandler.hasMechanicalView() && pBlockEntity.getBlockPos().getCenter().multiply(1.0, 0.0, 1.0).closerThan(pCameraPos.multiply(1.0, 0.0, 1.0), getViewDistance());
+    public boolean shouldRender(AbstractMechanicalBlock.Entity blockEntity, Vec3 cameraPos) {
+        return InformationHandler.hasMechanicalView() && blockEntity.getBlockPos().getCenter().multiply(1.0, 0.0, 1.0).closerThan(cameraPos.multiply(1.0, 0.0, 1.0), getViewDistance());
     }
 
     @Override
@@ -41,22 +38,22 @@ public class MechanicalBlockRenderer<E extends AbstractMechanicalBlock.Entity> i
     }
 
     @Override
-    public void render(E pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
+    public void render(E blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
         long gameTime = Minecraft.getInstance().level == null ? System.currentTimeMillis() / 50 : Minecraft.getInstance().level.getGameTime();
-        Vec3 vec31 = pBlockEntity.getBlockPos().getCenter();
-        for (Int2ObjectMap.Entry<Set<BlockPos>> entry : pBlockEntity.getConnectedPoses().int2ObjectEntrySet()) {
+        Vec3 vec31 = blockEntity.getBlockPos().getCenter();
+        for (Int2ObjectMap.Entry<Set<BlockPos>> entry : blockEntity.getConnectedPoses().int2ObjectEntrySet()) {
             int color = entry.getIntKey();
             for (BlockPos pos : entry.getValue()) {
-                pPoseStack.pushPose();
+                poseStack.pushPose();
                 Vec3 subtract = pos.getCenter().subtract(vec31);
                 Vec3 normalize = subtract.normalize();
-                pPoseStack.translate(0.5F, 0.5F, 0.5F);
-                pPoseStack.mulPose(Axis.YP.rotation(Mth.HALF_PI - (float) Math.atan2(normalize.z, normalize.x)));
-                pPoseStack.mulPose(Axis.XP.rotation((float) Math.acos(normalize.y)));
-                pPoseStack.translate(-0.5F, 0.0F, -0.5F);
+                poseStack.translate(0.5F, 0.5F, 0.5F);
+                poseStack.mulPose(Axis.YP.rotation(Mth.HALF_PI - (float) Math.atan2(normalize.z, normalize.x)));
+                poseStack.mulPose(Axis.XP.rotation((float) Math.acos(normalize.y)));
+                poseStack.translate(-0.5F, 0.0F, -0.5F);
                 int height = (int) Math.round(subtract.length());
-                BeaconRenderer.renderBeaconBeam(pPoseStack, pBuffer, BeaconRenderer.BEAM_LOCATION, pPartialTick, 1.0F, gameTime, 0, height, color, 0.2F, 0.25F);
-                pPoseStack.popPose();
+                BeaconRenderer.renderBeaconBeam(poseStack, bufferSource, BeaconRenderer.BEAM_LOCATION, partialTick, 1.0F, gameTime, 0, height, color, 0.2F, 0.25F);
+                poseStack.popPose();
             }
         }
     }

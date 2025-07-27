@@ -34,6 +34,9 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.server.command.EnumArgument;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.component.prefix.ModPrefix;
@@ -224,25 +227,30 @@ public final class ModCommands {
                             CommandSourceStack source = context.getSource();
                             ServerPlayer player = source.getPlayer();
                             if (cannotBeReforged(source, player)) return 0;
-                            PrefixComponent prefix = PrefixUtils.random(player.getRandom(), player.getMainHandItem());
+                            ItemStack itemStack = player.getMainHandItem();
+                            PrefixComponent prefix = PrefixUtils.random(player.getRandom(), itemStack);
                             if (unknownPrefixType(source, prefix)) return 0;
-                            source.sendSuccess(() -> Component.translatable("commands.confluence.reforge.success", prefix.getName()), false);
+                            source.sendSuccess(() -> Component.translatable("commands.confluence.reforge.success", ModRarity.withColor(itemStack, prefix.getName())), false);
                             return 1;
                         }))
                         .then(Commands.literal("best").executes(context -> {
                             CommandSourceStack source = context.getSource();
                             ServerPlayer player = source.getPlayer();
                             if (cannotBeReforged(source, player)) return 0;
-                            PrefixComponent prefix = PrefixUtils.best(player.getRandom(), player.getMainHandItem());
+                            ItemStack itemStack = player.getMainHandItem();
+                            PrefixComponent prefix = PrefixUtils.best(player.getRandom(), itemStack);
                             if (unknownPrefixType(source, prefix)) return 0;
-                            source.sendSuccess(() -> Component.translatable("commands.confluence.reforge.success", prefix.getName()), false);
+                            source.sendSuccess(() -> Component.translatable("commands.confluence.reforge.success", ModRarity.withColor(itemStack, prefix.getName())), false);
                             return 1;
                         }))
                         .then(Commands.literal("clear").executes(context -> {
                             CommandSourceStack source = context.getSource();
                             ServerPlayer player = source.getPlayer();
                             if (cannotBeReforged(source, player)) return 0;
-                            PrefixUtils.unknown(player.getMainHandItem());
+                            ItemStack itemStack = player.getMainHandItem();
+                            PrefixUtils.unknown(itemStack);
+                            LibUtils.resetDataComponent(itemStack, ConfluenceMagicLib.MOD_RARITY.get());
+                            LibUtils.resetDataComponent(itemStack, ModDataComponentTypes.VALUE.get());
                             source.sendSuccess(() -> Component.translatable("commands.confluence.reforge.clear.success"), false);
                             return 1;
                         }))
@@ -266,7 +274,7 @@ public final class ModCommands {
                 }
                 PrefixComponent prefix = PrefixUtils.setAndUpdate(itemStack, type, context.getArgument("group", ModPrefix.class));
                 if (unknownPrefixType(source, prefix)) return 0;
-                source.sendSuccess(() -> Component.translatable("commands.confluence.reforge.success", prefix.name()), false);
+                source.sendSuccess(() -> Component.translatable("commands.confluence.reforge.success", ModRarity.withColor(itemStack, prefix.getName())), false);
                 return 1;
             })));
         }

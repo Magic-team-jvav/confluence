@@ -313,10 +313,9 @@ public final class GameClientEvents {
     @SubscribeEvent
     public static void renderArm(RenderArmEvent event) {
         AbstractClientPlayer player = event.getPlayer();
-        if (Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player) instanceof PlayerRenderer playerRenderer) {
-            boolean b = ZombieArmRenderer.getInstance().renderHand(playerRenderer, event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight(), player, event.getArm());
-            if (b) event.setCanceled(true);
-        }
+        PlayerRenderer playerRenderer = (PlayerRenderer) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
+        boolean b = ZombieArmRenderer.getInstance().renderHand(playerRenderer, event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight(), player, event.getArm());
+        if (b) event.setCanceled(true);
     }
 
     private static boolean jeiChecked = ModList.get().isLoaded("jei") || ModList.get().isLoaded("emi");

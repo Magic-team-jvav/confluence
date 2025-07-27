@@ -4,6 +4,7 @@ import net.minecraft.client.RecipeBookCategories;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MinecartRenderer;
 import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
@@ -70,6 +71,7 @@ import org.confluence.mod.client.renderer.entity.projectile.sword.NightEdgeProje
 import org.confluence.mod.client.renderer.entity.projectile.sword.StarFuryProjectileRenderer;
 import org.confluence.mod.client.textures.GrayBlockModelSwapper;
 import org.confluence.mod.client.textures.GraySpriteShifterEntry;
+import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
@@ -184,7 +186,7 @@ public final class ModClientEvents {
         event.registerLayerDefinition(GlowingFishingHookModel.COMMON, GlowingFishingHookModel::createCommonLayer);
         event.registerLayerDefinition(GlowingFishingHookModel.GLOWING, GlowingFishingHookModel::createGlowingLayer);
 
-        event.registerLayerDefinition(TargetDummyModel.LAYER_LOCATION, () -> TargetDummyModel.createMesh(0, 64));
+        event.registerLayerDefinition(TargetDummyModel.LAYER_LOCATION, TargetDummyModel::createMesh);
 
         event.registerLayerDefinition(IceBladeSwordProjectileModel.LAYER_LOCATION, IceBladeSwordProjectileModel::createBodyLayer);
         event.registerLayerDefinition(EnchantedSwordProjectileModel.LAYER_LOCATION, EnchantedSwordProjectileModel::createBodyLayer);
@@ -231,17 +233,17 @@ public final class ModClientEvents {
         event.registerEntityRenderer(WATER_BOLT_PROJECTILE.get(), NoopRenderer::new);
         event.registerEntityRenderer(BALL_OF_FIRE_PROJECTILE.get(), NoopRenderer::new);
         event.registerEntityRenderer(EFFECT_THROWN_POTION.get(), ThrownItemRenderer::new);
-        event.registerEntityRenderer(ICE_BLADE_SWORD_PROJECTILE.get(), c -> new ForwardProjRenderer<>(c, new IceBladeSwordProjectileModel(c.bakeLayer(IceBladeSwordProjectileModel.LAYER_LOCATION)), Confluence.asResource("textures/entity/ice_blade_sword_projectile.png"), 1, 0F));
+        event.registerEntityRenderer(ICE_BLADE_SWORD_PROJECTILE.get(), context -> new ForwardProjRenderer<>(context, new IceBladeSwordProjectileModel(context.bakeLayer(IceBladeSwordProjectileModel.LAYER_LOCATION)), Confluence.asResource("textures/entity/ice_blade_sword_projectile.png"), 1, 0F));
         event.registerEntityRenderer(STAR_FURY_PROJECTILE.get(), StarFuryProjectileRenderer::new);
-        event.registerEntityRenderer(ENCHANTED_SWORD_PROJECTILE.get(), c -> new ForwardProjRenderer<>(c, new EnchantedSwordProjectileModel(c.bakeLayer(EnchantedSwordProjectileModel.LAYER_LOCATION)), Confluence.asResource("textures/entity/enchanted_sword_projectile.png"), 1, 0.2F, 0.89f));
+        event.registerEntityRenderer(ENCHANTED_SWORD_PROJECTILE.get(), context -> new ForwardProjRenderer<>(context, new EnchantedSwordProjectileModel(context.bakeLayer(EnchantedSwordProjectileModel.LAYER_LOCATION)), Confluence.asResource("textures/entity/enchanted_sword_projectile.png"), 1, 0.2F, 0.89f));
         event.registerEntityRenderer(LIGHTS_BANE_PROJECTILE.get(), LightsBaneProjectileRenderer::new);
-        event.registerEntityRenderer(GRASS_PROJECTILE.get(), c -> new ForwardProjRenderer<>(c, null, null));
-        event.registerEntityRenderer(BEE_PROJECTILE.get(), c -> new ForwardProjRenderer<>(c, new BeeProjectileModel(c.bakeLayer(BeeProjectileModel.LAYER_LOCATION)), TerraCurio.asResource("textures/entity/bee_projectile.png")));
+        event.registerEntityRenderer(GRASS_PROJECTILE.get(), context -> new ForwardProjRenderer<>(context, null, null));
+        event.registerEntityRenderer(BEE_PROJECTILE.get(), context -> new ForwardProjRenderer<>(context, new BeeProjectileModel(context.bakeLayer(BeeProjectileModel.LAYER_LOCATION)), TerraCurio.asResource("textures/entity/bee_projectile.png")));
         event.registerEntityRenderer(NIGHTS_EDGE_PROJECTILE.get(), NightEdgeProjectileRenderer::new);
 
         event.registerEntityRenderer(ARROW_PROJECTILE.get(), TerraArrowRenderer::new);
-        event.registerEntityRenderer(BEE_ARROW.get(), c -> new ForwardProjRenderer<>(c, new BeeProjectileModel(c.bakeLayer(BeeProjectileModel.LAYER_LOCATION)), TerraCurio.asResource("textures/entity/bee_projectile.png")));
-        event.registerEntityRenderer(HELL_BAT_ARROW.get(), c -> new GeoArrowRenderer(c, TEMonsterEntities.HELL_BAT.getId(),0.5f,0));
+        event.registerEntityRenderer(BEE_ARROW.get(), context -> new ForwardProjRenderer<>(context, new BeeProjectileModel(context.bakeLayer(BeeProjectileModel.LAYER_LOCATION)), TerraCurio.asResource("textures/entity/bee_projectile.png")));
+        event.registerEntityRenderer(HELL_BAT_ARROW.get(), context -> new GeoArrowRenderer(context, TEMonsterEntities.HELL_BAT.getId(),0.5f,0));
         event.registerEntityRenderer(BOULDER.get(), BoulderRenderer::new);
         event.registerEntityRenderer(FOLLOWER_BOULDER.get(), BoulderRenderer::new);
         event.registerEntityRenderer(EXPLODE_BOULDER.get(), BoulderRenderer::new);
@@ -296,30 +298,31 @@ public final class ModClientEvents {
         event.registerEntityRenderer(LUNAR_HOOK.get(), LunarHookRenderer::new);
         /* todo 静止钩 */
 
-        event.registerEntityRenderer(WOODEN_MINECART.get(), context -> new MinecartRenderer<>(context, ModelLayers.MINECART)); // todo 模型
-        event.registerEntityRenderer(GENERIC_MINECART.get(), context -> new MinecartRenderer<>(context, ModelLayers.MINECART));
-        event.registerEntityRenderer(MECHANICAL_CART.get(), context -> new MinecartRenderer<>(context, ModelLayers.MINECART));
-        event.registerEntityRenderer(MINECARP.get(), context -> new MinecartRenderer<>(context, ModelLayers.MINECART));
-        event.registerEntityRenderer(DEMONIC_HELLCART.get(), context -> new MinecartRenderer<>(context, ModelLayers.MINECART));
-        event.registerEntityRenderer(MEOWMERE_MINECART.get(), context -> new MinecartRenderer<>(context, ModelLayers.MINECART));
-        event.registerEntityRenderer(DIGGING_MOLECART.get(), context -> new MinecartRenderer<>(context, ModelLayers.MINECART));
+        EntityRendererProvider<BaseMinecartEntity> provider = context -> new MinecartRenderer<>(context, ModelLayers.MINECART);
+        event.registerEntityRenderer(WOODEN_MINECART.get(), provider); // todo 模型
+        event.registerEntityRenderer(GENERIC_MINECART.get(), provider);
+        event.registerEntityRenderer(MECHANICAL_CART.get(), provider);
+        event.registerEntityRenderer(MINECARP.get(), provider);
+        event.registerEntityRenderer(DEMONIC_HELLCART.get(), provider);
+        event.registerEntityRenderer(MEOWMERE_MINECART.get(), provider);
+        event.registerEntityRenderer(DIGGING_MOLECART.get(), provider);
 
 
         event.registerBlockEntityRenderer(FunctionalBlocks.ALTAR_BLOCK_ENTITY.get(), context -> new GeoBlockRenderer<>(new AltarBlockModel()));
-        event.registerBlockEntityRenderer(FunctionalBlocks.SKY_MILL_ENTITY.get(), context -> new SkyMillBlockRenderer());
-        event.registerBlockEntityRenderer(FunctionalBlocks.EXTRACTINATOR_ENTITY.get(), context -> new ExtractinatorBlockRenderer());
-        event.registerBlockEntityRenderer(FunctionalBlocks.MECHANICAL_BLOCK_ENTITY.get(), MechanicalBlockRenderer::new);
-        event.registerBlockEntityRenderer(FunctionalBlocks.SILLY_BALLOON_MACHINE_ENTITY.get(), MechanicalBlockRenderer::new);
+        event.registerBlockEntityRenderer(FunctionalBlocks.SKY_MILL_ENTITY.get(), ClientUtils.rendererProvider(SkyMillBlockRenderer::new));
+        event.registerBlockEntityRenderer(FunctionalBlocks.EXTRACTINATOR_ENTITY.get(), ClientUtils.rendererProvider(ExtractinatorBlockRenderer::new));
+        event.registerBlockEntityRenderer(FunctionalBlocks.MECHANICAL_BLOCK_ENTITY.get(), ClientUtils.rendererProvider(MechanicalBlockRenderer::new));
+        event.registerBlockEntityRenderer(FunctionalBlocks.SILLY_BALLOON_MACHINE_ENTITY.get(), ClientUtils.rendererProvider(MechanicalBlockRenderer::new));
         event.registerBlockEntityRenderer(FunctionalBlocks.WEATHER_VANE_ENTITY.get(), WeatherVaneBlockRenderer::new);
         event.registerBlockEntityRenderer(ChestBlocks.BASE_CHEST_ENTITY.get(), BaseChestBlockRenderer::new);
         event.registerBlockEntityRenderer(ChestBlocks.DEATH_CHEST_ENTITY.get(), DeathChestBlockRenderer::new);
         event.registerBlockEntityRenderer(NatureBlocks.LIFE_CRYSTAL_BLOCK_ENTITY.get(), context -> new GeoBlockRenderer<>(new LifeCrystalBlockModel()));
-        event.registerBlockEntityRenderer(StatueBlocks.BLOCK_ENTITY.get(), MechanicalBlockRenderer::new);
+        event.registerBlockEntityRenderer(StatueBlocks.BLOCK_ENTITY.get(), ClientUtils.rendererProvider(MechanicalBlockRenderer::new));
         event.registerBlockEntityRenderer(FunctionalBlocks.COOKING_POT_ENTITY.get(), context -> new GeoBlockRenderer<>(new DefaultedBlockGeoModel<>(Confluence.asResource("cooking_pot"))));
         event.registerBlockEntityRenderer(FunctionalBlocks.ANNOUNCEMENT_BOX_ENTITY.get(), SignRenderer::new);
         event.registerBlockEntityRenderer(FunctionalBlocks.SAFE_ENTITY.get(), context -> new GeoBlockRenderer<>(new DefaultedBlockGeoModel<>(Confluence.asResource("safe"))));
-        event.registerBlockEntityRenderer(DecorativeBlocks.MURAL_ENTITY_BLOCK.get(), context -> new MuralBlockRenderer());
-        event.registerBlockEntityRenderer(FunctionalBlocks.BEWITCHING_TABLE_ENTITY.get(), context -> new BewitchingTableBlockRenderer());
+        event.registerBlockEntityRenderer(DecorativeBlocks.MURAL_ENTITY_BLOCK.get(), ClientUtils.rendererProvider(MuralBlockRenderer::new));
+        event.registerBlockEntityRenderer(FunctionalBlocks.BEWITCHING_TABLE_ENTITY.get(), ClientUtils.rendererProvider(BewitchingTableBlockRenderer::new));
 
         WaystonesHelper.registerEntityRenderers(event);
     }

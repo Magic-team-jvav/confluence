@@ -11,18 +11,23 @@ import net.neoforged.neoforge.common.util.Lazy;
 import org.confluence.mod.Confluence;
 import org.lwjgl.glfw.GLFW;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.function.Supplier;
+
 @EventBusSubscriber(modid = Confluence.MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public final class ModKeyBindings {
+    private static List<Lazy<KeyMapping>> keyMappings = new LinkedList<>();
+
     @SubscribeEvent
     public static void keyBinding(RegisterKeyMappingsEvent event) {
-        event.register(HOOK.get());
-        event.register(SHOW_DETAIL_SPECULAR.get());
-        event.register(HEALING.get());
-        event.register(MANA.get());
-        event.register(EXTRA_INVENTORY.get());
+        for (Lazy<KeyMapping> lazy : keyMappings) {
+            event.register(lazy.get());
+        }
+        keyMappings = null;
     }
 
-    public static final Lazy<KeyMapping> HOOK = Lazy.of(() -> new KeyMapping(
+    public static final Lazy<KeyMapping> HOOK = register(() -> new KeyMapping(
             "key.confluence.hook",
             KeyConflictContext.IN_GAME,
             InputConstants.Type.KEYSYM,
@@ -30,7 +35,7 @@ public final class ModKeyBindings {
             "key.confluence.gameplay"
     ));
 
-    public static final Lazy<KeyMapping> SHOW_DETAIL_SPECULAR = Lazy.of(() -> new KeyMapping(
+    public static final Lazy<KeyMapping> SHOW_DETAIL_SPECULAR = register(() -> new KeyMapping(
             "key.confluence.specular_detail",
             KeyConflictContext.IN_GAME,
             InputConstants.Type.KEYSYM,
@@ -38,7 +43,7 @@ public final class ModKeyBindings {
             "key.confluence.gameplay"
     ));
 
-    public static final Lazy<KeyMapping> HEALING = Lazy.of(() -> new KeyMapping(
+    public static final Lazy<KeyMapping> HEALING = register(() -> new KeyMapping(
             "key.confluence.healing",
             KeyConflictContext.IN_GAME,
             InputConstants.Type.KEYSYM,
@@ -46,7 +51,7 @@ public final class ModKeyBindings {
             "key.confluence.gameplay"
     ));
 
-    public static final Lazy<KeyMapping> MANA = Lazy.of(() -> new KeyMapping(
+    public static final Lazy<KeyMapping> MANA = register(() -> new KeyMapping(
             "key.confluence.mana",
             KeyConflictContext.IN_GAME,
             InputConstants.Type.MOUSE,
@@ -54,11 +59,17 @@ public final class ModKeyBindings {
             "key.confluence.gameplay"
     ));
 
-    public static final Lazy<KeyMapping> EXTRA_INVENTORY = Lazy.of(() -> new KeyMapping(
+    public static final Lazy<KeyMapping> EXTRA_INVENTORY = register(() -> new KeyMapping(
             "key.confluence.extra_inventory",
             KeyConflictContext.IN_GAME,
             InputConstants.Type.KEYSYM,
             InputConstants.UNKNOWN.getValue(),
             "key.confluence.gameplay"
     ));
+
+    private static Lazy<KeyMapping> register(Supplier<KeyMapping> supplier) {
+        Lazy<KeyMapping> lazy = Lazy.of(supplier);
+        keyMappings.add(lazy);
+        return lazy;
+    }
 }

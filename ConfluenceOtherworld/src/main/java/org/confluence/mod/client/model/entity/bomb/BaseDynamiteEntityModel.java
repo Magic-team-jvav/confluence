@@ -22,10 +22,10 @@ public class BaseDynamiteEntityModel extends EntityModel<BaseDynamiteEntity> {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
-        PartDefinition bone = partdefinition.addOrReplaceChild("bone", CubeListBuilder.create().texOffs(0, 0).addBox(-2.5F, 0.0F, -2.5F, 5.0F, 12.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-1.0F, 0.0F, -1.0F, 1.5708F, 0.0F, 0.0F));
+        PartDefinition bone = partdefinition.addOrReplaceChild("bone", CubeListBuilder.create().texOffs(0, 0).addBox(-2.5F, 0.0F, -2.5F, 5.0F, 12.0F, 5.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(-1.0F, 0.0F, -1.0F, 1.5708F, 0.0F, 0.0F));
 
-        PartDefinition cube_r1 = bone.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(0, 0).addBox(0.0F, -1.5F, -0.5F, 0.0F, 4.0F, 1.0F, new CubeDeformation(0.0F))
-                .texOffs(2, 0).addBox(-0.5F, -1.5F, 0.0F, 1.0F, 4.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 13.5F, 0.0F, 0.0F, 0.7854F, 0.0F));
+        bone.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(0, 0).addBox(0.0F, -1.5F, -0.5F, 0.0F, 4.0F, 1.0F, CubeDeformation.NONE)
+                .texOffs(2, 0).addBox(-0.5F, -1.5F, 0.0F, 1.0F, 4.0F, 0.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 13.5F, 0.0F, 0.0F, 0.7854F, 0.0F));
 
         return LayerDefinition.create(meshdefinition, 32, 32);
     }

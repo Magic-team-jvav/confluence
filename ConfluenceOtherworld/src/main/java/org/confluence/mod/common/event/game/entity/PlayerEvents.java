@@ -71,30 +71,28 @@ import static org.confluence.mod.common.attachment.ExtraInventory.EQUIPMENT_STAR
 public final class PlayerEvents {
     @SubscribeEvent
     public static void loggedIn(PlayerEvent.PlayerLoggedInEvent event) {
-        if (event.getEntity() instanceof ServerPlayer player) {
-            PlayerUtils.syncMana2Client(player);
-            PlayerUtils.syncSavedData(player);
-            ExtraInventorySyncPacketS2C.sendToClient(player, player, player.getData(ModAttachmentTypes.EXTRA_INVENTORY));
-            FishingPowerInfoPacketS2C.sendAndGet(player);
-            VisibilityPacketS2C.sendEcho(player);
-            BoulderWorld.forceSetAccessory(player);
-            VisibilityPacketS2C.sendTheConstantPostEffect(player);
-            SecretFlagSyncPacketS2C.sendToAll(((IMinecraftServer) player.server).confluence$getSecretFlag());
-            if (HardmodeConvertor.INSTANCE.isCompleted()) {
-                AchievementUtils.awardAchievement(player, "its_hard");
-            }
-            if (CommonConfigs.DO_NPC_SPAWNING.get() && player.serverLevel().getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)) {
-                NPCSpawner.INSTANCE.trySpawnGuide(player);
-            }
-            CompatibilitySyncPacketS2c.sendToAll();
+        ServerPlayer player = (ServerPlayer) event.getEntity();
+        PlayerUtils.syncMana2Client(player);
+        PlayerUtils.syncSavedData(player);
+        ExtraInventorySyncPacketS2C.sendToClient(player, player, player.getData(ModAttachmentTypes.EXTRA_INVENTORY));
+        FishingPowerInfoPacketS2C.sendAndGet(player);
+        VisibilityPacketS2C.sendEcho(player);
+        BoulderWorld.forceSetAccessory(player);
+        VisibilityPacketS2C.sendTheConstantPostEffect(player);
+        SecretFlagSyncPacketS2C.sendToAll(((IMinecraftServer) player.server).confluence$getSecretFlag());
+        if (HardmodeConvertor.INSTANCE.isCompleted()) {
+            AchievementUtils.awardAchievement(player, "its_hard");
         }
+        if (CommonConfigs.DO_NPC_SPAWNING.get() && player.serverLevel().getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)) {
+            NPCSpawner.INSTANCE.trySpawnGuide(player);
+        }
+        CompatibilitySyncPacketS2c.sendToAll();
     }
 
     @SubscribeEvent
     public static void loggedOut(PlayerEvent.PlayerLoggedOutEvent event) {
-        if (event.getEntity() instanceof ServerPlayer player) {
-            player.serverLevel().getData(ModAttachmentTypes.CHUNK_DROPLETS_DATA).getLastSync().remove(player.getUUID());
-        }
+        ServerPlayer player = (ServerPlayer) event.getEntity();
+        player.serverLevel().getData(ModAttachmentTypes.CHUNK_DROPLETS_DATA).getLastSync().remove(player.getUUID());
     }
 
     @SubscribeEvent

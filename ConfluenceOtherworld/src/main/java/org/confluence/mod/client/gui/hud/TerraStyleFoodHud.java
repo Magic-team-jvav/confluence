@@ -24,11 +24,11 @@ import static org.confluence.mod.util.ClientUtils.draw;
 public class TerraStyleFoodHud implements LayeredDraw.Layer {
     private static final ResourceLocation LEGACY_TEXTURE = Confluence.asResource("textures/gui/hud/icon.png");
     private static final ResourceLocation OVERLAY_TEXTURE = Confluence.asResource("textures/gui/hud/overlay.png");
-    private static final int LEGACY_SIZE = 128;
+//    private static final int LEGACY_SIZE = 128;
     private static final int OVERLAY_SIZE = 128;
-    private static final int[] Food = new int[]{0xab311e, 0x5d11ba, 0x41a9ba, 0x37c438, 0xeed536};
-    private static final int[] Food_LOW = new int[]{0xab1f5d, 0x9d44ac, 0x12f7dd, 0x1fab7f, 0xf7b60b};
-    private static final int[] Food_HIGH = new int[]{0xffb5b5, 0xd6e7eb, 0xbdced0, 0xd6eead, 0xeff4ce};
+//    private static final int[] Food = new int[]{0xab311e, 0x5d11ba, 0x41a9ba, 0x37c438, 0xeed536};
+//    private static final int[] Food_LOW = new int[]{0xab1f5d, 0x9d44ac, 0x12f7dd, 0x1fab7f, 0xf7b60b};
+//    private static final int[] Food_HIGH = new int[]{0xffb5b5, 0xd6e7eb, 0xbdced0, 0xd6eead, 0xeff4ce};
 
     @Override
     public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {

@@ -13,6 +13,8 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.model.AgeableHierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.texture.DynamicTexture;
@@ -26,6 +28,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -56,6 +59,7 @@ import software.bernie.geckolib.renderer.GeoEntityRenderer;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
+import java.util.function.Supplier;
 
 @OnlyIn(Dist.CLIENT)
 public final class ClientUtils {
@@ -441,5 +445,9 @@ public final class ClientUtils {
             rots.pop();
             poseStack.popPose(true);
         }
+    }
+
+    public static <T extends BlockEntity> BlockEntityRendererProvider<T> rendererProvider(Supplier<BlockEntityRenderer<T>> factory) {
+        return context -> factory.get();
     }
 }

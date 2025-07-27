@@ -71,7 +71,7 @@ public class TombstoneBoulderEntity extends BoulderEntity {
 
     public static void createTombstone(ServerPlayer serverPlayer) {
         if (CommonConfigs.DROPS_TOMBSTONE.get()) {
-            boolean isGolden = PlayerUtils.getMoney(serverPlayer) >= 100 * 100 * 10;
+            boolean isGolden = PlayerUtils.getMoney(serverPlayer, true) >= 100 * 100 * 10;
             BlockState blockState = Util.getRandom(ModBlocks.TOMBSTONES.object2BooleanEntrySet().stream()
                     .filter(entry -> entry.getBooleanValue() == isGolden)
                     .map(entry -> entry.getKey().get().defaultBlockState())

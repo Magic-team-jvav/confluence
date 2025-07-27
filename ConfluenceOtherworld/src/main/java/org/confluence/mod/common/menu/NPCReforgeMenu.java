@@ -86,8 +86,8 @@ public class NPCReforgeMenu extends AbstractContainerMenu {
             ModPrefix modPrefix = ModPrefix.ID_MAP.get(data[DATA_PREFIX_ID]);
             if (modPrefix == null) return false;
             if (!(player instanceof ServerPlayer)) {
-                return PlayerUtils.getMoney(player) >= cost;
-            } else if (!PlayerUtils.tryCostMoney(player, cost)) {
+                return PlayerUtils.getMoney(player, true) >= cost;
+            } else if (!PlayerUtils.tryCostMoney(player, cost, true)) {
                 return false;
             }
             PrefixUtils.setAndUpdate(itemStack, prefixType, modPrefix);

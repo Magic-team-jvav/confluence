@@ -24,10 +24,10 @@ import org.confluence.mod.common.menu.NPCTradesForgeMenu;
 import org.confluence.mod.integration.terra_entity.init.ModTradeProviders;
 import org.confluence.mod.network.c2s.SellTradePacketC2S;
 import org.confluence.mod.util.PlayerUtils;
+import org.confluence.terraentity.api.npc.trade.ITrade;
+import org.confluence.terraentity.api.npc.trade.ITradeHolder;
 import org.confluence.terraentity.client.gui.container.TETradeScreen;
 import org.confluence.terraentity.entity.npc.mood.NPCMood;
-import org.confluence.terraentity.api.npc.trade.ITradeHolder;
-import org.confluence.terraentity.api.npc.trade.ITrade;
 import org.confluence.terraentity.registries.npc_trade.TradeProperties;
 import org.confluence.terraentity.registries.npc_trade.TradeProvider;
 import org.jetbrains.annotations.Nullable;
@@ -114,7 +114,7 @@ public class SellTrade implements ITrade {
         // 左上方背包的金币
         int []myCoins;
         if (Minecraft.getInstance().player != null) {
-            myCoins = PlayerUtils.getCoins(Minecraft.getInstance().player);
+            myCoins = PlayerUtils.getCoins(Minecraft.getInstance().player, true);
         }else{
             myCoins = new int[]{};
         }

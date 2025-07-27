@@ -34,7 +34,7 @@ public record SellTradePacketC2S (int tradeIndex) implements CustomPacketPayload
                     if(tradeIndex < 0 ){
                         return;
                     }
-                    trade = holder.getTradeManager().availableTrades().get(tradeIndex);
+                    trade = SellTrade.INSTANCE;
 
                     if(trade instanceof SellTrade sell){
                         sell.onSell(sp, holder, tradeIndex);

@@ -17,6 +17,8 @@ import org.confluence.terraentity.api.npc.trade.ITrade;
 
 public class WithForgeTradeScreen extends TETradeScreen<NPCTradesForgeMenu> {
 
+    public static boolean CTRL_PRESSED = false;
+
     ImageButton forgeBt;
     public ItemStack sellItem;
 
@@ -84,5 +86,21 @@ public class WithForgeTradeScreen extends TETradeScreen<NPCTradesForgeMenu> {
         }
         // 槽内没有物品
         return true;
+    }
+
+    @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        if(keyCode == 341){
+            CTRL_PRESSED = true;
+        }
+        return super.keyPressed(keyCode, scanCode, modifiers);
+    }
+
+    @Override
+    public boolean keyReleased(int keyCode, int scanCode, int modifiers) {
+        if(keyCode == 341){
+            CTRL_PRESSED = false;
+        }
+        return this.getFocused() != null && this.getFocused().keyReleased(keyCode, scanCode, modifiers);
     }
 }

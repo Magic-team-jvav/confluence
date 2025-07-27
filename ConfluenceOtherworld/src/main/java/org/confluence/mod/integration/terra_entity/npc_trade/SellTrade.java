@@ -87,14 +87,19 @@ public class SellTrade implements ITrade {
     public void onSell(ServerPlayer player, ITradeHolder npc, int index) {
 
         if(player.containerMenu instanceof NPCTradesForgeMenu menu){
-            ItemStack stack = menu.slots.getFirst().getItem();
+            ItemStack stack;
+            if(index > 1000){ //  // 约定1000以上为快速交易，此时index - 1000为此时menu点击的物品
+                stack = menu.slots.get(index - 1000).getItem();
+            }else {
+                stack = menu.slots.getFirst().getItem();
+            }
             int res = ValueComponent.getValue(stack, 0);
             int[] coins = PlayerUtils.decodeCoin(res);
             for(int i=0;i<4;i++){
                 Item item = PlayerUtils.INDEX_2_COIN.apply(i);
                 player.getInventory().add(new ItemStack(item, coins[i]));
             }
-            menu.slots.getFirst().set(ItemStack.EMPTY);
+            stack.setCount(0);
 
         }
     }
@@ -208,7 +213,7 @@ public class SellTrade implements ITrade {
     // 点击金钱图标时发送交易请求
     @Override
     public void onClick(double mouseX, double mouseY, int button, int index, Slot slot){
-        if(slot.hasItem()){
+        if(slot.hasItem() || index > 1000){
             PacketDistributor.sendToServer(new SellTradePacketC2S(index));
         }
     }

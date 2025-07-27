@@ -343,7 +343,7 @@ public final class NPCSpawner implements IGlobalData {
      */
     private boolean trySpawnMerchant(ServerPlayer player, BlockPos pos, Region region) {
         if (!hasNPCAlive(region, TENpcEntities.MERCHANT.get())) {
-            if (PlayerUtils.getMoney(player) >= 50 * CoinItem.UPGRADES_COUNT) {
+            if (PlayerUtils.getMoney(player, true) >= 50 * CoinItem.UPGRADES_COUNT) {
                 return spawnAtPos(player.serverLevel(), pos, TENpcEntities.MERCHANT.get());
             }
         }

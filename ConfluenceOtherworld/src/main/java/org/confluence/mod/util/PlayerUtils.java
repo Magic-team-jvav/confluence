@@ -188,13 +188,15 @@ public final class PlayerUtils {
         }
     }
 
-    public static int[] getCoins(Player player) {
+    public static int[] getCoins(Player player, boolean withPiggyBank) {
         int[] coins = new int[SIZE_COINS];
-        int[] ints = decodeCoin(PlayerPiggyBankContainer.of(player).getTotalMoney());
-        coins[0] = ints[3];
-        coins[1] = ints[2];
-        coins[2] = ints[1];
-        coins[3] = ints[0];
+        if (withPiggyBank) {
+            int[] ints = decodeCoin(PlayerPiggyBankContainer.of(player).getTotalMoney());
+            coins[0] = ints[3];
+            coins[1] = ints[2];
+            coins[2] = ints[1];
+            coins[3] = ints[0];
+        }
         for (ItemStack stack : Iterables.concat(player.getInventory().items, player.getData(ModAttachmentTypes.EXTRA_INVENTORY).getCoins())) {
             if (!stack.isEmpty() && stack.is(ModTags.Items.COINS)) {
                 int index = COIN_2_INDEX.applyAsInt(stack.getItem());
@@ -206,8 +208,13 @@ public final class PlayerUtils {
         return coins;
     }
 
-    public static long getMoney(Player player) {
-        long res = PlayerPiggyBankContainer.of(player).getTotalMoney();
+    @Deprecated
+    public static int[] getCoins(Player player) {
+        return getCoins(player, true);
+    }
+
+    public static long getMoney(Player player, boolean withPiggyBank) {
+        long res = withPiggyBank ? PlayerPiggyBankContainer.of(player).getTotalMoney() : 0;
         for (ItemStack stack : Iterables.concat(player.getInventory().items, player.getData(ModAttachmentTypes.EXTRA_INVENTORY).getCoins())) {
             if (!stack.isEmpty() && stack.is(ModTags.Items.COINS)) {
                 int index = COIN_2_INDEX.applyAsInt(stack.getItem());
@@ -219,14 +226,24 @@ public final class PlayerUtils {
         return res;
     }
 
-    public static boolean tryCostMoney(Player player, long cost) {
-        return tryCostMoney(getMoney(player), player, cost);
+    @Deprecated
+    public static long getMoney(Player player) {
+        return getMoney(player, true);
     }
 
-    public static boolean tryCostMoney(long have, Player player, long cost) {
+    public static boolean tryCostMoney(Player player, long cost, boolean withPiggyBank) {
+        return tryCostMoney(getMoney(player, withPiggyBank), player, cost, withPiggyBank);
+    }
+
+    @Deprecated
+    public static boolean tryCostMoney(Player player, long cost) {
+        return tryCostMoney(player, cost, true);
+    }
+
+    public static boolean tryCostMoney(long have, Player player, long cost, boolean withPiggyBank) {
         if (have < cost) return false;
 
-        if ((cost = PlayerPiggyBankContainer.of(player).tryCostMoney(cost)) == 0) return true;
+        if (withPiggyBank && (cost = PlayerPiggyBankContainer.of(player).tryCostMoney(cost)) == 0) return true;
 
         Inventory inventory = player.getInventory();
         for (int i = 0; i < inventory.getContainerSize(); i++) {
@@ -253,6 +270,11 @@ public final class PlayerUtils {
             inventory.add(new ItemStack(coinItem, coin));
         }
         return true;
+    }
+
+    @Deprecated
+    public static boolean tryCostMoney(long have, Player player, long cost) {
+        return tryCostMoney(have, player, cost, true);
     }
 
     public static int[] decodeCoin(long money) {
@@ -317,7 +339,7 @@ public final class PlayerUtils {
      * @see PlayerDeathInfoPacketS2C#replaceCombatKillPacket(ServerPlayer, Component)
      */
     public static void dropMoney(Player player) {
-        long money = getMoney(player);
+        long money = getMoney(player, false);
         long drops;
         if (player.level().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) {
             int ratio = LibUtils.switchByDifficulty(player.level(), player.blockPosition(), 2, 3, 4);
@@ -325,7 +347,7 @@ public final class PlayerUtils {
         } else {
             drops = money;
         }
-        tryCostMoney(money, player, drops);
+        tryCostMoney(money, player, drops, false);
         ModUtils.dropMoney(drops, player.getX(), player.getY(), player.getZ(), player.level());
 
         if (CommonConfigs.SHOW_MONEY_DROPS.get()) {

@@ -12,9 +12,9 @@ import net.neoforged.api.distmarker.OnlyIn;
 import org.confluence.lib.common.recipe.AmountIngredient;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.util.PlayerUtils;
-import org.confluence.terraentity.entity.npc.mood.NPCMood;
-import org.confluence.terraentity.api.npc.trade.ITradeHolder;
 import org.confluence.terraentity.api.npc.trade.ITrade;
+import org.confluence.terraentity.api.npc.trade.ITradeHolder;
+import org.confluence.terraentity.entity.npc.mood.NPCMood;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
@@ -39,13 +39,13 @@ public interface IMoneyTrade extends ITrade {
     }
 
     default boolean canTrade(Player player, ITradeHolder npc, int index) {
-        return PlayerUtils.getMoney(player) >= getCost(player, npc);
+        return PlayerUtils.getMoney(player, true) >= getCost(player, npc);
     }
 
     @Override
     default void onTrade(ServerPlayer player, ITradeHolder npc, int index) {
         long cost = this.getCost(player, npc);
-        if(PlayerUtils.tryCostMoney(player, cost)) {
+        if(PlayerUtils.tryCostMoney(player, cost, true)) {
             onTradeSuccess(player, npc, index, cost);
         }
     }
@@ -64,7 +64,7 @@ public interface IMoneyTrade extends ITrade {
         // 左上方背包的金币
         int []myCoins;
         if (Minecraft.getInstance().player != null) {
-            myCoins = PlayerUtils.getCoins(Minecraft.getInstance().player);
+            myCoins = PlayerUtils.getCoins(Minecraft.getInstance().player, true);
         }else{
             myCoins = new int[]{};
         }

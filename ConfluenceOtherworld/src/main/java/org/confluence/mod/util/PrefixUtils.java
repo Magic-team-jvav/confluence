@@ -412,8 +412,6 @@ public final class PrefixUtils {
 
     public static void unknown(ItemStack itemStack) {
         itemStack.set(ModDataComponentTypes.PREFIX, new PrefixComponent(PrefixType.UNKNOWN, "unknown", AttributeModifiersValue.EMPTY, 0.0F, 0, 0, 0.0F));
-        itemStack.remove(ConfluenceMagicLib.MOD_RARITY);
-        itemStack.remove(ModDataComponentTypes.VALUE);
     }
 
     public static float calculateManaCost(ItemStack itemStack, float amount) {

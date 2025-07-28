@@ -2077,8 +2077,8 @@ public class ModChineseProvider extends LanguageProvider {
 
         add(NatureBlocks.PEARL_LOG_BLOCKS.getButton().get(), "珍珠木按钮");
         add(NatureBlocks.PEARL_LOG_BLOCKS.getPlanks().get(), "珍珠木板");
-        add(NatureBlocks.PEARL_LOG_BLOCKS.getLog().get(), "珍珠木原木");
-        add(NatureBlocks.PEARL_LOG_BLOCKS.getStrippedLog().get(), "去皮珍珠木原木");
+        add(NatureBlocks.PEARL_LOG_BLOCKS.getLog().get(), "珍珠原木");
+        add(NatureBlocks.PEARL_LOG_BLOCKS.getStrippedLog().get(), "去皮珍珠原木");
         add(NatureBlocks.PEARL_LOG_BLOCKS.getStrippedWood().get(), "去皮珍珠木");
         add(NatureBlocks.PEARL_LOG_BLOCKS.getDoor().get(), "珍珠木门");
         add(NatureBlocks.PEARL_LOG_BLOCKS.getSign().get(), "珍珠木告示牌");
@@ -2094,8 +2094,8 @@ public class ModChineseProvider extends LanguageProvider {
 
         add(NatureBlocks.SHADOW_LOG_BLOCKS.getButton().get(), "暗影木按钮");
         add(NatureBlocks.SHADOW_LOG_BLOCKS.getPlanks().get(), "暗影木板");
-        add(NatureBlocks.SHADOW_LOG_BLOCKS.getLog().get(), "暗影木原木");
-        add(NatureBlocks.SHADOW_LOG_BLOCKS.getStrippedLog().get(), "去皮暗影木原木");
+        add(NatureBlocks.SHADOW_LOG_BLOCKS.getLog().get(), "暗影原木");
+        add(NatureBlocks.SHADOW_LOG_BLOCKS.getStrippedLog().get(), "去皮暗影原木");
         add(NatureBlocks.SHADOW_LOG_BLOCKS.getStrippedWood().get(), "去皮暗影木");
         add(NatureBlocks.SHADOW_LOG_BLOCKS.getDoor().get(), "暗影木门");
         add(NatureBlocks.SHADOW_LOG_BLOCKS.getTrapdoor().get(), "暗影木活板门");
@@ -2110,9 +2110,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.SHADOW_LOG_BLOCKS.getPressurePlate().get(), "暗影木压力板");
 
         add(NatureBlocks.PALM_LOG_BLOCKS.getButton().get(), "棕榈木按钮");
-        add(NatureBlocks.PALM_LOG_BLOCKS.getPlanks().get(), "棕榈木木板");
+        add(NatureBlocks.PALM_LOG_BLOCKS.getPlanks().get(), "棕榈木板");
         add(NatureBlocks.PALM_LOG_BLOCKS.getLog().get(), "棕榈原木");
-        add(NatureBlocks.PALM_LOG_BLOCKS.getDoor().get(), "棕榈木木门");
+        add(NatureBlocks.PALM_LOG_BLOCKS.getDoor().get(), "棕榈木门");
         add(NatureBlocks.PALM_LOG_BLOCKS.getTrapdoor().get(), "棕榈木活板门");
         add(NatureBlocks.PALM_LOG_BLOCKS.getSign().get(), "棕榈木告示牌");
         add(NatureBlocks.PALM_LOG_BLOCKS.getHangingSign().get(), "棕榈木悬挂告示牌");
@@ -2128,8 +2128,8 @@ public class ModChineseProvider extends LanguageProvider {
 
         add(NatureBlocks.BAOBAB_LOG_BLOCKS.getButton().get(), "猴面包木按钮");
         add(NatureBlocks.BAOBAB_LOG_BLOCKS.getPlanks().get(), "猴面包木板");
-        add(NatureBlocks.BAOBAB_LOG_BLOCKS.getLog().get(), "猴面包木原木");
-        add(NatureBlocks.BAOBAB_LOG_BLOCKS.getStrippedLog().get(), "去皮猴面包木原木");
+        add(NatureBlocks.BAOBAB_LOG_BLOCKS.getLog().get(), "猴面包原木");
+        add(NatureBlocks.BAOBAB_LOG_BLOCKS.getStrippedLog().get(), "去皮猴面包原木");
         add(NatureBlocks.BAOBAB_LOG_BLOCKS.getStrippedWood().get(), "去皮猴面包木");
         add(NatureBlocks.BAOBAB_LOG_BLOCKS.getDoor().get(), "猴面包木门");
         add(NatureBlocks.BAOBAB_LOG_BLOCKS.getTrapdoor().get(), "猴面包木活板门");
@@ -2160,7 +2160,7 @@ public class ModChineseProvider extends LanguageProvider {
 
         add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getButton().get(), "黄柳木按钮");
         add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getPlanks().get(), "黄柳木板");
-        add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getLog().get(), "黄柳木原木");
+        add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getLog().get(), "黄柳原木");
         add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getStrippedLog().get(), "去皮黄柳原木");
         add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getStrippedWood().get(), "去皮黄柳木");
         add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getDoor().get(), "黄柳木门");
@@ -2177,8 +2177,8 @@ public class ModChineseProvider extends LanguageProvider {
 
         add(NatureBlocks.ASH_LOG_BLOCKS.getButton().get(), "白蜡木按钮");
         add(NatureBlocks.ASH_LOG_BLOCKS.getPlanks().get(), "白蜡木板");
-        add(NatureBlocks.ASH_LOG_BLOCKS.getLog().get(), "白蜡木原木");
-        add(NatureBlocks.ASH_LOG_BLOCKS.getStrippedLog().get(), "去皮白蜡木原木");
+        add(NatureBlocks.ASH_LOG_BLOCKS.getLog().get(), "白蜡原木");
+        add(NatureBlocks.ASH_LOG_BLOCKS.getStrippedLog().get(), "去皮白蜡原木");
         add(NatureBlocks.ASH_LOG_BLOCKS.getStrippedWood().get(), "去皮白蜡木");
         add(NatureBlocks.ASH_LOG_BLOCKS.getDoor().get(), "白蜡木门");
         add(NatureBlocks.ASH_LOG_BLOCKS.getTrapdoor().get(), "白蜡木活板门");
@@ -2194,7 +2194,7 @@ public class ModChineseProvider extends LanguageProvider {
 
         add(NatureBlocks.LIVING_LOG_BLOCKS.getButton().get(), "生命木按钮");
         add(NatureBlocks.LIVING_LOG_BLOCKS.getPlanks().get(), "生命木板");
-        add(NatureBlocks.LIVING_LOG_BLOCKS.getLog().get(), "生命木原木");
+        add(NatureBlocks.LIVING_LOG_BLOCKS.getLog().get(), "生命原木");
         add(NatureBlocks.LIVING_LOG_BLOCKS.getStrippedLog().get(), "去皮生命原木");
         add(NatureBlocks.LIVING_LOG_BLOCKS.getStrippedWood().get(), "去皮生命木");
         add(NatureBlocks.LIVING_LOG_BLOCKS.getDoor().get(), "生命木门");
@@ -2212,7 +2212,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getButton().get(), "生命红木按钮");
         add(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getPlanks().get(), "生命红木板");
         add(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getLog().get(), "生命红木原木");
-        add(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getStrippedLog().get(), "去皮生命红原木");
+        add(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getStrippedLog().get(), "去皮生命红木原木");
         add(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getStrippedWood().get(), "去皮生命红木");
         add(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getDoor().get(), "生命红木门");
         add(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getTrapdoor().get(), "生命红木活板门");

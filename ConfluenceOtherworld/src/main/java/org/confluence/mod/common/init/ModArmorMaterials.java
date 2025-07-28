@@ -118,7 +118,7 @@ public final class ModArmorMaterials {
     public static final Holder<ArmorMaterial> FOSSIL_ARMOR_MATERIALS = registerArmorMaterial("fossil_armor_materials",
             2, 6, 6, 2,
             11, SoundEvents.ARMOR_EQUIP_GENERIC, MaterialItems.STURDY_FOSSIL,
-            "fossil", 1.0F, 0.0F
+            "fossil", 2.0F, 0.0F
     );
     public static final Holder<ArmorMaterial> BEE_ARMOR_MATERIALS = registerArmorMaterial("bee_armor_materials",
             3, 5, 5, 3,

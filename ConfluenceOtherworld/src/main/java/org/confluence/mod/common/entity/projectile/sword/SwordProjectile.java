@@ -22,6 +22,7 @@ import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.component.SwordProjectileComponent;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.terra_curio.common.init.TCAttributes;
+import org.confluence.terraentity.api.entity.IAttackableProjectile;
 import org.confluence.terraentity.api.entity.ICollisionAttackEntity;
 import org.confluence.terraentity.utils.TEUtils;
 import org.jetbrains.annotations.Nullable;
@@ -233,6 +234,11 @@ public abstract class SwordProjectile<T extends SwordProjectile<T>> extends Abst
     protected boolean doHurt(Entity target){
         if(TEUtils.projectileCanHurtEntityTest.test(this, target)) {
             float damage = getBaseDamage() * (attackDamageFactor);
+            DamageSource damageSource = damageSource();
+
+            if(IAttackableProjectile.tryHit(target, damageSource)){
+                return true;
+            }
 
             LivingEntity hurter;
             if(target instanceof LivingEntity living){
@@ -248,7 +254,7 @@ public abstract class SwordProjectile<T extends SwordProjectile<T>> extends Abst
                     effect.applyAll(owner, hurter);
                 });
 
-            if (target.hurt(damageSource(), damage)) {
+            if (target.hurt(damageSource, damage)) {
                 float attackKnockBack = getBaseKnockBack() + knockBack;
                 VectorUtils.knockBackA2B(this, hurter, attackKnockBack * 0.5, 0.2);
 

@@ -16,13 +16,13 @@
         },
         {
             "type": "terra_entity:fire_imp",
-            "weight": 60,
+            "weight": 30,
             "minCount": 1,
             "maxCount": 1
         },
         {
             "type": "terra_entity:demon",
-            "weight": 45,
+            "weight": 30,
             "minCount": 1,
             "maxCount": 1
         },

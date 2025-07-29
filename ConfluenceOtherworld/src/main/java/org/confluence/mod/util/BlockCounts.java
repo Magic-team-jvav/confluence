@@ -2,7 +2,7 @@ package org.confluence.mod.util;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class BlockCounts {
+public final class BlockCounts {
     public final AtomicInteger crimson = new AtomicInteger();
     public final AtomicInteger crimsonSand = new AtomicInteger();
     public final AtomicInteger crimsonIce = new AtomicInteger();

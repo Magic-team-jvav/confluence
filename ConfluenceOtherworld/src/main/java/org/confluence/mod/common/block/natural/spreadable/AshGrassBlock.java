@@ -10,7 +10,7 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 
 public class AshGrassBlock extends SpreadingGrassBlock {
     public AshGrassBlock(){
-        super(Type.PURE, Properties.ofFullCopy(Blocks.GRASS_BLOCK).mapColor(MapColor.TERRACOTTA_ORANGE));
+        super(Type.ASH, Properties.ofFullCopy(Blocks.GRASS_BLOCK).mapColor(MapColor.TERRACOTTA_ORANGE));
     }
 
     @Override
@@ -22,5 +22,4 @@ public class AshGrassBlock extends SpreadingGrassBlock {
             super.randomTick(blockState, serverLevel, blockPos, randomSource);
         }
     }
-
 }

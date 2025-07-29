@@ -49,8 +49,7 @@ public record WormholeToPlayerPacketC2S(UUID playerId, ByMod byMod) implements C
     }
 
     public static boolean isTrackable(ServerPlayer trackingPlayer, ServerPlayer trackedPlayer) {
-        if (trackingPlayer == trackedPlayer || trackingPlayer.getTeam() != trackedPlayer.getTeam()) return false;
-        return !getWormholePotion(trackingPlayer).isEmpty();
+        return trackingPlayer != trackedPlayer && trackingPlayer.getTeam() == trackedPlayer.getTeam();
     }
 
     private static ItemStack getWormholePotion(ServerPlayer serverPlayer) {

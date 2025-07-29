@@ -96,7 +96,7 @@ public final class ModFeatures {
         if (level.getBlockEntity(blockPos) instanceof INetworkEntity entity) {
             return entity;
         }
-        LibUtils.devRun(() -> Confluence.LOGGER.error("Failed to fetch mechanical block entity at ({}, {}, {})", blockPos.getX(), blockPos.getY(), blockPos.getZ()));
+        LibUtils.devRun(() -> Confluence.LOGGER.warn("Failed to fetch mechanical block entity at ({}, {}, {})", blockPos.getX(), blockPos.getY(), blockPos.getZ()));
         return null;
     }
 

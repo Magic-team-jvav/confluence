@@ -176,7 +176,7 @@ dependencies {
     compileOnly "curse.maven:ftb-chunks-forge-314906:5968500"
     compileOnly "curse.maven:ftb-library-forge-404465:6016745"
     if (ftb) {
-        runtimeOnly "curse.maven:ftb-chunks-forge-314906:5968500"
+        runtimeOnly "curse.maven:ftb-chunks-forge-314906:6504893"
         runtimeOnly "curse.maven:ftb-library-forge-404465:6016745"
         runtimeOnly "curse.maven:ftb-ultimine-forge-386134:5671703"
         runtimeOnly "curse.maven:ftb-teams-forge-404468:5882217"

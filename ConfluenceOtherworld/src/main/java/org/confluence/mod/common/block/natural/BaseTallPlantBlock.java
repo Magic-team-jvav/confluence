@@ -30,22 +30,23 @@ public class BaseTallPlantBlock extends TallGrassBlock {
 
     private final Block[] survive;
 
-    public BaseTallPlantBlock(Block... survive){
+    public BaseTallPlantBlock(Block... survive) {
         super(Properties.ofFullCopy(Blocks.TALL_GRASS).replaceable());
         this.survive = survive;
     }
 
-    public BaseTallPlantBlock(Properties prop, Block... survive){
+    public BaseTallPlantBlock(Properties prop, Block... survive) {
         super(prop);
         this.survive = survive;
     }
+
     @Override
-    public boolean mayPlaceOn(BlockState groundState, BlockGetter worldIn, BlockPos pos){
+    public boolean mayPlaceOn(BlockState groundState, BlockGetter worldIn, BlockPos pos) {
         return Arrays.stream(survive).anyMatch(state -> state == groundState.getBlock());
     }
 
     @Override
-    public boolean canSurvive(BlockState blockstate, LevelReader worldIn, BlockPos pos){
+    public boolean canSurvive(BlockState blockstate, LevelReader worldIn, BlockPos pos) {
         BlockPos blockpos = pos.below();
         BlockState groundState = worldIn.getBlockState(blockpos);
         return mayPlaceOn(groundState, worldIn, blockpos) &&
@@ -64,28 +65,28 @@ public class BaseTallPlantBlock extends TallGrassBlock {
 
     @Override
     @NotNull
-    public BlockState updateShape(BlockState originState, Direction pFacing, BlockState pFacingState, LevelAccessor pLevel, BlockPos pCurrentPos, BlockPos pFacingPos){
-        BlockState after = super.updateShape(originState, pFacing, pFacingState, pLevel, pCurrentPos, pFacingPos);
-        if(pFacing == Direction.UP && !pFacingState.isAir()) {
+    public BlockState updateShape(BlockState originState, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
+        BlockState after = super.updateShape(originState, facing, facingState, level, currentPos, facingPos);
+        if (facing == Direction.UP && !facingState.isAir()) {
             return Blocks.AIR.defaultBlockState();
         }
-        if(pFacing != Direction.DOWN) return after;
-        ISpreadable.Type type = pFacingState.getBlock() instanceof ISpreadable sp ? sp.getSpreadType() : ISpreadable.Type.PURE;
+        if (facing != Direction.DOWN) return after;
+        ISpreadable.Type type = facingState.getBlock() instanceof ISpreadable spreadable ? spreadable.getSpreadType() : ISpreadable.Type.PURE;
         BlockState transformResult = type.getNotNull(originState);
-        return transformResult.canSurvive(pLevel, pCurrentPos) ? transformResult : Blocks.AIR.defaultBlockState();
+        return transformResult.canSurvive(level, currentPos) ? transformResult : Blocks.AIR.defaultBlockState();
     }
 
     @Override
-    public BlockState playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
-        if (!pLevel.isClientSide()) {
-            BlockPos abovePos = pPos.above();
-            BlockState aboveState = pLevel.getBlockState(abovePos);
+    public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+        if (!level.isClientSide()) {
+            BlockPos abovePos = pos.above();
+            BlockState aboveState = level.getBlockState(abovePos);
             if (aboveState.getBlock() == this) {
-                pLevel.setBlock(abovePos, Blocks.AIR.defaultBlockState(), 35);
-                pLevel.levelEvent(pPlayer, 2001, abovePos, Block.getId(aboveState));
+                level.setBlock(abovePos, Blocks.AIR.defaultBlockState(), 35);
+                level.levelEvent(player, 2001, abovePos, Block.getId(aboveState));
             }
         }
-        super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
-        return pState;
+        super.playerWillDestroy(level, pos, state, player);
+        return state;
     }
 }

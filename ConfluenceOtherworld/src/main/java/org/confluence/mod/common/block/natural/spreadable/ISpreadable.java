@@ -154,7 +154,8 @@ public interface ISpreadable {
         CORRUPT(new TheCorruptionConversionTable()),
         GLOWING(new GlowingMushroomConversionTable()),
         JUNGLE(new JungleConversionTable()),
-        PURE(new PureConversionTable());
+        PURE(new PureConversionTable()),
+        ASH(new AshConversionTable());
 
         private static final IntFunction<Type> BY_ID = ByIdMap.continuous(Type::ordinal, values(), ByIdMap.OutOfBoundsStrategy.CLAMP);
         private final ConversionTable conversionTable;

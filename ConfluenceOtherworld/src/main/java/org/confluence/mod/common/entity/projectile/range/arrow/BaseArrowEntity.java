@@ -201,8 +201,8 @@ public class BaseArrowEntity extends AbstractArrow {
             }
 
             //命中自己
-            if (livingentity != entity1 && livingentity instanceof Player && entity1 instanceof ServerPlayer && !this.isSilent()) {
-                ((ServerPlayer) entity1).connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.ARROW_HIT_PLAYER, 0.0F));
+            if (livingentity != entity1 && livingentity instanceof Player && entity1 instanceof ServerPlayer player && !this.isSilent()) {
+                player.connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.ARROW_HIT_PLAYER, 0.0F));
             }
             penetrate++;
             if (!canPenetrate()) {

@@ -82,11 +82,11 @@ public class BasePlantBlock extends BushBlock {
      */
     @Override
     @NotNull
-    public BlockState updateShape(BlockState originState, Direction pFacing, BlockState pFacingState, LevelAccessor pLevel, BlockPos pCurrentPos, BlockPos pFacingPos){
-        BlockState after = super.updateShape(originState, pFacing, pFacingState, pLevel, pCurrentPos, pFacingPos);
-        if(pFacing != Direction.DOWN) return after;
-        ISpreadable.Type type = pFacingState.getBlock() instanceof ISpreadable sp ? sp.getSpreadType() : ISpreadable.Type.PURE;
-        BlockState transformResult = type.getNotNull(originState);  // 默认不转化，如果结果是摧毁则是写到map里面
-        return transformResult.canSurvive(pLevel, pCurrentPos) ? transformResult : Blocks.AIR.defaultBlockState();
+    public BlockState updateShape(BlockState originState, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos){
+        BlockState after = super.updateShape(originState, facing, facingState, level, currentPos, facingPos);
+        if(facing != Direction.DOWN) return after;
+        ISpreadable.Type type = facingState.getBlock() instanceof ISpreadable sp ? sp.getSpreadType() : ISpreadable.Type.PURE;
+        BlockState transformResult = type.getNotNull(originState);  // 默认不转化，如果结果是摧毁则是写到表里面
+        return transformResult.canSurvive(level, currentPos) ? transformResult : Blocks.AIR.defaultBlockState();
     }
 }

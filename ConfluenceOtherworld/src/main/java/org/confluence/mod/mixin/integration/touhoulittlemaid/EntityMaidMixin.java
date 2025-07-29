@@ -19,6 +19,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.Map;
+
 @Pseudo
 @Mixin(targets = "com.github.tartaricacid.touhoulittlemaid.entity.passive.EntityMaid", remap = false)
 public abstract class EntityMaidMixin implements ITradeHolder, SelfGetter<EntityMaid> {
@@ -26,6 +28,7 @@ public abstract class EntityMaidMixin implements ITradeHolder, SelfGetter<Entity
     @Unique
     private NPCTradeManager trades;
     private NPCMood mood = new NPCMood();
+    TradeParams tradeParams = TradeParams.create(); // 在没有使用发包同步参数之前，暂时使用默认参数
 
     @Override
     public NPCTradeManager getTradeManager() {
@@ -34,7 +37,7 @@ public abstract class EntityMaidMixin implements ITradeHolder, SelfGetter<Entity
 
     @Override
     public TradeParams getTradeParams() {
-        return null;
+        return tradeParams;
     }
 
     @Override

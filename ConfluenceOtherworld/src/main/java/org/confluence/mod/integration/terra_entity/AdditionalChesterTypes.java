@@ -32,12 +32,6 @@ public class AdditionalChesterTypes {
                     Component.translatable("container.confluence.safe"))
     ));
 
-    public static final Supplier<ChesterType> CHESTER = TYPES.register("chester", ()->new ChesterType(
-            Component.translatable("container.confluence.chester"),
-            ()->new SimpleMenuProvider((id, inventory, player1) ->
-                    new ChestMenu(MenuType.GENERIC_9x6, id, inventory, player1.getData(ModAttachmentTypes.CHESTER), 6),
-                    Component.translatable("container.confluence.chester"))
-    ));
 
     public static void register(IEventBus bus) {
         TYPES.register(bus);

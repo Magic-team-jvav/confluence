@@ -1010,7 +1010,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("container.confluence.solidifier", "固化机");
         add("container.confluence.mythril_anvil", "秘银砧");
         add("container.confluence.orichalcum_anvil", "山铜砧");
-        add("container.confluence.chester", "切斯特");
 
 
 

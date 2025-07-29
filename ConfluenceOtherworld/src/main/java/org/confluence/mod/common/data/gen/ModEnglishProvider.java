@@ -941,7 +941,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add("container.confluence.solidifier", "Solidifier");
         add("container.confluence.mythril_anvil", "Mythril Anvil");
         add("container.confluence.orichalcum_anvil", "Orichalcum Anvil");
-        add("container.confluence.chester", "Chester");
 
 
         add("title.confluence.shimmer_transmutation", "Shimmer Transmutation");

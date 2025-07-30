@@ -1024,7 +1024,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         IntrinsicTagAppender<Item> wip = tag(LibTags.Items.WIP);
         wip.add(
                 ConsumableItems.SMOKE_BOMB.get(),
-                ConsumableItems.SPIKY_BALL.get(),
                 ConsumableItems.GOODIE_BAG.get(),
                 AccessoryItems.GUIDE_VOODOO_DOLL.get(),
                 PaintItems.ECHO_COATING.get(),
@@ -1377,7 +1376,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 CrateBlocks.MIRAGE_CRATE.asItem(),
                 CrateBlocks.HELLSTONE_CRATE.asItem(),
                 CrateBlocks.SEASIDE_CRATE.asItem(),
-                LanceItems.DARK_LANCE.get(),
                 HookItems.WEB_SLINGER.get(),
                 HookItems.SLIME_HOOK.get(),
                 HookItems.FISH_HOOK.get(),

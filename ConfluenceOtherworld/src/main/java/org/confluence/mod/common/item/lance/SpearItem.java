@@ -16,9 +16,9 @@ import software.bernie.geckolib.animation.EasingType;
 import software.bernie.geckolib.animation.keyframe.Keyframe;
 import software.bernie.geckolib.loading.math.value.Constant;
 
-public class DarkLanceItem extends AbstractLanceItem {
-    public DarkLanceItem() {
-        super(new Properties(), ModRarity.ORANGE, 15, ObjectArrayList.of(
+public class SpearItem extends AbstractLanceItem {
+    public SpearItem() {
+        super(new Properties(), ModRarity.WHITE, 12, ObjectArrayList.of(
                 new Keyframe<>(0.0, new Constant(0.0), new Constant(0.0), EasingType.LINEAR),
                 new Keyframe<>(5.0, new Constant(0.0), new Constant(6.0), EasingType.EASE_OUT_BACK),
                 new Keyframe<>(5.0, new Constant(6.0), new Constant(-16.0), EasingType.EASE_IN_EXPO),
@@ -33,10 +33,7 @@ public class DarkLanceItem extends AbstractLanceItem {
 
     @Override
     protected void onHitEntity(DamageSource damageSource, Entity entity, LivingEntity living, Entity victim) {
-        victim.hurt(damageSource, 14.8F + (float) living.getAttributeValue(Attributes.ATTACK_DAMAGE));
-        if (victim instanceof LivingEntity living1) {
-            living1.addEffect(new MobEffectInstance(ModEffects.SHADOWFLAME, 300));
-        }
+        victim.hurt(damageSource, 6.2F + (float) living.getAttributeValue(Attributes.ATTACK_DAMAGE));
         VectorUtils.knockBackA2B(entity, victim, 0.5, 0.1);
     }
 }

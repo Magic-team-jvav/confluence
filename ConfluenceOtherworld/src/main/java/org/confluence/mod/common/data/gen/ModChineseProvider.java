@@ -2936,6 +2936,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(SwordItems.WHITE_PHASEBLADE.get(), "白陨石光剑");
 
         // 其他近战
+        add(LanceItems.SPEAR.get(), "长矛");
         add(LanceItems.DARK_LANCE.get(), "暗黑长枪");
         //剑气
         add(SwordItems.ENCHANTED_SWORD.get(), "附魔剑");
@@ -3500,6 +3501,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ManaWeaponItems.WEATHER_PAIN.get(), "天候棒");
         add(ManaWeaponItems.AQUA_SCEPTER.get(), "海蓝权杖");
         add(ManaWeaponItems.FLOWER_OF_FIRE.get(), "火之花");
+        add(ManaWeaponItems.DEMON_SCYTHE.get(), "恶魔之镰");
         add(ManaWeaponItems.WATER_BOLT.get(), "水矢");
         add(ManaWeaponItems.MAGIC_DAGGER.get(), "魔法飞刀");
         add(ManaWeaponItems.CRYSTAL_STORM.get(), "水晶风暴");

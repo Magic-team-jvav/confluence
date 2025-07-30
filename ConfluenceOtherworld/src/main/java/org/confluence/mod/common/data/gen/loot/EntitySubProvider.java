@@ -528,6 +528,10 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(TEYoyosItems.CASCADE))
                         .add(EmptyLootItem.emptyItem().setWeight(399))
                 )  //todo 限制阶段骷髅王后而肉山前
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(ManaWeaponItems.DEMON_SCYTHE).setWeight(286))
+                        .add(EmptyLootItem.emptyItem().setWeight(9714))
+                )
         );
         add(TEMonsterEntities.VOODOO_DEMON.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/voodoo_demon"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
@@ -537,6 +541,10 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(TEYoyosItems.CASCADE))
                         .add(EmptyLootItem.emptyItem().setWeight(399))
                 )  //todo 限制阶段骷髅王后而肉山前
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(ManaWeaponItems.DEMON_SCYTHE).setWeight(286))
+                        .add(EmptyLootItem.emptyItem().setWeight(9714))
+                )
         );
         add(TEMonsterEntities.HORNET.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/hornet"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
@@ -578,6 +586,18 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.STURDY_FOSSIL)).apply(count1To2).apply(random0To1)
                 )
+        );
+        add(TEMonsterEntities.ANGER_GOBLIN.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/anger_goblin"), goblinCommon()
+        );
+        add(TEMonsterEntities.GOBLIN_ARCHER.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/goblin_archer"), goblinCommon()
+        );
+        add(TEMonsterEntities.GOBLIN_PEON.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/goblin_peon"), goblinCommon()
+        );
+        add(TEMonsterEntities.GOBLIN_SORCERER.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/goblin_sorcerer"), goblinCommon()
+        );
+        add(TEMonsterEntities.GOBLIN_THIEF.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/goblin_thief"), goblinCommon()
+        );
+        add(TEMonsterEntities.GOBLIN_WARRIOR.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/goblin_warrior"), goblinCommon()
         );
         add(TENpcEntities.MECHANIC.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/mechanic"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
@@ -621,6 +641,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         )
                 )
         );
+
     }
 
     private static LootTable.Builder batCommon() {
@@ -632,6 +653,16 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(SwordItems.BAT_BAT).setWeight(4).setQuality(1))
                         .add(EmptyLootItem.emptyItem().setWeight(996))
+                );
+    }
+
+    private LootTable.Builder goblinCommon() {
+        LootItemConditionalFunction.Builder<?> count1To5 = SetItemCountFunction.setCount(UniformGenerator.between(1, 5));
+        EnchantedCountIncreaseFunction.Builder random0To1 = EnchantedCountIncreaseFunction.lootingMultiplier(registries, UniformGenerator.between(0.0F, 1.0F));
+        return LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(ConsumableItems.SPIKY_BALL)).apply(count1To5).apply(random0To1)
+                        .add(EmptyLootItem.emptyItem())
                 );
     }
 

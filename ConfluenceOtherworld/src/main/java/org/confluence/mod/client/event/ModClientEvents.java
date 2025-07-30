@@ -193,6 +193,8 @@ public final class ModClientEvents {
         event.registerLayerDefinition(ShurikenProjectileModel.LAYER_LOCATION, ShurikenProjectileModel::createBodyLayer);
         event.registerLayerDefinition(ThrownKnivesProjectileModel.LAYER_LOCATION, ThrownKnivesProjectileModel::createBodyLayer);
         event.registerLayerDefinition(VilethronProjectileModel.LAYER_LOCATION, VilethronProjectileModel::createBodyLayer);
+        event.registerLayerDefinition(DemonScytheProjectileModel.LAYER_LOCATION, DemonScytheProjectileModel::createBodyLayer);
+        event.registerLayerDefinition(SpikyBallProjectileModel.LAYER_LOCATION, SpikyBallProjectileModel::createBodyLayer);
         event.registerLayerDefinition(HurtnadoProjectileModel.LAYER_LOCATION, HurtnadoProjectileModel::createBodyLayer);
         event.registerLayerDefinition(RollingCactusSpikeModel.LAYER_LOCATION, RollingCactusSpikeModel::createBodyLayer);
 
@@ -254,7 +256,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(THROWN_KNIVES_PROJECTILE.get(), ThrownKnivesProjectileRenderer::new);
         event.registerEntityRenderer(JAVELIN_PROJECTILE.get(), SpearRenderer::new);
         event.registerEntityRenderer(SHURIKEN_PROJECTILE.get(), ShurikenProjectileRenderer::new);
-        event.registerEntityRenderer(SPIKY_BALL_PROJECTILE.get(), NoopRenderer::new); // todo 模型
+        event.registerEntityRenderer(SPIKY_BALL_PROJECTILE.get(), SpikyBallProjectileRenderer::new);
         event.registerEntityRenderer(THROWN_WATER_PROJECTILE.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(MAGIC_DAGGER_PROJECTILE.get(), NoopRenderer::new); // todo 模型
         event.registerEntityRenderer(CRYSTAL_STORM_PROJECTILE.get(), NoopRenderer::new); // todo 模型
@@ -273,7 +275,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(SUPER_SPIKY_BALL_PROJECTILE.get(), NoopRenderer::new); // todo 模型
         event.registerEntityRenderer(SPEAR.get(), NoopRenderer::new); // todo 模型
         event.registerEntityRenderer(BALL_OF_FROST_PROJECTILE.get(), NoopRenderer::new); // todo 模型
-        event.registerEntityRenderer(DEMON_SCYTHE_PROJECTILE.get(), NoopRenderer::new); // todo 模型
+        event.registerEntityRenderer(DEMON_SCYTHE_PROJECTILE.get(), DemonScytheProjectileRenderer::new);
 
         event.registerEntityRenderer(HOTLINE_FISHING_HOOK.get(), HotlineFishingHookRenderer::new);
         event.registerEntityRenderer(BASE_FISHING_HOOK.get(), BaseFishingHookRenderer::new);

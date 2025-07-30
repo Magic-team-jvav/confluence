@@ -124,6 +124,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(TCItems.ROCKET_BOOTS)
                 .add(TCItems.TOOLBELT)
                 .add(TCItems.WORKSHOP)
+                .add(ConsumableItems.SPIKY_BALL)
                 .add(SellTrade.INSTANCE)
                 .build());
 

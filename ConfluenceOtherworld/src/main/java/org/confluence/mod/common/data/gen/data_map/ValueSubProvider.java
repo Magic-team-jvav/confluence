@@ -379,7 +379,8 @@ public final class ValueSubProvider {
                 // Adamantite Glaive 1 gold 80 silver
                 // Chlorophyte Partisan 3 gold 60 silver
                 // Cobalt Naginata 90 silver
-                .add(LanceItems.DARK_LANCE, wrap(2, 50));
+                .add(LanceItems.DARK_LANCE, wrap(2, 50,0))
+                .add(LanceItems.SPEAR, wrap(2, 0));
         // Ghastly Glaive 1 gold
         // Gungnir 4 gold 60 silver
         // Mushroom Spear 14 gold
@@ -600,7 +601,7 @@ public final class ValueSubProvider {
                 .add(ManaWeaponItems.BEE_GUN, 20000)
                 .add(ManaWeaponItems.SPACE_GUN, 4000)
                 .add(ManaWeaponItems.WATER_BOLT, 15000)
-                // 恶魔之镰
+                .add(ManaWeaponItems.DEMON_SCYTHE, 15000)
                 // 骷髅头法书
                 .add(ManaWeaponItems.FLOWER_OF_FIRE, 25000)
                 .add(ManaWeaponItems.THUNDER_ZAPPER, 2100);

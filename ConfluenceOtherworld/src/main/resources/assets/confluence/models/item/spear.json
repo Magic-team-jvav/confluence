@@ -73,6 +73,6 @@
     }
   },
   "textures": {
-    "particle": "confluence:item/lance/dark_lance_item"
+    "particle": "confluence:item/lance/spear_item"
   }
 }

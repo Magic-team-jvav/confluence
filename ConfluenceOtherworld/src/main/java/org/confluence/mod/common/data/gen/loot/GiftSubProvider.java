@@ -68,7 +68,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/obsidian_lock_box"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        // todo .add(LootItem.lootTableItem(LanceItems.DARK_LANCE))
+                        .add(LootItem.lootTableItem(LanceItems.DARK_LANCE))
                         .add(LootItem.lootTableItem(ManaWeaponItems.FLOWER_OF_FIRE))
                         .add(LootItem.lootTableItem(BowItems.HELLWING_BOW))
                 )

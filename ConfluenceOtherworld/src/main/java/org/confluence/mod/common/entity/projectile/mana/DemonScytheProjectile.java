@@ -8,6 +8,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.common.entitiy.IAxisZRotate;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.init.ModEntities;
 
@@ -15,7 +16,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-public class DemonScytheProjectile extends AbstractManaProjectile {
+public class DemonScytheProjectile extends AbstractManaProjectile implements IAxisZRotate {
+    public final Rotate rotate = new Rotate();
     protected final Set<UUID> penetrateSet = new HashSet<>();
 
     public DemonScytheProjectile(EntityType<DemonScytheProjectile> entityType, Level level) {
@@ -40,7 +42,9 @@ public class DemonScytheProjectile extends AbstractManaProjectile {
                 setDeltaMovement(vec3.scale(1.1940371819652)); // (1.06^70)^(1/23) = 1.1940371819652
             }
         }
-
+        if (level().isClientSide) {
+            rotateZ(rotate, this::getDeltaMovement, 0.0F, 0.125F); // 无重力影响
+        }
         HitResult hitresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
         checkInsideBlocks();
         HitResult.Type hitresult$type = hitresult.getType();

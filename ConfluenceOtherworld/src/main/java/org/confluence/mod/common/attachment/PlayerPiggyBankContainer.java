@@ -57,30 +57,29 @@ public class PlayerPiggyBankContainer extends PlayerContainer<PiggyBankBlock.Ent
      */
     public long tryCostMoney(long cost) {
         if (cost <= 0) return 0;
+        if (totalMoney <= 0) return cost;
         long res = totalMoney - cost;
-        if (res >= 0) {
-            for (int i = 0; i < getContainerSize(); i++) {
-                ItemStack stack = getItem(i);
-                if (!stack.isEmpty() && stack.is(ModTags.Items.COINS)) {
-                    setItemNoUpdate(i, ItemStack.EMPTY);
-                }
+        for (int i = 0; i < getContainerSize(); i++) {
+            ItemStack stack = getItem(i);
+            if (!stack.isEmpty() && stack.is(ModTags.Items.COINS)) {
+                setItemNoUpdate(i, ItemStack.EMPTY);
             }
-            if (res != 0) {
-                int[] coins = decodeCoin(res);
-                for (int i = 0; i < SIZE_COINS; i++) {
-                    int coin = coins[i];
-                    if (coin <= 0) continue;
-                    CoinItem coinItem = INDEX_2_COIN.apply(i);
-                    while (coin > UPGRADES_COUNT) {
-                        addItem(new ItemStack(coinItem, UPGRADES_COUNT));
-                        coin -= UPGRADES_COUNT;
-                    }
-                    addItem(new ItemStack(coinItem, coin));
-                }
-            }
-            return 0;
         }
-        return -res;
+        if (res > 0) {
+            int[] coins = decodeCoin(res);
+            for (int i = 0; i < SIZE_COINS; i++) {
+                int coin = coins[i];
+                if (coin <= 0) continue;
+                CoinItem coinItem = INDEX_2_COIN.apply(i);
+                while (coin > UPGRADES_COUNT) {
+                    addItem(new ItemStack(coinItem, UPGRADES_COUNT));
+                    coin -= UPGRADES_COUNT;
+                }
+                addItem(new ItemStack(coinItem, coin));
+            }
+        }
+        setChanged();
+        return res < 0 ? -res : 0;
     }
 
     @ApiStatus.Internal

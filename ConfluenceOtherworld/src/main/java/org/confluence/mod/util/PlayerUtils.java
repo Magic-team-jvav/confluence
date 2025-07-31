@@ -243,7 +243,12 @@ public final class PlayerUtils {
     public static boolean tryCostMoney(long have, Player player, long cost, boolean withPiggyBank) {
         if (have < cost) return false;
 
-        if (withPiggyBank && (cost = PlayerPiggyBankContainer.of(player).tryCostMoney(cost)) == 0) return true;
+        if (withPiggyBank) {
+            long res = PlayerPiggyBankContainer.of(player).tryCostMoney(cost);
+            if (res == 0) return true;
+            have -= cost - res;
+            cost = res;
+        }
 
         Inventory inventory = player.getInventory();
         for (int i = 0; i < inventory.getContainerSize(); i++) {

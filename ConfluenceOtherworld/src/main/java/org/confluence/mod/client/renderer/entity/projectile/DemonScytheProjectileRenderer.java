@@ -10,17 +10,17 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.entity.projectile.DemonScytheProjectileModel;
-
 import org.confluence.mod.common.entity.projectile.mana.DemonScytheProjectile;
-
 
 public class DemonScytheProjectileRenderer extends EntityRenderer<DemonScytheProjectile> {
     private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/demon_scythe_projectile.png");
     private final DemonScytheProjectileModel model;
+
     public DemonScytheProjectileRenderer(EntityRendererProvider.Context context) {
         super(context);
         this.model = new DemonScytheProjectileModel(context.bakeLayer(DemonScytheProjectileModel.LAYER_LOCATION));
     }
+
     @Override
     public ResourceLocation getTextureLocation(DemonScytheProjectile entity) {
         return TEXTURE;
@@ -29,8 +29,7 @@ public class DemonScytheProjectileRenderer extends EntityRenderer<DemonScythePro
     @Override
     public void render(DemonScytheProjectile entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         poseStack.pushPose();
-        poseStack.scale(0.75F, 0.75F, 0.75F);
-        poseStack.translate(0, 0.6f, 0);
+        poseStack.translate(0, 0.75F, 0);
         poseStack.mulPose(Axis.YP.rotationDegrees(entity.getYRot() - 90.0F));
         poseStack.mulPose(Axis.ZP.rotation(-Mth.lerp(partialTick, entity.rotate.old, entity.rotate.neo)));
         poseStack.mulPose(Axis.YP.rotation(-Mth.HALF_PI));

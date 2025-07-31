@@ -16,10 +16,12 @@ import org.confluence.mod.common.entity.projectile.SpikyBallProjectile;
 public class SpikyBallProjectileRenderer extends EntityRenderer<SpikyBallProjectile> {
     private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/spiky_ball_projectile.png");
     private final SpikyBallProjectileModel model;
+
     public SpikyBallProjectileRenderer(EntityRendererProvider.Context context) {
         super(context);
         this.model = new SpikyBallProjectileModel(context.bakeLayer(SpikyBallProjectileModel.LAYER_LOCATION));
     }
+
     @Override
     public ResourceLocation getTextureLocation(SpikyBallProjectile entity) {
         return TEXTURE;
@@ -28,8 +30,7 @@ public class SpikyBallProjectileRenderer extends EntityRenderer<SpikyBallProject
     @Override
     public void render(SpikyBallProjectile entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         poseStack.pushPose();
-        poseStack.scale(0.75F, 0.75F, 0.75F);
-        poseStack.translate(0, 0.2f, 0);
+        poseStack.translate(0, 0.125F, 0);
         poseStack.mulPose(Axis.YP.rotationDegrees(entity.getYRot() - 90.0F));
         poseStack.mulPose(Axis.ZP.rotation(-Mth.lerp(partialTick, entity.rotate.old, entity.rotate.neo)));
         poseStack.mulPose(Axis.YP.rotation(-Mth.HALF_PI));

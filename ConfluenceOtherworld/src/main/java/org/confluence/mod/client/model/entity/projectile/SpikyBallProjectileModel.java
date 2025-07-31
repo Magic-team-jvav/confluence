@@ -9,7 +9,6 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.projectile.SpikyBallProjectile;
-import org.confluence.mod.common.entity.projectile.mana.DemonScytheProjectile;
 import org.jetbrains.annotations.NotNull;
 
 public class SpikyBallProjectileModel extends EntityModel<SpikyBallProjectile> {
@@ -24,9 +23,10 @@ public class SpikyBallProjectileModel extends EntityModel<SpikyBallProjectile> {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
-        PartDefinition bb_main = partdefinition.addOrReplaceChild("bb_main", CubeListBuilder.create().texOffs(0, 14).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 4.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
-        PartDefinition cube_r1 = bb_main.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(0, 7).addBox(-1.0F, -1.0F, 0.0F, 7.0F, 7.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-1.75F, -0.5F, -1.75F, 0.0F, -0.7854F, 0.0F));
-        PartDefinition cube_r2 = bb_main.addOrReplaceChild("cube_r2", CubeListBuilder.create().texOffs(0, 0).addBox(0.0F, -1.0F, -3.0F, 0.0F, 7.0F, 7.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.25F, -0.5F, -0.25F, 0.0F, -0.7854F, 0.0F));
+        PartDefinition bb_main = partdefinition.addOrReplaceChild("bb_main", CubeListBuilder.create().texOffs(0, 14).addBox(-2.0F, -2.0F, -2.0F, 4.0F, 4.0F, 4.0F, CubeDeformation.NONE), PartPose.ZERO);
+
+        bb_main.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(0, 7).addBox(-3.5F, -3.5F, 0.0F, 7.0F, 7.0F, 0.0F, CubeDeformation.NONE)
+                .texOffs(0, 0).addBox(0.0F, -3.5F, -3.5F, 0.0F, 7.0F, 7.0F, CubeDeformation.NONE), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 0.7854F, 0.0F));
         return LayerDefinition.create(meshdefinition, 32, 32);
     }
 

@@ -23,8 +23,8 @@ public class DemonScytheProjectileModel extends EntityModel<DemonScytheProjectil
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
-        PartDefinition bone = partdefinition.addOrReplaceChild("bone", CubeListBuilder.create().texOffs(48, 0).addBox(-1.0F, -12.0F, -1.0F, 2.0F, 24.0F, 2.0F, new CubeDeformation(0.0F))
-                .texOffs(0, -24).addBox(0.0F, -12.0F, -12.0F, 0.0F, 24.0F, 24.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 12.0F, 0.0F));
+        partdefinition.addOrReplaceChild("bone", CubeListBuilder.create().texOffs(48, 0).addBox(-1.0F, -12.0F, -1.0F, 2.0F, 24.0F, 2.0F, CubeDeformation.NONE)
+                .texOffs(0, -24).addBox(0.0F, -12.0F, -12.0F, 0.0F, 24.0F, 24.0F, CubeDeformation.NONE), PartPose.ZERO);
 
         return LayerDefinition.create(meshdefinition, 128, 128);
     }

@@ -70,7 +70,7 @@ public class WizardSet extends EquipmentSet {
                 .build());
     }
 
-    private static EquipmentSetBranch robeBonus(DeferredItem<ArmorItem> item, int additionalMana, float manaConsume) {
+    private static EquipmentSetBranch robeBonus(DeferredItem<? extends ArmorItem> item, int additionalMana, float manaConsume) {
         return new EquipmentSetBranch.Builder().addEquippable(VanillaEquippable.CHEST, item)
                 .bindHook(ModHookTypes.ADDITIONAL_MANA.get(), (owner, player, original) -> original + additionalMana)
                 .bindHook(ModHookTypes.MANA_CONSUME.get(), (owner, itemStack, original) -> () -> original.getAsFloat() * manaConsume)

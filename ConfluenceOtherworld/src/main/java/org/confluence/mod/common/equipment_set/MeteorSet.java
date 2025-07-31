@@ -35,7 +35,7 @@ public class MeteorSet extends EquipmentSet {
                 }).build());
     }
 
-    private static EquipmentSetBranch magicDamageBonus(VanillaEquippable slot, DeferredItem<ArmorItem> item) {
+    private static EquipmentSetBranch magicDamageBonus(VanillaEquippable slot, DeferredItem<? extends ArmorItem> item) {
         return new EquipmentSetBranch.Builder().addEquippable(slot, item)
                 .bindHook(builder -> builder.addBonus(TCAttributes.getMagicDamage(), new AttributeModifier(item.getId(), 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
                 .build();

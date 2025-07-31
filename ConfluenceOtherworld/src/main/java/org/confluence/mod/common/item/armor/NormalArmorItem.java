@@ -25,8 +25,8 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import java.util.function.Consumer;
 
 public class NormalArmorItem extends ArmorItem implements GeoItem {
-    private final AnimatableInstanceCache CACHE = GeckoLibUtil.createInstanceCache(this);
-    private final String name;
+    protected final AnimatableInstanceCache CACHE = GeckoLibUtil.createInstanceCache(this);
+    protected final String name;
 
     public NormalArmorItem(String name, Holder<ArmorMaterial> material, Type type, Properties properties) {
         super(material, type, properties);

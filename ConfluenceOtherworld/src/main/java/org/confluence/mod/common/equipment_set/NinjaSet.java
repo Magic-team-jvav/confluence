@@ -1,8 +1,8 @@
 package org.confluence.mod.common.equipment_set;
 
 import com.xiaohunao.equipment_benediction.common.equipment_set.EquipmentSet;
-import com.xiaohunao.equipment_benediction.common.equipment_set.EquippableGroup;
 import com.xiaohunao.equipment_benediction.common.equipment_set.EquipmentSetBranch;
+import com.xiaohunao.equipment_benediction.common.equipment_set.EquippableGroup;
 import com.xiaohunao.equipment_benediction.common.equippable.VanillaEquippable;
 import com.xiaohunao.equipment_benediction.common.hook.HookMap;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -32,7 +32,7 @@ public class NinjaSet extends EquipmentSet {
                 .build());
     }
 
-    private static EquipmentSetBranch critChanceBonus(VanillaEquippable slot, DeferredItem<ArmorItem> item) {
+    private static EquipmentSetBranch critChanceBonus(VanillaEquippable slot, DeferredItem<? extends ArmorItem> item) {
         return new EquipmentSetBranch.Builder().addEquippable(slot, item)
                 .bindHook(builder -> builder.addBonus(TCAttributes.getCriticalChance(), new AttributeModifier(item.getId(), 0.02, AttributeModifier.Operation.ADD_VALUE)))
                 .build();

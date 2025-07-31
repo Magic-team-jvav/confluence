@@ -179,6 +179,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.PANIC_NECKLACE))
                         .add(LootItem.lootTableItem(TGItems.THE_UNDERTAKER))
+                        .add(LootItem.lootTableItem(LanceItems.THE_ROTTED_FORK))
                 )
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/wooden_crate"), LootTable.lootTable()
@@ -451,6 +452,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.PANIC_NECKLACE))
                         .add(LootItem.lootTableItem(TGItems.THE_UNDERTAKER))
+                        .add(LootItem.lootTableItem(LanceItems.THE_ROTTED_FORK))
                 )
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/pearlwood_crate"), LootTable.lootTable()

@@ -380,7 +380,8 @@ public final class ValueSubProvider {
                 // Chlorophyte Partisan 3 gold 60 silver
                 // Cobalt Naginata 90 silver
                 .add(LanceItems.DARK_LANCE, wrap(2, 50,0))
-                .add(LanceItems.SPEAR, wrap(2, 0));
+                .add(LanceItems.SPEAR, wrap(2, 0))
+                .add(LanceItems.THE_ROTTED_FORK, wrap(1,50, 0));
         // Ghastly Glaive 1 gold
         // Gungnir 4 gold 60 silver
         // Mushroom Spear 14 gold
@@ -389,10 +390,8 @@ public final class ValueSubProvider {
         // Obsidian Swordfish 1 gold
         // Orichalcum Halberd 1 gold 65 silver
         // Palladium Pike 1 gold 20 silver
-        // Spear 2 silver
         // Storm Spear 30 silver
         // Swordfish 50 silver
-        // The Rotted Fork 1 gold 50 silver
         // Titanium Trident 2 gold 10 silver
         // Trident 20 silver
         appender.create()
@@ -799,6 +798,7 @@ public final class ValueSubProvider {
                 .add(TCItems.WORKSHOP, wrap(2, 0, 0));
         appender.create()
                 .add(TGItems.BOOMSTICK, wrap(2, 0, 0))
+                .add(TGItems.BLOWGUN, wrap(20, 0))
                 // Candy Corn Rifle 10 gold
                 // Chain Gun 9 gold
                 // Clockwork Assault Rifle 3 gold

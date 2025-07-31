@@ -215,6 +215,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 SKYWARE_GLASS_DOOR.get(),
                 DISC_BLOCK.get(),
                 OBSIDIAN_BRICKS.get(),
+                MECHANICAL_FRAGILE_OBSIDIAN_BRICKS.get(),
                 OBSIDIAN_BRICKS_SLAB.get(),
                 OBSIDIAN_BRICKS_STAIRS.get(),
                 OBSIDIAN_BRICKS_DOOR.get(),
@@ -910,6 +911,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         tag(Tags.Blocks.OBSIDIANS).add(
                 CHISELED_OBSIDIAN_BRICKS.get(),
                 OBSIDIAN_BRICKS.get(),
+                MECHANICAL_FRAGILE_OBSIDIAN_BRICKS.get(),
                 OBSIDIAN_BRICKS_SLAB.get(),
                 OBSIDIAN_BRICKS_STAIRS.get(),
                 OBSIDIAN_BRICKS_DOOR.get(),

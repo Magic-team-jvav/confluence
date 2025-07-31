@@ -23,6 +23,7 @@ import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.ConfluenceData;
+import org.confluence.mod.common.init.item.LanceItems;
 import org.confluence.mod.common.init.item.LightPetItems;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.ModUtils;
@@ -69,7 +70,7 @@ public class CrimsonHeartBlock extends Block {
                 // 猩红魔杖
             }
             if (level.random.nextFloat() < 0.2F) {
-                // 腐叉
+                LibUtils.createItemEntity(LanceItems.THE_ROTTED_FORK.get(), 1, center.x, center.y, center.z, level, 0);
             }
 
             for (ServerPlayer player : serverLevel.getPlayers(serverPlayer -> serverPlayer.distanceToSqr(center) <= 32 * 32)) {

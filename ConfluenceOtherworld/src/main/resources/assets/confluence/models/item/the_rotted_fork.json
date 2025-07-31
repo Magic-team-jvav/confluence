@@ -10,20 +10,25 @@
             "firstperson_righthand": {
                 "rotation": [
                     0,
-                    0,
-                    30
+                    10,
+                    0
                 ],
                 "translation": [
+                    10.5,
                     0,
-                    0,
-                    10.25
+                    6.75
                 ]
             },
             "firstperson_lefthand": {
                 "rotation": [
                     0,
+                    10,
+                    0
+                ],
+                "translation": [
+                    10.5,
                     0,
-                    30
+                    6.75
                 ]
             },
             "thirdperson_righthand": {

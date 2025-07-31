@@ -2,6 +2,8 @@ package org.confluence.mod.common.data.gen;
 
 import net.minecraft.Util;
 import net.minecraft.data.PackOutput;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.TooltipManager;
@@ -2937,6 +2939,7 @@ public class ModChineseProvider extends LanguageProvider {
 
         // 其他近战
         add(LanceItems.SPEAR.get(), "长矛");
+        add(LanceItems.THE_ROTTED_FORK.get(), "腐叉");
         add(LanceItems.DARK_LANCE.get(), "暗黑长枪");
         //剑气
         add(SwordItems.ENCHANTED_SWORD.get(), "附魔剑");

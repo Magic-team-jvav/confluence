@@ -1,9 +1,6 @@
 package org.confluence.mod.common.item.lance;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -14,7 +11,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -43,14 +39,15 @@ import software.bernie.geckolib.model.DefaultedItemGeoModel;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 public abstract class AbstractLanceItem extends CustomRarityItem implements GeoItem {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private final int attackDuration;
-    private final ObjectArrayList<Keyframe<MathValue>> keyframes;
+    private final List<Keyframe<MathValue>> keyframes;
 
-    public AbstractLanceItem(Properties properties, ModRarity rarity, int attackDuration, ObjectArrayList<Keyframe<MathValue>> keyframes) {
+    public AbstractLanceItem(Properties properties, ModRarity rarity, int attackDuration, List<Keyframe<MathValue>> keyframes) {
         super(properties.stacksTo(1), rarity);
         this.attackDuration = attackDuration;
         this.keyframes = keyframes;
@@ -154,10 +151,7 @@ public abstract class AbstractLanceItem extends CustomRarityItem implements GeoI
             @Override
             public BlockEntityWithoutLevelRenderer getGeoItemRenderer() {
                 if (renderer == null) {
-                    this.renderer = new GeoItemRenderer<>(new DefaultedItemGeoModel<>(Confluence.asResource("lance/" + BuiltInRegistries.ITEM.getKey(AbstractLanceItem.this).getPath()))) {
-                        @Override
-                        protected void renderInGui(ItemDisplayContext transformType, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay, float partialTick) {}
-                    };
+                    this.renderer = new GeoItemRenderer<>(new DefaultedItemGeoModel<>(Confluence.asResource("lance/" + BuiltInRegistries.ITEM.getKey(AbstractLanceItem.this).getPath())));
                 }
                 return renderer;
             }

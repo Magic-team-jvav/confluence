@@ -1,78 +1,108 @@
 {
-  "credit": "Made with Blockbench",
-  "parent": "builtin/entity",
-  "texture_size": [
-    96,
-    96
-  ],
-  "display": {
-    "thirdperson_righthand": {
-      "rotation": [
-        108,
-        0,
-        0
-      ],
-      "translation": [
-        0,
-        0,
-        2
-      ]
+    "base": {
+        "credit": "Made with Blockbench",
+        "parent": "builtin/entity",
+        "texture_size": [
+            96,
+            96
+        ],
+        "display": {
+            "thirdperson_righthand": {
+                "rotation": [
+                    108,
+                    0,
+                    0
+                ],
+                "translation": [
+                    0,
+                    0,
+                    2
+                ]
+            },
+            "thirdperson_lefthand": {
+                "rotation": [
+                    90,
+                    0,
+                    0
+                ],
+                "translation": [
+                    0,
+                    0,
+                    2
+                ]
+            },
+            "ground": {
+                "rotation": [
+                    90,
+                    0,
+                    0
+                ],
+                "translation": [
+                    0,
+                    16,
+                    0
+                ],
+                "scale": [
+                    0.5,
+                    0.5,
+                    0.5
+                ]
+            },
+            "gui": {
+                "rotation": [
+                    90,
+                    45,
+                    0
+                ],
+                "scale": [
+                    0.4,
+                    0.4,
+                    0.4
+                ]
+            },
+            "fixed": {
+                "rotation": [
+                    90,
+                    -45,
+                    -180
+                ],
+                "scale": [
+                    0.5,
+                    0.5,
+                    0.5
+                ]
+            }
+        },
+        "textures": {
+            "particle": "confluence:item/lance/dark_lance_item"
+        }
     },
-    "thirdperson_lefthand": {
-      "rotation": [
-        90,
-        0,
-        0
-      ],
-      "translation": [
-        0,
-        0,
-        2
-      ]
-    },
-    "ground": {
-      "rotation": [
-        90,
-        0,
-        0
-      ],
-      "translation": [
-        0,
-        16,
-        0
-      ],
-      "scale": [
-        0.5,
-        0.5,
-        0.5
-      ]
-    },
-    "gui": {
-      "rotation": [
-        90,
-        45,
-        0
-      ],
-      "scale": [
-        0.4,
-        0.4,
-        0.4
-      ]
-    },
-    "fixed": {
-      "rotation": [
-        90,
-        -45,
-        -180
-      ],
-      "scale": [
-        0.5,
-        0.5,
-        0.5
-      ]
+    "gui_light": "front",
+    "loader": "neoforge:separate_transforms",
+    "perspectives": {
+        "fixed": {
+            "parent": "minecraft:item/generated",
+            "textures": {
+                "layer0": "confluence:item/lance/dark_lance_inventory"
+            }
+        },
+        "ground": {
+            "parent": "minecraft:item/generated",
+            "textures": {
+                "layer0": "confluence:item/lance/dark_lance_inventory"
+            }
+        },
+        "gui": {
+            "parent": "minecraft:item/generated",
+            "textures": {
+                "layer0": "confluence:item/lance/dark_lance_inventory"
+            }
+        },
+        "head": {
+            "parent": "minecraft:item/generated",
+            "textures": {
+                "layer0": "confluence:item/lance/dark_lance_inventory"
+            }
+        }
     }
-  },
-  "textures": {
-    "particle": "confluence:item/lance/dark_lance_item"
-  }
 }

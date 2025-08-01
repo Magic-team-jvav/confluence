@@ -49,10 +49,22 @@ public class StonecuttingRecipeProvider extends AbstractRecipeProvider {
 
         stonecutting(recipeOutput, MaterialItems.CHINA_BOWL.toStack(), Ingredient.of(Items.WHITE_TERRACOTTA));
         stonecutting(recipeOutput, MaterialItems.CHINA_PLATE.toStack(), Ingredient.of(Items.WHITE_TERRACOTTA));
+
+
+        stonecutting(recipeOutput, DecorativeBlocks.GRANITE_COLUMN.toStack(), Ingredient.of(DecorativeBlocks.GRANITE_BRICKS));
+        stonecutting(recipeOutput, DecorativeBlocks.GRANITE_BRICKS.toStack(), Ingredient.of(NatureBlocks.GRANITE));
+        stonecutting(recipeOutput, DecorativeBlocks.POLISHED_GRANITE.toStack(), Ingredient.of(DecorativeBlocks.GRANITE_BRICKS));
+
+        stonecutting(recipeOutput, DecorativeBlocks.CALCITE_COLUMN.toStack(), Ingredient.of(DecorativeBlocks.CALCITE_BRICKS));
+        stonecutting(recipeOutput, DecorativeBlocks.CALCITE_BRICKS.toStack(), Ingredient.of(Blocks.CALCITE));
+        stonecutting(recipeOutput, DecorativeBlocks.POLISHED_CALCITE.toStack(), Ingredient.of(DecorativeBlocks.CALCITE_BRICKS));
+        stonecutting(recipeOutput, DecorativeBlocks.CALCITE_SMALL_BRICKS.toStack(), Ingredient.of(DecorativeBlocks.CALCITE_BRICKS));
+
+
         stonecutting(recipeOutput, DecorativeBlocks.CHISELED_OBSIDIAN_BRICKS.toStack(), Ingredient.of(DecorativeBlocks.OBSIDIAN_BRICKS));
-        stonecutting(recipeOutput, DecorativeBlocks.GRANITE_COLUMN.toStack(), Ingredient.of(DecorativeBlocks.POLISHED_GRANITE));
         stonecutting(recipeOutput, DecorativeBlocks.OBSIDIAN_SMALL_BRICKS.toStack(), Ingredient.of(DecorativeBlocks.OBSIDIAN_BRICKS));
         stonecutting(recipeOutput, DecorativeBlocks.SMOOTH_OBSIDIAN.toStack(), Ingredient.of(DecorativeBlocks.OBSIDIAN_BRICKS));
+
         stonecutting(recipeOutput, DecorativeBlocks.SNOW_BRICKS.toStack(), Ingredient.of(Items.SNOW_BLOCK));
         stonecutting(recipeOutput, DecorativeBlocks.SNOW_BRICKS_SLAB.toStack(2), Ingredient.of(DecorativeBlocks.SNOW_BRICKS));
         stonecutting(recipeOutput, DecorativeBlocks.SNOW_BRICKS_STAIRS.toStack(), Ingredient.of(DecorativeBlocks.SNOW_BRICKS));

@@ -1,7 +1,26 @@
 {
   "variants": {
-    "": {
-      "model": "confluence:block/granite"
-    }
+    "": [
+      {
+        "model": "confluence:block/granite",
+        "weight": 1
+      },
+      {
+        "model": "confluence:block/granite_0",
+        "weight": 1
+      },
+      {
+        "model": "confluence:block/granite_1",
+        "weight": 1
+      },
+      {
+        "model": "confluence:block/granite_2",
+        "weight": 1
+      },
+      {
+        "model": "confluence:block/granite_3",
+        "weight": 1
+      }
+    ]
   }
 }

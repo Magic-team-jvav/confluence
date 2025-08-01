@@ -223,7 +223,16 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 SMOOTH_OBSIDIAN.get(),
                 POLISHED_GRANITE.get(),
                 GRANITE_COLUMN.get(),
+                GRANITE_BRICKS.get(),
                 CHISELED_OBSIDIAN_BRICKS.get(),
+
+                CALCITE_COLUMN.get(),
+                CALCITE_BRICKS.get(),
+                CALCITE_SMALL_BRICKS.get(),
+                CRACKED_CALCITE_BRICKS.get(),
+                GILDED_CALCITE.get(),
+                POLISHED_CALCITE.get(),
+        
                 CRYSTAL_BLOCK.get(),
                 BLUE_BRICKS.get(),
                 GREEN_BRICKS.get(),
@@ -556,6 +565,15 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 AETHERIUM_BRICKS.get(),
                 POLISHED_GRANITE.get(),
                 GRANITE_COLUMN.get(),
+                GRANITE_BRICKS.get(),
+
+                CALCITE_COLUMN.get(),
+                CALCITE_BRICKS.get(),
+                CALCITE_SMALL_BRICKS.get(),
+                CRACKED_CALCITE_BRICKS.get(),
+                GILDED_CALCITE.get(),
+                POLISHED_CALCITE.get(),
+
                 CRYSTAL_BLOCK.get(),
                 RUBY_CHAIN.get(),
                 AMBER_CHAIN.get(),

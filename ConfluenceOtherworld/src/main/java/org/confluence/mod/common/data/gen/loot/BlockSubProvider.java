@@ -410,6 +410,13 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(POLISHED_GRANITE.get());
         dropSelf(GRANITE_COLUMN.get());
 
+        dropSelf(CALCITE_COLUMN.get());
+        dropSelf(CALCITE_BRICKS.get());
+        dropSelf(CALCITE_SMALL_BRICKS.get());
+        dropSelf(CRACKED_CALCITE_BRICKS.get());
+        dropSelf(GILDED_CALCITE.get());
+        dropSelf(POLISHED_CALCITE.get());
+
         dropSelf(ASPHALT_BLOCK.get());
 
         dropSelf(CHISELED_OBSIDIAN_BRICKS.get());

@@ -222,6 +222,14 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 '/', Ingredient.of(Items.STICK)
         ), HOE_PATTERN), hoe.asItem().getDefaultInstance());
     }
+    // 基础砖
+    private static final List<String> BRICKS_PATTERN = List.of("##","##");
+    private void registerBricksRecipes(RecipeOutput output, Ingredient material,
+                                    ItemLike bricks) {
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '#', material
+        ), BRICKS_PATTERN), bricks.asItem().getDefaultInstance());
+    }
     @Override
     protected void buildRecipes(RecipeOutput output, HolderLookup.Provider holderLookup) {
         // 注册矿物块的合成与分解配方
@@ -735,8 +743,24 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         shapeless(output, TEBoomerangItems.ENCHANTED_BOOMERANG.toStack(), Ingredient.of(TEBoomerangItems.WOOD_BOOMERANG),Ingredient.of(MaterialItems.FALLING_STAR));
         shapeless(output, BaitItems.ENCHANTED_NIGHTCRAWLER.toStack(), Ingredient.of(BaitItems.WORM),Ingredient.of(MaterialItems.FALLING_STAR));
 
-
-
+        // 基础石砖
+        registerBricksRecipes(output, Ingredient.of(NatureBlocks.EBONSTONE),DecorativeBlocks.EBONSTONE_BRICKS);
+        registerBricksRecipes(output, Ingredient.of(NatureBlocks.CRIMSTONE),DecorativeBlocks.CRIMSTONE_BRICKS);
+        registerBricksRecipes(output, Ingredient.of(NatureBlocks.PEARLSTONE),DecorativeBlocks.PEARLSTONE_BRICKS);
+        registerBricksRecipes(output, Ingredient.of(Blocks.CALCITE),DecorativeBlocks.CRACKED_CALCITE_BRICKS);
+        // 镶金方解石
+        shaped(output, "", "_from_nuggets_lead",
+                ShapedRecipePattern.of(Map.of(
+                        'S', Ingredient.of(Blocks.CALCITE),
+                        'A', Ingredient.of(Tags.Items.NUGGETS_GOLD)
+                ), List.of(
+                        "AAA",
+                        "ASA",
+                        "AAA"
+                )),
+                DecorativeBlocks.GILDED_CALCITE.toStack()
+        );
+        shapeless(output, MaterialItems.LEAD_NUGGET.toStack(9));
         // 铅铁共用相关
         shaped(output, "", "_from_nuggets_lead",
                 ShapedRecipePattern.of(Map.of(

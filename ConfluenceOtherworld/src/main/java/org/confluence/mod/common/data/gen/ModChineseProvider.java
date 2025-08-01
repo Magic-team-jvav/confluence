@@ -2418,7 +2418,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.JADE_BLOCK.get(), "翡翠块");
         add(DecorativeBlocks.SAPPHIRE_BLOCK.get(), "蓝玉块");
         add(DecorativeBlocks.AMETHYST_BLOCK.get(), "紫晶块");
-        add(DecorativeBlocks.POLISHED_GRANITE.get(), "磨制花岗岩块");
+
 
         add(DecorativeBlocks.SANDSTONE_BRICKS.get(), "砂岩砖");
         add(DecorativeBlocks.SANDSTONE_BRICKS_STAIRS.get(), "砂岩砖楼梯");
@@ -2440,6 +2440,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.PEARLSANDSTONE_BRICKS_STAIRS.get(), "珍珠砂岩楼梯");
         add(DecorativeBlocks.PEARLSANDSTONE_BRICKS_SLAB.get(), "珍珠砂岩台阶");
         add(DecorativeBlocks.PEARLSANDSTONE_BRICKS_WALL.get(), "珍珠砂岩砖墙");
+
 
         add(DecorativeBlocks.SNOW_BRICKS.get(), "雪砖");
         add(DecorativeBlocks.SNOW_BRICKS_STAIRS.get(), "雪砖楼梯");
@@ -2527,7 +2528,15 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.CHISELED_LIVING_PLANKS.get(), "雕纹生命木板");
         add(DecorativeBlocks.CHISELED_LIVING_MAHOGANY_PLANKS.get(), "雕纹生命红木板");
         add(DecorativeBlocks.CHISELED_GLOWING_MUSHROOM_PLANKS.get(), "雕纹发光蘑菇木板");
-        add(DecorativeBlocks.GRANITE_COLUMN.get(), "花岗岩梁");
+        add(DecorativeBlocks.GRANITE_BRICKS.get(), "花岗岩砖");
+        add(DecorativeBlocks.GRANITE_COLUMN.get(), "花岗岩柱");
+        add(DecorativeBlocks.POLISHED_GRANITE.get(), "磨制花岗岩");
+        add(DecorativeBlocks.CALCITE_COLUMN.get(), "方解石柱");
+        add(DecorativeBlocks.CALCITE_BRICKS.get(), "方解石砖");
+        add(DecorativeBlocks.CRACKED_CALCITE_BRICKS.get(), "裂纹方解石砖");
+        add(DecorativeBlocks.CALCITE_SMALL_BRICKS.get(), "方解细石砖");
+        add(DecorativeBlocks.GILDED_CALCITE.get(), "镶金方解石");
+        add(DecorativeBlocks.POLISHED_CALCITE.get(), "磨制方解石");
         add(DecorativeBlocks.PURE_GLASS.get(), "纯净玻璃");
         add(DecorativeBlocks.WHITE_PURE_GLASS.get(), "白色纯净玻璃");
         add(DecorativeBlocks.LIGHT_GRAY_PURE_GLASS.get(), "淡灰色纯净玻璃");
@@ -2941,11 +2950,13 @@ public class ModChineseProvider extends LanguageProvider {
         add(LanceItems.SPEAR.get(), "长矛");
         add(LanceItems.THE_ROTTED_FORK.get(), "腐叉");
         add(LanceItems.DARK_LANCE.get(), "暗黑长枪");
+        add(LanceItems.COBALT_NAGINATA.get(), "钴薙刀");
+        add(LanceItems.PALLADIUM_PIKE.get(), "钯金刺矛");
+        add(LanceItems.ORICHALCUM_HALBERD.get(), "山铜长戟");
         //剑气
         add(SwordItems.ENCHANTED_SWORD.get(), "附魔剑");
         //快攻
         add(SwordItems.TERRAGRIM.get(), "泰拉魔刃");
-
 
         add(AxeItems.COPPER_AXE.get(), "铜斧");
         add(AxeItems.TIN_AXE.get(), "锡斧");
@@ -3961,8 +3972,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.YELLOW_EEL.get(), "黄鳝");
         add(FoodItems.TILAPIA.get(), "罗非鱼");
         add(FoodItems.HONEYFIN.get(), "蜂蜜鱼");
-
-
 
         add(FoodItems.RAW_FROG.get(), "生青蛙肉");
         add(FoodItems.RAW_SQUIRREL.get(), "生松鼠肉");

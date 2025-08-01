@@ -1,3 +1,5 @@
+import java.text.SimpleDateFormat
+
 plugins {
     id 'net.neoforged.moddev'
 }
@@ -7,7 +9,7 @@ var projectName = ["Confluence-Magic-Lib", "TerraEntity", "MineTeam", "Equipment
                    "EntityTrackerHUD", "EnemyBanner"
 ]
 
-version = mod_version
+version = mod_version + "-${new SimpleDateFormat("yyMMdd").format(new Date())}"
 group = mod_group_id
 
 base {

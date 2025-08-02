@@ -7,14 +7,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.menu.HellforgeMenu;
+import org.confluence.mod.common.menu.EnhancedForgeMenu;
 
-public class HellforgeScreen extends AbstractContainerScreen<HellforgeMenu> {
+public class EnhanceForgeScreen extends AbstractContainerScreen<EnhancedForgeMenu> {
     public static final ResourceLocation SUPER_LIT_PROGRESS = Confluence.asResource("textures/gui/container/super_lit_progress.png");
-    private static final ResourceLocation BURN_PROGRESS_SPRITE = ResourceLocation.withDefaultNamespace("container/furnace/burn_progress");
-    private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/container/hellforge.png");
+    public static final ResourceLocation BURN_PROGRESS_SPRITE = ResourceLocation.withDefaultNamespace("container/furnace/burn_progress");
+    public static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/container/hellforge.png");
 
-    public HellforgeScreen(HellforgeMenu menu, Inventory playerInventory, Component title) {
+    public EnhanceForgeScreen(EnhancedForgeMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
     }
 

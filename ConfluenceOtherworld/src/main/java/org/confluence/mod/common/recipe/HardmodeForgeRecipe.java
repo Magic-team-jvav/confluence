@@ -11,42 +11,42 @@ import net.minecraft.world.item.crafting.RecipeType;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 
-public class HellforgeRecipe extends EnhancedForgeRecipe {
-    public HellforgeRecipe(ItemStack result, NonNullList<Ingredient> ingredients, float experience, int cookingTime, boolean requiresFuel) {
+public class HardmodeForgeRecipe extends EnhancedForgeRecipe {
+    public HardmodeForgeRecipe(ItemStack result, NonNullList<Ingredient> ingredients, float experience, int cookingTime, boolean requiresFuel) {
         super(result, ingredients, experience, cookingTime, requiresFuel);
     }
 
     @Override
     public String getGroup() {
-        return "hellforge";
+        return "hardmode_forge";
     }
 
     @Override
     public ItemStack getToastSymbol() {
-        return FunctionalBlocks.HELLFORGE.toStack();
+        return FunctionalBlocks.TITANIUM_FORGE.toStack();
     }
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return ModRecipes.HELLFORGE_SERIALIZER.get();
+        return ModRecipes.HARDMODE_FORGE_SERIALIZER.get();
     }
 
     @Override
     public RecipeType<?> getType() {
-        return ModRecipes.HELLFORGE_TYPE.get();
+        return ModRecipes.HARDMODE_FORGE_TYPE.get();
     }
 
-    public static class Serializer implements RecipeSerializer<HellforgeRecipe> {
-        public static final MapCodec<HellforgeRecipe> CODEC = EnhancedForgeRecipe.codec(HellforgeRecipe::new);
-        public static final StreamCodec<RegistryFriendlyByteBuf, HellforgeRecipe> STREAM_CODEC = EnhancedForgeRecipe.streamCodec(HellforgeRecipe::new);
+    public static class Serializer implements RecipeSerializer<HardmodeForgeRecipe> {
+        public static final MapCodec<HardmodeForgeRecipe> CODEC = EnhancedForgeRecipe.codec(HardmodeForgeRecipe::new);
+        public static final StreamCodec<RegistryFriendlyByteBuf, HardmodeForgeRecipe> STREAM_CODEC = EnhancedForgeRecipe.streamCodec(HardmodeForgeRecipe::new);
 
         @Override
-        public MapCodec<HellforgeRecipe> codec() {
+        public MapCodec<HardmodeForgeRecipe> codec() {
             return CODEC;
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, HellforgeRecipe> streamCodec() {
+        public StreamCodec<RegistryFriendlyByteBuf, HardmodeForgeRecipe> streamCodec() {
             return STREAM_CODEC;
         }
     }

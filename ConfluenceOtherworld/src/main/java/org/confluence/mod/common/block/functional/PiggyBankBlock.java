@@ -1,7 +1,6 @@
 package org.confluence.mod.common.block.functional;
 
 import com.mojang.serialization.MapCodec;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -13,10 +12,8 @@ import net.minecraft.world.entity.monster.piglin.PiglinAi;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ChestMenu;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -26,9 +23,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.common.PlayerContainer;
 import org.confluence.lib.common.block.HorizontalDirectionalWaterloggedBlock;
-import org.confluence.lib.common.component.ModRarity;
-import org.confluence.lib.common.item.TooltipBlockItem;
-import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.common.attachment.PlayerPiggyBankContainer;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 
@@ -85,12 +79,6 @@ public class PiggyBankBlock extends HorizontalDirectionalWaterloggedBlock implem
         @Override
         public BlockEntity self() {
             return this;
-        }
-    }
-
-    public static class BItem extends TooltipBlockItem {
-        public BItem(Block block) {
-            super(block, new Item.Properties(), ModRarity.WHITE, TooltipItem.getTooltipsFromString("piggy_bank", 2, ChatFormatting.GRAY));
         }
     }
 }

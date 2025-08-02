@@ -124,7 +124,7 @@ public final class ModClientEvents {
     public static void registerMenuScreens(RegisterMenuScreensEvent event) {
         event.register(ModMenuTypes.SKY_MILL.get(), SkyMillScreen::new);
         event.register(ModMenuTypes.HEAVY_WORK_BENCH.get(), HeavyWorkBenchScreen::new);
-        event.register(ModMenuTypes.HELLFORGE.get(), HellforgeScreen::new);
+        event.register(ModMenuTypes.HELLFORGE.get(), EnhanceForgeScreen::new);
         event.register(ModMenuTypes.FLETCHING_TABLE.get(), FletchingTableScreen::new);
         event.register(ModMenuTypes.ALCHEMY_TABLE.get(), AlchemyTableScreen::new);
         event.register(ModMenuTypes.EXTRA_INVENTORY.get(), ExtraInventoryScreen::new);
@@ -133,6 +133,7 @@ public final class ModClientEvents {
         event.register(ModMenuTypes.SOLIDIFIER.get(), SolidifierScreen::new);
         event.register(ModMenuTypes.CRYSTAL_BALL.get(), CrystalBallScreen::new);
         event.register(ModMenuTypes.HARDMODE_ANVIL.get(), HardmodeAnvilScreen::new);
+        event.register(ModMenuTypes.HARDMODE_FORGE.get(), EnhanceForgeScreen::new);
 
         event.register(ModMenuTypes.NPC_TRADES_MENU.get(), WithForgeTradeScreen::new);
         event.register(ModMenuTypes.REFORGE_MENU.get(), NPCReforgeScreen::new);
@@ -245,7 +246,7 @@ public final class ModClientEvents {
 
         event.registerEntityRenderer(ARROW_PROJECTILE.get(), TerraArrowRenderer::new);
         event.registerEntityRenderer(BEE_ARROW.get(), context -> new ForwardProjRenderer<>(context, new BeeProjectileModel(context.bakeLayer(BeeProjectileModel.LAYER_LOCATION)), TerraCurio.asResource("textures/entity/bee_projectile.png")));
-        event.registerEntityRenderer(HELL_BAT_ARROW.get(), context -> new GeoArrowRenderer(context, TEMonsterEntities.HELL_BAT.getId(),0.5f,0));
+        event.registerEntityRenderer(HELL_BAT_ARROW.get(), context -> new GeoArrowRenderer(context, TEMonsterEntities.HELL_BAT.getId(), 0.5f, 0));
         event.registerEntityRenderer(BOULDER.get(), BoulderRenderer::new);
         event.registerEntityRenderer(FOLLOWER_BOULDER.get(), BoulderRenderer::new);
         event.registerEntityRenderer(EXPLODE_BOULDER.get(), BoulderRenderer::new);

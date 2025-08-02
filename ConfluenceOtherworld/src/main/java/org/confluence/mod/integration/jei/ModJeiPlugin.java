@@ -120,7 +120,7 @@ public final class ModJeiPlugin implements IModPlugin {
         if (CommonConfigs.FLETCHING_MENU.get()) {
             registration.addRecipeClickArea(FletchingTableScreen.class, 87, 31, 28, 23, FletchingTableCategory.TYPE);
         }
-        registration.addRecipeClickArea(HellforgeScreen.class, 89, 31, 28, 23, HellforgeCategory.TYPE);
+        registration.addRecipeClickArea(EnhanceForgeScreen.class, 89, 31, 28, 23, HellforgeCategory.TYPE);
         registration.addRecipeClickArea(SkyMillScreen.class, 34, 35, 18, 18, SkyMillCategory.TYPE);
         registration.addRecipeClickArea(AlchemyTableScreen.class, 79, 38, 18, 20, AlchemyTableCategory.TYPE);
         registration.addRecipeClickArea(CookingPotScreen.class, 78, 36, 46, 15, CookingPotCategory.TYPE);

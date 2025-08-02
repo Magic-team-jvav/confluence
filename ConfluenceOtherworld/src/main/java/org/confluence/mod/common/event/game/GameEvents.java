@@ -79,6 +79,7 @@ public final class GameEvents {
                     event.setCanceled(true);
                 }
             }
+
             boolean isGoldenKey = carried.is(ToolItems.GOLDEN_DUNGEON_KEY);
             if ((isGoldenKey && onSlot.is(ConsumableItems.GOLDEN_LOCK_BOX) || (carried.is(ToolItems.SHADOW_KEY) && onSlot.is(ConsumableItems.OBSIDIAN_LOCK_BOX)))) {
                 if (player instanceof ServerPlayer serverPlayer && LootComponent.open(serverPlayer, onSlot)) {

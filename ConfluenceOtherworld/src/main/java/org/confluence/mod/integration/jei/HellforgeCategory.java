@@ -16,7 +16,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.gui.container.HellforgeScreen;
+import org.confluence.mod.client.gui.container.EnhanceForgeScreen;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.HellforgeRecipe;
 import org.jetbrains.annotations.Nullable;
@@ -78,7 +78,7 @@ public class HellforgeCategory implements IRecipeCategory<RecipeHolder<Hellforge
     public void draw(RecipeHolder<HellforgeRecipe> recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         guiGraphics.blit(BACKGROUND, 0, 0, 0, 0, 112, 48, 112, 48);
         if (recipe.value().isRequiresFuel()) {
-            guiGraphics.blit(HellforgeScreen.SUPER_LIT_PROGRESS, 54, 25, 0, 0, 14, 14, 14, 14);
+            guiGraphics.blit(EnhanceForgeScreen.SUPER_LIT_PROGRESS, 54, 25, 0, 0, 14, 14, 14, 14);
             if (mouseX >= 54 && mouseX <= 68 && mouseY >= 25 && mouseY <= 39) {
                 Component text = Component.translatable("condition.confluence.requires_fuel").withColor(ModRarity.CYAN.color());
                 guiGraphics.renderTooltip(Minecraft.getInstance().font, text, (int) mouseX, (int) mouseY);

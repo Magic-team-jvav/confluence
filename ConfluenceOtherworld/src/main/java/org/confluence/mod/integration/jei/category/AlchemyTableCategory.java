@@ -1,4 +1,4 @@
-package org.confluence.mod.integration.jei;
+package org.confluence.mod.integration.jei.category;
 
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;

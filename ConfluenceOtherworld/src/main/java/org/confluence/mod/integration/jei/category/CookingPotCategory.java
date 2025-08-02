@@ -1,4 +1,4 @@
-package org.confluence.mod.integration.jei;
+package org.confluence.mod.integration.jei.category;
 
 import com.google.common.collect.Streams;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;

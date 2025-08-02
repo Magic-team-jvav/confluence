@@ -1,4 +1,4 @@
-package org.confluence.mod.integration.jei;
+package org.confluence.mod.integration.jei.category;
 
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -14,6 +14,7 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.HardmodeAnvilRecipe;
+import org.confluence.mod.integration.jei.ModJeiPlugin;
 import org.jetbrains.annotations.Nullable;
 
 public class HardmodeAnvilCategory implements IRecipeCategory<RecipeHolder<HardmodeAnvilRecipe>> {

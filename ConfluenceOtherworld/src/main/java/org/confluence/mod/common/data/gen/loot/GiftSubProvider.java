@@ -363,7 +363,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(EmptyLootItem.emptyItem())
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.CRYSTAL_SHARDS_ITEM).apply(SetItemCountFunction.setCount(UniformGenerator.between(4, 10))))
+                        .add(LootItem.lootTableItem(MaterialItems.CRYSTAL_SHARDS).apply(SetItemCountFunction.setCount(UniformGenerator.between(4, 10))))
                         .add(EmptyLootItem.emptyItem())
                 )
         );

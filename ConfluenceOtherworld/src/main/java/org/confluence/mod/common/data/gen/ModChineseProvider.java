@@ -2,8 +2,6 @@ package org.confluence.mod.common.data.gen;
 
 import net.minecraft.Util;
 import net.minecraft.data.PackOutput;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.TooltipManager;
@@ -2811,6 +2809,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.LUMINITE_INGOT.get(), "夜明锭");
         add(MaterialItems.HALLOWED_INGOT.get(), "神圣锭");
         add(MaterialItems.SHROOMITE_INGOT.get(), "蘑菇矿锭");
+        add(MaterialItems.ECTOPLASM.get(), "灵气");
         add(MaterialItems.SPECTRE_INGOT.get(), "幽灵锭");
         add(MaterialItems.RUBY.get(), "红玉");
         add(MaterialItems.AMBER.get(), "琥珀");
@@ -2830,7 +2829,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.FILAMENTOUS_FIN.get(), "羽状鳍");
         add(MaterialItems.LENS.get(), "晶状体");
         add(MaterialItems.BLACK_LENS.get(), "黑晶状体");
-        add(MaterialItems.CRYSTAL_SHARDS_ITEM.get(), "水晶碎块");
+        add(MaterialItems.CRYSTAL_SHARDS.get(), "水晶碎块");
         add(MaterialItems.ANTLION_MANDIBLE.get(), "蚁狮上颚");
         add(MaterialItems.STINGER.get(), "毒刺");
         add(MaterialItems.MAN_EATER_VINE.get(), "食人怪藤蔓");

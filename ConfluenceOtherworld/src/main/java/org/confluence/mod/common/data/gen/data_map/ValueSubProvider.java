@@ -204,7 +204,7 @@ public final class ValueSubProvider {
                 .add(MaterialItems.BLACK_PEARL, wrap(3, 0, 0))
                 .add(MaterialItems.PINK_PEARL, wrap(15, 0, 0))
                 .add(MaterialItems.JUNGLE_SPORE, 20)
-                .add(MaterialItems.CRYSTAL_SHARDS_ITEM, wrap(16, 0))
+                .add(MaterialItems.CRYSTAL_SHARDS, wrap(16, 0))
                 .add(MaterialItems.CURSED_FLAME, wrap(8, 0))
                 .add(MaterialItems.ICHOR, wrap(9, 0))
                 .add(MaterialItems.PIXIE_DUST, wrap(1, 0))

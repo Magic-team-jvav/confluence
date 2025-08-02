@@ -1,4 +1,4 @@
-package org.confluence.mod.integration.jei;
+package org.confluence.mod.integration.jei.category;
 
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -16,6 +16,7 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.AltarRecipe;
+import org.confluence.mod.integration.jei.ModJeiPlugin;
 
 import static org.confluence.terra_curio.integration.jei.ModJeiPlugin.addInput;
 

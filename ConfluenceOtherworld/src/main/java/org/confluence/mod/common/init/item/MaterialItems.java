@@ -135,11 +135,12 @@ public class MaterialItems {
     public static final DeferredItem<Item> SOUL_OF_FRIGHT = ITEMS.register("soul_of_fright", () -> new TooltipItem(new Item.Properties(), ModRarity.PINK, TooltipItem.getTooltipsFromString("soul_of_fright", 1, ChatFormatting.GRAY)));
     public static final DeferredItem<Item> SOUL_OF_MIGHT = ITEMS.register("soul_of_might", () -> new TooltipItem(new Item.Properties(), ModRarity.PINK, TooltipItem.getTooltipsFromString("soul_of_might", 1, ChatFormatting.GRAY)));
     public static final DeferredItem<Item> SOUL_OF_SIGHT = ITEMS.register("soul_of_sight", () -> new TooltipItem(new Item.Properties(), ModRarity.PINK, TooltipItem.getTooltipsFromString("soul_of_sight", 1, ChatFormatting.GRAY)));
-    public static final DeferredItem<Item> CRYSTAL_SHARDS_ITEM = register("crystal_shards_item", ModRarity.BLUE);
+    public static final DeferredItem<Item> CRYSTAL_SHARDS = register("crystal_shards", ModRarity.BLUE);
     public static final DeferredItem<Item> CURSED_FLAME = ITEMS.register("cursed_flame", CursedFlameItem::new);
     public static final DeferredItem<Item> ICHOR = register("ichor", ModRarity.ORANGE);
     public static final DeferredItem<Item> PIXIE_DUST = register("pixie_dust", ModRarity.BLUE);
     public static final DeferredItem<Item> SPELL_TOME = register("spell_tome", ModRarity.BLUE);
+    public static final DeferredItem<Item> ECTOPLASM = register("ectoplasm", ModRarity.YELLOW);
 
     public static DeferredItem<Item> register(String id) {
         return ITEMS.register(id, () -> new Item(new Item.Properties()));

@@ -126,7 +126,7 @@ public final class ModClientEvents {
     public static void registerMenuScreens(RegisterMenuScreensEvent event) {
         event.register(ModMenuTypes.SKY_MILL.get(), SkyMillScreen::new);
         event.register(ModMenuTypes.HEAVY_WORK_BENCH.get(), HeavyWorkBenchScreen::new);
-        event.register(ModMenuTypes.HELLFORGE.get(), EnhanceForgeScreen::new);
+        event.register(ModMenuTypes.HELLFORGE.get(), HellforgeScreen::new);
         event.register(ModMenuTypes.FLETCHING_TABLE.get(), FletchingTableScreen::new);
         event.register(ModMenuTypes.ALCHEMY_TABLE.get(), AlchemyTableScreen::new);
         event.register(ModMenuTypes.EXTRA_INVENTORY.get(), ExtraInventoryScreen::new);
@@ -135,7 +135,7 @@ public final class ModClientEvents {
         event.register(ModMenuTypes.SOLIDIFIER.get(), SolidifierScreen::new);
         event.register(ModMenuTypes.CRYSTAL_BALL.get(), CrystalBallScreen::new);
         event.register(ModMenuTypes.HARDMODE_ANVIL.get(), HardmodeAnvilScreen::new);
-        event.register(ModMenuTypes.HARDMODE_FORGE.get(), EnhanceForgeScreen::new);
+        event.register(ModMenuTypes.HARDMODE_FORGE.get(), HardmodeForgeScreen::new);
 
         event.register(ModMenuTypes.NPC_TRADES_MENU.get(), WithForgeTradeScreen::new);
         event.register(ModMenuTypes.REFORGE_MENU.get(), NPCReforgeScreen::new);

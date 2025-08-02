@@ -1,4 +1,4 @@
-package org.confluence.mod.integration.jei;
+package org.confluence.mod.integration.jei.category;
 
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import mezz.jei.api.constants.VanillaTypes;
@@ -37,6 +37,8 @@ import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.menu.HeavyWorkBenchMenu;
 import org.confluence.mod.common.recipe.HeavyWorkBenchRecipe;
+import org.confluence.mod.integration.jei.ModJeiPlugin;
+import org.confluence.mod.integration.jei.RecipeTransferPacketC2S;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;

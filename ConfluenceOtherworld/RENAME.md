@@ -124,6 +124,7 @@
 
 ## 物品
 
-| 原名称                   | 修改后名称                |
-|-----------------------|----------------------|
-| `terra_guns:blowpipe` | `terra_guns:blowgun` |
+| 原名称                              | 修改后名称                       |
+|----------------------------------|-----------------------------|
+| `terra_guns:blowpipe`            | `terra_guns:blowgun`        |
+| `confluence:crystal_shards_item` | `confluence:crystal_shards` |

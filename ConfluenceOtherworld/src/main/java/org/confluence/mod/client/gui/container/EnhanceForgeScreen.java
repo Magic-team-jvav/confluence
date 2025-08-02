@@ -9,12 +9,12 @@ import net.minecraft.world.entity.player.Inventory;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.menu.EnhancedForgeMenu;
 
-public class EnhanceForgeScreen extends AbstractContainerScreen<EnhancedForgeMenu> {
+public abstract class EnhanceForgeScreen<M extends EnhancedForgeMenu> extends AbstractContainerScreen<M> {
     public static final ResourceLocation SUPER_LIT_PROGRESS = Confluence.asResource("textures/gui/container/super_lit_progress.png");
     public static final ResourceLocation BURN_PROGRESS_SPRITE = ResourceLocation.withDefaultNamespace("container/furnace/burn_progress");
     public static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/container/hellforge.png");
 
-    public EnhanceForgeScreen(EnhancedForgeMenu menu, Inventory playerInventory, Component title) {
+    public EnhanceForgeScreen(M menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
     }
 

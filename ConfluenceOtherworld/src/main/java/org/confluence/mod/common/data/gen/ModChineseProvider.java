@@ -2240,6 +2240,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.HARDENED_RED_SAND_BLOCK.get(), "硬化红沙块");
         add(NatureBlocks.MOISTENED_RED_SAND_BLOCK.get(), "湿润红沙块");
         add(NatureBlocks.GRANITE.get(), "花岗岩");
+        add(NatureBlocks.MARBLE.get(), "大理石");
         add(NatureBlocks.DIATOMACEOUS.get(), "硅藻土");
         add(NatureBlocks.SLUSH.get(), "雪泥块");
         add(NatureBlocks.SILT_BLOCK.get(), "泥沙块");
@@ -2533,12 +2534,12 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.GRANITE_BRICKS.get(), "花岗岩砖");
         add(DecorativeBlocks.GRANITE_COLUMN.get(), "花岗岩柱");
         add(DecorativeBlocks.POLISHED_GRANITE.get(), "磨制花岗岩");
-        add(DecorativeBlocks.CALCITE_COLUMN.get(), "方解石柱");
-        add(DecorativeBlocks.CALCITE_BRICKS.get(), "方解石砖");
-        add(DecorativeBlocks.CRACKED_CALCITE_BRICKS.get(), "裂纹方解石砖");
-        add(DecorativeBlocks.CALCITE_SMALL_BRICKS.get(), "方解细石砖");
-        add(DecorativeBlocks.GILDED_CALCITE.get(), "镶金方解石");
-        add(DecorativeBlocks.POLISHED_CALCITE.get(), "磨制方解石");
+        add(DecorativeBlocks.MARBLE_COLUMN.get(), "大理石柱");
+        add(DecorativeBlocks.MARBLE_BRICKS.get(), "大理石砖");
+        add(DecorativeBlocks.CRACKED_MARBLE_BRICKS.get(), "裂纹大理石砖");
+        add(DecorativeBlocks.MARBLE_SMALL_BRICKS.get(), "大理细石砖");
+        add(DecorativeBlocks.GILDED_MARBLE.get(), "镶金大理石");
+        add(DecorativeBlocks.POLISHED_MARBLE.get(), "磨制大理石");
         add(DecorativeBlocks.PURE_GLASS.get(), "纯净玻璃");
         add(DecorativeBlocks.WHITE_PURE_GLASS.get(), "白色纯净玻璃");
         add(DecorativeBlocks.LIGHT_GRAY_PURE_GLASS.get(), "淡灰色纯净玻璃");

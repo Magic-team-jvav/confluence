@@ -747,7 +747,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         registerBricksRecipes(output, Ingredient.of(NatureBlocks.EBONSTONE),DecorativeBlocks.EBONSTONE_BRICKS);
         registerBricksRecipes(output, Ingredient.of(NatureBlocks.CRIMSTONE),DecorativeBlocks.CRIMSTONE_BRICKS);
         registerBricksRecipes(output, Ingredient.of(NatureBlocks.PEARLSTONE),DecorativeBlocks.PEARLSTONE_BRICKS);
-        registerBricksRecipes(output, Ingredient.of(Blocks.CALCITE),DecorativeBlocks.CRACKED_CALCITE_BRICKS);
+        registerBricksRecipes(output, Ingredient.of(Blocks.CALCITE),DecorativeBlocks.CRACKED_MARBLE_BRICKS);
         // 镶金方解石
         shaped(output, "", "",
                 ShapedRecipePattern.of(Map.of(
@@ -758,7 +758,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                         "ASA",
                         "AAA"
                 )),
-                DecorativeBlocks.GILDED_CALCITE.toStack()
+                DecorativeBlocks.GILDED_MARBLE.toStack()
         );        // 铅铁共用相关
         shaped(output, "", "_from_nuggets_lead",
                 ShapedRecipePattern.of(Map.of(

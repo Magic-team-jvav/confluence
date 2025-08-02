@@ -226,12 +226,12 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 GRANITE_BRICKS.get(),
                 CHISELED_OBSIDIAN_BRICKS.get(),
 
-                CALCITE_COLUMN.get(),
-                CALCITE_BRICKS.get(),
-                CALCITE_SMALL_BRICKS.get(),
-                CRACKED_CALCITE_BRICKS.get(),
-                GILDED_CALCITE.get(),
-                POLISHED_CALCITE.get(),
+                MARBLE_COLUMN.get(),
+                MARBLE_BRICKS.get(),
+                MARBLE_SMALL_BRICKS.get(),
+                CRACKED_MARBLE_BRICKS.get(),
+                GILDED_MARBLE.get(),
+                POLISHED_MARBLE.get(),
         
                 CRYSTAL_BLOCK.get(),
                 BLUE_BRICKS.get(),
@@ -326,6 +326,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 ASPHALT_BLOCK.get(),
 
                 GRANITE.get(),
+                MARBLE.get(),
 
                 CrateBlocks.IRON_CRATE.get(),
                 CrateBlocks.GOLDEN_CRATE.get(),
@@ -567,12 +568,12 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 GRANITE_COLUMN.get(),
                 GRANITE_BRICKS.get(),
 
-                CALCITE_COLUMN.get(),
-                CALCITE_BRICKS.get(),
-                CALCITE_SMALL_BRICKS.get(),
-                CRACKED_CALCITE_BRICKS.get(),
-                GILDED_CALCITE.get(),
-                POLISHED_CALCITE.get(),
+                MARBLE_COLUMN.get(),
+                MARBLE_BRICKS.get(),
+                MARBLE_SMALL_BRICKS.get(),
+                CRACKED_MARBLE_BRICKS.get(),
+                GILDED_MARBLE.get(),
+                POLISHED_MARBLE.get(),
 
                 CRYSTAL_BLOCK.get(),
                 RUBY_CHAIN.get(),
@@ -608,6 +609,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 THIN_ICE_BLOCK.get(),
                 CRISPY_HONEY_BLOCK.get(),
                 NatureBlocks.GRANITE.get(),
+                MARBLE.get(),
                 POLISHED_GRANITE.get(),
 
                 SAFE.get(),
@@ -1028,7 +1030,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         tag(Tags.Blocks.SANDS).add(EBONSAND.get(), CRIMSAND.get(), PEARLSAND.get());
         tag(Tags.Blocks.SANDSTONE_BLOCKS).add(HARDENED_EBONSAND_BLOCK.get(), HARDENED_CRIMSAND_BLOCK.get(), HARDENED_PEARLSAND_BLOCK.get());
         tag(Tags.Blocks.SANDSTONE_RED_BLOCKS).add(HARDENED_RED_SAND_BLOCK.get());
-        tag(Tags.Blocks.STONES).add(EBONSTONE.get(), CRIMSTONE.get(), PEARLSTONE.get(), GRANITE.get());
+        tag(Tags.Blocks.STONES).add(EBONSTONE.get(), CRIMSTONE.get(), PEARLSTONE.get(), GRANITE.get(), MARBLE.get());
         tag(Tags.Blocks.VILLAGER_JOB_SITES).add(SKY_MILL.get(), COOKING_POT.get());
         tag(BlockTags.OVERWORLD_CARVER_REPLACEABLES).add(EBONSTONE.get(), CRIMSTONE.get(), HARDENED_SAND_BLOCK.get(), HARDENED_RED_SAND_BLOCK.get());
         tag(ModTags.Blocks.UNBREAKABLE_IF_CANNOT_HARVEST).addTags(ModTags.Blocks.NEEDS_2_LEVEL, ModTags.Blocks.NEEDS_3_LEVEL, ModTags.Blocks.NEEDS_4_LEVEL, ModTags.Blocks.NEEDS_5_LEVEL, ModTags.Blocks.NEEDS_6_LEVEL, ModTags.Blocks.NEEDS_7_LEVEL, ModTags.Blocks.NEEDS_8_LEVEL, ModTags.Blocks.NEEDS_9_LEVEL, Tags.Blocks.ORES_NETHERITE_SCRAP, Tags.Blocks.STORAGE_BLOCKS_NETHERITE);

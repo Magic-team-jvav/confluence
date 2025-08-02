@@ -233,12 +233,12 @@ public class DecorativeBlocks {
 
 
     // 方解石
-    public static final DeferredBlock<Block> CALCITE_COLUMN = registerWithItem("calcite_column", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_WHITE)));
-    public static final DeferredBlock<Block> CALCITE_BRICKS = registerWithItem("calcite_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_WHITE)));
-    public static final DeferredBlock<Block> CRACKED_CALCITE_BRICKS = registerWithItem("cracked_calcite_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_WHITE)));
-    public static final DeferredBlock<Block> CALCITE_SMALL_BRICKS = registerWithItem("calcite_small_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_WHITE)));
-    public static final DeferredBlock<Block> GILDED_CALCITE = registerWithItem("gilded_calcite", () -> new GlazedTerracottaBlock(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_WHITE)));
-    public static final DeferredBlock<Block> POLISHED_CALCITE = registerWithItem("polished_calcite", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_WHITE)));
+    public static final DeferredBlock<Block> MARBLE_COLUMN = registerWithItem("marble_column", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_WHITE)));
+    public static final DeferredBlock<Block> MARBLE_BRICKS = registerWithItem("marble_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_WHITE)));
+    public static final DeferredBlock<Block> CRACKED_MARBLE_BRICKS = registerWithItem("cracked_marble_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_WHITE)));
+    public static final DeferredBlock<Block> MARBLE_SMALL_BRICKS = registerWithItem("marble_small_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_WHITE)));
+    public static final DeferredBlock<Block> GILDED_MARBLE = registerWithItem("gilded_marble", () -> new GlazedTerracottaBlock(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_WHITE)));
+    public static final DeferredBlock<Block> POLISHED_MARBLE = registerWithItem("polished_marble", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_WHITE)));
 
 
     // 地牢

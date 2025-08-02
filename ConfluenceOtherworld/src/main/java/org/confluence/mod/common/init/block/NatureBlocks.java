@@ -84,6 +84,8 @@ public class NatureBlocks {
     public static final Supplier<BlockEntityType<LifeCrystalBlock.BEntity>> LIFE_CRYSTAL_BLOCK_ENTITY = ModBlocks.BLOCK_ENTITIES.register("life_crystal_block_entity", () -> BlockEntityType.Builder.of(LifeCrystalBlock.BEntity::new, LIFE_CRYSTAL_BLOCK.get()).build(null));
 
     public static final DeferredBlock<Block> GRANITE = registerWithItem("granite", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE)));
+    public static final DeferredBlock<Block> MARBLE = registerWithItem("marble", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE)));
+
     public static final DeferredBlock<Block> LIFE_MUSHROOM = registerWithoutItem("life_mushroom", () -> new MushroomBlock(ISpreadable.Type.PURE, Blocks.GRASS_BLOCK)); // 生命蘑菇
 
     // 腐化

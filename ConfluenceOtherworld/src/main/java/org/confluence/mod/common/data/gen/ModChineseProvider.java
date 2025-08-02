@@ -2957,6 +2957,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(LanceItems.COBALT_NAGINATA.get(), "钴薙刀");
         add(LanceItems.PALLADIUM_PIKE.get(), "钯金刺矛");
         add(LanceItems.ORICHALCUM_HALBERD.get(), "山铜长戟");
+        add(LanceItems.MYTHRIL_HALBERD.get(), "秘银长戟");
         //剑气
         add(SwordItems.ENCHANTED_SWORD.get(), "附魔剑");
         //快攻

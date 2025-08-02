@@ -268,6 +268,13 @@ public final class ModTags {
         public static final TagKey<Item> INGOTS_DEMONITE = c("ingots/demonite");
         public static final TagKey<Item> INGOTS_CRIMTANE = c("ingots/crimtane");
         public static final TagKey<Item> INGOTS_HELLSTONE = c("ingots/hellstone");
+        
+        public static final TagKey<Item> INGOTS_COBALT = c("ingots/cobalt");
+        public static final TagKey<Item> INGOTS_PALLADIUM = c("ingots/palladium");
+        public static final TagKey<Item> INGOTS_MYTHRIL = c("ingots/mythril");
+        public static final TagKey<Item> INGOTS_ORICHALCUM = c("ingots/orichalcum");
+        public static final TagKey<Item> INGOTS_ADAMANTITE = c("ingots/adamantite");
+        public static final TagKey<Item> INGOTS_TITANIUM = c("ingots/titanium");
 
         public static final TagKey<Item> RAW_MATERIALS_TIN = c("raw_materials/tin");
         public static final TagKey<Item> RAW_MATERIALS_LEAD = c("raw_materials/lead");
@@ -278,6 +285,13 @@ public final class ModTags {
         public static final TagKey<Item> RAW_MATERIALS_DEMONITE = c("raw_materials/demonite");
         public static final TagKey<Item> RAW_MATERIALS_CRIMTANE = c("raw_materials/crimtane");
         public static final TagKey<Item> RAW_MATERIALS_HELLSTONE = c("raw_materials/hellstone");
+
+        public static final TagKey<Item> RAW_MATERIALS_COBALT = c("raw_materials/cobalt");
+        public static final TagKey<Item> RAW_MATERIALS_PALLADIUM = c("raw_materials/palladium");
+        public static final TagKey<Item> RAW_MATERIALS_MYTHRIL = c("raw_materials/mythril");
+        public static final TagKey<Item> RAW_MATERIALS_ORICHALCUM = c("raw_materials/orichalcum");
+        public static final TagKey<Item> RAW_MATERIALS_ADAMANTITE = c("raw_materials/adamantite");
+        public static final TagKey<Item> RAW_MATERIALS_TITANIUM = c("raw_materials/titanium");
 
         public static final TagKey<Item> GEMS_RUBY = c("gems/ruby");
         public static final TagKey<Item> GEMS_AMBER = c("gems/amber");
@@ -360,6 +374,14 @@ public final class ModTags {
         public static final TagKey<Item> DIAMOND_ORE_SMELTING = register("diamond_ore_smelting");
         public static final TagKey<Item> EMERALD_ORE_SMELTING = register("emerald_ore_smelting");
         public static final TagKey<Item> REDSTONE_ORE_SMELTING = register("redstone_ore_smelting");
+
+        public static final TagKey<Item> COBALT_ORE_SMELTING = c("cobalt_ore_smelting");
+        public static final TagKey<Item> PALLADIUM_ORE_SMELTING = c("palladium_ore_smelting");
+        public static final TagKey<Item> MYTHRIL_ORE_SMELTING = c("mythril_ore_smelting");
+        public static final TagKey<Item> ORICHALCUM_ORE_SMELTING = c("orichalcum_ore_smelting");
+        public static final TagKey<Item> ADAMANTITE_ORE_SMELTING = c("adamantite_ore_smelting");
+        public static final TagKey<Item> TITANIUM_ORE_SMELTING = c("titanium_ore_smelting");
+        
         public static final TagKey<Item> MOSS_ITEM = register("moss_item");
         public static final TagKey<Item> SUMMONER_WEAPON = register("summoner_weapon");
         public static final TagKey<Item> CROP_FORTUNE = register("crop_fortune");

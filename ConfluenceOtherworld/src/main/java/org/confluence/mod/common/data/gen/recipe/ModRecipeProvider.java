@@ -171,6 +171,10 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         workshop(recipeOutput, TCItems.ANKH_CHARM.toStack(), Ingredient.of(AccessoryItems.ARMOR_BRACING), Ingredient.of(AccessoryItems.MEDICATED_BANDAGE), Ingredient.of(TCItems.THE_PLAN), Ingredient.of(AccessoryItems.COUNTERCURSE_MANTRA), Ingredient.of(AccessoryItems.REFLECTIVE_SHADES));
 
         hellforge(recipeOutput, MaterialItems.HELLSTONE_INGOT.toStack(), 0.2f, 100, true, AmountIngredient.of(3, MaterialItems.RAW_HELLSTONE), Ingredient.of(Items.OBSIDIAN));
+        hellforge(recipeOutput, MaterialItems.COBALT_INGOT.toStack(), 0.5F, 100, true, AmountIngredient.of(3, MaterialItems.RAW_COBALT));
+        hellforge(recipeOutput, MaterialItems.PALLADIUM_INGOT.toStack(), 0.5F, 100, true, AmountIngredient.of(3, MaterialItems.RAW_PALLADIUM));
+        hellforge(recipeOutput, MaterialItems.ORICHALCUM_INGOT.toStack(), 0.5F, 100, true, AmountIngredient.of(4, MaterialItems.RAW_ORICHALCUM));
+        hellforge(recipeOutput, MaterialItems.MYTHRIL_INGOT.toStack(), 0.5F, 100, true, AmountIngredient.of(4, MaterialItems.RAW_MYTHRIL));
 
         fletchingTable(recipeOutput, "", ArrowItems.FLAMING_ARROW.toStack(25), Ingredient.EMPTY, AmountIngredient.of(25, Items.ARROW), Ingredient.of(ModTags.Items.TORCH));
         fletchingTable(recipeOutput, "_from_feather", new ItemStack(Items.ARROW, 20), Ingredient.of(Items.FEATHER), AmountIngredient.of(5, Items.STICK), Ingredient.of(Items.FLINT));
@@ -243,8 +247,22 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
                 "HHS "
         )));
         hardmodeAnvil(recipeOutput, FunctionalBlocks.CHLOROPHYTE_EXTRACTINATOR.toStack(), AmountIngredient.of(18, MaterialItems.CHLOROPHYTE_INGOT), Ingredient.of(FunctionalBlocks.EXTRACTINATOR));
-        hardmodeAnvil(recipeOutput, FunctionalBlocks.ADAMANTITE_FORGE.toStack(), AmountIngredient.of(30, MaterialItems.RAW_ADAMANTITE), Ingredient.of(FunctionalBlocks.HELLFORGE));
-        hardmodeAnvil(recipeOutput, FunctionalBlocks.TITANIUM_FORGE.toStack(), AmountIngredient.of(30, MaterialItems.RAW_TITANIUM), Ingredient.of(FunctionalBlocks.HELLFORGE));
+        hardmodeAnvil(recipeOutput, FunctionalBlocks.TITANIUM_FORGE.toStack(), ShapedRecipePattern.of(Map.of(
+                'H', AmountIngredient.of(5, MaterialItems.RAW_TITANIUM),
+                'F', Ingredient.of(FunctionalBlocks.HELLFORGE)
+        ), List.of(
+                " H ",
+                "HFH",
+                "HHH"
+        )));
+        hardmodeAnvil(recipeOutput, FunctionalBlocks.ADAMANTITE_FORGE.toStack(), ShapedRecipePattern.of(Map.of(
+                'H', AmountIngredient.of(5, MaterialItems.RAW_ADAMANTITE),
+                'F', Ingredient.of(FunctionalBlocks.HELLFORGE)
+        ), List.of(
+                " H ",
+                "HFH",
+                "HHH"
+        )));
 
         Ingredient emptyDropper = Ingredient.of(ToolItems.EMPTY_DROPPER);
         crystalBlock(recipeOutput, ToolItems.MAGIC_SAND_DROPPER.toStack(3), AmountIngredient.of(3, emptyDropper), Ingredient.of(Tags.Items.SANDS));

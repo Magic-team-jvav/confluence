@@ -519,6 +519,26 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "aaa"
         )), TMItems.GOBLIN_BATTLE_STANDARD.get().getDefaultInstance());
 
+        // 秘银砧
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(2, ModTags.Items.INGOTS_MYTHRIL),
+                'a', Ingredient.of(ModTags.Items.INGOTS_MYTHRIL)
+        ), List.of(
+                "###",
+                " a ",
+                "aaa"
+        )), FunctionalBlocks.MYTHRIL_ANVIL.toStack());
+
+        // 山铜砧
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(2, ModTags.Items.INGOTS_ORICHALCUM),
+                'a', Ingredient.of(ModTags.Items.INGOTS_ORICHALCUM)
+        ), List.of(
+                "###",
+                " a ",
+                "#a#"
+        )), FunctionalBlocks.ORICHALCUM_ANVIL.toStack());
+
         shapeless(recipeOutput, NatureBlocks.THIN_ICE_BLOCK.toStack(), Ingredient.of(Items.ICE));
         shapeless(recipeOutput, ConsumableItems.ROTTEN_BONE_DUST.toStack(2), AmountIngredient.of(4, MaterialItems.ROTTEN_BONE), AmountIngredient.of(4, MaterialItems.WORM_TOOTH), AmountIngredient.of(8, MaterialItems.ROTTEN_CHUNK));
     }

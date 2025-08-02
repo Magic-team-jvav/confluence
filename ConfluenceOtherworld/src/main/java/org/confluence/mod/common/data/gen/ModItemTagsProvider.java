@@ -275,6 +275,13 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.EMERALD_ORE_SMELTING).add(OreBlocks.SANCTIFICATION_EMERALD_ORE.asItem(), OreBlocks.CORRUPTION_EMERALD_ORE.asItem(), OreBlocks.FLESHIFICATION_EMERALD_ORE.asItem());
         tag(ModTags.Items.REDSTONE_ORE_SMELTING).add(OreBlocks.SANCTIFICATION_REDSTONE_ORE.asItem(), OreBlocks.CORRUPTION_REDSTONE_ORE.asItem(), OreBlocks.FLESHIFICATION_REDSTONE_ORE.asItem());
 
+        tag(ModTags.Items.COBALT_ORE_SMELTING).addTag(ModTags.Items.ORES_COBALT).add(MaterialItems.RAW_COBALT.get());
+        tag(ModTags.Items.PALLADIUM_ORE_SMELTING).addTag(ModTags.Items.ORES_PALLADIUM).add(MaterialItems.RAW_PALLADIUM.get());
+        tag(ModTags.Items.MYTHRIL_ORE_SMELTING).addTag(ModTags.Items.ORES_MYTHRIL).add(MaterialItems.RAW_MYTHRIL.get());
+        tag(ModTags.Items.ORICHALCUM_ORE_SMELTING).addTag(ModTags.Items.ORES_ORICHALCUM).add(MaterialItems.RAW_ORICHALCUM.get());
+        tag(ModTags.Items.ADAMANTITE_ORE_SMELTING).addTag(ModTags.Items.ORES_ADAMANTITE).add(MaterialItems.RAW_ADAMANTITE.get());
+        tag(ModTags.Items.TITANIUM_ORE_SMELTING).addTag(ModTags.Items.ORES_TITANIUM).add(MaterialItems.RAW_TITANIUM.get());
+        
         tag(ModTags.Items.EBONY_LOGS).add(
                 NatureBlocks.EBONY_LOG_BLOCKS.getLog().asItem(),
                 NatureBlocks.EBONY_LOG_BLOCKS.getStrippedLog().asItem(),
@@ -570,6 +577,12 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.INGOTS_DEMONITE).add(MaterialItems.DEMONITE_INGOT.get());
         tag(ModTags.Items.INGOTS_CRIMTANE).add(MaterialItems.CRIMTANE_INGOT.get());
         tag(ModTags.Items.INGOTS_HELLSTONE).add(MaterialItems.HELLSTONE_INGOT.get());
+        tag(ModTags.Items.INGOTS_COBALT).add(MaterialItems.COBALT_INGOT.get());
+        tag(ModTags.Items.INGOTS_PALLADIUM).add(MaterialItems.PALLADIUM_INGOT.get());
+        tag(ModTags.Items.INGOTS_MYTHRIL).add(MaterialItems.MYTHRIL_INGOT.get());
+        tag(ModTags.Items.INGOTS_ORICHALCUM).add(MaterialItems.ORICHALCUM_INGOT.get());
+        tag(ModTags.Items.INGOTS_ADAMANTITE).add(MaterialItems.ADAMANTITE_INGOT.get());
+        tag(ModTags.Items.INGOTS_TITANIUM).add(MaterialItems.TITANIUM_INGOT.get());
         {
             copy(ModTags.Blocks.STORAGE_BLOCKS_TIN, ModTags.Items.STORAGE_BLOCKS_TIN);
             copy(ModTags.Blocks.STORAGE_BLOCKS_LEAD, ModTags.Items.STORAGE_BLOCKS_LEAD);
@@ -632,6 +645,13 @@ public class ModItemTagsProvider extends ItemTagsProvider {
             tag(ModTags.Items.RAW_MATERIALS_CRIMTANE).add(MaterialItems.RAW_CRIMTANE.get());
             tag(ModTags.Items.RAW_MATERIALS_HELLSTONE).add(MaterialItems.RAW_HELLSTONE.get());
 
+            tag(ModTags.Items.RAW_MATERIALS_COBALT).add(MaterialItems.RAW_COBALT.get());
+            tag(ModTags.Items.RAW_MATERIALS_PALLADIUM).add(MaterialItems.RAW_PALLADIUM.get());
+            tag(ModTags.Items.RAW_MATERIALS_MYTHRIL).add(MaterialItems.RAW_MYTHRIL.get());
+            tag(ModTags.Items.RAW_MATERIALS_ORICHALCUM).add(MaterialItems.RAW_ORICHALCUM.get());
+            tag(ModTags.Items.RAW_MATERIALS_ADAMANTITE).add(MaterialItems.RAW_ADAMANTITE.get());
+            tag(ModTags.Items.RAW_MATERIALS_TITANIUM).add(MaterialItems.RAW_TITANIUM.get());
+
             tag(ModTags.Items.RAW_MATERIALS_STURDY_FOSSIL).add(MaterialItems.STURDY_FOSSIL.get());
             tag(ModTags.Items.RAW_MATERIALS_OPAL).add(MaterialItems.OPAL.get());
             tag(ModTags.Items.RAW_MATERIALS_GELSTONE).add(MaterialItems.GELSTONE.get());
@@ -649,6 +669,13 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                     ModTags.Items.RAW_MATERIALS_DEMONITE,
                     ModTags.Items.RAW_MATERIALS_CRIMTANE,
                     ModTags.Items.RAW_MATERIALS_HELLSTONE,
+
+                    ModTags.Items.RAW_MATERIALS_COBALT,
+                    ModTags.Items.RAW_MATERIALS_PALLADIUM,
+                    ModTags.Items.RAW_MATERIALS_MYTHRIL,
+                    ModTags.Items.RAW_MATERIALS_ORICHALCUM,
+                    ModTags.Items.RAW_MATERIALS_ADAMANTITE,
+                    ModTags.Items.RAW_MATERIALS_TITANIUM,
 
                     ModTags.Items.RAW_MATERIALS_STURDY_FOSSIL,
                     ModTags.Items.RAW_MATERIALS_OPAL,

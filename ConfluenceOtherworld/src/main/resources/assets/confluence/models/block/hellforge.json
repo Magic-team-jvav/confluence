@@ -6,7 +6,7 @@
 	"textures": {
 		"1": "confluence:block/hellforge",
 		"3": "confluence:block/hellforge_lava_anim",
-		"particle": "confluence:block/hellforge"
+		"particle": "confluence:block/particle/hellforge_particle"
 	},
 	"elements": [
 		{

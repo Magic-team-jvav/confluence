@@ -1,0 +1,166 @@
+{
+	"format_version": "1.21.6",
+	"credit": "Made with Blockbench                    model by Magnox",
+	"texture_size": [32, 32],
+	"render_type": "cutout_mipped",
+	"textures": {
+		"1": "confluence:block/adamantite_forge",
+		"2": "confluence:block/adamantite_forge_flame",
+		"particle": "confluence:block/particle/adanmantite_forge_particle"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 2],
+			"to": [16, 14, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [9, 14.5, 7]},
+			"faces": {
+				"north": {"uv": [0, 0, 2, 1.75], "texture": "#1"},
+				"east": {"uv": [6.375, 0, 8.125, 1.75], "texture": "#1"},
+				"south": {"uv": [0, 1.875, 2, 3.625], "texture": "#1"},
+				"down": {"uv": [4.125, 0, 2.125, 1.75], "texture": "#1"}
+			}
+		},
+		{
+			"from": [0, 4, 5],
+			"to": [11, 17, 5],
+			"rotation": {"angle": 22.5, "axis": "y", "origin": [0, 10.5, 5]},
+			"faces": {
+				"north": {"uv": [0, 6.5, 5, 13], "texture": "#2"}
+			},
+			"shade": false,
+			"neoforge_data": {
+				"block_light": 15,
+				"ambient_occlusion": false
+			}
+		},
+		{
+			"from": [0, 4, 5],
+			"to": [11, 17, 5],
+			"rotation": {"angle": -22.5, "axis": "y", "origin": [0, 10.5, 5]},
+			"faces": {
+				"north": {"uv": [0, 6.5, 5, 13], "texture": "#2"}
+			},
+			"shade": false,
+			"neoforge_data": {
+				"block_light": 15,
+				"ambient_occlusion": false
+			}
+		},
+		{
+			"from": [0, 4, 10],
+			"to": [10, 17, 0],
+			"rotation": {"angle": 0, "axis": "y", "origin": [9, 14.5, 7]},
+			"faces": {
+				"north": {"uv": [4.125, 7.5, 5.375, 9.125], "texture": "#1"},
+				"east": {"uv": [5.5, 7.5, 6.75, 9.125], "texture": "#1"},
+				"up": {"uv": [11.75, 6.25, 10.5, 5], "texture": "#1"},
+				"down": {"uv": [1.25, 10.625, 0, 11.875], "texture": "#1"}
+			},
+			"shade": false,
+			"neoforge_data": {
+				"block_light": 15,
+				"ambient_occlusion": false
+			}
+		},
+		{
+			"from": [0, 4, 0],
+			"to": [10, 17, 2],
+			"rotation": {"angle": 0, "axis": "y", "origin": [9, 14.5, 7]},
+			"faces": {
+				"north": {"uv": [2.75, 7.5, 4, 9.125], "texture": "#1"},
+				"east": {"uv": [3.375, 13.125, 3.625, 14.75], "texture": "#1"},
+				"up": {"uv": [10.375, 13.875, 9.125, 13.625], "texture": "#1"},
+				"down": {"uv": [14.875, 9.75, 13.625, 10], "texture": "#1"}
+			},
+			"shade": false,
+			"neoforge_data": {
+				"block_light": 15,
+				"ambient_occlusion": false
+			}
+		},
+		{
+			"from": [0, 0, 0],
+			"to": [10, 4, 2],
+			"rotation": {"angle": 0, "axis": "y", "origin": [9, 14.5, 7]},
+			"faces": {
+				"north": {"uv": [9.125, 13, 10.375, 13.5], "texture": "#1"},
+				"east": {"uv": [10.5, 6.375, 10.75, 6.875], "texture": "#1"},
+				"west": {"uv": [14, 8.875, 14.25, 9.375], "texture": "#1"},
+				"down": {"uv": [14.875, 10.125, 13.625, 10.375], "texture": "#1"}
+			}
+		},
+		{
+			"from": [0, 14, 2],
+			"to": [10, 23, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [9, 14.5, 7]},
+			"faces": {
+				"north": {"uv": [2.75, 11, 4, 12.125], "texture": "#1"},
+				"east": {"uv": [0, 9.375, 1.75, 10.5], "texture": "#1"},
+				"south": {"uv": [4.125, 11, 5.375, 12.125], "texture": "#1"},
+				"up": {"uv": [7.625, 5.5, 6.375, 3.75], "texture": "#1"}
+			}
+		},
+		{
+			"from": [10, 14, 7],
+			"to": [16, 22, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [9, 14.5, 7]},
+			"faces": {
+				"north": {"uv": [12.25, 8.875, 13, 9.875], "texture": "#1"},
+				"east": {"uv": [11.75, 3.875, 12.875, 4.875], "texture": "#1"},
+				"south": {"uv": [12.375, 10, 13.125, 11], "texture": "#1"},
+				"up": {"uv": [2.625, 10.5, 1.875, 9.375], "texture": "#1"}
+			}
+		},
+		{
+			"from": [11, 22, 11],
+			"to": [15, 32, 15],
+			"rotation": {"angle": 0, "axis": "y", "origin": [9, 14.5, 7]},
+			"faces": {
+				"north": {"uv": [10.5, 13, 11, 14.25], "texture": "#1"},
+				"east": {"uv": [11.125, 13, 11.625, 14.25], "texture": "#1"},
+				"south": {"uv": [11.75, 13, 12.25, 14.25], "texture": "#1"},
+				"west": {"uv": [0, 13.125, 0.5, 14.375], "texture": "#1"},
+				"up": {"uv": [8.625, 14.375, 8.125, 13.875], "texture": "#1"},
+				"down": {"uv": [4.875, 14, 4.375, 14.5], "texture": "#1"}
+			}
+		},
+		{
+			"from": [5.7683, 13.08619, 1.99],
+			"to": [14.3133, 19.10619, 16.01],
+			"rotation": {"angle": -45, "axis": "z", "origin": [9, 14.5, 7]},
+			"faces": {
+				"north": {"uv": [8.25, 12.125, 9.375, 12.875], "texture": "#1"},
+				"south": {"uv": [9.5, 12.125, 10.625, 12.875], "texture": "#1"},
+				"up": {"uv": [10.75, 1.75, 9.625, 0], "texture": "#1"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "Adamantite",
+			"origin": [1, 0, 0],
+			"color": 0,
+			"children": [
+				{
+					"name": "left",
+					"origin": [1, 0, 0],
+					"color": 0,
+					"children": [
+						0,
+						{
+							"name": "glow",
+							"origin": [8, 10.5, 5],
+							"color": 0,
+							"children": [1, 2, 3, 4]
+						},
+						5,
+						6,
+						7,
+						8,
+						9
+					]
+				}
+			]
+		}
+	]
+}

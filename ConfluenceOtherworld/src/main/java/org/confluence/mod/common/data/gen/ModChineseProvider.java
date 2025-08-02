@@ -999,6 +999,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("container.confluence.heavy_work_bench", "重型工作台");
         add("container.confluence.crystal_ball", "水晶球");
         add("container.confluence.hellforge", "地狱熔炉");
+        add("container.confluence.adanmantite_forge", "精金熔炉");
+        add("container.confluence.titanium_forge", "钛金熔炉");
         add("container.confluence.alchemy_table", "炼药桌");
         add("container.confluence.cooking_pot", "烹饪锅");
         add("container.confluence.cauldron", "大锅");
@@ -1020,6 +1022,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("title.confluence.crystal_ball", "水晶球");
         add("title.confluence.solidifier", "固化机");
         add("title.confluence.hellforge", "地狱熔炉");
+        add("title.confluence.adanmantite_forge", "精金熔炉");
+        add("title.confluence.titanium_forge", "钛金熔炉");
         add("title.confluence.alchemy_table", "炼药桌");
         add("title.confluence.fletching_table", "制箭台");
         add("title.confluence.touhoulittlemaid", "女仆特供");
@@ -3302,6 +3306,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.HEAVY_WORK_BENCH.get(), "重型工作台");
         add(FunctionalBlocks.CRYSTAL_BALL.get(), "水晶球");
         add(FunctionalBlocks.HELLFORGE.get(), "地狱熔炉");
+        add(FunctionalBlocks.ADAMANTITE_FORGE.get(), "精金熔炉");
+        add(FunctionalBlocks.TITANIUM_FORGE.get(), "钛金熔炉");
         add(FunctionalBlocks.ALCHEMY_TABLE.get(), "炼药桌");
         add(FunctionalBlocks.WEATHER_VANE.get(), "风向标");
         add(FunctionalBlocks.LEAD_ANVIL.get(), "铅砧");

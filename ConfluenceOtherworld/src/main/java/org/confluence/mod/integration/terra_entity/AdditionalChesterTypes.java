@@ -16,7 +16,7 @@ import java.util.function.Supplier;
 
 public class AdditionalChesterTypes {
 
-    public static final DeferredRegister<ChesterType> TYPES = DeferredRegister.create(TERegistries.ChesterTypesProviders.REGISTRY, Confluence.MODID);
+    public static final DeferredRegister<ChesterType> TYPES = DeferredRegister.create(TERegistries.ChesterTypesRegistry.REGISTRY, Confluence.MODID);
 
     public static final Supplier<ChesterType> PIGGY_BANK = TYPES.register("piggy_bank", ()->new ChesterType(
             Component.translatable("container.confluence.piggy_bank"),

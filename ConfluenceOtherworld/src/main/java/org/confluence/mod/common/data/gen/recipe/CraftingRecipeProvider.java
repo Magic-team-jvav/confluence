@@ -749,7 +749,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         registerBricksRecipes(output, Ingredient.of(NatureBlocks.PEARLSTONE),DecorativeBlocks.PEARLSTONE_BRICKS);
         registerBricksRecipes(output, Ingredient.of(Blocks.CALCITE),DecorativeBlocks.CRACKED_CALCITE_BRICKS);
         // 镶金方解石
-        shaped(output, "", "_from_nuggets_lead",
+        shaped(output, "", "",
                 ShapedRecipePattern.of(Map.of(
                         'S', Ingredient.of(Blocks.CALCITE),
                         'A', Ingredient.of(Tags.Items.NUGGETS_GOLD)
@@ -759,9 +759,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                         "AAA"
                 )),
                 DecorativeBlocks.GILDED_CALCITE.toStack()
-        );
-        shapeless(output, MaterialItems.LEAD_NUGGET.toStack(9));
-        // 铅铁共用相关
+        );        // 铅铁共用相关
         shaped(output, "", "_from_nuggets_lead",
                 ShapedRecipePattern.of(Map.of(
                         'S', Ingredient.of(ModTags.Items.NUGGETS_LEAD)

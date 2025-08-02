@@ -25,6 +25,8 @@ public class AllSpriteShifts {
     public static final CTSpriteShiftEntry MAGENTA_PURE_GLASS = omni("magenta_pure_glass");
     public static final CTSpriteShiftEntry PINK_PURE_GLASS = omni("pink_pure_glass");
     public static final CTSpriteShiftEntry CHISELED_PALM_PLANKS = vertical("chiseled_palm_planks");
+    public static final CTSpriteShiftEntry GRANITE_COLUMN = vertical("granite_column");
+    public static final CTSpriteShiftEntry CALCITE_COLUMN = vertical("calcite_column");
 
     private static CTSpriteShiftEntry omni(String name) {
         return getCT(AllCTTypes.OMNIDIRECTIONAL, name);

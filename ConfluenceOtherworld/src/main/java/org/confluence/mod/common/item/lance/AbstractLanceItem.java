@@ -90,17 +90,15 @@ public abstract class AbstractLanceItem extends CustomRarityItem implements GeoI
                 AABB boundingBox = new AABB(startVec, endVec);
 
                 for (Entity victim : level.getEntities(entity, boundingBox, target -> canHitEntity(target, owner))) {
-                    if (!victim.isRemoved()) {
-                        AABB aabb = victim.getBoundingBox().inflate(0.3);
-                        if (aabb.clip(startVec, endVec).isPresent()) {
-                            owner.setLastHurtMob(victim);
-                            if (victim instanceof PartEntity<?> partEntity) {
-                                victim = partEntity.getParent();
-                            }
-                            DamageSource damageSource = getDamageSource(serverLevel, owner);
-                            onHitEntity(damageSource, entity, owner, victim);
-                            EnchantmentHelper.doPostAttackEffects(serverLevel, victim, damageSource);
+                    AABB aabb = victim.getBoundingBox().inflate(0.3);
+                    if (aabb.clip(startVec, endVec).isPresent()) {
+                        owner.setLastHurtMob(victim);
+                        if (victim instanceof PartEntity<?> partEntity) {
+                            victim = partEntity.getParent();
                         }
+                        DamageSource damageSource = getDamageSource(serverLevel, owner);
+                        onHitEntity(damageSource, entity, owner, victim);
+                        EnchantmentHelper.doPostAttackEffects(serverLevel, victim, damageSource);
                     }
                 }
             }

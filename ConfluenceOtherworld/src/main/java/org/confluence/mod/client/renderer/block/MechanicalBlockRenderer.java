@@ -16,7 +16,7 @@ import org.confluence.terra_curio.client.handler.InformationHandler;
 
 import java.util.Set;
 
-public class MechanicalBlockRenderer<E extends AbstractMechanicalBlock.Entity> implements BlockEntityRenderer<E> {
+public class MechanicalBlockRenderer<E extends AbstractMechanicalBlock.BEntity> implements BlockEntityRenderer<E> {
     @Override
     public boolean shouldRenderOffScreen(E blockEntity) {
         return InformationHandler.hasMechanicalView();
@@ -28,7 +28,7 @@ public class MechanicalBlockRenderer<E extends AbstractMechanicalBlock.Entity> i
     }
 
     @Override
-    public boolean shouldRender(AbstractMechanicalBlock.Entity blockEntity, Vec3 cameraPos) {
+    public boolean shouldRender(AbstractMechanicalBlock.BEntity blockEntity, Vec3 cameraPos) {
         return InformationHandler.hasMechanicalView() && blockEntity.getBlockPos().getCenter().multiply(1.0, 0.0, 1.0).closerThan(cameraPos.multiply(1.0, 0.0, 1.0), getViewDistance());
     }
 

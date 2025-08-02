@@ -61,7 +61,7 @@ public class DeathChestTrapFeature extends Feature<DeathChestTrapFeature.Config>
         if (FeatureUtils.safeSetBlock(level, chestPos, chestState, ModFeatures.IS_REPLACEABLE)) {
             RandomizableContainer.setBlockEntityLootTable(level, random, chestPos, config.lootTable);
             INetworkEntity chest = ModFeatures.getNetworkEntity(level, chestPos);
-            if (chest != null && chest.getSelf() instanceof BaseChestBlock.Entity entity) {
+            if (chest != null && chest.getSelf() instanceof BaseChestBlock.BEntity entity) {
                 boolean b = placeDartTraps(config, level, chestPos, chest);
                 boolean b1 = placeBoulders(config, random, level, chestPos, chest);
                 boolean b2 = placeTNTs(config, random, level, chestPos, chest);

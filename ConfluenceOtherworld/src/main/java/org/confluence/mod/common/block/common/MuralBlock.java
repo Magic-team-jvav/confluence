@@ -54,16 +54,16 @@ public class MuralBlock extends HorizontalDirectionalBlock implements EntityBloc
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new Entity(pos, state);
+        return new BEntity(pos, state);
     }
 
-    public static class Entity extends BlockEntity {
+    public static class BEntity extends BlockEntity {
         private Optional<List<MuralData>> back = Optional.empty();
         private Optional<List<MuralData>> left = Optional.empty();
         private Optional<List<MuralData>> right = Optional.empty();
         private Optional<List<MuralData>> front = Optional.empty();
 
-        public Entity(BlockPos pos, BlockState blockState) {
+        public BEntity(BlockPos pos, BlockState blockState) {
             super(DecorativeBlocks.MURAL_ENTITY_BLOCK.get(), pos, blockState);
         }
 

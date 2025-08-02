@@ -28,7 +28,7 @@ public class EvaporativeCloudBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return new Entity(pPos, pState);
+        return new BEntity(pPos, pState);
     }
 
     public void fallOn(Level level, BlockState state, BlockPos pos, net.minecraft.world.entity.Entity entity, float fallDistance) {
@@ -38,7 +38,7 @@ public class EvaporativeCloudBlock extends BaseEntityBlock {
     }
 
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
+    public <T extends BlockEntity> @Nullable BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
         if (pLevel.isClientSide) return null;
         return LibUtils.getTicker(pBlockEntityType, NatureBlocks.EVAPORATIVE_CLOUD_BLOCK_ENTITY.get(), (level, blockPos, blockState, e) -> {
             level.updateNeighborsAt(blockPos, blockState.getBlock());
@@ -53,8 +53,8 @@ public class EvaporativeCloudBlock extends BaseEntityBlock {
         return true;
     }
 
-    public static class Entity extends BlockEntity {
-        public Entity(BlockPos pos, BlockState state) {
+    public static class BEntity extends BlockEntity {
+        public BEntity(BlockPos pos, BlockState state) {
             super(NatureBlocks.EVAPORATIVE_CLOUD_BLOCK_ENTITY.get(), pos, state);
         }
     }

@@ -50,7 +50,7 @@ public class AnnouncementBoxBlock extends StandingSignBlock implements INetworkB
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new Entity(pos, state);
+        return new BEntity(pos, state);
     }
 
     @Override
@@ -63,9 +63,9 @@ public class AnnouncementBoxBlock extends StandingSignBlock implements INetworkB
 
     @Override
     public void onExecute(BlockState state, ServerLevel level, BlockPos pos, int color, INetworkEntity networkEntity) {
-        Entity entity = (Entity) networkEntity;
+        BEntity entity = (BEntity) networkEntity;
         if (!level.isClientSide) {
-            Entity.sendMessages(level, pos, entity.getText(true).getMessages(false));
+            BEntity.sendMessages(level, pos, entity.getText(true).getMessages(false));
         }
     }
 
@@ -82,7 +82,7 @@ public class AnnouncementBoxBlock extends StandingSignBlock implements INetworkB
 
         @Override
         public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-            return new Entity(pos, state);
+            return new BEntity(pos, state);
         }
 
         @Override
@@ -95,19 +95,19 @@ public class AnnouncementBoxBlock extends StandingSignBlock implements INetworkB
 
         @Override
         public void onExecute(BlockState state, ServerLevel level, BlockPos pos, int color, INetworkEntity networkEntity) {
-            Entity entity = (Entity) networkEntity;
+            BEntity entity = (BEntity) networkEntity;
             if (!level.isClientSide) {
-                Entity.sendMessages(level, pos, entity.getText(true).getMessages(false));
+                BEntity.sendMessages(level, pos, entity.getText(true).getMessages(false));
             }
         }
     }
 
-    public static class Entity extends SignBlockEntity implements INetworkEntity {
+    public static class BEntity extends SignBlockEntity implements INetworkEntity {
         private NetworkNode networkNode;
         private final Int2ObjectMap<Set<BlockPos>> connectedPoses;
         private final Int2ObjectMap<Set<BlockPos>> relativePoses;
 
-        public Entity(BlockPos pos, BlockState blockState) {
+        public BEntity(BlockPos pos, BlockState blockState) {
             super(FunctionalBlocks.ANNOUNCEMENT_BOX_ENTITY.get(), pos, blockState);
             this.connectedPoses = new Int2ObjectOpenHashMap<>();
             this.relativePoses = new Int2ObjectOpenHashMap<>();

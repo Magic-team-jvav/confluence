@@ -36,7 +36,7 @@ public class TombstoneInfoProvider implements IBlockComponentProvider, IServerDa
 
     @Override
     public void appendServerData(CompoundTag compoundTag, BlockAccessor blockAccessor) {
-        if (blockAccessor.getBlockEntity() instanceof TombstoneBlock.Entity entity) {
+        if (blockAccessor.getBlockEntity() instanceof TombstoneBlock.BEntity entity) {
             SignText signText = entity.getFrontText();
             ListTag listTag = new ListTag();
             for (Component message : signText.getMessages(false)) {

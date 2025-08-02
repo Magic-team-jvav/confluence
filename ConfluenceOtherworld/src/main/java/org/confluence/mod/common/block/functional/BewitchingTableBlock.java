@@ -61,7 +61,7 @@ public class BewitchingTableBlock extends HorizontalDirectionalWithVerticalFourP
         if (!level.isClientSide) {
             StateProperties.VerticalFourPart part = state.getValue(PART);
             BlockPos basePos = part.isBase() ? pos : StateProperties.VerticalFourPart.getRelatives(part, state.getValue(FACING), pos).get(StateProperties.VerticalFourPart.BASE);
-            if (level.getBlockEntity(basePos) instanceof Entity entity && level.getGameTime() - entity.lastClickTime > 110) {
+            if (level.getBlockEntity(basePos) instanceof BEntity entity && level.getGameTime() - entity.lastClickTime > 110) {
                 entity.lastClickTime = level.getGameTime();
                 entity.markUpdated();
                 player.addEffect(new MobEffectInstance(ModEffects.BEWITCHED, MobEffectInstance.INFINITE_DURATION));
@@ -73,7 +73,7 @@ public class BewitchingTableBlock extends HorizontalDirectionalWithVerticalFourP
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new Entity(pos, state);
+        return new BEntity(pos, state);
     }
 
     @Override
@@ -92,12 +92,12 @@ public class BewitchingTableBlock extends HorizontalDirectionalWithVerticalFourP
         return RenderShape.ENTITYBLOCK_ANIMATED;
     }
 
-    public static class Entity extends BlockEntity implements GeoBlockEntity {
+    public static class BEntity extends BlockEntity implements GeoBlockEntity {
         private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
         public final boolean isBase;
         private long lastClickTime;
 
-        public Entity(BlockPos pos, BlockState blockState) {
+        public BEntity(BlockPos pos, BlockState blockState) {
             super(FunctionalBlocks.BEWITCHING_TABLE_ENTITY.get(), pos, blockState);
             this.isBase = blockState.getValue(PART).isBase();
         }

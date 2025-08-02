@@ -48,18 +48,18 @@ public class CookingPotBlock extends BaseCauldronBlock {
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new Entity(pos, state);
+        return new BEntity(pos, state);
     }
 
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-        return level.isClientSide ? null : LibUtils.getTicker(blockEntityType, FunctionalBlocks.COOKING_POT_ENTITY.get(), Entity::serverTick);
+        return level.isClientSide ? null : LibUtils.getTicker(blockEntityType, FunctionalBlocks.COOKING_POT_ENTITY.get(), CookingPotBlock.BEntity::serverTick);
     }
 
-    public static class Entity extends BaseCauldronBlock.Entity implements GeoBlockEntity {
+    public static class BEntity extends BaseCauldronBlock.BEntity implements GeoBlockEntity {
         private final AnimatableInstanceCache CACHE = GeckoLibUtil.createInstanceCache(this);
 
-        public Entity(BlockPos pos, BlockState blockState) {
+        public BEntity(BlockPos pos, BlockState blockState) {
             super(FunctionalBlocks.COOKING_POT_ENTITY.get(), pos, blockState);
         }
 
@@ -77,10 +77,10 @@ public class CookingPotBlock extends BaseCauldronBlock {
         }
     }
 
-    public static class Item extends BlockItem implements GeoItem {
+    public static class BItem extends BlockItem implements GeoItem {
         private final AnimatableInstanceCache CACHE = GeckoLibUtil.createInstanceCache(this);
 
-        public Item(Block block, Properties properties) {
+        public BItem(Block block, Properties properties) {
             super(block, properties);
         }
 
@@ -95,7 +95,7 @@ public class CookingPotBlock extends BaseCauldronBlock {
         @Override
         public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
             consumer.accept(new GeoRenderProvider() {
-                private GeoItemRenderer<Item> renderer;
+                private GeoItemRenderer<BItem> renderer;
 
                 @Override
                 public BlockEntityWithoutLevelRenderer getGeoItemRenderer() {

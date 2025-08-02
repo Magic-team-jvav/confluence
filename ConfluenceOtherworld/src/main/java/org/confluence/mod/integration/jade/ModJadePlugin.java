@@ -24,9 +24,9 @@ import java.util.Map;
 public final class ModJadePlugin implements IWailaPlugin {
     @Override
     public void register(IWailaCommonRegistration registration) {
-        registration.registerBlockDataProvider(NetworkComponentProvider.INSTANCE, AbstractMechanicalBlock.Entity.class);
-        registration.registerBlockDataProvider(NetworkComponentProvider.INSTANCE, DeathChestBlock.Entity.class);
-        registration.registerBlockDataProvider(TombstoneInfoProvider.INSTANCE, TombstoneBlock.Entity.class);
+        registration.registerBlockDataProvider(NetworkComponentProvider.INSTANCE, AbstractMechanicalBlock.BEntity.class);
+        registration.registerBlockDataProvider(NetworkComponentProvider.INSTANCE, DeathChestBlock.BEntity.class);
+        registration.registerBlockDataProvider(TombstoneInfoProvider.INSTANCE, TombstoneBlock.BEntity.class);
     }
 
     @Override

@@ -62,7 +62,7 @@ public class LifeCrystalBlock extends HorizontalDirectionalBlock implements Enti
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return new Entity(pPos, pState);
+        return new BEntity(pPos, pState);
     }
 
     @Override
@@ -70,10 +70,10 @@ public class LifeCrystalBlock extends HorizontalDirectionalBlock implements Enti
         return CODEC;
     }
 
-    public static class Entity extends BlockEntity implements GeoBlockEntity {
+    public static class BEntity extends BlockEntity implements GeoBlockEntity {
         private final AnimatableInstanceCache CACHE = GeckoLibUtil.createInstanceCache(this);
 
-        public Entity(BlockPos pPos, BlockState pBlockState) {
+        public BEntity(BlockPos pPos, BlockState pBlockState) {
             super(NatureBlocks.LIFE_CRYSTAL_BLOCK_ENTITY.get(), pPos, pBlockState);
         }
 
@@ -86,10 +86,10 @@ public class LifeCrystalBlock extends HorizontalDirectionalBlock implements Enti
         }
     }
 
-    public static class Item extends BlockItem implements GeoItem {
+    public static class BItem extends BlockItem implements GeoItem {
         private final AnimatableInstanceCache CACHE = GeckoLibUtil.createInstanceCache(this);
 
-        public Item(LifeCrystalBlock pBlock) {
+        public BItem(LifeCrystalBlock pBlock) {
             super(pBlock, new Properties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.GREEN));
         }
 

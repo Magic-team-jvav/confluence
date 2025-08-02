@@ -32,7 +32,7 @@ public class DecorativeBlocks {
 
     // 杂项
     public static final DeferredBlock<MuralBlock> MURAL_BLOCK = registerWithItem("mural_block", () -> new MuralBlock(BlockBehaviour.Properties.ofFullCopy(STONE)));
-    public static final Supplier<BlockEntityType<MuralBlock.Entity>> MURAL_ENTITY_BLOCK = ModBlocks.BLOCK_ENTITIES.register("mural_entity_block", () ->BlockEntityType.Builder.of(MuralBlock.Entity::new, MURAL_BLOCK.get()).build(DSL.remainderType()));
+    public static final Supplier<BlockEntityType<MuralBlock.BEntity>> MURAL_ENTITY_BLOCK = ModBlocks.BLOCK_ENTITIES.register("mural_entity_block", () ->BlockEntityType.Builder.of(MuralBlock.BEntity::new, MURAL_BLOCK.get()).build(DSL.remainderType()));
     // 雕纹木板
     public static final DeferredBlock<Block> CHISELED_OAK_PLANKS = copyBlockRegister("chiseled_oak_planks", OAK_PLANKS);
     public static final DeferredBlock<Block> CHISELED_SPRUCE_PLANKS = copyBlockRegister("chiseled_spruce_planks", SPRUCE_PLANKS);

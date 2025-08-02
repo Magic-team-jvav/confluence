@@ -79,7 +79,7 @@ public class TimersBlock extends AbstractMechanicalBlock {
         return LibUtils.getTicker(pBlockEntityType, FunctionalBlocks.MECHANICAL_BLOCK_ENTITY.get(), TimersBlock::timer);
     }
 
-    private static void timer(Level level, BlockPos blockPos, BlockState blockState, Entity entity) {
+    private static void timer(Level level, BlockPos blockPos, BlockState blockState, BEntity entity) {
         if (level.isClientSide || !blockState.getValue(DRIVE)) return;
         TimersBlock timersBlock = (TimersBlock) blockState.getBlock();
         if ((level.getGameTime() + entity.getOrCreateNetworkNode().getId()) % timersBlock.duration == 0) {

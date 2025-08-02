@@ -10,7 +10,7 @@ import org.confluence.mod.client.model.block.WeatherVaneBlockModel;
 import org.confluence.mod.common.block.functional.WeatherVaneBlock;
 import org.joml.Quaternionf;
 
-public class WeatherVaneBlockRenderer implements BlockEntityRenderer<WeatherVaneBlock.Entity> {
+public class WeatherVaneBlockRenderer implements BlockEntityRenderer<WeatherVaneBlock.BEntity> {
     private final WeatherVaneBlockModel model;
 
     public WeatherVaneBlockRenderer(BlockEntityRendererProvider.Context context) {
@@ -18,7 +18,7 @@ public class WeatherVaneBlockRenderer implements BlockEntityRenderer<WeatherVane
     }
 
     @Override
-    public void render(WeatherVaneBlock.Entity entity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+    public void render(WeatherVaneBlock.BEntity entity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
         poseStack.pushPose();
         poseStack.translate(0.5F, 1.0F, 0.5F);
         Quaternionf rotation = Axis.YP.rotation(Mth.lerp(partialTick, entity.rotationO, entity.rotation)).rotateX(Mth.HALF_PI);

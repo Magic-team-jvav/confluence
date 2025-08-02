@@ -57,7 +57,7 @@ public class BiomeChestBlock extends ChestBlock {
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new Entity(pos, state);
+        return new BEntity(pos, state);
     }
 
     @Override
@@ -104,8 +104,8 @@ public class BiomeChestBlock extends ChestBlock {
         return state.getValue(UNLOCKED) ? super.getDestroyProgress(state, player, level, pos) : 0;
     }
 
-    public static class Entity extends ChestBlockEntity {
-        public Entity(BlockPos pos, BlockState blockState) {
+    public static class BEntity extends ChestBlockEntity {
+        public BEntity(BlockPos pos, BlockState blockState) {
             super(ChestBlocks.BIOME_CHEST_ENTITY.get(), pos, blockState);
         }
 

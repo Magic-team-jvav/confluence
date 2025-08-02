@@ -50,12 +50,12 @@ public class LockBlock extends Block implements EntityBlock {
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new Entity(pos, state);
+        return new BEntity(pos, state);
     }
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        if (!level.isClientSide && level.getBlockEntity(pos) instanceof Entity entity) {
+        if (!level.isClientSide && level.getBlockEntity(pos) instanceof BEntity entity) {
             if (entity.matchTool.isEmpty() || entity.matchTool.get().test(stack)) {
                 if (level.destroyBlock(pos, false, player)) {
                     BlockPos relative = pos.relative(state.getValue(BlockStateProperties.FACING));
@@ -85,11 +85,11 @@ public class LockBlock extends Block implements EntityBlock {
         return ItemInteractionResult.SUCCESS;
     }
 
-    public static class Entity extends BlockEntity {
+    public static class BEntity extends BlockEntity {
         private Optional<ItemPredicate> matchTool = Optional.empty();
         private boolean consumeTool = false;
 
-        public Entity(BlockPos pos, BlockState blockState) {
+        public BEntity(BlockPos pos, BlockState blockState) {
             super(FunctionalBlocks.LOCK_BLOCK_ENTITY.get(), pos, blockState);
         }
 

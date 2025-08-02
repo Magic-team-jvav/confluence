@@ -43,7 +43,7 @@ public class ConfettiCannonBlock extends HorizontalDirectionalBlock implements E
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new AbstractMechanicalBlock.Entity(pos, state);
+        return new AbstractMechanicalBlock.BEntity(pos, state);
     }
 
     @Override

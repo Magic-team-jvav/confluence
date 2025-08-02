@@ -75,7 +75,7 @@ public class GeyserBlock extends AbstractMechanicalBlock { // 热喷泉
 
     @Override
     public void entityInside(BlockState pState, Level pLevel, BlockPos pPos, net.minecraft.world.entity.Entity pEntity) {
-        if (!pLevel.isClientSide && pLevel.getBlockEntity(pPos) instanceof Entity entity) {
+        if (!pLevel.isClientSide && pLevel.getBlockEntity(pPos) instanceof BEntity entity) {
             onExecute(pState, (ServerLevel) pLevel, pPos, -1, entity);
         }
     }

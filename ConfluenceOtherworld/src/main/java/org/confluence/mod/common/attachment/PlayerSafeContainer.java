@@ -4,7 +4,7 @@ import net.minecraft.world.entity.player.Player;
 import org.confluence.lib.common.PlayerContainer;
 import org.confluence.mod.common.block.functional.SafeBlock;
 
-public class PlayerSafeContainer extends PlayerContainer<SafeBlock.Entity> {
+public class PlayerSafeContainer extends PlayerContainer<SafeBlock.BEntity> {
     public PlayerSafeContainer() {
         super(6);
     }

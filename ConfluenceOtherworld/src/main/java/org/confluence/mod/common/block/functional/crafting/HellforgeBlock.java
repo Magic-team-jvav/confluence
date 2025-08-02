@@ -86,7 +86,7 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
         if (level.isClientSide) {
             return InteractionResult.SUCCESS;
         } else {
-            if (level.getBlockEntity(pos) instanceof Entity entity) {
+            if (level.getBlockEntity(pos) instanceof BEntity entity) {
                 player.openMenu(entity);
             }
             return InteractionResult.CONSUME;
@@ -112,7 +112,7 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean moveByPiston) {
         if (!state.is(newState.getBlock())) {
-            if (level.getBlockEntity(pos) instanceof Entity entity && state.getValue(StateProperties.HORIZONTAL_TWO_PART).isBase()) {
+            if (level.getBlockEntity(pos) instanceof BEntity entity && state.getValue(StateProperties.HORIZONTAL_TWO_PART).isBase()) {
                 if (level instanceof ServerLevel serverLevel) {
                     Containers.dropContents(level, pos, entity);
                     entity.getRecipesToAwardAndPopExperience(serverLevel, Vec3.atCenterOf(pos));
@@ -130,15 +130,15 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new Entity(pos, state);
+        return new BEntity(pos, state);
     }
 
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-        return level.isClientSide || state.getValue(StateProperties.HORIZONTAL_TWO_PART).isRight() ? null : LibUtils.getTicker(blockEntityType, FunctionalBlocks.HELLFORGE_ENTITY.get(), Entity::serverTick);
+        return level.isClientSide || state.getValue(StateProperties.HORIZONTAL_TWO_PART).isRight() ? null : LibUtils.getTicker(blockEntityType, FunctionalBlocks.HELLFORGE_ENTITY.get(), BEntity::serverTick);
     }
 
-    public static class Entity extends BaseContainerBlockEntity implements WorldlyContainer, RecipeCraftingHolder {
+    public static class BEntity extends BaseContainerBlockEntity implements WorldlyContainer, RecipeCraftingHolder {
         private static final int[] SLOTS_FOR_UP = new int[]{INPUT_SLOT_1, INPUT_SLOT_2, INPUT_SLOT_3, INPUT_SLOT_4};
         private static final int[] SLOTS_FOR_DOWN = new int[]{RESULT_SLOT, FUEL_SLOT};
         private static final int[] SLOTS_FOR_SIDES = new int[]{FUEL_SLOT};
@@ -197,7 +197,7 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
         private final ItemStack[] itemStacks = new ItemStack[4];
         private int lastCheckSlot = 0;
 
-        public Entity(BlockPos pos, BlockState blockState) {
+        public BEntity(BlockPos pos, BlockState blockState) {
             super(FunctionalBlocks.HELLFORGE_ENTITY.get(), pos, blockState);
             this.hellforge = new RecipeManager.CachedCheck<>() {
                 @Nullable
@@ -244,7 +244,7 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
 //            invalidateCapabilities();
 //        }
 
-        public static void serverTick(Level level, BlockPos pos, BlockState state, Entity blockEntity) {
+        public static void serverTick(Level level, BlockPos pos, BlockState state, BEntity blockEntity) {
             boolean isLit = blockEntity.isLit();
             boolean[] data = new boolean[2];
             if (isLit) {
@@ -310,7 +310,7 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
             }
         }
 
-        private static void doBlasting(Level level, Entity blockEntity, RecipeHolder<BlastingRecipe> recipeholder, ItemStack lastInput, boolean[] data, ItemStack fuel) {
+        private static void doBlasting(Level level, BEntity blockEntity, RecipeHolder<BlastingRecipe> recipeholder, ItemStack lastInput, boolean[] data, ItemStack fuel) {
             if (!blockEntity.isLit() && canBlastingBurn(level.registryAccess(), recipeholder, blockEntity.items, lastInput)) {
                 data[0] = doUpdateStatus(blockEntity, fuel);
             }
@@ -322,7 +322,7 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
             data[1] = true;
         }
 
-        private static boolean doUpdateProgress(Entity blockEntity, Level level, RecipeHolder<?> recipeholder, BooleanSupplier supplier) {
+        private static boolean doUpdateProgress(BEntity blockEntity, Level level, RecipeHolder<?> recipeholder, BooleanSupplier supplier) {
             if (++blockEntity.cookingProgress >= blockEntity.cookingTotalTime) {
                 blockEntity.cookingProgress = 0;
                 if (!blockEntity.isLit()) {
@@ -336,7 +336,7 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
             return false;
         }
 
-        private static boolean doUpdateStatus(Entity blockEntity, ItemStack fuel) {
+        private static boolean doUpdateStatus(BEntity blockEntity, ItemStack fuel) {
             blockEntity.litTime = blockEntity.getBurnDuration(fuel);
             blockEntity.litDuration = blockEntity.litTime;
             if (fuel.hasCraftingRemainingItem()) {
@@ -369,7 +369,7 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
             }
         }
 
-        private static void resetCookTime(Entity entity) {
+        private static void resetCookTime(BEntity entity) {
             if (!entity.isLit()) {
                 entity.cookingTotalTime = getTotalCookTime(entity.level, entity);
                 if (entity.items.get(FUEL_SLOT).isEmpty()) {
@@ -423,7 +423,7 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
             }
         }
 
-        private static boolean canHellforgeBurn(RegistryAccess registryAccess, RecipeHolder<HellforgeRecipe> recipe, NonNullList<ItemStack> inventory, HellforgeBlock.Entity furnace) {
+        private static boolean canHellforgeBurn(RegistryAccess registryAccess, RecipeHolder<HellforgeRecipe> recipe, NonNullList<ItemStack> inventory, BEntity furnace) {
             ItemStack[] inputs = furnace.itemStacks;
             if ((!recipe.value().isRequiresFuel() || (furnace.useFuel() || furnace.isLit() || !furnace.getItem(FUEL_SLOT).isEmpty())) && Arrays.stream(inputs).anyMatch(itemStack -> !itemStack.isEmpty())) {
                 ItemStack neoResult = recipe.value().getResultItem(registryAccess);
@@ -433,7 +433,7 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
             }
         }
 
-        private static boolean burnHellforge(RegistryAccess registryAccess, RecipeHolder<HellforgeRecipe> recipe, NonNullList<ItemStack> inventory, HellforgeBlock.Entity furnace) {
+        private static boolean burnHellforge(RegistryAccess registryAccess, RecipeHolder<HellforgeRecipe> recipe, NonNullList<ItemStack> inventory, BEntity furnace) {
             if (canHellforgeBurn(registryAccess, recipe, inventory, furnace)) {
                 if (inventory.get(FUEL_SLOT).is(Items.BUCKET)) {
                     for (ItemStack input : furnace.itemStacks) {
@@ -479,7 +479,7 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
             return itemStacks;
         }
 
-        private static int getTotalCookTime(Level level, Entity blockEntity) {
+        private static int getTotalCookTime(Level level, BEntity blockEntity) {
             int time = blockEntity.hellforge.getRecipeFor(new ArrayRecipeInput(blockEntity.getItemStacks()), level).map(holder -> holder.value().getCookingTime()).orElse(100);
             if (!blockEntity.items.get(FUEL_SLOT).isEmpty()) {
                 return time;
@@ -514,7 +514,7 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
         @Override
         protected NonNullList<ItemStack> getItems() {
             if (getBlockState().getValue(StateProperties.HORIZONTAL_TWO_PART).isRight()) {
-                return level != null && level.getBlockEntity(getBlockPos().relative(StateProperties.HorizontalTwoPart.getConnectedDirection(getBlockState()))) instanceof Entity entity ? entity.items : items;
+                return level != null && level.getBlockEntity(getBlockPos().relative(StateProperties.HorizontalTwoPart.getConnectedDirection(getBlockState()))) instanceof BEntity entity ? entity.items : items;
             }
             return items;
         }
@@ -522,7 +522,7 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
         @Override
         protected void setItems(NonNullList<ItemStack> items) {
             if (getBlockState().getValue(StateProperties.HORIZONTAL_TWO_PART).isRight()) {
-                if (level != null && level.getBlockEntity(getBlockPos().relative(StateProperties.HorizontalTwoPart.getConnectedDirection(getBlockState()))) instanceof Entity entity) {
+                if (level != null && level.getBlockEntity(getBlockPos().relative(StateProperties.HorizontalTwoPart.getConnectedDirection(getBlockState()))) instanceof BEntity entity) {
                     entity.items = items;
                     return;
                 }
@@ -534,7 +534,7 @@ public class HellforgeBlock extends HorizontalDirectionalWithHorizontalTwoPartBl
         protected AbstractContainerMenu createMenu(int containerId, Inventory inventory) {
             if (getBlockState().getValue(StateProperties.HORIZONTAL_TWO_PART).isBase()) {
                 return new HellforgeMenu(containerId, inventory, this, dataAccess);
-            } else if (level != null && level.getBlockEntity(getBlockPos().relative(StateProperties.HorizontalTwoPart.getConnectedDirection(getBlockState()))) instanceof Entity entity) {
+            } else if (level != null && level.getBlockEntity(getBlockPos().relative(StateProperties.HorizontalTwoPart.getConnectedDirection(getBlockState()))) instanceof BEntity entity) {
                 return new HellforgeMenu(containerId, inventory, entity, entity.dataAccess);
             }
             return new HellforgeMenu(containerId, inventory, this, dataAccess);

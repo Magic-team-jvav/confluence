@@ -15,8 +15,8 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.block.TransparentLeavesBlock;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.block.natural.MushroomBlock;
 import org.confluence.mod.common.block.natural.*;
+import org.confluence.mod.common.block.natural.MushroomBlock;
 import org.confluence.mod.common.block.natural.sapling.AshSaplingBlock;
 import org.confluence.mod.common.block.natural.sapling.BaseSaplingBlock;
 import org.confluence.mod.common.block.natural.sapling.StoneSaplingBlock;
@@ -80,8 +80,8 @@ public class NatureBlocks {
     public static final DeferredBlock<Block> SILT_BLOCK = registerWithItem("silt_block", () -> new ColoredFallingBlock(new ColorRGBA(1531531531), BlockBehaviour.Properties.ofFullCopy(Blocks.SAND).mapColor(MapColor.TERRACOTTA_GRAY)));
     public static final DeferredBlock<Block> MARINE_GRAVEL = registerWithItem("marine_gravel", () -> new ColoredFallingBlock(new ColorRGBA(1531531531), BlockBehaviour.Properties.ofFullCopy(Blocks.SAND).mapColor(MapColor.TERRACOTTA_CYAN)));
     public static final DeferredBlock<RotatedPillarBlock> STONY_LOG = registerWithItem("stony_log", () -> new RotatedPillarBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).mapColor(MapColor.COLOR_LIGHT_GRAY)));
-    public static final DeferredBlock<LifeCrystalBlock> LIFE_CRYSTAL_BLOCK = registerWithItem("life_crystal_block", () -> new LifeCrystalBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_CLUSTER).mapColor(MapColor.COLOR_RED).lightLevel(state -> 5)), LifeCrystalBlock.Item::new);
-    public static final Supplier<BlockEntityType<LifeCrystalBlock.Entity>> LIFE_CRYSTAL_BLOCK_ENTITY = ModBlocks.BLOCK_ENTITIES.register("life_crystal_block_entity", () -> BlockEntityType.Builder.of(LifeCrystalBlock.Entity::new, LIFE_CRYSTAL_BLOCK.get()).build(null));
+    public static final DeferredBlock<LifeCrystalBlock> LIFE_CRYSTAL_BLOCK = registerWithItem("life_crystal_block", () -> new LifeCrystalBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_CLUSTER).mapColor(MapColor.COLOR_RED).lightLevel(state -> 5)), LifeCrystalBlock.BItem::new);
+    public static final Supplier<BlockEntityType<LifeCrystalBlock.BEntity>> LIFE_CRYSTAL_BLOCK_ENTITY = ModBlocks.BLOCK_ENTITIES.register("life_crystal_block_entity", () -> BlockEntityType.Builder.of(LifeCrystalBlock.BEntity::new, LIFE_CRYSTAL_BLOCK.get()).build(null));
 
     public static final DeferredBlock<Block> GRANITE = registerWithItem("granite", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE)));
     public static final DeferredBlock<Block> LIFE_MUSHROOM = registerWithoutItem("life_mushroom", () -> new MushroomBlock(ISpreadable.Type.PURE, Blocks.GRASS_BLOCK)); // 生命蘑菇
@@ -213,7 +213,7 @@ public class NatureBlocks {
             .sound(SoundType.SNOW)
             .noOcclusion()
             .randomTicks()));
-    public static final Supplier<BlockEntityType<EvaporativeCloudBlock.Entity>> EVAPORATIVE_CLOUD_BLOCK_ENTITY = ModBlocks.BLOCK_ENTITIES.register("evaporative_cloud_block", () -> BlockEntityType.Builder.of(EvaporativeCloudBlock.Entity::new, EVAPORATIVE_CLOUD_BLOCK.get()).build(DSL.remainderType()));
+    public static final Supplier<BlockEntityType<EvaporativeCloudBlock.BEntity>> EVAPORATIVE_CLOUD_BLOCK_ENTITY = ModBlocks.BLOCK_ENTITIES.register("evaporative_cloud_block", () -> BlockEntityType.Builder.of(EvaporativeCloudBlock.BEntity::new, EVAPORATIVE_CLOUD_BLOCK.get()).build(DSL.remainderType()));
     public static final DeferredBlock<ParticleCloudBlock> RAIN_CLOUD_BLOCK = registerWithItem("rain_cloud_block", () -> new ParticleCloudBlock(BlockBehaviour.Properties.of()
             .mapColor(MapColor.COLOR_GRAY)
             .strength(0.3F)
@@ -258,7 +258,7 @@ public class NatureBlocks {
     public static final DeferredBlock<Block> SHIMMER_DROOPING_VINE = registerWithoutItem("shimmer_drooping_vine", () -> new ShimmerDroopingVinesBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CAVE_VINES)));
     public static final DeferredBlock<Block> SHIMMER_DROOPING_VINE_PLANT = registerWithoutItem("shimmer_drooping_vine_plant", () -> new ShimmerDroopingVinesPlantBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CAVE_VINES_PLANT)));
 
-    public static final DeferredBlock<Block> BLINKING_ROYAL_SHIMMERLILY = registerWithItem("blinking_royal_shimmerlily", () -> new BlinkingRoyalShimmerlilyBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LILY_PAD)), BlinkingRoyalShimmerlilyBlock.Item::new);
+    public static final DeferredBlock<Block> BLINKING_ROYAL_SHIMMERLILY = registerWithItem("blinking_royal_shimmerlily", () -> new BlinkingRoyalShimmerlilyBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LILY_PAD)), BlinkingRoyalShimmerlilyBlock.BItem::new);
 
     //苔藓
     public static final DeferredBlock<BaseMossBlock> GREEN_MOSS = registerWithItem("green_moss", () -> new BaseMossBlock(5));
@@ -276,14 +276,14 @@ public class NatureBlocks {
 
     public static final DeferredBlock<CrimsonVenusFlytrapBlock> CRIMSON_VENUS_FLYTRAP_BLOCK = registerWithItem("crimson_venus_flytrap_block", CrimsonVenusFlytrapBlock::new);
     public static final DeferredBlock<BloodthirstCrystallizedBlock> BLOODTHIRST_CRYSTALLIZED_BLOCK = registerWithItem("bloodthirst_crystallized_block", BloodthirstCrystallizedBlock::new);
-    public static final Supplier<BlockEntityType<BloodthirstCrystallizedBlock.Entity>> BLOODTHIRST_CRYSTALLIZED_ENTITY = ModBlocks.BLOCK_ENTITIES.register("bloodthirst_crystallized_entity", () -> BlockEntityType.Builder.of(BloodthirstCrystallizedBlock.Entity::new, BLOODTHIRST_CRYSTALLIZED_BLOCK.get()).build(null));
+    public static final Supplier<BlockEntityType<BloodthirstCrystallizedBlock.BEntity>> BLOODTHIRST_CRYSTALLIZED_ENTITY = ModBlocks.BLOCK_ENTITIES.register("bloodthirst_crystallized_entity", () -> BlockEntityType.Builder.of(BloodthirstCrystallizedBlock.BEntity::new, BLOODTHIRST_CRYSTALLIZED_BLOCK.get()).build(null));
     public static final DeferredBlock<CorrodedWormRootsBlock> CORRODED_WORM_ROOTS_BLOCK = registerWithItem("corroded_worm_roots_block", CorrodedWormRootsBlock::new);
     public static final DeferredBlock<CorruptedOvariesBlock> CORRUPTED_OVARIES_BLOCK = registerWithItem("corrupted_ovaries_block", CorruptedOvariesBlock::new);
     public static final DeferredBlock<DecomposeTheSourceExtractBlock> DECOMPOSE_THE_SOURCE_EXTRACT_BLOCK = registerWithItem("decompose_the_source_extract_block", DecomposeTheSourceExtractBlock::new);
-    public static final Supplier<BlockEntityType<DecomposeTheSourceExtractBlock.Entity>> DECOMPOSE_THE_SOURCE_EXTRACT_ENTITY = ModBlocks.BLOCK_ENTITIES.register("decompose_the_source_extract_entity", () -> BlockEntityType.Builder.of(DecomposeTheSourceExtractBlock.Entity::new, DECOMPOSE_THE_SOURCE_EXTRACT_BLOCK.get()).build(null));
+    public static final Supplier<BlockEntityType<DecomposeTheSourceExtractBlock.BEntity>> DECOMPOSE_THE_SOURCE_EXTRACT_ENTITY = ModBlocks.BLOCK_ENTITIES.register("decompose_the_source_extract_entity", () -> BlockEntityType.Builder.of(DecomposeTheSourceExtractBlock.BEntity::new, DECOMPOSE_THE_SOURCE_EXTRACT_BLOCK.get()).build(null));
     public static final DeferredBlock<ShimmerCrystalslBlock> SHIMMER_CRYSTALS_BLOCK = registerWithItem("shimmer_crystals_block", ShimmerCrystalslBlock::new);
     public static final DeferredBlock<LostPaperBlock> LOST_PAPER_BLOCK = registerWithItem("lost_paper", LostPaperBlock::new);
-    public static final Supplier<BlockEntityType<LostPaperBlock.Entity>> LOST_PAPER_ENTITY = ModBlocks.BLOCK_ENTITIES.register("lost_paper", () -> BlockEntityType.Builder.of(LostPaperBlock.Entity::new, LOST_PAPER_BLOCK.get()).build(null));
+    public static final Supplier<BlockEntityType<LostPaperBlock.BEntity>> LOST_PAPER_ENTITY = ModBlocks.BLOCK_ENTITIES.register("lost_paper", () -> BlockEntityType.Builder.of(LostPaperBlock.BEntity::new, LOST_PAPER_BLOCK.get()).build(null));
 
 
     private static <B extends Block> DeferredBlock<B> registerWithoutItem(String id, Supplier<B> block) {

@@ -75,7 +75,7 @@ public class WaystonesHelper {
     public static final DeferredBlock<Block> MUSHROOM_PYLON = register("mushroom_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.PURPLE).lightLevel(state -> 10), (world, pos, biome) -> biome.is(ModBiomes.GLOWING_MUSHROOM));
     public static final DeferredBlock<Block> UNIVERSAL_PYLON = register("universal_pylon", BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(DyeColor.BROWN).lightLevel(state -> 10), (world, pos, biome) -> true);
 
-    public static final Supplier<BlockEntityType<PylonBlock.Entity>> PYLON_ENTITY = BLOCK_ENTITY_TYPES.register("pylon_entity", () -> BlockEntityType.Builder.of(PylonBlock.Entity::new, BLOCKS.getEntries().stream().map(DeferredHolder::get).toArray(Block[]::new)).build(DSL.remainderType()));
+    public static final Supplier<BlockEntityType<PylonBlock.BEntity>> PYLON_ENTITY = BLOCK_ENTITY_TYPES.register("pylon_entity", () -> BlockEntityType.Builder.of(PylonBlock.BEntity::new, BLOCKS.getEntries().stream().map(DeferredHolder::get).toArray(Block[]::new)).build(DSL.remainderType()));
 
     private static DeferredBlock<Block> register(String name, BlockBehaviour.Properties properties, PylonBlock.Survive survive) {
         int count = BLOCKS.getEntries().size();
@@ -140,7 +140,7 @@ public class WaystonesHelper {
         if (!IS_LOADED) return;
         event.registerBlockEntityRenderer(PYLON_ENTITY.get(), context -> new GeoBlockRenderer<>(new PylonModel()) {
             @Override
-            public void defaultRender(PoseStack poseStack, PylonBlock.Entity animatable, MultiBufferSource bufferSource, @Nullable RenderType renderType, @Nullable VertexConsumer buffer, float yaw, float partialTick, int packedLight) {
+            public void defaultRender(PoseStack poseStack, PylonBlock.BEntity animatable, MultiBufferSource bufferSource, @Nullable RenderType renderType, @Nullable VertexConsumer buffer, float yaw, float partialTick, int packedLight) {
                 if (animatable.isBase) {
                     super.defaultRender(poseStack, animatable, bufferSource, renderType, buffer, yaw, partialTick, packedLight);
                 }

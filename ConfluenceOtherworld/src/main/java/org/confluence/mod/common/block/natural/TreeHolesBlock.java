@@ -45,8 +45,8 @@ public class TreeHolesBlock extends BaseEntityBlock {
             return InteractionResult.SUCCESS;
         } else {
             BlockEntity blockentity = level.getBlockEntity(pos);
-            if (blockentity instanceof TreeHolesBlock.Entity) {
-                player.openMenu((TreeHolesBlock.Entity) blockentity);
+            if (blockentity instanceof BEntity) {
+                player.openMenu((BEntity) blockentity);
             }
             return InteractionResult.CONSUME;
         }
@@ -86,7 +86,7 @@ public class TreeHolesBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new Entity(pos, state);
+        return new BEntity(pos, state);
     }
 
     @Override
@@ -94,10 +94,10 @@ public class TreeHolesBlock extends BaseEntityBlock {
         return RenderShape.MODEL;
     }
 
-    public static class Entity extends RandomizableContainerBlockEntity {
+    public static class BEntity extends RandomizableContainerBlockEntity {
         private NonNullList<ItemStack> items = NonNullList.withSize(9, ItemStack.EMPTY);
 
-        public Entity(BlockPos pos, BlockState blockState) {
+        public BEntity(BlockPos pos, BlockState blockState) {
             super(FunctionalBlocks.TREE_HOLES_ENTITY.get(), pos, blockState);
         }
 

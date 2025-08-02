@@ -71,7 +71,7 @@ public class ExtractinatorBlock extends HorizontalDirectionalWithHorizontalTwoPa
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new Entity(pos, state);
+        return new BEntity(pos, state);
     }
 
     @Override
@@ -92,11 +92,11 @@ public class ExtractinatorBlock extends HorizontalDirectionalWithHorizontalTwoPa
         return ItemInteractionResult.SUCCESS;
     }
 
-    public static class Entity extends BlockEntity implements GeoBlockEntity {
+    public static class BEntity extends BlockEntity implements GeoBlockEntity {
         private final AnimatableInstanceCache CACHE = GeckoLibUtil.createInstanceCache(this);
         public final boolean isBase;
 
-        public Entity(BlockPos pos, BlockState blockState) {
+        public BEntity(BlockPos pos, BlockState blockState) {
             super(FunctionalBlocks.EXTRACTINATOR_ENTITY.get(), pos, blockState);
             this.isBase = blockState.getValue(StateProperties.HORIZONTAL_TWO_PART).isBase();
         }
@@ -114,10 +114,10 @@ public class ExtractinatorBlock extends HorizontalDirectionalWithHorizontalTwoPa
         }
     }
 
-    public static class Item extends TooltipBlockItem implements GeoItem {
+    public static class BItem extends TooltipBlockItem implements GeoItem {
         private final AnimatableInstanceCache CACHE = GeckoLibUtil.createInstanceCache(this);
 
-        public Item(ExtractinatorBlock block) {
+        public BItem(ExtractinatorBlock block) {
             super(block, new Properties(), ModRarity.WHITE, "tooltip.item.confluence.extractinator.0");
         }
 

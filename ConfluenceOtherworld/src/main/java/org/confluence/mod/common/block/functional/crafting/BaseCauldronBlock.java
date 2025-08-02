@@ -78,7 +78,7 @@ public class BaseCauldronBlock extends HorizontalDirectionalBlock implements Ent
         if (level.isClientSide) {
             return InteractionResult.SUCCESS;
         } else {
-            if (level.getBlockEntity(pos) instanceof Entity entity) {
+            if (level.getBlockEntity(pos) instanceof BEntity entity) {
                 player.openMenu(entity);
             }
             return InteractionResult.CONSUME;
@@ -115,19 +115,19 @@ public class BaseCauldronBlock extends HorizontalDirectionalBlock implements Ent
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new Entity(pos, state);
+        return new BEntity(pos, state);
     }
 
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-        return level.isClientSide ? null : LibUtils.getTicker(blockEntityType, FunctionalBlocks.CAULDRON_ENTITY.get(), CookingPotBlock.Entity::serverTick);
+        return level.isClientSide ? null : LibUtils.getTicker(blockEntityType, FunctionalBlocks.CAULDRON_ENTITY.get(), CookingPotBlock.BEntity::serverTick);
     }
 
-    public static class Entity extends BaseContainerBlockEntity {
+    public static class BEntity extends BaseContainerBlockEntity {
         protected NonNullList<ItemStack> items = NonNullList.withSize(CookingPotMenu.SLOT_COUNT, ItemStack.EMPTY);
         int cookingProgress;
         int cookingTotalTime;
-        int heatSourceItem = CookingPotBlock.Item.getId(Items.AIR);
+        int heatSourceItem = CookingPotBlock.BItem.getId(Items.AIR);
         ItemStack[] itemStacks = new ItemStack[4];
         protected final ContainerData dataAccess = new ContainerData() {
             @Override
@@ -161,12 +161,12 @@ public class BaseCauldronBlock extends HorizontalDirectionalBlock implements Ent
         };
         private final RecipeManager.CachedCheck<CookingPotRecipe.Input, CookingPotRecipe> cachedCheck;
 
-        public Entity(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState blockState) {
+        public BEntity(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState blockState) {
             super(blockEntityType, pos, blockState);
             this.cachedCheck = RecipeManager.createCheck(ModRecipes.COOKING_POT_TYPE.get());
         }
 
-        public Entity(BlockPos pos, BlockState blockState) {
+        public BEntity(BlockPos pos, BlockState blockState) {
             this(FunctionalBlocks.CAULDRON_ENTITY.get(), pos, blockState);
         }
 
@@ -181,7 +181,7 @@ public class BaseCauldronBlock extends HorizontalDirectionalBlock implements Ent
 //            invalidateCapabilities();
 //        }
 
-        public static void serverTick(Level level, BlockPos pos, BlockState state, Entity blockEntity) {
+        public static void serverTick(Level level, BlockPos pos, BlockState state, BEntity blockEntity) {
             BlockInWorld heatSource = new BlockInWorld(level, pos.below(), true);
             if (level.getGameTime() % 20 == 1) { // 每秒获取一次
                 blockEntity.heatSourceItem = Item.getId(heatSource.getState().getBlock().asItem());

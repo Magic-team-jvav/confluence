@@ -115,8 +115,8 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
         return state.getValue(StateProperties.VERTICAL_TWO_PART).isBase() ? LibUtils.getTicker(blockEntityType, StatueBlocks.BLOCK_ENTITY.get(), behaviour::entityTick) : null;
     }
 
-    public static class Entity extends AbstractMechanicalBlock.Entity {
-        public Entity(BlockPos pos, BlockState state) {
+    public static class BEntity extends AbstractMechanicalBlock.BEntity {
+        public BEntity(BlockPos pos, BlockState state) {
             super(StatueBlocks.BLOCK_ENTITY.get(), pos, state);
         }
 
@@ -142,8 +142,8 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
     }
 
     public static class Behaviour {
-        public @Nullable Entity newBlockEntity(BlockPos pos, BlockState state) {
-            return new Entity(pos, state);
+        public @Nullable BehaviourStatueBlock.BEntity newBlockEntity(BlockPos pos, BlockState state) {
+            return new BEntity(pos, state);
         }
 
         public void onExecute(BlockState state, ServerLevel level, BlockPos pos, int color, INetworkEntity networkEntity) {}
@@ -158,7 +158,7 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
             }
         }
 
-        public void entityTick(Level level, BlockPos pos, BlockState blockState, Entity entity) {}
+        public void entityTick(Level level, BlockPos pos, BlockState blockState, BEntity entity) {}
 
         public BlockState getStateForPlacement(BlockPlaceContext context, BlockState state) {
             return state;

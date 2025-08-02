@@ -149,7 +149,7 @@ public class AltarBlock extends BaseEntityBlock {
 
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
-        if (level.getBlockEntity(pos) instanceof Entity entity) {
+        if (level.getBlockEntity(pos) instanceof BEntity entity) {
             Containers.dropContents(level, pos, entity.itemHandler.getItems());
             level.removeBlockEntity(pos);
         }
@@ -157,7 +157,7 @@ public class AltarBlock extends BaseEntityBlock {
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        if (!level.isClientSide && level.getBlockEntity(pos) instanceof Entity entity) {
+        if (!level.isClientSide && level.getBlockEntity(pos) instanceof BEntity entity) {
             if (player.isCrouching()) {
                 player.addItem(entity.takeItem(-1));
             } else {
@@ -171,7 +171,7 @@ public class AltarBlock extends BaseEntityBlock {
     }
 
     public static void onLeftClick(BlockState state, Level level, BlockPos pos, Player player) {
-        if (level instanceof ServerLevel serverLevel && state.getBlock() instanceof AltarBlock && level.getBlockEntity(pos) instanceof Entity entity) {
+        if (level instanceof ServerLevel serverLevel && state.getBlock() instanceof AltarBlock && level.getBlockEntity(pos) instanceof BEntity entity) {
             RecipeManager recipeManager = serverLevel.getServer().getRecipeManager();
             if (player.isCrouching()) {
                 List<RecipeHolder<AltarRecipe>> recipes;
@@ -197,7 +197,7 @@ public class AltarBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new Entity(pos, state).setVariant(variant);
+        return new BEntity(pos, state).setVariant(variant);
     }
 
     public static boolean hurtPlayerIfBrokenNotAllowed(Player player, BlockState blockState) {
@@ -211,13 +211,13 @@ public class AltarBlock extends BaseEntityBlock {
         return false;
     }
 
-    public static class Entity extends BaseContainerBlockEntity implements GeoBlockEntity {
+    public static class BEntity extends BaseContainerBlockEntity implements GeoBlockEntity {
         public static final int CONTAINER_SIZE = 6;
         private final AnimatableInstanceCache CACHE = GeckoLibUtil.createInstanceCache(this);
         private final ItemStackHandlerRecipeInput itemHandler; // 5 Inputs and 1 Output.
         private Variant variant;
 
-        public Entity(BlockPos pos, BlockState blockState) {
+        public BEntity(BlockPos pos, BlockState blockState) {
             super(FunctionalBlocks.ALTAR_BLOCK_ENTITY.get(), pos, blockState);
             this.itemHandler = new ItemStackHandlerRecipeInput(this, CONTAINER_SIZE);
             SingletonGeoAnimatable.registerSyncedAnimatable(this);
@@ -273,7 +273,7 @@ public class AltarBlock extends BaseEntityBlock {
             }
         }
 
-        Entity setVariant(Variant variant) {
+        BEntity setVariant(Variant variant) {
             this.variant = variant;
             markUpdated();
             return this;
@@ -385,34 +385,34 @@ public class AltarBlock extends BaseEntityBlock {
         }
     }
 
-    public static class Item extends BlockItem implements GeoItem {
+    public static class BItem extends BlockItem implements GeoItem {
         private final AnimatableInstanceCache CACHE = GeckoLibUtil.createInstanceCache(this);
 
-        public Item(AltarBlock block) {
+        public BItem(AltarBlock block) {
             super(block, new Properties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.PURPLE));
         }
 
         @Override
         public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
             consumer.accept(new GeoRenderProvider() {
-                private GeoItemRenderer<Item> renderer;
+                private GeoItemRenderer<BItem> renderer;
 
                 @Override
                 public BlockEntityWithoutLevelRenderer getGeoItemRenderer() {
                     if (renderer == null) {
                         this.renderer = new GeoItemRenderer<>(new GeoModel<>() {
                             @Override
-                            public ResourceLocation getModelResource(AltarBlock.Item animatable) {
+                            public ResourceLocation getModelResource(BItem animatable) {
                                 return AltarBlockModel.MODELS[animatable.getVariant().getId()];
                             }
 
                             @Override
-                            public ResourceLocation getTextureResource(AltarBlock.Item animatable) {
+                            public ResourceLocation getTextureResource(BItem animatable) {
                                 return AltarBlockModel.TEXTURES[animatable.getVariant().getId()];
                             }
 
                             @Override
-                            public ResourceLocation getAnimationResource(AltarBlock.Item animatable) {
+                            public ResourceLocation getAnimationResource(BItem animatable) {
                                 return AltarBlockModel.ANIMATIONS[animatable.getVariant().getId()];
                             }
                         });

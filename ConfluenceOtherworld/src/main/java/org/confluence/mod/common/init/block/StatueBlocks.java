@@ -216,7 +216,7 @@ public class StatueBlocks {
     }));
     public static final DeferredBlock<BehaviourStatueBlock> BAST_STATUE = registerBehaviour("bast_statue", new BehaviourStatueBlock.Behaviour() {
         @Override
-        public void entityTick(Level level, BlockPos pos, BlockState blockState, BehaviourStatueBlock.Entity entity) {
+        public void entityTick(Level level, BlockPos pos, BlockState blockState, BehaviourStatueBlock.BEntity entity) {
             if (!level.isClientSide && level.getGameTime() % 400 == 0 && blockState.getValue(StateProperties.DRIVE)) {
                 Vec3 center = pos.getCenter();
                 for (Player player : level.players()) {
@@ -241,10 +241,10 @@ public class StatueBlocks {
     });
     // Angel Statue
 
-    public static final Supplier<BlockEntityType<BehaviourStatueBlock.Entity>> BLOCK_ENTITY = BLOCK_ENTITIES.register("behaviour_statue_entity", () -> {
+    public static final Supplier<BlockEntityType<BehaviourStatueBlock.BEntity>> BLOCK_ENTITY = BLOCK_ENTITIES.register("behaviour_statue_entity", () -> {
         BehaviourStatueBlock[] validBlocks = BEHAVIOUR_STATUES.stream().map(Supplier::get).toArray(BehaviourStatueBlock[]::new);
         BEHAVIOUR_STATUES = null;
-        return BlockEntityType.Builder.of(BehaviourStatueBlock.Entity::new, validBlocks).build(DSL.remainderType());
+        return BlockEntityType.Builder.of(BehaviourStatueBlock.BEntity::new, validBlocks).build(DSL.remainderType());
     });
 
     private static DeferredBlock<StatueBlock> register(String id) {

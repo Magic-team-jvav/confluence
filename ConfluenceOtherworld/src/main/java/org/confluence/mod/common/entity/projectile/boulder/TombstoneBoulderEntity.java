@@ -43,7 +43,7 @@ public class TombstoneBoulderEntity extends BoulderEntity {
     public void onRemove() {
         if (!level().isClientSide && level().getBlockState(blockPosition()).canBeReplaced()) {
             level().setBlock(blockPosition(), getBlockState(), Block.UPDATE_ALL);
-            if (level().getBlockEntity(blockPosition()) instanceof TombstoneBlock.Entity entity) {
+            if (level().getBlockEntity(blockPosition()) instanceof TombstoneBlock.BEntity entity) {
                 entity.setText(text, true);
             }
         }

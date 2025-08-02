@@ -10,8 +10,8 @@ import software.bernie.geckolib.model.GeoModel;
 
 import java.util.function.Function;
 
-public class PylonModel extends GeoModel<PylonBlock.Entity> {
-    private final Function<PylonBlock.Entity, ResourceLocation[]> function = new Function<>() {
+public class PylonModel extends GeoModel<PylonBlock.BEntity> {
+    private final Function<PylonBlock.BEntity, ResourceLocation[]> function = new Function<>() {
         private final ResourceLocation[][] cache = Util.make(new ResourceLocation[WaystonesHelper.BLOCKS.getEntries().size()][3], arr -> {
             for (DeferredHolder<Block, ? extends Block> entry : WaystonesHelper.BLOCKS.getEntries()) {
                 String path = entry.getId().getPath();
@@ -24,24 +24,24 @@ public class PylonModel extends GeoModel<PylonBlock.Entity> {
         });
 
         @Override
-        public ResourceLocation[] apply(PylonBlock.Entity entity) {
+        public ResourceLocation[] apply(PylonBlock.BEntity entity) {
             ResourceLocation[] resources = cache[((PylonBlock) entity.getBlockState().getBlock()).id];
             return GeckoLibCache.getBakedModels().containsKey(resources[0]) ? resources : cache[0];
         }
     };
 
     @Override
-    public ResourceLocation getModelResource(PylonBlock.Entity animatable) {
+    public ResourceLocation getModelResource(PylonBlock.BEntity animatable) {
         return function.apply(animatable)[0];
     }
 
     @Override
-    public ResourceLocation getTextureResource(PylonBlock.Entity animatable) {
+    public ResourceLocation getTextureResource(PylonBlock.BEntity animatable) {
         return function.apply(animatable)[1];
     }
 
     @Override
-    public ResourceLocation getAnimationResource(PylonBlock.Entity animatable) {
+    public ResourceLocation getAnimationResource(PylonBlock.BEntity animatable) {
         return function.apply(animatable)[2];
     }
 }

@@ -16,7 +16,7 @@ import org.confluence.mod.common.init.block.ChestBlocks;
 import java.util.Hashtable;
 import java.util.function.BiFunction;
 
-public class DeathChestBlockRenderer extends ChestRenderer<DeathChestBlock.Entity> {
+public class DeathChestBlockRenderer extends ChestRenderer<DeathChestBlock.BEntity> {
     private final BiFunction<Block, ChestType, Material> function;
 
     public DeathChestBlockRenderer(BlockEntityRendererProvider.Context context) {
@@ -47,7 +47,7 @@ public class DeathChestBlockRenderer extends ChestRenderer<DeathChestBlock.Entit
     }
 
     @Override
-    protected Material getMaterial(DeathChestBlock.Entity blockEntity, ChestType chestType) {
+    protected Material getMaterial(DeathChestBlock.BEntity blockEntity, ChestType chestType) {
         return function.apply(blockEntity.getBlockState().getBlock(), chestType);
     }
 }

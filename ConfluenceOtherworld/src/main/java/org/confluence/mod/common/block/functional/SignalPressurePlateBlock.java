@@ -53,7 +53,7 @@ public class SignalPressurePlateBlock extends PressurePlateBlock implements Enti
 
     @Override
     public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new AbstractMechanicalBlock.Entity(blockPos, blockState);
+        return new AbstractMechanicalBlock.BEntity(blockPos, blockState);
     }
 
     @Override

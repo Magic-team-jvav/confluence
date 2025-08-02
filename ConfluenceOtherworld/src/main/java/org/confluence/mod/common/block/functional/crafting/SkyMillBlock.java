@@ -77,7 +77,7 @@ public class SkyMillBlock extends HorizontalDirectionalBlock implements EntityBl
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return new Entity(pPos, pState);
+        return new BEntity(pPos, pState);
     }
 
     @Override
@@ -100,10 +100,10 @@ public class SkyMillBlock extends HorizontalDirectionalBlock implements EntityBl
         return CODEC;
     }
 
-    public static class Entity extends BlockEntity implements GeoBlockEntity {
+    public static class BEntity extends BlockEntity implements GeoBlockEntity {
         private final AnimatableInstanceCache CACHE = GeckoLibUtil.createInstanceCache(this);
 
-        public Entity(BlockPos pPos, BlockState pBlockState) {
+        public BEntity(BlockPos pPos, BlockState pBlockState) {
             super(FunctionalBlocks.SKY_MILL_ENTITY.get(), pPos, pBlockState);
         }
 
@@ -120,10 +120,10 @@ public class SkyMillBlock extends HorizontalDirectionalBlock implements EntityBl
         }
     }
 
-    public static class Item extends TooltipBlockItem implements GeoItem {
+    public static class BItem extends TooltipBlockItem implements GeoItem {
         private final AnimatableInstanceCache CACHE = GeckoLibUtil.createInstanceCache(this);
 
-        public Item(SkyMillBlock pBlock) {
+        public BItem(SkyMillBlock pBlock) {
             super(pBlock, new Properties(), ModRarity.BLUE, "tooltip.item.confluence.sky_mill.0");
         }
 

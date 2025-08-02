@@ -88,7 +88,7 @@ public final class ModPonderPlugin implements PonderPlugin {
         scene.overlay().showControls(dartPoint, Pointing.DOWN, 20).withItem(wrench);
         scene.overlay().showText(40).text("Select second mechanical block").pointAt(dartPoint).attachKeyFrame();
         scene.idle(5);
-        scene.world().modifyBlockEntity(new BlockPos(1, 1, 3), AbstractMechanicalBlock.Entity.class, blockEntity -> {
+        scene.world().modifyBlockEntity(new BlockPos(1, 1, 3), AbstractMechanicalBlock.BEntity.class, blockEntity -> {
             BlockPos switchPos = new BlockPos(3, 1, 1);
             if (scene.getScene().getWorld().getBlockEntity(switchPos) instanceof INetworkEntity entity) {
                 blockEntity.connectTo(0xFF0000, switchPos, entity);
@@ -101,7 +101,7 @@ public final class ModPonderPlugin implements PonderPlugin {
         scene.title("executing", "Executing");
         scene.world().showSection(util.select().fromTo(0, 0, 0, 4, 2, 4), Direction.UP);
         BlockPos switchPos = new BlockPos(3, 1, 1);
-        scene.world().modifyBlockEntity(new BlockPos(1, 1, 3), AbstractMechanicalBlock.Entity.class, blockEntity -> {
+        scene.world().modifyBlockEntity(new BlockPos(1, 1, 3), AbstractMechanicalBlock.BEntity.class, blockEntity -> {
             if (scene.getScene().getWorld().getBlockEntity(switchPos) instanceof INetworkEntity entity) {
                 blockEntity.connectTo(0xFF0000, switchPos, entity);
             }

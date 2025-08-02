@@ -19,9 +19,9 @@ import org.joml.Matrix4f;
 
 import java.util.List;
 
-public class MuralBlockRenderer implements BlockEntityRenderer<MuralBlock.Entity> {
+public class MuralBlockRenderer implements BlockEntityRenderer<MuralBlock.BEntity> {
     @Override
-    public void render(MuralBlock.Entity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+    public void render(MuralBlock.BEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
         ClientLevel level = Minecraft.getInstance().level;
         Direction direction = blockEntity.getBlockState().getValue(MuralBlock.FACING);
         int light = level == null ? packedLight : LevelRenderer.getLightColor(level, blockEntity.getBlockPos().relative(direction.getOpposite()));

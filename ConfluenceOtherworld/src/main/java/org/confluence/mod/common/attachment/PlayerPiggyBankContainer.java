@@ -16,7 +16,7 @@ import static org.confluence.mod.common.attachment.ExtraInventory.SIZE_COINS;
 import static org.confluence.mod.common.item.common.CoinItem.UPGRADES_COUNT;
 import static org.confluence.mod.util.PlayerUtils.*;
 
-public class PlayerPiggyBankContainer extends PlayerContainer<PiggyBankBlock.Entity> {
+public class PlayerPiggyBankContainer extends PlayerContainer<PiggyBankBlock.BEntity> {
     private long totalMoney;
     private Player owner;
 

@@ -34,21 +34,21 @@ public abstract class AbstractMechanicalBlock extends Block implements EntityBlo
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new Entity(pos, state);
+        return new BEntity(pos, state);
     }
 
-    public static class Entity extends BlockEntity implements INetworkEntity {
+    public static class BEntity extends BlockEntity implements INetworkEntity {
         private NetworkNode networkNode;
         private final Int2ObjectMap<Set<BlockPos>> connectedPoses;
         private final Int2ObjectMap<Set<BlockPos>> relativePoses;
 
-        public Entity(BlockEntityType<? extends Entity> entityType, BlockPos pos, BlockState blockState) {
+        public BEntity(BlockEntityType<? extends BEntity> entityType, BlockPos pos, BlockState blockState) {
             super(entityType, pos, blockState);
             this.connectedPoses = new Int2ObjectOpenHashMap<>();
             this.relativePoses = new Int2ObjectOpenHashMap<>();
         }
 
-        public Entity(BlockPos pos, BlockState state) {
+        public BEntity(BlockPos pos, BlockState state) {
             this(FunctionalBlocks.MECHANICAL_BLOCK_ENTITY.get(), pos, state);
         }
 

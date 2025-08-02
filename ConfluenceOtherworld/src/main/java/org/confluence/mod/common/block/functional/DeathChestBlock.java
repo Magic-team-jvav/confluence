@@ -42,7 +42,7 @@ public class DeathChestBlock extends BaseChestBlock implements INetworkBlock {
     }
 
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return new Entity(pPos, pState);
+        return new BEntity(pPos, pState);
     }
 
     protected Stat<ResourceLocation> getOpenChestStat() {
@@ -100,12 +100,12 @@ public class DeathChestBlock extends BaseChestBlock implements INetworkBlock {
         }
     }
 
-    public static class Entity extends BaseChestBlock.Entity implements INetworkEntity {
+    public static class BEntity extends BaseChestBlock.BEntity implements INetworkEntity {
         private NetworkNode networkNode;
         private final Int2ObjectMap<Set<BlockPos>> connectedPoses;
         private final Int2ObjectMap<Set<BlockPos>> relativePoses;
 
-        public Entity(BlockPos pPos, BlockState pBlockState) {
+        public BEntity(BlockPos pPos, BlockState pBlockState) {
             super(ChestBlocks.DEATH_CHEST_ENTITY.get(), pPos, pBlockState);
             this.connectedPoses = new Int2ObjectOpenHashMap<>();
             this.relativePoses = new Int2ObjectOpenHashMap<>();

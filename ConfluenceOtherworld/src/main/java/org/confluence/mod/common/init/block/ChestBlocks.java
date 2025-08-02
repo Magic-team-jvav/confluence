@@ -57,8 +57,8 @@ public class ChestBlocks {
         }
         return false;
     });
-    public static final Supplier<BlockEntityType<BaseChestBlock.Entity>> BASE_CHEST_ENTITY = ModBlocks.BLOCK_ENTITIES.register("base_chest_entity", () -> BlockEntityType.Builder.of(BaseChestBlock.Entity::new, NORMAL_CHESTS.stream().map(DeferredBlock::get).toArray(Block[]::new)).build(DSL.remainderType()));
-    public static final Supplier<BlockEntityType<DeathChestBlock.Entity>> DEATH_CHEST_ENTITY = ModBlocks.BLOCK_ENTITIES.register("death_chest_entity", () -> BlockEntityType.Builder.of(DeathChestBlock.Entity::new, DEATH_CHESTS.stream().map(DeferredBlock::get).toArray(Block[]::new)).build(DSL.remainderType()));
+    public static final Supplier<BlockEntityType<BaseChestBlock.BEntity>> BASE_CHEST_ENTITY = ModBlocks.BLOCK_ENTITIES.register("base_chest_entity", () -> BlockEntityType.Builder.of(BaseChestBlock.BEntity::new, NORMAL_CHESTS.stream().map(DeferredBlock::get).toArray(Block[]::new)).build(DSL.remainderType()));
+    public static final Supplier<BlockEntityType<DeathChestBlock.BEntity>> DEATH_CHEST_ENTITY = ModBlocks.BLOCK_ENTITIES.register("death_chest_entity", () -> BlockEntityType.Builder.of(DeathChestBlock.BEntity::new, DEATH_CHESTS.stream().map(DeferredBlock::get).toArray(Block[]::new)).build(DSL.remainderType()));
 
     public static final DeferredBlock<BiomeChestBlock> JUNGLE_CHEST = registerWithItem("jungle_chest", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.JUNGLE_KEY)));
     public static final DeferredBlock<BiomeChestBlock> CORRUPTION_CHEST = registerWithItem("corruption_chest", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.CORRUPTION_KEY)));
@@ -69,7 +69,7 @@ public class ChestBlocks {
     public static final DeferredBlock<BiomeChestBlock> OCEAN_CHEST = registerWithItem("ocean_chest", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.OCEAN_KEY)));
     public static final DeferredBlock<BiomeChestBlock> UNIVERSE_CHEST = registerWithItem("universe_chest", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.UNIVERSE_KEY)));
     public static final DeferredBlock<BiomeChestBlock> MECHANIC_SAFE_CHEST = registerWithItem("mechanic_safe_chest", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.MECHANIC_SAFE_KEY)));
-    public static final Supplier<BlockEntityType<BiomeChestBlock.Entity>> BIOME_CHEST_ENTITY = BLOCK_ENTITIES.register("biome_chest_entity", () -> BlockEntityType.Builder.of(BiomeChestBlock.Entity::new, JUNGLE_CHEST.get(), CORRUPTION_CHEST.get(), CRIMSON_CHEST.get(), HALLOWED_CHEST.get(), ICE_CHEST.get(), DESERT_CHEST.get(), OCEAN_CHEST.get(), UNIVERSE_CHEST.get(), MECHANIC_SAFE_CHEST.get()).build(DSL.remainderType()));
+    public static final Supplier<BlockEntityType<BiomeChestBlock.BEntity>> BIOME_CHEST_ENTITY = BLOCK_ENTITIES.register("biome_chest_entity", () -> BlockEntityType.Builder.of(BiomeChestBlock.BEntity::new, JUNGLE_CHEST.get(), CORRUPTION_CHEST.get(), CRIMSON_CHEST.get(), HALLOWED_CHEST.get(), ICE_CHEST.get(), DESERT_CHEST.get(), OCEAN_CHEST.get(), UNIVERSE_CHEST.get(), MECHANIC_SAFE_CHEST.get()).build(DSL.remainderType()));
 
     private static DeferredBlock<BaseChestBlock> registerNormal(String id, @Nullable Predicate<ItemStack> predicate) {
         DeferredBlock<BaseChestBlock> block = BLOCKS.register(id, () -> new BaseChestBlock(predicate == null ? null : (stack, state, level, pos, player, hand, hitResult) -> {

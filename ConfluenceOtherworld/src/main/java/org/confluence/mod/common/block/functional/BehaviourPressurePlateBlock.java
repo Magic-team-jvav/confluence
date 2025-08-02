@@ -66,7 +66,7 @@ public class BehaviourPressurePlateBlock extends BasePressurePlateBlock implemen
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new AbstractMechanicalBlock.Entity(blockPos, blockState);
+        return new AbstractMechanicalBlock.BEntity(blockPos, blockState);
     }
 
     @Override

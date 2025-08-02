@@ -71,7 +71,7 @@ public class SafeBlock extends HorizontalDirectionalWaterloggedBlock implements 
 
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
-        if (level.getBlockEntity(pos) instanceof Entity entity) {
+        if (level.getBlockEntity(pos) instanceof BEntity entity) {
             if (level.isClientSide) {
                 return InteractionResult.SUCCESS;
             }
@@ -87,25 +87,25 @@ public class SafeBlock extends HorizontalDirectionalWaterloggedBlock implements 
 
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-        return level.isClientSide ? null : LibUtils.getTicker(blockEntityType, FunctionalBlocks.SAFE_ENTITY.get(), Entity::serverTick);
+        return level.isClientSide ? null : LibUtils.getTicker(blockEntityType, FunctionalBlocks.SAFE_ENTITY.get(), BEntity::serverTick);
     }
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new Entity(pos, state);
+        return new BEntity(pos, state);
     }
 
-    public static class Entity extends BlockEntity implements PlayerContainer.ValidEntity, GeoBlockEntity {
+    public static class BEntity extends BlockEntity implements PlayerContainer.ValidEntity, GeoBlockEntity {
         private final AnimatableInstanceCache CACHE = GeckoLibUtil.createInstanceCache(this);
         public final ContainerOpenersCounter openersCounter = new ContainerOpenersCounter() {
             @Override
             protected void onOpen(Level level, BlockPos pos, BlockState state) {
-                Entity.this.triggerAnim("status", "open");
+                BEntity.this.triggerAnim("status", "open");
             }
 
             @Override
             protected void onClose(Level level, BlockPos pos, BlockState state) {
-                Entity.this.triggerAnim("status", "close");
+                BEntity.this.triggerAnim("status", "close");
             }
 
             @Override
@@ -120,7 +120,7 @@ public class SafeBlock extends HorizontalDirectionalWaterloggedBlock implements 
             }
         };
 
-        public Entity(BlockPos pos, BlockState blockState) {
+        public BEntity(BlockPos pos, BlockState blockState) {
             super(FunctionalBlocks.SAFE_ENTITY.get(), pos, blockState);
             SingletonGeoAnimatable.registerSyncedAnimatable(this);
         }
@@ -142,7 +142,7 @@ public class SafeBlock extends HorizontalDirectionalWaterloggedBlock implements 
             return CACHE;
         }
 
-        public static void serverTick(Level level, BlockPos pos, BlockState state, Entity entity) {
+        public static void serverTick(Level level, BlockPos pos, BlockState state, BEntity entity) {
             if (!entity.remove) {
                 entity.openersCounter.recheckOpeners(level, pos, state);
             }

@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
-public class BewitchingTableBlockRenderer extends GeoBlockRenderer<BewitchingTableBlock.Entity> {
+public class BewitchingTableBlockRenderer extends GeoBlockRenderer<BewitchingTableBlock.BEntity> {
     public static final ResourceLocation MODEL = Confluence.asResource("geo/block/bewitching_table.geo.json");
     public static final ResourceLocation TEXTURE = Confluence.asResource("textures/block/bewitching_table.png");
     public static final ResourceLocation ANIMATION = Confluence.asResource("animations/block/bewitching_table.animation.json");
@@ -19,24 +19,24 @@ public class BewitchingTableBlockRenderer extends GeoBlockRenderer<BewitchingTab
     public BewitchingTableBlockRenderer() {
         super(new GeoModel<>() {
             @Override
-            public ResourceLocation getModelResource(BewitchingTableBlock.Entity animatable) {
+            public ResourceLocation getModelResource(BewitchingTableBlock.BEntity animatable) {
                 return MODEL;
             }
 
             @Override
-            public ResourceLocation getTextureResource(BewitchingTableBlock.Entity animatable) {
+            public ResourceLocation getTextureResource(BewitchingTableBlock.BEntity animatable) {
                 return TEXTURE;
             }
 
             @Override
-            public ResourceLocation getAnimationResource(BewitchingTableBlock.Entity animatable) {
+            public ResourceLocation getAnimationResource(BewitchingTableBlock.BEntity animatable) {
                 return ANIMATION;
             }
         });
     }
 
     @Override
-    public void defaultRender(PoseStack poseStack, BewitchingTableBlock.Entity animatable, MultiBufferSource bufferSource, @Nullable RenderType renderType, @Nullable VertexConsumer buffer, float yaw, float partialTick, int packedLight) {
+    public void defaultRender(PoseStack poseStack, BewitchingTableBlock.BEntity animatable, MultiBufferSource bufferSource, @Nullable RenderType renderType, @Nullable VertexConsumer buffer, float yaw, float partialTick, int packedLight) {
         if (animatable.isBase) {
             super.defaultRender(poseStack, animatable, bufferSource, renderType, buffer, yaw, partialTick, packedLight);
         }

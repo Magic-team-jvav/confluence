@@ -63,7 +63,7 @@ public class DetonatorBlock extends AbstractMechanicalBlock {
     protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         if (state.getValue(StateProperties.DRIVE)) {
             if (!level.getEntitiesOfClass(LivingEntity.class, TOUCH_AABB.move(pos), PREDICATE).isEmpty() ||
-                    (level.getBlockEntity(pos) instanceof Entity entity && entity.getOrCreateNetworkNode().hasSignal(pos))
+                    (level.getBlockEntity(pos) instanceof BEntity entity && entity.getOrCreateNetworkNode().hasSignal(pos))
             ) {
                 level.scheduleTick(pos, this, 20);
             } else {

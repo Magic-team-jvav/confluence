@@ -79,8 +79,8 @@ public class BlinkingRoyalShimmerlilyBlock extends HorizontalDirectionalWithHori
         }
     }
 
-    public static class Item extends BlockItem {
-        public Item(Block block) {
+    public static class BItem extends BlockItem {
+        public BItem(Block block) {
             super(block, new Properties());
         }
 

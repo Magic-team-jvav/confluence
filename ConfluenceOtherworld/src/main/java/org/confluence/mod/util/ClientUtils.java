@@ -22,7 +22,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
@@ -36,9 +35,7 @@ import org.confluence.lib.client.AntiPushPoseStack;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.entity.DeadBodyPartEntity;
-import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
-import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.VanityArmorItems;
 import org.confluence.mod.common.item.vanity_armor.BaseDyeItem;
 import org.confluence.mod.integration.geckolib.IGeoCube;
@@ -228,25 +225,6 @@ public final class ClientUtils {
             }
         }
         return OptionalInt.empty();
-    }
-
-    /**
-     * 获取实体所的发光强度
-     *
-     * @param returnValue 原发光强度
-     * @return 目标发光强度，值域在[-15, 15]。负数代表仅水下光照
-     */
-    public static int getLuminance(Entity entity, int returnValue) {
-        int luminance = 0;
-        if (entity instanceof LivingEntity living) {
-            if (living.getItemBySlot(EquipmentSlot.HEAD).is(ModTags.Items.PROVIDE_LIGHT)) {
-                luminance += 10;
-            }
-            if (living.hasEffect(ModEffects.SHINE)) {
-                luminance += 10;
-            }
-        }
-        return returnValue >= 0 ? Math.min(returnValue + luminance, 15) : Math.max(returnValue - luminance, -15);
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})

@@ -1,0 +1,60 @@
+package org.confluence.mod.common.block.functional.crafting;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import org.confluence.lib.common.block.StateProperties;
+
+import static net.minecraft.world.level.block.state.properties.BlockStateProperties.LIT;
+import static org.confluence.lib.common.block.StateProperties.HorizontalTwoPart.getConnectedDirection;
+
+public class AdamantiteForgeBlock extends HardmodeForgeBlock {
+    public AdamantiteForgeBlock() {
+        super(BlockBehaviour.Properties.ofFullCopy(Blocks.NETHERITE_BLOCK).lightLevel(state -> state.getValue(BlockStateProperties.LIT) ? 15 : 7).noOcclusion());
+    }
+
+    @Override
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
+        super.animateTick(state, level, pos, random);
+        Direction facing = state.getValue(FACING);
+        StateProperties.HorizontalTwoPart part = state.getValue(PART);
+        double x = pos.getX() + 0.5;
+        double y = pos.getY() + 2.2;
+        double z = pos.getZ() + 0.5;
+        boolean axisX = facing.getAxis() == Direction.Axis.X;
+        boolean positive = facing.getAxisDirection() == Direction.AxisDirection.POSITIVE;
+        double off = positive ? 0.125 : -0.125;
+        double v = random.nextDouble() * off;
+        double rx;
+        double rz;
+        if (axisX) {
+            rx = x - (facing.getStepX() * 0.25 + random.nextDouble() * off);
+            if (part.isBase()) {
+                rz = z + facing.getClockWise().getStepZ() * 0.25 + v;
+            } else {
+                rz = z + facing.getCounterClockWise().getStepZ() * 0.25 - v;
+            }
+        } else {
+            rz = z - (facing.getStepZ() * 0.25 + random.nextDouble() * off);
+            if (part.isBase()) {
+                rx = x + facing.getClockWise().getStepX() * 0.25 - v;
+            } else {
+                rx = x + facing.getCounterClockWise().getStepX() * 0.25 + v;
+            }
+        }
+        boolean soul;
+        if (part.isBase()) {
+            soul = state.getValue(LIT);
+        } else {
+            BlockState blockState = level.getBlockState(pos.relative(getConnectedDirection(state)));
+            soul = blockState.is(this) && blockState.getValue(LIT);
+        }
+        level.addParticle(soul ? ParticleTypes.SOUL_FIRE_FLAME : ParticleTypes.FLAME, rx, y, rz, 0, 0.02, 0);
+    }
+}

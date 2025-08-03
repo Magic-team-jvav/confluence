@@ -32,17 +32,11 @@ neoForge {
 
         client1 {
             client()
-            // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
-            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
-            //玩家名字
-            programArguments = ["--username", "Dev1"]
+            programArguments.addAll "--username", "Confluence1"
         }
         client2 {
             client()
-            // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
-            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
-            //玩家名字
-            programArguments = ["--username", "Dev2"]
+            programArguments.addAll "--username", "Confluence2"
         }
 
 

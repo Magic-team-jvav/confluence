@@ -17,6 +17,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.GrassColor;
@@ -383,7 +384,7 @@ public final class ModClientEvents {
     @SubscribeEvent
     public static void textureAtlasStitched(TextureAtlasStitchedEvent event) {
         TextureAtlas atlas = event.getAtlas();
-        if (TextureAtlas.LOCATION_BLOCKS.equals(atlas.location())) {
+        if (InventoryMenu.BLOCK_ATLAS.equals(atlas.location())) {
             Map<ResourceLocation, TextureAtlasSprite> textures = atlas.getTextures();
             for (ResourceLocation key : ClientUtils.ORIGINAL) {
                 TextureAtlasSprite sprite = textures.get(key);

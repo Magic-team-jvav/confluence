@@ -19,7 +19,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.fml.loading.FMLEnvironment;
 import org.confluence.lib.common.block.HorizontalDirectionalWithHorizontalTwoPartBlock;
-import org.confluence.lib.common.block.StateProperties;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipBlockItem;
 import org.confluence.mod.client.renderer.block.ExtractinatorBlockRenderer;
@@ -65,7 +64,7 @@ public class ExtractinatorBlock extends HorizontalDirectionalWithHorizontalTwoPa
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         int index = state.getValue(FACING).get2DDataValue();
-        return state.getValue(StateProperties.HORIZONTAL_TWO_PART).isBase() ? BASE_SHAPES[index] : RIGHT_SHAPES[index];
+        return state.getValue(PART).isBase() ? BASE_SHAPES[index] : RIGHT_SHAPES[index];
     }
 
     @Nullable
@@ -98,7 +97,7 @@ public class ExtractinatorBlock extends HorizontalDirectionalWithHorizontalTwoPa
 
         public BEntity(BlockPos pos, BlockState blockState) {
             super(FunctionalBlocks.EXTRACTINATOR_ENTITY.get(), pos, blockState);
-            this.isBase = blockState.getValue(StateProperties.HORIZONTAL_TWO_PART).isBase();
+            this.isBase = blockState.getValue(PART).isBase();
         }
 
         @Override

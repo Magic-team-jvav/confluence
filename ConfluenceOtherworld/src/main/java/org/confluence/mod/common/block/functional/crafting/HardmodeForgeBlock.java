@@ -4,6 +4,9 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -70,6 +73,16 @@ public class HardmodeForgeBlock extends EnhancedForgeBlock {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
+        double d0 = pos.getX() + 0.5;
+        double d1 = pos.getY();
+        double d2 = pos.getZ() + 0.5;
+        if (random.nextDouble() < 0.1) {
+            level.playLocalSound(d0, d1, d2, SoundEvents.FURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 1.0F, 1.0F, false);
+        }
     }
 
     public static class BEntity extends EnhancedForgeBlock.BEntity<HardmodeForgeRecipe> {

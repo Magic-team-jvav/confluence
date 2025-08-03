@@ -1891,7 +1891,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEntities.STICKY_GRENADE.get(), "黏性手雷");
         add(ModEntities.TARGET_DUMMY.get(), "目标假人");
         add(ModEntities.THORN_HOOK.get(), "荆棘钩");
-        add(ModEntities.THROWN_KNIVES_PROJECTILE.get(), "投刀");
+        add(ModEntities.THROWN_KNIVE_PROJECTILE.get(), "投刀");
         add(ModEntities.THROWN_POWDER.get(), "掷出的粉末");
         add(ModEntities.VILETHRON_PROJECTILE.get(), "邪恶荆棘投射物");
         add(ModEntities.WATER_STREAM_PROJECTILE.get(), "水流射弹");
@@ -3157,7 +3157,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(BoatItems.YELLOW_WILLOW_CHEST_BOAT.get(), "黄柳木运输船");
 
         add(ConsumableItems.SHURIKEN.get(), "手里剑");
-        add(ConsumableItems.THROWING_KNIVES.get(), "投刀");
+        add(ConsumableItems.THROWING_KNIVE.get(), "投刀");
+        add(ConsumableItems.BONE_THROWING_KNIFE.get(), "骨投刀");
+        add(ConsumableItems.FROST_DAGGERFISH.get(), "寒霜飞鱼");
         add(ConsumableItems.JAVELIN.get(), "标枪");
         add(ConsumableItems.SPIKY_BALL.get(), "尖球");
         add(ConsumableItems.HOLY_WATER.get(), "圣水");

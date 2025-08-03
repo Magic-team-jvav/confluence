@@ -650,7 +650,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(LootItem.lootTableItem(MaterialItems.PEARL).setWeight(28))
                         .add(LootItem.lootTableItem(MaterialItems.BLACK_PEARL).setWeight(14))
                         .add(LootItem.lootTableItem(MaterialItems.PINK_PEARL).setWeight(3))
-                        .add(EmptyLootItem.emptyItem().setWeight(210))
+                        .add(EmptyLootItem.emptyItem().setWeight(180))
                 )
         );
         // 蠕虫罐头

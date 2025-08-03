@@ -10,16 +10,17 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.model.entity.projectile.ThrownKnivesProjectileModel;
+import org.confluence.mod.client.model.entity.projectile.BoneThrownKnivesProjectileModel;
+import org.confluence.mod.client.model.entity.projectile.FrostDaggerfishProjectileModel;
 import org.confluence.mod.common.entity.projectile.ThrowableDropSelfProjectile;
 
-public class ThrownKnivesProjectileRenderer extends EntityRenderer<ThrowableDropSelfProjectile> {
-    private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/thrown_knives_projectile.png");
-    private final ThrownKnivesProjectileModel model;
+public class FrostDaggerfishProjectileRenderer extends EntityRenderer<ThrowableDropSelfProjectile> {
+    private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/frost_daggerfish_projectile.png");
+    private final FrostDaggerfishProjectileModel model;
 
-    public ThrownKnivesProjectileRenderer(EntityRendererProvider.Context pContext) {
+    public FrostDaggerfishProjectileRenderer(EntityRendererProvider.Context pContext) {
         super(pContext);
-        this.model = new ThrownKnivesProjectileModel(pContext.bakeLayer(ThrownKnivesProjectileModel.LAYER_LOCATION));
+        this.model = new FrostDaggerfishProjectileModel(pContext.bakeLayer(FrostDaggerfishProjectileModel.LAYER_LOCATION));
     }
 
     @Override
@@ -30,7 +31,7 @@ public class ThrownKnivesProjectileRenderer extends EntityRenderer<ThrowableDrop
     @Override
     public void render(ThrowableDropSelfProjectile entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight) {
         poseStack.pushPose();
-        poseStack.translate(0.0F, 0.125F, 0.0F);
+        poseStack.translate(0.0F, -1.2F, 0.0F);
         poseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTick, entity.yRotO, entity.getYRot()) - 90.0F));
         poseStack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTick, entity.xRotO, entity.getXRot())));
         poseStack.mulPose(LibClientUtils.ANGLE_N90);

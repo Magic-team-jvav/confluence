@@ -11,11 +11,11 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.entity.projectile.ThrowableDropSelfProjectile;
 import org.jetbrains.annotations.NotNull;
 
-public class ThrownKnivesProjectileModel extends EntityModel<ThrowableDropSelfProjectile> {
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Confluence.asResource("throw_knives_projectile"), "main");
+public class BoneThrownKnivesProjectileModel extends EntityModel<ThrowableDropSelfProjectile> {
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Confluence.asResource("bone_throw_knive_projectile"), "main");
     private final ModelPart root;
 
-    public ThrownKnivesProjectileModel(ModelPart root) {
+    public BoneThrownKnivesProjectileModel(ModelPart root) {
         this.root = root;
     }
 

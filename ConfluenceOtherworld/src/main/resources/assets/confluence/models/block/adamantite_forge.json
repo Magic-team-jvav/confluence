@@ -6,7 +6,7 @@
 	"textures": {
 		"1": "confluence:block/adamantite_forge",
 		"2": "confluence:block/adamantite_forge_flame",
-		"particle": "confluence:block/particle/adanmantite_forge_particle"
+		"particle": "confluence:block/particle/adamantite_forge_particle"
 	},
 	"elements": [
 		{

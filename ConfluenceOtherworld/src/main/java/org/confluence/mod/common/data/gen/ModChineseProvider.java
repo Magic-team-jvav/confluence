@@ -999,7 +999,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("container.confluence.heavy_work_bench", "重型工作台");
         add("container.confluence.crystal_ball", "水晶球");
         add("container.confluence.hellforge", "地狱熔炉");
-        add("container.confluence.adanmantite_forge", "精金熔炉");
+        add("container.confluence.adamantite_forge", "精金熔炉");
         add("container.confluence.titanium_forge", "钛金熔炉");
         add("container.confluence.alchemy_table", "炼药桌");
         add("container.confluence.cooking_pot", "烹饪锅");

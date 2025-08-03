@@ -1,33 +1,33 @@
 {
   "variants": {
     "horizontal_two_part=base,facing=north": {
-      "model": "confluence:block/adanmantite_forge"
+      "model": "confluence:block/adamantite_forge"
     },
     "horizontal_two_part=right,facing=north": {
-      "model": "confluence:block/adanmantite_forge_right"
+      "model": "confluence:block/adamantite_forge_right"
     },
     "horizontal_two_part=base,facing=south": {
-      "model": "confluence:block/adanmantite_forge",
+      "model": "confluence:block/adamantite_forge",
       "y": 180
     },
     "horizontal_two_part=right,facing=south": {
-      "model": "confluence:block/adanmantite_forge_right",
+      "model": "confluence:block/adamantite_forge_right",
       "y": 180
     },
     "horizontal_two_part=base,facing=east": {
-      "model": "confluence:block/adanmantite_forge",
+      "model": "confluence:block/adamantite_forge",
       "y": 90
     },
     "horizontal_two_part=right,facing=east": {
-      "model": "confluence:block/adanmantite_forge_right",
+      "model": "confluence:block/adamantite_forge_right",
       "y": 90
     },
     "horizontal_two_part=base,facing=west": {
-      "model": "confluence:block/adanmantite_forge",
+      "model": "confluence:block/adamantite_forge",
       "y": 270
     },
     "horizontal_two_part=right,facing=west": {
-      "model": "confluence:block/adanmantite_forge_right",
+      "model": "confluence:block/adamantite_forge_right",
       "y": 270
     }
   }

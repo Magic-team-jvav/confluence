@@ -929,6 +929,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("container.confluence.safe", "Safe");
         add("container.confluence.heavy_work_bench", "Heavy Work Bench");
         add("container.confluence.hellforge", "Hell Forge");
+        add("container.confluence.adanmantite_forge", "Adanmantite Forge");
+        add("container.confluence.titanium_forge", "Titanium Forge");
         add("container.confluence.alchemy_table", "Alchemy Table");
         add("container.confluence.cooking_pot", "Cooking Pot");
         add("container.confluence.cauldron", "Cauldron");
@@ -948,6 +950,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("title.confluence.sky_mill", "Sky Mill");
         add("title.confluence.heavy_work_bench", "Heavy Work Bench");
         add("title.confluence.hellforge", "Hell Forge");
+        add("title.confluence.hardmode_anvil", "Hardmode Anvil");
+        add("title.confluence.hardmode_forge", "Hardmode Forge");
         add("title.confluence.crystal_ball", "Crystal Ball");
         add("title.confluence.alchemy_table", "Alchemy Table");
         add("title.confluence.cooking_pot", "Cooking Pot");

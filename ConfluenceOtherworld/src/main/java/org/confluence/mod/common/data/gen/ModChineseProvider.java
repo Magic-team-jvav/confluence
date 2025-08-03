@@ -1022,8 +1022,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("title.confluence.crystal_ball", "水晶球");
         add("title.confluence.solidifier", "固化机");
         add("title.confluence.hellforge", "地狱熔炉");
-        add("title.confluence.adanmantite_forge", "精金熔炉");
-        add("title.confluence.titanium_forge", "钛金熔炉");
+        add("title.confluence.hardmode_anvil", "困难模式砧");
+        add("title.confluence.hardmode_forge", "困难模式熔炉");
         add("title.confluence.alchemy_table", "炼药桌");
         add("title.confluence.fletching_table", "制箭台");
         add("title.confluence.touhoulittlemaid", "女仆特供");

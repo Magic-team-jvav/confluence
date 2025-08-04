@@ -642,7 +642,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
         HolderLookup.RegistryLookup<Enchantment> registrylookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
         return LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ConsumableItems.THROWING_KNIVES).apply(SetItemCountFunction.setCount(UniformGenerator.between(75, 150))))
+                        .add(LootItem.lootTableItem(ConsumableItems.THROWING_KNIVE).apply(SetItemCountFunction.setCount(UniformGenerator.between(75, 150))))
                         .add(EmptyLootItem.emptyItem().setWeight(7))
                 )
                 .withPool(LootPool.lootPool()
@@ -738,7 +738,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ArrowItems.FLAMING_ARROW).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35))))
-                        .add(LootItem.lootTableItem(ConsumableItems.THROWING_KNIVES).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35))))
+                        .add(LootItem.lootTableItem(ConsumableItems.THROWING_KNIVE).apply(SetItemCountFunction.setCount(UniformGenerator.between(20, 35))))
                         .add(EmptyLootItem.emptyItem().setWeight(2))
                 )
                 .withPool(LootPool.lootPool()

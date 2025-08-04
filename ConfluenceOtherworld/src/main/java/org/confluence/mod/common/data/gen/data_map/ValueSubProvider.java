@@ -841,17 +841,17 @@ public final class ValueSubProvider {
                 .add(TGItems.TUNGSTEN_BULLET, 3);
         appender.create()
                 .add(ConsumableItems.SHURIKEN, 15)
-                .add(ConsumableItems.THROWING_KNIVES, 50)
+                .add(ConsumableItems.THROWING_KNIVE, 50)
                 // 毒刀 12铜
                 .add(ConsumableItems.GRENADE, 75)
                 .add(ConsumableItems.STICKY_GRENADE, 15)
                 .add(ConsumableItems.BOUNCY_GRENADE, 20)
                 .add(ConsumableItems.SPIKY_BALL, 16)
                 .add(MaterialItems.DUNGEON_DEMON_BONE, 10)
-                // 骨投刀 10铜
+                .add(ConsumableItems.BONE_THROWING_KNIFE, 10)
                 // 星形茴香 5铜
                 // 莫洛托夫鸡尾酒 1 银
-                // 寒霜飞鱼 16 铜
+                .add(ConsumableItems.FROST_DAGGERFISH, 16)
                 .add(ConsumableItems.JAVELIN, 5)
                 // 骨头标枪 10铜
                 .add(ConsumableItems.BEENADE, wrap(5, 0));

@@ -8,9 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
-import net.minecraft.world.phys.Vec2;
 import org.confluence.lib.common.data.SingleJsonFileReloadListener;
-import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.AchievementToast;
 
@@ -24,7 +22,7 @@ import java.util.concurrent.Executor;
 public class AchievementOffsetLoader extends SingleJsonFileReloadListener {
     public static volatile CompletableFuture<Void> WAITING_FOR = CompletableFuture.completedFuture(null);
     private static AchievementOffsetLoader INSTANCE;
-    private Map<ResourceLocation, Vec2> registeredAchievements = ImmutableMap.of();
+    private Map<ResourceLocation, AchievementOffset> registeredAchievements = ImmutableMap.of();
 
     @Override
     public final CompletableFuture<Void> reload(
@@ -39,13 +37,13 @@ public class AchievementOffsetLoader extends SingleJsonFileReloadListener {
     }
 
     protected void apply(Map<ResourceLocation, JsonElement> resourceList) {
-        ImmutableMap.Builder<ResourceLocation, Vec2> builder = ImmutableMap.builder();
+        ImmutableMap.Builder<ResourceLocation, AchievementOffset> builder = ImmutableMap.builder();
         for (Map.Entry<ResourceLocation, JsonElement> entry : resourceList.entrySet()) {
             ResourceLocation location = entry.getKey();
             JsonElement json = entry.getValue();
-            LibUtils.VEC_2_CODEC.parse(JsonOps.INSTANCE, json)
+            AchievementOffset.CODEC.parse(JsonOps.INSTANCE, json)
                     .resultOrPartial(errorMsg -> Confluence.LOGGER.warn("Could not decode achievement offset with json id {} - error: {}", location, errorMsg))
-                    .ifPresent(vec2 -> builder.put(location, vec2));
+                    .ifPresent(offset -> builder.put(location, offset));
         }
         this.registeredAchievements = builder.build();
     }
@@ -60,7 +58,7 @@ public class AchievementOffsetLoader extends SingleJsonFileReloadListener {
         return "Achievement Offset";
     }
 
-    public Map<ResourceLocation, Vec2> getRegisteredAchievements() {
+    public Map<ResourceLocation, AchievementOffset> getRegisteredAchievements() {
         return registeredAchievements;
     }
 
@@ -71,7 +69,7 @@ public class AchievementOffsetLoader extends SingleJsonFileReloadListener {
         return INSTANCE;
     }
 
-    public static void handle(Map<ResourceLocation, Vec2> value) {
+    public static void handle(Map<ResourceLocation, AchievementOffset> value) {
         getInstance().registeredAchievements = ImmutableMap.copyOf(value);
         AchievementToast.clearToast();
         for (ResourceLocation id : value.keySet()) {
@@ -79,7 +77,7 @@ public class AchievementOffsetLoader extends SingleJsonFileReloadListener {
         }
     }
 
-    public static Map<ResourceLocation, Vec2> getDisplayOffset() {
+    public static Map<ResourceLocation, AchievementOffset> getDisplayOffset() {
         return getInstance().getRegisteredAchievements();
     }
 }

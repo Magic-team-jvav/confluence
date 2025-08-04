@@ -1,7 +1,11 @@
 package org.confluence.mod.common.data.gen.loot;
 
 import com.google.common.collect.Iterables;
+import net.minecraft.advancements.critereon.EnchantmentPredicate;
+import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.loot.BlockLootSubProvider;
@@ -21,20 +25,22 @@ import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
+import net.minecraft.world.level.storage.loot.predicates.MatchTool;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.common.block.natural.LogBlockSet;
+import org.confluence.mod.common.block.natural.SwordInStoneBlock;
 import org.confluence.mod.common.block.natural.herbs.BaseHerbBlock;
 import org.confluence.mod.common.init.block.*;
-import org.confluence.mod.common.init.item.AccessoryItems;
-import org.confluence.mod.common.init.item.FoodItems;
-import org.confluence.mod.common.init.item.MaterialItems;
-import org.confluence.mod.common.init.item.ModItems;
+import org.confluence.mod.common.init.item.*;
 
 import java.util.Set;
 
+import static net.minecraft.world.level.storage.loot.functions.SetItemCountFunction.setCount;
+import static net.minecraft.world.level.storage.loot.predicates.ExplosionCondition.survivesExplosion;
 import static org.confluence.mod.common.init.block.DecorativeBlocks.*;
 import static org.confluence.mod.common.init.block.FunctionalBlocks.*;
 import static org.confluence.mod.common.init.block.ModBlocks.*;
@@ -562,7 +568,7 @@ public final class BlockSubProvider extends BlockLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(39)))
         );
         dropOther(NatureBlocks.LIFE_MUSHROOM.get(), MaterialItems.LIFE_MUSHROOM.get());
-        add(NatureBlocks.JUNGLE_SPORE.get(), LootTable.lootTable().withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.JUNGLE_SPORE.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))))));
+        add(NatureBlocks.JUNGLE_SPORE.get(), LootTable.lootTable().withPool(LootPool.lootPool().add(LootItem.lootTableItem(MaterialItems.JUNGLE_SPORE.get()).apply(setCount(UniformGenerator.between(1, 3))))));
         add(NatureBlocks.AMBER_BRANCHES.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(AMBER))
@@ -677,6 +683,41 @@ public final class BlockSubProvider extends BlockLootSubProvider {
                         .when(this.hasSilkTouch())
                         .when(HAS_SHEARS))
         );
+        add(SWORD_IN_STONE.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(SWORD_IN_STONE.get())
+                                .setProperties(StatePropertiesPredicate.Builder.properties()
+                                        .hasProperty(SwordInStoneBlock.SWORD_TYPE, SwordInStoneBlock.SwordType.TERRAGRIM)))
+                        .add(LootItem.lootTableItem(SwordItems.TERRAGRIM.get())))
+                .withPool(LootPool.lootPool()
+                        .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(SWORD_IN_STONE.get())
+                                .setProperties(StatePropertiesPredicate.Builder.properties()
+                                        .hasProperty(SwordInStoneBlock.SWORD_TYPE, SwordInStoneBlock.SwordType.ENCHANTED_SWORD)))
+                        .add(LootItem.lootTableItem(SwordItems.ENCHANTED_SWORD.get())))
+                .withPool(LootPool.lootPool()
+                        .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(SWORD_IN_STONE.get())
+                                .setProperties(StatePropertiesPredicate.Builder.properties()
+                                        .hasProperty(SwordInStoneBlock.SWORD_TYPE, SwordInStoneBlock.SwordType.ROTTEN_SWORD)))
+                        .add(LootItem.lootTableItem(SwordItems.FAKE_SWORD)))
+        );
+        add(SPORE_ROOT_BLOCK.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(SPORE_ROOT_BLOCK.get()).when(hasSilkTouch()))
+                        .add(LootItem.lootTableItem(SPORE_ROOT.get())
+                                        .when(doesNotHaveShearsOrSilkTouch())
+                                        .when(survivesExplosion())
+                                        .apply(setCount(UniformGenerator.between(1, 2)))
+                        ))
+                );
+        add(WINTER_MARROW_BLOCK.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(WINTER_MARROW_BLOCK.get()).when(hasSilkTouch()))
+                        .add(LootItem.lootTableItem(WINTER_MARROW.get())
+                                .when(doesNotHaveShearsOrSilkTouch())
+                                .when(survivesExplosion())
+                                .apply(setCount(UniformGenerator.between(1, 2)))
+                        ))
+        );
     }
 
     @Override
@@ -701,11 +742,16 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         HolderLookup.RegistryLookup<Enchantment> registrylookup = registries.lookupOrThrow(Registries.ENCHANTMENT);
         return createSilkTouchDispatchTable(block, applyExplosionDecay(block,
                 LootItem.lootTableItem(RAW_TIN)
-                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 5.0F)))
+                        .apply(setCount(UniformGenerator.between(2.0F, 5.0F)))
                         .apply(ApplyBonusCount.addOreBonusCount(registrylookup.getOrThrow(Enchantments.FORTUNE)))
         ));
     }
-
+    private LootItemCondition.Builder hasShearsOrSilkTouch() {
+        return HAS_SHEARS.or(this.hasSilkTouch());
+    }
+    private LootItemCondition.Builder doesNotHaveShearsOrSilkTouch() {
+        return this.hasShearsOrSilkTouch().invert();
+    }
     private void addHerbDrop(BaseHerbBlock block, Item herb, Item seed) {
         add(block, LootTable.lootTable()
                 .withPool(LootPool.lootPool()
@@ -718,7 +764,7 @@ public final class BlockSubProvider extends BlockLootSubProvider {
                 .withPool(LootPool.lootPool()
                         .setRolls(ConstantValue.exactly(1))
                         .add(LootItem.lootTableItem(seed)
-                                .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))))
+                                .apply(setCount(UniformGenerator.between(1, 3))))
                         .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block)
                                 .setProperties(StatePropertiesPredicate.Builder.properties()
                                         .hasProperty(BaseHerbBlock.AGE, 2))))

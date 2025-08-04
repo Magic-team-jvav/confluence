@@ -163,6 +163,9 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                         .add(LootItem.lootTableItem(Items.COD).when(LocationCheck.checkLocation(
                                 LocationPredicate.Builder.location().setBiomes(isSnowyOrIcy).setY(caveThroughSpace)
                         )).setWeight(5))
+                        .add(LootItem.lootTableItem(ConsumableItems.FROST_DAGGERFISH).apply(SetItemCountFunction.setCount(UniformGenerator.between(7, 64))).when(LocationCheck.checkLocation(
+                                LocationPredicate.Builder.location().setBiomes(isSnowyOrIcy).setY(caveThroughSpace)
+                        )).setWeight(33))
                         // 热带草原
                         .add(LootItem.lootTableItem(FoodItems.YELLOW_EEL).when(LocationCheck.checkLocation(
                                 LocationPredicate.Builder.location().setBiomes(isSavana).setY(caveThroughSpace)
@@ -172,7 +175,7 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                         )).setWeight(60))
                         // 腐化之地
                         .add(LootItem.lootTableItem(FoodItems.EBONY_KOI).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setBiomes(isCrimson).setY(caveThroughSpace)
+                                LocationPredicate.Builder.location().setBiomes(isCorruption).setY(caveThroughSpace)
                         )).setWeight(2400))
                         // 猩红之地
                         .add(LootItem.lootTableItem(FoodItems.BLOODY_PIRANHAS).when(LocationCheck.checkLocation(

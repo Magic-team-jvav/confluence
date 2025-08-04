@@ -770,7 +770,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 )),
                 MaterialItems.LEAD_INGOT.toStack()
         );
-        shapeless(output, MaterialItems.LEAD_NUGGET.toStack(9));
+        shapeless(output, MaterialItems.LEAD_NUGGET.toStack(9), Ingredient.of(MaterialItems.LEAD_INGOT));
 
 
         // 石头及深板岩压力板

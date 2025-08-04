@@ -28,7 +28,7 @@ public abstract class SecretSeed {
     }
 
     public boolean match(MinecraftServer server) {
-        return ((IMinecraftServer) server).confluence$matchesSecretFlag(this);
+        return IMinecraftServer.of(server).confluence$matchesSecretFlag(this);
     }
 
     public boolean match(ServerLevel serverLevel) {

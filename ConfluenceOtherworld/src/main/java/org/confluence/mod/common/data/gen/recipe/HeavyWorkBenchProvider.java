@@ -540,7 +540,9 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         )), FunctionalBlocks.ORICHALCUM_ANVIL.toStack());
 
         shapeless(recipeOutput, NatureBlocks.THIN_ICE_BLOCK.toStack(), Ingredient.of(Items.ICE));
-        shapeless(recipeOutput, ConsumableItems.ROTTEN_BONE_DUST.toStack(2), AmountIngredient.of(4, MaterialItems.ROTTEN_BONE), AmountIngredient.of(4, MaterialItems.WORM_TOOTH), AmountIngredient.of(8, MaterialItems.ROTTEN_CHUNK));
+        shapeless(recipeOutput, ConsumableItems.BONE_THROWING_KNIFE.toStack(), Ingredient.of(ConsumableItems.THROWING_KNIVE), Ingredient.of(MaterialItems.STURDY_FOSSIL));
+        shapeless(recipeOutput, ConsumableItems.ROTTEN_BONE_DUST.toStack(2), AmountIngredient.of(2, MaterialItems.ROTTEN_BONE), AmountIngredient.of(2, MaterialItems.WORM_TOOTH), AmountIngredient.of(4, MaterialItems.ROTTEN_CHUNK));
+        shapeless(recipeOutput, ConsumableItems.BLOODSTAINED_POWDER.toStack(2), AmountIngredient.of(6, MaterialItems.VERTEBRA), AmountIngredient.of(4, MaterialItems.BLOOD_CLOT_POWDER));
     }
 
     private void buildBaseStatues(RecipeOutput recipeOutput) {

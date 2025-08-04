@@ -1,7 +1,7 @@
 package org.confluence.mod.mixin.integration.terra_curio;
 
 import net.minecraft.world.entity.Entity;
-import org.confluence.mod.util.ClientUtils;
+import org.confluence.mod.integration.sodium.dynamiclights.SodiumDynamicLightsHelper;
 import org.confluence.terra_curio.client.handler.TCClientPacketHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class TCClientPacketHandlerMixin {
     @Inject(method = "getLuminance", at = @At("RETURN"), cancellable = true)
     private static void extra(Entity entity, CallbackInfoReturnable<Integer> cir) {
-        int luminance = ClientUtils.getLuminance(entity, cir.getReturnValue());
+        int luminance = SodiumDynamicLightsHelper.getLuminance(entity, cir.getReturnValue());
         if (luminance != 0) cir.setReturnValue(luminance);
     }
 }

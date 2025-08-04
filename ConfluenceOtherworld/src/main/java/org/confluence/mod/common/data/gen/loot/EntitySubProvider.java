@@ -35,6 +35,7 @@ import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
 import org.confluence.terraentity.init.entity.TENpcEntities;
 import org.confluence.terraentity.init.item.TEBoomerangItems;
+import org.confluence.terraentity.init.item.TESummonItems;
 import org.confluence.terraentity.init.item.TEYoyosItems;
 import org.jetbrains.annotations.NotNull;
 
@@ -268,6 +269,10 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(TMItems.BLOOD_TEAR.get()))
                         .add(EmptyLootItem.emptyItem().setWeight(99))
                 )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TESummonItems.WALLET.get()).setWeight(5))
+                        .add(EmptyLootItem.emptyItem().setWeight(995))
+                )
         );
         add(TEMonsterEntities.DRIPPLER.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/drippler"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
@@ -277,6 +282,10 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TMItems.BLOOD_TEAR.get()))
                         .add(EmptyLootItem.emptyItem().setWeight(99))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TESummonItems.WALLET.get()).setWeight(5))
+                        .add(EmptyLootItem.emptyItem().setWeight(995))
                 )
         );
         add(TEMonsterEntities.BLOODY_SPORE.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/bloody_spore"), LootTable.lootTable()

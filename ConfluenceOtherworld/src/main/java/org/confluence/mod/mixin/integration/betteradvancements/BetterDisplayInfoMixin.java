@@ -1,6 +1,7 @@
 package org.confluence.mod.mixin.integration.betteradvancements;
 
 import net.minecraft.advancements.AdvancementHolder;
+import org.confluence.mod.common.data.AchievementOffset;
 import org.confluence.mod.common.data.AchievementOffsetLoader;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
@@ -17,8 +18,9 @@ public abstract class BetterDisplayInfoMixin {
 
     @Inject(method = "<init>(Lnet/minecraft/advancements/AdvancementHolder;)V", at = @At("TAIL"))
     private void hideLines(AdvancementHolder advancementHolder, CallbackInfo ci) {
-        if (AchievementOffsetLoader.getDisplayOffset().containsKey(advancementHolder.id())) {
-            this.hideLines = true;
+        AchievementOffset offset = AchievementOffsetLoader.getDisplayOffset().get(advancementHolder.id());
+        if (offset != null) {
+            this.hideLines = offset.hideLink();
         }
     }
 }

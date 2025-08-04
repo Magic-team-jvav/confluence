@@ -1385,6 +1385,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FunctionalBlocks.TREE_HOLES_BLOCK.asItem(),
                 FunctionalBlocks.MAGIC_MAIL_BOX.asItem(),
                 MaterialItems.SPELL_TOME.get(),
+                MaterialItems.ECTOPLASM.get(),
                 CrateBlocks.HALLOWED_CRATE.asItem(),
                 CrateBlocks.OBSIDIAN_CRATE.asItem(),
                 CrateBlocks.PEARLWOOD_CRATE.asItem(),

@@ -32,17 +32,11 @@ neoForge {
 
         client1 {
             client()
-            // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
-            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
-            //玩家名字
-            programArguments = ["--username", "Dev1"]
+            programArguments.addAll "--username", "Confluence1"
         }
         client2 {
             client()
-            // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
-            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
-            //玩家名字
-            programArguments = ["--username", "Dev2"]
+            programArguments.addAll "--username", "Confluence2"
         }
 
 
@@ -286,8 +280,9 @@ dependencies {
     //runtimeOnly "curse.maven:refined-storage-243076:6391989"
     //runtimeOnly "curse.maven:display-delight-1144296:5964213"
     //runtimeOnly "curse.maven:dynamictrees-252818:6360173"
-    //runtimeOnly "maven.modrinth:modernfix:JNjN5X7g"
+    //runtimeOnly "maven.modrinth:modernfix:JNjN5X7g" // 冲突真多
     //runtimeOnly "maven.modrinth:feature-recycler:2.0.0-neoforge" // 协助修复feature order cycle
+    //runtimeOnly "curse.maven:fargo-soul-1315726:6819904"
     if (true) {
         runtimeOnly "curse.maven:enchantment-descriptions-250419:6348560"
         runtimeOnly "curse.maven:bookshelf-228525:6717571"
@@ -410,7 +405,7 @@ jar {
     exclude 'org/confluence/mod/common/data/gen'
 }
 
-task sourcesJar(type: Jar) {
+tasks.register('sourcesJar', Jar) {
     from sourceSets.main.allJava
-    archiveClassifier = 'sources'
+    archiveClassifier.set("sources")
 }

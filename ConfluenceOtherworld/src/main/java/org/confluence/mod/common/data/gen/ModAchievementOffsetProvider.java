@@ -5,10 +5,9 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.phys.Vec2;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
-import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.data.AchievementOffset;
 import org.confluence.mod.util.AchievementUtils;
 
 import java.util.HashMap;
@@ -41,7 +40,7 @@ public class ModAchievementOffsetProvider extends AbstractRecipeProvider {
      */
     @Override
     protected void buildRecipes(RecipeOutput recipeOutput) {
-        recipe(Codec.unboundedMap(ResourceLocation.CODEC, LibUtils.VEC_2_CODEC), pathProvider().json(Confluence.asResource("achievement_offset"))).addRecipe(new Builder()
+        recipe(Codec.unboundedMap(ResourceLocation.CODEC, AchievementOffset.CODEC), pathProvider().json(Confluence.asResource("achievement_offset"))).addRecipe(new Builder()
                 // Collector [0, 0] -> [4, 5]
                 .offset("new_world", 0, 0)
                 .offset("timber", 1, 0)
@@ -177,10 +176,15 @@ public class ModAchievementOffsetProvider extends AbstractRecipeProvider {
     }
 
     public static class Builder {
-        private final Map<ResourceLocation, Vec2> map = new HashMap<>();
+        private final Map<ResourceLocation, AchievementOffset> map = new HashMap<>();
 
         public Builder offset(String path, float x, float y) {
-            map.put(AchievementUtils.asAchievement(path), new Vec2(x, y));
+            map.put(AchievementUtils.asAchievement(path), new AchievementOffset(x, y));
+            return this;
+        }
+
+        public Builder offset(String path, float x, float y, boolean hideLink) {
+            map.put(AchievementUtils.asAchievement(path), new AchievementOffset(x, y, hideLink));
             return this;
         }
     }

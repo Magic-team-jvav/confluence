@@ -23,7 +23,7 @@ public class TreasureBagItems {
     public static final DeferredItem<TreasureBagItem> KING_SLIME_TREASURE_BAG = ITEMS.register("king_slime_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/king_slime")));
     public static final DeferredItem<TreasureBagItem> EYE_OF_CTHULHU_TREASURE_BAG = ITEMS.register("eye_of_cthulhu_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/eye_of_cthulhu"), (level, pos) -> {
         String difficulty = LibUtils.switchByDifficulty(level, pos, "/classic", "/expert", "/master");
-        long secretFlag = ((IMinecraftServer) level.getServer()).confluence$getSecretFlag();
+        long secretFlag = IMinecraftServer.of(level.getServer()).confluence$getSecretFlag();
         String biome;
         if ((secretFlag & IWorldOptions.DOUBLE_EVIL) == IWorldOptions.DOUBLE_EVIL || (secretFlag & IWorldOptions.DOUBLE_EVIL) == 0) {
             biome = "_double_evil";

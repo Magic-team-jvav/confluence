@@ -28,6 +28,7 @@ import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
@@ -94,7 +95,7 @@ public final class ModUtils {
         double x = pos.getX() + 0.5 + level.random.nextInt(-50, 51);
         double z = pos.getZ() + 0.5 + level.random.nextInt(-50, 51);
         boss.setPos(x, pos.getY() + 0.5 + level.getHeight(Heightmap.Types.MOTION_BLOCKING, Mth.floor(x), Mth.floor(z)), z);
-        if(TEUtils.internalSpawnEntity(boss, level)){
+        if (TEUtils.internalSpawnEntity(boss, level)) {
             level.addFreshEntityWithPassengers(boss);
         }
     }
@@ -249,5 +250,17 @@ public final class ModUtils {
             return supportedItem && !enchantment.is(Enchantments.UNBREAKING) && !enchantment.is(Enchantments.MENDING);
         }
         return supportedItem;
+    }
+
+    /**
+     * 由于暮色森林使原版的该方法会访问区块，于是复制一份来用
+     *
+     * @see Level#isRainingAt(BlockPos)
+     */
+    public static boolean isRainingAt(Level level, BlockPos pos) {
+        if (!level.isRaining()) return false;
+        if (!level.canSeeSky(pos)) return false;
+        if (level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, pos).getY() > pos.getY()) return false;
+        return level.getBiome(pos).value().getPrecipitationAt(pos) == Biome.Precipitation.RAIN;
     }
 }

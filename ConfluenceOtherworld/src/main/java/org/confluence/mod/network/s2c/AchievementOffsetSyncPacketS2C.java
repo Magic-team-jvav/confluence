@@ -6,26 +6,25 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.phys.Vec2;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
-import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.data.AchievementOffset;
 import org.confluence.mod.common.data.AchievementOffsetLoader;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public record AchievementOffsetSyncPacketS2C(Map<ResourceLocation, Vec2> value) implements CustomPacketPayload {
+public record AchievementOffsetSyncPacketS2C(Map<ResourceLocation, AchievementOffset> value) implements CustomPacketPayload {
     public static final Type<AchievementOffsetSyncPacketS2C> TYPE = new Type<>(Confluence.asResource("achievement_offset_sync"));
     public static final StreamCodec<RegistryFriendlyByteBuf, AchievementOffsetSyncPacketS2C> STREAM_CODEC = new StreamCodec<>() {
         @Override
         public AchievementOffsetSyncPacketS2C decode(RegistryFriendlyByteBuf buffer) {
-            Map<ResourceLocation, Vec2> map = new HashMap<>();
+            Map<ResourceLocation, AchievementOffset> map = new HashMap<>();
             int size = buffer.readVarInt();
             for (int i = 0; i < size; i++) {
                 ResourceLocation key = ResourceLocation.STREAM_CODEC.decode(buffer);
-                Vec2 value = LibUtils.VEC_2_STREAM_CODEC.decode(buffer);
+                AchievementOffset value = AchievementOffset.STREAM_CODEC.decode(buffer);
                 map.put(key, value);
             }
             return new AchievementOffsetSyncPacketS2C(map);
@@ -34,9 +33,9 @@ public record AchievementOffsetSyncPacketS2C(Map<ResourceLocation, Vec2> value) 
         @Override
         public void encode(RegistryFriendlyByteBuf buffer, AchievementOffsetSyncPacketS2C value) {
             buffer.writeVarInt(value.value.size());
-            for (Map.Entry<ResourceLocation, Vec2> entry : value.value.entrySet()) {
+            for (Map.Entry<ResourceLocation, AchievementOffset> entry : value.value.entrySet()) {
                 ResourceLocation.STREAM_CODEC.encode(buffer, entry.getKey());
-                LibUtils.VEC_2_STREAM_CODEC.encode(buffer, entry.getValue());
+                AchievementOffset.STREAM_CODEC.encode(buffer, entry.getValue());
             }
         }
     };

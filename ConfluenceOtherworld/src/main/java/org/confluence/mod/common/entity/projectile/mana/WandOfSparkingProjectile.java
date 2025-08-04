@@ -10,7 +10,9 @@ public class WandOfSparkingProjectile extends BaseManaStaffProjectileEntity {
 
     @Override
     protected void onHitEntity(EntityHitResult entityHitResult) {
+        if (!level().isClientSide) {
+            entityHitResult.getEntity().igniteForTicks(100);
+        }
         super.onHitEntity(entityHitResult);
-        entityHitResult.getEntity().igniteForTicks(100);
     }
 }

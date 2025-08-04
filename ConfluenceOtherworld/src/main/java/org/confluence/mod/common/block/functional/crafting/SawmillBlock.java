@@ -16,7 +16,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.common.block.HorizontalDirectionalWithHorizontalTwoPartBlock;
-import org.confluence.lib.common.block.StateProperties;
 import org.confluence.mod.common.menu.SawmillMenu;
 import org.jetbrains.annotations.Nullable;
 
@@ -57,7 +56,7 @@ public class SawmillBlock extends HorizontalDirectionalWithHorizontalTwoPartBloc
     @Override
     protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         int index = state.getValue(FACING).get2DDataValue();
-        return state.getValue(StateProperties.HORIZONTAL_TWO_PART).isBase() ? SHAPES_BASE[index] : SHAPES_RIGHT[index];
+        return state.getValue(PART).isBase() ? SHAPES_BASE[index] : SHAPES_RIGHT[index];
     }
 
     @Override

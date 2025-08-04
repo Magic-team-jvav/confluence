@@ -48,4 +48,14 @@ public record LootComponent(ResourceKey<LootTable> value) implements DataCompone
     public StreamCodec<? super RegistryFriendlyByteBuf, LootComponent> streamCodec() {
         return STREAM_CODEC;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return o == this || (o instanceof LootComponent(ResourceKey<LootTable> value1) && value == value1);
+    }
+
+    @Override
+    public int hashCode() {
+        return 31 * value.registry().hashCode() + value.location().hashCode();
+    }
 }

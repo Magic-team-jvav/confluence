@@ -9,7 +9,7 @@ import org.confluence.terraentity.registries.npc_trade_lock.TradeLockProvider;
 import java.util.function.Supplier;
 
 public class ModTradeLockProviderTypes {
-    public static final DeferredRegister<TradeLockProvider> TYPES = DeferredRegister.create(TERegistries.TradeLockProviders.REGISTRY, Confluence.MODID);
+    public static final DeferredRegister<TradeLockProvider> TYPES = DeferredRegister.create(TERegistries.TRADE_LOCK_PROVIDERS, Confluence.MODID);
 
     public static final Supplier<TradeLockProvider> MOON_PHASE_LOCK = TYPES.register("moon_phase_lock", () -> new TradeLockProvider(MoonPhaseLock.CODEC));
     public static final Supplier<TradeLockProvider> SECRET_FLAG_LOCK = TYPES.register("secret_flag_lock", () -> new TradeLockProvider(SecretFlagLock.CODEC));

@@ -24,7 +24,7 @@ import static org.confluence.terraentity.registries.hit_effect.EffectStrategy.*;
  * @author coffee
  */
 public final class ModEffectStrategies {
-    public static final DeferredRegister<EffectStrategy> EFFECT_STRATEGY = DeferredRegister.create(TERegistries.EffectStrategies.REGISTRY, Confluence.MODID);
+    public static final DeferredRegister<EffectStrategy> EFFECT_STRATEGY = DeferredRegister.create(TERegistries.EFFECT_STRATEGIES, Confluence.MODID);
 
     /**
      * 复杂的回调效果

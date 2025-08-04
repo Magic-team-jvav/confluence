@@ -12,7 +12,7 @@ import java.util.function.Supplier;
 
 public class ModTradeProviders {
 
-    public static final DeferredRegister<TradeProvider> TYPES = DeferredRegister.create(TERegistries.TradeProviders.REGISTRY, Confluence.MODID);
+    public static final DeferredRegister<TradeProvider> TYPES = DeferredRegister.create(TERegistries.TRADE_PROVIDERS, Confluence.MODID);
 
     public static final Supplier<TradeProvider> MONEY_TRADE_ITEM = register("money_trade_item", MoneyTradeItem.CODEC);
     public static final Supplier<TradeProvider> DEFERRED_MONEY_TRADE_ITEM = register("deferred_money_trade_item", DeferredMoneyTradeItem.CODEC);

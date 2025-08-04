@@ -24,7 +24,7 @@ public interface IMinecraftServer {
      * 单人模式与多人模式通用
      */
     static boolean matchesSecretFlag(@NotNull MinecraftServer server, long flag) {
-        return ((IMinecraftServer) server).confluence$matchesSecretFlag(flag);
+        return IMinecraftServer.of(server).confluence$matchesSecretFlag(flag);
     }
 
     static boolean matchesSecretFlag(long secretFlag, long flag) {
@@ -40,10 +40,14 @@ public interface IMinecraftServer {
     }
 
     static boolean isHardmode(MinecraftServer server) {
-        return ((IMinecraftServer) server).confluence$matchesSecretFlag(IWorldOptions.HARDMODE);
+        return IMinecraftServer.of(server).confluence$matchesSecretFlag(IWorldOptions.HARDMODE);
     }
 
     static boolean isGraduated(MinecraftServer server) {
-        return ((IMinecraftServer) server).confluence$matchesSecretFlag(IWorldOptions.GRADUATED);
+        return IMinecraftServer.of(server).confluence$matchesSecretFlag(IWorldOptions.GRADUATED);
+    }
+
+    static IMinecraftServer of(MinecraftServer server) {
+        return (IMinecraftServer) server;
     }
 }

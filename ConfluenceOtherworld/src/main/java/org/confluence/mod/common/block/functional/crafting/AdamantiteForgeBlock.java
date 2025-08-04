@@ -30,22 +30,23 @@ public class AdamantiteForgeBlock extends HardmodeForgeBlock {
         boolean axisX = facing.getAxis() == Direction.Axis.X;
         boolean positive = facing.getAxisDirection() == Direction.AxisDirection.POSITIVE;
         double off = positive ? 0.125 : -0.125;
-        double v = random.nextDouble() * off;
+        double v1 = random.nextDouble() * off;
+        double v2 = random.nextDouble() * off;
         double rx;
         double rz;
         if (axisX) {
-            rx = x - (facing.getStepX() * 0.25 + random.nextDouble() * off);
+            rx = x - (facing.getStepX() * 0.25 + v1);
             if (part.isBase()) {
-                rz = z + facing.getClockWise().getStepZ() * 0.25 + v;
+                rz = z + facing.getClockWise().getStepZ() * 0.25 + v2;
             } else {
-                rz = z + facing.getCounterClockWise().getStepZ() * 0.25 - v;
+                rz = z + facing.getCounterClockWise().getStepZ() * 0.25 - v2;
             }
         } else {
-            rz = z - (facing.getStepZ() * 0.25 + random.nextDouble() * off);
+            rz = z - (facing.getStepZ() * 0.25 + v1);
             if (part.isBase()) {
-                rx = x + facing.getClockWise().getStepX() * 0.25 - v;
+                rx = x + facing.getClockWise().getStepX() * 0.25 - v2;
             } else {
-                rx = x + facing.getCounterClockWise().getStepX() * 0.25 + v;
+                rx = x + facing.getCounterClockWise().getStepX() * 0.25 + v2;
             }
         }
         boolean soul;

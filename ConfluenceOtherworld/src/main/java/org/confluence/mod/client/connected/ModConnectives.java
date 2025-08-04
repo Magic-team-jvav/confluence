@@ -3,7 +3,6 @@ package org.confluence.mod.client.connected;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import net.neoforged.bus.api.IEventBus;
 import org.confluence.mod.client.connected.behaviour.ConnectedTextureBehaviour;
 import org.confluence.mod.client.connected.behaviour.EncasedCTBehaviour;
 import org.confluence.mod.client.connected.behaviour.SimpleCTBehaviour;
@@ -21,10 +20,7 @@ public final class ModConnectives {
     public static final ModelSwapper MODEL_SWAPPER = new ModelSwapper();
     public static final CasingConnectivity CASING_CONNECTIVITY = new CasingConnectivity();
 
-    public static void register(IEventBus modEventBus) {
-        modEventBus.addListener(StitchedSprite::onTextureStitchPost);
-        MODEL_SWAPPER.registerListeners(modEventBus);
-
+    public static void register() {
         register(ModBlocks.ANDESITE_CASING.get(), () -> new EncasedCTBehaviour(AllSpriteShifts.ANDESITE_CASING));
         registerCasingConnectivity(ModBlocks.ANDESITE_CASING.get(), (block, cc) -> cc.makeCasing(block, AllSpriteShifts.ANDESITE_CASING));
 

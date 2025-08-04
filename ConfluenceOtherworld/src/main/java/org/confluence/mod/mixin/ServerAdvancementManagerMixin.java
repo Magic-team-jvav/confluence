@@ -7,8 +7,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.ServerAdvancementManager;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
-import net.minecraft.world.phys.Vec2;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.data.AchievementOffset;
 import org.confluence.mod.common.data.AchievementOffsetLoader;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -26,14 +26,14 @@ public abstract class ServerAdvancementManagerMixin {
     @Inject(method = "apply(Ljava/util/Map;Lnet/minecraft/server/packs/resources/ResourceManager;Lnet/minecraft/util/profiling/ProfilerFiller;)V", at = @At("TAIL"))
     private void confluence$setLocation(Map<ResourceLocation, JsonElement> p_136034_, ResourceManager p_136035_, ProfilerFiller p_136036_, CallbackInfo ci) {
         AchievementOffsetLoader.WAITING_FOR.thenAcceptAsync(v -> {
-            for (Map.Entry<ResourceLocation, Vec2> entry : AchievementOffsetLoader.getDisplayOffset().entrySet()) {
+            for (Map.Entry<ResourceLocation, AchievementOffset> entry : AchievementOffsetLoader.getDisplayOffset().entrySet()) {
                 AdvancementHolder advancement = advancements.get(entry.getKey());
                 if (advancement == null) {
                     Confluence.LOGGER.warn("Unknown advancement {}", entry.getKey());
                 } else {
                     advancement.value().display().ifPresent(displayInfo -> {
-                        Vec2 vec2 = entry.getValue();
-                        displayInfo.setLocation(vec2.x, vec2.y);
+                        AchievementOffset offset = entry.getValue();
+                        displayInfo.setLocation(offset.x(), offset.y());
                     });
                 }
             }

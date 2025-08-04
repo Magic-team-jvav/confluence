@@ -38,6 +38,7 @@ import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.connected.CustomBlockModels;
 import org.confluence.mod.client.connected.ModConnectives;
 import org.confluence.mod.client.connected.ModelSwapper;
+import org.confluence.mod.client.connected.StitchedSprite;
 import org.confluence.mod.client.gui.container.*;
 import org.confluence.mod.client.gui.hud.*;
 import org.confluence.mod.client.model.block.AltarBlockModel;
@@ -108,7 +109,7 @@ public final class ModClientEvents {
 
             ModClientSetups.registerItemProperties();
             ModClientSetups.setRenderLayers();
-            ModClientSetups.eventBus(ModConnectives::register);
+            ModConnectives.register();
 
             PonderHelper.registerPlugin();
             AppleskinHelper.addListeners();
@@ -384,6 +385,8 @@ public final class ModClientEvents {
     @SubscribeEvent
     public static void textureAtlasStitched(TextureAtlasStitchedEvent event) {
         TextureAtlas atlas = event.getAtlas();
+        StitchedSprite.onTextureStitchPost(atlas);
+
         if (InventoryMenu.BLOCK_ATLAS.equals(atlas.location())) {
             Map<ResourceLocation, TextureAtlasSprite> textures = atlas.getTextures();
             for (ResourceLocation key : ClientUtils.ORIGINAL) {
@@ -400,9 +403,11 @@ public final class ModClientEvents {
 
     @SubscribeEvent
     public static void model$ModifyBakingResult(ModelEvent.ModifyBakingResult event) {
+        Map<ModelResourceLocation, BakedModel> modelRegistry = event.getModels();
+        ModConnectives.MODEL_SWAPPER.onModelBake(modelRegistry);
+
         if (ModClientSetups.SHOULD_NOT_GENERATE_BLOCK_GRAY_TEXTURE || !StartupConfigs.paintsReplaceTexture()) return;
 
-        Map<ModelResourceLocation, BakedModel> modelRegistry = event.getModels();
         CustomBlockModels customBlockModels = ModConnectives.MODEL_SWAPPER.getCustomBlockModels();
         Set<String> bannedModForPaints = new HashSet<>(StartupConfigs.bannedModForPaints());
         for (Map.Entry<Block, Holder.Reference<Block>> entry : ((DefaultedMappedRegistry<Block>) BuiltInRegistries.BLOCK).byValue.entrySet()) {

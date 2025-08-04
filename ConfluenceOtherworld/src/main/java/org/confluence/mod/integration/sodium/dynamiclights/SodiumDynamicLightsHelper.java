@@ -1,4 +1,4 @@
-package org.confluence.mod.integration.sodium;
+package org.confluence.mod.integration.sodium.dynamiclights;
 
 import dev.lambdaurora.lambdynlights.api.DynamicLightHandlers;
 import net.minecraft.world.entity.Entity;
@@ -11,7 +11,7 @@ import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.ToolItems;
 
-public class SodiumDynamicLightHelper {
+public class SodiumDynamicLightsHelper {
     public static final boolean IS_LOADED = ModList.get().isLoaded("sodiumdynamiclights");
 
     public static void registerDynamicLight() {

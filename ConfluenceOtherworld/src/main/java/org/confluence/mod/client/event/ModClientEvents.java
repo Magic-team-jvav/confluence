@@ -81,7 +81,7 @@ import org.confluence.mod.common.item.paint.PaintItem;
 import org.confluence.mod.common.item.vanity_armor.BaseDyeItem;
 import org.confluence.mod.integration.appleskin.AppleskinHelper;
 import org.confluence.mod.integration.create.ponder.PonderHelper;
-import org.confluence.mod.integration.sodium.SodiumDynamicLightHelper;
+import org.confluence.mod.integration.sodium.dynamiclights.SodiumDynamicLightsHelper;
 import org.confluence.mod.integration.waystones.WaystonesHelper;
 import org.confluence.mod.util.ClientUtils;
 import org.confluence.terra_curio.TerraCurio;
@@ -113,7 +113,7 @@ public final class ModClientEvents {
 
             PonderHelper.registerPlugin();
             AppleskinHelper.addListeners();
-            SodiumDynamicLightHelper.registerDynamicLight();
+            SodiumDynamicLightsHelper.registerDynamicLight();
         });
     }
 

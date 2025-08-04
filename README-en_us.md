@@ -39,3 +39,21 @@
 
 - After all the project is pulled successuly, you can use gradle's runClient command.
 
+## Maven Example
+
+```groovy
+repositories {
+  maven {
+    name "org.confluenceReleases"
+    url "https://maven.confluence.ink/releases"
+  }
+  maven {
+    name "org.confluenceSnapshots"
+    url "https://maven.confluence.ink/snapshots"
+  }
+}
+
+dependencies {
+  implementation "org.confluence.lib:Confluence-Magic-Lib:<version>"
+}
+```

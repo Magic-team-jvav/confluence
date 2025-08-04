@@ -38,3 +38,22 @@
   > 以及[ConfluenceOtherworld/build.gradle](ConfluenceOtherworld/build.gradle)里加上子模块名
 
 - 全部拉取完成后,在gradle插件中启动ConfluenceOtherworld本体项目中的runClient命令
+
+## Maven 例子
+
+```groovy
+repositories {
+  maven {
+    name "org.confluenceReleases"
+    url "https://maven.confluence.ink/releases"
+  }
+  maven {
+    name "org.confluenceSnapshots"
+    url "https://maven.confluence.ink/snapshots"
+  }
+}
+
+dependencies {
+  implementation "org.confluence.lib:Confluence-Magic-Lib:<version>"
+}
+```

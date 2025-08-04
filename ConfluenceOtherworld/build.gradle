@@ -281,6 +281,7 @@ dependencies {
     //runtimeOnly "curse.maven:dynamictrees-252818:6360173"
     //runtimeOnly "maven.modrinth:modernfix:JNjN5X7g"
     //runtimeOnly "maven.modrinth:feature-recycler:2.0.0-neoforge" // 协助修复feature order cycle
+    runtimeOnly "curse.maven:fargo-soul-1315726:6819904"
     if (true) {
         runtimeOnly "curse.maven:enchantment-descriptions-250419:6348560"
         runtimeOnly "curse.maven:bookshelf-228525:6717571"

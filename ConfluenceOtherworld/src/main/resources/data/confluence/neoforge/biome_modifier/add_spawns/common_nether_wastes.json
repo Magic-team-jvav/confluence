@@ -1,22 +1,32 @@
 {
     "type": "neoforge:add_spawns",
-    "biomes": "#c:is_nether",
+    "biomes": [
+        "minecraft:nether_wastes",
+        "confluence:ash_wasteland",
+        "confluence:ash_forest"
+    ],
     "spawners": [
         {
+            "type": "terra_entity:lava_slime",
+            "weight": 120,
+            "minCount": 1,
+            "maxCount": 1
+        },
+        {
             "type": "terra_entity:hell_bat",
-            "weight": 20,
+            "weight": 60,
             "minCount": 1,
             "maxCount": 1
         },
         {
             "type": "terra_entity:fire_imp",
-            "weight": 5,
+            "weight": 10,
             "minCount": 1,
             "maxCount": 1
         },
         {
             "type": "terra_entity:demon",
-            "weight": 5,
+            "weight": 10,
             "minCount": 1,
             "maxCount": 1
         },

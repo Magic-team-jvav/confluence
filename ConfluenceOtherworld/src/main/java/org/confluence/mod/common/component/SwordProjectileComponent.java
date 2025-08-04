@@ -17,12 +17,12 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.terra_curio.common.init.TCAttributes;
-import org.confluence.terraentity.data.component.EffectStrategyComponent;
 import org.confluence.terraentity.api.entity.IGeneration;
+import org.confluence.terraentity.api.entity.ITrackType;
+import org.confluence.terraentity.data.component.EffectStrategyComponent;
 import org.confluence.terraentity.registries.generation.variant.AboveFallenGeneration;
 import org.confluence.terraentity.registries.generation.variant.ForwardGeneration;
 import org.confluence.terraentity.registries.hit_effect.variant.TimePossibilityAmplifierEffect;
-import org.confluence.terraentity.api.entity.ITrackType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -120,9 +120,9 @@ public record SwordProjectileComponent (
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if(obj == this) return true;
-        if(obj instanceof SwordProjectileComponent other){
+    public boolean equals(Object o) {
+        if (o == this) return true;
+        if (o instanceof SwordProjectileComponent other) {
             return damageFactor == other.damageFactor &&
                     baseSpeed == other.baseSpeed &&
                     acceleration == other.acceleration &&
@@ -137,6 +137,21 @@ public record SwordProjectileComponent (
         return false;
     }
 
+    @Override
+    public int hashCode() {
+        int result = Float.hashCode(damageFactor);
+        result = 31 * result + Float.hashCode(baseSpeed);
+        result = 31 * result + Float.hashCode(acceleration);
+        result = 31 * result + existTicks;
+        result = 31 * result + Float.hashCode(gravity);
+        result = 31 * result + cooldown;
+        result = 31 * result + soundEvent.hashCode();
+        result = 31 * result + projType.hashCode();
+        result = 31 * result + trackType.hashCode();
+        result = 31 * result + generation.hashCode();
+        result = 31 * result + hitEffect.hashCode();
+        return result;
+    }
 
     public float getVelocity(LivingEntity living) {
         float velocity = baseSpeed();
@@ -151,5 +166,4 @@ public record SwordProjectileComponent (
         if (attributeInstance != null) return Math.max(cooldown - (int) (attributeInstance.getValue() / 3.0), 0);
         return cooldown;
     }
-
 }

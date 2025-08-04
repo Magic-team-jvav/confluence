@@ -27,13 +27,13 @@ public record ValueComponent(int value) implements DataComponentType<ValueCompon
     }
 
     @Override
-    public boolean equals(Object obj) {
-        return obj instanceof ValueComponent(int value1) && value1 == value;
+    public boolean equals(Object o) {
+        return o == this || (o instanceof ValueComponent(int value1) && value1 == value);
     }
 
     @Override
     public int hashCode() {
-        return Integer.hashCode(value);
+        return value;
     }
 
     public static int getValue(ItemStack itemStack, int defaultValue, boolean prototype) {

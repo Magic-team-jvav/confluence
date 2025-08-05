@@ -65,6 +65,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("message.confluence.lock.need", "need: ");
         add("message.confluence.lock.or", " or ");
         add("message.confluence.dungeon_not_found", "Failed to find the Dungeon");
+        add("message.confluence.peddlers_satchel", "The Traveling Merchant's satchel deepens!");
 
         add("commands.confluence.reforge.cannot_be_reforged", "This item cannot be reforged (or cannot find an item that needs to be reforged)!");
         add("commands.confluence.reforge.unknown_prefix_type", "Unknown prefix type (or reforge failure)!");
@@ -473,8 +474,9 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.vortex_booster.0", "Allows flight and slow fall");
         add("tooltip.item.confluence.solar_wings.0", "Allows flight and slow fall");
         add("tooltip.item.confluence.stardust.0", "Allows flight and slow fall");
+        add("tooltip.item.confluence.peddlers_satchel.0", "Permanently increases items sold by the Traveling Merchant");
 
-
+        // configuration
         add("confluence.configuration.Compatibility", "Compatibility Mechanism");
         add("confluence.configuration.Compatibility.button", "Settings for compatibility with other mods");
         add("confluence.configuration.ArsNouveau", "Ars Nouveau");
@@ -981,6 +983,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add(StatueBlocks.N9_STATUE.get(), "'9' Statue");
         add(VanityArmorItems.DEAD_MANS_SWEATER.get(), "Dead Man's Sweater");
         add(SwordItems.NIGHTS_EDGE.get(), "Night's Edge");
+        add(ConsumableItems.PEDDLERS_SATCHEL.get(), "Peddler's Satchel");
 
         add("block.confluence.timers_1_1", "1 Second Timer");
         add("block.confluence.timers_3_1", "3 Second Timer");

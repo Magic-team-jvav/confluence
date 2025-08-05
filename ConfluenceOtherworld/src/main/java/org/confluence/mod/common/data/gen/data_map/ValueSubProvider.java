@@ -1283,7 +1283,8 @@ public final class ValueSubProvider {
                 .add(ConsumableItems.AMBROSIA, wrap(50, 0))
                 .add(ConsumableItems.GUMMY_WORM, wrap(10, 0, 0))
                 .add(ConsumableItems.GALAXY_PEARL, wrap(15, 0, 0))
-                .add(ConsumableItems.MINECART_UPGRADE_KIT, wrap(2, 0, 0));
+                .add(ConsumableItems.MINECART_UPGRADE_KIT, wrap(2, 0, 0))
+                .add(ConsumableItems.PEDDLERS_SATCHEL, wrap(25, 0));
         appender.create()
                 .add(TreasureBagItems.KING_SLIME_TREASURE_BAG, wrap(2, 50, 0))
                 .add(TreasureBagItems.EYE_OF_CTHULHU_TREASURE_BAG, wrap(3, 50, 0))

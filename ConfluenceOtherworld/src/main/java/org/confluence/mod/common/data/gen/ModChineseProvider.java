@@ -58,6 +58,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("message.confluence.lock.need", "需要：");
         add("message.confluence.lock.or", " 或 ");
         add("message.confluence.dungeon_not_found", "未成功找到地牢");
+        add("message.confluence.peddlers_satchel", "旅商的背包变大！");
 
         add("commands.confluence.reforge.cannot_be_reforged", "该物品无法被重铸（或无法找到需要重铸的物品）！");
         add("commands.confluence.reforge.unknown_prefix_type", "未知重铸类型（或重铸失败）！");
@@ -178,7 +179,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.ice_tofu_brick.0", "它现在不能吃了，但不妨碍它把你吃了");
         add("tooltip.item.confluence.pink_cola.0", "一瓶普通的粉色可乐，或许原来有一整箱？");
         add("tooltip.item.confluence.dongdongs_flatbread.0", "刚在下界岩上考好的饼，快来尝尝吧！");
-        add("tooltip.item.confluence.piglin_stew.0", "屁戈林在饿死前最想吃的东西，可他最终没能吃上…");
         add("tooltip.item.confluence.boredoms_pact_falling_resolve.0", "「无聊之咒·陨志」");
         add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.1", "(Boredom's Pact - Falling Resolve)");
         add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.2", "           ");
@@ -399,6 +399,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.terra_curio.radio_thing.1", "“禁忌的知识在其中回响……”");
 
         add("tooltip.item.confluence.sweet_sword.0", "来自一只屑水缡写的au“传说之下：虚无之上”");
+        add("tooltip.item.confluence.piglin_stew.0", "屁戈林在饿死前最想吃的东西，可他最终没能吃上…");
 
         add("tooltip.item.confluence.copper_short_sword.0", "神兵最微末的那部分力量自两世汇流之初就伴随着你…直至旅途的终点");
         add("tooltip.item.confluence.copper_short_sword.1", "“我们十个真厉害！”铜短剑说。");
@@ -438,7 +439,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.obsidian_lock_box.0", "“使用钥匙在背包中右键打开”");
         add("tooltip.item.confluence.obsidian_lock_box.1", "“需要暗影钥匙”");
 
-
         add("tooltip.item.confluence.angel_wings.0", "可飞行和缓慢坠落");
         add("tooltip.item.confluence.demon_wings.0", "可飞行和缓慢坠落");
         add("tooltip.item.confluence.fairy_wings.0", "可飞行和缓慢坠落");
@@ -467,6 +467,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.vortex_booster.0", "可飞行和缓慢坠落");
         add("tooltip.item.confluence.solar_wings.0", "可飞行和缓慢坠落");
         add("tooltip.item.confluence.stardust.0", "可飞行和缓慢坠落");
+        add("tooltip.item.confluence.peddlers_satchel.0", "永久增加旅商售卖的物品");
 
         //设置
         add("confluence.configuration.Compatibility", "兼容性机制");
@@ -3216,6 +3217,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ConsumableItems.BLOODSTAINED_POWDER.get(), "血凝痂粉");
         add(ConsumableItems.ADVANCED_COMBAT_TECHNIQUES.get(), "先进战斗技术");
         add(ConsumableItems.ADVANCED_COMBAT_TECHNIQUES_VOLUME_TWO.get(), "先进战斗技术：卷二");
+        add(ConsumableItems.PEDDLERS_SATCHEL.get(), "商贩背包");
         add(ConsumableItems.GOLDEN_LOCK_BOX.get(), "金锁盒");
         add(ConsumableItems.OBSIDIAN_LOCK_BOX.get(), "黑曜石锁盒");
 

@@ -38,7 +38,7 @@ public class AdvancedCombatTechniquesVolumeTwoItem extends TooltipItem {
                     return AbortableIterationConsumer.Continuation.CONTINUE;
                 });
                 MutableComponent component = Component.translatable("message.confluence.advancement_combat_techniques").withColor(GlobalColors.MESSAGE.get());
-                for (ServerPlayer serverPlayer : serverLevel.players()) {
+                for (ServerPlayer serverPlayer : serverLevel.getServer().getPlayerList().getPlayers()) {
                     serverPlayer.sendSystemMessage(component);
                 }
                 if (!player.hasInfiniteMaterials()) {

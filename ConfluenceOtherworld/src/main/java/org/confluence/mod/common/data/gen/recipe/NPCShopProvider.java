@@ -34,15 +34,16 @@ import org.confluence.mod.util.OverworldUtils;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.TerraEntity;
+import org.confluence.terraentity.api.npc.trade.ITrade;
+import org.confluence.terraentity.api.npc.trade.ITradeLock;
 import org.confluence.terraentity.entity.npc.trade.NPCTradeManager;
 import org.confluence.terraentity.init.entity.TENpcEntities;
 import org.confluence.terraentity.init.item.TEWhipItems;
-import org.confluence.terraentity.api.npc.trade.ITrade;
 import org.confluence.terraentity.init.item.TEYoyosItems;
 import org.confluence.terraentity.registries.npc_trade.TradeProperties;
 import org.confluence.terraentity.registries.npc_trade.variant.ItemTradeLootTable;
 import org.confluence.terraentity.registries.npc_trade.variant.TradeTask;
-import org.confluence.terraentity.api.npc.trade.ITradeLock;
+import org.confluence.terraentity.registries.npc_trade_list.variant.WeightMapGenerator;
 import org.confluence.terraentity.registries.npc_trade_lock.variant.BiomeLock;
 import org.confluence.terraentity.registries.npc_trade_lock.variant.MoodLock;
 import org.confluence.terraentity.registries.npc_trade_lock.variant.TimeLock;
@@ -251,19 +252,21 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(SellTrade.INSTANCE)
                 .build());
 
-        shop(TENpcEntities.TRAVELING_MERCHANT.getId()).addRecipe(withDefaultPylon()
-                .add(AccessoryItems.PAINT_SPRAYER)
-                .add(TCItems.PORTABLE_CEMENT_MIXER)
-                .add(TCItems.EXTENDO_GRIP)
-                .add(TCItems.BRICK_LAYER)
-                .add(TCItems.STOPWATCH)
-                .add(TCItems.LIFE_FORM_ANALYZER)
-                .add(TCItems.DPS_METER)
-                .add(SwordItems.KATANA)
-                .add(FoodItems.PAD_THAI)
-                .add(TEYoyosItems.CODE_1)
-                .add(SellTrade.INSTANCE)
-                .build());
+        shop(TENpcEntities.TRAVELING_MERCHANT.getId()).addRecipe(
+                new NPCTradeManager(WeightMapGenerator.builder(5) // 这个数字其实无意义，因为旅商是通过事件修改是数量
+                        .addTrade(new MoneyTradeItem.Builder().setResult(AccessoryItems.PAINT_SPRAYER).build(),1)
+                        .addTrade(new MoneyTradeItem.Builder().setResult(TCItems.PORTABLE_CEMENT_MIXER).build(),1)
+                        .addTrade(new MoneyTradeItem.Builder().setResult(TCItems.EXTENDO_GRIP).build(),1)
+                        .addTrade(new MoneyTradeItem.Builder().setResult(TCItems.BRICK_LAYER).build(),1)
+                        .addTrade(new MoneyTradeItem.Builder().setResult(TCItems.STOPWATCH).build(),1)
+                        .addTrade(new MoneyTradeItem.Builder().setResult(TCItems.LIFE_FORM_ANALYZER).build(),1)
+                        .addTrade(new MoneyTradeItem.Builder().setResult(TCItems.DPS_METER).build(),1)
+                        .addTrade(new MoneyTradeItem.Builder().setResult(SwordItems.KATANA).build(),1)
+                        .addTrade(new MoneyTradeItem.Builder().setResult(FoodItems.PAD_THAI).build(),1)
+                        .addTrade(new MoneyTradeItem.Builder().setResult(TEYoyosItems.CODE_1).build(),1)
+                        .build()
+                )
+        );
 
         shop(TENpcEntities.CLOTHIER.getId()).addRecipe(withDefaultPylon()
                 .add(VanityArmorItems.FAMILIAR_WIG)

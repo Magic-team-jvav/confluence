@@ -17,6 +17,7 @@ import org.confluence.mod.common.menu.NPCTradesForgeMenu;
 import org.confluence.mod.integration.terra_entity.brain.ConfluenceDemolitionistNPCAi;
 import org.confluence.mod.integration.terra_entity.init.ModEffectStrategies;
 import org.confluence.mod.integration.terra_entity.init.ModTradeProviders;
+import org.confluence.mod.integration.terra_entity.npc_trade.SellTrade;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.terraentity.api.event.NPCEvent;
 import org.confluence.terraentity.api.event.SummonEvent;
@@ -95,6 +96,16 @@ public class TEEvents {
     public static void summon$Pre(SummonEvent.Pre<?> event) {
         if (event.getPlayer() instanceof ServerPlayer serverPlayer && serverPlayer.getData(TEAttachments.SUMMONER_STORAGE).getIds().size() >= 8) {
             AchievementUtils.awardAchievement(serverPlayer, "you_and_what_army");
+        }
+    }
+
+    @SubscribeEvent
+    public static void onTravelMerchantGenerator(NPCEvent.TravelingMerchantGenerateTradeEvent event) {
+        if(event.getNPC().getType() == TENpcEntities.TRAVELING_MERCHANT.get()) {
+            int addition = NPCSpawner.INSTANCE.isPeddlersSatchelUsed()? 1 : 0;
+            int count = event.getNPC().getRandom().nextInt(4, 10);
+            event.addTrade(SellTrade.INSTANCE); // 通过事件额外添加售卖交易
+            event.setGenerateCount(count + addition);
         }
     }
 

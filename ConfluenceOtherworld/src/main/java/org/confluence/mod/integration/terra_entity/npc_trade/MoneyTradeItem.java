@@ -4,6 +4,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ItemLike;
 import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.integration.terra_entity.init.ModTradeProviders;
 import org.confluence.terraentity.api.npc.trade.ITradeHolder;
@@ -31,6 +32,11 @@ public record MoneyTradeItem(ItemStack result, @Nullable TradeProperties propert
 
         public Builder setResult(ItemStack result) {
             this.result = result;
+            return this;
+        }
+
+        public Builder setResult(ItemLike result) {
+            this.result = result.asItem().getDefaultInstance();
             return this;
         }
 

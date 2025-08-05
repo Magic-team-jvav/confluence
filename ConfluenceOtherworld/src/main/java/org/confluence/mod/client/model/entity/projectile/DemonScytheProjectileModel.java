@@ -29,7 +29,6 @@ public class DemonScytheProjectileModel extends EntityModel<DemonScytheProjectil
         return LayerDefinition.create(meshdefinition, 128, 128);
     }
 
-
     @Override
     public void setupAnim(@NotNull DemonScytheProjectile entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {}
 

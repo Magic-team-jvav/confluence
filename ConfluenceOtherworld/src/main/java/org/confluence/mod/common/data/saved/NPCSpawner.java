@@ -105,6 +105,8 @@ public final class NPCSpawner implements IGlobalData {
     private boolean isAdvancedCombatTechniquesVolumeTwoUsed = false; // 先进战斗技术：卷二
     private boolean isPeddlersSatchelUsed = false; // 商贩背包
 
+    private NPCSpawner() {}
+
     public Iterable<EntityType<?>> getNpcSpawned() {
         return npcSpawned;
     }

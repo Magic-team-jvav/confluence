@@ -76,6 +76,8 @@ public final class HardmodeConvertor implements IGlobalData {
     private volatile boolean completed = false;
     private transient volatile boolean shouldContinue = true;
 
+    private HardmodeConvertor() {}
+
     public boolean isStarted() {
         return started;
     }

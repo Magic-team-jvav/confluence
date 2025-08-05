@@ -75,6 +75,8 @@ public final class KillBoard implements IGlobalData {
     private final Object2BooleanMap<ResourceKey<Moment>> defeatedEvents = new Object2BooleanOpenHashMap<>();
     private GamePhase gamePhase = GamePhase.BEFORE_SKELETRON;
 
+    private KillBoard() {}
+
     public boolean isDefeated(EntityType<?> entityType) {
         return defeatedBosses.getBoolean(entityType);
     }

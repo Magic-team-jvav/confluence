@@ -438,11 +438,11 @@ public class ModDataProvider {
                     1
             ));
             register(context, GLOWING_MUSHROOM_VINE, ModFeatures.DROOPING_BLOCK.get(), new DroopingBlockFeature.Config(BlockStateProvider.simple(NatureBlocks.GLOWING_MUSHROOM_VINE.get()), false, 1, 9));
-            register(context, GLOWING_MUSHROOM_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.GLOWING_MUSHROOM_CATTAILS_HEAD.get()), BlockStateProvider.simple(NatureBlocks.GLOWING_MUSHROOM_CATTAILS_BODY.get()), 0, 1.0F, 16,20));
-            register(context, JUNGLE_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.JUNGLE_CATTAILS_HEAD.get()), BlockStateProvider.simple(NatureBlocks.JUNGLE_CATTAILS_BODY.get()), 2, 0.5F, 7,20));
-            register(context, CORRUPT_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.EBONY_CATTAILS_HEAD.get()), BlockStateProvider.simple(NatureBlocks.EBONY_CATTAILS_BODY.get()), 2, 0.5F, 5,20));
-            register(context, CRIMSON_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.CRIMSON_CATTAILS_HEAD.get()), BlockStateProvider.simple(NatureBlocks.CRIMSON_CATTAILS_BODY.get()), 2, 0.5F, 5,20));
-            register(context, FOREST_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.CATTAILS_HEAD.get()), BlockStateProvider.simple(NatureBlocks.CATTAILS_BODY.get()),2,0.5F,5,20));
+            register(context, GLOWING_MUSHROOM_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.GLOWING_MUSHROOM_CATTAILS_HEAD.get()), BlockStateProvider.simple(NatureBlocks.GLOWING_MUSHROOM_CATTAILS_BODY.get()), 0, 1.0F, 16, 20));
+            register(context, JUNGLE_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.JUNGLE_CATTAILS_HEAD.get()), BlockStateProvider.simple(NatureBlocks.JUNGLE_CATTAILS_BODY.get()), 2, 0.5F, 7, 20));
+            register(context, CORRUPT_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.EBONY_CATTAILS_HEAD.get()), BlockStateProvider.simple(NatureBlocks.EBONY_CATTAILS_BODY.get()), 2, 0.5F, 5, 20));
+            register(context, CRIMSON_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.CRIMSON_CATTAILS_HEAD.get()), BlockStateProvider.simple(NatureBlocks.CRIMSON_CATTAILS_BODY.get()), 2, 0.5F, 5, 20));
+            register(context, FOREST_CATTAILS, ModFeatures.CATTAILS.get(), new CattailsFeature.Config(BlockStateProvider.simple(NatureBlocks.CATTAILS_HEAD.get()), BlockStateProvider.simple(NatureBlocks.CATTAILS_BODY.get()), 2, 0.5F, 5, 20));
             register(context, ModFeatures.Configured.BAOBAB_TREE, Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(List.of(
                     new WeightedPlacedFeature(direct(
                             ModFeatures.BAOBAB_TREE.get(), new BaobabTreeFeature.Config(
@@ -904,7 +904,8 @@ public class ModDataProvider {
             register(context, SLUSH, configured.getOrThrow(ConfiguredFeatures.SLUSH), CountPlacement.of(10), inSquare, bottomThroughTop, biome);
             register(context, PALM_TREE, configured.getOrThrow(ModFeatures.Configured.PALM_TREE),
                     RarityFilter.onAverageOnceEvery(3), count1_9$2_1, inSquare, surfaceWaterDepth0, oceanFloor,
-                    BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.PALM_SAPLING.get().defaultBlockState(), Vec3i.ZERO)), biome); register(context, BAOBAB_TREE, configured.getOrThrow(ModFeatures.Configured.BAOBAB_TREE), biome, count1_9$2_1, inSquare, surfaceWaterDepth0, oceanFloor);
+                    BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.PALM_SAPLING.get().defaultBlockState(), Vec3i.ZERO)), biome);
+            register(context, BAOBAB_TREE, configured.getOrThrow(ModFeatures.Configured.BAOBAB_TREE), biome, count1_9$2_1, inSquare, surfaceWaterDepth0, oceanFloor);
             register(context, GEMSTONE_CAVE, configured.getOrThrow(ConfiguredFeatures.GEMSTONE_CAVE), RarityFilter.onAverageOnceEvery(40), inSquare, HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(14), VerticalAnchor.absolute(30)), biome);
             register(context, PEARL_TREE, configured.getOrThrow(ModFeatures.Configured.PEARL_TREE), count1_9$2_1, inSquare, surfaceWaterDepth0, oceanFloor, biome);
             register(context, ADDITIONAL_ANCIENT_DEBRIS, configured.getOrThrow(ConfiguredFeatures.ADDITIONAL_ANCIENT_DEBRIS), count3, inSquare, heightRangeTriangle(0, 128), biome);
@@ -1022,7 +1023,7 @@ public class ModDataProvider {
             HolderSet<Biome> swamp = biome.getOrThrow(Tags.Biomes.IS_SWAMP);
             HolderSet<Biome> overworld = biome.getOrThrow(Tags.Biomes.IS_OVERWORLD);
             HolderSet<Biome> jungle = biome.getOrThrow(Tags.Biomes.IS_JUNGLE);
-            HolderSet<Biome> lush = biome.getOrThrow(Tags.Biomes.IS_LUSH);
+            HolderSet<Biome> jungleLike = new OrHolderSet<>(jungle, biome.getOrThrow(Tags.Biomes.IS_LUSH));
 
             HolderGetter<PlacedFeature> placedFeature = context.lookup(Registries.PLACED_FEATURE);
             Function<ResourceKey<PlacedFeature>, Holder<PlacedFeature>> factory = placedFeature::getOrThrow;
@@ -1110,23 +1111,8 @@ public class ModDataProvider {
             addFeatures(context, "forest_like_uo", forestLike, HolderSet.direct(factory,
                     PlacedFeatures.SILT_BLOCK
             ), GenerationStep.Decoration.UNDERGROUND_ORES);
-            addFeatures(context, "jungle_vd", jungle, HolderSet.direct(factory,
-                    PlacedFeatures.MOONGLOW
-            ), GenerationStep.Decoration.VEGETAL_DECORATION);
-            addFeatures(context, "jungle_ud", jungle, HolderSet.direct(factory,
-                    PlacedFeatures.JUNGLE_POT
-            ), GenerationStep.Decoration.UNDERGROUND_DECORATION);
-            addFeatures(context, "jungle_uo", jungle, HolderSet.direct(factory,
-                    PlacedFeatures.CHLOROPHYTE_ORE
-            ), GenerationStep.Decoration.UNDERGROUND_ORES);
-            addFeatures(context, "lush_ud", lush, HolderSet.direct(factory,
-                    PlacedFeatures.UNDERGROUND_MOONGLOW
-            ), GenerationStep.Decoration.UNDERGROUND_DECORATION);
-            addFeatures(context, "lush_uo", lush, HolderSet.direct(factory,
-                    PlacedFeatures.CHLOROPHYTE_ORE
-            ), GenerationStep.Decoration.UNDERGROUND_ORES);
-
-            addFeatures(context, "jungle_lush_vd", new OrHolderSet<>(jungle, lush), HolderSet.direct(factory,
+            addFeatures(context, "jungle_like_vd", jungleLike, HolderSet.direct(factory,
+                    PlacedFeatures.MOONGLOW,
                     PlacedFeatures.JUNGLE_ROSE,
                     PlacedFeatures.JUNGLE_SPORE,
                     PlacedFeatures.JUNGLE_DROOPING_VINE,
@@ -1136,6 +1122,13 @@ public class ModDataProvider {
                     PlacedFeatures.UNDERGROUND_JUNGLE_TREE,
                     PlacedFeatures.NATURES_GIFT
             ), GenerationStep.Decoration.VEGETAL_DECORATION);
+            addFeatures(context, "jungle_like_ud", jungleLike, HolderSet.direct(factory,
+                    PlacedFeatures.JUNGLE_POT,
+                    PlacedFeatures.UNDERGROUND_MOONGLOW
+            ), GenerationStep.Decoration.UNDERGROUND_DECORATION);
+            addFeatures(context, "jungle_like_uo", jungleLike, HolderSet.direct(factory,
+                    PlacedFeatures.CHLOROPHYTE_ORE
+            ), GenerationStep.Decoration.UNDERGROUND_ORES);
 
             addFeatures(context, "beach_vd", biome.getOrThrow(Tags.Biomes.IS_BEACH), HolderSet.direct(factory,
                     PlacedFeatures.PALM_TREE

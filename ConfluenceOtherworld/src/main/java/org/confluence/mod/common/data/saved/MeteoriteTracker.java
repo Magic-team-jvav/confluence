@@ -35,6 +35,8 @@ public final class MeteoriteTracker {
     @NotNull BlockPos location = BlockPos.ZERO;
     int tickUntilLanding = 0;
 
+    private MeteoriteTracker() {}
+
     public void tick(ServerLevel level) {
         if (!CommonConfigs.DO_METEORITE_SPAWNING.get()) return;
         if (spawnAtNextNight && DateUtils.getDayTime(level) == DateUtils._00$00) {

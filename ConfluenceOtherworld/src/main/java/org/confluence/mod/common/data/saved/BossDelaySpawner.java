@@ -14,6 +14,8 @@ public final class BossDelaySpawner {
     public static final BossDelaySpawner INSTANCE = new BossDelaySpawner();
     private final List<Delayed<AbstractTerraBossBase<?>>> bossQueue = new ArrayList<>();
 
+    private BossDelaySpawner() {}
+
     public void tick(ServerLevel serverLevel) {
         if (!bossQueue.isEmpty()) {
             bossQueue.removeIf(mobDelayed -> {

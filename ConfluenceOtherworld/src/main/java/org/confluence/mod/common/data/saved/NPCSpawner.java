@@ -103,6 +103,7 @@ public final class NPCSpawner implements IGlobalData {
     private final Set<EntityType<?>> npcSpawned = new HashSet<>();
     private boolean isAdvancedCombatTechniquesUsed = false; // 先进战斗技术
     private boolean isAdvancedCombatTechniquesVolumeTwoUsed = false; // 先进战斗技术：卷二
+    private boolean isPeddlersSatchelUsed = false; // 商贩背包
 
     public Iterable<EntityType<?>> getNpcSpawned() {
         return npcSpawned;
@@ -122,6 +123,14 @@ public final class NPCSpawner implements IGlobalData {
 
     public boolean isAdvancedCombatTechniquesVolumeTwoUsed() {
         return isAdvancedCombatTechniquesVolumeTwoUsed;
+    }
+
+    public void setPeddlersSatchelUsed(boolean used) {
+        this.isPeddlersSatchelUsed = used;
+    }
+
+    public boolean isPeddlersSatchelUsed() {
+        return isPeddlersSatchelUsed;
     }
 
     public int getAliveNpcCount(Region region, Predicate<EntityType<?>> filter) {
@@ -217,6 +226,7 @@ public final class NPCSpawner implements IGlobalData {
         tag.get("npc_spawned").orElseEmptyList().read(NPC_SPAWNED_CODEC).ifSuccess(npcSpawned::addAll);
         this.isAdvancedCombatTechniquesUsed = tag.get("advanced_combat_techniques").asBoolean(false);
         this.isAdvancedCombatTechniquesVolumeTwoUsed = tag.get("advanced_combat_techniques_volume_two").asBoolean(false);
+        this.isPeddlersSatchelUsed = tag.get("peddlers_satchel").asBoolean(false);
     }
 
     @Override
@@ -231,6 +241,7 @@ public final class NPCSpawner implements IGlobalData {
         tag.put("npc_spawned", NPC_SPAWNED_CODEC.encodeStart(NbtOps.INSTANCE, npcSpawned).getOrThrow());
         tag.putBoolean("advanced_combat_techniques", isAdvancedCombatTechniquesUsed);
         tag.putBoolean("advanced_combat_techniques_volume_two", isAdvancedCombatTechniquesVolumeTwoUsed);
+        tag.putBoolean("peddlers_satchel", isPeddlersSatchelUsed);
     }
 
     @Override
@@ -244,6 +255,7 @@ public final class NPCSpawner implements IGlobalData {
         npcSpawned.clear();
         this.isAdvancedCombatTechniquesUsed = false;
         this.isAdvancedCombatTechniquesVolumeTwoUsed = false;
+        this.isPeddlersSatchelUsed = false;
     }
 
     /**

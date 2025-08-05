@@ -3,7 +3,6 @@ package org.confluence.mod.common.item.common;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.AbortableIterationConsumer;
@@ -16,28 +15,26 @@ import net.minecraft.world.level.entity.EntityTypeTest;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.init.ModSoundEvents;
-import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
+import org.confluence.terraentity.entity.npc.TravelingMerchantNPC;
 
-public class AdvancedCombatTechniquesVolumeTwoItem extends TooltipItem {
-    public AdvancedCombatTechniquesVolumeTwoItem() {
-        super(new Properties(), ModRarity.LIGHT_PURPLE, getTooltipsFromString("advanced_combat_techniques_volume_two", 2, ChatFormatting.GREEN));
+public class PeddlersSatchelItem extends TooltipItem {
+    public PeddlersSatchelItem() {
+        super(new Properties(), ModRarity.LIGHT_PURPLE, Component.translatable("tooltip.item.confluence.peddlers_satchel.0").withStyle(ChatFormatting.GREEN));
     }
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
         ItemStack itemStack = player.getItemInHand(usedHand);
         if (level instanceof ServerLevel serverLevel) {
-            if (!NPCSpawner.INSTANCE.isAdvancedCombatTechniquesVolumeTwoUsed()) {
-                NPCSpawner.INSTANCE.setAdvancedCombatTechniquesVolumeTwoUsed(true);
-                ResourceLocation id = Confluence.asResource("advanced_combat_techniques_volume_two");
-                serverLevel.getEntities().get(EntityTypeTest.forClass(AbstractTerraNPC.class), npc -> {
-                    NPCSpawner.applyAdvancedCombatTechniques(npc, id);
+            if (!NPCSpawner.INSTANCE.isPeddlersSatchelUsed()) {
+                NPCSpawner.INSTANCE.setPeddlersSatchelUsed(true);
+                serverLevel.getEntities().get(EntityTypeTest.forClass(TravelingMerchantNPC.class), npc -> {
+                    // todo
                     return AbortableIterationConsumer.Continuation.CONTINUE;
                 });
-                MutableComponent component = Component.translatable("message.confluence.advancement_combat_techniques").withColor(GlobalColors.MESSAGE.get());
+                MutableComponent component = Component.translatable("message.confluence.peddlers_satchel").withColor(GlobalColors.MESSAGE.get());
                 for (ServerPlayer serverPlayer : serverLevel.players()) {
                     serverPlayer.sendSystemMessage(component);
                 }

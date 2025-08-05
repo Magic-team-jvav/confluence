@@ -2,6 +2,7 @@ package org.confluence.mod.common.data.saved;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.terraentity.entity.boss.AbstractTerraBossBase;
@@ -33,6 +34,10 @@ public final class BossDelaySpawner {
     public void pushBoss(int delay, AbstractTerraBossBase<?> boss, Predicate<ServerLevel> predicate) {
         if (bossQueue.size() == 8) bossQueue.removeFirst();
         bossQueue.add(new Delayed<>(delay, boss, predicate));
+    }
+
+    public boolean hasSameTypeInQueue(EntityType<?> type) {
+        return bossQueue.stream().anyMatch(delayed -> delayed.entity.getType() == type);
     }
 
     public void clear() {

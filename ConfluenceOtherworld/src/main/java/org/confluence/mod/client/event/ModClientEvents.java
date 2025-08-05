@@ -109,7 +109,6 @@ public final class ModClientEvents {
 
             ModClientSetups.registerItemProperties();
             ModClientSetups.setRenderLayers();
-            ModConnectives.register();
 
             PonderHelper.registerPlugin();
             AppleskinHelper.addListeners();

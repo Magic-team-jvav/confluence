@@ -30,6 +30,7 @@ public class CustomBlockModels {
 
     private void loadEntriesIfMissing() {
         if (!funcsLoaded) {
+            ModConnectives.register();
             loadEntries();
             funcsLoaded = true;
         }

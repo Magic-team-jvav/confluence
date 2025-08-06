@@ -311,7 +311,7 @@ public class ExtraInventory extends ItemStackHandler implements Container {
         return projectile;
     }
 
-    public static ExtraInventory of(Player player) {
-        return player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
+    public static ExtraInventory of(LivingEntity living) {
+        return living.getData(ModAttachmentTypes.EXTRA_INVENTORY);
     }
 }

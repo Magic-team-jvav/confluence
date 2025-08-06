@@ -301,7 +301,7 @@ public final class PlayerEvents {
     @SubscribeEvent
     public static void respawn(PlayerEvent.PlayerRespawnEvent event) {
         ServerPlayer player = (ServerPlayer) event.getEntity();
-        EverBeneficial everBeneficial = player.getData(ModAttachmentTypes.EVER_BENEFICIAL);
+        EverBeneficial everBeneficial = EverBeneficial.of(player);
         EverBeneficialItem.LIFE_CRYSTAL.recovery(everBeneficial, eb -> eb.getUsedLifeCrystals() > 0, player);
         EverBeneficialItem.LIFE_FRUITS.recovery(everBeneficial, eb -> eb.getUsedLifeFruits() > 0, player);
         EverBeneficialItem.AEGIS_APPLE.recovery(everBeneficial, EverBeneficial::isAegisAppleUsed, player);

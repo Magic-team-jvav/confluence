@@ -5,7 +5,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.INBTSerializable;
 import org.confluence.mod.api.event.AdditionalManaEvent;
@@ -167,7 +167,7 @@ public class ManaStorage implements INBTSerializable<CompoundTag> {
         return arcaneCrystalUsed;
     }
 
-    public static ManaStorage of(Player player) {
-        return player.getData(ModAttachmentTypes.MANA_STORAGE);
+    public static ManaStorage of(LivingEntity living) {
+        return living.getData(ModAttachmentTypes.MANA_STORAGE);
     }
 }

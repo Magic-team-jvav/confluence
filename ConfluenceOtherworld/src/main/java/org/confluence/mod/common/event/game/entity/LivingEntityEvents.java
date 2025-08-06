@@ -34,6 +34,7 @@ import org.confluence.lib.common.event.GameEvents;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.data.saved.NPCSpawner;
@@ -43,7 +44,10 @@ import org.confluence.mod.common.effect.flask.FlaskEffect;
 import org.confluence.mod.common.effect.harmful.ManaSicknessEffect;
 import org.confluence.mod.common.effect.neutral.LoveEffect;
 import org.confluence.mod.common.entity.projectile.boulder.TombstoneBoulderEntity;
-import org.confluence.mod.common.init.*;
+import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.ModHookTypes;
+import org.confluence.mod.common.init.ModSecretSeeds;
+import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.common.CoinItem;
@@ -144,7 +148,7 @@ public final class LivingEntityEvents {
         if (!(living.level() instanceof ServerLevel level)) return;
 
         float amount = event.getAmount();
-        if (living.getData(ModAttachmentTypes.EVER_BENEFICIAL).isVitalCrystalUsed()) {
+        if (EverBeneficial.of(living).isVitalCrystalUsed()) {
             amount *= 1.2F;
         }
         if (living.hasEffect(ModEffects.COZY_FIRE)) {

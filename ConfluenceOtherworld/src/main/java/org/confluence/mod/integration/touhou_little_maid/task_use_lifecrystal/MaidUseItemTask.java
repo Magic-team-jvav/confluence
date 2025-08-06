@@ -10,7 +10,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.common.attachment.EverBeneficial;
-import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.common.item.common.EverBeneficialItem;
@@ -30,7 +29,7 @@ public class MaidUseItemTask extends Behavior<EntityMaid> {
             return false;
         }
         cooldown = _cooldown;
-        var data = owner.getData(ModAttachmentTypes.EVER_BENEFICIAL.get());
+        var data = EverBeneficial.of(owner);
         if (data.isLifeCrystalsMaximum()) return false;
         ItemStack stack = owner.getItemBySlot(EquipmentSlot.MAINHAND);
         return stack.getItem() == ConsumableItems.LIFE_CRYSTAL.get();
@@ -43,7 +42,7 @@ public class MaidUseItemTask extends Behavior<EntityMaid> {
     protected void start(ServerLevel worldIn, EntityMaid entityIn, long gameTimeIn) {
         ItemStack stack = entityIn.getItemBySlot(EquipmentSlot.MAINHAND);
         if (stack.getItem() == ConsumableItems.LIFE_CRYSTAL.get()) {
-            EverBeneficial data = entityIn.getData(ModAttachmentTypes.EVER_BENEFICIAL.get());
+            EverBeneficial data = EverBeneficial.of(entityIn);
             if (data.increaseCrystals()) {
                 AttributeInstance att = entityIn.getAttribute(Attributes.MAX_HEALTH);
                 if (att != null) {

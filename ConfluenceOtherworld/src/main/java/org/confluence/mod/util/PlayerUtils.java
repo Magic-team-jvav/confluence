@@ -22,13 +22,13 @@ import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.attachment.PlayerPiggyBankContainer;
 import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.data.saved.KillBoard;
-import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModHookTypes;
 import org.confluence.mod.common.init.ModTags;
@@ -139,7 +139,7 @@ public final class PlayerUtils {
 
     public static float getFishingPower(ServerPlayer player) {
         float base = TCUtils.getAccessoriesValue(player, AccessoryItems.FISHING$POWER);
-        if (player.getData(ModAttachmentTypes.EVER_BENEFICIAL).isGummyWormUsed()) base += 3.0F;
+        if (EverBeneficial.of(player).isGummyWormUsed()) base += 3.0F;
         if (player.isInFluidType() && TCUtils.hasAccessoriesType(player, TCItems.FLOAT$ON$LIQUID$SURFACE)) base += 5.0F;
         if (player.hasEffect(ModEffects.TIPSY)) base += 5.0F;
         Level level = player.level();

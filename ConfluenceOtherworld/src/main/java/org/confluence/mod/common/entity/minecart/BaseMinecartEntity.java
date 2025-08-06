@@ -13,7 +13,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.VectorUtils;
-import org.confluence.mod.common.init.ModAttachmentTypes;
+import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.util.AchievementUtils;
 import org.jetbrains.annotations.Nullable;
 
@@ -82,7 +82,7 @@ public class BaseMinecartEntity extends Minecart {
 
     @Override
     public void moveMinecartOnRail(BlockPos pos) {
-        boolean upgradeKit = driver != null && driver.getData(ModAttachmentTypes.EVER_BENEFICIAL).isMinecartUpgradeKitUsed();
+        boolean upgradeKit = driver != null && EverBeneficial.of(driver).isMinecartUpgradeKitUsed();
         if (upgradeKit) setDragAir(getUpgradedDragAir());
         double d25 = upgradeKit ? getUpgradedMaxSpeed() : getMaxSpeedWithRail();
         double d24 = upgradeKit ? getUpgradedAcceleration() : (isVehicle() ? acceleration : 1.0);

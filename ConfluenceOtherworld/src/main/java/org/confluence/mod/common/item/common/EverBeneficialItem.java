@@ -19,7 +19,6 @@ import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.attachment.ManaStorage;
-import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.item.MinecartItems;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.terra_curio.common.init.TCItems;
@@ -103,7 +102,7 @@ public class EverBeneficialItem extends TooltipItem {
 
         ItemStack itemStack = player.getItemInHand(usedHand);
         if (player instanceof ServerPlayer serverPlayer) {
-            EverBeneficial data = player.getData(ModAttachmentTypes.EVER_BENEFICIAL);
+            EverBeneficial data = EverBeneficial.of(player);
             if (beneficial.pre.test(data)) {
                 beneficial.post.accept(beneficial.id, serverPlayer, data, false);
                 CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayer, itemStack);

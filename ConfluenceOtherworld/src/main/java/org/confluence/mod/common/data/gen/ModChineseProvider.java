@@ -3232,7 +3232,7 @@ public class ModChineseProvider extends LanguageProvider {
         // 杂项
         add(ModItems.COPPER_COIN.get(), "铜币");
         add(ModItems.SILVER_COIN.get(), "银币");
-        add(ModItems.GOLDEN_COIN.get(), "金币");
+        add(ModItems.GOLD_COIN.get(), "金币");
         add(ModItems.PLATINUM_COIN.get(), "铂金币");
         add(ModItems.EMERALD_COIN.get(), "绿宝石币");
         add(ModItems.SOUL_CAKE.get(), "灵魂蛋糕");

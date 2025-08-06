@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "confluence:golden_coin",
+          "name": "confluence:gold_coin",
           "weight": 1
         }
       ]

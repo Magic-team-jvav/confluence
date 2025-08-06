@@ -215,7 +215,7 @@ public class AccessoryItems {
             Item item;
             float a = randomSource.nextFloat();
             if (a < 0.01F) {
-                item = ModItems.GOLDEN_COIN.get();
+                item = ModItems.GOLD_COIN.get();
             } else if (a < 0.099F) {
                 item = ModItems.SILVER_COIN.get();
             } else {

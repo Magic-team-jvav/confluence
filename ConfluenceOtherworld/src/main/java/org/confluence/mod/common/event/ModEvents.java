@@ -411,6 +411,7 @@ public final class ModEvents {
                 .register("confluence:emerald_branches", "confluence:jade_branches")
                 .register("confluence:emerald_sapling", "confluence:jade_sapling")
                 .register("confluence:emerald_chain", "confluence:jade_chain");
+
     }
 
     @SubscribeEvent
@@ -421,7 +422,9 @@ public final class ModEvents {
                 .register("confluence:silver_coin_pile", "confluence:silver_coin")
                 .register("confluence:golden_coin_pile", "confluence:golden_coin")
                 .register("confluence:platinum_coin_pile", "confluence:platinum_coin")
-                .register("confluence:emerald_coin_pile", "confluence:emerald_coin");
+                .register("confluence:emerald_coin_pile", "confluence:emerald_coin")
+                 // 1.1.4 -> 1.1.5
+                .register("confluence:golden_coin", "confluence:gold_coin");
     }
 
     @SubscribeEvent

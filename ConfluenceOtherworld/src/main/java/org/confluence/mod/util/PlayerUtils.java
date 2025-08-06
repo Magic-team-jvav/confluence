@@ -54,7 +54,7 @@ import static org.confluence.mod.common.item.common.CoinItem.UPGRADES_COUNT;
 public final class PlayerUtils {
     public static final ToIntFunction<Item> COIN_2_INDEX = coin -> {
         if (coin == ModItems.PLATINUM_COIN.get()) return 0;
-        if (coin == ModItems.GOLDEN_COIN.get()) return 1;
+        if (coin == ModItems.GOLD_COIN.get()) return 1;
         if (coin == ModItems.SILVER_COIN.get()) return 2;
         if (coin == ModItems.COPPER_COIN.get()) return 3;
         return -1;
@@ -62,7 +62,7 @@ public final class PlayerUtils {
     public static final IntFunction<CoinItem> INDEX_2_COIN = index -> switch (index) {
         case 0 -> ModItems.COPPER_COIN.get();
         case 1 -> ModItems.SILVER_COIN.get();
-        case 2 -> ModItems.GOLDEN_COIN.get();
+        case 2 -> ModItems.GOLD_COIN.get();
         default -> ModItems.PLATINUM_COIN.get();
     };
 

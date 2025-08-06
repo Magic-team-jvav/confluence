@@ -514,7 +514,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(EmptyLootItem.emptyItem())
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModItems.GOLDEN_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
+                        .add(LootItem.lootTableItem(ModItems.GOLD_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
                         .add(EmptyLootItem.emptyItem())
                 )
                 .withPool(LootPool.lootPool()
@@ -804,7 +804,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(EmptyLootItem.emptyItem().setWeight(9))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModItems.GOLDEN_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
+                        .add(LootItem.lootTableItem(ModItems.GOLD_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
                         .add(EmptyLootItem.emptyItem())
                 );
     }
@@ -827,7 +827,7 @@ public record ChestSubProvider(HolderLookup.Provider registries) implements Loot
                         .add(EmptyLootItem.emptyItem())
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModItems.GOLDEN_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
+                        .add(LootItem.lootTableItem(ModItems.GOLD_COIN).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
                         .add(EmptyLootItem.emptyItem().setWeight(5))
                 )
                 .withPool(LootPool.lootPool()

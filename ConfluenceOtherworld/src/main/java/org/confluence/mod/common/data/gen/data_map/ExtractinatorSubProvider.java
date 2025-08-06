@@ -73,7 +73,7 @@ public final class ExtractinatorSubProvider {
     private static ExtractinatorData.Pool.Builder extractCommon() {
         return ExtractinatorData.Pool.builder()
                 .add(ExtractinatorData.Entry.of(ModItems.PLATINUM_COIN, 1, 73))
-                .add(ExtractinatorData.Entry.of(ModItems.GOLDEN_COIN, 1, 2, 1017))
+                .add(ExtractinatorData.Entry.of(ModItems.GOLD_COIN, 1, 2, 1017))
                 .add(ExtractinatorData.Entry.of(ModItems.SILVER_COIN, 1, 4, 13534))
                 .add(ExtractinatorData.Entry.of(ModItems.COPPER_COIN, 1, 15, 642145))
                 .add(ExtractinatorData.Entry.of(MaterialItems.AMETHYST, 1, 2, 3333))

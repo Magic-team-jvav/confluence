@@ -15,7 +15,7 @@
         },
         {
             "type": "patchouli:spotlight",
-            "item": "confluence:golden_coin",
+            "item": "confluence:gold_coin",
             "text": "patchouli.confluence.otherworld_note.material.coin.2"
         },
         {
@@ -31,11 +31,11 @@
         {
             "type": "patchouli:crafting",
             "recipe": "confluence:copper_coin_from_silver_coin",
-            "recipe2": "confluence:silver_coin_from_golden_coin"
+            "recipe2": "confluence:silver_coin_from_gold_coin"
         },
         {
             "type": "patchouli:crafting",
-            "recipe": "confluence:golden_coin_from_platinum_coin",
+            "recipe": "confluence:gold_coin_from_platinum_coin",
             "text": "patchouli.confluence.otherworld_note.material.coin.5"
         }
     ]

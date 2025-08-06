@@ -70,7 +70,7 @@ public final class ModUtils {
         int k = (j - golden_count) / UPGRADES_COUNT;
         LibUtils.createItemEntity(ModItems.COPPER_COIN.get(), copper_count, x, y, z, level, 0);
         LibUtils.createItemEntity(ModItems.SILVER_COIN.get(), silver_count, x, y, z, level, 0);
-        LibUtils.createItemEntity(ModItems.GOLDEN_COIN.get(), golden_count, x, y, z, level, 0);
+        LibUtils.createItemEntity(ModItems.GOLD_COIN.get(), golden_count, x, y, z, level, 0);
         LibUtils.createItemEntity(ModItems.PLATINUM_COIN.get(), k, x, y, z, level, 0);
     }
 

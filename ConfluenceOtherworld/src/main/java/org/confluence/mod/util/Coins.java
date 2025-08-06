@@ -51,7 +51,7 @@ public final class Coins {
         } else if (coin == ModItems.SILVER_COIN.get()) {
             this.silver = count;
             index = 1;
-        } else if (coin == ModItems.GOLDEN_COIN.get()) {
+        } else if (coin == ModItems.GOLD_COIN.get()) {
             this.gold = count;
             index = 2;
         } else if (coin == ModItems.PLATINUM_COIN.get()) {
@@ -73,7 +73,7 @@ public final class Coins {
     public int byItem(CoinItem coin) {
         if (coin == ModItems.COPPER_COIN.get()) return copper;
         if (coin == ModItems.SILVER_COIN.get()) return silver;
-        if (coin == ModItems.GOLDEN_COIN.get()) return gold;
+        if (coin == ModItems.GOLD_COIN.get()) return gold;
         if (coin == ModItems.PLATINUM_COIN.get()) return platinum;
         return 0;
     }
@@ -97,7 +97,7 @@ public final class Coins {
             this.copper2PlatinumMap = new Object2IntLinkedOpenHashMap<>();
             copper2PlatinumMap.put(ModItems.COPPER_COIN.get(), copper);
             copper2PlatinumMap.put(ModItems.SILVER_COIN.get(), silver);
-            copper2PlatinumMap.put(ModItems.GOLDEN_COIN.get(), gold);
+            copper2PlatinumMap.put(ModItems.GOLD_COIN.get(), gold);
             copper2PlatinumMap.put(ModItems.PLATINUM_COIN.get(), platinum);
         }
         return copper2PlatinumMap.object2IntEntrySet();
@@ -107,7 +107,7 @@ public final class Coins {
         if (platinum2CopperMap == null) {
             this.platinum2CopperMap = new Object2IntLinkedOpenHashMap<>();
             platinum2CopperMap.put(ModItems.PLATINUM_COIN.get(), platinum);
-            platinum2CopperMap.put(ModItems.GOLDEN_COIN.get(), gold);
+            platinum2CopperMap.put(ModItems.GOLD_COIN.get(), gold);
             platinum2CopperMap.put(ModItems.SILVER_COIN.get(), silver);
             platinum2CopperMap.put(ModItems.COPPER_COIN.get(), copper);
         }

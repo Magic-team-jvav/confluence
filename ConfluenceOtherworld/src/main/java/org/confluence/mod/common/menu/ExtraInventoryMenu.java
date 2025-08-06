@@ -34,7 +34,7 @@ public class ExtraInventoryMenu extends AbstractContainerMenu {
     public ExtraInventoryMenu(int containerId, Inventory inventory) {
         super(ModMenuTypes.EXTRA_INVENTORY.get(), containerId);
         Player player = inventory.player;
-        this.extraInventory = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
+        this.extraInventory = ExtraInventory.of(player);
         int count = extraInventory.getContainerSize();
         for (int i = 0; i < count; i++) {
             if (i < COINS_START) { // 0, 1, 2, 3

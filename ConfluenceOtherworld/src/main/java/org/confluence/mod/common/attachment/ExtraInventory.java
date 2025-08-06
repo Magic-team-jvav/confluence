@@ -299,7 +299,7 @@ public class ExtraInventory extends ItemStackHandler implements Container {
     public static ItemStack getProjectile(ItemStack projectile, ItemStack weapon, LivingEntity living) {
         if (projectile.isEmpty() && weapon.getItem() instanceof ProjectileWeaponItem weaponItem && living instanceof Player player) {
             Predicate<ItemStack> predicate = weaponItem.getSupportedHeldProjectiles(weapon);
-            ExtraInventory extraInventory = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
+            ExtraInventory extraInventory = ExtraInventory.of(player);
             for (int i = 0; i < SIZE_AMMO; i++) {
                 ItemStack ammo = extraInventory.getAmmo(i);
                 if (predicate.test(ammo)) {
@@ -309,5 +309,9 @@ public class ExtraInventory extends ItemStackHandler implements Container {
             }
         }
         return projectile;
+    }
+
+    public static ExtraInventory of(Player player) {
+        return player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
     }
 }

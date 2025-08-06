@@ -10,6 +10,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.item.potion.HealingPotionItem;
@@ -32,14 +33,14 @@ public record KeyRequestPacketC2S(int key) implements CustomPacketPayload {
 
     public void handle(IPayloadContext context) {
         context.enqueueWork(() -> {
-            if (context.player() instanceof ServerPlayer serverPlayer) {
+            if (context.player() instanceof ServerPlayer player) {
                 if (key == KEY_HEALING) {
-                    HealingPotionItem.use(serverPlayer);
+                    HealingPotionItem.use(player);
                 } else if (key == KEY_MANA) {
-                    ManaPotionItem.use(serverPlayer);
+                    ManaPotionItem.use(player);
                 } else if (key == KEY_CLAIRVOYANCE) {
-                    serverPlayer.addEffect(new MobEffectInstance(ModEffects.CLAIRVOYANCE, MobEffectInstance.INFINITE_DURATION));
-                    serverPlayer.getData(ModAttachmentTypes.MANA_STORAGE).flushAbility(serverPlayer);
+                    player.addEffect(new MobEffectInstance(ModEffects.CLAIRVOYANCE, MobEffectInstance.INFINITE_DURATION));
+                    ManaStorage.of(player).flushAbility(player);
                 }
             }
         }).exceptionally(e -> {

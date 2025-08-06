@@ -91,7 +91,7 @@ public class BaseHookItem extends Item {
     }
 
     public static boolean hasAnyHooked(Player player) {
-        ItemStack hook = player.getData(ModAttachmentTypes.EXTRA_INVENTORY).getHook();
+        ItemStack hook = ExtraInventory.of(player).getHook();
         if (hook.isEmpty()) return false;
         CompoundTag nbt = LibUtils.getItemStackNbtIfPresent(hook);
         if (nbt == null) return false;

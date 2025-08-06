@@ -41,7 +41,7 @@ public abstract class InventoryMixin {
     @Inject(method = "add(ILnet/minecraft/world/item/ItemStack;)Z", at = @At("HEAD"), cancellable = true)
     private void add2Extra(int slot, ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
         if (stack.is(ModTags.Items.COINS)) {
-            ExtraInventory extraInventory = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
+            ExtraInventory extraInventory = ExtraInventory.of(player);
             if (confluence$insert2Extra(COINS_START, SIZE_COINS, extraInventory, stack, extraInventory1 -> {
                 for (int i = 0; i < SIZE_COINS; i++) {
                     ItemStack coins = extraInventory.getCoins(i);
@@ -71,7 +71,7 @@ public abstract class InventoryMixin {
         } else if (stack.is(ModTags.Items.AMMO)) {
             if (CommonConfigs.ammoSlotsItemBlackList.stream().anyMatch(stack.getItem().builtInRegistryHolder()::is) ||
                     CommonConfigs.ammoSlotsTagBlackList.stream().anyMatch(stack::is)) return;
-            ExtraInventory extraInventory = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
+            ExtraInventory extraInventory = ExtraInventory.of(player);
             if (confluence$insert2Extra(AMMO_START, SIZE_AMMO, extraInventory, stack, extraInventory2 -> {})) {
                 cir.setReturnValue(true);
             }
@@ -89,7 +89,7 @@ public abstract class InventoryMixin {
 
     @Inject(method = "clearOrCountMatchingItems", at = @At("RETURN"), cancellable = true)
     private void withExtra(Predicate<ItemStack> stackPredicate, int maxCount, Container inventory, CallbackInfoReturnable<Integer> cir, @Local boolean flag) {
-        cir.setReturnValue(ContainerHelper.clearOrCountMatchingItems(player.getData(ModAttachmentTypes.EXTRA_INVENTORY), stackPredicate, maxCount - cir.getReturnValue(), flag));
+        cir.setReturnValue(ContainerHelper.clearOrCountMatchingItems(ExtraInventory.of(player), stackPredicate, maxCount - cir.getReturnValue(), flag));
     }
 
     @Unique

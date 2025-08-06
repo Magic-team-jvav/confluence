@@ -15,6 +15,7 @@ import net.neoforged.neoforge.event.entity.item.ItemTossEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.common.attachment.ExtraInventory;
+import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
@@ -73,7 +74,7 @@ public final class ItemEvents {
             if (event.getPlayer().isLocalPlayer()) {
                 currentMana = ClientPacketHandler.getCurrentMana();
             } else {
-                currentMana = event.getPlayer().getData(ModAttachmentTypes.MANA_STORAGE).getCurrentMana();
+                currentMana = ManaStorage.of(event.getPlayer()).getCurrentMana();
             }
             event.setFire(currentMana >= manaGunItem.getManaCost());
         }
@@ -119,7 +120,6 @@ public final class ItemEvents {
     @SubscribeEvent
     public static void extraInventory(GunEvent.InventoryExtraEvent event) {
         Player player = event.getPlayer();
-        ExtraInventory data = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
-        event.addAmmoFirst(data.getAllAmmo());
+        event.addAmmoFirst(ExtraInventory.of(player).getAllAmmo());
     }
 }

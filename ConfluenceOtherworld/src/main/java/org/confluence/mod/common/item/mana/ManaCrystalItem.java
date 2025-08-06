@@ -27,7 +27,7 @@ public class ManaCrystalItem extends TooltipItem {
         level.playSound(player, player.getOnPos().above(), ModSoundEvents.MANA_STAR_USE.get(), SoundSource.PLAYERS, 1, 1);
         ItemStack itemStack = player.getItemInHand(hand);
         if (player instanceof ServerPlayer serverPlayer) {
-            ManaStorage data1 = serverPlayer.getData(ModAttachmentTypes.MANA_STORAGE);
+            ManaStorage data1 = ManaStorage.of(player);
             if (data1.addStar()) {
                 CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayer, itemStack);
                 itemStack.shrink(1);

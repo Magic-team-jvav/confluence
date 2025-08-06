@@ -38,7 +38,7 @@ public final class EntityEvents {
             MinecartAbilityEvent.DismountOnMinecart e = NeoForge.EVENT_BUS.post(new MinecartAbilityEvent.DismountOnMinecart(player, minecart));
             ItemStack itemStack = e.getMinecartItem();
             if (e.isCanceled() || itemStack == null) return;
-            ExtraInventory extraInventory = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
+            ExtraInventory extraInventory = ExtraInventory.of(player);
             if (extraInventory.getMinecart().isEmpty()) {
                 extraInventory.setItem(EQUIPMENT_START + 2, itemStack);
             } else {

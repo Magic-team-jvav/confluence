@@ -35,6 +35,7 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ExtraInventory;
+import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.effect.beneficial.ArcheryEffect;
 import org.confluence.mod.common.effect.beneficial.LuckEffect;
@@ -105,9 +106,9 @@ public final class LivingEntityEvents {
                     LibUtils.createItemEntity(holidayGift.getDefaultInstance(), victom.position(), level, 0);
                 }
             }
-            for (ServerPlayer serverPlayer : level.players()) {
-                if (serverPlayer.position().distanceToSqr(victom.position()) > 32 * 32) continue;
-                if (serverPlayer.getData(ModAttachmentTypes.MANA_STORAGE).canReceive() && serverPlayer.getRandom().nextFloat() < 0.083F) {
+            for (ServerPlayer player : level.players()) {
+                if (player.position().distanceToSqr(victom.position()) > 32 * 32) continue;
+                if (ManaStorage.of(player).canReceive() && player.getRandom().nextFloat() < 0.083F) {
                     LibUtils.createItemEntity(DateUtils.getStarItem().getDefaultInstance(), victom.position(), level, 0);
                     break;
                 }
@@ -286,7 +287,7 @@ public final class LivingEntityEvents {
     @SubscribeEvent
     public static void livingDrops(LivingDropsEvent event) {
         if (event.getEntity() instanceof Player player && !player.level().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) {
-            ExtraInventory data = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
+            ExtraInventory data = ExtraInventory.of(player);
             for (int i = 0; i < data.getContainerSize(); i++) {
                 if (i >= ExtraInventory.COINS_START && i < ExtraInventory.COINS_START + ExtraInventory.SIZE_COINS)
                     continue;

@@ -29,10 +29,10 @@ import static org.confluence.lib.util.LibUtils.getSlotIndex;
 public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, A extends HumanoidModel<T>> {
     @WrapOperation(method = "renderArmorPiece(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/entity/EquipmentSlot;ILnet/minecraft/client/model/HumanoidModel;FFFFFF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack;"))
     private ItemStack wrapItem(LivingEntity instance, EquipmentSlot slot, Operation<ItemStack> original, @Share("extra") LocalRef<ExtraInventory> extra) {
-        if (instance instanceof AbstractClientPlayer) {
+        if (instance instanceof AbstractClientPlayer player) {
             int index = getSlotIndex(slot);
             if (index != -1) {
-                ExtraInventory inventory = instance.getData(ModAttachmentTypes.EXTRA_INVENTORY);
+                ExtraInventory inventory = ExtraInventory.of(player);
                 extra.set(inventory);
                 ItemStack vanityArmor = inventory.getVanityArmor(index);
                 if (!vanityArmor.isEmpty()) return vanityArmor;

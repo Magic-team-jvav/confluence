@@ -21,6 +21,7 @@ import org.confluence.lib.color.GlobalColors;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ChunkDropletsData;
+import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.block.functional.network.PathService;
 import org.confluence.mod.common.data.saved.*;
 import org.confluence.mod.common.entity.FallingStarItemEntity;
@@ -89,20 +90,20 @@ public final class TickEvents {
 
     @SubscribeEvent
     public static void playerTick$Post(PlayerTickEvent.Post event) {
-        if (event.getEntity() instanceof ServerPlayer serverPlayer) {
-            PlayerUtils.regenerateMana(serverPlayer);
-            IServerPlayer player = IServerPlayer.of(serverPlayer);
-            player.confluence$setCouldPickupItem(true);
-            serverPlayer.getData(ModAttachmentTypes.EXTRA_INVENTORY).sync(serverPlayer);
-            ServerLevel serverLevel = serverPlayer.serverLevel();
-            AchievementUtils.youCanDoIt(serverPlayer, serverLevel);
-            TheConstant.applyDarkness(serverPlayer, serverLevel);
-            DungeonStructure.checkSkeletronDefeated(serverPlayer, serverLevel);
-            if (player.confluence$chunkPosChanged()) {
+        if (event.getEntity() instanceof ServerPlayer player) {
+            PlayerUtils.regenerateMana(player);
+            IServerPlayer iPlayer = IServerPlayer.of(player);
+            iPlayer.confluence$setCouldPickupItem(true);
+            ExtraInventory.of(player).sync(player);
+            ServerLevel serverLevel = player.serverLevel();
+            AchievementUtils.youCanDoIt(player, serverLevel);
+            TheConstant.applyDarkness(player, serverLevel);
+            DungeonStructure.checkSkeletronDefeated(player, serverLevel);
+            if (iPlayer.confluence$chunkPosChanged()) {
                 ChunkDropletsData data = serverLevel.getData(ModAttachmentTypes.CHUNK_DROPLETS_DATA);
-                Map<ChunkPos, Map<BlockPos, ParticleOptions>> dataMap = data.getDataMap(serverPlayer, false);
-                if (!dataMap.isEmpty() || data.getLastSync().computeIfAbsent(serverPlayer.getUUID(), uuid -> new HashSet<>()).stream().anyMatch(dataMap.keySet()::contains)) {
-                    PacketDistributor.sendToPlayer(serverPlayer, new DropletsSyncPacketS2C(dataMap));
+                Map<ChunkPos, Map<BlockPos, ParticleOptions>> dataMap = data.getDataMap(player, false);
+                if (!dataMap.isEmpty() || data.getLastSync().computeIfAbsent(player.getUUID(), uuid -> new HashSet<>()).stream().anyMatch(dataMap.keySet()::contains)) {
+                    PacketDistributor.sendToPlayer(player, new DropletsSyncPacketS2C(dataMap));
                 }
             }
         }

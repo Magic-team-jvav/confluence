@@ -16,6 +16,7 @@ import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.menu.NPCReforgeMenu;
+import org.confluence.mod.util.Coins;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terraentity.entity.ai.keyframe.animation.KeyframeAnimation;
@@ -38,29 +39,29 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
         guiGraphics.blit(BACKGROUND, leftPos, topPos + 19, 0, 0, imageWidth, imageHeight);
         int cost = menu.getCost();
         if (cost < 0x3F3F3F3F) {
-            int[] coins = PlayerUtils.decodeCoin(cost);
+            Coins coins = PlayerUtils.decodeCoin(cost);
             int x = leftPos + 52;
             int y = topPos + 1;
-            if (coins[3] > 0) {
-                ItemStack stack = new ItemStack(ModItems.PLATINUM_COIN.get(), coins[3]);
+            if (coins.platinum() > 0) {
+                ItemStack stack = new ItemStack(ModItems.PLATINUM_COIN.get(), coins.platinum());
                 guiGraphics.renderItem(stack, x, y);
                 guiGraphics.renderItemDecorations(font, stack, x, y);
                 x += 18;
             }
-            if (coins[2] > 0) {
-                ItemStack stack = new ItemStack(ModItems.GOLDEN_COIN.get(), coins[2]);
+            if (coins.gold() > 0) {
+                ItemStack stack = new ItemStack(ModItems.GOLDEN_COIN.get(), coins.gold());
                 guiGraphics.renderItem(stack, x, y);
                 guiGraphics.renderItemDecorations(font, stack, x, y);
                 x += 18;
             }
-            if (coins[1] > 0) {
-                ItemStack stack = new ItemStack(ModItems.SILVER_COIN.get(), coins[1]);
+            if (coins.silver() > 0) {
+                ItemStack stack = new ItemStack(ModItems.SILVER_COIN.get(), coins.silver());
                 guiGraphics.renderItem(stack, x, y);
                 guiGraphics.renderItemDecorations(font, stack, x, y);
                 x += 18;
             }
-            if (coins[0] > 0) {
-                ItemStack stack = new ItemStack(ModItems.COPPER_COIN.get(), coins[0]);
+            if (coins.copper() > 0) {
+                ItemStack stack = new ItemStack(ModItems.COPPER_COIN.get(), coins.copper());
                 guiGraphics.renderItem(stack, x, y);
                 guiGraphics.renderItemDecorations(font, stack, x, y);
             }

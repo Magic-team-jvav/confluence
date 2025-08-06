@@ -42,7 +42,7 @@ public class ManaPotionItem extends AbstractPotionItem {
     }
 
     public static void use(Player player) {
-        ManaStorage manaStorage = player.getData(ModAttachmentTypes.MANA_STORAGE);
+        ManaStorage manaStorage = ManaStorage.of(player);
         float required = manaStorage.getMaxMana() - manaStorage.getCurrentMana();
         AbstractPotionItem.use(player, required, ManaPotionItem.class, manaPotionItem -> manaPotionItem.amount);
     }

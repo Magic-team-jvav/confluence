@@ -94,7 +94,7 @@ public class TEEvents {
 
     @SubscribeEvent
     public static void summon$Pre(SummonEvent.Pre<?> event) {
-        if (event.getPlayer() instanceof ServerPlayer serverPlayer && serverPlayer.getData(TEAttachments.SUMMONER_STORAGE).getIds().size() >= 8) {
+        if (event.getEntity() instanceof ServerPlayer serverPlayer && serverPlayer.getData(TEAttachments.SUMMONER_STORAGE).getIds().size() >= 8) {
             AchievementUtils.awardAchievement(serverPlayer, "you_and_what_army");
         }
     }

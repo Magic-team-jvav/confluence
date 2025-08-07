@@ -58,7 +58,7 @@ public interface IWorldOptions {
         registerWorldIcon(map, BW_MASK, "boulder_world");
 
         CustomWorldIconRegisterEvent event = new CustomWorldIconRegisterEvent(map);
-        ModLoader.postEvent(event);
+        ModLoader.postEventWrapContainerInModOrder(event);
         map.putAll(event.getToAdd());
     });
 

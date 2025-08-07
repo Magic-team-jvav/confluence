@@ -71,7 +71,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
 //    private void registerSignBlock(LogBlocks logBlocks) {
 //        try {
-//            signBlock(logBlocks.SIGN.getPrefab(), logBlocks.WALL_SIGN.getPrefab(), Confluence.asResource("block/" + logBlocks.id + "_planks"));
+//            signBlock(logBlocks.SIGN.get(), logBlocks.WALL_SIGN.get(), Confluence.asResource("block/" + logBlocks.id + "_planks"));
 //        } catch (Exception e) {
 //            Confluence.LOGGER.error(e.getMessage());
 //        }

@@ -37,6 +37,6 @@ public class Fireblossom extends BaseHerbBlock {
 //        int r = pRandom.nextInt(60);
 //        if(r > 10) return;
 //        Vec3 pos = pPos.getCenter().add(pState.getOffset(pLevel, pPos)).offsetRandom(pRandom, 0.3f);
-//        pLevel.addParticle(ModParticles.FLAMEFLOWER_BLOOM.getPrefab(), pos.x, pos.y, pos.z, 0, 0.3f, 0);
+//        pLevel.addParticle(ModParticles.FLAMEFLOWER_BLOOM.get(), pos.x, pos.y, pos.z, 0, 0.3f, 0);
     }
 }

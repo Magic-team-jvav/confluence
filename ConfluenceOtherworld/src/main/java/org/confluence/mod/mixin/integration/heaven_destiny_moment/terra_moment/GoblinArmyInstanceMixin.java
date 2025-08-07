@@ -18,6 +18,7 @@ import net.minecraft.world.level.Level;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.data.saved.KillBoard;
+import org.confluence.mod.util.OverworldUtils;
 import org.confluence.phase_journey.common.util.PhaseUtils;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -46,7 +47,7 @@ public class GoblinArmyInstanceMixin {
         Level level = instance.getLevel();
         ListCondition listCondition = ListCondition.of(
                 WorldUniqueMomentCondition.DEFAULT,
-                LocationCondition.Builder.inDimension(Level.OVERWORLD).build(),
+                LocationCondition.Builder.inDimension(OverworldUtils.dimension()).build(),
                 InvertCondition.of(DifficultyCondition.PEACEFUL)
         );
 

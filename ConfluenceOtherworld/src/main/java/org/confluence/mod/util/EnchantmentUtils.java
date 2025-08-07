@@ -54,7 +54,7 @@ public final class EnchantmentUtils {
 
     public static float processEfficientMagic(ServerPlayer player) {
         if (EnchantmentHelper.has(player.getMainHandItem(), ModEnchantments.EffectComponentTypes.EFFICIENT_MAGIC.get())) {
-            ManaStorage manaStorage = player.getData(ModAttachmentTypes.MANA_STORAGE);
+            ManaStorage manaStorage = ManaStorage.of(player);
             return Mth.lerp(manaStorage.getCurrentMana() / manaStorage.getMaxMana(), 0.5F, 1.0F);
         }
         return 1.0F;
@@ -106,7 +106,7 @@ public final class EnchantmentUtils {
             ));
         }
         if (ratio.floatValue() <= 0) return amount;
-        ManaStorage manaStorage = player.getData(ModAttachmentTypes.MANA_STORAGE);
+        ManaStorage manaStorage = ManaStorage.of(player);
         float clamp = 1 - Mth.clamp(ratio.floatValue(), 0, 0.8F);
         if (manaStorage.forceExtractMana(() -> manaStorage.getMaxMana() * clamp)) {
             manaStorage.setRegenerateDelay();
@@ -127,7 +127,7 @@ public final class EnchantmentUtils {
                 ModEnchantments.EffectComponentTypes.MORE_MANA_MORE_ATTACK.get(), player.serverLevel(), level, itemStack, player, damageSource, mm
         ));
         if (lm.floatValue() > 0 || mm.floatValue() > 0) {
-            ManaStorage manaStorage = player.getData(ModAttachmentTypes.MANA_STORAGE);
+            ManaStorage manaStorage = ManaStorage.of(player);
             float ratio = manaStorage.getCurrentMana() / manaStorage.getMaxMana();
             return amount + amount * ((1 - ratio) * lm.floatValue() + ratio * mm.floatValue());
         }

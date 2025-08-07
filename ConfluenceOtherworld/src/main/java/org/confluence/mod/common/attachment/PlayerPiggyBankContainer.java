@@ -1,20 +1,21 @@
 package org.confluence.mod.common.attachment;
 
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.common.PlayerContainer;
 import org.confluence.mod.common.block.functional.PiggyBankBlock;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.network.s2c.PiggyBankTotalMoneyPacket;
+import org.confluence.mod.util.Coins;
 import org.jetbrains.annotations.ApiStatus;
 
-import static org.confluence.mod.common.attachment.ExtraInventory.SIZE_COINS;
 import static org.confluence.mod.common.item.common.CoinItem.UPGRADES_COUNT;
-import static org.confluence.mod.util.PlayerUtils.*;
+import static org.confluence.mod.util.PlayerUtils.COIN_2_INDEX;
+import static org.confluence.mod.util.PlayerUtils.decodeCoin;
 
 public class PlayerPiggyBankContainer extends PlayerContainer<PiggyBankBlock.BEntity> {
     private long totalMoney;
@@ -37,7 +38,7 @@ public class PlayerPiggyBankContainer extends PlayerContainer<PiggyBankBlock.BEn
             if (totalMoney != res) {
                 this.totalMoney = res;
                 if (owner instanceof ServerPlayer player) {
-                    PacketDistributor.sendToPlayer(player, new PiggyBankTotalMoneyPacket(totalMoney));
+                    PiggyBankTotalMoneyPacket.sendToClient(player, this, false);
                 }
             }
         });
@@ -66,11 +67,11 @@ public class PlayerPiggyBankContainer extends PlayerContainer<PiggyBankBlock.BEn
             }
         }
         if (res > 0) {
-            int[] coins = decodeCoin(res);
-            for (int i = 0; i < SIZE_COINS; i++) {
-                int coin = coins[i];
+            Coins coins = decodeCoin(res);
+            for (Object2IntMap.Entry<CoinItem> entry : coins.copper2PlatinumEntries()) {
+                int coin = entry.getIntValue();
                 if (coin <= 0) continue;
-                CoinItem coinItem = INDEX_2_COIN.apply(i);
+                CoinItem coinItem = entry.getKey();
                 while (coin > UPGRADES_COUNT) {
                     addItem(new ItemStack(coinItem, UPGRADES_COUNT));
                     coin -= UPGRADES_COUNT;

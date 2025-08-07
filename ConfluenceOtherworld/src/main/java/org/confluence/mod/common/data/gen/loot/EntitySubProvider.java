@@ -426,7 +426,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         );
         add(TEMonsterEntities.GOLDEN_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/golden_slime"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModItems.GOLDEN_COIN)).apply(SetItemCountFunction.setCount(ConstantValue.exactly(15)))
+                        .add(LootItem.lootTableItem(ModItems.GOLD_COIN)).apply(SetItemCountFunction.setCount(ConstantValue.exactly(15)))
                 )
         );
         add(TEMonsterEntities.NYMPH.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/nymph"), LootTable.lootTable()

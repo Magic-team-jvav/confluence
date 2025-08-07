@@ -32,16 +32,16 @@ public class IronSpellHelper {
 
     public static float getMana(float original, Player player) {
         if (CommonConfigs.CONVERT_IRONS_SPELL_MANA.get()) {
-            return player.getData(ModAttachmentTypes.MANA_STORAGE).getCurrentMana();
+            return ManaStorage.of(player).getCurrentMana();
         }
         return original;
     }
 
-    public static void extractMana(float manaCost, ServerPlayer serverPlayer) {
+    public static void extractMana(float manaCost, ServerPlayer player) {
         if (CommonConfigs.CONVERT_IRONS_SPELL_MANA.get()) {
             if (manaCost > 0) {
-                ManaStorage manaStorage = serverPlayer.getData(ModAttachmentTypes.MANA_STORAGE);
-                PlayerUtils.extractAndDelayAndSync(manaStorage, () -> manaCost * toConfluence(), serverPlayer);
+                ManaStorage manaStorage = ManaStorage.of(player);
+                PlayerUtils.extractAndDelayAndSync(manaStorage, () -> manaCost * toConfluence(), player);
             }
         }
     }
@@ -60,9 +60,9 @@ public class IronSpellHelper {
     }
 
     public static void updateMana(LivingEntity living, Holder<Attribute> attribute) {
-        if (IS_LOADED && CommonConfigs.CONVERT_IRONS_SPELL_MANA.get() && living instanceof ServerPlayer serverPlayer) {
+        if (IS_LOADED && CommonConfigs.CONVERT_IRONS_SPELL_MANA.get() && living instanceof ServerPlayer player) {
             if (attribute == AttributeRegistry.MAX_MANA.getDelegate()) {
-                serverPlayer.getData(ModAttachmentTypes.MANA_STORAGE).flushAbility(serverPlayer);
+                ManaStorage.of(player).flushAbility(player);
             }
         }
     }

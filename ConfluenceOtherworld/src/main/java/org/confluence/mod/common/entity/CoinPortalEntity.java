@@ -52,7 +52,7 @@ public class CoinPortalEntity extends Entity {
         setDeltaMovement(getDeltaMovement().scale(0.96));
         move(MoverType.SELF, getDeltaMovement());
         if (!level().isClientSide && age >= 20 && age % 10 == 0) {
-            LibUtils.createItemEntity(ModItems.GOLDEN_COIN.get().getDefaultInstance(), getX(), getY(), getZ(), level(), 0);
+            LibUtils.createItemEntity(ModItems.GOLD_COIN.get().getDefaultInstance(), getX(), getY(), getZ(), level(), 0);
             if (--this.amount <= 0) {
                 discard();
                 return;

@@ -738,7 +738,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 JUNGLE_PATH.get(),
                 MUSHROOM_PATH.get()
         );
-        tag(ModTags.Blocks.COINS).add(COPPER_COIN.get(), SILVER_COIN.get(), GOLDEN_COIN.get(), PLATINUM_COIN.get()); // 绿宝石币不要放进去
+        tag(ModTags.Blocks.COINS).add(COPPER_COIN.get(), SILVER_COIN.get(), GOLD_COIN.get(), PLATINUM_COIN.get()); // 绿宝石币不要放进去
 
         tag(ModTags.Blocks.NEEDS_5_LEVEL).add(
                 DEEPSLATE_COBALT_ORE.get(),

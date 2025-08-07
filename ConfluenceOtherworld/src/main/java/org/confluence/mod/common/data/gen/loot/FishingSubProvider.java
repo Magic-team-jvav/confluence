@@ -376,7 +376,7 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
         );
         // 蜂蜜
         output.accept(ModLootTables.FISHING_HONEY, LootTable.lootTable()
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FoodItems.HONEYFIN).setWeight(100)))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FoodItems.HONEYFIN).setWeight(10000)))
         );
     }
 }

@@ -43,7 +43,7 @@ public record HookThrowingPacketC2S(boolean throwing, int id) implements CustomP
             if (!(context.player() instanceof ServerPlayer player)) return;
             ServerLevel level = player.serverLevel();
             if (throwing) {
-                ExtraInventory extraInventory = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
+                ExtraInventory extraInventory = ExtraInventory.of(player);
                 ItemStack itemStack = extraInventory.getHook();
                 if (!(itemStack.getItem() instanceof BaseHookItem item)) return;
                 if (item.canHook(level, extraInventory, itemStack)) {

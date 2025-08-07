@@ -4,6 +4,7 @@ import com.google.common.collect.Iterables;
 import com.xiaohunao.equipment_benediction.common.hook.HookMapManager;
 import com.xiaohunao.heaven_destiny_moment.common.moment.MomentInstanceManager;
 import com.xiaohunao.terra_moment.common.init.TMMoments;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -21,13 +22,13 @@ import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.attachment.PlayerPiggyBankContainer;
 import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.data.saved.KillBoard;
-import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModHookTypes;
 import org.confluence.mod.common.init.ModTags;
@@ -53,7 +54,7 @@ import static org.confluence.mod.common.item.common.CoinItem.UPGRADES_COUNT;
 public final class PlayerUtils {
     public static final ToIntFunction<Item> COIN_2_INDEX = coin -> {
         if (coin == ModItems.PLATINUM_COIN.get()) return 0;
-        if (coin == ModItems.GOLDEN_COIN.get()) return 1;
+        if (coin == ModItems.GOLD_COIN.get()) return 1;
         if (coin == ModItems.SILVER_COIN.get()) return 2;
         if (coin == ModItems.COPPER_COIN.get()) return 3;
         return -1;
@@ -61,7 +62,7 @@ public final class PlayerUtils {
     public static final IntFunction<CoinItem> INDEX_2_COIN = index -> switch (index) {
         case 0 -> ModItems.COPPER_COIN.get();
         case 1 -> ModItems.SILVER_COIN.get();
-        case 2 -> ModItems.GOLDEN_COIN.get();
+        case 2 -> ModItems.GOLD_COIN.get();
         default -> ModItems.PLATINUM_COIN.get();
     };
 
@@ -69,18 +70,18 @@ public final class PlayerUtils {
         PacketDistributor.sendToPlayer(serverPlayer, new ManaPacketS2C(manaStorage.getMaxMana(), manaStorage.getCurrentMana()));
     }
 
-    public static void syncMana2Client(ServerPlayer serverPlayer) {
-        syncMana2Client(serverPlayer, serverPlayer.getData(ModAttachmentTypes.MANA_STORAGE));
+    public static void syncMana2Client(ServerPlayer player) {
+        syncMana2Client(player, ManaStorage.of(player));
     }
 
-    public static void regenerateMana(ServerPlayer serverPlayer) {
-        ManaStorage manaStorage = serverPlayer.getData(ModAttachmentTypes.MANA_STORAGE);
+    public static void regenerateMana(ServerPlayer player) {
+        ManaStorage manaStorage = ManaStorage.of(player);
 
         int delay = manaStorage.getRegenerateDelay();
-        boolean notMove = Math.abs(serverPlayer.walkDist - serverPlayer.walkDistO) < Mth.EPSILON;
+        boolean notMove = Math.abs(player.walkDist - player.walkDistO) < Mth.EPSILON;
         if (delay > 0) {
             if (manaStorage.isArcaneCrystalUsed()) delay = (int) ((float) delay * (notMove ? 0.975F : 0.95F));
-            if (delay > 20 && serverPlayer.hasEffect(ModEffects.MANA_REGENERATION)) delay = 20;
+            if (delay > 20 && player.hasEffect(ModEffects.MANA_REGENERATION)) delay = 20;
             int delayReduce = notMove ? 2 : 1;
             if (manaStorage.isFastManaRegeneration()) delayReduce += 1;
             manaStorage.setRegenerateDelay(delay - delayReduce);
@@ -92,23 +93,23 @@ public final class PlayerUtils {
             float a = manaStorage.getMaxMana() * 0.14285715F + (manaStorage.isFastManaRegeneration() ? 25 : 0) + 1;
             if (notMove) a += manaStorage.getMaxMana() * 0.5F;
             float b = manaStorage.getCurrentMana() * 0.8F / manaStorage.getMaxMana() + 0.2F;
-            return a * b * 0.0115F * EnchantmentUtils.processManaRegeneration(serverPlayer);
+            return a * b * 0.0115F * EnchantmentUtils.processManaRegeneration(player);
         };
 
-        if (manaStorage.receiveMana(receive)) syncMana2Client(serverPlayer, manaStorage);
+        if (manaStorage.receiveMana(receive)) syncMana2Client(player, manaStorage);
     }
 
-    public static boolean extractMana(ServerPlayer serverPlayer, ItemStack itemStack, FloatSupplier sup) {
-        if (serverPlayer.isCreative()) return true;
+    public static boolean extractMana(ServerPlayer player, ItemStack itemStack, FloatSupplier sup) {
+        if (player.isCreative()) return true;
         return extractAndDelayAndSync(
-                serverPlayer.getData(ModAttachmentTypes.MANA_STORAGE),
+                ManaStorage.of(player),
                 HookMapManager.postHooks(
                         ModHookTypes.MANA_CONSUME.get(),
                         (owner, hook, original) -> hook.onManaConsume(owner, itemStack, original),
-                        serverPlayer,
-                        () -> sup.getAsFloat() * EnchantmentUtils.processEfficientMagic(serverPlayer)
+                        player,
+                        () -> sup.getAsFloat() * EnchantmentUtils.processEfficientMagic(player)
                 ),
-                serverPlayer
+                player
         );
     }
 
@@ -121,9 +122,9 @@ public final class PlayerUtils {
         return false;
     }
 
-    public static void receiveMana(ServerPlayer serverPlayer, FloatSupplier sup) {
-        ManaStorage manaStorage = serverPlayer.getData(ModAttachmentTypes.MANA_STORAGE);
-        if (manaStorage.receiveMana(sup)) syncMana2Client(serverPlayer, manaStorage);
+    public static void receiveMana(ServerPlayer player, FloatSupplier sup) {
+        ManaStorage manaStorage = ManaStorage.of(player);
+        if (manaStorage.receiveMana(sup)) syncMana2Client(player, manaStorage);
     }
 
     public static void syncSavedData(ServerPlayer serverPlayer) {
@@ -138,7 +139,7 @@ public final class PlayerUtils {
 
     public static float getFishingPower(ServerPlayer player) {
         float base = TCUtils.getAccessoriesValue(player, AccessoryItems.FISHING$POWER);
-        if (player.getData(ModAttachmentTypes.EVER_BENEFICIAL).isGummyWormUsed()) base += 3.0F;
+        if (EverBeneficial.of(player).isGummyWormUsed()) base += 3.0F;
         if (player.isInFluidType() && TCUtils.hasAccessoriesType(player, TCItems.FLOAT$ON$LIQUID$SURFACE)) base += 5.0F;
         if (player.hasEffect(ModEffects.TIPSY)) base += 5.0F;
         Level level = player.level();
@@ -188,21 +189,11 @@ public final class PlayerUtils {
         }
     }
 
-    public static int[] getCoins(Player player, boolean withPiggyBank) {
-        int[] coins = new int[SIZE_COINS];
-        if (withPiggyBank) {
-            int[] ints = decodeCoin(PlayerPiggyBankContainer.of(player).getTotalMoney());
-            coins[0] = ints[3];
-            coins[1] = ints[2];
-            coins[2] = ints[1];
-            coins[3] = ints[0];
-        }
-        for (ItemStack stack : Iterables.concat(player.getInventory().items, player.getData(ModAttachmentTypes.EXTRA_INVENTORY).getCoins())) {
-            if (!stack.isEmpty() && stack.is(ModTags.Items.COINS)) {
-                int index = COIN_2_INDEX.applyAsInt(stack.getItem());
-                if (index != -1) {
-                    coins[index] += stack.getCount();
-                }
+    public static Coins getCoins(Player player, boolean withPiggyBank) {
+        Coins coins = withPiggyBank ? decodeCoin(PlayerPiggyBankContainer.of(player).getTotalMoney()) : Coins.createEmpty();
+        for (ItemStack stack : Iterables.concat(player.getInventory().items, ExtraInventory.of(player).getCoins())) {
+            if (!stack.isEmpty() && stack.getItem() instanceof CoinItem coin) {
+                coins.increase(coin, stack.getCount());
             }
         }
         return coins;
@@ -210,12 +201,13 @@ public final class PlayerUtils {
 
     @Deprecated
     public static int[] getCoins(Player player) {
-        return getCoins(player, true);
+        Coins coins = getCoins(player, true);
+        return new int[]{coins.platinum(), coins.gold(), coins.silver(), coins.copper()};
     }
 
     public static long getMoney(Player player, boolean withPiggyBank) {
         long res = withPiggyBank ? PlayerPiggyBankContainer.of(player).getTotalMoney() : 0;
-        for (ItemStack stack : Iterables.concat(player.getInventory().items, player.getData(ModAttachmentTypes.EXTRA_INVENTORY).getCoins())) {
+        for (ItemStack stack : Iterables.concat(player.getInventory().items, ExtraInventory.of(player).getCoins())) {
             if (!stack.isEmpty() && stack.is(ModTags.Items.COINS)) {
                 int index = COIN_2_INDEX.applyAsInt(stack.getItem());
                 if (index != -1) {
@@ -258,16 +250,16 @@ public final class PlayerUtils {
             }
         }
 
-        ExtraInventory extraInventory = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
+        ExtraInventory extraInventory = ExtraInventory.of(player);
         for (int i = COINS_START; i < COINS_START + SIZE_COINS; i++) {
             extraInventory.setItem(i, ItemStack.EMPTY);
         }
-        int[] coins = decodeCoin(have - cost);
+        Coins coins = decodeCoin(have - cost);
 
-        for (int i = 0; i < SIZE_COINS; i++) {
-            int coin = coins[i];
+        for (Object2IntMap.Entry<CoinItem> entry : coins.copper2PlatinumEntries()) {
+            int coin = entry.getIntValue();
             if (coin <= 0) continue;
-            CoinItem coinItem = INDEX_2_COIN.apply(i);
+            CoinItem coinItem = entry.getKey();
             while (coin > UPGRADES_COUNT) {
                 inventory.add(new ItemStack(coinItem, UPGRADES_COUNT));
                 coin -= UPGRADES_COUNT;
@@ -282,36 +274,33 @@ public final class PlayerUtils {
         return tryCostMoney(have, player, cost, true);
     }
 
-    public static int[] decodeCoin(long money) {
-        int[] coins = new int[SIZE_COINS];
-        if (money < 0) {
-            throw new IllegalArgumentException("Money cannot be negative");
-        }
+    public static Coins decodeCoin(long money) {
+        if (money < 0) throw new IllegalArgumentException("Money cannot be negative");
 
         // jit自动优化
-        coins[3] = (int) (money / (UPGRADES_COUNT * UPGRADES_COUNT * UPGRADES_COUNT)); // 铂金
+        int p = (int) (money / (UPGRADES_COUNT * UPGRADES_COUNT * UPGRADES_COUNT)); // 铂金
         money %= UPGRADES_COUNT * UPGRADES_COUNT * UPGRADES_COUNT;
-        coins[2] = (int) (money / (UPGRADES_COUNT * UPGRADES_COUNT)); // 金币
+        int g = (int) (money / (UPGRADES_COUNT * UPGRADES_COUNT)); // 金币
         money %= UPGRADES_COUNT * UPGRADES_COUNT;
-        coins[1] = (int) (money / UPGRADES_COUNT); // 银币
+        int s = (int) (money / UPGRADES_COUNT); // 银币
         money %= UPGRADES_COUNT;
-        coins[0] = (int) money; // 铜币
+        int c = (int) money; // 铜币
 
-        return coins;
+        return new Coins(c, s, g, p);
     }
 
-    public static int[] decodeCoin(int money) {
+    public static Coins decodeCoin(int money) {
         int copper_count = money % UPGRADES_COUNT;
         int i = ((money - copper_count) / UPGRADES_COUNT);
         int silver_count = i % UPGRADES_COUNT;
         int j = ((i - silver_count) / UPGRADES_COUNT);
         int golden_count = j % UPGRADES_COUNT;
         int k = (j - golden_count) / UPGRADES_COUNT;
-        return new int[]{copper_count, silver_count, golden_count, k};
+        return new Coins(copper_count, silver_count, golden_count, k);
     }
 
     public static void sortCoins(Player player) {
-        ExtraInventory extraInventory = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
+        ExtraInventory extraInventory = ExtraInventory.of(player);
         Object2IntOpenHashMap<Integer> map = new Object2IntOpenHashMap<>();
         for (int i = 0; i < SIZE_COINS; i++) {
             ItemStack coins = extraInventory.getCoins(i);

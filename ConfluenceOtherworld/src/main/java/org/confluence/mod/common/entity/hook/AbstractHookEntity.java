@@ -23,7 +23,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.common.init.ModAttachmentTypes;
+import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.item.hook.BaseHookItem;
 
@@ -73,7 +73,7 @@ public abstract class AbstractHookEntity extends Projectile {
     public void tick() {
         super.tick();
         Entity owner = getOwner();
-        if (owner == null || owner.isRemoved()) {
+        if (!(owner instanceof Player player) || owner.isRemoved()) {
             discard();
             return;
         }
@@ -93,7 +93,7 @@ public abstract class AbstractHookEntity extends Projectile {
             }
         }
         if (!level().isClientSide) {
-            ItemStack hook = owner.getData(ModAttachmentTypes.EXTRA_INVENTORY).getHook();
+            ItemStack hook = ExtraInventory.of(player).getHook();
             if (hookState != HookState.POP && distanceToSqr(owner) > hookRangeSqr) {
                 setHookState(HookState.POP);
             } else if (hookState == HookState.PUSH) {

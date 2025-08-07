@@ -201,23 +201,21 @@ public final class ModCommands {
                         .then(Commands.literal("receive").then(Commands.argument("value", FloatArgumentType.floatArg(0.0F, Float.MAX_VALUE)).executes(context -> {
                             ServerPlayer player = context.getSource().getPlayer();
                             if (player == null) return 0;
-                            ManaStorage manaStorage = player.getData(ModAttachmentTypes.MANA_STORAGE);
-                            boolean value = manaStorage.receiveMana(() -> FloatArgumentType.getFloat(context, "value"));
+                            boolean value = ManaStorage.of(player).receiveMana(() -> FloatArgumentType.getFloat(context, "value"));
                             PlayerUtils.syncMana2Client(player);
                             return value ? 1 : 0;
                         })))
                         .then(Commands.literal("extract").then(Commands.argument("value", FloatArgumentType.floatArg(0.0F, Float.MAX_VALUE)).executes(context -> {
                             ServerPlayer player = context.getSource().getPlayer();
                             if (player == null) return 0;
-                            ManaStorage manaStorage = player.getData(ModAttachmentTypes.MANA_STORAGE);
-                            boolean value = manaStorage.extractMana(() -> FloatArgumentType.getFloat(context, "value"), player);
+                            boolean value = ManaStorage.of(player).extractMana(() -> FloatArgumentType.getFloat(context, "value"), player);
                             PlayerUtils.syncMana2Client(player);
                             return value ? 1 : 0;
                         })))
                         .then(Commands.literal("clearStars").executes(context -> {
                             ServerPlayer player = context.getSource().getPlayer();
                             if (player == null) return 0;
-                            player.getData(ModAttachmentTypes.MANA_STORAGE).clearStars();
+                            ManaStorage.of(player).clearStars();
                             PlayerUtils.syncMana2Client(player);
                             return 1;
                         }))

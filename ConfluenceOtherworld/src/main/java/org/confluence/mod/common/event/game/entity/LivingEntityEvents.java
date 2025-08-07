@@ -34,7 +34,9 @@ import org.confluence.lib.common.event.GameEvents;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.attachment.ExtraInventory;
+import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.effect.beneficial.ArcheryEffect;
 import org.confluence.mod.common.effect.beneficial.LuckEffect;
@@ -42,7 +44,10 @@ import org.confluence.mod.common.effect.flask.FlaskEffect;
 import org.confluence.mod.common.effect.harmful.ManaSicknessEffect;
 import org.confluence.mod.common.effect.neutral.LoveEffect;
 import org.confluence.mod.common.entity.projectile.boulder.TombstoneBoulderEntity;
-import org.confluence.mod.common.init.*;
+import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.ModHookTypes;
+import org.confluence.mod.common.init.ModSecretSeeds;
+import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.common.CoinItem;
@@ -105,9 +110,9 @@ public final class LivingEntityEvents {
                     LibUtils.createItemEntity(holidayGift.getDefaultInstance(), victom.position(), level, 0);
                 }
             }
-            for (ServerPlayer serverPlayer : level.players()) {
-                if (serverPlayer.position().distanceToSqr(victom.position()) > 32 * 32) continue;
-                if (serverPlayer.getData(ModAttachmentTypes.MANA_STORAGE).canReceive() && serverPlayer.getRandom().nextFloat() < 0.083F) {
+            for (ServerPlayer player : level.players()) {
+                if (player.position().distanceToSqr(victom.position()) > 32 * 32) continue;
+                if (ManaStorage.of(player).canReceive() && player.getRandom().nextFloat() < 0.083F) {
                     LibUtils.createItemEntity(DateUtils.getStarItem().getDefaultInstance(), victom.position(), level, 0);
                     break;
                 }
@@ -143,7 +148,7 @@ public final class LivingEntityEvents {
         if (!(living.level() instanceof ServerLevel level)) return;
 
         float amount = event.getAmount();
-        if (living.getData(ModAttachmentTypes.EVER_BENEFICIAL).isVitalCrystalUsed()) {
+        if (EverBeneficial.of(living).isVitalCrystalUsed()) {
             amount *= 1.2F;
         }
         if (living.hasEffect(ModEffects.COZY_FIRE)) {
@@ -286,7 +291,7 @@ public final class LivingEntityEvents {
     @SubscribeEvent
     public static void livingDrops(LivingDropsEvent event) {
         if (event.getEntity() instanceof Player player && !player.level().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) {
-            ExtraInventory data = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
+            ExtraInventory data = ExtraInventory.of(player);
             for (int i = 0; i < data.getContainerSize(); i++) {
                 if (i >= ExtraInventory.COINS_START && i < ExtraInventory.COINS_START + ExtraInventory.SIZE_COINS)
                     continue;

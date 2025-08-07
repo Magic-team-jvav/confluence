@@ -8,9 +8,7 @@ import com.xiaohunao.heaven_destiny_moment.common.context.condition.level.Diffic
 import com.xiaohunao.heaven_destiny_moment.common.context.condition.player.PlayerCondition;
 import com.xiaohunao.heaven_destiny_moment.common.moment.MomentInstance;
 import com.xiaohunao.heaven_destiny_moment.common.moment.MomentInstanceBuilder;
-import com.xiaohunao.heaven_destiny_moment.common.moment.MomentInstanceManager;
 import com.xiaohunao.heaven_destiny_moment.compat.phase_journey.condition.PhaseJourneyCondition;
-import com.xiaohunao.terra_moment.common.event.PatrolSpawnEvent;
 import com.xiaohunao.terra_moment.common.init.TMMoments;
 import com.xiaohunao.terra_moment.common.moment.Instance.GoblinArmyInstance;
 import net.minecraft.core.BlockPos;
@@ -21,7 +19,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.data.saved.GamePhase;
 import org.confluence.mod.common.data.saved.KillBoard;
-import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.phase_journey.common.util.PhaseUtils;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -38,16 +35,13 @@ public class GoblinArmyInstanceMixin {
     @Inject(method = "canCreate", at = @At("HEAD"), cancellable = true)
     public void confluence$canCreate(Map<UUID, MomentInstance> runMoments, Level level, @Nullable BlockPos pos, @Nullable ServerPlayer player, CallbackInfoReturnable<Boolean> cir) {
         GoblinArmyInstance goblinArmyInstance = (GoblinArmyInstance)(Object) this;
-        boolean everBeneficial = PlayerCondition.Type.ANY.matches(goblinArmyInstance, pos, player, (momentInstance, pos1, serverPlayer) -> {
-            EverBeneficial data = serverPlayer.getData(ModAttachmentTypes.EVER_BENEFICIAL);
-            return data != null && data.getUsedLifeCrystals() >= 5;
-        });
+        boolean everBeneficial = PlayerCondition.Type.ANY.matches(goblinArmyInstance, pos, player, (momentInstance, pos1, serverPlayer) -> EverBeneficial.of(serverPlayer).getUsedLifeCrystals() >= 5);
 
         boolean hasEvilEverBeenBroken = PhaseJourneyCondition.of(PhaseJourneyCondition.Type.LEVEL, Confluence.asResource("has_evil_ever_been_broken")).matches(goblinArmyInstance, pos, player);
         cir.setReturnValue(everBeneficial && hasEvilEverBeenBroken);
     }
 
-    @Inject(method = "checkGeneralConditions", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "checkGeneralConditions", at = @At("HEAD"))
     public void  confluence$checkGeneralConditions(BlockPos pos, ServerPlayer serverPlayer, CallbackInfoReturnable<Boolean> cir) {
         MomentInstance instance = (GoblinArmyInstance)(Object) this;
         Level level = instance.getLevel();

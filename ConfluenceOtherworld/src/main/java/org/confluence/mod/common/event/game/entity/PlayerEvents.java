@@ -37,6 +37,8 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.attachment.ExtraInventory;
+import org.confluence.mod.common.attachment.ManaStorage;
+import org.confluence.mod.common.attachment.PlayerPiggyBankContainer;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import org.confluence.mod.common.data.AchievementOffsetLoader;
 import org.confluence.mod.common.data.map.DiggingPower;
@@ -77,7 +79,8 @@ public final class PlayerEvents {
         ServerPlayer player = (ServerPlayer) event.getEntity();
         PlayerUtils.syncMana2Client(player);
         PlayerUtils.syncSavedData(player);
-        ExtraInventorySyncPacketS2C.sendToClient(player, player, player.getData(ModAttachmentTypes.EXTRA_INVENTORY));
+        ExtraInventorySyncPacketS2C.sendToClient(player, player, ExtraInventory.of(player));
+        PiggyBankTotalMoneyPacket.sendToClient(player, PlayerPiggyBankContainer.of(player), true);
         FishingPowerInfoPacketS2C.sendAndGet(player);
         VisibilityPacketS2C.sendEcho(player);
         BoulderWorld.forceSetAccessory(player);
@@ -125,7 +128,7 @@ public final class PlayerEvents {
         ) {
             player.swing(InteractionHand.MAIN_HAND);
             if (!level.isClientSide) {
-                ExtraInventory extraInventory = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
+                ExtraInventory extraInventory = ExtraInventory.of(player);
                 ItemStack minecartItemStack = extraInventory.getMinecart();
                 RightClickRailBlock e = NeoForge.EVENT_BUS.post(new RightClickRailBlock(player, minecartItemStack, blockState, railBlock, blockPos));
                 if (e.isCanceled()) return;
@@ -177,7 +180,7 @@ public final class PlayerEvents {
         ItemStack itemStack = itemEntity.getItem();
         Player player = event.getPlayer();
         if (itemStack.is(ModTags.Items.PROVIDE_MANA)) {
-            player.getData(ModAttachmentTypes.MANA_STORAGE).receiveMana(() -> itemStack.getCount() * 100.0F);
+            ManaStorage.of(player).receiveMana(() -> itemStack.getCount() * 100.0F);
             itemEntity.discard();
             event.setCanPickup(TriState.FALSE);
         } else if (itemStack.is(ModTags.Items.PROVIDE_LIFE)) {
@@ -298,7 +301,7 @@ public final class PlayerEvents {
     @SubscribeEvent
     public static void respawn(PlayerEvent.PlayerRespawnEvent event) {
         ServerPlayer player = (ServerPlayer) event.getEntity();
-        EverBeneficial everBeneficial = player.getData(ModAttachmentTypes.EVER_BENEFICIAL);
+        EverBeneficial everBeneficial = EverBeneficial.of(player);
         EverBeneficialItem.LIFE_CRYSTAL.recovery(everBeneficial, eb -> eb.getUsedLifeCrystals() > 0, player);
         EverBeneficialItem.LIFE_FRUITS.recovery(everBeneficial, eb -> eb.getUsedLifeFruits() > 0, player);
         EverBeneficialItem.AEGIS_APPLE.recovery(everBeneficial, EverBeneficial::isAegisAppleUsed, player);
@@ -307,7 +310,7 @@ public final class PlayerEvents {
         EverBeneficialItem.ARTISAN_LOAF.recovery(everBeneficial, EverBeneficial::isArtisanLoafUsed, player);
 
         BoulderWorld.forceSetAccessory(player);
-        ExtraInventorySyncPacketS2C.sendToClient(player, player, player.getData(ModAttachmentTypes.EXTRA_INVENTORY));
+        ExtraInventorySyncPacketS2C.sendToClient(player, player, ExtraInventory.of(player));
     }
 
     @SubscribeEvent
@@ -352,7 +355,7 @@ public final class PlayerEvents {
     @SubscribeEvent
     public static void startTracking(PlayerEvent.StartTracking event) {
         if (event.getTarget() instanceof ServerPlayer player) {
-            ExtraInventorySyncPacketS2C.sendToClient((ServerPlayer) event.getEntity(), player, player.getData(ModAttachmentTypes.EXTRA_INVENTORY));
+            ExtraInventorySyncPacketS2C.sendToClient((ServerPlayer) event.getEntity(), player, ExtraInventory.of(player));
         } else if (event.getTarget() instanceof AbstractTerraNPC npc) {
             NPCSpawner.INSTANCE.applyBenedictions(npc);
         }
@@ -361,6 +364,6 @@ public final class PlayerEvents {
     @SubscribeEvent
     public static void changedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
         ServerPlayer player = (ServerPlayer) event.getEntity();
-        ExtraInventorySyncPacketS2C.sendToClient(player, player, player.getData(ModAttachmentTypes.EXTRA_INVENTORY));
+        ExtraInventorySyncPacketS2C.sendToClient(player, player, ExtraInventory.of(player));
     }
 }

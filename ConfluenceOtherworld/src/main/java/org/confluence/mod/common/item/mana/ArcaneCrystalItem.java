@@ -26,8 +26,7 @@ public class ArcaneCrystalItem extends TooltipItem {
         }
         ItemStack itemStack = player.getItemInHand(usedHand);
         if (player instanceof ServerPlayer serverPlayer) {
-            ManaStorage manaStorage = player.getData(ModAttachmentTypes.MANA_STORAGE);
-            if (manaStorage.setArcaneCrystalUsed()) {
+            if (ManaStorage.of(player).setArcaneCrystalUsed()) {
                 CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayer, itemStack);
                 itemStack.shrink(1);
             }

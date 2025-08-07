@@ -46,7 +46,7 @@ public final class ModVillagers {
     public static final Supplier<VillagerProfession> SKY_MILLER = PROFESSIONS.register("sky_miller", () -> new VillagerProfession("sky", holder -> holder.is(SKY_POI.getId()), holder -> holder.is(SKY_POI.getId()), ImmutableSet.of(MaterialItems.FALLING_STAR.get()), ImmutableSet.of(), SoundEvents.VILLAGER_WORK_WEAPONSMITH));
     public static final Supplier<VillagerProfession> CHEF = PROFESSIONS.register("chef", () -> new VillagerProfession("chef", holder -> holder.is(COOKING_POI.getId()), holder -> holder.is(COOKING_POI.getId()), ImmutableSet.of(FoodItems.COOK_FISH.get()), ImmutableSet.of(), SoundEvents.CAMPFIRE_CRACKLE));
     public static final Supplier<VillagerProfession> BANKER = PROFESSIONS.register("banker", () -> new VillagerProfession("coin", holder -> holder.is(COIN_POI.getId()), holder -> holder.is(COIN_POI.getId()), ImmutableSet.of(
-            ModItems.GOLDEN_COIN.get(),
+            ModItems.GOLD_COIN.get(),
             ModItems.PLATINUM_COIN.get(),
             ModItems.EMERALD_COIN.get()
     ), ImmutableSet.of(), ModSoundEvents.COINS.get()));
@@ -173,10 +173,10 @@ public final class ModVillagers {
         } else if (type == BANKER.get()) {
             tier1.add(new BasicItemListing(new ItemStack(Items.EMERALD), new ItemStack(Blocks.CHEST), 30, 15, 0.05F));
             tier1.add(new BasicItemListing(new ItemStack(ModItems.SILVER_COIN.get(), 20), new ItemStack(Items.EMERALD), 30, 15, 0.05F));
-            tier2.add(new BasicItemListing(new ItemStack(ModItems.GOLDEN_COIN.get(), 3), new ItemStack(ModItems.EMERALD_COIN.get()), 30, 15, 0.05F));
+            tier2.add(new BasicItemListing(new ItemStack(ModItems.GOLD_COIN.get(), 3), new ItemStack(ModItems.EMERALD_COIN.get()), 30, 15, 0.05F));
             tier3.add(new BasicItemListing(new ItemStack(Items.EMERALD, 20), new ItemStack(ModItems.EMERALD_COIN.get()), 30, 15, 0.05F));
             tier4.add(new BasicItemListing(new ItemStack(ModItems.SILVER_COIN.get(), 15), new ItemStack(Items.EMERALD), 45, 10, 0.05F));
-            tier5.add(new BasicItemListing(new ItemStack(ModItems.GOLDEN_COIN.get(), 2), new ItemStack(ModItems.EMERALD_COIN.get()),  45, 10, 0.05F));
+            tier5.add(new BasicItemListing(new ItemStack(ModItems.GOLD_COIN.get(), 2), new ItemStack(ModItems.EMERALD_COIN.get()),  45, 10, 0.05F));
         } else if (type == CHEF.get()) {
             tier1.add(new BasicItemListing(new ItemStack(Items.EMERALD), new ItemStack(Items.BREAD,3), 12, 10, 0.05F));
             tier1.add(new BasicItemListing(new ItemStack(Items.EMERALD), new ItemStack(Items.BEETROOT_SOUP,3), 12, 10, 0.05F));

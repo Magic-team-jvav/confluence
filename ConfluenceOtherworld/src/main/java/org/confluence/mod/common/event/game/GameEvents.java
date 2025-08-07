@@ -28,6 +28,8 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.AdditionalManaEvent;
 import org.confluence.mod.api.event.ShimmerItemTransmutationEvent;
 import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.attachment.ExtraInventory;
+import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.component.LootComponent;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.data.AchievementOffsetLoader;
@@ -100,17 +102,17 @@ public final class GameEvents {
 
     @SubscribeEvent
     public static void afterAccessoryAbilitiesFlushed(AfterAccessoryAbilitiesFlushedEvent event) {
-        if (event.getEntity() instanceof ServerPlayer serverPlayer) {
-            serverPlayer.getData(ModAttachmentTypes.MANA_STORAGE).flushAbility(serverPlayer);
-            FishingPowerInfoPacketS2C.sendAndGet(serverPlayer);
-            VisibilityPacketS2C.sendEcho(serverPlayer);
+        if (event.getEntity() instanceof ServerPlayer player) {
+            ManaStorage.of(player).flushAbility(player);
+            FishingPowerInfoPacketS2C.sendAndGet(player);
+            VisibilityPacketS2C.sendEcho(player);
         }
     }
 
     @SubscribeEvent
     public static void afterEquipmentBenedictionUpdated(AfterEquipmentBenedictionUpdatedEvent event) {
-        if (event.getEntity() instanceof ServerPlayer serverPlayer) {
-            serverPlayer.getData(ModAttachmentTypes.MANA_STORAGE).flushAbility(serverPlayer);
+        if (event.getEntity() instanceof ServerPlayer player) {
+            ManaStorage.of(player).flushAbility(player);
         }
     }
 
@@ -141,14 +143,14 @@ public final class GameEvents {
 
     @SubscribeEvent
     public static void onDatapackSync(OnDatapackSyncEvent event) {
-        ServerPlayer serverPlayer = event.getPlayer();
-        if (serverPlayer == null) {
-            for (ServerPlayer player : event.getPlayerList().getPlayers()) {
-                ExtraInventorySyncPacketS2C.sendToPlayersTrackingEntityAndSelf(player, player, player.getData(ModAttachmentTypes.EXTRA_INVENTORY));
+        ServerPlayer from = event.getPlayer();
+        if (from == null) {
+            for (ServerPlayer to : event.getPlayerList().getPlayers()) {
+                ExtraInventorySyncPacketS2C.sendToPlayersTrackingEntityAndSelf(to, to, ExtraInventory.of(to));
             }
         } else {
-            ExtraInventorySyncPacketS2C.sendToClient(serverPlayer, serverPlayer, serverPlayer.getData(ModAttachmentTypes.EXTRA_INVENTORY));
-            AchievementOffsetSyncPacketS2C.sendToClient(serverPlayer);
+            ExtraInventorySyncPacketS2C.sendToClient(from, from, ExtraInventory.of(from));
+            AchievementOffsetSyncPacketS2C.sendToClient(from);
         }
     }
 

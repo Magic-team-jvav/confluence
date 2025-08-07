@@ -43,7 +43,7 @@ public final class ModBlocks {
 
     public static final DeferredBlock<CoinPileBlock> COPPER_COIN = registerWithoutItem("copper_coin", CoinPileBlock::new);
     public static final DeferredBlock<CoinPileBlock> SILVER_COIN = registerWithoutItem("silver_coin", CoinPileBlock::new);
-    public static final DeferredBlock<CoinPileBlock> GOLDEN_COIN = registerWithoutItem("golden_coin", CoinPileBlock::new);
+    public static final DeferredBlock<CoinPileBlock> GOLD_COIN = registerWithoutItem("gold_coin", CoinPileBlock::new);
     public static final DeferredBlock<CoinPileBlock> PLATINUM_COIN = registerWithoutItem("platinum_coin", CoinPileBlock::new);
     public static final DeferredBlock<CoinPileBlock> EMERALD_COIN = registerWithoutItem("emerald_coin", CoinPileBlock::new);
 

@@ -5,7 +5,7 @@
       "bonus_rolls": 0.0,
       "conditions": [
         {
-          "block": "confluence:golden_coin",
+          "block": "confluence:gold_coin",
           "condition": "minecraft:block_state_property",
           "properties": {
             "heaps": "1"
@@ -15,7 +15,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "confluence:golden_coin",
+          "name": "confluence:gold_coin",
           "functions": [
             {
               "function": "set_count",
@@ -30,7 +30,7 @@
       "bonus_rolls": 0.0,
       "conditions": [
         {
-          "block": "confluence:golden_coin",
+          "block": "confluence:gold_coin",
           "condition": "minecraft:block_state_property",
           "properties": {
             "heaps": "2"
@@ -40,7 +40,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "confluence:golden_coin",
+          "name": "confluence:gold_coin",
           "functions": [
             {
               "function": "set_count",
@@ -55,7 +55,7 @@
       "bonus_rolls": 0.0,
       "conditions": [
         {
-          "block": "confluence:golden_coin",
+          "block": "confluence:gold_coin",
           "condition": "minecraft:block_state_property",
           "properties": {
             "heaps": "3"
@@ -65,7 +65,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "confluence:golden_coin",
+          "name": "confluence:gold_coin",
           "functions": [
             {
               "function": "set_count",
@@ -80,7 +80,7 @@
       "bonus_rolls": 0.0,
       "conditions": [
         {
-          "block": "confluence:golden_coin",
+          "block": "confluence:gold_coin",
           "condition": "minecraft:block_state_property",
           "properties": {
             "heaps": "4"
@@ -90,7 +90,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "confluence:golden_coin",
+          "name": "confluence:gold_coin",
           "functions": [
             {
               "function": "set_count",
@@ -105,7 +105,7 @@
       "bonus_rolls": 0.0,
       "conditions": [
         {
-          "block": "confluence:golden_coin",
+          "block": "confluence:gold_coin",
           "condition": "minecraft:block_state_property",
           "properties": {
             "heaps": "5"
@@ -115,7 +115,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "confluence:golden_coin",
+          "name": "confluence:gold_coin",
           "functions": [
             {
               "function": "set_count",
@@ -130,7 +130,7 @@
       "bonus_rolls": 0.0,
       "conditions": [
         {
-          "block": "confluence:golden_coin",
+          "block": "confluence:gold_coin",
           "condition": "minecraft:block_state_property",
           "properties": {
             "heaps": "6"
@@ -140,7 +140,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "confluence:golden_coin",
+          "name": "confluence:gold_coin",
           "functions": [
             {
               "function": "set_count",
@@ -155,7 +155,7 @@
       "bonus_rolls": 0.0,
       "conditions": [
         {
-          "block": "confluence:golden_coin",
+          "block": "confluence:gold_coin",
           "condition": "minecraft:block_state_property",
           "properties": {
             "heaps": "7"
@@ -165,7 +165,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "confluence:golden_coin",
+          "name": "confluence:gold_coin",
           "functions": [
             {
               "function": "set_count",
@@ -180,7 +180,7 @@
       "bonus_rolls": 0.0,
       "conditions": [
         {
-          "block": "confluence:golden_coin",
+          "block": "confluence:gold_coin",
           "condition": "minecraft:block_state_property",
           "properties": {
             "heaps": "8"
@@ -190,7 +190,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "confluence:golden_coin",
+          "name": "confluence:gold_coin",
           "functions": [
             {
               "function": "set_count",
@@ -205,7 +205,7 @@
       "bonus_rolls": 0.0,
       "conditions": [
         {
-          "block": "confluence:golden_coin",
+          "block": "confluence:gold_coin",
           "condition": "minecraft:block_state_property",
           "properties": {
             "heaps": "9"
@@ -215,7 +215,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "confluence:golden_coin",
+          "name": "confluence:gold_coin",
           "functions": [
             {
               "function": "set_count",
@@ -230,7 +230,7 @@
       "bonus_rolls": 0.0,
       "conditions": [
         {
-          "block": "confluence:golden_coin",
+          "block": "confluence:gold_coin",
           "condition": "minecraft:block_state_property",
           "properties": {
             "heaps": "10"
@@ -240,7 +240,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "confluence:golden_coin",
+          "name": "confluence:gold_coin",
           "functions": [
             {
               "function": "set_count",
@@ -255,7 +255,7 @@
       "bonus_rolls": 0.0,
       "conditions": [
         {
-          "block": "confluence:golden_coin",
+          "block": "confluence:gold_coin",
           "condition": "minecraft:block_state_property",
           "properties": {
             "heaps": "11"
@@ -265,7 +265,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "confluence:golden_coin",
+          "name": "confluence:gold_coin",
           "functions": [
             {
               "function": "set_count",
@@ -280,7 +280,7 @@
       "bonus_rolls": 0.0,
       "conditions": [
         {
-          "block": "confluence:golden_coin",
+          "block": "confluence:gold_coin",
           "condition": "minecraft:block_state_property",
           "properties": {
             "heaps": "12"
@@ -290,7 +290,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "confluence:golden_coin",
+          "name": "confluence:gold_coin",
           "functions": [
             {
               "function": "set_count",
@@ -302,5 +302,5 @@
       "rolls": 1.0
     }
   ],
-  "random_sequence": "confluence:block/golden_coin"
+  "random_sequence": "confluence:block/gold_coin"
 }

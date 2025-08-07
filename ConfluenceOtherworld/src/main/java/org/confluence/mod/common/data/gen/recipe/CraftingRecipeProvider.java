@@ -780,8 +780,8 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         shapeless(output, ToolItems.NPC_INVITATION.toStack(), Ingredient.of(Items.PAPER), Ingredient.of(Items.HONEYCOMB, MaterialItems.ROYAL_WAX));
         // 钱币
         shapeless(output, ModItems.COPPER_COIN.toStack(100), Ingredient.of(ModItems.SILVER_COIN));
-        shapeless(output, ModItems.SILVER_COIN.toStack(100), Ingredient.of(ModItems.GOLDEN_COIN));
-        shapeless(output, ModItems.GOLDEN_COIN.toStack(100), Ingredient.of(ModItems.PLATINUM_COIN));
+        shapeless(output, ModItems.SILVER_COIN.toStack(100), Ingredient.of(ModItems.GOLD_COIN));
+        shapeless(output, ModItems.GOLD_COIN.toStack(100), Ingredient.of(ModItems.PLATINUM_COIN));
 
         shapeless(output, MaterialItems.RAW_ASPHALT.toStack(), AmountIngredient.of(2, ItemTags.STONE_CRAFTING_MATERIALS), Ingredient.of(MaterialItems.GEL));
     }

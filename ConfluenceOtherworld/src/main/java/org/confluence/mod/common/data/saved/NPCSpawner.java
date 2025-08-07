@@ -34,6 +34,7 @@ import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.common.worldgen.structure.SimpleTemplatePiece;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.item.common.CoinItem;
@@ -456,7 +457,7 @@ public final class NPCSpawner implements IGlobalData {
     private boolean trySpawnArmsDealer(ServerPlayer player, BlockPos pos, Region region) {
         if (!hasNPCAlive(region, TENpcEntities.ARMS_DEALER.get())) {
             Predicate<ItemStack> predicate = stack -> stack.is(TGTags.BULLET) || stack.is(TGTags.GUN);
-            if (player.getInventory().hasAnyMatching(predicate) || player.getData(ModAttachmentTypes.EXTRA_INVENTORY).hasAnyMatching(predicate)) {
+            if (player.getInventory().hasAnyMatching(predicate) || ExtraInventory.of(player).hasAnyMatching(predicate)) {
                 return spawnAtPos(player.serverLevel(), pos, TENpcEntities.ARMS_DEALER.get());
             }
         }

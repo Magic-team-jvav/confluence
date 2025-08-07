@@ -14,6 +14,7 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.util.Coins;
 import org.confluence.mod.util.PlayerUtils;
 
 public record PlayerDeathInfoPacketS2C(Component deathMessage, int respawnTime, short platinum, byte gold, byte silver, byte copper) implements CustomPacketPayload {
@@ -50,8 +51,8 @@ public record PlayerDeathInfoPacketS2C(Component deathMessage, int respawnTime, 
     public static boolean replaceCombatKillPacket(ServerPlayer player, Component message) {
         if (CommonConfigs.SHOW_MONEY_DROPS.get()) {
             long drops = LibUtils.getOrCreatePersistedData(player).getLong("confluence:drops_money");
-            int[] coins = PlayerUtils.decodeCoin(drops);
-            PacketDistributor.sendToPlayer(player, new PlayerDeathInfoPacketS2C(message, PlayerUtils.getRespawnWaitTime(player), (short) coins[3], (byte) coins[2], (byte) coins[1], (byte) coins[0]));
+            Coins coins = PlayerUtils.decodeCoin(drops);
+            PacketDistributor.sendToPlayer(player, new PlayerDeathInfoPacketS2C(message, PlayerUtils.getRespawnWaitTime(player), (short) coins.platinum(), (byte) coins.gold(), (byte) coins.silver(), (byte) coins.copper()));
             return false;
         }
         return true;

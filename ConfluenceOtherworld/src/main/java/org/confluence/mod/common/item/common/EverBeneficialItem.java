@@ -18,7 +18,7 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.EverBeneficial;
-import org.confluence.mod.common.init.ModAttachmentTypes;
+import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.init.item.MinecartItems;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.terra_curio.common.init.TCItems;
@@ -33,7 +33,7 @@ import java.util.function.Supplier;
 public class EverBeneficialItem extends TooltipItem {
     public static final Post DO_NOTHING = (id, player, everBeneficial, isRespawn) -> {};
     public static final Beneficial LIFE_CRYSTAL = new Beneficial(Confluence.asResource("life_crystal"), EverBeneficial::increaseCrystals, (id, player, everBeneficial, isRespawn) -> {
-        if (everBeneficial.isLifeCrystalsMaximum() && everBeneficial.isLifeFruitsMaximum() && player.getData(ModAttachmentTypes.MANA_STORAGE).isStarMaximum()) {
+        if (everBeneficial.isLifeCrystalsMaximum() && everBeneficial.isLifeFruitsMaximum() && ManaStorage.of(player).isStarMaximum()) {
             AchievementUtils.awardAchievement(player, "topped_off");
         }
         AttributeInstance attributeInstance = player.getAttributes().getInstance(Attributes.MAX_HEALTH);
@@ -102,7 +102,7 @@ public class EverBeneficialItem extends TooltipItem {
 
         ItemStack itemStack = player.getItemInHand(usedHand);
         if (player instanceof ServerPlayer serverPlayer) {
-            EverBeneficial data = player.getData(ModAttachmentTypes.EVER_BENEFICIAL);
+            EverBeneficial data = EverBeneficial.of(player);
             if (beneficial.pre.test(data)) {
                 beneficial.post.accept(beneficial.id, serverPlayer, data, false);
                 CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayer, itemStack);

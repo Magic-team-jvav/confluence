@@ -113,7 +113,7 @@ public final class KillBoard implements IGlobalData {
         defeatedBosses.put(entityType, true);
         if (entityType == TEBossEntities.SKELETRON.get()) {
             setGamePhase(ServerLifecycleHooks.getCurrentServer(), GamePhase.AFTER_SKELETRON);
-        } else if (entityType == TEBossEntities.WALL_OF_FLESH.get()) {
+        } else if (entityType == TEBossEntities.WALL_OF_FLESH.get()) { // todo 还差肉山
             setGamePhase(ServerLifecycleHooks.getCurrentServer(), GamePhase.WALL_OF_FLESH);
         }
     }

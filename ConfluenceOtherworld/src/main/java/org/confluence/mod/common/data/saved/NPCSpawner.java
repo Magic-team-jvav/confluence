@@ -35,7 +35,6 @@ import org.confluence.lib.common.worldgen.structure.SimpleTemplatePiece;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ExtraInventory;
-import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.common.worldgen.structure.DungeonStructure;
@@ -474,7 +473,7 @@ public final class NPCSpawner implements IGlobalData {
     }
 
     private boolean trySpawnClothier(ServerPlayer player, BlockPos pos, Region region) {
-        if (KillBoard.INSTANCE.getGamePhase().isAboveThan(GamePhase.BEFORE_SKELETRON)) {
+        if (KillBoard.INSTANCE.getGamePhase().isAtLeast(GamePhase.AFTER_SKELETRON)) {
             if (!hasNPCAlive(region, TENpcEntities.CLOTHIER.get())) {
                 return spawnAtPos(player.serverLevel(), pos, TENpcEntities.CLOTHIER.get());
             }
@@ -518,7 +517,7 @@ public final class NPCSpawner implements IGlobalData {
      * @see MechanicNPCMixin
      */
     private boolean trySpawnMechanic(ServerPlayer player, BlockPos pos, Region region) {
-        if (KillBoard.INSTANCE.getGamePhase().isAboveThan(GamePhase.BEFORE_SKELETRON) && npcSpawned.contains(TENpcEntities.MECHANIC.get())) {
+        if (KillBoard.INSTANCE.getGamePhase().isAtLeast(GamePhase.AFTER_SKELETRON) && npcSpawned.contains(TENpcEntities.MECHANIC.get())) {
             if (!hasNPCAlive(region, TENpcEntities.MECHANIC.get())) {
                 return spawnAtPos(player.serverLevel(), pos, TENpcEntities.MECHANIC.get());
             }

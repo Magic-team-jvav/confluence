@@ -43,6 +43,10 @@ public final class OverworldUtils {
         return Level.OVERWORLD;
     }
 
+    public static ResourceKey<Level> underworld() {
+        return Level.NETHER;
+    }
+
     public static void replaceBiome(MultiNoiseBiomeSource biomeSource, int x, int y, int z, CallbackInfoReturnable<Holder<Biome>> cir, Supplier<List<Holder<Biome>>> jungleGetter, Supplier<Pair<Holder<Biome>, Holder<Biome>>> biomePairGetter, Function<RegistryAccess, Holder<Biome>> protectionFactory) {
         Holder<Biome> replaced = cir.getReturnValue();
         if (replaced != null) {
@@ -105,22 +109,37 @@ public final class OverworldUtils {
         return server.getLevel(dimension());
     }
 
+    /**
+     * default 320
+     */
     public static int getUltraY() {
         return 320;
     }
 
+    /**
+     * default 260
+     */
     public static int getSpaceY() {
         return 260;
     }
 
+    /**
+     * default 40
+     */
     public static int getSurfaceY() {
         return 40;
     }
 
+    /**
+     * default 0
+     */
     public static int getUndergroundY() {
         return 0;
     }
 
+    /**
+     * default -64
+     */
     public static int getCaveY() {
         return -64;
     }

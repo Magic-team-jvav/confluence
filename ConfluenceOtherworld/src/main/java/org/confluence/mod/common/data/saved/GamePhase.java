@@ -49,11 +49,11 @@ public enum GamePhase implements StringRepresentable, IExtensibleEnum {
     }
 
     public boolean isHardmode() {
-        return getOrder() >= WALL_OF_FLESH.getOrder();
+        return isAtLeast(WALL_OF_FLESH);
     }
 
     public boolean isGraduated() {
-        return getOrder() >= MOON_LORD.getOrder();
+        return isAtLeast(MOON_LORD);
     }
 
     /**
@@ -61,6 +61,10 @@ public enum GamePhase implements StringRepresentable, IExtensibleEnum {
      */
     public boolean isAboveThan(GamePhase other) {
         return getOrder() > other.getOrder();
+    }
+
+    public boolean isAtLeast(GamePhase other) {
+        return getOrder() >= other.getOrder();
     }
 
     public int getOrder() {

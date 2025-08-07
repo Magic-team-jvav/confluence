@@ -17,7 +17,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.EverBeneficial;
-import org.confluence.mod.common.data.saved.GamePhase;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.phase_journey.common.util.PhaseUtils;
 import org.jetbrains.annotations.Nullable;
@@ -53,7 +52,7 @@ public class GoblinArmyInstanceMixin {
 
         //未击败前的概率为33%,击败后的概率为3%,如果是肉前后阶段的话,概率分别为3%和1.67%
         float spawnChance = PhaseUtils.getValueBasedOnPhase(Confluence.asResource("goblin_army_victory"), level, 0.03F, 0.33F);
-        if (KillBoard.INSTANCE.getGamePhase().isAboveThan(GamePhase.WALL_OF_FLESH) && spawnChance == 0.03F) {
+        if (KillBoard.INSTANCE.getGamePhase().isHardmode() && spawnChance == 0.03F) {
             spawnChance = 0.0167F; //在肉后阶段,概率降低到1.67%
         }
 

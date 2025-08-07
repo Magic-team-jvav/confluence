@@ -25,7 +25,7 @@ public record ItemTransmutationRecipe(Ingredient source, List<ItemStack> target,
 
     @Override
     public boolean matches(SingleRecipeInput input, Level level) {
-        return input.item().getCount() >= shrink && source.test(input.item()) && KillBoard.INSTANCE.getGamePhase().getOrder() >= gamePhase.getOrder();
+        return input.item().getCount() >= shrink && source.test(input.item()) && KillBoard.INSTANCE.getGamePhase().isAtLeast(gamePhase);
     }
 
     @Override

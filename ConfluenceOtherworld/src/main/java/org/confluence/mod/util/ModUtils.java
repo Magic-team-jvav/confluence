@@ -94,7 +94,7 @@ public final class ModUtils {
     public static void summonBoss(ServerLevel level, BlockPos pos, AbstractTerraBossBase<?> boss) {
         double x = pos.getX() + 0.5 + level.random.nextInt(-50, 51);
         double z = pos.getZ() + 0.5 + level.random.nextInt(-50, 51);
-        boss.setPos(x, pos.getY() + 0.5 + level.getHeight(Heightmap.Types.MOTION_BLOCKING, Mth.floor(x), Mth.floor(z)), z);
+        boss.setPos(x, 0.5 + level.getHeight(Heightmap.Types.MOTION_BLOCKING, Mth.floor(x), Mth.floor(z)), z);
         if (TEUtils.internalSpawnEntity(boss, level)) {
             level.addFreshEntityWithPassengers(boss);
         }
@@ -155,7 +155,7 @@ public final class ModUtils {
         if (IMinecraftServer.isHardmode(level.getServer())) {
             amount *= 1.6;
         }
-        if (KillBoard.INSTANCE.getGamePhase().isAboveThan(GamePhase.PLANTERA)) {
+        if (KillBoard.INSTANCE.getGamePhase().isAtLeast(GamePhase.PLANTERA)) {
             amount *= 1.5;
         }
 

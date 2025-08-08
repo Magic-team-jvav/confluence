@@ -27,6 +27,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.neoforged.neoforge.common.Tags;
 import org.confluence.lib.color.GlobalColors;
@@ -39,7 +40,6 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.common.worldgen.structure.DungeonStructure;
 import org.confluence.mod.integration.terra_entity.IAbstractTerraNPC;
-import org.confluence.mod.integration.terra_entity.TEEvents;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IStructureStart;
 import org.confluence.mod.mixed.IWorldOptions;
@@ -513,7 +513,7 @@ public final class NPCSpawner implements IGlobalData {
     /**
      * 未在区域内的机械师会自动移除（因为机械师距离玩家基地可能很远）
      *
-     * @see TEEvents#onInteractNpc(NPCEvent.InteractNPCEvent)
+     * @see org.confluence.mod.integration.terra_entity.TEGameEvents#onInteractNpc(NPCEvent.InteractNPCEvent)
      * @see MechanicNPCMixin
      */
     private boolean trySpawnMechanic(ServerPlayer player, BlockPos pos, Region region) {
@@ -552,7 +552,7 @@ public final class NPCSpawner implements IGlobalData {
 
     public boolean spawnAtPos(ServerLevel level, BlockPos pos, EntityType<?> entityType) {
         if (!(entityType.create(level) instanceof AbstractTerraNPC living)) return false;
-        living.setPos(pos.getCenter());
+        living.setPos(pos.getX() + 0.5, level.getHeight(Heightmap.Types.MOTION_BLOCKING, pos.getX(), pos.getZ()) + 0.5, pos.getZ() + 0.5);
         level.addFreshEntity(living);
         if (living instanceof AnglerNPC angler) {
             angler.setWakeUp(true); // 重生的渔夫默认醒来

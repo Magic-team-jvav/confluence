@@ -67,7 +67,7 @@ public class TerraBowItem extends BowItem {
     @Override
     public @NotNull AbstractArrow customArrow(@NotNull AbstractArrow arrow, @NotNull ItemStack projectileStack, @NotNull ItemStack weaponStack) {
         int multiShoot = modifyArrowBuilder.multiShoot;
-        if(!modifyArrowBuilder.canMultiShoot.test(projectileStack)) {
+        if(modifyArrowBuilder.canMultiShoot.test(projectileStack)) {
             // 可以分裂但不满足条件没有分裂的箭伤害合成一支箭
             float damage = baseDamage / multiShoot;
             arrow.setBaseDamage(damage);
@@ -229,7 +229,7 @@ public class TerraBowItem extends BowItem {
         List<Function<Item.Properties, Item.Properties>> modifyProperties = new ArrayList<>();
         List<Consumer<BaseArrowEntity.Builder>> modifyArrowBuilder = new ArrayList<>();
         int multiShoot = 1;
-        Predicate<ItemStack> canMultiShoot = ammo->true;
+        Predicate<ItemStack> canMultiShoot = ammo->false;
         BiFunction<Integer, Integer, Vec3> multiShootOffset;
         public EntityTransform entityTransform;
         float inaccuracy;

@@ -41,6 +41,7 @@
 
 ## Maven 例子
 
+
 ```groovy
 repositories {
   maven {

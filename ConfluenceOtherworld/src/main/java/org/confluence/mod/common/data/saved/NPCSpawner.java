@@ -27,7 +27,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.neoforged.neoforge.common.Tags;
 import org.confluence.lib.color.GlobalColors;
@@ -552,7 +551,7 @@ public final class NPCSpawner implements IGlobalData {
 
     public boolean spawnAtPos(ServerLevel level, BlockPos pos, EntityType<?> entityType) {
         if (!(entityType.create(level) instanceof AbstractTerraNPC living)) return false;
-        living.setPos(pos.getX() + 0.5, level.getHeight(Heightmap.Types.MOTION_BLOCKING, pos.getX(), pos.getZ()) + 0.5, pos.getZ() + 0.5);
+        living.setPos(pos.getX() + 0.5, pos.getY() + 2.9, pos.getZ() + 0.5);
         level.addFreshEntity(living);
         if (living instanceof AnglerNPC angler) {
             angler.setWakeUp(true); // 重生的渔夫默认醒来

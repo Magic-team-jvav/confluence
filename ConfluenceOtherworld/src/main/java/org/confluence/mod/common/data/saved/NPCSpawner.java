@@ -32,6 +32,7 @@ import net.neoforged.neoforge.common.Tags;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.common.worldgen.structure.SimpleTemplatePiece;
+import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ExtraInventory;
@@ -44,7 +45,6 @@ import org.confluence.mod.mixed.IStructureStart;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.mixin.integration.terra_entity.AnglerNPCMixin;
 import org.confluence.mod.mixin.integration.terra_entity.MechanicNPCMixin;
-import org.confluence.mod.util.DateUtils;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_guns.common.init.TGTags;
@@ -340,7 +340,7 @@ public final class NPCSpawner implements IGlobalData {
         if (!hasNPCAlive(region, TENpcEntities.TRAVELING_MERCHANT.get())) {
             MomentInstanceManager manager = MomentInstanceManager.of(player.level());
             if (!manager.hasMoment(TMMoments.GOBLIN_ARMY.getKey())) {
-                if (DateUtils.isWithinDayTime(DateUtils._04$30, DateUtils.getDayTime(12, 0), DateUtils.getDayTime(player.level()))) {
+                if (LibDateUtils.isWithinDayTime(LibDateUtils._04$30, LibDateUtils.getDayTime(12, 0), player.level())) {
                     int bound = 30000 / CommonConfigs.NPC_SPAWN_INTERVAL.get(); // 6.25分钟内生成期望为22.12%
                     if (player.getRandom().nextInt(bound) == 0 && getAliveNpcCount(region, entityType -> entityType != TENpcEntities.OLD_MAN.get() /* todo 骷髅商人不计入 */) >= 2) {
                         return spawnAtPos(player.serverLevel(), pos, TENpcEntities.TRAVELING_MERCHANT.get());

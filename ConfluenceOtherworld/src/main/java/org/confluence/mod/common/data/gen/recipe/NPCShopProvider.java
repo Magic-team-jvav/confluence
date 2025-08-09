@@ -12,6 +12,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.conditions.ModLoadedCondition;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
+import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.Keys;
 import org.confluence.mod.common.data.saved.MoonPhase;
@@ -29,7 +30,6 @@ import org.confluence.mod.integration.terra_entity.npc_trade.SellTrade;
 import org.confluence.mod.integration.terra_entity.npc_trade_lock.*;
 import org.confluence.mod.integration.waystones.WaystonesHelper;
 import org.confluence.mod.mixed.IWorldOptions;
-import org.confluence.mod.util.DateUtils;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_guns.common.init.TGItems;
@@ -73,7 +73,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
     public void buildRecipes(RecipeOutput recipeOutput, HolderLookup.Provider holderLookup) {
         TradeProperties hardmodeLock = TradeProperties.builder().setLock(new SecretFlagLock(IWorldOptions.HARDMODE, false)).build();
         TradeProperties halloweensLock = TradeProperties.builder().setLock(DateLock.HALLOWEENS).build();
-        TradeProperties nightLock = TradeProperties.builder().setLock(new TimeLock(DateUtils._19$30, DateUtils._04$30, false)).build();
+        TradeProperties nightLock = TradeProperties.builder().setLock(new TimeLock(LibDateUtils._19$30, LibDateUtils._04$30, false)).build();
         // 女仆商店
         shop(Keys.MAID_SHOP).addRecipe(withDefaultPylon()
                 .add(TCItems.PORTABLE_CEMENT_MIXER)

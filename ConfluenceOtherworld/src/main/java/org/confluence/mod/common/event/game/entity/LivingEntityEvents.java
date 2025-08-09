@@ -31,6 +31,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.entity.living.*;
 import org.confluence.lib.common.event.GameEvents;
+import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
@@ -121,7 +122,7 @@ public final class LivingEntityEvents {
                 NPCSpawner.INSTANCE.onNPCRemoved(npc);
                 if (attacker != null && npc.getType() == TENpcEntities.CLOTHIER.get() &&
                         attacker instanceof Player player &&
-                        DateUtils.isNight(DateUtils.getDayTime(level)) && // 晚上杀死才生成
+                        LibDateUtils.isNight(level) && // 晚上杀死才生成
                         TCUtils.hasAccessoriesType(player, AccessoryItems.CLOTHIER$KILLER)
                 ) {
                     Skeletron skeletron = new Skeletron(TEBossEntities.SKELETRON.get(), level);

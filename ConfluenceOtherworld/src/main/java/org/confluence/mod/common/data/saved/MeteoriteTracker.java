@@ -16,10 +16,10 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import org.confluence.lib.color.GlobalColors;
+import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.network.s2c.MeteoriteLocationPacketS2C;
-import org.confluence.mod.util.DateUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -39,7 +39,7 @@ public final class MeteoriteTracker {
 
     public void tick(ServerLevel level) {
         if (!CommonConfigs.DO_METEORITE_SPAWNING.get()) return;
-        if (spawnAtNextNight && DateUtils.getDayTime(level) == DateUtils._00$00) {
+        if (spawnAtNextNight && LibDateUtils.getDayTime(level) == LibDateUtils._00$00) {
             this.spawnAtNextNight = false;
             generateLandingDetail(level, Mth.randomBetweenInclusive(level.random, 200, 400));
             Component message = Component.translatable("event.confluence.meteorite.ready").withColor(GlobalColors.EVENT.get());

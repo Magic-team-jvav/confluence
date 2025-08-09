@@ -20,6 +20,7 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.EverBeneficial;
@@ -145,11 +146,11 @@ public final class PlayerUtils {
         Level level = player.level();
         if (level.isRaining()) base *= 1.1F;
         else if (level.isThundering()) base *= 1.2F;
-        int dayTime = DateUtils.getDayTime(level);
-        if (DateUtils.isWithinDayTime(DateUtils._04$30, DateUtils._06$00, dayTime)) base *= 1.3F;
-        else if (DateUtils.isWithinDayTime(9, 0, 15, 0, dayTime)) base *= 0.8F;
-        else if (DateUtils.isWithinDayTime(DateUtils.getDayTime(18, 0), DateUtils._19$30, dayTime)) base *= 1.3F;
-        else if (DateUtils.isWithinDayTime(21, 18, 2, 12, dayTime)) base *= 0.8F;
+        int dayTime = LibDateUtils.getDayTime(level);
+        if (LibDateUtils.isWithinDayTime(LibDateUtils._04$30, LibDateUtils._06$00, dayTime)) base *= 1.3F;
+        else if (LibDateUtils.isWithinDayTime(9, 0, 15, 0, dayTime)) base *= 0.8F;
+        else if (LibDateUtils.isWithinDayTime(LibDateUtils.getDayTime(18, 0), LibDateUtils._19$30, dayTime)) base *= 1.3F;
+        else if (LibDateUtils.isWithinDayTime(21, 18, 2, 12, dayTime)) base *= 0.8F;
         base *= switch (level.getMoonPhase()) {
             case 0 -> 1.1F; // 满月
             case 1, 7 -> 1.05F; // 凸月

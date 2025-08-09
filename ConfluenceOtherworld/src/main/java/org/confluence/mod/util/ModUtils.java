@@ -33,6 +33,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.levelgen.Heightmap;
+import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.GamePhase;
@@ -117,7 +118,7 @@ public final class ModUtils {
         KillBoard.INSTANCE.defeat(type);
         boolean isEaterOfWorlds = type == TEBossEntities.EATER_OF_WORLDS.get();
         if (isEaterOfWorlds || type == TEBossEntities.BRAIN_OF_CTHULHU.get()) {
-            if (DateUtils.isWithinDayTime(DateUtils._00$00, DateUtils._04$30, DateUtils.getDayTime(level))) {
+            if (LibDateUtils.isWithinDayTime(LibDateUtils._00$00, LibDateUtils._04$30, level)) {
                 MeteoriteTracker.INSTANCE.spawnAtNextNight = true;
             } else if (!MeteoriteTracker.INSTANCE.spawnAtNextNight) {
                 MeteoriteTracker.INSTANCE.spawnAtNextNight = level.random.nextBoolean();

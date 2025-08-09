@@ -18,6 +18,7 @@ import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.color.GlobalColors;
+import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ChunkDropletsData;
@@ -33,7 +34,6 @@ import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.network.s2c.DropletsSyncPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
-import org.confluence.mod.util.DateUtils;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terraentity.entity.boss.EyeOfCthulhu;
@@ -53,12 +53,12 @@ public final class TickEvents {
         MeteoriteTracker.INSTANCE.tick(serverLevel);
         BossDelaySpawner.INSTANCE.tick(serverLevel);
 
-        int dayTime = DateUtils.getDayTime(serverLevel);
-        if (dayTime == DateUtils._06$00) {
+        int dayTime = LibDateUtils.getDayTime(serverLevel);
+        if (dayTime == LibDateUtils._06$00) {
             float factorX = Mth.nextFloat(serverLevel.random, -1.0F, 1.0F);
             float factorZ = Mth.nextFloat(serverLevel.random, -1.0F, 1.0F);
             ConfluenceData.get(serverLevel).setWindSpeed(factorX, factorZ);
-        } else if (dayTime == DateUtils._19$30) {
+        } else if (dayTime == LibDateUtils._19$30) {
             EntityType<EyeOfCthulhu> type = TEBossEntities.EYE_OF_CTHULHU.get();
             if (!KillBoard.INSTANCE.isDefeated(type) && !BossDelaySpawner.INSTANCE.hasSameTypeInQueue(type)) {
                 for (ServerPlayer player : serverLevel.players()) {
@@ -66,7 +66,7 @@ public final class TickEvents {
                     boolean npcFactor = NPCSpawner.INSTANCE.getAliveNpcCount(new NPCSpawner.Region(NPCSpawner.getNpcSpawnPos(player)), entityType -> true/* todo 骷髅商人不计入 */) >= 4;
                     if (attributeFactor && npcFactor) {
                         if (serverLevel.random.nextFloat() < 0.3333F) {
-                            BossDelaySpawner.INSTANCE.pushBoss(1350, new EyeOfCthulhu(serverLevel), level -> DateUtils.isNight(DateUtils.getDayTime(level)));
+                            BossDelaySpawner.INSTANCE.pushBoss(1350, new EyeOfCthulhu(serverLevel), LibDateUtils::isNight);
                             serverLevel.getServer().getPlayerList().broadcastSystemMessage(Component.translatable("event.confluence.eye_of_cthulhu").withColor(GlobalColors.MESSAGE.get()), false);
                         }
                         break;
@@ -78,7 +78,7 @@ public final class TickEvents {
             }
         }
         if (CommonConfigs.DO_NPC_SPAWNING.get() &&
-                DateUtils.isDay(dayTime) &&
+                LibDateUtils.isDay(dayTime) &&
                 serverLevel.getGameTime() % CommonConfigs.NPC_SPAWN_INTERVAL.get() == 0 &&
                 serverLevel.getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)
         ) {

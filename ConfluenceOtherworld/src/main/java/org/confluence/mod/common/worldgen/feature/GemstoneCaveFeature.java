@@ -12,13 +12,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
+import net.neoforged.neoforge.common.Tags;
 import org.confluence.lib.util.FeatureUtils;
 import org.confluence.mod.common.init.block.OreBlocks;
 
 import java.util.function.Supplier;
 
 public class GemstoneCaveFeature extends Feature<GemstoneCaveFeature.Config> {
-    private final Supplier<BlockState[]> gemstones = Suppliers.memoize(() -> new BlockState[]{
+    private final Supplier<BlockState[]> stonedGems = Suppliers.memoize(() -> new BlockState[]{
             OreBlocks.RUBY_ORE.get().defaultBlockState(),
             OreBlocks.TOPAZ_ORE.get().defaultBlockState(),
             OreBlocks.SAPPHIRE_ORE.get().defaultBlockState(),
@@ -26,37 +27,54 @@ public class GemstoneCaveFeature extends Feature<GemstoneCaveFeature.Config> {
             OreBlocks.AMETHYST_ORE.get().defaultBlockState(),
             Blocks.DIAMOND_ORE.defaultBlockState()
     });
+    private final Supplier<BlockState[]> deepslatedGems = Suppliers.memoize(() -> new BlockState[]{
+            OreBlocks.DEEPSLATE_RUBY_ORE.get().defaultBlockState(),
+            OreBlocks.DEEPSLATE_TOPAZ_ORE.get().defaultBlockState(),
+            OreBlocks.DEEPSLATE_SAPPHIRE_ORE.get().defaultBlockState(),
+            OreBlocks.DEEPSLATE_JADE_ORE.get().defaultBlockState(),
+            OreBlocks.DEEPSLATE_AMETHYST_ORE.get().defaultBlockState(),
+            Blocks.DEEPSLATE_DIAMOND_ORE.defaultBlockState()
+    });
 
-    public GemstoneCaveFeature(Codec<Config> pCodec) {
-        super(pCodec);
+    public GemstoneCaveFeature(Codec<Config> codec) {
+        super(codec);
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<Config> pContext) {
-        Config config = pContext.config();
-        RandomSource random = pContext.random();
-        WorldGenLevel level = pContext.level();
-        BlockPos blockPos = pContext.origin();
+    public boolean place(FeaturePlaceContext<Config> context) {
+        Config config = context.config();
+        RandomSource random = context.random();
+        WorldGenLevel level = context.level();
+        BlockPos blockPos = context.origin();
         float radius = config.radius + 0.5F;
         BlockState stone = Blocks.STONE.defaultBlockState();
+        BlockState deepslate = Blocks.DEEPSLATE.defaultBlockState();
         BlockState air = Blocks.AIR.defaultBlockState();
         int index0 = random.nextInt(6);
-        int index1 = index0;
-        while (index1 == index0) {
-            index1 = random.nextInt(6);
-        }
+        int t = index0;
+        while (t == index0) t = random.nextInt(6);
+        int index1 = t;
         float rotation = Mth.TWO_PI * random.nextFloat();
         int x = Mth.floor(Mth.sin(rotation) * radius);
         int z = Mth.floor(Mth.cos(rotation) * radius);
-
-        BlockState[] states = gemstones.get();
-        FeatureUtils.ball(radius + 2, blockPos, states[index0], true, level);
-        FeatureUtils.ball(radius + 2, blockPos, states[index1], true, level, 0.5F, random);
-        FeatureUtils.ball(radius + 2, blockPos, stone, true, level, 0.7F, random);
+        FeatureUtils.ball(radius + 2, blockPos, state -> determineGems(state, index0), true, level);
+        FeatureUtils.ball(radius + 2, blockPos, state -> determineGems(state, index1), true, level, 0.5F, random);
+        FeatureUtils.ball(radius + 2, blockPos, state -> isDeepslate(state) ? deepslate : stone, true, level, 0.7F, random);
         FeatureUtils.ball(radius, blockPos, air, true, level);
         FeatureUtils.ellipsoid(radius - 1, radius + 1, radius - 1, blockPos.offset(x, 0, z), air, true, level);
 
         return true;
+    }
+
+    private static boolean isDeepslate(BlockState state) {
+        return state.is(Blocks.DEEPSLATE) || state.is(Tags.Blocks.ORES_IN_GROUND_DEEPSLATE);
+    }
+
+    private BlockState determineGems(BlockState state, int index) {
+        if (isDeepslate(state)) {
+            return deepslatedGems.get()[index];
+        }
+        return stonedGems.get()[index];
     }
 
     public record Config(int radius) implements FeatureConfiguration {

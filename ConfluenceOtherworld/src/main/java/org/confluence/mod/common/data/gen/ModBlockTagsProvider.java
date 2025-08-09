@@ -232,7 +232,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 CRACKED_MARBLE_BRICKS.get(),
                 GILDED_MARBLE.get(),
                 POLISHED_MARBLE.get(),
-        
+
                 CRYSTAL_BLOCK.get(),
                 BLUE_BRICKS.get(),
                 GREEN_BRICKS.get(),
@@ -998,16 +998,17 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 DEEPSLATE_SILVER_ORE.get(),
                 DEEPSLATE_TUNGSTEN_ORE.get(),
                 DEEPSLATE_PLATINUM_ORE.get(),
-                DEEPSLATE_RUBY_ORE.get(),
-                DEEPSLATE_TOPAZ_ORE.get(),
-                DEEPSLATE_JADE_ORE.get(),
-                DEEPSLATE_SAPPHIRE_ORE.get(),
                 DEEPSLATE_COBALT_ORE.get(),
                 DEEPSLATE_PALLADIUM_ORE.get(),
                 DEEPSLATE_MYTHRIL_ORE.get(),
                 DEEPSLATE_ORICHALCUM_ORE.get(),
                 DEEPSLATE_ADAMANTITE_ORE.get(),
                 DEEPSLATE_TITANIUM_ORE.get(),
+
+                DEEPSLATE_RUBY_ORE.get(),
+                DEEPSLATE_TOPAZ_ORE.get(),
+                DEEPSLATE_JADE_ORE.get(),
+                DEEPSLATE_SAPPHIRE_ORE.get(),
                 DEEPSLATE_AMETHYST_ORE.get()
         );
         tag(Tags.Blocks.ORES_IN_GROUND_NETHERRACK).add(HELLSTONE.get());
@@ -1017,13 +1018,14 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 SILVER_ORE.get(),
                 TUNGSTEN_ORE.get(),
                 PLATINUM_ORE.get(),
+                DEMONITE_ORE.get(),
+                CRIMTANE_ORE.get(),
+
                 RUBY_ORE.get(),
                 TOPAZ_ORE.get(),
                 JADE_ORE.get(),
                 SAPPHIRE_ORE.get(),
-                AMETHYST_ORE.get(),
-                DEMONITE_ORE.get(),
-                CRIMTANE_ORE.get()
+                AMETHYST_ORE.get()
         );
         tag(Tags.Blocks.PLAYER_WORKSTATIONS_CRAFTING_TABLES).add(HEAVY_WORK_BENCH.get());
         tag(Tags.Blocks.PLAYER_WORKSTATIONS_FURNACES).add(HELLFORGE.get());

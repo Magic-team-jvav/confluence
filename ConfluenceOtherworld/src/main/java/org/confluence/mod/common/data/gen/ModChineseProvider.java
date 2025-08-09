@@ -2089,7 +2089,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.PEARL_LOG_BLOCKS.getStrippedWood().get(), "去皮珍珠木");
         add(NatureBlocks.PEARL_LOG_BLOCKS.getDoor().get(), "珍珠木门");
         add(NatureBlocks.PEARL_LOG_BLOCKS.getSign().get(), "珍珠木告示牌");
-        add(NatureBlocks.PEARL_LOG_BLOCKS.getHangingSign().get(), "暗影木悬挂告示牌");
+        add(NatureBlocks.PEARL_LOG_BLOCKS.getHangingSign().get(), "珍珠木悬挂告示牌");
         add(NatureBlocks.PEARL_LOG_BLOCKS.getStairs().get(), "珍珠木楼梯");
         add(NatureBlocks.PEARL_LOG_BLOCKS.getSlab().get(), "珍珠木台阶");
         add(NatureBlocks.PEARL_LOG_BLOCKS.getTrapdoor().get(), "珍珠木活板门");
@@ -2504,6 +2504,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.FROZEN_GEL_BLOCK.get(), "冻凝胶块");
         add(DecorativeBlocks.RED_CANDY_BLOCK.get(), "红色糖块");
         add(DecorativeBlocks.GREEN_CANDY_BLOCK.get(), "绿色糖块");
+        add(DecorativeBlocks.FLESH_BLOCK.get(), "血肉块");
 
         add(DecorativeBlocks.SUN_PLATE.get(), "日盘块");
         add(DecorativeBlocks.SUN_PLATE_STAIRS.get(), "日盘楼梯");

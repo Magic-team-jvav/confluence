@@ -49,7 +49,7 @@ public class DualHookEntity extends AbstractHookEntity implements VariantHolder<
     @Override
     protected void onHooked(BlockHitResult hitResult, ItemStack itemStack) {
         super.onHooked(hitResult, itemStack);
-        if (LibUtils.getItemStackNbt(itemStack).get("hooks") instanceof ListTag list) {
+        if (LibUtils.getItemStackNbtNoCopy(itemStack).get("hooks") instanceof ListTag list) {
             list.forEach(tag -> {
                 AbstractHookEntity hookEntity = BaseHookItem.getHookEntity(tag, level());
                 if (hookEntity != null && hookEntity != this) hookEntity.setHookState(HookState.POP);

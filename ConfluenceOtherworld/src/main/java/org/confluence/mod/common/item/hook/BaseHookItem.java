@@ -14,7 +14,6 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.entity.hook.AbstractHookEntity;
-import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.jetbrains.annotations.Nullable;
 
 public class BaseHookItem extends Item {
@@ -72,7 +71,7 @@ public class BaseHookItem extends Item {
     }
 
     public void onUnequip(ServerPlayer serverPlayer, ItemStack newStack, ItemStack stack) {
-        if (!ItemStack.isSameItem(newStack, stack) && LibUtils.getItemStackNbt(stack).get("hooks") instanceof ListTag list) {
+        if (!ItemStack.isSameItem(newStack, stack) && LibUtils.getItemStackNbtNoCopy(stack).get("hooks") instanceof ListTag list) {
             discardAllHooks(list, serverPlayer.serverLevel());
         }
     }

@@ -37,7 +37,7 @@ public class HookItems {
     public static final DeferredItem<BaseHookItem> DUAL_HOOK = ITEMS.register("dual_hook", () -> new BaseHookItem(ModRarity.LIGHT_RED, 2, 18.33F, 1.4F, BaseHookItem.HookType.INDIVIDUAL, (itemStack, item, player, level) -> {
         CompoundTag tag = LibUtils.getItemStackNbt(itemStack);
         boolean isRed = tag.getBoolean("isRed");
-        tag.putBoolean("isRed", !isRed);
+        LibUtils.updateItemStackNbt(itemStack, nbt -> nbt.putBoolean("isRed", !isRed));
         return new DualHookEntity(item, player, level, isRed ? DualHookEntity.Variant.RED : DualHookEntity.Variant.BLUE);
     }));
     public static final DeferredItem<BaseHookItem> HOOK_OF_DISSONANCE = ITEMS.register("hook_of_dissonance", () -> new BaseHookItem(ModRarity.PINK, 1, 20.0F, 1.6F, BaseHookItem.HookType.SINGLE, (itemStack, item, player, level) -> new HookOfDissonanceEntity(item, player, level)));

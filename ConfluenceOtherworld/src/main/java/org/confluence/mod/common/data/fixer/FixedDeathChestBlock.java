@@ -57,8 +57,8 @@ public class FixedDeathChestBlock extends FixedBaseChestBlock implements INetwor
         super(Properties.ofFullCopy(Blocks.TRAPPED_CHEST).explosionResistance(ModBlocks.getObsidianBasedExplosionResistance(0.0F)), RegistriesFixer.DEATH_CHEST_BLOCK_ENTITY::get);
     }
 
-    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return new BEntity(pPos, pState);
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new BEntity(pos, state);
     }
 
     @Override
@@ -92,11 +92,11 @@ public class FixedDeathChestBlock extends FixedBaseChestBlock implements INetwor
     }
 
     @Override
-    public InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHit) {
-        if (skipInteraction(pPlayer.getMainHandItem())) {
+    public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+        if (skipInteraction(player.getMainHandItem())) {
             return InteractionResult.PASS;
         }
-        return super.useWithoutItem(pState, pLevel, pPos, pPlayer, pHit);
+        return super.useWithoutItem(state, level, pos, player, hitResult);
     }
 
     @Override

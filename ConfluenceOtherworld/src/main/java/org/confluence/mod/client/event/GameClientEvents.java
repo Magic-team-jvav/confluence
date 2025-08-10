@@ -59,12 +59,14 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEquipmentSets;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.ToolItems;
+import org.confluence.mod.common.item.lance.AbstractLanceItem;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.integration.ars_nouveau.ArsNouveauHelper;
 import org.confluence.mod.integration.irons_spell.IronSpellHelper;
 import org.confluence.mod.integration.xaero.XaeroHelper;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.ILocalPlayer;
+import org.confluence.mod.network.c2s.LanceAttackPacketC2S;
 import org.confluence.mod.util.ClientUtils;
 import org.confluence.mod.util.DeathAnimUtils;
 import org.confluence.mod.util.ModUtils;
@@ -82,6 +84,28 @@ import static net.minecraft.world.item.component.ItemAttributeModifiers.ATTRIBUT
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, value = Dist.CLIENT, modid = Confluence.MODID)
 public final class GameClientEvents {
+    @SubscribeEvent
+    public static void clientTick$Pre(ClientTickEvent.Pre event) {
+        Minecraft minecraft = Minecraft.getInstance();
+
+        if (minecraft.gameMode != null && !minecraft.gameMode.isDestroying()) {
+            LocalPlayer player = minecraft.player;
+            if (player != null && minecraft.options.keyAttack.isDown()) {
+                ItemStack itemStack = player.getMainHandItem();
+                if (!itemStack.isEmpty() && itemStack.getItem() instanceof AbstractLanceItem lanceItem) {
+                    CompoundTag tag = LibUtils.getItemStackNbtIfPresent(itemStack);
+                    if (tag != null) {
+                        long gameTime = player.level().getGameTime();
+                        long l = tag.getLong(AbstractLanceItem.LAST_ATTACK_TIME_KEY);
+                        if (gameTime - l > lanceItem.getAttackDuration()) {
+                            LanceAttackPacketC2S.sendToServer();
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     @SubscribeEvent
     public static void clientTick$Post(ClientTickEvent.Post event) {
         Minecraft minecraft = Minecraft.getInstance();

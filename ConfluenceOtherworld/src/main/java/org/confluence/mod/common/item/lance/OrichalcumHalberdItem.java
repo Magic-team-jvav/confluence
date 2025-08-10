@@ -16,7 +16,7 @@ import software.bernie.geckolib.loading.math.value.Constant;
 
 public class OrichalcumHalberdItem extends AbstractLanceItem {
     public OrichalcumHalberdItem() {
-        super(new Properties(), ModRarity.LIGHT_RED, 15, ObjectArrayList.of(
+        super(new Properties(), ModRarity.LIGHT_RED, 15, 1, ObjectArrayList.of(
                 new Keyframe<>(0.0, new Constant(0.0), new Constant(0.0), EasingType.LINEAR),
                 new Keyframe<>(5.0, new Constant(0.0), new Constant(6.0), EasingType.EASE_OUT_BACK),
                 new Keyframe<>(5.0, new Constant(6.0), new Constant(-16.0), EasingType.EASE_IN_EXPO),

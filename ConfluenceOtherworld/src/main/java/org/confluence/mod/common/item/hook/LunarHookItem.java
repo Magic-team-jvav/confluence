@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class LunarHookItem extends BaseHookItem implements IHookFastThrow {
     public LunarHookItem() {
         super(ModRarity.RED, 4, 22.92F, 1.8F, HookType.SIMULTANEOUS, (itemStack, item, player, level) -> {
-            ListTag list = LibUtils.getItemStackNbt(itemStack).getList("hooks", Tag.TAG_COMPOUND);
+            ListTag list = LibUtils.getItemStackNbtNoCopy(itemStack).getList("hooks", Tag.TAG_COMPOUND);
             AtomicBoolean nebula = new AtomicBoolean(true);
             AtomicBoolean solar = new AtomicBoolean(true);
             AtomicBoolean stardust = new AtomicBoolean(true);

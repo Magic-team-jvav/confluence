@@ -208,6 +208,7 @@ public final class ModEvents {
         registrar.playToServer(WormholeToPlayerPacketC2S.TYPE, WormholeToPlayerPacketC2S.STREAM_CODEC, WormholeToPlayerPacketC2S::handle);
         registrar.playToServer(SellTradePacketC2S.TYPE, SellTradePacketC2S.STREAM_CODEC, SellTradePacketC2S::handle);
         registrar.playToServer(RecipeTransferPacketC2S.TYPE, RecipeTransferPacketC2S.STREAM_CODEC, RecipeTransferPacketC2S::handle);
+        registrar.playToServer(LanceAttackPacketC2S.TYPE, LanceAttackPacketC2S.STREAM_CODEC, LanceAttackPacketC2S::handle);
         WaystonesHelper.registerPayload(registrar);
     }
 

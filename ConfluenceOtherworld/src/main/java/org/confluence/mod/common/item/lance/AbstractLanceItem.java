@@ -43,15 +43,31 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public abstract class AbstractLanceItem extends CustomRarityItem implements GeoItem {
+    public static final String LAST_ATTACK_TIME_KEY = "confluence:last_attack_time";
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private final int attackDuration;
+    private final int attackInterval;
     private final List<Keyframe<MathValue>> keyframes;
 
-    public AbstractLanceItem(Properties properties, ModRarity rarity, int attackDuration, List<Keyframe<MathValue>> keyframes) {
+    /**
+     * @param attackDuration 攻击持续时间，值越大攻击时间越长
+     * @param attackInterval 攻击间隔，每造成两次伤害之间的时间
+     * @param keyframes      应用于长矛攻击的关键帧，建议匹配攻击持续时间
+     */
+    public AbstractLanceItem(Properties properties, ModRarity rarity, int attackDuration, int attackInterval, List<Keyframe<MathValue>> keyframes) {
         super(properties.stacksTo(1), rarity);
         this.attackDuration = attackDuration;
+        this.attackInterval = attackInterval;
         this.keyframes = keyframes;
         SingletonGeoAnimatable.registerSyncedAnimatable(this);
+    }
+
+    public int getAttackDuration() {
+        return attackDuration;
+    }
+
+    public int getAttackInterval() {
+        return attackInterval;
     }
 
     @Override
@@ -61,8 +77,8 @@ public abstract class AbstractLanceItem extends CustomRarityItem implements GeoI
 
     @Override
     public boolean onEntitySwing(ItemStack stack, LivingEntity entity, InteractionHand hand) {
-        if (entity.level() instanceof ServerLevel serverLevel && entity.level().getGameTime() - LibUtils.getItemStackNbt(stack).getLong("confluence:last_attack_time") > attackDuration) {
-            LibUtils.updateItemStackNbt(stack, tag -> tag.putLong("confluence:last_attack_time", entity.level().getGameTime()));
+        if (entity.level() instanceof ServerLevel serverLevel && entity.level().getGameTime() - LibUtils.getItemStackNbtNoCopy(stack).getLong(LAST_ATTACK_TIME_KEY) > attackDuration) {
+            LibUtils.updateItemStackNbt(stack, tag -> tag.putLong(LAST_ATTACK_TIME_KEY, entity.level().getGameTime()));
             triggerAnim(entity, GeoItem.getOrAssignId(stack, serverLevel), "lance", "use");
         }
         return true;
@@ -81,8 +97,9 @@ public abstract class AbstractLanceItem extends CustomRarityItem implements GeoI
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
         if (isSelected && level instanceof ServerLevel serverLevel && entity instanceof LivingEntity owner) {
-            long tickCount = entity.level().getGameTime() - LibUtils.getItemStackNbt(stack).getLong("confluence:last_attack_time");
-            if (tickCount <= attackDuration) {
+            long gameTime = entity.level().getGameTime();
+            long tickCount = gameTime - LibUtils.getItemStackNbtNoCopy(stack).getLong(LAST_ATTACK_TIME_KEY);
+            if (tickCount <= attackDuration && (attackInterval <= 1 || gameTime % attackInterval == 0)) {
                 Vec3 viewVector = entity.getViewVector(1.0F);
                 Vec3 position = entity.position().add(0, 1, 0);
                 Vec3 startVec = position.add(viewVector.scale(-0.5));

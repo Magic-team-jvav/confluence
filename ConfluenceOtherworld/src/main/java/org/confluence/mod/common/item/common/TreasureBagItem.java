@@ -62,7 +62,7 @@ public class TreasureBagItem extends CustomRarityItem {
             ResourceKey<LootTable> table = component == null ? null : component.value();
             if (table == null) {
                 // todo 1.3.0时移除string变量
-                String string = LibUtils.getItemStackNbt(itemStack).getString("lootTable");
+                String string = LibUtils.getItemStackNbtNoCopy(itemStack).getString("lootTable");
                 if (string.isEmpty() || player.isCreative()) {
                     table = ResourceKey.create(Registries.LOOT_TABLE, lootTable.withSuffix(suffix.apply(serverLevel, player.blockPosition())));
                 } else {

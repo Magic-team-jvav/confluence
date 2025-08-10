@@ -81,7 +81,7 @@ public class MagicConch extends CustomRarityItem implements ApplySelectionPacket
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         ItemStack itemStack = pPlayer.getItemInHand(pUsedHand);
         if (pPlayer instanceof ServerPlayer serverPlayer) {
-            CompoundTag tag = LibUtils.getItemStackNbt(itemStack);
+            CompoundTag tag = LibUtils.getItemStackNbtNoCopy(itemStack);
             if (tag.get("pos1") != null || tag.get("pos2") != null) {
                 Optional<BlockPos> pos1 = NbtUtils.readBlockPos(tag, "pos1");
                 Optional<BlockPos> pos2 = NbtUtils.readBlockPos(tag, "pos2");
@@ -110,7 +110,7 @@ public class MagicConch extends CustomRarityItem implements ApplySelectionPacket
 
     @Override
     public @Nullable BlockPos getSelected(byte index, ItemStack itemStack) {
-        CompoundTag tag = LibUtils.getItemStackNbt(itemStack);
+        CompoundTag tag = LibUtils.getItemStackNbtNoCopy(itemStack);
         if (index == 0) {
             return NbtUtils.readBlockPos(tag, "pos1").orElse(null);
         }

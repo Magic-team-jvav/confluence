@@ -81,8 +81,8 @@ public class FixedBaseChestBlock extends ChestBlock {
     }
 
     @Override
-    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return new BEntity(pPos, pState);
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new BEntity(pos, state);
     }
 
     @Override
@@ -99,29 +99,28 @@ public class FixedBaseChestBlock extends ChestBlock {
     }
 
     @Override
-    public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
-        super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
-        CompoundTag tag = LibUtils.getItemStackNbt(pStack);
-        Variant variantId = Variant.byId(tag.getInt("VariantId"));
-        BlockState state = pState.setValue(UNLOCKED, variantId.unlock < 0);
-        pLevel.setBlockAndUpdate(pPos, state);
-        if (pLevel.getBlockEntity(pPos) instanceof BEntity entity) {
+    public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
+        super.setPlacedBy(level, pos, state, placer, stack);
+        Variant variantId = Variant.byId(LibUtils.getItemStackNbtNoCopy(stack).getInt("VariantId"));
+        BlockState blockState = state.setValue(UNLOCKED, variantId.unlock < 0);
+        level.setBlockAndUpdate(pos, blockState);
+        if (level.getBlockEntity(pos) instanceof BEntity entity) {
             entity.variant = variantId;
-            entity.setBlockState(state);
+            entity.setBlockState(blockState);
         }
     }
 
     @Nullable
     @Override
-    protected Direction candidatePartnerFacing(BlockPlaceContext pContext, Direction pDirection) {
-        BlockPos relative = pContext.getClickedPos().relative(pDirection);
-        if (pContext.getLevel().getBlockEntity(relative) instanceof BEntity entity) {
-            ItemStack itemStack = pContext.getItemInHand();
+    protected Direction candidatePartnerFacing(BlockPlaceContext context, Direction direction) {
+        BlockPos relative = context.getClickedPos().relative(direction);
+        if (context.getLevel().getBlockEntity(relative) instanceof BEntity entity) {
+            ItemStack itemStack = context.getItemInHand();
 
-            if (LibUtils.getItemStackNbt(itemStack).getInt("VariantId") != entity.variant.id)
+            if (LibUtils.getItemStackNbtNoCopy(itemStack).getInt("VariantId") != entity.variant.id)
                 return null;
 
-            BlockState blockstate = pContext.getLevel().getBlockState(relative);
+            BlockState blockstate = context.getLevel().getBlockState(relative);
             return blockstate.is(this) && blockstate.getValue(TYPE) == ChestType.SINGLE ? blockstate.getValue(FACING) : null;
         }
         return null;
@@ -170,11 +169,11 @@ public class FixedBaseChestBlock extends ChestBlock {
 
     // 修正方块状态
     @Override
-    public InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHit) {
-        if (!pState.getValue(UNLOCKED) && pLevel.getBlockEntity(pPos) instanceof BEntity entity && !entity.isLocked()) {
-            pLevel.setBlock(pPos, pState.setValue(UNLOCKED, true), 3);
+    public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+        if (!state.getValue(UNLOCKED) && level.getBlockEntity(pos) instanceof BEntity entity && !entity.isLocked()) {
+            level.setBlock(pos, state.setValue(UNLOCKED, true), 3);
         }
-        return super.useWithoutItem(pState, pLevel, pPos, pPlayer, pHit);
+        return super.useWithoutItem(state, level, pos, player, hitResult);
     }
 
     @Override
@@ -361,8 +360,7 @@ public class FixedBaseChestBlock extends ChestBlock {
         @Override
         public void inventoryTick(ItemStack stack, Level level, net.minecraft.world.entity.Entity entity, int slotId, boolean isSelected) {
             if (entity instanceof ServerPlayer player) {
-                CompoundTag tag = LibUtils.getItemStackNbt(stack);
-                Variant variantId = Variant.byId(tag.getInt("VariantId"));
+                Variant variantId = Variant.byId(LibUtils.getItemStackNbtNoCopy(stack).getInt("VariantId"));
                 ItemStack itemStack = new ItemStack(BEntity.getBlockByVariant(variantId), stack.getCount());
                 itemStack.set(DataComponents.BLOCK_STATE, new BlockItemStateProperties(Map.of("unlocked", variantId.unlock < 0 ? "true" : "false")));
                 player.getInventory().setItem(slotId, itemStack);

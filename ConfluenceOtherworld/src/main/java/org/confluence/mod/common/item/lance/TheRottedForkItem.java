@@ -16,7 +16,7 @@ import software.bernie.geckolib.loading.math.value.Constant;
 
 public class TheRottedForkItem extends AbstractLanceItem {
     public TheRottedForkItem() {
-        super(new Properties(), ModRarity.BLUE, 12, ObjectArrayList.of(
+        super(new Properties(), ModRarity.BLUE, 12, 3, ObjectArrayList.of(
                 new Keyframe<>(0.0, new Constant(0.0), new Constant(0.0), EasingType.LINEAR),
                 new Keyframe<>(4.8, new Constant(0.0), new Constant(6.0), EasingType.EASE_OUT_BACK),
                 new Keyframe<>(4.8, new Constant(6.0), new Constant(-16.0), EasingType.EASE_IN_EXPO),

@@ -16,7 +16,7 @@ import software.bernie.geckolib.loading.math.value.Constant;
 
 public class CobaltNaginataItem extends AbstractLanceItem {
     public CobaltNaginataItem() {
-        super(new Properties(), ModRarity.BLUE, 15, 1, ObjectArrayList.of(
+        super(new Properties(), ModRarity.BLUE, 15, 0, ObjectArrayList.of(
                 new Keyframe<>(0.0, new Constant(0.0), new Constant(0.0), EasingType.LINEAR),
                 new Keyframe<>(5.0, new Constant(0.0), new Constant(6.0), EasingType.EASE_OUT_BACK),
                 new Keyframe<>(5.0, new Constant(6.0), new Constant(-16.0), EasingType.EASE_IN_EXPO),
@@ -31,7 +31,7 @@ public class CobaltNaginataItem extends AbstractLanceItem {
 
     @Override
     protected void onHitEntity(DamageSource damageSource, Entity entity, LivingEntity living, Entity victim) {
-        victim.hurt(damageSource, 22.2F + (float) living.getAttributeValue(Attributes.ATTACK_DAMAGE));
-        VectorUtils.knockBackA2B(entity, victim, 0.5, 0.1);
+        victim.hurt(damageSource, 13.7F + (float) living.getAttributeValue(Attributes.ATTACK_DAMAGE));
+        VectorUtils.knockBackA2B(entity, victim, 0.4, 0.1);
     }
 }

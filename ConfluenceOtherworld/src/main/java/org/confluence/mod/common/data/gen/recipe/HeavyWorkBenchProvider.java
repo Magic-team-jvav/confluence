@@ -539,6 +539,19 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "#a#"
         )), FunctionalBlocks.ORICHALCUM_ANVIL.toStack());
 
+        // 穿流戟
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(3, MaterialItems.OPAL),
+                'a', AmountIngredient.of(2, MaterialItems.HEIM),
+                'b', AmountIngredient.of(3, ModTags.Items.GOLD_AND_PLATINUM)
+        ), List.of(
+                " a a",
+                "  # ",
+                " b a",
+                "b   "
+        )), LanceItems.STREAMSTRIKE_HALBERD.toStack());
+
+
         shapeless(recipeOutput, NatureBlocks.THIN_ICE_BLOCK.toStack(), Ingredient.of(Items.ICE));
         shapeless(recipeOutput, ConsumableItems.BONE_THROWING_KNIFE.toStack(), Ingredient.of(ConsumableItems.THROWING_KNIVE), Ingredient.of(MaterialItems.STURDY_FOSSIL));
         shapeless(recipeOutput, ConsumableItems.ROTTEN_BONE_DUST.toStack(2), AmountIngredient.of(2, MaterialItems.ROTTEN_BONE), AmountIngredient.of(2, MaterialItems.WORM_TOOTH), AmountIngredient.of(4, MaterialItems.ROTTEN_CHUNK));

@@ -24,6 +24,137 @@
 					}
 				}
 			}
+		},
+		"eye": {
+			"loop": true,
+			"animation_length": 2.75,
+			"bones": {
+				"bone3": {
+					"scale": {
+						"0.0": {
+							"vector": [1, 1, 1]
+						},
+						"0.5": {
+							"vector": [1, 1, 1]
+						},
+						"0.5417": {
+							"vector": [1, 0, 1]
+						},
+						"0.625": {
+							"vector": [1, 1, 1]
+						},
+						"0.6667": {
+							"vector": [1, 0, 1]
+						},
+						"0.75": {
+							"vector": [1, 1, 1]
+						},
+						"2.0": {
+							"vector": [1, 1, 1]
+						}
+					}
+				},
+				"bone2": {
+					"position": {
+						"0.0": {
+							"post": {
+								"vector": [0, 0, 0]
+							},
+							"lerp_mode": "catmullrom"
+						},
+						"0.1667": {
+							"post": {
+								"vector": [0, 1, 0]
+							},
+							"lerp_mode": "catmullrom"
+						},
+						"0.3333": {
+							"post": {
+								"vector": [0, 0, 1]
+							},
+							"lerp_mode": "catmullrom"
+						},
+						"0.4583": {
+							"post": {
+								"vector": [0, -1, 0]
+							},
+							"lerp_mode": "catmullrom"
+						},
+						"0.625": {
+							"post": {
+								"vector": [0, 0, 0]
+							},
+							"lerp_mode": "catmullrom"
+						},
+						"0.6667": {
+							"post": {
+								"vector": [0, 0, 0]
+							},
+							"lerp_mode": "catmullrom"
+						},
+						"1.1667": {
+							"post": {
+								"vector": [0, 0, 0]
+							},
+							"lerp_mode": "catmullrom"
+						},
+						"1.25": {
+							"post": {
+								"vector": [0, -1, 0]
+							},
+							"lerp_mode": "catmullrom"
+						},
+						"1.875": {
+							"post": {
+								"vector": [0, -1, 0]
+							},
+							"lerp_mode": "catmullrom"
+						},
+						"2.0": {
+							"post": {
+								"vector": [0, 0, 0]
+							},
+							"lerp_mode": "catmullrom"
+						}
+					},
+					"scale": {
+						"0.0": {
+							"vector": [1, 1, 1]
+						},
+						"0.5": {
+							"vector": [1, 1, 1]
+						},
+						"0.5417": {
+							"vector": [1, 0, 1]
+						},
+						"0.625": {
+							"vector": [1, 1, 1]
+						},
+						"0.6667": {
+							"vector": [1, 0, 1]
+						},
+						"0.75": {
+							"vector": [1, 1, 1]
+						},
+						"1.1667": {
+							"vector": [1, 1, 1]
+						},
+						"2.0": {
+							"vector": [1, 1, 1]
+						}
+					}
+				},
+				"root_item": {
+					"position": {
+						"0.0": {
+							"vector": [0, 0, 3]
+						},
+						"1.6667": {
+							"vector": [0, 0, 3]
+						}
+					}
+				}
+			}
 		}
 	}
 }

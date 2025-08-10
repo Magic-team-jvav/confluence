@@ -16,11 +16,11 @@ import software.bernie.geckolib.loading.math.value.Constant;
 
 public class TheRottedForkItem extends AbstractLanceItem {
     public TheRottedForkItem() {
-        super(new Properties(), ModRarity.BLUE, 12, 3, ObjectArrayList.of(
+        super(new Properties(), ModRarity.BLUE, 15, 1, ObjectArrayList.of(
                 new Keyframe<>(0.0, new Constant(0.0), new Constant(0.0), EasingType.LINEAR),
-                new Keyframe<>(4.8, new Constant(0.0), new Constant(6.0), EasingType.EASE_OUT_BACK),
-                new Keyframe<>(4.8, new Constant(6.0), new Constant(-16.0), EasingType.EASE_IN_EXPO),
-                new Keyframe<>(4.8, new Constant(-16.0), new Constant(0.0), EasingType.LINEAR)
+                new Keyframe<>(5.0, new Constant(0.0), new Constant(6.0), EasingType.EASE_OUT_BACK),
+                new Keyframe<>(5.0, new Constant(6.0), new Constant(-16.0), EasingType.EASE_IN_EXPO),
+                new Keyframe<>(5.0, new Constant(-16.0), new Constant(0.0), EasingType.LINEAR)
         ));
     }
 
@@ -31,7 +31,7 @@ public class TheRottedForkItem extends AbstractLanceItem {
 
     @Override
     protected void onHitEntity(DamageSource damageSource, Entity entity, LivingEntity living, Entity victim) {
-        victim.hurt(damageSource, 10.2F + (float) living.getAttributeValue(Attributes.ATTACK_DAMAGE));
+        victim.hurt(damageSource, 4.3F + (float) living.getAttributeValue(Attributes.ATTACK_DAMAGE));
         VectorUtils.knockBackA2B(entity, victim, 0.5, 0.1);
     }
 }

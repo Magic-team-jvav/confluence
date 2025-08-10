@@ -31,7 +31,7 @@ public class OrichalcumHalberdItem extends AbstractLanceItem {
 
     @Override
     protected void onHitEntity(DamageSource damageSource, Entity entity, LivingEntity living, Entity victim) {
-        victim.hurt(damageSource, 24.2F + (float) living.getAttributeValue(Attributes.ATTACK_DAMAGE));
+        victim.hurt(damageSource, 16.9F + (float) living.getAttributeValue(Attributes.ATTACK_DAMAGE));
         VectorUtils.knockBackA2B(entity, victim, 0.5, 0.1);
     }
 }

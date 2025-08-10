@@ -33,7 +33,7 @@ public class DarkLanceItem extends AbstractLanceItem {
 
     @Override
     protected void onHitEntity(DamageSource damageSource, Entity entity, LivingEntity living, Entity victim) {
-        victim.hurt(damageSource, 14.8F + (float) living.getAttributeValue(Attributes.ATTACK_DAMAGE));
+        victim.hurt(damageSource, 8.3F + (float) living.getAttributeValue(Attributes.ATTACK_DAMAGE));
         if (victim instanceof LivingEntity living1) {
             living1.addEffect(new MobEffectInstance(ModEffects.SHADOWFLAME, 300));
         }

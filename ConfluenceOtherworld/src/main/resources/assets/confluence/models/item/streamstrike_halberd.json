@@ -1,0 +1,120 @@
+{
+    "base": {
+        "credit": "Made with Blockbench",
+        "parent": "builtin/entity",
+        "texture_size": [
+            32,
+            32
+        ],
+        "display": {
+            "firstperson_righthand": {
+                "rotation": [
+                    0,
+                    10,
+                    0
+                ],
+                "translation": [
+                    10.5,
+                    0,
+                    6.75
+                ]
+            },
+            "firstperson_lefthand": {
+                "rotation": [
+                    0,
+                    10,
+                    0
+                ],
+                "translation": [
+                    10.5,
+                    0,
+                    6.75
+                ]
+            },
+            "thirdperson_righthand": {
+                "rotation": [
+                    108,
+                    0,
+                    0
+                ],
+                "translation": [
+                    0,
+                    0,
+                    2
+                ]
+            },
+            "thirdperson_lefthand": {
+                "rotation": [
+                    90,
+                    0,
+                    0
+                ],
+                "translation": [
+                    0,
+                    0,
+                    2
+                ]
+            },
+            "ground": {
+                "rotation": [
+                    90,
+                    0,
+                    0
+                ],
+                "translation": [
+                    0,
+                    12.25,
+                    0
+                ],
+                "scale": [
+                    0.5,
+                    0.5,
+                    0.5
+                ]
+            },
+            "head": {
+                "rotation": [
+                    90.4,
+                    -50.25,
+                    0.29
+                ],
+                "translation": [
+                    0,
+                    -14,
+                    4
+                ]
+            }
+        },
+        "textures": {
+            "particle": "confluence:item/lance/streamstrike_halberd_item"
+        }
+    },
+    "gui_light": "front",
+    "loader": "neoforge:separate_transforms",
+    "perspectives": {
+        "fixed": {
+            "parent": "minecraft:item/generated",
+            "textures": {
+                "layer0": "confluence:item/lance/streamstrike_halberd_inventory"
+            }
+        },
+        "ground": {
+            "parent": "minecraft:item/generated",
+            "textures": {
+                "layer0": "confluence:item/lance/streamstrike_halberd_inventory"
+            }
+        },
+        "gui": {
+            "parent": "minecraft:item/generated",
+            "textures": {
+                "layer0": "confluence:item/lance/streamstrike_halberd_inventory"
+            }
+        },
+        "head": {
+            "parent": "minecraft:item/generated",
+            "textures": {
+                "layer0": "confluence:item/lance/streamstrike_halberd_inventory"
+            }
+        }
+    }
+}

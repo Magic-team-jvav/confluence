@@ -14,9 +14,9 @@ import software.bernie.geckolib.animation.EasingType;
 import software.bernie.geckolib.animation.keyframe.Keyframe;
 import software.bernie.geckolib.loading.math.value.Constant;
 
-public class SpearItem extends AbstractLanceItem {
-    public SpearItem() {
-        super(new Properties(), ModRarity.WHITE, 15, 1, ObjectArrayList.of(
+public class AdamantiteGlaiveItem extends AbstractLanceItem {
+    public AdamantiteGlaiveItem() {
+        super(new Properties(), ModRarity.BLUE, 15, 1, ObjectArrayList.of(
                 new Keyframe<>(0.0, new Constant(0.0), new Constant(0.0), EasingType.LINEAR),
                 new Keyframe<>(5.0, new Constant(0.0), new Constant(6.0), EasingType.EASE_OUT_BACK),
                 new Keyframe<>(5.0, new Constant(6.0), new Constant(-16.0), EasingType.EASE_IN_EXPO),
@@ -31,7 +31,7 @@ public class SpearItem extends AbstractLanceItem {
 
     @Override
     protected void onHitEntity(DamageSource damageSource, Entity entity, LivingEntity living, Entity victim) {
-        victim.hurt(damageSource, 2.2F + (float) living.getAttributeValue(Attributes.ATTACK_DAMAGE));
-        VectorUtils.knockBackA2B(entity, victim, 0.65, 0.1);
+        victim.hurt(damageSource, 19.5F + (float) living.getAttributeValue(Attributes.ATTACK_DAMAGE));
+        VectorUtils.knockBackA2B(entity, victim, 0.5, 0.2);
     }
 }

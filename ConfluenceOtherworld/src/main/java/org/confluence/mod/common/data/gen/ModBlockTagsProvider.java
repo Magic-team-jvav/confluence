@@ -297,6 +297,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 TIMERS_BLOCK_5_1.get(),
                 TIMERS_BLOCK_1_2.get(),
                 TIMERS_BLOCK_1_4.get(),
+                DETONATOR.get(),
                 EVER_POWERED_RAIL.get(),
                 JUNGLE_HIVE_BLOCK.get(),
                 THIN_ICE_BLOCK.get(),
@@ -600,6 +601,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 TIMERS_BLOCK_5_1.get(),
                 TIMERS_BLOCK_1_2.get(),
                 TIMERS_BLOCK_1_4.get(),
+                DETONATOR.get(),
 
                 DESERT_FOSSIL.get(),
                 GELSTONE_ORE.get(),

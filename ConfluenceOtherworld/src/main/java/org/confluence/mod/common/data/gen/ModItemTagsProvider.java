@@ -1376,7 +1376,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FunctionalBlocks.PLAYER_PRESSURE_PLATE.asItem(),
                 FunctionalBlocks.LEVER.asItem(),
                 FunctionalBlocks.GEYSER_BLOCK.asItem(),
-                FunctionalBlocks.DETONATOR.asItem(),
                 FunctionalBlocks.LAND_MINE.asItem(),
                 FunctionalBlocks.SUPER_DART_TRAP.asItem(),
                 FunctionalBlocks.FLAME_TRAP.asItem(),

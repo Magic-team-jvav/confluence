@@ -133,6 +133,7 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(TIMERS_BLOCK_5_1.get());
         dropSelf(TIMERS_BLOCK_1_2.get());
         dropSelf(TIMERS_BLOCK_1_4.get());
+        dropSelf( DETONATOR.get());
         dropSelf(EVER_POWERED_RAIL.get());
         dropSelf(SHARPENING_STATION.get());
         dropSelf(BEWITCHING_TABLE.get());

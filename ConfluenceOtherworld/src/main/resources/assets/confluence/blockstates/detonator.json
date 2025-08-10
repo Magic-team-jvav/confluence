@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "drive=false": {
+      "model": "confluence:block/detonator_push"
+    },
+    "drive=true": {
+      "model": "confluence:block/detonator_close"
+    }
+  }
+}

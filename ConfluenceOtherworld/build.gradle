@@ -263,6 +263,7 @@ dependencies {
         runtimeOnly "io.redspace:irons_spellbooks:${irons_spells_version}"
         runtimeOnly "dev.kosmx.player-anim:player-animation-lib-forge:${player_animator_version}"
     }
+
     compileOnly "curse.maven:dynamiclights-reforged-551736:5807536"
 
     /**********************************************************/
@@ -283,6 +284,10 @@ dependencies {
     //runtimeOnly "maven.modrinth:modernfix:JNjN5X7g" // 冲突真多
     //runtimeOnly "maven.modrinth:feature-recycler:2.0.0-neoforge" // 协助修复feature order cycle
     //runtimeOnly "curse.maven:fargo-soul-1315726:6819904"
+    //runtimeOnly "curse.maven:cataclysm-spellbooks-1099461:6427259"
+    //runtimeOnly "curse.maven:azurelib-817423:6849116"
+    //runtimeOnly "curse.maven:lendercataclysm-551586:6849033"
+    //runtimeOnly "curse.maven:lionfish-api-1001614:6168249"
     if (true) {
         runtimeOnly "curse.maven:enchantment-descriptions-250419:6348560"
         runtimeOnly "curse.maven:bookshelf-228525:6717571"

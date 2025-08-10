@@ -8,11 +8,11 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.client.event.ModClientSetups;
-import org.confluence.mod.integration.terra_entity.npc_trade.SellTrade;
-import org.confluence.terraentity.client.gui.container.TETradeScreen;
 import org.confluence.mod.common.menu.NPCTradesForgeMenu;
+import org.confluence.mod.integration.terra_entity.npc_trade.SellTrade;
 import org.confluence.mod.network.c2s.OpenMenuPacketC2S;
 import org.confluence.terraentity.api.npc.trade.ITrade;
+import org.confluence.terraentity.client.gui.container.TETradeScreen;
 
 
 public class WithForgeTradeScreen extends TETradeScreen<NPCTradesForgeMenu> {
@@ -90,17 +90,11 @@ public class WithForgeTradeScreen extends TETradeScreen<NPCTradesForgeMenu> {
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if(keyCode == 341){
-            CTRL_PRESSED = true;
-        }
         return super.keyPressed(keyCode, scanCode, modifiers);
     }
 
     @Override
     public boolean keyReleased(int keyCode, int scanCode, int modifiers) {
-        if(keyCode == 341){
-            CTRL_PRESSED = false;
-        }
         return this.getFocused() != null && this.getFocused().keyReleased(keyCode, scanCode, modifiers);
     }
 }

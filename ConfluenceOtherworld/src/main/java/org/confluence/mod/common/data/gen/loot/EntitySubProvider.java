@@ -25,6 +25,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModLootTables;
+import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.loot.DateLootItemCondition;
 import org.confluence.mod.mixin.accessor.EntityLootSubProviderAccessor;
@@ -644,13 +645,43 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         )
                 )
         );
-        add(TEAnimals.SQUIRREL.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/squirrel"), LootTable.lootTable()
+        add(TEAnimals.CRAB.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/crab"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(FoodItems.RAW_SQUIRREL).apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot())).apply(random0To1)
-                        )
+                        .add(LootItem.lootTableItem(FoodItems.SHRIMP_PO_BOY).setWeight(2))
+                        .add(emptyWeight98).apply(random0To1)
                 )
         );
-
+        add(TEMonsterEntities.GRANITE_ELEMENTAL.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/granite_elemental"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FoodItems.SPAGHETTI).setWeight(2))
+                        .add(emptyWeight98).apply(random0To1)
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(NatureBlocks.GRANITE)).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 10))).apply(random0To1)
+                )
+        );
+        // 肉后怪
+        add(TEMonsterEntities.WYVERN.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/wyvern"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(ModItems.GOLD_COIN)).apply(SetItemCountFunction.setCount(ConstantValue.exactly(2)))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(MaterialItems.SOUL_OF_FLIGHT)).apply(SetItemCountFunction.setCount(UniformGenerator.between(10, 20))).apply(random0To1)
+                )
+        );
+        add(TEMonsterEntities.PIXIE.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/pixie"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TCItems.FAST_CLOCK).setWeight(2))
+                        .add(emptyWeight98)
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(AccessoryItems.MEGAPHONE).setWeight(2))
+                        .add(emptyWeight98)
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(MaterialItems.PIXIE_DUST)).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))).apply(random0To1)
+                )
+        );
     }
 
     private static LootTable.Builder batCommon() {

@@ -56,12 +56,12 @@ public class GraniteCaveStructure extends Structure {
             List<Vector3d> listPos2 = new ArrayList<>();
             List<Vector3d> listPos3 = new ArrayList<>();
             for (Vector3d vector3d : listPos) {
-                listPos1.addAll(ellipsoidPos(11.5, 9.5, 11.5, VectorUtils.fromVector3d(vector3d), 0.002F, random));
+                listPos1.addAll(ellipsoidPos(13.5, 9.5, 13.5, VectorUtils.fromVector3d(vector3d), 0.002F, random));
             }
 
             for (Vector3d vector3d : listPos1) {
                 checkPos = VectorUtils.fromVector3d(vector3d);
-                listPos2.addAll(ellipsoidPos(11.5, 4.5, 11.5, checkPos, 0.002F, random));
+                listPos2.addAll(ellipsoidPos(11.5, 6.5, 11.5, checkPos, 0.002F, random));
             }
             for (Vector3d vector3d : listPos2) {
                 checkPos = VectorUtils.fromVector3d(vector3d);
@@ -69,17 +69,17 @@ public class GraniteCaveStructure extends Structure {
             }
             for (Vector3d vector3d : listPos2) {
                 checkPos = VectorUtils.fromVector3d(vector3d);
-                ellipsoid(random.nextInt(4, 10) + 0.5, 2.5, random.nextInt(4, 10) + 0.5, checkPos, 0, true, blockMap);
+                ellipsoid(random.nextInt(4, 9) + 0.5, 2.5, random.nextInt(4, 9) + 0.5, checkPos, 0, true, blockMap);
             }
 
             for (Vector3d vector3d : listPos2) {
                 if (0.001F > random.nextFloat()) {
-                    listPos3.addAll(ellipsoidPos(random.nextInt(8, 20) + 0.5, 1.5, random.nextInt(8, 20) + 0.5, VectorUtils.fromVector3d(vector3d), 0.05F, random));
+                    listPos3.addAll(ellipsoidPos(random.nextInt(8, 13) + 0.5, 1.5, random.nextInt(8, 13) + 0.5, VectorUtils.fromVector3d(vector3d), 0.05F, random));
                 }
             }
             for (Vector3d vector3d : listPos3) {
                 checkPos = VectorUtils.fromVector3d(vector3d);
-                ellipsoid(random.nextInt(4, 10) + 0.5, 0.1, random.nextInt(4, 10) + 0.5, checkPos, blockstate, true, blockMap);
+                ellipsoid(random.nextInt(4, 9) + 0.5, 0.1, random.nextInt(4, 9) + 0.5, checkPos, blockstate, true, blockMap);
             }
 
             GridPiece.addPieces(blockMap, Lists.newArrayList(

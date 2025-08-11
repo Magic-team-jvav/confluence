@@ -1563,7 +1563,11 @@ public class ModDataProvider {
                     JigsawStructure.DEFAULT_DIMENSION_PADDING,
                     LiquidSettings.APPLY_WATERLOGGING
             ));
-            context.register(ModStructures.Keys.GRANITE_CAVE, new GraniteCaveStructure(new Structure.StructureSettings(overworld, Map.of(), GenerationStep.Decoration.LOCAL_MODIFICATIONS, TerrainAdjustment.NONE)));
+            context.register(ModStructures.Keys.GRANITE_CAVE, new GraniteCaveStructure(new Structure.StructureSettings(overworld, Map.of(
+                    MobCategory.MONSTER, new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create(
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GRANITE_ELEMENTAL.get(), 30, 1, 1)
+                    ))
+            ), GenerationStep.Decoration.LOCAL_MODIFICATIONS, TerrainAdjustment.NONE)));
             context.register(ModStructures.Keys.MARBLE_CAVE, new MarbleCaveStructure(new Structure.StructureSettings(overworld, Map.of(), GenerationStep.Decoration.LOCAL_MODIFICATIONS, TerrainAdjustment.NONE)));
             context.register(ModStructures.Keys.DESERT_UNDERGROUND_CABINS, new JigsawStructure(
                     new Structure.StructureSettings(desertBadlands, Map.of(), GenerationStep.Decoration.UNDERGROUND_STRUCTURES, TerrainAdjustment.BEARD_THIN),

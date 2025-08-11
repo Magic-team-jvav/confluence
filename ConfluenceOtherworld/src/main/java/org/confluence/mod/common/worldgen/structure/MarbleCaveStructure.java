@@ -58,12 +58,12 @@ public class MarbleCaveStructure extends Structure {
             List<Vector3d> listPos1 = new ArrayList<>();
             List<Vector3d> listPos2 = new ArrayList<>();
             for (Vector3d vector3d : listPos) {
-                listPos1.addAll(ellipsoidPos(11.5, 9.5, 11.5, VectorUtils.fromVector3d(vector3d), 0.002F, random));
+                listPos1.addAll(ellipsoidPos(13.5, 13.5, 13.5, VectorUtils.fromVector3d(vector3d), 0.002F, random));
             }
 
             for (Vector3d vector3d : listPos1) {
                 checkPos = VectorUtils.fromVector3d(vector3d);
-                listPos2.addAll(ellipsoidPos(11.5, 4.5, 11.5, checkPos, 0.002F, random));
+                listPos2.addAll(ellipsoidPos(11.5, 11.5, 11.5, checkPos, 0.002F, random));
             }
             for (Vector3d vector3d : listPos2) {
                 checkPos = VectorUtils.fromVector3d(vector3d);
@@ -71,7 +71,7 @@ public class MarbleCaveStructure extends Structure {
             }
             for (Vector3d vector3d : listPos2) {
                 checkPos = VectorUtils.fromVector3d(vector3d);
-                ellipsoid(random.nextInt(4, 10) + 0.5, random.nextInt(4, 10) + 0.5, random.nextInt(4, 12) + 0.5, checkPos, 0, true, blockMap);
+                ellipsoid(random.nextInt(4, 9) + 0.5, random.nextInt(4, 9) + 0.5, random.nextInt(4, 9) + 0.5, checkPos, 0, true, blockMap);
                 if (0.1F > random.nextFloat()) featureMap.put(checkPos, MARBLE_CAVE_POT.location());
             }
 

@@ -27,7 +27,7 @@ public class PumpkinSet extends EquipmentSet {
                 .bindHook(builder -> builder
                         .addBonus(Attributes.ATTACK_DAMAGE, new AttributeModifier(id, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
                         .addBonus(TCAttributes.getMagicDamage(), new AttributeModifier(id, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
-                        .addBonus(TEAttributes.SUMMON_DAMAGE, new AttributeModifier(id, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
+                        .addBonus(TEAttributes.MARK_DAMAGE, new AttributeModifier(id, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
                         .addBonus(TCAttributes.getRangedDamage(), new AttributeModifier(id, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
                 ).build());
     }

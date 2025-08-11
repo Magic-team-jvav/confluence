@@ -38,7 +38,7 @@ public class CrimsonSet extends EquipmentSet {
                 .bindHook(builder -> builder
                         .addBonus(Attributes.ATTACK_DAMAGE, new AttributeModifier(item.getId(), 0.02, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
                         .addBonus(TCAttributes.getMagicDamage(), new AttributeModifier(item.getId(), 0.02, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
-                        .addBonus(TEAttributes.SUMMON_DAMAGE, new AttributeModifier(item.getId(), 0.02, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
+                        .addBonus(TEAttributes.MARK_DAMAGE, new AttributeModifier(item.getId(), 0.02, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
                         .addBonus(TCAttributes.getRangedDamage(), new AttributeModifier(item.getId(), 0.02, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
                 ).build();
     }

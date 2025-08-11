@@ -26,7 +26,7 @@ public class CrystalAssassinSet extends EquipmentSet {
                 .bindHook(builder -> builder
                         .addBonus(Attributes.ATTACK_DAMAGE, new AttributeModifier(ArmorItems.CRYSTAL_ASSASSIN_CHESTPLATE.getId(), 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
                         .addBonus(TCAttributes.getMagicDamage(), new AttributeModifier(ArmorItems.CRYSTAL_ASSASSIN_CHESTPLATE.getId(), 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
-                        .addBonus(TEAttributes.SUMMON_DAMAGE, new AttributeModifier(ArmorItems.CRYSTAL_ASSASSIN_CHESTPLATE.getId(), 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
+                        .addBonus(TEAttributes.MARK_DAMAGE, new AttributeModifier(ArmorItems.CRYSTAL_ASSASSIN_CHESTPLATE.getId(), 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
                         .addBonus(TCAttributes.getRangedDamage(), new AttributeModifier(ArmorItems.CRYSTAL_ASSASSIN_CHESTPLATE.getId(), 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
                 )
                 .bindHook(ModHookTypes.SKIP_AMMO_CONSUME.get(), (owner, shooter, ammoStack) -> shooter.getRandom().nextFloat() < 0.1F)
@@ -50,7 +50,7 @@ public class CrystalAssassinSet extends EquipmentSet {
                 .bindHook(builder -> builder
                         .addBonus(Attributes.ATTACK_DAMAGE, new AttributeModifier(Confluence.asResource("crystal_assassin_set"), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
                         .addBonus(TCAttributes.getMagicDamage(), new AttributeModifier(Confluence.asResource("crystal_assassin_set"), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
-                        .addBonus(TEAttributes.SUMMON_DAMAGE, new AttributeModifier(Confluence.asResource("crystal_assassin_set"), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
+                        .addBonus(TEAttributes.MARK_DAMAGE, new AttributeModifier(Confluence.asResource("crystal_assassin_set"), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
                         .addBonus(TCAttributes.getRangedDamage(), new AttributeModifier(Confluence.asResource("crystal_assassin_set"), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
                         .addBonus(TCAttributes.getCriticalChance(), new AttributeModifier(Confluence.asResource("crystal_assassin_set"), 0.1, AttributeModifier.Operation.ADD_VALUE))
                 )

@@ -46,7 +46,7 @@ public class HallowedSet extends EquipmentSet {
                 .addEquippable(VanillaEquippable.HEAD, ArmorItems.HALLOWED_HOOD)
                 .bindHook(builder -> builder
                         .addBonus(TEAttributes.MINION_CAPACITY, new AttributeModifier(ArmorItems.HALLOWED_HOOD.getId(), 1, AttributeModifier.Operation.ADD_VALUE))
-                        .addBonus(TEAttributes.SUMMON_DAMAGE, new AttributeModifier(ArmorItems.HALLOWED_HOOD.getId(), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
+                        .addBonus(TEAttributes.MARK_DAMAGE, new AttributeModifier(ArmorItems.HALLOWED_HOOD.getId(), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
                 ).build());
         equippableGroup.addEquippableSet("helmet", new EquipmentSetBranch.Builder()
                 .addEquippable(VanillaEquippable.HEAD, ArmorItems.HALLOWED_HELMET)
@@ -63,7 +63,7 @@ public class HallowedSet extends EquipmentSet {
                         .addBonus(Attributes.ATTACK_DAMAGE, new AttributeModifier(ArmorItems.HALLOWED_CHESTPLATE.getId(), 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
                         .addBonus(TCAttributes.getRangedDamage(), new AttributeModifier(ArmorItems.HALLOWED_CHESTPLATE.getId(), 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
                         .addBonus(TCAttributes.getMagicDamage(), new AttributeModifier(ArmorItems.HALLOWED_CHESTPLATE.getId(), 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
-                        .addBonus(TEAttributes.SUMMON_DAMAGE, new AttributeModifier(ArmorItems.HALLOWED_CHESTPLATE.getId(), 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
+                        .addBonus(TEAttributes.MARK_DAMAGE, new AttributeModifier(ArmorItems.HALLOWED_CHESTPLATE.getId(), 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
                 ).build());
         equippableGroup.addEquippableSet("boots", new EquipmentSetBranch.Builder()
                 .addEquippable(VanillaEquippable.FEET, ArmorItems.HALLOWED_BOOTS)

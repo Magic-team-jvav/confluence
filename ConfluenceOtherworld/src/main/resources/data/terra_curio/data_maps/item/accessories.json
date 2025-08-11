@@ -86,7 +86,7 @@
                         "operation": "add_multiplied_total"
                     }
                 ],
-                "terra_entity:player.summon_damage": [
+                "terra_entity:player.mark_damage": [
                     {
                         "id": "terra_curio:avenger_emblem",
                         "amount": 0.12,
@@ -118,7 +118,7 @@
                         "operation": "add_multiplied_total"
                     }
                 ],
-                "terra_entity:player.summon_damage": [
+                "terra_entity:player.mark_damage": [
                     {
                         "id": "terra_curio:destroyer_emblem",
                         "amount": 0.1,
@@ -157,7 +157,7 @@
                         "operation": "add_multiplied_total"
                     }
                 ],
-                "terra_entity:player.summon_damage": [
+                "terra_entity:player.mark_damage": [
                     {
                         "id": "terra_curio:putrid_scent",
                         "amount": 0.05,
@@ -203,7 +203,7 @@
                         "operation": "add_multiplied_total"
                     }
                 ],
-                "terra_entity:player.summon_damage": [
+                "terra_entity:player.mark_damage": [
                     {
                         "id": "terra_curio:moon_stone",
                         "amount": 0.1,
@@ -270,7 +270,7 @@
                         "operation": "add_multiplied_total"
                     }
                 ],
-                "terra_entity:player.summon_damage": [
+                "terra_entity:player.mark_damage": [
                     {
                         "id": "terra_curio:sun_stone",
                         "amount": 0.1,
@@ -337,7 +337,7 @@
                         "operation": "add_multiplied_total"
                     }
                 ],
-                "terra_entity:player.summon_damage": [
+                "terra_entity:player.mark_damage": [
                     {
                         "id": "terra_curio:celestial_stone",
                         "amount": 0.1,
@@ -404,7 +404,7 @@
                         "operation": "add_multiplied_total"
                     }
                 ],
-                "terra_entity:player.summon_damage": [
+                "terra_entity:player.mark_damage": [
                     {
                         "id": "terra_curio:celestial_stone",
                         "amount": 0.1,

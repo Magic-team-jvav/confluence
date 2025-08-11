@@ -19,20 +19,20 @@ public class SpiderSet extends EquipmentSet {
                 .addEquippable(VanillaEquippable.HEAD, ArmorItems.SPIDER_HELMET)
                 .bindHook(builder -> builder
                         .addBonus(TEAttributes.MINION_CAPACITY, new AttributeModifier(ArmorItems.SPIDER_HELMET.getId(), 1, AttributeModifier.Operation.ADD_VALUE))
-                        .addBonus(TEAttributes.SUMMON_DAMAGE, new AttributeModifier(ArmorItems.SPIDER_HELMET.getId(), 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
+                        .addBonus(TEAttributes.MARK_DAMAGE, new AttributeModifier(ArmorItems.SPIDER_HELMET.getId(), 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
                 ).build());
         equippableGroup.addEquippableSet("chestplate", new EquipmentSetBranch.Builder()
                 .addEquippable(VanillaEquippable.CHEST, ArmorItems.SPIDER_CHESTPLATE)
                 .bindHook(builder -> builder
                         .addBonus(TEAttributes.MINION_CAPACITY, new AttributeModifier(ArmorItems.SPIDER_CHESTPLATE.getId(), 1, AttributeModifier.Operation.ADD_VALUE))
-                        .addBonus(TEAttributes.SUMMON_DAMAGE, new AttributeModifier(ArmorItems.SPIDER_CHESTPLATE.getId(), 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
+                        .addBonus(TEAttributes.MARK_DAMAGE, new AttributeModifier(ArmorItems.SPIDER_CHESTPLATE.getId(), 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
                 ).build());
         equippableGroup.addEquippableSet("leggings", new EquipmentSetBranch.Builder()
                 .addEquippable(VanillaEquippable.LEGS, ArmorItems.SPIDER_LEGGINGS)
                 .bindHook(builder -> builder.addBonus(TEAttributes.MINION_CAPACITY, new AttributeModifier(ArmorItems.SPIDER_LEGGINGS.getId(), 1, AttributeModifier.Operation.ADD_VALUE))).build());
         equippableGroup.addEquippableSet("boots", new EquipmentSetBranch.Builder()
                 .addEquippable(VanillaEquippable.FEET, ArmorItems.SPIDER_BOOTS)
-                .bindHook(builder -> builder.addBonus(TEAttributes.SUMMON_DAMAGE, new AttributeModifier(ArmorItems.SPIDER_BOOTS.getId(), 0.06, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
+                .bindHook(builder -> builder.addBonus(TEAttributes.MARK_DAMAGE, new AttributeModifier(ArmorItems.SPIDER_BOOTS.getId(), 0.06, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
                 .build());
 
         equippableGroup.addEquippableSet("full_set", new EquipmentSetBranch.Builder()
@@ -42,7 +42,7 @@ public class SpiderSet extends EquipmentSet {
                         VanillaEquippable.LEGS, ArmorItems.SPIDER_LEGGINGS,
                         VanillaEquippable.FEET, ArmorItems.SPIDER_BOOTS
                 )
-                .bindHook(builder -> builder.addBonus(TEAttributes.SUMMON_DAMAGE, new AttributeModifier(Confluence.asResource("spider_set"), 0.12, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
+                .bindHook(builder -> builder.addBonus(TEAttributes.MARK_DAMAGE, new AttributeModifier(Confluence.asResource("spider_set"), 0.12, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
                 .bindHook(EBHookTypes.ENTITY_INVULNERABILITY_CHECK.get(), (owner, event) -> {
                     if (TCUtils.isFire(event.getSource())) {
                         event.setInvulnerable(true);

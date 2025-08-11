@@ -39,7 +39,7 @@ public class MythrilSet extends EquipmentSet {
                         .addBonus(Attributes.ATTACK_DAMAGE, new AttributeModifier(ArmorItems.COBALT_LEGGINGS.getId(), 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
                         .addBonus(TCAttributes.getRangedDamage(), new AttributeModifier(ArmorItems.COBALT_LEGGINGS.getId(), 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
                         .addBonus(TCAttributes.getMagicDamage(), new AttributeModifier(ArmorItems.COBALT_LEGGINGS.getId(), 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
-                        .addBonus(TEAttributes.SUMMON_DAMAGE, new AttributeModifier(ArmorItems.COBALT_LEGGINGS.getId(), 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
+                        .addBonus(TEAttributes.MARK_DAMAGE, new AttributeModifier(ArmorItems.COBALT_LEGGINGS.getId(), 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
                 .build());
         equippableGroup.addEquippableSet("leggings", new EquipmentSetBranch.Builder()
                 .addEquippable(VanillaEquippable.LEGS, ArmorItems.MYTHRIL_LEGGINGS)

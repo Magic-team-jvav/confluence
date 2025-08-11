@@ -46,7 +46,7 @@ public class ExquisitelyStuffedEffect extends MobEffect {   //吃得好/很满�
             case 2 -> 0.10;
             default -> 0.05;
         });
-        addAttributeModifier(TEAttributes.SUMMON_DAMAGE, ID, ADD_MULTIPLIED_TOTAL, v -> switch (v) {
+        addAttributeModifier(TEAttributes.MARK_DAMAGE, ID, ADD_MULTIPLIED_TOTAL, v -> switch (v) {
             case 1 -> 0.075;
             case 2 -> 0.10;
             default -> 0.05;

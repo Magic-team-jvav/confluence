@@ -42,7 +42,7 @@ public class AdamantiteSet extends EquipmentSet {
                         .addBonus(Attributes.ATTACK_DAMAGE, new AttributeModifier(ArmorItems.ADAMANTITE_CHESTPLATE.getId(), 0.08, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
                         .addBonus(TCAttributes.getRangedDamage(), new AttributeModifier(ArmorItems.ADAMANTITE_CHESTPLATE.getId(), 0.08, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
                         .addBonus(TCAttributes.getMagicDamage(), new AttributeModifier(ArmorItems.ADAMANTITE_CHESTPLATE.getId(), 0.08, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
-                        .addBonus(TEAttributes.SUMMON_DAMAGE, new AttributeModifier(ArmorItems.ADAMANTITE_CHESTPLATE.getId(), 0.08, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
+                        .addBonus(TEAttributes.MARK_DAMAGE, new AttributeModifier(ArmorItems.ADAMANTITE_CHESTPLATE.getId(), 0.08, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
                 ).build());
         equippableGroup.addEquippableSet("leggings", new EquipmentSetBranch.Builder()
                 .addEquippable(VanillaEquippable.LEGS, ArmorItems.ADAMANTITE_LEGGINGS)

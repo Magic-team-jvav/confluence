@@ -8,10 +8,13 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
@@ -23,6 +26,7 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.util.ModUtils;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
@@ -56,6 +60,7 @@ public abstract class AbstractLanceItem extends CustomRarityItem implements GeoI
      */
     public AbstractLanceItem(Properties properties, ModRarity rarity, int attackDuration, int attackInterval, List<Keyframe<MathValue>> keyframes) {
         super(properties.stacksTo(1), rarity);
+        if (attackInterval < 1) throw new IllegalArgumentException("attackInterval must be greater than 1, currently is " + attackInterval);
         this.attackDuration = attackDuration;
         this.attackInterval = attackInterval;
         this.keyframes = keyframes;
@@ -144,7 +149,7 @@ public abstract class AbstractLanceItem extends CustomRarityItem implements GeoI
         }
         if (currentFrame == null) currentFrame = keyframes.getLast();
         AnimationPoint point = new AnimationPoint(currentFrame, startTick, currentFrame.length(), currentFrame.startValue().get(), currentFrame.endValue().get());
-        return point.keyFrame().easingType().apply(point) * owner.getAttributeValue(Attributes.ENTITY_INTERACTION_RANGE) * 1.5 / -16;
+        return point.keyFrame().easingType().apply(point) * owner.getAttributeValue(Attributes.ENTITY_INTERACTION_RANGE) / -16;
     }
 
     @Override
@@ -171,5 +176,11 @@ public abstract class AbstractLanceItem extends CustomRarityItem implements GeoI
                 return renderer;
             }
         });
+    }
+
+    protected static ItemAttributeModifiers entityInteractionRange(float extra) {
+        return ItemAttributeModifiers.builder()
+                .add(Attributes.ENTITY_INTERACTION_RANGE, new AttributeModifier(ModItems.BASE_ENTITY_INTERACTION_RANGE_ID, extra, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+                .build();
     }
 }

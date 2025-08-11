@@ -25,6 +25,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.stats.Stat;
 import net.minecraft.stats.Stats;
 import net.minecraft.stats.StatsCounter;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -57,6 +58,7 @@ import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEquipmentSets;
+import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.common.item.lance.AbstractLanceItem;
@@ -95,9 +97,7 @@ public final class GameClientEvents {
                 if (!itemStack.isEmpty() && itemStack.getItem() instanceof AbstractLanceItem lanceItem) {
                     CompoundTag tag = LibUtils.getItemStackNbtIfPresent(itemStack);
                     if (tag != null) {
-                        long gameTime = player.level().getGameTime();
-                        long l = tag.getLong(AbstractLanceItem.LAST_ATTACK_TIME_KEY);
-                        if (gameTime - l > lanceItem.getAttackDuration()) {
+                        if (player.level().getGameTime() - tag.getLong(AbstractLanceItem.LAST_ATTACK_TIME_KEY) > lanceItem.getAttackDuration()) {
                             LanceAttackPacketC2S.sendToServer();
                         }
                     }
@@ -138,11 +138,16 @@ public final class GameClientEvents {
 
     @SubscribeEvent
     public static void leftClick(InputEvent.InteractionKeyMappingTriggered event) {
-        Minecraft minecraft = Minecraft.getInstance();
-        LocalPlayer localPlayer = minecraft.player;
-        if (localPlayer == null) return;
+        LocalPlayer player = Minecraft.getInstance().player;
+        if (player == null) return;
         if (event.isUseItem() || event.isAttack() || event.isPickBlock()) {
-            if (!((ILocalPlayer) localPlayer).confluence$isCanMove() || localPlayer.hasEffect(ModEffects.CURSED)) {
+            if (!((ILocalPlayer) player).confluence$isCanMove() || player.hasEffect(ModEffects.CURSED)) {
+                event.setCanceled(true);
+                event.setSwingHand(false);
+            }
+        }
+        if (event.isAttack() && event.getHand() == InteractionHand.MAIN_HAND) {
+            if (player.getMainHandItem().is(ModTags.Items.LANCES)) {
                 event.setCanceled(true);
                 event.setSwingHand(false);
             }

@@ -47,6 +47,7 @@ public final class ModItems {
     public static final ResourceLocation BASE_ATTACK_KNOCKBACK_ID = Confluence.asResource("base_attack_knockback");
     public static final ResourceLocation BASE_CRITICAL_CHANCE_ID = Confluence.asResource("base_critical_chance");
     public static final ResourceLocation BASE_BLOCK_INTERACTION_RANGE_ID = Confluence.asResource("base_block_interaction_range");
+    public static final ResourceLocation BASE_ENTITY_INTERACTION_RANGE_ID = Confluence.asResource("base_entity_interaction_range");
 
     public static final DeferredItem<Item> STAR = HIDDEN.register("star", () -> new CustomRarityItem(new Item.Properties().stacksTo(MAX_STACK_SIZE), ModRarity.MASTER));
     public static final DeferredItem<Item> SOUL_CAKE = HIDDEN.register("soul_cake", () -> new CustomRarityItem(new Item.Properties().stacksTo(MAX_STACK_SIZE), ModRarity.MASTER));

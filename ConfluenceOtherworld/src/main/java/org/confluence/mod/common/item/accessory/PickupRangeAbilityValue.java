@@ -11,7 +11,7 @@ public record PickupRangeAbilityValue(Tuple<Float, Integer> value) implements Pr
     public static final Codec<PickupRangeAbilityValue> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ExtraCodecs.POSITIVE_FLOAT.fieldOf("range").forGetter(v -> v.value.getA()),
             ExtraCodecs.POSITIVE_INT.fieldOf("combine_id").forGetter(v -> v.value.getB())
-    ).apply(instance, (speed, ticks) -> new PickupRangeAbilityValue(new Tuple<>(speed, ticks))));
+    ).apply(instance, (range, combineId) -> new PickupRangeAbilityValue(new Tuple<>(range, combineId))));
     public static final CombineRule<Tuple<Float, Integer>, PickupRangeAbilityValue> COMBINE_RULE = CombineRule.register((a, b) -> {
         if (a.getB().equals(b.getB())) return a; // a与b 的 combine_id 相同时，不合并
         return new Tuple<>(a.getA() + b.getA(), a.getB());

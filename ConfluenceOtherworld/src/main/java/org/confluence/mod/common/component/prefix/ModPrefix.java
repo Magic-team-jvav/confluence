@@ -62,7 +62,7 @@ public interface ModPrefix {
                     .put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ID, attackDamage, ADD_MULTIPLIED_TOTAL))
                     .put(TCAttributes.getRangedDamage(), new AttributeModifier(ID, attackDamage, ADD_MULTIPLIED_TOTAL))
                     .put(TCAttributes.getMagicDamage(), new AttributeModifier(ID, attackDamage, ADD_MULTIPLIED_TOTAL))
-                    .put(TEAttributes.MARK_DAMAGE, new AttributeModifier(ID, attackDamage, ADD_MULTIPLIED_TOTAL));
+                    .put(TEAttributes.SUMMON_DAMAGE, new AttributeModifier(ID, attackDamage, ADD_MULTIPLIED_TOTAL));
             if (attackSpeed != 0.0F) builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(ID, attackSpeed, ADD_MULTIPLIED_TOTAL));
             if (movementSpeed != 0.0F) builder.put(Attributes.MOVEMENT_SPEED, new AttributeModifier(ID, movementSpeed, ADD_MULTIPLIED_TOTAL));
             return new PrefixComponent(prefixType, name, new AttributeModifiersValue(builder.build()), 0.0F, additionalMana, tier, value);
@@ -113,7 +113,7 @@ public interface ModPrefix {
                     .put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ID, attackDamage, ADD_MULTIPLIED_TOTAL))
                     .put(TCAttributes.getRangedDamage(), new AttributeModifier(ID, attackDamage, ADD_MULTIPLIED_TOTAL))
                     .put(TCAttributes.getMagicDamage(), new AttributeModifier(ID, attackDamage, ADD_MULTIPLIED_TOTAL))
-                    .put(TEAttributes.MARK_DAMAGE, new AttributeModifier(ID, attackDamage, ADD_MULTIPLIED_TOTAL));
+                    .put(TEAttributes.SUMMON_DAMAGE, new AttributeModifier(ID, attackDamage, ADD_MULTIPLIED_TOTAL));
             if (criticalChance != 0.0F) builder.put(TCAttributes.getCriticalChance(), new AttributeModifier(ID, criticalChance, ADD_VALUE));
             if (knockBack != 0.0F) builder.put(Attributes.ATTACK_KNOCKBACK, new AttributeModifier(ID, knockBack, ADD_VALUE));
             return new PrefixComponent(prefixType, name, new AttributeModifiersValue(builder.build()), 0.0F, 0, tier, value);
@@ -160,7 +160,7 @@ public interface ModPrefix {
                     .put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ID, attackDamage, ADD_MULTIPLIED_TOTAL))
                     .put(TCAttributes.getRangedDamage(), new AttributeModifier(ID, attackDamage, ADD_MULTIPLIED_TOTAL))
                     .put(TCAttributes.getMagicDamage(), new AttributeModifier(ID, attackDamage, ADD_MULTIPLIED_TOTAL))
-                    .put(TEAttributes.MARK_DAMAGE, new AttributeModifier(ID, attackDamage, ADD_MULTIPLIED_TOTAL));
+                    .put(TEAttributes.SUMMON_DAMAGE, new AttributeModifier(ID, attackDamage, ADD_MULTIPLIED_TOTAL));
             if (attackSpeed != 0) builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(ID, attackSpeed, ADD_MULTIPLIED_TOTAL));
             if (criticalChance != 0.0F) builder.put(TCAttributes.getCriticalChance(), new AttributeModifier(ID, criticalChance, ADD_VALUE));
             if (knockBack != 0.0F) builder.put(Attributes.ATTACK_KNOCKBACK, new AttributeModifier(ID, knockBack, ADD_VALUE));

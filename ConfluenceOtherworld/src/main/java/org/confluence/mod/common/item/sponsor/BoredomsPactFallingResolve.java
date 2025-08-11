@@ -101,7 +101,7 @@ public class BoredomsPactFallingResolve extends BaseCurioItem {
                 Attributes.ATTACK_DAMAGE, modifier,
                 TCAttributes.getMagicDamage(), modifier,
                 TCAttributes.getRangedDamage(), modifier,
-                TEAttributes.MARK_DAMAGE, modifier,
+                TEAttributes.SUMMON_DAMAGE, modifier,
                 TCAttributes.getCriticalChance(), modifier
         );
     }

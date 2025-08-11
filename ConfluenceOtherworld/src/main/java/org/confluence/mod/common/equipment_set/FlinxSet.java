@@ -14,7 +14,7 @@ public class FlinxSet extends EquipmentSet {
     protected void init(HookMap.Builder hook, EquippableGroup.Builder equippableGroup) {
         equippableGroup.addEquippableSet("chestplate", new EquipmentSetBranch.Builder()
                 .addEquippable(VanillaEquippable.CHEST, ArmorItems.FLINX_FUR_COAT)
-                .bindHook(builder -> builder.addBonus(TEAttributes.MARK_DAMAGE, new AttributeModifier(ArmorItems.FLINX_FUR_COAT.getId(), 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
+                .bindHook(builder -> builder.addBonus(TEAttributes.SUMMON_DAMAGE, new AttributeModifier(ArmorItems.FLINX_FUR_COAT.getId(), 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
                 .bindHook(builder -> builder.addBonus(TEAttributes.MINION_CAPACITY, new AttributeModifier(ArmorItems.FLINX_FUR_COAT.getId(), 1, AttributeModifier.Operation.ADD_VALUE)))
                 .build());
     }

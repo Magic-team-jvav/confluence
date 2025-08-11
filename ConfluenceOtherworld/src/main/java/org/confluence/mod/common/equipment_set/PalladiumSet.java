@@ -44,7 +44,7 @@ public class PalladiumSet extends EquipmentSet {
                         .addBonus(Attributes.ATTACK_DAMAGE, new AttributeModifier(ArmorItems.PALLADIUM_CHESTPLATE.getId(), 0.03, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
                         .addBonus(TCAttributes.getRangedDamage(), new AttributeModifier(ArmorItems.PALLADIUM_CHESTPLATE.getId(), 0.03, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
                         .addBonus(TCAttributes.getMagicDamage(), new AttributeModifier(ArmorItems.PALLADIUM_CHESTPLATE.getId(), 0.03, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
-                        .addBonus(TEAttributes.MARK_DAMAGE, new AttributeModifier(ArmorItems.PALLADIUM_CHESTPLATE.getId(), 0.03, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
+                        .addBonus(TEAttributes.SUMMON_DAMAGE, new AttributeModifier(ArmorItems.PALLADIUM_CHESTPLATE.getId(), 0.03, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
                         .addBonus(TCAttributes.getCriticalChance(), new AttributeModifier(ArmorItems.PALLADIUM_CHESTPLATE.getId(), 0.02, AttributeModifier.Operation.ADD_VALUE))
                 ).build());
         equippableGroup.addEquippableSet("leggings", new EquipmentSetBranch.Builder()
@@ -53,7 +53,7 @@ public class PalladiumSet extends EquipmentSet {
                         .addBonus(Attributes.ATTACK_DAMAGE, new AttributeModifier(ArmorItems.PALLADIUM_LEGGINGS.getId(), 0.02, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
                         .addBonus(TCAttributes.getRangedDamage(), new AttributeModifier(ArmorItems.PALLADIUM_LEGGINGS.getId(), 0.02, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
                         .addBonus(TCAttributes.getMagicDamage(), new AttributeModifier(ArmorItems.PALLADIUM_LEGGINGS.getId(), 0.02, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
-                        .addBonus(TEAttributes.MARK_DAMAGE, new AttributeModifier(ArmorItems.PALLADIUM_LEGGINGS.getId(), 0.02, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
+                        .addBonus(TEAttributes.SUMMON_DAMAGE, new AttributeModifier(ArmorItems.PALLADIUM_LEGGINGS.getId(), 0.02, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
                 ).build());
         equippableGroup.addEquippableSet("boots", new EquipmentSetBranch.Builder()
                 .addEquippable(VanillaEquippable.FEET, ArmorItems.PALLADIUM_BOOTS)

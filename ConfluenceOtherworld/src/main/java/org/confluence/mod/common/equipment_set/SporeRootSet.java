@@ -15,20 +15,20 @@ public class SporeRootSet extends EquipmentSet {
     protected void init(HookMap.Builder hook, EquippableGroup.Builder equippableGroup) {
         equippableGroup.addEquippableSet("helmet", new EquipmentSetBranch.Builder()
                 .addEquippable(VanillaEquippable.HEAD, ArmorItems.SPORE_ROOT_HELMET)
-                .bindHook(builder -> builder.addBonus(TEAttributes.MARK_DAMAGE, new AttributeModifier(ArmorItems.SPORE_ROOT_HELMET.getId(), 0.02, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
+                .bindHook(builder -> builder.addBonus(TEAttributes.SUMMON_DAMAGE, new AttributeModifier(ArmorItems.SPORE_ROOT_HELMET.getId(), 0.02, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
                 .bindHook(builder -> builder.addBonus(TEAttributes.MINION_CAPACITY, new AttributeModifier(ArmorItems.SPORE_ROOT_HELMET.getId(), 1, AttributeModifier.Operation.ADD_VALUE)))
                 .build());
         equippableGroup.addEquippableSet("chestplate", new EquipmentSetBranch.Builder()
                 .addEquippable(VanillaEquippable.CHEST, ArmorItems.SPORE_ROOT_CHESTPLATE)
-                .bindHook(builder -> builder.addBonus(TEAttributes.MARK_DAMAGE, new AttributeModifier(ArmorItems.SPORE_ROOT_CHESTPLATE.getId(), 0.03, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
+                .bindHook(builder -> builder.addBonus(TEAttributes.SUMMON_DAMAGE, new AttributeModifier(ArmorItems.SPORE_ROOT_CHESTPLATE.getId(), 0.03, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
                 .build());
         equippableGroup.addEquippableSet("leggings", new EquipmentSetBranch.Builder()
                 .addEquippable(VanillaEquippable.LEGS, ArmorItems.SPORE_ROOT_LEGGINGS)
-                .bindHook(builder -> builder.addBonus(TEAttributes.MARK_DAMAGE, new AttributeModifier(ArmorItems.SPORE_ROOT_LEGGINGS.getId(), 0.03, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
+                .bindHook(builder -> builder.addBonus(TEAttributes.SUMMON_DAMAGE, new AttributeModifier(ArmorItems.SPORE_ROOT_LEGGINGS.getId(), 0.03, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
                 .build());
         equippableGroup.addEquippableSet("boots", new EquipmentSetBranch.Builder()
                 .addEquippable(VanillaEquippable.FEET, ArmorItems.SPORE_ROOT_BOOTS)
-                .bindHook(builder -> builder.addBonus(TEAttributes.MARK_DAMAGE, new AttributeModifier(ArmorItems.SPORE_ROOT_BOOTS.getId(), 0.02, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
+                .bindHook(builder -> builder.addBonus(TEAttributes.SUMMON_DAMAGE, new AttributeModifier(ArmorItems.SPORE_ROOT_BOOTS.getId(), 0.02, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
                 .build());
 
         equippableGroup.addEquippableSet("full_set", new EquipmentSetBranch.Builder()

@@ -11,6 +11,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import org.confluence.mod.Confluence;
 import org.confluence.terra_curio.api.primitive.AttributeModifiersValue;
 import org.confluence.terra_curio.common.init.TCAttributes;
+import org.confluence.terraentity.init.TEAttributes;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -57,7 +58,11 @@ public interface ModPrefix {
             ImmutableListMultimap.Builder<Holder<Attribute>, AttributeModifier> builder = ImmutableListMultimap.builder();
             if (armor != 0) builder.put(Attributes.ARMOR, new AttributeModifier(ID, armor, ADD_VALUE));
             if (criticalChance != 0.0F) builder.put(TCAttributes.getCriticalChance(), new AttributeModifier(ID, criticalChance, ADD_VALUE));
-            if (attackDamage != 0.0F) builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ID, attackDamage, ADD_MULTIPLIED_TOTAL));
+            if (attackDamage != 0.0F) builder
+                    .put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ID, attackDamage, ADD_MULTIPLIED_TOTAL))
+                    .put(TCAttributes.getRangedDamage(), new AttributeModifier(ID, attackDamage, ADD_MULTIPLIED_TOTAL))
+                    .put(TCAttributes.getMagicDamage(), new AttributeModifier(ID, attackDamage, ADD_MULTIPLIED_TOTAL))
+                    .put(TEAttributes.SUMMON_DAMAGE, new AttributeModifier(ID, attackDamage, ADD_MULTIPLIED_TOTAL));
             if (attackSpeed != 0.0F) builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(ID, attackSpeed, ADD_MULTIPLIED_TOTAL));
             if (movementSpeed != 0.0F) builder.put(Attributes.MOVEMENT_SPEED, new AttributeModifier(ID, movementSpeed, ADD_MULTIPLIED_TOTAL));
             return new PrefixComponent(prefixType, name, new AttributeModifiersValue(builder.build()), 0.0F, additionalMana, tier, value);
@@ -104,7 +109,11 @@ public interface ModPrefix {
         @Override
         public PrefixComponent createComponent(PrefixType prefixType) {
             ImmutableListMultimap.Builder<Holder<Attribute>, AttributeModifier> builder = ImmutableListMultimap.builder();
-            if (attackDamage != 0.0F) builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ID, attackDamage, ADD_MULTIPLIED_TOTAL));
+            if (attackDamage != 0.0F) builder
+                    .put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ID, attackDamage, ADD_MULTIPLIED_TOTAL))
+                    .put(TCAttributes.getRangedDamage(), new AttributeModifier(ID, attackDamage, ADD_MULTIPLIED_TOTAL))
+                    .put(TCAttributes.getMagicDamage(), new AttributeModifier(ID, attackDamage, ADD_MULTIPLIED_TOTAL))
+                    .put(TEAttributes.SUMMON_DAMAGE, new AttributeModifier(ID, attackDamage, ADD_MULTIPLIED_TOTAL));
             if (criticalChance != 0.0F) builder.put(TCAttributes.getCriticalChance(), new AttributeModifier(ID, criticalChance, ADD_VALUE));
             if (knockBack != 0.0F) builder.put(Attributes.ATTACK_KNOCKBACK, new AttributeModifier(ID, knockBack, ADD_VALUE));
             return new PrefixComponent(prefixType, name, new AttributeModifiersValue(builder.build()), 0.0F, 0, tier, value);
@@ -147,7 +156,11 @@ public interface ModPrefix {
         @Override
         public PrefixComponent createComponent(PrefixType prefixType) {
             ImmutableListMultimap.Builder<Holder<Attribute>, AttributeModifier> builder = ImmutableListMultimap.builder();
-            if (attackDamage != 0.0F) builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ID, attackDamage, ADD_MULTIPLIED_TOTAL));
+            if (attackDamage != 0.0F) builder
+                    .put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ID, attackDamage, ADD_MULTIPLIED_TOTAL))
+                    .put(TCAttributes.getRangedDamage(), new AttributeModifier(ID, attackDamage, ADD_MULTIPLIED_TOTAL))
+                    .put(TCAttributes.getMagicDamage(), new AttributeModifier(ID, attackDamage, ADD_MULTIPLIED_TOTAL))
+                    .put(TEAttributes.SUMMON_DAMAGE, new AttributeModifier(ID, attackDamage, ADD_MULTIPLIED_TOTAL));
             if (attackSpeed != 0) builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(ID, attackSpeed, ADD_MULTIPLIED_TOTAL));
             if (criticalChance != 0.0F) builder.put(TCAttributes.getCriticalChance(), new AttributeModifier(ID, criticalChance, ADD_VALUE));
             if (knockBack != 0.0F) builder.put(Attributes.ATTACK_KNOCKBACK, new AttributeModifier(ID, knockBack, ADD_VALUE));

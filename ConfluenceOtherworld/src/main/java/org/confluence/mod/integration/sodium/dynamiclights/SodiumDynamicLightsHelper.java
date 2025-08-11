@@ -8,7 +8,7 @@ import net.neoforged.fml.ModList;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
-import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.item.ArmorItems;
 import org.confluence.mod.common.init.item.ToolItems;
 
 public class SodiumDynamicLightsHelper {
@@ -29,7 +29,7 @@ public class SodiumDynamicLightsHelper {
     public static int getLuminance(Entity entity, int returnValue) {
         int luminance = 0;
         if (entity instanceof LivingEntity living) {
-            if (living.getItemBySlot(EquipmentSlot.HEAD).is(ModTags.Items.PROVIDE_LIGHT)) {
+            if (living.getItemBySlot(EquipmentSlot.HEAD).is(ArmorItems.MINING_HELMET)) {
                 luminance += 10;
             }
             if (living.hasEffect(ModEffects.SHINE)) {

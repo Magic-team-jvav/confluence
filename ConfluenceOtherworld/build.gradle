@@ -153,6 +153,7 @@ boolean mmmmmmmmmmmm = false // 试验假人
 boolean supplementaries = false // 锦致装饰
 boolean lootBeams = false // 战利品光束
 boolean spark = false // 火花
+boolean apotheosis = true // 神化
 
 dependencies {
     projectName.forEach { name -> implementation jarJar(project(":" + name)) }
@@ -185,7 +186,9 @@ dependencies {
 
     compileOnly "vazkii.patchouli:Patchouli:1.21-87-NEOFORGE:api"
     compileOnly "vazkii.patchouli:Patchouli:1.21-87-NEOFORGE"
-    //runtimeOnly "vazkii.patchouli:Patchouli:1.21-87-NEOFORGE"
+    if (false || apotheosis) {
+        runtimeOnly "vazkii.patchouli:Patchouli:1.21-87-NEOFORGE"
+    }
 
     compileOnly "curse.maven:ftb-chunks-forge-314906:5968500"
     compileOnly "curse.maven:ftb-library-forge-404465:6016745"
@@ -219,9 +222,12 @@ dependencies {
     //runtimeOnly "curse.maven:carry-on-274259:5649344"
 
     compileOnly "curse.maven:apothic-attributes-898963:6302334"
-    if (false) {
+    if (apotheosis) {
+        runtimeOnly "curse.maven:apotheosis-313970:6545942"
+        runtimeOnly "curse.maven:apothic-enchanting-1063926:6563643"
+        runtimeOnly "curse.maven:apothic-spawners-986583:6430294"
         runtimeOnly "curse.maven:apothic-attributes-898963:6302334"
-        runtimeOnly "curse.maven:placebo-283644:6337156"
+        runtimeOnly "curse.maven:placebo-283644:6446766"
     }
 
     compileOnly "curse.maven:appleskin-248787:5586600"

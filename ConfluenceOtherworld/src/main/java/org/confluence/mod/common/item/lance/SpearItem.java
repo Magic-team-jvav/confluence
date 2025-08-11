@@ -16,11 +16,11 @@ import software.bernie.geckolib.loading.math.value.Constant;
 
 public class SpearItem extends AbstractLanceItem {
     public SpearItem() {
-        super(new Properties(), ModRarity.WHITE, 15, 1, ObjectArrayList.of(
-                new Keyframe<>(0.0, new Constant(0.0), new Constant(0.0), EasingType.LINEAR),
-                new Keyframe<>(5.0, new Constant(0.0), new Constant(6.0), EasingType.EASE_OUT_BACK),
-                new Keyframe<>(5.0, new Constant(6.0), new Constant(-16.0), EasingType.EASE_IN_EXPO),
-                new Keyframe<>(5.0, new Constant(-16.0), new Constant(0.0), EasingType.LINEAR)
+        super(new Properties().attributes(entityInteractionRange(1)), ModRarity.WHITE, 15, 3, createKeyframes(
+                K.of(0, 0, EasingType.LINEAR),
+                K.of(0.17, 6, EasingType.EASE_OUT_BACK),
+                K.of(0.33, -16, EasingType.EASE_IN_EXPO),
+                K.of(0.55, 0, EasingType.LINEAR)
         ));
     }
 

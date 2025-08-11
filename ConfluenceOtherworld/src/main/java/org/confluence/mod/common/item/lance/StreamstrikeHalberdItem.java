@@ -16,11 +16,11 @@ import software.bernie.geckolib.loading.math.value.Constant;
 
 public class StreamstrikeHalberdItem extends AbstractLanceItem {
     public StreamstrikeHalberdItem() {
-        super(new Properties(), ModRarity.BLUE, 15, 1, ObjectArrayList.of(
-                new Keyframe<>(0.0, new Constant(0.0), new Constant(0.0), EasingType.LINEAR),
-                new Keyframe<>(5.0, new Constant(0.0), new Constant(6.0), EasingType.EASE_OUT_BACK),
-                new Keyframe<>(5.0, new Constant(6.0), new Constant(-16.0), EasingType.EASE_IN_EXPO),
-                new Keyframe<>(5.0, new Constant(-16.0), new Constant(0.0), EasingType.LINEAR)
+        super(new Properties().attributes(entityInteractionRange(4)), ModRarity.BLUE,15, 3, createKeyframes(
+                K.of(0, 0, EasingType.LINEAR),
+                K.of(0.17, 6, EasingType.EASE_OUT_BACK),
+                K.of(0.33, -16, EasingType.EASE_IN_EXPO),
+                K.of(0.55, 0, EasingType.LINEAR)
         ));
     }
 
@@ -31,7 +31,7 @@ public class StreamstrikeHalberdItem extends AbstractLanceItem {
 
     @Override
     protected void onHitEntity(DamageSource damageSource, Entity entity, LivingEntity living, Entity victim) {
-        victim.hurt(damageSource, 3.8F + (float) living.getAttributeValue(Attributes.ATTACK_DAMAGE));
+        victim.hurt(damageSource, 3.4F + (float) living.getAttributeValue(Attributes.ATTACK_DAMAGE));
         VectorUtils.knockBackA2B(entity, victim, 0.5, 0.2);
     }
 }

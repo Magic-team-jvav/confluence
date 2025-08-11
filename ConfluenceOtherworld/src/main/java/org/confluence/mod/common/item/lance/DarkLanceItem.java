@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.lance;
 
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -13,16 +12,14 @@ import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEffects;
 import software.bernie.geckolib.animation.EasingType;
-import software.bernie.geckolib.animation.keyframe.Keyframe;
-import software.bernie.geckolib.loading.math.value.Constant;
 
 public class DarkLanceItem extends AbstractLanceItem {
     public DarkLanceItem() {
-        super(new Properties().attributes(entityInteractionRange(5)), ModRarity.ORANGE, 15, 1, ObjectArrayList.of(
-                new Keyframe<>(0.0, new Constant(0.0), new Constant(0.0), EasingType.LINEAR),
-                new Keyframe<>(5.0, new Constant(0.0), new Constant(6.0), EasingType.EASE_OUT_BACK),
-                new Keyframe<>(5.0, new Constant(6.0), new Constant(-16.0), EasingType.EASE_IN_EXPO),
-                new Keyframe<>(5.0, new Constant(-16.0), new Constant(0.0), EasingType.LINEAR)
+        super(new Properties().attributes(entityInteractionRange(5)), ModRarity.ORANGE, 15, 1, createKeyframes(
+                K.of(0, 0, EasingType.LINEAR),
+                K.of(0.25, 6, EasingType.EASE_OUT_BACK),
+                K.of(0.5, -16, EasingType.EASE_IN_EXPO),
+                K.of(0.75, 0, EasingType.LINEAR)
         ));
     }
 

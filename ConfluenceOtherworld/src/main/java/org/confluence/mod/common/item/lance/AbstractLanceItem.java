@@ -1,5 +1,6 @@
 package org.confluence.mod.common.item.lance;
 
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -32,17 +33,16 @@ import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.animation.PlayState;
-import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.animation.*;
 import software.bernie.geckolib.animation.keyframe.AnimationPoint;
 import software.bernie.geckolib.animation.keyframe.Keyframe;
 import software.bernie.geckolib.loading.math.MathValue;
+import software.bernie.geckolib.loading.math.value.Constant;
 import software.bernie.geckolib.model.DefaultedItemGeoModel;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -60,7 +60,7 @@ public abstract class AbstractLanceItem extends CustomRarityItem implements GeoI
      */
     public AbstractLanceItem(Properties properties, ModRarity rarity, int attackDuration, int attackInterval, List<Keyframe<MathValue>> keyframes) {
         super(properties.stacksTo(1), rarity);
-        if (attackInterval < 1) throw new IllegalArgumentException("attackInterval must be greater than 1, currently is " + attackInterval);
+        if (attackInterval < 1) throw new IllegalArgumentException("attackInterval must be greater than or equal to 1, currently is " + attackInterval);
         this.attackDuration = attackDuration;
         this.attackInterval = attackInterval;
         this.keyframes = keyframes;
@@ -178,9 +178,33 @@ public abstract class AbstractLanceItem extends CustomRarityItem implements GeoI
         });
     }
 
-    protected static ItemAttributeModifiers entityInteractionRange(float extra) {
+    public static ItemAttributeModifiers entityInteractionRange(float extra) {
         return ItemAttributeModifiers.builder()
                 .add(Attributes.ENTITY_INTERACTION_RANGE, new AttributeModifier(ModItems.BASE_ENTITY_INTERACTION_RANGE_ID, extra, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
                 .build();
+    }
+
+    public static List<Keyframe<MathValue>> createKeyframes(K k, K... ks) {
+        List<Keyframe<MathValue>> keyframes = new LinkedList<>();
+        keyframes.add(new Keyframe<>(0, new Constant(0), k.toValue(), k.easingType));
+        for (K k1 : ks) {
+            Keyframe<MathValue> last = keyframes.getLast();
+            keyframes.add(new Keyframe<>(k1.toTick() - last.endValue().get(), last.endValue(), k1.toValue(), k.easingType));
+        }
+        return new ObjectArrayList<>(keyframes);
+    }
+
+    public record K(double atTime, double zOffset, EasingType easingType) {
+        public double toTick() {
+            return atTime * 20;
+        }
+
+        public MathValue toValue() {
+            return new Constant(zOffset);
+        }
+
+        public static K of(double atTime, double zOffset, EasingType easingType) {
+            return new K(atTime, zOffset, easingType);
+        }
     }
 }

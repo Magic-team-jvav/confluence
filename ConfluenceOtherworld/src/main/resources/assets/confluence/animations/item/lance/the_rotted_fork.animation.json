@@ -2,41 +2,27 @@
 	"format_version": "1.8.0",
 	"animations": {
 		"use": {
-			"animation_length": 0.5,
+			"animation_length": 0.75,
 			"bones": {
 				"bone": {
 					"position": {
 						"0.0": {
 							"vector": [0, 0, 0]
 						},
-						"0.17": {
-							"vector": [
-								0,
-								0,
-								6
-							],
-							"easing": "easeOutBack"
-						},
-						"0.3": {
-							"vector": [
-								0,
-								0,
-								-16
-							],
-							"easing": "easeInExpo"
+						"0.25": {
+							"vector": [0, 0, 6]
 						},
 						"0.5": {
-							"vector": [
-								0,
-								0,
-								0
-							],
-							"easing": "easeInExpo"
+							"vector": [0, 0, -16]
+						},
+						"0.75": {
+							"vector": [0, 0, 0]
 						}
 					}
 				}
 			}
 		},
+		"geckolib_format_version": 2,
 		"eye": {
 			"loop": true,
 			"animation_length": 2.75,

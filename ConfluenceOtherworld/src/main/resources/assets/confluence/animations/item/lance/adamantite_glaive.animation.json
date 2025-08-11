@@ -2,28 +2,29 @@
 	"format_version": "1.8.0",
 	"animations": {
 		"use": {
-            "animation_length": 0.33,
+			"animation_length": 0.5,
 			"bones": {
 				"bone": {
 					"position": {
 						"0.0": {
 							"vector": [0, 0, 0]
 						},
-						"0.08": {
+						"0.17": {
 							"vector": [0, 0, 6],
 							"easing": "easeOutBack"
 						},
-						"0.25": {
+						"0.33": {
 							"vector": [0, 0, -16],
 							"easing": "easeInExpo"
 						},
-						"0.33": {
+						"0.5": {
 							"vector": [0, 0, 0],
-                            "easing": "easeInExpo"
+							"easing": "linear"
 						}
 					}
 				}
 			}
 		}
-	}
+	},
+	"geckolib_format_version": 2
 }

@@ -13,11 +13,11 @@ import software.bernie.geckolib.animation.EasingType;
 
 public class TheRottedForkItem extends AbstractLanceItem {
     public TheRottedForkItem() {
-        super(new Properties().attributes(entityInteractionRange(4)), ModRarity.BLUE, 10, 4, createKeyframes(
+        super(new Properties().attributes(entityInteractionRange(4)), ModRarity.BLUE,15, 5, createKeyframes(
                 K.of(0, 0, EasingType.LINEAR),
-                K.of(0.17, 6, EasingType.EASE_OUT_BACK),
-                K.of(0.33, -16, EasingType.EASE_IN_EXPO),
-                K.of(0.5, 0, EasingType.LINEAR)
+                K.of(0.25, 6, EasingType.EASE_OUT_BACK),
+                K.of(0.5, -16, EasingType.EASE_IN_EXPO),
+                K.of(0.75, 0, EasingType.LINEAR)
         ));
     }
 
@@ -28,7 +28,7 @@ public class TheRottedForkItem extends AbstractLanceItem {
 
     @Override
     protected void onHitEntity(DamageSource damageSource, Entity entity, LivingEntity living, Entity victim) {
-        victim.hurt(damageSource, 4.3F + (float) living.getAttributeValue(Attributes.ATTACK_DAMAGE));
+        victim.hurt(damageSource, 4.9F + (float) living.getAttributeValue(Attributes.ATTACK_DAMAGE));
         VectorUtils.knockBackA2B(entity, victim, 0.5, 0.1);
     }
 }

@@ -16,11 +16,11 @@ import software.bernie.geckolib.loading.math.value.Constant;
 
 public class StreamstrikeHalberdItem extends AbstractLanceItem {
     public StreamstrikeHalberdItem() {
-        super(new Properties().attributes(entityInteractionRange(4)), ModRarity.BLUE,15, 3, createKeyframes(
+        super(new Properties().attributes(entityInteractionRange(4)), ModRarity.BLUE,10, 3, createKeyframes(
                 K.of(0, 0, EasingType.LINEAR),
                 K.of(0.17, 6, EasingType.EASE_OUT_BACK),
                 K.of(0.33, -16, EasingType.EASE_IN_EXPO),
-                K.of(0.55, 0, EasingType.LINEAR)
+                K.of(0.5, 0, EasingType.LINEAR)
         ));
     }
 

@@ -17,7 +17,7 @@
 							"vector": [0, 0, -16],
 							"easing": "easeInExpo"
 						},
-						"0.55": {
+						"0.5": {
 							"vector": [0, 0, 0],
 							"easing": "linear"
 						}

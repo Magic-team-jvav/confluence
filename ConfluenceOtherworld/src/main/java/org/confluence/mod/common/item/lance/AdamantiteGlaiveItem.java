@@ -16,10 +16,10 @@ import software.bernie.geckolib.loading.math.value.Constant;
 
 public class AdamantiteGlaiveItem extends AbstractLanceItem {
     public AdamantiteGlaiveItem() {
-        super(new Properties().attributes(entityInteractionRange(4)), ModRarity.LIGHT_RED,15, 6, createKeyframes(
+        super(new Properties().attributes(entityInteractionRange(4)), ModRarity.LIGHT_RED,7, 2, createKeyframes(
                 K.of(0, 0, EasingType.LINEAR),
-                K.of(0.08, 6, EasingType.EASE_OUT_BACK),
-                K.of(0.25, -16, EasingType.EASE_IN_EXPO),
+                K.of(0.08, 6, EasingType.LINEAR),
+                K.of(0.25, -16, EasingType.LINEAR),
                 K.of(0.33, 0, EasingType.LINEAR)
         ));
     }

@@ -82,9 +82,9 @@ public abstract class AbstractLanceItem extends CustomRarityItem implements GeoI
 
     @Override
     public boolean onEntitySwing(ItemStack stack, LivingEntity entity, InteractionHand hand) {
-        if (entity.level() instanceof ServerLevel serverLevel && entity.level().getGameTime() - LibUtils.getItemStackNbtNoCopy(stack).getLong(LAST_ATTACK_TIME_KEY) > attackDuration) {
+        if (entity.level() instanceof ServerLevel level && entity.level().getGameTime() - LibUtils.getItemStackNbtNoCopy(stack).getLong(LAST_ATTACK_TIME_KEY) > attackDuration) {
             LibUtils.updateItemStackNbt(stack, tag -> tag.putLong(LAST_ATTACK_TIME_KEY, entity.level().getGameTime()));
-            triggerAnim(entity, GeoItem.getOrAssignId(stack, serverLevel), "lance", "use");
+            triggerAnim(entity, GeoItem.getOrAssignId(stack, level), "lance", "use");
         }
         return true;
     }
@@ -155,7 +155,7 @@ public abstract class AbstractLanceItem extends CustomRarityItem implements GeoI
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "lance", state -> PlayState.STOP)
-                .triggerableAnim("use", RawAnimation.begin().thenLoop("use")));
+                .triggerableAnim("use", RawAnimation.begin().thenPlay("use")));
     }
 
     @Override

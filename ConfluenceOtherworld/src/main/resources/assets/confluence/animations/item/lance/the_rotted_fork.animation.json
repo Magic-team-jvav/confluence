@@ -37,7 +37,6 @@
 				}
 			}
 		},
-		"geckolib_format_version": 2,
 		"eye": {
 			"loop": true,
 			"animation_length": 2.75,
@@ -169,5 +168,6 @@
 				}
 			}
 		}
-	}
+	},
+	"geckolib_format_version": 2
 }

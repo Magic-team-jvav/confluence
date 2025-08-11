@@ -225,7 +225,7 @@ public final class LivingEntityEvents {
         // 暴击判定和伤害显示
         boolean crit = false;
         if (!TCAttributes.hasCustomAttribute(TCAttributes.CRIT_CHANCE) && attacker instanceof Player player) {
-            if (victim.getRandom().nextFloat() < player.getAttributeValue(TCAttributes.CRIT_CHANCE)) {
+            if (LibUtils.checkChance(player.getAttributeValue(TCAttributes.CRIT_CHANCE), player.getRandom())) {
                 amount *= 1.5F;
                 player.crit(victim);
                 crit = true;

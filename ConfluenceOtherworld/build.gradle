@@ -153,7 +153,7 @@ boolean mmmmmmmmmmmm = false // 试验假人
 boolean supplementaries = false // 锦致装饰
 boolean lootBeams = false // 战利品光束
 boolean spark = false // 火花
-boolean apotheosis = true // 神化
+boolean apotheosis = false // 神化
 
 dependencies {
     projectName.forEach { name -> implementation jarJar(project(":" + name)) }

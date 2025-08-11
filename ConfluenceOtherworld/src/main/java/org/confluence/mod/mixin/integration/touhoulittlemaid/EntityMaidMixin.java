@@ -6,8 +6,8 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.common.data.Keys;
-import org.confluence.terraentity.entity.npc.mood.NPCMood;
 import org.confluence.terraentity.api.npc.trade.ITradeHolder;
+import org.confluence.terraentity.entity.npc.mood.NPCMood;
 import org.confluence.terraentity.entity.npc.trade.NPCTradeManager;
 import org.confluence.terraentity.entity.npc.trade.TradeParams;
 import org.confluence.terraentity.network.s2c.UpdateNPCTradePacket;
@@ -18,8 +18,6 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.util.Map;
 
 @Pseudo
 @Mixin(targets = "com.github.tartaricacid.touhoulittlemaid.entity.passive.EntityMaid", remap = false)

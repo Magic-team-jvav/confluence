@@ -10,13 +10,28 @@
 							"vector": [0, 0, 0]
 						},
 						"0.17": {
-							"vector": [0, 0, 6]
+							"vector": [
+								0,
+								0,
+								6
+							],
+							"easing": "easeOutBack"
 						},
 						"0.3": {
-							"vector": [0, 0, -16]
+							"vector": [
+								0,
+								0,
+								-16
+							],
+							"easing": "easeInExpo"
 						},
 						"0.5": {
-							"vector": [0, 0, 0]
+							"vector": [
+								0,
+								0,
+								0
+							],
+							"easing": "easeInExpo"
 						}
 					}
 				}

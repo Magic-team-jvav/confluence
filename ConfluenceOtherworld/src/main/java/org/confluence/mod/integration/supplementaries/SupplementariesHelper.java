@@ -5,7 +5,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.fml.ModList;
 import org.confluence.mod.common.attachment.ExtraInventory;
-import org.confluence.mod.common.init.ModAttachmentTypes;
 
 public class SupplementariesHelper {
     public static final boolean IS_LOADED = ModList.get().isLoaded("supplementaries");

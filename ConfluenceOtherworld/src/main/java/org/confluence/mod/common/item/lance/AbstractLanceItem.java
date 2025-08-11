@@ -155,7 +155,7 @@ public abstract class AbstractLanceItem extends CustomRarityItem implements GeoI
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
         controllers.add(new AnimationController<>(this, "lance", state -> PlayState.STOP)
-                .triggerableAnim("use", RawAnimation.begin().thenPlay("use")));
+                .triggerableAnim("use", RawAnimation.begin().thenLoop("use")));
     }
 
     @Override

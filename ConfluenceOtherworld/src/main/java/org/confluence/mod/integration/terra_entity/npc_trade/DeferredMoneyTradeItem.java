@@ -15,9 +15,9 @@ import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.integration.terra_entity.init.ModTradeProviders;
 import org.confluence.terraentity.api.npc.trade.ITradeHolder;
 import org.confluence.terraentity.api.npc.trade.ITradeItem;
+import org.confluence.terraentity.api.npc.trade.ITradeLock;
 import org.confluence.terraentity.registries.npc_trade.TradeProperties;
 import org.confluence.terraentity.registries.npc_trade.TradeProvider;
-import org.confluence.terraentity.api.npc.trade.ITradeLock;
 
 public class DeferredMoneyTradeItem implements ITradeItem, IMoneyTrade {
     public static final MapCodec<DeferredMoneyTradeItem> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(

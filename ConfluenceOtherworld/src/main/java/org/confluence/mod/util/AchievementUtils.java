@@ -19,7 +19,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.block.functional.DartTrapBlock;
 import org.confluence.mod.common.data.saved.NPCSpawner;
-import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 
 import static org.confluence.mod.common.attachment.ExtraInventory.SIZE_VANITY_ARMOR;

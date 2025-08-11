@@ -6,8 +6,6 @@ import com.xiaohunao.equipment_benediction.common.equipment_set.EquippableGroup;
 import com.xiaohunao.equipment_benediction.common.equippable.VanillaEquippable;
 import com.xiaohunao.equipment_benediction.common.hook.HookMap;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.item.ArmorItems;
 import org.confluence.terraentity.init.TEAttributes;
 

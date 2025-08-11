@@ -12,7 +12,6 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ExtraInventory;
-import org.confluence.mod.common.init.ModAttachmentTypes;
 
 public record ExtraInventorySyncPacketS2C(int entityId, ExtraInventory extraInventory) implements CustomPacketPayload {
     public static final Type<ExtraInventorySyncPacketS2C> TYPE = new Type<>(Confluence.asResource("extra_inventory_sync"));

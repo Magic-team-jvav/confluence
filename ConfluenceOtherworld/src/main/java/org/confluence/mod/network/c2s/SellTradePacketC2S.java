@@ -10,9 +10,9 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.integration.terra_entity.npc_trade.SellTrade;
+import org.confluence.terraentity.api.npc.trade.ITrade;
 import org.confluence.terraentity.api.npc.trade.ITradeHolder;
 import org.confluence.terraentity.mixed.IPlayer;
-import org.confluence.terraentity.api.npc.trade.ITrade;
 
 public record SellTradePacketC2S (int tradeIndex) implements CustomPacketPayload {
     public static final Type<SellTradePacketC2S> TYPE = new Type<>(Confluence.asResource("sell_trade_c2s"));

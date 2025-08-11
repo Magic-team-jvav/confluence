@@ -2,7 +2,7 @@
 	"format_version": "1.8.0",
 	"animations": {
 		"use": {
-			"animation_length": 0.75,
+			"animation_length": 0.42,
 			"bones": {
 				"bone": {
 					"position": {

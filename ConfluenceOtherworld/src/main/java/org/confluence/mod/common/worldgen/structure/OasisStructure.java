@@ -25,7 +25,8 @@ import java.util.Map;
 import java.util.Optional;
 
 import static org.confluence.lib.util.StructureUtils.*;
-import static org.confluence.lib.util.VectorUtils.*;
+import static org.confluence.lib.util.VectorUtils.ballPos;
+import static org.confluence.lib.util.VectorUtils.frustumSetPos;
 
 public class OasisStructure extends Structure {
     public static final MapCodec<OasisStructure> CODEC = simpleCodec(OasisStructure::new);

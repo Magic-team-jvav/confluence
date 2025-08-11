@@ -10,7 +10,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.model.entity.projectile.BoneThrownKnivesProjectileModel;
 import org.confluence.mod.client.model.entity.projectile.FrostDaggerfishProjectileModel;
 import org.confluence.mod.common.entity.projectile.ThrowableDropSelfProjectile;
 

@@ -22,8 +22,6 @@ import org.confluence.mod.common.init.ModSoundEvents;
 import java.util.ArrayList;
 import java.util.List;
 
-import static net.minecraft.world.item.component.ItemAttributeModifiers.ATTRIBUTE_MODIFIER_FORMAT;
-
 public class CrateBlockItem extends BlockItem {
     private final List<Component> commonTooltips;
     public CrateBlockItem(Block block, ResourceKey<LootTable> lootTable) {

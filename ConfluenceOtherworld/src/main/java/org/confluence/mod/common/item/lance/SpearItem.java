@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.lance;
 
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -11,8 +10,6 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.init.ModDamageTypes;
 import software.bernie.geckolib.animation.EasingType;
-import software.bernie.geckolib.animation.keyframe.Keyframe;
-import software.bernie.geckolib.loading.math.value.Constant;
 
 public class SpearItem extends AbstractLanceItem {
     public SpearItem() {

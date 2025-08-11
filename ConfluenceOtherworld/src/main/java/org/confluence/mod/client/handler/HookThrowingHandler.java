@@ -17,7 +17,6 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.client.ModKeyBindings;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.entity.hook.AbstractHookEntity;
-import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.item.HookItems;
 import org.confluence.mod.network.c2s.HookThrowingPacketC2S;
 import org.confluence.terra_curio.client.handler.PlayerJumpHandler;

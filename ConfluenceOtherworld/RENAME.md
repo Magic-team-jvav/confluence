@@ -122,9 +122,17 @@
 
 # 从1.1.4到1.1.5
 
+## 方块
+
+| 原名称                      | 修改后名称                  |
+|--------------------------|------------------------|
+| `confluence:golden_coin` | `confluence:gold_coin` |
+
 ## 物品
 
 | 原名称                              | 修改后名称                       |
 |----------------------------------|-----------------------------|
 | `terra_guns:blowpipe`            | `terra_guns:blowgun`        |
 | `confluence:crystal_shards_item` | `confluence:crystal_shards` |
+| `confluence:throwing_knives`     | `confluence:throwing_knive` |
+| `confluence:golden_coin`         | `confluence:gold_coin`      |

@@ -336,7 +336,7 @@ public final class ModEvents {
     }
 
     @SubscribeEvent
-    public static void blockWithNameFixRegister(NameFixRegisterEvent.BlockWithItem event) {
+    public static void blockWithItemNameFixRegister(NameFixRegisterEvent.BlockWithItem event) {
         event
                 // 1.1.2 -> 1.1.3
                 .register("confluence:freeze_crate", "confluence:frozen_crate")

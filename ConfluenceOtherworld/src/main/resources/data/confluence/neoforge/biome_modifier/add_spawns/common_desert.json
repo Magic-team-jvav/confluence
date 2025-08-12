@@ -9,6 +9,12 @@
     },
     "spawners": [
         {
+            "type": "terra_entity:scorpion",
+            "weight": 15,
+            "minCount": 1,
+            "maxCount": 1
+        },
+        {
             "type": "terra_entity:desert_slime",
             "weight": 30,
             "minCount": 1,

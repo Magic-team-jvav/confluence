@@ -1258,7 +1258,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 OreBlocks.SPECTRE_BLOCK.asItem(),
                 OreBlocks.RAW_LUMINITE_BLOCK.asItem(),
                 OreBlocks.LUMINITE_BLOCK.asItem(),
-                OreBlocks.HELLSTONE_BLOCK.asItem(),
                 OreBlocks.RAW_COBALT_BLOCK.asItem(),
                 OreBlocks.COBALT_BLOCK.asItem(),
                 OreBlocks.RAW_PALLADIUM_BLOCK.asItem(),

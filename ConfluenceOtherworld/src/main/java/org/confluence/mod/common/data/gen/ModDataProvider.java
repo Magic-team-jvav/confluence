@@ -94,6 +94,7 @@ import org.confluence.mod.common.worldgen.feature.*;
 import org.confluence.mod.common.worldgen.structure.*;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.util.OverworldUtils;
+import org.confluence.terraentity.init.entity.TEAnimals;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
 
 import java.util.*;
@@ -1297,6 +1298,7 @@ public class ModDataProvider {
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.SPORE_SKELETON.get(), 60, 1, 2))
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.SPORE_ZOMBIE.get(), 45, 1, 2))
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.HAT_SPORE_ZOMBIE.get(), 15, 1, 2))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEAnimals.GLOWING_SNAIL.get(), 10, 1, 2))
                             .build())
                     .generationSettings(biomeGenerationSettings(placedFeatures, worldCarvers, builder -> {
                         addDefaultGenerations(builder);
@@ -1621,7 +1623,11 @@ public class ModDataProvider {
                     JigsawStructure.DEFAULT_DIMENSION_PADDING,
                     LiquidSettings.APPLY_WATERLOGGING
             ));
-            context.register(ModStructures.Keys.SHIMMER_LAKE, new ShimmerLakeStructure(new Structure.StructureSettings(overworld, Map.of(), GenerationStep.Decoration.VEGETAL_DECORATION, TerrainAdjustment.NONE)));
+            context.register(ModStructures.Keys.SHIMMER_LAKE, new ShimmerLakeStructure(new Structure.StructureSettings(overworld, Map.of(
+                    MobCategory.MONSTER, new StructureSpawnOverride(StructureSpawnOverride.BoundingBoxType.STRUCTURE, WeightedRandomList.create(
+                            new MobSpawnSettings.SpawnerData(TEAnimals.FEALING.get(), 30, 1, 2)
+                    ))
+            ), GenerationStep.Decoration.VEGETAL_DECORATION, TerrainAdjustment.NONE)));
         }
     }
 

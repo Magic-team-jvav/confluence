@@ -173,6 +173,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.abeemination.3", "“The flapping of the bees' wings shakes the thickest leaves in the jungle”");
         add("tooltip.item.confluence.clothier_voodoo_doll.0", "'You are a terrible person'");
         add("tooltip.item.confluence.guide_voodoo_doll.0", "'You are a terrible person'");
+        add("tooltip.item.confluence.hardmode_forge.0", "Used to smelt adamantite and titanium ore");
 
         add("tooltip.item.confluence.tokyo_teddy_bear.0", "A self - abased girl said like a broken teddy bear:");
         add("tooltip.item.confluence.tokyo_teddy_bear.1", "           Let me tell you");

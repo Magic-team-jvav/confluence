@@ -24,6 +24,14 @@ public abstract class FlaskEffect extends MobEffect {
         super(category, color, particle);
     }
 
+    @Override
+    public void fillEffectCures(Set<EffectCure> cures, MobEffectInstance effectInstance) {
+        super.fillEffectCures(cures, effectInstance);
+        cures.add(CURE);
+    }
+
+    public abstract void doMeleeAttack(LivingEntity attacker, LivingEntity victim, int amplifier, DamageSource damageSource, float amount);
+
     public static void onLivingDamage(LivingEntity victim, DamageSource damageSource, float amount) {
         if (damageSource.getEntity() instanceof LivingEntity attacker && attacker.getWeaponItem().is(Tags.Items.MELEE_WEAPON_TOOLS)) {
             for (MobEffectInstance activeEffect : attacker.getActiveEffects()) {
@@ -33,14 +41,6 @@ public abstract class FlaskEffect extends MobEffect {
             }
         }
     }
-
-    @Override
-    public void fillEffectCures(Set<EffectCure> cures, MobEffectInstance effectInstance) {
-        super.fillEffectCures(cures, effectInstance);
-        cures.add(CURE);
-    }
-
-    public abstract void doMeleeAttack(LivingEntity attacker, LivingEntity victim, int amplifier, DamageSource damageSource, float amount);
 
     public static boolean saveFlaskEffects(Map<Holder<MobEffect>, MobEffectInstance> activeEffects) {
         activeEffects.entrySet().removeIf(entry -> !entry.getValue().getCures().contains(CURE));

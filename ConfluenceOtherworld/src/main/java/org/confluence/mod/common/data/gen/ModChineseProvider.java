@@ -166,6 +166,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.abeemination.3", "“群蜂振翅之声憾动了丛林中最为厚重的叶片”");
         add("tooltip.item.confluence.clothier_voodoo_doll.0", "“你这人真可怕”");
         add("tooltip.item.confluence.guide_voodoo_doll.0", "“你这人真可怕”");
+        add("tooltip.item.confluence.hardmode_forge.0", "用于熔炼精金矿和钛金矿");
 
         add("tooltip.item.confluence.tokyo_teddy_bear.0", "一位自卑的少女如破碎的泰迪熊般说到：");
         add("tooltip.item.confluence.tokyo_teddy_bear.1", "           来让你听听");

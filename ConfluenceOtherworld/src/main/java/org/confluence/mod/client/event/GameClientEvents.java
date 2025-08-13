@@ -148,11 +148,11 @@ public final class GameClientEvents {
                 event.setSwingHand(false);
             }
         }
-        if (event.isAttack() && event.getHand() == InteractionHand.MAIN_HAND) {
-            if (player.getMainHandItem().is(ModTags.Items.LANCES)) {
+        if (event.getHand() == InteractionHand.MAIN_HAND && player.getMainHandItem().is(ModTags.Items.LANCES)) {
+            if (event.isAttack()) {
                 event.setCanceled(true);
-                event.setSwingHand(false);
             }
+            event.setSwingHand(false);
         }
     }
 

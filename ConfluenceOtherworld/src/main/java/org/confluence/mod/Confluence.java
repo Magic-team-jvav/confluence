@@ -47,12 +47,12 @@ public class Confluence {
         ModFeatures.register(eventBus);
         ModEnchantments.register(eventBus);
         WaystonesHelper.register(eventBus);
+        ModAdvancements.register(eventBus);
 
         ModFluids.initialize();
         ModPrefix.initialize();
         RegistriesFixer.initialize();
 
-        ModCriterionTriggers.TRIGGERS.register(eventBus);
         ModTabs.TABS.register(eventBus);
         ModEntities.ENTITIES.register(eventBus);
         ModDataComponentTypes.TYPES.register(eventBus);

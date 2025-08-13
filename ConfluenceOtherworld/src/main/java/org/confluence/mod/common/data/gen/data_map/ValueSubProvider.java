@@ -4,9 +4,9 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.common.data.DataMapProvider;
-import net.neoforged.neoforge.registries.datamaps.DataMapType;
 import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.data.gen.ModDataMapProvider;
+import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.integration.waystones.WaystonesHelper;
@@ -1512,10 +1512,9 @@ public final class ValueSubProvider {
         WaystonesHelper.appendValue(appender.create());
     }
 
-    @SuppressWarnings({"unchecked", "deprecation"})
     public static class Builder extends DataMapProvider.Builder<ValueComponent, Item> {
-        public Builder(DataMapType<?, ?> type) {
-            super((DataMapType<Item, ValueComponent>) type);
+        public Builder() {
+            super(ModDataMaps.VALUE);
         }
 
         public Builder add(ItemLike itemLike, int value) {

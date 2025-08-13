@@ -91,7 +91,7 @@ public final class PrefixUtils {
     }
 
     public static @Nullable PrefixComponent getPrefix(ItemStack itemStack) {
-        return itemStack.get(ModDataComponentTypes.PREFIX);
+        return itemStack.isEmpty() ? null : itemStack.get(ModDataComponentTypes.PREFIX);
     }
 
     public static @Nullable PrefixComponent random(RandomSource random, ItemStack itemStack) {
@@ -108,7 +108,7 @@ public final class PrefixUtils {
 
     public static @Nullable PrefixComponent setAndUpdate(ItemStack itemStack, PrefixType prefixType, ModPrefix modPrefix) {
         if (prefixType == null) return null;
-        PrefixComponent prefix = modPrefix.createComponent(prefixType);
+        PrefixComponent prefix = modPrefix.createComponent(prefixType, itemStack);
         itemStack.set(ModDataComponentTypes.PREFIX, prefix);
         int num1 = ModPrefix.ID_MAP.inverse().getOrDefault(modPrefix, 0);
         float num2 = 1;

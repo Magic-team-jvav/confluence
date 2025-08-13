@@ -21,6 +21,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.stats.Stat;
 import net.minecraft.stats.Stats;
@@ -40,6 +41,7 @@ import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
+import net.neoforged.neoforge.common.NeoForgeConfig;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import org.confluence.lib.client.AntiPushPoseStack;
 import org.confluence.lib.common.component.ModRarity;
@@ -206,34 +208,38 @@ public final class GameClientEvents {
 
     @SubscribeEvent
     public static void itemToolTip(ItemTooltipEvent event) {
-        ItemStack itemStack = event.getItemStack();
-        if (itemStack.isEmpty()) return;
-        PrefixComponent prefix = PrefixUtils.getPrefix(itemStack);
-        if (prefix != null) {
-            List<Component> toolTip = event.getToolTip();
-            if (prefix.type() == PrefixType.MAGIC) {
-                if (prefix.manaCost() != 0.0) {
-                    boolean b = prefix.manaCost() > 0.0;
-                    toolTip.add(toolTip.isEmpty() ? 0 : 1, Component.translatable(
-                            "prefix.confluence.tooltip." + (b ? "plus" : "take"),
-                            ATTRIBUTE_MODIFIER_FORMAT.format(prefix.manaCost() * (b ? 100.0 : -100.0)),
-                            Component.translatable("prefix.confluence.tooltip.mana_cost")
-                    ).withStyle(b ? ChatFormatting.RED : ChatFormatting.BLUE));
-                }
-            } else if (prefix.type() == PrefixType.ACCESSORY) {
-                if (prefix.additionalMana() > 0) {
-                    toolTip.add(toolTip.isEmpty() ? 0 : 1, Component.translatable(
-                            "prefix.confluence.tooltip.add",
-                            prefix.additionalMana(),
-                            Component.translatable("prefix.confluence.tooltip.additional_mana")
-                    ).withStyle(ChatFormatting.BLUE));
-                }
-            }
-        }
         if (ClientConfigs.sellPriceDisplay.test()) {
-            int price = ValueComponent.getValue(itemStack, 0);
+            int price = ValueComponent.getValue(event.getItemStack(), 0);
             if (price > 0) {
                 event.getToolTip().add(Component.translatable("tooltip.price.sell").withStyle(ChatFormatting.GRAY).append(ModUtils.formatPrice(price)));
+            }
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOW)
+    public static void addAttributeTooltips(AddAttributeTooltipsEvent event) {
+        PrefixComponent prefix = PrefixUtils.getPrefix(event.getStack());
+        if (prefix == null) return;
+        if (prefix.type() == PrefixType.MAGIC) {
+            if (prefix.manaCost() != 0.0) {
+                boolean positive = prefix.manaCost() > 0.0;
+                String format = ATTRIBUTE_MODIFIER_FORMAT.format(prefix.manaCost() * (positive ? 100.0 : -100.0));
+                MutableComponent component = Component.translatable("prefix.confluence.tooltip.mana_cost");
+                if (event.getContext().flag().isAdvanced() && NeoForgeConfig.COMMON.attributeAdvancedTooltipDebugInfo.get()) {
+                    String valueStr = ATTRIBUTE_MODIFIER_FORMAT.format(1 + prefix.manaCost());
+                    component.append(Component.literal(" [x" + valueStr + "]").withStyle(ChatFormatting.GRAY));
+                }
+                event.addTooltipLines(Component.translatable("prefix.confluence.tooltip." + (positive ? "plus" : "take"), format, component)
+                        .withStyle(positive ? ChatFormatting.RED : ChatFormatting.BLUE));
+            }
+        } else if (prefix.type() == PrefixType.ACCESSORY) {
+            if (prefix.additionalMana() > 0) {
+                MutableComponent component = Component.translatable("prefix.confluence.tooltip.additional_mana");
+                if (event.getContext().flag().isAdvanced() && NeoForgeConfig.COMMON.attributeAdvancedTooltipDebugInfo.get()) {
+                    component.append(Component.literal(" [+" + prefix.additionalMana() + "]").withStyle(ChatFormatting.GRAY));
+                }
+                event.addTooltipLines(Component.translatable("prefix.confluence.tooltip.add", prefix.additionalMana(), component)
+                        .withStyle(ChatFormatting.BLUE));
             }
         }
     }

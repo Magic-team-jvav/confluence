@@ -8,10 +8,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.Confluence;
 import org.confluence.terra_curio.api.primitive.AttributeModifiersValue;
 import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terraentity.init.TEAttributes;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +23,17 @@ import static net.minecraft.world.entity.ai.attributes.AttributeModifier.Operati
 
 @SuppressWarnings("unused")
 public interface ModPrefix {
-    PrefixComponent createComponent(PrefixType prefixType);
+    default @Nullable PrefixComponent createComponent(PrefixType prefixType) {
+        return null;
+    }
+
+    default @Nullable PrefixComponent createComponent(PrefixType prefixType, ItemStack stack) {
+        return createComponent(prefixType);
+    }
+
+    default AttributeModifier createModifier(double value, AttributeModifier.Operation operation) {
+        return new AttributeModifier(getModifierId(), value, operation);
+    }
 
     String name();
 
@@ -56,15 +68,15 @@ public interface ModPrefix {
         @Override
         public PrefixComponent createComponent(PrefixType prefixType) {
             ImmutableListMultimap.Builder<Holder<Attribute>, AttributeModifier> builder = ImmutableListMultimap.builder();
-            if (armor != 0) builder.put(Attributes.ARMOR, new AttributeModifier(ID, armor, ADD_VALUE));
-            if (criticalChance != 0.0F) builder.put(TCAttributes.getCriticalChance(), new AttributeModifier(ID, criticalChance, ADD_VALUE));
+            if (armor != 0) builder.put(Attributes.ARMOR, createModifier(armor, ADD_VALUE));
+            if (criticalChance != 0.0F) builder.put(TCAttributes.getCriticalChance(), createModifier(criticalChance, ADD_VALUE));
             if (attackDamage != 0.0F) builder
-                    .put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ID, attackDamage, ADD_MULTIPLIED_TOTAL))
-                    .put(TCAttributes.getRangedDamage(), new AttributeModifier(ID, attackDamage, ADD_MULTIPLIED_TOTAL))
-                    .put(TCAttributes.getMagicDamage(), new AttributeModifier(ID, attackDamage, ADD_MULTIPLIED_TOTAL))
-                    .put(TEAttributes.SUMMON_DAMAGE, new AttributeModifier(ID, attackDamage, ADD_MULTIPLIED_TOTAL));
-            if (attackSpeed != 0.0F) builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(ID, attackSpeed, ADD_MULTIPLIED_TOTAL));
-            if (movementSpeed != 0.0F) builder.put(Attributes.MOVEMENT_SPEED, new AttributeModifier(ID, movementSpeed, ADD_MULTIPLIED_TOTAL));
+                    .put(Attributes.ATTACK_DAMAGE, createModifier(attackDamage, ADD_MULTIPLIED_TOTAL))
+                    .put(TCAttributes.getRangedDamage(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL))
+                    .put(TCAttributes.getMagicDamage(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL))
+                    .put(TEAttributes.SUMMON_DAMAGE, createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
+            if (attackSpeed != 0.0F) builder.put(Attributes.ATTACK_SPEED, createModifier(attackSpeed, ADD_MULTIPLIED_TOTAL));
+            if (movementSpeed != 0.0F) builder.put(Attributes.MOVEMENT_SPEED, createModifier(movementSpeed, ADD_MULTIPLIED_TOTAL));
             return new PrefixComponent(prefixType, name, new AttributeModifiersValue(builder.build()), 0.0F, additionalMana, tier, value);
         }
 
@@ -109,13 +121,17 @@ public interface ModPrefix {
         @Override
         public PrefixComponent createComponent(PrefixType prefixType) {
             ImmutableListMultimap.Builder<Holder<Attribute>, AttributeModifier> builder = ImmutableListMultimap.builder();
-            if (attackDamage != 0.0F) builder
-                    .put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ID, attackDamage, ADD_MULTIPLIED_TOTAL))
-                    .put(TCAttributes.getRangedDamage(), new AttributeModifier(ID, attackDamage, ADD_MULTIPLIED_TOTAL))
-                    .put(TCAttributes.getMagicDamage(), new AttributeModifier(ID, attackDamage, ADD_MULTIPLIED_TOTAL))
-                    .put(TEAttributes.SUMMON_DAMAGE, new AttributeModifier(ID, attackDamage, ADD_MULTIPLIED_TOTAL));
-            if (criticalChance != 0.0F) builder.put(TCAttributes.getCriticalChance(), new AttributeModifier(ID, criticalChance, ADD_VALUE));
-            if (knockBack != 0.0F) builder.put(Attributes.ATTACK_KNOCKBACK, new AttributeModifier(ID, knockBack, ADD_VALUE));
+            if (attackDamage != 0.0F) {
+                if (prefixType == PrefixType.UNIVERSAL || prefixType == PrefixType.MELEE) {
+                    builder.put(Attributes.ATTACK_DAMAGE, createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
+                } else if (prefixType == PrefixType.RANGED) {
+                    builder.put(TCAttributes.getRangedDamage(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
+                } else if (prefixType == PrefixType.MAGIC) {
+                    builder.put(TCAttributes.getMagicDamage(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
+                }
+            }
+            if (criticalChance != 0.0F) builder.put(TCAttributes.getCriticalChance(), createModifier(criticalChance, ADD_VALUE));
+            if (knockBack != 0.0F) builder.put(Attributes.ATTACK_KNOCKBACK, createModifier(knockBack, ADD_VALUE));
             return new PrefixComponent(prefixType, name, new AttributeModifiersValue(builder.build()), 0.0F, 0, tier, value);
         }
 
@@ -156,14 +172,18 @@ public interface ModPrefix {
         @Override
         public PrefixComponent createComponent(PrefixType prefixType) {
             ImmutableListMultimap.Builder<Holder<Attribute>, AttributeModifier> builder = ImmutableListMultimap.builder();
-            if (attackDamage != 0.0F) builder
-                    .put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ID, attackDamage, ADD_MULTIPLIED_TOTAL))
-                    .put(TCAttributes.getRangedDamage(), new AttributeModifier(ID, attackDamage, ADD_MULTIPLIED_TOTAL))
-                    .put(TCAttributes.getMagicDamage(), new AttributeModifier(ID, attackDamage, ADD_MULTIPLIED_TOTAL))
-                    .put(TEAttributes.SUMMON_DAMAGE, new AttributeModifier(ID, attackDamage, ADD_MULTIPLIED_TOTAL));
-            if (attackSpeed != 0) builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(ID, attackSpeed, ADD_MULTIPLIED_TOTAL));
-            if (criticalChance != 0.0F) builder.put(TCAttributes.getCriticalChance(), new AttributeModifier(ID, criticalChance, ADD_VALUE));
-            if (knockBack != 0.0F) builder.put(Attributes.ATTACK_KNOCKBACK, new AttributeModifier(ID, knockBack, ADD_VALUE));
+            if (attackDamage != 0.0F) {
+                if (prefixType == PrefixType.UNIVERSAL || prefixType == PrefixType.MELEE) {
+                    builder.put(Attributes.ATTACK_DAMAGE, createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
+                } else if (prefixType == PrefixType.RANGED) {
+                    builder.put(TCAttributes.getRangedDamage(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
+                } else if (prefixType == PrefixType.MAGIC) {
+                    builder.put(TCAttributes.getMagicDamage(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
+                }
+            }
+            if (attackSpeed != 0) builder.put(Attributes.ATTACK_SPEED, createModifier(attackSpeed, ADD_MULTIPLIED_TOTAL));
+            if (criticalChance != 0.0F) builder.put(TCAttributes.getCriticalChance(), createModifier(criticalChance, ADD_VALUE));
+            if (knockBack != 0.0F) builder.put(Attributes.ATTACK_KNOCKBACK, createModifier(knockBack, ADD_VALUE));
             return new PrefixComponent(prefixType, name, new AttributeModifiersValue(builder.build()), 0.0F, 0, tier, value);
         }
 
@@ -211,11 +231,11 @@ public interface ModPrefix {
         @Override
         public PrefixComponent createComponent(PrefixType prefixType) {
             ImmutableListMultimap.Builder<Holder<Attribute>, AttributeModifier> builder = ImmutableListMultimap.builder();
-            if (attackDamage != 0.0F) builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ID, attackDamage, ADD_MULTIPLIED_TOTAL));
-            if (attackSpeed != 0) builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(ID, attackSpeed, ADD_MULTIPLIED_TOTAL));
-            if (criticalChance != 0.0F) builder.put(TCAttributes.getCriticalChance(), new AttributeModifier(ID, criticalChance, ADD_VALUE));
-            if (size != 0.0F) builder.put(Attributes.ENTITY_INTERACTION_RANGE, new AttributeModifier(ID, size, ADD_MULTIPLIED_TOTAL));
-            if (knockBack != 0.0F) builder.put(Attributes.ATTACK_KNOCKBACK, new AttributeModifier(ID, knockBack, ADD_VALUE));
+            if (attackDamage != 0.0F) builder.put(Attributes.ATTACK_DAMAGE, createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
+            if (attackSpeed != 0) builder.put(Attributes.ATTACK_SPEED, createModifier(attackSpeed, ADD_MULTIPLIED_TOTAL));
+            if (criticalChance != 0.0F) builder.put(TCAttributes.getCriticalChance(), createModifier(criticalChance, ADD_VALUE));
+            if (size != 0.0F) builder.put(Attributes.ENTITY_INTERACTION_RANGE, createModifier(size, ADD_MULTIPLIED_TOTAL));
+            if (knockBack != 0.0F) builder.put(Attributes.ATTACK_KNOCKBACK, createModifier(knockBack, ADD_VALUE));
             return new PrefixComponent(prefixType, name, new AttributeModifiersValue(builder.build()), 0.0F, 0, tier, value);
         }
 
@@ -258,11 +278,11 @@ public interface ModPrefix {
         @Override
         public PrefixComponent createComponent(PrefixType prefixType) {
             ImmutableListMultimap.Builder<Holder<Attribute>, AttributeModifier> builder = ImmutableListMultimap.builder();
-            if (rangedDamage != 0.0F) builder.put(TCAttributes.getRangedDamage(), new AttributeModifier(ID, rangedDamage, ADD_MULTIPLIED_TOTAL));
-            if (attackSpeed != 0) builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(ID, attackSpeed, ADD_MULTIPLIED_TOTAL));
-            if (criticalChance != 0.0F) builder.put(TCAttributes.getCriticalChance(), new AttributeModifier(ID, criticalChance, ADD_VALUE));
-            if (value != 0.0F) builder.put(TCAttributes.getRangedVelocity(), new AttributeModifier(ID, velocity, ADD_MULTIPLIED_TOTAL));
-            if (knockBack != 0.0F) builder.put(Attributes.ATTACK_KNOCKBACK, new AttributeModifier(ID, knockBack, ADD_VALUE));
+            if (rangedDamage != 0.0F) builder.put(TCAttributes.getRangedDamage(), createModifier(rangedDamage, ADD_MULTIPLIED_TOTAL));
+            if (attackSpeed != 0) builder.put(Attributes.ATTACK_SPEED, createModifier(attackSpeed, ADD_MULTIPLIED_TOTAL));
+            if (criticalChance != 0.0F) builder.put(TCAttributes.getCriticalChance(), createModifier(criticalChance, ADD_VALUE));
+            if (value != 0.0F) builder.put(TCAttributes.getRangedVelocity(), createModifier(velocity, ADD_MULTIPLIED_TOTAL));
+            if (knockBack != 0.0F) builder.put(Attributes.ATTACK_KNOCKBACK, createModifier(knockBack, ADD_VALUE));
             return new PrefixComponent(prefixType, name, new AttributeModifiersValue(builder.build()), 0.0F, 0, tier, value);
         }
 
@@ -305,10 +325,10 @@ public interface ModPrefix {
         @Override
         public PrefixComponent createComponent(PrefixType prefixType) {
             ImmutableListMultimap.Builder<Holder<Attribute>, AttributeModifier> builder = ImmutableListMultimap.builder();
-            if (rangedDamage != 0.0F) builder.put(TCAttributes.getRangedDamage(), new AttributeModifier(ID, rangedDamage, ADD_MULTIPLIED_TOTAL));
-            if (attackSpeed != 0) builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(ID, attackSpeed, ADD_MULTIPLIED_TOTAL));
-            if (criticalChance != 0.0F) builder.put(TCAttributes.getCriticalChance(), new AttributeModifier(ID, criticalChance, ADD_VALUE));
-            if (knockBack != 0.0F) builder.put(Attributes.ATTACK_KNOCKBACK, new AttributeModifier(ID, knockBack, ADD_VALUE));
+            if (rangedDamage != 0.0F) builder.put(TCAttributes.getRangedDamage(), createModifier(rangedDamage, ADD_MULTIPLIED_TOTAL));
+            if (attackSpeed != 0) builder.put(Attributes.ATTACK_SPEED, createModifier(attackSpeed, ADD_MULTIPLIED_TOTAL));
+            if (criticalChance != 0.0F) builder.put(TCAttributes.getCriticalChance(), createModifier(criticalChance, ADD_VALUE));
+            if (knockBack != 0.0F) builder.put(Attributes.ATTACK_KNOCKBACK, createModifier(knockBack, ADD_VALUE));
             return new PrefixComponent(prefixType, name, new AttributeModifiersValue(builder.build()), manaCost, 0, tier, value);
         }
 

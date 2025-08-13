@@ -29,6 +29,7 @@ import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.recipe.*;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.recipe.WorkshopRecipe;
+import org.confluence.terra_guns.common.init.TGItems;
 
 import java.util.HashSet;
 import java.util.List;
@@ -264,8 +265,13 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
                 "HFH",
                 "HHH"
         )));
+        hardmodeAnvil(recipeOutput, TGItems.CHLOROPHYTE_BULLET.toStack(60), AmountIngredient.of(60, TGItems.MUSKET_BULLET), Ingredient.of(MaterialItems.CHLOROPHYTE_INGOT));
+        hardmodeAnvil(recipeOutput, TGItems.CRYSTAL_BULLET.toStack(100), AmountIngredient.of(100, TGItems.MUSKET_BULLET), Ingredient.of(MaterialItems.CRYSTAL_SHARDS));
+        hardmodeAnvil(recipeOutput, TGItems.ICHOR_BULLET.toStack(150), AmountIngredient.of(150, TGItems.MUSKET_BULLET), Ingredient.of(MaterialItems.ICHOR));
+        hardmodeAnvil(recipeOutput, TGItems.CURSED_BULLET.toStack(150), AmountIngredient.of(150, TGItems.MUSKET_BULLET), Ingredient.of(MaterialItems.CURSED_FLAME));
 
         Ingredient emptyDropper = Ingredient.of(ToolItems.EMPTY_DROPPER);
+        crystalBlock(recipeOutput, TGItems.ENDLESS_MUSKET_POUCH.toStack(1), AmountIngredient.of(3996,TGItems.MUSKET_BULLET));
         crystalBlock(recipeOutput, ToolItems.MAGIC_SAND_DROPPER.toStack(3), AmountIngredient.of(3, emptyDropper), Ingredient.of(Tags.Items.SANDS));
         crystalBlock(recipeOutput, ToolItems.MAGIC_HONEY_DROPPER.toStack(), emptyDropper);
         crystalBlock(recipeOutput, ToolItems.MAGIC_LAVA_DROPPER.toStack(), emptyDropper);

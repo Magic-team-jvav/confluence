@@ -79,7 +79,7 @@ public class SwordItems {
     public static final DeferredItem<SwordItem> ZOMBIE_ARM = register("zombie_arm", ModTiers.UNBREAKABLE, 5, 2.6F, NORMAL_SWORD.get());
     public static final DeferredItem<SwordItem> MANDIBLE_BLADE = register("mandible_blade", ModTiers.UNBREAKABLE, 6, 2.6F, NORMAL_SWORD.get());
     public static final DeferredItem<SwordItem> BONE_SWORD = register("bone_sword", ModTiers.UNBREAKABLE, 7, 2.9F, ModRarity.ORANGE, NORMAL_SWORD.get());
-    public static final DeferredItem<SwordItem> PURPLE_CLUBBERFISH = register("purple_clubberfish", ModTiers.UNBREAKABLE, 12, 0.5F, NORMAL_SWORD.get());
+    public static final DeferredItem<SwordItem> PURPLE_CLUBBERFISH = register("purple_clubberfish", ModTiers.UNBREAKABLE, 15, 0.5F, NORMAL_SWORD.get());
     public static final DeferredItem<SwordItem> STYLISH_SCISSORS = register("stylish_scissors", ModTiers.UNBREAKABLE, 5, 2.8F, ModRarity.GREEN, NORMAL_SWORD.get());
     public static final DeferredItem<SwordItem> EXOTIC_SCIMITAR = register("exotic_scimitar", ModTiers.UNBREAKABLE, 7, 2.9F, ModRarity.GREEN, NORMAL_SWORD.get());
     public static final DeferredItem<SwordItem> KATANA = register("katana", ModTiers.UNBREAKABLE, 6, 3.7F, ModRarity.BLUE, NORMAL_SWORD.get());

@@ -3571,6 +3571,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(BaitItems.SULPHUR_BUTTERFLY.get(), "黄粉蝶");
         add(BaitItems.TREE_NYMPH_BUTTERFLY.get(), "帛斑蝶");
         add(BaitItems.TRUFFLE_WORM.get(), "松露虫");
+        add(BaitItems.PRISMATIC_LACEWING.get(), "七彩草蛉");
         add(BaitItems.ULYSSES_BUTTERFLY.get(), "翠凤蝶");
         add(BaitItems.WATER_STRIDER.get(), "水黾");
         add(BaitItems.WORM.get(), "蠕虫");

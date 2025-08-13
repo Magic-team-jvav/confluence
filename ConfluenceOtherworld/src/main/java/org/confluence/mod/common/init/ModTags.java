@@ -276,6 +276,8 @@ public final class ModTags {
         public static final TagKey<Item> INGOTS_ADAMANTITE = c("ingots/adamantite");
         public static final TagKey<Item> INGOTS_TITANIUM = c("ingots/titanium");
 
+        public static final TagKey<Item> INGOTS_CHLOROPHYTE = c("ingots/chlorophyte");
+
         public static final TagKey<Item> RAW_MATERIALS_TIN = c("raw_materials/tin");
         public static final TagKey<Item> RAW_MATERIALS_LEAD = c("raw_materials/lead");
         public static final TagKey<Item> RAW_MATERIALS_SILVER = c("raw_materials/silver");
@@ -292,6 +294,8 @@ public final class ModTags {
         public static final TagKey<Item> RAW_MATERIALS_ORICHALCUM = c("raw_materials/orichalcum");
         public static final TagKey<Item> RAW_MATERIALS_ADAMANTITE = c("raw_materials/adamantite");
         public static final TagKey<Item> RAW_MATERIALS_TITANIUM = c("raw_materials/titanium");
+
+        public static final TagKey<Item> RAW_MATERIALS_CHLOROPHYTE = c("raw_materials/chlorophyte");
 
         public static final TagKey<Item> GEMS_RUBY = c("gems/ruby");
         public static final TagKey<Item> GEMS_AMBER = c("gems/amber");

@@ -1257,19 +1257,25 @@ public class ModDataProvider {
             );
             context.register(ModBiomes.THE_HALLOW, new Biome.BiomeBuilder().temperature(0.5f).downfall(0.5f)
                     .specialEffects(new BiomeSpecialEffects.Builder().foliageColorOverride(-16711703).grassColorOverride(-3999757).fogColor(-3346188).waterColor(-1554953).waterFogColor(-3345167).skyColor(-3346188).build())
-                    .mobSpawnSettings(MobSpawnSettings.EMPTY)
+                    .mobSpawnSettings(new MobSpawnSettings.Builder()
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.PIXIE.get(), 60, 1, 2))
+                            .build())
                     .generationSettings(BiomeGenerationSettings.EMPTY)
                     .build()
             );
             context.register(ModBiomes.THE_HALLOW_DESERT, new Biome.BiomeBuilder().temperature(0).downfall(0)
                     .specialEffects(new BiomeSpecialEffects.Builder().foliageColorOverride(-11084592).grassColorOverride(-4005129).fogColor(-3347468).waterColor(-3347468).waterFogColor(-1554953).skyColor(-4592650).build())
-                    .mobSpawnSettings(MobSpawnSettings.EMPTY)
+                    .mobSpawnSettings(new MobSpawnSettings.Builder()
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.PIXIE.get(), 60, 1, 2))
+                            .build())
                     .generationSettings(BiomeGenerationSettings.EMPTY)
                     .build()
             );
             context.register(ModBiomes.THE_HALLOW_TUNDRA, new Biome.BiomeBuilder().temperature(0.5f).downfall(0.5f)
                     .specialEffects(new BiomeSpecialEffects.Builder().foliageColorOverride(-11084592).grassColorOverride(-4005129).fogColor(-3347468).waterColor(-3347468).waterFogColor(-1554953).skyColor(-4592650).build())
-                    .mobSpawnSettings(MobSpawnSettings.EMPTY)
+                    .mobSpawnSettings(new MobSpawnSettings.Builder()
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.PIXIE.get(), 60, 1, 2))
+                            .build())
                     .generationSettings(BiomeGenerationSettings.EMPTY)
                     .build()
             );

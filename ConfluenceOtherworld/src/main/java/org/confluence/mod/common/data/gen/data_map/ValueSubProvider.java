@@ -1400,6 +1400,7 @@ public final class ValueSubProvider {
                 .add(BaitItems.SULPHUR_BUTTERFLY, silver10)
                 .add(BaitItems.TREE_NYMPH_BUTTERFLY, gold1)
                 .add(BaitItems.TRUFFLE_WORM, gold10)
+                .add(BaitItems.PRISMATIC_LACEWING, gold5)
                 .add(BaitItems.ULYSSES_BUTTERFLY, silver20)
                 .add(BaitItems.WATER_STRIDER, silver10)
                 .add(BaitItems.WORM, silver5)

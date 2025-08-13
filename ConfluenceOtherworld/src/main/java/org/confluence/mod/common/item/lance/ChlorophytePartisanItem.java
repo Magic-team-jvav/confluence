@@ -14,7 +14,7 @@ import software.bernie.geckolib.animation.EasingType;
 
 public class ChlorophytePartisanItem extends AbstractLanceItem {
     public ChlorophytePartisanItem() {
-        super(new Properties().attributes(entityInteractionRange(4)), ModRarity.LIME, 10, 3, createKeyframes(
+        super(new Properties().attributes(entityInteractionRange(6)), ModRarity.LIME, 10, 3, createKeyframes(
                 K.of(0, 0, EasingType.LINEAR),
                 K.of(0.17, 6, EasingType.EASE_OUT_BACK),
                 K.of(0.33, -16, EasingType.EASE_IN_EXPO),

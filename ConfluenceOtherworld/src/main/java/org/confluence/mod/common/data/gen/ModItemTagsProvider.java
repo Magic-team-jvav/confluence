@@ -583,6 +583,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.INGOTS_ORICHALCUM).add(MaterialItems.ORICHALCUM_INGOT.get());
         tag(ModTags.Items.INGOTS_ADAMANTITE).add(MaterialItems.ADAMANTITE_INGOT.get());
         tag(ModTags.Items.INGOTS_TITANIUM).add(MaterialItems.TITANIUM_INGOT.get());
+        tag(ModTags.Items.INGOTS_CHLOROPHYTE).add(MaterialItems.CHLOROPHYTE_INGOT.get());
         {
             copy(ModTags.Blocks.STORAGE_BLOCKS_TIN, ModTags.Items.STORAGE_BLOCKS_TIN);
             copy(ModTags.Blocks.STORAGE_BLOCKS_LEAD, ModTags.Items.STORAGE_BLOCKS_LEAD);
@@ -652,6 +653,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
             tag(ModTags.Items.RAW_MATERIALS_ADAMANTITE).add(MaterialItems.RAW_ADAMANTITE.get());
             tag(ModTags.Items.RAW_MATERIALS_TITANIUM).add(MaterialItems.RAW_TITANIUM.get());
 
+            tag(ModTags.Items.RAW_MATERIALS_CHLOROPHYTE).add(MaterialItems.RAW_CHLOROPHYTE.get());
+
             tag(ModTags.Items.RAW_MATERIALS_STURDY_FOSSIL).add(MaterialItems.STURDY_FOSSIL.get());
             tag(ModTags.Items.RAW_MATERIALS_OPAL).add(MaterialItems.OPAL.get());
             tag(ModTags.Items.RAW_MATERIALS_GELSTONE).add(MaterialItems.GELSTONE.get());
@@ -676,6 +679,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                     ModTags.Items.RAW_MATERIALS_ORICHALCUM,
                     ModTags.Items.RAW_MATERIALS_ADAMANTITE,
                     ModTags.Items.RAW_MATERIALS_TITANIUM,
+
+                    ModTags.Items.RAW_MATERIALS_CHLOROPHYTE,
 
                     ModTags.Items.RAW_MATERIALS_STURDY_FOSSIL,
                     ModTags.Items.RAW_MATERIALS_OPAL,

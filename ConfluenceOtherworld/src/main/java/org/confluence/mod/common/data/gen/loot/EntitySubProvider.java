@@ -5,6 +5,7 @@ import com.xiaohunao.terra_moment.common.init.TMItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.loot.EntityLootSubProvider;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.flag.FeatureFlags;
@@ -12,10 +13,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.*;
-import net.minecraft.world.level.storage.loot.functions.EnchantedCountIncreaseFunction;
-import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunction;
-import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
-import net.minecraft.world.level.storage.loot.functions.SmeltItemFunction;
+import net.minecraft.world.level.storage.loot.functions.*;
 import net.minecraft.world.level.storage.loot.predicates.AllOfCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemKilledByPlayerCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceWithEnchantedBonusCondition;
@@ -37,6 +35,7 @@ import org.confluence.terraentity.init.entity.TEMonsterEntities;
 import org.confluence.terraentity.init.entity.TENpcEntities;
 import org.confluence.terraentity.init.item.TEBoomerangItems;
 import org.confluence.terraentity.init.item.TEPetItems;
+import org.confluence.terraentity.init.item.TESummonItems;
 import org.confluence.terraentity.init.item.TEYoyosItems;
 import org.jetbrains.annotations.NotNull;
 
@@ -660,6 +659,12 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(NatureBlocks.GRANITE)).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 10))).apply(random0To1)
                 )
         );
+        /*
+        add(TEMonsterEntities.BLUE_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/blue_slime"), slimeCommon()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(MaterialItems.GEL)).apply(count1To2)).apply(random0To1)
+        );
+        */
         // 肉后怪
         add(TEMonsterEntities.WYVERN.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/wyvern"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
@@ -695,6 +700,19 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(996))
                 );
     }
+    /*
+    private static LootTable.Builder slimeCommon() {
+        return LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(NestedLootTable.lootTableReference(ModLootTables.SLIME_CARRY))
+                        .add(EmptyLootItem.emptyItem().setWeight(19))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TESummonItems.SLIME_STAFF).setQuality(1))
+                        .add(EmptyLootItem.emptyItem().setWeight(6999))
+                );
+    }
+    todo NbtProvider*/
 
     private LootTable.Builder goblinCommon() {
         LootItemConditionalFunction.Builder<?> count1To5 = SetItemCountFunction.setCount(UniformGenerator.between(1, 5));

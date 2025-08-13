@@ -82,7 +82,6 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(TCItems.STOPWATCH)
                 .add(TCItems.LIFE_FORM_ANALYZER)
                 .add(TCItems.DPS_METER)
-                .add(TCItems.DPS_METER)
                 .add(AccessoryItems.PAINT_SPRAYER)
                 .add(TEWhipItems.LEATHER_WHIP)
                 .add(SwordItems.KATANA)
@@ -264,6 +263,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                         .addTrade(new MoneyTradeItem.Builder().setResult(SwordItems.KATANA).build(),1)
                         .addTrade(new MoneyTradeItem.Builder().setResult(FoodItems.PAD_THAI).build(),1)
                         .addTrade(new MoneyTradeItem.Builder().setResult(TEYoyosItems.CODE_1).build(),1)
+                        .addTrade(new MoneyTradeItem.Builder().setResult(FishingPoleItems.SITTING_DUCKS_FISHING_POLE).build(),1)
                         .build()
                 )
         );

@@ -13,7 +13,7 @@ import software.bernie.geckolib.animation.EasingType;
 
 public class SpearItem extends AbstractLanceItem {
     public SpearItem() {
-        super(new Properties().attributes(entityInteractionRange(1)), ModRarity.WHITE, 15, 5, createKeyframes(
+        super(new Properties().attributes(entityInteractionRange(3)), ModRarity.WHITE, 15, 5, createKeyframes(
                 K.of(0, 0, EasingType.LINEAR),
                 K.of(0.25, 6, EasingType.EASE_OUT_BACK),
                 K.of(0.5, -16, EasingType.EASE_IN_EXPO),

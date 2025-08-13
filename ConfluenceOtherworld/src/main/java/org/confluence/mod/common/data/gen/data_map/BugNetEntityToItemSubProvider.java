@@ -29,9 +29,40 @@ public final class BugNetEntityToItemSubProvider {
                 .add(TEAnimals.SNAIL, BaitItems.SNAIL)
                 .add(TEAnimals.BUTTERFLY, List.of(
                         intVariant(0, BaitItems.GOLD_BUTTERFLY),
-                        intVariant(1, BaitItems.HELL_BUTTERFLY),
-                        intVariant(2, BaitItems.JULIA_BUTTERFLY),
-                        intVariant(3, BaitItems.MONARCH_BUTTERFLY)
+                        intVariant(1, BaitItems.JULIA_BUTTERFLY),
+                        intVariant(2, BaitItems.MONARCH_BUTTERFLY),
+                        intVariant(3, BaitItems.PURPLE_EMPEROR_BUTTERFLY),
+                        intVariant(4, BaitItems.RED_ADMIRAL_BUTTERFLY),
+                        intVariant(5, BaitItems.SULPHUR_BUTTERFLY),
+                        intVariant(6, BaitItems.TREE_NYMPH_BUTTERFLY),
+                        intVariant(7, BaitItems.ULYSSES_BUTTERFLY),
+                        intVariant(8, BaitItems.ZEBRA_SWALLOWTAIL_BUTTERFLY)
+                ))
+                .add(TEAnimals.DRAGONFLY, List.of(
+                        intVariant(0, BaitItems.BLACK_DRAGONFLY),
+                        intVariant(1, BaitItems.BLUE_DRAGONFLY),
+                        intVariant(2, BaitItems.GOLD_DRAGONFLY),
+                        intVariant(3, BaitItems.GREEN_DRAGONFLY),
+                        intVariant(4, BaitItems.ORANGE_DRAGONFLY),
+                        intVariant(5, BaitItems.RED_DRAGONFLY),
+                        intVariant(6, BaitItems.YELLOW_DRAGONFLY)
+                ))
+                .add(TEAnimals.LADYBUG, List.of(
+                        intVariant(0, BaitItems.GOLD_LADYBUG),
+                        intVariant(1, BaitItems.LADYBUG)
+                ))
+                .add(TEAnimals.WORM, List.of(
+                        intVariant(0, BaitItems.ENCHANTED_NIGHTCRAWLER),
+                        intVariant(1, BaitItems.GOLD_WORM),
+                        intVariant(2, BaitItems.WORM)
+                ))
+                .add(TEAnimals.SCORPION, List.of(
+                        intVariant(0, BaitItems.BLACK_SCORPION),
+                        intVariant(1, BaitItems.SCORPION)
+                ))
+                .add(TEAnimals.GRASSHOPPER, List.of(
+                        intVariant(0, BaitItems.GOLD_GRASSHOPPER),
+                        intVariant(1, BaitItems.GRASSHOPPER)
                 ))
         ;
     }

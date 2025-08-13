@@ -1,13 +1,18 @@
 package org.confluence.mod.common.init.item;
 
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.item.fishing.BaitItem;
+import org.confluence.terraentity.init.entity.TEAnimals;
+
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import static org.confluence.lib.common.component.ModRarity.*;
-
 
 public class BaitItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
@@ -22,9 +27,9 @@ public class BaitItems {
             BUGGY = register("buggy", GREEN, 0.4F),
             ENCHANTED_NIGHTCRAWLER = register("enchanted_nightcrawler", GREEN, 0.35F),
             FIREFLY = register("firefly", BLUE, 0.2F),
-            GLOWING_SNAIL = register("glowing_snail", BLUE, 0.15F),
-            GOLD_BUTTERFLY = register("gold_butterfly", ORANGE, 0.5F),
-            GOLD_DRAGONFLY = register("gold_dragonfly", ORANGE, 0.5F),
+            GLOWING_SNAIL = register("glowing_snail", BLUE, 0.15F, TEAnimals.GLOWING_SNAIL),
+            GOLD_BUTTERFLY = register("gold_butterfly", ORANGE, 0.5F, TEAnimals.BUTTERFLY, entity -> entity.setVariant(0)),
+            GOLD_DRAGONFLY = register("gold_dragonfly", ORANGE, 0.5F, TEAnimals.DRAGONFLY, entity -> entity.setVariant(2)),
             GOLD_GRASSHOPPER = register("gold_grasshopper", ORANGE, 0.5F),
             GOLD_LADYBUG = register("gold_ladybug", ORANGE, 0.5F),
             GOLD_WATER_STRIDER = register("gold_water_strider", ORANGE, 0.5F),
@@ -60,6 +65,15 @@ public class BaitItems {
             ZEBRA_SWALLOWTAIL_BUTTERFLY = register("zebra_swallowtail_butterfly", BLUE, 0.15F);
 
     public static DeferredItem<BaitItem> register(String name, ModRarity rarity, float bonus) {
-        return ITEMS.register(name, () -> new BaitItem(rarity, bonus));
+        return register(name, rarity, bonus, () -> null, entity -> {});
+    }
+
+    public static <T extends Entity> DeferredItem<BaitItem> register(String name, ModRarity rarity, float bonus, Supplier<? extends EntityType<T>> supplier) {
+        return register(name, rarity, bonus, supplier, entity -> {});
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T extends Entity> DeferredItem<BaitItem> register(String name, ModRarity rarity, float bonus, Supplier<? extends EntityType<T>> supplier, Consumer<T> consumer) {
+        return ITEMS.register(name, () -> new BaitItem(rarity, bonus, supplier, (Consumer<Entity>) consumer));
     }
 }

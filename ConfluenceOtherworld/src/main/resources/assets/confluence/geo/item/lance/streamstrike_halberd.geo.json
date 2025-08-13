@@ -13,7 +13,8 @@
 			"bones": [
 				{
 					"name": "bone",
-					"pivot": [0, 0, 2]
+					"pivot": [0, 0, 2],
+					"rotation": [0, 0, -87.5]
 				},
 				{
 					"name": "root_item",

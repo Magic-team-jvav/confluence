@@ -1152,8 +1152,90 @@ public class ModEnglishProvider extends LanguageProvider {
         add("equipment_benediction.set_switcher.confluence.flinx_set", "Flinx set");
         add("equipment_benediction.set_switcher.confluence.flinx_set.data.0", "Increases summon damage by 5%,Increases your max number of minions by 1");
 
+        add("equipment_benediction.set_switcher.confluence.cobalt_set", "Cobalt Set");
+        add("equipment_benediction.set_switcher.confluence.cobalt_set.data.0", "10% increased ranged damage,10% increased ranged critical strike chance");
+        add("equipment_benediction.set_switcher.confluence.cobalt_set.data.1", "Increases maximum mana by 40,10% increased magic damage,9% increased magic critical strike chance");
+        add("equipment_benediction.set_switcher.confluence.cobalt_set.data.2", "10% increased movement speed,15% increased melee damage");
+        add("equipment_benediction.set_switcher.confluence.cobalt_set.data.3", "5% increased critical strike chance");
+        add("equipment_benediction.set_switcher.confluence.cobalt_set.data.4", "3% increased damage");
+        add("equipment_benediction.set_switcher.confluence.cobalt_set.data.5", "10% increased movement speed ");
+        add("equipment_benediction.set_switcher.confluence.cobalt_set.data.6", "15% increased melee speed");
+        add("equipment_benediction.set_switcher.confluence.cobalt_set.data.7", "20% chance to save ammo");
+        add("equipment_benediction.set_switcher.confluence.cobalt_set.data.8", "14% reduced mana costs");
 
+        add("equipment_benediction.set_switcher.confluence.palladium_set", "Palladium Set");
+        add("equipment_benediction.set_switcher.confluence.palladium_set.data.0", "12% increased melee damage,12% increased melee speed");
+        add("equipment_benediction.set_switcher.confluence.palladium_set.data.1", "9% increased magic damage and critical strike chance,Increases maximum mana by 60");
+        add("equipment_benediction.set_switcher.confluence.palladium_set.data.2", "9% increased ranged damage,9% increased ranged critical strike chance");
+        add("equipment_benediction.set_switcher.confluence.palladium_set.data.3", "3% increased damage,2% increased critical strike chance");
+        add("equipment_benediction.set_switcher.confluence.palladium_set.data.4", "2% increased damage");
+        add("equipment_benediction.set_switcher.confluence.palladium_set.data.5", "1% increased critical strike chance");
+        add("equipment_benediction.set_switcher.confluence.palladium_set.data.6", "Greatly increases life regeneration after striking an enemy");
 
+        add("equipment_benediction.set_switcher.confluence.mythril_set", "Mythril Set");
+        add("equipment_benediction.set_switcher.confluence.mythril_set.data.0", "Increases maximum mana by 60,15% increased magic damage");
+        add("equipment_benediction.set_switcher.confluence.mythril_set.data.1", "12% increased ranged damage,7% increased ranged critical strike chance");
+        add("equipment_benediction.set_switcher.confluence.mythril_set.data.2", "8% increased melee critical strike chance,10% increased melee damage");
+        add("equipment_benediction.set_switcher.confluence.mythril_set.data.3", "7% increased damage");
+        add("equipment_benediction.set_switcher.confluence.mythril_set.data.4", "5% increased critical strike chance");
+        add("equipment_benediction.set_switcher.confluence.mythril_set.data.5", "5% increased critical strike chance");
+        add("equipment_benediction.set_switcher.confluence.mythril_set.data.6", "10% increased melee critical strike chance");
+        add("equipment_benediction.set_switcher.confluence.mythril_set.data.7", "17% reduced mana costs");
+        add("equipment_benediction.set_switcher.confluence.mythril_set.data.8", "20% chance to save ammo");
+
+        add("equipment_benediction.set_switcher.confluence.orichalcum_set", "Orichalcum Set");
+        add("equipment_benediction.set_switcher.confluence.orichalcum_set.data.0", "18% increased magic critical strike chance,Increases maximum mana by 80");
+        add("equipment_benediction.set_switcher.confluence.orichalcum_set.data.1", "11% increased melee damage and melee speed,7% increased movement speed");
+        add("equipment_benediction.set_switcher.confluence.orichalcum_set.data.2", "15% increased ranged critical strike chance,8% increased movement speed");
+        add("equipment_benediction.set_switcher.confluence.orichalcum_set.data.3", "6% increased critical strike chance");
+        add("equipment_benediction.set_switcher.confluence.orichalcum_set.data.4", "8% increased damage");
+        add("equipment_benediction.set_switcher.confluence.orichalcum_set.data.5", "11% increased movement speed");
+        add("equipment_benediction.set_switcher.confluence.orichalcum_set.data.6", "Flower petals will fall on your target for extra damage");
+
+        add("equipment_benediction.set_switcher.confluence.adamantite_set", "Adamantite Set");
+        add("equipment_benediction.set_switcher.confluence.adamantite_set.data.0", "Increases maximum mana by 80,12% increased magic damage and critical strike chance");
+        add("equipment_benediction.set_switcher.confluence.adamantite_set.data.1", "14% increased ranged damage,10% increased ranged critical strike chance");
+        add("equipment_benediction.set_switcher.confluence.adamantite_set.data.2", "7% increased melee critical strike chance,14% increased melee damage");
+        add("equipment_benediction.set_switcher.confluence.adamantite_set.data.3", "8% increased damage");
+        add("equipment_benediction.set_switcher.confluence.adamantite_set.data.4", "7% increased critical strike chance");
+        add("equipment_benediction.set_switcher.confluence.adamantite_set.data.5", "5% increased movement speed");
+        add("equipment_benediction.set_switcher.confluence.adamantite_set.data.6", "20% increased melee and movement speed");
+        add("equipment_benediction.set_switcher.confluence.adamantite_set.data.7", "25% chance to save ammo");
+        add("equipment_benediction.set_switcher.confluence.adamantite_set.data.8", "19% reduced mana costs");
+
+        add("equipment_benediction.set_switcher.confluence.titanium_set", "Titanium Set");
+        add("equipment_benediction.set_switcher.confluence.titanium_set.data.0", "16% increased magic damage and 7% increased magic critical strike chance,Increases maximum mana by 100");
+        add("equipment_benediction.set_switcher.confluence.titanium_set.data.1", "9% increased melee damage and critical strike chance,9% increased melee speed");
+        add("equipment_benediction.set_switcher.confluence.titanium_set.data.2", "16% increased ranged damage,7% increased ranged critical strike chance");
+        add("equipment_benediction.set_switcher.confluence.titanium_set.data.3", "4% increased damage,3% increased critical strike chance");
+        add("equipment_benediction.set_switcher.confluence.titanium_set.data.4", "3% increased damage and critical strike chance");
+        add("equipment_benediction.set_switcher.confluence.titanium_set.data.5", "6% increased movement speed");
+        add("equipment_benediction.set_switcher.confluence.titanium_set.data.6", "Attacking generates a defensive barrier of titanium shards");
+
+        add("equipment_benediction.set_switcher.confluence.hallowed_set", "Hallowed Set");
+        add("equipment_benediction.set_switcher.confluence.hallowed_set.data.0", "10% increased melee damage and critical strike chance,10% increased melee speed");
+        add("equipment_benediction.set_switcher.confluence.hallowed_set.data.1", "Increases maximum mana by 100,12% increased magic damage and critical strike chance");
+        add("equipment_benediction.set_switcher.confluence.hallowed_set.data.2", "Increases your max number of minions by 1,Increases summon damage by 10%");
+        add("equipment_benediction.set_switcher.confluence.hallowed_set.data.3", "15% increased ranged damage,8% increased ranged critical strike chance");
+        add("equipment_benediction.set_switcher.confluence.hallowed_set.data.4", "7% increased critical strike chance");
+        add("equipment_benediction.set_switcher.confluence.hallowed_set.data.5", "7% increased damage");
+        add("equipment_benediction.set_switcher.confluence.hallowed_set.data.6", "8% increased movement speed");
+        add("equipment_benediction.set_switcher.confluence.hallowed_set.data.7", "Become immune after striking an enemy");
+        add("equipment_benediction.set_switcher.confluence.hallowed_set.data.8", "Become immune after striking an enemy,and increases your max number of minions by 2");
+
+        add("equipment_benediction.set_switcher.confluence.crystal_assassin_set", "Crystal Assassin Set");
+        add("equipment_benediction.set_switcher.confluence.crystal_assassin_set.data.0", "5% increased critical strike chance,10% reduced mana cost");
+        add("equipment_benediction.set_switcher.confluence.crystal_assassin_set.data.1", "5% increased damage,10% chance to save ammo");
+        add("equipment_benediction.set_switcher.confluence.crystal_assassin_set.data.2", "10% increased melee speed");
+        add("equipment_benediction.set_switcher.confluence.crystal_assassin_set.data.3", "20% increased movement speed");
+        add("equipment_benediction.set_switcher.confluence.crystal_assassin_set.data.4", "Allows the ability to dash,10% increased damage and critical strike chance");
+
+        add("equipment_benediction.set_switcher.confluence.spider_set", "Spider Set");
+        add("equipment_benediction.set_switcher.confluence.spider_set.data.0", "Increases your max number of minions by 1，Increases summon damage by 5%");
+        add("equipment_benediction.set_switcher.confluence.spider_set.data.1", "ncreases your max number of minions by 1，Increases summon damage by 5%");
+        add("equipment_benediction.set_switcher.confluence.spider_set.data.2", "Increases your max number of minions by 1");
+        add("equipment_benediction.set_switcher.confluence.spider_set.data.3", "Increases summon damage by 6%");
+        add("equipment_benediction.set_switcher.confluence.spider_set.data.4", "Increases summon damage by 12%");
 
         // npc dialogs
         add("dialogs.confluence.guide.0", "My job is to offer suggestions for your upcoming tasks. I recommend that you come and talk to me whenever you encounter any difficulties.");

@@ -11,17 +11,16 @@ import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.init.ModDamageTypes;
 import software.bernie.geckolib.animation.EasingType;
 
-
-public class AdamantiteGlaiveItem extends AbstractLanceItem {
-    public AdamantiteGlaiveItem() {
-        super(new Properties().attributes(entityInteractionRange(4)), ModRarity.LIGHT_RED, 10, 3, createKeyframes(
+public class StormSpearItem extends AbstractLanceItem {
+    public StormSpearItem() {
+        super(new Properties().attributes(entityInteractionRange(1)), ModRarity.BLUE, 15, 5, createKeyframes(
                 K.of(0, 0, EasingType.LINEAR),
-                K.of(0.17, 6, EasingType.EASE_OUT_BACK),
-                K.of(0.33, -16, EasingType.EASE_IN_EXPO),
-                K.of(0.5, 0, EasingType.LINEAR)
+                K.of(0.25, 6, EasingType.EASE_OUT_BACK),
+                K.of(0.5, -16, EasingType.EASE_IN_EXPO),
+                K.of(0.75, 0, EasingType.LINEAR)
         ));
     }
-
+    // todo攻击时能向前发射闪电射弹
     @Override
     protected DamageSource getDamageSource(ServerLevel level, LivingEntity owner) {
         return ModDamageTypes.of(level, DamageTypes.STING, owner);
@@ -29,7 +28,7 @@ public class AdamantiteGlaiveItem extends AbstractLanceItem {
 
     @Override
     protected void onHitEntity(DamageSource damageSource, Entity entity, LivingEntity living, Entity victim) {
-        victim.hurt(damageSource, 19.5F + (float) living.getAttributeValue(Attributes.ATTACK_DAMAGE));
-        VectorUtils.knockBackA2B(entity, victim, 0.6, 0.2);
+        victim.hurt(damageSource, 3.9F + (float) living.getAttributeValue(Attributes.ATTACK_DAMAGE));
+        VectorUtils.knockBackA2B(entity, victim, 0.6, 0.1);
     }
 }

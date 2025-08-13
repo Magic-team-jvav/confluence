@@ -1199,9 +1199,90 @@ public class ModChineseProvider extends LanguageProvider {
         add("equipment_benediction.set_switcher.confluence.flinx_set", "雪怪套装");
         add("equipment_benediction.set_switcher.confluence.flinx_set.data.0", "召唤伤害提高5%，仆从数量上限增加1");
 
+        add("equipment_benediction.set_switcher.confluence.cobalt_set", "钴套装");
+        add("equipment_benediction.set_switcher.confluence.cobalt_set.data.0", "远程伤害提高10%，远程暴击率提高10%");
+        add("equipment_benediction.set_switcher.confluence.cobalt_set.data.1", "最大魔力增加40，魔法伤害提高10%，魔法暴击率提高9%");
+        add("equipment_benediction.set_switcher.confluence.cobalt_set.data.2", "移动速度提高10%，近战伤害提高15%");
+        add("equipment_benediction.set_switcher.confluence.cobalt_set.data.3", "暴击率提高5%");
+        add("equipment_benediction.set_switcher.confluence.cobalt_set.data.4", "伤害提高3%");
+        add("equipment_benediction.set_switcher.confluence.cobalt_set.data.5", "移动速度提高10%");
+        add("equipment_benediction.set_switcher.confluence.cobalt_set.data.6", "近战速度提高15%");
+        add("equipment_benediction.set_switcher.confluence.cobalt_set.data.7", "20%几率省下弹药");
+        add("equipment_benediction.set_switcher.confluence.cobalt_set.data.8", "魔力消耗降低14%");
 
+        add("equipment_benediction.set_switcher.confluence.palladium_set", "钯金套装");
+        add("equipment_benediction.set_switcher.confluence.palladium_set.data.0", "近战伤害提高12%，近战速度提高12%");
+        add("equipment_benediction.set_switcher.confluence.palladium_set.data.1", "魔法伤害和魔法暴击率各提高9%，最大魔力增加60");
+        add("equipment_benediction.set_switcher.confluence.palladium_set.data.2", "远程伤害提高9%，远程暴击率提高9%");
+        add("equipment_benediction.set_switcher.confluence.palladium_set.data.3", "伤害提高3%，暴击率提高2%");
+        add("equipment_benediction.set_switcher.confluence.palladium_set.data.4", "伤害提高2%");
+        add("equipment_benediction.set_switcher.confluence.palladium_set.data.5", "暴击率提高1%");
+        add("equipment_benediction.set_switcher.confluence.palladium_set.data.6", "攻击敌人后大大提高生命再生速度");
 
+        add("equipment_benediction.set_switcher.confluence.mythril_set", "秘银套装");
+        add("equipment_benediction.set_switcher.confluence.mythril_set.data.0", "最大魔力增加60，魔法伤害提高15%");
+        add("equipment_benediction.set_switcher.confluence.mythril_set.data.1", "远程伤害提高12%，远程暴击率提高7%");
+        add("equipment_benediction.set_switcher.confluence.mythril_set.data.2", "近战暴击率提高8%，近战伤害提高10%");
+        add("equipment_benediction.set_switcher.confluence.mythril_set.data.3", "伤害提高7%");
+        add("equipment_benediction.set_switcher.confluence.mythril_set.data.4", "暴击率提高5%");
+        add("equipment_benediction.set_switcher.confluence.mythril_set.data.5", "暴击率提高5%");
+        add("equipment_benediction.set_switcher.confluence.mythril_set.data.6", "近战暴击率提高10%");
+        add("equipment_benediction.set_switcher.confluence.mythril_set.data.7", "魔力消耗降低17%");
+        add("equipment_benediction.set_switcher.confluence.mythril_set.data.8", "20%几率省下弹药");
 
+        add("equipment_benediction.set_switcher.confluence.orichalcum_set", "山铜套装");
+        add("equipment_benediction.set_switcher.confluence.orichalcum_set.data.0", "魔法暴击率提高18%，最大魔力增加80");
+        add("equipment_benediction.set_switcher.confluence.orichalcum_set.data.1", "近战伤害和近战速度各提高11%，移动速度提高7%");
+        add("equipment_benediction.set_switcher.confluence.orichalcum_set.data.2", "远程暴击率提高15%，移动速度提高8%");
+        add("equipment_benediction.set_switcher.confluence.orichalcum_set.data.3", "暴击率提高6%");
+        add("equipment_benediction.set_switcher.confluence.orichalcum_set.data.4", "伤害提高8%");
+        add("equipment_benediction.set_switcher.confluence.orichalcum_set.data.5", "移动速度提高11%");
+        add("equipment_benediction.set_switcher.confluence.orichalcum_set.data.6", "花瓣将落到目标身上造成额外伤害");
+
+        add("equipment_benediction.set_switcher.confluence.adamantite_set", "精金套装");
+        add("equipment_benediction.set_switcher.confluence.adamantite_set.data.0", "最大魔力增加80，魔法伤害和魔法暴击率各提高12%");
+        add("equipment_benediction.set_switcher.confluence.adamantite_set.data.1", "远程伤害提高14%，远程暴击率提高10%");
+        add("equipment_benediction.set_switcher.confluence.adamantite_set.data.2", "近战暴击率提高7%，近战伤害提高14%");
+        add("equipment_benediction.set_switcher.confluence.adamantite_set.data.3", "伤害提高8%");
+        add("equipment_benediction.set_switcher.confluence.adamantite_set.data.4", "暴击率提高7%");
+        add("equipment_benediction.set_switcher.confluence.adamantite_set.data.5", "移动速度提高5%");
+        add("equipment_benediction.set_switcher.confluence.adamantite_set.data.6", "近战速度和移动速度各提高20%");
+        add("equipment_benediction.set_switcher.confluence.adamantite_set.data.7", "25%几率省下弹药");
+        add("equipment_benediction.set_switcher.confluence.adamantite_set.data.8", "魔力消耗降低19%");
+
+        add("equipment_benediction.set_switcher.confluence.titanium_set", "钛金套装");
+        add("equipment_benediction.set_switcher.confluence.titanium_set.data.0", "魔法伤害提高16%、魔法暴击率提高7%，最大魔力增加100");
+        add("equipment_benediction.set_switcher.confluence.titanium_set.data.1", "近战伤害和近战暴击率各提高9%，近战速度提高9%");
+        add("equipment_benediction.set_switcher.confluence.titanium_set.data.2", "远程伤害提高16%，远程暴击率提高7%");
+        add("equipment_benediction.set_switcher.confluence.titanium_set.data.3", "伤害提高4%，暴击率提高3%");
+        add("equipment_benediction.set_switcher.confluence.titanium_set.data.4", "伤害和暴击率各提高3%");
+        add("equipment_benediction.set_switcher.confluence.titanium_set.data.5", "移动速度提高6%");
+        add("equipment_benediction.set_switcher.confluence.titanium_set.data.6", "攻击生成钛金碎片防御屏障");
+
+        add("equipment_benediction.set_switcher.confluence.hallowed_set", "神圣套装");
+        add("equipment_benediction.set_switcher.confluence.hallowed_set.data.0", "近战伤害和近战暴击率各提高10%，近战速度提高10%");
+        add("equipment_benediction.set_switcher.confluence.hallowed_set.data.1", "最大魔力增加100，魔法伤害和魔法暴击率各提高12%");
+        add("equipment_benediction.set_switcher.confluence.hallowed_set.data.2", "仆从数量上限增加1，召唤伤害提高10%");
+        add("equipment_benediction.set_switcher.confluence.hallowed_set.data.3", "远程伤害提高15%，远程暴击率提高8%");
+        add("equipment_benediction.set_switcher.confluence.hallowed_set.data.4", "暴击率提高7%");
+        add("equipment_benediction.set_switcher.confluence.hallowed_set.data.5", "伤害提高7%");
+        add("equipment_benediction.set_switcher.confluence.hallowed_set.data.6", "移动速度提高8%");
+        add("equipment_benediction.set_switcher.confluence.hallowed_set.data.7", "攻击敌人后进入免疫状态");
+        add("equipment_benediction.set_switcher.confluence.hallowed_set.data.8", "攻击敌人后进入免疫状态，仆从数量上限增加2");
+
+        add("equipment_benediction.set_switcher.confluence.crystal_assassin_set", "水晶刺客套装");
+        add("equipment_benediction.set_switcher.confluence.crystal_assassin_set.data.0", "暴击率提高5%，魔力消耗降低10%");
+        add("equipment_benediction.set_switcher.confluence.crystal_assassin_set.data.1", "伤害提高5%，10%几率省下弹药");
+        add("equipment_benediction.set_switcher.confluence.crystal_assassin_set.data.2", "近战速度提高10%");
+        add("equipment_benediction.set_switcher.confluence.crystal_assassin_set.data.3", "移动速度提高20%");
+        add("equipment_benediction.set_switcher.confluence.crystal_assassin_set.data.4", "可猛冲，伤害和暴击率各提高10%");
+
+        add("equipment_benediction.set_switcher.confluence.spider_set", "蜘蛛套装");
+        add("equipment_benediction.set_switcher.confluence.spider_set.data.0", "仆从数量上限增加1，召唤伤害提高5%");
+        add("equipment_benediction.set_switcher.confluence.spider_set.data.1", "仆从数量上限增加1，召唤伤害提高5%");
+        add("equipment_benediction.set_switcher.confluence.spider_set.data.2", "仆从数量上限增加1");
+        add("equipment_benediction.set_switcher.confluence.spider_set.data.3", "召唤伤害提高6%");
+        add("equipment_benediction.set_switcher.confluence.spider_set.data.4", "召唤伤害提高12%");
         // npc对话
         add("dialogs.confluence.guide.0", "我的工作是为你接下来的任务提供建议。建议你遇到任何困难时都来和我谈谈。");
         add("dialogs.confluence.guide.1", "他们说，有个人会告诉你如何在这地方上生存……哦等下。那个人就是我。");
@@ -2955,6 +3036,7 @@ public class ModChineseProvider extends LanguageProvider {
 
         // 其他近战
         add(LanceItems.SPEAR.get(), "长矛");
+        add(LanceItems.STORM_SPEAR.get(), "风暴长矛");
         add(LanceItems.THE_ROTTED_FORK.get(), "腐叉");
         add(LanceItems.STREAMSTRIKE_HALBERD.get(), "穿流戟");
         add(LanceItems.DARK_LANCE.get(), "暗黑长枪");
@@ -2963,6 +3045,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(LanceItems.ORICHALCUM_HALBERD.get(), "山铜长戟");
         add(LanceItems.MYTHRIL_HALBERD.get(), "秘银长戟");
         add(LanceItems.ADAMANTITE_GLAIVE.get(), "精金关刀");
+        add(LanceItems.TITANIUM_TRIDENT.get(), "钛金三叉戟");
+        add(LanceItems.CHLOROPHYTE_PARTISAN.get(), "叶绿镋");
         //剑气
         add(SwordItems.ENCHANTED_SWORD.get(), "附魔剑");
         //快攻

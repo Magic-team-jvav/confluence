@@ -387,23 +387,23 @@ public final class ValueSubProvider {
                 .add(ToolItems.YELLOW_WRENCH, silver20 + silver20)
                 .add(ToolItems.WIRE_CUTTER, silver20 + silver20);
         appender.create()
-                // Adamantite Glaive 1 gold 80 silver
-                // Chlorophyte Partisan 3 gold 60 silver
-                // Cobalt Naginata 90 silver
+                .add(LanceItems.ADAMANTITE_GLAIVE, gold1 + silver50 + silver20 + silver10)
+                .add(LanceItems.CHLOROPHYTE_PARTISAN, gold2 + gold1 + silver50 + silver10)
+                .add(LanceItems.COBALT_NAGINATA, silver50 + silver20 + silver20)
                 .add(LanceItems.DARK_LANCE, gold2 + silver50)
                 .add(LanceItems.SPEAR, silver2)
-                .add(LanceItems.THE_ROTTED_FORK, gold1 + silver50);
+                .add(LanceItems.THE_ROTTED_FORK, gold1 + silver50)
+                .add(LanceItems.MYTHRIL_HALBERD, gold1 + silver20 + silver10 + silver5)
+                .add(LanceItems.ORICHALCUM_HALBERD, gold1 + silver50 + silver10 + silver5)
+                .add(LanceItems.PALLADIUM_PIKE, gold1 + silver20)
+                .add(LanceItems.TITANIUM_TRIDENT, gold2 + silver10);
         // Ghastly Glaive 1 gold
         // Gungnir 4 gold 60 silver
         // Mushroom Spear 14 gold
-        // Mythril Halberd 1 gold 35 silver
         // North Pole 9 gold
         // Obsidian Swordfish 1 gold
-        // Orichalcum Halberd 1 gold 65 silver
-        // Palladium Pike 1 gold 20 silver
         // Storm Spear 30 silver
         // Swordfish 50 silver
-        // Titanium Trident 2 gold 10 silver
         // Trident 20 silver
         appender.create()
                 // Aerial Bane 5 gold

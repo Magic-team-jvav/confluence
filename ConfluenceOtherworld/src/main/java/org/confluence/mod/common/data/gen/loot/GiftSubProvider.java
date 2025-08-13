@@ -29,6 +29,7 @@ import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.init.item.TEBoomerangItems;
 import org.confluence.terraentity.init.item.TERideableItems;
+import org.confluence.terraentity.init.item.TEYoyosItems;
 
 import java.util.Calendar;
 import java.util.function.BiConsumer;
@@ -86,6 +87,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(LootItem.lootTableItem(TCItems.COBALT_SHIELD))
                         .add(LootItem.lootTableItem(TGItems.HAND_GUN))
                         .add(LootItem.lootTableItem(ManaWeaponItems.AQUA_SCEPTER))
+                        .add(LootItem.lootTableItem(TEYoyosItems.VALOR))
                 )
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(ToolItems.SHADOW_KEY))
@@ -100,6 +102,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(LootItem.lootTableItem(TCItems.ANCIENT_CHISEL))
                         .add(LootItem.lootTableItem(FishingPoleItems.SCARAB_FISHING_ROD))
                         .add(LootItem.lootTableItem(ManaWeaponItems.THUNDER_ZAPPER))
+                        .add(LootItem.lootTableItem(LanceItems.STORM_SPEAR))
                         .add(LootItem.lootTableItem(ToolItems.MAGIC_CONCH))
                 )
                 .withPool(LootPool.lootPool()
@@ -373,6 +376,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(LootItem.lootTableItem(TCItems.ANCIENT_CHISEL))
                         .add(LootItem.lootTableItem(FishingPoleItems.SCARAB_FISHING_ROD))
                         .add(LootItem.lootTableItem(ManaWeaponItems.THUNDER_ZAPPER))
+                        .add(LootItem.lootTableItem(LanceItems.STORM_SPEAR))
                         .add(LootItem.lootTableItem(ToolItems.MAGIC_CONCH))
                 )
                 .withPool(LootPool.lootPool()

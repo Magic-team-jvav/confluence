@@ -543,11 +543,12 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 '#', AmountIngredient.of(3, MaterialItems.OPAL),
                 'a', AmountIngredient.of(2, MaterialItems.HEIM),
-                'b', AmountIngredient.of(3, ModTags.Items.GOLD_AND_PLATINUM)
+                'b', AmountIngredient.of(3, ModTags.Items.GOLD_AND_PLATINUM),
+                'c', Ingredient.of(MaterialItems.HEIM)
         ), List.of(
-                " a a",
-                "  # ",
-                " b a",
+                "  ca",
+                " c#c",
+                " bc ",
                 "b   "
         )), LanceItems.STREAMSTRIKE_HALBERD.toStack());
 

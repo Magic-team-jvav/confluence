@@ -903,6 +903,7 @@ public final class ValueSubProvider {
                 .add(AccessoryItems.CLOTHIER_VOODOO_DOLL, silver2)
                 .add(AccessoryItems.GUIDE_VOODOO_DOLL, silver2)
                 .add(ToolItems.BUG_NET, silver5)
+                .add(ToolItems.LAVAPROOF_BUG_NET, gold5)
                 .add(ToolItems.GOLDEN_BUG_NET, gold5);
         appender.create()
                 .add(ArmorItems.MINING_HELMET, gold1 - silver20)

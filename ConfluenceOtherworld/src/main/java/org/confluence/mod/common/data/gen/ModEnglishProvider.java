@@ -476,6 +476,11 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.solar_wings.0", "Allows flight and slow fall");
         add("tooltip.item.confluence.stardust.0", "Allows flight and slow fall");
         add("tooltip.item.confluence.peddlers_satchel.0", "Permanently increases items sold by the Traveling Merchant");
+        add("tooltip.item.confluence.bug_net.0", "Used to catch critters");
+        add("tooltip.item.confluence.lavaproof_bug_net.0", "'For when things get too hot to handle'");
+        add("tooltip.item.confluence.golden_bug_net.0", "Used to catch critters");
+        add("tooltip.item.confluence.golden_bug_net.1", "Can catch lava critters too!");
+        add("tooltip.item.confluence.dev_bug_net.0", "Can catch most creatures!");
 
         // configuration
         add("confluence.configuration.Compatibility", "Compatibility Mechanism");

@@ -6,6 +6,7 @@ import net.minecraft.data.tags.EntityTypeTagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.terraentity.init.entity.TEAnimals;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
 import org.jetbrains.annotations.Nullable;
 
@@ -25,6 +26,11 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
                 TEMonsterEntities.BIG_ANGER_BONES.get(),
                 TEMonsterEntities.BIG_MUSCLE_ANGER_BONES.get(),
                 TEMonsterEntities.BIG_HELMET_ANGER_BONES.get()
+        );
+        tag(ModTags.EntityTypes.LAVA_BUG_NET_ALLOWS).add(
+                // todo 熔岩萤火虫
+                TEAnimals.MAGMA_SNAIL.get(),
+                TEAnimals.HELL_BUTTERFLY.get()
         );
     }
 }

@@ -469,6 +469,11 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.solar_wings.0", "可飞行和缓慢坠落");
         add("tooltip.item.confluence.stardust.0", "可飞行和缓慢坠落");
         add("tooltip.item.confluence.peddlers_satchel.0", "永久增加旅商售卖的物品");
+        add("tooltip.item.confluence.bug_net.0", "用来捕捉小动物");
+        add("tooltip.item.confluence.lavaproof_bug_net.0", "“当事情变得棘手的时候使用”");
+        add("tooltip.item.confluence.golden_bug_net.0", "用来捕捉小动物");
+        add("tooltip.item.confluence.golden_bug_net.1", "也可以捕捉熔岩小动物！");
+        add("tooltip.item.confluence.dev_bug_net.0", "可以捕捉绝大部分生物！");
 
         //设置
         add("confluence.configuration.Compatibility", "兼容性机制");
@@ -3202,6 +3207,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ToolItems.BOTTOMLESS_LAVA_BUCKET.get(), "无底熔岩桶");
         add(ToolItems.BOTTOMLESS_HONEY_BUCKET.get(), "无底蜂蜜桶");
         add(ToolItems.BUG_NET.get(), "虫网");
+        add(ToolItems.LAVAPROOF_BUG_NET.get(), "防熔岩虫网");
         add(ToolItems.DEV_BUG_NET.get(), "开发者虫网");
         add(ToolItems.GOLDEN_BUG_NET.get(), "金虫网");
         add(ToolItems.ROPE_COIL.get(), "绳圈");

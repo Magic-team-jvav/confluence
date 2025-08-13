@@ -2,6 +2,7 @@ package org.confluence.mod.common.item.common;
 
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ServerboundInteractPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -11,19 +12,20 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.lib.common.item.CustomRarityItem;
+import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.data.map.BugNetEntityToItem;
 import org.confluence.mod.common.init.item.ModItems;
 
+import java.util.List;
 import java.util.function.Predicate;
 
-public class BugNetItem extends CustomRarityItem {
+public class BugNetItem extends TooltipItem {
     private final double maxSize;
     private final Predicate<LivingEntity> predicate;
 
-    public BugNetItem(ModRarity rarity, double maxSize, Predicate<LivingEntity> predicate) {
-        super(new Properties().stacksTo(1), rarity);
+    public BugNetItem(ModRarity rarity, List<Component> tooltips, double maxSize, Predicate<LivingEntity> predicate) {
+        super(new Properties().stacksTo(1), rarity, tooltips);
         this.maxSize = maxSize;
         this.predicate = predicate;
     }

@@ -36,7 +36,7 @@ import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
 import org.confluence.terraentity.init.entity.TENpcEntities;
 import org.confluence.terraentity.init.item.TEBoomerangItems;
-import org.confluence.terraentity.init.item.TESummonItems;
+import org.confluence.terraentity.init.item.TEPetItems;
 import org.confluence.terraentity.init.item.TEYoyosItems;
 import org.jetbrains.annotations.NotNull;
 
@@ -271,7 +271,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(99))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TESummonItems.WALLET.get()).setWeight(5))
+                        .add(LootItem.lootTableItem(TEPetItems.WALLET.get()).setWeight(5))
                         .add(EmptyLootItem.emptyItem().setWeight(995))
                 )
         );
@@ -285,7 +285,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(99))
                 )
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(TESummonItems.WALLET.get()).setWeight(5))
+                        .add(LootItem.lootTableItem(TEPetItems.WALLET.get()).setWeight(5))
                         .add(EmptyLootItem.emptyItem().setWeight(995))
                 )
         );

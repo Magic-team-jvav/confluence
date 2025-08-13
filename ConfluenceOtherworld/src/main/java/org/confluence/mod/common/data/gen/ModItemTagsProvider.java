@@ -281,7 +281,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.ORICHALCUM_ORE_SMELTING).addTag(ModTags.Items.ORES_ORICHALCUM).add(MaterialItems.RAW_ORICHALCUM.get());
         tag(ModTags.Items.ADAMANTITE_ORE_SMELTING).addTag(ModTags.Items.ORES_ADAMANTITE).add(MaterialItems.RAW_ADAMANTITE.get());
         tag(ModTags.Items.TITANIUM_ORE_SMELTING).addTag(ModTags.Items.ORES_TITANIUM).add(MaterialItems.RAW_TITANIUM.get());
-        
+
         tag(ModTags.Items.EBONY_LOGS).add(
                 NatureBlocks.EBONY_LOG_BLOCKS.getLog().asItem(),
                 NatureBlocks.EBONY_LOG_BLOCKS.getStrippedLog().asItem(),
@@ -1479,6 +1479,15 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.UNABLE_TO_APPLY_PREFIX).add(
                 AccessoryItems.CLOTHIER_VOODOO_DOLL.get(),
                 AccessoryItems.GUIDE_VOODOO_DOLL.get()
+        );
+
+        tag(ModTags.Items.ANTIGRAVITY).add(
+                MaterialItems.SOUL_OF_LIGHT.get(),
+                MaterialItems.SOUL_OF_NIGHT.get(),
+                MaterialItems.SOUL_OF_FLIGHT.get(),
+                MaterialItems.SOUL_OF_FRIGHT.get(),
+                MaterialItems.SOUL_OF_MIGHT.get(),
+                MaterialItems.SOUL_OF_SIGHT.get()
         );
 
         IntrinsicTagAppender<Item> skipResetStrength = tag(LibTags.Items.SKIP_RESET_STRENGTH);

@@ -1,33 +1,40 @@
 package org.confluence.mod.common.event.game;
 
 import net.minecraft.core.Holder;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ClickAction;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.ItemAttributeModifierEvent;
+import net.neoforged.neoforge.event.ItemStackedOnOtherEvent;
 import net.neoforged.neoforge.event.entity.item.ItemTossEvent;
+import org.confluence.lib.common.item.ColoredItem;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.ManaStorage;
+import org.confluence.mod.common.component.LootComponent;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.common.init.item.AccessoryItems;
-import org.confluence.mod.common.init.item.GunItems;
-import org.confluence.mod.common.init.item.MaterialItems;
+import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.common.GuideVooDooDollItem;
 import org.confluence.mod.common.item.gun.ManaGunItem;
+import org.confluence.mod.network.s2c.VisibilityPacketS2C;
+import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.common.init.TCAttributes;
+import org.confluence.terra_curio.common.item.IFunctionCouldEnable;
 import org.confluence.terra_guns.api.event.GunEvent;
 
 import java.util.Collection;
@@ -35,6 +42,42 @@ import java.util.Map;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
 public final class ItemEvents {
+    @SubscribeEvent
+    public static void itemStackedOnOther(ItemStackedOnOtherEvent event) {
+        ItemStack onSlot = event.getStackedOnItem();
+        ItemStack carried = event.getCarriedItem();
+        Item slotItem = onSlot.getItem();
+        Player player = event.getPlayer();
+        if (event.getClickAction() == ClickAction.SECONDARY) {
+            if (carried.isEmpty()) {
+                // 需要注意创造模式物品栏是仅客户端的，所以创造模式无法正常使用
+                if (slotItem instanceof IFunctionCouldEnable couldEnable) {
+                    if (player instanceof ServerPlayer serverPlayer) {
+                        couldEnable.cycleEnable(onSlot);
+                        VisibilityPacketS2C.sendEcho(serverPlayer);
+                    }
+                    event.setCanceled(true);
+                }
+            }
+
+            boolean isGoldenKey = carried.is(ToolItems.GOLDEN_DUNGEON_KEY);
+            if ((isGoldenKey && onSlot.is(ConsumableItems.GOLDEN_LOCK_BOX) || (carried.is(ToolItems.SHADOW_KEY) && onSlot.is(ConsumableItems.OBSIDIAN_LOCK_BOX)))) {
+                if (player instanceof ServerPlayer serverPlayer && LootComponent.open(serverPlayer, onSlot)) {
+                    if (!serverPlayer.hasInfiniteMaterials()) {
+                        if (isGoldenKey) {
+                            carried.shrink(1);
+                        }
+                        onSlot.shrink(1);
+                    }
+                }
+                event.setCanceled(true);
+            }
+        }
+        if (slotItem instanceof ColoredItem && ItemStack.isSameItem(onSlot, carried)) {
+            ColoredItem.setColor(carried, ColoredItem.getColor(onSlot));
+        }
+    }
+
     @SubscribeEvent
     public static void attributeModifier(ItemAttributeModifierEvent event) {
         ItemStack itemStack = event.getItemStack();
@@ -64,6 +107,7 @@ public final class ItemEvents {
         } else if (itemStack.is(ModTags.Items.COINS)) {
             itemEntity.playSound(ModSoundEvents.COINS_SMALL.get());
         }
+        ModUtils.makeItemAntigravity(itemEntity);
     }
 
     @SubscribeEvent

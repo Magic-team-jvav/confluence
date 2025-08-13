@@ -21,6 +21,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.npc.Npc;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.alchemy.PotionContents;
@@ -40,6 +41,7 @@ import org.confluence.mod.common.data.saved.GamePhase;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.data.saved.MeteoriteTracker;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.init.item.PotionItems;
@@ -263,5 +265,11 @@ public final class ModUtils {
         if (!level.canSeeSky(pos)) return false;
         if (level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING, pos).getY() > pos.getY()) return false;
         return level.getBiome(pos).value().getPrecipitationAt(pos) == Biome.Precipitation.RAIN;
+    }
+
+    public static void makeItemAntigravity(ItemEntity entity) {
+        if (entity.getItem().is(ModTags.Items.ANTIGRAVITY)) {
+            entity.setNoGravity(true);
+        }
     }
 }

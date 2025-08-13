@@ -303,6 +303,9 @@ public final class LivingEntityEvents {
                 event.getDrops().add(new ItemEntity(player.level(), player.getX(), player.getY(), player.getZ(), itemStack));
             }
         }
+        for (ItemEntity entity : event.getDrops()) {
+            ModUtils.makeItemAntigravity(entity);
+        }
     }
 
     @SubscribeEvent

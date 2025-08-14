@@ -3054,6 +3054,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(LanceItems.MYTHRIL_HALBERD.get(), "秘银长戟");
         add(LanceItems.ADAMANTITE_GLAIVE.get(), "精金关刀");
         add(LanceItems.TITANIUM_TRIDENT.get(), "钛金三叉戟");
+        add(LanceItems.GUNGNIR.get(), "永恒之枪");
         add(LanceItems.CHLOROPHYTE_PARTISAN.get(), "叶绿镋");
         //剑气
         add(SwordItems.ENCHANTED_SWORD.get(), "附魔剑");

@@ -183,6 +183,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(LootItem.lootTableItem(TCItems.PANIC_NECKLACE))
                         .add(LootItem.lootTableItem(TGItems.THE_UNDERTAKER))
                         .add(LootItem.lootTableItem(LanceItems.THE_ROTTED_FORK))
+                        .add(LootItem.lootTableItem(ManaWeaponItems.CRIMSON_ROD))
                 )
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/wooden_crate"), LootTable.lootTable()
@@ -457,6 +458,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(LootItem.lootTableItem(TCItems.PANIC_NECKLACE))
                         .add(LootItem.lootTableItem(TGItems.THE_UNDERTAKER))
                         .add(LootItem.lootTableItem(LanceItems.THE_ROTTED_FORK))
+                        .add(LootItem.lootTableItem(ManaWeaponItems.CRIMSON_ROD))
                 )
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/pearlwood_crate"), LootTable.lootTable()
@@ -939,6 +941,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
 
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/king_slime/classic"), KingSlimeTreasureBagCommon()
                 .withPool(LootPool.lootPool()
+                        .setRolls(ConstantValue.exactly(4))
                         .add(LootItem.lootTableItem(ArmorItems.NINJA_HELMET))
                         .add(EmptyLootItem.emptyItem().setWeight(2))
                         .add(LootItem.lootTableItem(ArmorItems.NINJA_CHESTPLATE))
@@ -956,6 +959,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/king_slime/expert"), KingSlimeTreasureBagCommon()
                 .withPool(LootPool.lootPool()
+                        .setRolls(ConstantValue.exactly(4))
                         .add(LootItem.lootTableItem(ArmorItems.NINJA_HELMET).setWeight(2))
                         .add(EmptyLootItem.emptyItem())
                         .add(LootItem.lootTableItem(ArmorItems.NINJA_CHESTPLATE).setWeight(2))
@@ -979,6 +983,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/king_slime/master"), KingSlimeTreasureBagCommon()
                 .withPool(LootPool.lootPool()
+                        .setRolls(ConstantValue.exactly(4))
                         .add(LootItem.lootTableItem(ArmorItems.NINJA_HELMET).setWeight(2))
                         .add(EmptyLootItem.emptyItem())
                         .add(LootItem.lootTableItem(ArmorItems.NINJA_CHESTPLATE).setWeight(2))
@@ -1146,7 +1151,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
 
     // 克脑的也只有药
     private static LootTable.Builder HealingPotionCommon() {
-        return LootTable.lootTable().withPool(LootPool.lootPool().add(LootItem.lootTableItem(PotionItems.HEALING_POTION)
+        return LootTable.lootTable().withPool(LootPool.lootPool().add(LootItem.lootTableItem(PotionItems.LESSER_HEALING_POTION)
                 .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 15)))
         ));
     }
@@ -1155,7 +1160,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
         return LootTable.lootTable()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(HookItems.SLIME_HOOK)))
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(FunctionalBlocks.SOLIDIFIER)))
-                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(PotionItems.HEALING_POTION)
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(PotionItems.LESSER_HEALING_POTION)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 15)))
                 ));
     }

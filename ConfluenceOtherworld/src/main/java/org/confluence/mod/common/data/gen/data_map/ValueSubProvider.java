@@ -392,62 +392,65 @@ public final class ValueSubProvider {
                 .add(LanceItems.COBALT_NAGINATA, silver50 + silver20 + silver20)
                 .add(LanceItems.DARK_LANCE, gold2 + silver50)
                 .add(LanceItems.SPEAR, silver2)
+                .add(LanceItems.STORM_SPEAR, silver20 + silver10)
                 .add(LanceItems.THE_ROTTED_FORK, gold1 + silver50)
                 .add(LanceItems.MYTHRIL_HALBERD, gold1 + silver20 + silver10 + silver5)
                 .add(LanceItems.ORICHALCUM_HALBERD, gold1 + silver50 + silver10 + silver5)
                 .add(LanceItems.PALLADIUM_PIKE, gold1 + silver20)
-                .add(LanceItems.TITANIUM_TRIDENT, gold2 + silver10);
+                .add(LanceItems.TITANIUM_TRIDENT, gold2 + silver10)
+                .add(LanceItems.GUNGNIR, gold2 + gold2 + silver50 + silver10);
         // Ghastly Glaive 1 gold
-        // Gungnir 4 gold 60 silver
         // Mushroom Spear 14 gold
         // North Pole 9 gold
         // Obsidian Swordfish 1 gold
-        // Storm Spear 30 silver
         // Swordfish 50 silver
         // Trident 20 silver
         appender.create()
                 // Aerial Bane 5 gold
-                // Ash Wood Bow 20 copper
+                .add(BowItems.ASH_WOOD_BOW, 20)
+                .add(BowItems.ASH_WOOD_SHORT_BOW, 10)
+                .add(BowItems.EBONWOOD_BOW, 20)
+                .add(BowItems.EBONWOOD_SHORT_BOW, 10)
+                .add(BowItems.SHADEWOOD_BOW, 20)
+                .add(BowItems.SHADEWOOD_SHORT_BOW, 10)
+                .add(BowItems.PEARLWOOD_BOW, 20)
+                .add(BowItems.PEARLWOOD_SHORT_BOW, 10)
                 // Blood Rain Bow 1 gold
                 // Boreal Wood Bow 20 copper
                 .add(BowItems.COPPER_BOW, 70)
-                .add(BowItems.COPPER_SHORT_BOW, 70)
+                .add(BowItems.COPPER_SHORT_BOW, 60)
                 .add(BowItems.DAEDALUS_STORM_BOW, gold10 - gold2)
                 .add(BowItems.DEMON_BOW, 3600)
-                // Ebonwood Bow 20 copper
                 // Eventide 5 gold
                 .add(BowItems.GOLDEN_BOW, 1400)
-                .add(BowItems.GOLDEN_SHORT_BOW, 1400)
+                .add(BowItems.GOLDEN_SHORT_BOW, 1380)
                 // Hellwing Bow 2 gold 50 silver
                 // Ice Bow 5 gold
                 .add(BowItems.IRON_BOW, 140)
                 .add(BowItems.IRON_SHORT_BOW, 140)
                 .add(BowItems.LEAD_BOW, 420)
-                .add(BowItems.LEAD_SHORT_BOW, 420)
+                .add(BowItems.LEAD_SHORT_BOW, 400)
                 // Marrow 54 silver
                 .add(BowItems.MOLTEN_FURY, 5400)
-                // Palm Wood Bow 20 copper
-                // Pearlwood Bow 20 copper
                 // Phantasm 10 gold
                 // Phantom Phoenix 1 gold
                 .add(BowItems.PLATINUM_BOW, 2100)
-                .add(BowItems.PLATINUM_SHORT_BOW, 2100)
+                .add(BowItems.PLATINUM_SHORT_BOW, 2080)
                 // Pulse Bow 9 gold
                 // Rich Mahogany Bow 20 copper
-                // Shadewood Bow 20 copper
                 // Shadowflame Bow 2 gold
                 .add(BowItems.SILVER_BOW, 700)
-                .add(BowItems.SILVER_SHORT_BOW, 700)
+                .add(BowItems.SILVER_SHORT_BOW, 680)
                 .add(BowItems.TENDON_BOW, 3600)
                 .add(BowItems.THE_BEES_KNEES, gold2)
                 .add(BowItems.TIN_BOW, 150)
-                .add(BowItems.TIN_SHORT_BOW, 150)
+                .add(BowItems.TIN_SHORT_BOW, 130)
                 .add(BowItems.TUNGSTEN_BOW, 1050)
-                .add(BowItems.TUNGSTEN_SHORT_BOW, 1050)
+                .add(BowItems.TUNGSTEN_SHORT_BOW, 1030)
                 .add(Items.BOW, 40)
                 .add(BowItems.FOSSIL_BOW, 3000)
                 .add(BowItems.HUNTING_BOW, 3800)
-                .add(BowItems.WOODEN_SHORT_BOW, 40);
+                .add(BowItems.WOODEN_SHORT_BOW, 30);
         appender.create()
                 .add(PickaxeItems.CACTUS_PICKAXE, silver2 + silver2)
                 .add(PickaxeItems.COPPER_PICKAXE, silver1)

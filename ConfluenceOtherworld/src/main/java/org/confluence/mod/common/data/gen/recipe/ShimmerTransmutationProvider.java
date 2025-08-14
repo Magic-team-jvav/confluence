@@ -218,6 +218,11 @@ public class ShimmerTransmutationProvider extends AbstractRecipeProvider {
         item(recipeOutput, "rotten_bone_from_vertebra", addItem(MaterialItems.VERTEBRA, MaterialItems.ROTTEN_BONE, 3));
         item(recipeOutput, ModItems.CORRUPT_SEED, ModItems.CRIMSON_SEED);
         item(recipeOutput, ModItems.CRIMSON_SEED, ModItems.CORRUPT_SEED);
+        // 忍者套转化
+        item(recipeOutput, ArmorItems.NINJA_HELMET, ArmorItems.NINJA_CHESTPLATE);
+        item(recipeOutput, ArmorItems.NINJA_CHESTPLATE, ArmorItems.NINJA_LEGGINGS);
+        item(recipeOutput, ArmorItems.NINJA_LEGGINGS, ArmorItems.NINJA_BOOTS);
+        item(recipeOutput, ArmorItems.NINJA_BOOTS, ArmorItems.NINJA_HELMET);
         // 微光箭转化
         item(recipeOutput, "shimmer_arrow", addItem(ItemTags.ARROWS, ArrowItems.SHIMMER_ARROW.get(), 1));
         // 匣子转化

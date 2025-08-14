@@ -17,10 +17,14 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.init.ModEntities;
 import org.jetbrains.annotations.Nullable;
-
+import software.bernie.geckolib.animatable.GeoAnimatable;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
 import java.util.UUID;
+import software.bernie.geckolib.util.GeckoLibUtil;
+public class CloudProjectile extends AbstractManaProjectile implements GeoAnimatable {
+    private final AnimatableInstanceCache CACHE = GeckoLibUtil.createInstanceCache(this);
 
-public class CloudProjectile extends AbstractManaProjectile {
     protected static final EntityDataAccessor<Integer> DATA_TARGET_ID = SynchedEntityData.defineId(CloudProjectile.class, EntityDataSerializers.INT);
     protected UUID targetUUID;
     protected transient LivingEntity target;
@@ -152,5 +156,19 @@ public class CloudProjectile extends AbstractManaProjectile {
             compound.putString("RainType", BuiltInRegistries.ENTITY_TYPE.getKey(rainType).toString());
         }
         compound.putInt("Duration", duration);
+    }
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return CACHE;
+    }
+
+    @Override
+    public double getTick(Object object) {
+        return this.tickCount;
     }
 }

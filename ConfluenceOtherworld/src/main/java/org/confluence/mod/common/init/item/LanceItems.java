@@ -20,5 +20,6 @@ public class LanceItems {
     public static final DeferredItem<OrichalcumHalberdItem> MYTHRIL_HALBERD = ITEMS.register("mythril_halberd", OrichalcumHalberdItem::new);
     public static final DeferredItem<AdamantiteGlaiveItem> ADAMANTITE_GLAIVE = ITEMS.register("adamantite_glaive", AdamantiteGlaiveItem::new);
     public static final DeferredItem<AdamantiteGlaiveItem> TITANIUM_TRIDENT = ITEMS.register("titanium_trident", AdamantiteGlaiveItem::new);
+    public static final DeferredItem<GungnirItem> GUNGNIR = ITEMS.register("gungnir", GungnirItem::new);
     public static final DeferredItem<ChlorophytePartisanItem> CHLOROPHYTE_PARTISAN = ITEMS.register("chlorophyte_partisan", ChlorophytePartisanItem::new);
 }

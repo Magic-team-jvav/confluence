@@ -240,7 +240,7 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                                 LocationPredicate.Builder.location().setBiomes(isJungleOrLush).setY(caveThroughSpace))
                         ).setWeight(25))
                         .add(LootItem.lootTableItem(SwordItems.PURPLE_CLUBBERFISH).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setBiomes(isJungleOrLush).setY(caveThroughSpace)
+                                LocationPredicate.Builder.location().setBiomes(isCorruption).setY(caveThroughSurface)
                         )).setWeight(25))
                         .add(LootItem.lootTableItem(PickaxeItems.REAVER_SHARK_PICKAXE).when(LocationCheck.checkLocation(
                                 LocationPredicate.Builder.location().setBiomes(isOceanOrBeach).setY(caveThroughSpace)

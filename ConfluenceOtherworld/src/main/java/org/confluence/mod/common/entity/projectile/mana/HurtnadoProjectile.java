@@ -19,9 +19,10 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 public class HurtnadoProjectile extends AbstractManaProjectile implements Immunity {
-    private final Set<Entity> passThrough = new HashSet<>();
+    private final Set<UUID> penetrateSet = new HashSet<>();
     private Entity target;
     public float rotateO = 0.0F;
     public float rotate = 0.0F;
@@ -65,7 +66,7 @@ public class HurtnadoProjectile extends AbstractManaProjectile implements Immuni
                 if (entity.hurt(getDamagesource(), getCalculatedDamage())) {
                     VectorUtils.knockBackA2B(this, entity, 0.5, 0.2);
                 }
-                if (passThrough.add(entity) && passThrough.size() >= 14) {
+                if (penetrateSet.add(entity.getUUID()) && penetrateSet.size() >= 14) {
                     discard();
                     return;
                 }

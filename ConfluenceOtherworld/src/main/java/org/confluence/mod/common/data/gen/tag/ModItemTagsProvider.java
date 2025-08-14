@@ -1218,6 +1218,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ManaWeaponItems.CURSED_FLAMES.get(),
                 ManaWeaponItems.FLOWER_OF_FROST.get(),
                 ManaWeaponItems.BOOK_OF_SKULLS.get(),
+                ManaWeaponItems.CRIMSON_ROD.get(),
                 NatureBlocks.ASH_LOG_BLOCKS.getLeaves().asItem(),
                 NatureBlocks.LOOSE_HONEY_BLOCK.asItem(),
                 NatureBlocks.GREEN_MOSS.asItem(),

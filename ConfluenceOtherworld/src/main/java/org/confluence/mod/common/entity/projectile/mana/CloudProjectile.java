@@ -5,35 +5,31 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.monster.Enemy;
-import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.*;
+import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.init.ModEntities;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
-public class SkullProjectile extends AbstractManaProjectile {
-    private static final EntityDataAccessor<Integer> DATA_TARGET_ID = SynchedEntityData.defineId(SkullProjectile.class, EntityDataSerializers.INT);
+public class CloudProjectile extends AbstractManaProjectile {
+    private static final EntityDataAccessor<Integer> DATA_TARGET_ID = SynchedEntityData.defineId(CloudProjectile.class, EntityDataSerializers.INT);
     private UUID targetUUID;
-    private transient LivingEntity target;
-    protected final Set<UUID> penetrateSet = new HashSet<>();
+    private LivingEntity target;
 
-    public SkullProjectile(EntityType<SkullProjectile> entityType, Level level) {
+    public CloudProjectile(EntityType<? extends AbstractManaProjectile> entityType, Level level) {
         super(entityType, level);
         setNoGravity(true);
     }
 
-    public SkullProjectile(LivingEntity living) {
-        this(ModEntities.SKULL_PROJECTILE.get(), living.level());
+    public CloudProjectile(LivingEntity living) {
+        this(ModEntities.BLOOD_CLOUD_PROJECTILE.get(), living.level());
         setOwner(living);
         setPos(living.getX(), living.getEyeY() - 0.1, living.getZ());
     }
@@ -56,53 +52,59 @@ public class SkullProjectile extends AbstractManaProjectile {
 
     @Override
     public void baseTick() {
+        if (tickCount > 5 * 60 * 20 || getOwner() == null || getOwner().position().distanceToSqr(position()) > 64 * 64) {
+            discard();
+            return;
+        }
         super.baseTick();
 
-        if (getTarget() == null) {
-            if (!level().isClientSide) {
-                level().getEntitiesOfClass(LivingEntity.class, new AABB(blockPosition()).inflate(12.5), living -> living instanceof Enemy).stream()
-                        .min(Comparator.comparingDouble(living -> living.distanceToSqr(this))).ifPresent(this::setTarget);
+        Vec3 vec3 = getDeltaMovement();
+        move(MoverType.SELF, vec3);
+        Vec3 motion = getDeltaMovement();
+        if (!vec3.equals(motion)) {
+            setTarget(null);
+            motion = Vec3.ZERO;
+        }
+        setDeltaMovement(motion);
+
+        if (motion.x == 0 && motion.y == 0 && motion.z == 0) {
+            if (!level().isClientSide && level().getGameTime() % 3 == 0) {
+                LivingEntity owner = getLivingOwner();
+                if (owner != null) {
+                    RainProjectile entity = new RainProjectile(owner, position().add(
+                            (random.nextFloat() - 0.5F) * 2,
+                            -0.5,
+                            (random.nextFloat() - 0.5F) * 2
+                    ));
+                    entity.setDamage(getDamage());
+                    level().addFreshEntity(entity);
+                }
             }
-        } else if (!target.isRemoved()) {
-            Vec3 vec3 = getDeltaMovement().add(VectorUtils.getVectorA2B(this, target).scale(0.4375));
-            if (vec3.lengthSqr() > 0.4375 * 0.4375) {
-                setDeltaMovement(vec3.normalize().scale(0.4375));
+        } else if (getTarget() != null && !target.isRemoved()) {
+            if (Mth.square(getX() - target.getX()) + Mth.square(getZ() - target.getZ()) < 4) {
+                setPos(target.position().add(0, target.getBbHeight() + 2, 0));
+                setDeltaMovement(Vec3.ZERO);
+                setTarget(null);
+            } else {
+                Vec3 added = motion.add(VectorUtils.getVectorA2B(this, target).scale(0.2).add(0, 0.2, 0));
+                if (added.lengthSqr() > 1.5 * 1.5) {
+                    setDeltaMovement(added.normalize().scale(1.5));
+                }
             }
         } else {
             setTarget(null);
         }
-
-        HitResult hitresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
-        checkInsideBlocks();
-        HitResult.Type hitresult$type = hitresult.getType();
-        if (hitresult$type == HitResult.Type.BLOCK) {
-            onHitBlock((BlockHitResult) hitresult);
-            discard();
-            return;
-        } else if (hitresult$type == HitResult.Type.ENTITY) {
-            Entity entity = ((EntityHitResult) hitresult).getEntity();
-            if (!penetrateSet.contains(entity.getUUID())) {
-                if (entity.hurt(getDamagesource(), getCalculatedDamage())) {
-                    VectorUtils.knockBackA2B(this, entity, 0.35, 0.1);
-                }
-                penetrateSet.add(entity.getUUID());
-                if (penetrateSet.size() == 3) {
-                    discard();
-                    return;
-                }
-            }
-        }
-
-        Vec3 vec3 = getDeltaMovement();
-        double offX = getX() + vec3.x;
-        double offY = getY() + vec3.y;
-        double offZ = getZ() + vec3.z;
-        setPos(offX, offY, offZ);
     }
 
     public void setTarget(@Nullable LivingEntity target) {
         this.target = target;
-        this.targetUUID = target == null ? null : target.getUUID();
+        if (target == null) {
+            this.targetUUID = null;
+            entityData.set(DATA_TARGET_ID, -114514);
+        } else {
+            this.targetUUID = target.getUUID();
+            entityData.set(DATA_TARGET_ID, target.getId());
+        }
     }
 
     public @Nullable LivingEntity getTarget() {

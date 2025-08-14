@@ -25,6 +25,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.init.item.LanceItems;
 import org.confluence.mod.common.init.item.LightPetItems;
+import org.confluence.mod.common.init.item.ManaWeaponItems;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.phase_journey.common.util.PhaseUtils;
@@ -58,19 +59,19 @@ public class CrimsonHeartBlock extends Block {
 
             if (count == 0 || level.random.nextFloat() < 0.2F) {
                 LibUtils.createItemEntity(TGItems.THE_UNDERTAKER.toStack(), center.x, center.y, center.z, level, 0);
-                LibUtils.createItemEntity(TGItems.MUSKET_BULLET.get(), 100, center.x, center.y, center.z, level, 0);
+                LibUtils.createItemEntity(TGItems.MUSKET_BULLET.toStack(100), center.x, center.y, center.z, level, 0);
             }
             if (level.random.nextFloat() < 0.2F) {
-                LibUtils.createItemEntity(LightPetItems.CRIMSON_HEART.get(), 1, center.x, center.y, center.z, level, 0);
+                LibUtils.createItemEntity(LightPetItems.CRIMSON_HEART.toStack(), center.x, center.y, center.z, level, 0);
             }
             if (level.random.nextFloat() < 0.2F) {
-                LibUtils.createItemEntity(TCItems.PANIC_NECKLACE.get(), 1, center.x, center.y, center.z, level, 0);
+                LibUtils.createItemEntity(TCItems.PANIC_NECKLACE.toStack(), center.x, center.y, center.z, level, 0);
             }
             if (level.random.nextFloat() < 0.2F) {
-                // 猩红魔杖
+                LibUtils.createItemEntity(ManaWeaponItems.CRIMSON_ROD.toStack(), center.x, center.y, center.z, level, 0);
             }
             if (level.random.nextFloat() < 0.2F) {
-                LibUtils.createItemEntity(LanceItems.THE_ROTTED_FORK.get(), 1, center.x, center.y, center.z, level, 0);
+                LibUtils.createItemEntity(LanceItems.THE_ROTTED_FORK.toStack(), center.x, center.y, center.z, level, 0);
             }
 
             for (ServerPlayer player : serverLevel.getPlayers(serverPlayer -> serverPlayer.distanceToSqr(center) <= 32 * 32)) {

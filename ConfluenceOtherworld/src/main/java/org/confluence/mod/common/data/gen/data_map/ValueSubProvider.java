@@ -603,7 +603,7 @@ public final class ValueSubProvider {
                 .add(ManaWeaponItems.DIAMOND_STAFF, 2800)
                 .add(ManaWeaponItems.AMBER_STAFF, 2800)
                 .add(ManaWeaponItems.VILETHRON, gold1 + silver50)
-                // 猩红魔杖
+                .add(ManaWeaponItems.CRIMSON_ROD, gold1 + silver50)
                 .add(ManaWeaponItems.WEATHER_PAIN, gold1 + silver50)
                 // 魔法飞弹
                 .add(ManaWeaponItems.AQUA_SCEPTER, 17500)

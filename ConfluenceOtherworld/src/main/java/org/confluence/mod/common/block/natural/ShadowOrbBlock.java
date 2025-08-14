@@ -56,19 +56,19 @@ public class ShadowOrbBlock extends Block {
 
             if (count == 0 || level.random.nextFloat() < 0.2F) {
                 LibUtils.createItemEntity(TGItems.MUSKET.toStack(), center.x, center.y, center.z, level, 0);
-                LibUtils.createItemEntity(TGItems.MUSKET_BULLET.get(), 100, center.x, center.y, center.z, level, 0);
+                LibUtils.createItemEntity(TGItems.MUSKET_BULLET.toStack(100), center.x, center.y, center.z, level, 0);
             }
             if (level.random.nextFloat() < 0.2F) {
-                LibUtils.createItemEntity(LightPetItems.SHADOW_ORB.get(), 1, center.x, center.y, center.z, level, 0);
+                LibUtils.createItemEntity(LightPetItems.SHADOW_ORB.toStack(), center.x, center.y, center.z, level, 0);
             }
             if (level.random.nextFloat() < 0.2F) {
-                LibUtils.createItemEntity(ManaWeaponItems.VILETHRON.get(), 1, center.x, center.y, center.z, level, 0);
+                LibUtils.createItemEntity(ManaWeaponItems.VILETHRON.toStack(), center.x, center.y, center.z, level, 0);
             }
             if (level.random.nextFloat() < 0.2F) {
                 // 链球
             }
             if (level.random.nextFloat() < 0.2F) {
-                LibUtils.createItemEntity(AccessoryItems.BAND_OF_STARPOWER.get(), 1, center.x, center.y, center.z, level, 0);
+                LibUtils.createItemEntity(AccessoryItems.BAND_OF_STARPOWER.toStack(), center.x, center.y, center.z, level, 0);
             }
 
             for (ServerPlayer player : serverLevel.getPlayers(serverPlayer -> serverPlayer.distanceToSqr(center) <= 32 * 32)) {

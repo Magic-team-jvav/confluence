@@ -3627,31 +3627,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(ManaWeaponItems.CRYSTAL_STORM.get(), "水晶风暴");
         add(ManaWeaponItems.CURSED_FLAMES.get(), "诅咒焰");
         add(ManaWeaponItems.FLOWER_OF_FROST.get(), "寒霜之花");
-        /*
-        add(ManaWeapons.MAGIC_MISSILE.get(), "魔法导弹");
-        add(ManaWeapons.FLAMELASH.get(), "烈焰火鞭");
-        add(ManaWeapons.SKY_FRACTURE.get(), "裂天剑");
-        add(ManaWeapons.CRYSTAL_SERPENT.get(), "水晶蛇");
-        add(ManaWeapons.FROST_STAFF.get(), "寒霜法杖");
-        add(ManaWeapons.CRYSTAL_VILE_SHARD.get(), "魔晶碎块");
-        add(ManaWeapons.LIFE_DRAIN.get(), "夺命杖");
-        add(ManaWeapons.METEOR_STAFF.get(), "流星法杖");
-        add(ManaWeapons.POISON_STAFF.get(), "毒液法杖");
-        add(ManaWeapons.RAINBOW_ROD.get(), "彩虹法杖");
-        add(ManaWeapons.UNHOLY_TRIDENT.get(), "邪恶三叉戟");
-        add(ManaWeapons.TOME_OF_INFINITE_WISDOM.get(), "无限智慧巨著");
-        add(ManaWeapons.NETTLE_BURST.get(), "爆裂藤曼");
-        add(ManaWeapons.SHADOWBEAM_STAFF.get(), "暗影束法杖");
-        add(ManaWeapons.INFERNO_FORK.get(), "狱火叉");
-        add(ManaWeapons.VENOM_STAFF.get(), "毒液法杖");
-        add(ManaWeapons.BAT_SCEPTER.get(), "蝙蝠权杖");
-        add(ManaWeapons.BLIZZARD_STAFF.get(), "暴雪法杖");
-        add(ManaWeapons.SPECTRE_STAFF.get(), "幽灵法杖");
-        add(ManaWeapons.RESONANCE_SCEPTER.get(), "共鸣权杖");
-        add(ManaWeapons.STAFF_OF_EARTH.get(), "大地法杖");
-        add(ManaWeapons.RAZORPINE.get(), "剃刀松");
-        add(ManaWeapons.BETSYS_WRATH.get(), "双足翼龙怒气");
-         */
+        add(ManaWeaponItems.BOOK_OF_SKULLS.get(), "骷髅头法术书");
+        add(ManaWeaponItems.CRIMSON_ROD.get(), "猩红魔杖");
+
         add(ManaWeaponItems.BEE_GUN.get(), "蜜蜂枪");
         add(ManaWeaponItems.SPACE_GUN.get(), "太空枪");
         add(GunItems.STAR_CANNON.get(), "星星炮");

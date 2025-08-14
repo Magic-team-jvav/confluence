@@ -8,6 +8,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
@@ -268,7 +269,7 @@ public final class ModTags {
         public static final TagKey<Item> INGOTS_DEMONITE = c("ingots/demonite");
         public static final TagKey<Item> INGOTS_CRIMTANE = c("ingots/crimtane");
         public static final TagKey<Item> INGOTS_HELLSTONE = c("ingots/hellstone");
-        
+
         public static final TagKey<Item> INGOTS_COBALT = c("ingots/cobalt");
         public static final TagKey<Item> INGOTS_PALLADIUM = c("ingots/palladium");
         public static final TagKey<Item> INGOTS_MYTHRIL = c("ingots/mythril");
@@ -309,7 +310,7 @@ public final class ModTags {
         public static final TagKey<Item> RAW_MATERIALS_GELSTONE = c("raw_materials/gelstone");
         public static final TagKey<Item> RAW_MATERIALS_COLD_CRYSTAL = c("raw_materials/cold_crystal");
 
-        public static final TagKey<Item> RAW_MATERIALS_FLOATING_WHEAT= c("raw_materials/raw_materials_floating_wheat");
+        public static final TagKey<Item> RAW_MATERIALS_FLOATING_WHEAT = c("raw_materials/raw_materials_floating_wheat");
 
         public static final TagKey<Item> NUGGETS_LEAD = c("nuggets/lead");
 
@@ -385,7 +386,7 @@ public final class ModTags {
         public static final TagKey<Item> ORICHALCUM_ORE_SMELTING = c("orichalcum_ore_smelting");
         public static final TagKey<Item> ADAMANTITE_ORE_SMELTING = c("adamantite_ore_smelting");
         public static final TagKey<Item> TITANIUM_ORE_SMELTING = c("titanium_ore_smelting");
-        
+
         public static final TagKey<Item> MOSS_ITEM = register("moss_item");
         public static final TagKey<Item> SUMMONER_WEAPON = register("summoner_weapon");
         public static final TagKey<Item> CROP_FORTUNE = register("crop_fortune");
@@ -438,5 +439,9 @@ public final class ModTags {
         public static final TagKey<Enchantment> MENDING_EXCLUSIVE = Confluence.asTagKey(Registries.ENCHANTMENT, "mending_exclusive");
         public static final TagKey<Enchantment> MANA_AFFECTIVE_EXCLUSIVE = Confluence.asTagKey(Registries.ENCHANTMENT, "mana_affective_exclusive");
         public static final TagKey<Enchantment> MAGIC_ATTACK_EXCLUSIVE = Confluence.asTagKey(Registries.ENCHANTMENT, "magic_attack_exclusive");
+    }
+
+    public static class RecipeSerializers {
+        public static final TagKey<RecipeSerializer<?>> AUTOMATION_IGNORE = TagKey.create(Registries.RECIPE_SERIALIZER, ResourceLocation.fromNamespaceAndPath("create", "automation_ignore"));
     }
 }

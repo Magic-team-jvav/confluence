@@ -1,4 +1,4 @@
-package org.confluence.mod.common.hook;
+package org.confluence.mod.common.equipment_set.hook;
 
 import com.xiaohunao.equipment_benediction.common.hook.IHook;
 import com.xiaohunao.equipment_benediction.common.interfaces.IBenediction;

@@ -11,6 +11,7 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
 import org.confluence.lib.common.data.gen.CollectRecipeProvider;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.gen.recipe.*;
+import org.confluence.mod.common.data.gen.tag.*;
 
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -52,5 +53,6 @@ public final class ModDataGenerator {
         generator.addProvider(server, new ModDataMapProvider(output, lookup));
         generator.addProvider(server, new ModLootTableProvider(output, lookup));
         generator.addProvider(server, new ModEnchantmentTagsProvider(output, lookup, helper));
+        generator.addProvider(server, new ModRecipeSerializerTagsProvider(output, lookup, helper));
     }
 }

@@ -1,4 +1,4 @@
-package org.confluence.mod.common.data.gen;
+package org.confluence.mod.common.data.gen.tag;
 
 import com.google.common.collect.Streams;
 import net.minecraft.core.HolderLookup;

@@ -52,7 +52,7 @@ public class EntityDisplayItem extends CustomRarityItem {
     public Component getName(ItemStack stack) {
         CompoundTag tag = LibUtils.getItemStackNbtIfPresent(stack);
         if (tag != null) {
-            EntityType<?> entityType = BuiltInRegistries.ENTITY_TYPE.getOptional(ResourceLocation.parse(tag.getString("id"))).orElse(EntityType.PIG);
+            EntityType<?> entityType = BuiltInRegistries.ENTITY_TYPE.getOptional(ResourceLocation.tryParse(tag.getString(Entity.ID_TAG))).orElse(EntityType.PIG);
             return entityType.getDescription();
         }
         return super.getName(stack);

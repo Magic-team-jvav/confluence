@@ -25,7 +25,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.common.data.saved.IGlobalData;
-import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.LibCodecUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.EnterHardmodeEvent;
 import org.confluence.mod.common.CommonConfigs;
@@ -68,7 +68,7 @@ public final class HardmodeConvertor implements IGlobalData {
                 return DataResult.success(longList, Lifecycle.stable());
             }
         };
-        return LibUtils.tupleCodec(Codec.LONG.xmap(ChunkPos::new, ChunkPos::toLong), codec).listOf().xmap(LinkedList::new, Function.identity());
+        return LibCodecUtils.tupleCodec(Codec.LONG.xmap(ChunkPos::new, ChunkPos::toLong), codec).listOf().xmap(LinkedList::new, Function.identity());
     });
 
     private volatile boolean started = false;

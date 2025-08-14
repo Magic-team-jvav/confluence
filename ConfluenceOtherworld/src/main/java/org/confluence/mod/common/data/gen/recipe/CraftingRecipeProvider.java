@@ -21,6 +21,7 @@ import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.common.recipe.special.BoomBunnyRecipe;
 import org.confluence.terraentity.init.TEItems;
 import org.confluence.terraentity.init.item.TEBoomerangItems;
 import org.confluence.terraentity.init.item.TEYoyosItems;
@@ -161,9 +162,11 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 "###"
         )), chestplate.asItem().getDefaultInstance());
     }
+
     // 基础弓
     private static final List<String> BOW_PATTERN = List.of(" #/", "# /", " #/");
     private static final List<String> SHORT_BOW_PATTERN = List.of(" #", "#/", " #");
+
     private void registerBowRecipes(RecipeOutput output, Ingredient material,
                                     ItemLike normalBow, ItemLike shortBow) {
         shaped(output, ShapedRecipePattern.of(Map.of(
@@ -176,6 +179,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 '/', Ingredient.of(Items.STRING)
         ), SHORT_BOW_PATTERN), shortBow.asItem().getDefaultInstance());
     }
+
     //  基础工具，阔剑短剑
     private static final List<String> AXE_PATTERN = List.of("##", "#/", " /");
     private static final List<String> PICKAXE_PATTERN = List.of("###", " / ", " / ");
@@ -184,9 +188,10 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
     private static final List<String> SHORT_SWORD_PATTERN = List.of(" #", "/ ");
     private static final List<String> SHOVEL_PATTERN = List.of("#", "/", "/");
     private static final List<String> HOE_PATTERN = List.of("##", " /", " /");
+
     private void registerToolRecipes(RecipeOutput output, Ingredient material,
                                      ItemLike axe, ItemLike pickaxe, ItemLike hammer,
-                                     ItemLike broadsword,ItemLike shortsword, ItemLike shovel, ItemLike hoe) {
+                                     ItemLike broadsword, ItemLike shortsword, ItemLike shovel, ItemLike hoe) {
         shaped(output, ShapedRecipePattern.of(Map.of(
                 '#', material,
                 '/', Ingredient.of(Items.STICK)
@@ -222,14 +227,17 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 '/', Ingredient.of(Items.STICK)
         ), HOE_PATTERN), hoe.asItem().getDefaultInstance());
     }
+
     // 基础砖
-    private static final List<String> BRICKS_PATTERN = List.of("##","##");
+    private static final List<String> BRICKS_PATTERN = List.of("##", "##");
+
     private void registerBricksRecipes(RecipeOutput output, Ingredient material,
-                                    ItemLike bricks) {
+                                       ItemLike bricks) {
         shaped(output, ShapedRecipePattern.of(Map.of(
                 '#', material
         ), BRICKS_PATTERN), bricks.asItem().getDefaultInstance());
     }
+
     @Override
     protected void buildRecipes(RecipeOutput output, HolderLookup.Provider holderLookup) {
         // 注册矿物块的合成与分解配方
@@ -433,14 +441,14 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         registerArmorRecipes(output, Ingredient.of(ModTags.Items.INGOTS_TUNGSTEN), ArmorItems.TUNGSTEN_HELMET, ArmorItems.TUNGSTEN_CHESTPLATE, ArmorItems.TUNGSTEN_LEGGINGS, ArmorItems.TUNGSTEN_BOOTS);
         registerArmorRecipes(output, Ingredient.of(ModTags.Items.INGOTS_PLATINUM), ArmorItems.PLATINUM_HELMET, ArmorItems.PLATINUM_CHESTPLATE, ArmorItems.PLATINUM_LEGGINGS, ArmorItems.PLATINUM_BOOTS);
         // 基础弓
-        registerBowRecipes(output, Ingredient.of(Tags.Items.INGOTS_COPPER),BowItems.COPPER_BOW,BowItems.COPPER_SHORT_BOW);
-        registerBowRecipes(output, Ingredient.of(Tags.Items.INGOTS_GOLD),BowItems.GOLDEN_BOW,BowItems.GOLDEN_SHORT_BOW);
-        registerBowRecipes(output, Ingredient.of(Tags.Items.INGOTS_IRON),BowItems.IRON_BOW,BowItems.IRON_SHORT_BOW);
-        registerBowRecipes(output, Ingredient.of(ModTags.Items.INGOTS_TIN),BowItems.TIN_BOW,BowItems.TIN_SHORT_BOW);
-        registerBowRecipes(output, Ingredient.of(ModTags.Items.INGOTS_LEAD),BowItems.LEAD_BOW,BowItems.LEAD_SHORT_BOW);
-        registerBowRecipes(output, Ingredient.of(ModTags.Items.INGOTS_SILVER),BowItems.SILVER_BOW,BowItems.SILVER_SHORT_BOW);
-        registerBowRecipes(output, Ingredient.of(ModTags.Items.INGOTS_TUNGSTEN),BowItems.TUNGSTEN_BOW,BowItems.TUNGSTEN_SHORT_BOW);
-        registerBowRecipes(output, Ingredient.of(ModTags.Items.INGOTS_PLATINUM),BowItems.PLATINUM_BOW,BowItems.PLATINUM_SHORT_BOW);
+        registerBowRecipes(output, Ingredient.of(Tags.Items.INGOTS_COPPER), BowItems.COPPER_BOW, BowItems.COPPER_SHORT_BOW);
+        registerBowRecipes(output, Ingredient.of(Tags.Items.INGOTS_GOLD), BowItems.GOLDEN_BOW, BowItems.GOLDEN_SHORT_BOW);
+        registerBowRecipes(output, Ingredient.of(Tags.Items.INGOTS_IRON), BowItems.IRON_BOW, BowItems.IRON_SHORT_BOW);
+        registerBowRecipes(output, Ingredient.of(ModTags.Items.INGOTS_TIN), BowItems.TIN_BOW, BowItems.TIN_SHORT_BOW);
+        registerBowRecipes(output, Ingredient.of(ModTags.Items.INGOTS_LEAD), BowItems.LEAD_BOW, BowItems.LEAD_SHORT_BOW);
+        registerBowRecipes(output, Ingredient.of(ModTags.Items.INGOTS_SILVER), BowItems.SILVER_BOW, BowItems.SILVER_SHORT_BOW);
+        registerBowRecipes(output, Ingredient.of(ModTags.Items.INGOTS_TUNGSTEN), BowItems.TUNGSTEN_BOW, BowItems.TUNGSTEN_SHORT_BOW);
+        registerBowRecipes(output, Ingredient.of(ModTags.Items.INGOTS_PLATINUM), BowItems.PLATINUM_BOW, BowItems.PLATINUM_SHORT_BOW);
         shaped(output, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(Items.STICK),
                 '/', Ingredient.of(Items.STRING)
@@ -452,7 +460,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         shaped(output, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(NatureBlocks.EBONY_LOG_BLOCKS.getPlanks()),
                 '/', Ingredient.of(Items.BOW)
-                ), List.of(
+        ), List.of(
                 " #",
                 "#/",
                 " #"
@@ -514,12 +522,12 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 " #"
         )), BowItems.PEARLWOOD_SHORT_BOW.toStack());
         // 基础工具，阔剑短剑
-        registerToolRecipes(output, Ingredient.of(Tags.Items.INGOTS_COPPER),AxeItems.COPPER_AXE,PickaxeItems.COPPER_PICKAXE,HammerItems.COPPER_HAMMER,SwordItems.COPPER_BROADSWORD,SwordItems.COPPER_SHORT_SWORD,ShovelItems.COPPER_SHOVEL,HoeItems.COPPER_HOE);
-        registerToolRecipes(output, Ingredient.of(ModTags.Items.INGOTS_TIN),AxeItems.TIN_AXE,PickaxeItems.TIN_PICKAXE,HammerItems.TIN_HAMMER,SwordItems.TIN_BROADSWORD,SwordItems.TIN_SHORT_SWORD,ShovelItems.TIN_SHOVEL,HoeItems.TIN_HOE);
-        registerToolRecipes(output, Ingredient.of(ModTags.Items.INGOTS_LEAD),AxeItems.LEAD_AXE,PickaxeItems.LEAD_PICKAXE,HammerItems.LEAD_HAMMER,SwordItems.LEAD_BROADSWORD,SwordItems.LEAD_SHORT_SWORD,ShovelItems.LEAD_SHOVEL,HoeItems.LEAD_HOE);
-        registerToolRecipes(output, Ingredient.of(ModTags.Items.INGOTS_SILVER),AxeItems.SILVER_AXE,PickaxeItems.SILVER_PICKAXE,HammerItems.SILVER_HAMMER,SwordItems.SILVER_BROADSWORD,SwordItems.SILVER_SHORT_SWORD,ShovelItems.SILVER_SHOVEL,HoeItems.SILVER_HOE);
-        registerToolRecipes(output, Ingredient.of(ModTags.Items.INGOTS_TUNGSTEN),AxeItems.TUNGSTEN_AXE,PickaxeItems.TUNGSTEN_PICKAXE,HammerItems.TUNGSTEN_HAMMER,SwordItems.TUNGSTEN_BROADSWORD,SwordItems.TUNGSTEN_SHORT_SWORD,ShovelItems.TUNGSTEN_SHOVEL,HoeItems.TUNGSTEN_HOE);
-        registerToolRecipes(output, Ingredient.of(ModTags.Items.INGOTS_PLATINUM),AxeItems.PLATINUM_AXE,PickaxeItems.PLATINUM_PICKAXE,HammerItems.PLATINUM_HAMMER,SwordItems.PLATINUM_BROADSWORD,SwordItems.PLATINUM_SHORT_SWORD,ShovelItems.PLATINUM_SHOVEL,HoeItems.PLATINUM_HOE);
+        registerToolRecipes(output, Ingredient.of(Tags.Items.INGOTS_COPPER), AxeItems.COPPER_AXE, PickaxeItems.COPPER_PICKAXE, HammerItems.COPPER_HAMMER, SwordItems.COPPER_BROADSWORD, SwordItems.COPPER_SHORT_SWORD, ShovelItems.COPPER_SHOVEL, HoeItems.COPPER_HOE);
+        registerToolRecipes(output, Ingredient.of(ModTags.Items.INGOTS_TIN), AxeItems.TIN_AXE, PickaxeItems.TIN_PICKAXE, HammerItems.TIN_HAMMER, SwordItems.TIN_BROADSWORD, SwordItems.TIN_SHORT_SWORD, ShovelItems.TIN_SHOVEL, HoeItems.TIN_HOE);
+        registerToolRecipes(output, Ingredient.of(ModTags.Items.INGOTS_LEAD), AxeItems.LEAD_AXE, PickaxeItems.LEAD_PICKAXE, HammerItems.LEAD_HAMMER, SwordItems.LEAD_BROADSWORD, SwordItems.LEAD_SHORT_SWORD, ShovelItems.LEAD_SHOVEL, HoeItems.LEAD_HOE);
+        registerToolRecipes(output, Ingredient.of(ModTags.Items.INGOTS_SILVER), AxeItems.SILVER_AXE, PickaxeItems.SILVER_PICKAXE, HammerItems.SILVER_HAMMER, SwordItems.SILVER_BROADSWORD, SwordItems.SILVER_SHORT_SWORD, ShovelItems.SILVER_SHOVEL, HoeItems.SILVER_HOE);
+        registerToolRecipes(output, Ingredient.of(ModTags.Items.INGOTS_TUNGSTEN), AxeItems.TUNGSTEN_AXE, PickaxeItems.TUNGSTEN_PICKAXE, HammerItems.TUNGSTEN_HAMMER, SwordItems.TUNGSTEN_BROADSWORD, SwordItems.TUNGSTEN_SHORT_SWORD, ShovelItems.TUNGSTEN_SHOVEL, HoeItems.TUNGSTEN_HOE);
+        registerToolRecipes(output, Ingredient.of(ModTags.Items.INGOTS_PLATINUM), AxeItems.PLATINUM_AXE, PickaxeItems.PLATINUM_PICKAXE, HammerItems.PLATINUM_HAMMER, SwordItems.PLATINUM_BROADSWORD, SwordItems.PLATINUM_SHORT_SWORD, ShovelItems.PLATINUM_SHOVEL, HoeItems.PLATINUM_HOE);
         shaped(output, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(Tags.Items.INGOTS_IRON),
                 '/', Ingredient.of(Items.STICK)
@@ -720,13 +728,13 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 Ingredient.of(MaterialItems.RAW_TUNGSTEN),
                 Ingredient.of(MaterialItems.RAW_TUNGSTEN)
         );
-        shapeless(output, ToolItems.VINE_ROPE_COIL.toStack(),Ingredient.of(ModBlocks.VINE_ROPE),Ingredient.of(ModBlocks.VINE_ROPE),Ingredient.of(ModBlocks.VINE_ROPE),Ingredient.of(ModBlocks.VINE_ROPE));
-        shapeless(output, ToolItems.WEB_ROPE_COIL.toStack(),Ingredient.of(ModBlocks.WEB_ROPE),Ingredient.of(ModBlocks.WEB_ROPE),Ingredient.of(ModBlocks.WEB_ROPE),Ingredient.of(ModBlocks.WEB_ROPE));
-        shapeless(output, ToolItems.SILK_ROPE_COIL.toStack(),Ingredient.of(ModBlocks.SILK_ROPE),Ingredient.of(ModBlocks.SILK_ROPE),Ingredient.of(ModBlocks.SILK_ROPE),Ingredient.of(ModBlocks.SILK_ROPE));
-        shapeless(output, ToolItems.ROPE_COIL.toStack(),Ingredient.of(ModBlocks.ROPE),Ingredient.of(ModBlocks.ROPE),Ingredient.of(ModBlocks.ROPE),Ingredient.of(ModBlocks.ROPE));
-        shapeless(output, ConsumableItems.MANA_CRYSTAL.toStack(),Ingredient.of(MaterialItems.FALLING_STAR),Ingredient.of(MaterialItems.FALLING_STAR),Ingredient.of(MaterialItems.FALLING_STAR),Ingredient.of(MaterialItems.FALLING_STAR),Ingredient.of(MaterialItems.FALLING_STAR));
-        shapeless(output, MaterialItems.FALLING_STAR.toStack(),Ingredient.of(MaterialItems.STAR_PETALS),Ingredient.of(MaterialItems.STAR_PETALS),Ingredient.of(MaterialItems.STAR_PETALS),Ingredient.of(MaterialItems.STAR_PETALS),Ingredient.of(MaterialItems.STAR_PETALS));
-        shapeless(output, FoodItems.CLOUD_DOUGH.toStack(),Ingredient.of(MaterialItems.FLOATING_WHEAT_HEADS),Ingredient.of(MaterialItems.FLOATING_WHEAT_HEADS),Ingredient.of(MaterialItems.FLOATING_WHEAT_HEADS));
+        shapeless(output, ToolItems.VINE_ROPE_COIL.toStack(), Ingredient.of(ModBlocks.VINE_ROPE), Ingredient.of(ModBlocks.VINE_ROPE), Ingredient.of(ModBlocks.VINE_ROPE), Ingredient.of(ModBlocks.VINE_ROPE));
+        shapeless(output, ToolItems.WEB_ROPE_COIL.toStack(), Ingredient.of(ModBlocks.WEB_ROPE), Ingredient.of(ModBlocks.WEB_ROPE), Ingredient.of(ModBlocks.WEB_ROPE), Ingredient.of(ModBlocks.WEB_ROPE));
+        shapeless(output, ToolItems.SILK_ROPE_COIL.toStack(), Ingredient.of(ModBlocks.SILK_ROPE), Ingredient.of(ModBlocks.SILK_ROPE), Ingredient.of(ModBlocks.SILK_ROPE), Ingredient.of(ModBlocks.SILK_ROPE));
+        shapeless(output, ToolItems.ROPE_COIL.toStack(), Ingredient.of(ModBlocks.ROPE), Ingredient.of(ModBlocks.ROPE), Ingredient.of(ModBlocks.ROPE), Ingredient.of(ModBlocks.ROPE));
+        shapeless(output, ConsumableItems.MANA_CRYSTAL.toStack(), Ingredient.of(MaterialItems.FALLING_STAR), Ingredient.of(MaterialItems.FALLING_STAR), Ingredient.of(MaterialItems.FALLING_STAR), Ingredient.of(MaterialItems.FALLING_STAR), Ingredient.of(MaterialItems.FALLING_STAR));
+        shapeless(output, MaterialItems.FALLING_STAR.toStack(), Ingredient.of(MaterialItems.STAR_PETALS), Ingredient.of(MaterialItems.STAR_PETALS), Ingredient.of(MaterialItems.STAR_PETALS), Ingredient.of(MaterialItems.STAR_PETALS), Ingredient.of(MaterialItems.STAR_PETALS));
+        shapeless(output, FoodItems.CLOUD_DOUGH.toStack(), Ingredient.of(MaterialItems.FLOATING_WHEAT_HEADS), Ingredient.of(MaterialItems.FLOATING_WHEAT_HEADS), Ingredient.of(MaterialItems.FLOATING_WHEAT_HEADS));
 
         shapeless(output, ConsumableItems.VILE_POWDER.toStack(5), Ingredient.of(NatureBlocks.VILE_MUSHROOM));
         shapeless(output, ConsumableItems.VICIOUS_POWDER.toStack(5), Ingredient.of(NatureBlocks.VICIOUS_MUSHROOM));
@@ -739,15 +747,15 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         shapeless(output, ConsumableItems.STICKY_DYNAMITE.toStack(), Ingredient.of(ConsumableItems.DYNAMITE), Ingredient.of(MaterialItems.GEL));
         shapeless(output, ConsumableItems.STICKY_GRENADE.toStack(), Ingredient.of(ConsumableItems.GRENADE), Ingredient.of(MaterialItems.GEL));
         shapeless(output, ConsumableItems.SCARAB_BOMB.toStack(), Ingredient.of(ConsumableItems.BOMB), Ingredient.of(MaterialItems.STURDY_FOSSIL));
-        shapeless(output, TEBoomerangItems.TRIMARANG.toStack(), Ingredient.of(TEBoomerangItems.ENCHANTED_BOOMERANG),Ingredient.of(TEBoomerangItems.ICE_BOOMERANG),Ingredient.of(TEBoomerangItems.SHROOMERANG));
-        shapeless(output, TEBoomerangItems.ENCHANTED_BOOMERANG.toStack(), Ingredient.of(TEBoomerangItems.WOOD_BOOMERANG),Ingredient.of(MaterialItems.FALLING_STAR));
-        shapeless(output, BaitItems.ENCHANTED_NIGHTCRAWLER.toStack(), Ingredient.of(BaitItems.WORM),Ingredient.of(MaterialItems.FALLING_STAR));
+        shapeless(output, TEBoomerangItems.TRIMARANG.toStack(), Ingredient.of(TEBoomerangItems.ENCHANTED_BOOMERANG), Ingredient.of(TEBoomerangItems.ICE_BOOMERANG), Ingredient.of(TEBoomerangItems.SHROOMERANG));
+        shapeless(output, TEBoomerangItems.ENCHANTED_BOOMERANG.toStack(), Ingredient.of(TEBoomerangItems.WOOD_BOOMERANG), Ingredient.of(MaterialItems.FALLING_STAR));
+        shapeless(output, BaitItems.ENCHANTED_NIGHTCRAWLER.toStack(), Ingredient.of(BaitItems.WORM), Ingredient.of(MaterialItems.FALLING_STAR));
 
         // 基础石砖
-        registerBricksRecipes(output, Ingredient.of(NatureBlocks.EBONSTONE),DecorativeBlocks.EBONSTONE_BRICKS);
-        registerBricksRecipes(output, Ingredient.of(NatureBlocks.CRIMSTONE),DecorativeBlocks.CRIMSTONE_BRICKS);
-        registerBricksRecipes(output, Ingredient.of(NatureBlocks.PEARLSTONE),DecorativeBlocks.PEARLSTONE_BRICKS);
-        registerBricksRecipes(output, Ingredient.of(Blocks.CALCITE),DecorativeBlocks.CRACKED_MARBLE_BRICKS);
+        registerBricksRecipes(output, Ingredient.of(NatureBlocks.EBONSTONE), DecorativeBlocks.EBONSTONE_BRICKS);
+        registerBricksRecipes(output, Ingredient.of(NatureBlocks.CRIMSTONE), DecorativeBlocks.CRIMSTONE_BRICKS);
+        registerBricksRecipes(output, Ingredient.of(NatureBlocks.PEARLSTONE), DecorativeBlocks.PEARLSTONE_BRICKS);
+        registerBricksRecipes(output, Ingredient.of(Blocks.CALCITE), DecorativeBlocks.CRACKED_MARBLE_BRICKS);
         // 镶金方解石
         shaped(output, "", "",
                 ShapedRecipePattern.of(Map.of(
@@ -784,6 +792,8 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         shapeless(output, ModItems.GOLD_COIN.toStack(100), Ingredient.of(ModItems.PLATINUM_COIN));
 
         shapeless(output, MaterialItems.RAW_ASPHALT.toStack(), AmountIngredient.of(2, ItemTags.STONE_CRAFTING_MATERIALS), Ingredient.of(MaterialItems.GEL));
+
+        output.accept(Confluence.asResource("boom_bunny"), BoomBunnyRecipe.getInstance(), null);
     }
 
     protected void shaped(RecipeOutput recipeOutput, String prefix, String suffix, ShapedRecipePattern pattern, ItemStack result) {

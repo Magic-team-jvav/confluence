@@ -6,6 +6,7 @@
     "refmap": "confluence.refmap.json",
     "mixins": [
         "AdvancementCommands$Action$2Mixin",
+        "AnvilMenuMixin",
         "FoodDataMixin",
         "LootModifierManagerMixin",
         "LootTableMixin",

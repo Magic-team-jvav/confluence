@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceKey;
@@ -271,5 +272,12 @@ public final class ModUtils {
         if (entity.getItem().is(ModTags.Items.ANTIGRAVITY)) {
             entity.setNoGravity(true);
         }
+    }
+
+    /**
+     * 铁砧是否能强制合并两个相同物品
+     */
+    public static boolean couldAnvilForceMerge(ItemStack itemStack) {
+        return isFromConfluence(BuiltInRegistries.ITEM, itemStack.getItem());
     }
 }

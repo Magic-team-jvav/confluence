@@ -602,18 +602,18 @@ public final class ValueSubProvider {
                 .add(ManaWeaponItems.RUBY_STAFF, 2800)
                 .add(ManaWeaponItems.DIAMOND_STAFF, 2800)
                 .add(ManaWeaponItems.AMBER_STAFF, 2800)
-                .add(ManaWeaponItems.VILETHRON, 15000)
+                .add(ManaWeaponItems.VILETHRON, gold1 + silver50)
                 // 猩红魔杖
-                .add(ManaWeaponItems.WEATHER_PAIN, 15000)
+                .add(ManaWeaponItems.WEATHER_PAIN, gold1 + silver50)
                 // 魔法飞弹
                 .add(ManaWeaponItems.AQUA_SCEPTER, 17500)
                 // 烈焰火鞭
                 .add(ManaWeaponItems.BEE_GUN, gold2)
                 .add(ManaWeaponItems.SPACE_GUN, silver20 + silver20)
-                .add(ManaWeaponItems.WATER_BOLT, 15000)
-                .add(ManaWeaponItems.DEMON_SCYTHE, 15000)
-                // 骷髅头法书
-                .add(ManaWeaponItems.FLOWER_OF_FIRE, 25000)
+                .add(ManaWeaponItems.WATER_BOLT, gold1 + silver50)
+                .add(ManaWeaponItems.DEMON_SCYTHE, gold1 + silver50)
+                .add(ManaWeaponItems.BOOK_OF_SKULLS, gold1 + silver50)
+                .add(ManaWeaponItems.FLOWER_OF_FIRE, gold2 + silver50)
                 .add(ManaWeaponItems.THUNDER_ZAPPER, 2100);
         // 灰冲击枪
         appender.create()

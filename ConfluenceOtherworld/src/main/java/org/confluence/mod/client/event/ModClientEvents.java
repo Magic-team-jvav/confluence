@@ -284,6 +284,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(SPEAR.get(), NoopRenderer::new); // todo 模型
         event.registerEntityRenderer(BALL_OF_FROST_PROJECTILE.get(), NoopRenderer::new); // todo 模型
         event.registerEntityRenderer(DEMON_SCYTHE_PROJECTILE.get(), DemonScytheProjectileRenderer::new);
+        event.registerEntityRenderer(SKULL_PROJECTILE.get(), NoopRenderer::new); // todo 模型
 
         event.registerEntityRenderer(HOTLINE_FISHING_HOOK.get(), HotlineFishingHookRenderer::new);
         event.registerEntityRenderer(BASE_FISHING_HOOK.get(), BaseFishingHookRenderer::new);

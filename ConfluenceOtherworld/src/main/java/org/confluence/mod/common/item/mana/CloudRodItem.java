@@ -7,6 +7,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -15,9 +16,19 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.entity.projectile.mana.CloudProjectile;
 
-public class CrimsonRodItem extends ManaStaffItem<CloudProjectile> {
-    public CrimsonRodItem() {
-        super(ModRarity.BLUE, CloudProjectile::new, 12.0F, 30, 12.0F, 3, 0.04);
+import java.util.function.Consumer;
+
+public class CloudRodItem extends ManaStaffItem<CloudProjectile> {
+    public CloudRodItem(Properties properties, ModRarity rarity, ProjectileFactory<CloudProjectile> factory, float damage, int manaCost, float rawVelocity, int cooldown) {
+        super(properties, rarity, factory, damage, manaCost, rawVelocity, cooldown);
+    }
+
+    public CloudRodItem(ModRarity rarity, ProjectileFactory<CloudProjectile> factory, float damage, int manaCost, float rawVelocity, int cooldown, Consumer<ItemAttributeModifiers.Builder> consumer) {
+        super(rarity, factory, damage, manaCost, rawVelocity, cooldown, consumer);
+    }
+
+    public CloudRodItem(ModRarity rarity, ProjectileFactory<CloudProjectile> factory, float damage, int manaCost, float rawVelocity, int cooldown, double critChance) {
+        super(rarity, factory, damage, manaCost, rawVelocity, cooldown, critChance);
     }
 
     @Override

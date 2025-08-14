@@ -57,7 +57,7 @@ public abstract class StripedProjectile extends DamageSettableProjectile {
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        builder.define(DATA_IS_HEAD, true);
+        super.defineSynchedData(builder.define(DATA_IS_HEAD, true));
     }
 
     @Override

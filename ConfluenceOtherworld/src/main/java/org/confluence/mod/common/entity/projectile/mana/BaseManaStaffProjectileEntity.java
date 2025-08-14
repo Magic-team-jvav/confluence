@@ -49,7 +49,7 @@ public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        builder.define(DATA_VARIANT_ID, 0);
+        super.defineSynchedData(builder.define(DATA_VARIANT_ID, 0));
     }
 
     public void setVariant(Variant pVariant) {

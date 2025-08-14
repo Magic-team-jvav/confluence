@@ -10,7 +10,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.mixed.Immunity;
 
 import java.util.HashSet;
@@ -20,12 +19,12 @@ import java.util.UUID;
 public class RainProjectile extends AbstractManaProjectile implements Immunity {
     protected final Set<UUID> penetrateSet = new HashSet<>();
 
-    public RainProjectile(EntityType<? extends AbstractManaProjectile> entityType, Level level) {
+    public RainProjectile(EntityType<? extends RainProjectile> entityType, Level level) {
         super(entityType, level);
     }
 
-    public RainProjectile(LivingEntity living, Vec3 position) {
-        this(ModEntities.BLOOD_RAIN_PROJECTILE.get(), living.level());
+    public RainProjectile(EntityType<? extends RainProjectile> entityType, LivingEntity living, Vec3 position) {
+        this(entityType, living.level());
         setOwner(living);
         setPos(position);
     }

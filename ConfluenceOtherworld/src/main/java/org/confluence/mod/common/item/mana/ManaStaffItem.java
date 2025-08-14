@@ -76,7 +76,6 @@ public class ManaStaffItem<E extends DamageSettableProjectile> extends CustomRar
         if (player instanceof ServerPlayer serverPlayer && couldShoot(serverPlayer, itemStack)) {
             serverPlayer.awardStat(Stats.ITEM_USED.get(this));
             E projectile = factory.create(serverPlayer);
-            projectile.setDamage(damage);
             beforeShoot(serverPlayer, itemStack, projectile);
             level.addFreshEntity(projectile);
             afterShoot(serverPlayer, itemStack, projectile);
@@ -89,6 +88,8 @@ public class ManaStaffItem<E extends DamageSettableProjectile> extends CustomRar
     }
 
     protected void beforeShoot(ServerPlayer player, ItemStack itemStack, E projectile) {
+        projectile.setDamage(damage);
+        projectile.setDefaultVelocity(velocity);
         projectile.setOwner(player);
         projectile.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, velocity, 0.0F);
     }

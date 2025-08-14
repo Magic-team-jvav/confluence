@@ -287,6 +287,8 @@ public final class ModClientEvents {
         event.registerEntityRenderer(SKULL_PROJECTILE.get(), NoopRenderer::new); // todo 模型
         event.registerEntityRenderer(BLOOD_CLOUD_PROJECTILE.get(), NoopRenderer::new); // todo 模型
         event.registerEntityRenderer(BLOOD_RAIN_PROJECTILE.get(), NoopRenderer::new); // todo 模型
+        event.registerEntityRenderer(RAIN_CLOUD_PROJECTILE.get(), NoopRenderer::new); // todo 模型
+        event.registerEntityRenderer(RAIN_PROJECTILE.get(), NoopRenderer::new); // todo 模型
 
         event.registerEntityRenderer(HOTLINE_FISHING_HOOK.get(), HotlineFishingHookRenderer::new);
         event.registerEntityRenderer(BASE_FISHING_HOOK.get(), BaseFishingHookRenderer::new);

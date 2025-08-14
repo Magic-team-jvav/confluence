@@ -1,9 +1,11 @@
 package org.confluence.mod.common.entity.projectile.mana;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -19,17 +21,21 @@ import org.jetbrains.annotations.Nullable;
 import java.util.UUID;
 
 public class CloudProjectile extends AbstractManaProjectile {
-    private static final EntityDataAccessor<Integer> DATA_TARGET_ID = SynchedEntityData.defineId(CloudProjectile.class, EntityDataSerializers.INT);
-    private UUID targetUUID;
-    private LivingEntity target;
+    protected static final EntityDataAccessor<Integer> DATA_TARGET_ID = SynchedEntityData.defineId(CloudProjectile.class, EntityDataSerializers.INT);
+    protected UUID targetUUID;
+    protected transient LivingEntity target;
+    private EntityType<? extends RainProjectile> rainType;
+    private int duration;
 
-    public CloudProjectile(EntityType<? extends AbstractManaProjectile> entityType, Level level) {
+    public CloudProjectile(EntityType<? extends CloudProjectile> entityType, Level level) {
         super(entityType, level);
         setNoGravity(true);
     }
 
-    public CloudProjectile(LivingEntity living) {
-        this(ModEntities.BLOOD_CLOUD_PROJECTILE.get(), living.level());
+    public CloudProjectile(EntityType<? extends CloudProjectile> cloudType, EntityType<? extends RainProjectile> rainType, LivingEntity living, int duration) {
+        this(cloudType, living.level());
+        this.rainType = rainType;
+        this.duration = duration;
         setOwner(living);
         setPos(living.getX(), living.getEyeY() - 0.1, living.getZ());
     }
@@ -68,12 +74,12 @@ public class CloudProjectile extends AbstractManaProjectile {
         setDeltaMovement(motion);
 
         if (motion.x == 0 && motion.y == 0 && motion.z == 0) {
-            if (!level().isClientSide && level().getGameTime() % 3 == 0) {
+            if (!level().isClientSide && (duration <= 1 || level().getGameTime() % duration == 0)) {
                 LivingEntity owner = getLivingOwner();
                 if (owner != null) {
-                    RainProjectile entity = new RainProjectile(owner, position().add(
+                    RainProjectile entity = new RainProjectile(rainType, owner, position().add(
                             (random.nextFloat() - 0.5F) * 2,
-                            -0.5,
+                            -1,
                             (random.nextFloat() - 0.5F) * 2
                     ));
                     entity.setDamage(getDamage());
@@ -87,8 +93,9 @@ public class CloudProjectile extends AbstractManaProjectile {
                 setTarget(null);
             } else {
                 Vec3 added = motion.add(VectorUtils.getVectorA2B(this, target).scale(0.2).add(0, 0.2, 0));
-                if (added.lengthSqr() > 1.5 * 1.5) {
-                    setDeltaMovement(added.normalize().scale(1.5));
+                float maxVelocity = getDefaultVelocity();
+                if (added.lengthSqr() > maxVelocity * maxVelocity) {
+                    setDeltaMovement(added.normalize().scale(maxVelocity));
                 }
             }
         } else {
@@ -117,12 +124,20 @@ public class CloudProjectile extends AbstractManaProjectile {
         return target;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     protected void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         if (compound.hasUUID("TargetUUID")) {
             this.targetUUID = compound.getUUID("TargetUUID");
         }
+        try {
+            ResourceLocation type = ResourceLocation.tryParse(compound.getString("RainType"));
+            this.rainType = (EntityType<? extends RainProjectile>) BuiltInRegistries.ENTITY_TYPE.get(type);
+        } catch (Exception ignored) {
+            this.rainType = ModEntities.BLOOD_RAIN_PROJECTILE.get();
+        }
+        this.duration = compound.getInt("Duration");
     }
 
     @Override
@@ -131,5 +146,11 @@ public class CloudProjectile extends AbstractManaProjectile {
         if (targetUUID != null) {
             compound.putUUID("TargetUUID", targetUUID);
         }
+        if (rainType == null) {
+            compound.putString("RainType", "confluence:blood_rain_projectile");
+        } else {
+            compound.putString("RainType", BuiltInRegistries.ENTITY_TYPE.getKey(rainType).toString());
+        }
+        compound.putInt("Duration", duration);
     }
 }

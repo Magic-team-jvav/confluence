@@ -1,7 +1,6 @@
 package org.confluence.mod.common.entity.projectile.mana;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -20,9 +19,6 @@ public abstract class AbstractManaProjectile extends DamageSettableProjectile {
     public AbstractManaProjectile(EntityType<? extends AbstractManaProjectile> entityType, Level level) {
         super(entityType, level);
     }
-
-    @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {}
 
     @Override
     public void tick() {

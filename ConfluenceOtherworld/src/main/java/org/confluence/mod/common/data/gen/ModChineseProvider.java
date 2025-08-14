@@ -3629,6 +3629,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ManaWeaponItems.FLOWER_OF_FROST.get(), "寒霜之花");
         add(ManaWeaponItems.BOOK_OF_SKULLS.get(), "骷髅头法术书");
         add(ManaWeaponItems.CRIMSON_ROD.get(), "猩红魔杖");
+        add(ManaWeaponItems.NIMBUS_ROD.get(), "雨云魔杖");
 
         add(ManaWeaponItems.BEE_GUN.get(), "蜜蜂枪");
         add(ManaWeaponItems.SPACE_GUN.get(), "太空枪");

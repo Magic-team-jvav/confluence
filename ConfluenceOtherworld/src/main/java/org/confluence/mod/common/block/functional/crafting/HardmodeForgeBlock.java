@@ -1,6 +1,5 @@
 package org.confluence.mod.common.block.functional.crafting;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
@@ -30,8 +29,6 @@ import org.confluence.mod.common.recipe.HellforgeRecipe;
 import org.jetbrains.annotations.Nullable;
 
 public class HardmodeForgeBlock extends EnhancedForgeBlock {
-    public static final MapCodec<HardmodeForgeBlock> CODEC = simpleCodec(HardmodeForgeBlock::new);
-
     public HardmodeForgeBlock(Properties properties) {
         super(properties);
     }
@@ -44,11 +41,6 @@ public class HardmodeForgeBlock extends EnhancedForgeBlock {
     @Override
     protected BlockEntityType<BEntity> getBlockEntityType() {
         return FunctionalBlocks.HARDMODE_FORGE_ENTITY.get();
-    }
-
-    @Override
-    protected MapCodec<HardmodeForgeBlock> codec() {
-        return CODEC;
     }
 
     @SuppressWarnings("unchecked")

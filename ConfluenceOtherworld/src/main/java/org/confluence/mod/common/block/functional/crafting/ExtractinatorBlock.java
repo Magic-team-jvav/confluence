@@ -1,6 +1,5 @@
 package org.confluence.mod.common.block.functional.crafting;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -40,7 +39,6 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import java.util.function.Consumer;
 
 public class ExtractinatorBlock extends HorizontalDirectionalWithHorizontalTwoPartBlock implements EntityBlock {
-    public static final MapCodec<ExtractinatorBlock> CODEC = simpleCodec(ExtractinatorBlock::new);
     private static final VoxelShape BASE_SHAPE_SOUTH = box(3.0, 0.0, 3.0, 16.0, 16.0, 13.0);
     private static final VoxelShape BASE_SHAPE_WEST = box(3.0, 0.0, 3.0, 13.0, 16.0, 16.0);
     private static final VoxelShape BASE_SHAPE_NORTH = box(0.0, 0.0, 3.0, 13.0, 16.0, 13.0);
@@ -54,11 +52,6 @@ public class ExtractinatorBlock extends HorizontalDirectionalWithHorizontalTwoPa
 
     public ExtractinatorBlock(Properties properties) {
         super(properties);
-    }
-
-    @Override
-    protected MapCodec<ExtractinatorBlock> codec() {
-        return CODEC;
     }
 
     @Override

@@ -8,20 +8,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.Level;
-import org.confluence.lib.common.recipe.AbstractAmountRecipe;
-import org.confluence.lib.common.recipe.EnvironmentRecipeInput;
+import org.confluence.lib.common.recipe.EnvironmentAmountRecipe;
+import org.confluence.lib.common.recipe.EnvironmentLevelAccess;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 
-public class CrystalBallRecipe extends AbstractAmountRecipe<EnvironmentRecipeInput> {
-    public CrystalBallRecipe(ItemStack result, NonNullList<Ingredient> ingredients) {
-        super(result, ingredients);
-    }
-
-    @Override
-    public boolean matches(EnvironmentRecipeInput input, Level pLevel) {
-        return input.getAccess().matches(this) && super.matches(input, pLevel);
+public class CrystalBallRecipe extends EnvironmentAmountRecipe {
+    public CrystalBallRecipe(ItemStack result, NonNullList<Ingredient> ingredients, EnvironmentLevelAccess.Matcher environment) {
+        super(result, ingredients, environment);
     }
 
     @Override
@@ -50,8 +44,8 @@ public class CrystalBallRecipe extends AbstractAmountRecipe<EnvironmentRecipeInp
     }
 
     public static class Serializer implements RecipeSerializer<CrystalBallRecipe> {
-        public static final MapCodec<CrystalBallRecipe> CODEC = shapelessSerializerMapCodec(CrystalBallRecipe::new);
-        public static final StreamCodec<RegistryFriendlyByteBuf, CrystalBallRecipe> STREAM_CODEC = shapelessSerializerSteamCodec(CrystalBallRecipe::new);
+        public static final MapCodec<CrystalBallRecipe> CODEC = environmentShapelessSerializerMapCodec(CrystalBallRecipe::new);
+        public static final StreamCodec<RegistryFriendlyByteBuf, CrystalBallRecipe> STREAM_CODEC = environmentShapelessSerializerSteamCodec(CrystalBallRecipe::new);
 
         @Override
         public MapCodec<CrystalBallRecipe> codec() {

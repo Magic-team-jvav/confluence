@@ -15,6 +15,7 @@ import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.common.Tags;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.lib.common.recipe.AmountIngredient;
+import org.confluence.lib.common.recipe.EnvironmentLevelAccess;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.*;
@@ -553,7 +554,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         )), LanceItems.STREAMSTRIKE_HALBERD.toStack());
 
 
-        shapeless(recipeOutput, NatureBlocks.THIN_ICE_BLOCK.toStack(), Ingredient.of(Items.ICE));
+        shapeless(recipeOutput, NatureBlocks.THIN_ICE_BLOCK.toStack(), EnvironmentLevelAccess.matcher(null, null, true), Ingredient.of(Items.ICE));
         shapeless(recipeOutput, ConsumableItems.BONE_THROWING_KNIFE.toStack(), Ingredient.of(ConsumableItems.THROWING_KNIVE), Ingredient.of(MaterialItems.STURDY_FOSSIL));
         shapeless(recipeOutput, ConsumableItems.ROTTEN_BONE_DUST.toStack(2), AmountIngredient.of(2, MaterialItems.ROTTEN_BONE), AmountIngredient.of(2, MaterialItems.WORM_TOOTH), AmountIngredient.of(4, MaterialItems.ROTTEN_CHUNK));
         shapeless(recipeOutput, ConsumableItems.BLOODSTAINED_POWDER.toStack(2), AmountIngredient.of(6, MaterialItems.VERTEBRA), AmountIngredient.of(4, MaterialItems.BLOOD_CLOT_POWDER));
@@ -586,18 +587,34 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
 
     protected void shaped(RecipeOutput recipeOutput, String suffix, ShapedRecipePattern pattern, ItemStack result) {
         ResourceLocation id = Confluence.asResource("heavy_work_bench/" + getItemName(result.getItem()) + suffix);
-        recipeOutput.accept(id, new HeavyWorkBenchRecipe(result, pattern), null);
+        recipeOutput.accept(id, new HeavyWorkBenchRecipe(result, pattern, EnvironmentLevelAccess.Matcher.EMPTY), null);
     }
 
     protected void shaped(RecipeOutput recipeOutput, ShapedRecipePattern pattern, ItemStack result) {
         ResourceLocation id = Confluence.asResource("heavy_work_bench/" + getItemName(result.getItem()));
-        recipeOutput.accept(id, new HeavyWorkBenchRecipe(result, pattern), null);
+        recipeOutput.accept(id, new HeavyWorkBenchRecipe(result, pattern, EnvironmentLevelAccess.Matcher.EMPTY), null);
     }
 
     protected void shapeless(RecipeOutput recipeOutput, ItemStack result, Ingredient... ingredients) {
         ResourceLocation id = Confluence.asResource("heavy_work_bench/" + getItemName(result.getItem()));
         NonNullList<Ingredient> ingredientz = NonNullList.of(Ingredient.EMPTY, ingredients);
-        recipeOutput.accept(id, new HeavyWorkBenchRecipe(result, ingredientz), null);
+        recipeOutput.accept(id, new HeavyWorkBenchRecipe(result, ingredientz, EnvironmentLevelAccess.Matcher.EMPTY), null);
+    }
+
+    protected void shaped(RecipeOutput recipeOutput, String suffix, ShapedRecipePattern pattern, ItemStack result, EnvironmentLevelAccess.Matcher environment) {
+        ResourceLocation id = Confluence.asResource("heavy_work_bench/" + getItemName(result.getItem()) + suffix);
+        recipeOutput.accept(id, new HeavyWorkBenchRecipe(result, pattern, environment), null);
+    }
+
+    protected void shaped(RecipeOutput recipeOutput, ShapedRecipePattern pattern, ItemStack result, EnvironmentLevelAccess.Matcher environment) {
+        ResourceLocation id = Confluence.asResource("heavy_work_bench/" + getItemName(result.getItem()));
+        recipeOutput.accept(id, new HeavyWorkBenchRecipe(result, pattern, environment), null);
+    }
+
+    protected void shapeless(RecipeOutput recipeOutput, ItemStack result, EnvironmentLevelAccess.Matcher environment, Ingredient... ingredients) {
+        ResourceLocation id = Confluence.asResource("heavy_work_bench/" + getItemName(result.getItem()));
+        NonNullList<Ingredient> ingredientz = NonNullList.of(Ingredient.EMPTY, ingredients);
+        recipeOutput.accept(id, new HeavyWorkBenchRecipe(result, ingredientz, environment), null);
     }
 
     protected void baseHook(RecipeOutput recipeOutput, Ingredient hook, Ingredient chain, ItemStack result) {
@@ -605,7 +622,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         recipeOutput.accept(id, new HeavyWorkBenchRecipe(result, ShapedRecipePattern.of(Map.of(
                 '#', hook,
                 'a', chain
-        ), baseHookPattern)), null);
+        ), baseHookPattern), EnvironmentLevelAccess.Matcher.EMPTY), null);
     }
 
     protected void baseWhip(RecipeOutput recipeOutput, Ingredient handle, Ingredient strip, ItemStack result) {
@@ -613,7 +630,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         recipeOutput.accept(id, new HeavyWorkBenchRecipe(result, ShapedRecipePattern.of(Map.of(
                 '#', handle,
                 'a', strip
-        ), baseWhipPattern)), null);
+        ), baseWhipPattern), EnvironmentLevelAccess.Matcher.EMPTY), null);
     }
 
     protected void baseStaff(RecipeOutput recipeOutput, Ingredient gem, Ingredient handle, ItemStack result) {
@@ -621,14 +638,14 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         recipeOutput.accept(id, new HeavyWorkBenchRecipe(result, ShapedRecipePattern.of(Map.of(
                 '#', gem,
                 'a', handle
-        ), baseStaffPattern)), null);
+        ), baseStaffPattern), EnvironmentLevelAccess.Matcher.EMPTY), null);
     }
     protected void basePhaseblade(RecipeOutput recipeOutput, Ingredient gem, Ingredient handle, ItemStack result) {
         ResourceLocation id = Confluence.asResource("heavy_work_bench/" + getItemName(result.getItem()));
         recipeOutput.accept(id, new HeavyWorkBenchRecipe(result, ShapedRecipePattern.of(Map.of(
                 '#', gem,
                 'a', handle
-        ), basePhasebladePattern)), null);
+        ), basePhasebladePattern), EnvironmentLevelAccess.Matcher.EMPTY), null);
     }
     protected void baseRobe(RecipeOutput recipeOutput, Ingredient robe, Ingredient gem, Ingredient handle,ItemStack result) {
         ResourceLocation id = Confluence.asResource("heavy_work_bench/" + getItemName(result.getItem()));
@@ -636,6 +653,6 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 '#', robe,
                 'b', gem,
                 'a', handle
-        ), baseRobePattern)), null);
+        ), baseRobePattern), EnvironmentLevelAccess.Matcher.EMPTY), null);
     }
 }

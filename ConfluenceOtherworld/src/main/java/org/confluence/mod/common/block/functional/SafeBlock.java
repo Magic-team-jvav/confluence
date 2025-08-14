@@ -1,6 +1,5 @@
 package org.confluence.mod.common.block.functional;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
@@ -41,7 +40,6 @@ import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class SafeBlock extends HorizontalDirectionalWaterloggedBlock implements EntityBlock {
-    public static final MapCodec<SafeBlock> CODEC = simpleCodec(SafeBlock::new);
     private static final VoxelShape SHAPE = box(1, 0, 1, 15, 15, 15);
 
     public SafeBlock(Properties properties) {
@@ -52,11 +50,6 @@ public class SafeBlock extends HorizontalDirectionalWaterloggedBlock implements 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder.add(BlockStateProperties.OPEN));
-    }
-
-    @Override
-    protected MapCodec<SafeBlock> codec() {
-        return CODEC;
     }
 
     @Override

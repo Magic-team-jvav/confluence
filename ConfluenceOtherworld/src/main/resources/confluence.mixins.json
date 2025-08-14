@@ -7,6 +7,7 @@
     "mixins": [
         "AdvancementCommands$Action$2Mixin",
         "AnvilMenuMixin",
+        "EnvironmentLevelAccess$MatcherMixin",
         "FoodDataMixin",
         "LootModifierManagerMixin",
         "LootTableMixin",

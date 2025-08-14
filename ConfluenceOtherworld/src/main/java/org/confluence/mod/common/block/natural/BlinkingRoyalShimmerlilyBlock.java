@@ -1,6 +1,5 @@
 package org.confluence.mod.common.block.natural;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -24,7 +23,6 @@ import org.confluence.mod.common.init.ModFluids;
 import org.jetbrains.annotations.Nullable;
 
 public class BlinkingRoyalShimmerlilyBlock extends HorizontalDirectionalWithHorizontalFourPartBlock {
-    public static final MapCodec<BlinkingRoyalShimmerlilyBlock> CODEC = simpleCodec(BlinkingRoyalShimmerlilyBlock::new);
     private static final VoxelShape A_SHAPE = box(3,-1,0,16,0,13); // 南
     private static final VoxelShape B_SHAPE = box(3,-1,3,16,0,16); // 西
     private static final VoxelShape C_SHAPE = box(0,-1,3,13,0,16); // 北
@@ -36,11 +34,6 @@ public class BlinkingRoyalShimmerlilyBlock extends HorizontalDirectionalWithHori
 
     public BlinkingRoyalShimmerlilyBlock(Properties properties) {
         super(properties);
-    }
-
-    @Override
-    protected MapCodec<BlinkingRoyalShimmerlilyBlock> codec() {
-        return CODEC;
     }
 
     @Override

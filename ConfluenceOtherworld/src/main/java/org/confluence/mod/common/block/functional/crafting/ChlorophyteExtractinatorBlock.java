@@ -1,6 +1,5 @@
 package org.confluence.mod.common.block.functional.crafting;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -18,15 +17,8 @@ import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.terra_curio.mixin.client.accessor.MinecraftAccessor;
 
 public class ChlorophyteExtractinatorBlock extends HorizontalDirectionalWithHorizontalTwoPartBlock {
-    public static final MapCodec<ChlorophyteExtractinatorBlock> CODEC = simpleCodec(ChlorophyteExtractinatorBlock::new);
-
     public ChlorophyteExtractinatorBlock(Properties properties) {
         super(properties);
-    }
-
-    @Override
-    protected MapCodec<ChlorophyteExtractinatorBlock> codec() {
-        return CODEC;
     }
 
     @Override
@@ -41,5 +33,4 @@ public class ChlorophyteExtractinatorBlock extends HorizontalDirectionalWithHori
         }
         return ItemInteractionResult.SUCCESS;
     }
-
 }

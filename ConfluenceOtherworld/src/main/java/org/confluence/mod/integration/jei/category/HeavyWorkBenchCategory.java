@@ -32,6 +32,7 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
+import org.confluence.lib.common.recipe.EnvironmentLevelAccess;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -149,7 +150,7 @@ public class HeavyWorkBenchCategory implements IRecipeCategory<RecipeHolder<Heav
 
 
         /**
-         * mezz.jei.common.transfer.RecipeTransferUtil#getRecipeTransferOperations(IStackHelper, Map, List, List)
+         * @see mezz.jei.common.transfer.RecipeTransferUtil#getRecipeTransferOperations(IStackHelper, Map, List, List)
          */
         @Override
         public @Nullable IRecipeTransferError transferRecipe(HeavyWorkBenchMenu container, RecipeHolder<HeavyWorkBenchRecipe> recipe, IRecipeSlotsView recipeSlots, Player player, boolean maxTransfer, boolean doTransfer) {
@@ -199,6 +200,20 @@ public class HeavyWorkBenchCategory implements IRecipeCategory<RecipeHolder<Heav
                 return transferHelper.createUserErrorForMissingSlots(Component.translatable("jei.tooltip.error.recipe.transfer.missing"), missing);
             }
 
+            EnvironmentLevelAccess access = container.getAccess();
+            if (access.getLevel() != null && access.getPos() != null) {
+                EnvironmentLevelAccess.Matcher environment = recipe.value().getEnvironment();
+                if (!environment.matchesBiome(access.getLevel(), access.getPos())) {
+                    return transferHelper.createUserErrorWithTooltip(Component.translatable("jei.tooltip.error.recipe.transfer.biome", environment.biome().get().toString()));
+                }
+                if (!environment.matchesBlock(access.getLevel(), access.getPos())) {
+                    return transferHelper.createUserErrorWithTooltip(Component.translatable("jei.tooltip.error.recipe.transfer.block", environment.block().get().inflate(), environment.block().get().toDescription()));
+                }
+                if (!environment.matchesGraveyard(access.getLevel(), access.getPos())) {
+                    return transferHelper.createUserErrorWithTooltip(Component.translatable("jei.tooltip.error.recipe.transfer.graveyard"));
+                }
+            }
+
             if (doTransfer) {
                 PacketDistributor.sendToServer(new RecipeTransferPacketC2S(recipe.id(), maxTransfer, false));
             }
@@ -239,7 +254,7 @@ public class HeavyWorkBenchCategory implements IRecipeCategory<RecipeHolder<Heav
         @Override
         public @Nullable IRecipeTransferError transferRecipe(HeavyWorkBenchMenu container, Object o, IRecipeSlotsView recipeSlots, Player player, boolean maxTransfer, boolean doTransfer) {
             if (o instanceof RecipeHolder(ResourceLocation id, Recipe<?> value)) {
-                HeavyWorkBenchRecipe recipe4x = RecipeTransferPacketC2S.getRecipe4x(HeavyWorkBenchRecipe.class, value, either -> new HeavyWorkBenchRecipe(value.getResultItem(player.registryAccess()), either));
+                HeavyWorkBenchRecipe recipe4x = RecipeTransferPacketC2S.getRecipe4x(HeavyWorkBenchRecipe.class, value, either -> new HeavyWorkBenchRecipe(value.getResultItem(player.registryAccess()), either, EnvironmentLevelAccess.Matcher.EMPTY));
                 if (recipe4x != null) {
                     return heavyRecipeTransferHandler.transferRecipe(container, new RecipeHolder<>(id, recipe4x), recipeSlots, player, maxTransfer, doTransfer);
                 }

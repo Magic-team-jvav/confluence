@@ -10,9 +10,9 @@ import net.minecraft.world.item.crafting.*;
 import org.confluence.lib.common.menu.EitherAmountContainerMenu4x;
 import org.confluence.lib.common.menu.ToggleAmountResultSlot;
 import org.confluence.lib.common.recipe.AbstractAmountRecipe;
+import org.confluence.lib.common.recipe.EnvironmentLevelAccess;
 import org.confluence.lib.common.recipe.EnvironmentRecipeInput;
 import org.confluence.lib.common.recipe.MenuRecipeInput;
-import org.confluence.mod.common.block.functional.crafting.HeavyWorkBenchBlock;
 import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -22,14 +22,14 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HeavyWorkBenchMenu extends EitherAmountContainerMenu4x<EnvironmentRecipeInput, HeavyWorkBenchRecipe, HeavyWorkBenchMenu.ResultSlot, HeavyWorkBenchBlock.LevelAccess> {
+public class HeavyWorkBenchMenu extends EitherAmountContainerMenu4x<EnvironmentRecipeInput, HeavyWorkBenchRecipe, HeavyWorkBenchMenu.ResultSlot, EnvironmentLevelAccess> {
     private List<RecipeHolder<CraftingRecipe>> craftingRecipes = new ArrayList<>();
 
     public HeavyWorkBenchMenu(int containerId, Inventory inventory) {
-        this(containerId, inventory, new HeavyWorkBenchBlock.LevelAccess(null, null));
+        this(containerId, inventory, new EnvironmentLevelAccess(null, null));
     }
 
-    public HeavyWorkBenchMenu(int containerId, Inventory inventory, HeavyWorkBenchBlock.LevelAccess access) {
+    public HeavyWorkBenchMenu(int containerId, Inventory inventory, EnvironmentLevelAccess access) {
         super(ModMenuTypes.HEAVY_WORK_BENCH.get(), ModRecipes.HEAVY_WORK_BENCH_TYPE.get(), containerId, inventory, access,
                 (menu, size) -> {
                     access.initializeIfNeeded(inventory.player);
@@ -41,6 +41,10 @@ public class HeavyWorkBenchMenu extends EitherAmountContainerMenu4x<EnvironmentR
                         setup.run();
                     }
                 });
+    }
+
+    public EnvironmentLevelAccess getAccess() {
+        return access;
     }
 
     @Override

@@ -1,6 +1,5 @@
 package org.confluence.mod.common.block.functional;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -33,7 +32,6 @@ import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class BewitchingTableBlock extends HorizontalDirectionalWithVerticalFourPartBlock implements EntityBlock {
-    public static final MapCodec<BewitchingTableBlock> CODEC = simpleCodec(BewitchingTableBlock::new);
     private static final VoxelShape BASE_SHAPE_SOUTH = Shapes.or(box(5, 9, 2, 16, 13, 3), box(5, 8, 1.5, 16, 9, 3.5), box(5, 8, 12.5, 16, 9, 14.5), box(5, 9, 13, 16, 13, 14), box(2, 0, 1, 5, 13, 4), box(1, 0, 1, 2, 3, 4), box(2, 0, 12, 5, 13, 15), box(1, 0, 12, 2, 3, 15), box(0, 13, 0, 16, 16, 16));
     private static final VoxelShape BASE_SHAPE_WEST = Shapes.or(box(13, 9, 5, 14, 13, 16), box(12.5, 8, 5, 14.5, 9, 16), box(1.5, 8, 5, 3.5, 9, 16), box(2, 9, 5, 3, 13, 16), box(12, 0, 2, 15, 13, 5), box(12, 0, 1, 15, 3, 2), box(1, 0, 2, 4, 13, 5), box(1, 0, 1, 4, 3, 2), box(0, 13, 0, 16, 16, 16));
     private static final VoxelShape BASE_SHAPE_NORTH = Shapes.or(box(0, 9, 2, 11, 13, 3), box(0, 8, 1.5, 11, 9, 3.5), box(0, 8, 12.5, 11, 9, 14.5), box(0, 9, 13, 11, 13, 14), box(11, 0, 1, 14, 13, 4), box(14, 0, 1, 15, 3, 4), box(11, 0, 12, 14, 13, 15), box(14, 0, 12, 15, 3, 15), box(0, 13, 0, 16, 16, 16));
@@ -49,11 +47,6 @@ public class BewitchingTableBlock extends HorizontalDirectionalWithVerticalFourP
 
     public BewitchingTableBlock(Properties properties) {
         super(properties);
-    }
-
-    @Override
-    protected MapCodec<BewitchingTableBlock> codec() {
-        return CODEC;
     }
 
     @Override

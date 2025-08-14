@@ -1,6 +1,5 @@
 package org.confluence.mod.common.block.functional.crafting;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
@@ -22,15 +21,8 @@ import org.confluence.mod.common.menu.HellforgeMenu;
 import org.confluence.mod.common.recipe.HellforgeRecipe;
 
 public class HellforgeBlock extends EnhancedForgeBlock {
-    public static final MapCodec<HellforgeBlock> CODEC = simpleCodec(HellforgeBlock::new);
-
     public HellforgeBlock(Properties properties) {
         super(properties);
-    }
-
-    @Override
-    protected MapCodec<HellforgeBlock> codec() {
-        return CODEC;
     }
 
     @Override

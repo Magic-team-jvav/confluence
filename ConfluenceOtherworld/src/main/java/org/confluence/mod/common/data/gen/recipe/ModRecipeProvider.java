@@ -6,8 +6,11 @@ import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
+import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -18,10 +21,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.crafting.ICustomIngredient;
+import net.neoforged.neoforge.registries.holdersets.OrHolderSet;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.lib.common.recipe.AmountIngredient;
+import org.confluence.lib.common.recipe.EnvironmentLevelAccess;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.*;
@@ -29,12 +35,10 @@ import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.recipe.*;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.recipe.WorkshopRecipe;
+import org.confluence.terra_furniture.common.init.TFTags;
 import org.confluence.terra_guns.common.init.TGItems;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 public class ModRecipeProvider extends AbstractRecipeProvider {
@@ -152,6 +156,8 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
 
         skyMill(recipeOutput, DecorativeBlocks.BOUNCY_CLOUD_BLOCK.toStack(), Ingredient.of(MaterialItems.PINK_GEL), Ingredient.of(NatureBlocks.CLOUD_BLOCK));
         skyMill(recipeOutput, ChestBlocks.SKYWARE_CHEST.toStack(), AmountIngredient.of(5, DecorativeBlocks.SUN_PLATE));
+        skyMill(recipeOutput, NatureBlocks.RAIN_CLOUD_BLOCK.toStack(), EnvironmentLevelAccess.matcher(null, searchWater(holderLookup), false), Ingredient.of(NatureBlocks.CLOUD_BLOCK));
+        skyMill(recipeOutput, NatureBlocks.SNOW_CLOUD_BLOCK.toStack(), EnvironmentLevelAccess.matcher(holderLookup.lookupOrThrow(Registries.BIOME).getOrThrow(Tags.Biomes.IS_COLD_OVERWORLD), null, false), Ingredient.of(NatureBlocks.CLOUD_BLOCK));
 
         workshop(recipeOutput, AccessoryItems.ANGLER_TACKLE_BAG.toStack(), Ingredient.of(AccessoryItems.HIGH_TEST_FISHING_LINE), Ingredient.of(AccessoryItems.TACKLE_BOX), Ingredient.of(TCItems.ANGLER_EARRING));
         workshop(recipeOutput, AccessoryItems.MAGIC_CUFFS.toStack(), Ingredient.of(AccessoryItems.MANA_REGENERATION_BAND), Ingredient.of(TCItems.SHACKLE));
@@ -271,11 +277,11 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         hardmodeAnvil(recipeOutput, TGItems.CURSED_BULLET.toStack(150), AmountIngredient.of(150, TGItems.MUSKET_BULLET), Ingredient.of(MaterialItems.CURSED_FLAME));
 
         Ingredient emptyDropper = Ingredient.of(ToolItems.EMPTY_DROPPER);
-        crystalBlock(recipeOutput, TGItems.ENDLESS_MUSKET_POUCH.toStack(1), AmountIngredient.of(3996,TGItems.MUSKET_BULLET));
+        crystalBlock(recipeOutput, TGItems.ENDLESS_MUSKET_POUCH.toStack(1), AmountIngredient.of(3996, TGItems.MUSKET_BULLET));
         crystalBlock(recipeOutput, ToolItems.MAGIC_SAND_DROPPER.toStack(3), AmountIngredient.of(3, emptyDropper), Ingredient.of(Tags.Items.SANDS));
-        crystalBlock(recipeOutput, ToolItems.MAGIC_HONEY_DROPPER.toStack(), emptyDropper);
-        crystalBlock(recipeOutput, ToolItems.MAGIC_LAVA_DROPPER.toStack(), emptyDropper);
-        crystalBlock(recipeOutput, ToolItems.MAGIC_WATER_DROPPER.toStack(), emptyDropper);
+        crystalBlock(recipeOutput, ToolItems.MAGIC_HONEY_DROPPER.toStack(), EnvironmentLevelAccess.matcher(null, searchHoney(holderLookup), false), emptyDropper);
+        crystalBlock(recipeOutput, ToolItems.MAGIC_LAVA_DROPPER.toStack(), EnvironmentLevelAccess.matcher(null, searchLava(holderLookup), false), emptyDropper);
+        crystalBlock(recipeOutput, ToolItems.MAGIC_WATER_DROPPER.toStack(), EnvironmentLevelAccess.matcher(null, searchWater(holderLookup), false), emptyDropper);
 
         hardmodeForge(recipeOutput, MaterialItems.ADAMANTITE_INGOT.toStack(), 0.5F, 100, true, AmountIngredient.of(4, MaterialItems.RAW_ADAMANTITE));
         hardmodeForge(recipeOutput, MaterialItems.TITANIUM_INGOT.toStack(), 0.5F, 100, true, AmountIngredient.of(4, MaterialItems.RAW_TITANIUM));
@@ -291,7 +297,12 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
 
     protected void skyMill(RecipeOutput recipeOutput, ItemStack result, Ingredient... ingredients) {
         ResourceLocation id = Confluence.asResource("sky_mill/" + getItemName(result.getItem()));
-        recipeOutput.accept(id, new SkyMillRecipe(result, NonNullList.of(Ingredient.EMPTY, ingredients)), null);
+        recipeOutput.accept(id, new SkyMillRecipe(result, NonNullList.of(Ingredient.EMPTY, ingredients), EnvironmentLevelAccess.Matcher.EMPTY), null);
+    }
+
+    protected void skyMill(RecipeOutput recipeOutput, ItemStack result, EnvironmentLevelAccess.Matcher environment, Ingredient... ingredients) {
+        ResourceLocation id = Confluence.asResource("sky_mill/" + getItemName(result.getItem()));
+        recipeOutput.accept(id, new SkyMillRecipe(result, NonNullList.of(Ingredient.EMPTY, ingredients), environment), null);
     }
 
     protected void workshop(RecipeOutput recipeOutput, ItemStack result, Ingredient... ingredients) {
@@ -336,7 +347,13 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
     protected void crystalBlock(RecipeOutput recipeOutput, ItemStack result, Ingredient... ingredients) {
         ResourceLocation id = Confluence.asResource("crystal_block/" + getItemName(result.getItem()));
         NonNullList<Ingredient> zingredients = NonNullList.of(Ingredient.EMPTY, ingredients);
-        recipeOutput.accept(id, new CrystalBallRecipe(result, zingredients), null);
+        recipeOutput.accept(id, new CrystalBallRecipe(result, zingredients, EnvironmentLevelAccess.Matcher.EMPTY), null);
+    }
+
+    protected void crystalBlock(RecipeOutput recipeOutput, ItemStack result, EnvironmentLevelAccess.Matcher environment, Ingredient... ingredients) {
+        ResourceLocation id = Confluence.asResource("crystal_block/" + getItemName(result.getItem()));
+        NonNullList<Ingredient> zingredients = NonNullList.of(Ingredient.EMPTY, ingredients);
+        recipeOutput.accept(id, new CrystalBallRecipe(result, zingredients, environment), null);
     }
 
     protected void hardmodeForge(RecipeOutput recipeOutput, ItemStack result, float experience, int cookingTime, boolean requiresFuel, Ingredient... ingredients) {
@@ -403,5 +420,34 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
             }
         }
         return builder.build(id.withPrefix("recipes/confluence/"));
+    }
+
+    public static EnvironmentLevelAccess.SearchContext searchWater(HolderLookup.Provider holderLookup) {
+        return new EnvironmentLevelAccess.SearchContext(2,
+                Optional.of(new OrHolderSet<>(
+                        holderLookup.lookupOrThrow(Registries.BLOCK).getOrThrow(TFTags.SINKS),
+                        HolderSet.direct(Blocks.WATER_CAULDRON.builtInRegistryHolder())
+                )),
+                List.of(new StatePropertiesPredicate(List.of(new StatePropertiesPredicate.PropertyMatcher(
+                        BlockStateProperties.WATERLOGGED.getName(), new StatePropertiesPredicate.ExactMatcher("true")
+                )))),
+                Optional.of(holderLookup.lookupOrThrow(Registries.FLUID).getOrThrow(Tags.Fluids.WATER))
+        );
+    }
+
+    public static EnvironmentLevelAccess.SearchContext searchHoney(HolderLookup.Provider holderLookup) {
+        return new EnvironmentLevelAccess.SearchContext(2,
+                Optional.of(HolderSet.direct(ModBlocks.HONEY_CAULDRON)),
+                List.of(),
+                Optional.of(holderLookup.lookupOrThrow(Registries.FLUID).getOrThrow(Tags.Fluids.HONEY))
+        );
+    }
+
+    public static EnvironmentLevelAccess.SearchContext searchLava(HolderLookup.Provider holderLookup) {
+        return new EnvironmentLevelAccess.SearchContext(2,
+                Optional.of(HolderSet.direct(Blocks.LAVA_CAULDRON.builtInRegistryHolder())),
+                List.of(),
+                Optional.of(holderLookup.lookupOrThrow(Registries.FLUID).getOrThrow(Tags.Fluids.LAVA))
+        );
     }
 }

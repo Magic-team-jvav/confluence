@@ -1,6 +1,5 @@
 package org.confluence.mod.common.block.functional;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -27,17 +26,11 @@ import org.confluence.mod.common.attachment.PlayerPiggyBankContainer;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 
 public class PiggyBankBlock extends HorizontalDirectionalWaterloggedBlock implements EntityBlock {
-    public static final MapCodec<PiggyBankBlock> CODEC = simpleCodec(PiggyBankBlock::new);
     private static final VoxelShape SHAPE_X = box(2, 0, 4, 14, 10, 12);
     private static final VoxelShape SHAPE_Z = box(4, 0, 2, 12, 10, 14);
 
     public PiggyBankBlock(Properties properties) {
         super(properties);
-    }
-
-    @Override
-    protected MapCodec<PiggyBankBlock> codec() {
-        return CODEC;
     }
 
     @Override

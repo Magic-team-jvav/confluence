@@ -1,6 +1,5 @@
 package org.confluence.mod.common.block.functional.crafting;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
@@ -20,7 +19,6 @@ import org.confluence.mod.common.menu.AlchemyTableMenu;
 import org.jetbrains.annotations.Nullable;
 
 public class AlchemyTableBlock extends HorizontalDirectionalWithVerticalFourPartBlock {
-    public static final MapCodec<AlchemyTableBlock> CODEC = simpleCodec(AlchemyTableBlock::new);
     private static final VoxelShape BASE_SHAPE_SOUTH = Shapes.or(box(5, 3, 2, 16, 12, 14), box(2, 0, 1, 16, 3, 15), box(0, 12, 0, 16, 16, 16));
     private static final VoxelShape BASE_SHAPE_WEST = Shapes.or(box(2, 3, 5, 14, 12, 16), box(1, 0, 2, 15, 3, 16), box(0, 12, 0, 16, 16, 16));
     private static final VoxelShape BASE_SHAPE_NORTH = Shapes.or(box(0, 3, 2, 11, 12, 14), box(0, 0, 1, 14, 3, 15), box(0, 12, 0, 16, 16, 16));
@@ -36,11 +34,6 @@ public class AlchemyTableBlock extends HorizontalDirectionalWithVerticalFourPart
 
     public AlchemyTableBlock(Properties properties) {
         super(properties);
-    }
-
-    @Override
-    protected MapCodec<AlchemyTableBlock> codec() {
-        return CODEC;
     }
 
     @Override

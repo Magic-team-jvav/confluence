@@ -61,6 +61,11 @@ public class ManaStaffItem<E extends DamageSettableProjectile> extends CustomRar
     }
 
     @Override
+    public int getEnchantmentValue(ItemStack stack) {
+        return 20;
+    }
+
+    @Override
     public UseAnim getUseAnimation(ItemStack itemStack) {
         return UseAnim.BLOCK;
     }

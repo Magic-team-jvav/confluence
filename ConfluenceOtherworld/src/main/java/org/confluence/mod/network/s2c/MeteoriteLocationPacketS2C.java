@@ -16,8 +16,8 @@ import org.confluence.mod.client.handler.MeteorLandingHandler;
 public record MeteoriteLocationPacketS2C(BlockPos location, int tickUntilLanding) implements CustomPacketPayload {
     public static final Type<MeteoriteLocationPacketS2C> TYPE = new Type<>(Confluence.asResource("meteorite_location"));
     public static final StreamCodec<ByteBuf, MeteoriteLocationPacketS2C> STREAM_CODEC = StreamCodec.composite(
-            BlockPos.STREAM_CODEC, p -> p.location,
-            ByteBufCodecs.INT, p -> p.tickUntilLanding,
+            BlockPos.STREAM_CODEC, MeteoriteLocationPacketS2C::location,
+            ByteBufCodecs.VAR_INT, MeteoriteLocationPacketS2C::tickUntilLanding,
             MeteoriteLocationPacketS2C::new
     );
 

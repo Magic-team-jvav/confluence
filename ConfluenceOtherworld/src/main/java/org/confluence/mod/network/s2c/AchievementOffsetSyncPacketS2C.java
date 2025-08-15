@@ -1,7 +1,8 @@
 package org.confluence.mod.network.s2c;
 
-import net.minecraft.network.RegistryFriendlyByteBuf;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
@@ -14,31 +15,13 @@ import org.confluence.mod.common.data.AchievementOffsetLoader;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.IntFunction;
 
 public record AchievementOffsetSyncPacketS2C(Map<ResourceLocation, AchievementOffset> value) implements CustomPacketPayload {
     public static final Type<AchievementOffsetSyncPacketS2C> TYPE = new Type<>(Confluence.asResource("achievement_offset_sync"));
-    public static final StreamCodec<RegistryFriendlyByteBuf, AchievementOffsetSyncPacketS2C> STREAM_CODEC = new StreamCodec<>() {
-        @Override
-        public AchievementOffsetSyncPacketS2C decode(RegistryFriendlyByteBuf buffer) {
-            Map<ResourceLocation, AchievementOffset> map = new HashMap<>();
-            int size = buffer.readVarInt();
-            for (int i = 0; i < size; i++) {
-                ResourceLocation key = ResourceLocation.STREAM_CODEC.decode(buffer);
-                AchievementOffset value = AchievementOffset.STREAM_CODEC.decode(buffer);
-                map.put(key, value);
-            }
-            return new AchievementOffsetSyncPacketS2C(map);
-        }
-
-        @Override
-        public void encode(RegistryFriendlyByteBuf buffer, AchievementOffsetSyncPacketS2C value) {
-            buffer.writeVarInt(value.value.size());
-            for (Map.Entry<ResourceLocation, AchievementOffset> entry : value.value.entrySet()) {
-                ResourceLocation.STREAM_CODEC.encode(buffer, entry.getKey());
-                AchievementOffset.STREAM_CODEC.encode(buffer, entry.getValue());
-            }
-        }
-    };
+    public static final StreamCodec<ByteBuf, AchievementOffsetSyncPacketS2C> STREAM_CODEC = ByteBufCodecs
+            .map((IntFunction<Map<ResourceLocation, AchievementOffset>>) HashMap::new, ResourceLocation.STREAM_CODEC, AchievementOffset.STREAM_CODEC)
+            .map(AchievementOffsetSyncPacketS2C::new, AchievementOffsetSyncPacketS2C::value);
 
     @Override
     public Type<AchievementOffsetSyncPacketS2C> type() {

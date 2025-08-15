@@ -16,10 +16,7 @@ import org.confluence.terraentity.mixed.IPlayer;
 
 public record SellTradePacketC2S (int tradeIndex) implements CustomPacketPayload {
     public static final Type<SellTradePacketC2S> TYPE = new Type<>(Confluence.asResource("sell_trade_c2s"));
-    public static final StreamCodec<ByteBuf, SellTradePacketC2S> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.INT, p -> p.tradeIndex,
-            SellTradePacketC2S::new
-    );
+    public static final StreamCodec<ByteBuf, SellTradePacketC2S> STREAM_CODEC = ByteBufCodecs.VAR_INT.map(SellTradePacketC2S::new, SellTradePacketC2S::tradeIndex);
 
     @Override
     public Type<SellTradePacketC2S> type() {

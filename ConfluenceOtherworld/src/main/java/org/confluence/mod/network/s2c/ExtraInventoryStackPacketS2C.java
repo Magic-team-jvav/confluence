@@ -18,8 +18,8 @@ import org.confluence.mod.common.attachment.ExtraInventory;
 public record ExtraInventoryStackPacketS2C(long packedData, ItemStack itemStack) implements CustomPacketPayload {
     public static final Type<ExtraInventoryStackPacketS2C> TYPE = new Type<>(Confluence.asResource("extra_inventory_stack"));
     public static final StreamCodec<RegistryFriendlyByteBuf, ExtraInventoryStackPacketS2C> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.VAR_LONG, p -> p.packedData,
-            ItemStack.OPTIONAL_STREAM_CODEC, p -> p.itemStack,
+            ByteBufCodecs.VAR_LONG, ExtraInventoryStackPacketS2C::packedData,
+            ItemStack.OPTIONAL_STREAM_CODEC, ExtraInventoryStackPacketS2C::itemStack,
             ExtraInventoryStackPacketS2C::new
     );
 

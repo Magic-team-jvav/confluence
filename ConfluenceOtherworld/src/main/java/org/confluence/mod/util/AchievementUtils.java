@@ -99,7 +99,7 @@ public final class AchievementUtils {
                 ExtraInventory extraInventory = ExtraInventory.of(player);
                 boolean fashionStatement = true;
                 for (int i = 0; i < SIZE_VANITY_ARMOR; i++) {
-                    if (extraInventory.getVanityArmor(i).isEmpty()) {
+                    if (extraInventory.getVanityArmor(i, false).isEmpty()) {
                         fashionStatement = false;
                         break;
                     }

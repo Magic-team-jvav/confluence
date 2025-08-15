@@ -12,7 +12,7 @@ import org.confluence.mod.client.handler.ClientPacketHandler;
 public record ManaPacketS2C(int maxMana, float currentMana) implements CustomPacketPayload {
     public static final Type<ManaPacketS2C> TYPE = new Type<>(Confluence.asResource("mana"));
     public static final StreamCodec<ByteBuf, ManaPacketS2C> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.INT, ManaPacketS2C::maxMana,
+            ByteBufCodecs.VAR_INT, ManaPacketS2C::maxMana,
             ByteBufCodecs.FLOAT, ManaPacketS2C::currentMana,
             ManaPacketS2C::new
     );

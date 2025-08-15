@@ -16,7 +16,7 @@ import org.confluence.mod.common.CommonConfigs;
 public record CompatibilitySyncPacketS2c(int data) implements CustomPacketPayload {
     private static ModConfigSpec.BooleanValue[] configs;
     public static final Type<CompatibilitySyncPacketS2c> TYPE = new Type<>(Confluence.asResource("compatibility_sync"));
-    public static final StreamCodec<ByteBuf, CompatibilitySyncPacketS2c> STREAM_CODEC = ByteBufCodecs.INT.map(CompatibilitySyncPacketS2c::new, CompatibilitySyncPacketS2c::data);
+    public static final StreamCodec<ByteBuf, CompatibilitySyncPacketS2c> STREAM_CODEC = ByteBufCodecs.VAR_INT.map(CompatibilitySyncPacketS2c::new, CompatibilitySyncPacketS2c::data);
 
     @Override
     public Type<CompatibilitySyncPacketS2c> type() {

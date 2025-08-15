@@ -20,10 +20,7 @@ public record KeyRequestPacketC2S(int key) implements CustomPacketPayload {
     public static final int KEY_MANA = 1;
     public static final int KEY_CLAIRVOYANCE = 2; // 水晶球给予的灵视
     public static final Type<KeyRequestPacketC2S> TYPE = new Type<>(Confluence.asResource("key_request"));
-    public static final StreamCodec<ByteBuf, KeyRequestPacketC2S> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.INT, p -> p.key,
-            KeyRequestPacketC2S::new
-    );
+    public static final StreamCodec<ByteBuf, KeyRequestPacketC2S> STREAM_CODEC = ByteBufCodecs.VAR_INT.map(KeyRequestPacketC2S::new, KeyRequestPacketC2S::key);
 
     @Override
     public Type<KeyRequestPacketC2S> type() {

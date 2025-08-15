@@ -20,12 +20,12 @@ import org.confluence.mod.util.PlayerUtils;
 public record PlayerDeathInfoPacketS2C(Component deathMessage, int respawnTime, short platinum, byte gold, byte silver, byte copper) implements CustomPacketPayload {
     public static final Type<PlayerDeathInfoPacketS2C> TYPE = new Type<>(Confluence.asResource("player_death_info"));
     public static final StreamCodec<RegistryFriendlyByteBuf, PlayerDeathInfoPacketS2C> STREAM_CODEC = StreamCodec.composite(
-            ComponentSerialization.TRUSTED_STREAM_CODEC, p -> p.deathMessage,
-            ByteBufCodecs.INT, p -> p.respawnTime,
-            ByteBufCodecs.SHORT, p -> p.platinum,
-            ByteBufCodecs.BYTE, p -> p.gold,
-            ByteBufCodecs.BYTE, p -> p.silver,
-            ByteBufCodecs.BYTE, p -> p.copper,
+            ComponentSerialization.TRUSTED_STREAM_CODEC, PlayerDeathInfoPacketS2C::deathMessage,
+            ByteBufCodecs.VAR_INT, PlayerDeathInfoPacketS2C::respawnTime,
+            ByteBufCodecs.SHORT, PlayerDeathInfoPacketS2C::platinum,
+            ByteBufCodecs.BYTE, PlayerDeathInfoPacketS2C::gold,
+            ByteBufCodecs.BYTE, PlayerDeathInfoPacketS2C::silver,
+            ByteBufCodecs.BYTE, PlayerDeathInfoPacketS2C::copper,
             PlayerDeathInfoPacketS2C::new
     );
 

@@ -16,7 +16,7 @@ import org.confluence.mod.common.attachment.ExtraInventory;
 public record ExtraInventorySyncPacketS2C(int entityId, ExtraInventory extraInventory) implements CustomPacketPayload {
     public static final Type<ExtraInventorySyncPacketS2C> TYPE = new Type<>(Confluence.asResource("extra_inventory_sync"));
     public static final StreamCodec<RegistryFriendlyByteBuf, ExtraInventorySyncPacketS2C> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.INT, ExtraInventorySyncPacketS2C::entityId,
+            ByteBufCodecs.VAR_INT, ExtraInventorySyncPacketS2C::entityId,
             ExtraInventory.STREAM_CODEC, ExtraInventorySyncPacketS2C::extraInventory,
             ExtraInventorySyncPacketS2C::new
     );

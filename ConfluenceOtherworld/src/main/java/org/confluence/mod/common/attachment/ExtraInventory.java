@@ -45,7 +45,7 @@ public class ExtraInventory implements Container, INBTSerializable<CompoundTag> 
     public static final int SIZE_EXCEPT_ACCESSORY_DYE = SIZE_VANITY_ARMOR * 2 + SIZE_COINS + SIZE_AMMO + SIZE_EQUIPMENT * 2 + SIZE_TRASH;
 
     public static final int VANITY_ARMOR_START = 0;
-    public static final int VANITY_ARMOR_DYE_START = SIZE_VANITY_ARMOR;
+    public static final int VANITY_ARMOR_DYE_START = VANITY_ARMOR_START + SIZE_VANITY_ARMOR;
     public static final int COINS_START = VANITY_ARMOR_DYE_START + SIZE_VANITY_ARMOR;
     public static final int AMMO_START = COINS_START + SIZE_COINS;
     public static final int EQUIPMENT_START = AMMO_START + SIZE_AMMO;
@@ -80,7 +80,7 @@ public class ExtraInventory implements Container, INBTSerializable<CompoundTag> 
         public void encode(RegistryFriendlyByteBuf buffer, ExtraInventory extraInventory) {
             buffer.writeVarInt(extraInventory.getSizeAccessoryDye());
             List<ItemStack> list = new ArrayList<>();
-            for (int i = 0; i < extraInventory.size(); i++) {
+            for (int i = 0; i < extraInventory.getContainerSize(); i++) {
                 list.add(i, extraInventory.getItem(i));
             }
             ItemStack.OPTIONAL_LIST_STREAM_CODEC.encode(buffer, list);
@@ -113,14 +113,6 @@ public class ExtraInventory implements Container, INBTSerializable<CompoundTag> 
         validateIndex(index, SIZE_VANITY_ARMOR);
         IStackWithDye stack = vanityArmor.get(index);
         return dye ? stack.getDye() : stack.getStack();
-    }
-
-    public ItemStack getVanityArmor(int index) {
-        return getVanityArmor(index, false);
-    }
-
-    public ItemStack getVanityArmorDye(int index) {
-        return getVanityArmor(index, true);
     }
 
     public void setVanityArmor(int index, ItemStack stack, boolean dye) {
@@ -166,20 +158,20 @@ public class ExtraInventory implements Container, INBTSerializable<CompoundTag> 
         return dye ? stack.getDye() : stack.getStack();
     }
 
-    public ItemStack getPet() {
-        return getEquipment(PET_INDEX, false);
+    public ItemStack getPet(boolean dye) {
+        return getEquipment(PET_INDEX, dye);
     }
 
-    public ItemStack getLightPet() {
-        return getEquipment(LIGHT_PET_INDEX, false);
+    public ItemStack getLightPet(boolean dye) {
+        return getEquipment(LIGHT_PET_INDEX, dye);
     }
 
-    public ItemStack getMinecart() {
-        return getEquipment(MINECART_INDEX, false);
+    public ItemStack getMinecart(boolean dye) {
+        return getEquipment(MINECART_INDEX, dye);
     }
 
-    public ItemStack getHook() {
-        return getEquipment(HOOK_INDEX, false);
+    public ItemStack getHook(boolean dye) {
+        return getEquipment(HOOK_INDEX, dye);
     }
 
     public void setEquipment(int index, ItemStack stack, boolean dye) {
@@ -218,7 +210,7 @@ public class ExtraInventory implements Container, INBTSerializable<CompoundTag> 
     public void sync(ServerPlayer player) {
         initialize(player);
         if (dirty) {
-            for (int i = 0; i < size(); i++) {
+            for (int i = 0; i < getContainerSize(); i++) {
                 ItemStack itemStack = getItem(i);
                 ItemStack previous = previousStacks.get(i);
                 if (!ItemStack.matches(itemStack, previous)) {
@@ -245,7 +237,7 @@ public class ExtraInventory implements Container, INBTSerializable<CompoundTag> 
             AchievementUtils.awardAchievement(player, "fashion_statement");
         }
 
-        if (!getEquipment(HOOK_INDEX, false).isEmpty()) {
+        if (!getHook(false).isEmpty()) {
             AchievementUtils.awardAchievement(player, "hold_on_tight");
         }
     }
@@ -329,7 +321,7 @@ public class ExtraInventory implements Container, INBTSerializable<CompoundTag> 
             t = nbt.getList("AccessoryDye", Tag.TAG_COMPOUND);
             encodeList(this.accessoryDye = NonNullList.withSize(t.size(), ItemStack.EMPTY), ops);
         } else { // todo 1.3.0时删除
-            int size = nbt.contains("Size", Tag.TAG_INT) ? nbt.getInt("Size") : size();
+            int size = nbt.contains("Size", Tag.TAG_INT) ? nbt.getInt("Size") : getContainerSize();
             ListTag tagList = nbt.getList("Items", Tag.TAG_COMPOUND);
             for (int i = 0; i < tagList.size(); i++) {
                 CompoundTag itemTags = tagList.getCompound(i);
@@ -366,10 +358,6 @@ public class ExtraInventory implements Container, INBTSerializable<CompoundTag> 
         return ItemStack.OPTIONAL_CODEC.parse(ops, tag).result().orElse(ItemStack.EMPTY);
     }
 
-    public int size() {
-        return SIZE_EXCEPT_ACCESSORY_DYE + accessoryDye.size();
-    }
-
     public void copyFrom(ExtraInventory other) {
         this.vanityArmor = other.vanityArmor;
         this.coin = other.coin;
@@ -389,27 +377,27 @@ public class ExtraInventory implements Container, INBTSerializable<CompoundTag> 
 
     @Override
     public int getContainerSize() {
-        return size();
+        return SIZE_EXCEPT_ACCESSORY_DYE + accessoryDye.size();
     }
 
     @Override
     public ItemStack getItem(int index) {
         if (index < VANITY_ARMOR_DYE_START) {
-            return vanityArmor.get(index - VANITY_ARMOR_START).getStack();
+            return getVanityArmor(index - VANITY_ARMOR_START, false);
         } else if (index < COINS_START) {
-            return vanityArmor.get(index - VANITY_ARMOR_DYE_START).getDye();
+            return getVanityArmor(index - VANITY_ARMOR_DYE_START, true);
         } else if (index < AMMO_START) {
-            return coin.get(index - COINS_START);
+            return getCoins(index - COINS_START);
         } else if (index < EQUIPMENT_START) {
-            return ammo.get(index - AMMO_START);
+            return getAmmo(index - AMMO_START);
         } else if (index < EQUIPMENT_DYE_START) {
-            return equipment.get(index - EQUIPMENT_START).getStack();
+            return getEquipment(index - EQUIPMENT_START, false);
         } else if (index < TRASH_START) {
-            return equipment.get(index - EQUIPMENT_DYE_START).getDye();
+            return getEquipment(index - EQUIPMENT_DYE_START, true);
         } else if (index < ACCESSORY_DYE_START) {
-            return trash;
+            return getTrash();
         } else if (index < accessoryDye.size()) {
-            return accessoryDye.get(index - ACCESSORY_DYE_START);
+            return getAccessoryDye(index - ACCESSORY_DYE_START);
         }
         return ItemStack.EMPTY;
     }
@@ -435,17 +423,17 @@ public class ExtraInventory implements Container, INBTSerializable<CompoundTag> 
         } else if (index < COINS_START) {
             setVanityArmor(index - VANITY_ARMOR_DYE_START, stack, true);
         } else if (index < AMMO_START) {
-            coin.set(index - COINS_START, stack);
+            setCoins(index - COINS_START, stack);
         } else if (index < EQUIPMENT_START) {
-            ammo.set(index - AMMO_START, stack);
+            setAmmo(index - AMMO_START, stack);
         } else if (index < EQUIPMENT_DYE_START) {
-            equipment.set(index - EQUIPMENT_START, equipment.get(index - EQUIPMENT_START).setStack(stack));
+            setEquipment(index - EQUIPMENT_START, stack, false);
         } else if (index < TRASH_START) {
-            equipment.set(index - EQUIPMENT_DYE_START, equipment.get(index - EQUIPMENT_DYE_START).setDye(stack));
+            setEquipment(index - EQUIPMENT_DYE_START, stack, true);
         } else if (index < ACCESSORY_DYE_START) {
-            this.trash = stack;
+            setTrash(trash);
         } else if (index < accessoryDye.size()) {
-            accessoryDye.set(index - ACCESSORY_DYE_START, stack);
+            setAccessoryDye(index - ACCESSORY_DYE_START, stack);
         }
     }
 

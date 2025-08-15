@@ -211,7 +211,7 @@ public final class ClientUtils {
 
     public static OptionalInt getVanityDyeColor(ExtraInventory extraInventory, int index, Player player) {
         if (index != -1) {
-            ItemStack vanityArmorDye = extraInventory.getVanityArmorDye(index);
+            ItemStack vanityArmorDye = extraInventory.getVanityArmor(index, true);
             if (!vanityArmorDye.isEmpty()) {
                 Item item = vanityArmorDye.getItem();
                 if (item instanceof BaseDyeItem dyeItem) {

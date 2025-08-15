@@ -33,7 +33,7 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, A extends 
             if (index != -1) {
                 ExtraInventory inventory = ExtraInventory.of(player);
                 extra.set(inventory);
-                ItemStack vanityArmor = inventory.getVanityArmor(index);
+                ItemStack vanityArmor = inventory.getVanityArmor(index, false);
                 if (!vanityArmor.isEmpty()) return vanityArmor;
             }
         }
@@ -52,7 +52,7 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, A extends 
     @ModifyExpressionValue(method = "renderArmorPiece(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/entity/EquipmentSlot;ILnet/minecraft/client/model/HumanoidModel;FFFFFF)V", at = @At(value = "INVOKE", target = "Lnet/neoforged/neoforge/client/ClientHooks;getArmorTexture(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ArmorMaterial$Layer;ZLnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/resources/ResourceLocation;", remap = false))
     private ResourceLocation withGray(ResourceLocation original, @Local(argsOnly = true) LivingEntity entity, @Local(argsOnly = true) EquipmentSlot slot, @Share("extra") LocalRef<ExtraInventory> extra) {
         if (entity instanceof AbstractClientPlayer) {
-            if (!extra.get().getVanityArmorDye(getSlotIndex(slot)).isEmpty()) {
+            if (!extra.get().getVanityArmor(getSlotIndex(slot), true).isEmpty()) {
                 return ClientUtils.getGrayTexture(original);
             }
         }

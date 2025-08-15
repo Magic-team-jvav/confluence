@@ -93,7 +93,7 @@ public abstract class AbstractHookEntity extends Projectile {
             }
         }
         if (!level().isClientSide) {
-            ItemStack hook = ExtraInventory.of(player).getHook();
+            ItemStack hook = ExtraInventory.of(player).getHook(false);
             if (hookState != HookState.POP && distanceToSqr(owner) > hookRangeSqr) {
                 setHookState(HookState.POP);
             } else if (hookState == HookState.PUSH) {

@@ -14,10 +14,7 @@ import org.confluence.mod.util.PlayerUtils;
 
 public record FishingPowerInfoPacketS2C(float value) implements CustomPacketPayload {
     public static final Type<FishingPowerInfoPacketS2C> TYPE = new Type<>(Confluence.asResource("fishing_power_info"));
-    public static final StreamCodec<ByteBuf, FishingPowerInfoPacketS2C> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.FLOAT, p -> p.value,
-            FishingPowerInfoPacketS2C::new
-    );
+    public static final StreamCodec<ByteBuf, FishingPowerInfoPacketS2C> STREAM_CODEC = ByteBufCodecs.FLOAT.map(FishingPowerInfoPacketS2C::new, FishingPowerInfoPacketS2C::value);
 
     @Override
     public Type<FishingPowerInfoPacketS2C> type() {

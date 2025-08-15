@@ -36,7 +36,7 @@ public final class EntityEvents {
             ItemStack itemStack = e.getMinecartItem();
             if (e.isCanceled() || itemStack == null) return;
             ExtraInventory extraInventory = ExtraInventory.of(player);
-            if (extraInventory.getMinecart().isEmpty()) {
+            if (extraInventory.getMinecart(false).isEmpty()) {
                 extraInventory.setEquipment(ExtraInventory.MINECART_INDEX, itemStack, false);
             } else {
                 player.addItem(itemStack);

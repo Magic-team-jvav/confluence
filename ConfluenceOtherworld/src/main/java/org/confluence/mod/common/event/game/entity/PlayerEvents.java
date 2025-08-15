@@ -128,7 +128,7 @@ public final class PlayerEvents {
             player.swing(InteractionHand.MAIN_HAND);
             if (!level.isClientSide) {
                 ExtraInventory extraInventory = ExtraInventory.of(player);
-                ItemStack minecartItemStack = extraInventory.getMinecart();
+                ItemStack minecartItemStack = extraInventory.getMinecart(false);
                 RightClickRailBlock e = NeoForge.EVENT_BUS.post(new RightClickRailBlock(player, minecartItemStack, blockState, railBlock, blockPos));
                 if (e.isCanceled()) return;
                 AbstractMinecart minecart = e.getMinecart();

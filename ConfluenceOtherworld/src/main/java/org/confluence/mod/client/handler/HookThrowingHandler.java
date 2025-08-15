@@ -34,7 +34,7 @@ public final class HookThrowingHandler {
         while (ModKeyBindings.HOOK.get().consumeClick()) isDown = true;
         if (isDown) HookThrowingPacketC2S.push();
         if (player.isCrouching()) return;
-        ItemStack itemStack = ExtraInventory.of(player).getHook();
+        ItemStack itemStack = ExtraInventory.of(player).getHook(false);
         CompoundTag tag = LibUtils.getItemStackNbtIfPresent(itemStack);
         if (tag == null) return;
 

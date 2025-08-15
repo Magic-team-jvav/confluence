@@ -16,18 +16,18 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.mixed.IEntity;
 import org.slf4j.Logger;
 
-public record DeathMotionPacketS2C(int entityId, float x,float y, float z) implements CustomPacketPayload {
+public record DeathMotionPacketS2C(int entityId, float x, float y, float z) implements CustomPacketPayload {
     public static final Type<DeathMotionPacketS2C> TYPE = new Type<>(Confluence.asResource("death_motion"));
     public static final StreamCodec<ByteBuf, DeathMotionPacketS2C> STREAM_CODEC = StreamCodec.composite(
-        ByteBufCodecs.VAR_INT, p -> p.entityId,
-        ByteBufCodecs.FLOAT, p -> p.x,
-        ByteBufCodecs.FLOAT, p -> p.y,
-        ByteBufCodecs.FLOAT, p -> p.z,
-        DeathMotionPacketS2C::new
+            ByteBufCodecs.VAR_INT, DeathMotionPacketS2C::entityId,
+            ByteBufCodecs.FLOAT, DeathMotionPacketS2C::x,
+            ByteBufCodecs.FLOAT, DeathMotionPacketS2C::y,
+            ByteBufCodecs.FLOAT, DeathMotionPacketS2C::z,
+            DeathMotionPacketS2C::new
     );
     private static final Logger LOGGER = LogUtils.getLogger();
 
-    public DeathMotionPacketS2C(int entityId, Vec3 motion){
+    public DeathMotionPacketS2C(int entityId, Vec3 motion) {
         this(entityId, (float) motion.x, (float) motion.y, (float) motion.z);
     }
 
@@ -38,9 +38,9 @@ public record DeathMotionPacketS2C(int entityId, float x,float y, float z) imple
 
     public void handle(IPayloadContext context) {
         context.enqueueWork(() -> {
-            if(context.player().isLocalPlayer() && context.player().level().getEntity(entityId) instanceof IEntity entity){
+            if (context.player().isLocalPlayer() && context.player().level().getEntity(entityId) instanceof IEntity entity) {
                 entity.confluence$deathMotion(new Vec3(x, y, z));
-                if(entity instanceof LivingEntity living && living.isDeadOrDying()){
+                if (entity instanceof LivingEntity living && living.isDeadOrDying()) {
                     LOGGER.warn("Receive death motion packet but entity is dying");
                 }
             }

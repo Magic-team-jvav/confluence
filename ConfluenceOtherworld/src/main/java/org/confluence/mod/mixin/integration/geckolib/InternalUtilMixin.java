@@ -20,7 +20,7 @@ public abstract class InternalUtilMixin {
         if (entity instanceof AbstractClientPlayer player) {
             int index = getSlotIndex(slot);
             if (index != -1) {
-                ItemStack vanityArmor = ExtraInventory.of(player).getVanityArmor(index);
+                ItemStack vanityArmor = ExtraInventory.of(player).getVanityArmor(index, false);
                 if (!vanityArmor.isEmpty()) return vanityArmor;
             }
         }

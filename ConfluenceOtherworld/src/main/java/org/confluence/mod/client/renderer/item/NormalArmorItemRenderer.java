@@ -40,7 +40,7 @@ public class NormalArmorItemRenderer<T extends Item & GeoItem> extends DyeableGe
     public ResourceLocation getTextureLocation(T animatable) {
         ResourceLocation original = super.getTextureLocation(animatable);
         if (currentSlot != null && currentEntity instanceof AbstractClientPlayer player) {
-            if (!ExtraInventory.of(player).getVanityArmorDye(getSlotIndex(currentSlot)).isEmpty()) {
+            if (!ExtraInventory.of(player).getVanityArmor(getSlotIndex(currentSlot), true).isEmpty()) {
                 return ClientUtils.getGrayTexture(original);
             }
         }

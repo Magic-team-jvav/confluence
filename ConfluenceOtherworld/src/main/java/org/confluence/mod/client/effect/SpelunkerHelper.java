@@ -388,8 +388,9 @@ public class SpelunkerHelper extends AbstractBufferManager {
                 pos.setY(center.getY() + j);
                 for (int k = -range; k < range; k++) {
                     pos.setZ(center.getZ() + k);
-                    BlockState blockState = PhaseManager.BLOCK.replaceSourceIfPlayerNotReachedPhase(player, level.getBlockState(pos));
+                    BlockState blockState = level.getBlockState(pos);
                     if (blockState.isAir()) continue;
+                    blockState = PhaseManager.BLOCK.replaceSourceIfPlayerNotReachedPhase(player, blockState);
                     Block block = blockState.getBlock();
                     if (targets.containsKey(block) &&  /*&&//有目标且
                             (!centerCache.containsKey(pos) ||//未已缓存或

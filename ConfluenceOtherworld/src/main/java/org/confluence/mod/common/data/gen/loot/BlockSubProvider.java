@@ -13,18 +13,23 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CaveVines;
+import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
 import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
+import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
+import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.confluence.mod.common.block.natural.BaseCropBlock;
+import org.confluence.mod.common.block.natural.CoinPileBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.block.natural.SwordInStoneBlock;
 import org.confluence.mod.common.block.natural.herbs.BaseHerbBlock;
@@ -51,6 +56,7 @@ public final class BlockSubProvider extends BlockLootSubProvider {
 
     @Override
     protected void generate() {
+        HolderLookup.RegistryLookup<Enchantment> registrylookup = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
         LootPoolSingletonContainer.Builder<?> emptyWeight59 = EmptyLootItem.emptyItem().setWeight(59);
 
         // region ore
@@ -699,11 +705,11 @@ public final class BlockSubProvider extends BlockLootSubProvider {
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(SPORE_ROOT_BLOCK.get()).when(hasSilkTouch()))
                         .add(LootItem.lootTableItem(SPORE_ROOT.get())
-                                        .when(doesNotHaveShearsOrSilkTouch())
-                                        .when(survivesExplosion())
-                                        .apply(setCount(UniformGenerator.between(1, 2)))
+                                .when(doesNotHaveShearsOrSilkTouch())
+                                .when(survivesExplosion())
+                                .apply(setCount(UniformGenerator.between(1, 2)))
                         ))
-                );
+        );
         add(WINTER_MARROW_BLOCK.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(WINTER_MARROW_BLOCK.get()).when(hasSilkTouch()))
@@ -713,6 +719,57 @@ public final class BlockSubProvider extends BlockLootSubProvider {
                                 .apply(setCount(UniformGenerator.between(1, 2)))
                         ))
         );
+        // 作物
+        LootItemCondition.Builder lootitemcondition$builder1 = LootItemBlockStatePropertyCondition.hasBlockStateProperties(FLOATING_WHEAT.get())
+                .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(CropBlock.AGE, 7));
+        this.add(NatureBlocks.FLOATING_WHEAT.get(), this.createCropDrops(NatureBlocks.FLOATING_WHEAT.get(), MaterialItems.FLOATING_WHEAT_HEADS.asItem(), FoodItems.FLOATING_WHEAT_SEED.get(), lootitemcondition$builder1));
+
+        lootitemcondition$builder1 = LootItemBlockStatePropertyCondition.hasBlockStateProperties(CLOUDWEAVER.get())
+                .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(CropBlock.AGE, 7));
+        this.add(NatureBlocks.CLOUDWEAVER.get(), this.createCropDrops(NatureBlocks.CLOUDWEAVER.get(), MaterialItems.WEAVING_CLOUD_COTTON.asItem(), FoodItems.CLOUDWEAVER_SEED.get(), lootitemcondition$builder1));
+
+        LootTable.Builder lootTableBuilder = LootTable.lootTable();
+        for (int age = 1; age <= 5; age++) {
+            lootTableBuilder.withPool(LootPool.lootPool()
+                    .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(STELLAR_BLOSSOM.get())
+                            .setProperties(StatePropertiesPredicate.Builder.properties()
+                                    .hasProperty(CropBlock.AGE, age)))
+                    .add(LootItem.lootTableItem(FoodItems.STELLAR_BLOSSOM_SEED.get())));
+        }
+        lootTableBuilder.withPool(LootPool.lootPool()
+                .add(LootItem.lootTableItem(FoodItems.STELLAR_BLOSSOM_SEED.get()))
+                .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(STELLAR_BLOSSOM.get())
+                        .setProperties(StatePropertiesPredicate.Builder.properties()
+                                .hasProperty(CropBlock.AGE, 0))));
+        lootTableBuilder.withPool(LootPool.lootPool()
+                .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(STELLAR_BLOSSOM.get())
+                        .setProperties(StatePropertiesPredicate.Builder.properties()
+                                .hasProperty(CropBlock.AGE, 6)))
+                .add(LootItem.lootTableItem(FoodItems.STELLAR_BLOSSOM_SEED.get())
+                        .apply(setCount(ConstantValue.exactly(2))))
+               );
+        lootTableBuilder.withPool(LootPool.lootPool()
+                .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(STELLAR_BLOSSOM.get())
+                        .setProperties(StatePropertiesPredicate.Builder.properties()
+                                .hasProperty(CropBlock.AGE, 6)))
+                .add(LootItem.lootTableItem(STAR_PETALS.get())));
+        lootTableBuilder.withPool(LootPool.lootPool()
+                .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(STELLAR_BLOSSOM.get())
+                        .setProperties(StatePropertiesPredicate.Builder.properties()
+                                .hasProperty(CropBlock.AGE, 7)))
+                .add(LootItem.lootTableItem(FoodItems.STELLAR_BLOSSOM_SEED.get()).apply(setCount(UniformGenerator.between(2, 3))))
+              );
+        lootTableBuilder.withPool(LootPool.lootPool()
+                .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(STELLAR_BLOSSOM.get())
+                        .setProperties(StatePropertiesPredicate.Builder.properties()
+                                .hasProperty(CropBlock.AGE, 7)))
+                .add(LootItem.lootTableItem(STAR_PETALS.get())).apply(SetItemCountFunction.setCount(UniformGenerator.between(2.0F, 3.0F))).apply(ApplyBonusCount.addUniformBonusCount(registrylookup.getOrThrow(Enchantments.FORTUNE)))
+                .apply(setCount(UniformGenerator.between(2, 5))));
+        add(STELLAR_BLOSSOM.get(), lootTableBuilder);
+        addCoinPileDrop(COPPER_COIN.get());
+        addCoinPileDrop(SILVER_COIN.get());
+        addCoinPileDrop(GOLD_COIN.get());
+        addCoinPileDrop(PLATINUM_COIN.get());
     }
 
     @Override
@@ -770,7 +827,18 @@ public final class BlockSubProvider extends BlockLootSubProvider {
                                 .setProperties(StatePropertiesPredicate.Builder.properties()
                                         .hasProperty(BaseHerbBlock.AGE, 1)))));
     }
-
+    private void addCoinPileDrop(CoinPileBlock block) {
+        LootTable.Builder lootTable = LootTable.lootTable();
+        for (int heaps = 1; heaps <= 12; heaps++) {
+            lootTable.withPool(LootPool.lootPool()
+                    .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block)
+                            .setProperties(StatePropertiesPredicate.Builder.properties()
+                                    .hasProperty(CoinPileBlock.HEAPS, String.valueOf(heaps))))
+                    .add(LootItem.lootTableItem(block)
+                            .apply(setCount(ConstantValue.exactly(heaps)))));
+        }
+        add(block, lootTable);
+    }
     private LootTable.Builder createShimmerBerriesDrop(Block block) {
         return LootTable.lootTable()
                 .withPool(

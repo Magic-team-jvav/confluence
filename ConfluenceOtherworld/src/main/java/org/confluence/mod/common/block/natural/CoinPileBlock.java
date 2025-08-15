@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.init.ModSoundEvents;
@@ -25,7 +26,7 @@ import javax.annotation.Nullable;
 public class CoinPileBlock extends FallingBlock {
     public static final MapCodec<CoinPileBlock> CODEC = simpleCodec(CoinPileBlock::new);
     public static final BooleanProperty ISBASE = BooleanProperty.create("isbase");
-    private static final IntegerProperty HEAPS = IntegerProperty.create("heaps", 1, 12);
+    public static final IntegerProperty HEAPS = IntegerProperty.create("heaps", 1, 12);
     private static final VoxelShape ONE_CUBE = box(3.0, 0.0, 3.0, 13.0, 3.0, 13.0);
     private static final VoxelShape TWO_CUBES = box(3.0, 0.0, 3.0, 13.0, 4.0, 13.0);
     private static final VoxelShape THREE_CUBES = box(3.0, 0.0, 3.0, 13.0, 5.0, 13.0);

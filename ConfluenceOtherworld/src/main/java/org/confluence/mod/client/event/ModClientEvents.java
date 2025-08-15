@@ -87,10 +87,10 @@ import org.confluence.mod.util.ClientUtils;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.client.model.entity.BeeProjectileModel;
 import org.confluence.terra_guns.util.TGUtil;
+import org.confluence.terraentity.client.entity.renderer.mob.GeoNegativeVolumeRenderer;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
 import software.bernie.geckolib.model.DefaultedBlockGeoModel;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
-import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -287,10 +287,10 @@ public final class ModClientEvents {
         event.registerEntityRenderer(BALL_OF_FROST_PROJECTILE.get(), NoopRenderer::new); // todo 模型
         event.registerEntityRenderer(DEMON_SCYTHE_PROJECTILE.get(), DemonScytheProjectileRenderer::new);
         event.registerEntityRenderer(SKULL_PROJECTILE.get(), NoopRenderer::new); // todo 模型
-        event.registerEntityRenderer(BLOOD_CLOUD_PROJECTILE.get(), context -> new GeoEntityRenderer<>(context, new BloodCloudProjectileModel()));// todo 负模型渲染
-        event.registerEntityRenderer(BLOOD_RAIN_PROJECTILE.get(), BloodRainProjectileRenderer::new);
+        event.registerEntityRenderer(BLOOD_CLOUD_PROJECTILE.get(), context -> new GeoNegativeVolumeRenderer<>(context, new BloodCloudProjectileModel(), false, 2, -0.2F));
+        event.registerEntityRenderer(BLOOD_RAIN_PROJECTILE.get(), context -> new RainProjectileRenderer(context, RainProjectileRenderer.BLOOD_RAIN));
         event.registerEntityRenderer(RAIN_CLOUD_PROJECTILE.get(), NoopRenderer::new); // todo 模型
-        event.registerEntityRenderer(RAIN_PROJECTILE.get(), RainProjectileRenderer::new);
+        event.registerEntityRenderer(RAIN_PROJECTILE.get(), context -> new RainProjectileRenderer(context, RainProjectileRenderer.RAIN));
 
 
         event.registerEntityRenderer(HOTLINE_FISHING_HOOK.get(), HotlineFishingHookRenderer::new);

@@ -11,22 +11,24 @@ import org.confluence.mod.client.model.entity.projectile.RainProjectileModel;
 import org.confluence.mod.common.entity.projectile.mana.RainProjectile;
 
 public class RainProjectileRenderer extends EntityRenderer<RainProjectile> {
-    private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/rain_projectile.png");
+    public static final ResourceLocation RAIN = Confluence.asResource("textures/entity/rain_projectile.png");
+    public static final ResourceLocation BLOOD_RAIN = Confluence.asResource("textures/entity/blood_rain_projectile.png");
     private final RainProjectileModel model;
+    private final ResourceLocation texture;
 
-    public RainProjectileRenderer(EntityRendererProvider.Context pContext) {
-        super(pContext);
-        this.model = new RainProjectileModel(pContext.bakeLayer(RainProjectileModel.LAYER_LOCATION));
+    public RainProjectileRenderer(EntityRendererProvider.Context context, ResourceLocation texture) {
+        super(context);
+        this.model = new RainProjectileModel(context.bakeLayer(RainProjectileModel.LAYER_LOCATION));
+        this.texture = texture;
     }
 
     @Override
     public ResourceLocation getTextureLocation(RainProjectile pEntity) {
-        return TEXTURE;
+        return texture;
     }
 
     @Override
     public void render(RainProjectile entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource multiBufferSource, int packedLight) {
-        poseStack.translate(0F, 0, 0);
-        model.renderToBuffer(poseStack, multiBufferSource.getBuffer(model.renderType(TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY);
+        model.renderToBuffer(poseStack, multiBufferSource.getBuffer(model.renderType(texture)), packedLight, OverlayTexture.NO_OVERLAY);
     }
 }

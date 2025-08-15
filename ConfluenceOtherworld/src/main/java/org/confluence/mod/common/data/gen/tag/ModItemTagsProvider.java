@@ -561,7 +561,24 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.RAW_MYTHRIL.get(),
                 MaterialItems.RAW_ORICHALCUM.get(),
                 MaterialItems.RAW_ADAMANTITE.get(),
-                MaterialItems.RAW_TITANIUM.get()
+                MaterialItems.RAW_TITANIUM.get(),
+                MaterialItems.RAW_CHLOROPHYTE.get(),
+                MaterialItems.RAW_LUMINITE.get(),
+
+                MaterialItems.SOUL_OF_FRIGHT.get(),
+                MaterialItems.SOUL_OF_MIGHT.get(),
+                MaterialItems.SOUL_OF_FLIGHT.get(),
+                MaterialItems.SOUL_OF_NIGHT.get(),
+                MaterialItems.SOUL_OF_LIGHT.get(),
+                MaterialItems.SOUL_OF_SIGHT.get(),
+
+                MaterialItems.CRYSTAL_SHARDS.get(),
+                MaterialItems.CURSED_FLAME.get(),
+                MaterialItems.ICHOR.get(),
+                MaterialItems.PIXIE_DUST.get(),
+                MaterialItems.UNICORN_HORN.get(),
+                MaterialItems.SPIDER_FANG.get(),
+                MaterialItems.SPELL_TOME.get()
         );
         tag(ModTags.Items.BOSS_SUMMONING).add(
                 ConsumableItems.SUSPICIOUS_LOOKING_EYE.get(),
@@ -1394,8 +1411,9 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FunctionalBlocks.SPEAR_TRAP.asItem(),
                 FunctionalBlocks.TREE_HOLES_BLOCK.asItem(),
                 FunctionalBlocks.MAGIC_MAIL_BOX.asItem(),
-                MaterialItems.SPELL_TOME.get(),
                 MaterialItems.ECTOPLASM.get(),
+                MaterialItems.UNICORN_HORN.get(),
+                MaterialItems.SPIDER_FANG.get(),
                 CrateBlocks.HALLOWED_CRATE.asItem(),
                 CrateBlocks.OBSIDIAN_CRATE.asItem(),
                 CrateBlocks.PEARLWOOD_CRATE.asItem(),

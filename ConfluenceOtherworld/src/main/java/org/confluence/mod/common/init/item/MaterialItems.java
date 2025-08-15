@@ -139,6 +139,8 @@ public class MaterialItems {
     public static final DeferredItem<Item> CURSED_FLAME = ITEMS.register("cursed_flame", CursedFlameItem::new);
     public static final DeferredItem<Item> ICHOR = register("ichor", ModRarity.ORANGE);
     public static final DeferredItem<Item> PIXIE_DUST = register("pixie_dust", ModRarity.BLUE);
+    public static final DeferredItem<Item> UNICORN_HORN = register("unicorn_horn", ModRarity.BLUE);
+    public static final DeferredItem<Item> SPIDER_FANG = register("spider_fang", ModRarity.LIGHT_RED);
     public static final DeferredItem<Item> SPELL_TOME = register("spell_tome", ModRarity.BLUE);
     public static final DeferredItem<Item> ECTOPLASM = register("ectoplasm", ModRarity.YELLOW);
 

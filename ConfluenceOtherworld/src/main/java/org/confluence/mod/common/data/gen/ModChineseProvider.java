@@ -2939,6 +2939,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.CURSED_FLAME.get(), "诅咒焰");
         add(MaterialItems.ICHOR.get(), "灵液");
         add(MaterialItems.PIXIE_DUST.get(), "妖精尘");
+        add(MaterialItems.UNICORN_HORN.get(), "独角兽角");
+        add(MaterialItems.SPIDER_FANG.get(), "蜘蛛牙");
         add(MaterialItems.PEARL.get(), "珍珠");
         add(MaterialItems.BLACK_PEARL.get(), "黑珍珠");
         add(MaterialItems.PINK_PEARL.get(), "粉珍珠");

@@ -152,8 +152,19 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(ConsumableItems.PURIFICATION_POWDER)
                 .add(NatureBlocks.YELLOW_WILLOW_SAPLING)
                 .add(Blocks.OAK_SAPLING)
+                .add(Blocks.SUNFLOWER)
                 .add(Items.PUMPKIN_SEEDS)
                 .add(ModItems.GRASS_SEED)
+                .add(new MoneyTradeItem.Builder()
+                        .setResult(ModItems.HALLOWED_SEED.toStack(1))
+                        .setProperties(hardmodeLock)
+                        .build())
+                //.add(ModItems.ASH_GRASS_SEED) todo在地狱中时
+                //.add(ModItems.MUSHROOM_GRASS_SEED) todo在发光蘑菇群系中时
+                //.add(ModItems.CRIMSON_SEED) todo 血月或灵雾且腐化世界
+                //.add(ModItems.VILE_POWDER) todo 血月且腐化世界
+                //.add(ModItems.VICIOUS_POWDER) todo 血月且猩红世界
+                //.add(ModItems.CORRUPT_SEED) todo 血月或灵雾且猩红世界
                 .add(SellTrade.INSTANCE)
                 .build());
 

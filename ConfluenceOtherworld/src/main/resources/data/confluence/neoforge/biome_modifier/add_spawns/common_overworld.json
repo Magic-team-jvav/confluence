@@ -13,6 +13,18 @@
             "weight": 6,
             "minCount": 1,
             "maxCount": 1
+        },
+        {
+            "type": "terra_entity:harpy",
+            "weight": 60,
+            "minCount": 1,
+            "maxCount": 2
+        },
+        {
+            "type": "terra_entity:harpy",
+            "weight": 5,
+            "minCount": 1,
+            "maxCount": 1
         }
     ]
 }

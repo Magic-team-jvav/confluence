@@ -30,6 +30,7 @@ import org.confluence.terra_guns.common.init.TGTags;
 import org.confluence.terraentity.init.TEItems;
 import org.confluence.terraentity.init.block.TEFigureBlocks;
 import org.confluence.terraentity.init.item.TEBoomerangItems;
+import org.confluence.terraentity.init.item.TERideableItems;
 import org.confluence.terraentity.init.item.TESummonItems;
 import org.jetbrains.annotations.Nullable;
 
@@ -48,6 +49,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         HookItems.acceptTag(tag(ModTags.Items.HOOK));
         PotionItems.acceptTag(tag(Tags.Items.POTIONS));
         FoodItems.acceptTag(tag(Tags.Items.FOODS));
+        TERideableItems.ITEMS.getEntries().forEach(item -> tag(ModTags.Items.MOUNT).add(item.get()));
 
         IntrinsicTagAppender<Item> boats = tag(ItemTags.BOATS);
         BoatItems.BOAT_ITEMS.getEntries().forEach(item -> boats.add(item.get()));

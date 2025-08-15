@@ -63,7 +63,7 @@ public class ExtraInventory extends ItemStackHandler implements Container {
         }
     };
 
-    private int sizeAccessoryDye = 0;
+    private transient int sizeAccessoryDye = 0;
     private transient boolean initialized = false;
     private transient NonNullList<ItemStack> previousStacks;
     private transient boolean dirty = true;
@@ -106,10 +106,6 @@ public class ExtraInventory extends ItemStackHandler implements Container {
         return stacks.subList(AMMO_START, AMMO_START + SIZE_AMMO);
     }
 
-    public List<ItemStack> getAllAmmo() {
-        return this.stacks.subList(AMMO_START, AMMO_START + SIZE_AMMO);
-    }
-
     public ItemStack getPet() {
         return getItem(EQUIPMENT_START);
     }
@@ -140,19 +136,19 @@ public class ExtraInventory extends ItemStackHandler implements Container {
     }
 
     public ItemStack getPetDye() {
-        return getItem(DYE_START + EQUIPMENT_START);
+        return getItem(DYE_START + SIZE_VANITY_ARMOR);
     }
 
     public ItemStack getLightPetDye() {
-        return getItem(DYE_START + EQUIPMENT_START + 1);
+        return getItem(DYE_START + SIZE_VANITY_ARMOR + 1);
     }
 
     public ItemStack getMinecartDye() {
-        return getItem(DYE_START + EQUIPMENT_START + 2);
+        return getItem(DYE_START + SIZE_VANITY_ARMOR + 2);
     }
 
     public ItemStack getHookDye() {
-        return getItem(DYE_START + EQUIPMENT_START + 3);
+        return getItem(DYE_START + SIZE_VANITY_ARMOR + 3);
     }
 
     public ItemStack getAccessoryDye(int index) {

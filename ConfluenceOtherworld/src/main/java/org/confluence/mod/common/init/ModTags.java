@@ -324,9 +324,12 @@ public final class ModTags {
         public static final TagKey<Item> LIGHT_PET = register("light_pet");
         public static final TagKey<Item> MINECART = register("minecart");
         public static final TagKey<Item> HOOK = register("hook");
+        public static final TagKey<Item> MOUNT = register("mount");
         public static final TagKey<Item> DYE = register("dye");
+
         public static final TagKey<Item> PROVIDE_MANA = register("provide_mana");
         public static final TagKey<Item> PROVIDE_LIFE = register("provide_life");
+
         public static final TagKey<Item> TORCH = register("torch");
         public static final TagKey<Item> PROVIDE_LIGHT = register("provide_light");
         public static final TagKey<Item> HARDMODE = register("hardmode"); // 用于防止微光分解出困难模式物品

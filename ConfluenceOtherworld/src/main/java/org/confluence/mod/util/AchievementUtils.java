@@ -31,14 +31,9 @@ public final class AchievementUtils {
     }
 
     public static boolean achievedAchievement(ServerPlayer player, String path) {
-        CompoundTag data = LibUtils.getOrCreatePersistedData(player);
-        String key = Confluence.MODID + ':' + path;
-        if (data.getBoolean(key)) return true;
+        if (LibUtils.getOrCreatePersistedData(player).getBoolean(Confluence.MODID + ':' + path)) return true;
         AdvancementHolder advancement = player.server.getAdvancements().get(asAchievement(path));
-        if (advancement != null) {
-            return player.getAdvancements().getOrStartProgress(advancement).isDone();
-        }
-        return false;
+        return advancement != null && player.getAdvancements().getOrStartProgress(advancement).isDone();
     }
 
     public static void awardAchievement(ServerPlayer player, String path) {

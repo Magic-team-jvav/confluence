@@ -163,6 +163,6 @@ public final class ItemEvents {
     @SubscribeEvent
     public static void extraInventory(GunEvent.InventoryExtraEvent event) {
         Player player = event.getPlayer();
-        event.addAmmoFirst(ExtraInventory.of(player).getAllAmmo());
+        event.addAmmoFirst(ExtraInventory.of(player).getAmmo());
     }
 }

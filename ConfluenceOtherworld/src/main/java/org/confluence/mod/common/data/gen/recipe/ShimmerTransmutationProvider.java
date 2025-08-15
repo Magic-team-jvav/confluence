@@ -18,9 +18,7 @@ import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.GamePhase;
 import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.common.init.block.CrateBlocks;
-import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.recipe.ItemTransmutationRecipe;
 import org.confluence.terraentity.init.item.TESummonItems;
@@ -218,11 +216,28 @@ public class ShimmerTransmutationProvider extends AbstractRecipeProvider {
         item(recipeOutput, "rotten_bone_from_vertebra", addItem(MaterialItems.VERTEBRA, MaterialItems.ROTTEN_BONE, 3));
         item(recipeOutput, ModItems.CORRUPT_SEED, ModItems.CRIMSON_SEED);
         item(recipeOutput, ModItems.CRIMSON_SEED, ModItems.CORRUPT_SEED);
-        // 忍者套转化
+        // 盔甲转化
         item(recipeOutput, ArmorItems.NINJA_HELMET, ArmorItems.NINJA_CHESTPLATE);
         item(recipeOutput, ArmorItems.NINJA_CHESTPLATE, ArmorItems.NINJA_LEGGINGS);
         item(recipeOutput, ArmorItems.NINJA_LEGGINGS, ArmorItems.NINJA_BOOTS);
         item(recipeOutput, ArmorItems.NINJA_BOOTS, ArmorItems.NINJA_HELMET);
+
+        item(recipeOutput, ArmorItems.MINING_CHESTPLATE, ArmorItems.MINING_LEGGINGS);
+        item(recipeOutput, ArmorItems.MINING_LEGGINGS, ArmorItems.MINING_BOOTS);
+        item(recipeOutput, ArmorItems.MINING_BOOTS, ArmorItems.MINING_CHESTPLATE);
+        // 钥匙变箱子
+        item(recipeOutput, ToolItems.GOLDEN_DUNGEON_KEY, ChestBlocks.DUNGEON_CHEST);
+        item(recipeOutput, ToolItems.GOLDEN_KEY, ChestBlocks.GOLDEN_CHEST);
+        item(recipeOutput, ToolItems.SHADOW_KEY, ChestBlocks.SHADOW_CHEST);
+        item(recipeOutput, ToolItems.JUNGLE_KEY, ChestBlocks.JUNGLE_CHEST);
+        item(recipeOutput, ToolItems.CORRUPTION_KEY, ChestBlocks.CORRUPTION_CHEST);
+        item(recipeOutput, ToolItems.CRIMSON_KEY, ChestBlocks.CRIMSON_CHEST);
+        item(recipeOutput, ToolItems.HALLOWED_KEY, ChestBlocks.HALLOWED_CHEST);
+        item(recipeOutput, ToolItems.FROZEN_KEY, ChestBlocks.FROZEN_CHEST);
+        item(recipeOutput, ToolItems.DESERT_KEY, ChestBlocks.DESERT_CHEST);
+        item(recipeOutput, ToolItems.OCEAN_KEY, ChestBlocks.OCEAN_CHEST);
+        item(recipeOutput, ToolItems.UNIVERSE_KEY, ChestBlocks.UNIVERSE_CHEST);
+        item(recipeOutput, ToolItems.MECHANIC_SAFE_KEY, ChestBlocks.MECHANIC_SAFE_CHEST);
         // 微光箭转化
         item(recipeOutput, "shimmer_arrow", addItem(ItemTags.ARROWS, ArrowItems.SHIMMER_ARROW.get(), 1));
         // 匣子转化
@@ -269,6 +284,8 @@ public class ShimmerTransmutationProvider extends AbstractRecipeProvider {
         item(recipeOutput, "cobblestone_from_raw_copper", addItem(Items.RAW_COPPER, Items.COBBLESTONE));
         item(recipeOutput, Items.COBBLESTONE, Items.DIRT);
         // 矿的下级转化（陨石，魔矿，猩红矿不参与这一过程）
+        item(recipeOutput, MaterialItems.RAW_LUMINITE, MaterialItems.RAW_CHLOROPHYTE);
+        item(recipeOutput, MaterialItems.RAW_CHLOROPHYTE, MaterialItems.RAW_TITANIUM);
         item(recipeOutput, MaterialItems.RAW_TITANIUM, MaterialItems.RAW_ADAMANTITE);
         item(recipeOutput, MaterialItems.RAW_ADAMANTITE, MaterialItems.RAW_ORICHALCUM);
         item(recipeOutput, MaterialItems.RAW_ORICHALCUM, MaterialItems.RAW_MYTHRIL);
@@ -300,6 +317,42 @@ public class ShimmerTransmutationProvider extends AbstractRecipeProvider {
         item(recipeOutput, FunctionalBlocks.ALCHEMY_TABLE, FunctionalBlocks.BEWITCHING_TABLE);
         item(recipeOutput, FunctionalBlocks.BEWITCHING_TABLE, FunctionalBlocks.ALCHEMY_TABLE);
         item(recipeOutput, TESummonItems.FINCH_STAFF, ModItems.LIVING_WOOD_WAND);
+        item(recipeOutput, MaterialItems.SPELL_TOME, ConsumableItems.ADVANCED_COMBAT_TECHNIQUES_VOLUME_TWO);
+
+        item(recipeOutput, NatureBlocks.GRANITE, NatureBlocks.MARBLE);
+        item(recipeOutput, Blocks.SANDSTONE, Blocks.SAND);
+        item(recipeOutput, NatureBlocks.HARDENED_SAND_BLOCK, Blocks.SAND);
+        item(recipeOutput, NatureBlocks.EBONSANDSTONE, NatureBlocks.EBONSAND);
+        item(recipeOutput, NatureBlocks.HARDENED_EBONSAND_BLOCK, NatureBlocks.EBONSAND);
+        item(recipeOutput, NatureBlocks.CRIMSANDSTONE, NatureBlocks.CRIMSAND);
+        item(recipeOutput, NatureBlocks.HARDENED_CRIMSAND_BLOCK, NatureBlocks.CRIMSAND);
+        item(recipeOutput, NatureBlocks.PEARLSANDSTONE, NatureBlocks.PEARLSAND);
+        item(recipeOutput, NatureBlocks.HARDENED_PEARLSAND_BLOCK, NatureBlocks.PEARLSAND);
+        item(recipeOutput, Blocks.ICE, Blocks.SNOW_BLOCK);
+        item(recipeOutput, Blocks.BLUE_ICE, Blocks.SNOW_BLOCK);
+        item(recipeOutput, Blocks.PACKED_ICE, Blocks.SNOW_BLOCK);
+        item(recipeOutput, Blocks.HONEY_BLOCK, NatureBlocks.JUNGLE_HIVE_BLOCK);
+        item(recipeOutput, DecorativeBlocks.CRISPY_HONEY_BLOCK, NatureBlocks.JUNGLE_HIVE_BLOCK);
+        item(recipeOutput, Blocks.PUMPKIN, Blocks.CACTUS);
+        item(recipeOutput, Blocks.CACTUS, Blocks.PUMPKIN);
+
+        item(recipeOutput, Blocks.ACACIA_LOG, Blocks.OAK_LOG);
+        item(recipeOutput, Blocks.BIRCH_LOG, Blocks.OAK_LOG);
+        item(recipeOutput, Blocks.CHERRY_LOG, Blocks.OAK_LOG);
+        item(recipeOutput, Blocks.JUNGLE_LOG, Blocks.OAK_LOG);
+        item(recipeOutput, Blocks.DARK_OAK_LOG, Blocks.OAK_LOG);
+        item(recipeOutput, Blocks.MANGROVE_LOG, Blocks.OAK_LOG);
+        item(recipeOutput, Blocks.SPRUCE_LOG, Blocks.OAK_LOG);
+        item(recipeOutput, NatureBlocks.EBONY_LOG_BLOCKS.getLog(), Blocks.OAK_LOG);
+        item(recipeOutput, NatureBlocks.PEARL_LOG_BLOCKS.getLog(), Blocks.OAK_LOG);
+        item(recipeOutput, NatureBlocks.SHADOW_LOG_BLOCKS.getLog(), Blocks.OAK_LOG);
+        item(recipeOutput, NatureBlocks.PALM_LOG_BLOCKS.getLog(), Blocks.OAK_LOG);
+        item(recipeOutput, NatureBlocks.BAOBAB_LOG_BLOCKS.getLog(), Blocks.OAK_LOG);
+        item(recipeOutput, NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getLog(), Blocks.OAK_LOG);
+        item(recipeOutput, NatureBlocks.LIVING_LOG_BLOCKS.getLog(), Blocks.OAK_LOG);
+        item(recipeOutput, NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getLog(), Blocks.OAK_LOG);
+        item(recipeOutput, NatureBlocks.ASH_LOG_BLOCKS.getLog(), Blocks.OAK_LOG);
+        item(recipeOutput, NatureBlocks.SPOOKY_LOG_BLOCKS.getLog(), Blocks.OAK_LOG);
         item(recipeOutput, "purification_powder_from_vile_powder", addItem(ConsumableItems.VILE_POWDER, ConsumableItems.PURIFICATION_POWDER));
         item(recipeOutput, "purification_powder_from_vicious_powder", addItem(ConsumableItems.VICIOUS_POWDER, ConsumableItems.PURIFICATION_POWDER));
 

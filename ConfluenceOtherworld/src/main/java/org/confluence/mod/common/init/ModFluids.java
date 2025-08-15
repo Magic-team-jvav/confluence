@@ -19,6 +19,7 @@ import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.ToolItems;
+import org.confluence.terraentity.init.entity.TEAnimals;
 import org.confluence.terraentity.init.entity.TENpcEntities;
 
 import static org.confluence.mod.api.event.ShimmerEntityTransmutationEvent.addEntity;
@@ -106,6 +107,35 @@ public final class ModFluids {
         addEntity(EntityType.MOOSHROOM, EntityType.COW);
         addEntity(TENpcEntities.ANGLER.get(), TENpcEntities.FEMALE_ANGLER.get());
         addEntity(TENpcEntities.FEMALE_ANGLER.get(), TENpcEntities.ANGLER.get());
+        // 飞灵转化
+        addEntity(EntityType.DOLPHIN, TEAnimals.FEALING.get());
+        addEntity(EntityType.PARROT, TEAnimals.FEALING.get());
+        addEntity(EntityType.RABBIT, TEAnimals.FEALING.get());
+        addEntity(EntityType.COD, TEAnimals.FEALING.get());
+        addEntity(EntityType.SALMON, TEAnimals.FEALING.get());
+        addEntity(EntityType.TROPICAL_FISH, TEAnimals.FEALING.get());
+        addEntity(EntityType.TURTLE, TEAnimals.FEALING.get());
+        addEntity(EntityType.FROG, TEAnimals.FEALING.get());
+        addEntity(TEAnimals.BOOM_BUNNY.get(), TEAnimals.FEALING.get());
+        addEntity(TEAnimals.BUNNY.get(), TEAnimals.FEALING.get());
+        addEntity(TEAnimals.BIRD.get(), TEAnimals.FEALING.get());
+        addEntity(TEAnimals.BLUE_JAY.get(), TEAnimals.FEALING.get());
+        addEntity(TEAnimals.CARDINAL.get(), TEAnimals.FEALING.get());
+        addEntity(TEAnimals.DUCK.get(), TEAnimals.FEALING.get());
+        addEntity(TEAnimals.SQUIRREL.get(), TEAnimals.FEALING.get());
+        addEntity(TEAnimals.HELL_BUTTERFLY.get(), TEAnimals.FEALING.get());
+        addEntity(TEAnimals.MAGMA_SNAIL.get(), TEAnimals.FEALING.get());
+        addEntity(TEAnimals.WORM.get(), TEAnimals.FEALING.get());
+        addEntity(TEAnimals.DRAGONFLY.get(), TEAnimals.FEALING.get());
+        addEntity(TEAnimals.BUTTERFLY.get(), TEAnimals.FEALING.get());
+        addEntity(TEAnimals.GRASSHOPPER.get(), TEAnimals.FEALING.get());
+        addEntity(TEAnimals.SCORPION.get(), TEAnimals.FEALING.get());
+        addEntity(TEAnimals.SLUGGY.get(), TEAnimals.FEALING.get());
+        addEntity(TEAnimals.SNAIL.get(), TEAnimals.FEALING.get());
+        addEntity(TEAnimals.GLOWING_SNAIL.get(), TEAnimals.FEALING.get());
+        addEntity(TEAnimals.MAGGOT.get(), TEAnimals.FEALING.get());
+        addEntity(TEAnimals.PRISMATIC_LACEWING.get(), TEAnimals.FEALING.get());
+        addEntity(TEAnimals.FAIRY.get(), TEAnimals.FEALING.get());
     }
 
     public static void initialize() {}

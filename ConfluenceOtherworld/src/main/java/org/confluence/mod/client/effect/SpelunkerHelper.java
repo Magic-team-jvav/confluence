@@ -303,6 +303,14 @@ public class SpelunkerHelper extends AbstractBufferManager {
         // 石英
         putTarget(Blocks.NETHER_QUARTZ_ORE, Color.WHITE, true, ShowType.SPELUNKER);
 
+        // 新三矿 todo仅敲除祭坛后可探测
+        putTarget(DEEPSLATE_COBALT_ORE.get(), Color.BLUE, true, ShowType.SPELUNKER);
+        putTarget(DEEPSLATE_PALLADIUM_ORE.get(), Color.ORANGE, true, ShowType.SPELUNKER);
+        putTarget(DEEPSLATE_MYTHRIL_ORE.get(), Color.CYAN, true, ShowType.SPELUNKER);
+        putTarget(DEEPSLATE_ORICHALCUM_ORE.get(), Color.MAGENTA, true, ShowType.SPELUNKER);
+        putTarget(DEEPSLATE_ADAMANTITE_ORE.get(), Color.PINK, true, ShowType.SPELUNKER);
+        putTarget(DEEPSLATE_TITANIUM_ORE.get(), Color.LIGHT_GRAY, true, ShowType.SPELUNKER);
+        putTarget(CHLOROPHYTE_ORE.get(), Color.GREEN, true, ShowType.SPELUNKER);
 
         // tip 危险感知
         putTarget(Blocks.POLISHED_BLACKSTONE_PRESSURE_PLATE, Color.MAGENTA, true, ShowType.DANGER);
@@ -346,6 +354,8 @@ public class SpelunkerHelper extends AbstractBufferManager {
         putTarget(GRAVITATION_TRAP.get(), Color.MAGENTA, true, ShowType.DANGER);
         putTarget(PNEUMATIC_TRAP.get(), Color.MAGENTA, true, ShowType.DANGER);
         putTarget(SPIKE.get(), Color.MAGENTA, true, ShowType.DANGER);
+        putTarget(ChestBlocks.DEATH_GOLDEN_CHEST.get(), Color.MAGENTA, true, ShowType.DANGER);
+        putTarget(ChestBlocks.DEATH_WOODEN_CHEST.get(), Color.MAGENTA, true, ShowType.DANGER);
     }
 
 

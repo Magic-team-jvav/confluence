@@ -21,6 +21,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
@@ -34,6 +35,7 @@ import org.confluence.mod.common.block.common.BaseChestBlock;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.block.ChestBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
+import org.confluence.phase_journey.common.phase.PhaseManager;
 import org.confluence.terraentity.client.buffer.AbstractBufferManager;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
@@ -93,7 +95,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
                 player.sendSystemMessage(Component.literal("failed to load spelunker config"));
 
             }
-        }, ()->{
+        }, () -> {
             this.defaultBlocks();
             player.sendSystemMessage(Component.literal("failed to load spelunker config"));
         });
@@ -106,15 +108,17 @@ public class SpelunkerHelper extends AbstractBufferManager {
                 Codec.INT.fieldOf("color").forGetter(t -> t.color.getRGB()),
                 Codec.BOOL.fieldOf("showText").forGetter(t -> t.showText),
                 Codec.INT.fieldOf("showType").forGetter(t -> t.showType.ordinal())
-        ).apply(builder, (color, showText, showType)->new Tuple(new Color(color), showText, ShowType.values()[showType])));
+        ).apply(builder, (color, showText, showType) -> new Tuple(new Color(color), showText, ShowType.values()[showType])));
 
         public static final MapCodec<Map<Block, Tuple>> BLOCK_MAP_CODEC =
-                Codec.unboundedMap(ResourceLocation.CODEC.xmap(BuiltInRegistries.BLOCK::get,BuiltInRegistries.BLOCK::getKey), Tuple.CODEC).fieldOf("targets").fieldOf("values");
+                Codec.unboundedMap(ResourceLocation.CODEC.xmap(BuiltInRegistries.BLOCK::get, BuiltInRegistries.BLOCK::getKey), Tuple.CODEC).fieldOf("targets").fieldOf("values");
 
     }
+
     protected boolean shouldRefresh() {
         return System.currentTimeMillis() - lastRefreshTime > 100;
     }
+
     private static SpelunkerHelper blockGen;
     public static volatile boolean lock = true;
 
@@ -374,25 +378,27 @@ public class SpelunkerHelper extends AbstractBufferManager {
         blockMap.clear();
 
         Player player = Minecraft.getInstance().player;
-        if (player != null){
-            Level level = player.level();
-            BlockPos center = player.blockPosition();
-            for (int i = -range; i <= range; i++) {
-                for (int j = -range; j < range; j++) {
-                    for (int k = -range; k < range; k++) {
-                        BlockPos pos = center.offset(i, j, k);
-                        Block block = level.getBlockState(pos).getBlock();
-                        if ((targets.containsKey(block) /*&&//有目标且
+        if (player == null) return;
+        Level level = player.level();
+        BlockPos center = player.blockPosition();
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+        for (int i = -range; i <= range; i++) {
+            pos.setX(center.getX() + i);
+            for (int j = -range; j < range; j++) {
+                pos.setY(center.getY() + j);
+                for (int k = -range; k < range; k++) {
+                    pos.setZ(center.getZ() + k);
+                    BlockState blockState = PhaseManager.BLOCK.replaceSourceIfPlayerNotReachedPhase(player, level.getBlockState(pos));
+                    if (blockState.isAir()) continue;
+                    Block block = blockState.getBlock();
+                    if (targets.containsKey(block) &&  /*&&//有目标且
                             (!centerCache.containsKey(pos) ||//未已缓存或
                                     centerCache.containsKey(pos) && player.level().getBlockState(pos).is(Blocks.AIR))*/
-                                && (targets.get(block).showType == ShowType.SPELUNKER && player.hasEffect(ModEffects.SPELUNKER) ||
-                                targets.get(block).showType == ShowType.DANGER && player.hasEffect(ModEffects.DANGER_SENSE)) ||
-                                level.getBlockState(pos).is(Tags.Blocks.ORES) && player.hasEffect(ModEffects.SPELUNKER) // 显示所有带矿物标签的方块
-                        )) {//已缓存但为空
-
-                            var list = blockMap.computeIfAbsent(block, k1 -> new ArrayList<>());
-                            list.add(pos);
-                        }
+                            (targets.get(block).showType == ShowType.SPELUNKER && player.hasEffect(ModEffects.SPELUNKER) ||
+                                    targets.get(block).showType == ShowType.DANGER && player.hasEffect(ModEffects.DANGER_SENSE)) ||
+                            blockState.is(Tags.Blocks.ORES) && player.hasEffect(ModEffects.SPELUNKER) // 显示所有带矿物标签的方块
+                    ) {//已缓存但为空
+                        blockMap.computeIfAbsent(block, k1 -> new ArrayList<>()).add(pos.immutable());
                     }
                 }
             }
@@ -407,9 +413,9 @@ public class SpelunkerHelper extends AbstractBufferManager {
         centers.clear();
         centerCacheFrame.clear();
         Player player = Minecraft.getInstance().player;
-        if(player == null)
+        if (player == null)
             return;
-        if(--buildCount <= 0){
+        if (--buildCount <= 0) {
             // 提高周围矿物刷新间隔
             buildCount = 10;
             refreshBlocks();
@@ -422,10 +428,10 @@ public class SpelunkerHelper extends AbstractBufferManager {
 
             Tuple target = blockGen.targets.get(n.getKey());
             Color color;
-            if (target != null){
+            if (target != null) {
                 color = target.color();
-            }else {
-                color = new Color(n.getKey().defaultBlockState().getMapColor(player.level(),n.getValue().getFirst()).calculateRGBColor(MapColor.Brightness.HIGH));
+            } else {
+                color = new Color(n.getKey().defaultBlockState().getMapColor(player.level(), n.getValue().getFirst()).calculateRGBColor(MapColor.Brightness.HIGH));
             }
             if (n.getValue() == null) return;
             int r = color.getRed();
@@ -499,7 +505,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
     @Override
     protected void afterRender(PoseStack poseStack) {
         Player player = Minecraft.getInstance().player;
-        if (player==null) return;
+        if (player == null) return;
 
         GL11.glDisable(GL11.GL_DEPTH_TEST);
         GL11.glDisable(GL11.GL_BLEND);
@@ -571,14 +577,14 @@ public class SpelunkerHelper extends AbstractBufferManager {
         LocalPlayer player = Minecraft.getInstance().player;
         if (
 //                event.getStage() == RenderLevelStageEvent.Stage.AFTER_WEATHER ||
-                        event.getStage() != RenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS
+                event.getStage() != RenderLevelStageEvent.Stage.AFTER_TRANSLUCENT_BLOCKS
 //                ||event.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY
 //                ||event.getStage() == RenderLevelStageEvent.Stage.AFTER_SOLID_BLOCKS
 //                ||event.getStage() == RenderLevelStageEvent.Stage.AFTER_CUTOUT_BLOCKS
 //                ||event.getStage() == RenderLevelStageEvent.Stage.AFTER_CUTOUT_MIPPED_BLOCKS_BLOCKS
 //                ||event.getStage() == RenderLevelStageEvent.Stage.AFTER_ENTITIES
 //                ||event.getStage() == RenderLevelStageEvent.Stage.AFTER_BLOCK_ENTITIES
-                || player == null
+                        || player == null
         ) return;
         SpelunkerHelper blockGen = SpelunkerHelper.getSingleton();
         //效果消失，清除缓存

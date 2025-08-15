@@ -48,7 +48,6 @@ import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
 
 import static org.confluence.lib.util.LibUtils.MAX_STACK_SIZE;
-import static org.confluence.mod.common.attachment.ExtraInventory.COINS_START;
 import static org.confluence.mod.common.attachment.ExtraInventory.SIZE_COINS;
 import static org.confluence.mod.common.item.common.CoinItem.UPGRADES_COUNT;
 
@@ -192,7 +191,7 @@ public final class PlayerUtils {
 
     public static Coins getCoins(Player player, boolean withPiggyBank) {
         Coins coins = withPiggyBank ? decodeCoin(PlayerPiggyBankContainer.of(player).getTotalMoney()) : Coins.createEmpty();
-        for (ItemStack stack : Iterables.concat(player.getInventory().items, ExtraInventory.of(player).getCoins())) {
+        for (ItemStack stack : Iterables.concat(player.getInventory().items, ExtraInventory.of(player).getAllCoins())) {
             if (!stack.isEmpty() && stack.getItem() instanceof CoinItem coin) {
                 coins.increase(coin, stack.getCount());
             }
@@ -208,7 +207,7 @@ public final class PlayerUtils {
 
     public static long getMoney(Player player, boolean withPiggyBank) {
         long res = withPiggyBank ? PlayerPiggyBankContainer.of(player).getTotalMoney() : 0;
-        for (ItemStack stack : Iterables.concat(player.getInventory().items, ExtraInventory.of(player).getCoins())) {
+        for (ItemStack stack : Iterables.concat(player.getInventory().items, ExtraInventory.of(player).getAllCoins())) {
             if (!stack.isEmpty() && stack.is(ModTags.Items.COINS)) {
                 int index = COIN_2_INDEX.applyAsInt(stack.getItem());
                 if (index != -1) {
@@ -252,8 +251,8 @@ public final class PlayerUtils {
         }
 
         ExtraInventory extraInventory = ExtraInventory.of(player);
-        for (int i = COINS_START; i < COINS_START + SIZE_COINS; i++) {
-            extraInventory.setItem(i, ItemStack.EMPTY);
+        for (int i = 0; i < SIZE_COINS; i++) {
+            extraInventory.setCoins(i, ItemStack.EMPTY);
         }
         Coins coins = decodeCoin(have - cost);
 
@@ -306,7 +305,7 @@ public final class PlayerUtils {
         for (int i = 0; i < SIZE_COINS; i++) {
             ItemStack coins = extraInventory.getCoins(i);
             if (coins.isEmpty() || !coins.is(ModTags.Items.COINS)) continue;
-            extraInventory.setItem(COINS_START + i, ItemStack.EMPTY);
+            extraInventory.setCoins(i, ItemStack.EMPTY);
             int index = COIN_2_INDEX.applyAsInt(coins.getItem());
             int count = coins.getCount();
             Supplier<CoinItem> upgrade;
@@ -321,11 +320,11 @@ public final class PlayerUtils {
             if (count <= 0) continue;
             CoinItem coinItem = INDEX_2_COIN.apply(3 - i);
             while (count > MAX_STACK_SIZE) {
-                extraInventory.setItem(COINS_START + j++, new ItemStack(coinItem, MAX_STACK_SIZE));
+                extraInventory.setCoins(j++, new ItemStack(coinItem, MAX_STACK_SIZE));
                 count -= MAX_STACK_SIZE;
             }
             if (count > 0) {
-                extraInventory.setItem(COINS_START + j++, new ItemStack(coinItem, count));
+                extraInventory.setCoins(j++, new ItemStack(coinItem, count));
             }
         }
     }

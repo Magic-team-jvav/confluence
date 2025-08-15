@@ -12,7 +12,7 @@ import org.confluence.mod.common.entity.projectile.mana.RainProjectile;
 import org.jetbrains.annotations.NotNull;
 
 public class RainProjectileModel extends EntityModel<RainProjectile> {
-    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Confluence.asResource("blood_rain_projectile"), "main");
+    public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Confluence.asResource("rain_projectile"), "main");
     private final ModelPart root;
 
     public RainProjectileModel(ModelPart root) {
@@ -23,7 +23,7 @@ public class RainProjectileModel extends EntityModel<RainProjectile> {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
-        PartDefinition bb_main = partdefinition.addOrReplaceChild("bb_main", CubeListBuilder.create().texOffs(0, 0).addBox(-1.0F, -16.0F, 0.0F, 1.0F, 16.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 24.0F, 0.0F));
+        partdefinition.addOrReplaceChild("bb_main", CubeListBuilder.create().texOffs(0, 0).addBox(-1.0F, 0.0F, 0.0F, 1.0F, 32.0F, 1.0F, CubeDeformation.NONE), PartPose.ZERO);
 
         return LayerDefinition.create(meshdefinition, 32, 32);
     }

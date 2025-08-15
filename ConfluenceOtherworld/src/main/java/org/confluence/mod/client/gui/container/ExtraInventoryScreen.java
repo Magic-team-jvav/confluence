@@ -72,7 +72,7 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
         int containerSize = extraInventory.getContainerSize();
         int sizeAccessoryDye = extraInventory.getSizeAccessoryDye();
         int size = containerSize - sizeAccessoryDye;
-        for (int i = 0; i < size; i++) {
+        for (int i = VANITY_ARMOR_START; i < size; i++) {
             Slot slot = menu.getSlot(i);
             if (!slot.isActive() || slot.hasItem()) continue;
             if (i < COINS_START) {
@@ -83,15 +83,8 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
                 guiGraphics.blit(BACKGROUND, leftPos + 99, topPos + (i - AMMO_START) * 18 + 8, 177, 136, 16, 16);
             } else if (i < TRASH_START) {
                 renderEquipment(guiGraphics, i - EQUIPMENT_START);
-            } else if (i < DYE_START) {
+            } else if (i < ACCESSORY_DYE_START) {
                 guiGraphics.blit(BACKGROUND, leftPos + 152, topPos + 166, 177, 170, 16, 16);
-            } else {
-                int j = i - DYE_START;
-                if (j < SIZE_VANITY_ARMOR) {
-                    renderVanityArmor(guiGraphics, j);
-                } else {
-                    renderEquipment(guiGraphics, j - SIZE_VANITY_ARMOR);
-                }
             }
         }
         if (sizeAccessoryDye > 0) {
@@ -114,13 +107,12 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
     }
 
     private void renderEquipment(GuiGraphics guiGraphics, int i) {
-        int v = switch (i) {
-            case 1 -> 102;
-            case 2 -> 119;
-            case 3 -> 68;
-            default -> 85;
-        };
-        guiGraphics.blit(BACKGROUND, leftPos + 121, topPos + i * 18 + 8, 177, v, 16, 16);
+        boolean isMount = i == MOUNT_INDEX;
+        guiGraphics.blit(BACKGROUND,
+                leftPos + (isMount ? 148 : 121), topPos + (isMount ? 8 : i * 18 + 8),
+                isMount ? 194 : 177, isMount ? 68 : 68 + i * 17,
+                16, 16
+        );
     }
 
     private void renderVanityArmor(GuiGraphics guiGraphics, int i) {

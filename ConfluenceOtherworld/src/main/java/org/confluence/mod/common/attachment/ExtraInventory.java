@@ -1,159 +1,212 @@
 package org.confluence.mod.common.attachment;
 
+import com.mojang.serialization.DynamicOps;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ProjectileWeaponItem;
-import net.neoforged.neoforge.items.ItemStackHandler;
-import org.apache.commons.lang3.stream.Streams;
+import net.neoforged.neoforge.common.util.INBTSerializable;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.item.hook.BaseHookItem;
 import org.confluence.mod.network.s2c.ExtraInventoryStackPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.terra_curio.TerraCurio;
+import org.confluence.terraentity.integration.curios.CuriosHelper;
 import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
+import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
-public class ExtraInventory extends ItemStackHandler implements Container {
+@SuppressWarnings("unused")
+public class ExtraInventory implements Container, INBTSerializable<CompoundTag> {
     public static final int SIZE_VANITY_ARMOR = 4;
     public static final int SIZE_COINS = 4;
     public static final int SIZE_AMMO = 4;
-    public static final int SIZE_EQUIPMENT = 4;
+    public static final int SIZE_EQUIPMENT = 5;
     public static final int SIZE_TRASH = 1;
-    public static final int SIZE_DYE_EXCEPT_ACCESSORY_DYE = SIZE_VANITY_ARMOR + SIZE_EQUIPMENT;
-    public static final int SIZE_EXCEPT_ACCESSORY_DYE = SIZE_VANITY_ARMOR + SIZE_COINS + SIZE_AMMO + SIZE_EQUIPMENT + SIZE_TRASH + SIZE_DYE_EXCEPT_ACCESSORY_DYE;
+    public static final int SIZE_EXCEPT_ACCESSORY_DYE = SIZE_VANITY_ARMOR * 2 + SIZE_COINS + SIZE_AMMO + SIZE_EQUIPMENT * 2 + SIZE_TRASH;
 
-    public static final int COINS_START = SIZE_VANITY_ARMOR;
+    public static final int VANITY_ARMOR_START = 0;
+    public static final int VANITY_ARMOR_DYE_START = SIZE_VANITY_ARMOR;
+    public static final int COINS_START = VANITY_ARMOR_DYE_START + SIZE_VANITY_ARMOR;
     public static final int AMMO_START = COINS_START + SIZE_COINS;
     public static final int EQUIPMENT_START = AMMO_START + SIZE_AMMO;
-    public static final int TRASH_START = EQUIPMENT_START + SIZE_EQUIPMENT;
-    public static final int DYE_START = TRASH_START + SIZE_TRASH;
+    public static final int EQUIPMENT_DYE_START = EQUIPMENT_START + SIZE_EQUIPMENT;
+    public static final int TRASH_START = EQUIPMENT_DYE_START + SIZE_EQUIPMENT;
+    public static final int ACCESSORY_DYE_START = TRASH_START + SIZE_TRASH;
+
+    public static final int PET_INDEX = 0;
+    public static final int LIGHT_PET_INDEX = 1;
+    public static final int MINECART_INDEX = 2;
+    public static final int HOOK_INDEX = 3;
+    public static final int MOUNT_INDEX = 4;
 
     public static final StreamCodec<RegistryFriendlyByteBuf, ExtraInventory> STREAM_CODEC = new StreamCodec<>() {
         @Override
         public ExtraInventory decode(RegistryFriendlyByteBuf buffer) {
             ExtraInventory extraInventory = new ExtraInventory(false);
             int accessoryDye = buffer.readVarInt();
-            extraInventory.sizeAccessoryDye = accessoryDye;
-            extraInventory.initialized = true;
             int size = SIZE_EXCEPT_ACCESSORY_DYE + accessoryDye;
+            extraInventory.initialized = true;
+            extraInventory.accessoryDye = NonNullList.withSize(accessoryDye, ItemStack.EMPTY);
             extraInventory.previousStacks = NonNullList.withSize(size, ItemStack.EMPTY);
             extraInventory.dirty = false;
             List<ItemStack> list = ItemStack.OPTIONAL_LIST_STREAM_CODEC.decode(buffer);
-            if (list instanceof NonNullList<ItemStack> nonNullList) {
-                extraInventory.stacks = nonNullList;
-            } else {
-                extraInventory.stacks = NonNullList.copyOf(list);
+            for (int i = 0; i < size; i++) {
+                extraInventory.setItem(i, list.get(i));
             }
             return extraInventory;
         }
 
         @Override
         public void encode(RegistryFriendlyByteBuf buffer, ExtraInventory extraInventory) {
-            buffer.writeVarInt(extraInventory.sizeAccessoryDye);
-            ItemStack.OPTIONAL_LIST_STREAM_CODEC.encode(buffer, extraInventory.stacks);
+            buffer.writeVarInt(extraInventory.getSizeAccessoryDye());
+            List<ItemStack> list = new ArrayList<>();
+            for (int i = 0; i < extraInventory.size(); i++) {
+                list.add(i, extraInventory.getItem(i));
+            }
+            ItemStack.OPTIONAL_LIST_STREAM_CODEC.encode(buffer, list);
         }
     };
 
-    private transient int sizeAccessoryDye = 0;
+    private NonNullList<IStackWithDye> vanityArmor = NonNullList.withSize(SIZE_VANITY_ARMOR, StackWithDye.DEFAULT);
+    private NonNullList<ItemStack> coin = NonNullList.withSize(SIZE_COINS, ItemStack.EMPTY);
+    private NonNullList<ItemStack> ammo = NonNullList.withSize(SIZE_AMMO, ItemStack.EMPTY);
+    private NonNullList<IStackWithDye> equipment = NonNullList.withSize(SIZE_EQUIPMENT, StackWithDye.DEFAULT);
+    private ItemStack trash = ItemStack.EMPTY;
+    private NonNullList<ItemStack> accessoryDye;
+
     private transient boolean initialized = false;
     private transient NonNullList<ItemStack> previousStacks;
     private transient boolean dirty = true;
 
     public ExtraInventory(boolean init) {
-        super(SIZE_EXCEPT_ACCESSORY_DYE);
         if (init) {
+            this.accessoryDye = NonNullList.withSize(0, ItemStack.EMPTY);
             this.previousStacks = NonNullList.withSize(SIZE_EXCEPT_ACCESSORY_DYE, ItemStack.EMPTY);
         }
     }
 
     public int getSizeAccessoryDye() {
-        return sizeAccessoryDye;
+        return accessoryDye.size();
+    }
+
+    public ItemStack getVanityArmor(int index, boolean dye) {
+        validateIndex(index, SIZE_VANITY_ARMOR);
+        IStackWithDye stack = vanityArmor.get(index);
+        return dye ? stack.getDye() : stack.getStack();
     }
 
     public ItemStack getVanityArmor(int index) {
-        validateIndex(index, SIZE_VANITY_ARMOR);
-        return getItem(index);
+        return getVanityArmor(index, false);
     }
 
-    public List<ItemStack> getVanityArmor() {
-        return stacks.subList(0, SIZE_VANITY_ARMOR);
+    public ItemStack getVanityArmorDye(int index) {
+        return getVanityArmor(index, true);
+    }
+
+    public void setVanityArmor(int index, ItemStack stack, boolean dye) {
+        validateIndex(index, SIZE_VANITY_ARMOR);
+        if (dye) vanityArmor.set(index, vanityArmor.get(index).setDye(stack));
+        else vanityArmor.set(index, vanityArmor.get(index).setStack(stack));
+        setChanged();
     }
 
     public ItemStack getCoins(int index) {
         validateIndex(index, SIZE_COINS);
-        return getItem(COINS_START + index);
+        return coin.get(index);
     }
 
-    public List<ItemStack> getCoins() {
-        return stacks.subList(COINS_START, COINS_START + SIZE_COINS);
+    public List<ItemStack> getAllCoins() {
+        return coin;
+    }
+
+    public void setCoins(int index, ItemStack stack) {
+        validateIndex(index, SIZE_COINS);
+        coin.set(index, stack);
+        setChanged();
     }
 
     public ItemStack getAmmo(int index) {
         validateIndex(index, SIZE_AMMO);
-        return getItem(AMMO_START + index);
+        return ammo.get(index);
     }
 
-    public List<ItemStack> getAmmo() {
-        return stacks.subList(AMMO_START, AMMO_START + SIZE_AMMO);
+    public List<ItemStack> getAllAmmo() {
+        return ammo;
+    }
+
+    public void setAmmo(int index, ItemStack stack) {
+        validateIndex(index, SIZE_AMMO);
+        ammo.set(index, stack);
+        setChanged();
+    }
+
+    public ItemStack getEquipment(int index, boolean dye) {
+        validateIndex(index, SIZE_EQUIPMENT);
+        IStackWithDye stack = equipment.get(index);
+        return dye ? stack.getDye() : stack.getStack();
     }
 
     public ItemStack getPet() {
-        return getItem(EQUIPMENT_START);
+        return getEquipment(PET_INDEX, false);
     }
 
     public ItemStack getLightPet() {
-        return getItem(EQUIPMENT_START + 1);
+        return getEquipment(LIGHT_PET_INDEX, false);
     }
 
     public ItemStack getMinecart() {
-        return getItem(EQUIPMENT_START + 2);
+        return getEquipment(MINECART_INDEX, false);
     }
 
     public ItemStack getHook() {
-        return getItem(EQUIPMENT_START + 3);
+        return getEquipment(HOOK_INDEX, false);
+    }
+
+    public void setEquipment(int index, ItemStack stack, boolean dye) {
+        validateIndex(index, SIZE_EQUIPMENT);
+        if (dye) equipment.set(index, equipment.get(index).setDye(stack));
+        else equipment.set(index, equipment.get(index).setStack(stack));
+        setChanged();
     }
 
     public ItemStack getTrash() {
-        return getItem(TRASH_START);
+        return trash;
     }
 
-    public ItemStack getVanityArmorDye(int index) {
-        validateIndex(index, SIZE_VANITY_ARMOR);
-        return getItem(DYE_START + index);
-    }
-
-    public List<ItemStack> getVanityArmorDye() {
-        return stacks.subList(DYE_START, DYE_START + SIZE_VANITY_ARMOR);
-    }
-
-    public ItemStack getPetDye() {
-        return getItem(DYE_START + SIZE_VANITY_ARMOR);
-    }
-
-    public ItemStack getLightPetDye() {
-        return getItem(DYE_START + SIZE_VANITY_ARMOR + 1);
-    }
-
-    public ItemStack getMinecartDye() {
-        return getItem(DYE_START + SIZE_VANITY_ARMOR + 2);
-    }
-
-    public ItemStack getHookDye() {
-        return getItem(DYE_START + SIZE_VANITY_ARMOR + 3);
+    public void setTrash(ItemStack stack) {
+        this.trash = stack;
+        setChanged();
     }
 
     public ItemStack getAccessoryDye(int index) {
-        validateIndex(index, sizeAccessoryDye);
-        return getItem(DYE_START + SIZE_DYE_EXCEPT_ACCESSORY_DYE + index);
+        validateIndex(index, accessoryDye.size());
+        return accessoryDye.get(index);
+    }
+
+    public void setAccessoryDye(int index, ItemStack stack) {
+        validateIndex(index, accessoryDye.size());
+        accessoryDye.set(index, stack);
+        setChanged();
     }
 
     private static void validateIndex(int index, int size) {
@@ -162,44 +215,54 @@ public class ExtraInventory extends ItemStackHandler implements Container {
         }
     }
 
-    public void sync(ServerPlayer serverPlayer) {
-        initialize(serverPlayer);
+    public void sync(ServerPlayer player) {
+        initialize(player);
         if (dirty) {
-            boolean dyeHard = true;
-            boolean fashionStatement = true;
-            boolean holdOnTight = true;
-
-            for (int i = 0; i < getContainerSize(); i++) {
+            for (int i = 0; i < size(); i++) {
                 ItemStack itemStack = getItem(i);
                 ItemStack previous = previousStacks.get(i);
                 if (!ItemStack.matches(itemStack, previous)) {
-                    ExtraInventoryStackPacketS2C.sendToPlayersTrackingEntityAndSelf(serverPlayer, serverPlayer, sizeAccessoryDye, i, itemStack);
+                    ExtraInventoryStackPacketS2C.sendToPlayersTrackingEntityAndSelf(player, player, accessoryDye.size(), i, itemStack);
                     if (previous.getItem() instanceof BaseHookItem hookItem) {
-                        hookItem.onUnequip(serverPlayer, itemStack, previous);
+                        hookItem.onUnequip(player, itemStack, previous);
                     }
                     previousStacks.set(i, itemStack.copy());
                 }
-
-                if (dyeHard && i >= DYE_START && itemStack.isEmpty()) dyeHard = false;
-                if (fashionStatement && i < COINS_START && itemStack.isEmpty()) fashionStatement = false;
-                if (holdOnTight && i == EQUIPMENT_START + 3 && itemStack.isEmpty()) holdOnTight = false;
             }
             this.dirty = false;
 
-            if (dyeHard) AchievementUtils.awardAchievement(serverPlayer, "dye_hard");
-            if (fashionStatement && Streams.of(serverPlayer.getArmorSlots()).noneMatch(ItemStack::isEmpty)) {
-                AchievementUtils.awardAchievement(serverPlayer, "fashion_statement");
-            }
-            if (holdOnTight) AchievementUtils.awardAchievement(serverPlayer, "hold_on_tight");
+            checkAchievements(player);
         }
     }
 
+    private void checkAchievements(ServerPlayer player) {
+        if (vanityArmor.stream().noneMatch(IStackWithDye::isDyeEmpty) &&
+                equipment.stream().noneMatch(IStackWithDye::isDyeEmpty) &&
+                accessoryDye.stream().noneMatch(ItemStack::isEmpty)
+        ) AchievementUtils.awardAchievement(player, "dye_hard");
+
+        if (vanityArmor.stream().noneMatch(IStackWithDye::isStackEmpty)) {
+            AchievementUtils.awardAchievement(player, "fashion_statement");
+        }
+
+        if (!getEquipment(HOOK_INDEX, false).isEmpty()) {
+            AchievementUtils.awardAchievement(player, "hold_on_tight");
+        }
+    }
+
+    // 需要晚于Curios Api
     public void initialize(ServerPlayer player) {
         if (!initialized) {
-            updateAccessorySize(player, CuriosApi.getCuriosInventory(player).map(handler -> {
+            Optional<ICuriosItemHandler> inventory = CuriosApi.getCuriosInventory(player);
+            updateAccessorySize(player, inventory.map(handler -> {
                 ICurioStacksHandler accessory = handler.getCurios().get(TerraCurio.CURIO_SLOT);
                 return accessory == null ? 0 : accessory.getSlots();
             }).orElse(0));
+            inventory.ifPresent(handler -> {
+                handler.getStacksHandler(CuriosHelper.PET_KEY).ifPresent(t -> equipment.set(PET_INDEX, new CurioStackWithDye(0, t.getStacks())));
+                handler.getStacksHandler(CuriosHelper.LIGHT_PET_KEY).ifPresent(t -> equipment.set(LIGHT_PET_INDEX, new CurioStackWithDye(0, t.getStacks())));
+                handler.getStacksHandler(CuriosHelper.MOUNT_KEY).ifPresent(t -> equipment.set(MOUNT_INDEX, new CurioStackWithDye(0, t.getStacks())));
+            });
             this.initialized = true;
         }
     }
@@ -209,69 +272,206 @@ public class ExtraInventory extends ItemStackHandler implements Container {
         this.previousStacks = NonNullList.withSize(SIZE_EXCEPT_ACCESSORY_DYE + accessoryDye, ItemStack.EMPTY);
     }
 
-    public void setAccessoryDyes(Player player, int size) {
-        int sizeCurrent = SIZE_EXCEPT_ACCESSORY_DYE + size;
-        int sizeBefore = stacks.size();
+    public void setAccessoryDyes(Player player, int sizeCurrent) {
+        int sizeBefore = accessoryDye.size();
         NonNullList<ItemStack> itemStacks = NonNullList.withSize(sizeCurrent, ItemStack.EMPTY);
         if (!player.isLocalPlayer() && sizeBefore > sizeCurrent) {
-            for (ItemStack remain : stacks.subList(sizeCurrent, sizeBefore)) {
+            for (ItemStack remain : accessoryDye.subList(sizeCurrent, sizeBefore)) {
                 if (!remain.isEmpty()) player.drop(remain, true);
             }
         }
         for (int i = 0; i < sizeCurrent; i++) {
             if (i >= sizeBefore) continue;
-            itemStacks.set(i, stacks.get(i));
+            itemStacks.set(i, accessoryDye.get(i));
         }
-        this.stacks = itemStacks;
-        this.sizeAccessoryDye = size;
+        this.accessoryDye = itemStacks;
+    }
+
+    @Override
+    public CompoundTag serializeNBT(HolderLookup.Provider provider) {
+        RegistryOps<Tag> ops = provider.createSerializationContext(NbtOps.INSTANCE);
+        CompoundTag tag = new CompoundTag();
+        ListTag t = new ListTag();
+        for (IStackWithDye stack : vanityArmor) t.add(stack.encode(ops));
+        tag.put("VanityArmor", t);
+        tag.put("Coin", encodeList(coin, ops));
+        tag.put("Ammo", encodeList(ammo, ops));
+        t = new ListTag();
+        for (IStackWithDye stack : equipment) t.add(stack.encode(ops));
+        tag.put("Equipment", t);
+        tag.put("Trash", encode(trash, ops));
+        tag.put("AccessoryDye", encodeList(accessoryDye, ops));
+        tag.putBoolean("confluence:fixed", true);
+        return tag;
+    }
+
+    private static Tag encodeList(NonNullList<ItemStack> list, DynamicOps<Tag> ops) {
+        ListTag tag = new ListTag();
+        for (ItemStack stack : list) tag.add(encode(stack, ops));
+        return tag;
+    }
+
+    private static Tag encode(ItemStack stack, DynamicOps<Tag> ops) {
+        return ItemStack.OPTIONAL_CODEC.encodeStart(ops, stack).result().orElseGet(CompoundTag::new);
+    }
+
+    @Override
+    public void deserializeNBT(HolderLookup.Provider provider, CompoundTag nbt) {
+        if (nbt.getBoolean("confluence:fixed")) {
+            RegistryOps<Tag> ops = provider.createSerializationContext(NbtOps.INSTANCE);
+            ListTag t = nbt.getList("VanityArmor", Tag.TAG_COMPOUND);
+            for (int i = 0; i < vanityArmor.size(); i++) vanityArmor.set(i, StackWithDye.DEFAULT.decode(t.getCompound(i), ops));
+            decodeList(coin, nbt.getList("Coin", Tag.TAG_COMPOUND), ops);
+            decodeList(ammo, nbt.getList("Ammo", Tag.TAG_COMPOUND), ops);
+            t = nbt.getList("Equipment", Tag.TAG_COMPOUND);
+            for (int i = 0; i < equipment.size(); i++) equipment.set(i, StackWithDye.DEFAULT.decode(t.getCompound(i), ops));
+            this.trash = decode(nbt.getCompound("Trash"), ops);
+            t = nbt.getList("AccessoryDye", Tag.TAG_COMPOUND);
+            encodeList(this.accessoryDye = NonNullList.withSize(t.size(), ItemStack.EMPTY), ops);
+        } else { // todo 1.3.0时删除
+            int size = nbt.contains("Size", Tag.TAG_INT) ? nbt.getInt("Size") : size();
+            ListTag tagList = nbt.getList("Items", Tag.TAG_COMPOUND);
+            for (int i = 0; i < tagList.size(); i++) {
+                CompoundTag itemTags = tagList.getCompound(i);
+                int slot = itemTags.getInt("Slot");
+                if (slot >= 0 && slot < size) {
+                    ItemStack.parse(provider, itemTags).ifPresent(stack -> {
+                        if (slot < 4) setVanityArmor(slot, stack, false);
+                        else if (slot < 8) setCoins(slot - 4, stack);
+                        else if (slot < 12) setAmmo(slot - 8, stack);
+                        else if (slot == 12) setEquipment(PET_INDEX, stack, false);
+                        else if (slot == 13) setEquipment(LIGHT_PET_INDEX, stack, false);
+                        else if (slot == 14) setEquipment(MINECART_INDEX, stack, false);
+                        else if (slot == 15) setEquipment(HOOK_INDEX, stack, false);
+                        else if (slot == 16) setTrash(stack);
+                        else if (slot < 21) setVanityArmor(slot - 17, stack, true);
+                        else if (slot == 21) setEquipment(PET_INDEX, stack, true);
+                        else if (slot == 22) setEquipment(LIGHT_PET_INDEX, stack, true);
+                        else if (slot == 23) setEquipment(MINECART_INDEX, stack, true);
+                        else if (slot == 24) setEquipment(HOOK_INDEX, stack, true);
+                        else if (slot < 25 + accessoryDye.size()) setAccessoryDye(slot - 25, stack);
+                    });
+                }
+            }
+        }
+    }
+
+    private static void decodeList(NonNullList<ItemStack> list, ListTag tag, DynamicOps<Tag> ops) {
+        for (int i = 0; i < list.size(); i++) {
+            list.set(i, decode(tag.getCompound(i), ops));
+        }
+    }
+
+    private static ItemStack decode(CompoundTag tag, DynamicOps<Tag> ops) {
+        return ItemStack.OPTIONAL_CODEC.parse(ops, tag).result().orElse(ItemStack.EMPTY);
+    }
+
+    public int size() {
+        return SIZE_EXCEPT_ACCESSORY_DYE + accessoryDye.size();
+    }
+
+    public void copyFrom(ExtraInventory other) {
+        this.vanityArmor = other.vanityArmor;
+        this.coin = other.coin;
+        this.ammo = other.ammo;
+        this.equipment = other.equipment;
+        this.trash = other.trash;
+        this.accessoryDye = other.accessoryDye;
+
+        this.initialized = other.initialized;
+        this.previousStacks = other.previousStacks;
+        this.dirty = other.dirty;
+    }
+
+    public void setDirty() {
+        this.dirty = true;
     }
 
     @Override
     public int getContainerSize() {
-        return stacks.size();
+        return size();
+    }
+
+    @Override
+    public ItemStack getItem(int index) {
+        if (index < VANITY_ARMOR_DYE_START) {
+            return vanityArmor.get(index - VANITY_ARMOR_START).getStack();
+        } else if (index < COINS_START) {
+            return vanityArmor.get(index - VANITY_ARMOR_DYE_START).getDye();
+        } else if (index < AMMO_START) {
+            return coin.get(index - COINS_START);
+        } else if (index < EQUIPMENT_START) {
+            return ammo.get(index - AMMO_START);
+        } else if (index < EQUIPMENT_DYE_START) {
+            return equipment.get(index - EQUIPMENT_START).getStack();
+        } else if (index < TRASH_START) {
+            return equipment.get(index - EQUIPMENT_DYE_START).getDye();
+        } else if (index < ACCESSORY_DYE_START) {
+            return trash;
+        } else if (index < accessoryDye.size()) {
+            return accessoryDye.get(index - ACCESSORY_DYE_START);
+        }
+        return ItemStack.EMPTY;
+    }
+
+    @Override
+    public ItemStack removeItem(int slot, int amount) {
+        ItemStack stack = removeItemNoUpdate(slot);
+        setDirty();
+        return stack;
+    }
+
+    @Override
+    public ItemStack removeItemNoUpdate(int slot) {
+        ItemStack stack = getItem(slot);
+        setItem(slot, ItemStack.EMPTY);
+        return stack;
+    }
+
+    @Override
+    public void setItem(int index, ItemStack stack) {
+        if (index < VANITY_ARMOR_DYE_START) {
+            setVanityArmor(index - VANITY_ARMOR_START, stack, false);
+        } else if (index < COINS_START) {
+            setVanityArmor(index - VANITY_ARMOR_DYE_START, stack, true);
+        } else if (index < AMMO_START) {
+            coin.set(index - COINS_START, stack);
+        } else if (index < EQUIPMENT_START) {
+            ammo.set(index - AMMO_START, stack);
+        } else if (index < EQUIPMENT_DYE_START) {
+            equipment.set(index - EQUIPMENT_START, equipment.get(index - EQUIPMENT_START).setStack(stack));
+        } else if (index < TRASH_START) {
+            equipment.set(index - EQUIPMENT_DYE_START, equipment.get(index - EQUIPMENT_DYE_START).setDye(stack));
+        } else if (index < ACCESSORY_DYE_START) {
+            this.trash = stack;
+        } else if (index < accessoryDye.size()) {
+            accessoryDye.set(index - ACCESSORY_DYE_START, stack);
+        }
     }
 
     @Override
     public boolean isEmpty() {
-        for (ItemStack stack : stacks) {
-            if (!stack.isEmpty()) {
-                return false;
-            }
+        for (IStackWithDye stack : vanityArmor) {
+            if (!stack.isEmpty()) return false;
+        }
+        for (ItemStack stack : coin) {
+            if (!stack.isEmpty()) return false;
+        }
+        for (ItemStack stack : ammo) {
+            if (!stack.isEmpty()) return false;
+        }
+        for (IStackWithDye stack : equipment) {
+            if (!stack.isEmpty()) return false;
+        }
+        for (ItemStack stack : accessoryDye) {
+            if (!stack.isEmpty()) return false;
         }
         return true;
     }
 
     @Override
-    public ItemStack getItem(int slot) {
-        return getStackInSlot(slot);
-    }
-
-    @Override
-    public ItemStack removeItem(int slot, int amount) {
-        return extractItem(slot, amount, false);
-    }
-
-    @Override
-    public ItemStack removeItemNoUpdate(int slot) {
-        ItemStack itemStack = getItem(slot);
-        setItem(slot, ItemStack.EMPTY);
-        return itemStack;
-    }
-
-    @Override
-    public void setItem(int slot, ItemStack stack) {
-        stacks.set(slot, stack);
-        setChanged();
-    }
-
-    @Override
     public void setChanged() {
-        this.dirty = true;
-    }
-
-    @Override
-    protected void onContentsChanged(int slot) {
-        setChanged();
+        setDirty();
     }
 
     @Override
@@ -281,21 +481,18 @@ public class ExtraInventory extends ItemStackHandler implements Container {
 
     @Override
     public void clearContent() {
-        stacks.clear();
-    }
-
-    public void copyFrom(ExtraInventory other) {
-        this.sizeAccessoryDye = other.sizeAccessoryDye;
-        this.initialized = other.initialized;
-        this.previousStacks = other.previousStacks;
-        this.dirty = other.dirty;
-        this.stacks = other.stacks;
+        vanityArmor.clear();
+        coin.clear();
+        ammo.clear();
+        equipment.clear();
+        this.trash = ItemStack.EMPTY;
+        accessoryDye.clear();
     }
 
     public static ItemStack getProjectile(ItemStack projectile, ItemStack weapon, LivingEntity living) {
         if (projectile.isEmpty() && weapon.getItem() instanceof ProjectileWeaponItem weaponItem && living instanceof Player player) {
             Predicate<ItemStack> predicate = weaponItem.getSupportedHeldProjectiles(weapon);
-            ExtraInventory extraInventory = ExtraInventory.of(player);
+            ExtraInventory extraInventory = of(player);
             for (int i = 0; i < SIZE_AMMO; i++) {
                 ItemStack ammo = extraInventory.getAmmo(i);
                 if (predicate.test(ammo)) {
@@ -309,5 +506,93 @@ public class ExtraInventory extends ItemStackHandler implements Container {
 
     public static ExtraInventory of(LivingEntity living) {
         return living.getData(ModAttachmentTypes.EXTRA_INVENTORY);
+    }
+
+    public interface IStackWithDye {
+        IStackWithDye setStack(ItemStack stack);
+
+        ItemStack getStack();
+
+        IStackWithDye setDye(ItemStack dye);
+
+        ItemStack getDye();
+
+        default boolean isStackEmpty() {
+            return getStack().isEmpty();
+        }
+
+        default boolean isDyeEmpty() {
+            return getDye().isEmpty();
+        }
+
+        default boolean isEmpty() {
+            return isStackEmpty() && isDyeEmpty();
+        }
+
+        default Tag encode(DynamicOps<Tag> ops) {
+            CompoundTag tag = new CompoundTag();
+            tag.put("Stack", ExtraInventory.encode(getStack(), ops));
+            tag.put("Dye", ExtraInventory.encode(getDye(), ops));
+            return tag;
+        }
+
+        default IStackWithDye decode(CompoundTag tag, DynamicOps<Tag> ops) {
+            return setStack(ExtraInventory.decode(tag.getCompound("Stack"), ops))
+                    .setDye(ExtraInventory.decode(tag.getCompound("Dye"), ops));
+        }
+    }
+
+    public record StackWithDye(ItemStack stack, ItemStack dye) implements IStackWithDye {
+        public static final StackWithDye DEFAULT = new StackWithDye(ItemStack.EMPTY, ItemStack.EMPTY);
+
+        public IStackWithDye setStack(ItemStack stack) {
+            return new StackWithDye(stack, dye);
+        }
+
+        public ItemStack getStack() {
+            return stack;
+        }
+
+        public IStackWithDye setDye(ItemStack dye) {
+            return new StackWithDye(stack, dye);
+        }
+
+        public ItemStack getDye() {
+            return dye;
+        }
+    }
+
+    public static class CurioStackWithDye implements IStackWithDye {
+        private final Consumer<ItemStack> setter;
+        private final Supplier<ItemStack> getter;
+        private ItemStack dye = ItemStack.EMPTY;
+
+        public CurioStackWithDye(Consumer<ItemStack> setter, Supplier<ItemStack> getter) {
+            this.setter = setter;
+            this.getter = getter;
+        }
+
+        public CurioStackWithDye(int slot, IDynamicStackHandler stacks) {
+            this.setter = stack -> stacks.setStackInSlot(slot, stack);
+            this.getter = () -> stacks.getStackInSlot(slot);
+        }
+
+        public IStackWithDye setStack(ItemStack stack) {
+            setter.accept(stack);
+            return this;
+        }
+
+        public ItemStack getStack() {
+            return getter.get();
+        }
+
+        public IStackWithDye setDye(ItemStack dye) {
+            this.dye = dye;
+            return this;
+        }
+
+        public ItemStack getDye() {
+            return dye;
+        }
     }
 }

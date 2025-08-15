@@ -293,10 +293,8 @@ public final class LivingEntityEvents {
     public static void livingDrops(LivingDropsEvent event) {
         if (event.getEntity() instanceof Player player && !player.level().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) {
             ExtraInventory data = ExtraInventory.of(player);
-            for (int i = 0; i < data.getContainerSize(); i++) {
-                if (i >= ExtraInventory.COINS_START && i < ExtraInventory.COINS_START + ExtraInventory.SIZE_COINS)
-                    continue;
-                ItemStack itemStack = data.getItem(i);
+            for (int i = 0; i < ExtraInventory.SIZE_COINS; i++) {
+                ItemStack itemStack = data.getCoins(i);
                 if (!itemStack.isEmpty()) {
                     data.setItem(i, ItemStack.EMPTY);
                 }

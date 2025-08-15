@@ -70,7 +70,6 @@ import java.util.Objects;
 
 import static org.confluence.mod.api.event.MinecartAbilityEvent.DismountOnMinecart;
 import static org.confluence.mod.api.event.MinecartAbilityEvent.RightClickRailBlock;
-import static org.confluence.mod.common.attachment.ExtraInventory.EQUIPMENT_START;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
 public final class PlayerEvents {
@@ -134,7 +133,7 @@ public final class PlayerEvents {
                 if (e.isCanceled()) return;
                 AbstractMinecart minecart = e.getMinecart();
                 if (minecart != null) {
-                    extraInventory.setItem(EQUIPMENT_START + 2, ItemStack.EMPTY);
+                    extraInventory.setEquipment(ExtraInventory.MINECART_INDEX, ItemStack.EMPTY, false);
                     level.addFreshEntity(minecart);
                     player.startRiding(minecart, true);
                 }

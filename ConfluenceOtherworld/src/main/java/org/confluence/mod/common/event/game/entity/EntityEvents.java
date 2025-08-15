@@ -22,8 +22,6 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.util.AchievementUtils;
 
-import static org.confluence.mod.common.attachment.ExtraInventory.EQUIPMENT_START;
-
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
 public final class EntityEvents {
     @SubscribeEvent
@@ -39,7 +37,7 @@ public final class EntityEvents {
             if (e.isCanceled() || itemStack == null) return;
             ExtraInventory extraInventory = ExtraInventory.of(player);
             if (extraInventory.getMinecart().isEmpty()) {
-                extraInventory.setItem(EQUIPMENT_START + 2, itemStack);
+                extraInventory.setEquipment(ExtraInventory.MINECART_INDEX, itemStack, false);
             } else {
                 player.addItem(itemStack);
             }

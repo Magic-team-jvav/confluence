@@ -13,6 +13,7 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.AddReloadListenerEvent;
@@ -96,7 +97,7 @@ public final class GameEvents {
         }
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOW)
     public static void onDatapackSync(OnDatapackSyncEvent event) {
         ServerPlayer from = event.getPlayer();
         if (from == null) {
@@ -104,7 +105,7 @@ public final class GameEvents {
                 ExtraInventorySyncPacketS2C.sendToPlayersTrackingEntityAndSelf(to, to, ExtraInventory.of(to));
             }
         } else {
-            ExtraInventorySyncPacketS2C.sendToClient(from, from, ExtraInventory.of(from));
+            ExtraInventorySyncPacketS2C.sendToClient(from, from, ExtraInventory.of(from)); // 需要晚于Curios Api
             AchievementOffsetSyncPacketS2C.sendToClient(from);
         }
     }

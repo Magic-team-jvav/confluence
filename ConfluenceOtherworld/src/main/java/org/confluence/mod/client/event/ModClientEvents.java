@@ -289,7 +289,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(SKULL_PROJECTILE.get(), NoopRenderer::new); // todo 模型
         event.registerEntityRenderer(BLOOD_CLOUD_PROJECTILE.get(), context -> new GeoNegativeVolumeRenderer<>(context, new BloodCloudProjectileModel(), false, 2, -0.2F));
         event.registerEntityRenderer(BLOOD_RAIN_PROJECTILE.get(), context -> new RainProjectileRenderer(context, RainProjectileRenderer.BLOOD_RAIN));
-        event.registerEntityRenderer(RAIN_CLOUD_PROJECTILE.get(), NoopRenderer::new); // todo 模型
+        event.registerEntityRenderer(RAIN_CLOUD_PROJECTILE.get(), context -> new GeoNegativeVolumeRenderer<>(context, new RainCloudProjectileModel(), false, 2, -0.2F));
         event.registerEntityRenderer(RAIN_PROJECTILE.get(), context -> new RainProjectileRenderer(context, RainProjectileRenderer.RAIN));
 
 

@@ -26,7 +26,7 @@ public class CrystalBallMenu extends AbstractContainerMenu {
     private final AmountResultSlot<CrystalBallRecipe> resultSlot;
 
     public CrystalBallMenu(int containerId, Inventory inventory) {
-        this(containerId, inventory, new EnvironmentLevelAccess(null, null));
+        this(containerId, inventory, EnvironmentLevelAccess.empty());
     }
 
     public CrystalBallMenu(int containerId, Inventory inventory, EnvironmentLevelAccess access) {

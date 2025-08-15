@@ -26,7 +26,7 @@ public class HeavyWorkBenchMenu extends EitherAmountContainerMenu4x<EnvironmentR
     private List<RecipeHolder<CraftingRecipe>> craftingRecipes = new ArrayList<>();
 
     public HeavyWorkBenchMenu(int containerId, Inventory inventory) {
-        this(containerId, inventory, new EnvironmentLevelAccess(null, null));
+        this(containerId, inventory, EnvironmentLevelAccess.empty());
     }
 
     public HeavyWorkBenchMenu(int containerId, Inventory inventory, EnvironmentLevelAccess access) {

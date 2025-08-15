@@ -40,7 +40,7 @@ public class SkyMillMenu extends AbstractContainerMenu {
     private List<RecipeHolder<SkyMillRecipe>> recipes = Lists.newArrayList();
 
     public SkyMillMenu(int containerId, Inventory inventory) {
-        this(containerId, inventory, new EnvironmentLevelAccess(null, null));
+        this(containerId, inventory, EnvironmentLevelAccess.empty());
     }
 
     public SkyMillMenu(int containerId, Inventory inventory, EnvironmentLevelAccess access) {

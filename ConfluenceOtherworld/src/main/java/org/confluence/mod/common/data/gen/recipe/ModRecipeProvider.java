@@ -48,7 +48,9 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
 
     @Override
     protected void buildRecipes(RecipeOutput recipeOutput, HolderLookup.Provider holderLookup) {
-        //高炉
+        EnvironmentLevelAccess.SearchContext searchWater = searchWater(holderLookup);
+
+        // 高炉
         cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.ORES_AMBER), MaterialItems.AMBER.toStack(), 1.0F, 100);
         cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.ORES_RUBY), MaterialItems.RUBY.toStack(), 1.0F, 100);
         cooking(recipeOutput, BlastingRecipe::new, "blasting/", "", Ingredient.of(ModTags.Items.ORES_TOPAZ), MaterialItems.TOPAZ.toStack(), 1.0F, 100);
@@ -156,7 +158,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
 
         skyMill(recipeOutput, DecorativeBlocks.BOUNCY_CLOUD_BLOCK.toStack(), Ingredient.of(MaterialItems.PINK_GEL), Ingredient.of(NatureBlocks.CLOUD_BLOCK));
         skyMill(recipeOutput, ChestBlocks.SKYWARE_CHEST.toStack(), AmountIngredient.of(5, DecorativeBlocks.SUN_PLATE));
-        skyMill(recipeOutput, NatureBlocks.RAIN_CLOUD_BLOCK.toStack(), EnvironmentLevelAccess.matcher(null, searchWater(holderLookup), false), Ingredient.of(NatureBlocks.CLOUD_BLOCK));
+        skyMill(recipeOutput, NatureBlocks.RAIN_CLOUD_BLOCK.toStack(), EnvironmentLevelAccess.matcher(null, searchWater, false), Ingredient.of(NatureBlocks.CLOUD_BLOCK));
         skyMill(recipeOutput, NatureBlocks.SNOW_CLOUD_BLOCK.toStack(), EnvironmentLevelAccess.matcher(holderLookup.lookupOrThrow(Registries.BIOME).getOrThrow(Tags.Biomes.IS_COLD_OVERWORLD), null, false), Ingredient.of(NatureBlocks.CLOUD_BLOCK));
 
         workshop(recipeOutput, AccessoryItems.ANGLER_TACKLE_BAG.toStack(), Ingredient.of(AccessoryItems.HIGH_TEST_FISHING_LINE), Ingredient.of(AccessoryItems.TACKLE_BOX), Ingredient.of(TCItems.ANGLER_EARRING));
@@ -176,6 +178,8 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         workshop(recipeOutput, AccessoryItems.COUNTERCURSE_MANTRA.toStack(), Ingredient.of(AccessoryItems.MEGAPHONE), Ingredient.of(AccessoryItems.NAZAR));
         workshop(recipeOutput, AccessoryItems.MANA_FLOWER.toStack(), Ingredient.of(PotionItems.MANA_POTION), Ingredient.of(AccessoryItems.NATURES_GIFT));
         workshop(recipeOutput, TCItems.ANKH_CHARM.toStack(), Ingredient.of(AccessoryItems.ARMOR_BRACING), Ingredient.of(AccessoryItems.MEDICATED_BANDAGE), Ingredient.of(TCItems.THE_PLAN), Ingredient.of(AccessoryItems.COUNTERCURSE_MANTRA), Ingredient.of(AccessoryItems.REFLECTIVE_SHADES));
+        workshop(recipeOutput, AccessoryItems.BAND_OF_STARPOWER.toStack(), EnvironmentLevelAccess.matcher(null, null, true), Ingredient.of(ConsumableItems.MANA_CRYSTAL), Ingredient.of(TCItems.PANIC_NECKLACE));
+        workshop(recipeOutput, TCItems.PANIC_NECKLACE.toStack(), EnvironmentLevelAccess.matcher(null, null, true), Ingredient.of(ConsumableItems.LIFE_CRYSTAL), Ingredient.of(AccessoryItems.BAND_OF_STARPOWER));
 
         hellforge(recipeOutput, MaterialItems.HELLSTONE_INGOT.toStack(), 0.2F, 100, true, AmountIngredient.of(3, MaterialItems.RAW_HELLSTONE), Ingredient.of(Items.OBSIDIAN));
         hellforge(recipeOutput, MaterialItems.COBALT_INGOT.toStack(), 0.5F, 100, true, AmountIngredient.of(3, MaterialItems.RAW_COBALT));
@@ -281,7 +285,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         crystalBlock(recipeOutput, ToolItems.MAGIC_SAND_DROPPER.toStack(3), AmountIngredient.of(3, emptyDropper), Ingredient.of(Tags.Items.SANDS));
         crystalBlock(recipeOutput, ToolItems.MAGIC_HONEY_DROPPER.toStack(), EnvironmentLevelAccess.matcher(null, searchHoney(holderLookup), false), emptyDropper);
         crystalBlock(recipeOutput, ToolItems.MAGIC_LAVA_DROPPER.toStack(), EnvironmentLevelAccess.matcher(null, searchLava(holderLookup), false), emptyDropper);
-        crystalBlock(recipeOutput, ToolItems.MAGIC_WATER_DROPPER.toStack(), EnvironmentLevelAccess.matcher(null, searchWater(holderLookup), false), emptyDropper);
+        crystalBlock(recipeOutput, ToolItems.MAGIC_WATER_DROPPER.toStack(), EnvironmentLevelAccess.matcher(null, searchWater, false), emptyDropper);
 
         hardmodeForge(recipeOutput, MaterialItems.ADAMANTITE_INGOT.toStack(), 0.5F, 100, true, AmountIngredient.of(4, MaterialItems.RAW_ADAMANTITE));
         hardmodeForge(recipeOutput, MaterialItems.TITANIUM_INGOT.toStack(), 0.5F, 100, true, AmountIngredient.of(4, MaterialItems.RAW_TITANIUM));
@@ -307,7 +311,12 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
 
     protected void workshop(RecipeOutput recipeOutput, ItemStack result, Ingredient... ingredients) {
         ResourceLocation id = Confluence.asResource("workshop/" + getItemName(result.getItem()));
-        recipeOutput.accept(id, new WorkshopRecipe(result, NonNullList.of(Ingredient.EMPTY, ingredients)), null);
+        recipeOutput.accept(id, new WorkshopRecipe(result, NonNullList.of(Ingredient.EMPTY, ingredients), EnvironmentLevelAccess.Matcher.EMPTY), null);
+    }
+
+    protected void workshop(RecipeOutput recipeOutput, ItemStack result, EnvironmentLevelAccess.Matcher environment, Ingredient... ingredients) {
+        ResourceLocation id = Confluence.asResource("workshop/" + getItemName(result.getItem()));
+        recipeOutput.accept(id, new WorkshopRecipe(result, NonNullList.of(Ingredient.EMPTY, ingredients), environment), null);
     }
 
     protected void hellforge(RecipeOutput recipeOutput, ItemStack result, float experience, int cookingTime, boolean requiresFuel, Ingredient... ingredients) {

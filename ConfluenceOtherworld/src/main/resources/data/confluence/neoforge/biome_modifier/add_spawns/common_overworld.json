@@ -21,7 +21,7 @@
             "maxCount": 2
         },
         {
-            "type": "terra_entity:harpy",
+            "type": "terra_entity:wyvern",
             "weight": 5,
             "minCount": 1,
             "maxCount": 1

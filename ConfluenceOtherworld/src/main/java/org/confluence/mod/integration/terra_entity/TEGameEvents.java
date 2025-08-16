@@ -40,7 +40,11 @@ public final class TEGameEvents {
 
     @SubscribeEvent
     public static void onInitNpcTrade(NPCEvent.InitNPCTradeEvent event) {
-        event.setRedirection(Confluence.asResource(event.getOrigin().getPath()));
+        if (event.getNPC().getType() == TENpcEntities.FEMALE_ANGLER.get()) { // 渔女直接使用渔夫的任务表
+            event.setRedirection(Confluence.asResource(TENpcEntities.ANGLER.getId().getPath()));
+        } else {
+            event.setRedirection(Confluence.asResource(event.getOrigin().getPath()));
+        }
     }
 
     @SubscribeEvent

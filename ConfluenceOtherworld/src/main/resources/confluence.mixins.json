@@ -71,6 +71,7 @@
         "integration.terra_entity.CursedSkullMixin",
         "integration.terra_entity.DemonEyeMixin",
         "integration.terra_entity.DungeonGuardianMixin",
+        "integration.terra_entity.DynamicAnglerTradeTaskMixin",
         "integration.terra_entity.KingSlimeMixin",
         "integration.terra_entity.MechanicNPCMixin",
         "integration.terra_entity.ServerBoundEventPacketMixin",

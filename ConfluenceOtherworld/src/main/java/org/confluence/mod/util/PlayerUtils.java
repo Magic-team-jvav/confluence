@@ -29,7 +29,6 @@ import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.attachment.PlayerPiggyBankContainer;
 import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.data.saved.ConfluenceData;
-import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModHookTypes;
 import org.confluence.mod.common.init.ModTags;
@@ -133,7 +132,7 @@ public final class PlayerUtils {
         if (CommonConfigs.STAR_PHASE.get()) {
             StarPhasesPacketS2C.sendToClient(serverPlayer, data.getStarPhases());
         }
-        GamePhasePacketS2C.sendToClient(serverPlayer, KillBoard.INSTANCE.getGamePhase());
+        KillBoardSyncPacketS2C.sendToClient(serverPlayer);
         MeteoriteLocationPacketS2C.sendToAll(data.getMeteoriteLocation(), 0);
     }
 

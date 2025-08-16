@@ -859,7 +859,18 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 .addTag(ModTags.Items.HARDMODE_RAW_MATERIALS)
                 .add(NatureBlocks.PEARL_LOG_BLOCKS.getAllItems().stream().map(Supplier::get).toArray(Item[]::new))
                 .add(NatureBlocks.PEARL_SAPLING.asItem())
-                .add(NatureBlocks.SPOOKY_LOG_BLOCKS.getAllItems().stream().map(Supplier::get).toArray(Item[]::new));
+                .add(NatureBlocks.SPOOKY_LOG_BLOCKS.getAllItems().stream().map(Supplier::get).toArray(Item[]::new))
+                .add( // 防止肉前出现这些任务
+                        QuestedFishes.ICHORFISH.get(),
+                        QuestedFishes.CURSEDFISH.get(),
+                        QuestedFishes.FISHRON.get(),
+                        QuestedFishes.DERPFISH.get(),
+                        QuestedFishes.CAP_TUNABEARD.get(),
+                        QuestedFishes.HUNGERFISH.get(),
+                        QuestedFishes.MIRAGE_FISH.get(),
+                        QuestedFishes.PIXIEFISH.get(),
+                        QuestedFishes.UNICORN_FISH.get()
+                );
 
         TESummonItems.ITEMS.getEntries().forEach(item -> tag(ModTags.Items.SUMMONER_WEAPON).add(item.get()));
 

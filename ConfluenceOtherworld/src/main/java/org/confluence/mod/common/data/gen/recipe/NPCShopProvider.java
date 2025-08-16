@@ -1,5 +1,6 @@
 package org.confluence.mod.common.data.gen.recipe;
 
+import com.google.common.collect.ImmutableMap;
 import com.xiaohunao.terra_moment.common.init.TMMoments;
 import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.core.HolderLookup;
@@ -54,7 +55,6 @@ import org.confluence.terraentity.registries.npc_trade_task.variant.DynamicAngle
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
@@ -74,14 +74,31 @@ public class NPCShopProvider extends AbstractRecipeProvider {
 
     @Override
     public void buildRecipes(RecipeOutput recipeOutput, HolderLookup.Provider holderLookup) {
-        TradeProperties hardmode = TradeProperties.builder().setLock(new SecretFlagLock(IWorldOptions.HARDMODE)).build();
-        TradeProperties halloweens = TradeProperties.builder().setLock(DateLock.HALLOWEENS).build();
-        TradeProperties night = TradeProperties.builder().setLock(new TimeLock(LibDateUtils._19$30, LibDateUtils._04$30, false)).build();
+        SecretFlagLock theCorruptionWorldLock = new SecretFlagLock(IWorldOptions.THE_CORRUPTION);
+        SecretFlagLock theCrimsonWorldLock = new SecretFlagLock(IWorldOptions.THE_CRIMSON);
+        SecretFlagLock hardmodeLock = new SecretFlagLock(IWorldOptions.HARDMODE);
         MomentLock bloodMoonLock = new MomentLock(TMMoments.BLOOD_MOON.getKey());
-        SecretFlagLock theCorruptionLock = new SecretFlagLock(IWorldOptions.THE_CORRUPTION);
-        SecretFlagLock theCrimsonLock = new SecretFlagLock(IWorldOptions.THE_CRIMSON);
         EnvironmentLock graveyardLock = new EnvironmentLock(EnvironmentLevelAccess.matcher(null, null, true));
         BiomeLock glowingMushroomLock = BiomeLock.of(ModBiomes.GLOWING_MUSHROOM);
+        BiomeLock theCrimsonLock = BiomeLock.of(ModTags.Biomes.THE_CRIMSON);
+        BiomeLock theCorruptionLock = BiomeLock.of(ModTags.Biomes.THE_CORRUPTION);
+        BiomeLock theHallowLock = BiomeLock.of(ModTags.Biomes.THE_HALLOW);
+        BiomeLock snowyLikeLock = BiomeLock.of(Tags.Biomes.IS_SNOWY, Tags.Biomes.IS_ICY);
+        BiomeLock jungleLikeLock = BiomeLock.of(Tags.Biomes.IS_JUNGLE, Tags.Biomes.IS_LUSH);
+        BiomeLock forestLock = BiomeLock.of(ModTags.Biomes.IS_FOREST);
+        BiomeLock desertLock = BiomeLock.of(Tags.Biomes.IS_DESERT);
+        BiomeLock oceanLock = BiomeLock.of(Tags.Biomes.IS_OCEAN);
+        PositionLock caveThroughSurfaceLock = PositionLock.ofY(MinMaxBounds.Ints.between(OverworldUtils.getCaveY(), OverworldUtils.getSurfaceY()));
+        PositionLock caveThroughUndergroundLock = PositionLock.ofY(MinMaxBounds.Ints.between(OverworldUtils.getCaveY(), OverworldUtils.getUndergroundY()));
+        PositionLock surfaceThroughUltraLock = PositionLock.ofY(MinMaxBounds.Ints.between(OverworldUtils.getSurfaceY(), OverworldUtils.getUltraY()));
+        PositionLock surfaceThroughSpaceLock = PositionLock.ofY(MinMaxBounds.Ints.between(OverworldUtils.getSurfaceY(), OverworldUtils.getSpaceY()));
+        PositionLock spaceThroughUltraLock = PositionLock.ofY(MinMaxBounds.Ints.between(OverworldUtils.getSpaceY(), OverworldUtils.getUltraY()));
+        ITradeLock notEvilBiomes = ITradeLock.or(theCorruptionLock, theCrimsonLock, theHallowLock).invert();
+
+        TradeProperties hardmode = TradeProperties.builder().setLock(hardmodeLock).build();
+        TradeProperties halloweens = TradeProperties.builder().setLock(DateLock.HALLOWEENS).build();
+        TradeProperties night = TradeProperties.builder().setLock(new TimeLock(LibDateUtils._19$30, LibDateUtils._04$30, false)).build();
+
         // 女仆商店
         shop(Keys.MAID_SHOP).addRecipe(withDefaultPylon()
                 .add(TCItems.PORTABLE_CEMENT_MIXER)
@@ -177,19 +194,19 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                         .build())
                 .add(new MoneyTradeItem.Builder()
                         .setResult(ModItems.CRIMSON_SEED)
-                        .setProperties(TradeProperties.builder().setLock(ITradeLock.and(ITradeLock.or(bloodMoonLock, graveyardLock), theCorruptionLock)).build())
+                        .setProperties(TradeProperties.builder().setLock(ITradeLock.and(ITradeLock.or(bloodMoonLock, graveyardLock), theCorruptionWorldLock)).build())
                         .build())
                 .add(new MoneyTradeItem.Builder()
                         .setResult(ConsumableItems.VILE_POWDER.toStack())
-                        .setProperties(TradeProperties.builder().setLock(ITradeLock.and(bloodMoonLock, theCorruptionLock)).build())
+                        .setProperties(TradeProperties.builder().setLock(ITradeLock.and(bloodMoonLock, theCorruptionWorldLock)).build())
                         .build())
                 .add(new MoneyTradeItem.Builder()
                         .setResult(ConsumableItems.VICIOUS_POWDER.toStack())
-                        .setProperties(TradeProperties.builder().setLock(ITradeLock.and(bloodMoonLock, theCrimsonLock)).build())
+                        .setProperties(TradeProperties.builder().setLock(ITradeLock.and(bloodMoonLock, theCrimsonWorldLock)).build())
                         .build())
                 .add(new MoneyTradeItem.Builder()
                         .setResult(ModItems.CORRUPT_SEED)
-                        .setProperties(TradeProperties.builder().setLock(ITradeLock.and(ITradeLock.or(bloodMoonLock, graveyardLock), theCrimsonLock)).build())
+                        .setProperties(TradeProperties.builder().setLock(ITradeLock.and(ITradeLock.or(bloodMoonLock, graveyardLock), theCrimsonWorldLock)).build())
                         .build())
                 .add(SellTrade.INSTANCE)
                 .build());
@@ -244,9 +261,49 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                                         .setLootTable(ModLootTables.QUESTS_0)
                                         .setSprite(TerraEntity.space("random_gift"))
                                         .build(),
-                                Map.of(
-                                        QuestedFishes.AMANITA_FUNGIFIN.toStack(), glowingMushroomLock
-                                ))
+                                ImmutableMap.<ItemStack, ITradeLock>builder()
+                                        .put(QuestedFishes.AMANITA_FUNGIFIN.toStack(), glowingMushroomLock)
+                                        .put(QuestedFishes.BLOODY_MANOWAR.toStack(), theCrimsonLock)
+                                        .put(QuestedFishes.ICHORFISH.toStack(), ITradeLock.and(theCrimsonLock))
+                                        .put(QuestedFishes.CURSEDFISH.toStack(), ITradeLock.and(theCorruptionLock))
+                                        .put(QuestedFishes.EATER_OF_PLANKTON.toStack(), theCorruptionLock)
+                                        .put(QuestedFishes.INFECTED_SCABBARDFISH.toStack(), theCorruptionLock)
+                                        .put(QuestedFishes.FISHRON.toStack(), ITradeLock.and(snowyLikeLock, caveThroughSurfaceLock))
+                                        .put(QuestedFishes.MUTANT_FLINXFIN.toStack(), ITradeLock.and(snowyLikeLock, caveThroughSurfaceLock))
+                                        .put(QuestedFishes.PENGFISH.toStack(), ITradeLock.and(snowyLikeLock, surfaceThroughUltraLock))
+                                        .put(QuestedFishes.TUNDRA_TROUT.toStack(), ITradeLock.and(snowyLikeLock, surfaceThroughUltraLock))
+                                        .put(QuestedFishes.CATFISH.toStack(), ITradeLock.and(jungleLikeLock, surfaceThroughSpaceLock))
+                                        .put(QuestedFishes.DERPFISH.toStack(), ITradeLock.and(jungleLikeLock, surfaceThroughSpaceLock))
+                                        .put(QuestedFishes.MUDFISH.toStack(), jungleLikeLock)
+                                        .put(QuestedFishes.TROPICAL_BARRACUDA.toStack(), surfaceThroughSpaceLock)
+                                        .put(QuestedFishes.BUNNYFISH.toStack(), ITradeLock.and(forestLock, surfaceThroughSpaceLock))
+                                        .put(QuestedFishes.SLIMEFISH.toStack(), ITradeLock.and(forestLock, surfaceThroughSpaceLock))
+                                        .put(QuestedFishes.ZOMBIE_FISH.toStack(), ITradeLock.and(forestLock, surfaceThroughSpaceLock))
+                                        .put(QuestedFishes.SCARAB_FISH.toStack(), desertLock)
+                                        .put(QuestedFishes.SCORPIO_FISH.toStack(), desertLock)
+                                        .put(QuestedFishes.CAP_TUNABEARD.toStack(), ITradeLock.and(oceanLock, surfaceThroughUltraLock))
+                                        .put(QuestedFishes.CLOUDFISH.toStack(), ITradeLock.and(oceanLock, surfaceThroughUltraLock))
+                                        .put(QuestedFishes.BUMBLEBEE_TUNA.toStack(), FishingHookInFluidLock.of(true, Tags.Fluids.HONEY))
+                                        .put(QuestedFishes.ANGELFISH.toStack(), ITradeLock.and(notEvilBiomes, spaceThroughUltraLock, AnyBossDefeatedLock.INSTANCE))
+                                        .put(QuestedFishes.CLOUDFISH.toStack(), ITradeLock.and(notEvilBiomes, spaceThroughUltraLock, AnyBossDefeatedLock.INSTANCE))
+                                        .put(QuestedFishes.WYVERNTAIL.toStack(), ITradeLock.and(notEvilBiomes, spaceThroughUltraLock))
+                                        .put(QuestedFishes.DEMONIC_HELLFISH.toStack(), ITradeLock.and(notEvilBiomes, caveThroughUndergroundLock))
+                                        .put(QuestedFishes.FISHOTRON.toStack(), ITradeLock.and(notEvilBiomes, caveThroughUndergroundLock))
+                                        .put(QuestedFishes.GUIDE_VOODOO_FISH.toStack(), ITradeLock.and(notEvilBiomes, caveThroughUndergroundLock))
+                                        .put(QuestedFishes.HUNGERFISH.toStack(), ITradeLock.and(notEvilBiomes, caveThroughUndergroundLock))
+                                        .put(QuestedFishes.BATFISH.toStack(), ITradeLock.and(notEvilBiomes, caveThroughSurfaceLock))
+                                        .put(QuestedFishes.BONEFISH.toStack(), ITradeLock.and(notEvilBiomes, caveThroughSurfaceLock))
+                                        .put(QuestedFishes.JEWELFISH.toStack(), ITradeLock.and(notEvilBiomes, caveThroughSurfaceLock))
+                                        .put(QuestedFishes.MIRAGE_FISH.toStack(), ITradeLock.and(theHallowLock, caveThroughSurfaceLock))
+                                        .put(QuestedFishes.SPIDERFISH.toStack(), ITradeLock.and(notEvilBiomes, caveThroughSurfaceLock))
+                                        .put(QuestedFishes.DIRTFISH.toStack(), ITradeLock.and(notEvilBiomes, PositionLock.ofY(MinMaxBounds.Ints.between(OverworldUtils.getUndergroundY(), OverworldUtils.getSpaceY()))))
+                                        .put(QuestedFishes.DYNAMITE_FISH.toStack(), ITradeLock.and(notEvilBiomes, surfaceThroughSpaceLock))
+                                        .put(QuestedFishes.FALLEN_STARFISH.toStack(), ITradeLock.and(notEvilBiomes, surfaceThroughUltraLock))
+                                        .put(QuestedFishes.THE_FISH_OF_CTHULHU.toStack(), ITradeLock.and(notEvilBiomes, surfaceThroughUltraLock))
+                                        .put(QuestedFishes.HARPYFISH.toStack(), ITradeLock.and(notEvilBiomes, surfaceThroughUltraLock))
+                                        .put(QuestedFishes.PIXIEFISH.toStack(), ITradeLock.and(theHallowLock, surfaceThroughUltraLock))
+                                        .put(QuestedFishes.UNICORN_FISH.toStack(), ITradeLock.and(theHallowLock, surfaceThroughSpaceLock))
+                                        .build())
                         .addResult(10, List.of(ArmorItems.ANGLER_HAT.toStack()))
                         .addResult(15, List.of(ArmorItems.ANGLER_VEST.toStack()))
                         .addResult(20, List.of(ArmorItems.ANGLER_PANTS.toStack()))

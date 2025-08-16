@@ -21,6 +21,7 @@ public final class ClientPacketHandler {
     private static int maxMana = 20;
     private static float currentMana = 20;
     private static GamePhase gamePhase = GamePhase.BEFORE_SKELETRON;
+    private static int defeatedBoss = 0;
     private static float fishingPower = 0.0F;
     private static boolean echoVisible = false;
     private static long secretFlag = 0L;
@@ -37,6 +38,10 @@ public final class ClientPacketHandler {
 
     public static GamePhase getGamePhase() {
         return gamePhase;
+    }
+
+    public static int getDefeatedBoss() {
+        return defeatedBoss;
     }
 
     public static float getFishingPower() {
@@ -63,6 +68,7 @@ public final class ClientPacketHandler {
         maxMana = 20;
         currentMana = 20;
         gamePhase = GamePhase.BEFORE_SKELETRON;
+        defeatedBoss = 0;
         fishingPower = 0.0F;
         echoVisible = false;
         secretFlag = 0L;
@@ -78,8 +84,9 @@ public final class ClientPacketHandler {
         }
     }
 
-    public static void handleGamePhase(GamePhasePacketS2C packet) {
+    public static void handleGamePhase(KillBoardSyncPacketS2C packet) {
         gamePhase = packet.gamePhase();
+        defeatedBoss = packet.defeatedBoss();
     }
 
     public static void handleFishingPower(FishingPowerInfoPacketS2C packet) {

@@ -21,7 +21,7 @@ import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.common.block.natural.ChlorophyteOreBlock;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
-import org.confluence.mod.network.s2c.GamePhasePacketS2C;
+import org.confluence.mod.network.s2c.KillBoardSyncPacketS2C;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.phase_journey.common.util.PhaseUtils;
 import org.confluence.terraentity.init.entity.TEBossEntities;
@@ -109,6 +109,13 @@ public final class KillBoard implements IGlobalData {
         return count;
     }
 
+    public int getDefeatedBoss() {
+        if (LibUtils.isLogicalClient()) {
+            return ClientPacketHandler.getDefeatedBoss();
+        }
+        return defeatedBosses.size();
+    }
+
     public void defeat(EntityType<?> entityType) {
         defeatedBosses.put(entityType, true);
         if (entityType == TEBossEntities.SKELETRON.get()) {
@@ -131,7 +138,7 @@ public final class KillBoard implements IGlobalData {
 
     public void setGamePhase(MinecraftServer server, GamePhase gamePhase) {
         this.gamePhase = gamePhase;
-        GamePhasePacketS2C.sendToAll(gamePhase);
+        KillBoardSyncPacketS2C.sendToAll();
         if (gamePhase.isGraduated()) {
             IMinecraftServer.of(server).confluence$updateSecretFlag(IWorldOptions.GRADUATED);
         } else if (gamePhase.isHardmode()) {

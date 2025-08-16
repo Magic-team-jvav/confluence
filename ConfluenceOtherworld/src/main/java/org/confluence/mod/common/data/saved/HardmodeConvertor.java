@@ -68,7 +68,7 @@ public final class HardmodeConvertor implements IGlobalData {
                 return DataResult.success(longList, Lifecycle.stable());
             }
         };
-        return LibCodecUtils.tupleCodec(Codec.LONG.xmap(ChunkPos::new, ChunkPos::toLong), codec).listOf().xmap(LinkedList::new, Function.identity());
+        return LibCodecUtils.tuple(Codec.LONG.xmap(ChunkPos::new, ChunkPos::toLong), codec).listOf().xmap(LinkedList::new, Function.identity());
     });
 
     private volatile boolean started = false;

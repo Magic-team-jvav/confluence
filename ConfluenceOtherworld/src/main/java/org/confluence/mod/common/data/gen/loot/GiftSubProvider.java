@@ -790,7 +790,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 )
         );
         // 渔夫奖励列表其一
-        output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/fishing_quests_0"), LootTable.lootTable()
+        output.accept(ModLootTables.QUESTS_0, LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(PotionItems.FISHING_POTION).setWeight(300).apply(count2To5))
                         .add(LootItem.lootTableItem(PotionItems.CRATE_POTION).setWeight(300).apply(count2To5))

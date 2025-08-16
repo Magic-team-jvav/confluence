@@ -11,6 +11,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.menu.NPCTradesForgeMenu;
 import org.confluence.mod.integration.terra_entity.brain.ConfluenceDemolitionistNPCAi;
@@ -19,9 +20,11 @@ import org.confluence.mod.util.AchievementUtils;
 import org.confluence.terraentity.api.event.NPCEvent;
 import org.confluence.terraentity.api.event.SummonEvent;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
+import org.confluence.terraentity.entity.npc.AnglerNPC;
 import org.confluence.terraentity.entity.npc.brain.NurseAi;
 import org.confluence.terraentity.init.TEAttachments;
 import org.confluence.terraentity.init.entity.TENpcEntities;
+import org.confluence.terraentity.registries.npc_trade_task.variant.DynamicAnglerTradeTask;
 
 @EventBusSubscriber(modid = Confluence.MODID, bus = EventBusSubscriber.Bus.GAME)
 public final class TEGameEvents {
@@ -48,6 +51,7 @@ public final class TEGameEvents {
             }
             EntityType<?> type = npc.getType();
             player.openMenu(new SimpleMenuProvider((id, inventory, player1) -> new NPCTradesForgeMenu(id, inventory, npc, type == TENpcEntities.GOBLIN_TINKERER.get()), Component.translatable("container.confluence.npc_shop")));
+
             IAbstractTerraNPC terraNPC = IAbstractTerraNPC.of(npc);
             if (terraNPC.confluence$shouldInteract()) {
                 terraNPC.confluence$setShouldInteract(false);
@@ -59,6 +63,14 @@ public final class TEGameEvents {
                     NPCSpawner.broadcastMessageToRegion(player.level(), npc, Component.translatable("event.confluence.npc.arrived", type.getDescription(), npc.getName()).withColor(GlobalColors.NPC_ARRIVED.get()));
                 }
             }
+
+            if (npc instanceof AnglerNPC angler) {
+                DynamicAnglerTradeTask task = angler.getFirstTask();
+                if (task != null) {
+                    PlayerSpecialData.of(player).setCurrentQuestedFish(task.getCurrentCost(), task.getCurrentLock());
+                }
+            }
+
             event.setResult(InteractionResult.CONSUME_PARTIAL);
         });
     }

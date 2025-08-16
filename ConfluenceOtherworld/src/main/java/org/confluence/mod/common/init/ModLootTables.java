@@ -60,6 +60,7 @@ public final class ModLootTables {
     public static final ResourceKey<LootTable> TREASURE = register("gameplay/fishing/treasure");
     public static final ResourceKey<LootTable> CRATE = register("gameplay/crate");
     public static final ResourceKey<LootTable> CRATE_HARDMODE = register("gameplay/crate_hardmode");
+    public static final ResourceKey<LootTable> QUESTS_0 = register("gameplay/fishing_quests_0");
 
     public static final ResourceKey<LootTable> CORRUPTION_CARRY = register("gameplay/corruption_carry");
     public static final ResourceKey<LootTable> SLIME_CARRY = register("gameplay/slime_carry");

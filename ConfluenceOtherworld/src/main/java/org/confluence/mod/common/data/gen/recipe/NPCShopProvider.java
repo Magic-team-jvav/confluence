@@ -19,6 +19,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.Keys;
 import org.confluence.mod.common.data.saved.MoonPhase;
 import org.confluence.mod.common.init.ModBiomes;
+import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.CrateBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -52,8 +53,8 @@ import org.confluence.terraentity.registries.npc_trade_lock.variant.TimeLock;
 import org.confluence.terraentity.registries.npc_trade_task.variant.DynamicAnglerTradeTask;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
@@ -80,6 +81,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
         SecretFlagLock theCorruptionLock = new SecretFlagLock(IWorldOptions.THE_CORRUPTION);
         SecretFlagLock theCrimsonLock = new SecretFlagLock(IWorldOptions.THE_CRIMSON);
         EnvironmentLock graveyardLock = new EnvironmentLock(EnvironmentLevelAccess.matcher(null, null, true));
+        BiomeLock glowingMushroomLock = BiomeLock.of(ModBiomes.GLOWING_MUSHROOM);
         // 女仆商店
         shop(Keys.MAID_SHOP).addRecipe(withDefaultPylon()
                 .add(TCItems.PORTABLE_CEMENT_MIXER)
@@ -171,7 +173,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                         .build())
                 .add(new MoneyTradeItem.Builder()
                         .setResult(ModItems.MUSHROOM_GRASS_SEED)
-                        .setProperties(TradeProperties.builder().setLock(BiomeLock.of(ModBiomes.GLOWING_MUSHROOM)).build())
+                        .setProperties(TradeProperties.builder().setLock(glowingMushroomLock).build())
                         .build())
                 .add(new MoneyTradeItem.Builder()
                         .setResult(ModItems.CRIMSON_SEED)
@@ -236,17 +238,20 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .build());
 
         NPCTradeManager angler = new Builder()
-                .add(TradeTask.create(DynamicAnglerTradeTask.builder(ItemTradeLootTable.builder()
-                                .addCost(CrateBlocks.WOODEN_CRATE.toStack()) // 在没有任务鱼机制前，用木匣代替
-                                .setLootTable(Confluence.asResource("gameplay/fishing_quests_0"))
-                                .setSprite(TerraEntity.space("random_gift"))
-                                .build(), List.of(Items.DIRT.getDefaultInstance(), Items.ICE.getDefaultInstance(), Items.EMERALD.getDefaultInstance()))
-                        .addResult(10, Collections.singletonList(ArmorItems.ANGLER_HAT.toStack()))
-                        .addResult(15, Collections.singletonList(ArmorItems.ANGLER_VEST.toStack()))
-                        .addResult(20, Collections.singletonList(ArmorItems.ANGLER_PANTS.toStack()))
-                        .addResult(25, Collections.singletonList(ToolItems.BOTTOMLESS_WATER_BUCKET.toStack()))
-                        .addResult(30, Collections.singletonList(FishingPoleItems.GOLDEN_FISHING_ROD.toStack()))
-//                        .setTitle("title.terra_entity.npc_trade.task.fishman")
+                .add(TradeTask.create(DynamicAnglerTradeTask.builder(
+                                ItemTradeLootTable.builder()
+                                        .addCost(CrateBlocks.WOODEN_CRATE.toStack()) // 在没有任务鱼机制前，用木匣代替
+                                        .setLootTable(ModLootTables.QUESTS_0)
+                                        .setSprite(TerraEntity.space("random_gift"))
+                                        .build(),
+                                Map.of(
+                                        QuestedFishes.AMANITA_FUNGIFIN.toStack(), glowingMushroomLock
+                                ))
+                        .addResult(10, List.of(ArmorItems.ANGLER_HAT.toStack()))
+                        .addResult(15, List.of(ArmorItems.ANGLER_VEST.toStack()))
+                        .addResult(20, List.of(ArmorItems.ANGLER_PANTS.toStack()))
+                        .addResult(25, List.of(ToolItems.BOTTOMLESS_WATER_BUCKET.toStack()))
+                        .addResult(30, List.of(FishingPoleItems.GOLDEN_FISHING_ROD.toStack()))
                         .build()))
                 .build();
         shop(TENpcEntities.ANGLER.getId()).addRecipe(angler);

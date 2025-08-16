@@ -150,7 +150,7 @@ public final class ModClientSetups {
             return ModArmPoses.LANCE.getValue();
         }
     };
-    public static final IClientItemExtensions NOOP_ITEM = new IClientItemExtensions() {
+    static final IClientItemExtensions NOOP_ITEM = new IClientItemExtensions() {
         private BlockEntityWithoutLevelRenderer renderer;
 
         @Override
@@ -166,7 +166,7 @@ public final class ModClientSetups {
         @Override
         public BlockEntityWithoutLevelRenderer getCustomRenderer() {
             if (renderer == null) {
-                this.renderer = new BlockEntityWithoutLevelRenderer(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels()){
+                this.renderer = new BlockEntityWithoutLevelRenderer(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels()) {
                     @Override
                     public void renderByItem(ItemStack stack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {}
                 };
@@ -201,6 +201,7 @@ public final class ModClientSetups {
             return IntegerRGB.HALLOW_C.mixture(IntegerRGB.HALLOW_A, (m - 8) * 0.25F);
         }
     };
+    static boolean guideCheckedJEI = ModList.get().isLoaded("jei") || ModList.get().isLoaded("emi");
 
     static void setRenderLayers() {
         RenderType translucent = RenderType.translucent();
@@ -256,12 +257,7 @@ public final class ModClientSetups {
         });
     }
 
-    public static final boolean SHOULD_NOT_GENERATE_BLOCK_GRAY_TEXTURE;
-
-    static {
-        ModList modList = ModList.get();
-        SHOULD_NOT_GENERATE_BLOCK_GRAY_TEXTURE = modList.isLoaded("ctm") || modList.isLoaded("fusion") || modList.isLoaded("continuity");
-    }
+    public static final boolean SHOULD_NOT_GENERATE_BLOCK_GRAY_TEXTURE = ModList.get().isLoaded("ctm") || ModList.get().isLoaded("fusion") || ModList.get().isLoaded("continuity");
 
     public static final RenderType TERRA_SWORD_RENDER_TYPE = RenderType.create("entity_translucent_emissive", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 1536, true, false,
             RenderType.CompositeState.builder()

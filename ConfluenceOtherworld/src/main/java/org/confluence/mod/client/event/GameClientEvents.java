@@ -37,7 +37,6 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
@@ -77,7 +76,9 @@ import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.api.event.PerformJumpingEvent;
 import org.confluence.terraentity.api.event.NPCEvent;
+import org.confluence.terraentity.entity.npc.AnglerNPC;
 import org.confluence.terraentity.init.entity.TENpcEntities;
+import org.confluence.terraentity.registries.npc_trade_task.variant.DynamicAnglerTradeTask;
 import software.bernie.geckolib.event.GeoRenderEvent;
 
 import java.util.Collection;
@@ -353,16 +354,14 @@ public final class GameClientEvents {
         if (b) event.setCanceled(true);
     }
 
-    private static boolean jeiChecked = ModList.get().isLoaded("jei") || ModList.get().isLoaded("emi");
-
     @SubscribeEvent
     public static void npc$Dialog(NPCEvent.NPCDialogEvent event) {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player == null) return;
         EntityType<?> type = event.getNPC().getType();
-        if (!jeiChecked && type == TENpcEntities.GUIDE.get()) {
+        if (!ModClientSetups.guideCheckedJEI && type == TENpcEntities.GUIDE.get()) {
             event.setNeoDialog(Component.translatable("dialogs.confluence.guide.jei_check"));
-            jeiChecked = true;
+            ModClientSetups.guideCheckedJEI = true;
         } else if (type == TENpcEntities.NURSE.get() && event.getNPC().getRandom().nextInt(25) == 0) {
             StatsCounter stats = player.getStats();
             for (Stat<EntityType<?>> stat : Stats.ENTITY_KILLED_BY) {
@@ -371,6 +370,11 @@ public final class GameClientEvents {
                     event.setNeoDialog(Component.translatable("dialogs.confluence.nurse.player_killed_by", stat.getValue().getDescription(), value));
                     break;
                 }
+            }
+        } else if (event.getNPC() instanceof AnglerNPC angler) {
+            DynamicAnglerTradeTask task = angler.getFirstTask();
+            if (task != null) {
+                event.setNeoDialog(Component.translatable("dialogs.confluence.angler." + task.getCurrentCost().getDescriptionId()));
             }
         }
     }

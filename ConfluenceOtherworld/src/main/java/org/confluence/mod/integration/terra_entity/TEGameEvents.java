@@ -1,5 +1,6 @@
 package org.confluence.mod.integration.terra_entity;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
@@ -10,6 +11,7 @@ import net.minecraft.world.item.CrossbowItem;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import org.confluence.lib.color.GlobalColors;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.data.saved.NPCSpawner;
@@ -19,6 +21,7 @@ import org.confluence.mod.integration.terra_entity.npc_trade.SellTrade;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.terraentity.api.event.NPCEvent;
 import org.confluence.terraentity.api.event.SummonEvent;
+import org.confluence.terraentity.api.event.YoyosThrowingEvent;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 import org.confluence.terraentity.entity.npc.AnglerNPC;
 import org.confluence.terraentity.entity.npc.brain.NurseAi;
@@ -110,8 +113,37 @@ public final class TEGameEvents {
 
     @SubscribeEvent
     public static void summon$Pre(SummonEvent.Pre<?> event) {
-        if (event.getEntity() instanceof ServerPlayer serverPlayer && serverPlayer.getData(TEAttachments.SUMMONER_STORAGE).getIds().size() >= 8) {
-            AchievementUtils.awardAchievement(serverPlayer, "you_and_what_army");
+        if (event.getEntity() instanceof ServerPlayer player && player.getData(TEAttachments.SUMMONER_STORAGE).getIds().size() >= 8) {
+            AchievementUtils.awardAchievement(player, "you_and_what_army");
+        }
+    }
+
+    @SubscribeEvent
+    public static void afterNpcTrade(NPCEvent.NPCTradeEvent.Post event) {
+        if (event.getEntity() instanceof ServerPlayer player && event.getHolder() instanceof AnglerNPC) {
+            CompoundTag data = LibUtils.getOrCreatePersistedData(player);
+            int times = data.getInt("confluence:angler_task_times") + 1;
+            String path;
+            if (times >= 200) {
+                path = "supreme_helper_minion";
+            } else if (times >= 50) {
+                path = "fast_and_fishious";
+            } else if (times >= 25) {
+                path = "trout_monkey";
+            } else if (times >= 10) {
+                path = "good_little_slave";
+            } else {
+                path = "servant_in_training";
+            }
+            AchievementUtils.awardAchievement(player, path);
+            data.putInt("confluence:angler_task_times", times);
+        }
+    }
+
+    @SubscribeEvent
+    public static void yoyosThrowing(YoyosThrowingEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player) {
+            AchievementUtils.awardAchievement(player, "throwing_lines");
         }
     }
 }

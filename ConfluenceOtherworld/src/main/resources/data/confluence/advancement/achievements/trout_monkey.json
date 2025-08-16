@@ -1,7 +1,7 @@
 {
     "display": {
         "icon": {
-            "id": "minecraft:barrier"
+            "id": "confluence:trout"
         },
         "title": {
             "translate": "achievements.confluence.trout_monkey.title"

@@ -16,4 +16,7 @@ public class ModTradeLockProviderTypes {
     public static final Supplier<TradeLockProvider> CONDITIONS_LOCK = TYPES.register("conditions_lock", () -> new TradeLockProvider(ConditionsLock.CODEC));
     public static final Supplier<TradeLockProvider> POSITION_LOCK = TYPES.register("position_lock", () -> new TradeLockProvider(PositionLock.CODEC));
     public static final Supplier<TradeLockProvider> DATE_LOCK = TYPES.register("date_lock", () -> new TradeLockProvider(DateLock.CODEC));
+    public static final Supplier<TradeLockProvider> DIMENSION_LOCK = TYPES.register("dimension_lock", () -> new TradeLockProvider(DimensionLock.CODEC));
+    public static final Supplier<TradeLockProvider> MOMENT_LOCK = TYPES.register("moment_lock", () -> new TradeLockProvider(MomentLock.CODEC));
+    public static final Supplier<TradeLockProvider> ENVIRONMENT_LOCK = TYPES.register("environment_lock", () -> new TradeLockProvider(EnvironmentLock.CODEC));
 }

@@ -30,7 +30,7 @@ public record MoonPhaseLock(List<MoonPhase> moonPhases) implements ITradeLock {
 
     @Override
     public boolean canTrade(Player player, ITradeHolder npc, int index) {
-        int phase = player.level().getMoonPhase();
+        int phase = npc.level().getMoonPhase();
         return moonPhases.stream().anyMatch(moonPhase -> moonPhase.match(phase));
     }
 

@@ -27,4 +27,16 @@ public record PositionLock(MinMaxBounds.Ints x, MinMaxBounds.Ints y, MinMaxBound
     public TradeLockProvider getCodec() {
         return ModTradeLockProviderTypes.POSITION_LOCK.get();
     }
+
+    public static PositionLock ofX(MinMaxBounds.Ints x) {
+        return new PositionLock(x, MinMaxBounds.Ints.ANY, MinMaxBounds.Ints.ANY);
+    }
+
+    public static PositionLock ofY(MinMaxBounds.Ints y) {
+        return new PositionLock(MinMaxBounds.Ints.ANY, y, MinMaxBounds.Ints.ANY);
+    }
+
+    public static PositionLock ofZ(MinMaxBounds.Ints z) {
+        return new PositionLock(MinMaxBounds.Ints.ANY, MinMaxBounds.Ints.ANY, z);
+    }
 }

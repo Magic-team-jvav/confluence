@@ -1,5 +1,6 @@
 package org.confluence.mod.common.data.gen.recipe;
 
+import com.xiaohunao.terra_moment.common.init.TMMoments;
 import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -12,6 +13,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.conditions.ModLoadedCondition;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
+import org.confluence.lib.common.recipe.EnvironmentLevelAccess;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.Keys;
@@ -52,7 +54,7 @@ import org.confluence.terraentity.registries.npc_trade_task.variant.DynamicAngle
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -71,9 +73,13 @@ public class NPCShopProvider extends AbstractRecipeProvider {
 
     @Override
     public void buildRecipes(RecipeOutput recipeOutput, HolderLookup.Provider holderLookup) {
-        TradeProperties hardmodeLock = TradeProperties.builder().setLock(new SecretFlagLock(IWorldOptions.HARDMODE, false)).build();
-        TradeProperties halloweensLock = TradeProperties.builder().setLock(DateLock.HALLOWEENS).build();
-        TradeProperties nightLock = TradeProperties.builder().setLock(new TimeLock(LibDateUtils._19$30, LibDateUtils._04$30, false)).build();
+        TradeProperties hardmode = TradeProperties.builder().setLock(new SecretFlagLock(IWorldOptions.HARDMODE)).build();
+        TradeProperties halloweens = TradeProperties.builder().setLock(DateLock.HALLOWEENS).build();
+        TradeProperties night = TradeProperties.builder().setLock(new TimeLock(LibDateUtils._19$30, LibDateUtils._04$30, false)).build();
+        MomentLock bloodMoonLock = new MomentLock(TMMoments.BLOOD_MOON.getKey());
+        SecretFlagLock theCorruptionLock = new SecretFlagLock(IWorldOptions.THE_CORRUPTION);
+        SecretFlagLock theCrimsonLock = new SecretFlagLock(IWorldOptions.THE_CRIMSON);
+        EnvironmentLock graveyardLock = new EnvironmentLock(EnvironmentLevelAccess.matcher(null, null, true));
         // 女仆商店
         shop(Keys.MAID_SHOP).addRecipe(withDefaultPylon()
                 .add(TCItems.PORTABLE_CEMENT_MIXER)
@@ -83,7 +89,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(TCItems.LIFE_FORM_ANALYZER)
                 .add(TCItems.DPS_METER)
                 .add(AccessoryItems.PAINT_SPRAYER)
-                .add(TEWhipItems.LEATHER_WHIP)
+                .add(Objects.requireNonNull(TEWhipItems.LEATHER_WHIP))
                 .add(SwordItems.KATANA)
                 .add(FoodItems.PAD_THAI)
                 .add(SellTrade.INSTANCE)
@@ -137,11 +143,11 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(TGItems.MUSKET_BULLET, 100)
                 .add(new MoneyTradeItem.Builder()
                         .setResult(TGItems.SILVER_BULLET.toStack())
-                        .setProperties(hardmodeLock)
+                        .setProperties(hardmode)
                         .build())
                 .add(new MoneyTradeItem.Builder()
                         .setResult(TGItems.SILVER_BULLET.toStack(100))
-                        .setProperties(hardmodeLock)
+                        .setProperties(hardmode)
                         .build())
                 .add(TGItems.FLINTLOCK_PISTOL)
                 .add(TGItems.MINISHARK)
@@ -156,15 +162,33 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(Items.PUMPKIN_SEEDS)
                 .add(ModItems.GRASS_SEED)
                 .add(new MoneyTradeItem.Builder()
-                        .setResult(ModItems.HALLOWED_SEED.toStack(1))
-                        .setProperties(hardmodeLock)
+                        .setResult(ModItems.HALLOWED_SEED.toStack())
+                        .setProperties(hardmode)
                         .build())
-                //.add(ModItems.ASH_GRASS_SEED) todo在地狱中时
-                //.add(ModItems.MUSHROOM_GRASS_SEED) todo在发光蘑菇群系中时
-                //.add(ModItems.CRIMSON_SEED) todo 血月或灵雾且腐化世界
-                //.add(ModItems.VILE_POWDER) todo 血月且腐化世界
-                //.add(ModItems.VICIOUS_POWDER) todo 血月且猩红世界
-                //.add(ModItems.CORRUPT_SEED) todo 血月或灵雾且猩红世界
+                .add(new MoneyTradeItem.Builder()
+                        .setResult(ModItems.ASH_GRASS_SEED)
+                        .setProperties(TradeProperties.builder().setLock(new DimensionLock(OverworldUtils.underworld())).build())
+                        .build())
+                .add(new MoneyTradeItem.Builder()
+                        .setResult(ModItems.MUSHROOM_GRASS_SEED)
+                        .setProperties(TradeProperties.builder().setLock(BiomeLock.of(ModBiomes.GLOWING_MUSHROOM)).build())
+                        .build())
+                .add(new MoneyTradeItem.Builder()
+                        .setResult(ModItems.CRIMSON_SEED)
+                        .setProperties(TradeProperties.builder().setLock(ITradeLock.and(ITradeLock.or(bloodMoonLock, graveyardLock), theCorruptionLock)).build())
+                        .build())
+                .add(new MoneyTradeItem.Builder()
+                        .setResult(ConsumableItems.VILE_POWDER.toStack())
+                        .setProperties(TradeProperties.builder().setLock(ITradeLock.and(bloodMoonLock, theCorruptionLock)).build())
+                        .build())
+                .add(new MoneyTradeItem.Builder()
+                        .setResult(ConsumableItems.VICIOUS_POWDER.toStack())
+                        .setProperties(TradeProperties.builder().setLock(ITradeLock.and(bloodMoonLock, theCrimsonLock)).build())
+                        .build())
+                .add(new MoneyTradeItem.Builder()
+                        .setResult(ModItems.CORRUPT_SEED)
+                        .setProperties(TradeProperties.builder().setLock(ITradeLock.and(ITradeLock.or(bloodMoonLock, graveyardLock), theCrimsonLock)).build())
+                        .build())
                 .add(SellTrade.INSTANCE)
                 .build());
 
@@ -228,9 +252,6 @@ public class NPCShopProvider extends AbstractRecipeProvider {
         shop(TENpcEntities.ANGLER.getId()).addRecipe(angler);
         shop(TENpcEntities.FEMALE_ANGLER.getId()).addRecipe(angler);
 
-//        shop(TENpcEntities.OLD_MAN.getId()).addRecipe(new Builder()
-//                .build());
-
         shop(TENpcEntities.MECHANIC.getId()).addRecipe(withDefaultPylon()
                 .add(ToolItems.RED_WRENCH)
                 .add(ToolItems.BLUE_WRENCH)
@@ -264,17 +285,17 @@ public class NPCShopProvider extends AbstractRecipeProvider {
 
         shop(TENpcEntities.TRAVELING_MERCHANT.getId()).addRecipe(
                 new NPCTradeManager(WeightMapGenerator.builder(5) // 这个数字其实无意义，因为旅商是通过事件修改是数量
-                        .addTrade(new MoneyTradeItem.Builder().setResult(AccessoryItems.PAINT_SPRAYER).build(),1)
-                        .addTrade(new MoneyTradeItem.Builder().setResult(TCItems.PORTABLE_CEMENT_MIXER).build(),1)
-                        .addTrade(new MoneyTradeItem.Builder().setResult(TCItems.EXTENDO_GRIP).build(),1)
-                        .addTrade(new MoneyTradeItem.Builder().setResult(TCItems.BRICK_LAYER).build(),1)
-                        .addTrade(new MoneyTradeItem.Builder().setResult(TCItems.STOPWATCH).build(),1)
-                        .addTrade(new MoneyTradeItem.Builder().setResult(TCItems.LIFE_FORM_ANALYZER).build(),1)
-                        .addTrade(new MoneyTradeItem.Builder().setResult(TCItems.DPS_METER).build(),1)
-                        .addTrade(new MoneyTradeItem.Builder().setResult(SwordItems.KATANA).build(),1)
-                        .addTrade(new MoneyTradeItem.Builder().setResult(FoodItems.PAD_THAI).build(),1)
-                        .addTrade(new MoneyTradeItem.Builder().setResult(TEYoyosItems.CODE_1).build(),1)
-                        .addTrade(new MoneyTradeItem.Builder().setResult(FishingPoleItems.SITTING_DUCKS_FISHING_POLE).build(),1)
+                        .addTrade(new MoneyTradeItem.Builder().setResult(AccessoryItems.PAINT_SPRAYER).build(), 1)
+                        .addTrade(new MoneyTradeItem.Builder().setResult(TCItems.PORTABLE_CEMENT_MIXER).build(), 1)
+                        .addTrade(new MoneyTradeItem.Builder().setResult(TCItems.EXTENDO_GRIP).build(), 1)
+                        .addTrade(new MoneyTradeItem.Builder().setResult(TCItems.BRICK_LAYER).build(), 1)
+                        .addTrade(new MoneyTradeItem.Builder().setResult(TCItems.STOPWATCH).build(), 1)
+                        .addTrade(new MoneyTradeItem.Builder().setResult(TCItems.LIFE_FORM_ANALYZER).build(), 1)
+                        .addTrade(new MoneyTradeItem.Builder().setResult(TCItems.DPS_METER).build(), 1)
+                        .addTrade(new MoneyTradeItem.Builder().setResult(SwordItems.KATANA).build(), 1)
+                        .addTrade(new MoneyTradeItem.Builder().setResult(FoodItems.PAD_THAI).build(), 1)
+                        .addTrade(new MoneyTradeItem.Builder().setResult(TEYoyosItems.CODE_1).build(), 1)
+                        .addTrade(new MoneyTradeItem.Builder().setResult(FishingPoleItems.SITTING_DUCKS_FISHING_POLE).build(), 1)
                         .build()
                 )
         );
@@ -297,11 +318,11 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(TGItems.BLOWGUN)
                 .add(new MoneyTradeItem.Builder()
                         .setResult(FunctionalBlocks.CAULDRON.toStack())
-                        .setProperties(halloweensLock)
+                        .setProperties(halloweens)
                         .build())
                 .add(new MoneyTradeItem.Builder()
                         .setResult(AccessoryItems.PYGMY_NECKLACE.toStack())
-                        .setProperties(nightLock)
+                        .setProperties(night)
                         .build())
                 .add(SellTrade.INSTANCE)
                 .build());
@@ -314,23 +335,21 @@ public class NPCShopProvider extends AbstractRecipeProvider {
     }
 
     protected Builder withDefaultPylon() {
+        ITradeLock waystonesLock = withModLoaded(WaystonesHelper.MODID);
+        MoodLock goodMoodLock = MoodLock.greater(120);
         return new Builder()
-                .add(new DeferredMoneyTradeItem(WaystonesHelper.FOREST_PYLON.getId(), 1, withModLoadedGreaterMood(new BiomeLock(Optional.empty(), Optional.of(List.of(Tags.Biomes.IS_FOREST, Tags.Biomes.IS_PLAINS))), WaystonesHelper.MODID)))
-                .add(new DeferredMoneyTradeItem(WaystonesHelper.SNOW_PYLON.getId(), 1, withModLoadedGreaterMood(new BiomeLock(Optional.empty(), Optional.of(List.of(Tags.Biomes.IS_SNOWY, Tags.Biomes.IS_ICY))), WaystonesHelper.MODID)))
-                .add(new DeferredMoneyTradeItem(WaystonesHelper.DESERT_PYLON.getId(), 1, withModLoadedGreaterMood(new BiomeLock(Optional.empty(), Optional.of(List.of(Tags.Biomes.IS_DESERT, Tags.Biomes.IS_BADLANDS))), WaystonesHelper.MODID)))
-                .add(new DeferredMoneyTradeItem(WaystonesHelper.CAVERN_PYLON.getId(), 1, withModLoadedGreaterMood(new PositionLock(MinMaxBounds.Ints.ANY, MinMaxBounds.Ints.atMost(OverworldUtils.getSurfaceY()), MinMaxBounds.Ints.ANY), WaystonesHelper.MODID)))
-                .add(new DeferredMoneyTradeItem(WaystonesHelper.OCEAN_PYLON.getId(), 1, withModLoadedGreaterMood(new BiomeLock(Optional.empty(), Optional.of(Collections.singletonList(Tags.Biomes.IS_OCEAN))), WaystonesHelper.MODID)))
-                .add(new DeferredMoneyTradeItem(WaystonesHelper.JUNGLE_PYLON.getId(), 1, withModLoadedGreaterMood(new BiomeLock(Optional.empty(), Optional.of(Collections.singletonList(Tags.Biomes.IS_JUNGLE))), WaystonesHelper.MODID)))
-                .add(new DeferredMoneyTradeItem(WaystonesHelper.HALLOW_PYLON.getId(), 1, withModLoadedGreaterMood(new BiomeLock(Optional.empty(), Optional.of(Collections.singletonList(ModTags.Biomes.THE_HALLOW))), WaystonesHelper.MODID)))
-                .add(new DeferredMoneyTradeItem(WaystonesHelper.MUSHROOM_PYLON.getId(), 1, withModLoadedGreaterMood(new BiomeLock(Optional.of(Collections.singletonList(ModBiomes.GLOWING_MUSHROOM)), Optional.empty()), WaystonesHelper.MODID)));
+                .add(new DeferredMoneyTradeItem(WaystonesHelper.FOREST_PYLON.getId(), 1, ITradeLock.and(BiomeLock.of(Tags.Biomes.IS_FOREST, Tags.Biomes.IS_PLAINS), goodMoodLock, waystonesLock)))
+                .add(new DeferredMoneyTradeItem(WaystonesHelper.SNOW_PYLON.getId(), 1, ITradeLock.and(BiomeLock.of(Tags.Biomes.IS_SNOWY, Tags.Biomes.IS_ICY), goodMoodLock, waystonesLock)))
+                .add(new DeferredMoneyTradeItem(WaystonesHelper.DESERT_PYLON.getId(), 1, ITradeLock.and(BiomeLock.of(Tags.Biomes.IS_DESERT, Tags.Biomes.IS_BADLANDS), goodMoodLock, waystonesLock)))
+                .add(new DeferredMoneyTradeItem(WaystonesHelper.CAVERN_PYLON.getId(), 1, ITradeLock.and(PositionLock.ofY(MinMaxBounds.Ints.atMost(OverworldUtils.getSurfaceY())), goodMoodLock, waystonesLock)))
+                .add(new DeferredMoneyTradeItem(WaystonesHelper.OCEAN_PYLON.getId(), 1, ITradeLock.and(BiomeLock.of(Tags.Biomes.IS_OCEAN), goodMoodLock, waystonesLock)))
+                .add(new DeferredMoneyTradeItem(WaystonesHelper.JUNGLE_PYLON.getId(), 1, ITradeLock.and(BiomeLock.of(Tags.Biomes.IS_JUNGLE), goodMoodLock, waystonesLock)))
+                .add(new DeferredMoneyTradeItem(WaystonesHelper.HALLOW_PYLON.getId(), 1, ITradeLock.and(BiomeLock.of(ModTags.Biomes.THE_HALLOW), goodMoodLock, waystonesLock)))
+                .add(new DeferredMoneyTradeItem(WaystonesHelper.MUSHROOM_PYLON.getId(), 1, ITradeLock.and(BiomeLock.of(ModBiomes.GLOWING_MUSHROOM), goodMoodLock, waystonesLock)));
     }
 
     protected ITradeLock withModLoaded(String modid) {
         return new ConditionsLock(new ModLoadedCondition(modid));
-    }
-
-    protected ITradeLock withModLoadedGreaterMood(ITradeLock subLock, String modid) {
-        return ITradeLock.and(MoodLock.greater(120), withModLoaded(modid), subLock);
     }
 
     @Override

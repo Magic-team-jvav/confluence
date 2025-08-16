@@ -5,6 +5,7 @@ import org.confluence.mod.Confluence;
 public class AllSpriteShifts {
     public static final CTSpriteShiftEntry ECHO_BLOCK = omni("echo_block");
     public static final CTSpriteShiftEntry BLUE_GEL_BLOCK = omni("blue_gel_block");
+    public static final CTSpriteShiftEntry FROZEN_GEL_BLOCK = omni("frozen_gel_block");
     public static final CTSpriteShiftEntry ANDESITE_CASING = omni("andesite_casing");
     public static final CTSpriteShiftEntry SUN_PLATE = omni("sun_plate");
     public static final CTSpriteShiftEntry PURE_GLASS = omni("pure_glass");

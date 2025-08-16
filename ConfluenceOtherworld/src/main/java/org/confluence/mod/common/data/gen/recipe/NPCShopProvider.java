@@ -280,7 +280,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                                 .put(QuestedFishes.ZOMBIE_FISH.toStack(), ITradeLock.and(forestLock, surfaceThroughSpaceLock))
                                 .put(QuestedFishes.SCARAB_FISH.toStack(), desertLock)
                                 .put(QuestedFishes.SCORPIO_FISH.toStack(), desertLock)
-                                .put(QuestedFishes.CAP_TUNABEARD.toStack(), ITradeLock.and(oceanLock, surfaceThroughUltraLock))
+                                .put(QuestedFishes.CAPN_TUNABEARD.toStack(), ITradeLock.and(oceanLock, surfaceThroughUltraLock))
                                 .put(QuestedFishes.CLOUDFISH.toStack(), ITradeLock.and(oceanLock, surfaceThroughUltraLock))
                                 .put(QuestedFishes.BUMBLEBEE_TUNA.toStack(), FishingHookInFluidLock.of(true, Tags.Fluids.HONEY))
                                 .put(QuestedFishes.ANGELFISH.toStack(), ITradeLock.and(notEvilBiomes, spaceThroughUltraLock, AnyBossDefeatedLock.INSTANCE))

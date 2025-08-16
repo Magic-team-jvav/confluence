@@ -17,7 +17,7 @@ public class QuestedFishes {
             BONEFISH = register("bonefish"), // 骨鱼
             BUMBLEBEE_TUNA = register("bumblebee_tuna"), // 大黄蜂金枪鱼
             BUNNYFISH = register("bunnyfish"), // 兔兔鱼
-            CAP_TUNABEARD = register("cap_tunabeard"), // 金枪鱼船长
+            CAPN_TUNABEARD = register("capn_tunabeard"), // 金枪鱼船长
             INFECTED_SCABBARDFISH = register("infected_scabbardfish"), // 染病鞘鱼
             JEWELFISH = register("jewelfish"), // 宝石鱼
             MIRAGE_FISH = register("mirage_fish"), // 混沌鱼

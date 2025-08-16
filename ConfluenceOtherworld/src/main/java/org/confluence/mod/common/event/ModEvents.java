@@ -461,7 +461,9 @@ public final class ModEvents {
                 .register("confluence:night_edge", "confluence:nights_edge")
                 // 1.1.4 -> 1.1.5
                 .register("confluence:crystal_shards_item", "confluence:crystal_shards")
-                .register("confluence:throwing_knives", "confluence:throwing_knive");
+                .register("confluence:throwing_knives", "confluence:throwing_knive")
+                 // 1.1.4 -> 1.2.0
+                .register("confluence:cap_tunabeard", "confluence:capn_tunabeard");
     }
 
     @SubscribeEvent

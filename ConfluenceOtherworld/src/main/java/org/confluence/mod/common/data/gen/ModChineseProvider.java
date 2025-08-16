@@ -3896,7 +3896,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(QuestedFishes.BONEFISH.get(), "骨鱼");
         add(QuestedFishes.BUMBLEBEE_TUNA.get(), "大黄蜂金枪鱼");
         add(QuestedFishes.BUNNYFISH.get(), "兔兔鱼");
-        add(QuestedFishes.CAP_TUNABEARD.get(), "金枪鱼船长");
+        add(QuestedFishes.CAPN_TUNABEARD.get(), "金枪鱼须船长");
         add(QuestedFishes.CATFISH.get(), "猫猫鱼");
         add(QuestedFishes.CLOUDFISH.get(), "云朵鱼");
         add(QuestedFishes.CLOWNFISH.get(), "小丑鱼");

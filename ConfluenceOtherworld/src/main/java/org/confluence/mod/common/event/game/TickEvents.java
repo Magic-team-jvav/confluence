@@ -97,6 +97,7 @@ public final class TickEvents {
             ExtraInventory.of(player).sync(player);
             ServerLevel serverLevel = player.serverLevel();
             AchievementUtils.youCanDoIt(player, serverLevel);
+            AchievementUtils.quietNeighborhood(player, serverLevel);
             TheConstant.applyDarkness(player, serverLevel);
             DungeonStructure.checkSkeletronDefeated(player, serverLevel);
             if (iPlayer.confluence$chunkPosChanged()) {

@@ -110,7 +110,7 @@ public final class GameClientEvents {
         if (gameTime % 40 == 2) {
             ModClientSetups.inEctoMist = DynamicBiomeUtils.getISection(player.level(), player.blockPosition()).confluence$isEctoMist();
         }
-        if (ModClientSetups.inEctoMist) {
+        if (ModClientSetups.inEctoMist && !minecraft.isPaused()) {
             player.level().addParticle(ParticleTypes.SOUL,
                     player.getX() + (player.getRandom().nextDouble() - 0.5) * 8,
                     player.getY() + (player.getRandom().nextDouble() - 0.25) * 8,
@@ -393,45 +393,43 @@ public final class GameClientEvents {
     @SubscribeEvent
     public static void fogColor(ViewportEvent.ComputeFogColor event) {
         LocalPlayer player = Minecraft.getInstance().player;
-        if (player != null) {
-            if (ModClientSetups.inEctoMist) {
-                if (ModClientSetups.ectoMistStep > 0.0F) {
-                    ModClientSetups.ectoMistStep -= 0.5F / Minecraft.getInstance().getFps();
-                }
-                float exp = Mth.clamp(ModClientSetups.ectoMistStep, 0.5F, 1.0F);
-                event.setRed(exp);
-                event.setGreen(exp);
-                event.setBlue(exp);
-            } else if (ModClientSetups.ectoMistStep < 1.0F) {
-                ModClientSetups.ectoMistStep += 0.5F / Minecraft.getInstance().getFps();
-                float exp = Mth.clamp(ModClientSetups.ectoMistStep, 0.5F, 1.0F);
-                event.setRed(exp);
-                event.setGreen(exp);
-                event.setBlue(exp);
+        if (player == null) return;
+        if (ModClientSetups.inEctoMist) {
+            if (ModClientSetups.ectoMistStep > 0.0F) {
+                ModClientSetups.ectoMistStep -= 0.5F / Minecraft.getInstance().getFps();
             }
+            float exp = Mth.clamp(ModClientSetups.ectoMistStep, 0.5F, 1.0F);
+            event.setRed(exp);
+            event.setGreen(exp);
+            event.setBlue(exp);
+        } else if (ModClientSetups.ectoMistStep < 1.0F) {
+            ModClientSetups.ectoMistStep += 0.5F / Minecraft.getInstance().getFps();
+            float exp = Mth.clamp(ModClientSetups.ectoMistStep, 0.5F, 1.0F);
+            event.setRed(exp);
+            event.setGreen(exp);
+            event.setBlue(exp);
         }
     }
 
     @SubscribeEvent
     public static void renderFog(ViewportEvent.RenderFog event) {
         LocalPlayer player = Minecraft.getInstance().player;
-        if (player != null) {
-            if (ModClientSetups.inEctoMist) {
-                float exp = (float) EasingType.exp(ModClientSetups.ectoMistStep);
-                event.setNearPlaneDistance(Mth.lerp(exp, 4, ModClientSetups.originalNearFog));
-                event.setFarPlaneDistance(Mth.lerp(exp, 8, ModClientSetups.originalFarFog));
-                event.setFogShape(FogShape.SPHERE);
-                event.setCanceled(true);
-            } else if (ModClientSetups.ectoMistStep < 1.0F) {
-                float exp = (float) EasingType.exp(ModClientSetups.ectoMistStep);
-                event.setNearPlaneDistance(Mth.lerp(exp, 4, ModClientSetups.originalNearFog * 0.5F));
-                event.setFarPlaneDistance(Mth.lerp(exp, 8, ModClientSetups.originalFarFog * 0.5F));
-                event.setFogShape(FogShape.SPHERE);
-                event.setCanceled(true);
-            } else {
-                ModClientSetups.originalNearFog = event.getNearPlaneDistance();
-                ModClientSetups.originalFarFog = event.getFarPlaneDistance();
-            }
+        if (player == null) return;
+        if (ModClientSetups.inEctoMist) {
+            float exp = (float) EasingType.exp(ModClientSetups.ectoMistStep);
+            event.setNearPlaneDistance(Mth.lerp(exp, 4, ModClientSetups.originalNearFog));
+            event.setFarPlaneDistance(Mth.lerp(exp, 8, ModClientSetups.originalFarFog));
+            event.setFogShape(FogShape.SPHERE);
+            event.setCanceled(true);
+        } else if (ModClientSetups.ectoMistStep < 1.0F) {
+            float exp = (float) EasingType.exp(ModClientSetups.ectoMistStep);
+            event.setNearPlaneDistance(Mth.lerp(exp, 4, ModClientSetups.originalNearFog * 0.5F));
+            event.setFarPlaneDistance(Mth.lerp(exp, 8, ModClientSetups.originalFarFog * 0.5F));
+            event.setFogShape(FogShape.SPHERE);
+            event.setCanceled(true);
+        } else {
+            ModClientSetups.originalNearFog = event.getNearPlaneDistance();
+            ModClientSetups.originalFarFog = event.getFarPlaneDistance();
         }
     }
 }

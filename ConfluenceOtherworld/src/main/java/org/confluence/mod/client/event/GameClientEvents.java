@@ -1,6 +1,7 @@
 package org.confluence.mod.client.event;
 
 import com.ibm.icu.impl.Pair;
+import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.datafixers.util.Either;
 import com.xiaohunao.equipment_benediction.api.manager.EquipmentSetManager;
 import com.xiaohunao.equipment_benediction.common.equipment_set.EquipmentSetBranch;
@@ -17,6 +18,7 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -26,6 +28,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.stats.Stat;
 import net.minecraft.stats.Stats;
 import net.minecraft.stats.StatsCounter;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -70,15 +73,13 @@ import org.confluence.mod.integration.xaero.XaeroHelper;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.ILocalPlayer;
 import org.confluence.mod.network.c2s.LanceAttackPacketC2S;
-import org.confluence.mod.util.ClientUtils;
-import org.confluence.mod.util.DeathAnimUtils;
-import org.confluence.mod.util.ModUtils;
-import org.confluence.mod.util.PrefixUtils;
+import org.confluence.mod.util.*;
 import org.confluence.terra_curio.api.event.PerformJumpingEvent;
 import org.confluence.terraentity.api.event.NPCEvent;
 import org.confluence.terraentity.entity.npc.AnglerNPC;
 import org.confluence.terraentity.init.entity.TENpcEntities;
 import org.confluence.terraentity.registries.npc_trade_task.variant.DynamicAnglerTradeTask;
+import software.bernie.geckolib.animation.EasingType;
 import software.bernie.geckolib.event.GeoRenderEvent;
 
 import java.util.Collection;
@@ -92,20 +93,29 @@ public final class GameClientEvents {
     @SubscribeEvent
     public static void clientTick$Pre(ClientTickEvent.Pre event) {
         Minecraft minecraft = Minecraft.getInstance();
+        LocalPlayer player = minecraft.player;
+        if (player == null) return;
+        long gameTime = player.level().getGameTime();
 
-        if (minecraft.gameMode != null && !minecraft.gameMode.isDestroying()) {
-            LocalPlayer player = minecraft.player;
-            if (player != null && minecraft.options.keyAttack.isDown()) {
-                ItemStack itemStack = player.getMainHandItem();
-                if (!itemStack.isEmpty() && itemStack.getItem() instanceof AbstractLanceItem lanceItem) {
-                    CompoundTag tag = LibUtils.getItemStackNbtIfPresent(itemStack);
-                    if (tag != null) {
-                        if (player.level().getGameTime() - tag.getLong(AbstractLanceItem.LAST_ATTACK_TIME_KEY) > lanceItem.getAttackDuration()) {
-                            LanceAttackPacketC2S.sendToServer();
-                        }
-                    }
+        if (minecraft.gameMode != null && !minecraft.gameMode.isDestroying() && minecraft.options.keyAttack.isDown()) {
+            ItemStack itemStack = player.getMainHandItem();
+            if (!itemStack.isEmpty() && itemStack.getItem() instanceof AbstractLanceItem lanceItem) {
+                CompoundTag tag = LibUtils.getItemStackNbtIfPresent(itemStack);
+                if (tag != null && gameTime - tag.getLong(AbstractLanceItem.LAST_ATTACK_TIME_KEY) > lanceItem.getAttackDuration()) {
+                    LanceAttackPacketC2S.sendToServer();
                 }
             }
+        }
+
+        if (gameTime % 40 == 2) {
+            ModClientSetups.inEctoMist = DynamicBiomeUtils.getISection(player.level(), player.blockPosition()).confluence$isEctoMist();
+        }
+        if (ModClientSetups.inEctoMist) {
+            player.level().addParticle(ParticleTypes.SOUL,
+                    player.getX() + (player.getRandom().nextDouble() - 0.5) * 8,
+                    player.getY() + (player.getRandom().nextDouble() - 0.25) * 8,
+                    player.getZ() + (player.getRandom().nextDouble() - 0.5) * 8,
+                    0, 0, 0);
         }
     }
 
@@ -122,6 +132,7 @@ public final class GameClientEvents {
             ClientPacketHandler.reset();
             CompatibilityHandler.reset();
             DropletsHandler.clear();
+            ModClientSetups.inEctoMist = false;
         } else {
             BaseSwordItem.swordProjectileHandle(minecraft, player);
             HookThrowingHandler.handle(player);
@@ -375,6 +386,51 @@ public final class GameClientEvents {
             DynamicAnglerTradeTask task = angler.getFirstTask();
             if (task != null && task.canTrade(angler, 0)) {
                 event.setNeoDialog(Component.translatable("dialogs.confluence.angler." + task.getCurrentCost().getDescriptionId()));
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void fogColor(ViewportEvent.ComputeFogColor event) {
+        LocalPlayer player = Minecraft.getInstance().player;
+        if (player != null) {
+            if (ModClientSetups.inEctoMist) {
+                if (ModClientSetups.ectoMistStep > 0.0F) {
+                    ModClientSetups.ectoMistStep -= 0.5F / Minecraft.getInstance().getFps();
+                }
+                float exp = Mth.clamp(ModClientSetups.ectoMistStep, 0.5F, 1.0F);
+                event.setRed(exp);
+                event.setGreen(exp);
+                event.setBlue(exp);
+            } else if (ModClientSetups.ectoMistStep < 1.0F) {
+                ModClientSetups.ectoMistStep += 0.5F / Minecraft.getInstance().getFps();
+                float exp = Mth.clamp(ModClientSetups.ectoMistStep, 0.5F, 1.0F);
+                event.setRed(exp);
+                event.setGreen(exp);
+                event.setBlue(exp);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void renderFog(ViewportEvent.RenderFog event) {
+        LocalPlayer player = Minecraft.getInstance().player;
+        if (player != null) {
+            if (ModClientSetups.inEctoMist) {
+                float exp = (float) EasingType.exp(ModClientSetups.ectoMistStep);
+                event.setNearPlaneDistance(Mth.lerp(exp, 4, ModClientSetups.originalNearFog));
+                event.setFarPlaneDistance(Mth.lerp(exp, 8, ModClientSetups.originalFarFog));
+                event.setFogShape(FogShape.SPHERE);
+                event.setCanceled(true);
+            } else if (ModClientSetups.ectoMistStep < 1.0F) {
+                float exp = (float) EasingType.exp(ModClientSetups.ectoMistStep);
+                event.setNearPlaneDistance(Mth.lerp(exp, 4, ModClientSetups.originalNearFog * 0.5F));
+                event.setFarPlaneDistance(Mth.lerp(exp, 8, ModClientSetups.originalFarFog * 0.5F));
+                event.setFogShape(FogShape.SPHERE);
+                event.setCanceled(true);
+            } else {
+                ModClientSetups.originalNearFog = event.getNearPlaneDistance();
+                ModClientSetups.originalFarFog = event.getFarPlaneDistance();
             }
         }
     }

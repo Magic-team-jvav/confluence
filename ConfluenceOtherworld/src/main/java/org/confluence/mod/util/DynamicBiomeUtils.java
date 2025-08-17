@@ -16,9 +16,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.chunk.PalettedContainer;
-import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.ReturnException;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.mixed.IChunkSection;
@@ -156,7 +154,7 @@ public final class DynamicBiomeUtils {
      */
     @SuppressWarnings("unchecked")
     public static void applyDynamicBiome(ChunkAccess chunk) {
-        LibUtils.devRun(() -> Confluence.LOGGER.debug("protoToLevel {}", chunk));
+        //LibUtils.devRun(() -> Confluence.LOGGER.debug("protoToLevel {}", chunk));
         Holder<Biome> belowBiome = null;
         for (LevelChunkSection section : chunk.getSections()) {
             section.recalcBlockCounts();

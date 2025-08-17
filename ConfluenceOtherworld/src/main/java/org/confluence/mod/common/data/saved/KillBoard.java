@@ -27,6 +27,8 @@ import org.confluence.mod.util.OverworldUtils;
 import org.confluence.phase_journey.common.util.PhaseUtils;
 import org.confluence.terraentity.init.entity.TEBossEntities;
 
+import java.util.Set;
+
 public final class KillBoard implements IGlobalData {
     public static final KillBoard INSTANCE = new KillBoard();
     public static final Codec<Object2BooleanMap<EntityType<?>>> DEFEATED_BOSSES_CODEC = new Codec<>() {
@@ -71,31 +73,12 @@ public final class KillBoard implements IGlobalData {
             })), Lifecycle.stable());
         }
     };
-    public static final StreamCodec<ByteBuf, KillBoard> STREAM_CODEC = new StreamCodec<>() {
-        private final StreamCodec<ByteBuf, Object2BooleanMap<EntityType<?>>> bossesCodec = ByteBufCodecs.map(Object2BooleanOpenHashMap::new,
-                ResourceLocation.STREAM_CODEC.map(BuiltInRegistries.ENTITY_TYPE::get, BuiltInRegistries.ENTITY_TYPE::getKey), ByteBufCodecs.BOOL
-        );
-        private final StreamCodec<ByteBuf, Object2BooleanMap<ResourceKey<Moment>>> eventsCodec = ByteBufCodecs.map(Object2BooleanOpenHashMap::new,
-                ResourceKey.streamCodec(HDMRegistries.Keys.MOMENT), ByteBufCodecs.BOOL
-        );
-
-        @Override
-        public KillBoard decode(ByteBuf buffer) {
-            KillBoard instance = KillBoard.INSTANCE;
-            instance.clear();
-            instance.defeatedBosses.putAll(bossesCodec.decode(buffer));
-            instance.defeatedEvents.putAll(eventsCodec.decode(buffer));
-            instance.gamePhase = GamePhase.STREAM_CODEC.decode(buffer);
-            return instance;
-        }
-
-        @Override
-        public void encode(ByteBuf buffer, KillBoard value) {
-            bossesCodec.encode(buffer, value.defeatedBosses);
-            eventsCodec.encode(buffer, value.defeatedEvents);
-            GamePhase.STREAM_CODEC.encode(buffer, value.gamePhase);
-        }
-    };
+    public static final StreamCodec<ByteBuf, Object2BooleanMap<EntityType<?>>> DEFEATED_BOSSES_STREAM_CODEC = ByteBufCodecs.map(Object2BooleanOpenHashMap::new,
+            ResourceLocation.STREAM_CODEC.map(BuiltInRegistries.ENTITY_TYPE::get, BuiltInRegistries.ENTITY_TYPE::getKey), ByteBufCodecs.BOOL
+    );
+    public static final StreamCodec<ByteBuf, Object2BooleanMap<ResourceKey<Moment>>> DEFEATED_EVENTS_STREAM_CODEC = ByteBufCodecs.map(Object2BooleanOpenHashMap::new,
+            ResourceKey.streamCodec(HDMRegistries.Keys.MOMENT), ByteBufCodecs.BOOL
+    );
 
     private final Object2BooleanMap<EntityType<?>> defeatedBosses = new Object2BooleanOpenHashMap<>();
     private final Object2BooleanMap<ResourceKey<Moment>> defeatedEvents = new Object2BooleanOpenHashMap<>();
@@ -135,8 +118,12 @@ public final class KillBoard implements IGlobalData {
         return count;
     }
 
-    public int getDefeatedBoss() {
-        return defeatedBosses.size();
+    public Set<EntityType<?>> getDefeatedBosses() {
+        return defeatedBosses.keySet();
+    }
+
+    public Set<ResourceKey<Moment>> getDefeatedEvents() {
+        return defeatedEvents.keySet();
     }
 
     public void defeat(EntityType<?> entityType) {
@@ -145,11 +132,14 @@ public final class KillBoard implements IGlobalData {
             setGamePhase(ServerLifecycleHooks.getCurrentServer(), GamePhase.AFTER_SKELETRON);
         } else if (entityType == TEBossEntities.WALL_OF_FLESH.get() || entityType == TEBossEntities.HILL_OF_FLESH.get()) {
             setGamePhase(ServerLifecycleHooks.getCurrentServer(), GamePhase.WALL_OF_FLESH);
+        } else {
+            KillBoardSyncPacketS2C.sendToAll();
         }
     }
 
     public void defeat(Moment moment) {
         HDMRegistries.MOMENT.getResourceKey(moment).ifPresentOrElse(key -> defeatedEvents.put(key, true), () -> Confluence.LOGGER.warn("Unknown moment: {}", moment));
+        KillBoardSyncPacketS2C.sendToAll();
     }
 
     public GamePhase getGamePhase() {
@@ -166,6 +156,19 @@ public final class KillBoard implements IGlobalData {
             PhaseUtils.achieveLevelPhase(OverworldUtils.getLevel(server), ChlorophyteOreBlock.PHASE, true);
             HardmodeConvertor.INSTANCE.start(server, false);
         }
+    }
+
+    public void networkEncode(ByteBuf buffer) {
+        DEFEATED_BOSSES_STREAM_CODEC.encode(buffer, defeatedBosses);
+        DEFEATED_EVENTS_STREAM_CODEC.encode(buffer, defeatedEvents);
+        GamePhase.STREAM_CODEC.encode(buffer, gamePhase);
+    }
+
+    public void networkDecode(ByteBuf buffer) {
+        clear();
+        this.defeatedBosses.putAll(DEFEATED_BOSSES_STREAM_CODEC.decode(buffer));
+        this.defeatedEvents.putAll(DEFEATED_EVENTS_STREAM_CODEC.decode(buffer));
+        this.gamePhase = GamePhase.STREAM_CODEC.decode(buffer);
     }
 
     @Override

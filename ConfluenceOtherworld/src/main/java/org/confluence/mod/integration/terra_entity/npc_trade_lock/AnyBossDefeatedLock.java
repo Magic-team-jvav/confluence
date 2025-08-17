@@ -16,7 +16,7 @@ public class AnyBossDefeatedLock implements ITradeLock {
 
     @Override
     public boolean canTrade(Player player, ITradeHolder npc, int index) {
-        return KillBoard.INSTANCE.getDefeatedBoss() > 0;
+        return !KillBoard.INSTANCE.getDefeatedBosses().isEmpty();
     }
 
     @Override

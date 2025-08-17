@@ -9,10 +9,21 @@ import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.KillBoard;
 
-public class KillBoardSyncPacketS2C implements CustomPacketPayload {
+public final class KillBoardSyncPacketS2C implements CustomPacketPayload {
     public static final Type<KillBoardSyncPacketS2C> TYPE = new Type<>(Confluence.asResource("kill_board_sync"));
     public static final KillBoardSyncPacketS2C INSTANCE = new KillBoardSyncPacketS2C();
-    public static final StreamCodec<ByteBuf, KillBoardSyncPacketS2C> STREAM_CODEC = KillBoard.STREAM_CODEC.map(v -> INSTANCE, o -> KillBoard.INSTANCE);
+    public static final StreamCodec<ByteBuf, KillBoardSyncPacketS2C> STREAM_CODEC = new StreamCodec<>() {
+        @Override
+        public KillBoardSyncPacketS2C decode(ByteBuf buffer) {
+            KillBoard.INSTANCE.networkDecode(buffer);
+            return INSTANCE;
+        }
+
+        @Override
+        public void encode(ByteBuf buffer, KillBoardSyncPacketS2C value) {
+            KillBoard.INSTANCE.networkEncode(buffer);
+        }
+    };
 
     private KillBoardSyncPacketS2C() {}
 

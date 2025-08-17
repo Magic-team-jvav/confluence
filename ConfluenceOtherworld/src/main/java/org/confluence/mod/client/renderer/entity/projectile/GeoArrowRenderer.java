@@ -7,6 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.confluence.mod.common.entity.projectile.range.arrow.HellBatArrowEntity;
 import org.confluence.terraentity.client.entity.renderer.GeoNormalRenderer;
+import software.bernie.geckolib.cache.object.BakedGeoModel;
 
 public class GeoArrowRenderer extends GeoNormalRenderer<HellBatArrowEntity> {
 
@@ -21,7 +22,7 @@ public class GeoArrowRenderer extends GeoNormalRenderer<HellBatArrowEntity> {
 
 
     @Override
-    protected void adjustPose(PoseStack poseStack, HellBatArrowEntity animatable, float partialTick){
+    protected void adjustPose(PoseStack poseStack, HellBatArrowEntity animatable, BakedGeoModel model, float partialTick){
         poseStack.translate(0, 0F, 0.0F);
         poseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTick,animatable.yRotO, animatable.getYRot()) - 90.0F));
         poseStack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTick,animatable.xRotO, animatable.getXRot())));

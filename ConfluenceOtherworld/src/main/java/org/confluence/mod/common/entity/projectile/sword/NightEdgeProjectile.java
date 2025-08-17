@@ -52,7 +52,7 @@ public class NightEdgeProjectile extends SwordProjectile<NightEdgeProjectile> im
         ));
 
 
-        this.rotAnimation = Vec3KeyframeAnimation.Builder()
+        this.rotAnimation = Vec3KeyframeAnimation.builder()
                 .addKeyframe(new Keyframe(0, 0, 0,1,0,1), new Vec3(0,135,120))
                 .addKeyframe(new Keyframe(3, 0, 0,1,0,1), new Vec3(0,45,120))
                 .addKeyframe(new Keyframe(6, 0, 0,1,0,1), new Vec3(0,-45,120))

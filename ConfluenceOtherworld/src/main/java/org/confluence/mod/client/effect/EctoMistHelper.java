@@ -3,13 +3,13 @@ package org.confluence.mod.client.effect;
 import com.mojang.blaze3d.shaders.FogShape;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ViewportEvent;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.init.ModParticleTypes;
 import org.confluence.mod.util.DynamicBiomeUtils;
 import software.bernie.geckolib.animation.EasingType;
 
@@ -24,11 +24,11 @@ public class EctoMistHelper {
         if (player.level().getGameTime() % 40 == 2) {
             isGraveyard = DynamicBiomeUtils.getISection(player.level(), player.blockPosition()).confluence$isGraveyard();
         }
-        if (isGraveyard && !minecraft.isPaused()) {
-            player.level().addParticle(ParticleTypes.SOUL,
-                    player.getX() + (player.getRandom().nextDouble() - 0.5) * 8,
-                    player.getY() + (player.getRandom().nextDouble() - 0.25) * 8,
-                    player.getZ() + (player.getRandom().nextDouble() - 0.5) * 8,
+        if (isGraveyard && !minecraft.isPaused() && player.getRandom().nextInt(10) == 0) {
+            player.level().addParticle(ModParticleTypes.ECTO_MIST.get(),
+                    player.getX() + (player.getRandom().nextDouble() - 0.5) * 16,
+                    player.getY() + player.getRandom().nextDouble() * 4,
+                    player.getZ() + (player.getRandom().nextDouble() - 0.5) * 16,
                     0, 0, 0);
         }
     }
@@ -49,6 +49,8 @@ public class EctoMistHelper {
             event.setRed(exp);
             event.setGreen(exp);
             event.setBlue(exp);
+        } else {
+            ectoMistStep = 1.0F;
         }
     }
 

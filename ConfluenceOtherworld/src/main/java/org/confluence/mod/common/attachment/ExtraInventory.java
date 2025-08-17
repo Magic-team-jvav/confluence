@@ -434,7 +434,7 @@ public class ExtraInventory implements Container, INBTSerializable<CompoundTag> 
         } else if (index < TRASH_START) {
             setEquipment(index - EQUIPMENT_DYE_START, stack, true);
         } else if (index < ACCESSORY_DYE_START) {
-            setTrash(trash);
+            setTrash(stack);
         } else if (index < getContainerSize()) {
             setAccessoryDye(index - ACCESSORY_DYE_START, stack);
         }

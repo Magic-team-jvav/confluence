@@ -10,9 +10,16 @@ public interface IChunkSection {
     BlockCounts confluence$getBlockCounts();
 
     PalettedContainerRO<Holder<Biome>> confluence$getBackupBiome();
+
     void confluence$setBackupBiome(PalettedContainerRO<Holder<Biome>> biome);
+
     void confluence$setBiomes(PalettedContainerRO<Holder<Biome>> biomes);
+
     Holder<Biome> confluence$getBiomeByKey(ResourceKey<Biome> key);
 
-    boolean confluence$isGraveyard();
+    boolean confluence$isEctoMist();
+
+    default boolean confluence$isGraveyard() {
+        return confluence$isEctoMist();
+    }
 }

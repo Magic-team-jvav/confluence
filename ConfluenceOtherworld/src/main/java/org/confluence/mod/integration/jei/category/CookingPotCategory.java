@@ -25,7 +25,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-import static org.confluence.terra_curio.integration.jei.ModJeiPlugin.addInput;
+import static org.confluence.mod.integration.jei.ModJeiPlugin.addInput;
 
 public class CookingPotCategory implements IRecipeCategory<RecipeHolder<CookingPotRecipe>> {
     public static final RecipeType<RecipeHolder<CookingPotRecipe>> TYPE = RecipeType.createRecipeHolderType(Confluence.asResource("cooking_pot"));

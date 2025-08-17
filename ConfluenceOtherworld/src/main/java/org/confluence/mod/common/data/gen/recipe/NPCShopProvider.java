@@ -78,7 +78,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
         SecretFlagLock theCrimsonWorldLock = new SecretFlagLock(IWorldOptions.THE_CRIMSON);
         SecretFlagLock hardmodeLock = new SecretFlagLock(IWorldOptions.HARDMODE);
         MomentLock bloodMoonLock = new MomentLock(TMMoments.BLOOD_MOON.getKey());
-        EnvironmentLock graveyardLock = new EnvironmentLock(EnvironmentLevelAccess.matcher(null, null, true));
+        EnvironmentLock ectoMistLock = new EnvironmentLock(EnvironmentLevelAccess.matcher(null, null, true));
         BiomeLock glowingMushroomLock = BiomeLock.of(ModBiomes.GLOWING_MUSHROOM);
         BiomeLock theCrimsonLock = BiomeLock.of(ModTags.Biomes.THE_CRIMSON);
         BiomeLock theCorruptionLock = BiomeLock.of(ModTags.Biomes.THE_CORRUPTION);
@@ -194,7 +194,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                         .build())
                 .add(new MoneyTradeItem.Builder()
                         .setResult(ModItems.CRIMSON_SEED)
-                        .setProperties(TradeProperties.builder().setLock(ITradeLock.and(ITradeLock.or(bloodMoonLock, graveyardLock), theCorruptionWorldLock)).build())
+                        .setProperties(TradeProperties.builder().setLock(ITradeLock.and(ITradeLock.or(bloodMoonLock, ectoMistLock), theCorruptionWorldLock)).build())
                         .build())
                 .add(new MoneyTradeItem.Builder()
                         .setResult(ConsumableItems.VILE_POWDER.toStack())
@@ -206,7 +206,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                         .build())
                 .add(new MoneyTradeItem.Builder()
                         .setResult(ModItems.CORRUPT_SEED)
-                        .setProperties(TradeProperties.builder().setLock(ITradeLock.and(ITradeLock.or(bloodMoonLock, graveyardLock), theCrimsonWorldLock)).build())
+                        .setProperties(TradeProperties.builder().setLock(ITradeLock.and(ITradeLock.or(bloodMoonLock, ectoMistLock), theCrimsonWorldLock)).build())
                         .build())
                 .add(SellTrade.INSTANCE)
                 .build());

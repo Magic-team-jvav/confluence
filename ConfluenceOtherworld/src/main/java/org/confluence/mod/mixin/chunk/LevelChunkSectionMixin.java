@@ -42,8 +42,8 @@ public abstract class LevelChunkSectionMixin implements IChunkSection {
     }
 
     @Override
-    public boolean confluence$isGraveyard() {
-        return confluence$blockCounts.isGraveyard();
+    public boolean confluence$isEctoMist() {
+        return confluence$blockCounts.isEctoMist();
     }
 
     @Override

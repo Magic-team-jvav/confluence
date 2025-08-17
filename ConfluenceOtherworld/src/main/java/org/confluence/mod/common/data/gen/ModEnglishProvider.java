@@ -106,7 +106,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.jei.drop_chance", "Chance: %s%%");
         add("jei.tooltip.error.recipe.transfer.biome", "Not in correct biomes: %s");
         add("jei.tooltip.error.recipe.transfer.block", "No %2$s were found within %1$s meters");
-        add("jei.tooltip.error.recipe.transfer.graveyard", "Not in the Ecto Mist environment");
+        add("jei.tooltip.error.recipe.transfer.ecto_mist", "Not in the Ecto Mist environment");
 
         add("tooltip.item.confluence.meteorite_ingot.0", "Warm to the touch");
         add("tooltip.item.confluence.encumbering_stone.0", "Prevents item pickups while locked");
@@ -906,7 +906,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("achievements.confluence.to_infinity_and_beyond.title", "To Infinity... and Beyond! ");
         add("achievements.confluence.to_infinity_and_beyond.description", "Fly a Kwad Racer into outer space.");
         add("achievements.confluence.quiet_neighborhood.title", "Quiet Neighborhood");
-        add("achievements.confluence.quiet_neighborhood.description", "Enter a misty graveyard filled with the surly dead.");
+        add("achievements.confluence.quiet_neighborhood.description", "Enter a misty ectoMist filled with the surly dead.");
         add("achievements.confluence.robbing_the_grave.title", "Robbing the Grave");
         add("achievements.confluence.robbing_the_grave.description", "Obtain a rare treasure from a difficult monster in the dungeon.");
 

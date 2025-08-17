@@ -3,7 +3,9 @@ package org.confluence.mod.integration.jei;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
+import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.helpers.IJeiHelpers;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.transfer.IRecipeTransferHandlerHelper;
@@ -18,6 +20,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.block.Blocks;
+import org.confluence.lib.common.recipe.AmountIngredient;
 import org.confluence.lib.common.recipe.EitherAmountRecipe4x;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.AchievementToast;
@@ -31,8 +34,6 @@ import org.confluence.mod.integration.jei.category.*;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.confluence.terra_curio.integration.jei.ModJeiPlugin.addInput;
 
 @JeiPlugin
 public final class ModJeiPlugin implements IModPlugin {
@@ -180,5 +181,21 @@ public final class ModJeiPlugin implements IModPlugin {
             }
         });
         builder.addSlot(RecipeIngredientRole.OUTPUT, 117, 33).addItemStack(recipe.value().getResultItem(null));
+    }
+
+    public static void addInput(IRecipeLayoutBuilder builder, int x, int y, Ingredient ingredient) {
+        addInput(builder, x, y, ingredient, false);
+    }
+
+    public static void addInput(IRecipeLayoutBuilder builder, int x, int y, Ingredient ingredient, boolean directSlot) {
+        if (!ingredient.isEmpty()) {
+            IRecipeSlotBuilder sb;
+            if (ingredient.getCustomIngredient() instanceof AmountIngredient amountIngredient) {
+                sb = builder.addInputSlot(x, y).addIngredients(VanillaTypes.ITEM_STACK, amountIngredient.getItems().toList());
+            } else {
+                sb = builder.addInputSlot(x, y).addIngredients(ingredient);
+            }
+            if (directSlot) sb.setStandardSlotBackground();
+        }
     }
 }

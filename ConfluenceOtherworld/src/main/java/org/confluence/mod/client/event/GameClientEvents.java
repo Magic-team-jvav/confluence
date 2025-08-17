@@ -373,7 +373,7 @@ public final class GameClientEvents {
             }
         } else if (event.getNPC() instanceof AnglerNPC angler) {
             DynamicAnglerTradeTask task = angler.getFirstTask();
-            if (task != null) {
+            if (task != null && task.canTrade(angler, 0)) {
                 event.setNeoDialog(Component.translatable("dialogs.confluence.angler." + task.getCurrentCost().getDescriptionId()));
             }
         }

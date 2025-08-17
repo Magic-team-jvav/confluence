@@ -1,6 +1,7 @@
 package org.confluence.mod.integration.jei.category;
 
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.builder.ITooltipBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IJeiHelpers;
@@ -18,7 +19,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.SkyMillRecipe;
 
-import static org.confluence.terra_curio.integration.jei.ModJeiPlugin.addInput;
+import static org.confluence.mod.integration.jei.ModJeiPlugin.addInput;
 
 public class SkyMillCategory implements IRecipeCategory<RecipeHolder<SkyMillRecipe>> {
     public static final RecipeType<RecipeHolder<SkyMillRecipe>> TYPE = RecipeType.createRecipeHolderType(Confluence.asResource("sky_mill"));
@@ -77,5 +78,11 @@ public class SkyMillCategory implements IRecipeCategory<RecipeHolder<SkyMillReci
     @Override
     public void draw(RecipeHolder<SkyMillRecipe> recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         guiGraphics.blit(BACKGROUND, 0, 0, 0, 0, 72, 72, 72, 72);
+    }
+
+    @Override
+    public void getTooltip(ITooltipBuilder tooltip, RecipeHolder<SkyMillRecipe> recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
+        IRecipeCategory.super.getTooltip(tooltip, recipe, recipeSlotsView, mouseX, mouseY);
+        tooltip.addAll(recipe.value().getEnvironment().toDescriptions());
     }
 }

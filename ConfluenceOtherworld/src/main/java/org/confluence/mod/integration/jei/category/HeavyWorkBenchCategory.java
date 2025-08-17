@@ -3,6 +3,7 @@ package org.confluence.mod.integration.jei.category;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.builder.ITooltipBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotView;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
@@ -98,6 +99,12 @@ public class HeavyWorkBenchCategory implements IRecipeCategory<RecipeHolder<Heav
             }
             guiGraphics.pose().popPose();
         }
+    }
+
+    @Override
+    public void getTooltip(ITooltipBuilder tooltip, RecipeHolder<HeavyWorkBenchRecipe> recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
+        IRecipeCategory.super.getTooltip(tooltip, recipe, recipeSlotsView, mouseX, mouseY);
+        tooltip.addAll(recipe.value().getEnvironment().toDescriptions());
     }
 
     @SuppressWarnings("unchecked")
@@ -209,8 +216,8 @@ public class HeavyWorkBenchCategory implements IRecipeCategory<RecipeHolder<Heav
                 if (!environment.matchesBlock(access.getLevel(), access.getPos())) {
                     return transferHelper.createUserErrorWithTooltip(Component.translatable("jei.tooltip.error.recipe.transfer.block", environment.block().get().inflate(), environment.block().get().toDescription()));
                 }
-                if (!environment.matchesGraveyard(access.getLevel(), access.getPos())) {
-                    return transferHelper.createUserErrorWithTooltip(Component.translatable("jei.tooltip.error.recipe.transfer.graveyard"));
+                if (!environment.matchesEctoMist(access.getLevel(), access.getPos())) {
+                    return transferHelper.createUserErrorWithTooltip(Component.translatable("jei.tooltip.error.recipe.transfer.ecto_mist"));
                 }
             }
 

@@ -15,7 +15,7 @@ public final class BlockCounts {
     public final AtomicInteger sunflower = new AtomicInteger();
     public final AtomicInteger tomb = new AtomicInteger();
 
-    public boolean isGraveyard() {
+    public boolean isEctoMist() {
         return tomb.get() - sunflower.get() >= 7;
     }
 }

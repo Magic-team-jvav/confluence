@@ -91,17 +91,17 @@ public final class TickEvents {
     @SubscribeEvent
     public static void playerTick$Post(PlayerTickEvent.Post event) {
         if (event.getEntity() instanceof ServerPlayer player) {
-            PlayerUtils.regenerateMana(player);
+            ServerLevel level = player.serverLevel();
             IServerPlayer iPlayer = IServerPlayer.of(player);
             iPlayer.confluence$setCouldPickupItem(true);
+            PlayerUtils.regenerateMana(player);
             ExtraInventory.of(player).sync(player);
-            ServerLevel serverLevel = player.serverLevel();
-            AchievementUtils.youCanDoIt(player, serverLevel);
-            AchievementUtils.quietNeighborhood(player, serverLevel);
-            TheConstant.applyDarkness(player, serverLevel);
-            DungeonStructure.checkSkeletronDefeated(player, serverLevel);
+            AchievementUtils.youCanDoIt(player, level);
+            AchievementUtils.quietNeighborhood(player, level);
+            TheConstant.applyDarkness(player, level);
+            DungeonStructure.checkSkeletronDefeated(player, level);
             if (iPlayer.confluence$chunkPosChanged()) {
-                ChunkDropletsData data = serverLevel.getData(ModAttachmentTypes.CHUNK_DROPLETS_DATA);
+                ChunkDropletsData data = level.getData(ModAttachmentTypes.CHUNK_DROPLETS_DATA);
                 Map<ChunkPos, Map<BlockPos, ParticleOptions>> dataMap = data.getDataMap(player, false);
                 if (!dataMap.isEmpty() || data.getLastSync().computeIfAbsent(player.getUUID(), uuid -> new HashSet<>()).stream().anyMatch(dataMap.keySet()::contains)) {
                     PacketDistributor.sendToPlayer(player, new DropletsSyncPacketS2C(dataMap));

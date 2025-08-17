@@ -133,7 +133,7 @@ public final class AchievementUtils {
     }
 
     public static void quietNeighborhood(ServerPlayer player, ServerLevel level) {
-        if (level.getGameTime() % 20 == 2 && DynamicBiomeUtils.getISection(level, player.blockPosition()).confluence$isGraveyard()) {
+        if (level.getGameTime() % 40 == 2 && DynamicBiomeUtils.getISection(level, player.blockPosition()).confluence$isEctoMist()) {
             awardAchievement(player, "quiet_neighborhood");
         }
     }

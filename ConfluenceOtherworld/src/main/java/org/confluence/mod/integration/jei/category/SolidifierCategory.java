@@ -19,7 +19,7 @@ import org.confluence.mod.common.recipe.SolidifierRecipe;
 import org.confluence.terra_furniture.TerraFurniture;
 import org.jetbrains.annotations.Nullable;
 
-import static org.confluence.terra_curio.integration.jei.ModJeiPlugin.addInput;
+import static org.confluence.mod.integration.jei.ModJeiPlugin.addInput;
 
 public class SolidifierCategory implements IRecipeCategory<RecipeHolder<SolidifierRecipe>> {
     public static final RecipeType<RecipeHolder<SolidifierRecipe>> TYPE = RecipeType.createRecipeHolderType(Confluence.asResource("solidifier"));

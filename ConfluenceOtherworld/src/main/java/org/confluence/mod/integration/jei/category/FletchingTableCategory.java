@@ -17,7 +17,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.recipe.FletchingTableRecipe;
 import org.jetbrains.annotations.Nullable;
 
-import static org.confluence.terra_curio.integration.jei.ModJeiPlugin.addInput;
+import static org.confluence.mod.integration.jei.ModJeiPlugin.addInput;
 
 public class FletchingTableCategory implements IRecipeCategory<RecipeHolder<FletchingTableRecipe>> {
     public static final RecipeType<RecipeHolder<FletchingTableRecipe>> TYPE = RecipeType.createRecipeHolderType(Confluence.asResource("fletching_table"));

@@ -18,7 +18,7 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.AlchemyTableRecipe;
 import org.jetbrains.annotations.Nullable;
 
-import static org.confluence.terra_curio.integration.jei.ModJeiPlugin.addInput;
+import static org.confluence.mod.integration.jei.ModJeiPlugin.addInput;
 
 public class AlchemyTableCategory implements IRecipeCategory<RecipeHolder<AlchemyTableRecipe>> {
     public static final RecipeType<RecipeHolder<AlchemyTableRecipe>> TYPE = RecipeType.createRecipeHolderType(Confluence.asResource("alchemy_table"));

@@ -20,7 +20,7 @@ import org.confluence.mod.client.gui.container.EnhanceForgeScreen;
 import org.confluence.mod.common.recipe.EnhancedForgeRecipe;
 import org.jetbrains.annotations.Nullable;
 
-import static org.confluence.terra_curio.integration.jei.ModJeiPlugin.addInput;
+import static org.confluence.mod.integration.jei.ModJeiPlugin.addInput;
 
 public abstract class EnhancedForgeCategory<R extends EnhancedForgeRecipe> implements IRecipeCategory<RecipeHolder<R>> {
     private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/hellforge.png");

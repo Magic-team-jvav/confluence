@@ -1,6 +1,5 @@
 package org.confluence.mod.common.event;
 
-import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackLocationInfo;
@@ -13,7 +12,6 @@ import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -52,8 +50,6 @@ import org.confluence.lib.util.ConfluenceResources;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.common.block.common.AetheriumCauldronBlock;
-import org.confluence.mod.common.block.common.HoneyCauldronBlock;
 import org.confluence.mod.common.block.natural.ChlorophyteOreBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.block.natural.StepRevealingBlock;
@@ -64,7 +60,10 @@ import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.entity.TargetDummyEntity;
 import org.confluence.mod.common.init.*;
-import org.confluence.mod.common.init.block.*;
+import org.confluence.mod.common.init.block.ChestBlocks;
+import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.common.init.block.ModBlocks;
+import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.integration.jei.RecipeTransferPacketC2S;
@@ -74,13 +73,13 @@ import org.confluence.mod.integration.waystones.WaystonesHelper;
 import org.confluence.mod.network.c2s.*;
 import org.confluence.mod.network.s2c.*;
 import org.confluence.mod.util.DateUtils;
+import org.confluence.mod.util.ModUtils;
 import org.confluence.phase_journey.api.PhaseJourneyEvent;
 import org.confluence.terra_curio.api.event.RegisterAccessoriesComponentUpdateEvent;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTabs;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
 
-import java.util.Map;
 import java.util.Optional;
 
 import static org.confluence.mod.Confluence.MODID;
@@ -134,15 +133,7 @@ public final class ModEvents {
             LogBlockSet.wrapStrip();
             LogBlockSet.setFlammable();
             ModRecipes.Brewing.initialize();
-            CauldronInteraction.INTERACTIONS.values().forEach(map -> {
-                Map<Item, CauldronInteraction> interactionMap = map.map();
-                interactionMap.put(ToolItems.BOTTOMLESS_WATER_BUCKET.get(), CauldronInteraction.FILL_WATER);
-                interactionMap.put(ToolItems.BOTTOMLESS_LAVA_BUCKET.get(), CauldronInteraction.FILL_LAVA);
-                interactionMap.put(ToolItems.BOTTOMLESS_HONEY_BUCKET.get(), HoneyCauldronBlock.FILL_HONEY);
-                interactionMap.put(ToolItems.BOTTOMLESS_SHIMMER_BUCKET.get(), AetheriumCauldronBlock.FILL_AETHERIUM);
-                interactionMap.put(ToolItems.HONEY_BUCKET.get(), HoneyCauldronBlock.FILL_HONEY);
-                interactionMap.put(NatureBlocks.AETHERIUM_BLOCK.asItem(), AetheriumCauldronBlock.FILL_AETHERIUM);
-            });
+            ModUtils.registerCauldronInteractions();
             TERemoval.redirectLootTable();
             IGlobalData.registerGlobalData(KillBoard.INSTANCE, HardmodeConvertor.INSTANCE, NPCSpawner.INSTANCE);
         });

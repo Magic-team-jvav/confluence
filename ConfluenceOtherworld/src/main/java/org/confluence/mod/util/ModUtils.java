@@ -5,6 +5,7 @@ import com.xiaohunao.terra_moment.common.init.TMMoments;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
+import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
@@ -12,7 +13,11 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -24,7 +29,9 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.npc.Npc;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -32,20 +39,27 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LayeredCauldronBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.Heightmap;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.block.common.AetheriumCauldronBlock;
+import org.confluence.mod.common.block.common.HoneyCauldronBlock;
 import org.confluence.mod.common.data.saved.GamePhase;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.data.saved.MeteoriteTracker;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.init.item.PotionItems;
+import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.common.item.common.TreasureBagItem;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.terra_curio.TerraCurio;
@@ -58,6 +72,7 @@ import org.confluence.terraentity.init.entity.TEMonsterEntities;
 import org.confluence.terraentity.utils.TEUtils;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Map;
 import java.util.Set;
 
 import static org.confluence.mod.common.item.common.CoinItem.UPGRADES_COUNT;
@@ -279,5 +294,54 @@ public final class ModUtils {
      */
     public static boolean couldAnvilForceMerge(ItemStack itemStack) {
         return isFromConfluence(BuiltInRegistries.ITEM, itemStack.getItem());
+    }
+
+    public static void registerCauldronInteractions() {
+        CauldronInteraction.INTERACTIONS.values().forEach(map -> {
+            Map<Item, CauldronInteraction> interactionMap = map.map();
+            interactionMap.put(ToolItems.BOTTOMLESS_WATER_BUCKET.get(), CauldronInteraction.FILL_WATER);
+            interactionMap.put(ToolItems.BOTTOMLESS_LAVA_BUCKET.get(), CauldronInteraction.FILL_LAVA);
+            interactionMap.put(ToolItems.BOTTOMLESS_HONEY_BUCKET.get(), HoneyCauldronBlock.FILL_HONEY);
+            interactionMap.put(ToolItems.BOTTOMLESS_SHIMMER_BUCKET.get(), AetheriumCauldronBlock.FILL_AETHERIUM);
+            interactionMap.put(ToolItems.HONEY_BUCKET.get(), HoneyCauldronBlock.FILL_HONEY);
+            interactionMap.put(NatureBlocks.AETHERIUM_BLOCK.asItem(), AetheriumCauldronBlock.FILL_AETHERIUM);
+        });
+        CauldronInteraction.EMPTY.map().put(PotionItems.BOTTLED_WATER.get(), (state, level, pos, player, hand, stack) -> {
+            if (!level.isClientSide) {
+                Item item = stack.getItem();
+                player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, PotionItems.BOTTLE.toStack()));
+                player.awardStat(Stats.USE_CAULDRON);
+                player.awardStat(Stats.ITEM_USED.get(item));
+                level.setBlockAndUpdate(pos, Blocks.WATER_CAULDRON.defaultBlockState());
+                level.playSound(null, pos, SoundEvents.BOTTLE_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);
+                level.gameEvent(null, GameEvent.FLUID_PLACE, pos);
+            }
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
+        });
+        CauldronInteraction.WATER.map().put(PotionItems.BOTTLE.get(), (state, level, pos, player, hand, stack) -> {
+            if (!level.isClientSide) {
+                Item item = stack.getItem();
+                player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, PotionItems.BOTTLED_WATER.toStack()));
+                player.awardStat(Stats.USE_CAULDRON);
+                player.awardStat(Stats.ITEM_USED.get(item));
+                LayeredCauldronBlock.lowerFillLevel(state, level, pos);
+                level.playSound(null, pos, SoundEvents.BOTTLE_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
+                level.gameEvent(null, GameEvent.FLUID_PICKUP, pos);
+            }
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
+        });
+        CauldronInteraction.WATER.map().put(PotionItems.BOTTLED_WATER.get(), (state, level, pos, player, hand, stack) -> {
+            if (state.getValue(LayeredCauldronBlock.LEVEL) == 3) {
+                return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            } else if (!level.isClientSide) {
+                player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, PotionItems.BOTTLE.toStack()));
+                player.awardStat(Stats.USE_CAULDRON);
+                player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
+                level.setBlockAndUpdate(pos, state.cycle(LayeredCauldronBlock.LEVEL));
+                level.playSound(null, pos, SoundEvents.BOTTLE_EMPTY, SoundSource.BLOCKS, 1.0F, 1.0F);
+                level.gameEvent(null, GameEvent.FLUID_PLACE, pos);
+            }
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
+        });
     }
 }

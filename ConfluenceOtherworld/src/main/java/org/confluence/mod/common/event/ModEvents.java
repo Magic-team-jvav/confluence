@@ -462,7 +462,7 @@ public final class ModEvents {
                 // 1.1.4 -> 1.1.5
                 .register("confluence:crystal_shards_item", "confluence:crystal_shards")
                 .register("confluence:throwing_knives", "confluence:throwing_knive")
-                 // 1.1.4 -> 1.2.0
+                // 1.1.5 -> 1.2.0
                 .register("confluence:cap_tunabeard", "confluence:capn_tunabeard");
     }
 

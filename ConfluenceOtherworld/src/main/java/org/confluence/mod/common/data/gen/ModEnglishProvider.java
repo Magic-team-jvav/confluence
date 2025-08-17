@@ -993,6 +993,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add(VanityArmorItems.DEAD_MANS_SWEATER.get(), "Dead Man's Sweater");
         add(SwordItems.NIGHTS_EDGE.get(), "Night's Edge");
         add(ConsumableItems.PEDDLERS_SATCHEL.get(), "Peddler's Satchel");
+        add(QuestedFishes.CAPN_TUNABEARD.get(), "Cap'n Tunabeard");
 
         add("block.confluence.timers_1_1", "1 Second Timer");
         add("block.confluence.timers_3_1", "3 Second Timer");

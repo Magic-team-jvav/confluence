@@ -786,27 +786,146 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(LootItem.lootTableItem(PotionItems.MINING_POTION).setWeight(24))
                         .add(LootItem.lootTableItem(PotionItems.RECALL_POTION).setWeight(24))
                         .add(LootItem.lootTableItem(PotionItems.WORMHOLE_POTION).setWeight(24))
-                        .add(LootItem.lootTableItem(PotionItems.WORMHOLE_POTION).setWeight(24))
                 )
         );
-        // 渔夫奖励列表其一
         output.accept(ModLootTables.QUESTS_0, LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(PotionItems.FISHING_POTION).setWeight(300).apply(count2To5))
-                        .add(LootItem.lootTableItem(PotionItems.CRATE_POTION).setWeight(300).apply(count2To5))
-                        .add(LootItem.lootTableItem(ToolItems.GOLDEN_BUG_NET).setWeight(15))
-                        .add(LootItem.lootTableItem(HookItems.FISH_HOOK).setWeight(20))
-                        .add(LootItem.lootTableItem(MinecartItems.MINECARP).setWeight(20))
-                        .add(LootItem.lootTableItem(AccessoryItems.HIGH_TEST_FISHING_LINE).setWeight(30))
-                        .add(LootItem.lootTableItem(TCItems.ANGLER_EARRING).setWeight(30))
+                        // 虫洞药水、传送药水（各1/6概率）
+                        .add(LootItem.lootTableItem(PotionItems.WORMHOLE_POTION).setWeight(200))
+                        .add(LootItem.lootTableItem(PotionItems.RECALL_POTION).setWeight(200))
+                        // 宝匣药水、钓鱼药水（各1/3概率）
+                        .add(LootItem.lootTableItem(PotionItems.CRATE_POTION).setWeight(400).apply(count2To5))
+                        .add(LootItem.lootTableItem(PotionItems.FISHING_POTION).setWeight(400).apply(count2To5))
+                        // 钓鱼浮标（1/25概率）
+                        .add(LootItem.lootTableItem(AccessoryItems.FISHING_BOBBER).setWeight(48))
+                        // 六分仪、渔民宝典、天气收音机（各1/30概率）
+                        .add(LootItem.lootTableItem(TCItems.SEXTANT).setWeight(40))
                         .add(LootItem.lootTableItem(TCItems.FISHERMANS_POCKET_GUIDE).setWeight(40))
                         .add(LootItem.lootTableItem(TCItems.WEATHER_RADIO).setWeight(40))
-                        .add(LootItem.lootTableItem(TCItems.SEXTANT).setWeight(40))
+                        // 钓具箱、优质钓鱼线、渔夫耳环（各1/40概率）
                         .add(LootItem.lootTableItem(AccessoryItems.TACKLE_BOX).setWeight(30))
-                        .add(LootItem.lootTableItem(AccessoryItems.FISHING_BOBBER).setWeight(48))
-                        .add(LootItem.lootTableItem(PotionItems.RECALL_POTION).setWeight(24))
-                        .add(LootItem.lootTableItem(PotionItems.WORMHOLE_POTION).setWeight(24))
-                        .add(LootItem.lootTableItem(PotionItems.WORMHOLE_POTION).setWeight(24))
+                        .add(LootItem.lootTableItem(AccessoryItems.HIGH_TEST_FISHING_LINE).setWeight(30))
+                        .add(LootItem.lootTableItem(TCItems.ANGLER_EARRING).setWeight(30))
+                        // 鱼钩、鲤鱼矿车（各1/60概率）
+                        .add(LootItem.lootTableItem(HookItems.FISH_HOOK).setWeight(20))
+                        .add(LootItem.lootTableItem(MinecartItems.MINECARP).setWeight(20))
+                        // 金虫网（1/80概率）
+                        .add(LootItem.lootTableItem(ToolItems.GOLDEN_BUG_NET).setWeight(15))
+                )
+        );
+
+        // 渔夫奖励列表其二  第十个任务后
+        output.accept(ModLootTables.QUESTS_1, LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        // 虫洞药水（1/6概率）、传送药水（1/6概率）
+                        .add(LootItem.lootTableItem(PotionItems.WORMHOLE_POTION).setWeight(1400))
+                        .add(LootItem.lootTableItem(PotionItems.RECALL_POTION).setWeight(1400))
+
+                        // 宝匣药水（1/3概率）、钓鱼药水（1/3概率）
+                        .add(LootItem.lootTableItem(PotionItems.CRATE_POTION).setWeight(2800).apply(count2To5))
+                        .add(LootItem.lootTableItem(PotionItems.FISHING_POTION).setWeight(2800).apply(count2To5))
+
+                        // 鳍翼、无底水桶、超级吸收棉（各1/70概率）
+                        .add(LootItem.lootTableItem(AccessoryItems.FIN_WINGS).setWeight(120))
+                        .add(LootItem.lootTableItem(ToolItems.BOTTOMLESS_WATER_BUCKET).setWeight(120))
+                        .add(LootItem.lootTableItem(ToolItems.SUPER_ABSORBANT_SPONGE).setWeight(120))
+
+                        // 无底蜂蜜桶、蜂蜜吸收棉（各1/20概率）
+                        .add(LootItem.lootTableItem(ToolItems.BOTTOMLESS_HONEY_BUCKET).setWeight(420))
+                        .add(LootItem.lootTableItem(ToolItems.HONEY_ABSORBANT_SPONGE).setWeight(420))
+
+                        // 钓鱼浮标（1/25概率）
+                        .add(LootItem.lootTableItem(AccessoryItems.FISHING_BOBBER).setWeight(336))
+
+                        // 六分仪、渔民宝典、天气收音机（各1/30概率）
+                        .add(LootItem.lootTableItem(TCItems.SEXTANT).setWeight(280))
+                        .add(LootItem.lootTableItem(TCItems.FISHERMANS_POCKET_GUIDE).setWeight(280))
+                        .add(LootItem.lootTableItem(TCItems.WEATHER_RADIO).setWeight(280))
+
+                        // 钓具箱、优质钓鱼线、渔夫耳环（各1/40概率）
+                        .add(LootItem.lootTableItem(AccessoryItems.TACKLE_BOX).setWeight(210))
+                        .add(LootItem.lootTableItem(AccessoryItems.HIGH_TEST_FISHING_LINE).setWeight(210))
+                        .add(LootItem.lootTableItem(TCItems.ANGLER_EARRING).setWeight(210))
+
+                        // 鱼钩、鲤鱼矿车（各1/60概率）
+                        .add(LootItem.lootTableItem(HookItems.FISH_HOOK).setWeight(140))
+                        .add(LootItem.lootTableItem(MinecartItems.MINECARP).setWeight(140))
+
+                        // 金虫网（1/80概率）
+                        .add(LootItem.lootTableItem(ToolItems.GOLDEN_BUG_NET).setWeight(105))
+                )
+        );
+
+        // 渔夫奖励列表其三  第十个任务后，且肉后
+        output.accept(ModLootTables.QUESTS_2, LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        // 虫洞药水（1/6概率）、传送药水（1/6概率）
+                        .add(LootItem.lootTableItem(PotionItems.WORMHOLE_POTION).setWeight(1400))
+                        .add(LootItem.lootTableItem(PotionItems.RECALL_POTION).setWeight(1400))
+                        // 宝匣药水（1/3概率）、钓鱼药水（1/3概率）
+                        .add(LootItem.lootTableItem(PotionItems.CRATE_POTION).setWeight(2800).apply(count2To5))
+                        .add(LootItem.lootTableItem(PotionItems.FISHING_POTION).setWeight(2800).apply(count2To5))
+                        // 鳍翼、无底水桶、超级吸收棉（各1/70概率）
+                        .add(LootItem.lootTableItem(AccessoryItems.FIN_WINGS).setWeight(120))
+                        .add(LootItem.lootTableItem(ToolItems.BOTTOMLESS_WATER_BUCKET).setWeight(120))
+                        .add(LootItem.lootTableItem(ToolItems.SUPER_ABSORBANT_SPONGE).setWeight(120))
+                        // 无底蜂蜜桶、蜂蜜吸收棉（各1/40概率，已更新）
+                        .add(LootItem.lootTableItem(ToolItems.BOTTOMLESS_HONEY_BUCKET).setWeight(210))
+                        .add(LootItem.lootTableItem(ToolItems.HONEY_ABSORBANT_SPONGE).setWeight(210))
+                        // 钓鱼浮标（1/25概率）
+                        .add(LootItem.lootTableItem(AccessoryItems.FISHING_BOBBER).setWeight(336))
+                        // 六分仪、渔民宝典、天气收音机（各1/30概率）
+                        .add(LootItem.lootTableItem(TCItems.SEXTANT).setWeight(280))
+                        .add(LootItem.lootTableItem(TCItems.FISHERMANS_POCKET_GUIDE).setWeight(280))
+                        .add(LootItem.lootTableItem(TCItems.WEATHER_RADIO).setWeight(280))
+                        // 钓具箱、优质钓鱼线、渔夫耳环（各1/40概率）
+                        .add(LootItem.lootTableItem(AccessoryItems.TACKLE_BOX).setWeight(210))
+                        .add(LootItem.lootTableItem(AccessoryItems.HIGH_TEST_FISHING_LINE).setWeight(210))
+                        .add(LootItem.lootTableItem(TCItems.ANGLER_EARRING).setWeight(210))
+                        // 鱼钩、鲤鱼矿车（各1/60概率）
+                        .add(LootItem.lootTableItem(HookItems.FISH_HOOK).setWeight(140))
+                        .add(LootItem.lootTableItem(MinecartItems.MINECARP).setWeight(140))
+                        // 金虫网（1/80概率）
+                        .add(LootItem.lootTableItem(ToolItems.GOLDEN_BUG_NET).setWeight(105))
+                        // 熔线钓钩（1/100概率）
+                        .add(LootItem.lootTableItem(FishingPoleItems.HOTLINE_FISHING_HOOK).setWeight(84))
+                )
+        );
+        // 渔夫奖励列表其四  第七十五个任务后，且肉后
+        output.accept(ModLootTables.QUESTS_3, LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        // 虫洞药水（1/6概率）、传送药水（1/6概率）
+                        .add(LootItem.lootTableItem(PotionItems.WORMHOLE_POTION).setWeight(7000))
+                        .add(LootItem.lootTableItem(PotionItems.RECALL_POTION).setWeight(7000))
+                        // 宝匣药水（1/3概率）、钓鱼药水（1/3概率）
+                        .add(LootItem.lootTableItem(PotionItems.CRATE_POTION).setWeight(14000).apply(count2To5))
+                        .add(LootItem.lootTableItem(PotionItems.FISHING_POTION).setWeight(14000).apply(count2To5))
+                        // 鳍翼、无底水桶、超级吸收棉（各1/70概率）
+                        .add(LootItem.lootTableItem(AccessoryItems.FIN_WINGS).setWeight(600))
+                        .add(LootItem.lootTableItem(ToolItems.BOTTOMLESS_WATER_BUCKET).setWeight(600))
+                        .add(LootItem.lootTableItem(ToolItems.SUPER_ABSORBANT_SPONGE).setWeight(600))
+                        // 无底蜂蜜桶、蜂蜜吸收棉（各1/40概率）
+                        .add(LootItem.lootTableItem(ToolItems.BOTTOMLESS_HONEY_BUCKET).setWeight(1050))
+                        .add(LootItem.lootTableItem(ToolItems.HONEY_ABSORBANT_SPONGE).setWeight(1050))
+                        // 钓鱼浮标（1/25概率）
+                        .add(LootItem.lootTableItem(AccessoryItems.FISHING_BOBBER).setWeight(1680))
+                        // 六分仪、渔民宝典、天气收音机（各1/30概率）
+                        .add(LootItem.lootTableItem(TCItems.SEXTANT).setWeight(1400))
+                        .add(LootItem.lootTableItem(TCItems.FISHERMANS_POCKET_GUIDE).setWeight(1400))
+                        .add(LootItem.lootTableItem(TCItems.WEATHER_RADIO).setWeight(1400))
+                        // 钓具箱、优质钓鱼线、渔夫耳环（各1/40概率）
+                        .add(LootItem.lootTableItem(AccessoryItems.TACKLE_BOX).setWeight(1050))
+                        .add(LootItem.lootTableItem(AccessoryItems.HIGH_TEST_FISHING_LINE).setWeight(1050))
+                        .add(LootItem.lootTableItem(TCItems.ANGLER_EARRING).setWeight(1050))
+                        // 鱼钩、鲤鱼矿车（各1/60概率）
+                        .add(LootItem.lootTableItem(HookItems.FISH_HOOK).setWeight(700))
+                        .add(LootItem.lootTableItem(MinecartItems.MINECARP).setWeight(700))
+                        // 金虫网（1/80概率）
+                        .add(LootItem.lootTableItem(ToolItems.GOLDEN_BUG_NET).setWeight(525))
+                        // 熔线钓钩（1/100概率）
+                        .add(LootItem.lootTableItem(FishingPoleItems.HOTLINE_FISHING_HOOK).setWeight(420))
+                        // 金钓竿（1/250概率）
+                        .add(LootItem.lootTableItem(FishingPoleItems.GOLDEN_FISHING_ROD).setWeight(168))
                 )
         );
         // 宝藏袋

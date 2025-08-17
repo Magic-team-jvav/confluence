@@ -260,6 +260,9 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                                 .setLootTable(ModLootTables.QUESTS_0)
                                 .setSprite(TerraEntity.space("random_gift"))
                                 .build(),
+                        // todo第10次任务后使用QUESTS_1
+                        // todo第10次任务后，且肉后使用QUESTS_2
+                        // todo第75次任务后，且肉后使用QUESTS_3
                         ImmutableMap.<ItemStack, ITradeLock>builder()
                                 .put(QuestedFishes.AMANITA_FUNGIFIN.toStack(), glowingMushroomLock)
                                 .put(QuestedFishes.BLOODY_MANOWAR.toStack(), theCrimsonLock)

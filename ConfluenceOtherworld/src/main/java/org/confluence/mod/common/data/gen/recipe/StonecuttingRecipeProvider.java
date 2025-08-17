@@ -47,8 +47,8 @@ public class StonecuttingRecipeProvider extends AbstractRecipeProvider {
         stonecutting(recipeOutput, DecorativeBlocks.PINK_BRICK_SLAB.toStack(2), Ingredient.of(DecorativeBlocks.PINK_BRICKS));
         stonecutting(recipeOutput, DecorativeBlocks.PINK_BRICK_STAIRS.toStack(), Ingredient.of(DecorativeBlocks.PINK_BRICKS));
 
-        stonecutting(recipeOutput, MaterialItems.CHINA_BOWL.toStack(), Ingredient.of(Items.WHITE_TERRACOTTA));
-        stonecutting(recipeOutput, MaterialItems.CHINA_PLATE.toStack(), Ingredient.of(Items.WHITE_TERRACOTTA));
+        stonecutting(recipeOutput, MaterialItems.CHINA_BOWL.toStack(3), Ingredient.of(Items.WHITE_GLAZED_TERRACOTTA));
+        stonecutting(recipeOutput, MaterialItems.CHINA_PLATE.toStack(5), Ingredient.of(Items.WHITE_GLAZED_TERRACOTTA));
 
 
         stonecutting(recipeOutput, DecorativeBlocks.GRANITE_COLUMN.toStack(), Ingredient.of(DecorativeBlocks.GRANITE_BRICKS));

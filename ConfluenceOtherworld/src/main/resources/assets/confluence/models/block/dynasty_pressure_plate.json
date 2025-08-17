@@ -1,0 +1,7 @@
+{
+  "parent": "block/pressure_plate_up",
+  "textures": {
+    "texture": "confluence:block/dynasty_planks"
+  },
+  "render_type": "solid"
+}

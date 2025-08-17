@@ -355,6 +355,7 @@ public final class ModTags {
         public static final TagKey<Item> LIVING_MAHOGANY_LOGS = register("living_mahogany_logs");
         public static final TagKey<Item> ASH_LOGS = register("ash_logs");
         public static final TagKey<Item> SPOOKY_LOGS = register("spooky_logs");
+        public static final TagKey<Item> DYNASTY_LOGS = register("dynasty_logs");
         public static final TagKey<Item> INITIAL_WOOD = register("initial_wood");  // 木套tag，用于合成木套而分离其他套装
         public static final TagKey<Item> QUESTED_FISHES = register("quested_fishes");  // 任务鱼
         public static final TagKey<Item> EMBLEM = register("emblem");  // 徽章

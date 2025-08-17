@@ -2250,9 +2250,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.getFenceGate().get(), "发光蘑菇栅栏门");
         add(NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.getPressurePlate().get(), "发光蘑菇压力板");
 
-
-
-
         add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getButton().get(), "黄柳木按钮");
         add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getPlanks().get(), "黄柳木板");
         add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getLog().get(), "黄柳原木");
@@ -2320,6 +2317,23 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getFence().get(), "生命红木栅栏");
         add(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getFenceGate().get(), "生命红木栅栏门");
         add(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getPressurePlate().get(), "生命红木压力板");
+
+        add(NatureBlocks.DYNASTY_LOG_BLOCKS.getButton().get(), "王朝木按钮");
+        add(NatureBlocks.DYNASTY_LOG_BLOCKS.getPlanks().get(), "王朝木板");
+        add(NatureBlocks.DYNASTY_LOG_BLOCKS.getLog().get(), "王朝原木");
+        add(NatureBlocks.DYNASTY_LOG_BLOCKS.getStrippedLog().get(), "去皮王朝原木");
+        add(NatureBlocks.DYNASTY_LOG_BLOCKS.getStrippedWood().get(), "去皮王朝木");
+        add(NatureBlocks.DYNASTY_LOG_BLOCKS.getDoor().get(), "王朝木门");
+        add(NatureBlocks.DYNASTY_LOG_BLOCKS.getTrapdoor().get(), "王朝木活板门");
+        add(NatureBlocks.DYNASTY_LOG_BLOCKS.getSign().get(), "王朝木告示牌");
+        add(NatureBlocks.DYNASTY_LOG_BLOCKS.getHangingSign().get(), "悬挂式王朝木告示牌");
+        add(NatureBlocks.DYNASTY_LOG_BLOCKS.getStairs().get(), "王朝木楼梯");
+        add(NatureBlocks.DYNASTY_LOG_BLOCKS.getSlab().get(), "王朝木台阶");
+        add(NatureBlocks.DYNASTY_LOG_BLOCKS.getWood().get(), "王朝木");
+        add(NatureBlocks.DYNASTY_LOG_BLOCKS.getLeaves().get(), "王朝树叶");
+        add(NatureBlocks.DYNASTY_LOG_BLOCKS.getFence().get(), "王朝木栅栏");
+        add(NatureBlocks.DYNASTY_LOG_BLOCKS.getFenceGate().get(), "王朝木栅栏门");
+        add(NatureBlocks.DYNASTY_LOG_BLOCKS.getPressurePlate().get(), "王朝木压力板");
 
         add(NatureBlocks.DESERT_FOSSIL.get(), "沙漠化石");
         add(NatureBlocks.HARDENED_SAND_BLOCK.get(), "硬化沙块");
@@ -2621,6 +2635,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.CHISELED_LIVING_PLANKS.get(), "雕纹生命木板");
         add(DecorativeBlocks.CHISELED_LIVING_MAHOGANY_PLANKS.get(), "雕纹生命红木板");
         add(DecorativeBlocks.CHISELED_GLOWING_MUSHROOM_PLANKS.get(), "雕纹发光蘑菇木板");
+        add(DecorativeBlocks.CHISELED_DYNASTY_PLANKS.get(), "雕纹王朝木板");
         add(DecorativeBlocks.GRANITE_BRICKS.get(), "花岗岩砖");
         add(DecorativeBlocks.GRANITE_COLUMN.get(), "花岗岩柱");
         add(DecorativeBlocks.POLISHED_GRANITE.get(), "磨制花岗岩");
@@ -2690,6 +2705,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.SWORD_IN_STONE.get(), "石中剑");
         add(DecorativeBlocks.REMAINS_BLOCK.get(), "遗骸");
         add(DecorativeBlocks.LIHZAHRD_DOOR.get(), "丛林蜥蜴门");
+
+        add(DecorativeBlocks.WHITE_PAPER_PANE.get(), "缟白纸窗格");
+        add(DecorativeBlocks.MALACHITE_PAPER_PANE.get(), "石绿纸窗格");
+        add(DecorativeBlocks.TRADITIONAL_DYNASTY_DOOR.get(), "传统王朝木门");
 
         // 雕像
         add(StatueBlocks.A_STATUE.get(), "A字雕像");

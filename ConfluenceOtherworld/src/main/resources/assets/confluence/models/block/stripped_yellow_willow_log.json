@@ -3,10 +3,10 @@
   "textures": {
     "down": "confluence:block/stripped_yellow_willow_log_top",
     "up": "confluence:block/stripped_yellow_willow_log_top",
-    "north": "confluence:block/stripped_yellow_willow_log",
-    "east": "confluence:block/stripped_yellow_willow_log",
-    "south": "confluence:block/stripped_yellow_willow_log",
-    "west": "confluence:block/stripped_yellow_willow_log",
+    "north": "confluence:block/stripped_yellow_willow_log_side",
+    "east": "confluence:block/stripped_yellow_willow_log_side",
+    "south": "confluence:block/stripped_yellow_willow_log_side",
+    "west": "confluence:block/stripped_yellow_willow_log_side",
     "particle": "confluence:block/stripped_yellow_willow_log_top"
   },
   "render_type": "solid"

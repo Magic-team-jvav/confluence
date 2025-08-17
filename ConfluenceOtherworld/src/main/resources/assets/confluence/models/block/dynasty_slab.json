@@ -1,0 +1,9 @@
+{
+  "parent": "block/slab",
+  "textures": {
+    "bottom": "confluence:block/dynasty_planks",
+    "top": "confluence:block/dynasty_planks",
+    "side": "confluence:block/dynasty_planks"
+  },
+  "render_type": "solid"
+}

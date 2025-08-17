@@ -289,8 +289,7 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(PEARL_LOG_BLOCKS.getLog().get());
         dropSelf(PALM_LOG_BLOCKS.getLog().get());
         dropSelf(ASH_LOG_BLOCKS.getLog().get());
-//            dropSelf(LIFE_PLANKS.get());
-//            dropSelf(LIFE_LOG.get());
+        dropSelf(DYNASTY_LOG_BLOCKS.getLog().get());
         dropSelf(STONY_LOG.get());
 
 
@@ -424,6 +423,9 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(GILDED_MARBLE.get());
         dropSelf(POLISHED_MARBLE.get());
 
+        dropSelf(WHITE_PAPER_PANE.get());
+        dropSelf(MALACHITE_PAPER_PANE.get());
+
         dropSelf(ASPHALT_BLOCK.get());
 
         dropSelf(CHISELED_OBSIDIAN_BRICKS.get());
@@ -518,6 +520,7 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         this.add(SKYWARE_DOOR.get(), this::createDoorTable);
         this.add(SKYWARE_GLASS_DOOR.get(), this::createDoorTable);
         this.add(DUNGEON_DOOR.get(), this::createDoorTable);
+        this.add(TRADITIONAL_DYNASTY_DOOR.get(), this::createDoorTable);
 
         // 发光蘑菇
         this.add(GLOWING_MUSHROOM_INDUSIUM_BLOCK.get(), p_249169_ -> this.createMushroomBlockDrop(p_249169_, MaterialItems.GLOWING_MUSHROOM));

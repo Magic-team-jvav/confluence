@@ -404,6 +404,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         registerWoodRecipes(output, NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS, ModTags.Items.LIVING_MAHOGANY_LOGS);
         registerWoodRecipes(output, NatureBlocks.ASH_LOG_BLOCKS, ModTags.Items.ASH_LOGS);
         registerWoodRecipes(output, NatureBlocks.SPOOKY_LOG_BLOCKS, ModTags.Items.SPOOKY_LOGS);
+        registerWoodRecipes(output, NatureBlocks.DYNASTY_LOG_BLOCKS, ModTags.Items.DYNASTY_LOGS);
 
         shaped(output, ShapedRecipePattern.of(Map.of(
                 '|', Ingredient.of(Items.CHAIN),

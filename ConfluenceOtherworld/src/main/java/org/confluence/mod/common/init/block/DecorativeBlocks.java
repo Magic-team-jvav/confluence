@@ -46,6 +46,7 @@ public class DecorativeBlocks {
     public static final DeferredBlock<Block> CHISELED_LIVING_MAHOGANY_PLANKS = copyBlockRegister("chiseled_living_mahogany_planks", OAK_PLANKS);
     public static final DeferredBlock<Block> CHISELED_ASH_PLANKS = copyBlockRegister("chiseled_ash_planks", OAK_PLANKS);
     public static final DeferredBlock<Block> CHISELED_GLOWING_MUSHROOM_PLANKS = copyBlockRegister("chiseled_glowing_mushroom_planks", OAK_PLANKS);
+    public static final DeferredBlock<Block> CHISELED_DYNASTY_PLANKS = copyBlockRegister("chiseled_dynasty_planks", OAK_PLANKS);
     public static final DeferredBlock<Block> WOOD_STONE_SLATTED_BLOCKS = copyBlockRegister("wood_stone_slatted_blocks", OAK_PLANKS);
 
     // 砖
@@ -226,6 +227,11 @@ public class DecorativeBlocks {
     public static final DeferredBlock<Block> CHISELED_OBSIDIAN_BRICKS = copyBlockRegister("chiseled_obsidian_bricks", OBSIDIAN);
     public static final DeferredBlock<Block> SMOOTH_OBSIDIAN = copyBlockRegister("smooth_obsidian", OBSIDIAN);
 
+    // 王朝木系列
+    public static final DeferredBlock<Block> WHITE_PAPER_PANE = copyBlockRegister("white_paper_pane", OAK_PLANKS);
+    public static final DeferredBlock<Block> MALACHITE_PAPER_PANE = copyBlockRegister("malachite_paper_pane", OAK_PLANKS);
+    public static final DeferredBlock<DoorBlock> TRADITIONAL_DYNASTY_DOOR = registerWithItem("traditional_dynasty_door", () -> new DoorBlock(BlockSetType.OAK, BlockBehaviour.Properties.ofFullCopy(OAK_DOOR).mapColor(DyeColor.BROWN).pushReaction(PushReaction.BLOCK)));
+
     // 花岗岩
     public static final DeferredBlock<Block> GRANITE_COLUMN = registerWithItem("granite_column",  () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_BLUE)));
     public static final DeferredBlock<Block> GRANITE_BRICKS = registerWithItem("granite_bricks",  () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_BLUE)));
@@ -283,6 +289,7 @@ public class DecorativeBlocks {
     public static final DeferredBlock<ChainBlock> AMETHYST_CHAIN = copyBlockRegister("amethyst_chain", CHAIN, properties -> new ChainBlock(properties.mapColor(MapColor.COLOR_PURPLE)));
     public static final DeferredBlock<ChainBlock> SILK_CHAIN = copyBlockRegister("silk_chain", CHAIN, properties -> new ChainBlock(properties.mapColor(MapColor.TERRACOTTA_WHITE)));
     public static final DeferredBlock<ChainBlock> BONE_CHAIN = copyBlockRegister("bone_chain", CHAIN, properties -> new ChainBlock(properties.mapColor(MapColor.TERRACOTTA_WHITE)));
+
 
     // 神庙
     public static final BlockSetType LIHZAHRD = BlockSetType.register(new BlockSetType("confluence:lihzahrd",

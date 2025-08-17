@@ -412,9 +412,13 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 CHISELED_YELLOW_WILLOW_PLANKS.get(),
                 CHISELED_LIVING_PLANKS.get(),
                 CHISELED_ASH_PLANKS.get(),
+                CHISELED_GLOWING_MUSHROOM_PLANKS.get(),
+                CHISELED_DYNASTY_PLANKS.get(),
                 WOOD_STONE_SLATTED_BLOCKS.get(),
                 GOLDEN_CHEST.get(),
                 SPORE_ROOT_BLOCK.get(),
+
+                TRADITIONAL_DYNASTY_DOOR.get(),
 
                 ANNOUNCEMENT_BOX.get(),
                 WALL_ANNOUNCEMENT_BOX.get(),

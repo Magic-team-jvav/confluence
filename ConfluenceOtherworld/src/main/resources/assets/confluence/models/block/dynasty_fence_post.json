@@ -1,0 +1,8 @@
+{
+  "parent": "block/fence_post",
+  "textures": {
+    "texture": "confluence:block/dynasty_planks",
+    "particle": "confluence:block/dynasty_planks"
+  },
+  "render_type": "solid"
+}

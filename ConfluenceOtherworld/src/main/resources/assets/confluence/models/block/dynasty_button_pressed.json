@@ -1,0 +1,7 @@
+{
+  "parent": "block/button_pressed",
+  "textures": {
+    "texture": "confluence:block/dynasty_planks"
+  },
+  "render_type": "solid"
+}

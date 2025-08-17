@@ -1,0 +1,13 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "confluence:block/dynasty_log_top",
+    "up": "confluence:block/dynasty_log_top",
+    "north": "confluence:block/dynasty_log_side",
+    "east": "confluence:block/dynasty_log_side",
+    "south": "confluence:block/dynasty_log_side",
+    "west": "confluence:block/dynasty_log_side",
+    "particle": "confluence:block/dynasty_log_top"
+  },
+  "render_type": "solid"
+}

@@ -104,9 +104,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.jei.count_range", "Count: %s-%s");
         add("tooltip.jei.count_exact", "Count: %s");
         add("tooltip.jei.drop_chance", "Chance: %s%%");
-        add("jei.tooltip.error.recipe.transfer.biome", "Not in correct biomes: %s");
-        add("jei.tooltip.error.recipe.transfer.block", "No %2$s were found within %1$s meters");
-        add("jei.tooltip.error.recipe.transfer.ecto_mist", "Not in the Ecto Mist environment");
+        add("jei.tooltip.error.recipe.transfer.environment", "Not in correct environment");
 
         add("tooltip.item.confluence.meteorite_ingot.0", "Warm to the touch");
         add("tooltip.item.confluence.encumbering_stone.0", "Prevents item pickups while locked");

@@ -269,9 +269,4 @@ public final class ModClientSetups {
 //                        .setLightmapState(LIGHTMAP)
                     .setOverlayState(OVERLAY)
                     .createCompositeState(false));
-
-    static boolean inEctoMist = false;
-    static float ectoMistStep = 1.0F;
-    static float originalNearFog = 0.0F;
-    static float originalFarFog = 0.0F;
 }

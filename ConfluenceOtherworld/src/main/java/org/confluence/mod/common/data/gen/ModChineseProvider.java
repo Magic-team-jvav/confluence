@@ -97,9 +97,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.jei.count_range", "数量：%s-%s");
         add("tooltip.jei.count_exact", "数量：%s");
         add("tooltip.jei.drop_chance", "爆率：%s%%");
-        add("jei.tooltip.error.recipe.transfer.biome", "不在正确的生物群系内：%s");
-        add("jei.tooltip.error.recipe.transfer.block", "未在%1$s米内发现%2$s");
-        add("jei.tooltip.error.recipe.transfer.ecto_mist", "不在灵雾环境内");
+        add("jei.tooltip.error.recipe.transfer.environment", "不在正确的环境内");
 
         add("tooltip.item.confluence.meteorite_ingot.0", "摸起来是温的");
         add("tooltip.item.confluence.encumbering_stone.0", "锁上时能防止拾取物品");

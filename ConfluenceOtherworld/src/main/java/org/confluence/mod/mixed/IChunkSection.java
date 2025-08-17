@@ -17,9 +17,5 @@ public interface IChunkSection {
 
     Holder<Biome> confluence$getBiomeByKey(ResourceKey<Biome> key);
 
-    boolean confluence$isEctoMist();
-
-    default boolean confluence$isGraveyard() {
-        return confluence$isEctoMist();
-    }
+    boolean confluence$isGraveyard();
 }

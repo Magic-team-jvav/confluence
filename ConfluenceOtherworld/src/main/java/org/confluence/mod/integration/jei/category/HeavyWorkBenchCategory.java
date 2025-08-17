@@ -207,18 +207,8 @@ public class HeavyWorkBenchCategory implements IRecipeCategory<RecipeHolder<Heav
                 return transferHelper.createUserErrorForMissingSlots(Component.translatable("jei.tooltip.error.recipe.transfer.missing"), missing);
             }
 
-            EnvironmentLevelAccess access = container.getAccess();
-            if (access.getLevel() != null && access.getPos() != null) {
-                EnvironmentLevelAccess.Matcher environment = recipe.value().getEnvironment();
-                if (!environment.matchesBiome(access.getLevel(), access.getPos())) {
-                    return transferHelper.createUserErrorWithTooltip(Component.translatable("jei.tooltip.error.recipe.transfer.biome", environment.biome().get().toString()));
-                }
-                if (!environment.matchesBlock(access.getLevel(), access.getPos())) {
-                    return transferHelper.createUserErrorWithTooltip(Component.translatable("jei.tooltip.error.recipe.transfer.block", environment.block().get().inflate(), environment.block().get().toDescription()));
-                }
-                if (!environment.matchesEctoMist(access.getLevel(), access.getPos())) {
-                    return transferHelper.createUserErrorWithTooltip(Component.translatable("jei.tooltip.error.recipe.transfer.ecto_mist"));
-                }
+            if (!recipe.value().getEnvironment().matches(container.getAccess())) {
+                return transferHelper.createUserErrorWithTooltip(Component.translatable("jei.tooltip.error.recipe.transfer.environment"));
             }
 
             if (doTransfer) {

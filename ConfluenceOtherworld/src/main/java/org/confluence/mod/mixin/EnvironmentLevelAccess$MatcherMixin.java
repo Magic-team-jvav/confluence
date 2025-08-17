@@ -11,8 +11,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = EnvironmentLevelAccess.Matcher.class, remap = false)
 public abstract class EnvironmentLevelAccess$MatcherMixin {
-    @Inject(method = "isEctoMist", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "isGraveyard", at = @At("HEAD"), cancellable = true)
     private static void inject(Level level, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
-        cir.setReturnValue(DynamicBiomeUtils.getISection(level, pos).confluence$isEctoMist());
+        cir.setReturnValue(DynamicBiomeUtils.getISection(level, pos).confluence$isGraveyard());
     }
 }

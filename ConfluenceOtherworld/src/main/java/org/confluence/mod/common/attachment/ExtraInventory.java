@@ -31,6 +31,7 @@ import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -251,9 +252,10 @@ public class ExtraInventory implements Container, INBTSerializable<CompoundTag> 
                 return accessory == null ? 0 : accessory.getSlots();
             }).orElse(0));
             inventory.ifPresent(handler -> {
-                handler.getStacksHandler(CuriosHelper.PET_KEY).ifPresent(t -> equipment.set(PET_INDEX, new CurioStackWithDye(0, t.getStacks())));
-                handler.getStacksHandler(CuriosHelper.LIGHT_PET_KEY).ifPresent(t -> equipment.set(LIGHT_PET_INDEX, new CurioStackWithDye(0, t.getStacks())));
-                handler.getStacksHandler(CuriosHelper.MOUNT_KEY).ifPresent(t -> equipment.set(MOUNT_INDEX, new CurioStackWithDye(0, t.getStacks())));
+                BiConsumer<Integer, ICurioStacksHandler> function = (i, t) -> equipment.set(i, new CurioStackWithDye(0, t.getStacks(), equipment.get(i)));
+                handler.getStacksHandler(CuriosHelper.PET_KEY).ifPresent(t -> function.accept(PET_INDEX, t));
+                handler.getStacksHandler(CuriosHelper.LIGHT_PET_KEY).ifPresent(t -> function.accept(LIGHT_PET_INDEX, t));
+                handler.getStacksHandler(CuriosHelper.MOUNT_KEY).ifPresent(t -> function.accept(MOUNT_INDEX, t));
             });
             this.initialized = true;
         }
@@ -322,6 +324,7 @@ public class ExtraInventory implements Container, INBTSerializable<CompoundTag> 
             encodeList(this.accessoryDye = NonNullList.withSize(t.size(), ItemStack.EMPTY), ops);
         } else { // todo 1.3.0时删除
             int size = nbt.contains("Size", Tag.TAG_INT) ? nbt.getInt("Size") : getContainerSize();
+            this.accessoryDye = NonNullList.withSize(size - 25, ItemStack.EMPTY);
             ListTag tagList = nbt.getList("Items", Tag.TAG_COMPOUND);
             for (int i = 0; i < tagList.size(); i++) {
                 CompoundTag itemTags = tagList.getCompound(i);
@@ -396,7 +399,7 @@ public class ExtraInventory implements Container, INBTSerializable<CompoundTag> 
             return getEquipment(index - EQUIPMENT_DYE_START, true);
         } else if (index < ACCESSORY_DYE_START) {
             return getTrash();
-        } else if (index < accessoryDye.size()) {
+        } else if (index < getContainerSize()) {
             return getAccessoryDye(index - ACCESSORY_DYE_START);
         }
         return ItemStack.EMPTY;
@@ -432,7 +435,7 @@ public class ExtraInventory implements Container, INBTSerializable<CompoundTag> 
             setEquipment(index - EQUIPMENT_DYE_START, stack, true);
         } else if (index < ACCESSORY_DYE_START) {
             setTrash(trash);
-        } else if (index < accessoryDye.size()) {
+        } else if (index < getContainerSize()) {
             setAccessoryDye(index - ACCESSORY_DYE_START, stack);
         }
     }
@@ -553,16 +556,17 @@ public class ExtraInventory implements Container, INBTSerializable<CompoundTag> 
     public static class CurioStackWithDye implements IStackWithDye {
         private final Consumer<ItemStack> setter;
         private final Supplier<ItemStack> getter;
-        private ItemStack dye = ItemStack.EMPTY;
+        private ItemStack dye;
 
-        public CurioStackWithDye(Consumer<ItemStack> setter, Supplier<ItemStack> getter) {
+        public CurioStackWithDye(Consumer<ItemStack> setter, Supplier<ItemStack> getter, IStackWithDye original) {
             this.setter = setter;
             this.getter = getter;
+            setter.accept(original.getStack());
+            this.dye = original.getDye();
         }
 
-        public CurioStackWithDye(int slot, IDynamicStackHandler stacks) {
-            this.setter = stack -> stacks.setStackInSlot(slot, stack);
-            this.getter = () -> stacks.getStackInSlot(slot);
+        public CurioStackWithDye(int slot, IDynamicStackHandler stacks, IStackWithDye original) {
+            this(stack -> stacks.setStackInSlot(slot, stack), () -> stacks.getStackInSlot(slot), original);
         }
 
         public IStackWithDye setStack(ItemStack stack) {

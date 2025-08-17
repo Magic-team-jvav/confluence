@@ -107,6 +107,7 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
     }
 
     private void renderEquipment(GuiGraphics guiGraphics, int i) {
+        if (i >= SIZE_EQUIPMENT) i -= SIZE_EQUIPMENT;
         boolean isMount = i == MOUNT_INDEX;
         guiGraphics.blit(BACKGROUND,
                 leftPos + (isMount ? 148 : 121), topPos + (isMount ? 8 : i * 18 + 8),
@@ -116,13 +117,8 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
     }
 
     private void renderVanityArmor(GuiGraphics guiGraphics, int i) {
-        int v = switch (i) {
-            case 1 -> 17;
-            case 2 -> 34;
-            case 3 -> 51;
-            default -> 0;
-        };
-        guiGraphics.blit(BACKGROUND, leftPos + 8, topPos + i * 18 + 8, 177, v, 16, 16);
+        if (i >= SIZE_VANITY_ARMOR) i -= SIZE_VANITY_ARMOR;
+        guiGraphics.blit(BACKGROUND, leftPos + 8, topPos + i * 18 + 8, 177, i * 17, 16, 16);
     }
 
     @Override

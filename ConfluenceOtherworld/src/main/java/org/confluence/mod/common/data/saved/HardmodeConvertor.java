@@ -17,6 +17,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.status.ChunkStatus;
@@ -30,6 +31,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.EnterHardmodeEvent;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
+import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.mixed.IDedicatedServer;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
@@ -168,6 +170,8 @@ public final class HardmodeConvertor implements IGlobalData {
         if (chunkAccess == null) return false;
         int cx = SectionPos.sectionToBlockCoord(chunkPos.x);
         int cz = SectionPos.sectionToBlockCoord(chunkPos.z);
+        BlockState cachedState = null;
+        boolean isGrassBlock = false;
         for (int x = 0; x < 16; x++) {
             BlockPosColumn[] columns = set[x];
             for (int z = 0; z < 16; z++) {
@@ -175,7 +179,17 @@ public final class HardmodeConvertor implements IGlobalData {
                 if (column == null || column == BlockPosColumn.ZERO) continue;
                 for (BlockPos blockPos : column.iterable(cx + x, cz + z)) {
                     BlockState target = ISpreadable.Type.HALLOW.getNullable(chunkAccess.getBlockState(blockPos));
-                    if (target != null) {
+                    if (target == null) continue;
+                    if (cachedState != target) {
+                        cachedState = target;
+                        isGrassBlock = target.is(ModTags.Blocks.SPREADABLE_GRASS_BLOCK);
+                    }
+                    if (isGrassBlock) {
+                        BlockPos above = blockPos.above();
+                        if (Block.isShapeFullBlock(chunkAccess.getBlockState(above).getCollisionShape(chunkAccess, above))) {
+                            chunkAccess.setBlockState(blockPos, target, false);
+                        }
+                    } else {
                         chunkAccess.setBlockState(blockPos, target, false);
                     }
                 }

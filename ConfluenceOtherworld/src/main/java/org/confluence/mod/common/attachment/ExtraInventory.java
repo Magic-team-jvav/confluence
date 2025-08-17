@@ -16,6 +16,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ProjectileWeaponItem;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.INBTSerializable;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.item.hook.BaseHookItem;
@@ -24,17 +25,15 @@ import org.confluence.mod.util.AchievementUtils;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terraentity.integration.curios.CuriosHelper;
 import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.event.CurioChangeEvent;
 import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
-import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 
 @SuppressWarnings("unused")
 public class ExtraInventory implements Container, INBTSerializable<CompoundTag> {
@@ -98,6 +97,7 @@ public class ExtraInventory implements Container, INBTSerializable<CompoundTag> 
     private transient boolean initialized = false;
     private transient NonNullList<ItemStack> previousStacks;
     private transient boolean dirty = true;
+    private transient LivingEntity living;
 
     public ExtraInventory(boolean init) {
         if (init) {
@@ -252,7 +252,7 @@ public class ExtraInventory implements Container, INBTSerializable<CompoundTag> 
                 return accessory == null ? 0 : accessory.getSlots();
             }).orElse(0));
             inventory.ifPresent(handler -> {
-                BiConsumer<Integer, ICurioStacksHandler> function = (i, t) -> equipment.set(i, new CurioStackWithDye(0, t.getStacks(), equipment.get(i)));
+                BiConsumer<Integer, ICurioStacksHandler> function = (i, t) -> equipment.set(i, new CurioStackWithDye(0, t, equipment.get(i)));
                 handler.getStacksHandler(CuriosHelper.PET_KEY).ifPresent(t -> function.accept(PET_INDEX, t));
                 handler.getStacksHandler(CuriosHelper.LIGHT_PET_KEY).ifPresent(t -> function.accept(LIGHT_PET_INDEX, t));
                 handler.getStacksHandler(CuriosHelper.MOUNT_KEY).ifPresent(t -> function.accept(MOUNT_INDEX, t));
@@ -496,7 +496,9 @@ public class ExtraInventory implements Container, INBTSerializable<CompoundTag> 
     }
 
     public static ExtraInventory of(LivingEntity living) {
-        return living.getData(ModAttachmentTypes.EXTRA_INVENTORY);
+        ExtraInventory extraInventory = living.getData(ModAttachmentTypes.EXTRA_INVENTORY);
+        extraInventory.living = living;
+        return extraInventory;
     }
 
     public interface IStackWithDye {
@@ -553,29 +555,29 @@ public class ExtraInventory implements Container, INBTSerializable<CompoundTag> 
         }
     }
 
-    public static class CurioStackWithDye implements IStackWithDye {
-        private final Consumer<ItemStack> setter;
-        private final Supplier<ItemStack> getter;
+    public class CurioStackWithDye implements IStackWithDye {
+        private final int slot;
+        private final ICurioStacksHandler handler;
         private ItemStack dye;
 
-        public CurioStackWithDye(Consumer<ItemStack> setter, Supplier<ItemStack> getter, IStackWithDye original) {
-            this.setter = setter;
-            this.getter = getter;
-            setter.accept(original.getStack());
-            this.dye = original.getDye();
-        }
-
-        public CurioStackWithDye(int slot, IDynamicStackHandler stacks, IStackWithDye original) {
-            this(stack -> stacks.setStackInSlot(slot, stack), () -> stacks.getStackInSlot(slot), original);
+        public CurioStackWithDye(int slot, ICurioStacksHandler handler, IStackWithDye original) {
+            this.slot = slot;
+            this.handler = handler;
+            setStack(original.getStack());
+            setDye(original.getDye());
         }
 
         public IStackWithDye setStack(ItemStack stack) {
-            setter.accept(stack);
+            ItemStack from = getStack();
+            handler.getStacks().setStackInSlot(slot, stack);
+            if (living != null) {
+                NeoForge.EVENT_BUS.post(new CurioChangeEvent(living, handler.getIdentifier(), slot, from, stack));
+            }
             return this;
         }
 
         public ItemStack getStack() {
-            return getter.get();
+            return handler.getStacks().getStackInSlot(slot);
         }
 
         public IStackWithDye setDye(ItemStack dye) {

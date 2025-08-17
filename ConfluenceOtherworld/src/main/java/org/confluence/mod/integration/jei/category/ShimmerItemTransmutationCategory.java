@@ -17,8 +17,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.common.data.saved.GamePhase;
+import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.common.recipe.ItemTransmutationRecipe;
 import org.confluence.mod.integration.jei.ModJeiPlugin;
@@ -81,7 +81,7 @@ public class ShimmerItemTransmutationCategory implements IRecipeCategory<RecipeH
     @Override
     public void draw(RecipeHolder<ItemTransmutationRecipe> recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         GamePhase gamePhase = recipe.value().gamePhase();
-        if (gamePhase.isAboveThan(ClientPacketHandler.getGamePhase())) {
+        if (gamePhase.isAboveThan(KillBoard.INSTANCE.getGamePhase())) {
             ModJeiPlugin.drawArrowDown(guiGraphics, 54, 46, false);
             if (mouseX >= 54 && mouseX <= 75 && mouseY >= 46 && mouseY <= 74) {
                 Component text = Component.translatable("condition.confluence.shimmer_transmutation." + gamePhase.getSerializedName()).withStyle(style -> style.withColor(ChatFormatting.RED));

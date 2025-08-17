@@ -29,7 +29,9 @@ public class ManaCrystalItem extends TooltipItem {
             ManaStorage data1 = ManaStorage.of(player);
             if (data1.addStar()) {
                 CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayer, itemStack);
-                itemStack.shrink(1);
+                if (!player.hasInfiniteMaterials()) {
+                    itemStack.shrink(1);
+                }
             }
             EverBeneficial data;
             if (data1.isStarMaximum() && (data = EverBeneficial.of(serverPlayer)).isLifeCrystalsMaximum() && data.isLifeFruitsMaximum()) {

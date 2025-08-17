@@ -91,7 +91,10 @@ public class ExtraInventoryMenu extends AbstractContainerMenu {
                     }
                 });
             } else if (i < TRASH_START) { // 21, 22, 23, 24, 25
-                addSlot(new DyeToggleSlot(extraInventory, i, 121, (i - EQUIPMENT_DYE_START) * 18 + 8));
+                int j = i - EQUIPMENT_DYE_START;
+                int x = j == MOUNT_INDEX ? 148 : 121;
+                int y = j == MOUNT_INDEX ? 8 : j * 18 + 8;
+                addSlot(new DyeToggleSlot(extraInventory, i, x, y));
             } else if (i < ACCESSORY_DYE_START) { // 26
                 addSlot(new Slot(extraInventory, i, 152, 166));
             } else { // 27...

@@ -10,6 +10,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ViewportEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModParticleTypes;
+import org.confluence.mod.mixed.IChunkSection;
 import org.confluence.mod.util.DynamicBiomeUtils;
 import software.bernie.geckolib.animation.EasingType;
 
@@ -22,7 +23,8 @@ public class EctoMistHelper {
 
     public static void tick(Minecraft minecraft, LocalPlayer player) {
         if (player.level().getGameTime() % 40 == 2) {
-            isGraveyard = DynamicBiomeUtils.getISection(player.level(), player.blockPosition()).confluence$isGraveyard();
+            IChunkSection iSection = DynamicBiomeUtils.getISection(player.level(), player.blockPosition());
+            isGraveyard = iSection != null && iSection.confluence$isGraveyard();
         }
         if (isGraveyard && !minecraft.isPaused() && player.getRandom().nextInt(10) == 0) {
             player.level().addParticle(ModParticleTypes.ECTO_MIST.get(),

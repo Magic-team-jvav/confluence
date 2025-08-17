@@ -4,20 +4,21 @@ import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.*;
 import com.xiaohunao.heaven_destiny_moment.common.init.HDMRegistries;
 import com.xiaohunao.heaven_destiny_moment.common.moment.Moment;
+import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
 import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.entity.EntityType;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.lib.common.data.saved.IGlobalData;
-import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.common.block.natural.ChlorophyteOreBlock;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
@@ -70,6 +71,31 @@ public final class KillBoard implements IGlobalData {
             })), Lifecycle.stable());
         }
     };
+    public static final StreamCodec<ByteBuf, KillBoard> STREAM_CODEC = new StreamCodec<>() {
+        private final StreamCodec<ByteBuf, Object2BooleanMap<EntityType<?>>> bossesCodec = ByteBufCodecs.map(Object2BooleanOpenHashMap::new,
+                ResourceLocation.STREAM_CODEC.map(BuiltInRegistries.ENTITY_TYPE::get, BuiltInRegistries.ENTITY_TYPE::getKey), ByteBufCodecs.BOOL
+        );
+        private final StreamCodec<ByteBuf, Object2BooleanMap<ResourceKey<Moment>>> eventsCodec = ByteBufCodecs.map(Object2BooleanOpenHashMap::new,
+                ResourceKey.streamCodec(HDMRegistries.Keys.MOMENT), ByteBufCodecs.BOOL
+        );
+
+        @Override
+        public KillBoard decode(ByteBuf buffer) {
+            KillBoard instance = KillBoard.INSTANCE;
+            instance.clear();
+            instance.defeatedBosses.putAll(bossesCodec.decode(buffer));
+            instance.defeatedEvents.putAll(eventsCodec.decode(buffer));
+            instance.gamePhase = GamePhase.STREAM_CODEC.decode(buffer);
+            return instance;
+        }
+
+        @Override
+        public void encode(ByteBuf buffer, KillBoard value) {
+            bossesCodec.encode(buffer, value.defeatedBosses);
+            eventsCodec.encode(buffer, value.defeatedEvents);
+            GamePhase.STREAM_CODEC.encode(buffer, value.gamePhase);
+        }
+    };
 
     private final Object2BooleanMap<EntityType<?>> defeatedBosses = new Object2BooleanOpenHashMap<>();
     private final Object2BooleanMap<ResourceKey<Moment>> defeatedEvents = new Object2BooleanOpenHashMap<>();
@@ -110,9 +136,6 @@ public final class KillBoard implements IGlobalData {
     }
 
     public int getDefeatedBoss() {
-        if (LibUtils.isLogicalClient()) {
-            return ClientPacketHandler.getDefeatedBoss();
-        }
         return defeatedBosses.size();
     }
 
@@ -120,7 +143,7 @@ public final class KillBoard implements IGlobalData {
         defeatedBosses.put(entityType, true);
         if (entityType == TEBossEntities.SKELETRON.get()) {
             setGamePhase(ServerLifecycleHooks.getCurrentServer(), GamePhase.AFTER_SKELETRON);
-        } else if (entityType == TEBossEntities.WALL_OF_FLESH.get()) { // todo 还差肉山
+        } else if (entityType == TEBossEntities.WALL_OF_FLESH.get() || entityType == TEBossEntities.HILL_OF_FLESH.get()) {
             setGamePhase(ServerLifecycleHooks.getCurrentServer(), GamePhase.WALL_OF_FLESH);
         }
     }
@@ -130,9 +153,6 @@ public final class KillBoard implements IGlobalData {
     }
 
     public GamePhase getGamePhase() {
-        if (LibUtils.isLogicalClient()) {
-            return ClientPacketHandler.getGamePhase();
-        }
         return gamePhase;
     }
 

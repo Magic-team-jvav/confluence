@@ -14,11 +14,13 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.block.functional.DartTrapBlock;
 import org.confluence.mod.common.data.saved.NPCSpawner;
+import org.confluence.mod.mixed.IChunkSection;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 
 import static org.confluence.mod.common.attachment.ExtraInventory.SIZE_VANITY_ARMOR;
@@ -49,18 +51,18 @@ public final class AchievementUtils {
     }
 
     public static void youCanDoIt(ServerPlayer player, ServerLevel level) {
-        if (level.getDayTime() % 1200L == 0L) { // 每分钟检查一次
-            long firstNight = LibUtils.getOrCreatePersistedData(player).getLong("confluence:you_can_do_it");
-            if (firstNight != -1L) {
-                if (firstNight == 0L && level.isNight()) {
-                    LibUtils.getOrCreatePersistedData(player).putLong("confluence:you_can_do_it", level.getDayTime());
-                } else if (firstNight != 0L && level.getDayTime() - firstNight > 12000L) {
-                    AdvancementHolder advancement = player.server.getAdvancements().get(asAchievement("you_can_do_it"));
-                    if (advancement != null) {
-                        player.getAdvancements().award(advancement, "never");
-                    }
-                    LibUtils.getOrCreatePersistedData(player).putLong("confluence:you_can_do_it", -1L);
+        if (level.getGameTime() % 1200 == 0L) { // 每分钟检查一次
+            byte firstNight = LibUtils.getOrCreatePersistedData(player).getByte("confluence:you_can_do_it");
+            if (firstNight == -1) return;
+            int dayTime = LibDateUtils.getDayTime(level);
+            if (LibDateUtils.isNight(dayTime)) {
+                LibUtils.getOrCreatePersistedData(player).putByte("confluence:you_can_do_it", (byte) 1);
+            } else if (LibDateUtils.isDay(dayTime)) {
+                AdvancementHolder advancement = player.server.getAdvancements().get(asAchievement("you_can_do_it"));
+                if (advancement != null) {
+                    player.getAdvancements().award(advancement, "never");
                 }
+                LibUtils.getOrCreatePersistedData(player).putByte("confluence:you_can_do_it", (byte) -1);
             }
         }
     }
@@ -133,8 +135,11 @@ public final class AchievementUtils {
     }
 
     public static void quietNeighborhood(ServerPlayer player, ServerLevel level) {
-        if (level.getGameTime() % 40 == 2 && DynamicBiomeUtils.getISection(level, player.blockPosition()).confluence$isGraveyard()) {
-            awardAchievement(player, "quiet_neighborhood");
+        if (level.getGameTime() % 40 == 2) {
+            IChunkSection iSection = DynamicBiomeUtils.getISection(level, player.blockPosition());
+            if (iSection != null && iSection.confluence$isGraveyard()) {
+                awardAchievement(player, "quiet_neighborhood");
+            }
         }
     }
 }

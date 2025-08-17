@@ -8,7 +8,6 @@ import net.minecraft.network.protocol.game.ClientboundPlayerCombatKillPacket;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import org.confluence.mod.common.data.saved.GamePhase;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
 import org.confluence.mod.mixed.IDeathScreen;
@@ -20,8 +19,6 @@ import org.confluence.phase_journey.mixed.ILevelRenderer;
 public final class ClientPacketHandler {
     private static int maxMana = 20;
     private static float currentMana = 20;
-    private static GamePhase gamePhase = GamePhase.BEFORE_SKELETRON;
-    private static int defeatedBoss = 0;
     private static float fishingPower = 0.0F;
     private static boolean echoVisible = false;
     private static long secretFlag = 0L;
@@ -34,14 +31,6 @@ public final class ClientPacketHandler {
 
     public static int getMaxMana() {
         return maxMana;
-    }
-
-    public static GamePhase getGamePhase() {
-        return gamePhase;
-    }
-
-    public static int getDefeatedBoss() {
-        return defeatedBoss;
     }
 
     public static float getFishingPower() {
@@ -67,8 +56,6 @@ public final class ClientPacketHandler {
     public static void reset() {
         maxMana = 20;
         currentMana = 20;
-        gamePhase = GamePhase.BEFORE_SKELETRON;
-        defeatedBoss = 0;
         fishingPower = 0.0F;
         echoVisible = false;
         secretFlag = 0L;
@@ -82,11 +69,6 @@ public final class ClientPacketHandler {
         if (currentMana >= maxMana) {
             player.playSound(ModSoundEvents.COOLDOWN_RECOVERY.get());
         }
-    }
-
-    public static void handleGamePhase(KillBoardSyncPacketS2C packet) {
-        gamePhase = packet.gamePhase();
-        defeatedBoss = packet.defeatedBoss();
     }
 
     public static void handleFishingPower(FishingPowerInfoPacketS2C packet) {

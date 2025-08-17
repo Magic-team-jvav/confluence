@@ -143,7 +143,7 @@ public final class ModUtils {
             }
         }
         boolean stickySituation = type == TEBossEntities.KING_SLIME.get() && MomentInstanceManager.of(level).hasMoment(TMMoments.SLIME_RAIN.getKey());
-        boolean is$WallOrMountain$OfFlesh = type == TEBossEntities.WALL_OF_FLESH.get(); // todo 还差Mountain of Flesh
+        boolean is$WallOrHill$OfFlesh = type == TEBossEntities.WALL_OF_FLESH.get() || type == TEBossEntities.HILL_OF_FLESH.get();
         ResourceKey<Level> dimension = living.level().dimension();
         level.players().stream().filter(player -> player.level().dimension() == dimension).forEach(player -> {
             TreasureBagItem.createItemEntity(living, player);
@@ -151,7 +151,7 @@ public final class ModUtils {
                 AchievementUtils.awardAchievement(player, "worm_fodder");
             } else if (stickySituation) {
                 AchievementUtils.awardAchievement(player, "sticky_situation");
-            } else if (is$WallOrMountain$OfFlesh) {
+            } else if (is$WallOrHill$OfFlesh) {
                 AchievementUtils.awardAchievement(player, "still_hungry");
             }
         });

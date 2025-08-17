@@ -22,6 +22,7 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.mixed.IChunkSection;
 import org.confluence.mod.mixed.IPalettedContainer;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -141,11 +142,12 @@ public final class DynamicBiomeUtils {
         }
     }
 
-    public static LevelChunkSection getSection(Level level, BlockPos pos) {
+    public static @Nullable LevelChunkSection getSection(Level level, BlockPos pos) {
+        if (level.isOutsideBuildHeight(pos)) return null;
         return level.getChunk(pos).getSection(level.getSectionIndex(pos.getY()));
     }
 
-    public static IChunkSection getISection(Level level, BlockPos pos) {
+    public static @Nullable IChunkSection getISection(Level level, BlockPos pos) {
         return (IChunkSection) getSection(level, pos);
     }
 

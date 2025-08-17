@@ -130,8 +130,10 @@ public final class GameEvents {
 
     @SubscribeEvent
     public static void curioChange(CurioChangeEvent event) {
-        if (event.getEntity() instanceof ServerPlayer player && PrefixUtils.canInit(event.getTo())) {
-            PrefixUtils.initPrefix(player.getRandom(), event.getTo());
+        if (event.getEntity() instanceof ServerPlayer player) {
+            if (PrefixUtils.canInit(event.getTo())) {
+                PrefixUtils.initPrefix(player.getRandom(), event.getTo());
+            }
         }
     }
 

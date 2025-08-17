@@ -260,9 +260,6 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                                 .setLootTable(ModLootTables.QUESTS_0)
                                 .setSprite(TerraEntity.space("random_gift"))
                                 .build(),
-                        // todo第10次任务后使用QUESTS_1
-                        // todo第10次任务后，且肉后使用QUESTS_2
-                        // todo第75次任务后，且肉后使用QUESTS_3
                         ImmutableMap.<ItemStack, ITradeLock>builder()
                                 .put(QuestedFishes.AMANITA_FUNGIFIN.toStack(), glowingMushroomLock)
                                 .put(QuestedFishes.BLOODY_MANOWAR.toStack(), theCrimsonLock)
@@ -311,6 +308,9 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .addResult(20, List.of(ArmorItems.ANGLER_PANTS.toStack()))
                 .addResult(25, List.of(ToolItems.BOTTOMLESS_WATER_BUCKET.toStack()))
                 .addResult(30, List.of(FishingPoleItems.GOLDEN_FISHING_ROD.toStack()))
+                .addLootTable(10, ModLootTables.QUESTS_1)
+                .addLootTable(50, ModLootTables.QUESTS_2)
+                .addLootTable(75, ModLootTables.QUESTS_3)
                 .build())).build());
 
         shop(TENpcEntities.MECHANIC.getId()).addRecipe(withDefaultPylon()

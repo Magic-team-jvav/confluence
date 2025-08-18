@@ -12,16 +12,15 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.*;
-import net.minecraft.world.level.storage.loot.functions.EnchantedCountIncreaseFunction;
-import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunction;
-import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
-import net.minecraft.world.level.storage.loot.functions.SmeltItemFunction;
+import net.minecraft.world.level.storage.loot.functions.*;
 import net.minecraft.world.level.storage.loot.predicates.AllOfCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemKilledByPlayerCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceWithEnchantedBonusCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.neoforged.neoforge.registries.DeferredHolder;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.NbtComponent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.GamePhase;
 import org.confluence.mod.common.init.ModEntities;
@@ -39,6 +38,7 @@ import org.confluence.terraentity.init.entity.TEMonsterEntities;
 import org.confluence.terraentity.init.entity.TENpcEntities;
 import org.confluence.terraentity.init.item.TEBoomerangItems;
 import org.confluence.terraentity.init.item.TEPetItems;
+import org.confluence.terraentity.init.item.TESummonItems;
 import org.confluence.terraentity.init.item.TEYoyosItems;
 import org.jetbrains.annotations.NotNull;
 
@@ -663,12 +663,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(NatureBlocks.GRANITE)).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 10))).apply(random0To1)
                 )
         );
-        /*
-        add(TEMonsterEntities.BLUE_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/blue_slime"), slimeCommon()
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.GEL)).apply(count1To2)).apply(random0To1)
-        );
-        */
+        add(TEMonsterEntities.BLUE_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/blue_slime"), slimeCommon(-10040065));
         // 肉后怪
         add(TEMonsterEntities.WYVERN.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/wyvern"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
@@ -704,8 +699,8 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(996))
                 );
     }
-    /*
-    private static LootTable.Builder slimeCommon() {
+
+    private static LootTable.Builder slimeCommon(int gelColor) {
         return LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(NestedLootTable.lootTableReference(ModLootTables.SLIME_CARRY))
@@ -714,9 +709,13 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TESummonItems.SLIME_STAFF).setQuality(1))
                         .add(EmptyLootItem.emptyItem().setWeight(6999))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(MaterialItems.GEL))
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))
+                        .apply(SetComponentsFunction.setComponent(ConfluenceMagicLib.NBT.get(), NbtComponent.create(tag -> tag.putInt("color", gelColor))))
                 );
     }
-    todo NbtProvider*/
 
     private LootTable.Builder goblinCommon() {
         LootItemConditionalFunction.Builder<?> count1To5 = SetItemCountFunction.setCount(UniformGenerator.between(1, 5));

@@ -32,9 +32,7 @@ public class PotionItems {
     public static final DeferredItem<AbstractPotionItem> BOTTLED_WATER = ITEMS.register("bottled_water", () -> new AbstractPotionItem(new Item.Properties().stacksTo(16)) {
         @Override
         protected void apply(@NotNull ItemStack itemStack, @NotNull Level level, @NotNull LivingEntity living) {
-            if (living.getAirSupply() <= 0 && living instanceof ServerPlayer serverPlayer) {
-                AchievementUtils.awardAchievement(serverPlayer, "unusual_survival_strategies");
-            }
+            if (living instanceof ServerPlayer player) AchievementUtils.unusualSurvivalStrategies(player, true);
         }
     });
 

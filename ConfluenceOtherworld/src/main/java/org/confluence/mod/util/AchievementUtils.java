@@ -152,4 +152,10 @@ public final class AchievementUtils {
             }
         }
     }
+
+    public static void unusualSurvivalStrategies(ServerPlayer player, boolean isWatterBottle) {
+        if (isWatterBottle && player.isInWater() && player.getAirSupply() <= 0) {
+            awardAchievement(player, "unusual_survival_strategies");
+        }
+    }
 }

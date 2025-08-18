@@ -1,7 +1,0 @@
-{
-  "parent": "block/button_pressed",
-  "textures": {
-    "texture": "confluence:block/yellow_willow_planks"
-  },
-  "render_type": "solid"
-}

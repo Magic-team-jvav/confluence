@@ -4,6 +4,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.DataMapProvider;
 import net.neoforged.neoforge.registries.datamaps.DataMapType;
+import net.neoforged.neoforge.registries.datamaps.builtin.NeoForgeDataMaps;
 import org.confluence.mod.common.data.gen.data_map.*;
 import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.mod.mixin.accessor.DataMapProviderAccessor;
@@ -25,6 +26,7 @@ public class ModDataMapProvider extends DataMapProvider {
         ImmunitySubProvider.gather(() -> builder(ModDataMaps.IMMUNITY));
         DiggingPowerProvider.gather(() -> builder(ModDataMaps.DIGGING_POWER));
         BugNetEntityToItemSubProvider.gather(builder(ModDataMaps.BUG_NET_ENTITY_TO_ITEM, BugNetEntityToItemSubProvider.Builder::new));
+        FurnaceFuelsSubProvider.gather(() -> builder(NeoForgeDataMaps.FURNACE_FUELS));
     }
 
     @SuppressWarnings("unchecked")

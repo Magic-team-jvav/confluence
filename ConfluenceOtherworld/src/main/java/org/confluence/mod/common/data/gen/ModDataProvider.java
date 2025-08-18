@@ -387,13 +387,13 @@ public class ModDataProvider {
             herb(context, JUNGLE_ROSE, 16, NatureBlocks.JUNGLE_ROSE.get());
             herb(context, NATURES_GIFT, 4, NatureBlocks.NATURES_GIFT.get());
 
-            droopingVineTree(context, ModFeatures.Configured.YELLOW_WILLOW_TREE, NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getLog().get(), NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getLeaves().get(), NatureBlocks.YELLOW_WILLOW_DROOPING_LEAVES.get(), 6);
+            droopingVineTree(context, ModFeatures.Configured.YELLOW_WILLOW_TREE, NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.LOG.get(), NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.LEAVES.get(), NatureBlocks.YELLOW_WILLOW_DROOPING_LEAVES.get(), 6);
 
             register(context, CORRUPT_DROOPING_VINE, ModFeatures.DROOPING_BLOCK.get(), new DroopingBlockFeature.Config(BlockStateProvider.simple(NatureBlocks.CORRUPT_DROOPING_VINE.get()), false, 1, 9));
             register(context, ModFeatures.Configured.EBONY_TREE, Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(List.of(
                     new WeightedPlacedFeature(direct(
                             Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
-                                    BlockStateProvider.simple(NatureBlocks.EBONY_LOG_BLOCKS.getLog().get()),
+                                    BlockStateProvider.simple(NatureBlocks.EBONY_LOG_BLOCKS.LOG.get()),
                                     new StraightTrunkPlacer(6, 0, 0),
                                     BlockStateProvider.simple(Blocks.AIR),
                                     new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.ZERO, 3),
@@ -403,7 +403,7 @@ public class ModDataProvider {
                     ), 0.05F),
                     new WeightedPlacedFeature(direct(
                             Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
-                                    BlockStateProvider.simple(NatureBlocks.EBONY_LOG_BLOCKS.getLog().get()),
+                                    BlockStateProvider.simple(NatureBlocks.EBONY_LOG_BLOCKS.LOG.get()),
                                     new StraightTrunkPlacer(5, 2, 0),
                                     BlockStateProvider.simple(Blocks.AIR),
                                     new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.ZERO, 3),
@@ -412,22 +412,22 @@ public class ModDataProvider {
                             BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.EBONY_SAPLING.get().defaultBlockState(), Vec3i.ZERO))
                     ), 0.05F)
             ), direct(
-                    ModFeatures.DROOPING_VINE_TREE.get(), new DroopingVineTreeFeature.Config(BlockStateProvider.simple(NatureBlocks.EBONY_LOG_BLOCKS.getLog().get()), BlockStateProvider.simple(NatureBlocks.EBONY_LOG_BLOCKS.getLeaves().get()), BlockStateProvider.simple(NatureBlocks.CORRUPT_DROOPING_VINE.get()), 5),
+                    ModFeatures.DROOPING_VINE_TREE.get(), new DroopingVineTreeFeature.Config(BlockStateProvider.simple(NatureBlocks.EBONY_LOG_BLOCKS.LOG.get()), BlockStateProvider.simple(NatureBlocks.EBONY_LOG_BLOCKS.LEAVES.get()), BlockStateProvider.simple(NatureBlocks.CORRUPT_DROOPING_VINE.get()), 5),
                     BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.EBONY_SAPLING.get().defaultBlockState(), Vec3i.ZERO))
             )));
             register(context, ModFeatures.Configured.SHADOW_TREE, Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(Collections.singletonList(
                     new WeightedPlacedFeature(direct(
                             Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
-                                    BlockStateProvider.simple(NatureBlocks.SHADOW_LOG_BLOCKS.getLog().get()),
+                                    BlockStateProvider.simple(NatureBlocks.SHADOW_LOG_BLOCKS.LOG.get()),
                                     new StraightTrunkPlacer(5, 2, 0),
-                                    BlockStateProvider.simple(NatureBlocks.SHADOW_LOG_BLOCKS.getLeaves().get()),
+                                    BlockStateProvider.simple(NatureBlocks.SHADOW_LOG_BLOCKS.LEAVES.get()),
                                     new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.ZERO, 3),
                                     new TwoLayersFeatureSize(1, 0, 1)
                             ).ignoreVines().dirt(BlockStateProvider.simple(NatureBlocks.CRIMSON_GRASS_BLOCK.get())).build(),
                             BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.SHADOW_SAPLING.get().defaultBlockState(), Vec3i.ZERO))
                     ), 0.5F)
             ), direct(
-                    ModFeatures.DROOPING_VINE_TREE.get(), new DroopingVineTreeFeature.Config(BlockStateProvider.simple(NatureBlocks.SHADOW_LOG_BLOCKS.getLog().get()), BlockStateProvider.simple(NatureBlocks.SHADOW_LOG_BLOCKS.getLeaves().get()), BlockStateProvider.simple(NatureBlocks.CRIMSON_DROOPING_VINE.get()), 5),
+                    ModFeatures.DROOPING_VINE_TREE.get(), new DroopingVineTreeFeature.Config(BlockStateProvider.simple(NatureBlocks.SHADOW_LOG_BLOCKS.LOG.get()), BlockStateProvider.simple(NatureBlocks.SHADOW_LOG_BLOCKS.LEAVES.get()), BlockStateProvider.simple(NatureBlocks.CRIMSON_DROOPING_VINE.get()), 5),
                     BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.SHADOW_SAPLING.get().defaultBlockState(), Vec3i.ZERO))
             )));
             register(context, CRIMSON_DROOPING_VINE, ModFeatures.DROOPING_BLOCK.get(), new DroopingBlockFeature.Config(BlockStateProvider.simple(NatureBlocks.CRIMSON_DROOPING_VINE.get()), false, 1, 9));
@@ -447,10 +447,10 @@ public class ModDataProvider {
             register(context, ModFeatures.Configured.BAOBAB_TREE, Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(List.of(
                     new WeightedPlacedFeature(direct(
                             ModFeatures.BAOBAB_TREE.get(), new BaobabTreeFeature.Config(
-                                    BlockStateProvider.simple(NatureBlocks.BAOBAB_LOG_BLOCKS.getLog().get()),
-                                    BlockStateProvider.simple(NatureBlocks.BAOBAB_LOG_BLOCKS.getWood().get()),
-                                    BlockStateProvider.simple(NatureBlocks.BAOBAB_LOG_BLOCKS.getWood().get()),
-                                    BlockStateProvider.simple(NatureBlocks.BAOBAB_LOG_BLOCKS.getLeaves().get()),
+                                    BlockStateProvider.simple(NatureBlocks.BAOBAB_LOG_BLOCKS.LOG.get()),
+                                    BlockStateProvider.simple(NatureBlocks.BAOBAB_LOG_BLOCKS.WOOD.get()),
+                                    BlockStateProvider.simple(NatureBlocks.BAOBAB_LOG_BLOCKS.WOOD.get()),
+                                    BlockStateProvider.simple(NatureBlocks.BAOBAB_LOG_BLOCKS.LEAVES.get()),
                                     BlockStateProvider.simple(Blocks.AIR),
                                     8
                             ),
@@ -458,10 +458,10 @@ public class ModDataProvider {
                     ), 0.05F),
                     new WeightedPlacedFeature(direct(
                             ModFeatures.BAOBAB_TREE.get(), new BaobabTreeFeature.Config(
-                                    BlockStateProvider.simple(NatureBlocks.BAOBAB_LOG_BLOCKS.getLog().get()),
-                                    BlockStateProvider.simple(NatureBlocks.BAOBAB_LOG_BLOCKS.getWood().get()),
-                                    BlockStateProvider.simple(NatureBlocks.BAOBAB_LOG_BLOCKS.getWood().get()),
-                                    BlockStateProvider.simple(NatureBlocks.BAOBAB_LOG_BLOCKS.getLeaves().get()),
+                                    BlockStateProvider.simple(NatureBlocks.BAOBAB_LOG_BLOCKS.LOG.get()),
+                                    BlockStateProvider.simple(NatureBlocks.BAOBAB_LOG_BLOCKS.WOOD.get()),
+                                    BlockStateProvider.simple(NatureBlocks.BAOBAB_LOG_BLOCKS.WOOD.get()),
+                                    BlockStateProvider.simple(NatureBlocks.BAOBAB_LOG_BLOCKS.LEAVES.get()),
                                     BlockStateProvider.simple(Blocks.WATER),
                                     8
                             ),
@@ -469,11 +469,11 @@ public class ModDataProvider {
                     ), 0.05F)
             ), direct(
                     ModFeatures.BAOBAB_TREE.get(), new BaobabTreeFeature.Config(
-                            BlockStateProvider.simple(NatureBlocks.BAOBAB_LOG_BLOCKS.getLog().get()),
-                            BlockStateProvider.simple(NatureBlocks.BAOBAB_LOG_BLOCKS.getWood().get()),
-                            BlockStateProvider.simple(NatureBlocks.BAOBAB_LOG_BLOCKS.getWood().get()),
-                            BlockStateProvider.simple(NatureBlocks.BAOBAB_LOG_BLOCKS.getLeaves().get()),
-                            BlockStateProvider.simple(NatureBlocks.BAOBAB_LOG_BLOCKS.getStrippedLog().get()),
+                            BlockStateProvider.simple(NatureBlocks.BAOBAB_LOG_BLOCKS.LOG.get()),
+                            BlockStateProvider.simple(NatureBlocks.BAOBAB_LOG_BLOCKS.WOOD.get()),
+                            BlockStateProvider.simple(NatureBlocks.BAOBAB_LOG_BLOCKS.WOOD.get()),
+                            BlockStateProvider.simple(NatureBlocks.BAOBAB_LOG_BLOCKS.LEAVES.get()),
+                            BlockStateProvider.simple(NatureBlocks.BAOBAB_LOG_BLOCKS.STRIPPED_LOG.get()),
                             8
                     ),
                     BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.BAOBAB_SAPLING.get().defaultBlockState(), Vec3i.ZERO))
@@ -484,7 +484,7 @@ public class ModDataProvider {
             register(context, CAVE_CHESTS, ModFeatures.SIMPLE_BLOCK_NBT.get(), new SimpleBlockNBTFeature.Config(new WeightedStateProvider(randomState(ChestBlocks.GOLDEN_CHEST.get().defaultBlockState().setValue(BaseChestBlock.UNLOCKED, true), ChestBlock.FACING)), tag -> tag.putString("LootTable", "confluence:chests/cave_chests")));
             register(context, UNDERGROUND_CHESTS, ModFeatures.SIMPLE_BLOCK_NBT.get(), new SimpleBlockNBTFeature.Config(new WeightedStateProvider(randomState(Blocks.CHEST.defaultBlockState(), ChestBlock.FACING)), tag -> tag.putString("LootTable", "confluence:chests/underground_chests")));
             register(context, FOREST_DROOPING_VINE, ModFeatures.DROOPING_BLOCK.get(), new DroopingBlockFeature.Config(BlockStateProvider.simple(NatureBlocks.FOREST_DROOPING_VINE.get()), false, 1, 9));
-            register(context, ModFeatures.Configured.ASH_TREE, ModFeatures.BRANCH_TREE.get(), new BranchTreeFeature.Config(BlockStateProvider.simple(NatureBlocks.ASH_LOG_BLOCKS.getLog().get()), BlockStateProvider.simple(NatureBlocks.ASH_BRANCHES.get()), 7, 3));
+            register(context, ModFeatures.Configured.ASH_TREE, ModFeatures.BRANCH_TREE.get(), new BranchTreeFeature.Config(BlockStateProvider.simple(NatureBlocks.ASH_LOG_BLOCKS.LOG.get()), BlockStateProvider.simple(NatureBlocks.ASH_BRANCHES.get()), 7, 3));
             register(context, JUNGLE_DROOPING_VINE, ModFeatures.DROOPING_BLOCK.get(), new DroopingBlockFeature.Config(BlockStateProvider.simple(NatureBlocks.JUNGLE_DROOPING_VINE.get()), false, 1, 9));
             register(context, UNDERGROUND_JUNGLE_GRASS, Feature.RANDOM_PATCH, new RandomPatchConfiguration(32, 7, 3, direct(
                     Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(new WeightedStateProvider(SimpleWeightedRandomList.<BlockState>builder().add(Blocks.SHORT_GRASS.defaultBlockState(), 3).add(Blocks.FERN.defaultBlockState(), 1).build())),
@@ -519,18 +519,18 @@ public class ModDataProvider {
             register(context, CAVE_FROZEN_CHESTS, ModFeatures.SIMPLE_BLOCK_NBT.get(), new SimpleBlockNBTFeature.Config(BlockStateProvider.simple(ChestBlocks.FROZEN_CHEST.get().defaultBlockState().setValue(BaseChestBlock.UNLOCKED, true)), tag -> tag.putString("LootTable", "confluence:chests/cave_frozen_chests")));
             register(context, UNDERGROUND_FROZEN_CHESTS, ModFeatures.SIMPLE_BLOCK_NBT.get(), new SimpleBlockNBTFeature.Config(BlockStateProvider.simple(ChestBlocks.FROZEN_CHEST.get().defaultBlockState().setValue(BaseChestBlock.UNLOCKED, true)), tag -> tag.putString("LootTable", "confluence:chests/frozen_chests")));
             register(context, ModFeatures.Configured.PALM_TREE, ModFeatures.PALM_TREE.get(), new PalmTreeFeature.Config(
-                    BlockStateProvider.simple(NatureBlocks.PALM_LOG_BLOCKS.getLog().get()),
-                    BlockStateProvider.simple(NatureBlocks.PALM_LOG_BLOCKS.getLeaves().get().defaultBlockState().setValue(LeavesBlock.DISTANCE, 1).setValue(PalmLeaves.TYPE, SlabType.BOTTOM)),
-                    BlockStateProvider.simple(NatureBlocks.PALM_LOG_BLOCKS.getLeaves().get().defaultBlockState().setValue(LeavesBlock.DISTANCE, 1).setValue(PalmLeaves.TYPE, SlabType.TOP)),
-                    BlockStateProvider.simple(NatureBlocks.PALM_LOG_BLOCKS.getLeaves().get().defaultBlockState().setValue(LeavesBlock.DISTANCE, 1).setValue(PalmLeaves.TYPE, SlabType.DOUBLE))
+                    BlockStateProvider.simple(NatureBlocks.PALM_LOG_BLOCKS.LOG.get()),
+                    BlockStateProvider.simple(NatureBlocks.PALM_LOG_BLOCKS.LEAVES.get().defaultBlockState().setValue(LeavesBlock.DISTANCE, 1).setValue(PalmLeaves.TYPE, SlabType.BOTTOM)),
+                    BlockStateProvider.simple(NatureBlocks.PALM_LOG_BLOCKS.LEAVES.get().defaultBlockState().setValue(LeavesBlock.DISTANCE, 1).setValue(PalmLeaves.TYPE, SlabType.TOP)),
+                    BlockStateProvider.simple(NatureBlocks.PALM_LOG_BLOCKS.LEAVES.get().defaultBlockState().setValue(LeavesBlock.DISTANCE, 1).setValue(PalmLeaves.TYPE, SlabType.DOUBLE))
             ));
             register(context, GEMSTONE_CAVE, ModFeatures.GEMSTONE_CAVE.get(), new GemstoneCaveFeature.Config(3));
             register(context, ModFeatures.Configured.PEARL_TREE, Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(List.of(
                     new WeightedPlacedFeature(direct(
                             Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
-                                    BlockStateProvider.simple(NatureBlocks.PEARL_LOG_BLOCKS.getLog().get()),
+                                    BlockStateProvider.simple(NatureBlocks.PEARL_LOG_BLOCKS.LOG.get()),
                                     new ForkingTrunkPlacer(5, 0, 0),
-                                    BlockStateProvider.simple(NatureBlocks.PEARL_LOG_BLOCKS.getLeaves().get()),
+                                    BlockStateProvider.simple(NatureBlocks.PEARL_LOG_BLOCKS.LEAVES.get()),
                                     new AcaciaFoliagePlacer(ConstantInt.of(2), ConstantInt.ZERO),
                                     new TwoLayersFeatureSize(1, 0, 2)
                             ).ignoreVines().dirt(BlockStateProvider.simple(Blocks.DIRT)).build(),
@@ -538,9 +538,9 @@ public class ModDataProvider {
                     ), 0.5F),
                     new WeightedPlacedFeature(direct(
                             Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
-                                    BlockStateProvider.simple(NatureBlocks.PEARL_LOG_BLOCKS.getLog().get()),
+                                    BlockStateProvider.simple(NatureBlocks.PEARL_LOG_BLOCKS.LOG.get()),
                                     new FancyTrunkPlacer(7, 0, 0),
-                                    BlockStateProvider.simple(NatureBlocks.PEARL_LOG_BLOCKS.getLeaves().get()),
+                                    BlockStateProvider.simple(NatureBlocks.PEARL_LOG_BLOCKS.LEAVES.get()),
                                     new FancyFoliagePlacer(ConstantInt.of(2), ConstantInt.of(4), 4),
                                     new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4))
                             ).ignoreVines().dirt(BlockStateProvider.simple(Blocks.DIRT)).build(),
@@ -548,9 +548,9 @@ public class ModDataProvider {
                     ), 0.5F),
                     new WeightedPlacedFeature(direct(
                             Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
-                                    BlockStateProvider.simple(NatureBlocks.PEARL_LOG_BLOCKS.getLog().get()),
+                                    BlockStateProvider.simple(NatureBlocks.PEARL_LOG_BLOCKS.LOG.get()),
                                     new StraightTrunkPlacer(5, 2, 1),
-                                    BlockStateProvider.simple(NatureBlocks.PEARL_LOG_BLOCKS.getLeaves().get()),
+                                    BlockStateProvider.simple(NatureBlocks.PEARL_LOG_BLOCKS.LEAVES.get()),
                                     new SpruceFoliagePlacer(UniformInt.of(2, 3), UniformInt.of(0, 2), UniformInt.of(1, 2)),
                                     new TwoLayersFeatureSize(2, 0, 2)
                             ).ignoreVines().dirt(BlockStateProvider.simple(Blocks.DIRT)).build(),
@@ -558,9 +558,9 @@ public class ModDataProvider {
                     ), 0.5F),
                     new WeightedPlacedFeature(direct(
                             Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
-                                    BlockStateProvider.simple(NatureBlocks.PEARL_LOG_BLOCKS.getLog().get()),
+                                    BlockStateProvider.simple(NatureBlocks.PEARL_LOG_BLOCKS.LOG.get()),
                                     new StraightTrunkPlacer(5, 2, 0),
-                                    BlockStateProvider.simple(NatureBlocks.PEARL_LOG_BLOCKS.getLeaves().get()),
+                                    BlockStateProvider.simple(NatureBlocks.PEARL_LOG_BLOCKS.LEAVES.get()),
                                     new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.ZERO, 3),
                                     new TwoLayersFeatureSize(1, 0, 1)
                             ).ignoreVines().dirt(BlockStateProvider.simple(NatureBlocks.HALLOW_GRASS_BLOCK.get())).build(),
@@ -568,9 +568,9 @@ public class ModDataProvider {
                     ), 0.5F)
             ), direct(
                     Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
-                            BlockStateProvider.simple(NatureBlocks.PEARL_LOG_BLOCKS.getLog().get()),
+                            BlockStateProvider.simple(NatureBlocks.PEARL_LOG_BLOCKS.LOG.get()),
                             new StraightTrunkPlacer(7, 0, 0),
-                            BlockStateProvider.simple(NatureBlocks.PEARL_LOG_BLOCKS.getLeaves().get()),
+                            BlockStateProvider.simple(NatureBlocks.PEARL_LOG_BLOCKS.LEAVES.get()),
                             new BushFoliagePlacer(ConstantInt.of(2), ConstantInt.of(1), 2),
                             new TwoLayersFeatureSize(0, 0, 0)
                     ).ignoreVines().dirt(BlockStateProvider.simple(Blocks.DIRT)).build(),

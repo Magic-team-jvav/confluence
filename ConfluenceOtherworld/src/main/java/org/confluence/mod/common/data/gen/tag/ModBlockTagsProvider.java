@@ -42,7 +42,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         OreBlocks.acceptTag(tag(Tags.Blocks.ORES));
         StatueBlocks.acceptTag(mineableWithPickaxe);
         tag(ModTags.Blocks.JEWELLERY_BRANCHES_ATTACHABLE).add(STONY_LOG.get());
-        tag(ModTags.Blocks.ASH_LOG_BRANCHES_ATTACHABLE).add(ASH_LOG_BLOCKS.getLog().get());
+        tag(ModTags.Blocks.ASH_LOG_BRANCHES_ATTACHABLE).add(ASH_LOG_BLOCKS.LOG.get());
         tag(ModTags.Blocks.OPAL_ORE_REPLACEMENT).add(DIATOMACEOUS.get());
         tag(ModTags.Blocks.DESERT_FOSSIL_REPLACEMENT).add(HARDENED_SAND_BLOCK.get(), HARDENED_RED_SAND_BLOCK.get());
         tag(ModTags.Blocks.SLUSH_REPLACEMENT).add(Blocks.PACKED_ICE, Blocks.SNOW_BLOCK);
@@ -138,14 +138,14 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         tag(TETags.Blocks.HONEY).add(HONEY.get());
 
         tag(BlockTags.OVERWORLD_NATURAL_LOGS).add(
-                EBONY_LOG_BLOCKS.getLog().get(),
-                SHADOW_LOG_BLOCKS.getLog().get(),
-                PALM_LOG_BLOCKS.getLog().get(),
-                PEARL_LOG_BLOCKS.getLog().get(),
-                YELLOW_WILLOW_LOG_BLOCKS.getLog().get(),
-                LIVING_LOG_BLOCKS.getLog().get(),
-                LIVING_MAHOGANY_LOG_BLOCKS.getLog().get(),
-                BAOBAB_LOG_BLOCKS.getLog().get()
+                EBONY_LOG_BLOCKS.LOG.get(),
+                SHADOW_LOG_BLOCKS.LOG.get(),
+                PALM_LOG_BLOCKS.LOG.get(),
+                PEARL_LOG_BLOCKS.LOG.get(),
+                YELLOW_WILLOW_LOG_BLOCKS.LOG.get(),
+                LIVING_LOG_BLOCKS.LOG.get(),
+                LIVING_MAHOGANY_LOG_BLOCKS.LOG.get(),
+                BAOBAB_LOG_BLOCKS.LOG.get()
         );
 
         mineableWithPickaxe.add(
@@ -400,20 +400,12 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         mineableWithHoe.add(FLOATING_WHEAT_BALE.get(), SCULK_TRAP.get());
         CrateBlocks.BLOCKS.getEntries().forEach(block -> mineableWithHoe.add(block.get()));
 
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithAxe = tag(BlockTags.MINEABLE_WITH_AXE);
-        mineableWithAxe.add(
+        tag(BlockTags.PLANKS).add(
                 CHISELED_OAK_PLANKS.get(),
-                CHISELED_SPRUCE_PLANKS.get(),
-                CHISELED_EBONY_PLANKS.get(),
-                CHISELED_SHADOW_PLANKS.get(),
-                CHISELED_PEARL_PLANKS.get(),
-                CHISELED_PALM_PLANKS.get(),
-                CHISELED_BAOBAB_PLANKS.get(),
-                CHISELED_YELLOW_WILLOW_PLANKS.get(),
-                CHISELED_LIVING_PLANKS.get(),
-                CHISELED_ASH_PLANKS.get(),
-                CHISELED_GLOWING_MUSHROOM_PLANKS.get(),
-                CHISELED_DYNASTY_PLANKS.get(),
+                CHISELED_SPRUCE_PLANKS.get()
+        );
+
+        tag(BlockTags.MINEABLE_WITH_AXE).add(
                 WOOD_STONE_SLATTED_BLOCKS.get(),
                 GOLDEN_CHEST.get(),
                 SPORE_ROOT_BLOCK.get(),
@@ -1282,8 +1274,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 ModTags.Blocks.CRIMSON_TUNDRA_BLOCKS
         ).add(
                 CRIMSON_GRASS_BLOCK.get(),
-                SHADOW_LOG_BLOCKS.getLog().get(),
-                SHADOW_LOG_BLOCKS.getLeaves().get(),
+                SHADOW_LOG_BLOCKS.LOG.get(),
+                SHADOW_LOG_BLOCKS.LEAVES.get(),
                 CRIMSTONE.get(),
                 CRIMSAND.get(),
                 COBBLED_CRIMSTONE.get(),
@@ -1309,8 +1301,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 ModTags.Blocks.CORRUPTED_TUNDRA_BLOCKS
         ).add(
                 CORRUPT_GRASS_BLOCK.get(),
-                EBONY_LOG_BLOCKS.getLog().get(),
-                EBONY_LOG_BLOCKS.getLeaves().get(),
+                EBONY_LOG_BLOCKS.LOG.get(),
+                EBONY_LOG_BLOCKS.LEAVES.get(),
                 EBONSTONE.get(),
                 EBONSAND.get(),
                 COBBLED_EBONSTONE.get(),
@@ -1336,8 +1328,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 ModTags.Blocks.HALLOW_TUNDRA_BLOCKS
         ).add(
                 HALLOW_GRASS_BLOCK.get(),
-                PEARL_LOG_BLOCKS.getLog().get(),
-                PEARL_LOG_BLOCKS.getLeaves().get(),
+                PEARL_LOG_BLOCKS.LOG.get(),
+                PEARL_LOG_BLOCKS.LEAVES.get(),
                 PEARLSTONE.get(),
                 PEARLSAND.get(),
                 COBBLED_PEARLSTONE.get(),

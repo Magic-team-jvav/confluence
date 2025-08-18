@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/cube_column_horizontal",
-  "textures": {
-    "end": "confluence:block/stripped_shadow_log_side",
-    "side": "confluence:block/stripped_shadow_log_side"
-  }
-}

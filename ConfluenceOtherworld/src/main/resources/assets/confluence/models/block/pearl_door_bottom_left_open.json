@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/door_bottom_left_open",
-  "textures": {
-    "bottom": "confluence:block/pearl_door_bottom",
-    "top": "confluence:block/pearl_door_top"
-  },
-  "render_type": "cutout"
-}

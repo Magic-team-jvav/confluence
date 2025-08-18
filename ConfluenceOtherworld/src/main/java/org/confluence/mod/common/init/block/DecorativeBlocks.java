@@ -36,17 +36,6 @@ public class DecorativeBlocks {
     // 雕纹木板
     public static final DeferredBlock<Block> CHISELED_OAK_PLANKS = copyBlockRegister("chiseled_oak_planks", OAK_PLANKS);
     public static final DeferredBlock<Block> CHISELED_SPRUCE_PLANKS = copyBlockRegister("chiseled_spruce_planks", SPRUCE_PLANKS);
-    public static final DeferredBlock<Block> CHISELED_EBONY_PLANKS = copyBlockRegister("chiseled_ebony_planks", OAK_PLANKS);
-    public static final DeferredBlock<Block> CHISELED_SHADOW_PLANKS = copyBlockRegister("chiseled_shadow_planks", OAK_PLANKS);
-    public static final DeferredBlock<Block> CHISELED_PEARL_PLANKS = copyBlockRegister("chiseled_pearl_planks", OAK_PLANKS);
-    public static final DeferredBlock<Block> CHISELED_PALM_PLANKS = copyBlockRegister("chiseled_palm_planks", OAK_PLANKS);
-    public static final DeferredBlock<Block> CHISELED_BAOBAB_PLANKS = copyBlockRegister("chiseled_baobab_planks", OAK_PLANKS);
-    public static final DeferredBlock<Block> CHISELED_YELLOW_WILLOW_PLANKS = copyBlockRegister("chiseled_yellow_willow_planks", OAK_PLANKS);
-    public static final DeferredBlock<Block> CHISELED_LIVING_PLANKS = copyBlockRegister("chiseled_living_planks", OAK_PLANKS);
-    public static final DeferredBlock<Block> CHISELED_LIVING_MAHOGANY_PLANKS = copyBlockRegister("chiseled_living_mahogany_planks", OAK_PLANKS);
-    public static final DeferredBlock<Block> CHISELED_ASH_PLANKS = copyBlockRegister("chiseled_ash_planks", OAK_PLANKS);
-    public static final DeferredBlock<Block> CHISELED_GLOWING_MUSHROOM_PLANKS = copyBlockRegister("chiseled_glowing_mushroom_planks", OAK_PLANKS);
-    public static final DeferredBlock<Block> CHISELED_DYNASTY_PLANKS = copyBlockRegister("chiseled_dynasty_planks", OAK_PLANKS);
     public static final DeferredBlock<Block> WOOD_STONE_SLATTED_BLOCKS = copyBlockRegister("wood_stone_slatted_blocks", OAK_PLANKS);
 
     // 砖

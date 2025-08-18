@@ -1,7 +1,0 @@
-{
-  "parent": "block/template_fence_gate",
-  "textures": {
-    "texture": "confluence:block/dynasty_planks"
-  },
-  "render_type": "solid"
-}

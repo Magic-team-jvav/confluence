@@ -1,8 +1,0 @@
-{
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "confluence:block/glowing_mushroom_planks",
-    "particle": "confluence:block/glowing_mushroom_planks"
-  },
-  "render_type": "solid"
-}

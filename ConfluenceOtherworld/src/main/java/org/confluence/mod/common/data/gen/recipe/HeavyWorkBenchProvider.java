@@ -499,7 +499,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
 
         // 亚马逊球
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                'S', AmountIngredient.of(4,NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getPlanks()),
+                'S', AmountIngredient.of(4, NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.PLANKS),
                 'A', AmountIngredient.of(12,MaterialItems.STINGER),
                 'B', AmountIngredient.of(9,MaterialItems.JUNGLE_SPORE),
                 '/', Ingredient.of(MaterialItems.MAN_EATER_VINE)

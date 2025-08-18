@@ -1,8 +1,0 @@
-{
-  "parent": "block/template_orientable_trapdoor_top",
-  "textures": {
-    "texture": "confluence:block/living_mahogany_trapdoor",
-    "particle": "confluence:block/living_mahogany_trapdoor"
-  },
-  "render_type": "cutout"
-}

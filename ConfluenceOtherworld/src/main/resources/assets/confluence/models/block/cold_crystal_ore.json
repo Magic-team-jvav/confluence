@@ -1,8 +1,0 @@
-{
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "confluence:block/cold_crystal_ore",
-    "particle": "confluence:block/cold_crystal_ore"
-  },
-  "render_type": "solid"
-}

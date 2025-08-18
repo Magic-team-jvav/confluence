@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/outer_stairs",
-  "textures": {
-    "bottom": "confluence:block/ebony_planks",
-    "side": "confluence:block/ebony_planks",
-    "top": "confluence:block/ebony_planks"
-  }
-}

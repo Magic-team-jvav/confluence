@@ -1,8 +1,0 @@
-{
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "confluence:block/baobab_planks",
-    "particle": "confluence:block/baobab_planks"
-  },
-  "render_type": "solid"
-}

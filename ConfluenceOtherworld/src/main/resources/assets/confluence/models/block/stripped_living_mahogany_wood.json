@@ -1,8 +1,0 @@
-{
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "confluence:block/stripped_living_mahogany_log",
-    "particle": "confluence:block/stripped_living_mahogany_log"
-  },
-  "render_type": "solid"
-}

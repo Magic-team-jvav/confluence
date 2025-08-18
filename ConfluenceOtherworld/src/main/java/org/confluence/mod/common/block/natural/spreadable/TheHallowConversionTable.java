@@ -15,8 +15,8 @@ public class TheHallowConversionTable extends ConversionTable {
     protected @Nullable Block getTarget(BlockState source) {
         Holder<Block> holder = source.getBlock().builtInRegistryHolder();
 
-        if (holder.is(BlockTags.LOGS)) return NatureBlocks.PEARL_LOG_BLOCKS.getLog().get();
-        if (holder.is(BlockTags.LEAVES)) return NatureBlocks.PEARL_LOG_BLOCKS.getLeaves().get();
+        if (holder.is(BlockTags.LOGS)) return NatureBlocks.PEARL_LOG_BLOCKS.LOG.get();
+        if (holder.is(BlockTags.LEAVES)) return NatureBlocks.PEARL_LOG_BLOCKS.LEAVES.get();
         if (holder.is(BlockTags.BASE_STONE_OVERWORLD)) return NatureBlocks.PEARLSTONE.get();
         if (holder.is(Tags.Blocks.COBBLESTONES)) return NatureBlocks.COBBLED_PEARLSTONE.get();
 

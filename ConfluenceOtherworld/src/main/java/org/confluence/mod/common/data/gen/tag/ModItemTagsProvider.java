@@ -1,6 +1,5 @@
 package org.confluence.mod.common.data.gen.tag;
 
-import com.google.common.collect.Streams;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
@@ -20,6 +19,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import org.confluence.lib.common.LibTags;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.DeathChestBlock;
+import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
@@ -36,7 +36,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public class ModItemTagsProvider extends ItemTagsProvider {
     public ModItemTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, CompletableFuture<TagLookup<Block>> b, @Nullable ExistingFileHelper helper) {
@@ -48,6 +47,24 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         HookItems.acceptTag(tag(ModTags.Items.HOOK));
         PotionItems.acceptTag(tag(Tags.Items.POTIONS));
         FoodItems.acceptTag(tag(Tags.Items.FOODS));
+
+        IntrinsicTagAppender<Item> notFlammableWood = tag(ItemTags.NON_FLAMMABLE_WOOD);
+        for (LogBlockSet logBlockSet : LogBlockSet.LOG_BLOCK_SETS) {
+            if (logBlockSet.ignitedByLava) continue;
+            notFlammableWood.add(logBlockSet.PLANKS.asItem());
+            if (logBlockSet.LOG.isBound()) notFlammableWood.add(logBlockSet.LOG.asItem());
+            if (logBlockSet.WOOD.isBound()) notFlammableWood.add(logBlockSet.WOOD.asItem());
+            if (logBlockSet.STRIPPED_LOG.isBound()) notFlammableWood.add(logBlockSet.STRIPPED_LOG.asItem());
+            if (logBlockSet.STRIPPED_WOOD.isBound()) notFlammableWood.add(logBlockSet.STRIPPED_WOOD.asItem());
+            if (logBlockSet.STAIRS.isBound()) notFlammableWood.add(logBlockSet.STAIRS.asItem());
+            if (logBlockSet.SLAB.isBound()) notFlammableWood.add(logBlockSet.SLAB.asItem());
+            if (logBlockSet.BUTTON.isBound()) notFlammableWood.add(logBlockSet.BUTTON.asItem());
+            if (logBlockSet.FENCE.isBound()) notFlammableWood.add(logBlockSet.FENCE.asItem());
+            if (logBlockSet.FENCE_GATE.isBound()) notFlammableWood.add(logBlockSet.FENCE_GATE.asItem());
+            if (logBlockSet.SIGN.isBound()) notFlammableWood.add(logBlockSet.SIGN.asItem());
+            if (logBlockSet.PRESSURE_PLATE.isBound()) notFlammableWood.add(logBlockSet.PRESSURE_PLATE.asItem());
+            if (logBlockSet.DOOR.isBound()) notFlammableWood.add(logBlockSet.DOOR.asItem());
+        }
 
         tag(ModTags.Items.MOUNT).addOptionalTag(TETags.Items.CURIOS_MOUNT);
         tag(ModTags.Items.PET).addOptionalTag(TETags.Items.CURIOS_PET);
@@ -107,10 +124,10 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FoodItems.STINKY_FISH.get()
         );
         tag(ModTags.Items.INITIAL_WOOD).add(
-                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getPlanks().asItem(),
-                NatureBlocks.LIVING_LOG_BLOCKS.getPlanks().asItem(),
-                NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getPlanks().asItem(),
-                NatureBlocks.BAOBAB_LOG_BLOCKS.getPlanks().asItem(),
+                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.PLANKS.asItem(),
+                NatureBlocks.LIVING_LOG_BLOCKS.PLANKS.asItem(),
+                NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.PLANKS.asItem(),
+                NatureBlocks.BAOBAB_LOG_BLOCKS.PLANKS.asItem(),
                 Blocks.OAK_PLANKS.asItem(),
                 Blocks.ACACIA_PLANKS.asItem(),
                 Blocks.BAMBOO_PLANKS.asItem(),
@@ -183,18 +200,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.TISSUE_SAMPLE.get()
         );
 
-        // 可烧的木材
-        tag(ModTags.Items.WOODEN_COMBUSTIBLES).add(Streams.concat(
-                NatureBlocks.EBONY_LOG_BLOCKS.getAllItems().stream(),
-                NatureBlocks.PEARL_LOG_BLOCKS.getAllItems().stream(),
-                NatureBlocks.SHADOW_LOG_BLOCKS.getAllItems().stream(),
-                NatureBlocks.PALM_LOG_BLOCKS.getAllItems().stream(),
-                NatureBlocks.BAOBAB_LOG_BLOCKS.getAllItems().stream(),
-                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getAllItems().stream(),
-                NatureBlocks.LIVING_LOG_BLOCKS.getAllItems().stream(),
-                NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getAllItems().stream(),
-                NatureBlocks.SPOOKY_LOG_BLOCKS.getAllItems().stream()
-        ).map(Supplier::get).toArray(Item[]::new));
         tag(ItemTags.BEACON_PAYMENT_ITEMS).add(
                 MaterialItems.LEAD_INGOT.get(),
                 MaterialItems.SILVER_INGOT.get(),
@@ -287,69 +292,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.ADAMANTITE_ORE_SMELTING).addTag(ModTags.Items.ORES_ADAMANTITE).add(MaterialItems.RAW_ADAMANTITE.get());
         tag(ModTags.Items.TITANIUM_ORE_SMELTING).addTag(ModTags.Items.ORES_TITANIUM).add(MaterialItems.RAW_TITANIUM.get());
 
-        tag(ModTags.Items.EBONY_LOGS).add(
-                NatureBlocks.EBONY_LOG_BLOCKS.getLog().asItem(),
-                NatureBlocks.EBONY_LOG_BLOCKS.getStrippedLog().asItem(),
-                NatureBlocks.EBONY_LOG_BLOCKS.getWood().asItem(),
-                NatureBlocks.EBONY_LOG_BLOCKS.getStrippedWood().asItem()
-        );
-        tag(ModTags.Items.PEARL_LOGS).add(
-                NatureBlocks.PEARL_LOG_BLOCKS.getLog().asItem(),
-                NatureBlocks.PEARL_LOG_BLOCKS.getStrippedLog().asItem(),
-                NatureBlocks.PEARL_LOG_BLOCKS.getWood().asItem(),
-                NatureBlocks.PEARL_LOG_BLOCKS.getStrippedWood().asItem()
-        );
-        tag(ModTags.Items.SHADOW_LOGS).add(
-                NatureBlocks.SHADOW_LOG_BLOCKS.getLog().asItem(),
-                NatureBlocks.SHADOW_LOG_BLOCKS.getStrippedLog().asItem(),
-                NatureBlocks.SHADOW_LOG_BLOCKS.getWood().asItem(),
-                NatureBlocks.SHADOW_LOG_BLOCKS.getStrippedWood().asItem()
-        );
-        tag(ModTags.Items.PALM_LOGS).add(
-                NatureBlocks.PALM_LOG_BLOCKS.getLog().asItem(),
-                NatureBlocks.PALM_LOG_BLOCKS.getStrippedLog().asItem(),
-                NatureBlocks.PALM_LOG_BLOCKS.getWood().asItem(),
-                NatureBlocks.PALM_LOG_BLOCKS.getStrippedWood().asItem()
-        );
-        tag(ModTags.Items.BAOBAB_LOGS).add(
-                NatureBlocks.BAOBAB_LOG_BLOCKS.getLog().asItem(),
-                NatureBlocks.BAOBAB_LOG_BLOCKS.getStrippedLog().asItem(),
-                NatureBlocks.BAOBAB_LOG_BLOCKS.getWood().asItem(),
-                NatureBlocks.BAOBAB_LOG_BLOCKS.getStrippedWood().asItem()
-        );
-        tag(ModTags.Items.YELLOW_WILLOW_LOGS).add(
-                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getLog().asItem(),
-                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getStrippedLog().asItem(),
-                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getWood().asItem(),
-                NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getStrippedWood().asItem()
-        );
-        tag(ModTags.Items.LIVING_LOGS).add(
-                NatureBlocks.LIVING_LOG_BLOCKS.getLog().asItem(),
-                NatureBlocks.LIVING_LOG_BLOCKS.getStrippedLog().asItem(),
-                NatureBlocks.LIVING_LOG_BLOCKS.getWood().asItem(),
-                NatureBlocks.LIVING_LOG_BLOCKS.getStrippedWood().asItem()
-        );
-        tag(ModTags.Items.LIVING_MAHOGANY_LOGS).add(
-                NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getLog().asItem(),
-                NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getStrippedLog().asItem(),
-                NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getWood().asItem(),
-                NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getStrippedWood().asItem()
-        );
-        tag(ModTags.Items.ASH_LOGS).add(
-                NatureBlocks.ASH_LOG_BLOCKS.getLog().asItem(),
-                NatureBlocks.ASH_LOG_BLOCKS.getStrippedLog().asItem(),
-                NatureBlocks.ASH_LOG_BLOCKS.getWood().asItem(),
-                NatureBlocks.ASH_LOG_BLOCKS.getStrippedWood().asItem()
-        );
-        tag(ModTags.Items.SPOOKY_LOGS).add(
-                NatureBlocks.SPOOKY_LOG_BLOCKS.getLog().asItem(),
-                NatureBlocks.SPOOKY_LOG_BLOCKS.getStrippedLog().asItem(),
-                NatureBlocks.SPOOKY_LOG_BLOCKS.getWood().asItem(),
-                NatureBlocks.SPOOKY_LOG_BLOCKS.getStrippedWood().asItem()
-        );
-        tag(ModTags.Items.GLOWING_MUSHROOM_STEMS).add(
-                NatureBlocks.GLOWING_MUSHROOM_STEM_BLOCK.asItem()
-        );
         tag(ItemTags.BOOKSHELF_BOOKS).add(
                 ManaWeaponItems.WATER_BOLT.get()
         );
@@ -857,9 +799,9 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
         tag(ModTags.Items.HARDMODE)
                 .addTag(ModTags.Items.HARDMODE_RAW_MATERIALS)
-                .add(NatureBlocks.PEARL_LOG_BLOCKS.getAllItems().stream().map(Supplier::get).toArray(Item[]::new))
+                .add(NatureBlocks.PEARL_LOG_BLOCKS.getAllItems().toArray(Item[]::new))
                 .add(NatureBlocks.PEARL_SAPLING.asItem())
-                .add(NatureBlocks.SPOOKY_LOG_BLOCKS.getAllItems().stream().map(Supplier::get).toArray(Item[]::new))
+                .add(NatureBlocks.SPOOKY_LOG_BLOCKS.getAllItems().toArray(Item[]::new))
                 .add( // 防止肉前出现这些任务
                         QuestedFishes.ICHORFISH.get(),
                         QuestedFishes.CURSEDFISH.get(),
@@ -932,21 +874,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ItemTags.PIGLIN_LOVED).add(
                 FoodItems.GOLDEN_CARP.get(),
                 FoodItems.GOLDEN_DELIGHT.get()
-        );
-        tag(ItemTags.NON_FLAMMABLE_WOOD).add(
-                NatureBlocks.ASH_LOG_BLOCKS.getLog().asItem(),
-                NatureBlocks.ASH_LOG_BLOCKS.getWood().asItem(),
-                NatureBlocks.ASH_LOG_BLOCKS.getStrippedLog().asItem(),
-                NatureBlocks.ASH_LOG_BLOCKS.getStrippedWood().asItem(),
-                NatureBlocks.ASH_LOG_BLOCKS.getPlanks().asItem(),
-                NatureBlocks.ASH_LOG_BLOCKS.getStairs().asItem(),
-                NatureBlocks.ASH_LOG_BLOCKS.getSlab().asItem(),
-                NatureBlocks.ASH_LOG_BLOCKS.getButton().asItem(),
-                NatureBlocks.ASH_LOG_BLOCKS.getFence().asItem(),
-                NatureBlocks.ASH_LOG_BLOCKS.getFenceGate().asItem(),
-                NatureBlocks.ASH_LOG_BLOCKS.getSign().asItem(),
-                NatureBlocks.ASH_LOG_BLOCKS.getPressurePlate().asItem(),
-                NatureBlocks.ASH_LOG_BLOCKS.getDoor().asItem()
         );
         tag(Tags.Items.FOODS_VEGETABLE).add(
                 FoodItems.SPICY_PEPPER.get()
@@ -1251,7 +1178,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ManaWeaponItems.CURSED_FLAMES.get(),
                 ManaWeaponItems.FLOWER_OF_FROST.get(),
                 ManaWeaponItems.BOOK_OF_SKULLS.get(),
-                NatureBlocks.ASH_LOG_BLOCKS.getLeaves().asItem(),
                 NatureBlocks.LOOSE_HONEY_BLOCK.asItem(),
                 NatureBlocks.GREEN_MOSS.asItem(),
                 NatureBlocks.BROWN_MOSS.asItem(),
@@ -1267,13 +1193,13 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 NatureBlocks.BLOODTHIRST_CRYSTALLIZED_BLOCK.asItem(),
                 NatureBlocks.CORRODED_WORM_ROOTS_BLOCK.asItem(),
                 NatureBlocks.CORRUPTED_OVARIES_BLOCK.asItem(),
-                NatureBlocks.SPOOKY_LOG_BLOCKS.getStrippedLog().asItem(),
-                NatureBlocks.SPOOKY_LOG_BLOCKS.getWood().asItem(),
-                NatureBlocks.SPOOKY_LOG_BLOCKS.getStrippedWood().asItem(),
-                NatureBlocks.SPOOKY_LOG_BLOCKS.getTrapdoor().asItem(),
-                NatureBlocks.SPOOKY_LOG_BLOCKS.getDoor().asItem(),
-                NatureBlocks.SPOOKY_LOG_BLOCKS.getLog().asItem(),
-                NatureBlocks.SPOOKY_LOG_BLOCKS.getLeaves().asItem(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.STRIPPED_LOG.asItem(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.WOOD.asItem(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.STRIPPED_WOOD.asItem(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.TRAPDOOR.asItem(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.DOOR.asItem(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.LOG.asItem(),
+                NatureBlocks.SPOOKY_LOG_BLOCKS.LEAVES.asItem(),
                 NatureBlocks.DECOMPOSE_THE_SOURCE_EXTRACT_BLOCK.asItem(),
                 NatureBlocks.LIFE_MUSHROOM_INDUSIUM_BLOCK.asItem(),
                 NatureBlocks.LIFE_MUSHROOM_STEM_BLOCK.asItem(),
@@ -1286,8 +1212,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 NatureBlocks.ASH_PATH.asItem(),
                 NatureBlocks.SHIMMER_CRYSTALS_BLOCK.asItem(),
                 NatureBlocks.LOST_PAPER_BLOCK.asItem(),
-                NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.getTrapdoor().asItem(),
-                NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.getDoor().asItem(),
+                NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.TRAPDOOR.asItem(),
+                NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.DOOR.asItem(),
                 PotBlocks.OCEAN_POT.asItem(),
                 OreBlocks.METEORITE_BLOCK.asItem(),
                 OreBlocks.HALLOWED_BLOCK.asItem(),
@@ -1338,7 +1264,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 DecorativeBlocks.CRIMSANDSTONE_BRICKS_STAIRS.asItem(),
                 DecorativeBlocks.CRIMSANDSTONE_BRICKS_SLAB.asItem(),
                 DecorativeBlocks.CRIMSANDSTONE_BRICKS_WALL.asItem(),
-                DecorativeBlocks.CHISELED_GLOWING_MUSHROOM_PLANKS.asItem(),
+                NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.CHISELED_PLANKS.asItem(),
                 DecorativeBlocks.SNOW_BRICKS_WALL.asItem(),
                 StatueBlocks.ARMOR_STATUE.asItem(),
                 StatueBlocks.AXE_STATUE.asItem(),

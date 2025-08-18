@@ -1,9 +1,0 @@
-{
-  "parent": "block/cube_bottom_top",
-  "textures": {
-    "bottom": "confluence:block/glowing_mushroom_planks",
-    "top": "confluence:block/glowing_mushroom_planks",
-    "side": "confluence:block/glowing_mushroom_planks"
-  },
-  "render_type": "solid"
-}

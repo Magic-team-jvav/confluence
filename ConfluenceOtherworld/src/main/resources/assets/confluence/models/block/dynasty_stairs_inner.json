@@ -1,9 +1,0 @@
-{
-  "parent": "block/inner_stairs",
-  "textures": {
-    "bottom": "confluence:block/dynasty_planks",
-    "top": "confluence:block/dynasty_planks",
-    "side": "confluence:block/dynasty_planks"
-  },
-  "render_type": "solid"
-}

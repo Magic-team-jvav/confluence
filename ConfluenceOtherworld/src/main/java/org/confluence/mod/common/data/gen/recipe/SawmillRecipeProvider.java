@@ -10,12 +10,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.ShapedRecipePattern;
+import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import org.apache.commons.lang3.stream.Streams;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.recipe.SawmillRecipe;
 
 import java.util.List;
@@ -49,16 +51,13 @@ public class SawmillRecipeProvider extends AbstractRecipeProvider {
         shapeless(recipeOutput, new ItemStack(Items.MANGROVE_PLANKS, 9), Ingredient.of(ItemTags.MANGROVE_LOGS));
         shapeless(recipeOutput, new ItemStack(Items.SPRUCE_PLANKS, 9), Ingredient.of(ItemTags.SPRUCE_LOGS));
         shapeless(recipeOutput, new ItemStack(Items.WARPED_PLANKS, 9), Ingredient.of(ItemTags.WARPED_STEMS));
-        shapeless(recipeOutput, NatureBlocks.EBONY_LOG_BLOCKS.getPlanks().toStack(9), Ingredient.of(ModTags.Items.EBONY_LOGS));
-        shapeless(recipeOutput, NatureBlocks.SHADOW_LOG_BLOCKS.getPlanks().toStack(9), Ingredient.of(ModTags.Items.SHADOW_LOGS));
-        shapeless(recipeOutput, NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getPlanks().toStack(9), Ingredient.of(ModTags.Items.YELLOW_WILLOW_LOGS));
-        shapeless(recipeOutput, NatureBlocks.LIVING_LOG_BLOCKS.getPlanks().toStack(9), Ingredient.of(ModTags.Items.LIVING_LOGS));
-        shapeless(recipeOutput, NatureBlocks.ASH_LOG_BLOCKS.getPlanks().toStack(9), Ingredient.of(ModTags.Items.ASH_LOGS));
-        shapeless(recipeOutput, NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getPlanks().toStack(9), Ingredient.of(ModTags.Items.LIVING_MAHOGANY_LOGS));
-        shapeless(recipeOutput, NatureBlocks.BAOBAB_LOG_BLOCKS.getPlanks().toStack(9), Ingredient.of(ModTags.Items.BAOBAB_LOGS));
-        shapeless(recipeOutput, NatureBlocks.PALM_LOG_BLOCKS.getPlanks().toStack(9), Ingredient.of(ModTags.Items.PALM_LOGS));
-        shapeless(recipeOutput, NatureBlocks.PEARL_LOG_BLOCKS.getPlanks().toStack(9), Ingredient.of(ModTags.Items.PEARL_LOGS));
-        shapeless(recipeOutput, NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.getPlanks().toStack(9), Ingredient.of(NatureBlocks.GLOWING_MUSHROOM_STEM_BLOCK));
+
+        for (LogBlockSet logBlockSet : LogBlockSet.LOG_BLOCK_SETS) {
+            ItemLike[] logs = Streams.of(logBlockSet.LOG, logBlockSet.STRIPPED_LOG, logBlockSet.WOOD, logBlockSet.STRIPPED_WOOD).filter(DeferredHolder::isBound).toArray(ItemLike[]::new);
+            if (logs.length > 0) shapeless(recipeOutput, logBlockSet.PLANKS.toStack(9), Ingredient.of(logs));
+            if (logBlockSet.SLAB.isBound()) shapeless(recipeOutput, logBlockSet.SLAB.toStack(4), Ingredient.of(logBlockSet.PLANKS));
+            if (logBlockSet.STAIRS.isBound()) shapeless(recipeOutput, logBlockSet.STAIRS.toStack(2), Ingredient.of(logBlockSet.PLANKS));
+        }
 
         shapeless(recipeOutput, new ItemStack(Items.OAK_SLAB, 4), Ingredient.of(Items.OAK_PLANKS));
         shapeless(recipeOutput, new ItemStack(Items.ACACIA_SLAB, 4), Ingredient.of(Items.ACACIA_PLANKS));
@@ -71,17 +70,6 @@ public class SawmillRecipeProvider extends AbstractRecipeProvider {
         shapeless(recipeOutput, new ItemStack(Items.MANGROVE_SLAB, 4), Ingredient.of(Items.MANGROVE_PLANKS));
         shapeless(recipeOutput, new ItemStack(Items.SPRUCE_SLAB, 4), Ingredient.of(Items.SPRUCE_PLANKS));
         shapeless(recipeOutput, new ItemStack(Items.WARPED_SLAB, 4), Ingredient.of(Items.WARPED_PLANKS));
-        shapeless(recipeOutput, NatureBlocks.EBONY_LOG_BLOCKS.getSlab().toStack(4), Ingredient.of(NatureBlocks.EBONY_LOG_BLOCKS.getPlanks()));
-        shapeless(recipeOutput, NatureBlocks.SHADOW_LOG_BLOCKS.getSlab().toStack(4), Ingredient.of(NatureBlocks.SHADOW_LOG_BLOCKS.getPlanks()));
-        shapeless(recipeOutput, NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getSlab().toStack(4), Ingredient.of(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getPlanks()));
-        shapeless(recipeOutput, NatureBlocks.LIVING_LOG_BLOCKS.getSlab().toStack(4), Ingredient.of(NatureBlocks.LIVING_LOG_BLOCKS.getPlanks()));
-        shapeless(recipeOutput, NatureBlocks.ASH_LOG_BLOCKS.getSlab().toStack(4), Ingredient.of(NatureBlocks.ASH_LOG_BLOCKS.getPlanks()));
-        shapeless(recipeOutput, NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getSlab().toStack(4), Ingredient.of(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getPlanks()));
-        shapeless(recipeOutput, NatureBlocks.BAOBAB_LOG_BLOCKS.getSlab().toStack(4), Ingredient.of(NatureBlocks.BAOBAB_LOG_BLOCKS.getPlanks()));
-        shapeless(recipeOutput, NatureBlocks.PALM_LOG_BLOCKS.getSlab().toStack(4), Ingredient.of(NatureBlocks.PALM_LOG_BLOCKS.getPlanks()));
-        shapeless(recipeOutput, NatureBlocks.PEARL_LOG_BLOCKS.getSlab().toStack(4), Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.getPlanks()));
-        shapeless(recipeOutput, NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.getSlab().toStack(4), Ingredient.of(NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.getPlanks()));
-
 
         shapeless(recipeOutput, new ItemStack(Items.OAK_STAIRS, 2), Ingredient.of(Items.OAK_PLANKS));
         shapeless(recipeOutput, new ItemStack(Items.ACACIA_STAIRS, 2), Ingredient.of(Items.ACACIA_PLANKS));
@@ -94,16 +82,6 @@ public class SawmillRecipeProvider extends AbstractRecipeProvider {
         shapeless(recipeOutput, new ItemStack(Items.MANGROVE_STAIRS, 2), Ingredient.of(Items.MANGROVE_PLANKS));
         shapeless(recipeOutput, new ItemStack(Items.SPRUCE_STAIRS, 2), Ingredient.of(Items.SPRUCE_PLANKS));
         shapeless(recipeOutput, new ItemStack(Items.WARPED_STAIRS, 2), Ingredient.of(Items.WARPED_PLANKS));
-        shapeless(recipeOutput, NatureBlocks.EBONY_LOG_BLOCKS.getStairs().toStack(2), Ingredient.of(NatureBlocks.EBONY_LOG_BLOCKS.getPlanks()));
-        shapeless(recipeOutput, NatureBlocks.SHADOW_LOG_BLOCKS.getStairs().toStack(2), Ingredient.of(NatureBlocks.SHADOW_LOG_BLOCKS.getPlanks()));
-        shapeless(recipeOutput, NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getStairs().toStack(2), Ingredient.of(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getPlanks()));
-        shapeless(recipeOutput, NatureBlocks.LIVING_LOG_BLOCKS.getStairs().toStack(2), Ingredient.of(NatureBlocks.LIVING_LOG_BLOCKS.getPlanks()));
-        shapeless(recipeOutput, NatureBlocks.ASH_LOG_BLOCKS.getStairs().toStack(2), Ingredient.of(NatureBlocks.ASH_LOG_BLOCKS.getPlanks()));
-        shapeless(recipeOutput, NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getStairs().toStack(2), Ingredient.of(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getPlanks()));
-        shapeless(recipeOutput, NatureBlocks.BAOBAB_LOG_BLOCKS.getStairs().toStack(2), Ingredient.of(NatureBlocks.BAOBAB_LOG_BLOCKS.getPlanks()));
-        shapeless(recipeOutput, NatureBlocks.PALM_LOG_BLOCKS.getStairs().toStack(2), Ingredient.of(NatureBlocks.PALM_LOG_BLOCKS.getPlanks()));
-        shapeless(recipeOutput, NatureBlocks.PEARL_LOG_BLOCKS.getStairs().toStack(2), Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.getPlanks()));
-        shapeless(recipeOutput, NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.getStairs().toStack(2), Ingredient.of(NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.getPlanks()));
     }
 
     protected void shaped(RecipeOutput recipeOutput, ItemStack result, ShapedRecipePattern pattern) {

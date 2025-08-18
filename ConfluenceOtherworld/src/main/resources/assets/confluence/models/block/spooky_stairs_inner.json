@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/inner_stairs",
-  "textures": {
-    "bottom": "confluence:block/spooky_planks",
-    "side": "confluence:block/spooky_planks",
-    "top": "confluence:block/spooky_planks"
-  }
-}

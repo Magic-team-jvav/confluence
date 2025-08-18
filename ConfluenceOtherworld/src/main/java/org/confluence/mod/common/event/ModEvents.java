@@ -52,6 +52,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.block.natural.ChlorophyteOreBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
+import org.confluence.mod.common.block.natural.MagicMailBox;
 import org.confluence.mod.common.block.natural.StepRevealingBlock;
 import org.confluence.mod.common.capability.FluidBottomlessBucketWrapper;
 import org.confluence.mod.common.data.saved.ConfluenceData;
@@ -135,6 +136,7 @@ public final class ModEvents {
             ModRecipes.Brewing.initialize();
             ModUtils.registerCauldronInteractions();
             TERemoval.redirectLootTable();
+            MagicMailBox.registerVariants();
             IGlobalData.registerGlobalData(KillBoard.INSTANCE, HardmodeConvertor.INSTANCE, NPCSpawner.INSTANCE);
         });
     }

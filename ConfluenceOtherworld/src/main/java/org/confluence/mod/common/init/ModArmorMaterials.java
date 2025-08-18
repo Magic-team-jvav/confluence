@@ -44,20 +44,20 @@ public final class ModArmorMaterials {
     );
     public static final Holder<ArmorMaterial> EBONY_ARMOR_MATERIALS = registerArmorMaterial("ebony_armor_materials",
             1, 2, 1, 1,
-            9, SoundEvents.ARMOR_EQUIP_GENERIC, NatureBlocks.EBONY_LOG_BLOCKS.getPlanks(), "ebony", 0.0F, 0.0F
+            9, SoundEvents.ARMOR_EQUIP_GENERIC, NatureBlocks.EBONY_LOG_BLOCKS.PLANKS, "ebony", 0.0F, 0.0F
     );
     public static final Holder<ArmorMaterial> SHADOW_PLANK_ARMOR_MATERIALS = registerArmorMaterial("shadow_plank_armor_materials",
             1, 2, 1, 1,
-            9, SoundEvents.ARMOR_EQUIP_GENERIC, NatureBlocks.SHADOW_LOG_BLOCKS.getPlanks(), "shadow_plank", 0.0F, 0.0F
+            9, SoundEvents.ARMOR_EQUIP_GENERIC, NatureBlocks.SHADOW_LOG_BLOCKS.PLANKS, "shadow_plank", 0.0F, 0.0F
     );
     public static final Holder<ArmorMaterial> PEARL_ARMOR_MATERIALS = registerArmorMaterial("pearl_armor_materials",
             1, 2, 2, 1,
-            9, SoundEvents.ARMOR_EQUIP_GENERIC, NatureBlocks.PEARL_LOG_BLOCKS.getPlanks(),
+            9, SoundEvents.ARMOR_EQUIP_GENERIC, NatureBlocks.PEARL_LOG_BLOCKS.PLANKS,
             "pearl", 0.0F, 0.0F
     );
     public static final Holder<ArmorMaterial> ASH_ARMOR_MATERIALS = registerArmorMaterial("ash_armor_materials",
             2, 2, 2, 2,
-            9, SoundEvents.ARMOR_EQUIP_GENERIC, NatureBlocks.ASH_LOG_BLOCKS.getPlanks(), "pearl", 0.0F, 0.0F
+            9, SoundEvents.ARMOR_EQUIP_GENERIC, NatureBlocks.ASH_LOG_BLOCKS.PLANKS, "pearl", 0.0F, 0.0F
     );
     public static final Holder<ArmorMaterial> PUMPKIN_ARMOR_MATERIALS = registerArmorMaterial("pumpkin_armor_materials",
             2, 2, 2, 2,

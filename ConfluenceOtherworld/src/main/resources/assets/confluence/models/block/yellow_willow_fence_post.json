@@ -1,8 +1,0 @@
-{
-  "parent": "block/fence_post",
-  "textures": {
-    "texture": "confluence:block/yellow_willow_planks",
-    "particle": "confluence:block/yellow_willow_planks"
-  },
-  "render_type": "solid"
-}

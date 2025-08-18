@@ -1,8 +1,0 @@
-{
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "confluence:block/living_planks",
-    "particle": "confluence:block/living_planks"
-  },
-  "render_type": "solid"
-}

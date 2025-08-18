@@ -44,29 +44,6 @@ public class MagicMailBox extends Block {
 
     private static final Map<Block, Integer> BLOCK_TO_VARIANT = new HashMap<>();
 
-    static {
-        BLOCK_TO_VARIANT.put(Blocks.OAK_PLANKS, 0);
-        BLOCK_TO_VARIANT.put(Blocks.SPRUCE_PLANKS, 1);
-        BLOCK_TO_VARIANT.put(Blocks.BIRCH_PLANKS, 2);
-        BLOCK_TO_VARIANT.put(Blocks.JUNGLE_PLANKS, 3);
-        BLOCK_TO_VARIANT.put(Blocks.ACACIA_PLANKS, 4);
-        BLOCK_TO_VARIANT.put(Blocks.DARK_OAK_PLANKS, 5);
-        BLOCK_TO_VARIANT.put(Blocks.MANGROVE_PLANKS, 6);
-        BLOCK_TO_VARIANT.put(Blocks.CHERRY_PLANKS, 7);
-        BLOCK_TO_VARIANT.put(Blocks.CRIMSON_PLANKS, 8);
-        BLOCK_TO_VARIANT.put(Blocks.WARPED_PLANKS, 9);
-        BLOCK_TO_VARIANT.put(NatureBlocks.EBONY_LOG_BLOCKS.getPlanks().get(), 10);
-        BLOCK_TO_VARIANT.put(NatureBlocks.PEARL_LOG_BLOCKS.getPlanks().get(), 11);
-        BLOCK_TO_VARIANT.put(NatureBlocks.SHADOW_LOG_BLOCKS.getPlanks().get(), 12);
-        BLOCK_TO_VARIANT.put(NatureBlocks.PALM_LOG_BLOCKS.getPlanks().get(), 13);
-        BLOCK_TO_VARIANT.put(NatureBlocks.BAOBAB_LOG_BLOCKS.getPlanks().get(), 14);
-        BLOCK_TO_VARIANT.put(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getPlanks().get(), 15);
-        BLOCK_TO_VARIANT.put(NatureBlocks.SPOOKY_LOG_BLOCKS.getPlanks().get(), 16);
-        BLOCK_TO_VARIANT.put(NatureBlocks.LIVING_LOG_BLOCKS.getPlanks().get(), 17);
-        BLOCK_TO_VARIANT.put(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.getPlanks().get(), 18);
-        BLOCK_TO_VARIANT.put(NatureBlocks.ASH_LOG_BLOCKS.getPlanks().get(), 19);
-    }
-
     public MagicMailBox() {
         super(BlockBehaviour.Properties.of().strength(1.0f));
         registerDefaultState(this.stateDefinition.any()
@@ -129,5 +106,28 @@ public class MagicMailBox extends Block {
                 default -> SHAPES[4];
             };
         }
+    }
+
+    public static void registerVariants() {
+        BLOCK_TO_VARIANT.put(Blocks.OAK_PLANKS, 0);
+        BLOCK_TO_VARIANT.put(Blocks.SPRUCE_PLANKS, 1);
+        BLOCK_TO_VARIANT.put(Blocks.BIRCH_PLANKS, 2);
+        BLOCK_TO_VARIANT.put(Blocks.JUNGLE_PLANKS, 3);
+        BLOCK_TO_VARIANT.put(Blocks.ACACIA_PLANKS, 4);
+        BLOCK_TO_VARIANT.put(Blocks.DARK_OAK_PLANKS, 5);
+        BLOCK_TO_VARIANT.put(Blocks.MANGROVE_PLANKS, 6);
+        BLOCK_TO_VARIANT.put(Blocks.CHERRY_PLANKS, 7);
+        BLOCK_TO_VARIANT.put(Blocks.CRIMSON_PLANKS, 8);
+        BLOCK_TO_VARIANT.put(Blocks.WARPED_PLANKS, 9);
+        BLOCK_TO_VARIANT.put(NatureBlocks.EBONY_LOG_BLOCKS.PLANKS.get(), 10);
+        BLOCK_TO_VARIANT.put(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get(), 11);
+        BLOCK_TO_VARIANT.put(NatureBlocks.SHADOW_LOG_BLOCKS.PLANKS.get(), 12);
+        BLOCK_TO_VARIANT.put(NatureBlocks.PALM_LOG_BLOCKS.PLANKS.get(), 13);
+        BLOCK_TO_VARIANT.put(NatureBlocks.BAOBAB_LOG_BLOCKS.PLANKS.get(), 14);
+        BLOCK_TO_VARIANT.put(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.PLANKS.get(), 15);
+        BLOCK_TO_VARIANT.put(NatureBlocks.SPOOKY_LOG_BLOCKS.PLANKS.get(), 16);
+        BLOCK_TO_VARIANT.put(NatureBlocks.LIVING_LOG_BLOCKS.PLANKS.get(), 17);
+        BLOCK_TO_VARIANT.put(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.PLANKS.get(), 18);
+        BLOCK_TO_VARIANT.put(NatureBlocks.ASH_LOG_BLOCKS.PLANKS.get(), 19);
     }
 }

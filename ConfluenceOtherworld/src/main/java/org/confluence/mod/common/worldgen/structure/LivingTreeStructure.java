@@ -98,8 +98,8 @@ public class LivingTreeStructure extends Structure {
 
             GridPiece.addPieces(blockMap, Lists.newArrayList(
                     Blocks.AIR.defaultBlockState(),
-                    NatureBlocks.LIVING_LOG_BLOCKS.getWood().get().defaultBlockState(),
-                    NatureBlocks.LIVING_LOG_BLOCKS.getLeaves().get().defaultBlockState().setValue(PERSISTENT, Boolean.TRUE)
+                    NatureBlocks.LIVING_LOG_BLOCKS.WOOD.get().defaultBlockState(),
+                    NatureBlocks.LIVING_LOG_BLOCKS.LEAVES.get().defaultBlockState().setValue(PERSISTENT, Boolean.TRUE)
             ), Map.of(
                     chestPos.offset(0, -3, 3), Confluence.asResource("surface_chests")
             ), builder);

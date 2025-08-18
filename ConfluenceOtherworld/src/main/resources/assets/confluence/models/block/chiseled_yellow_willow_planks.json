@@ -1,8 +1,0 @@
-{
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "confluence:block/chiseled_yellow_willow_planks",
-    "particle": "confluence:block/chiseled_yellow_willow_planks"
-  },
-  "render_type": "solid"
-}

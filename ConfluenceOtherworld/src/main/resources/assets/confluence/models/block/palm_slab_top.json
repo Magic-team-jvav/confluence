@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/slab_top",
-  "textures": {
-    "bottom": "confluence:block/palm_planks",
-    "side": "confluence:block/palm_planks",
-    "top": "confluence:block/palm_planks"
-  }
-}

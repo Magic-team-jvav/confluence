@@ -16,8 +16,6 @@ public class TheCrimsonConversionTable extends ConversionTable {
     protected @Nullable Block getTarget(BlockState source) {
         Holder<Block> holder = source.getBlock().builtInRegistryHolder();
 
-        if (holder.is(BlockTags.LOGS)) return NatureBlocks.SHADOW_LOG_BLOCKS.getLog().get();
-        if (holder.is(BlockTags.LEAVES)) return NatureBlocks.SHADOW_LOG_BLOCKS.getLeaves().get();
         if (holder.is(BlockTags.BASE_STONE_OVERWORLD)) return NatureBlocks.CRIMSTONE.get();
         if (holder.is(Tags.Blocks.COBBLESTONES)) return NatureBlocks.COBBLED_CRIMSTONE.get();
 

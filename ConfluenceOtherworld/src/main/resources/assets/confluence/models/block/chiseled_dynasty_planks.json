@@ -1,8 +1,0 @@
-{
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "confluence:block/chiseled_dynasty_planks",
-    "particle": "confluence:block/chiseled_dynasty_planks"
-  },
-  "render_type": "solid"
-}

@@ -1,7 +1,0 @@
-{
-  "parent": "block/template_fence_gate_wall_open",
-  "textures": {
-    "texture": "confluence:block/yellow_willow_planks"
-  },
-  "render_type": "solid"
-}

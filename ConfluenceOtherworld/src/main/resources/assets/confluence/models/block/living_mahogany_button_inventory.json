@@ -1,7 +1,0 @@
-{
-  "parent": "block/button_inventory",
-  "textures": {
-    "texture": "confluence:block/living_mahogany_planks"
-  },
-  "render_type": "solid"
-}

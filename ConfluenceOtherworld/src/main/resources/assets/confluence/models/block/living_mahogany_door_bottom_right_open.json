@@ -1,8 +1,0 @@
-{
-  "parent": "block/door_bottom_right_open",
-  "textures": {
-    "bottom": "confluence:block/living_mahogany_door_bottom",
-    "top": "confluence:block/living_mahogany_door_top"
-  },
-  "render_type": "cutout"
-}

@@ -101,11 +101,11 @@ public interface ISpreadable {
     Supplier<Set<Block>> PALMS = Suppliers.memoize(() -> {
         LogBlockSet set = NatureBlocks.PALM_LOG_BLOCKS;
         return Sets.newHashSet(
-                set.getLog().get(),
-                set.getWood().get(),
-                set.getStrippedLog().get(),
-                set.getStrippedWood().get(),
-                set.getLeaves().get()
+                set.LOG.get(),
+                set.WOOD.get(),
+                set.STRIPPED_LOG.get(),
+                set.STRIPPED_WOOD.get(),
+                set.LEAVES.get()
         );
     });
     BlockState AIR = Blocks.AIR.defaultBlockState();

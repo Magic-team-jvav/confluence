@@ -11,6 +11,7 @@ import org.confluence.mod.client.connected.custom.WeightedCTModel;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
+import org.confluence.mod.common.init.block.NatureBlocks;
 
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
@@ -29,7 +30,7 @@ public final class ModConnectives {
         register(DecorativeBlocks.FROZEN_GEL_BLOCK.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.FROZEN_GEL_BLOCK));
         register(FunctionalBlocks.ECHO_BLOCK.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.ECHO_BLOCK));
 
-        register(DecorativeBlocks.CHISELED_PALM_PLANKS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.CHISELED_PALM_PLANKS));
+        register(NatureBlocks.PALM_LOG_BLOCKS.CHISELED_PLANKS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.CHISELED_PALM_PLANKS));
         register(DecorativeBlocks.GRANITE_COLUMN.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.GRANITE_COLUMN));
         register(DecorativeBlocks.MARBLE_COLUMN.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.CALCITE_COLUMN));
 

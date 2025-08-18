@@ -9,13 +9,12 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.common.EffectCure;
 import net.neoforged.neoforge.common.Tags;
+import org.confluence.mod.common.init.ModEffects;
 
 import java.util.Map;
 import java.util.Set;
 
 public abstract class FlaskEffect extends MobEffect {
-    public static final EffectCure CURE = EffectCure.get("confluence:flask");
-
     public FlaskEffect(MobEffectCategory category, int color) {
         super(category, color);
     }
@@ -27,7 +26,7 @@ public abstract class FlaskEffect extends MobEffect {
     @Override
     public void fillEffectCures(Set<EffectCure> cures, MobEffectInstance effectInstance) {
         super.fillEffectCures(cures, effectInstance);
-        cures.add(CURE);
+        cures.add(ModEffects.FLASK);
     }
 
     public abstract void doMeleeAttack(LivingEntity attacker, LivingEntity victim, int amplifier, DamageSource damageSource, float amount);
@@ -43,13 +42,13 @@ public abstract class FlaskEffect extends MobEffect {
     }
 
     public static boolean saveFlaskEffects(Map<Holder<MobEffect>, MobEffectInstance> activeEffects) {
-        activeEffects.entrySet().removeIf(entry -> !entry.getValue().getCures().contains(CURE));
+        activeEffects.entrySet().removeIf(entry -> !entry.getValue().getCures().contains(ModEffects.FLASK));
         return false;
     }
 
     public static void removeAnotherFlaskEffects(MobEffectInstance mobEffectInstance, LivingEntity living) {
-        if (mobEffectInstance.getCures().contains(CURE)) {
-            living.removeEffectsCuredBy(CURE);
+        if (mobEffectInstance.getCures().contains(ModEffects.FLASK)) {
+            living.removeEffectsCuredBy(ModEffects.FLASK);
         }
     }
 }

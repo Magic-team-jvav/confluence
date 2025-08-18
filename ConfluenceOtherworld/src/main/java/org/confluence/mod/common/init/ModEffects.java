@@ -5,6 +5,7 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.neoforged.neoforge.common.EffectCure;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.effect.PublicMobEffect;
@@ -22,6 +23,8 @@ import org.mesdag.particlestorm.api.MolangParticleMobEffect;
 
 public final class ModEffects {
     public static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(BuiltInRegistries.MOB_EFFECT, Confluence.MODID);
+    public static final EffectCure FLASK = EffectCure.get("confluence:flask");
+    public static final EffectCure CANNOT_REMOVE_BY_NURSE = EffectCure.get("confluence:cannot_remove_by_nurse");
 
     public static final DeferredHolder<MobEffect, MobEffect> EXQUISITELY_STUFFED = EFFECTS.register("exquisitely_stuffed", ExquisitelyStuffedEffect::new);
     public static final DeferredHolder<MobEffect, MobEffect> IRON_SKIN = EFFECTS.register("iron_skin", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x184F5)

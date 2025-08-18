@@ -1,5 +1,6 @@
 package org.confluence.mod.integration.terra_entity.npc_trade;
 
+import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.gui.Font;
@@ -7,11 +8,11 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.neoforge.common.EffectCures;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.integration.terra_entity.init.ModTradeProviders;
 import org.confluence.mod.util.AchievementUtils;
+import org.confluence.mod.util.ModUtils;
 import org.confluence.terraentity.api.npc.trade.ITradeHealth;
 import org.confluence.terraentity.api.npc.trade.ITradeHolder;
 import org.confluence.terraentity.init.entity.TEBossEntities;
@@ -44,7 +45,7 @@ public record MoneyTradeHealthFull(@Nullable TradeProperties properties) impleme
         long cost = (long) (player.getMaxHealth() - player.getHealth() + 1) * 5;
         // 每个减益5银
         for (MobEffectInstance instance : player.getActiveEffects()) {
-            if (instance.getCures().contains(EffectCures.HONEY)) {
+            if (ModUtils.isDebuff(instance)) {
                 cost += 500;
             }
         }
@@ -101,7 +102,11 @@ public record MoneyTradeHealthFull(@Nullable TradeProperties properties) impleme
     @Override
     public void onTradeSuccess(ServerPlayer player, ITradeHolder npc, int index, long cost) {
         player.setHealth(player.getMaxHealth());
-        player.removeEffectsCuredBy(EffectCures.HONEY);
+        for (MobEffectInstance instance : ImmutableList.copyOf(player.getActiveEffects())) {
+            if (ModUtils.isDebuff(instance)) {
+                player.removeEffect(instance.getEffect());
+            }
+        }
         AchievementUtils.theFrequentFlyer(player, cost);
     }
 

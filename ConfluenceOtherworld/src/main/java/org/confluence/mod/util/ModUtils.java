@@ -19,6 +19,7 @@ import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -343,5 +344,9 @@ public final class ModUtils {
             }
             return ItemInteractionResult.sidedSuccess(level.isClientSide);
         });
+    }
+
+    public static boolean isDebuff(MobEffectInstance instance) {
+        return instance.getEffect().value().getCategory() == MobEffectCategory.HARMFUL && !instance.getCures().contains(ModEffects.CANNOT_REMOVE_BY_NURSE);
     }
 }

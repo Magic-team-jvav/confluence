@@ -1,7 +1,7 @@
 {
     "display": {
         "icon": {
-            "id": "minecraft:barrier"
+            "id": "confluence:stellar_blossom_seed"
         },
         "title": {
             "translate": "achievements.confluence.a_rare_realm.title"

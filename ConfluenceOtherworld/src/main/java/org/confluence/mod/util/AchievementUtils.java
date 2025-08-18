@@ -21,6 +21,8 @@ import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.block.functional.DartTrapBlock;
 import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.mixed.IChunkSection;
+import org.confluence.mod.mixed.IMinecraftServer;
+import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 
 import static org.confluence.mod.common.attachment.ExtraInventory.SIZE_VANITY_ARMOR;
@@ -139,6 +141,14 @@ public final class AchievementUtils {
             IChunkSection iSection = DynamicBiomeUtils.getISection(level, player.blockPosition());
             if (iSection != null && iSection.confluence$isGraveyard()) {
                 awardAchievement(player, "quiet_neighborhood");
+            }
+        }
+    }
+
+    public static void aRareRealm(ServerPlayer player, ServerLevel level) {
+        if (IMinecraftServer.of(player.server).confluence$matchesSecretFlag(IWorldOptions.SECRET_SEED)) {
+            if (level.getGameTime() % 20 == 3) {
+                awardAchievement(player, "a_rare_realm");
             }
         }
     }

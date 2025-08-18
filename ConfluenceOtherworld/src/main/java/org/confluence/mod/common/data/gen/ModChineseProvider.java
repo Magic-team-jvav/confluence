@@ -1423,6 +1423,48 @@ public class ModChineseProvider extends LanguageProvider {
         add("dialogs.confluence.truffle.5", "有个关于我的谣言正在盛传：“如果打不过他，那就吃掉他！");
         add("dialogs.confluence.truffle.6", "我感觉这里有更多同类...");
 
+        add("dialogs.confluence.angler.item.confluence.amanita_fungifin", "我在巨大的发光蘑菇中发现了这个惊人的地方！一切都是蓝的！我正在采摘蓝光湖畔的一些蘑菇，其中一只蘑菇突然咬了我一口，然后游走了！我想以其人之道还治其人之身，并狂咬它一顿！我的意思是，你去把它弄回来给我！（抓捕位置：发光蘑菇地）");
+        add("dialogs.confluence.angler.item.confluence.angelfish", "你知道吗，天空中漂浮着许多神奇的岛屿？你肯定不知道！他们说，天使住在天上，我相信这些天使都有鳍和鳃，在那游来游去！我相信你肯定能抓一个给我！（抓捕位置：天湖）");
+        add("dialogs.confluence.angler.item.confluence.batfish", "呐呐呐呐呐呐呐，蝙蝠鱼！意思是去地下深挖，抓住它，再带来给我！（抓捕位置：地下和洞穴）");
+        add("dialogs.confluence.angler.item.confluence.bloody_manowar", "噢！别靠近我！我被一条血水母蜇了！怕你孤陋寡闻不知道血水母是什么，所以我告诉你，它是整个世界中最凶险的水母！如果你敢，去那个烂透了的猩红之地，把它抓来！（抓捕位置：猩红之地）");
+        add("dialogs.confluence.angler.item.confluence.bonefish", "如果看到地下水中漂浮着鱼骨，我通常不怎么好奇，但是这只鱼骨竟然在游泳！什么，你以为在世界中还能动的只有人类的骷髅吗？去抓一只给我，这样我可以把它钉在别人的床上！（抓捕位置：地下和洞穴）");
+        add("dialogs.confluence.angler.item.confluence.bumblebee_tuna", "在世界的地下丛林中有许多光怪陆离的生物！比如说，我看见过这种鱼，像一只超级大黄蜂！我对蜜蜂过敏，所以你必须去把它给我抓来！它的味道肯定像金枪鱼和蜂蜜三明治！（抓捕位置：蜂蜜）");
+        add("dialogs.confluence.angler.item.confluence.bunnyfish", "我正在森林里钓鱼，对吧？你猜发生了什么！一只兔兔朝我跳了过来！然后，又有一只跳过来，又有一只……突然间我就被兔兔包围了！甚至有一只从水里向我游过来，但它没有腿！我惊讶地从椅子上跌下来，把所有兔兔都吓跑了！我想要那条兔兔鱼作为宠物，因此你最好去把它抓来给我！马上！（抓捕位置：地表）");
+        add("dialogs.confluence.angler.item.confluence.capn_tunabeard", "哟，朋友！吓本大盗一跳！停船，我的乖乖！有一个海盗船长，养了一条叫“金枪鱼须船长”的宠物鱼，但在一场大风暴中，鱼缸落水了！它有一个尾钩，一个眼罩，还有别的！你需要把那条鱼抓给我，这样我就能像海盗一样酷酷的！显然，它就在大海的某个地方！咄！（抓捕位置：海洋）");
+        add("dialogs.confluence.angler.item.confluence.catfish", "我终于找到一只喜欢水的丛林猫！我想这是因为它还有鱼的天性。我不知道为什么会这样，我也不想知道。我只是希望它能到我手里，你得快点！（抓捕位置：丛林地表）");
+        add("dialogs.confluence.angler.item.confluence.cloudfish", "有谣言说天上漂浮着岛屿，岛上有惊人的宝藏！但是谁会在意呢，更有意思的是，云彩中有时会形成湖泊，湖泊中游荡着云朵做成的鱼！我想尝尝它的味道，所以你最好去把它抓来给我！（抓捕位置：天湖）");
+        add("dialogs.confluence.angler.item.confluence.clownfish", "我在海边看到过这条亮橙色的彩鱼，它在疯狂地游来游去，好像在找走丢的家人！去把它抓来给我，这样又会有一条游出来找它！（抓捕位置：海洋）");
+        add("dialogs.confluence.angler.item.confluence.cursedfish", "有条受诅咒的鱼在腐化之地最深处的水中游来游去！它由潜藏在那里的堕落恐怖蔓延出来的诅咒焰化成。他们说，诅咒焰连水都无法扑灭，可以永远燃烧。有一条这样的鱼，我就可以做许多好玩的事！你去抓给我！还是你太胆小！？（抓捕位置：腐化之地）");
+        add("dialogs.confluence.angler.item.confluence.demonic_hellfish", "我听说在地狱，所有恶魔的王其实是一条鱼！想像一下，如果你去抓一条给我，我将拥有强大的王权！（抓捕位置：洞穴）");
+        add("dialogs.confluence.angler.item.confluence.derpfish", "丛林里的那些跳跳兽是我见过的最可怕的怪物！好的一面是，有时候它们没有腿！这些是生活在水中的，就没那么可怕了！马上去给我抓一只，这样我可以品尝它们的味道，还不会被吓个半死！（抓捕位置：丛林地表）");
+        add("dialogs.confluence.angler.item.confluence.dirtfish", "正当我在收线钓起一条大鱼时，这个僵尸从森林湖中蹦出来，不仅很搞笑还会说话，然后开始大说特说这种用土做成的“凶残”的鱼！他说，这鱼能闷死十个像他这个块头的小伙子……我要得到它！马上！（抓捕位置：地表和地下）");
+        add("dialogs.confluence.angler.item.confluence.dynamite_fish", "爆破专家在森林里的湖中弄丢了一捆雷管，一直很着急。他有那么多炸药，丢的那捆炸药有这么重要吗？显然，因为这捆炸药长出了鳍，开始游走了！我不知道他做炸药的材料是哪儿弄的，但那一捆肯定已经走火入魔了！钓回来给我，我一直想要一条自杀式炸弹鱼！不要问为什么……（抓捕位置：地表）");
+        add("dialogs.confluence.angler.item.confluence.eater_of_plankton", "你肯定不敢去找浮游噬鱼。它是由世界吞噬怪的残块变异而来的腐化鱼！把它抓来给我，证明你不是胆小鬼！（抓捕位置：腐化之地）");
+        add("dialogs.confluence.angler.item.confluence.fallen_starfish", "我喜欢收集天上落下来的亮黄色星星！如果落在某个人的脑袋上，我会更喜欢。但是……但是……我最喜欢的还是星星落在森林湖中变成鱼！那条鱼简直酷毙了，而你又这么牛，快去抓来给我！（抓捕位置：天湖和地表）");
+        add("dialogs.confluence.angler.item.confluence.the_fish_of_cthulhu", "显然，恶魔眼有时是两栖的。它们不飞，它们游！我想知道有人在浴缸中发现一条时会有怎样的表情！它们总是在同一个区域晃悠。所以，你要钓一条给我！（抓捕位置：天湖和地表）");
+        add("dialogs.confluence.angler.item.confluence.fishotron", "我不知道哪种情况更惨：骷髅鱼还是长了手的骷髅鱼。这条深藏在洞穴中的骷髅王鱼真把我吓了一跳！我认为它和地牢边的那个老人被同一个恶魔掌控着！我给你两个胆，你去把它抓来给我！（抓捕位置：洞穴）");
+        add("dialogs.confluence.angler.item.confluence.fishron", "有一个名为猪龙鱼的传奇生物！它一部分是猪，一部分是龙，还有一部分是鱼！我听说，它在世界最寒冷的冰封地下湖中游荡！我不会去那里，因此你去抓它，一定要到我的手里！我太激动了！");
+        add("dialogs.confluence.angler.item.confluence.guide_voodoo_fish", "地狱的恶魔真的很喜欢巫毒娃娃，但我觉得有一个娃娃身藏着特别多的魔法！它变成了一条鱼，还可以对自己施法。我命令你去地狱，给我带一个来！如果是我的话，我会小心沸腾的熔岩，因为它会把你烧死，这样我就得不到鱼了！（抓捕位置：洞穴）");
+        add("dialogs.confluence.angler.item.confluence.harpyfish", "我正要在山上的湖畔睡觉时，这条鱼向我俯冲下来。它在飞！它长着一张女人的脸，还有羽毛！我想我叫得比她还大声！嘿，她把我吓成那样，你去让她付出代价！（抓捕位置：天湖和地表）");
+        add("dialogs.confluence.angler.item.confluence.hungerfish", "血肉墙上饿鬼的一块碎片变形成了小鱼一样的东西，在地狱漫无目的地游来游去。它很恶心，但我现在就要！（抓捕位置：洞穴）");
+        add("dialogs.confluence.angler.item.confluence.ichorfish", "你知道吗？在猩红之地的深处，一些生物在制作这种恶心的黄东西。我听说一池黄东西融合成鱼形，然后开始游来游去，太离奇了！去抓一条给我，我可以把它塞在别人的马桶里！（抓捕位置：猩红之地）");
+        add("dialogs.confluence.angler.item.confluence.infected_scabbardfish", "一条很长的鱼，看起来像剑鞘，在腐化之地的浑水中游来游去！它看起来很像黑檀石，所以不要让它骗了你！没错，就你啦。你去抓它，而不是我去！（抓捕位置：腐化之地）");
+        add("dialogs.confluence.angler.item.confluence.jewelfish", "哦哦，我马上就要发大财啦！在洞穴的深处，有一种宝石做的鱼！别问我怎么做，我不知道，我知道的是，这种鱼非常美丽，你去把它抓来给我！（抓捕位置：地下和洞穴）");
+        add("dialogs.confluence.angler.item.confluence.mirage_fish", "我告诉你，在地下更深处的神圣之地里可以找到一些有趣的小动物！它们闪耀着疯狂的紫色，让我眼花缭乱！这鱼是绝对狂野的，因此我希望你能抓一条给我！（抓捕位置：地下神圣之地）");
+        add("dialogs.confluence.angler.item.confluence.mudfish", "经过丛林的水域时，要注意脚下！为什么？不，我不担心你会被食人鱼吃掉。我担心你会踩到我最喜欢的一种鱼，泥鱼！我还希望，你会抓一条来给我当宠物！（抓捕位置：丛林）");
+        add("dialogs.confluence.angler.item.confluence.mutant_flinxfin", "棕白色、毛茸茸，住在冰冻地下湖中，是什么鱼？突变雪怪鱼！我没有开玩笑，确实有一种更适应水生生活的突变雪怪鱼！我希望它能够适应我的鱼缸，一定要抓一条！（抓捕位置：地下苔原）");
+        add("dialogs.confluence.angler.item.confluence.pengfish", "是鲸鱼！是海豚！不，是企鹅鱼！瞧瞧，该你出马了！你去给我抓一条！你知道它们只喜欢冷水吧？（抓捕位置：地表苔原）");
+        add("dialogs.confluence.angler.item.confluence.pixiefish", "有一种十分十分罕见的妖精，长了太多翅膀，所以完全飞不起来！它在蓝色草地环绕的湖中与鱼儿一起游来游去。我的鱼缸需要一盏灯，所以我想让你把那个妖精抓来给我！（抓捕位置：地表神圣之地）");
+        add("dialogs.confluence.angler.item.confluence.scarab_fish", "我读过这个古老的故事，讲的是一条长得像魔法金龟子的鱼！说白了就是甲虫！在哪里能找到它？你说呢？咄，在沙漠！别那样看着我……是真的！那里其实是有水的！我想去，但我怕我的眼珠子被秃鹰啄掉。所以……还是你去吧！（抓捕位置：沙漠）");
+        add("dialogs.confluence.angler.item.confluence.scorpio_fish", "我敢肯定有人告诉过你沙漠里没有水，真是愚蠢至极！大错特错！沙漠里有种叫绿洲的地方，那里就有水！你说有水就会有什么！？没错，有鱼！那些奇怪的鱼会叮你、咬你，用尽各种方法折磨你！这是一种很适合我的宠物，也是一个很适合你的任务！（抓捕位置：沙漠）");
+        add("dialogs.confluence.angler.item.confluence.slimefish", "森林里的史莱姆有点恶心。史莱姆鱼更恶心！我可不想与史莱姆们一起游泳，所以你快去从水里抓一条给我！（抓捕位置：地表森林）");
+        add("dialogs.confluence.angler.item.confluence.spiderfish", "我看到一条八条腿的鱼！不！不可能！你为我钓它，这样它到我手里时就是死的了！这是我最后一次去这么深的洞穴钓鱼！（抓捕位置：地下和洞穴）");
+        add("dialogs.confluence.angler.item.confluence.tropical_barracuda", "食人鱼和鲨鱼都很丑！太太太丑了！你知道吗？有一种鱼长得很漂亮，但可以把你的脸咬掉。顺便说，我愿意付两铂金币来让这事发生。不过关键是，你要抓一条给我。一定要在你的脸被咬掉之前，把它交给我！（抓捕位置：丛林地表）");
+        add("dialogs.confluence.angler.item.confluence.tundra_trout", "你知道位于世界雪域表面上的湖泊为什么从不结冰吗？我不知道。但鱼知道！用冰制成的鱼会作为上佳的祭品进贡给伟大且神奇的渔夫！去吧，我的忠诚仆人，赶快把这条苔原鳟鱼带给我！（抓捕位置：地表苔原）");
+        add("dialogs.confluence.angler.item.confluence.unicorn_fish", "独角兽和彩虹都是好东西！它们无处不在，甚至在水中。真的，我居然在圣湖中看到一条独角兽鱼！你的任务就是把它钓起来，我会拿它当宠物！（抓捕位置：神圣之地）");
+        add("dialogs.confluence.angler.item.confluence.wyverntail", "我知道一些你……你不知道的事！好吧，我告诉你，有一只可怕的怪物在星空中飞来飞去！这不是我自己编出来的！它叫飞龙！可是，可是，你已经知道了，是不是？你不知道的是，它们就像蝌蚪那样出生和成长！所以，它们实际上像……像青蛙！开始行动，给我抓一只！（抓捕位置：天湖）");
+        add("dialogs.confluence.angler.item.confluence.zombie_fish", "你相信吗？！我晚上在森林里抓到一条已经死了的鱼！然后，它想吃我！我把它扔掉，然后扭头就跑！现在，我要把它钉在别人的梳妆台上，看看会发生什么，所以你去把那条鱼给我抓回来，好吗？！（抓捕位置：地表）");
+
         add("mood.terra_entity.goblin_tinkerer.like.dye_trader", "染料商知道把东西混在一起是多么有趣，我能理解！");
         add("mood.terra_entity.goblin_tinkerer.love.mechanic", "机械师让我像失了魂似的，心神不宁，不过我喜欢这种感觉！");
         add("mood.terra_entity.goblin_tinkerer.dislike.clothier", "我从服装商身上发现了怪异之处，仿佛他们掌握了黑暗秘密。我不喜欢这种感觉。");
@@ -2705,7 +2747,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(DecorativeBlocks.LIHZAHRD_DOOR.get(), "丛林蜥蜴门");
 
         add(DecorativeBlocks.WHITE_PAPER_PANE.get(), "缟白纸窗格");
+        add(DecorativeBlocks.WHITE_PAPER_PANE_LAMP.get(), "缟白纸窗格灯");
         add(DecorativeBlocks.MALACHITE_PAPER_PANE.get(), "石绿纸窗格");
+        add(DecorativeBlocks.MALACHITE_PAPER_PANE_LAMP.get(), "石绿纸窗格灯");
         add(DecorativeBlocks.TRADITIONAL_DYNASTY_DOOR.get(), "传统王朝木门");
 
         // 雕像

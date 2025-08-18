@@ -411,7 +411,9 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(POLISHED_MARBLE.get());
 
         dropSelf(WHITE_PAPER_PANE.get());
+        dropSelf(WHITE_PAPER_PANE_LAMP.get());
         dropSelf(MALACHITE_PAPER_PANE.get());
+        dropSelf(MALACHITE_PAPER_PANE_LAMP.get());
 
         dropSelf(ASPHALT_BLOCK.get());
 

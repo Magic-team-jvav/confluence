@@ -35,6 +35,8 @@ public final class ModConnectives {
         register(DecorativeBlocks.MARBLE_COLUMN.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.CALCITE_COLUMN));
 
         register(DecorativeBlocks.WHITE_PAPER_PANE.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.WHITE_PAPER_PANE));
+        register(DecorativeBlocks.WHITE_PAPER_PANE_LAMP.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.WHITE_PAPER_PANE_LAMP));
+        register(DecorativeBlocks.MALACHITE_PAPER_PANE_LAMP.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.MALACHITE_PAPER_PANE_LAMP));
         register(DecorativeBlocks.MALACHITE_PAPER_PANE.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.MALACHITE_PAPER_PANE));
 
         registerWeighted(DecorativeBlocks.WHITE_PURE_GLASS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.WHITE_PURE_GLASS), 1, 5);

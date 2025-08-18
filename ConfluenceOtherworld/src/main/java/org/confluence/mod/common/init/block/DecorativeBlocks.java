@@ -218,7 +218,9 @@ public class DecorativeBlocks {
 
     // 王朝木系列
     public static final DeferredBlock<Block> WHITE_PAPER_PANE = copyBlockRegister("white_paper_pane", OAK_PLANKS);
+    public static final DeferredBlock<Block> WHITE_PAPER_PANE_LAMP = registerWithItem("white_paper_pane_lamp", () -> new Block(BlockBehaviour.Properties.ofFullCopy(OAK_PLANKS).lightLevel(state->15)));
     public static final DeferredBlock<Block> MALACHITE_PAPER_PANE = copyBlockRegister("malachite_paper_pane", OAK_PLANKS);
+    public static final DeferredBlock<Block> MALACHITE_PAPER_PANE_LAMP = registerWithItem("malachite_paper_pane_lamp", () -> new Block(BlockBehaviour.Properties.ofFullCopy(OAK_PLANKS).lightLevel(state->15)));
     public static final DeferredBlock<DoorBlock> TRADITIONAL_DYNASTY_DOOR = registerWithItem("traditional_dynasty_door", () -> new DoorBlock(BlockSetType.OAK, BlockBehaviour.Properties.ofFullCopy(OAK_DOOR).mapColor(DyeColor.BROWN).pushReaction(PushReaction.BLOCK)));
 
     // 花岗岩

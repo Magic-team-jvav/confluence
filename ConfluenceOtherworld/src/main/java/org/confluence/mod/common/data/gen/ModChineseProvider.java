@@ -3386,6 +3386,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(TreasureBagItems.BRAIN_OF_CTHULHU_TREASURE_BAG.get(), "克苏鲁之脑宝藏袋");
         add(TreasureBagItems.QUEEN_BEE_TREASURE_BAG.get(), "蜂王宝藏袋");
         add(TreasureBagItems.SKELETRON_TREASURE_BAG.get(), "骷髅王宝藏袋");
+        //add(TreasureBagItems.DEERCLOPS_TREASURE_BAG.get(), "独眼巨鹿宝藏袋");
         add(TreasureBagItems.WALL_OF_FLESH_TREASURE_BAG.get(), "血肉墙宝藏袋");
 
         // 杂项

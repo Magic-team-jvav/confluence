@@ -497,6 +497,36 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 "/SS",
                 "/  "
         )), TEYoyosItems.WOODEN_YOYO.toStack());
+        // 王朝木衍生系列
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                'S', Ingredient.of(NatureBlocks.DYNASTY_LOG_BLOCKS.PLANKS),
+                '/', Ingredient.of(Items.PAPER)
+        ), List.of(
+                " S ",
+                "S/S",
+                " S "
+        )), DecorativeBlocks.WHITE_PAPER_PANE.toStack());
+        shapeless(output, "", "",
+                new ItemStack(DecorativeBlocks.WHITE_PAPER_PANE_LAMP),
+                Ingredient.of(DecorativeBlocks.WHITE_PAPER_PANE),
+                Ingredient.of(Items.TORCH)
+        );
+        shapeless(output, "", "",
+                new ItemStack(DecorativeBlocks.MALACHITE_PAPER_PANE),
+                Ingredient.of(DecorativeBlocks.WHITE_PAPER_PANE),
+                Ingredient.of(Items.CYAN_DYE)
+        );
+        shapeless(output, "", "",
+                new ItemStack(DecorativeBlocks.MALACHITE_PAPER_PANE_LAMP),
+                Ingredient.of(DecorativeBlocks.MALACHITE_PAPER_PANE),
+                Ingredient.of(Items.TORCH)
+        );
+        shapeless(output, "", "",
+                new ItemStack(DecorativeBlocks.TRADITIONAL_DYNASTY_DOOR),
+                Ingredient.of(NatureBlocks.DYNASTY_LOG_BLOCKS.DOOR),
+                Ingredient.of(Items.RED_DYE),
+                Ingredient.of(Items.BLACK_DYE)
+        );
         // 便捷合成，无序合成
         shapeless(output, "", "_from_raw_copper",
                 new ItemStack(Items.COPPER_INGOT),

@@ -1214,7 +1214,7 @@ public final class ValueSubProvider {
                 .add(VanityArmorItems.TEAM_DYE, silver20);
 
         appender.create()
-                .add(NatureBlocks.YELLOW_WILLOW_SAPLING, silver20);
+                .add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.SAPLING, silver20);
 
         appender.create()
                 .add(ModItems.GRASS_SEED, 4)

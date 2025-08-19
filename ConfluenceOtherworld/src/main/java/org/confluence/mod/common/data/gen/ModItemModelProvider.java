@@ -6,6 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.item.SignItem;
 import net.minecraft.world.level.block.*;
 import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
 import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
@@ -17,6 +18,7 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.common.item.paint.PaintItem;
 import org.confluence.terraentity.init.item.TEBoomerangItems;
 
 import java.util.*;
@@ -149,19 +151,42 @@ public class ModItemModelProvider extends ItemModelProvider {
             Item item1 = item.get();
             String path = item.getId().getPath();
             try {
-                if (item1 instanceof BlockItem item2) {
+                if (item1 instanceof SignItem) {
+                    withExistingParent(path, "item/generated").texture("layer0", "confluence:item/sign/" + path);
+                } else if (item1 instanceof BlockItem item2) {
                     Block block = item2.getBlock();
-                    if (block instanceof DoorBlock) {
-                        withExistingParent(path, "item/generated").texture("layer0", Confluence.asResource("item/" + path));
-                    } else if (block instanceof TrapDoorBlock) {
-                        withExistingParent(path, Confluence.asResource("block/" + path + "_bottom"));
-                    } else {
-                        withExistingParent(path, Confluence.asResource("block/" + path + (hasInventory(block) ? "_inventory" : "")));
+                    switch (block) {
+                        case DoorBlock ignored -> withExistingParent(path, "item/generated").texture("layer0", Confluence.asResource("item/decoration/door/" + path));
+                        case TrapDoorBlock ignored -> withExistingParent(path, Confluence.asResource("block/" + path + "_bottom"));
+                        case SaplingBlock ignored -> withExistingParent(path, "item/generated").texture("layer0", "confluence:block/" + path);
+                        case ButtonBlock ignored -> withExistingParent(path, Confluence.asResource("block/" + path + "_inventory"));
+                        case FenceBlock ignored -> withExistingParent(path, Confluence.asResource("block/" + path + "_inventory"));
+                        //case LeavesBlock ignored -> withExistingParent(path, "block/leaves").texture("all", Confluence.asResource("block/" + path + "_item"));
+                        case ChainBlock ignored -> withExistingParent(path, "item/generated").texture("layer0", Confluence.asResource("item/chain/" + path));
+                        default -> withExistingParent(path, Confluence.asResource("block/" + path));
                     }
                 }
             } catch (Exception ignored) {
                 withExistingParent(path, MISSING_BLOCK);
             }
+        }
+
+        for (DeferredHolder<Item, ? extends Item> item : PaintItems.ITEMS.getEntries()) {
+            if (item.get() instanceof PaintItem) {
+                String path = item.getId().getPath();
+                if (path.startsWith("deep_")) {
+                    withExistingParent(path, Confluence.asResource("item/template_deep_paint"));
+                } else {
+                    withExistingParent(path, Confluence.asResource("item/template_paint"));
+                }
+            }
+        }
+
+        for (int i = 0; i < 32; i++) {
+            StringBuilder s = new StringBuilder("meteor_compass_");
+            if (i < 10) s.append(0);
+            String name = s.append(i).toString();
+            withExistingParent(name, "item/generated").texture("layer0", Confluence.asResource("item/compass/" + name));
         }
     }
 
@@ -185,10 +210,6 @@ public class ModItemModelProvider extends ItemModelProvider {
                     .perspective(ItemDisplayContext.FIXED, standaloneModel);
         });
         skip.add(deferredItem);
-    }
-
-    private static boolean hasInventory(Block block) {
-        return block instanceof ButtonBlock || block instanceof FenceBlock;
     }
 
     private Map<DeferredRegister.Items, String[]> createDir(DeferredRegister.Items reg, String... packPaths) {

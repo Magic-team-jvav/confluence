@@ -64,10 +64,17 @@ public class ModBlockStateProvider extends BlockStateProvider {
             if (logBlockSet.SLAB.isBound()) slabBlock(logBlockSet.SLAB.get(), planks, planks);
             if (logBlockSet.STAIRS.isBound()) stairsBlock(logBlockSet.STAIRS.get(), planks);
             if (logBlockSet.SIGN.isBound()) signBlock(logBlockSet.SIGN.get(), logBlockSet.WALL_SIGN.get(), planks);
-            if (logBlockSet.TRAPDOOR.isBound()) trapdoorBlock(logBlockSet.TRAPDOOR.get(), Confluence.asResource("block/" + id + "_trapdoor"), true);
-            if (logBlockSet.DOOR.isBound()) doorBlock(logBlockSet.DOOR.get(), Confluence.asResource("block/" + id + "_door_bottom"), Confluence.asResource("block/" + id + "_door_top"));
+            if (logBlockSet.TRAPDOOR.isBound()) trapdoorBlockWithRenderType(logBlockSet.TRAPDOOR.get(), Confluence.asResource("block/" + id + "_trapdoor"), true, "cutout");
+            if (logBlockSet.DOOR.isBound()) {
+                doorBlockWithRenderType(logBlockSet.DOOR.get(), Confluence.asResource("block/" + id + "_door_bottom"), Confluence.asResource("block/" + id + "_door_top"), "cutout");
+            }
             if (logBlockSet.HANGING_SIGN.isBound()) hangingSignBlock(logBlockSet.HANGING_SIGN.get(), logBlockSet.WALL_HANGING_SIGN.get(), planks);
             if (logBlockSet.CHISELED_PLANKS.isBound()) simpleBlock(logBlockSet.CHISELED_PLANKS.get());
+            if (logBlockSet.SAPLING.isBound()) {
+                try {
+                    models().withExistingParent(id + "_sapling", "block/cross").texture("cross", Confluence.asResource("block/" + id + "_sapling"));
+                } catch (Exception ignored) {}
+            }
         }
     }
 
@@ -121,16 +128,16 @@ public class ModBlockStateProvider extends BlockStateProvider {
     }
 
     @Override
-    public void trapdoorBlock(TrapDoorBlock block, ResourceLocation texture, boolean orientable) {
+    public void trapdoorBlockWithRenderType(TrapDoorBlock block, ResourceLocation texture, boolean orientable, String renderType) {
         try {
-            super.trapdoorBlock(block, texture, orientable);
+            super.trapdoorBlockWithRenderType(block, texture, orientable, renderType);
         } catch (Exception ignored) {}
     }
 
     @Override
-    public void doorBlock(DoorBlock block, ResourceLocation bottom, ResourceLocation top) {
+    public void doorBlockWithRenderType(DoorBlock block, ResourceLocation bottom, ResourceLocation top, String renderType) {
         try {
-            super.doorBlock(block, bottom, top);
+            super.doorBlockWithRenderType(block, bottom, top, renderType);
         } catch (Exception ignored) {}
     }
 

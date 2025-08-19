@@ -74,6 +74,7 @@ public class LogBlockSet {
     public final DeferredItem<HangingSignItem> HANGING_SIGN_ITEM;
     // 番外个体
     public final DeferredBlock<Block> CHISELED_PLANKS;
+    public final DeferredBlock<SaplingBlock> SAPLING;
 
     LogBlockSet(Builder builder) {
         this.id = builder.id;
@@ -100,11 +101,12 @@ public class LogBlockSet {
         this.HANGING_SIGN_ITEM = builder.hangingSignItem == null ? DeferredItem.createItem(Confluence.asResourceKey(Registries.ITEM, id + "_hanging_sign")) : ModItems.BLOCK_ITEMS.register(id + "_hanging_sign", () -> builder.hangingSignItem.apply(HANGING_SIGN.get(), WALL_HANGING_SIGN.get(), new Item.Properties().stacksTo(16)));
 
         this.CHISELED_PLANKS = register(builder.chiseledPlanks, "chiseled_" + id + "_planks", true, () -> ignitedByLava(BlockBehaviour.Properties.ofFullCopy(PLANKS.get())));
+        this.SAPLING = builder.sapling == null ? DeferredBlock.createBlock(Confluence.asResourceKey(Registries.BLOCK, id + "_sapling")) : registerWithItem(id + "_sapling", () -> builder.sapling.apply(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)));
     }
 
     public Stream<Item> getAllItems() {
         return Streams.concat(
-                Stream.of(PLANKS, LOG, STRIPPED_LOG, LEAVES, WOOD, STRIPPED_WOOD, BUTTON, FENCE, FENCE_GATE, PRESSURE_PLATE, SLAB, STAIRS, TRAPDOOR, DOOR).filter(DeferredHolder::isBound).map(DeferredBlock::asItem),
+                Stream.of(PLANKS, LOG, STRIPPED_LOG, LEAVES, WOOD, STRIPPED_WOOD, BUTTON, FENCE, FENCE_GATE, PRESSURE_PLATE, SLAB, STAIRS, TRAPDOOR, DOOR, SAPLING).filter(DeferredHolder::isBound).map(DeferredBlock::asItem),
                 Stream.of(SIGN_ITEM, HANGING_SIGN_ITEM).filter(DeferredHolder::isBound).map(DeferredItem::asItem)
         );
     }
@@ -140,36 +142,37 @@ public class LogBlockSet {
     }
 
     public static void acceptTags(Function<TagKey<Block>, IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block>> provider) {
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> completes = provider.apply(BlockTags.COMPLETES_FIND_TREE_TUTORIAL);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> burn = provider.apply(BlockTags.LOGS_THAT_BURN);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> logs = provider.apply(BlockTags.LOGS);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> planks = provider.apply(BlockTags.PLANKS);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> buttons = provider.apply(BlockTags.BUTTONS);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> woodenButtons = provider.apply(BlockTags.WOODEN_BUTTONS);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> stairs = provider.apply(BlockTags.STAIRS);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> woodenStairs = provider.apply(BlockTags.WOODEN_STAIRS);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> slabs = provider.apply(BlockTags.SLABS);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> woodenSlabs = provider.apply(BlockTags.WOODEN_SLABS);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> fences = provider.apply(BlockTags.FENCES);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> woodenFences = provider.apply(BlockTags.WOODEN_FENCES);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> cFences = provider.apply(Tags.Blocks.FENCES);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> cFencesWooden = provider.apply(Tags.Blocks.FENCES_WOODEN);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> fenceGates = provider.apply(BlockTags.FENCE_GATES);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> cFenceGates = provider.apply(Tags.Blocks.FENCE_GATES);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> cFenceGatesWooden = provider.apply(Tags.Blocks.FENCE_GATES_WOODEN);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> trapdoors = provider.apply(BlockTags.TRAPDOORS);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> woodenTrapdoors = provider.apply(BlockTags.WOODEN_TRAPDOORS);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> woodenPressurePlates = provider.apply(BlockTags.WOODEN_PRESSURE_PLATES);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> doors = provider.apply(BlockTags.DOORS);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> woodenDoors = provider.apply(BlockTags.WOODEN_DOORS);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> leaves = provider.apply(BlockTags.LEAVES);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> standingSigns = provider.apply(BlockTags.STANDING_SIGNS);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> wallSigns = provider.apply(BlockTags.WALL_SIGNS);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> signs = provider.apply(BlockTags.SIGNS);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> cStrippedLogs = provider.apply(Tags.Blocks.STRIPPED_LOGS);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> ceilingHangingSigns = provider.apply(BlockTags.CEILING_HANGING_SIGNS);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> wallHangingSigns = provider.apply(BlockTags.WALL_HANGING_SIGNS);
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> allHangingSigns = provider.apply(BlockTags.ALL_HANGING_SIGNS);
+        var completes = provider.apply(BlockTags.COMPLETES_FIND_TREE_TUTORIAL);
+        var burn = provider.apply(BlockTags.LOGS_THAT_BURN);
+        var logs = provider.apply(BlockTags.LOGS);
+        var planks = provider.apply(BlockTags.PLANKS);
+        var buttons = provider.apply(BlockTags.BUTTONS);
+        var woodenButtons = provider.apply(BlockTags.WOODEN_BUTTONS);
+        var stairs = provider.apply(BlockTags.STAIRS);
+        var woodenStairs = provider.apply(BlockTags.WOODEN_STAIRS);
+        var slabs = provider.apply(BlockTags.SLABS);
+        var woodenSlabs = provider.apply(BlockTags.WOODEN_SLABS);
+        var fences = provider.apply(BlockTags.FENCES);
+        var woodenFences = provider.apply(BlockTags.WOODEN_FENCES);
+        var cFences = provider.apply(Tags.Blocks.FENCES);
+        var cFencesWooden = provider.apply(Tags.Blocks.FENCES_WOODEN);
+        var fenceGates = provider.apply(BlockTags.FENCE_GATES);
+        var cFenceGates = provider.apply(Tags.Blocks.FENCE_GATES);
+        var cFenceGatesWooden = provider.apply(Tags.Blocks.FENCE_GATES_WOODEN);
+        var trapdoors = provider.apply(BlockTags.TRAPDOORS);
+        var woodenTrapdoors = provider.apply(BlockTags.WOODEN_TRAPDOORS);
+        var woodenPressurePlates = provider.apply(BlockTags.WOODEN_PRESSURE_PLATES);
+        var doors = provider.apply(BlockTags.DOORS);
+        var woodenDoors = provider.apply(BlockTags.WOODEN_DOORS);
+        var leaves = provider.apply(BlockTags.LEAVES);
+        var standingSigns = provider.apply(BlockTags.STANDING_SIGNS);
+        var wallSigns = provider.apply(BlockTags.WALL_SIGNS);
+        var signs = provider.apply(BlockTags.SIGNS);
+        var cStrippedLogs = provider.apply(Tags.Blocks.STRIPPED_LOGS);
+        var ceilingHangingSigns = provider.apply(BlockTags.CEILING_HANGING_SIGNS);
+        var wallHangingSigns = provider.apply(BlockTags.WALL_HANGING_SIGNS);
+        var allHangingSigns = provider.apply(BlockTags.ALL_HANGING_SIGNS);
+        var saplings = provider.apply(BlockTags.SAPLINGS);
 
         for (LogBlockSet logBlocks : LOG_BLOCK_SETS) {
             boolean ignitedByLava = logBlocks.ignitedByLava;
@@ -270,6 +273,10 @@ public class LogBlockSet {
             if (logBlocks.CHISELED_PLANKS.isBound()) {
                 Block value = logBlocks.CHISELED_PLANKS.get();
                 planks.add(value);
+            }
+            if (logBlocks.SAPLING.isBound()) {
+                Block value = logBlocks.SAPLING.get();
+                saplings.add(value);
             }
         }
     }
@@ -422,6 +429,7 @@ public class LogBlockSet {
         private TriFunction<CeilingHangingSignBlock, WallHangingSignBlock, Item.Properties, ? extends HangingSignItem> hangingSignItem;
         // 最后之作
         private Function<BlockBehaviour.Properties, ? extends Block> chiseledPlanks = Block::new;
+        private Function<BlockBehaviour.Properties, ? extends SaplingBlock> sapling;
 
         public Builder(String id, boolean ignitedByLava, WoodSetType woodSetType) {
             this.id = id;
@@ -539,6 +547,11 @@ public class LogBlockSet {
 
         public Builder chiseledPlanks(@Nullable Function<BlockBehaviour.Properties, ? extends Block> function) {
             this.chiseledPlanks = function;
+            return this;
+        }
+
+        public Builder sapling(@NotNull Function<BlockBehaviour.Properties, ? extends SaplingBlock> function) {
+            this.sapling = function;
             return this;
         }
 

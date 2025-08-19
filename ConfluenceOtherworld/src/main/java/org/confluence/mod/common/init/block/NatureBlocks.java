@@ -16,7 +16,6 @@ import org.confluence.lib.common.block.TransparentLeavesBlock;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.natural.*;
 import org.confluence.mod.common.block.natural.MushroomBlock;
-import org.confluence.mod.common.block.natural.sapling.AshSaplingBlock;
 import org.confluence.mod.common.block.natural.sapling.BaseSaplingBlock;
 import org.confluence.mod.common.block.natural.sapling.StoneSaplingBlock;
 import org.confluence.mod.common.block.natural.spreadable.*;
@@ -40,9 +39,6 @@ public class NatureBlocks {
     public static final DeferredBlock<Block> DIAMOND_SAPLING = registerWithItem("diamond_sapling", () -> new StoneSaplingBlock(ModFeatures.TreeGrowers.DIAMOND_GROWER));
     public static final DeferredBlock<Block> SAPPHIRE_SAPLING = registerWithItem("sapphire_sapling", () -> new StoneSaplingBlock(ModFeatures.TreeGrowers.SAPPHIRE_GROWER));
     public static final DeferredBlock<Block> AMETHYST_SAPLING = registerWithItem("amethyst_sapling", () -> new StoneSaplingBlock(ModFeatures.TreeGrowers.AMETHYST_GROWER));
-    public static final DeferredBlock<Block> LIVING_SAPLING = registerWithItem("living_sapling", () -> new BaseSaplingBlock(ModFeatures.TreeGrowers.LIVING_GROWER, Blocks.GRASS_BLOCK, Blocks.DIRT));
-    public static final DeferredBlock<Block> YELLOW_WILLOW_SAPLING = registerWithItem("yellow_willow_sapling", () -> new BaseSaplingBlock(ModFeatures.TreeGrowers.YELLOW_WILLOW_GROWER, Blocks.GRASS_BLOCK, Blocks.DIRT));
-    public static final DeferredBlock<Block> BAOBAB_SAPLING = registerWithItem("baobab_sapling", () -> new BaseSaplingBlock(ModFeatures.TreeGrowers.BAOBAB_GROWER, Blocks.GRASS_BLOCK, Blocks.DIRT));
 
     // 流体接触块
     public static final DeferredBlock<ThinHoneyBlock> THIN_HONEY_BLOCK = registerWithItem("thin_honey_block", () -> new ThinHoneyBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.HONEY_BLOCK).mapColor(MapColor.COLOR_ORANGE)));
@@ -89,8 +85,7 @@ public class NatureBlocks {
 
     // 腐化
     public static final DeferredBlock<Block> CORRUPT_GRASS_BLOCK = registerWithItem("corrupt_grass_block", () -> new SpreadingGrassBlock(ISpreadable.Type.CORRUPT, BlockBehaviour.Properties.ofFullCopy(Blocks.GRASS_BLOCK).mapColor(MapColor.COLOR_PURPLE)));
-    public static final DeferredBlock<Block> EBONY_SAPLING = registerWithItem("ebony_sapling", () -> new BaseSaplingBlock(ModFeatures.TreeGrowers.EBONY_GROWER, CORRUPT_GRASS_BLOCK.get()));
-    public static final LogBlockSet EBONY_LOG_BLOCKS = LogBlockSet.builder("ebony", true, EBONY).build();
+    public static final LogBlockSet EBONY_LOG_BLOCKS = LogBlockSet.builder("ebony", true, EBONY).sapling(properties -> new BaseSaplingBlock(ModFeatures.TreeGrowers.EBONY_GROWER, properties, null, CORRUPT_GRASS_BLOCK)).build();
     public static final DeferredBlock<Block> EBONSTONE = registerWithItem("ebonstone", () -> new SpreadingBlock(ISpreadable.Type.CORRUPT, BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).mapColor(MapColor.TERRACOTTA_PURPLE)));
     public static final DeferredBlock<Block> COBBLED_EBONSTONE = registerWithItem("cobbled_ebonstone", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE).mapColor(MapColor.TERRACOTTA_PURPLE)));
     public static final DeferredBlock<Block> EBONSANDSTONE = registerWithItem("ebonsandstone", () -> new SpreadingBlock(ISpreadable.Type.CORRUPT, BlockBehaviour.Properties.ofFullCopy(Blocks.SANDSTONE).mapColor(MapColor.TERRACOTTA_PURPLE)));
@@ -107,11 +102,10 @@ public class NatureBlocks {
     public static final DeferredBlock<ShadowOrbBlock> SHADOW_ORB = registerWithoutItem("shadow_orb", ShadowOrbBlock::new);
     public static final DeferredBlock<CrimsonHeartBlock> CRIMSON_HEART = registerWithoutItem("crimson_heart", CrimsonHeartBlock::new);
 
-    //  神圣
+    // 神圣
     public static final DeferredBlock<Block> HALLOW_GRASS_BLOCK = registerWithItem("hallow_grass_block", () -> new SpreadingGrassBlock(ISpreadable.Type.HALLOW, BlockBehaviour.Properties.ofFullCopy(Blocks.GRASS_BLOCK).mapColor(MapColor.COLOR_CYAN)));
     public static final DeferredBlock<Block> HALLOW_GRASS = registerWithItem("hallow_grass", () -> new BasePlantBlock(HALLOW_GRASS_BLOCK.get())); // 神圣草
-    public static final DeferredBlock<Block> PEARL_SAPLING = registerWithItem("pearl_sapling", () -> new BaseSaplingBlock(ModFeatures.TreeGrowers.PEARL_GROWER, HALLOW_GRASS_BLOCK.get()));
-    public static final LogBlockSet PEARL_LOG_BLOCKS = LogBlockSet.builder("pearl", true, PEARL).build();
+    public static final LogBlockSet PEARL_LOG_BLOCKS = LogBlockSet.builder("pearl", true, PEARL).sapling(properties -> new BaseSaplingBlock(ModFeatures.TreeGrowers.PEARL_GROWER, properties, null, HALLOW_GRASS_BLOCK)).build();
     public static final DeferredBlock<Block> PEARLSTONE = registerWithItem("pearlstone", () -> new SpreadingBlock(ISpreadable.Type.HALLOW, BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).mapColor(MapColor.TERRACOTTA_MAGENTA)));
     public static final DeferredBlock<Block> COBBLED_PEARLSTONE = registerWithItem("cobbled_pearlstone", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE).mapColor(MapColor.TERRACOTTA_MAGENTA)));
     public static final DeferredBlock<Block> HARDENED_PEARLSAND_BLOCK = registerWithItem("hardened_pearlsand_block", () -> new SpreadingBlock(ISpreadable.Type.HALLOW, BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).mapColor(MapColor.TERRACOTTA_PINK)));
@@ -124,8 +118,7 @@ public class NatureBlocks {
 
     // 猩红
     public static final DeferredBlock<Block> CRIMSON_GRASS_BLOCK = registerWithItem("crimson_grass_block", () -> new SpreadingGrassBlock(ISpreadable.Type.CRIMSON, BlockBehaviour.Properties.ofFullCopy(Blocks.GRASS_BLOCK).mapColor(MapColor.COLOR_RED)));
-    public static final DeferredBlock<Block> SHADOW_SAPLING = registerWithItem("shadow_sapling", () -> new BaseSaplingBlock(ModFeatures.TreeGrowers.SHADOW_GROWER, CRIMSON_GRASS_BLOCK.get()));
-    public static final LogBlockSet SHADOW_LOG_BLOCKS = LogBlockSet.builder("shadow", true, SHADOW).build();
+    public static final LogBlockSet SHADOW_LOG_BLOCKS = LogBlockSet.builder("shadow", true, SHADOW).sapling(properties -> new BaseSaplingBlock(ModFeatures.TreeGrowers.SHADOW_GROWER, properties, null, CRIMSON_GRASS_BLOCK)).build();
     public static final DeferredBlock<Block> CRIMSTONE = registerWithItem("crimstone", () -> new SpreadingBlock(ISpreadable.Type.CRIMSON, BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).mapColor(MapColor.COLOR_RED)));
     public static final DeferredBlock<Block> COBBLED_CRIMSTONE = registerWithItem("cobbled_crimstone", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE).mapColor(MapColor.COLOR_RED)));
     public static final DeferredBlock<Block> HARDENED_CRIMSAND_BLOCK = registerWithItem("hardened_crimsand_block", () -> new SpreadingBlock(ISpreadable.Type.CRIMSON, BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).mapColor(MapColor.TERRACOTTA_RED)));
@@ -154,22 +147,21 @@ public class NatureBlocks {
     public static final LogBlockSet GLOWING_MUSHROOM_LOG_BLOCKS = LogBlockSet.builder("glowing_mushroom", true, LogBlockSet.WoodSetType.GLOWING_MUSHROOM).log(null).strippedLog(null).wood(null).strippedWood(null).leaves(null).build();
 
     // 沙漠
-    public static final DeferredBlock<Block> PALM_SAPLING = registerWithItem("palm_sapling", () -> new BaseSaplingBlock(ModFeatures.TreeGrowers.PALM_GROWER, Blocks.SAND, Blocks.RED_SAND, Blocks.GRASS_BLOCK, NatureBlocks.MOISTENED_SAND_BLOCK.get(), NatureBlocks.MOISTENED_RED_SAND_BLOCK.get()));
-    public static final LogBlockSet PALM_LOG_BLOCKS = LogBlockSet.builder("palm", true, PALM).leaves(PalmLeaves::new).build();
+    public static final LogBlockSet PALM_LOG_BLOCKS = LogBlockSet.builder("palm", true, PALM).leaves(PalmLeaves::new).sapling(properties -> new BaseSaplingBlock(ModFeatures.TreeGrowers.PALM_GROWER, properties, null, getSupplier(Blocks.SAND), getSupplier(Blocks.RED_SAND), getSupplier(Blocks.GRASS_BLOCK), NatureBlocks.MOISTENED_SAND_BLOCK, NatureBlocks.MOISTENED_RED_SAND_BLOCK)).build();
     public static final DeferredBlock<Block> DESERT_TAPERED_BLOCK = registerWithItem("desert_tapered_block", TaperedTwoPartBlock::new);
     public static final DeferredBlock<DesertPlantBlock> SMALL_DESERT_PLANT = registerWithItem("small_desert_plant", () -> new DesertPlantBlock(Block.box(4.0D, 0.0D, 4.0D, 12.0D, 16.0D, 12.0D)));
     public static final DeferredBlock<DesertPlantBlock> BIG_DESERT_PLANT = registerWithItem("big_desert_plant", () -> new DesertPlantBlock(Block.box(4.0D, 0.0D, 4.0D, 12.0D, 16.0D, 12.0D)));
     public static final DeferredBlock<SmallCactusBlock> SMALL_CACTUS = registerWithItem("small_cactus", SmallCactusBlock::new);
-    public static final DeferredBlock<Block> DESERT_GRASS = registerWithItem("desert_grass", () -> new BasePlantBlock(Blocks.SAND,Blocks.RED_SAND));
-    public static final DeferredBlock<Block> DESERT_TALL_GRASS = registerWithItem("desert_tall_grass", () -> new BaseTallPlantBlock(Blocks.SAND,Blocks.RED_SAND));
+    public static final DeferredBlock<Block> DESERT_GRASS = registerWithItem("desert_grass", () -> new BasePlantBlock(Blocks.SAND, Blocks.RED_SAND));
+    public static final DeferredBlock<Block> DESERT_TALL_GRASS = registerWithItem("desert_tall_grass", () -> new BaseTallPlantBlock(Blocks.SAND, Blocks.RED_SAND));
     public static final DeferredBlock<Block> PACKED_DIRT = registerWithItem("packed_dirt", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).strength(1.0F, 1.0F).sound(SoundType.STONE).mapColor(MapColor.COLOR_BROWN)));
 
     // 萨瓦纳草原
-    public static final LogBlockSet BAOBAB_LOG_BLOCKS = LogBlockSet.builder("baobab", true, BAOBAB).build();
+    public static final LogBlockSet BAOBAB_LOG_BLOCKS = LogBlockSet.builder("baobab", true, BAOBAB).sapling(properties -> new BaseSaplingBlock(ModFeatures.TreeGrowers.BAOBAB_GROWER, properties, null, getSupplier(Blocks.GRASS_BLOCK), getSupplier(Blocks.DIRT))).build();
 
 
     // 黄柳
-    public static final LogBlockSet YELLOW_WILLOW_LOG_BLOCKS = LogBlockSet.builder("yellow_willow", true, YELLOW_WILLOW).build();
+    public static final LogBlockSet YELLOW_WILLOW_LOG_BLOCKS = LogBlockSet.builder("yellow_willow", true, YELLOW_WILLOW).sapling(properties -> new BaseSaplingBlock(ModFeatures.TreeGrowers.YELLOW_WILLOW_GROWER, properties, null, getSupplier(Blocks.GRASS_BLOCK), getSupplier(Blocks.DIRT))).build();
     // 万圣节
     public static final LogBlockSet SPOOKY_LOG_BLOCKS = LogBlockSet.builder("spooky", true, SPOOKY).build();
     // 生命树
@@ -177,10 +169,9 @@ public class NatureBlocks {
     // 生命红木
     public static final LogBlockSet LIVING_MAHOGANY_LOG_BLOCKS = LogBlockSet.builder("living_mahogany", true, LIVING_MAHOGANY).leaves(properties -> new TransparentLeavesBlock(properties.noOcclusion())).build();
     // 灰烬
-    public static final DeferredBlock<Block> ASH_SAPLING = registerWithItem("ash_sapling", () -> new AshSaplingBlock(ModFeatures.TreeGrowers.ASH_GROWER));
-    public static final LogBlockSet ASH_LOG_BLOCKS = LogBlockSet.builder("ash", false, ASH).leaves(null).build();
     public static final DeferredBlock<Block> ASH_BLOCK = registerWithItem("ash_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.SAND).strength(1.0F, 1.0F).sound(SoundType.SAND).mapColor(MapColor.TERRACOTTA_GRAY)));
     public static final DeferredBlock<Block> ASH_GRASS_BLOCK = registerWithItem("ash_grass_block", AshGrassBlock::new);
+    public static final LogBlockSet ASH_LOG_BLOCKS = LogBlockSet.builder("ash", false, ASH).leaves(null).sapling(properties -> new BaseSaplingBlock(ModFeatures.TreeGrowers.ASH_GROWER, properties, null, ASH_BLOCK, ASH_GRASS_BLOCK)).build();
     public static final DeferredBlock<Block> ASH_GRASS = registerWithItem("ash_grass", () -> new BasePlantBlock(ASH_GRASS_BLOCK.get()));
 
     // 丛林
@@ -193,9 +184,9 @@ public class NatureBlocks {
     public static final DeferredBlock<NaturesGiftBlock> JUNGLE_ROSE = registerWithItem("jungle_rose", NaturesGiftBlock::new);
     public static final DeferredBlock<LarvaBlock> LARVA = registerWithItem("larva", () -> new LarvaBlock(BlockBehaviour.Properties.of().pushReaction(PushReaction.DESTROY).noOcclusion().replaceable().instabreak()));
 
-    public static final DeferredBlock<Block> JUNGLE_PATH = registerWithItem("mud_path",() -> new MudPathBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MUD).mapColor(MapColor.COLOR_LIGHT_GRAY)));
-    public static final DeferredBlock<Block> MUSHROOM_PATH = registerWithItem("mushroom_path",() -> new MudPathBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MUD).mapColor(MapColor.COLOR_LIGHT_GRAY)));
-    public static final DeferredBlock<Block> ASH_PATH = registerWithItem("ash_path",() -> new AshPathBlock(BlockBehaviour.Properties.ofFullCopy(NatureBlocks.ASH_BLOCK.get()).mapColor(MapColor.COLOR_GRAY)));
+    public static final DeferredBlock<Block> JUNGLE_PATH = registerWithItem("mud_path", () -> new MudPathBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MUD).mapColor(MapColor.COLOR_LIGHT_GRAY)));
+    public static final DeferredBlock<Block> MUSHROOM_PATH = registerWithItem("mushroom_path", () -> new MudPathBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MUD).mapColor(MapColor.COLOR_LIGHT_GRAY)));
+    public static final DeferredBlock<Block> ASH_PATH = registerWithItem("ash_path", () -> new AshPathBlock(BlockBehaviour.Properties.ofFullCopy(NatureBlocks.ASH_BLOCK.get()).mapColor(MapColor.COLOR_GRAY)));
 
     // 王朝木
     public static final LogBlockSet DYNASTY_LOG_BLOCKS = LogBlockSet.builder("dynasty", true, DYNASTY).leaves(null).build();
@@ -300,5 +291,9 @@ public class NatureBlocks {
         DeferredBlock<B> object = BLOCKS.register(id, block);
         ModItems.BLOCK_ITEMS.register(id, () -> function.apply(object.get()));
         return object;
+    }
+
+    private static Supplier<Block> getSupplier(Block block) {
+        return () -> block;
     }
 }

@@ -175,7 +175,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
 
         shop(TENpcEntities.DRYAD.getId()).addRecipe(withDefaultPylon()
                 .add(ConsumableItems.PURIFICATION_POWDER)
-                .add(NatureBlocks.YELLOW_WILLOW_SAPLING)
+                .add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.SAPLING)
                 .add(Blocks.OAK_SAPLING)
                 .add(Blocks.SUNFLOWER)
                 .add(Items.PUMPKIN_SEEDS)

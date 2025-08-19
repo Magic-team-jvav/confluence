@@ -2479,10 +2479,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.JUNGLE_THORN.get(), "丛林荆棘");
         add(NatureBlocks.PLANTERA_THORN.get(), "世纪之花荆棘");
         // 树苗
-        add(NatureBlocks.SHADOW_SAPLING.get(), "暗影树苗");
-        add(NatureBlocks.EBONY_SAPLING.get(), "乌木树苗");
-        add(NatureBlocks.PALM_SAPLING.get(), "棕榈树苗");
-        add(NatureBlocks.PEARL_SAPLING.get(), "珍珠树苗");
+        add(NatureBlocks.SHADOW_LOG_BLOCKS.SAPLING.get(), "暗影树苗");
+        add(NatureBlocks.EBONY_LOG_BLOCKS.SAPLING.get(), "乌木树苗");
+        add(NatureBlocks.PALM_LOG_BLOCKS.SAPLING.get(), "棕榈树苗");
+        add(NatureBlocks.PEARL_LOG_BLOCKS.SAPLING.get(), "珍珠树苗");
         add(NatureBlocks.RUBY_SAPLING.get(), "红玉树苗");
         add(NatureBlocks.AMBER_SAPLING.get(), "琥珀树苗");
         add(NatureBlocks.TOPAZ_SAPLING.get(), "黄玉树苗");
@@ -2490,10 +2490,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.DIAMOND_SAPLING.get(), "钻石树苗");
         add(NatureBlocks.SAPPHIRE_SAPLING.get(), "蓝玉树苗");
         add(NatureBlocks.AMETHYST_SAPLING.get(), "紫晶树苗");
-        add(NatureBlocks.ASH_SAPLING.get(), "白蜡树苗");
-        add(NatureBlocks.LIVING_SAPLING.get(), "生命树树苗");
-        add(NatureBlocks.YELLOW_WILLOW_SAPLING.get(), "黄柳树苗");
-        add(NatureBlocks.BAOBAB_SAPLING.get(), "猴面包树苗");
+        add(NatureBlocks.ASH_LOG_BLOCKS.SAPLING.get(), "白蜡树苗");
+        add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.SAPLING.get(), "黄柳树苗");
+        add(NatureBlocks.BAOBAB_LOG_BLOCKS.SAPLING.get(), "猴面包树苗");
 
         add(NatureBlocks.VICIOUS_MUSHROOM.get(), "毒蘑菇");
         add(NatureBlocks.VILE_MUSHROOM.get(), "魔菇");

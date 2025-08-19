@@ -102,11 +102,6 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(RAIN_CLOUD_BLOCK.get());
         dropSelf(SNOW_CLOUD_BLOCK.get());
         //dropSelf(FLOATING_WHEAT_BALE.get());
-        dropSelf(SHADOW_SAPLING.get());
-        dropSelf(EBONY_SAPLING.get());
-        dropSelf(PEARL_SAPLING.get());
-        dropSelf(PALM_SAPLING.get());
-        dropSelf(ASH_SAPLING.get());
         dropSelf(STURDY_FOSSIL_BLOCK.get());
         dropSelf(OPAL_BLOCK.get());
         dropSelf(GELSTONE_BLOCK.get());
@@ -541,6 +536,7 @@ public final class BlockSubProvider extends BlockLootSubProvider {
             if (logBlocks.DOOR.isBound()) add(logBlocks.DOOR.get(), this::createDoorTable);
             if (logBlocks.HANGING_SIGN.isBound()) dropSelf(logBlocks.HANGING_SIGN.get());
             if (logBlocks.CHISELED_PLANKS.isBound()) dropSelf(logBlocks.CHISELED_PLANKS.get());
+            if (logBlocks.SAPLING.isBound()) dropSelf(logBlocks.SAPLING.get());
         }
 
         CrateBlocks.BLOCKS.getEntries().forEach(block -> dropSelf(block.get()));
@@ -628,7 +624,7 @@ public final class BlockSubProvider extends BlockLootSubProvider {
                         .add(LootItem.lootTableItem(FoodItems.POMEGRANATE.get()))
                         .add(EmptyLootItem.emptyItem().setWeight(199)))
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ASH_SAPLING.get()))
+                        .add(LootItem.lootTableItem(ASH_LOG_BLOCKS.SAPLING.get()))
                         .add(EmptyLootItem.emptyItem().setWeight(19)))
         );
         add(NatureBlocks.ASH_BRANCHES.get(), LootTable.lootTable()
@@ -639,7 +635,7 @@ public final class BlockSubProvider extends BlockLootSubProvider {
                         .add(LootItem.lootTableItem(FoodItems.POMEGRANATE.get()))
                         .add(EmptyLootItem.emptyItem().setWeight(199)))
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ASH_SAPLING.get()))
+                        .add(LootItem.lootTableItem(ASH_LOG_BLOCKS.SAPLING.get()))
                         .add(EmptyLootItem.emptyItem().setWeight(19)))
         );
         add(NatureBlocks.ASH_GRASS.get(), LootTable.lootTable()

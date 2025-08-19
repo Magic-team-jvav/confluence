@@ -399,7 +399,7 @@ public class ModDataProvider {
                                     new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.ZERO, 3),
                                     new TwoLayersFeatureSize(1, 0, 1)
                             ).ignoreVines().dirt(BlockStateProvider.simple(Blocks.DIRT)).build(),
-                            BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.EBONY_SAPLING.get().defaultBlockState(), Vec3i.ZERO))
+                            BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.EBONY_LOG_BLOCKS.SAPLING.get().defaultBlockState(), Vec3i.ZERO))
                     ), 0.05F),
                     new WeightedPlacedFeature(direct(
                             Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
@@ -409,11 +409,11 @@ public class ModDataProvider {
                                     new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.ZERO, 3),
                                     new TwoLayersFeatureSize(1, 0, 1)
                             ).ignoreVines().dirt(BlockStateProvider.simple(NatureBlocks.CORRUPT_GRASS_BLOCK.get())).build(),
-                            BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.EBONY_SAPLING.get().defaultBlockState(), Vec3i.ZERO))
+                            BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.EBONY_LOG_BLOCKS.SAPLING.get().defaultBlockState(), Vec3i.ZERO))
                     ), 0.05F)
             ), direct(
                     ModFeatures.DROOPING_VINE_TREE.get(), new DroopingVineTreeFeature.Config(BlockStateProvider.simple(NatureBlocks.EBONY_LOG_BLOCKS.LOG.get()), BlockStateProvider.simple(NatureBlocks.EBONY_LOG_BLOCKS.LEAVES.get()), BlockStateProvider.simple(NatureBlocks.CORRUPT_DROOPING_VINE.get()), 5),
-                    BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.EBONY_SAPLING.get().defaultBlockState(), Vec3i.ZERO))
+                    BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.EBONY_LOG_BLOCKS.SAPLING.get().defaultBlockState(), Vec3i.ZERO))
             )));
             register(context, ModFeatures.Configured.SHADOW_TREE, Feature.RANDOM_SELECTOR, new RandomFeatureConfiguration(Collections.singletonList(
                     new WeightedPlacedFeature(direct(
@@ -424,11 +424,11 @@ public class ModDataProvider {
                                     new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.ZERO, 3),
                                     new TwoLayersFeatureSize(1, 0, 1)
                             ).ignoreVines().dirt(BlockStateProvider.simple(NatureBlocks.CRIMSON_GRASS_BLOCK.get())).build(),
-                            BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.SHADOW_SAPLING.get().defaultBlockState(), Vec3i.ZERO))
+                            BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.SHADOW_LOG_BLOCKS.SAPLING.get().defaultBlockState(), Vec3i.ZERO))
                     ), 0.5F)
             ), direct(
                     ModFeatures.DROOPING_VINE_TREE.get(), new DroopingVineTreeFeature.Config(BlockStateProvider.simple(NatureBlocks.SHADOW_LOG_BLOCKS.LOG.get()), BlockStateProvider.simple(NatureBlocks.SHADOW_LOG_BLOCKS.LEAVES.get()), BlockStateProvider.simple(NatureBlocks.CRIMSON_DROOPING_VINE.get()), 5),
-                    BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.SHADOW_SAPLING.get().defaultBlockState(), Vec3i.ZERO))
+                    BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.SHADOW_LOG_BLOCKS.SAPLING.get().defaultBlockState(), Vec3i.ZERO))
             )));
             register(context, CRIMSON_DROOPING_VINE, ModFeatures.DROOPING_BLOCK.get(), new DroopingBlockFeature.Config(BlockStateProvider.simple(NatureBlocks.CRIMSON_DROOPING_VINE.get()), false, 1, 9));
             register(context, ModFeatures.Configured.GLOWING_MUSHROOM_TREE, ModFeatures.MUSHROOM_TREE.get(), new MushroomTreeFeature.Config(
@@ -454,7 +454,7 @@ public class ModDataProvider {
                                     BlockStateProvider.simple(Blocks.AIR),
                                     8
                             ),
-                            BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.BAOBAB_SAPLING.get().defaultBlockState(), Vec3i.ZERO))
+                            BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.BAOBAB_LOG_BLOCKS.SAPLING.get().defaultBlockState(), Vec3i.ZERO))
                     ), 0.05F),
                     new WeightedPlacedFeature(direct(
                             ModFeatures.BAOBAB_TREE.get(), new BaobabTreeFeature.Config(
@@ -465,7 +465,7 @@ public class ModDataProvider {
                                     BlockStateProvider.simple(Blocks.WATER),
                                     8
                             ),
-                            BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.BAOBAB_SAPLING.get().defaultBlockState(), Vec3i.ZERO))
+                            BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.BAOBAB_LOG_BLOCKS.SAPLING.get().defaultBlockState(), Vec3i.ZERO))
                     ), 0.05F)
             ), direct(
                     ModFeatures.BAOBAB_TREE.get(), new BaobabTreeFeature.Config(
@@ -476,7 +476,7 @@ public class ModDataProvider {
                             BlockStateProvider.simple(NatureBlocks.BAOBAB_LOG_BLOCKS.STRIPPED_LOG.get()),
                             8
                     ),
-                    BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.BAOBAB_SAPLING.get().defaultBlockState(), Vec3i.ZERO))
+                    BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.BAOBAB_LOG_BLOCKS.SAPLING.get().defaultBlockState(), Vec3i.ZERO))
             )));
             register(context, THIN_ICE_PATCH, ModFeatures.COLUMN_PATCH.get(), new ColumnPatchFeature.Config(3, 4, 32, 32, 0.5F, BlockStateProvider.simple(NatureBlocks.THIN_ICE_BLOCK.get())));
             register(context, POWDER_SNOW_PATCH, ModFeatures.COLUMN_PATCH.get(), new ColumnPatchFeature.Config(0, 2, 10, 32, 0.3F, BlockStateProvider.simple(Blocks.POWDER_SNOW)));
@@ -534,7 +534,7 @@ public class ModDataProvider {
                                     new AcaciaFoliagePlacer(ConstantInt.of(2), ConstantInt.ZERO),
                                     new TwoLayersFeatureSize(1, 0, 2)
                             ).ignoreVines().dirt(BlockStateProvider.simple(Blocks.DIRT)).build(),
-                            BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.PEARL_SAPLING.get().defaultBlockState(), Vec3i.ZERO))
+                            BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.PEARL_LOG_BLOCKS.SAPLING.get().defaultBlockState(), Vec3i.ZERO))
                     ), 0.5F),
                     new WeightedPlacedFeature(direct(
                             Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
@@ -544,7 +544,7 @@ public class ModDataProvider {
                                     new FancyFoliagePlacer(ConstantInt.of(2), ConstantInt.of(4), 4),
                                     new TwoLayersFeatureSize(0, 0, 0, OptionalInt.of(4))
                             ).ignoreVines().dirt(BlockStateProvider.simple(Blocks.DIRT)).build(),
-                            BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.PEARL_SAPLING.get().defaultBlockState(), Vec3i.ZERO))
+                            BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.PEARL_LOG_BLOCKS.SAPLING.get().defaultBlockState(), Vec3i.ZERO))
                     ), 0.5F),
                     new WeightedPlacedFeature(direct(
                             Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
@@ -554,7 +554,7 @@ public class ModDataProvider {
                                     new SpruceFoliagePlacer(UniformInt.of(2, 3), UniformInt.of(0, 2), UniformInt.of(1, 2)),
                                     new TwoLayersFeatureSize(2, 0, 2)
                             ).ignoreVines().dirt(BlockStateProvider.simple(Blocks.DIRT)).build(),
-                            BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.PEARL_SAPLING.get().defaultBlockState(), Vec3i.ZERO))
+                            BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.PEARL_LOG_BLOCKS.SAPLING.get().defaultBlockState(), Vec3i.ZERO))
                     ), 0.5F),
                     new WeightedPlacedFeature(direct(
                             Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
@@ -564,7 +564,7 @@ public class ModDataProvider {
                                     new BlobFoliagePlacer(ConstantInt.of(2), ConstantInt.ZERO, 3),
                                     new TwoLayersFeatureSize(1, 0, 1)
                             ).ignoreVines().dirt(BlockStateProvider.simple(NatureBlocks.HALLOW_GRASS_BLOCK.get())).build(),
-                            BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.PEARL_SAPLING.get().defaultBlockState(), Vec3i.ZERO))
+                            BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.PEARL_LOG_BLOCKS.SAPLING.get().defaultBlockState(), Vec3i.ZERO))
                     ), 0.5F)
             ), direct(
                     Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
@@ -574,7 +574,7 @@ public class ModDataProvider {
                             new BushFoliagePlacer(ConstantInt.of(2), ConstantInt.of(1), 2),
                             new TwoLayersFeatureSize(0, 0, 0)
                     ).ignoreVines().dirt(BlockStateProvider.simple(Blocks.DIRT)).build(),
-                    BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.PEARL_SAPLING.get().defaultBlockState(), Vec3i.ZERO))
+                    BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.PEARL_LOG_BLOCKS.SAPLING.get().defaultBlockState(), Vec3i.ZERO))
             )));
             register(context, LivingMahoganyTreeStructure.LIVING_IVY_CHESTS, ModFeatures.SIMPLE_BLOCK_NBT.get(), new SimpleBlockNBTFeature.Config(BlockStateProvider.simple(ChestBlocks.IVY_CHEST.get()), tag -> tag.putString("LootTable", "confluence:chests/ivy_chests")));
             register(context, MarbleCaveStructure.MARBLE_CAVE_POT, ModFeatures.GROUND_BLOCK.get(), new GroundBlockFeature.Config(BlockStateProvider.simple(PotBlocks.MARBLE_CAVE_POT.get()), 20));
@@ -905,7 +905,7 @@ public class ModDataProvider {
             register(context, SLUSH, configured.getOrThrow(ConfiguredFeatures.SLUSH), CountPlacement.of(10), inSquare, bottomThroughTop, biome);
             register(context, PALM_TREE, configured.getOrThrow(ModFeatures.Configured.PALM_TREE),
                     RarityFilter.onAverageOnceEvery(3), count1_9$2_1, inSquare, surfaceWaterDepth0, oceanFloor,
-                    BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.PALM_SAPLING.get().defaultBlockState(), Vec3i.ZERO)), biome);
+                    BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.PALM_LOG_BLOCKS.SAPLING.get().defaultBlockState(), Vec3i.ZERO)), biome);
             register(context, BAOBAB_TREE, configured.getOrThrow(ModFeatures.Configured.BAOBAB_TREE), biome, count1_9$2_1, inSquare, surfaceWaterDepth0, oceanFloor);
             register(context, GEMSTONE_CAVE, configured.getOrThrow(ConfiguredFeatures.GEMSTONE_CAVE), RarityFilter.onAverageOnceEvery(40), inSquare, HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(14), VerticalAnchor.absolute(30)), biome);
             register(context, PEARL_TREE, configured.getOrThrow(ModFeatures.Configured.PEARL_TREE), count1_9$2_1, inSquare, surfaceWaterDepth0, oceanFloor, biome);

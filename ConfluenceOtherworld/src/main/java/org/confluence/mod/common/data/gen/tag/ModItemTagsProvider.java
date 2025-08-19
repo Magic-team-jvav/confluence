@@ -32,6 +32,7 @@ import org.confluence.terraentity.init.TETags;
 import org.confluence.terraentity.init.block.TEFigureBlocks;
 import org.confluence.terraentity.init.item.TEBoomerangItems;
 import org.confluence.terraentity.init.item.TESummonItems;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
@@ -43,7 +44,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
     }
 
     @Override
-    protected void addTags(HolderLookup.Provider provider) {
+    protected void addTags(HolderLookup.@NotNull Provider provider) {
         HookItems.acceptTag(tag(ModTags.Items.HOOK));
         PotionItems.acceptTag(tag(Tags.Items.POTIONS));
         FoodItems.acceptTag(tag(Tags.Items.FOODS));
@@ -226,21 +227,15 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.TOPAZ.get()
         );
         tag(ItemTags.SAPLINGS).add(
-                NatureBlocks.SHADOW_SAPLING.asItem(),
-                NatureBlocks.EBONY_SAPLING.asItem(),
-                NatureBlocks.PALM_SAPLING.asItem(),
-                NatureBlocks.PEARL_SAPLING.asItem(),
                 NatureBlocks.RUBY_SAPLING.asItem(),
                 NatureBlocks.AMBER_SAPLING.asItem(),
                 NatureBlocks.TOPAZ_SAPLING.asItem(),
                 NatureBlocks.JADE_SAPLING.asItem(),
                 NatureBlocks.DIAMOND_SAPLING.asItem(),
                 NatureBlocks.SAPPHIRE_SAPLING.asItem(),
-                NatureBlocks.AMETHYST_SAPLING.asItem(),
-                NatureBlocks.ASH_SAPLING.asItem(),
-                NatureBlocks.LIVING_SAPLING.asItem(),
-                NatureBlocks.YELLOW_WILLOW_SAPLING.asItem()
+                NatureBlocks.AMETHYST_SAPLING.asItem()
         );
+        copy(BlockTags.SAPLINGS, ItemTags.SAPLINGS);
 
         tag(ModTags.Items.EVIL_INGOT).add(MaterialItems.DEMONITE_INGOT.get(), MaterialItems.CRIMTANE_INGOT.get());
         tag(ModTags.Items.LEAD_AND_IRON).addTags(Tags.Items.INGOTS_IRON, ModTags.Items.INGOTS_LEAD);
@@ -800,7 +795,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         tag(ModTags.Items.HARDMODE)
                 .addTag(ModTags.Items.HARDMODE_RAW_MATERIALS)
                 .add(NatureBlocks.PEARL_LOG_BLOCKS.getAllItems().toArray(Item[]::new))
-                .add(NatureBlocks.PEARL_SAPLING.asItem())
                 .add(NatureBlocks.SPOOKY_LOG_BLOCKS.getAllItems().toArray(Item[]::new))
                 .add( // 防止肉前出现这些任务
                         QuestedFishes.ICHORFISH.get(),

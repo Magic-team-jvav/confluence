@@ -118,7 +118,6 @@ public final class ModFeatures {
         public static final ResourceKey<ConfiguredFeature<?, ?>> SAPPHIRE_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("sapphire_tree"));
         public static final ResourceKey<ConfiguredFeature<?, ?>> AMETHYST_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("amethyst_tree"));
         public static final ResourceKey<ConfiguredFeature<?, ?>> ASH_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("ash_tree"));
-        public static final ResourceKey<ConfiguredFeature<?, ?>> LIVING_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("living_tree")); // todo
         public static final ResourceKey<ConfiguredFeature<?, ?>> YELLOW_WILLOW_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("yellow_willow_tree"));
         public static final ResourceKey<ConfiguredFeature<?, ?>> BAOBAB_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("baobab_tree"));
         public static final ResourceKey<ConfiguredFeature<?, ?>> GLOWING_MUSHROOM_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, Confluence.asResource("glowing_mushroom_tree"));
@@ -137,7 +136,6 @@ public final class ModFeatures {
         public static final TreeGrower SAPPHIRE_GROWER = registerSmallTree("sapphire", Configured.SAPPHIRE_TREE);
         public static final TreeGrower AMETHYST_GROWER = registerSmallTree("amethyst", Configured.AMETHYST_TREE);
         public static final TreeGrower ASH_GROWER = registerSmallTree("ash", Configured.ASH_TREE);
-        public static final TreeGrower LIVING_GROWER = registerSmallTree("living", Configured.LIVING_TREE);
         public static final TreeGrower YELLOW_WILLOW_GROWER = registerSmallTree("yellow_willow", Configured.YELLOW_WILLOW_TREE);
         public static final TreeGrower BAOBAB_GROWER = registerBigTree("baobab", Configured.BAOBAB_TREE);
 

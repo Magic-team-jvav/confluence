@@ -2,9 +2,6 @@ permissions: write-all
 name: Maven Publish
 on:
   workflow_dispatch:
-  schedule:
-    # Run this job every day at 5:30 AM UTC+8
-    - cron: "30 21 * * *"
 
 jobs:
   build:

@@ -371,6 +371,7 @@ tasks.withType(ProcessResources).configureEach {
 }
 
 tasks.withType(Copy).configureEach { duplicatesStrategy = DuplicatesStrategy.EXCLUDE }
+tasks.withType(Jar).configureEach { duplicatesStrategy = DuplicatesStrategy.EXCLUDE }
 
 tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
 

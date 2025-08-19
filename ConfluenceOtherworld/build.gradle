@@ -422,17 +422,20 @@ tasks.register('sourcesJar', Jar) {
     archiveClassifier.set("sources")
 }
 
+ext {
+    releasesUrl = "https://maven.confluence.ink/releases"
+    snapshotsUrl = "https://maven.confluence.ink/snapshots"
+}
 publishing {
     publications {
         register('mavenJava', MavenPublication) {
             from components.java
         }
     }
-
     repositories {
         maven {
             name = "Confluence"
-            url = "https://maven.confluence.ink/snapshots"
+            url = version.toString().endsWith("SNAPSHOT") ? snapshotsUrl : releasesUrl
             credentials {
                 username = System.getenv("MAGIC_TEAM_USERNAME")
                 password = System.getenv("MAGIC_TEAM_TOKEN")

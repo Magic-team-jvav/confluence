@@ -1,6 +1,9 @@
 package org.confluence.mod.common.entity.projectile;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -12,10 +15,16 @@ import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 
 public abstract class DamageSettableProjectile extends Projectile {
-    protected float damage = 0.0F;
+    protected static final EntityDataAccessor<Float> DATA_DEFAULT_VELOCITY = SynchedEntityData.defineId(DamageSettableProjectile.class, EntityDataSerializers.FLOAT);
+    protected float damage;
 
     public DamageSettableProjectile(EntityType<? extends DamageSettableProjectile> entityType, Level level) {
         super(entityType, level);
+    }
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        builder.define(DATA_DEFAULT_VELOCITY, 0.0F);
     }
 
     public void setDamage(float damage) {
@@ -53,15 +62,25 @@ public abstract class DamageSettableProjectile extends Projectile {
         return damage;
     }
 
+    public void setDefaultVelocity(float defaultVelocity) {
+        entityData.set(DATA_DEFAULT_VELOCITY, defaultVelocity);
+    }
+
+    public float getDefaultVelocity() {
+        return entityData.get(DATA_DEFAULT_VELOCITY);
+    }
+
     @Override
     protected void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         this.damage = compound.getFloat("Damage");
+        setDefaultVelocity(compound.getFloat("DefaultVelocity"));
     }
 
     @Override
     protected void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putFloat("Damage", damage);
+        compound.putFloat("DefaultVelocity", getDefaultVelocity());
     }
 }

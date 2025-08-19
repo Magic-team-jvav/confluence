@@ -1,6 +1,5 @@
 package org.confluence.mod.common.item.lance;
 
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -13,16 +12,14 @@ import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEffects;
 import software.bernie.geckolib.animation.EasingType;
-import software.bernie.geckolib.animation.keyframe.Keyframe;
-import software.bernie.geckolib.loading.math.value.Constant;
 
 public class DarkLanceItem extends AbstractLanceItem {
     public DarkLanceItem() {
-        super(new Properties(), ModRarity.ORANGE, 15, ObjectArrayList.of(
-                new Keyframe<>(0.0, new Constant(0.0), new Constant(0.0), EasingType.LINEAR),
-                new Keyframe<>(5.0, new Constant(0.0), new Constant(6.0), EasingType.EASE_OUT_BACK),
-                new Keyframe<>(5.0, new Constant(6.0), new Constant(-16.0), EasingType.EASE_IN_EXPO),
-                new Keyframe<>(5.0, new Constant(-16.0), new Constant(0.0), EasingType.LINEAR)
+        super(new Properties().attributes(entityInteractionRange(6)), ModRarity.ORANGE, 10, 3, createKeyframes(
+                K.of(0, 0, EasingType.LINEAR),
+                K.of(0.17, 6, EasingType.EASE_OUT_BACK),
+                K.of(0.33, -16, EasingType.EASE_IN_EXPO),
+                K.of(0.5, 0, EasingType.LINEAR)
         ));
     }
 
@@ -33,7 +30,7 @@ public class DarkLanceItem extends AbstractLanceItem {
 
     @Override
     protected void onHitEntity(DamageSource damageSource, Entity entity, LivingEntity living, Entity victim) {
-        victim.hurt(damageSource, 10.8F + (float) living.getAttributeValue(Attributes.ATTACK_DAMAGE));
+        victim.hurt(damageSource, 8.3F + (float) living.getAttributeValue(Attributes.ATTACK_DAMAGE));
         if (victim instanceof LivingEntity living1) {
             living1.addEffect(new MobEffectInstance(ModEffects.SHADOWFLAME, 300));
         }

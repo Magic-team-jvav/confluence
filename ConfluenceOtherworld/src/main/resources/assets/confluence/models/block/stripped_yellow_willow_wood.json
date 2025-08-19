@@ -1,8 +1,0 @@
-{
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "confluence:block/stripped_yellow_willow_log",
-    "particle": "confluence:block/stripped_yellow_willow_log"
-  },
-  "render_type": "solid"
-}

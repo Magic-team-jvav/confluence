@@ -4,13 +4,10 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.Blocks;
 import org.confluence.lib.common.component.ModRarity;
 
-import java.util.List;
 import java.util.Optional;
 
 import static org.confluence.lib.common.item.TooltipItem.getTooltipsFromString;

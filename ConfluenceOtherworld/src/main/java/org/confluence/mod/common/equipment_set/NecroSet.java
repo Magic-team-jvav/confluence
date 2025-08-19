@@ -31,7 +31,7 @@ public class NecroSet extends EquipmentSet {
                 .build());
     }
 
-    private static EquipmentSetBranch rangedDamageBonus(VanillaEquippable slot, DeferredItem<ArmorItem> item, double value) {
+    private static EquipmentSetBranch rangedDamageBonus(VanillaEquippable slot, DeferredItem<? extends ArmorItem> item, double value) {
         return new EquipmentSetBranch.Builder().addEquippable(slot, item)
                 .bindHook(builder -> builder.addBonus(TCAttributes.getRangedDamage(), new AttributeModifier(item.getId(), value, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
                 .build();

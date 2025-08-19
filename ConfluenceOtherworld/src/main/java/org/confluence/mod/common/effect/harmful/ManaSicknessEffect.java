@@ -6,12 +6,21 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
+import net.neoforged.neoforge.common.EffectCure;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTags;
+
+import java.util.Set;
 
 public class ManaSicknessEffect extends MobEffect {
     public ManaSicknessEffect() {
         super(MobEffectCategory.HARMFUL, 0x0000FF);
+    }
+
+    @Override
+    public void fillEffectCures(Set<EffectCure> cures, MobEffectInstance effectInstance) {
+        super.fillEffectCures(cures, effectInstance);
+        cures.add(ModEffects.CANNOT_REMOVE_BY_NURSE);
     }
 
     public static float apply(DamageSource damageSource, float amount) {

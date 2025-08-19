@@ -74,17 +74,17 @@ public abstract class MixinMultiNoiseBiomeSourceSquared implements SelfGetter<Mu
             if (confluence$self() instanceof BannedBiomeMultiNoiseBiomeSource) {
                 return this.confluence$biomePair = new Pair<>(null, null);
             } else if (ModSecretSeeds.DRUNK_WORLD.match(flag)) {
-                ((IMinecraftServer) server).confluence$updateSecretFlag(IWorldOptions.DOUBLE_EVIL);
+                IMinecraftServer.of(server).confluence$updateSecretFlag(IWorldOptions.DOUBLE_EVIL);
                 return this.confluence$biomePair = new Pair<>(null, null);
             } else if ((flag & IWorldOptions.DOUBLE_EVIL) == 0) {
                 if (new LegacyRandomSource(worldOptions.seed()).nextBoolean()) {
                     from = ModBiomes.THE_CORRUPTION;
                     to = ModBiomes.THE_CRIMSON;
-                    ((IMinecraftServer) server).confluence$updateSecretFlag(IWorldOptions.THE_CRIMSON);
+                    IMinecraftServer.of(server).confluence$updateSecretFlag(IWorldOptions.THE_CRIMSON);
                 } else {
                     from = ModBiomes.THE_CRIMSON;
                     to = ModBiomes.THE_CORRUPTION;
-                    ((IMinecraftServer) server).confluence$updateSecretFlag(IWorldOptions.THE_CORRUPTION);
+                    IMinecraftServer.of(server).confluence$updateSecretFlag(IWorldOptions.THE_CORRUPTION);
                 }
             } else {
                 if ((flag & IWorldOptions.THE_CORRUPTION) == 0) {

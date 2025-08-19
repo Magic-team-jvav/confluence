@@ -11,25 +11,25 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import org.confluence.lib.common.menu.AmountResultSlot;
+import org.confluence.lib.common.recipe.EnvironmentLevelAccess;
 import org.confluence.lib.common.recipe.EnvironmentRecipeInput;
-import org.confluence.mod.common.block.functional.crafting.CrystalBallBlock;
 import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.CrystalBallRecipe;
 
 public class CrystalBallMenu extends AbstractContainerMenu {
-    private final CrystalBallBlock.LevelAccess access;
+    private final EnvironmentLevelAccess access;
     private final Player player;
     private final EnvironmentRecipeInput input;
     private final ResultContainer result;
     private final AmountResultSlot<CrystalBallRecipe> resultSlot;
 
     public CrystalBallMenu(int containerId, Inventory inventory) {
-        this(containerId, inventory, new CrystalBallBlock.LevelAccess(null, null));
+        this(containerId, inventory, EnvironmentLevelAccess.empty());
     }
 
-    public CrystalBallMenu(int containerId, Inventory inventory, CrystalBallBlock.LevelAccess access) {
+    public CrystalBallMenu(int containerId, Inventory inventory, EnvironmentLevelAccess access) {
         super(ModMenuTypes.CRYSTAL_BALL.get(), containerId);
         this.access = access;
         this.player = inventory.player;

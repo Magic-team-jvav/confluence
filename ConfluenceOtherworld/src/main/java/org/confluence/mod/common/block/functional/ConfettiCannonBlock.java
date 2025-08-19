@@ -43,17 +43,17 @@ public class ConfettiCannonBlock extends HorizontalDirectionalBlock implements E
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new AbstractMechanicalBlock.Entity(pos, state);
+        return new AbstractMechanicalBlock.BEntity(pos, state);
     }
 
     @Override
-    public void onExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {
-        int pitch = pState.getValue(PITCH_30) * 30;
-        int yaw = (pState.getValue(FACING).get2DDataValue() & 3) * 90;
+    public void onExecute(BlockState state, ServerLevel level, BlockPos pos, int color, INetworkEntity networkEntity) {
+        int pitch = state.getValue(PITCH_30) * 30;
+        int yaw = (state.getValue(FACING).get2DDataValue() & 3) * 90;
         MolangExp expression = new MolangExp(Map.of(
                 "variable.pitch", Integer.toString(pitch),
                 "variable.yaw", Integer.toString(yaw)
         ));
-        EmitterCreationPacketS2C.sendToAll(Confluence.asResource("confetti"), pPos.getCenter().toVector3f(), ParticleEffect.Type.PARTICLE_WITH_VELOCITY, expression);
+        EmitterCreationPacketS2C.sendToAll(Confluence.asResource("confetti"), pos.getCenter().toVector3f(), ParticleEffect.Type.PARTICLE_WITH_VELOCITY, expression);
     }
 }

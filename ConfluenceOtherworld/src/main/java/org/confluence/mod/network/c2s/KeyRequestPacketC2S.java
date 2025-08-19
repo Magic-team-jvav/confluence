@@ -10,7 +10,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.init.ModAttachmentTypes;
+import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.item.potion.HealingPotionItem;
 import org.confluence.mod.common.item.potion.ManaPotionItem;
@@ -20,10 +20,7 @@ public record KeyRequestPacketC2S(int key) implements CustomPacketPayload {
     public static final int KEY_MANA = 1;
     public static final int KEY_CLAIRVOYANCE = 2; // 水晶球给予的灵视
     public static final Type<KeyRequestPacketC2S> TYPE = new Type<>(Confluence.asResource("key_request"));
-    public static final StreamCodec<ByteBuf, KeyRequestPacketC2S> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.INT, p -> p.key,
-            KeyRequestPacketC2S::new
-    );
+    public static final StreamCodec<ByteBuf, KeyRequestPacketC2S> STREAM_CODEC = ByteBufCodecs.VAR_INT.map(KeyRequestPacketC2S::new, KeyRequestPacketC2S::key);
 
     @Override
     public Type<KeyRequestPacketC2S> type() {
@@ -32,14 +29,14 @@ public record KeyRequestPacketC2S(int key) implements CustomPacketPayload {
 
     public void handle(IPayloadContext context) {
         context.enqueueWork(() -> {
-            if (context.player() instanceof ServerPlayer serverPlayer) {
+            if (context.player() instanceof ServerPlayer player) {
                 if (key == KEY_HEALING) {
-                    HealingPotionItem.use(serverPlayer);
+                    HealingPotionItem.use(player);
                 } else if (key == KEY_MANA) {
-                    ManaPotionItem.use(serverPlayer);
+                    ManaPotionItem.use(player);
                 } else if (key == KEY_CLAIRVOYANCE) {
-                    serverPlayer.addEffect(new MobEffectInstance(ModEffects.CLAIRVOYANCE, MobEffectInstance.INFINITE_DURATION));
-                    serverPlayer.getData(ModAttachmentTypes.MANA_STORAGE).flushAbility(serverPlayer);
+                    player.addEffect(new MobEffectInstance(ModEffects.CLAIRVOYANCE, MobEffectInstance.INFINITE_DURATION));
+                    ManaStorage.of(player).flushAbility(player);
                 }
             }
         }).exceptionally(e -> {

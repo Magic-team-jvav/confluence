@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "": {
+            "model": "confluence:block/bewitching_table"
+        }
+    }
+}

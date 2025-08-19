@@ -5,6 +5,7 @@ import org.confluence.mod.Confluence;
 public class AllSpriteShifts {
     public static final CTSpriteShiftEntry ECHO_BLOCK = omni("echo_block");
     public static final CTSpriteShiftEntry BLUE_GEL_BLOCK = omni("blue_gel_block");
+    public static final CTSpriteShiftEntry FROZEN_GEL_BLOCK = omni("frozen_gel_block");
     public static final CTSpriteShiftEntry ANDESITE_CASING = omni("andesite_casing");
     public static final CTSpriteShiftEntry SUN_PLATE = omni("sun_plate");
     public static final CTSpriteShiftEntry PURE_GLASS = omni("pure_glass");
@@ -25,6 +26,13 @@ public class AllSpriteShifts {
     public static final CTSpriteShiftEntry MAGENTA_PURE_GLASS = omni("magenta_pure_glass");
     public static final CTSpriteShiftEntry PINK_PURE_GLASS = omni("pink_pure_glass");
     public static final CTSpriteShiftEntry CHISELED_PALM_PLANKS = vertical("chiseled_palm_planks");
+    public static final CTSpriteShiftEntry GRANITE_COLUMN = vertical("granite_column");
+    public static final CTSpriteShiftEntry CALCITE_COLUMN = vertical("calcite_column");
+
+    public static final CTSpriteShiftEntry WHITE_PAPER_PANE = omni("white_paper_pane");
+    public static final CTSpriteShiftEntry WHITE_PAPER_PANE_LAMP = omni("white_paper_pane_lamp");
+    public static final CTSpriteShiftEntry MALACHITE_PAPER_PANE = omni("malachite_paper_pane");
+    public static final CTSpriteShiftEntry MALACHITE_PAPER_PANE_LAMP = omni("malachite_paper_pane_lamp");
 
     private static CTSpriteShiftEntry omni(String name) {
         return getCT(AllCTTypes.OMNIDIRECTIONAL, name);

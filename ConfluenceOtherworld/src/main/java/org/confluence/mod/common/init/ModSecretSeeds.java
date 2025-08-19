@@ -15,6 +15,7 @@ public final class ModSecretSeeds {
     public static final List<SecretSeed> VALUES = new ArrayList<>();
     public static final Map<ResourceLocation, SecretSeed> BY_ID = new Hashtable<>();
     public static final Codec<SecretSeed> CODEC = ResourceLocation.CODEC.xmap(BY_ID::get, SecretSeed::getId);
+    public static final int RESERVE = 8;
 
     public static final SecretSeed DRUNK_WORLD = register(Confluence.asResource("drunk_world"), DrunkWorld::new); //                 1_00000000
     public static final SecretSeed NOT_THE_BEES = register(Confluence.asResource("not_the_bees"), NotTheBees::new); //              10_00000000
@@ -38,7 +39,7 @@ public final class ModSecretSeeds {
      * @see org.confluence.mod.mixed.IWorldOptions
      */
     private static SecretSeed register(ResourceLocation id, BiFunction<Long, ResourceLocation, SecretSeed> function) {
-        SecretSeed secretSeed = function.apply(1L << (VALUES.size() + 8), id);
+        SecretSeed secretSeed = function.apply(1L << (VALUES.size() + RESERVE), id);
         VALUES.add(secretSeed);
         BY_ID.put(id, secretSeed);
         return secretSeed;

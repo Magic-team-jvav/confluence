@@ -35,10 +35,14 @@ public class FoodItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
     //常规食物
     public static final DeferredItem<BaseFoodItem> COOKED_SHRIMP = registerNormalFood("cooked_shrimp", ModFoodProperties.PlentySatisfiedProperties(6000, 6, 3.5f));
-    public static final DeferredItem<BaseFoodItem> RAW_FROG = registerNormalFood("raw_frog", ModFoodProperties.noEffectProperties(3, 1.8f));
-    public static final DeferredItem<BaseFoodItem> RAW_SQUIRREL = registerNormalFood("raw_squirrel", ModFoodProperties.noEffectProperties(3, 1.8f));
-    public static final DeferredItem<BaseFoodItem> RAW_BIRD = registerNormalFood("raw_bird", ModFoodProperties.noEffectProperties(3, 1.8f));
+    public static final DeferredItem<BaseFoodItem> RAW_FROG = registerNormalFood("raw_frog", ModFoodProperties.noEffectProperties(2, 1.8f));
+    public static final DeferredItem<BaseFoodItem> RAW_SQUIRREL = registerNormalFood("raw_squirrel", ModFoodProperties.noEffectProperties(2, 1.8f));
+    public static final DeferredItem<BaseFoodItem> RAW_BIRD = registerNormalFood("raw_bird", ModFoodProperties.noEffectProperties(2, 1.8f));
     public static final DeferredItem<BaseFoodItem> RAW_DUCK = registerNormalFood("raw_duck", ModFoodProperties.noEffectProperties(3, 1.8f));
+    public static final DeferredItem<BaseFoodItem> COOKED_FROG = registerNormalFood("cooked_frog", ModFoodProperties.noEffectProperties(4, 3.6f));
+    public static final DeferredItem<BaseFoodItem> COOKED_SQUIRREL = registerNormalFood("cooked_squirrel", ModFoodProperties.noEffectProperties(4, 3.6f));
+    public static final DeferredItem<BaseFoodItem> COOKED_BIRD = registerNormalFood("cooked_bird", ModFoodProperties.noEffectProperties(4, 3.6f));
+    public static final DeferredItem<BaseFoodItem> COOKED_DUCK = registerNormalFood("cooked_duck", ModFoodProperties.noEffectProperties(6, 7.2f));
     public static final DeferredItem<BaseFoodItem> ESCARGOT = registerNormalFood("escargot", ModFoodProperties.PlentySatisfiedProperties(6000, 6, 3.5f));
     public static final DeferredItem<BaseFoodItem> FROGGLE_BUNWICH = registerNormalFood("froggle_bunwich", ModFoodProperties.PlentySatisfiedProperties(7200, 6, 3.5f));
     public static final DeferredItem<BaseFoodItem> GOLDEN_DELIGHT = registerNormalFood("golden_delight", ModFoodProperties.GOLDEN_CARP); //金美味
@@ -87,7 +91,7 @@ public class FoodItems {
     public static final DeferredItem<BaseFoodItem> COOKED_FLUTTERING_LAMB_CHOPS = registerNormalFood("cooked_fluttering_lamb_chops", ModFoodProperties.preparedMeatProperties(8, 12.8f));
     public static final DeferredItem<BaseFoodItem> BAOBAB_FRUIT = registerNormalFood("baobab_fruit", ModFoodProperties.noEffectProperties(3, 1.8f)); //猴面包果
     public static final DeferredItem<BaseFoodItem> COOKED_BAOBAB_FRUIT = registerNormalFood("cooked_baobab_fruit", ModFoodProperties.noEffectProperties(5, 3.8f));  //烤猴面包果
-    public static final DeferredItem<BaseFoodItem.BlockItem> BOULDER_BREAD = registerBlockItemFood("boulder_bread", builder -> builder.food(ModFoodProperties.hasEffectProperties(20, 2.5f, EffectData.of(ModEffects.CHOKING, 6000))).duration(d -> 48).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT), ModBlocks.BOULDER_BREAD_BLOCK); //巨石面包
+    public static final DeferredItem<BaseFoodItem.BItem> BOULDER_BREAD = registerBlockItemFood("boulder_bread", builder -> builder.food(ModFoodProperties.hasEffectProperties(20, 2.5f, EffectData.of(ModEffects.CHOKING, 6000))).duration(d -> 48).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT), ModBlocks.BOULDER_BREAD_BLOCK); //巨石面包
     // 水果
     public static final DeferredItem<BaseFoodItem> APRICOT = registerNormalFood("apricot", ModFoodProperties.WellFedProperties(6000, 4, 1.5f));
     public static final DeferredItem<BaseFoodItem> BANANA = registerNormalFood("banana", ModFoodProperties.WellFedProperties(6000, 4, 1.5f));
@@ -109,7 +113,13 @@ public class FoodItems {
     public static final DeferredItem<BaseFoodItem> ELDERBERRY = registerNormalFood("elderberry", ModFoodProperties.WellFedProperties(6000, 4, 1.5f));
     public static final DeferredItem<BaseFoodItem> BLACKCURRANT = registerNormalFood("blackcurrant", ModFoodProperties.WellFedProperties(6000, 4, 1.5f));
     public static final DeferredItem<BaseFoodItem> PEELED_SUGAR_TANGERINE = registerNormalFood("peeled_sugar_tangerine", ModFoodProperties.WellFedProperties(6000, 4, 1.5f));
-    public static final DeferredItem<BaseFoodItem> SHIMMER_BERRIES = registerNormalFood("shimmer_berries", ModFoodProperties.noEffectProperties(3,  1.8f));
+    public static final DeferredItem<BaseFoodItem.BItem> SHIMMER_BERRIES = registerBlockItemFood("shimmer_berries",
+            builder -> builder
+                    .food(ModFoodProperties.noEffectProperties(3, 1.8f))
+                    .duration(d -> 15)
+                    .useAnim(u -> UseAnim.EAT)
+                    .eatingSound(s -> SoundEvents.GENERIC_EAT),
+            NatureBlocks.SHIMMER_DROOPING_VINE);
     //返还容器
     public static final DeferredItem<BaseFoodItem> FRUIT_JUICE = registerDrinkingFood("fruit_juice", ModFoodProperties.WellFedProperties(18000, 4, 1.5f, GLASS_BOTTLE), 20, UseAnim.DRINK, SoundEvents.HONEY_DRINK, SoundEvents.HONEY_DRINK); //混合果汁
     public static final DeferredItem<BaseFoodItem> APPLE_JUICE = registerDrinkingFood("apple_juice", ModFoodProperties.WellFedProperties(12000, 4, 1.5f, GLASS_BOTTLE), 20, UseAnim.DRINK, SoundEvents.HONEY_DRINK, SoundEvents.HONEY_DRINK);
@@ -184,7 +194,7 @@ public class FoodItems {
 
     public static final DeferredItem<BaseFoodItem> LONGEVITY_NOODLES = registerNormalFood("longevity_noodles", ModFoodProperties.WellFedProperties(6000, 4, 1.5f));
 
-    public static final Supplier<BaseFoodItem.BlockItem> GREEN_DUMPLING = registerBlockItemFood("green_dumpling", builder -> builder.food(ModFoodProperties.PlentySatisfiedProperties(6000, 3, 1.5f)).duration(d -> 48).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT), ModBlocks.GREEN_DUMPLING_BLOCK);
+    public static final Supplier<BaseFoodItem.BItem> GREEN_DUMPLING = registerBlockItemFood("green_dumpling", builder -> builder.food(ModFoodProperties.PlentySatisfiedProperties(6000, 3, 1.5f)).duration(d -> 48).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT), ModBlocks.GREEN_DUMPLING_BLOCK);
 
     // 种子
     public static final Supplier<Item> STELLAR_BLOSSOM_SEED = ITEMS.register("stellar_blossom_seed", () -> new ItemNameBlockItem(NatureBlocks.STELLAR_BLOSSOM.get(), new Item.Properties()));
@@ -206,11 +216,11 @@ public class FoodItems {
         });
     }
 
-    public static DeferredItem<BaseFoodItem.BlockItem> registerBlockItemFood(String name, Consumer<BaseFoodItem.Builder> consumer, Supplier<? extends Block> block) {
+    public static DeferredItem<BaseFoodItem.BItem> registerBlockItemFood(String name, Consumer<BaseFoodItem.Builder> consumer, Supplier<? extends Block> block) {
         return ITEMS.register(name, () -> {
             BaseFoodItem.Builder builder = BaseFoodItem.builder().stackTo(64);
             consumer.accept(builder);
-            return new BaseFoodItem.BlockItem(block.get(), builder.getProperties());
+            return new BaseFoodItem.BItem(block.get(), builder.getProperties());
         });
     }
 

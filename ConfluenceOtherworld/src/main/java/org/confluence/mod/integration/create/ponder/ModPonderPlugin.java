@@ -23,6 +23,7 @@ import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.init.item.ToolItems;
+import org.confluence.mod.common.item.common.DungeonCompass;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -42,8 +43,11 @@ public final class ModPonderPlugin implements PonderPlugin {
         PonderSceneRegistrationHelper<Item> HELPER = helper.withKeyFunction(BuiltInRegistries.ITEM::getKey);
         HELPER.forComponents(FunctionalBlocks.DEMON_ALTAR.asItem(), FunctionalBlocks.CRIMSON_ALTAR.asItem())
                 .addStoryBoard(Confluence.asResource("gameplay/altar"), ModPonderPlugin::altar, TAG_GAMEPLAY);
+        HELPER.forComponents(ToolItems.METEOR_COMPASS.get())
+                .addStoryBoard(Confluence.asResource("gameplay/dungeon"), ModPonderPlugin::dungeon, TAG_GAMEPLAY);
         HELPER.forComponents(ToolItems.RED_WRENCH.get())
-                .addStoryBoard(Confluence.asResource("mechanical/connect"), ModPonderPlugin::connect, TAG_MECHANICAL)
+                .addStoryBoard(Confluence.asResource("mechanical/connect"), ModPonderPlugin::connect, TAG_MECHANICAL);
+        HELPER.forComponents(FunctionalBlocks.SWITCH.asItem())
                 .addStoryBoard(Confluence.asResource("mechanical/execute"), ModPonderPlugin::execute, TAG_MECHANICAL);
     }
 
@@ -64,12 +68,12 @@ public final class ModPonderPlugin implements PonderPlugin {
                 .add(FunctionalBlocks.SWITCH.asItem());
         HELPER.addToTag(TAG_GAMEPLAY)
                 .add(FunctionalBlocks.DEMON_ALTAR.asItem())
-                .add(FunctionalBlocks.CRIMSON_ALTAR.asItem());
+                .add(FunctionalBlocks.CRIMSON_ALTAR.asItem())
+                .add(ToolItems.METEOR_COMPASS.get());
     }
 
     private static void connect(SceneBuilder scene, SceneBuildingUtil util) {
         scene.title("connecting", "Connecting");
-        scene.configureBasePlate(0, 0, 5);
         scene.showBasePlate();
         ItemStack wrench = ToolItems.RED_WRENCH.get().getDefaultInstance();
         Vec3 switchPoint = new Vec3(3.5, 1.5, 1.5);
@@ -84,7 +88,7 @@ public final class ModPonderPlugin implements PonderPlugin {
         scene.overlay().showControls(dartPoint, Pointing.DOWN, 20).withItem(wrench);
         scene.overlay().showText(40).text("Select second mechanical block").pointAt(dartPoint).attachKeyFrame();
         scene.idle(5);
-        scene.world().modifyBlockEntity(new BlockPos(1, 1, 3), AbstractMechanicalBlock.Entity.class, blockEntity -> {
+        scene.world().modifyBlockEntity(new BlockPos(1, 1, 3), AbstractMechanicalBlock.BEntity.class, blockEntity -> {
             BlockPos switchPos = new BlockPos(3, 1, 1);
             if (scene.getScene().getWorld().getBlockEntity(switchPos) instanceof INetworkEntity entity) {
                 blockEntity.connectTo(0xFF0000, switchPos, entity);
@@ -97,7 +101,7 @@ public final class ModPonderPlugin implements PonderPlugin {
         scene.title("executing", "Executing");
         scene.world().showSection(util.select().fromTo(0, 0, 0, 4, 2, 4), Direction.UP);
         BlockPos switchPos = new BlockPos(3, 1, 1);
-        scene.world().modifyBlockEntity(new BlockPos(1, 1, 3), AbstractMechanicalBlock.Entity.class, blockEntity -> {
+        scene.world().modifyBlockEntity(new BlockPos(1, 1, 3), AbstractMechanicalBlock.BEntity.class, blockEntity -> {
             if (scene.getScene().getWorld().getBlockEntity(switchPos) instanceof INetworkEntity entity) {
                 blockEntity.connectTo(0xFF0000, switchPos, entity);
             }
@@ -112,9 +116,8 @@ public final class ModPonderPlugin implements PonderPlugin {
         scene.idle(20);
     }
 
-    public static void altar(SceneBuilder scene, SceneBuildingUtil util) {
+    private static void altar(SceneBuilder scene, SceneBuildingUtil util) {
         scene.title("using_altar", "Using Altar");
-        scene.configureBasePlate(0, 0, 5);
         scene.showBasePlate();
         Vec3 altarPoint = new Vec3(2.5, 1.5, 2.5);
 
@@ -133,5 +136,24 @@ public final class ModPonderPlugin implements PonderPlugin {
         scene.overlay().showControls(altarPoint, Pointing.RIGHT, 40).leftClick().whileSneaking();
         scene.overlay().showText(40).text("Left click while sneaking to quick crafting").pointAt(altarPoint).attachKeyFrame();
         scene.idle(50);
+    }
+
+    private static void dungeon(SceneBuilder scene, SceneBuildingUtil util) {
+        scene.title("dungeon_compass", "Create Dungeon Compass");
+        scene.showBasePlate();
+        scene.idle(20);
+        scene.world().showSection(util.select().fromTo(2, 1, 2, 4, 1, 4), Direction.DOWN);
+        scene.idle(20);
+        for (int[] crystal : DungeonCompass.CRYSTALS) {
+            int x = 3 - crystal[0];
+            int z = 3 - crystal[1];
+            scene.world().showSection(util.select().fromTo(x, 1, z, x, 2, z), Direction.DOWN);
+            scene.idle(5);
+        }
+        scene.idle(15);
+        scene.overlay().showControls(new Vec3(3.5, 1.5, 3.5), Pointing.DOWN, 20).withItem(ToolItems.METEOR_COMPASS.toStack());
+        scene.idle(40);
+        scene.world().createItemEntity(new Vec3(3.5, 2, 3.5), new Vec3(0, 0.2, 0), ToolItems.DUNGEON_COMPASS.toStack());
+        scene.idle(20);
     }
 }

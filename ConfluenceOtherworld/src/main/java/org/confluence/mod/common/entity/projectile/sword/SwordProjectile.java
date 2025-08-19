@@ -22,7 +22,8 @@ import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.component.SwordProjectileComponent;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.terra_curio.common.init.TCAttributes;
-import org.confluence.terraentity.entity.ai.ICollisionAttackEntity;
+import org.confluence.terraentity.api.entity.IAttackableProjectile;
+import org.confluence.terraentity.api.entity.ICollisionAttackEntity;
 import org.confluence.terraentity.utils.TEUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
@@ -35,7 +36,7 @@ import java.util.Comparator;
 public abstract class SwordProjectile<T extends SwordProjectile<T>> extends AbstractHurtingProjectile implements ICollisionAttackEntity<T> {
 
     // 可调参数
-    public int TIME_EXISTENCE = 40;
+    public int lifetime = 40;
     public int hitCount = 1;
     protected float attackDamageFactor = 1F;
     protected float baseAttackDamage = 0;
@@ -84,6 +85,11 @@ public abstract class SwordProjectile<T extends SwordProjectile<T>> extends Abst
     }
 
     @Override
+    public boolean fireImmune() {
+        return true;
+    }
+
+    @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(DATA_INIT_SPEED, new Vector3f(0, 0, 0));
@@ -122,7 +128,7 @@ public abstract class SwordProjectile<T extends SwordProjectile<T>> extends Abst
     public void setProjComponent(SwordProjectileComponent projComponent) {
         this.projComponent = projComponent;
         this.gravity = projComponent.gravity();
-        this.TIME_EXISTENCE = projComponent.existTicks();
+        this.lifetime = projComponent.existTicks();
         this.entityData.set(DATA_INIT_GRAVITY, gravity);
     }
 
@@ -180,7 +186,7 @@ public abstract class SwordProjectile<T extends SwordProjectile<T>> extends Abst
                 }
             }
         }
-        if (!level().isClientSide &&tickCount >= TIME_EXISTENCE)
+        if (!level().isClientSide && tickCount >= lifetime)
             discard();
 //        this.applyGravity();
         doCollisionAttack(this::canHitEntity,
@@ -216,7 +222,7 @@ public abstract class SwordProjectile<T extends SwordProjectile<T>> extends Abst
 
     public DamageSource damageSource(){
         if(getOwner() instanceof LivingEntity living)
-            return ModDamageTypes.of(level(), ModDamageTypes.SWORD_PROJECTILE, living);
+            return ModDamageTypes.of(level(), ModDamageTypes.SWORD_PROJECTILE, living); // 剑气默认有无敌帧
         else return damageSources().magic();
     }
 
@@ -228,6 +234,11 @@ public abstract class SwordProjectile<T extends SwordProjectile<T>> extends Abst
     protected boolean doHurt(Entity target){
         if(TEUtils.projectileCanHurtEntityTest.test(this, target)) {
             float damage = getBaseDamage() * (attackDamageFactor);
+            DamageSource damageSource = damageSource();
+
+            if(IAttackableProjectile.tryHit(target, damageSource)){
+                return true;
+            }
 
             LivingEntity hurter;
             if(target instanceof LivingEntity living){
@@ -243,7 +254,7 @@ public abstract class SwordProjectile<T extends SwordProjectile<T>> extends Abst
                     effect.applyAll(owner, hurter);
                 });
 
-            if (target.hurt(damageSource(), damage)) {
+            if (target.hurt(damageSource, damage)) {
                 float attackKnockBack = getBaseKnockBack() + knockBack;
                 VectorUtils.knockBackA2B(this, hurter, attackKnockBack * 0.5, 0.2);
 
@@ -293,7 +304,7 @@ public abstract class SwordProjectile<T extends SwordProjectile<T>> extends Abst
     }
 
     public SwordProjectile setExistTime(int time){
-        TIME_EXISTENCE = time;
+        lifetime = time;
         return this;
     }
 

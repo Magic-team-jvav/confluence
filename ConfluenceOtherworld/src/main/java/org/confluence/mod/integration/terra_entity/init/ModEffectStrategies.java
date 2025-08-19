@@ -7,8 +7,8 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.terraentity.data.component.EffectStrategyComponent;
-import org.confluence.terraentity.registries.hit_effect.EffectStrategy;
 import org.confluence.terraentity.registries.TERegistries;
+import org.confluence.terraentity.registries.hit_effect.EffectStrategy;
 import org.confluence.terraentity.registries.hit_effect.IEffectStrategy;
 import org.confluence.terraentity.registries.hit_effect.variant.TimePossibilityAmplifierEffect;
 
@@ -24,7 +24,7 @@ import static org.confluence.terraentity.registries.hit_effect.EffectStrategy.*;
  * @author coffee
  */
 public final class ModEffectStrategies {
-    public static final DeferredRegister<EffectStrategy> EFFECT_STRATEGY = DeferredRegister.create(TERegistries.EffectStrategies.REGISTRY, Confluence.MODID);
+    public static final DeferredRegister<EffectStrategy> EFFECT_STRATEGY = DeferredRegister.create(TERegistries.EFFECT_STRATEGIES, Confluence.MODID);
 
     /**
      * 复杂的回调效果

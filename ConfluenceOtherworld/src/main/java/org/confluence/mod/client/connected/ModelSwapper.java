@@ -8,8 +8,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.client.event.ModelEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,13 +21,8 @@ public class ModelSwapper {
 		return customBlockModels;
 	}
 
-	public void onModelBake(ModelEvent.ModifyBakingResult event) {
-		Map<ModelResourceLocation, BakedModel> modelRegistry = event.getModels();
+	public void onModelBake(Map<ModelResourceLocation, BakedModel> modelRegistry) {
 		customBlockModels.forEach((block, modelFunc) -> swapModels(modelRegistry, getAllBlockStateModelLocations(BuiltInRegistries.BLOCK.getKey(block), block), modelFunc));
-	}
-
-	public void registerListeners(IEventBus modEventBus) {
-		modEventBus.addListener(this::onModelBake);
 	}
 
 	public static <T extends BakedModel> void swapModels(Map<ModelResourceLocation, BakedModel> modelRegistry, List<ModelResourceLocation> locations, Function<BakedModel, T> factory) {

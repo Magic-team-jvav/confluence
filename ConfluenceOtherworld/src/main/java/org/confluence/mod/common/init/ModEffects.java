@@ -5,6 +5,7 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.neoforged.neoforge.common.EffectCure;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.effect.PublicMobEffect;
@@ -22,6 +23,8 @@ import org.mesdag.particlestorm.api.MolangParticleMobEffect;
 
 public final class ModEffects {
     public static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(BuiltInRegistries.MOB_EFFECT, Confluence.MODID);
+    public static final EffectCure FLASK = EffectCure.get("confluence:flask");
+    public static final EffectCure CANNOT_REMOVE_BY_NURSE = EffectCure.get("confluence:cannot_remove_by_nurse");
 
     public static final DeferredHolder<MobEffect, MobEffect> EXQUISITELY_STUFFED = EFFECTS.register("exquisitely_stuffed", ExquisitelyStuffedEffect::new);
     public static final DeferredHolder<MobEffect, MobEffect> IRON_SKIN = EFFECTS.register("iron_skin", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x184F5)
@@ -50,7 +53,7 @@ public final class ModEffects {
     public static final DeferredHolder<MobEffect, MobEffect> HEART_REACH = EFFECTS.register("heart_reach", HeartReachEffect::new);
     public static final DeferredHolder<MobEffect, MobEffect> ARCHERY = EFFECTS.register("archery", ArcheryEffect::new);
     public static final DeferredHolder<MobEffect, MobEffect> FLIPPER = EFFECTS.register("flipper", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x000088));
-    public static final DeferredHolder<MobEffect, MobEffect> SHINE = EFFECTS.register("shine", ShineEffect::new);
+    public static final DeferredHolder<MobEffect, MobEffect> SHINE = EFFECTS.register("shine", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFFFF66));
     public static final DeferredHolder<MobEffect, MobEffect> SPELUNKER = EFFECTS.register("spelunker", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFFFF00));
     public static final DeferredHolder<MobEffect, MobEffect> HUNTER = EFFECTS.register("hunter", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFFC800));
     public static final DeferredHolder<MobEffect, MobEffect> DANGER_SENSE = EFFECTS.register("danger_sense", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFFAFAF));

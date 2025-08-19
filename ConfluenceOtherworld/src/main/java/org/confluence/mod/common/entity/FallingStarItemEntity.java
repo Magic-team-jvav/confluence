@@ -16,6 +16,7 @@ import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.init.ModDamageTypes;
@@ -23,6 +24,7 @@ import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.item.MaterialItems;
+import org.confluence.mod.util.OverworldUtils;
 import org.mesdag.particlestorm.PSGameClient;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 
@@ -60,7 +62,7 @@ public class FallingStarItemEntity extends ItemEntity {
             PSGameClient.LOADER.addEmitter(emitter, false);
         }
         super.tick();
-        if (level().getDayTime() % 24000 < 12000) {
+        if (LibDateUtils.isDay(level())) {
             onRemove();
         } else {
             if (onGround()) {
@@ -118,10 +120,11 @@ public class FallingStarItemEntity extends ItemEntity {
     }
 
     public static void summon(ServerLevel level) {
-        if (CommonConfigs.DO_FALLING_STAR_SPAWNING.get() && level.getDayTime() % 24000 > 12000 && level.getGameTime() % CommonConfigs.FALLING_STAR_INTERVAL.get() == 0) {
+        if (CommonConfigs.DO_FALLING_STAR_SPAWNING.get() && LibDateUtils.isNight(level) && level.getGameTime() % CommonConfigs.FALLING_STAR_INTERVAL.get() == 0) {
             RandomSource random = level.random;
             Set<Vec3> cache = new HashSet<>();
             for (ServerPlayer serverPlayer : level.players()) {
+                if (serverPlayer.level().dimension() != OverworldUtils.dimension()) continue;
                 if (cache.stream().anyMatch(pos -> serverPlayer.distanceToSqr(pos) < Mth.square(serverPlayer.requestedViewDistance() * 16))) {
                     continue;
                 }

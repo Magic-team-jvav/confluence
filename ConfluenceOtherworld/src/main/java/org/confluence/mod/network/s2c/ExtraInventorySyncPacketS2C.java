@@ -12,12 +12,11 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ExtraInventory;
-import org.confluence.mod.common.init.ModAttachmentTypes;
 
 public record ExtraInventorySyncPacketS2C(int entityId, ExtraInventory extraInventory) implements CustomPacketPayload {
     public static final Type<ExtraInventorySyncPacketS2C> TYPE = new Type<>(Confluence.asResource("extra_inventory_sync"));
     public static final StreamCodec<RegistryFriendlyByteBuf, ExtraInventorySyncPacketS2C> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.INT, ExtraInventorySyncPacketS2C::entityId,
+            ByteBufCodecs.VAR_INT, ExtraInventorySyncPacketS2C::entityId,
             ExtraInventory.STREAM_CODEC, ExtraInventorySyncPacketS2C::extraInventory,
             ExtraInventorySyncPacketS2C::new
     );
@@ -31,7 +30,7 @@ public record ExtraInventorySyncPacketS2C(int entityId, ExtraInventory extraInve
         context.enqueueWork(() -> {
             Player player = context.player();
             if (player.isLocalPlayer() && player.level().getEntity(entityId) instanceof Player entity) {
-                entity.getData(ModAttachmentTypes.EXTRA_INVENTORY).copyFrom(extraInventory);
+                ExtraInventory.of(entity).copyFrom(extraInventory);
             }
         }).exceptionally(e -> {
             context.disconnect(Component.translatable("neoforge.network.invalid_flow", e.getMessage()));
@@ -39,17 +38,17 @@ public record ExtraInventorySyncPacketS2C(int entityId, ExtraInventory extraInve
         });
     }
 
-    public static void sendToClient(ServerPlayer serverPlayer, ServerPlayer player, ExtraInventory extraInventory) {
+    public static void sendToClient(ServerPlayer from, ServerPlayer to, ExtraInventory extraInventory) {
         if (ServerLifecycleHooks.getCurrentServer() != null) {
-            extraInventory.initialize(serverPlayer);
-            PacketDistributor.sendToPlayer(serverPlayer, new ExtraInventorySyncPacketS2C(player.getId(), extraInventory));
+            extraInventory.initialize(from);
+            PacketDistributor.sendToPlayer(from, new ExtraInventorySyncPacketS2C(to.getId(), extraInventory));
         }
     }
 
-    public static void sendToPlayersTrackingEntityAndSelf(ServerPlayer serverPlayer, ServerPlayer player, ExtraInventory extraInventory) {
+    public static void sendToPlayersTrackingEntityAndSelf(ServerPlayer from, ServerPlayer to, ExtraInventory extraInventory) {
         if (ServerLifecycleHooks.getCurrentServer() != null) {
-            extraInventory.initialize(serverPlayer);
-            PacketDistributor.sendToPlayersTrackingEntityAndSelf(serverPlayer, new ExtraInventorySyncPacketS2C(player.getId(), extraInventory));
+            extraInventory.initialize(from);
+            PacketDistributor.sendToPlayersTrackingEntityAndSelf(from, new ExtraInventorySyncPacketS2C(to.getId(), extraInventory));
         }
     }
 }

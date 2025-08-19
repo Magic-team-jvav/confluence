@@ -4,7 +4,6 @@ import com.google.common.base.Stopwatch;
 import com.google.common.collect.AbstractIterator;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.*;
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
@@ -15,13 +14,11 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ChunkMap;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.status.ChunkStatus;
 import net.neoforged.fml.loading.FMLEnvironment;
@@ -29,17 +26,18 @@ import net.neoforged.neoforge.common.NeoForge;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.common.data.saved.IGlobalData;
-import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.LibCodecUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.EnterHardmodeEvent;
 import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
 import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.mixed.IDedicatedServer;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.network.s2c.SecretFlagSyncPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
+import org.confluence.mod.util.OverworldUtils;
 
 import javax.annotation.CheckForNull;
 import java.util.*;
@@ -49,7 +47,7 @@ import java.util.function.Function;
 /**
  * <a href="https://terraria.wiki.gg/zh/wiki/%E5%9B%B0%E9%9A%BE%E6%A8%A1%E5%BC%8F%E8%BD%AC%E6%8D%A2">困难模式转换</a>
  */
-public class HardmodeConvertor implements IGlobalData {
+public final class HardmodeConvertor implements IGlobalData {
     public static final HardmodeConvertor INSTANCE = new HardmodeConvertor();
     public static final Codec<List<Tuple<ChunkPos, BlockPosColumn[][]>>> SANCTIFICATION_CODEC = Codec.lazyInitialized(() -> {
         Codec<BlockPosColumn[][]> codec = new Codec<>() {
@@ -72,14 +70,15 @@ public class HardmodeConvertor implements IGlobalData {
                 return DataResult.success(longList, Lifecycle.stable());
             }
         };
-        return LibUtils.tupleCodec(Codec.LONG.xmap(ChunkPos::new, ChunkPos::toLong), codec).listOf().xmap(LinkedList::new, Function.identity());
+        return LibCodecUtils.tuple(Codec.LONG.xmap(ChunkPos::new, ChunkPos::toLong), codec).listOf().xmap(LinkedList::new, Function.identity());
     });
 
     private volatile boolean started = false;
     private volatile List<Tuple<ChunkPos, BlockPosColumn[][]>> sanctification = new LinkedList<>();
     private volatile boolean completed = false;
     private transient volatile boolean shouldContinue = true;
-    private transient final TheHallowConversionTable theHallowConversionTable = new TheHallowConversionTable();
+
+    private HardmodeConvertor() {}
 
     public boolean isStarted() {
         return started;
@@ -98,14 +97,18 @@ public class HardmodeConvertor implements IGlobalData {
         this.started = true;
         print(server, Component.translatable("event.confluence.hardmode_conversion.starting"), debug);
         CompletableFuture.supplyAsync(() -> {
-            ServerLevel overworld = server.overworld();
+            ServerLevel overworld = OverworldUtils.getLevel(server);
             BlockPos startPos = server.getWorldData().overworldData().getSpawnPos().atY(overworld.getMinBuildHeight());
             int height = overworld.getMaxBuildHeight() - overworld.getMinBuildHeight(), startRadius = 32, thickness = 64;
             return generateConicalCylinder(startPos, height, startRadius, startRadius + height, thickness);
         }, Util.backgroundExecutor()).thenAccept(list -> {
             this.sanctification = list;
             this.shouldContinue = true;
-            print(server, Component.translatable("event.confluence.hardmode_conversion.generate_data.sanctification", sanctification.size(), sanctification.size() / 4), debug);
+            if (CommonConfigs.INSTANTLY_HARDMODE_CONVERSION.get()) {
+                print(server, Component.translatable("event.confluence.hardmode_conversion.instantly"), debug);
+            } else {
+                print(server, Component.translatable("event.confluence.hardmode_conversion.generate_data.sanctification", sanctification.size(), sanctification.size() / 4), debug);
+            }
             print(server, Component.translatable("event.confluence.hardmode_conversion.started"), debug);
         });
     }
@@ -119,18 +122,17 @@ public class HardmodeConvertor implements IGlobalData {
                 if (server instanceof IDedicatedServer dedicatedServer) {
                     dedicatedServer.confluence$setOnHardmodeConversation(false);
                 }
-                SecretFlagSyncPacketS2C.sendToAll(((IMinecraftServer) server).confluence$getSecretFlag());
+                SecretFlagSyncPacketS2C.sendToAll(IMinecraftServer.of(server).confluence$getSecretFlag());
                 for (ServerPlayer serverPlayer : server.getPlayerList().getPlayers()) {
                     AchievementUtils.awardAchievement(serverPlayer, "its_hard");
                 }
-                ((IMinecraftServer) server).confluence$updateSecretFlag(IWorldOptions.HARDMODE);
+                IMinecraftServer.of(server).confluence$updateSecretFlag(IWorldOptions.HARDMODE);
                 print(server, Component.translatable("event.confluence.hardmode_conversion.hardmode"), !FMLEnvironment.production);
                 print(server, Component.translatable("event.confluence.hardmode_conversion.finished").withColor(GlobalColors.MESSAGE.get()), true);
                 print(server, Component.translatable("event.confluence.hardmode_conversion.welcome").withColor(GlobalColors.EVENT.get()), true);
                 NeoForge.EVENT_BUS.post(new EnterHardmodeEvent(server));
             }
             this.started = false;
-            theHallowConversionTable.clear();
         } else {
             if (serverLevel.getServer() instanceof IDedicatedServer dedicatedServer && !dedicatedServer.confluence$isOnHardmodeConversation()) {
                 dedicatedServer.confluence$setOnHardmodeConversation(true);
@@ -168,17 +170,27 @@ public class HardmodeConvertor implements IGlobalData {
         if (chunkAccess == null) return false;
         int cx = SectionPos.sectionToBlockCoord(chunkPos.x);
         int cz = SectionPos.sectionToBlockCoord(chunkPos.z);
+        BlockState cachedState = null;
+        boolean isGrassBlock = false;
         for (int x = 0; x < 16; x++) {
             BlockPosColumn[] columns = set[x];
             for (int z = 0; z < 16; z++) {
                 BlockPosColumn column = columns[z];
                 if (column == null || column == BlockPosColumn.ZERO) continue;
                 for (BlockPos blockPos : column.iterable(cx + x, cz + z)) {
-                    BlockState sourceState = chunkAccess.getBlockState(blockPos);
-                    if (sourceState.isAir()) continue;
-                    BlockState targetState = theHallowConversionTable.get(sourceState);
-                    if (targetState != null) {
-                        chunkAccess.setBlockState(blockPos, targetState, false);
+                    BlockState target = ISpreadable.Type.HALLOW.getNullable(chunkAccess.getBlockState(blockPos));
+                    if (target == null) continue;
+                    if (cachedState != target) {
+                        cachedState = target;
+                        isGrassBlock = target.is(ModTags.Blocks.SPREADABLE_GRASS_BLOCK);
+                    }
+                    if (isGrassBlock) {
+                        BlockPos above = blockPos.above();
+                        if (Block.isShapeFullBlock(chunkAccess.getBlockState(above).getCollisionShape(chunkAccess, above))) {
+                            chunkAccess.setBlockState(blockPos, target, false);
+                        }
+                    } else {
+                        chunkAccess.setBlockState(blockPos, target, false);
                     }
                 }
             }
@@ -270,7 +282,6 @@ public class HardmodeConvertor implements IGlobalData {
         this.completed = false;
         sanctification.clear();
         this.shouldContinue = true;
-        theHallowConversionTable.clear();
     }
 
     public static class BlockPosColumn {
@@ -291,7 +302,7 @@ public class HardmodeConvertor implements IGlobalData {
         }
 
         public long asLong() {
-            return ChunkPos.asLong(minY, maxY);
+            return (long) minY & 4294967295L | ((long) maxY & 4294967295L) << 32;
         }
 
         public Iterable<BlockPos> iterable(int x, int z) {
@@ -317,65 +328,7 @@ public class HardmodeConvertor implements IGlobalData {
         }
 
         public static BlockPosColumn of(long packedPos) {
-            return new BlockPosColumn(ChunkPos.getX(packedPos), ChunkPos.getZ(packedPos));
-        }
-    }
-
-    public static class TheHallowConversionTable {
-        private final Map<BlockState, BlockState> cache = new Object2ObjectOpenHashMap<>();
-        private BlockState lastCheck;
-        private BlockState lastTarget;
-
-        @SuppressWarnings("unchecked")
-        public <T extends Comparable<T>, V extends T> BlockState get(BlockState blockState) {
-            if (lastTarget != null && blockState == lastCheck) return lastTarget;
-            BlockState computed = cache.computeIfAbsent(blockState, source -> {
-                Block target = null;
-
-                if (source.is(BlockTags.LOGS)) {
-                    target = NatureBlocks.PEARL_LOG_BLOCKS.getLog().get();
-                } else if (source.is(BlockTags.LEAVES)) {
-                    target = NatureBlocks.PEARL_LOG_BLOCKS.getLeaves().get();
-                } else if (source.is(BlockTags.BASE_STONE_OVERWORLD)) {
-                    target = NatureBlocks.PEARLSTONE.get();
-                } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_GRASS_BLOCK)) {
-                    target = NatureBlocks.HALLOW_GRASS_BLOCK.get();
-                } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_JUNGLE_GRASS_BLOCK)) {
-                    target = NatureBlocks.JUNGLE_GRASS_BLOCK.get();
-                } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_SHORT_GRASS)) {
-                    target = NatureBlocks.HALLOW_GRASS.get();
-                } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_PACKED_ICE)) {
-                    target = NatureBlocks.PINK_PACKED_ICE.get();
-                } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_ICE)) {
-                    target = NatureBlocks.PINK_ICE.get();
-                } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_SAND)) {
-                    target = NatureBlocks.PEARLSAND.get();
-                } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_SANDSTONE)) {
-                    target = NatureBlocks.PEARLSANDSTONE.get();
-                } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_HARDENED_SAND_BLOCK)) {
-                    target = NatureBlocks.HARDENED_PEARLSAND_BLOCK.get();
-                } else if (source.is(ModTags.Blocks.HALLOW_CONVERSION_MOIST_SAND_BLOCK)) {
-                    target = NatureBlocks.MOISTENED_PEARLSAND_BLOCK.get();
-                }
-
-                if (target == null) return null;
-                BlockState targetState = target.defaultBlockState();
-                for (Map.Entry<Property<?>, Comparable<?>> entry1 : source.getValues().entrySet()) {
-                    if (targetState.hasProperty(entry1.getKey())) {
-                        targetState = targetState.setValue((Property<T>) entry1.getKey(), (V) entry1.getValue());
-                    }
-                }
-                return targetState;
-            });
-            if (blockState != lastCheck) {
-                this.lastCheck = blockState;
-                this.lastTarget = computed;
-            }
-            return computed;
-        }
-
-        public void clear() {
-            cache.clear();
+            return new BlockPosColumn((int) (packedPos & 4294967295L), (int) (packedPos >>> 32 & 4294967295L));
         }
     }
 }

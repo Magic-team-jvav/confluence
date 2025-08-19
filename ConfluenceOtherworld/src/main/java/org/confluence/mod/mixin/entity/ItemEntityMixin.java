@@ -16,7 +16,7 @@ import org.confluence.mod.api.event.ShimmerItemTransmutationEvent;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.saved.GamePhase;
 import org.confluence.mod.common.data.saved.KillBoard;
-import org.confluence.mod.common.init.ModCriterionTriggers;
+import org.confluence.mod.common.init.ModAdvancements;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModTags;
@@ -84,7 +84,7 @@ public abstract class ItemEntityMixin implements IItemEntity {
                     }
                     level.playSound(null, self.getX(), self.getY(), self.getZ(), ModSoundEvents.SHIMMER_EVOLUTION.get(), SoundSource.AMBIENT, 0.5F, 1.0F);
                     if (self.getOwner() instanceof ServerPlayer serverPlayer) {
-                        ModCriterionTriggers.SHIMMER_TRANSMUTATION.get().trigger(serverPlayer, self);
+                        ModAdvancements.CriterionTriggerz.SHIMMER_TRANSMUTATION.get().trigger(serverPlayer, self);
                     }
                 }
             }

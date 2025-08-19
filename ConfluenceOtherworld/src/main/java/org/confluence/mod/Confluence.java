@@ -14,6 +14,7 @@ import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.component.prefix.ModPrefix;
 import org.confluence.mod.common.data.fixer.RegistriesFixer;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.ModBlocks;
@@ -37,14 +38,21 @@ public class Confluence {
             ClientConfigs.register(container);
             container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
         }
-        TEEvents.init(eventBus);
+
+        TEEvents.register(eventBus);
         ModBlocks.register(eventBus);
         ModItems.register(eventBus);
         ModVillagers.register(eventBus);
         ModRecipes.register(eventBus);
         ModFeatures.register(eventBus);
+        ModEnchantments.register(eventBus);
+        WaystonesHelper.register(eventBus);
+        ModAdvancements.register(eventBus);
+
         ModFluids.initialize();
-        ModCriterionTriggers.TRIGGERS.register(eventBus);
+        ModPrefix.initialize();
+        RegistriesFixer.initialize();
+
         ModTabs.TABS.register(eventBus);
         ModEntities.ENTITIES.register(eventBus);
         ModDataComponentTypes.TYPES.register(eventBus);
@@ -60,9 +68,8 @@ public class Confluence {
         ModHookTypes.TYPES.register(eventBus);
         ModLootTables.ItemConditions.TYPES.register(eventBus);
         ModTradeLockProviderTypes.TYPES.register(eventBus);
-        RegistriesFixer.init();
+        ModCommands.ARGUMENT_TYPE_INFOS.register(eventBus);
 
-        WaystonesHelper.register(eventBus);
     }
 
     public static void registerGameRules() {

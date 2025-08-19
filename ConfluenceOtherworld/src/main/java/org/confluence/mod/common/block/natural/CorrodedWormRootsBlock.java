@@ -62,7 +62,7 @@ public class CorrodedWormRootsBlock extends Block {
     }
 
     public boolean connectsTo(BlockState state, Direction direction) {
-        return state.is(this) || state.is(NatureBlocks.EBONY_LOG_BLOCKS.getLog().get());
+        return state.is(this) || state.is(NatureBlocks.EBONY_LOG_BLOCKS.LOG.get());
     }
 
     @Override

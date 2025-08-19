@@ -23,7 +23,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.mod.common.init.ModAttachmentTypes;
+import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.item.hook.BaseHookItem;
 
@@ -33,6 +33,7 @@ public abstract class AbstractHookEntity extends Projectile {
     private static final EntityDataAccessor<Integer> DATA_HOOK_STATE = SynchedEntityData.defineId(AbstractHookEntity.class, EntityDataSerializers.INT);
     public final float hookRangeSqr;
     private final BaseHookItem.HookType hookType;
+    private BlockPos hookPos;
     private BlockState hookedState;
     public float lastDelta = 0.0F;
 
@@ -72,7 +73,7 @@ public abstract class AbstractHookEntity extends Projectile {
     public void tick() {
         super.tick();
         Entity owner = getOwner();
-        if (owner == null || owner.isRemoved()) {
+        if (!(owner instanceof Player player) || owner.isRemoved()) {
             discard();
             return;
         }
@@ -92,7 +93,7 @@ public abstract class AbstractHookEntity extends Projectile {
             }
         }
         if (!level().isClientSide) {
-            ItemStack hook = owner.getData(ModAttachmentTypes.EXTRA_INVENTORY).getHook();
+            ItemStack hook = ExtraInventory.of(player).getHook(false);
             if (hookState != HookState.POP && distanceToSqr(owner) > hookRangeSqr) {
                 setHookState(HookState.POP);
             } else if (hookState == HookState.PUSH) {
@@ -103,7 +104,7 @@ public abstract class AbstractHookEntity extends Projectile {
                     onHitBlock(hitResult);
                     onHooked(hitResult, hook);
                 }
-            } else if (hookState == HookState.HOOKED && level().getBlockState(blockPosition()) != hookedState) {
+            } else if (hookState == HookState.HOOKED && (hookPos == null || level().getBlockState(hookPos) != hookedState)) {
                 setHookState(HookState.POP);
             }
         }
@@ -125,7 +126,8 @@ public abstract class AbstractHookEntity extends Projectile {
         level().gameEvent(GameEvent.PROJECTILE_LAND, blockPos, GameEvent.Context.of(this, blockState));
         setDeltaMovement(Vec3.ZERO);
         setHookState(HookState.HOOKED);
-        this.hookedState = level().getBlockState(blockPosition());
+        this.hookPos = blockPos;
+        this.hookedState = blockState;
         this.hasImpulse = true;
         float ratio = getOwner() == null ? 1 : Mth.sqrt((float) blockPos.distSqr(getOwner().blockPosition())) / Mth.sqrt(hookRangeSqr);
         playSound(ModSoundEvents.HOOK_ATTACH.get(), 0.5F * ratio, 1.0F);

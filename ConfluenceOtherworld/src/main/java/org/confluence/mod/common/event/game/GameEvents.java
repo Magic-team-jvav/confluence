@@ -12,32 +12,28 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.ClickAction;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.AddReloadListenerEvent;
-import net.neoforged.neoforge.event.ItemStackedOnOtherEvent;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
-import org.confluence.lib.common.item.ColoredItem;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.AdditionalManaEvent;
 import org.confluence.mod.api.event.ShimmerItemTransmutationEvent;
 import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.common.component.LootComponent;
+import org.confluence.mod.common.attachment.ExtraInventory;
+import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.data.AchievementOffsetLoader;
-import org.confluence.mod.common.data.ConfluenceCommand;
-import org.confluence.mod.common.init.ModAttachmentTypes;
+import org.confluence.mod.common.data.saved.KillBoard;
+import org.confluence.mod.common.init.ModCommands;
 import org.confluence.mod.common.init.ModHookTypes;
 import org.confluence.mod.common.init.ModRecipes;
-import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.common.init.item.MaterialItems;
-import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.integration.ars_nouveau.ArsNouveauHelper;
 import org.confluence.mod.integration.irons_spell.IronSpellHelper;
 import org.confluence.mod.mixed.IMinecraftServer;
@@ -49,7 +45,6 @@ import org.confluence.mod.network.s2c.VisibilityPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.api.event.AfterAccessoryAbilitiesFlushedEvent;
-import org.confluence.terra_curio.common.item.IFunctionCouldEnable;
 import org.confluence.terra_guns.api.event.GunEvent;
 import top.theillusivec4.curios.api.event.CurioAttributeModifierEvent;
 import top.theillusivec4.curios.api.event.CurioChangeEvent;
@@ -62,59 +57,24 @@ import java.util.Map;
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
 public final class GameEvents {
     @SubscribeEvent
-    public static void itemStackedOnOther(ItemStackedOnOtherEvent event) {
-        ItemStack onSlot = event.getStackedOnItem();
-        ItemStack carried = event.getCarriedItem();
-        Item slotItem = onSlot.getItem();
-        Player player = event.getPlayer();
-        if (event.getClickAction() == ClickAction.SECONDARY) {
-            if (carried.isEmpty()) {
-                // 需要注意创造模式物品栏是仅客户端的，所以创造模式无法正常使用
-                if (slotItem instanceof IFunctionCouldEnable couldEnable) {
-                    if (player instanceof ServerPlayer serverPlayer) {
-                        couldEnable.cycleEnable(onSlot);
-                        VisibilityPacketS2C.sendEcho(serverPlayer);
-                    }
-                    event.setCanceled(true);
-                }
-            }
-            boolean isGoldenKey = carried.is(ToolItems.GOLDEN_DUNGEON_KEY);
-            if ((isGoldenKey && onSlot.is(ConsumableItems.GOLDEN_LOCK_BOX) || (carried.is(ToolItems.SHADOW_KEY) && onSlot.is(ConsumableItems.OBSIDIAN_LOCK_BOX)))) {
-                if (player instanceof ServerPlayer serverPlayer && LootComponent.open(serverPlayer, onSlot)) {
-                    if (!serverPlayer.hasInfiniteMaterials()) {
-                        if (isGoldenKey) {
-                            carried.shrink(1);
-                        }
-                        onSlot.shrink(1);
-                    }
-                }
-                event.setCanceled(true);
-            }
-        }
-        if (slotItem instanceof ColoredItem && ItemStack.isSameItem(onSlot, carried)) {
-            ColoredItem.setColor(carried, ColoredItem.getColor(onSlot));
-        }
-    }
-
-    @SubscribeEvent
     public static void afterAccessoryAbilitiesFlushed(AfterAccessoryAbilitiesFlushedEvent event) {
-        if (event.getEntity() instanceof ServerPlayer serverPlayer) {
-            serverPlayer.getData(ModAttachmentTypes.MANA_STORAGE).flushAbility(serverPlayer);
-            FishingPowerInfoPacketS2C.sendAndGet(serverPlayer);
-            VisibilityPacketS2C.sendEcho(serverPlayer);
+        if (event.getEntity() instanceof ServerPlayer player) {
+            ManaStorage.of(player).flushAbility(player);
+            FishingPowerInfoPacketS2C.sendAndGet(player);
+            VisibilityPacketS2C.sendEcho(player);
         }
     }
 
     @SubscribeEvent
     public static void afterEquipmentBenedictionUpdated(AfterEquipmentBenedictionUpdatedEvent event) {
-        if (event.getEntity() instanceof ServerPlayer serverPlayer) {
-            serverPlayer.getData(ModAttachmentTypes.MANA_STORAGE).flushAbility(serverPlayer);
+        if (event.getEntity() instanceof ServerPlayer player) {
+            ManaStorage.of(player).flushAbility(player);
         }
     }
 
     @SubscribeEvent
     public static void command(RegisterCommandsEvent event) {
-        ConfluenceCommand.register(event.getDispatcher());
+        ModCommands.register(event.getDispatcher());
     }
 
     @SubscribeEvent
@@ -137,16 +97,16 @@ public final class GameEvents {
         }
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOW)
     public static void onDatapackSync(OnDatapackSyncEvent event) {
-        ServerPlayer serverPlayer = event.getPlayer();
-        if (serverPlayer == null) {
-            for (ServerPlayer player : event.getPlayerList().getPlayers()) {
-                ExtraInventorySyncPacketS2C.sendToPlayersTrackingEntityAndSelf(player, player, player.getData(ModAttachmentTypes.EXTRA_INVENTORY));
+        ServerPlayer from = event.getPlayer();
+        if (from == null) {
+            for (ServerPlayer to : event.getPlayerList().getPlayers()) {
+                ExtraInventorySyncPacketS2C.sendToPlayersTrackingEntityAndSelf(to, to, ExtraInventory.of(to));
             }
         } else {
-            ExtraInventorySyncPacketS2C.sendToClient(serverPlayer, serverPlayer, serverPlayer.getData(ModAttachmentTypes.EXTRA_INVENTORY));
-            AchievementOffsetSyncPacketS2C.sendToClient(serverPlayer);
+            ExtraInventorySyncPacketS2C.sendToClient(from, from, ExtraInventory.of(from)); // 需要晚于Curios Api
+            AchievementOffsetSyncPacketS2C.sendToClient(from);
         }
     }
 
@@ -158,14 +118,22 @@ public final class GameEvents {
                 for (Player player : momentInstance.getPlayers()) {
                     AchievementUtils.awardAchievement((ServerPlayer) player, "bloodbath");
                 }
+                KillBoard.INSTANCE.defeat(momentInstance.getMoment());
+            } else if (momentInstance.getMoment() == TMMoments.GOBLIN_ARMY.get()) {
+                for (Player player : momentInstance.getPlayers()) {
+                    AchievementUtils.awardAchievement((ServerPlayer) player, "goblin_punter");
+                }
+                KillBoard.INSTANCE.defeat(momentInstance.getMoment());
             }
         }
     }
 
     @SubscribeEvent
     public static void curioChange(CurioChangeEvent event) {
-        if (event.getEntity() instanceof ServerPlayer player && PrefixUtils.canInit(event.getTo())) {
-            PrefixUtils.initPrefix(player.getRandom(), event.getTo());
+        if (event.getEntity() instanceof ServerPlayer player) {
+            if (PrefixUtils.canInit(event.getTo())) {
+                PrefixUtils.initPrefix(player.getRandom(), event.getTo());
+            }
         }
     }
 

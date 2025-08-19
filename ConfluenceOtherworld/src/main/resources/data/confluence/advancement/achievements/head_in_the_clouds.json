@@ -17,13 +17,11 @@
     "parent": "confluence:achievements/new_world",
     "criteria": {
         "requirement": {
-            "trigger": "minecraft:inventory_changed",
+            "trigger": "terra_curio:curios_equipped",
             "conditions": {
-                "items": [
-                    {
-                        "items": "#confluence:wings"
-                    }
-                ]
+                "item": {
+                    "items": "#confluence:wings"
+                }
             }
         }
     }

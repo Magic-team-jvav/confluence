@@ -8,19 +8,32 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.Confluence;
 import org.confluence.terra_curio.api.primitive.AttributeModifiersValue;
 import org.confluence.terra_curio.common.init.TCAttributes;
+import org.confluence.terraentity.init.TEAttributes;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import static net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL;
 import static net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADD_VALUE;
 
 @SuppressWarnings("unused")
 public interface ModPrefix {
-    PrefixComponent createComponent(PrefixType prefixType);
+    default @Nullable PrefixComponent createComponent(PrefixType prefixType) {
+        return null;
+    }
+
+    default @Nullable PrefixComponent createComponent(PrefixType prefixType, ItemStack stack) {
+        return createComponent(prefixType);
+    }
+
+    default AttributeModifier createModifier(double value, AttributeModifier.Operation operation) {
+        return new AttributeModifier(getModifierId(), value, operation);
+    }
 
     String name();
 
@@ -29,7 +42,7 @@ public interface ModPrefix {
     ResourceLocation getModifierId();
 
     record Accessory(String name, float armor, float criticalChance, float attackDamage, float attackSpeed, float movementSpeed, int additionalMana, int tier, float value) implements ModPrefix {
-        public static final List<Accessory> VALUES = new ArrayList<>();
+        public static final Map<String, Accessory> VALUES = ModPrefix.registerGroup("accessory");
         public static final ResourceLocation ID = Confluence.asResource("accessory_prefix");
 
         public static final Accessory HARD = register("hard", 1, 0, 0, 0, 0, 0, 1, 0.1025F), // 坚硬
@@ -55,11 +68,15 @@ public interface ModPrefix {
         @Override
         public PrefixComponent createComponent(PrefixType prefixType) {
             ImmutableListMultimap.Builder<Holder<Attribute>, AttributeModifier> builder = ImmutableListMultimap.builder();
-            if (armor != 0) builder.put(Attributes.ARMOR, new AttributeModifier(ID, armor, ADD_VALUE));
-            if (criticalChance != 0.0F) builder.put(TCAttributes.getCriticalChance(), new AttributeModifier(ID, criticalChance, ADD_VALUE));
-            if (attackDamage != 0.0F) builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ID, attackDamage, ADD_MULTIPLIED_TOTAL));
-            if (attackSpeed != 0.0F) builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(ID, attackSpeed, ADD_MULTIPLIED_TOTAL));
-            if (movementSpeed != 0.0F) builder.put(Attributes.MOVEMENT_SPEED, new AttributeModifier(ID, movementSpeed, ADD_MULTIPLIED_TOTAL));
+            if (armor != 0) builder.put(Attributes.ARMOR, createModifier(armor, ADD_VALUE));
+            if (criticalChance != 0.0F) builder.put(TCAttributes.getCriticalChance(), createModifier(criticalChance, ADD_VALUE));
+            if (attackDamage != 0.0F) builder
+                    .put(Attributes.ATTACK_DAMAGE, createModifier(attackDamage, ADD_MULTIPLIED_TOTAL))
+                    .put(TCAttributes.getRangedDamage(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL))
+                    .put(TCAttributes.getMagicDamage(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL))
+                    .put(TEAttributes.SUMMON_DAMAGE, createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
+            if (attackSpeed != 0.0F) builder.put(Attributes.ATTACK_SPEED, createModifier(attackSpeed, ADD_MULTIPLIED_TOTAL));
+            if (movementSpeed != 0.0F) builder.put(Attributes.MOVEMENT_SPEED, createModifier(movementSpeed, ADD_MULTIPLIED_TOTAL));
             return new PrefixComponent(prefixType, name, new AttributeModifiersValue(builder.build()), 0.0F, additionalMana, tier, value);
         }
 
@@ -75,13 +92,15 @@ public interface ModPrefix {
 
         private static Accessory register(String name, float armor, float criticalChance, float attackDamage, float attackSpeed, float movementSpeed, int additionalMana, int tier, float value) {
             Accessory accessory = new Accessory(name, armor / 2, criticalChance, attackDamage, attackSpeed, movementSpeed, additionalMana, tier, value);
-            VALUES.add(accessory);
+            VALUES.put(name, accessory);
             return accessory;
         }
+
+        private static void init() {}
     }
 
     record Universal(String name, float attackDamage, float criticalChance, float knockBack, int tier, float value) implements ModPrefix {
-        public static final List<Universal> VALUES = new ArrayList<>();
+        public static final Map<String, Universal> VALUES = ModPrefix.registerGroup("universal");
         public static final ResourceLocation ID = Confluence.asResource("universal_prefix");
 
         public static final Universal KEEN = register("keen", 0, 0.03F, 0, 1, 0.1236F), // 锐利
@@ -102,9 +121,17 @@ public interface ModPrefix {
         @Override
         public PrefixComponent createComponent(PrefixType prefixType) {
             ImmutableListMultimap.Builder<Holder<Attribute>, AttributeModifier> builder = ImmutableListMultimap.builder();
-            if (attackDamage != 0.0F) builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ID, attackDamage, ADD_MULTIPLIED_TOTAL));
-            if (criticalChance != 0.0F) builder.put(TCAttributes.getCriticalChance(), new AttributeModifier(ID, criticalChance, ADD_VALUE));
-            if (knockBack != 0.0F) builder.put(Attributes.ATTACK_KNOCKBACK, new AttributeModifier(ID, knockBack, ADD_VALUE));
+            if (attackDamage != 0.0F) {
+                if (prefixType == PrefixType.UNIVERSAL || prefixType == PrefixType.MELEE) {
+                    builder.put(Attributes.ATTACK_DAMAGE, createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
+                } else if (prefixType == PrefixType.RANGED) {
+                    builder.put(TCAttributes.getRangedDamage(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
+                } else if (prefixType == PrefixType.MAGIC) {
+                    builder.put(TCAttributes.getMagicDamage(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
+                }
+            }
+            if (criticalChance != 0.0F) builder.put(TCAttributes.getCriticalChance(), createModifier(criticalChance, ADD_VALUE));
+            if (knockBack != 0.0F) builder.put(Attributes.ATTACK_KNOCKBACK, createModifier(knockBack, ADD_VALUE));
             return new PrefixComponent(prefixType, name, new AttributeModifiersValue(builder.build()), 0.0F, 0, tier, value);
         }
 
@@ -120,13 +147,15 @@ public interface ModPrefix {
 
         private static Universal register(String name, float attackDamage, float criticalChance, float knockBack, int tier, float value) {
             Universal universal = new Universal(name, attackDamage, criticalChance, knockBack, tier, value);
-            VALUES.add(universal);
+            VALUES.put(name, universal);
             return universal;
         }
+
+        private static void init() {}
     }
 
     record Common(String name, float attackDamage, float attackSpeed, float criticalChance, float knockBack, int tier, float value) implements ModPrefix {
-        public static final List<Common> VALUES = new ArrayList<>();
+        public static final Map<String, Common> VALUES = ModPrefix.registerGroup("common");
         public static final ResourceLocation ID = Confluence.asResource("common_prefix");
 
         public static final Common QUICK = register("quick", 0, 0.1F, 0, 0, 1, 0.21F), // 迅捷
@@ -143,10 +172,18 @@ public interface ModPrefix {
         @Override
         public PrefixComponent createComponent(PrefixType prefixType) {
             ImmutableListMultimap.Builder<Holder<Attribute>, AttributeModifier> builder = ImmutableListMultimap.builder();
-            if (attackDamage != 0.0F) builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ID, attackDamage, ADD_MULTIPLIED_TOTAL));
-            if (attackSpeed != 0) builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(ID, attackSpeed, ADD_MULTIPLIED_TOTAL));
-            if (criticalChance != 0.0F) builder.put(TCAttributes.getCriticalChance(), new AttributeModifier(ID, criticalChance, ADD_VALUE));
-            if (knockBack != 0.0F) builder.put(Attributes.ATTACK_KNOCKBACK, new AttributeModifier(ID, knockBack, ADD_VALUE));
+            if (attackDamage != 0.0F) {
+                if (prefixType == PrefixType.UNIVERSAL || prefixType == PrefixType.MELEE) {
+                    builder.put(Attributes.ATTACK_DAMAGE, createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
+                } else if (prefixType == PrefixType.RANGED) {
+                    builder.put(TCAttributes.getRangedDamage(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
+                } else if (prefixType == PrefixType.MAGIC) {
+                    builder.put(TCAttributes.getMagicDamage(), createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
+                }
+            }
+            if (attackSpeed != 0) builder.put(Attributes.ATTACK_SPEED, createModifier(attackSpeed, ADD_MULTIPLIED_TOTAL));
+            if (criticalChance != 0.0F) builder.put(TCAttributes.getCriticalChance(), createModifier(criticalChance, ADD_VALUE));
+            if (knockBack != 0.0F) builder.put(Attributes.ATTACK_KNOCKBACK, createModifier(knockBack, ADD_VALUE));
             return new PrefixComponent(prefixType, name, new AttributeModifiersValue(builder.build()), 0.0F, 0, tier, value);
         }
 
@@ -162,13 +199,15 @@ public interface ModPrefix {
 
         private static Common register(String name, float attackDamage, float attackSpeed, float criticalChance, float knockBack, int tier, float value) {
             Common common = new Common(name, attackDamage, attackSpeed, criticalChance, knockBack, tier, value);
-            VALUES.add(common);
+            VALUES.put(name, common);
             return common;
         }
+
+        private static void init() {}
     }
 
     record Melee(String name, float attackDamage, float attackSpeed, float criticalChance, float size, float knockBack, int tier, float value) implements ModPrefix {
-        public static final List<Melee> VALUES = new ArrayList<>();
+        public static final Map<String, Melee> VALUES = ModPrefix.registerGroup("melee");
         public static final ResourceLocation ID = Confluence.asResource("melee_prefix");
 
         public static final Melee LARGE = register("large", 0, 0, 0, 0.12F, 0, 1, 0.2544F), // 大
@@ -192,11 +231,11 @@ public interface ModPrefix {
         @Override
         public PrefixComponent createComponent(PrefixType prefixType) {
             ImmutableListMultimap.Builder<Holder<Attribute>, AttributeModifier> builder = ImmutableListMultimap.builder();
-            if (attackDamage != 0.0F) builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ID, attackDamage, ADD_MULTIPLIED_TOTAL));
-            if (attackSpeed != 0) builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(ID, attackSpeed, ADD_MULTIPLIED_TOTAL));
-            if (criticalChance != 0.0F) builder.put(TCAttributes.getCriticalChance(), new AttributeModifier(ID, criticalChance, ADD_VALUE));
-            if (size != 0.0F) builder.put(Attributes.ENTITY_INTERACTION_RANGE, new AttributeModifier(ID, size, ADD_MULTIPLIED_TOTAL));
-            if (knockBack != 0.0F) builder.put(Attributes.ATTACK_KNOCKBACK, new AttributeModifier(ID, knockBack, ADD_VALUE));
+            if (attackDamage != 0.0F) builder.put(Attributes.ATTACK_DAMAGE, createModifier(attackDamage, ADD_MULTIPLIED_TOTAL));
+            if (attackSpeed != 0) builder.put(Attributes.ATTACK_SPEED, createModifier(attackSpeed, ADD_MULTIPLIED_TOTAL));
+            if (criticalChance != 0.0F) builder.put(TCAttributes.getCriticalChance(), createModifier(criticalChance, ADD_VALUE));
+            if (size != 0.0F) builder.put(Attributes.ENTITY_INTERACTION_RANGE, createModifier(size, ADD_MULTIPLIED_TOTAL));
+            if (knockBack != 0.0F) builder.put(Attributes.ATTACK_KNOCKBACK, createModifier(knockBack, ADD_VALUE));
             return new PrefixComponent(prefixType, name, new AttributeModifiersValue(builder.build()), 0.0F, 0, tier, value);
         }
 
@@ -212,13 +251,15 @@ public interface ModPrefix {
 
         private static Melee register(String name, float attackDamage, float attackSpeed, float criticalChance, float size, float knockBack, int tier, float value) {
             Melee melee = new Melee(name, attackDamage, attackSpeed, criticalChance, size, knockBack, tier, value);
-            VALUES.add(melee);
+            VALUES.put(name, melee);
             return melee;
         }
+
+        private static void init() {}
     }
 
     record Ranged(String name, float rangedDamage, float attackSpeed, float criticalChance, float velocity, float knockBack, int tier, float value) implements ModPrefix {
-        public static final List<Ranged> VALUES = new ArrayList<>();
+        public static final Map<String, Ranged> VALUES = ModPrefix.registerGroup("ranged");
         public static final ResourceLocation ID = Confluence.asResource("ranged_prefix");
 
         public static final Ranged SIGHTED = register("sighted", 0.1F, 0, 0.03F, 0, 0, 1, 0.3596F), // 精准
@@ -237,11 +278,11 @@ public interface ModPrefix {
         @Override
         public PrefixComponent createComponent(PrefixType prefixType) {
             ImmutableListMultimap.Builder<Holder<Attribute>, AttributeModifier> builder = ImmutableListMultimap.builder();
-            if (rangedDamage != 0.0F) builder.put(TCAttributes.getRangedDamage(), new AttributeModifier(ID, rangedDamage, ADD_MULTIPLIED_TOTAL));
-            if (attackSpeed != 0) builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(ID, attackSpeed, ADD_MULTIPLIED_TOTAL));
-            if (criticalChance != 0.0F) builder.put(TCAttributes.getCriticalChance(), new AttributeModifier(ID, criticalChance, ADD_VALUE));
-            if (value != 0.0F) builder.put(TCAttributes.getRangedVelocity(), new AttributeModifier(ID, velocity, ADD_MULTIPLIED_TOTAL));
-            if (knockBack != 0.0F) builder.put(Attributes.ATTACK_KNOCKBACK, new AttributeModifier(ID, knockBack, ADD_VALUE));
+            if (rangedDamage != 0.0F) builder.put(TCAttributes.getRangedDamage(), createModifier(rangedDamage, ADD_MULTIPLIED_TOTAL));
+            if (attackSpeed != 0) builder.put(Attributes.ATTACK_SPEED, createModifier(attackSpeed, ADD_MULTIPLIED_TOTAL));
+            if (criticalChance != 0.0F) builder.put(TCAttributes.getCriticalChance(), createModifier(criticalChance, ADD_VALUE));
+            if (value != 0.0F) builder.put(TCAttributes.getRangedVelocity(), createModifier(velocity, ADD_MULTIPLIED_TOTAL));
+            if (knockBack != 0.0F) builder.put(Attributes.ATTACK_KNOCKBACK, createModifier(knockBack, ADD_VALUE));
             return new PrefixComponent(prefixType, name, new AttributeModifiersValue(builder.build()), 0.0F, 0, tier, value);
         }
 
@@ -257,13 +298,15 @@ public interface ModPrefix {
 
         private static Ranged register(String name, float rangedDamage, float attackSpeed, float criticalChance, float velocity, float knockBack, int tier, float value) {
             Ranged ranged = new Ranged(name, rangedDamage, attackSpeed, criticalChance, velocity, knockBack, tier, value);
-            VALUES.add(ranged);
+            VALUES.put(name, ranged);
             return ranged;
         }
+
+        private static void init() {}
     }
 
     record Magic(String name, float rangedDamage, float attackSpeed, float criticalChance, float manaCost, float knockBack, int tier, float value) implements ModPrefix {
-        public static final List<Magic> VALUES = new ArrayList<>();
+        public static final Map<String, Magic> VALUES = ModPrefix.registerGroup("magic");
         public static final ResourceLocation ID = Confluence.asResource("magic_prefix");
 
         public static final Magic MYTHIC = register("mythic", 0.1F, 0, 0, -0.15F, 0, 2, 0.6002F), // 神秘
@@ -282,10 +325,10 @@ public interface ModPrefix {
         @Override
         public PrefixComponent createComponent(PrefixType prefixType) {
             ImmutableListMultimap.Builder<Holder<Attribute>, AttributeModifier> builder = ImmutableListMultimap.builder();
-            if (rangedDamage != 0.0F) builder.put(TCAttributes.getRangedDamage(), new AttributeModifier(ID, rangedDamage, ADD_MULTIPLIED_TOTAL));
-            if (attackSpeed != 0) builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(ID, attackSpeed, ADD_MULTIPLIED_TOTAL));
-            if (criticalChance != 0.0F) builder.put(TCAttributes.getCriticalChance(), new AttributeModifier(ID, criticalChance, ADD_VALUE));
-            if (knockBack != 0.0F) builder.put(Attributes.ATTACK_KNOCKBACK, new AttributeModifier(ID, knockBack, ADD_VALUE));
+            if (rangedDamage != 0.0F) builder.put(TCAttributes.getRangedDamage(), createModifier(rangedDamage, ADD_MULTIPLIED_TOTAL));
+            if (attackSpeed != 0) builder.put(Attributes.ATTACK_SPEED, createModifier(attackSpeed, ADD_MULTIPLIED_TOTAL));
+            if (criticalChance != 0.0F) builder.put(TCAttributes.getCriticalChance(), createModifier(criticalChance, ADD_VALUE));
+            if (knockBack != 0.0F) builder.put(Attributes.ATTACK_KNOCKBACK, createModifier(knockBack, ADD_VALUE));
             return new PrefixComponent(prefixType, name, new AttributeModifiersValue(builder.build()), manaCost, 0, tier, value);
         }
 
@@ -301,9 +344,19 @@ public interface ModPrefix {
 
         private static Magic register(String name, float rangedDamage, float attackSpeed, float criticalChance, float manaCost, float knockBack, int tier, float value) {
             Magic magic = new Magic(name, rangedDamage, attackSpeed, criticalChance, manaCost, knockBack, tier, value);
-            VALUES.add(magic);
+            VALUES.put(name, magic);
             return magic;
         }
+
+        private static void init() {}
+    }
+
+    Map<String, Map<String, ? extends ModPrefix>> GROUPS = new HashMap<>();
+
+    static <T extends ModPrefix> Map<String, T> registerGroup(String name) {
+        HashMap<String, T> v = new HashMap<>();
+        GROUPS.put(name, v);
+        return v;
     }
 
     HashBiMap<Integer, ModPrefix> ID_MAP = Util.make(HashBiMap.create(), map -> {
@@ -392,4 +445,13 @@ public interface ModPrefix {
         map.put(83, Magic.MYTHICAL);
         map.put(84, Melee.LEGENDARY2);
     });
+
+    static void initialize() {
+        Accessory.init();
+        Universal.init();
+        Common.init();
+        Melee.init();
+        Ranged.init();
+        Magic.init();
+    }
 }

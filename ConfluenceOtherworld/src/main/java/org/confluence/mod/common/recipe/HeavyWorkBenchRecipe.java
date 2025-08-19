@@ -10,24 +10,22 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.ShapedRecipePattern;
-import net.minecraft.world.level.Level;
-import org.confluence.lib.common.recipe.EitherAmountRecipe4x;
-import org.confluence.lib.common.recipe.EnvironmentRecipeInput;
+import org.confluence.lib.common.recipe.EnvironmentEitherAmountRecipe4x;
+import org.confluence.lib.common.recipe.EnvironmentLevelAccess;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 
-public class HeavyWorkBenchRecipe extends EitherAmountRecipe4x<EnvironmentRecipeInput> {
-    public HeavyWorkBenchRecipe(ItemStack pResult, Either<ShapedRecipePattern, NonNullList<Ingredient>> either) {
-        super(pResult, either);
+public class HeavyWorkBenchRecipe extends EnvironmentEitherAmountRecipe4x {
+    public HeavyWorkBenchRecipe(ItemStack result, Either<ShapedRecipePattern, NonNullList<Ingredient>> either, EnvironmentLevelAccess.Matcher environment) {
+        super(result, either, environment);
     }
 
-    public HeavyWorkBenchRecipe(ItemStack pResult, ShapedRecipePattern pattern) {
-        super(pResult, pattern);
+    public HeavyWorkBenchRecipe(ItemStack result, NonNullList<Ingredient> ingredients, EnvironmentLevelAccess.Matcher environment) {
+        super(result, ingredients, environment);
     }
 
-    @Override
-    public boolean matches(EnvironmentRecipeInput input, Level level) {
-        return input.getAccess().matches(this) && super.matches(input, level);
+    public HeavyWorkBenchRecipe(ItemStack result, ShapedRecipePattern pattern, EnvironmentLevelAccess.Matcher environment) {
+        super(result, pattern, environment);
     }
 
     @Override
@@ -51,8 +49,8 @@ public class HeavyWorkBenchRecipe extends EitherAmountRecipe4x<EnvironmentRecipe
     }
 
     public static class Serializer implements RecipeSerializer<HeavyWorkBenchRecipe> {
-        public static final MapCodec<HeavyWorkBenchRecipe> CODEC = EitherAmountRecipe4x.shapedSerializerMapCodec(HeavyWorkBenchRecipe::new);
-        public static final StreamCodec<RegistryFriendlyByteBuf, HeavyWorkBenchRecipe> STREAM_CODEC = EitherAmountRecipe4x.eitherSerializerSteamCodec(HeavyWorkBenchRecipe::new);
+        public static final MapCodec<HeavyWorkBenchRecipe> CODEC = EnvironmentEitherAmountRecipe4x.environmentEitherSerializerMapCodec(HeavyWorkBenchRecipe::new);
+        public static final StreamCodec<RegistryFriendlyByteBuf, HeavyWorkBenchRecipe> STREAM_CODEC = EnvironmentEitherAmountRecipe4x.environmentEitherSerializerStreamCodec(HeavyWorkBenchRecipe::new);
 
         @Override
         public MapCodec<HeavyWorkBenchRecipe> codec() {

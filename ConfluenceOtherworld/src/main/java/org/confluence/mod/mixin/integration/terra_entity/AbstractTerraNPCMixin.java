@@ -21,10 +21,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(value = AbstractTerraNPC.class, remap = false)
 public abstract class AbstractTerraNPCMixin implements IAbstractTerraNPC, SelfGetter<AbstractTerraNPC> {
     @Shadow
-    protected abstract void initName();
+    public abstract void initName();
 
     @Unique
     private NPCSpawner.Region confluence$region = NPCSpawner.Region.ZERO;
+    @Unique
+    private boolean confluence$shouldInteract = false;
 
     @Override
     public void confluence$setRegion(NPCSpawner.Region region) {
@@ -34,6 +36,16 @@ public abstract class AbstractTerraNPCMixin implements IAbstractTerraNPC, SelfGe
     @Override
     public NPCSpawner.Region confluence$getRegion() {
         return confluence$region;
+    }
+
+    @Override
+    public void confluence$setShouldInteract(boolean should) {
+        this.confluence$shouldInteract = should;
+    }
+
+    @Override
+    public boolean confluence$shouldInteract() {
+        return confluence$shouldInteract;
     }
 
     @Inject(method = "<init>", at = @At("TAIL"))
@@ -46,11 +58,13 @@ public abstract class AbstractTerraNPCMixin implements IAbstractTerraNPC, SelfGe
         if (tag.contains("confluence:region")) {
             this.confluence$region = NPCSpawner.Region.CODEC.parse(NbtOps.INSTANCE, tag.get("confluence:region")).result().orElse(NPCSpawner.Region.ZERO);
         }
+        this.confluence$shouldInteract = tag.getBoolean("confluence:should_interact");
     }
 
     @Inject(method = "addAdditionalSaveData", at = @At("TAIL"))
     private void save(CompoundTag tag, CallbackInfo ci) {
         NPCSpawner.Region.CODEC.encodeStart(NbtOps.INSTANCE, confluence$region).ifSuccess(tag1 -> tag.put("confluence:region", tag1));
+        tag.putBoolean("confluence:should_interact", confluence$shouldInteract);
     }
 
     @Inject(method = "setHouse", at = @At("HEAD"))

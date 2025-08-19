@@ -5,7 +5,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ManaStorage;
-import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.integration.ars_nouveau.ArsNouveauHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
@@ -32,7 +31,7 @@ public abstract class ManaCapMixin {
     @Inject(method = "<init>", at = @At("TAIL"))
     private void init(LivingEntity livingEntity, CallbackInfo ci) {
         if (CommonConfigs.CONVERT_ARS_NOUVEAU_MANA.get() && livingEntity instanceof Player player) {
-            this.confluence$manaStorage = Optional.of(player.getData(ModAttachmentTypes.MANA_STORAGE));
+            this.confluence$manaStorage = Optional.of(ManaStorage.of(player));
             this.confluence$isServerSide = player instanceof ServerPlayer;
         }
     }

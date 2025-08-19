@@ -1,19 +1,27 @@
 {
     "type": "neoforge:add_spawns",
-    "biomes": [
-        "minecraft:frozen_peaks",
-        "minecraft:frozen_river",
-        "minecraft:grove",
-        "minecraft:ice_spikes",
-        "minecraft:jagged_peaks",
-        "minecraft:snowy_beach",
-        "minecraft:snowy_plains",
-        "minecraft:snowy_slopes",
-        "minecraft:snowy_taiga"
-    ],
+    "biomes": {
+        "type": "neoforge:or",
+        "values": [
+            "#c:is_snowy",
+            "#c:is_icy"
+        ]
+    },
     "spawners": [
         {
             "type": "terra_entity:ice_bat",
+            "weight": 80,
+            "minCount": 1,
+            "maxCount": 2
+        },
+        {
+            "type": "terra_entity:undead_viking",
+            "weight": 80,
+            "minCount": 1,
+            "maxCount": 2
+        },
+        {
+            "type": "terra_entity:snow_flinx",
             "weight": 80,
             "minCount": 1,
             "maxCount": 2

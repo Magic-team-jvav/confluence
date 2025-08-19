@@ -1,6 +1,7 @@
 package org.confluence.mod.common.worldgen.feature;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -85,7 +86,7 @@ public class ColumnPatchFeature extends Feature<ColumnPatchFeature.Config> {
 
     public record Config(int stepHeight, int radius, int maxDepth, int maxSearchHeight, float successRatio, BlockStateProvider blockStateProvider) implements FeatureConfiguration {
         public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                ExtraCodecs.POSITIVE_INT.lenientOptionalFieldOf("step_height", 3).forGetter(Config::stepHeight),
+                Codec.INT.validate(i -> i >= 0 ? DataResult.success(i) : DataResult.error(() -> "Value must be non-negative: " + i)).lenientOptionalFieldOf("step_height", 3).forGetter(Config::stepHeight),
                 ExtraCodecs.POSITIVE_INT.lenientOptionalFieldOf("radius", 4).forGetter(Config::radius),
                 ExtraCodecs.POSITIVE_INT.lenientOptionalFieldOf("max_depth", 32).forGetter(Config::maxDepth),
                 ExtraCodecs.POSITIVE_INT.lenientOptionalFieldOf("max_search_height", 32).forGetter(Config::maxDepth),

@@ -21,15 +21,14 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.entity.hook.AbstractHookEntity;
-import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.item.hook.BaseHookItem;
 
 public record HookThrowingPacketC2S(boolean throwing, int id) implements CustomPacketPayload {
     public static final Type<HookThrowingPacketC2S> TYPE = new Type<>(Confluence.asResource("hook_throwing"));
     public static final StreamCodec<ByteBuf, HookThrowingPacketC2S> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.BOOL, p -> p.throwing,
-            ByteBufCodecs.INT, p -> p.id,
+            ByteBufCodecs.BOOL, HookThrowingPacketC2S::throwing,
+            ByteBufCodecs.VAR_INT, HookThrowingPacketC2S::id,
             HookThrowingPacketC2S::new
     );
 
@@ -43,8 +42,8 @@ public record HookThrowingPacketC2S(boolean throwing, int id) implements CustomP
             if (!(context.player() instanceof ServerPlayer player)) return;
             ServerLevel level = player.serverLevel();
             if (throwing) {
-                ExtraInventory extraInventory = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
-                ItemStack itemStack = extraInventory.getHook();
+                ExtraInventory extraInventory = ExtraInventory.of(player);
+                ItemStack itemStack = extraInventory.getHook(false);
                 if (!(itemStack.getItem() instanceof BaseHookItem item)) return;
                 if (item.canHook(level, extraInventory, itemStack)) {
                     ListTag listTag = LibUtils.getItemStackNbt(itemStack).getList("hooks", Tag.TAG_COMPOUND);

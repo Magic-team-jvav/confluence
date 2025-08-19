@@ -4,7 +4,7 @@
 	"texture_size": [128, 128],
 	"textures": {
 		"7": "confluence:block/heavy_work_bench",
-		"particle": "confluence:block/heavy_work_bench_particle"
+		"particle": "confluence:block/particle/heavy_work_bench_particle"
 	},
 	"elements": [
 		{

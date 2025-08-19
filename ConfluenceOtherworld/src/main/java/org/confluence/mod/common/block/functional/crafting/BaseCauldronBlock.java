@@ -7,6 +7,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionResult;
@@ -77,7 +78,7 @@ public class BaseCauldronBlock extends HorizontalDirectionalBlock implements Ent
         if (level.isClientSide) {
             return InteractionResult.SUCCESS;
         } else {
-            if (level.getBlockEntity(pos) instanceof Entity entity) {
+            if (level.getBlockEntity(pos) instanceof BEntity entity) {
                 player.openMenu(entity);
             }
             return InteractionResult.CONSUME;
@@ -95,38 +96,38 @@ public class BaseCauldronBlock extends HorizontalDirectionalBlock implements Ent
     }
 
     @Override
-    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
-        if (!pState.is(pNewState.getBlock())) {
-            if (pLevel.getBlockEntity(pPos) instanceof CookingPotBlock.Entity entity) {
-                if (!pLevel.isClientSide) {
-                    Containers.dropContents(pLevel, pPos, entity);
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+        if (!state.is(newState.getBlock())) {
+            if (level.getBlockEntity(pos) instanceof Container container) {
+                if (!level.isClientSide) {
+                    Containers.dropContents(level, pos, container);
                 }
-                pLevel.updateNeighbourForOutputSignal(pPos, this);
+                level.updateNeighbourForOutputSignal(pos, state.getBlock());
             }
-            super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
+            super.onRemove(state, level, pos, newState, movedByPiston);
         }
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(BlockStateProperties.LIT, FACING);
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(BlockStateProperties.LIT, FACING);
     }
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new Entity(pos, state);
+        return new BEntity(pos, state);
     }
 
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-        return level.isClientSide ? null : LibUtils.getTicker(blockEntityType, FunctionalBlocks.CAULDRON_ENTITY.get(), CookingPotBlock.Entity::serverTick);
+        return level.isClientSide ? null : LibUtils.getTicker(blockEntityType, FunctionalBlocks.CAULDRON_ENTITY.get(), CookingPotBlock.BEntity::serverTick);
     }
 
-    public static class Entity extends BaseContainerBlockEntity {
+    public static class BEntity extends BaseContainerBlockEntity {
         protected NonNullList<ItemStack> items = NonNullList.withSize(CookingPotMenu.SLOT_COUNT, ItemStack.EMPTY);
         int cookingProgress;
         int cookingTotalTime;
-        int heatSourceItem = CookingPotBlock.Item.getId(Items.AIR);
+        int heatSourceItem = CookingPotBlock.BItem.getId(Items.AIR);
         ItemStack[] itemStacks = new ItemStack[4];
         protected final ContainerData dataAccess = new ContainerData() {
             @Override
@@ -160,16 +161,27 @@ public class BaseCauldronBlock extends HorizontalDirectionalBlock implements Ent
         };
         private final RecipeManager.CachedCheck<CookingPotRecipe.Input, CookingPotRecipe> cachedCheck;
 
-        public Entity(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState blockState) {
+        public BEntity(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState blockState) {
             super(blockEntityType, pos, blockState);
             this.cachedCheck = RecipeManager.createCheck(ModRecipes.COOKING_POT_TYPE.get());
         }
 
-        public Entity(BlockPos pos, BlockState blockState) {
+        public BEntity(BlockPos pos, BlockState blockState) {
             this(FunctionalBlocks.CAULDRON_ENTITY.get(), pos, blockState);
         }
 
-        public static void serverTick(Level level, BlockPos pos, BlockState state, Entity blockEntity) {
+//        @Override
+//        public void onLoad() {
+//            super.onLoad();
+//            invalidateCapabilities();
+//        }
+//
+//        @Override
+//        public void onChunkUnloaded() {
+//            invalidateCapabilities();
+//        }
+
+        public static void serverTick(Level level, BlockPos pos, BlockState state, BEntity blockEntity) {
             BlockInWorld heatSource = new BlockInWorld(level, pos.below(), true);
             if (level.getGameTime() % 20 == 1) { // 每秒获取一次
                 blockEntity.heatSourceItem = Item.getId(heatSource.getState().getBlock().asItem());

@@ -53,11 +53,11 @@ public class SignalPressurePlateBlock extends PressurePlateBlock implements Enti
 
     @Override
     public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new AbstractMechanicalBlock.Entity(blockPos, blockState);
+        return new AbstractMechanicalBlock.BEntity(blockPos, blockState);
     }
 
     @Override
-    public void onExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {}
+    public void onExecute(BlockState state, ServerLevel level, BlockPos pos, int color, INetworkEntity networkEntity) {}
 
     @Override
     protected int getSignalStrength(Level level, BlockPos pos) {
@@ -65,7 +65,7 @@ public class SignalPressurePlateBlock extends PressurePlateBlock implements Enti
         try {
             ((LevelAccessor) level).callGetEntities().get(TOUCH_AABB.move(pos), entity -> {
                 if (test.test(entity)) {
-                    throw new ReturnException(0);
+                    throw new ReturnException();
                 }
             });
         } catch (ReturnException e) {

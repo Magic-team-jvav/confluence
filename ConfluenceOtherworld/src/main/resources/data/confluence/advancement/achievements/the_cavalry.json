@@ -18,6 +18,20 @@
     "criteria": {
         "never": {
             "trigger": "minecraft:impossible"
+        },
+        "curio": {
+            "trigger": "terra_curio:curios_equipped",
+            "conditions": {
+                "item": {
+                    "items": "#confluence:mount"
+                }
+            }
         }
-    }
+    },
+    "requirements": [
+        [
+            "never",
+            "curio"
+        ]
+    ]
 }

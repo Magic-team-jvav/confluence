@@ -12,7 +12,7 @@
       "item": "confluence:diamond_chain"
     },
     "$": {
-      "item": "mineacrft:diamond_block"
+        "item": "minecraft:diamond_block"
     }
   },
   "pattern": [

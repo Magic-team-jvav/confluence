@@ -87,7 +87,7 @@ public class BloodthirstCrystallizedBlock extends Block implements EntityBlock {
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new Entity(pos, state);
+        return new BEntity(pos, state);
     }
 
     @Override
@@ -114,8 +114,8 @@ public class BloodthirstCrystallizedBlock extends Block implements EntityBlock {
         }
     }
 
-    public static class Entity extends BlockEntity {
-        public Entity(BlockPos pos, BlockState blockState) {
+    public static class BEntity extends BlockEntity {
+        public BEntity(BlockPos pos, BlockState blockState) {
             super(NatureBlocks.BLOODTHIRST_CRYSTALLIZED_ENTITY.get(), pos, blockState);
         }
 

@@ -13,6 +13,7 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.hud.ArrowInBowHud;
 import org.confluence.mod.common.entity.projectile.range.arrow.BeeArrow;
+import org.confluence.mod.common.entity.projectile.range.arrow.HellBatArrowEntity;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.item.bow.BaseArrowItem;
 import org.confluence.mod.common.item.bow.DaedalusStormbow;
@@ -34,6 +35,10 @@ public class BowItems {
 
     // 短弓
     public static final DeferredItem<ShortBowItem> WOODEN_SHORT_BOW = ITEMS.register("wooden_short_bow",() -> new ShortBowItem( 4.0F, 384));
+    public static final DeferredItem<ShortBowItem> EBONWOOD_SHORT_BOW = ITEMS.register("ebonwood_short_bow",() -> new ShortBowItem( 4.3F, 404));
+    public static final DeferredItem<ShortBowItem> SHADEWOOD_SHORT_BOW = ITEMS.register("shadewood_short_bow",() -> new ShortBowItem( 4.4F, 424));
+    public static final DeferredItem<ShortBowItem> ASH_WOOD_SHORT_BOW = ITEMS.register("ash_wood_short_bow",() -> new ShortBowItem( 4.5F, 444));
+    public static final DeferredItem<ShortBowItem> PEARLWOOD_SHORT_BOW = ITEMS.register("pearlwood_short_bow",() -> new ShortBowItem( 5.0F, 1000));
     public static final DeferredItem<ShortBowItem> COPPER_SHORT_BOW = ITEMS.register("copper_short_bow", () -> new ShortBowItem(4.5F, 640));
     public static final DeferredItem<ShortBowItem> TIN_SHORT_BOW = ITEMS.register("tin_short_bow", () -> new ShortBowItem(4.5F, 768));
     public static final DeferredItem<ShortBowItem> IRON_SHORT_BOW = ITEMS.register("iron_short_bow", () -> new ShortBowItem(5.0F, 896));
@@ -45,6 +50,10 @@ public class BowItems {
 
 
     // 无效果蓄力弓
+    public static final DeferredItem<TerraBowItem> EBONWOOD_BOW = register("ebonwood_bow", 3.0F, 404);
+    public static final DeferredItem<TerraBowItem> SHADEWOOD_BOW = register("shadewood_bow", 3.1F, 424);
+    public static final DeferredItem<TerraBowItem> ASH_WOOD_BOW = register("ash_wood_bow", 3.2F, 444);
+    public static final DeferredItem<TerraBowItem> PEARLWOOD_BOW = register("pearlwood_bow", 3.5F, 1000);
     public static final DeferredItem<TerraBowItem> COPPER_BOW = register("copper_bow", 3.0F, 640);
     public static final DeferredItem<TerraBowItem> TIN_BOW = register("tin_bow", 3.0F, 768);
     public static final DeferredItem<TerraBowItem> IRON_BOW = register("iron_bow", 3.5F, 896);
@@ -77,11 +86,16 @@ public class BowItems {
             .setRarity(ModRarity.ORANGE)
             .setArrowTransform(ArrowItems.HELLFIRE_ARROW.get())
     );
-    public static final DeferredItem<TerraBowItem> THE_BEES_KNEES = register("the_bees_knees",  2.0F, m->m
+    public static final DeferredItem<TerraBowItem> THE_BEES_KNEES = register("the_bees_knees",  6.0F, m->m
             .setRarity(ModRarity.YELLOW)
             .setMultiShoot(3, (i, c)->new Vec3(-i*0.25f,0,0))
             .setCanMultiShoot(ammo->!(ammo.getItem() instanceof BaseArrowItem))
             .setEntityTransform(TerraBowItem.EntityTransform.create(ModEntities.BEE_ARROW.get(), BeeArrow::new))
+    );
+    public static final DeferredItem<TerraBowItem> HELLWING_BOW = register("hellwing_bow",  6.3f, m->m
+            .setRarity(ModRarity.RED)
+            .setInaccuracy(1f)
+            .setEntityTransform(TerraBowItem.EntityTransform.create(ModEntities.HELL_BAT_ARROW.get(), HellBatArrowEntity::new))
     );
 
     // 代达罗斯风暴弓

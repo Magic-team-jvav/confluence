@@ -14,13 +14,12 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ExtraInventory;
-import org.confluence.mod.common.init.ModAttachmentTypes;
 
 public record ExtraInventoryStackPacketS2C(long packedData, ItemStack itemStack) implements CustomPacketPayload {
     public static final Type<ExtraInventoryStackPacketS2C> TYPE = new Type<>(Confluence.asResource("extra_inventory_stack"));
     public static final StreamCodec<RegistryFriendlyByteBuf, ExtraInventoryStackPacketS2C> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.VAR_LONG, p -> p.packedData,
-            ItemStack.OPTIONAL_STREAM_CODEC, p -> p.itemStack,
+            ByteBufCodecs.VAR_LONG, ExtraInventoryStackPacketS2C::packedData,
+            ItemStack.OPTIONAL_STREAM_CODEC, ExtraInventoryStackPacketS2C::itemStack,
             ExtraInventoryStackPacketS2C::new
     );
 
@@ -33,8 +32,10 @@ public record ExtraInventoryStackPacketS2C(long packedData, ItemStack itemStack)
         context.enqueueWork(() -> {
             Player player = context.player();
             if (player.isLocalPlayer() && player.level().getEntity(getEntityId()) instanceof Player entity) {
-                ExtraInventory extraInventory = entity.getData(ModAttachmentTypes.EXTRA_INVENTORY);
-                extraInventory.setAccessoryDyes(player, getSizeAccessoryDye());
+                ExtraInventory extraInventory = ExtraInventory.of(entity);
+                if (extraInventory.getSizeAccessoryDye() != getSizeAccessoryDye()) {
+                    extraInventory.setAccessoryDyes(player, getSizeAccessoryDye());
+                }
                 extraInventory.setItem(getSlot(), itemStack);
             }
         }).exceptionally(e -> {

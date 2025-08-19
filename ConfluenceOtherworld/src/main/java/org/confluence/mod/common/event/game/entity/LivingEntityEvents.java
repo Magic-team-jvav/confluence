@@ -6,6 +6,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
@@ -30,18 +31,24 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.entity.living.*;
 import org.confluence.lib.common.event.GameEvents;
+import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.attachment.ExtraInventory;
+import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.effect.beneficial.ArcheryEffect;
 import org.confluence.mod.common.effect.beneficial.LuckEffect;
 import org.confluence.mod.common.effect.flask.FlaskEffect;
 import org.confluence.mod.common.effect.harmful.ManaSicknessEffect;
 import org.confluence.mod.common.effect.neutral.LoveEffect;
-import org.confluence.mod.common.entity.projectile.boulder.TombstoneBoulder;
-import org.confluence.mod.common.init.*;
+import org.confluence.mod.common.entity.projectile.boulder.TombstoneBoulderEntity;
+import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.ModHookTypes;
+import org.confluence.mod.common.init.ModSecretSeeds;
+import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.common.CoinItem;
@@ -57,16 +64,17 @@ import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.network.s2c.DeathMotionPacketS2C;
 import org.confluence.mod.network.s2c.VisibilityPacketS2C;
-import org.confluence.mod.util.AchievementUtils;
-import org.confluence.mod.util.DateUtils;
-import org.confluence.mod.util.ModUtils;
-import org.confluence.mod.util.PlayerUtils;
+import org.confluence.mod.util.*;
 import org.confluence.terra_curio.common.init.TCAttributes;
-import org.confluence.terraentity.entity.ai.Boss;
+import org.confluence.terra_curio.util.TCUtils;
+import org.confluence.terraentity.api.entity.Boss;
+import org.confluence.terraentity.entity.boss.Skeletron;
 import org.confluence.terraentity.entity.monster.slime.GoldenSlime;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 import org.confluence.terraentity.init.TETags;
+import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
+import org.confluence.terraentity.init.entity.TENpcEntities;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -77,46 +85,56 @@ import static org.confluence.mod.util.PlayerUtils.receiveMana;
 public final class LivingEntityEvents {
     @SubscribeEvent
     public static void livingDeath(LivingDeathEvent event) {
-        LivingEntity living = event.getEntity();
+        LivingEntity victom = event.getEntity();
         DamageSource damageSource = event.getSource();
 
-        if (living.level() instanceof ServerLevel level) {
-            if (living instanceof Enemy && damageSource.getEntity() instanceof ServerPlayer) {
+        if (victom.level() instanceof ServerLevel level) {
+            Entity attacker = damageSource.getEntity();
+            if (victom instanceof Enemy && attacker instanceof ServerPlayer) {
                 if (CommonConfigs.DROP_MONEY.get() && level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT)) {
-                    ModUtils.enemyDropMoney(living, level);
+                    ModUtils.enemyDropMoney(victom, level);
                 }
             }
-            if (damageSource.getEntity() != null && damageSource.getEntity().getType().is(TETags.EntityTypes.CORRUPT)) {
-                NatureBlocks.DECOMPOSE_THE_SOURCE_EXTRACT_BLOCK.get().checkVisibilityAndSummonEntity(level, living);
+            if (attacker != null && attacker.getType().is(TETags.EntityTypes.CORRUPT)) {
+                NatureBlocks.DECOMPOSE_THE_SOURCE_EXTRACT_BLOCK.get().checkVisibilityAndSummonEntity(level, victom);
             }
-            if (living instanceof Boss boss && boss.shouldShowMessage()) {
-                ModUtils.bossDeath(level, living);
+            if (victom instanceof Boss boss && boss.shouldShowMessage()) {
+                ModUtils.bossDeath(level, victom);
             }
-            if (living instanceof ServerPlayer serverPlayer) {
+            if (victom instanceof ServerPlayer serverPlayer) {
                 PlayerUtils.dropMoney(serverPlayer);
-                TombstoneBoulder.createTombstone(serverPlayer);
+                TombstoneBoulderEntity.createTombstone(serverPlayer);
             }
-            if (living.getRandom().nextFloat() < 0.011F) {
-                Item holidayGift = DateUtils.getHolidayGift(living.getRandom());
+            if (victom.getRandom().nextFloat() < 0.011F) {
+                Item holidayGift = DateUtils.getHolidayGift(victom.getRandom());
                 if (holidayGift != Items.AIR) {
-                    LibUtils.createItemEntity(holidayGift.getDefaultInstance(), living.position(), level, 0);
+                    LibUtils.createItemEntity(holidayGift.getDefaultInstance(), victom.position(), level, 0);
                 }
             }
-            for (ServerPlayer serverPlayer : level.players()) {
-                if (serverPlayer.position().distanceToSqr(living.position()) > 32 * 32) continue;
-                if (serverPlayer.getData(ModAttachmentTypes.MANA_STORAGE).canReceive() && serverPlayer.getRandom().nextFloat() < 0.083F) {
-                    LibUtils.createItemEntity(DateUtils.getStarItem().getDefaultInstance(), living.position(), level, 0);
+            for (ServerPlayer player : level.players()) {
+                if (player.position().distanceToSqr(victom.position()) > 32 * 32) continue;
+                if (ManaStorage.of(player).canReceive() && player.getRandom().nextFloat() < 0.083F) {
+                    LibUtils.createItemEntity(DateUtils.getStarItem().getDefaultInstance(), victom.position(), level, 0);
                     break;
                 }
             }
-            if (living instanceof AbstractTerraNPC npc) {
+            if (victom instanceof AbstractTerraNPC npc) {
                 NPCSpawner.INSTANCE.onNPCRemoved(npc);
+                if (attacker != null && npc.getType() == TENpcEntities.CLOTHIER.get() &&
+                        attacker instanceof Player player &&
+                        LibDateUtils.isNight(level) && // 晚上杀死才生成
+                        TCUtils.hasAccessoriesType(player, AccessoryItems.CLOTHIER$KILLER)
+                ) {
+                    Skeletron skeletron = new Skeletron(TEBossEntities.SKELETRON.get(), level);
+                    skeletron.finalizeSpawn(level, level.getCurrentDifficultyAt(skeletron.blockPosition()), MobSpawnType.EVENT, null);
+                    ModUtils.summonBoss(level, attacker.blockPosition(), skeletron);
+                }
             }
-            if (living.hasEffect(ModEffects.BLOOD_BUTCHERED)) {
-                NatureBlocks.BLOODTHIRST_CRYSTALLIZED_BLOCK.get().checkVisibility(level, living);
+            if (victom.hasEffect(ModEffects.BLOOD_BUTCHERED)) {
+                NatureBlocks.BLOODTHIRST_CRYSTALLIZED_BLOCK.get().checkVisibility(level, victom);
             }
-            DeathMotionPacketS2C.sendToAll(living);
-            NoTraps.entityDropsGrenade(living);
+            DeathMotionPacketS2C.sendToAll(victom);
+            NoTraps.entityDropsGrenade(victom);
         }
     }
 
@@ -131,7 +149,7 @@ public final class LivingEntityEvents {
         if (!(living.level() instanceof ServerLevel level)) return;
 
         float amount = event.getAmount();
-        if (living.getData(ModAttachmentTypes.EVER_BENEFICIAL).isVitalCrystalUsed()) {
+        if (EverBeneficial.of(living).isVitalCrystalUsed()) {
             amount *= 1.2F;
         }
         if (living.hasEffect(ModEffects.COZY_FIRE)) {
@@ -147,8 +165,7 @@ public final class LivingEntityEvents {
         DamageSource damageSource = event.getSource();
         LivingEntity living = event.getEntity();
         if (living instanceof ServerPlayer serverPlayer) {
-            float amount = event.getAmount();
-            AccessoryItems.applyHurtGetMana(serverPlayer, damageSource, (int) amount);
+            AccessoryItems.applyHurtGetMana(serverPlayer, damageSource, event.getAmount());
         }
         Immunity cause = Immunity.getCause(event.getSource());
         if (((ILivingEntity) living).confluence$getImmunityTicks().containsKey(cause)) {
@@ -173,36 +190,44 @@ public final class LivingEntityEvents {
     public static void livingDamage$Pre(LivingDamageEvent.Pre event) {
         float amount = event.getNewDamage();
         if (amount <= 0.0F) return; // 防止莫名的负数伤害
-        LivingEntity living = event.getEntity();
-        if (!(living.level() instanceof ServerLevel level)) return;
+        LivingEntity victim = event.getEntity();
+        if (!(victim.level() instanceof ServerLevel level)) return;
         DamageSource damageSource = event.getSource();
-        if (damageSource.is(DamageTypes.FELL_OUT_OF_WORLD) || damageSource.is(DamageTypes.GENERIC_KILL)) return;
+        if (damageSource.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) return;
         @Nullable Entity attacker = damageSource.getEntity();
 
-        amount = ArcheryEffect.apply(living, damageSource, amount);
+        amount = ArcheryEffect.apply(victim, damageSource, amount);
         amount = ManaSicknessEffect.apply(damageSource, amount);
         amount = TheConstant.applyAttackDamage(attacker, amount);
 
-        ModUtils.applyBrainOfCthulhuDebuff(level, attacker, living);
-        ModUtils.applyCursedSkullDebuff(attacker, living);
+        ModUtils.applyBrainOfCthulhuDebuff(level, attacker, victim);
+        ModUtils.applyCursedSkullDebuff(attacker, victim);
+
+        if (attacker instanceof ServerPlayer player) {
+            EnchantmentUtils.dropsStar(player, victim, damageSource);
+            amount = EnchantmentUtils.processMagicAttack(player, damageSource, amount);
+        }
+        if (victim instanceof ServerPlayer player) {
+            amount = EnchantmentUtils.processManaProtection(player, damageSource, amount);
+        }
 
         // 芦苇呼吸管对溺水伤害减半
         if (damageSource.is(DamageTypes.DROWN)) {
-            if (LibUtils.anyHandHasItem(living, SwordItems.BREATHING_REED.get())) {
+            if (LibUtils.anyHandHasItem(victim, SwordItems.BREATHING_REED.get())) {
                 amount *= 0.5F;
             }
         }
         // 剑命中效果
         ItemStack weapon = damageSource.getWeaponItem();
         if (weapon != null && weapon.getItem() instanceof BaseSwordItem sword) {
-            sword.applyHitEffects(weapon, attacker, living, damageSource, amount);
+            sword.applyHitEffects(weapon, attacker, victim, damageSource, amount);
         }
         // 暴击判定和伤害显示
         boolean crit = false;
         if (!TCAttributes.hasCustomAttribute(TCAttributes.CRIT_CHANCE) && attacker instanceof Player player) {
-            if (living.getRandom().nextFloat() < player.getAttributeValue(TCAttributes.CRIT_CHANCE)) {
+            if (LibUtils.checkChance(player.getAttributeValue(TCAttributes.CRIT_CHANCE), player.getRandom())) {
                 amount *= 1.5F;
-                player.crit(living);
+                player.crit(victim);
                 crit = true;
             }
         }
@@ -267,16 +292,17 @@ public final class LivingEntityEvents {
     @SubscribeEvent
     public static void livingDrops(LivingDropsEvent event) {
         if (event.getEntity() instanceof Player player && !player.level().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) {
-            ExtraInventory data = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
-            for (int i = 0; i < data.getContainerSize(); i++) {
-                if (i >= ExtraInventory.COINS_START && i < ExtraInventory.COINS_START + ExtraInventory.SIZE_COINS)
-                    continue;
-                ItemStack itemStack = data.getItem(i);
+            ExtraInventory data = ExtraInventory.of(player);
+            for (int i = 0; i < ExtraInventory.SIZE_COINS; i++) {
+                ItemStack itemStack = data.getCoins(i);
                 if (!itemStack.isEmpty()) {
                     data.setItem(i, ItemStack.EMPTY);
                 }
                 event.getDrops().add(new ItemEntity(player.level(), player.getX(), player.getY(), player.getZ(), itemStack));
             }
+        }
+        for (ItemEntity entity : event.getDrops()) {
+            ModUtils.makeItemAntigravity(entity);
         }
     }
 
@@ -338,7 +364,7 @@ public final class LivingEntityEvents {
                 LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.FEET, (pink ? ArmorItems.PINK_INSULATED_SHOES : ArmorItems.INSULATED_SHOES).get(), 0.003F);
                 //mob.setCustomName(Component.translatable("entity.confluence.frozen_zombie"));
                 event.setCanceled(true);
-            } else if (level.isRainingAt(blockPos)) {
+            } else if (ModUtils.isRainingAt(level, blockPos)) {
                 LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.HEAD, ArmorItems.RAIN_CAP.get(), 0.003F);
                 LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.CHEST, ArmorItems.RAINCOAT.get(), 0.003F);
                 //mob.setCustomName(Component.translatable("entity.confluence.raincoat_zombie"));

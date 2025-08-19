@@ -11,7 +11,6 @@ import net.minecraft.world.level.Level;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.common.attachment.ManaStorage;
-import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModSoundEvents;
 
 public class ArcaneCrystalItem extends TooltipItem {
@@ -26,8 +25,7 @@ public class ArcaneCrystalItem extends TooltipItem {
         }
         ItemStack itemStack = player.getItemInHand(usedHand);
         if (player instanceof ServerPlayer serverPlayer) {
-            ManaStorage manaStorage = player.getData(ModAttachmentTypes.MANA_STORAGE);
-            if (manaStorage.setArcaneCrystalUsed()) {
+            if (ManaStorage.of(player).setArcaneCrystalUsed()) {
                 CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayer, itemStack);
                 itemStack.shrink(1);
             }

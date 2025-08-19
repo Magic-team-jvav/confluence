@@ -1,16 +1,17 @@
 package org.confluence.mod.common.entity.projectile.mana;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.entity.projectile.DamageSettableProjectile;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.util.ModUtils;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class AbstractManaProjectile extends DamageSettableProjectile {
     protected boolean localVelocity = false;
@@ -20,15 +21,16 @@ public abstract class AbstractManaProjectile extends DamageSettableProjectile {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {}
-
-    @Override
     public void tick() {
         if (getOwner() == null) {
             discard();
         } else {
             super.tick();
         }
+    }
+
+    public @Nullable LivingEntity getLivingOwner() {
+        return getOwner() instanceof LivingEntity living ? living : null;
     }
 
     public DamageSource getDamagesource() {

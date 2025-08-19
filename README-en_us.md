@@ -15,10 +15,11 @@
 | [IsekaiInvaded](IsekaiInvaded)               | Dimensional Invasion Event | depends on HeavenDestinyMoment |
 | [TerraFurniture](TerraFurniture)             | Terra's Furniture          | yes                            |
 
-| Official Integrations                                              | Description                  |
-|--------------------------------------------------------------------|------------------------------|
-| [ConfluenceDelight](https://github.com/cooobird/ConfluenceDelight) | Farmer's Delight integration |
-| [ConfluenceMusic](https://github.com/westernat/Confluence-Music)   | Extra music                  |
+| Official Integrations                                                               | Description                                                                            |
+|-------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------|
+| [ConfluenceDelight](https://github.com/cooobird/ConfluenceDelight)                  | Farmer's Delight integration                                                           |
+| [ConfluenceMusic](https://github.com/westernat/Confluence-Music)                    | Extra music                                                                            |
+| [ConfluenceDimensionPatch](https://github.com/westernat/Confluence-Dimension-Patch) | Transfer the Confluence Otherworld's modifications to the Overworld to a new dimension |
 
 ## Build the Project
 
@@ -38,3 +39,21 @@
 
 - After all the project is pulled successuly, you can use gradle's runClient command.
 
+## Maven Example
+
+```groovy
+repositories {
+  maven {
+    name "org.confluenceReleases"
+    url "https://maven.confluence.ink/releases"
+  }
+  maven {
+    name "org.confluenceSnapshots"
+    url "https://maven.confluence.ink/snapshots"
+  }
+}
+
+dependencies {
+  implementation "org.confluence.lib:Confluence-Magic-Lib:<version>"
+}
+```

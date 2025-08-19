@@ -60,16 +60,16 @@ public class TerraBowItem extends BowItem {
     }
 
     @Override
-    public boolean supportsEnchantment(ItemStack stack, Holder<Enchantment> enchantment) {
+    public boolean supportsEnchantment(@NotNull ItemStack stack, @NotNull Holder<Enchantment> enchantment) {
         return ModUtils.supportsEnchantment(stack, enchantment);
     }
 
     @Override
-    public @NotNull AbstractArrow customArrow(AbstractArrow arrow, ItemStack projectileStack, ItemStack weaponStack) {
+    public @NotNull AbstractArrow customArrow(@NotNull AbstractArrow arrow, @NotNull ItemStack projectileStack, @NotNull ItemStack weaponStack) {
         int multiShoot = modifyArrowBuilder.multiShoot;
-        if(!modifyArrowBuilder.canMultiShoot.test(projectileStack)) {
+        if(modifyArrowBuilder.canMultiShoot.test(projectileStack)) {
             // 可以分裂但不满足条件没有分裂的箭伤害合成一支箭
-            float damage = baseDamage * multiShoot;
+            float damage = baseDamage / multiShoot;
             arrow.setBaseDamage(damage);
         }else{
             arrow.setBaseDamage(baseDamage);
@@ -79,7 +79,7 @@ public class TerraBowItem extends BowItem {
     }
 
     @Override
-    public void releaseUsing(ItemStack stack, Level level, LivingEntity entity, int timeLeft) {
+    public void releaseUsing(@NotNull ItemStack stack, @NotNull Level level, @NotNull LivingEntity entity, int timeLeft) {
         super.releaseUsing(stack, level, entity, timeLeft);
         if(stack.is(ModTags.Items.FAST_BOW) && entity instanceof Player p){
             p.getCooldowns().addCooldown(this, 5);
@@ -92,7 +92,7 @@ public class TerraBowItem extends BowItem {
     }
 
     @Override
-    protected void shoot(ServerLevel level, LivingEntity shooter, InteractionHand hand, ItemStack weapon, List<ItemStack> projectileItems, float velocity, float inaccuracy, boolean isCrit, @Nullable LivingEntity target) {
+    protected void shoot(@NotNull ServerLevel level, @NotNull LivingEntity shooter, @NotNull InteractionHand hand, @NotNull ItemStack weapon, List<ItemStack> projectileItems, float velocity, float inaccuracy, boolean isCrit, @Nullable LivingEntity target) {
         float f = EnchantmentHelper.processProjectileSpread(level, weapon, shooter, 0.0F);
         float f1 = projectileItems.size() == 1 ? 0.0F : 2.0F * f / (float)(projectileItems.size() - 1);
         float f2 = (float)((projectileItems.size() - 1) % 2) * f1 / 2.0F;
@@ -111,7 +111,7 @@ public class TerraBowItem extends BowItem {
                 for(int k = 0; k < count; k++) {
 //                    float f0 = count * 5 - k * 10f;
                     Projectile projectile = this.createProjectile(level, shooter, weapon, itemstack, isCrit);
-                    this.shootProjectile(shooter, projectile, i, velocity, inaccuracy, f4 + 0, target);
+                    this.shootProjectile(shooter, projectile, i, velocity, inaccuracy + modifyArrowBuilder.inaccuracy, f4 + 0, target);
 
                     if(modifyArrowBuilder.multiShootOffset!=null) {
                         // 多重射击初始位置偏移
@@ -156,7 +156,7 @@ public class TerraBowItem extends BowItem {
     }
 
     @Override
-    public void onUseTick(Level level, LivingEntity entity, ItemStack stack, int remainingUseDuration) {
+    public void onUseTick(@NotNull Level level, @NotNull LivingEntity entity, @NotNull ItemStack stack, int remainingUseDuration) {
         if(this.arrowModifier.fullPullHitEffects != null) {
             float f = getUseDuration(stack, entity) - remainingUseDuration;
             if (f < 16)
@@ -171,7 +171,7 @@ public class TerraBowItem extends BowItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
+    public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, List<Component> tooltipComponents, @NotNull TooltipFlag tooltipFlag) {
         tooltipComponents.add(Component.translatable("attribute.name.generic.attack_damage").append(": ").append(String.format("%.1f", this.baseDamage)).withColor(0x00FF00));
         if(modifyArrowBuilder.multiShoot > 1){
             tooltipComponents.add(Component.translatable("tooltip.item.confluence.max_count").append(": ").append(String.format("%d", modifyArrowBuilder.multiShoot)).withColor(0x00FF00));
@@ -205,12 +205,12 @@ public class TerraBowItem extends BowItem {
     }
 
     @Override
-    public boolean isEnchantable(ItemStack stack) {
+    public boolean isEnchantable(@NotNull ItemStack stack) {
         return true;
     }
 
     @Override
-    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+    public boolean shouldCauseReequipAnimation(@NotNull ItemStack oldStack, @NotNull ItemStack newStack, boolean slotChanged) {
         return false;
     }
 
@@ -221,13 +221,18 @@ public class TerraBowItem extends BowItem {
         return f;
     }
 
+    /**
+     * <p>弓的属性修饰</p>
+     * <p>若注册在弓里面，则是弓的属性；若注册在箭里面，则是箭的属性。二者可以叠加</p>
+     */
     public static class Builder{
         List<Function<Item.Properties, Item.Properties>> modifyProperties = new ArrayList<>();
         List<Consumer<BaseArrowEntity.Builder>> modifyArrowBuilder = new ArrayList<>();
         int multiShoot = 1;
-        Predicate<ItemStack> canMultiShoot = ammo->true;
+        Predicate<ItemStack> canMultiShoot = ammo->false;
         BiFunction<Integer, Integer, Vec3> multiShootOffset;
         public EntityTransform entityTransform;
+        float inaccuracy;
 
         /**
          * 应用属性修改器
@@ -328,6 +333,14 @@ public class TerraBowItem extends BowItem {
          */
         public Builder addModifyArrowBuilder(Consumer<BaseArrowEntity.Builder> modifyArrowBuilder){
             this.modifyArrowBuilder.add(modifyArrowBuilder);
+            return this;
+        }
+
+        /**
+         * 设置额外不准确度
+         */
+        public Builder setInaccuracy(float inaccuracy){
+            this.inaccuracy = inaccuracy;
             return this;
         }
 

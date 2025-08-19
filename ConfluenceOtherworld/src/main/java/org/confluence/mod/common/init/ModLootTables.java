@@ -8,6 +8,7 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.loot.DateLootItemCondition;
+import org.confluence.mod.common.loot.GamePhaseLootItemCondition;
 
 import java.util.function.Supplier;
 
@@ -59,6 +60,10 @@ public final class ModLootTables {
     public static final ResourceKey<LootTable> TREASURE = register("gameplay/fishing/treasure");
     public static final ResourceKey<LootTable> CRATE = register("gameplay/crate");
     public static final ResourceKey<LootTable> CRATE_HARDMODE = register("gameplay/crate_hardmode");
+    public static final ResourceKey<LootTable> QUESTS_0 = register("gameplay/fishing_quests_0");
+    public static final ResourceKey<LootTable> QUESTS_1 = register("gameplay/fishing_quests_1");
+    public static final ResourceKey<LootTable> QUESTS_2 = register("gameplay/fishing_quests_2");
+    public static final ResourceKey<LootTable> QUESTS_3 = register("gameplay/fishing_quests_3");
 
     public static final ResourceKey<LootTable> CORRUPTION_CARRY = register("gameplay/corruption_carry");
     public static final ResourceKey<LootTable> SLIME_CARRY = register("gameplay/slime_carry");
@@ -82,5 +87,6 @@ public final class ModLootTables {
         public static final DeferredRegister<LootItemConditionType> TYPES = DeferredRegister.create(BuiltInRegistries.LOOT_CONDITION_TYPE, Confluence.MODID);
 
         public static final Supplier<LootItemConditionType> DATE = TYPES.register("date", () -> new LootItemConditionType(DateLootItemCondition.CODEC));
+        public static final Supplier<LootItemConditionType> GAME_PHASE = TYPES.register("game_phase", () -> new LootItemConditionType(GamePhaseLootItemCondition.CODEC));
     }
 }

@@ -3,7 +3,11 @@ package org.confluence.mod.integration.jei;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
+import mezz.jei.api.constants.VanillaTypes;
+import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.helpers.IJeiHelpers;
+import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.transfer.IRecipeTransferHandlerHelper;
 import mezz.jei.api.registration.*;
 import net.minecraft.client.Minecraft;
@@ -12,8 +16,12 @@ import net.minecraft.client.gui.components.toasts.ToastComponent;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.block.Blocks;
+import org.confluence.lib.common.recipe.AmountIngredient;
+import org.confluence.lib.common.recipe.EitherAmountRecipe4x;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.AchievementToast;
 import org.confluence.mod.client.gui.container.*;
@@ -22,6 +30,7 @@ import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.item.ToolItems;
+import org.confluence.mod.integration.jei.category.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +69,8 @@ public final class ModJeiPlugin implements IModPlugin {
         registration.addRecipeCategories(new SolidifierCategory(jeiHelpers));
         registration.addRecipeCategories(new HardmodeAnvilCategory(jeiHelpers));
         registration.addRecipeCategories(new ExtractinatorCategory(jeiHelpers, ExtractinatorCategory.EXTRACTINATOR, FunctionalBlocks.EXTRACTINATOR.get()));
+        registration.addRecipeCategories(new ExtractinatorCategory(jeiHelpers, ExtractinatorCategory.CHLOROPHYTE_EXTRACTINATOR, FunctionalBlocks.CHLOROPHYTE_EXTRACTINATOR.get()));
+        registration.addRecipeCategories(new HardmodeForgeCategory(jeiHelpers));
     }
 
     @Override
@@ -81,6 +92,8 @@ public final class ModJeiPlugin implements IModPlugin {
         registration.addRecipes(SolidifierCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.SOLIDIFIER_TYPE.get()));
         registration.addRecipes(HardmodeAnvilCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.HARDMODE_ANVIL_TYPE.get()));
         registration.addRecipes(ExtractinatorCategory.EXTRACTINATOR, ExtractinatorCategory.collectAll(ModDataMaps.EXTRACTINATOR, level.registryAccess()));
+        registration.addRecipes(ExtractinatorCategory.CHLOROPHYTE_EXTRACTINATOR, ExtractinatorCategory.collectAll(ModDataMaps.CHLOROPHYTE_EXTRACTINATOR, level.registryAccess()));
+        registration.addRecipes(HardmodeForgeCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.HARDMODE_FORGE_TYPE.get()));
     }
 
     @Override
@@ -103,6 +116,9 @@ public final class ModJeiPlugin implements IModPlugin {
         registration.addRecipeCatalyst(FunctionalBlocks.MYTHRIL_ANVIL.toStack(), HardmodeAnvilCategory.TYPE);
         registration.addRecipeCatalyst(FunctionalBlocks.ORICHALCUM_ANVIL.toStack(), HardmodeAnvilCategory.TYPE);
         registration.addRecipeCatalyst(FunctionalBlocks.EXTRACTINATOR.toStack(), ExtractinatorCategory.EXTRACTINATOR);
+        registration.addRecipeCatalyst(FunctionalBlocks.CHLOROPHYTE_EXTRACTINATOR.toStack(), ExtractinatorCategory.CHLOROPHYTE_EXTRACTINATOR);
+        registration.addRecipeCatalyst(FunctionalBlocks.ADAMANTITE_FORGE.toStack(), HardmodeForgeCategory.TYPE, HellforgeCategory.TYPE, RecipeTypes.BLASTING);
+        registration.addRecipeCatalyst(FunctionalBlocks.TITANIUM_FORGE.toStack(), HardmodeForgeCategory.TYPE, HellforgeCategory.TYPE, RecipeTypes.BLASTING);
     }
 
     @Override
@@ -118,6 +134,7 @@ public final class ModJeiPlugin implements IModPlugin {
         registration.addRecipeClickArea(AlchemyTableScreen.class, 79, 38, 18, 20, AlchemyTableCategory.TYPE);
         registration.addRecipeClickArea(CookingPotScreen.class, 78, 36, 46, 15, CookingPotCategory.TYPE);
         registration.addRecipeClickArea(HardmodeAnvilScreen.class, 78, 36, 46, 15, HardmodeAnvilCategory.TYPE);
+        registration.addRecipeClickArea(HardmodeForgeScreen.class, 89, 31, 28, 23, HardmodeForgeCategory.TYPE);
 
         registration.addGlobalGuiHandler(new ExtraInventoryHandler());
     }
@@ -136,5 +153,49 @@ public final class ModJeiPlugin implements IModPlugin {
 
     public static void drawArrowRight(GuiGraphics guiGraphics, int x, int y, boolean usable) {
         guiGraphics.blit(ARROW_RIGHT, x, y, 0, usable ? 0 : 21, 28, 21, 42, 42);
+    }
+
+    public static void setEitherRecipe4x(IRecipeLayoutBuilder builder, RecipeHolder<? extends EitherAmountRecipe4x<?>> recipe) {
+        recipe.value().either.ifLeft(shaped -> {
+            int width = shaped.width();
+            int height = shaped.height();
+            boolean symmetrical = shaped.symmetrical;
+            for (int i = 0; i < height; i++) {
+                for (int j = 0; j < width; j++) {
+                    if (symmetrical) {
+                        addInput(builder, j * 18 + 6, i * 18 + 5, shaped.ingredients().get(width - j - 1 + i * width));
+                    } else {
+                        addInput(builder, j * 18 + 6, i * 18 + 5, shaped.ingredients().get(j + i * width));
+                    }
+                }
+            }
+        }).ifRight(shapeless -> {
+            builder.setShapeless();
+            int i = 0, j = 0;
+            for (Ingredient ingredient : shapeless) {
+                addInput(builder, j * 18 + 6, i * 18 + 5, ingredient);
+                if (++j >= 4) {
+                    j = 0;
+                    i++;
+                }
+            }
+        });
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 117, 33).addItemStack(recipe.value().getResultItem(null));
+    }
+
+    public static void addInput(IRecipeLayoutBuilder builder, int x, int y, Ingredient ingredient) {
+        addInput(builder, x, y, ingredient, false);
+    }
+
+    public static void addInput(IRecipeLayoutBuilder builder, int x, int y, Ingredient ingredient, boolean directSlot) {
+        if (!ingredient.isEmpty()) {
+            IRecipeSlotBuilder sb;
+            if (ingredient.getCustomIngredient() instanceof AmountIngredient amountIngredient) {
+                sb = builder.addInputSlot(x, y).addIngredients(VanillaTypes.ITEM_STACK, amountIngredient.getItems().toList());
+            } else {
+                sb = builder.addInputSlot(x, y).addIngredients(ingredient);
+            }
+            if (directSlot) sb.setStandardSlotBackground();
+        }
     }
 }

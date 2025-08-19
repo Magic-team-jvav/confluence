@@ -1,7 +1,7 @@
 {
     "display": {
         "icon": {
-            "id": "minecraft:barrier"
+            "id": "confluence:sea_bass"
         },
         "title": {
             "translate": "achievements.confluence.good_little_slave.title"

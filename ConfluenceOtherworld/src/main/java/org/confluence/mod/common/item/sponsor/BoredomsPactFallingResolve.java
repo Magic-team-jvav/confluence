@@ -96,7 +96,7 @@ public class BoredomsPactFallingResolve extends BaseCurioItem {
 
     @Override
     public Multimap<Holder<Attribute>, AttributeModifier> getAttributeModifiers(SlotContext slotContext, ResourceLocation id, ItemStack stack) {
-        AttributeModifier modifier = new AttributeModifier(ID, 0.2 * LibUtils.getItemStackNbt(stack).getByte("count"), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+        AttributeModifier modifier = new AttributeModifier(ID, 0.2 * LibUtils.getItemStackNbtNoCopy(stack).getByte("count"), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
         return ImmutableMultimap.of(
                 Attributes.ATTACK_DAMAGE, modifier,
                 TCAttributes.getMagicDamage(), modifier,

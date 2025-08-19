@@ -1,5 +1,6 @@
 package org.confluence.mod.mixin.entity;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
@@ -14,16 +15,20 @@ import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.entity.PartEntity;
 import net.neoforged.neoforge.fluids.FluidType;
 import org.confluence.mod.api.event.ShimmerEntityTransmutationEvent;
+import org.confluence.mod.common.block.common.AetheriumCauldronBlock;
 import org.confluence.mod.common.data.saved.GamePhase;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.ArmorItems;
 import org.confluence.mod.integration.terra_entity.IAbstractTerraNPC;
 import org.confluence.mod.mixed.IEntity;
@@ -71,6 +76,12 @@ public abstract class EntityMixin implements IEntity {
     @Shadow
     public abstract boolean is(Entity pEntity);
 
+    @Shadow
+    public abstract BlockState getInBlockState();
+
+    @Shadow
+    public abstract BlockPos blockPosition();
+
     @Unique
     private boolean confluence$isInShimmer = false;
     @Unique
@@ -104,11 +115,10 @@ public abstract class EntityMixin implements IEntity {
 
         if (confluence$entity_coolDown < 0) this.confluence$entity_coolDown = 0;
 
-        boolean isItem = self instanceof ItemEntity;
-        if (getEyeInFluidType() == ModFluids.SHIMMER.type().get()) {
+        if (confluence$checkInShimmer()) {
             if (!confluence$isInShimmer) { // 入微光
                 this.confluence$isInShimmer = true;
-                self.level().playSound(null, self.getX(), self.getY(), self.getZ(), isItem ? ModSoundEvents.SHIMMER_ITEM_INTERACTIONS.get() : ModSoundEvents.SHIMMER_IMMERSION.get(), SoundSource.AMBIENT, 0.5F, 1.0F);
+                self.level().playSound(null, self.getX(), self.getY(), self.getZ(), self instanceof ItemEntity ? ModSoundEvents.SHIMMER_ITEM_INTERACTIONS.get() : ModSoundEvents.SHIMMER_IMMERSION.get(), SoundSource.AMBIENT, 0.5F, 1.0F);
             }
         } else {
             if (confluence$isInShimmer) { // 出微光
@@ -118,7 +128,7 @@ public abstract class EntityMixin implements IEntity {
         }
 
         if (confluence$isInShimmer) {
-            if (!self.level().isClientSide && confluence$entity_coolDown == 0 && !isItem) {
+            if (confluence$entity_coolDown == 0 && !self.level().isClientSide && !(self instanceof ItemEntity)) {
                 ShimmerEntityTransmutationEvent.Pre pre = new ShimmerEntityTransmutationEvent.Pre(self);
                 if (NeoForge.EVENT_BUS.post(pre).isCanceled()) {
                     confluence$setup(self, pre.getCoolDown(), pre.getSpeedY());
@@ -147,8 +157,7 @@ public abstract class EntityMixin implements IEntity {
             }
         } else {
             this.confluence$entity_transforming = 0;
-            if (confluence$entity_coolDown > 0) this.confluence$entity_coolDown--;
-            if (confluence$entity_coolDown == 0 && confluence$transformData != HAD_SETUP && !isItem) {
+            if (--this.confluence$entity_coolDown == 0 && confluence$transformData != HAD_SETUP && !(self instanceof ItemEntity)) {
                 setGlowingTag(false);
                 if (confluence$transformData == HAS_GRAVITY) {
                     setNoGravity(false);
@@ -221,5 +230,13 @@ public abstract class EntityMixin implements IEntity {
                 return;
             }
         }
+    }
+
+    @Unique
+    private boolean confluence$checkInShimmer() {
+        if (getEyeInFluidType() == ModFluids.SHIMMER.type().get()) return true;
+        BlockState state = getInBlockState();
+        Block block = state.getBlock();
+        return block == ModBlocks.AETHERIUM_CAULDRON.get() && ((AetheriumCauldronBlock) block).isEntityInsideContent(state, blockPosition(), confluence$self());
     }
 }

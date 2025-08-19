@@ -201,8 +201,8 @@ public class BaseArrowEntity extends AbstractArrow {
             }
 
             //命中自己
-            if (livingentity != entity1 && livingentity instanceof Player && entity1 instanceof ServerPlayer && !this.isSilent()) {
-                ((ServerPlayer) entity1).connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.ARROW_HIT_PLAYER, 0.0F));
+            if (livingentity != entity1 && livingentity instanceof Player && entity1 instanceof ServerPlayer player && !this.isSilent()) {
+                player.connection.send(new ClientboundGameEventPacket(ClientboundGameEventPacket.ARROW_HIT_PLAYER, 0.0F));
             }
             penetrate++;
             if (!canPenetrate()) {
@@ -328,6 +328,7 @@ public class BaseArrowEntity extends AbstractArrow {
         private float speedFactor = 1;
         private float knockBack = 0;
         private int causeFireTick = 0;
+        private int luminance = 0;
 
         // 雨天增益
         private float speedUpInRain = 1;
@@ -404,12 +405,22 @@ public class BaseArrowEntity extends AbstractArrow {
         public Builder setCauseFire(int tick) {//初始火焰增加
             type |= Tag.cause_fire;
             this.causeFireTick = tick;
+            this.setLuminance(Math.max(this.luminance, 8));
             return this;
         }
 
         public Builder setTransformArrow(BaseArrowItem arrow) {
             this.transformArrow = arrow;
             return this;
+        }
+
+        public Builder setLuminance(int luminance) {
+            this.luminance = luminance;
+            return this;
+        }
+
+        public int getLuminance() {
+            return luminance;
         }
 
         public int getType() {

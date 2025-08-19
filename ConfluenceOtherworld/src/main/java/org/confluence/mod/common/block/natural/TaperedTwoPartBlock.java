@@ -54,17 +54,13 @@ public class TaperedTwoPartBlock extends Block implements SimpleWaterloggedBlock
         if (state.getValue(WATERLOGGED)) {
             level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
-        if (direction != Direction.UP && direction != Direction.DOWN) {
-            return state;
-        } else if (neighborState.is(this)) {
-            Direction dir = state.getValue(TIP_DIRECTION);
-            if (direction == dir) {
-                if (state.getValue(PART) == TIP_SINGLE) {
-                    return state.setValue(PART, BASE);
-                }
-            } else {
-                return state.setValue(PART, TIP_MERGE);
-            }
+        Direction ownDirection = state.getValue(TIP_DIRECTION);
+        if ((state.getValue(PART) == TIP_SINGLE) && level.getBlockState(pos.relative(ownDirection)).is(this.asBlock()) && ownDirection == level.getBlockState(pos.relative(ownDirection)).getValue(TIP_DIRECTION)) {
+            return state.setValue(PART, BASE);
+        } else if ((state.getValue(PART) == BASE) && level.getBlockState(pos.relative(ownDirection)).is(this.asBlock()) && ownDirection == level.getBlockState(pos.relative(ownDirection)).getValue(TIP_DIRECTION)) {
+            return state.setValue(PART, BASE);
+        } else if ((state.getValue(PART) == TIP_MERGE) && level.getBlockState(pos.relative(ownDirection.getOpposite())).is(this.asBlock()) && ownDirection == level.getBlockState(pos.relative(ownDirection.getOpposite())).getValue(TIP_DIRECTION)) {
+            return state.setValue(PART, TIP_MERGE);
         }
         if (!canSurvive(state, level, pos)) {
             level.scheduleTick(pos, this, 1);
@@ -136,9 +132,7 @@ public class TaperedTwoPartBlock extends Block implements SimpleWaterloggedBlock
     }
 
     private boolean isValidTaperedPlacement(LevelReader level, BlockPos pos, Direction dir) {
-        BlockPos blockpos = pos.relative(dir.getOpposite());
-        BlockState blockState = level.getBlockState(blockpos);
-        return blockState.isFaceSturdy(level, blockpos, dir) || (blockState.is(this) && blockState.getValue(TIP_DIRECTION) == dir && blockState.getValue(PART) != TIP_MERGE);
+        return level.getBlockState(pos.relative(dir.getOpposite())).isFaceSturdy(level, pos.relative(dir.getOpposite()), dir) || (level.getBlockState(pos.relative(dir.getOpposite())).is(this.asBlock()) && (level.getBlockState(pos.relative(dir.getOpposite())).getValue(PART) == TIP_SINGLE));
     }
 
     private @Nullable Direction calculateTipDirection(LevelReader level, BlockPos pos, Direction dir) {

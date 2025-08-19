@@ -16,7 +16,6 @@ import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import org.confluence.mod.common.attachment.ExtraInventory;
-import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.util.ClientUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -29,12 +28,12 @@ import static org.confluence.lib.util.LibUtils.getSlotIndex;
 public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, A extends HumanoidModel<T>> {
     @WrapOperation(method = "renderArmorPiece(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/entity/EquipmentSlot;ILnet/minecraft/client/model/HumanoidModel;FFFFFF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack;"))
     private ItemStack wrapItem(LivingEntity instance, EquipmentSlot slot, Operation<ItemStack> original, @Share("extra") LocalRef<ExtraInventory> extra) {
-        if (instance instanceof AbstractClientPlayer) {
+        if (instance instanceof AbstractClientPlayer player) {
             int index = getSlotIndex(slot);
             if (index != -1) {
-                ExtraInventory inventory = instance.getData(ModAttachmentTypes.EXTRA_INVENTORY);
+                ExtraInventory inventory = ExtraInventory.of(player);
                 extra.set(inventory);
-                ItemStack vanityArmor = inventory.getVanityArmor(index);
+                ItemStack vanityArmor = inventory.getVanityArmor(index, false);
                 if (!vanityArmor.isEmpty()) return vanityArmor;
             }
         }
@@ -53,7 +52,7 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, A extends 
     @ModifyExpressionValue(method = "renderArmorPiece(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/entity/EquipmentSlot;ILnet/minecraft/client/model/HumanoidModel;FFFFFF)V", at = @At(value = "INVOKE", target = "Lnet/neoforged/neoforge/client/ClientHooks;getArmorTexture(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ArmorMaterial$Layer;ZLnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/resources/ResourceLocation;", remap = false))
     private ResourceLocation withGray(ResourceLocation original, @Local(argsOnly = true) LivingEntity entity, @Local(argsOnly = true) EquipmentSlot slot, @Share("extra") LocalRef<ExtraInventory> extra) {
         if (entity instanceof AbstractClientPlayer) {
-            if (!extra.get().getVanityArmorDye(getSlotIndex(slot)).isEmpty()) {
+            if (!extra.get().getVanityArmor(getSlotIndex(slot), true).isEmpty()) {
                 return ClientUtils.getGrayTexture(original);
             }
         }

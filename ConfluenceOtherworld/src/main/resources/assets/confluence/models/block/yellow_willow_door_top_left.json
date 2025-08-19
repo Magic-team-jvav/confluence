@@ -1,8 +1,0 @@
-{
-  "parent": "block/door_top_left",
-  "textures": {
-    "bottom": "confluence:block/yellow_willow_door_bottom",
-    "top": "confluence:block/yellow_willow_door_top"
-  },
-  "render_type": "cutout"
-}

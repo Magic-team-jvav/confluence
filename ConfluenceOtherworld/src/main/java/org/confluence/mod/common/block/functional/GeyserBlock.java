@@ -75,7 +75,7 @@ public class GeyserBlock extends AbstractMechanicalBlock { // 热喷泉
 
     @Override
     public void entityInside(BlockState pState, Level pLevel, BlockPos pPos, net.minecraft.world.entity.Entity pEntity) {
-        if (!pLevel.isClientSide && pLevel.getBlockEntity(pPos) instanceof Entity entity) {
+        if (!pLevel.isClientSide && pLevel.getBlockEntity(pPos) instanceof BEntity entity) {
             onExecute(pState, (ServerLevel) pLevel, pPos, -1, entity);
         }
     }
@@ -86,16 +86,16 @@ public class GeyserBlock extends AbstractMechanicalBlock { // 热喷泉
     }
 
     @Override
-    public void onExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {
-        if (pState.getValue(StateProperties.DRIVE)) return;
-        int bx = pPos.getX();
-        int by = pPos.getY();
-        int bz = pPos.getZ();
-        double offsetY = pState.getValue(IS_FLOOR) ? 12.0 : -12.0;
+    public void onExecute(BlockState state, ServerLevel level, BlockPos pos, int color, INetworkEntity networkEntity) {
+        if (state.getValue(StateProperties.DRIVE)) return;
+        int bx = pos.getX();
+        int by = pos.getY();
+        int bz = pos.getZ();
+        double offsetY = state.getValue(IS_FLOOR) ? 12.0 : -12.0;
         // todo 粒子
-        pLevel.getEntities((net.minecraft.world.entity.Entity) null, new AABB(bx, by, bz, bx + 1.0, by + offsetY, bz + 1.0), entity -> entity instanceof LivingEntity)
-                .forEach(entity -> entity.hurt(pLevel.damageSources().lava(), 4.0F));
-        pLevel.setBlockAndUpdate(pPos, pState.setValue(StateProperties.DRIVE, true));
-        pLevel.scheduleTick(pPos, this, 66);
+        level.getEntities((net.minecraft.world.entity.Entity) null, new AABB(bx, by, bz, bx + 1.0, by + offsetY, bz + 1.0), entity -> entity instanceof LivingEntity)
+                .forEach(entity -> entity.hurt(level.damageSources().lava(), 4.0F));
+        level.setBlockAndUpdate(pos, state.setValue(StateProperties.DRIVE, true));
+        level.scheduleTick(pos, this, 66);
     }
 }

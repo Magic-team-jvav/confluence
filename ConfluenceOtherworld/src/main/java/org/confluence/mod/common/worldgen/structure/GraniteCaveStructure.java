@@ -29,7 +29,7 @@ import static org.confluence.lib.util.VectorUtils.frustumSetPos;
 public class GraniteCaveStructure extends Structure {
     public static final MapCodec<GraniteCaveStructure> CODEC = simpleCodec(GraniteCaveStructure::new);
 
-    protected GraniteCaveStructure(StructureSettings settings) {
+    public GraniteCaveStructure(StructureSettings settings) {
         super(settings);
     }
 
@@ -51,35 +51,35 @@ public class GraniteCaveStructure extends Structure {
             BlockPos checkPos;
             int blockstate = 1;
 
-            List<Vector3d> listPos = frustumSetPos(start, end, random.nextInt(53, 56) + 0.5, random.nextInt(53, 56) + 0.5, 0.0002F, random);
+            List<Vector3d> listPos = frustumSetPos(start, end, random.nextInt(38, 41) + 0.5, random.nextInt(38, 41) + 0.5, 0.0002F, random);
             List<Vector3d> listPos1 = new ArrayList<>();
             List<Vector3d> listPos2 = new ArrayList<>();
             List<Vector3d> listPos3 = new ArrayList<>();
             for (Vector3d vector3d : listPos) {
-                listPos1.addAll(ellipsoidPos(15.5, 9.5, 15.5, VectorUtils.fromVector3d(vector3d), 0.002F, random));
+                listPos1.addAll(ellipsoidPos(13.5, 9.5, 13.5, VectorUtils.fromVector3d(vector3d), 0.002F, random));
             }
 
             for (Vector3d vector3d : listPos1) {
                 checkPos = VectorUtils.fromVector3d(vector3d);
-                listPos2.addAll(ellipsoidPos(15.5, 4.5, 15.5, checkPos, 0.002F, random));
+                listPos2.addAll(ellipsoidPos(11.5, 6.5, 11.5, checkPos, 0.002F, random));
             }
             for (Vector3d vector3d : listPos2) {
                 checkPos = VectorUtils.fromVector3d(vector3d);
-                ellipsoid(13.5, 4.5, 13.5, checkPos, blockstate, true, blockMap);
+                ellipsoid(9.5, 4.5, 9.5, checkPos, blockstate, true, blockMap);
             }
             for (Vector3d vector3d : listPos2) {
                 checkPos = VectorUtils.fromVector3d(vector3d);
-                ellipsoid(random.nextInt(4, 12) + 0.5, 2.5, random.nextInt(4, 12) + 0.5, checkPos, 0, true, blockMap);
+                ellipsoid(random.nextInt(4, 9) + 0.5, 2.5, random.nextInt(4, 9) + 0.5, checkPos, 0, true, blockMap);
             }
 
             for (Vector3d vector3d : listPos2) {
                 if (0.001F > random.nextFloat()) {
-                    listPos3.addAll(ellipsoidPos(random.nextInt(10, 30) + 0.5, 1.5, random.nextInt(10, 30) + 0.5, VectorUtils.fromVector3d(vector3d), 0.05F, random));
+                    listPos3.addAll(ellipsoidPos(random.nextInt(8, 13) + 0.5, 1.5, random.nextInt(8, 13) + 0.5, VectorUtils.fromVector3d(vector3d), 0.05F, random));
                 }
             }
             for (Vector3d vector3d : listPos3) {
                 checkPos = VectorUtils.fromVector3d(vector3d);
-                ellipsoid(random.nextInt(4, 12) + 0.5, 0.1, random.nextInt(4, 12) + 0.5, checkPos, blockstate, true, blockMap);
+                ellipsoid(random.nextInt(4, 9) + 0.5, 0.1, random.nextInt(4, 9) + 0.5, checkPos, blockstate, true, blockMap);
             }
 
             GridPiece.addPieces(blockMap, Lists.newArrayList(

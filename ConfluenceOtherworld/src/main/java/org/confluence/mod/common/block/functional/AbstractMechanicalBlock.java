@@ -21,35 +21,35 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Set;
 
 public abstract class AbstractMechanicalBlock extends Block implements EntityBlock, INetworkBlock {
-    public AbstractMechanicalBlock(Properties pProperties) {
-        super(pProperties);
+    public AbstractMechanicalBlock(Properties properties) {
+        super(properties);
     }
 
     @Override
-    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
-        onNodeRemove(pState, pLevel, pPos, pNewState);
-        super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+        onNodeRemove(state, level, pos, newState);
+        super.onRemove(state, level, pos, newState, movedByPiston);
     }
 
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return new Entity(pPos, pState);
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new BEntity(pos, state);
     }
 
-    public static class Entity extends BlockEntity implements INetworkEntity {
+    public static class BEntity extends BlockEntity implements INetworkEntity {
         private NetworkNode networkNode;
         private final Int2ObjectMap<Set<BlockPos>> connectedPoses;
         private final Int2ObjectMap<Set<BlockPos>> relativePoses;
 
-        public Entity(BlockEntityType<? extends Entity> entityType, BlockPos pPos, BlockState pBlockState) {
-            super(entityType, pPos, pBlockState);
+        public BEntity(BlockEntityType<? extends BEntity> entityType, BlockPos pos, BlockState blockState) {
+            super(entityType, pos, blockState);
             this.connectedPoses = new Int2ObjectOpenHashMap<>();
             this.relativePoses = new Int2ObjectOpenHashMap<>();
         }
 
-        public Entity(BlockPos pPos, BlockState pBlockState) {
-            this(FunctionalBlocks.MECHANICAL_BLOCK_ENTITY.get(), pPos, pBlockState);
+        public BEntity(BlockPos pos, BlockState state) {
+            this(FunctionalBlocks.MECHANICAL_BLOCK_ENTITY.get(), pos, state);
         }
 
         @Override
@@ -85,7 +85,12 @@ public abstract class AbstractMechanicalBlock extends Block implements EntityBlo
 
         @Override
         public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-            return serializePoses(super.getUpdateTag(registries), "connectedPoses", connectedPoses);
+            return serializePoses(new CompoundTag(), "connectedPoses", connectedPoses);
+        }
+
+        @Override
+        public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+            deserializePoses(tag, "connectedPoses", connectedPoses);
         }
 
         @Override

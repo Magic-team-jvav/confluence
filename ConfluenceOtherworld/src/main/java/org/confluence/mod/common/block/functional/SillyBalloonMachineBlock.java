@@ -32,13 +32,13 @@ public class SillyBalloonMachineBlock extends Block implements EntityBlock, INet
     }
 
     @Override
-    public void onExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {
-        pLevel.setBlockAndUpdate(pPos, pState.cycle(StateProperties.DRIVE));
+    public void onExecute(BlockState state, ServerLevel level, BlockPos pos, int color, INetworkEntity networkEntity) {
+        level.setBlockAndUpdate(pos, state.cycle(StateProperties.DRIVE));
     }
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new Entity(pos, state);
+        return new BEntity(pos, state);
     }
 
     @Override
@@ -49,17 +49,17 @@ public class SillyBalloonMachineBlock extends Block implements EntityBlock, INet
 
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-        return level.isClientSide ? LibUtils.getTicker(blockEntityType, FunctionalBlocks.SILLY_BALLOON_MACHINE_ENTITY.get(), Entity::clientTick) : null;
+        return level.isClientSide ? LibUtils.getTicker(blockEntityType, FunctionalBlocks.SILLY_BALLOON_MACHINE_ENTITY.get(), BEntity::clientTick) : null;
     }
 
-    public static class Entity extends AbstractMechanicalBlock.Entity {
+    public static class BEntity extends AbstractMechanicalBlock.BEntity {
         private ParticleEmitter emitter;
 
-        public Entity(BlockPos pPos, BlockState pBlockState) {
+        public BEntity(BlockPos pPos, BlockState pBlockState) {
             super(FunctionalBlocks.SILLY_BALLOON_MACHINE_ENTITY.get(), pPos, pBlockState);
         }
 
-        public static void clientTick(Level level, BlockPos blockPos, BlockState blockState, Entity blockEntity) {
+        public static void clientTick(Level level, BlockPos blockPos, BlockState blockState, BEntity blockEntity) {
             if (blockEntity.emitter == null) {
                 blockEntity.emitter = new ParticleEmitter(level, blockPos.getCenter(), Confluence.asResource("balloon"));
                 PSGameClient.LOADER.addEmitter(blockEntity.emitter, false);

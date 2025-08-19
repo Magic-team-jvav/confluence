@@ -16,8 +16,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import org.confluence.lib.common.menu.AmountResultSlot;
+import org.confluence.lib.common.recipe.EnvironmentLevelAccess;
 import org.confluence.lib.common.recipe.EnvironmentRecipeInput;
-import org.confluence.mod.common.block.functional.crafting.SkyMillBlock;
 import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -30,7 +30,7 @@ public class SkyMillMenu extends AbstractContainerMenu {
     private static final int INV_SLOT_END = 31;
     private static final int USE_ROW_SLOT_START = 31;
     private static final int USE_ROW_SLOT_END = 40;
-    private final SkyMillBlock.LevelAccess access;
+    private final EnvironmentLevelAccess access;
     private final Player player;
     private Runnable slotUpdateListener = () -> {};
     public final EnvironmentRecipeInput input;
@@ -39,16 +39,16 @@ public class SkyMillMenu extends AbstractContainerMenu {
     private final DataSlot selectedRecipeIndex = DataSlot.standalone();
     private List<RecipeHolder<SkyMillRecipe>> recipes = Lists.newArrayList();
 
-    public SkyMillMenu(int pContainerId, Inventory inventory) {
-        this(pContainerId, inventory, new SkyMillBlock.LevelAccess(null, null));
+    public SkyMillMenu(int containerId, Inventory inventory) {
+        this(containerId, inventory, EnvironmentLevelAccess.empty());
     }
 
-    public SkyMillMenu(int pContainerId, Inventory inventory, SkyMillBlock.LevelAccess pAccess) {
-        super(ModMenuTypes.SKY_MILL.get(), pContainerId);
-        this.access = pAccess;
+    public SkyMillMenu(int containerId, Inventory inventory, EnvironmentLevelAccess access) {
+        super(ModMenuTypes.SKY_MILL.get(), containerId);
+        this.access = access;
         this.player = inventory.player;
-        access.initializeIfNeeded(player);
-        this.input = new EnvironmentRecipeInput(this, 3, access) {
+        this.access.initializeIfNeeded(player);
+        this.input = new EnvironmentRecipeInput(this, 3, SkyMillMenu.this.access) {
             public void setChanged() {
                 super.setChanged();
                 SkyMillMenu.this.slotUpdateListener.run();
@@ -58,7 +58,7 @@ public class SkyMillMenu extends AbstractContainerMenu {
             @Override
             public void onTake(Player pPlayer, ItemStack pStack) {
                 super.onTake(pPlayer, pStack);
-                access.execute((level, pos) -> {
+                SkyMillMenu.this.access.execute((level, pos) -> {
                     if (level instanceof ServerLevel serverLevel) {
                         serverLevel.sendParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 5, 0, 0, 0, 0.01);
                     }

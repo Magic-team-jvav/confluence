@@ -1,5 +1,6 @@
 package org.confluence.mod.common.block.common;
 
+import com.xiaohunao.terra_moment.common.init.TMMoments;
 import it.unimi.dsi.fastutil.longs.LongSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -176,7 +177,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
 
     private boolean dropGoldKey(ServerLevel level, BlockPos blockPos, Vec3 center) {
         if (level.random.nextFloat() < 0.0286F) {
-            Structure structure = level.registryAccess().registryOrThrow(Registries.STRUCTURE).get(ModStructures.DUNGEON_KEY);
+            Structure structure = level.registryAccess().registryOrThrow(Registries.STRUCTURE).get(ModStructures.Keys.DUNGEON);
             if (structure != null) {
                 int chunkX = SectionPos.blockToSectionCoord(blockPos.getX());
                 int chunkZ = SectionPos.blockToSectionCoord(blockPos.getZ());
@@ -218,7 +219,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
                 if (level.random.nextFloat() < 0.2F) {
                     // todo 返回药水
                 }
-            } else if (y <= 0.0) {
+            } else if (y <= OverworldUtils.getUndergroundY()) {
                 item = switch (level.random.nextInt(15)) {
                     case 0 -> SPELUNKER_POTION.get();
                     case 1 -> FEATHERFALL_POTION.get();
@@ -235,7 +236,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
                     case 13 -> DANGERSENSE_POTION.get();
                     default -> RECALL_POTION.get();
                 };
-            } else if (y <= 63.0) {
+            } else if (y <= OverworldUtils.getSurfaceY()) {
                 item = switch (level.random.nextInt(11)) {
                     case 0 -> REGENERATION_POTION.get();
                     case 1 -> SHINE_POTION.get();
@@ -247,7 +248,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
                     case 7 -> DANGERSENSE_POTION.get();
                     default -> RECALL_POTION.get();
                 };
-            } else if (y <= 240.0) {
+            } else if (y <= OverworldUtils.getSpaceY()) {
                 item = switch (level.random.nextInt(10)) {
                     case 0 -> IRON_SKIN_POTION.get();
                     case 1 -> SHINE_POTION.get();
@@ -319,7 +320,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
 //            } else if (this == UNDERGROUND_DESERT_POTS.get()) {
 //                item = Torches.DESERT_TORCH.item.get();
 //            } else {
-                item = Items.TORCH;
+        item = Items.TORCH;
 //            }
 //        }
         LibUtils.createItemEntity(item, amount, center, level, 0);
@@ -328,7 +329,7 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
 
     private boolean dropAmmo(ServerLevel level, Vec3 center) {
         int amount = level.random.nextInt(10, 21);
-        Item item = Items.ARROW;
+        Item item;
         boolean isHardmode = KillBoard.INSTANCE.getGamePhase().isHardmode();
         if (level.random.nextBoolean()) {
             item = isHardmode ? ConsumableItems.GRENADE.get() : ConsumableItems.SHURIKEN.get();
@@ -340,6 +341,8 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
             } else {
                 item = level.random.nextBoolean() ? TGItems.SILVER_BULLET.get() : TGItems.TUNGSTEN_BULLET.get();
             }
+        } else {
+            item = Items.ARROW;
         }
         LibUtils.createItemEntity(item, amount, center, level, 0);
         return true;
@@ -387,11 +390,11 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
         float random = level.random.nextFloat();
         float ratio = 1.0F;
         double y = center.y;
-        if (y <= 0.0) {
+        if (y <= OverworldUtils.getUndergroundY()) {
             ratio = 1.25F;
-        } else if (y <= 63.0) {
+        } else if (y <= OverworldUtils.getSurfaceY()) {
             ratio = 0.75F;
-        } else if (y <= 240.0) {
+        } else if (y <= OverworldUtils.getSpaceY()) {
             ratio = 0.5F;
         } else if (random < 0.05F) {
             ratio = Mth.nextFloat(level.random, 1.5F, 2.0F);
@@ -419,10 +422,13 @@ public class BasePotBlock extends Block implements SimpleWaterloggedBlock {
                 TEBossEntities.EYE_OF_CTHULHU.get(),
                 TEBossEntities.EATER_OF_WORLDS.get(),
                 TEBossEntities.BRAIN_OF_CTHULHU.get(),
+                TEBossEntities.QUEEN_BEE.get(),
                 TEBossEntities.SKELETRON.get()
+        ) + KillBoard.INSTANCE.countDefeated(
+                TMMoments.GOBLIN_ARMY.getKey()
         );
         for (int i = 0; i < defeated; i++) {
-            ratio *= 1.1F; // todo 毁灭者、双子魔眼、机械骷髅王、世纪之花、蜂王、石巨人、海盗入侵、哥布林入侵、雪人军团
+            ratio *= 1.1F; // todo 毁灭者、双子魔眼、机械骷髅王、世纪之花、石巨人、海盗入侵、雪人军团
         }
         ratio *= moneyRatio;
         int amount = (int) Math.ceil(level.random.nextInt(80, 358) * ratio);

@@ -44,8 +44,8 @@ public class MechanicalFragileBlock extends AbstractMechanicalBlock implements I
     }
 
     @Override
-    public void onExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {
-        pLevel.removeBlock(pPos, false);
+    public void onExecute(BlockState state, ServerLevel level, BlockPos pos, int color, INetworkEntity networkEntity) {
+        level.removeBlock(pos, false);
     }
 
     @Override

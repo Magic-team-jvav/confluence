@@ -17,7 +17,7 @@ import org.confluence.mod.common.init.block.ChestBlocks;
 import java.util.Hashtable;
 import java.util.function.BiFunction;
 
-public class BaseChestBlockRenderer extends ChestRenderer<BaseChestBlock.Entity> {
+public class BaseChestBlockRenderer extends ChestRenderer<BaseChestBlock.BEntity> {
     private final BiFunction<BlockState, ChestType, Material> function;
 
     public BaseChestBlockRenderer(BlockEntityRendererProvider.Context pContext) {
@@ -63,7 +63,7 @@ public class BaseChestBlockRenderer extends ChestRenderer<BaseChestBlock.Entity>
     }
 
     @Override
-    protected Material getMaterial(BaseChestBlock.Entity blockEntity, ChestType chestType) {
+    protected Material getMaterial(BaseChestBlock.BEntity blockEntity, ChestType chestType) {
         return function.apply(blockEntity.getBlockState(), chestType);
     }
 }

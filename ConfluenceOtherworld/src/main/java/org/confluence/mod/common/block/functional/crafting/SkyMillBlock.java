@@ -7,9 +7,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -23,16 +21,12 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.common.NeoForgeMod;
-import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.fluids.FluidType;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipBlockItem;
 import org.confluence.lib.common.recipe.EnvironmentLevelAccess;
 import org.confluence.mod.client.renderer.block.SkyMillBlockRenderer;
 import org.confluence.mod.client.renderer.item.SimpleGeoItemRenderer;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.menu.SkyMillMenu;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
@@ -56,7 +50,7 @@ public class SkyMillBlock extends HorizontalDirectionalBlock implements EntityBl
     }
 
     @Override
-    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return SHAPE;
     }
 
@@ -71,13 +65,13 @@ public class SkyMillBlock extends HorizontalDirectionalBlock implements EntityBl
     }
 
     @Override
-    public RenderShape getRenderShape(BlockState pState) {
+    public RenderShape getRenderShape(BlockState state) {
         return RenderShape.ENTITYBLOCK_ANIMATED;
     }
 
     @Override
-    public @Nullable BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return new Entity(pPos, pState);
+    public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new BEntity(pos, state);
     }
 
     @Override
@@ -91,8 +85,8 @@ public class SkyMillBlock extends HorizontalDirectionalBlock implements EntityBl
     }
 
     @Override
-    public @Nullable MenuProvider getMenuProvider(BlockState pState, Level pLevel, BlockPos pPos) {
-        return new SimpleMenuProvider((pContainerId, pPlayerInventory, pPlayer) -> new SkyMillMenu(pContainerId, pPlayerInventory, new LevelAccess(pLevel, pPos)), Component.translatable("container.confluence.sky_mill"));
+    public @Nullable MenuProvider getMenuProvider(BlockState state, Level level, BlockPos pos) {
+        return new SimpleMenuProvider((containerId, inventory, pPlayer) -> new SkyMillMenu(containerId, inventory, new EnvironmentLevelAccess(level, pos)), Component.translatable("container.confluence.sky_mill"));
     }
 
     @Override
@@ -100,11 +94,11 @@ public class SkyMillBlock extends HorizontalDirectionalBlock implements EntityBl
         return CODEC;
     }
 
-    public static class Entity extends BlockEntity implements GeoBlockEntity {
+    public static class BEntity extends BlockEntity implements GeoBlockEntity {
         private final AnimatableInstanceCache CACHE = GeckoLibUtil.createInstanceCache(this);
 
-        public Entity(BlockPos pPos, BlockState pBlockState) {
-            super(FunctionalBlocks.SKY_MILL_ENTITY.get(), pPos, pBlockState);
+        public BEntity(BlockPos pos, BlockState state) {
+            super(FunctionalBlocks.SKY_MILL_ENTITY.get(), pos, state);
         }
 
         @Override
@@ -120,11 +114,11 @@ public class SkyMillBlock extends HorizontalDirectionalBlock implements EntityBl
         }
     }
 
-    public static class Item extends TooltipBlockItem implements GeoItem {
+    public static class BItem extends TooltipBlockItem implements GeoItem {
         private final AnimatableInstanceCache CACHE = GeckoLibUtil.createInstanceCache(this);
 
-        public Item(SkyMillBlock pBlock) {
-            super(pBlock, new Properties(), ModRarity.BLUE, "tooltip.item.confluence.sky_mill.0");
+        public BItem(SkyMillBlock block) {
+            super(block, new Properties(), ModRarity.BLUE, "tooltip.item.confluence.sky_mill.0");
         }
 
         @Override
@@ -138,28 +132,6 @@ public class SkyMillBlock extends HorizontalDirectionalBlock implements EntityBl
         @Override
         public AnimatableInstanceCache getAnimatableInstanceCache() {
             return CACHE;
-        }
-    }
-
-    public static class LevelAccess extends EnvironmentLevelAccess {
-        public LevelAccess(@Nullable Level level, @Nullable BlockPos pos) {
-            super(level, pos);
-            this.level = level;
-            this.pos = pos;
-        }
-
-        @Override
-        public <R extends Recipe<?>> boolean matches(R recipe) {
-            if (level == null) return false;
-            ItemStack resultItem = recipe.getResultItem(level.registryAccess());
-            if (resultItem.is(NatureBlocks.SNOW_CLOUD_BLOCK.asItem())) {
-                return isBiome(holder -> holder.is(Tags.Biomes.IS_COLD_OVERWORLD));
-            }
-            if (resultItem.is(NatureBlocks.RAIN_CLOUD_BLOCK.asItem())) {
-                FluidType water = NeoForgeMod.WATER_TYPE.value();
-                return anyMatch(blockState -> blockState.getFluidState().getType().getFluidType() == water, 2);
-            }
-            return true;
         }
     }
 }

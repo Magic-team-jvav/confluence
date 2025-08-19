@@ -1,12 +1,14 @@
 package org.confluence.mod.common.entity.projectile.sword;
 
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.terraentity.registries.track.ITrackType;
+import org.confluence.mod.common.init.ModDamageTypes;
+import org.confluence.terraentity.api.entity.ITrackType;
 import org.confluence.terraentity.registries.track.variant.BasisTrack;
 import org.confluence.terraentity.registries.track.variant.SimpleTrack;
 import org.confluence.terraentity.utils.TEUtils;
@@ -19,7 +21,7 @@ public class BeeKeeperProjectile extends SwordProjectile<BeeKeeperProjectile> {
 
     public BeeKeeperProjectile(EntityType<? extends SwordProjectile> entityType, Level pLevel) {
         super(entityType, pLevel);
-        this.TIME_EXISTENCE = 100;
+        this.lifetime = 100;
         trackType = new BasisTrack(90, 0.3f);
 
     }
@@ -65,4 +67,12 @@ public class BeeKeeperProjectile extends SwordProjectile<BeeKeeperProjectile> {
         this.knockBack = 0;
         this.baseKnockBack = 0;
     }
+
+    @Override
+    public DamageSource damageSource(){
+        if(getOwner() instanceof LivingEntity living)
+            return ModDamageTypes.of(level(), ModDamageTypes.SWORD_PROJECTILE, living, this); // 取消无敌帧
+        else return damageSources().magic();
+    }
+
 }

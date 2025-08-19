@@ -15,8 +15,8 @@ import org.confluence.mod.client.handler.WeatherHandler;
 public record WindSpeedPacketS2C(float x, float z) implements CustomPacketPayload {
     public static final Type<WindSpeedPacketS2C> TYPE = new Type<>(Confluence.asResource("wind_speed"));
     public static final StreamCodec<ByteBuf, WindSpeedPacketS2C> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.FLOAT, p -> p.x,
-            ByteBufCodecs.FLOAT, p -> p.z,
+            ByteBufCodecs.FLOAT, WindSpeedPacketS2C::x,
+            ByteBufCodecs.FLOAT, WindSpeedPacketS2C::z,
             WindSpeedPacketS2C::new
     );
 

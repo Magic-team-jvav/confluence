@@ -23,8 +23,8 @@ public class LandMineBlock extends AbstractMechanicalBlock {
     }
 
     @Override
-    public void onExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {
-        pLevel.explode(null, pPos.getX() + 0.5, pPos.getY(), pPos.getZ() + 0.5, 3, false, Level.ExplosionInteraction.MOB);
+    public void onExecute(BlockState state, ServerLevel level, BlockPos pos, int color, INetworkEntity networkEntity) {
+        level.explode(null, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 3, false, Level.ExplosionInteraction.MOB);
     }
 
     @Override

@@ -35,7 +35,7 @@ public class ThrowableDropSelfProjectile extends DamageSettableProjectile {
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        builder.define(DATA_FLY_TICKS, 5).define(DATA_ITEM_STACK, ItemStack.EMPTY);
+        super.defineSynchedData(builder.define(DATA_FLY_TICKS, 5).define(DATA_ITEM_STACK, ItemStack.EMPTY));
     }
 
     public ThrowableDropSelfProjectile(EntityType<? extends ThrowableDropSelfProjectile> pEntityType, Level pLevel) {

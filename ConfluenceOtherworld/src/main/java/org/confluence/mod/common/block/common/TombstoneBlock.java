@@ -76,12 +76,12 @@ public class TombstoneBlock extends HorizontalDirectionalBlock implements Entity
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new Entity(pos, state);
+        return new BEntity(pos, state);
     }
 
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
-        if (level.getBlockEntity(pos) instanceof Entity entity) {
+        if (level.getBlockEntity(pos) instanceof BEntity entity) {
             if (level.isClientSide) {
                 Util.pauseInIde(new IllegalStateException("Expected to only call this on server"));
             }
@@ -99,12 +99,12 @@ public class TombstoneBlock extends HorizontalDirectionalBlock implements Entity
         return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
-    public void openTextEdit(Player player, Entity entity) {
+    public void openTextEdit(Player player, BEntity entity) {
         entity.setAllowedPlayerEditor(player.getUUID());
         player.openTextEdit(entity, true);
     }
 
-    public boolean otherPlayerIsEditingSign(Player player, Entity entity) {
+    public boolean otherPlayerIsEditingSign(Player player, BEntity entity) {
         UUID uuid = entity.getPlayerWhoMayEdit();
         return uuid != null && !uuid.equals(player.getUUID());
     }
@@ -112,7 +112,7 @@ public class TombstoneBlock extends HorizontalDirectionalBlock implements Entity
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-        return LibUtils.getTicker(blockEntityType, ModBlocks.TOMBSTONE_ENTITY.get(), Entity::tick);
+        return LibUtils.getTicker(blockEntityType, ModBlocks.TOMBSTONE_ENTITY.get(), BEntity::tick);
     }
 
     @Override
@@ -125,8 +125,8 @@ public class TombstoneBlock extends HorizontalDirectionalBlock implements Entity
         return SHAPE;
     }
 
-    public static class Entity extends SignBlockEntity {
-        public Entity(BlockPos pos, BlockState blockState) {
+    public static class BEntity extends SignBlockEntity {
+        public BEntity(BlockPos pos, BlockState blockState) {
             super(ModBlocks.TOMBSTONE_ENTITY.get(), pos, blockState);
         }
 

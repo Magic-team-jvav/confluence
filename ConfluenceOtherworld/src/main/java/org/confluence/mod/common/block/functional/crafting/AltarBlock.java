@@ -11,6 +11,7 @@ import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -46,6 +47,7 @@ import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.recipe.ItemStackHandlerRecipeInput;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.block.AltarBlockModel;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.saved.ConfluenceData;
@@ -72,6 +74,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.IntFunction;
+import java.util.function.UnaryOperator;
 
 public class AltarBlock extends BaseEntityBlock {
     public static final MapCodec<AltarBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
@@ -79,6 +82,22 @@ public class AltarBlock extends BaseEntityBlock {
             Variant.CODEC.fieldOf("variant").orElse(Variant.DEMON).forGetter(block -> block.variant)
     ).apply(instance, AltarBlock::new));
     public static final VoxelShape SHAPE = Shapes.box(-0.125, 0.0, -0.125, 1.125, 0.8, 1.125);
+    private static final Component TIPS;
+
+    static {
+        ResourceLocation fontId = Confluence.asResource("button");
+        UnaryOperator<Style> button = style -> style.withFont(fontId);
+        TIPS = Component.empty()
+                .append(Component.literal("2").withStyle(button))
+                .append(Component.translatable("message.confluence.altar_tips.0"))
+                .append(Component.literal("23").withStyle(button))
+                .append(Component.translatable("message.confluence.altar_tips.1"))
+                .append(Component.literal("1").withStyle(button))
+                .append(Component.translatable("message.confluence.altar_tips.2"))
+                .append(Component.literal("13").withStyle(button))
+                .append(Component.translatable("message.confluence.altar_tips.3"));
+    }
+
     private final Variant variant;
 
     public AltarBlock(Properties properties, Variant variant) {
@@ -130,7 +149,7 @@ public class AltarBlock extends BaseEntityBlock {
 
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
-        if (level.getBlockEntity(pos) instanceof Entity entity) {
+        if (level.getBlockEntity(pos) instanceof BEntity entity) {
             Containers.dropContents(level, pos, entity.itemHandler.getItems());
             level.removeBlockEntity(pos);
         }
@@ -138,37 +157,36 @@ public class AltarBlock extends BaseEntityBlock {
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        if (!level.isClientSide && level.getBlockEntity(pos) instanceof Entity entity) { // 放/取物品
-            if (player.isCrouching()) { // 取物品
+        if (!level.isClientSide && level.getBlockEntity(pos) instanceof BEntity entity) {
+            if (player.isCrouching()) {
                 player.addItem(entity.takeItem(-1));
-            } else { // 存物品
+            } else {
                 player.setItemInHand(hand, entity.addItem(player.getItemInHand(hand)));
                 if (CommonConfigs.ALTAR_TIPS.get()) {
-                    player.sendSystemMessage(Component.translatable("message.confluence.altar_tips.0"));
-                    player.sendSystemMessage(Component.translatable("message.confluence.altar_tips.1"));
+                    player.displayClientMessage(TIPS, true);
                 }
             }
         }
         return ItemInteractionResult.sidedSuccess(level.isClientSide);
     }
 
-    public static void onLeftClick(BlockState state, Level level, BlockPos pos, Player player) { // 合成
-        if (level instanceof ServerLevel serverLevel && state.getBlock() instanceof AltarBlock && level.getBlockEntity(pos) instanceof Entity entity) {
+    public static void onLeftClick(BlockState state, Level level, BlockPos pos, Player player) {
+        if (level instanceof ServerLevel serverLevel && state.getBlock() instanceof AltarBlock && level.getBlockEntity(pos) instanceof BEntity entity) {
             RecipeManager recipeManager = serverLevel.getServer().getRecipeManager();
-            if (player.isCrouching()) { // 全部合成
+            if (player.isCrouching()) {
                 List<RecipeHolder<AltarRecipe>> recipes;
                 boolean crafted = false;
                 while (!(recipes = recipeManager.getRecipesFor(ModRecipes.ALTAR_TYPE.get(), entity.itemHandler, level)).isEmpty()) {
                     crafted = true;
-                    AltarRecipe recipe = recipes.getFirst().value(); // 先只取第一个合成表
+                    AltarRecipe recipe = recipes.getFirst().value();
                     ItemStack result = recipe.assembleAndExtract(entity.itemHandler, level.registryAccess());
                     LibUtils.createItemEntity(result, pos.getX() + 0.5, pos.getY() + 0.75, pos.getZ() + 0.5, level, 0);
                 }
                 if (crafted) entity.playAnimation(serverLevel, pos);
-            } else { // 合成一个
-                List<RecipeHolder<AltarRecipe>> recipes = recipeManager.getRecipesFor(ModRecipes.ALTAR_TYPE.get(), entity.itemHandler, level); // todo 多态合成
+            } else {
+                List<RecipeHolder<AltarRecipe>> recipes = recipeManager.getRecipesFor(ModRecipes.ALTAR_TYPE.get(), entity.itemHandler, level);
                 if (recipes.isEmpty()) return;
-                AltarRecipe recipe = recipes.getFirst().value(); // 先只取第一个合成表
+                AltarRecipe recipe = recipes.getFirst().value();
                 ItemStack result = recipe.assembleAndExtract(entity.itemHandler, level.registryAccess());
                 LibUtils.createItemEntity(result, pos.getX() + 0.5, pos.getY() + 0.75, pos.getZ() + 0.5, level, 0);
                 entity.playAnimation(serverLevel, pos);
@@ -179,7 +197,7 @@ public class AltarBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new Entity(pos, state).setVariant(variant);
+        return new BEntity(pos, state).setVariant(variant);
     }
 
     public static boolean hurtPlayerIfBrokenNotAllowed(Player player, BlockState blockState) {
@@ -193,17 +211,28 @@ public class AltarBlock extends BaseEntityBlock {
         return false;
     }
 
-    public static class Entity extends BaseContainerBlockEntity implements GeoBlockEntity {
+    public static class BEntity extends BaseContainerBlockEntity implements GeoBlockEntity {
         public static final int CONTAINER_SIZE = 6;
         private final AnimatableInstanceCache CACHE = GeckoLibUtil.createInstanceCache(this);
         private final ItemStackHandlerRecipeInput itemHandler; // 5 Inputs and 1 Output.
         private Variant variant;
 
-        public Entity(BlockPos pos, BlockState blockState) {
+        public BEntity(BlockPos pos, BlockState blockState) {
             super(FunctionalBlocks.ALTAR_BLOCK_ENTITY.get(), pos, blockState);
             this.itemHandler = new ItemStackHandlerRecipeInput(this, CONTAINER_SIZE);
             SingletonGeoAnimatable.registerSyncedAnimatable(this);
         }
+
+//        @Override
+//        public void onLoad() {
+//            super.onLoad();
+//            invalidateCapabilities();
+//        }
+//
+//        @Override
+//        public void onChunkUnloaded() {
+//            invalidateCapabilities();
+//        }
 
         public ItemStack addItem(ItemStack toAdd) {
             int firstEmptySlot = -1;
@@ -244,7 +273,7 @@ public class AltarBlock extends BaseEntityBlock {
             }
         }
 
-        Entity setVariant(Variant variant) {
+        BEntity setVariant(Variant variant) {
             this.variant = variant;
             markUpdated();
             return this;
@@ -257,7 +286,7 @@ public class AltarBlock extends BaseEntityBlock {
         @Override
         public void loadAdditional(CompoundTag nbt, HolderLookup.Provider registries) {
             super.loadAdditional(nbt, registries);
-            variant = Variant.byId(nbt.getInt("variant"));
+            this.variant = Variant.byId(nbt.getInt("variant"));
             itemHandler.setItems(NonNullList.withSize(CONTAINER_SIZE, ItemStack.EMPTY));
             ContainerHelper.loadAllItems(nbt, itemHandler.getItems(), registries);
         }
@@ -307,6 +336,13 @@ public class AltarBlock extends BaseEntityBlock {
             return nbt;
         }
 
+        @Override
+        public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+            this.variant = Variant.byId(tag.getInt("variant"));
+            itemHandler.setItems(NonNullList.withSize(CONTAINER_SIZE, ItemStack.EMPTY));
+            ContainerHelper.loadAllItems(tag, itemHandler.getItems(), lookupProvider);
+        }
+
         public void markUpdated() {
             setChanged();
             if (level != null) {
@@ -349,34 +385,34 @@ public class AltarBlock extends BaseEntityBlock {
         }
     }
 
-    public static class Item extends BlockItem implements GeoItem {
+    public static class BItem extends BlockItem implements GeoItem {
         private final AnimatableInstanceCache CACHE = GeckoLibUtil.createInstanceCache(this);
 
-        public Item(AltarBlock block) {
+        public BItem(AltarBlock block) {
             super(block, new Properties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.PURPLE));
         }
 
         @Override
         public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
             consumer.accept(new GeoRenderProvider() {
-                private GeoItemRenderer<Item> renderer;
+                private GeoItemRenderer<BItem> renderer;
 
                 @Override
                 public BlockEntityWithoutLevelRenderer getGeoItemRenderer() {
                     if (renderer == null) {
                         this.renderer = new GeoItemRenderer<>(new GeoModel<>() {
                             @Override
-                            public ResourceLocation getModelResource(AltarBlock.Item animatable) {
+                            public ResourceLocation getModelResource(BItem animatable) {
                                 return AltarBlockModel.MODELS[animatable.getVariant().getId()];
                             }
 
                             @Override
-                            public ResourceLocation getTextureResource(AltarBlock.Item animatable) {
+                            public ResourceLocation getTextureResource(BItem animatable) {
                                 return AltarBlockModel.TEXTURES[animatable.getVariant().getId()];
                             }
 
                             @Override
-                            public ResourceLocation getAnimationResource(AltarBlock.Item animatable) {
+                            public ResourceLocation getAnimationResource(BItem animatable) {
                                 return AltarBlockModel.ANIMATIONS[animatable.getVariant().getId()];
                             }
                         });

@@ -4,7 +4,7 @@
 	"texture_size": [64, 64],
 	"textures": {
 		"3": "confluence:block/items_on_alchemy_table",
-		"particle": "confluence:block/alchemy_table_particle",
+		"particle": "confluence:block/particle/alchemy_table_particle",
 		"all": "block/candle"
 	},
 	"elements": [

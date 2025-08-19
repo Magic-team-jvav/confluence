@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
-public class ExtractinatorBlockRenderer extends GeoBlockRenderer<ExtractinatorBlock.Entity> {
+public class ExtractinatorBlockRenderer extends GeoBlockRenderer<ExtractinatorBlock.BEntity> {
     public static final ResourceLocation MODEL = Confluence.asResource("geo/block/extractinator.geo.json");
     public static final ResourceLocation TEXTURE = Confluence.asResource("textures/block/extractinator.png");
     public static final ResourceLocation ANIMATION = Confluence.asResource("animations/block/extractinator.animation.json");
@@ -20,36 +20,36 @@ public class ExtractinatorBlockRenderer extends GeoBlockRenderer<ExtractinatorBl
     public ExtractinatorBlockRenderer() {
         super(new GeoModel<>() {
             @Override
-            public ResourceLocation getModelResource(ExtractinatorBlock.Entity animatable) {
+            public ResourceLocation getModelResource(ExtractinatorBlock.BEntity animatable) {
                 return MODEL;
             }
 
             @Override
-            public ResourceLocation getTextureResource(ExtractinatorBlock.Entity animatable) {
+            public ResourceLocation getTextureResource(ExtractinatorBlock.BEntity animatable) {
                 return TEXTURE;
             }
 
             @Override
-            public ResourceLocation getAnimationResource(ExtractinatorBlock.Entity animatable) {
+            public ResourceLocation getAnimationResource(ExtractinatorBlock.BEntity animatable) {
                 return ANIMATION;
             }
         });
     }
 
     @Override
-    public void defaultRender(PoseStack poseStack, ExtractinatorBlock.Entity animatable, MultiBufferSource bufferSource, @Nullable RenderType renderType, @Nullable VertexConsumer buffer, float yaw, float partialTick, int packedLight) {
+    public void defaultRender(PoseStack poseStack, ExtractinatorBlock.BEntity animatable, MultiBufferSource bufferSource, @Nullable RenderType renderType, @Nullable VertexConsumer buffer, float yaw, float partialTick, int packedLight) {
         if (animatable.isBase) {
             super.defaultRender(poseStack, animatable, bufferSource, renderType, buffer, yaw, partialTick, packedLight);
         }
     }
 
     @Override
-    public boolean shouldRenderOffScreen(ExtractinatorBlock.Entity pBlockEntity) {
+    public boolean shouldRenderOffScreen(ExtractinatorBlock.BEntity pBlockEntity) {
         return true;
     }
 
     @Override
-    public AABB getRenderBoundingBox(ExtractinatorBlock.Entity blockEntity) {
+    public AABB getRenderBoundingBox(ExtractinatorBlock.BEntity blockEntity) {
         return AABB.INFINITE;
     }
 }

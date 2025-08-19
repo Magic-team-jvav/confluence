@@ -16,10 +16,11 @@
 | [TerraFurniture](TerraFurniture)                            | 泰拉家具              | 是                     |
 | [EntityTrackerHUD](EntityTrackerHUD)                        | 提供包括Boss实体的实时位置提示 | 是                     |
 
-| 官方附属                                                               | 备注   |
-|--------------------------------------------------------------------|------|
-| [ConfluenceDelight](https://github.com/cooobird/ConfluenceDelight) | 汇流乐事 |
-| [ConfluenceMusic](https://github.com/westernat/Confluence-Music)   | 汇流音乐 |
+| 官方附属                                                                                | 备注                 |
+|-------------------------------------------------------------------------------------|--------------------|
+| [ConfluenceDelight](https://github.com/cooobird/ConfluenceDelight)                  | 汇流乐事               |
+| [ConfluenceMusic](https://github.com/westernat/Confluence-Music)                    | 汇流音乐               |
+| [ConfluenceDimensionPatch](https://github.com/westernat/Confluence-Dimension-Patch) | 将汇流来世对主世界的修改转移到新维度 |
 
 ## 构建项目
 
@@ -37,3 +38,23 @@
   > 以及[ConfluenceOtherworld/build.gradle](ConfluenceOtherworld/build.gradle)里加上子模块名
 
 - 全部拉取完成后,在gradle插件中启动ConfluenceOtherworld本体项目中的runClient命令
+
+## Maven 例子
+
+
+```groovy
+repositories {
+  maven {
+    name "org.confluenceReleases"
+    url "https://maven.confluence.ink/releases"
+  }
+  maven {
+    name "org.confluenceSnapshots"
+    url "https://maven.confluence.ink/snapshots"
+  }
+}
+
+dependencies {
+  implementation "org.confluence.lib:Confluence-Magic-Lib:<version>"
+}
+```

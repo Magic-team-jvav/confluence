@@ -1,11 +1,19 @@
 {
     "type": "neoforge:add_spawns",
-    "biomes": [
-        "minecraft:desert",
-        "minecraft:badlands",
-        "minecraft:wooded_badlands"
-    ],
+    "biomes": {
+        "type": "neoforge:or",
+        "values": [
+            "#c:is_desert",
+            "#c:is_badlands"
+        ]
+    },
     "spawners": [
+        {
+            "type": "terra_entity:scorpion",
+            "weight": 15,
+            "minCount": 1,
+            "maxCount": 1
+        },
         {
             "type": "terra_entity:desert_slime",
             "weight": 30,

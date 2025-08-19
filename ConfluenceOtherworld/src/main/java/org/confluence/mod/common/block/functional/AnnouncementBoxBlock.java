@@ -50,7 +50,7 @@ public class AnnouncementBoxBlock extends StandingSignBlock implements INetworkB
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new Entity(pos, state);
+        return new BEntity(pos, state);
     }
 
     @Override
@@ -62,10 +62,10 @@ public class AnnouncementBoxBlock extends StandingSignBlock implements INetworkB
     }
 
     @Override
-    public void onExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {
-        Entity entity = (Entity) pEntity;
-        if (!pLevel.isClientSide) {
-            Entity.sendMessages(pLevel, pPos, entity.getText(true).getMessages(false));
+    public void onExecute(BlockState state, ServerLevel level, BlockPos pos, int color, INetworkEntity networkEntity) {
+        BEntity entity = (BEntity) networkEntity;
+        if (!level.isClientSide) {
+            BEntity.sendMessages(level, pos, entity.getText(true).getMessages(false));
         }
     }
 
@@ -82,7 +82,7 @@ public class AnnouncementBoxBlock extends StandingSignBlock implements INetworkB
 
         @Override
         public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-            return new Entity(pos, state);
+            return new BEntity(pos, state);
         }
 
         @Override
@@ -94,20 +94,20 @@ public class AnnouncementBoxBlock extends StandingSignBlock implements INetworkB
         }
 
         @Override
-        public void onExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {
-            Entity entity = (Entity) pEntity;
-            if (!pLevel.isClientSide) {
-                Entity.sendMessages(pLevel, pPos, entity.getText(true).getMessages(false));
+        public void onExecute(BlockState state, ServerLevel level, BlockPos pos, int color, INetworkEntity networkEntity) {
+            BEntity entity = (BEntity) networkEntity;
+            if (!level.isClientSide) {
+                BEntity.sendMessages(level, pos, entity.getText(true).getMessages(false));
             }
         }
     }
 
-    public static class Entity extends SignBlockEntity implements INetworkEntity {
+    public static class BEntity extends SignBlockEntity implements INetworkEntity {
         private NetworkNode networkNode;
         private final Int2ObjectMap<Set<BlockPos>> connectedPoses;
         private final Int2ObjectMap<Set<BlockPos>> relativePoses;
 
-        public Entity(BlockPos pos, BlockState blockState) {
+        public BEntity(BlockPos pos, BlockState blockState) {
             super(FunctionalBlocks.ANNOUNCEMENT_BOX_ENTITY.get(), pos, blockState);
             this.connectedPoses = new Int2ObjectOpenHashMap<>();
             this.relativePoses = new Int2ObjectOpenHashMap<>();
@@ -146,7 +146,12 @@ public class AnnouncementBoxBlock extends StandingSignBlock implements INetworkB
 
         @Override
         public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-            return serializePoses(super.getUpdateTag(registries), "connectedPoses", connectedPoses);
+            return serializePoses(new CompoundTag(), "connectedPoses", connectedPoses);
+        }
+
+        @Override
+        public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+            deserializePoses(tag, "connectedPoses", connectedPoses);
         }
 
         @Override

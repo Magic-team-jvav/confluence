@@ -53,15 +53,15 @@ public class PylonBlock extends WaystoneBlock {
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new Entity(pos, state);
+        return new BEntity(pos, state);
     }
 
-    public static class Entity extends WaystoneBlockEntity implements GeoBlockEntity {
+    public static class BEntity extends WaystoneBlockEntity implements GeoBlockEntity {
         private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
         private final ResourceLocation waystoneType;
         public final boolean isBase;
 
-        public Entity(BlockPos blockPos, BlockState blockState) {
+        public BEntity(BlockPos blockPos, BlockState blockState) {
             super(blockPos, blockState);
             this.waystoneType = BuiltInRegistries.BLOCK.getKey(blockState.getBlock());
             this.isBase = blockState.getValue(WaystoneBlock.HALF) == DoubleBlockHalf.LOWER;

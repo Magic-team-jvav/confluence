@@ -45,7 +45,7 @@ public abstract class LocalPlayerMixin implements ILocalPlayer {
 
     @Inject(method = "openTextEdit", at = @At("HEAD"), cancellable = true)
     private void openTombstoneEdit(SignBlockEntity signEntity, boolean isFrontText, CallbackInfo ci) {
-        if (signEntity instanceof TombstoneBlock.Entity entity) {
+        if (signEntity instanceof TombstoneBlock.BEntity entity) {
             Block block = entity.getBlockState().getBlock();
             boolean isGold = ModBlocks.TOMBSTONES.object2BooleanEntrySet().stream()
                     .filter(entry -> entry.getKey().get() == block)

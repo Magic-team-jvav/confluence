@@ -7,7 +7,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.client.event.RenderHandEvent;
 import net.neoforged.neoforge.registries.DeferredItem;
 import org.confluence.mod.common.init.item.BowItems;
 import org.confluence.mod.common.item.bow.ShortBowItem;
@@ -18,7 +17,7 @@ import java.util.Map;
 
 
 public class ArrowInBowHud {
-    private static Map<DeferredItem<? extends TerraBowItem>, Vec3> offsets = new HashMap<>();
+    private static final Map<DeferredItem<? extends TerraBowItem>, Vec3> offsets = new HashMap<>();
     public static void initAdaptionMap(){
         //长弓有三个阶段参数
         offsets.put(BowItems.DAEDALUS_STORM_BOW, new Vec3(0.365f, 0.2f, 0.0f));

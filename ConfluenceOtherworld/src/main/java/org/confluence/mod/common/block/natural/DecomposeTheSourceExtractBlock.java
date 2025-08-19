@@ -120,11 +120,11 @@ public class DecomposeTheSourceExtractBlock extends Block implements EntityBlock
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new Entity(pos, state);
+        return new BEntity(pos, state);
     }
 
-    public static class Entity extends BlockEntity {
-        public Entity(BlockPos pos, BlockState blockState) {
+    public static class BEntity extends BlockEntity {
+        public BEntity(BlockPos pos, BlockState blockState) {
             super(NatureBlocks.DECOMPOSE_THE_SOURCE_EXTRACT_ENTITY.get(), pos, blockState);
         }
 

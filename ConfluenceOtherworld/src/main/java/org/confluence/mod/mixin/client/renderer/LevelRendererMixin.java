@@ -22,4 +22,10 @@ public abstract class LevelRendererMixin {
     private void renderBoulderSun(Matrix4f frustumMatrix, Matrix4f projectionMatrix, float partialTick, Camera camera, boolean isFoggy, Runnable skyFogSetup, CallbackInfo ci) {
         BoulderWorld.renderBoulderSun(minecraft);
     }
+
+    // fixme 在解决空指针前先这样
+//    @ModifyExpressionValue(method = "renderLevel", at = @At(value = "INVOKE", target = "Ljava/lang/Iterable;iterator()Ljava/util/Iterator;"))
+//    private Iterator<Entity> filterNull(Iterator<Entity> original) {
+//        return Iterators.filter(original, Objects::nonNull);
+//    }
 }

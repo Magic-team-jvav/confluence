@@ -61,6 +61,11 @@ public class ManaStaffItem<E extends DamageSettableProjectile> extends CustomRar
     }
 
     @Override
+    public int getEnchantmentValue(ItemStack stack) {
+        return 20;
+    }
+
+    @Override
     public UseAnim getUseAnimation(ItemStack itemStack) {
         return UseAnim.BLOCK;
     }
@@ -71,7 +76,6 @@ public class ManaStaffItem<E extends DamageSettableProjectile> extends CustomRar
         if (player instanceof ServerPlayer serverPlayer && couldShoot(serverPlayer, itemStack)) {
             serverPlayer.awardStat(Stats.ITEM_USED.get(this));
             E projectile = factory.create(serverPlayer);
-            projectile.setDamage(damage);
             beforeShoot(serverPlayer, itemStack, projectile);
             level.addFreshEntity(projectile);
             afterShoot(serverPlayer, itemStack, projectile);
@@ -84,6 +88,8 @@ public class ManaStaffItem<E extends DamageSettableProjectile> extends CustomRar
     }
 
     protected void beforeShoot(ServerPlayer player, ItemStack itemStack, E projectile) {
+        projectile.setDamage(damage);
+        projectile.setDefaultVelocity(velocity);
         projectile.setOwner(player);
         projectile.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, velocity, 0.0F);
     }
@@ -95,9 +101,9 @@ public class ManaStaffItem<E extends DamageSettableProjectile> extends CustomRar
         player.level().playSound(null, player.getX(), player.getY(), player.getZ(), ModSoundEvents.REGULAR_STAFF_SHOOT.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
     }
 
-    @FunctionalInterface
-    public interface ProjectileFactory<E extends Projectile> {
-        E create(ServerPlayer serverPlayer);
+    @Override
+    public boolean isEnchantable(ItemStack stack) {
+        return stack.getMaxStackSize() == 1;
     }
 
     @Override
@@ -106,5 +112,10 @@ public class ManaStaffItem<E extends DamageSettableProjectile> extends CustomRar
         tooltipComponents.add(Component.translatable("tooltip.confluence.mana_cost", manaCost).withStyle(ChatFormatting.GRAY));
         tooltipComponents.add(Component.translatable("tooltip.confluence.velocity", velocity).withStyle(ChatFormatting.GRAY));
         tooltipComponents.add(Component.translatable("tooltip.confluence.cooldown", cooldown).withStyle(ChatFormatting.GRAY));
+    }
+
+    @FunctionalInterface
+    public interface ProjectileFactory<E extends Projectile> {
+        E create(ServerPlayer serverPlayer);
     }
 }

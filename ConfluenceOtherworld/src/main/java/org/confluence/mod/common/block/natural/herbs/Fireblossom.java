@@ -8,6 +8,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.common.init.item.FoodItems;
 import org.jetbrains.annotations.NotNull;
 
@@ -24,8 +25,7 @@ public class Fireblossom extends BaseHerbBlock {
     @Override
     public boolean canBloom(ServerLevel world, BlockState state){
         if (world.dimensionType().natural()) {
-            long dayTime = world.dayTime() % 24000;
-            return dayTime >= 9760L && world.isDay() && !world.isRaining();
+            return LibDateUtils.isWithinDayTime(LibDateUtils.getDayTime(15, 45), LibDateUtils._19$30, world) && !world.isRaining();
         }
         return true;
     }
@@ -37,6 +37,6 @@ public class Fireblossom extends BaseHerbBlock {
 //        int r = pRandom.nextInt(60);
 //        if(r > 10) return;
 //        Vec3 pos = pPos.getCenter().add(pState.getOffset(pLevel, pPos)).offsetRandom(pRandom, 0.3f);
-//        pLevel.addParticle(ModParticles.FLAMEFLOWER_BLOOM.getPrefab(), pos.x, pos.y, pos.z, 0, 0.3f, 0);
+//        pLevel.addParticle(ModParticles.FLAMEFLOWER_BLOOM.get(), pos.x, pos.y, pos.z, 0, 0.3f, 0);
     }
 }

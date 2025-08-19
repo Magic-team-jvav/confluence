@@ -4,15 +4,21 @@ import com.nlf.calendar.Lunar;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
+import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.common.init.item.FoodItems;
 import org.confluence.mod.common.init.item.ModItems;
 
-import java.time.format.DateTimeParseException;
 import java.util.Calendar;
 import java.util.Date;
 
 public final class DateUtils {
+    public static final @Deprecated int _00$00 = LibDateUtils._00$00;
+    public static final @Deprecated int _04$30 = LibDateUtils._04$30;
+    public static final @Deprecated int _06$00 = LibDateUtils._06$00;
+    public static final @Deprecated int _19$30 = LibDateUtils._19$30;
+
     private static long lastCacheTime = 0;
     private static final Calendar calendar = Calendar.getInstance();
     private static Lunar lunar;
@@ -89,33 +95,38 @@ public final class DateUtils {
         return ModItems.STAR.get();
     }
 
-    /**
-     * 映射到游戏内的dayTime
-     */
+    @Deprecated
+    public static int getDayTime(Level level) {
+        return LibDateUtils.getDayTime(level);
+    }
+
+    @Deprecated
+    public static int getDayTime(long dayTime) {
+        return LibDateUtils.getDayTime(dayTime);
+    }
+
+    @Deprecated
     public static int getDayTime(int hour, int minute) {
-        if (hour < 0 || hour > 23) throw new DateTimeParseException("hour bounds is [0, 23], currently is " + hour, "", 0);
-        if (minute < 0 || minute > 59) throw new DateTimeParseException("minute bounds is [0, 59], currently is " + minute, "", 0);
-        int i = (hour - 6) * 1000;
-        int j = (int) (minute / 0.06F);
-        if (i < 0) i += 24000;
-        return i + j;
+        return LibDateUtils.getDayTime(hour, minute);
     }
 
-    /**
-     * @param start 开始的dayTime
-     * @param end   结束的dayTime
-     * @param time  判断的dayTime
-     * @return start <= time <= end
-     */
-    public static boolean isWithinDayTime(int start, int end, long time) {
-        time %= 24000L;
-        if (start > end) {
-            return time >= start || time <= end;
-        }
-        return time >= start && time <= end;
+    @Deprecated
+    public static boolean isWithinDayTime(int start, int end, int dayTime) {
+        return LibDateUtils.isWithinDayTime(start, end, dayTime);
     }
 
-    public static boolean isWithinDayTime(int startHour, int startMinute, int endHour, int endMinute, long time) {
-        return isWithinDayTime(getDayTime(startHour, startMinute), getDayTime(endHour, endMinute), time);
+    @Deprecated
+    public static boolean isWithinDayTime(int startHour, int startMinute, int endHour, int endMinute, int dayTime) {
+        return LibDateUtils.isWithinDayTime(startHour, startMinute, endHour, endMinute, dayTime);
+    }
+
+    @Deprecated
+    public static boolean isDay(int dayTime) {
+        return LibDateUtils.isDay(dayTime);
+    }
+
+    @Deprecated
+    public static boolean isNight(int dayTime) {
+        return LibDateUtils.isNight(dayTime);
     }
 }

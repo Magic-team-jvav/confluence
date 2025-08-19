@@ -72,16 +72,16 @@ public class SignalAdapterBlock extends AbstractMechanicalBlock {
     }
 
     @Override
-    public void onExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {
-        if (!pState.getValue(SIGNAL)) {
-            pLevel.setBlockAndUpdate(pPos, pState.setValue(SIGNAL, true));
+    public void onExecute(BlockState state, ServerLevel level, BlockPos pos, int color, INetworkEntity networkEntity) {
+        if (!state.getValue(SIGNAL)) {
+            level.setBlockAndUpdate(pos, state.setValue(SIGNAL, true));
         }
     }
 
     @Override
-    public void onUnExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {
-        if (pState.getValue(SIGNAL)) {
-            pLevel.setBlockAndUpdate(pPos, pState.setValue(SIGNAL, false));
+    public void onUnExecute(BlockState state, ServerLevel level, BlockPos pos, int color, INetworkEntity networkEntity) {
+        if (state.getValue(SIGNAL)) {
+            level.setBlockAndUpdate(pos, state.setValue(SIGNAL, false));
         }
     }
 }

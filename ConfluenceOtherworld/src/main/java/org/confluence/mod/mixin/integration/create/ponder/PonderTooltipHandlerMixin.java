@@ -26,7 +26,7 @@ public abstract class PonderTooltipHandlerMixin {
 
     @WrapOperation(method = "deferredTick", at = @At(value = "INVOKE", target = "Lnet/createmod/catnip/animation/LerpedFloat;setValue(D)V", ordinal = 1))
     private static void modify(LerpedFloat instance, double value, Operation<Void> original, @Local float vValue) {
-        if (!subject && CatnipClientServices.CLIENT_HOOKS.isKeyPressed(PonderKeybinds.PONDER.getKeybind()) && trackingStack.getItem() instanceof AltarBlock.Item) {
+        if (!subject && CatnipClientServices.CLIENT_HOOKS.isKeyPressed(PonderKeybinds.PONDER.getKeybind()) && trackingStack.getItem() instanceof AltarBlock.BItem) {
             if (vValue >= 1) {
                 ScreenOpener.transitionTo(PonderUI.of(trackingStack));
                 instance.startWithValue(0);

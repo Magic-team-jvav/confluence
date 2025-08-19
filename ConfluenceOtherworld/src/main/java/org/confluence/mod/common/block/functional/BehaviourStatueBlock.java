@@ -1,5 +1,6 @@
 package org.confluence.mod.common.block.functional;
 
+import com.mojang.datafixers.util.Function3;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -35,7 +36,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -51,51 +51,51 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        super.createBlockStateDefinition(builder);
-        builder.add(StateProperties.DRIVE);
+        super.createBlockStateDefinition(builder.add(StateProperties.DRIVE));
     }
 
     @Override
-    public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        return behaviour.getStateForPlacement(pContext, super.getStateForPlacement(pContext));
+    public @Nullable BlockState getStateForPlacement(BlockPlaceContext context) {
+        BlockState original = super.getStateForPlacement(context);
+        return original == null ? null : behaviour.getStateForPlacement(context, original);
     }
 
     @Override
-    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        VoxelShape shape = behaviour.getShape(pState, pLevel, pPos, pContext);
-        return shape == null ? super.getShape(pState, pLevel, pPos, pContext) : shape;
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        VoxelShape shape = behaviour.getShape(state, level, pos, context);
+        return shape == null ? super.getShape(state, level, pos, context) : shape;
     }
 
     @Override
-    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
-        if (pState.getBlock() != pNewState.getBlock()) {
-            onNodeRemove(pState, pLevel, pPos, pNewState);
-            super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+        if (state.getBlock() != newState.getBlock()) {
+            onNodeRemove(state, level, pos, newState);
+            super.onRemove(state, level, pos, newState, movedByPiston);
         }
     }
 
     @Override
-    public void onExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {
-        behaviour.onExecute(pState, pLevel, pPos, pColor, pEntity);
-        execution(pState, pLevel, pPos, pColor, true);
+    public void onExecute(BlockState state, ServerLevel level, BlockPos pos, int color, INetworkEntity networkEntity) {
+        behaviour.onExecute(state, level, pos, color, networkEntity);
+        execution(state, level, pos, color, true);
     }
 
     @Override
-    public void onUnExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {
-        behaviour.onUnExecute(pState, pLevel, pPos, pColor, pEntity);
-        execution(pState, pLevel, pPos, pColor, false);
+    public void onUnExecute(BlockState state, ServerLevel level, BlockPos pos, int color, INetworkEntity networkEntity) {
+        behaviour.onUnExecute(state, level, pos, color, networkEntity);
+        execution(state, level, pos, color, false);
     }
 
-    private void execution(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, boolean hasSignal) {
-        BlockPos relative = pPos.relative(StateProperties.VerticalTwoPart.getConnectedDirection(pState));
-        if (pLevel.getBlockEntity(relative) instanceof INetworkEntity entity) {
-            Network network = entity.getOrCreateNetworkNode().getNetwork(pColor);
+    private void execution(BlockState state, ServerLevel level, BlockPos pos, int color, boolean hasSignal) {
+        BlockPos relative = pos.relative(StateProperties.VerticalTwoPart.getConnectedDirection(state));
+        if (level.getBlockEntity(relative) instanceof INetworkEntity entity) {
+            Network network = entity.getOrCreateNetworkNode().getNetwork(color);
             if (network != null && hasSignal != network.hasSignal()) {
                 network.setSignal(hasSignal);
                 network.getNodes().stream()
                         .map(NetworkNode::getEntity)
                         .collect(Collectors.toSet())
-                        .forEach(entity1 -> INetworkBlock.internalExecute(pLevel, relative, pColor, hasSignal, entity1));
+                        .forEach(entity1 -> INetworkBlock.internalExecute(level, relative, color, hasSignal, entity1));
             }
         }
     }
@@ -115,9 +115,9 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
         return state.getValue(StateProperties.VERTICAL_TWO_PART).isBase() ? LibUtils.getTicker(blockEntityType, StatueBlocks.BLOCK_ENTITY.get(), behaviour::entityTick) : null;
     }
 
-    public static class Entity extends AbstractMechanicalBlock.Entity {
-        public Entity(BlockPos pPos, BlockState pBlockState) {
-            super(StatueBlocks.BLOCK_ENTITY.get(), pPos, pBlockState);
+    public static class BEntity extends AbstractMechanicalBlock.BEntity {
+        public BEntity(BlockPos pos, BlockState state) {
+            super(StatueBlocks.BLOCK_ENTITY.get(), pos, state);
         }
 
         @Override
@@ -142,13 +142,13 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
     }
 
     public static class Behaviour {
-        public @Nullable Entity newBlockEntity(BlockPos pos, BlockState state) {
-            return new Entity(pos, state);
+        public @Nullable BehaviourStatueBlock.BEntity newBlockEntity(BlockPos pos, BlockState state) {
+            return new BEntity(pos, state);
         }
 
-        public void onExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {}
+        public void onExecute(BlockState state, ServerLevel level, BlockPos pos, int color, INetworkEntity networkEntity) {}
 
-        public void onUnExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {}
+        public void onUnExecute(BlockState state, ServerLevel level, BlockPos pos, int color, INetworkEntity networkEntity) {}
 
         public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
             if (state.getValue(StateProperties.DRIVE)) {
@@ -158,13 +158,13 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
             }
         }
 
-        public void entityTick(Level level, BlockPos pos, BlockState blockState, Entity entity) {}
+        public void entityTick(Level level, BlockPos pos, BlockState blockState, BEntity entity) {}
 
-        public BlockState getStateForPlacement(BlockPlaceContext pContext, BlockState original) {
-            return original;
+        public BlockState getStateForPlacement(BlockPlaceContext context, BlockState state) {
+            return state;
         }
 
-        public @Nullable VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+        public @Nullable VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
             return null;
         }
 
@@ -175,25 +175,26 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
 
     public static class SummonBehaviour<E extends net.minecraft.world.entity.Entity> extends Behaviour {
         private final List<UUID> entities = new ArrayList<>();
-
+        private final boolean randomPos;
         private final boolean noDrops;
         private final int cooldown;
-        private final BiFunction<Level, Vec3, E> factory;
+        private final Function3<BlockState, Level, Vec3, E> factory;
         private final Consumer<E> afterSummon;
 
-        public SummonBehaviour(boolean noDrops, BiFunction<Level, Vec3, E> factory) {
-            this(noDrops, 10, factory, entity -> {});
+        public SummonBehaviour(boolean randomPos, boolean noDrops, Function3<BlockState, Level, Vec3, E> factory) {
+            this(randomPos, noDrops, 10, factory, entity -> {});
         }
 
-        public SummonBehaviour(boolean noDrops, BiFunction<Level, Vec3, E> factory, Consumer<E> afterSummon) {
-            this(noDrops, 10, factory, afterSummon);
+        public SummonBehaviour(boolean randomPos, boolean noDrops, Function3<BlockState, Level, Vec3, E> factory, Consumer<E> afterSummon) {
+            this(randomPos, noDrops, 10, factory, afterSummon);
         }
 
-        public SummonBehaviour(boolean noDrops, int cooldown, BiFunction<Level, Vec3, E> factory) {
-            this(noDrops, cooldown, factory, entity -> {});
+        public SummonBehaviour(boolean randomPos, boolean noDrops, int cooldown, Function3<BlockState, Level, Vec3, E> factory) {
+            this(randomPos, noDrops, cooldown, factory, entity -> {});
         }
 
-        public SummonBehaviour(boolean noDrops, int cooldown, BiFunction<Level, Vec3, E> factory, Consumer<E> afterSummon) {
+        public SummonBehaviour(boolean randomPos, boolean noDrops, int cooldown, Function3<BlockState, Level, Vec3, E> factory, Consumer<E> afterSummon) {
+            this.randomPos = randomPos;
             this.noDrops = noDrops;
             this.cooldown = cooldown;
             this.factory = factory;
@@ -201,24 +202,24 @@ public class BehaviourStatueBlock extends StatueBlock implements INetworkBlock, 
         }
 
         @Override
-        public void onExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {
-            if (!pState.getValue(StateProperties.DRIVE) && pState.getValue(StateProperties.VERTICAL_TWO_PART).isBase()) {
+        public void onExecute(BlockState state, ServerLevel level, BlockPos pos, int color, INetworkEntity networkEntity) {
+            if (!state.getValue(StateProperties.DRIVE) && state.getValue(StateProperties.VERTICAL_TWO_PART).isBase()) {
                 entities.removeIf(entity -> {
-                    net.minecraft.world.entity.Entity entity1 = pLevel.getEntity(entity);
+                    net.minecraft.world.entity.Entity entity1 = level.getEntity(entity);
                     return entity1 == null || entity1.isRemoved();
                 });
                 if (entities.size() >= 3) return;
-                BlockPos relative = pPos.relative(Util.getRandom(LibUtils.HORIZONTAL, pLevel.random));
-                E entity = factory.apply(pLevel, relative.getCenter());
-                pLevel.addFreshEntity(entity);
+                BlockPos relative = randomPos ? pos.relative(Util.getRandom(LibUtils.HORIZONTAL, level.random)) : pos;
+                E entity = factory.apply(state, level, relative.getCenter());
+                level.addFreshEntity(entity);
                 afterSummon.accept(entity);
                 if (noDrops) {
                     entity.addTag(LibUtils.NO_DROPS_TAG);
                 }
                 entities.add(entity.getUUID());
-                pLevel.setBlockAndUpdate(pPos, pState.setValue(StateProperties.DRIVE, true));
-                pLevel.scheduleTick(pPos, pState.getBlock(), cooldown);
-                pEntity.getSelf().setChanged();
+                level.setBlockAndUpdate(pos, state.setValue(StateProperties.DRIVE, true));
+                level.scheduleTick(pos, state.getBlock(), cooldown);
+                networkEntity.getSelf().setChanged();
             }
         }
 

@@ -8,20 +8,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.Level;
-import org.confluence.lib.common.recipe.AbstractAmountRecipe;
-import org.confluence.lib.common.recipe.EnvironmentRecipeInput;
+import org.confluence.lib.common.recipe.EnvironmentAmountRecipe;
+import org.confluence.lib.common.recipe.EnvironmentLevelAccess;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 
-public class SkyMillRecipe extends AbstractAmountRecipe<EnvironmentRecipeInput> {
-    public SkyMillRecipe(ItemStack pResult, NonNullList<Ingredient> pIngredients) {
-        super(pResult, pIngredients);
-    }
-
-    @Override
-    public boolean matches(EnvironmentRecipeInput input, Level pLevel) {
-        return input.getAccess().matches(this) && super.matches(input, pLevel);
+public class SkyMillRecipe extends EnvironmentAmountRecipe {
+    public SkyMillRecipe(ItemStack result, NonNullList<Ingredient> ingredients, EnvironmentLevelAccess.Matcher environment) {
+        super(result, ingredients, environment);
     }
 
     @Override
@@ -50,8 +44,8 @@ public class SkyMillRecipe extends AbstractAmountRecipe<EnvironmentRecipeInput> 
     }
 
     public static class Serializer implements RecipeSerializer<SkyMillRecipe> {
-        public static final MapCodec<SkyMillRecipe> CODEC = shapelessSerializerMapCodec(SkyMillRecipe::new);
-        public static final StreamCodec<RegistryFriendlyByteBuf, SkyMillRecipe> STREAM_CODEC = shapelessSerializerSteamCodec(SkyMillRecipe::new);
+        public static final MapCodec<SkyMillRecipe> CODEC = environmentShapelessSerializerMapCodec(SkyMillRecipe::new);
+        public static final StreamCodec<RegistryFriendlyByteBuf, SkyMillRecipe> STREAM_CODEC = environmentShapelessSerializerSteamCodec(SkyMillRecipe::new);
 
         @Override
         public MapCodec<SkyMillRecipe> codec() {

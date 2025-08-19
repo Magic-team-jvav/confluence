@@ -2,7 +2,9 @@ package org.confluence.mod.client.event;
 
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -59,6 +61,8 @@ import org.joml.Vector3f;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.function.Consumer;
+
+import static net.minecraft.client.renderer.RenderStateShard.*;
 
 @SuppressWarnings("deprecation")
 @ParametersAreNonnullByDefault
@@ -146,7 +150,7 @@ public final class ModClientSetups {
             return ModArmPoses.LANCE.getValue();
         }
     };
-    public static final IClientItemExtensions NOOP_ITEM = new IClientItemExtensions() {
+    static final IClientItemExtensions NOOP_ITEM = new IClientItemExtensions() {
         private BlockEntityWithoutLevelRenderer renderer;
 
         @Override
@@ -162,7 +166,7 @@ public final class ModClientSetups {
         @Override
         public BlockEntityWithoutLevelRenderer getCustomRenderer() {
             if (renderer == null) {
-                this.renderer = new BlockEntityWithoutLevelRenderer(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels()){
+                this.renderer = new BlockEntityWithoutLevelRenderer(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels()) {
                     @Override
                     public void renderByItem(ItemStack stack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {}
                 };
@@ -197,13 +201,14 @@ public final class ModClientSetups {
             return IntegerRGB.HALLOW_C.mixture(IntegerRGB.HALLOW_A, (m - 8) * 0.25F);
         }
     };
+    static boolean guideCheckedJEI = ModList.get().isLoaded("jei") || ModList.get().isLoaded("emi");
 
     static void setRenderLayers() {
         RenderType translucent = RenderType.translucent();
         ItemBlockRenderTypes.setRenderLayer(ModFluids.SHIMMER.fluid().get(), translucent);
         ItemBlockRenderTypes.setRenderLayer(ModFluids.SHIMMER.flowing().get(), translucent);
-        ItemBlockRenderTypes.setRenderLayer(ModFluids.HONEY.fluid().get(), translucent);
-        ItemBlockRenderTypes.setRenderLayer(ModFluids.HONEY.flowing().get(), translucent);
+// todo 等蜂蜜贴图被画成半透明       ItemBlockRenderTypes.setRenderLayer(ModFluids.HONEY.fluid().get(), translucent);
+//        ItemBlockRenderTypes.setRenderLayer(ModFluids.HONEY.flowing().get(), translucent);
         ItemBlockRenderTypes.setRenderLayer(DecorativeBlocks.WHITE_PURE_GLASS.get(), translucent);
         ItemBlockRenderTypes.setRenderLayer(DecorativeBlocks.LIGHT_GRAY_PURE_GLASS.get(), translucent);
         ItemBlockRenderTypes.setRenderLayer(DecorativeBlocks.GRAY_PURE_GLASS.get(), translucent);
@@ -222,9 +227,30 @@ public final class ModClientSetups {
         ItemBlockRenderTypes.setRenderLayer(DecorativeBlocks.PINK_PURE_GLASS.get(), translucent);
         ItemBlockRenderTypes.setRenderLayer(DecorativeBlocks.PACKED_ICE_BRICKS.get(), translucent);
         RenderType cutout = RenderType.cutout();
-        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.EBONY_LOG_BLOCKS.getDoor().get(), cutout);
-        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.EBONY_LOG_BLOCKS.getTrapdoor().get(), cutout);
-        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.PALM_LOG_BLOCKS.getDoor().get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.EBONY_LOG_BLOCKS.DOOR.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.EBONY_LOG_BLOCKS.TRAPDOOR.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.PALM_LOG_BLOCKS.DOOR.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.PALM_LOG_BLOCKS.TRAPDOOR.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.SHADOW_LOG_BLOCKS.DOOR.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.SHADOW_LOG_BLOCKS.TRAPDOOR.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.PALM_LOG_BLOCKS.DOOR.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.PALM_LOG_BLOCKS.TRAPDOOR.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.DOOR.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.TRAPDOOR.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.ASH_LOG_BLOCKS.DOOR.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.ASH_LOG_BLOCKS.TRAPDOOR.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.BAOBAB_LOG_BLOCKS.DOOR.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.BAOBAB_LOG_BLOCKS.TRAPDOOR.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.LIVING_LOG_BLOCKS.DOOR.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.LIVING_LOG_BLOCKS.TRAPDOOR.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.DOOR.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.TRAPDOOR.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.SPOOKY_LOG_BLOCKS.DOOR.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.SPOOKY_LOG_BLOCKS.TRAPDOOR.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.DOOR.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.TRAPDOOR.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.DYNASTY_LOG_BLOCKS.DOOR.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(NatureBlocks.DYNASTY_LOG_BLOCKS.TRAPDOOR.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(FunctionalBlocks.EVER_POWERED_RAIL.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(DecorativeBlocks.PURE_GLASS.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(FunctionalBlocks.ECHO_BLOCK.get(), cutout);
@@ -252,10 +278,16 @@ public final class ModClientSetups {
         });
     }
 
-    public static final boolean SHOULD_NOT_GENERATE_BLOCK_GRAY_TEXTURE;
+    public static final boolean SHOULD_NOT_GENERATE_BLOCK_GRAY_TEXTURE = ModList.get().isLoaded("ctm") || ModList.get().isLoaded("fusion") || ModList.get().isLoaded("continuity");
 
-    static {
-        ModList modList = ModList.get();
-        SHOULD_NOT_GENERATE_BLOCK_GRAY_TEXTURE = modList.isLoaded("ctm") || modList.isLoaded("fusion") || modList.isLoaded("continuity");
-    }
+    public static final RenderType TERRA_SWORD_RENDER_TYPE = RenderType.create("entity_translucent_emissive", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 1536, true, false,
+            RenderType.CompositeState.builder()
+                    .setShaderState(RENDERTYPE_ENTITY_TRANSLUCENT_EMISSIVE_SHADER)
+                    .setTextureState(new RenderStateShard.TextureStateShard(Confluence.asResource("textures/mask/sword.png"), true, false))
+                    .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
+                    .setWriteMaskState(COLOR_WRITE)
+                    .setCullState(NO_CULL)
+//                        .setLightmapState(LIGHTMAP)
+                    .setOverlayState(OVERLAY)
+                    .createCompositeState(false));
 }

@@ -16,8 +16,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class PotionItemMixin {
     @Inject(method = "finishUsingItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/advancements/critereon/ConsumeItemTrigger;trigger(Lnet/minecraft/server/level/ServerPlayer;Lnet/minecraft/world/item/ItemStack;)V"))
     private void achievement(ItemStack stack, Level level, LivingEntity entityLiving, CallbackInfoReturnable<ItemStack> cir) {
-        if (entityLiving.getAirSupply() <= 0 && ModUtils.isWaterBottle(stack)) {
-            AchievementUtils.awardAchievement((ServerPlayer) entityLiving, "unusual_survival_strategies");
-        }
+        AchievementUtils.unusualSurvivalStrategies((ServerPlayer) entityLiving, ModUtils.isWaterBottle(stack));
     }
 }

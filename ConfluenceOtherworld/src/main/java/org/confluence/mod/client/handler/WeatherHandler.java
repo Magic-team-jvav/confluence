@@ -111,7 +111,7 @@ public final class WeatherHandler {
         map.put(Blocks.MANGROVE_LEAVES, new Context(Facing.HORIZONTAL, ModParticleTypes.LEAVES.get(), Context.FULL));
         map.put(Blocks.AZALEA_LEAVES, new Context(Facing.HORIZONTAL, ModParticleTypes.LEAVES.get(), Context.FULL));
         map.put(Blocks.FLOWERING_AZALEA_LEAVES, new Context(Facing.HORIZONTAL, ModParticleTypes.LEAVES.get(), Context.FULL));
-        map.put(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.getLeaves().get(), new Context(Facing.HORIZONTAL, ModParticleTypes.YELLOW_WILLOW.get(), Context.FULL));
+        map.put(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.LEAVES.get(), new Context(Facing.HORIZONTAL, ModParticleTypes.YELLOW_WILLOW.get(), Context.FULL));
     }
 
     public static void sandParticles(Map<Block, Context> map) {

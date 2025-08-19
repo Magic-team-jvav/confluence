@@ -9,13 +9,11 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.ClientPacketHandler;
 
-public record ManaPacketS2C(int maxMana, int currentMana) implements CustomPacketPayload {
+public record ManaPacketS2C(int maxMana, float currentMana) implements CustomPacketPayload {
     public static final Type<ManaPacketS2C> TYPE = new Type<>(Confluence.asResource("mana"));
     public static final StreamCodec<ByteBuf, ManaPacketS2C> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.INT,
-            ManaPacketS2C::maxMana,
-            ByteBufCodecs.INT,
-            ManaPacketS2C::currentMana,
+            ByteBufCodecs.VAR_INT, ManaPacketS2C::maxMana,
+            ByteBufCodecs.FLOAT, ManaPacketS2C::currentMana,
             ManaPacketS2C::new
     );
 

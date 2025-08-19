@@ -9,10 +9,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.entity.hook.AbstractHookEntity;
-import org.confluence.mod.common.entity.hook.BaseHookEntity;
-import org.confluence.mod.common.entity.hook.DualHookEntity;
-import org.confluence.mod.common.entity.hook.MimicHookEntity;
+import org.confluence.mod.common.entity.hook.*;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.item.hook.BaseHookItem;
 import org.confluence.mod.common.item.hook.FishHookItem;
@@ -40,10 +37,10 @@ public class HookItems {
     public static final DeferredItem<BaseHookItem> DUAL_HOOK = ITEMS.register("dual_hook", () -> new BaseHookItem(ModRarity.LIGHT_RED, 2, 18.33F, 1.4F, BaseHookItem.HookType.INDIVIDUAL, (itemStack, item, player, level) -> {
         CompoundTag tag = LibUtils.getItemStackNbt(itemStack);
         boolean isRed = tag.getBoolean("isRed");
-        tag.putBoolean("isRed", !isRed);
+        LibUtils.updateItemStackNbt(itemStack, nbt -> nbt.putBoolean("isRed", !isRed));
         return new DualHookEntity(item, player, level, isRed ? DualHookEntity.Variant.RED : DualHookEntity.Variant.BLUE);
     }));
-    public static final DeferredItem<BaseHookItem> HOOK_OF_DISSONANCE = ITEMS.register("hook_of_dissonance", () -> new BaseHookItem(ModRarity.PINK, 1, 20.0F, 1.6F, BaseHookItem.HookType.SINGLE, (itemStack, item, player, level) -> new AbstractHookEntity.Impl(ModEntities.HOOK_OF_DISSONANCE.get(), item, player, level)));
+    public static final DeferredItem<BaseHookItem> HOOK_OF_DISSONANCE = ITEMS.register("hook_of_dissonance", () -> new BaseHookItem(ModRarity.PINK, 1, 20.0F, 1.6F, BaseHookItem.HookType.SINGLE, (itemStack, item, player, level) -> new HookOfDissonanceEntity(item, player, level)));
     public static final DeferredItem<BaseHookItem> THORN_HOOK = ITEMS.register("thorn_hook", () -> new BaseHookItem(ModRarity.LIGHT_PURPLE, 3, 20.0F, 1.6F, BaseHookItem.HookType.SIMULTANEOUS, (itemStack, item, player, level) -> new AbstractHookEntity.Impl(ModEntities.THORN_HOOK.get(), item, player, level)));
     public static final DeferredItem<BaseHookItem> ILLUMINANT_HOOK = ITEMS.register("illuminant_hook", () -> new BaseHookItem(ModRarity.LIGHT_PURPLE, 3, 20.0F, 1.5F, BaseHookItem.HookType.SIMULTANEOUS, (itemStack, item, player, level) -> new MimicHookEntity(item, player, level, MimicHookEntity.Variant.ILLUMINANT)));
     public static final DeferredItem<BaseHookItem> WORM_HOOK = ITEMS.register("worm_hook", () -> new BaseHookItem(ModRarity.LIGHT_PURPLE, 3, 20.0F, 1.5F, BaseHookItem.HookType.SIMULTANEOUS, (itemStack, item, player, level) -> new MimicHookEntity(item, player, level, MimicHookEntity.Variant.WORM)));

@@ -58,10 +58,10 @@ public abstract class AbstractDispenserMechanicalBlock extends AbstractMechanica
     }
 
     @Override
-    public void onExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {
-        if (!pState.getValue(TRIGGERED) && behaviour(pState, pLevel, pPos, pColor, pEntity)){
-            pLevel.setBlockAndUpdate(pPos, pState.setValue(TRIGGERED, true));
-            if (delay() > 0) pLevel.scheduleTick(pPos, this, delay());
+    public void onExecute(BlockState state, ServerLevel level, BlockPos pos, int color, INetworkEntity networkEntity) {
+        if (!state.getValue(TRIGGERED) && behaviour(state, level, pos, color, networkEntity)){
+            level.setBlockAndUpdate(pos, state.setValue(TRIGGERED, true));
+            if (delay() > 0) level.scheduleTick(pos, this, delay());
         }
     }
 

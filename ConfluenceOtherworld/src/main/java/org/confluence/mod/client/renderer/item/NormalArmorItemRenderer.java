@@ -5,7 +5,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.init.ModAttachmentTypes;
+import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.util.ClientUtils;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.cache.object.GeoBone;
@@ -30,7 +30,7 @@ public class NormalArmorItemRenderer<T extends Item & GeoItem> extends DyeableGe
     @Override
     protected Color getColorForBone(GeoBone bone) {
         if (currentSlot != null && currentEntity instanceof AbstractClientPlayer player) {
-            OptionalInt color = ClientUtils.getVanityDyeColor(currentEntity.getData(ModAttachmentTypes.EXTRA_INVENTORY), getSlotIndex(currentSlot), player);
+            OptionalInt color = ClientUtils.getVanityDyeColor(ExtraInventory.of(player), getSlotIndex(currentSlot), player);
             if (color.isPresent()) return new Color(color.getAsInt());
         }
         return Color.WHITE;
@@ -39,8 +39,8 @@ public class NormalArmorItemRenderer<T extends Item & GeoItem> extends DyeableGe
     @Override
     public ResourceLocation getTextureLocation(T animatable) {
         ResourceLocation original = super.getTextureLocation(animatable);
-        if (currentSlot != null && currentEntity instanceof AbstractClientPlayer) {
-            if (!currentEntity.getData(ModAttachmentTypes.EXTRA_INVENTORY).getVanityArmorDye(getSlotIndex(currentSlot)).isEmpty()) {
+        if (currentSlot != null && currentEntity instanceof AbstractClientPlayer player) {
+            if (!ExtraInventory.of(player).getVanityArmor(getSlotIndex(currentSlot), true).isEmpty()) {
                 return ClientUtils.getGrayTexture(original);
             }
         }

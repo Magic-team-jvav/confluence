@@ -6,6 +6,8 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.*;
@@ -14,6 +16,7 @@ import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import org.confluence.lib.common.worldgen.structure.GridPiece;
@@ -28,6 +31,12 @@ import static net.minecraft.world.level.block.PoweredRailBlock.SHAPE;
 import static org.confluence.lib.util.StructureUtils.*;
 
 public class MineTunnelsStructure extends Structure {
+    public static final ResourceKey<ConfiguredFeature<?, ?>> RAIL_SUPPORT = Confluence.asResourceKey(Registries.CONFIGURED_FEATURE, "rail_support");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> RAIL_BOULDER = Confluence.asResourceKey(Registries.CONFIGURED_FEATURE, "rail_boulder");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> RAIL_DART = Confluence.asResourceKey(Registries.CONFIGURED_FEATURE, "rail_dart");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> RAIL_STONE_BRICKS = Confluence.asResourceKey(Registries.CONFIGURED_FEATURE, "rail_stone_bricks");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> RAIL_TUFF_BRICKS = Confluence.asResourceKey(Registries.CONFIGURED_FEATURE, "rail_tuff_bricks");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> RAIL_SPRUCE_LOG = Confluence.asResourceKey(Registries.CONFIGURED_FEATURE, "rail_spruce_log");
     public static final MapCodec<MineTunnelsStructure> CODEC = simpleCodec(MineTunnelsStructure::new);
     public static final Direction[] facing = new Direction[]{
             Direction.EAST,
@@ -58,12 +67,6 @@ public class MineTunnelsStructure extends Structure {
             Object2IntMap<BlockPos> translationMap = new Object2IntOpenHashMap<>();
             List<BlockPos> switchMap = new ArrayList<>();
             Map<BlockPos, ResourceLocation> featureMap = new HashMap<>();
-            ResourceLocation rail = Confluence.asResource("to_structure/rail_support");
-            ResourceLocation railBoulder = Confluence.asResource("to_structure/rail_boulder");
-            ResourceLocation railDart = Confluence.asResource("to_structure/rail_dart");
-            ResourceLocation stoneBricks = Confluence.asResource("to_structure/rail_stone_bricks");
-            ResourceLocation tuffBricks = Confluence.asResource("to_structure/rail_tuff_bricks");
-            ResourceLocation spruceLog = Confluence.asResource("to_structure/rail_spruce_log");
 
             boolean setGate = 0.1666666F >= random.nextFloat();
             //setGate = true;
@@ -104,28 +107,28 @@ public class MineTunnelsStructure extends Structure {
                 if (facingType == 0 || facingType == 1) {
                     rectangular(tunnelPos.offset(0, yOffset, 1), tunnelPos.offset(0, yOffset, -1), 1, blockMap, 0);
                     if (tunnelFacing / 4 == 1) {
-                        blockMap.put(tunnelPos.offset(0, yOffset + 1, 0), 3);
+                        blockMap.put(tunnelPos, 3);
                     } else if (tunnelFacing / 4 == 2) {
-                        blockMap.put(tunnelPos.offset(0, yOffset + 1, 0), 4 + facingType);
+                        blockMap.put(tunnelPos, 4 + facingType);
                     } else {
                         blockMap.put(tunnelPos.offset(0, yOffset + 1, 0), railShape[facingType]);
                     }
                     if (xSet % 10 == 0) {
-                        featureMap.put(tunnelPos.offset(0, yOffset, 1), rail);
-                        featureMap.put(tunnelPos.offset(0, yOffset, -1), rail);
+                        featureMap.put(tunnelPos.offset(0, yOffset, 1), RAIL_SUPPORT.location());
+                        featureMap.put(tunnelPos.offset(0, yOffset, -1), RAIL_SUPPORT.location());
                     }
                 } else {
                     rectangular(tunnelPos.offset(1, yOffset, 0), tunnelPos.offset(-1, yOffset, 0), 1, blockMap, 0);
                     if (tunnelFacing / 4 == 1) {
-                        blockMap.put(tunnelPos.offset(0, yOffset + 1, 0), 2);
+                        blockMap.put(tunnelPos, 2);
                     } else if (tunnelFacing / 4 == 2) {
-                        blockMap.put(tunnelPos.offset(0, yOffset + 1, 0), 4 + facingType);
+                        blockMap.put(tunnelPos, 4 + facingType);
                     } else {
-                        blockMap.put(tunnelPos.offset(0, yOffset + 1, 0), railShape[facingType]);
+                        blockMap.put(tunnelPos, railShape[facingType]);
                     }
                     if (zSet % 10 == 0) {
-                        featureMap.put(tunnelPos.offset(1, yOffset, 0), rail);
-                        featureMap.put(tunnelPos.offset(-1, yOffset, 0), rail);
+                        featureMap.put(tunnelPos.offset(1, yOffset, 0), RAIL_SUPPORT.location());
+                        featureMap.put(tunnelPos.offset(-1, yOffset, 0), RAIL_SUPPORT.location());
                     }
                 }
                 if (tunnelFacing > 11) {
@@ -147,13 +150,13 @@ public class MineTunnelsStructure extends Structure {
                         blockMap.put(translationPos.offset(0, -1, 0), 24);
                         break;
                     case 1:
-                        featureMap.put(translationPos, railBoulder);
+                        featureMap.put(translationPos, RAIL_BOULDER.location());
                         break;
                     case 3:
-                        featureMap.put(translationPos, railDart);
+                        featureMap.put(translationPos, RAIL_DART.location());
                         break;
                     default:
-                        ellipsoid(4.9, 10.9, 4.9, translationPos.offset(0, -6, 0),0, true, blockMap);
+                        ellipsoid(4.9, 10.9, 4.9, translationPos.offset(0, -6, 0), 0, true, blockMap);
                         ball(7.9, translationPos.offset(0, -12, 0), 0, 22, true, blockMap, translationPos.getY() - 12);
                         ball(6.4, translationPos.offset(0, -12, 0), 0, 23, true, blockMap, translationPos.getY() - 12);
                 }
@@ -193,21 +196,21 @@ public class MineTunnelsStructure extends Structure {
 
             for (int xF = -2; xF < 3; xF++) {
                 for (int zF = -2; zF < 3; zF++) {
-                    featureMap.put(underPos.offset(xF, -2, zF), stoneBricks);
+                    featureMap.put(underPos.offset(xF, -2, zF), RAIL_STONE_BRICKS.location());
                 }
             }
-            featureMap.put(underPos.offset(3, -2, 3), spruceLog);
-            featureMap.put(underPos.offset(3, -2, -3), spruceLog);
-            featureMap.put(underPos.offset(-3, -2, 3), spruceLog);
-            featureMap.put(underPos.offset(-3, -2, -3), spruceLog);
-            featureMap.put(underPos.offset(3, -2, 2), tuffBricks);
-            featureMap.put(underPos.offset(3, -2, -2), tuffBricks);
-            featureMap.put(underPos.offset(-3, -2, 2), tuffBricks);
-            featureMap.put(underPos.offset(-3, -2, -2), tuffBricks);
-            featureMap.put(underPos.offset(2, -2, 3), tuffBricks);
-            featureMap.put(underPos.offset(2, -2, -3), tuffBricks);
-            featureMap.put(underPos.offset(-2, -2, 3), tuffBricks);
-            featureMap.put(underPos.offset(-2, -2, -3), tuffBricks);
+            featureMap.put(underPos.offset(3, -2, 3), RAIL_SPRUCE_LOG.location());
+            featureMap.put(underPos.offset(3, -2, -3), RAIL_SPRUCE_LOG.location());
+            featureMap.put(underPos.offset(-3, -2, 3), RAIL_SPRUCE_LOG.location());
+            featureMap.put(underPos.offset(-3, -2, -3), RAIL_SPRUCE_LOG.location());
+            featureMap.put(underPos.offset(3, -2, 2), RAIL_TUFF_BRICKS.location());
+            featureMap.put(underPos.offset(3, -2, -2), RAIL_TUFF_BRICKS.location());
+            featureMap.put(underPos.offset(-3, -2, 2), RAIL_TUFF_BRICKS.location());
+            featureMap.put(underPos.offset(-3, -2, -2), RAIL_TUFF_BRICKS.location());
+            featureMap.put(underPos.offset(2, -2, 3), RAIL_TUFF_BRICKS.location());
+            featureMap.put(underPos.offset(2, -2, -3), RAIL_TUFF_BRICKS.location());
+            featureMap.put(underPos.offset(-2, -2, 3), RAIL_TUFF_BRICKS.location());
+            featureMap.put(underPos.offset(-2, -2, -3), RAIL_TUFF_BRICKS.location());
 
             GridPiece.addPieces(blockMap, Lists.newArrayList(
                     /* 0  */  Blocks.AIR.defaultBlockState(),

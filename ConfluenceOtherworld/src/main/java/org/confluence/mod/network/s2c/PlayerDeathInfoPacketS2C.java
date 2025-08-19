@@ -14,17 +14,18 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.util.Coins;
 import org.confluence.mod.util.PlayerUtils;
 
 public record PlayerDeathInfoPacketS2C(Component deathMessage, int respawnTime, short platinum, byte gold, byte silver, byte copper) implements CustomPacketPayload {
     public static final Type<PlayerDeathInfoPacketS2C> TYPE = new Type<>(Confluence.asResource("player_death_info"));
     public static final StreamCodec<RegistryFriendlyByteBuf, PlayerDeathInfoPacketS2C> STREAM_CODEC = StreamCodec.composite(
-            ComponentSerialization.TRUSTED_STREAM_CODEC, p -> p.deathMessage,
-            ByteBufCodecs.INT, p -> p.respawnTime,
-            ByteBufCodecs.SHORT, p -> p.platinum,
-            ByteBufCodecs.BYTE, p -> p.gold,
-            ByteBufCodecs.BYTE, p -> p.silver,
-            ByteBufCodecs.BYTE, p -> p.copper,
+            ComponentSerialization.TRUSTED_STREAM_CODEC, PlayerDeathInfoPacketS2C::deathMessage,
+            ByteBufCodecs.VAR_INT, PlayerDeathInfoPacketS2C::respawnTime,
+            ByteBufCodecs.SHORT, PlayerDeathInfoPacketS2C::platinum,
+            ByteBufCodecs.BYTE, PlayerDeathInfoPacketS2C::gold,
+            ByteBufCodecs.BYTE, PlayerDeathInfoPacketS2C::silver,
+            ByteBufCodecs.BYTE, PlayerDeathInfoPacketS2C::copper,
             PlayerDeathInfoPacketS2C::new
     );
 
@@ -50,8 +51,8 @@ public record PlayerDeathInfoPacketS2C(Component deathMessage, int respawnTime, 
     public static boolean replaceCombatKillPacket(ServerPlayer player, Component message) {
         if (CommonConfigs.SHOW_MONEY_DROPS.get()) {
             long drops = LibUtils.getOrCreatePersistedData(player).getLong("confluence:drops_money");
-            int[] coins = PlayerUtils.decodeCoin(drops);
-            PacketDistributor.sendToPlayer(player, new PlayerDeathInfoPacketS2C(message, PlayerUtils.getRespawnWaitTime(player), (short) coins[3], (byte) coins[2], (byte) coins[1], (byte) coins[0]));
+            Coins coins = PlayerUtils.decodeCoin(drops);
+            PacketDistributor.sendToPlayer(player, new PlayerDeathInfoPacketS2C(message, PlayerUtils.getRespawnWaitTime(player), (short) coins.platinum(), (byte) coins.gold(), (byte) coins.silver(), (byte) coins.copper()));
             return false;
         }
         return true;

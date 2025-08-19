@@ -1,9 +1,7 @@
 package org.confluence.mod.common.init;
 
-import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
@@ -30,9 +28,20 @@ public final class ModStructures {
     public static final DeferredHolder<StructureType<?>, StructureType<MarbleCaveStructure>> MARBLE_CAVE = TYPES.register("marble_cave", () -> () -> MarbleCaveStructure.CODEC);
     public static final DeferredHolder<StructureType<?>, StructureType<GraniteCaveStructure>> GRANITE_CAVE = TYPES.register("granite_cave", () -> () -> GraniteCaveStructure.CODEC);
 
-    public static final ResourceKey<Structure> DUNGEON_KEY = Confluence.asResourceKey(Registries.STRUCTURE, "dungeon");
+    public static class Keys {
+        public static final ResourceKey<Structure> AIR = key("air");
+        public static final ResourceKey<Structure> CRIMSON_CAVE = key("crimson_cave");
+        public static final ResourceKey<Structure> CRIMSON_FOSSIL = key("crimson_fossil");
+        public static final ResourceKey<Structure> GRANITE_CAVE = key("granite_cave");
+        public static final ResourceKey<Structure> MARBLE_CAVE = key("marble_cave");
+        public static final ResourceKey<Structure> DESERT_UNDERGROUND_CABINS = key("desert_underground_cabins");
+        public static final ResourceKey<Structure> DUNGEON = key("dungeon");
+        public static final ResourceKey<Structure> DUNGEON_ALTAR = key("dungeon_altar");
+        public static final ResourceKey<Structure> EBONY_STONE_THORN = key("ebony_stone_thorn");
+        public static final ResourceKey<Structure> SHIMMER_LAKE = key("shimmer_lake");
 
-    public static void boostrap(BootstrapContext<Structure> context) {
-        context.register(DUNGEON_KEY, new DungeonStructure(new Structure.StructureSettings(HolderSet.empty())));
+        private static ResourceKey<Structure> key(String path) {
+            return Confluence.asResourceKey(Registries.STRUCTURE, path);
+        }
     }
 }

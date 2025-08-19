@@ -295,7 +295,7 @@ public class BaseSwordItem extends SwordItem {
         void accept(A a, B b, C c, D d);
     }
 
-    // TODO: 这是飞龙、波涌之刃的发剑气方式，还要写附魔剑、泰拉刃的
+    // TODO: 这是飞龙、波涌之刃的发剑气方式，还要写泰拉刃的
     @OnlyIn(Dist.CLIENT)
     public static void swordProjectileHandle(Minecraft minecraft, LocalPlayer player) {
         if (minecraft.gameMode == null || minecraft.gameMode.isDestroying() || !minecraft.options.keyAttack.isDown()) {return;}

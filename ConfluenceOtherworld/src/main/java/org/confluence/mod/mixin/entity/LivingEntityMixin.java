@@ -200,6 +200,6 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
 
     @ModifyExpressionValue(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;shouldDiscardFriction()Z"))
     private boolean discardWhenHasAnyHooked(boolean original) {
-        return original || (confluence$self() instanceof Player player && BaseHookItem.hasAnyHooked(player));
+        return original || (confluence$self() instanceof Player player && !player.isCrouching() && BaseHookItem.hasAnyHooked(player));
     }
 }

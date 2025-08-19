@@ -31,7 +31,7 @@ public abstract class MutableQuadViewImplMixin implements IMutableQuadViewImpl {
         return confluence$entry;
     }
 
-    @Inject(method = "cachedSprite(Lnet/minecraft/client/renderer/texture/TextureAtlasSprite;)V",at=@At("HEAD"))
+    @Inject(method = "cachedSprite(Lnet/minecraft/client/renderer/texture/TextureAtlasSprite;)V", at = @At("HEAD"))
     private void cachedGraySprite(TextureAtlasSprite sprite, CallbackInfo ci) {
         if (sprite == null) {
             this.confluence$entry = null;

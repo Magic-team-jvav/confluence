@@ -35,7 +35,7 @@ public class WrenchItem extends CustomRarityItem {
     }
 
     public static boolean containsPos(ItemStack pStack) {
-        return LibUtils.getItemStackNbt(pStack).contains("blockPos");
+        return LibUtils.getItemStackNbtNoCopy(pStack).contains("blockPos");
     }
 
     @Override
@@ -74,7 +74,7 @@ public class WrenchItem extends CustomRarityItem {
     }
 
     public static BlockPos readBlockPos(ItemStack itemStack) {
-        return NbtUtils.readBlockPos(LibUtils.getItemStackNbt(itemStack), "blockPos").orElse(BlockPos.ZERO);
+        return NbtUtils.readBlockPos(LibUtils.getItemStackNbtNoCopy(itemStack), "blockPos").orElse(BlockPos.ZERO);
     }
 
     public static void removeBlockPos(ItemStack itemStack) {

@@ -6,21 +6,16 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.common.recipe.EnvironmentLevelAccess;
 import org.confluence.mod.common.menu.CrystalBallMenu;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.stream.Stream;
 
 public class CrystalBallBlock extends Block {
     public CrystalBallBlock(Properties properties) {
@@ -52,19 +47,6 @@ public class CrystalBallBlock extends Block {
 
     @Override
     public MenuProvider getMenuProvider(BlockState state, Level level, BlockPos pos) {
-        return new SimpleMenuProvider((containerId, inventory, player) -> new CrystalBallMenu(containerId, inventory, new LevelAccess(level, pos)), Component.translatable("container.confluence.crystal_ball"));
-    }
-
-    public static class LevelAccess extends EnvironmentLevelAccess {
-        public LevelAccess(@Nullable Level level, @Nullable BlockPos pos) {
-            super(level, pos);
-        }
-
-        @Override
-        public <R extends Recipe<?>> boolean matches(R recipe) {
-            if (level == null || pos == null) return false;
-            //ItemStack resultItem = recipe.getResultItem(level.registryAccess()); todo
-            return true;
-        }
+        return new SimpleMenuProvider((containerId, inventory, player) -> new CrystalBallMenu(containerId, inventory, new EnvironmentLevelAccess(level, pos)), Component.translatable("container.confluence.crystal_ball"));
     }
 }

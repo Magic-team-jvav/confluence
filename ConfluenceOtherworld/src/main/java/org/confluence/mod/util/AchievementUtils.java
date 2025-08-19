@@ -14,12 +14,15 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.block.functional.DartTrapBlock;
 import org.confluence.mod.common.data.saved.NPCSpawner;
-import org.confluence.mod.common.init.ModAttachmentTypes;
+import org.confluence.mod.mixed.IChunkSection;
+import org.confluence.mod.mixed.IMinecraftServer;
+import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 
 import static org.confluence.mod.common.attachment.ExtraInventory.SIZE_VANITY_ARMOR;
@@ -29,6 +32,12 @@ public final class AchievementUtils {
 
     public static ResourceLocation asAchievement(String path) {
         return Confluence.asResource(PREFIX + path);
+    }
+
+    public static boolean achievedAchievement(ServerPlayer player, String path) {
+        if (LibUtils.getOrCreatePersistedData(player).getBoolean(Confluence.MODID + ':' + path)) return true;
+        AdvancementHolder advancement = player.server.getAdvancements().get(asAchievement(path));
+        return advancement != null && player.getAdvancements().getOrStartProgress(advancement).isDone();
     }
 
     public static void awardAchievement(ServerPlayer player, String path) {
@@ -44,18 +53,18 @@ public final class AchievementUtils {
     }
 
     public static void youCanDoIt(ServerPlayer player, ServerLevel level) {
-        if (level.getDayTime() % 1200L == 0L) { // 每分钟检查一次
-            long firstNight = LibUtils.getOrCreatePersistedData(player).getLong("confluence:you_can_do_it");
-            if (firstNight != -1L) {
-                if (firstNight == 0L && level.isNight()) {
-                    LibUtils.getOrCreatePersistedData(player).putLong("confluence:you_can_do_it", level.getDayTime());
-                } else if (firstNight != 0L && level.getDayTime() - firstNight > 12000L) {
-                    AdvancementHolder advancement = player.server.getAdvancements().get(asAchievement("you_can_do_it"));
-                    if (advancement != null) {
-                        player.getAdvancements().award(advancement, "never");
-                    }
-                    LibUtils.getOrCreatePersistedData(player).putLong("confluence:you_can_do_it", -1L);
+        if (level.getGameTime() % 1200 == 0L) { // 每分钟检查一次
+            byte firstNight = LibUtils.getOrCreatePersistedData(player).getByte("confluence:you_can_do_it");
+            if (firstNight == -1) return;
+            int dayTime = LibDateUtils.getDayTime(level);
+            if (LibDateUtils.isNight(dayTime)) {
+                LibUtils.getOrCreatePersistedData(player).putByte("confluence:you_can_do_it", (byte) 1);
+            } else if (LibDateUtils.isDay(dayTime)) {
+                AdvancementHolder advancement = player.server.getAdvancements().get(asAchievement("you_can_do_it"));
+                if (advancement != null) {
+                    player.getAdvancements().award(advancement, "never");
                 }
+                LibUtils.getOrCreatePersistedData(player).putByte("confluence:you_can_do_it", (byte) -1);
             }
         }
     }
@@ -87,19 +96,19 @@ public final class AchievementUtils {
         }
     }
 
-    public static void matchingAttire_fashionStatement(EquipmentSlot slot, ServerPlayer serverPlayer) {
+    public static void matchingAttire_fashionStatement(EquipmentSlot slot, ServerPlayer player) {
         if (slot.getType() == EquipmentSlot.Type.HUMANOID_ARMOR) {
-            if (Streams.stream(serverPlayer.getArmorSlots()).noneMatch(ItemStack::isEmpty)) {
-                awardAchievement(serverPlayer, "matching_attire");
-                ExtraInventory extraInventory = serverPlayer.getData(ModAttachmentTypes.EXTRA_INVENTORY);
+            if (Streams.stream(player.getArmorSlots()).noneMatch(ItemStack::isEmpty)) {
+                awardAchievement(player, "matching_attire");
+                ExtraInventory extraInventory = ExtraInventory.of(player);
                 boolean fashionStatement = true;
                 for (int i = 0; i < SIZE_VANITY_ARMOR; i++) {
-                    if (extraInventory.getVanityArmor(i).isEmpty()) {
+                    if (extraInventory.getVanityArmor(i, false).isEmpty()) {
                         fashionStatement = false;
                         break;
                     }
                 }
-                if (fashionStatement) awardAchievement(serverPlayer, "fashion_statement");
+                if (fashionStatement) awardAchievement(player, "fashion_statement");
             }
         }
     }
@@ -124,6 +133,29 @@ public final class AchievementUtils {
                     AchievementUtils.awardAchievement(player, "no_hobo");
                 }
             }
+        }
+    }
+
+    public static void quietNeighborhood(ServerPlayer player, ServerLevel level) {
+        if (level.getGameTime() % 40 == 2) {
+            IChunkSection iSection = DynamicBiomeUtils.getISection(level, player.blockPosition());
+            if (iSection != null && iSection.confluence$isGraveyard()) {
+                awardAchievement(player, "quiet_neighborhood");
+            }
+        }
+    }
+
+    public static void aRareRealm(ServerPlayer player, ServerLevel level) {
+        if (IMinecraftServer.of(player.server).confluence$matchesSecretFlag(IWorldOptions.SECRET_SEED)) {
+            if (level.getGameTime() % 20 == 3) {
+                awardAchievement(player, "a_rare_realm");
+            }
+        }
+    }
+
+    public static void unusualSurvivalStrategies(ServerPlayer player, boolean isWatterBottle) {
+        if (isWatterBottle && player.isInWater() && player.getAirSupply() <= 0) {
+            awardAchievement(player, "unusual_survival_strategies");
         }
     }
 }

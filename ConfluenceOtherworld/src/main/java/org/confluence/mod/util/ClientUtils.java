@@ -13,6 +13,8 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.model.AgeableHierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.texture.DynamicTexture;
@@ -20,12 +22,12 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -33,9 +35,7 @@ import org.confluence.lib.client.AntiPushPoseStack;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.entity.DeadBodyPartEntity;
-import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
-import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.VanityArmorItems;
 import org.confluence.mod.common.item.vanity_armor.BaseDyeItem;
 import org.confluence.mod.integration.geckolib.IGeoCube;
@@ -56,6 +56,7 @@ import software.bernie.geckolib.renderer.GeoEntityRenderer;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
+import java.util.function.Supplier;
 
 @OnlyIn(Dist.CLIENT)
 public final class ClientUtils {
@@ -210,7 +211,7 @@ public final class ClientUtils {
 
     public static OptionalInt getVanityDyeColor(ExtraInventory extraInventory, int index, Player player) {
         if (index != -1) {
-            ItemStack vanityArmorDye = extraInventory.getVanityArmorDye(index);
+            ItemStack vanityArmorDye = extraInventory.getVanityArmor(index, true);
             if (!vanityArmorDye.isEmpty()) {
                 Item item = vanityArmorDye.getItem();
                 if (item instanceof BaseDyeItem dyeItem) {
@@ -226,30 +227,11 @@ public final class ClientUtils {
         return OptionalInt.empty();
     }
 
-    /**
-     * 获取实体所的发光强度
-     *
-     * @param returnValue 原发光强度
-     * @return 目标发光强度，值域在[-15, 15]。负数代表仅水下光照
-     */
-    public static int getLuminance(Entity entity, int returnValue) {
-        int luminance = 0;
-        if (entity instanceof LivingEntity living) {
-            if (living.getItemBySlot(EquipmentSlot.HEAD).is(ModTags.Items.PROVIDE_LIGHT)) {
-                luminance += 10;
-            }
-            if (living.hasEffect(ModEffects.SHINE)) {
-                luminance += 10;
-            }
-        }
-        return returnValue >= 0 ? Math.min(returnValue + luminance, 15) : Math.max(returnValue - luminance, -15);
-    }
-
     @SuppressWarnings({"rawtypes", "unchecked"})
     public static void livingDeath(LivingEntity entity) {
         if (!(entity.level() instanceof ClientLevel level)) return;
 //        DecimalFormat df = new DecimalFormat("#.####");
-        Minecraft.getInstance().executeIfPossible(entity::discard);
+        DeathAnimUtils.tellDiscardEntity(entity);
         EntityRenderer<? super LivingEntity> renderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(entity);
         Vec3 deathMotion;
         if (entity instanceof Mob mob && mob.isNoAi()) {
@@ -315,7 +297,7 @@ public final class ClientUtils {
 
                     part.setPos(entityPos.add(transformed.x, transformed.y, transformed.z));
                     part.setDeltaMovement(deathMotion.offsetRandom(level.random, (float) (deathMotion.length() * 0.5 + 0.2)).multiply(1, 1.05f, 1));
-                    Minecraft.getInstance().executeIfPossible(() -> level.addEntity(part));
+                    DeathAnimUtils.tellAddEntity(level, part);
                 }
             }
         } else if (renderer instanceof LivingEntityRenderer<?, ?> livingRenderer) {
@@ -441,5 +423,9 @@ public final class ClientUtils {
             rots.pop();
             poseStack.popPose(true);
         }
+    }
+
+    public static <T extends BlockEntity> BlockEntityRendererProvider<T> rendererProvider(Supplier<BlockEntityRenderer<T>> factory) {
+        return context -> factory.get();
     }
 }

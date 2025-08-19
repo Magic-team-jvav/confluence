@@ -141,8 +141,8 @@ public class BaseFoodItem extends Item {
         }
     }
 
-    public static class BlockItem extends net.minecraft.world.item.BlockItem {
-        public BlockItem(Block block, Properties properties) {
+    public static class BItem extends net.minecraft.world.item.BlockItem {
+        public BItem(Block block, Properties properties) {
             super(block, properties);
         }
     }

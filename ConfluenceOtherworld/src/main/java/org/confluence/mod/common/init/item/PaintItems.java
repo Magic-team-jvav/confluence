@@ -52,7 +52,7 @@ public class PaintItems {
     public static final DeferredItem<PaintItem> SHADOW_PAINT = registerPaint("shadow_paint", 0x000000);
     public static final DeferredItem<PaintItem> NEGATIVE_PAINT = registerPaint("negative_paint", BrushData.NEGATIVE_COLOR);
     public static final DeferredItem<PaintItem> ILLUMINANT_COATING = registerPaint("illuminant_coating", BrushData.ILLUMINANT_COLOR);
-    public static final DeferredItem<PaintItem> ECHO_COATING = registerPaint("echo_coating", BrushData.ECHO_COLOR); // todo
+    public static final DeferredItem<PaintItem> ECHO_COATING = registerPaint("echo_coating", BrushData.ECHO_COLOR);
 
     private static DeferredItem<PaintItem> registerPaint(String name, int color) {
         return ITEMS.register(name, () -> {

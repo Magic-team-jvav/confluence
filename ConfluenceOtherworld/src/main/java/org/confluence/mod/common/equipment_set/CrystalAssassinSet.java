@@ -19,7 +19,7 @@ public class CrystalAssassinSet extends EquipmentSet {
         equippableGroup.addEquippableSet("helmet", new EquipmentSetBranch.Builder()
                 .addEquippable(VanillaEquippable.HEAD, ArmorItems.CRYSTAL_ASSASSIN_HELMET)
                 .bindHook(builder -> builder.addBonus(TCAttributes.getCriticalChance(), new AttributeModifier(ArmorItems.CRYSTAL_ASSASSIN_HELMET.getId(), 0.05, AttributeModifier.Operation.ADD_VALUE)))
-                .bindHook(ModHookTypes.MANA_CONSUME.get(), (owner, itemStack, original) -> () -> (int) (original.getAsInt() * 0.9))
+                .bindHook(ModHookTypes.MANA_CONSUME.get(), (owner, itemStack, original) -> () -> original.getAsFloat() * 0.9F)
                 .build());
         equippableGroup.addEquippableSet("chestplate", new EquipmentSetBranch.Builder()
                 .addEquippable(VanillaEquippable.CHEST, ArmorItems.CRYSTAL_ASSASSIN_CHESTPLATE)

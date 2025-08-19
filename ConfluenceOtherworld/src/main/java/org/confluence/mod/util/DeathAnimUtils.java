@@ -1,7 +1,7 @@
 package org.confluence.mod.util;
 
+import com.ibm.icu.impl.Pair;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.Model;
@@ -15,6 +15,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.client.DummyMultiBufferSource;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.integration.geckolib.IGeoCube;
@@ -36,195 +37,8 @@ import java.util.Map;
 /** @author voila */
 public final class DeathAnimUtils {
     public static final Map<EntityType<? extends LivingEntity>, DeathAnimOptions> options = new HashMap<>();
-
-//    static{
-//        options.put(GHAST, DeathAnimOptions.Builtin.NO_GRAVITY_LOW_SPIN.customParticle(e -> {
-//        }));
-//        options.put(PHANTOM, DeathAnimOptions.Builtin.LOW_SPIN);
-//        options.put(SPIDER, DeathAnimOptions.Builtin.NO_GRAVITY.bloodColor(0.459f, 0.706f, 1.000f));
-//        options.put(CAVE_SPIDER, DeathAnimOptions.Builtin.NO_GRAVITY.bloodColor(0.459f, 0.706f, 1.000f));
-//        options.put(WARDEN, DeathAnimOptions.Builtin.LOW_SPIN);
-//        options.put(BLAZE, DeathAnimOptions.Builtin.EXTRA_FALL.bloodColor(0.89f, 0.65f, 0.07f));
-//        options.put(GIANT, DeathAnimOptions.Builtin.DEFAULT.bloodColor(0.45f, 0f, 0f));
-//        options.put(WITHER, DeathAnimOptions.Builtin.EXTRA_FALL.customParticle(entity -> {
-//        }));
-//        options.put(VEX, DeathAnimOptions.Builtin.LOW_SPIN);
-//        options.put(ENDERMAN, DeathAnimOptions.Builtin.DEFAULT.bloodColor(0.627f, 0.000f, 0.659f));
-//        options.put(GUARDIAN, DeathAnimOptions.Builtin.LOW_SPIN);
-//        options.put(ELDER_GUARDIAN, DeathAnimOptions.Builtin.LOW_SPIN);
-//        options.put(PIGLIN, DeathAnimOptions.Builtin.DEFAULT);
-//        options.put(PIGLIN_BRUTE, DeathAnimOptions.Builtin.DEFAULT);
-//        options.put(ENDERMITE, DeathAnimOptions.Builtin.DEFAULT);
-//        options.put(ZOMBIE, DeathAnimOptions.Builtin.DEFAULT.bloodColor(0.45f, 0f, 0f));
-//        options.put(DROWNED, DeathAnimOptions.Builtin.DEFAULT.bloodColor(0.45f, 0f, 0f));
-//        options.put(ZOMBIE_VILLAGER, DeathAnimOptions.Builtin.DEFAULT.bloodColor(0.45f, 0f, 0f));
-//        options.put(ZOMBIFIED_PIGLIN, DeathAnimOptions.Builtin.DEFAULT.bloodColor(0.45f, 0f, 0f));
-//        options.put(HUSK, DeathAnimOptions.Builtin.DEFAULT.bloodColor(0.45f, 0f, 0f));
-//        options.put(ZOGLIN, DeathAnimOptions.Builtin.LOW_SPIN.bloodColor(0.45f, 0f, 0f));
-//        options.put(WITHER_SKELETON, DeathAnimOptions.Builtin.DEFAULT.bloodColor(0.2f, 0.2f, 0.2f));
-//        options.put(SKELETON, DeathAnimOptions.Builtin.DEFAULT.bloodColor(0.631f, 0.631f, 0.631f));
-//        options.put(STRAY, DeathAnimOptions.Builtin.DEFAULT.bloodColor(0.95f, 0.95f, 0.95f));
-//        options.put(CREEPER, DeathAnimOptions.Builtin.DEFAULT.bloodColor(0.44f, 0.44f, 0.44f));
-//        options.put(WITCH, DeathAnimOptions.Builtin.LOW_SPIN);
-//        options.put(RAVAGER, DeathAnimOptions.Builtin.NO_GRAVITY_LOW_SPIN);
-//        options.put(PILLAGER, DeathAnimOptions.Builtin.DEFAULT);
-//        options.put(ILLUSIONER, DeathAnimOptions.Builtin.DEFAULT);
-//        options.put(EVOKER, DeathAnimOptions.Builtin.DEFAULT);
-//        options.put(VINDICATOR, DeathAnimOptions.Builtin.DEFAULT);
-//        options.put(SILVERFISH, DeathAnimOptions.Builtin.DEFAULT);
-//        options.put(DOLPHIN, DeathAnimOptions.Builtin.LOW_SPIN);
-//        options.put(PUFFERFISH, DeathAnimOptions.Builtin.DEFAULT);
-//        options.put(TADPOLE, DeathAnimOptions.Builtin.DEFAULT);
-//        options.put(COD, DeathAnimOptions.Builtin.DEFAULT);
-//        options.put(SALMON, DeathAnimOptions.Builtin.DEFAULT);
-//        options.put(TROPICAL_FISH, DeathAnimOptions.Builtin.DEFAULT);
-//        options.put(IRON_GOLEM, DeathAnimOptions.Builtin.LOW_SPIN.bloodColor(1, 0.94f, 0.85f));
-//        options.put(SHULKER, DeathAnimOptions.Builtin.LOW_SPIN.bloodColor(0.627f, 0.000f, 0.659f));
-//        options.put(SNOW_GOLEM, DeathAnimOptions.Builtin.DEFAULT.bloodColor(1, 1, 1));
-//        options.put(FOX, DeathAnimOptions.Builtin.LOW_SPIN);
-//        options.put(PIG, DeathAnimOptions.Builtin.DEFAULT);
-//        options.put(FROG, DeathAnimOptions.Builtin.NO_GRAVITY_LOW_SPIN);
-//        options.put(STRIDER, DeathAnimOptions.Builtin.LOW_SPIN);
-//        options.put(OCELOT, DeathAnimOptions.Builtin.LOW_SPIN);
-//        options.put(PANDA, DeathAnimOptions.Builtin.LOW_SPIN);
-//        options.put(GOAT, DeathAnimOptions.Builtin.LOW_SPIN);
-//        options.put(COW, DeathAnimOptions.Builtin.DEFAULT);
-//        options.put(MOOSHROOM, DeathAnimOptions.Builtin.DEFAULT);
-//        options.put(HOGLIN, DeathAnimOptions.Builtin.LOW_SPIN);
-//        options.put(CHICKEN, DeathAnimOptions.Builtin.DEFAULT);
-//        options.put(RABBIT, DeathAnimOptions.Builtin.DEFAULT);
-//        options.put(HORSE, DeathAnimOptions.Builtin.DEFAULT);
-//        options.put(SKELETON_HORSE, DeathAnimOptions.Builtin.DEFAULT.bloodColor(0.631f, 0.631f, 0.631f));
-//        options.put(CAMEL, DeathAnimOptions.Builtin.LOW_SPIN);
-//        options.put(MULE, DeathAnimOptions.Builtin.DEFAULT);
-//        options.put(LLAMA, DeathAnimOptions.Builtin.DEFAULT);
-//        options.put(TRADER_LLAMA, DeathAnimOptions.Builtin.DEFAULT);
-//        options.put(DONKEY, DeathAnimOptions.Builtin.DEFAULT);
-//        options.put(ZOMBIE_HORSE, DeathAnimOptions.Builtin.DEFAULT.bloodColor(0.45f, 0f, 0f));
-//        options.put(BEE, DeathAnimOptions.Builtin.NO_GRAVITY.bloodColor(0.96f, 1, 0.73f)); // 重力
-//        options.put(AXOLOTL, DeathAnimOptions.Builtin.NO_GRAVITY_LOW_SPIN);
-//        options.put(TURTLE, DeathAnimOptions.Builtin.NO_XZ_SPIN_NO_GRAVITY);
-//        options.put(SNIFFER, DeathAnimOptions.Builtin.LOW_SPIN);
-//        options.put(SHEEP, DeathAnimOptions.Builtin.DEFAULT);
-//        options.put(POLAR_BEAR, DeathAnimOptions.Builtin.DEFAULT);
-//        options.put(WOLF, DeathAnimOptions.Builtin.DEFAULT);
-//        options.put(PARROT, DeathAnimOptions.Builtin.NO_GRAVITY);
-//        options.put(CAT, DeathAnimOptions.Builtin.DEFAULT);
-//        options.put(WANDERING_TRADER, DeathAnimOptions.Builtin.DEFAULT);
-//        options.put(VILLAGER, DeathAnimOptions.Builtin.DEFAULT);
-//        options.put(ALLAY, DeathAnimOptions.Builtin.LOW_SPIN.customParticle(entity -> {
-//
-//        })); // TODO: 烟
-//        options.put(BAT, DeathAnimOptions.Builtin.DEFAULT);
-//        options.put(SLIME, DeathAnimOptions.Builtin.DEFAULT.bloodColor(0.396f, 0.659f, 0.333f));
-//    }
-//
-//    public static void moveParts(PoseStack poseStack, Entity animatable, Object bone, float partialTick, DeathAnimOptions options){
-//        if(!(animatable instanceof LivingEntity entity) || entity.isAlive() || options == null) return;
-//        float[] motions;
-//        if(bone instanceof GeoBone b){ // TODO: 既然GeoBone也实现了IModelPart(还没提交)就不用分开处理了
-//            GeoBone parent = b.getParent();
-//            motions = ((IClientLivingEntity) entity).confluence$getMotionsForBone(b);
-//            if(parent != null){
-//                float[] pm = ((IClientLivingEntity) entity).confluence$getMotionsForBone(parent);
-//                for(int i = 0, motionsLength = motions.length; i < motionsLength; i++){
-//                    motions[i] -= pm[i];
-//                }
-//            }
-//            poseStack.translate(getOffset(entity.deathTime, motions[0], partialTick),
-//                getOffset(entity.deathTime, motions[1], partialTick),
-//                getOffset(entity.deathTime, motions[2], partialTick));
-//            poseStack.mulPose(Axis.XP.rotationDegrees(getOffset(entity.deathTime, motions[3], partialTick)));
-//            poseStack.mulPose(Axis.YP.rotationDegrees(getOffset(entity.deathTime, motions[4], partialTick)));
-//            poseStack.mulPose(Axis.ZP.rotationDegrees(getOffset(entity.deathTime, motions[5], partialTick)));
-//        }else if(bone instanceof ModelPart p){
-//            motions = ((IClientLivingEntity) entity).confluence$getMotionsForPart(p);
-//            float[] parentMotions = ((IModelPart) (Object) p).confluence$parentOffset();
-//            List<ModelPart.Cube> cubes = ((ModelPartAccessor) (Object) p).getCubes();
-//            PartPose deathPose = ((IClientLivingEntity) entity).confluence$getPoseForPart(p);
-//            if(deathPose != null){
-//                p.loadPose(deathPose);
-//            }
-////            p.resetPose();
-//            if(cubes.size() != 0){
-//                Map<String, ModelPart> children = ((ModelPartAccessor) (Object) p).getChildren();
-//                float[] bak = Arrays.copyOf(motions, 6);
-//                motions = Arrays.copyOf(motions, 6);
-//                for(int i = 0, motionsLength = motions.length; i < motionsLength; i++){
-//                    motions[i] -= parentMotions[i];
-//                }
-//
-//                float tx = getOffset(entity.deathTime, motions[0], partialTick);
-//                float footY = motions[1];
-//                float tz = getOffset(entity.deathTime, motions[2], partialTick);
-//                float rx = getOffset(entity.deathTime, motions[3], partialTick);
-//                float ry = getOffset(entity.deathTime, motions[4], partialTick);
-//                float rz = getOffset(entity.deathTime, motions[5], partialTick);
-//                float ty = 0;
-//                Vec3 landMotion = ((IClientLivingEntity) entity).confluence$landMotion();
-//                Vec2 xz = ((IModelPart) (Object) p).confluence$landMotion();
-//                if(!Double.isNaN(landMotion.y) && !options.isNoModelGravity()){  // 实体已落地
-//                    landMotion = landMotion.with(Direction.Axis.Y, -0.2); // 客户端的精度太低了 算半天还不如一个固定值效果好
-//                    int landTicks = ((IClientLivingEntity) entity).confluence$landTicks();
-//                    int lastTick = Math.max(0, landTicks - 1);
-//                    float fallDistance = (float) -(Mth.lerp(partialTick, (landMotion.y - 0.08) * lastTick, (landMotion.y - 0.08) * landTicks));
-//                    ty = Math.min(fallDistance, footY);
-//                    if(ty != footY){  // 模型未落地
-//                        double speed = landMotion.length();
-//                        float[] rot = ModUtils.dirToRot(landMotion);
-//                        float motionYaw;
-//                        float renderYHeadRot = entity.getViewYRot(partialTick);
-//                        float renderYRot = Mth.rotLerp(partialTick, entity.yRotO, entity.getYRot());
-//                        if(((IModelPart) (Object) p).confluence$isSkull()){ // 头戴头颅要特殊处理
-//                            motionYaw = Mth.wrapDegrees(-rot[0] + renderYRot + (renderYHeadRot - renderYRot));
-//                        }else{
-//                            motionYaw = Mth.wrapDegrees(-rot[0] + 180 + renderYRot);  // 我不知道为什么是这样，是试出来的
-//                        }
-//                        landMotion = Vec3.directionFromRotation(rot[1], motionYaw).normalize().scale(speed);
-//                        tx += Mth.lerp(partialTick, (landMotion.x * Math.pow(0.96, lastTick)) * lastTick, (landMotion.x * Math.pow(0.9, landTicks)) * landTicks);
-//                        tz += Mth.lerp(partialTick, (landMotion.z * Math.pow(0.96, lastTick)) * lastTick, (landMotion.z * Math.pow(0.9, landTicks)) * landTicks);
-//                    }else if(xz != null){
-//                        tx = xz.x;
-//                        tz = xz.y;
-//                    }
-//                }
-//                ((IModelPart) (Object) p).confluence$landMotion(new Vec2(tx, tz));
-//                poseStack.translate(tx, ty, tz);
-//                poseStack.mulPose(Axis.XP.rotationDegrees(rx));
-//                poseStack.mulPose(Axis.YP.rotationDegrees(ry));
-//                poseStack.mulPose(Axis.ZP.rotationDegrees(rz));
-//                for(ModelPart child : children.values()){
-//                    ((IModelPart) (Object) child).confluence$parentOffset(bak);
-//                }
-//
-//            }
-//        }
-//    }
-//
-//    public static float getOffset(int tick, float max, float partialTick){
-//        float now = getPosition(tick, max);
-//        float last = getPosition(tick - 1, max);
-//        return Mth.wrapDegrees(Mth.lerp(partialTick, last, now));
-//    }
-//
-//    /** 最大旋转和最大偏移 */
-//    public static float[] createOffsets(RandomSource random, Vec3 motion, ModelPart part, DeathAnimOptions options){
-//        Vector3f dir = createSpread(random, motion);
-//        List<ModelPart.Cube> cubes = ((ModelPartAccessor) (Object) part).getCubes();
-//        float max = Float.NEGATIVE_INFINITY;
-//        for(ModelPart.Cube cube : cubes){
-//            max = Math.max(cube.maxY, max);
-//        }
-//        float[] rot = options.getRotations();
-//        return new float[]{
-//            dir.x,
-//            max == Float.NEGATIVE_INFINITY ? 0 : Math.max(0, (24 - (max + part.y)) / 16),
-//            dir.z,
-//            random.nextFloat() * rot[0] * 2 - rot[0],
-//            random.nextFloat() * rot[1] * 2 - rot[1],
-//            random.nextFloat() * rot[2] * 2 - rot[2]
-//        };
-//    }
+    public static final List<Pair<ClientLevel, Entity>> toBeAdded = new ArrayList<>();
+    public static final List<Entity> toBeDiscarded = new ArrayList<>();
 
     public static float[] createOffsets(RandomSource random, Vec3 motion, float height, DeathAnimOptions options){
         Vector3f dir = createSpread(random, motion);
@@ -250,17 +64,6 @@ public final class DeathAnimUtils {
         return Vec3.directionFromRotation(0, rots[0]).normalize().scale(1.2).toVector3f();
     }
 
-    /** @author ChatGPT */
-    public static float cubicBezier(float t, float p0, float p1, float p2, float p3){
-        float u = 1 - t;
-        float tt = t * t;
-        float uu = u * u;
-        float uuu = uu * u;
-        float ttt = tt * t;
-
-        return uuu * p0 + 3 * uu * t * p1 + 3 * u * tt * p2 + ttt * p3;
-    }
-
     /** @author voila, ChatGPT */
     public static float getPosition(int tick, float max){
         if(tick < 0) tick = 0;
@@ -272,7 +75,7 @@ public final class DeathAnimUtils {
         float p1 = 1f;
         float p2 = 1f;
         float p3 = 1f;
-        float bezierValue = cubicBezier(t, p0, p1, p2, p3);
+        float bezierValue = LibUtils.cubicBezier(t, p0, p1, p2, p3);
         return bezierValue * max;
     }
 
@@ -471,7 +274,11 @@ public final class DeathAnimUtils {
     }
 
     public static void tellAddEntity(ClientLevel level,Entity entity){
-        Minecraft.getInstance().tell(() -> level.addEntity(entity));
+        toBeAdded.add(Pair.of(level, entity));
+    }
+
+    public static void tellDiscardEntity(Entity entity){
+        toBeDiscarded.add(entity);
     }
 
     /** 让原版Renderer帮我变换，在model.renderToBuffer之前就会返回，就能保留变换的结果 */

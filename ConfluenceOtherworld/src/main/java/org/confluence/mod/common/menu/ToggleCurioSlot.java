@@ -87,7 +87,8 @@ public class ToggleCurioSlot extends Slot implements IToggleSlot {
         @Override
         public ItemStack removeItemNoUpdate(int slot) {
             ItemStack itemStack = getItem(slot);
-            setItem(slot, ItemStack.EMPTY); // todo 还是会更新
+            handler.setStackInSlot(slot, ItemStack.EMPTY);
+            handler.setPreviousStackInSlot(slot, ItemStack.EMPTY);
             return itemStack;
         }
 

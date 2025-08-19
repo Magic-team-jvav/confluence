@@ -1,6 +1,5 @@
 package org.confluence.mod.common.block.natural;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -23,17 +22,11 @@ import org.confluence.terraentity.entity.boss.QueenBee;
 import org.confluence.terraentity.init.entity.TEBossEntities;
 
 public class LarvaBlock extends HorizontalDirectionalWithVerticalTwoPartBlock {
-    public static final MapCodec<LarvaBlock> CODEC = simpleCodec(LarvaBlock::new);
     private static final VoxelShape SHAPE_UPPER = box(0, 0, 0, 16, 8, 16);
     private static final VoxelShape SHAPE_LOWER = box(0, 8, 0, 16, 16, 16);
 
     public LarvaBlock(Properties properties) {
         super(properties);
-    }
-
-    @Override
-    protected MapCodec<LarvaBlock> codec() {
-        return CODEC;
     }
 
     @Override
@@ -61,10 +54,10 @@ public class LarvaBlock extends HorizontalDirectionalWithVerticalTwoPartBlock {
     }
 
     @Override
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState pNewState, boolean pMovedByPiston) {
-        super.onRemove(state, level, pos, pNewState, pMovedByPiston);
-        if (state.getValue(PART).isBase()) {
-            ModUtils.summonBoss(level, pos.getCenter(), new QueenBee(TEBossEntities.QUEEN_BEE.get(), level));
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+        super.onRemove(state, level, pos, newState, movedByPiston);
+        if (state.getValue(PART).isBase() && level instanceof ServerLevel serverLevel) {
+            ModUtils.summonBoss(serverLevel, pos, new QueenBee(TEBossEntities.QUEEN_BEE.get(), level));
         }
     }
 

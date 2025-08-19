@@ -35,7 +35,6 @@ public class CookingPotProvider extends AbstractRecipeProvider {
         HeatSourcePredicate campfireHeatSource = HeatSourcePredicate.builder().of(BlockTags.CAMPFIRES).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(BlockStateProperties.LIT, true)).build();
         HeatSourcePredicate snowHeatSource = HeatSourcePredicate.builder().of(Blocks.SNOW_BLOCK).build();
         cookingPot(recipeOutput, SwordItems.SWEET_SWORD.toStack(), Ingredient.of(Items.WOODEN_SWORD), HeatSourcePredicate.EMPTY, 100, Ingredient.of(Items.COOKIE), Ingredient.of(Items.SUGAR), Ingredient.of(Items.COCOA_BEANS));   // 糖果剑
-        cookingPot(recipeOutput, FoodItems.APPLE_PIE.toStack(), bowlContainer, HeatSourcePredicate.EMPTY, 100, Ingredient.of(Items.APPLE));
         cookingPot(recipeOutput, FoodItems.BLOODY_MOSCATO.toStack(), bottleContainer, HeatSourcePredicate.EMPTY, 100, Ingredient.of(FoodItems.BLOOD_ORANGE), Ingredient.of(FoodItems.RAMBUTAN));
         cookingPot(recipeOutput, FoodItems.BOWL_OF_SOUP.toStack(), bowlContainer, campfireHeatSource, 200, Ingredient.of(MaterialItems.LIFE_MUSHROOM), Ingredient.of(FoodItems.GOLDFISH));
         cookingPot(recipeOutput, FoodItems.BUNNY_STEW.toStack(), bowlContainer, campfireHeatSource, 200, Ingredient.of(Items.RABBIT));
@@ -62,7 +61,7 @@ public class CookingPotProvider extends AbstractRecipeProvider {
         cookingPot(recipeOutput, FoodItems.ROASTED_DUCK.toStack(), Ingredient.EMPTY, campfireHeatSource, 200, Ingredient.of(FoodItems.RAW_DUCK));
         cookingPot(recipeOutput, FoodItems.SAUTEED_FROG_LEGS.toStack(), bowlContainer, campfireHeatSource, 200, Ingredient.of(FoodItems.RAW_FROG));
         cookingPot(recipeOutput, FoodItems.SEAFOOD_DINNER.toStack(), bowlContainer, campfireHeatSource, 200, AmountIngredient.of(2, ModTags.Items.SEAFOOD_DINNER_MATERIALS));
-        cookingPot(recipeOutput, FoodItems.SMOOTHIE_OF_DARKNESS.toStack(), bottleContainer, campfireHeatSource, 200, Ingredient.of(FoodItems.ELDERBERRY), Ingredient.of(FoodItems.BLACKCURRANT));
+        cookingPot(recipeOutput, FoodItems.SMOOTHIE_OF_DARKNESS.toStack(), bottleContainer, HeatSourcePredicate.EMPTY, 200, Ingredient.of(FoodItems.ELDERBERRY), Ingredient.of(FoodItems.BLACKCURRANT));
         cookingPot(recipeOutput, FoodItems.TROPICAL_SMOOTHIE.toStack(), bottleContainer, HeatSourcePredicate.EMPTY, 100, Ingredient.of(FoodItems.MANGO), Ingredient.of(FoodItems.PINEAPPLE));
         cookingPot(recipeOutput, FoodItems.ZONGZI.toStack(), Ingredient.of(Items.LILY_PAD), campfireHeatSource, 200, Ingredient.of(Items.SUGAR), Ingredient.of(Items.STRING), Ingredient.of(Items.WHEAT));
         cookingPot(recipeOutput, FoodItems.MEAT_STUFFED_ZONGZI.toStack(), Ingredient.of(Items.LILY_PAD), campfireHeatSource, 200, Ingredient.of(Tags.Items.FOODS_RAW_MEAT), Ingredient.of(Items.STRING), Ingredient.of(Items.WHEAT));

@@ -1,6 +1,5 @@
 package org.confluence.mod.common.event;
 
-import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackLocationInfo;
@@ -13,9 +12,9 @@ import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -38,29 +37,34 @@ import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.fluids.RegisterCauldronFluidContentEvent;
+import net.neoforged.neoforge.fluids.capability.wrappers.FluidBucketWrapper;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforgespi.locating.IModFile;
+import org.confluence.lib.api.NameFixRegisterEvent;
+import org.confluence.lib.common.block.StateProperties;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.util.ConfluenceResources;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.common.block.common.AetheriumCauldronBlock;
-import org.confluence.mod.common.block.common.BaseChestBlock;
-import org.confluence.mod.common.block.common.HoneyCauldronBlock;
-import org.confluence.mod.common.block.functional.crafting.AltarBlock;
+import org.confluence.mod.common.block.natural.ChlorophyteOreBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
+import org.confluence.mod.common.block.natural.MagicMailBox;
 import org.confluence.mod.common.block.natural.StepRevealingBlock;
-import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
+import org.confluence.mod.common.capability.FluidBottomlessBucketWrapper;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.data.saved.HardmodeConvertor;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.entity.TargetDummyEntity;
 import org.confluence.mod.common.init.*;
-import org.confluence.mod.common.init.block.*;
+import org.confluence.mod.common.init.block.ChestBlocks;
+import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.common.init.block.ModBlocks;
+import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.integration.jei.RecipeTransferPacketC2S;
@@ -70,13 +74,13 @@ import org.confluence.mod.integration.waystones.WaystonesHelper;
 import org.confluence.mod.network.c2s.*;
 import org.confluence.mod.network.s2c.*;
 import org.confluence.mod.util.DateUtils;
+import org.confluence.mod.util.ModUtils;
 import org.confluence.phase_journey.api.PhaseJourneyEvent;
 import org.confluence.terra_curio.api.event.RegisterAccessoriesComponentUpdateEvent;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTabs;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
 
-import java.util.Map;
 import java.util.Optional;
 
 import static org.confluence.mod.Confluence.MODID;
@@ -129,18 +133,10 @@ public final class ModEvents {
         event.enqueueWork(() -> {
             LogBlockSet.wrapStrip();
             LogBlockSet.setFlammable();
-            ISpreadable.Type.buildMap();
             ModRecipes.Brewing.initialize();
-            CauldronInteraction.INTERACTIONS.values().forEach(map -> {
-                Map<Item, CauldronInteraction> interactionMap = map.map();
-                interactionMap.put(ToolItems.BOTTOMLESS_WATER_BUCKET.get(), CauldronInteraction.FILL_WATER);
-                interactionMap.put(ToolItems.BOTTOMLESS_LAVA_BUCKET.get(), CauldronInteraction.FILL_LAVA);
-                interactionMap.put(ToolItems.BOTTOMLESS_HONEY_BUCKET.get(), HoneyCauldronBlock.FILL_HONEY);
-                interactionMap.put(ToolItems.BOTTOMLESS_SHIMMER_BUCKET.get(), AetheriumCauldronBlock.FILL_AETHERIUM);
-                interactionMap.put(ToolItems.HONEY_BUCKET.get(), HoneyCauldronBlock.FILL_HONEY);
-                interactionMap.put(NatureBlocks.AETHERIUM_BLOCK.asItem(), AetheriumCauldronBlock.FILL_AETHERIUM);
-            });
+            ModUtils.registerCauldronInteractions();
             TERemoval.redirectLootTable();
+            MagicMailBox.registerVariants();
             IGlobalData.registerGlobalData(KillBoard.INSTANCE, HardmodeConvertor.INSTANCE, NPCSpawner.INSTANCE);
         });
     }
@@ -184,7 +180,7 @@ public final class ModEvents {
         registrar.playToClient(ExtraInventoryStackPacketS2C.TYPE, ExtraInventoryStackPacketS2C.STREAM_CODEC, ExtraInventoryStackPacketS2C::handle);
         registrar.playToClient(ExtraInventorySyncPacketS2C.TYPE, ExtraInventorySyncPacketS2C.STREAM_CODEC, ExtraInventorySyncPacketS2C::handle);
         registrar.playToClient(FishingPowerInfoPacketS2C.TYPE, FishingPowerInfoPacketS2C.STREAM_CODEC, FishingPowerInfoPacketS2C::handle);
-        registrar.playToClient(GamePhasePacketS2C.TYPE, GamePhasePacketS2C.STREAM_CODEC, GamePhasePacketS2C::handle);
+        registrar.playToClient(KillBoardSyncPacketS2C.TYPE, KillBoardSyncPacketS2C.STREAM_CODEC, (payload, context) -> {});
         registrar.playToClient(ManaPacketS2C.TYPE, ManaPacketS2C.STREAM_CODEC, ManaPacketS2C::handle);
         registrar.playToClient(MeteoriteLocationPacketS2C.TYPE, MeteoriteLocationPacketS2C.STREAM_CODEC, MeteoriteLocationPacketS2C::handle);
         registrar.playToClient(OpenSelectionsScreenPacketS2C.TYPE, OpenSelectionsScreenPacketS2C.STREAM_CODEC, OpenSelectionsScreenPacketS2C::handle);
@@ -194,6 +190,8 @@ public final class ModEvents {
         registrar.playToClient(WindSpeedPacketS2C.TYPE, WindSpeedPacketS2C.STREAM_CODEC, WindSpeedPacketS2C::handle);
         registrar.playToClient(AchievementOffsetSyncPacketS2C.TYPE, AchievementOffsetSyncPacketS2C.STREAM_CODEC, AchievementOffsetSyncPacketS2C::handle);
         registrar.playToClient(CompatibilitySyncPacketS2c.TYPE, CompatibilitySyncPacketS2c.STREAM_CODEC, CompatibilitySyncPacketS2c::handle);
+        registrar.playToClient(PiggyBankTotalMoneyPacket.TYPE, PiggyBankTotalMoneyPacket.STREAM_CODEC, PiggyBankTotalMoneyPacket::handle);
+        registrar.playToClient(DropletsSyncPacketS2C.TYPE, DropletsSyncPacketS2C.STREAM_CODEC, DropletsSyncPacketS2C::handle);
 
         registrar.playToServer(ApplySelectionPacketC2S.TYPE, ApplySelectionPacketC2S.STREAM_CODEC, ApplySelectionPacketC2S::handle);
         registrar.playToServer(HookThrowingPacketC2S.TYPE, HookThrowingPacketC2S.STREAM_CODEC, HookThrowingPacketC2S::handle);
@@ -203,6 +201,7 @@ public final class ModEvents {
         registrar.playToServer(WormholeToPlayerPacketC2S.TYPE, WormholeToPlayerPacketC2S.STREAM_CODEC, WormholeToPlayerPacketC2S::handle);
         registrar.playToServer(SellTradePacketC2S.TYPE, SellTradePacketC2S.STREAM_CODEC, SellTradePacketC2S::handle);
         registrar.playToServer(RecipeTransferPacketC2S.TYPE, RecipeTransferPacketC2S.STREAM_CODEC, RecipeTransferPacketC2S::handle);
+        registrar.playToServer(LanceAttackPacketC2S.TYPE, LanceAttackPacketC2S.STREAM_CODEC, LanceAttackPacketC2S::handle);
         WaystonesHelper.registerPayload(registrar);
     }
 
@@ -223,6 +222,7 @@ public final class ModEvents {
         event.register(AccessoryItems.LAVAPROOF$FISHING$HOOK);
         event.register(AccessoryItems.SPECTRE$GOGGLES);
         event.register(AccessoryItems.PAINT$SPRAYER);
+        event.register(AccessoryItems.CLOTHIER$KILLER);
     }
 
     @SubscribeEvent
@@ -252,29 +252,32 @@ public final class ModEvents {
      */
     @SubscribeEvent
     public static void phaseJourney$Register(PhaseJourneyEvent.Register event) {
-        BlockState target = Blocks.DEEPSLATE.defaultBlockState();
+        BlockState deepslate = Blocks.DEEPSLATE.defaultBlockState();
         int step = 0;
         for (int state = 0; state < 3; state++) {
             int finalState = state;
             event.phaseRegister(Confluence.asResource("reveal_step_" + (step++)), context -> {
-                context.blockReplacement(OreBlocks.DEEPSLATE_COBALT_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), target);
-                context.blockReplacement(OreBlocks.DEEPSLATE_PALLADIUM_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), target);
+                context.blockReplacement(OreBlocks.DEEPSLATE_COBALT_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), deepslate);
+                context.blockReplacement(OreBlocks.DEEPSLATE_PALLADIUM_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), deepslate);
             });
             event.phaseRegister(Confluence.asResource("reveal_step_" + (step++)), context -> {
-                context.blockReplacement(OreBlocks.DEEPSLATE_MYTHRIL_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), target);
-                context.blockReplacement(OreBlocks.DEEPSLATE_ORICHALCUM_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), target);
+                context.blockReplacement(OreBlocks.DEEPSLATE_MYTHRIL_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), deepslate);
+                context.blockReplacement(OreBlocks.DEEPSLATE_ORICHALCUM_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), deepslate);
             });
             event.phaseRegister(Confluence.asResource("reveal_step_" + (step++)), context -> {
-                context.blockReplacement(OreBlocks.DEEPSLATE_ADAMANTITE_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), target);
-                context.blockReplacement(OreBlocks.DEEPSLATE_TITANIUM_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), target);
+                context.blockReplacement(OreBlocks.DEEPSLATE_ADAMANTITE_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), deepslate);
+                context.blockReplacement(OreBlocks.DEEPSLATE_TITANIUM_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), deepslate);
             });
         }
+
+        event.phaseRegister(ChlorophyteOreBlock.PHASE, context -> context.blockReplacement(OreBlocks.CHLOROPHYTE_ORE.get(), Blocks.MUD));
     }
 
     @SubscribeEvent
     public static void blockEntityTypeAddBlocks(BlockEntityTypeAddBlocksEvent event) {
         event.modify(BlockEntityType.BRUSHABLE_BLOCK, OreBlocks.OPAL_ORE.get());
         event.modify(BlockEntityType.SIGN, LogBlockSet.getSignBlocks());
+        event.modify(BlockEntityType.HANGING_SIGN, LogBlockSet.getHangingSignBlocks());
         event.modify(BlockEntityType.SCULK_SENSOR, FunctionalBlocks.SCULK_TRAP.get());
         event.modify(BlockEntityType.CAMPFIRE, FunctionalBlocks.LIFE_CAMPFIRE.get());
     }
@@ -288,17 +291,30 @@ public final class ModEvents {
     @SubscribeEvent
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.registerBlock(Capabilities.ItemHandler.BLOCK, (level, pos, state, blockEntity, side) -> {
-            if (!state.getValue(BaseChestBlock.UNLOCKED)) return null;
+            if (state.hasProperty(StateProperties.UNLOCKED) && !state.getValue(StateProperties.UNLOCKED)) return null;
             Container container = ChestBlock.getContainer((ChestBlock) state.getBlock(), state, level, pos, true);
-            if (container == null) return null;
-            return new InvWrapper(container);
-        }, ChestBlocks.GOLDEN_CHEST.get(), ChestBlocks.DEATH_GOLDEN_CHEST.get());
-        event.registerBlock(Capabilities.ItemHandler.BLOCK, (level, pos, state, blockEntity, context) -> {
-            if (blockEntity instanceof AltarBlock.Entity entity) {
-                return new InvWrapper(entity);
-            }
-            return null;
-        }, FunctionalBlocks.DEMON_ALTAR.get(), FunctionalBlocks.CRIMSON_ALTAR.get());
+            return container == null ? null : new InvWrapper(container);
+        }, ChestBlocks.BLOCKS.getEntries().stream().map(DeferredHolder::get).toArray(Block[]::new));
+
+//        List<BlockEntityType<? extends BaseContainerBlockEntity>> invBlockEntities = List.of(
+//                FunctionalBlocks.ALTAR_BLOCK_ENTITY.get(),
+//                FunctionalBlocks.CAULDRON_ENTITY.get(),
+//                FunctionalBlocks.TREE_HOLES_ENTITY.get()
+//        );
+//        for (BlockEntityType<? extends BaseContainerBlockEntity> type : invBlockEntities) {
+//            event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, type, (container, side) -> new InvWrapper(container));
+//        }
+//        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, FunctionalBlocks.HELLFORGE_ENTITY.get(), SidedInvWrapper::new);
+
+        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBottomlessBucketWrapper(stack),
+                ToolItems.BOTTOMLESS_WATER_BUCKET,
+                ToolItems.BOTTOMLESS_LAVA_BUCKET,
+                ToolItems.BOTTOMLESS_HONEY_BUCKET,
+                ToolItems.BOTTOMLESS_SHIMMER_BUCKET
+        );
+        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBucketWrapper(stack), ToolItems.HONEY_BUCKET);
+
+//        event.registerEntity(Capabilities.ItemHandler.ENTITY, EntityType.PLAYER, (player, context) -> player.getData(ModAttachmentTypes.EXTRA_INVENTORY));
     }
 
     @SubscribeEvent
@@ -310,5 +326,145 @@ public final class ModEvents {
             }
             return false;
         }, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+    }
+
+    @SubscribeEvent
+    public static void blockWithItemNameFixRegister(NameFixRegisterEvent.BlockWithItem event) {
+        event
+                // 1.1.2 -> 1.1.3
+                .register("confluence:freeze_crate", "confluence:frozen_crate")
+                .register("confluence:ebony_stone", "confluence:ebonstone")
+                .register("confluence:pearl_stone", "confluence:pearlstone")
+                .register("confluence:tr_crimson_stone", "confluence:crimstone")
+                .register("confluence:ebony_cobblestone", "confluence:cobbled_ebonstone")
+                .register("confluence:pearl_cobblestone", "confluence:cobbled_pearlstone")
+                .register("confluence:tr_crimson_cobblestone", "confluence:cobbled_crimstone")
+                .register("confluence:ebony_sandstone", "confluence:ebonsandstone")
+                .register("confluence:tr_crimson_sandstone", "confluence:crimsandstone")
+                .register("confluence:pearl_sandstone", "confluence:pearlsandstone")
+                .register("confluence:ebony_sand", "confluence:ebonsand")
+                .register("confluence:pearl_sand", "confluence:pearlsand")
+                .register("confluence:crimson_sand", "confluence:crimsand")
+                .register("confluence:ebony_sand_layer_block", "confluence:ebonsand_layer_block")
+                .register("confluence:tr_crimson_sand_layer_block", "confluence:crimsand_layer_block")
+                .register("confluence:pearl_sand_layer_block", "confluence:pearlsand_layer_block")
+                .register("confluence:red_hardened_sand_block", "confluence:hardened_red_sand_block")
+                .register("confluence:ebony_hardened_sand_block", "confluence:hardened_ebonsand_block")
+                .register("confluence:pearl_hardened_sand_block", "confluence:hardened_pearlsand_block")
+                .register("confluence:tr_crimson_hardened_sand_block", "confluence:hardened_crimsand_block")
+                .register("confluence:ebony_moist_sand_block", "confluence:moistened_ebonsand_block")
+                .register("confluence:pearl_moist_sand_block", "confluence:moistened_pearlsand_block")
+                .register("confluence:tr_crimson_moist_sand_block", "confluence:moistened_crimsand_block")
+                .register("confluence:moist_sand_block", "confluence:moistened_sand_block")
+                .register("confluence:red_moist_sand_block", "confluence:moistened_red_sand_block")
+                .register("confluence:tr_lava_bricks", "confluence:hellstone_bricks")
+                .register("confluence:tr_amethyst_ore", "confluence:amethyst_ore")
+                .register("confluence:deepslate_tr_amethyst_ore", "confluence:deepslate_amethyst_ore")
+                .register("confluence:sanctification_tr_amethyst_ore", "confluence:sanctification_amethyst_ore")
+                .register("confluence:corruption_tr_amethyst_ore", "confluence:corruption_amethyst_ore")
+                .register("confluence:fleshification_tr_amethyst_ore", "confluence:fleshification_amethyst_ore")
+                .register("confluence:tr_crimson_ore", "confluence:crimtane_ore")
+                .register("confluence:deepslate_tr_crimson_ore", "confluence:deepslate_crimtane_ore")
+                .register("confluence:sanctification_tr_crimson_ore", "confluence:sanctification_crimtane_ore")
+                .register("confluence:corruption_tr_crimson_ore", "confluence:corruption_crimtane_ore")
+                .register("confluence:fleshification_tr_crimson_ore", "confluence:fleshification_crimtane_ore")
+                .register("confluence:raw_tr_crimson_block", "confluence:raw_crimtane_block")
+                .register("confluence:tr_crimson_block", "confluence:crimtane_block")
+                .register("confluence:tr_crimson_grass_block", "confluence:crimson_grass_block")
+                .register("confluence:tr_crimson_jungle_grass_block", "confluence:crimson_jungle_grass_block")
+                .register("confluence:tr_crimson_drooping_vine", "confluence:crimson_drooping_vine")
+                .register("confluence:tr_crimson_grass", "confluence:crimson_grass")
+                .register("confluence:tr_crimson_cattails_body", "confluence:crimson_cattails_body")
+                .register("confluence:tr_crimson_cattails_head", "confluence:crimson_cattails_head")
+                .register("confluence:tr_crimson_pot", "confluence:crimson_pot")
+                .register("confluence:tr_crimson_crate", "confluence:crimson_crate")
+                .register("confluence:tr_crimson_cattails", "confluence:crimson_cattails")
+                .register("confluence:tr_crimson_ore_bricks", "confluence:crimtane_ore_bricks")
+                .register("confluence:tr_crimson_rock_bricks", "confluence:crimstone_bricks")
+                .register("confluence:tr_amethyst_branches", "confluence:amethyst_branches")
+                .register("confluence:tr_amethyst_sapling", "confluence:amethyst_sapling")
+                .register("confluence:tr_amethyst_block", "confluence:amethyst_block")
+                .register("confluence:tr_polished_granite", "confluence:polished_granite")
+                .register("confluence:tr_copper_bricks", "confluence:copper_bricks")
+                .register("confluence:tr_gold_bricks", "confluence:golden_bricks")
+                .register("confluence:tr_iron_bricks", "confluence:iron_bricks")
+                .register("confluence:ebony_rock_bricks", "confluence:ebonstone_bricks")
+                .register("confluence:pearl_rock_bricks", "confluence:pearlstone_bricks")
+                .register("confluence:tr_obsidian_bricks", "confluence:obsidian_bricks")
+                .register("confluence:tr_obsidian_small_bricks", "confluence:obsidian_small_bricks")
+                .register("confluence:tr_smooth_obsidian", "confluence:smooth_obsidian")
+                .register("confluence:tr_oak_planks", "confluence:chiseled_oak_planks")
+                .register("confluence:tr_northland_planks", "confluence:chiseled_spruce_planks")
+                .register("confluence:tr_granite_column", "confluence:granite_column")
+                .register("confluence:tr_emerald_ore", "confluence:jade_ore")
+                .register("confluence:deepslate_tr_emerald_ore", "confluence:deepslate_jade_ore")
+                .register("confluence:sanctification_tr_emerald_ore", "confluence:sanctification_jade_ore")
+                .register("confluence:corruption_tr_emerald_ore", "confluence:corruption_jade_ore")
+                .register("confluence:fleshification_tr_emerald_ore", "confluence:fleshification_jade_ore")
+                .register("confluence:tr_emerald_block", "confluence:jade_block")
+                .register("confluence:emerald_branches", "confluence:jade_branches")
+                .register("confluence:emerald_sapling", "confluence:jade_sapling")
+                .register("confluence:emerald_chain", "confluence:jade_chain")
+                // 1.1.4 -> 1.1.5
+                .register("confluence:golden_coin", "confluence:gold_coin");
+
+    }
+
+    @SubscribeEvent
+    public static void blockNameFixRegister(NameFixRegisterEvent.Block event) {
+        event
+                // 1.1.2 -> 1.1.3
+                .register("confluence:copper_coin_pile", "confluence:copper_coin")
+                .register("confluence:silver_coin_pile", "confluence:silver_coin")
+                .register("confluence:golden_coin_pile", "confluence:golden_coin")
+                .register("confluence:platinum_coin_pile", "confluence:platinum_coin")
+                .register("confluence:emerald_coin_pile", "confluence:emerald_coin");
+    }
+
+    @SubscribeEvent
+    public static void itemNameFixRegister(NameFixRegisterEvent.Item event) {
+        event
+                // 1.1.2 -> 1.1.3
+                .register("confluence:copper_board_sword", "confluence:copper_broadsword")
+                .register("confluence:tin_board_sword", "confluence:tin_broadsword")
+                .register("confluence:lead_board_sword", "confluence:lead_broadsword")
+                .register("confluence:silver_board_sword", "confluence:silver_broadsword")
+                .register("confluence:tungsten_board_sword", "confluence:tungsten_broadsword")
+                .register("confluence:golden_board_sword", "confluence:golden_broadsword")
+                .register("confluence:platinum_board_sword", "confluence:platinum_broadsword")
+                .register("confluence:tr_crimson_ingot", "confluence:crimtane_ingot")
+                .register("confluence:raw_tr_crimson", "confluence:raw_crimtane")
+                .register("confluence:tr_emerald", "confluence:jade")
+                .register("confluence:emerald_minecart", "confluence:jade_minecart")
+                .register("confluence:emerald_hook", "confluence:jade_hook")
+                .register("confluence:emerald_staff", "confluence:jade_staff")
+                .register("confluence:tr_amethyst", "confluence:amethyst")
+                .register("confluence:tr_crimson_seed", "confluence:crimson_seed")
+                .register("confluence:tr_clownfish", "confluence:clownfish")
+                .register("confluence:tr_salmon", "confluence:salmon")
+                .register("confluence:red_light_saber", "confluence:red_phaseblade")
+                .register("confluence:orange_light_saber", "confluence:orange_phaseblade")
+                .register("confluence:yellow_light_saber", "confluence:yellow_phaseblade")
+                .register("confluence:green_light_saber", "confluence:green_phaseblade")
+                .register("confluence:blue_light_saber", "confluence:blue_phaseblade")
+                .register("confluence:purple_light_saber", "confluence:purple_phaseblade")
+                .register("confluence:white_light_saber", "confluence:white_phaseblade")
+                .register("confluence:demon_ocnch", "confluence:demon_conch")
+                // 1.1.3 -> 1.1.4
+                .register("confluence:night_edge", "confluence:nights_edge")
+                // 1.1.4 -> 1.1.5
+                .register("confluence:crystal_shards_item", "confluence:crystal_shards")
+                .register("confluence:throwing_knives", "confluence:throwing_knive")
+                // 1.1.5 -> 1.2.0
+                .register("confluence:cap_tunabeard", "confluence:capn_tunabeard");
+    }
+
+    @SubscribeEvent
+    public static void biomeNameFixRegister(NameFixRegisterEvent.Biome event) {
+        event
+                // 1.1.2 -> 1.1.3
+                .register("confluence:tr_crimson", "confluence:the_crimson")
+                .register("confluence:tr_crimson_desert", "confluence:the_crimson_desert")
+                .register("confluence:tr_crimson_tundra", "confluence:the_crimson_tundra");
     }
 }

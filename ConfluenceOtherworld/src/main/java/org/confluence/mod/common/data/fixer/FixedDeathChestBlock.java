@@ -57,13 +57,13 @@ public class FixedDeathChestBlock extends FixedBaseChestBlock implements INetwor
         super(Properties.ofFullCopy(Blocks.TRAPPED_CHEST).explosionResistance(ModBlocks.getObsidianBasedExplosionResistance(0.0F)), RegistriesFixer.DEATH_CHEST_BLOCK_ENTITY::get);
     }
 
-    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return new Entity(pPos, pState);
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new BEntity(pos, state);
     }
 
     @Override
     protected List<ItemStack> getDrops(BlockState state, LootParams.Builder params) {
-        if (params.getOptionalParameter(LootContextParams.BLOCK_ENTITY) instanceof Entity entity) {
+        if (params.getOptionalParameter(LootContextParams.BLOCK_ENTITY) instanceof BEntity entity) {
             return Collections.singletonList(setData(RegistriesFixer.DEATH_CHEST_BLOCK.toStack(), entity.variant));
         }
         return Collections.emptyList();
@@ -92,30 +92,30 @@ public class FixedDeathChestBlock extends FixedBaseChestBlock implements INetwor
     }
 
     @Override
-    public InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHit) {
-        if (skipInteraction(pPlayer.getMainHandItem())) {
+    public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+        if (skipInteraction(player.getMainHandItem())) {
             return InteractionResult.PASS;
         }
-        return super.useWithoutItem(pState, pLevel, pPos, pPlayer, pHit);
+        return super.useWithoutItem(state, level, pos, player, hitResult);
     }
 
     @Override
     public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
         ItemStack itemStack = new ItemStack(this);
-        if (level.getBlockEntity(pos) instanceof Entity entity) {
+        if (level.getBlockEntity(pos) instanceof BEntity entity) {
             return setData(itemStack, entity.variant);
         }
         return itemStack;
     }
 
     @Override
-    public void onExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {
-        execution(pState, pLevel, pPos, pColor, true);
+    public void onExecute(BlockState state, ServerLevel level, BlockPos pos, int color, INetworkEntity networkEntity) {
+        execution(state, level, pos, color, true);
     }
 
     @Override
-    public void onUnExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {
-        execution(pState, pLevel, pPos, pColor, false);
+    public void onUnExecute(BlockState state, ServerLevel level, BlockPos pos, int color, INetworkEntity networkEntity) {
+        execution(state, level, pos, color, false);
     }
 
     private void execution(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, boolean hasSignal) {
@@ -135,7 +135,7 @@ public class FixedDeathChestBlock extends FixedBaseChestBlock implements INetwor
 
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-        return level.isClientSide ? null : LibUtils.getTicker(blockEntityType, RegistriesFixer.DEATH_CHEST_BLOCK_ENTITY.get(), Entity::deathTick);
+        return level.isClientSide ? null : LibUtils.getTicker(blockEntityType, RegistriesFixer.DEATH_CHEST_BLOCK_ENTITY.get(), BEntity::deathTick);
     }
 
     public static ItemStack setData(ItemStack itemStack, Variant variant) {
@@ -144,12 +144,12 @@ public class FixedDeathChestBlock extends FixedBaseChestBlock implements INetwor
         return itemStack;
     }
 
-    public static class Entity extends FixedBaseChestBlock.Entity implements INetworkEntity {
+    public static class BEntity extends FixedBaseChestBlock.BEntity implements INetworkEntity {
         private NetworkNode networkNode;
         private final Int2ObjectMap<Set<BlockPos>> connectedPoses;
         private final Int2ObjectMap<Set<BlockPos>> relativePoses;
 
-        public Entity(BlockPos pPos, BlockState pBlockState) {
+        public BEntity(BlockPos pPos, BlockState pBlockState) {
             super(RegistriesFixer.DEATH_CHEST_BLOCK_ENTITY.get(), pPos, pBlockState);
             this.connectedPoses = new Int2ObjectOpenHashMap<>();
             this.relativePoses = new Int2ObjectOpenHashMap<>();
@@ -258,7 +258,7 @@ public class FixedDeathChestBlock extends FixedBaseChestBlock implements INetwor
             }
         }
 
-        public static void deathTick(Level level, BlockPos blockPos, BlockState blockState, Entity entity) {
+        public static void deathTick(Level level, BlockPos blockPos, BlockState blockState, BEntity entity) {
             ChestBlock target;
             if (entity.variant == Variant.UNLOCKED_GOLDEN) {
                 target = ChestBlocks.DEATH_GOLDEN_CHEST.get();
@@ -278,7 +278,7 @@ public class FixedDeathChestBlock extends FixedBaseChestBlock implements INetwor
                     .setValue(FACING, blockState.getValue(FACING))
                     .setValue(WATERLOGGED, blockState.getValue(WATERLOGGED))
                     .setValue(TYPE, blockState.getValue(TYPE)));
-            if (level.getBlockEntity(blockPos) instanceof DeathChestBlock.Entity blockEntity) {
+            if (level.getBlockEntity(blockPos) instanceof DeathChestBlock.BEntity blockEntity) {
                 ((ChestBlockEntityAccessor) blockEntity).callSetItems(items);
                 blockEntity.setLootTable(lootTable);
                 blockEntity.setLootTableSeed(lootTableSeed);

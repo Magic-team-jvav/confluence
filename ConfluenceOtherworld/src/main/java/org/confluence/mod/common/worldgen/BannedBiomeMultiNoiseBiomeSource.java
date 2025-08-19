@@ -32,9 +32,9 @@ public class BannedBiomeMultiNoiseBiomeSource extends MultiNoiseBiomeSource {
             MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
             if (server == null) return biome;
             if (targetBiome.equals(ModBiomes.THE_CORRUPTION)) {
-                ((IMinecraftServer) server).confluence$updateSecretFlag(IWorldOptions.THE_CORRUPTION);
+                IMinecraftServer.of(server).confluence$updateSecretFlag(IWorldOptions.THE_CORRUPTION);
             } else if (targetBiome.equals(ModBiomes.THE_CRIMSON)) {
-                ((IMinecraftServer) server).confluence$updateSecretFlag(IWorldOptions.THE_CRIMSON);
+                IMinecraftServer.of(server).confluence$updateSecretFlag(IWorldOptions.THE_CRIMSON);
             }
             this.target = server.registryAccess().holderOrThrow(targetBiome);
             this.protection = server.registryAccess().holderOrThrow(Biomes.PLAINS);

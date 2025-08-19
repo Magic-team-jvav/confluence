@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:chest",
+  "type": "minecraft:generic",
   "pools": [
     {
       "rolls": 1,
@@ -41,12 +41,17 @@
                 {
                   "text":""
                 },
-                {
-                  "text":"1",
-                  "font":"confluence:paper_image",
-                  "italic":false,
-                  "color":"#FFFFFF"
-                }
+                [
+                  {
+                    "text":" "
+                  },
+                  {
+                    "text":"1",
+                    "font":"confluence:paper_image",
+                    "italic":false,
+                    "color":"#FFFFFF"
+                  }
+                ]
               ],
               "mode": "replace_all"
             },
@@ -101,12 +106,17 @@
                 {
                   "text":""
                 },
-                {
-                  "text":"2",
-                  "font":"confluence:paper_image",
-                  "italic":false,
-                  "color":"#FFFFFF"
-                }
+                [
+                  {
+                    "text":" "
+                  },
+                  {
+                    "text":"2",
+                    "font":"confluence:paper_image",
+                    "italic":false,
+                    "color":"#FFFFFF"
+                  }
+                ]
               ],
               "mode": "replace_all"
             },
@@ -123,7 +133,7 @@
         {
           "type": "minecraft:item",
           "name": "minecraft:paper",
-          "weight": 30
+          "weight": 10
         }
       ]
     }

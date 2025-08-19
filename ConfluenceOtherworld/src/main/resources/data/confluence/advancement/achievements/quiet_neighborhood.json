@@ -1,7 +1,7 @@
 {
     "display": {
         "icon": {
-            "id": "minecraft:barrier"
+            "id": "confluence:tombstone"
         },
         "title": {
             "translate": "achievements.confluence.quiet_neighborhood.title"

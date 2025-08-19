@@ -20,20 +20,21 @@ import net.minecraft.world.item.ItemStack;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Function;
 
 public class EntityDisplayItemRenderer extends BlockEntityWithoutLevelRenderer {
-    private final Map<UUID, Entity> entityMap = new Hashtable<>();
+    private Map<UUID, Entity> entityMap = new Hashtable<>();
     private final Function<ClientLevel, RemotePlayer> magicHarp2333 = new Function<>() {
         private RemotePlayer cache;
 
         @Override
         public RemotePlayer apply(ClientLevel level) {
             if (cache == null) {
-                this.cache = new RemotePlayer(level, new GameProfile(UUID.randomUUID(), "MagicHarp2333")) { // Our Leader
+                this.cache = new RemotePlayer(level, new GameProfile(Mth.createInsecureUUID(level.random), "MagicHarp2333")) { // Our Leader
                     private PlayerSkin playerSkin;
 
                     @Override
@@ -56,23 +57,24 @@ public class EntityDisplayItemRenderer extends BlockEntityWithoutLevelRenderer {
 
     @Override
     public void renderByItem(ItemStack stack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
-        ClientLevel level = Minecraft.getInstance().level;
+        Minecraft minecraft = Minecraft.getInstance();
+        ClientLevel level = minecraft.level;
         if (level == null) return;
         CompoundTag tag = LibUtils.getItemStackNbtIfPresent(stack);
         Entity entity;
         if (tag == null) {
             entity = magicHarp2333.apply(level);
         } else {
-            if (level.getGameTime() % 24000L == 0) entityMap.clear(); // 每天清一次缓存
-            entity = entityMap.computeIfAbsent(tag.getUUID(Entity.UUID_TAG), itemStack -> {
+            if (!entityMap.isEmpty() && level.getGameTime() % 24000L == 0) this.entityMap = new HashMap<>(); // 每天清一次缓存
+            entity = entityMap.computeIfAbsent(tag.getUUID(Entity.UUID_TAG), uuid -> {
                 Entity loaded = EntityType.loadEntityRecursive(tag, level, Function.identity());
                 return loaded == null ? new Pig(EntityType.PIG, level) : loaded;
             });
         }
 
         poseStack.pushPose();
-        EntityRenderDispatcher erd = Minecraft.getInstance().getEntityRenderDispatcher();
-        MultiBufferSource.BufferSource immediate = Minecraft.getInstance().renderBuffers().bufferSource();
+        EntityRenderDispatcher erd = minecraft.getEntityRenderDispatcher();
+        MultiBufferSource.BufferSource immediate = minecraft.renderBuffers().bufferSource();
         erd.setRenderShadow(false);
         poseStack.translate(0.5F, 0.25F, 0.5F);
         float rotation = 0.0F;

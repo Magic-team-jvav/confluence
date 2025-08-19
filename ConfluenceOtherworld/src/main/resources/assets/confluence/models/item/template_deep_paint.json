@@ -1,0 +1,7 @@
+{
+  "parent": "item/generated",
+  "textures": {
+      "layer0": "confluence:item/paint/deep_paint",
+    "layer1": "confluence:item/paint/paint_overlay"
+  }
+}

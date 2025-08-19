@@ -18,11 +18,7 @@ public abstract class NoiseChunkGenMixin {
     @Inject(method = "doCreateBiomes", at = @At("RETURN"))
     private void doCreateBiomes(Blender pBlender, RandomState pRandom, StructureManager pStructureManager, ChunkAccess pChunk, CallbackInfo ci) {
         for (LevelChunkSection section : pChunk.getSections()) {
-            // 激进寻找邪恶，如果区块内完全没有邪恶就是完全纯净的，设为备份，净化时还原成备份
-            // 如果有邪恶则在净化时设为平原
-            if (DynamicBiomeUtils.getTypicalBiome(section, true, null) == null) {
-                ((IChunkSection) section).confluence$setBackupBiome(section.getBiomes());
-            }
+            ((IChunkSection) section).confluence$setBackupBiome(DynamicBiomeUtils.judgeBackupBiome(section));
         }
     }
 }

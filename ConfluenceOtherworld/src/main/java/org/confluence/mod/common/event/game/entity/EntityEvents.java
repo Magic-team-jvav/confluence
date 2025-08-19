@@ -17,13 +17,10 @@ import net.neoforged.neoforge.event.entity.EntityMountEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.MinecartAbilityEvent;
 import org.confluence.mod.common.attachment.ExtraInventory;
-import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.util.AchievementUtils;
-
-import static org.confluence.mod.common.attachment.ExtraInventory.EQUIPMENT_START;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
 public final class EntityEvents {
@@ -38,9 +35,9 @@ public final class EntityEvents {
             MinecartAbilityEvent.DismountOnMinecart e = NeoForge.EVENT_BUS.post(new MinecartAbilityEvent.DismountOnMinecart(player, minecart));
             ItemStack itemStack = e.getMinecartItem();
             if (e.isCanceled() || itemStack == null) return;
-            ExtraInventory extraInventory = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
-            if (extraInventory.getMinecart().isEmpty()) {
-                extraInventory.setItem(EQUIPMENT_START + 2, itemStack);
+            ExtraInventory extraInventory = ExtraInventory.of(player);
+            if (extraInventory.getMinecart(false).isEmpty()) {
+                extraInventory.setEquipment(ExtraInventory.MINECART_INDEX, itemStack, false);
             } else {
                 player.addItem(itemStack);
             }

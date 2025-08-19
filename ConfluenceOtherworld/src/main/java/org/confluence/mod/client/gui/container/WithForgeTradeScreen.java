@@ -8,14 +8,16 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.client.event.ModClientSetups;
-import org.confluence.mod.integration.terra_entity.npc_trade.SellTrade;
-import org.confluence.terraentity.client.gui.container.TETradeScreen;
 import org.confluence.mod.common.menu.NPCTradesForgeMenu;
+import org.confluence.mod.integration.terra_entity.npc_trade.SellTrade;
 import org.confluence.mod.network.c2s.OpenMenuPacketC2S;
-import org.confluence.terraentity.registries.npc_trade.ITrade;
+import org.confluence.terraentity.api.npc.trade.ITrade;
+import org.confluence.terraentity.client.gui.container.TETradeScreen;
 
 
 public class WithForgeTradeScreen extends TETradeScreen<NPCTradesForgeMenu> {
+
+    public static boolean CTRL_PRESSED = false;
 
     ImageButton forgeBt;
     public ItemStack sellItem;
@@ -84,5 +86,15 @@ public class WithForgeTradeScreen extends TETradeScreen<NPCTradesForgeMenu> {
         }
         // 槽内没有物品
         return true;
+    }
+
+    @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        return super.keyPressed(keyCode, scanCode, modifiers);
+    }
+
+    @Override
+    public boolean keyReleased(int keyCode, int scanCode, int modifiers) {
+        return this.getFocused() != null && this.getFocused().keyReleased(keyCode, scanCode, modifiers);
     }
 }

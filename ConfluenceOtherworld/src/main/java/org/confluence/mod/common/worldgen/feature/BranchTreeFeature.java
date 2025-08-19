@@ -1,26 +1,17 @@
 package org.confluence.mod.common.worldgen.feature;
 
-import com.google.common.collect.Lists;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderSet;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.PipeBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import org.confluence.mod.common.init.block.NatureBlocks;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +33,7 @@ public class BranchTreeFeature extends Feature<BranchTreeFeature.Config> {
         BlockState trunkBlockState = config.trunk().getState(random, basePos);
         BlockState branchBlockState = config.branch().getState(random, basePos);
         int height = config.height + random.nextInt(3);
-        int branchLength = config.branch_height;
+        int branchLength = config.branchHeight;
 
         boolean placed = true;
         boolean placeBranch = true;
@@ -102,12 +93,12 @@ public class BranchTreeFeature extends Feature<BranchTreeFeature.Config> {
         return false;
     }
 
-    public record Config(BlockStateProvider trunk, BlockStateProvider branch, int height, int branch_height) implements FeatureConfiguration {
+    public record Config(BlockStateProvider trunk, BlockStateProvider branch, int height, int branchHeight) implements FeatureConfiguration {
         public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 BlockStateProvider.CODEC.fieldOf("trunk_block").forGetter(Config::trunk),
                 BlockStateProvider.CODEC.fieldOf("branch_block").forGetter(Config::branch),
                 Codec.INT.fieldOf("height").forGetter(Config::height),
-                Codec.INT.fieldOf("branch_height").forGetter(Config::branch_height)
+                Codec.INT.fieldOf("branch_height").forGetter(Config::branchHeight)
         ).apply(instance, Config::new));
     }
 

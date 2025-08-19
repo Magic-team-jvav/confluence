@@ -2,7 +2,9 @@ package org.confluence.mod.common.attachment;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.common.util.INBTSerializable;
+import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.jetbrains.annotations.UnknownNullability;
 
 public class EverBeneficial implements INBTSerializable<CompoundTag> {
@@ -152,5 +154,9 @@ public class EverBeneficial implements INBTSerializable<CompoundTag> {
         this.galaxyPearl = nbt.getBoolean("galaxyPearl");
         this.minecartUpgradeKit = nbt.getBoolean("minecartUpgradeKit");
         this.artisanLoafUsed = nbt.getBoolean("artisanLoafUsed");
+    }
+
+    public static EverBeneficial of(LivingEntity living) {
+        return living.getData(ModAttachmentTypes.EVER_BENEFICIAL);
     }
 }

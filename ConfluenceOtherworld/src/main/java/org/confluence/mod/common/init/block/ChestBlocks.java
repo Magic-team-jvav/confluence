@@ -17,6 +17,7 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.common.BaseChestBlock;
+import org.confluence.mod.common.block.common.BiomeChestBlock;
 import org.confluence.mod.common.block.functional.DeathChestBlock;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.init.item.ToolItems;
@@ -25,6 +26,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+
+import static org.confluence.mod.common.init.block.ModBlocks.BLOCK_ENTITIES;
 
 public class ChestBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Confluence.MODID);
@@ -54,12 +57,22 @@ public class ChestBlocks {
         }
         return false;
     });
+    public static final Supplier<BlockEntityType<BaseChestBlock.BEntity>> BASE_CHEST_ENTITY = ModBlocks.BLOCK_ENTITIES.register("base_chest_entity", () -> BlockEntityType.Builder.of(BaseChestBlock.BEntity::new, NORMAL_CHESTS.stream().map(DeferredBlock::get).toArray(Block[]::new)).build(DSL.remainderType()));
+    public static final Supplier<BlockEntityType<DeathChestBlock.BEntity>> DEATH_CHEST_ENTITY = ModBlocks.BLOCK_ENTITIES.register("death_chest_entity", () -> BlockEntityType.Builder.of(DeathChestBlock.BEntity::new, DEATH_CHESTS.stream().map(DeferredBlock::get).toArray(Block[]::new)).build(DSL.remainderType()));
 
-    public static final Supplier<BlockEntityType<BaseChestBlock.Entity>> BASE_CHEST_ENTITY = ModBlocks.BLOCK_ENTITIES.register("base_chest_entity", () -> BlockEntityType.Builder.of(BaseChestBlock.Entity::new, NORMAL_CHESTS.stream().map(DeferredBlock::get).toArray(Block[]::new)).build(DSL.remainderType()));
-    public static final Supplier<BlockEntityType<DeathChestBlock.Entity>> DEATH_CHEST_ENTITY = ModBlocks.BLOCK_ENTITIES.register("death_chest_entity", () -> BlockEntityType.Builder.of(DeathChestBlock.Entity::new, DEATH_CHESTS.stream().map(DeferredBlock::get).toArray(Block[]::new)).build(DSL.remainderType()));
+    public static final DeferredBlock<BiomeChestBlock> JUNGLE_CHEST = registerWithItem("jungle_chest", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.JUNGLE_KEY)));
+    public static final DeferredBlock<BiomeChestBlock> CORRUPTION_CHEST = registerWithItem("corruption_chest", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.CORRUPTION_KEY)));
+    public static final DeferredBlock<BiomeChestBlock> CRIMSON_CHEST = registerWithItem("crimson_chest", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.CRIMSON_KEY)));
+    public static final DeferredBlock<BiomeChestBlock> HALLOWED_CHEST = registerWithItem("hallowed_chest", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.HALLOWED_KEY)));
+    public static final DeferredBlock<BiomeChestBlock> ICE_CHEST = registerWithItem("ice_chest", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.FROZEN_KEY)));
+    public static final DeferredBlock<BiomeChestBlock> DESERT_CHEST = registerWithItem("desert_chest", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.DESERT_KEY)));
+    public static final DeferredBlock<BiomeChestBlock> OCEAN_CHEST = registerWithItem("ocean_chest", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.OCEAN_KEY)));
+    public static final DeferredBlock<BiomeChestBlock> UNIVERSE_CHEST = registerWithItem("universe_chest", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.UNIVERSE_KEY)));
+    public static final DeferredBlock<BiomeChestBlock> MECHANIC_SAFE_CHEST = registerWithItem("mechanic_safe_chest", () -> new BiomeChestBlock(stack -> stack.is(ToolItems.MECHANIC_SAFE_KEY)));
+    public static final Supplier<BlockEntityType<BiomeChestBlock.BEntity>> BIOME_CHEST_ENTITY = BLOCK_ENTITIES.register("biome_chest_entity", () -> BlockEntityType.Builder.of(BiomeChestBlock.BEntity::new, JUNGLE_CHEST.get(), CORRUPTION_CHEST.get(), CRIMSON_CHEST.get(), HALLOWED_CHEST.get(), ICE_CHEST.get(), DESERT_CHEST.get(), OCEAN_CHEST.get(), UNIVERSE_CHEST.get(), MECHANIC_SAFE_CHEST.get()).build(DSL.remainderType()));
 
     private static DeferredBlock<BaseChestBlock> registerNormal(String id, @Nullable Predicate<ItemStack> predicate) {
-        DeferredBlock<BaseChestBlock> object = BLOCKS.register(id, () -> new BaseChestBlock(predicate == null ? null : (stack, state, level, pos, player, hand, hitResult) -> {
+        DeferredBlock<BaseChestBlock> block = BLOCKS.register(id, () -> new BaseChestBlock(predicate == null ? null : (stack, state, level, pos, player, hand, hitResult) -> {
             if (predicate.test(stack)) {
                 Direction relativeDir = ChestBlock.getConnectedDirection(state);
                 boolean isDouble = state.getValue(ChestBlock.TYPE) != ChestType.SINGLE;
@@ -81,15 +94,20 @@ public class ChestBlocks {
             }
             return false;
         }));
-        ModItems.BLOCK_ITEMS.registerSimpleBlockItem(object);
-        NORMAL_CHESTS.add(object);
-        return object;
+        ModItems.BLOCK_ITEMS.registerSimpleBlockItem(block);
+        NORMAL_CHESTS.add(block);
+        return block;
     }
 
     private static DeferredBlock<DeathChestBlock> registerDeath(String id) {
-        DeferredBlock<DeathChestBlock> object = BLOCKS.register(id, DeathChestBlock::new);
-        ModItems.BLOCK_ITEMS.registerSimpleBlockItem(object);
-        DEATH_CHESTS.add(object);
-        return object;
+        DeferredBlock<DeathChestBlock> block = registerWithItem(id, DeathChestBlock::new);
+        DEATH_CHESTS.add(block);
+        return block;
+    }
+
+    private static <B extends Block> DeferredBlock<B> registerWithItem(String id, Supplier<B> supplier) {
+        DeferredBlock<B> block = BLOCKS.register(id, supplier);
+        ModItems.BLOCK_ITEMS.registerSimpleBlockItem(block);
+        return block;
     }
 }

@@ -81,13 +81,13 @@ public class FixedBaseChestBlock extends ChestBlock {
     }
 
     @Override
-    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return new Entity(pPos, pState);
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new BEntity(pos, state);
     }
 
     @Override
     protected List<ItemStack> getDrops(BlockState state, LootParams.Builder params) {
-        if (params.getOptionalParameter(LootContextParams.BLOCK_ENTITY) instanceof Entity entity) {
+        if (params.getOptionalParameter(LootContextParams.BLOCK_ENTITY) instanceof BEntity entity) {
             return Collections.singletonList(setData(RegistriesFixer.BASE_CHEST_BLOCK.toStack(), entity.variant));
         }
         return Collections.emptyList();
@@ -99,29 +99,28 @@ public class FixedBaseChestBlock extends ChestBlock {
     }
 
     @Override
-    public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
-        super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
-        CompoundTag tag = LibUtils.getItemStackNbt(pStack);
-        Variant variantId = Variant.byId(tag.getInt("VariantId"));
-        BlockState state = pState.setValue(UNLOCKED, variantId.unlock < 0);
-        pLevel.setBlockAndUpdate(pPos, state);
-        if (pLevel.getBlockEntity(pPos) instanceof Entity entity) {
+    public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
+        super.setPlacedBy(level, pos, state, placer, stack);
+        Variant variantId = Variant.byId(LibUtils.getItemStackNbtNoCopy(stack).getInt("VariantId"));
+        BlockState blockState = state.setValue(UNLOCKED, variantId.unlock < 0);
+        level.setBlockAndUpdate(pos, blockState);
+        if (level.getBlockEntity(pos) instanceof BEntity entity) {
             entity.variant = variantId;
-            entity.setBlockState(state);
+            entity.setBlockState(blockState);
         }
     }
 
     @Nullable
     @Override
-    protected Direction candidatePartnerFacing(BlockPlaceContext pContext, Direction pDirection) {
-        BlockPos relative = pContext.getClickedPos().relative(pDirection);
-        if (pContext.getLevel().getBlockEntity(relative) instanceof Entity entity) {
-            ItemStack itemStack = pContext.getItemInHand();
+    protected Direction candidatePartnerFacing(BlockPlaceContext context, Direction direction) {
+        BlockPos relative = context.getClickedPos().relative(direction);
+        if (context.getLevel().getBlockEntity(relative) instanceof BEntity entity) {
+            ItemStack itemStack = context.getItemInHand();
 
-            if (LibUtils.getItemStackNbt(itemStack).getInt("VariantId") != entity.variant.id)
+            if (LibUtils.getItemStackNbtNoCopy(itemStack).getInt("VariantId") != entity.variant.id)
                 return null;
 
-            BlockState blockstate = pContext.getLevel().getBlockState(relative);
+            BlockState blockstate = context.getLevel().getBlockState(relative);
             return blockstate.is(this) && blockstate.getValue(TYPE) == ChestType.SINGLE ? blockstate.getValue(FACING) : null;
         }
         return null;
@@ -129,7 +128,7 @@ public class FixedBaseChestBlock extends ChestBlock {
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        if (level.getBlockEntity(pos) instanceof Entity entity && entity.isLocked()) {
+        if (level.getBlockEntity(pos) instanceof BEntity entity && entity.isLocked()) {
             boolean isShadow = stack.is(ToolItems.SHADOW_KEY);
             if ((isShadow && entity.variant == Variant.LOCKED_SHADOW) || (stack.is(ToolItems.GOLDEN_KEY) && entity.variant == Variant.LOCKED_GOLDEN) || (stack.is(ToolItems.GOLDEN_DUNGEON_KEY) && entity.variant == Variant.LOCKED_DUNGEON)) {
                 int unlock = entity.variant.unlock;
@@ -142,7 +141,7 @@ public class FixedBaseChestBlock extends ChestBlock {
                     ((IBaseContainerBlockEntity) entity).confluence$setCustomName(name);
                     Direction relativeDir = ChestBlock.getConnectedDirection(state);
                     boolean isDouble = false;
-                    if (state.getValue(TYPE) != ChestType.SINGLE && level.getBlockEntity(pos.relative(relativeDir)) instanceof Entity entity1) {
+                    if (state.getValue(TYPE) != ChestType.SINGLE && level.getBlockEntity(pos.relative(relativeDir)) instanceof BEntity entity1) {
                         entity1.variant = entity.variant;
                         ((IBaseContainerBlockEntity) entity).confluence$setCustomName(name);
                         isDouble = true;
@@ -170,17 +169,17 @@ public class FixedBaseChestBlock extends ChestBlock {
 
     // 修正方块状态
     @Override
-    public InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHit) {
-        if (!pState.getValue(UNLOCKED) && pLevel.getBlockEntity(pPos) instanceof Entity entity && !entity.isLocked()) {
-            pLevel.setBlock(pPos, pState.setValue(UNLOCKED, true), 3);
+    public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+        if (!state.getValue(UNLOCKED) && level.getBlockEntity(pos) instanceof BEntity entity && !entity.isLocked()) {
+            level.setBlock(pos, state.setValue(UNLOCKED, true), 3);
         }
-        return super.useWithoutItem(pState, pLevel, pPos, pPlayer, pHit);
+        return super.useWithoutItem(state, level, pos, player, hitResult);
     }
 
     @Override
     public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
         ItemStack itemStack = new ItemStack(this);
-        if (level.getBlockEntity(pos) instanceof Entity entity) {
+        if (level.getBlockEntity(pos) instanceof BEntity entity) {
             return setData(itemStack, entity.variant);
         }
         return itemStack;
@@ -204,17 +203,17 @@ public class FixedBaseChestBlock extends ChestBlock {
 
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-        return level.isClientSide ? null : LibUtils.getTicker(blockEntityType, RegistriesFixer.BASE_CHEST_BLOCK_ENTITY.get(), Entity::baseTick);
+        return level.isClientSide ? null : LibUtils.getTicker(blockEntityType, RegistriesFixer.BASE_CHEST_BLOCK_ENTITY.get(), BEntity::baseTick);
     }
 
-    public static class Entity extends ChestBlockEntity {
+    public static class BEntity extends ChestBlockEntity {
         public Variant variant = Variant.LOCKED_GOLDEN;
 
-        public Entity(BlockPos pPos, BlockState pBlockState) {
+        public BEntity(BlockPos pPos, BlockState pBlockState) {
             super(RegistriesFixer.BASE_CHEST_BLOCK_ENTITY.get(), pPos, pBlockState);
         }
 
-        public Entity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
+        public BEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
             super(pType, pPos, pBlockState);
         }
 
@@ -264,7 +263,7 @@ public class FixedBaseChestBlock extends ChestBlock {
         private static final ResourceKey<LootTable> IVY_CHESTS = ResourceKey.create(Registries.LOOT_TABLE, Confluence.asResource("chests/ivy_chests"));
         private static final ResourceKey<LootTable> LIVING_IVY_CHESTS = ResourceKey.create(Registries.LOOT_TABLE, Confluence.asResource("chests/living_ivy_chests"));
 
-        public static void baseTick(Level level, BlockPos blockPos, BlockState blockState, Entity entity) {
+        public static void baseTick(Level level, BlockPos blockPos, BlockState blockState, BEntity entity) {
             BlockState target = getBlockByVariant(entity.variant).defaultBlockState()
                     .setValue(FACING, blockState.getValue(FACING))
                     .setValue(WATERLOGGED, blockState.getValue(WATERLOGGED))
@@ -353,17 +352,16 @@ public class FixedBaseChestBlock extends ChestBlock {
         }
     }
 
-    public static class Item extends BlockItem {
-        public Item(Block block) {
+    public static class BItem extends BlockItem {
+        public BItem(Block block) {
             super(block, new Properties());
         }
 
         @Override
         public void inventoryTick(ItemStack stack, Level level, net.minecraft.world.entity.Entity entity, int slotId, boolean isSelected) {
             if (entity instanceof ServerPlayer player) {
-                CompoundTag tag = LibUtils.getItemStackNbt(stack);
-                Variant variantId = Variant.byId(tag.getInt("VariantId"));
-                ItemStack itemStack = new ItemStack(Entity.getBlockByVariant(variantId), stack.getCount());
+                Variant variantId = Variant.byId(LibUtils.getItemStackNbtNoCopy(stack).getInt("VariantId"));
+                ItemStack itemStack = new ItemStack(BEntity.getBlockByVariant(variantId), stack.getCount());
                 itemStack.set(DataComponents.BLOCK_STATE, new BlockItemStateProperties(Map.of("unlocked", variantId.unlock < 0 ? "true" : "false")));
                 player.getInventory().setItem(slotId, itemStack);
             }

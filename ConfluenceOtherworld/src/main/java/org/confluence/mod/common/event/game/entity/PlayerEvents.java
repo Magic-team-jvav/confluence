@@ -2,11 +2,13 @@ package org.confluence.mod.common.event.game.entity;
 
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -15,7 +17,10 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.entity.vehicle.Minecart;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseRailBlock;
@@ -29,12 +34,14 @@ import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.entity.player.*;
 import org.confluence.lib.common.item.ColoredItem;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.api.event.GetCustomDiggingPowerEvent;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.attachment.ExtraInventory;
+import org.confluence.mod.common.attachment.ManaStorage;
+import org.confluence.mod.common.attachment.PlayerPiggyBankContainer;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import org.confluence.mod.common.data.AchievementOffsetLoader;
+import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.data.saved.HardmodeConvertor;
 import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
@@ -43,6 +50,7 @@ import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.axe.BaseAxeItem;
 import org.confluence.mod.common.item.common.BaseMinecartItem;
+import org.confluence.mod.common.item.common.DungeonCompass;
 import org.confluence.mod.common.item.common.EverBeneficialItem;
 import org.confluence.mod.common.item.drill.DrillItem;
 import org.confluence.mod.common.menu.FletchingTableMenu;
@@ -58,32 +66,38 @@ import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.util.TCUtils;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 
+import java.util.Objects;
+
 import static org.confluence.mod.api.event.MinecartAbilityEvent.DismountOnMinecart;
 import static org.confluence.mod.api.event.MinecartAbilityEvent.RightClickRailBlock;
-import static org.confluence.mod.common.attachment.ExtraInventory.EQUIPMENT_START;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
 public final class PlayerEvents {
     @SubscribeEvent
-    public static void playerLogin(PlayerEvent.PlayerLoggedInEvent event) {
-        Player player = event.getEntity();
-        if (player instanceof ServerPlayer serverPlayer) {
-            PlayerUtils.syncMana2Client(serverPlayer);
-            PlayerUtils.syncSavedData(serverPlayer);
-            ExtraInventorySyncPacketS2C.sendToClient(serverPlayer, serverPlayer, serverPlayer.getData(ModAttachmentTypes.EXTRA_INVENTORY));
-            FishingPowerInfoPacketS2C.sendAndGet(serverPlayer);
-            VisibilityPacketS2C.sendEcho(serverPlayer);
-            BoulderWorld.forceSetAccessory(serverPlayer);
-            VisibilityPacketS2C.sendTheConstantPostEffect(serverPlayer);
-            SecretFlagSyncPacketS2C.sendToAll(((IMinecraftServer) serverPlayer.server).confluence$getSecretFlag());
-            if (HardmodeConvertor.INSTANCE.isCompleted()) {
-                AchievementUtils.awardAchievement(serverPlayer, "its_hard");
-            }
-            if (CommonConfigs.DO_NPC_SPAWNING.get() && serverPlayer.serverLevel().getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)) {
-                NPCSpawner.INSTANCE.trySpawnGuide(serverPlayer);
-            }
-            CompatibilitySyncPacketS2c.sendToAll();
+    public static void loggedIn(PlayerEvent.PlayerLoggedInEvent event) {
+        ServerPlayer player = (ServerPlayer) event.getEntity();
+        PlayerUtils.syncMana2Client(player);
+        PlayerUtils.syncSavedData(player);
+        ExtraInventorySyncPacketS2C.sendToClient(player, player, ExtraInventory.of(player));
+        PiggyBankTotalMoneyPacket.sendToClient(player, PlayerPiggyBankContainer.of(player), true);
+        FishingPowerInfoPacketS2C.sendAndGet(player);
+        VisibilityPacketS2C.sendEcho(player);
+        BoulderWorld.forceSetAccessory(player);
+        VisibilityPacketS2C.sendTheConstantPostEffect(player);
+        SecretFlagSyncPacketS2C.sendToAll(IMinecraftServer.of(player.server).confluence$getSecretFlag());
+        if (HardmodeConvertor.INSTANCE.isCompleted()) {
+            AchievementUtils.awardAchievement(player, "its_hard");
         }
+        if (CommonConfigs.DO_NPC_SPAWNING.get() && player.serverLevel().getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)) {
+            NPCSpawner.INSTANCE.trySpawnGuide(player);
+        }
+        CompatibilitySyncPacketS2c.sendToAll();
+    }
+
+    @SubscribeEvent
+    public static void loggedOut(PlayerEvent.PlayerLoggedOutEvent event) {
+        ServerPlayer player = (ServerPlayer) event.getEntity();
+        player.serverLevel().getData(ModAttachmentTypes.CHUNK_DROPLETS_DATA).getLastSync().remove(player.getUUID());
     }
 
     @SubscribeEvent
@@ -113,13 +127,13 @@ public final class PlayerEvents {
         ) {
             player.swing(InteractionHand.MAIN_HAND);
             if (!level.isClientSide) {
-                ExtraInventory extraInventory = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
-                ItemStack minecartItemStack = extraInventory.getMinecart();
+                ExtraInventory extraInventory = ExtraInventory.of(player);
+                ItemStack minecartItemStack = extraInventory.getMinecart(false);
                 RightClickRailBlock e = NeoForge.EVENT_BUS.post(new RightClickRailBlock(player, minecartItemStack, blockState, railBlock, blockPos));
                 if (e.isCanceled()) return;
                 AbstractMinecart minecart = e.getMinecart();
                 if (minecart != null) {
-                    extraInventory.setItem(EQUIPMENT_START + 2, ItemStack.EMPTY);
+                    extraInventory.setEquipment(ExtraInventory.MINECART_INDEX, ItemStack.EMPTY, false);
                     level.addFreshEntity(minecart);
                     player.startRiding(minecart, true);
                 }
@@ -129,16 +143,18 @@ public final class PlayerEvents {
 
         if (CommonConfigs.FLETCHING_MENU.get() && blockState.is(Blocks.FLETCHING_TABLE)) {
             if (!level.isClientSide) {
-                player.swing(InteractionHand.MAIN_HAND, true);
                 player.openMenu(new FletchingTableMenu.Provider(level, blockPos));
             }
+            player.swing(InteractionHand.MAIN_HAND);
             event.setCanceled(true);
         }
 
         // 再生之斧/再生法杖 右键自动收获
         if (!level.isClientSide && itemStack.is(ModTags.Items.CROP_FORTUNE)) {
-            BaseAxeItem.dropAndPlaceOnRightClick(event.getEntity(), event.getItemStack(), event.getPos());
+            BaseAxeItem.dropAndPlaceOnRightClick(player, itemStack, blockPos);
         }
+
+        DungeonCompass.matches(player, event.getHand(), level, itemStack, blockState, blockPos);
     }
 
     @SubscribeEvent
@@ -163,7 +179,7 @@ public final class PlayerEvents {
         ItemStack itemStack = itemEntity.getItem();
         Player player = event.getPlayer();
         if (itemStack.is(ModTags.Items.PROVIDE_MANA)) {
-            player.getData(ModAttachmentTypes.MANA_STORAGE).receiveMana(() -> itemStack.getCount() * 100);
+            ManaStorage.of(player).receiveMana(() -> itemStack.getCount() * 100.0F);
             itemEntity.discard();
             event.setCanPickup(TriState.FALSE);
         } else if (itemStack.is(ModTags.Items.PROVIDE_LIFE)) {
@@ -257,7 +273,7 @@ public final class PlayerEvents {
         } else if (minecartItem.getItem() == Items.MINECART) {
             event.setMinecart(new Minecart(level, x, y, z));
         } else if (minecartItem.getItem() instanceof BaseMinecartItem baseMinecartItem) {
-            event.setMinecart(baseMinecartItem.createMinecart(level, x, y, z, AbstractMinecart.Type.RIDEABLE, minecartItem, event.getEntity()));
+            event.setMinecart(Objects.requireNonNull(baseMinecartItem.createMinecart(level, x, y, z, AbstractMinecart.Type.RIDEABLE, minecartItem, event.getEntity())));
         }
     }
 
@@ -283,81 +299,70 @@ public final class PlayerEvents {
 
     @SubscribeEvent
     public static void respawn(PlayerEvent.PlayerRespawnEvent event) {
-        if (!(event.getEntity() instanceof ServerPlayer serverPlayer)) return;
-        EverBeneficial everBeneficial = serverPlayer.getData(ModAttachmentTypes.EVER_BENEFICIAL);
-        EverBeneficialItem.LIFE_CRYSTAL.recovery(everBeneficial, eb -> eb.getUsedLifeCrystals() > 0, serverPlayer);
-        EverBeneficialItem.LIFE_FRUITS.recovery(everBeneficial, eb -> eb.getUsedLifeFruits() > 0, serverPlayer);
-        EverBeneficialItem.AEGIS_APPLE.recovery(everBeneficial, EverBeneficial::isAegisAppleUsed, serverPlayer);
-        EverBeneficialItem.AMBROSIA.recovery(everBeneficial, EverBeneficial::isAmbrosiaUsed, serverPlayer);
-        EverBeneficialItem.GALAXY_PEARL.recovery(everBeneficial, EverBeneficial::isGalaxyPearlUsed, serverPlayer);
-        EverBeneficialItem.ARTISAN_LOAF.recovery(everBeneficial, EverBeneficial::isArtisanLoafUsed, serverPlayer);
+        ServerPlayer player = (ServerPlayer) event.getEntity();
+        EverBeneficial everBeneficial = EverBeneficial.of(player);
+        EverBeneficialItem.LIFE_CRYSTAL.recovery(everBeneficial, eb -> eb.getUsedLifeCrystals() > 0, player);
+        EverBeneficialItem.LIFE_FRUITS.recovery(everBeneficial, eb -> eb.getUsedLifeFruits() > 0, player);
+        EverBeneficialItem.AEGIS_APPLE.recovery(everBeneficial, EverBeneficial::isAegisAppleUsed, player);
+        EverBeneficialItem.AMBROSIA.recovery(everBeneficial, EverBeneficial::isAmbrosiaUsed, player);
+        EverBeneficialItem.GALAXY_PEARL.recovery(everBeneficial, EverBeneficial::isGalaxyPearlUsed, player);
+        EverBeneficialItem.ARTISAN_LOAF.recovery(everBeneficial, EverBeneficial::isArtisanLoafUsed, player);
 
-        BoulderWorld.forceSetAccessory(serverPlayer);
-        ExtraInventorySyncPacketS2C.sendToClient(serverPlayer, serverPlayer, serverPlayer.getData(ModAttachmentTypes.EXTRA_INVENTORY));
+        BoulderWorld.forceSetAccessory(player);
+        ExtraInventorySyncPacketS2C.sendToClient(player, player, ExtraInventory.of(player));
     }
 
     @SubscribeEvent
     public static void harvestCheck(PlayerEvent.HarvestCheck event) {
         ItemStack itemStack = event.getEntity().getMainHandItem();
-        if (!itemStack.isEmpty() && itemStack.getItem() instanceof DiggerItem diggerItem) {
-            int power = -1;
-            Tier tier = diggerItem.getTier();
-            if (tier instanceof ModTiers.PoweredTier poweredTier) {
-                power = poweredTier.getPower();
-            } else if (tier instanceof Tiers tiers) {
-                power = ModTiers.getPowerForVanillaTiers(tiers);
-            }
-            power = NeoForge.EVENT_BUS.post(new GetCustomDiggingPowerEvent(itemStack, power)).getPower();
-            event.setCanHarvest(ModTiers.isCorrectToolForDrops(power, itemStack, event.getTargetBlock()));
+        if (!itemStack.isEmpty() && itemStack.is(ItemTags.PICKAXES)) {
+            event.setCanHarvest(ModTiers.isCorrectToolForDrops(DiggingPower.getPower(itemStack), itemStack, event.getTargetBlock()));
         }
     }
 
     @SubscribeEvent
     public static void itemPickup(ItemEntityPickupEvent.Pre event) {
-        if (event.getPlayer() instanceof ServerPlayer serverPlayer) {
-            if (((IServerPlayer) serverPlayer).confluence$isCouldPickupItem()) {
-                if (CommonConfigs.AUTO_STACK_GELS_COLOR.get()) {
-                    ItemStack itemStack = event.getItemEntity().getItem();
-                    Item gel = MaterialItems.GEL.get();
-                    if (itemStack.is(gel)) {
-                        int defaultMaxStackSize = gel.getDefaultMaxStackSize();
-                        for (ItemStack stack : serverPlayer.getInventory().items) {
-                            if (!stack.isEmpty() && stack.is(gel) && stack.getCount() + itemStack.getCount() <= defaultMaxStackSize) {
-                                ColoredItem.setColor(itemStack, ColoredItem.getColor(stack));
-                                break;
-                            }
+        ServerPlayer player = (ServerPlayer) event.getPlayer();
+        if (IServerPlayer.of(player).confluence$isCouldPickupItem()) {
+            if (CommonConfigs.AUTO_STACK_GELS_COLOR.get()) {
+                ItemStack itemStack = event.getItemEntity().getItem();
+                Item gel = MaterialItems.GEL.get();
+                if (itemStack.is(gel)) {
+                    int defaultMaxStackSize = gel.getDefaultMaxStackSize();
+                    for (ItemStack stack : player.getInventory().items) {
+                        if (!stack.isEmpty() && stack.is(gel) && stack.getCount() + itemStack.getCount() <= defaultMaxStackSize) {
+                            ColoredItem.setColor(itemStack, ColoredItem.getColor(stack));
+                            break;
                         }
                     }
                 }
-            } else {
-                event.setCanPickup(TriState.FALSE);
             }
+        } else {
+            event.setCanPickup(TriState.FALSE);
         }
     }
 
     @SubscribeEvent
     public static void advancementEarn(AdvancementEvent.AdvancementEarnEvent event) {
         AdvancementHolder advancement = event.getAdvancement();
-        if (event.getEntity() instanceof ServerPlayer player && AchievementOffsetLoader.getDisplayOffset().containsKey(advancement.id())) {
+        if (advancement.value().display().map(DisplayInfo::shouldAnnounceChat).orElse(false) && AchievementOffsetLoader.getDisplayOffset().containsKey(advancement.id())) {
+            ServerPlayer player = (ServerPlayer) event.getEntity();
             player.server.getPlayerList().broadcastSystemMessage(Component.translatable("chat.type.advancement.achievement", player.getDisplayName(), Advancement.name(advancement)), false);
         }
     }
 
     @SubscribeEvent
     public static void startTracking(PlayerEvent.StartTracking event) {
-        if (event.getEntity() instanceof ServerPlayer serverPlayer) {
-            if (event.getTarget() instanceof ServerPlayer player) {
-                ExtraInventorySyncPacketS2C.sendToClient(serverPlayer, player, player.getData(ModAttachmentTypes.EXTRA_INVENTORY));
-            } else if (event.getTarget() instanceof AbstractTerraNPC npc) {
-                NPCSpawner.INSTANCE.applyBenedictions(npc);
-            }
+        if (event.getTarget() instanceof ServerPlayer player) {
+            ExtraInventorySyncPacketS2C.sendToClient((ServerPlayer) event.getEntity(), player, ExtraInventory.of(player));
+        } else if (event.getTarget() instanceof AbstractTerraNPC npc) {
+            NPCSpawner.INSTANCE.applyBenedictions(npc);
         }
     }
 
     @SubscribeEvent
     public static void changedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
-        if (event.getEntity() instanceof ServerPlayer serverPlayer) {
-            ExtraInventorySyncPacketS2C.sendToClient(serverPlayer, serverPlayer, serverPlayer.getData(ModAttachmentTypes.EXTRA_INVENTORY));
-        }
+        ServerPlayer player = (ServerPlayer) event.getEntity();
+        ExtraInventorySyncPacketS2C.sendToClient(player, player, ExtraInventory.of(player));
     }
 }

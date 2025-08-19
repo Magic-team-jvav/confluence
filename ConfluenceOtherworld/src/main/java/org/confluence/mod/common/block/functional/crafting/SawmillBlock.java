@@ -1,6 +1,5 @@
 package org.confluence.mod.common.block.functional.crafting;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
@@ -16,12 +15,10 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.common.block.HorizontalDirectionalWithHorizontalTwoPartBlock;
-import org.confluence.lib.common.block.StateProperties;
 import org.confluence.mod.common.menu.SawmillMenu;
 import org.jetbrains.annotations.Nullable;
 
 public class SawmillBlock extends HorizontalDirectionalWithHorizontalTwoPartBlock {
-    public static final MapCodec<SawmillBlock> CODEC = simpleCodec(SawmillBlock::new);
     private static final VoxelShape[] SHAPES_BASE = new VoxelShape[]{
             Shapes.or(box(3, 2, 1, 16, 4, 15), box(1, 0, 1, 3, 12, 15), box(0, 12, 7, 3, 14, 9), box(0, 12, 9, 16, 14, 16), box(0, 12, 0, 16, 14, 7)),
             Shapes.or(box(1, 2, 3, 15, 4, 16), box(1, 0, 1, 15, 12, 3), box(0, 12, 0, 7, 14, 16), box(9, 12, 0, 16, 14, 16), box(7, 12, 0, 9, 14, 3)),
@@ -40,11 +37,6 @@ public class SawmillBlock extends HorizontalDirectionalWithHorizontalTwoPartBloc
     }
 
     @Override
-    protected MapCodec<SawmillBlock> codec() {
-        return CODEC;
-    }
-
-    @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
         if (level.isClientSide) {
             return InteractionResult.SUCCESS;
@@ -57,7 +49,7 @@ public class SawmillBlock extends HorizontalDirectionalWithHorizontalTwoPartBloc
     @Override
     protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         int index = state.getValue(FACING).get2DDataValue();
-        return state.getValue(StateProperties.HORIZONTAL_TWO_PART).isBase() ? SHAPES_BASE[index] : SHAPES_RIGHT[index];
+        return state.getValue(PART).isBase() ? SHAPES_BASE[index] : SHAPES_RIGHT[index];
     }
 
     @Override

@@ -2,10 +2,12 @@ package org.confluence.mod.client.gui.container;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -18,9 +20,13 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.common.menu.IToggleSlot;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.client.event.ModClientSetups;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.menu.ExtraInventoryMenu;
 import org.confluence.mod.integration.mine_team.ExtraTeamRender;
+import org.confluence.mod.mixed.IInventoryScreen;
+import org.confluence.mod.network.c2s.OpenMenuPacketC2S;
 import org.confluence.terra_curio.TerraCurio;
 import top.theillusivec4.curios.common.network.client.CPacketOpenVanilla;
 
@@ -66,7 +72,7 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
         int containerSize = extraInventory.getContainerSize();
         int sizeAccessoryDye = extraInventory.getSizeAccessoryDye();
         int size = containerSize - sizeAccessoryDye;
-        for (int i = 0; i < size; i++) {
+        for (int i = VANITY_ARMOR_START; i < size; i++) {
             Slot slot = menu.getSlot(i);
             if (!slot.isActive() || slot.hasItem()) continue;
             if (i < COINS_START) {
@@ -77,15 +83,8 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
                 guiGraphics.blit(BACKGROUND, leftPos + 99, topPos + (i - AMMO_START) * 18 + 8, 177, 136, 16, 16);
             } else if (i < TRASH_START) {
                 renderEquipment(guiGraphics, i - EQUIPMENT_START);
-            } else if (i < DYE_START) {
+            } else if (i < ACCESSORY_DYE_START) {
                 guiGraphics.blit(BACKGROUND, leftPos + 152, topPos + 166, 177, 170, 16, 16);
-            } else {
-                int j = i - DYE_START;
-                if (j < SIZE_VANITY_ARMOR) {
-                    renderVanityArmor(guiGraphics, j);
-                } else {
-                    renderEquipment(guiGraphics, j - SIZE_VANITY_ARMOR);
-                }
             }
         }
         if (sizeAccessoryDye > 0) {
@@ -108,23 +107,18 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
     }
 
     private void renderEquipment(GuiGraphics guiGraphics, int i) {
-        int v = switch (i) {
-            case 1 -> 102;
-            case 2 -> 119;
-            case 3 -> 68;
-            default -> 85;
-        };
-        guiGraphics.blit(BACKGROUND, leftPos + 121, topPos + i * 18 + 8, 177, v, 16, 16);
+        if (i >= SIZE_EQUIPMENT) i -= SIZE_EQUIPMENT;
+        boolean isMount = i == MOUNT_INDEX;
+        guiGraphics.blit(BACKGROUND,
+                leftPos + (isMount ? 148 : 121), topPos + (isMount ? 8 : i * 18 + 8),
+                isMount ? 194 : 177, isMount ? 68 : 68 + i * 17,
+                16, 16
+        );
     }
 
     private void renderVanityArmor(GuiGraphics guiGraphics, int i) {
-        int v = switch (i) {
-            case 1 -> 17;
-            case 2 -> 34;
-            case 3 -> 51;
-            default -> 0;
-        };
-        guiGraphics.blit(BACKGROUND, leftPos + 8, topPos + i * 18 + 8, 177, v, 16, 16);
+        if (i >= SIZE_VANITY_ARMOR) i -= SIZE_VANITY_ARMOR;
+        guiGraphics.blit(BACKGROUND, leftPos + 8, topPos + i * 18 + 8, 177, i * 17, 16, 16);
     }
 
     @Override
@@ -165,5 +159,23 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
     @Override
     public <T extends GuiEventListener & Renderable & NarratableEntry> T addRenderableWidget(T widget) {
         return super.addRenderableWidget(widget);
+    }
+
+    public static ImageButton getExtraInventoryButton(EffectRenderingInventoryScreen<?> screen, boolean isInventoryScreen) {
+        int x = screen.getGuiLeft() - 16 + ClientConfigs.extraInventoryButtonOffsetX;
+        if (!isInventoryScreen && ClientConfigs.extraInventoryButtonOffsetX >= 192) x += 19;
+        int y = screen.getGuiTop() + 2 + ClientConfigs.extraInventoryButtonOffsetY;
+        ImageButton extraInventoryButton = new ImageButton(x, y, 16, 16, ModClientSetups.EXTRA_INVENTORY_BUTTON, button -> {
+            LocalPlayer player = Minecraft.getInstance().player;
+            if (player != null) {
+                ItemStack stack = player.containerMenu.getCarried();
+                player.containerMenu.setCarried(ItemStack.EMPTY);
+                OpenMenuPacketC2S.sendToServer(OpenMenuPacketC2S.EXTRA_INVENTORY, stack);
+            }
+        });
+        if (isInventoryScreen) {
+            ((IInventoryScreen) screen).confluence$setExtraButton(extraInventoryButton);
+        }
+        return extraInventoryButton;
     }
 }

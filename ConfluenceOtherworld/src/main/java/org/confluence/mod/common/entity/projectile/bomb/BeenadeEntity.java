@@ -27,7 +27,7 @@ public class BeenadeEntity extends BaseGrenadeEntity {
             if (hivePack && living.getRandom().nextFloat() < 0.3333F) amount++;
             for (int i = 0; i < amount; i++) {
                 BeeProjectile bee = new BeeProjectile(level(), living, hivePack && living.getRandom().nextBoolean());
-                bee.setBaseDamage(7.0F);
+                bee.setBaseDamage(5.0F);
                 bee.setPos(position());
                 level().addFreshEntity(bee);
             }

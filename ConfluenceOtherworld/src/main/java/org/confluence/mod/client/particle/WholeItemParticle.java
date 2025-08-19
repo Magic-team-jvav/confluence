@@ -50,7 +50,7 @@ public class WholeItemParticle extends TextureSheetParticle {
     }
 
     @Override
-    public void render(@NotNull VertexConsumer pBuffer, Camera camera, float partialTicks) {
+    public void render(@NotNull VertexConsumer buffer, Camera camera, float partialTicks) {
         Minecraft mc = Minecraft.getInstance();
         PoseStack poseStack = new PoseStack();
 
@@ -70,7 +70,7 @@ public class WholeItemParticle extends TextureSheetParticle {
                 OverlayTexture.NO_OVERLAY,
                 poseStack,
                 mc.renderBuffers().bufferSource(),
-                null,
+                level,
                 0
         );
         mc.renderBuffers().bufferSource().endBatch();

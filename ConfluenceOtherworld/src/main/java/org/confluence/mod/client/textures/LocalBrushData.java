@@ -23,11 +23,17 @@ public final class LocalBrushData {
     private static final Long2ObjectMap<int[]> DATA = new Long2ObjectOpenHashMap<>();
 
     public static void putData(BlockPos pos, Direction facing, int color) {
-        DATA.computeIfAbsent(pos.asLong(), l -> BrushData.createColor(BrushData.EMPTY_COLOR))[facing.get3DDataValue()] = color;
+        try {
+            DATA.computeIfAbsent(pos.asLong(), l -> BrushData.createColor(BrushData.EMPTY_COLOR))[facing.get3DDataValue()] = color;
+        } catch (Exception ignored) {}
     }
 
     public static int @Nullable [] getColors(BlockPos pos) {
-        return DATA.get(pos.asLong());
+        try {
+            return DATA.get(pos.asLong());
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public static boolean hasEcho(BlockPos pos) {
@@ -35,32 +41,34 @@ public final class LocalBrushData {
     }
 
     public static boolean hasEcho(long pos) {
-        int[] colors = DATA.get(pos);
-        return colors != null && colors[0] == BrushData.ECHO_COLOR;
+        try {
+            int[] colors = DATA.get(pos);
+            return colors != null && colors[0] == BrushData.ECHO_COLOR;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public static int getColor(BlockPos pos, @Nullable Direction facing) {
         if (facing == null) return BrushData.EMPTY_COLOR;
-        int[] colors = DATA.get(pos.asLong());
-        return colors == null ? BrushData.EMPTY_COLOR : colors[facing.get3DDataValue()];
-    }
-
-    public static boolean hasColor(BlockPos pos) {
-        return DATA.get(pos.asLong()) != null;
-    }
-
-    public static void removeData(BlockPos pos) {
-        DATA.remove(pos.asLong());
+        try {
+            int[] colors = DATA.get(pos.asLong());
+            return colors == null ? BrushData.EMPTY_COLOR : colors[facing.get3DDataValue()];
+        } catch (Exception e) {
+            return BrushData.EMPTY_COLOR;
+        }
     }
 
     public static void removeData(BlockPos pos, Direction facing) {
-        int[] colors = DATA.get(pos.asLong());
-        if (colors != null) {
-            colors[facing.get3DDataValue()] = BrushData.EMPTY_COLOR;
-            if (Arrays.stream(colors).allMatch(i -> i == BrushData.EMPTY_COLOR)) {
-                DATA.remove(pos.asLong());
+        try {
+            int[] colors = DATA.get(pos.asLong());
+            if (colors != null) {
+                colors[facing.get3DDataValue()] = BrushData.EMPTY_COLOR;
+                if (Arrays.stream(colors).allMatch(i -> i == BrushData.EMPTY_COLOR)) {
+                    DATA.remove(pos.asLong());
+                }
             }
-        }
+        } catch (Exception ignored) {}
     }
 
     public static void clear() {

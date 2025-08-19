@@ -9,7 +9,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ExtraInventory;
-import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.util.PlayerUtils;
@@ -23,10 +22,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.IntFunction;
 import java.util.function.Predicate;
 
-import static org.confluence.mod.common.attachment.ExtraInventory.*;
+import static org.confluence.mod.common.attachment.ExtraInventory.SIZE_AMMO;
+import static org.confluence.mod.common.attachment.ExtraInventory.SIZE_COINS;
 import static org.confluence.mod.common.item.common.CoinItem.UPGRADES_COUNT;
 
 @Mixin(Inventory.class)
@@ -41,8 +43,8 @@ public abstract class InventoryMixin {
     @Inject(method = "add(ILnet/minecraft/world/item/ItemStack;)Z", at = @At("HEAD"), cancellable = true)
     private void add2Extra(int slot, ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
         if (stack.is(ModTags.Items.COINS)) {
-            ExtraInventory extraInventory = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
-            if (confluence$insert2Extra(COINS_START, SIZE_COINS, extraInventory, stack, extraInventory1 -> {
+            ExtraInventory extraInventory = ExtraInventory.of(player);
+            if (confluence$insert2Extra(SIZE_COINS, extraInventory, stack, extraInventory1 -> {
                 for (int i = 0; i < SIZE_COINS; i++) {
                     ItemStack coins = extraInventory.getCoins(i);
                     int count = coins.getCount();
@@ -52,27 +54,27 @@ public abstract class InventoryMixin {
                         if (coin == ModItems.COPPER_COIN.get()) {
                             itemStack = ModItems.SILVER_COIN.get().getDefaultInstance();
                         } else if (coin == ModItems.SILVER_COIN.get()) {
-                            itemStack = ModItems.GOLDEN_COIN.get().getDefaultInstance();
-                        } else if (coin == ModItems.GOLDEN_COIN.get()) {
+                            itemStack = ModItems.GOLD_COIN.get().getDefaultInstance();
+                        } else if (coin == ModItems.GOLD_COIN.get()) {
                             itemStack = ModItems.PLATINUM_COIN.get().getDefaultInstance();
                         }
                         if (itemStack != null) {
                             coins.setCount(count % UPGRADES_COUNT);
-                            extraInventory1.setItem(COINS_START + i, coins);
+                            extraInventory1.setCoins(i, coins);
                             itemStack.setCount(count / UPGRADES_COUNT);
-                            confluence$insert2Extra(COINS_START, SIZE_COINS, extraInventory1, itemStack, extraInventory2 -> {});
+                            confluence$insert2Extra(SIZE_COINS, extraInventory1, itemStack, extraInventory2 -> {}, extraInventory1::getCoins, extraInventory1::setCoins);
                         }
                     }
                 }
-            })) {
+            }, extraInventory::getCoins, extraInventory::setCoins)) {
                 PlayerUtils.sortCoins(player);
                 cir.setReturnValue(true);
             }
         } else if (stack.is(ModTags.Items.AMMO)) {
             if (CommonConfigs.ammoSlotsItemBlackList.stream().anyMatch(stack.getItem().builtInRegistryHolder()::is) ||
                     CommonConfigs.ammoSlotsTagBlackList.stream().anyMatch(stack::is)) return;
-            ExtraInventory extraInventory = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
-            if (confluence$insert2Extra(AMMO_START, SIZE_AMMO, extraInventory, stack, extraInventory2 -> {})) {
+            ExtraInventory extraInventory = ExtraInventory.of(player);
+            if (confluence$insert2Extra(SIZE_AMMO, extraInventory, stack, extraInventory2 -> {}, extraInventory::getAmmo, extraInventory::setAmmo)) {
                 cir.setReturnValue(true);
             }
         } else if (!stack.isEmpty() && PrefixUtils.canInit(stack)) {
@@ -89,15 +91,15 @@ public abstract class InventoryMixin {
 
     @Inject(method = "clearOrCountMatchingItems", at = @At("RETURN"), cancellable = true)
     private void withExtra(Predicate<ItemStack> stackPredicate, int maxCount, Container inventory, CallbackInfoReturnable<Integer> cir, @Local boolean flag) {
-        cir.setReturnValue(ContainerHelper.clearOrCountMatchingItems(player.getData(ModAttachmentTypes.EXTRA_INVENTORY), stackPredicate, maxCount - cir.getReturnValue(), flag));
+        cir.setReturnValue(ContainerHelper.clearOrCountMatchingItems(ExtraInventory.of(player), stackPredicate, maxCount - cir.getReturnValue(), flag));
     }
 
     @Unique
-    private boolean confluence$insert2Extra(int head, int size, ExtraInventory extraInventory, ItemStack stack, Consumer<ExtraInventory> consumer) {
+    private boolean confluence$insert2Extra(int size, ExtraInventory extraInventory, ItemStack stack, Consumer<ExtraInventory> consumer, IntFunction<ItemStack> getter, BiConsumer<Integer, ItemStack> setter) {
         int i;
         do {
             i = stack.getCount();
-            stack.setCount(confluence$addResource2Extra(head, size, extraInventory, stack));
+            stack.setCount(confluence$addResource2Extra(size, stack, getter, setter));
             consumer.accept(extraInventory);
         } while (!stack.isEmpty() && stack.getCount() < i);
 
@@ -110,11 +112,11 @@ public abstract class InventoryMixin {
     }
 
     @Unique
-    private int confluence$addResource2Extra(int head, int size, ExtraInventory extraInventory, ItemStack stack) {
+    private int confluence$addResource2Extra(int size, ItemStack stack, IntFunction<ItemStack> getter, BiConsumer<Integer, ItemStack> setter) {
         int index = 0;
         boolean found = false;
         for (; index < size; index++) {
-            ItemStack itemStack = extraInventory.getItem(head + index);
+            ItemStack itemStack = getter.apply(index);
             if (itemStack.isEmpty() || hasRemainingSpaceForItem(itemStack, stack)) {
                 found = true;
                 break;
@@ -124,12 +126,12 @@ public abstract class InventoryMixin {
             return stack.getCount();
         }
         int i = stack.getCount();
-        ItemStack itemStack = extraInventory.getItem(head + index);
+        ItemStack itemStack = getter.apply(index);
         if (itemStack.isEmpty()) {
             itemStack = stack.copyWithCount(0);
-            extraInventory.setItem(head + index, itemStack);
+            setter.accept(index, itemStack);
         }
-        int j = extraInventory.getMaxStackSize(itemStack) - itemStack.getCount();
+        int j = stack.getMaxStackSize() - itemStack.getCount();
         int k = Math.min(i, j);
         if (k != 0) {
             i -= k;

@@ -3,18 +3,12 @@ package org.confluence.mod.common.init.block;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.RedStoneOreBlock;
-import net.minecraft.world.level.block.TransparentBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.block.natural.HellStoneBlock;
-import org.confluence.mod.common.block.natural.MeteoriteOre;
-import org.confluence.mod.common.block.natural.OpalOreBlock;
-import org.confluence.mod.common.block.natural.StepRevealingBlock;
+import org.confluence.mod.common.block.natural.*;
 import org.confluence.mod.common.init.item.ModItems;
 
 import java.util.function.Function;
@@ -87,6 +81,9 @@ public class OreBlocks {
     public static final DeferredBlock<Block> METEORITE_BLOCK = registerWithItem("meteorite_block", MeteoriteOre::new, block -> new BlockItem(block, new Item.Properties().fireResistant()));
 
     public static final DeferredBlock<Block> STURDY_FOSSIL_BLOCK = copyBlockRegister("sturdy_fossil_block", Blocks.DIAMOND_BLOCK);
+    public static final DeferredBlock<Block> OPAL_BLOCK = copyBlockRegister("opal_block", Blocks.DIAMOND_BLOCK);
+    public static final DeferredBlock<Block> GELSTONE_BLOCK = copyBlockRegister("gelstone_block", Blocks.DIAMOND_BLOCK);
+    public static final DeferredBlock<Block> COLD_CRYSTAL_BLOCK = copyBlockRegister("cold_crystal_block", Blocks.DIAMOND_BLOCK);
 
     public static final DeferredBlock<Block> SANCTIFICATION_EMERALD_ORE = copyBlockRegister("sanctification_emerald_ore", Blocks.EMERALD_ORE);
     public static final DeferredBlock<Block> CORRUPTION_EMERALD_ORE = copyBlockRegister("corruption_emerald_ore", Blocks.EMERALD_ORE);
@@ -156,7 +153,7 @@ public class OreBlocks {
 
     public static final DeferredBlock<Block> HALLOWED_BLOCK = copyBlockRegister("hallowed_block", Blocks.IRON_BLOCK);
 
-    public static final DeferredBlock<Block> CHLOROPHYTE_ORE = copyBlockRegister("chlorophyte_ore", Blocks.IRON_ORE);
+    public static final DeferredBlock<Block> CHLOROPHYTE_ORE = registerWithItem("chlorophyte_ore", ChlorophyteOreBlock::new);
     public static final DeferredBlock<Block> RAW_CHLOROPHYTE_BLOCK = copyBlockRegister("raw_chlorophyte_block", Blocks.IRON_BLOCK);
     public static final DeferredBlock<Block> CHLOROPHYTE_BLOCK = copyBlockRegister("chlorophyte_block", Blocks.RAW_IRON_BLOCK);
 
@@ -171,10 +168,10 @@ public class OreBlocks {
     public static final DeferredBlock<Block> GELSTONE_ORE = copyBlockRegister("gelstone_ore", Blocks.IRON_ORE);
     public static final DeferredBlock<Block> SPORE_ROOT_BLOCK = copyBlockRegister("spore_root_block", Blocks.IRON_ORE);
     public static final DeferredBlock<Block> WINTER_MARROW_BLOCK = copyBlockRegister("winter_marrow_block", Blocks.IRON_ORE);
-    public static final DeferredBlock<Block> COLD_CRYSTAL_ORE = registerWithItem("cold_crystal_ore", () -> new TransparentBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_ORE).noOcclusion()));
+    public static final DeferredBlock<Block> COLD_CRYSTAL_ORE = registerWithItem("cold_crystal_ore", () -> new TransparentBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_ORE).noOcclusion().sound(SoundType.GRASS)));
     public static final DeferredBlock<Block> HELLSTONE = registerWithItem("hellstone", () -> new HellStoneBlock(true), block -> new BlockItem(block, new Item.Properties().fireResistant()));
-    public static final DeferredBlock<Block> ASH_HELLSTONE = registerWithItem("ash_hellstone", () -> new HellStoneBlock(false), block -> new BlockItem(block, new Item.Properties().fireResistant()));
-    public static final DeferredBlock<Block> HELLSTONE_BRICKS = registerWithItem("hellstone_bricks", () -> new HellStoneBlock(false), block -> new BlockItem(block, new Item.Properties().fireResistant()));
+    public static final DeferredBlock<Block> ASH_HELLSTONE = registerWithItem("ash_hellstone", () -> new HellStoneBlock(true), block -> new BlockItem(block, new Item.Properties().fireResistant()));
+    public static final DeferredBlock<Block> HELLSTONE_BRICKS = registerWithItem("hellstone_bricks", () -> new HellStoneBlock(true), block -> new BlockItem(block, new Item.Properties().fireResistant()));
     public static final DeferredBlock<Block> RAW_HELLSTONE_BLOCK = registerWithItem("raw_hellstone_block", () -> new HellStoneBlock(false), block -> new BlockItem(block, new Item.Properties().fireResistant()));
     public static final DeferredBlock<Block> HELLSTONE_BLOCK = registerWithItem("hellstone_block", () -> new HellStoneBlock(false), block -> new BlockItem(block, new Item.Properties().fireResistant()));
 

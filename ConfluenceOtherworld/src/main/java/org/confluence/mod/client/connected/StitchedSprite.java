@@ -3,7 +3,7 @@ package org.confluence.mod.client.connected;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.client.event.TextureAtlasStitchedEvent;
+import net.minecraft.world.inventory.InventoryMenu;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,13 +24,11 @@ public class StitchedSprite {
 	}
 
 	public StitchedSprite(ResourceLocation location) {
-		this(TextureAtlas.LOCATION_BLOCKS, location);
+		this(InventoryMenu.BLOCK_ATLAS, location);
 	}
 
-	public static void onTextureStitchPost(TextureAtlasStitchedEvent event) {
-		TextureAtlas atlas = event.getAtlas();
-		ResourceLocation atlasLocation = atlas.location();
-		List<StitchedSprite> sprites = ALL.get(atlasLocation);
+	public static void onTextureStitchPost(TextureAtlas atlas) {
+		List<StitchedSprite> sprites = ALL.get(atlas.location());
 		if (sprites != null) {
 			for (StitchedSprite sprite : sprites) {
 				sprite.loadSprite(atlas);

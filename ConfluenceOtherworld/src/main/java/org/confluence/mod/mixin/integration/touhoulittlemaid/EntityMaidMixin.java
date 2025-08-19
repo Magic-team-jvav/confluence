@@ -1,13 +1,13 @@
 package org.confluence.mod.mixin.integration.touhoulittlemaid;
 
 import com.github.tartaricacid.touhoulittlemaid.entity.passive.EntityMaid;
-import com.google.gson.JsonElement;
 import com.mojang.serialization.DynamicOps;
-import com.mojang.serialization.JsonOps;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.Tag;
 import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.common.data.Keys;
+import org.confluence.terraentity.api.npc.trade.ITradeHolder;
 import org.confluence.terraentity.entity.npc.mood.NPCMood;
-import org.confluence.terraentity.entity.npc.trade.ITradeHolder;
 import org.confluence.terraentity.entity.npc.trade.NPCTradeManager;
 import org.confluence.terraentity.entity.npc.trade.TradeParams;
 import org.confluence.terraentity.network.s2c.UpdateNPCTradePacket;
@@ -26,6 +26,7 @@ public abstract class EntityMaidMixin implements ITradeHolder, SelfGetter<Entity
     @Unique
     private NPCTradeManager trades;
     private NPCMood mood = new NPCMood();
+    TradeParams tradeParams = TradeParams.create(); // 在没有使用发包同步参数之前，暂时使用默认参数
 
     @Override
     public NPCTradeManager getTradeManager() {
@@ -34,7 +35,7 @@ public abstract class EntityMaidMixin implements ITradeHolder, SelfGetter<Entity
 
     @Override
     public TradeParams getTradeParams() {
-        return null;
+        return tradeParams;
     }
 
     @Override
@@ -56,12 +57,16 @@ public abstract class EntityMaidMixin implements ITradeHolder, SelfGetter<Entity
     private void onAddedToLevel(CallbackInfo ci) {
 
         // 如果是第一次生成
-        if (trades == null) {
-            DynamicOps<JsonElement> ops = this.level().registryAccess().createSerializationContext(JsonOps.INSTANCE);
-            trades = NPCTradeManager.getCopy(Keys.MAID_SHOP,ops);
-            if (trades != null) {
-                trades.initTrades(this);
+        if (trades == null ) {
+            try{    // 不能因为版本等问题让女仆消失
+                DynamicOps<Tag> ops = this.level().registryAccess().createSerializationContext(NbtOps.INSTANCE);
+                trades = NPCTradeManager.getCopy(Keys.MAID_SHOP,ops);
+                if (trades != null) {
+                    trades.initTrades(this, Keys.MAID_SHOP);
+                }
+            } catch (Exception ignored){
             }
+
         }
     }
 

@@ -75,7 +75,7 @@ public class CattailsBodyBlock extends GrowingPlantBodyBlock implements SimpleWa
 
     @Override
     protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
-        boolean water = level.getBlockState(currentPos).getValue(WATERLOGGED);
+        boolean water = level.getBlockState(currentPos).getFluidState().is(Fluids.WATER);
         if (facing == this.growthDirection.getOpposite() && !state.canSurvive(level, currentPos)) {
             level.scheduleTick(currentPos, this, 1);
         }

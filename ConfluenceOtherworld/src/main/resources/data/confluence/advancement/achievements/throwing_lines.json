@@ -1,7 +1,7 @@
 {
     "display": {
         "icon": {
-            "id": "minecraft:barrier"
+            "id": "terra_entity:wooden_yoyo"
         },
         "title": {
             "translate": "achievements.confluence.throwing_lines.title"

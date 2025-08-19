@@ -1,4 +1,7 @@
+import java.text.SimpleDateFormat
+
 plugins {
+    id 'maven-publish'
     id 'net.neoforged.moddev'
 }
 var projectName = ["Confluence-Magic-Lib", "TerraEntity", "MineTeam", "EquipmentBenediction",
@@ -7,7 +10,7 @@ var projectName = ["Confluence-Magic-Lib", "TerraEntity", "MineTeam", "Equipment
                    "EntityTrackerHUD", "EnemyBanner"
 ]
 
-version = mod_version
+version = mod_version + "-${new SimpleDateFormat("yyMMdd").format(new Date())}"
 group = mod_group_id
 
 base {
@@ -27,6 +30,17 @@ neoForge {
             client()
             programArguments.addAll '--username', 'Confluence'
         }
+
+        client1 {
+            client()
+            programArguments.addAll "--username", "Confluence1"
+        }
+        client2 {
+            client()
+            programArguments.addAll "--username", "Confluence2"
+        }
+
+
         server {
             server()
             //programArgument '--nogui'
@@ -43,7 +57,9 @@ neoForge {
                     // 忽略无效指令，避免有的人没安装 JetBrain Runtime 无法启动游戏
                     "-XX:+IgnoreUnrecognizedVMOptions",
                     // 启用 JetBrain Runtime 热重载功能
-                    "-XX:+AllowEnhancedClassRedefinition"
+                    "-XX:+AllowEnhancedClassRedefinition",
+                    // 并发修改检测
+                    //"-javaagent:mods/CMESuckMyDuck-1.0.5.jar=net/minecraft/util/ClassInstanceMultiMap;byClass;Map;nonstatic"
             ])
             if (isRunningInIdea) {
                 systemProperty "terminal.jline", "true"
@@ -137,11 +153,14 @@ boolean ipn = false // 一键背包整理Next
 boolean mmmmmmmmmmmm = false // 试验假人
 boolean supplementaries = false // 锦致装饰
 boolean lootBeams = false // 战利品光束
+boolean spark = false // 火花
+boolean apotheosis = false // 神化
 
 dependencies {
     projectName.forEach { name -> implementation jarJar(project(":" + name)) }
 
-    implementation(jarJar(group: 'com.xiaohunao.xhn_lib', name: 'xhn_lib', version: '1.21.1-0.0.1'))
+//    implementation jarJar(project(":XHN-Lib"))
+    implementation(jarJar(group: 'com.xiaohunao.xhn_lib', name: 'xhn_lib', version: '1.21.1-0.0.2'))
     implementation(jarJar("software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"))
     implementation(jarJar("curse.maven:particle-storm-1124172:${particle_storm_version}"))
 
@@ -155,11 +174,8 @@ dependencies {
     jarJar('cn.6tail:lunar:1.7.4')
 
     compileOnly "net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}"
-    if (false) {
-        runtimeOnly("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
-        runtimeOnly("net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}")
-        runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}")
-        runtimeOnly("com.tterrag.registrate:Registrate:${registrate_version}")
+    if (true) {
+        runtimeOnly("com.simibubi.create:create-${minecraft_version}:${create_version}") { transitive = false }
     }
 
     compileOnly "curse.maven:jade-324717:6011258"
@@ -171,12 +187,14 @@ dependencies {
 
     compileOnly "vazkii.patchouli:Patchouli:1.21-87-NEOFORGE:api"
     compileOnly "vazkii.patchouli:Patchouli:1.21-87-NEOFORGE"
-    //runtimeOnly "vazkii.patchouli:Patchouli:1.21-87-NEOFORGE"
+    if (false || apotheosis) {
+        runtimeOnly "vazkii.patchouli:Patchouli:1.21-87-NEOFORGE"
+    }
 
     compileOnly "curse.maven:ftb-chunks-forge-314906:5968500"
     compileOnly "curse.maven:ftb-library-forge-404465:6016745"
     if (ftb) {
-        runtimeOnly "curse.maven:ftb-chunks-forge-314906:5968500"
+        runtimeOnly "curse.maven:ftb-chunks-forge-314906:6504893"
         runtimeOnly "curse.maven:ftb-library-forge-404465:6016745"
         runtimeOnly "curse.maven:ftb-ultimine-forge-386134:5671703"
         runtimeOnly "curse.maven:ftb-teams-forge-404468:5882217"
@@ -185,9 +203,9 @@ dependencies {
     compileOnly "curse.maven:better-advancements-272515:5850587"
     runtimeOnly "curse.maven:better-advancements-272515:5850587"
 
-    compileOnly "curse.maven:sodium-394468:6211307"
+    compileOnly "curse.maven:sodium-394468:6382651"
     if (!vanillin) {
-        runtimeOnly "curse.maven:sodium-394468:6211307"
+        runtimeOnly "curse.maven:sodium-394468:6382651"
         runtimeOnly "curse.maven:irisshaders-455508:6213632"
     }
 
@@ -205,9 +223,12 @@ dependencies {
     //runtimeOnly "curse.maven:carry-on-274259:5649344"
 
     compileOnly "curse.maven:apothic-attributes-898963:6302334"
-    if (false) {
+    if (apotheosis) {
+        runtimeOnly "curse.maven:apotheosis-313970:6545942"
+        runtimeOnly "curse.maven:apothic-enchanting-1063926:6563643"
+        runtimeOnly "curse.maven:apothic-spawners-986583:6430294"
         runtimeOnly "curse.maven:apothic-attributes-898963:6302334"
-        runtimeOnly "curse.maven:placebo-283644:6337156"
+        runtimeOnly "curse.maven:placebo-283644:6446766"
     }
 
     compileOnly "curse.maven:appleskin-248787:5586600"
@@ -226,11 +247,11 @@ dependencies {
         runtimeOnly "maven.modrinth:balm:YgPFqhlP"
     }
 
-    compileOnly "curse.maven:xaeros-minimap-263420:6184458"
-    compileOnly "curse.maven:xaeros-world-map-317780:6212662"
+    compileOnly "curse.maven:xaeros-minimap-263420:6515043"
+    compileOnly "curse.maven:xaeros-world-map-317780:6538359"
     if (true) {
-        runtimeOnly "curse.maven:xaeros-minimap-263420:6184458"
-        runtimeOnly "curse.maven:xaeros-world-map-317780:6212662"
+        runtimeOnly "curse.maven:xaeros-minimap-263420:6515043"
+        runtimeOnly "curse.maven:xaeros-world-map-317780:6538359"
     }
 
     compileOnly "maven.modrinth:loot-beams-refork:neoforge-1.21.1-3.2.5"
@@ -245,12 +266,15 @@ dependencies {
     //runtimeOnly "com.hollingsworth.ars_nouveau:ars_nouveau-${minecraft_version}:${ars_nouveau_version}"
 
     compileOnly "io.redspace:irons_spellbooks:${irons_spells_version}:api"
-    if (false) {
+    if (true) {
         runtimeOnly "io.redspace:irons_spellbooks:${irons_spells_version}"
         runtimeOnly "dev.kosmx.player-anim:player-animation-lib-forge:${player_animator_version}"
     }
 
+    compileOnly "curse.maven:dynamiclights-reforged-551736:5807536"
+
     /**********************************************************/
+
 
     runtimeOnly "curse.maven:worldedit-225608:5830452"
     //runtimeOnly "curse.maven:spark-361579:6225208"
@@ -264,7 +288,18 @@ dependencies {
     //runtimeOnly "curse.maven:refined-storage-243076:6391989"
     //runtimeOnly "curse.maven:display-delight-1144296:5964213"
     //runtimeOnly "curse.maven:dynamictrees-252818:6360173"
-    //runtimeOnly "maven.modrinth:modernfix:JNjN5X7g"
+    //runtimeOnly "maven.modrinth:modernfix:JNjN5X7g" // 冲突真多
+    //runtimeOnly "maven.modrinth:feature-recycler:2.0.0-neoforge" // 协助修复feature order cycle
+    //runtimeOnly "curse.maven:fargo-soul-1315726:6819904"
+    //runtimeOnly "curse.maven:cataclysm-spellbooks-1099461:6427259"
+    //runtimeOnly "curse.maven:azurelib-817423:6849116"
+    //runtimeOnly "curse.maven:lendercataclysm-551586:6849033"
+    //runtimeOnly "curse.maven:lionfish-api-1001614:6168249"
+    if (true) {
+        runtimeOnly "curse.maven:enchantment-descriptions-250419:6348560"
+        runtimeOnly "curse.maven:bookshelf-228525:6717571"
+        runtimeOnly "curse.maven:prickle-1023259:6546240"
+    }
     if (false) {
         runtimeOnly "curse.maven:immersive-portals-for-forge-355440:6013197"
         runtimeOnly "curse.maven:cloth-config-348521:5729127"
@@ -307,6 +342,12 @@ dependencies {
     if (supplementaries || mmmmmmmmmmmm) {
         runtimeOnly "maven.modrinth:moonlight:1.21-2.18.18-neoforge"
     }
+
+    if(spark){
+        implementation "curse.maven:spark-361579:6225208"
+
+    }
+
 }
 
 tasks.withType(ProcessResources).configureEach {
@@ -376,7 +417,29 @@ jar {
     exclude 'org/confluence/mod/common/data/gen'
 }
 
-task sourcesJar(type: Jar) {
+tasks.register('sourcesJar', Jar) {
     from sourceSets.main.allJava
-    archiveClassifier = 'sources'
+    archiveClassifier.set("sources")
+}
+
+ext {
+    releasesUrl = "https://maven.confluence.ink/releases"
+    snapshotsUrl = "https://maven.confluence.ink/snapshots"
+}
+publishing {
+    publications {
+        register('mavenJava', MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            name = "Confluence"
+            url = version.toString().endsWith("SNAPSHOT") ? snapshotsUrl : releasesUrl
+            credentials {
+                username = System.getenv("MAGIC_TEAM_USERNAME")
+                password = System.getenv("MAGIC_TEAM_TOKEN")
+            }
+        }
+    }
 }

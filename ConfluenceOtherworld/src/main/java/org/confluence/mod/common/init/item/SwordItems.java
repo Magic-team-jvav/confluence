@@ -46,14 +46,21 @@ public class SwordItems {
     public static final DeferredItem<SwordItem> TUNGSTEN_SHORT_SWORD = register("tungsten_short_sword", ModTiers.TUNGSTEN, 5, 3, SHORT_SWORD.get());
     public static final DeferredItem<SwordItem> GOLDEN_SHORT_SWORD = register("golden_short_sword", ModTiers.GOLD, 6, 3, SHORT_SWORD.get());
     public static final DeferredItem<SwordItem> PLATINUM_SHORT_SWORD = register("platinum_short_sword", ModTiers.PLATINUM, 7, 3, SHORT_SWORD.get());
-    public static final DeferredItem<SwordItem> BREATHING_REED = register("breathing_reed", ModTiers.UNBREAKABLE, 2, 1.6F, SHORT_SWORD.get());
+    public static final DeferredItem<SwordItem> BREATHING_REED = register("breathing_reed", ModTiers.UNBREAKABLE, 2, 1.6F, ModRarity.BLUE, SHORT_SWORD.get()
+            .addTooltip(p -> p.withColor(11184810)));
     public static final DeferredItem<SwordItem> GLADIUS = register("gladius", ModTiers.UNBREAKABLE, 6, 3, SHORT_SWORD.get());
-    public static final DeferredItem<SwordItem> UMBRELLA = register("umbrella", ModTiers.UNBREAKABLE, 2, 1.6F, ModRarity.BLUE, UMBRELLA_SWORD.get());
-    public static final DeferredItem<SwordItem> TRAGIC_UMBRELLA = register("tragic_umbrella", ModTiers.UNBREAKABLE, 2, 1.6F, ModRarity.BLUE, UMBRELLA_SWORD.get());
+    public static final DeferredItem<SwordItem> UMBRELLA = register("umbrella", ModTiers.UNBREAKABLE, 2, 1.6F, ModRarity.BLUE, UMBRELLA_SWORD.get()
+            .addTooltip(p -> p.withColor(11184810)));
+    public static final DeferredItem<SwordItem> TRAGIC_UMBRELLA = register("tragic_umbrella", ModTiers.UNBREAKABLE, 2, 1.6F, ModRarity.BLUE, UMBRELLA_SWORD.get()
+            .addTooltip(p -> p.withColor(11184810)));
 
 
     //普通宽剑 默认横扫*1.5
     public static final DeferredItem<SwordItem> CACTUS_SWORD = register("cactus_sword", ModTiers.CACTUS, 5, 1.6F, NORMAL_SWORD.get());
+    public static final DeferredItem<SwordItem> EBONWOOD_SWORD = register("ebonwood_sword", ModTiers.CACTUS, 6, 1.6F, NORMAL_SWORD.get());
+    public static final DeferredItem<SwordItem> SHADEWOOD_SWORD = register("shadewood_sword", ModTiers.CACTUS, 6, 1.6F, NORMAL_SWORD.get());
+    public static final DeferredItem<SwordItem> ASH_WOOD_SWORD = register("ash_wood_sword", ModTiers.CACTUS, 7, 1.6F, NORMAL_SWORD.get());
+    public static final DeferredItem<SwordItem> PEARLWOOD_SWORD = register("pearlwood_sword", ModTiers.CACTUS, 8, 1.6F, NORMAL_SWORD.get());
     public static final DeferredItem<SwordItem> COPPER_BROADSWORD = register("copper_broadsword", ModTiers.COPPER, 5, 1.6F, NORMAL_SWORD.get());
     public static final DeferredItem<SwordItem> TIN_BROADSWORD = register("tin_broadsword", ModTiers.TIN, 5, 1.6F, NORMAL_SWORD.get());
     public static final DeferredItem<SwordItem> LEAD_BROADSWORD = register("lead_broadsword", ModTiers.LEAD, 6, 1.6F, NORMAL_SWORD.get());
@@ -72,7 +79,7 @@ public class SwordItems {
     public static final DeferredItem<SwordItem> ZOMBIE_ARM = register("zombie_arm", ModTiers.UNBREAKABLE, 5, 2.6F, NORMAL_SWORD.get());
     public static final DeferredItem<SwordItem> MANDIBLE_BLADE = register("mandible_blade", ModTiers.UNBREAKABLE, 6, 2.6F, NORMAL_SWORD.get());
     public static final DeferredItem<SwordItem> BONE_SWORD = register("bone_sword", ModTiers.UNBREAKABLE, 7, 2.9F, ModRarity.ORANGE, NORMAL_SWORD.get());
-    public static final DeferredItem<SwordItem> PURPLE_CLUBBERFISH = register("purple_clubberfish", ModTiers.UNBREAKABLE, 12, 0.5F, NORMAL_SWORD.get());
+    public static final DeferredItem<SwordItem> PURPLE_CLUBBERFISH = register("purple_clubberfish", ModTiers.UNBREAKABLE, 15, 0.5F, NORMAL_SWORD.get());
     public static final DeferredItem<SwordItem> STYLISH_SCISSORS = register("stylish_scissors", ModTiers.UNBREAKABLE, 5, 2.8F, ModRarity.GREEN, NORMAL_SWORD.get());
     public static final DeferredItem<SwordItem> EXOTIC_SCIMITAR = register("exotic_scimitar", ModTiers.UNBREAKABLE, 7, 2.9F, ModRarity.GREEN, NORMAL_SWORD.get());
     public static final DeferredItem<SwordItem> KATANA = register("katana", ModTiers.UNBREAKABLE, 6, 3.7F, ModRarity.BLUE, NORMAL_SWORD.get());

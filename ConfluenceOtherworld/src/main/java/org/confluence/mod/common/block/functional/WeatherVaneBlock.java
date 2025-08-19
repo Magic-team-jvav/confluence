@@ -27,12 +27,12 @@ public class WeatherVaneBlock extends Block implements EntityBlock {
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new Entity(pos, state);
+        return new BEntity(pos, state);
     }
 
     @Override
     public @Nullable <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-        return level.isClientSide ? LibUtils.getTicker(blockEntityType, FunctionalBlocks.WEATHER_VANE_ENTITY.get(), Entity::clientTick) : null;
+        return level.isClientSide ? LibUtils.getTicker(blockEntityType, FunctionalBlocks.WEATHER_VANE_ENTITY.get(), BEntity::clientTick) : null;
     }
 
     @Override
@@ -40,7 +40,7 @@ public class WeatherVaneBlock extends Block implements EntityBlock {
         return SHAPE;
     }
 
-    public static class Entity extends BlockEntity {
+    public static class BEntity extends BlockEntity {
         private static final float INACCURACY = 0.3F / 20.0F;
         private final Vector2f lastWindSpeed = new Vector2f();
         private int shakeTime = 20;
@@ -50,11 +50,11 @@ public class WeatherVaneBlock extends Block implements EntityBlock {
         public float shakeO = 0.0F;
         public float shake = 0.0F;
 
-        public Entity(BlockPos pos, BlockState blockState) {
+        public BEntity(BlockPos pos, BlockState blockState) {
             super(FunctionalBlocks.WEATHER_VANE_ENTITY.get(), pos, blockState);
         }
 
-        public static void clientTick(Level level, BlockPos blockPos, BlockState blockState, Entity entity) {
+        public static void clientTick(Level level, BlockPos blockPos, BlockState blockState, BEntity entity) {
             float windSpeedX = WeatherHandler.getWindSpeedX();
             float windSpeedZ = WeatherHandler.getWindSpeedZ();
             if (entity.lastWindSpeed.x != windSpeedX || entity.lastWindSpeed.y != windSpeedZ) {

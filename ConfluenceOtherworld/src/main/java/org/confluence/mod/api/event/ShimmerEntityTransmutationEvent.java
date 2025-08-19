@@ -1,5 +1,6 @@
 package org.confluence.mod.api.event;
 
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.neoforged.bus.api.Event;
@@ -90,5 +91,12 @@ public abstract class ShimmerEntityTransmutationEvent extends Event {
         ENTITY_TRANSMUTATION.add(new EntityTransmutation(source, target, gamePhase));
     }
 
+    public static void addEntity(TagKey<EntityType<?>> sourceTag, EntityType<?> target) {
+        ENTITY_TRANSMUTATION.add(new EntityTransmutation(
+                entity -> entity.getType().is(sourceTag),
+                target,
+                GamePhase.BEFORE_SKELETRON
+        ));
+    }
     public record EntityTransmutation(Predicate<Entity> source, EntityType<?> target, GamePhase gamePhase) {}
 }

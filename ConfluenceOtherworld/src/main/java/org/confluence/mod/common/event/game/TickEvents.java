@@ -2,20 +2,27 @@ package org.confluence.mod.common.event.game;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.ObjectIterator;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.GameRules;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.color.GlobalColors;
+import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.attachment.ChunkDropletsData;
+import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.block.functional.network.PathService;
 import org.confluence.mod.common.data.saved.*;
 import org.confluence.mod.common.entity.FallingStarItemEntity;
@@ -25,11 +32,15 @@ import org.confluence.mod.common.worldgen.structure.DungeonStructure;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.mixed.Immunity;
+import org.confluence.mod.network.s2c.DropletsSyncPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terraentity.entity.boss.EyeOfCthulhu;
 import org.confluence.terraentity.init.entity.TEBossEntities;
+
+import java.util.HashSet;
+import java.util.Map;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
 public final class TickEvents {
@@ -42,23 +53,24 @@ public final class TickEvents {
         MeteoriteTracker.INSTANCE.tick(serverLevel);
         BossDelaySpawner.INSTANCE.tick(serverLevel);
 
-        long dayTime = serverLevel.getDayTime() % 24000L;
-        if (dayTime == 0L) { // 6:00
+        int dayTime = LibDateUtils.getDayTime(serverLevel);
+        if (dayTime == LibDateUtils._06$00) {
             float factorX = Mth.nextFloat(serverLevel.random, -1.0F, 1.0F);
             float factorZ = Mth.nextFloat(serverLevel.random, -1.0F, 1.0F);
             ConfluenceData.get(serverLevel).setWindSpeed(factorX, factorZ);
-        } else if (dayTime == 13500L) { // 19:30
-            if (!KillBoard.INSTANCE.isDefeated(TEBossEntities.EYE_OF_CTHULHU.get())) {
-                boolean attributeFactor = false;
-                boolean npcFactor = false;
+        } else if (dayTime == LibDateUtils._19$30) {
+            EntityType<EyeOfCthulhu> type = TEBossEntities.EYE_OF_CTHULHU.get();
+            if (!KillBoard.INSTANCE.isDefeated(type) && !BossDelaySpawner.INSTANCE.hasSameTypeInQueue(type)) {
                 for (ServerPlayer player : serverLevel.players()) {
-                    if (!attributeFactor) attributeFactor = player.getMaxHealth() >= 40 && player.getArmorValue() >= 10;
-                    if (!npcFactor) npcFactor = NPCSpawner.INSTANCE.getAliveNpcCount(new NPCSpawner.Region(NPCSpawner.getNpcSpawnPos(player))) >= 4;
-                    if (attributeFactor && npcFactor) break;
-                }
-                if (attributeFactor && npcFactor && serverLevel.random.nextFloat() < 0.3333F) {
-                    BossDelaySpawner.INSTANCE.pushBoss(1350, new EyeOfCthulhu(serverLevel), level -> level.getDayTime() % 24000 > 12000);
-                    serverLevel.getServer().getPlayerList().broadcastSystemMessage(Component.translatable("event.confluence.eye_of_cthulhu").withColor(GlobalColors.MESSAGE.get()), false);
+                    boolean attributeFactor = player.getMaxHealth() >= 40 && player.getArmorValue() >= 10;
+                    boolean npcFactor = NPCSpawner.INSTANCE.getAliveNpcCount(new NPCSpawner.Region(NPCSpawner.getNpcSpawnPos(player)), entityType -> true/* todo 骷髅商人不计入 */) >= 4;
+                    if (attributeFactor && npcFactor) {
+                        if (serverLevel.random.nextFloat() < 0.3333F) {
+                            BossDelaySpawner.INSTANCE.pushBoss(1350, new EyeOfCthulhu(serverLevel), LibDateUtils::isNight);
+                            serverLevel.getServer().getPlayerList().broadcastSystemMessage(Component.translatable("event.confluence.eye_of_cthulhu").withColor(GlobalColors.MESSAGE.get()), false);
+                        }
+                        break;
+                    }
                 }
             }
             if (KillBoard.INSTANCE.isAnyDefeated(TEBossEntities.EATER_OF_WORLDS.get(), TEBossEntities.BRAIN_OF_CTHULHU.get()) && serverLevel.random.nextFloat() < 0.02F) {
@@ -66,7 +78,7 @@ public final class TickEvents {
             }
         }
         if (CommonConfigs.DO_NPC_SPAWNING.get() &&
-                dayTime < 12000 &&
+                LibDateUtils.isDay(dayTime) &&
                 serverLevel.getGameTime() % CommonConfigs.NPC_SPAWN_INTERVAL.get() == 0 &&
                 serverLevel.getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)
         ) {
@@ -78,15 +90,24 @@ public final class TickEvents {
 
     @SubscribeEvent
     public static void playerTick$Post(PlayerTickEvent.Post event) {
-        Player player = event.getEntity();
-        if (player instanceof ServerPlayer serverPlayer) {
-            PlayerUtils.regenerateMana(serverPlayer);
-            ((IServerPlayer) serverPlayer).confluence$setCouldPickupItem(true);
-            serverPlayer.getData(ModAttachmentTypes.EXTRA_INVENTORY).sync(serverPlayer);
-            ServerLevel serverLevel = serverPlayer.serverLevel();
-            AchievementUtils.youCanDoIt(serverPlayer, serverLevel);
-            TheConstant.applyDarkness(serverPlayer, serverLevel);
-            DungeonStructure.checkSkeletronDefeated(serverPlayer, serverLevel);
+        if (event.getEntity() instanceof ServerPlayer player) {
+            ServerLevel level = player.serverLevel();
+            IServerPlayer iPlayer = IServerPlayer.of(player);
+            iPlayer.confluence$setCouldPickupItem(true);
+            PlayerUtils.regenerateMana(player);
+            ExtraInventory.of(player).sync(player);
+            AchievementUtils.youCanDoIt(player, level);
+            AchievementUtils.quietNeighborhood(player, level);
+            AchievementUtils.aRareRealm(player, level);
+            TheConstant.applyDarkness(player, level);
+            DungeonStructure.checkSkeletronDefeated(player, level);
+            if (iPlayer.confluence$chunkPosChanged()) {
+                ChunkDropletsData data = level.getData(ModAttachmentTypes.CHUNK_DROPLETS_DATA);
+                Map<ChunkPos, Map<BlockPos, ParticleOptions>> dataMap = data.getDataMap(player, false);
+                if (!dataMap.isEmpty() || data.getLastSync().computeIfAbsent(player.getUUID(), uuid -> new HashSet<>()).stream().anyMatch(dataMap.keySet()::contains)) {
+                    PacketDistributor.sendToPlayer(player, new DropletsSyncPacketS2C(dataMap));
+                }
+            }
         }
     }
 

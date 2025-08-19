@@ -125,7 +125,7 @@ public abstract class BaseHerbBlock extends CropBlock implements EntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return new Entity(pPos, pState);
+        return new BEntity(pPos, pState);
     }
 
     @Nullable
@@ -146,8 +146,8 @@ public abstract class BaseHerbBlock extends CropBlock implements EntityBlock {
         });
     }
 
-    public static class Entity extends BlockEntity {
-        public Entity(BlockPos pPos, BlockState pBlockState) {
+    public static class BEntity extends BlockEntity {
+        public BEntity(BlockPos pPos, BlockState pBlockState) {
             super(ModBlocks.HERBS_ENTITY.get(), pPos, pBlockState);
         }
     }

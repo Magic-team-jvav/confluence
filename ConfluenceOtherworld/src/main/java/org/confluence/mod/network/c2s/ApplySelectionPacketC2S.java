@@ -19,10 +19,7 @@ import org.jetbrains.annotations.Nullable;
  */
 public record ApplySelectionPacketC2S(byte selected) implements CustomPacketPayload {
     public static final Type<ApplySelectionPacketC2S> TYPE = new Type<>(Confluence.asResource("apply_selection_c2s"));
-    public static final StreamCodec<ByteBuf, ApplySelectionPacketC2S> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.BYTE, p -> p.selected,
-            ApplySelectionPacketC2S::new
-    );
+    public static final StreamCodec<ByteBuf, ApplySelectionPacketC2S> STREAM_CODEC = ByteBufCodecs.BYTE.map(ApplySelectionPacketC2S::new, ApplySelectionPacketC2S::selected);
 
     @Override
     public Type<ApplySelectionPacketC2S> type() {

@@ -2,6 +2,8 @@ package org.confluence.mod.common.item.common;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.AbortableIterationConsumer;
@@ -30,12 +32,14 @@ public class AdvancedCombatTechniquesVolumeTwoItem extends TooltipItem {
         if (level instanceof ServerLevel serverLevel) {
             if (!NPCSpawner.INSTANCE.isAdvancedCombatTechniquesVolumeTwoUsed()) {
                 NPCSpawner.INSTANCE.setAdvancedCombatTechniquesVolumeTwoUsed(true);
+                ResourceLocation id = Confluence.asResource("advanced_combat_techniques_volume_two");
                 serverLevel.getEntities().get(EntityTypeTest.forClass(AbstractTerraNPC.class), npc -> {
-                    NPCSpawner.applyAdvancedCombatTechniques(npc, Confluence.asResource("advanced_combat_techniques_volume_two"));
+                    NPCSpawner.applyAdvancedCombatTechniques(npc, id);
                     return AbortableIterationConsumer.Continuation.CONTINUE;
                 });
-                for (ServerPlayer serverPlayer : serverLevel.players()) {
-                    serverPlayer.sendSystemMessage(Component.translatable("message.confluence.advancement_combat_techniques").withColor(GlobalColors.MESSAGE.get()));
+                MutableComponent component = Component.translatable("message.confluence.advancement_combat_techniques").withColor(GlobalColors.MESSAGE.get());
+                for (ServerPlayer serverPlayer : serverLevel.getServer().getPlayerList().getPlayers()) {
+                    serverPlayer.sendSystemMessage(component);
                 }
                 if (!player.hasInfiniteMaterials()) {
                     itemStack.shrink(1);

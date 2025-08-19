@@ -10,6 +10,7 @@ import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -49,8 +50,22 @@ public class AetheriumCauldronBlock extends AbstractCauldronBlock {
     }
 
     @Override
+    protected double getContentHeight(BlockState state) {
+        return 0.9375;
+    }
+
+    @Override
     public boolean isFull(BlockState state) {
         return true;
+    }
+
+    @Override
+    public boolean isEntityInsideContent(BlockState state, BlockPos pos, Entity entity) {
+        return super.isEntityInsideContent(state, pos, entity);
+    }
+
+    protected int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
+        return 3;
     }
 
     @Override

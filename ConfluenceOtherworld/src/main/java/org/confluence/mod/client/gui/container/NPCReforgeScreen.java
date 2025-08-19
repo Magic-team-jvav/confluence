@@ -1,6 +1,7 @@
 package org.confluence.mod.client.gui.container;
 
 import com.google.common.collect.EvictingQueue;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -14,8 +15,9 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
-import org.confluence.mod.common.init.item.ModItems;
+import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.common.menu.NPCReforgeMenu;
+import org.confluence.mod.util.Coins;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terraentity.entity.ai.keyframe.animation.KeyframeAnimation;
@@ -38,31 +40,14 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
         guiGraphics.blit(BACKGROUND, leftPos, topPos + 19, 0, 0, imageWidth, imageHeight);
         int cost = menu.getCost();
         if (cost < 0x3F3F3F3F) {
-            int[] coins = PlayerUtils.decodeCoin(cost);
+            Coins coins = PlayerUtils.decodeCoin(cost);
             int x = leftPos + 52;
             int y = topPos + 1;
-            if (coins[3] > 0) {
-                ItemStack stack = new ItemStack(ModItems.PLATINUM_COIN.get(), coins[3]);
+            for (Object2IntMap.Entry<CoinItem> entry : coins.platinum2CopperEntries()) {
+                ItemStack stack = new ItemStack(entry.getKey(), entry.getIntValue());
                 guiGraphics.renderItem(stack, x, y);
                 guiGraphics.renderItemDecorations(font, stack, x, y);
                 x += 18;
-            }
-            if (coins[2] > 0) {
-                ItemStack stack = new ItemStack(ModItems.GOLDEN_COIN.get(), coins[2]);
-                guiGraphics.renderItem(stack, x, y);
-                guiGraphics.renderItemDecorations(font, stack, x, y);
-                x += 18;
-            }
-            if (coins[1] > 0) {
-                ItemStack stack = new ItemStack(ModItems.SILVER_COIN.get(), coins[1]);
-                guiGraphics.renderItem(stack, x, y);
-                guiGraphics.renderItemDecorations(font, stack, x, y);
-                x += 18;
-            }
-            if (coins[0] > 0) {
-                ItemStack stack = new ItemStack(ModItems.COPPER_COIN.get(), coins[0]);
-                guiGraphics.renderItem(stack, x, y);
-                guiGraphics.renderItemDecorations(font, stack, x, y);
             }
         }
         if (buttonClicked) {
@@ -81,8 +66,8 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
 
     protected void init() {
         super.init();
-        this.interpolator = KeyframeAnimation.Builder()
-                .addKeyframe(0,0)
+        this.interpolator = KeyframeAnimation.builder()
+                .addKeyframe(0, 0)
                 .addKeyframe(15, 55)
                 .addKeyframe(20, 60)
                 .addKeyframe(40, 60)
@@ -107,7 +92,7 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
                 double v = interpolator.cal(clickTime + pPartialTick);
                 pGuiGraphics.pose().pushPose();
 
-                MutableComponent component = Component.translatable("prefix.confluence." + prefix.name()).append(" ").append(Component.translatable(itemStack.getItem().getDescriptionId()));
+                MutableComponent component = prefix.getName().append(" ").append(Component.translatable(itemStack.getItem().getDescriptionId()));
                 ModRarity rarity = ModRarity.getRarity(itemStack);
                 if (rarity != null) {
                     component.withColor(rarity.color());
@@ -132,7 +117,7 @@ public class NPCReforgeScreen extends AbstractContainerScreen<NPCReforgeMenu> {
             ItemStack itemStack = menu.getReforgeItem();
             PrefixComponent prefix = PrefixUtils.getPrefix(itemStack);
             if (prefix != null && prefix.type() != PrefixType.UNKNOWN) {
-                MutableComponent component = Component.translatable("prefix.confluence." + prefix.name());
+                MutableComponent component = prefix.getName();
                 ModRarity rarity = ModRarity.getRarity(itemStack);
                 if (rarity != null) {
                     component.withColor(rarity.color());

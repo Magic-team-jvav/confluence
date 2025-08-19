@@ -5,7 +5,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import software.bernie.geckolib.model.GeoModel;
 
-public class AltarBlockModel extends GeoModel<AltarBlock.Entity> {
+public class AltarBlockModel extends GeoModel<AltarBlock.BEntity> {
     public static final ResourceLocation[] MODELS = new ResourceLocation[]{
             Confluence.asResource("geo/block/demon_altar.geo.json"),
             Confluence.asResource("geo/block/crimson_altar.geo.json")
@@ -20,17 +20,17 @@ public class AltarBlockModel extends GeoModel<AltarBlock.Entity> {
     };
 
     @Override
-    public ResourceLocation getModelResource(AltarBlock.Entity animatable) {
+    public ResourceLocation getModelResource(AltarBlock.BEntity animatable) {
         return MODELS[animatable.getVariant().getId()];
     }
 
     @Override
-    public ResourceLocation getTextureResource(AltarBlock.Entity animatable) {
+    public ResourceLocation getTextureResource(AltarBlock.BEntity animatable) {
         return TEXTURES[animatable.getVariant().getId()];
     }
 
     @Override
-    public ResourceLocation getAnimationResource(AltarBlock.Entity animatable) {
+    public ResourceLocation getAnimationResource(AltarBlock.BEntity animatable) {
         return ANIMATIONS[animatable.getVariant().getId()];
     }
 }

@@ -42,7 +42,7 @@ public class DeathChestBlock extends BaseChestBlock implements INetworkBlock {
     }
 
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return new Entity(pPos, pState);
+        return new BEntity(pPos, pState);
     }
 
     protected Stat<ResourceLocation> getOpenChestStat() {
@@ -76,13 +76,13 @@ public class DeathChestBlock extends BaseChestBlock implements INetworkBlock {
     }
 
     @Override
-    public void onExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {
-        execution(pState, pLevel, pPos, pColor, true);
+    public void onExecute(BlockState state, ServerLevel level, BlockPos pos, int color, INetworkEntity networkEntity) {
+        execution(state, level, pos, color, true);
     }
 
     @Override
-    public void onUnExecute(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {
-        execution(pState, pLevel, pPos, pColor, false);
+    public void onUnExecute(BlockState state, ServerLevel level, BlockPos pos, int color, INetworkEntity networkEntity) {
+        execution(state, level, pos, color, false);
     }
 
     private void execution(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, boolean hasSignal) {
@@ -100,12 +100,12 @@ public class DeathChestBlock extends BaseChestBlock implements INetworkBlock {
         }
     }
 
-    public static class Entity extends BaseChestBlock.Entity implements INetworkEntity {
+    public static class BEntity extends BaseChestBlock.BEntity implements INetworkEntity {
         private NetworkNode networkNode;
         private final Int2ObjectMap<Set<BlockPos>> connectedPoses;
         private final Int2ObjectMap<Set<BlockPos>> relativePoses;
 
-        public Entity(BlockPos pPos, BlockState pBlockState) {
+        public BEntity(BlockPos pPos, BlockState pBlockState) {
             super(ChestBlocks.DEATH_CHEST_ENTITY.get(), pPos, pBlockState);
             this.connectedPoses = new Int2ObjectOpenHashMap<>();
             this.relativePoses = new Int2ObjectOpenHashMap<>();
@@ -177,7 +177,12 @@ public class DeathChestBlock extends BaseChestBlock implements INetworkBlock {
 
         @Override
         public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-            return serializePoses(super.getUpdateTag(registries), "connectedPoses", connectedPoses);
+            return serializePoses(new CompoundTag(), "connectedPoses", connectedPoses);
+        }
+
+        @Override
+        public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+            deserializePoses(tag, "connectedPoses", connectedPoses);
         }
 
         @Override

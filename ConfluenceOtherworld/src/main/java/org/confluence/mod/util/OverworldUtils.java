@@ -10,6 +10,8 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.features.TreeFeatures;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.WorldGenLevel;
@@ -41,6 +43,10 @@ public final class OverworldUtils {
         return Level.OVERWORLD;
     }
 
+    public static ResourceKey<Level> underworld() {
+        return Level.NETHER;
+    }
+
     public static void replaceBiome(MultiNoiseBiomeSource biomeSource, int x, int y, int z, CallbackInfoReturnable<Holder<Biome>> cir, Supplier<List<Holder<Biome>>> jungleGetter, Supplier<Pair<Holder<Biome>, Holder<Biome>>> biomePairGetter, Function<RegistryAccess, Holder<Biome>> protectionFactory) {
         Holder<Biome> replaced = cir.getReturnValue();
         if (replaced != null) {
@@ -68,6 +74,7 @@ public final class OverworldUtils {
 
     public static void replaceTree(FeaturePlaceContext<TreeConfiguration> context, CallbackInfoReturnable<Boolean> cir) {
         WorldGenLevel level = context.level();
+        if (!(level instanceof WorldGenRegion)) return;
         BlockPos origin = context.origin();
         if (level.getBiome(origin).is(ModTags.Biomes.VANITY_TREES_REPLACEABLE)) {
             RandomSource random = context.random();
@@ -76,7 +83,7 @@ public final class OverworldUtils {
             if (random.nextFloat() < v) {
                 if (random.nextFloat() < 0.75F) {
                     boolean placed = level.registryAccess().registryOrThrow(Registries.CONFIGURED_FEATURE)
-                            .getHolder(ModFeatures.Configured.CONFIGURED_YELLOW_WILLOW).orElseThrow().value()
+                            .getHolder(ModFeatures.Configured.YELLOW_WILLOW_TREE).orElseThrow().value()
                             .place(level, context.chunkGenerator(), random, origin);
                     if (placed) cir.setReturnValue(true);
                 } else {
@@ -96,5 +103,44 @@ public final class OverworldUtils {
             }
         }
         return original.call(instance, blockPos, blockState, i);
+    }
+
+    public static ServerLevel getLevel(MinecraftServer server) {
+        return server.getLevel(dimension());
+    }
+
+    /**
+     * default 320
+     */
+    public static int getUltraY() {
+        return 320;
+    }
+
+    /**
+     * default 260
+     */
+    public static int getSpaceY() {
+        return 260;
+    }
+
+    /**
+     * default 40
+     */
+    public static int getSurfaceY() {
+        return 40;
+    }
+
+    /**
+     * default 0
+     */
+    public static int getUndergroundY() {
+        return 0;
+    }
+
+    /**
+     * default -64
+     */
+    public static int getCaveY() {
+        return -64;
     }
 }

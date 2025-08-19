@@ -74,7 +74,7 @@ public class LostPaperBlock extends Block implements EntityBlock {
 
     @Override
     public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, BlockEntity blockEntity, ItemStack tool) {
-        if (blockEntity instanceof Entity entity) {
+        if (blockEntity instanceof BEntity entity) {
             int layer = state.getValue(LAYER);
             entity.dropLoot(level, pos, player, layer);
         }
@@ -95,13 +95,13 @@ public class LostPaperBlock extends Block implements EntityBlock {
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new Entity(pos, state);
+        return new BEntity(pos, state);
     }
 
-    public static class Entity extends BlockEntity {
+    public static class BEntity extends BlockEntity {
         private ResourceLocation lootTable = null;
 
-        public Entity(BlockPos pos, BlockState state) {
+        public BEntity(BlockPos pos, BlockState state) {
             super(NatureBlocks.LOST_PAPER_ENTITY.get(), pos, state);
         }
 

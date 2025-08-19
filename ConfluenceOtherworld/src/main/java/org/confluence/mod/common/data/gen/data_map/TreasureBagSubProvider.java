@@ -16,6 +16,7 @@ public final class TreasureBagSubProvider {
                 .add(TEBossEntities.BRAIN_OF_CTHULHU, new TreasureBagDrop(TreasureBagItems.BRAIN_OF_CTHULHU_TREASURE_BAG.get()), false)
                 .add(TEBossEntities.QUEEN_BEE, new TreasureBagDrop(TreasureBagItems.QUEEN_BEE_TREASURE_BAG.get()), false)
                 .add(TEBossEntities.SKELETRON, new TreasureBagDrop(TreasureBagItems.SKELETRON_TREASURE_BAG.get()), false)
-                .add(TEBossEntities.WALL_OF_FLESH, new TreasureBagDrop(TreasureBagItems.WALL_OF_FLESH_TREASURE_BAG.get()), false);
+                .add(TEBossEntities.WALL_OF_FLESH, new TreasureBagDrop(TreasureBagItems.WALL_OF_FLESH_TREASURE_BAG.get()), false)
+                .add(TEBossEntities.HILL_OF_FLESH, new TreasureBagDrop(TreasureBagItems.WALL_OF_FLESH_TREASURE_BAG.get()), false);
     }
 }

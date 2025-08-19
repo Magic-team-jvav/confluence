@@ -1,11 +1,12 @@
 {
     "type": "neoforge:add_spawns",
-    "biomes": [
-        "minecraft:jungle",
-        "minecraft:lush_caves",
-        "minecraft:sparse_jungle",
-        "minecraft:bamboo_jungle"
-    ],
+    "biomes": {
+        "type": "neoforge:or",
+        "values": [
+            "#c:is_jungle",
+            "#c:is_lush"
+        ]
+    },
     "spawners": [
         {
             "type": "terra_entity:hornet",
@@ -36,6 +37,12 @@
             "weight": 40,
             "minCount": 1,
             "maxCount": 1
+        },
+        {
+            "type": "terra_entity:piranha",
+            "weight": 40,
+            "minCount": 2,
+            "maxCount": 3
         }
     ]
 }

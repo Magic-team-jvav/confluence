@@ -1,6 +1,5 @@
 package org.confluence.mod.common.block.functional;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -24,21 +23,14 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.common.PlayerContainer;
 import org.confluence.lib.common.block.HorizontalDirectionalWaterloggedBlock;
 import org.confluence.mod.common.attachment.PlayerPiggyBankContainer;
-import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 
 public class PiggyBankBlock extends HorizontalDirectionalWaterloggedBlock implements EntityBlock {
-    public static final MapCodec<PiggyBankBlock> CODEC = simpleCodec(PiggyBankBlock::new);
     private static final VoxelShape SHAPE_X = box(2, 0, 4, 14, 10, 12);
     private static final VoxelShape SHAPE_Z = box(4, 0, 2, 12, 10, 14);
 
     public PiggyBankBlock(Properties properties) {
         super(properties);
-    }
-
-    @Override
-    protected MapCodec<PiggyBankBlock> codec() {
-        return CODEC;
     }
 
     @Override
@@ -53,11 +45,11 @@ public class PiggyBankBlock extends HorizontalDirectionalWaterloggedBlock implem
 
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
-        if (level.getBlockEntity(pos) instanceof Entity entity) {
+        if (level.getBlockEntity(pos) instanceof BEntity entity) {
             if (level.isClientSide) {
                 return InteractionResult.SUCCESS;
             }
-            PlayerPiggyBankContainer container = player.getData(ModAttachmentTypes.PIGGY_BANK);
+            PlayerPiggyBankContainer container = PlayerPiggyBankContainer.of(player);
             container.setActiveContainer(entity);
             player.openMenu(new SimpleMenuProvider((id, inventory, player1) -> new ChestMenu(MenuType.GENERIC_9x6, id, inventory, container, 6), Component.translatable("container.confluence.piggy_bank")));
             PiglinAi.angerNearbyPiglins(player, true);
@@ -69,11 +61,11 @@ public class PiggyBankBlock extends HorizontalDirectionalWaterloggedBlock implem
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new Entity(pos, state);
+        return new BEntity(pos, state);
     }
 
-    public static class Entity extends BlockEntity implements PlayerContainer.ValidEntity {
-        public Entity(BlockPos pos, BlockState blockState) {
+    public static class BEntity extends BlockEntity implements PlayerContainer.ValidEntity {
+        public BEntity(BlockPos pos, BlockState blockState) {
             super(FunctionalBlocks.PIGGY_BANK_ENTITY.get(), pos, blockState);
         }
 

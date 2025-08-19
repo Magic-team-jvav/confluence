@@ -13,7 +13,6 @@ import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import org.confluence.lib.common.menu.ToggleSlot;
 import org.confluence.mod.common.attachment.ExtraInventory;
-import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.terra_curio.TerraCurio;
@@ -34,10 +33,11 @@ public class ExtraInventoryMenu extends AbstractContainerMenu {
     public ExtraInventoryMenu(int containerId, Inventory inventory) {
         super(ModMenuTypes.EXTRA_INVENTORY.get(), containerId);
         Player player = inventory.player;
-        this.extraInventory = player.getData(ModAttachmentTypes.EXTRA_INVENTORY);
+        this.extraInventory = ExtraInventory.of(player);
+        Optional<ICuriosItemHandler> optional = CuriosApi.getCuriosInventory(player);
         int count = extraInventory.getContainerSize();
-        for (int i = 0; i < count; i++) {
-            if (i < COINS_START) { // 0, 1, 2, 3
+        for (int i = VANITY_ARMOR_START; i < count; i++) {
+            if (i < VANITY_ARMOR_DYE_START) { // 0, 1, 2, 3
                 addSlot(new ToggleSlot(extraInventory, i, 8, i * 18 + 8) { // vanity armor
                     @Override
                     public boolean mayPlace(ItemStack stack) {
@@ -58,39 +58,49 @@ public class ExtraInventoryMenu extends AbstractContainerMenu {
                         return (itemstack.isEmpty() || player.isCreative() || !EnchantmentHelper.has(itemstack, EnchantmentEffectComponents.PREVENT_ARMOR_CHANGE)) && super.mayPickup(player);
                     }
                 });
-            } else if (i < AMMO_START) { // 4, 5, 6 ,7
+            } else if (i < COINS_START) { // 4, 5, 6 ,7
+                addSlot(new DyeToggleSlot(extraInventory, i, 8, (i - VANITY_ARMOR_DYE_START) * 18 + 8));
+            } else if (i < AMMO_START) { // 8, 9, 10, 11
                 addSlot(new Slot(extraInventory, i, 81, (i - COINS_START) * 18 + 8) { // coins
                     @Override
                     public boolean mayPlace(ItemStack stack) {
                         return stack.is(ModTags.Items.COINS);
                     }
                 });
-            } else if (i < EQUIPMENT_START) { // 8, 9, 10, 11
+            } else if (i < EQUIPMENT_START) { // 12, 13, 14, 15
                 addSlot(new Slot(extraInventory, i, 99, (i - AMMO_START) * 18 + 8) { // ammo
                     @Override
                     public boolean mayPlace(ItemStack stack) {
                         return stack.is(ModTags.Items.AMMO);
                     }
                 });
-            } else if (i < TRASH_START) { // 12, 13, 14, 15
-                addSlot(new ToggleSlot(extraInventory, i, 121, (i - EQUIPMENT_START) * 18 + 8) { // equipment
+            } else if (i < EQUIPMENT_DYE_START) { // 16, 17, 18, 19, 20
+                int j = i - EQUIPMENT_START;
+                int x = j == MOUNT_INDEX ? 148 : 121;
+                int y = j == MOUNT_INDEX ? 8 : j * 18 + 8;
+                addSlot(new ToggleSlot(extraInventory, i, x, y) { // equipment
                     @Override
                     public boolean mayPlace(ItemStack stack) {
-                        return stack.is(switch (getSlotIndex() - EQUIPMENT_START) {
-                            case 1 -> ModTags.Items.LIGHT_PET;
-                            case 2 -> ModTags.Items.MINECART;
-                            case 3 -> ModTags.Items.HOOK;
+                        return stack.is(switch (j) {
+                            case LIGHT_PET_INDEX -> ModTags.Items.LIGHT_PET;
+                            case MINECART_INDEX -> ModTags.Items.MINECART;
+                            case HOOK_INDEX -> ModTags.Items.HOOK;
+                            case MOUNT_INDEX -> ModTags.Items.MOUNT;
                             default -> ModTags.Items.PET;
                         });
                     }
                 });
-            } else if (i < DYE_START) { // 16
+            } else if (i < TRASH_START) { // 21, 22, 23, 24, 25
+                int j = i - EQUIPMENT_DYE_START;
+                int x = j == MOUNT_INDEX ? 148 : 121;
+                int y = j == MOUNT_INDEX ? 8 : j * 18 + 8;
+                addSlot(new DyeToggleSlot(extraInventory, i, x, y));
+            } else if (i < ACCESSORY_DYE_START) { // 26
                 addSlot(new Slot(extraInventory, i, 152, 166));
-            } else {
-                addSlot(getDyeSlot(i));
+            } else { // 27...
+                addSlot(new DyeToggleSlot(extraInventory, i, -25, (i - ACCESSORY_DYE_START) * 18 + 8));
             }
         }
-        Optional<ICuriosItemHandler> optional = CuriosApi.getCuriosInventory(player);
         if (optional.isPresent()) {
             ICurioStacksHandler accessory = optional.get().getCurios().get(TerraCurio.CURIO_SLOT);
             if (accessory != null) {
@@ -112,29 +122,6 @@ public class ExtraInventoryMenu extends AbstractContainerMenu {
             addSlot(new Slot(inventory, m, 8 + m * 18, 142));
         }
         this.invEnd = hotBar + 9;
-    }
-
-    private ToggleSlot getDyeSlot(int i) {
-        int j = i - DYE_START;
-        int x, y;
-        if (j < SIZE_VANITY_ARMOR) { // vanity armor dye
-            x = 8;
-            y = j * 18 + 8;
-        } else if (j < SIZE_DYE_EXCEPT_ACCESSORY_DYE) { // equipment dye
-            x = 121;
-            y = (j - SIZE_VANITY_ARMOR) * 18 + 8;
-        } else { // accessory dye
-            x = -25;
-            y = (j - SIZE_DYE_EXCEPT_ACCESSORY_DYE) * 18 + 8;
-        }
-        ToggleSlot slot = new ToggleSlot(extraInventory, i, x, y) {
-            @Override
-            public boolean mayPlace(ItemStack stack) {
-                return stack.is(ModTags.Items.DYE);
-            }
-        };
-        slot.isActive = false;
-        return slot;
     }
 
     @Override
@@ -182,7 +169,7 @@ public class ExtraInventoryMenu extends AbstractContainerMenu {
     protected boolean moveItemStackTo(ItemStack stack, int startIndex, int endIndex, boolean reverseDirection) {
         if (startIndex <= TRASH_START && endIndex >= TRASH_START) {
             return super.moveItemStackTo(stack, startIndex, TRASH_START, reverseDirection) ||
-                    super.moveItemStackTo(stack, DYE_START, endIndex, reverseDirection);
+                    super.moveItemStackTo(stack, ACCESSORY_DYE_START, endIndex, reverseDirection);
         }
         return super.moveItemStackTo(stack, startIndex, endIndex, reverseDirection);
     }

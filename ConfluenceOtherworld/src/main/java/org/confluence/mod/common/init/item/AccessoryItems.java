@@ -18,11 +18,12 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.common.data.gen.ModItemTagsProvider;
+import org.confluence.mod.common.data.gen.tag.ModItemTagsProvider;
 import org.confluence.mod.common.entity.fishing.CurioFishingHook;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.item.accessory.*;
+import org.confluence.mod.common.item.common.GuideVooDooDollItem;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.api.primitive.*;
 import org.confluence.terra_curio.common.init.TCAttributes;
@@ -60,6 +61,7 @@ public class AccessoryItems {
     public static final ValueType<Unit, UnitValue> LAVAPROOF$FISHING$HOOK = ValueType.ofUnit("lavaproof_fishing_hook");
     public static final ValueType<Unit, UnitValue> SPECTRE$GOGGLES = ValueType.ofUnit("spectre_goggles");
     public static final ValueType<Unit, UnitValue> PAINT$SPRAYER = ValueType.ofUnit("paint_sprayer");
+    public static final ValueType<Unit, UnitValue> CLOTHIER$KILLER = ValueType.ofUnit("clothier_killer");
 
     public static final ValueType<Float, FloatValue> MANA$USE$REDUCE = ValueType.ofFloat("mana_use_reduce", FloatValue.ADDITION_WITHIN_0_TO_1, 0.0F);
     public static final ValueType<Float, FloatValue> REDUCE$HEALING$COOLDOWN = ValueType.ofFloat("reduce_healing_cooldown", FloatValue.ADDITION_WITHIN_0_TO_1, 0.0F);
@@ -171,6 +173,9 @@ public class AccessoryItems {
     public static final DeferredItem<BaseCurioItem> SOLAR_WINGS = registerWings("solar_wings", RED, 0.85F, 92, true, false); // 飞行高度：95
     public static final DeferredItem<BaseCurioItem> STARDUST_WINGS = registerWings("stardust", RED, 0.85F, 92, true, false); // 飞行高度：95
 
+    public static final DeferredItem<BaseCurioItem> CLOTHIER_VOODOO_DOLL = registerCurio("clothier_voodoo_doll", builder -> builder.rarity(BLUE).accessories(units(CLOTHIER$KILLER)));
+    public static final DeferredItem<BaseCurioItem> GUIDE_VOODOO_DOLL = registerDirectly("guide_voodoo_doll", GuideVooDooDollItem::new);
+
     private static DeferredItem<BaseCurioItem> registerCurio(String name, Consumer<BaseCurioItem.Builder> consumer) {
         return ITEMS.register(name, () -> {
             BaseCurioItem.Builder builder = BaseCurioItem.builder(name);
@@ -210,7 +215,7 @@ public class AccessoryItems {
             Item item;
             float a = randomSource.nextFloat();
             if (a < 0.01F) {
-                item = ModItems.GOLDEN_COIN.get();
+                item = ModItems.GOLD_COIN.get();
             } else if (a < 0.099F) {
                 item = ModItems.SILVER_COIN.get();
             } else {
@@ -222,7 +227,7 @@ public class AccessoryItems {
         }
     }
 
-    public static void applyHurtGetMana(ServerPlayer serverPlayer, DamageSource damageSource, int amount) {
+    public static void applyHurtGetMana(ServerPlayer serverPlayer, DamageSource damageSource, float amount) {
         if (TCUtils.hasAccessoriesType(serverPlayer, HURT$GET$MANA)) {
             if (!damageSource.is(DamageTypes.DROWN) && !damageSource.is(TCTags.HARMFUL_EFFECT)) {
                 PlayerUtils.receiveMana(serverPlayer, () -> amount);

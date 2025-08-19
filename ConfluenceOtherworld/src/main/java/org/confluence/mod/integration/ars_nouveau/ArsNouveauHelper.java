@@ -15,7 +15,6 @@ import org.confluence.mod.api.event.AdditionalManaEvent;
 import org.confluence.mod.client.handler.CompatibilityHandler;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ManaStorage;
-import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.util.PlayerUtils;
 
 public class ArsNouveauHelper {
@@ -32,12 +31,12 @@ public class ArsNouveauHelper {
     }
 
     public static void extractMana(ServerPlayer serverPlayer, ManaStorage manaStorage, double manaToRemove) {
-        PlayerUtils.extractAndDelayAndSync(manaStorage, () -> (int) (manaToRemove * toConfluence()), serverPlayer);
+        PlayerUtils.extractAndDelayAndSync(manaStorage, () -> (float) (manaToRemove * toConfluence()), serverPlayer);
     }
 
     public static TriState enoughMana(LivingEntity living, int totalCost) {
         if (CommonConfigs.CONVERT_ARS_NOUVEAU_MANA.get() && living instanceof Player player) {
-            return totalCost * toConfluence() <= player.getData(ModAttachmentTypes.MANA_STORAGE).getCurrentMana() ? TriState.TRUE : TriState.FALSE;
+            return totalCost * toConfluence() <= ManaStorage.of(player).getCurrentMana() ? TriState.TRUE : TriState.FALSE;
         }
         return TriState.DEFAULT;
     }
@@ -56,8 +55,8 @@ public class ArsNouveauHelper {
     }
 
     public static void updateMana(LivingEntity living) {
-        if (CommonConfigs.CONVERT_ARS_NOUVEAU_MANA.get() && living instanceof ServerPlayer serverPlayer) {
-            serverPlayer.getData(ModAttachmentTypes.MANA_STORAGE).flushAbility(serverPlayer);
+        if (CommonConfigs.CONVERT_ARS_NOUVEAU_MANA.get() && living instanceof ServerPlayer player) {
+            ManaStorage.of(player).flushAbility(player);
         }
     }
 }

@@ -61,7 +61,7 @@ public class BaseChestBlock extends ChestBlock {
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return new Entity(pPos, pState);
+        return new BEntity(pPos, pState);
     }
 
     @Override
@@ -126,12 +126,12 @@ public class BaseChestBlock extends ChestBlock {
         return state.getValue(UNLOCKED) ? super.getDestroyProgress(state, player, level, pos) : 0;
     }
 
-    public static class Entity extends ChestBlockEntity {
-        public Entity(BlockPos pPos, BlockState pBlockState) {
+    public static class BEntity extends ChestBlockEntity {
+        public BEntity(BlockPos pPos, BlockState pBlockState) {
             this(ChestBlocks.BASE_CHEST_ENTITY.get(), pPos, pBlockState);
         }
 
-        public Entity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
+        public BEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
             super(pType, pPos, pBlockState);
         }
 

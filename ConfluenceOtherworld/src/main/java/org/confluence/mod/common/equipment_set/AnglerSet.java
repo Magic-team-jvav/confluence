@@ -1,8 +1,8 @@
 package org.confluence.mod.common.equipment_set;
 
 import com.xiaohunao.equipment_benediction.common.equipment_set.EquipmentSet;
-import com.xiaohunao.equipment_benediction.common.equipment_set.EquippableGroup;
 import com.xiaohunao.equipment_benediction.common.equipment_set.EquipmentSetBranch;
+import com.xiaohunao.equipment_benediction.common.equipment_set.EquippableGroup;
 import com.xiaohunao.equipment_benediction.common.equippable.VanillaEquippable;
 import com.xiaohunao.equipment_benediction.common.hook.HookMap;
 import net.minecraft.world.item.ArmorItem;
@@ -19,7 +19,7 @@ public class AnglerSet extends EquipmentSet {
         equippableGroup.addEquippableSet("leggings", fishingPowerBonus(VanillaEquippable.LEGS, ArmorItems.ANGLER_PANTS));
     }
 
-    private static EquipmentSetBranch fishingPowerBonus(VanillaEquippable slot, DeferredItem<ArmorItem> item) {
+    private static EquipmentSetBranch fishingPowerBonus(VanillaEquippable slot, DeferredItem<? extends ArmorItem> item) {
         return new EquipmentSetBranch.Builder().addEquippable(slot, item)
                 .bindHook(ModHookTypes.FISHING_POWER.get(), (owner, player, original) -> original * 1.05F)
                 .build();

@@ -31,6 +31,7 @@ public interface IWorldOptions {
     long DOUBLE_EVIL = 0b0011;
     long HARDMODE = 0b0100;
     long GRADUATED = 0b1100;
+    long SECRET_SEED = Long.MAX_VALUE >> ModSecretSeeds.RESERVE << ModSecretSeeds.RESERVE;
 
     long DW_MASK = ModSecretSeeds.DRUNK_WORLD.getFlag();
     long NTB_MASK = ModSecretSeeds.NOT_THE_BEES.getFlag();
@@ -41,6 +42,7 @@ public interface IWorldOptions {
     long DDU_MASK = ModSecretSeeds.DONT_DIG_UP.getFlag();
     long GFB_MASK = ModSecretSeeds.GET_FIXED_BOI.getFlag();
     long BW_MASK = ModSecretSeeds.BOULDER_WORLD.getFlag();
+
 
     ResourceLocation UNKNOWN_WORLD_ICON = Confluence.asResource("textures/gui/world_icon/unknown.png");
     Long2ObjectMap<ResourceLocation> WORLD_ICON = Util.make(new Long2ObjectOpenHashMap<>(), map -> {
@@ -58,7 +60,7 @@ public interface IWorldOptions {
         registerWorldIcon(map, BW_MASK, "boulder_world");
 
         CustomWorldIconRegisterEvent event = new CustomWorldIconRegisterEvent(map);
-        ModLoader.postEvent(event);
+        ModLoader.postEventWrapContainerInModOrder(event);
         map.putAll(event.getToAdd());
     });
 

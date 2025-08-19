@@ -417,11 +417,7 @@ jar {
     exclude 'org/confluence/mod/common/data/gen'
 }
 
-tasks.named('sourcesJar', Jar) {
-    from sourceSets.main.allJava
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    archiveClassifier = 'sources'
-}
+java.withSourcesJar()
 
 ext {
     releasesUrl = "https://maven.confluence.ink/releases"
@@ -431,6 +427,7 @@ publishing {
     publications {
         register('mavenJava', MavenPublication) {
             from components.java
+            artifact tasks.named('sourcesJar')
         }
     }
     repositories {

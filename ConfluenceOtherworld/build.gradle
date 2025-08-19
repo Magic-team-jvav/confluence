@@ -417,10 +417,7 @@ jar {
     exclude 'org/confluence/mod/common/data/gen'
 }
 
-tasks.register('sourcesJar', Jar) {
-    from sourceSets.main.allJava
-    archiveClassifier.set("sources")
-}
+java.withSourcesJar()
 
 ext {
     releasesUrl = "https://maven.confluence.ink/releases"

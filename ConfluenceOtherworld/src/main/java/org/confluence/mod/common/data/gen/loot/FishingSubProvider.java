@@ -278,39 +278,39 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                         )).setWeight(72).setQuality(1))
                         // 丛林
                         .add(LootItem.lootTableItem(CrateBlocks.JUNGLE_CRATE).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setBiomes(isJungleOrLush).setY(caveThroughSpace)
+                                LocationPredicate.Builder.location().setBiomes(isJungleOrLush).setY(caveThroughSurface)
                         )).setWeight(72).setQuality(1))
                         // 沙漠
                         .add(LootItem.lootTableItem(CrateBlocks.OASIS_CRATE).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setBiomes(isDesertOrBadlands).setY(caveThroughSpace)
+                                LocationPredicate.Builder.location().setBiomes(isDesertOrBadlands).setY(caveThroughSurface)
                         )).setWeight(72).setQuality(1))
                         // 海洋
                         .add(LootItem.lootTableItem(CrateBlocks.OCEAN_CRATE).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setBiomes(isOceanOrBeach).setY(caveThroughSpace)
+                                LocationPredicate.Builder.location().setBiomes(isOceanOrBeach).setY(caveThroughSurface)
                         )).setWeight(72).setQuality(1))
                         // 雪原
                         .add(LootItem.lootTableItem(CrateBlocks.FROZEN_CRATE).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setBiomes(isSnowyOrIcy).setY(caveThroughSpace)
+                                LocationPredicate.Builder.location().setBiomes(isSnowyOrIcy).setY(caveThroughSurface)
                         )).setWeight(72).setQuality(1))
                         // 热带草原
                         .add(LootItem.lootTableItem(CrateBlocks.SAVANNA_CRATE).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setBiomes(isSavana).setY(caveThroughSpace)
+                                LocationPredicate.Builder.location().setBiomes(isSavana).setY(caveThroughSurface)
                         )).setWeight(72).setQuality(1))
                         // 腐化之地
                         .add(LootItem.lootTableItem(CrateBlocks.CORRUPT_CRATE).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setBiomes(isCorruption).setY(caveThroughSpace)
+                                LocationPredicate.Builder.location().setBiomes(isCorruption).setY(caveThroughSurface)
                         )).setWeight(72).setQuality(1))
                         // 猩红之地
                         .add(LootItem.lootTableItem(CrateBlocks.CRIMSON_CRATE).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setBiomes(isCrimson).setY(caveThroughSpace)
+                                LocationPredicate.Builder.location().setBiomes(isCrimson).setY(caveThroughSurface)
                         )).setWeight(72).setQuality(1))
                         // 神圣之地
                         .add(LootItem.lootTableItem(CrateBlocks.HALLOWED_CRATE).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setBiomes(isHallow).setY(caveThroughSpace)
+                                LocationPredicate.Builder.location().setBiomes(isHallow).setY(caveThroughSurface)
                         )).setWeight(72).setQuality(1))
                         // 地牢
                         .add(LootItem.lootTableItem(CrateBlocks.DUNGEON_CRATE).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setStructures(isDungeon).setY(caveThroughSpace)
+                                LocationPredicate.Builder.location().setStructures(isDungeon).setY(caveThroughSurface)
                         )).setWeight(72).setQuality(1))
                 )
         );
@@ -327,39 +327,39 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                         )).setWeight(72).setQuality(1))
                         // 丛林
                         .add(LootItem.lootTableItem(CrateBlocks.BRAMBLE_CRATE).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setBiomes(isJungleOrLush).setY(caveThroughSpace)
+                                LocationPredicate.Builder.location().setBiomes(isJungleOrLush).setY(caveThroughSurface)
                         )).setWeight(72).setQuality(1))
                         // 沙漠
                         .add(LootItem.lootTableItem(CrateBlocks.MIRAGE_CRATE).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setBiomes(isDesertOrBadlands).setY(caveThroughSpace)
+                                LocationPredicate.Builder.location().setBiomes(isDesertOrBadlands).setY(caveThroughSurface)
                         )).setWeight(72).setQuality(1))
                         // 海洋
                         .add(LootItem.lootTableItem(CrateBlocks.SEASIDE_CRATE).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setBiomes(isOceanOrBeach).setY(caveThroughSpace)
+                                LocationPredicate.Builder.location().setBiomes(isOceanOrBeach).setY(caveThroughSurface)
                         )).setWeight(72).setQuality(1))
                         // 雪原
                         .add(LootItem.lootTableItem(CrateBlocks.BOREAL_CRATE).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setBiomes(isSnowyOrIcy).setY(caveThroughSpace)
+                                LocationPredicate.Builder.location().setBiomes(isSnowyOrIcy).setY(caveThroughSurface)
                         )).setWeight(72).setQuality(1))
                         // 热带草原
                         .add(LootItem.lootTableItem(CrateBlocks.WILD_CRATE).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setBiomes(isSavana).setY(caveThroughSpace)
+                                LocationPredicate.Builder.location().setBiomes(isSavana).setY(caveThroughSurface)
                         )).setWeight(72).setQuality(1))
                         // 腐化之地
                         .add(LootItem.lootTableItem(CrateBlocks.DEFILED_CRATE).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setBiomes(isCorruption).setY(caveThroughSpace)
+                                LocationPredicate.Builder.location().setBiomes(isCorruption).setY(caveThroughSurface)
                         )).setWeight(72).setQuality(1))
                         // 猩红之地
                         .add(LootItem.lootTableItem(CrateBlocks.HEMATIC_CRATE).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setBiomes(isCrimson).setY(caveThroughSpace)
+                                LocationPredicate.Builder.location().setBiomes(isCrimson).setY(caveThroughSurface)
                         )).setWeight(72).setQuality(1))
                         // 神圣之地
                         .add(LootItem.lootTableItem(CrateBlocks.DIVINE_CRATE).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setBiomes(isHallow).setY(caveThroughSpace)
+                                LocationPredicate.Builder.location().setBiomes(isHallow).setY(caveThroughSurface)
                         )).setWeight(72).setQuality(1))
                         // 地牢
                         .add(LootItem.lootTableItem(CrateBlocks.STOCKADE_CRATE).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setStructures(isDungeon).setY(caveThroughSpace)
+                                LocationPredicate.Builder.location().setStructures(isDungeon).setY(caveThroughSurface)
                         )).setWeight(72).setQuality(1))
                 )
         );

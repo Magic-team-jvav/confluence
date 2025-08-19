@@ -129,6 +129,7 @@ public final class ModRecipes {
             registerMaterial(NatureBlocks.GLOWING_MUSHROOM.get().asItem());
             registerMaterial(FoodItems.STINKY_FISH.get());
             registerMaterial(MaterialItems.AMBER.get());
+            registerMaterial(FoodItems.MOTTLED_OILFISH.get());
 
 
             // 箭术

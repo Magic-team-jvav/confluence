@@ -297,8 +297,11 @@ public class LogBlockSet {
             if (logBlocks.TRAPDOOR.isBound()) output.accept(logBlocks.TRAPDOOR.get());
             if (logBlocks.DOOR.isBound()) output.accept(logBlocks.DOOR.get());
             if (logBlocks.HANGING_SIGN_ITEM.isBound()) output.accept(logBlocks.HANGING_SIGN_ITEM.get());
+            if (logBlocks.CHISELED_PLANKS.isBound()) output.accept(logBlocks.CHISELED_PLANKS.get());
+            if (logBlocks.SAPLING.isBound()) output.accept(logBlocks.SAPLING.get());
         }
     }
+
 
     public static void acceptNature(CreativeModeTab.Output output) {
         for (LogBlockSet logBlocks : LOG_BLOCK_SETS) {
@@ -307,6 +310,9 @@ public class LogBlockSet {
             }
             if (logBlocks.LEAVES.isBound()) {
                 output.accept(logBlocks.LEAVES);
+            }
+            if (logBlocks.SAPLING.isBound()) {
+                output.accept(logBlocks.SAPLING);
             }
         }
     }

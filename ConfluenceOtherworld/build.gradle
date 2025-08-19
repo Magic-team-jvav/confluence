@@ -1,6 +1,7 @@
 import java.text.SimpleDateFormat
 
 plugins {
+    id 'maven-publish'
     id 'net.neoforged.moddev'
 }
 var projectName = ["Confluence-Magic-Lib", "TerraEntity", "MineTeam", "EquipmentBenediction",
@@ -427,6 +428,7 @@ publishing {
             from components.java
         }
     }
+
     repositories {
         maven {
             name = "Confluence"

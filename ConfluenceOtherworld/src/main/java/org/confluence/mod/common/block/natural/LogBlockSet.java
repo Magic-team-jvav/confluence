@@ -43,7 +43,6 @@ import static org.confluence.mod.common.init.block.ModBlocks.registerWithItem;
 import static org.confluence.mod.common.init.block.ModBlocks.registerWithoutItem;
 
 public class LogBlockSet {
-    private static Map<Supplier<? extends Block>, Supplier<? extends Block>> STRIP_TABLE = new Hashtable<>();
     public static final Map<Block, Block> WRAPPED_STRIP_TABLE = new Hashtable<>();
     public static final List<LogBlockSet> LOG_BLOCK_SETS = new ArrayList<>();
     private static Block[] SIGN_BLOCKS;
@@ -77,6 +76,7 @@ public class LogBlockSet {
     public final DeferredBlock<SaplingBlock> SAPLING;
 
     LogBlockSet(Builder builder) {
+        if ((builder.log == null && builder.strippedLog != null) || (builder.wood == null && builder.strippedWood != null)) throw new NullPointerException();
         this.id = builder.id;
         this.ignitedByLava = builder.ignitedByLava;
         this.PLANKS = registerWithItem(id + "_planks", () -> builder.planks.apply(ignitedByLava(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).instrument(NoteBlockInstrument.BASS).strength(2.0F, 3.0F).sound(SoundType.WOOD))));
@@ -298,28 +298,26 @@ public class LogBlockSet {
             if (logBlocks.DOOR.isBound()) output.accept(logBlocks.DOOR.get());
             if (logBlocks.HANGING_SIGN_ITEM.isBound()) output.accept(logBlocks.HANGING_SIGN_ITEM.get());
             if (logBlocks.CHISELED_PLANKS.isBound()) output.accept(logBlocks.CHISELED_PLANKS.get());
-            if (logBlocks.SAPLING.isBound()) output.accept(logBlocks.SAPLING.get());
         }
     }
 
-
     public static void acceptNature(CreativeModeTab.Output output) {
         for (LogBlockSet logBlocks : LOG_BLOCK_SETS) {
-            if (logBlocks.LOG.isBound()) {
-                output.accept(logBlocks.LOG);
-            }
-            if (logBlocks.LEAVES.isBound()) {
-                output.accept(logBlocks.LEAVES);
-            }
-            if (logBlocks.SAPLING.isBound()) {
-                output.accept(logBlocks.SAPLING);
-            }
+            if (logBlocks.LOG.isBound()) output.accept(logBlocks.LOG);
+            if (logBlocks.LEAVES.isBound()) output.accept(logBlocks.LEAVES);
+            if (logBlocks.SAPLING.isBound()) output.accept(logBlocks.SAPLING);
         }
     }
 
     public static void wrapStrip() {
-        STRIP_TABLE.forEach((s1, s2) -> WRAPPED_STRIP_TABLE.put(s1.get(), s2.get()));
-        STRIP_TABLE = null;
+        for (LogBlockSet logBlockSet : LOG_BLOCK_SETS) {
+            if (logBlockSet.LOG.isBound() && logBlockSet.STRIPPED_LOG.isBound()) {
+                WRAPPED_STRIP_TABLE.put(logBlockSet.LOG.get(), logBlockSet.STRIPPED_LOG.get());
+            }
+            if (logBlockSet.WOOD.isBound() && logBlockSet.STRIPPED_WOOD.isBound()) {
+                WRAPPED_STRIP_TABLE.put(logBlockSet.WOOD.get(), logBlockSet.STRIPPED_WOOD.get());
+            }
+        }
     }
 
     public static Block[] getSignBlocks() {
@@ -464,7 +462,6 @@ public class LogBlockSet {
         }
 
         public Builder strippedLog(@Nullable Function<BlockBehaviour.Properties, ? extends RotatedPillarBlock> function) {
-            if (log == null && function != null) throw new NullPointerException();
             this.strippedLog = function;
             return this;
         }
@@ -480,7 +477,6 @@ public class LogBlockSet {
         }
 
         public Builder strippedWood(@Nullable Function<BlockBehaviour.Properties, ? extends RotatedPillarBlock> function) {
-            if (wood == null && function != null) throw new NullPointerException();
             this.strippedWood = function;
             return this;
         }

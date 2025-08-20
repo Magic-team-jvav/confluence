@@ -59,7 +59,7 @@ public final class AchievementUtils {
             int dayTime = LibDateUtils.getDayTime(level);
             if (LibDateUtils.isNight(dayTime)) {
                 LibUtils.getOrCreatePersistedData(player).putByte("confluence:you_can_do_it", (byte) 1);
-            } else if (LibDateUtils.isDay(dayTime)) {
+            } else if (firstNight == 1 && LibDateUtils.isDay(dayTime)) {
                 AdvancementHolder advancement = player.server.getAdvancements().get(asAchievement("you_can_do_it"));
                 if (advancement != null) {
                     player.getAdvancements().award(advancement, "never");

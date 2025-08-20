@@ -5,6 +5,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
@@ -37,7 +38,7 @@ public class RainProjectile extends AbstractManaProjectile implements Immunity {
         }
         super.baseTick();
 
-        HitResult hitresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
+        HitResult hitresult = ProjectileUtil.getHitResult(position(), this, this::canHitEntity, getDeltaMovement(), level(), 0.6F, ClipContext.Block.COLLIDER);
         checkInsideBlocks();
         HitResult.Type hitresult$type = hitresult.getType();
         if (hitresult$type == HitResult.Type.BLOCK) {

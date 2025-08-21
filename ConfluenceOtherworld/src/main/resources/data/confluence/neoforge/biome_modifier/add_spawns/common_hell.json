@@ -22,7 +22,7 @@
         },
         {
             "type": "terra_entity:voodoo_demon",
-            "weight": 7,
+            "weight": 4,
             "minCount": 1,
             "maxCount": 1
         },

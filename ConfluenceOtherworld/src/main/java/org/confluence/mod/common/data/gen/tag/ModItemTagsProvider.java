@@ -224,7 +224,11 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.JADE.get(),
                 MaterialItems.RUBY.get(),
                 MaterialItems.SAPPHIRE.get(),
-                MaterialItems.TOPAZ.get()
+                MaterialItems.TOPAZ.get(),
+                MaterialItems.OPAL.get(),
+                MaterialItems.STURDY_FOSSIL.get(),
+                MaterialItems.GELSTONE.get(),
+                MaterialItems.COLD_CRYSTAL.get()
         );
         tag(ItemTags.SAPLINGS).add(
                 NatureBlocks.RUBY_SAPLING.asItem(),

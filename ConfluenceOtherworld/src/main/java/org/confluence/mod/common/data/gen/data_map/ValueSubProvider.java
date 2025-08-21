@@ -224,7 +224,7 @@ public final class ValueSubProvider {
                 .add(MaterialItems.PIXIE_DUST, silver1);
         appender.create()
                 // Adamantite Sword 2 gold 76 silver
-                // Ash Wood Sword  20 copper
+                .add(SwordItems.ASH_WOOD_SWORD, 20)
                 .add(SwordItems.BAT_BAT, silver20 + silver5)
                 // Beam Sword 3 gold
                 .add(SwordItems.BEE_KEEPER, gold2)
@@ -249,7 +249,7 @@ public final class ValueSubProvider {
                 .add(SwordItems.COPPER_SHORT_SWORD, 70)
                 // Cutlass 3 gold 60 silver
                 // Death Sickle 7 gold 50 silver
-                // Ebonwood Sword 20 copper
+                .add(SwordItems.EBONWOOD_SWORD, 20)
                 .add(SwordItems.ENCHANTED_SWORD, gold1 + gold2)
                 // Excalibur 4 gold 60 silver
                 .add(SwordItems.EXOTIC_SCIMITAR, silver20)
@@ -282,8 +282,7 @@ public final class ValueSubProvider {
                 // Orange Phasesaber 1 gold
                 // Orichalcum Sword 2 gold 53 silver
                 // Palladium Sword 1 gold 84 silver
-                // Palm Wood Sword 20 copper
-                // Pearlwood Sword 20 copper
+                .add(SwordItems.PEARLWOOD_SWORD, 20)
                 .add(SwordItems.PLATINUM_BROADSWORD, silver20 + silver5 + silver2)
                 .add(SwordItems.PLATINUM_SHORT_SWORD, silver20 + silver1)
                 // Psycho Knife 10 gold
@@ -295,7 +294,7 @@ public final class ValueSubProvider {
                 // Rich Mahogany Sword 20 copper
                 // Ruler 2 silver
                 // Seedler 10 gold
-                // Shadewood Sword 20 copper
+                .add(SwordItems.SHADEWOOD_SWORD, 20)
                 .add(SwordItems.SILVER_BROADSWORD, silver10 - silver1)
                 .add(SwordItems.SILVER_SHORT_SWORD, silver5 + silver2)
                 // Slap Hand 5 gold
@@ -1226,6 +1225,7 @@ public final class ValueSubProvider {
                 .add(Items.PUMPKIN_SEEDS, 50)
                 .add(ModItems.HALLOWED_SEED, silver2 + silver2)
                 .add(ModItems.MUSHROOM_GRASS_SEED, 30)
+                .add(NatureBlocks.DYNASTY_LOG_BLOCKS.LOG, 10)
                 .add(ModItems.JUNGLE_GRASS_SEED, 30);
         appender.create()
                 .add(HookItems.GRAPPLING_HOOK, silver20 + silver20)

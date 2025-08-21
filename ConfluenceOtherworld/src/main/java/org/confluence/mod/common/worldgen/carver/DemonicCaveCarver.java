@@ -36,13 +36,13 @@ public class DemonicCaveCarver extends WorldCarver<DemonicCaveCarver.Config> {
     @Override
     public boolean carve(CarvingContext context, Config config, ChunkAccess chunk, Function<BlockPos, Holder<Biome>> biomeAccessor, RandomSource random, Aquifer aquifer, ChunkPos chunkPos, CarvingMask carvingMask) {
         int x1 = chunkPos.getBlockX((int) config.verticalLength.sample(random) * (random.nextBoolean() ? -1 : 1));
-        int y1 = config.y.sample(random, context) + 8;
         int z1 = chunkPos.getBlockZ((int) config.verticalLength.sample(random) * (random.nextBoolean() ? -1 : 1));
+        int y1 = chunk.getHeight(Heightmap.Types.WORLD_SURFACE_WG, x1, z1);
         if (!biomeAccessor.apply(new BlockPos(x1, y1, z1)).is(ModBiomes.THE_CORRUPTION) ||
                 !chunk.getFluidState(new BlockPos(x1, chunk.getHeight(Heightmap.Types.WORLD_SURFACE_WG, x1, z1) - 1, z1)).isEmpty()) return false;
         int x2 = chunkPos.getBlockX((int) config.verticalLength.sample(random) * (random.nextBoolean() ? -1 : 1));
-        int y2 = config.y.sample(random, context) + 8;
         int z2 = chunkPos.getBlockZ((int) config.verticalLength.sample(random) * (random.nextBoolean() ? -1 : 1));
+        int y2 = chunk.getHeight(Heightmap.Types.WORLD_SURFACE_WG, x2, z2);
         if (!biomeAccessor.apply(new BlockPos(x2, y2, z2)).is(ModBiomes.THE_CORRUPTION) ||
                 !chunk.getFluidState(new BlockPos(x2, chunk.getHeight(Heightmap.Types.WORLD_SURFACE_WG, x2, z2) - 1, z2)).isEmpty()) return false;
         float yScale = config.yScale.sample(random);

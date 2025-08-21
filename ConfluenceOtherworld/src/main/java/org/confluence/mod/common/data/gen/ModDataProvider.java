@@ -992,7 +992,7 @@ public class ModDataProvider {
             )));
             context.register(DEMONIC_CAVE_CARVER, new ConfiguredWorldCarver<>(ModCarvers.DEMONIC_CAVE_CARVER.get(), new DemonicCaveCarver.Config(new CarverConfiguration(
                     0.2F,
-                    UniformHeight.of(VerticalAnchor.aboveBottom(40), absolute80),
+                    ConstantHeight.ZERO, // 没有用上的参数
                     ConstantFloat.of(4),
                     aboveBottom8,
                     CarverDebugSettings.DEFAULT,

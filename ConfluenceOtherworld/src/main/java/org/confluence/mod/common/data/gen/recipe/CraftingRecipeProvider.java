@@ -235,6 +235,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         registerBoatRecipes(output, NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS, BoatItems.LIVING_MAHOGANY_BOAT, BoatItems.LIVING_MAHOGANY_CHEST_BOAT);
         registerBoatRecipes(output, NatureBlocks.ASH_LOG_BLOCKS, BoatItems.ASH_BOAT, BoatItems.ASH_CHEST_BOAT);
         registerBoatRecipes(output, NatureBlocks.SPOOKY_LOG_BLOCKS, BoatItems.SPOOKY_BOAT, BoatItems.SPOOKY_CHEST_BOAT);
+        registerBoatRecipes(output, NatureBlocks.DYNASTY_LOG_BLOCKS, BoatItems.DYNASTY_BOAT, BoatItems.DYNASTY_CHEST_BOAT);
 
         // 基础盔甲
         registerArmorRecipes(output, Ingredient.of(NatureBlocks.ASH_LOG_BLOCKS.PLANKS), ArmorItems.ASH_HELMET, ArmorItems.ASH_CHESTPLATE, ArmorItems.ASH_LEGGINGS, ArmorItems.ASH_BOOTS);

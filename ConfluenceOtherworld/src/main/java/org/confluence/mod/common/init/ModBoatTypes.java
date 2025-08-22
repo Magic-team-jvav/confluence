@@ -101,6 +101,14 @@ public final class ModBoatTypes {
             () -> Items.STICK,
             false
     );
+    public static final EnumProxy<Boat.Type> DYNASTY = register(
+            NatureBlocks.DYNASTY_LOG_BLOCKS.PLANKS,
+            "dynasty",
+            BoatItems.DYNASTY_BOAT,
+            BoatItems.DYNASTY_CHEST_BOAT,
+            () -> Items.STICK,
+            false
+    );
 
     private static EnumProxy<Boat.Type> register(Supplier<Block> planks, String name, Supplier<BoatItem> boatItem, Supplier<BoatItem> chestBoatItem, Supplier<Item> stickItem, boolean raft) {
         return new EnumProxy<>(Boat.Type.class, planks, Confluence.MODID + ':' + name, boatItem, chestBoatItem, stickItem, raft);

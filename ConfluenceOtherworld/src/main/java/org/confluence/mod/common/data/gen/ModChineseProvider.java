@@ -3314,6 +3314,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(BoatItems.SPOOKY_CHEST_BOAT.get(), "阴森木运输船");
         add(BoatItems.YELLOW_WILLOW_BOAT.get(), "黄柳木船");
         add(BoatItems.YELLOW_WILLOW_CHEST_BOAT.get(), "黄柳木运输船");
+        add(BoatItems.DYNASTY_BOAT.get(), "王朝木船");
+        add(BoatItems.DYNASTY_CHEST_BOAT.get(), "王朝木运输船");
 
         add(ConsumableItems.SHURIKEN.get(), "手里剑");
         add(ConsumableItems.THROWING_KNIVE.get(), "投刀");

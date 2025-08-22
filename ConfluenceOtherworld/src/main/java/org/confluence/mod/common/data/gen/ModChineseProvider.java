@@ -2,6 +2,8 @@ package org.confluence.mod.common.data.gen;
 
 import net.minecraft.Util;
 import net.minecraft.data.PackOutput;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.TooltipManager;
@@ -1020,7 +1022,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("container.confluence.solidifier", "固化机");
         add("container.confluence.mythril_anvil", "秘银砧");
         add("container.confluence.orichalcum_anvil", "山铜砧");
-
 
 
         add("title.confluence.shimmer_transmutation", "微光嬗变");
@@ -3948,7 +3949,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.AMBER_ROBE.get(), "琥珀长袍");
 
 
-
         // 任务鱼
         add(QuestedFishes.AMANITA_FUNGIFIN.get(), "毒菌鱼");
         add(QuestedFishes.ANGELFISH.get(), "天使鱼");
@@ -4147,68 +4147,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.CLOUDWEAVER_SEED.get(), "云织草种子");
         add(FoodItems.FLOATING_WHEAT_SEED.get(), "飘飘麦种子");
 
-        // 药水
-        add(PotionItems.BOTTLE.get(), "玻璃瓶");
-        add(PotionItems.BOTTLED_WATER.get(), "瓶装水");
-        add(PotionItems.MUG.get(), "玻璃杯");
-        add(PotionItems.ALE.get(), "麦芽酒");
-        add(PotionItems.LESSER_HEALING_POTION.get(), "弱效治疗药水");
-        add(PotionItems.HEALING_POTION.get(), "治疗药水");
-        add(PotionItems.RESTORATION_POTION.get(), "恢复药水");
-        add(PotionItems.GREATER_HEALING_POTION.get(), "强效治疗药水");
-        add(PotionItems.SUPER_HEALING_POTION.get(), "超级治疗药水");
-        add(PotionItems.LESSER_MANA_POTION.get(), "弱效魔力药水");
-        add(PotionItems.MANA_POTION.get(), "魔力药水");
-        add(PotionItems.GREATER_MANA_POTION.get(), "强效魔力药水");
-        add(PotionItems.SUPER_MANA_POTION.get(), "超级魔力药水");
-        add(PotionItems.GRAVITATION_POTION.get(), "重力药水");
-        add(PotionItems.SHINE_POTION.get(), "光环药水");
-        add(PotionItems.IRON_SKIN_POTION.get(), "铁皮药水");
-        add(PotionItems.WRATH_POTION.get(), "怒气药水");
-        add(PotionItems.TITAN_POTION.get(), "泰坦药水");
-        add(PotionItems.BUILDER_POTION.get(), "建造者药水");
-        add(PotionItems.ENDURANCE_POTION.get(), "耐力药水");
-        add(PotionItems.INFERNO_POTION.get(), "狱火药水");
-        add(PotionItems.LIFEFORCE_POTION.get(), "生命力药水");
-        add(PotionItems.FISHING_POTION.get(), "钓鱼药水");
-        add(PotionItems.RAGE_POTION.get(), "暴怒药水");
-        add(PotionItems.MANA_REGENERATION_POTION.get(), "魔力回复药水");
-        add(PotionItems.THORNS_POTION.get(), "荆棘药水");
-        add(PotionItems.MAGIC_POWER_POTION.get(), "魔能药水");
-        add(PotionItems.OBSIDIAN_SKIN_POTION.get(), "黑曜石皮肤药水");
-        add(PotionItems.LESSER_LUCK_POTION.get(), "弱效幸运药水");
-        add(PotionItems.LUCK_POTION.get(), "幸运药水");
-        add(PotionItems.GREATER_LUCK_POTION.get(), "强效幸运药水");
-        add(PotionItems.LOVE_POTION.get(), "爱情药水");
-        add(PotionItems.SWIFTNESS_POTION.get(), "迅捷药水");
-        add(PotionItems.REGENERATION_POTION.get(), "再生药水");
-        add(PotionItems.FLIPPER_POTION.get(), "脚蹼药水");
-        add(PotionItems.ARCHERY_POTION.get(), "箭术药水");
-        add(PotionItems.HEART_REACH_POTION.get(), "拾心药水");
-        add(PotionItems.GILLS_POTION.get(), "鱼鳃药水");
-        add(PotionItems.INVISIBILITY_POTION.get(), "隐形药水");
-        add(PotionItems.WORMHOLE_POTION.get(), "虫洞药水");
-        add(PotionItems.MINING_POTION.get(), "采矿药水");
-        add(PotionItems.RECALL_POTION.get(), "回忆药水");
-        add(PotionItems.NIGHT_OWL_POTION.get(), "夜猫子药水");
-        add(PotionItems.WATER_WALKING_POTION.get(), "水上漂药水");
-        add(PotionItems.FEATHERFALL_POTION.get(), "羽落药水");
-        add(PotionItems.RANDOM_TELEPORT_POTION.get(), "传送药水");
-        add(PotionItems.SPELUNKER_POTION.get(), "洞穴探险药水");
-        add(PotionItems.DANGERSENSE_POTION.get(), "危险感药水");
-        add(PotionItems.HUNTER_POTION.get(), "狩猎药水");
-        add(PotionItems.CRATE_POTION.get(), "宝匣药水");
-        add(PotionItems.CHAOS_POTION.get(), "混沌药水");
-        add(PotionItems.STINK_POTION.get(), "臭味药水");
-        add(PotionItems.RED_POTION.get(), "红药水");
-        add(PotionItems.AMMO_RESERVATION_POTION.get(), "弹药储备药水");
-        add(PotionItems.SUMMONING_POTION.get(), "召唤药水");
-        add(PotionItems.SHIMMER_POTION.get(), "微光药水");
-        add(PotionItems.STRANGE_BREW.get(), "诡药");
-        add(PotionItems.FLASK_OF_FIRE.get(), "烈火药剂");
-        add(PotionItems.FLASK_OF_GOLD.get(), "金药剂");
-        add(PotionItems.EGGNOG.get(), "蛋酒");
-
         // 饰品
         add(AccessoryItems.ADHESIVE_BANDAGE.get(), "黏性绷带");
         add(AccessoryItems.MEDICATED_BANDAGE.get(), "药用绷带");
@@ -4402,6 +4340,68 @@ public class ModChineseProvider extends LanguageProvider {
         add(VanityArmorItems.BROWN_DYE.get(), "棕染料");
         add(VanityArmorItems.TEAM_DYE.get(), "团队染料");
 
+        // 药水
+        add(PotionItems.BOTTLE.get(), "玻璃瓶");
+        add(PotionItems.BOTTLED_WATER.get(), "瓶装水");
+        add(PotionItems.MUG.get(), "玻璃杯");
+        add(PotionItems.ALE.get(), "麦芽酒");
+        add(PotionItems.LESSER_HEALING_POTION.get(), "弱效治疗药水");
+        add(PotionItems.HEALING_POTION.get(), "治疗药水");
+        add(PotionItems.RESTORATION_POTION.get(), "恢复药水");
+        add(PotionItems.GREATER_HEALING_POTION.get(), "强效治疗药水");
+        add(PotionItems.SUPER_HEALING_POTION.get(), "超级治疗药水");
+        add(PotionItems.LESSER_MANA_POTION.get(), "弱效魔力药水");
+        add(PotionItems.MANA_POTION.get(), "魔力药水");
+        add(PotionItems.GREATER_MANA_POTION.get(), "强效魔力药水");
+        add(PotionItems.SUPER_MANA_POTION.get(), "超级魔力药水");
+        add(PotionItems.GRAVITATION_POTION.get(), "重力药水");
+        add(PotionItems.SHINE_POTION.get(), "光环药水");
+        add(PotionItems.IRON_SKIN_POTION.get(), "铁皮药水");
+        addPotion(PotionItems.WRATH_POTION.get(), "怒气药水", "伤害提高10%");
+        add(PotionItems.TITAN_POTION.get(), "泰坦药水");
+        add(PotionItems.BUILDER_POTION.get(), "建造者药水");
+        add(PotionItems.ENDURANCE_POTION.get(), "耐力药水");
+        add(PotionItems.INFERNO_POTION.get(), "狱火药水");
+        add(PotionItems.LIFEFORCE_POTION.get(), "生命力药水");
+        add(PotionItems.FISHING_POTION.get(), "钓鱼药水");
+        add(PotionItems.RAGE_POTION.get(), "暴怒药水");
+        add(PotionItems.MANA_REGENERATION_POTION.get(), "魔力回复药水");
+        add(PotionItems.THORNS_POTION.get(), "荆棘药水");
+        add(PotionItems.MAGIC_POWER_POTION.get(), "魔能药水");
+        add(PotionItems.OBSIDIAN_SKIN_POTION.get(), "黑曜石皮肤药水");
+        add(PotionItems.LESSER_LUCK_POTION.get(), "弱效幸运药水");
+        add(PotionItems.LUCK_POTION.get(), "幸运药水");
+        add(PotionItems.GREATER_LUCK_POTION.get(), "强效幸运药水");
+        add(PotionItems.LOVE_POTION.get(), "爱情药水");
+        add(PotionItems.SWIFTNESS_POTION.get(), "迅捷药水");
+        add(PotionItems.REGENERATION_POTION.get(), "再生药水");
+        add(PotionItems.FLIPPER_POTION.get(), "脚蹼药水");
+        add(PotionItems.ARCHERY_POTION.get(), "箭术药水");
+        add(PotionItems.HEART_REACH_POTION.get(), "拾心药水");
+        add(PotionItems.GILLS_POTION.get(), "鱼鳃药水");
+        add(PotionItems.INVISIBILITY_POTION.get(), "隐形药水");
+        add(PotionItems.WORMHOLE_POTION.get(), "虫洞药水");
+        add(PotionItems.MINING_POTION.get(), "采矿药水");
+        add(PotionItems.RECALL_POTION.get(), "回忆药水");
+        add(PotionItems.NIGHT_OWL_POTION.get(), "夜猫子药水");
+        add(PotionItems.WATER_WALKING_POTION.get(), "水上漂药水");
+        add(PotionItems.FEATHERFALL_POTION.get(), "羽落药水");
+        add(PotionItems.RANDOM_TELEPORT_POTION.get(), "传送药水");
+        add(PotionItems.SPELUNKER_POTION.get(), "洞穴探险药水");
+        add(PotionItems.DANGERSENSE_POTION.get(), "危险感药水");
+        add(PotionItems.HUNTER_POTION.get(), "狩猎药水");
+        add(PotionItems.CRATE_POTION.get(), "宝匣药水");
+        add(PotionItems.CHAOS_POTION.get(), "混沌药水");
+        add(PotionItems.STINK_POTION.get(), "臭味药水");
+        add(PotionItems.RED_POTION.get(), "红药水");
+        add(PotionItems.AMMO_RESERVATION_POTION.get(), "弹药储备药水");
+        add(PotionItems.SUMMONING_POTION.get(), "召唤药水");
+        add(PotionItems.SHIMMER_POTION.get(), "微光药水");
+        add(PotionItems.STRANGE_BREW.get(), "诡药");
+        add(PotionItems.FLASK_OF_FIRE.get(), "烈火药剂");
+        add(PotionItems.FLASK_OF_GOLD.get(), "金药剂");
+        add(PotionItems.EGGNOG.get(), "蛋酒");
+
         // 药水效果
         add(ModEffects.MANA_SICKNESS.get(), "耐魔性");
         add(ModEffects.SHINE.get(), "发光");
@@ -4413,7 +4413,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEffects.LIFE_FORCE.get(), "生命力");
         add(ModEffects.THORNS.get(), "荆棘");
         add(ModEffects.TITAN.get(), "泰坦之力");
-        add(ModEffects.WRATH.get(), "愤怒");
+        addEffect(ModEffects.WRATH.get(), "怒气", "伤害提高10%");
         add(ModEffects.BUILDER.get(), "熟练建造");
         add(ModEffects.BLEEDING.get(), "流血");
         add(ModEffects.SILENCED.get(), "沉默");
@@ -4428,7 +4428,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEffects.CRATE.get(), "宝匣");
         add(ModEffects.ACID_VENOM.get(), "酸性毒液");
         add(ModEffects.CURSED_INFERNO.get(), "诅咒焰");
-//        add(ModEffects.FROST_BURN.get(), "霜冻");
         add(ModEffects.RAGE.get(), "暴怒");
         add(ModEffects.FISHING.get(), "钓鱼");
         add(ModEffects.LUCK_EFFECT.get(), "幸运");
@@ -4447,7 +4446,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEffects.ARCHERY.get(), "箭术");
         add(ModEffects.HEART_REACH.get(), "拾心");
         add(ModEffects.OBSIDIAN_SKIN.get(), "黑曜石皮");
-//        add(ModEffects.HELLFIRE.get(), "狱炎");
         add(ModEffects.COZY_FIRE.get(), "温馨之火");
         add(ModEffects.BEWITCHED.get(), "着魔");
         add(ModEffects.HUNGER_DELAYED.get(), "饥饿延缓");
@@ -4464,6 +4462,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEffects.FROSTBITE.get(), "冻伤");
         add(ModEffects.SHADOWFLAME.get(), "暗影焰");
 
+        add("tooltip.confluence.disabled", "已禁用");
+
         add(TooltipManager.prefix, "** 赞助者物品 **");
 
         add("item.confluence.spawn_eggs", "%s刷怪蛋");
@@ -4475,5 +4475,15 @@ public class ModChineseProvider extends LanguageProvider {
 
         PonderHelper.addTranslateKeys(this::add, false);
         WaystonesHelper.addTranslateKeys((block, s) -> add(Util.makeDescriptionId("block", block.getId()), s), false);
+    }
+
+    private void addPotion(Item potion, String name, String tooltip) {
+        add(potion, name);
+        add("tooltip." + potion.getDescriptionId() + ".0", tooltip);
+    }
+
+    private void addEffect(MobEffect effect, String name, String tooltip) {
+        add(effect, name);
+        add("tooltip." + effect.getDescriptionId() + ".0", tooltip);
     }
 }

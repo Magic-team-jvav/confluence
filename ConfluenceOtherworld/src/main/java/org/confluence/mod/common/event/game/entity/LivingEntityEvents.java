@@ -61,6 +61,7 @@ import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
 import org.confluence.mod.common.worldgen.structure.DungeonStructure;
 import org.confluence.mod.mixed.IDamageSource;
 import org.confluence.mod.mixed.ILivingEntity;
+import org.confluence.mod.mixed.IMobEffectInstance;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.network.s2c.DeathMotionPacketS2C;
 import org.confluence.mod.network.s2c.VisibilityPacketS2C;
@@ -444,6 +445,13 @@ public final class LivingEntityEvents {
             if (DungeonStructure.skipSpawn(event.getEntity(), event.getLevel().getLevel())) {
                 event.setResult(MobSpawnEvent.PositionCheck.Result.FAIL);
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void effectParticleModification(EffectParticleModificationEvent event) {
+        if (event.isVisible() && !IMobEffectInstance.of(event.getEffect()).confluence$isEnabled()) {
+            event.setVisible(false);
         }
     }
 }

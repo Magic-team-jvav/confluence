@@ -349,4 +349,8 @@ public final class ModUtils {
     public static boolean isDebuff(MobEffectInstance instance) {
         return instance.getEffect().value().getCategory() == MobEffectCategory.HARMFUL && !instance.getCures().contains(ModEffects.CANNOT_REMOVE_BY_NURSE);
     }
+
+    public static boolean isSwitchableEffect(MobEffectInstance instance) {
+        return instance.getEffect().value().isBeneficial();
+    }
 }

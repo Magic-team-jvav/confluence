@@ -7,6 +7,7 @@ import com.xiaohunao.equipment_benediction.common.equipment_set.EquipmentSetBran
 import com.xiaohunao.equipment_benediction.common.event.AfterEquipmentBenedictionUpdatedEvent;
 import com.xiaohunao.equipment_benediction.common.init.EBAttachments;
 import net.minecraft.ChatFormatting;
+import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
@@ -17,16 +18,19 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.stats.Stat;
 import net.minecraft.stats.Stats;
 import net.minecraft.stats.StatsCounter;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -70,6 +74,7 @@ import org.confluence.mod.integration.irons_spell.IronSpellHelper;
 import org.confluence.mod.integration.xaero.XaeroHelper;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.ILocalPlayer;
+import org.confluence.mod.mixed.IMobEffectInstance;
 import org.confluence.mod.network.c2s.LanceAttackPacketC2S;
 import org.confluence.mod.util.ClientUtils;
 import org.confluence.mod.util.DeathAnimUtils;
@@ -377,6 +382,18 @@ public final class GameClientEvents {
             if (task != null && task.canTrade(angler, 0)) {
                 event.setNeoDialog(Component.translatable("dialogs.confluence.angler." + task.getCurrentCost().getDescriptionId()));
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void gatherEffectScreenTooltips(GatherEffectScreenTooltipsEvent event) {
+        Optional<ResourceKey<MobEffect>> optional = event.getEffectInstance().getEffect().unwrapKey();
+        if (optional.isPresent()) {
+            String key = Util.makeDescriptionId("tooltip.effect", optional.get().location()) + ".0";
+            if (I18n.exists(key)) event.getTooltip().add(Component.translatable(key).withStyle(ChatFormatting.GRAY));
+        }
+        if (!IMobEffectInstance.of(event.getEffectInstance()).confluence$isEnabled()) {
+            event.getTooltip().add(Component.translatable("tooltip.confluence.disabled").withStyle(ChatFormatting.DARK_GRAY));
         }
     }
 }

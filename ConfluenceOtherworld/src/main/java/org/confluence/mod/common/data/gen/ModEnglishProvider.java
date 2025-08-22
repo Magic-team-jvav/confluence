@@ -2,6 +2,7 @@ package org.confluence.mod.common.data.gen;
 
 import net.minecraft.Util;
 import net.minecraft.data.PackOutput;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.LanguageProvider;
@@ -1976,6 +1977,11 @@ public class ModEnglishProvider extends LanguageProvider {
         ModEffects.EFFECTS.getEntries().forEach(effect -> add(effect.get(), LibUtils.toTitleCase(effect.getId().getPath())));
         ModEntities.ENTITIES.getEntries().forEach(entity -> add(entity.get(), LibUtils.toTitleCase(entity.getId().getPath())));
 
+        addPotion(PotionItems.WRATH_POTION.get(), "Increases damage by 10%");
+        addEffect(ModEffects.WRATH.get(), "10% increased damage");
+
+        add("tooltip.confluence.disabled", "Disabled");
+
         add(TooltipManager.prefix, "** Sponsor Item **");
 
         add("item.confluence.spawn_eggs", "%s Spawn Egg");
@@ -1994,5 +2000,13 @@ public class ModEnglishProvider extends LanguageProvider {
         if (!((LanguageProviderAccessor) this).getData().containsKey(key)) {
             super.add(key, value);
         }
+    }
+
+    private void addPotion(Item potion, String tooltip) {
+        add("tooltip." + potion.getDescriptionId() + ".0", tooltip);
+    }
+
+    private void addEffect(MobEffect effect, String tooltip) {
+        add("tooltip." + effect.getDescriptionId() + ".0", tooltip);
     }
 }

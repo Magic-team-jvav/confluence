@@ -202,6 +202,7 @@ public final class ModEvents {
         registrar.playToServer(SellTradePacketC2S.TYPE, SellTradePacketC2S.STREAM_CODEC, SellTradePacketC2S::handle);
         registrar.playToServer(RecipeTransferPacketC2S.TYPE, RecipeTransferPacketC2S.STREAM_CODEC, RecipeTransferPacketC2S::handle);
         registrar.playToServer(LanceAttackPacketC2S.TYPE, LanceAttackPacketC2S.STREAM_CODEC, LanceAttackPacketC2S::handle);
+        registrar.playToServer(SwitchEffectEnabledPackedC2S.TYPE, SwitchEffectEnabledPackedC2S.STREAM_CODEC, SwitchEffectEnabledPackedC2S::handle);
         WaystonesHelper.registerPayload(registrar);
     }
 

@@ -17,6 +17,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -35,6 +36,7 @@ import org.confluence.mod.common.item.hook.BaseHookItem;
 import org.confluence.mod.common.worldgen.secret_seed.NoTraps;
 import org.confluence.mod.integration.irons_spell.IronSpellHelper;
 import org.confluence.mod.mixed.ILivingEntity;
+import org.confluence.mod.mixed.IMobEffectInstance;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.terra_curio.common.effect.HoneyEffect;
 import org.confluence.terra_curio.common.init.TCItems;
@@ -201,5 +203,10 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
     @ModifyExpressionValue(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;shouldDiscardFriction()Z"))
     private boolean discardWhenHasAnyHooked(boolean original) {
         return original || (confluence$self() instanceof Player player && !player.isCrouching() && BaseHookItem.hasAnyHooked(player));
+    }
+
+    @WrapWithCondition(method = "onEffectUpdated", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/effect/MobEffect;addAttributeModifiers(Lnet/minecraft/world/entity/ai/attributes/AttributeMap;I)V"))
+    private boolean shouldAdd(MobEffect mobEffect, AttributeMap entry, int i, @Local(argsOnly = true) MobEffectInstance instance) {
+        return IMobEffectInstance.of(instance).confluence$isEnabled();
     }
 }

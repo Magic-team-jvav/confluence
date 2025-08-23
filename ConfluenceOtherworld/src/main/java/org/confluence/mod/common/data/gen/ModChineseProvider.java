@@ -4169,7 +4169,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(PotionItems.BOTTLE.get(), "玻璃瓶");
         add(PotionItems.BOTTLED_WATER.get(), "瓶装水");
         add(PotionItems.MUG.get(), "玻璃杯");
-        addPotion(PotionItems.ALE.get(), "麦芽酒","提高近战能力，降低防御力");
+        addPotion(PotionItems.ALE.get(), "麦芽酒","近战属性小幅提升、防御力降低“干杯！”");
         addPotion(PotionItems.LESSER_HEALING_POTION.get(), "弱效治疗药水", "恢复10生命");
         addPotion(PotionItems.HEALING_POTION.get(), "治疗药水","恢复20生命");
         addPotion(PotionItems.RESTORATION_POTION.get(), "恢复药水","恢复18生命");
@@ -4229,7 +4229,7 @@ public class ModChineseProvider extends LanguageProvider {
 
         // 药水效果
         addEffect(ModEffects.MANA_SICKNESS.get(), "耐魔性","魔法伤害降低");
-        addEffect(ModEffects.SHINE.get(), "发光","发出光环");
+        addEffect(ModEffects.SHINE.get(), "发光","发光");
         addEffect(ModEffects.SHIMMER.get(), "闪烁","你虚化了！");
         addEffect(ModEffects.EXQUISITELY_STUFFED.get(), "膳食","所有属性提升");
         addEffect(ModEffects.IRON_SKIN.get(), "铁皮","防御力增加4");
@@ -4263,7 +4263,7 @@ public class ModChineseProvider extends LanguageProvider {
         addEffect(ModEffects.SPELUNKER.get(), "寻宝","显示宝藏和矿石的位置");
         addEffect(ModEffects.HUNTER.get(), "狩猎","显示敌人位置");
         addEffect(ModEffects.DANGER_SENSE.get(), "危险感知","你可以看到附近的危险");
-        addEffect(ModEffects.FROZEN.get(), "冻结","降低移动速度");
+        addEffect(ModEffects.FROZEN.get(), "冻结","你不能移动！");
         addEffect(ModEffects.STINKY.get(), "臭味","你的味道真难闻");
         addEffect(ModEffects.THE_BAST_DEFENSE.get(), "巴斯特防御","防御增加5");
         addEffect(ModEffects.SHARPENED.get(), "锋利","近战武器具有盔甲穿透力");
@@ -4276,7 +4276,7 @@ public class ModChineseProvider extends LanguageProvider {
         addEffect(ModEffects.HUNGER_DELAYED.get(), "饥饿延缓","延缓饱食度下降速度");
         addEffect(ModEffects.CHOKING.get(), "干噎","你需要喝水！");
         addEffect(ModEffects.DELICIOUS.get(), "美味","正面效果翻倍，负面效果减半");
-        addEffect(ModEffects.LOVE.get(), "爱情","你陷入了爱河");
+        addEffect(ModEffects.LOVE.get(), "爱情","你已坠入爱河！");
         addEffect(ModEffects.MIDAS.get(), "迈达斯","死亡时掉落更多钱");
         addEffect(ModEffects.TIPSY.get(), "踉跄","提高近战能力，降低防御力");
         addEffect(ModEffects.CLAIRVOYANCE.get(), "灵视","魔法能力提高");

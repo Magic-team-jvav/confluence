@@ -37,7 +37,7 @@ public class GoblinArmyInstanceMixin {
         GoblinArmyInstance goblinArmyInstance = (GoblinArmyInstance)(Object) this;
         boolean everBeneficial = PlayerCondition.Type.ANY.matches(goblinArmyInstance, pos, player, (momentInstance, pos1, serverPlayer) -> EverBeneficial.of(serverPlayer).getUsedLifeCrystals() >= 5);
 
-        boolean hasEvilEverBeenBroken = PhaseJourneyCondition.of(PhaseJourneyCondition.Type.LEVEL, Confluence.asResource("has_evil_ever_been_broken")).matches(goblinArmyInstance, pos, player);
+        boolean hasEvilEverBeenBroken = PhaseJourneyCondition.of(PhaseJourneyCondition.Type.LEVEL, Confluence.asResource("has_it_evil_ever_been_broken")).matches(goblinArmyInstance, pos, player);
         cir.setReturnValue(everBeneficial && hasEvilEverBeenBroken);
     }
 

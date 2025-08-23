@@ -38,6 +38,7 @@ import org.confluence.mod.integration.irons_spell.IronSpellHelper;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.IMobEffectInstance;
 import org.confluence.mod.mixed.Immunity;
+import org.confluence.mod.util.ModUtils;
 import org.confluence.terra_curio.common.effect.HoneyEffect;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.util.TCUtils;
@@ -59,6 +60,9 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
 
     @Shadow
     public abstract boolean canFreeze();
+
+    @Shadow
+    public abstract Map<Holder<MobEffect>, MobEffectInstance> getActiveEffectsMap();
 
     @Unique
     private final Object2IntMap<Immunity> confluence$entityImmunityTicks = new Object2IntOpenHashMap<>();
@@ -208,5 +212,15 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
     @WrapWithCondition(method = "onEffectUpdated", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/effect/MobEffect;addAttributeModifiers(Lnet/minecraft/world/entity/ai/attributes/AttributeMap;I)V"))
     private boolean shouldAdd(MobEffect mobEffect, AttributeMap entry, int i, @Local(argsOnly = true) MobEffectInstance instance) {
         return IMobEffectInstance.of(instance).confluence$isEnabled();
+    }
+
+    @Inject(method = "hasEffect", at = @At("HEAD"), cancellable = true)
+    private void hasEffect(Holder<MobEffect> effect, CallbackInfoReturnable<Boolean> cir) {
+        cir.setReturnValue(ModUtils.hasEffect(getActiveEffectsMap(), effect));
+    }
+
+    @Inject(method = "getEffect", at = @At("HEAD"), cancellable = true)
+    private void getEffect(Holder<MobEffect> effect, CallbackInfoReturnable<MobEffectInstance> cir) {
+        cir.setReturnValue(ModUtils.getEffect(getActiveEffectsMap(), effect));
     }
 }

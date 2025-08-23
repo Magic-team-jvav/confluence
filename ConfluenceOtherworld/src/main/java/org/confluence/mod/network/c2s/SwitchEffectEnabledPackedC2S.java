@@ -30,7 +30,7 @@ public record SwitchEffectEnabledPackedC2S(Holder<MobEffect> effect, boolean ena
     public void handle(IPayloadContext context) {
         context.enqueueWork(() -> {
             if (context.player() instanceof ServerPlayer player) {
-                MobEffectInstance instance = player.getEffect(effect);
+                MobEffectInstance instance = player.getActiveEffectsMap().get(effect);
                 if (instance != null && ModUtils.isSwitchableEffect(instance)) {
                     IMobEffectInstance.of(instance).confluence$setEnabled(enabled);
                     MobEffect mobEffect = instance.getEffect().value();

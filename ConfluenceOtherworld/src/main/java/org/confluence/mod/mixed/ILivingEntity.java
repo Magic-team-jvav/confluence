@@ -1,6 +1,13 @@
 package org.confluence.mod.mixed;
 
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import net.minecraft.core.Holder;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.LivingEntity;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Map;
 
 public interface ILivingEntity {
     void confluence$setBreakEasyCrashBlock(boolean breaking);
@@ -14,4 +21,18 @@ public interface ILivingEntity {
     void confluence$setExtraInvulnerableTicks(int ticks);
 
     int confluence$getExtraInvulnerableTicks();
+
+    static ILivingEntity of(LivingEntity living) {
+        return (ILivingEntity) living;
+    }
+
+    static boolean hasEffect(Map<Holder<MobEffect>, MobEffectInstance> activeEffects, Holder<MobEffect> effect) {
+        MobEffectInstance instance = activeEffects.get(effect);
+        return instance != null && IMobEffectInstance.of(instance).confluence$isEnabled();
+    }
+
+    static @Nullable MobEffectInstance getEffect(Map<Holder<MobEffect>, MobEffectInstance> activeEffects, Holder<MobEffect> effect) {
+        MobEffectInstance instance = activeEffects.get(effect);
+        return instance == null || !IMobEffectInstance.of(instance).confluence$isEnabled() ? null : instance;
+    }
 }

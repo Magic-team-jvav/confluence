@@ -31,7 +31,7 @@ public class StrangeBrewItem extends AbstractPotionItem {
         } else if (v < 0.61F) {
             ticks = 20;
         }
-        ((ILivingEntity) living).confluence$setExtraInvulnerableTicks(ticks);
+        ILivingEntity.of(living).confluence$setExtraInvulnerableTicks(ticks);
         living.addEffect(new MobEffectInstance(ModEffects.POTION_SICKNESS, Mth.randomBetweenInclusive(random, 800, 1400)));
     }
 }

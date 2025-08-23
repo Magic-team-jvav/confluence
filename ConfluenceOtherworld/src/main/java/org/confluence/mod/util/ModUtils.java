@@ -63,7 +63,6 @@ import org.confluence.mod.common.init.item.PotionItems;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.common.item.common.TreasureBagItem;
 import org.confluence.mod.mixed.IMinecraftServer;
-import org.confluence.mod.mixed.IMobEffectInstance;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.common.init.TCEffects;
 import org.confluence.terra_guns.TerraGuns;
@@ -353,15 +352,5 @@ public final class ModUtils {
 
     public static boolean isSwitchableEffect(MobEffectInstance instance) {
         return instance.getEffect().value().isBeneficial();
-    }
-
-    public static boolean hasEffect(Map<Holder<MobEffect>, MobEffectInstance> activeEffects, Holder<MobEffect> effect) {
-        MobEffectInstance instance = activeEffects.get(effect);
-        return instance != null && IMobEffectInstance.of(instance).confluence$isEnabled();
-    }
-
-    public static @Nullable MobEffectInstance getEffect(Map<Holder<MobEffect>, MobEffectInstance> activeEffects, Holder<MobEffect> effect) {
-        MobEffectInstance instance = activeEffects.get(effect);
-        return instance == null || !IMobEffectInstance.of(instance).confluence$isEnabled() ? null : instance;
     }
 }

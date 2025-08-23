@@ -26,7 +26,9 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.fluids.FluidType;
 import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.api.event.LivingFreezeEvent;
+import org.confluence.mod.common.block.natural.ThinIceBlock;
 import org.confluence.mod.common.effect.flask.FlaskEffect;
+import org.confluence.mod.common.effect.neutral.ShimmerEffect;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.ModHookTypes;
@@ -38,9 +40,7 @@ import org.confluence.mod.integration.irons_spell.IronSpellHelper;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.IMobEffectInstance;
 import org.confluence.mod.mixed.Immunity;
-import org.confluence.mod.util.ModUtils;
 import org.confluence.terra_curio.common.effect.HoneyEffect;
-import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.util.TCUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -107,15 +107,7 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
         LivingEntity self = confluence$self();
         if (fallDistance >= 2.5F && blockState.is(NatureBlocks.THIN_ICE_BLOCK)) {
             if (TCUtils.isIceSafe(self)) return;
-            if (!level().isClientSide) {
-                BlockPos.betweenClosedStream(getBoundingBox().move(0.0, -0.5, 0.0)).forEach(pos -> {
-                    if (pos.equals(blockPos) || level().getBlockState(pos).is(NatureBlocks.THIN_ICE_BLOCK)) {
-                        level().destroyBlock(pos, true, self);
-                    }
-                });
-            }
-            confluence$setBreakEasyCrashBlock(true);
-            setOnGround(false);
+            ThinIceBlock.fall(self, blockPos);
             super.checkFallDamage(motionY, false, blockState, blockPos);
             ci.cancel();
             return;
@@ -128,16 +120,12 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
         LivingEntity self = confluence$self();
         FluidType fluidType = self.getBlockStateOn().getFluidState().getType().getFluidType();
         if (fluidType == ModFluids.HONEY.type().get()) {
-            if (!self.level().isClientSide) {
+            if (!level().isClientSide) {
                 HoneyEffect.applyHoneyEffect(self);
             }
             instance = instance.scale(0.8);
         } else if (fluidType == ModFluids.SHIMMER.type().get()) {
-            if (!self.level().isClientSide && self.getEyeInFluidType() == ModFluids.SHIMMER.type().get() && !self.hasEffect(ModEffects.SHIMMER)) {
-                if (self.isCrouching() || !TCUtils.getAccessoriesValue(self, TCItems.EFFECT$IMMUNITIES).contains(ModEffects.SHIMMER)) {
-                    self.addEffect(new MobEffectInstance(ModEffects.SHIMMER, MobEffectInstance.INFINITE_DURATION));
-                }
-            }
+            ShimmerEffect.applyShimmerEffect(self);
             instance = instance.add(0, -0.03, 0);
         }
         if (self.hasEffect(ModEffects.FLIPPER)) {
@@ -216,11 +204,11 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
 
     @Inject(method = "hasEffect", at = @At("HEAD"), cancellable = true)
     private void hasEffect(Holder<MobEffect> effect, CallbackInfoReturnable<Boolean> cir) {
-        cir.setReturnValue(ModUtils.hasEffect(getActiveEffectsMap(), effect));
+        cir.setReturnValue(ILivingEntity.hasEffect(getActiveEffectsMap(), effect));
     }
 
     @Inject(method = "getEffect", at = @At("HEAD"), cancellable = true)
     private void getEffect(Holder<MobEffect> effect, CallbackInfoReturnable<MobEffectInstance> cir) {
-        cir.setReturnValue(ModUtils.getEffect(getActiveEffectsMap(), effect));
+        cir.setReturnValue(ILivingEntity.getEffect(getActiveEffectsMap(), effect));
     }
 }

@@ -169,7 +169,7 @@ public final class LivingEntityEvents {
             AccessoryItems.applyHurtGetMana(serverPlayer, damageSource, event.getAmount());
         }
         Immunity cause = Immunity.getCause(event.getSource());
-        if (((ILivingEntity) living).confluence$getImmunityTicks().containsKey(cause)) {
+        if (ILivingEntity.of(living).confluence$getImmunityTicks().containsKey(cause)) {
             event.setCanceled(true);
         }
         if (cause != null) {

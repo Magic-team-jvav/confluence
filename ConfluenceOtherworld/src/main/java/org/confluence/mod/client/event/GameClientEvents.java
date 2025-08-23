@@ -307,15 +307,15 @@ public final class GameClientEvents {
     @SubscribeEvent
     public static void postRenderLiving(RenderLivingEvent.Post<?, ?> event) {
         if (event.getPoseStack() instanceof AntiPushPoseStack || ClientConfigs.goreEffect == ClientConfigs.GoreEffect.OFF) return;
-        LivingEntity entity = event.getEntity();
+        LivingEntity living = event.getEntity();
         if (ClientConfigs.goreEffect == ClientConfigs.GoreEffect.CONFLUENCE_VANILLA
-                && !ResourceLocation.DEFAULT_NAMESPACE.equals(BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType()).getNamespace()))
-            return;
-        boolean dead = entity.isDeadOrDying();
-        if (dead != ((ILivingEntity) entity).confluence$deadO()) {
-            ClientUtils.livingDeath(entity);
+                && !ResourceLocation.DEFAULT_NAMESPACE.equals(BuiltInRegistries.ENTITY_TYPE.getKey(living.getType()).getNamespace())
+        ) return;
+        boolean dead = living.isDeadOrDying();
+        if (dead != ILivingEntity.of(living).confluence$deadO()) {
+            ClientUtils.livingDeath(living);
         }
-        ((ILivingEntity) entity).confluence$deadO(dead);
+        ILivingEntity.of(living).confluence$deadO(dead);
     }
 
     @SubscribeEvent
@@ -327,12 +327,12 @@ public final class GameClientEvents {
             return;
         }
         // 渲染这个实体结束的时候检测是不是刚死，这时候方便获取到这个实体的姿势
-        if (entity instanceof LivingEntity living && entity instanceof ILivingEntity li) {
+        if (entity instanceof LivingEntity living) {
             boolean dead = living.isDeadOrDying();
-            if (dead != li.confluence$deadO()) {
+            if (dead != ILivingEntity.of(living).confluence$deadO()) {
                 ClientUtils.livingDeath(living);
             }
-            li.confluence$deadO(dead);
+            ILivingEntity.of(living).confluence$deadO(dead);
         }
     }
 

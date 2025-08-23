@@ -50,7 +50,7 @@ public interface Immunity {
     static void calculateInvTicks(DamageSource damageSource, LivingEntity victim) {
         Immunity cause = getCause(damageSource);
         if (cause != null) {
-            Object2IntMap<Immunity> invTicks = ((ILivingEntity) victim).confluence$getImmunityTicks();
+            Object2IntMap<Immunity> invTicks = ILivingEntity.of(victim).confluence$getImmunityTicks();
             int time = cause.confluence$getImmunityDuration(damageSource);
             if (time != 0) {
                 invTicks.put(cause, time);

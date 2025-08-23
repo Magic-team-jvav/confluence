@@ -7,8 +7,11 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.block.ModBlocks;
+import org.confluence.terra_curio.common.init.TCItems;
+import org.confluence.terra_curio.util.TCUtils;
 
 public class ShimmerEffect extends MobEffect {
     public ShimmerEffect() {
@@ -31,5 +34,13 @@ public class ShimmerEffect extends MobEffect {
     @Override
     public boolean shouldApplyEffectTickThisTick(int pDuration, int pAmplifier) {
         return true;
+    }
+
+    public static void applyShimmerEffect(LivingEntity living) {
+        if (!living.level().isClientSide && living.getEyeInFluidType() == ModFluids.SHIMMER.type().get() && !living.hasEffect(ModEffects.SHIMMER)) {
+            if (living.isCrouching() || !TCUtils.getAccessoriesValue(living, TCItems.EFFECT$IMMUNITIES).contains(ModEffects.SHIMMER)) {
+                living.addEffect(new MobEffectInstance(ModEffects.SHIMMER, MobEffectInstance.INFINITE_DURATION));
+            }
+        }
     }
 }

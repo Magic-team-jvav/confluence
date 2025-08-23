@@ -51,7 +51,7 @@ public final class EntityEvents {
     @SubscribeEvent
     public static void invulnerabilityCheck(EntityInvulnerabilityCheckEvent event) {
         if (event.isInvulnerable() || !(event.getEntity() instanceof LivingEntity living)) return;
-        if (((ILivingEntity) living).confluence$getExtraInvulnerableTicks() > 0) return;
+        if (ILivingEntity.of(living).confluence$getExtraInvulnerableTicks() > 0) return;
 
         DamageSource damageSource = event.getSource();
         if (damageSource.is(DamageTypes.FELL_OUT_OF_WORLD) || damageSource.is(DamageTypes.GENERIC_KILL)) return;

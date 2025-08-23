@@ -1,9 +1,12 @@
 package org.confluence.mod.mixin.client.gui;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -38,18 +41,15 @@ public abstract class EffectRenderingInventoryScreenMixin implements IAbstractCo
         }
     }
 
-    @Inject(method = "renderIcons", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(IIIIILnet/minecraft/client/renderer/texture/TextureAtlasSprite;)V"))
-    private void beforeRender(GuiGraphics guiGraphics, int renderX, int yOffset, Iterable<MobEffectInstance> effects, boolean isSmall, CallbackInfo ci, @Local MobEffectInstance instance) {
-        if (!IMobEffectInstance.of(instance).confluence$isEnabled()) {
+    @WrapOperation(method = "renderIcons", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(IIIIILnet/minecraft/client/renderer/texture/TextureAtlasSprite;)V"))
+    private void makeTranslucent(GuiGraphics guiGraphics, int x, int y, int blitOffset, int width, int height, TextureAtlasSprite sprite, Operation<Void> original, @Local MobEffectInstance instance) {
+        if (IMobEffectInstance.of(instance).confluence$isEnabled()) {
+            original.call(guiGraphics, x, y, blitOffset, width, height, sprite);
+        } else {
             RenderSystem.enableBlend();
-            RenderSystem.setShaderColor(1, 1, 1, 0.5F);
-        }
-    }
-
-    @Inject(method = "renderIcons", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(IIIIILnet/minecraft/client/renderer/texture/TextureAtlasSprite;)V", shift = At.Shift.AFTER))
-    private void afterRender(GuiGraphics guiGraphics, int renderX, int yOffset, Iterable<MobEffectInstance> effects, boolean isSmall, CallbackInfo ci, @Local MobEffectInstance instance) {
-        if (!IMobEffectInstance.of(instance).confluence$isEnabled()) {
-            RenderSystem.setShaderColor(1, 1, 1, 1);
+            guiGraphics.setColor(1, 1, 1, 0.5F);
+            original.call(guiGraphics, x, y, blitOffset, width, height, sprite);
+            guiGraphics.setColor(1, 1, 1, 1);
             RenderSystem.disableBlend();
         }
     }

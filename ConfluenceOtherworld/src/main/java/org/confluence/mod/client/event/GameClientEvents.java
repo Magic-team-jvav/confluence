@@ -82,9 +82,7 @@ import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.api.event.PerformJumpingEvent;
 import org.confluence.terraentity.api.event.NPCEvent;
-import org.confluence.terraentity.entity.npc.AnglerNPC;
 import org.confluence.terraentity.init.entity.TENpcEntities;
-import org.confluence.terraentity.registries.npc_trade_task.variant.DynamicAnglerTradeTask;
 import software.bernie.geckolib.event.GeoRenderEvent;
 
 import java.util.Collection;
@@ -376,11 +374,6 @@ public final class GameClientEvents {
                     event.setNeoDialog(Component.translatable("dialogs.confluence.nurse.player_killed_by", stat.getValue().getDescription(), value));
                     break;
                 }
-            }
-        } else if (event.getNPC() instanceof AnglerNPC angler) {
-            DynamicAnglerTradeTask task = angler.getFirstTask();
-            if (task != null && task.canTrade(angler, 0)) {
-                event.setNeoDialog(Component.translatable("dialogs.confluence.angler." + task.getCurrentCost().getDescriptionId()));
             }
         }
     }

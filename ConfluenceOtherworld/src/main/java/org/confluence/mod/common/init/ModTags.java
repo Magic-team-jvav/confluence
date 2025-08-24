@@ -382,7 +382,6 @@ public final class ModTags {
         public static final TagKey<Item> MOSS_ITEM = register("moss_item");
         public static final TagKey<Item> SUMMONER_WEAPON = register("summoner_weapon");
         public static final TagKey<Item> CROP_FORTUNE = register("crop_fortune");
-        public static final TagKey<Item> EVIL_KEY = register("evil_key"); // 用于地牢二层的门锁 todo 改为列表
         public static final TagKey<Item> TREASURE_BAG = register("treasure_bag");
         public static final TagKey<Item> FAST_BOW = register("fast_bow");
         public static final TagKey<Item> ABLE_TO_DESTROY_ALTAR = register("able_to_destroy_altar");

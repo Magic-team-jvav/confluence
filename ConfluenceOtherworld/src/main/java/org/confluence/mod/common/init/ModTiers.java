@@ -46,12 +46,12 @@ public final class ModTiers {
     public static final Tier PALLADIUM = new PoweredTier(130, ModTags.Blocks.NEEDS_7_LEVEL, 10000, 32, 12, 15, () -> Ingredient.of(MaterialItems.PALLADIUM_INGOT));
     public static final Tier MYTHRIL = new PoweredTier(150, ModTags.Blocks.NEEDS_8_LEVEL, 10000, 33, 14, 16, () -> Ingredient.of(MaterialItems.MYTHRIL_INGOT));
     public static final Tier ORICHALCUM = new PoweredTier(165, ModTags.Blocks.NEEDS_8_LEVEL, 10000, 34, 16, 16, () -> Ingredient.of(MaterialItems.ORICHALCUM_INGOT));
-    public static final Tier ADAMANTITE = new PoweredTier(180, ModTags.Blocks.NEEDS_9_LEVEL, 10000, 35, 22, 17, () -> Ingredient.of(MaterialItems.ADAMANTITE_INGOT));
-    public static final Tier TITANIUM = new PoweredTier(190, ModTags.Blocks.NEEDS_9_LEVEL, 10000, 36, 24, 18, () -> Ingredient.of(MaterialItems.TITANIUM_INGOT));
-    public static final Tier SPECTRE = new PoweredTier(200, ModTags.Blocks.NEEDS_10_LEVEL, 10000, 48, 26, 21, () -> Ingredient.of(MaterialItems.SPECTRE_INGOT));
-    public static final Tier CHLOROPHYTE = new PoweredTier(200, ModTags.Blocks.NEEDS_10_LEVEL, 10000, 47, 26, 20, () -> Ingredient.of(MaterialItems.CHLOROPHYTE_INGOT));
-    public static final Tier HALLOWED = new PoweredTier(200, ModTags.Blocks.NEEDS_10_LEVEL, 10000, 46, 25, 19, () -> Ingredient.of(MaterialItems.HALLOWED_INGOT));
-    public static final Tier SHROOMITE = new PoweredTier(200, ModTags.Blocks.NEEDS_10_LEVEL, 10000, 60, 28, 22, () -> Ingredient.of(MaterialItems.SHROOMITE_INGOT));
+    public static final Tier ADAMANTITE = new PoweredTier(180, ModTags.Blocks.NEEDS_8_LEVEL, 10000, 35, 22, 17, () -> Ingredient.of(MaterialItems.ADAMANTITE_INGOT));
+    public static final Tier TITANIUM = new PoweredTier(190, ModTags.Blocks.NEEDS_8_LEVEL, 10000, 36, 24, 18, () -> Ingredient.of(MaterialItems.TITANIUM_INGOT));
+    public static final Tier SPECTRE = new PoweredTier(200, ModTags.Blocks.NEEDS_9_LEVEL, 10000, 48, 26, 21, () -> Ingredient.of(MaterialItems.SPECTRE_INGOT));
+    public static final Tier CHLOROPHYTE = new PoweredTier(200, ModTags.Blocks.NEEDS_9_LEVEL, 10000, 47, 26, 20, () -> Ingredient.of(MaterialItems.CHLOROPHYTE_INGOT));
+    public static final Tier HALLOWED = new PoweredTier(200, ModTags.Blocks.NEEDS_9_LEVEL, 10000, 46, 25, 19, () -> Ingredient.of(MaterialItems.HALLOWED_INGOT));
+    public static final Tier SHROOMITE = new PoweredTier(200, ModTags.Blocks.NEEDS_9_LEVEL, 10000, 60, 28, 22, () -> Ingredient.of(MaterialItems.SHROOMITE_INGOT));
     public static final Tier LIHZAHRD = new PoweredTier(210, ModTags.Blocks.UNBREAKABLE, 10000, 80, 32, 24, () -> Ingredient.of(DecorativeBlocks.LIHZAHRD_BRICKS));
     public static final Tier LUMINITE = new PoweredTier(225, ModTags.Blocks.UNBREAKABLE, 10000, 95, 38, 25, () -> Ingredient.of(MaterialItems.LUMINITE_INGOT));
 
@@ -75,12 +75,11 @@ public final class ModTiers {
     /**
      * 镐力 ======================= 等级 <p>
      * 全都能挖，比如丛林蜥蜴砖 <p>
-     * 201 ======================= 10 <p>
+     * 201 ======================= 9 <p>
      * 200 神圣 <p>
-     * 191 ======================= 9 <p>
+     * 191 ======================= 8 <p>
      * 190 钛金 <p>
      * 180 精金 <p>
-     * 166 ======================= 8 <p>
      * 165 山铜 <p>
      * 150 秘银 <p>
      * 131 ======================= 7 <p>
@@ -111,8 +110,7 @@ public final class ModTiers {
         if (!blockState.requiresCorrectToolForDrops()) return true;
         if (!pickaxeItem.isCorrectToolForDrops(blockState)) return false;
         if (power == -1 || power >= 201) return true;
-        if (power >= 191) return !blockState.is(ModTags.Blocks.NEEDS_10_LEVEL);
-        if (power >= 166) return !blockState.is(ModTags.Blocks.NEEDS_9_LEVEL);
+        if (power >= 191) return !blockState.is(ModTags.Blocks.NEEDS_9_LEVEL);
         if (power >= 131) return !blockState.is(ModTags.Blocks.NEEDS_8_LEVEL);
         if (power >= 101) return !blockState.is(ModTags.Blocks.NEEDS_7_LEVEL);
         if (power >= 71) return !blockState.is(ModTags.Blocks.NEEDS_6_LEVEL);

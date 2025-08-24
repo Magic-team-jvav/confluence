@@ -17,6 +17,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.SwordProjectileComponent;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
+import org.confluence.mod.common.item.sword.GeoSwordItem;
 import org.confluence.mod.common.item.sword.Phaseblade;
 import org.confluence.mod.common.item.sword.SweetSword;
 import org.confluence.mod.common.item.sword.legacy.InventoryTickStrategy;
@@ -49,10 +50,12 @@ public class SwordItems {
     public static final DeferredItem<SwordItem> BREATHING_REED = register("breathing_reed", ModTiers.UNBREAKABLE, 2, 1.6F, ModRarity.BLUE, SHORT_SWORD.get()
             .addTooltip(p -> p.withColor(11184810)));
     public static final DeferredItem<SwordItem> GLADIUS = register("gladius", ModTiers.UNBREAKABLE, 6, 3, SHORT_SWORD.get());
-    public static final DeferredItem<SwordItem> UMBRELLA = register("umbrella", ModTiers.UNBREAKABLE, 2, 1.6F, ModRarity.BLUE, UMBRELLA_SWORD.get()
-            .addTooltip(p -> p.withColor(11184810)));
-    public static final DeferredItem<SwordItem> TRAGIC_UMBRELLA = register("tragic_umbrella", ModTiers.UNBREAKABLE, 2, 1.6F, ModRarity.BLUE, UMBRELLA_SWORD.get()
-            .addTooltip(p -> p.withColor(11184810)));
+    public static final DeferredItem<SwordItem> UMBRELLA = register("umbrella", () -> new GeoSwordItem(ModTiers.UNBREAKABLE, ModRarity.BLUE, 2, 1.6F, UMBRELLA_SWORD.get()
+            .addTooltip(p -> p.withColor(11184810))
+            .modifyProperties(p -> p.component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE))));
+    public static final DeferredItem<SwordItem> TRAGIC_UMBRELLA = register("tragic_umbrella", () -> new GeoSwordItem(ModTiers.UNBREAKABLE, ModRarity.BLUE, 2, 1.6F, UMBRELLA_SWORD.get()
+            .addTooltip(p -> p.withColor(11184810))
+            .modifyProperties(p -> p.component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE))));
 
 
     //普通宽剑 默认横扫*1.5
@@ -156,10 +159,12 @@ public class SwordItems {
     }
 
     public static DeferredItem<SwordItem> register(String name, Tier tier, int rawDamage, float rawSpeed, ModRarity rarity, BaseSwordItem.ModifierBuilder modifierBuilder) {
-        if (tier == ModTiers.UNBREAKABLE) {
-            modifierBuilder.modifyProperties(p -> p.component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE));
-        }
-        return register(name, () -> new BaseSwordItem(tier, rarity, rawDamage, rawSpeed, modifierBuilder));
+        return register(name, () -> {
+            if (tier == ModTiers.UNBREAKABLE) {
+                modifierBuilder.modifyProperties(p -> p.component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE));
+            }
+            return new BaseSwordItem(tier, rarity, rawDamage, rawSpeed, modifierBuilder);
+        });
     }
 
     public static void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> tag) {

@@ -149,6 +149,12 @@ public final class ModClientSetups {
             return ModArmPoses.LANCE.getValue();
         }
     };
+    static final IClientItemExtensions UMBRELLA = new IClientItemExtensions() {
+        @Override
+        public HumanoidModel.ArmPose getArmPose(LivingEntity entityLiving, InteractionHand hand, ItemStack itemStack) {
+            return ModArmPoses.UMBRELLA.getValue();
+        }
+    };
     static final IClientItemExtensions NOOP_ITEM = new IClientItemExtensions() {
         private BlockEntityWithoutLevelRenderer renderer;
 

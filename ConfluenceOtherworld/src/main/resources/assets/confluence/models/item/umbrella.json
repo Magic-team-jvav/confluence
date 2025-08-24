@@ -1,0 +1,75 @@
+{
+    "base": {
+        "credit": "Made with Blockbench",
+        "parent": "builtin/entity",
+        "texture_size": [
+            32,
+            32
+        ],
+        "display": {
+            "thirdperson_righthand": {
+                "rotation": [
+                    -45,
+                    0,
+                    0
+                ],
+                "translation": [
+                    0,
+                    -2,
+                    0
+                ]
+            },
+            "thirdperson_lefthand": {
+                "rotation": [
+                    -45,
+                    0,
+                    0
+                ],
+                "translation": [
+                    0,
+                    -2,
+                    0
+                ]
+            },
+            "firstperson_righthand": {
+                "rotation": [
+                    8,
+                    0,
+                    0
+                ]
+            },
+            "firstperson_lefthand": {
+                "rotation": [
+                    8,
+                    0,
+                    0
+                ]
+            }
+        },
+        "textures": {
+            "particle": "confluence:item/umbrella"
+        }
+    },
+    "gui_light": "front",
+    "loader": "neoforge:separate_transforms",
+    "perspectives": {
+        "fixed": {
+            "parent": "minecraft:item/handheld",
+            "textures": {
+                "layer0": "confluence:item/sword/umbrella"
+            }
+        },
+        "gui": {
+            "parent": "minecraft:item/handheld",
+            "textures": {
+                "layer0": "confluence:item/sword/umbrella"
+            }
+        },
+        "ground": {
+            "parent": "minecraft:item/handheld",
+            "textures": {
+                "layer0": "confluence:item/sword/umbrella"
+            }
+        }
+    }
+}

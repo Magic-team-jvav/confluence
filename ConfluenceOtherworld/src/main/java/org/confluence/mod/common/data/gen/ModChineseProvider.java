@@ -1399,21 +1399,21 @@ public class ModChineseProvider extends LanguageProvider {
         add("patchouli.confluence.otherworld_note.boss_checklist.eye_of_cthulhu.name", "克苏鲁之眼");
         add("patchouli.confluence.otherworld_note.boss_checklist.eye_of_cthulhu.0", "作为一只巨大的眼睛，克苏鲁之眼又快又狠（不太准）。*b当克苏鲁之眼血量低于一定数值，它会将其眼睛变为嘴发出吼叫声并进入狂暴。*b在狂暴时，克苏鲁之眼只会疯狂的向你冲刺。*2此时是真的快准狠了。");
         add("patchouli.confluence.otherworld_note.boss_checklist.eye_of_cthulhu.1", "*z$(#9A5CC6)“只在夜间出没的危险眼球怪。”*c*w");
-        add("patchouli.confluence.otherworld_note.boss_checklist.eye_of_cthulhu.2", "在任何地方使用可疑眼球来召唤世界吞噬怪。*b有时克苏鲁之眼会在晚上出现：$(#AA0000)“你感到有个邪恶的东西在看着你……”*c*2需要在晚上才能召唤。");
+        add("patchouli.confluence.otherworld_note.boss_checklist.eye_of_cthulhu.2", "在任何地方使用可疑眼球来召唤克苏鲁之眼。*b有时克苏鲁之眼会在晚上出现：$(#AA0000)“你感到有个邪恶的东西在看着你……”*c*2需要在晚上才能召唤。");
         add("patchouli.confluence.otherworld_note.boss_checklist.eye_of_cthulhu.3", "可疑眼球是一个用于召唤Boss的物品，看起来像是个被剥离的眼球。*b它可以用来在任何地点立刻召唤克苏鲁之眼。*2在!cs:a!祭坛*c中使用 6 个晶状体合成可疑眼球。");
         add("patchouli.confluence.otherworld_note.boss_checklist.eye_of_cthulhu.4", "*o$(#555555)“一颗死气沉沉，目光呆滞的眼球，尽管它不具备攻击性，但它似乎比那些夜间会在半空中飞来飞去的同僚们更为危险。它好像在看着你。”");
 
         add("patchouli.confluence.otherworld_note.boss_checklist.king_slime.name", "史莱姆王");
         add("patchouli.confluence.otherworld_note.boss_checklist.king_slime.0", "史莱姆王作为一只超大史莱姆，它不止比普通史莱姆跳的更高更远，当你离它过远时它还会瞬移！*2它还有顶巨大的王冠！");
         add("patchouli.confluence.otherworld_note.boss_checklist.king_slime.1", "*z$(#555555)“所有黏滑生物的首领。”*c*w");
-        add("patchouli.confluence.otherworld_note.boss_checklist.king_slime.2", "在任何地方使用史莱姆皇冠，或者在史莱姆雨中击杀 150 只史莱姆来召唤世界吞噬怪。*2可以在任意时间召唤。");
+        add("patchouli.confluence.otherworld_note.boss_checklist.king_slime.2", "在任何地方使用史莱姆皇冠，或者在史莱姆雨中击杀 150 只史莱姆来召唤史莱姆王。*2可以在任意时间召唤。");
         add("patchouli.confluence.otherworld_note.boss_checklist.king_slime.3", "史莱姆皇冠是一个用于召唤Boss的物品，看起来像是个戴着王冠的小蓝色史莱姆。*b它可以用来在任何地点立刻召唤史莱姆王。*2在!cs:a!祭坛*c中使用 20 个!ma:g!凝胶*c和金冠/铂金冠合成史莱姆皇冠。");
-        add("patchouli.confluence.otherworld_note.boss_checklist.king_slime.4", "*o$(#555555)“一只小巧的王冠，看上去是为那些人畜无害的可爱凝胶生物的加冕仪式所准备的。戴上它可能不是个好选择。*c");
+        add("patchouli.confluence.otherworld_note.boss_checklist.king_slime.4", "*o$(#555555)“一只小巧的王冠，看上去是为那些人畜无害的可爱凝胶生物的加冕仪式所准备的。戴上它可能不是个好选择。”*c");
 
         add("patchouli.confluence.otherworld_note.boss_checklist.queen_bee.name", "蜂王");
         add("patchouli.confluence.otherworld_note.boss_checklist.queen_bee.0", "字面意思，它是蜜蜂们的女王，所以当它开始抖动它的体节时会召唤大群的小蜜蜂来攻击你。*b它底下的蜂巢当然不是装饰，可是货真价实会发射毒针的！*b小心蜂王偶尔会朝你俯冲！*2*o绝对不要把蜂王带出丛林，当蜂王的眼睛变红时请尽快结束战斗或者……*c*l$(#FF0000)跑！");
         add("patchouli.confluence.otherworld_note.boss_checklist.queen_bee.1", "*z$(#FFAA00)“统治丛林蜂巢的女王。”*c*w");
-        add("patchouli.confluence.otherworld_note.boss_checklist.queen_bee.2", "在丛林使用憎恶之蜂，或者在蜂巢破坏幼虫来召唤世界吞噬怪。*2可以在任意时间召唤。");
+        add("patchouli.confluence.otherworld_note.boss_checklist.queen_bee.2", "在丛林使用憎恶之蜂，或者在蜂巢破坏幼虫来召唤蜂王。*2可以在任意时间召唤。");
         add("patchouli.confluence.otherworld_note.boss_checklist.queen_bee.3", "憎恶之蜂是一个用于召唤Boss的物品，看起来像是个蜜蜂。*b它可以用来在丛林中立刻召唤蜂王。*2在!cs:hwb!重型工作台*c中使用 5 个蜂蜜块、5 个丛林蜂巢、毒刺和蜂蜜瓶合成憎恶之蜂。");
         add("patchouli.confluence.otherworld_note.boss_checklist.queen_bee.4", "*o$(#555555)“她似乎嫉妒厌恶那些荧光真菌孢子的气息。一团尚未成型的幼蜂，摸上去感觉像粘稠的蜂蜜...蜂王与她的下属们对它们甜蜜领地的保护欲不知何时渐渐发展为对非同类生物的嫉妒排斥与憎恶。群峰振翅值声撼动了丛林中最为厚重的叶片。”");
 

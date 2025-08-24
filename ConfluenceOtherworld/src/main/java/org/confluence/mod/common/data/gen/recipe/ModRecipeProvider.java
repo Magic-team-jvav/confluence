@@ -33,6 +33,7 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.recipe.*;
+import org.confluence.phase_journey.mixin.client.ItemModelShaperMixin;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.recipe.WorkshopRecipe;
 import org.confluence.terra_furniture.common.init.TFTags;
@@ -115,7 +116,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(NatureBlocks.MOISTENED_SAND_BLOCK), Items.SAND.getDefaultInstance(), 0.15F, 200);
         cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(Tags.Items.GLASS_BLOCKS_COLORLESS), PotionItems.MUG.toStack(), 1.0F, 200);
         cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(NatureBlocks.DIATOMACEOUS), DecorativeBlocks.PURE_GLASS.toStack(), 0.3F, 200);
-        cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.GOLD_COOKING), Items.GOLD_NUGGET.getDefaultInstance(), 0.1F, 200);
+        cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "gold_nugget_from_gold_cooking", Ingredient.of(ModTags.Items.GOLD_COOKING), Items.GOLD_NUGGET.getDefaultInstance(), 0.1F, 200);
 
         cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(DecorativeBlocks.MARBLE_BRICKS), DecorativeBlocks.CRACKED_MARBLE_BRICKS.toStack(), 0.1F, 200);
 
@@ -130,7 +131,14 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(FoodItems.SALMON), Items.COOKED_SALMON.getDefaultInstance(), 0.2F, 200);
         cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(FoodItems.ATLANTIC_COD, FoodItems.PISCES_FIN_COD, FoodItems.SEA_BASS, FoodItems.TROUT), Items.COOKED_COD.getDefaultInstance(), 0.35F, 200);
 
+        cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "glass_from_crimsand", Ingredient.of(NatureBlocks.CRIMSAND), Items.GLASS.getDefaultInstance(), 0.1F, 200);
+        cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "glass_from_ebonsand", Ingredient.of(NatureBlocks.EBONSAND), Items.GLASS.getDefaultInstance(), 0.1F, 200);
+        cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "glass_from_pearlsand", Ingredient.of(NatureBlocks.PEARLSAND), Items.GLASS.getDefaultInstance(), 0.1F, 200);
+
+        cooking(recipeOutput, SmeltingRecipe::new, "smelting/", "", Ingredient.of(ModTags.Items.GOLD_COOKING), Items.GOLD_NUGGET.getDefaultInstance(), 0.1F, 200);
+
         cooking(recipeOutput, SmokingRecipe::new, "smoking/", "", Ingredient.of(FoodItems.BAOBAB_FRUIT), FoodItems.COOKED_BAOBAB_FRUIT.toStack(), 0.35F, 100);
+        cooking(recipeOutput, SmokingRecipe::new, "smoking/", "", Ingredient.of(FoodItems.CLOUD_DOUGH), FoodItems.CLOUD_BREAD.toStack(), 0.2F, 100);
         cooking(recipeOutput, SmokingRecipe::new, "smoking/", "", Ingredient.of(FoodItems.FLUTTERING_LAMB_CHOPS), FoodItems.COOKED_FLUTTERING_LAMB_CHOPS.toStack(), 0.35F, 100);
         cooking(recipeOutput, SmokingRecipe::new, "smoking/", "", Ingredient.of(FoodItems.RAW_DUCK), FoodItems.COOKED_DUCK.toStack(), 0.35F, 100);
         cooking(recipeOutput, SmokingRecipe::new, "smoking/", "", Ingredient.of(FoodItems.RAW_BIRD), FoodItems.COOKED_BIRD.toStack(), 0.35F, 100);
@@ -155,9 +163,107 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
                 Ingredient.of(DecorativeBlocks.AMBER_BLOCK),
                 HookItems.AMBER_HOOK.toStack()
         ), null);
+        recipeOutput.accept(Confluence.asResource("smithing/topaz_hook"), new SmithingTransformRecipe(
+                Ingredient.of(DecorativeBlocks.TOPAZ_CHAIN),
+                Ingredient.of(DecorativeBlocks.TOPAZ_CHAIN),
+                Ingredient.of(DecorativeBlocks.TOPAZ_BLOCK),
+                HookItems.TOPAZ_HOOK.toStack()
+        ), null);
+        recipeOutput.accept(Confluence.asResource("smithing/amethyst_hook"), new SmithingTransformRecipe(
+                Ingredient.of(DecorativeBlocks.AMETHYST_CHAIN),
+                Ingredient.of(DecorativeBlocks.AMETHYST_CHAIN),
+                Ingredient.of(DecorativeBlocks.AMETHYST_BLOCK),
+                HookItems.AMETHYST_HOOK.toStack()
+        ), null);
+        recipeOutput.accept(Confluence.asResource("smithing/diamond_hook"), new SmithingTransformRecipe(
+                Ingredient.of(DecorativeBlocks.DIAMOND_CHAIN),
+                Ingredient.of(DecorativeBlocks.DIAMOND_CHAIN),
+                Ingredient.of(Items.DIAMOND_BLOCK),
+                HookItems.DIAMOND_HOOK.toStack()
+        ), null);
+        recipeOutput.accept(Confluence.asResource("smithing/ruby_hook"), new SmithingTransformRecipe(
+                Ingredient.of(DecorativeBlocks.RUBY_CHAIN),
+                Ingredient.of(DecorativeBlocks.RUBY_CHAIN),
+                Ingredient.of(DecorativeBlocks.RUBY_BLOCK),
+                HookItems.RUBY_HOOK.toStack()
+        ), null);
+        recipeOutput.accept(Confluence.asResource("smithing/sapphire_hook"), new SmithingTransformRecipe(
+                Ingredient.of(DecorativeBlocks.SAPPHIRE_CHAIN),
+                Ingredient.of(DecorativeBlocks.SAPPHIRE_CHAIN),
+                Ingredient.of(DecorativeBlocks.SAPPHIRE_BLOCK),
+                HookItems.SAPPHIRE_HOOK.toStack()
+        ), null);
+        recipeOutput.accept(Confluence.asResource("smithing/grappling_hook"), new SmithingTransformRecipe(
+                Ingredient.of(Items.CHAIN),
+                Ingredient.of(Items.CHAIN),
+                Ingredient.of(MaterialItems.HOOK),
+                HookItems.GRAPPLING_HOOK.toStack()
+        ), null);
+        recipeOutput.accept(Confluence.asResource("smithing/golden_axe"), new SmithingTransformRecipe(
+                Ingredient.of(Tags.Items.GEMS),
+                Ingredient.of(Items.GOLDEN_AXE),
+                Ingredient.of(Tags.Items.INGOTS_GOLD),
+                AxeItems.GOLDEN_AXE.toStack()
+        ), null);
+        recipeOutput.accept(Confluence.asResource("smithing/golden_broadsword"), new SmithingTransformRecipe(
+                Ingredient.of(Tags.Items.GEMS),
+                Ingredient.of(Items.GOLDEN_SWORD),
+                Ingredient.of(Tags.Items.INGOTS_GOLD),
+                SwordItems.GOLDEN_BROADSWORD.toStack()
+        ), null);
+        recipeOutput.accept(Confluence.asResource("smithing/golden_pickaxe"), new SmithingTransformRecipe(
+                Ingredient.of(Tags.Items.GEMS),
+                Ingredient.of(Items.GOLDEN_PICKAXE),
+                Ingredient.of(Tags.Items.INGOTS_GOLD),
+                PickaxeItems.GOLDEN_PICKAXE.toStack()
+        ), null);
+        recipeOutput.accept(Confluence.asResource("smithing/golden_shovel"), new SmithingTransformRecipe(
+                Ingredient.of(Tags.Items.GEMS),
+                Ingredient.of(Items.GOLDEN_SHOVEL),
+                Ingredient.of(Tags.Items.INGOTS_GOLD),
+                ShovelItems.GOLDEN_SHOVEL.toStack()
+        ), null);
+        recipeOutput.accept(Confluence.asResource("smithing/golden_hoe"), new SmithingTransformRecipe(
+                Ingredient.of(Tags.Items.GEMS),
+                Ingredient.of(Items.GOLDEN_HOE),
+                Ingredient.of(Tags.Items.INGOTS_GOLD),
+                HoeItems.GOLDEN_HOE.toStack()
+        ), null);
+        recipeOutput.accept(Confluence.asResource("smithing/golden_helmet"), new SmithingTransformRecipe(
+                Ingredient.of(Tags.Items.GEMS),
+                Ingredient.of(Items.GOLDEN_HELMET),
+                Ingredient.of(Tags.Items.INGOTS_GOLD),
+                ArmorItems.GOLDEN_HELMET.toStack()
+        ), null);
+        recipeOutput.accept(Confluence.asResource("smithing/golden_chestplate"), new SmithingTransformRecipe(
+                Ingredient.of(Tags.Items.GEMS),
+                Ingredient.of(Items.GOLDEN_CHESTPLATE),
+                Ingredient.of(Tags.Items.INGOTS_GOLD),
+                ArmorItems.GOLDEN_CHESTPLATE.toStack()
+        ), null);
+        recipeOutput.accept(Confluence.asResource("smithing/golden_leggings"), new SmithingTransformRecipe(
+                Ingredient.of(Tags.Items.GEMS),
+                Ingredient.of(Items.GOLDEN_LEGGINGS),
+                Ingredient.of(Tags.Items.INGOTS_GOLD),
+                ArmorItems.GOLDEN_LEGGINGS.toStack()
+        ), null);
+        recipeOutput.accept(Confluence.asResource("smithing/golden_boots"), new SmithingTransformRecipe(
+                Ingredient.of(Tags.Items.GEMS),
+                Ingredient.of(Items.GOLDEN_BOOTS),
+                Ingredient.of(Tags.Items.INGOTS_GOLD),
+                ArmorItems.GOLDEN_BOOTS.toStack()
+        ), null);
+
 
         skyMill(recipeOutput, DecorativeBlocks.BOUNCY_CLOUD_BLOCK.toStack(), Ingredient.of(MaterialItems.PINK_GEL), Ingredient.of(NatureBlocks.CLOUD_BLOCK));
         skyMill(recipeOutput, ChestBlocks.SKYWARE_CHEST.toStack(), AmountIngredient.of(5, DecorativeBlocks.SUN_PLATE));
+        skyMill(recipeOutput, DecorativeBlocks.DISC_BLOCK.toStack(4), Ingredient.of(DecorativeBlocks.SUN_PLATE));
+        skyMill(recipeOutput, DecorativeBlocks.SKYWARE_DOOR.toStack(), AmountIngredient.of(2,DecorativeBlocks.SUN_PLATE));
+        skyMill(recipeOutput, DecorativeBlocks.SKYWARE_GLASS_DOOR.toStack(), AmountIngredient.of(2,DecorativeBlocks.SUN_PLATE), Ingredient.of(DecorativeBlocks.PURE_GLASS));
+        skyMill(recipeOutput, DecorativeBlocks.SUN_PLATE.toStack(25), AmountIngredient.of(25,Items.COBBLESTONE), Ingredient.of(MaterialItems.FALLING_STAR));
+        skyMill(recipeOutput, DecorativeBlocks.SUN_PLATE_STAIRS.toStack(), Ingredient.of(DecorativeBlocks.SUN_PLATE));
+        skyMill(recipeOutput, DecorativeBlocks.SUN_PLATE_SLAB.toStack(2), Ingredient.of(DecorativeBlocks.SUN_PLATE));
+        skyMill(recipeOutput, NatureBlocks.CLOUD_BLOCK.toStack(2), Ingredient.of(MaterialItems.WEAVING_CLOUD_COTTON));
         skyMill(recipeOutput, NatureBlocks.RAIN_CLOUD_BLOCK.toStack(), EnvironmentLevelAccess.matcher(null, searchWater, false), Ingredient.of(NatureBlocks.CLOUD_BLOCK));
         skyMill(recipeOutput, NatureBlocks.SNOW_CLOUD_BLOCK.toStack(), EnvironmentLevelAccess.matcher(holderLookup.lookupOrThrow(Registries.BIOME).getOrThrow(Tags.Biomes.IS_COLD_OVERWORLD), null, false), Ingredient.of(NatureBlocks.CLOUD_BLOCK));
 
@@ -177,6 +283,10 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         workshop(recipeOutput, AccessoryItems.ARMOR_BRACING.toStack(), Ingredient.of(AccessoryItems.ARMOR_POLISH), Ingredient.of(TCItems.VITAMINS));
         workshop(recipeOutput, AccessoryItems.COUNTERCURSE_MANTRA.toStack(), Ingredient.of(AccessoryItems.MEGAPHONE), Ingredient.of(AccessoryItems.NAZAR));
         workshop(recipeOutput, AccessoryItems.MANA_FLOWER.toStack(), Ingredient.of(PotionItems.MANA_POTION), Ingredient.of(AccessoryItems.NATURES_GIFT));
+        workshop(recipeOutput, AccessoryItems.MANA_REGENERATION_BAND.toStack(), Ingredient.of(TCItems.BAND_OF_REGENERATION), Ingredient.of(AccessoryItems.BAND_OF_STARPOWER));
+        workshop(recipeOutput, TCItems.FART_IN_A_JAR.toStack(), Ingredient.of(ModItems.WHOOPIE_CUSHION), Ingredient.of(TCItems.CLOUD_IN_A_BOTTLE));
+        workshop(recipeOutput, TCItems.ARCHITECT_GIZMO_PACK.toStack(), Ingredient.of(TCItems.BRICK_LAYER), Ingredient.of(TCItems.EXTENDO_GRIP), Ingredient.of(TCItems.PORTABLE_CEMENT_MIXER), Ingredient.of(AccessoryItems.PAINT_SPRAYER));
+        workshop(recipeOutput, AccessoryItems.ARCANE_FLOWER.toStack(), Ingredient.of(TCItems.PUTRID_SCENT), Ingredient.of(AccessoryItems.MANA_FLOWER));
         workshop(recipeOutput, TCItems.ANKH_CHARM.toStack(), Ingredient.of(AccessoryItems.ARMOR_BRACING), Ingredient.of(AccessoryItems.MEDICATED_BANDAGE), Ingredient.of(TCItems.THE_PLAN), Ingredient.of(AccessoryItems.COUNTERCURSE_MANTRA), Ingredient.of(AccessoryItems.REFLECTIVE_SHADES));
         workshop(recipeOutput, AccessoryItems.BAND_OF_STARPOWER.toStack(), EnvironmentLevelAccess.matcher(null, null, true), Ingredient.of(ConsumableItems.MANA_CRYSTAL), Ingredient.of(TCItems.PANIC_NECKLACE));
         workshop(recipeOutput, TCItems.PANIC_NECKLACE.toStack(), EnvironmentLevelAccess.matcher(null, null, true), Ingredient.of(ConsumableItems.LIFE_CRYSTAL), Ingredient.of(AccessoryItems.BAND_OF_STARPOWER));
@@ -187,6 +297,28 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         hellforge(recipeOutput, MaterialItems.ORICHALCUM_INGOT.toStack(), 0.5F, 100, true, AmountIngredient.of(4, MaterialItems.RAW_ORICHALCUM));
         hellforge(recipeOutput, MaterialItems.MYTHRIL_INGOT.toStack(), 0.5F, 100, true, AmountIngredient.of(4, MaterialItems.RAW_MYTHRIL));
         hellforge(recipeOutput, ToolItems.LAVAPROOF_BUG_NET.toStack(), 0.3F, 200, false, AmountIngredient.of(15, MaterialItems.HELLSTONE_INGOT), Ingredient.of(ToolItems.BUG_NET));
+
+        hellforge(recipeOutput, ArmorItems.OBSIDIAN_HELMET.toStack(), 0.5F, 200, true,
+                AmountIngredient.of(10, MaterialItems.SILK),
+                AmountIngredient.of(5, ModTags.Items.SHADOW_SCALE_AND_TISSUE_SAMPLE),
+                AmountIngredient.of(20, Items.OBSIDIAN),
+                Ingredient.of(Items.IRON_HELMET));
+        hellforge(recipeOutput, ArmorItems.OBSIDIAN_CHESTPLATE.toStack(), 0.5F, 200, true,
+                AmountIngredient.of(10, MaterialItems.SILK),
+                AmountIngredient.of(5, ModTags.Items.SHADOW_SCALE_AND_TISSUE_SAMPLE),
+                AmountIngredient.of(20, Items.OBSIDIAN),
+                Ingredient.of(Items.IRON_CHESTPLATE));
+        hellforge(recipeOutput, ArmorItems.OBSIDIAN_LEGGINGS.toStack(), 0.5F, 200, true,
+                AmountIngredient.of(10, MaterialItems.SILK),
+                AmountIngredient.of(5, ModTags.Items.SHADOW_SCALE_AND_TISSUE_SAMPLE),
+                AmountIngredient.of(20, Items.OBSIDIAN),
+                Ingredient.of(Items.IRON_LEGGINGS));
+        hellforge(recipeOutput, ArmorItems.OBSIDIAN_BOOTS.toStack(), 0.5F, 200, true,
+                AmountIngredient.of(10, MaterialItems.SILK),
+                AmountIngredient.of(5, ModTags.Items.SHADOW_SCALE_AND_TISSUE_SAMPLE),
+                AmountIngredient.of(20, Items.OBSIDIAN),
+                Ingredient.of(Items.IRON_BOOTS));
+        hellforge(recipeOutput, TCItems.OBSIDIAN_SKULL.toStack(), 0.5F, 200, false, AmountIngredient.of(10, Items.OBSIDIAN), Ingredient.of(Items.SKELETON_SKULL));
 
         fletchingTable(recipeOutput, "", ArrowItems.FLAMING_ARROW.toStack(25), Ingredient.EMPTY, AmountIngredient.of(25, Items.ARROW), Ingredient.of(ModTags.Items.TORCH));
         fletchingTable(recipeOutput, "_from_feather", new ItemStack(Items.ARROW, 20), Ingredient.of(Items.FEATHER), AmountIngredient.of(5, Items.STICK), Ingredient.of(Items.FLINT));

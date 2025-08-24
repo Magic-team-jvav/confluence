@@ -568,6 +568,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 Ingredient.of(MaterialItems.RAW_TUNGSTEN),
                 Ingredient.of(MaterialItems.RAW_TUNGSTEN)
         );
+
         shapeless(output, ToolItems.VINE_ROPE_COIL.toStack(), Ingredient.of(ModBlocks.VINE_ROPE), Ingredient.of(ModBlocks.VINE_ROPE), Ingredient.of(ModBlocks.VINE_ROPE), Ingredient.of(ModBlocks.VINE_ROPE));
         shapeless(output, ToolItems.WEB_ROPE_COIL.toStack(), Ingredient.of(ModBlocks.WEB_ROPE), Ingredient.of(ModBlocks.WEB_ROPE), Ingredient.of(ModBlocks.WEB_ROPE), Ingredient.of(ModBlocks.WEB_ROPE));
         shapeless(output, ToolItems.SILK_ROPE_COIL.toStack(), Ingredient.of(ModBlocks.SILK_ROPE), Ingredient.of(ModBlocks.SILK_ROPE), Ingredient.of(ModBlocks.SILK_ROPE), Ingredient.of(ModBlocks.SILK_ROPE));
@@ -575,6 +576,10 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         shapeless(output, ConsumableItems.MANA_CRYSTAL.toStack(), Ingredient.of(MaterialItems.FALLING_STAR), Ingredient.of(MaterialItems.FALLING_STAR), Ingredient.of(MaterialItems.FALLING_STAR), Ingredient.of(MaterialItems.FALLING_STAR), Ingredient.of(MaterialItems.FALLING_STAR));
         shapeless(output, MaterialItems.FALLING_STAR.toStack(), Ingredient.of(MaterialItems.STAR_PETALS), Ingredient.of(MaterialItems.STAR_PETALS), Ingredient.of(MaterialItems.STAR_PETALS), Ingredient.of(MaterialItems.STAR_PETALS), Ingredient.of(MaterialItems.STAR_PETALS));
         shapeless(output, FoodItems.CLOUD_DOUGH.toStack(), Ingredient.of(MaterialItems.FLOATING_WHEAT_HEADS), Ingredient.of(MaterialItems.FLOATING_WHEAT_HEADS), Ingredient.of(MaterialItems.FLOATING_WHEAT_HEADS));
+
+        // 机关箱用陷阱箱合成方式
+        shapeless(output, ChestBlocks.DEATH_GOLDEN_CHEST.toStack(), Ingredient.of(ChestBlocks.GOLDEN_CHEST), Ingredient.of(Items.TRIPWIRE_HOOK));
+        shapeless(output, ChestBlocks.DEATH_WOODEN_CHEST.toStack(), Ingredient.of(Items.TRAPPED_CHEST), Ingredient.of(Items.TRIPWIRE_HOOK));
 
         shapeless(output, ConsumableItems.VILE_POWDER.toStack(5), Ingredient.of(NatureBlocks.VILE_MUSHROOM));
         shapeless(output, ConsumableItems.VICIOUS_POWDER.toStack(5), Ingredient.of(NatureBlocks.VICIOUS_MUSHROOM));

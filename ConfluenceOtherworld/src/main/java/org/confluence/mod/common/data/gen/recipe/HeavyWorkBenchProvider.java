@@ -561,6 +561,9 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         shapeless(recipeOutput, TGItems.SILVER_BULLET.toStack(70), AmountIngredient.of(70, TGItems.MUSKET_BULLET), Ingredient.of(ModTags.Items.INGOTS_SILVER));
         shapeless(recipeOutput, TGItems.TUNGSTEN_BULLET.toStack(70), AmountIngredient.of(70, TGItems.MUSKET_BULLET), Ingredient.of(ModTags.Items.INGOTS_TUNGSTEN));
         shapeless(recipeOutput, TGItems.METEOR_SHOT.toStack(70), AmountIngredient.of(70, TGItems.MUSKET_BULLET), Ingredient.of(ModTags.Items.INGOTS_METEORITE));
+
+        shapeless(recipeOutput, FunctionalBlocks.EXPLODE_BOULDER.toStack(), Ingredient.of(FunctionalBlocks.NORMAL_BOULDER), Ingredient.of(FunctionalBlocks.INSTANTANEOUS_EXPLOSION_TNT));
+        shapeless(recipeOutput, FunctionalBlocks.FOLLOWER_BOULDER.toStack(), Ingredient.of(FunctionalBlocks.NORMAL_BOULDER), Ingredient.of(Items.OBSERVER));
     }
 
     private void buildBaseStatues(RecipeOutput recipeOutput) {

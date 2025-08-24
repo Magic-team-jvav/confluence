@@ -26,7 +26,6 @@ public final class ModTags {
         public static final TagKey<Block> NEEDS_7_LEVEL = register("needs_7_level");
         public static final TagKey<Block> NEEDS_8_LEVEL = register("needs_8_level");
         public static final TagKey<Block> NEEDS_9_LEVEL = register("needs_9_level");
-        public static final TagKey<Block> NEEDS_10_LEVEL = register("needs_10_level");
         public static final TagKey<Block> UNBREAKABLE = register("unbreakable"); // 用于锯刃镐及以上
         public static final TagKey<Block> TORCH = register("torch"); // todo
         public static final TagKey<Block> HARDMODE = register("hardmode"); // todo

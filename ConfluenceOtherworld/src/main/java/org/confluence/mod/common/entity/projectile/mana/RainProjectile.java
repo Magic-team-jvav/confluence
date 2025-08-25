@@ -19,6 +19,7 @@ import java.util.UUID;
 
 public class RainProjectile extends AbstractManaProjectile implements Immunity {
     protected final Set<UUID> penetrateSet = new HashSet<>();
+    private int maxPenetrate = 2;
 
     public RainProjectile(EntityType<? extends RainProjectile> entityType, Level level) {
         super(entityType, level);
@@ -28,6 +29,10 @@ public class RainProjectile extends AbstractManaProjectile implements Immunity {
         this(entityType, living.level());
         setOwner(living);
         setPos(position);
+    }
+
+    public void setMaxPenetrate(int maxPenetrate) {
+        this.maxPenetrate = maxPenetrate;
     }
 
     @Override
@@ -45,12 +50,12 @@ public class RainProjectile extends AbstractManaProjectile implements Immunity {
             onHitBlock((BlockHitResult) hitresult);
             discard();
             return;
-        } else if (hitresult$type == HitResult.Type.ENTITY) {
+        } else if (!level().isClientSide && hitresult$type == HitResult.Type.ENTITY) {
             Entity entity = ((EntityHitResult) hitresult).getEntity();
             if (!penetrateSet.contains(entity.getUUID())) {
                 entity.hurt(getDamagesource(), getCalculatedDamage());
                 penetrateSet.add(entity.getUUID());
-                if (penetrateSet.size() == 2) {
+                if (penetrateSet.size() == maxPenetrate) {
                     discard();
                     return;
                 }

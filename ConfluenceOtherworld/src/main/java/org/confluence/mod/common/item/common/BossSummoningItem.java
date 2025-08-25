@@ -14,13 +14,14 @@ import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.terraentity.entity.boss.AbstractTerraBossBase;
 
 import java.util.List;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 public class BossSummoningItem extends TooltipItem {
     private final Predicate<Player> condition;
-    private final Factory factory;
+    private final Function<Level, Mob> factory;
 
-    public BossSummoningItem(Predicate<Player> condition, Factory factory, List<Component> tooltips) {
+    public BossSummoningItem(Predicate<Player> condition, Function<Level, Mob> factory, List<Component> tooltips) {
         super(new Properties(), ModRarity.BLUE, tooltips);
         this.condition = condition;
         this.factory = factory;
@@ -31,7 +32,7 @@ public class BossSummoningItem extends TooltipItem {
         ItemStack itemStack = player.getItemInHand(usedHand);
         if (level instanceof ServerLevel serverLevel && condition.test(player)) {
             itemStack.shrink(1);
-            Mob mob = factory.create(level);
+            Mob mob = factory.apply(level);
             if (!level.getEntitiesOfClass(mob.getClass(), player.getBoundingBox().inflate(Short.MAX_VALUE)).isEmpty()) {
                 return InteractionResultHolder.fail(itemStack);
             }
@@ -42,10 +43,5 @@ public class BossSummoningItem extends TooltipItem {
             level.addFreshEntity(mob);
         }
         return InteractionResultHolder.success(itemStack);
-    }
-
-    @FunctionalInterface
-    public interface Factory {
-        Mob create(Level level);
     }
 }

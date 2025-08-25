@@ -1,6 +1,9 @@
 package org.confluence.mod.common.item.mana;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtUtils;
+import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -16,9 +19,12 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.entity.projectile.mana.CloudProjectile;
 
+import java.util.UUID;
 import java.util.function.Consumer;
 
 public class CloudRodItem extends ManaStaffItem<CloudProjectile> {
+    private int maxCloud = 1;
+
     public CloudRodItem(Properties properties, ModRarity rarity, ProjectileFactory<CloudProjectile> factory, float damage, int manaCost, float rawVelocity, int cooldown) {
         super(properties, rarity, factory, damage, manaCost, rawVelocity, cooldown);
     }
@@ -31,12 +37,20 @@ public class CloudRodItem extends ManaStaffItem<CloudProjectile> {
         super(rarity, factory, damage, manaCost, rawVelocity, cooldown, critChance);
     }
 
+    public CloudRodItem setMaxCloud(int maxCloud) {
+        if (maxCloud < 1) throw new IllegalArgumentException("maxCount must be greater than 1, currently is '" + maxCloud + "'");
+        this.maxCloud = maxCloud;
+        return this;
+    }
+
     @Override
     protected void beforeShoot(ServerPlayer player, ItemStack itemStack, CloudProjectile projectile) {
         super.beforeShoot(player, itemStack, projectile);
         CompoundTag tag = LibUtils.getItemStackNbtNoCopy(itemStack);
-        if (tag.hasUUID("last")) {
-            Entity entity = player.serverLevel().getEntity(tag.getUUID("last"));
+        ListTag clouds = tag.getList("Clouds", CompoundTag.TAG_INT_ARRAY);
+        if (clouds.size() == maxCloud) {
+            UUID removed = NbtUtils.loadUUID(clouds.removeFirst());
+            Entity entity = player.serverLevel().getEntity(removed);
             if (entity != null) {
                 entity.discard();
             }
@@ -67,6 +81,11 @@ public class CloudRodItem extends ManaStaffItem<CloudProjectile> {
     @Override
     protected void afterShoot(ServerPlayer player, ItemStack itemStack, CloudProjectile projectile) {
         super.afterShoot(player, itemStack, projectile);
-        LibUtils.updateItemStackNbt(itemStack, tag -> tag.putUUID("last", projectile.getUUID()));
+        LibUtils.updateItemStackNbt(itemStack, tag -> {
+            ListTag clouds = new ListTag();
+            clouds.addAll(tag.getList("Clouds", Tag.TAG_INT_ARRAY));
+            clouds.add(NbtUtils.createUUID(projectile.getUUID()));
+            tag.put("Clouds", clouds);
+        });
     }
 }

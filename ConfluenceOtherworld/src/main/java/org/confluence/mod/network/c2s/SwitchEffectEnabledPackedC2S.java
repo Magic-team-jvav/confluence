@@ -39,6 +39,7 @@ public record SwitchEffectEnabledPackedC2S(Holder<MobEffect> effect, boolean ena
                     } else {
                         mobEffect.removeAttributeModifiers(player.getAttributes());
                     }
+                    player.effectsDirty = true;
                 }
             }
         }).exceptionally(e -> {

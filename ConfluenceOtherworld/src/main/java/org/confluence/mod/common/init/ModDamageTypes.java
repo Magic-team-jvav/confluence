@@ -19,7 +19,6 @@ public final class ModDamageTypes {
     public static final ResourceKey<DamageType> MAGICAL_PROJECTILE = register("magical_projectile");
     public static final ResourceKey<DamageType> SWORD_PROJECTILE = register("sword_projectile");
 
-
     private static ResourceKey<DamageType> register(String id) {
         return Confluence.asResourceKey(Registries.DAMAGE_TYPE, id);
     }
@@ -39,6 +38,5 @@ public final class ModDamageTypes {
     public static void bootstrap(BootstrapContext<DamageType> context) {
         TETags.DamageTypes.createDamageTypes(context);
         context.register(SWORD_PROJECTILE, new DamageType("sword_projectile_damage_type", 0.1F));
-
     }
 }

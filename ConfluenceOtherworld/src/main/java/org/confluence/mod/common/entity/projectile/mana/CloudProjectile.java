@@ -31,16 +31,18 @@ public class CloudProjectile extends AbstractManaProjectile implements GeoEntity
     protected transient double motionY;
     private EntityType<? extends RainProjectile> rainType;
     private int duration;
+    private int maxPenetrate;
 
     public CloudProjectile(EntityType<? extends CloudProjectile> entityType, Level level) {
         super(entityType, level);
         setNoGravity(true);
     }
 
-    public CloudProjectile(EntityType<? extends CloudProjectile> cloudType, EntityType<? extends RainProjectile> rainType, LivingEntity living, int duration) {
+    public CloudProjectile(EntityType<? extends CloudProjectile> cloudType, EntityType<? extends RainProjectile> rainType, LivingEntity living, int duration, int maxPenetrate) {
         this(cloudType, living.level());
         this.rainType = rainType;
         this.duration = duration;
+        this.maxPenetrate = maxPenetrate;
         setOwner(living);
         setPos(living.getX(), living.getEyeY() - 0.1, living.getZ());
     }
@@ -94,6 +96,7 @@ public class CloudProjectile extends AbstractManaProjectile implements GeoEntity
                             -1,
                             (random.nextFloat() - 0.5F) * width
                     ));
+                    entity.setMaxPenetrate(maxPenetrate);
                     entity.setDamage(getDamage());
                     level().addFreshEntity(entity);
                 }

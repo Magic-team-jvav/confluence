@@ -302,7 +302,6 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         );
         solidifier(recipeOutput, DecorativeBlocks.PINK_GEL_BLOCK.toStack(),
                 ShapedRecipePattern.of(Map.of(
-                                '#', Ingredient.of(MaterialItems.PINK_GEL),
                                 '#', Ingredient.of(MaterialItems.PINK_GEL)
                         ),
                         List.of(

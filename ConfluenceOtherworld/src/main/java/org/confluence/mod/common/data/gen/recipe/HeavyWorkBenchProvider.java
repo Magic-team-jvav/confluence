@@ -24,6 +24,7 @@ import org.confluence.mod.common.recipe.HeavyWorkBenchRecipe;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_furniture.common.init.TFBlocks;
 import org.confluence.terra_guns.common.init.TGItems;
+import org.confluence.terraentity.init.item.TEBoomerangItems;
 import org.confluence.terraentity.init.item.TESummonItems;
 import org.confluence.terraentity.init.item.TEWhipItems;
 import org.confluence.terraentity.init.item.TEYoyosItems;
@@ -120,13 +121,13 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         basePhaseblade(recipeOutput, AmountIngredient.of(5, ModTags.Items.GEMS_AMETHYST), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.PURPLE_PHASEBLADE.toStack());
 
         // 基础长袍
-        baseRobe(recipeOutput, Ingredient.of(VanityArmorItems.ROBE), AmountIngredient.of(2, Tags.Items.GEMS_DIAMOND),Ingredient.of(Tags.Items.GEMS_DIAMOND),ArmorItems.DIAMOND_ROBE.toStack());
-        baseRobe(recipeOutput, Ingredient.of(VanityArmorItems.ROBE), AmountIngredient.of(2, ModTags.Items.GEMS_RUBY),Ingredient.of(ModTags.Items.GEMS_RUBY), ArmorItems.RUBY_ROBE.toStack());
-        baseRobe(recipeOutput, Ingredient.of(VanityArmorItems.ROBE), AmountIngredient.of(2, ModTags.Items.GEMS_AMBER),Ingredient.of(ModTags.Items.GEMS_AMBER), ArmorItems.AMBER_ROBE.toStack());
-        baseRobe(recipeOutput, Ingredient.of(VanityArmorItems.ROBE), AmountIngredient.of(2, ModTags.Items.GEMS_TOPAZ),Ingredient.of(ModTags.Items.GEMS_TOPAZ), ArmorItems.TOPAZ_ROBE.toStack());
-        baseRobe(recipeOutput, Ingredient.of(VanityArmorItems.ROBE), AmountIngredient.of(2, ModTags.Items.GEMS_JADE),Ingredient.of(ModTags.Items.GEMS_JADE), ArmorItems.JADE_ROBE.toStack());
-        baseRobe(recipeOutput, Ingredient.of(VanityArmorItems.ROBE), AmountIngredient.of(2, ModTags.Items.GEMS_SAPPHIRE),Ingredient.of(ModTags.Items.GEMS_SAPPHIRE), ArmorItems.SAPPHIRE_ROBE.toStack());
-        baseRobe(recipeOutput, Ingredient.of(VanityArmorItems.ROBE), AmountIngredient.of(2, ModTags.Items.GEMS_AMETHYST),Ingredient.of(ModTags.Items.GEMS_AMETHYST), ArmorItems.AMETHYST_ROBE.toStack());
+        baseRobe(recipeOutput, Ingredient.of(VanityArmorItems.ROBE), AmountIngredient.of(2, Tags.Items.GEMS_DIAMOND), Ingredient.of(Tags.Items.GEMS_DIAMOND), ArmorItems.DIAMOND_ROBE.toStack());
+        baseRobe(recipeOutput, Ingredient.of(VanityArmorItems.ROBE), AmountIngredient.of(2, ModTags.Items.GEMS_RUBY), Ingredient.of(ModTags.Items.GEMS_RUBY), ArmorItems.RUBY_ROBE.toStack());
+        baseRobe(recipeOutput, Ingredient.of(VanityArmorItems.ROBE), AmountIngredient.of(2, ModTags.Items.GEMS_AMBER), Ingredient.of(ModTags.Items.GEMS_AMBER), ArmorItems.AMBER_ROBE.toStack());
+        baseRobe(recipeOutput, Ingredient.of(VanityArmorItems.ROBE), AmountIngredient.of(2, ModTags.Items.GEMS_TOPAZ), Ingredient.of(ModTags.Items.GEMS_TOPAZ), ArmorItems.TOPAZ_ROBE.toStack());
+        baseRobe(recipeOutput, Ingredient.of(VanityArmorItems.ROBE), AmountIngredient.of(2, ModTags.Items.GEMS_JADE), Ingredient.of(ModTags.Items.GEMS_JADE), ArmorItems.JADE_ROBE.toStack());
+        baseRobe(recipeOutput, Ingredient.of(VanityArmorItems.ROBE), AmountIngredient.of(2, ModTags.Items.GEMS_SAPPHIRE), Ingredient.of(ModTags.Items.GEMS_SAPPHIRE), ArmorItems.SAPPHIRE_ROBE.toStack());
+        baseRobe(recipeOutput, Ingredient.of(VanityArmorItems.ROBE), AmountIngredient.of(2, ModTags.Items.GEMS_AMETHYST), Ingredient.of(ModTags.Items.GEMS_AMETHYST), ArmorItems.AMETHYST_ROBE.toStack());
 
         // 金系列
         Map<Character, Ingredient> goldWithGems = Map.of(
@@ -354,6 +355,22 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "////",
                 " // "
         )), FunctionalBlocks.NORMAL_BOULDER.toStack());
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '/', Ingredient.of(Items.OAK_LOG)
+        ), List.of(
+                " // ",
+                "////",
+                "////",
+                " // "
+        )), FunctionalBlocks.OAK_LOG_BOULDER.toStack());
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '/', Ingredient.of(Items.CACTUS)
+        ), List.of(
+                " // ",
+                "////",
+                "////",
+                " // "
+        )), FunctionalBlocks.ROLLING_CACTUS_BOULDER.toStack());
         // 巨石面包
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 '/', Ingredient.of(Items.BREAD)
@@ -386,8 +403,8 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         )), TESummonItems.IRON_GOLEM_STAFF.toStack());
         // 小雪怪法杖
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                'a', AmountIngredient.of(2,MaterialItems.FLINX_FUR),
-                '#', AmountIngredient.of(2,ModTags.Items.GOLD_AND_PLATINUM)
+                'a', AmountIngredient.of(2, MaterialItems.FLINX_FUR),
+                '#', AmountIngredient.of(2, ModTags.Items.GOLD_AND_PLATINUM)
         ), List.of(
                 "  aa",
                 " a##",
@@ -397,9 +414,9 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
 
         // 小雪怪皮毛外套
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                'a', AmountIngredient.of(4,MaterialItems.FLINX_FUR),
-                'b', AmountIngredient.of(2,MaterialItems.SILK),
-                '#', AmountIngredient.of(8,ModTags.Items.GOLD_AND_PLATINUM)
+                'a', AmountIngredient.of(4, MaterialItems.FLINX_FUR),
+                'b', AmountIngredient.of(2, MaterialItems.SILK),
+                '#', AmountIngredient.of(8, ModTags.Items.GOLD_AND_PLATINUM)
         ), List.of(
                 "a#a",
                 "bbb",
@@ -408,7 +425,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
 
         // 计时器
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                'a', Ingredient.of(TCItems.GOLD_WATCH,TCItems.PLATINUM_WATCH),
+                'a', Ingredient.of(TCItems.GOLD_WATCH, TCItems.PLATINUM_WATCH),
                 'b', Ingredient.of(Items.REDSTONE),
                 'c', Ingredient.of(ModTags.Items.LEAD_AND_IRON)
         ), List.of(
@@ -418,7 +435,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         )), FunctionalBlocks.TIMERS_BLOCK_1_1.toStack());
 
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                'a', Ingredient.of(TCItems.SILVER_WATCH,TCItems.TUNGSTEN_WATCH),
+                'a', Ingredient.of(TCItems.SILVER_WATCH, TCItems.TUNGSTEN_WATCH),
                 'b', Ingredient.of(Items.REDSTONE),
                 'c', Ingredient.of(ModTags.Items.LEAD_AND_IRON)
         ), List.of(
@@ -428,7 +445,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         )), FunctionalBlocks.TIMERS_BLOCK_3_1.toStack());
 
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                'a', Ingredient.of(TCItems.COPPER_WATCH,TCItems.TIN_WATCH),
+                'a', Ingredient.of(TCItems.COPPER_WATCH, TCItems.TIN_WATCH),
                 'b', Ingredient.of(Items.REDSTONE),
                 'c', Ingredient.of(ModTags.Items.LEAD_AND_IRON)
         ), List.of(
@@ -438,7 +455,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         )), FunctionalBlocks.TIMERS_BLOCK_5_1.toStack());
 
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                'a', Ingredient.of(MaterialItems.TIN_INGOT,Items.COPPER_INGOT),
+                'a', Ingredient.of(MaterialItems.TIN_INGOT, Items.COPPER_INGOT),
                 'b', Ingredient.of(Items.REDSTONE_BLOCK),
                 'c', Ingredient.of(Tags.Items.STONES)
         ), List.of(
@@ -469,7 +486,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
 
         // 抑郁球
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                'S', AmountIngredient.of(3,ModTags.Items.INGOTS_DEMONITE),
+                'S', AmountIngredient.of(3, ModTags.Items.INGOTS_DEMONITE),
                 '/', Ingredient.of(Items.STRING)
         ), List.of(
                 " SS",
@@ -479,7 +496,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
 
         // 血脉球
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                'S', AmountIngredient.of(3,ModTags.Items.INGOTS_CRIMTANE),
+                'S', AmountIngredient.of(3, ModTags.Items.INGOTS_CRIMTANE),
                 '/', Ingredient.of(Items.STRING)
         ), List.of(
                 " SS",
@@ -489,7 +506,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
 
         // 蜂巢球
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                'S', AmountIngredient.of(3,MaterialItems.ROYAL_WAX),
+                'S', AmountIngredient.of(3, MaterialItems.ROYAL_WAX),
                 '/', Ingredient.of(Items.STRING)
         ), List.of(
                 " SS",
@@ -500,8 +517,8 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         // 亚马逊球
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 'S', AmountIngredient.of(4, NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.PLANKS),
-                'A', AmountIngredient.of(12,MaterialItems.STINGER),
-                'B', AmountIngredient.of(9,MaterialItems.JUNGLE_SPORE),
+                'A', AmountIngredient.of(12, MaterialItems.STINGER),
+                'B', AmountIngredient.of(9, MaterialItems.JUNGLE_SPORE),
                 '/', Ingredient.of(MaterialItems.MAN_EATER_VINE)
         ), List.of(
                 " AS",
@@ -553,6 +570,530 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "b   "
         )), LanceItems.STREAMSTRIKE_HALBERD.toStack());
 
+        // 再生之斧
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(Items.WOODEN_AXE),
+                'a', AmountIngredient.of(3, MaterialItems.JUNGLE_SPORE),
+                'b', Ingredient.of(MaterialItems.MAN_EATER_VINE),
+                'c', Ingredient.of(AxeItems.STAFF_OF_REGROWTH)
+        ), List.of(
+                " aaa",
+                " c#b",
+                " b a",
+                "b   "
+        )), AxeItems.AXE_OF_REGROWTH.toStack());
+        // 血腥屠刀
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '/', Ingredient.of(MaterialItems.VERTEBRA),
+                'c', AmountIngredient.of(2, ModTags.Items.INGOTS_CRIMTANE)
+        ), List.of(
+                "  cc",
+                " cc ",
+                "c/  ",
+                "/   "
+        )), SwordItems.BLOOD_BUTCHERER.toStack());
+        // 嗜血狂斧
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '/', Ingredient.of(MaterialItems.VERTEBRA),
+                'c', AmountIngredient.of(2, ModTags.Items.INGOTS_CRIMTANE)
+        ), List.of(
+                " ccc",
+                " c/c",
+                " /c ",
+                "/   "
+        )), AxeItems.BLOOD_LUST_CLUSTER.toStack());
+        // 死亡使者镐
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '/', Ingredient.of(MaterialItems.VERTEBRA),
+                'a', AmountIngredient.of(6, MaterialItems.TISSUE_SAMPLE),
+                'c', AmountIngredient.of(3, ModTags.Items.INGOTS_CRIMTANE)
+        ), List.of(
+                " cca",
+                "  /c",
+                " / c",
+                "/   "
+        )), PickaxeItems.DEATHBRINGER_PICKAXE.toStack());
+        // 血肉锤
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '/', Ingredient.of(MaterialItems.VERTEBRA),
+                'a', AmountIngredient.of(4, MaterialItems.TISSUE_SAMPLE),
+                'c', AmountIngredient.of(3, ModTags.Items.INGOTS_CRIMTANE)
+        ), List.of(
+                "cac",
+                "c/c",
+                " / ",
+                " / "
+        )), HammerItems.FLESH_GRINDER.toStack());
+        // 烹饪锅
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(ModTags.Items.LEAD_AND_IRON),
+                'b', AmountIngredient.of(2, ModTags.Items.LEAD_AND_IRON),
+                '#', Ingredient.of(ItemTags.PLANKS)
+        ), List.of(
+                "a  a",
+                "a  a",
+                "baab",
+                "#  #"
+        )), FunctionalBlocks.COOKING_POT.toStack());
+        // 锯木机
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(ModTags.Items.LEAD_AND_IRON),
+                'b', AmountIngredient.of(3, ItemTags.WOODEN_SLABS),
+                'c', Ingredient.of(Items.STICK),
+                'd', Ingredient.of(Items.CHAIN)
+        ), List.of(
+                "aa  ",
+                "bbbb",
+                "cd c",
+                "cbbc"
+        )), FunctionalBlocks.SAWMILL.toStack());
+        // 肌腱弓
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'c', Ingredient.of(ModTags.Items.INGOTS_CRIMTANE),
+                '/', Ingredient.of(Items.STRING)
+        ), List.of(
+                " ccc",
+                "cc /",
+                "c / ",
+                "c/  "
+        )), BowItems.TENDON_BOW.toStack());
+        // 恶魔弓
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'c', Ingredient.of(ModTags.Items.INGOTS_DEMONITE),
+                '/', Ingredient.of(Items.STRING)
+        ), List.of(
+                " ccc",
+                "cc /",
+                "c / ",
+                "c/  "
+        )), BowItems.DEMON_BOW.toStack());
+        // 魔光剑
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '/', Ingredient.of(MaterialItems.ROTTEN_BONE),
+                'c', Ingredient.of(ModTags.Items.INGOTS_DEMONITE)
+        ), List.of(
+                "  cc",
+                " ccc",
+                "c/c ",
+                "/c  "
+        )), SwordItems.LIGHTS_BANE.toStack());
+        // 暗夜战斧
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '/', Ingredient.of(MaterialItems.ROTTEN_BONE),
+                'c', AmountIngredient.of(2, ModTags.Items.INGOTS_DEMONITE)
+        ), List.of(
+                " ccc",
+                " c/c",
+                " /c ",
+                "/   "
+        )), AxeItems.WAR_AXE_OF_THE_NIGHT.toStack());
+        // 恶魔镐
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '/', Ingredient.of(MaterialItems.ROTTEN_BONE),
+                'a', AmountIngredient.of(6, MaterialItems.SHADOW_SCALE),
+                'c', AmountIngredient.of(3, ModTags.Items.INGOTS_DEMONITE)
+        ), List.of(
+                " cca",
+                "  /c",
+                " / c",
+                "/   "
+        )), PickaxeItems.NIGHTMARE_PICKAXE.toStack());
+        // 魔锤
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '/', Ingredient.of(MaterialItems.ROTTEN_BONE),
+                'c', AmountIngredient.of(4, ModTags.Items.INGOTS_DEMONITE),
+                'a', AmountIngredient.of(2, MaterialItems.SHADOW_SCALE)
+        ), List.of(
+                "aca",
+                "c/c",
+                " / ",
+                " / "
+        )), HammerItems.THE_BREAKER.toStack());
+        // 暗影套
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(5, MaterialItems.SHADOW_SCALE),
+                '#', AmountIngredient.of(4, ModTags.Items.INGOTS_DEMONITE)
+        ), List.of(
+                "a#a",
+                "# #"
+        )), ArmorItems.SHADOW_HELMET.toStack());
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(5, MaterialItems.SHADOW_SCALE),
+                '#', AmountIngredient.of(4, ModTags.Items.INGOTS_DEMONITE)
+        ), List.of(
+                "# #",
+                "a#a",
+                "###"
+        )), ArmorItems.SHADOW_CHESTPLATE.toStack());
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(5, MaterialItems.SHADOW_SCALE),
+                '#', AmountIngredient.of(3, ModTags.Items.INGOTS_DEMONITE)
+        ), List.of(
+                "a#a",
+                "# #",
+                "# #"
+        )), ArmorItems.SHADOW_LEGGINGS.toStack());
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(5, MaterialItems.SHADOW_SCALE),
+                '#', AmountIngredient.of(3, ModTags.Items.INGOTS_DEMONITE)
+        ), List.of(
+                "a a",
+                "# #"
+        )), ArmorItems.SHADOW_BOOTS.toStack());
+        // 猩红套
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(3, MaterialItems.TISSUE_SAMPLE),
+                '#', AmountIngredient.of(6, ModTags.Items.INGOTS_CRIMTANE)
+        ), List.of(
+                "#a#",
+                "a a"
+        )), ArmorItems.CRIMSON_HELMET.toStack());
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(3, MaterialItems.TISSUE_SAMPLE),
+                '#', AmountIngredient.of(5, ModTags.Items.INGOTS_CRIMTANE)
+        ), List.of(
+                "a a",
+                "#a#",
+                "###"
+        )), ArmorItems.CRIMSON_CHESTPLATE.toStack());
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(3, MaterialItems.TISSUE_SAMPLE),
+                '#', AmountIngredient.of(4, ModTags.Items.INGOTS_CRIMTANE)
+        ), List.of(
+                "a#a",
+                "# #",
+                "a a"
+        )), ArmorItems.CRIMSON_LEGGINGS.toStack());
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(5, MaterialItems.TISSUE_SAMPLE),
+                '#', AmountIngredient.of(4, ModTags.Items.INGOTS_CRIMTANE)
+        ), List.of(
+                "a a",
+                "# #"
+        )), ArmorItems.CRIMSON_BOOTS.toStack());
+        // 石骸弓
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'c', Ingredient.of(ModTags.Items.RAW_MATERIALS_STURDY_FOSSIL),
+                '/', Ingredient.of(Items.STRING)
+        ), List.of(
+                " ccc",
+                "cc /",
+                "c / ",
+                "c/  "
+        )), BowItems.FOSSIL_BOW.toStack());
+        // 化石镐
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '/', Ingredient.of(Items.STICK),
+                '#', Ingredient.of(ModTags.Items.RAW_MATERIALS_STURDY_FOSSIL)
+        ), List.of(
+                " ###",
+                "  /#",
+                " / #",
+                "/   "
+        )), PickaxeItems.FOSSIL_PICKAXE.toStack());
+        // 化石套
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(2, ModTags.Items.RAW_MATERIALS_STURDY_FOSSIL),
+                'a', AmountIngredient.of(2, ModTags.Items.GEMS_AMBER)
+        ), List.of(
+                "#a#",
+                "# #"
+        )), ArmorItems.FOSSIL_HELMET.toStack());
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(2, ModTags.Items.RAW_MATERIALS_STURDY_FOSSIL),
+                'a', AmountIngredient.of(2, ModTags.Items.GEMS_AMBER)
+        ), List.of(
+                "# #",
+                "#a#",
+                "###"
+        )), ArmorItems.FOSSIL_CHESTPLATE.toStack());
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(2, ModTags.Items.RAW_MATERIALS_STURDY_FOSSIL)
+        ), List.of(
+                "###",
+                "# #",
+                "# #"
+        )), ArmorItems.FOSSIL_LEGGINGS.toStack());
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(2, ModTags.Items.RAW_MATERIALS_STURDY_FOSSIL)
+        ), List.of(
+                "# #",
+                "# #"
+        )), ArmorItems.FOSSIL_BOOTS.toStack());
+        // 熔火之怒
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'c', AmountIngredient.of(2, ModTags.Items.INGOTS_HELLSTONE),
+                '/', Ingredient.of(Items.STRING)
+        ), List.of(
+                " ccc",
+                "cc /",
+                "c / ",
+                "c/  "
+        )), BowItems.MOLTEN_FURY.toStack());
+        // 泥土炸弹
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(3, Items.DIRT),
+                'a', Ingredient.of(ConsumableItems.BOMB)
+        ), List.of(
+                "###",
+                "#a#",
+                "###"
+        )), ConsumableItems.DIRT_BOMB.toStack());
+        // 烈焰回旋镖
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(3, ModTags.Items.INGOTS_HELLSTONE),
+                'b', AmountIngredient.of(2, ModTags.Items.INGOTS_HELLSTONE),
+                'c', Ingredient.of(TEBoomerangItems.ENCHANTED_BOOMERANG)
+        ), List.of(
+                "  ab",
+                " c  ",
+                "a   ",
+                "b   "
+        )), TEBoomerangItems.FLAMARANG.toStack());
+        // 火山
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(4, ModTags.Items.INGOTS_HELLSTONE),
+                'b', Ingredient.of(Items.SOUL_SAND),
+                'c', AmountIngredient.of(2, Items.BLAZE_ROD)
+        ), List.of(
+                "   a",
+                " aa ",
+                "baa ",
+                "cb  "
+        )), SwordItems.VOLCANO.toStack());
+        // 熔岩锤斧
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(3, ModTags.Items.INGOTS_HELLSTONE),
+                'a', Ingredient.of(Items.BLAZE_ROD)
+        ), List.of(
+                "####",
+                " #a#",
+                " a  ",
+                "a   "
+        )), HamaxeItems.MOLTEN_HAMAXE.toStack());
+        // 熔岩镐
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'c', AmountIngredient.of(4, ModTags.Items.INGOTS_HELLSTONE),
+                '/', Ingredient.of(Items.BLAZE_ROD)
+        ), List.of(
+                " ccc",
+                "  /c",
+                " / c",
+                "/   "
+        )), PickaxeItems.MOLTEN_PICKAXE.toStack());
+        // 流星锤斧
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(2, ModTags.Items.INGOTS_METEORITE),
+                'a', AmountIngredient.of(3, ModTags.Items.INGOTS_METEORITE)
+        ), List.of(
+                "####",
+                " #a#",
+                " a  ",
+                "a   "
+        )), HamaxeItems.METEOR_HAMAXE.toStack());
+        // 陨石套
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(2, ModTags.Items.INGOTS_METEORITE)
+        ), List.of(
+                "###",
+                "# #"
+        )), ArmorItems.METEOR_HELMET.toStack());
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(2, ModTags.Items.INGOTS_METEORITE)
+        ), List.of(
+                "# #",
+                "###",
+                "###"
+        )), ArmorItems.METEOR_CHESTPLATE.toStack());
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(2, ModTags.Items.INGOTS_METEORITE)
+        ), List.of(
+                "###",
+                "# #",
+                "# #"
+        )), ArmorItems.METEOR_LEGGINGS.toStack());
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(2, ModTags.Items.INGOTS_METEORITE)
+        ), List.of(
+                "# #",
+                "# #"
+        )), ArmorItems.METEOR_BOOTS.toStack());
+        // 太空枪
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(2, ModTags.Items.INGOTS_METEORITE),
+                'a', AmountIngredient.of(4, ModTags.Items.INGOTS_METEORITE)
+        ), List.of(
+                "  ##",
+                " ## ",
+                "aa  ",
+                "  a "
+        )), ManaWeaponItems.SPACE_GUN.toStack());
+        // 南瓜套
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(2, Items.PUMPKIN)
+        ), List.of(
+                "###",
+                "# #"
+        )), ArmorItems.PUMPKIN_HELMET.toStack());
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(2, Items.PUMPKIN)
+        ), List.of(
+                "# #",
+                "###",
+                "###"
+        )), ArmorItems.PUMPKIN_CHESTPLATE.toStack());
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(2, Items.PUMPKIN)
+        ), List.of(
+                "###",
+                "# #",
+                "# #"
+        )), ArmorItems.PUMPKIN_LEGGINGS.toStack());
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(2, Items.PUMPKIN)
+        ), List.of(
+                "# #",
+                "# #"
+        )), ArmorItems.PUMPKIN_BOOTS.toStack());
+        // 寒晶套
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(2, MaterialItems.WINTER_MARROW),
+                'a', AmountIngredient.of(2, ModTags.Items.RAW_MATERIALS_COLD_CRYSTAL)
+        ), List.of(
+                "#a#",
+                "# #"
+        )), ArmorItems.COLD_CRYSTAL_HELMET.toStack());
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(2, MaterialItems.WINTER_MARROW),
+                'a', AmountIngredient.of(2, ModTags.Items.RAW_MATERIALS_COLD_CRYSTAL)
+        ), List.of(
+                "#a#",
+                "# #",
+                "# #"
+        )), ArmorItems.COLD_CRYSTAL_CHESTPLATE.toStack());
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(2, MaterialItems.WINTER_MARROW)
+        ), List.of(
+                "###",
+                "# #",
+                "# #"
+        )), ArmorItems.COLD_CRYSTAL_LEGGINGS.toStack());
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(2, MaterialItems.WINTER_MARROW)
+        ), List.of(
+                "# #",
+                "# #"
+        )), ArmorItems.COLD_CRYSTAL_BOOTS.toStack());
+        // 孢根套
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(2, MaterialItems.SPORE_ROOT),
+                'a', AmountIngredient.of(2, ModTags.Items.RAW_MATERIALS_GELSTONE)
+        ), List.of(
+                "#a#",
+                "# #"
+        )), ArmorItems.SPORE_ROOT_HELMET.toStack());
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(2, MaterialItems.SPORE_ROOT),
+                'a', AmountIngredient.of(2, ModTags.Items.RAW_MATERIALS_GELSTONE)
+        ), List.of(
+                "# #",
+                "#a#",
+                "###"
+        )), ArmorItems.SPORE_ROOT_CHESTPLATE.toStack());
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(2, MaterialItems.SPORE_ROOT)
+        ), List.of(
+                "###",
+                "# #",
+                "# #"
+        )), ArmorItems.SPORE_ROOT_LEGGINGS.toStack());
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(2, MaterialItems.SPORE_ROOT)
+        ), List.of(
+                "# #",
+                "# #"
+        )), ArmorItems.SPORE_ROOT_BOOTS.toStack());
+        // 渊潾套
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(2, MaterialItems.HEIM),
+                'a', AmountIngredient.of(2, ModTags.Items.RAW_MATERIALS_OPAL),
+                'b', AmountIngredient.of(2, Items.PRISMARINE_SHARD)
+        ), List.of(
+                "bab",
+                "# #"
+        )), ArmorItems.HEIM_HELMET.toStack());
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(2, MaterialItems.HEIM),
+                'a', AmountIngredient.of(2, ModTags.Items.RAW_MATERIALS_OPAL),
+                'b', AmountIngredient.of(2, Items.PRISMARINE_SHARD)
+        ), List.of(
+                "# #",
+                "bab",
+                "###"
+        )), ArmorItems.HEIM_CHESTPLATE.toStack());
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(2, MaterialItems.HEIM),
+                'b', AmountIngredient.of(2, Items.PRISMARINE_SHARD)
+        ), List.of(
+                "b#b",
+                "b b",
+                "# #"
+        )), ArmorItems.HEIM_LEGGINGS.toStack());
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(2, MaterialItems.HEIM),
+                'b', AmountIngredient.of(2, Items.PRISMARINE_SHARD)
+        ), List.of(
+                "b b",
+                "# #"
+        )), ArmorItems.HEIM_BOOTS.toStack());
+        // 魔光护符
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', Ingredient.of(ModTags.Items.EVIL_INGOT),
+                'c', AmountIngredient.of(2, ModTags.Items.EVIL_INGOT),
+                '/', AmountIngredient.of(2, ModTags.Items.GEMS_TOPAZ)
+        ), List.of(
+                "a  a",
+                " cc ",
+                "c//c",
+                "cccc"
+        )), TCItems.MAGILUMINESCENCE.toStack());
+        // 黄蜂法杖
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(2, MaterialItems.ROYAL_WAX)
+        ), List.of(
+                "###",
+                "# #",
+                " # ",
+                " # "
+        )), TESummonItems.HORNET_STAFF.toStack());
+        // 蜜蜂套
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(MaterialItems.ROYAL_WAX)
+        ), List.of(
+                "###",
+                "# #"
+        )), ArmorItems.BEE_HELMET.toStack());
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(MaterialItems.ROYAL_WAX)
+        ), List.of(
+                "# #",
+                "###",
+                "###"
+        )), ArmorItems.BEE_CHESTPLATE.toStack());
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(MaterialItems.ROYAL_WAX)
+        ), List.of(
+                "###",
+                "# #",
+                "# #"
+        )), ArmorItems.BEE_LEGGINGS.toStack());
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(MaterialItems.ROYAL_WAX)
+        ), List.of(
+                "# #",
+                "# #"
+        )), ArmorItems.BEE_BOOTS.toStack());
+
 
         shapeless(recipeOutput, NatureBlocks.THIN_ICE_BLOCK.toStack(), EnvironmentLevelAccess.matcher(null, null, true), Ingredient.of(Items.ICE));
         shapeless(recipeOutput, ConsumableItems.BONE_THROWING_KNIFE.toStack(), Ingredient.of(ConsumableItems.THROWING_KNIVE), Ingredient.of(MaterialItems.STURDY_FOSSIL));
@@ -564,6 +1105,12 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
 
         shapeless(recipeOutput, FunctionalBlocks.EXPLODE_BOULDER.toStack(), Ingredient.of(FunctionalBlocks.NORMAL_BOULDER), Ingredient.of(FunctionalBlocks.INSTANTANEOUS_EXPLOSION_TNT));
         shapeless(recipeOutput, FunctionalBlocks.FOLLOWER_BOULDER.toStack(), Ingredient.of(FunctionalBlocks.NORMAL_BOULDER), Ingredient.of(Items.OBSERVER));
+        shapeless(recipeOutput, FunctionalBlocks.EVER_POWERED_RAIL.toStack(16), AmountIngredient.of(16, Items.RAIL), Ingredient.of(Items.REDSTONE_TORCH));
+
+        shapeless(recipeOutput, ConsumableItems.SCARAB_BOMB.toStack(), Ingredient.of(ConsumableItems.BOMB), Ingredient.of(MaterialItems.STURDY_FOSSIL));
+        shapeless(recipeOutput, NatureBlocks.LIFE_CRYSTAL_BLOCK.toStack(), Ingredient.of(ConsumableItems.LIFE_CRYSTAL));
+
+        shapeless(recipeOutput, ConsumableItems.ABEEMINATION.toStack(), AmountIngredient.of(5, NatureBlocks.JUNGLE_HIVE_BLOCK), AmountIngredient.of(5, Items.HONEY_BLOCK), Ingredient.of(Items.HONEY_BOTTLE), Ingredient.of(MaterialItems.STINGER));
     }
 
     private void buildBaseStatues(RecipeOutput recipeOutput) {
@@ -643,6 +1190,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 'a', handle
         ), baseStaffPattern), EnvironmentLevelAccess.Matcher.EMPTY), null);
     }
+
     protected void basePhaseblade(RecipeOutput recipeOutput, Ingredient gem, Ingredient handle, ItemStack result) {
         ResourceLocation id = Confluence.asResource("heavy_work_bench/" + getItemName(result.getItem()));
         recipeOutput.accept(id, new HeavyWorkBenchRecipe(result, ShapedRecipePattern.of(Map.of(
@@ -650,7 +1198,8 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 'a', handle
         ), basePhasebladePattern), EnvironmentLevelAccess.Matcher.EMPTY), null);
     }
-    protected void baseRobe(RecipeOutput recipeOutput, Ingredient robe, Ingredient gem, Ingredient handle,ItemStack result) {
+
+    protected void baseRobe(RecipeOutput recipeOutput, Ingredient robe, Ingredient gem, Ingredient handle, ItemStack result) {
         ResourceLocation id = Confluence.asResource("heavy_work_bench/" + getItemName(result.getItem()));
         recipeOutput.accept(id, new HeavyWorkBenchRecipe(result, ShapedRecipePattern.of(Map.of(
                 '#', robe,

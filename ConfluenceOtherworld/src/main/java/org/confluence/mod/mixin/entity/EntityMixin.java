@@ -217,7 +217,7 @@ public abstract class EntityMixin implements IEntity {
                 }
                 event.setTarget(target);
                 if (sourceEntity instanceof AbstractTerraNPC sourceNpc && target instanceof AbstractTerraNPC targetNpc) {
-                    targetNpc.setHouse(sourceNpc.house);
+                    targetNpc.setHouse(sourceNpc.getHouse());
                     event.setSpeedY(0.7);
                     NPCSpawner.INSTANCE.setNPCAlive(((IAbstractTerraNPC) sourceNpc).confluence$getRegion(), sourceNpc.getType(), false);
                     if (target instanceof AnglerNPC anglerNPC) {

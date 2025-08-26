@@ -2,9 +2,7 @@ package org.confluence.mod.client.event;
 
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.blaze3d.vertex.*;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -20,7 +18,9 @@ import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.item.CompassItemPropertyFunction;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.item.ItemPropertyFunction;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
@@ -54,6 +54,7 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.ToolItems;
+import org.confluence.mod.common.item.accessory.GuideVooDooDollItem;
 import org.confluence.terra_curio.common.item.IFunctionCouldEnable;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
@@ -171,9 +172,31 @@ public final class ModClientSetups {
         @Override
         public BlockEntityWithoutLevelRenderer getCustomRenderer() {
             if (renderer == null) {
-                this.renderer = new BlockEntityWithoutLevelRenderer(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels()) {
+                Minecraft minecraft = Minecraft.getInstance();
+                this.renderer = new BlockEntityWithoutLevelRenderer(minecraft.getBlockEntityRenderDispatcher(), minecraft.getEntityModels()) {
                     @Override
                     public void renderByItem(ItemStack stack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {}
+                };
+            }
+            return renderer;
+        }
+    };
+    static final IClientItemExtensions GUIDE_VOODOO_DOLL = new IClientItemExtensions() {
+        private BlockEntityWithoutLevelRenderer renderer;
+
+        @Override
+        public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+            if (renderer == null) {
+                Minecraft minecraft = Minecraft.getInstance();
+                this.renderer = new BlockEntityWithoutLevelRenderer(minecraft.getBlockEntityRenderDispatcher(), minecraft.getEntityModels()) {
+                    @Override
+                    public void renderByItem(ItemStack stack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
+                        CompoundTag tag = LibUtils.getItemStackNbtIfPresent(stack);
+                        RenderType renderType = tag == null || tag.getBoolean(GuideVooDooDollItem.IS_WALL_KEY) ? ModClientSetups.RED_GLINT : RenderType.glint();
+                        VertexConsumer consumer = VertexMultiConsumer.create(buffer.getBuffer(renderType), buffer.getBuffer(Sheets.translucentCullBlockSheet()));
+                        BakedModel model = minecraft.getItemRenderer().getModel(stack, minecraft.level, null, 250826);
+                        minecraft.getItemRenderer().renderModelLists(model, stack, packedLight, OverlayTexture.NO_OVERLAY, poseStack, consumer);
+                    }
                 };
             }
             return renderer;
@@ -241,10 +264,9 @@ public final class ModClientSetups {
 
     static void registerItemProperties() {
         ResourceLocation enable = Confluence.asResource("enable");
-        ItemPropertyFunction enableFunction = (itemStack, level, living, speed) -> {
-            CompoundTag tag = LibUtils.getItemStackNbtIfPresent(itemStack);
-            if (tag == null) return 1;
-            return tag.getBoolean(IFunctionCouldEnable.DISABLE) ? 0 : 1;
+        ItemPropertyFunction enableFunction = (stack, level, living, seed) -> {
+            CompoundTag tag = LibUtils.getItemStackNbtIfPresent(stack);
+            return tag != null && tag.getBoolean(IFunctionCouldEnable.DISABLE) ? 0 : 1;
         };
         ItemProperties.register(AccessoryItems.SPECTRE_GOGGLES.get(), enable, enableFunction);
         ItemProperties.register(AccessoryItems.MECHANICAL_LENS.get(), enable, enableFunction);
@@ -264,11 +286,25 @@ public final class ModClientSetups {
     public static final RenderType TERRA_SWORD_RENDER_TYPE = RenderType.create("entity_translucent_emissive", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 1536, true, false,
             RenderType.CompositeState.builder()
                     .setShaderState(RENDERTYPE_ENTITY_TRANSLUCENT_EMISSIVE_SHADER)
-                    .setTextureState(new RenderStateShard.TextureStateShard(Confluence.asResource("textures/mask/sword.png"), true, false))
+                    .setTextureState(new TextureStateShard(Confluence.asResource("textures/mask/sword.png"), true, false))
                     .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
                     .setWriteMaskState(COLOR_WRITE)
                     .setCullState(NO_CULL)
-//                        .setLightmapState(LIGHTMAP)
                     .setOverlayState(OVERLAY)
                     .createCompositeState(false));
+
+    public static final RenderType RED_GLINT = createGlint("red_glint");
+
+    private static RenderType createGlint(String name) {
+        return RenderType.create(name, DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS, 1536, RenderType.CompositeState.builder()
+                .setShaderState(RENDERTYPE_GLINT_SHADER)
+                .setTextureState(new TextureStateShard(Confluence.asResource("textures/misc/" + name + ".png"), true, false))
+                .setWriteMaskState(COLOR_WRITE)
+                .setCullState(NO_CULL)
+                .setDepthTestState(EQUAL_DEPTH_TEST)
+                .setTransparencyState(GLINT_TRANSPARENCY)
+                .setTexturingState(GLINT_TEXTURING)
+                .createCompositeState(false)
+        );
+    }
 }

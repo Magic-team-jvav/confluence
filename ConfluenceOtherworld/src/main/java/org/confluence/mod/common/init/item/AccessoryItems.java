@@ -23,7 +23,6 @@ import org.confluence.mod.common.entity.fishing.CurioFishingHook;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.item.accessory.*;
-import org.confluence.mod.common.item.common.GuideVooDooDollItem;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.api.primitive.*;
 import org.confluence.terra_curio.common.init.TCAttributes;

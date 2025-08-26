@@ -519,7 +519,10 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.PIXIE_DUST.get(),
                 MaterialItems.UNICORN_HORN.get(),
                 MaterialItems.SPIDER_FANG.get(),
-                MaterialItems.SPELL_TOME.get()
+                MaterialItems.SPELL_TOME.get(),
+
+                FoodItems.COLORFUL_MINERAL_FISH.get(),
+                FoodItems.CHAOS_FISH.get()
         );
         tag(ModTags.Items.BOSS_SUMMONING).add(
                 ConsumableItems.SUSPICIOUS_LOOKING_EYE.get(),

@@ -1381,13 +1381,18 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 HookItems.LUNAR_HOOK.get(),
                 HookItems.STATIC_HOOK.get(),
                 TEItems.DEBUG_ITEM.get(),
+                DrillItems.CHLOROPHYTE_DRILL.get(),
+                DrillItems.DRAX.get(),
+                DrillItems.SOLAR_FLARE_DRILL.get(),
+                DrillItems.VORTEX_DRILL.get(),
+                DrillItems.NEBULA_DRILL.get(),
+                DrillItems.STARDUST_DRILL.get(),
                 TEFigureBlocks.FIGURE.asItem(),
                 TEFigureBlocks.FIGURE2.asItem(),
                 TEFigureBlocks.FIGURE3.asItem()
         );
         Consumer<DeferredHolder<Item, ? extends Item>> wipAction = item -> wip.add(item.get());
         MinecartItems.ITEMS.getEntries().forEach(wipAction);
-        DrillItems.ITEMS.getEntries().forEach(wipAction);
         LightPetItems.ITEMS.getEntries().forEach(wipAction);
 
         tag(TGTags.GUN).add(

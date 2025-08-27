@@ -69,7 +69,7 @@
             }
         },
         "textures": {
-            "particle": "confluence:item/drill/cobalt_drill_inventory"
+            "particle": "confluence:item/drill/orichalcum_drill_inventory"
         }
     },
     "gui_light": "front",
@@ -78,25 +78,25 @@
         "fixed": {
             "parent": "minecraft:item/generated",
             "textures": {
-                "layer0": "confluence:item/drill/cobalt_drill_inventory"
+                "layer0": "confluence:item/drill/orichalcum_drill_inventory"
             }
         },
         "ground": {
             "parent": "minecraft:item/generated",
             "textures": {
-                "layer0": "confluence:item/drill/cobalt_drill_inventory"
+                "layer0": "confluence:item/drill/orichalcum_drill_inventory"
             }
         },
         "gui": {
             "parent": "minecraft:item/generated",
             "textures": {
-                "layer0": "confluence:item/drill/cobalt_drill_inventory"
+                "layer0": "confluence:item/drill/orichalcum_drill_inventory"
             }
         },
         "head": {
             "parent": "minecraft:item/generated",
             "textures": {
-                "layer0": "confluence:item/drill/cobalt_drill_inventory"
+                "layer0": "confluence:item/drill/orichalcum_drill_inventory"
             }
         }
     }

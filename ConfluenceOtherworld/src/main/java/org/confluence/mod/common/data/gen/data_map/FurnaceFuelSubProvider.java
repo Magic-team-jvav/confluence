@@ -8,7 +8,7 @@ import org.confluence.mod.common.init.item.ArmorItems;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.init.item.ToolItems;
 
-public class FurnaceFuelsSubProvider {
+public final class FurnaceFuelSubProvider {
     public static void gather(ModDataMapProvider.Appender<DataMapProvider.Builder<FurnaceFuel, Item>> appender) {
         appender.create()
                 .add(MaterialItems.GEL.getKey(), new FurnaceFuel(160), false)

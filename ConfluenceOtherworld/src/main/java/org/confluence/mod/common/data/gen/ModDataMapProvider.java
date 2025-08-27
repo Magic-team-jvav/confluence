@@ -26,7 +26,8 @@ public class ModDataMapProvider extends DataMapProvider {
         ImmunitySubProvider.gather(() -> builder(ModDataMaps.IMMUNITY));
         DiggingPowerProvider.gather(() -> builder(ModDataMaps.DIGGING_POWER));
         BugNetEntityToItemSubProvider.gather(builder(ModDataMaps.BUG_NET_ENTITY_TO_ITEM, BugNetEntityToItemSubProvider.Builder::new));
-        FurnaceFuelsSubProvider.gather(() -> builder(NeoForgeDataMaps.FURNACE_FUELS));
+        FurnaceFuelSubProvider.gather(() -> builder(NeoForgeDataMaps.FURNACE_FUELS));
+        LivingInvulnerableEffectsSubProvider.gather(builder(ModDataMaps.LIVING_INVULNERABLE_EFFECTS, LivingInvulnerableEffectsSubProvider.Builder::new));
     }
 
     @SuppressWarnings("unchecked")

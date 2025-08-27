@@ -30,6 +30,7 @@ public final class ModDataMaps {
     public static final DataMapType<EntityType<?>, TreasureBagDrop> TREASURE_BAG = register("treasure_bag", Registries.ENTITY_TYPE, TreasureBagDrop.CODEC, false);
     public static final DataMapType<EntityType<?>, ImmunityDataMap> IMMUNITY = register("immunity", Registries.ENTITY_TYPE, ImmunityDataMap.CODEC, true);
     public static final DataMapType<EntityType<?>, BugNetEntityToItem> BUG_NET_ENTITY_TO_ITEM = register("bug_net_entity_to_item", Registries.ENTITY_TYPE, BugNetEntityToItem.CODEC, false);
+    public static final DataMapType<EntityType<?>, LivingInvulnerableEffects> LIVING_INVULNERABLE_EFFECTS = register("living_invulnerable_effects", Registries.ENTITY_TYPE, LivingInvulnerableEffects.CODEC, true);
 
     private static <R, T> DataMapType<R, T> register(String path, ResourceKey<Registry<R>> resourceKey, Codec<T> codec, boolean synced) {
         DataMapType.Builder<T, R> builder = DataMapType.builder(Confluence.asResource(path), resourceKey, codec);

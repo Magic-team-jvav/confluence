@@ -38,6 +38,7 @@ import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.ManaStorage;
+import org.confluence.mod.common.data.map.LivingInvulnerableEffects;
 import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.effect.beneficial.ArcheryEffect;
 import org.confluence.mod.common.effect.beneficial.LuckEffect;
@@ -255,10 +256,12 @@ public final class LivingEntityEvents {
     }
 
     @SubscribeEvent
-    public static void mobEffect$Applicable(MobEffectEvent.Applicable event) { // 泰拉生物的免疫全扔mixin了
-        Holder<MobEffect> effect = event.getEffectInstance().getEffect();
-        if (effect == ModEffects.SHIMMER && !(event.getEntity() instanceof Player)) {
-            event.setResult(MobEffectEvent.Applicable.Result.DO_NOT_APPLY);
+    public static void mobEffect$Applicable(MobEffectEvent.Applicable event) {
+        if (event.getResult() == MobEffectEvent.Applicable.Result.DEFAULT && !(event.getEntity() instanceof Player)) {
+            Holder<MobEffect> effect = event.getEffectInstance().getEffect();
+            if (LivingInvulnerableEffects.isInvulnerableTo(event.getEntity(), effect)) {
+                event.setResult(MobEffectEvent.Applicable.Result.DO_NOT_APPLY);
+            }
         }
         SweetSword.applyEffects(event);
     }

@@ -23,8 +23,8 @@ import org.confluence.mod.common.recipe.CookingPotRecipe.HeatSourcePredicate;
 
 import java.util.concurrent.CompletableFuture;
 
-public class CookingPotProvider extends AbstractRecipeProvider {
-    public CookingPotProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookup) {
+public class CookingPotRecipeProvider extends AbstractRecipeProvider {
+    public CookingPotRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookup) {
         super(output, lookup);
     }
 

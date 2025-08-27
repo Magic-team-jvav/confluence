@@ -44,6 +44,19 @@ public final class ModArmPoses {
             model.leftArm.xRot = -135 * Mth.DEG_TO_RAD;
         }
     });
+    public static final EnumProxy<ArmPose> DRILL = register(true, (HumanoidModel<?> model, LivingEntity living, HumanoidArm arm) -> {
+        if (arm == HumanoidArm.RIGHT) {
+            model.rightArm.xRot = model.head.xRot - 40 * Mth.DEG_TO_RAD;
+            model.rightArm.yRot = model.head.yRot - 25 * Mth.DEG_TO_RAD;
+            model.leftArm.xRot = model.head.xRot - 45.35F * Mth.DEG_TO_RAD;
+            model.leftArm.yRot = model.head.yRot + 40 * Mth.DEG_TO_RAD;
+        } else {
+            model.leftArm.xRot = model.head.xRot - 40 * Mth.DEG_TO_RAD;
+            model.leftArm.yRot = model.head.yRot + 25 * Mth.DEG_TO_RAD;
+            model.rightArm.xRot = model.head.xRot - 45.35F * Mth.DEG_TO_RAD;
+            model.rightArm.yRot = model.head.yRot - 40 * Mth.DEG_TO_RAD;
+        }
+    });
 
     private static EnumProxy<ArmPose> register(boolean twoHanded, IArmPoseTransformer transformer) {
         return new EnumProxy<>(ArmPose.class, twoHanded, transformer);

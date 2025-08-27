@@ -44,11 +44,12 @@ public final class ModDataGenerator {
                 ModRecipeProvider::new,
                 CraftingRecipeProvider::new,
                 HeavyWorkBenchProvider::new,
-                CookingPotProvider::new,
-                ShimmerTransmutationProvider::new,
+                CookingPotRecipeProvider::new,
+                ShimmerTransmutationRecipeProvider::new,
                 ModAchievementOffsetProvider::new,
                 StonecuttingRecipeProvider::new,
-                SawmillRecipeProvider::new
+                SawmillRecipeProvider::new,
+                HardmodeAnvilRecipeProvider::new
         ));
         generator.addProvider(server, new ModDataMapProvider(output, lookup));
         generator.addProvider(server, new ModLootTableProvider(output, lookup));

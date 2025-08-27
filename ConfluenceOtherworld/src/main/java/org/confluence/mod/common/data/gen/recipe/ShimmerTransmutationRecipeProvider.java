@@ -31,8 +31,8 @@ import java.util.concurrent.CompletableFuture;
 import static org.confluence.mod.common.init.item.AccessoryItems.*;
 import static org.confluence.terra_curio.common.init.TCItems.*;
 
-public class ShimmerTransmutationProvider extends AbstractRecipeProvider {
-    public ShimmerTransmutationProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookup) {
+public class ShimmerTransmutationRecipeProvider extends AbstractRecipeProvider {
+    public ShimmerTransmutationRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookup) {
         super(output, lookup);
     }
 

@@ -61,6 +61,7 @@ import org.joml.Vector3f;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import static net.minecraft.client.renderer.RenderStateShard.*;
 
@@ -138,24 +139,20 @@ public final class ModClientSetups {
             return renderer;
         }
     };
-    static final IClientItemExtensions BREATHING_REED = new IClientItemExtensions() {
-        @Override
-        public HumanoidModel.ArmPose getArmPose(LivingEntity entityLiving, InteractionHand hand, ItemStack itemStack) {
-            return ModArmPoses.BREATHING_REED.getValue();
-        }
-    };
-    static final IClientItemExtensions LANCE = new IClientItemExtensions() {
-        @Override
-        public HumanoidModel.ArmPose getArmPose(LivingEntity entityLiving, InteractionHand hand, ItemStack itemStack) {
-            return ModArmPoses.LANCE.getValue();
-        }
-    };
-    static final IClientItemExtensions UMBRELLA = new IClientItemExtensions() {
-        @Override
-        public HumanoidModel.ArmPose getArmPose(LivingEntity entityLiving, InteractionHand hand, ItemStack itemStack) {
-            return ModArmPoses.UMBRELLA.getValue();
-        }
-    };
+    static final IClientItemExtensions BREATHING_REED = simpleArmPose(ModArmPoses.BREATHING_REED::getValue);
+    static final IClientItemExtensions LANCE = simpleArmPose(ModArmPoses.LANCE::getValue);
+    static final IClientItemExtensions UMBRELLA = simpleArmPose(ModArmPoses.UMBRELLA::getValue);
+    static final IClientItemExtensions DRILL = simpleArmPose(ModArmPoses.DRILL::getValue);
+
+    private static IClientItemExtensions simpleArmPose(Supplier<HumanoidModel.ArmPose> supplier) {
+        return new IClientItemExtensions() {
+            @Override
+            public HumanoidModel.ArmPose getArmPose(LivingEntity entityLiving, InteractionHand hand, ItemStack itemStack) {
+                return supplier.get();
+            }
+        };
+    }
+
     static final IClientItemExtensions NOOP_ITEM = new IClientItemExtensions() {
         private BlockEntityWithoutLevelRenderer renderer;
 

@@ -1792,6 +1792,7 @@ public class ModEnglishProvider extends LanguageProvider {
         BaitItems.ITEMS.getEntries().forEach(itemAction);
         BoatItems.forEach(itemAction);
         BowItems.ITEMS.getEntries().forEach(itemAction);
+        ChainsawItems.ITEMS.getEntries().forEach(itemAction);
         ConsumableItems.ITEMS.getEntries().forEach(itemAction);
         VanityArmorItems.ITEMS.getEntries().forEach(itemAction);
         DrillItems.ITEMS.getEntries().forEach(itemAction);

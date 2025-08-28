@@ -40,7 +40,7 @@ public final class LivingInvulnerableEffectsSubProvider {
                 // TODO 骨蛇 胭脂虫 螃蟹 龙虾
                 .add(TEMonsterEntities.CRIMSON_KEMERA, TCEffects.CONFUSED)
                 .add(TEMonsterEntities.CURSED_SKULL, MobEffects.POISON, TCEffects.CONFUSED)
-                .add(TEBossEntities.DUNGEON_GUARDIAN, new AnyHolderSet<>(provider.lookupOrThrow(Registries.MOB_EFFECT)))
+                .add(TEBossEntities.DUNGEON_GUARDIAN, new AnyHolderSet<>(provider.lookupOrThrow(Registries.MOB_EFFECT)), LivingInvulnerableEffects.Category.HARMFUL)
                 .add(TEMonsterEntities.DUNGEON_SLIME, MobEffects.POISON)
                 .add(TEMonsterEntities.EATER_OF_SOULS, TCEffects.CONFUSED)
                 .add(TEMonsterEntities.FACE_MONSTER, MobEffects.POISON)
@@ -115,8 +115,8 @@ public final class LivingInvulnerableEffectsSubProvider {
             super(ModDataMaps.LIVING_INVULNERABLE_EFFECTS);
         }
 
-        public Builder add(IHolderExtension<EntityType<?>> holder, HolderSet<MobEffect> effects) {
-            super.add(Objects.requireNonNull(holder.getKey()), new LivingInvulnerableEffects(effects), false);
+        public Builder add(IHolderExtension<EntityType<?>> holder, HolderSet<MobEffect> effects, LivingInvulnerableEffects.Category... categories) {
+            super.add(Objects.requireNonNull(holder.getKey()), new LivingInvulnerableEffects(effects, categories), false);
             return this;
         }
 
@@ -126,8 +126,8 @@ public final class LivingInvulnerableEffectsSubProvider {
             return this;
         }
 
-        public Builder add(TagKey<EntityType<?>> tagKey, HolderSet<MobEffect> effects) {
-            super.add(tagKey, new LivingInvulnerableEffects(effects), false);
+        public Builder add(TagKey<EntityType<?>> tagKey, HolderSet<MobEffect> effects, LivingInvulnerableEffects.Category... categories) {
+            super.add(tagKey, new LivingInvulnerableEffects(effects, categories), false);
             return this;
         }
 

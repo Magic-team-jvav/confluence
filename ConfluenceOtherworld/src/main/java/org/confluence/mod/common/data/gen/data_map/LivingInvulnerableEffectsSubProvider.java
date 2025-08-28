@@ -30,6 +30,9 @@ public final class LivingInvulnerableEffectsSubProvider {
     static final Holder<MobEffect> FROST_BURN = TEEffects.FROST_BURN;
     static final Holder<MobEffect> FROSTBITE = ModEffects.FROSTBITE;
     static final Holder<MobEffect> SHADOWFLAME = ModEffects.SHADOWFLAME;
+    static final Holder<MobEffect> SHIMMER = ModEffects.SHIMMER;
+    static final Holder<MobEffect> ACID_VENOM = ModEffects.ACID_VENOM;
+    static final Holder<MobEffect> ICHOR = ModEffects.ICHOR;
     static LivingInvulnerableEffects allHarmfulEffect = new LivingInvulnerableEffects(HolderSet.direct(BuiltInRegistries.MOB_EFFECT.stream().filter(effect -> effect.getCategory() == MobEffectCategory.HARMFUL).map(Holder::direct).collect(Collectors.toList())));
 
     public static void gather(ModDataMapProvider.Appender<Builder> appender) {
@@ -54,7 +57,8 @@ public final class LivingInvulnerableEffectsSubProvider {
                 .add(TEMonsterEntities.EATER_OF_SOULS, CONFUSED)
                 .add(TEMonsterEntities.FACE_MONSTER, POISON)
                 .add(TEMonsterEntities.FIRE_IMP, CONFUSED, HELLFIRE)
-                // TODO 冰冻僵尸 真菌球怪 鬼魂
+                // TODO 冰冻僵尸 真菌球怪
+                .add(TEMonsterEntities.GHOST, ACID_VENOM, FROSTBITE, SHADOWFLAME, CONFUSED, ICHOR, POISON, FROST_BURN, HELLFIRE) //TODO 涂油 破晓
                 .add(TEMonsterEntities.GIANT_SHELLY, CONFUSED)
                 .add(TEMonsterEntities.GIANT_WORM, CONFUSED)
                 // TODO 侏儒
@@ -89,6 +93,32 @@ public final class LivingInvulnerableEffectsSubProvider {
                 .add(TEMonsterEntities.VOODOO_DEMON, CONFUSED, SHADOWFLAME, HELLFIRE)
                 // TODO 秃鹰 爬墙蜘蛛
                 .add(TEMonsterEntities.YELLOW_SLIME, POISON)
+                // TODO 琵琶鱼 愤怒捕手 巨骨舌鱼 装甲骷髅 装甲维京海盗 黑隐士 嗜血怪 拜月教忠教徒 邪教徒弓箭手 蓝装甲骷髅 骷髅李 混沌精 爬藤怪 宝箱怪 冰雪宝箱怪 腐化宝箱怪 猩红宝箱怪 神圣宝箱怪 丛林宝箱怪
+                .add(TEMonsterEntities.CORRUPT_SLIME, POISON)
+                // TODO 腐化者
+                .add(TEMonsterEntities.CRIMSLIME, POISON)
+                /*
+                TODO 猩红斧 诅咒锤 跳跳兽 沙漠幽魂 魔教徒 挖掘怪 沙虫 附魔剑 恶心浮游怪 腹足怪 巨型诅咒骷髅头 巨型真菌球怪 地狱装甲骷髅 蹦蹦兽
+                 弹跳杰克南瓜灯 冰雪精 冰雪陆龟 灵液黏黏怪 冰雪人鱼 夜明蝙蝠 夜明史莱姆 丛林蜘蛛 熔岩蝙蝠 丛林蜥蜴 火星探测器 蛇发女妖 苔藓黄蜂 蛾
+                  圣骑士 装甲幻影魔 褴褛邪教徒法师 红魔鬼 岩石巨人 符文巫师 生锈装甲骷髅 沙贼 骷髅弓箭手 骷髅突击手 骷髅狙击手 小史莱姆 恶翅史莱姆
+                   恶翅史莱姆(无翅膀) 骷髅特警 毒泥 吞世怪 幻灵
+                 */
+                .add(TEMonsterEntities.WYVERN, CONFUSED)
+                .add(TEMonsterEntities.GREEN_DUMPLING_SLIME, POISON)
+                .add(TEMonsterEntities.GOLDEN_SLIME, SHIMMER)
+                //boss
+                .add(TEBossEntities.BRAIN_OF_CTHULHU, CONFUSED)
+                .add(TEBossEntities.EATER_OF_WORLDS, CONFUSED)
+                .add(TEBossEntities.EATER_OF_WORLDS_SEGMENT, CONFUSED)
+                .add(TEBossEntities.EYE_OF_CTHULHU, CONFUSED)
+                .add(TEBossEntities.KING_SLIME, SHIMMER, CONFUSED, POISON)
+                .add(TEBossEntities.QUEEN_BEE, POISON, CONFUSED)
+                .add(TEBossEntities.HILL_OF_FLESH, CONFUSED, HELLFIRE)
+                .add(TEBossEntities.WALL_OF_FLESH, CONFUSED, HELLFIRE)
+                //boss servant
+                .add(TEMonsterEntities.VISUAL_NEURON, CONFUSED)
+                .add(TEMonsterEntities.LEECH, CONFUSED)
+                .add(TEMonsterEntities.THE_HUNGRY, SHIMMER, CONFUSED)
         ;
     }
 

@@ -26,6 +26,7 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.terra_curio.common.item.curio.BaseCurioItem;
 import org.confluence.terraentity.entity.boss.wallofflesh.WallOfFlesh;
 import org.confluence.terraentity.init.entity.TEBossEntities;
+import org.jetbrains.annotations.Nullable;
 import top.theillusivec4.curios.api.SlotContext;
 
 import java.util.List;
@@ -66,7 +67,7 @@ public class GuideVooDooDollItem extends BaseCurioItem {
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity livingEntity) {
         if (!level.isClientSide) {
-            LibUtils.updateItemStackNbt(stack, tag -> tag.putBoolean(IS_WALL_KEY, !tag.getBoolean(IS_WALL_KEY)));
+            LibUtils.updateItemStackNbt(stack, tag -> tag.putBoolean(IS_WALL_KEY, !isWall(tag)));
         }
         return stack;
     }
@@ -102,7 +103,7 @@ public class GuideVooDooDollItem extends BaseCurioItem {
                 }
             }
 
-            if (tag.getBoolean(IS_WALL_KEY)) {
+            if (isWall(tag)) {
                 WallOfFlesh wallOfFlesh = TEBossEntities.WALL_OF_FLESH.get().spawn(level, blockPos.relative(direction, 64), MobSpawnType.MOB_SUMMONED);
                 if (wallOfFlesh != null) {
                     wallOfFlesh.setForward(direction.getOpposite());
@@ -116,11 +117,14 @@ public class GuideVooDooDollItem extends BaseCurioItem {
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
-        CompoundTag tag = LibUtils.getItemStackNbtIfPresent(stack);
-        if (tag == null || tag.getBoolean(IS_WALL_KEY)) {
+        if (isWall(LibUtils.getItemStackNbtIfPresent(stack))) {
             tooltipComponents.add(Component.translatable("tooltip.item.confluence.guide_voodoo_doll.wall").withStyle(ChatFormatting.DARK_GRAY));
         } else {
             tooltipComponents.add(Component.translatable("tooltip.item.confluence.guide_voodoo_doll.hill").withStyle(ChatFormatting.DARK_GRAY));
         }
+    }
+
+    public static boolean isWall(@Nullable CompoundTag tag) {
+        return tag == null || !tag.contains(IS_WALL_KEY) || tag.getBoolean(IS_WALL_KEY);
     }
 }

@@ -189,7 +189,7 @@ public final class ModClientSetups {
                     @Override
                     public void renderByItem(ItemStack stack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
                         CompoundTag tag = LibUtils.getItemStackNbtIfPresent(stack);
-                        RenderType renderType = tag == null || tag.getBoolean(GuideVooDooDollItem.IS_WALL_KEY) ? ModClientSetups.RED_GLINT : RenderType.glint();
+                        RenderType renderType = GuideVooDooDollItem.isWall(tag) ? ModClientSetups.RED_GLINT : RenderType.glint();
                         VertexConsumer consumer = VertexMultiConsumer.create(buffer.getBuffer(renderType), buffer.getBuffer(Sheets.translucentCullBlockSheet()));
                         BakedModel model = minecraft.getItemRenderer().getModel(stack, minecraft.level, null, 250826);
                         minecraft.getItemRenderer().renderModelLists(model, stack, packedLight, OverlayTexture.NO_OVERLAY, poseStack, consumer);

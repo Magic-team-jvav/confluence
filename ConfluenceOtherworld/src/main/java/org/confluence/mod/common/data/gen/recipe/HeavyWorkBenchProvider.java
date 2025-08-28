@@ -1176,6 +1176,14 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 'a', AmountIngredient.of(2, ModTags.Items.INGOTS_COBALT)
         ), List.of(
                 "##a ",
+                "##aa"
+        )), ChainsawItems.COBALT_CHAINSAW.toStack());
+        // 钴链锯
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(ModTags.Items.INGOTS_COBALT),
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_COBALT)
+        ), List.of(
+                "##a ",
                 "# #a",
                 "##a "
         )), DrillItems.COBALT_DRILL.toStack());
@@ -1264,6 +1272,14 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "# #a",
                 "##a "
         )), DrillItems.PALLADIUM_DRILL.toStack());
+        // 钯金链锯
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(ModTags.Items.INGOTS_PALLADIUM),
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_PALLADIUM)
+        ), List.of(
+                "#aa ",
+                "#aaa"
+        )), ChainsawItems.PALLADIUM_CHAINSAW.toStack());
 
 
         shapeless(recipeOutput, NatureBlocks.THIN_ICE_BLOCK.toStack(), EnvironmentLevelAccess.matcher(null, null, true), Ingredient.of(Items.ICE));

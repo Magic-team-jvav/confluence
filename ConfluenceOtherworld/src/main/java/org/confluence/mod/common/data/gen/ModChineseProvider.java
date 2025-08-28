@@ -173,9 +173,17 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.abeemination.3", "“群蜂振翅之声憾动了丛林中最为厚重的叶片”");
         add("tooltip.item.confluence.clothier_voodoo_doll.0", "“你这人真可怕”");
         add("tooltip.item.confluence.guide_voodoo_doll.0", "“你这人真可怕”");
-        add("tooltip.item.confluence.guide_voodoo_doll.1", "手持并长按使用以切换形态");
-        add("tooltip.item.confluence.guide_voodoo_doll.wall", "血肉之墙");
-        add("tooltip.item.confluence.guide_voodoo_doll.hill", "血肉之山");
+        add("tooltip.item.terra_curio.guide_voodoo_doll.1", "手持并长按使用以切换形态");
+        add("tooltip.item.confluence.guide_voodoo_doll.wall", "“业火焚傀儡，血肉帷幕启”\n" +
+                "将这无辜的娃娃投入地狱的岩浆中，血肉之墙将于地狱彼端现身；只有地狱里的岩浆才能满足燃烧献祭所需的苛刻的高温\n" +
+                "祂的心脏中封印着这个世界最本质，最狂野的力量，将在肉身坍塌后尽数释放。\n" +
+                "“亲眼看着那位指引你一步步走到今天的人在焚身的痛苦中翻滚挣扎，你作何感想？”\n" +
+                "召唤血肉墙");
+        add("tooltip.item.confluence.guide_voodoo_doll.hill", "“业火焚傀儡，赤峰血潮腾”\n" +
+                "将这无辜的娃娃投入地狱的岩浆中，血肉之山将从温床中孵化；只有地狱里的岩浆才能满足燃烧献祭所需的苛刻的高温\n" +
+                "祂的心脏中封印着这个世界最本质，最狂野的力量，将在肉身坍塌后尽数释放。\n" +
+                "“亲眼看着那位指引你一步步走到今天的人在焚身的痛苦中翻滚挣扎，你作何感想？”\n" +
+                "召唤血肉山");
         add("tooltip.item.confluence.hardmode_forge.0", "用于熔炼精金矿和钛金矿");
 
         add("tooltip.item.confluence.tokyo_teddy_bear.0", "一位自卑的少女如破碎的泰迪熊般说到：");
@@ -1076,6 +1084,16 @@ public class ModChineseProvider extends LanguageProvider {
         add("event.confluence.npc.left", "%s已离开！");
         add("event.confluence.traveling_merchant.departed", "旅商%s已离去！");
         add("event.confluence.reveal_step1.departed", "旅商%s已离去！");
+
+        add("event.confluence.reveal_step0", "你的世界已赐钴，钯金！");
+        add("event.confluence.reveal_step1", "你的世界已赐秘银，山铜！");
+        add("event.confluence.reveal_step2", "你的世界已赐精金，钛金！");
+        add("event.confluence.reveal_step3", "你的世界已赐更多钴，钯金！");
+        add("event.confluence.reveal_step4", "你的世界已赐更多秘银，山铜！");
+        add("event.confluence.reveal_step5", "你的世界已赐更多精金，钛金！");
+        add("event.confluence.reveal_step6", "你的世界已赐最大数量钴，钯金！");
+        add("event.confluence.reveal_step7", "你的世界已赐最大数量秘银，山铜！");
+        add("event.confluence.reveal_step8", "你的世界已赐最大数量精金，钛金！");
 
         add("entity.minecraft.villager.confluence.sky_miller", "天师");
         add("entity.minecraft.villager.confluence.chef", "厨师");
@@ -3049,6 +3067,14 @@ public class ModChineseProvider extends LanguageProvider {
         add(DrillItems.VORTEX_DRILL.get(), "星旋钻头");
         add(DrillItems.NEBULA_DRILL.get(), "星云钻头");
         add(DrillItems.STARDUST_DRILL.get(), "星尘钻头");
+
+        // 链锯
+        add(ChainsawItems.COBALT_CHAINSAW.get(), "钴链锯");
+        add(ChainsawItems.PALLADIUM_CHAINSAW.get(), "钯金链锯");
+        add(ChainsawItems.MYTHRIL_CHAINSAW.get(), "秘银链锯");
+        add(ChainsawItems.ORICHALCUM_CHAINSAW.get(), "山铜链锯");
+        add(ChainsawItems.ADAMANTITE_CHAINSAW.get(), "精金链锯");
+        add(ChainsawItems.TITANIUM_CHAINSAW.get(), "钛金链锯");
 
         // Hammers
         add(HammerItems.WOODEN_HAMMER.get(), "木锤");

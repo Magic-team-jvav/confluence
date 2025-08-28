@@ -784,6 +784,12 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(MaterialItems.PIXIE_DUST)).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))).apply(random0To1)
                 )
         );
+        add(TEMonsterEntities.WRAITH.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/wraith"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TCItems.FAST_CLOCK).setWeight(2))
+                        .add(emptyWeight98)
+                )
+        );
     }
 
     private static LootTable.Builder batCommon() {

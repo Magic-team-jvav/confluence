@@ -179,9 +179,18 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.abeemination.3", "“The flapping of the bees' wings shakes the thickest leaves in the jungle”");
         add("tooltip.item.confluence.clothier_voodoo_doll.0", "'You are a terrible person'");
         add("tooltip.item.confluence.guide_voodoo_doll.0", "'You are a terrible person'");
-        add("tooltip.item.confluence.guide_voodoo_doll.1", "Hold and hold to use to switch type");
-        add("tooltip.item.confluence.guide_voodoo_doll.wall", "Wall of Flesh");
-        add("tooltip.item.confluence.guide_voodoo_doll.hill", "Hill of Flesh");
+        add("tooltip.item.terra_curio.guide_voodoo_doll.1", "Hold and hold to use to switch type");
+        add("tooltip.item.confluence.guide_voodoo_doll.wall", "\"Karma's fire consumes the puppet, the veil of flesh is raised\"\n" +
+                "Cast this innocent doll into the Underworld's magma, and the Wall of Flesh shall emerge from hell's far side; only the Underworld's magma can satisfy the harsh heat demands of the burning sacrifice\n" +
+                "Sealed within Its heart is the world's most primal, untamed power, which shall fully unleash when Its mortal form crumbles.\n" +
+                "\"How does it feel to watch the one who guided your every step writhe in the agony of being burned alive?\"\n" +
+                "Summons the Wall of Flesh");
+
+        add("tooltip.item.item.confluence.guide_voodoo_doll.hill", "\"Karma's fire consumes the puppet, scarlet peaks surge with a tide of blood\"\n" +
+                "Cast this innocent doll into the Underworld's magma, and the Hill of Flesh shall hatch from its nurturing cradle; only the Underworld's magma can satisfy the harsh heat demands of the burning sacrifice\n" +
+                "Sealed within Its heart is the world's most primal, untamed power, which shall fully unleash when Its mortal form crumbles.\n" +
+                "\"How does it feel to watch the one who guided your every step writhe in the agony of being burned alive?\"\n" +
+                "Summons the Hill of Flesh");
         add("tooltip.item.confluence.hardmode_forge.0", "Used to smelt adamantite and titanium ore");
 
         add("tooltip.item.confluence.tokyo_teddy_bear.0", "A self - abased girl said like a broken teddy bear:");
@@ -1029,6 +1038,16 @@ public class ModEnglishProvider extends LanguageProvider {
         add("event.confluence.npc.slain", "%2$s the %1$s was slain...");
         add("event.confluence.npc.left", "%s has left!");
         add("event.confluence.traveling_merchant.departed", "%s the Traveling Merchant has departed!");
+
+        add("event.confluence.reveal_step0", "Your world has been blessed with Cobalt and Palladium!");
+        add("event.confluence.reveal_step1", "Your world has been blessed with Mythril and Orichalcum!");
+        add("event.confluence.reveal_step2", "Your world has been blessed with Adamantite and Titanium!");
+        add("event.confluence.reveal_step3", "Your world has been blessed with more Cobalt and Palladium!");
+        add("event.confluence.reveal_step4", "Your world has been blessed with more Mythril and Orichalcum!");
+        add("event.confluence.reveal_step5", "Your world has been blessed with more Adamantite and Titanium!");
+        add("event.confluence.reveal_step6", "Your world has been blessed with the maximum amount of Cobalt and Palladium!");
+        add("event.confluence.reveal_step7", "Your world has been blessed with the maximum amount of Mythril and Orichalcum!");
+        add("event.confluence.reveal_step8", "Your world has been blessed with the maximum amount of Adamantite and Titanium!");
 
         add("entity.minecraft.villager.confluence.sky_miller", "Sky Miller");
         add("entity.minecraft.villager.confluence.chef", "Chef");

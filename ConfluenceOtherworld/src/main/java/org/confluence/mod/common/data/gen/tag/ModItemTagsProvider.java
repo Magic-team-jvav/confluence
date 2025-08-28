@@ -1014,7 +1014,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         wip.add(
                 ConsumableItems.SMOKE_BOMB.get(),
                 ConsumableItems.GOODIE_BAG.get(),
-                AccessoryItems.GUIDE_VOODOO_DOLL.get(),
                 PaintItems.ECHO_COATING.get(),
                 ToolItems.TARGET_DUMMY.get(),
                 ModItems.WHOOPIE_CUSHION.get(),

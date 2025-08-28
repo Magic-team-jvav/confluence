@@ -145,6 +145,13 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
                 "# #a",
                 "##a "
         )));
+        hardmodeAnvil(recipeOutput, ChainsawItems.MYTHRIL_CHAINSAW.toStack(), ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(ModTags.Items.INGOTS_MYTHRIL),
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_MYTHRIL)
+        ), List.of(
+                "##a ",
+                "##aa"
+        )));
 
         // 山铜套
         hardmodeAnvil(recipeOutput, ArmorItems.ORICHALCUM_HEADGEAR.toStack(), ShapedRecipePattern.of(Map.of(
@@ -227,6 +234,13 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
                 "##a ",
                 "# #a",
                 "##a "
+        )));
+        hardmodeAnvil(recipeOutput, ChainsawItems.ORICHALCUM_CHAINSAW.toStack(), ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(ModTags.Items.INGOTS_ORICHALCUM),
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_ORICHALCUM)
+        ), List.of(
+                "#aa ",
+                "#aaa"
         )));
 
         // 钛金套
@@ -315,6 +329,13 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
                 "# ab",
                 "aab "
         )));
+        hardmodeAnvil(recipeOutput, ChainsawItems.TITANIUM_CHAINSAW.toStack(), ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(ModTags.Items.INGOTS_TITANIUM),
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_TITANIUM)
+        ), List.of(
+                "aaa ",
+                "#aaa"
+        )));
 
         // 精金套
         hardmodeAnvil(recipeOutput, ArmorItems.ADAMANTITE_HEADGEAR.toStack(), ShapedRecipePattern.of(Map.of(
@@ -397,6 +418,31 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
                 "##a ",
                 "# #a",
                 "##a "
+        )));
+        hardmodeAnvil(recipeOutput, ChainsawItems.ADAMANTITE_CHAINSAW.toStack(), ShapedRecipePattern.of(Map.of(
+                '#', Ingredient.of(ModTags.Items.INGOTS_ADAMANTITE),
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_ADAMANTITE)
+        ), List.of(
+                "#aa ",
+                "#aaa"
+        )));
+
+        // 翅膀
+        hardmodeAnvil(recipeOutput, AccessoryItems.FAIRY_WINGS.toStack(), ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(10, MaterialItems.SOUL_OF_FLIGHT),
+                'b', AmountIngredient.of(14, MaterialItems.PIXIE_DUST),
+                'c', AmountIngredient.of(8, MaterialItems.PIXIE_DUST)
+        ), List.of(
+                "b  b",
+                "baab",
+                "b  b",
+                "c  c"
+        )));
+        hardmodeAnvil(recipeOutput, AccessoryItems.HARPY_WINGS.toStack(), ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(10, MaterialItems.SOUL_OF_FLIGHT),
+                'b', Ingredient.of(MaterialItems.GIANT_HARPY_FEATHER)
+        ), List.of(
+                "aba"
         )));
     }
 

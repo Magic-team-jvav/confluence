@@ -1532,7 +1532,13 @@ public final class ValueSubProvider {
                 .add(TFBlocks.GLASS_KILN, silver50 + silver2 + silver2)
                 .add(TFBlocks.LIVING_LOOM, gold2);
         appender.create()
-                .add(ChainsawItems.COBALT_CHAINSAW, gold1 + silver10 - silver2);
+                .add(ChainsawItems.COBALT_CHAINSAW, gold1 + silver10 - silver2)
+                .add(ChainsawItems.PALLADIUM_CHAINSAW, gold1 + silver20 + silver20 + silver2 + silver2)
+                .add(ChainsawItems.MYTHRIL_CHAINSAW, gold1 + silver50 + silver10 + silver2)
+                .add(ChainsawItems.ORICHALCUM_CHAINSAW, gold2 - silver2)
+                .add(ChainsawItems.ADAMANTITE_CHAINSAW, gold2 + silver10 + silver5 + silver1)
+                .add(ChainsawItems.TITANIUM_CHAINSAW, gold2 + silver50 + silver2)
+        ;
 
         WaystonesHelper.appendValue(appender.create());
     }

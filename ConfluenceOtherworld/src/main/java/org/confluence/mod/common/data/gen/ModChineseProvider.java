@@ -174,16 +174,16 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.clothier_voodoo_doll.0", "“你这人真可怕”");
         add("tooltip.item.confluence.guide_voodoo_doll.0", "“你这人真可怕”");
         add("tooltip.item.terra_curio.guide_voodoo_doll.1", "手持并长按使用以切换形态");
-        add("tooltip.item.confluence.guide_voodoo_doll.wall", "“业火焚傀儡，血肉帷幕启”\n" +
-                "将这无辜的娃娃投入地狱的岩浆中，血肉之墙将于地狱彼端现身；只有地狱里的岩浆才能满足燃烧献祭所需的苛刻的高温\n" +
-                "祂的心脏中封印着这个世界最本质，最狂野的力量，将在肉身坍塌后尽数释放。\n" +
-                "“亲眼看着那位指引你一步步走到今天的人在焚身的痛苦中翻滚挣扎，你作何感想？”\n" +
-                "召唤血肉墙");
-        add("tooltip.item.confluence.guide_voodoo_doll.hill", "“业火焚傀儡，赤峰血潮腾”\n" +
-                "将这无辜的娃娃投入地狱的岩浆中，血肉之山将从温床中孵化；只有地狱里的岩浆才能满足燃烧献祭所需的苛刻的高温\n" +
-                "祂的心脏中封印着这个世界最本质，最狂野的力量，将在肉身坍塌后尽数释放。\n" +
-                "“亲眼看着那位指引你一步步走到今天的人在焚身的痛苦中翻滚挣扎，你作何感想？”\n" +
-                "召唤血肉山");
+        add("tooltip.item.confluence.guide_voodoo_doll.wall.0", "“业火焚傀儡，血肉帷幕启”");
+        add("tooltip.item.confluence.guide_voodoo_doll.wall.1", "将这无辜的娃娃投入地狱的岩浆中，血肉之墙将于地狱彼端现身；只有地狱里的岩浆才能满足燃烧献祭所需的苛刻的高温");
+        add("tooltip.item.confluence.guide_voodoo_doll.wall.2", "祂的心脏中封印着这个世界最本质，最狂野的力量，将在肉身坍塌后尽数释放。");
+        add("tooltip.item.confluence.guide_voodoo_doll.wall.3", "“亲眼看着那位指引你一步步走到今天的人在焚身的痛苦中翻滚挣扎，你作何感想？”");
+        add("tooltip.item.confluence.guide_voodoo_doll.wall.4", "“召唤血肉墙");
+        add("tooltip.item.confluence.guide_voodoo_doll.hill.0", "“业火焚傀儡，赤峰血潮腾”");
+        add("tooltip.item.confluence.guide_voodoo_doll.hill.1", "将这无辜的娃娃投入地狱的岩浆中，血肉之山将从温床中孵化；只有地狱里的岩浆才能满足燃烧献祭所需的苛刻的高温");
+        add("tooltip.item.confluence.guide_voodoo_doll.hill.2", "祂的心脏中封印着这个世界最本质，最狂野的力量，将在肉身坍塌后尽数释放。");
+        add("tooltip.item.confluence.guide_voodoo_doll.hill.3", "“亲眼看着那位指引你一步步走到今天的人在焚身的痛苦中翻滚挣扎，你作何感想？”");
+        add("tooltip.item.confluence.guide_voodoo_doll.hill.4", "“召唤血肉山");
         add("tooltip.item.confluence.hardmode_forge.0", "用于熔炼精金矿和钛金矿");
 
         add("tooltip.item.confluence.tokyo_teddy_bear.0", "一位自卑的少女如破碎的泰迪熊般说到：");

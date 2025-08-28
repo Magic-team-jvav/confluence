@@ -180,17 +180,17 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.clothier_voodoo_doll.0", "'You are a terrible person'");
         add("tooltip.item.confluence.guide_voodoo_doll.0", "'You are a terrible person'");
         add("tooltip.item.terra_curio.guide_voodoo_doll.1", "Hold and hold to use to switch type");
-        add("tooltip.item.confluence.guide_voodoo_doll.wall", "\"Karma's fire consumes the puppet, the veil of flesh is raised\"\n" +
-                "Cast this innocent doll into the Underworld's magma, and the Wall of Flesh shall emerge from hell's far side; only the Underworld's magma can satisfy the harsh heat demands of the burning sacrifice\n" +
-                "Sealed within Its heart is the world's most primal, untamed power, which shall fully unleash when Its mortal form crumbles.\n" +
-                "\"How does it feel to watch the one who guided your every step writhe in the agony of being burned alive?\"\n" +
-                "Summons the Wall of Flesh");
+        add("tooltip.item.confluence.guide_voodoo_doll.wall.0", "\"Karma's fire consumes the puppet, the veil of flesh is raised\"");
+        add("tooltip.item.confluence.guide_voodoo_doll.wall.1", "Cast this innocent doll into the Underworld's magma, and the Wall of Flesh shall emerge from hell's far side; only the Underworld's magma can satisfy the harsh heat demands of the burning sacrifice");
+        add("tooltip.item.confluence.guide_voodoo_doll.wall.2", "Sealed within Its heart is the world's most primal, untamed power, which shall fully unleash when Its mortal form crumbles.");
+        add("tooltip.item.confluence.guide_voodoo_doll.wall.3", "\"How does it feel to watch the one who guided your every step writhe in the agony of being burned alive?\"");
+        add("tooltip.item.confluence.guide_voodoo_doll.wall.4", "Summons the Wall of Flesh");
 
-        add("tooltip.item.item.confluence.guide_voodoo_doll.hill", "\"Karma's fire consumes the puppet, scarlet peaks surge with a tide of blood\"\n" +
-                "Cast this innocent doll into the Underworld's magma, and the Hill of Flesh shall hatch from its nurturing cradle; only the Underworld's magma can satisfy the harsh heat demands of the burning sacrifice\n" +
-                "Sealed within Its heart is the world's most primal, untamed power, which shall fully unleash when Its mortal form crumbles.\n" +
-                "\"How does it feel to watch the one who guided your every step writhe in the agony of being burned alive?\"\n" +
-                "Summons the Hill of Flesh");
+        add("tooltip.item.confluence.guide_voodoo_doll.hill.0", "\"Karma's fire consumes the puppet, scarlet peaks surge with a tide of blood\"");
+        add("tooltip.item.confluence.guide_voodoo_doll.hill.1", "Cast this innocent doll into the Underworld's magma, and the Hill of Flesh shall hatch from its nurturing cradle; only the Underworld's magma can satisfy the harsh heat demands of the burning sacrifice");
+        add("tooltip.item.confluence.guide_voodoo_doll.hill.2", "Sealed within Its heart is the world's most primal, untamed power, which shall fully unleash when Its mortal form crumbles.");
+        add("tooltip.item.confluence.guide_voodoo_doll.hill.3", "\"How does it feel to watch the one who guided your every step writhe in the agony of being burned alive?\"");
+        add("tooltip.item.confluence.guide_voodoo_doll.hill.4", "Summons the Hill of Flesh");
         add("tooltip.item.confluence.hardmode_forge.0", "Used to smelt adamantite and titanium ore");
 
         add("tooltip.item.confluence.tokyo_teddy_bear.0", "A self - abased girl said like a broken teddy bear:");

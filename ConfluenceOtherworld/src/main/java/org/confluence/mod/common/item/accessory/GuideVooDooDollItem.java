@@ -118,9 +118,17 @@ public class GuideVooDooDollItem extends BaseCurioItem {
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
         if (isWall(LibUtils.getItemStackNbtIfPresent(stack))) {
-            tooltipComponents.add(Component.translatable("tooltip.item.confluence.guide_voodoo_doll.wall").withStyle(ChatFormatting.DARK_GRAY));
+            tooltipComponents.add(Component.translatable("tooltip.item.confluence.guide_voodoo_doll.wall.0").withStyle(ChatFormatting.DARK_RED));
+            tooltipComponents.add(Component.translatable("tooltip.item.confluence.guide_voodoo_doll.wall.1").withStyle(ChatFormatting.DARK_RED));
+            tooltipComponents.add(Component.translatable("tooltip.item.confluence.guide_voodoo_doll.wall.2").withStyle(ChatFormatting.DARK_RED));
+            tooltipComponents.add(Component.translatable("tooltip.item.confluence.guide_voodoo_doll.wall.3").withStyle(ChatFormatting.DARK_RED));
+            tooltipComponents.add(Component.translatable("tooltip.item.confluence.guide_voodoo_doll.wall.4").withStyle(ChatFormatting.DARK_RED));
         } else {
-            tooltipComponents.add(Component.translatable("tooltip.item.confluence.guide_voodoo_doll.hill").withStyle(ChatFormatting.DARK_GRAY));
+            tooltipComponents.add(Component.translatable("tooltip.item.confluence.guide_voodoo_doll.hill.0").withStyle(ChatFormatting.DARK_PURPLE));
+            tooltipComponents.add(Component.translatable("tooltip.item.confluence.guide_voodoo_doll.hill.1").withStyle(ChatFormatting.DARK_PURPLE));
+            tooltipComponents.add(Component.translatable("tooltip.item.confluence.guide_voodoo_doll.hill.2").withStyle(ChatFormatting.DARK_PURPLE));
+            tooltipComponents.add(Component.translatable("tooltip.item.confluence.guide_voodoo_doll.hill.3").withStyle(ChatFormatting.DARK_PURPLE));
+            tooltipComponents.add(Component.translatable("tooltip.item.confluence.guide_voodoo_doll.hill.4").withStyle(ChatFormatting.DARK_PURPLE));
         }
     }
 

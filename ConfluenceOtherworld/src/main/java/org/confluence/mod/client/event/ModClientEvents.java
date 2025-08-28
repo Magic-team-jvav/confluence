@@ -1,5 +1,7 @@
 package org.confluence.mod.client.event;
 
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Streams;
 import net.minecraft.client.RecipeBookCategories;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.BiomeColors;
@@ -370,7 +372,10 @@ public final class ModClientEvents {
         event.registerItem(ModClientSetups.BREATHING_REED, SwordItems.BREATHING_REED);
         event.registerItem(ModClientSetups.LANCE, LanceItems.ITEMS.getEntries().stream().map(DeferredHolder::get).toArray(Item[]::new));
         event.registerItem(ModClientSetups.UMBRELLA, SwordItems.UMBRELLA, SwordItems.TRAGIC_UMBRELLA);
-        event.registerItem(ModClientSetups.DRILL, DrillItems.ITEMS.getEntries().stream().map(DeferredHolder::get).toArray(Item[]::new));
+        event.registerItem(ModClientSetups.DRILL_O_CHAINSAW, Streams.stream(Iterables.concat(
+                DrillItems.ITEMS.getEntries(),
+                ChainsawItems.ITEMS.getEntries()
+        )).map(DeferredHolder::get).toArray(Item[]::new));
         event.registerItem(ModClientSetups.NOOP_ITEM, SwordItems.ZOMBIE_ARM);
         event.registerItem(ModClientSetups.GUIDE_VOODOO_DOLL, AccessoryItems.GUIDE_VOODOO_DOLL);
         TGUtil.registerOtherGunModel(event, Confluence.MODID, ManaWeaponItems.BEE_GUN);

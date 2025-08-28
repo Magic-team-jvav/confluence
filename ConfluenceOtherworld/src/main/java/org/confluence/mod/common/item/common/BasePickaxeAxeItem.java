@@ -1,4 +1,4 @@
-package org.confluence.mod.common.item.pickaxe_axe;
+package org.confluence.mod.common.item.common;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
@@ -21,17 +21,13 @@ import org.confluence.mod.util.ModUtils;
 
 import java.util.function.Consumer;
 
-public class PickaxeAxeItem extends DiggerItem {
-    public PickaxeAxeItem(Tier tier, float rawDamage, float rawSpeed, ModRarity rarity) {
-        this(tier, rawDamage, rawSpeed, new Properties(), rarity);
-    }
-
-    public PickaxeAxeItem(Tier tier, float rawDamage, float rawSpeed, Properties properties, ModRarity rarity) {
+public class BasePickaxeAxeItem extends DiggerItem {
+    public BasePickaxeAxeItem(Tier tier, float rawDamage, float rawSpeed, Properties properties, ModRarity rarity) {
         super(tier, ModTags.Blocks.MINEABLE_WITH_PICKAXE_AXE, properties.component(ConfluenceMagicLib.MOD_RARITY, rarity)
                 .component(DataComponents.ATTRIBUTE_MODIFIERS, createAttributes(tier, (rawDamage - tier.getAttackDamageBonus() - 1), rawSpeed - 4)));
     }
 
-    public PickaxeAxeItem(Tier tier, float rawDamage, float rawSpeed, Properties properties, Consumer<ItemAttributeModifiers.Builder> consumer, ModRarity rarity) {
+    public BasePickaxeAxeItem(Tier tier, float rawDamage, float rawSpeed, Properties properties, Consumer<ItemAttributeModifiers.Builder> consumer, ModRarity rarity) {
         super(tier, ModTags.Blocks.MINEABLE_WITH_PICKAXE_AXE, properties.component(ConfluenceMagicLib.MOD_RARITY, rarity)
                 .component(DataComponents.ATTRIBUTE_MODIFIERS, ModItems.createAttributes(tier, (rawDamage - tier.getAttackDamageBonus() - 1), rawSpeed - 4, consumer)));
     }

@@ -1,4 +1,4 @@
-package org.confluence.mod.common.item.axe;
+package org.confluence.mod.common.item.common;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;

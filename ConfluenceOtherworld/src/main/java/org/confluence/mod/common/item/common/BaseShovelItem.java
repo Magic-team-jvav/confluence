@@ -1,4 +1,4 @@
-package org.confluence.mod.common.item.shovel;
+package org.confluence.mod.common.item.common;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;

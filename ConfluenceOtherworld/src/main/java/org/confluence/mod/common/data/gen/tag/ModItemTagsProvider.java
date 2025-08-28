@@ -1460,6 +1460,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
         IntrinsicTagAppender<Item> skipResetStrength = tag(LibTags.Items.SKIP_RESET_STRENGTH);
         DrillItems.ITEMS.getEntries().forEach(item -> skipResetStrength.add(item.get()));
+        ChainsawItems.ITEMS.getEntries().forEach(item -> skipResetStrength.add(item.get()));
         LanceItems.ITEMS.getEntries().forEach(item -> {
             Item value = item.get();
             skipResetStrength.add(value);

@@ -29,11 +29,11 @@
         },
         {
             "enum": "net/minecraft/client/model/HumanoidModel$ArmPose",
-            "name": "CONFLUENCE_DRILL",
+            "name": "CONFLUENCE_DRILL_O_CHAINSAW",
             "constructor": "(ZLnet/neoforged/neoforge/client/IArmPoseTransformer;)V",
             "parameters": {
                 "class": "org/confluence/mod/common/init/ModArmPoses",
-                "field": "DRILL"
+                "field": "DRILL_O_CHAINSAW"
             }
         },
         {

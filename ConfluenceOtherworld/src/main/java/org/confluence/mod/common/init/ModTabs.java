@@ -142,6 +142,7 @@ public final class ModTabs {
                         PickaxeItems.ITEMS.getEntries().forEach(action);
                         PickaxeAxeItems.ITEMS.getEntries().forEach(action);
                         DrillItems.ITEMS.getEntries().forEach(action);
+                        ChainsawItems.ITEMS.getEntries().forEach(action);
                         HamaxeItems.ITEMS.getEntries().forEach(action);
                         HoeShovelItems.ITEMS.getEntries().forEach(action);
                         HammerItems.ITEMS.getEntries().forEach(action);

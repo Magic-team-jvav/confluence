@@ -1,4 +1,4 @@
-package org.confluence.mod.common.item.pickaxe;
+package org.confluence.mod.common.item.common;
 
 import net.minecraft.core.Holder;
 import net.minecraft.world.item.ItemStack;

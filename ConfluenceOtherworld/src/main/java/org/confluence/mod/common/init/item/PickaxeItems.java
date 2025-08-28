@@ -8,7 +8,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTiers;
-import org.confluence.mod.common.item.pickaxe.BasePickaxeItem;
+import org.confluence.mod.common.item.common.BasePickaxeItem;
 
 import static org.confluence.mod.common.init.item.ModItems.attributes;
 import static org.confluence.mod.common.init.item.ModItems.unbreakable;

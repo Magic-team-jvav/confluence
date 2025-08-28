@@ -11,7 +11,7 @@ import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTiers;
-import org.confluence.mod.common.item.axe.BaseAxeItem;
+import org.confluence.mod.common.item.common.BaseAxeItem;
 
 import static org.confluence.mod.common.init.item.ModItems.attributes;
 import static org.confluence.mod.common.init.item.ModItems.unbreakable;

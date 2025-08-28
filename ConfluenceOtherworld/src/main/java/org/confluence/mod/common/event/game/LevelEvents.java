@@ -28,7 +28,7 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
-import org.confluence.mod.common.item.axe.BaseAxeItem;
+import org.confluence.mod.common.item.common.BaseAxeItem;
 import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
 import org.confluence.mod.common.worldgen.secret_seed.NoTraps;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;

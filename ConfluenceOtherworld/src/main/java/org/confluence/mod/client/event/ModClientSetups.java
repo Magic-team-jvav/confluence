@@ -142,7 +142,7 @@ public final class ModClientSetups {
     static final IClientItemExtensions BREATHING_REED = simpleArmPose(ModArmPoses.BREATHING_REED::getValue);
     static final IClientItemExtensions LANCE = simpleArmPose(ModArmPoses.LANCE::getValue);
     static final IClientItemExtensions UMBRELLA = simpleArmPose(ModArmPoses.UMBRELLA::getValue);
-    static final IClientItemExtensions DRILL = simpleArmPose(ModArmPoses.DRILL::getValue);
+    static final IClientItemExtensions DRILL_O_CHAINSAW = simpleArmPose(ModArmPoses.DRILL_O_CHAINSAW::getValue);
 
     private static IClientItemExtensions simpleArmPose(Supplier<HumanoidModel.ArmPose> supplier) {
         return new IClientItemExtensions() {

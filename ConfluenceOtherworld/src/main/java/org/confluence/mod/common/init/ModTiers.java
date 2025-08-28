@@ -6,7 +6,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.Tiers;
-import net.minecraft.world.item.component.Tool;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -15,7 +14,6 @@ import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
 import java.util.function.Supplier;
 
 /**
@@ -140,14 +138,6 @@ public final class ModTiers {
 
         public int getPower() {
             return power;
-        }
-
-        @Override
-        public @NotNull Tool createToolProperties(@NotNull TagKey<Block> block) {
-            return new Tool(List.of(
-                    Tool.Rule.deniesDrops(getIncorrectBlocksForDrops()),
-                    Tool.Rule.minesAndDrops(block, getSpeed())
-            ), 1.0F, 1);
         }
 
         @Override

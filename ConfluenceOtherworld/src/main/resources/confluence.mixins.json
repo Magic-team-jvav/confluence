@@ -155,8 +155,6 @@
         "integration.jei.TypedItemStackMixin$S1Mixin",
         "integration.journeymap.EffectMixin",
         "integration.loot_beams_refork.ConfigHandlersMixin",
-        "integration.patchouli.BookPageMixin",
-        "integration.patchouli.GuiBookLandingMixin",
         "integration.sodium.BlockOcclusionCacheMixin",
         "integration.sodium.BlockRendererMixin",
         "integration.sodium.ChunkBuilderMeshingTaskMixin",

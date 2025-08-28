@@ -13,8 +13,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
 
-import static org.confluence.mod.api.event.ShimmerEntityTransmutationEvent.addEntity;
-
 public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
     public ModEntityTypeTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, @Nullable ExistingFileHelper existingFileHelper) {
         super(output, provider, Confluence.MODID, existingFileHelper);

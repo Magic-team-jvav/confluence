@@ -193,7 +193,7 @@ public final class GameClientEvents {
             PrefixComponent prefix = PrefixUtils.getPrefix(event.getItemStack());
             if (prefix != null && prefix.type() != PrefixType.UNKNOWN) {
                 tooltipElements.set(0, Either.left(
-                        prefix.getName().setStyle(component.getStyle()).append(" ").append(component)
+                        prefix.getName().setStyle(component.getStyle()).append(Component.translatable("confluence.prefix_separator")).append(component)
                 ));
             }
         }

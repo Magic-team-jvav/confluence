@@ -113,7 +113,7 @@ public class BaseSwordItem extends SwordItem {
 
             try {
                 data.generation().genProjectile(living, weapon, data.getVelocity(living), () -> {
-                    if (BuiltInRegistries.ENTITY_TYPE.get(data.projType()).create(living.level()) instanceof SwordProjectile<?> projectile) {
+                    if (BuiltInRegistries.ENTITY_TYPE.get(data.projType()).create(living.level()) instanceof SwordProjectile projectile) {
                         projectile.setProjComponent(data);
                         projectile.addAttackDamage((float) (data.damageFactor() * living.getAttributeValue(Attributes.ATTACK_DAMAGE)));
                         return projectile;

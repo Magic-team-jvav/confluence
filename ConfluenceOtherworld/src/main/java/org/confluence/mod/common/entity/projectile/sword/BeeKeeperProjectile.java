@@ -15,7 +15,7 @@ import org.confluence.terraentity.utils.TEUtils;
 
 import java.util.Optional;
 
-public class BeeKeeperProjectile extends SwordProjectile<BeeKeeperProjectile> {
+public class BeeKeeperProjectile extends SwordProjectile {
 
     ITrackType trackType;
 

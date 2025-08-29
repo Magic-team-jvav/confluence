@@ -11,7 +11,7 @@ import org.confluence.mod.common.init.ModParticleTypes;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-public class GrassSwordProjectile extends SwordProjectile<GrassSwordProjectile> {
+public class GrassSwordProjectile extends SwordProjectile {
 
     float yawSpeed;
     float pitchSpeed;

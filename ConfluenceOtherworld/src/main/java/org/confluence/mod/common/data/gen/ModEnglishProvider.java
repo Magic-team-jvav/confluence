@@ -179,7 +179,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.abeemination.3", "“The flapping of the bees' wings shakes the thickest leaves in the jungle”");
         add("tooltip.item.confluence.clothier_voodoo_doll.0", "'You are a terrible person'");
         add("tooltip.item.confluence.guide_voodoo_doll.0", "'You are a terrible person'");
-        add("tooltip.item.terra_curio.guide_voodoo_doll.1", "Hold and hold to use to switch type");
+        add("tooltip.item.terra_curio.guide_voodoo_doll.1", "Hold and press to switch type");
         add("tooltip.item.confluence.guide_voodoo_doll.wall.0", "\"Karma's fire consumes the puppet, the veil of flesh is raised\"");
         add("tooltip.item.confluence.guide_voodoo_doll.wall.1", "Cast this innocent doll into the Underworld's magma, and the Wall of Flesh shall emerge from hell's far side; only the Underworld's magma can satisfy the harsh heat demands of the burning sacrifice");
         add("tooltip.item.confluence.guide_voodoo_doll.wall.2", "Sealed within Its heart is the world's most primal, untamed power, which shall fully unleash when Its mortal form crumbles.");

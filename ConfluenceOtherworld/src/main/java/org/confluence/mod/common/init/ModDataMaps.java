@@ -6,6 +6,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -31,6 +32,7 @@ public final class ModDataMaps {
     public static final DataMapType<EntityType<?>, ImmunityDataMap> IMMUNITY = register("immunity", Registries.ENTITY_TYPE, ImmunityDataMap.CODEC, true);
     public static final DataMapType<EntityType<?>, BugNetEntityToItem> BUG_NET_ENTITY_TO_ITEM = register("bug_net_entity_to_item", Registries.ENTITY_TYPE, BugNetEntityToItem.CODEC, false);
     public static final DataMapType<EntityType<?>, LivingInvulnerableEffects> LIVING_INVULNERABLE_EFFECTS = register("living_invulnerable_effects", Registries.ENTITY_TYPE, LivingInvulnerableEffects.CODEC, true);
+    public static final DataMapType<Block, BlockBreakSpawns> BLOCK_BREAK_SPAWNS = register("block_break_spawns", Registries.BLOCK, BlockBreakSpawns.CODEC, false);
 
     private static <R, T> DataMapType<R, T> register(String path, ResourceKey<Registry<R>> resourceKey, Codec<T> codec, boolean synced) {
         DataMapType.Builder<T, R> builder = DataMapType.builder(Confluence.asResource(path), resourceKey, codec);

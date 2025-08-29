@@ -21,6 +21,7 @@ import net.neoforged.neoforge.event.level.ExplosionEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
+import org.confluence.mod.common.data.map.BlockBreakSpawns;
 import org.confluence.mod.common.data.saved.BrushData;
 import org.confluence.mod.common.entity.projectile.bomb.BaseBombEntity;
 import org.confluence.mod.common.init.ModAttachmentTypes;
@@ -102,5 +103,6 @@ public final class LevelEvents {
         BlockPos pos = event.getPos();
         NoTraps.dropBombWhenLeavesDestroy(serverPlayer, blockState, pos);
         BoulderWorld.createBoulderWhenBlockDestroy(serverPlayer, blockState, pos);
+        BlockBreakSpawns.spawn(serverPlayer.serverLevel(), pos, blockState);
     }
 }

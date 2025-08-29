@@ -3,8 +3,13 @@ package org.confluence.mod.common.block.natural.spreadable;
 import net.minecraft.core.Holder;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.neoforged.neoforge.common.Tags;
+import org.confluence.mod.common.block.natural.CattailsBodyBlock;
+import org.confluence.mod.common.block.natural.CattailsHeadBlock;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
@@ -13,7 +18,15 @@ import org.jetbrains.annotations.Nullable;
 public class TheHallowConversionTable extends ConversionTable {
     @Override
     protected @Nullable Block getTarget(BlockState source) {
-        Holder<Block> holder = source.getBlock().builtInRegistryHolder();
+        Block block = source.getBlock();
+
+        if (block == Blocks.TALL_GRASS) {
+            return source.getValue(DoublePlantBlock.HALF) == DoubleBlockHalf.LOWER ? NatureBlocks.HALLOW_GRASS.get() : Blocks.AIR;
+        }
+        if (block instanceof CattailsHeadBlock) return NatureBlocks.CRIMSON_CATTAILS_HEAD.get();
+        if (block instanceof CattailsBodyBlock) return NatureBlocks.CRIMSON_CATTAILS_BODY.get();
+
+        Holder<Block> holder = block.builtInRegistryHolder();
 
         if (holder.is(BlockTags.LOGS)) return NatureBlocks.PEARL_LOG_BLOCKS.LOG.get();
         if (holder.is(BlockTags.LEAVES)) return NatureBlocks.PEARL_LOG_BLOCKS.LEAVES.get();

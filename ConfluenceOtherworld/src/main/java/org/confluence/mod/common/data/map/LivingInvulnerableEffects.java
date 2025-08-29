@@ -28,7 +28,7 @@ public record LivingInvulnerableEffects(HolderSet<MobEffect> effects, List<Categ
 
     public static boolean isInvulnerableTo(LivingEntity living, Holder<MobEffect> effect) {
         LivingInvulnerableEffects data = living.getType().builtInRegistryHolder().getData(ModDataMaps.LIVING_INVULNERABLE_EFFECTS);
-        return data != null && data.effects.contains(effect) && data.categories.stream().anyMatch(category -> category.is(effect));
+        return data != null && data.effects.contains(effect) && (data.categories.isEmpty() || data.categories.stream().anyMatch(category -> category.is(effect)));
     }
 
     public enum Category implements StringRepresentable {

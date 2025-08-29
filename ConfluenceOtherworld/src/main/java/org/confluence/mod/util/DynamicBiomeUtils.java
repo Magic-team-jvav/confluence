@@ -8,7 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BiomeTags;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Blocks;
@@ -142,12 +142,12 @@ public final class DynamicBiomeUtils {
         }
     }
 
-    public static @Nullable LevelChunkSection getSection(Level level, BlockPos pos) {
+    public static @Nullable LevelChunkSection getSection(LevelAccessor level, BlockPos pos) {
         if (level.isOutsideBuildHeight(pos)) return null;
         return level.getChunk(pos).getSection(level.getSectionIndex(pos.getY()));
     }
 
-    public static @Nullable IChunkSection getISection(Level level, BlockPos pos) {
+    public static @Nullable IChunkSection getISection(LevelAccessor level, BlockPos pos) {
         return (IChunkSection) getSection(level, pos);
     }
 

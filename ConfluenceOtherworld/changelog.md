@@ -17,6 +17,8 @@
 - 由于某些情况导致配饰重复佩戴而产生的崩溃
 - 史莱姆攻击不到玩家
 - 人形怪不渲染靴子
+- 杀死仆从不再掉钱币
+- 地牢祭坛的墓碑中的字没有本地化
 
 ## 优化：
 
@@ -31,6 +33,7 @@
 - 检测药水，检测饰品列表，生物追踪配置增加更多内容
 - 洞穴探险(spelunker)效果不会显示被隐藏的方块
 - 被隐藏的方块现在也会对调试界面(debug screen)隐藏
+- 金属探测器(metal detector)不再检测被隐藏的方块
 - JEI显示环境合成条件
 - 瓶子(confluence:bottle)与水瓶(confluence:bottled_water)可以与炼药锅(cauldron)交互
 - 抓人草根部渲染偏移
@@ -54,7 +57,7 @@
 
 ## 更新内容：
 
-- 花岗精(granite elemental)、飞龙(wyvern)、妖精(pixie)、装甲幻影魔(possess armor)、幻灵(wraith)、更多小动物
+- 花岗精(granite elemental)、鬼魂(ghost)、飞龙(wyvern)、妖精(pixie)、装甲幻影魔(possess armor)、幻灵(wraith)、更多小动物
 - 部分长矛(lance)、链锯(chainsaw)、钻头(drill)、镐(pickaxe)；防熔岩虫网(lavaproof bug net)、猩红魔杖(crimson rod)
 - 坐骑现在可以装备，并且有快捷键
 - 召唤师头盔的附魔（与保护冲突）
@@ -118,7 +121,7 @@
 | 妖精鱼(pixiefish)              | 神圣     | 40~320  | 肉后         |
 | 独角兽鱼(unicorn_fish)          | 神圣     | 40~260  | 肉后         |
 
-- 墓地以及灵雾(ecto mist)合成
+- 墓地以及灵雾(ecto mist)合成（僵尸会无视白天生成在其中，并且僵尸在走出墓地前不会因为阳光而燃烧）
 - 增益(buff)可以在物品栏(inventory)内，通过点击图标以开关
 - 肉山(hill of flesh)、肉墙(wall of flesh)；二者击败其一即刻开始困难模式转变
 - 困难模式（默认转变策略对于设备会有明显卡顿且时间较长，可以从配置中改为立刻转变，届时tps会完全停止但时间较短）

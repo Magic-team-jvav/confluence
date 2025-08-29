@@ -3,7 +3,9 @@ package org.confluence.mod.common.data.gen.tag;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
+import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.entity.EntityType;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
@@ -63,5 +65,22 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
                 TEAnimals.PRISMATIC_LACEWING.get(),
                 TEAnimals.FAIRY.get()
         );
+        tag(ModTags.EntityTypes.SPAWN_AT_GRAVEYARD)
+                .addTag(EntityTypeTags.ZOMBIES);
+        //.add(TEMonsterEntities.DEMON_EYE.get()); fixme 恶魔之眼白天会飞走
+        tag(ModTags.EntityTypes.DO_NOT_DROPS_EVIL_SOUL)
+                .addTag(
+                        Tags.EntityTypes.BOSSES
+                ).add(
+                        TEMonsterEntities.BLUE_SLIME.get(),
+                        TEMonsterEntities.GREEN_SLIME.get(),
+                        TEMonsterEntities.PINK_SLIME.get(),
+                        TEMonsterEntities.BLACK_SLIME.get(),
+                        TEMonsterEntities.PURPLE_SLIME.get(),
+                        TEMonsterEntities.RED_SLIME.get(),
+                        TEMonsterEntities.YELLOW_SLIME.get(),
+                        TEMonsterEntities.JUNGLE_SLIME.get()
+                        // todo 尖刺史莱姆
+                );
     }
 }

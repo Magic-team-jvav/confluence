@@ -48,6 +48,7 @@
         "entity.FishingHookMixin",
         "entity.ItemEntityMixin",
         "entity.LivingEntityMixin",
+        "entity.MobMixin",
         "entity.PlayerMixin",
         "entity.ServerPlayerMixin",
         "entity.VillagerMixin",

@@ -421,9 +421,15 @@ public final class ModTags {
     }
 
     public static class EntityTypes {
-        public static final TagKey<EntityType<?>> SPAWN_AT_DUNGEON = Confluence.asTagKey(Registries.ENTITY_TYPE, "spawn_at_dungeon"); // 允许生成在地牢的生物
-        public static final TagKey<EntityType<?>> LAVA_BUG_NET_ALLOWS = Confluence.asTagKey(Registries.ENTITY_TYPE, "lava_bug_net_allows"); // 熔岩萤火虫、岩浆蜗牛和地狱蝴蝶; 用于区分普通虫网与防熔岩虫网
-        public static final TagKey<EntityType<?>> FEALING_TRANSMUTATION = Confluence.asTagKey(Registries.ENTITY_TYPE, "fealing_transmutation"); // 可转化为飞灵的生物
+        public static final TagKey<EntityType<?>> SPAWN_AT_DUNGEON = register("spawn_at_dungeon"); // 允许生成在地牢的生物
+        public static final TagKey<EntityType<?>> LAVA_BUG_NET_ALLOWS = register("lava_bug_net_allows"); // 熔岩萤火虫、岩浆蜗牛和地狱蝴蝶; 用于区分普通虫网与防熔岩虫网
+        public static final TagKey<EntityType<?>> FEALING_TRANSMUTATION = register("fealing_transmutation"); // 可转化为飞灵的生物
+        public static final TagKey<EntityType<?>> SPAWN_AT_GRAVEYARD = register("spawn_at_graveyard"); // 可以生成在墓地的生物
+        public static final TagKey<EntityType<?>> DO_NOT_DROPS_EVIL_SOUL = register("do_not_drops_evil_soul"); // 不掉落光明或暗影之魂
+
+        private static TagKey<EntityType<?>> register(String id) {
+            return Confluence.asTagKey(Registries.ENTITY_TYPE, id);
+        }
     }
 
     public static class Enchantments {

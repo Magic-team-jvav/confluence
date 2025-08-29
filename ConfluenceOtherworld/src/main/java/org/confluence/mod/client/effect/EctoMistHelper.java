@@ -42,15 +42,15 @@ public class EctoMistHelper {
                 ectoMistStep -= 0.5F / Minecraft.getInstance().getFps();
             }
             float exp = Mth.clamp(ectoMistStep, 0.5F, 1.0F);
-            event.setRed(exp);
-            event.setGreen(exp);
-            event.setBlue(exp);
+            event.setRed(event.getRed() * exp);
+            event.setGreen(event.getGreen() * exp);
+            event.setBlue(event.getBlue() * exp);
         } else if (ectoMistStep < 1.0F) {
             ectoMistStep += 0.5F / Minecraft.getInstance().getFps();
             float exp = Mth.clamp(ectoMistStep, 0.5F, 1.0F);
-            event.setRed(exp);
-            event.setGreen(exp);
-            event.setBlue(exp);
+            event.setRed(event.getRed() * exp);
+            event.setGreen(event.getGreen() * exp);
+            event.setBlue(event.getBlue() * exp);
         } else {
             ectoMistStep = 1.0F;
         }

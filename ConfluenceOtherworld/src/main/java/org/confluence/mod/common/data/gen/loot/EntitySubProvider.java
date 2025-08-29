@@ -762,6 +762,18 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))
                 )
         );
+        add(TEMonsterEntities.BLUE_JELLYFISH.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/blue_jellyfish"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TCItems.JELLYFISH_NECKLACE))
+                        .add(EmptyLootItem.emptyItem().setWeight(99))
+                )
+        );
+        add(TEMonsterEntities.PINK_JELLYFISH.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/pink_jellyfish"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TCItems.JELLYFISH_NECKLACE))
+                        .add(EmptyLootItem.emptyItem().setWeight(99))
+                )
+        );
         // 肉后怪
         add(TEMonsterEntities.WYVERN.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/wyvern"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
@@ -788,6 +800,16 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.FAST_CLOCK).setWeight(2))
                         .add(emptyWeight98)
+                )
+        );
+        add(TEMonsterEntities.GREEN_JELLYFISH.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/green_jellyfish"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(AccessoryItems.MEGAPHONE).setWeight(2))
+                        .add(emptyWeight98)
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TCItems.JELLYFISH_NECKLACE))
+                        .add(EmptyLootItem.emptyItem().setWeight(99))
                 )
         );
     }

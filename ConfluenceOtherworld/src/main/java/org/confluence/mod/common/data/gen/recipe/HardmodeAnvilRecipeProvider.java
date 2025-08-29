@@ -444,6 +444,24 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
         ), List.of(
                 "aba"
         )));
+        hardmodeAnvil(recipeOutput, AccessoryItems.ANGEL_WINGS.toStack(), ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(10, MaterialItems.SOUL_OF_FLIGHT),
+                'b', AmountIngredient.of(4, MaterialItems.SOUL_OF_LIGHT),
+                'c', AmountIngredient.of(5, MaterialItems.HARPY_FEATHER)
+        ), List.of(
+                "b  b",
+                "caac",
+                "b  b"
+        )));
+        hardmodeAnvil(recipeOutput, AccessoryItems.DEMON_WINGS.toStack(), ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(10, MaterialItems.SOUL_OF_FLIGHT),
+                'b', AmountIngredient.of(4, MaterialItems.SOUL_OF_NIGHT),
+                'c', AmountIngredient.of(5, MaterialItems.HARPY_FEATHER)
+        ), List.of(
+                "b  b",
+                "caac",
+                "b  b"
+        )));
     }
 
     protected void hardmodeAnvil(RecipeOutput recipeOutput, ItemStack result, ShapedRecipePattern pattern) {

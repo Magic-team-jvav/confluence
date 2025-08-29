@@ -208,6 +208,7 @@ public final class ModClientEvents {
         event.registerLayerDefinition(HurtnadoProjectileModel.LAYER_LOCATION, HurtnadoProjectileModel::createBodyLayer);
         event.registerLayerDefinition(RollingCactusSpikeModel.LAYER_LOCATION, RollingCactusSpikeModel::createBodyLayer);
         event.registerLayerDefinition(RainProjectileModel.LAYER_LOCATION, RainProjectileModel::createBodyLayer);
+        event.registerLayerDefinition(SkullProjectileModel.LAYER_LOCATION, SkullProjectileModel::createBodyLayer);
 
         event.registerLayerDefinition(BaseHookModel.LAYER_LOCATION, BaseHookModel::createBodyLayer);
         event.registerLayerDefinition(WebSlingerModel.LAYER_LOCATION, WebSlingerModel::createBodyLayer);
@@ -289,7 +290,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(SPEAR.get(), NoopRenderer::new); // todo 模型
         event.registerEntityRenderer(BALL_OF_FROST_PROJECTILE.get(), NoopRenderer::new); // todo 模型
         event.registerEntityRenderer(DEMON_SCYTHE_PROJECTILE.get(), DemonScytheProjectileRenderer::new);
-        event.registerEntityRenderer(SKULL_PROJECTILE.get(), NoopRenderer::new); // todo 模型
+        event.registerEntityRenderer(SKULL_PROJECTILE.get(), SkullProjectileRenderer::new);
         event.registerEntityRenderer(BLOOD_CLOUD_PROJECTILE.get(), context -> new GeoNegativeVolumeRenderer<>(context, new BloodCloudProjectileModel(), false, 2, -0.2F));
         event.registerEntityRenderer(BLOOD_RAIN_PROJECTILE.get(), context -> new RainProjectileRenderer(context, RainProjectileRenderer.BLOOD_RAIN));
         event.registerEntityRenderer(RAIN_CLOUD_PROJECTILE.get(), context -> new GeoNegativeVolumeRenderer<>(context, new RainCloudProjectileModel(), false, 2, -0.2F));

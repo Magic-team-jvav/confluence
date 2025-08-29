@@ -10,7 +10,7 @@
         },
         {
             "type": "terra_entity:fairy",
-            "weight": 6,
+            "weight": 2,
             "minCount": 1,
             "maxCount": 1
         },

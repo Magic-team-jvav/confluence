@@ -399,6 +399,10 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(LootItem.lootTableItem(TGItems.MUSKET))
                         .add(LootItem.lootTableItem(ManaWeaponItems.VILETHRON))
                 )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(MaterialItems.SOUL_OF_NIGHT).apply(count2To5))
+                        .add(EmptyLootItem.emptyItem())
+                )
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/boreal_crate"), environmentCrateHardModeCommon()
                 .withPool(LootPool.lootPool()
@@ -459,6 +463,10 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(LootItem.lootTableItem(TGItems.THE_UNDERTAKER))
                         .add(LootItem.lootTableItem(LanceItems.THE_ROTTED_FORK))
                         .add(LootItem.lootTableItem(ManaWeaponItems.CRIMSON_ROD))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(MaterialItems.SOUL_OF_NIGHT).apply(count2To5))
+                        .add(EmptyLootItem.emptyItem())
                 )
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/pearlwood_crate"), LootTable.lootTable()
@@ -936,6 +944,10 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
 
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/skeletron/classic"), HealingPotionCommon()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(HookItems.SKELETRON_HAND)))
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(ManaWeaponItems.BOOK_OF_SKULLS).setWeight(105))
+                        .add(EmptyLootItem.emptyItem().setWeight(895))
+                )
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/skeletron/expert"), HealingPotionCommon()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(HookItems.SKELETRON_HAND)))
@@ -943,6 +955,10 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
                         .apply(SetItemCountFunction.setCount(new ConstantValue(5)))
                 ))
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(ManaWeaponItems.BOOK_OF_SKULLS))
+                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                )
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/skeletron/master"), HealingPotionCommon()
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(HookItems.SKELETRON_HAND)))
@@ -950,6 +966,10 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
                         .apply(SetItemCountFunction.setCount(new ConstantValue(5)))
                 ))
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(ManaWeaponItems.BOOK_OF_SKULLS))
+                        .add(EmptyLootItem.emptyItem().setWeight(2))
+                )
         );
 
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/queen_bee/classic"), queenBeeTreasureBagCommon()

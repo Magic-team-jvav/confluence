@@ -43,7 +43,6 @@ public interface Immunity {
                 case LOCAL -> im;
             };
         }
-        // TODO: 打表
         return null;
     }
 

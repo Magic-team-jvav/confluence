@@ -111,7 +111,7 @@ public final class ModUtils {
         return itemStack.is(PotionItems.BOTTLED_WATER) || itemStack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).is(Potions.WATER);
     }
 
-    public static void summonBoss(ServerLevel level, BlockPos pos, AbstractTerraBossBase<?> boss) {
+    public static void summonBoss(ServerLevel level, BlockPos pos, AbstractTerraBossBase boss) {
         double x = pos.getX() + 0.5 + level.random.nextInt(-50, 51);
         double z = pos.getZ() + 0.5 + level.random.nextInt(-50, 51);
         boss.setPos(x, 0.5 + level.getHeight(Heightmap.Types.MOTION_BLOCKING, Mth.floor(x), Mth.floor(z)), z);

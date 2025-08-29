@@ -36,7 +36,7 @@ public class BossSummoningItem extends TooltipItem {
             if (!level.getEntitiesOfClass(mob.getClass(), player.getBoundingBox().inflate(Short.MAX_VALUE)).isEmpty()) {
                 return InteractionResultHolder.fail(itemStack);
             }
-            if (mob instanceof AbstractTerraBossBase<?> boss) {
+            if (mob instanceof AbstractTerraBossBase boss) {
                 boss.finalizeSpawn(serverLevel, level.getCurrentDifficultyAt(player.blockPosition()), MobSpawnType.MOB_SUMMONED, null);
             }
             mob.setPos(player.getX() + level.random.nextInt(-50, 51), player.getY(), player.getZ() + level.random.nextInt(-50, 51));

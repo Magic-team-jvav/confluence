@@ -95,7 +95,7 @@ public final class LivingEntityEvents {
             if (victim instanceof Enemy && attacker instanceof ServerPlayer) {
                 if (CommonConfigs.DROP_MONEY.get() &&
                         level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT) &&
-                        (!(victim instanceof IMinion<?> minion) || minion.minion_getOwnerUUID() == null)
+                        (!(victim instanceof IMinion minion) || minion.minion_getOwnerUUID() == null)
                 ) {
                     ModUtils.enemyDropMoney(victim, level);
                 }
@@ -320,7 +320,7 @@ public final class LivingEntityEvents {
         }
         if (KillBoard.INSTANCE.getGamePhase().isHardmode() &&
                 living instanceof Enemy &&
-                (!(living instanceof IMinion<?> minion) || minion.minion_getOwnerUUID() == null) &&
+                (!(living instanceof IMinion minion) || minion.minion_getOwnerUUID() == null) &&
                 !living.getType().is(ModTags.EntityTypes.DO_NOT_DROPS_EVIL_SOUL) &&
                 (y < OverworldUtils.getUndergroundY() || ModSecretSeeds.DONT_DIG_UP.match(level) || ModSecretSeeds.GET_FIXED_BOI.match(level)) &&
                 living.getRandom().nextFloat() < (LibUtils.isAtLeastExpert(level, living.blockPosition()) ? 0.36F : 0.2F)

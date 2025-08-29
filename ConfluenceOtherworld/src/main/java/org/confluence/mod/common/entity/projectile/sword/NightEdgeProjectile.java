@@ -18,7 +18,7 @@ import java.util.List;
 
 import static org.confluence.terraentity.utils.TEUtils.rotToDir;
 
-public class NightEdgeProjectile extends SwordProjectile<NightEdgeProjectile> implements IOBBProjectile<NightEdgeProjectile> {
+public class NightEdgeProjectile extends SwordProjectile<NightEdgeProjectile> implements IOBBProjectile {
 
     Vec3KeyframeAnimation posAnimation;
     Vec3KeyframeAnimation rotAnimation;

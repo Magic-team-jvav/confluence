@@ -13,7 +13,7 @@ import java.util.function.Predicate;
 
 public final class BossDelaySpawner {
     public static final BossDelaySpawner INSTANCE = new BossDelaySpawner();
-    private final List<Delayed<AbstractTerraBossBase<?>>> bossQueue = new ArrayList<>();
+    private final List<Delayed<AbstractTerraBossBase>> bossQueue = new ArrayList<>();
 
     private BossDelaySpawner() {}
 
@@ -31,7 +31,7 @@ public final class BossDelaySpawner {
         }
     }
 
-    public void pushBoss(int delay, AbstractTerraBossBase<?> boss, Predicate<ServerLevel> predicate) {
+    public void pushBoss(int delay, AbstractTerraBossBase boss, Predicate<ServerLevel> predicate) {
         if (bossQueue.size() == 8) bossQueue.removeFirst();
         bossQueue.add(new Delayed<>(delay, boss, predicate));
     }

@@ -596,13 +596,13 @@ public class ModDataProvider {
                             OreConfiguration.target(stoneOreReplaceables, OreBlocks.PLATINUM_ORE.get().defaultBlockState()),
                             OreConfiguration.target(deepslateOreReplaceables, OreBlocks.DEEPSLATE_PLATINUM_ORE.get().defaultBlockState())
                     ), 20)
-            )), 32, 4));
+            )), 32, 8));
             register(context, GOLD_VEIN_WITH_DETONATOR, ModFeatures.DETONATOR_FEATURE.get(), new DetonatorFeature.Config(Holder.direct(new ConfiguredFeature<>(Feature.ORE,
                     new OreConfiguration(List.of(
                             OreConfiguration.target(stoneOreReplaceables, Blocks.GOLD_ORE.defaultBlockState()),
                             OreConfiguration.target(deepslateOreReplaceables, Blocks.DEEPSLATE_GOLD_ORE.defaultBlockState())
                     ), 27)
-            )), 32, 4));
+            )), 32, 8));
         }
 
         private static <FC extends FeatureConfiguration, F extends Feature<FC>> void register(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, F feature, FC config) {
@@ -926,8 +926,8 @@ public class ModDataProvider {
             register(context, GEMSTONE_CAVE, configured.getOrThrow(ConfiguredFeatures.GEMSTONE_CAVE), RarityFilter.onAverageOnceEvery(55), inSquare, HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(14), VerticalAnchor.absolute(30)), biome);
             register(context, PEARL_TREE, configured.getOrThrow(ModFeatures.Configured.PEARL_TREE), count1_9$2_1, inSquare, surfaceWaterDepth0, oceanFloor, biome);
             register(context, ADDITIONAL_ANCIENT_DEBRIS, configured.getOrThrow(ConfiguredFeatures.ADDITIONAL_ANCIENT_DEBRIS), count3, inSquare, heightRangeTriangle(0, 128), biome);
-            register(context, PLATINUM_VEIN_WITH_DETONATOR, configured.getOrThrow(ConfiguredFeatures.PLATINUM_VEIN_WITH_DETONATOR), RarityFilter.onAverageOnceEvery(50), HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(14), VerticalAnchor.absolute(30)));
-            register(context, GOLD_VEIN_WITH_DETONATOR, configured.getOrThrow(ConfiguredFeatures.GOLD_VEIN_WITH_DETONATOR), RarityFilter.onAverageOnceEvery(50), HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(14), VerticalAnchor.absolute(30)));
+            register(context, PLATINUM_VEIN_WITH_DETONATOR, configured.getOrThrow(ConfiguredFeatures.PLATINUM_VEIN_WITH_DETONATOR), RarityFilter.onAverageOnceEvery(25), inSquare, HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(14), VerticalAnchor.absolute(30)), biome);
+            register(context, GOLD_VEIN_WITH_DETONATOR, configured.getOrThrow(ConfiguredFeatures.GOLD_VEIN_WITH_DETONATOR), RarityFilter.onAverageOnceEvery(25), inSquare, HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(14), VerticalAnchor.absolute(30)), biome);
 
             gemTree(context, AMBER_TREE, configured.getOrThrow(ModFeatures.Configured.AMBER_TREE), NatureBlocks.AMBER_SAPLING.get());
             gemTree(context, AMETHYST_TREE, configured.getOrThrow(ModFeatures.Configured.AMETHYST_TREE), NatureBlocks.AMETHYST_SAPLING.get());

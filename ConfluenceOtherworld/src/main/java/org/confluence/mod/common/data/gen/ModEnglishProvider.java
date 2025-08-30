@@ -185,13 +185,13 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.guide_voodoo_doll.wall.2", "Sealed within Its heart is the world's most primal, untamed power, which shall fully unleash when Its mortal form crumbles.");
         add("tooltip.item.confluence.guide_voodoo_doll.wall.3", "\"How does it feel to watch the one who guided your every step writhe in the agony of being burned alive?\"");
         add("tooltip.item.confluence.guide_voodoo_doll.wall.4", "Summons the Wall of Flesh");
-
         add("tooltip.item.confluence.guide_voodoo_doll.hill.0", "\"Karma's fire consumes the puppet, scarlet peaks surge with a tide of blood\"");
         add("tooltip.item.confluence.guide_voodoo_doll.hill.1", "Cast this innocent doll into the Underworld's magma, and the Hill of Flesh shall hatch from its nurturing cradle; only the Underworld's magma can satisfy the harsh heat demands of the burning sacrifice");
         add("tooltip.item.confluence.guide_voodoo_doll.hill.2", "Sealed within Its heart is the world's most primal, untamed power, which shall fully unleash when Its mortal form crumbles.");
         add("tooltip.item.confluence.guide_voodoo_doll.hill.3", "\"How does it feel to watch the one who guided your every step writhe in the agony of being burned alive?\"");
         add("tooltip.item.confluence.guide_voodoo_doll.hill.4", "Summons the Hill of Flesh");
         add("tooltip.item.confluence.hardmode_forge.0", "Used to smelt adamantite and titanium ore");
+        add("tooltip.item.confluence.loom.0", "Used for crafting cloth");
 
         add("tooltip.item.confluence.tokyo_teddy_bear.0", "A self - abased girl said like a broken teddy bear:");
         add("tooltip.item.confluence.tokyo_teddy_bear.1", "           Let me tell you");
@@ -969,7 +969,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("container.confluence.solidifier", "Solidifier");
         add("container.confluence.mythril_anvil", "Mythril Anvil");
         add("container.confluence.orichalcum_anvil", "Orichalcum Anvil");
-
+        add("container.confluence.loom", "Loom");
 
         add("title.confluence.shimmer_transmutation", "Shimmer Transmutation");
         add("title.confluence.altar", "Altar");
@@ -988,6 +988,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("title.confluence.sawmill", "Sawmill");
         add("title.confluence.mythril_anvil", "Mythril Anvil");
         add("title.confluence.orichalcum_anvil", "Orichalcum Anvil");
+        add("title.confluence.loom", "Loom");
 
         // Override
         add("item.confluence.encumbering_stone.disable", "Encumbering Stone: Disable");

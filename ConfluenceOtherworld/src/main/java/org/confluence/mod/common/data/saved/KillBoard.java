@@ -3,6 +3,7 @@ package org.confluence.mod.common.data.saved;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.*;
 import com.xiaohunao.heaven_destiny_moment.common.init.HDMRegistries;
+import com.xiaohunao.heaven_destiny_moment.common.moment.IMoment;
 import com.xiaohunao.heaven_destiny_moment.common.moment.Moment;
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
@@ -52,12 +53,12 @@ public final class KillBoard implements IGlobalData {
             })), Lifecycle.stable());
         }
     };
-    public static final Codec<Object2BooleanMap<ResourceKey<Moment>>> DEFEATED_EVENTS_CODEC = new Codec<>() {
+    public static final Codec<Object2BooleanMap<ResourceKey<IMoment>>> DEFEATED_EVENTS_CODEC = new Codec<>() {
         @Override
-        public <T> DataResult<Pair<Object2BooleanMap<ResourceKey<Moment>>, T>> decode(DynamicOps<T> ops, T input) {
-            Object2BooleanMap<ResourceKey<Moment>> map = new Object2BooleanOpenHashMap<>();
+        public <T> DataResult<Pair<Object2BooleanMap<ResourceKey<IMoment>>, T>> decode(DynamicOps<T> ops, T input) {
+            Object2BooleanMap<ResourceKey<IMoment>> map = new Object2BooleanOpenHashMap<>();
             ops.getMap(input).getOrThrow().entries().forEach(pair -> ops.getStringValue(pair.getFirst()).ifSuccess(id -> {
-                ResourceKey<Moment> key = ResourceKey.create(HDMRegistries.Keys.MOMENT, ResourceLocation.parse(id));
+                ResourceKey<IMoment> key = ResourceKey.create(HDMRegistries.Keys.MOMENT, ResourceLocation.parse(id));
                 boolean defeated = ops.getBooleanValue(pair.getSecond()).result().orElse(false);
                 map.put(key, defeated);
             }));
@@ -65,7 +66,7 @@ public final class KillBoard implements IGlobalData {
         }
 
         @Override
-        public <T> DataResult<T> encode(Object2BooleanMap<ResourceKey<Moment>> input, DynamicOps<T> ops, T prefix) {
+        public <T> DataResult<T> encode(Object2BooleanMap<ResourceKey<IMoment>> input, DynamicOps<T> ops, T prefix) {
             return DataResult.success(ops.createMap(input.object2BooleanEntrySet().stream().map(entry -> {
                 T string = ops.createString(entry.getKey().location().toString());
                 T defeated = ops.createBoolean(entry.getBooleanValue());
@@ -76,12 +77,12 @@ public final class KillBoard implements IGlobalData {
     public static final StreamCodec<ByteBuf, Object2BooleanMap<EntityType<?>>> DEFEATED_BOSSES_STREAM_CODEC = ByteBufCodecs.map(Object2BooleanOpenHashMap::new,
             ResourceLocation.STREAM_CODEC.map(BuiltInRegistries.ENTITY_TYPE::get, BuiltInRegistries.ENTITY_TYPE::getKey), ByteBufCodecs.BOOL
     );
-    public static final StreamCodec<ByteBuf, Object2BooleanMap<ResourceKey<Moment>>> DEFEATED_EVENTS_STREAM_CODEC = ByteBufCodecs.map(Object2BooleanOpenHashMap::new,
+    public static final StreamCodec<ByteBuf, Object2BooleanMap<ResourceKey<IMoment>>> DEFEATED_EVENTS_STREAM_CODEC = ByteBufCodecs.map(Object2BooleanOpenHashMap::new,
             ResourceKey.streamCodec(HDMRegistries.Keys.MOMENT), ByteBufCodecs.BOOL
     );
 
     private final Object2BooleanMap<EntityType<?>> defeatedBosses = new Object2BooleanOpenHashMap<>();
-    private final Object2BooleanMap<ResourceKey<Moment>> defeatedEvents = new Object2BooleanOpenHashMap<>();
+    private final Object2BooleanMap<ResourceKey<IMoment>> defeatedEvents = new Object2BooleanOpenHashMap<>();
     private GamePhase gamePhase = GamePhase.BEFORE_SKELETRON;
 
     private KillBoard() {}
@@ -90,7 +91,7 @@ public final class KillBoard implements IGlobalData {
         return defeatedBosses.getBoolean(entityType);
     }
 
-    public boolean isDefeated(ResourceKey<Moment> moment) {
+    public boolean isDefeated(ResourceKey<IMoment> moment) {
         return defeatedEvents.getBoolean(moment);
     }
 
@@ -110,9 +111,9 @@ public final class KillBoard implements IGlobalData {
     }
 
     @SafeVarargs
-    public final int countDefeated(ResourceKey<Moment>... keys) {
+    public final int countDefeated(ResourceKey<IMoment>... keys) {
         int count = 0;
-        for (ResourceKey<Moment> key : keys) {
+        for (ResourceKey<IMoment> key : keys) {
             if (isDefeated(key)) count++;
         }
         return count;
@@ -122,7 +123,7 @@ public final class KillBoard implements IGlobalData {
         return defeatedBosses.keySet();
     }
 
-    public Set<ResourceKey<Moment>> getDefeatedEvents() {
+    public Set<ResourceKey<IMoment>> getDefeatedEvents() {
         return defeatedEvents.keySet();
     }
 
@@ -137,7 +138,7 @@ public final class KillBoard implements IGlobalData {
         }
     }
 
-    public void defeat(Moment moment) {
+    public void defeat(IMoment moment) {
         HDMRegistries.MOMENT.getResourceKey(moment).ifPresentOrElse(key -> defeatedEvents.put(key, true), () -> Confluence.LOGGER.warn("Unknown moment: {}", moment));
         KillBoardSyncPacketS2C.sendToAll();
     }

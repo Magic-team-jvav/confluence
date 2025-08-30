@@ -6,7 +6,6 @@ import com.xiaohunao.heaven_destiny_moment.common.context.condition.level.LevelC
 import com.xiaohunao.heaven_destiny_moment.common.context.condition.level.LevelRunningTimeCondition;
 import com.xiaohunao.heaven_destiny_moment.common.context.condition.moment.MomentHistoryCondition;
 import com.xiaohunao.heaven_destiny_moment.common.context.condition.player.PlayerCondition;
-import com.xiaohunao.heaven_destiny_moment.common.init.HDMRegistries;
 import com.xiaohunao.heaven_destiny_moment.common.moment.IMoment;
 import com.xiaohunao.heaven_destiny_moment.common.predicate.AttributePredicate;
 import com.xiaohunao.heaven_destiny_moment.common.trigger.triggers.TimeProbabilityTrigger;
@@ -17,7 +16,6 @@ import com.xiaohunao.terra_moment.common.init.TMMoments;
 import com.xiaohunao.xhn_lib.api.register.PostRegisterResult;
 import com.xiaohunao.xhn_lib.common.event.FlexibleRegisterEvent;
 import net.minecraft.advancements.critereon.MinMaxBounds;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -25,9 +23,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.init.ModMomentProbabilityFunction;
+import org.confluence.mod.integration.heaven_destiny_moment.init.ModMomentProbabilityFunction;
 import org.confluence.mod.integration.heaven_destiny_moment.context.condition.EverBeneficialCondition;
 
 import java.util.List;

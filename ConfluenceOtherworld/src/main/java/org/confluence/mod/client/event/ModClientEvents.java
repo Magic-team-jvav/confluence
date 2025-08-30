@@ -141,6 +141,7 @@ public final class ModClientEvents {
         event.register(ModMenuTypes.CRYSTAL_BALL.get(), CrystalBallScreen::new);
         event.register(ModMenuTypes.HARDMODE_ANVIL.get(), HardmodeAnvilScreen::new);
         event.register(ModMenuTypes.HARDMODE_FORGE.get(), HardmodeForgeScreen::new);
+        event.register(ModMenuTypes.LOOM.get(), LoomScreen::new);
 
         event.register(ModMenuTypes.NPC_TRADES_MENU.get(), WithForgeTradeScreen::new);
         event.register(ModMenuTypes.REFORGE_MENU.get(), NPCReforgeScreen::new);
@@ -345,6 +346,7 @@ public final class ModClientEvents {
         event.registerBlockEntityRenderer(FunctionalBlocks.SAFE_ENTITY.get(), context -> new GeoBlockRenderer<>(new DefaultedBlockGeoModel<>(Confluence.asResource("safe"))));
         event.registerBlockEntityRenderer(DecorativeBlocks.MURAL_ENTITY_BLOCK.get(), ClientUtils.rendererProvider(MuralBlockRenderer::new));
         event.registerBlockEntityRenderer(FunctionalBlocks.BEWITCHING_TABLE_ENTITY.get(), ClientUtils.rendererProvider(BewitchingTableBlockRenderer::new));
+        event.registerBlockEntityRenderer(FunctionalBlocks.LOOM_ENTITY.get(), ClientUtils.rendererProvider(LoomBlockRenderer::new));
 
         WaystonesHelper.registerEntityRenderers(event);
     }

@@ -11,15 +11,15 @@ import org.confluence.lib.common.recipe.MenuRecipeInput;
 import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.common.recipe.SolidifierRecipe;
+import org.confluence.mod.common.recipe.LoomRecipe;
 
-public class SolidifierMenu extends EitherAmountContainerMenu4x<MenuRecipeInput, SolidifierRecipe, ToggleAmountResultSlot<SolidifierRecipe>, ContainerLevelAccess> {
-    public SolidifierMenu(int containerId, Inventory inventory) {
+public class LoomMenu extends EitherAmountContainerMenu4x<MenuRecipeInput, LoomRecipe, ToggleAmountResultSlot<LoomRecipe>, ContainerLevelAccess> {
+    public LoomMenu(int containerId, Inventory inventory) {
         this(containerId, inventory, ContainerLevelAccess.NULL);
     }
 
-    public SolidifierMenu(int containerId, Inventory inventory, ContainerLevelAccess access) {
-        super(ModMenuTypes.SOLIDIFIER.get(), ModRecipes.SOLIDIFIER_TYPE.get(), containerId, inventory, access, MenuRecipeInput::new,
+    public LoomMenu(int containerId, Inventory inventory, ContainerLevelAccess access) {
+        super(ModMenuTypes.LOOM.get(), ModRecipes.LOOM_TYPE.get(), containerId, inventory, access, MenuRecipeInput::new,
                 (input, container, slot, x, y, setup) -> new ToggleAmountResultSlot<>(input, container, slot, x, y) {
                     @Override
                     protected void updateMenu() {
@@ -41,6 +41,6 @@ public class SolidifierMenu extends EitherAmountContainerMenu4x<MenuRecipeInput,
 
     @Override
     public boolean stillValid(Player player) {
-        return stillValid(access, player, FunctionalBlocks.SOLIDIFIER.get());
+        return stillValid(access, player, FunctionalBlocks.LOOM.get());
     }
 }

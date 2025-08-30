@@ -66,6 +66,8 @@ public final class ModRecipes {
     public static final Supplier<RecipeSerializer<?>> ITEM_TRANSMUTATION_SERIALIZER = SERIALIZERS.register("item_transmutation", ItemTransmutationRecipe.Serializer::new);
     public static final Supplier<RecipeType<HardmodeForgeRecipe>> HARDMODE_FORGE_TYPE = registerType("hardmode_forge");
     public static final Supplier<RecipeSerializer<?>> HARDMODE_FORGE_SERIALIZER = SERIALIZERS.register("hardmode_forge", HardmodeForgeRecipe.Serializer::new);
+    public static final Supplier<RecipeType<LoomRecipe>> LOOM_TYPE = registerType("loom");
+    public static final Supplier<RecipeSerializer<?>> LOOM_SERIALIZER = SERIALIZERS.register("loom", LoomRecipe.Serializer::new);
 
     public static final DeferredHolder<RecipeSerializer<?>, BoomBunnyRecipe.Serializer> BOOM_BUNNY_SERIALIZER = SERIALIZERS.register("boom_bunny", BoomBunnyRecipe.Serializer::new);
 

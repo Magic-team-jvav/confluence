@@ -8,6 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.AABB;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.crafting.ExtractinatorBlock;
+import org.confluence.mod.util.ClientUtils;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
@@ -50,6 +51,6 @@ public class ExtractinatorBlockRenderer extends GeoBlockRenderer<ExtractinatorBl
 
     @Override
     public AABB getRenderBoundingBox(ExtractinatorBlock.BEntity blockEntity) {
-        return AABB.INFINITE;
+        return ClientUtils.getRenderBoundingBox3x(blockEntity.getBlockPos());
     }
 }

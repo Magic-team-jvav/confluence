@@ -71,6 +71,7 @@ public final class ModJeiPlugin implements IModPlugin {
         registration.addRecipeCategories(new ExtractinatorCategory(jeiHelpers, ExtractinatorCategory.EXTRACTINATOR, FunctionalBlocks.EXTRACTINATOR.get()));
         registration.addRecipeCategories(new ExtractinatorCategory(jeiHelpers, ExtractinatorCategory.CHLOROPHYTE_EXTRACTINATOR, FunctionalBlocks.CHLOROPHYTE_EXTRACTINATOR.get()));
         registration.addRecipeCategories(new HardmodeForgeCategory(jeiHelpers));
+        registration.addRecipeCategories(new LoomCategory(jeiHelpers));
     }
 
     @Override
@@ -94,6 +95,7 @@ public final class ModJeiPlugin implements IModPlugin {
         registration.addRecipes(ExtractinatorCategory.EXTRACTINATOR, ExtractinatorCategory.collectAll(ModDataMaps.EXTRACTINATOR, level.registryAccess()));
         registration.addRecipes(ExtractinatorCategory.CHLOROPHYTE_EXTRACTINATOR, ExtractinatorCategory.collectAll(ModDataMaps.CHLOROPHYTE_EXTRACTINATOR, level.registryAccess()));
         registration.addRecipes(HardmodeForgeCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.HARDMODE_FORGE_TYPE.get()));
+        registration.addRecipes(LoomCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.LOOM_TYPE.get()));
     }
 
     @Override
@@ -119,6 +121,7 @@ public final class ModJeiPlugin implements IModPlugin {
         registration.addRecipeCatalyst(FunctionalBlocks.CHLOROPHYTE_EXTRACTINATOR.toStack(), ExtractinatorCategory.CHLOROPHYTE_EXTRACTINATOR);
         registration.addRecipeCatalyst(FunctionalBlocks.ADAMANTITE_FORGE.toStack(), HardmodeForgeCategory.TYPE, HellforgeCategory.TYPE, RecipeTypes.BLASTING);
         registration.addRecipeCatalyst(FunctionalBlocks.TITANIUM_FORGE.toStack(), HardmodeForgeCategory.TYPE, HellforgeCategory.TYPE, RecipeTypes.BLASTING);
+        registration.addRecipeCatalyst(FunctionalBlocks.LOOM.toStack(), LoomCategory.TYPE);
     }
 
     @Override
@@ -135,6 +138,7 @@ public final class ModJeiPlugin implements IModPlugin {
         registration.addRecipeClickArea(CookingPotScreen.class, 78, 36, 46, 15, CookingPotCategory.TYPE);
         registration.addRecipeClickArea(HardmodeAnvilScreen.class, 78, 36, 46, 15, HardmodeAnvilCategory.TYPE);
         registration.addRecipeClickArea(HardmodeForgeScreen.class, 89, 31, 28, 23, HardmodeForgeCategory.TYPE);
+        registration.addRecipeClickArea(LoomScreen.class, 95, 32, 28, 23, LoomCategory.TYPE);
 
         registration.addGlobalGuiHandler(new ExtraInventoryHandler());
     }

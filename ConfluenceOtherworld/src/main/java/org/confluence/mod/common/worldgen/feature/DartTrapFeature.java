@@ -63,7 +63,7 @@ public class DartTrapFeature extends Feature<DartTrapFeature.Config> {
     public record Config(int maxDartDistance, int maxSearchDown) implements FeatureConfiguration {
         public static final Codec<Config> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 ExtraCodecs.POSITIVE_INT.lenientOptionalFieldOf("max_dart_distance", 24).forGetter(Config::maxDartDistance),
-                ExtraCodecs.POSITIVE_INT.fieldOf("max_search_down").orElse(32).forGetter(Config::maxSearchDown)
+                ExtraCodecs.POSITIVE_INT.lenientOptionalFieldOf("max_search_down", 32).forGetter(Config::maxSearchDown)
         ).apply(instance, Config::new));
     }
 }

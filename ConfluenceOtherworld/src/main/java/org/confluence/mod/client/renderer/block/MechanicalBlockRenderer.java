@@ -12,6 +12,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.block.functional.AbstractMechanicalBlock;
+import org.confluence.mod.util.ClientUtils;
 import org.confluence.terra_curio.client.handler.InformationHandler;
 
 import java.util.Set;
@@ -34,7 +35,7 @@ public class MechanicalBlockRenderer<E extends AbstractMechanicalBlock.BEntity> 
 
     @Override
     public AABB getRenderBoundingBox(E blockEntity) {
-        return AABB.INFINITE;
+        return ClientUtils.getRenderBoundingBox3x(blockEntity.getBlockPos());
     }
 
     @Override

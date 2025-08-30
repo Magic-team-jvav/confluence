@@ -15,50 +15,50 @@ import org.confluence.lib.common.recipe.MenuRecipeInput;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 
-public class SolidifierRecipe extends EitherAmountRecipe4x<MenuRecipeInput> {
-    public SolidifierRecipe(ItemStack result, ShapedRecipePattern pattern) {
+public class LoomRecipe extends EitherAmountRecipe4x<MenuRecipeInput> {
+    public LoomRecipe(ItemStack result, ShapedRecipePattern pattern) {
         super(result, pattern);
     }
 
-    public SolidifierRecipe(ItemStack result, NonNullList<Ingredient> ingredients) {
+    public LoomRecipe(ItemStack result, NonNullList<Ingredient> ingredients) {
         super(result, ingredients);
     }
 
-    public SolidifierRecipe(ItemStack result, Either<ShapedRecipePattern, NonNullList<Ingredient>> either) {
+    public LoomRecipe(ItemStack result, Either<ShapedRecipePattern, NonNullList<Ingredient>> either) {
         super(result, either);
     }
 
     @Override
     public String getGroup() {
-        return "solidifier";
+        return "loom";
     }
 
     @Override
     public ItemStack getToastSymbol() {
-        return FunctionalBlocks.SOLIDIFIER.toStack();
+        return FunctionalBlocks.LOOM.toStack();
     }
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return ModRecipes.SOLIDIFIER_SERIALIZER.get();
+        return ModRecipes.LOOM_SERIALIZER.get();
     }
 
     @Override
     public RecipeType<?> getType() {
-        return ModRecipes.SOLIDIFIER_TYPE.get();
+        return ModRecipes.LOOM_TYPE.get();
     }
 
-    public static class Serializer implements RecipeSerializer<SolidifierRecipe> {
-        public static final MapCodec<SolidifierRecipe> CODEC = EitherAmountRecipe4x.shapedSerializerMapCodec(SolidifierRecipe::new);
-        public static final StreamCodec<RegistryFriendlyByteBuf, SolidifierRecipe> STREAM_CODEC = EitherAmountRecipe4x.shapedSerializerSteamCodec(SolidifierRecipe::new);
+    public static class Serializer implements RecipeSerializer<LoomRecipe> {
+        public static final MapCodec<LoomRecipe> CODEC = EitherAmountRecipe4x.eitherSerializerMapCodec(LoomRecipe::new);
+        public static final StreamCodec<RegistryFriendlyByteBuf, LoomRecipe> STREAM_CODEC = EitherAmountRecipe4x.eitherSerializerStreamCodec(LoomRecipe::new);
 
         @Override
-        public MapCodec<SolidifierRecipe> codec() {
+        public MapCodec<LoomRecipe> codec() {
             return CODEC;
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, SolidifierRecipe> streamCodec() {
+        public StreamCodec<RegistryFriendlyByteBuf, LoomRecipe> streamCodec() {
             return STREAM_CODEC;
         }
     }

@@ -185,6 +185,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.guide_voodoo_doll.hill.3", "“亲眼看着那位指引你一步步走到今天的人在焚身的痛苦中翻滚挣扎，你作何感想？”");
         add("tooltip.item.confluence.guide_voodoo_doll.hill.4", "召唤血肉山");
         add("tooltip.item.confluence.hardmode_forge.0", "用于熔炼精金矿和钛金矿");
+        add("tooltip.item.confluence.loom.0", "用于制作衣物");
 
         add("tooltip.item.confluence.tokyo_teddy_bear.0", "一位自卑的少女如破碎的泰迪熊般说到：");
         add("tooltip.item.confluence.tokyo_teddy_bear.1", "           来让你听听");
@@ -1037,7 +1038,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("container.confluence.solidifier", "固化机");
         add("container.confluence.mythril_anvil", "秘银砧");
         add("container.confluence.orichalcum_anvil", "山铜砧");
-
+        add("container.confluence.loom", "织布机");
 
         add("title.confluence.shimmer_transmutation", "微光嬗变");
         add("title.confluence.altar", "祭坛");
@@ -1056,6 +1057,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("title.confluence.sawmill", "锯木机");
         add("title.confluence.mythril_anvil", "秘银砧");
         add("title.confluence.orichalcum_anvil", "山铜砧");
+        add("title.confluence.loom", "织布机");
 
         // 覆盖
         add("item.confluence.encumbering_stone.disable", "负重石：关闭");
@@ -3387,6 +3389,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.SPEAR_TRAP.get(), "长矛机关");
         add(FunctionalBlocks.LEVER.get(), "控制杆");
         add(FunctionalBlocks.WOODEN_SPIKE.get(), "木尖刺");
+        add(FunctionalBlocks.LOOM.get(), "织布机");
         add(ModBlocks.AETHERIUM_CAULDRON.get(), "微光炼药锅");
         add(ModBlocks.HONEY_CAULDRON.get(), "蜂蜜炼药锅");
 

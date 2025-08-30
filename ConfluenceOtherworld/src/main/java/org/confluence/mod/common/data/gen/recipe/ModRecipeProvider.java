@@ -433,14 +433,20 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         recipeOutput.accept(id, factory.create("", CookingBookCategory.MISC, ingredient, result, experience, cookingTime), createAdvancementHolder(recipeOutput, id, ingredient));
     }
 
-    protected void skyMill(RecipeOutput recipeOutput, ItemStack result, Ingredient... ingredients) {
-        ResourceLocation id = Confluence.asResource("sky_mill/" + getItemName(result.getItem()));
-        recipeOutput.accept(id, new SkyMillRecipe(result, NonNullList.of(Ingredient.EMPTY, ingredients), EnvironmentLevelAccess.Matcher.EMPTY), null);
-    }
-
     protected void solidifier(RecipeOutput recipeOutput, ItemStack result, ShapedRecipePattern pattern) {
         ResourceLocation id = Confluence.asResource("solidifier/" + getItemName(result.getItem()));
         recipeOutput.accept(id, new SolidifierRecipe(result, pattern), null);
+    }
+
+    protected void solidifier(RecipeOutput recipeOutput, ItemStack result, Ingredient... ingredients) {
+        ResourceLocation id = Confluence.asResource("solidifier/" + getItemName(result.getItem()));
+        NonNullList<Ingredient> zingredients = NonNullList.of(Ingredient.EMPTY, ingredients);
+        recipeOutput.accept(id, new SolidifierRecipe(result, zingredients), null);
+    }
+
+    protected void skyMill(RecipeOutput recipeOutput, ItemStack result, Ingredient... ingredients) {
+        ResourceLocation id = Confluence.asResource("sky_mill/" + getItemName(result.getItem()));
+        recipeOutput.accept(id, new SkyMillRecipe(result, NonNullList.of(Ingredient.EMPTY, ingredients), EnvironmentLevelAccess.Matcher.EMPTY), null);
     }
 
     protected void skyMill(RecipeOutput recipeOutput, ItemStack result, EnvironmentLevelAccess.Matcher environment, Ingredient... ingredients) {
@@ -497,6 +503,17 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         ResourceLocation id = Confluence.asResource("hardmode_forge/" + getItemName(result.getItem()));
         NonNullList<Ingredient> zingredients = NonNullList.of(Ingredient.EMPTY, ingredients);
         recipeOutput.accept(id, new HardmodeForgeRecipe(result, zingredients, experience, cookingTime, requiresFuel), null);
+    }
+
+    protected void loom(RecipeOutput recipeOutput, ItemStack result, ShapedRecipePattern pattern) {
+        ResourceLocation id = Confluence.asResource("loom/" + getItemName(result.getItem()));
+        recipeOutput.accept(id, new LoomRecipe(result, pattern), null);
+    }
+
+    protected void loom(RecipeOutput recipeOutput, ItemStack result, Ingredient... ingredients) {
+        ResourceLocation id = Confluence.asResource("loom/" + getItemName(result.getItem()));
+        NonNullList<Ingredient> zingredients = NonNullList.of(Ingredient.EMPTY, ingredients);
+        recipeOutput.accept(id, new LoomRecipe(result, zingredients), null);
     }
 
     public static AdvancementHolder createAdvancementHolder(RecipeOutput recipeOutput, ResourceLocation id, NonNullList<Ingredient> ingredients) {

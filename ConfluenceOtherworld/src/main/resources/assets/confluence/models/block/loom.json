@@ -6,7 +6,8 @@
         128
     ],
     "textures": {
-        "0": "confluence:block/loom"
+        "0": "confluence:block/loom",
+        "particle": "confluence:block/particle/loom_particle"
     },
     "elements": [
         {
@@ -1454,61 +1455,61 @@
     ],
     "display": {
         "thirdperson_righthand": {
-            "rotation": [
-                75,
-                45,
-                0
-            ],
             "translation": [
                 0,
-                2.5,
-                0
+                -1,
+                1
             ],
             "scale": [
-                0.375,
-                0.375,
-                0.375
+                0.3,
+                0.3,
+                0.3
             ]
         },
         "thirdperson_lefthand": {
-            "rotation": [
-                75,
-                45,
-                0
-            ],
             "translation": [
                 0,
-                2.5,
-                0
+                -1,
+                1
             ],
             "scale": [
-                0.375,
-                0.375,
-                0.375
+                0.3,
+                0.3,
+                0.3
             ]
         },
         "firstperson_righthand": {
             "rotation": [
                 0,
-                45,
-                0
+                0,
+                25
+            ],
+            "translation": [
+                1.13,
+                -0.2999999999999998,
+                2.63
             ],
             "scale": [
-                0.4,
-                0.4,
-                0.4
+                0.3,
+                0.3,
+                0.3
             ]
         },
         "firstperson_lefthand": {
             "rotation": [
                 0,
-                45,
-                0
+                0,
+                25
+            ],
+            "translation": [
+                1.13,
+                -0.2999999999999998,
+                2.63
             ],
             "scale": [
-                0.4,
-                0.4,
-                0.4
+                0.3,
+                0.3,
+                0.3
             ]
         },
         "ground": {
@@ -1526,29 +1527,36 @@
         "gui": {
             "rotation": [
                 30,
-                -135,
+                135,
                 0
             ],
             "translation": [
-                -2,
-                -0.5,
+                2,
+                0,
                 0
             ],
             "scale": [
-                0.5,
-                0.5,
-                0.5
+                0.45,
+                0.45,
+                0.45
+            ]
+        },
+        "head": {
+            "translation": [
+                0,
+                3.25,
+                -0.5
             ]
         },
         "fixed": {
             "rotation": [
                 0,
-                90,
+                -90,
                 0
             ],
             "translation": [
-                2,
-                -2,
+                0,
+                -4,
                 0
             ],
             "scale": [

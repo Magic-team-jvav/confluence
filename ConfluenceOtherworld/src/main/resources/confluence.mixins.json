@@ -163,6 +163,7 @@
         "integration.terra_curio.TCClientPacketHandlerMixin",
         "integration.terra_curio.TCKeyBindingsMixin",
         "integration.terra_curio.TCUtilsMixin",
+        "integration.terra_entity.TEKeyBindingsMixin",
         "integration.waystones.WaystoneSelectionScreenBaseMixin",
         "integration.xaero.GuiMapMixin",
         "integration.xaero.MapElementRenderHandler$BuilderMixin",

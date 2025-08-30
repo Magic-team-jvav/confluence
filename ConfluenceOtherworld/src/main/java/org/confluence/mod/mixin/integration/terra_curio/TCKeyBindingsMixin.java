@@ -1,13 +1,13 @@
 package org.confluence.mod.mixin.integration.terra_curio;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import org.confluence.terra_curio.client.TCKeyBindings;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.Constant;
-import org.spongepowered.asm.mixin.injection.ModifyConstant;
+import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(value = TCKeyBindings.class, remap = false)
 public abstract class TCKeyBindingsMixin {
-    @ModifyConstant(method = "category", constant = @Constant(stringValue = "key.terra_curio.gameplay"))
+    @ModifyReturnValue(method = "category", at = @At("RETURN"))
     private static String redirect(String original) {
         return "key.confluence.gameplay";
     }

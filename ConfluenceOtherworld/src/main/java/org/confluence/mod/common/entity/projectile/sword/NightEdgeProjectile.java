@@ -122,7 +122,7 @@ public class NightEdgeProjectile extends SwordProjectile implements IOBBProjecti
     // 调整攻击范围
     @Override
     public float lengthScale() {
-        return 2f;
+        return 6f;
     }
 
     public OBB buildOBB() {

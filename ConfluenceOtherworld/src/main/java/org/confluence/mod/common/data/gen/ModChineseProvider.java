@@ -170,7 +170,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.abeemination.0", "右键使用以召唤蜂王，只有热带阔叶雨林间的污浊瘴气才能压制住她的狂怒");
         add("tooltip.item.confluence.abeemination.1", "她似乎极度那些厌恶荧光真菌孢子的气息");
         add("tooltip.item.confluence.abeemination.2", "一团尚未成型的幼蜂，摸上去感觉像黏稠的蜂蜜……蜂王与她的下属们对它们甜蜜领地的保护欲不知何时渐渐发展为对非同类生物的极度排斥与憎恶。");
-        add("tooltip.item.confluence.abeemination.3", "“群蜂振翅之声憾动了丛林中最为厚重的叶片”");
+        add("tooltip.item.confluence.abeemination.3", "“群蜂振翅之声撼动了丛林中最为厚重的叶片”");
         add("tooltip.item.confluence.clothier_voodoo_doll.0", "“你这人真可怕”");
         add("tooltip.item.confluence.guide_voodoo_doll.0", "“你这人真可怕”");
         add("tooltip.item.terra_curio.guide_voodoo_doll.1", "手持并长按使用以切换形态");
@@ -252,7 +252,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("text.building_1", "预计版本%s完成");
         add("text.building_2", "请勿靠近!");
 
-        add("text.confluence.afterlife_notes", "  冒险者，新的天地充满了无尽的挑战与机遇，这本手记将帮助你了解这个世界的奥秘，指引你面对怪物和困境，只有不断探索，你才能发现更多的力量与宝藏，你的旅途才刚刚开始。                            —— 向导");
+        add("text.confluence.afterlife_notes", "  冒险者，新的天地充满了无尽的挑战与机遇，这本手记将帮助你了解这个世界的奥秘，指引你面对怪物和困境。只有不断探索，你才能发现更多的力量与宝藏，你的旅途才刚刚开始。                            —— 向导");
         add("text.confluence.village_exploration", "世界异变悄然降临，生灵阴暗的邪念纷纷爆发，外界的肉体侵扰接踵而至。所有可用的资源，皆被唤醒。新世界的降临，既带来了毁灭的阴影，也打开了新的可能。建筑如腾飞的鸟儿，直抵苍穹，令人惊叹。曾经无法触及的云彩，如今化作实体的方块，映衬出人们心中的渴望。在探索的旅程中，他们掌握了前所未有的知识，发现了新的植物，仿佛在喧嚣中寻得了一隅宁静。在那片");
         add("text.confluence.village_exploration_0", "净土上，新的希望悄然滋生，带来了久违的安详。");
         add("text.confluence.research_on_wheat_mutation", "我们发现，带来的小麦竟开始发白、发黄。起初，我们以为它们无法适应这陌生的环境，直到一块云块轻盈飘过，它把小麦染上了彩霞的色彩，幻化为一种全新的植物。对这异变的产物，我们心中难免生出怀疑——直到有人忍饥挨饿，迫切渴望食物。奇怪的是，明明吃饱了，身体却似乎愈发轻盈，仿佛与大地的重负渐行渐远。在这奇异的世界里，变化与困惑交织，我们开始重新审");
@@ -1438,7 +1438,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("patchouli.confluence.otherworld_note.boss_checklist.queen_bee.1", "*z$(#FFAA00)“统治丛林蜂巢的女王。”*c*w");
         add("patchouli.confluence.otherworld_note.boss_checklist.queen_bee.2", "在丛林使用憎恶之蜂，或者在蜂巢破坏幼虫来召唤蜂王。*2可以在任意时间召唤。");
         add("patchouli.confluence.otherworld_note.boss_checklist.queen_bee.3", "憎恶之蜂是一个用于召唤Boss的物品，看起来像是个蜜蜂。*b它可以用来在丛林中立刻召唤蜂王。*2在!cs:hwb!重型工作台*c中使用 5 个蜂蜜块、5 个丛林蜂巢、毒刺和蜂蜜瓶合成憎恶之蜂。");
-        add("patchouli.confluence.otherworld_note.boss_checklist.queen_bee.4", "*o$(#555555)“她似乎嫉妒厌恶那些荧光真菌孢子的气息。一团尚未成型的幼蜂，摸上去感觉像粘稠的蜂蜜...蜂王与她的下属们对它们甜蜜领地的保护欲不知何时渐渐发展为对非同类生物的嫉妒排斥与憎恶。群峰振翅值声撼动了丛林中最为厚重的叶片。”");
+        add("patchouli.confluence.otherworld_note.boss_checklist.queen_bee.4", "*o$(#555555)“她似乎嫉妒厌恶那些荧光真菌孢子的气息。一团尚未成型的幼蜂，摸上去感觉像粘稠的蜂蜜...蜂王与她的下属们对它们甜蜜领地的保护欲不知何时渐渐发展为对非同类生物的嫉妒排斥与憎恶。群蜂振翅值声撼动了丛林中最为厚重的叶片。”");
 
         // 制作站
         add("patchouli.confluence.otherworld_note.crafting_stations.alchemy_table.0", "炼药桌差不多就是酿造台的Plus版，当然不能用于制作酿造台的配方，而是制作特殊的酿药配方。*b在!cs:hwb!重型工作台*c中使用木板、酿造台、骷髅头颅、蜡烛和玻璃瓶制作而成。");

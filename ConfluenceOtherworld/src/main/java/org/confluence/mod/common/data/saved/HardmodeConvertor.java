@@ -16,6 +16,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.util.Tuple;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -151,7 +152,7 @@ public final class HardmodeConvertor implements IGlobalData {
                     return refilled;
                 });
                 Confluence.LOGGER.info("Hardmode conversion took {}", stopwatch.stop());
-            } else if (serverLevel.getGameTime() % 5 == 0) {
+            } else if (serverLevel.getGameTime() % 5 == 0 && serverLevel.getServer().getPlayerList().getPlayers().stream().noneMatch(Entity::isRemoved)) {
                 Tuple<ChunkPos, BlockPosColumn[][]> entry = sanctification.getFirst();
                 ChunkPos chunkPos = entry.getA();
 

@@ -19,6 +19,7 @@ import org.confluence.mod.common.data.fixer.RegistriesFixer;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.ModItems;
+import org.confluence.mod.integration.heaven_destiny_moment.HDMEvents;
 import org.confluence.mod.integration.terra_entity.TEEvents;
 import org.confluence.mod.integration.terra_entity.init.ModTradeLockProviderTypes;
 import org.confluence.mod.integration.waystones.WaystonesHelper;
@@ -40,6 +41,7 @@ public class Confluence {
         }
 
         TEEvents.register(eventBus);
+        HDMEvents.register(eventBus);
         ModBlocks.register(eventBus);
         ModItems.register(eventBus);
         ModVillagers.register(eventBus);

@@ -35,7 +35,10 @@ public final class LivingInvulnerableEffectsSubProvider {
                 .add(TEMonsterEntities.LITTLE_HORNET, MobEffects.POISON, TCEffects.CONFUSED)
                 .add(TEMonsterEntities.BLACK_SLIME, MobEffects.POISON)
                 .add(TEMonsterEntities.BLOOD_CRAWLER, MobEffects.POISON)
-                // TODO 蓝水母 粉水母 绿水母 血水母 蘑菇鱼
+                .add(TEMonsterEntities.BLUE_JELLYFISH, TCEffects.CONFUSED)
+                .add(TEMonsterEntities.PINK_JELLYFISH, TCEffects.CONFUSED)
+                .add(TEMonsterEntities.GREEN_JELLYFISH, TCEffects.CONFUSED)
+                // TODO 血水母 蘑菇鱼
                 .add(TEMonsterEntities.BLUE_SLIME, MobEffects.POISON)
                 // TODO 骨蛇 胭脂虫 螃蟹 龙虾
                 .add(TEMonsterEntities.CRIMSON_KEMERA, TCEffects.CONFUSED)
@@ -89,7 +92,7 @@ public final class LivingInvulnerableEffectsSubProvider {
                 TODO 猩红斧 诅咒锤 跳跳兽 沙漠幽魂 魔教徒 挖掘怪 沙虫 附魔剑 恶心浮游怪 腹足怪 巨型诅咒骷髅头 巨型真菌球怪 地狱装甲骷髅 蹦蹦兽
                  弹跳杰克南瓜灯 冰雪精 冰雪陆龟 灵液黏黏怪 冰雪人鱼 夜明蝙蝠 夜明史莱姆 丛林蜘蛛 熔岩蝙蝠 丛林蜥蜴 火星探测器 蛇发女妖 苔藓黄蜂 蛾
                   圣骑士 装甲幻影魔 褴褛邪教徒法师 红魔鬼 岩石巨人 符文巫师 生锈装甲骷髅 沙贼 骷髅弓箭手 骷髅突击手 骷髅狙击手 小史莱姆 恶翅史莱姆
-                   恶翅史莱姆(无翅膀) 骷髅特警 毒泥 吞世怪 幻灵
+                   恶翅史莱姆(无翅膀) 骷髅特警 毒泥 吞世怪
                  */
                 .add(TEMonsterEntities.WYVERN, TCEffects.CONFUSED)
                 .add(TEMonsterEntities.GREEN_DUMPLING_SLIME, MobEffects.POISON)
@@ -106,6 +109,7 @@ public final class LivingInvulnerableEffectsSubProvider {
                 //boss servant
                 .add(TEMonsterEntities.VISUAL_NEURON, TCEffects.CONFUSED)
                 .add(TEMonsterEntities.LEECH, TCEffects.CONFUSED)
+                .add(TEMonsterEntities.SERVANT_OF_CTHULHU, ModEffects.SHIMMER, TCEffects.CONFUSED)
                 .add(TEMonsterEntities.THE_HUNGRY, ModEffects.SHIMMER, TCEffects.CONFUSED)
         ;
     }

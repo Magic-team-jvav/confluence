@@ -98,11 +98,18 @@ public class SkullProjectile extends AbstractManaProjectile {
         double offY = getY() + vec3.y;
         double offZ = getZ() + vec3.z;
         setPos(offX, offY, offZ);
+        updateRotation();
     }
 
     public void setTarget(@Nullable LivingEntity target) {
         this.target = target;
-        this.targetUUID = target == null ? null : target.getUUID();
+        if (target == null) {
+            this.targetUUID = null;
+            entityData.set(DATA_TARGET_ID, -114514);
+        } else {
+            this.targetUUID = target.getUUID();
+            entityData.set(DATA_TARGET_ID, target.getId());
+        }
     }
 
     public @Nullable LivingEntity getTarget() {

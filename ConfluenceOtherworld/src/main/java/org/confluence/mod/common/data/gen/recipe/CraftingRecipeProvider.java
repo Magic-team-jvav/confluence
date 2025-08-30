@@ -750,17 +750,6 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 )),
                 ModBlocks.WEB_ROPE.toStack(3)
         );
-        // 丝绸绳
-        shaped(output,
-                ShapedRecipePattern.of(Map.of(
-                        '#', Ingredient.of(MaterialItems.SILK)
-                ), List.of(
-                        "#",
-                        "#",
-                        "#"
-                )),
-                ModBlocks.SILK_ROPE.toStack(30)
-        );
         // 蛛丝锁链
         shaped(output,
                 ShapedRecipePattern.of(Map.of(

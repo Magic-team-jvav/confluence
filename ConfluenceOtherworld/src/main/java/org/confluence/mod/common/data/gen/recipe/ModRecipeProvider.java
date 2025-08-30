@@ -265,6 +265,43 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         skyMill(recipeOutput, NatureBlocks.RAIN_CLOUD_BLOCK.toStack(), EnvironmentLevelAccess.matcher(null, searchWater, false), Ingredient.of(NatureBlocks.CLOUD_BLOCK));
         skyMill(recipeOutput, NatureBlocks.SNOW_CLOUD_BLOCK.toStack(), EnvironmentLevelAccess.matcher(holderLookup.lookupOrThrow(Registries.BIOME).getOrThrow(Tags.Biomes.IS_COLD_OVERWORLD), null, false), Ingredient.of(NatureBlocks.CLOUD_BLOCK));
 
+        loom(recipeOutput, ModBlocks.SILK_ROPE.toStack(30), Ingredient.of(MaterialItems.SILK));
+        loom(recipeOutput, MaterialItems.SILK.toStack(), AmountIngredient.of(7,Items.COBWEB));
+        baseRobe(recipeOutput, Ingredient.of(VanityArmorItems.ROBE), AmountIngredient.of(2, Tags.Items.GEMS_DIAMOND), Ingredient.of(Tags.Items.GEMS_DIAMOND), ArmorItems.DIAMOND_ROBE.toStack());
+        baseRobe(recipeOutput, Ingredient.of(VanityArmorItems.ROBE), AmountIngredient.of(2, ModTags.Items.GEMS_RUBY), Ingredient.of(ModTags.Items.GEMS_RUBY), ArmorItems.RUBY_ROBE.toStack());
+        baseRobe(recipeOutput, Ingredient.of(VanityArmorItems.ROBE), AmountIngredient.of(2, ModTags.Items.GEMS_AMBER), Ingredient.of(ModTags.Items.GEMS_AMBER), ArmorItems.AMBER_ROBE.toStack());
+        baseRobe(recipeOutput, Ingredient.of(VanityArmorItems.ROBE), AmountIngredient.of(2, ModTags.Items.GEMS_TOPAZ), Ingredient.of(ModTags.Items.GEMS_TOPAZ), ArmorItems.TOPAZ_ROBE.toStack());
+        baseRobe(recipeOutput, Ingredient.of(VanityArmorItems.ROBE), AmountIngredient.of(2, ModTags.Items.GEMS_JADE), Ingredient.of(ModTags.Items.GEMS_JADE), ArmorItems.JADE_ROBE.toStack());
+        baseRobe(recipeOutput, Ingredient.of(VanityArmorItems.ROBE), AmountIngredient.of(2, ModTags.Items.GEMS_SAPPHIRE), Ingredient.of(ModTags.Items.GEMS_SAPPHIRE), ArmorItems.SAPPHIRE_ROBE.toStack());
+        baseRobe(recipeOutput, Ingredient.of(VanityArmorItems.ROBE), AmountIngredient.of(2, ModTags.Items.GEMS_AMETHYST), Ingredient.of(ModTags.Items.GEMS_AMETHYST), ArmorItems.AMETHYST_ROBE.toStack());
+        loom(recipeOutput, VanityArmorItems.ROBE.toStack(),
+                ShapedRecipePattern.of(
+                        Map.of(
+                                '#', AmountIngredient.of(3, MaterialItems.SILK),
+                                'a', AmountIngredient.of(2, MaterialItems.SILK)
+                        ),
+                        List.of(
+                                "#a#",
+                                "# #",
+                                "# #"
+                        )
+                )
+        );
+        loom(recipeOutput, ArmorItems.FLINX_FUR_COAT.toStack(),
+                ShapedRecipePattern.of(
+                        Map.of(
+                                'a', AmountIngredient.of(4, MaterialItems.FLINX_FUR),
+                                'b', AmountIngredient.of(2, MaterialItems.SILK),
+                                '#', AmountIngredient.of(8, ModTags.Items.GOLD_AND_PLATINUM)
+                        ),
+                        List.of(
+                                "a#a",
+                                "bbb",
+                                "b b"
+                        )
+                )
+        );
+
         workshop(recipeOutput, AccessoryItems.ANGLER_TACKLE_BAG.toStack(), Ingredient.of(AccessoryItems.HIGH_TEST_FISHING_LINE), Ingredient.of(AccessoryItems.TACKLE_BOX), Ingredient.of(TCItems.ANGLER_EARRING));
         workshop(recipeOutput, AccessoryItems.MAGIC_CUFFS.toStack(), Ingredient.of(AccessoryItems.MANA_REGENERATION_BAND), Ingredient.of(TCItems.SHACKLE));
         workshop(recipeOutput, AccessoryItems.CELESTIAL_CUFFS.toStack(), Ingredient.of(AccessoryItems.MAGIC_CUFFS), Ingredient.of(AccessoryItems.CELESTIAL_MAGNET));
@@ -444,6 +481,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         recipeOutput.accept(id, new SolidifierRecipe(result, zingredients), null);
     }
 
+
     protected void skyMill(RecipeOutput recipeOutput, ItemStack result, Ingredient... ingredients) {
         ResourceLocation id = Confluence.asResource("sky_mill/" + getItemName(result.getItem()));
         recipeOutput.accept(id, new SkyMillRecipe(result, NonNullList.of(Ingredient.EMPTY, ingredients), EnvironmentLevelAccess.Matcher.EMPTY), null);
@@ -515,6 +553,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         NonNullList<Ingredient> zingredients = NonNullList.of(Ingredient.EMPTY, ingredients);
         recipeOutput.accept(id, new LoomRecipe(result, zingredients), null);
     }
+
 
     public static AdvancementHolder createAdvancementHolder(RecipeOutput recipeOutput, ResourceLocation id, NonNullList<Ingredient> ingredients) {
         Set<Item> itemCounter = new HashSet<>();
@@ -603,5 +642,19 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
                 List.of(),
                 Optional.of(holderLookup.lookupOrThrow(Registries.FLUID).getOrThrow(Tags.Fluids.LAVA))
         );
+    }
+    private final List<String> baseRobePattern = List.of(
+            "bbb",
+            "a#a",
+            "a a"
+    );
+    protected void baseRobe(RecipeOutput recipeOutput, Ingredient robe, Ingredient gem, Ingredient handle, ItemStack result) {
+        ResourceLocation id = Confluence.asResource("loom/" + getItemName(result.getItem()));
+        ShapedRecipePattern pattern = ShapedRecipePattern.of(Map.of(
+                '#', robe,
+                'b', gem,
+                'a', handle
+        ), baseRobePattern);
+        recipeOutput.accept(id, new LoomRecipe(result, pattern), null);
     }
 }

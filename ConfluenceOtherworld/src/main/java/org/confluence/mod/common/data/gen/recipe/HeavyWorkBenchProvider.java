@@ -55,11 +55,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
             "aa  ",
             "a   "
     );
-    private final List<String> baseRobePattern = List.of(
-            "bbb",
-            "a#a",
-            "a a"
-    );
+
 
 
     public HeavyWorkBenchProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookup) {
@@ -119,15 +115,6 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         basePhaseblade(recipeOutput, AmountIngredient.of(5, ModTags.Items.GEMS_JADE), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.GREEN_PHASEBLADE.toStack());
         basePhaseblade(recipeOutput, AmountIngredient.of(5, ModTags.Items.GEMS_SAPPHIRE), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.BLUE_PHASEBLADE.toStack());
         basePhaseblade(recipeOutput, AmountIngredient.of(5, ModTags.Items.GEMS_AMETHYST), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.PURPLE_PHASEBLADE.toStack());
-
-        // 基础长袍
-        baseRobe(recipeOutput, Ingredient.of(VanityArmorItems.ROBE), AmountIngredient.of(2, Tags.Items.GEMS_DIAMOND), Ingredient.of(Tags.Items.GEMS_DIAMOND), ArmorItems.DIAMOND_ROBE.toStack());
-        baseRobe(recipeOutput, Ingredient.of(VanityArmorItems.ROBE), AmountIngredient.of(2, ModTags.Items.GEMS_RUBY), Ingredient.of(ModTags.Items.GEMS_RUBY), ArmorItems.RUBY_ROBE.toStack());
-        baseRobe(recipeOutput, Ingredient.of(VanityArmorItems.ROBE), AmountIngredient.of(2, ModTags.Items.GEMS_AMBER), Ingredient.of(ModTags.Items.GEMS_AMBER), ArmorItems.AMBER_ROBE.toStack());
-        baseRobe(recipeOutput, Ingredient.of(VanityArmorItems.ROBE), AmountIngredient.of(2, ModTags.Items.GEMS_TOPAZ), Ingredient.of(ModTags.Items.GEMS_TOPAZ), ArmorItems.TOPAZ_ROBE.toStack());
-        baseRobe(recipeOutput, Ingredient.of(VanityArmorItems.ROBE), AmountIngredient.of(2, ModTags.Items.GEMS_JADE), Ingredient.of(ModTags.Items.GEMS_JADE), ArmorItems.JADE_ROBE.toStack());
-        baseRobe(recipeOutput, Ingredient.of(VanityArmorItems.ROBE), AmountIngredient.of(2, ModTags.Items.GEMS_SAPPHIRE), Ingredient.of(ModTags.Items.GEMS_SAPPHIRE), ArmorItems.SAPPHIRE_ROBE.toStack());
-        baseRobe(recipeOutput, Ingredient.of(VanityArmorItems.ROBE), AmountIngredient.of(2, ModTags.Items.GEMS_AMETHYST), Ingredient.of(ModTags.Items.GEMS_AMETHYST), ArmorItems.AMETHYST_ROBE.toStack());
 
         // 金系列
         Map<Character, Ingredient> goldWithGems = Map.of(
@@ -412,17 +399,6 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "#   "
         )), TESummonItems.SNOW_FLINX_STAFF.toStack());
 
-        // 小雪怪皮毛外套
-        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                'a', AmountIngredient.of(4, MaterialItems.FLINX_FUR),
-                'b', AmountIngredient.of(2, MaterialItems.SILK),
-                '#', AmountIngredient.of(8, ModTags.Items.GOLD_AND_PLATINUM)
-        ), List.of(
-                "a#a",
-                "bbb",
-                "b b"
-        )), ArmorItems.FLINX_FUR_COAT.toStack());
-
         // 计时器
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 'a', Ingredient.of(TCItems.GOLD_WATCH, TCItems.PLATINUM_WATCH),
@@ -474,15 +450,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "#   "
         )), TESummonItems.IMP_STAFF.toStack());
 
-        // 长袍
-        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                '#', AmountIngredient.of(3, MaterialItems.SILK),
-                'a', AmountIngredient.of(2, MaterialItems.SILK)
-        ), List.of(
-                "#a#",
-                "# #",
-                "# #"
-        )), VanityArmorItems.ROBE.toStack());
+
 
         // 抑郁球
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
@@ -1386,12 +1354,5 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         ), basePhasebladePattern), EnvironmentLevelAccess.Matcher.EMPTY), null);
     }
 
-    protected void baseRobe(RecipeOutput recipeOutput, Ingredient robe, Ingredient gem, Ingredient handle, ItemStack result) {
-        ResourceLocation id = Confluence.asResource("heavy_work_bench/" + getItemName(result.getItem()));
-        recipeOutput.accept(id, new HeavyWorkBenchRecipe(result, ShapedRecipePattern.of(Map.of(
-                '#', robe,
-                'b', gem,
-                'a', handle
-        ), baseRobePattern), EnvironmentLevelAccess.Matcher.EMPTY), null);
-    }
+
 }

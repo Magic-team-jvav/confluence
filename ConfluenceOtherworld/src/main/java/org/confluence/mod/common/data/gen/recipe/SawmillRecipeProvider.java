@@ -15,6 +15,7 @@ import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import org.apache.commons.lang3.stream.Streams;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
+import org.confluence.lib.common.recipe.AmountIngredient;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -38,6 +39,15 @@ public class SawmillRecipeProvider extends AbstractRecipeProvider {
         ), List.of(
                 "AC",
                 "B "
+        )));
+
+        shaped(recipeOutput, FunctionalBlocks.LOOM.toStack(), ShapedRecipePattern.of(Map.of(
+                'c', Ingredient.of(ItemTags.WOODEN_SLABS),
+                'b', AmountIngredient.of(2,ItemTags.PLANKS)
+        ), List.of(
+                "  bb",
+                "ccbb",
+                " b b"
         )));
 
         shapeless(recipeOutput, new ItemStack(Items.OAK_PLANKS, 9), Ingredient.of(ItemTags.OAK_LOGS));

@@ -16,12 +16,12 @@ import java.util.function.IntFunction;
 public class CurioFishingHook extends AbstractFishingHook implements VariantHolder<CurioFishingHook.Variant> {
     private static final EntityDataAccessor<Integer> DATA_VARIANT_ID = SynchedEntityData.defineId(CurioFishingHook.class, EntityDataSerializers.INT);
 
-    public CurioFishingHook(EntityType<CurioFishingHook> pEntityType, Level pLevel) {
-        super(pEntityType, pLevel);
+    public CurioFishingHook(EntityType<CurioFishingHook> entityType, Level level) {
+        super(entityType, level);
     }
 
-    public CurioFishingHook(Player player, Level pLevel, int pLuck, int pLureSpeed, Variant variant) {
-        super(ModEntities.CURIO_FISHING_HOOK.get(), pLevel, pLuck, pLureSpeed);
+    public CurioFishingHook(Player player, Level level, int luck, int lureSpeed, Variant variant) {
+        super(ModEntities.CURIO_FISHING_HOOK.get(), level, luck, lureSpeed);
         setVariant(variant);
         setup(player);
     }
@@ -33,8 +33,8 @@ public class CurioFishingHook extends AbstractFishingHook implements VariantHold
     }
 
     @Override
-    public void setVariant(Variant pVariant) {
-        entityData.set(DATA_VARIANT_ID, pVariant.id);
+    public void setVariant(Variant variant) {
+        entityData.set(DATA_VARIANT_ID, variant.id);
     }
 
     @Override
@@ -65,8 +65,8 @@ public class CurioFishingHook extends AbstractFishingHook implements VariantHold
             return id;
         }
 
-        public static Variant byId(int pId) {
-            return BY_ID.apply(pId);
+        public static Variant byId(int id) {
+            return BY_ID.apply(id);
         }
 
         @Override

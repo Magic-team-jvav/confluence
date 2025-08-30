@@ -1468,6 +1468,13 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ToolItems.YELLOW_WRENCH.get(),
                 ToolItems.WIRE_CUTTER.get()
         );
+
+        tag(ModTags.Items.LAVA_PROOF_BAIT).add(
+                BaitItems.HELL_BUTTERFLY.get(),
+                BaitItems.MAGMA_SNAIL.get(),
+                BaitItems.LAVAFLY.get()
+        );
+
         WaystonesHelper.itemTag(this::tag);
     }
 

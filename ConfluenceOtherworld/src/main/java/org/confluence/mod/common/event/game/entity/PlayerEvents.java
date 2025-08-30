@@ -52,10 +52,10 @@ import org.confluence.mod.common.item.common.BaseAxeItem;
 import org.confluence.mod.common.item.common.BaseMinecartItem;
 import org.confluence.mod.common.item.common.DungeonCompass;
 import org.confluence.mod.common.item.common.EverBeneficialItem;
+import org.confluence.mod.common.item.fishing.AbstractFishingPole;
 import org.confluence.mod.common.menu.FletchingTableMenu;
 import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
 import org.confluence.mod.mixed.IAbstractMinecart;
-import org.confluence.mod.mixed.IFishingHook;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.network.s2c.*;
@@ -209,20 +209,13 @@ public final class PlayerEvents {
         Player player = event.getEntity();
         Level level = player.level();
 
-        if (!TCUtils.hasAccessoriesType(player, AccessoryItems.HIGH$TEST$FISHING$LINE) && level.random.nextFloat() < 0.1429F) {
+        if (!TCUtils.hasAccessoriesType(player, AccessoryItems.HIGH$TEST$FISHING$LINE) && player.getRandom().nextFloat() < 0.1429F) {
             level.playSound(null, event.getHookEntity().blockPosition(), ModSoundEvents.DECOUPLING.get(), SoundSource.AMBIENT);
             event.setCanceled(true);
             return;
         }
 
-        IFishingHook fishingHook = (IFishingHook) event.getHookEntity();
-        ItemStack bait = fishingHook.confluence$getBait();
-        if (bait != null) {
-            float factor = TCUtils.hasAccessoriesType(player, AccessoryItems.TACKLE$BOX) ? 1.0F : 2.0F;
-            if (level.random.nextFloat() < 1.0F / (factor + fishingHook.confluence$getBonus() / 6.0F)) {
-                bait.shrink(1);
-            }
-        }
+        AbstractFishingPole.consumeBait(player, level);
     }
 
     @SubscribeEvent

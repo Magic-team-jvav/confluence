@@ -53,6 +53,7 @@ import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.common.item.accessory.GuideVooDooDollItem;
 import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.common.item.sword.SweetSword;
@@ -127,6 +128,10 @@ public final class LivingEntityEvents {
                     Skeletron skeletron = new Skeletron(TEBossEntities.SKELETRON.get(), level);
                     skeletron.finalizeSpawn(level, level.getCurrentDifficultyAt(skeletron.blockPosition()), MobSpawnType.EVENT, null);
                     ModUtils.summonBoss(level, attacker.blockPosition(), skeletron);
+                }
+
+                if (npc.getType() == TENpcEntities.GUIDE.get() && level.dimension() == OverworldUtils.underworld() && damageSource.is(DamageTypes.LAVA)) {
+                    GuideVooDooDollItem.summon(npc, level, npc.getRandom().nextBoolean(), () -> null);
                 }
             }
             if (victim.hasEffect(ModEffects.BLOOD_BUTCHERED)) {

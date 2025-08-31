@@ -418,6 +418,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 MAGIC_MAIL_BOX.get(),
                 KEG.get(),
                 SAWMILL.get(),
+                LOOM.get(),
+                LIFE_CAMPFIRE.get(),
 
                 CrateBlocks.WOODEN_CRATE.get(),
                 CrateBlocks.PEARLWOOD_CRATE.get(),

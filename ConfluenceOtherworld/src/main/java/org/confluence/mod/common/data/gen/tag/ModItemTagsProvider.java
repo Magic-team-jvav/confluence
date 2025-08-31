@@ -1281,7 +1281,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FunctionalBlocks.CHLOROPHYTE_EXTRACTINATOR.asItem(),
                 FunctionalBlocks.BLEND_O_MATIC.asItem(),
                 FunctionalBlocks.MEAT_GRINDER.asItem(),
-                FunctionalBlocks.LIFE_CAMPFIRE.asItem(),
                 FunctionalBlocks.WOODEN_SPIKE.asItem(),
                 FunctionalBlocks.FRAGILE_BLUE_BRICKS.asItem(),
                 FunctionalBlocks.FRAGILE_GREEN_BRICKS.asItem(),

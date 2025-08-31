@@ -1,0 +1,8 @@
+{
+  "parent": "confluence:block/life_campfire_off",
+  "render_type": "cutout_mipped",
+  "textures": {
+    "fire": "confluence:block/life_campfire_fire",
+    "lit_log": "confluence:block/life_campfire_log_lit"
+  }
+}

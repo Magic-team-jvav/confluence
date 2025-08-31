@@ -556,6 +556,14 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 Ingredient.of(Items.RED_DYE),
                 Ingredient.of(Items.BLACK_DYE)
         );
+        // 生命篝火
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                'S', Ingredient.of(NatureBlocks.LIVING_LOG_BLOCKS.WOOD,NatureBlocks.LIVING_MAHOGANY_LOG_BLOCKS.WOOD,MaterialItems.LIFE_MUSHROOM),
+                '/', Ingredient.of(Items.CAMPFIRE)
+        ), List.of(
+                " S ",
+                "S/S"
+        )), FunctionalBlocks.LIFE_CAMPFIRE.toStack());
         // 便捷合成，无序合成
         shapeless(output, "", "_from_raw_copper",
                 new ItemStack(Items.COPPER_INGOT),

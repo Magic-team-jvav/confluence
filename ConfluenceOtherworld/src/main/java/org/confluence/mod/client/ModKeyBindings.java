@@ -17,6 +17,7 @@ import java.util.function.Supplier;
 
 @EventBusSubscriber(modid = Confluence.MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public final class ModKeyBindings {
+    public static final String KEY_BINDINGS_CATEGORY = "key.confluence.gameplay";
     private static List<Lazy<KeyMapping>> keyMappings = new LinkedList<>();
 
     @SubscribeEvent
@@ -32,7 +33,7 @@ public final class ModKeyBindings {
             KeyConflictContext.IN_GAME,
             InputConstants.Type.KEYSYM,
             GLFW.GLFW_KEY_R,
-            "key.confluence.gameplay"
+            KEY_BINDINGS_CATEGORY
     ));
 
     public static final Lazy<KeyMapping> SHOW_DETAIL_SPECULAR = register(() -> new KeyMapping(
@@ -40,7 +41,7 @@ public final class ModKeyBindings {
             KeyConflictContext.IN_GAME,
             InputConstants.Type.KEYSYM,
             GLFW.GLFW_KEY_TAB,
-            "key.confluence.gameplay"
+            KEY_BINDINGS_CATEGORY
     ));
 
     public static final Lazy<KeyMapping> HEALING = register(() -> new KeyMapping(
@@ -48,7 +49,7 @@ public final class ModKeyBindings {
             KeyConflictContext.IN_GAME,
             InputConstants.Type.KEYSYM,
             GLFW.GLFW_KEY_H,
-            "key.confluence.gameplay"
+            KEY_BINDINGS_CATEGORY
     ));
 
     public static final Lazy<KeyMapping> MANA = register(() -> new KeyMapping(
@@ -56,7 +57,7 @@ public final class ModKeyBindings {
             KeyConflictContext.IN_GAME,
             InputConstants.Type.MOUSE,
             GLFW.GLFW_MOUSE_BUTTON_4,
-            "key.confluence.gameplay"
+            KEY_BINDINGS_CATEGORY
     ));
 
     public static final Lazy<KeyMapping> EXTRA_INVENTORY = register(() -> new KeyMapping(
@@ -64,7 +65,7 @@ public final class ModKeyBindings {
             KeyConflictContext.IN_GAME,
             InputConstants.Type.KEYSYM,
             InputConstants.UNKNOWN.getValue(),
-            "key.confluence.gameplay"
+            KEY_BINDINGS_CATEGORY
     ));
 
     private static Lazy<KeyMapping> register(Supplier<KeyMapping> supplier) {

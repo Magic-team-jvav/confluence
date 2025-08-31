@@ -1,6 +1,7 @@
 package org.confluence.mod.mixin.integration.terra_curio;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import org.confluence.mod.client.ModKeyBindings;
 import org.confluence.terra_curio.client.TCKeyBindings;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -9,6 +10,6 @@ import org.spongepowered.asm.mixin.injection.At;
 public abstract class TCKeyBindingsMixin {
     @ModifyReturnValue(method = "category", at = @At("RETURN"))
     private static String redirect(String original) {
-        return "key.confluence.gameplay";
+        return ModKeyBindings.KEY_BINDINGS_CATEGORY;
     }
 }

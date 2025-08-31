@@ -322,11 +322,11 @@ public final class ClientUtils {
             }
             Stack<Vector3f> rots = new Stack<>();
             rots.push(new Vector3f());
-            makePartRecursively(rootModelPart, "root", poseStack, livingRenderer, level, entity, deathSpeed, rots, deathMotion);
+            makePartRecursively(rootModelPart, poseStack, livingRenderer, level, entity, deathSpeed, rots, deathMotion);
         }
     }
 
-    private static void makePartRecursively(ModelPart modelPart, String name, AntiPushPoseStack poseStack, LivingEntityRenderer<?, ?> renderer, ClientLevel level, Entity entity, float deathSpeed, Stack<Vector3f> rots, Vec3 deathMotion) {
+    private static void makePartRecursively(ModelPart modelPart, AntiPushPoseStack poseStack, LivingEntityRenderer<?, ?> renderer, ClientLevel level, Entity entity, float deathSpeed, Stack<Vector3f> rots, Vec3 deathMotion) {
         if (!modelPart.visible || modelPart.skipDraw) return;
         if (renderer.getModel().young && renderer.getModel() instanceof AgeableListModelAccessor model) {
             for (ModelPart bodyPart : model.callBodyParts()) {
@@ -421,7 +421,7 @@ public final class ClientUtils {
             poseStack.pushPose(true);
             Vector3f newRot = new Vector3f(modelRot);
             rots.push(newRot);
-            makePartRecursively(child, childName, poseStack, renderer, level, entity, deathSpeed, rots, deathMotion);
+            makePartRecursively(child, poseStack, renderer, level, entity, deathSpeed, rots, deathMotion);
             rots.pop();
             poseStack.popPose(true);
         }
@@ -440,5 +440,14 @@ public final class ClientUtils {
                 pos.getY() + 2,
                 pos.getZ() + 2
         );
+    }
+
+    public static void renderBait(GuiGraphics guiGraphics, ItemStack bait, int x, int y) {
+        PoseStack pose = guiGraphics.pose();
+        pose.pushPose();
+        pose.translate(x + 8, y + 8, 0);
+        pose.scale(0.5F, 0.5F, 0.5F);
+        guiGraphics.renderItem(bait, 0, 0);
+        pose.popPose();
     }
 }

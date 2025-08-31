@@ -9,6 +9,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.GameRules;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -27,9 +28,11 @@ import org.confluence.mod.common.block.functional.network.PathService;
 import org.confluence.mod.common.data.saved.*;
 import org.confluence.mod.common.entity.FallingStarItemEntity;
 import org.confluence.mod.common.init.ModAttachmentTypes;
+import org.confluence.mod.common.item.fishing.AbstractFishingPole;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
 import org.confluence.mod.common.worldgen.structure.DungeonStructure;
 import org.confluence.mod.mixed.ILivingEntity;
+import org.confluence.mod.mixed.IPlayer;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.network.s2c.DropletsSyncPacketS2C;
@@ -107,6 +110,13 @@ public final class TickEvents {
                 if (!dataMap.isEmpty() || data.getLastSync().computeIfAbsent(player.getUUID(), uuid -> new HashSet<>()).stream().anyMatch(dataMap.keySet()::contains)) {
                     PacketDistributor.sendToPlayer(player, new DropletsSyncPacketS2C(dataMap));
                 }
+            }
+        }
+
+        IPlayer iPlayer = IPlayer.of(event.getEntity());
+        if (!iPlayer.confluence$getCurrentBait().isEmpty() && event.getEntity().level().getGameTime() % 60 == 3) {
+            if (!(event.getEntity().getMainHandItem().getItem() instanceof AbstractFishingPole)) {
+                iPlayer.confluence$setCurrentBait(ItemStack.EMPTY);
             }
         }
     }

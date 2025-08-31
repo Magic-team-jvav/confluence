@@ -391,6 +391,7 @@ public final class ModTags {
         public static final TagKey<Item> DEATH = register("death");
         public static final TagKey<Item> UNABLE_TO_APPLY_PREFIX = register("unable_to_apply_prefix"); // 不能上词缀
         public static final TagKey<Item> ANTIGRAVITY = register("antigravity"); // 无视重力
+        public static final TagKey<Item> LAVA_PROOF_BAIT = register("lava_proof_bait"); // 防熔岩鱼饵
 
         private static TagKey<Item> c(String name) {
             return ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", name));

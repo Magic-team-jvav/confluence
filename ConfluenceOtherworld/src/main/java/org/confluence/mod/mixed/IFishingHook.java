@@ -1,6 +1,5 @@
 package org.confluence.mod.mixed;
 
-import com.google.common.collect.Iterables;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -10,7 +9,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.item.ItemStack;
@@ -30,6 +28,7 @@ import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
+import org.confluence.mod.common.item.fishing.AbstractFishingPole;
 import org.confluence.mod.common.item.fishing.IBait;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.terra_curio.util.TCUtils;
@@ -40,17 +39,14 @@ public interface IFishingHook {
 
     boolean confluence$isLavaHook();
 
-    void confluence$setBait(@Nullable ItemStack bait);
+    @Deprecated
+    default void confluence$setBait(@Nullable ItemStack bait) {}
 
-    @Nullable ItemStack confluence$getBait();
+    @Deprecated
+    default @Nullable ItemStack confluence$getBait() {return null;}
 
-    default float confluence$getBonus() {
-        ItemStack itemStack = confluence$getBait();
-        if (itemStack != null && itemStack.getItem() instanceof IBait iBait) {
-            return iBait.getBaitBonus();
-        }
-        return 0.0F;
-    }
+    @Deprecated
+    default float confluence$getBonus() {return 0.0F;}
 
     static IFishingHook of(FishingHook fishingHook) {
         return (IFishingHook) fishingHook;
@@ -86,25 +82,15 @@ public interface IFishingHook {
         return self.isInLava() ? ParticleTypes.LAVA : original;
     }
 
-    static LootParams modifyLuck(FishingHook self, LootParams params) {
+    static LootParams modifyLuck(FishingHook self, LootParams params, ItemStack stack) {
         Player owner = self.getPlayerOwner();
-        float fishing = self.luck;
         if (owner != null) {
-            IFishingHook fishingHook = of(self);
-            fishing += TCUtils.getAccessoriesValue(owner, AccessoryItems.FISHING$POWER);
-            Inventory inventory = owner.getInventory();
-            float bonus = 1.0F;
-            for (ItemStack itemStack : Iterables.concat(inventory.offhand, inventory.items)) {
-                if (itemStack.getItem() instanceof IBait iBait) {
-                    fishingHook.confluence$setBait(itemStack);
-                    bonus += iBait.getBaitBonus();
-                    break;
-                }
-                fishingHook.confluence$setBait(null);
-            }
-            if (fishingHook.confluence$getBait() != null) fishing *= bonus;
+            float luck = self.luck;
+            luck += TCUtils.getAccessoriesValue(owner, AccessoryItems.FISHING$POWER);
+            IBait bait = IBait.of(AbstractFishingPole.getBait(self.registryAccess(), stack));
+            if (bait != null) luck *= (1 + bait.getBaitBonus());
+            params.luck = luck;
         }
-        params.luck = fishing;
         return params;
     }
 

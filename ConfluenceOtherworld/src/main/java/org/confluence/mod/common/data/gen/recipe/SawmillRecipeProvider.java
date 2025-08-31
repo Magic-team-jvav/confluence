@@ -46,8 +46,8 @@ public class SawmillRecipeProvider extends AbstractRecipeProvider {
                 'b', AmountIngredient.of(2,ItemTags.PLANKS)
         ), List.of(
                 "  bb",
-                "ccbb",
-                " b b"
+                "  bb",
+                "bccb"
         )));
 
         shapeless(recipeOutput, new ItemStack(Items.OAK_PLANKS, 9), Ingredient.of(ItemTags.OAK_LOGS));

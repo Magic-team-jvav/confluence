@@ -14,6 +14,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.CrystalBallRecipe;
 
+// todo
 public class CrystalBallCategory implements IRecipeCategory<RecipeHolder<CrystalBallRecipe>> {
     public static final RecipeType<RecipeHolder<CrystalBallRecipe>> TYPE = RecipeType.createRecipeHolderType(Confluence.asResource("crystal_ball"));
     private static final Component TITLE = Component.translatable("title.confluence.crystal_ball");

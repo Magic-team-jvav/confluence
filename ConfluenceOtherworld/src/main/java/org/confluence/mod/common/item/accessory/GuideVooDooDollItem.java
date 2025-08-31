@@ -1,5 +1,6 @@
 package org.confluence.mod.common.item.accessory;
 
+import com.google.common.collect.Streams;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -15,6 +16,7 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -28,6 +30,7 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.terra_curio.common.item.curio.BaseCurioItem;
+import org.confluence.terraentity.entity.boss.hillofflesh.HillOfFlesh;
 import org.confluence.terraentity.entity.boss.wallofflesh.WallOfFlesh;
 import org.confluence.terraentity.init.TESounds;
 import org.confluence.terraentity.init.entity.TEBossEntities;
@@ -113,6 +116,13 @@ public class GuideVooDooDollItem extends BaseCurioItem {
     }
 
     public static void summon(Entity entity, ServerLevel level, boolean isWall, Supplier<@Nullable Direction> forward) {
+        EntityType<WallOfFlesh> wof = TEBossEntities.WALL_OF_FLESH.get();
+        EntityType<HillOfFlesh> hof = TEBossEntities.HILL_OF_FLESH.get();
+        if (Streams.stream(level.getEntities().getAll()).anyMatch(entity1 -> {
+            EntityType<?> type = entity1.getType();
+            return type == wof || type == hof;
+        })) return;
+
         BlockPos blockPos = entity.blockPosition();
         if (isWall) {
             Direction direction = forward.get();
@@ -137,12 +147,12 @@ public class GuideVooDooDollItem extends BaseCurioItem {
                     direction = Direction.fromAxisAndDirection(Direction.Axis.Z, negative ? Direction.AxisDirection.POSITIVE : Direction.AxisDirection.NEGATIVE);
                 }
             }
-            WallOfFlesh wallOfFlesh = TEBossEntities.WALL_OF_FLESH.get().spawn(level, blockPos.relative(direction, 64), MobSpawnType.MOB_SUMMONED);
+            WallOfFlesh wallOfFlesh = wof.spawn(level, blockPos.relative(direction, 64), MobSpawnType.MOB_SUMMONED);
             if (wallOfFlesh != null) {
                 wallOfFlesh.setForward(direction.getOpposite());
             }
         } else {
-            TEBossEntities.HILL_OF_FLESH.get().spawn(level, blockPos, MobSpawnType.MOB_SUMMONED);
+            hof.spawn(level, blockPos, MobSpawnType.MOB_SUMMONED);
         }
         for (ServerPlayer player : level.getServer().getPlayerList().getPlayers()) {
             player.connection.send(new ClientboundSoundPacket(TESounds.WALL_OF_FLESH_ROAR, SoundSource.HOSTILE, player.getX(), player.getY(), player.getZ(), 1, 1, 0));

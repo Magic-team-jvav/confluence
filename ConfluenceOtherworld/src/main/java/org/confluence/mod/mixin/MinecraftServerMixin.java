@@ -29,7 +29,7 @@ public abstract class MinecraftServerMixin implements IMinecraftServer {
 
     @Override
     public void confluence$updateSecretFlag(long flag) {
-        IWorldOptions iWorldOptions = (IWorldOptions) getWorldData().worldGenOptions();
+        IWorldOptions iWorldOptions = IWorldOptions.of(getWorldData().worldGenOptions());
         iWorldOptions.confluence$withSecretFlag(flag);
         this.confluence$secretFlag = iWorldOptions.confluence$getSecretFlag();
     }
@@ -41,6 +41,6 @@ public abstract class MinecraftServerMixin implements IMinecraftServer {
 
     @Inject(method = "<init>", at = @At("TAIL"))
     private void initialize(Thread serverThread, LevelStorageSource.LevelStorageAccess storageSource, PackRepository packRepository, WorldStem worldStem, Proxy proxy, DataFixer fixerUpper, Services services, ChunkProgressListenerFactory progressListenerFactory, CallbackInfo ci) {
-        this.confluence$secretFlag = ((IWorldOptions) getWorldData().worldGenOptions()).confluence$getSecretFlag();
+        this.confluence$secretFlag = IWorldOptions.of(getWorldData().worldGenOptions()).confluence$getSecretFlag();
     }
 }

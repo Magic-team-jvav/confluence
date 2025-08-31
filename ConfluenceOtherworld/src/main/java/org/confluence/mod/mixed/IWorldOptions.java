@@ -10,8 +10,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.CustomWorldIconRegisterEvent;
 import org.confluence.mod.common.init.ModSecretSeeds;
 
-import java.util.Optional;
-
 public interface IWorldOptions {
     /**
      * 能获取到服务器的情况下尽量使用如下方法
@@ -21,8 +19,6 @@ public interface IWorldOptions {
     void confluence$withSecretFlag(long flag);
 
     long confluence$getSecretFlag();
-
-    void confluence$setLegacyCustomOptions(Optional<String> legacyCustomOptions);
 
     WorldOptions confluence$copyWithoutSecretFlag();
 
@@ -75,5 +71,9 @@ public interface IWorldOptions {
 
     static ResourceLocation getWorldIcon(long flag) {
         return WORLD_ICON.getOrDefault(flag, UNKNOWN_WORLD_ICON);
+    }
+
+    static IWorldOptions of(WorldOptions options) {
+        return (IWorldOptions) options;
     }
 }

@@ -68,7 +68,7 @@ public abstract class MixinMultiNoiseBiomeSourceSquared implements SelfGetter<Mu
             MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
             if (server == null) return null;
             WorldOptions worldOptions = server.getWorldData().worldGenOptions();
-            long flag = ((IWorldOptions) worldOptions).confluence$getSecretFlag();
+            long flag = IWorldOptions.of(worldOptions).confluence$getSecretFlag();
             ResourceKey<Biome> from;
             ResourceKey<Biome> to;
             if (confluence$self() instanceof BannedBiomeMultiNoiseBiomeSource) {

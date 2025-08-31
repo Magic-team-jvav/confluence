@@ -2,8 +2,9 @@ package org.confluence.mod.mixin.chunk;
 
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunkSection;
-import org.confluence.mod.mixed.IChunkSection;
+import org.confluence.mod.mixed.ILevelChunkSection;
 import org.confluence.mod.util.DynamicBiomeUtils;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Dynamic;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -17,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(targets = "net.minecraft.world.level.chunk.LevelChunkSection$1BlockCounter")
 public abstract class BlockCounterMixin {
     @Unique
-    IChunkSection confluence$section;
+    private @Nullable ILevelChunkSection confluence$section;
 
     @Dynamic // 抑制一下报错
     @Inject(method = "accept", at = @At("RETURN"))
@@ -32,6 +33,6 @@ public abstract class BlockCounterMixin {
 
     @Inject(method = "<init>*", at = @At("RETURN"))
     private void constr(LevelChunkSection section, CallbackInfo ci) {
-        this.confluence$section = (IChunkSection) section;
+        this.confluence$section = ILevelChunkSection.of(section);
     }
 }

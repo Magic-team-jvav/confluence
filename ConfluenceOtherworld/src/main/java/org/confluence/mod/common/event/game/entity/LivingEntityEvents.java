@@ -23,7 +23,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameRules;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -392,47 +391,39 @@ public final class LivingEntityEvents {
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void finalizeSpawn(FinalizeSpawnEvent event) {
         Mob mob = event.getEntity();
-        Level level = mob.level();
-        BlockPos blockPos = BlockPos.containing(event.getX(), event.getY(), event.getZ());
-        DifficultyInstance difficulty = event.getDifficulty();
         if (mob.getType() == EntityType.ZOMBIE) {
-            Holder<Biome> biome = level.getBiome(blockPos);
+            BlockPos blockPos = BlockPos.containing(event.getX(), event.getY(), event.getZ());
+            Holder<Biome> biome = mob.level().getBiome(blockPos);
+            DifficultyInstance difficulty = event.getDifficulty();
             if (biome.is(Tags.Biomes.IS_ICY) || biome.is(Tags.Biomes.IS_SNOWY)) {
                 boolean pink = mob.getRandom().nextFloat() < 0.01F;
                 LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.HEAD, (pink ? ArmorItems.PINK_SNOW_CAPS : ArmorItems.SNOW_CAPS).get(), 0.003F);
                 LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.CHEST, (pink ? ArmorItems.PINK_SNOW_SUITS : ArmorItems.SNOW_SUITS).get(), 0.003F);
                 LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.LEGS, (pink ? ArmorItems.PINK_INSULATED_PANTS : ArmorItems.INSULATED_PANTS).get(), 0.003F);
                 LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.FEET, (pink ? ArmorItems.PINK_INSULATED_SHOES : ArmorItems.INSULATED_SHOES).get(), 0.003F);
-                //mob.setCustomName(Component.translatable("entity.confluence.frozen_zombie"));
                 event.setCanceled(true);
-            } else if (ModUtils.isRainingAt(level, blockPos)) {
+            } else if (ModUtils.isRainingAt(mob.level(), blockPos)) {
                 LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.HEAD, ArmorItems.RAIN_CAP.get(), 0.003F);
                 LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.CHEST, ArmorItems.RAINCOAT.get(), 0.003F);
-                //mob.setCustomName(Component.translatable("entity.confluence.raincoat_zombie"));
                 event.setCanceled(true);
             }
         } else if (mob.getType() == EntityType.SKELETON) {
-            if (!level.canSeeSky(blockPos) && mob.getRandom().nextFloat() < 0.01F) {
+            DifficultyInstance difficulty = event.getDifficulty();
+            if (!mob.level().canSeeSky(BlockPos.containing(event.getX(), event.getY(), event.getZ())) && mob.getRandom().nextFloat() < 0.01F) {
                 LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.HEAD, ArmorItems.MINING_HELMET.get(), 1.0F);
                 LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.CHEST, ArmorItems.MINING_CHESTPLATE.get(), 1.0F);
                 LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.LEGS, ArmorItems.MINING_LEGGINGS.get(), 1.0F);
                 LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.FEET, ArmorItems.MINING_BOOTS.get(), 1.0F);
                 LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.MAINHAND, PickaxeItems.BONE_PICKAXE.get(), 0.25F);
-                //mob.setCustomName(Component.translatable("entity.confluence.undead_miner"));
                 event.setCanceled(true);
             }
-        } else if (event.getEntity() instanceof Slime slime && mob.level() instanceof ServerLevel serverLevel) {
-            if (ModSecretSeeds.CELEBRATIONMK10.match(serverLevel) || ModSecretSeeds.GET_FIXED_BOI.match(serverLevel)) {
-                if (event.getSpawnType().equals(MobSpawnType.NATURAL)) {
-                    if (mob.getRandom().nextInt(140) == 1) {
-                        event.setCanceled(true);
-
-                        GoldenSlime goldenSlime = TEMonsterEntities.GOLDEN_SLIME.get().create(serverLevel);
-                        if (goldenSlime != null) {
-                            goldenSlime.moveTo(slime.getX(), slime.getY(), slime.getZ(), slime.getYRot(), slime.getXRot());
-                            level.addFreshEntity(goldenSlime);
-                        }
-                    }
+        } else if (event.getSpawnType() == MobSpawnType.NATURAL && event.getEntity() instanceof Slime slime) {
+            if ((ModSecretSeeds.CELEBRATIONMK10.match() || ModSecretSeeds.GET_FIXED_BOI.match()) && mob.getRandom().nextInt(140) == 1) {
+                event.setCanceled(true);
+                GoldenSlime goldenSlime = TEMonsterEntities.GOLDEN_SLIME.get().create(mob.level());
+                if (goldenSlime != null) {
+                    goldenSlime.moveTo(slime.getX(), slime.getY(), slime.getZ(), slime.getYRot(), slime.getXRot());
+                    mob.level().addFreshEntity(goldenSlime);
                 }
             }
         }
@@ -487,7 +478,7 @@ public final class LivingEntityEvents {
                 event.setResult(MobSpawnEvent.PositionCheck.Result.FAIL);
             }
             if (mob.getType().is(ModTags.EntityTypes.SPAWN_AT_GRAVEYARD)) {
-                IChunkSection iSection = DynamicBiomeUtils.getISection(event.getLevel(), mob.blockPosition());
+                ILevelChunkSection iSection = DynamicBiomeUtils.getISection(event.getLevel(), mob.blockPosition());
                 if (iSection != null && iSection.confluence$isGraveyard()) {
                     event.setResult(MobSpawnEvent.PositionCheck.Result.SUCCEED);
                 }
@@ -506,7 +497,7 @@ public final class LivingEntityEvents {
 //                        : MobSpawnEvent.SpawnPlacementCheck.Result.FAIL);
 //            } else
             if (entityType.is(ModTags.EntityTypes.SPAWN_AT_GRAVEYARD)) {
-                IChunkSection iSection = DynamicBiomeUtils.getISection(event.getLevel(), event.getPos());
+                ILevelChunkSection iSection = DynamicBiomeUtils.getISection(event.getLevel(), event.getPos());
                 if (iSection != null && iSection.confluence$isGraveyard()) {
                     event.setResult(MobSpawnEvent.SpawnPlacementCheck.Result.SUCCEED);
                 }

@@ -6,6 +6,7 @@ import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.level.LevelAccessor;
@@ -19,7 +20,7 @@ import net.minecraft.world.level.chunk.PalettedContainer;
 import org.confluence.lib.util.ReturnException;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.mixed.IChunkSection;
+import org.confluence.mod.mixed.ILevelChunkSection;
 import org.confluence.mod.mixed.IPalettedContainer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -33,18 +34,18 @@ import java.util.function.Predicate;
 public final class DynamicBiomeUtils {
     public static final int BIOME_THRESHOLD = 256;
     public static final Map<Predicate<BlockState>, BiConsumer<BlockCounts, Integer>> COUNTER = new ImmutableMap.Builder<Predicate<BlockState>, BiConsumer<BlockCounts, Integer>>()
-        .put(block -> block.is(ModTags.Blocks.CRIMSON_BLOCKS), (counter, count) -> counter.crimson.addAndGet(count))
-        .put(block -> block.is(ModTags.Blocks.CRIMSON_DESERT_BLOCKS), (counter, count) -> counter.crimsonSand.addAndGet(count))
-        .put(block -> block.is(ModTags.Blocks.CRIMSON_TUNDRA_BLOCKS), (counter, count) -> counter.crimsonIce.addAndGet(count))
-        .put(block -> block.is(ModTags.Blocks.CORRUPTION_BLOCKS), (counter, count) -> counter.corrupt.addAndGet(count))
-        .put(block -> block.is(ModTags.Blocks.CORRUPTED_DESERT_BLOCKS), (counter, count) -> counter.corruptSand.addAndGet(count))
-        .put(block -> block.is(ModTags.Blocks.CORRUPTED_TUNDRA_BLOCKS), (counter, count) -> counter.corruptIce.addAndGet(count))
-        .put(block -> block.is(ModTags.Blocks.HALLOW_BLOCKS), (counter, count) -> counter.hallow.addAndGet(count))
-        .put(block -> block.is(ModTags.Blocks.HALLOW_DESERT_BLOCKS), (counter, count) -> counter.hallowSand.addAndGet(count))
-        .put(block -> block.is(ModTags.Blocks.HALLOW_TUNDRA_BLOCKS), (counter, count) -> counter.hallowIce.addAndGet(count))
-        .put(block -> block.is(Blocks.SUNFLOWER), (counter, count) -> counter.sunflower.addAndGet(count))
-        .put(block -> block.is(ModTags.Blocks.TOMBSTONE), (counter, count) -> counter.tomb.addAndGet(count))
-        .build();
+            .put(block -> block.is(ModTags.Blocks.CRIMSON_BLOCKS), (counter, count) -> counter.crimson.addAndGet(count))
+            .put(block -> block.is(ModTags.Blocks.CRIMSON_DESERT_BLOCKS), (counter, count) -> counter.crimsonSand.addAndGet(count))
+            .put(block -> block.is(ModTags.Blocks.CRIMSON_TUNDRA_BLOCKS), (counter, count) -> counter.crimsonIce.addAndGet(count))
+            .put(block -> block.is(ModTags.Blocks.CORRUPTION_BLOCKS), (counter, count) -> counter.corrupt.addAndGet(count))
+            .put(block -> block.is(ModTags.Blocks.CORRUPTED_DESERT_BLOCKS), (counter, count) -> counter.corruptSand.addAndGet(count))
+            .put(block -> block.is(ModTags.Blocks.CORRUPTED_TUNDRA_BLOCKS), (counter, count) -> counter.corruptIce.addAndGet(count))
+            .put(block -> block.is(ModTags.Blocks.HALLOW_BLOCKS), (counter, count) -> counter.hallow.addAndGet(count))
+            .put(block -> block.is(ModTags.Blocks.HALLOW_DESERT_BLOCKS), (counter, count) -> counter.hallowSand.addAndGet(count))
+            .put(block -> block.is(ModTags.Blocks.HALLOW_TUNDRA_BLOCKS), (counter, count) -> counter.hallowIce.addAndGet(count))
+            .put(block -> block.is(Blocks.SUNFLOWER), (counter, count) -> counter.sunflower.addAndGet(count))
+            .put(block -> block.is(ModTags.Blocks.TOMBSTONE), (counter, count) -> counter.tomb.addAndGet(count))
+            .build();
 
     /**
      * 动态群系的优先级，数字小的优先级高
@@ -71,9 +72,8 @@ public final class DynamicBiomeUtils {
      * <p>
      * 如果原群系没有邪恶则返回原群系
      */
-    @SuppressWarnings("unchecked")
     @NotNull
-    public static PalettedContainer<Holder<Biome>> judgeBackupBiome(LevelChunkSection section) {
+    public static PalettedContainer<Holder<Biome>> judgeBackupBiome(LevelChunkSection section, HolderLookup.RegistryLookup<Biome> lookup) {
         PalettedContainer<Holder<Biome>> biomes = (PalettedContainer<Holder<Biome>>) section.getBiomes();
         AtomicReference<Holder<Biome>> pure = new AtomicReference<>();
         AtomicBoolean hasEvil = new AtomicBoolean(false);
@@ -91,10 +91,10 @@ public final class DynamicBiomeUtils {
         } catch (ReturnException ignore) {
         }
         if (hasEvil.get()) {
-            if (pure.get() != null) {
-                return ((IPalettedContainer<Holder<Biome>>) biomes).confluence$recreateSingle(pure.get());
+            if (pure.get() == null) {
+                return IPalettedContainer.recreateSingle(biomes, lookup.getOrThrow(Biomes.PLAINS));
             }
-            return ((IPalettedContainer<Holder<Biome>>) biomes).confluence$recreateSingle(((IChunkSection) section).confluence$getBiomeByKey(Biomes.PLAINS));
+            return IPalettedContainer.recreateSingle(biomes, pure.get());
         }
         return biomes;
     }
@@ -102,9 +102,8 @@ public final class DynamicBiomeUtils {
     /**
      * @return 平衡的结果，纯净返回null
      */
-    public static Holder<Biome> judgeSection(LevelChunkSection section) {
-        IChunkSection biomeSource = (IChunkSection) section;
-        BlockCounts counts = biomeSource.confluence$getBlockCounts();
+    public static @Nullable Holder<Biome> judgeSection(LevelChunkSection section, HolderLookup.RegistryLookup<Biome> lookup) {
+        BlockCounts counts = ILevelChunkSection.of(section).confluence$getBlockCounts();
         int sunflower = counts.sunflower.get() * 64;
         int crimson = Math.max(0, counts.crimson.get() - sunflower);
         int corrupt = Math.max(0, counts.corrupt.get() - sunflower);
@@ -118,25 +117,25 @@ public final class DynamicBiomeUtils {
 
         if (corrupt >= BIOME_THRESHOLD && corrupt >= crimson) {
             if (counts.corruptSand.get() >= BIOME_THRESHOLD || section.getBiomes().maybeHas(biomeHolder -> biomeHolder.is(Biomes.DESERT))) {
-                return biomeSource.confluence$getBiomeByKey(ModBiomes.THE_CORRUPTION_DESERT);
+                return lookup.getOrThrow(ModBiomes.THE_CORRUPTION_DESERT);
             } else if (counts.corruptIce.get() >= BIOME_THRESHOLD || section.getBiomes().maybeHas(biomeHolder -> biomeHolder.is(BiomeTags.SPAWNS_SNOW_FOXES))) {
-                return biomeSource.confluence$getBiomeByKey(ModBiomes.THE_CORRUPTION_TUNDRA);
+                return lookup.getOrThrow(ModBiomes.THE_CORRUPTION_TUNDRA);
             }
-            return biomeSource.confluence$getBiomeByKey(ModBiomes.THE_CORRUPTION);
+            return lookup.getOrThrow(ModBiomes.THE_CORRUPTION);
         } else if (crimson >= BIOME_THRESHOLD) {
             if (counts.crimsonSand.get() >= BIOME_THRESHOLD || section.getBiomes().maybeHas(biomeHolder -> biomeHolder.is(Biomes.DESERT))) {
-                return biomeSource.confluence$getBiomeByKey(ModBiomes.THE_CRIMSON_DESERT);
+                return lookup.getOrThrow(ModBiomes.THE_CRIMSON_DESERT);
             } else if (counts.crimsonIce.get() >= BIOME_THRESHOLD || section.getBiomes().maybeHas(biomeHolder -> biomeHolder.is(BiomeTags.SPAWNS_SNOW_FOXES))) {
-                return biomeSource.confluence$getBiomeByKey(ModBiomes.THE_CRIMSON_TUNDRA);
+                return lookup.getOrThrow(ModBiomes.THE_CRIMSON_TUNDRA);
             }
-            return biomeSource.confluence$getBiomeByKey(ModBiomes.THE_CRIMSON);
+            return lookup.getOrThrow(ModBiomes.THE_CRIMSON);
         } else if (hallow >= BIOME_THRESHOLD) {
             if (counts.hallowSand.get() >= BIOME_THRESHOLD || section.getBiomes().maybeHas(biomeHolder -> biomeHolder.is(Biomes.DESERT))) {
-                return biomeSource.confluence$getBiomeByKey(ModBiomes.THE_HALLOW_DESERT);
+                return lookup.getOrThrow(ModBiomes.THE_HALLOW_DESERT);
             } else if (counts.hallowIce.get() >= BIOME_THRESHOLD || section.getBiomes().maybeHas(biomeHolder -> biomeHolder.is(BiomeTags.SPAWNS_SNOW_FOXES))) {
-                return biomeSource.confluence$getBiomeByKey(ModBiomes.THE_HALLOW_TUNDRA);
+                return lookup.getOrThrow(ModBiomes.THE_HALLOW_TUNDRA);
             }
-            return biomeSource.confluence$getBiomeByKey(ModBiomes.THE_HALLOW);
+            return lookup.getOrThrow(ModBiomes.THE_HALLOW);
         } else {
             return null;
         }
@@ -147,24 +146,23 @@ public final class DynamicBiomeUtils {
         return level.getChunk(pos).getSection(level.getSectionIndex(pos.getY()));
     }
 
-    public static @Nullable IChunkSection getISection(LevelAccessor level, BlockPos pos) {
-        return (IChunkSection) getSection(level, pos);
+    public static @Nullable ILevelChunkSection getISection(LevelAccessor level, BlockPos pos) {
+        return ILevelChunkSection.of(getSection(level, pos));
     }
 
     /**
      * 为这个区块应用动态群系，从底部判断到顶部，应用动态群系的规则
      */
-    @SuppressWarnings("unchecked")
-    public static void applyDynamicBiome(ChunkAccess chunk) {
+    public static void applyDynamicBiome(ChunkAccess chunk, HolderLookup.RegistryLookup<Biome> lookup) {
         //LibUtils.devRun(() -> Confluence.LOGGER.debug("protoToLevel {}", chunk));
         Holder<Biome> belowBiome = null;
         for (LevelChunkSection section : chunk.getSections()) {
             section.recalcBlockCounts();
-            Holder<Biome> currentBiome = judgeSection(section);
+            Holder<Biome> currentBiome = judgeSection(section, lookup);
             if (currentBiome != null) {
-                ((IChunkSection) section).confluence$setBiomes(((IPalettedContainer<Holder<Biome>>) section.getBiomes()).confluence$recreateSingle(currentBiome));
+                ILevelChunkSection.of(section).confluence$setBiomes(IPalettedContainer.recreateSingle(section.getBiomes(), currentBiome));
             } else if (belowBiome != null) {
-                ((IChunkSection) section).confluence$setBiomes(((IPalettedContainer<Holder<Biome>>) section.getBiomes()).confluence$recreateSingle(belowBiome));
+                ILevelChunkSection.of(section).confluence$setBiomes(IPalettedContainer.recreateSingle(section.getBiomes(), belowBiome));
             }
             belowBiome = currentBiome;
         }

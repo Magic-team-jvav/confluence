@@ -187,7 +187,7 @@ public final class ModCommands {
                     }
                     LevelChunk chunk = level.getChunkAt(pos);
                     LevelChunkSection section = chunk.getSection(chunk.getSectionIndex(pos.getY()));
-                    Holder<Biome> result = DynamicBiomeUtils.judgeSection(section);
+                    Holder<Biome> result = DynamicBiomeUtils.judgeSection(section, level.registryAccess().lookupOrThrow(Registries.BIOME));
                     context.getSource().sendSuccess(() -> {
                         if (result == null) {
                             return Component.literal(pos + " pure");

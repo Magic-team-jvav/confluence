@@ -20,7 +20,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.block.functional.DartTrapBlock;
 import org.confluence.mod.common.data.saved.NPCSpawner;
-import org.confluence.mod.mixed.IChunkSection;
+import org.confluence.mod.mixed.ILevelChunkSection;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
@@ -138,7 +138,7 @@ public final class AchievementUtils {
 
     public static void quietNeighborhood(ServerPlayer player, ServerLevel level) {
         if (level.getGameTime() % 40 == 2) {
-            IChunkSection iSection = DynamicBiomeUtils.getISection(level, player.blockPosition());
+            ILevelChunkSection iSection = DynamicBiomeUtils.getISection(level, player.blockPosition());
             if (iSection != null && iSection.confluence$isGraveyard()) {
                 awardAchievement(player, "quiet_neighborhood");
             }

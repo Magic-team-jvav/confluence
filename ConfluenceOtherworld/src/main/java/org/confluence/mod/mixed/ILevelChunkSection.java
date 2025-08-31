@@ -1,12 +1,12 @@
 package org.confluence.mod.mixed;
 
 import net.minecraft.core.Holder;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.chunk.PalettedContainerRO;
 import org.confluence.mod.util.BlockCounts;
 
-public interface IChunkSection {
+public interface ILevelChunkSection {
     BlockCounts confluence$getBlockCounts();
 
     PalettedContainerRO<Holder<Biome>> confluence$getBackupBiome();
@@ -15,7 +15,9 @@ public interface IChunkSection {
 
     void confluence$setBiomes(PalettedContainerRO<Holder<Biome>> biomes);
 
-    Holder<Biome> confluence$getBiomeByKey(ResourceKey<Biome> key);
-
     boolean confluence$isGraveyard();
+
+    static ILevelChunkSection of(LevelChunkSection section) {
+        return (ILevelChunkSection) section;
+    }
 }

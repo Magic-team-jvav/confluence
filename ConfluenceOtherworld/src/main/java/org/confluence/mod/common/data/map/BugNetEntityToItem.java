@@ -28,7 +28,7 @@ public record BugNetEntityToItem(List<Tuple<EntityPredicate, ItemStack>> list) {
     });
 
     public static @Nullable ItemStack getItem(ServerPlayer player, LivingEntity living) {
-        BugNetEntityToItem data = living.getType().builtInRegistryHolder().getData(ModDataMaps.BUG_NET_ENTITY_TO_ITEM);
+        BugNetEntityToItem data = ModDataMaps.getEntityData(ModDataMaps.BUG_NET_ENTITY_TO_ITEM, living);
         if (data != null) {
             for (Tuple<EntityPredicate, ItemStack> tuple : data.list) {
                 if (tuple.getA().matches(player, living)) {

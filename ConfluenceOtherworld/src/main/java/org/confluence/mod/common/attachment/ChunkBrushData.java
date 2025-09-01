@@ -7,9 +7,11 @@ import net.minecraft.nbt.IntArrayTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.util.INBTSerializable;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.data.saved.BrushData;
+import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.jetbrains.annotations.UnknownNullability;
 
 import java.util.Hashtable;
@@ -61,5 +63,9 @@ public class ChunkBrushData implements INBTSerializable<CompoundTag> {
             }
             dataMap.put(chunkPos, new BrushData(value));
         }
+    }
+
+    public static ChunkBrushData of(Level level) {
+        return level.getData(ModAttachmentTypes.CHUNK_BRUSH_DATA);
     }
 }

@@ -3,6 +3,7 @@ package org.confluence.mod.common.attachment;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.lib.common.PlayerContainer;
 import org.confluence.mod.common.block.functional.SafeBlock;
+import org.confluence.mod.common.init.ModAttachmentTypes;
 
 public class PlayerSafeContainer extends PlayerContainer<SafeBlock.BEntity> {
     public PlayerSafeContainer() {
@@ -21,5 +22,9 @@ public class PlayerSafeContainer extends PlayerContainer<SafeBlock.BEntity> {
         if (activeContainer != null && !activeContainer.isRemoved() && !player.isSpectator()) {
             activeContainer.openersCounter.decrementOpeners(player, player.level(), activeContainer.getBlockPos(), activeContainer.getBlockState());
         }
+    }
+
+    public static PlayerSafeContainer of(Player player) {
+        return player.getData(ModAttachmentTypes.SAFE);
     }
 }

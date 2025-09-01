@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundSoundPacket;
 import net.minecraft.server.level.ServerLevel;
@@ -157,5 +158,10 @@ public class GuideVooDooDollItem extends BaseCurioItem {
         for (ServerPlayer player : level.getServer().getPlayerList().getPlayers()) {
             player.connection.send(new ClientboundSoundPacket(TESounds.WALL_OF_FLESH_ROAR, SoundSource.HOSTILE, player.getX(), player.getY(), player.getZ(), 1, 1, 0));
         }
+    }
+
+    public static void setForward(Player player, ItemStack itemStack) {
+        Tag nbt = Direction.CODEC.encodeStart(NbtOps.INSTANCE, player.getDirection()).result().orElseGet(CompoundTag::new);
+        LibUtils.updateItemStackNbt(itemStack, tag -> tag.put(DIRECTION_KEY, nbt));
     }
 }

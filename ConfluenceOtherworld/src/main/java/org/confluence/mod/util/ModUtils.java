@@ -13,6 +13,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -30,6 +31,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.npc.Npc;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
@@ -51,6 +53,7 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.common.AetheriumCauldronBlock;
 import org.confluence.mod.common.block.common.HoneyCauldronBlock;
+import org.confluence.mod.common.component.LootComponent;
 import org.confluence.mod.common.data.saved.GamePhase;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.data.saved.MeteoriteTracker;
@@ -58,13 +61,16 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.init.item.PotionItems;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.common.item.common.TreasureBagItem;
 import org.confluence.mod.mixed.IMinecraftServer;
+import org.confluence.mod.network.s2c.VisibilityPacketS2C;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.common.init.TCEffects;
+import org.confluence.terra_curio.common.item.IFunctionCouldEnable;
 import org.confluence.terra_guns.TerraGuns;
 import org.confluence.terraentity.TerraEntity;
 import org.confluence.terraentity.entity.boss.AbstractTerraBossBase;
@@ -352,5 +358,34 @@ public final class ModUtils {
 
     public static boolean isSwitchableEffect(MobEffectInstance instance) {
         return instance.getEffect().value().isBeneficial();
+    }
+
+    public static boolean switchFunction(ItemStack carried, ItemStack onSlot, Player player) {
+        // 需要注意创造模式物品栏是仅客户端的，所以创造模式无法正常使用
+        if (carried.isEmpty() && onSlot.getItem() instanceof IFunctionCouldEnable couldEnable) {
+            if (player instanceof ServerPlayer serverPlayer) {
+                couldEnable.cycleEnable(onSlot);
+                VisibilityPacketS2C.sendEcho(serverPlayer);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean useKey(ItemStack carried, ItemStack onSlot, Player player) {
+        if ((carried.is(ToolItems.GOLDEN_DUNGEON_KEY) && onSlot.is(ConsumableItems.GOLDEN_LOCK_BOX)) ||
+                (carried.is(ToolItems.SHADOW_KEY) && onSlot.is(ConsumableItems.OBSIDIAN_LOCK_BOX))
+        ) {
+            if (player instanceof ServerPlayer serverPlayer && LootComponent.open(serverPlayer, onSlot)) {
+                if (!serverPlayer.hasInfiniteMaterials()) {
+                    if (carried.is(ToolItems.GOLDEN_DUNGEON_KEY)) {
+                        carried.shrink(1);
+                    }
+                    onSlot.shrink(1);
+                }
+            }
+            return true;
+        }
+        return false;
     }
 }

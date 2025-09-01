@@ -17,6 +17,8 @@ import org.confluence.terra_curio.common.init.TCItems;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
 public class TreasureBagItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
 
@@ -42,6 +44,7 @@ public class TreasureBagItems {
     public static final DeferredItem<TreasureBagItem> SKELETRON_TREASURE_BAG = ITEMS.register("skeletron_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/skeletron")));
     //public static final DeferredItem<TreasureBagItem> DEERCLOPS_TREASURE_BAG = ITEMS.register("deerclops_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/deerclops")));
     public static final DeferredItem<TreasureBagItem> WALL_OF_FLESH_TREASURE_BAG = ITEMS.register("wall_of_flesh_treasure_bag", () -> new TreasureBagItem(Confluence.asResource("treasure_bag/wall_of_flesh")) {
+        @ParametersAreNonnullByDefault
         @Override
         protected void collectItems(ServerLevel serverLevel, Player player, ItemStack itemStack, ObjectArrayList<ItemStack> items) {
             if (LibUtils.isAtLeastExpert(serverLevel, player.blockPosition())) {

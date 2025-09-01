@@ -2,8 +2,10 @@ package org.confluence.mod.common.init;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -15,6 +17,7 @@ import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.data.map.*;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -48,5 +51,9 @@ public final class ModDataMaps {
             event.register(type);
         }
         types = null;
+    }
+
+    public static <T> @Nullable T getEntityData(DataMapType<EntityType<?>, T> type, Entity entity) {
+        return BuiltInRegistries.ENTITY_TYPE.getData(type, entity.getType().builtInRegistryHolder().unwrapKey().orElseThrow());
     }
 }

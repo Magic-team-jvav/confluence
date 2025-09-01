@@ -10,6 +10,6 @@ import org.confluence.mod.integration.heaven_destiny_moment.context.condition.Ev
 public class ModMapCodecRegisters {
     public static final MapCodecFlexibleRegister<ICondition> CONDITION_CODEC = MapCodecFlexibleRegister.createMapCodec(HDMRegistries.Keys.CONDITION_CODEC, Confluence.MODID)
             .addMapCodec(
-                    "everBeneficial", EverBeneficialCondition.CODEC
+                    "ever_beneficial", EverBeneficialCondition.CODEC
             );
 }

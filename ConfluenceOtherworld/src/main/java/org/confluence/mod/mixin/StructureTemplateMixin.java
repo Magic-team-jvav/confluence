@@ -23,7 +23,6 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.mod.common.attachment.ChunkBrushData;
 import org.confluence.mod.common.attachment.ChunkDropletsData;
@@ -171,7 +170,7 @@ public abstract class StructureTemplateMixin {
             ChunkPos chunkPos = entry.getKey();
             data.getDataMap().computeIfAbsent(chunkPos, pos1 -> new HashMap<>()).putAll(entry.getValue());
             for (ServerPlayer player : level.getChunkSource().chunkMap.getPlayers(chunkPos, false)) {
-                PacketDistributor.sendToPlayer(player, new DropletsSyncPacketS2C(data.getDataMap(player, true)));
+                DropletsSyncPacketS2C.sendToClient(player, data.getDataMap(player, true));
             }
         }
     }

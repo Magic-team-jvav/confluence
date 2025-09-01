@@ -1,23 +1,20 @@
 package org.confluence.mod.network.s2c;
 
-import com.mojang.logging.LogUtils;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.mixed.IEntity;
-import org.slf4j.Logger;
+import org.confluence.mod.network.IPacket;
 
-public record DeathMotionPacketS2C(int entityId, float x, float y, float z) implements CustomPacketPayload {
-    public static final Type<DeathMotionPacketS2C> TYPE = new Type<>(Confluence.asResource("death_motion"));
+public record DeathMotionPacketS2C(int entityId, float x, float y, float z) implements IPacketS2C {
+    public static final Type<DeathMotionPacketS2C> TYPE = IPacket.createType("death_motion");
     public static final StreamCodec<ByteBuf, DeathMotionPacketS2C> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.VAR_INT, DeathMotionPacketS2C::entityId,
             ByteBufCodecs.FLOAT, DeathMotionPacketS2C::x,
@@ -25,7 +22,6 @@ public record DeathMotionPacketS2C(int entityId, float x, float y, float z) impl
             ByteBufCodecs.FLOAT, DeathMotionPacketS2C::z,
             DeathMotionPacketS2C::new
     );
-    private static final Logger LOGGER = LogUtils.getLogger();
 
     public DeathMotionPacketS2C(int entityId, Vec3 motion) {
         this(entityId, (float) motion.x, (float) motion.y, (float) motion.z);
@@ -36,18 +32,14 @@ public record DeathMotionPacketS2C(int entityId, float x, float y, float z) impl
         return TYPE;
     }
 
-    public void handle(IPayloadContext context) {
-        context.enqueueWork(() -> {
-            if (context.player().isLocalPlayer() && context.player().level().getEntity(entityId) instanceof IEntity entity) {
-                entity.confluence$deathMotion(new Vec3(x, y, z));
-                if (entity instanceof LivingEntity living && living.isDeadOrDying()) {
-                    LOGGER.warn("Receive death motion packet but entity is dying");
-                }
+    @Override
+    public void work(Player player) {
+        if (player.level().getEntity(entityId) instanceof IEntity entity) {
+            entity.confluence$deathMotion(new Vec3(x, y, z));
+            if (entity instanceof LivingEntity living && living.isDeadOrDying()) {
+                Confluence.LOGGER.warn("Receive death motion packet but entity is dying");
             }
-        }).exceptionally(e -> {
-            context.disconnect(Component.translatable("neoforge.network.invalid_flow", e.getMessage()));
-            return null;
-        });
+        }
     }
 
     public static void sendToAll(LivingEntity living) {

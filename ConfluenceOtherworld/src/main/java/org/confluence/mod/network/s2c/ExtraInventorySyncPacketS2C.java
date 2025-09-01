@@ -1,20 +1,17 @@
 package org.confluence.mod.network.s2c;
 
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ExtraInventory;
+import org.confluence.mod.network.IPacket;
 
-public record ExtraInventorySyncPacketS2C(int entityId, ExtraInventory extraInventory) implements CustomPacketPayload {
-    public static final Type<ExtraInventorySyncPacketS2C> TYPE = new Type<>(Confluence.asResource("extra_inventory_sync"));
+public record ExtraInventorySyncPacketS2C(int entityId, ExtraInventory extraInventory) implements IPacketS2C {
+    public static final Type<ExtraInventorySyncPacketS2C> TYPE = IPacket.createType("extra_inventory_sync");
     public static final StreamCodec<RegistryFriendlyByteBuf, ExtraInventorySyncPacketS2C> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.VAR_INT, ExtraInventorySyncPacketS2C::entityId,
             ExtraInventory.STREAM_CODEC, ExtraInventorySyncPacketS2C::extraInventory,
@@ -26,16 +23,11 @@ public record ExtraInventorySyncPacketS2C(int entityId, ExtraInventory extraInve
         return TYPE;
     }
 
-    public void handle(IPayloadContext context) {
-        context.enqueueWork(() -> {
-            Player player = context.player();
-            if (player.isLocalPlayer() && player.level().getEntity(entityId) instanceof Player entity) {
-                ExtraInventory.of(entity).copyFrom(extraInventory);
-            }
-        }).exceptionally(e -> {
-            context.disconnect(Component.translatable("neoforge.network.invalid_flow", e.getMessage()));
-            return null;
-        });
+    @Override
+    public void work(Player player) {
+        if (player.level().getEntity(entityId) instanceof Player entity) {
+            ExtraInventory.of(entity).copyFrom(extraInventory);
+        }
     }
 
     public static void sendToClient(ServerPlayer from, ServerPlayer to, ExtraInventory extraInventory) {

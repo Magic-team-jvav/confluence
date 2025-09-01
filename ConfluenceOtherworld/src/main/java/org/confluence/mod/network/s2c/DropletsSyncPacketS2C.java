@@ -4,20 +4,21 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ChunkPos;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.DropletsHandler;
+import org.confluence.mod.network.IPacket;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public record DropletsSyncPacketS2C(Map<ChunkPos, Map<BlockPos, ParticleOptions>> data) implements CustomPacketPayload {
-    public static final Type<DropletsSyncPacketS2C> TYPE = new Type<>(Confluence.asResource("droplets_sync"));
+public record DropletsSyncPacketS2C(Map<ChunkPos, Map<BlockPos, ParticleOptions>> data) implements IPacketS2C {
+    public static final Type<DropletsSyncPacketS2C> TYPE = IPacket.createType("droplets_sync");
     public static final StreamCodec<RegistryFriendlyByteBuf, DropletsSyncPacketS2C> STREAM_CODEC = new StreamCodec<>() {
         @Override
         public DropletsSyncPacketS2C decode(RegistryFriendlyByteBuf buffer) {
@@ -56,14 +57,16 @@ public record DropletsSyncPacketS2C(Map<ChunkPos, Map<BlockPos, ParticleOptions>
         return TYPE;
     }
 
-    public void handle(IPayloadContext context) {
-        context.enqueueWork(() -> {
-            if (context.player().isLocalPlayer()) {
-                DropletsHandler.handlePacket(this);
-            }
-        }).exceptionally(e -> {
-            context.disconnect(Component.translatable("neoforge.network.invalid_flow", e.getMessage()));
-            return null;
-        });
+    @Override
+    public void work(Player player) {
+        DropletsHandler.handlePacket(this);
+    }
+
+    public static void sendToClient(ServerPlayer player, Map<ChunkPos, Map<BlockPos, ParticleOptions>> dataMap) {
+        PacketDistributor.sendToPlayer(player, new DropletsSyncPacketS2C(dataMap));
+    }
+
+    public static void sendToPlayersTrackingChunk(ServerLevel level, ChunkPos chunkPos, Map<ChunkPos, Map<BlockPos, ParticleOptions>> dataMap) {
+        PacketDistributor.sendToPlayersTrackingChunk(level, chunkPos, new DropletsSyncPacketS2C(dataMap));
     }
 }

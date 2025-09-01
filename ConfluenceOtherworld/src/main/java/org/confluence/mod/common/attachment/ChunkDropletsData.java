@@ -9,10 +9,15 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.RegistryOps;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.util.INBTSerializable;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.common.init.ModAttachmentTypes;
+import org.confluence.mod.mixed.IServerPlayer;
+import org.confluence.mod.network.s2c.DropletsSyncPacketS2C;
 
 import java.util.*;
 
@@ -96,5 +101,19 @@ public class ChunkDropletsData implements INBTSerializable<CompoundTag> {
             }
             dataMap.put(chunkPos, value);
         }
+    }
+
+    public static void syncDroplets(ServerPlayer player) {
+        if (IServerPlayer.of(player).confluence$chunkPosChanged()) {
+            ChunkDropletsData data = of(player.serverLevel());
+            Map<ChunkPos, Map<BlockPos, ParticleOptions>> dataMap = data.getDataMap(player, false);
+            if (!dataMap.isEmpty() || data.getLastSync().computeIfAbsent(player.getUUID(), uuid -> new HashSet<>()).stream().anyMatch(dataMap.keySet()::contains)) {
+                DropletsSyncPacketS2C.sendToClient(player, dataMap);
+            }
+        }
+    }
+
+    public static ChunkDropletsData of(Level level) {
+        return level.getData(ModAttachmentTypes.CHUNK_DROPLETS_DATA);
     }
 }

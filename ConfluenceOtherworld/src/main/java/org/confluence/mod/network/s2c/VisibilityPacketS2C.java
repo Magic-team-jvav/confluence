@@ -1,19 +1,17 @@
 package org.confluence.mod.network.s2c;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.item.AccessoryItems;
+import org.confluence.mod.network.IPacket;
 import org.confluence.terra_curio.common.component.AccessoriesComponent;
 import org.confluence.terra_curio.common.item.IFunctionCouldEnable;
 import org.confluence.terra_curio.util.CuriosUtils;
@@ -21,11 +19,11 @@ import org.confluence.terra_curio.util.TCUtils;
 
 import java.util.function.Predicate;
 
-public record VisibilityPacketS2C(byte mask) implements CustomPacketPayload {
+public record VisibilityPacketS2C(byte mask) implements IPacketS2C {
     public static final byte ECHO = 0b0000010; // 回声
     public static final byte THE_CONSTANT_POST_EFFECT = 0b0000100; // 永恒领域后处理效果
     public static final byte SIGNAL = 0b0001000; // 信号线
-    public static final Type<VisibilityPacketS2C> TYPE = new Type<>(Confluence.asResource("visibility"));
+    public static final Type<VisibilityPacketS2C> TYPE = IPacket.createType("visibility");
     public static final StreamCodec<ByteBuf, VisibilityPacketS2C> STREAM_CODEC = ByteBufCodecs.BYTE.map(VisibilityPacketS2C::new, VisibilityPacketS2C::mask);
 
     public VisibilityPacketS2C(byte checkMask, boolean visible) {
@@ -37,15 +35,9 @@ public record VisibilityPacketS2C(byte mask) implements CustomPacketPayload {
         return TYPE;
     }
 
-    public void handle(IPayloadContext context) {
-        context.enqueueWork(() -> {
-            if (context.player().isLocalPlayer()) {
-                ClientPacketHandler.handleVisibility(mask, (mask & 1) != 0);
-            }
-        }).exceptionally(e -> {
-            context.disconnect(Component.translatable("neoforge.network.invalid_flow", e.getMessage()));
-            return null;
-        });
+    @Override
+    public void work(Player player) {
+        ClientPacketHandler.handleVisibility(mask, (mask & 1) != 0);
     }
 
     public static void sendEcho(ServerPlayer player) {

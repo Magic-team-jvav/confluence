@@ -4,19 +4,18 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.SelectionsScreen;
+import org.confluence.mod.network.IPacket;
 
 /**
  * @see SelectionsScreen
  * @see org.confluence.mod.network.c2s.ApplySelectionPacketC2S
  */
-public record OpenSelectionsScreenPacketS2C(Component[] selections, boolean[] enables) implements CustomPacketPayload {
-    public static final Type<OpenSelectionsScreenPacketS2C> TYPE = new Type<>(Confluence.asResource("open_selections_screen_s2c"));
+public record OpenSelectionsScreenPacketS2C(Component[] selections, boolean[] enables) implements IPacketS2C {
+    public static final Type<OpenSelectionsScreenPacketS2C> TYPE = IPacket.createType("open_selections_screen_s2c");
     public static final StreamCodec<RegistryFriendlyByteBuf, OpenSelectionsScreenPacketS2C> STREAM_CODEC = new StreamCodec<>() {
         @Override
         public OpenSelectionsScreenPacketS2C decode(RegistryFriendlyByteBuf buffer) {
@@ -46,15 +45,9 @@ public record OpenSelectionsScreenPacketS2C(Component[] selections, boolean[] en
         return TYPE;
     }
 
-    public void handle(IPayloadContext context) {
-        context.enqueueWork(() -> {
-            if (context.player().isLocalPlayer()) {
-                SelectionsScreen.handlePacket(this);
-            }
-        }).exceptionally(e -> {
-            context.disconnect(Component.translatable("neoforge.network.invalid_flow", e.getMessage()));
-            return null;
-        });
+    @Override
+    public void work(Player player) {
+        SelectionsScreen.handlePacket(this);
     }
 
     public static void sendToClient(ServerPlayer serverPlayer, Component[] selections, boolean[] enables) {

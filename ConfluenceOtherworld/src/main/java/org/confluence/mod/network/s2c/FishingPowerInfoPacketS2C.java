@@ -1,19 +1,17 @@
 package org.confluence.mod.network.s2c;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.ClientPacketHandler;
+import org.confluence.mod.network.IPacket;
 import org.confluence.mod.util.PlayerUtils;
 
-public record FishingPowerInfoPacketS2C(float value) implements CustomPacketPayload {
-    public static final Type<FishingPowerInfoPacketS2C> TYPE = new Type<>(Confluence.asResource("fishing_power_info"));
+public record FishingPowerInfoPacketS2C(float value) implements IPacketS2C {
+    public static final Type<FishingPowerInfoPacketS2C> TYPE = IPacket.createType("fishing_power_info");
     public static final StreamCodec<ByteBuf, FishingPowerInfoPacketS2C> STREAM_CODEC = ByteBufCodecs.FLOAT.map(FishingPowerInfoPacketS2C::new, FishingPowerInfoPacketS2C::value);
 
     @Override
@@ -21,15 +19,9 @@ public record FishingPowerInfoPacketS2C(float value) implements CustomPacketPayl
         return TYPE;
     }
 
-    public void handle(IPayloadContext context) {
-        context.enqueueWork(() -> {
-            if (context.player().isLocalPlayer()) {
-                ClientPacketHandler.handleFishingPower(this);
-            }
-        }).exceptionally(e -> {
-            context.disconnect(Component.translatable("neoforge.network.invalid_flow", e.getMessage()));
-            return null;
-        });
+    @Override
+    public void work(Player player) {
+        ClientPacketHandler.handleFishingPower(this);
     }
 
     public static float sendAndGet(ServerPlayer serverPlayer) {

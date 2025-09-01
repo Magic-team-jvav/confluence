@@ -62,6 +62,18 @@ public record PrefixComponent(PrefixType type, String name, AttributeModifiersVa
     }
 
     @Override
+    public int hashCode() {
+        int result = type.hashCode();
+        result = 31 * result + name.hashCode();
+        result = 31 * result + modifiers.hashCode();
+        result = 31 * result + Float.hashCode(manaCost);
+        result = 31 * result + additionalMana;
+        result = 31 * result + tier;
+        result = 31 * result + Float.hashCode(value);
+        return result;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (o == this) return true;
         return o instanceof PrefixComponent(PrefixType type1, String name1, AttributeModifiersValue modifiers1, float cost, int mana, int tier1, float value1) &&

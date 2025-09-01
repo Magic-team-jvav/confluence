@@ -2,23 +2,20 @@ package org.confluence.mod.network.c2s;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.confluence.lib.network.ExtraByteBufCodecs;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.init.item.PotionItems;
+import org.confluence.mod.network.IPacket;
 
 import java.util.UUID;
 
-public record WormholeToPlayerPacketC2S(UUID playerId, ByMod byMod) implements CustomPacketPayload {
-    public static final Type<WormholeToPlayerPacketC2S> TYPE = new Type<>(Confluence.asResource("wormhole_to_player"));
+public record WormholeToPlayerPacketC2S(UUID playerId, ByMod byMod) implements IPacketC2S {
+    public static final Type<WormholeToPlayerPacketC2S> TYPE = IPacket.createType("wormhole_to_player");
     public static final StreamCodec<FriendlyByteBuf, WormholeToPlayerPacketC2S> STREAM_CODEC = StreamCodec.composite(
             ExtraByteBufCodecs.UUID, WormholeToPlayerPacketC2S::playerId,
             ByMod.STREAM_CODEC, WormholeToPlayerPacketC2S::byMod,
@@ -30,22 +27,16 @@ public record WormholeToPlayerPacketC2S(UUID playerId, ByMod byMod) implements C
         return TYPE;
     }
 
-    public void handle(IPayloadContext context) {
-        context.enqueueWork(() -> {
-            if (context.player() instanceof ServerPlayer serverPlayer && byMod.enabled()) {
-                ServerPlayer target = serverPlayer.server.getPlayerList().getPlayer(playerId);
-                if (target != null && serverPlayer.getTeam() == target.getTeam()) {
-                    ItemStack potion = getWormholePotion(serverPlayer);
-                    if (!potion.isEmpty()) {
-                        potion.shrink(1);
-                        teleport(serverPlayer, target);
-                    }
-                }
-            }
-        }).exceptionally(e -> {
-            context.disconnect(Component.translatable("neoforge.network.invalid_flow", e.getMessage()));
-            return null;
-        });
+    @Override
+    public void work(ServerPlayer player) {
+        if (!byMod.enabled()) return;
+        ServerPlayer target = player.server.getPlayerList().getPlayer(playerId);
+        if (target != null && player.getTeam() == target.getTeam()) {
+            ItemStack potion = getWormholePotion(player);
+            if (potion.isEmpty()) return;
+            if (!player.hasInfiniteMaterials()) potion.shrink(1);
+            teleport(player, target);
+        }
     }
 
     public static boolean isTrackable(ServerPlayer trackingPlayer, ServerPlayer trackedPlayer) {

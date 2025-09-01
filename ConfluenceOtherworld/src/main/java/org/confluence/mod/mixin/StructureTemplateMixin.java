@@ -23,12 +23,10 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.mod.common.attachment.ChunkBrushData;
 import org.confluence.mod.common.attachment.ChunkDropletsData;
 import org.confluence.mod.common.data.saved.BrushData;
-import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.mixed.IStructureTemplate$StructureBlockInfo;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
 import org.confluence.mod.network.s2c.DropletsSyncPacketS2C;
@@ -51,7 +49,7 @@ public abstract class StructureTemplateMixin {
         if (level instanceof ServerLevel serverLevel) {
             ChunkPos chunkPos = new ChunkPos(blockpos3);
 
-            ChunkBrushData data = serverLevel.getData(ModAttachmentTypes.CHUNK_BRUSH_DATA);
+            ChunkBrushData data = ChunkBrushData.of(serverLevel);
             BrushData brushData = data.getDataMap().get(chunkPos);
             if (brushData != null) {
                 int[] colors = brushData.get(blockpos3);
@@ -60,7 +58,7 @@ public abstract class StructureTemplateMixin {
                 }
             }
 
-            ChunkDropletsData data1 = serverLevel.getData(ModAttachmentTypes.CHUNK_DROPLETS_DATA);
+            ChunkDropletsData data1 = ChunkDropletsData.of(serverLevel);
             Map<BlockPos, ParticleOptions> map = data1.getDataMap().get(chunkPos);
             if (map != null) {
                 ParticleOptions particle = map.get(blockpos3);
@@ -167,11 +165,11 @@ public abstract class StructureTemplateMixin {
 
         for (Map.Entry<ChunkPos, Map<BlockPos, ParticleOptions>> entry : droplets.get().entrySet()) {
             ServerLevel level = serverLevel.getLevel();
-            ChunkDropletsData data = level.getData(ModAttachmentTypes.CHUNK_DROPLETS_DATA);
+            ChunkDropletsData data = ChunkDropletsData.of(level);
             ChunkPos chunkPos = entry.getKey();
             data.getDataMap().computeIfAbsent(chunkPos, pos1 -> new HashMap<>()).putAll(entry.getValue());
             for (ServerPlayer player : level.getChunkSource().chunkMap.getPlayers(chunkPos, false)) {
-                PacketDistributor.sendToPlayer(player, new DropletsSyncPacketS2C(data.getDataMap(player, true)));
+                DropletsSyncPacketS2C.sendToClient(player, data.getDataMap(player, true));
             }
         }
     }

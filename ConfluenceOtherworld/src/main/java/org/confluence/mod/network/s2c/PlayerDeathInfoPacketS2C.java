@@ -5,20 +5,18 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.network.IPacket;
 import org.confluence.mod.util.Coins;
 import org.confluence.mod.util.PlayerUtils;
 
-public record PlayerDeathInfoPacketS2C(Component deathMessage, int respawnTime, short platinum, byte gold, byte silver, byte copper) implements CustomPacketPayload {
-    public static final Type<PlayerDeathInfoPacketS2C> TYPE = new Type<>(Confluence.asResource("player_death_info"));
+public record PlayerDeathInfoPacketS2C(Component deathMessage, int respawnTime, short platinum, byte gold, byte silver, byte copper) implements IPacketS2C {
+    public static final Type<PlayerDeathInfoPacketS2C> TYPE = IPacket.createType("player_death_info");
     public static final StreamCodec<RegistryFriendlyByteBuf, PlayerDeathInfoPacketS2C> STREAM_CODEC = StreamCodec.composite(
             ComponentSerialization.TRUSTED_STREAM_CODEC, PlayerDeathInfoPacketS2C::deathMessage,
             ByteBufCodecs.VAR_INT, PlayerDeathInfoPacketS2C::respawnTime,
@@ -34,15 +32,9 @@ public record PlayerDeathInfoPacketS2C(Component deathMessage, int respawnTime, 
         return TYPE;
     }
 
-    public void handle(IPayloadContext context) {
-        context.enqueueWork(() -> {
-            if (context.player().isLocalPlayer()) {
-                ClientPacketHandler.handleDeathInfo(this, context.player());
-            }
-        }).exceptionally(e -> {
-            context.disconnect(Component.translatable("neoforge.network.invalid_flow", e.getMessage()));
-            return null;
-        });
+    @Override
+    public void work(Player player) {
+        ClientPacketHandler.handleDeathInfo(this, player);
     }
 
     /**

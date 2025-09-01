@@ -10,8 +10,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.ChunkPos;
+import org.confluence.mod.common.attachment.ChunkBrushData;
 import org.confluence.mod.common.data.saved.BrushData;
-import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.item.PaintItems;
 
 public class EyedropperItem extends Item {
@@ -21,15 +21,15 @@ public class EyedropperItem extends Item {
 
     @Override
     public InteractionResult useOn(UseOnContext context) {
-        if (context.getPlayer() instanceof ServerPlayer serverPlayer) {
+        if (context.getPlayer() instanceof ServerPlayer player) {
             BlockPos clickedPos = context.getClickedPos();
-            BrushData brushData = serverPlayer.level().getData(ModAttachmentTypes.CHUNK_BRUSH_DATA).getDataMap().get(new ChunkPos(clickedPos));
+            BrushData brushData = ChunkBrushData.of(player.serverLevel()).getDataMap().get(new ChunkPos(clickedPos));
             if (brushData != null) {
                 int color = brushData.get(clickedPos, context.getClickedFace());
                 if (color != BrushData.EMPTY_COLOR) {
                     ItemStack itemStack = PaintItems.PAINT.get().getDefaultInstance();
                     itemStack.set(DataComponents.DYED_COLOR, new DyedItemColor(color, true));
-                    serverPlayer.setItemInHand(InteractionHand.OFF_HAND, itemStack);
+                    player.setItemInHand(InteractionHand.OFF_HAND, itemStack);
                 }
             }
         }

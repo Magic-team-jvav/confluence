@@ -11,7 +11,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -28,16 +27,14 @@ import org.confluence.mod.common.component.LootComponent;
 import org.confluence.mod.common.data.map.TreasureBagDrop;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
 import org.confluence.mod.common.init.ModDataComponentTypes;
-import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.mod.common.init.ModSoundEvents;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.function.BiFunction;
 
 public class TreasureBagItem extends CustomRarityItem {
-    private final ResourceLocation lootTable;
-    private final BiFunction<ServerLevel, BlockPos, String> suffix;
+    public final ResourceLocation lootTable;
+    public final BiFunction<ServerLevel, BlockPos, String> suffix;
 
     public TreasureBagItem(ResourceLocation lootTable, BiFunction<ServerLevel, BlockPos, String> suffix) {
         super(new Properties().fireResistant(), ModRarity.EXPERT);
@@ -93,19 +90,8 @@ public class TreasureBagItem extends CustomRarityItem {
         tooltipComponents.add(Component.translatable("tooltip.item.confluence.right_click.common.0").withStyle(ChatFormatting.GRAY));
     }
 
-    public static @Nullable ItemStack getTreasureBag(LivingEntity living) {
-        if (!(living.level() instanceof ServerLevel serverLevel)) return null;
-        EntityType<?> type = living.getType();
-        TreasureBagDrop data = type.builtInRegistryHolder().getData(ModDataMaps.TREASURE_BAG);
-        if (data == null || !(data.item() instanceof TreasureBagItem item)) return null;
-        ItemStack itemStack = item.getDefaultInstance();
-        ResourceLocation lootTable = item.lootTable.withSuffix(item.suffix.apply(serverLevel, living.blockPosition()));
-        itemStack.set(ModDataComponentTypes.LOOT, new LootComponent(ResourceKey.create(Registries.LOOT_TABLE, lootTable)));
-        return itemStack;
-    }
-
     public static void createItemEntity(LivingEntity living, ServerPlayer owner) {
-        ItemStack itemStack = getTreasureBag(living);
+        ItemStack itemStack = TreasureBagDrop.getTreasureBag(living);
         if (itemStack != null) {
             living.level().addFreshEntity(new TreasureBagItemEntity(living.level(), living.position(), itemStack, owner));
         }

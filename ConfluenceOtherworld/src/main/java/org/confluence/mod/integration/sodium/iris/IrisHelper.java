@@ -15,6 +15,7 @@ import java.util.function.Consumer;
 
 public class IrisHelper {
     public static <T> void modifyBlockProperties(Int2ObjectMap<List<T>> blockEntriesById) {
+        // todo 继续补充
         injectBlockProperties(10272, blockEntriesById, list -> {
             list.add(blockEntry(OreBlocks.CORRUPTION_IRON_ORE.getId()));
             list.add(blockEntry(OreBlocks.FLESHIFICATION_IRON_ORE.getId()));

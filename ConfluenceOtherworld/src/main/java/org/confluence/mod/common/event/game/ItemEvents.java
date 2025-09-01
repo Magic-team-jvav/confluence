@@ -16,9 +16,7 @@ import net.neoforged.neoforge.event.ItemStackedOnOtherEvent;
 import net.neoforged.neoforge.event.entity.item.ItemTossEvent;
 import org.confluence.lib.common.item.ColoredItem;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.common.attachment.ExtraInventory;
-import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
@@ -82,14 +80,8 @@ public final class ItemEvents {
 
     @SubscribeEvent
     public static void gunFire(GunEvent.GunFireEvent event) {
-        if (event.getGun() instanceof ManaGunItem manaGunItem) {
-            float currentMana;
-            if (event.getPlayer().isLocalPlayer()) {
-                currentMana = ClientPacketHandler.getCurrentMana();
-            } else {
-                currentMana = ManaStorage.of(event.getPlayer()).getCurrentMana();
-            }
-            event.setFire(currentMana >= manaGunItem.getManaCost());
+        if (event.getGun() instanceof ManaGunItem) {
+            event.setFire(true);
         }
     }
 

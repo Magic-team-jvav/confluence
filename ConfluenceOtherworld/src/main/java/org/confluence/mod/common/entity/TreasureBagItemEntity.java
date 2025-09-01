@@ -83,4 +83,12 @@ public class TreasureBagItemEntity extends ItemEntity {
             entityData.set(DATA_OWNER, Optional.of(compound.getUUID("ActuallyOwner")));
         }
     }
+
+    public static void convert(ItemEntity itemEntity) {
+        TreasureBagItemEntity entity = new TreasureBagItemEntity(itemEntity.level(), itemEntity.position(), itemEntity.getItem(), null);
+        entity.setPickUpDelay(40);
+        entity.setDeltaMovement(itemEntity.getDeltaMovement());
+        itemEntity.level().addFreshEntity(entity);
+        itemEntity.discard();
+    }
 }

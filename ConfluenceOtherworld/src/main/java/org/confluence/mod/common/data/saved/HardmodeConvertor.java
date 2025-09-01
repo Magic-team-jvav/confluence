@@ -124,8 +124,8 @@ public final class HardmodeConvertor implements IGlobalData {
                     dedicatedServer.confluence$setOnHardmodeConversation(false);
                 }
                 SecretFlagSyncPacketS2C.sendToAll(IMinecraftServer.of(server).confluence$getSecretFlag());
-                for (ServerPlayer serverPlayer : server.getPlayerList().getPlayers()) {
-                    AchievementUtils.awardAchievement(serverPlayer, "its_hard");
+                for (ServerPlayer player : server.getPlayerList().getPlayers()) {
+                    AchievementUtils.awardAchievement(player, "its_hard");
                 }
                 IMinecraftServer.of(server).confluence$updateSecretFlag(IWorldOptions.HARDMODE);
                 print(server, Component.translatable("event.confluence.hardmode_conversion.hardmode"), !FMLEnvironment.production);
@@ -139,7 +139,7 @@ public final class HardmodeConvertor implements IGlobalData {
                 dedicatedServer.confluence$setOnHardmodeConversation(true);
             }
             if (CommonConfigs.INSTANTLY_HARDMODE_CONVERSION.get()) {
-                Confluence.LOGGER.info("Starting hardmode conversion ...");
+                Confluence.LOGGER.debug("Starting hardmode conversion ...");
                 Stopwatch stopwatch = Stopwatch.createStarted();
                 sanctification.removeIf(entry -> {
                     ChunkPos chunkPos = entry.getA();
@@ -151,7 +151,7 @@ public final class HardmodeConvertor implements IGlobalData {
 
                     return refilled;
                 });
-                Confluence.LOGGER.info("Hardmode conversion took {}", stopwatch.stop());
+                Confluence.LOGGER.debug("Hardmode conversion took {}", stopwatch.stop());
             } else if (serverLevel.getGameTime() % 5 == 0 && serverLevel.getServer().getPlayerList().getPlayers().stream().noneMatch(Entity::isRemoved)) {
                 Tuple<ChunkPos, BlockPosColumn[][]> entry = sanctification.getFirst();
                 ChunkPos chunkPos = entry.getA();

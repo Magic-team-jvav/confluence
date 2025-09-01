@@ -2,6 +2,7 @@ package org.confluence.mod.mixed;
 
 import com.mojang.serialization.Codec;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.ObjectIterator;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.damagesource.DamageSource;
@@ -57,6 +58,47 @@ public interface Immunity {
         }
     }
 
+    static void tick(Entity entity) {
+        // 实体身上的无敌帧每刻-1
+        if (entity instanceof ILivingEntity living) {
+            int extraInvulnerableTicks = living.confluence$getExtraInvulnerableTicks();
+            if (extraInvulnerableTicks > 0) {
+                living.confluence$setExtraInvulnerableTicks(extraInvulnerableTicks - 1);
+            }
+
+            Object2IntMap<Immunity> invTicks = living.confluence$getImmunityTicks();
+            if (invTicks.isEmpty()) return;
+            ObjectIterator<Object2IntMap.Entry<Immunity>> iterator = invTicks.object2IntEntrySet().iterator();
+            while (iterator.hasNext()) {
+                Object2IntMap.Entry<Immunity> entry = iterator.next();
+                int remain = entry.getIntValue() - 1;
+                if (remain < 0) {
+                    iterator.remove();
+                } else {
+                    entry.setValue(remain);
+                }
+            }
+        }
+    }
+
+    Type confluence$getImmunityType();
+
+    @SuppressWarnings("all")
+    default int confluence$getImmunityDuration(DamageSource damageSource) {
+        Entity causeEntity = damageSource.getEntity();
+        // 自身是汇流近战武器且使用者有攻击速度属性
+        Object self = this;
+        if (self instanceof ItemStack weaponItemStack && weaponItemStack.getItem() instanceof SwordItem weaponItem
+                && ModUtils.isFromConfluence(BuiltInRegistries.ITEM, weaponItem)
+                && causeEntity instanceof LivingEntity living && living.getAttributes().hasAttribute(Attributes.ATTACK_SPEED)
+        ) {
+            double speed = living.getAttribute(Attributes.ATTACK_SPEED).getValue();
+            int time = (int) (20 / speed) - 1;
+            return Math.max(0, time);
+        }
+        return 0;
+    }
+
     enum Type implements StringRepresentable {
         /** 静态无敌帧，以类而不是对象区分不同的伤害，比如魔刺，多个魔刺弹幕叠在一起伤害频率也不会变快 */
         STATIC,
@@ -69,22 +111,5 @@ public interface Immunity {
         public @NotNull String getSerializedName() {
             return name().toLowerCase(Locale.ROOT);
         }
-    }
-
-    Type confluence$getImmunityType();
-
-    @SuppressWarnings("all")
-    default int confluence$getImmunityDuration(DamageSource damageSource){
-        Entity causeEntity = damageSource.getEntity();
-        // 自身是汇流近战武器且使用者有攻击速度属性
-        Object self = this;
-        if(self instanceof ItemStack weaponItemStack && weaponItemStack.getItem() instanceof SwordItem weaponItem
-            && ModUtils.isFromConfluence(BuiltInRegistries.ITEM,weaponItem)
-            && causeEntity instanceof LivingEntity living && living.getAttributes().hasAttribute(Attributes.ATTACK_SPEED)){
-            double speed = living.getAttribute(Attributes.ATTACK_SPEED).getValue();
-            int time = (int) (20 / speed) - 1;
-            return Math.max(0, time);
-        }
-        return 0;
     }
 }

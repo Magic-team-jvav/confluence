@@ -123,17 +123,17 @@ public class FallingStarItemEntity extends ItemEntity {
         if (CommonConfigs.DO_FALLING_STAR_SPAWNING.get() && LibDateUtils.isNight(level) && level.getGameTime() % CommonConfigs.FALLING_STAR_INTERVAL.get() == 0) {
             RandomSource random = level.random;
             Set<Vec3> cache = new HashSet<>();
-            for (ServerPlayer serverPlayer : level.players()) {
-                if (serverPlayer.level().dimension() != OverworldUtils.dimension()) continue;
-                if (cache.stream().anyMatch(pos -> serverPlayer.distanceToSqr(pos) < Mth.square(serverPlayer.requestedViewDistance() * 16))) {
+            for (ServerPlayer player : level.players()) {
+                if (player.level().dimension() != OverworldUtils.dimension()) continue;
+                if (cache.stream().anyMatch(pos -> player.distanceToSqr(pos) < Mth.square(player.requestedViewDistance() * 16))) {
                     continue;
                 }
                 int offsetX = Mth.nextInt(random, -16, 16);
                 int offsetZ = Mth.nextInt(random, -16, 16);
-                BlockPos pos = serverPlayer.getOnPos().offset(offsetX, 0, offsetZ).atY(256);
+                BlockPos pos = player.getOnPos().offset(offsetX, 0, offsetZ).atY(256);
                 if (level.isLoaded(pos)) {
                     level.addFreshEntity(new FallingStarItemEntity(level, pos.getCenter()));
-                    cache.add(serverPlayer.position());
+                    cache.add(player.position());
                 }
             }
         }

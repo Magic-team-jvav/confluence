@@ -13,8 +13,8 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.client.textures.LocalBrushData;
+import org.confluence.mod.common.attachment.ChunkBrushData;
 import org.confluence.mod.common.data.saved.BrushData;
-import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.network.IPacket;
 import org.jetbrains.annotations.Nullable;
 
@@ -97,7 +97,7 @@ public record BrushingColorPacketS2C(ChunkPos chunkPos, BrushData data) implemen
     public static void remove(ServerLevel level, BlockPos pos, Direction facing) {
         if (ServerLifecycleHooks.getCurrentServer() != null) {
             ChunkPos chunkPos = new ChunkPos(pos);
-            BrushData brushData = level.getData(ModAttachmentTypes.CHUNK_BRUSH_DATA).getDataMap().get(chunkPos);
+            BrushData brushData = ChunkBrushData.of(level).getDataMap().get(chunkPos);
             if (brushData == null) return;
             if (level.getBlockState(pos).isSolidRender(level, pos)) {
                 brushData.remove(pos, facing);
@@ -112,7 +112,7 @@ public record BrushingColorPacketS2C(ChunkPos chunkPos, BrushData data) implemen
     public static void remove(ServerLevel level, BlockPos pos) {
         if (ServerLifecycleHooks.getCurrentServer() != null) {
             ChunkPos chunkPos = new ChunkPos(pos);
-            BrushData brushData = level.getData(ModAttachmentTypes.CHUNK_BRUSH_DATA).getDataMap().get(chunkPos);
+            BrushData brushData = ChunkBrushData.of(level).getDataMap().get(chunkPos);
             if (brushData == null) return;
             brushData.remove(pos);
             PacketDistributor.sendToAllPlayers(new BrushingColorPacketS2C(chunkPos, new BrushData(Map.of(pos, CLEAR_COLORS))));
@@ -120,7 +120,7 @@ public record BrushingColorPacketS2C(ChunkPos chunkPos, BrushData data) implemen
     }
 
     private static void saveData(ServerLevel level, ChunkPos chunkPos, BrushData data) {
-        level.getData(ModAttachmentTypes.CHUNK_BRUSH_DATA).getDataMap()
+        ChunkBrushData.of(level).getDataMap()
                 .computeIfAbsent(chunkPos, pos -> new BrushData(new Hashtable<>()))
                 .merge(data);
     }

@@ -27,7 +27,6 @@ import org.confluence.lib.common.PlayerContainer;
 import org.confluence.lib.common.block.HorizontalDirectionalWaterloggedBlock;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.attachment.PlayerSafeContainer;
-import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
@@ -69,7 +68,7 @@ public class SafeBlock extends HorizontalDirectionalWaterloggedBlock implements 
                 return InteractionResult.SUCCESS;
             }
             level.setBlock(pos, state.setValue(BlockStateProperties.OPEN, true), Block.UPDATE_ALL);
-            PlayerSafeContainer container = player.getData(ModAttachmentTypes.SAFE);
+            PlayerSafeContainer container = PlayerSafeContainer.of(player);
             container.setActiveContainer(entity);
             player.openMenu(new SimpleMenuProvider((id, inventory, player1) -> new ChestMenu(MenuType.GENERIC_9x6, id, inventory, container, 6), Component.translatable("container.confluence.safe")));
             PiglinAi.angerNearbyPiglins(player, true);
@@ -107,7 +106,7 @@ public class SafeBlock extends HorizontalDirectionalWaterloggedBlock implements 
             @Override
             protected boolean isOwnContainer(Player player) {
                 if (player.containerMenu instanceof ChestMenu chestMenu) {
-                    return chestMenu.getContainer() == player.getData(ModAttachmentTypes.SAFE);
+                    return chestMenu.getContainer() == PlayerSafeContainer.of(player);
                 }
                 return false;
             }

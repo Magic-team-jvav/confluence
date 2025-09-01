@@ -187,7 +187,7 @@ dependencies {
 
     compileOnly "vazkii.patchouli:Patchouli:1.21-87-NEOFORGE:api"
     compileOnly "vazkii.patchouli:Patchouli:1.21-87-NEOFORGE"
-    if (false || apotheosis) {
+    if (apotheosis) {
         runtimeOnly "vazkii.patchouli:Patchouli:1.21-87-NEOFORGE"
     }
 
@@ -204,9 +204,10 @@ dependencies {
     runtimeOnly "curse.maven:better-advancements-272515:5850587"
 
     compileOnly "curse.maven:sodium-394468:6382651"
+    compileOnly "curse.maven:irisshaders-455508:6661598"
     if (!vanillin) {
         runtimeOnly "curse.maven:sodium-394468:6382651"
-        runtimeOnly "curse.maven:irisshaders-455508:6213632"
+        runtimeOnly "curse.maven:irisshaders-455508:6661598"
     }
 
     compileOnly "curse.maven:advancement-plaques-499826:5905995"

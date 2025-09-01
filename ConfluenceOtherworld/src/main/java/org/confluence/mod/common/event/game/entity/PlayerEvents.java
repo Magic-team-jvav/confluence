@@ -35,10 +35,7 @@ import net.neoforged.neoforge.event.entity.player.*;
 import org.confluence.lib.common.item.ColoredItem;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.common.attachment.EverBeneficial;
-import org.confluence.mod.common.attachment.ExtraInventory;
-import org.confluence.mod.common.attachment.ManaStorage;
-import org.confluence.mod.common.attachment.PlayerPiggyBankContainer;
+import org.confluence.mod.common.attachment.*;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import org.confluence.mod.common.data.AchievementOffsetLoader;
 import org.confluence.mod.common.data.map.DiggingPower;
@@ -46,7 +43,10 @@ import org.confluence.mod.common.data.saved.HardmodeConvertor;
 import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
 import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
-import org.confluence.mod.common.init.*;
+import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.ModTiers;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.common.BaseAxeItem;
 import org.confluence.mod.common.item.common.BaseMinecartItem;
@@ -96,7 +96,7 @@ public final class PlayerEvents {
     @SubscribeEvent
     public static void loggedOut(PlayerEvent.PlayerLoggedOutEvent event) {
         ServerPlayer player = (ServerPlayer) event.getEntity();
-        player.serverLevel().getData(ModAttachmentTypes.CHUNK_DROPLETS_DATA).getLastSync().remove(player.getUUID());
+        ChunkDropletsData.of(player.serverLevel()).getLastSync().remove(player.getUUID());
     }
 
     @SubscribeEvent

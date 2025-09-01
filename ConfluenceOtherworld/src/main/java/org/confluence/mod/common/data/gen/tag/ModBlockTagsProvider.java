@@ -63,7 +63,13 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 Blocks.TWISTING_VINES,
                 Blocks.TWISTING_VINES_PLANT,
                 Blocks.CAVE_VINES,
-                Blocks.CAVE_VINES_PLANT
+                Blocks.CAVE_VINES_PLANT,
+                GLOWING_MUSHROOM_VINE.get(),
+                FOREST_DROOPING_VINE.get(),
+                JUNGLE_DROOPING_VINE.get(),
+                CORRUPT_DROOPING_VINE.get(),
+                CRIMSON_DROOPING_VINE.get(),
+                HALLOW_DROOPING_VINE.get()
         );
         tag(ModTags.Blocks.EASY_CRASH).add(
                 THIN_ICE_BLOCK.get(),

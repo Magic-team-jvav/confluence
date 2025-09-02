@@ -1,4 +1,4 @@
-package org.confluence.mod.common.item.vanity_armor;
+package org.confluence.mod.common.item.common;
 
 import com.google.common.base.Suppliers;
 import net.minecraft.core.Holder;

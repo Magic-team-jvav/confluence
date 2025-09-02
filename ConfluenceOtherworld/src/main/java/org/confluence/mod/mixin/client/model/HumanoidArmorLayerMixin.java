@@ -20,8 +20,6 @@ import org.confluence.mod.util.ClientUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-import java.util.OptionalInt;
-
 import static org.confluence.lib.util.LibUtils.getSlotIndex;
 
 @Mixin(HumanoidArmorLayer.class)
@@ -43,8 +41,8 @@ public abstract class HumanoidArmorLayerMixin<T extends LivingEntity, A extends 
     @WrapOperation(method = "renderArmorPiece(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/entity/EquipmentSlot;ILnet/minecraft/client/model/HumanoidModel;FFFFFF)V", at = @At(value = "INVOKE", target = "Lnet/neoforged/neoforge/client/extensions/common/IClientItemExtensions;getArmorLayerTintColor(Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/item/ArmorMaterial$Layer;II)I", remap = false))
     private int dyeColor(IClientItemExtensions instance, ItemStack stack, LivingEntity entity, ArmorMaterial.Layer layer, int layerIdx, int fallbackColor, Operation<Integer> original, @Local(argsOnly = true) EquipmentSlot slot, @Share("extra") LocalRef<ExtraInventory> extra) {
         if (entity instanceof AbstractClientPlayer player) {
-            OptionalInt color = ClientUtils.getVanityDyeColor(extra.get(), getSlotIndex(slot), player);
-            if (color.isPresent()) return color.getAsInt();
+            int argb = ClientUtils.getVanityDyeARGB(extra.get(), getSlotIndex(slot), player);
+            if (argb != -1) return argb;
         }
         return original.call(instance, stack, entity, layer, layerIdx, fallbackColor);
     }

@@ -14,7 +14,7 @@ public class PaintbrushItem extends Item {
     @Override
     public InteractionResult useOn(UseOnContext pContext) {
         if (pContext.getPlayer() instanceof ServerPlayer serverPlayer) {
-            int color = PaintItem.getColor(pContext.getPlayer());
+            int color = PaintItem.useAndGetRGB(pContext.getPlayer());
             if (color != -1) {
                 BrushingColorPacketS2C.sendToPlayersTrackingChunk(serverPlayer.serverLevel(), pContext.getClickedPos(), null, color, true);
             }

@@ -26,6 +26,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
@@ -50,8 +51,8 @@ import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.item.VanityArmorItems;
+import org.confluence.mod.common.item.common.BaseDyeItem;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
-import org.confluence.mod.common.item.vanity_armor.BaseDyeItem;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
 import org.confluence.mod.integration.geckolib.IGeoCube;
 import org.confluence.mod.mixed.IEntity;
@@ -224,22 +225,22 @@ public final class ClientUtils {
         }
     }
 
-    public static OptionalInt getVanityDyeColor(ExtraInventory extraInventory, int index, Player player) {
+    public static int getVanityDyeARGB(ExtraInventory extraInventory, int index, Player player) {
         if (index != -1) {
             ItemStack vanityArmorDye = extraInventory.getVanityArmor(index, true);
             if (!vanityArmorDye.isEmpty()) {
                 Item item = vanityArmorDye.getItem();
-                if (item instanceof BaseDyeItem dyeItem) {
-                    return OptionalInt.of(dyeItem.color);
+                if (item instanceof BaseDyeItem) {
+                    return BaseDyeItem.getARGB(vanityArmorDye);
                 } else if (item == VanityArmorItems.TEAM_DYE.get()) {
                     Team team = TeamManager.getTeam(player);
                     if (team != null) {
-                        return OptionalInt.of(0xFF << 24 | team.getColor());
+                        return FastColor.ARGB32.opaque(team.getRGB());
                     }
                 }
             }
         }
-        return OptionalInt.empty();
+        return -1;
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})

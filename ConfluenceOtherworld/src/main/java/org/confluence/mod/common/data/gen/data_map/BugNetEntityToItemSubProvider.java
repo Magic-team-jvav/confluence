@@ -25,6 +25,8 @@ public final class BugNetEntityToItemSubProvider {
                 .add(TEAnimals.GRUBBY, BaitItems.GRUBBY)
                 .add(TEAnimals.MAGGOT, BaitItems.MAGGOT)
                 .add(TEAnimals.MAGMA_SNAIL, BaitItems.MAGMA_SNAIL)
+                .add(TEAnimals.HELL_BUTTERFLY, BaitItems.HELL_BUTTERFLY)
+                .add(TEAnimals.PRISMATIC_LACEWING, BaitItems.PRISMATIC_LACEWING)
                 .add(TEAnimals.SLUGGY, BaitItems.SLUGGY)
                 .add(TEAnimals.SNAIL, BaitItems.SNAIL)
                 .add(TEAnimals.BUTTERFLY, List.of(

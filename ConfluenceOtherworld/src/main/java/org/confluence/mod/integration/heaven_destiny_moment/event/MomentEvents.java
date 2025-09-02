@@ -134,8 +134,8 @@ public class MomentEvents {
         Level level = event.getLevel();
         MomentInstanceManager momentInstanceManager = MomentInstanceManager.of(level);
         Registry<IMoment> moment = HDMRegistries.MOMENT;
-        System.out.println(moment);
-        System.out.println(momentInstanceManager);
+//        System.out.println(moment);
+//        System.out.println(momentInstanceManager);
     }
 
 }

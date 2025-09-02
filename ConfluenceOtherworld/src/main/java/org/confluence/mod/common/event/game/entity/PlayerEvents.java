@@ -52,7 +52,6 @@ import org.confluence.mod.common.item.common.BaseAxeItem;
 import org.confluence.mod.common.item.common.BaseMinecartItem;
 import org.confluence.mod.common.item.common.DungeonCompass;
 import org.confluence.mod.common.item.common.EverBeneficialItem;
-import org.confluence.mod.common.item.fishing.AbstractFishingPole;
 import org.confluence.mod.common.menu.FletchingTableMenu;
 import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
 import org.confluence.mod.mixed.IAbstractMinecart;
@@ -212,10 +211,7 @@ public final class PlayerEvents {
         if (!TCUtils.hasAccessoriesType(player, AccessoryItems.HIGH$TEST$FISHING$LINE) && player.getRandom().nextFloat() < 0.1429F) {
             level.playSound(null, event.getHookEntity().blockPosition(), ModSoundEvents.DECOUPLING.get(), SoundSource.AMBIENT);
             event.setCanceled(true);
-            return;
         }
-
-        AbstractFishingPole.consumeBait(player, level);
     }
 
     @SubscribeEvent

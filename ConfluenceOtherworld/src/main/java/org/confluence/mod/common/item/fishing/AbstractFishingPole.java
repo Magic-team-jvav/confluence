@@ -68,13 +68,7 @@ public abstract class AbstractFishingPole extends FishingRodItem {
         ItemStack stack = player.getItemInHand(hand);
         if (player.fishing != null) {
             if (!level.isClientSide) {
-                ItemStack bait = getBait(level.registryAccess(), stack);
-                if (!bait.isEmpty() && player.addItem(bait)) {
-                    player.drop(bait, true);
-                }
-                setBait(level.registryAccess(), stack, ItemStack.EMPTY);
-                IPlayer.of(player).confluence$setCurrentBait(ItemStack.EMPTY);
-
+                consumeBait(player, level);
                 int i = player.fishing.retrieve(stack);
                 ItemStack original = stack.copy();
                 stack.hurtAndBreak(i, player, LivingEntity.getSlotForHand(hand));
@@ -179,19 +173,25 @@ public abstract class AbstractFishingPole extends FishingRodItem {
             RegistryAccess provider = level.registryAccess();
             ItemStack bait = getBait(provider, fishingPole);
             if (bait.isEmpty()) return;
+            boolean consume = false;
             if (bait.is(BaitItems.TRUFFLE_WORM)) {
-                setBait(provider, fishingPole, ItemStack.EMPTY);
+                consume = true;
             } else if (bait.is(BaitItems.GOLD_WORM)) {
                 if (player.getRandom().nextInt(20) == 0) {
-                    setBait(provider, fishingPole, ItemStack.EMPTY);
+                    consume = true;
                 }
             } else {
                 float factor = TCUtils.hasAccessoriesType(player, AccessoryItems.TACKLE$BOX) ? 1.0F : 2.0F;
                 IBait iBait = IBait.of(bait);
                 if (player.getRandom().nextFloat() < 1.0F / (factor + (iBait == null ? 0 : iBait.getBaitBonus()) / 6.0F)) {
-                    setBait(provider, fishingPole, ItemStack.EMPTY);
+                    consume = true;
                 }
             }
+            if (!consume && player.addItem(bait)) {
+                player.drop(bait, true);
+            }
+            setBait(level.registryAccess(), fishingPole, ItemStack.EMPTY);
+            IPlayer.of(player).confluence$setCurrentBait(ItemStack.EMPTY);
         }
     }
 

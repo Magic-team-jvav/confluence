@@ -4,7 +4,7 @@ import com.google.common.collect.Multimap;
 import com.xiaohunao.equipment_benediction.common.equipment_set.EquipmentSet;
 import com.xiaohunao.equipment_benediction.common.equipment_set.EquipmentSetBranch;
 import com.xiaohunao.equipment_benediction.common.equipment_set.EquippableGroup;
-import com.xiaohunao.equipment_benediction.common.equippable.VanillaEquippable;
+import com.xiaohunao.equipment_benediction.common.equippable.VanillaWearable;
 import com.xiaohunao.equipment_benediction.common.hook.HookMap;
 import com.xiaohunao.equipment_benediction.common.hook.hooks.AfterLivingHurtEntityHook;
 import com.xiaohunao.equipment_benediction.common.hook.hooks.LivingIncomingDamageHook;
@@ -29,36 +29,36 @@ public class HallowedSet extends EquipmentSet {
     @Override
     protected void init(HookMap.Builder hook, EquippableGroup.Builder equippableGroup) {
         equippableGroup.addEquippableSet("mask", new EquipmentSetBranch.Builder()
-                .addEquippable(VanillaEquippable.HEAD, ArmorItems.HALLOWED_MASK)
+                .addEquippable(VanillaWearable.HEAD, ArmorItems.HALLOWED_MASK)
                 .bindHook(builder -> builder
                         .addBonus(Attributes.ATTACK_DAMAGE, new AttributeModifier(ArmorItems.HALLOWED_MASK.getId(), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
                         .addBonus(TCAttributes.getCriticalChance(), new AttributeModifier(ArmorItems.HALLOWED_MASK.getId(), 0.1, AttributeModifier.Operation.ADD_VALUE))
                         .addBonus(Attributes.ATTACK_SPEED, new AttributeModifier(ArmorItems.HALLOWED_MASK.getId(), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
                 ).build());
         equippableGroup.addEquippableSet("headgear", new EquipmentSetBranch.Builder()
-                .addEquippable(VanillaEquippable.HEAD, ArmorItems.HALLOWED_HEADGEAR)
+                .addEquippable(VanillaWearable.HEAD, ArmorItems.HALLOWED_HEADGEAR)
                 .bindHook(ModHookTypes.ADDITIONAL_MANA.get(), (owner, player, original) -> original + 100)
                 .bindHook(builder -> builder
                         .addBonus(TCAttributes.getMagicDamage(), new AttributeModifier(ArmorItems.HALLOWED_HEADGEAR.getId(), 0.12, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
                         .addBonus(TCAttributes.getCriticalChance(), new AttributeModifier(ArmorItems.HALLOWED_HEADGEAR.getId(), 0.12, AttributeModifier.Operation.ADD_VALUE))
                 ).build());
         equippableGroup.addEquippableSet("hood", new EquipmentSetBranch.Builder()
-                .addEquippable(VanillaEquippable.HEAD, ArmorItems.HALLOWED_HOOD)
+                .addEquippable(VanillaWearable.HEAD, ArmorItems.HALLOWED_HOOD)
                 .bindHook(builder -> builder
                         .addBonus(TEAttributes.MINION_CAPACITY, new AttributeModifier(ArmorItems.HALLOWED_HOOD.getId(), 1, AttributeModifier.Operation.ADD_VALUE))
                         .addBonus(TEAttributes.SUMMON_DAMAGE, new AttributeModifier(ArmorItems.HALLOWED_HOOD.getId(), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
                 ).build());
         equippableGroup.addEquippableSet("helmet", new EquipmentSetBranch.Builder()
-                .addEquippable(VanillaEquippable.HEAD, ArmorItems.HALLOWED_HELMET)
+                .addEquippable(VanillaWearable.HEAD, ArmorItems.HALLOWED_HELMET)
                 .bindHook(builder -> builder
                         .addBonus(TCAttributes.getRangedDamage(), new AttributeModifier(ArmorItems.HALLOWED_HELMET.getId(), 0.15, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
                         .addBonus(TCAttributes.getCriticalChance(), new AttributeModifier(ArmorItems.HALLOWED_HELMET.getId(), 0.08, AttributeModifier.Operation.ADD_VALUE))
                 ).build());
         equippableGroup.addEquippableSet("chestplate", new EquipmentSetBranch.Builder()
-                .addEquippable(VanillaEquippable.CHEST, ArmorItems.HALLOWED_CHESTPLATE)
+                .addEquippable(VanillaWearable.CHEST, ArmorItems.HALLOWED_CHESTPLATE)
                 .bindHook(builder -> builder.addBonus(TCAttributes.getCriticalChance(), new AttributeModifier(ArmorItems.HALLOWED_CHESTPLATE.getId(), 0.07, AttributeModifier.Operation.ADD_VALUE))).build());
         equippableGroup.addEquippableSet("leggings", new EquipmentSetBranch.Builder()
-                .addEquippable(VanillaEquippable.LEGS, ArmorItems.HALLOWED_LEGGINGS)
+                .addEquippable(VanillaWearable.LEGS, ArmorItems.HALLOWED_LEGGINGS)
                 .bindHook(builder -> builder
                         .addBonus(Attributes.ATTACK_DAMAGE, new AttributeModifier(ArmorItems.HALLOWED_CHESTPLATE.getId(), 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
                         .addBonus(TCAttributes.getRangedDamage(), new AttributeModifier(ArmorItems.HALLOWED_CHESTPLATE.getId(), 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
@@ -66,7 +66,7 @@ public class HallowedSet extends EquipmentSet {
                         .addBonus(TEAttributes.SUMMON_DAMAGE, new AttributeModifier(ArmorItems.HALLOWED_CHESTPLATE.getId(), 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))
                 ).build());
         equippableGroup.addEquippableSet("boots", new EquipmentSetBranch.Builder()
-                .addEquippable(VanillaEquippable.FEET, ArmorItems.HALLOWED_BOOTS)
+                .addEquippable(VanillaWearable.FEET, ArmorItems.HALLOWED_BOOTS)
                 .bindHook(builder -> builder.addBonus(Attributes.MOVEMENT_SPEED, new AttributeModifier(ArmorItems.HALLOWED_BOOTS.getId(), 0.08, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)))
                 .build());
 
@@ -85,20 +85,20 @@ public class HallowedSet extends EquipmentSet {
         };
         equippableGroup.addEquippableSet("common_set", new EquipmentSetBranch.Builder()
                 .addEquippable(
-                        VanillaEquippable.HEAD, Ingredient.of(ArmorItems.HALLOWED_HELMET, ArmorItems.HALLOWED_MASK, ArmorItems.HALLOWED_HEADGEAR),
-                        VanillaEquippable.CHEST, ArmorItems.HALLOWED_CHESTPLATE,
-                        VanillaEquippable.LEGS, ArmorItems.HALLOWED_LEGGINGS,
-                        VanillaEquippable.FEET, ArmorItems.HALLOWED_BOOTS
+                        VanillaWearable.HEAD, Ingredient.of(ArmorItems.HALLOWED_HELMET, ArmorItems.HALLOWED_MASK, ArmorItems.HALLOWED_HEADGEAR),
+                        VanillaWearable.CHEST, ArmorItems.HALLOWED_CHESTPLATE,
+                        VanillaWearable.LEGS, ArmorItems.HALLOWED_LEGGINGS,
+                        VanillaWearable.FEET, ArmorItems.HALLOWED_BOOTS
                 )
                 .bindHook(EBHookTypes.LIVING_INCOMING_DAMAGE.get(), protection)
                 .bindHook(EBHookTypes.AFTER_LIVING_HURT_ENTITY.get(), hurt)
                 .build());
         equippableGroup.addEquippableSet("hood_set", new EquipmentSetBranch.Builder()
                 .addEquippable(
-                        VanillaEquippable.HEAD, ArmorItems.HALLOWED_HOOD,
-                        VanillaEquippable.CHEST, ArmorItems.HALLOWED_CHESTPLATE,
-                        VanillaEquippable.LEGS, ArmorItems.HALLOWED_LEGGINGS,
-                        VanillaEquippable.FEET, ArmorItems.HALLOWED_BOOTS
+                        VanillaWearable.HEAD, ArmorItems.HALLOWED_HOOD,
+                        VanillaWearable.CHEST, ArmorItems.HALLOWED_CHESTPLATE,
+                        VanillaWearable.LEGS, ArmorItems.HALLOWED_LEGGINGS,
+                        VanillaWearable.FEET, ArmorItems.HALLOWED_BOOTS
                 )
                 .bindHook(EBHookTypes.LIVING_INCOMING_DAMAGE.get(), protection)
                 .bindHook(EBHookTypes.AFTER_LIVING_HURT_ENTITY.get(), hurt)

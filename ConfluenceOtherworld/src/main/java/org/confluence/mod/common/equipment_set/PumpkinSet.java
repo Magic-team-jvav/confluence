@@ -3,7 +3,7 @@ package org.confluence.mod.common.equipment_set;
 import com.xiaohunao.equipment_benediction.common.equipment_set.EquipmentSet;
 import com.xiaohunao.equipment_benediction.common.equipment_set.EquipmentSetBranch;
 import com.xiaohunao.equipment_benediction.common.equipment_set.EquippableGroup;
-import com.xiaohunao.equipment_benediction.common.equippable.VanillaEquippable;
+import com.xiaohunao.equipment_benediction.common.equippable.VanillaWearable;
 import com.xiaohunao.equipment_benediction.common.hook.HookMap;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -19,10 +19,10 @@ public class PumpkinSet extends EquipmentSet {
         ResourceLocation id = Confluence.asResource("pumpkin_set");
         equippableGroup.addEquippableSet("full_set", new EquipmentSetBranch.Builder()
                 .addEquippable(
-                        VanillaEquippable.HEAD, ArmorItems.PUMPKIN_HELMET,
-                        VanillaEquippable.CHEST, ArmorItems.PUMPKIN_CHESTPLATE,
-                        VanillaEquippable.LEGS, ArmorItems.PUMPKIN_LEGGINGS,
-                        VanillaEquippable.FEET, ArmorItems.PUMPKIN_BOOTS
+                        VanillaWearable.HEAD, ArmorItems.PUMPKIN_HELMET,
+                        VanillaWearable.CHEST, ArmorItems.PUMPKIN_CHESTPLATE,
+                        VanillaWearable.LEGS, ArmorItems.PUMPKIN_LEGGINGS,
+                        VanillaWearable.FEET, ArmorItems.PUMPKIN_BOOTS
                 )
                 .bindHook(builder -> builder
                         .addBonus(Attributes.ATTACK_DAMAGE, new AttributeModifier(id, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL))

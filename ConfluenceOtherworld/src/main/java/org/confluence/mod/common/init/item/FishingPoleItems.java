@@ -1,14 +1,7 @@
 package org.confluence.mod.common.init.item;
 
-import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
-import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.FishingRodItem;
 import net.minecraft.world.item.Item;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
@@ -33,22 +26,6 @@ public class FishingPoleItems {
 
     private static DeferredItem<AbstractFishingPole> register(String name, Supplier<AbstractFishingPole> supplier) {
         return ITEMS.register(name, supplier);
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public static void registerCast() {
-        ResourceLocation cast = ResourceLocation.withDefaultNamespace("cast");
-        ClampedItemPropertyFunction function = (itemStack, level, living, speed) -> {
-            if (living == null) {
-                return 0.0F;
-            } else {
-                boolean flag = living.getMainHandItem() == itemStack;
-                boolean flag1 = living.getOffhandItem() == itemStack;
-                if (living.getMainHandItem().getItem() instanceof FishingRodItem) flag1 = false;
-                return (flag || flag1) && living instanceof Player && ((Player) living).fishing != null ? 1.0F : 0.0F;
-            }
-        };
-        ITEMS.getEntries().forEach(pole -> ItemProperties.register(pole.get(), cast, function));
     }
 
     public static void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> tag) {

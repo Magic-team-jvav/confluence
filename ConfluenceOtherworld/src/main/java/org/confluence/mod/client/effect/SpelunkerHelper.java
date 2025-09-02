@@ -24,8 +24,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.registries.DeferredBlock;
@@ -56,7 +54,6 @@ import static org.confluence.terraentity.client.util.ShaderUtil.renderDebugBlock
 /**
  * 实际上是渲染方块边框的类
  */
-@OnlyIn(Dist.CLIENT)
 public class SpelunkerHelper extends AbstractBufferManager {
     /**
      * 调参表

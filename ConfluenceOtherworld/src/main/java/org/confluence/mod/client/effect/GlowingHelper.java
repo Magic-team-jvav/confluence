@@ -4,8 +4,6 @@ import net.minecraft.Util;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.monster.Slime;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import org.confluence.mod.common.entity.projectile.boulder.BoulderEntity;
 
 import java.awt.*;
@@ -14,7 +12,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-@OnlyIn(Dist.CLIENT)
 public class GlowingHelper {
     public static final GlowingHelper INSTANCE = Util.make(new GlowingHelper(), helper -> {
         //狩猎药水实体   表优先于中立生物和敌人

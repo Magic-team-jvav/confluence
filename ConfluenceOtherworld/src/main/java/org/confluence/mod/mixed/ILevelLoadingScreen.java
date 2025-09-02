@@ -3,10 +3,7 @@ package org.confluence.mod.mixed;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.LevelLoadingScreen;
 import net.minecraft.network.chat.Component;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
 public interface ILevelLoadingScreen {
     void confluence$setSecretFlag(long flag);
 

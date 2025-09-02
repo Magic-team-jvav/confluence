@@ -85,7 +85,6 @@ import org.confluence.mod.common.item.vanity_armor.BaseDyeItem;
 import org.confluence.mod.integration.appleskin.AppleskinHelper;
 import org.confluence.mod.integration.create.ponder.PonderHelper;
 import org.confluence.mod.integration.sodium.dynamiclights.SodiumDynamicLightsHelper;
-import org.confluence.mod.integration.waystones.WaystonesHelper;
 import org.confluence.mod.util.ClientUtils;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.client.model.entity.BeeProjectileModel;
@@ -107,8 +106,8 @@ public final class ModClientEvents {
     public static void clientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
             ClientConfigs.onLoad();
-            BowItems.registerProperties();
-            FishingPoleItems.registerCast();
+            ModClientSetups.registerBowProperties();
+            ModClientSetups.registerFishingPoleProperties();
             ArrowInBowHud.initAdaptionMap();
 
             ModClientSetups.registerItemProperties();
@@ -348,7 +347,7 @@ public final class ModClientEvents {
         event.registerBlockEntityRenderer(FunctionalBlocks.BEWITCHING_TABLE_ENTITY.get(), ClientUtils.rendererProvider(BewitchingTableBlockRenderer::new));
         event.registerBlockEntityRenderer(FunctionalBlocks.LOOM_ENTITY.get(), ClientUtils.rendererProvider(LoomBlockRenderer::new));
 
-        WaystonesHelper.registerEntityRenderers(event);
+        ModClientSetups.registerWaystoneRenderers(event);
     }
 
     @SubscribeEvent

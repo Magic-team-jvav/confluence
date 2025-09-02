@@ -12,8 +12,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.util.AchievementUtils;
@@ -27,7 +25,6 @@ import java.util.List;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-@OnlyIn(Dist.CLIENT)
 public class AchievementToast implements Toast {
     public static final Component DISPLAY = Component.translatable("achievements.toast.complete");
     private static final ResourceLocation TEXTURE = Confluence.asResource("textures/achievement/toast.png");

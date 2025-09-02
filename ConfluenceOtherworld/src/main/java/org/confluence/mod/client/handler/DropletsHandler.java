@@ -6,14 +6,11 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.world.level.ChunkPos;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import org.confluence.mod.network.s2c.DropletsSyncPacketS2C;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
-@OnlyIn(Dist.CLIENT)
 public final class DropletsHandler {
     private static @Nullable Map<ChunkPos, Map<BlockPos, ParticleOptions>> droplets = null;
 

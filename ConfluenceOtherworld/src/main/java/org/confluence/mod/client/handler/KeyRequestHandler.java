@@ -2,13 +2,10 @@ package org.confluence.mod.client.handler;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import org.confluence.mod.client.ModKeyBindings;
 import org.confluence.mod.network.c2s.KeyRequestPacketC2S;
 import org.confluence.mod.network.c2s.OpenMenuPacketC2S;
 
-@OnlyIn(Dist.CLIENT)
 public final class KeyRequestHandler {
     private static boolean keyHealingDown = false;
     private static boolean keyManaDown = false;

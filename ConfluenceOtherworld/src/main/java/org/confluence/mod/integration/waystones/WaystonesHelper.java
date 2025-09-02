@@ -1,13 +1,9 @@
 package org.confluence.mod.integration.waystones;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.datafixers.DSL;
 import net.blay09.mods.waystones.api.WaystonesAPI;
 import net.blay09.mods.waystones.requirement.NoRequirement;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
@@ -21,11 +17,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModList;
-import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.conditions.ModLoadedCondition;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
@@ -46,8 +39,6 @@ import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModTabs;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.integration.xaero.PylonWaypointElement;
-import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -133,19 +124,6 @@ public class WaystonesHelper {
             consumer.accept(MUSHROOM_PYLON, "蘑菇晶塔");
             consumer.accept(UNIVERSAL_PYLON, "万能晶塔");
         }
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        if (!IS_LOADED) return;
-        event.registerBlockEntityRenderer(PYLON_ENTITY.get(), context -> new GeoBlockRenderer<>(new PylonModel()) {
-            @Override
-            public void defaultRender(PoseStack poseStack, PylonBlock.BEntity animatable, MultiBufferSource bufferSource, @Nullable RenderType renderType, @Nullable VertexConsumer buffer, float yaw, float partialTick, int packedLight) {
-                if (animatable.isBase) {
-                    super.defaultRender(poseStack, animatable, bufferSource, renderType, buffer, yaw, partialTick, packedLight);
-                }
-            }
-        });
     }
 
     public static void appendValue(ValueSubProvider.Builder builder) {

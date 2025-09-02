@@ -1,7 +1,5 @@
 package org.confluence.mod.common.item.sword;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -9,7 +7,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlotGroup;
@@ -23,10 +20,7 @@ import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.common.ItemAbility;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
@@ -36,7 +30,6 @@ import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.sword.legacy.InventoryTickStrategy;
 import org.confluence.mod.common.item.sword.legacy.SwordPrefabs;
-import org.confluence.mod.network.c2s.SwordShootingPacketC2S;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terraentity.data.component.EffectStrategyComponent;
 import org.confluence.terraentity.init.TEDataComponentTypes;
@@ -293,19 +286,5 @@ public class BaseSwordItem extends SwordItem {
     @FunctionalInterface
     public interface QuaConsumer<A, B, C, D> {
         void accept(A a, B b, C c, D d);
-    }
-
-    // TODO: 这是飞龙、波涌之刃的发剑气方式，还要写泰拉刃的
-    @OnlyIn(Dist.CLIENT)
-    public static void swordProjectileHandle(Minecraft minecraft, LocalPlayer player) {
-        if (minecraft.gameMode == null || minecraft.gameMode.isDestroying() || !minecraft.options.keyAttack.isDown()) {return;}
-
-        ItemStack stack = player.getMainHandItem();
-        SwordProjectileComponent data = stack.get(ModDataComponentTypes.SWORD_PROJECTILE);
-        if (data != null && stack.getItem() instanceof BaseSwordItem sword && !player.getCooldowns().isOnCooldown(sword)) {
-            PacketDistributor.sendToServer(SwordShootingPacketC2S.INSTANCE);
-            player.getCooldowns().addCooldown(sword, data.getAttackSpeed(player));
-            player.swing(InteractionHand.MAIN_HAND);
-        }
     }
 }

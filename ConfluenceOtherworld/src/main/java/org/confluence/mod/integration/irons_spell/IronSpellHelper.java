@@ -7,8 +7,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.fml.ModList;
 import org.confluence.mod.api.event.AdditionalManaEvent;
 import org.confluence.mod.client.handler.CompatibilityHandler;
@@ -45,7 +43,6 @@ public class IronSpellHelper {
         }
     }
 
-    @OnlyIn(Dist.CLIENT)
     public static boolean cancelRenderManaOverlay(ResourceLocation name) {
         return IS_LOADED && CompatibilityHandler.isConvertIronsSpellMana() && MANA_OVERLAY_NAME.equals(name);
     }

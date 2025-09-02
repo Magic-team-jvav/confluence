@@ -1,12 +1,6 @@
 package org.confluence.mod.common.init.item;
 
-import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
-import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.BowItem;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.component.ModRarity;
@@ -128,20 +122,5 @@ public class BowItems {
      */
     public static DeferredItem<TerraBowItem> register(String name, float damage, Function<TerraBowItem.Builder, TerraBowItem.Builder> modifier) {
         return register(name, () -> new TerraBowItem(damage,  modifier.apply(new TerraBowItem.Builder().setUnBreakable())));
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public static void registerProperties() {
-        ResourceLocation pull = ResourceLocation.withDefaultNamespace("pull");
-        ClampedItemPropertyFunction shortBowPull = (itemStack, clientLevel, living, speed) -> living != null && living.getUseItem() == itemStack ? (float) (itemStack.getUseDuration(living) - living.getUseItemRemainingTicks()) / ShortBowItem.MAX_DRAW_DURATION : 0.0F;
-        ClampedItemPropertyFunction bowPull = (itemStack, clientLevel, living, speed) -> living != null && living.getUseItem() == itemStack ? (float) (itemStack.getUseDuration(living) - living.getUseItemRemainingTicks()) / BowItem.MAX_DRAW_DURATION : 0.0F;
-        ResourceLocation pulling = ResourceLocation.withDefaultNamespace("pulling");
-        ClampedItemPropertyFunction bowPulling = (itemStack, clientLevel, living, speed) -> living != null && living.isUsingItem() && living.getUseItem() == itemStack ? 1.0F : 0.0F;
-
-        ITEMS.getEntries().forEach(item -> {
-            if(item.get() instanceof ShortBowItem) ItemProperties.register(item.get(), pull, shortBowPull);
-            else ItemProperties.register(item.get(), pull, bowPull);
-            ItemProperties.register(item.get(), pulling, bowPulling);
-        });
     }
 }

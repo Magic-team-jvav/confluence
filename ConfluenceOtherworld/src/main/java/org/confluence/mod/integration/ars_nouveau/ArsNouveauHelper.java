@@ -7,8 +7,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.common.util.TriState;
 import org.confluence.mod.api.event.AdditionalManaEvent;
@@ -41,7 +39,6 @@ public class ArsNouveauHelper {
         return TriState.DEFAULT;
     }
 
-    @OnlyIn(Dist.CLIENT)
     public static boolean cancelRenderManaBar(ResourceLocation name) {
         return IS_LOADED && CompatibilityHandler.isConvertArsNouveauMana() && MANA_BAR_NAME.equals(name);
     }

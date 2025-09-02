@@ -68,7 +68,6 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.common.item.lance.AbstractLanceItem;
-import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.integration.ars_nouveau.ArsNouveauHelper;
 import org.confluence.mod.integration.irons_spell.IronSpellHelper;
 import org.confluence.mod.integration.xaero.XaeroHelper;
@@ -127,7 +126,7 @@ public final class GameClientEvents {
             DropletsHandler.clear();
             EctoMistHelper.isGraveyard = false;
         } else {
-            BaseSwordItem.swordProjectileHandle(minecraft, player);
+            ClientUtils.swordProjectileHandle(minecraft, player);
             HookThrowingHandler.handle(player);
             KeyRequestHandler.handle();
             XaeroHelper.tick(player);

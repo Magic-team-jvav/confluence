@@ -15,6 +15,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
 import net.minecraft.client.renderer.item.CompassItemPropertyFunction;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.item.ItemPropertyFunction;
@@ -30,6 +31,9 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BowItem;
+import net.minecraft.world.item.FishingRodItem;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockAndTintGetter;
@@ -38,6 +42,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModList;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientBlockExtensions;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
@@ -53,11 +58,18 @@ import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
+import org.confluence.mod.common.init.item.BowItems;
+import org.confluence.mod.common.init.item.FishingPoleItems;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.common.item.accessory.GuideVooDooDollItem;
+import org.confluence.mod.common.item.bow.ShortBowItem;
+import org.confluence.mod.integration.waystones.PylonBlock;
+import org.confluence.mod.integration.waystones.PylonModel;
+import org.confluence.mod.integration.waystones.WaystonesHelper;
 import org.confluence.terra_curio.common.item.IFunctionCouldEnable;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
+import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.function.Consumer;
@@ -303,5 +315,46 @@ public final class ModClientSetups {
                 .setTexturingState(GLINT_TEXTURING)
                 .createCompositeState(false)
         );
+    }
+
+    public static void registerBowProperties() {
+        ResourceLocation pull = ResourceLocation.withDefaultNamespace("pull");
+        ClampedItemPropertyFunction shortBowPull = (itemStack, clientLevel, living, speed) -> living != null && living.getUseItem() == itemStack ? (float) (itemStack.getUseDuration(living) - living.getUseItemRemainingTicks()) / ShortBowItem.MAX_DRAW_DURATION : 0.0F;
+        ClampedItemPropertyFunction bowPull = (itemStack, clientLevel, living, speed) -> living != null && living.getUseItem() == itemStack ? (float) (itemStack.getUseDuration(living) - living.getUseItemRemainingTicks()) / BowItem.MAX_DRAW_DURATION : 0.0F;
+        ResourceLocation pulling = ResourceLocation.withDefaultNamespace("pulling");
+        ClampedItemPropertyFunction bowPulling = (itemStack, clientLevel, living, speed) -> living != null && living.isUsingItem() && living.getUseItem() == itemStack ? 1.0F : 0.0F;
+
+        BowItems.ITEMS.getEntries().forEach(item -> {
+            if (item.get() instanceof ShortBowItem) ItemProperties.register(item.get(), pull, shortBowPull);
+            else ItemProperties.register(item.get(), pull, bowPull);
+            ItemProperties.register(item.get(), pulling, bowPulling);
+        });
+    }
+
+    public static void registerFishingPoleProperties() {
+        ResourceLocation cast = ResourceLocation.withDefaultNamespace("cast");
+        ClampedItemPropertyFunction function = (itemStack, level, living, speed) -> {
+            if (living == null) {
+                return 0.0F;
+            } else {
+                boolean flag = living.getMainHandItem() == itemStack;
+                boolean flag1 = living.getOffhandItem() == itemStack;
+                if (living.getMainHandItem().getItem() instanceof FishingRodItem) flag1 = false;
+                return (flag || flag1) && living instanceof Player && ((Player) living).fishing != null ? 1.0F : 0.0F;
+            }
+        };
+        FishingPoleItems.ITEMS.getEntries().forEach(pole -> ItemProperties.register(pole.get(), cast, function));
+    }
+
+    public static void registerWaystoneRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        if (!WaystonesHelper.IS_LOADED) return;
+        event.registerBlockEntityRenderer(WaystonesHelper.PYLON_ENTITY.get(), context -> new GeoBlockRenderer<>(new PylonModel()) {
+            @Override
+            public void defaultRender(PoseStack poseStack, PylonBlock.BEntity animatable, MultiBufferSource bufferSource, @Nullable RenderType renderType, @Nullable VertexConsumer buffer, float yaw, float partialTick, int packedLight) {
+                if (animatable.isBase) {
+                    super.defaultRender(poseStack, animatable, bufferSource, renderType, buffer, yaw, partialTick, packedLight);
+                }
+            }
+        });
     }
 }

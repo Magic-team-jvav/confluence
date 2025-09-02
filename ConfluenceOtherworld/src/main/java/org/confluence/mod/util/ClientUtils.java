@@ -13,15 +13,22 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.model.AgeableHierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.PostChain;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.texture.DynamicTexture;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -29,21 +36,28 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.client.AntiPushPoseStack;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.mod.common.attachment.ExtraInventory;
+import org.confluence.mod.common.component.SwordProjectileComponent;
 import org.confluence.mod.common.entity.DeadBodyPartEntity;
+import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.init.ModSecretSeeds;
+import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.item.VanityArmorItems;
+import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.common.item.vanity_armor.BaseDyeItem;
+import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
 import org.confluence.mod.integration.geckolib.IGeoCube;
 import org.confluence.mod.mixed.IEntity;
 import org.confluence.mod.mixed.ILivingEntityRenderer;
 import org.confluence.mod.mixin.client.accessor.AgeableListModelAccessor;
+import org.confluence.mod.network.c2s.SwordShootingPacketC2S;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
@@ -60,7 +74,6 @@ import java.io.InputStream;
 import java.util.*;
 import java.util.function.Supplier;
 
-@OnlyIn(Dist.CLIENT)
 public final class ClientUtils {
     public static final String GRAY_SUFFIX = ".gray";
     public static final String NEGATIVE_SUFFIX = ".negative";
@@ -449,5 +462,45 @@ public final class ClientUtils {
         pose.scale(0.5F, 0.5F, 0.5F);
         guiGraphics.renderItem(bait, 0, 0);
         pose.popPose();
+    }
+
+    // TODO: 这是飞龙、波涌之刃的发剑气方式，还要写泰拉刃的
+    public static void swordProjectileHandle(Minecraft minecraft, LocalPlayer player) {
+        if (minecraft.gameMode == null || minecraft.gameMode.isDestroying() || !minecraft.options.keyAttack.isDown()) {return;}
+
+        ItemStack stack = player.getMainHandItem();
+        SwordProjectileComponent data = stack.get(ModDataComponentTypes.SWORD_PROJECTILE);
+        if (data != null && stack.getItem() instanceof BaseSwordItem sword && !player.getCooldowns().isOnCooldown(sword)) {
+            PacketDistributor.sendToServer(SwordShootingPacketC2S.INSTANCE);
+            player.getCooldowns().addCooldown(sword, data.getAttackSpeed(player));
+            player.swing(InteractionHand.MAIN_HAND);
+        }
+    }
+
+    public static void renderBoulderSun(Minecraft minecraft) {
+        if (ModSecretSeeds.BOULDER_WORLD.match()) {
+            MultiBufferSource bufferSource = minecraft.renderBuffers().bufferSource();
+            BlockState blockState = FunctionalBlocks.NORMAL_BOULDER.get().defaultBlockState();
+            PoseStack poseStack = new PoseStack();
+            poseStack.mulPose(Axis.ZP.rotation(minecraft.level.getTimeOfDay(0) * Mth.TWO_PI));
+            poseStack.translate(-5, 100, -5);
+            poseStack.scale(10, 10, 10);
+            minecraft.getBlockRenderer().renderSingleBlock(blockState, poseStack, bufferSource, 0xF000F0, OverlayTexture.NO_OVERLAY);
+        }
+    }
+
+    public static void postTheConstantEffect(boolean post) {
+        GameRenderer gameRenderer = Minecraft.getInstance().gameRenderer;
+        PostChain postChain = gameRenderer.currentEffect();
+        if (post) {
+            if (postChain == null || !TheConstant.POST_EFFECT.toString().equals(postChain.getName())) {
+                gameRenderer.loadEffect(TheConstant.POST_EFFECT);
+            }
+            gameRenderer.effectActive = true;
+        } else {
+            if (postChain != null && TheConstant.POST_EFFECT.toString().equals(postChain.getName())) {
+                gameRenderer.effectActive = false;
+            }
+        }
     }
 }

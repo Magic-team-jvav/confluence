@@ -23,7 +23,7 @@ import org.confluence.terraentity.init.entity.TEAnimals;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BlockBreakSpawnsSubProvider {
+public final class BlockBreakSpawnsSubProvider {
     public static void gather(ModDataMapProvider.Appender<Builder> appender, HolderLookup.Provider provider) {
         HolderLookup.RegistryLookup<Biome> biome = provider.lookupOrThrow(Registries.BIOME);
         HolderSet<Biome> jungleLike = new OrHolderSet<>(biome.getOrThrow(Tags.Biomes.IS_JUNGLE), biome.getOrThrow(Tags.Biomes.IS_LUSH));

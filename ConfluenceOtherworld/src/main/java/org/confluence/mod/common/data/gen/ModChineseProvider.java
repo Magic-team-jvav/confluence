@@ -1039,6 +1039,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("container.confluence.mythril_anvil", "秘银砧");
         add("container.confluence.orichalcum_anvil", "山铜砧");
         add("container.confluence.loom", "织布机");
+        add("container.confluence.dye_vat", "染缸");
+        add("container.confluence.dye_mix", "混色");
 
         add("title.confluence.shimmer_transmutation", "微光嬗变");
         add("title.confluence.altar", "祭坛");
@@ -1058,6 +1060,10 @@ public class ModChineseProvider extends LanguageProvider {
         add("title.confluence.mythril_anvil", "秘银砧");
         add("title.confluence.orichalcum_anvil", "山铜砧");
         add("title.confluence.loom", "织布机");
+        add("title.confluence.dye_vat", "染缸");
+
+        add("button.confluence.dye_vat", "染缸");
+        add("button.confluence.dye_mix", "混色");
 
         // 覆盖
         add("item.confluence.encumbering_stone.disable", "负重石：关闭");

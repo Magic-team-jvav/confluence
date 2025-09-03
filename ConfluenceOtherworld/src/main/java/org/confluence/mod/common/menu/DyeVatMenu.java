@@ -9,6 +9,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.ResultContainer;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import org.confluence.lib.common.menu.AmountResultSlot;
@@ -72,7 +73,46 @@ public class DyeVatMenu extends AbstractContainerMenu {
 
     @Override
     public ItemStack quickMoveStack(Player player, int index) {
-        return ItemStack.EMPTY; // todo
+        ItemStack itemstack = ItemStack.EMPTY;
+        Slot slot = slots.get(index);
+        if (slot.hasItem()) {
+            ItemStack itemstack1 = slot.getItem();
+            Item item = itemstack1.getItem();
+            itemstack = itemstack1.copy();
+            if (index == 0) {
+                item.onCraftedBy(itemstack1, player.level(), player);
+                if (!moveItemStackTo(itemstack1, 5, 41, true)) {
+                    return ItemStack.EMPTY;
+                }
+                slot.onQuickCraft(itemstack1, itemstack);
+            } else if (index < 5) {
+                if (!moveItemStackTo(itemstack1, 5, 41, false)) {
+                    return ItemStack.EMPTY;
+                }
+            } else if (!moveItemStackTo(itemstack1, 1, 5, false)) {
+                if (index < 32) {
+                    if (!moveItemStackTo(itemstack1, 32, 41, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else if (index < 41 && !moveItemStackTo(itemstack1, 5, 32, false)) {
+                    return ItemStack.EMPTY;
+                }
+            }
+
+            if (itemstack1.isEmpty()) {
+                slot.setByPlayer(ItemStack.EMPTY);
+            }
+
+            slot.setChanged();
+            if (itemstack1.getCount() == itemstack.getCount()) {
+                return ItemStack.EMPTY;
+            }
+
+            slot.onTake(player, itemstack1);
+            broadcastChanges();
+        }
+
+        return itemstack;
     }
 
     @Override

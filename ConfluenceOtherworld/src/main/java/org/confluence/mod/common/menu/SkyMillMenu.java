@@ -185,10 +185,8 @@ public class SkyMillMenu extends AbstractContainerMenu {
                 if (!moveItemStackTo(itemstack1, INV_SLOT_START, USE_ROW_SLOT_END, false)) {
                     return ItemStack.EMPTY;
                 }
-            } else {
-                if (!moveItemStackTo(itemstack1, 1, 4, false)) {
-                    return ItemStack.EMPTY;
-                } else if (index < INV_SLOT_END) {
+            } else if (!moveItemStackTo(itemstack1, 1, 4, false)) {
+                if (index < INV_SLOT_END) {
                     if (!moveItemStackTo(itemstack1, USE_ROW_SLOT_START, USE_ROW_SLOT_END, false)) {
                         return ItemStack.EMPTY;
                     }

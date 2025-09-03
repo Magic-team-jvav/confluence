@@ -72,6 +72,7 @@ public final class ModJeiPlugin implements IModPlugin {
         registration.addRecipeCategories(new ExtractinatorCategory(jeiHelpers, ExtractinatorCategory.CHLOROPHYTE_EXTRACTINATOR, FunctionalBlocks.CHLOROPHYTE_EXTRACTINATOR.get()));
         registration.addRecipeCategories(new HardmodeForgeCategory(jeiHelpers));
         registration.addRecipeCategories(new LoomCategory(jeiHelpers));
+        registration.addRecipeCategories(new DyeVatCategory(jeiHelpers));
     }
 
     @Override
@@ -96,6 +97,7 @@ public final class ModJeiPlugin implements IModPlugin {
         registration.addRecipes(ExtractinatorCategory.CHLOROPHYTE_EXTRACTINATOR, ExtractinatorCategory.collectAll(ModDataMaps.CHLOROPHYTE_EXTRACTINATOR, level.registryAccess()));
         registration.addRecipes(HardmodeForgeCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.HARDMODE_FORGE_TYPE.get()));
         registration.addRecipes(LoomCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.LOOM_TYPE.get()));
+        registration.addRecipes(DyeVatCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.DYE_VAT_TYPE.get()));
     }
 
     @Override
@@ -122,6 +124,7 @@ public final class ModJeiPlugin implements IModPlugin {
         registration.addRecipeCatalyst(FunctionalBlocks.ADAMANTITE_FORGE.toStack(), HardmodeForgeCategory.TYPE, HellforgeCategory.TYPE, RecipeTypes.BLASTING);
         registration.addRecipeCatalyst(FunctionalBlocks.TITANIUM_FORGE.toStack(), HardmodeForgeCategory.TYPE, HellforgeCategory.TYPE, RecipeTypes.BLASTING);
         registration.addRecipeCatalyst(FunctionalBlocks.LOOM.toStack(), LoomCategory.TYPE);
+        registration.addRecipeCatalyst(FunctionalBlocks.DYE_VAT.toStack(), DyeVatCategory.TYPE);
     }
 
     @Override
@@ -139,6 +142,7 @@ public final class ModJeiPlugin implements IModPlugin {
         registration.addRecipeClickArea(HardmodeAnvilScreen.class, 78, 36, 46, 15, HardmodeAnvilCategory.TYPE);
         registration.addRecipeClickArea(HardmodeForgeScreen.class, 89, 31, 28, 23, HardmodeForgeCategory.TYPE);
         registration.addRecipeClickArea(LoomScreen.class, 95, 32, 28, 23, LoomCategory.TYPE);
+        registration.addRecipeClickArea(DyeVatScreen.class, 87, 36, 22, 15, DyeVatCategory.TYPE);
 
         registration.addGlobalGuiHandler(new ExtraInventoryHandler());
     }

@@ -13,27 +13,33 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.common.recipe.AltarRecipe;
+import org.confluence.mod.common.recipe.DyeVatRecipe;
+import org.jetbrains.annotations.Nullable;
 
 import static org.confluence.mod.integration.jei.ModJeiPlugin.addInput;
 
-public class AltarCategory implements IRecipeCategory<RecipeHolder<AltarRecipe>> {
-    public static final RecipeType<RecipeHolder<AltarRecipe>> TYPE = RecipeType.createRecipeHolderType(Confluence.asResource("altar"));
-    private static final Component TITLE = Component.translatable("title.confluence.altar");
+public class DyeVatCategory implements IRecipeCategory<RecipeHolder<DyeVatRecipe>> {
+    public static final RecipeType<RecipeHolder<DyeVatRecipe>> TYPE = RecipeType.createRecipeHolderType(Confluence.asResource("dye_vat"));
+    private static final Component TITLE = Component.translatable("title.confluence.dye_vat");
     private final IDrawable icon;
 
-    public AltarCategory(IJeiHelpers jeiHelpers) {
-        this.icon = jeiHelpers.getGuiHelper().createDrawableItemStack(FunctionalBlocks.DEMON_ALTAR.toStack());
+    public DyeVatCategory(IJeiHelpers jeiHelpers) {
+        this.icon = jeiHelpers.getGuiHelper().createDrawableItemStack(FunctionalBlocks.DYE_VAT.toStack());
     }
 
     @Override
-    public RecipeType<RecipeHolder<AltarRecipe>> getRecipeType() {
+    public RecipeType<RecipeHolder<DyeVatRecipe>> getRecipeType() {
         return TYPE;
     }
 
     @Override
     public Component getTitle() {
         return TITLE;
+    }
+
+    @Override
+    public @Nullable IDrawable getIcon() {
+        return icon;
     }
 
     @Override
@@ -47,12 +53,7 @@ public class AltarCategory implements IRecipeCategory<RecipeHolder<AltarRecipe>>
     }
 
     @Override
-    public IDrawable getIcon() {
-        return icon;
-    }
-
-    @Override
-    public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<AltarRecipe> recipe, IFocusGroup focusGroup) {
+    public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<DyeVatRecipe> recipe, IFocusGroup focuses) {
         NonNullList<Ingredient> ingredients = recipe.value().getIngredients();
         int size = ingredients.size();
         if (size == 1) {
@@ -74,7 +75,7 @@ public class AltarCategory implements IRecipeCategory<RecipeHolder<AltarRecipe>>
     }
 
     @Override
-    public void createRecipeExtras(IRecipeExtrasBuilder builder, RecipeHolder<AltarRecipe> recipe, IFocusGroup focuses) {
+    public void createRecipeExtras(IRecipeExtrasBuilder builder, RecipeHolder<DyeVatRecipe> recipe, IFocusGroup focuses) {
         IRecipeCategory.super.createRecipeExtras(builder, recipe, focuses);
         builder.addRecipeArrow().setPosition(50 + 5, 6 + 2);
     }

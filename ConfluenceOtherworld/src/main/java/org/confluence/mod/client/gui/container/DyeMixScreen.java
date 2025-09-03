@@ -14,6 +14,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.item.VanityArmorItems;
 import org.confluence.mod.common.item.common.BaseDyeItem;
 import org.confluence.mod.common.menu.DyeMixMenu;
+import org.confluence.mod.network.c2s.DyeMixPacketC2S;
 import org.confluence.mod.network.c2s.OpenMenuPacketC2S;
 
 public class DyeMixScreen extends AbstractContainerScreen<DyeMixMenu> {
@@ -51,7 +52,7 @@ public class DyeMixScreen extends AbstractContainerScreen<DyeMixMenu> {
                 return false;
             }
         });
-        editBox.setResponder(value -> BaseDyeItem.setRGB(this.dye = VanityArmorItems.DYE.toStack(1), rgb));
+        editBox.setResponder(value -> BaseDyeItem.setRGB(this.dye = VanityArmorItems.DYE.toStack(), rgb));
     }
 
     @Override
@@ -59,7 +60,17 @@ public class DyeMixScreen extends AbstractContainerScreen<DyeMixMenu> {
         super.render(guiGraphics, mouseX, mouseY, partialTick);
         renderTooltip(guiGraphics, mouseX, mouseY);
         if (!dye.isEmpty()) {
-            guiGraphics.renderFakeItem(dye, leftPos + 125, topPos + 35);
+            int x = leftPos + 125;
+            int y = topPos + 35;
+            guiGraphics.renderFakeItem(dye, x, y);
+            int count = Math.min(
+                    Math.min(
+                            menu.getSlot(0).getItem().getCount(),
+                            menu.getSlot(1).getItem().getCount()
+                    ),
+                    menu.getSlot(2).getItem().getCount()
+            );
+            guiGraphics.renderItemDecorations(minecraft.font, dye, x, y, Integer.toString(count));
         }
     }
 
@@ -81,6 +92,12 @@ public class DyeMixScreen extends AbstractContainerScreen<DyeMixMenu> {
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (!editBox.isHovered()) {
             editBox.setFocused(false);
+        }
+        if (mouseX > leftPos + 125 && mouseX < leftPos + 141 && mouseY > topPos + 35 && mouseY < topPos + 51) {
+            ItemStack carried = menu.getCarried();
+            if (!dye.isEmpty() && (carried.isEmpty() || (ItemStack.isSameItemSameComponents(carried, dye) && carried.getCount() < carried.getMaxStackSize()))) {
+                DyeMixPacketC2S.sendToServer(dye);
+            }
         }
         return super.mouseClicked(mouseX, mouseY, button);
     }

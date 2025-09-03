@@ -13,7 +13,7 @@ import org.confluence.mod.common.init.item.VanityArmorItems;
 
 public class DyeMixMenu extends AbstractContainerMenu {
     private final ContainerLevelAccess access;
-    private final SimpleContainer container;
+    public final SimpleContainer container;
 
     public DyeMixMenu(int containerId, Inventory inventory) {
         this(containerId, inventory, ContainerLevelAccess.NULL);
@@ -55,7 +55,40 @@ public class DyeMixMenu extends AbstractContainerMenu {
 
     @Override
     public ItemStack quickMoveStack(Player player, int index) {
-        return ItemStack.EMPTY; // todo
+        ItemStack itemstack = ItemStack.EMPTY;
+        Slot slot = slots.get(index);
+        if (slot.hasItem()) {
+            ItemStack itemstack1 = slot.getItem();
+            itemstack = itemstack1.copy();
+            if (index > 2) {
+                if (!moveItemStackTo(itemstack1, 0, 3, false)) {
+                    if (index < 30) {
+                        if (!moveItemStackTo(itemstack1, 30, 39, false)) {
+                            return ItemStack.EMPTY;
+                        }
+                    } else if (index < 39 && !moveItemStackTo(itemstack1, 3, 30, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                    return ItemStack.EMPTY;
+                }
+            } else if (!moveItemStackTo(itemstack1, 2, 39, false)) {
+                return ItemStack.EMPTY;
+            }
+
+            if (itemstack1.isEmpty()) {
+                slot.setByPlayer(ItemStack.EMPTY);
+            } else {
+                slot.setChanged();
+            }
+
+            if (itemstack1.getCount() == itemstack.getCount()) {
+                return ItemStack.EMPTY;
+            }
+
+            slot.onTake(player, itemstack1);
+        }
+
+        return itemstack;
     }
 
     @Override

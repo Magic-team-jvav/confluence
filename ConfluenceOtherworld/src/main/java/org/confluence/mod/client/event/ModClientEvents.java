@@ -214,7 +214,10 @@ public final class ModClientEvents {
         event.registerLayerDefinition(BaseHookModel.LAYER_LOCATION, BaseHookModel::createBodyLayer);
         event.registerLayerDefinition(WebSlingerModel.LAYER_LOCATION, WebSlingerModel::createBodyLayer);
         event.registerLayerDefinition(SkeletronHandModel.LAYER_LOCATION, SkeletronHandModel::createBodyLayer);
+
         /* todo 静止钩 */
+
+        event.registerLayerDefinition(FlailModel.LAYER_LOCATION, FlailModel::createBodyLayer);
 
         event.registerLayerDefinition(WeatherVaneBlockModel.LAYER_LOCATION, WeatherVaneBlockModel::createBodyLayer);
     }
@@ -320,6 +323,9 @@ public final class ModClientEvents {
         event.registerEntityRenderer(CHRISTMAS_HOOK.get(), ChristmasHookRenderer::new);
         event.registerEntityRenderer(LUNAR_HOOK.get(), LunarHookRenderer::new);
         /* todo 静止钩 */
+
+        event.registerEntityRenderer(FLAIL_BALL.get(), FlailRenderer::new);
+
 
         EntityRendererProvider<BaseMinecartEntity> provider = context -> new MinecartRenderer<>(context, ModelLayers.MINECART);
         event.registerEntityRenderer(WOODEN_MINECART.get(), provider); // todo 模型

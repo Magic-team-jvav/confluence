@@ -139,6 +139,7 @@ public final class ModItems {
         ConsumableItems.ITEMS.register(eventBus);
         DrillItems.ITEMS.register(eventBus);
         FishingPoleItems.ITEMS.register(eventBus);
+        FlailItems.ITEMS.register(eventBus);
         FoodItems.ITEMS.register(eventBus);
         HamaxeItems.ITEMS.register(eventBus);
         HoeShovelItems.ITEMS.register(eventBus);

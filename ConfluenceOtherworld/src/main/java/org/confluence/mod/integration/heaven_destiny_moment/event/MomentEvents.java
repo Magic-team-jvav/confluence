@@ -15,7 +15,6 @@ import com.xiaohunao.heaven_destiny_moment.compat.phase_journey.condition.PhaseJ
 import com.xiaohunao.terra_moment.TerraMoment;
 import com.xiaohunao.terra_moment.common.init.TMMomentTypes;
 import com.xiaohunao.terra_moment.common.init.TMMoments;
-import com.xiaohunao.xhn_lib.api.register.PostRegisterResult;
 import com.xiaohunao.xhn_lib.common.event.FlexibleRegisterEvent;
 import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.core.Registry;
@@ -28,8 +27,8 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.integration.heaven_destiny_moment.init.ModMomentProbabilityFunction;
 import org.confluence.mod.integration.heaven_destiny_moment.context.condition.EverBeneficialCondition;
+import org.confluence.mod.integration.heaven_destiny_moment.init.ModMomentProbabilityFunction;
 
 import java.util.List;
 
@@ -134,8 +133,8 @@ public class MomentEvents {
         Level level = event.getLevel();
         MomentInstanceManager momentInstanceManager = MomentInstanceManager.of(level);
         Registry<IMoment> moment = HDMRegistries.MOMENT;
-        System.out.println(moment);
-        System.out.println(momentInstanceManager);
+//        System.out.println(moment);
+//        System.out.println(momentInstanceManager);
     }
 
 }

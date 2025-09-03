@@ -126,7 +126,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         customModels.add(createDir(QuestedFishes.ITEMS, "quested_fish/"));
         customModels.add(createDir(ToolItems.ITEMS, "tool/"));
         customModels.add(createDir(TreasureBagItems.ITEMS, "treasure_bag/"));
-        customModels.add(createDir(VanityArmorItems.ITEMS, "vanity_armor/"));
+        customModels.add(createDir(VanityArmorItems.ITEMS, "vanity_armor_item/"));
 
         genModels(customModels, "item/generated");
 

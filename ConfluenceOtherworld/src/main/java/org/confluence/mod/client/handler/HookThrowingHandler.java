@@ -10,8 +10,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.client.ModKeyBindings;
@@ -26,7 +24,6 @@ import java.util.Iterator;
 
 import static org.confluence.terra_curio.network.c2s.PlayerJumpPacketC2S.RESET_FALL_DISTANCE;
 
-@OnlyIn(Dist.CLIENT)
 public final class HookThrowingHandler {
     public static void handle(LocalPlayer player) {
         if (Minecraft.getInstance().isPaused()) return;

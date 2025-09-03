@@ -5,8 +5,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
 import org.confluence.mod.client.event.ModClientSetups;
 import org.confluence.mod.network.c2s.OpenMenuPacketC2S;
@@ -15,7 +13,6 @@ import org.confluence.mod.network.c2s.OpenMenuPacketC2S;
 /**
  * 联动车万女仆
  */
-@OnlyIn(Dist.CLIENT)
 public class ExtraButton {
     @SubscribeEvent
     public void addButton(MaidContainerGuiEvent.Init event) {

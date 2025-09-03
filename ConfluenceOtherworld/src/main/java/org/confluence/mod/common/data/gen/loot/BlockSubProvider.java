@@ -141,6 +141,7 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(PIGGY_BANK.get());
         dropSelf(LIFE_CAMPFIRE.get());
         dropSelf(LOOM.get());
+        dropSelf(DYE_VAT.get());
         dropSelf(SAFE.get());
         dropSelf(ANNOUNCEMENT_BOX.get());
         dropSelf(KEG.get());

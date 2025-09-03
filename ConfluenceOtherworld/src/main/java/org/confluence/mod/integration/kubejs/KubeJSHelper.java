@@ -1,8 +1,5 @@
 package org.confluence.mod.integration.kubejs;
 
-import net.minecraft.client.gui.GuiGraphics;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.fml.ModList;
 
 import java.lang.reflect.Field;
@@ -12,8 +9,7 @@ public class KubeJSHelper {
     private static boolean error = false;
     private static Field kjs$itemSize;
 
-    @OnlyIn(Dist.CLIENT)
-    public static boolean shouldDrawStackSize(GuiGraphics graphics) {
+    public static boolean shouldDrawStackSize(Object graphics) {
         if (IS_LOADED && !error) {
             try {
                 if (kjs$itemSize == null) {

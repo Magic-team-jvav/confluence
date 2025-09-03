@@ -1039,6 +1039,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("container.confluence.mythril_anvil", "秘银砧");
         add("container.confluence.orichalcum_anvil", "山铜砧");
         add("container.confluence.loom", "织布机");
+        add("container.confluence.dye_vat", "染缸");
+        add("container.confluence.dye_mix", "混色");
 
         add("title.confluence.shimmer_transmutation", "微光嬗变");
         add("title.confluence.altar", "祭坛");
@@ -1058,6 +1060,10 @@ public class ModChineseProvider extends LanguageProvider {
         add("title.confluence.mythril_anvil", "秘银砧");
         add("title.confluence.orichalcum_anvil", "山铜砧");
         add("title.confluence.loom", "织布机");
+        add("title.confluence.dye_vat", "染缸");
+
+        add("button.confluence.dye_vat", "染缸");
+        add("button.confluence.dye_mix", "混色");
 
         // 覆盖
         add("item.confluence.encumbering_stone.disable", "负重石：关闭");
@@ -3390,6 +3396,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.LEVER.get(), "控制杆");
         add(FunctionalBlocks.WOODEN_SPIKE.get(), "木尖刺");
         add(FunctionalBlocks.LOOM.get(), "织布机");
+        add(FunctionalBlocks.DYE_VAT.get(), "染缸");
         add(ModBlocks.AETHERIUM_CAULDRON.get(), "微光炼药锅");
         add(ModBlocks.HONEY_CAULDRON.get(), "蜂蜜炼药锅");
 
@@ -4170,6 +4177,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(VanityArmorItems.THE_DOCTORS_SHOES.get(), "博士鞋");
         add(VanityArmorItems.GOLD_CROWN.get(), "金冠");
         add(VanityArmorItems.PLATINUM_CROWN.get(), "铂金冠");
+        add(VanityArmorItems.DYE.get(), "染料");
         add(VanityArmorItems.RED_DYE.get(), "红染料");
         add(VanityArmorItems.BRIGHT_RED_DYE.get(), "淡红染料");
         add(VanityArmorItems.ORANGE_DYE.get(), "橙染料");

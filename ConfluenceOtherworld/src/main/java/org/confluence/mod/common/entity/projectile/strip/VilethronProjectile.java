@@ -6,8 +6,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEntities;
 
@@ -34,7 +32,6 @@ public class VilethronProjectile extends StripedProjectile {
         return new VilethronProjectile(shooter, position());
     }
 
-    @OnlyIn(Dist.CLIENT)
     public int getAlpha() {
         return Mth.clamp(255 - tickCount * 255 / ticksForBodyRemove, 0, 255);
     }

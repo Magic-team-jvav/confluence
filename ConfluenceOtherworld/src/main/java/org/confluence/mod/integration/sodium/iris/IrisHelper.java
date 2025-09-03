@@ -18,8 +18,10 @@ public class IrisHelper {
         // todo 继续补充
         injectBlockProperties(10272, blockEntriesById, list -> {
             list.add(blockEntry(OreBlocks.CORRUPTION_IRON_ORE.getId()));
-            list.add(blockEntry(OreBlocks.FLESHIFICATION_IRON_ORE.getId()));
             list.add(blockEntry(OreBlocks.SANCTIFICATION_IRON_ORE.getId()));
+        });
+        injectBlockProperties(10368, blockEntriesById, list -> {
+            list.add(blockEntry(OreBlocks.FLESHIFICATION_IRON_ORE.getId()));
         });
     }
 

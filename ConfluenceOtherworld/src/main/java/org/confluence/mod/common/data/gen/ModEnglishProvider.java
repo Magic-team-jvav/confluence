@@ -970,6 +970,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("container.confluence.mythril_anvil", "Mythril Anvil");
         add("container.confluence.orichalcum_anvil", "Orichalcum Anvil");
         add("container.confluence.loom", "Loom");
+        add("container.confluence.dye_vat", "Dye Vat");
+        add("container.confluence.dye_mix", "Dye Mix");
 
         add("title.confluence.shimmer_transmutation", "Shimmer Transmutation");
         add("title.confluence.altar", "Altar");
@@ -989,6 +991,10 @@ public class ModEnglishProvider extends LanguageProvider {
         add("title.confluence.mythril_anvil", "Mythril Anvil");
         add("title.confluence.orichalcum_anvil", "Orichalcum Anvil");
         add("title.confluence.loom", "Loom");
+        add("title.confluence.dye_vat", "Dye Vat");
+
+        add("button.confluence.dye_vat", "Dye Vat");
+        add("button.confluence.dye_mix", "Dye Mix");
 
         // Override
         add("item.confluence.encumbering_stone.disable", "Encumbering Stone: Disable");

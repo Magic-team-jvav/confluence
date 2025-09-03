@@ -1,8 +1,6 @@
 package org.confluence.mod.client.connected;
 
 import net.minecraft.world.level.block.Block;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import org.confluence.mod.client.connected.behaviour.ConnectedTextureBehaviour;
 import org.confluence.mod.client.connected.behaviour.EncasedCTBehaviour;
 import org.confluence.mod.client.connected.behaviour.SimpleCTBehaviour;
@@ -16,7 +14,6 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
-@OnlyIn(Dist.CLIENT)
 public final class ModConnectives {
     public static final ModelSwapper MODEL_SWAPPER = new ModelSwapper();
     public static final CasingConnectivity CASING_CONNECTIVITY = new CasingConnectivity();

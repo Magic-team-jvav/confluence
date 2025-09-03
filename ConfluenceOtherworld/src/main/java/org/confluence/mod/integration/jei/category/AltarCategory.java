@@ -5,7 +5,6 @@ import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
 import mezz.jei.api.helpers.IJeiHelpers;
 import mezz.jei.api.recipe.IFocusGroup;
-import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.core.NonNullList;
@@ -54,7 +53,6 @@ public class AltarCategory implements IRecipeCategory<RecipeHolder<AltarRecipe>>
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<AltarRecipe> recipe, IFocusGroup focusGroup) {
-        // input
         NonNullList<Ingredient> ingredients = recipe.value().getIngredients();
         int size = ingredients.size();
         if (size == 1) {
@@ -72,8 +70,7 @@ public class AltarCategory implements IRecipeCategory<RecipeHolder<AltarRecipe>>
             addInput(builder, 33, -1, ingredients.get(2), true);
             addInput(builder, 33, 17, ingredients.get(3), true);
         }
-        // output
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 88, 8).addItemStack(recipe.value().getResultItem(null)).setOutputSlotBackground();
+        builder.addOutputSlot(88, 8).addItemStack(recipe.value().getResultItem(null)).setOutputSlotBackground();
     }
 
     @Override

@@ -21,7 +21,7 @@ public class PaintRollerItem extends Item {
             ServerLevel serverLevel = serverPlayer.serverLevel();
             BlockPos clickedPos = pContext.getClickedPos();
             Direction clickedFace = pContext.getClickedFace();
-            int color = PaintItem.getColor(pContext.getPlayer());
+            int color = PaintItem.useAndGetRGB(pContext.getPlayer());
             if (color != BrushData.EMPTY_COLOR) {
                 BrushingColorPacketS2C.sendToPlayersTrackingChunk(serverLevel, clickedPos, clickedFace, color, true);
             }

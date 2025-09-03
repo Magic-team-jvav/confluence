@@ -29,8 +29,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.registries.datamaps.DataMapType;
 import org.confluence.mod.Confluence;
@@ -165,7 +163,6 @@ public class ExtractinatorCategory implements IRecipeCategory<ExtractinatorCateg
 
     public record IngredientPair(ItemStack ingredient, ExtractinatorData data) {}
 
-    @OnlyIn(Dist.CLIENT)
     public static class DataItemStack extends ItemStack {
         public final int min;
         public final int max;

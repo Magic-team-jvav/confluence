@@ -18,7 +18,6 @@ import net.minecraft.core.DefaultedMappedRegistry;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FastColor;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.FoliageColor;
@@ -80,12 +79,11 @@ import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.common.item.common.BaseDyeItem;
 import org.confluence.mod.common.item.paint.PaintItem;
-import org.confluence.mod.common.item.vanity_armor.BaseDyeItem;
 import org.confluence.mod.integration.appleskin.AppleskinHelper;
 import org.confluence.mod.integration.create.ponder.PonderHelper;
 import org.confluence.mod.integration.sodium.dynamiclights.SodiumDynamicLightsHelper;
-import org.confluence.mod.integration.waystones.WaystonesHelper;
 import org.confluence.mod.util.ClientUtils;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.client.model.entity.BeeProjectileModel;
@@ -107,8 +105,8 @@ public final class ModClientEvents {
     public static void clientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
             ClientConfigs.onLoad();
-            BowItems.registerProperties();
-            FishingPoleItems.registerCast();
+            ModClientSetups.registerBowProperties();
+            ModClientSetups.registerFishingPoleProperties();
             ArrowInBowHud.initAdaptionMap();
 
             ModClientSetups.registerItemProperties();
@@ -142,6 +140,8 @@ public final class ModClientEvents {
         event.register(ModMenuTypes.HARDMODE_ANVIL.get(), HardmodeAnvilScreen::new);
         event.register(ModMenuTypes.HARDMODE_FORGE.get(), HardmodeForgeScreen::new);
         event.register(ModMenuTypes.LOOM.get(), LoomScreen::new);
+        event.register(ModMenuTypes.DYE_VAT.get(), DyeVatScreen::new);
+        event.register(ModMenuTypes.DYE_MIX.get(), DyeMixScreen::new);
 
         event.register(ModMenuTypes.NPC_TRADES_MENU.get(), WithForgeTradeScreen::new);
         event.register(ModMenuTypes.REFORGE_MENU.get(), NPCReforgeScreen::new);
@@ -348,7 +348,7 @@ public final class ModClientEvents {
         event.registerBlockEntityRenderer(FunctionalBlocks.BEWITCHING_TABLE_ENTITY.get(), ClientUtils.rendererProvider(BewitchingTableBlockRenderer::new));
         event.registerBlockEntityRenderer(FunctionalBlocks.LOOM_ENTITY.get(), ClientUtils.rendererProvider(LoomBlockRenderer::new));
 
-        WaystonesHelper.registerEntityRenderers(event);
+        ModClientSetups.registerWaystoneRenderers(event);
     }
 
     @SubscribeEvent
@@ -362,8 +362,8 @@ public final class ModClientEvents {
     public static void registerItemColors(RegisterColorHandlersEvent.Item event) {
         event.register((pStack, pTintIndex) -> ColoredItem.getColor(pStack), MaterialItems.GEL.get());
         event.register((pStack, pTintIndex) -> GrassColor.getDefaultColor(), NatureBlocks.JUNGLE_GRASS_BLOCK.get());
-        event.register((stack, tintIndex) -> tintIndex == 1 && stack.getItem() instanceof PaintItem paintItem ? FastColor.ARGB32.opaque(paintItem.getColor(stack)) : 0xFFFFFFFF, PaintItems.PAINT_ITEMS.toArray(PaintItem[]::new));
-        event.register((stack, tintIndex) -> tintIndex == 1 && stack.getItem() instanceof BaseDyeItem dyeItem ? dyeItem.color : 0xFFFFFFFF, VanityArmorItems.DYE_ITEMS.stream().map(DeferredHolder::get).toArray(Item[]::new));
+        event.register((stack, tintIndex) -> tintIndex == 1 ? PaintItem.getARGB(stack) : 0xFFFFFFFF, PaintItems.PAINT_ITEMS.toArray(Item[]::new));
+        event.register((stack, tintIndex) -> tintIndex == 1 ? BaseDyeItem.getARGB(stack) : 0xFFFFFFFF, VanityArmorItems.DYE_ITEMS.stream().map(DeferredHolder::get).toArray(Item[]::new));
     }
 
     @SubscribeEvent

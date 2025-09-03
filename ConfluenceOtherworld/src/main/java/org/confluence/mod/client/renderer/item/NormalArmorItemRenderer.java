@@ -13,8 +13,6 @@ import software.bernie.geckolib.model.DefaultedItemGeoModel;
 import software.bernie.geckolib.renderer.specialty.DyeableGeoArmorRenderer;
 import software.bernie.geckolib.util.Color;
 
-import java.util.OptionalInt;
-
 import static org.confluence.lib.util.LibUtils.getSlotIndex;
 
 public class NormalArmorItemRenderer<T extends Item & GeoItem> extends DyeableGeoArmorRenderer<T> {
@@ -30,8 +28,8 @@ public class NormalArmorItemRenderer<T extends Item & GeoItem> extends DyeableGe
     @Override
     protected Color getColorForBone(GeoBone bone) {
         if (currentSlot != null && currentEntity instanceof AbstractClientPlayer player) {
-            OptionalInt color = ClientUtils.getVanityDyeColor(ExtraInventory.of(player), getSlotIndex(currentSlot), player);
-            if (color.isPresent()) return new Color(color.getAsInt());
+            int argb = ClientUtils.getVanityDyeARGB(ExtraInventory.of(player), getSlotIndex(currentSlot), player);
+            if (argb != -1) return new Color(argb);
         }
         return Color.WHITE;
     }

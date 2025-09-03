@@ -1530,6 +1530,7 @@ public final class ValueSubProvider {
                 .add(FunctionalBlocks.SPIKY_BALL_TRAP, silver20)
                 .add(FunctionalBlocks.SPEAR_TRAP, silver20)
                 .add(FunctionalBlocks.LOOM, 60)
+                .add(FunctionalBlocks.DYE_VAT, gold1)
                 .add(TFBlocks.GLASS_KILN, silver50 + silver2 + silver2)
                 .add(TFBlocks.LIVING_LOOM, gold2);
         appender.create()

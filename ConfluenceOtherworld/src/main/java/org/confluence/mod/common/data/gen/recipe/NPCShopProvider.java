@@ -212,6 +212,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .build());
 
         shop(TENpcEntities.DYE_TRADER.getId()).addRecipe(withDefaultPylon()
+                .add(FunctionalBlocks.DYE_VAT)
                 .add(VanityArmorItems.SILVER_DYE)
                 .add(VanityArmorItems.BROWN_DYE)
                 .add(VanityArmorItems.TEAM_DYE)
@@ -251,6 +252,20 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(PaintItems.GRAY_PAINT)
                 .add(PaintItems.WHITE_PAINT)
                 .add(PaintItems.BROWN_PAINT)
+                .add(new MoneyTradeItem.Builder()
+                        .setResult(PaintItems.SHADOW_PAINT.toStack())
+                        .setProperties(hardmode)
+                        .build())
+                .add(new MoneyTradeItem.Builder()
+                        .setResult(PaintItems.NEGATIVE_PAINT.toStack())
+                        .setProperties(hardmode)
+                        .build())
+                .add(new MoneyTradeItem.Builder()
+                        .setResult(PaintItems.ILLUMINANT_COATING.toStack())
+                        .setProperties(TradeProperties.builder()
+                                .setLock(ectoMistLock)
+                                .build())
+                        .build())
                 .add(SellTrade.INSTANCE)
                 .build());
 

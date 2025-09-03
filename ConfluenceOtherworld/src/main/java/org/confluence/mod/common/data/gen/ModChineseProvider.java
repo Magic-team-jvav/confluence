@@ -186,6 +186,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.guide_voodoo_doll.hill.4", "召唤血肉山");
         add("tooltip.item.confluence.hardmode_forge.0", "用于熔炼精金矿和钛金矿");
         add("tooltip.item.confluence.loom.0", "用于制作衣物");
+        add("tooltip.item.confluence.dye_vat.0", "用于制作染料");
 
         add("tooltip.item.confluence.tokyo_teddy_bear.0", "一位自卑的少女如破碎的泰迪熊般说到：");
         add("tooltip.item.confluence.tokyo_teddy_bear.1", "           来让你听听");

@@ -464,7 +464,6 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         hardmodeForge(recipeOutput, DecorativeBlocks.CRYSTAL_BLOCK.toStack(5), 0.1F, 20, false, AmountIngredient.of(5, Blocks.STONE), Ingredient.of(MaterialItems.CRYSTAL_SHARDS));
         hardmodeForge(recipeOutput, MaterialItems.SPECTRE_INGOT.toStack(2), 2, 200, true, AmountIngredient.of(2, MaterialItems.CHLOROPHYTE_INGOT), Ingredient.of(MaterialItems.ECTOPLASM));
 
-        dyeVat(recipeOutput, VanityArmorItems.BLACK_DYE.toStack(2), Ingredient.of(MaterialItems.BLACK_INK));
 
         dyeVat(recipeOutput, PaintItems.DEEP_RED_PAINT.toStack(), AmountIngredient.of(2, PaintItems.RED_PAINT));
         dyeVat(recipeOutput, PaintItems.DEEP_ORANGE_PAINT.toStack(), AmountIngredient.of(2, PaintItems.ORANGE_PAINT));
@@ -478,19 +477,20 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         dyeVat(recipeOutput, PaintItems.DEEP_PURPLE_PAINT.toStack(), AmountIngredient.of(2, PaintItems.PURPLE_PAINT));
         dyeVat(recipeOutput, PaintItems.DEEP_VIOLET_PAINT.toStack(), AmountIngredient.of(2, PaintItems.VIOLET_PAINT));
         dyeVat(recipeOutput, PaintItems.DEEP_PINK_PAINT.toStack(), AmountIngredient.of(2, PaintItems.PINK_PAINT));
-
-        dyeVat(recipeOutput, VanityArmorItems.BRIGHT_RED_DYE.toStack(), Ingredient.of(VanityArmorItems.RED_DYE), Ingredient.of(VanityArmorItems.SILVER_DYE));
-        dyeVat(recipeOutput, VanityArmorItems.BRIGHT_ORANGE_DYE.toStack(), Ingredient.of(VanityArmorItems.ORANGE_DYE), Ingredient.of(VanityArmorItems.SILVER_DYE));
-        dyeVat(recipeOutput, VanityArmorItems.BRIGHT_YELLOW_DYE.toStack(), Ingredient.of(VanityArmorItems.YELLOW_DYE), Ingredient.of(VanityArmorItems.SILVER_DYE));
-        dyeVat(recipeOutput, VanityArmorItems.BRIGHT_LIME_DYE.toStack(), Ingredient.of(VanityArmorItems.LIME_DYE), Ingredient.of(VanityArmorItems.SILVER_DYE));
-        dyeVat(recipeOutput, VanityArmorItems.BRIGHT_GREEN_DYE.toStack(), Ingredient.of(VanityArmorItems.GREEN_DYE), Ingredient.of(VanityArmorItems.SILVER_DYE));
-        dyeVat(recipeOutput, VanityArmorItems.BRIGHT_TEAL_DYE.toStack(), Ingredient.of(VanityArmorItems.TEAL_DYE), Ingredient.of(VanityArmorItems.SILVER_DYE));
-        dyeVat(recipeOutput, VanityArmorItems.BRIGHT_CYAN_DYE.toStack(), Ingredient.of(VanityArmorItems.CYAN_DYE), Ingredient.of(VanityArmorItems.SILVER_DYE));
-        dyeVat(recipeOutput, VanityArmorItems.BRIGHT_SKY_BLUE_DYE.toStack(), Ingredient.of(VanityArmorItems.SKY_BLUE_DYE), Ingredient.of(VanityArmorItems.SILVER_DYE));
-        dyeVat(recipeOutput, VanityArmorItems.BRIGHT_BLUE_DYE.toStack(), Ingredient.of(VanityArmorItems.BLUE_DYE), Ingredient.of(VanityArmorItems.SILVER_DYE));
-        dyeVat(recipeOutput, VanityArmorItems.BRIGHT_PURPLE_DYE.toStack(), Ingredient.of(VanityArmorItems.PURPLE_DYE), Ingredient.of(VanityArmorItems.SILVER_DYE));
-        dyeVat(recipeOutput, VanityArmorItems.BRIGHT_VIOLET_DYE.toStack(), Ingredient.of(VanityArmorItems.VIOLET_DYE), Ingredient.of(VanityArmorItems.SILVER_DYE));
-        dyeVat(recipeOutput, VanityArmorItems.BRIGHT_PINK_DYE.toStack(), Ingredient.of(VanityArmorItems.PINK_DYE), Ingredient.of(VanityArmorItems.SILVER_DYE));
+        Ingredient silverDye = Ingredient.of(VanityArmorItems.SILVER_DYE);
+        dyeVat(recipeOutput, VanityArmorItems.BLACK_DYE.toStack(2), Ingredient.of(MaterialItems.BLACK_INK));
+        dyeVat(recipeOutput, VanityArmorItems.BRIGHT_RED_DYE.toStack(), Ingredient.of(VanityArmorItems.RED_DYE), silverDye);
+        dyeVat(recipeOutput, VanityArmorItems.BRIGHT_ORANGE_DYE.toStack(), Ingredient.of(VanityArmorItems.ORANGE_DYE), silverDye);
+        dyeVat(recipeOutput, VanityArmorItems.BRIGHT_YELLOW_DYE.toStack(), Ingredient.of(VanityArmorItems.YELLOW_DYE), silverDye);
+        dyeVat(recipeOutput, VanityArmorItems.BRIGHT_LIME_DYE.toStack(), Ingredient.of(VanityArmorItems.LIME_DYE), silverDye);
+        dyeVat(recipeOutput, VanityArmorItems.BRIGHT_GREEN_DYE.toStack(), Ingredient.of(VanityArmorItems.GREEN_DYE), silverDye);
+        dyeVat(recipeOutput, VanityArmorItems.BRIGHT_TEAL_DYE.toStack(), Ingredient.of(VanityArmorItems.TEAL_DYE), silverDye);
+        dyeVat(recipeOutput, VanityArmorItems.BRIGHT_CYAN_DYE.toStack(), Ingredient.of(VanityArmorItems.CYAN_DYE), silverDye);
+        dyeVat(recipeOutput, VanityArmorItems.BRIGHT_SKY_BLUE_DYE.toStack(), Ingredient.of(VanityArmorItems.SKY_BLUE_DYE), silverDye);
+        dyeVat(recipeOutput, VanityArmorItems.BRIGHT_BLUE_DYE.toStack(), Ingredient.of(VanityArmorItems.BLUE_DYE), silverDye);
+        dyeVat(recipeOutput, VanityArmorItems.BRIGHT_PURPLE_DYE.toStack(), Ingredient.of(VanityArmorItems.PURPLE_DYE), silverDye);
+        dyeVat(recipeOutput, VanityArmorItems.BRIGHT_VIOLET_DYE.toStack(), Ingredient.of(VanityArmorItems.VIOLET_DYE), silverDye);
+        dyeVat(recipeOutput, VanityArmorItems.BRIGHT_PINK_DYE.toStack(), Ingredient.of(VanityArmorItems.PINK_DYE), silverDye);
     }
 
     protected <T extends AbstractCookingRecipe> void cooking(RecipeOutput recipeOutput, AbstractCookingRecipe.Factory<T> factory, String prefix, String suffix, Ingredient ingredient, ItemStack result, float experience, int cookingTime) {

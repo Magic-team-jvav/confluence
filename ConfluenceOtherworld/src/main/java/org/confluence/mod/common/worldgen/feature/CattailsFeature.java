@@ -94,7 +94,7 @@ public class CattailsFeature extends Feature<CattailsFeature.Config> {
                     if (!level.getBlockState(mutable.setY(checkY + 1)).canBeReplaced()) {
                         level.setBlock(mutable.setY(checkY), cattailsHeadBlockState.trySetValue(WATERLOGGED, true), 3);
                         than = false;
-                    } else if ((((!level.getBlockState(mutable.setY(checkY + 1)).is(Blocks.WATER)) && level.getBlockState(mutable.setY(checkY + 1)).canBeReplaced()) && level.getBlockState(mutable.setY(checkY)).is(Blocks.WATER))) {
+                    } else if ((((!level.getBlockState(mutable.setY(checkY + 1)).is(Blocks.WATER)) && level.getBlockState(mutable.setY(checkY + 1)).canBeReplaced()) && level.getBlockState(mutable.setY(checkY)).is(Blocks.WATER)) || level.getBlockState(mutable.setY(checkY + 1)).isAir()) {
                         int length = random.nextInt(1, 5);
                         level.setBlock(mutable.setY(checkY), cattailsBodyBlockState.trySetValue(WATERLOGGED, true), 3);
                         for (int i = 1; i <= length; i++) {

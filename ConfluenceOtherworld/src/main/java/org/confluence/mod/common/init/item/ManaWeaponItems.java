@@ -36,9 +36,9 @@ public class ManaWeaponItems {
     public static final DeferredItem<ManaStaffItem<WaterStreamProjectile>> AQUA_SCEPTER = ITEMS.register("aqua_scepter", () -> new ManaStaffItem<>(ModRarity.GREEN, WaterStreamProjectile::new, 11, 7, 32.0F, 3, 0.04));
     public static final DeferredItem<ManaStaffItem<BallOfFireProjectile>> FLOWER_OF_FIRE = ITEMS.register("flower_of_fire", () -> new ManaStaffItem<>(ModRarity.ORANGE, BallOfFireProjectile::new, 28.6F, 12, 7.5F, 7, 0.04));
     /* 烈焰火鞭 */
-    public static final DeferredItem<ManaStaffItem<SkullProjectile>> BOOK_OF_SKULLS = ITEMS.register("book_of_skulls", () -> new ManaStaffItem<>(ModRarity.GREEN, SkullProjectile::new, 29, 18, 3.5F, 2, 0.04));
+    public static final DeferredItem<ManaStaffItem<SkullProjectile>> BOOK_OF_SKULLS = ITEMS.register("book_of_skulls", () -> new ManaStaffItem<>(ModRarity.GREEN, SkullProjectile::new, 18.2F, 18, 3.5F, 2, 0.04));
     public static final DeferredItem<ManaStaffItem<WaterBoltProjectile>> WATER_BOLT = ITEMS.register("water_bolt", () -> new ManaStaffItem<>(ModRarity.GREEN, WaterBoltProjectile::new, 19.5F, 10, 4.5F, 7, 0.04));
-    public static final DeferredItem<ManaStaffItem<DemonScytheProjectile>> DEMON_SCYTHE = ITEMS.register("demon_scythe", () -> new ManaStaffItem<>(ModRarity.ORANGE, DemonScytheProjectile::new, 35, 14, 0.2F, 3, 0.04));
+    public static final DeferredItem<ManaStaffItem<DemonScytheProjectile>> DEMON_SCYTHE = ITEMS.register("demon_scythe", () -> new ManaStaffItem<>(ModRarity.ORANGE, DemonScytheProjectile::new, 24.8f, 14, 0.2F, 3, 0.04));
     public static final DeferredItem<CloudRodItem> CRIMSON_ROD = ITEMS.register("crimson_rod", () -> new CloudRodItem(ModRarity.BLUE, player -> new CloudProjectile(ModEntities.BLOOD_CLOUD_PROJECTILE.get(), ModEntities.BLOOD_RAIN_PROJECTILE.get(), player, 3, 2), 8, 30, 12, 3, 0.04));
 
     public static final DeferredItem<CloudRodItem> NIMBUS_ROD = ITEMS.register("nimbus_rod", () -> new CloudRodItem(ModRarity.LIGHT_PURPLE, player -> new CloudProjectile(ModEntities.RAIN_CLOUD_PROJECTILE.get(), ModEntities.RAIN_PROJECTILE.get(), player, 2, 5), 15, 30, 16, 3, 0.04).setMaxCloud(2));

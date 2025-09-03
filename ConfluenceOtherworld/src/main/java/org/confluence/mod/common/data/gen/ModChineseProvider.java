@@ -4,6 +4,7 @@ import net.minecraft.Util;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.TooltipManager;
@@ -2312,6 +2313,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.DARK_AETHERIUM_BLOCK.get(), "黯淡以太块");
         add(NatureBlocks.SHADOW_ORB.get(), "暗影珠");
         add(NatureBlocks.CRIMSON_HEART.get(), "猩红心脏");
+        add(NatureBlocks.CRYSTAL_SHARDS_BLOCK.get(), "水晶碎块");
+        add(NatureBlocks.GELATIN_CRYSTAL_BLOCK.get(), "明胶水晶");
 
         add(NatureBlocks.SPOOKY_LOG_BLOCKS.LOG.get(), "阴森原木");
         add(NatureBlocks.SPOOKY_LOG_BLOCKS.WOOD.get(), "阴森木");

@@ -20,7 +20,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class BeeGunItem extends ManaGunItem {
     public BeeGunItem(Properties properties) {
-        super(properties, 4, 1.8F, 1, 0.01f, 0.04f, 2, 1.5F, ModRarity.GREEN, 5);
+        super(properties, 4, 4.6f, 1, 0.01f, 0.04f, 2, 1.5F, ModRarity.GREEN, 5);
     }
 
     @Override

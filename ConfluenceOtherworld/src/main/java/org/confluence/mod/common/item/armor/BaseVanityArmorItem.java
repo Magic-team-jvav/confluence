@@ -1,4 +1,4 @@
-package org.confluence.mod.common.item.common;
+package org.confluence.mod.common.item.armor;
 
 import com.google.common.base.Suppliers;
 import net.minecraft.client.Minecraft;
@@ -55,15 +55,13 @@ public class BaseVanityArmorItem extends ArmorItem implements GeoItem {
             private NormalArmorItemRenderer<BaseVanityArmorItem> renderer;
 
             @Override
-            public <T extends LivingEntity> HumanoidModel<?> getGeoArmorRenderer(@Nullable T livingEntity, ItemStack itemStack,
-                                                                                 @Nullable EquipmentSlot equipmentSlot,
-                                                                                 @Nullable HumanoidModel<T> original) {
+            public <T extends LivingEntity> HumanoidModel<?> getGeoArmorRenderer(@Nullable T livingEntity, ItemStack itemStack, @Nullable EquipmentSlot equipmentSlot, @Nullable HumanoidModel<T> original) {
                 if (renderer == null) {
-                    ResourceLocation textureResource = Confluence.asResource("textures/item/vanity_armor/" + name + ".png");
+                    ResourceLocation textureResource = Confluence.asResource("textures/item/" + name + ".png");
                     if (Minecraft.getInstance().getResourceManager().getResource(textureResource).isEmpty()) {
-                        this.renderer = new NormalArmorItemRenderer<>("vanity_armor/default_vanity_armor");
+                        this.renderer = new NormalArmorItemRenderer<>("vanity_armor/dead_mans_seater");
                     } else {
-                        this.renderer = new NormalArmorItemRenderer<>("vanity_armor/" + name);
+                        this.renderer = new NormalArmorItemRenderer<>(name);
                     }
                 }
                 return renderer;

@@ -16,7 +16,6 @@ import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.SolidifierRecipe;
-import org.confluence.terra_furniture.TerraFurniture;
 import org.jetbrains.annotations.Nullable;
 
 import static org.confluence.mod.integration.jei.ModJeiPlugin.addInput;
@@ -24,7 +23,7 @@ import static org.confluence.mod.integration.jei.ModJeiPlugin.addInput;
 public class SolidifierCategory implements IRecipeCategory<RecipeHolder<SolidifierRecipe>> {
     public static final RecipeType<RecipeHolder<SolidifierRecipe>> TYPE = RecipeType.createRecipeHolderType(Confluence.asResource("solidifier"));
     private static final Component TITLE = Component.translatable("title.confluence.solidifier");
-    private static final ResourceLocation BACKGROUND = TerraFurniture.asResource("textures/gui/solidifier.png");
+    private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/solidifier.png");
     private final IDrawable icon;
 
     public SolidifierCategory(IJeiHelpers jeiHelpers) {

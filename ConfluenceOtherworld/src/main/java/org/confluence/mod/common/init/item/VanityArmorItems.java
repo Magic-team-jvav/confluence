@@ -1,10 +1,8 @@
 package org.confluence.mod.common.init.item;
 
 import net.minecraft.core.Holder;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
-import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -12,11 +10,8 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.init.ModArmorMaterials;
-import org.confluence.mod.common.item.armor.NormalArmorItem;
+import org.confluence.mod.common.item.armor.BaseVanityArmorItem;
 import org.confluence.mod.common.item.common.BaseDyeItem;
-import org.confluence.mod.common.item.common.BaseVanityArmorItem;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;

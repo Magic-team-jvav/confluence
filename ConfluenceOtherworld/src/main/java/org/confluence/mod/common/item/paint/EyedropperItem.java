@@ -1,13 +1,11 @@
 package org.confluence.mod.common.item.paint;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.ChunkPos;
 import org.confluence.mod.common.attachment.ChunkBrushData;
@@ -27,9 +25,9 @@ public class EyedropperItem extends Item {
             if (brushData != null) {
                 int rgb = brushData.get(clickedPos, context.getClickedFace());
                 if (rgb != BrushData.EMPTY_COLOR) {
-                    ItemStack itemStack = PaintItems.PAINT.toStack();
-                    itemStack.set(DataComponents.DYED_COLOR, new DyedItemColor(rgb, true));
-                    player.setItemInHand(InteractionHand.OFF_HAND, itemStack);
+                    ItemStack stack = PaintItems.PAINT.toStack();
+                    PaintItem.setRGB(stack, rgb);
+                    player.setItemInHand(InteractionHand.OFF_HAND, stack);
                 }
             }
         }

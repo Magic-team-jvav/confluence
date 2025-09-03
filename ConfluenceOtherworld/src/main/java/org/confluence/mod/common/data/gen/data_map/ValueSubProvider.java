@@ -374,6 +374,7 @@ public final class ValueSubProvider {
                 .add(Items.BOW, 40)
                 .add(BowItems.FOSSIL_BOW, 3000)
                 .add(BowItems.HUNTING_BOW, 3800)
+                .add(BowItems.HELLWING_BOW, gold2 + silver50)
                 .add(BowItems.WOODEN_SHORT_BOW, 30);
         appender.create()
                 .add(PickaxeItems.CACTUS_PICKAXE, silver2 + silver2)

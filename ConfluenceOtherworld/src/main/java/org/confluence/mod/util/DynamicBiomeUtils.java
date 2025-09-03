@@ -1,6 +1,5 @@
 package org.confluence.mod.util;
 
-import com.google.common.collect.ImmutableMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.Util;
@@ -12,6 +11,7 @@ import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
@@ -25,27 +25,41 @@ import org.confluence.mod.mixed.IPalettedContainer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.BiConsumer;
-import java.util.function.Predicate;
+import java.util.function.Function;
 
 public final class DynamicBiomeUtils {
     public static final int BIOME_THRESHOLD = 256;
-    public static final Map<Predicate<BlockState>, BiConsumer<BlockCounts, Integer>> COUNTER = new ImmutableMap.Builder<Predicate<BlockState>, BiConsumer<BlockCounts, Integer>>()
-            .put(block -> block.is(ModTags.Blocks.CRIMSON_BLOCKS), (counter, count) -> counter.crimson.addAndGet(count))
-            .put(block -> block.is(ModTags.Blocks.CRIMSON_DESERT_BLOCKS), (counter, count) -> counter.crimsonSand.addAndGet(count))
-            .put(block -> block.is(ModTags.Blocks.CRIMSON_TUNDRA_BLOCKS), (counter, count) -> counter.crimsonIce.addAndGet(count))
-            .put(block -> block.is(ModTags.Blocks.CORRUPTION_BLOCKS), (counter, count) -> counter.corrupt.addAndGet(count))
-            .put(block -> block.is(ModTags.Blocks.CORRUPTED_DESERT_BLOCKS), (counter, count) -> counter.corruptSand.addAndGet(count))
-            .put(block -> block.is(ModTags.Blocks.CORRUPTED_TUNDRA_BLOCKS), (counter, count) -> counter.corruptIce.addAndGet(count))
-            .put(block -> block.is(ModTags.Blocks.HALLOW_BLOCKS), (counter, count) -> counter.hallow.addAndGet(count))
-            .put(block -> block.is(ModTags.Blocks.HALLOW_DESERT_BLOCKS), (counter, count) -> counter.hallowSand.addAndGet(count))
-            .put(block -> block.is(ModTags.Blocks.HALLOW_TUNDRA_BLOCKS), (counter, count) -> counter.hallowIce.addAndGet(count))
-            .put(block -> block.is(Blocks.SUNFLOWER), (counter, count) -> counter.sunflower.addAndGet(count))
-            .put(block -> block.is(ModTags.Blocks.TOMBSTONE), (counter, count) -> counter.tomb.addAndGet(count))
-            .build();
+    //    public static final Map<Predicate<BlockState>, BiConsumer<BlockCounts, Integer>> COUNTER = new ImmutableMap.Builder<Predicate<BlockState>, BiConsumer<BlockCounts, Integer>>()
+//            .put(block -> block.is(ModTags.Blocks.CRIMSON_BLOCKS), (counter, count) -> counter.crimson.addAndGet(count))
+//            .put(block -> block.is(ModTags.Blocks.CRIMSON_DESERT_BLOCKS), (counter, count) -> counter.crimsonSand.addAndGet(count))
+//            .put(block -> block.is(ModTags.Blocks.CRIMSON_TUNDRA_BLOCKS), (counter, count) -> counter.crimsonIce.addAndGet(count))
+//            .put(block -> block.is(ModTags.Blocks.CORRUPTION_BLOCKS), (counter, count) -> counter.corrupt.addAndGet(count))
+//            .put(block -> block.is(ModTags.Blocks.CORRUPTED_DESERT_BLOCKS), (counter, count) -> counter.corruptSand.addAndGet(count))
+//            .put(block -> block.is(ModTags.Blocks.CORRUPTED_TUNDRA_BLOCKS), (counter, count) -> counter.corruptIce.addAndGet(count))
+//            .put(block -> block.is(ModTags.Blocks.HALLOW_BLOCKS), (counter, count) -> counter.hallow.addAndGet(count))
+//            .put(block -> block.is(ModTags.Blocks.HALLOW_DESERT_BLOCKS), (counter, count) -> counter.hallowSand.addAndGet(count))
+//            .put(block -> block.is(ModTags.Blocks.HALLOW_TUNDRA_BLOCKS), (counter, count) -> counter.hallowIce.addAndGet(count))
+//            .put(block -> block.is(Blocks.SUNFLOWER), (counter, count) -> counter.sunflower.addAndGet(count))
+//            .put(block -> block.is(ModTags.Blocks.TOMBSTONE), (counter, count) -> counter.tomb.addAndGet(count))
+//            .build();
+    public static final Function<BlockState, BlockCounts.@Nullable Type> COUNTER = state -> {
+        Block block = state.getBlock();
+        if (block == Blocks.SUNFLOWER) return BlockCounts.Type.SUNFLOWER;
+        Holder<Block> holder = block.builtInRegistryHolder();
+        if (holder.is(ModTags.Blocks.CRIMSON_BLOCKS)) return BlockCounts.Type.CRIMSON;
+        if (holder.is(ModTags.Blocks.CRIMSON_DESERT_BLOCKS)) return BlockCounts.Type.CRIMSON_SAND;
+        if (holder.is(ModTags.Blocks.CRIMSON_TUNDRA_BLOCKS)) return BlockCounts.Type.CRIMSON_ICE;
+        if (holder.is(ModTags.Blocks.CORRUPTION_BLOCKS)) return BlockCounts.Type.CORRUPT;
+        if (holder.is(ModTags.Blocks.CORRUPTED_DESERT_BLOCKS)) return BlockCounts.Type.CORRUPT_SAND;
+        if (holder.is(ModTags.Blocks.CORRUPTED_TUNDRA_BLOCKS)) return BlockCounts.Type.CORRUPT_ICE;
+        if (holder.is(ModTags.Blocks.HALLOW_BLOCKS)) return BlockCounts.Type.HALLOW;
+        if (holder.is(ModTags.Blocks.HALLOW_DESERT_BLOCKS)) return BlockCounts.Type.HALLOW_SAND;
+        if (holder.is(ModTags.Blocks.HALLOW_TUNDRA_BLOCKS)) return BlockCounts.Type.HALLOW_ICE;
+        if (holder.is(ModTags.Blocks.TOMBSTONE)) return BlockCounts.Type.TOMB;
+        return null;
+    };
 
     /**
      * 动态群系的优先级，数字小的优先级高

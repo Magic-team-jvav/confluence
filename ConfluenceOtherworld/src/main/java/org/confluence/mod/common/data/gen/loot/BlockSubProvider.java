@@ -1,6 +1,6 @@
 package org.confluence.mod.common.data.gen.loot;
 
-import com.google.common.collect.Iterables;
+import com.google.common.collect.Streams;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
@@ -26,6 +26,7 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.common.block.natural.CoinPileBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
@@ -35,6 +36,7 @@ import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 
 import java.util.Set;
+import java.util.stream.Stream;
 
 import static net.minecraft.world.level.storage.loot.functions.SetItemCountFunction.setCount;
 import static net.minecraft.world.level.storage.loot.predicates.ExplosionCondition.survivesExplosion;
@@ -767,20 +769,20 @@ public final class BlockSubProvider extends BlockLootSubProvider {
 
     @Override
     protected Iterable<Block> getKnownBlocks() {
-        return Iterables.concat(
-                getIterableFromRegister(ModBlocks.BLOCKS),
-                getIterableFromRegister(OreBlocks.BLOCKS),
-                getIterableFromRegister(DecorativeBlocks.BLOCKS),
-                getIterableFromRegister(ChestBlocks.BLOCKS),
-                getIterableFromRegister(CrateBlocks.BLOCKS),
-                getIterableFromRegister(FunctionalBlocks.BLOCKS),
-                getIterableFromRegister(NatureBlocks.BLOCKS),
-                getIterableFromRegister(PotBlocks.BLOCKS)
-        );
+        return Streams.concat(
+                getStreamFromRegister(ModBlocks.BLOCKS),
+                getStreamFromRegister(OreBlocks.BLOCKS),
+                getStreamFromRegister(DecorativeBlocks.BLOCKS),
+                getStreamFromRegister(ChestBlocks.BLOCKS),
+                getStreamFromRegister(CrateBlocks.BLOCKS),
+                getStreamFromRegister(FunctionalBlocks.BLOCKS),
+                getStreamFromRegister(NatureBlocks.BLOCKS),
+                getStreamFromRegister(PotBlocks.BLOCKS)
+        )::iterator;
     }
 
-    private Iterable<Block> getIterableFromRegister(DeferredRegister<Block> register) {
-        return register.getEntries().stream().map(holder -> (Block) holder.get()).filter(block -> map.containsKey(block.getLootTable())).toList();
+    private Stream<Block> getStreamFromRegister(DeferredRegister<Block> register) {
+        return (Stream<Block>) register.getEntries().stream().map(DeferredHolder::get).filter(block -> map.containsKey(block.getLootTable()));
     }
 
     private LootTable.Builder createTinOreDrop(Block block) {

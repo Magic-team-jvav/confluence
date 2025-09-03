@@ -859,9 +859,9 @@ public final class EntitySubProvider extends EntityLootSubProvider {
     @Override
     protected @NotNull Stream<EntityType<?>> getKnownEntityTypes() {
         return Streams.concat(
-                ModEntities.ENTITIES.getEntries().stream().map(DeferredHolder::get),
-                TEEntities.ENTITIES.getEntries().stream().map(DeferredHolder::get)
-        );
+                ModEntities.ENTITIES.getEntries().stream(),
+                TEEntities.ENTITIES.getEntries().stream()
+        ).map(DeferredHolder::get);
     }
 
     @Override

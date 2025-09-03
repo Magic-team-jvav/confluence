@@ -463,6 +463,34 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         hardmodeForge(recipeOutput, MaterialItems.CHLOROPHYTE_INGOT.toStack(), 1, 200, true, AmountIngredient.of(5, MaterialItems.RAW_CHLOROPHYTE));
         hardmodeForge(recipeOutput, DecorativeBlocks.CRYSTAL_BLOCK.toStack(5), 0.1F, 20, false, AmountIngredient.of(5, Blocks.STONE), Ingredient.of(MaterialItems.CRYSTAL_SHARDS));
         hardmodeForge(recipeOutput, MaterialItems.SPECTRE_INGOT.toStack(2), 2, 200, true, AmountIngredient.of(2, MaterialItems.CHLOROPHYTE_INGOT), Ingredient.of(MaterialItems.ECTOPLASM));
+
+
+        dyeVat(recipeOutput, PaintItems.DEEP_RED_PAINT.toStack(), AmountIngredient.of(2, PaintItems.RED_PAINT));
+        dyeVat(recipeOutput, PaintItems.DEEP_ORANGE_PAINT.toStack(), AmountIngredient.of(2, PaintItems.ORANGE_PAINT));
+        dyeVat(recipeOutput, PaintItems.DEEP_YELLOW_PAINT.toStack(), AmountIngredient.of(2, PaintItems.YELLOW_PAINT));
+        dyeVat(recipeOutput, PaintItems.DEEP_LIME_PAINT.toStack(), AmountIngredient.of(2, PaintItems.LIME_PAINT));
+        dyeVat(recipeOutput, PaintItems.DEEP_GREEN_PAINT.toStack(), AmountIngredient.of(2, PaintItems.GREEN_PAINT));
+        dyeVat(recipeOutput, PaintItems.DEEP_TEAL_PAINT.toStack(), AmountIngredient.of(2, PaintItems.TEAL_PAINT));
+        dyeVat(recipeOutput, PaintItems.DEEP_CYAN_PAINT.toStack(), AmountIngredient.of(2, PaintItems.CYAN_PAINT));
+        dyeVat(recipeOutput, PaintItems.DEEP_SKY_BLUE_PAINT.toStack(), AmountIngredient.of(2, PaintItems.SKY_BLUE_PAINT));
+        dyeVat(recipeOutput, PaintItems.DEEP_BLUE_PAINT.toStack(), AmountIngredient.of(2, PaintItems.BLUE_PAINT));
+        dyeVat(recipeOutput, PaintItems.DEEP_PURPLE_PAINT.toStack(), AmountIngredient.of(2, PaintItems.PURPLE_PAINT));
+        dyeVat(recipeOutput, PaintItems.DEEP_VIOLET_PAINT.toStack(), AmountIngredient.of(2, PaintItems.VIOLET_PAINT));
+        dyeVat(recipeOutput, PaintItems.DEEP_PINK_PAINT.toStack(), AmountIngredient.of(2, PaintItems.PINK_PAINT));
+        Ingredient silverDye = Ingredient.of(VanityArmorItems.SILVER_DYE);
+        dyeVat(recipeOutput, VanityArmorItems.BLACK_DYE.toStack(2), Ingredient.of(MaterialItems.BLACK_INK));
+        dyeVat(recipeOutput, VanityArmorItems.BRIGHT_RED_DYE.toStack(), Ingredient.of(VanityArmorItems.RED_DYE), silverDye);
+        dyeVat(recipeOutput, VanityArmorItems.BRIGHT_ORANGE_DYE.toStack(), Ingredient.of(VanityArmorItems.ORANGE_DYE), silverDye);
+        dyeVat(recipeOutput, VanityArmorItems.BRIGHT_YELLOW_DYE.toStack(), Ingredient.of(VanityArmorItems.YELLOW_DYE), silverDye);
+        dyeVat(recipeOutput, VanityArmorItems.BRIGHT_LIME_DYE.toStack(), Ingredient.of(VanityArmorItems.LIME_DYE), silverDye);
+        dyeVat(recipeOutput, VanityArmorItems.BRIGHT_GREEN_DYE.toStack(), Ingredient.of(VanityArmorItems.GREEN_DYE), silverDye);
+        dyeVat(recipeOutput, VanityArmorItems.BRIGHT_TEAL_DYE.toStack(), Ingredient.of(VanityArmorItems.TEAL_DYE), silverDye);
+        dyeVat(recipeOutput, VanityArmorItems.BRIGHT_CYAN_DYE.toStack(), Ingredient.of(VanityArmorItems.CYAN_DYE), silverDye);
+        dyeVat(recipeOutput, VanityArmorItems.BRIGHT_SKY_BLUE_DYE.toStack(), Ingredient.of(VanityArmorItems.SKY_BLUE_DYE), silverDye);
+        dyeVat(recipeOutput, VanityArmorItems.BRIGHT_BLUE_DYE.toStack(), Ingredient.of(VanityArmorItems.BLUE_DYE), silverDye);
+        dyeVat(recipeOutput, VanityArmorItems.BRIGHT_PURPLE_DYE.toStack(), Ingredient.of(VanityArmorItems.PURPLE_DYE), silverDye);
+        dyeVat(recipeOutput, VanityArmorItems.BRIGHT_VIOLET_DYE.toStack(), Ingredient.of(VanityArmorItems.VIOLET_DYE), silverDye);
+        dyeVat(recipeOutput, VanityArmorItems.BRIGHT_PINK_DYE.toStack(), Ingredient.of(VanityArmorItems.PINK_DYE), silverDye);
     }
 
     protected <T extends AbstractCookingRecipe> void cooking(RecipeOutput recipeOutput, AbstractCookingRecipe.Factory<T> factory, String prefix, String suffix, Ingredient ingredient, ItemStack result, float experience, int cookingTime) {
@@ -552,6 +580,12 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         ResourceLocation id = Confluence.asResource("loom/" + getItemName(result.getItem()));
         NonNullList<Ingredient> zingredients = NonNullList.of(Ingredient.EMPTY, ingredients);
         recipeOutput.accept(id, new LoomRecipe(result, zingredients), null);
+    }
+
+    protected void dyeVat(RecipeOutput recipeOutput, ItemStack result, Ingredient... ingredients) {
+        ResourceLocation id = Confluence.asResource("dye_vat/" + getItemName(result.getItem()));
+        NonNullList<Ingredient> zingredients = NonNullList.of(Ingredient.EMPTY, ingredients);
+        recipeOutput.accept(id, new DyeVatRecipe(result, zingredients), null);
     }
 
 

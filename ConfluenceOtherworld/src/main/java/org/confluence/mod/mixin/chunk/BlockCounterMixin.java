@@ -3,6 +3,7 @@ package org.confluence.mod.mixin.chunk;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import org.confluence.mod.mixed.ILevelChunkSection;
+import org.confluence.mod.util.BlockCounts;
 import org.confluence.mod.util.DynamicBiomeUtils;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Dynamic;
@@ -24,13 +25,18 @@ public abstract class BlockCounterMixin {
     @Inject(method = "accept", at = @At("RETURN"))
     private void accept(BlockState state, int count, CallbackInfo ci) {
         if (confluence$section == null) return;
-        DynamicBiomeUtils.COUNTER.forEach((predicate, consumer) -> {
-            if (predicate.test(state)) {
-                consumer.accept(confluence$section.confluence$getBlockCounts(), count);
-            }
-        });
+//        DynamicBiomeUtils.COUNTER.forEach((predicate, consumer) -> {
+//            if (predicate.test(state)) {
+//                consumer.accept(confluence$section.confluence$getBlockCounts(), count);
+//            }
+//        });
+        BlockCounts.Type type = DynamicBiomeUtils.COUNTER.apply(state);
+        if (type != null) {
+            type.apply(confluence$section.confluence$getBlockCounts()).addAndGet(count);
+        }
     }
 
+    @Dynamic
     @Inject(method = "<init>*", at = @At("RETURN"))
     private void constr(LevelChunkSection section, CallbackInfo ci) {
         this.confluence$section = ILevelChunkSection.of(section);

@@ -139,11 +139,11 @@ public final class ModFeatures {
         public static final TreeGrower BAOBAB_GROWER = registerBigTree("baobab", Configured.BAOBAB_TREE);
 
         private static TreeGrower registerSmallTree(String name, ResourceKey<ConfiguredFeature<?, ?>> tree) {
-            return new TreeGrower(Confluence.MODID + ":" + name, Optional.empty(), Optional.of(tree), Optional.empty());
+            return new TreeGrower(Confluence.asPlainId(name), Optional.empty(), Optional.of(tree), Optional.empty());
         }
 
         private static TreeGrower registerBigTree(String name, ResourceKey<ConfiguredFeature<?, ?>> tree) {
-            return new TreeGrower(Confluence.MODID + ":" + name, Optional.of(tree), Optional.empty(), Optional.empty());
+            return new TreeGrower(Confluence.asPlainId(name), Optional.of(tree), Optional.empty(), Optional.empty());
         }
     }
 }

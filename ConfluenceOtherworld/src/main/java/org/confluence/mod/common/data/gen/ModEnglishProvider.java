@@ -192,6 +192,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.guide_voodoo_doll.hill.4", "Summons the Hill of Flesh");
         add("tooltip.item.confluence.hardmode_forge.0", "Used to smelt adamantite and titanium ore");
         add("tooltip.item.confluence.loom.0", "Used for crafting cloth");
+        add("tooltip.item.confluence.dye_vat.0", "Used to Craft Dyes");
 
         add("tooltip.item.confluence.tokyo_teddy_bear.0", "A self - abased girl said like a broken teddy bear:");
         add("tooltip.item.confluence.tokyo_teddy_bear.1", "           Let me tell you");

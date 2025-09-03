@@ -596,13 +596,13 @@ public class ModDataProvider {
                             OreConfiguration.target(stoneOreReplaceables, OreBlocks.PLATINUM_ORE.get().defaultBlockState()),
                             OreConfiguration.target(deepslateOreReplaceables, OreBlocks.DEEPSLATE_PLATINUM_ORE.get().defaultBlockState())
                     ), 20)
-            )), 32, 8));
+            )), 32, 1));
             register(context, GOLD_VEIN_WITH_DETONATOR, ModFeatures.DETONATOR_FEATURE.get(), new DetonatorFeature.Config(Holder.direct(new ConfiguredFeature<>(Feature.ORE,
                     new OreConfiguration(List.of(
                             OreConfiguration.target(stoneOreReplaceables, Blocks.GOLD_ORE.defaultBlockState()),
                             OreConfiguration.target(deepslateOreReplaceables, Blocks.DEEPSLATE_GOLD_ORE.defaultBlockState())
                     ), 27)
-            )), 32, 8));
+            )), 32, 1));
         }
 
         private static <FC extends FeatureConfiguration, F extends Feature<FC>> void register(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, F feature, FC config) {
@@ -923,11 +923,11 @@ public class ModDataProvider {
                     RarityFilter.onAverageOnceEvery(3), count1_9$2_1, inSquare, surfaceWaterDepth0, oceanFloor,
                     BlockPredicateFilter.forPredicate(BlockPredicate.wouldSurvive(NatureBlocks.PALM_LOG_BLOCKS.SAPLING.get().defaultBlockState(), Vec3i.ZERO)), biome);
             register(context, BAOBAB_TREE, configured.getOrThrow(ModFeatures.Configured.BAOBAB_TREE), biome, count1_9$2_1, inSquare, surfaceWaterDepth0, oceanFloor);
-            register(context, GEMSTONE_CAVE, configured.getOrThrow(ConfiguredFeatures.GEMSTONE_CAVE), RarityFilter.onAverageOnceEvery(55), inSquare, HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(14), VerticalAnchor.absolute(30)), biome);
+            register(context, GEMSTONE_CAVE, configured.getOrThrow(ConfiguredFeatures.GEMSTONE_CAVE), inSquare, RarityFilter.onAverageOnceEvery(55), bottomThroughUnderground, biome);
             register(context, PEARL_TREE, configured.getOrThrow(ModFeatures.Configured.PEARL_TREE), count1_9$2_1, inSquare, surfaceWaterDepth0, oceanFloor, biome);
             register(context, ADDITIONAL_ANCIENT_DEBRIS, configured.getOrThrow(ConfiguredFeatures.ADDITIONAL_ANCIENT_DEBRIS), count3, inSquare, heightRangeTriangle(0, 128), biome);
-            register(context, PLATINUM_VEIN_WITH_DETONATOR, configured.getOrThrow(ConfiguredFeatures.PLATINUM_VEIN_WITH_DETONATOR), RarityFilter.onAverageOnceEvery(25), inSquare, HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(14), VerticalAnchor.absolute(30)), biome);
-            register(context, GOLD_VEIN_WITH_DETONATOR, configured.getOrThrow(ConfiguredFeatures.GOLD_VEIN_WITH_DETONATOR), RarityFilter.onAverageOnceEvery(25), inSquare, HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(14), VerticalAnchor.absolute(30)), biome);
+            register(context, PLATINUM_VEIN_WITH_DETONATOR, configured.getOrThrow(ConfiguredFeatures.PLATINUM_VEIN_WITH_DETONATOR), RarityFilter.onAverageOnceEvery(30), inSquare, bottomThroughUnderground, biome);
+            register(context, GOLD_VEIN_WITH_DETONATOR, configured.getOrThrow(ConfiguredFeatures.GOLD_VEIN_WITH_DETONATOR), RarityFilter.onAverageOnceEvery(30), inSquare, bottomThroughUnderground, biome);
 
             gemTree(context, AMBER_TREE, configured.getOrThrow(ModFeatures.Configured.AMBER_TREE), NatureBlocks.AMBER_SAPLING.get());
             gemTree(context, AMETHYST_TREE, configured.getOrThrow(ModFeatures.Configured.AMETHYST_TREE), NatureBlocks.AMETHYST_SAPLING.get());
@@ -1119,7 +1119,7 @@ public class ModDataProvider {
                     PlacedFeatures.CRIMSON_ALTAR_WORLD, PlacedFeatures.DEMON_ALTAR_WORLD,
                     PlacedFeatures.NO_TRAPS_GRAVITATION_TRAP, PlacedFeatures.NO_TRAPS_PNEUMATIC_TRAP, PlacedFeatures.NO_TRAPS_SCULK_TRAP, PlacedFeatures.NO_TRAPS_SHIMMER_TRAP,
                     PlacedFeatures.DART_TRAP, PlacedFeatures.BOULDER_TRAP, PlacedFeatures.DEATH_CHEST_TRAP,
-                    PlacedFeatures.LIFE_CRYSTAL, PlacedFeatures.WATER_CHESTS,  PlacedFeatures.PLATINUM_VEIN_WITH_DETONATOR, PlacedFeatures.GOLD_VEIN_WITH_DETONATOR
+                    PlacedFeatures.LIFE_CRYSTAL, PlacedFeatures.WATER_CHESTS,PlacedFeatures.PLATINUM_VEIN_WITH_DETONATOR, PlacedFeatures.GOLD_VEIN_WITH_DETONATOR
             ), GenerationStep.Decoration.UNDERGROUND_DECORATION);
             addFeatures(context, "overworld_vd", overworld, HolderSet.direct(factory,
                     PlacedFeatures.LIFE_MUSHROOM

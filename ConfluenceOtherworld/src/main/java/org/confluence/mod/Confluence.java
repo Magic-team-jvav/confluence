@@ -71,7 +71,6 @@ public class Confluence {
         ModLootTables.ItemConditions.TYPES.register(eventBus);
         ModTradeLockProviderTypes.TYPES.register(eventBus);
         ModCommands.ARGUMENT_TYPE_INFOS.register(eventBus);
-
     }
 
     public static void registerGameRules() {
@@ -84,8 +83,8 @@ public class Confluence {
         return ResourceLocation.fromNamespaceAndPath(MODID, path);
     }
 
-    public static String asDescriptionId(String path) {
-        return MODID + "." + path;
+    public static String asPlainId(String path) {
+        return MODID + ':' + path;
     }
 
     public static <T> ResourceKey<T> asResourceKey(ResourceKey<? extends Registry<T>> registryKey, String path) {

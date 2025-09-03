@@ -9,9 +9,9 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.mod.network.IPacket;
 
-public record DyeMixPacketC2S(ItemStack dye) implements IPacketC2S {
+public record DyeMixPacketC2S(ItemStack stack) implements IPacketC2S {
     public static final Type<DyeMixPacketC2S> TYPE = IPacket.createType("dye_mix");
-    public static final StreamCodec<RegistryFriendlyByteBuf, DyeMixPacketC2S> STREAM_CODEC = ItemStack.OPTIONAL_STREAM_CODEC.map(DyeMixPacketC2S::new, DyeMixPacketC2S::dye);
+    public static final StreamCodec<RegistryFriendlyByteBuf, DyeMixPacketC2S> STREAM_CODEC = ItemStack.OPTIONAL_STREAM_CODEC.map(DyeMixPacketC2S::new, DyeMixPacketC2S::stack);
 
     @Override
     public Type<DyeMixPacketC2S> type() {
@@ -30,14 +30,14 @@ public record DyeMixPacketC2S(ItemStack dye) implements IPacketC2S {
             blue.remove(1);
             ItemStack carried = menu.getCarried();
             if (carried.isEmpty()) {
-                menu.setCarried(dye);
-            } else if (ItemStack.isSameItemSameComponents(carried, dye) && carried.getCount() < carried.getMaxStackSize()) {
+                menu.setCarried(stack);
+            } else if (ItemStack.isSameItemSameComponents(carried, stack) && carried.getCount() < carried.getMaxStackSize()) {
                 carried.grow(1);
             }
         }
     }
 
-    public static void sendToServer(ItemStack dye) {
-        PacketDistributor.sendToServer(new DyeMixPacketC2S(dye));
+    public static void sendToServer(ItemStack stack) {
+        PacketDistributor.sendToServer(new DyeMixPacketC2S(stack));
     }
 }

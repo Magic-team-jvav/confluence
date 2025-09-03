@@ -1,5 +1,6 @@
 package org.confluence.mod.common.menu;
 
+import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -9,11 +10,13 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.common.init.item.PaintItems;
 import org.confluence.mod.common.init.item.VanityArmorItems;
 
 public class DyeMixMenu extends AbstractContainerMenu {
     private final ContainerLevelAccess access;
     public final SimpleContainer container;
+    private Runnable listener = () -> {};
 
     public DyeMixMenu(int containerId, Inventory inventory) {
         this(containerId, inventory, ContainerLevelAccess.NULL);
@@ -22,24 +25,30 @@ public class DyeMixMenu extends AbstractContainerMenu {
     public DyeMixMenu(int containerId, Inventory inventory, ContainerLevelAccess access) {
         super(ModMenuTypes.DYE_MIX.get(), containerId);
         this.access = access;
-        this.container = new SimpleContainer(3);
+        this.container = new SimpleContainer(3) {
+            @Override
+            public void setChanged() {
+                super.setChanged();
+                DyeMixMenu.this.slotsChanged(this);
+            }
+        };
 
         addSlot(new Slot(container, 0, 17, 14) {
             @Override
             public boolean mayPlace(ItemStack stack) {
-                return stack.is(VanityArmorItems.RED_DYE);
+                return stack.is(VanityArmorItems.RED_DYE) || stack.is(PaintItems.RED_PAINT);
             }
         });
         addSlot(new Slot(container, 1, 17, 35) {
             @Override
             public boolean mayPlace(ItemStack stack) {
-                return stack.is(VanityArmorItems.GREEN_DYE);
+                return stack.is(VanityArmorItems.GREEN_DYE) || stack.is(PaintItems.GREEN_PAINT);
             }
         });
         addSlot(new Slot(container, 2, 17, 56) {
             @Override
             public boolean mayPlace(ItemStack stack) {
-                return stack.is(VanityArmorItems.BLUE_DYE);
+                return stack.is(VanityArmorItems.BLUE_DYE) || stack.is(PaintItems.BLUE_PAINT);
             }
         });
 
@@ -51,6 +60,16 @@ public class DyeMixMenu extends AbstractContainerMenu {
         for (int m = 0; m < 9; m++) {
             addSlot(new Slot(inventory, m, 8 + m * 18, 142));
         }
+    }
+
+    public void registerUpdateListener(Runnable listener) {
+        this.listener = listener;
+    }
+
+    @Override
+    public void slotsChanged(Container container) {
+        super.slotsChanged(container);
+        listener.run();
     }
 
     @Override

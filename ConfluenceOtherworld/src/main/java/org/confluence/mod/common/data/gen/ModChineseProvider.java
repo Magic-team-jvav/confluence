@@ -4098,6 +4098,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(AccessoryItems.NEBULA_WINGS.get(), "星云斗篷");
         add(AccessoryItems.VORTEX_BOOSTER.get(), "星旋强化翼");
         add(AccessoryItems.SOLAR_WINGS.get(), "日耀之翼");
+        add(AccessoryItems.SOLAR_WINGS.get(), "日耀之翼");
         add(AccessoryItems.STARDUST_WINGS.get(), "星尘之翼");
         add(AccessoryItems.CLOTHIER_VOODOO_DOLL.get(), "服装商巫毒玩偶");
         add(AccessoryItems.GUIDE_VOODOO_DOLL.get(), "向导巫毒玩偶");
@@ -4176,6 +4177,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(VanityArmorItems.THE_DOCTORS_SHOES.get(), "博士鞋");
         add(VanityArmorItems.GOLD_CROWN.get(), "金冠");
         add(VanityArmorItems.PLATINUM_CROWN.get(), "铂金冠");
+        add(VanityArmorItems.DYE.get(), "染料");
         add(VanityArmorItems.RED_DYE.get(), "红染料");
         add(VanityArmorItems.BRIGHT_RED_DYE.get(), "淡红染料");
         add(VanityArmorItems.ORANGE_DYE.get(), "橙染料");

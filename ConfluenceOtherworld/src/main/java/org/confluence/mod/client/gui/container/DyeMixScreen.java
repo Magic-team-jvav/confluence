@@ -10,9 +10,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.common.util.TriState;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.init.item.PaintItems;
 import org.confluence.mod.common.init.item.VanityArmorItems;
 import org.confluence.mod.common.item.common.BaseDyeItem;
+import org.confluence.mod.common.item.paint.PaintItem;
 import org.confluence.mod.common.menu.DyeMixMenu;
 import org.confluence.mod.network.c2s.DyeMixPacketC2S;
 import org.confluence.mod.network.c2s.OpenMenuPacketC2S;
@@ -20,8 +23,9 @@ import org.confluence.mod.network.c2s.OpenMenuPacketC2S;
 public class DyeMixScreen extends AbstractContainerScreen<DyeMixMenu> {
     private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/container/dye_mix.png");
     private EditBox editBox;
-    private int rgb = 0x66CCFF;
-    private ItemStack dye = ItemStack.EMPTY;
+    private int rgb = 0;
+    private TriState isDye = TriState.DEFAULT;
+    private ItemStack stack = ItemStack.EMPTY;
 
     public DyeMixScreen(DyeMixMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
@@ -30,6 +34,16 @@ public class DyeMixScreen extends AbstractContainerScreen<DyeMixMenu> {
     @Override
     protected void init() {
         super.init();
+        menu.registerUpdateListener(() -> {
+            ItemStack red = menu.getSlot(0).getItem();
+            ItemStack green = menu.getSlot(1).getItem();
+            ItemStack blue = menu.getSlot(2).getItem();
+            if (red.getItem().getClass() == green.getItem().getClass() && green.getItem().getClass() == blue.getItem().getClass()) {
+                this.isDye = red.getItem() instanceof BaseDyeItem ? TriState.TRUE : TriState.FALSE;
+            } else {
+                this.isDye = TriState.DEFAULT;
+            }
+        });
         addRenderableWidget(Button.builder(Component.translatable("button.confluence.dye_vat"), button -> {
             LocalPlayer player = minecraft.player;
             if (player != null) {
@@ -52,17 +66,25 @@ public class DyeMixScreen extends AbstractContainerScreen<DyeMixMenu> {
                 return false;
             }
         });
-        editBox.setResponder(value -> BaseDyeItem.setRGB(this.dye = VanityArmorItems.DYE.toStack(), rgb));
+        editBox.setResponder(value -> {
+            if (isDye.isTrue()) {
+                BaseDyeItem.setRGB(this.stack = VanityArmorItems.DYE.toStack(), rgb);
+            } else if (isDye.isFalse()) {
+                PaintItem.setRGB(this.stack = PaintItems.PAINT.toStack(), rgb);
+            } else {
+                this.stack = ItemStack.EMPTY;
+            }
+        });
     }
 
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         super.render(guiGraphics, mouseX, mouseY, partialTick);
         renderTooltip(guiGraphics, mouseX, mouseY);
-        if (!dye.isEmpty()) {
+        if (!stack.isEmpty()) {
             int x = leftPos + 125;
             int y = topPos + 35;
-            guiGraphics.renderFakeItem(dye, x, y);
+            guiGraphics.renderFakeItem(stack, x, y);
             int count = Math.min(
                     Math.min(
                             menu.getSlot(0).getItem().getCount(),
@@ -70,7 +92,7 @@ public class DyeMixScreen extends AbstractContainerScreen<DyeMixMenu> {
                     ),
                     menu.getSlot(2).getItem().getCount()
             );
-            guiGraphics.renderItemDecorations(minecraft.font, dye, x, y, Integer.toString(count));
+            guiGraphics.renderItemDecorations(minecraft.font, stack, x, y, Integer.toString(count));
         }
     }
 
@@ -95,8 +117,8 @@ public class DyeMixScreen extends AbstractContainerScreen<DyeMixMenu> {
         }
         if (mouseX > leftPos + 125 && mouseX < leftPos + 141 && mouseY > topPos + 35 && mouseY < topPos + 51) {
             ItemStack carried = menu.getCarried();
-            if (!dye.isEmpty() && (carried.isEmpty() || (ItemStack.isSameItemSameComponents(carried, dye) && carried.getCount() < carried.getMaxStackSize()))) {
-                DyeMixPacketC2S.sendToServer(dye);
+            if (!stack.isEmpty() && (carried.isEmpty() || (ItemStack.isSameItemSameComponents(carried, stack) && carried.getCount() < carried.getMaxStackSize()))) {
+                DyeMixPacketC2S.sendToServer(stack);
             }
         }
         return super.mouseClicked(mouseX, mouseY, button);

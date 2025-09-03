@@ -24,6 +24,10 @@ public class PaintItem extends Item {
         return FastColor.ARGB32.opaque(getRGB(stack));
     }
 
+    public static void setRGB(ItemStack stack, int rgb) {
+        stack.set(DataComponents.DYED_COLOR, new DyedItemColor(rgb, true));
+    }
+
     public static int useAndGetRGB(Player player) {
         Inventory inventory = player.getInventory();
         for (ItemStack itemStack : Iterables.concat(inventory.offhand, inventory.items)) {

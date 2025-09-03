@@ -582,7 +582,7 @@ public class LogBlockSet {
         public final WoodType TYPE;
 
         WoodSetType(String id) {
-            id = Confluence.MODID + ":" + id;
+            id = Confluence.asPlainId(id);
             this.SET = BlockSetType.register(new BlockSetType(id));
             this.TYPE = WoodType.register(new WoodType(id, SET));
         }

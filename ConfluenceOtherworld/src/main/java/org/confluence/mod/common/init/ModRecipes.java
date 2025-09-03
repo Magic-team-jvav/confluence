@@ -77,7 +77,7 @@ public final class ModRecipes {
         return TYPES.register(id + "_type", () -> new RecipeType<>() {
             @Override
             public String toString() {
-                return "confluence:" + id;
+                return Confluence.asPlainId(id);
             }
         });
     }

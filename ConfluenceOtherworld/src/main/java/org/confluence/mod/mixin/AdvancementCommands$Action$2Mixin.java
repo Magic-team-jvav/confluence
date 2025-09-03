@@ -15,7 +15,7 @@ public abstract class AdvancementCommands$Action$2Mixin {
     @Inject(method = "perform", at = @At(value = "RETURN", ordinal = 1))
     private void revokeAll(ServerPlayer player, AdvancementHolder advancementHolder, CallbackInfoReturnable<Boolean> cir) {
         if (Confluence.MODID.equals(advancementHolder.id().getNamespace())) {
-            String key = Confluence.MODID + ':' + advancementHolder.id().getPath().substring(AchievementUtils.PREFIX.length());
+            String key = Confluence.asPlainId(advancementHolder.id().getPath().substring(AchievementUtils.PREFIX.length()));
             LibUtils.getOrCreatePersistedData(player).remove(key);
         }
     }

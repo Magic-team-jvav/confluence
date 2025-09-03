@@ -87,6 +87,6 @@ public final class ModBoatTypes {
     );
 
     private static EnumProxy<Boat.Type> register(Supplier<Block> planks, String name, Supplier<BoatItem> boatItem, Supplier<BoatItem> chestBoatItem) {
-        return new EnumProxy<>(Boat.Type.class, planks, Confluence.MODID + ':' + name, boatItem, chestBoatItem, (Supplier<Item>) () -> Items.STICK, false);
+        return new EnumProxy<>(Boat.Type.class, planks, Confluence.asPlainId(name), boatItem, chestBoatItem, (Supplier<Item>) () -> Items.STICK, false);
     }
 }

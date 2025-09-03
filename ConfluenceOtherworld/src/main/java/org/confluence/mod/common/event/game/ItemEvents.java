@@ -47,7 +47,9 @@ public final class ItemEvents {
                 event.setCanceled(true);
             }
         }
-        ColoredItem.merge(carried, onSlot);
+        if (carried.is(MaterialItems.GEL)) {
+            ColoredItem.merge(carried, onSlot);
+        }
     }
 
     @SubscribeEvent

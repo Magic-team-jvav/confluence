@@ -6,41 +6,40 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.ResultContainer;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import org.confluence.lib.common.menu.AmountResultSlot;
-import org.confluence.lib.common.recipe.EnvironmentLevelAccess;
-import org.confluence.lib.common.recipe.EnvironmentRecipeInput;
+import org.confluence.lib.common.recipe.MenuRecipeInput;
 import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.common.recipe.CrystalBallRecipe;
+import org.confluence.mod.common.recipe.DyeVatRecipe;
 
-public class CrystalBallMenu extends AbstractContainerMenu {
-    private final EnvironmentLevelAccess access;
+public class DyeVatMenu extends AbstractContainerMenu {
+    private final ContainerLevelAccess access;
     private final Player player;
-    private final EnvironmentRecipeInput input;
+    private final MenuRecipeInput input;
     private final ResultContainer result;
-    private final AmountResultSlot<CrystalBallRecipe> resultSlot;
+    private final AmountResultSlot<DyeVatRecipe> resultSlot;
 
-    public CrystalBallMenu(int containerId, Inventory inventory) {
-        this(containerId, inventory, EnvironmentLevelAccess.empty());
+    public DyeVatMenu(int containerId, Inventory inventory) {
+        this(containerId, inventory, ContainerLevelAccess.NULL);
     }
 
-    public CrystalBallMenu(int containerId, Inventory inventory, EnvironmentLevelAccess access) {
-        super(ModMenuTypes.CRYSTAL_BALL.get(), containerId);
+    public DyeVatMenu(int containerId, Inventory inventory, ContainerLevelAccess access) {
+        super(ModMenuTypes.DYE_VAT.get(), containerId);
         this.access = access;
         this.player = inventory.player;
-        access.initializeIfNeeded(player);
-        this.input = new EnvironmentRecipeInput(this, 4, access);
+        this.input = new MenuRecipeInput(this, 4);
         this.result = new ResultContainer();
-        addSlot(this.resultSlot = new AmountResultSlot<>(input, result, 0, 103, 35));
+        addSlot(this.resultSlot = new AmountResultSlot<>(input, result, 0, 125, 35));
 
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 2; j++) {
-                addSlot(new Slot(input, j + i * 2, 26 + j * 18, 26 + i * 18));
+                addSlot(new Slot(input, j + i * 2, 35 + j * 18, 26 + i * 18));
             }
         }
 
@@ -59,7 +58,7 @@ public class CrystalBallMenu extends AbstractContainerMenu {
         access.execute((level, pos) -> {
             if (player instanceof ServerPlayer serverPlayer) {
                 ItemStack itemStack = ItemStack.EMPTY;
-                CrystalBallRecipe recipe = level.getRecipeManager().getRecipeFor(ModRecipes.CRYSTAL_BALL_TYPE.get(), input, level).map(RecipeHolder::value).orElse(null);
+                DyeVatRecipe recipe = level.getRecipeManager().getRecipeFor(ModRecipes.DYE_VAT_TYPE.get(), input, level).map(RecipeHolder::value).orElse(null);
                 if (recipe != null) {
                     itemStack = recipe.getResultItem(null).copy();
                     resultSlot.setCurrentRecipe(recipe);
@@ -78,7 +77,7 @@ public class CrystalBallMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player player) {
-        return stillValid(access, player, FunctionalBlocks.CRYSTAL_BALL.get());
+        return stillValid(access, player, FunctionalBlocks.DYE_VAT.get());
     }
 
     @Override

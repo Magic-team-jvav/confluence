@@ -25,6 +25,8 @@ public final class ModMenuTypes {
     public static final Supplier<MenuType<HardmodeAnvilMenu>> HARDMODE_ANVIL = TYPES.register("hardmode_anvil", () -> new MenuType<>(HardmodeAnvilMenu::new, FeatureFlags.VANILLA_SET));
     public static final Supplier<MenuType<HardmodeForgeMenu>> HARDMODE_FORGE = TYPES.register("hardmode_forge", () -> new MenuType<>(HardmodeForgeMenu::new, FeatureFlags.VANILLA_SET));
     public static final Supplier<MenuType<LoomMenu>> LOOM = TYPES.register("loom", () -> new MenuType<>(LoomMenu::new, FeatureFlags.VANILLA_SET));
+    public static final Supplier<MenuType<DyeVatMenu>> DYE_VAT = TYPES.register("dye_vat", () -> new MenuType<>(DyeVatMenu::new, FeatureFlags.VANILLA_SET));
+    public static final Supplier<MenuType<DyeMixMenu>> DYE_MIX = TYPES.register("dye_mix", () -> new MenuType<>(DyeMixMenu::new, FeatureFlags.VANILLA_SET));
 
     public static final Supplier<MenuType<NPCTradesForgeMenu>> NPC_TRADES_MENU = TYPES.register("npc_trades", () -> new MenuType<>(NPCTradesForgeMenu::new, FeatureFlags.VANILLA_SET));
     public static final Supplier<MenuType<NPCReforgeMenu>> REFORGE_MENU = TYPES.register("reforge_menu", () -> new MenuType<>(NPCReforgeMenu::new, FeatureFlags.VANILLA_SET));

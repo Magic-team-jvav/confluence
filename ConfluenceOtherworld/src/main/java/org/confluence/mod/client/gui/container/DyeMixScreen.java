@@ -1,0 +1,87 @@
+package org.confluence.mod.client.gui.container;
+
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FastColor;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
+import org.confluence.mod.Confluence;
+import org.confluence.mod.common.init.item.VanityArmorItems;
+import org.confluence.mod.common.item.common.BaseDyeItem;
+import org.confluence.mod.common.menu.DyeMixMenu;
+import org.confluence.mod.network.c2s.OpenMenuPacketC2S;
+
+public class DyeMixScreen extends AbstractContainerScreen<DyeMixMenu> {
+    private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/container/dye_mix.png");
+    private EditBox editBox;
+    private int rgb = 0x66CCFF;
+    private ItemStack dye = ItemStack.EMPTY;
+
+    public DyeMixScreen(DyeMixMenu menu, Inventory playerInventory, Component title) {
+        super(menu, playerInventory, title);
+    }
+
+    @Override
+    protected void init() {
+        super.init();
+        addRenderableWidget(Button.builder(Component.translatable("button.confluence.dye_vat"), button -> {
+            LocalPlayer player = minecraft.player;
+            if (player != null) {
+                ItemStack stack = player.containerMenu.getCarried();
+                player.containerMenu.setCarried(ItemStack.EMPTY);
+                OpenMenuPacketC2S.sendToServer(OpenMenuPacketC2S.DYE_VAT_MENU, stack);
+            }
+        }).width(48).pos(leftPos + 109, topPos + 58).build());
+        addRenderableWidget(this.editBox = new EditBox(minecraft.font, leftPos + 64, topPos + 24, 44, 10, Component.empty()));
+        editBox.setMaxLength(6);
+        editBox.setFilter(value -> {
+            if (value.isEmpty()) {
+                this.rgb = 0;
+                return true;
+            }
+            try {
+                this.rgb = FastColor.ARGB32.opaque(Integer.parseInt(value, 16));
+                return true;
+            } catch (Exception e) {
+                return false;
+            }
+        });
+        editBox.setResponder(value -> BaseDyeItem.setRGB(this.dye = VanityArmorItems.DYE.toStack(1), rgb));
+    }
+
+    @Override
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+        super.render(guiGraphics, mouseX, mouseY, partialTick);
+        renderTooltip(guiGraphics, mouseX, mouseY);
+        if (!dye.isEmpty()) {
+            guiGraphics.renderFakeItem(dye, leftPos + 125, topPos + 35);
+        }
+    }
+
+    @Override
+    protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
+        guiGraphics.blit(BACKGROUND, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+    }
+
+    @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        if (editBox.isFocused()) {
+            editBox.keyPressed(keyCode, scanCode, modifiers);
+            return true;
+        }
+        return super.keyPressed(keyCode, scanCode, modifiers);
+    }
+
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        if (!editBox.isHovered()) {
+            editBox.setFocused(false);
+        }
+        return super.mouseClicked(mouseX, mouseY, button);
+    }
+}

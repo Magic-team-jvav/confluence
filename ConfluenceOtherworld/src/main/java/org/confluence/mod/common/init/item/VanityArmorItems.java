@@ -11,8 +11,8 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.item.vanity_armor.BaseDyeItem;
-import org.confluence.mod.common.item.vanity_armor.BaseVanityArmorItem;
+import org.confluence.mod.common.item.common.BaseDyeItem;
+import org.confluence.mod.common.item.common.BaseVanityArmorItem;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -63,39 +63,40 @@ public class VanityArmorItems {
     public static final DeferredItem<BaseVanityArmorItem> THE_DOCTORS_SHOES = ITEMS.register("the_doctors_shoes", () -> new BaseVanityArmorItem(ArmorItem.Type.BOOTS, ModRarity.WHITE));
     public static final DeferredItem<BaseVanityArmorItem> DEAD_MANS_SWEATER = ITEMS.register("dead_mans_seater", () -> new BaseVanityArmorItem(ArmorItem.Type.CHESTPLATE, ModRarity.GREEN));
 
-    public static final DeferredItem<BaseDyeItem> RED_DYE = registerDye("red_dye", ModRarity.BLUE, 0xFFDB0909);
-    public static final DeferredItem<BaseDyeItem> BRIGHT_RED_DYE = registerDye("bright_red_dye", ModRarity.BLUE, 0xFFFF4F4F);
-    public static final DeferredItem<BaseDyeItem> ORANGE_DYE = registerDye("orange_dye", ModRarity.BLUE, 0xFFEC5a07);
-    public static final DeferredItem<BaseDyeItem> BRIGHT_ORANGE_DYE = registerDye("bright_orange_dye", ModRarity.BLUE, 0xFFFF7B3E);
-    public static final DeferredItem<BaseDyeItem> YELLOW_DYE = registerDye("yellow_dye", ModRarity.BLUE, 0xFFF0b007);
-    public static final DeferredItem<BaseDyeItem> BRIGHT_YELLOW_DYE = registerDye("bright_yellow_dye", ModRarity.BLUE, 0xFFFFE07B);
-    public static final DeferredItem<BaseDyeItem> LIME_DYE = registerDye("lime_dye", ModRarity.BLUE, 0xFFb7e013);
-    public static final DeferredItem<BaseDyeItem> BRIGHT_LIME_DYE = registerDye("bright_lime_dye", ModRarity.BLUE, 0xFF9CE14D);
-    public static final DeferredItem<BaseDyeItem> GREEN_DYE = registerDye("green_dye", ModRarity.BLUE, 0xFF2cdf09);
-    public static final DeferredItem<BaseDyeItem> BRIGHT_GREEN_DYE = registerDye("bright_green_dye", ModRarity.BLUE, 0xFF9FD57A);
-    public static final DeferredItem<BaseDyeItem> TEAL_DYE = registerDye("teal_dye", ModRarity.BLUE, 0xFF03c75b);
-    public static final DeferredItem<BaseDyeItem> BRIGHT_TEAL_DYE = registerDye("bright_teal_dye", ModRarity.BLUE, 0xFF4CC29D);
-    public static final DeferredItem<BaseDyeItem> CYAN_DYE = registerDye("cyan_dye", ModRarity.BLUE, 0xFF03c7a2);
-    public static final DeferredItem<BaseDyeItem> BRIGHT_CYAN_DYE = registerDye("bright_cyan_dye", ModRarity.BLUE, 0xFF00D1C1);
-    public static final DeferredItem<BaseDyeItem> SKY_BLUE_DYE = registerDye("sky_blue_dye", ModRarity.BLUE, 0xFF0699ce);
-    public static final DeferredItem<BaseDyeItem> BRIGHT_SKY_BLUE_DYE = registerDye("bright_sky_blue_dye", ModRarity.BLUE, 0xFF8DC9E3);
-    public static final DeferredItem<BaseDyeItem> BLUE_DYE = registerDye("blue_dye", ModRarity.BLUE, 0xFF203ebe);
-    public static final DeferredItem<BaseDyeItem> BRIGHT_BLUE_DYE = registerDye("bright_blue_dye", ModRarity.BLUE, 0xFF4C65B3);
-    public static final DeferredItem<BaseDyeItem> PURPLE_DYE = registerDye("purple_dye", ModRarity.BLUE, 0xFF6214d6);
-    public static final DeferredItem<BaseDyeItem> BRIGHT_PURPLE_DYE = registerDye("bright_purple_dye", ModRarity.BLUE, 0xFF9A71F5);
-    public static final DeferredItem<BaseDyeItem> VIOLET_DYE = registerDye("violet_dye", ModRarity.BLUE, 0xFFba14d6);
-    public static final DeferredItem<BaseDyeItem> BRIGHT_VIOLET_DYE = registerDye("bright_violet_dye", ModRarity.BLUE, 0xFF9A5FD8);
-    public static final DeferredItem<BaseDyeItem> PINK_DYE = registerDye("pink_dye", ModRarity.BLUE, 0xFFed10cc);
-    public static final DeferredItem<BaseDyeItem> BRIGHT_PINK_DYE = registerDye("bright_pink_dye", ModRarity.BLUE, 0xFFFF75A7);
-    public static final DeferredItem<BaseDyeItem> BLACK_DYE = registerDye("black_dye", ModRarity.BLUE, 0xFF1e1d20);
-    public static final DeferredItem<BaseDyeItem> GRAY_DYE = registerDye("gray_dye", ModRarity.BLUE, 0xFF676764);
-    public static final DeferredItem<BaseDyeItem> SILVER_DYE = registerDye("silver_dye", ModRarity.BLUE, 0xFFfffef6);
-    public static final DeferredItem<BaseDyeItem> BROWN_DYE = registerDye("brown_dye", ModRarity.BLUE, 0xFF8b653f);
+    public static final DeferredItem<BaseDyeItem> DYE = registerDye("dye", 0x39C5BB);
+    public static final DeferredItem<BaseDyeItem> RED_DYE = registerDye("red_dye", 0xDB0909);
+    public static final DeferredItem<BaseDyeItem> BRIGHT_RED_DYE = registerDye("bright_red_dye", 0xFF4F4F);
+    public static final DeferredItem<BaseDyeItem> ORANGE_DYE = registerDye("orange_dye", 0xEC5a07);
+    public static final DeferredItem<BaseDyeItem> BRIGHT_ORANGE_DYE = registerDye("bright_orange_dye", 0xFF7B3E);
+    public static final DeferredItem<BaseDyeItem> YELLOW_DYE = registerDye("yellow_dye", 0xF0b007);
+    public static final DeferredItem<BaseDyeItem> BRIGHT_YELLOW_DYE = registerDye("bright_yellow_dye", 0xFFE07B);
+    public static final DeferredItem<BaseDyeItem> LIME_DYE = registerDye("lime_dye", 0xb7e013);
+    public static final DeferredItem<BaseDyeItem> BRIGHT_LIME_DYE = registerDye("bright_lime_dye", 0x9CE14D);
+    public static final DeferredItem<BaseDyeItem> GREEN_DYE = registerDye("green_dye", 0x2cdf09);
+    public static final DeferredItem<BaseDyeItem> BRIGHT_GREEN_DYE = registerDye("bright_green_dye", 0x9FD57A);
+    public static final DeferredItem<BaseDyeItem> TEAL_DYE = registerDye("teal_dye", 0x03c75b);
+    public static final DeferredItem<BaseDyeItem> BRIGHT_TEAL_DYE = registerDye("bright_teal_dye", 0x4CC29D);
+    public static final DeferredItem<BaseDyeItem> CYAN_DYE = registerDye("cyan_dye", 0x03c7a2);
+    public static final DeferredItem<BaseDyeItem> BRIGHT_CYAN_DYE = registerDye("bright_cyan_dye", 0x00D1C1);
+    public static final DeferredItem<BaseDyeItem> SKY_BLUE_DYE = registerDye("sky_blue_dye", 0x0699ce);
+    public static final DeferredItem<BaseDyeItem> BRIGHT_SKY_BLUE_DYE = registerDye("bright_sky_blue_dye", 0x8DC9E3);
+    public static final DeferredItem<BaseDyeItem> BLUE_DYE = registerDye("blue_dye", 0x203ebe);
+    public static final DeferredItem<BaseDyeItem> BRIGHT_BLUE_DYE = registerDye("bright_blue_dye", 0x4C65B3);
+    public static final DeferredItem<BaseDyeItem> PURPLE_DYE = registerDye("purple_dye", 0x6214d6);
+    public static final DeferredItem<BaseDyeItem> BRIGHT_PURPLE_DYE = registerDye("bright_purple_dye", 0x9A71F5);
+    public static final DeferredItem<BaseDyeItem> VIOLET_DYE = registerDye("violet_dye", 0xba14d6);
+    public static final DeferredItem<BaseDyeItem> BRIGHT_VIOLET_DYE = registerDye("bright_violet_dye", 0x9A5FD8);
+    public static final DeferredItem<BaseDyeItem> PINK_DYE = registerDye("pink_dye", 0xed10cc);
+    public static final DeferredItem<BaseDyeItem> BRIGHT_PINK_DYE = registerDye("bright_pink_dye", 0xFF75A7);
+    public static final DeferredItem<BaseDyeItem> BLACK_DYE = registerDye("black_dye", 0x1e1d20);
+    public static final DeferredItem<BaseDyeItem> GRAY_DYE = registerDye("gray_dye", 0x676764);
+    public static final DeferredItem<BaseDyeItem> SILVER_DYE = registerDye("silver_dye", 0xfffef6);
+    public static final DeferredItem<BaseDyeItem> BROWN_DYE = registerDye("brown_dye", 0x8b653f);
 
     public static final DeferredItem<Item> TEAM_DYE = ITEMS.register("team_dye", () -> new CustomRarityItem(ModRarity.BLUE));
 
-    private static DeferredItem<BaseDyeItem> registerDye(String name, ModRarity rarity, int color) {
-        DeferredItem<BaseDyeItem> item = ITEMS.register(name, () -> new BaseDyeItem(rarity, color));
+    private static DeferredItem<BaseDyeItem> registerDye(String name, int color) {
+        DeferredItem<BaseDyeItem> item = ITEMS.register(name, () -> new BaseDyeItem(ModRarity.BLUE, color));
         DYE_ITEMS.add(item);
         return item;
     }

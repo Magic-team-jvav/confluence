@@ -425,6 +425,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 KEG.get(),
                 SAWMILL.get(),
                 LOOM.get(),
+                DYE_VAT.get(),
                 LIFE_CAMPFIRE.get(),
 
                 CrateBlocks.WOODEN_CRATE.get(),

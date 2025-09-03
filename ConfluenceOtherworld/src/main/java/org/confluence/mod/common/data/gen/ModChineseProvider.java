@@ -3396,6 +3396,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.LEVER.get(), "控制杆");
         add(FunctionalBlocks.WOODEN_SPIKE.get(), "木尖刺");
         add(FunctionalBlocks.LOOM.get(), "织布机");
+        add(FunctionalBlocks.DYE_VAT.get(), "染缸");
         add(ModBlocks.AETHERIUM_CAULDRON.get(), "微光炼药锅");
         add(ModBlocks.HONEY_CAULDRON.get(), "蜂蜜炼药锅");
 
@@ -4097,7 +4098,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(AccessoryItems.FISHRON_WINGS.get(), "猪鱼龙之翼");
         add(AccessoryItems.NEBULA_WINGS.get(), "星云斗篷");
         add(AccessoryItems.VORTEX_BOOSTER.get(), "星旋强化翼");
-        add(AccessoryItems.SOLAR_WINGS.get(), "日耀之翼");
         add(AccessoryItems.SOLAR_WINGS.get(), "日耀之翼");
         add(AccessoryItems.STARDUST_WINGS.get(), "星尘之翼");
         add(AccessoryItems.CLOTHIER_VOODOO_DOLL.get(), "服装商巫毒玩偶");

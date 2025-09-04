@@ -26,6 +26,7 @@ public class SpreadingBlock extends Block implements ISpreadable {
         return type;
     }
 
+    @Override
     public void randomTick(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource) {
         if (!serverLevel.isAreaLoaded(blockPos, 3)) return;
         spread(blockState, serverLevel, blockPos, randomSource);

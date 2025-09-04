@@ -1,13 +1,17 @@
 package org.confluence.mod.common.init.block;
 
 import com.mojang.datafixers.DSL;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.ColorRGBA;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.neoforge.registries.DeferredBlock;
@@ -23,11 +27,14 @@ import org.confluence.mod.common.init.ModFeatures;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.ModItems;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static org.confluence.mod.common.block.natural.LogBlockSet.WoodSetType.*;
+import static org.confluence.mod.common.block.natural.spreadable.PearlstoneBlock.generateCrystal;
 
+@ParametersAreNonnullByDefault
 public class NatureBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Confluence.MODID);
 
@@ -91,7 +98,7 @@ public class NatureBlocks {
     public static final DeferredBlock<Block> EBONSANDSTONE = registerWithItem("ebonsandstone", () -> new SpreadingBlock(ISpreadable.Type.CORRUPT, BlockBehaviour.Properties.ofFullCopy(Blocks.SANDSTONE).mapColor(MapColor.TERRACOTTA_PURPLE)));
     public static final DeferredBlock<Block> HARDENED_EBONSAND_BLOCK = registerWithItem("hardened_ebonsand_block", () -> new SpreadingBlock(ISpreadable.Type.CORRUPT, BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).mapColor(MapColor.TERRACOTTA_PURPLE)));
     public static final DeferredBlock<Block> EBONSAND = registerWithItem("ebonsand", () -> new SpreadingSandBlock(ISpreadable.Type.CORRUPT, 0x372B4B, BlockBehaviour.Properties.ofFullCopy(Blocks.SAND).mapColor(MapColor.COLOR_BLACK)));
-    public static final DeferredBlock<Block> MOISTENED_EBONSAND_BLOCK = registerWithItem("moistened_ebonsand_block", () -> new SpreadableMoistSandBlock(ISpreadable.Type.CORRUPT, BlockBehaviour.Properties.ofFullCopy(Blocks.MUD).mapColor(MapColor.COLOR_BLACK), EBONSAND.get()));
+    public static final DeferredBlock<Block> MOISTENED_EBONSAND_BLOCK = registerWithItem("moistened_ebonsand_block", () -> new SpreadableMoistedSandBlock(ISpreadable.Type.CORRUPT, BlockBehaviour.Properties.ofFullCopy(Blocks.MUD).mapColor(MapColor.COLOR_BLACK), EBONSAND));
     public static final DeferredBlock<Block> PURPLE_ICE = registerWithItem("purple_ice", () -> new IceBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ICE).mapColor(MapColor.COLOR_PURPLE)));
     public static final DeferredBlock<Block> PURPLE_PACKED_ICE = registerWithItem("purple_packed_ice", () -> new IceBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PACKED_ICE).mapColor(MapColor.COLOR_PURPLE)));
     public static final DeferredBlock<SandLayerBlock> EBONSAND_LAYER_BLOCK = registerWithItem("ebonsand_layer_block", SandLayerBlock::new);
@@ -106,17 +113,36 @@ public class NatureBlocks {
     public static final DeferredBlock<Block> HALLOW_GRASS_BLOCK = registerWithItem("hallow_grass_block", () -> new SpreadingGrassBlock(ISpreadable.Type.HALLOW, BlockBehaviour.Properties.ofFullCopy(Blocks.GRASS_BLOCK).mapColor(MapColor.COLOR_CYAN)));
     public static final DeferredBlock<Block> HALLOW_GRASS = registerWithItem("hallow_grass", () -> new BasePlantBlock(HALLOW_GRASS_BLOCK.get())); // 神圣草
     public static final LogBlockSet PEARL_LOG_BLOCKS = LogBlockSet.builder("pearl", true, PEARL).sapling(properties -> new BaseSaplingBlock(ModFeatures.TreeGrowers.PEARL_GROWER, properties, null, HALLOW_GRASS_BLOCK)).build();
-    public static final DeferredBlock<Block> PEARLSTONE = registerWithItem("pearlstone", () -> new SpreadingBlock(ISpreadable.Type.HALLOW, BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).mapColor(MapColor.TERRACOTTA_MAGENTA)));
+    public static final DeferredBlock<Block> PEARLSTONE = registerWithItem("pearlstone", () -> new PearlstoneBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).mapColor(MapColor.TERRACOTTA_MAGENTA)));
     public static final DeferredBlock<Block> COBBLED_PEARLSTONE = registerWithItem("cobbled_pearlstone", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE).mapColor(MapColor.TERRACOTTA_MAGENTA)));
-    public static final DeferredBlock<Block> HARDENED_PEARLSAND_BLOCK = registerWithItem("hardened_pearlsand_block", () -> new SpreadingBlock(ISpreadable.Type.HALLOW, BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).mapColor(MapColor.TERRACOTTA_PINK)));
-    public static final DeferredBlock<Block> PEARLSANDSTONE = registerWithItem("pearlsandstone", () -> new SpreadingBlock(ISpreadable.Type.HALLOW, BlockBehaviour.Properties.ofFullCopy(Blocks.SANDSTONE).mapColor(MapColor.TERRACOTTA_PINK)));
-    public static final DeferredBlock<Block> PEARLSAND = registerWithItem("pearlsand", () -> new SpreadingSandBlock(ISpreadable.Type.HALLOW, 0xEDD5F6, BlockBehaviour.Properties.ofFullCopy(Blocks.SAND).mapColor(MapColor.TERRACOTTA_PINK)));
-    public static final DeferredBlock<Block> MOISTENED_PEARLSAND_BLOCK = registerWithItem("moistened_pearlsand_block", () -> new SpreadableMoistSandBlock(ISpreadable.Type.HALLOW, BlockBehaviour.Properties.ofFullCopy(Blocks.MUD).mapColor(MapColor.TERRACOTTA_PINK), PEARLSAND.get()));
+    public static final DeferredBlock<Block> HARDENED_PEARLSAND_BLOCK = registerWithItem("hardened_pearlsand_block", () -> new PearlstoneBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).mapColor(MapColor.TERRACOTTA_PINK)));
+    public static final DeferredBlock<Block> PEARLSANDSTONE = registerWithItem("pearlsandstone", () -> new PearlstoneBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SANDSTONE).mapColor(MapColor.TERRACOTTA_PINK)));
+    public static final DeferredBlock<Block> PEARLSAND = registerWithItem("pearlsand", () -> new SpreadingSandBlock(ISpreadable.Type.HALLOW, 0xEDD5F6, BlockBehaviour.Properties.ofFullCopy(Blocks.SAND).mapColor(MapColor.TERRACOTTA_PINK)) {
+        @Override
+        public void spread(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource) {
+            super.spread(blockState, serverLevel, blockPos, randomSource);
+            generateCrystal(serverLevel, blockPos, randomSource);
+        }
+    });
+    public static final DeferredBlock<Block> MOISTENED_PEARLSAND_BLOCK = registerWithItem("moistened_pearlsand_block", () -> new SpreadableMoistedSandBlock(ISpreadable.Type.HALLOW, BlockBehaviour.Properties.ofFullCopy(Blocks.MUD).mapColor(MapColor.TERRACOTTA_PINK), PEARLSAND) {
+        @Override
+        public void spread(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource) {
+            super.spread(blockState, serverLevel, blockPos, randomSource);
+            generateCrystal(serverLevel, blockPos, randomSource);
+        }
+    });
     public static final DeferredBlock<SandLayerBlock> PEARLSAND_LAYER_BLOCK = registerWithItem("pearlsand_layer_block", SandLayerBlock::new);
     public static final DeferredBlock<Block> PINK_ICE = registerWithItem("pink_ice", () -> new IceBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.ICE).mapColor(MapColor.COLOR_PINK)));
-    public static final DeferredBlock<Block> PINK_PACKED_ICE = registerWithItem("pink_packed_ice", () -> new IceBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PACKED_ICE).mapColor(MapColor.COLOR_PINK)));
-    public static final DeferredBlock<CrystalShardsBlock> CRYSTAL_SHARDS_BLOCK = registerWithItem("crystal_shards_block", () -> new CrystalShardsBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_CLUSTER).mapColor(MapColor.COLOR_PINK).lightLevel(state -> 7)));
-    public static final DeferredBlock<CrystalShardsBlock> GELATIN_CRYSTAL_BLOCK = registerWithItem("gelatin_crystal_block", () -> new CrystalShardsBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_CLUSTER).mapColor(MapColor.COLOR_PINK).lightLevel(state -> 9)));
+    public static final DeferredBlock<Block> PINK_PACKED_ICE = registerWithItem("pink_packed_ice", () -> new IceBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.PACKED_ICE).mapColor(MapColor.COLOR_PINK).randomTicks()) {
+        @Override
+        public void randomTick(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource) {
+            if (serverLevel.isAreaLoaded(blockPos, 3)) {
+                generateCrystal(serverLevel, blockPos, randomSource);
+            }
+        }
+    });
+    public static final DeferredBlock<AmethystClusterBlock> CRYSTAL_SHARDS = registerWithoutItem("crystal_shards", () -> new AmethystClusterBlock(7.0F, 3.0F, BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_CLUSTER).mapColor(MapColor.COLOR_PINK).lightLevel(state -> 7)));
+    public static final DeferredBlock<AmethystClusterBlock> GELATIN_CRYSTAL = registerWithoutItem("gelatin_crystal", () -> new AmethystClusterBlock(7.0F, 3.0F, BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_CLUSTER).mapColor(MapColor.COLOR_PINK).lightLevel(state -> 9)));
 
 
     // 猩红
@@ -127,7 +153,7 @@ public class NatureBlocks {
     public static final DeferredBlock<Block> HARDENED_CRIMSAND_BLOCK = registerWithItem("hardened_crimsand_block", () -> new SpreadingBlock(ISpreadable.Type.CRIMSON, BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).mapColor(MapColor.TERRACOTTA_RED)));
     public static final DeferredBlock<Block> CRIMSANDSTONE = registerWithItem("crimsandstone", () -> new SpreadingBlock(ISpreadable.Type.CRIMSON, BlockBehaviour.Properties.ofFullCopy(Blocks.SANDSTONE).mapColor(MapColor.TERRACOTTA_RED)));
     public static final DeferredBlock<Block> CRIMSAND = registerWithItem("crimsand", () -> new SpreadingSandBlock(ISpreadable.Type.CRIMSON, 0x5313E0, BlockBehaviour.Properties.ofFullCopy(Blocks.SAND).mapColor(MapColor.COLOR_RED)));
-    public static final DeferredBlock<Block> MOISTENED_CRIMSAND_BLOCK = registerWithItem("moistened_crimsand_block", () -> new SpreadableMoistSandBlock(ISpreadable.Type.CRIMSON, BlockBehaviour.Properties.ofFullCopy(Blocks.MUD).mapColor(MapColor.COLOR_RED), CRIMSAND.get()));
+    public static final DeferredBlock<Block> MOISTENED_CRIMSAND_BLOCK = registerWithItem("moistened_crimsand_block", () -> new SpreadableMoistedSandBlock(ISpreadable.Type.CRIMSON, BlockBehaviour.Properties.ofFullCopy(Blocks.MUD).mapColor(MapColor.COLOR_RED), CRIMSAND));
     public static final DeferredBlock<Block> VICIOUS_MUSHROOM = registerWithoutItem("vicious_mushroom", () -> new MushroomBlock(ISpreadable.Type.CRIMSON, CRIMSON_GRASS_BLOCK.get())); // 毒蘑菇
     public static final DeferredBlock<ThornBlock> CRIMSON_THORN = registerWithItem("crimson_thorn", () -> new SpreadingThornBlock(2, CRIMSON_GRASS_BLOCK.get(), ISpreadable.Type.CRIMSON));
     public static final DeferredBlock<Block> CRIMSON_GRASS = registerWithItem("crimson_grass", () -> new BasePlantBlock(CRIMSON_GRASS_BLOCK.get())); // 猩红草

@@ -3,9 +3,9 @@
 	"credit": "Made with Blockbench                    model by Magnox",
 	"texture_size": [128, 128],
 	"textures": {
-		"0": "confluence:block/gelatin_crystal_block",
-		"1": "confluence:block/gelatin_crystals_block_animation",
-		"particle": "confluence:block/particle/gelatin_crystal_block_particle"
+		"0": "confluence:block/gelatin_crystal",
+		"1": "confluence:block/gelatin_crystals_animation",
+		"particle": "confluence:block/particle/gelatin_crystal_particle"
 	},
 	"elements": [
 		{

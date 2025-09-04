@@ -3,8 +3,8 @@
 	"credit": "Made with Blockbench                    model by Magnox",
 	"texture_size": [128, 128],
 	"textures": {
-		"0": "confluence:block/crystal_shards_block_big",
-		"particle": "confluence:block/particle/crystal_shards_block_blue_particle"
+        "0": "confluence:block/crystal_shards_big",
+        "particle": "confluence:block/particle/crystal_shards_blue_particle"
 	},
 	"elements": [
 		{

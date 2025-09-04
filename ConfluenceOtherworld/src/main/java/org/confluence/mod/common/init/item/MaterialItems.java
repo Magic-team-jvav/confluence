@@ -1,9 +1,11 @@
 package org.confluence.mod.common.init.item;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.lib.common.item.TooltipItem;
@@ -135,7 +137,7 @@ public class MaterialItems {
     public static final DeferredItem<Item> SOUL_OF_FRIGHT = ITEMS.register("soul_of_fright", () -> new TooltipItem(new Item.Properties(), ModRarity.PINK, TooltipItem.getTooltipsFromString("soul_of_fright", 1, ChatFormatting.GRAY)));
     public static final DeferredItem<Item> SOUL_OF_MIGHT = ITEMS.register("soul_of_might", () -> new TooltipItem(new Item.Properties(), ModRarity.PINK, TooltipItem.getTooltipsFromString("soul_of_might", 1, ChatFormatting.GRAY)));
     public static final DeferredItem<Item> SOUL_OF_SIGHT = ITEMS.register("soul_of_sight", () -> new TooltipItem(new Item.Properties(), ModRarity.PINK, TooltipItem.getTooltipsFromString("soul_of_sight", 1, ChatFormatting.GRAY)));
-    public static final DeferredItem<Item> CRYSTAL_SHARDS = register("crystal_shards", ModRarity.BLUE);
+    public static final DeferredItem<BlockItem> CRYSTAL_SHARDS = ITEMS.register("crystal_shards", () -> new BlockItem(NatureBlocks.CRYSTAL_SHARDS.get(), new Item.Properties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.BLUE)));
     public static final DeferredItem<Item> CURSED_FLAME = ITEMS.register("cursed_flame", CursedFlameItem::new);
     public static final DeferredItem<Item> ICHOR = register("ichor", ModRarity.ORANGE);
     public static final DeferredItem<Item> PIXIE_DUST = register("pixie_dust", ModRarity.BLUE);

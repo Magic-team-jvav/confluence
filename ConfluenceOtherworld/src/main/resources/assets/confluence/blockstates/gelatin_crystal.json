@@ -2,38 +2,38 @@
     "variants": {
         "facing=down":
             {
-                "model": "confluence:block/gelatin_crystal_block",
+                "model": "confluence:block/gelatin_crystal",
                 "x": 180,
                 "weight": 1
             },
         "facing=up":
             {
-                "model": "confluence:block/gelatin_crystal_block",
+                "model": "confluence:block/gelatin_crystal",
                 "weight": 1
             },
         "facing=north":
             {
-                "model": "confluence:block/gelatin_crystal_block",
+                "model": "confluence:block/gelatin_crystal",
                 "x": 90,
                 "weight": 1
             },
         "facing=south":
             {
-                "model": "confluence:block/gelatin_crystal_block",
+                "model": "confluence:block/gelatin_crystal",
                 "x": 90,
                 "y": 180,
                 "weight": 1
             },
         "facing=west":
             {
-                "model": "confluence:block/gelatin_crystal_block",
+                "model": "confluence:block/gelatin_crystal",
                 "x": 90,
                 "y": 270,
                 "weight": 1
             },
         "facing=east":
             {
-                "model": "confluence:block/gelatin_crystal_block",
+                "model": "confluence:block/gelatin_crystal",
                 "x": 90,
                 "y": 90,
                 "weight": 1

@@ -2,127 +2,127 @@
     "variants": {
         "facing=down": [
             {
-                "model": "confluence:block/crystal_shards_block_blue",
+                "model": "confluence:block/crystal_shards_blue",
                 "x": 180,
                 "weight": 1
             },
             {
-                "model": "confluence:block/crystal_shards_block_blue_small",
+                "model": "confluence:block/crystal_shards_blue_small",
                 "x": 180,
                 "weight": 1
             },
             {
-                "model": "confluence:block/crystal_shards_block_pink",
+                "model": "confluence:block/crystal_shards_pink",
                 "x": 180,
                 "weight": 1
             },
             {
-                "model": "confluence:block/crystal_shards_block_pink_small",
+                "model": "confluence:block/crystal_shards_pink_small",
                 "x": 180,
                 "weight": 1
             },
             {
-                "model": "confluence:block/crystal_shards_block_purple",
+                "model": "confluence:block/crystal_shards_purple",
                 "x": 180,
                 "weight": 1
             },
             {
-                "model": "confluence:block/crystal_shards_block_purple_small",
+                "model": "confluence:block/crystal_shards_purple_small",
                 "x": 180,
                 "weight": 1
             }
         ],
         "facing=up": [
             {
-                "model": "confluence:block/crystal_shards_block_blue",
+                "model": "confluence:block/crystal_shards_blue",
                 "weight": 1
             },
             {
-                "model": "confluence:block/crystal_shards_block_blue_small",
+                "model": "confluence:block/crystal_shards_blue_small",
                 "weight": 1
             },
             {
-                "model": "confluence:block/crystal_shards_block_pink",
+                "model": "confluence:block/crystal_shards_pink",
                 "weight": 1
             },
             {
-                "model": "confluence:block/crystal_shards_block_pink_small",
+                "model": "confluence:block/crystal_shards_pink_small",
                 "weight": 1
             },
             {
-                "model": "confluence:block/crystal_shards_block_purple",
+                "model": "confluence:block/crystal_shards_purple",
                 "weight": 1
             },
             {
-                "model": "confluence:block/crystal_shards_block_purple_small",
+                "model": "confluence:block/crystal_shards_purple_small",
                 "weight": 1
             }
         ],
         "facing=north": [
             {
-                "model": "confluence:block/crystal_shards_block_blue",
+                "model": "confluence:block/crystal_shards_blue",
                 "x": 90,
                 "weight": 1
             },
             {
-                "model": "confluence:block/crystal_shards_block_blue_small",
+                "model": "confluence:block/crystal_shards_blue_small",
                 "x": 90,
                 "weight": 1
             },
             {
-                "model": "confluence:block/crystal_shards_block_pink",
+                "model": "confluence:block/crystal_shards_pink",
                 "x": 90,
                 "weight": 1
             },
             {
-                "model": "confluence:block/crystal_shards_block_pink_small",
+                "model": "confluence:block/crystal_shards_pink_small",
                 "x": 90,
                 "weight": 1
             },
             {
-                "model": "confluence:block/crystal_shards_block_purple",
+                "model": "confluence:block/crystal_shards_purple",
                 "x": 90,
                 "weight": 1
             },
             {
-                "model": "confluence:block/crystal_shards_block_purple_small",
+                "model": "confluence:block/crystal_shards_purple_small",
                 "x": 90,
                 "weight": 1
             }
         ],
         "facing=south": [
             {
-                "model": "confluence:block/crystal_shards_block_blue",
+                "model": "confluence:block/crystal_shards_blue",
                 "x": 90,
                 "y": 180,
                 "weight": 1
             },
             {
-                "model": "confluence:block/crystal_shards_block_blue_small",
+                "model": "confluence:block/crystal_shards_blue_small",
                 "x": 90,
                 "y": 180,
                 "weight": 1
             },
             {
-                "model": "confluence:block/crystal_shards_block_pink",
+                "model": "confluence:block/crystal_shards_pink",
                 "x": 90,
                 "y": 180,
                 "weight": 1
             },
             {
-                "model": "confluence:block/crystal_shards_block_pink_small",
+                "model": "confluence:block/crystal_shards_pink_small",
                 "x": 90,
                 "y": 180,
                 "weight": 1
             },
             {
-                "model": "confluence:block/crystal_shards_block_purple",
+                "model": "confluence:block/crystal_shards_purple",
                 "x": 90,
                 "y": 180,
                 "weight": 1
             },
             {
-                "model": "confluence:block/crystal_shards_block_purple_small",
+                "model": "confluence:block/crystal_shards_purple_small",
                 "x": 90,
                 "y": 180,
                 "weight": 1
@@ -130,37 +130,37 @@
         ],
         "facing=west": [
             {
-                "model": "confluence:block/crystal_shards_block_blue",
+                "model": "confluence:block/crystal_shards_blue",
                 "x": 90,
                 "y": 270,
                 "weight": 1
             },
             {
-                "model": "confluence:block/crystal_shards_block_blue_small",
+                "model": "confluence:block/crystal_shards_blue_small",
                 "x": 90,
                 "y": 270,
                 "weight": 1
             },
             {
-                "model": "confluence:block/crystal_shards_block_pink",
+                "model": "confluence:block/crystal_shards_pink",
                 "x": 90,
                 "y": 270,
                 "weight": 1
             },
             {
-                "model": "confluence:block/crystal_shards_block_pink_small",
+                "model": "confluence:block/crystal_shards_pink_small",
                 "x": 90,
                 "y": 270,
                 "weight": 1
             },
             {
-                "model": "confluence:block/crystal_shards_block_purple",
+                "model": "confluence:block/crystal_shards_purple",
                 "x": 90,
                 "y": 270,
                 "weight": 1
             },
             {
-                "model": "confluence:block/crystal_shards_block_purple_small",
+                "model": "confluence:block/crystal_shards_purple_small",
                 "x": 90,
                 "y": 270,
                 "weight": 1
@@ -168,37 +168,37 @@
         ],
         "facing=east": [
             {
-                "model": "confluence:block/crystal_shards_block_blue",
+                "model": "confluence:block/crystal_shards_blue",
                 "x": 90,
                 "y": 90,
                 "weight": 1
             },
             {
-                "model": "confluence:block/crystal_shards_block_blue_small",
+                "model": "confluence:block/crystal_shards_blue_small",
                 "x": 90,
                 "y": 90,
                 "weight": 1
             },
             {
-                "model": "confluence:block/crystal_shards_block_pink",
+                "model": "confluence:block/crystal_shards_pink",
                 "x": 90,
                 "y": 90,
                 "weight": 1
             },
             {
-                "model": "confluence:block/crystal_shards_block_pink_small",
+                "model": "confluence:block/crystal_shards_pink_small",
                 "x": 90,
                 "y": 90,
                 "weight": 1
             },
             {
-                "model": "confluence:block/crystal_shards_block_purple",
+                "model": "confluence:block/crystal_shards_purple",
                 "x": 90,
                 "y": 90,
                 "weight": 1
             },
             {
-                "model": "confluence:block/crystal_shards_block_purple_small",
+                "model": "confluence:block/crystal_shards_purple_small",
                 "x": 90,
                 "y": 90,
                 "weight": 1

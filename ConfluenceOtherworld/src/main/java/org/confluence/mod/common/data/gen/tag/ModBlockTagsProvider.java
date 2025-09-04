@@ -361,8 +361,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 GELSTONE_BLOCK.get(),
                 STURDY_FOSSIL_BLOCK.get(),
                 COLD_CRYSTAL_BLOCK.get(),
-                CRYSTAL_SHARDS_BLOCK.get(),
-                GELATIN_CRYSTAL_BLOCK.get(),
+                CRYSTAL_SHARDS.get(),
+                GELATIN_CRYSTAL.get(),
 
                 AMMO_BOX.get(),
                 BEWITCHING_TABLE.get(),

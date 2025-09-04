@@ -20,11 +20,11 @@ import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
 import org.confluence.mod.common.init.block.NatureBlocks;
 
 import java.util.Map;
+import java.util.function.Supplier;
 
-public class SpreadableMoistSandBlock extends Block implements ISpreadable {
-
+public class SpreadableMoistedSandBlock extends Block implements ISpreadable {
     private final ISpreadable.Type type;
-    private final Block TargetBlock;
+    private final Supplier<Block> targetBlock;
     public static final BooleanProperty NORTH = PipeBlock.NORTH;
     public static final BooleanProperty EAST = PipeBlock.EAST;
     public static final BooleanProperty SOUTH = PipeBlock.SOUTH;
@@ -32,18 +32,19 @@ public class SpreadableMoistSandBlock extends Block implements ISpreadable {
     public static final BooleanProperty UP = PipeBlock.UP;
     public static final BooleanProperty DOWN = PipeBlock.DOWN;
     private static final Map<Direction, BooleanProperty> PROPERTY_BY_DIRECTION = PipeBlock.PROPERTY_BY_DIRECTION;
-    public SpreadableMoistSandBlock(ISpreadable.Type type, BlockBehaviour.Properties properties, Block TargetSand) {
+
+    public SpreadableMoistedSandBlock(ISpreadable.Type type, BlockBehaviour.Properties properties, Supplier<Block> targetBlock) {
         super(properties.randomTicks().instrument(NoteBlockInstrument.SNARE).strength(0.5F).sound(SoundType.SAND));
         this.type = type;
-        this.TargetBlock = TargetSand;
+        this.targetBlock = targetBlock;
         registerDefaultState(stateDefinition.any()
-            .setValue(STILL_ALIVE, true)
-            .setValue(NORTH, true)
-            .setValue(EAST, true)
-            .setValue(SOUTH, true)
-            .setValue(WEST, true)
-            .setValue(UP, true)
-            .setValue(DOWN, true));
+                .setValue(STILL_ALIVE, true)
+                .setValue(NORTH, true)
+                .setValue(EAST, true)
+                .setValue(SOUTH, true)
+                .setValue(WEST, true)
+                .setValue(UP, true)
+                .setValue(DOWN, true));
     }
 
     @Override
@@ -55,18 +56,19 @@ public class SpreadableMoistSandBlock extends Block implements ISpreadable {
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         BlockGetter blockgetter = context.getLevel();
         BlockPos blockpos = context.getClickedPos();
+        Block block = targetBlock.get();
         return this.defaultBlockState()
-            .setValue(DOWN, !blockgetter.getBlockState(blockpos.below()).is(TargetBlock))
-            .setValue(UP, !blockgetter.getBlockState(blockpos.above()).is(TargetBlock))
-            .setValue(NORTH, !blockgetter.getBlockState(blockpos.north()).is(TargetBlock))
-            .setValue(EAST, !blockgetter.getBlockState(blockpos.east()).is(TargetBlock))
-            .setValue(SOUTH, !blockgetter.getBlockState(blockpos.south()).is(TargetBlock))
-            .setValue(WEST, !blockgetter.getBlockState(blockpos.west()).is(TargetBlock));
+                .setValue(DOWN, !blockgetter.getBlockState(blockpos.below()).is(block))
+                .setValue(UP, !blockgetter.getBlockState(blockpos.above()).is(block))
+                .setValue(NORTH, !blockgetter.getBlockState(blockpos.north()).is(block))
+                .setValue(EAST, !blockgetter.getBlockState(blockpos.east()).is(block))
+                .setValue(SOUTH, !blockgetter.getBlockState(blockpos.south()).is(block))
+                .setValue(WEST, !blockgetter.getBlockState(blockpos.west()).is(block));
     }
 
     @Override
     protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
-        if (!facingState.is(TargetBlock)) {
+        if (!facingState.is(targetBlock.get())) {
             return state.setValue(PROPERTY_BY_DIRECTION.get(facing), true);
         }
         return state.setValue(PROPERTY_BY_DIRECTION.get(facing), false);
@@ -75,21 +77,21 @@ public class SpreadableMoistSandBlock extends Block implements ISpreadable {
     @Override
     protected BlockState rotate(BlockState state, Rotation rot) {
         return state.setValue(PROPERTY_BY_DIRECTION.get(rot.rotate(Direction.NORTH)), state.getValue(NORTH))
-            .setValue(PROPERTY_BY_DIRECTION.get(rot.rotate(Direction.SOUTH)), state.getValue(SOUTH))
-            .setValue(PROPERTY_BY_DIRECTION.get(rot.rotate(Direction.EAST)), state.getValue(EAST))
-            .setValue(PROPERTY_BY_DIRECTION.get(rot.rotate(Direction.WEST)), state.getValue(WEST))
-            .setValue(PROPERTY_BY_DIRECTION.get(rot.rotate(Direction.UP)), state.getValue(UP))
-            .setValue(PROPERTY_BY_DIRECTION.get(rot.rotate(Direction.DOWN)), state.getValue(DOWN));
+                .setValue(PROPERTY_BY_DIRECTION.get(rot.rotate(Direction.SOUTH)), state.getValue(SOUTH))
+                .setValue(PROPERTY_BY_DIRECTION.get(rot.rotate(Direction.EAST)), state.getValue(EAST))
+                .setValue(PROPERTY_BY_DIRECTION.get(rot.rotate(Direction.WEST)), state.getValue(WEST))
+                .setValue(PROPERTY_BY_DIRECTION.get(rot.rotate(Direction.UP)), state.getValue(UP))
+                .setValue(PROPERTY_BY_DIRECTION.get(rot.rotate(Direction.DOWN)), state.getValue(DOWN));
     }
 
     @Override
     protected BlockState mirror(BlockState state, Mirror mirror) {
         return state.setValue(PROPERTY_BY_DIRECTION.get(mirror.mirror(Direction.NORTH)), state.getValue(NORTH))
-            .setValue(PROPERTY_BY_DIRECTION.get(mirror.mirror(Direction.SOUTH)), state.getValue(SOUTH))
-            .setValue(PROPERTY_BY_DIRECTION.get(mirror.mirror(Direction.EAST)), state.getValue(EAST))
-            .setValue(PROPERTY_BY_DIRECTION.get(mirror.mirror(Direction.WEST)), state.getValue(WEST))
-            .setValue(PROPERTY_BY_DIRECTION.get(mirror.mirror(Direction.UP)), state.getValue(UP))
-            .setValue(PROPERTY_BY_DIRECTION.get(mirror.mirror(Direction.DOWN)), state.getValue(DOWN));
+                .setValue(PROPERTY_BY_DIRECTION.get(mirror.mirror(Direction.SOUTH)), state.getValue(SOUTH))
+                .setValue(PROPERTY_BY_DIRECTION.get(mirror.mirror(Direction.EAST)), state.getValue(EAST))
+                .setValue(PROPERTY_BY_DIRECTION.get(mirror.mirror(Direction.WEST)), state.getValue(WEST))
+                .setValue(PROPERTY_BY_DIRECTION.get(mirror.mirror(Direction.UP)), state.getValue(UP))
+                .setValue(PROPERTY_BY_DIRECTION.get(mirror.mirror(Direction.DOWN)), state.getValue(DOWN));
     }
 
     @Override
@@ -101,16 +103,15 @@ public class SpreadableMoistSandBlock extends Block implements ISpreadable {
         if (!serverLevel.isAreaLoaded(blockPos, 3)) return;
         spread(blockState, serverLevel, blockPos, randomSource);
     }
+
     @Override
     protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
         if (level.dimensionType().ultraWarm()) {
             if (state.is(NatureBlocks.MOISTENED_EBONSAND_BLOCK.get())) {
                 level.setBlock(pos, NatureBlocks.EBONSAND.get().defaultBlockState(), 3);
-            }
-            else if (state.is(NatureBlocks.MOISTENED_CRIMSAND_BLOCK.get())) {
+            } else if (state.is(NatureBlocks.MOISTENED_CRIMSAND_BLOCK.get())) {
                 level.setBlock(pos, NatureBlocks.CRIMSAND.get().defaultBlockState(), 3);
-            }
-            else if (state.is(NatureBlocks.MOISTENED_PEARLSAND_BLOCK.get())) {
+            } else if (state.is(NatureBlocks.MOISTENED_PEARLSAND_BLOCK.get())) {
                 level.setBlock(pos, NatureBlocks.PEARLSAND.get().defaultBlockState(), 3);
             }
 

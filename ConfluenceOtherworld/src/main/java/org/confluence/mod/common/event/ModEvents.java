@@ -12,6 +12,7 @@ import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -66,6 +67,7 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
+import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.integration.jei.RecipeTransferPacketC2S;
 import org.confluence.mod.integration.terra_entity.TEItemComponentModify;
@@ -246,6 +248,10 @@ public final class ModEvents {
             event.accept(TCItems.EVERLASTING.get().getDefaultInstance(), visibility);
             event.accept(TCItems.BASE_POINT.get().getDefaultInstance(), visibility);
             AccessoryItems.ITEMS.getEntries().forEach(item -> event.accept(item.get()));
+        } else if (event.getTab() == ModTabs.MISC.get()) {
+            ItemStack clothierVoodooDollStack = AccessoryItems.CLOTHIER_VOODOO_DOLL.toStack();
+            event.insertAfter(ConsumableItems.ABEEMINATION.toStack(), clothierVoodooDollStack, visibility);
+            event.insertAfter(clothierVoodooDollStack, AccessoryItems.GUIDE_VOODOO_DOLL.toStack(), visibility);
         }
     }
 

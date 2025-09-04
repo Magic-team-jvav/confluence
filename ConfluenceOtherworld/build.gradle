@@ -372,7 +372,6 @@ tasks.withType(ProcessResources).configureEach {
 }
 
 tasks.withType(Copy).configureEach { duplicatesStrategy = DuplicatesStrategy.EXCLUDE }
-tasks.withType(Jar).configureEach { duplicatesStrategy = DuplicatesStrategy.EXCLUDE }
 
 tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
 
@@ -419,7 +418,11 @@ jar {
     exclude 'org/confluence/mod/common/data/gen'
 }
 
-java.withSourcesJar()
+tasks.register('sourceJar', Jar) {
+    from sourceSets.main.allJava
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    archiveClassifier.set('sources')
+}
 
 ext {
     releasesUrl = "https://maven.confluence.ink/releases"
@@ -429,6 +432,7 @@ publishing {
     publications {
         register('mavenJava', MavenPublication) {
             from components.java
+            artifact sourceJar
         }
     }
     repositories {

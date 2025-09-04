@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.concurrent.CompletableFuture;
 
 import static org.confluence.mod.Confluence.MODID;
-import static org.confluence.mod.common.init.block.ChestBlocks.GOLDEN_CHEST;
+import static org.confluence.mod.common.init.block.ChestBlocks.*;
 import static org.confluence.mod.common.init.block.DecorativeBlocks.*;
 import static org.confluence.mod.common.init.block.FunctionalBlocks.*;
 import static org.confluence.mod.common.init.block.ModBlocks.*;
@@ -330,6 +330,23 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 DARK_AETHERIUM_BLOCK.get(),
                 CRISPY_HONEY_BLOCK.get(),
 
+                GOLDEN_CHEST.get(),
+                DEATH_GOLDEN_CHEST.get(),
+                SHADOW_CHEST.get(),
+                FROZEN_CHEST.get(),
+                IVY_CHEST.get(),
+                WATER_CHEST.get(),
+                SKYWARE_CHEST.get(),
+                JUNGLE_CHEST.get(),
+                CORRUPTION_CHEST.get(),
+                CRIMSON_CHEST.get(),
+                HALLOWED_CHEST.get(),
+                ICE_CHEST.get(),
+                DESERT_CHEST.get(),
+                OCEAN_CHEST.get(),
+                UNIVERSE_CHEST.get(),
+                MECHANIC_SAFE_CHEST.get(),
+
                 ASPHALT_BLOCK.get(),
 
                 GRANITE.get(),
@@ -415,7 +432,10 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 
         tag(BlockTags.MINEABLE_WITH_AXE).add(
                 WOOD_STONE_SLATTED_BLOCKS.get(),
-                GOLDEN_CHEST.get(),
+                DEATH_WOODEN_CHEST.get(),
+                LIVING_WOOD_CHEST.get(),
+                SANDSTONE_CHEST.get(),
+                DUNGEON_CHEST.get(),
                 SPORE_ROOT_BLOCK.get(),
 
                 TRADITIONAL_DYNASTY_DOOR.get(),

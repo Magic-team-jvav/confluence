@@ -620,6 +620,12 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(7))
                 )
         );
+        add(TENpcEntities.DYE_TRADER.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/dye_trader"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(SwordItems.EXOTIC_SCIMITAR))
+                        .add(EmptyLootItem.emptyItem().setWeight(7))
+                )
+        );
         add(TEAnimals.DUCK.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/duck"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(FoodItems.RAW_DUCK).apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot())).apply(random0To1)

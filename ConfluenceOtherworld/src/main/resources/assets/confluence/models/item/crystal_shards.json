@@ -1,3 +1,6 @@
 {
-    "parent": "confluence:block/crystal_shards_blue"
+    "parent": "minecraft:item/generated",
+    "textures": {
+        "layer0": "confluence:item/materials/crystal_shards"
+    }
 }

@@ -98,9 +98,7 @@ public final class ItemEvents {
     public static void ammoData(GunEvent.AmmoDataEvent event) {
         Player player = event.getPlayer();
         float velocityModify = (float) player.getAttributeValue(TCAttributes.getRangedVelocity());
-        float damageModify = (float) player.getAttributeValue(TCAttributes.getRangedDamage());
         float knockbackModify = (float) player.getAttributeValue(Attributes.ATTACK_KNOCKBACK);
-        float criticalModify = (float) player.getAttributeValue(TCAttributes.getCriticalChance());
 
         if (event.getGun() instanceof ManaGunItem manaGunItem) {
             event.setDamage(manaGunItem.getDamage());
@@ -112,9 +110,7 @@ public final class ItemEvents {
         }
 
         event.setVelocity(event.getVelocity() * velocityModify);
-        event.setDamage(event.getDamage() * damageModify);
         event.setKnockback(event.getKnockback() * knockbackModify);
-        event.setCritical(event.getCritical() * criticalModify);
     }
 
     @SubscribeEvent

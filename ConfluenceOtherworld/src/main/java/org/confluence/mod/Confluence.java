@@ -8,10 +8,10 @@ import net.minecraft.world.level.GameRules;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.component.prefix.ModPrefix;
@@ -27,7 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Mod(Confluence.MODID)
-public class Confluence {
+public final class Confluence {
     public static final String MODID = ConfluenceMagicLib.CONFLUENCE_ID;
     public static final Logger LOGGER = LoggerFactory.getLogger("Confluence");
     public static GameRules.Key<GameRules.IntegerValue> SPREADABLE_CHANCE;
@@ -35,7 +35,7 @@ public class Confluence {
     public Confluence(IEventBus eventBus, ModContainer container) {
         StartupConfigs.register(container);
         CommonConfigs.register(container);
-        if (FMLEnvironment.dist.isClient()) {
+        if (LibUtils.isPhysicalClient()) {
             ClientConfigs.register(container);
             container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
         }

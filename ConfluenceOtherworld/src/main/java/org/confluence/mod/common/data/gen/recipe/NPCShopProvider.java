@@ -80,8 +80,6 @@ public class NPCShopProvider extends AbstractRecipeProvider {
         MomentLock bloodMoonLock = new MomentLock(TMMoments.BLOOD_MOON.getKey());
         EnvironmentLock ectoMistLock = new EnvironmentLock(EnvironmentLevelAccess.matcher(null, null, true));
         BiomeLock glowingMushroomLock = BiomeLock.of(ModBiomes.GLOWING_MUSHROOM);
-        BiomeLock theCrimsonLock = BiomeLock.of(ModTags.Biomes.THE_CRIMSON);
-        BiomeLock theCorruptionLock = BiomeLock.of(ModTags.Biomes.THE_CORRUPTION);
         BiomeLock theHallowLock = BiomeLock.of(ModTags.Biomes.THE_HALLOW);
         BiomeLock snowyLikeLock = BiomeLock.of(Tags.Biomes.IS_SNOWY, Tags.Biomes.IS_ICY);
         BiomeLock jungleLikeLock = BiomeLock.of(Tags.Biomes.IS_JUNGLE, Tags.Biomes.IS_LUSH);
@@ -93,7 +91,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
         PositionLock surfaceThroughUltraLock = PositionLock.ofY(MinMaxBounds.Ints.between(OverworldUtils.getSurfaceY(), OverworldUtils.getUltraY()));
         PositionLock surfaceThroughSpaceLock = PositionLock.ofY(MinMaxBounds.Ints.between(OverworldUtils.getSurfaceY(), OverworldUtils.getSpaceY()));
         PositionLock spaceThroughUltraLock = PositionLock.ofY(MinMaxBounds.Ints.between(OverworldUtils.getSpaceY(), OverworldUtils.getUltraY()));
-        ITradeLock notEvilBiomes = ITradeLock.or(theCorruptionLock, theCrimsonLock, theHallowLock).invert();
+        ITradeLock notEvilBiomes = ITradeLock.or(BiomeLock.of(ModTags.Biomes.THE_CORRUPTION), BiomeLock.of(ModTags.Biomes.THE_CRIMSON), theHallowLock).invert();
 
         TradeProperties hardmode = TradeProperties.builder().setLock(hardmodeLock).build();
         TradeProperties halloweens = TradeProperties.builder().setLock(DateLock.HALLOWEENS).build();
@@ -277,11 +275,11 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                                 .build(),
                         ImmutableMap.<ItemStack, ITradeLock>builder()
                                 .put(QuestedFishes.AMANITA_FUNGIFIN.toStack(), glowingMushroomLock)
-                                .put(QuestedFishes.BLOODY_MANOWAR.toStack(), theCrimsonLock)
-                                .put(QuestedFishes.ICHORFISH.toStack(), ITradeLock.and(theCrimsonLock))
-                                .put(QuestedFishes.CURSEDFISH.toStack(), ITradeLock.and(theCorruptionLock))
-                                .put(QuestedFishes.EATER_OF_PLANKTON.toStack(), theCorruptionLock)
-                                .put(QuestedFishes.INFECTED_SCABBARDFISH.toStack(), theCorruptionLock)
+                                .put(QuestedFishes.BLOODY_MANOWAR.toStack(), theCrimsonWorldLock)
+                                .put(QuestedFishes.ICHORFISH.toStack(), theCrimsonWorldLock)
+                                .put(QuestedFishes.CURSEDFISH.toStack(), theCorruptionWorldLock)
+                                .put(QuestedFishes.EATER_OF_PLANKTON.toStack(), theCorruptionWorldLock)
+                                .put(QuestedFishes.INFECTED_SCABBARDFISH.toStack(), theCorruptionWorldLock)
                                 .put(QuestedFishes.FISHRON.toStack(), ITradeLock.and(snowyLikeLock, caveThroughSurfaceLock))
                                 .put(QuestedFishes.MUTANT_FLINXFIN.toStack(), ITradeLock.and(snowyLikeLock, caveThroughSurfaceLock))
                                 .put(QuestedFishes.PENGFISH.toStack(), ITradeLock.and(snowyLikeLock, surfaceThroughUltraLock))

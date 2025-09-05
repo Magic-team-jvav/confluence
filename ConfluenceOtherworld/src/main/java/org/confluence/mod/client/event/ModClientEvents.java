@@ -299,7 +299,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(BLOOD_RAIN_PROJECTILE.get(), context -> new RainProjectileRenderer(context, RainProjectileRenderer.BLOOD_RAIN));
         event.registerEntityRenderer(RAIN_CLOUD_PROJECTILE.get(), context -> new GeoNegativeVolumeRenderer<>(context, new RainCloudProjectileModel(), false, 2, -0.2F));
         event.registerEntityRenderer(RAIN_PROJECTILE.get(), context -> new RainProjectileRenderer(context, RainProjectileRenderer.RAIN));
-
+        event.registerEntityRenderer(STORM_SPEAR_SHOT_PROJECTILE.get(), NoopRenderer::new); // todo 模型
 
         event.registerEntityRenderer(HOTLINE_FISHING_HOOK.get(), HotlineFishingHookRenderer::new);
         event.registerEntityRenderer(BASE_FISHING_HOOK.get(), BaseFishingHookRenderer::new);

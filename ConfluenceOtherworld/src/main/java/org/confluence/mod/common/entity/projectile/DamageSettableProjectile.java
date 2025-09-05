@@ -11,6 +11,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 
@@ -68,6 +69,12 @@ public abstract class DamageSettableProjectile extends Projectile {
 
     public float getDefaultVelocity() {
         return entityData.get(DATA_DEFAULT_VELOCITY);
+    }
+
+    @Override
+    public Vec3 getMovementToShoot(double x, double y, double z, float velocity, float inaccuracy) {
+        setDefaultVelocity(velocity);
+        return super.getMovementToShoot(x, y, z, velocity, inaccuracy);
     }
 
     @Override

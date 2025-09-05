@@ -5,15 +5,18 @@ import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -27,6 +30,7 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.CustomRarityItem;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.util.ModUtils;
 import software.bernie.geckolib.animatable.GeoItem;
@@ -46,12 +50,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
 
+@SuppressWarnings("unused")
 public abstract class AbstractLanceItem extends CustomRarityItem implements GeoItem {
     public static final String LAST_ATTACK_TIME_KEY = "confluence:last_attack_time";
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-    private final int attackDuration;
-    private final int attackInterval;
-    private final List<Keyframe<MathValue>> keyframes;
+    protected final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    protected final int attackDuration;
+    protected final int attackInterval;
+    protected final List<Keyframe<MathValue>> keyframes;
 
     /**
      * @param attackDuration 攻击持续时间，值越大攻击时间越长
@@ -85,9 +90,12 @@ public abstract class AbstractLanceItem extends CustomRarityItem implements GeoI
         if (entity.level() instanceof ServerLevel level && entity.level().getGameTime() - LibUtils.getItemStackNbtNoCopy(stack).getLong(LAST_ATTACK_TIME_KEY) > attackDuration) {
             LibUtils.updateItemStackNbt(stack, tag -> tag.putLong(LAST_ATTACK_TIME_KEY, entity.level().getGameTime()));
             triggerAnim(entity, GeoItem.getOrAssignId(stack, level), "lance", "use");
+            onStartSting(stack, level, entity);
         }
         return true;
     }
+
+    protected void onStartSting(ItemStack stack, ServerLevel level, LivingEntity owner) {}
 
     @Override
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
@@ -102,34 +110,48 @@ public abstract class AbstractLanceItem extends CustomRarityItem implements GeoI
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
         if (isSelected && level instanceof ServerLevel serverLevel && entity instanceof LivingEntity owner) {
-            long gameTime = entity.level().getGameTime();
-            long tickCount = gameTime - LibUtils.getItemStackNbtNoCopy(stack).getLong(LAST_ATTACK_TIME_KEY);
+            long gameTime = owner.level().getGameTime();
+            CompoundTag tag = LibUtils.getItemStackNbtNoCopy(stack);
+            long tickCount = gameTime - tag.getLong(LAST_ATTACK_TIME_KEY);
             if (tickCount <= attackDuration && (attackInterval <= 1 || gameTime % attackInterval == 0)) {
-                Vec3 viewVector = entity.getViewVector(1.0F);
-                Vec3 position = entity.position().add(0, 1, 0);
+                Vec3 viewVector = owner.getViewVector(1.0F);
+                Vec3 position = owner.position().add(0, 1, 0);
                 Vec3 startVec = position.add(viewVector.scale(-0.5));
                 Vec3 endVec = position.add(viewVector.scale(getDistance(tickCount, owner)));
                 AABB boundingBox = new AABB(startVec, endVec);
 
-                for (Entity victim : level.getEntities(entity, boundingBox, target -> canHitEntity(target, owner))) {
+                for (Entity victim : level.getEntities(owner, boundingBox, target -> canHitEntity(target, owner))) {
                     AABB aabb = victim.getBoundingBox().inflate(0.3);
                     if (aabb.clip(startVec, endVec).isPresent()) {
                         owner.setLastHurtMob(victim);
                         if (victim instanceof PartEntity<?> partEntity) {
                             victim = partEntity.getParent();
                         }
-                        DamageSource damageSource = getDamageSource(serverLevel, owner);
-                        onHitEntity(damageSource, entity, owner, victim);
-                        EnchantmentHelper.doPostAttackEffects(serverLevel, victim, damageSource);
+                        onHitEntity(stack, serverLevel, owner, victim);
                     }
                 }
+                onStingTick(stack, serverLevel, owner, endVec);
             }
         }
     }
 
-    protected abstract DamageSource getDamageSource(ServerLevel level, LivingEntity owner);
+    protected abstract void onHitEntity(DamageSource damageSource, LivingEntity owner, Entity victim);
 
-    protected abstract void onHitEntity(DamageSource damageSource, Entity entity, LivingEntity living, Entity victim);
+    protected DamageSource getDamageSource(ServerLevel level, LivingEntity owner) {
+        return ModDamageTypes.of(level, DamageTypes.STING, owner);
+    }
+
+    protected void onHitEntity(ItemStack stack, ServerLevel level, LivingEntity owner, Entity victim) {
+        DamageSource damageSource = getDamageSource(level, owner);
+        onHitEntity(damageSource, owner, victim);
+        EnchantmentHelper.doPostAttackEffects(level, victim, damageSource);
+    }
+
+    protected void onStingTick(ItemStack stack, ServerLevel level, LivingEntity owner, Vec3 tipPos) {}
+
+    protected boolean hurtVictim(DamageSource damageSource, LivingEntity owner, Entity victim) {
+        return victim.hurt(damageSource, (float) owner.getAttributeValue(Attributes.ATTACK_DAMAGE));
+    }
 
     protected boolean canHitEntity(Entity target, LivingEntity owner) {
         return ModUtils.canHitEntity(target, owner);
@@ -178,9 +200,10 @@ public abstract class AbstractLanceItem extends CustomRarityItem implements GeoI
         });
     }
 
-    public static ItemAttributeModifiers entityInteractionRange(float extra) {
+    public static ItemAttributeModifiers attributes(float extraRange, float extraDamage) {
         return ItemAttributeModifiers.builder()
-                .add(Attributes.ENTITY_INTERACTION_RANGE, new AttributeModifier(ModItems.BASE_ENTITY_INTERACTION_RANGE_ID, extra, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+                .add(Attributes.ENTITY_INTERACTION_RANGE, new AttributeModifier(ModItems.BASE_ENTITY_INTERACTION_RANGE_ID, extraRange, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
+                .add(Attributes.ATTACK_DAMAGE, new AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID, extraDamage, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND)
                 .build();
     }
 

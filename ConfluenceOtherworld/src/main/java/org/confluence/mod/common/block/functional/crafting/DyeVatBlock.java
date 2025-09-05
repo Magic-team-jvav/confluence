@@ -29,14 +29,14 @@ public class DyeVatBlock extends HorizontalDirectionalWithHorizontalTwoPartBlock
     private static final VoxelShape[] BASE_SHAPES = new VoxelShape[]{BASE_SHAPE_SOUTH, BASE_SHAPE_WEST, BASE_SHAPE_NORTH, BASE_SHAPE_EAST};
     private static final VoxelShape[] RIGHT_SHAPES = new VoxelShape[]{RIGHT_SHAPE_SOUTH, RIGHT_SHAPE_WEST, RIGHT_SHAPE_NORTH, RIGHT_SHAPE_EAST};
 
+    public DyeVatBlock() {
+        super(Properties.ofFullCopy(Blocks.BARREL));
+    }
+
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         int index = state.getValue(FACING).get2DDataValue();
         return state.getValue(PART).isBase() ? BASE_SHAPES[index] : RIGHT_SHAPES[index];
-    }
-
-    public DyeVatBlock() {
-        super(Properties.ofFullCopy(Blocks.BARREL));
     }
 
     @Override

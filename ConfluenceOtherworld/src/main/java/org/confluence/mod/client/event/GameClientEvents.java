@@ -124,7 +124,7 @@ public final class GameClientEvents {
             ClientPacketHandler.reset();
             CompatibilityHandler.reset();
             DropletsHandler.clear();
-            EctoMistHelper.isGraveyard = false;
+            EctoMistHelper.effectiveTombstones = 0;
         } else {
             ClientUtils.swordProjectileHandle(minecraft, player);
             HookThrowingHandler.handle(player);

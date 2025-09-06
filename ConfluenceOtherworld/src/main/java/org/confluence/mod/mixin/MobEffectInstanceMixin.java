@@ -6,6 +6,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.effect.MobEffectInstance;
 import org.confluence.mod.mixed.IMobEffectInstance;
+import org.confluence.mod.util.ModUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -54,6 +55,8 @@ public abstract class MobEffectInstanceMixin implements IMobEffectInstance {
     private void merge(MobEffectInstance other, CallbackInfoReturnable<Boolean> cir) {
         if (!IMobEffectInstance.of(other).confluence$isEnabled()) {
             confluence$setEnabled(false);
+        } else if (!confluence$isEnabled() && !ModUtils.isSwitchableEffect(other)) {
+            confluence$setEnabled(true);
         }
     }
 }

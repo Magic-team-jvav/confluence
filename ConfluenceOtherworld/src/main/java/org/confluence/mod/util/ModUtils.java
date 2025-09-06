@@ -48,9 +48,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.neoforged.neoforge.common.NeoForge;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.api.event.EffectSwitchableCheckEvent;
 import org.confluence.mod.common.block.common.AetheriumCauldronBlock;
 import org.confluence.mod.common.block.common.HoneyCauldronBlock;
 import org.confluence.mod.common.component.LootComponent;
@@ -357,7 +359,9 @@ public final class ModUtils {
     }
 
     public static boolean isSwitchableEffect(MobEffectInstance instance) {
-        return instance.getEffect().value().isBeneficial();
+        MobEffect effect = instance.getEffect().value();
+        boolean switchable = effect == TCEffects.GRAVITATION.get() ? instance.getAmplifier() <= 0 : effect.isBeneficial();
+        return NeoForge.EVENT_BUS.post(new EffectSwitchableCheckEvent(instance, switchable)).isSwitchable();
     }
 
     public static boolean switchFunction(ItemStack carried, ItemStack onSlot, Player player) {

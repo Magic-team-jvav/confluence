@@ -37,6 +37,7 @@ import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.ManaStorage;
+import org.confluence.mod.common.data.map.GamePhase2AttributeModifiers;
 import org.confluence.mod.common.data.map.LivingInvulnerableEffects;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.data.saved.NPCSpawner;
@@ -426,6 +427,10 @@ public final class LivingEntityEvents {
                     mob.level().addFreshEntity(goldenSlime);
                 }
             }
+        }
+
+        if (!event.isCanceled()) {
+            GamePhase2AttributeModifiers.applyModifiers(mob);
         }
     }
 

@@ -29,6 +29,7 @@ public class ModDataMapProvider extends DataMapProvider {
         FurnaceFuelSubProvider.gather(() -> builder(NeoForgeDataMaps.FURNACE_FUELS));
         LivingInvulnerableEffectsSubProvider.gather(builder(ModDataMaps.LIVING_INVULNERABLE_EFFECTS, LivingInvulnerableEffectsSubProvider.Builder::new), provider);
         BlockBreakSpawnsSubProvider.gather(builder(ModDataMaps.BLOCK_BREAK_SPAWNS, BlockBreakSpawnsSubProvider.Builder::new), provider);
+        GamePhase2AttributeModifiersSubProvider.gather(builder(ModDataMaps.GAME_PHASE_2_ATTRIBUTE_MODIFIERS, GamePhase2AttributeModifiersSubProvider.Builder::new));
     }
 
     @SuppressWarnings("unchecked")

@@ -12,8 +12,7 @@ import net.minecraft.world.level.block.Block;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.registries.datamaps.DataMapType;
-import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
+import net.neoforged.neoforge.registries.datamaps.*;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.data.map.*;
@@ -35,6 +34,14 @@ public final class ModDataMaps {
     public static final DataMapType<EntityType<?>, ImmunityDataMap> IMMUNITY = register("immunity", Registries.ENTITY_TYPE, ImmunityDataMap.CODEC, true);
     public static final DataMapType<EntityType<?>, BugNetEntityToItem> BUG_NET_ENTITY_TO_ITEM = register("bug_net_entity_to_item", Registries.ENTITY_TYPE, BugNetEntityToItem.CODEC, false);
     public static final DataMapType<EntityType<?>, LivingInvulnerableEffects> LIVING_INVULNERABLE_EFFECTS = register("living_invulnerable_effects", Registries.ENTITY_TYPE, LivingInvulnerableEffects.CODEC, true);
+    public static final AdvancedDataMapType<EntityType<?>, GamePhase2AttributeModifiers, GamePhase2AttributeModifiers.Remover> GAME_PHASE_2_ATTRIBUTE_MODIFIERS = register(
+            "game_phase_2_attribute_modifiers",
+            Registries.ENTITY_TYPE,
+            GamePhase2AttributeModifiers.CODEC,
+            GamePhase2AttributeModifiers.Remover.CODEC,
+            new GamePhase2AttributeModifiers.Merger(),
+            false
+    );
     public static final DataMapType<Block, BlockBreakSpawns> BLOCK_BREAK_SPAWNS = register("block_break_spawns", Registries.BLOCK, BlockBreakSpawns.CODEC, false);
 
     private static <R, T> DataMapType<R, T> register(String path, ResourceKey<Registry<R>> resourceKey, Codec<T> codec, boolean synced) {
@@ -43,6 +50,19 @@ public final class ModDataMaps {
         DataMapType<R, T> type = builder.build();
         types.add(type);
         return type;
+    }
+
+    private static <R, T, VR extends DataMapValueRemover<R, T>> AdvancedDataMapType<R, T, VR> register(String path, ResourceKey<Registry<R>> resourceKey, Codec<T> codec, Codec<VR> removerCodec, @Nullable DataMapValueMerger<R, T> merger, boolean synced) {
+        AdvancedDataMapType.Builder<T, R, VR> builder = AdvancedDataMapType.builder(Confluence.asResource(path), resourceKey, codec).remover(removerCodec);
+        if (merger != null) builder.merger(merger);
+        if (synced) builder.synced(codec, false);
+        AdvancedDataMapType<R, T, VR> type = builder.build();
+        types.add(type);
+        return type;
+    }
+
+    private static <R, T, VR extends DataMapValueRemover<R, T>> AdvancedDataMapType<R, T, VR> register(String path, ResourceKey<Registry<R>> resourceKey, Codec<T> codec, Codec<VR> removerCodec, boolean synced) {
+        return register(path, resourceKey, codec, removerCodec, null, synced);
     }
 
     @SubscribeEvent

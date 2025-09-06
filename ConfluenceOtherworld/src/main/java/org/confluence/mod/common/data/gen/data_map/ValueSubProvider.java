@@ -704,7 +704,7 @@ public final class ValueSubProvider {
                 .add(TCItems.STAR_VEIL, gold2)
                 .add(TCItems.STEP_STOOL, 25000)
                 .add(TCItems.STINGER_NECKLACE, 30000)
-                .add(TCItems.STOPWATCH, 50000)
+                .add(TCItems.STOPWATCH, 10000)
                 .add(TCItems.SUN_STONE, 60000)
                 .add(TCItems.SWEETHEART_NECKLACE, gold2)
                 .add(TCItems.TABI, 30000)
@@ -1025,7 +1025,7 @@ public final class ValueSubProvider {
                 .add(PotionItems.WORMHOLE_POTION, silver2);
         appender.create()
                 .add(Items.ENCHANTED_GOLDEN_APPLE, silver50)
-                .add(FoodItems.PAD_THAI, 5500)
+                .add(FoodItems.PAD_THAI, 1100)
                 .add(FoodItems.HONEYFIN, silver5 + silver10);
         appender.create()
                 .add(PaintItems.PAINTBRUSH, silver20)

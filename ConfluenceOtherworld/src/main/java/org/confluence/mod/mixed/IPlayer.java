@@ -14,6 +14,10 @@ public interface IPlayer extends SelfGetter<Player> {
 
     ItemStack confluence$getCurrentBait();
 
+    void confluence$setCouldDamageEnvironment(boolean could);
+
+    boolean confluence$isCouldDamageEnvironment();
+
     static IPlayer of(Player player) {
         return (IPlayer) player;
     }

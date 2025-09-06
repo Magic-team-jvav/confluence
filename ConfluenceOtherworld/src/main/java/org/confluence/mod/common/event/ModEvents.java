@@ -227,6 +227,8 @@ public final class ModEvents {
         event.register(AccessoryItems.SPECTRE$GOGGLES);
         event.register(AccessoryItems.PAINT$SPRAYER);
         event.register(AccessoryItems.CLOTHIER$KILLER);
+        event.register(AccessoryItems.CRITTER$COMPANIONSHIP);
+        event.register(AccessoryItems.PLANTS$PROTECTION);
     }
 
     @SubscribeEvent

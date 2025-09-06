@@ -40,12 +40,9 @@ public record GamePhase2AttributeModifiers(Map<GamePhase, AttributeModifiersValu
 
     public AttributeModifiersValue get(GamePhase gamePhase) {
         AttributeModifiersValue value = map.get(gamePhase);
-        if (value != null) return value;
-        Optional<GamePhase> min = map.keySet().stream()
-                .filter(gamePhase1 -> !gamePhase1.isAtLeast(gamePhase))
-                .max(Comparator.comparingInt(GamePhase::getOrder));
-        if (min.isEmpty()) return AttributeModifiersValue.EMPTY;
-        return map.getOrDefault(min.get(), AttributeModifiersValue.EMPTY);
+        return value == null ? map.keySet().stream().filter(gamePhase::isAboveThan)
+                .max(Comparator.comparingInt(GamePhase::getOrder))
+                .map(map::get).orElse(AttributeModifiersValue.EMPTY) : value;
     }
 
     public static void applyModifiers(LivingEntity living) {

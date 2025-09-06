@@ -10,15 +10,15 @@ import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.terra_curio.common.item.IFunctionCouldEnable;
 
-public class EncumberingStoneItem extends TooltipItem implements IFunctionCouldEnable {
-    public EncumberingStoneItem() {
-        super(new Properties().stacksTo(1), ModRarity.BLUE, getTooltipsFromString("encumbering_stone", 3, ChatFormatting.GRAY));
+public class GuideToCritterCompanionshipItem extends TooltipItem implements IFunctionCouldEnable {
+    public GuideToCritterCompanionshipItem() {
+        super(new Properties().stacksTo(1), ModRarity.BLUE, getTooltipsFromString("guide_to_critter_companionship", 2, ChatFormatting.GRAY));
     }
 
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
         if (entity instanceof IServerPlayer serverPlayer) {
-            serverPlayer.confluence$setCouldPickupItem(!isEnabled(stack));
+            serverPlayer.confluence$setCouldHurtCritter(!isEnabled(stack));
         }
     }
 

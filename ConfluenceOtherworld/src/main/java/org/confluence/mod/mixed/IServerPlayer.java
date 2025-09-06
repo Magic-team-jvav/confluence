@@ -12,6 +12,10 @@ public interface IServerPlayer extends SelfGetter<ServerPlayer> {
 
     boolean confluence$chunkPosChanged();
 
+    void confluence$setCouldHurtCritter(boolean could);
+
+    boolean confluence$isCouldHurtCritter();
+
     static IServerPlayer of(ServerPlayer player) {
         return (IServerPlayer) player;
     }

@@ -5,6 +5,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
@@ -32,6 +33,7 @@ import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.item.common.BaseAxeItem;
 import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
 import org.confluence.mod.common.worldgen.secret_seed.NoTraps;
+import org.confluence.mod.mixed.IPlayer;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
 import org.confluence.terra_curio.util.TCUtils;
 
@@ -92,17 +94,22 @@ public final class LevelEvents {
 
     @SubscribeEvent
     public static void block$Break(BlockEvent.BreakEvent event) {
-        if (!(event.getPlayer() instanceof ServerPlayer serverPlayer)) return;
-        BlockState blockState = event.getState();
-
-        if (AltarBlock.hurtPlayerIfBrokenNotAllowed(serverPlayer, blockState)) {
+        Player player = event.getPlayer();
+        BlockState state = event.getState();
+        if (!IPlayer.of(player).confluence$isCouldDamageEnvironment() && state.is(ModTags.Blocks.ENVIRONMENTAL_PRESERVATION)) {
             event.setCanceled(true);
             return;
         }
+        if (player instanceof ServerPlayer serverPlayer) {
+            if (AltarBlock.hurtPlayerIfBrokenNotAllowed(serverPlayer, state)) {
+                event.setCanceled(true);
+                return;
+            }
 
-        BlockPos pos = event.getPos();
-        NoTraps.dropBombWhenLeavesDestroy(serverPlayer, blockState, pos);
-        BoulderWorld.createBoulderWhenBlockDestroy(serverPlayer, blockState, pos);
-        BlockBreakSpawns.spawn(serverPlayer.serverLevel(), pos, blockState);
+            BlockPos pos = event.getPos();
+            NoTraps.dropBombWhenLeavesDestroy(serverPlayer, state, pos);
+            BoulderWorld.createBoulderWhenBlockDestroy(serverPlayer, state, pos);
+            BlockBreakSpawns.spawn(serverPlayer.serverLevel(), pos, state);
+        }
     }
 }

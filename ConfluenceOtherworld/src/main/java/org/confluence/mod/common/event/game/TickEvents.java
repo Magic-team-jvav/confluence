@@ -5,6 +5,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameRules;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -24,6 +25,7 @@ import org.confluence.mod.common.entity.FallingStarItemEntity;
 import org.confluence.mod.common.item.fishing.AbstractFishingPole;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
 import org.confluence.mod.common.worldgen.structure.DungeonStructure;
+import org.confluence.mod.mixed.IPlayer;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.util.AchievementUtils;
@@ -76,17 +78,22 @@ public final class TickEvents {
 
     @SubscribeEvent
     public static void playerTick$Post(PlayerTickEvent.Post event) {
-        if (event.getEntity() instanceof ServerPlayer player) {
-            ServerLevel level = player.serverLevel();
-            IServerPlayer.of(player).confluence$setCouldPickupItem(true);
-            PlayerUtils.regenerateMana(player);
-            ExtraInventory.of(player).sync(player);
-            AchievementUtils.youCanDoIt(player, level);
-            AchievementUtils.quietNeighborhood(player, level);
-            AchievementUtils.aRareRealm(player, level);
-            TheConstant.applyDarkness(player, level);
-            DungeonStructure.checkSkeletronDefeated(player, level);
-            ChunkDropletsData.syncDroplets(player);
+        if (event.getEntity() instanceof Player player) {
+            if (player instanceof ServerPlayer serverPlayer) {
+                ServerLevel level = serverPlayer.serverLevel();
+                IServerPlayer iServerPlayer = IServerPlayer.of(serverPlayer);
+                iServerPlayer.confluence$setCouldPickupItem(true);
+                iServerPlayer.confluence$setCouldHurtCritter(true);
+                PlayerUtils.regenerateMana(serverPlayer);
+                ExtraInventory.of(serverPlayer).sync(serverPlayer);
+                AchievementUtils.youCanDoIt(serverPlayer, level);
+                AchievementUtils.quietNeighborhood(serverPlayer, level);
+                AchievementUtils.aRareRealm(serverPlayer, level);
+                TheConstant.applyDarkness(serverPlayer, level);
+                DungeonStructure.checkSkeletronDefeated(serverPlayer, level);
+                ChunkDropletsData.syncDroplets(serverPlayer);
+            }
+            IPlayer.of(player).confluence$setCouldDamageEnvironment(true);
         }
 
         AbstractFishingPole.resetCurrentBait(event);

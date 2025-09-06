@@ -44,6 +44,8 @@ public abstract class ServerPlayerMixin implements IServerPlayer {
     private short confluence$bulldozer = 0;
     @Unique
     private ChunkPos confluence$lastChunkPosition;
+    @Unique
+    private boolean confluence$couldHurtCritter = false;
 
     @Override
     public void confluence$setCouldPickupItem(boolean enable) {
@@ -75,6 +77,16 @@ public abstract class ServerPlayerMixin implements IServerPlayer {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void confluence$setCouldHurtCritter(boolean could) {
+        this.confluence$couldHurtCritter = could;
+    }
+
+    @Override
+    public boolean confluence$isCouldHurtCritter() {
+        return confluence$couldHurtCritter;
     }
 
     @Inject(method = "checkMovementStatistics", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;isSprinting()Z"))

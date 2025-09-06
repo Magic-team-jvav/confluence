@@ -14,6 +14,7 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Slime;
@@ -187,6 +188,9 @@ public final class LivingEntityEvents {
                         2, 0.0, 0.5, 0.0, 0.1
                 );
             }
+        }
+        if (living instanceof Animal && damageSource.getEntity() instanceof IServerPlayer iPlayer && !iPlayer.confluence$isCouldHurtCritter()) {
+            event.setCanceled(true);
         }
     }
 

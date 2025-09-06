@@ -3,6 +3,7 @@ package org.confluence.mod.common.data.gen.tag;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -1389,6 +1390,29 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
             tag(ModTags.Blocks.CORRUPTED_DESERT_BLOCKS).add(EBONSANDSTONE.get(), HARDENED_EBONSAND_BLOCK.get(), MOISTENED_EBONSAND_BLOCK.get());
             tag(ModTags.Blocks.CORRUPTED_TUNDRA_BLOCKS).add(PURPLE_ICE.get(), PURPLE_PACKED_ICE.get());
         }
+        tag(ModTags.Blocks.ENVIRONMENTAL_PRESERVATION).add(
+                        Blocks.BAMBOO,
+                        Blocks.SHORT_GRASS, Blocks.TALL_GRASS,
+                        Blocks.FERN, Blocks.LARGE_FERN,
+                        Blocks.DEAD_BUSH,
+                        Blocks.SUGAR_CANE,
+                        Blocks.CHORUS_PLANT, Blocks.CHORUS_FLOWER,
+                        Blocks.SWEET_BERRY_BUSH,
+                        Blocks.NETHER_WART,
+                        Blocks.COCOA,
+                        Blocks.VINE, Blocks.GLOW_LICHEN,
+                        Blocks.RED_MUSHROOM, Blocks.BROWN_MUSHROOM,
+                        Blocks.WARPED_FUNGUS, Blocks.CRIMSON_FUNGUS,
+                        Blocks.ATTACHED_MELON_STEM, Blocks.ATTACHED_PUMPKIN_STEM,
+                        Blocks.MOSS_CARPET,
+                        Blocks.PINK_PETALS,
+                        Blocks.BIG_DRIPLEAF,
+                        Blocks.BIG_DRIPLEAF_STEM,
+                        Blocks.SMALL_DRIPLEAF
+                        // todo 剩下的植物
+                )
+                .addTags(BlockTags.FLOWERS, BlockTags.LEAVES, BlockTags.SAPLINGS, BlockTags.CROPS)
+                .addOptionalTag(ResourceLocation.fromNamespaceAndPath("twilightforest", "portal/decoration"));
         WaystonesHelper.blockTag(this::tag);
     }
 }

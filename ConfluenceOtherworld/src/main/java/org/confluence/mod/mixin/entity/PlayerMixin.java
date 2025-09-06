@@ -22,7 +22,9 @@ public abstract class PlayerMixin implements IPlayer {
     @Unique
     private FlailBall confluence$flailEntity;
     @Unique
-    private transient ItemStack confluence$currentBait = ItemStack.EMPTY;
+    private ItemStack confluence$currentBait = ItemStack.EMPTY;
+    @Unique
+    private boolean confluence$couldDamageEnvironment = true;
 
     @Override
     public void confluence$setFlailBall(FlailBall entity) {
@@ -42,6 +44,16 @@ public abstract class PlayerMixin implements IPlayer {
     @Override
     public ItemStack confluence$getCurrentBait() {
         return confluence$currentBait;
+    }
+
+    @Override
+    public void confluence$setCouldDamageEnvironment(boolean could) {
+        this.confluence$couldDamageEnvironment = could;
+    }
+
+    @Override
+    public boolean confluence$isCouldDamageEnvironment() {
+        return confluence$couldDamageEnvironment;
     }
 
     @Inject(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z"))

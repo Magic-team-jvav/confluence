@@ -13,11 +13,9 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.model.entity.projectile.FlailModel;
@@ -26,6 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
+// 搬运自1.20.1, 编写 by Viola & EDGtheXu, 搬运&修复 by MakerTechno.
 public class FlailRenderer extends EntityRenderer<FlailBall> {
     private static final ResourceLocation TEXTURE = Confluence.asResource("textures/entity/flail.png");
     protected final EntityModel<FlailBall> model;
@@ -41,6 +40,7 @@ public class FlailRenderer extends EntityRenderer<FlailBall> {
 
     @Override
     public boolean shouldRender(FlailBall entity, Frustum pCamera, double pCamX, double pCamY, double pCamZ) {
+        /* 实测发现存在渲染不到的情况，暂时仅通过是否有持有者判断渲染。TODO: 测试结束请再次认证有效性并还原代码
         if (super.shouldRender(entity, pCamera, pCamX, pCamY, pCamZ)) {
             return true;
         } else {
@@ -52,8 +52,11 @@ public class FlailRenderer extends EntityRenderer<FlailBall> {
             }
         }
         return false;
+        */
+
+        return entity.getOwner() != null;
     }
-    //TODO
+    // TODO: 原作者可能想通过这种方式获取一些贴图参数
     public BlockState getChain(FlailBall entity){
         return Blocks.CHAIN.defaultBlockState();
     }
@@ -64,123 +67,20 @@ public class FlailRenderer extends EntityRenderer<FlailBall> {
         return TEXTURE;
     }
 
-    //todo 屎山展示
-/*
-    @Override
-    public void render(FlailBall entity, float entityYaw, float partialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource multiBufferSource, int packedLight){
-        Entity owner = entity.getOwner();
-        if(owner == null) return;
-        //Vec3 start = new Vec3(offset * Mth.cos(radians), 0, offset * Mth.sin(radians));
-        Vec3 end = calculatePos(entity, owner);
-        entity.frameCount++;
-        Vec3 pt = entity.position().vectorTo(owner.position());
-        float roty2 = (float) Mth.wrapDegrees(Math.toDegrees(Mth.atan2(pt.x, pt.z)));
-        if(entity.getPhase() == FlailBall.PHASE_SPIN){
-            poseStack.pushPose();
-            poseStack.translate(end.x,end.y, end.z);
-            //poseStack.mulPose(Axis.YP.rotationDegrees(owner.getYRot()));
-            poseStack.mulPose(Axis.YN.rotationDegrees(owner.getYRot()));
-            //poseStack.mulPose(Axis.XP.rotation(angle+90));
-            //var ax = owner.getForward().multiply(1,0,1).add(0,1,0).toVector3f().rotateY(owner.getYRot()+90);
-            Matrix4f m4 = new Matrix4f()
-                    .translate(owner.position().add(0,1,0).toVector3f())
-                    .rotate(Axis.XN.rotationDegrees(angle+90))
-                    .translate(owner.position().add(0,1,0).toVector3f().mul(-1,-1,-1));
-            poseStack.mulPoseMatrix(m4);
-            //poseStack.mulPose(Axis.of(ax).rotationDegrees(angle+90));
-            //poseStack.translate(0,-0.5, 0);
-            //poseStack.mulPose(Axis.ZP.rotationDegrees((float) (entity.frameCount*0.5)));
-            model.renderToBuffer(poseStack, multiBufferSource.getBuffer(model.renderType(TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
-            poseStack.popPose();
-        }else {
-            poseStack.pushPose();
+    // 屎山展示，但是视觉上不舒服我删了。想看的去1.20翻源码去
 
-            poseStack.mulPose(Axis.YP.rotationDegrees(roty2 - 90.0F));
-            model.renderToBuffer(poseStack, multiBufferSource.getBuffer(model.renderType(TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
-
-            // model.renderToBuffer(poseStack, multiBufferSource.getBuffer(model.renderType(TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
-//            entity.setYRot(roty2);
-//            Confluence.LOGGER.info("{}", roty2);
-//            renderHook(entity, poseStack, multiBufferSource, packedLight);
-            poseStack.popPose();
-        }
-
-
-        // TODO: 链条
-        float scale = 0.5f;
-        float scaleXZ = 0.2F;
-        float uv = 0.25f;
-
-        poseStack.pushPose();
-        var consumer = multiBufferSource.getBuffer(chainType());
-        Matrix4f matrix4f = poseStack.last().pose();
-        Matrix3f matrix3f = poseStack.last().normal();
-        poseStack.scale(scaleXZ,scale,scaleXZ);
-
-        Vec3 dir;
-        if(entity.getPhase() == FlailBall.PHASE_SPIN) {
-            float yr =  owner.getYRot();
-            dir = end.subtract(1.5*Math.cos(yr),1,1.5*Math.sin(yr)) ;
-            poseStack.translate(end.x/scale,end.y/scale,end.z/scale);
-            poseStack.mulPose(Axis.YN.rotationDegrees(yr));
-            //poseStack.translate(-0.25/scale,0,-0.25/scale);
-            //var ax = owner.getForward().multiply(1,0,1).add(0,1,0).toVector3f().rotateY(owner.getYRot()+90);
-            poseStack.mulPose(Axis.XP.rotation(angle+90));
-            //poseStack.mulPose(Axis.of(ax).rotation(angle+90));
-
-        }else{
-            dir = owner.position().subtract(entity.position().add(0,1,0));
-
-        }
-
-        //poseStack.translate(0.5, 0, 0);
-
-        double distance = dir.length();
-        for (float i = 0; i < distance; i+=scale) {
-            poseStack.mulPose(Axis.YN.rotationDegrees(90));
-            poseStack.translate(-scaleXZ/2.0, scale, scaleXZ/2.0);
-            vertex(consumer, matrix4f, matrix3f, packedLight, 0.0F, 0, 0, uv);
-            vertex(consumer, matrix4f, matrix3f, packedLight, 1, 0, uv, uv);
-            vertex(consumer, matrix4f, matrix3f, packedLight, 1, 1, uv, 0);
-            vertex(consumer, matrix4f, matrix3f, packedLight, 0.0F, 1, 0, 0);
-        }
-
-
-        poseStack.popPose();
-
-    }
-    int factor = 1000;
-    double semiMajorAxis = 1.5;
-    double semiMinorAxis = 1.5;
-    double offsetY = semiMinorAxis / 2.0;
-    double xPos;
-    double yPos;
-    double zPos;
-    float angle;
-    float radians;
-    public Vec3 calculatePos(FlailBall flail, Entity owner){
-
-        angle = (float) (2 * Math.PI * flail.frameCount / factor);
-        float ownerYRot = owner.getYRot();
-        radians = (float) Math.toRadians(ownerYRot);
-        xPos = semiMajorAxis * Mth.cos(angle) * Mth.sin(radians) + 0.25 * Mth.sin(radians);
-        yPos = offsetY * Mth.sin(angle) + 1;
-        zPos = semiMajorAxis * Mth.cos(angle) * Mth.cos(radians) + 0.25 * Mth.cos(radians);
-        return new Vec3(xPos, yPos, -zPos);
-    }
-*/
-
-    float rotv = 0;
+    // 这几个变量干什么的？没用到啊？
+    /*float rotv = 0; // 线速度
     float rotva = 0.02f;//加速度
-    float dirInit;//丢出去时的朝向
+    float dirInit;//丢出去时的朝向*/
     @Override
     public void render(FlailBall entity, float entityYaw, float partialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource multiBufferSource, int packedLight) {
         var owner = (Player)entity.getOwner();
         if(owner==null)return;
 
         poseStack.pushPose();
-        rotv += rotv>5?0:rotva;
-        if(entity.frameCount==0)  dirInit = owner.getXRot();
+        /*rotv += rotv>5?0:rotva;*/
+        // if(entity.frameCount==0)  dirInit = owner.getXRot();
         entity.frameCount=entity.frameCount+5;
         float angle = (float) (entity.frameCount*2);
         float offsety = 0.25f;
@@ -223,7 +123,7 @@ public class FlailRenderer extends EntityRenderer<FlailBall> {
         float uv = 0.25f;
         poseStack.pushPose();
         var consumer = multiBufferSource.getBuffer(chainType());
-        Matrix4f matrix4f = poseStack.last().pose();
+        Matrix4f basePoseMatrix = poseStack.last().pose();
         PoseStack.Pose pose = poseStack.last();
         poseStack.scale(scaleXZ,scale,scaleXZ);
         double distance;
@@ -249,10 +149,10 @@ public class FlailRenderer extends EntityRenderer<FlailBall> {
         float preDistance = 0.3f;
         for (float i = 0f; i < distance/scaleXZ+0.5; i+=scale) {
             if(i>preDistance) {
-                vertex(consumer, matrix4f, pose, packedLight, 0.0F, 0, 0, uv);
-                vertex(consumer, matrix4f, pose, packedLight, 1, 0, uv, uv);
-                vertex(consumer, matrix4f, pose, packedLight, 1, 1, uv, 0);
-                vertex(consumer, matrix4f, pose, packedLight, 0.0F, 1, 0, 0);
+                vertex(consumer, basePoseMatrix, pose, packedLight, 0.0F, 0, 0, uv);
+                vertex(consumer, basePoseMatrix, pose, packedLight, 1, 0, uv, uv);
+                vertex(consumer, basePoseMatrix, pose, packedLight, 1, 1, uv, 0);
+                vertex(consumer, basePoseMatrix, pose, packedLight, 0.0F, 1, 0, 0);
             }
             poseStack.mulPose(Axis.YN.rotationDegrees(30));//每步旋转角
             poseStack.translate(-scaleXZ/2.0, scale, scaleXZ/2.0);//回正到中心

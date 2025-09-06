@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
-// 原作者：@viola
+//  编写 by viola  搬运&修正 by MakerTechno
 @ParametersAreNonnullByDefault
 public class FlailItem extends Item {
     public final float damage;
@@ -56,17 +56,19 @@ public class FlailItem extends Item {
 
     @Override
     public void releaseUsing(ItemStack stack, Level level, LivingEntity living, int timeCharged) {
-//        Confluence.LOGGER.info("releaseUsing {}",pLivingEntity);
         super.releaseUsing(stack, level, living, timeCharged);
         if (!(living instanceof IPlayer player)) return;
+
         FlailBall flail = player.confluence$getFlailBall();
         if (flail == null) return;
         int phase = flail.getPhase();
         Player owner = (Player) player;
+
         if (phase == FlailBall.PHASE_SPIN) {
+            float rotModify = owner.getItemInHand(InteractionHand.MAIN_HAND).is(this) ? -3 : 3;
             flail.setPhase(FlailBall.PHASE_THROWN);
             flail.setPos(flail.position().add(0, 1, 0));
-            Vec3 direction = Vec3.directionFromRotation(owner.getXRot() - 3, owner.getYRot() - 3).scale(3); // TODO: 发射速度，近战速度加成
+            Vec3 direction = Vec3.directionFromRotation(owner.getXRot() - 3, owner.getYRot() + rotModify).scale(3); // TODO: 发射速度，近战速度加成
             flail.setDeltaMovement(direction.add(owner.getDeltaMovement()));
         } else {
             flail.setPhase(FlailBall.PHASE_FORCE_RETRACT);

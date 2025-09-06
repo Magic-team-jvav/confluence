@@ -18,6 +18,7 @@ import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.item.flail.FlailItem;
 import org.confluence.mod.mixed.IPlayer;
 import org.confluence.mod.mixed.Immunity;
+import org.confluence.mod.util.ModUtils;
 import org.confluence.terraentity.api.entity.IOriented;
 import org.confluence.terraentity.mixin.accessor.EntityAccessor;
 import org.confluence.terraentity.utils.OBB;
@@ -28,7 +29,6 @@ public class FlailBall extends Projectile implements IOriented, Immunity {
     public long frameCount = 0;
     private final FlailItem item;
     private InteractionHand hand;
-    private Vec3 direction;
     public float offset;
     public float radians;
 
@@ -71,7 +71,7 @@ public class FlailBall extends Projectile implements IOriented, Immunity {
         int phase = getPhase();
         if(owner == null || owner.isRemoved()  // 没有owner
             || (!level().isClientSide() && item == null)  // 没有物品
-            || !level().isClientSide() && owner instanceof LivingEntity living && living.getItemInHand(hand).getItem() != item   // 切换物品
+            || (!level().isClientSide() && owner instanceof LivingEntity living && living.getItemInHand(hand).getItem() != item)   // 切换物品
             || position().distanceToSqr(owner.position()) >= 30 * 30){  //距离太远，自动消失的距离是固定的 TODO: 调整数值
             discard();
             if(owner instanceof IPlayer fp){
@@ -132,7 +132,7 @@ public class FlailBall extends Projectile implements IOriented, Immunity {
                         discard();
                     }
                     continue;
-                }
+                } else if (!ModUtils.canHitEntity(living, owner)) continue;
 
                 living.hurt(damageSources().mobAttack(owner instanceof LivingEntity lo ? lo : null), item.damage); // TODO: 不同阶段伤害不同
 //                living.knockback();

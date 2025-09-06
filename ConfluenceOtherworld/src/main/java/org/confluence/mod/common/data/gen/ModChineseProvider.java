@@ -594,10 +594,10 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.Mana", "魔力值");
         add("confluence.configuration.Armor", "护甲值");
         add("confluence.configuration.Health", "生命值");
-        add("confluence.configuration.Food", "饱食度");
+        add("confluence.configuration.Food", "饥饿值");
         add("confluence.configuration.terraStyleHealth", "泰拉样式生命值");
         add("confluence.configuration.terraStyleArmor", "泰拉样式护甲值");
-        add("confluence.configuration.terraStyleFood", "泰拉样式饱食度");
+        add("confluence.configuration.terraStyleFood", "泰拉样式饥饿值");
         add("confluence.configuration.healthStyle", "生命值样式");
         add("confluence.configuration.healthOffsetX", "生命值X轴偏移");
         add("confluence.configuration.healthOffsetY", "生命值Y轴偏移");
@@ -605,7 +605,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.manaOffsetX", "魔力值X轴偏移");
         add("confluence.configuration.manaOffsetY", "魔力值Y轴偏移");
         add("confluence.configuration.armorStyle", "护甲值样式");
-        add("confluence.configuration.foodStyle", "饱食度样式");
+        add("confluence.configuration.foodStyle", "饥饿值样式");
         add("confluence.configuration.armorStyle.legacy_horizontal", "护甲值样式:精致-水平");
         add("confluence.configuration.armorStyle.legacy_diagonal", "护甲值样式:精致-对角");
         add("confluence.configuration.armorStyle.legacy_vertical", "护甲值样式:精致-垂直");
@@ -614,8 +614,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.manaStyle.overlay", "魔力值样式:叠加");
         add("confluence.configuration.healthStyle.legacy", "生命值样式:精致");
         add("confluence.configuration.healthStyle.overlay", "生命值样式:叠加");
-        add("confluence.configuration.foodStyle.legacy", "饱食度样式:精致");
-        add("confluence.configuration.foodStyle.overlay", "饱食度样式:叠加");
+        add("confluence.configuration.foodStyle.legacy", "饥饿值样式:精致");
+        add("confluence.configuration.foodStyle.overlay", "饥饿值样式:叠加");
         add("confluence.configuration.leftEffectIcon", "左侧药水效果标识");
         add("confluence.configuration.extraInventoryButtonOffsetX", "额外物品栏按钮X轴偏移");
         add("confluence.configuration.extraInventoryButtonOffsetY", "额外物品栏按钮Y轴偏移");
@@ -650,10 +650,10 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.Mana.button", "魔力值");
         add("confluence.configuration.Armor.button", "护甲值");
         add("confluence.configuration.Health.button", "生命值");
-        add("confluence.configuration.Food.button", "饱食度");
+        add("confluence.configuration.Food.button", "饥饿值");
         add("confluence.configuration.manaStyle.tooltip", "魔力值样式");
         add("confluence.configuration.Mana.tooltip", "关于魔力值显示");
-        add("confluence.configuration.Food.tooltip", "关于饱食度显示");
+        add("confluence.configuration.Food.tooltip", "关于饥饿值显示");
         add("confluence.configuration.section.confluence.client.toml", "个人显示设定");
         add("confluence.configuration.section.confluence.common.toml", "游戏机制设定");
         add("confluence.configuration.leftEffectIcon.tooltip", "开启后，药水效果图标显示屏幕左侧");
@@ -4318,7 +4318,7 @@ public class ModChineseProvider extends LanguageProvider {
         addEffect(ModEffects.OBSIDIAN_SKIN.get(), "黑曜石皮", "对熔岩免疫");
         addEffect(ModEffects.COZY_FIRE.get(), "温馨之火", "生命再生速度略有提高");
         addEffect(ModEffects.BEWITCHED.get(), "着魔", "提高仆从数量上限");
-        addEffect(ModEffects.HUNGER_DELAYED.get(), "饥饿延缓", "延缓饱食度下降速度");
+        addEffect(ModEffects.HUNGER_DELAYED.get(), "饥饿延缓", "延缓饥饿值下降速度");
         addEffect(ModEffects.CHOKING.get(), "干噎", "你需要喝水！");
         addEffect(ModEffects.DELICIOUS.get(), "美味", "正面效果翻倍，负面效果减半");
         addEffect(ModEffects.LOVE.get(), "爱情", "你已坠入爱河！");

@@ -1094,7 +1094,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ArmorItems.CRYSTAL_ASSASSIN_CHESTPLATE.get(),
                 ArmorItems.CRYSTAL_ASSASSIN_LEGGINGS.get(),
                 ArmorItems.CRYSTAL_ASSASSIN_BOOTS.get(),
-                VanityArmorItems.ROBE.get(),
                 VanityArmorItems.TOP_HAT.get(),
                 VanityArmorItems.TUXEDO_SHIRT.get(),
                 VanityArmorItems.TUXEDO_PANTS.get(),

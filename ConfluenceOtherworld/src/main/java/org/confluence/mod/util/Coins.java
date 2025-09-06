@@ -7,8 +7,6 @@ import it.unimi.dsi.fastutil.objects.Object2IntSortedMap;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.common.CoinItem;
 
-import java.util.Objects;
-
 public final class Coins {
     private int copper;
     private int silver;
@@ -115,28 +113,29 @@ public final class Coins {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj == this) return true;
-        if (obj == null || obj.getClass() != this.getClass()) return false;
-        var that = (Coins) obj;
-        return this.copper == that.copper &&
+    public boolean equals(Object o) {
+        return o == this || (o instanceof Coins that &&
+                this.copper == that.copper &&
                 this.silver == that.silver &&
                 this.gold == that.gold &&
-                this.platinum == that.platinum;
+                this.platinum == that.platinum);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(copper, silver, gold, platinum);
+        int result = copper;
+        result = 31 * result + silver;
+        result = 31 * result + gold;
+        result = 31 * result + platinum;
+        return result;
     }
 
     @Override
     public String toString() {
-        return "Coins[" +
-                "copper=" + copper + ", " +
-                "silver=" + silver + ", " +
-                "golden=" + gold + ", " +
-                "platinum=" + platinum + ']';
+        return "Coins[copper=" + copper +
+                ", silver=" + silver +
+                ", golden=" + gold +
+                ", platinum=" + platinum + ']';
     }
 
     public static Coins createEmpty() {

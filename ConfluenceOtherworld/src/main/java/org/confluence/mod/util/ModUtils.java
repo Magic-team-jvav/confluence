@@ -354,6 +354,9 @@ public final class ModUtils {
         });
     }
 
+    /**
+     * 决定护士是否能治疗
+     */
     public static boolean isDebuff(MobEffectInstance instance) {
         return instance.getEffect().value().getCategory() == MobEffectCategory.HARMFUL && !instance.getCures().contains(ModEffects.CANNOT_REMOVE_BY_NURSE);
     }
@@ -364,8 +367,10 @@ public final class ModUtils {
         return NeoForge.EVENT_BUS.post(new EffectSwitchableCheckEvent(instance, switchable)).isSwitchable();
     }
 
+    /**
+     * 需要注意创造模式物品栏是仅客户端的，所以创造模式无法正常使用
+     */
     public static boolean switchFunction(ItemStack carried, ItemStack onSlot, Player player) {
-        // 需要注意创造模式物品栏是仅客户端的，所以创造模式无法正常使用
         if (carried.isEmpty() && onSlot.getItem() instanceof IFunctionCouldEnable couldEnable) {
             if (player instanceof ServerPlayer serverPlayer) {
                 couldEnable.cycleEnable(onSlot);

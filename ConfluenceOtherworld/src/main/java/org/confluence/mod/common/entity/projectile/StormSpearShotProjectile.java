@@ -15,6 +15,7 @@ import org.confluence.mod.common.item.lance.StormSpearItem;
 import org.confluence.mod.util.ModUtils;
 
 public class StormSpearShotProjectile extends DamageSettableProjectile {
+    private float rotation = 0;
     public StormSpearShotProjectile(EntityType<? extends DamageSettableProjectile> entityType, Level level) {
         super(entityType, level);
         setNoGravity(true);
@@ -23,6 +24,9 @@ public class StormSpearShotProjectile extends DamageSettableProjectile {
     @Override
     public void baseTick() {
         super.baseTick();
+
+        rotation += 100;
+        if (rotation >= 360) rotation -= 360;
 
         HitResult hitresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
         checkInsideBlocks();
@@ -45,7 +49,9 @@ public class StormSpearShotProjectile extends DamageSettableProjectile {
 
         if (tickCount > 200) discard();
     }
-
+    public float getRotation() {
+        return rotation;
+    }
     @Override
     protected boolean canHitEntity(Entity target) {
         return ModUtils.canHitEntity(target, getOwner());

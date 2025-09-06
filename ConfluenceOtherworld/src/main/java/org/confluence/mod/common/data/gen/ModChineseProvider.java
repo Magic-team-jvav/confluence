@@ -199,7 +199,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.failed_skull.0", "一只苦力怕被猪灵强制改造了身体，可以多次自爆。猪灵想用它作为入侵主世界的生物兵器，却被其意外逃脱");
         add("tooltip.item.confluence.ice_tofu_brick.0", "它现在不能吃了，但不妨碍它把你吃了");
         add("tooltip.item.confluence.pink_cola.0", "一瓶普通的粉色可乐，或许原来有一整箱？");
-        add("tooltip.item.confluence.dongdongs_flatbread.0", "刚在下界岩上考好的饼，快来尝尝吧！");
+        add("tooltip.item.confluence.dongdongs_flatbread.0", "刚在下界岩上烤好的饼，快来尝尝吧！");
         add("tooltip.item.confluence.boredoms_pact_falling_resolve.0", "「无聊之咒·陨志」");
         add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.1", "(Boredom's Pact - Falling Resolve)");
         add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.2", "           ");

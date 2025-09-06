@@ -49,8 +49,8 @@ public interface ModPrefix {
                 GUARDING = register("guarding", 2, 0, 0, 0, 0, 0, 1, 0.21F), // 守护
                 ARMORED = register("armored", 3, 0, 0, 0, 0, 0, 1, 0.3225F), // 装甲
                 WARDING = register("warding", 4, 0, 0, 0, 0, 0, 2, 0.44F), // 护佑
-                PRECISE = register("precise", 0, 0.02F, 0, 0, 0, 0, 1, 0.21F), // 精确
-                LUCKY = register("lucky", 0, 0.04F, 0, 0, 0, 0, 2, 0.44F), // 幸运
+                PRECISE = register("precise", 0, 0.03F, 0, 0, 0, 0, 1, 0.21F), // 精确
+                LUCKY = register("lucky", 0, 0.05F, 0, 0, 0, 0, 2, 0.44F), // 幸运
                 JAGGED = register("jagged", 0, 0, 0.01F, 0, 0, 0, 1, 0.1025F), // 锯齿
                 SPIKED = register("spiked", 0, 0, 0.02F, 0, 0, 0, 1, 0.21F), // 尖刺
                 ANGRY = register("angry", 0, 0, 0.03F, 0, 0, 0, 1, 0.3225F), // 愤怒

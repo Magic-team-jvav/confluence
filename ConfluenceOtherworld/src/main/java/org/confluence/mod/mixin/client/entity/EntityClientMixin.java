@@ -5,7 +5,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.NeutralMob;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.client.effect.GlowingHelper;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.mixed.IEntity;
@@ -16,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Entity.class)
-public abstract class EntityClientMixin implements SelfGetter<Entity>, IEntity {
+public abstract class EntityClientMixin implements IEntity {
     @Unique
     private Vec3 confluence$deathMotion;
 

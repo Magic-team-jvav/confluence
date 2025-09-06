@@ -253,7 +253,7 @@ public final class ClientUtils {
         if (entity instanceof Mob mob && mob.isNoAi()) {
             deathMotion = Vec3.ZERO;
         } else {
-            deathMotion = ((IEntity) (entity)).confluence$deathMotion();
+            deathMotion = IEntity.of(entity).confluence$deathMotion();
         }
         if (deathMotion == null) {
             deathMotion = entity.getDeltaMovement();
@@ -317,7 +317,7 @@ public final class ClientUtils {
                 }
             }
         } else if (renderer instanceof LivingEntityRenderer<?, ?> livingRenderer) {
-            ModelPart rootModelPart = ((ILivingEntityRenderer) livingRenderer).confluence$getRootModelPart();
+            ModelPart rootModelPart = ILivingEntityRenderer.of(livingRenderer).confluence$getRootModelPart();
             if (rootModelPart == null) return;
             AntiPushPoseStack poseStack = new AntiPushPoseStack();
 //            LivingEntityRendererAccessor rendererAccessor = (LivingEntityRendererAccessor) livingRenderer;

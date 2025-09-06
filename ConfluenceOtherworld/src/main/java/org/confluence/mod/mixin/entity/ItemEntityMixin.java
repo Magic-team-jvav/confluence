@@ -59,7 +59,7 @@ public abstract class ItemEntityMixin implements IItemEntity {
         if (level.isClientSide || self.isRemoved()) return;
         if (confluence$item_coolDown < 0) this.confluence$item_coolDown = 0;
 
-        if (confluence$item_coolDown == 0 && ((IEntity) self).confluence$isInShimmer()) {
+        if (confluence$item_coolDown == 0 && IEntity.of(self).confluence$isInShimmer()) {
             ShimmerItemTransmutationEvent.Pre pre = new ShimmerItemTransmutationEvent.Pre(self);
             if (NeoForge.EVENT_BUS.post(pre).isCanceled()) {
                 self.getItem().shrink(pre.getShrink());
@@ -98,7 +98,7 @@ public abstract class ItemEntityMixin implements IItemEntity {
         entity.setNoGravity(true);
         Vec3 motion = entity.getDeltaMovement();
         entity.setDeltaMovement(motion.x, y, motion.z);
-        ((IItemEntity) entity).confluence$item_setCoolDown(coolDown);
+        IItemEntity.of(entity).confluence$item_setCoolDown(coolDown);
         entity.setGlowingTag(true);
     }
 

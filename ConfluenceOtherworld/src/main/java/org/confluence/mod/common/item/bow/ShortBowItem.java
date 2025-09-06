@@ -28,7 +28,7 @@ public class ShortBowItem extends TerraBowItem {
 
     public static void applyToArrow(ItemStack itemStack, AbstractArrow arrow) {
         if (itemStack.getItem() instanceof ShortBowItem) {
-            ((IAbstractArrow) arrow).confluence$setShootFromShortBow(true);
+            IAbstractArrow.of(arrow).confluence$setShootFromShortBow(true);
         }
     }
 }

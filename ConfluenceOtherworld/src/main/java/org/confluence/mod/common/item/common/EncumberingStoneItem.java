@@ -2,7 +2,6 @@ package org.confluence.mod.common.item.common;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -18,8 +17,8 @@ public class EncumberingStoneItem extends TooltipItem implements IFunctionCouldE
 
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
-        if (entity instanceof ServerPlayer serverPlayer) {
-            ((IServerPlayer) serverPlayer).confluence$setCouldPickupItem(!isEnabled(stack, null));
+        if (entity instanceof IServerPlayer serverPlayer) {
+            serverPlayer.confluence$setCouldPickupItem(!isEnabled(stack, null));
         }
     }
 

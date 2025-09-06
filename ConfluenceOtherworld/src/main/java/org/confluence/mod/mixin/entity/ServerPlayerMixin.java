@@ -12,7 +12,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.stats.ServerStatsCounter;
 import net.minecraft.world.level.ChunkPos;
-import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.network.s2c.PlayerDeathInfoPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
@@ -25,7 +24,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ServerPlayer.class)
-public abstract class ServerPlayerMixin implements IServerPlayer, SelfGetter<ServerPlayer> {
+public abstract class ServerPlayerMixin implements IServerPlayer {
     @Shadow
     @Final
     private ServerStatsCounter stats;

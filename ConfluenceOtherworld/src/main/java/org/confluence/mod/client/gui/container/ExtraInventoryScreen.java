@@ -174,7 +174,7 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
             }
         });
         if (isInventoryScreen) {
-            ((IInventoryScreen) screen).confluence$setExtraButton(extraInventoryButton);
+            IInventoryScreen.of((InventoryScreen) screen).confluence$setExtraButton(extraInventoryButton);
         }
         return extraInventoryButton;
     }

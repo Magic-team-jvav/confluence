@@ -266,11 +266,8 @@ public final class PlayerEvents {
 
     @SubscribeEvent
     public static void dismountOnMinecart(DismountOnMinecart event) {
-        if (event.getMinecartItem() != null) return;
-        AbstractMinecart.Type type = event.getMinecart().getMinecartType();
-
-        if (type == AbstractMinecart.Type.RIDEABLE) {
-            event.setMinecartItem(((IAbstractMinecart) event.getMinecart()).confluence$getDropItem().getDefaultInstance());
+        if (event.getMinecartItem() == null && event.getMinecart().getMinecartType() == AbstractMinecart.Type.RIDEABLE) {
+            event.setMinecartItem(IAbstractMinecart.of(event.getMinecart()).confluence$getDropItem().getDefaultInstance());
         }
     }
 

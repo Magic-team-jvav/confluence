@@ -4,7 +4,6 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
-import org.confluence.lib.mixed.IExtraSyncedData;
 import org.confluence.lib.network.SetEntityDataPacketS2C;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.mixed.IAbstractArrow;
@@ -16,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(AbstractArrow.class)
-public abstract class AbstractArrowMixin implements IAbstractArrow, IExtraSyncedData<AbstractArrow> {
+public abstract class AbstractArrowMixin implements IAbstractArrow {
     @Unique
     private static final byte[] confluence$dataIds = {SetEntityDataPacketS2C.DATA_BOOLEAN};
     @Unique
@@ -34,7 +33,7 @@ public abstract class AbstractArrowMixin implements IAbstractArrow, IExtraSynced
 
     @Override
     public void confluence$setData(byte dataId, Object o) {
-        IExtraSyncedData.super.confluence$setData(dataId, o);
+        IAbstractArrow.super.confluence$setData(dataId, o);
         this.confluence$fromShortBow = (boolean) o;
     }
 
@@ -63,11 +62,11 @@ public abstract class AbstractArrowMixin implements IAbstractArrow, IExtraSynced
 
     @Inject(method = "addAdditionalSaveData", at = @At("TAIL"))
     private void addShortBow(CompoundTag pCompound, CallbackInfo ci) {
-        pCompound.putBoolean("confluence:fromShortBow", confluence$isShootFromShortBow());
+        pCompound.putBoolean("confluence:from_short_bow", confluence$isShootFromShortBow());
     }
 
     @Inject(method = "readAdditionalSaveData", at = @At("TAIL"))
     private void readShortBow(CompoundTag pCompound, CallbackInfo ci) {
-        confluence$setShootFromShortBow(pCompound.getBoolean("confluence:fromShortBow"));
+        confluence$setShootFromShortBow(pCompound.getBoolean("confluence:from_short_bow"));
     }
 }

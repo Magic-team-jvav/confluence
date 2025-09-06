@@ -7,7 +7,9 @@ import org.confluence.mod.common.entity.projectile.FlailBall;
 
 public interface IPlayer extends SelfGetter<Player> {
     void confluence$setFlailBall(FlailBall entity);
+
     FlailBall confluence$getFlailBall();
+
     void confluence$setCurrentBait(ItemStack bait);
 
     ItemStack confluence$getCurrentBait();

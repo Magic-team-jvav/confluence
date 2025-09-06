@@ -22,11 +22,11 @@ public abstract class AttributesGuiMixin {
 
     @Inject(method = "<init>", at = @At("TAIL"))
     private void init(InventoryScreen parent, CallbackInfo ci) {
-        ((IInventoryScreen) parent).confluence$setExtraButtonVisibility(!open, parent.getGuiLeft());
+        IInventoryScreen.of(parent).confluence$setExtraButtonVisibility(!open, parent.getGuiLeft());
     }
 
     @Inject(method = "toggleVisibility", at = @At("TAIL"))
     private void toggle(CallbackInfo ci) {
-        ((IInventoryScreen) parent).confluence$setExtraButtonVisibility(!open, parent.getGuiLeft());
+        IInventoryScreen.of(parent).confluence$setExtraButtonVisibility(!open, parent.getGuiLeft());
     }
 }

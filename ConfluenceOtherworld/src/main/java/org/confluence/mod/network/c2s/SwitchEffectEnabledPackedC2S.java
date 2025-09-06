@@ -7,6 +7,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.mod.mixed.IMobEffectInstance;
 import org.confluence.mod.network.IPacket;
 import org.confluence.mod.util.ModUtils;
@@ -37,5 +38,9 @@ public record SwitchEffectEnabledPackedC2S(Holder<MobEffect> effect, boolean ena
             }
             player.effectsDirty = true;
         }
+    }
+
+    public static void sendToServer(Holder<MobEffect> effect, boolean enabled) {
+        PacketDistributor.sendToServer(new SwitchEffectEnabledPackedC2S(effect, enabled));
     }
 }

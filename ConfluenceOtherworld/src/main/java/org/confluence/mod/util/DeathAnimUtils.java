@@ -83,7 +83,7 @@ public final class DeathAnimUtils {
         EntityModel<?> model = renderer.getModel();
         ModelPart any = findAnyModelPart(model, model.getClass());
         if(any == null) return null;
-        return ((IModelPart) (Object) (any)).confluence$root();
+        return IModelPart.of(any).confluence$root();
     }
     public static ModelPart findAnyModelPart(Object model, Class<?> finding){
         if(model instanceof HierarchicalModel<?> hierarchicalModel){

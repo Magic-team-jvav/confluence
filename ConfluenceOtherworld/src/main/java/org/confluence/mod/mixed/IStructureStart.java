@@ -2,7 +2,6 @@ package org.confluence.mod.mixed;
 
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
-import org.jetbrains.annotations.NotNull;
 
 public interface IStructureStart {
     /**
@@ -10,7 +9,7 @@ public interface IStructureStart {
      */
     BoundingBox confluence$cachedBoundingBox();
 
-    static @NotNull IStructureStart of(@NotNull StructureStart structureStart) {
+    static IStructureStart of(StructureStart structureStart) {
         return (IStructureStart) (Object) structureStart;
     }
 }

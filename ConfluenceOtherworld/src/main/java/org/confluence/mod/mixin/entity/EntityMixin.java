@@ -46,9 +46,6 @@ import static org.confluence.mod.api.event.ShimmerEntityTransmutationEvent.ENTIT
 
 @Mixin(Entity.class)
 public abstract class EntityMixin implements IEntity {
-    @Unique
-    private static final Vec3 ANTI_GRAVITY = new Vec3(0.0, -5.0E-4F, 0.0);
-
     @Shadow
     public abstract DamageSources damageSources();
 
@@ -189,7 +186,7 @@ public abstract class EntityMixin implements IEntity {
 
     @Unique
     private static void confluence$setup(Entity entity, int coolDown, double y) {
-        IEntity iEntity = (IEntity) entity;
+        IEntity iEntity = IEntity.of(entity);
         iEntity.confluence$setOriginalNoGravity(entity.isNoGravity());
         iEntity.confluence$entity_setCoolDown(coolDown);
         entity.setNoGravity(true);

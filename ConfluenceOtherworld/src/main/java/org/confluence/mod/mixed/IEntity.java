@@ -25,7 +25,13 @@ public interface IEntity extends Immunity, SelfGetter<Entity> {
         return ImmunityDataMap.getImmunityDuration(confluence$self(), damageSource, Immunity.super::confluence$getImmunityDuration);
     }
 
+    static IEntity of(Entity entity) {
+        return (IEntity) entity;
+    }
+
     byte HAD_SETUP = -1;
     byte HAS_GRAVITY = 0;
     byte NO_GRAVITY = 1;
+
+    Vec3 ANTI_GRAVITY = new Vec3(0.0, -5.0E-4F, 0.0);
 }

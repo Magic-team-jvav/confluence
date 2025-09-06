@@ -1,7 +1,7 @@
 package org.confluence.mod.common.data.saved;
 
-import com.mojang.datafixers.util.Pair;
-import com.mojang.serialization.*;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.Dynamic;
 import com.xiaohunao.heaven_destiny_moment.common.init.HDMRegistries;
 import com.xiaohunao.heaven_destiny_moment.common.moment.IMoment;
 import io.netty.buffer.ByteBuf;
@@ -15,6 +15,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.entity.EntityType;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.lib.common.data.saved.IGlobalData;
@@ -31,48 +32,8 @@ import java.util.Set;
 
 public final class KillBoard implements IGlobalData {
     public static final KillBoard INSTANCE = new KillBoard();
-    public static final Codec<Object2BooleanMap<EntityType<?>>> DEFEATED_BOSSES_CODEC = new Codec<>() {
-        @Override
-        public <T> DataResult<Pair<Object2BooleanMap<EntityType<?>>, T>> decode(DynamicOps<T> ops, T input) {
-            Object2BooleanMap<EntityType<?>> map = new Object2BooleanOpenHashMap<>();
-            ops.getMap(input).getOrThrow().entries().forEach(pair -> ops.getStringValue(pair.getFirst()).ifSuccess(id -> {
-                EntityType<?> entityType = BuiltInRegistries.ENTITY_TYPE.get(ResourceLocation.parse(id));
-                boolean defeated = ops.getBooleanValue(pair.getSecond()).result().orElse(false);
-                map.put(entityType, defeated);
-            }));
-            return DataResult.success(new Pair<>(map, input), Lifecycle.stable());
-        }
-
-        @Override
-        public <T> DataResult<T> encode(Object2BooleanMap<EntityType<?>> input, DynamicOps<T> ops, T prefix) {
-            return DataResult.success(ops.createMap(input.object2BooleanEntrySet().stream().map(entry -> {
-                T string = ops.createString(BuiltInRegistries.ENTITY_TYPE.getKey(entry.getKey()).toString());
-                T defeated = ops.createBoolean(entry.getBooleanValue());
-                return new Pair<>(string, defeated);
-            })), Lifecycle.stable());
-        }
-    };
-    public static final Codec<Object2BooleanMap<ResourceKey<IMoment>>> DEFEATED_EVENTS_CODEC = new Codec<>() {
-        @Override
-        public <T> DataResult<Pair<Object2BooleanMap<ResourceKey<IMoment>>, T>> decode(DynamicOps<T> ops, T input) {
-            Object2BooleanMap<ResourceKey<IMoment>> map = new Object2BooleanOpenHashMap<>();
-            ops.getMap(input).getOrThrow().entries().forEach(pair -> ops.getStringValue(pair.getFirst()).ifSuccess(id -> {
-                ResourceKey<IMoment> key = ResourceKey.create(HDMRegistries.Keys.MOMENT, ResourceLocation.parse(id));
-                boolean defeated = ops.getBooleanValue(pair.getSecond()).result().orElse(false);
-                map.put(key, defeated);
-            }));
-            return DataResult.success(new Pair<>(map, input), Lifecycle.stable());
-        }
-
-        @Override
-        public <T> DataResult<T> encode(Object2BooleanMap<ResourceKey<IMoment>> input, DynamicOps<T> ops, T prefix) {
-            return DataResult.success(ops.createMap(input.object2BooleanEntrySet().stream().map(entry -> {
-                T string = ops.createString(entry.getKey().location().toString());
-                T defeated = ops.createBoolean(entry.getBooleanValue());
-                return new Pair<>(string, defeated);
-            })), Lifecycle.stable());
-        }
-    };
+    public static final Codec<Object2BooleanMap<EntityType<?>>> DEFEATED_BOSSES_CODEC = ExtraCodecs.object2BooleanMap(BuiltInRegistries.ENTITY_TYPE.byNameCodec());
+    public static final Codec<Object2BooleanMap<ResourceKey<IMoment>>> DEFEATED_EVENTS_CODEC = ExtraCodecs.object2BooleanMap(ResourceKey.codec(HDMRegistries.Keys.MOMENT));
     public static final StreamCodec<ByteBuf, Object2BooleanMap<EntityType<?>>> DEFEATED_BOSSES_STREAM_CODEC = ByteBufCodecs.map(Object2BooleanOpenHashMap::new,
             ResourceLocation.STREAM_CODEC.map(BuiltInRegistries.ENTITY_TYPE::get, BuiltInRegistries.ENTITY_TYPE::getKey), ByteBufCodecs.BOOL
     );
@@ -175,7 +136,6 @@ public final class KillBoard implements IGlobalData {
     public <T> void decode(Dynamic<T> tag) {
         defeatedBosses.clear();
         defeatedEvents.clear();
-        //tag.get("defeated_map").orElseEmptyMap().read(DEFEATED_MAP_CODEC).ifSuccess(defeatedMap::putAll);
         tag.get("defeated_bosses").result().or(() -> tag.get("defeated_map").result()).orElseGet(tag::emptyMap).read(DEFEATED_BOSSES_CODEC).ifSuccess(defeatedBosses::putAll);
         tag.get("defeated_events").orElseEmptyMap().read(DEFEATED_EVENTS_CODEC).ifSuccess(defeatedEvents::putAll);
         this.gamePhase = GamePhase.getByOrder(tag.get("game_phase").asInt(0));
@@ -183,7 +143,6 @@ public final class KillBoard implements IGlobalData {
 
     @Override
     public void encode(CompoundTag tag) {
-        //tag.put("defeated_map", DEFEATED_MAP_CODEC.encodeStart(NbtOps.INSTANCE, defeatedMap).getOrThrow());
         tag.put("defeated_bosses", DEFEATED_BOSSES_CODEC.encodeStart(NbtOps.INSTANCE, defeatedBosses).result().orElseGet(CompoundTag::new));
         tag.put("defeated_events", DEFEATED_EVENTS_CODEC.encodeStart(NbtOps.INSTANCE, defeatedEvents).result().orElseGet(CompoundTag::new));
         tag.putInt("game_phase", gamePhase.getOrder());

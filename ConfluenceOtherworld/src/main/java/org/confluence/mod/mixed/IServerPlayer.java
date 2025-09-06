@@ -1,8 +1,9 @@
 package org.confluence.mod.mixed;
 
 import net.minecraft.server.level.ServerPlayer;
+import org.confluence.lib.mixed.SelfGetter;
 
-public interface IServerPlayer {
+public interface IServerPlayer extends SelfGetter<ServerPlayer> {
     void confluence$setCouldPickupItem(boolean enable);
 
     boolean confluence$isCouldPickupItem();

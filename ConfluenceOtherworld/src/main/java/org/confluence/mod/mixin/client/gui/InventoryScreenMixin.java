@@ -3,7 +3,6 @@ package org.confluence.mod.mixin.client.gui;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.gui.screens.recipebook.RecipeBookComponent;
-import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.mixed.IInventoryScreen;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -14,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(InventoryScreen.class)
-public abstract class InventoryScreenMixin implements IInventoryScreen, SelfGetter<InventoryScreen> {
+public abstract class InventoryScreenMixin implements IInventoryScreen {
     @Shadow
     @Final
     private RecipeBookComponent recipeBookComponent;

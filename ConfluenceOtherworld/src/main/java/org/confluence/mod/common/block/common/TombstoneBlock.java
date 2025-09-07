@@ -63,7 +63,7 @@ public class TombstoneBlock extends HorizontalDirectionalBlock implements Entity
     @Override
     public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack tool) {
         super.playerDestroy(level, player, pos, state, blockEntity, tool);
-        if (!level.isClientSide && pos.getY() < OverworldUtils.getSurfaceY() && LibDateUtils.isNight(LibDateUtils.getDayTime(level))) {
+        if (!level.isClientSide && pos.getY() < OverworldUtils.getSurfaceY() && LibDateUtils.isNight(level)) {
             ILevelChunkSection iSection = DynamicBiomeUtils.getISection(level, pos);
             RandomSource random = player.getRandom();
             if (iSection != null && iSection.confluence$isGraveyard() && random.nextBoolean()) {

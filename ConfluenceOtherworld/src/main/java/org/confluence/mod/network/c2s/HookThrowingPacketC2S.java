@@ -1,16 +1,14 @@
 package org.confluence.mod.network.c2s;
 
-import io.netty.buffer.ByteBuf;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.HitResult;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -23,11 +21,21 @@ import org.confluence.mod.network.IPacket;
 
 public record HookThrowingPacketC2S(boolean throwing, int id) implements IPacketC2S {
     public static final Type<HookThrowingPacketC2S> TYPE = IPacket.createType("hook_throwing");
-    public static final StreamCodec<ByteBuf, HookThrowingPacketC2S> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.BOOL, HookThrowingPacketC2S::throwing,
-            ByteBufCodecs.VAR_INT, HookThrowingPacketC2S::id,
-            HookThrowingPacketC2S::new
-    );
+    public static final StreamCodec<FriendlyByteBuf, HookThrowingPacketC2S> STREAM_CODEC = new StreamCodec<>() {
+        @Override
+        public HookThrowingPacketC2S decode(FriendlyByteBuf buffer) {
+            boolean throwing = buffer.readBoolean();
+            int id = 0;
+            if (throwing) id = buffer.readVarInt();
+            return new HookThrowingPacketC2S(throwing, id);
+        }
+
+        @Override
+        public void encode(FriendlyByteBuf buffer, HookThrowingPacketC2S value) {
+            buffer.writeBoolean(value.throwing);
+            if (value.throwing) buffer.writeVarInt(value.id);
+        }
+    };
 
     @Override
     public Type<HookThrowingPacketC2S> type() {
@@ -81,11 +89,8 @@ public record HookThrowingPacketC2S(boolean throwing, int id) implements IPacket
                         ModSoundEvents.HOOK_SHOOT.get(), SoundSource.PLAYERS,
                         0.3F * ratio, 1);
             }
-        } else {
-            Entity entity = level.getEntity(id);
-            if (entity instanceof AbstractHookEntity hookEntity) {
-                hookEntity.setHookState(AbstractHookEntity.HookState.POP);
-            }
+        } else if (level.getEntity(id) instanceof AbstractHookEntity hookEntity) {
+            hookEntity.setHookState(AbstractHookEntity.HookState.POP);
         }
     }
 

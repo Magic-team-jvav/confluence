@@ -48,6 +48,7 @@ import org.confluence.lib.common.block.StateProperties;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.event.NameFixRegisterEvent;
 import org.confluence.lib.util.ConfluenceResources;
+import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
@@ -330,7 +331,7 @@ public final class ModEvents {
         event.register(TEMonsterEntities.GREEN_DUMPLING_SLIME.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, (entityType, serverLevel, spawnType, pos, random) -> {
             if (DateUtils.isQingMing(DateUtils.getLunar()) && serverLevel instanceof Level level) {
                 int y = pos.getY();
-                return y > 30 && y < 260 && level.isDay() && serverLevel.canSeeSky(pos);
+                return y > 30 && y < 260 && LibDateUtils.isDay(level) && serverLevel.canSeeSky(pos);
             }
             return false;
         }, RegisterSpawnPlacementsEvent.Operation.REPLACE);

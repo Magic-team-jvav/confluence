@@ -41,7 +41,6 @@ import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.util.TCUtils;
 import org.confluence.terraentity.api.entity.Boss;
 
-import java.util.List;
 import java.util.function.IntFunction;
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
@@ -177,7 +176,7 @@ public final class PlayerUtils {
         return new Tuple<>(ret, max);
     }
 
-    public static void consumeItemCount(List<ItemStack> have, Item item, int consumeCount) {
+    public static void consumeItemCount(Iterable<ItemStack> have, Item item, int consumeCount) {
         int count = 0;
         for (ItemStack stack : have) {
             if (stack.is(item) && count < consumeCount) {

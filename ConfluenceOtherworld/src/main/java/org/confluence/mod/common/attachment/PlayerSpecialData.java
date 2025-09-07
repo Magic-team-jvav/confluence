@@ -88,7 +88,7 @@ public class PlayerSpecialData implements INBTSerializable<CompoundTag> {
                 boolean b = data.isCouldDamageEnvironment();
                 if (!a && !b) break;
                 Item item = stack.getItem();
-                boolean c = item == ToolItems.GUIDE_TO_PEACEFUL_COEXISTENCE_ITEM.get();
+                boolean c = item == ToolItems.GUIDE_TO_PEACEFUL_COEXISTENCE.get();
                 if (a && (c || item == ToolItems.GUIDE_TO_CRITTER_COMPANIONSHIP.get())) {
                     data.setCouldHurtCritters(false);
                 }

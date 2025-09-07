@@ -178,6 +178,7 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(Blocks.SUNFLOWER)
                 .add(Items.PUMPKIN_SEEDS)
                 .add(ModItems.GRASS_SEED)
+                .add(ToolItems.GUIDE_TO_ENVIRONMENTAL_PRESERVATION)
                 .add(new MoneyTradeItem.Builder()
                         .setResult(ModItems.HALLOWED_SEED.toStack())
                         .setProperties(hardmode)
@@ -401,6 +402,16 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                         .build())
                 .add(SellTrade.INSTANCE)
                 .build());
+
+        shop(TENpcEntities.ZOOLOGIST.getId()).addRecipe(withDefaultPylon()
+                .add(ToolItems.GUIDE_TO_CRITTER_COMPANIONSHIP)
+                .add(TEWhipItems.LEATHER_WHIP)
+                .add(MinecartItems.DIGGING_MOLECART)
+                .add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.SAPLING)
+                .add(Items.CHERRY_SAPLING)
+                .add(SellTrade.INSTANCE)
+                .build());
+
     }
 
 

@@ -160,6 +160,13 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.right_click.common.0", "Hold the right mouse button to open.");
         add("tooltip.item.confluence.raw_asphalt.0", "Use a Blend-O-Matic to make asphalt blocks");
         add("tooltip.item.confluence.empty_dropper.0", "Right-click on the droplet to remove it (requires block assist aiming)");
+        add("tooltip.item.confluence.guide_to_critter_companionship.0", "Prevents you from hurting critters while in the inventory");
+        add("tooltip.item.confluence.guide_to_critter_companionship.1", "Right click to deactivate/reactivate effects");
+        add("tooltip.item.confluence.guide_to_environmental_preservation.0", "Prevents you from accidentally destroying the environment while in the inventory");
+        add("tooltip.item.confluence.guide_to_environmental_preservation.1", "Right click to deactivate/reactivate effects");
+        add("tooltip.item.confluence.guide_to_peaceful_coexistence.0", "Prevents you from hurting critters while in the inventory");
+        add("tooltip.item.confluence.guide_to_peaceful_coexistence.1", "Prevents you from accidentally destroying the environment while in the inventory");
+        add("tooltip.item.confluence.guide_to_peaceful_coexistence.2", "Right click to deactivate/reactivate effects");
 
         add("tooltip.item.confluence.slime_crown.0", "Right - click to summon the King Slime");
         add("tooltip.item.confluence.slime_crown.1", "A small crown that seems to be prepared for the coronation ceremony of those cute and harmless gel - like creatures.");
@@ -999,6 +1006,9 @@ public class ModEnglishProvider extends LanguageProvider {
 
         // Override
         add("item.confluence.encumbering_stone.disable", "Encumbering Stone: Disable");
+        add("item.confluence.guide_to_critter_companionship.disable", "Guide to Critter Companionship: Disable");
+        add("item.confluence.guide_to_environmental_preservation.disable", "Guide to Environmental Preservation: Disable");
+        add("item.confluence.guide_to_peaceful_coexistence.disable", "Guide to Peaceful Coexistence: Disable");
         add("item.confluence.paint", "Paint");
         add(AccessoryItems.PHILOSOPHERS_STONE.get(), "Philosopher's Stone");
         add(ModItems.BOREDOMS_PACT_FALLING_RESOLVE.get(), "Boredom's Pact - Falling Resolve");

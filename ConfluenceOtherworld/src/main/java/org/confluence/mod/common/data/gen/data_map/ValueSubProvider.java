@@ -547,7 +547,9 @@ public final class ValueSubProvider {
                 .add(TESummonItems.HORNET_STAFF, silver50 + silver20)
                 .add(TESummonItems.IMP_STAFF, silver50 + silver2 + silver2)
                 .add(TESummonItems.FINCH_STAFF, gold1)
-                .add(TESummonItems.SNOW_FLINX_STAFF, gold1 + silver50);
+                .add(TESummonItems.SNOW_FLINX_STAFF, gold1 + silver50)
+                .add(TEPetItems.CHESTER_STAFF, gold2)
+                .add(TEPetItems.WALLET, gold2);
         appender.create()
                 .add(TEWhipItems.LEATHER_WHIP, gold2);
         appender.create()
@@ -796,7 +798,10 @@ public final class ValueSubProvider {
                 .add(AccessoryItems.GUIDE_VOODOO_DOLL, silver2)
                 .add(ToolItems.BUG_NET, silver5)
                 .add(ToolItems.LAVAPROOF_BUG_NET, gold5)
-                .add(ToolItems.GOLDEN_BUG_NET, gold5);
+                .add(ToolItems.GOLDEN_BUG_NET, gold5)
+                .add(ToolItems.GUIDE_TO_CRITTER_COMPANIONSHIP, gold1)
+                .add(ToolItems.GUIDE_TO_ENVIRONMENTAL_PRESERVATION, gold1)
+                .add(ToolItems.GUIDE_TO_PEACEFUL_COEXISTENCE, gold2);
         appender.create()
                 .add(ArmorItems.MINING_HELMET, gold1 - silver20)
                 .add(ArmorItems.MINING_CHESTPLATE, silver10)
@@ -1103,6 +1108,7 @@ public final class ValueSubProvider {
                 .add(ModItems.CRIMSON_SEED, silver1)
                 .add(Items.SUNFLOWER, silver10)
                 .add(Items.OAK_SAPLING, 2)
+                .add(Items.CHERRY_SAPLING, 5)
                 .add(Items.PUMPKIN_SEEDS, 50)
                 .add(ModItems.HALLOWED_SEED, silver2 + silver2)
                 .add(ModItems.MUSHROOM_GRASS_SEED, 30)

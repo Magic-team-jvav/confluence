@@ -23,20 +23,28 @@ public final class GamePhase2AttributeModifiersSubProvider {
 
     public static void gather(ModDataMapProvider.Appender<Builder> appender) {
         appender.create()
+                // 初始数值基础，目标阶段数值除初始数值-1 = 填参值
                 .add(EntityType.ZOMBIE.builtInRegistryHolder(), Map.of(
                         GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
-                                .add(Attributes.MAX_HEALTH, id, 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.ATTACK_DAMAGE, id, 1.7, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.MAX_HEALTH, id, 2.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.ARMOR, id, 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .build(),
                         GamePhase.PLANTERA, AttributeModifiersValue.builder()
-                                .add(Attributes.MAX_HEALTH, id, 2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.ATTACK_DAMAGE, id, 2.6, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.MAX_HEALTH, id, 3.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.ARMOR, id, 2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .build()
                 ))
                 .add(TEMonsterEntities.BLOOD_ZOMBIE, Map.of(
                         GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
-                                .add(Attributes.MAX_HEALTH, id, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.MAX_HEALTH, id, 0.09, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.ATTACK_DAMAGE, id, -0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .build(),
                         GamePhase.PLANTERA, AttributeModifiersValue.builder()
                                 .add(Attributes.MAX_HEALTH, id, 1.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.ATTACK_DAMAGE, id, 0.8, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.ARMOR, id, 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .build()
                 ));
     }

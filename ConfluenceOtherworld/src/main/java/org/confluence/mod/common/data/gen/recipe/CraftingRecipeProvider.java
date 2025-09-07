@@ -564,6 +564,12 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 " S ",
                 "S/S"
         )), FunctionalBlocks.LIFE_CAMPFIRE.toStack());
+        // 香蒲造纸
+        shaped(output, ShapedRecipePattern.of(Map.of(
+                '/', Ingredient.of(ModItems.CATTAILS,ModItems.JUNGLE_CATTAILS,ModItems.GLOWING_MUSHROOM_CATTAILS,ModItems.EBONY_CATTAILS,ModItems.CRIMSON_CATTAILS,ModItems.HALLOW_CATTAILS)
+        ), List.of(
+                "///"
+        )), new ItemStack(Items.PAPER,3));
         // 便捷合成，无序合成
         shapeless(output, "", "_from_raw_copper",
                 new ItemStack(Items.COPPER_INGOT),
@@ -610,11 +616,10 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         shapeless(output, ToolItems.SILK_ROPE_COIL.toStack(), Ingredient.of(ModBlocks.SILK_ROPE), Ingredient.of(ModBlocks.SILK_ROPE), Ingredient.of(ModBlocks.SILK_ROPE), Ingredient.of(ModBlocks.SILK_ROPE));
         shapeless(output, ToolItems.ROPE_COIL.toStack(), Ingredient.of(ModBlocks.ROPE), Ingredient.of(ModBlocks.ROPE), Ingredient.of(ModBlocks.ROPE), Ingredient.of(ModBlocks.ROPE));
 
-        shapeless(output, new ItemStack(Items.STRING, 4), Ingredient.of(ItemTags.WOOL));
+        shapeless(output, new ItemStack(Items.STRING, 2), Ingredient.of(ItemTags.WOOL));
         shapeless(output, "", "_from_stony_log", new ItemStack(Items.COBBLESTONE, 2), Ingredient.of(NatureBlocks.STONY_LOG));
         shapeless(output, "", "_from_gel", new ItemStack(Items.TORCH, 3), Ingredient.of(MaterialItems.GEL), Ingredient.of(Items.STICK));
         shapeless(output, "", "_from_slime_ball", new ItemStack(Items.TORCH, 3), Ingredient.of(Items.SLIME_BALL), Ingredient.of(Items.STICK));
-
 
         shapeless(output, ConsumableItems.MANA_CRYSTAL.toStack(), Ingredient.of(MaterialItems.FALLING_STAR), Ingredient.of(MaterialItems.FALLING_STAR), Ingredient.of(MaterialItems.FALLING_STAR), Ingredient.of(MaterialItems.FALLING_STAR), Ingredient.of(MaterialItems.FALLING_STAR));
         shapeless(output, MaterialItems.FALLING_STAR.toStack(), Ingredient.of(MaterialItems.STAR_PETALS), Ingredient.of(MaterialItems.STAR_PETALS), Ingredient.of(MaterialItems.STAR_PETALS), Ingredient.of(MaterialItems.STAR_PETALS), Ingredient.of(MaterialItems.STAR_PETALS));

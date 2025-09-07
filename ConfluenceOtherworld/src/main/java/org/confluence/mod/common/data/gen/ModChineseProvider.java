@@ -154,6 +154,13 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.red_potion.0", "“仅献给配得上的人”");
         add("tooltip.item.confluence.raw_asphalt.0", "使用搅拌机以制成沥青块");
         add("tooltip.item.confluence.empty_dropper.0", "右击液滴以去除（需要有方块辅助瞄准）");
+        add("tooltip.item.confluence.guide_to_critter_companionship.0", "放在物品栏中时能防止你伤害小动物");
+        add("tooltip.item.confluence.guide_to_critter_companionship.1", "右键点击停用/激活其效果");
+        add("tooltip.item.confluence.guide_to_environmental_preservation.0", "放在物品栏中时能防止你意外破坏环境");
+        add("tooltip.item.confluence.guide_to_environmental_preservation.1", "右键点击停用/激活其效果");
+        add("tooltip.item.confluence.guide_to_peaceful_coexistence.0", "放在物品栏中时能防止你伤害小动物");
+        add("tooltip.item.confluence.guide_to_peaceful_coexistence.1", "放在物品栏中时能防止你意外破坏环境");
+        add("tooltip.item.confluence.guide_to_peaceful_coexistence.2", "右键点击停用/激活其效果");
 
         add("tooltip.item.confluence.slime_crown.0", "右键使用以召唤史莱姆王");
         add("tooltip.item.confluence.slime_crown.1", "一只小巧的王冠，看上去是为那些人畜无害的可爱凝胶生物的加冕仪式所准备的。");
@@ -1068,6 +1075,9 @@ public class ModChineseProvider extends LanguageProvider {
 
         // 覆盖
         add("item.confluence.encumbering_stone.disable", "负重石：关闭");
+        add("item.confluence.guide_to_critter_companionship.disable", "小动物友谊指南：关闭");
+        add("item.confluence.guide_to_environmental_preservation.disable", "环境保护指南：关闭");
+        add("item.confluence.guide_to_peaceful_coexistence.disable", "和平共处指南：关闭");
         add("item.confluence.paint", "油漆");
 
         add("resourcepack.terraria_art", "泰拉艺术");
@@ -3159,6 +3169,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(ToolItems.MAGIC_HONEY_DROPPER.get(), "魔法蜂蜜滴管");
         add(ToolItems.MAGIC_LAVA_DROPPER.get(), "魔法熔岩滴管");
         add(ToolItems.MAGIC_WATER_DROPPER.get(), "魔法水滴管");
+        add(ToolItems.GUIDE_TO_CRITTER_COMPANIONSHIP.get(), "小动物友谊指南");
+        add(ToolItems.GUIDE_TO_ENVIRONMENTAL_PRESERVATION.get(), "环境保护指南");
+        add(ToolItems.GUIDE_TO_PEACEFUL_COEXISTENCE.get(), "和平共处指南");
 
         add(BoatItems.ASH_BOAT.get(), "白蜡木船");
         add(BoatItems.ASH_CHEST_BOAT.get(), "白蜡木运输船");

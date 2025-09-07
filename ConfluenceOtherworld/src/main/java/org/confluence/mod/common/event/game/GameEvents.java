@@ -193,7 +193,7 @@ public final class GameEvents {
         }
         PlayerSpecialData data = PlayerSpecialData.of(player);
         Item item = event.getStack().getItem();
-        boolean c = item == ToolItems.GUIDE_TO_PEACEFUL_COEXISTENCE_ITEM.get();
+        boolean c = item == ToolItems.GUIDE_TO_PEACEFUL_COEXISTENCE.get();
         if (c || item == ToolItems.GUIDE_TO_CRITTER_COMPANIONSHIP.get()) {
             data.setCouldHurtCritters(event.isEnabled());
         }

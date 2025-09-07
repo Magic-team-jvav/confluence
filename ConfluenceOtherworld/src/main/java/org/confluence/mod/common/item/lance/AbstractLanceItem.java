@@ -130,7 +130,7 @@ public abstract class AbstractLanceItem extends CustomRarityItem implements GeoI
                         onHitEntity(stack, serverLevel, owner, victim);
                     }
                 }
-                onStingTick(stack, serverLevel, owner, endVec);
+                onStingTick(stack, serverLevel, owner, endVec, attackDuration - tickCount < attackInterval);
             }
         }
     }
@@ -147,7 +147,7 @@ public abstract class AbstractLanceItem extends CustomRarityItem implements GeoI
         EnchantmentHelper.doPostAttackEffects(level, victim, damageSource);
     }
 
-    protected void onStingTick(ItemStack stack, ServerLevel level, LivingEntity owner, Vec3 tipPos) {}
+    protected void onStingTick(ItemStack stack, ServerLevel level, LivingEntity owner, Vec3 tipPos, boolean last) {}
 
     protected boolean hurtVictim(DamageSource damageSource, LivingEntity owner, Entity victim) {
         return victim.hurt(damageSource, (float) owner.getAttributeValue(Attributes.ATTACK_DAMAGE));

@@ -29,10 +29,12 @@ public class StormSpearShotProjectileRenderer extends EntityRenderer<StormSpearS
     @Override
     public void render(StormSpearShotProjectile entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         poseStack.pushPose();
-        poseStack.translate(0, -1.2F, 0);
+        poseStack.translate(0, 0.375F, 0);
+        poseStack.scale(2, 2, 2);
         poseStack.mulPose(Axis.YP.rotationDegrees(entity.getYRot() - 90.0F));
+        poseStack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(packedLight, entity.xRotO, entity.getXRot())));
         poseStack.mulPose(Axis.YP.rotation(-Mth.HALF_PI));
-        poseStack.mulPose(Axis.ZP.rotationDegrees(entity.getRotation()));
+        poseStack.mulPose(Axis.ZP.rotation(Mth.lerp(partialTick, entity.rotate.old, entity.rotate.neo)));
         model.renderToBuffer(poseStack, bufferSource.getBuffer(model.renderType(TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY);
         poseStack.popPose();
     }

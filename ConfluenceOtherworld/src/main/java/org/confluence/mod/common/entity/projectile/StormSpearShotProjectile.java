@@ -1,5 +1,6 @@
 package org.confluence.mod.common.entity.projectile;
 
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -9,13 +10,15 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.common.entitiy.IAxisZRotate;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.item.lance.StormSpearItem;
 import org.confluence.mod.util.ModUtils;
 
 public class StormSpearShotProjectile extends DamageSettableProjectile {
-    private float rotation = 0;
+    public final IAxisZRotate.Rotate rotate = new IAxisZRotate.Rotate();
+
     public StormSpearShotProjectile(EntityType<? extends DamageSettableProjectile> entityType, Level level) {
         super(entityType, level);
         setNoGravity(true);
@@ -25,8 +28,11 @@ public class StormSpearShotProjectile extends DamageSettableProjectile {
     public void baseTick() {
         super.baseTick();
 
-        rotation += 100;
-        if (rotation >= 360) rotation -= 360;
+        if (level().isClientSide) {
+            if (rotate.neo > Mth.TWO_PI) rotate.neo -= Mth.TWO_PI;
+            rotate.old = rotate.neo;
+            rotate.neo += 1;
+        }
 
         HitResult hitresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
         checkInsideBlocks();
@@ -49,9 +55,7 @@ public class StormSpearShotProjectile extends DamageSettableProjectile {
 
         if (tickCount > 200) discard();
     }
-    public float getRotation() {
-        return rotation;
-    }
+
     @Override
     protected boolean canHitEntity(Entity target) {
         return ModUtils.canHitEntity(target, getOwner());

@@ -61,11 +61,13 @@ public class ColumnPatchFeature extends Feature<ColumnPatchFeature.Config> {
         for (int y = 1; y <= config.maxDepth; y++) {
             int ay = oy - y;
             if (ay < minY) break;
+            mutablePos.setY(ay);
             for (int x = -config.radius; x <= config.radius; x++) {
                 int ax = ox + x;
                 int radiusSqrSubXSqr = radiusSqr - x * x;
+                mutablePos.setX(ax);
                 for (int z = -config.radius; z <= config.radius; z++) {
-                    if (z * z <= radiusSqrSubXSqr && level.isStateAtPosition(mutablePos.set(ax, ay, oz + z), PREDICATE)) {
+                    if (z * z <= radiusSqrSubXSqr && level.isStateAtPosition(mutablePos.setZ(oz + z), PREDICATE)) {
                         if (y <= 3) {
                             air.add(mutablePos.immutable());
                         } else {

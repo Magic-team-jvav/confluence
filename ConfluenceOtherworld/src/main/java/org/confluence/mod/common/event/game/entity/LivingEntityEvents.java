@@ -38,6 +38,7 @@ import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.ManaStorage;
+import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.data.map.GamePhase2AttributeModifiers;
 import org.confluence.mod.common.data.map.LivingInvulnerableEffects;
 import org.confluence.mod.common.data.saved.KillBoard;
@@ -189,7 +190,7 @@ public final class LivingEntityEvents {
                 );
             }
         }
-        if (living instanceof Animal && damageSource.getEntity() instanceof IServerPlayer iPlayer && !iPlayer.confluence$isCouldHurtCritter()) {
+        if (living instanceof Animal && damageSource.getEntity() instanceof Player player && !PlayerSpecialData.of(player).isCouldHurtCritters()) {
             event.setCanceled(true);
         }
     }

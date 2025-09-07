@@ -18,7 +18,6 @@ import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
 import net.minecraft.client.renderer.item.CompassItemPropertyFunction;
 import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.client.renderer.item.ItemPropertyFunction;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
@@ -48,6 +47,7 @@ import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtension
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.extensions.common.IClientMobEffectExtensions;
 import org.confluence.lib.color.IntegerRGB;
+import org.confluence.lib.util.LibClientUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.MeteorLandingHandler;
@@ -66,7 +66,6 @@ import org.confluence.mod.common.item.bow.ShortBowItem;
 import org.confluence.mod.integration.waystones.PylonBlock;
 import org.confluence.mod.integration.waystones.PylonModel;
 import org.confluence.mod.integration.waystones.WaystonesHelper;
-import org.confluence.terra_curio.common.item.IFunctionCouldEnable;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
@@ -273,13 +272,9 @@ public final class ModClientSetups {
 
     static void registerItemProperties() {
         ResourceLocation enable = Confluence.asResource("enable");
-        ItemPropertyFunction enableFunction = (stack, level, living, seed) -> {
-            CompoundTag tag = LibUtils.getItemStackNbtIfPresent(stack);
-            return tag != null && tag.getBoolean(IFunctionCouldEnable.DISABLE) ? 0 : 1;
-        };
-        ItemProperties.register(AccessoryItems.SPECTRE_GOGGLES.get(), enable, enableFunction);
-        ItemProperties.register(AccessoryItems.MECHANICAL_LENS.get(), enable, enableFunction);
-        ItemProperties.register(ToolItems.ENCUMBERING_STONE.get(), enable, enableFunction);
+        ItemProperties.register(AccessoryItems.SPECTRE_GOGGLES.get(), enable, LibClientUtils.COULD_ENABLE_PROPERTY_FUNCTION);
+        ItemProperties.register(AccessoryItems.MECHANICAL_LENS.get(), enable, LibClientUtils.COULD_ENABLE_PROPERTY_FUNCTION);
+        ItemProperties.register(ToolItems.ENCUMBERING_STONE.get(), enable, LibClientUtils.COULD_ENABLE_PROPERTY_FUNCTION);
         ItemProperties.register(ToolItems.METEOR_COMPASS.get(), ResourceLocation.withDefaultNamespace("angle"), new CompassItemPropertyFunction((level, stack, entity) -> MeteorLandingHandler.getGlobalPos()));
     }
 

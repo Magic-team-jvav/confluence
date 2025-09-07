@@ -21,6 +21,7 @@ import net.neoforged.neoforge.event.level.ChunkWatchEvent;
 import net.neoforged.neoforge.event.level.ExplosionEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ChunkBrushData;
+import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.data.map.BlockBreakSpawns;
@@ -33,7 +34,6 @@ import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.item.common.BaseAxeItem;
 import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
 import org.confluence.mod.common.worldgen.secret_seed.NoTraps;
-import org.confluence.mod.mixed.IPlayer;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
 import org.confluence.terra_curio.util.TCUtils;
 
@@ -96,7 +96,7 @@ public final class LevelEvents {
     public static void block$Break(BlockEvent.BreakEvent event) {
         Player player = event.getPlayer();
         BlockState state = event.getState();
-        if (!IPlayer.of(player).confluence$isCouldDamageEnvironment() && state.is(ModTags.Blocks.ENVIRONMENTAL_PRESERVATION)) {
+        if (!PlayerSpecialData.of(player).isCouldDamageEnvironment() && state.is(ModTags.Blocks.ENVIRONMENTAL_PRESERVATION)) {
             event.setCanceled(true);
             return;
         }

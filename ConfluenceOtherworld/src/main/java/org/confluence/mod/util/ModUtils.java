@@ -69,10 +69,8 @@ import org.confluence.mod.common.init.item.PotionItems;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.common.item.common.TreasureBagItem;
 import org.confluence.mod.mixed.IMinecraftServer;
-import org.confluence.mod.network.s2c.VisibilityPacketS2C;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.common.init.TCEffects;
-import org.confluence.terra_curio.common.item.IFunctionCouldEnable;
 import org.confluence.terra_guns.TerraGuns;
 import org.confluence.terraentity.TerraEntity;
 import org.confluence.terraentity.entity.boss.AbstractTerraBossBase;
@@ -365,20 +363,6 @@ public final class ModUtils {
         MobEffect effect = instance.getEffect().value();
         boolean switchable = effect == TCEffects.GRAVITATION.get() ? instance.getAmplifier() <= 0 : effect.isBeneficial();
         return NeoForge.EVENT_BUS.post(new EffectSwitchableCheckEvent(instance, switchable)).isSwitchable();
-    }
-
-    /**
-     * 需要注意创造模式物品栏是仅客户端的，所以创造模式无法正常使用
-     */
-    public static boolean switchFunction(ItemStack carried, ItemStack onSlot, Player player) {
-        if (carried.isEmpty() && onSlot.getItem() instanceof IFunctionCouldEnable couldEnable) {
-            if (player instanceof ServerPlayer serverPlayer) {
-                couldEnable.cycleEnable(onSlot);
-                VisibilityPacketS2C.sendEcho(serverPlayer);
-            }
-            return true;
-        }
-        return false;
     }
 
     public static boolean useKey(ItemStack carried, ItemStack onSlot, Player player) {

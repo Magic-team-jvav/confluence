@@ -12,6 +12,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -21,12 +22,14 @@ import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
+import org.confluence.lib.event.SwitchItemFunctionEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.AdditionalManaEvent;
 import org.confluence.mod.api.event.ShimmerItemTransmutationEvent;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.ManaStorage;
+import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.data.AchievementOffsetLoader;
 import org.confluence.mod.common.data.saved.KillBoard;
@@ -34,6 +37,7 @@ import org.confluence.mod.common.init.ModCommands;
 import org.confluence.mod.common.init.ModHookTypes;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.item.MaterialItems;
+import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.integration.ars_nouveau.ArsNouveauHelper;
 import org.confluence.mod.integration.irons_spell.IronSpellHelper;
 import org.confluence.mod.mixed.IMinecraftServer;
@@ -179,5 +183,22 @@ public final class GameEvents {
     public static void additionalMana(AdditionalManaEvent event) {
         ArsNouveauHelper.additionalMana(event);
         IronSpellHelper.additionalMana(event);
+    }
+
+    @SubscribeEvent
+    public static void switchItemFunction$Post(SwitchItemFunctionEvent.Post event) {
+        Player player = event.getEntity();
+        if (player instanceof ServerPlayer serverPlayer) {
+            VisibilityPacketS2C.sendEcho(serverPlayer);
+        }
+        PlayerSpecialData data = PlayerSpecialData.of(player);
+        Item item = event.getStack().getItem();
+        boolean c = item == ToolItems.GUIDE_TO_PEACEFUL_COEXISTENCE_ITEM.get();
+        if (c || item == ToolItems.GUIDE_TO_CRITTER_COMPANIONSHIP.get()) {
+            data.setCouldHurtCritters(event.isEnabled());
+        }
+        if (c || item == ToolItems.GUIDE_TO_ENVIRONMENTAL_PRESERVATION.get()) {
+            data.setCouldDamageEnvironment(event.isEnabled());
+        }
     }
 }

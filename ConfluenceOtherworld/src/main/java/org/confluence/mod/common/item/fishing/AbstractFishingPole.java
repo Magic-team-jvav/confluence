@@ -27,7 +27,6 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.neoforged.neoforge.event.EventHooks;
-import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibUtils;
@@ -195,10 +194,10 @@ public abstract class AbstractFishingPole extends FishingRodItem {
         }
     }
 
-    public static void resetCurrentBait(PlayerTickEvent.Post event) {
-        IPlayer iPlayer = IPlayer.of(event.getEntity());
-        if (!iPlayer.confluence$getCurrentBait().isEmpty() && event.getEntity().level().getGameTime() % 60 == 3) {
-            ItemStack itemStack = event.getEntity().getMainHandItem();
+    public static void resetCurrentBait(Player player) {
+        IPlayer iPlayer = IPlayer.of(player);
+        if (!iPlayer.confluence$getCurrentBait().isEmpty()) {
+            ItemStack itemStack = player.getMainHandItem();
             if (itemStack.isEmpty() || !(itemStack.getItem() instanceof AbstractFishingPole)) {
                 iPlayer.confluence$setCurrentBait(ItemStack.EMPTY);
             }

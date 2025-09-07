@@ -1,19 +1,20 @@
 package org.confluence.mod.network.s2c;
 
 import io.netty.buffer.ByteBuf;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.confluence.lib.common.item.IFunctionCouldEnable;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.network.IPacket;
 import org.confluence.terra_curio.common.component.AccessoriesComponent;
-import org.confluence.terra_curio.common.item.IFunctionCouldEnable;
 import org.confluence.terra_curio.util.CuriosUtils;
 import org.confluence.terra_curio.util.TCUtils;
 
@@ -43,12 +44,19 @@ public record VisibilityPacketS2C(byte mask) implements IPacketS2C {
     public static void sendEcho(ServerPlayer player) {
         boolean visible = TCUtils.hasAccessoriesType(player, AccessoryItems.SPECTRE$GOGGLES) &&
                 CuriosUtils.hasCurio(player, (Predicate<ItemStack>) itemStack -> {
-                    AccessoriesComponent component = TCUtils.getAccessoriesComponent(itemStack);
-                    if (component == null) return false;
-                    return component.contains(AccessoryItems.SPECTRE$GOGGLES) && itemStack.getItem() instanceof IFunctionCouldEnable func && func.isEnabled(itemStack, null);
+                    if (itemStack.getItem() instanceof IFunctionCouldEnable func && func.isEnabled(itemStack)) {
+                        AccessoriesComponent component = TCUtils.getAccessoriesComponent(itemStack);
+                        if (component != null) {
+                            return component.contains(AccessoryItems.SPECTRE$GOGGLES);
+                        }
+                    }
+                    return false;
                 });
-        LibUtils.getOrCreatePersistedData(player).putBoolean("confluence:has_echo_visibility", visible);
-        PacketDistributor.sendToPlayer(player, new VisibilityPacketS2C(ECHO, visible));
+        CompoundTag data = LibUtils.getOrCreatePersistedData(player);
+        if (data.getBoolean("confluence:has_echo_visibility") != visible) {
+            data.putBoolean("confluence:has_echo_visibility", visible);
+            PacketDistributor.sendToPlayer(player, new VisibilityPacketS2C(ECHO, visible));
+        }
     }
 
     public static void sendTheConstantPostEffect(ServerPlayer serverPlayer) {

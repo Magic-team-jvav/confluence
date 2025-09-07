@@ -86,7 +86,7 @@ public class ToolItems {
     public static final DeferredItem<NPCInvitationItem> NPC_INVITATION = ITEMS.register("npc_invitation", NPCInvitationItem::new);
     public static final DeferredItem<DungeonCompass> DUNGEON_COMPASS = ITEMS.register("dungeon_compass", DungeonCompass::new);
 
-    public static final DeferredItem<MagicDropperItem> EMPTY_DROPPER = ITEMS.register("empty_dropper", () -> new MagicDropperItem(null){
+    public static final DeferredItem<MagicDropperItem> EMPTY_DROPPER = ITEMS.register("empty_dropper", () -> new MagicDropperItem(null) {
         @Override
         public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
             tooltipComponents.add(Component.translatable("tooltip.item.confluence.empty_dropper.0"));

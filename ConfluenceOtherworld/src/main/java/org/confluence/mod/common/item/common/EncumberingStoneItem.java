@@ -1,16 +1,14 @@
 package org.confluence.mod.common.item.common;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.lib.common.item.TooltipItem;
+import org.confluence.lib.common.item.FunctionItem;
 import org.confluence.mod.mixed.IServerPlayer;
-import org.confluence.terra_curio.common.item.IFunctionCouldEnable;
 
-public class EncumberingStoneItem extends TooltipItem implements IFunctionCouldEnable {
+public class EncumberingStoneItem extends FunctionItem {
     public EncumberingStoneItem() {
         super(new Properties().stacksTo(1), ModRarity.BLUE, getTooltipsFromString("encumbering_stone", 3, ChatFormatting.GRAY));
     }
@@ -20,10 +18,5 @@ public class EncumberingStoneItem extends TooltipItem implements IFunctionCouldE
         if (entity instanceof IServerPlayer serverPlayer) {
             serverPlayer.confluence$setCouldPickupItem(!isEnabled(stack));
         }
-    }
-
-    @Override
-    public Component getName(ItemStack pStack) {
-        return isEnabled(pStack) ? super.getName(pStack) : Component.translatable(getDescriptionId(pStack) + ".disable");
     }
 }

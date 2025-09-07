@@ -83,34 +83,33 @@ public class FlailRenderer extends EntityRenderer<FlailBall> {
         // if(entity.frameCount==0)  dirInit = owner.getXRot();
         entity.frameCount=entity.frameCount+5;
         float angle = (float) (entity.frameCount*2);
-        float offsety = 0.25f;
-        //todo 左手
-        float r = 0.5f;//右手的半径
+        float yOffset = 0.25f;
+        float r = - entity.getEntityData().get(FlailBall.DATA_OFFSET);
         //todo y的坐标还有点问题
-        Vec3 pt = entity.position().add(0,offsety,0).vectorTo(owner.position().add(0,0.8,0))//抛出后的方向和修正
+        Vec3 ownerRotateCenterPos = entity.position().add(0,yOffset,0).vectorTo(owner.position().add(0,0.8,0))//抛出后的方向和修正
             .add(r*Math.cos(Math.toRadians(owner.yBodyRot+180) ),0,r*Math.sin(Math.toRadians(owner.yBodyRot+180)));//修正手的位置
 
         //
-        float rotx = (float) Mth.wrapDegrees(Math.toDegrees(Mth.atan2(-pt.y, Math.sqrt(pt.x * pt.x + pt.z * pt.z))));
-        float roty = (float) Mth.wrapDegrees(Math.toDegrees(Mth.atan2(pt.x, pt.z)));
+        float xRot = (float) Mth.wrapDegrees(Math.toDegrees(Mth.atan2(-ownerRotateCenterPos.y, Math.sqrt(ownerRotateCenterPos.x * ownerRotateCenterPos.x + ownerRotateCenterPos.z * ownerRotateCenterPos.z))));
+        float yRot = (float) Mth.wrapDegrees(Math.toDegrees(Mth.atan2(ownerRotateCenterPos.x, ownerRotateCenterPos.z)));
 
 
-        Matrix4f m4;
+        Matrix4f ballMatrix;
 
         if(entity.getPhase() == FlailBall.PHASE_SPIN){
-            m4 = new Matrix4f()
+            ballMatrix = new Matrix4f()
                     .rotate(-(float) Math.toRadians(owner.getYRot()),new Vector3f(0,1,0));
-            m4.translate(new Vector3f(0,1,0))
+            ballMatrix.translate(new Vector3f(0,1,0))
                     .rotate((float) Math.toRadians(angle),new Vector3f(1,0,0))
                     .translate(new Vector3f(0,-1,0));
-            poseStack.mulPose(m4);
+            poseStack.mulPose(ballMatrix);
         }
         else{
-            m4 = new Matrix4f().rotate((float) Math.toRadians(roty),new Vector3f(0,1,0));
-            m4.translate(0,offsety,0)
-                    .rotate((float)( Math.toRadians(rotx)+Math.PI/2),new Vector3f(1,0,0))
-                    .translate(0,-offsety,0);
-            poseStack.mulPose(m4);
+            ballMatrix = new Matrix4f().rotate((float) Math.toRadians(yRot),new Vector3f(0,1,0));
+            ballMatrix.translate(0,yOffset,0)
+                    .rotate((float)( Math.toRadians(xRot)+Math.PI/2),new Vector3f(1,0,0))
+                    .translate(0,-yOffset,0);
+            poseStack.mulPose(ballMatrix);
         }
 
         model.renderToBuffer(poseStack, multiBufferSource.getBuffer(model.renderType(TEXTURE)), packedLight, OverlayTexture.NO_OVERLAY, 0xFFFF);
@@ -127,25 +126,25 @@ public class FlailRenderer extends EntityRenderer<FlailBall> {
         PoseStack.Pose pose = poseStack.last();
         poseStack.scale(scaleXZ,scale,scaleXZ);
         double distance;
-        Matrix4f m5;
+        Matrix4f chainMatrix;
 
         if(entity.getPhase() == FlailBall.PHASE_SPIN) {
             distance = scale;
-            m5 = new Matrix4f().rotate(-(float) Math.toRadians(owner.getYRot()),new Vector3f(0,1,0));//y轴旋转
-            m5.translate(new Vector3f(0,1/scale,0))
+            chainMatrix = new Matrix4f().rotate(-(float) Math.toRadians(owner.getYRot()),new Vector3f(0,1,0));//y轴旋转
+            chainMatrix.translate(new Vector3f(0,1/scale,0))
                     .rotate((float) Math.toRadians(angle),new Vector3f(1,0,0))//绕从player的x轴向上平移1单位的轴旋转
                     .translate(new Vector3f(0,-1/scale,0));
         }else{
 
-            distance = pt.length();
+            distance = ownerRotateCenterPos.length();
 
-            m5 = new Matrix4f().translate(0f, offsety/scale,0f)//先向上平移到链球中心中间位置
-                    .rotate((float) Math.toRadians(roty),new Vector3f(0,1,0));//绕y轴旋转
+            chainMatrix = new Matrix4f().translate(0f, yOffset/scale,0f)//先向上平移到链球中心中间位置
+                    .rotate((float) Math.toRadians(yRot),new Vector3f(0,1,0));//绕y轴旋转
             //todo 角度可能有问题  M注: 雀氏有问题，链锤不松手上下飞就能发现玩家终点跑天上去了
-            m5.rotate((float)( Math.toRadians(rotx)+Math.PI/2),new Vector3f(1,0,0)).translate(0f, -offsety/scale,0f);//绕中心的x轴旋转
+            chainMatrix.rotate((float)( Math.toRadians(xRot)+Math.PI/2),new Vector3f(1,0,0)).translate(0f, -yOffset/scale,0f);//绕中心的x轴旋转
 
         }
-        poseStack.mulPose(m5);
+        poseStack.mulPose(chainMatrix);
         float preDistance = 0.3f;
         for (float i = 0f; i < distance/scaleXZ+0.5; i+=scale) {
             if(i>preDistance) {
@@ -156,7 +155,7 @@ public class FlailRenderer extends EntityRenderer<FlailBall> {
             }
             poseStack.mulPose(Axis.YN.rotationDegrees(30));//每步旋转角
             poseStack.translate(-scaleXZ/2.0, scale, scaleXZ/2.0);//回正到中心
-        }
+        } // M: 你这么渲染让我想起了我小时候把纸带卷成卷再展开后形成的类似弹簧的结构
         poseStack.popPose();
     }
 

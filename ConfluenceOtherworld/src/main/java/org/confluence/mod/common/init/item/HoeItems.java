@@ -7,7 +7,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTiers;
-import org.confluence.mod.common.item.hoe.BaseHoeItem;
+import org.confluence.mod.common.item.common.BaseHoeItem;
 
 import static org.confluence.mod.common.init.item.ModItems.unbreakable;
 

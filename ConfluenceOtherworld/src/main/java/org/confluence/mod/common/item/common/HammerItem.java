@@ -1,4 +1,4 @@
-package org.confluence.mod.common.item.hammer;
+package org.confluence.mod.common.item.common;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -48,19 +48,18 @@ public class HammerItem extends DiggerItem {
     }
 
     public static void hammerMineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity entity) {
-        if (!level.isClientSide) {
-            int destroyCount = 1;
-            if (entity instanceof Player player) {
-                BlockHitResult picked = (BlockHitResult) player.pick(10, 1.0F, true);
-                boolean xOff = true, yOff = true, zOff = true;
-                switch (picked.getDirection()) {
-                    case NORTH, SOUTH -> zOff = false;
-                    case WEST, EAST -> xOff = false;
-                    default -> yOff = false;
-                }
-                destroyCount += iteForBlocks(level, player, pos, xOff, yOff, zOff, state.getDestroySpeed(level, pos) * 1.5F, stack);
+        if (level.isClientSide) return;
+        int destroyCount = 1;
+        if (entity instanceof Player player) {
+            BlockHitResult picked = (BlockHitResult) player.pick(10, 1.0F, true);
+            boolean xOff = true, yOff = true, zOff = true;
+            switch (picked.getDirection()) {
+                case NORTH, SOUTH -> zOff = false;
+                case WEST, EAST -> xOff = false;
+                default -> yOff = false;
             }
-            if (state.getDestroySpeed(level, pos) != 0.0F) {
+            destroyCount += iteForBlocks(level, player, pos, xOff, yOff, zOff, state.getDestroyProgress(player, level, pos) * 1.5F, stack);
+            if (state.getDestroyProgress(player, level, pos) != 0.0F) {
                 stack.hurtAndBreak(destroyCount, entity, EquipmentSlot.MAINHAND);
             }
         }

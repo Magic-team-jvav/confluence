@@ -1,15 +1,17 @@
-package org.confluence.mod.common.item.lance;
+package org.confluence.mod.common.item.spear;
 
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.VectorUtils;
+import org.confluence.mod.common.init.ModEffects;
 import software.bernie.geckolib.animation.EasingType;
 
-public class AdamantiteGlaiveItem extends AbstractLanceItem {
-    public AdamantiteGlaiveItem() {
-        super(new Properties().attributes(attributes(6, 19.5F)), ModRarity.LIGHT_RED, 10, 3, createKeyframes(
+public class DarkLanceItem extends AbstractSpearItem {
+    public DarkLanceItem() {
+        super(new Properties().attributes(attributes(6, 8.3F)), ModRarity.ORANGE, 10, 3, createKeyframes(
                 K.of(0, 0, EasingType.LINEAR),
                 K.of(0.17, 6, EasingType.EASE_OUT_BACK),
                 K.of(0.33, -16, EasingType.EASE_IN_EXPO),
@@ -20,6 +22,9 @@ public class AdamantiteGlaiveItem extends AbstractLanceItem {
     @Override
     protected void onHitEntity(DamageSource damageSource, LivingEntity owner, Entity victim) {
         hurtVictim(damageSource, owner, victim);
-        VectorUtils.knockBackA2B(owner, victim, 0.6, 0.2);
+        if (victim instanceof LivingEntity living) {
+            living.addEffect(new MobEffectInstance(ModEffects.SHADOWFLAME, 300));
+        }
+        VectorUtils.knockBackA2B(owner, victim, 0.5, 0.1);
     }
 }

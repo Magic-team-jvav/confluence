@@ -20,7 +20,7 @@ public final class ModArmPoses {
             }
         }
     });
-    public static final EnumProxy<ArmPose> LANCE = register(true, (HumanoidModel<?> model, LivingEntity living, HumanoidArm arm) -> {
+    public static final EnumProxy<ArmPose> SPEAR = register(true, (HumanoidModel<?> model, LivingEntity living, HumanoidArm arm) -> {
         if (arm == HumanoidArm.RIGHT) {
             if (model.crouching) {
                 model.rightArm.xRot = model.head.xRot;

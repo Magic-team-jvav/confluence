@@ -23,9 +23,9 @@ import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.ConfluenceData;
-import org.confluence.mod.common.init.item.LanceItems;
 import org.confluence.mod.common.init.item.LightPetItems;
 import org.confluence.mod.common.init.item.ManaWeaponItems;
+import org.confluence.mod.common.init.item.SpearItems;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.phase_journey.common.util.PhaseUtils;
@@ -71,7 +71,7 @@ public class CrimsonHeartBlock extends Block {
                 LibUtils.createItemEntity(ManaWeaponItems.CRIMSON_ROD.toStack(), center.x, center.y, center.z, level, 0);
             }
             if (level.random.nextFloat() < 0.2F) {
-                LibUtils.createItemEntity(LanceItems.THE_ROTTED_FORK.toStack(), center.x, center.y, center.z, level, 0);
+                LibUtils.createItemEntity(SpearItems.THE_ROTTED_FORK.toStack(), center.x, center.y, center.z, level, 0);
             }
 
             for (ServerPlayer player : serverLevel.getPlayers(serverPlayer -> serverPlayer.distanceToSqr(center) <= 32 * 32)) {

@@ -81,7 +81,7 @@
             }
         },
         "textures": {
-            "particle": "confluence:item/lance/dark_lance_item"
+            "particle": "confluence:item/spear/dark_lance_inventory"
         }
     },
     "gui_light": "front",
@@ -90,25 +90,25 @@
         "fixed": {
             "parent": "minecraft:item/generated",
             "textures": {
-                "layer0": "confluence:item/lance/dark_lance_inventory"
+                "layer0": "confluence:item/spear/dark_lance_inventory"
             }
         },
         "ground": {
             "parent": "minecraft:item/generated",
             "textures": {
-                "layer0": "confluence:item/lance/dark_lance_inventory"
+                "layer0": "confluence:item/spear/dark_lance_inventory"
             }
         },
         "gui": {
             "parent": "minecraft:item/generated",
             "textures": {
-                "layer0": "confluence:item/lance/dark_lance_inventory"
+                "layer0": "confluence:item/spear/dark_lance_inventory"
             }
         },
         "head": {
             "parent": "minecraft:item/generated",
             "textures": {
-                "layer0": "confluence:item/lance/dark_lance_inventory"
+                "layer0": "confluence:item/spear/dark_lance_inventory"
             }
         }
     }

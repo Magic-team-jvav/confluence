@@ -1,4 +1,4 @@
-package org.confluence.mod.common.item.lance;
+package org.confluence.mod.common.item.spear;
 
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -7,7 +7,7 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.VectorUtils;
 import software.bernie.geckolib.animation.EasingType;
 
-public class TheRottedForkItem extends AbstractLanceItem {
+public class TheRottedForkItem extends AbstractSpearItem {
     public TheRottedForkItem() {
         super(new Properties().attributes(attributes(6, 4.9F)), ModRarity.BLUE, 15, 5, createKeyframes(
                 K.of(0, 0, EasingType.LINEAR),

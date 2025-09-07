@@ -536,7 +536,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 " c#c",
                 " bc ",
                 "b   "
-        )), LanceItems.STREAMSTRIKE_HALBERD.toStack());
+        )), SpearItems.STREAMSTRIKE_HALBERD.toStack());
 
         // 再生之斧
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
@@ -1116,7 +1116,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "  aa",
                 " a  ",
                 "a   "
-        )), LanceItems.COBALT_NAGINATA.toStack());
+        )), SpearItems.COBALT_NAGINATA.toStack());
         // 钴镐
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 'b', AmountIngredient.of(3, ModTags.Items.INGOTS_COBALT),
@@ -1208,7 +1208,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "  aa",
                 " a a",
                 "a   "
-        )), LanceItems.PALLADIUM_PIKE.toStack());
+        )), SpearItems.PALLADIUM_PIKE.toStack());
         // 钯金镐
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 'b', AmountIngredient.of(3, ModTags.Items.INGOTS_PALLADIUM),

@@ -2973,19 +2973,19 @@ public class ModChineseProvider extends LanguageProvider {
         add(SwordItems.WHITE_PHASEBLADE.get(), "白陨石光剑");
 
         // 其他近战
-        add(LanceItems.SPEAR.get(), "长矛");
-        add(LanceItems.STORM_SPEAR.get(), "风暴长矛");
-        add(LanceItems.THE_ROTTED_FORK.get(), "腐叉");
-        add(LanceItems.STREAMSTRIKE_HALBERD.get(), "穿流戟");
-        add(LanceItems.DARK_LANCE.get(), "暗黑长枪");
-        add(LanceItems.COBALT_NAGINATA.get(), "钴薙刀");
-        add(LanceItems.PALLADIUM_PIKE.get(), "钯金刺矛");
-        add(LanceItems.ORICHALCUM_HALBERD.get(), "山铜长戟");
-        add(LanceItems.MYTHRIL_HALBERD.get(), "秘银长戟");
-        add(LanceItems.ADAMANTITE_GLAIVE.get(), "精金关刀");
-        add(LanceItems.TITANIUM_TRIDENT.get(), "钛金三叉戟");
-        add(LanceItems.GUNGNIR.get(), "永恒之枪");
-        add(LanceItems.CHLOROPHYTE_PARTISAN.get(), "叶绿镋");
+        add(SpearItems.SPEAR.get(), "长矛");
+        add(SpearItems.STORM_SPEAR.get(), "风暴长矛");
+        add(SpearItems.THE_ROTTED_FORK.get(), "腐叉");
+        add(SpearItems.STREAMSTRIKE_HALBERD.get(), "穿流戟");
+        add(SpearItems.DARK_LANCE.get(), "暗黑长枪");
+        add(SpearItems.COBALT_NAGINATA.get(), "钴薙刀");
+        add(SpearItems.PALLADIUM_PIKE.get(), "钯金刺矛");
+        add(SpearItems.ORICHALCUM_HALBERD.get(), "山铜长戟");
+        add(SpearItems.MYTHRIL_HALBERD.get(), "秘银长戟");
+        add(SpearItems.ADAMANTITE_GLAIVE.get(), "精金关刀");
+        add(SpearItems.TITANIUM_TRIDENT.get(), "钛金三叉戟");
+        add(SpearItems.GUNGNIR.get(), "永恒之枪");
+        add(SpearItems.CHLOROPHYTE_PARTISAN.get(), "叶绿镋");
         //剑气
         add(SwordItems.ENCHANTED_SWORD.get(), "附魔剑");
         //快攻

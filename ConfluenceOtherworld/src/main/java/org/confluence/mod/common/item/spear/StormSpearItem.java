@@ -1,4 +1,4 @@
-package org.confluence.mod.common.item.lance;
+package org.confluence.mod.common.item.spear;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
@@ -13,7 +13,7 @@ import org.confluence.mod.common.entity.projectile.StormSpearShotProjectile;
 import org.confluence.mod.common.init.ModEntities;
 import software.bernie.geckolib.animation.EasingType;
 
-public class StormSpearItem extends AbstractLanceItem {
+public class StormSpearItem extends AbstractSpearItem {
     public static final double knockBackScale = 0.6;
     public static final double knockBackMotionY = 0.1;
 

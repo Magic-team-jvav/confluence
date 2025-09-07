@@ -1,4 +1,4 @@
-package org.confluence.mod.common.item.lance;
+package org.confluence.mod.common.item.spear;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -51,7 +51,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 @SuppressWarnings("unused")
-public abstract class AbstractLanceItem extends CustomRarityItem implements GeoItem {
+public abstract class AbstractSpearItem extends CustomRarityItem implements GeoItem {
     public static final String LAST_ATTACK_TIME_KEY = "confluence:last_attack_time";
     protected final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     protected final int attackDuration;
@@ -63,7 +63,7 @@ public abstract class AbstractLanceItem extends CustomRarityItem implements GeoI
      * @param attackInterval 攻击间隔，每造成两次伤害之间的时间
      * @param keyframes      应用于长矛攻击的关键帧，建议匹配攻击持续时间
      */
-    public AbstractLanceItem(Properties properties, ModRarity rarity, int attackDuration, int attackInterval, List<Keyframe<MathValue>> keyframes) {
+    public AbstractSpearItem(Properties properties, ModRarity rarity, int attackDuration, int attackInterval, List<Keyframe<MathValue>> keyframes) {
         super(properties.stacksTo(1), rarity);
         if (attackInterval < 1) throw new IllegalArgumentException("attackInterval must be greater than or equal to 1, currently is " + attackInterval);
         this.attackDuration = attackDuration;
@@ -89,7 +89,7 @@ public abstract class AbstractLanceItem extends CustomRarityItem implements GeoI
     public boolean onEntitySwing(ItemStack stack, LivingEntity entity, InteractionHand hand) {
         if (entity.level() instanceof ServerLevel level && entity.level().getGameTime() - LibUtils.getItemStackNbtNoCopy(stack).getLong(LAST_ATTACK_TIME_KEY) > attackDuration) {
             LibUtils.updateItemStackNbt(stack, tag -> tag.putLong(LAST_ATTACK_TIME_KEY, entity.level().getGameTime()));
-            triggerAnim(entity, GeoItem.getOrAssignId(stack, level), "lance", "use");
+            triggerAnim(entity, GeoItem.getOrAssignId(stack, level), "spear", "use");
             onStartSting(stack, level, entity);
         }
         return true;
@@ -176,7 +176,7 @@ public abstract class AbstractLanceItem extends CustomRarityItem implements GeoI
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "lance", state -> PlayState.STOP)
+        controllers.add(new AnimationController<>(this, "spear", state -> PlayState.STOP)
                 .triggerableAnim("use", RawAnimation.begin().thenPlay("use")));
     }
 
@@ -193,7 +193,7 @@ public abstract class AbstractLanceItem extends CustomRarityItem implements GeoI
             @Override
             public BlockEntityWithoutLevelRenderer getGeoItemRenderer() {
                 if (renderer == null) {
-                    this.renderer = new GeoItemRenderer<>(new DefaultedItemGeoModel<>(Confluence.asResource("lance/" + BuiltInRegistries.ITEM.getKey(AbstractLanceItem.this).getPath())));
+                    this.renderer = new GeoItemRenderer<>(new DefaultedItemGeoModel<>(Confluence.asResource("spear/" + BuiltInRegistries.ITEM.getKey(AbstractSpearItem.this).getPath())));
                 }
                 return renderer;
             }

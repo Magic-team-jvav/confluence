@@ -11,11 +11,11 @@
         },
         {
             "enum": "net/minecraft/client/model/HumanoidModel$ArmPose",
-            "name": "CONFLUENCE_LANCE",
+            "name": "CONFLUENCE_SPEAR",
             "constructor": "(ZLnet/neoforged/neoforge/client/IArmPoseTransformer;)V",
             "parameters": {
                 "class": "org/confluence/mod/common/init/ModArmPoses",
-                "field": "LANCE"
+                "field": "SPEAR"
             }
         },
         {

@@ -86,7 +86,7 @@
             }
         },
         "textures": {
-            "particle": "confluence:item/lance/cobalt_naginata_item"
+            "particle": "confluence:item/spear/cobalt_naginata_item"
         }
     },
     "gui_light": "front",
@@ -95,25 +95,25 @@
         "fixed": {
             "parent": "minecraft:item/generated",
             "textures": {
-                "layer0": "confluence:item/lance/cobalt_naginata_inventory"
+                "layer0": "confluence:item/spear/cobalt_naginata_inventory"
             }
         },
         "ground": {
             "parent": "minecraft:item/generated",
             "textures": {
-                "layer0": "confluence:item/lance/cobalt_naginata_inventory"
+                "layer0": "confluence:item/spear/cobalt_naginata_inventory"
             }
         },
         "gui": {
             "parent": "minecraft:item/generated",
             "textures": {
-                "layer0": "confluence:item/lance/cobalt_naginata_inventory"
+                "layer0": "confluence:item/spear/cobalt_naginata_inventory"
             }
         },
         "head": {
             "parent": "minecraft:item/generated",
             "textures": {
-                "layer0": "confluence:item/lance/cobalt_naginata_inventory"
+                "layer0": "confluence:item/spear/cobalt_naginata_inventory"
             }
         }
     }

@@ -67,14 +67,14 @@ import org.confluence.mod.common.init.ModEquipmentSets;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.ToolItems;
-import org.confluence.mod.common.item.lance.AbstractLanceItem;
+import org.confluence.mod.common.item.spear.AbstractSpearItem;
 import org.confluence.mod.integration.ars_nouveau.ArsNouveauHelper;
 import org.confluence.mod.integration.irons_spell.IronSpellHelper;
 import org.confluence.mod.integration.xaero.XaeroHelper;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.ILocalPlayer;
 import org.confluence.mod.mixed.IMobEffectInstance;
-import org.confluence.mod.network.c2s.LanceAttackPacketC2S;
+import org.confluence.mod.network.c2s.SpearAttackPacketC2S;
 import org.confluence.mod.util.ClientUtils;
 import org.confluence.mod.util.DeathAnimUtils;
 import org.confluence.mod.util.ModUtils;
@@ -100,10 +100,10 @@ public final class GameClientEvents {
 
         if (minecraft.gameMode != null && !minecraft.gameMode.isDestroying() && minecraft.options.keyAttack.isDown()) {
             ItemStack itemStack = player.getMainHandItem();
-            if (!itemStack.isEmpty() && itemStack.getItem() instanceof AbstractLanceItem lanceItem) {
+            if (!itemStack.isEmpty() && itemStack.getItem() instanceof AbstractSpearItem spearItem) {
                 CompoundTag tag = LibUtils.getItemStackNbtIfPresent(itemStack);
-                if (tag != null && player.level().getGameTime() - tag.getLong(AbstractLanceItem.LAST_ATTACK_TIME_KEY) > lanceItem.getAttackDuration()) {
-                    LanceAttackPacketC2S.sendToServer();
+                if (tag != null && player.level().getGameTime() - tag.getLong(AbstractSpearItem.LAST_ATTACK_TIME_KEY) > spearItem.getAttackDuration()) {
+                    SpearAttackPacketC2S.sendToServer();
                 }
             }
         }
@@ -152,7 +152,7 @@ public final class GameClientEvents {
                 event.setSwingHand(false);
             }
         }
-        if (event.getHand() == InteractionHand.MAIN_HAND && player.getMainHandItem().is(ModTags.Items.LANCES)) {
+        if (event.getHand() == InteractionHand.MAIN_HAND && player.getMainHandItem().is(ModTags.Items.SPEARS)) {
             if (event.isAttack()) {
                 event.setCanceled(true);
             }

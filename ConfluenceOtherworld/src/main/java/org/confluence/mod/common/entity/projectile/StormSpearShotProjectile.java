@@ -13,7 +13,7 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.entitiy.IAxisZRotate;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.init.ModDamageTypes;
-import org.confluence.mod.common.item.lance.StormSpearItem;
+import org.confluence.mod.common.item.spear.StormSpearItem;
 import org.confluence.mod.util.ModUtils;
 
 public class StormSpearShotProjectile extends DamageSettableProjectile {

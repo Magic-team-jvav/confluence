@@ -1835,9 +1835,9 @@ public class ModEnglishProvider extends LanguageProvider {
         QuestedFishes.ITEMS.getEntries().forEach(itemAction);
         ShovelItems.ITEMS.getEntries().forEach(itemAction);
         SwordItems.ITEMS.getEntries().forEach(itemAction);
+        SpearItems.ITEMS.getEntries().forEach(itemAction);
         ToolItems.ITEMS.getEntries().forEach(itemAction);
         TreasureBagItems.ITEMS.getEntries().forEach(itemAction);
-        LanceItems.ITEMS.getEntries().forEach(itemAction);
         GunItems.ITEMS.getEntries().forEach(itemAction);
 
         ModEffects.EFFECTS.getEntries().forEach(effect -> add(effect.get(), LibUtils.toTitleCase(effect.getId().getPath())));

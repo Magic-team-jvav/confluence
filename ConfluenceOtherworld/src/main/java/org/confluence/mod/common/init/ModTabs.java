@@ -174,7 +174,7 @@ public final class ModTabs {
                         Consumer<DeferredHolder<Item, ? extends Item>> action = item -> output.accept(item.get());
                         SwordItems.ITEMS.getEntries().forEach(action);
                         TEBoomerangItems.ITEMS.getEntries().forEach(action);
-                        LanceItems.ITEMS.getEntries().forEach(action);
+                        SpearItems.ITEMS.getEntries().forEach(action);
                     })
 //                    .withTabsAfter(Confluence.asResourceKey(Registries.CREATIVE_MODE_TAB, "rangers"))
                     .withTabsBefore(ARMORS.getId())

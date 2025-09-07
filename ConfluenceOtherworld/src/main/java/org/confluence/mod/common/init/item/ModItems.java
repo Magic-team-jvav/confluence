@@ -146,7 +146,6 @@ public final class ModItems {
         HammerItems.ITEMS.register(eventBus);
         HookItems.ITEMS.register(eventBus);
         IconItems.ITEMS.register(eventBus);
-        LanceItems.ITEMS.register(eventBus);
         LightPetItems.ITEMS.register(eventBus);
         ManaWeaponItems.ITEMS.register(eventBus);
         MaterialItems.ITEMS.register(eventBus);
@@ -156,6 +155,7 @@ public final class ModItems {
         PickaxeItems.ITEMS.register(eventBus);
         HoeItems.ITEMS.register(eventBus);
         ShovelItems.ITEMS.register(eventBus);
+        SpearItems.ITEMS.register(eventBus);
         PotionItems.ITEMS.register(eventBus);
         QuestedFishes.ITEMS.register(eventBus);
         SwordItems.ITEMS.register(eventBus);

@@ -86,7 +86,7 @@
             }
         },
         "textures": {
-            "particle": "confluence:item/lance/gungnir_item"
+            "particle": "confluence:item/spear/gungnir_item"
         }
     },
     "gui_light": "front",
@@ -95,25 +95,25 @@
         "fixed": {
             "parent": "minecraft:item/generated",
             "textures": {
-                "layer0": "confluence:item/lance/gungnir_inventory"
+                "layer0": "confluence:item/spear/gungnir_inventory"
             }
         },
         "ground": {
             "parent": "minecraft:item/generated",
             "textures": {
-                "layer0": "confluence:item/lance/gungnir_inventory"
+                "layer0": "confluence:item/spear/gungnir_inventory"
             }
         },
         "gui": {
             "parent": "minecraft:item/generated",
             "textures": {
-                "layer0": "confluence:item/lance/gungnir_inventory"
+                "layer0": "confluence:item/spear/gungnir_inventory"
             }
         },
         "head": {
             "parent": "minecraft:item/generated",
             "textures": {
-                "layer0": "confluence:item/lance/gungnir_inventory"
+                "layer0": "confluence:item/spear/gungnir_inventory"
             }
         }
     }

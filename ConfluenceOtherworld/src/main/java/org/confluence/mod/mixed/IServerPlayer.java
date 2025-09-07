@@ -12,6 +12,8 @@ public interface IServerPlayer extends SelfGetter<ServerPlayer> {
 
     boolean confluence$chunkPosChanged();
 
+    double confluence$getMovementSpeed();
+
     static IServerPlayer of(ServerPlayer player) {
         return (IServerPlayer) player;
     }

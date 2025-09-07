@@ -7,6 +7,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -109,13 +110,13 @@ public abstract class AbstractSpearItem extends CustomRarityItem implements GeoI
 
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
-        if (isSelected && level instanceof ServerLevel serverLevel && entity instanceof LivingEntity owner) {
+        if (isSelected && entity instanceof ServerPlayer owner) {
             long gameTime = owner.level().getGameTime();
             CompoundTag tag = LibUtils.getItemStackNbtNoCopy(stack);
             long tickCount = gameTime - tag.getLong(LAST_ATTACK_TIME_KEY);
             if (tickCount <= attackDuration && (attackInterval <= 1 || gameTime % attackInterval == 0)) {
                 Vec3 viewVector = owner.getViewVector(1.0F);
-                Vec3 position = owner.position().add(0, 1, 0);
+                Vec3 position = new Vec3(owner.getX(), owner.getEyeY() - 0.1, owner.getZ());
                 Vec3 startVec = position.add(viewVector.scale(-0.5));
                 Vec3 endVec = position.add(viewVector.scale(getDistance(tickCount, owner)));
                 AABB boundingBox = new AABB(startVec, endVec);
@@ -127,10 +128,10 @@ public abstract class AbstractSpearItem extends CustomRarityItem implements GeoI
                         if (victim instanceof PartEntity<?> partEntity) {
                             victim = partEntity.getParent();
                         }
-                        onHitEntity(stack, serverLevel, owner, victim);
+                        onHitEntity(stack, (ServerLevel) level, owner, victim);
                     }
                 }
-                onStingTick(stack, serverLevel, owner, endVec, attackDuration - tickCount < attackInterval);
+                onStingTick(stack, (ServerLevel) level, owner, endVec, attackDuration - tickCount < attackInterval);
             }
         }
     }
@@ -188,7 +189,7 @@ public abstract class AbstractSpearItem extends CustomRarityItem implements GeoI
     @Override
     public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
         consumer.accept(new GeoRenderProvider() {
-            private GeoItemRenderer<DarkLanceItem> renderer;
+            private GeoItemRenderer<AbstractSpearItem> renderer;
 
             @Override
             public BlockEntityWithoutLevelRenderer getGeoItemRenderer() {

@@ -36,6 +36,11 @@ public abstract class ServerPlayerMixin implements IServerPlayer {
     @Shadow
     public abstract PlayerAdvancements getAdvancements();
 
+    @Shadow
+    private static boolean didNotMove(double dx, double dy, double dz) {
+        return false;
+    }
+
     @Unique
     private boolean confluence$couldPickupItem = true;
     @Unique
@@ -44,6 +49,8 @@ public abstract class ServerPlayerMixin implements IServerPlayer {
     private short confluence$bulldozer = 0;
     @Unique
     private ChunkPos confluence$lastChunkPosition;
+    @Unique
+    private double confluence$movementSpeed;
 
     @Override
     public void confluence$setCouldPickupItem(boolean enable) {
@@ -77,10 +84,25 @@ public abstract class ServerPlayerMixin implements IServerPlayer {
         return false;
     }
 
+    @Override
+    public double confluence$getMovementSpeed() {
+        return confluence$movementSpeed;
+    }
+
     @Inject(method = "checkMovementStatistics", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;isSprinting()Z"))
     private void checkMarathon(double dx, double dy, double dz, CallbackInfo ci) {
-        if (confluence$marathon_medalist) return;
-        this.confluence$marathon_medalist = AchievementUtils.marathonMedalist(confluence$self(), stats, confluence$marathon_medalist);
+        if (!confluence$marathon_medalist) {
+            this.confluence$marathon_medalist = AchievementUtils.marathonMedalist(confluence$self(), stats, confluence$marathon_medalist);
+        }
+    }
+
+    @Inject(method = "checkMovementStatistics", at = @At("HEAD"))
+    private void checkSpeed(double dx, double dy, double dz, CallbackInfo ci) {
+        if (didNotMove(dx, dy, dz)) {
+            this.confluence$movementSpeed = 0;
+        } else {
+            this.confluence$movementSpeed = Math.sqrt(dx * dx + dy * dy + dz * dz) * 20;
+        }
     }
 
     @WrapWithCondition(method = "die", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerGamePacketListenerImpl;send(Lnet/minecraft/network/protocol/Packet;Lnet/minecraft/network/PacketSendListener;)V"))

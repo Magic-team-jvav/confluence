@@ -47,7 +47,6 @@ public final class ModTabs {
                         PotBlocks.BLOCKS.getEntries().forEach(block -> output.accept(block.get()));
                         output.accept(OreBlocks.COLD_CRYSTAL_ORE.get());
                     })
-//                    .withTabsAfter(Confluence.asResourceKey(Registries.CREATIVE_MODE_TAB, "building_blocks"))
                     .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
                     .build()
     );
@@ -59,7 +58,6 @@ public final class ModTabs {
                         DecorativeBlocks.BLOCKS.getEntries().forEach(block -> output.accept(block.get()));
                         StatueBlocks.BLOCKS.getEntries().forEach(block -> output.accept(block.get()));
                     })
-//                    .withTabsAfter(TFRegistries.FURNITURE.getId())
                     .withTabsBefore(NATURAL_BLOCKS.getId())
                     .build()
     );
@@ -80,7 +78,6 @@ public final class ModTabs {
                         output.accept(TFBlocks.ICE_MACHINE.get());
                         output.accept(TFBlocks.TRASH_CAN.get());
                     })
-//                    .withTabsAfter(Confluence.asResourceKey(Registries.CREATIVE_MODE_TAB, "materials"))
                     .withTabsBefore(TFRegistries.FURNITURE.getId())
                     .build());
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MATERIALS = TABS.register("materials",
@@ -108,7 +105,6 @@ public final class ModTabs {
                         CrateBlocks.BLOCKS.getEntries().forEach(action);
                         PaintItems.ITEMS.getEntries().forEach(action);
                     })
-//                    .withTabsAfter(Confluence.asResourceKey(Registries.CREATIVE_MODE_TAB, "food_and_potions"))
                     .withTabsBefore(MATERIALS.getId())
                     .build());
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> FOOD_AND_POTIONS = TABS.register("food_and_potions",
@@ -118,7 +114,6 @@ public final class ModTabs {
                         PotionItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
                         FoodItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
                     })
-//                    .withTabsAfter(Confluence.asResourceKey(Registries.CREATIVE_MODE_TAB, "tools"))
                     .withTabsBefore(MISC.getId())
                     .build());
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> TOOLS = TABS.register("tools",
@@ -153,7 +148,6 @@ public final class ModTabs {
                         ShovelItems.ITEMS.getEntries().forEach(action);
                         BoatItems.forEach(action);
                     })
-//                    .withTabsAfter(TCTabs.ACCESSORIES.getId())
                     .withTabsBefore(FOOD_AND_POTIONS.getId())
                     .build());
     /* 饰品 */
@@ -165,7 +159,6 @@ public final class ModTabs {
                         ArmorItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
                         VanityArmorItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
                     })
-//                    .withTabsAfter(Confluence.asResourceKey(Registries.CREATIVE_MODE_TAB, "warriors"))
                     .withTabsBefore(TCTabs.ACCESSORIES.getId()).build());
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> WARRIORS = TABS.register("warriors",
             () -> CreativeModeTab.builder().icon(() -> IconItems.MELEE_ICON.get().getDefaultInstance())
@@ -175,8 +168,8 @@ public final class ModTabs {
                         SwordItems.ITEMS.getEntries().forEach(action);
                         TEBoomerangItems.ITEMS.getEntries().forEach(action);
                         SpearItems.ITEMS.getEntries().forEach(action);
+                        LanceItems.ITEMS.getEntries().forEach(action);
                     })
-//                    .withTabsAfter(Confluence.asResourceKey(Registries.CREATIVE_MODE_TAB, "rangers"))
                     .withTabsBefore(ARMORS.getId())
                     .build());
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> SHOOTERS = TABS.register("rangers",
@@ -192,7 +185,6 @@ public final class ModTabs {
                         output.accept(ManaWeaponItems.SPACE_GUN.get());
                         TGItems.BULLETS.getEntries().forEach(action);
                     })
-//                    .withTabsAfter(Confluence.asResourceKey(Registries.CREATIVE_MODE_TAB, "mages"))
                     .withTabsBefore(WARRIORS.getId())
                     .build());
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MAGES = TABS.register("mages",
@@ -210,7 +202,6 @@ public final class ModTabs {
                         output.accept(EnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.SPELL_DESPERATION, 2));
                         output.accept(EnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.MYSTIC_SURGE, 2));
                     })
-//                    .withTabsAfter(Confluence.asResourceKey(Registries.CREATIVE_MODE_TAB, "summoners"))
                     .withTabsBefore(SHOOTERS.getId())
                     .build());
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> SUMMONERS = TABS.register("summoners",

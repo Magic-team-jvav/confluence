@@ -28,13 +28,13 @@ public class TargetDummyEntity extends LivingEntity {
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        if (source.getEntity() instanceof Player player) {
-            if (player.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof PickaxeItem && player.isShiftKeyDown()) {
-                this.remove(RemovalReason.DISCARDED);
+        if (source.getEntity() instanceof Player player && player.isCrouching() && player.onGround()) {
+            if (player.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof PickaxeItem) {
+                discard();
                 LibUtils.createItemEntity(ToolItems.TARGET_DUMMY.get().getDefaultInstance(), position(), player.level(), 0);
                 return true;
-            } else if (player.isCreative() && player.isShiftKeyDown()){
-                this.remove(RemovalReason.DISCARDED);
+            } else if (player.isCreative()) {
+                discard();
             }
         }
         if (source.is(DamageTypes.GENERIC_KILL)) {

@@ -2932,6 +2932,12 @@ public class ModChineseProvider extends LanguageProvider {
         add(SwordItems.ASH_WOOD_SWORD.get(), "白蜡木剑");
         add(SwordItems.PEARLWOOD_SWORD.get(), "珍珠木剑");
         add(SwordItems.MURAMASA.get(), "村正大刀");
+        add(SwordItems.COBALT_SWORD.get(), "钴剑");
+        add(SwordItems.PALLADIUM_SWORD.get(), "钯金剑");
+        add(SwordItems.MYTHRIL_SWORD.get(), "秘银剑");
+        add(SwordItems.ORICHALCUM_SWORD.get(), "山铜剑");
+        add(SwordItems.ADAMANTITE_SWORD.get(), "精金剑");
+        add(SwordItems.TITANIUM_SWORD.get(), "钛金剑");
 
 
         add(SwordItems.CROWBAR.get(), "撬棍");

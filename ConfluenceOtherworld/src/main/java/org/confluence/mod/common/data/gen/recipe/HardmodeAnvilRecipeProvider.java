@@ -110,6 +110,15 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
         )));
 
         // 秘银武器工具
+        hardmodeAnvil(recipeOutput, SwordItems.MYTHRIL_SWORD.toStack(), ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_MYTHRIL),
+                '/', Ingredient.of(Items.STICK)
+        ), List.of(
+                "   a",
+                "  a ",
+                "a/a ",
+                "/   "
+        )));
         hardmodeAnvil(recipeOutput, SpearItems.MYTHRIL_HALBERD.toStack(), ShapedRecipePattern.of(Map.of(
                 'a', AmountIngredient.of(2, ModTags.Items.INGOTS_MYTHRIL)
         ), List.of(
@@ -199,6 +208,15 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
         )));
 
         // 山铜武器工具
+        hardmodeAnvil(recipeOutput, SwordItems.ORICHALCUM_SWORD.toStack(), ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_ORICHALCUM),
+                '/', Ingredient.of(Items.STICK)
+        ), List.of(
+                "   a",
+                "  aa",
+                "a/a ",
+                "/   "
+        )));
         hardmodeAnvil(recipeOutput, SpearItems.ORICHALCUM_HALBERD.toStack(), ShapedRecipePattern.of(Map.of(
                 'a', AmountIngredient.of(2, ModTags.Items.INGOTS_ORICHALCUM)
         ), List.of(
@@ -291,6 +309,16 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
         )));
 
         // 钛金武器工具
+        hardmodeAnvil(recipeOutput, SwordItems.TITANIUM_SWORD.toStack(), ShapedRecipePattern.of(Map.of(
+                'c', Ingredient.of(ModTags.Items.INGOTS_TITANIUM),
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_TITANIUM),
+                '/', Ingredient.of(Items.STICK)
+        ), List.of(
+                "  cc",
+                " cac",
+                "a/c ",
+                "/a  "
+        )));
         hardmodeAnvil(recipeOutput, SpearItems.TITANIUM_TRIDENT.toStack(), ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(ModTags.Items.INGOTS_TITANIUM),
                 'a', AmountIngredient.of(2, ModTags.Items.INGOTS_TITANIUM),
@@ -383,6 +411,16 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
         )));
 
         // 精金武器工具
+        hardmodeAnvil(recipeOutput, SwordItems.ADAMANTITE_SWORD.toStack(), ShapedRecipePattern.of(Map.of(
+                'c', Ingredient.of(ModTags.Items.INGOTS_ADAMANTITE),
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_ADAMANTITE),
+                '/', Ingredient.of(Items.STICK)
+        ), List.of(
+                "  c ",
+                " cac",
+                "aac ",
+                "/a  "
+        )));
         hardmodeAnvil(recipeOutput, SpearItems.ADAMANTITE_GLAIVE.toStack(), ShapedRecipePattern.of(Map.of(
                 'a', AmountIngredient.of(2, ModTags.Items.INGOTS_ADAMANTITE)
         ), List.of(

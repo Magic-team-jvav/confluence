@@ -1117,6 +1117,16 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 " a  ",
                 "a   "
         )), SpearItems.COBALT_NAGINATA.toStack());
+        // 钴剑
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_COBALT),
+                '/', Ingredient.of(Items.STICK)
+        ), List.of(
+                "   a",
+                "  aa",
+                " a/ ",
+                "/   "
+        )), SwordItems.COBALT_SWORD.toStack());
         // 钴镐
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 'b', AmountIngredient.of(3, ModTags.Items.INGOTS_COBALT),
@@ -1200,6 +1210,16 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "a a",
                 "a a"
         )), ArmorItems.PALLADIUM_BOOTS.toStack());
+        // 钯金剑
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_PALLADIUM),
+                '/', Ingredient.of(Items.STICK)
+        ), List.of(
+                "  aa",
+                "  a ",
+                "a/a ",
+                "/   "
+        )), SwordItems.PALLADIUM_SWORD.toStack());
         // 钯金刺矛
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 'a', AmountIngredient.of(2, ModTags.Items.INGOTS_PALLADIUM)

@@ -53,6 +53,12 @@ public class ModItemModelProvider extends ItemModelProvider {
         separateModel(SwordItems.BAT_BAT, templateReverse24x, "sword/");
         separateModel(SwordItems.KATANA, templateReverse24x, "sword/");
         separateModel(SwordItems.VOLCANO, templateNormal24x, "sword/");
+        separateModel(SwordItems.COBALT_SWORD, templateNormal24x, "sword/");
+        separateModel(SwordItems.PALLADIUM_SWORD, templateNormal24x, "sword/");
+        separateModel(SwordItems.MYTHRIL_SWORD, templateNormal24x, "sword/");
+        separateModel(SwordItems.ORICHALCUM_SWORD, templateNormal24x, "sword/");
+        separateModel(SwordItems.ADAMANTITE_SWORD, templateNormal24x, "sword/");
+        separateModel(SwordItems.TITANIUM_SWORD, templateNormal24x, "sword/");
         separateModel(HammerItems.THE_BREAKER, templateReverse24x, "hammer/");
         separateModel(HammerItems.FLESH_GRINDER, templateNormal24x, "hammer/");
         separateModel(HammerItems.ROCKFISH, templateNormal24x, "hammer/");

@@ -1494,7 +1494,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 SANCTIFICATION_DEMONITE_ORE.get(),
                 SANCTIFICATION_CRIMTANE_ORE.get()
         );
-        tag(ModTags.Blocks.HOUSE_CONSTITUTE).add(
+        tag(TETags.Blocks.NPC_HOUSE_CONSTITUTE).add(
                 WHITE_PAPER_PANE_LAMP.get(),
                 MALACHITE_PAPER_PANE_LAMP.get()
         );

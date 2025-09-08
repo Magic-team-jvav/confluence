@@ -1494,6 +1494,10 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 SANCTIFICATION_DEMONITE_ORE.get(),
                 SANCTIFICATION_CRIMTANE_ORE.get()
         );
+        tag(ModTags.Blocks.HOUSE_CONSTITUTE).add(
+                WHITE_PAPER_PANE_LAMP.get(),
+                MALACHITE_PAPER_PANE_LAMP.get()
+        );
         { // 没沙子是防止河流里的沙子被误判成沙漠
             tag(ModTags.Blocks.HALLOW_DESERT_BLOCKS).add(PEARLSANDSTONE.get(), HARDENED_PEARLSAND_BLOCK.get(), MOISTENED_PEARLSAND_BLOCK.get());
             tag(ModTags.Blocks.HALLOW_TUNDRA_BLOCKS).add(PINK_ICE.get(), PINK_PACKED_ICE.get());

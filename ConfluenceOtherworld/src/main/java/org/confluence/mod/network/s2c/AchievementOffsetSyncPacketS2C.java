@@ -32,7 +32,7 @@ public record AchievementOffsetSyncPacketS2C(Object2BooleanMap<ResourceLocation>
 
     public static void sendToClient(ServerPlayer player) {
         Object2BooleanMap<ResourceLocation> map = new Object2BooleanOpenHashMap<>();
-        for (Map.Entry<ResourceLocation, AchievementOffset> entry : AchievementOffsetLoader.getInstance().getRegisteredAchievements().entrySet()) {
+        for (Map.Entry<ResourceLocation, AchievementOffset> entry : AchievementOffsetLoader.getDisplayOffset().entrySet()) {
             map.put(entry.getKey(), entry.getValue().hideLink());
         }
         PacketDistributor.sendToPlayer(player, new AchievementOffsetSyncPacketS2C(map));

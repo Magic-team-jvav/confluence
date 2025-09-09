@@ -34,11 +34,11 @@ public record EverBeneficialCondition(Optional<Integer> lifeCrystals,
     ).apply(instance, EverBeneficialCondition::new));
 
     public boolean matches(AutomationContext context) {
-        if (context.getPlayer().isEmpty()) {
+        if (context.player().isEmpty()) {
             return false;
         }
 
-        Player player = context.getPlayer().get();
+        Player player = context.player().get();
         EverBeneficial everBeneficial = EverBeneficial.of(player);
 
         if (lifeCrystals.isPresent() && everBeneficial.getUsedLifeCrystals() < lifeCrystals.get()) {

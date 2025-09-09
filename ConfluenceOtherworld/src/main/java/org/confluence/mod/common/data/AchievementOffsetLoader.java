@@ -3,6 +3,7 @@ package org.confluence.mod.common.data;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.JsonOps;
+import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
@@ -69,11 +70,10 @@ public class AchievementOffsetLoader extends SingleJsonFileReloadListener {
         return INSTANCE;
     }
 
-    public static void handle(Map<ResourceLocation, AchievementOffset> value) {
-        getInstance().registeredAchievements = ImmutableMap.copyOf(value);
+    public static void handle(Object2BooleanMap<ResourceLocation> value) {
         AchievementToast.clearToast();
-        for (ResourceLocation id : value.keySet()) {
-            AchievementToast.registerToast(id);
+        for (Object2BooleanMap.Entry<ResourceLocation> entry : value.object2BooleanEntrySet()) {
+            AchievementToast.registerToast(entry.getKey(), entry.getBooleanValue());
         }
     }
 

@@ -1,6 +1,8 @@
 package org.confluence.mod.network.s2c;
 
 import io.netty.buffer.ByteBuf;
+import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
+import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -11,13 +13,11 @@ import org.confluence.mod.common.data.AchievementOffset;
 import org.confluence.mod.common.data.AchievementOffsetLoader;
 import org.confluence.mod.network.IPacket;
 
-import java.util.HashMap;
 import java.util.Map;
 
-public record AchievementOffsetSyncPacketS2C(Map<ResourceLocation, AchievementOffset> value) implements IPacketS2C {
+public record AchievementOffsetSyncPacketS2C(Object2BooleanMap<ResourceLocation> value) implements IPacketS2C {
     public static final Type<AchievementOffsetSyncPacketS2C> TYPE = IPacket.createType("achievement_offset_sync");
-    public static final StreamCodec<ByteBuf, AchievementOffsetSyncPacketS2C> STREAM_CODEC = LibStreamCodecUtils
-            .map(HashMap::new, ResourceLocation.STREAM_CODEC, AchievementOffset.STREAM_CODEC)
+    public static final StreamCodec<ByteBuf, AchievementOffsetSyncPacketS2C> STREAM_CODEC = LibStreamCodecUtils.object2BooleanMap(ResourceLocation.STREAM_CODEC)
             .map(AchievementOffsetSyncPacketS2C::new, AchievementOffsetSyncPacketS2C::value);
 
     @Override
@@ -31,6 +31,10 @@ public record AchievementOffsetSyncPacketS2C(Map<ResourceLocation, AchievementOf
     }
 
     public static void sendToClient(ServerPlayer player) {
-        PacketDistributor.sendToPlayer(player, new AchievementOffsetSyncPacketS2C(AchievementOffsetLoader.getInstance().getRegisteredAchievements()));
+        Object2BooleanMap<ResourceLocation> map = new Object2BooleanOpenHashMap<>();
+        for (Map.Entry<ResourceLocation, AchievementOffset> entry : AchievementOffsetLoader.getInstance().getRegisteredAchievements().entrySet()) {
+            map.put(entry.getKey(), entry.getValue().hideLink());
+        }
+        PacketDistributor.sendToPlayer(player, new AchievementOffsetSyncPacketS2C(map));
     }
 }

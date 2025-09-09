@@ -3783,7 +3783,7 @@
     "tooltip.item.confluence.chromatic_cloak.0": "Inmunidad a la Fase del Shimmer. Mantén pulsado Shift para entrar en Fase mientras estás sumergido en el Shimmer",
 
     "tooltip.item.confluence.clothier_voodoo_doll.0": "'Eres una persona terrible'",
-    "tooltip.item.confluence.coin": "Acércate sigilosamente y haz clic derecho para fundir en una moneda principal",
+    "tooltip.item.confluence.coin.0": "Acércate sigilosamente y haz clic derecho para fundir en una moneda principal",
     "tooltip.item.confluence.coin_ring.0": "Golpear enemigos puede soltar monedas extra, aumenta el alcance de recogida de monedas",
     "tooltip.item.confluence.copper_short_sword.0": "El fragmento más pequeño del poder del arma divina está contigo desde la convergencia de los dos mundos... hasta el final del viaje.",
     "tooltip.item.confluence.copper_short_sword.1": "\"¡Somos geniales!\" dijo la espada corta de cobre.",
@@ -3886,7 +3886,7 @@
     "tooltip.item.confluence.obsidian_lock_box.1": "“Requiere una Llave de las Sombras”",
     "tooltip.item.confluence.ocean_key.0": "“Abre la puerta de la sala del océano y el cofre del océano en la mazmorra”",
     "tooltip.item.confluence.on_hit_effects": "Efectos al golpear",
-    "tooltip.item.confluence.paint_scraper": "Usado para quitar pintura o revestimientos. Pulsa Shift + clic derecho para quitar solo una cara.",
+    "tooltip.item.confluence.paint_scraper.0": "Usado para quitar pintura o revestimientos. Pulsa Shift + clic derecho para quitar solo una cara.",
     "tooltip.item.confluence.paint_sprayer.0": "Pinta o recubre automáticamente los objetos colocados.",
     "tooltip.item.confluence.paradox_interactive_medal.0": "Prueba de haber jugado Hearts of Iron, Victoria, Europa Universalis, Crusader Kings y Cities: Skylines al mismo tiempo.",
     "tooltip.item.confluence.philosophers_stone.0": "Reduce el tiempo de recarga de las pociones de curación",

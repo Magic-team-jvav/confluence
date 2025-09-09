@@ -200,6 +200,10 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.hardmode_forge.0", "Used to smelt adamantite and titanium ore");
         add("tooltip.item.confluence.loom.0", "Used for crafting cloth");
         add("tooltip.item.confluence.dye_vat.0", "Used to Craft Dyes");
+        add("tooltip.item.confluence.jousting_lance.0", "Build momentum to increase attack power");
+        add("tooltip.item.confluence.jousting_lance.1", "'Have at thee!'");
+        add("tooltip.item.confluence.hallowed_jousting_lance.0", "Build momentum to increase attack power");
+        add("tooltip.item.confluence.shadow_jousting_lance.0", "Build momentum to increase attack power");
 
         add("tooltip.item.confluence.tokyo_teddy_bear.0", "A self - abased girl said like a broken teddy bear:");
         add("tooltip.item.confluence.tokyo_teddy_bear.1", "           Let me tell you");
@@ -389,10 +393,15 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.terra_curio.spectre_goggles.1", "Right-click in the backpack to toggle on/off.");
         add("tooltip.item.confluence.guide_to_plant_fiber_cordage.0", "Allows the collection of Vine Rope from vines");
         add("tooltip.item.confluence.fledgling_wings.0", "Allows flight and slow fall");
-        add("tooltip.item.confluence.chromatic_cloak.0", "Immunity to Shimmer Phasing.Hold Shift to Phase while submerged in Shimmer");
-        add("tooltip.item.confluence.paint_scraper", "Used to remove paint or coatings.Press Shift + Right-click to remove only one side.");
+        add("tooltip.item.confluence.chromatic_cloak.0", "Immunity to Shimmer Phasing, Hold Crouch to Phase while submerged in Shimmer");
+        add("tooltip.item.confluence.paintbrush.0", "Used with paint to color blocks");
+        add("tooltip.item.confluence.paintbrush.1", "Can also apply coatings");
+        add("tooltip.item.confluence.paint_roller.0", "Used with paint to color walls");
+        add("tooltip.item.confluence.paint_roller.1", "Can also apply coatings");
+        add("tooltip.item.confluence.paint_scraper.0", "Used to remove paint or coatings. Crouch to remove only one side");
+        add("tooltip.item.confluence.paint_scraper.1", "Can sometimes collect moss");
         add("tooltip.item.confluence.paint_sprayer.0", "Automatically paints or coats placed objects.");
-        add("tooltip.item.confluence.coin", "Sneak through the air and right-click to merge into a primary coin");
+        add("tooltip.item.confluence.coin.0", "Sneak through the air and right-click to merge into a primary coin");
         add("tooltip.item.confluence.hardmode_convertor.0", "Right-clicking on the ground immediately turns the current world into Hardmode");
         add("tooltip.item.confluence.life_crystal.0", "Permanently increases maximum life by 4");
         add("tooltip.item.confluence.life_fruit.0", "Permanently increases maximum life by 1");

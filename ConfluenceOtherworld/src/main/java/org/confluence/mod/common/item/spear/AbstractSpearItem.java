@@ -119,17 +119,14 @@ public abstract class AbstractSpearItem extends CustomRarityItem implements GeoI
                 Vec3 position = new Vec3(owner.getX(), owner.getEyeY() - 0.1, owner.getZ());
                 Vec3 startVec = position.add(viewVector.scale(-0.5));
                 Vec3 endVec = position.add(viewVector.scale(getDistance(tickCount, owner)));
-                AABB boundingBox = new AABB(startVec, endVec);
 
-                for (Entity victim : level.getEntities(owner, boundingBox, target -> canHitEntity(target, owner))) {
-                    AABB aabb = victim.getBoundingBox().inflate(0.3);
-                    if (aabb.clip(startVec, endVec).isPresent()) {
-                        owner.setLastHurtMob(victim);
-                        if (victim instanceof PartEntity<?> partEntity) {
-                            victim = partEntity.getParent();
-                        }
-                        onHitEntity(stack, (ServerLevel) level, owner, victim);
+                for (Entity victim : level.getEntities(owner, new AABB(startVec, endVec), target -> canHitEntity(target, owner))) {
+                    if (victim.getBoundingBox().inflate(0.3).clip(startVec, endVec).isEmpty()) continue;
+                    owner.setLastHurtMob(victim);
+                    if (victim instanceof PartEntity<?> partEntity) {
+                        victim = partEntity.getParent();
                     }
+                    onHitEntity(stack, (ServerLevel) level, owner, victim);
                 }
                 onStingTick(stack, (ServerLevel) level, owner, endVec, attackDuration - tickCount < attackInterval);
             }

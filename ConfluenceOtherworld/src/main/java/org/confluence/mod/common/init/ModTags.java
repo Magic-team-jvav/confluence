@@ -317,6 +317,7 @@ public final class ModTags {
 
         public static final TagKey<Item> HAMMERS = c("tools/hammers");
         public static final TagKey<Item> SPEARS = c("tools/spears");
+        public static final TagKey<Item> LANCES = c("tools/lances");
         public static final TagKey<Item> WEAPONS = c("weapons");
 
         public static final TagKey<Item> COINS = register("coins");

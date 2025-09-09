@@ -82,25 +82,21 @@ public class LanceItem extends TooltipItem implements ILeftClickStateItem, GeoIt
                 WeaponStorage.of(owner).leftClicking &&
                 (attackInterval <= 1 || owner.level().getGameTime() % attackInterval == 0)
         ) {
-            Vec3 viewVector = owner.getViewVector(1.0F);
             Vec3 startVec = new Vec3(owner.getX(), owner.getEyeY() - 0.1, owner.getZ());
-            Vec3 endVec = startVec.add(viewVector.scale(attackDistance));
-            AABB boundingBox = new AABB(startVec, endVec);
+            Vec3 endVec = startVec.add(owner.getViewVector(1.0F).scale(attackDistance));
 
-            for (Entity victim : level.getEntities(owner, boundingBox, target -> ModUtils.canHitEntity(target, owner))) {
-                AABB aabb = victim.getBoundingBox().inflate(0.3);
-                if (aabb.clip(startVec, endVec).isPresent()) {
-                    owner.setLastHurtMob(victim);
-                    if (victim instanceof PartEntity<?> partEntity) {
-                        victim = partEntity.getParent();
-                    }
-                    DamageSource damageSource = ModDamageTypes.of(level, DamageTypes.STING, owner);
-                    double v = IServerPlayer.of(owner).confluence$getMovementSpeed() * 1.5;
-                    victim.hurt(damageSource, Mth.floor(baseAttackDamage * (v * 6 / 175 + 0.1F)));
-                    double kb = v * baseKnockback * 4 / 105;
-                    VectorUtils.knockBackA2B(owner, victim, kb, kb * 0.3);
-                    EnchantmentHelper.doPostAttackEffects((ServerLevel) level, victim, damageSource);
+            for (Entity victim : level.getEntities(owner, new AABB(startVec, endVec), target -> ModUtils.canHitEntity(target, owner))) {
+                if (victim.getBoundingBox().inflate(0.3).clip(startVec, endVec).isEmpty()) continue;
+                owner.setLastHurtMob(victim);
+                if (victim instanceof PartEntity<?> partEntity) {
+                    victim = partEntity.getParent();
                 }
+                DamageSource damageSource = ModDamageTypes.of(level, DamageTypes.STING, owner);
+                double v = IServerPlayer.of(owner).confluence$getMovementSpeed() * 1.5;
+                victim.hurt(damageSource, Mth.floor(baseAttackDamage * (v * 6 / 175 + 0.1F)));
+                double kb = v * baseKnockback * 4 / 105;
+                VectorUtils.knockBackA2B(owner, victim, kb, kb * 0.3);
+                EnchantmentHelper.doPostAttackEffects((ServerLevel) level, victim, damageSource);
             }
         }
     }

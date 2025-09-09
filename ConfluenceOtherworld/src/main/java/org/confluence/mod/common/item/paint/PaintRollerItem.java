@@ -2,17 +2,21 @@ package org.confluence.mod.common.item.paint;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.UseOnContext;
+import org.confluence.lib.common.component.ModRarity;
+import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.common.data.saved.BrushData;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
 
-public class PaintRollerItem extends Item {
-    public PaintRollerItem() {
-        super(new Properties().stacksTo(1));
+import java.util.List;
+
+public class PaintRollerItem extends TooltipItem {
+    public PaintRollerItem(Properties properties, ModRarity rarity, List<Component> tooltips) {
+        super(properties.stacksTo(1), rarity, tooltips);
     }
 
     @Override

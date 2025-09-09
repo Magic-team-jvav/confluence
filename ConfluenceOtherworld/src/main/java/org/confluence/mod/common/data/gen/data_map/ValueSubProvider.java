@@ -1042,6 +1042,9 @@ public final class ValueSubProvider {
                 .add(PaintItems.PAINTBRUSH, silver20)
                 .add(PaintItems.PAINT_ROLLER, silver20)
                 .add(PaintItems.PAINT_SCRAPER, silver20)
+                .add(PaintItems.SPECTRE_PAINTBRUSH, gold5 + gold1)
+                .add(PaintItems.SPECTRE_PAINT_ROLLER, gold5 + gold1)
+                .add(PaintItems.SPECTRE_PAINT_SCRAPER, gold5 + gold1)
                 .add(PaintItems.RED_PAINT, 5)
                 .add(PaintItems.DEEP_RED_PAINT, 5)
                 .add(PaintItems.ORANGE_PAINT, 5)
@@ -1070,6 +1073,10 @@ public final class ValueSubProvider {
                 .add(PaintItems.GRAY_PAINT, 5)
                 .add(PaintItems.WHITE_PAINT, 5)
                 .add(PaintItems.BROWN_PAINT, 5);
+        appender.create()
+                .add(LanceItems.JOUSTING_LANCE, gold1 + silver20)
+                .add(LanceItems.HALLOWED_JOUSTING_LANCE, gold2 + gold2 + silver50 + silver10)
+                .add(LanceItems.SHADOW_JOUSTING_LANCE, gold10);
 
         appender.create()
                 .add(VanityArmorItems.GOLD_CROWN, silver20)
@@ -1564,7 +1571,8 @@ public final class ValueSubProvider {
         }
 
         public Builder add(ItemLike itemLike, int value) {
-            return (Builder) super.add(itemLike.asItem().builtInRegistryHolder(), new ValueComponent(value), false);
+            super.add(itemLike.asItem().builtInRegistryHolder(), new ValueComponent(value), false);
+            return this;
         }
     }
 }

@@ -1421,6 +1421,13 @@ public class ModItemTagsProvider extends ItemTagsProvider {
             weapons.add(value);
             tag(ModTags.Items.SPEARS).add(value);
         });
+        LanceItems.ITEMS.getEntries().forEach(item -> {
+            Item value = item.get();
+            skipResetStrength.add(value);
+            meleeWeaponTools.add(value);
+            weapons.add(value);
+            tag(ModTags.Items.LANCES).add(value);
+        });
 
         tag(ModTags.Items.SHOW_SIGNAL).add(
                 ToolItems.RED_WRENCH.get(),

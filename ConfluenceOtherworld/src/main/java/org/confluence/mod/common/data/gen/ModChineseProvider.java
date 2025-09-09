@@ -194,6 +194,10 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.hardmode_forge.0", "用于熔炼精金矿和钛金矿");
         add("tooltip.item.confluence.loom.0", "用于制作衣物");
         add("tooltip.item.confluence.dye_vat.0", "用于制作染料");
+        add("tooltip.item.confluence.jousting_lance.0", "提升速度来加强攻击力");
+        add("tooltip.item.confluence.jousting_lance.1", "“纳命来！”");
+        add("tooltip.item.confluence.hallowed_jousting_lance.0", "提升速度来加强攻击力");
+        add("tooltip.item.confluence.shadow_jousting_lance.0", "提升速度来加强攻击力");
 
         add("tooltip.item.confluence.tokyo_teddy_bear.0", "一位自卑的少女如破碎的泰迪熊般说到：");
         add("tooltip.item.confluence.tokyo_teddy_bear.1", "           来让你听听");
@@ -384,9 +388,14 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.guide_to_plant_fiber_cordage.0", "可从藤蔓收集藤蔓绳");
         add("tooltip.item.confluence.fledgling_wings.0", "可飞行和缓慢坠落");
         add("tooltip.item.confluence.chromatic_cloak.0", "对微光相位化免疫，当淹没在微光中时潜行可以相位化");
-        add("tooltip.item.confluence.paint_scraper", "用于去除油漆或涂料，按下shift+右键仅去除一面");
+        add("tooltip.item.confluence.paintbrush.0", "与油漆一起用于给方块所有面涂色");
+        add("tooltip.item.confluence.paintbrush.1", "也可以涂覆涂料");
+        add("tooltip.item.confluence.paint_roller.0", "与油漆一起用于给方块单个面涂色");
+        add("tooltip.item.confluence.paint_roller.1", "也可以涂覆涂料");
+        add("tooltip.item.confluence.paint_scraper.0", "用于去除油漆或涂料，潜行仅去除一面");
+        add("tooltip.item.confluence.paint_scraper.1", "有时可以收集苔藓");
         add("tooltip.item.confluence.paint_sprayer.0", "自动给放置的物体刷油漆或涂料");
-        add("tooltip.item.confluence.coin", "对着空气潜行右击合并为上级钱币");
+        add("tooltip.item.confluence.coin.0", "对着空气潜行右击合并为上级钱币");
         add("tooltip.item.confluence.hardmode_convertor.0", "右击地面将当前世界立刻开始转变为困难模式");
         add("tooltip.item.confluence.life_crystal.0", "最大生命永久增加4");
         add("tooltip.item.confluence.life_fruit.0", "最大生命永久增加1");
@@ -4127,8 +4136,11 @@ public class ModChineseProvider extends LanguageProvider {
 
         // 染料
         add(PaintItems.PAINTBRUSH.get(), "漆刷");
-        add(PaintItems.PAINT_ROLLER.get(), "油漆滚刷");
+        add(PaintItems.PAINT_ROLLER.get(), "涂漆滚刷");
         add(PaintItems.PAINT_SCRAPER.get(), "漆铲");
+        add(PaintItems.SPECTRE_PAINTBRUSH.get(), "幽灵漆刷");
+        add(PaintItems.SPECTRE_PAINT_ROLLER.get(), "幽灵涂漆滚刷");
+        add(PaintItems.SPECTRE_PAINT_SCRAPER.get(), "幽灵漆铲");
         add(PaintItems.EYEDROPPER.get(), "滴管");
         add(PaintItems.RED_PAINT.get(), "红漆");
         add(PaintItems.DEEP_RED_PAINT.get(), "深红漆");
@@ -4228,6 +4240,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(VanityArmorItems.SILVER_DYE.get(), "银染料");
         add(VanityArmorItems.BROWN_DYE.get(), "棕染料");
         add(VanityArmorItems.TEAM_DYE.get(), "团队染料");
+
+        add(LanceItems.JOUSTING_LANCE.get(), "骑枪");
+        add(LanceItems.HALLOWED_JOUSTING_LANCE.get(), "神圣骑枪");
+        add(LanceItems.SHADOW_JOUSTING_LANCE.get(), "暗影骑枪");
 
         // 药水
         add(PotionItems.BOTTLE.get(), "玻璃瓶");

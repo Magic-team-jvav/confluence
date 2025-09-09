@@ -5,17 +5,16 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
+import org.confluence.lib.common.component.ModRarity;
+import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
 
 import java.util.List;
 
-public class PaintScraperItem extends Item {
-    public PaintScraperItem() {
-        super(new Properties().stacksTo(1));
+public class PaintScraperItem extends TooltipItem {
+    public PaintScraperItem(Properties properties, ModRarity rarity, List<Component> tooltips) {
+        super(properties.stacksTo(1), rarity, tooltips);
     }
 
     @Override
@@ -30,10 +29,5 @@ public class PaintScraperItem extends Item {
             }
         }
         return InteractionResult.SUCCESS;
-    }
-
-    @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        tooltipComponents.add(Component.translatable("tooltip.item.confluence.paint_scraper"));
     }
 }

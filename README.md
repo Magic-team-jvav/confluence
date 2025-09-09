@@ -41,20 +41,19 @@
 
 ## Maven 例子
 
-
 ```groovy
 repositories {
-  maven {
-    name "org.confluenceReleases"
-    url "https://maven.confluence.ink/releases"
-  }
-  maven {
-    name "org.confluenceSnapshots"
-    url "https://maven.confluence.ink/snapshots"
-  }
+    maven {
+        name "org.confluenceReleases"
+        url "https://maven.confluence.ink/releases"
+    }
+    maven {
+        name "org.confluenceSnapshots"
+        url "https://maven.confluence.ink/snapshots"
+    }
 }
 
 dependencies {
-  implementation "org.confluence.lib:Confluence-Magic-Lib:<version>"
+    implementation "org.confluence.lib:Confluence-Magic-Lib:<version>"
 }
 ```

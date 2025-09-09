@@ -1,9 +1,18 @@
 package org.confluence.mod.common.init.item;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.EquipmentSlotGroup;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.apache.commons.lang3.function.TriFunction;
+import org.confluence.lib.common.component.ModRarity;
+import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.BrushData;
 import org.confluence.mod.common.item.paint.*;
@@ -15,9 +24,12 @@ public class PaintItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
     public static final List<PaintItem> PAINT_ITEMS = new ArrayList<>();
 
-    public static final DeferredItem<PaintbrushItem> PAINTBRUSH = ITEMS.register("paintbrush", PaintbrushItem::new);
-    public static final DeferredItem<PaintRollerItem> PAINT_ROLLER = ITEMS.register("paint_roller", PaintRollerItem::new);
-    public static final DeferredItem<PaintScraperItem> PAINT_SCRAPER = ITEMS.register("paint_scraper", PaintScraperItem::new);
+    public static final DeferredItem<PaintbrushItem> PAINTBRUSH = registerTool("paintbrush", PaintbrushItem::new, false);
+    public static final DeferredItem<PaintRollerItem> PAINT_ROLLER = registerTool("paint_roller", PaintRollerItem::new, false);
+    public static final DeferredItem<PaintScraperItem> PAINT_SCRAPER = registerTool("paint_scraper", PaintScraperItem::new, false);
+    public static final DeferredItem<PaintbrushItem> SPECTRE_PAINTBRUSH = registerTool("paintbrush", PaintbrushItem::new, true);
+    public static final DeferredItem<PaintRollerItem> SPECTRE_PAINT_ROLLER = registerTool("paint_roller", PaintRollerItem::new, true);
+    public static final DeferredItem<PaintScraperItem> SPECTRE_PAINT_SCRAPER = registerTool("paint_scraper", PaintScraperItem::new, true);
     public static final DeferredItem<EyedropperItem> EYEDROPPER = ITEMS.register("eyedropper", EyedropperItem::new);
     public static final DeferredItem<PaintItem> PAINT = registerPaint("paint", 0x39C5BB);
 
@@ -62,8 +74,17 @@ public class PaintItems {
         });
     }
 
+    private static <T extends Item> DeferredItem<T> registerTool(String suffix, TriFunction<Item.Properties, ModRarity, List<Component>, T> factory, boolean spectre) {
+        return ITEMS.register(spectre ? "spectre_" + suffix : suffix, () -> {
+            Item.Properties properties = new Item.Properties();
+            if (spectre) properties.attributes(ItemAttributeModifiers.builder().add(
+                    Attributes.BLOCK_INTERACTION_RANGE, new AttributeModifier(ModItems.BASE_BLOCK_INTERACTION_RANGE_ID, 3, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND
+            ).build());
+            return factory.apply(properties, ModRarity.WHITE, TooltipItem.getTooltipsFromString(suffix, 2, ChatFormatting.GRAY));
+        });
+    }
+
     public static void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> tag) {
         ITEMS.getEntries().forEach(entry -> tag.add(entry.get()));
     }
 }
-

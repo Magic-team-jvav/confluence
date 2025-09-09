@@ -26,14 +26,14 @@ public record HookThrowingPacketC2S(boolean throwing, int id) implements IPacket
         public HookThrowingPacketC2S decode(FriendlyByteBuf buffer) {
             boolean throwing = buffer.readBoolean();
             int id = 0;
-            if (throwing) id = buffer.readVarInt();
+            if (!throwing) id = buffer.readVarInt();
             return new HookThrowingPacketC2S(throwing, id);
         }
 
         @Override
         public void encode(FriendlyByteBuf buffer, HookThrowingPacketC2S value) {
             buffer.writeBoolean(value.throwing);
-            if (value.throwing) buffer.writeVarInt(value.id);
+            if (!value.throwing) buffer.writeVarInt(value.id);
         }
     };
 

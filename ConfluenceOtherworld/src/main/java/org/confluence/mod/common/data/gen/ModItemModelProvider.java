@@ -1,6 +1,7 @@
 package org.confluence.mod.common.data.gen;
 
 import net.minecraft.client.renderer.block.model.BlockModel;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
@@ -18,6 +19,7 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.common.item.common.BaseDyeItem;
 import org.confluence.mod.common.item.paint.PaintItem;
 import org.confluence.terraentity.init.item.TEBoomerangItems;
 
@@ -29,7 +31,7 @@ public class ModItemModelProvider extends ItemModelProvider {
     private static final ResourceLocation MISSING_ITEM = Confluence.asResource("item/item_icon");
     private static final ResourceLocation MISSING_BLOCK = Confluence.asResource("item/blocks_icon");
     private final ModelFile itemGenerated = new ModelFile.UncheckedModelFile(ResourceLocation.withDefaultNamespace("item/generated"));
-    private final Set<DeferredHolder<Item, ? extends Item>> skip = new HashSet<>();
+    private final Set<Item> skip = new HashSet<>();
 
     public ModItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
         super(output, MODID, existingFileHelper);
@@ -78,11 +80,11 @@ public class ModItemModelProvider extends ItemModelProvider {
         separateModel(ManaWeaponItems.WEATHER_PAIN, templateReverse24x, "mana_staff/");
 
         getBuilder(SwordItems.NIGHTS_EDGE.getId().getPath()).parent(templateReverse24x).texture("layer0", SwordItems.NIGHTS_EDGE.getId().withPrefix("item/sword/"));
-        skip.add(SwordItems.NIGHTS_EDGE);
+        skip.add(SwordItems.NIGHTS_EDGE.get());
 
         ResourceLocation templateDye = Confluence.asResource("item/template_dye");
-        for (DeferredHolder<Item, ? extends Item> item : VanityArmorItems.DYE_ITEMS) {
-            withExistingParent(item.getId().getPath(), templateDye);
+        for (BaseDyeItem item : VanityArmorItems.COLORED_DYE_ITEMS) {
+            withExistingParent(BuiltInRegistries.ITEM.getKey(item).getPath(), templateDye);
             skip.add(item);
         }
 
@@ -113,7 +115,7 @@ public class ModItemModelProvider extends ItemModelProvider {
             } catch (Exception e) {
                 withExistingParent(path, MISSING_ITEM);
             }
-            skip.add(item);
+            skip.add(item.get());
         }
 
         // 一般物品
@@ -222,7 +224,7 @@ public class ModItemModelProvider extends ItemModelProvider {
                     .perspective(ItemDisplayContext.GROUND, standaloneModel)
                     .perspective(ItemDisplayContext.FIXED, standaloneModel);
         });
-        skip.add(deferredItem);
+        skip.add(deferredItem.get());
     }
 
     private Map<DeferredRegister.Items, String[]> createDir(DeferredRegister.Items reg, String... packPaths) {
@@ -233,7 +235,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         for (Map<DeferredRegister.Items, String[]> map : list) {
             for (Map.Entry<DeferredRegister.Items, String[]> entry : map.entrySet()) {
                 for (DeferredHolder<Item, ? extends Item> item : entry.getKey().getEntries()) {
-                    if (skip.contains(item)) continue;
+                    if (skip.contains(item.get())) continue;
                     String path = item.getId().getPath();
                     boolean exist = false;
                     for (String packPath : entry.getValue()) {

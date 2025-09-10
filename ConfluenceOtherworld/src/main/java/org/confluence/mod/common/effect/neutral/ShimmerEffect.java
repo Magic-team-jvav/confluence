@@ -19,20 +19,31 @@ public class ShimmerEffect extends MobEffect {
     }
 
     @Override
-    public boolean applyEffectTick(LivingEntity living, int pAmplifier) {
+    public boolean applyEffectTick(LivingEntity living, int amplifier) {
         Level level = living.level();
         if (level.isClientSide) return true;
         if (living.position().y < level.getMinBuildHeight() + 5) return false;
         if (level.getFluidState(living.getOnPos()).getType().getFluidType() != ModFluids.SHIMMER.type().get()) {
             living.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 2, 1, false, false, false));
         }
-        return !level.getBlockState(living.getOnPos()).is(Blocks.BEDROCK) &&
-                !level.getBlockStates(living.getBoundingBox().inflate(-0.1)).allMatch(blockState ->
-                        (blockState.liquid() && !blockState.is(ModBlocks.SHIMMER.get())) || blockState.isAir());
+        if (level.getBlockState(living.getOnPos()).is(Blocks.BEDROCK)) return false;
+
+        boolean shouldExpire = level.getBlockStates(living.getBoundingBox().inflate(-0.1)).allMatch(blockState -> {
+            if (blockState.isAir()) return true;
+            return blockState.liquid() && !blockState.is(ModBlocks.SHIMMER.get());
+        });
+        if (amplifier > 0) {
+            if (shouldExpire) {
+                MobEffectInstance effect = living.getEffect(ModEffects.SHIMMER);
+                if (effect != null) effect.amplifier = 0;
+            }
+            return true;
+        }
+        return !shouldExpire;
     }
 
     @Override
-    public boolean shouldApplyEffectTickThisTick(int pDuration, int pAmplifier) {
+    public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
         return true;
     }
 

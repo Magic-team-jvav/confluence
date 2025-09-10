@@ -85,6 +85,8 @@ public class PaintItems {
     }
 
     public static void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> tag) {
-        ITEMS.getEntries().forEach(entry -> tag.add(entry.get()));
+        for (PaintItem paintItem : PAINT_ITEMS) {
+            tag.add(paintItem);
+        }
     }
 }

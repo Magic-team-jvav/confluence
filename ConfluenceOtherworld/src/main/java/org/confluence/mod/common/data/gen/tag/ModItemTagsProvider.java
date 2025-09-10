@@ -5,7 +5,6 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
@@ -23,6 +22,7 @@ import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.common.item.common.BaseDyeItem;
 import org.confluence.mod.integration.waystones.WaystonesHelper;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_furniture.common.init.TFBlocks;
@@ -453,7 +453,15 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FoodItems.FLOATING_WHEAT_SEED.get()
         );
 
-        PaintItems.acceptTag(tag(Tags.Items.DYED));
+        IntrinsicTagAppender<Item> dye = tag(ModTags.Items.DYE);
+        dye.add(VanityArmorItems.TEAM_DYE.get());
+        IntrinsicTagAppender<Item> dyed = tag(Tags.Items.DYED);
+        for (BaseDyeItem dyeItem : VanityArmorItems.COLORED_DYE_ITEMS) {
+            dyed.add(dyeItem);
+            dye.add(dyeItem);
+        }
+
+        PaintItems.acceptTag(dyed);
         ArrowItems.acceptTag(tag(ItemTags.ARROWS));
         IntrinsicTagAppender<Item> hammer = tag(ModTags.Items.HAMMERS);
         HamaxeItems.acceptTag(hammer);
@@ -723,14 +731,11 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 BowItems.THE_BEES_KNEES.get()
         );
 
-        AccessoryItems.acceptTags(this);
+        AccessoryItems.acceptTags(this::tag);
         tag(ModTags.Items.AMMO)
                 .add(Items.FIREWORK_ROCKET, MaterialItems.FALLING_STAR.get())
                 .addTag(ItemTags.ARROWS)
                 .addOptionalTag(TGTags.AMMO);
-        IntrinsicTagAppender<Item> dye = tag(ModTags.Items.DYE);
-        VanityArmorItems.DYE_ITEMS.forEach(item -> dye.add(item.get()));
-        dye.add(VanityArmorItems.TEAM_DYE.get());
 
         // Bow 附魔
         IntrinsicTagAppender<Item> durabilityEnchantable = tag(ItemTags.DURABILITY_ENCHANTABLE);
@@ -1036,7 +1041,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 HammerItems.CHLOROPHYTE_JACKHAMMER.get(),
                 PickaxeAxeItems.SHROOMITE_DIGGING_CLAW.get(),
                 PickaxeItems.SPECTRE_PICKAXE.get(),
-                PickaxeItems.CHLOROPHYTE_PICKAXE.get(),
                 PickaxeItems.SOLAR_FLARE_PICKAXE.get(),
                 PickaxeItems.VORTEX_PICKAXE.get(),
                 PickaxeItems.NEBULA_PICKAXE.get(),
@@ -1159,6 +1163,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 NatureBlocks.LOST_PAPER_BLOCK.asItem(),
                 NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.TRAPDOOR.asItem(),
                 NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.DOOR.asItem(),
+                NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.CHISELED_PLANKS.asItem(),
                 PotBlocks.OCEAN_POT.asItem(),
                 OreBlocks.METEORITE_BLOCK.asItem(),
                 OreBlocks.HALLOWED_BLOCK.asItem(),
@@ -1209,8 +1214,9 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 DecorativeBlocks.CRIMSANDSTONE_BRICKS_STAIRS.asItem(),
                 DecorativeBlocks.CRIMSANDSTONE_BRICKS_SLAB.asItem(),
                 DecorativeBlocks.CRIMSANDSTONE_BRICKS_WALL.asItem(),
-                NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.CHISELED_PLANKS.asItem(),
                 DecorativeBlocks.SNOW_BRICKS_WALL.asItem(),
+                DecorativeBlocks.CRIMTANE_ORE_BRICKS_STAIRS.asItem(),
+                DecorativeBlocks.CRIMTANE_ORE_BRICKS_SLAB.asItem(),
                 StatueBlocks.ARMOR_STATUE.asItem(),
                 StatueBlocks.AXE_STATUE.asItem(),
                 StatueBlocks.BOOMERANG_STATUE.asItem(),
@@ -1438,10 +1444,5 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         );
 
         WaystonesHelper.itemTag(this::tag);
-    }
-
-    @Override
-    public IntrinsicTagAppender<Item> tag(TagKey<Item> tag) {
-        return super.tag(tag);
     }
 }

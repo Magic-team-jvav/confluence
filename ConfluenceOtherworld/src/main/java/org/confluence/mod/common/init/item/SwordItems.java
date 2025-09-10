@@ -73,12 +73,12 @@ public class SwordItems {
     public static final DeferredItem<SwordItem> PLATINUM_BROADSWORD = register("platinum_broadsword", ModTiers.PLATINUM, 8, 1.6F, NORMAL_SWORD.get());
     public static final DeferredItem<SwordItem> MURAMASA = register("muramasa", ModTiers.UNBREAKABLE, 14, 3, NORMAL_SWORD.get()
             .setSweepRange(2.5F).addAttributeModifier(Attributes.ATTACK_KNOCKBACK, 0.2f, AttributeModifier.Operation.ADD_VALUE));
-    public static final DeferredItem<SwordItem> COBALT_SWORD = register("cobalt_sword", ModTiers.COBALT, 25, 2.4F,ModRarity.LIGHT_RED, NORMAL_SWORD.get());
-    public static final DeferredItem<SwordItem> PALLADIUM_SWORD = register("palladium_sword", ModTiers.PALLADIUM, 29, 2.6F, ModRarity.LIGHT_RED,NORMAL_SWORD.get());
-    public static final DeferredItem<SwordItem> MYTHRIL_SWORD = register("mythril_sword", ModTiers.MYTHRIL, 30, 2.6F, ModRarity.LIGHT_RED,NORMAL_SWORD.get());
-    public static final DeferredItem<SwordItem> ORICHALCUM_SWORD = register("orichalcum_sword", ModTiers.ORICHALCUM, 34, 2.4F, ModRarity.LIGHT_RED,NORMAL_SWORD.get());
-    public static final DeferredItem<SwordItem> ADAMANTITE_SWORD = register("adamantite_sword", ModTiers.ADAMANTITE, 36, 2.4F, ModRarity.LIGHT_RED,NORMAL_SWORD.get());
-    public static final DeferredItem<SwordItem> TITANIUM_SWORD = register("titanium_sword", ModTiers.PALLADIUM, 36, 2.4F,ModRarity.LIGHT_RED, NORMAL_SWORD.get());
+    public static final DeferredItem<SwordItem> COBALT_SWORD = register("cobalt_sword", ModTiers.UNBREAKABLE, 25, 2.4F,ModRarity.LIGHT_RED, NORMAL_SWORD.get());
+    public static final DeferredItem<SwordItem> PALLADIUM_SWORD = register("palladium_sword", ModTiers.UNBREAKABLE, 29, 2.6F, ModRarity.LIGHT_RED,NORMAL_SWORD.get());
+    public static final DeferredItem<SwordItem> MYTHRIL_SWORD = register("mythril_sword", ModTiers.UNBREAKABLE, 30, 2.6F, ModRarity.LIGHT_RED,NORMAL_SWORD.get());
+    public static final DeferredItem<SwordItem> ORICHALCUM_SWORD = register("orichalcum_sword", ModTiers.UNBREAKABLE, 34, 2.4F, ModRarity.LIGHT_RED,NORMAL_SWORD.get());
+    public static final DeferredItem<SwordItem> ADAMANTITE_SWORD = register("adamantite_sword", ModTiers.UNBREAKABLE, 36, 2.4F, ModRarity.LIGHT_RED,NORMAL_SWORD.get());
+    public static final DeferredItem<SwordItem> TITANIUM_SWORD = register("titanium_sword", ModTiers.UNBREAKABLE, 36, 2.4F,ModRarity.LIGHT_RED, NORMAL_SWORD.get());
 
     //tip 注册剑的特殊功能只需修改最后一个参数即可，只需要把 NORMAL_SWORD替换成prefab的其他预制效果，还可以追加效果
     public static final DeferredItem<SwordItem> FAKE_SWORD = register("fake_sword", ModTiers.CANDY_CANE, 3, 1.6F, ModRarity.GRAY, NORMAL_SWORD.get());

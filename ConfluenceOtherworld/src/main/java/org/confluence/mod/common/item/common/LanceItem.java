@@ -1,5 +1,6 @@
 package org.confluence.mod.common.item.common;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
@@ -40,6 +41,8 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import java.util.List;
 import java.util.function.Consumer;
 
+import static net.minecraft.world.item.component.ItemAttributeModifiers.ATTRIBUTE_MODIFIER_FORMAT;
+
 public class LanceItem extends TooltipItem implements ILeftClickStateItem, GeoItem {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private final int attackInterval;
@@ -48,12 +51,21 @@ public class LanceItem extends TooltipItem implements ILeftClickStateItem, GeoIt
     private final double baseKnockback;
 
     public LanceItem(Properties properties, ModRarity rarity, int attackInterval, double attackDistance, double baseAttackDamage, double baseKnockback, List<Component> tooltips) {
-        super(properties.stacksTo(1), rarity, tooltips);
+        super(properties.stacksTo(1), rarity, collectTooltips(attackInterval, attackDistance, baseAttackDamage, baseKnockback, tooltips));
         this.attackInterval = attackInterval;
         this.attackDistance = attackDistance;
         this.baseAttackDamage = baseAttackDamage;
         this.baseKnockback = baseKnockback;
         SingletonGeoAnimatable.registerSyncedAnimatable(this);
+    }
+
+    private static List<Component> collectTooltips(int attackInterval, double attackDistance, double baseAttackDamage, double baseKnockback, List<Component> tooltips) {
+        return List.of(
+                Component.translatable("tooltip.confluence.attack_interval", attackInterval).withStyle(ChatFormatting.GRAY),
+                Component.translatable("tooltip.confluence.attack_distance", ATTRIBUTE_MODIFIER_FORMAT.format(attackDistance)).withStyle(ChatFormatting.GRAY),
+                Component.translatable("tooltip.confluence.attack_damage", ATTRIBUTE_MODIFIER_FORMAT.format(baseAttackDamage)).withStyle(ChatFormatting.GRAY),
+                Component.translatable("tooltip.confluence.knockback", ATTRIBUTE_MODIFIER_FORMAT.format(baseKnockback)).withStyle(ChatFormatting.GRAY)
+        );
     }
 
     @Override

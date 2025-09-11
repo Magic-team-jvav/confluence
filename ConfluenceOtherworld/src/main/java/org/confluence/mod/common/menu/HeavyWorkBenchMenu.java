@@ -43,10 +43,6 @@ public class HeavyWorkBenchMenu extends EitherAmountContainerMenu4x<EnvironmentR
                 });
     }
 
-    public EnvironmentLevelAccess getAccess() {
-        return access;
-    }
-
     @Override
     public int getRecipesAmount() {
         return recipes.size() + craftingRecipes.size();

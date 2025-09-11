@@ -3665,7 +3665,7 @@
     "title.confluence.solidifier": "Solidificador",
     "title.confluence.touhoulittlemaid": "Suprimentos da Pequena Empregada Touhou",
     "tooltip.confluence.cooldown": "Tempo de Recarga: %s",
-    "tooltip.confluence.damage": "Dano: %s",
+    "tooltip.confluence.attack_damage": "Dano: %s",
     "tooltip.confluence.mana_cost": "Custo de Mana: %s",
     "tooltip.confluence.velocity": "Velocidade do Projétil: %s",
     "tooltip.item.confluence.abeemination.0": "Clique com o botão direito para invocar a Rainha Abelha. Apenas o miasma sujo da floresta tropical de folhas largas pode conter sua fúria.",

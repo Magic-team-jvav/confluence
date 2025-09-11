@@ -16,6 +16,7 @@ import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.SolidifierRecipe;
+import org.confluence.mod.integration.jei.EitherRecipe4xHelper;
 import org.jetbrains.annotations.Nullable;
 
 import static org.confluence.mod.integration.jei.ModJeiPlugin.addInput;
@@ -25,9 +26,11 @@ public class SolidifierCategory implements IRecipeCategory<RecipeHolder<Solidifi
     private static final Component TITLE = Component.translatable("title.confluence.solidifier");
     private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/solidifier.png");
     private final IDrawable icon;
+    private final EitherRecipe4xHelper helper;
 
     public SolidifierCategory(IJeiHelpers jeiHelpers) {
         this.icon = jeiHelpers.getGuiHelper().createDrawableItemStack(FunctionalBlocks.SOLIDIFIER.toStack());
+        this.helper = new EitherRecipe4xHelper(jeiHelpers.getIngredientManager());
     }
 
     @Override
@@ -76,5 +79,8 @@ public class SolidifierCategory implements IRecipeCategory<RecipeHolder<Solidifi
     @Override
     public void draw(RecipeHolder<SolidifierRecipe> recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         guiGraphics.blit(BACKGROUND, 0, 0, 0, 0, 144, 80, 144, 80);
+        if (mouseX >= 80 && mouseX <= 80 + 28 && mouseY >= 29 && mouseY <= 29 + 23) {
+            helper.drawSummary(recipeSlotsView, guiGraphics);
+        }
     }
 }

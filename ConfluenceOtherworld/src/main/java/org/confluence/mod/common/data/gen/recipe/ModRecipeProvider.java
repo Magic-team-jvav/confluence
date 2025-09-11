@@ -266,7 +266,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         skyMill(recipeOutput, NatureBlocks.SNOW_CLOUD_BLOCK.toStack(), EnvironmentLevelAccess.matcher(holderLookup.lookupOrThrow(Registries.BIOME).getOrThrow(Tags.Biomes.IS_COLD_OVERWORLD), null, false), Ingredient.of(NatureBlocks.CLOUD_BLOCK));
 
         loom(recipeOutput, ModBlocks.SILK_ROPE.toStack(30), Ingredient.of(MaterialItems.SILK));
-        loom(recipeOutput, MaterialItems.SILK.toStack(), AmountIngredient.of(7,Items.COBWEB));
+        loom(recipeOutput, MaterialItems.SILK.toStack(), AmountIngredient.of(7, Items.COBWEB));
         baseRobe(recipeOutput, Ingredient.of(VanityArmorItems.ROBE), AmountIngredient.of(2, Tags.Items.GEMS_DIAMOND), Ingredient.of(Tags.Items.GEMS_DIAMOND), ArmorItems.DIAMOND_ROBE.toStack());
         baseRobe(recipeOutput, Ingredient.of(VanityArmorItems.ROBE), AmountIngredient.of(2, ModTags.Items.GEMS_RUBY), Ingredient.of(ModTags.Items.GEMS_RUBY), ArmorItems.RUBY_ROBE.toStack());
         baseRobe(recipeOutput, Ingredient.of(VanityArmorItems.ROBE), AmountIngredient.of(2, ModTags.Items.GEMS_AMBER), Ingredient.of(ModTags.Items.GEMS_AMBER), ArmorItems.AMBER_ROBE.toStack());
@@ -391,14 +391,14 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
                 Ingredient.of(Items.IRON_BOOTS));
         hellforge(recipeOutput, TCItems.OBSIDIAN_SKULL.toStack(), 0.5F, 200, false, AmountIngredient.of(10, Items.OBSIDIAN), Ingredient.of(Items.SKELETON_SKULL));
 
-        fletchingTable(recipeOutput, "", ArrowItems.FLAMING_ARROW.toStack(25), Ingredient.EMPTY, AmountIngredient.of(25, Items.ARROW), Ingredient.of(ModTags.Items.TORCH));
+        fletchingTable(recipeOutput, ArrowItems.FLAMING_ARROW.toStack(25), Ingredient.EMPTY, AmountIngredient.of(25, Items.ARROW), Ingredient.of(ModTags.Items.TORCH));
         fletchingTable(recipeOutput, "_from_feather", new ItemStack(Items.ARROW, 20), Ingredient.of(Items.FEATHER), AmountIngredient.of(5, Items.STICK), Ingredient.of(Items.FLINT));
         fletchingTable(recipeOutput, "_from_wool", new ItemStack(Items.ARROW, 35), Ingredient.of(ItemTags.WOOL), Ingredient.of(ItemTags.LOGS), Ingredient.of(ItemTags.STONE_CRAFTING_MATERIALS));
-        fletchingTable(recipeOutput, "", ArrowItems.FLY_FISH_ARROW.toStack(10), Ingredient.of(MaterialItems.FILAMENTOUS_FIN), AmountIngredient.of(10, Items.ARROW), Ingredient.of());
-        fletchingTable(recipeOutput, "", ArrowItems.FOSSIL_ARROW.toStack(25), Ingredient.of(), AmountIngredient.of(25, Items.ARROW), Ingredient.of(MaterialItems.STURDY_FOSSIL));
-        fletchingTable(recipeOutput, "", ArrowItems.HELLFIRE_ARROW.toStack(64), Ingredient.of(), AmountIngredient.of(64, Items.ARROW), Ingredient.of(MaterialItems.HELLSTONE_INGOT));
-        fletchingTable(recipeOutput, "", ArrowItems.STAR_ARROW.toStack(10), Ingredient.of(), AmountIngredient.of(10, Items.ARROW), Ingredient.of(MaterialItems.FALLING_STAR));
-        fletchingTable(recipeOutput, "", ArrowItems.UNHOLY_ARROW.toStack(5), Ingredient.of(), AmountIngredient.of(5, Items.ARROW), Ingredient.of(ModTags.Items.EVIL_MATERIAL));
+        fletchingTable(recipeOutput, ArrowItems.FLY_FISH_ARROW.toStack(10), Ingredient.of(MaterialItems.FILAMENTOUS_FIN), AmountIngredient.of(10, Items.ARROW), Ingredient.of());
+        fletchingTable(recipeOutput, ArrowItems.FOSSIL_ARROW.toStack(25), Ingredient.of(), AmountIngredient.of(25, Items.ARROW), Ingredient.of(MaterialItems.STURDY_FOSSIL));
+        fletchingTable(recipeOutput, ArrowItems.HELLFIRE_ARROW.toStack(64), Ingredient.of(), AmountIngredient.of(64, Items.ARROW), Ingredient.of(MaterialItems.HELLSTONE_INGOT));
+        fletchingTable(recipeOutput, ArrowItems.STAR_ARROW.toStack(10), Ingredient.of(), AmountIngredient.of(10, Items.ARROW), Ingredient.of(MaterialItems.FALLING_STAR));
+        fletchingTable(recipeOutput, ArrowItems.UNHOLY_ARROW.toStack(5), Ingredient.of(), AmountIngredient.of(5, Items.ARROW), Ingredient.of(ModTags.Items.EVIL_MATERIAL));
 
         altar(recipeOutput, ConsumableItems.BLOODY_SPINE.toStack(), AmountIngredient.of(30, ConsumableItems.VICIOUS_POWDER), AmountIngredient.of(15, MaterialItems.VERTEBRA));
         altar(recipeOutput, ConsumableItems.WORM_FOOD.toStack(), AmountIngredient.of(30, ConsumableItems.VILE_POWDER), AmountIngredient.of(15, MaterialItems.ROTTEN_CHUNK));
@@ -541,6 +541,11 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         recipeOutput.accept(id, new FletchingTableRecipe(result, tail, body, head), null);
     }
 
+    protected void fletchingTable(RecipeOutput recipeOutput, ItemStack result, Ingredient tail, Ingredient body, Ingredient head) {
+        ResourceLocation id = Confluence.asResource("fletching_table/" + getItemName(result.getItem()));
+        recipeOutput.accept(id, new FletchingTableRecipe(result, tail, body, head), null);
+    }
+
     protected void altar(RecipeOutput recipeOutput, ItemStack result, Ingredient... ingredients) {
         ResourceLocation id = Confluence.asResource("altar/" + getItemName(result.getItem()));
         NonNullList<Ingredient> zingredients = NonNullList.of(Ingredient.EMPTY, ingredients);
@@ -677,18 +682,18 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
                 Optional.of(holderLookup.lookupOrThrow(Registries.FLUID).getOrThrow(Tags.Fluids.LAVA))
         );
     }
+
     private final List<String> baseRobePattern = List.of(
             "bbb",
             "a#a",
             "a a"
     );
+
     protected void baseRobe(RecipeOutput recipeOutput, Ingredient robe, Ingredient gem, Ingredient handle, ItemStack result) {
-        ResourceLocation id = Confluence.asResource("loom/" + getItemName(result.getItem()));
-        ShapedRecipePattern pattern = ShapedRecipePattern.of(Map.of(
+        loom(recipeOutput, result, ShapedRecipePattern.of(Map.of(
                 '#', robe,
                 'b', gem,
                 'a', handle
-        ), baseRobePattern);
-        recipeOutput.accept(id, new LoomRecipe(result, pattern), null);
+        ), baseRobePattern));
     }
 }

@@ -4877,7 +4877,7 @@
   "title.terra_furniture.living_loom": "Living Loom",
   "tooltic.terra_entity.summon_item.desc": "Press for a while to release all summons",
   "tooltip.confluence.cooldown": "Cooldown: %s",
-  "tooltip.confluence.damage": "Damage: %s",
+  "tooltip.confluence.attack_damage": "Damage: %s",
   "tooltip.confluence.disabled": "Disabled",
   "tooltip.confluence.mana_cost": "Mana Cost: %s",
   "tooltip.confluence.velocity": "Projectile Speed: %s",

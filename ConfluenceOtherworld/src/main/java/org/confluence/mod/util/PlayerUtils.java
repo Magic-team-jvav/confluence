@@ -40,6 +40,7 @@ import org.confluence.mod.network.s2c.*;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.util.TCUtils;
 import org.confluence.terraentity.api.entity.Boss;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.function.IntFunction;
 import java.util.function.Supplier;
@@ -197,7 +198,8 @@ public final class PlayerUtils {
         return coins;
     }
 
-    @Deprecated
+    @Deprecated(since = "1.2.0", forRemoval = true)
+    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
     public static int[] getCoins(Player player) {
         Coins coins = getCoins(player, true);
         return new int[]{coins.platinum(), coins.gold(), coins.silver(), coins.copper()};
@@ -216,7 +218,8 @@ public final class PlayerUtils {
         return res;
     }
 
-    @Deprecated
+    @Deprecated(since = "1.2.0", forRemoval = true)
+    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
     public static long getMoney(Player player) {
         return getMoney(player, true);
     }
@@ -225,7 +228,8 @@ public final class PlayerUtils {
         return tryCostMoney(getMoney(player, withPiggyBank), player, cost, withPiggyBank);
     }
 
-    @Deprecated
+    @Deprecated(since = "1.2.0", forRemoval = true)
+    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
     public static boolean tryCostMoney(Player player, long cost) {
         return tryCostMoney(player, cost, true);
     }
@@ -267,7 +271,8 @@ public final class PlayerUtils {
         return true;
     }
 
-    @Deprecated
+    @Deprecated(since = "1.2.0", forRemoval = true)
+    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
     public static boolean tryCostMoney(long have, Player player, long cost) {
         return tryCostMoney(have, player, cost, true);
     }

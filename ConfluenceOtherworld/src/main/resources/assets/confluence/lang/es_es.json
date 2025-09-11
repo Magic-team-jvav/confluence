@@ -3722,7 +3722,7 @@
     "title.confluence.solidifier": "Solidificador",
     "title.confluence.touhoulittlemaid": "Suministros de la Pequeña Doncella Touhou",
     "tooltip.confluence.cooldown": "Tiempo de Recarga: %s",
-    "tooltip.confluence.damage": "Daño: %s",
+    "tooltip.confluence.attack_damage": "Daño: %s",
     "tooltip.confluence.mana_cost": "Coste de Maná: %s",
     "tooltip.confluence.velocity": "Velocidad del Proyectil: %s",
     "tooltip.item.confluence.abeemination.0": "Haz clic derecho para invocar a la Reina Abeja. Solo el miasma sucio de la selva tropical de hojas anchas puede contener su furia.",

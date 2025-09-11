@@ -1,11 +1,13 @@
 package org.confluence.mod.common.item.spear;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -28,7 +30,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.entity.PartEntity;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.lib.common.item.CustomRarityItem;
+import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModDamageTypes;
@@ -52,7 +54,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 @SuppressWarnings("unused")
-public abstract class AbstractSpearItem extends CustomRarityItem implements GeoItem {
+public abstract class AbstractSpearItem extends TooltipItem implements GeoItem {
     public static final String LAST_ATTACK_TIME_KEY = "confluence:last_attack_time";
     protected final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     protected final int attackDuration;
@@ -65,12 +67,19 @@ public abstract class AbstractSpearItem extends CustomRarityItem implements GeoI
      * @param keyframes      应用于长矛攻击的关键帧，建议匹配攻击持续时间
      */
     public AbstractSpearItem(Properties properties, ModRarity rarity, int attackDuration, int attackInterval, List<Keyframe<MathValue>> keyframes) {
-        super(properties.stacksTo(1), rarity);
+        super(properties.stacksTo(1), rarity, collectTooltips(attackDuration, attackInterval));
         if (attackInterval < 1) throw new IllegalArgumentException("attackInterval must be greater than or equal to 1, currently is " + attackInterval);
         this.attackDuration = attackDuration;
         this.attackInterval = attackInterval;
         this.keyframes = keyframes;
         SingletonGeoAnimatable.registerSyncedAnimatable(this);
+    }
+
+    private static List<Component> collectTooltips(int attackDuration, int attackInterval) {
+        return List.of(
+                Component.translatable("tooltip.confluence.attack_duration", attackDuration).withStyle(ChatFormatting.GRAY),
+                Component.translatable("tooltip.confluence.attack_interval", attackInterval).withStyle(ChatFormatting.GRAY)
+        );
     }
 
     public int getAttackDuration() {

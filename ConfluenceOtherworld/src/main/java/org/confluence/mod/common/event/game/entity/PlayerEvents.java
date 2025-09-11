@@ -315,7 +315,7 @@ public final class PlayerEvents {
                     int defaultMaxStackSize = gel.getDefaultMaxStackSize();
                     for (ItemStack stack : player.getInventory().items) {
                         if (!stack.isEmpty() && stack.is(gel) && stack.getCount() + itemStack.getCount() <= defaultMaxStackSize) {
-                            ColoredItem.setColor(itemStack, ColoredItem.getColor(stack));
+                            ColoredItem.setRGBA(itemStack, ColoredItem.getRGBA(stack));
                             break;
                         }
                     }

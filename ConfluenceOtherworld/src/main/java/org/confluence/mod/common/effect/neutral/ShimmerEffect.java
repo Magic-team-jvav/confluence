@@ -1,5 +1,6 @@
 package org.confluence.mod.common.effect.neutral;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -23,10 +24,12 @@ public class ShimmerEffect extends MobEffect {
         Level level = living.level();
         if (level.isClientSide) return true;
         if (living.position().y < level.getMinBuildHeight() + 5) return false;
-        if (level.getFluidState(living.getOnPos()).getType().getFluidType() != ModFluids.SHIMMER.type().get()) {
+        BlockPos onPos = living.getOnPos();
+        if (level.getBlockState(onPos).is(Blocks.BEDROCK)) return false;
+
+        if (level.getFluidState(onPos).getType().getFluidType() != ModFluids.SHIMMER.type().get()) {
             living.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 2, 1, false, false, false));
         }
-        if (level.getBlockState(living.getOnPos()).is(Blocks.BEDROCK)) return false;
 
         boolean shouldExpire = level.getBlockStates(living.getBoundingBox().inflate(-0.1)).allMatch(blockState -> {
             if (blockState.isAir()) return true;

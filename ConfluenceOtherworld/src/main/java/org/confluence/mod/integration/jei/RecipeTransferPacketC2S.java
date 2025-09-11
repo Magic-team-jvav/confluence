@@ -4,28 +4,27 @@ import com.mojang.datafixers.util.Either;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.confluence.lib.common.menu.EitherAmountContainerMenu4x;
 import org.confluence.lib.common.recipe.AmountIngredient;
 import org.confluence.lib.common.recipe.EitherAmountRecipe4x;
 import org.confluence.lib.common.recipe.MenuRecipeInput;
-import org.confluence.mod.Confluence;
+import org.confluence.mod.network.IPacket;
+import org.confluence.mod.network.c2s.IPacketC2S;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 
-public record RecipeTransferPacketC2S(ResourceLocation recipeId, boolean maxTransfer, boolean isFake) implements CustomPacketPayload {
-    public static final Type<RecipeTransferPacketC2S> TYPE = new Type<>(Confluence.asResource("recipe_transfer"));
+public record RecipeTransferPacketC2S(ResourceLocation recipeId, boolean maxTransfer, boolean isFake) implements IPacketC2S {
+    public static final Type<RecipeTransferPacketC2S> TYPE = IPacket.createType("recipe_transfer");
     public static final StreamCodec<RegistryFriendlyByteBuf, RecipeTransferPacketC2S> STREAM_CODEC = StreamCodec.composite(
             ResourceLocation.STREAM_CODEC, RecipeTransferPacketC2S::recipeId,
             ByteBufCodecs.BOOL, RecipeTransferPacketC2S::maxTransfer,
@@ -38,59 +37,52 @@ public record RecipeTransferPacketC2S(ResourceLocation recipeId, boolean maxTran
         return TYPE;
     }
 
-    public void handle(IPayloadContext context) {
-        context.enqueueWork(() -> {
-            if (context.player() instanceof ServerPlayer player) {
-                RecipeManager recipeManager = player.server.getRecipeManager();
-                recipeManager.byKey(recipeId).ifPresent(recipeHolder -> {
-                    Recipe<?> recipe = recipeHolder.value();
-                    EitherAmountRecipe4x<?> recipe4x = getRecipe4x(EitherAmountRecipe4x.class, recipe, either -> new FakeAmountRecipe4x(player.registryAccess(), recipe, either));
-                    if (recipe4x != null && player.containerMenu instanceof EitherAmountContainerMenu4x<?, ?, ?, ?> menu4x) {
-                        menu4x.clearContainerNoUpdate(player);
-                        List<Slot> slots = menu4x.slots.stream().filter(slot -> !slot.isFake() && slot.hasItem()).toList();
-                        recipe4x.either.ifLeft(pattern -> {
-                            NonNullList<Ingredient> ingredients = pattern.ingredients();
-                            int width = pattern.width();
-                            int height = pattern.height();
-                            boolean symmetrical = pattern.symmetrical;
-                            for (int i = 0; i < height; i++) {
-                                for (int j = 0; j < width; j++) {
-                                    Ingredient ingredient = ingredients.get(symmetrical ? width - j - 1 + i * width : j + i * width);
-                                    for (Slot slot : slots) {
-                                        if (ingredient.test(slot.getItem())) {
-                                            ItemStack itemStack = player.getInventory().removeItem(slot.getSlotIndex(), AmountIngredient.getAmount(ingredient));
-                                            int index = j + i * width;
-                                            for (int k = 3; k > 0; k--) {
-                                                if (index >= width * k) {
-                                                    index += k * (4 - width);
-                                                    break;
-                                                }
-                                            }
-                                            menu4x.getContainer().setItem(index, itemStack);
-                                            break;
-                                        }
+    @Override
+    public void work(ServerPlayer player) {
+        Optional<RecipeHolder<?>> optional = player.server.getRecipeManager().byKey(recipeId);
+        if (optional.isEmpty()) return;
+        Recipe<?> recipe = optional.get().value();
+        @Nullable EitherAmountRecipe4x<?> recipe4x = getRecipe4x(EitherAmountRecipe4x.class, recipe, either -> new FakeAmountRecipe4x(player.registryAccess(), recipe, either));
+        if (recipe4x != null && player.containerMenu instanceof EitherAmountContainerMenu4x<?, ?, ?, ?> menu4x) {
+            menu4x.clearContainerNoUpdate(player);
+            List<Slot> slots = menu4x.slots.stream().filter(slot -> !slot.isFake() && slot.hasItem()).toList();
+            recipe4x.either.ifLeft(pattern -> {
+                NonNullList<Ingredient> ingredients = pattern.ingredients();
+                int width = pattern.width();
+                int height = pattern.height();
+                boolean symmetrical = pattern.symmetrical;
+                for (int i = 0; i < height; i++) {
+                    for (int j = 0; j < width; j++) {
+                        Ingredient ingredient = ingredients.get(symmetrical ? width - j - 1 + i * width : j + i * width);
+                        for (Slot slot : slots) {
+                            if (ingredient.test(slot.getItem())) {
+                                ItemStack itemStack = player.getInventory().removeItem(slot.getSlotIndex(), AmountIngredient.getAmount(ingredient));
+                                int index = j + i * width;
+                                for (int k = 3; k > 0; k--) {
+                                    if (index >= width * k) {
+                                        index += k * (4 - width);
+                                        break;
                                     }
                                 }
+                                menu4x.getContainer().setItem(index, itemStack);
+                                break;
                             }
-                        }).ifRight(ingredients -> {
-                            int index = 0;
-                            for (Ingredient ingredient : ingredients) {
-                                for (Slot slot : slots) {
-                                    if (ingredient.test(slot.getItem())) {
-                                        ItemStack itemStack = player.getInventory().removeItem(slot.getSlotIndex(), AmountIngredient.getAmount(ingredient));
-                                        menu4x.getContainer().setItem(index++, itemStack);
-                                    }
-                                }
-                            }
-                        });
-                        menu4x.broadcastChanges();
+                        }
                     }
-                });
-            }
-        }).exceptionally(e -> {
-            context.disconnect(Component.translatable("neoforge.network.invalid_flow", e.getMessage()));
-            return null;
-        });
+                }
+            }).ifRight(ingredients -> {
+                int index = 0;
+                for (Ingredient ingredient : ingredients) {
+                    for (Slot slot : slots) {
+                        if (ingredient.test(slot.getItem())) {
+                            ItemStack itemStack = player.getInventory().removeItem(slot.getSlotIndex(), AmountIngredient.getAmount(ingredient));
+                            menu4x.getContainer().setItem(index++, itemStack);
+                        }
+                    }
+                }
+            });
+            menu4x.broadcastChanges();
+        }
     }
 
     @SuppressWarnings("unchecked")

@@ -4969,7 +4969,7 @@
     "title.terra_furniture.living_loom": "生命木织机",
     "tooltic.terra_entity.summon_item.desc": "长按以解除所有召唤物",
     "tooltip.confluence.cooldown": "冷却：%s",
-    "tooltip.confluence.damage": "伤害：%s",
+    "tooltip.confluence.attack_damage": "伤害：%s",
     "tooltip.confluence.disabled": "已禁用",
     "tooltip.confluence.mana_cost": "魔力消耗：%s",
     "tooltip.confluence.velocity": "射弹速度：%s",

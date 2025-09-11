@@ -4,6 +4,7 @@ import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.ITooltipBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
+import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
 import mezz.jei.api.helpers.IJeiHelpers;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeType;
@@ -13,15 +14,15 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.CrystalBallRecipe;
+import org.confluence.mod.integration.jei.ModJeiPlugin;
 
-// todo
 public class CrystalBallCategory implements IRecipeCategory<RecipeHolder<CrystalBallRecipe>> {
     public static final RecipeType<RecipeHolder<CrystalBallRecipe>> TYPE = RecipeType.createRecipeHolderType(Confluence.asResource("crystal_ball"));
     private static final Component TITLE = Component.translatable("title.confluence.crystal_ball");
     private final IDrawable icon;
 
     public CrystalBallCategory(IJeiHelpers jeiHelpers) {
-        this.icon = jeiHelpers.getGuiHelper().createDrawableItemStack(FunctionalBlocks.SKY_MILL.toStack());
+        this.icon = jeiHelpers.getGuiHelper().createDrawableItemStack(FunctionalBlocks.CRYSTAL_BALL.toStack());
     }
 
     @Override
@@ -36,12 +37,12 @@ public class CrystalBallCategory implements IRecipeCategory<RecipeHolder<Crystal
 
     @Override
     public int getWidth() {
-        return 72;
+        return 128;
     }
 
     @Override
     public int getHeight() {
-        return 72;
+        return 32;
     }
 
     @Override
@@ -50,8 +51,14 @@ public class CrystalBallCategory implements IRecipeCategory<RecipeHolder<Crystal
     }
 
     @Override
-    public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<CrystalBallRecipe> recipe, IFocusGroup focuses) {
+    public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<CrystalBallRecipe> recipe, IFocusGroup focusGroup) {
+        ModJeiPlugin.set4IngredientsRecipe(builder, recipe);
+    }
 
+    @Override
+    public void createRecipeExtras(IRecipeExtrasBuilder builder, RecipeHolder<CrystalBallRecipe> recipe, IFocusGroup focuses) {
+        IRecipeCategory.super.createRecipeExtras(builder, recipe, focuses);
+        builder.addRecipeArrow().setPosition(50 + 5, 6 + 2);
     }
 
     @Override

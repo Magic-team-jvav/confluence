@@ -2,6 +2,7 @@ package org.confluence.mod.integration.jei.category;
 
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
+import mezz.jei.api.gui.builder.ITooltipBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IJeiHelpers;
@@ -89,6 +90,14 @@ public class ShimmerItemTransmutationCategory implements IRecipeCategory<RecipeH
             }
         } else {
             ModJeiPlugin.drawArrowDown(guiGraphics, 54, 46, recipe.value().isValid());
+        }
+    }
+
+    @Override
+    public void getTooltip(ITooltipBuilder tooltip, RecipeHolder<ItemTransmutationRecipe> recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
+        IRecipeCategory.super.getTooltip(tooltip, recipe, recipeSlotsView, mouseX, mouseY);
+        if (!recipe.value().isValid()) {
+            tooltip.add(Component.translatable("jei.tooltip.shimmer_black_list").withStyle(ChatFormatting.RED));
         }
     }
 }

@@ -424,9 +424,9 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
         hardmodeAnvil(recipeOutput, SpearItems.ADAMANTITE_GLAIVE.toStack(), ShapedRecipePattern.of(Map.of(
                 'a', AmountIngredient.of(2, ModTags.Items.INGOTS_ADAMANTITE)
         ), List.of(
-                "   a",
                 "  aa",
-                " a a",
+                " aa ",
+                " a  ",
                 "a   "
         )));
         hardmodeAnvil(recipeOutput, PickaxeItems.ADAMANTITE_PICKAXE.toStack(), ShapedRecipePattern.of(Map.of(

@@ -14,10 +14,16 @@ import org.confluence.lib.common.recipe.EnvironmentEitherAmountRecipe4x;
 import org.confluence.lib.common.recipe.EnvironmentLevelAccess;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.jetbrains.annotations.ApiStatus;
 
 public class HeavyWorkBenchRecipe extends EnvironmentEitherAmountRecipe4x {
     public HeavyWorkBenchRecipe(ItemStack result, Either<ShapedRecipePattern, NonNullList<Ingredient>> either, EnvironmentLevelAccess.Matcher environment) {
         super(result, either, environment);
+    }
+
+    @ApiStatus.Internal
+    public HeavyWorkBenchRecipe(ItemStack result, Either<ShapedRecipePattern, NonNullList<Ingredient>> either) {
+        this(result, either, EnvironmentLevelAccess.Matcher.EMPTY);
     }
 
     public HeavyWorkBenchRecipe(ItemStack result, NonNullList<Ingredient> ingredients, EnvironmentLevelAccess.Matcher environment) {

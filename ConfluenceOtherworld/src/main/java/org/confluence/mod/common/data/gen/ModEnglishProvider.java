@@ -109,7 +109,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.jei.count_range", "Count: %s-%s");
         add("tooltip.jei.count_exact", "Count: %s");
         add("tooltip.jei.drop_chance", "Chance: %s%%");
-        add("jei.tooltip.error.recipe.transfer.environment", "Not in correct environment");
+        add("jei.tooltip.shimmer_black_list", "The shimmer will prevent the item from transmutation or decompose");
 
         add("tooltip.item.confluence.meteorite_ingot.0", "Warm to the touch");
         add("tooltip.item.confluence.encumbering_stone.0", "Prevents item pickups while locked");
@@ -433,10 +433,14 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.cause_fire", "Causes Fire");
         add("tooltip.item.confluence.can_penetrate", "Can Penetrate");
 
-        add("tooltip.confluence.damage", "Damage: %s");
+        add("tooltip.confluence.attack_damage", "Damage: %s");
         add("tooltip.confluence.mana_cost", "Mana Cost: %s");
         add("tooltip.confluence.velocity", "Projectile Speed: %s");
         add("tooltip.confluence.cooldown", "Cooldown: %s");
+        add("tooltip.confluence.attack_duration", "Attack Duration: %s");
+        add("tooltip.confluence.attack_interval", "Attack Interval: %s");
+        add("tooltip.confluence.attack_distance", "Attack Distance: %s");
+        add("tooltip.confluence.knockback", "Knockback: %s");
 
         add("tooltip.item.confluence.radio_thing.0", "Allows the user to see the world differently");
         add("tooltip.item.terra_curio.radio_thing.1", "'Forbidden Knowledge echoes from the radio...'");

@@ -103,7 +103,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.jei.count_range", "数量：%s-%s");
         add("tooltip.jei.count_exact", "数量：%s");
         add("tooltip.jei.drop_chance", "爆率：%s%%");
-        add("jei.tooltip.error.recipe.transfer.environment", "不在正确的环境内");
+        add("jei.tooltip.shimmer_black_list", "微光将阻止该物品嬗变或分解");
 
         add("tooltip.item.confluence.meteorite_ingot.0", "摸起来是温的");
         add("tooltip.item.confluence.encumbering_stone.0", "锁上时能防止拾取物品");
@@ -427,10 +427,14 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.cause_fire", "点燃");
         add("tooltip.item.confluence.can_penetrate", "穿透");
 
-        add("tooltip.confluence.damage", "伤害：%s");
+        add("tooltip.confluence.attack_damage", "伤害：%s");
         add("tooltip.confluence.mana_cost", "魔力消耗：%s");
         add("tooltip.confluence.velocity", "射弹速度：%s");
         add("tooltip.confluence.cooldown", "冷却：%s");
+        add("tooltip.confluence.attack_duration", "攻击持续总长：%s");
+        add("tooltip.confluence.attack_interval", "下次攻击间隔：%s");
+        add("tooltip.confluence.attack_distance", "攻击距离：%s");
+        add("tooltip.confluence.knockback", "击退：%s");
 
         add("tooltip.item.confluence.radio_thing.0", "允许使用者以不同的方式看世界");
         add("tooltip.item.terra_curio.radio_thing.1", "“禁忌的知识在其中回响……”");
@@ -3427,8 +3431,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(FunctionalBlocks.WOODEN_SPIKE.get(), "木尖刺");
         add(FunctionalBlocks.LOOM.get(), "织布机");
         add(FunctionalBlocks.DYE_VAT.get(), "染缸");
-        add(ModBlocks.AETHERIUM_CAULDRON.get(), "微光炼药锅");
-        add(ModBlocks.HONEY_CAULDRON.get(), "蜂蜜炼药锅");
+        add(ModBlocks.AETHERIUM_CAULDRON.get(), "装有微光的炼药锅");
+        add(ModBlocks.HONEY_CAULDRON.get(), "装有蜂蜜的炼药锅");
 
         add(ChestBlocks.GOLDEN_CHEST.get(), "金箱");
         add(ChestBlocks.DEATH_GOLDEN_CHEST.get(), "死人金箱");

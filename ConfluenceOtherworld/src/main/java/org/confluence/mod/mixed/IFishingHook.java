@@ -22,6 +22,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.neoforged.neoforge.common.Tags;
+import org.confluence.lib.mixed.IExtraSyncedData;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModLootTables;
@@ -32,20 +33,24 @@ import org.confluence.mod.common.item.fishing.AbstractFishingPole;
 import org.confluence.mod.common.item.fishing.IBait;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.terra_curio.util.TCUtils;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
-public interface IFishingHook {
+public interface IFishingHook extends IExtraSyncedData<FishingHook> {
     void confluence$setIsLavaHook();
 
     boolean confluence$isLavaHook();
 
-    @Deprecated
+    @Deprecated(since = "1.2.0", forRemoval = true)
+    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
     default void confluence$setBait(@Nullable ItemStack bait) {}
 
-    @Deprecated
+    @Deprecated(since = "1.2.0", forRemoval = true)
+    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
     default @Nullable ItemStack confluence$getBait() {return null;}
 
-    @Deprecated
+    @Deprecated(since = "1.2.0", forRemoval = true)
+    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
     default float confluence$getBonus() {return 0.0F;}
 
     static IFishingHook of(FishingHook fishingHook) {
@@ -111,10 +116,11 @@ public interface IFishingHook {
                 return ObjectArrayList.of(questedFish);
             }
 
-            float chance = player.hasEffect(ModEffects.CRATE) ? 0.25F : 0.1F;
+            int sample = player.hasEffect(ModEffects.CRATE) ? 4 : 10;
             ServerLevel level = player.serverLevel();
-            if (level.random.nextFloat() < chance) {
-                return level.getServer().reloadableRegistries().getLootTable(ModLootTables.CRATE)
+            if (level.random.nextInt(sample) == 0) {
+                ResourceKey<LootTable> lootTable = IMinecraftServer.isHardmode(level.getServer()) ? ModLootTables.CRATE_HARDMODE : ModLootTables.CRATE;
+                return level.getServer().reloadableRegistries().getLootTable(lootTable)
                         .getRandomItems(new LootParams.Builder(level)
                                 .withParameter(LootContextParams.ORIGIN, self.position())
                                 .withParameter(LootContextParams.THIS_ENTITY, self)

@@ -7,16 +7,13 @@ import mezz.jei.api.helpers.IJeiHelpers;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.DyeVatRecipe;
+import org.confluence.mod.integration.jei.ModJeiPlugin;
 import org.jetbrains.annotations.Nullable;
-
-import static org.confluence.mod.integration.jei.ModJeiPlugin.addInput;
 
 public class DyeVatCategory implements IRecipeCategory<RecipeHolder<DyeVatRecipe>> {
     public static final RecipeType<RecipeHolder<DyeVatRecipe>> TYPE = RecipeType.createRecipeHolderType(Confluence.asResource("dye_vat"));
@@ -53,25 +50,8 @@ public class DyeVatCategory implements IRecipeCategory<RecipeHolder<DyeVatRecipe
     }
 
     @Override
-    public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<DyeVatRecipe> recipe, IFocusGroup focuses) {
-        NonNullList<Ingredient> ingredients = recipe.value().getIngredients();
-        int size = ingredients.size();
-        if (size == 1) {
-            addInput(builder, 24, 8, ingredients.getFirst(), true);
-        } else if (size == 2) {
-            addInput(builder, 15, 8, ingredients.get(0), true);
-            addInput(builder, 33, 8, ingredients.get(1), true);
-        } else if (size == 3) {
-            addInput(builder, 15, 15, ingredients.get(0), true);
-            addInput(builder, 33, 15, ingredients.get(1), true);
-            addInput(builder, 24, 1, ingredients.get(2), true);
-        } else {
-            addInput(builder, 15, -1, ingredients.get(0), true);
-            addInput(builder, 15, 17, ingredients.get(1), true);
-            addInput(builder, 33, -1, ingredients.get(2), true);
-            addInput(builder, 33, 17, ingredients.get(3), true);
-        }
-        builder.addOutputSlot(88, 8).addItemStack(recipe.value().getResultItem(null)).setOutputSlotBackground();
+    public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<DyeVatRecipe> recipe, IFocusGroup focusGroup) {
+        ModJeiPlugin.set4IngredientsRecipe(builder, recipe);
     }
 
     @Override

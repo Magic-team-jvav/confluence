@@ -1217,6 +1217,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 DecorativeBlocks.SNOW_BRICKS_WALL.asItem(),
                 DecorativeBlocks.CRIMTANE_ORE_BRICKS_STAIRS.asItem(),
                 DecorativeBlocks.CRIMTANE_ORE_BRICKS_SLAB.asItem(),
+                DecorativeBlocks.CHISELED_SPRUCE_PLANKS.asItem(),
                 StatueBlocks.ARMOR_STATUE.asItem(),
                 StatueBlocks.AXE_STATUE.asItem(),
                 StatueBlocks.BOOMERANG_STATUE.asItem(),

@@ -12,6 +12,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.confluence.lib.util.WipNotDisplayOutput;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.init.block.*;
@@ -38,13 +39,15 @@ public final class ModTabs {
             () -> CreativeModeTab.builder().icon(() -> IconItems.NATURE_ICON.get().getDefaultInstance())
                     .title(Component.translatable("creativetab.confluence.natural_blocks"))
                     .displayItems((parameters, output) -> {
+                        output = new WipNotDisplayOutput(output);
                         LogBlockSet.acceptNature(output);
-                        OreBlocks.BLOCKS.getEntries().forEach(block -> output.accept(block.get()));
+                        CreativeModeTab.Output finalOutput = output;
+                        OreBlocks.BLOCKS.getEntries().forEach(block -> finalOutput.accept(block.get()));
                         NatureBlocks.BLOCKS.getEntries().forEach(block -> {
                             Item item = block.get().asItem();
-                            if (item != Items.AIR) output.accept(item);
+                            if (item != Items.AIR) finalOutput.accept(item);
                         });
-                        PotBlocks.BLOCKS.getEntries().forEach(block -> output.accept(block.get()));
+                        PotBlocks.BLOCKS.getEntries().forEach(block -> finalOutput.accept(block.get()));
                         output.accept(OreBlocks.COLD_CRYSTAL_ORE.get());
                     })
                     .withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
@@ -54,9 +57,11 @@ public final class ModTabs {
             () -> CreativeModeTab.builder().icon(() -> IconItems.BLOCKS_ICON.get().getDefaultInstance())
                     .title(Component.translatable("creativetab.confluence.building_blocks"))
                     .displayItems((parameters, output) -> {
+                        output = new WipNotDisplayOutput(output);
                         LogBlockSet.acceptBuilding(output);
-                        DecorativeBlocks.BLOCKS.getEntries().forEach(block -> output.accept(block.get()));
-                        StatueBlocks.BLOCKS.getEntries().forEach(block -> output.accept(block.get()));
+                        CreativeModeTab.Output finalOutput = output;
+                        DecorativeBlocks.BLOCKS.getEntries().forEach(block -> finalOutput.accept(block.get()));
+                        StatueBlocks.BLOCKS.getEntries().forEach(block -> finalOutput.accept(block.get()));
                     })
                     .withTabsBefore(NATURAL_BLOCKS.getId())
                     .build()
@@ -66,13 +71,15 @@ public final class ModTabs {
             () -> CreativeModeTab.builder().icon(() -> IconItems.MECHANICAL_ICON.get().getDefaultInstance())
                     .title(Component.translatable("creativetab.confluence.mechanical"))
                     .displayItems((parameters, output) -> {
+                        output = new WipNotDisplayOutput(output);
                         output.accept(ToolItems.RED_WRENCH.get());
                         output.accept(ToolItems.GREEN_WRENCH.get());
                         output.accept(ToolItems.BLUE_WRENCH.get());
                         output.accept(ToolItems.YELLOW_WRENCH.get());
                         output.accept(ToolItems.WIRE_CUTTER.get());
-                        ChestBlocks.BLOCKS.getEntries().forEach(block -> output.accept(block.get()));
-                        FunctionalBlocks.BLOCKS.getEntries().forEach(block -> output.accept(block.get()));
+                        CreativeModeTab.Output finalOutput = output;
+                        ChestBlocks.BLOCKS.getEntries().forEach(block -> finalOutput.accept(block.get()));
+                        FunctionalBlocks.BLOCKS.getEntries().forEach(block -> finalOutput.accept(block.get()));
                         output.accept(TFBlocks.GLASS_KILN.get());
                         output.accept(TFBlocks.LIVING_LOOM.get());
                         output.accept(TFBlocks.ICE_MACHINE.get());
@@ -84,17 +91,21 @@ public final class ModTabs {
             () -> CreativeModeTab.builder().icon(() -> IconItems.MATERIAL_ICON.get().getDefaultInstance())
                     .title(Component.translatable("creativetab.confluence.materials"))
                     .displayItems((parameters, output) -> {
+                        output = new WipNotDisplayOutput(output);
                         output.accept(ConsumableItems.MANA_CRYSTAL.get());
                         output.accept(ConsumableItems.LIFE_CRYSTAL.get());
                         output.accept(ConsumableItems.LIFE_FRUIT.get());
-                        MaterialItems.ITEMS.getEntries().forEach(item -> output.accept(item.get().getDefaultInstance()));
+                        CreativeModeTab.Output finalOutput = output;
+                        MaterialItems.ITEMS.getEntries().forEach(item -> finalOutput.accept(item.get()));
                         output.accept(ModBlocks.POO.get());
                     }).withTabsAfter(Confluence.asResourceKey(Registries.CREATIVE_MODE_TAB, "misc")).withTabsBefore(MECHANICAL.getId()).build());
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MISC = TABS.register("misc",
             () -> CreativeModeTab.builder().icon(() -> IconItems.PRECIOUS_ICON.get().getDefaultInstance())
                     .title(Component.translatable("creativetab.confluence.misc"))
                     .displayItems((parameters, output) -> {
-                        Consumer<Supplier<? extends ItemLike>> action = item -> output.accept(item.get());
+                        output = new WipNotDisplayOutput(output);
+                        CreativeModeTab.Output finalOutput = output;
+                        Consumer<Supplier<? extends ItemLike>> action = item -> finalOutput.accept(item.get());
                         ModItems.ITEMS.getEntries().forEach(action);
                         output.accept(TCItems.DEMON_HEART.get());
                         ConsumableItems.ITEMS.getEntries().forEach(action);
@@ -111,8 +122,9 @@ public final class ModTabs {
             () -> CreativeModeTab.builder().icon(() -> IconItems.POTION_ICON.get().getDefaultInstance())
                     .title(Component.translatable("creativetab.confluence.food_and_potions"))
                     .displayItems((parameters, output) -> {
-                        PotionItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
-                        FoodItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
+                        WipNotDisplayOutput wrappedOutput = new WipNotDisplayOutput(output);
+                        PotionItems.ITEMS.getEntries().forEach(item -> wrappedOutput.accept(item.get()));
+                        FoodItems.ITEMS.getEntries().forEach(item -> wrappedOutput.accept(item.get()));
                     })
                     .withTabsBefore(MISC.getId())
                     .build());
@@ -120,7 +132,9 @@ public final class ModTabs {
             () -> CreativeModeTab.builder().icon(() -> IconItems.TOOLS_ICON.get().getDefaultInstance())
                     .title(Component.translatable("creativetab.confluence.tools"))
                     .displayItems((parameters, output) -> {
-                        Consumer<DeferredHolder<Item, ? extends Item>> action = item -> output.accept(item.get());
+                        output = new WipNotDisplayOutput(output);
+                        CreativeModeTab.Output finalOutput = output;
+                        Consumer<DeferredHolder<Item, ? extends Item>> action = item -> finalOutput.accept(item.get());
                         ToolItems.ITEMS.getEntries().forEach(action);
                         output.accept(ModBlocks.ROPE.get());
                         output.accept(ModBlocks.VINE_ROPE.get());
@@ -155,16 +169,19 @@ public final class ModTabs {
             () -> CreativeModeTab.builder().icon(() -> IconItems.ARMOR_ICON.get().getDefaultInstance())
                     .title(Component.translatable("creativetab.confluence.armors"))
                     .displayItems((parameters, output) -> {
+                        output = new WipNotDisplayOutput(output);
                         output.accept(TCItems.DIVING_HELMET.get());
-                        ArmorItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
-                        VanityArmorItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
+                        CreativeModeTab.Output finalOutput = output;
+                        ArmorItems.ITEMS.getEntries().forEach(item -> finalOutput.accept(item.get()));
+                        VanityArmorItems.ITEMS.getEntries().forEach(item -> finalOutput.accept(item.get()));
                     })
                     .withTabsBefore(TCTabs.ACCESSORIES.getId()).build());
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> WARRIORS = TABS.register("warriors",
             () -> CreativeModeTab.builder().icon(() -> IconItems.MELEE_ICON.get().getDefaultInstance())
                     .title(Component.translatable("creativetab.confluence.warriors"))
                     .displayItems((parameters, output) -> {
-                        Consumer<DeferredHolder<Item, ? extends Item>> action = item -> output.accept(item.get());
+                        WipNotDisplayOutput wrappedOutput = new WipNotDisplayOutput(output);
+                        Consumer<DeferredHolder<Item, ? extends Item>> action = item -> wrappedOutput.accept(item.get());
                         SwordItems.ITEMS.getEntries().forEach(action);
                         TEBoomerangItems.ITEMS.getEntries().forEach(action);
                         SpearItems.ITEMS.getEntries().forEach(action);
@@ -176,7 +193,9 @@ public final class ModTabs {
             () -> CreativeModeTab.builder().icon(() -> IconItems.REMOTE_ICON.get().getDefaultInstance())
                     .title(Component.translatable("creativetab.confluence.rangers"))
                     .displayItems((parameters, output) -> {
-                        Consumer<DeferredHolder<Item, ? extends Item>> action = item -> output.accept(item.get());
+                        output = new WipNotDisplayOutput(output);
+                        CreativeModeTab.Output finalOutput = output;
+                        Consumer<DeferredHolder<Item, ? extends Item>> action = item -> finalOutput.accept(item.get());
                         BowItems.ITEMS.getEntries().forEach(action);
                         ArrowItems.ITEMS.getEntries().forEach(action);
                         TGItems.GUNS.getEntries().forEach(action);
@@ -191,7 +210,9 @@ public final class ModTabs {
             () -> CreativeModeTab.builder().icon(() -> IconItems.MAGIC_ICON.get().getDefaultInstance())
                     .title(Component.translatable("creativetab.confluence.mages"))
                     .displayItems((parameters, output) -> {
-                        ManaWeaponItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
+                        output = new WipNotDisplayOutput(output);
+                        CreativeModeTab.Output finalOutput = output;
+                        ManaWeaponItems.ITEMS.getEntries().forEach(item -> finalOutput.accept(item.get()));
                         HolderLookup.RegistryLookup<Enchantment> registryLookup = parameters.holders().lookupOrThrow(Registries.ENCHANTMENT);
                         output.accept(EnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.MANA_REGENERATION, 3));
                         output.accept(EnchantmentUtils.enchantedBook(registryLookup, ModEnchantments.EFFICIENT_MAGIC, 1));
@@ -208,9 +229,10 @@ public final class ModTabs {
             () -> CreativeModeTab.builder().icon(() -> IconItems.SUMMON_ICON.get().getDefaultInstance())
                     .title(Component.translatable("creativetab.confluence.summoners"))
                     .displayItems((parameters, output) -> {
-                        TESummonItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
-                        TEWhipItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
-                        LightPetItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
+                        WipNotDisplayOutput wrappedOutput = new WipNotDisplayOutput(output);
+                        TESummonItems.ITEMS.getEntries().forEach(item -> wrappedOutput.accept(item.get()));
+                        TEWhipItems.ITEMS.getEntries().forEach(item -> wrappedOutput.accept(item.get()));
+                        LightPetItems.ITEMS.getEntries().forEach(item -> wrappedOutput.accept(item.get()));
                     })
                     .withTabsAfter(TEItems.NEO_TERRA.getId())
                     .withTabsBefore(MAGES.getId())
@@ -222,8 +244,10 @@ public final class ModTabs {
             () -> CreativeModeTab.builder().icon(() -> IconItems.DEVELOPER_ICON.get().getDefaultInstance())
                     .title(Component.translatable("creativetab.confluence.developer"))
                     .displayItems((parameters, output) -> {
+                        output = new WipNotDisplayOutput(output);
                         output.accept(ModBlocks.ANDESITE_CASING.get());
-                        ModItems.HIDDEN.getEntries().forEach(item -> output.accept(item.get()));
+                        CreativeModeTab.Output finalOutput = output;
+                        ModItems.HIDDEN.getEntries().forEach(item -> finalOutput.accept(item.get()));
                         output.accept(FoodItems.PINK_COLA.get());
                         output.accept(FoodItems.DONGDONGS_FLATBREAD.get());
                         output.accept(FoodItems.PIGLIN_STEW.get());

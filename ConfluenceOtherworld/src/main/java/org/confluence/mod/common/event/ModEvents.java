@@ -50,6 +50,7 @@ import org.confluence.lib.event.NameFixRegisterEvent;
 import org.confluence.lib.util.ConfluenceResources;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.WipNotDisplayOutput;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.block.natural.ChlorophyteOreBlock;
@@ -246,9 +247,10 @@ public final class ModEvents {
     public static void buildCreativeModeTabContents(BuildCreativeModeTabContentsEvent event) {
         CreativeModeTab.TabVisibility visibility = CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS;
         if (event.getTab() == TCTabs.ACCESSORIES.get()) {
-            event.accept(TCItems.EVERLASTING.get().getDefaultInstance(), visibility);
-            event.accept(TCItems.BASE_POINT.get().getDefaultInstance(), visibility);
-            AccessoryItems.ITEMS.getEntries().forEach(item -> event.accept(item.get()));
+            WipNotDisplayOutput output = new WipNotDisplayOutput(event);
+            output.accept(TCItems.EVERLASTING.get().getDefaultInstance(), visibility);
+            output.accept(TCItems.BASE_POINT.get().getDefaultInstance(), visibility);
+            AccessoryItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
         } else if (event.getTab() == ModTabs.MISC.get()) {
             ItemStack clothierVoodooDollStack = AccessoryItems.CLOTHIER_VOODOO_DOLL.toStack();
             event.insertAfter(ConsumableItems.ABEEMINATION.toStack(), clothierVoodooDollStack, visibility);

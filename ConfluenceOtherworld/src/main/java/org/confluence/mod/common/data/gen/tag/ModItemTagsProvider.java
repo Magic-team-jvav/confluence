@@ -1342,7 +1342,10 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 DrillItems.STARDUST_DRILL.get(),
                 TEFigureBlocks.FIGURE.asItem(),
                 TEFigureBlocks.FIGURE2.asItem(),
-                TEFigureBlocks.FIGURE3.asItem()
+                TEFigureBlocks.FIGURE3.asItem(),
+                LanceItems.JOUSTING_LANCE.get(),
+                LanceItems.HALLOWED_JOUSTING_LANCE.get(),
+                LanceItems.SHADOW_JOUSTING_LANCE.get()
         );
         Consumer<DeferredHolder<Item, ? extends Item>> wipAction = item -> wip.add(item.get());
         MinecartItems.ITEMS.getEntries().forEach(wipAction);

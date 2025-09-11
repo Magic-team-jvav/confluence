@@ -57,6 +57,7 @@ import org.confluence.mod.client.model.entity.hook.SkeletronHandModel;
 import org.confluence.mod.client.model.entity.hook.WebSlingerModel;
 import org.confluence.mod.client.model.entity.projectile.*;
 import org.confluence.mod.client.particle.*;
+import org.confluence.mod.client.renderer.SizedTextureTooltip;
 import org.confluence.mod.client.renderer.block.*;
 import org.confluence.mod.client.renderer.entity.BodyPartRenderer;
 import org.confluence.mod.client.renderer.entity.FallingStarRenderer;
@@ -79,6 +80,7 @@ import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.common.item.SizedTextureComponent;
 import org.confluence.mod.common.item.common.BaseDyeItem;
 import org.confluence.mod.common.item.paint.PaintItem;
 import org.confluence.mod.integration.appleskin.AppleskinHelper;
@@ -463,5 +465,10 @@ public final class ModClientEvents {
     @SubscribeEvent
     public static void registerRenderBuffers(RegisterRenderBuffersEvent event) {
         event.registerRenderBuffer(ModClientSetups.RED_GLINT);
+    }
+
+    @SubscribeEvent
+    public static void registerClientTooltipComponentFactories(RegisterClientTooltipComponentFactoriesEvent event) {
+        event.register(SizedTextureComponent.class, component -> new SizedTextureTooltip(component.width(), component.height(), component.location()));
     }
 }

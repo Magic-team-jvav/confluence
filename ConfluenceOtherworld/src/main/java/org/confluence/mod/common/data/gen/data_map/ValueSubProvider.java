@@ -339,6 +339,7 @@ public final class ValueSubProvider {
                 .add(SpearItems.CHLOROPHYTE_PARTISAN, gold2 + gold1 + silver50 + silver10)
                 .add(SpearItems.COBALT_NAGINATA, silver50 + silver20 + silver20)
                 .add(SpearItems.DARK_LANCE, gold2 + silver50)
+                .add(SpearItems.STREAMSTRIKE_HALBERD, gold2 + silver50+ silver20)
                 .add(SpearItems.SPEAR, silver2)
                 .add(SpearItems.STORM_SPEAR, silver20 + silver10)
                 .add(SpearItems.THE_ROTTED_FORK, gold1 + silver50)
@@ -557,7 +558,16 @@ public final class ValueSubProvider {
                 .add(TEPetItems.CHESTER_STAFF, gold2)
                 .add(TEPetItems.WALLET, gold2);
         appender.create()
-                .add(TEWhipItems.LEATHER_WHIP, gold2);
+                .add(TEWhipItems.LEATHER_WHIP, gold2)
+                .add(TEWhipItems.SLUB_WHIP, 30)
+                .add(TEWhipItems.RUBY_WHIP, gold2)
+                .add(TEWhipItems.AMBER_WHIP, gold2 + silver50)
+                .add(TEWhipItems.TOPAZ_WHIP, gold2 + silver10)
+                .add(TEWhipItems.JADE_WHIP, gold2 + silver20)
+                .add(TEWhipItems.DIAMOND_WHIP, gold2 + silver50)
+                .add(TEWhipItems.SAPPHIRE_WHIP, gold2 + silver20)
+                .add(TEWhipItems.AMETHYST_WHIP, gold2 + silver10)
+                .add(TEWhipItems.SWAMP_WHIP, gold2 + silver50 + silver50);
         appender.create()
                 .add(TCItems.AGLET, 25000)
                 .add(TCItems.AMBER_HORSESHOE_BALLOON, 30000)

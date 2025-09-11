@@ -62,7 +62,8 @@ public class EitherRecipe4xHelper {
             Class<C> containerClazz,
             @Nullable MenuType<C> menuType,
             FakeRecipeFactory<I, R> factory,
-            RecipeType<RecipeHolder<R>> recipeType
+            RecipeType<RecipeHolder<R>> recipeType,
+            boolean allowsCraftingTableRecipe
     ) {
         TransferHandler<I, R, S, A, C> transferHandler = new TransferHandler<>(
                 registration.getJeiHelpers(),
@@ -72,13 +73,15 @@ public class EitherRecipe4xHelper {
                 recipeType
         );
         registration.addRecipeTransferHandler(transferHandler, recipeType);
-        registration.addUniversalRecipeTransferHandler(new CraftingRecipeTransferHandler<>(
-                transferHandler,
-                recipeClazz,
-                factory,
-                containerClazz,
-                menuType
-        ));
+        if (allowsCraftingTableRecipe) {
+            registration.addUniversalRecipeTransferHandler(new CraftingRecipeTransferHandler<>(
+                    transferHandler,
+                    recipeClazz,
+                    factory,
+                    containerClazz,
+                    menuType
+            ));
+        }
     }
 
     public static void setEitherRecipe4x(IRecipeLayoutBuilder builder, RecipeHolder<? extends EitherAmountRecipe4x<?>> recipe) {

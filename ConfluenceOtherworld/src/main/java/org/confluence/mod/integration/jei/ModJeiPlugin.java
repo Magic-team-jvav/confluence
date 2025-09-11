@@ -155,11 +155,11 @@ public final class ModJeiPlugin implements IModPlugin {
 
     @Override
     public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
-        EitherRecipe4xHelper.register(registration, HardmodeAnvilRecipe.class, HardmodeAnvilMenu.class, ModMenuTypes.HARDMODE_ANVIL.get(), HardmodeAnvilRecipe::new, HardmodeAnvilCategory.TYPE);
-        EitherRecipe4xHelper.register(registration, HeavyWorkBenchRecipe.class, HeavyWorkBenchMenu.class, ModMenuTypes.HEAVY_WORK_BENCH.get(), HeavyWorkBenchRecipe::new, HeavyWorkBenchCategory.TYPE);
-        EitherRecipe4xHelper.register(registration, LoomRecipe.class, LoomMenu.class, ModMenuTypes.LOOM.get(), LoomRecipe::new, LoomCategory.TYPE);
-        EitherRecipe4xHelper.register(registration, SawmillRecipe.class, SawmillMenu.class, ModMenuTypes.SAWMILL.get(), SawmillRecipe::new, SawmillCategory.TYPE);
-        EitherRecipe4xHelper.register(registration, SolidifierRecipe.class, SolidifierMenu.class, ModMenuTypes.SOLIDIFIER.get(), SolidifierRecipe::new, SolidifierCategory.TYPE);
+        EitherRecipe4xHelper.register(registration, HardmodeAnvilRecipe.class, HardmodeAnvilMenu.class, ModMenuTypes.HARDMODE_ANVIL.get(), HardmodeAnvilRecipe::new, HardmodeAnvilCategory.TYPE, false);
+        EitherRecipe4xHelper.register(registration, HeavyWorkBenchRecipe.class, HeavyWorkBenchMenu.class, ModMenuTypes.HEAVY_WORK_BENCH.get(), HeavyWorkBenchRecipe::new, HeavyWorkBenchCategory.TYPE, true);
+        EitherRecipe4xHelper.register(registration, LoomRecipe.class, LoomMenu.class, ModMenuTypes.LOOM.get(), LoomRecipe::new, LoomCategory.TYPE, false);
+        EitherRecipe4xHelper.register(registration, SawmillRecipe.class, SawmillMenu.class, ModMenuTypes.SAWMILL.get(), SawmillRecipe::new, SawmillCategory.TYPE, false);
+        EitherRecipe4xHelper.register(registration, SolidifierRecipe.class, SolidifierMenu.class, ModMenuTypes.SOLIDIFIER.get(), SolidifierRecipe::new, SolidifierCategory.TYPE, false);
     }
 
     public static void drawArrowDown(GuiGraphics guiGraphics, int x, int y, boolean usable) {

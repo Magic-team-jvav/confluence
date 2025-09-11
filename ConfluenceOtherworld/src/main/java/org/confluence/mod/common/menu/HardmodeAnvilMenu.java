@@ -14,6 +14,7 @@ import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.HardmodeAnvilRecipe;
 
+// todo 支持工作台
 public class HardmodeAnvilMenu extends EitherAmountContainerMenu4x<MenuRecipeInput, HardmodeAnvilRecipe, ToggleAmountResultSlot<HardmodeAnvilRecipe>, ContainerLevelAccess> {
     public HardmodeAnvilMenu(int containerId, Inventory inventory) {
         this(containerId, inventory, ContainerLevelAccess.NULL);

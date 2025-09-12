@@ -155,11 +155,13 @@ boolean supplementaries = false // 锦致装饰
 boolean lootBeams = false // 战利品光束
 boolean spark = false // 火花
 boolean apotheosis = false // 神化
+boolean legendarytooltips = true // 传说提示框
+boolean itemborders = true // 物品边框
+boolean advancementPlaques = false // 进度牌匾
 
 dependencies {
     projectName.forEach { name -> implementation jarJar(project(":" + name)) }
 
-//    implementation jarJar(project(":XHN-Lib"))
     implementation(jarJar(group: 'com.xiaohunao.xhn_lib', name: 'xhn_lib', version: '1.21.1-0.0.2'))
     implementation(jarJar("software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"))
     implementation(jarJar("curse.maven:particle-storm-1124172:${particle_storm_version}"))
@@ -209,10 +211,6 @@ dependencies {
         runtimeOnly "curse.maven:sodium-394468:6382651"
         runtimeOnly "curse.maven:irisshaders-455508:6661598"
     }
-
-    compileOnly "curse.maven:advancement-plaques-499826:5905995"
-    //runtimeOnly "curse.maven:advancement-plaques-499826:5905995"
-    //runtimeOnly "curse.maven:iceberg-520110:6118329"
 
     compileOnly "curse.maven:journeymap-32274:6213329"
     //runtimeOnly "curse.maven:journeymap-32274:6213329"
@@ -295,12 +293,20 @@ dependencies {
     //runtimeOnly "curse.maven:azurelib-817423:6849116"
     //runtimeOnly "curse.maven:lendercataclysm-551586:6849033"
     //runtimeOnly "curse.maven:lionfish-api-1001614:6168249"
-    if (true) {
+    if (advancementPlaques) {
+        runtimeOnly "curse.maven:advancement-plaques-499826:5905995"
+    }
+    if (legendarytooltips) {
         runtimeOnly "curse.maven:legendary-tooltips-532127:6400660"
+    }
+    if (itemborders) {
+        runtimeOnly "curse.maven:item-borders-513769:5591010"
+    }
+    if (advancementPlaques || legendarytooltips || itemborders) {
         runtimeOnly "curse.maven:iceberg-520110:6423863"
         runtimeOnly "curse.maven:prism-lib-638111:6372979"
     }
-    if (true) {
+    if (false) {
         runtimeOnly "curse.maven:enchantment-descriptions-250419:6348560"
         runtimeOnly "curse.maven:bookshelf-228525:6717571"
         runtimeOnly "curse.maven:prickle-1023259:6546240"
@@ -350,9 +356,7 @@ dependencies {
 
     if(spark){
         implementation "curse.maven:spark-361579:6225208"
-
     }
-
 }
 
 tasks.withType(ProcessResources).configureEach {

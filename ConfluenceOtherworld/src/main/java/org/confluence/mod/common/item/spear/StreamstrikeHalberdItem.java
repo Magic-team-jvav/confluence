@@ -16,7 +16,7 @@ public class StreamstrikeHalberdItem extends AbstractSpearItem {
                 K.of(0.75, 0, EasingType.LINEAR)
         ));
     }
-
+    // todo手持时提升水中游泳速度
     @Override
     protected void onHitEntity(DamageSource damageSource, LivingEntity owner, Entity victim) {
         hurtVictim(damageSource, owner, victim);

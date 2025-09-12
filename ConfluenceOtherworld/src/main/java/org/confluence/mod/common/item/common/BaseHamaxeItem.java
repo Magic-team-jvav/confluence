@@ -37,14 +37,14 @@ import java.util.function.Consumer;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-public class HamaxeItem extends DiggerItem {
-    public HamaxeItem(Tier tier, float rawDamage, float rawSpeed, Properties properties, ModRarity rarity) {
+public class BaseHamaxeItem extends DiggerItem {
+    public BaseHamaxeItem(Tier tier, float rawDamage, float rawSpeed, Properties properties, ModRarity rarity) {
         super(tier, ModTags.Blocks.MINEABLE_WITH_HAMAXE, properties.component(ConfluenceMagicLib.MOD_RARITY, rarity)
                 .component(DataComponents.ATTRIBUTE_MODIFIERS, createAttributes(tier, (rawDamage - tier.getAttackDamageBonus() - 1), rawSpeed - 4))
                 .component(ConfluenceMagicLib.TOOL_MODE, new ToolMode(0)));
     }
 
-    public HamaxeItem(Tier tier, float rawDamage, float rawSpeed, Properties properties, Consumer<ItemAttributeModifiers.Builder> consumer, ModRarity rarity) {
+    public BaseHamaxeItem(Tier tier, float rawDamage, float rawSpeed, Properties properties, Consumer<ItemAttributeModifiers.Builder> consumer, ModRarity rarity) {
         super(tier, ModTags.Blocks.MINEABLE_WITH_HAMAXE, properties.component(ConfluenceMagicLib.MOD_RARITY, rarity)
                 .component(DataComponents.ATTRIBUTE_MODIFIERS, ModItems.createAttributes(tier, (rawDamage - tier.getAttackDamageBonus() - 1), rawSpeed - 4, consumer))
                 .component(ConfluenceMagicLib.TOOL_MODE, new ToolMode(0)));
@@ -59,7 +59,7 @@ public class HamaxeItem extends DiggerItem {
     public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity miningEntity) {
         ToolMode toolMode = stack.get(ConfluenceMagicLib.TOOL_MODE.get());
         if (toolMode == null || toolMode.mode() == 0) {
-            HammerItem.hammerMineBlock(stack, level, state, pos, miningEntity);
+            BaseHammerItem.hammerMineBlock(stack, level, state, pos, miningEntity);
         }
         return true;
     }

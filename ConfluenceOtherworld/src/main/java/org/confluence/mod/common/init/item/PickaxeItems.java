@@ -27,7 +27,7 @@ public class PickaxeItems {
     public static final DeferredItem<PickaxeItem> FOSSIL_PICKAXE = ITEMS.register("fossil_pickaxe", () -> new BasePickaxeItem(ModTiers.FOSSIL, 8, 1.2F, new Item.Properties(), attributes(0, 0.4), ModRarity.BLUE));
     public static final DeferredItem<PickaxeItem> BONE_PICKAXE = ITEMS.register("bone_pickaxe", () -> new BasePickaxeItem(ModTiers.BONE, 8, 1.2F, unbreakable(), attributes(0, 0.3), ModRarity.BLUE));
     public static final DeferredItem<PickaxeItem> PLATINUM_PICKAXE = ITEMS.register("platinum_pickaxe", () -> new BasePickaxeItem(ModTiers.PLATINUM, 7, 1.2F, new Item.Properties(),  attributes(0, 0.2), ModRarity.WHITE));
-    public static final DeferredItem<PickaxeItem> REAVER_SHARK_PICKAXE = ITEMS.register("reaver_shark_pickaxe", () -> new BasePickaxeItem(ModTiers.REAVER_SHARK, 10, 1.2F, unbreakable(), attributes(0, 0.3), ModRarity.ORANGE));
+    public static final DeferredItem<PickaxeItem> REAVER_SHARK_PICKAXE = ITEMS.register("reaver_shark_pickaxe", () -> new BasePickaxeItem(ModTiers.REAVER_SHARK, 10, 1.2F, unbreakable(), attributes(0, 0.3), ModRarity.ORANGE).image(24, 24));
     public static final DeferredItem<PickaxeItem> NIGHTMARE_PICKAXE = ITEMS.register("nightmare_pickaxe", () -> new BasePickaxeItem(ModTiers.DEMONITE, 9, 1.2F, unbreakable(), attributes(0, 0.3), ModRarity.BLUE));
     public static final DeferredItem<PickaxeItem> DEATHBRINGER_PICKAXE = ITEMS.register("deathbringer_pickaxe", () -> new BasePickaxeItem(ModTiers.CRIMTANE, 12, 1.2F, unbreakable(), attributes(0, 0.35), ModRarity.BLUE));
     public static final DeferredItem<PickaxeItem> MOLTEN_PICKAXE = ITEMS.register("molten_pickaxe", () -> new BasePickaxeItem(ModTiers.HELLSTONE, 12, 1.3F, unbreakable(), attributes(0, 0.2), ModRarity.ORANGE));

@@ -97,7 +97,7 @@ public abstract class AbstractSpearItem extends TooltipItem implements GeoItem {
     @Override
     public Optional<TooltipComponent> getTooltipImage(ItemStack stack) {
         if (component == null) {
-            this.component = SizedTextureComponent.of(32, 32, stack.getItem(), "spear", "_32x");
+            this.component = SizedTextureComponent.of(32, 32, stack.getItem(), "spear");
         }
         return Optional.of(component);
     }

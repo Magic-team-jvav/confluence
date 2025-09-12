@@ -6,6 +6,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
@@ -18,22 +19,44 @@ import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.ModItems;
+import org.confluence.mod.common.item.SizedTextureComponent;
 import org.confluence.mod.util.ModUtils;
+import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.Nullable;
+import org.joml.Vector2i;
 
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-public class HammerItem extends DiggerItem {
-    public HammerItem(Tier tier, float rawDamage, float rawSpeed, ModRarity rarity) {
+public class BaseHammerItem extends DiggerItem {
+    private @Nullable Vector2i imageSize;
+    private @Nullable TooltipComponent component;
+
+    public BaseHammerItem(Tier tier, float rawDamage, float rawSpeed, ModRarity rarity) {
         this(tier, rawDamage, rawSpeed, new Properties(), rarity);
     }
 
-    public HammerItem(Tier tier, float rawDamage, float rawSpeed, Properties properties, ModRarity rarity) {
+    public BaseHammerItem(Tier tier, float rawDamage, float rawSpeed, Properties properties, ModRarity rarity) {
         super(tier, ModTags.Blocks.MINEABLE_WITH_HAMMER, properties.component(ConfluenceMagicLib.MOD_RARITY, rarity).component(DataComponents.ATTRIBUTE_MODIFIERS, createAttributes(tier, (rawDamage - tier.getAttackDamageBonus() - 1), rawSpeed - 4)));
     }
 
-    public HammerItem(Tier tier, float rawDamage, float rawSpeed, Properties properties, Consumer<ItemAttributeModifiers.Builder> consumer, ModRarity rarity) {
+    public BaseHammerItem(Tier tier, float rawDamage, float rawSpeed, Properties properties, Consumer<ItemAttributeModifiers.Builder> consumer, ModRarity rarity) {
         super(tier, ModTags.Blocks.MINEABLE_WITH_HAMMER, properties.component(ConfluenceMagicLib.MOD_RARITY, rarity).component(DataComponents.ATTRIBUTE_MODIFIERS, ModItems.createAttributes(tier, (rawDamage - tier.getAttackDamageBonus() - 1), rawSpeed - 4, consumer)));
+    }
+
+    @ApiStatus.Internal
+    public BaseHammerItem image(int width, int height) {
+        this.imageSize = new Vector2i(width, height);
+        return this;
+    }
+
+    @Override
+    public Optional<TooltipComponent> getTooltipImage(ItemStack stack) {
+        if (component == null && imageSize != null) {
+            this.component = SizedTextureComponent.of(imageSize.x, imageSize.y, stack.getItem(), "hammer");
+        }
+        return Optional.ofNullable(component);
     }
 
     @Override

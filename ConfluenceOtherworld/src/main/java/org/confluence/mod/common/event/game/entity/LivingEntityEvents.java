@@ -229,7 +229,7 @@ public final class LivingEntityEvents {
         // 剑命中效果
         ItemStack weapon = damageSource.getWeaponItem();
         if (weapon != null && weapon.getItem() instanceof BaseSwordItem sword) {
-            sword.applyHitEffects(weapon, attacker, victim, damageSource, amount);
+            sword.applyHitEffects(weapon, attacker, victim, damageSource);
         }
         // 暴击判定和伤害显示
         boolean crit = false;

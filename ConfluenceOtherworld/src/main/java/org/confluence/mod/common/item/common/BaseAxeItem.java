@@ -10,6 +10,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
@@ -26,12 +27,20 @@ import net.neoforged.neoforge.common.Tags;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.init.item.ModItems;
+import org.confluence.mod.common.item.SizedTextureComponent;
 import org.confluence.mod.util.ModUtils;
+import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.Nullable;
+import org.joml.Vector2i;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 public class BaseAxeItem extends AxeItem {
+    private @Nullable Vector2i imageSize;
+    private @Nullable TooltipComponent component;
+
     public BaseAxeItem(Tier tier, float rawDamage, float rawSpeed, ModRarity rarity) {
         this(tier, rawDamage, rawSpeed, new Properties(), rarity);
     }
@@ -44,6 +53,20 @@ public class BaseAxeItem extends AxeItem {
     public BaseAxeItem(Tier tier, float rawDamage, float rawSpeed, Properties properties, Consumer<ItemAttributeModifiers.Builder> consumer, ModRarity rarity) {
         super(tier, properties.component(ConfluenceMagicLib.MOD_RARITY, rarity)
                 .component(DataComponents.ATTRIBUTE_MODIFIERS, ModItems.createAttributes(tier, (rawDamage - tier.getAttackDamageBonus() - 1), rawSpeed - 4, consumer)));
+    }
+
+    @ApiStatus.Internal
+    public BaseAxeItem image(int width, int height) {
+        this.imageSize = new Vector2i(width, height);
+        return this;
+    }
+
+    @Override
+    public Optional<TooltipComponent> getTooltipImage(ItemStack stack) {
+        if (component == null && imageSize != null) {
+            this.component = SizedTextureComponent.of(imageSize.x, imageSize.y, stack.getItem(), "axe");
+        }
+        return Optional.ofNullable(component);
     }
 
     @Override

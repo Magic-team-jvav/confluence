@@ -469,6 +469,6 @@ public final class ModClientEvents {
 
     @SubscribeEvent
     public static void registerClientTooltipComponentFactories(RegisterClientTooltipComponentFactoriesEvent event) {
-        event.register(SizedTextureComponent.class, component -> new SizedTextureTooltip(component.width(), component.height(), component.location()));
+        event.register(SizedTextureComponent.class, SizedTextureTooltip::new);
     }
 }

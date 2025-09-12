@@ -36,7 +36,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
@@ -47,13 +46,11 @@ import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.common.NeoForgeConfig;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import org.confluence.lib.client.AntiPushPoseStack;
-import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.effect.EctoMistHelper;
 import org.confluence.mod.client.effect.SpelunkerHelper;
-import org.confluence.mod.client.gui.TooltipManager;
 import org.confluence.mod.client.gui.container.ExtraInventoryScreen;
 import org.confluence.mod.client.handler.*;
 import org.confluence.mod.client.renderer.item.DungeonCompassRenderer;
@@ -184,7 +181,6 @@ public final class GameClientEvents {
     public static void gatherComponents(RenderTooltipEvent.GatherComponents event) {
         ItemStack itemStack = event.getItemStack();
         if (itemStack.isEmpty()) return;
-        Item item = itemStack.getItem();
         List<Either<FormattedText, TooltipComponent>> tooltipElements = event.getTooltipElements();
         if (tooltipElements.isEmpty()) return;
         Optional<FormattedText> displayName = tooltipElements.getFirst().left();
@@ -196,18 +192,18 @@ public final class GameClientEvents {
                 ));
             }
         }
-        // 捐赠者物品
-        var ins = TooltipManager.getInstance();
-        if (ins.contains(item)) {
-            tooltipElements.add(Either.left(
-                    Component.empty()
-            ));
-            tooltipElements.add(Either.left(
-                    Component.translatable(TooltipManager.prefix).withColor(ModRarity.EXPERT.color())
-                            .append("  ")
-                            .append(Component.literal(ins.getTooltip(item))))
-            );
-        }
+//        // 捐赠者物品
+//        var ins = TooltipManager.getInstance();
+//        if (ins.contains(item)) {
+//            tooltipElements.add(Either.left(
+//                    Component.empty()
+//            ));
+//            tooltipElements.add(Either.left(
+//                    Component.translatable(TooltipManager.prefix).withColor(ModRarity.EXPERT.color())
+//                            .append("  ")
+//                            .append(Component.literal(ins.getTooltip(item))))
+//            );
+//        }
     }
 
     @SubscribeEvent

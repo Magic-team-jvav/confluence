@@ -57,6 +57,7 @@ import org.confluence.mod.client.model.entity.hook.SkeletronHandModel;
 import org.confluence.mod.client.model.entity.hook.WebSlingerModel;
 import org.confluence.mod.client.model.entity.projectile.*;
 import org.confluence.mod.client.particle.*;
+import org.confluence.mod.client.renderer.NoopTooltip;
 import org.confluence.mod.client.renderer.SizedTextureTooltip;
 import org.confluence.mod.client.renderer.block.*;
 import org.confluence.mod.client.renderer.entity.BodyPartRenderer;
@@ -85,6 +86,7 @@ import org.confluence.mod.common.item.common.BaseDyeItem;
 import org.confluence.mod.common.item.paint.PaintItem;
 import org.confluence.mod.integration.appleskin.AppleskinHelper;
 import org.confluence.mod.integration.create.ponder.PonderHelper;
+import org.confluence.mod.integration.legendarytooltips.LegendaryTooltipsHelper;
 import org.confluence.mod.integration.sodium.dynamiclights.SodiumDynamicLightsHelper;
 import org.confluence.mod.util.ClientUtils;
 import org.confluence.terra_curio.TerraCurio;
@@ -469,6 +471,6 @@ public final class ModClientEvents {
 
     @SubscribeEvent
     public static void registerClientTooltipComponentFactories(RegisterClientTooltipComponentFactoriesEvent event) {
-        event.register(SizedTextureComponent.class, SizedTextureTooltip::new);
+        event.register(SizedTextureComponent.class, component -> LegendaryTooltipsHelper.IS_LOADED ? NoopTooltip.INSTANCE : new SizedTextureTooltip(component));
     }
 }

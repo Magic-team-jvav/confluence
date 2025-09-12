@@ -152,6 +152,7 @@
         "integration.jei.TypedItemStackMixin",
         "integration.jei.TypedItemStackMixin$S1Mixin",
         "integration.journeymap.EffectMixin",
+        "integration.legendarytooltips.ItemColorsMixin",
         "integration.loot_beams_refork.ConfigHandlersMixin",
         "integration.sodium.BlockOcclusionCacheMixin",
         "integration.sodium.BlockRendererMixin",

@@ -155,8 +155,8 @@ boolean supplementaries = false // 锦致装饰
 boolean lootBeams = false // 战利品光束
 boolean spark = false // 火花
 boolean apotheosis = false // 神化
-boolean legendarytooltips = true // 传说提示框
-boolean itemborders = true // 物品边框
+boolean legendarytooltips = false // 传说提示框
+boolean itemborders = false // 物品边框
 boolean advancementPlaques = false // 进度牌匾
 
 dependencies {

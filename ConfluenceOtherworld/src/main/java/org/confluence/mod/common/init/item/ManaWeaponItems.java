@@ -20,6 +20,7 @@ import org.confluence.mod.common.item.mana.WeatherPainItem;
 public class ManaWeaponItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
 
+    // 魔法武器数值参考为 原数值÷2 +5 为基础值
     public static final DeferredItem<ManaStaffItem<WandOfSparkingProjectile>> WAND_OF_SPARKING = ITEMS.register("wand_of_sparking", () -> new ManaStaffItem<>(ModRarity.BLUE, WandOfSparkingProjectile::new, 5.6F, 2, 7.0F, 13, 0.14));
     public static final DeferredItem<ManaStaffItem<WandOfFrostingProjectile>> WAND_OF_FROSTING = ITEMS.register("wand_of_frosting", () -> new ManaStaffItem<>(ModRarity.BLUE, WandOfFrostingProjectile::new, 10.0F, 2, 7.0F, 13, 0.14));
     public static final DeferredItem<ManaStaffItem<ThunderZapperProjectile>> THUNDER_ZAPPER = ITEMS.register("thunder_zapper", () -> new ManaStaffItem<>(ModRarity.BLUE, ThunderZapperProjectile::new, 14.8F, 7, 12, 6, 0.04));

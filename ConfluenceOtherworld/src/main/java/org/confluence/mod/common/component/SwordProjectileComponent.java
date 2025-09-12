@@ -71,7 +71,7 @@ public record SwordProjectileComponent (
     ).apply(instance, SwordProjectileComponent::new));
 
     public static final Supplier<SwordProjectileComponent> ICE_PROJ =
-            ()->new SwordProjectileComponent(2,0.6f,0.9f,40, 0, 15,
+            ()->new SwordProjectileComponent(1.0f,0.6f,0.9f,40, 0, 15,
                     ModSoundEvents.FROZEN_ARROW.getId(), ModEntities.ICE_BLADE_SWORD_PROJECTILE.getId(),
                     Optional.empty(), ForwardGeneration.of(0,0),
                     Optional.empty()   );
@@ -83,13 +83,13 @@ public record SwordProjectileComponent (
                     Optional.empty() );
 
     public static final Supplier<SwordProjectileComponent> ENCHANTED_SWORD_PROJ =
-            ()->new SwordProjectileComponent(1.2f,0.8f,0.9f,40, 0, 10,
+            ()->new SwordProjectileComponent(1.0f,0.8f,0.9f,40, 0, 10,
                     ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),ModEntities.ENCHANTED_SWORD_PROJECTILE.getId(),
                     Optional.empty(), ForwardGeneration.of(0,0),
                     Optional.empty() );
 
     public static final Supplier<SwordProjectileComponent> GRASS_PROJ =
-            ()->new SwordProjectileComponent(1,0.8f,0.9f,20, 0, 10,
+            ()->new SwordProjectileComponent(0.25f,0.8f,0.9f,20, 0, 10,
                     ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.GRASS_PROJECTILE.getId(),
                     Optional.empty(), ForwardGeneration.of(0,20),
                     Optional.of(EffectStrategyComponent.of(TimePossibilityAmplifierEffect.of("grass_effect", MobEffects.POISON, 100, 1, 0.5f))));

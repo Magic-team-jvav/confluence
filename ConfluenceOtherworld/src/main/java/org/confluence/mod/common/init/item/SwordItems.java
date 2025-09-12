@@ -36,6 +36,7 @@ import static org.confluence.mod.common.item.sword.legacy.SwordPrefabs.*;
 public class SwordItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
 
+    // 铂金以上剑参考数值为 泰拉wiki中的伤害÷2后 + 2为基础值
     // 普通短剑
     public static final DeferredItem<BaseSwordItem> COPPER_SHORT_SWORD = register("copper_short_sword", ModTiers.COPPER, 2, 3, ModRarity.WHITE, SHORT_SWORD.get()
             .addTooltip(p -> p.withColor(0x984c11)).addTooltip(p -> p.withColor(0x984c11)));
@@ -70,7 +71,7 @@ public class SwordItems {
     public static final DeferredItem<BaseSwordItem> TUNGSTEN_BROADSWORD = register("tungsten_broadsword", ModTiers.TUNGSTEN, 6, 1.6F, NORMAL_SWORD.get());
     public static final DeferredItem<BaseSwordItem> GOLDEN_BROADSWORD = register("golden_broadsword", ModTiers.GOLD, 7, 1.6F, NORMAL_SWORD.get());
     public static final DeferredItem<BaseSwordItem> PLATINUM_BROADSWORD = register("platinum_broadsword", ModTiers.PLATINUM, 8, 1.6F, NORMAL_SWORD.get());
-    public static final DeferredItem<BaseSwordItem> MURAMASA = register("muramasa", ModTiers.UNBREAKABLE, 14, 3, NORMAL_SWORD.get()
+    public static final DeferredItem<BaseSwordItem> MURAMASA = register("muramasa", ModTiers.UNBREAKABLE, 15, 3, NORMAL_SWORD.get()
             .setSweepRange(2.5F).addAttributeModifier(Attributes.ATTACK_KNOCKBACK, 0.2f, AttributeModifier.Operation.ADD_VALUE).image(24, 24));
     public static final DeferredItem<BaseSwordItem> COBALT_SWORD = register("cobalt_sword", ModTiers.UNBREAKABLE, 25, 2.4F, ModRarity.LIGHT_RED, NORMAL_SWORD.get().image(32, 32));
     public static final DeferredItem<BaseSwordItem> PALLADIUM_SWORD = register("palladium_sword", ModTiers.UNBREAKABLE, 29, 2.6F, ModRarity.LIGHT_RED, NORMAL_SWORD.get().image(32, 32));
@@ -95,30 +96,30 @@ public class SwordItems {
     public static final DeferredItem<BaseSwordItem> TERRAGRIM = register("terragrim", ModTiers.UNBREAKABLE, 1, 9, ModRarity.ORANGE, BOARD_SWORD.apply(1.2f));
 
     //效果剑
-    public static final DeferredItem<BaseSwordItem> LIGHTS_BANE = register("lights_bane", ModTiers.UNBREAKABLE, 7, 3, ModRarity.BLUE, EFFECT_SWORD
+    public static final DeferredItem<BaseSwordItem> LIGHTS_BANE = register("lights_bane", ModTiers.UNBREAKABLE, 11, 3, ModRarity.BLUE, EFFECT_SWORD
             .apply(ModEffectStrategies.Components.LIGHTS_BANE_EFFECT.get()).image(24, 24));
-    public static final DeferredItem<BaseSwordItem> BLOOD_BUTCHERER = register("blood_butcherer", ModTiers.UNBREAKABLE, 9, 1.3F, ModRarity.BLUE, EFFECT_SWORD
+    public static final DeferredItem<BaseSwordItem> BLOOD_BUTCHERER = register("blood_butcherer", ModTiers.UNBREAKABLE, 14, 1.3F, ModRarity.BLUE, EFFECT_SWORD
             .apply(ModEffectStrategies.Components.BLOOD_BUTCHERED_EFFECT.get()).image(24, 24));
     public static final DeferredItem<BaseSwordItem> VOLCANO = register("volcano", ModTiers.UNBREAKABLE, 25, 1.2f, ModRarity.ORANGE, EFFECT_SWORD
             .apply(TEEffectStrategies.Components.HELL_FIRE_EFFECT.get())
             .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 2f, AttributeModifier.Operation.ADD_VALUE)
             .addAttributeModifier(Attributes.ATTACK_KNOCKBACK, 0.5f, AttributeModifier.Operation.ADD_VALUE).image(32, 32));
-    public static final DeferredItem<BaseSwordItem> BAT_BAT = register("bat_bat", ModTiers.UNBREAKABLE, 14, 0.3F, ModRarity.ORANGE, EFFECT_SWORD
+    public static final DeferredItem<BaseSwordItem> BAT_BAT = register("bat_bat", ModTiers.UNBREAKABLE, 21, 0.6F, ModRarity.ORANGE, EFFECT_SWORD
             .apply(ModEffectStrategies.Components.BAT_FANG_EFFECT.get()));
-    public static final DeferredItem<BaseSwordItem> TENTACLE_MACE = register("tentacle_mace", ModTiers.UNBREAKABLE, 7, 2.6F, ModRarity.GREEN, EFFECT_SWORD
+    public static final DeferredItem<BaseSwordItem> TENTACLE_MACE = register("tentacle_mace", ModTiers.UNBREAKABLE, 13, 2.6F, ModRarity.GREEN, EFFECT_SWORD
             .apply(ModEffectStrategies.Components.TENTACLE_SPIKES_EFFECT.get()));
-    public static final DeferredItem<BaseSwordItem> BEE_KEEPER = register("bee_keeper", ModTiers.UNBREAKABLE, 13, 1.6F, ModRarity.GREEN, EFFECT_SWORD
+    public static final DeferredItem<BaseSwordItem> BEE_KEEPER = register("bee_keeper", ModTiers.UNBREAKABLE, 18, 1.6F, ModRarity.GREEN, EFFECT_SWORD
             .apply(ModEffectStrategies.Components.BEE_KEEPER_EFFECT.get()).addTooltip(2).image(24, 24));
 
 
     //弹幕剑
-    public static final DeferredItem<BaseSwordItem> ICE_BLADE = register("ice_blade", ModTiers.UNBREAKABLE, 7, 3, ModRarity.BLUE, PROJ_SWORD
+    public static final DeferredItem<BaseSwordItem> ICE_BLADE = register("ice_blade", ModTiers.UNBREAKABLE, 10, 3, ModRarity.BLUE, PROJ_SWORD
             .apply(SwordProjectileComponent.ICE_PROJ).image(24, 24));
-    public static final DeferredItem<BaseSwordItem> STARFURY = register("starfury", ModTiers.UNBREAKABLE, 8, 2.9F, ModRarity.GREEN, PROJ_SWORD
+    public static final DeferredItem<BaseSwordItem> STARFURY = register("starfury", ModTiers.UNBREAKABLE, 14, 2.9F, ModRarity.GREEN, PROJ_SWORD
             .apply(SwordProjectileComponent.STAR_FURY_PROJ).addTooltip(p -> p.withColor(0xe44189)).addTooltip(p -> p.withColor(0xe44189)));
-    public static final DeferredItem<BaseSwordItem> ENCHANTED_SWORD = register("enchanted_sword", ModTiers.UNBREAKABLE, 9, 2.9F, ModRarity.ORANGE, PROJ_SWORD
+    public static final DeferredItem<BaseSwordItem> ENCHANTED_SWORD = register("enchanted_sword", ModTiers.UNBREAKABLE, 12, 2.9F, ModRarity.ORANGE, PROJ_SWORD
             .apply(SwordProjectileComponent.ENCHANTED_SWORD_PROJ).addTooltip(p -> p.withColor(0x4156e4)).addTooltip(p -> p.withColor(0x4156e4)));
-    public static final DeferredItem<BaseSwordItem> BLADE_OF_GRASS = register("blade_of_grass", ModTiers.UNBREAKABLE, 7, 2.9F, ModRarity.GREEN, PROJ_SWORD
+    public static final DeferredItem<BaseSwordItem> BLADE_OF_GRASS = register("blade_of_grass", ModTiers.UNBREAKABLE, 11, 2.9F, ModRarity.GREEN, PROJ_SWORD
             .apply(SwordProjectileComponent.GRASS_PROJ).image(24, 24));
     public static final DeferredItem<BaseSwordItem> NIGHTS_EDGE = register("nights_edge", ModTiers.UNBREAKABLE, 25, 2.5F, ModRarity.GREEN, PROJ_SWORD
             .apply(SwordProjectileComponent.NIGHT_PROJ).image(32, 32));

@@ -52,6 +52,7 @@ import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.WipNotDisplayOutput;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.StartupConfigs;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.block.natural.ChlorophyteOreBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
@@ -99,6 +100,9 @@ public final class ModEvents {
             ModFluids.registerInteraction();
             ModFluids.registerShimmerTransform();
             ModBiomes.registerRegionAndSurface();
+            if (StartupConfigs.forceAllowWipItemsDisplayInCreativeModeTab()) {
+                WipNotDisplayOutput.forceAllow();
+            }
 
             if (!ModList.get().isLoaded("attributefix")) {
                 if (Attributes.ARMOR.value() instanceof RangedAttribute rangedAttribute) {

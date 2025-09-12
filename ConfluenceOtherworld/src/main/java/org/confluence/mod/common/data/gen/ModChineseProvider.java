@@ -589,6 +589,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.bannedModForPaints", "模组油漆使用黑名单");
         add("confluence.configuration.bannedModForPaints.button", "填入模组MODID以使用黑名单");
         add("confluence.configuration.bannedModForPaints.tooltip", "如果本模组的油漆为其他模组的部分方块带来渲染问题，填入MODID以禁止该模组的方块使用油漆染色");
+        add("confluence.configuration.forceAllowWipItemsDisplayInCreativeModeTab", "决定未完成物品是否显示于创造模式标签页");
+        add("confluence.configuration.forceAllowWipItemsDisplayInCreativeModeTab.tooltip", "开启后强制允许未完成物品显示于创造模式标签页");
         add("confluence.configuration.fletchingMenu", "制箭台菜单");
         add("confluence.configuration.fletchingMenu.tooltip", "启用时，将使用汇流来世的修改制箭台");
         add("confluence.configuration.shimmerDecompose", "微光分解");

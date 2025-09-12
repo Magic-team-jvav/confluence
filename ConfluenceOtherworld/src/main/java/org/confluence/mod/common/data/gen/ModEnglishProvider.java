@@ -590,6 +590,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.configuration.bannedModForPaints", "Mod Paints Blacklist");
         add("confluence.configuration.bannedModForPaints.button", "Enter Mod ID to use the blacklist");
         add("confluence.configuration.bannedModForPaints.tooltip", "If the paints from this mod cause rendering issues with blocks from other mods, enter the MOD ID to prevent that mod's blocks from using the paint color");
+        add("confluence.configuration.forceAllowWipItemsDisplayInCreativeModeTab", "Decide whether wip items should be displayed in the creative mode tab.");
+        add("confluence.configuration.forceAllowWipItemsDisplayInCreativeModeTab.tooltip", "Enable to force allow wip items to be displayed in the creative mode tab.");
         add("confluence.configuration.fletchingMenu", "Fletching Table Menu");
         add("confluence.configuration.fletchingMenu.tooltip", "When enabled, the fletching table will be modified by Conflux");
         add("confluence.configuration.shimmer_decompose", "Shimmer Decompose");

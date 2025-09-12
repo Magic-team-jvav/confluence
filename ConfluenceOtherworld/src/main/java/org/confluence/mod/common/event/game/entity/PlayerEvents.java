@@ -109,11 +109,17 @@ public final class PlayerEvents {
     public static void rightClickBlock(PlayerInteractEvent.RightClickBlock event) {
         Player player = event.getEntity();
         Level level = event.getLevel();
-        if (player.isCrouching()) return;
         BlockPos blockPos = event.getPos();
         BlockState blockState = level.getBlockState(blockPos);
-        ItemStack itemStack = event.getItemStack();
         Block block = blockState.getBlock();
+
+        if (!event.getUseBlock().isTrue() && block instanceof AltarBlock) {
+            event.setUseBlock(TriState.TRUE);
+        }
+
+        if (player.isCrouching()) return;
+
+        ItemStack itemStack = event.getItemStack();
 
         if (CommonConfigs.RIGHT_CLICK_RIDE_MINECART.get() &&
                 !(itemStack.getItem() instanceof BlockItem) &&
@@ -348,5 +354,10 @@ public final class PlayerEvents {
     public static void changedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
         ServerPlayer player = (ServerPlayer) event.getEntity();
         ExtraInventorySyncPacketS2C.sendToClient(player, player, ExtraInventory.of(player));
+    }
+
+    @SubscribeEvent
+    public static void useItemOnBlock(UseItemOnBlockEvent event) {
+
     }
 }

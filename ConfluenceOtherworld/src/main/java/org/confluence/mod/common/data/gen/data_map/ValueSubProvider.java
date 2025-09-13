@@ -1,8 +1,11 @@
 package org.confluence.mod.common.data.gen.data_map;
 
+import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.DataMapProvider;
 import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.data.gen.ModDataMapProvider;
@@ -80,6 +83,19 @@ public final class ValueSubProvider {
                 .add(Items.GOLDEN_BOOTS, 1200 * 4)
                 .add(Items.DIAMOND_BOOTS, (silver20 + silver10) * 4)
                 .add(Items.NETHERITE_BOOTS, (silver20 + silver20) * 4);
+        appender.create()
+                .add(Items.ROTTEN_FLESH, 1)
+                .add(Items.BONE, 2)
+                .add(Items.GUNPOWDER, 2)
+                .add(Items.STRING, 2)
+                .add(Items.ENDER_PEARL, 4)
+                .add(Items.FEATHER, 2)
+                .add(Items.LEATHER, 2)
+                .add(Items.BLAZE_ROD, 8)
+                .add(Items.TOTEM_OF_UNDYING, silver10)
+                .add(Items.HEAVY_CORE, silver10)
+                .add(Tags.Items.MUSIC_DISCS, silver5)
+                .add(Items.ENCHANTED_BOOK, silver10);
         appender.create()
                 .add(Items.COPPER_BLOCK, 150 * 9)
                 .add(OreBlocks.CRIMTANE_BLOCK, 3900 * 9)
@@ -1582,6 +1598,11 @@ public final class ValueSubProvider {
 
         public Builder add(ItemLike itemLike, int value) {
             super.add(itemLike.asItem().builtInRegistryHolder(), new ValueComponent(value), false);
+            return this;
+        }
+
+        public Builder add(TagKey<Item> tag, int value) {
+            super.add(tag, new ValueComponent(value), false);
             return this;
         }
     }

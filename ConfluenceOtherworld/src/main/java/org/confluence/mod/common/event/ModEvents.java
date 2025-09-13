@@ -59,10 +59,7 @@ import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.block.natural.MagicMailBox;
 import org.confluence.mod.common.block.natural.StepRevealingBlock;
 import org.confluence.mod.common.capability.FluidBottomlessBucketWrapper;
-import org.confluence.mod.common.data.saved.ConfluenceData;
-import org.confluence.mod.common.data.saved.HardmodeConvertor;
-import org.confluence.mod.common.data.saved.KillBoard;
-import org.confluence.mod.common.data.saved.NPCSpawner;
+import org.confluence.mod.common.data.saved.*;
 import org.confluence.mod.common.entity.TargetDummyEntity;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.ChestBlocks;
@@ -145,7 +142,12 @@ public final class ModEvents {
             ModUtils.registerCauldronInteractions();
             TERemoval.redirectLootTable();
             MagicMailBox.registerVariants();
-            IGlobalData.registerGlobalData(KillBoard.INSTANCE, HardmodeConvertor.INSTANCE, NPCSpawner.INSTANCE);
+            IGlobalData.registerGlobalData(
+                    KillBoard.INSTANCE,
+                    HardmodeConvertor.INSTANCE,
+                    NPCSpawner.INSTANCE,
+                    Bestiary.INSTANCE
+            );
         });
     }
 

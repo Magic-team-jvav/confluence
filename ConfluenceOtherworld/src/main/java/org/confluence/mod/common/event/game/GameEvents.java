@@ -5,6 +5,7 @@ import com.xiaohunao.equipment_benediction.common.hook.HookMapManager;
 import com.xiaohunao.heaven_destiny_moment.common.event.MomentEvent;
 import com.xiaohunao.heaven_destiny_moment.common.moment.MomentInstance;
 import com.xiaohunao.terra_moment.common.init.TMMoments;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -12,8 +13,11 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
+import net.minecraft.world.entity.vehicle.Minecart;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -25,6 +29,7 @@ import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.lib.event.SwitchItemFunctionEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.AdditionalManaEvent;
+import org.confluence.mod.api.event.MinecartAbilityEvent;
 import org.confluence.mod.api.event.ShimmerItemTransmutationEvent;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ExtraInventory;
@@ -33,13 +38,17 @@ import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.data.AchievementOffsetLoader;
 import org.confluence.mod.common.data.saved.KillBoard;
+import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
 import org.confluence.mod.common.init.ModCommands;
 import org.confluence.mod.common.init.ModHookTypes;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.item.MaterialItems;
+import org.confluence.mod.common.init.item.MinecartItems;
 import org.confluence.mod.common.init.item.ToolItems;
+import org.confluence.mod.common.item.common.BaseMinecartItem;
 import org.confluence.mod.integration.ars_nouveau.ArsNouveauHelper;
 import org.confluence.mod.integration.irons_spell.IronSpellHelper;
+import org.confluence.mod.mixed.IAbstractMinecart;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.network.s2c.AchievementOffsetSyncPacketS2C;
@@ -53,10 +62,7 @@ import org.confluence.terra_guns.api.event.GunEvent;
 import top.theillusivec4.curios.api.event.CurioAttributeModifierEvent;
 import top.theillusivec4.curios.api.event.CurioChangeEvent;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
 public final class GameEvents {
@@ -199,6 +205,36 @@ public final class GameEvents {
         }
         if (c || item == ToolItems.GUIDE_TO_ENVIRONMENTAL_PRESERVATION.get()) {
             data.setCouldDamageEnvironment(event.isEnabled());
+        }
+    }
+
+    @SubscribeEvent
+    public static void rightClickRailBlock(MinecartAbilityEvent.RightClickRailBlock event) {
+        AbstractMinecart minecart = event.getMinecart();
+        if (minecart != null) return;
+
+        ServerLevel level = (ServerLevel) event.getEntity().level();
+        BlockPos blockPos = event.getBlockPos();
+        boolean ascending = event.getRailBlock().getRailDirection(event.getBlockState(), level, blockPos, null).isAscending();
+        double x = blockPos.getX() + 0.5;
+        double y = blockPos.getY() + 0.0625 + (ascending ? 0.5 : 0.0);
+        double z = blockPos.getZ() + 0.5;
+        ItemStack minecartItem = event.getMinecartItem();
+
+        if (minecartItem.isEmpty()) {
+            BaseMinecartEntity baseMinecart = new BaseMinecartEntity(level, x, y, z, MinecartItems.Types.WOODEN);
+            event.setMinecart(baseMinecart);
+        } else if (minecartItem.getItem() == Items.MINECART) {
+            event.setMinecart(new Minecart(level, x, y, z));
+        } else if (minecartItem.getItem() instanceof BaseMinecartItem baseMinecartItem) {
+            event.setMinecart(Objects.requireNonNull(baseMinecartItem.createMinecart(level, x, y, z, AbstractMinecart.Type.RIDEABLE, minecartItem, event.getEntity())));
+        }
+    }
+
+    @SubscribeEvent
+    public static void dismountOnMinecart(MinecartAbilityEvent.DismountOnMinecart event) {
+        if (event.getMinecartItem() == null && event.getMinecart().getMinecartType() == AbstractMinecart.Type.RIDEABLE) {
+            event.setMinecartItem(IAbstractMinecart.of(event.getMinecart()).confluence$getDropItem().getDefaultInstance());
         }
     }
 }

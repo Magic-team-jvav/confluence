@@ -1,5 +1,7 @@
 package org.confluence.mod.util;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 import it.unimi.dsi.fastutil.objects.Object2IntLinkedOpenHashMap;
@@ -8,6 +10,13 @@ import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.common.CoinItem;
 
 public final class Coins {
+    public static final Codec<Coins> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            Codec.INT.fieldOf("copper").forGetter(Coins::copper),
+            Codec.INT.fieldOf("silver").forGetter(Coins::silver),
+            Codec.INT.fieldOf("gold").forGetter(Coins::gold),
+            Codec.INT.fieldOf("platinum").forGetter(Coins::platinum)
+    ).apply(instance, Coins::new));
+
     private int copper;
     private int silver;
     private int gold;

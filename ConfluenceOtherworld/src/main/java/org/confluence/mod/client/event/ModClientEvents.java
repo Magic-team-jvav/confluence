@@ -40,6 +40,7 @@ import org.confluence.mod.client.connected.CustomBlockModels;
 import org.confluence.mod.client.connected.ModConnectives;
 import org.confluence.mod.client.connected.ModelSwapper;
 import org.confluence.mod.client.connected.StitchedSprite;
+import org.confluence.mod.client.gui.bestiary.ClientBestiaryEntry;
 import org.confluence.mod.client.gui.container.*;
 import org.confluence.mod.client.gui.hud.*;
 import org.confluence.mod.client.model.WrappedBakedModel;
@@ -472,5 +473,10 @@ public final class ModClientEvents {
     @SubscribeEvent
     public static void registerClientTooltipComponentFactories(RegisterClientTooltipComponentFactoriesEvent event) {
         event.register(SizedTextureComponent.class, component -> PrismLibHelper.IS_LOADED ? NoopTooltip.INSTANCE : new SizedTextureTooltip(component));
+    }
+
+    @SubscribeEvent
+    public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event) {
+        event.registerReloadListener(ClientBestiaryEntry.Loader.getInstance());
     }
 }

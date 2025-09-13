@@ -5,7 +5,6 @@ import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
@@ -16,7 +15,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
-import net.minecraft.world.entity.vehicle.Minecart;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -42,19 +40,19 @@ import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.data.saved.HardmodeConvertor;
 import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
-import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.ModTiers;
-import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.common.init.item.AccessoryItems;
+import org.confluence.mod.common.init.item.MaterialItems;
+import org.confluence.mod.common.init.item.ModItems;
+import org.confluence.mod.common.init.item.PotionItems;
 import org.confluence.mod.common.item.common.BaseAxeItem;
-import org.confluence.mod.common.item.common.BaseMinecartItem;
 import org.confluence.mod.common.item.common.DungeonCompass;
 import org.confluence.mod.common.item.common.EverBeneficialItem;
 import org.confluence.mod.common.menu.FletchingTableMenu;
 import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
-import org.confluence.mod.mixed.IAbstractMinecart;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.network.s2c.*;
@@ -64,9 +62,6 @@ import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.util.TCUtils;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 
-import java.util.Objects;
-
-import static org.confluence.mod.api.event.MinecartAbilityEvent.DismountOnMinecart;
 import static org.confluence.mod.api.event.MinecartAbilityEvent.RightClickRailBlock;
 
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
@@ -86,7 +81,7 @@ public final class PlayerEvents {
         if (HardmodeConvertor.INSTANCE.isCompleted()) {
             AchievementUtils.awardAchievement(player, "its_hard");
         }
-        if (CommonConfigs.DO_NPC_SPAWNING.get() && player.serverLevel().getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)) {
+        if (CommonConfigs.DO_NPC_SPAWNING.get() && player.level().getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)) {
             NPCSpawner.INSTANCE.trySpawnGuide(player);
         }
         CompatibilitySyncPacketS2c.sendToAll();
@@ -212,10 +207,9 @@ public final class PlayerEvents {
     @SubscribeEvent
     public static void itemFished(ItemFishedEvent event) {
         Player player = event.getEntity();
-        Level level = player.level();
 
         if (!TCUtils.hasAccessoriesType(player, AccessoryItems.HIGH$TEST$FISHING$LINE) && player.getRandom().nextFloat() < 0.1429F) {
-            level.playSound(null, event.getHookEntity().blockPosition(), ModSoundEvents.DECOUPLING.get(), SoundSource.AMBIENT);
+            player.level().playSound(null, event.getHookEntity().blockPosition(), ModSoundEvents.DECOUPLING.get(), SoundSource.AMBIENT);
             event.setCanceled(true);
         }
     }
@@ -223,14 +217,13 @@ public final class PlayerEvents {
     @SubscribeEvent
     public static void rightClickItem(PlayerInteractEvent.RightClickItem event) {
         Player player = event.getEntity();
-        if (!player.isSpectator()) {
-            ItemStack itemStack = event.getItemStack();
-            if (itemStack.is(ModTags.Items.MANA_WEAPON) && player.hasEffect(ModEffects.SILENCED)) {
+        if (player.isSpectator()) return;
+        ItemStack itemStack = event.getItemStack();
+        if (itemStack.is(ModTags.Items.MANA_WEAPON) && player.hasEffect(ModEffects.SILENCED)) {
+            event.setCanceled(true);
+        } else if (!itemStack.isEmpty()) {
+            if (player.hasEffect(ModEffects.STONED) || player.hasEffect(ModEffects.FROZEN) || player.hasEffect(ModEffects.CURSED)) {
                 event.setCanceled(true);
-            } else if (!itemStack.isEmpty()) {
-                if (player.hasEffect(ModEffects.STONED) || player.hasEffect(ModEffects.FROZEN) || player.hasEffect(ModEffects.CURSED)) {
-                    event.setCanceled(true);
-                }
             }
         }
     }
@@ -244,36 +237,6 @@ public final class PlayerEvents {
         }
         if (player.getMainHandItem().is(ModTags.Items.SPEARS)) {
             event.setCanceled(true);
-        }
-    }
-
-    @SubscribeEvent
-    public static void rightClickRailBlock(RightClickRailBlock event) {
-        AbstractMinecart minecart = event.getMinecart();
-        if (minecart != null) return;
-
-        ServerLevel level = (ServerLevel) event.getEntity().level();
-        BlockPos blockPos = event.getBlockPos();
-        boolean ascending = event.getRailBlock().getRailDirection(event.getBlockState(), level, blockPos, null).isAscending();
-        double x = blockPos.getX() + 0.5;
-        double y = blockPos.getY() + 0.0625 + (ascending ? 0.5 : 0.0);
-        double z = blockPos.getZ() + 0.5;
-        ItemStack minecartItem = event.getMinecartItem();
-
-        if (minecartItem.isEmpty()) {
-            BaseMinecartEntity baseMinecart = new BaseMinecartEntity(level, x, y, z, MinecartItems.Types.WOODEN);
-            event.setMinecart(baseMinecart);
-        } else if (minecartItem.getItem() == Items.MINECART) {
-            event.setMinecart(new Minecart(level, x, y, z));
-        } else if (minecartItem.getItem() instanceof BaseMinecartItem baseMinecartItem) {
-            event.setMinecart(Objects.requireNonNull(baseMinecartItem.createMinecart(level, x, y, z, AbstractMinecart.Type.RIDEABLE, minecartItem, event.getEntity())));
-        }
-    }
-
-    @SubscribeEvent
-    public static void dismountOnMinecart(DismountOnMinecart event) {
-        if (event.getMinecartItem() == null && event.getMinecart().getMinecartType() == AbstractMinecart.Type.RIDEABLE) {
-            event.setMinecartItem(IAbstractMinecart.of(event.getMinecart()).confluence$getDropItem().getDefaultInstance());
         }
     }
 
@@ -354,10 +317,5 @@ public final class PlayerEvents {
     public static void changedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
         ServerPlayer player = (ServerPlayer) event.getEntity();
         ExtraInventorySyncPacketS2C.sendToClient(player, player, ExtraInventory.of(player));
-    }
-
-    @SubscribeEvent
-    public static void useItemOnBlock(UseItemOnBlockEvent event) {
-
     }
 }

@@ -1165,7 +1165,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.DOOR.asItem(),
                 NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.CHISELED_PLANKS.asItem(),
                 PotBlocks.OCEAN_POT.asItem(),
-                OreBlocks.METEORITE_BLOCK.asItem(),
                 OreBlocks.HALLOWED_BLOCK.asItem(),
                 OreBlocks.RAW_CHLOROPHYTE_BLOCK.asItem(),
                 OreBlocks.CHLOROPHYTE_BLOCK.asItem(),

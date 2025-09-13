@@ -1,0 +1,70 @@
+{
+  "variants": {
+    "axis=x": [
+      {
+        "model": "confluence:block/shadow_log",
+        "x": 90,
+        "y": 90,
+        "weight": 10
+      },
+      {
+        "model": "confluence:block/shadow_log_horizontal",
+        "x": 90,
+        "y": 90,
+        "weight": 10
+      },
+      {
+        "model": "confluence:block/shadow_log_1",
+        "x": 90,
+        "y": 90,
+        "weight": 1
+      },
+      {
+        "model": "confluence:block/shadow_log_2",
+        "x": 90,
+        "y": 90,
+        "weight": 1
+      }
+    ],
+    "axis=y": [
+      {
+        "model": "confluence:block/shadow_log",
+        "weight": 10
+      },
+      {
+        "model": "confluence:block/shadow_log_horizontal",
+        "weight": 10
+      },
+      {
+        "model": "confluence:block/shadow_log_1",
+        "weight": 1
+      },
+      {
+        "model": "confluence:block/shadow_log_2",
+        "weight": 1
+      }
+    ],
+    "axis=z": [
+      {
+        "model": "confluence:block/shadow_log",
+        "x": 90,
+        "weight": 10
+      },
+      {
+        "model": "confluence:block/shadow_log_horizontal",
+        "x": 90,
+        "weight": 10
+      },
+      {
+        "model": "confluence:block/shadow_log_1",
+        "x": 90,
+        "weight": 1
+      },
+      {
+        "model": "confluence:block/shadow_log_2",
+        "x": 90,
+        "weight": 1
+      }
+    ]
+  }
+}

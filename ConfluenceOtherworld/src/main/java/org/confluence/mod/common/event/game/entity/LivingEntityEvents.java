@@ -41,6 +41,7 @@ import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.data.map.GamePhase2AttributeModifiers;
 import org.confluence.mod.common.data.map.LivingInvulnerableEffects;
+import org.confluence.mod.common.data.saved.Bestiary;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.effect.beneficial.ArcheryEffect;
@@ -95,12 +96,14 @@ public final class LivingEntityEvents {
 
         if (victim.level() instanceof ServerLevel level) {
             Entity attacker = damageSource.getEntity();
-            if (victim instanceof Enemy && attacker instanceof ServerPlayer) {
-                if (CommonConfigs.DROP_MONEY.get() &&
+            if (attacker instanceof ServerPlayer) {
+                if (victim instanceof Enemy &&
+                        CommonConfigs.DROP_MONEY.get() &&
                         level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT) &&
                         (!(victim instanceof IMinion minion) || minion.minion_getOwnerUUID() == null)
-                ) {
-                    ModUtils.enemyDropMoney(victim, level);
+                ) ModUtils.enemyDropMoney(victim, level);
+                if (!victim.getType().is(ModTags.EntityTypes.BESTIARY_BLACKLIST)) {
+                    Bestiary.INSTANCE.updateEntry(victim, true);
                 }
             }
             if (attacker != null && attacker.getType().is(TETags.EntityTypes.CORRUPT)) {

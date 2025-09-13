@@ -1,4 +1,4 @@
-package org.confluence.mod.client.gui.bestiary;
+package org.confluence.mod.client.handler.bestiary;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

@@ -126,14 +126,15 @@ public final class PlayerUtils {
         if (manaStorage.receiveMana(sup)) syncMana2Client(player, manaStorage);
     }
 
-    public static void syncSavedData(ServerPlayer serverPlayer) {
-        ConfluenceData data = ConfluenceData.get(serverPlayer.serverLevel());
-        WindSpeedPacketS2C.sendToClient(serverPlayer, data.getWindSpeedX(), data.getWindSpeedZ());
+    public static void syncSavedData(ServerPlayer player) {
+        ConfluenceData data = ConfluenceData.get(player.serverLevel());
+        WindSpeedPacketS2C.sendToClient(player, data.getWindSpeedX(), data.getWindSpeedZ());
         if (CommonConfigs.STAR_PHASE.get()) {
-            StarPhasesPacketS2C.sendToClient(serverPlayer, data.getStarPhases());
+            StarPhasesPacketS2C.sendToClient(player, data.getStarPhases());
         }
-        KillBoardSyncPacketS2C.sendToClient(serverPlayer);
+        KillBoardSyncPacketS2C.sendToClient(player);
         MeteoriteLocationPacketS2C.sendToAll(data.getMeteoriteLocation(), 0);
+        BestiarySyncPacketS2C.syncEntries(player);
     }
 
     public static float getFishingPower(ServerPlayer player) {

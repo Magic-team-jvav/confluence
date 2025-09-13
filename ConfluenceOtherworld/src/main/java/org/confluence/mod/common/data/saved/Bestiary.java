@@ -15,9 +15,9 @@ import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.mod.common.data.map.BestiaryEntry;
+import org.confluence.mod.network.s2c.BestiarySyncPacketS2C;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
@@ -51,17 +51,16 @@ public class Bestiary implements IGlobalData {
         return "confluence:bestiary";
     }
 
-    public void increaseKilledByCount(LivingEntity living) {
-        getOrCreateEntry(living).killedByCount++;
-    }
-
-    public @Nullable BestiaryEntry getEntry(EntityType<?> entityType) {
-        return entries.get(entityType);
+    public Map<EntityType<?>, BestiaryEntry> getEntries() {
+        return entries;
     }
 
     public BestiaryEntry getOrCreateEntry(LivingEntity living) {
         return entries.computeIfAbsent(living.getType(), type -> {
-            BestiaryEntry entry = new BestiaryEntry();
+            BestiaryEntry entry = BestiaryEntry.getPresetEntry(type);
+            if (entry != null) return entry;
+
+            entry = new BestiaryEntry();
             entry.type = type;
             AttributeMap map = living.getAttributes();
             entry.maxHealth = getAttributeBaseValue(map, Attributes.MAX_HEALTH);
@@ -73,8 +72,18 @@ public class Bestiary implements IGlobalData {
         });
     }
 
-    private static double getAttributeBaseValue(AttributeMap map, Holder<Attribute> attribute) {
+    public void updateEntry(LivingEntity living, boolean killed) {
+        BestiaryEntry entry = getOrCreateEntry(living);
+        if (killed) {
+            entry.killedByCount++;
+            BestiarySyncPacketS2C.syncEntry(living.getType());
+        } else {
+            BestiarySyncPacketS2C.syncEntry(living.getType(), entry);
+        }
+    }
+
+    private static float getAttributeBaseValue(AttributeMap map, Holder<Attribute> attribute) {
         AttributeInstance instance = map.getInstance(attribute);
-        return instance == null ? 0.0 : instance.getBaseValue();
+        return instance == null ? 0.0F : (float) instance.getBaseValue();
     }
 }

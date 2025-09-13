@@ -4,10 +4,14 @@ import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import org.confluence.mod.common.data.saved.Bestiary;
 import org.confluence.mod.common.entity.projectile.FlailBall;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.mixed.IDamageSource;
 import org.confluence.mod.mixed.IPlayer;
 import org.spongepowered.asm.mixin.Mixin;
@@ -59,5 +63,15 @@ public abstract class PlayerMixin implements IPlayer {
             }
         }
         return exhaustion;
+    }
+
+    @Inject(method = "touch", at = @At("TAIL"))
+    private void touch(Entity entity, CallbackInfo ci) {
+        if (!confluence$self().isLocalPlayer() && entity instanceof Animal animal) {
+            EntityType<?> type = animal.getType();
+            if (!type.is(ModTags.EntityTypes.BESTIARY_BLACKLIST) && !Bestiary.INSTANCE.getEntries().containsKey(type)) {
+                Bestiary.INSTANCE.updateEntry(animal, false);
+            }
+        }
     }
 }

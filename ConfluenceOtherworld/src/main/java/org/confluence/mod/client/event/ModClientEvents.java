@@ -40,9 +40,9 @@ import org.confluence.mod.client.connected.CustomBlockModels;
 import org.confluence.mod.client.connected.ModConnectives;
 import org.confluence.mod.client.connected.ModelSwapper;
 import org.confluence.mod.client.connected.StitchedSprite;
-import org.confluence.mod.client.gui.bestiary.ClientBestiaryEntry;
 import org.confluence.mod.client.gui.container.*;
 import org.confluence.mod.client.gui.hud.*;
+import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.client.model.WrappedBakedModel;
 import org.confluence.mod.client.model.block.AltarBlockModel;
 import org.confluence.mod.client.model.block.LifeCrystalBlockModel;
@@ -477,6 +477,6 @@ public final class ModClientEvents {
 
     @SubscribeEvent
     public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event) {
-        event.registerReloadListener(ClientBestiaryEntry.Loader.getInstance());
+        event.registerReloadListener(ClientBestiary.getInstance());
     }
 }

@@ -2,10 +2,13 @@ package org.confluence.mod.util;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 import it.unimi.dsi.fastutil.objects.Object2IntLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntSortedMap;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.common.CoinItem;
 
@@ -16,6 +19,13 @@ public final class Coins {
             Codec.INT.fieldOf("gold").forGetter(Coins::gold),
             Codec.INT.fieldOf("platinum").forGetter(Coins::platinum)
     ).apply(instance, Coins::new));
+    public static final StreamCodec<ByteBuf, Coins> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.VAR_INT, Coins::copper,
+            ByteBufCodecs.VAR_INT, Coins::silver,
+            ByteBufCodecs.VAR_INT, Coins::gold,
+            ByteBufCodecs.VAR_INT, Coins::platinum,
+            Coins::new
+    );
 
     private int copper;
     private int silver;

@@ -429,6 +429,7 @@ public final class ModTags {
         public static final TagKey<EntityType<?>> FEALING_TRANSMUTATION = register("fealing_transmutation"); // 可转化为飞灵的生物
         public static final TagKey<EntityType<?>> SPAWN_AT_GRAVEYARD = register("spawn_at_graveyard"); // 可以生成在墓地的生物
         public static final TagKey<EntityType<?>> DO_NOT_DROPS_EVIL_SOUL = register("do_not_drops_evil_soul"); // 不掉落光明或暗影之魂
+        public static final TagKey<EntityType<?>> BESTIARY_BLACKLIST = register("bestiary_blacklist"); // 怪物图鉴黑名单
 
         private static TagKey<EntityType<?>> register(String id) {
             return Confluence.asTagKey(Registries.ENTITY_TYPE, id);

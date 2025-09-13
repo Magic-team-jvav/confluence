@@ -19,23 +19,20 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(value = TCAttributes.class, remap = false)
 public abstract class TCAttributesMixin {
     @ModifyVariable(method = "applyPickupRange", at = @At("STORE"))
-    private static float[] inflate(float[] ranges, @Local(argsOnly = true) Player player) {
-        ranges[0] = Mth.square(TCUtils.getAccessoriesValue(player, AccessoryItems.MANA$PICKUP$RANGE).getA());
-        ranges[1] = Mth.square(TCUtils.getAccessoriesValue(player, AccessoryItems.COIN$PICKUP$RANGE).getA());
-        ranges[2] = Mth.square(HeartReachEffect.getRange(player));
-        return ranges;
+    private static float[] inflate(float[] rangesSqr, @Local(argsOnly = true) Player player) {
+        rangesSqr[0] = Mth.square(TCUtils.getAccessoriesValue(player, AccessoryItems.MANA$PICKUP$RANGE).getA());
+        rangesSqr[1] = Mth.square(TCUtils.getAccessoriesValue(player, AccessoryItems.COIN$PICKUP$RANGE).getA());
+        rangesSqr[2] = Mth.square(HeartReachEffect.getRange(player));
+        return rangesSqr;
     }
 
     @Inject(method = "forMixin$skip", at = @At("HEAD"), cancellable = true)
-    private static void skip(Player player, ItemEntity itemEntity, float[] ranges, CallbackInfoReturnable<Boolean> cir) {
+    private static void skip(Player player, ItemEntity itemEntity, float[] rangesSqr, CallbackInfoReturnable<Boolean> cir) {
         ItemStack itemStack = itemEntity.getItem();
-        double v = itemEntity.position().distanceToSqr(player.position());
-        if (v > ranges[0] && itemStack.is(ModTags.Items.PROVIDE_MANA)) {
-            cir.setReturnValue(true);
-        } else if (v > ranges[1] && itemStack.is(ModTags.Items.COINS)) {
-            cir.setReturnValue(true);
-        } else if (v > ranges[2] && itemStack.is(ModTags.Items.PROVIDE_LIFE)) {
-            cir.setReturnValue(true);
-        }
+        double sqr = itemEntity.position().distanceToSqr(player.position());
+        if ((sqr > rangesSqr[0] && itemStack.is(ModTags.Items.PROVIDE_MANA)) ||
+                (sqr > rangesSqr[1] && itemStack.is(ModTags.Items.COINS)) ||
+                (sqr > rangesSqr[2] && itemStack.is(ModTags.Items.PROVIDE_LIFE))
+        ) cir.setReturnValue(true);
     }
 }

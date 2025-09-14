@@ -27,7 +27,8 @@ public class TheCrimsonConversionTable extends ConversionTable {
         if (block instanceof CattailsBodyBlock) return NatureBlocks.HALLOW_CATTAILS_BODY.get();
 
         Holder<Block> holder = block.builtInRegistryHolder();
-
+        if (holder.is(BlockTags.LOGS)) return NatureBlocks.SHADOW_LOG_BLOCKS.LOG.get();
+        if (holder.is(BlockTags.LEAVES)) return NatureBlocks.SHADOW_LOG_BLOCKS.LEAVES.get();
         if (holder.is(BlockTags.BASE_STONE_OVERWORLD)) return NatureBlocks.CRIMSTONE.get();
         if (holder.is(Tags.Blocks.COBBLESTONES)) return NatureBlocks.COBBLED_CRIMSTONE.get();
 

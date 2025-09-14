@@ -41,7 +41,7 @@ public class ClientBestiary extends SingleJsonFileReloadListener {
 
     @Override
     protected ResourceLocation resourcePath() {
-        return Confluence.asResource("bestiary");
+        return Confluence.asResource("bestiary.json");
     }
 
     @Override
@@ -77,7 +77,7 @@ public class ClientBestiary extends SingleJsonFileReloadListener {
                 cbe.knockbackResistance = be.knockbackResistance;
                 cbe.attackDamage = be.attackDamage;
                 cbe.armor = be.armor;
-                cbe.coins = be.coins;
+                cbe.drops = be.drops;
             }
         }).ifRight(type -> {
             ClientBestiaryEntry entry = getInstance().getEntries().get(type);

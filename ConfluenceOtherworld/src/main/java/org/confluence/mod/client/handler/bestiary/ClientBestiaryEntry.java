@@ -7,28 +7,34 @@ import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.map.BestiaryEntry;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class ClientBestiaryEntry extends BestiaryEntry {
-    public static final ResourceLocation DEFAULT_BACKGROUND = Confluence.asResource("bestiary/unknown_background"); // gui sprite
+    // gui sprite
+    public static final ResourceLocation DEFAULT_BACKGROUND = background("unknown");
+    public static final ResourceLocation SURFACE_BACKGROUND = background("surface");
+    public static final ResourceLocation THE_HALLOW_BACKGROUND = background("the_hallow");
+
     public static final Component DEFAULT_DESCRIPTION = Component.literal("???");
     public static final Codec<ClientBestiaryEntry> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.INT.lenientOptionalFieldOf("order", 1000000).forGetter(ClientBestiaryEntry::getOrder),
             ExtraCodecs.intRange(0, 5).lenientOptionalFieldOf("rarity", 0).forGetter(ClientBestiaryEntry::getRarity),
             ResourceLocation.CODEC.lenientOptionalFieldOf("background", DEFAULT_BACKGROUND).forGetter(ClientBestiaryEntry::getBackground),
             ComponentSerialization.CODEC.lenientOptionalFieldOf("description", DEFAULT_DESCRIPTION).forGetter(ClientBestiaryEntry::getDescription),
-            EnvironmentEntry.CODEC.listOf().lenientOptionalFieldOf("environments", List.of()).forGetter(ClientBestiaryEntry::getEnvironments)
+            FilterEntry.CODEC.listOf().lenientOptionalFieldOf("filters", List.of()).forGetter(ClientBestiaryEntry::getFilters)
     ).apply(instance, ClientBestiaryEntry::new));
 
     private final int order;
     private final int rarity;
     private final ResourceLocation background;
     private final Component description;
-    private final List<EnvironmentEntry> environments;
+    private final List<FilterEntry> filters;
 
     private Component displayName;
     private Entity renderedEntity;
@@ -38,15 +44,15 @@ public class ClientBestiaryEntry extends BestiaryEntry {
         this.rarity = 0;
         this.background = DEFAULT_BACKGROUND;
         this.description = DEFAULT_DESCRIPTION;
-        this.environments = List.of();
+        this.filters = List.of();
     }
 
-    private ClientBestiaryEntry(int order, int rarity, ResourceLocation background, Component description, List<EnvironmentEntry> environments) {
+    private ClientBestiaryEntry(int order, int rarity, ResourceLocation background, Component description, List<FilterEntry> filters) {
         this.order = order;
         this.rarity = rarity;
         this.background = background;
         this.description = description;
-        this.environments = environments;
+        this.filters = filters;
     }
 
     public int getOrder() {
@@ -65,8 +71,8 @@ public class ClientBestiaryEntry extends BestiaryEntry {
         return description;
     }
 
-    public List<EnvironmentEntry> getEnvironments() {
-        return environments;
+    public List<FilterEntry> getFilters() {
+        return filters;
     }
 
     public Component getDisplayName() {
@@ -84,5 +90,60 @@ public class ClientBestiaryEntry extends BestiaryEntry {
             }
         }
         return renderedEntity;
+    }
+
+    public static ResourceLocation background(String path) {
+        return Confluence.asResource("bestiary/background/" + path);
+    }
+
+    public static Builder builder(EntityType<?> entityType) {
+        return new Builder(entityType);
+    }
+
+    public static class Builder {
+        private final EntityType<?> entityType;
+        private int order = 1000000;
+        private int rarity = 0;
+        private ResourceLocation background = DEFAULT_BACKGROUND;
+        private Component description = DEFAULT_DESCRIPTION;
+        private List<FilterEntry> filters = List.of();
+
+        private Builder(EntityType<?> entityType) {
+            this.entityType = entityType;
+        }
+
+        public Builder order(int order) {
+            this.order = order;
+            return this;
+        }
+
+        /**
+         * @param rarity [0, 5]
+         */
+        public Builder rarity(int rarity) {
+            this.rarity = rarity;
+            return this;
+        }
+
+        public Builder background(ResourceLocation background) {
+            this.background = background;
+            return this;
+        }
+
+        public Builder description(Component description) {
+            this.description = description;
+            return this;
+        }
+
+        public Builder filters(FilterEntry... entries) {
+            this.filters = Arrays.stream(entries).toList();
+            return this;
+        }
+
+        public ClientBestiaryEntry build() {
+            ClientBestiaryEntry entry = new ClientBestiaryEntry(order, rarity, background, description, filters);
+            entry.type = entityType;
+            return entry;
+        }
     }
 }

@@ -40,6 +40,7 @@ import org.confluence.mod.client.connected.CustomBlockModels;
 import org.confluence.mod.client.connected.ModConnectives;
 import org.confluence.mod.client.connected.ModelSwapper;
 import org.confluence.mod.client.connected.StitchedSprite;
+import org.confluence.mod.client.effect.ColoredGlintContext;
 import org.confluence.mod.client.gui.container.*;
 import org.confluence.mod.client.gui.hud.*;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
@@ -393,6 +394,12 @@ public final class ModClientEvents {
         )).map(DeferredHolder::get).toArray(Item[]::new));
         event.registerItem(ModClientSetups.NOOP_ITEM, SwordItems.ZOMBIE_ARM);
         event.registerItem(ModClientSetups.GUIDE_VOODOO_DOLL, AccessoryItems.GUIDE_VOODOO_DOLL);
+        event.registerItem(ModClientSetups.FULL_LIGHT, MaterialItems.SOUL_OF_FRIGHT);
+        event.registerItem(ModClientSetups.FULL_LIGHT, MaterialItems.SOUL_OF_MIGHT);
+        event.registerItem(ModClientSetups.FULL_LIGHT, MaterialItems.SOUL_OF_SIGHT);
+        event.registerItem(ModClientSetups.FULL_LIGHT, MaterialItems.SOUL_OF_LIGHT);
+        event.registerItem(ModClientSetups.FULL_LIGHT, MaterialItems.SOUL_OF_NIGHT);
+        event.registerItem(ModClientSetups.FULL_LIGHT, MaterialItems.SOUL_OF_FLIGHT);
         TGUtil.registerOtherGunModel(event, Confluence.MODID, ManaWeaponItems.BEE_GUN);
         TGUtil.registerOtherGunModel(event, Confluence.MODID, ManaWeaponItems.SPACE_GUN);
         GunItems.ITEMS.getEntries().forEach(holder -> TGUtil.registerOtherGunModel(event, Confluence.MODID, holder));
@@ -438,6 +445,12 @@ public final class ModClientEvents {
         Map<ModelResourceLocation, BakedModel> modelRegistry = event.getModels();
 
         modelRegistry.compute(ModelResourceLocation.inventory(AccessoryItems.GUIDE_VOODOO_DOLL.getId()), (k, model) -> new WrappedBakedModel(model));
+        modelRegistry.compute(ModelResourceLocation.inventory(MaterialItems.SOUL_OF_FRIGHT.getId()), (k, model) -> new WrappedBakedModel(model));
+        modelRegistry.compute(ModelResourceLocation.inventory(MaterialItems.SOUL_OF_MIGHT.getId()), (k, model) -> new WrappedBakedModel(model));
+        modelRegistry.compute(ModelResourceLocation.inventory(MaterialItems.SOUL_OF_SIGHT.getId()), (k, model) -> new WrappedBakedModel(model));
+        modelRegistry.compute(ModelResourceLocation.inventory(MaterialItems.SOUL_OF_LIGHT.getId()), (k, model) -> new WrappedBakedModel(model));
+        modelRegistry.compute(ModelResourceLocation.inventory(MaterialItems.SOUL_OF_NIGHT.getId()), (k, model) -> new WrappedBakedModel(model));
+        modelRegistry.compute(ModelResourceLocation.inventory(MaterialItems.SOUL_OF_FLIGHT.getId()), (k, model) -> new WrappedBakedModel(model));
 
         ModConnectives.MODEL_SWAPPER.onModelBake(modelRegistry);
 
@@ -467,7 +480,9 @@ public final class ModClientEvents {
 
     @SubscribeEvent
     public static void registerRenderBuffers(RegisterRenderBuffersEvent event) {
-        event.registerRenderBuffer(ModClientSetups.RED_GLINT);
+        for (ColoredGlintContext context : ColoredGlintContext.COLORED_GLINT_CONTEXTS) {
+            event.registerRenderBuffer(context.renderType());
+        }
     }
 
     @SubscribeEvent

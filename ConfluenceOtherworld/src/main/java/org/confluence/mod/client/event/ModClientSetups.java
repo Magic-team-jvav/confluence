@@ -2,7 +2,10 @@ package org.confluence.mod.client.event;
 
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -18,12 +21,9 @@ import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
 import net.minecraft.client.renderer.item.CompassItemPropertyFunction;
 import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
@@ -50,8 +50,11 @@ import org.confluence.lib.color.IntegerRGB;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.effect.ColoredGlintContext;
 import org.confluence.mod.client.handler.MeteorLandingHandler;
+import org.confluence.mod.client.renderer.item.CustomLightItemExtension;
 import org.confluence.mod.client.renderer.item.EntityDisplayItemRenderer;
+import org.confluence.mod.client.renderer.item.MutableRenderTypeItemExtension;
 import org.confluence.mod.common.init.ModArmPoses;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
@@ -189,27 +192,8 @@ public final class ModClientSetups {
             return renderer;
         }
     };
-    static final IClientItemExtensions GUIDE_VOODOO_DOLL = new IClientItemExtensions() {
-        private BlockEntityWithoutLevelRenderer renderer;
-
-        @Override
-        public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-            if (renderer == null) {
-                Minecraft minecraft = Minecraft.getInstance();
-                this.renderer = new BlockEntityWithoutLevelRenderer(minecraft.getBlockEntityRenderDispatcher(), minecraft.getEntityModels()) {
-                    @Override
-                    public void renderByItem(ItemStack stack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
-                        CompoundTag tag = LibUtils.getItemStackNbtIfPresent(stack);
-                        RenderType renderType = GuideVooDooDollItem.isWall(tag) ? ModClientSetups.RED_GLINT : RenderType.glint();
-                        VertexConsumer consumer = VertexMultiConsumer.create(buffer.getBuffer(renderType), buffer.getBuffer(Sheets.translucentCullBlockSheet()));
-                        BakedModel model = minecraft.getItemRenderer().getModel(stack, minecraft.level, null, 250826);
-                        minecraft.getItemRenderer().renderModelLists(model, stack, packedLight, OverlayTexture.NO_OVERLAY, poseStack, consumer);
-                    }
-                };
-            }
-            return renderer;
-        }
-    };
+    static final IClientItemExtensions GUIDE_VOODOO_DOLL = new MutableRenderTypeItemExtension(stack -> GuideVooDooDollItem.isWall(LibUtils.getItemStackNbtIfPresent(stack)) ? ModClientSetups.GLINT_FF0000.renderType() : RenderType.glint());
+    static final IClientItemExtensions FULL_LIGHT = new CustomLightItemExtension(15);
     static final IClientMobEffectExtensions TRANSLUCENT_EFFECT_ICON = new IClientMobEffectExtensions() {
         @Override
         public boolean renderInventoryIcon(MobEffectInstance instance, EffectRenderingInventoryScreen<?> screen, GuiGraphics guiGraphics, int x, int y, int blitOffset) {
@@ -243,8 +227,6 @@ public final class ModClientSetups {
         RenderType translucent = RenderType.translucent();
         ItemBlockRenderTypes.setRenderLayer(ModFluids.SHIMMER.fluid().get(), translucent);
         ItemBlockRenderTypes.setRenderLayer(ModFluids.SHIMMER.flowing().get(), translucent);
-// todo 等蜂蜜贴图被画成半透明       ItemBlockRenderTypes.setRenderLayer(ModFluids.HONEY.fluid().get(), translucent);
-//        ItemBlockRenderTypes.setRenderLayer(ModFluids.HONEY.flowing().get(), translucent);
         ItemBlockRenderTypes.setRenderLayer(DecorativeBlocks.WHITE_PURE_GLASS.get(), translucent);
         ItemBlockRenderTypes.setRenderLayer(DecorativeBlocks.LIGHT_GRAY_PURE_GLASS.get(), translucent);
         ItemBlockRenderTypes.setRenderLayer(DecorativeBlocks.GRAY_PURE_GLASS.get(), translucent);
@@ -297,20 +279,7 @@ public final class ModClientSetups {
                     .setOverlayState(OVERLAY)
                     .createCompositeState(false));
 
-    public static final RenderType RED_GLINT = createGlint("red_glint");
-
-    private static RenderType createGlint(String name) {
-        return RenderType.create(name, DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS, 1536, RenderType.CompositeState.builder()
-                .setShaderState(RENDERTYPE_GLINT_SHADER)
-                .setTextureState(new TextureStateShard(Confluence.asResource("textures/misc/" + name + ".png"), true, false))
-                .setWriteMaskState(COLOR_WRITE)
-                .setCullState(NO_CULL)
-                .setDepthTestState(EQUAL_DEPTH_TEST)
-                .setTransparencyState(GLINT_TRANSPARENCY)
-                .setTexturingState(GLINT_TEXTURING)
-                .createCompositeState(false)
-        );
-    }
+    public static final ColoredGlintContext GLINT_FF0000 = ColoredGlintContext.create("FF0000", 0xFF0000);
 
     public static void registerBowProperties() {
         ResourceLocation pull = ResourceLocation.withDefaultNamespace("pull");

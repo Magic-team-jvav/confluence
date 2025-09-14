@@ -2,6 +2,7 @@ package org.confluence.mod.client.gui.container;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -22,6 +23,7 @@ import org.confluence.lib.common.menu.IToggleSlot;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.event.ModClientSetups;
+import org.confluence.mod.client.gui.BestiaryScreen;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.menu.ExtraInventoryMenu;
 import org.confluence.mod.integration.mine_team.ExtraTeamRender;
@@ -59,6 +61,11 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
     protected void init() {
         super.init();
         teamRender.initButton();
+        addRenderableWidget(Button.builder(Component.literal("B"), button -> { // todo 换成图片
+            if (menu.getCarried().isEmpty()) {
+                minecraft.setScreen(new BestiaryScreen(this));
+            }
+        }).size(16, 16).pos(leftPos + 129, topPos + 165).build());
         // better experience mixin here
     }
 

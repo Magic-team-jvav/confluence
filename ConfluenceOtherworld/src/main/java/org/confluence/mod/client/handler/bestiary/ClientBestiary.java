@@ -41,7 +41,7 @@ public class ClientBestiary extends SingleJsonFileReloadListener {
 
     @Override
     protected ResourceLocation resourcePath() {
-        return Confluence.asResource("bestiary");
+        return Confluence.asResource("bestiary.json");
     }
 
     @Override

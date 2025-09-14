@@ -1,6 +1,5 @@
 package org.confluence.mod.common.worldgen.feature;
 
-import com.google.common.base.Stopwatch;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
@@ -18,7 +17,6 @@ import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfigur
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import org.confluence.lib.util.LibCodecUtils;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.mod.Confluence;
 
 public class CattailsFeature extends Feature<CattailsFeature.Config> {
     public CattailsFeature(Codec<Config> codec) {
@@ -27,7 +25,6 @@ public class CattailsFeature extends Feature<CattailsFeature.Config> {
 
     @Override
     public boolean place(FeaturePlaceContext<Config> context) {
-        Stopwatch stopwatch = Stopwatch.createStarted();
         RandomSource random = context.random();
         Config config = context.config();
         WorldGenLevel level = context.level();
@@ -96,11 +93,7 @@ public class CattailsFeature extends Feature<CattailsFeature.Config> {
                 }
             }
         }
-        if (placed > 0) {
-            Confluence.LOGGER.debug("{}", stopwatch.stop());
-            return true;
-        }
-        return false;
+        return placed > 0;
     }
 
     public record Config(BlockStateProvider cattailsHead, BlockStateProvider cattailsBody, int radius, float chance, int maxLength, int maxCheck) implements FeatureConfiguration {

@@ -148,7 +148,7 @@ repositories {
 
 boolean vanillin = false // 香兰素
 boolean observable = false // 可视性能侦测
-boolean ftb = false // feed the beast
+boolean ftb = false // FTB系列
 boolean ipn = false // 一键背包整理Next
 boolean mmmmmmmmmmmm = false // 试验假人
 boolean supplementaries = false // 锦致装饰

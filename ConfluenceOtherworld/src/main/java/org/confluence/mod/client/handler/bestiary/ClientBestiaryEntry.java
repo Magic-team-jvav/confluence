@@ -16,17 +16,71 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ClientBestiaryEntry extends BestiaryEntry {
-    // gui sprite
-    public static final ResourceLocation DEFAULT_BACKGROUND = background("unknown");
-    public static final ResourceLocation SURFACE_BACKGROUND = background("surface");
-    public static final ResourceLocation THE_HALLOW_BACKGROUND = background("the_hallow");
+    public static final ResourceLocation SURFACE = background("surface");
+    public static final ResourceLocation SURFACE_SUN = background("surface_sun");
+    public static final ResourceLocation SURFACE_NIGHTTIME = background("surface_nighttime");
+    public static final ResourceLocation SURFACE_MOON = background("surface_moon");
+    public static final ResourceLocation SURFACE_RAIN = background("surface_rain");
+    public static final ResourceLocation SURFACE_NIGHTTIME_RAIN = background("surface_nighttime_rain");
+    public static final ResourceLocation SURFACE_GRAVEYARD = background("surface_graveyard");
+    public static final ResourceLocation BLOOD_MOON = background("blodd_moon");
+    public static final ResourceLocation ECLIPSE = background("eclipse");
+    public static final ResourceLocation PUMPKIN_MOON = background("pumpkin_moon");
+    public static final ResourceLocation FROST_MOON = background("frost_moon");
+    public static final ResourceLocation SKY = background("sky");
+    public static final ResourceLocation UNDERGROUND = background("underground");
+    public static final ResourceLocation CAVE = background("cave");
+    public static final ResourceLocation OCEAN = background("ocean");
+    public static final ResourceLocation THE_JUNGLE = background("the_jungle");
+    public static final ResourceLocation THE_JUNGLE_SUN = background("the_jungle_sun");
+    public static final ResourceLocation UNDERGROUND_JUNGLE = background("underground_jungle");
+    public static final ResourceLocation THE_JUNGLE_MOON = background("the_jungle_moon");
+    public static final ResourceLocation SNOW = background("snow");
+    public static final ResourceLocation SNOW_MOON = background("snow_moon");
+    public static final ResourceLocation UNDERGROUND_SNOW = background("underground_snow");
+    public static final ResourceLocation BLIZZARD = background("blizzard");
+    public static final ResourceLocation SURFACE_MUSHROOM = background("surface_mushroom");
+    public static final ResourceLocation UNDERGROUND_MUSHROOM = background("underground_mushroom");
+    public static final ResourceLocation DESERT = background("desert");
+    public static final ResourceLocation DESERT_SUN = background("desert_sun");
+    public static final ResourceLocation UNDERGROUND_DESERT = background("underground_desert");
+    public static final ResourceLocation SANDSTORM = background("underground_desert");
+    public static final ResourceLocation THE_NETHER = background("the_nether");
+    public static final ResourceLocation MARBLE = background("marble");
+    public static final ResourceLocation GRANITE = background("granite");
+    public static final ResourceLocation SPIDER_NEST = background("spider_nest");
+    public static final ResourceLocation METEOR = background("meteor");
+    public static final ResourceLocation THE_CORRUPTION = background("the_corruption");
+    public static final ResourceLocation UNDERGROUND_CORRUPTION = background("underground_corruption");
+    public static final ResourceLocation CORRUPT_DESERT = background("corrupt_desert");
+    public static final ResourceLocation CORRUPT_CAVE_DESERT = background("corrupt_cave_desert");
+    public static final ResourceLocation CORRUPT_ICE = background("corrupt_ice");
+    public static final ResourceLocation THE_CRIMSON = background("the_crimson");
+    public static final ResourceLocation UNDERGROUND_CRIMSON = background("underground_crimson");
+    public static final ResourceLocation CRIMSON_DESERT = background("crimson_desert");
+    public static final ResourceLocation CRIMSON_CAVE_DESERT = background("crimson_cave_desert");
+    public static final ResourceLocation CRIMSON_ICE = background("crimson_ice");
+    public static final ResourceLocation THE_HALLOW = background("the_hallow");
+    public static final ResourceLocation THE_HALLOW_SUN = background("the_hallow_sun");
+    public static final ResourceLocation THE_HALLOW_MOON = background("the_hallow_moon");
+    public static final ResourceLocation THE_HALLOW_RAIN = background("the_hallow_rain");
+    public static final ResourceLocation UNDERGROUND_HALLOW = background("underground_hallow");
+    public static final ResourceLocation HALLOW_DESERT = background("hallow_desert");
+    public static final ResourceLocation HALLOW_CAVE_DESERT = background("hallow_cave_desert");
+    public static final ResourceLocation HALLOW_ICE = background("hallow_ice");
+    public static final ResourceLocation THE_DUNGEON = background("the_dungeon");
+    public static final ResourceLocation THE_TEMPLE = background("the_temple");
+    public static final ResourceLocation SOLAR_PILLAR = background("solar_pillar");
+    public static final ResourceLocation VORTEX_PILLAR = background("vortex_pillar");
+    public static final ResourceLocation NEBULA_PILLAR = background("nebula_pillar");
+    public static final ResourceLocation STARDUST_PILLAR = background("stardust_pillar");
 
-    public static final Component DEFAULT_DESCRIPTION = Component.literal("???");
+    public static final Component UNKNOWN = Component.literal("???");
     public static final Codec<ClientBestiaryEntry> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.INT.lenientOptionalFieldOf("order", 1000000).forGetter(ClientBestiaryEntry::getOrder),
             ExtraCodecs.intRange(0, 5).lenientOptionalFieldOf("rarity", 0).forGetter(ClientBestiaryEntry::getRarity),
-            ResourceLocation.CODEC.lenientOptionalFieldOf("background", DEFAULT_BACKGROUND).forGetter(ClientBestiaryEntry::getBackground),
-            ComponentSerialization.CODEC.lenientOptionalFieldOf("description", DEFAULT_DESCRIPTION).forGetter(ClientBestiaryEntry::getDescription),
+            ResourceLocation.CODEC.lenientOptionalFieldOf("background", SURFACE).forGetter(ClientBestiaryEntry::getBackground),
+            ComponentSerialization.CODEC.lenientOptionalFieldOf("description", UNKNOWN).forGetter(ClientBestiaryEntry::getDescription),
             FilterEntry.CODEC.listOf().lenientOptionalFieldOf("filters", List.of()).forGetter(ClientBestiaryEntry::getFilters)
     ).apply(instance, ClientBestiaryEntry::new));
 
@@ -42,8 +96,8 @@ public class ClientBestiaryEntry extends BestiaryEntry {
     public ClientBestiaryEntry() {
         this.order = 1000000;
         this.rarity = 0;
-        this.background = DEFAULT_BACKGROUND;
-        this.description = DEFAULT_DESCRIPTION;
+        this.background = SURFACE;
+        this.description = UNKNOWN;
         this.filters = List.of();
     }
 
@@ -104,8 +158,8 @@ public class ClientBestiaryEntry extends BestiaryEntry {
         private final EntityType<?> entityType;
         private int order = 1000000;
         private int rarity = 0;
-        private ResourceLocation background = DEFAULT_BACKGROUND;
-        private Component description = DEFAULT_DESCRIPTION;
+        private ResourceLocation background = SURFACE;
+        private Component description = UNKNOWN;
         private List<FilterEntry> filters = List.of();
 
         private Builder(EntityType<?> entityType) {

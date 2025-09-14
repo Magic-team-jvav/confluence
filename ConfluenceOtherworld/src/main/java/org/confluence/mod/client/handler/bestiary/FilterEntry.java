@@ -27,68 +27,69 @@ public class FilterEntry {
     public static final FilterEntry SNOW = preset("snow", 77, 1, 12, 14);
     public static final FilterEntry UNDERGROUND_SNOW = preset("underground_snow", 92, 1, 13, 13);
     public static final FilterEntry THE_CORRUPTION = preset("the_corruption", 107, 2, 12, 11);
-// 地下腐化之地(122, 1, 13, 13)
-// 腐化沙漠(138, 2, 9, 12)
-// 腐化洞穴沙漠(152, 2, 13, 12)
-// 腐化冰雪(167, 1, 13, 13)
-// 猩红之地(183, 2, 10, 12)
-// 地下猩红(196, 1, 14, 13)
-// 猩红沙漠(212, 1, 11, 12)
-// 猩红洞穴沙漠(227, 1, 13, 12)
-//
-// 猩红冰雪(1, 16, 13, 13)
+    public static final FilterEntry UNDERGROUND_CORRUPTION = preset("underground_corruption", 122, 1, 13, 13);
+    public static final FilterEntry CORRUPT_DESERT = preset("corrupt_desert", 138, 2, 9, 12);
+    public static final FilterEntry CORRUPT_CAVE_DESERT = preset("corrupt_cave_desert", 152, 2, 13, 12);
+    public static final FilterEntry CORRUPT_ICE = preset("corrupt_ice", 167, 1, 13, 13);
+    public static final FilterEntry THE_CRIMSON = preset("the_crimson", 183, 2, 10, 12);
+    public static final FilterEntry UNDERGROUND_CRIMSON = preset("underground_crimson", 196, 1, 14, 13);
+    public static final FilterEntry CRIMSON_DESERT = preset("crimson_desert", 212, 1, 11, 12);
+    public static final FilterEntry CRIMSON_CAVE_DESERT = preset("crimson_cave_desert", 227, 1, 13, 12);
+
+    public static final FilterEntry CRIMSON_ICE = preset("crimson_ice", 1, 16, 13, 13);
     public static final FilterEntry THE_HALLOW = preset("the_hallow", 16, 16, 14, 14);
-// 地下神圣之地(30, 18, 15, 12)
-// 神圣沙漠(48, 17, 9, 12)
-// 神圣洞穴沙漠(62, 17, 13, 12)
-// 神圣冰雪(77, 17, 13, 13)
-// (92, 17, 12, 13)
-// (107, 17, 13, 13)
-// (123, 17, 10, 13)
-// (137, 18, 12, 12)
-// (151, 16, 15, 14)
-// (167, 16, 13, 14)
-// (184, 17, 8, 12)
-// (198, 17, 10, 13)
-// (213, 17, 10, 13)
-// (227, 17, 13, 12)
-//
-// (2, 32, 12, 12)
-// (17, 32, 12, 13)
-// (31, 33, 14, 12)
-// (48, 33, 11, 11)
-// (62, 32, 12, 12)
-// (77, 33, 12, 11)
-// (93, 33, 11, 11)
-// (103, 32, 12, 12)
-// (121, 32, 13, 11)
-// (136, 31, 14, 13)
-// (151, 31, 14, 14)
-// (167, 33, 12, 12)
-// (182, 33, 13, 12)
-// (198, 33, 11, 11)
-// (213, 32, 10, 12)
-// (229, 32, 10, 13)
-//
-// (3, 46, 11, 14)
-// (17, 47, 13, 12)
-// (32, 47, 12, 12)
-// (48, 48, 11, 11)
-// (63, 48, 11, 11)
-// (77, 47, 13, 12)
-// (94, 47, 10, 12)
-// (107, 47, 13, 12)
-// (122, 47, 12, 13)
-// (137, 47, 12, 13)
-// (152, 47, 12, 13)
-// (167, 47, 12, 13)
-// (181, 47, 14, 12)
-// (197, 47, 12, 12)
-// (213, 46, 10, 14)
-// (227, 47, 13, 13)
-//
-// (4, 62, 9, 13)
-// (19, 62, 9, 13)
+    public static final FilterEntry UNDERGROUND_HALLOW = preset("underground_hallow", 30, 18, 15, 12);
+    public static final FilterEntry HALLOW_DESERT = preset("hallow_desert", 48, 17, 9, 12);
+    public static final FilterEntry HALLOW_CAVE_DESERT = preset("hallow_cave_desert", 62, 17, 13, 12);
+    public static final FilterEntry HALLOW_ICE = preset("hallow_ice", 77, 17, 13, 13);
+    public static final FilterEntry THE_JUNGLE = preset("the_jungle", 92, 17, 12, 13);
+    public static final FilterEntry UNDERGROUND_JUNGLE = preset("underground_jungle", 107, 17, 13, 13);
+    public static final FilterEntry SURFACE_MUSHROOM = preset("surface_mushroom", 123, 17, 10, 13);
+    public static final FilterEntry UNDERGROUND_MUSHROOM = preset("underground_mushroom", 137, 18, 12, 12);
+    public static final FilterEntry SKY = preset("sky", 151, 16, 15, 14);
+    public static final FilterEntry OASIS = preset("oasis", 167, 16, 13, 14);
+    public static final FilterEntry OCEAN = preset("ocean", 184, 17, 8, 12);
+    public static final FilterEntry MARBLE = preset("marble", 198, 17, 10, 13);
+    public static final FilterEntry GRANITE = preset("granite", 213, 17, 10, 13);
+    public static final FilterEntry THE_TEMPLE = preset("the_temple", 227, 17, 13, 12);
+
+    public static final FilterEntry THE_DUNGEON = preset("the_dungeon", 2, 32, 12, 12);
+    public static final FilterEntry THE_UNDERWORLD = preset("the_underworld", 17, 32, 12, 13);
+    public static final FilterEntry SPIDER_NEST = preset("spider_nest", 31, 33, 14, 12);
+    public static final FilterEntry GRAVEYARD = preset("graveyard", 48, 33, 11, 11);
+    public static final FilterEntry DAYTIME = preset("daytime", 62, 32, 12, 12);
+    public static final FilterEntry NIGHTTIME = preset("nighttime", 77, 33, 12, 11);
+    public static final FilterEntry BLOOD_MOON = preset("blood_moon", 93, 33, 11, 11);
+    public static final FilterEntry ECLIPSE = preset("eclipse", 103, 32, 12, 12);
+    public static final FilterEntry RAIN = preset("rain", 121, 32, 13, 11);
+    public static final FilterEntry WINDY_DAY = preset("windy_day", 136, 31, 14, 13);
+    public static final FilterEntry BLIZZARD = preset("blizzard", 151, 31, 14, 14);
+    public static final FilterEntry SANDSTORM = preset("sandstorm", 167, 33, 12, 12);
+    public static final FilterEntry METEOR = preset("meteor", 182, 33, 13, 12);
+    public static final FilterEntry HALLOWEEN = preset("halloween", 198, 33, 11, 11);
+    public static final FilterEntry CHRISTMAS = preset("christmas", 213, 32, 10, 12);
+    public static final FilterEntry SLIME_RAIN = preset("slime_rain", 229, 32, 10, 13);
+
+    public static final FilterEntry PARTY = preset("party", 3, 46, 11, 14);
+    public static final FilterEntry GOBLIN_INVASION = preset("goblin_invasion", 17, 47, 13, 12);
+    public static final FilterEntry PIRATE_INVASION = preset("pirate_invasion", 32, 47, 12, 12);
+    public static final FilterEntry PUMPKIN_MOON = preset("pumpkin_moon", 48, 48, 11, 11);
+    public static final FilterEntry FROST_MOON = preset("frost_moon", 63, 48, 11, 11);
+    public static final FilterEntry MARTIAN_MADNESS = preset("martian_madness", 77, 47, 13, 12);
+    public static final FilterEntry FROST_LEGION = preset("frost_legion", 94, 47, 10, 12);
+    public static final FilterEntry OLD_ONES_ARMY = preset("old_ones_army", 107, 47, 13, 12);
+    public static final FilterEntry SOLAR_PILLAR = preset("solar_pillar", 122, 47, 12, 13);
+    public static final FilterEntry VORTEX_PILLAR = preset("vortex_pillar", 137, 47, 12, 13);
+    public static final FilterEntry NEBULA_PILLAR = preset("nebula_pillar", 152, 47, 12, 13);
+    public static final FilterEntry STARDUST_PILLAR = preset("stardust_pillar", 167, 47, 12, 13);
+    public static final FilterEntry HARDMODE = preset("hardmode", 181, 47, 14, 12);
+    public static final FilterEntry ITEM_SPAWN = preset("item_spawn", 197, 47, 12, 12);
+    public static final FilterEntry IF_UNLOCKED = preset("if_unlocked", 213, 46, 10, 14);
+    public static final FilterEntry BOSS_ENEMY = preset("boss_enemy", 227, 47, 13, 13);
+
+    // 白问号(4, 62, 9, 13)
+    // 黑问号(19, 62, 9, 13)
+    public static final FilterEntry RARE_CREATURE = preset("rare_creature", 31, 61, 14, 14);
 
     private final String name;
     private final int u;
@@ -96,7 +97,8 @@ public class FilterEntry {
     private final int w;
     private final int h;
 
-    private transient Component displayName;
+    private transient Component title;
+    private transient Component desc;
 
     private FilterEntry(String name, int u, int v, int w, int h) {
         this.name = name;
@@ -133,11 +135,18 @@ public class FilterEntry {
         return h;
     }
 
-    public Component displayName() {
-        if (displayName == null) {
-            this.displayName = Component.translatable("bestiary.confluence.filter." + name);
+    public Component title() {
+        if (title == null) {
+            this.title = Component.translatable("bestiary.confluence.filter." + name + ".title");
         }
-        return displayName;
+        return title;
+    }
+
+    public Component desc() {
+        if (desc == null) {
+            this.desc = Component.translatable("bestiary.confluence.filter." + name + ".desc");
+        }
+        return desc;
     }
 
     @Override

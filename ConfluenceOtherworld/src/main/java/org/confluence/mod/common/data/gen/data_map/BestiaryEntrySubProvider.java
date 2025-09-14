@@ -6,7 +6,6 @@ import net.neoforged.neoforge.common.extensions.IHolderExtension;
 import org.confluence.mod.common.data.gen.ModDataMapProvider;
 import org.confluence.mod.common.data.map.BestiaryEntry;
 import org.confluence.mod.common.init.ModDataMaps;
-import org.confluence.mod.util.PlayerUtils;
 
 import java.util.Objects;
 
@@ -20,14 +19,14 @@ public final class BestiaryEntrySubProvider {
             super(ModDataMaps.BESTIARY_ENTRY);
         }
 
-        public Builder add(IHolderExtension<EntityType<?>> holder, float maxHealth, float knockbackResistance, float attackDamage, float armor, int coins) {
+        public Builder add(IHolderExtension<EntityType<?>> holder, float maxHealth, float knockbackResistance, float attackDamage, float armor, int drops) {
             BestiaryEntry entry = new BestiaryEntry();
             entry.type = holder.getDelegate().value();
             entry.maxHealth = maxHealth;
             entry.knockbackResistance = knockbackResistance;
             entry.attackDamage = attackDamage;
             entry.armor = armor;
-            entry.coins = PlayerUtils.decodeCoin(coins);
+            entry.drops = drops;
             super.add(Objects.requireNonNull(holder.getKey()), entry, false);
             return this;
         }

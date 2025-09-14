@@ -17,7 +17,6 @@ import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.mod.common.data.map.BestiaryEntry;
 import org.confluence.mod.network.s2c.BestiarySyncPacketS2C;
 import org.confluence.mod.util.ModUtils;
-import org.confluence.mod.util.PlayerUtils;
 
 import java.util.Map;
 
@@ -67,7 +66,7 @@ public class Bestiary implements IGlobalData {
             entry.knockbackResistance = getAttributeBaseValue(map, Attributes.KNOCKBACK_RESISTANCE);
             entry.attackDamage = getAttributeBaseValue(map, Attributes.ATTACK_DAMAGE);
             entry.armor = getAttributeBaseValue(map, Attributes.ARMOR);
-            entry.coins = PlayerUtils.decodeCoin((int) ModUtils.getLivingBaseMoneyDrops(living, living.level()));
+            entry.drops = (int) ModUtils.getLivingBaseMoneyDrops(living, living.level());
             return entry;
         });
     }

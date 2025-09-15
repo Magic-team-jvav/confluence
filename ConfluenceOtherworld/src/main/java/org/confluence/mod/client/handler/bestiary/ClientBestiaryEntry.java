@@ -105,7 +105,7 @@ public class ClientBestiaryEntry extends BestiaryEntry {
     private final List<FilterEntry> filters;
     private final Optional<CompoundTag> entityNbt;
 
-    private transient float unlockedProgress = 0.0F;
+    private transient float unlockedProgress = -1.0F; // 小于零代表未解锁
     private transient Component displayName;
     private transient LivingEntity renderedEntity;
 
@@ -176,11 +176,19 @@ public class ClientBestiaryEntry extends BestiaryEntry {
     }
 
     public float getUnlockedProgress() {
-        return unlockedProgress;
+        return Mth.clamp(unlockedProgress, 0.0F, 1.0F);
+    }
+
+    public boolean isLocked() {
+        return unlockedProgress < -Mth.EPSILON;
+    }
+
+    public void unlock() {
+        if (isLocked()) this.unlockedProgress = 0.0F;
     }
 
     public void updateUnlockedProgress(Level level) {
-        if (unlockedProgress >= 1.0F) return;
+        if (isLocked() || unlockedProgress >= 1.0F) return;
         LivingEntity living = getRenderedEntity(level);
         if (living instanceof Npc || living instanceof Animal || type.is(Tags.EntityTypes.BOSSES)) {
             this.unlockedProgress = 1.0F;

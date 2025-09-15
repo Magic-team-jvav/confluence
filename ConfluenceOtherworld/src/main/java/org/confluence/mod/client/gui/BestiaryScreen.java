@@ -48,6 +48,9 @@ public class BestiaryScreen extends Screen {
         this.leftPos = (width - imageWidth) / 2;
         this.topPos = (height - imageHeight) / 2;
         Collection<ClientBestiaryEntry> entries = ClientBestiary.getInstance().getSortedEntries();
+        for (ClientBestiaryEntry entry : entries) {
+            entry.updateUnlockedProgress(getMinecraft().level); // 打开怪物图鉴再刷新
+        }
         this.maxPage = entries.size() / 24;
         this.page = 0;
         this.renderedEntries = Iterables.limit(entries, 24);
@@ -78,7 +81,8 @@ public class BestiaryScreen extends Screen {
         int x = leftPos + 8;
         int y = topPos + 8;
         for (ClientBestiaryEntry entry : renderedEntries) {
-            if (entry.getUnlockedProgress() > 0.0F && mouseX > x && mouseX < x + 36 && mouseY > y && mouseY < y + 36) {
+            if (mouseX > x && mouseX < x + 36 && mouseY > y && mouseY < y + 36) {
+                if (entry.isLocked()) return false;
                 this.showedEntry = entry;
                 return true;
             }
@@ -99,7 +103,12 @@ public class BestiaryScreen extends Screen {
         int y1 = topPos + 8;
         for (ClientBestiaryEntry entry : renderedEntries) {
             guiGraphics.blitSprite(BACKGROUND, 256, 256, 220, 0, x1, y1, 35, 35);
-            InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, x1, y1, x1 + 35, y1 + 35, 10, 0.3F, mouseX, mouseY, entry.getRenderedEntity(minecraft.level));
+            if (entry.isLocked()) {
+                FilterEntry locked = FilterEntry.LOCKED;
+                guiGraphics.blitSprite(FILTERS, 256, 256, locked.u(), locked.v(), x1 + (36 - locked.w()) / 2, y1 + (36 - locked.h()) / 2, locked.w(), locked.h());
+            } else {
+                InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, x1, y1, x1 + 35, y1 + 35, 10, 0.3F, mouseX, mouseY, entry.getRenderedEntity(getMinecraft().level));
+            }
 
             x1 += 35;
             if (x1 >= leftPos + 8 + 4 * 35) {
@@ -123,7 +132,7 @@ public class BestiaryScreen extends Screen {
             // 背景图
             guiGraphics.blitSprite(showedEntry.getBackground(), 48, 48, 0, 0, x1, y1, 48, 48);
             // 实体
-            InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, x1, y1, leftPos + 212, topPos + 56, 20, 0.3F, mouseX, mouseY, showedEntry.getRenderedEntity(minecraft.level));
+            InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, x1, y1, leftPos + 212, topPos + 56, 20, 0.3F, mouseX, mouseY, showedEntry.getRenderedEntity(getMinecraft().level));
             // 稀有度
             pose.pushPose();
             pose.translate(0, 0, 180);
@@ -216,7 +225,7 @@ public class BestiaryScreen extends Screen {
             // 描述
             if (progress >= 0.2F) {
                 x1 = leftPos + 164;
-                y1 += 16;
+                if (!showedEntry.getFilters().isEmpty()) y1 += 16;
                 Component description = showedEntry.getDescription();
                 if (font.width(description) > 48) {
                     for (FormattedCharSequence sequence : font.split(description, 48)) {
@@ -239,7 +248,7 @@ public class BestiaryScreen extends Screen {
     public void onClose() {
         super.onClose();
         if (parent != null) {
-            minecraft.setScreen(parent);
+            getMinecraft().setScreen(parent);
         }
     }
 }

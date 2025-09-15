@@ -88,7 +88,7 @@ public class FilterEntry {
     public static final FilterEntry IF_UNLOCKED = preset("if_unlocked", 213, 46, 10, 14);
     public static final FilterEntry BOSS_ENEMY = preset("boss_enemy", 227, 47, 13, 13);
 
-    // 白问号(4, 62, 9, 13)
+    public static final FilterEntry LOCKED = preset("unlocked", 4, 62, 9, 13);
     // 黑问号(19, 62, 9, 13)
     public static final FilterEntry RARE_CREATURE = preset("rare_creature", 31, 61, 14, 14);
 

@@ -123,7 +123,7 @@ public final class GameClientEvents {
             CompatibilityHandler.reset();
             DropletsHandler.clear();
             EctoMistHelper.effectiveTombstones = 0;
-            ClientBestiary.removeCurrentLevel();
+            ClientBestiary.getInstance().removeCurrentLevel();
         } else {
             ClientUtils.swordProjectileHandle(minecraft, player);
             HookThrowingHandler.handle(player);

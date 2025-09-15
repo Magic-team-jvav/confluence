@@ -105,15 +105,19 @@ public class ClientBestiary extends ContextAwareReloadListener {
         return INSTANCE;
     }
 
-    public static void removeCurrentLevel() {
-        getInstance().currentLevel = null;
+    public void removeCurrentLevel() {
+        if (currentLevel == null) return;
+        for (ClientBestiaryEntry entry : getSortedEntries()) {
+            entry.resetRenderedEntity();
+        }
+        this.currentLevel = null;
     }
 
     // 玩家进入存档统一同步
     // 随后只需更新部分实体
     public void handle(Level level, Either<Map<String, BestiaryEntry>, String> either) {
-        boolean shouldResetEntity = currentLevel != level; // 这一步是为了释放内存
-        if (shouldResetEntity) {
+        if (currentLevel != level) { // 这一步是为了释放内存
+            removeCurrentLevel();
             this.currentLevel = level;
         }
         either.ifLeft(map -> {
@@ -125,22 +129,19 @@ public class ClientBestiary extends ContextAwareReloadListener {
                     unknown.key = key;
                     return unknown;
                 });
+                cbe.unlock();
                 cbe.killedByCount = be.killedByCount;
                 cbe.maxHealth = be.maxHealth;
                 cbe.knockbackResistance = be.knockbackResistance;
                 cbe.attackDamage = be.attackDamage;
                 cbe.armor = be.armor;
                 cbe.drops = be.drops;
-                if (shouldResetEntity) cbe.resetRenderedEntity();
-                cbe.updateUnlockedProgress(level);
             }
             sortEntries();
         }).ifRight(key -> {
             ClientBestiaryEntry entry = entries.get(key);
             if (entry != null) {
                 entry.killedByCount++;
-                if (shouldResetEntity) entry.resetRenderedEntity();
-                entry.updateUnlockedProgress(level);
             }
         });
     }

@@ -13,12 +13,14 @@ import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.npc.Npc;
 import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.common.Tags;
 import org.confluence.lib.util.LibCodecUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.map.BestiaryEntry;
 import org.confluence.mod.mixin.accessor.EntityAccessor;
-import org.confluence.terraentity.init.TETags;
 
 import java.util.Arrays;
 import java.util.List;
@@ -157,6 +159,10 @@ public class ClientBestiaryEntry extends BestiaryEntry {
         return displayName;
     }
 
+    public void resetRenderedEntity() {
+        this.renderedEntity = null;
+    }
+
     public LivingEntity getRenderedEntity(Level level) {
         if (renderedEntity == null) {
             if (type.create(level) instanceof LivingEntity living) {
@@ -173,9 +179,10 @@ public class ClientBestiaryEntry extends BestiaryEntry {
         return unlockedProgress;
     }
 
-    public void updateUnlockedProgress() {
+    public void updateUnlockedProgress(Level level) {
         if (unlockedProgress >= 1.0F) return;
-        if (type.is(TETags.EntityTypes.NPC)) {
+        LivingEntity living = getRenderedEntity(level);
+        if (living instanceof Npc || living instanceof Animal || type.is(Tags.EntityTypes.BOSSES)) {
             this.unlockedProgress = 1.0F;
         } else {
             float required = BannerConfig.getBasicKills(EntityType.getKey(type).toString());

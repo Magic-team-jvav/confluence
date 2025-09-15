@@ -53,6 +53,7 @@ import org.confluence.mod.client.effect.EctoMistHelper;
 import org.confluence.mod.client.effect.SpelunkerHelper;
 import org.confluence.mod.client.gui.container.ExtraInventoryScreen;
 import org.confluence.mod.client.handler.*;
+import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.client.renderer.item.DungeonCompassRenderer;
 import org.confluence.mod.client.renderer.item.ZombieArmRenderer;
 import org.confluence.mod.client.textures.LocalBrushData;
@@ -122,6 +123,7 @@ public final class GameClientEvents {
             CompatibilityHandler.reset();
             DropletsHandler.clear();
             EctoMistHelper.effectiveTombstones = 0;
+            ClientBestiary.removeCurrentLevel();
         } else {
             ClientUtils.swordProjectileHandle(minecraft, player);
             HookThrowingHandler.handle(player);

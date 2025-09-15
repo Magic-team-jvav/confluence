@@ -14,6 +14,7 @@ import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.resource.ContextAwareReloadListener;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.mod.Confluence;
@@ -38,6 +39,7 @@ public class ClientBestiary extends ContextAwareReloadListener {
     private Comparator<Map.Entry<String, ClientBestiaryEntry>> comparator = SortType.ENTRY_ORDER.comparator;
     private Map<String, ClientBestiaryEntry> entries = Maps.newHashMap();
     private Map<String, ClientBestiaryEntry> sortedEntries = Maps.newLinkedHashMap();
+    private Level currentLevel;
 
     private ClientBestiary() {}
 
@@ -103,9 +105,17 @@ public class ClientBestiary extends ContextAwareReloadListener {
         return INSTANCE;
     }
 
+    public static void removeCurrentLevel() {
+        getInstance().currentLevel = null;
+    }
+
     // 玩家进入存档统一同步
     // 随后只需更新部分实体
-    public void handle(Either<Map<String, BestiaryEntry>, String> either) {
+    public void handle(Level level, Either<Map<String, BestiaryEntry>, String> either) {
+        boolean shouldResetEntity = currentLevel != level; // 这一步是为了释放内存
+        if (shouldResetEntity) {
+            this.currentLevel = level;
+        }
         either.ifLeft(map -> {
             for (Map.Entry<String, BestiaryEntry> entry : map.entrySet()) {
                 BestiaryEntry be = entry.getValue();
@@ -121,14 +131,16 @@ public class ClientBestiary extends ContextAwareReloadListener {
                 cbe.attackDamage = be.attackDamage;
                 cbe.armor = be.armor;
                 cbe.drops = be.drops;
-                cbe.updateUnlockedProgress();
+                if (shouldResetEntity) cbe.resetRenderedEntity();
+                cbe.updateUnlockedProgress(level);
             }
             sortEntries();
         }).ifRight(key -> {
             ClientBestiaryEntry entry = entries.get(key);
             if (entry != null) {
                 entry.killedByCount++;
-                entry.updateUnlockedProgress();
+                if (shouldResetEntity) entry.resetRenderedEntity();
+                entry.updateUnlockedProgress(level);
             }
         });
     }

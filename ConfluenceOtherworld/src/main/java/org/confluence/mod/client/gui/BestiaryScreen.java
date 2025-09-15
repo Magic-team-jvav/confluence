@@ -1,6 +1,7 @@
 package org.confluence.mod.client.gui;
 
 import com.google.common.collect.Iterables;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
@@ -9,6 +10,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.LivingEntity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.client.handler.bestiary.ClientBestiaryEntry;
@@ -57,6 +59,9 @@ public class BestiaryScreen extends Screen {
     }
 
     @Override
+    protected void rebuildWidgets() {}
+
+    @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
         int lastPage = page;
         Collection<ClientBestiaryEntry> entries = ClientBestiary.getInstance().getSortedEntries();
@@ -81,7 +86,7 @@ public class BestiaryScreen extends Screen {
         int x = leftPos + 8;
         int y = topPos + 8;
         for (ClientBestiaryEntry entry : renderedEntries) {
-            if (mouseX > x && mouseX < x + 36 && mouseY > y && mouseY < y + 36) {
+            if (mouseX >= x && mouseX < x + 36 && mouseY >= y && mouseY < y + 36) {
                 if (entry.isLocked()) return false;
                 this.showedEntry = entry;
                 return true;
@@ -104,10 +109,14 @@ public class BestiaryScreen extends Screen {
         for (ClientBestiaryEntry entry : renderedEntries) {
             guiGraphics.blitSprite(BACKGROUND, 256, 256, 220, 0, x1, y1, 35, 35);
             if (entry.isLocked()) {
-                FilterEntry locked = FilterEntry.LOCKED;
-                guiGraphics.blitSprite(FILTERS, 256, 256, locked.u(), locked.v(), x1 + (36 - locked.w()) / 2, y1 + (36 - locked.h()) / 2, locked.w(), locked.h());
+                renderFilter(guiGraphics, FilterEntry.LOCKED, x1, y1, 36, 36);
             } else {
-                InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, x1, y1, x1 + 35, y1 + 35, 10, 0.3F, mouseX, mouseY, entry.getRenderedEntity(getMinecraft().level));
+                LivingEntity living = entry.getRenderedEntity(getMinecraft().level);
+                float size = (float) Math.max(living.getBoundingBox().getXsize(), living.getBoundingBox().getYsize());
+                float factor = 2 / size;
+                int scale = Mth.ceil(10 * factor);
+                float yOffset = 0.3F / factor;
+                InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, x1, y1, x1 + 35, y1 + 35, scale, yOffset, mouseX, mouseY, living);
             }
 
             x1 += 35;
@@ -132,23 +141,24 @@ public class BestiaryScreen extends Screen {
             // 背景图
             guiGraphics.blitSprite(showedEntry.getBackground(), 48, 48, 0, 0, x1, y1, 48, 48);
             // 实体
-            InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, x1, y1, leftPos + 212, topPos + 56, 20, 0.3F, mouseX, mouseY, showedEntry.getRenderedEntity(getMinecraft().level));
+            LivingEntity living = showedEntry.getRenderedEntity(getMinecraft().level);
+            InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, x1, y1, leftPos + 212, topPos + 56, 20, 0.3F, mouseX, mouseY, living);
             // 稀有度
             pose.pushPose();
             pose.translate(0, 0, 180);
             guiGraphics.blitSprite(BACKGROUND, 256, 256, 221, 53, x1, y1, 23, 7);
-            for (int i = 0; i < showedEntry.getRarity(); i += 5) {
+            for (int i = 0; i < showedEntry.getRarity(); i++) {
                 if (i == 0) {
                     // 大星
                     guiGraphics.blitSprite(BACKGROUND, 256, 256, 222, 61, x1 + 1, y1 + 1, 5, 5);
                 } else {
                     // 小星
-                    guiGraphics.blitSprite(BACKGROUND, 256, 256, 227, 61, x1 + 2 + i, y1 + 1, 4, 5);
+                    guiGraphics.blitSprite(BACKGROUND, 256, 256, 227, 61, x1 + 2 + i * 4, y1 + 1, 4, 5);
                 }
             }
             pose.popPose();
             // 名字
-            if (mouseX > x1 && mouseX < x1 + 48 && mouseY > y1 && mouseY < y1 + 48) {
+            if (mouseX >= x1 && mouseX < x1 + 48 && mouseY >= y1 && mouseY < y1 + 48) {
                 guiGraphics.renderTooltip(font, showedEntry.getDisplayName(), mouseX, mouseY);
             }
             // 杀死次数
@@ -160,51 +170,50 @@ public class BestiaryScreen extends Screen {
             guiGraphics.drawString(font, text, 0, 0, 0xFFFFFF);
             pose.popPose();
 
-            if (progress >= 0.2F) {
-                x1 = leftPos + 187 - 1;
-                y1 = topPos + 81 - 1;
-                x2 = leftPos + 212 - 1;
-                y2 = topPos + 92 - 1;
-                // 生命值
+            boolean p20 = progress >= 0.2F;
+            x1 = leftPos + 187 - 1;
+            y1 = topPos + 81 - 1;
+            x2 = leftPos + 212 - 1;
+            y2 = topPos + 92 - 1;
+            // 生命值
+            pose.pushPose();
+            text = p20 ? ATTRIBUTE_MODIFIER_FORMAT.format(showedEntry.maxHealth) : "?";
+            pose.translate(x1 - font.width(text) * 0.8F, y1 - lineHeight, 0);
+            pose.scale(0.8F, 0.8F, 1);
+            guiGraphics.drawString(font, text, 0, 0, 0xFFFFFF);
+            pose.popPose();
+            // 击退抗性
+            pose.pushPose();
+            text = p20 ? ATTRIBUTE_MODIFIER_FORMAT.format(showedEntry.knockbackResistance) : "?";
+            pose.translate(x2 - font.width(text) * 0.8F, y1 - lineHeight, 0);
+            pose.scale(0.8F, 0.8F, 1);
+            guiGraphics.drawString(font, text, 0, 0, 0xFFFFFF);
+            pose.popPose();
+            // 攻击力
+            pose.pushPose();
+            text = p20 ? ATTRIBUTE_MODIFIER_FORMAT.format(showedEntry.attackDamage) : "?";
+            pose.translate(x1 - font.width(text) * 0.8F, y2 - lineHeight, 0);
+            pose.scale(0.8F, 0.8F, 1);
+            guiGraphics.drawString(font, text, 0, 0, 0xFFFFFF);
+            pose.popPose();
+            // 防御力
+            pose.pushPose();
+            text = p20 ? ATTRIBUTE_MODIFIER_FORMAT.format(showedEntry.armor) : "?";
+            pose.translate(x2 - font.width(text) * 0.8F, y2 - lineHeight, 0);
+            pose.scale(0.8F, 0.8F, 1);
+            guiGraphics.drawString(font, text, 0, 0, 0xFFFFFF);
+            pose.popPose();
+            // 钱币
+            x1 = leftPos + 174 - 1;
+            y1 = topPos + 105;
+            for (Integer count : showedEntry.getCoins().platinum2Copper()) {
                 pose.pushPose();
-                text = ATTRIBUTE_MODIFIER_FORMAT.format(showedEntry.maxHealth);
+                text = p20 ? count.toString() : "?";
                 pose.translate(x1 - font.width(text) * 0.8F, y1 - lineHeight, 0);
                 pose.scale(0.8F, 0.8F, 1);
                 guiGraphics.drawString(font, text, 0, 0, 0xFFFFFF);
                 pose.popPose();
-                // 击退抗性
-                pose.pushPose();
-                text = ATTRIBUTE_MODIFIER_FORMAT.format(showedEntry.knockbackResistance);
-                pose.translate(x2 - font.width(text) * 0.8F, y1 - lineHeight, 0);
-                pose.scale(0.8F, 0.8F, 1);
-                guiGraphics.drawString(font, text, 0, 0, 0xFFFFFF);
-                pose.popPose();
-                // 攻击力
-                pose.pushPose();
-                text = ATTRIBUTE_MODIFIER_FORMAT.format(showedEntry.attackDamage);
-                pose.translate(x1 - font.width(text) * 0.8F, y2 - lineHeight, 0);
-                pose.scale(0.8F, 0.8F, 1);
-                guiGraphics.drawString(font, text, 0, 0, 0xFFFFFF);
-                pose.popPose();
-                // 防御力
-                pose.pushPose();
-                text = ATTRIBUTE_MODIFIER_FORMAT.format(showedEntry.armor);
-                pose.translate(x2 - font.width(text) * 0.8F, y2 - lineHeight, 0);
-                pose.scale(0.8F, 0.8F, 1);
-                guiGraphics.drawString(font, text, 0, 0, 0xFFFFFF);
-                pose.popPose();
-                // 钱币
-                x1 = leftPos + 174 - 1;
-                y1 = topPos + 105;
-                for (Integer count : showedEntry.getCoins().platinum2Copper()) {
-                    pose.pushPose();
-                    text = count.toString();
-                    pose.translate(x1 - font.width(text) * 0.8F, y1 - lineHeight, 0);
-                    pose.scale(0.8F, 0.8F, 1);
-                    guiGraphics.drawString(font, text, 0, 0, 0xFFFFFF);
-                    pose.popPose();
-                    x1 += 13;
-                }
+                x1 += 13;
             }
             // 群系
             x1 = leftPos + 164;
@@ -212,8 +221,8 @@ public class BestiaryScreen extends Screen {
             x2 = x1 + 48;
             int t = x1;
             for (FilterEntry filter : showedEntry.getFilters()) {
-                guiGraphics.blitSprite(FILTERS, 256, 256, filter.u(), filter.v(), x1 + (16 - filter.w()) / 2, y1 + (16 - filter.h()) / 2, filter.w(), filter.h());
-                if (mouseX > x1 && mouseX < x1 + 16 && mouseY > y1 && mouseY < y1 + 16) {
+                renderFilter(guiGraphics, filter, x1, y1, 16, 16);
+                if (mouseX >= x1 && mouseX < x1 + 16 && mouseY >= y1 && mouseY < y1 + 16) {
                     guiGraphics.renderTooltip(font, filter.tooltip(), Optional.empty(), mouseX, mouseY);
                 }
                 x1 += 16;
@@ -223,7 +232,7 @@ public class BestiaryScreen extends Screen {
                 }
             }
             // 描述
-            if (progress >= 0.2F) {
+            if (p20) {
                 x1 = leftPos + 164;
                 if (!showedEntry.getFilters().isEmpty()) y1 += 16;
                 Component description = showedEntry.getDescription();
@@ -250,5 +259,17 @@ public class BestiaryScreen extends Screen {
         if (parent != null) {
             getMinecraft().setScreen(parent);
         }
+    }
+
+    private static void renderFilter(GuiGraphics guiGraphics, FilterEntry filter, int x, int y, int alignX, int alignY) {
+        RenderSystem.enableBlend();
+        guiGraphics.blitSprite(FILTERS, 256, 256, filter.u(), filter.v(), x + (alignX - filter.w()) / 2, y + (alignY - filter.h()) / 2, filter.w(), filter.h());
+        RenderSystem.disableBlend();
+    }
+
+    private static void renderFilter(GuiGraphics guiGraphics, FilterEntry filter, int x, int y) {
+        RenderSystem.enableBlend();
+        guiGraphics.blitSprite(FILTERS, 256, 256, filter.u(), filter.v(), x, y, filter.w(), filter.h());
+        RenderSystem.disableBlend();
     }
 }

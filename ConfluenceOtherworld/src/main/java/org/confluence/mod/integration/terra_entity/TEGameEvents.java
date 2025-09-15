@@ -79,7 +79,7 @@ public final class TEGameEvents {
                 }
             }
 
-            if (!Bestiary.INSTANCE.getEntries().containsKey(type)) {
+            if (!Bestiary.INSTANCE.containsKey(npc)) {
                 Bestiary.INSTANCE.updateEntry(npc, false);
             }
 

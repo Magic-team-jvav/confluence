@@ -55,7 +55,7 @@ public class FilterEntry {
     public static final FilterEntry THE_TEMPLE = preset("the_temple", 227, 17, 13, 12);
 
     public static final FilterEntry THE_DUNGEON = preset("the_dungeon", 2, 32, 12, 12);
-    public static final FilterEntry THE_UNDERWORLD = preset("the_underworld", 17, 32, 12, 13);
+    public static final FilterEntry THE_NETHER = preset("the_nether", 17, 32, 12, 13);
     public static final FilterEntry SPIDER_NEST = preset("spider_nest", 31, 33, 14, 12);
     public static final FilterEntry GRAVEYARD = preset("graveyard", 48, 33, 11, 11);
     public static final FilterEntry DAYTIME = preset("daytime", 62, 32, 12, 12);

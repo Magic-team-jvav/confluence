@@ -13,11 +13,11 @@ import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.npc.Npc;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.Tags;
 import org.confluence.lib.util.LibCodecUtils;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.map.BestiaryEntry;
 import org.confluence.mod.mixin.accessor.EntityAccessor;
@@ -34,7 +34,7 @@ public class ClientBestiaryEntry extends BestiaryEntry {
     public static final ResourceLocation SURFACE_MOON = background("surface_moon");
     public static final ResourceLocation SURFACE_RAIN = background("surface_rain");
     public static final ResourceLocation SURFACE_NIGHTTIME_RAIN = background("surface_nighttime_rain");
-    public static final ResourceLocation SURFACE_GRAVEYARD = background("surface_graveyard");
+    public static final ResourceLocation GRAVEYARD = background("graveyard");
     public static final ResourceLocation BLOOD_MOON = background("blodd_moon");
     public static final ResourceLocation ECLIPSE = background("eclipse");
     public static final ResourceLocation PUMPKIN_MOON = background("pumpkin_moon");
@@ -51,8 +51,7 @@ public class ClientBestiaryEntry extends BestiaryEntry {
     public static final ResourceLocation SNOW_MOON = background("snow_moon");
     public static final ResourceLocation UNDERGROUND_SNOW = background("underground_snow");
     public static final ResourceLocation BLIZZARD = background("blizzard");
-    public static final ResourceLocation SURFACE_MUSHROOM = background("surface_mushroom");
-    public static final ResourceLocation UNDERGROUND_MUSHROOM = background("underground_mushroom");
+    public static final ResourceLocation GLOWING_MUSHROOM = background("glowing_mushroom");
     public static final ResourceLocation DESERT = background("desert");
     public static final ResourceLocation DESERT_SUN = background("desert_sun");
     public static final ResourceLocation UNDERGROUND_DESERT = background("underground_desert");
@@ -91,7 +90,7 @@ public class ClientBestiaryEntry extends BestiaryEntry {
     public static final Codec<ClientBestiaryEntry> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             BuiltInRegistries.ENTITY_TYPE.byNameCodec().fieldOf("type").forGetter(ClientBestiaryEntry::getType),
             Codec.INT.lenientOptionalFieldOf("order", 1000000).forGetter(ClientBestiaryEntry::getOrder),
-            ExtraCodecs.intRange(0, 5).lenientOptionalFieldOf("rarity", 0).forGetter(ClientBestiaryEntry::getRarity),
+            ExtraCodecs.intRange(0, 5).lenientOptionalFieldOf("rarity", 1).forGetter(ClientBestiaryEntry::getRarity),
             ResourceLocation.CODEC.lenientOptionalFieldOf("background", SURFACE).forGetter(ClientBestiaryEntry::getBackground),
             ComponentSerialization.CODEC.lenientOptionalFieldOf("description", UNKNOWN).forGetter(ClientBestiaryEntry::getDescription),
             LibCodecUtils.homogenousList(FilterEntry.CODEC, false).lenientOptionalFieldOf("filters", List.of()).forGetter(ClientBestiaryEntry::getFilters),
@@ -111,7 +110,7 @@ public class ClientBestiaryEntry extends BestiaryEntry {
 
     public ClientBestiaryEntry() {
         this.order = 1000000;
-        this.rarity = 0;
+        this.rarity = 1;
         this.background = SURFACE;
         this.description = UNKNOWN;
         this.filters = List.of();
@@ -190,7 +189,7 @@ public class ClientBestiaryEntry extends BestiaryEntry {
     public void updateUnlockedProgress(Level level) {
         if (isLocked() || unlockedProgress >= 1.0F) return;
         LivingEntity living = getRenderedEntity(level);
-        if (living instanceof Npc || living instanceof Animal || type.is(Tags.EntityTypes.BOSSES)) {
+        if (living instanceof Npc || LibUtils.isAnimal(living) || type.is(Tags.EntityTypes.BOSSES)) {
             this.unlockedProgress = 1.0F;
         } else {
             float required = BannerConfig.getBasicKills(EntityType.getKey(type).toString());
@@ -210,7 +209,7 @@ public class ClientBestiaryEntry extends BestiaryEntry {
         private final EntityType<?> type;
         private final String key;
         private int order = 1000000;
-        private int rarity = 0;
+        private int rarity = 1;
         private ResourceLocation background = SURFACE;
         private Component description = UNKNOWN;
         private List<FilterEntry> filters = List.of();

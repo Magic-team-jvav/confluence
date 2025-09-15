@@ -79,6 +79,10 @@ public class Bestiary implements IGlobalData {
         }
     }
 
+    public boolean containsKey(LivingEntity living) {
+        return entries.containsKey(RegisterBestiaryKeyEvent.getKey(living));
+    }
+
     private static float getAttributeBaseValue(AttributeMap map, Holder<Attribute> attribute) {
         AttributeInstance instance = map.getInstance(attribute);
         return instance == null ? 0.0F : (float) instance.getBaseValue();

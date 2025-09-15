@@ -16,7 +16,6 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.resource.ContextAwareReloadListener;
-import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.map.BestiaryEntry;
 
@@ -65,7 +64,7 @@ public class ClientBestiary extends ContextAwareReloadListener {
                     map.put(entry.getKey(), entry.getValue());
                 }
             } catch (RuntimeException | IOException ioexception) {
-                ConfluenceMagicLib.LOGGER.error("Couldn't read bestiary {} in resource pack {}", resourceLocation, resource.sourcePackId(), ioexception);
+                Confluence.LOGGER.error("Couldn't read {} in resource pack {}", resourceLocation, resource.sourcePackId(), ioexception);
             }
         }
         return map;

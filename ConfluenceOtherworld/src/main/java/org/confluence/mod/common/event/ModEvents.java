@@ -53,6 +53,7 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.WipNotDisplayOutput;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.StartupConfigs;
+import org.confluence.mod.api.event.RegisterBestiaryKeyEvent;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.block.natural.ChlorophyteOreBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
@@ -81,9 +82,11 @@ import org.confluence.phase_journey.api.PhaseJourneyEvent;
 import org.confluence.terra_curio.api.event.RegisterAccessoriesComponentUpdateEvent;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTabs;
+import org.confluence.terraentity.init.entity.TEAnimals;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
 
 import java.util.Optional;
+import java.util.function.Function;
 
 import static org.confluence.mod.Confluence.MODID;
 
@@ -344,6 +347,8 @@ public final class ModEvents {
             }
             return false;
         }, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+
+        RegisterBestiaryKeyEvent.postEvent(); // 这个时期正好处于实体类型注册完的阶段，且datagen也会调用这个事件
     }
 
     @SubscribeEvent
@@ -484,5 +489,21 @@ public final class ModEvents {
                 .register("confluence:tr_crimson", "confluence:the_crimson")
                 .register("confluence:tr_crimson_desert", "confluence:the_crimson_desert")
                 .register("confluence:tr_crimson_tundra", "confluence:the_crimson_tundra");
+    }
+
+    @SubscribeEvent
+    public static void registerBestiaryKey(RegisterBestiaryKeyEvent event) {
+        Function<Integer, String> i2s = i -> Integer.toString(i);
+        event.register(TEAnimals.JEWEL_BUNNY.get(), RegisterBestiaryKeyEvent.terraVariant(i2s));
+        event.register(TEAnimals.SQUIRREL.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
+        event.register(TEAnimals.JEWEL_SQUIRREL.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
+        event.register(TEAnimals.GRASSHOPPER.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
+        event.register(TEAnimals.BUTTERFLY.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
+        event.register(TEAnimals.WORM.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
+        event.register(TEAnimals.DRAGONFLY.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
+        event.register(TEAnimals.LADYBUG.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
+        event.register(TEAnimals.FEALING.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
+        event.register(TEAnimals.DUCK.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
+        event.register(TEAnimals.FAIRY.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
     }
 }

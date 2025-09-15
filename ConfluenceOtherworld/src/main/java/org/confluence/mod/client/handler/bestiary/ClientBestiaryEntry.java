@@ -2,18 +2,28 @@ package org.confluence.mod.client.handler.bestiary;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.xiaohunao.enemybanner.BannerConfig;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.TagParser;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ExtraCodecs;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import org.confluence.lib.util.LibCodecUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.map.BestiaryEntry;
+import org.confluence.mod.mixin.accessor.EntityAccessor;
+import org.confluence.terraentity.init.TETags;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 public class ClientBestiaryEntry extends BestiaryEntry {
     public static final ResourceLocation SURFACE = background("surface");
@@ -77,11 +87,13 @@ public class ClientBestiaryEntry extends BestiaryEntry {
 
     public static final Component UNKNOWN = Component.literal("???");
     public static final Codec<ClientBestiaryEntry> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            BuiltInRegistries.ENTITY_TYPE.byNameCodec().fieldOf("type").forGetter(ClientBestiaryEntry::getType),
             Codec.INT.lenientOptionalFieldOf("order", 1000000).forGetter(ClientBestiaryEntry::getOrder),
             ExtraCodecs.intRange(0, 5).lenientOptionalFieldOf("rarity", 0).forGetter(ClientBestiaryEntry::getRarity),
             ResourceLocation.CODEC.lenientOptionalFieldOf("background", SURFACE).forGetter(ClientBestiaryEntry::getBackground),
             ComponentSerialization.CODEC.lenientOptionalFieldOf("description", UNKNOWN).forGetter(ClientBestiaryEntry::getDescription),
-            FilterEntry.CODEC.listOf().lenientOptionalFieldOf("filters", List.of()).forGetter(ClientBestiaryEntry::getFilters)
+            LibCodecUtils.homogenousList(FilterEntry.CODEC, false).lenientOptionalFieldOf("filters", List.of()).forGetter(ClientBestiaryEntry::getFilters),
+            TagParser.LENIENT_CODEC.lenientOptionalFieldOf("entity_nbt").forGetter(ClientBestiaryEntry::getEntityNbt)
     ).apply(instance, ClientBestiaryEntry::new));
 
     private final int order;
@@ -89,9 +101,11 @@ public class ClientBestiaryEntry extends BestiaryEntry {
     private final ResourceLocation background;
     private final Component description;
     private final List<FilterEntry> filters;
+    private final Optional<CompoundTag> entityNbt;
 
-    private Component displayName;
-    private Entity renderedEntity;
+    private transient float unlockedProgress = 0.0F;
+    private transient Component displayName;
+    private transient LivingEntity renderedEntity;
 
     public ClientBestiaryEntry() {
         this.order = 1000000;
@@ -99,14 +113,17 @@ public class ClientBestiaryEntry extends BestiaryEntry {
         this.background = SURFACE;
         this.description = UNKNOWN;
         this.filters = List.of();
+        this.entityNbt = Optional.empty();
     }
 
-    private ClientBestiaryEntry(int order, int rarity, ResourceLocation background, Component description, List<FilterEntry> filters) {
+    private ClientBestiaryEntry(EntityType<?> type, int order, int rarity, ResourceLocation background, Component description, List<FilterEntry> filters, Optional<CompoundTag> entityNbt) {
+        this.type = type;
         this.order = order;
         this.rarity = rarity;
         this.background = background;
         this.description = description;
         this.filters = filters;
+        this.entityNbt = entityNbt;
     }
 
     public int getOrder() {
@@ -129,41 +146,64 @@ public class ClientBestiaryEntry extends BestiaryEntry {
         return filters;
     }
 
+    public Optional<CompoundTag> getEntityNbt() {
+        return entityNbt;
+    }
+
     public Component getDisplayName() {
         if (displayName == null) {
-            this.displayName = type.getDescription();
+            this.displayName = Component.translatable(key);
         }
         return displayName;
     }
 
-    public Entity getRenderedEntity(Level level) {
+    public LivingEntity getRenderedEntity(Level level) {
         if (renderedEntity == null) {
-            this.renderedEntity = type.create(level);
-            if (renderedEntity == null) {
-                throw new NullPointerException("Failed to create rendered entity from type " + type);
+            if (type.create(level) instanceof LivingEntity living) {
+                this.renderedEntity = living;
+                entityNbt.ifPresent(nbt -> ((EntityAccessor) renderedEntity).callReadAdditionalSaveData(nbt));
+            } else {
+                throw new NullPointerException("Failed to create rendered entity from type " + key);
             }
         }
         return renderedEntity;
+    }
+
+    public float getUnlockedProgress() {
+        return unlockedProgress;
+    }
+
+    public void updateUnlockedProgress() {
+        if (unlockedProgress >= 1.0F) return;
+        if (type.is(TETags.EntityTypes.NPC)) {
+            this.unlockedProgress = 1.0F;
+        } else {
+            float required = BannerConfig.getBasicKills(EntityType.getKey(type).toString());
+            this.unlockedProgress = Mth.clamp(killedByCount / required, 0.0F, 1.0F);
+        }
     }
 
     public static ResourceLocation background(String path) {
         return Confluence.asResource("bestiary/background/" + path);
     }
 
-    public static Builder builder(EntityType<?> entityType) {
-        return new Builder(entityType);
+    public static Builder builder(EntityType<?> type, String key) {
+        return new Builder(type, key);
     }
 
     public static class Builder {
-        private final EntityType<?> entityType;
+        private final EntityType<?> type;
+        private final String key;
         private int order = 1000000;
         private int rarity = 0;
         private ResourceLocation background = SURFACE;
         private Component description = UNKNOWN;
         private List<FilterEntry> filters = List.of();
+        private CompoundTag entityNbt;
 
-        private Builder(EntityType<?> entityType) {
-            this.entityType = entityType;
+        private Builder(EntityType<?> type, String key) {
+            this.type = type;
+            this.key = key;
         }
 
         public Builder order(int order) {
@@ -194,9 +234,21 @@ public class ClientBestiaryEntry extends BestiaryEntry {
             return this;
         }
 
+        public Builder entityNbt(Consumer<CompoundTag> consumer) {
+            CompoundTag nbt = new CompoundTag();
+            consumer.accept(nbt);
+            this.entityNbt = nbt;
+            return this;
+        }
+
+        public Builder entityNbt(CompoundTag nbt) {
+            this.entityNbt = nbt;
+            return this;
+        }
+
         public ClientBestiaryEntry build() {
-            ClientBestiaryEntry entry = new ClientBestiaryEntry(order, rarity, background, description, filters);
-            entry.type = entityType;
+            ClientBestiaryEntry entry = new ClientBestiaryEntry(type, order, rarity, background, description, filters, Optional.ofNullable(entityNbt));
+            entry.key = key;
             return entry;
         }
     }

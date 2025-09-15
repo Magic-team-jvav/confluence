@@ -5,6 +5,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.network.chat.Component;
 
+import java.util.List;
 import java.util.Map;
 
 public class FilterEntry {
@@ -97,8 +98,7 @@ public class FilterEntry {
     private final int w;
     private final int h;
 
-    private transient Component title;
-    private transient Component desc;
+    private transient List<Component> tooltip;
 
     private FilterEntry(String name, int u, int v, int w, int h) {
         this.name = name;
@@ -108,7 +108,7 @@ public class FilterEntry {
         this.h = h;
     }
 
-    // todo 事件
+    // todo 事件注册
     private static FilterEntry preset(String name, int u, int v, int w, int h) {
         FilterEntry entry = new FilterEntry(name, u, v, w, h);
         PRESETS.put(name, entry);
@@ -135,18 +135,14 @@ public class FilterEntry {
         return h;
     }
 
-    public Component title() {
-        if (title == null) {
-            this.title = Component.translatable("bestiary.confluence.filter." + name + ".title");
+    public List<Component> tooltip() {
+        if (tooltip == null) {
+            this.tooltip = List.of(
+                    Component.translatable("bestiary.confluence.filter." + name + ".title"),
+                    Component.translatable("bestiary.confluence.filter." + name + ".desc")
+            );
         }
-        return title;
-    }
-
-    public Component desc() {
-        if (desc == null) {
-            this.desc = Component.translatable("bestiary.confluence.filter." + name + ".desc");
-        }
-        return desc;
+        return tooltip;
     }
 
     @Override

@@ -40,8 +40,6 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
     private static final ResourceLocation ACCESSORY = TerraCurio.asResource("textures/slot/accessory.png");
 
     private boolean buttonPressed = false;
-    private float xMouse;
-    private float yMouse;
     private final ExtraTeamRender teamRender = new ExtraTeamRender(this);
 
     public ExtraInventoryScreen(ExtraInventoryMenu menu, Inventory playerInventory, Component title) {
@@ -53,8 +51,6 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
         teamRender.renderTeamIcon(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
         super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
         renderTooltip(pGuiGraphics, pMouseX, pMouseY);
-        this.xMouse = (float) pMouseX;
-        this.yMouse = (float) pMouseY;
     }
 
     @Override
@@ -110,7 +106,7 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
         if (buttonPressed) {
             guiGraphics.blit(BACKGROUND, leftPos + 147, topPos + 33, 194, 0, 18, 20);
         }
-        renderEntityInInventoryFollowsMouse(guiGraphics, leftPos + 26, topPos + 8, leftPos + 75, topPos + 78, 30, 0.0625F, xMouse, yMouse, minecraft.player);
+        renderEntityInInventoryFollowsMouse(guiGraphics, leftPos + 26, topPos + 8, leftPos + 75, topPos + 78, 30, 0.0625F, mouseX, mouseY, minecraft.player);
     }
 
     private void renderEquipment(GuiGraphics guiGraphics, int i) {

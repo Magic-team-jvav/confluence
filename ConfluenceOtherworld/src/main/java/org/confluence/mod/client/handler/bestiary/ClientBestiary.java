@@ -1,56 +1,99 @@
 package org.confluence.mod.client.handler.bestiary;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.JsonOps;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.EntityType;
-import org.confluence.lib.common.data.SingleJsonFileReloadListener;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
+import net.minecraft.server.packs.resources.Resource;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.util.profiling.ProfilerFiller;
+import net.neoforged.neoforge.resource.ContextAwareReloadListener;
+import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.map.BestiaryEntry;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+import java.io.IOException;
+import java.io.Reader;
+import java.util.Collection;
 import java.util.Comparator;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 
-public class ClientBestiary extends SingleJsonFileReloadListener {
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
+public class ClientBestiary extends ContextAwareReloadListener {
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
     private static ClientBestiary INSTANCE;
 
-    private LinkedHashMap<EntityType<?>, ClientBestiaryEntry> entries = Maps.newLinkedHashMap();
+    private Comparator<Map.Entry<String, ClientBestiaryEntry>> comparator = SortType.ENTRY_ORDER.comparator;
+    private Map<String, ClientBestiaryEntry> entries = Maps.newHashMap();
+    private Map<String, ClientBestiaryEntry> sortedEntries = Maps.newLinkedHashMap();
 
     private ClientBestiary() {}
 
     @Override
-    protected void apply(Map<ResourceLocation, JsonElement> resourceList) {
-        List<ClientBestiaryEntry> list = Lists.newArrayList();
-        for (Map.Entry<ResourceLocation, JsonElement> entry : resourceList.entrySet()) {
+    public CompletableFuture<Void> reload(
+            PreparableReloadListener.PreparationBarrier stage,
+            ResourceManager resourceManager,
+            ProfilerFiller preparationsProfiler,
+            ProfilerFiller reloadProfiler,
+            Executor backgroundExecutor,
+            Executor gameExecutor
+    ) {
+        return CompletableFuture.supplyAsync(() -> prepare(resourceManager), backgroundExecutor).thenCompose(stage::wait).thenAcceptAsync(this::apply, gameExecutor);
+    }
+
+    protected Map<String, JsonElement> prepare(ResourceManager resourceManager) {
+        Map<String, JsonElement> map = new HashMap<>();
+        ResourceLocation resourceLocation = Confluence.asResource("bestiary.json");
+        for (Resource resource : resourceManager.getResourceStack(resourceLocation)) {
+            try (Reader reader = resource.openAsReader()) {
+                JsonObject jsonobject = GsonHelper.fromJson(GSON, reader, JsonObject.class);
+                for (Map.Entry<String, JsonElement> entry : jsonobject.entrySet()) {
+                    map.put(entry.getKey(), entry.getValue());
+                }
+            } catch (RuntimeException | IOException ioexception) {
+                ConfluenceMagicLib.LOGGER.error("Couldn't read bestiary {} in resource pack {}", resourceLocation, resource.sourcePackId(), ioexception);
+            }
+        }
+        return map;
+    }
+
+    protected void apply(Map<String, JsonElement> resourceList) {
+        Map<String, ClientBestiaryEntry> map = Maps.newHashMap();
+        for (Map.Entry<String, JsonElement> entry : resourceList.entrySet()) {
             ClientBestiaryEntry.CODEC.parse(JsonOps.INSTANCE, entry.getValue()).ifSuccess(result -> {
-                result.type = BuiltInRegistries.ENTITY_TYPE.get(entry.getKey());
-                list.add(result);
+                result.key = entry.getKey();
+                map.put(result.key, result);
             });
         }
-        LinkedHashMap<EntityType<?>, ClientBestiaryEntry> map = Maps.newLinkedHashMap();
-        list.stream().sorted(Comparator.comparingInt(ClientBestiaryEntry::getOrder))
-                .forEachOrdered(entry -> map.put(entry.type, entry));
         this.entries = map;
+        sortEntries();
     }
 
-    @Override
-    protected ResourceLocation resourcePath() {
-        return Confluence.asResource("bestiary.json");
+    public void setSortType(SortType type, boolean reverse) {
+        this.comparator = reverse ? type.comparator.reversed() : type.comparator;
+        sortEntries();
     }
 
-    @Override
-    protected String identifier() {
-        return "bestiary";
+    private void sortEntries() {
+        Map<String, ClientBestiaryEntry> sorted = Maps.newLinkedHashMap();
+        entries.entrySet().stream().sorted(comparator).forEachOrdered(entry -> sorted.put(entry.getKey(), entry.getValue()));
+        this.sortedEntries = sorted;
     }
 
-    public LinkedHashMap<EntityType<?>, ClientBestiaryEntry> getEntries() {
-        return entries;
+    public Collection<ClientBestiaryEntry> getSortedEntries() {
+        return sortedEntries.values();
     }
 
     public static ClientBestiary getInstance() {
@@ -62,14 +105,14 @@ public class ClientBestiary extends SingleJsonFileReloadListener {
 
     // 玩家进入存档统一同步
     // 随后只需更新部分实体
-    public static void handle(Either<Map<EntityType<?>, BestiaryEntry>, EntityType<?>> either) {
+    public void handle(Either<Map<String, BestiaryEntry>, String> either) {
         either.ifLeft(map -> {
-            LinkedHashMap<EntityType<?>, ClientBestiaryEntry> entries = getInstance().getEntries();
-            for (Map.Entry<EntityType<?>, BestiaryEntry> entry : map.entrySet()) {
+            for (Map.Entry<String, BestiaryEntry> entry : map.entrySet()) {
                 BestiaryEntry be = entry.getValue();
-                ClientBestiaryEntry cbe = entries.computeIfAbsent(entry.getKey(), type -> {
+                ClientBestiaryEntry cbe = entries.computeIfAbsent(entry.getKey(), key -> {
                     ClientBestiaryEntry unknown = new ClientBestiaryEntry();
-                    unknown.type = type;
+                    unknown.type = be.type;
+                    unknown.key = key;
                     return unknown;
                 });
                 cbe.killedByCount = be.killedByCount;
@@ -78,10 +121,31 @@ public class ClientBestiary extends SingleJsonFileReloadListener {
                 cbe.attackDamage = be.attackDamage;
                 cbe.armor = be.armor;
                 cbe.drops = be.drops;
+                cbe.updateUnlockedProgress();
             }
-        }).ifRight(type -> {
-            ClientBestiaryEntry entry = getInstance().getEntries().get(type);
-            if (entry != null) entry.killedByCount++;
+            sortEntries();
+        }).ifRight(key -> {
+            ClientBestiaryEntry entry = entries.get(key);
+            if (entry != null) {
+                entry.killedByCount++;
+                entry.updateUnlockedProgress();
+            }
         });
+    }
+
+    public enum SortType {
+        ENTRY_ORDER(Comparator.comparingInt(entry -> entry.getValue().getOrder())),
+        ENTITY_ID(Map.Entry.comparingByKey()),
+        ATTACK_DAMAGE(Comparator.comparingDouble(entry -> entry.getValue().attackDamage)),
+        ARMOR(Comparator.comparingDouble(entry -> entry.getValue().armor)),
+        DROPS(Comparator.comparingInt(entry -> entry.getValue().drops)),
+        MAX_HEALTH(Comparator.comparingDouble(entry -> entry.getValue().maxHealth)),
+        RARITY(Comparator.comparingInt(entry -> entry.getValue().getRarity()));
+
+        public final Comparator<Map.Entry<String, ClientBestiaryEntry>> comparator;
+
+        SortType(Comparator<Map.Entry<String, ClientBestiaryEntry>> comparator) {
+            this.comparator = comparator;
+        }
     }
 }

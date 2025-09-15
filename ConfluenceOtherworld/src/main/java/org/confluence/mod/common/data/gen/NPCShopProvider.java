@@ -1,4 +1,4 @@
-package org.confluence.mod.common.data.gen.recipe;
+package org.confluence.mod.common.data.gen;
 
 import com.google.common.collect.ImmutableMap;
 import com.xiaohunao.terra_moment.common.init.TMMoments;

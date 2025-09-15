@@ -19,9 +19,9 @@ public final class BestiaryEntrySubProvider {
             super(ModDataMaps.BESTIARY_ENTRY);
         }
 
-        public Builder add(IHolderExtension<EntityType<?>> holder, float maxHealth, float knockbackResistance, float attackDamage, float armor, int drops) {
+        public Builder add(IHolderExtension<EntityType<?>> holder, String typeKey, String variant, float maxHealth, float knockbackResistance, float attackDamage, float armor, int drops) {
             BestiaryEntry entry = new BestiaryEntry();
-            entry.type = holder.getDelegate().value();
+            entry.key = variant.isEmpty() ? typeKey : typeKey + '.' + variant;
             entry.maxHealth = maxHealth;
             entry.knockbackResistance = knockbackResistance;
             entry.attackDamage = attackDamage;
@@ -29,6 +29,18 @@ public final class BestiaryEntrySubProvider {
             entry.drops = drops;
             super.add(Objects.requireNonNull(holder.getKey()), entry, false);
             return this;
+        }
+
+        public Builder add(IHolderExtension<EntityType<?>> holder, String variant, float maxHealth, float knockbackResistance, float attackDamage, float armor, int drops) {
+            return add(holder, holder.getDelegate().value().getDescriptionId(), variant, maxHealth, knockbackResistance, attackDamage, armor, drops);
+        }
+
+        public Builder add(IHolderExtension<EntityType<?>> holder, float maxHealth, float knockbackResistance, float attackDamage, float armor, int drops) {
+            return add(holder, "", maxHealth, knockbackResistance, attackDamage, armor, drops);
+        }
+
+        public Builder addIntVariant(IHolderExtension<EntityType<?>> holder, String variantKey, int variant, float maxHealth, float knockbackResistance, float attackDamage, float armor, int drops) {
+            return add(holder, variantKey + '.' + variant, maxHealth, knockbackResistance, attackDamage, armor, drops);
         }
     }
 }

@@ -205,6 +205,18 @@ public class ClientBestiaryEntry extends BestiaryEntry {
         return new Builder(type, key);
     }
 
+    public ClientBestiaryEntry copy() {
+        return new ClientBestiaryEntry(
+                type,
+                order,
+                rarity,
+                background,
+                description,
+                filters,
+                entityNbt
+        );
+    }
+
     public static class Builder {
         private final EntityType<?> type;
         private final String key;

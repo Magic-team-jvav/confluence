@@ -49,6 +49,11 @@ public class Bestiary implements IGlobalData {
         return entries;
     }
 
+    @Override
+    public void clear() {
+        entries.clear();
+    }
+
     public BestiaryEntry getOrCreateEntry(LivingEntity living) {
         return entries.computeIfAbsent(RegisterBestiaryKeyEvent.getKey(living), key -> {
             EntityType<?> type = living.getType();

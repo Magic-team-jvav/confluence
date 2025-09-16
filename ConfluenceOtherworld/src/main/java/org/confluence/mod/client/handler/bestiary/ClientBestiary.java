@@ -7,7 +7,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.JsonOps;
+import net.minecraft.ChatFormatting;
 import net.minecraft.MethodsReturnNonnullByDefault;
+import net.minecraft.Util;
+import net.minecraft.client.searchtree.SearchTree;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.Resource;
@@ -28,6 +31,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
+import java.util.stream.Stream;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
@@ -37,7 +41,9 @@ public class ClientBestiary extends ContextAwareReloadListener {
 
     private Comparator<Map.Entry<String, ClientBestiaryEntry>> comparator = SortType.ENTRY_ORDER.comparator;
     private Map<String, ClientBestiaryEntry> entries = Maps.newHashMap();
+    private Map<String, ClientBestiaryEntry> backupEntries = Maps.newHashMap();
     private Map<String, ClientBestiaryEntry> sortedEntries = Maps.newLinkedHashMap();
+    private CompletableFuture<SearchTree<Map.Entry<String, ClientBestiaryEntry>>> searchTree = CompletableFuture.completedFuture(SearchTree.empty());
     private Level currentLevel;
 
     private ClientBestiary() {}
@@ -72,19 +78,28 @@ public class ClientBestiary extends ContextAwareReloadListener {
 
     protected void apply(Map<String, JsonElement> resourceList) {
         Map<String, ClientBestiaryEntry> map = Maps.newHashMap();
+        Map<String, ClientBestiaryEntry> backup = Maps.newHashMap();
         for (Map.Entry<String, JsonElement> entry : resourceList.entrySet()) {
             ClientBestiaryEntry.CODEC.parse(JsonOps.INSTANCE, entry.getValue()).ifSuccess(result -> {
                 result.key = entry.getKey();
                 map.put(result.key, result);
+                backup.put(result.key, result.copy());
             });
         }
         this.entries = map;
-        sortEntries();
+        this.backupEntries = backup;
     }
 
     public void setSortType(SortType type, boolean reverse) {
         this.comparator = reverse ? type.comparator.reversed() : type.comparator;
         sortEntries();
+    }
+
+    public Collection<ClientBestiaryEntry> search(String query) {
+        if (query.isEmpty()) {
+            return sortedEntries.values();
+        }
+        return searchTree.join().search(query).stream().sorted(comparator).map(Map.Entry::getValue).toList();
     }
 
     private void sortEntries() {
@@ -104,22 +119,26 @@ public class ClientBestiary extends ContextAwareReloadListener {
         return INSTANCE;
     }
 
-    public void removeCurrentLevel() {
+    public void resetEntries() {
         if (currentLevel == null) return;
-        for (ClientBestiaryEntry entry : getSortedEntries()) {
-            entry.resetRenderedEntity();
-        }
         this.currentLevel = null;
+        Map<String, ClientBestiaryEntry> map = Maps.newHashMap();
+        for (Map.Entry<String, ClientBestiaryEntry> entry : backupEntries.entrySet()) {
+            map.put(entry.getKey(), entry.getValue().copy());
+        }
+        this.entries = map;
+        sortEntries();
     }
 
     // 玩家进入存档统一同步
     // 随后只需更新部分实体
     public void handle(Level level, Either<Map<String, BestiaryEntry>, String> either) {
         if (currentLevel != level) { // 这一步是为了释放内存
-            removeCurrentLevel();
+            resetEntries();
             this.currentLevel = level;
         }
         either.ifLeft(map -> {
+            int lastSize = entries.size();
             for (Map.Entry<String, BestiaryEntry> entry : map.entrySet()) {
                 BestiaryEntry be = entry.getValue();
                 ClientBestiaryEntry cbe = entries.computeIfAbsent(entry.getKey(), key -> {
@@ -136,7 +155,16 @@ public class ClientBestiary extends ContextAwareReloadListener {
                 cbe.armor = be.armor;
                 cbe.drops = be.drops;
             }
-            sortEntries();
+            if (lastSize != entries.size()) {
+                sortEntries();
+                this.searchTree = CompletableFuture.supplyAsync(() -> SearchTree.plainText(
+                        sortedEntries.entrySet().stream().filter(entry -> !entry.getValue().isLocked()).toList(),
+                        entry -> Stream.of(
+                                entry.getValue().type.getDescription(),
+                                entry.getValue().getDescription()
+                        ).map(c -> ChatFormatting.stripFormatting(c.getString()).trim())
+                ), Util.backgroundExecutor());
+            }
         }).ifRight(key -> {
             ClientBestiaryEntry entry = entries.get(key);
             if (entry != null) {
@@ -154,7 +182,7 @@ public class ClientBestiary extends ContextAwareReloadListener {
         MAX_HEALTH(Comparator.comparingDouble(entry -> entry.getValue().maxHealth)),
         RARITY(Comparator.comparingInt(entry -> entry.getValue().getRarity()));
 
-        public final Comparator<Map.Entry<String, ClientBestiaryEntry>> comparator;
+        private final Comparator<Map.Entry<String, ClientBestiaryEntry>> comparator;
 
         SortType(Comparator<Map.Entry<String, ClientBestiaryEntry>> comparator) {
             this.comparator = comparator;

@@ -4,6 +4,7 @@ import com.google.common.collect.Iterables;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.Component;
@@ -27,16 +28,38 @@ public class BestiaryScreen extends Screen {
     private static final ResourceLocation BACKGROUND = Confluence.asResource("bestiary/background");
     private static final ResourceLocation FILTERS = Confluence.asResource("bestiary/filters");
 
+    private static final int textureWidth = 512;
+    private static final int textureHeight = 256;
+    private static final int imageWidth = 220;
+    private static final int imageHeight = 230;
+
+    private static final int renderedEntryX = 8;
+    private static final int renderedEntryY = 10;
+
+    private static final int showedEntryX = 164;
+    private static final int showedEntryY = renderedEntryY;
+    private static final int showedEntryWH = 48;
+    private static final float textScale = 0.8F;
+
     private final @Nullable Screen parent;
-    private int imageWidth;
-    private int imageHeight;
     private int topPos;
     private int leftPos;
 
     private int maxPage;
     private int page;
     private Iterable<ClientBestiaryEntry> renderedEntries = List.of();
+    private Collection<ClientBestiaryEntry> entries = List.of();
     private @Nullable ClientBestiaryEntry showedEntry;
+
+    private GuiSprite slider;
+
+    private boolean searchBoxOpened = false;
+    private GuiSprite closedSearchBox;
+    private GuiSprite openedSearchBox;
+    private ClickableArea editBoxArea;
+    private ClickableArea searchButtonArea;
+    private ClickableArea closeSearchBoxArea;
+    private EditBox editBox;
 
     public BestiaryScreen(@Nullable Screen parent) {
         super(Component.empty());
@@ -45,46 +68,68 @@ public class BestiaryScreen extends Screen {
 
     @Override
     protected void init() {
-        this.imageWidth = 220;
-        this.imageHeight = 227;
         this.leftPos = (width - imageWidth) / 2;
         this.topPos = (height - imageHeight) / 2;
-        Collection<ClientBestiaryEntry> entries = ClientBestiary.getInstance().getSortedEntries();
+        this.entries = ClientBestiary.getInstance().getSortedEntries();
         for (ClientBestiaryEntry entry : entries) {
             entry.updateUnlockedProgress(getMinecraft().level); // 打开怪物图鉴再刷新
         }
-        this.maxPage = entries.size() / 24;
-        this.page = 0;
-        this.renderedEntries = Iterables.limit(entries, 24);
+        updateRenderedEntries(0);
+
+        this.slider = new GuiSprite(BACKGROUND, textureWidth, textureHeight, 221, 37, 7, 15).setX(leftPos + 153);
+
+        int searchBoxX = leftPos + imageWidth;
+        int searchBoxY = topPos;
+        this.closedSearchBox = new GuiSprite(BACKGROUND, textureWidth, textureHeight, 257, 0, 13, 16).setPos(searchBoxX, searchBoxY);
+        this.openedSearchBox = new GuiSprite(BACKGROUND, textureWidth, textureHeight, 285, 0, 104, 16).setPos(searchBoxX, searchBoxY);
+        this.editBoxArea = new ClickableArea(82, 62).setPos(searchBoxX, searchBoxY);
+        this.searchButtonArea = new ClickableArea(13, 16).setPos(editBoxArea.getEndX(), searchBoxY);
+        this.closeSearchBoxArea = new ClickableArea(9, 16).setPos(searchButtonArea.getEndX(), searchBoxY);
+        addRenderableWidget(this.editBox = new EditBox(font, searchBoxX + 1, searchBoxY + 2, 80, 9, Component.empty()));
+        editBox.setBordered(false);
+        editBox.setMaxLength(50);
     }
 
     @Override
     protected void rebuildWidgets() {}
 
     @Override
+    public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
+        return false; // todo 滚动条
+    }
+
+    @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
-        int lastPage = page;
-        Collection<ClientBestiaryEntry> entries = ClientBestiary.getInstance().getSortedEntries();
+        int x = leftPos + renderedEntryX;
+        int y = topPos + renderedEntryY;
+        if (mouseX >= x && mouseX < x + 141 && mouseY >= y && mouseY < y + 211) {
+            int lastPage = page;
+            updateRenderedEntries(page + Mth.sign(-scrollY));
+            return lastPage != page;
+        }
+        return false;
+    }
+
+    private void updateRenderedEntries(int page) {
         if (entries.size() > 24) {
             this.maxPage = entries.size() / 24;
-            this.page = Mth.clamp(page + Mth.sign(-scrollY), 0, maxPage);
-            if (page == 0) {
+            this.page = Mth.clamp(page, 0, maxPage);
+            if (this.page == 0) {
                 this.renderedEntries = Iterables.limit(entries, 24);
             } else {
-                this.renderedEntries = Iterables.limit(Iterables.skip(entries, page * 24), 24);
+                this.renderedEntries = Iterables.limit(Iterables.skip(entries, this.page * 24), 24);
             }
         } else {
             this.maxPage = 0;
             this.page = 0;
             this.renderedEntries = Iterables.limit(entries, 24);
         }
-        return lastPage != page;
     }
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        int x = leftPos + 8;
-        int y = topPos + 8;
+        int x = leftPos + renderedEntryX;
+        int y = topPos + renderedEntryY;
         for (ClientBestiaryEntry entry : renderedEntries) {
             if (mouseX >= x && mouseX < x + 36 && mouseY >= y && mouseY < y + 36) {
                 if (entry.isLocked()) return false;
@@ -92,22 +137,58 @@ public class BestiaryScreen extends Screen {
                 return true;
             }
             x += 36;
-            if (x >= leftPos + 8 + 4 * 36) {
-                x = leftPos + 8;
+            if (x >= leftPos + renderedEntryX + 4 * 36) {
+                x = leftPos + renderedEntryX;
                 y += 36;
+            }
+        }
+
+        if (searchBoxOpened) {
+            if (openedSearchBox.isHovered(mouseX, mouseY)) {
+                if (editBoxArea.isHovered(mouseX, mouseY)) {
+                    setFocused(editBox);
+                } else if (searchButtonArea.isHovered(mouseX, mouseY)) {
+                    this.entries = ClientBestiary.getInstance().search(editBox.getValue().trim());
+                    updateRenderedEntries(0);
+                } else if (closeSearchBoxArea.isHovered(mouseX, mouseY)) {
+                    toggleSearchBox(false);
+                } else {
+                    return false;
+                }
+                return true;
+            }
+        } else {
+            if (closedSearchBox.isHovered(mouseX, mouseY)) {
+                toggleSearchBox(true);
+                return true;
+            }
+        }
+        if (editBox.isFocused()) {
+            setFocused(null);
+            if (editBox.getValue().trim().isEmpty()) {
+                this.entries = ClientBestiary.getInstance().getSortedEntries();
+                updateRenderedEntries(0);
             }
         }
         return false;
     }
 
+    private void toggleSearchBox(boolean enable) {
+        this.searchBoxOpened = enable;
+        editBoxArea.setActive(enable);
+        searchButtonArea.setActive(enable);
+        closeSearchBoxArea.setActive(enable);
+        editBox.setVisible(enable);
+    }
+
     @Override
     public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        guiGraphics.blitSprite(BACKGROUND, 256, 256, 0, 0, leftPos, topPos, imageWidth, imageHeight);
+        guiGraphics.blitSprite(BACKGROUND, textureWidth, textureHeight, 0, 0, leftPos, topPos, imageWidth, imageHeight);
 
-        int x1 = leftPos + 8;
-        int y1 = topPos + 8;
+        int x1 = leftPos + renderedEntryX;
+        int y1 = topPos + renderedEntryY;
         for (ClientBestiaryEntry entry : renderedEntries) {
-            guiGraphics.blitSprite(BACKGROUND, 256, 256, 220, 0, x1, y1, 35, 35);
+            guiGraphics.blitSprite(BACKGROUND, textureWidth, textureHeight, 220, 0, x1, y1, 36, 36);
             if (entry.isLocked()) {
                 renderFilter(guiGraphics, FilterEntry.LOCKED, x1, y1, 36, 36);
             } else {
@@ -116,108 +197,87 @@ public class BestiaryScreen extends Screen {
                 float factor = 2 / size;
                 int scale = Mth.ceil(10 * factor);
                 float yOffset = 0.3F / factor;
-                InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, x1, y1, x1 + 35, y1 + 35, scale, yOffset, mouseX, mouseY, living);
+                InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, x1, y1, x1 + 36, y1 + 36, scale, yOffset, mouseX, mouseY, living);
             }
 
             x1 += 35;
-            if (x1 >= leftPos + 8 + 4 * 35) {
-                x1 = leftPos + 8;
+            if (x1 >= leftPos + renderedEntryX + 4 * 35) {
+                x1 = leftPos + renderedEntryX;
                 y1 += 35;
             }
         }
 
+        // 滚动条
         if (maxPage > 0) {
-            int i = Mth.lerpInt((float) page / maxPage, 7, 205);
-            guiGraphics.blitSprite(BACKGROUND, 256, 256, 221, 37, leftPos + 152, topPos + i, 7, 15);
+            slider.setY(topPos + Mth.lerpInt((float) page / maxPage, 6, 222 - slider.getH()));
+            slider.render(guiGraphics);
         }
 
+        // 搜索框
+        if (searchBoxOpened) {
+            openedSearchBox.render(guiGraphics);
+        } else {
+            closedSearchBox.render(guiGraphics);
+        }
+
+        // 正在显示条目
         if (showedEntry != null) {
             float progress = showedEntry.getUnlockedProgress();
             PoseStack pose = guiGraphics.pose();
             int x2, y2;
 
-            x1 = leftPos + 164;
-            y1 = topPos + 8;
+            x1 = leftPos + showedEntryX;
+            y1 = topPos + showedEntryY;
             // 背景图
-            guiGraphics.blitSprite(showedEntry.getBackground(), 48, 48, 0, 0, x1, y1, 48, 48);
+            guiGraphics.blitSprite(showedEntry.getBackground(), showedEntryWH, showedEntryWH, 0, 0, x1, y1, showedEntryWH, showedEntryWH);
             // 实体
             LivingEntity living = showedEntry.getRenderedEntity(getMinecraft().level);
-            InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, x1, y1, leftPos + 212, topPos + 56, 20, 0.3F, mouseX, mouseY, living);
+            InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, x1, y1, x1 + showedEntryWH, y1 + showedEntryWH, 20, 0.3F, mouseX, mouseY, living);
             // 稀有度
             pose.pushPose();
             pose.translate(0, 0, 180);
-            guiGraphics.blitSprite(BACKGROUND, 256, 256, 221, 53, x1, y1, 23, 7);
+            guiGraphics.blitSprite(BACKGROUND, textureWidth, textureHeight, 221, 53, x1, y1, 23, 7);
             for (int i = 0; i < showedEntry.getRarity(); i++) {
                 if (i == 0) {
                     // 大星
-                    guiGraphics.blitSprite(BACKGROUND, 256, 256, 222, 61, x1 + 1, y1 + 1, 5, 5);
+                    guiGraphics.blitSprite(BACKGROUND, textureWidth, textureHeight, 222, 61, x1 + 1, y1 + 1, 5, 5);
                 } else {
                     // 小星
-                    guiGraphics.blitSprite(BACKGROUND, 256, 256, 227, 61, x1 + 2 + i * 4, y1 + 1, 4, 5);
+                    guiGraphics.blitSprite(BACKGROUND, textureWidth, textureHeight, 227, 61, x1 + 2 + i * 4, y1 + 1, 4, 5);
                 }
             }
             pose.popPose();
             // 名字
-            if (mouseX >= x1 && mouseX < x1 + 48 && mouseY >= y1 && mouseY < y1 + 48) {
+            if (mouseX >= x1 && mouseX < x1 + showedEntryWH && mouseY >= y1 && mouseY < y1 + showedEntryWH) {
                 guiGraphics.renderTooltip(font, showedEntry.getDisplayName(), mouseX, mouseY);
             }
             // 杀死次数
-            String text = Integer.toString(showedEntry.killedByCount);
-            float lineHeight = font.lineHeight * 0.8F;
-            pose.pushPose();
-            pose.translate(leftPos + 212 - 1 - font.width(text) * 0.8F, topPos + 70 - lineHeight, 0);
-            pose.scale(0.8F, 0.8F, 1);
-            guiGraphics.drawString(font, text, 0, 0, 0xFFFFFF);
-            pose.popPose();
+            float lineHeight = font.lineHeight * textScale;
+            renderScaledString(guiGraphics, pose, Integer.toString(showedEntry.killedByCount), leftPos + 212 - 1, topPos + 73, lineHeight);
 
             boolean p20 = progress >= 0.2F;
             x1 = leftPos + 187 - 1;
-            y1 = topPos + 81 - 1;
+            y1 = topPos + 84 - 1;
             x2 = leftPos + 212 - 1;
-            y2 = topPos + 92 - 1;
+            y2 = topPos + 95 - 1;
             // 生命值
-            pose.pushPose();
-            text = p20 ? ATTRIBUTE_MODIFIER_FORMAT.format(showedEntry.maxHealth) : "?";
-            pose.translate(x1 - font.width(text) * 0.8F, y1 - lineHeight, 0);
-            pose.scale(0.8F, 0.8F, 1);
-            guiGraphics.drawString(font, text, 0, 0, 0xFFFFFF);
-            pose.popPose();
+            renderScaledString(guiGraphics, pose, p20 ? ATTRIBUTE_MODIFIER_FORMAT.format(showedEntry.maxHealth) : "?", x1, y1, lineHeight);
             // 击退抗性
-            pose.pushPose();
-            text = p20 ? ATTRIBUTE_MODIFIER_FORMAT.format(showedEntry.knockbackResistance) : "?";
-            pose.translate(x2 - font.width(text) * 0.8F, y1 - lineHeight, 0);
-            pose.scale(0.8F, 0.8F, 1);
-            guiGraphics.drawString(font, text, 0, 0, 0xFFFFFF);
-            pose.popPose();
+            renderScaledString(guiGraphics, pose, p20 ? ATTRIBUTE_MODIFIER_FORMAT.format(showedEntry.knockbackResistance) : "?", x2, y1, lineHeight);
             // 攻击力
-            pose.pushPose();
-            text = p20 ? ATTRIBUTE_MODIFIER_FORMAT.format(showedEntry.attackDamage) : "?";
-            pose.translate(x1 - font.width(text) * 0.8F, y2 - lineHeight, 0);
-            pose.scale(0.8F, 0.8F, 1);
-            guiGraphics.drawString(font, text, 0, 0, 0xFFFFFF);
-            pose.popPose();
+            renderScaledString(guiGraphics, pose, p20 ? ATTRIBUTE_MODIFIER_FORMAT.format(showedEntry.attackDamage) : "?", x1, y2, lineHeight);
             // 防御力
-            pose.pushPose();
-            text = p20 ? ATTRIBUTE_MODIFIER_FORMAT.format(showedEntry.armor) : "?";
-            pose.translate(x2 - font.width(text) * 0.8F, y2 - lineHeight, 0);
-            pose.scale(0.8F, 0.8F, 1);
-            guiGraphics.drawString(font, text, 0, 0, 0xFFFFFF);
-            pose.popPose();
+            renderScaledString(guiGraphics, pose, p20 ? ATTRIBUTE_MODIFIER_FORMAT.format(showedEntry.armor) : "?", x2, y2, lineHeight);
             // 钱币
             x1 = leftPos + 174 - 1;
-            y1 = topPos + 105;
+            y1 = topPos + 109;
             for (Integer count : showedEntry.getCoins().platinum2Copper()) {
-                pose.pushPose();
-                text = p20 ? count.toString() : "?";
-                pose.translate(x1 - font.width(text) * 0.8F, y1 - lineHeight, 0);
-                pose.scale(0.8F, 0.8F, 1);
-                guiGraphics.drawString(font, text, 0, 0, 0xFFFFFF);
-                pose.popPose();
+                renderScaledString(guiGraphics, pose, p20 ? count.toString() : "?", x1, y1, lineHeight);
                 x1 += 13;
             }
             // 群系
             x1 = leftPos + 164;
-            y1 = topPos + 109;
+            y1 = topPos + 116;
             x2 = x1 + 48;
             int t = x1;
             for (FilterEntry filter : showedEntry.getFilters()) {
@@ -248,6 +308,20 @@ public class BestiaryScreen extends Screen {
         }
     }
 
+    private void renderFilter(GuiGraphics guiGraphics, FilterEntry filter, int x, int y, int alignX, int alignY) {
+        RenderSystem.enableBlend();
+        guiGraphics.blitSprite(FILTERS, 256, 256, filter.u(), filter.v(), x + (alignX - filter.w()) / 2, y + (alignY - filter.h()) / 2, filter.w(), filter.h());
+        RenderSystem.disableBlend();
+    }
+
+    private void renderScaledString(GuiGraphics guiGraphics, PoseStack pose, String text, int x, int y, float lineHeight) {
+        pose.pushPose();
+        pose.translate(x - font.width(text) * textScale, y - lineHeight, 0);
+        pose.scale(textScale, textScale, 1);
+        guiGraphics.drawString(font, text, 0, 0, 0xFFFFFF);
+        pose.popPose();
+    }
+
     @Override
     public boolean isPauseScreen() {
         return false;
@@ -259,17 +333,5 @@ public class BestiaryScreen extends Screen {
         if (parent != null) {
             getMinecraft().setScreen(parent);
         }
-    }
-
-    private static void renderFilter(GuiGraphics guiGraphics, FilterEntry filter, int x, int y, int alignX, int alignY) {
-        RenderSystem.enableBlend();
-        guiGraphics.blitSprite(FILTERS, 256, 256, filter.u(), filter.v(), x + (alignX - filter.w()) / 2, y + (alignY - filter.h()) / 2, filter.w(), filter.h());
-        RenderSystem.disableBlend();
-    }
-
-    private static void renderFilter(GuiGraphics guiGraphics, FilterEntry filter, int x, int y) {
-        RenderSystem.enableBlend();
-        guiGraphics.blitSprite(FILTERS, 256, 256, filter.u(), filter.v(), x, y, filter.w(), filter.h());
-        RenderSystem.disableBlend();
     }
 }

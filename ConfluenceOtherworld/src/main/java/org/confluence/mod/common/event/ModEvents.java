@@ -505,5 +505,6 @@ public final class ModEvents {
         event.register(TEAnimals.FEALING.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
         event.register(TEAnimals.DUCK.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
         event.register(TEAnimals.FAIRY.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
+        // event.register(TEMonsterEntities.DEMON_EYE.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
     }
 }

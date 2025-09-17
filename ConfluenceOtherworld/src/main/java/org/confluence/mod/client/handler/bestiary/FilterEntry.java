@@ -41,7 +41,7 @@ public class FilterEntry {
     public static final FilterEntry SURFACE_MUSHROOM = register("surface_mushroom", 240, 123, 17, 10, 13);
     public static final FilterEntry UNDERGROUND_MUSHROOM = register("underground_mushroom", 250, 137, 18, 12, 12);
     public static final FilterEntry SKY = register("sky", 260, 151, 16, 15, 14);
-    public static final FilterEntry OASIS = register("oasis", 270, 167, 16, 13, 14);
+    //public static final FilterEntry OASIS = register("oasis", 270, 167, 16, 13, 14);
     public static final FilterEntry OCEAN = register("ocean", 280, 184, 17, 8, 12);
     public static final FilterEntry MARBLE = register("marble", 290, 198, 17, 10, 13);
     public static final FilterEntry GRANITE = register("granite", 300, 213, 17, 10, 13);
@@ -54,7 +54,7 @@ public class FilterEntry {
     public static final FilterEntry DAYTIME = register("daytime", 360, 62, 32, 12, 12);
     public static final FilterEntry NIGHTTIME = register("nighttime", 370, 77, 33, 12, 11);
     public static final FilterEntry BLOOD_MOON = register("blood_moon", 380, 93, 33, 11, 11);
-    public static final FilterEntry ECLIPSE = register("eclipse", 390, 103, 32, 12, 12);
+    public static final FilterEntry ECLIPSE = register("eclipse", 390, 107, 32, 12, 12);
     public static final FilterEntry RAIN = register("rain", 400, 121, 32, 13, 11);
     public static final FilterEntry WINDY_DAY = register("windy_day", 410, 136, 31, 14, 13);
     public static final FilterEntry BLIZZARD = register("blizzard", 420, 151, 31, 14, 14);
@@ -62,7 +62,7 @@ public class FilterEntry {
     public static final FilterEntry METEOR = register("meteor", 440, 182, 33, 13, 12);
     public static final FilterEntry HALLOWEEN = register("halloween", 450, 198, 33, 11, 11);
     public static final FilterEntry CHRISTMAS = register("christmas", 460, 213, 32, 10, 12);
-    public static final FilterEntry SLIME_RAIN = register("slime_rain", 470, 229, 32, 10, 13);
+    //public static final FilterEntry SLIME_RAIN = register("slime_rain", 470, 229, 32, 10, 13);
 
     public static final FilterEntry PARTY = register("party", 480, 3, 46, 11, 14);
     public static final FilterEntry GOBLIN_INVASION = register("goblin_invasion", 490, 17, 47, 13, 12);
@@ -76,8 +76,8 @@ public class FilterEntry {
     public static final FilterEntry VORTEX_PILLAR = register("vortex_pillar", 570, 137, 47, 12, 13);
     public static final FilterEntry NEBULA_PILLAR = register("nebula_pillar", 580, 152, 47, 12, 13);
     public static final FilterEntry STARDUST_PILLAR = register("stardust_pillar", 590, 167, 47, 12, 13);
-    public static final FilterEntry HARDMODE = register("hardmode", 600, 181, 47, 14, 12);
-    public static final FilterEntry ITEM_SPAWN = register("item_spawn", 610, 197, 47, 12, 12);
+    //public static final FilterEntry HARDMODE = register("hardmode", 600, 181, 47, 14, 12);
+    //public static final FilterEntry ITEM_SPAWN = register("item_spawn", 610, 197, 47, 12, 12);
     public static final FilterEntry IF_UNLOCKED = register("if_unlocked", 620, 213, 46, 10, 14);
     public static final FilterEntry BOSS_ENEMY = register("boss_enemy", 630, 227, 47, 13, 13);
 

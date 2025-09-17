@@ -101,15 +101,14 @@ public class BestiaryScreen extends Screen {
         int searchBoxY = topPos;
         this.closedSearchBox = new GuiSprite(BACKGROUND, textureW, textureH, 257, 0, 13, 16).setPos(searchBoxX, searchBoxY)
                 .setHovered(new GuiSprite(BACKGROUND, textureW, textureH, 257, 34, 13, 16).setPos(searchBoxX, searchBoxY));
-        this.openedSearchBox = new GuiSprite(BACKGROUND, textureW, textureH, 285, 0, 104, 16).setPos(searchBoxX, searchBoxY);
-        this.editBoxArea = new ClickableArea(81, 16).setPos(searchBoxX, searchBoxY);
+        this.openedSearchBox = new GuiSprite(BACKGROUND, textureW, textureH, 285, 0, 72, 16).setPos(searchBoxX, searchBoxY);
+        this.editBoxArea = new ClickableArea(49, 16).setPos(searchBoxX, searchBoxY);
         this.searchButtonArea = new ClickableArea(13, 16).setPos(editBoxArea.getEndX(), searchBoxY)
-                .setHovered(new GuiSprite(BACKGROUND, textureW, textureH, 390, 0, 13, 16).setPos(editBoxArea.getEndX(), searchBoxY));
+                .setHovered(new GuiSprite(BACKGROUND, textureW, textureH, 358, 0, 13, 16).setPos(editBoxArea.getEndX(), searchBoxY));
         this.closeSearchBoxArea = new ClickableArea(9, 16).setPos(searchButtonArea.getEndX(), searchBoxY)
-                .setHovered(new GuiSprite(BACKGROUND, textureW, textureH, 404, 0, 10, 16).setPos(searchButtonArea.getEndX(), searchBoxY));
-        addRenderableWidget(this.editBox = new EditBox(font, searchBoxX + 1, searchBoxY + 2, 80, 9, Component.empty()));
+                .setHovered(new GuiSprite(BACKGROUND, textureW, textureH, 372, 0, 10, 16).setPos(searchButtonArea.getEndX(), searchBoxY));
+        addRenderableWidget(this.editBox = new EditBox(font, searchBoxX + 1, searchBoxY + 2, 48, 9, Component.empty()));
         editBox.setBordered(false);
-        editBox.setMaxLength(50);
 
         int filterX = leftPos + imageWidth;
         int filterY = topPos + 17;
@@ -118,14 +117,14 @@ public class BestiaryScreen extends Screen {
         this.renderedFilters = Iterables.limit(bestiary.getFilterEntries(), 28);
         this.closedFilter = new GuiSprite(BACKGROUND, textureW, textureH, 257, 17, 13, 16).setPos(filterX, filterY);
         closedFilter.setHovered(new GuiSprite(BACKGROUND, textureW, textureH, 257, 51, 13, 16).setPos(closedFilter.getX(), closedFilter.getY()));
-        this.openedFilter = new GuiSprite(BACKGROUND, textureW, textureH, 285, 17, 104, 183).setPos(filterX, filterY);
+        this.openedFilter = new GuiSprite(BACKGROUND, textureW, textureH, 285, 17, 72, 136).setPos(filterX, filterY);
         this.closeFilterArea = new ClickableArea(10, 13);
         closeFilterArea.setPos(openedFilter.getEndX() - closeFilterArea.getW(), openedFilter.getY());
-        closeFilterArea.setHovered(new GuiSprite(BACKGROUND, textureW, textureH, 390, 17, 10, 14).setPos(closeFilterArea.getX(), closeFilterArea.getY()));
+        closeFilterArea.setHovered(new GuiSprite(BACKGROUND, textureW, textureH, 358, 17, 10, 14).setPos(closeFilterArea.getX(), closeFilterArea.getY()));
 
         this.closedSort = new GuiSprite(BACKGROUND, textureW, textureH, 271, 0, 13, 16);
         closedSort.setPos(leftPos - closedSort.getW(), topPos).setHovered(new GuiSprite(BACKGROUND, textureW, textureH, 271, 34, 13, 16).setPos(closedSort.getX(), closedSort.getY()));
-        int sortWidth = 104;
+        int sortWidth = 72;
         this.openedSortTop = new GuiSprite(BACKGROUND, textureW, textureH, 285, 202, sortWidth, 12).setPos(leftPos - sortWidth, topPos);
         this.closeSortArea = new ClickableArea(10, 12).setPos(openedSortTop.getX(), openedSortTop.getY());
         closeSortArea.setHovered(new GuiSprite(BACKGROUND, textureW, textureH, 248, 202, 10, 12).setPos(closeSortArea.getX(), closeSortArea.getY()));
@@ -369,7 +368,7 @@ public class BestiaryScreen extends Screen {
                     sprite.render(guiGraphics);
                 }
                 Component name = entry.getKey().getTranslatedName();
-                guiGraphics.drawString(font, name, sprite.getX() + (sprite.getW() - font.width(name)) / 2, sprite.getY() + (sprite.getH() - font.lineHeight) / 2, 0xFFFFFF);
+                guiGraphics.drawString(font, name, sprite.getX() + (sprite.getW() - 6 - font.width(name)) / 2, sprite.getY() + (sprite.getH() - font.lineHeight) / 2, 0xFFFFFF);
             }
             openedSortBottom.render(guiGraphics);
         } else {

@@ -1848,6 +1848,15 @@ public class ModChineseProvider extends LanguageProvider {
         add("tag.item.confluence.wings", "翅膀");
 
         // 生物图鉴
+        add("bestiary.sort_type.unlocks", "解锁");
+        add("bestiary.sort_type.bestiary_id", "怪物图鉴ID");
+        add("bestiary.sort_type.name", "名称");
+        add("bestiary.sort_type.attack", "攻击");
+        add("bestiary.sort_type.defense", "防御");
+        add("bestiary.sort_type.coins", "钱币");
+        add("bestiary.sort_type.hp", "生命");
+        add("bestiary.sort_type.rarity", "稀有度");
+
         add("bestiary.entity.terra_entity.guide.desc", "向导总是提供有用的建议和制作配方。他的出身以及他与这个世界非同寻常的联系仍然是一个谜。");
         add("bestiary.entity.terra_entity.merchant.desc", "商人就像一个简单的杂货店，提供有用的新手工具和探索所需的物资。");
         add("bestiary.entity.terra_entity.nurse.desc", "护士的刻薄态度和糟糕的护理方式可能会让人害怕，但只要付出一定的代价，她就能完全治愈受创的泰拉瑞亚人。");

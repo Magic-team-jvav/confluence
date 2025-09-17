@@ -43,7 +43,7 @@ public class ClientBestiary extends ContextAwareReloadListener {
     private static ClientBestiary INSTANCE;
 
     private boolean sortReversed = false;
-    private SortType sortType = SortType.ENTRY_ORDER;
+    private SortType sortType = SortType.UNLOCKS;
     private Comparator<Map.Entry<String, ClientBestiaryEntry>> comparator = sortType.comparator;
     private Object2BooleanMap<FilterEntry> filterEntries = new Object2BooleanLinkedOpenHashMap<>();
     private Map<String, ClientBestiaryEntry> entries = Maps.newHashMap();
@@ -102,6 +102,7 @@ public class ClientBestiary extends ContextAwareReloadListener {
         ModLoader.postEvent(new RegisterBestiaryFilterEvent(FilterEntry::register));
         Object2BooleanMap<FilterEntry> map = new Object2BooleanLinkedOpenHashMap<>();
         FilterEntry.PRESETS.values().stream().sorted(Comparator.comparingInt(FilterEntry::getOrder)).forEachOrdered(filter -> map.put(filter, true));
+        map.put(FilterEntry.IF_UNLOCKED, false);
         this.filterEntries = map;
     }
 
@@ -234,12 +235,13 @@ public class ClientBestiary extends ContextAwareReloadListener {
     }
 
     public enum SortType implements TranslatableEnum {
-        ENTRY_ORDER(Comparator.comparingInt(entry -> entry.getValue().getOrder())),
-        ENTITY_ID(Map.Entry.comparingByKey()),
-        ATTACK_DAMAGE(Comparator.comparingDouble(entry -> entry.getValue().attackDamage)),
-        ARMOR(Comparator.comparingDouble(entry -> entry.getValue().armor)),
-        DROPS(Comparator.comparingInt(entry -> entry.getValue().drops)),
-        MAX_HEALTH(Comparator.comparingDouble(entry -> entry.getValue().maxHealth)),
+        UNLOCKS(Comparator.comparingInt(entry -> entry.getValue().isLocked() ? 1 : 0)),
+        BESTIARY_ID(Comparator.comparingInt(entry -> entry.getValue().getOrder())),
+        NAME(Comparator.comparing(entry -> entry.getValue().getDescription().getString())),
+        ATTACK(Comparator.comparingDouble(entry -> entry.getValue().attackDamage)),
+        DEFENSE(Comparator.comparingDouble(entry -> entry.getValue().armor)),
+        COINS(Comparator.comparingInt(entry -> entry.getValue().drops)),
+        HP(Comparator.comparingDouble(entry -> entry.getValue().maxHealth)),
         RARITY(Comparator.comparingInt(entry -> entry.getValue().getRarity()));
 
         private final Comparator<Map.Entry<String, ClientBestiaryEntry>> comparator;

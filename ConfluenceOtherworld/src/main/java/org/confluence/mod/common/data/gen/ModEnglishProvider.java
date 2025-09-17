@@ -1808,6 +1808,15 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tag.item.confluence.wings", "Wings");
 
         // Bestiary
+        add("bestiary.sort_type.unlocks", "Unlocked");
+        add("bestiary.sort_type.bestiary_id", "Bestiary ID");
+        add("bestiary.sort_type.name", "Name");
+        add("bestiary.sort_type.attack", "Attack");
+        add("bestiary.sort_type.defense", "Defense");
+        add("bestiary.sort_type.coins", "Coins");
+        add("bestiary.sort_type.hp", "HP");
+        add("bestiary.sort_type.rarity", "Rarity");
+
         add("bestiary.entity.terra_entity.guide.desc", "The Guide always offers useful advice and crafting recipes. His origins and unusual connections to this world remain a mystery.");
         add("bestiary.entity.terra_entity.merchant.desc", "The Merchant acts as a simple general store of sorts, providing useful starter tools and supplies needed for exploration.");
         add("bestiary.entity.terra_entity.nurse.desc", "The Nurse's snarky attitude and poor bedside manner may be scary, but for a price, she will cure all that ails a wounded Terrarian.");

@@ -19,14 +19,12 @@ public interface IAbstractContainerScreen {
         return TriState.DEFAULT;
     }
 
-    static boolean switchEnabled(MobEffectInstance instance) {
+    static void switchEnabled(MobEffectInstance instance) {
         if (ModUtils.isSwitchableEffect(instance)) {
             IMobEffectInstance i = IMobEffectInstance.of(instance);
             i.confluence$setEnabled(!i.confluence$isEnabled());
             SwitchEffectEnabledPackedC2S.sendToServer(instance.getEffect(), i.confluence$isEnabled());
-            return true;
         }
-        return false;
     }
 
     static void makeTranslucent(GuiGraphics guiGraphics, MobEffectInstance instance, Runnable call) {

@@ -13,6 +13,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.Util;
 import net.minecraft.client.searchtree.SearchTree;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.Resource;
@@ -21,6 +22,7 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.level.Level;
 import net.neoforged.fml.ModLoader;
+import net.neoforged.neoforge.common.TranslatableEnum;
 import net.neoforged.neoforge.resource.ContextAwareReloadListener;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.RegisterBestiaryFilterEvent;
@@ -40,13 +42,15 @@ public class ClientBestiary extends ContextAwareReloadListener {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
     private static ClientBestiary INSTANCE;
 
-    private Comparator<Map.Entry<String, ClientBestiaryEntry>> comparator = SortType.ENTRY_ORDER.comparator;
+    private boolean sortReversed = false;
+    private SortType sortType = SortType.ENTRY_ORDER;
+    private Comparator<Map.Entry<String, ClientBestiaryEntry>> comparator = sortType.comparator;
+    private Object2BooleanMap<FilterEntry> filterEntries = new Object2BooleanLinkedOpenHashMap<>();
     private Map<String, ClientBestiaryEntry> entries = Maps.newHashMap();
     private Map<String, ClientBestiaryEntry> backupEntries = Maps.newHashMap();
     private Map<String, ClientBestiaryEntry> sortedEntries = Maps.newLinkedHashMap();
     private CompletableFuture<SearchTree<Map.Entry<String, ClientBestiaryEntry>>> searchTree = CompletableFuture.completedFuture(SearchTree.empty());
 
-    private Object2BooleanMap<FilterEntry> filterEntries = new Object2BooleanLinkedOpenHashMap<>();
 
     private Level currentLevel;
 
@@ -95,7 +99,7 @@ public class ClientBestiary extends ContextAwareReloadListener {
     }
 
     public void registerCustomFilter() {
-        ModLoader.postEvent(new RegisterBestiaryFilterEvent(FilterEntry::preset));
+        ModLoader.postEvent(new RegisterBestiaryFilterEvent(FilterEntry::register));
         Object2BooleanMap<FilterEntry> map = new Object2BooleanLinkedOpenHashMap<>();
         FilterEntry.PRESETS.values().stream().sorted(Comparator.comparingInt(FilterEntry::getOrder)).forEachOrdered(filter -> map.put(filter, true));
         this.filterEntries = map;
@@ -115,8 +119,18 @@ public class ClientBestiary extends ContextAwareReloadListener {
     }
 
     public void setSortType(SortType type, boolean reverse) {
+        this.sortType = type;
+        this.sortReversed = reverse;
         this.comparator = reverse ? type.comparator.reversed() : type.comparator;
         sortEntries();
+    }
+
+    public boolean isSortReversed() {
+        return sortReversed;
+    }
+
+    public SortType getSortType() {
+        return sortType;
     }
 
     public Collection<ClientBestiaryEntry> search(String query) {
@@ -137,8 +151,15 @@ public class ClientBestiary extends ContextAwareReloadListener {
     }
 
     private boolean filter(ClientBestiaryEntry entry) {
+        if (entry.isLocked()) {
+            if (isFilterEnabled(FilterEntry.IF_UNLOCKED)) {
+                return false;
+            }
+        }
+
         List<FilterEntry> filters = entry.getFilters();
         if (filters.isEmpty()) return true;
+
         boolean enabled = false;
         for (FilterEntry filter : filters) {
             enabled |= isFilterEnabled(filter);
@@ -198,9 +219,10 @@ public class ClientBestiary extends ContextAwareReloadListener {
                 this.searchTree = CompletableFuture.supplyAsync(() -> SearchTree.plainText(
                         sortedEntries.entrySet().stream().filter(entry -> !entry.getValue().isLocked()).toList(),
                         entry -> Stream.of(
-                                entry.getValue().type.getDescription(),
-                                entry.getValue().getDescription()
-                        ).map(c -> ChatFormatting.stripFormatting(c.getString()).trim())
+                                entry.getKey(),
+                                entry.getValue().getDescription().getString(),
+                                entry.getValue().type.getDescription().getString()
+                        ).map(s -> ChatFormatting.stripFormatting(s).trim())
                 ), Util.backgroundExecutor());
             }
         }).ifRight(key -> {
@@ -211,7 +233,7 @@ public class ClientBestiary extends ContextAwareReloadListener {
         });
     }
 
-    public enum SortType {
+    public enum SortType implements TranslatableEnum {
         ENTRY_ORDER(Comparator.comparingInt(entry -> entry.getValue().getOrder())),
         ENTITY_ID(Map.Entry.comparingByKey()),
         ATTACK_DAMAGE(Comparator.comparingDouble(entry -> entry.getValue().attackDamage)),
@@ -224,6 +246,11 @@ public class ClientBestiary extends ContextAwareReloadListener {
 
         SortType(Comparator<Map.Entry<String, ClientBestiaryEntry>> comparator) {
             this.comparator = comparator;
+        }
+
+        @Override
+        public Component getTranslatedName() {
+            return Component.translatable("bestiary.sort_type." + name().toLowerCase(Locale.ROOT));
         }
     }
 }

@@ -13,7 +13,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.bestiary.ClientBestiaryEntry;
 import org.confluence.mod.client.handler.bestiary.FilterEntry;
 import org.confluence.terraentity.entity.animal.*;
-import org.confluence.terraentity.entity.monster.demoneye.DemonEye;
 import org.confluence.terraentity.entity.npc.AnglerNPC;
 import org.confluence.terraentity.init.entity.TEAnimals;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
@@ -154,7 +153,7 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 .add(TEAnimals.HELL_BUTTERFLY, builder -> builder.order(12200).rarity(2).background(THE_NETHER).filters(FilterEntry.THE_NETHER))
                 .add(TEAnimals.MAGMA_SNAIL, builder -> builder.order(12300).rarity(2).background(THE_NETHER).filters(FilterEntry.THE_NETHER))
                 // 荧光虫
-                .add(TEAnimals.PRISMATIC_LACEWING, builder -> builder.order(12500).rarity(3).background(THE_HALLOW_MOON).filters(FilterEntry.THE_HALLOW,FilterEntry.NIGHTTIME)) //神圣夜晚
+                .add(TEAnimals.PRISMATIC_LACEWING, builder -> builder.order(12500).rarity(3).background(THE_HALLOW_MOON).filters(FilterEntry.THE_HALLOW, FilterEntry.NIGHTTIME)) //神圣夜晚
                 .add(TEAnimals.GLOWING_SNAIL, builder -> builder.order(12600).rarity(3).background(GLOWING_MUSHROOM).filters(FilterEntry.SURFACE_MUSHROOM))
                 // 侏儒
                 .add(TEMonsterEntities.GOBLIN_SCOUT, builder -> builder.order(12800).rarity(3).background(SURFACE).filters(FilterEntry.SURFACE))
@@ -177,20 +176,20 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 // 僵尸 （女性）
                 // 僵尸 （史莱姆）
                 // 僵尸 （光头）
-                .add(EntityType.ZOMBIE.builtInRegistryHolder(), builder -> builder.order(14500).rarity(1).background(SURFACE_MOON).filters(FilterEntry.SURFACE,FilterEntry.NIGHTTIME))
+                .add(EntityType.ZOMBIE.builtInRegistryHolder(), builder -> builder.order(14500).rarity(1).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
                 // 僵尸 （纤瘦）
                 // 僵尸 （火把）
                 // 僵尸 （沼泽）
                 // 僵尸 （中箭）
                 // 僵尸 （雨衣）
-                .add(TEMonsterEntities.POSSESS_ARMOR, builder -> builder.order(15100).rarity(2).background(SURFACE_MOON).filters(FilterEntry.SURFACE,FilterEntry.NIGHTTIME))
+                .add(TEMonsterEntities.POSSESS_ARMOR, builder -> builder.order(15100).rarity(2).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
                 // 狼人
-                .add(TEMonsterEntities.WRAITH, builder -> builder.order(15300).rarity(2).background(SURFACE_MOON).filters(FilterEntry.SURFACE,FilterEntry.NIGHTTIME))
+                .add(TEMonsterEntities.WRAITH, builder -> builder.order(15300).rarity(2).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
                 // 腐化兔兔
                 // 腐化企鹅
                 // 毒兔兔
                 // 毒企鹅
-                .add(TEMonsterEntities.BLOOD_ZOMBIE, builder -> builder.order(15800).rarity(1).background(BLOOD_MOON).filters(FilterEntry.SURFACE,FilterEntry.BLOOD_MOON,FilterEntry.NIGHTTIME))
+                .add(TEMonsterEntities.BLOOD_ZOMBIE, builder -> builder.order(15800).rarity(1).background(BLOOD_MOON).filters(FilterEntry.SURFACE, FilterEntry.BLOOD_MOON, FilterEntry.NIGHTTIME))
                 // 僵尸新郎
                 // 僵尸新娘
                 // 僵尸人鱼
@@ -199,9 +198,9 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 // 血鳗鱼
                 // 腐化金鱼
                 // 毒金鱼
-                .add(TEMonsterEntities.DRIPPLER, builder -> builder.order(16700).rarity(2).background(BLOOD_MOON).filters(FilterEntry.SURFACE,FilterEntry.BLOOD_MOON,FilterEntry.NIGHTTIME))
+                .add(TEMonsterEntities.DRIPPLER, builder -> builder.order(16700).rarity(2).background(BLOOD_MOON).filters(FilterEntry.SURFACE, FilterEntry.BLOOD_MOON, FilterEntry.NIGHTTIME))
                 // 嗒嗒牙齿炸弹
-                .add(TEMonsterEntities.WANDERING_EYE_FISH, builder -> builder.order(16900).rarity(4).background(BLOOD_MOON).filters(FilterEntry.SURFACE,FilterEntry.BLOOD_MOON,FilterEntry.NIGHTTIME))
+                .add(TEMonsterEntities.WANDERING_EYE_FISH, builder -> builder.order(16900).rarity(4).background(BLOOD_MOON).filters(FilterEntry.SURFACE, FilterEntry.BLOOD_MOON, FilterEntry.NIGHTTIME))
                 // 血浆哥布林鲨鱼
                 // 恐惧鹦鹉螺
                 // 弹跳杰克南瓜灯

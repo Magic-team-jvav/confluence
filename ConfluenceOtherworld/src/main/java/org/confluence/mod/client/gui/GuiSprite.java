@@ -2,6 +2,7 @@ package org.confluence.mod.client.gui;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.Nullable;
 
 public class GuiSprite {
     private final ResourceLocation path;
@@ -13,6 +14,8 @@ public class GuiSprite {
     private final int h;
     private int x;
     private int y;
+
+    private @Nullable GuiSprite hovered;
 
     public GuiSprite(ResourceLocation path, int textureW, int textureH, int u, int v, int w, int h) {
         this.path = path;
@@ -48,6 +51,22 @@ public class GuiSprite {
         return h;
     }
 
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getEndX() {
+        return x + w;
+    }
+
+    public int getEndY() {
+        return y + h;
+    }
+
     public GuiSprite setPos(int x, int y) {
         this.x = x;
         this.y = y;
@@ -64,11 +83,27 @@ public class GuiSprite {
         return this;
     }
 
+    public GuiSprite setHovered(GuiSprite hovered) {
+        this.hovered = hovered;
+        return this;
+    }
+
+    public @Nullable GuiSprite getHovered() {
+        return hovered;
+    }
+
     public void render(GuiGraphics guiGraphics) {
         guiGraphics.blitSprite(path, textureW, textureH, u, v, x, y, 0, w, h);
     }
 
     public boolean isHovered(double mouseX, double mouseY) {
-        return mouseX >= x && mouseX < x + w && mouseY >= y && mouseY < y + h;
+        return mouseX >= x && mouseX < getEndX() && mouseY >= y && mouseY < getEndY();
+    }
+
+    public void renderSelfAndHovered(GuiGraphics guiGraphics, double mouseX, double mouseY) {
+        render(guiGraphics);
+        if (hovered != null && hovered.isHovered(mouseX, mouseY)) {
+            hovered.render(guiGraphics);
+        }
     }
 }

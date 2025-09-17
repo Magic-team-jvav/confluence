@@ -28,8 +28,8 @@ public class BestiaryScreen extends Screen {
     private static final ResourceLocation BACKGROUND = Confluence.asResource("bestiary/background");
     private static final ResourceLocation FILTERS = Confluence.asResource("bestiary/filters");
 
-    private static final int textureWidth = 512;
-    private static final int textureHeight = 256;
+    private static final int textureW = 512;
+    private static final int textureH = 256;
     private static final int imageWidth = 220;
     private static final int imageHeight = 230;
 
@@ -61,6 +61,14 @@ public class BestiaryScreen extends Screen {
     private ClickableArea closeSearchBoxArea;
     private EditBox editBox;
 
+    private boolean filterOpened = false;
+    private int filterMaxPage;
+    private int filterPage;
+    private Iterable<FilterEntry> renderedFilters = List.of();
+    private GuiSprite closedFilter;
+    private GuiSprite openedFilter;
+    private ClickableArea closeFilterArea;
+
     public BestiaryScreen(@Nullable Screen parent) {
         super(Component.empty());
         this.parent = parent;
@@ -76,18 +84,33 @@ public class BestiaryScreen extends Screen {
         }
         updateRenderedEntries(0);
 
-        this.slider = new GuiSprite(BACKGROUND, textureWidth, textureHeight, 221, 37, 7, 15).setX(leftPos + 153);
+        this.slider = new GuiSprite(BACKGROUND, textureW, textureH, 221, 37, 7, 15).setX(leftPos + 153);
 
         int searchBoxX = leftPos + imageWidth;
         int searchBoxY = topPos;
-        this.closedSearchBox = new GuiSprite(BACKGROUND, textureWidth, textureHeight, 257, 0, 13, 16).setPos(searchBoxX, searchBoxY);
-        this.openedSearchBox = new GuiSprite(BACKGROUND, textureWidth, textureHeight, 285, 0, 104, 16).setPos(searchBoxX, searchBoxY);
+        this.closedSearchBox = new GuiSprite(BACKGROUND, textureW, textureH, 257, 0, 13, 16).setPos(searchBoxX, searchBoxY)
+                .setHovered(new GuiSprite(BACKGROUND, textureW, textureH, 257, 34, 13, 16).setPos(searchBoxX, searchBoxY));
+        this.openedSearchBox = new GuiSprite(BACKGROUND, textureW, textureH, 285, 0, 104, 16).setPos(searchBoxX, searchBoxY);
         this.editBoxArea = new ClickableArea(82, 62).setPos(searchBoxX, searchBoxY);
-        this.searchButtonArea = new ClickableArea(13, 16).setPos(editBoxArea.getEndX(), searchBoxY);
-        this.closeSearchBoxArea = new ClickableArea(9, 16).setPos(searchButtonArea.getEndX(), searchBoxY);
+        this.searchButtonArea = new ClickableArea(13, 16).setPos(editBoxArea.getEndX(), searchBoxY)
+                .setHovered(new GuiSprite(BACKGROUND, textureW, textureH, 390, 0, 13, 16).setPos(editBoxArea.getEndX() - 1, searchBoxY));
+        this.closeSearchBoxArea = new ClickableArea(9, 16).setPos(searchButtonArea.getEndX(), searchBoxY)
+                .setHovered(new GuiSprite(BACKGROUND, textureW, textureH, 404, 0, 10, 16).setPos(searchButtonArea.getEndX() - 1, searchBoxY));
         addRenderableWidget(this.editBox = new EditBox(font, searchBoxX + 1, searchBoxY + 2, 80, 9, Component.empty()));
         editBox.setBordered(false);
         editBox.setMaxLength(50);
+
+        int filterX = leftPos + imageWidth;
+        int filterY = topPos + 17;
+        Collection<FilterEntry> filters = ClientBestiary.getInstance().getFilterEntries();
+        this.filterMaxPage = filters.size() / 28;
+        this.filterPage = 0;
+        this.renderedFilters = Iterables.limit(filters, 28);
+        this.closedFilter = new GuiSprite(BACKGROUND, textureW, textureH, 257, 17, 13, 16).setPos(filterX, filterY)
+                .setHovered(new GuiSprite(BACKGROUND, textureW, textureH, 257, 51, 13, 16).setPos(filterX, filterY));
+        this.openedFilter = new GuiSprite(BACKGROUND, textureW, textureH, 285, 17, 104, 183).setPos(filterX, filterY);
+        this.closeFilterArea = new ClickableArea(10, 13).setPos(filterX + 94, filterY)
+                .setHovered(new GuiSprite(BACKGROUND, textureW, textureH, 390, 17, 10, 14).setPos(filterX + 94, filterY));
     }
 
     @Override
@@ -106,18 +129,30 @@ public class BestiaryScreen extends Screen {
             int lastPage = page;
             updateRenderedEntries(page + Mth.sign(-scrollY));
             return lastPage != page;
+        } else if (openedFilter.isHovered(mouseX, mouseY)) {
+            int lastPage = filterPage;
+            this.filterPage = Mth.clamp(filterPage + Mth.sign(-scrollY), 0, filterMaxPage);
+            if (lastPage != filterPage) {
+                Collection<FilterEntry> filters = ClientBestiary.getInstance().getFilterEntries();
+                if (filterPage == 0) {
+                    this.renderedFilters = Iterables.limit(filters, 28);
+                } else {
+                    this.renderedFilters = Iterables.limit(Iterables.skip(filters, filterPage * 28), 28);
+                }
+                return true;
+            }
         }
         return false;
     }
 
-    private void updateRenderedEntries(int page) {
+    private void updateRenderedEntries(int setPage) {
         if (entries.size() > 24) {
             this.maxPage = entries.size() / 24;
-            this.page = Mth.clamp(page, 0, maxPage);
-            if (this.page == 0) {
+            this.page = Mth.clamp(setPage, 0, maxPage);
+            if (page == 0) {
                 this.renderedEntries = Iterables.limit(entries, 24);
             } else {
-                this.renderedEntries = Iterables.limit(Iterables.skip(entries, this.page * 24), 24);
+                this.renderedEntries = Iterables.limit(Iterables.skip(entries, page * 24), 24);
             }
         } else {
             this.maxPage = 0;
@@ -170,6 +205,38 @@ public class BestiaryScreen extends Screen {
                 updateRenderedEntries(0);
             }
         }
+
+        if (filterOpened) {
+            if (closeFilterArea.isHovered(mouseX, mouseY)) {
+                this.filterOpened = false;
+                this.closeFilterArea.setActive(false);
+                return true;
+            } else {
+                x = openedFilter.getX();
+                y = openedFilter.getY() + 15;
+                for (FilterEntry filter : renderedFilters) {
+                    if (mouseX >= x && mouseX < x + 16 && mouseY >= y && mouseY < y + 16) {
+                        ClientBestiary.getInstance().toggleFilter(filter);
+                        this.entries = ClientBestiary.getInstance().getSortedEntries();
+                        updateRenderedEntries(0);
+                        return true;
+                    }
+                    x += 16;
+                    if (x >= openedFilter.getX() + 4 * 16) {
+                        x = openedFilter.getX();
+                        y += 16;
+                    }
+                }
+            }
+            return false;
+        } else {
+            if (closedFilter.isHovered(mouseX, mouseY)) {
+                this.filterOpened = true;
+                this.closeFilterArea.setActive(true);
+                return true;
+            }
+        }
+
         return false;
     }
 
@@ -183,12 +250,12 @@ public class BestiaryScreen extends Screen {
 
     @Override
     public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        guiGraphics.blitSprite(BACKGROUND, textureWidth, textureHeight, 0, 0, leftPos, topPos, imageWidth, imageHeight);
+        guiGraphics.blitSprite(BACKGROUND, textureW, textureH, 0, 0, leftPos, topPos, imageWidth, imageHeight);
 
         int x1 = leftPos + renderedEntryX;
         int y1 = topPos + renderedEntryY;
         for (ClientBestiaryEntry entry : renderedEntries) {
-            guiGraphics.blitSprite(BACKGROUND, textureWidth, textureHeight, 220, 0, x1, y1, 36, 36);
+            guiGraphics.blitSprite(BACKGROUND, textureW, textureH, 220, 0, x1, y1, 36, 36);
             if (entry.isLocked()) {
                 renderFilter(guiGraphics, FilterEntry.LOCKED, x1, y1, 36, 36);
             } else {
@@ -216,8 +283,31 @@ public class BestiaryScreen extends Screen {
         // 搜索框
         if (searchBoxOpened) {
             openedSearchBox.render(guiGraphics);
+            searchButtonArea.renderHovered(guiGraphics, mouseX, mouseY);
+            closeSearchBoxArea.renderHovered(guiGraphics, mouseX, mouseY);
         } else {
-            closedSearchBox.render(guiGraphics);
+            closedSearchBox.renderSelfAndHovered(guiGraphics, mouseX, mouseY);
+        }
+
+        // 过滤器
+        if (filterOpened) {
+            openedFilter.render(guiGraphics);
+            closeFilterArea.renderHovered(guiGraphics, mouseX, mouseY);
+            x1 = openedFilter.getX();
+            y1 = openedFilter.getY() + 15;
+            for (FilterEntry filter : renderedFilters) {
+                boolean enabled = ClientBestiary.getInstance().isFilterEnabled(filter);
+                if (!enabled) RenderSystem.setShaderColor(1, 1, 1, 0.3F);
+                renderFilter(guiGraphics, filter, x1, y1, 16, 16);
+                if (!enabled) RenderSystem.setShaderColor(1, 1, 1, 1);
+                x1 += 16;
+                if (x1 >= openedFilter.getX() + 4 * 16) {
+                    x1 = openedFilter.getX();
+                    y1 += 16;
+                }
+            }
+        } else {
+            closedFilter.renderSelfAndHovered(guiGraphics, mouseX, mouseY);
         }
 
         // 正在显示条目
@@ -236,14 +326,14 @@ public class BestiaryScreen extends Screen {
             // 稀有度
             pose.pushPose();
             pose.translate(0, 0, 180);
-            guiGraphics.blitSprite(BACKGROUND, textureWidth, textureHeight, 221, 53, x1, y1, 23, 7);
+            guiGraphics.blitSprite(BACKGROUND, textureW, textureH, 221, 53, x1, y1, 23, 7);
             for (int i = 0; i < showedEntry.getRarity(); i++) {
                 if (i == 0) {
                     // 大星
-                    guiGraphics.blitSprite(BACKGROUND, textureWidth, textureHeight, 222, 61, x1 + 1, y1 + 1, 5, 5);
+                    guiGraphics.blitSprite(BACKGROUND, textureW, textureH, 222, 61, x1 + 1, y1 + 1, 5, 5);
                 } else {
                     // 小星
-                    guiGraphics.blitSprite(BACKGROUND, textureWidth, textureHeight, 227, 61, x1 + 2 + i * 4, y1 + 1, 4, 5);
+                    guiGraphics.blitSprite(BACKGROUND, textureW, textureH, 227, 61, x1 + 2 + i * 4, y1 + 1, 4, 5);
                 }
             }
             pose.popPose();
@@ -310,7 +400,8 @@ public class BestiaryScreen extends Screen {
 
     private void renderFilter(GuiGraphics guiGraphics, FilterEntry filter, int x, int y, int alignX, int alignY) {
         RenderSystem.enableBlend();
-        guiGraphics.blitSprite(FILTERS, 256, 256, filter.u(), filter.v(), x + (alignX - filter.w()) / 2, y + (alignY - filter.h()) / 2, filter.w(), filter.h());
+        ResourceLocation sprite = filter.sprite == null ? FILTERS : filter.sprite;
+        guiGraphics.blitSprite(sprite, 256, 256, filter.u(), filter.v(), x + (alignX - filter.w()) / 2, y + (alignY - filter.h()) / 2, filter.w(), filter.h());
         RenderSystem.disableBlend();
     }
 

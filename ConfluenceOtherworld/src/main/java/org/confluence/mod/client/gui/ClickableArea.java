@@ -1,11 +1,16 @@
 package org.confluence.mod.client.gui;
 
+import net.minecraft.client.gui.GuiGraphics;
+import org.jetbrains.annotations.Nullable;
+
 public class ClickableArea {
     private final int w;
     private final int h;
     private int x;
     private int y;
     private boolean active = false;
+
+    private @Nullable GuiSprite hovered;
 
     public ClickableArea(int w, int h) {
         this.w = w;
@@ -47,11 +52,24 @@ public class ClickableArea {
         return this;
     }
 
+    public ClickableArea setHovered(GuiSprite hovered) {
+        this.hovered = hovered;
+        return this;
+    }
+
+    public @Nullable GuiSprite getHovered() {
+        return hovered;
+    }
+
     public boolean isActive() {
         return active;
     }
 
     public boolean isHovered(double mouseX, double mouseY) {
         return active && mouseX >= x && mouseX < getEndX() && mouseY >= y && mouseY < getEndY();
+    }
+
+    public void renderHovered(GuiGraphics guiGraphics, double mouseX, double mouseY) {
+        if (isActive() && hovered != null && hovered.isHovered(mouseX, mouseY)) hovered.render(guiGraphics);
     }
 }

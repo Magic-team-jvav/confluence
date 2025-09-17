@@ -121,6 +121,8 @@ public final class ModClientEvents {
             PonderHelper.registerPlugin();
             AppleskinHelper.addListeners();
             SodiumDynamicLightsHelper.registerDynamicLight();
+
+            ClientBestiary.getInstance().registerCustomFilter();
         });
     }
 

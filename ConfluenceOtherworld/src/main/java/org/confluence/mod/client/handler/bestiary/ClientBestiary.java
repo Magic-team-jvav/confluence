@@ -7,6 +7,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.JsonOps;
+import it.unimi.dsi.fastutil.objects.Object2BooleanLinkedOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.Util;
@@ -18,17 +20,16 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.level.Level;
+import net.neoforged.fml.ModLoader;
 import net.neoforged.neoforge.resource.ContextAwareReloadListener;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.api.event.RegisterBestiaryFilterEvent;
 import org.confluence.mod.common.data.map.BestiaryEntry;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.stream.Stream;
@@ -44,6 +45,9 @@ public class ClientBestiary extends ContextAwareReloadListener {
     private Map<String, ClientBestiaryEntry> backupEntries = Maps.newHashMap();
     private Map<String, ClientBestiaryEntry> sortedEntries = Maps.newLinkedHashMap();
     private CompletableFuture<SearchTree<Map.Entry<String, ClientBestiaryEntry>>> searchTree = CompletableFuture.completedFuture(SearchTree.empty());
+
+    private Object2BooleanMap<FilterEntry> filterEntries = new Object2BooleanLinkedOpenHashMap<>();
+
     private Level currentLevel;
 
     private ClientBestiary() {}
@@ -90,6 +94,26 @@ public class ClientBestiary extends ContextAwareReloadListener {
         this.backupEntries = backup;
     }
 
+    public void registerCustomFilter() {
+        ModLoader.postEvent(new RegisterBestiaryFilterEvent(FilterEntry::preset));
+        Object2BooleanMap<FilterEntry> map = new Object2BooleanLinkedOpenHashMap<>();
+        FilterEntry.PRESETS.values().stream().sorted(Comparator.comparingInt(FilterEntry::getOrder)).forEachOrdered(filter -> map.put(filter, true));
+        this.filterEntries = map;
+    }
+
+    public Collection<FilterEntry> getFilterEntries() {
+        return filterEntries.keySet();
+    }
+
+    public void toggleFilter(FilterEntry filter) {
+        filterEntries.computeBooleanIfPresent(filter, (entry, enabled) -> !enabled);
+        sortEntries();
+    }
+
+    public boolean isFilterEnabled(FilterEntry filter) {
+        return filterEntries.getOrDefault(filter, false);
+    }
+
     public void setSortType(SortType type, boolean reverse) {
         this.comparator = reverse ? type.comparator.reversed() : type.comparator;
         sortEntries();
@@ -99,13 +123,27 @@ public class ClientBestiary extends ContextAwareReloadListener {
         if (query.isEmpty()) {
             return sortedEntries.values();
         }
-        return searchTree.join().search(query).stream().sorted(comparator).map(Map.Entry::getValue).toList();
+        return searchTree.join().search(query).stream().sorted(comparator).map(Map.Entry::getValue).filter(this::filter).toList();
     }
 
     private void sortEntries() {
         Map<String, ClientBestiaryEntry> sorted = Maps.newLinkedHashMap();
-        entries.entrySet().stream().sorted(comparator).forEachOrdered(entry -> sorted.put(entry.getKey(), entry.getValue()));
+        entries.entrySet().stream().sorted(comparator).forEachOrdered(entry -> {
+            if (filter(entry.getValue())) {
+                sorted.put(entry.getKey(), entry.getValue());
+            }
+        });
         this.sortedEntries = sorted;
+    }
+
+    private boolean filter(ClientBestiaryEntry entry) {
+        List<FilterEntry> filters = entry.getFilters();
+        if (filters.isEmpty()) return true;
+        boolean enabled = false;
+        for (FilterEntry filter : filters) {
+            enabled |= isFilterEnabled(filter);
+        }
+        return enabled;
     }
 
     public Collection<ClientBestiaryEntry> getSortedEntries() {

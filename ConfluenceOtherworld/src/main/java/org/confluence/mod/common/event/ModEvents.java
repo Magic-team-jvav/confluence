@@ -82,6 +82,7 @@ import org.confluence.phase_journey.api.PhaseJourneyEvent;
 import org.confluence.terra_curio.api.event.RegisterAccessoriesComponentUpdateEvent;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTabs;
+import org.confluence.terraentity.entity.monster.demoneye.DemonEyeVariant;
 import org.confluence.terraentity.init.entity.TEAnimals;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
 
@@ -505,6 +506,6 @@ public final class ModEvents {
         event.register(TEAnimals.FEALING.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
         event.register(TEAnimals.DUCK.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
         event.register(TEAnimals.FAIRY.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
-        // event.register(TEMonsterEntities.DEMON_EYE.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
+        event.register(TEMonsterEntities.DEMON_EYE.get(), RegisterBestiaryKeyEvent.vanillaVariant(DemonEyeVariant::getSerializedName));
     }
 }

@@ -29,6 +29,10 @@ public class ModEnglishProvider extends LanguageProvider {
         super(output, Confluence.MODID, "en_us");
     }
 
+    public ModEnglishProvider(PackOutput output, String locale) {
+        super(output, Confluence.MODID, locale);
+    }
+
     @Override
     protected void addTranslations() {
         add("confluence.prefix_separator", " ");

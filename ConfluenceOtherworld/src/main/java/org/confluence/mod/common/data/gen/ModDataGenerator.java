@@ -28,6 +28,7 @@ public final class ModDataGenerator {
         boolean client = event.includeClient();
         generator.addProvider(client, new ModChineseProvider(output));
         generator.addProvider(client, new ModEnglishProvider(output));
+        generator.addProvider(client, new ModEnUdProvider(output));
         generator.addProvider(client, new ModBlockStateProvider(output, helper));
         generator.addProvider(client, new ModItemModelProvider(output, helper));
         generator.addProvider(client, new CollectRecipeProvider(Confluence.asPlainId("client"), output, lookup,

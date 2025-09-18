@@ -10,6 +10,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -31,6 +32,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.AdditionalManaEvent;
 import org.confluence.mod.api.event.MinecartAbilityEvent;
 import org.confluence.mod.api.event.ShimmerItemTransmutationEvent;
+import org.confluence.mod.api.event.bestiary.ToBeBestiaryEntryEvent;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.ManaStorage;
@@ -59,6 +61,7 @@ import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.api.event.AfterAccessoryAbilitiesFlushedEvent;
 import org.confluence.terra_guns.api.event.GunEvent;
+import org.confluence.terraentity.entity.summon.AbstractSummonMob;
 import top.theillusivec4.curios.api.event.CurioAttributeModifierEvent;
 import top.theillusivec4.curios.api.event.CurioChangeEvent;
 
@@ -236,5 +239,11 @@ public final class GameEvents {
         if (event.getMinecartItem() == null && event.getMinecart().getMinecartType() == AbstractMinecart.Type.RIDEABLE) {
             event.setMinecartItem(IAbstractMinecart.of(event.getMinecart()).confluence$getDropItem().getDefaultInstance());
         }
+    }
+
+    @SubscribeEvent
+    public static void toBeBestiaryEntry(ToBeBestiaryEntryEvent event) {
+        LivingEntity living = event.getEntity();
+        if (living instanceof AbstractSummonMob) event.setCanceled(true);
     }
 }

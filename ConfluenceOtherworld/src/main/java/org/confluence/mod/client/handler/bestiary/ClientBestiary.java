@@ -25,7 +25,7 @@ import net.neoforged.fml.ModLoader;
 import net.neoforged.neoforge.common.TranslatableEnum;
 import net.neoforged.neoforge.resource.ContextAwareReloadListener;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.api.event.RegisterBestiaryFilterEvent;
+import org.confluence.mod.api.event.bestiary.RegisterBestiaryFilterEvent;
 import org.confluence.mod.common.data.map.BestiaryEntry;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -184,6 +184,7 @@ public class ClientBestiary extends ContextAwareReloadListener {
         this.currentLevel = null;
         Map<String, ClientBestiaryEntry> map = Maps.newHashMap();
         for (Map.Entry<String, ClientBestiaryEntry> entry : backupEntries.entrySet()) {
+            entry.getValue().resetRenderedEntity(); // 为了防止备份条目也生成了实体
             map.put(entry.getKey(), entry.getValue().copy());
         }
         this.entries = map;

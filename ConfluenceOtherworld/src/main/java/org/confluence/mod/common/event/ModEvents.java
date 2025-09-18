@@ -8,10 +8,14 @@ import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.world.Container;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -53,7 +57,7 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.WipNotDisplayOutput;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.StartupConfigs;
-import org.confluence.mod.api.event.RegisterBestiaryKeyEvent;
+import org.confluence.mod.api.event.bestiary.RegisterBestiaryKeyEvent;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.block.natural.ChlorophyteOreBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
@@ -68,6 +72,7 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
+import org.confluence.mod.common.init.item.ArmorItems;
 import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.integration.jei.RecipeTransferPacketC2S;
@@ -225,6 +230,7 @@ public final class ModEvents {
     @SubscribeEvent
     public static void registerAttributes(EntityAttributeCreationEvent event) {
         event.put(ModEntities.TARGET_DUMMY.get(), TargetDummyEntity.createAttributes().build());
+        event.put(ModEntities.BESTIARY_ENTRY_DISPLAY.get(), LivingEntity.createLivingAttributes().build());
     }
 
     @SubscribeEvent
@@ -507,5 +513,15 @@ public final class ModEvents {
         event.register(TEAnimals.DUCK.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
         event.register(TEAnimals.FAIRY.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
         event.register(TEMonsterEntities.DEMON_EYE.get(), RegisterBestiaryKeyEvent.vanillaVariant(DemonEyeVariant::getSerializedName));
+        event.register(EntityType.ZOMBIE, ((type, zombie) -> {
+            String key = type.getDescriptionId();
+            Item chest = zombie.getItemBySlot(EquipmentSlot.CHEST).getItem();
+            if (chest == ArmorItems.RAINCOAT.get()) {
+                return key + ".raincoat";
+            } else if (chest == ArmorItems.SNOW_SUITS.get() || chest == ArmorItems.PINK_SNOW_SUITS.get()) {
+                return key + ".frozen";
+            }
+            return key;
+        }));
     }
 }

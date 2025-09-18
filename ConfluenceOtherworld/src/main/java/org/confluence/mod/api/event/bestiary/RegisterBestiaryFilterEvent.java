@@ -1,4 +1,4 @@
-package org.confluence.mod.api.event;
+package org.confluence.mod.api.event.bestiary;
 
 import com.mojang.datafixers.util.Function6;
 import net.neoforged.bus.api.Event;

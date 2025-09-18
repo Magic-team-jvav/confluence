@@ -19,7 +19,10 @@ import net.neoforged.neoforge.common.Tags;
 import org.confluence.lib.util.LibCodecUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.api.event.bestiary.RegisterCustomBestiaryEntryRendererEvent;
 import org.confluence.mod.common.data.map.BestiaryEntry;
+import org.confluence.mod.common.entity.BestiaryEntryDisplay;
+import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.mixin.accessor.EntityAccessor;
 
 import java.util.Arrays;
@@ -165,7 +168,13 @@ public class ClientBestiaryEntry extends BestiaryEntry {
     public LivingEntity getRenderedEntity(Level level) {
         if (renderedEntity == null) {
             if (type.create(level) instanceof LivingEntity living) {
-                this.renderedEntity = living;
+                if (RegisterCustomBestiaryEntryRendererEvent.hasRenderer(key)) {
+                    BestiaryEntryDisplay entity = new BestiaryEntryDisplay(ModEntities.BESTIARY_ENTRY_DISPLAY.get(), level);
+                    entity.setDelegate(key, living);
+                    this.renderedEntity = entity;
+                } else {
+                    this.renderedEntity = living;
+                }
                 entityNbt.ifPresent(nbt -> ((EntityAccessor) renderedEntity).callReadAdditionalSaveData(nbt));
             } else {
                 throw new NullPointerException("Failed to create rendered entity from type " + key);

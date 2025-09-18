@@ -368,7 +368,7 @@ public class BestiaryScreen extends Screen {
                     sprite.render(guiGraphics);
                 }
                 Component name = entry.getKey().getTranslatedName();
-                guiGraphics.drawString(font, name, sprite.getX() + (sprite.getW() - 6 - font.width(name)) / 2, sprite.getY() + (sprite.getH() - font.lineHeight) / 2, 0xFFFFFF);
+                guiGraphics.drawString(font, name, sprite.getX() + 6 + (sprite.getW() - 6 - font.width(name)) / 2, sprite.getY() + (sprite.getH() - font.lineHeight) / 2, 0xFFFFFF);
             }
             openedSortBottom.render(guiGraphics);
         } else {

@@ -13,8 +13,10 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Enemy;
+import net.neoforged.neoforge.common.NeoForge;
 import org.confluence.lib.common.data.saved.IGlobalData;
-import org.confluence.mod.api.event.RegisterBestiaryKeyEvent;
+import org.confluence.mod.api.event.bestiary.RegisterBestiaryKeyEvent;
+import org.confluence.mod.api.event.bestiary.ToBeBestiaryEntryEvent;
 import org.confluence.mod.common.data.map.BestiaryEntry;
 import org.confluence.mod.network.s2c.BestiarySyncPacketS2C;
 import org.confluence.mod.util.ModUtils;
@@ -74,6 +76,8 @@ public class Bestiary implements IGlobalData {
     }
 
     public void updateEntry(LivingEntity living, boolean killed) {
+        if (NeoForge.EVENT_BUS.post(new ToBeBestiaryEntryEvent(living)).isCanceled()) return;
+
         BestiaryEntry entry = getOrCreateEntry(living);
         if (killed) entry.killedByCount++;
 

@@ -10,7 +10,7 @@ import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.lib.util.LibStreamCodecUtils;
-import org.confluence.mod.api.event.RegisterBestiaryKeyEvent;
+import org.confluence.mod.api.event.bestiary.RegisterBestiaryKeyEvent;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.common.data.map.BestiaryEntry;
 import org.confluence.mod.common.data.saved.Bestiary;

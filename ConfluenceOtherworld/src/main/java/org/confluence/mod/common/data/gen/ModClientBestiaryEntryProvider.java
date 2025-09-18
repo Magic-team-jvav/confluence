@@ -5,19 +5,26 @@ import com.mojang.serialization.Codec;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.extensions.IHolderExtension;
 import org.confluence.lib.common.data.gen.AbstractRecipeProvider;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.bestiary.ClientBestiaryEntry;
 import org.confluence.mod.client.handler.bestiary.FilterEntry;
+import org.confluence.mod.common.init.item.ArmorItems;
 import org.confluence.terraentity.entity.animal.*;
+import org.confluence.terraentity.entity.monster.demoneye.DemonEye;
+import org.confluence.terraentity.entity.monster.demoneye.DemonEyeVariant;
 import org.confluence.terraentity.entity.npc.AnglerNPC;
 import org.confluence.terraentity.init.entity.TEAnimals;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
 import org.confluence.terraentity.init.entity.TENpcEntities;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
@@ -33,7 +40,7 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
     }
 
     @Override
-    protected void buildRecipes(RecipeOutput recipeOutput) {
+    protected void buildRecipes(RecipeOutput recipeOutput, HolderLookup.Provider provider) {
         FilterEntry[] surfaceDaytime = {FilterEntry.SURFACE, FilterEntry.DAYTIME};
         recipe(Codec.unboundedMap(Codec.STRING, ClientBestiaryEntry.CODEC), pathProvider().json(Confluence.asResource("bestiary"))).addRecipe(new Builder()
                 .add(TENpcEntities.GUIDE, builder -> builder.order(100).rarity(1).background(SURFACE).filters(FilterEntry.SURFACE))
@@ -73,7 +80,6 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 .add(TEAnimals.BOOM_BUNNY, builder -> builder.order(4250).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
                 // 兔兔 （史莱姆）
                 // 兔兔 （圣诞节）
-                // 金兔
                 .addIntVariant(TEAnimals.JEWEL_BUNNY, JewelBunny.VARIANT_KEY, JewelBunny.GOLDEN_ID, builder -> builder.order(4700).rarity(5).background(SURFACE_SUN).filters(surfaceDaytime))
                 .add(TEAnimals.BIRD, builder -> builder.order(4800).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
                 .add(TEAnimals.BLUE_JAY, builder -> builder.order(4900).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
@@ -150,28 +156,34 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 .add(TEAnimals.SLUGGY, builder -> builder.order(12000).rarity(2).background(THE_JUNGLE).filters(FilterEntry.THE_JUNGLE))
                 // 蚜虫
                 // 熔岩萤火虫
-                .add(TEAnimals.HELL_BUTTERFLY, builder -> builder.order(12200).rarity(2).background(THE_NETHER).filters(FilterEntry.THE_NETHER))
-                .add(TEAnimals.MAGMA_SNAIL, builder -> builder.order(12300).rarity(2).background(THE_NETHER).filters(FilterEntry.THE_NETHER))
-                // 荧光虫
-                .add(TEAnimals.PRISMATIC_LACEWING, builder -> builder.order(12500).rarity(3).background(THE_HALLOW_MOON).filters(FilterEntry.THE_HALLOW, FilterEntry.NIGHTTIME)) //神圣夜晚
-                .add(TEAnimals.GLOWING_SNAIL, builder -> builder.order(12600).rarity(3).background(GLOWING_MUSHROOM).filters(FilterEntry.SURFACE_MUSHROOM))
+                .add(TEAnimals.HELL_BUTTERFLY, builder -> builder.order(12300).rarity(2).background(THE_NETHER).filters(FilterEntry.THE_NETHER))
+                .add(TEAnimals.MAGMA_SNAIL, builder -> builder.order(12400).rarity(2).background(THE_NETHER).filters(FilterEntry.THE_NETHER))
+                // 荧火虫
+                .add(TEAnimals.PRISMATIC_LACEWING, builder -> builder.order(12600).rarity(3).background(THE_HALLOW_MOON).filters(FilterEntry.THE_HALLOW, FilterEntry.NIGHTTIME)) //神圣夜晚
+                .add(TEAnimals.GLOWING_SNAIL, builder -> builder.order(12700).rarity(3).background(GLOWING_MUSHROOM).filters(FilterEntry.SURFACE_MUSHROOM))
                 // 侏儒
-                .add(TEMonsterEntities.GOBLIN_SCOUT, builder -> builder.order(12800).rarity(3).background(SURFACE).filters(FilterEntry.SURFACE))
-                .add(TEMonsterEntities.GREEN_SLIME, builder -> builder.order(12900).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
-                .add(TEMonsterEntities.BLUE_SLIME, builder -> builder.order(13000).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
-                .add(TEMonsterEntities.PURPLE_SLIME, builder -> builder.order(13100).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
-                .add(TEMonsterEntities.PINK_SLIME, builder -> builder.order(13200).rarity(4).background(SURFACE_SUN).filters(surfaceDaytime))
+                .add(TEMonsterEntities.GOBLIN_SCOUT, builder -> builder.order(12900).rarity(3).background(SURFACE).filters(FilterEntry.SURFACE))
+                .add(TEMonsterEntities.GREEN_SLIME, builder -> builder.order(13000).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
+                .add(TEMonsterEntities.BLUE_SLIME, builder -> builder.order(13100).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
+                .add(TEMonsterEntities.PURPLE_SLIME, builder -> builder.order(13200).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
+                .add(TEMonsterEntities.PINK_SLIME, builder -> builder.order(13300).rarity(4).background(SURFACE_SUN).filters(surfaceDaytime))
                 // 大风气球怪
                 // 愤怒蒲公英
                 // 雨伞史莱姆
-                .add(TEMonsterEntities.FLYING_FISH, builder -> builder.order(13600).rarity(2).background(SURFACE_RAIN).filters(FilterEntry.SURFACE, FilterEntry.RAIN))
+                .add(TEMonsterEntities.FLYING_FISH, builder -> builder.order(13700).rarity(2).background(SURFACE_RAIN).filters(FilterEntry.SURFACE, FilterEntry.RAIN))
                 // 愤怒雨云怪
-                // 恶魔眼 （胀大）
-                // 恶魔眼 （瞌睡）
-                // 恶魔眼 （紫）
-                // 恶魔眼
-                // 恶魔眼 （绿）
-                // 恶魔眼 （白内障）
+                .demonEyeVariant(DemonEyeVariant.DILATED, builder -> builder.order(13900).rarity(1).background(SURFACE_NIGHTTIME).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
+                .demonEyeVariant(DemonEyeVariant.DILATED_SMALL, builder -> builder.order(13910).rarity(1).background(SURFACE_NIGHTTIME).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
+                .demonEyeVariant(DemonEyeVariant.SLEEPY, builder -> builder.order(14000).rarity(1).background(SURFACE_NIGHTTIME).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
+                .demonEyeVariant(DemonEyeVariant.SLEEPY_BIG, builder -> builder.order(14010).rarity(1).background(SURFACE_NIGHTTIME).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
+                .demonEyeVariant(DemonEyeVariant.PURPLE, builder -> builder.order(14100).rarity(1).background(SURFACE_NIGHTTIME).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
+                .demonEyeVariant(DemonEyeVariant.PURPLE_BIG, builder -> builder.order(14110).rarity(1).background(SURFACE_NIGHTTIME).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
+                .demonEyeVariant(DemonEyeVariant.NORMAL, builder -> builder.order(14200).rarity(1).background(SURFACE_NIGHTTIME).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
+                .demonEyeVariant(DemonEyeVariant.NORMAL_BIG, builder -> builder.order(14210).rarity(1).background(SURFACE_NIGHTTIME).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
+                .demonEyeVariant(DemonEyeVariant.GREEN, builder -> builder.order(14300).rarity(1).background(SURFACE_NIGHTTIME).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
+                .demonEyeVariant(DemonEyeVariant.GREEN_SMALL, builder -> builder.order(14310).rarity(1).background(SURFACE_NIGHTTIME).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
+                .demonEyeVariant(DemonEyeVariant.CATARACT, builder -> builder.order(14400).rarity(1).background(SURFACE_NIGHTTIME).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
+                .demonEyeVariant(DemonEyeVariant.CATARACT_BIG, builder -> builder.order(14410).rarity(1).background(SURFACE_NIGHTTIME).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
                 // 游荡眼球怪
                 // 僵尸 （女性）
                 // 僵尸 （史莱姆）
@@ -181,7 +193,7 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 // 僵尸 （火把）
                 // 僵尸 （沼泽）
                 // 僵尸 （中箭）
-                // 僵尸 （雨衣）
+                .mobArmorItems(EntityType.ZOMBIE.builtInRegistryHolder(), "raincoat", List.of(ArmorItems.RAIN_CAP.toStack(), ArmorItems.RAINCOAT.toStack(), ItemStack.EMPTY, ItemStack.EMPTY), provider, builder -> builder.order(15400).rarity(2).background(SURFACE_NIGHTTIME_RAIN).filters(FilterEntry.NIGHTTIME, FilterEntry.RAIN))
                 .add(TEMonsterEntities.POSSESS_ARMOR, builder -> builder.order(15100).rarity(2).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
                 // 狼人
                 .add(TEMonsterEntities.WRAITH, builder -> builder.order(15300).rarity(2).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
@@ -246,6 +258,25 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
 
         public Builder addIntVariant(IHolderExtension<EntityType<?>> holder, String variantKey, int variant, Consumer<ClientBestiaryEntry.Builder> consumer) {
             return add(holder, Integer.toString(variant), consumer.andThen(builder -> builder.entityNbt(nbt -> nbt.putInt(variantKey, variant))));
+        }
+
+        private Builder demonEyeVariant(DemonEyeVariant variant, Consumer<ClientBestiaryEntry.Builder> consumer) {
+            return add(TEMonsterEntities.DEMON_EYE, variant.getSerializedName(), consumer.andThen(builder -> builder.entityNbt(nbt -> nbt.putInt(DemonEye.VARIANT_KEY, variant.getId()))));
+        }
+
+        private Builder mobArmorItems(IHolderExtension<EntityType<?>> holder, String variant, List<ItemStack> armorItems, HolderLookup.Provider provider, Consumer<ClientBestiaryEntry.Builder> consumer) {
+            if (armorItems.size() != 4) throw new IllegalArgumentException();
+            return add(holder, variant, consumer.andThen(builder -> builder.entityNbt(nbt -> {
+                ListTag listTag = new ListTag();
+                for (ItemStack itemStack : armorItems) {
+                    if (itemStack.isEmpty()) {
+                        listTag.add(new CompoundTag());
+                    } else {
+                        listTag.add(itemStack.save(provider));
+                    }
+                }
+                nbt.put("ArmorItems", listTag);
+            })));
         }
     }
 }

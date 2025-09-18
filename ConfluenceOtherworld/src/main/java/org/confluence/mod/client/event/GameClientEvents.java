@@ -24,6 +24,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.stats.Stat;
@@ -44,6 +45,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.common.NeoForgeConfig;
+import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import org.confluence.lib.client.AntiPushPoseStack;
 import org.confluence.lib.util.LibUtils;
@@ -381,6 +383,21 @@ public final class GameClientEvents {
         }
         if (!IMobEffectInstance.of(event.getEffectInstance()).confluence$isEnabled()) {
             event.getTooltip().add(Component.translatable("tooltip.confluence.disabled").withStyle(ChatFormatting.DARK_GRAY));
+        }
+    }
+
+    @SubscribeEvent
+    public static void renderNameTag(RenderNameTagEvent event) {
+        if (!event.canRender().isDefault()) return;
+        Entity entity = event.getEntity();
+        if (entity.getType() == EntityType.ZOMBIE || entity.getType() == EntityType.SKELETON) {
+            if (entity.hasCustomName() && event.getContent().getContents() instanceof TranslatableContents contents && contents.getKey().contains("confluence")) {
+                if (entity == Minecraft.getInstance().getEntityRenderDispatcher().crosshairPickEntity) {
+                    event.setCanRender(TriState.TRUE);
+                } else {
+                    event.setCanRender(TriState.FALSE);
+                }
+            }
         }
     }
 }

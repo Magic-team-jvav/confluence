@@ -1,4 +1,4 @@
-package org.confluence.mod.api.event;
+package org.confluence.mod.api.event.bestiary;
 
 import com.google.common.collect.Maps;
 import net.minecraft.world.entity.Entity;

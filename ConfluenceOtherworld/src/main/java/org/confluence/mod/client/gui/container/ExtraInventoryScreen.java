@@ -2,9 +2,9 @@ package org.confluence.mod.client.gui.container;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.components.Renderable;
+import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -38,6 +38,7 @@ import static org.confluence.mod.common.attachment.ExtraInventory.*;
 public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventoryMenu> {
     private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/container/extra_inventory.png");
     private static final ResourceLocation ACCESSORY = TerraCurio.asResource("textures/slot/accessory.png");
+    private static final WidgetSprites BUTTON = new WidgetSprites(Confluence.asResource("widget/bestiary_button"), Confluence.asResource("widget/bestiary_button_highlighted"));
 
     private boolean buttonPressed = false;
     private final ExtraTeamRender teamRender = new ExtraTeamRender(this);
@@ -57,11 +58,11 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
     protected void init() {
         super.init();
         teamRender.initButton();
-        addRenderableWidget(Button.builder(Component.literal("B"), button -> { // todo 换成图片
+        addRenderableWidget(new ImageButton(leftPos + 125, topPos + 166, 16, 16, BUTTON, button -> {
             if (menu.getCarried().isEmpty()) {
-                minecraft.setScreen(new BestiaryScreen(this));
+                getMinecraft().setScreen(new BestiaryScreen(this));
             }
-        }).size(16, 16).pos(leftPos + 129, topPos + 165).build());
+        }));
         // better experience mixin here
     }
 
@@ -129,7 +130,7 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
         if (mouseX >= leftPos + 147 && mouseX <= leftPos + 165 && mouseY >= topPos + 33 && mouseY <= topPos + 53) {
             this.buttonPressed = !buttonPressed;
             toggleAllSlot();
-            minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, buttonPressed ? 1.0F : 0.8F));
+            getMinecraft().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, buttonPressed ? 1.0F : 0.8F));
             return true;
         }
         return super.mouseClicked(mouseX, mouseY, button);

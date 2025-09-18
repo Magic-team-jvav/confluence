@@ -1,7 +1,6 @@
 package org.confluence.mod.common.init.item;
 
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.Item;
@@ -55,8 +54,4 @@ public class AxeItems {
         }
     }); // 再生法杖
     public static final DeferredItem<BaseAxeItem> AXE_OF_REGROWTH = ITEMS.register("axe_of_regrowth", () -> new BaseAxeItem(ModTiers.PLATINUM, 7, 1f, unbreakable(), ModRarity.LIGHT_RED).image(24, 24)); // 再生之斧
-
-    public static void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> tag) {
-        ITEMS.getEntries().forEach(axe -> tag.add(axe.get()));
-    }
 }

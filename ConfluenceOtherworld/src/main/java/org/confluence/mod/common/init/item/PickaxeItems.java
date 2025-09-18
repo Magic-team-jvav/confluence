@@ -1,6 +1,5 @@
 package org.confluence.mod.common.init.item;
 
-import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.PickaxeItem;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -44,8 +43,4 @@ public class PickaxeItems {
     public static final DeferredItem<PickaxeItem> VORTEX_PICKAXE = ITEMS.register("vortex_pickaxe", () -> new BasePickaxeItem(ModTiers.LUMINITE, 28, 3.2F, unbreakable(), attributes(3, 0.55), ModRarity.RED));
     public static final DeferredItem<PickaxeItem> NEBULA_PICKAXE = ITEMS.register("nebula_pickaxe", () -> new BasePickaxeItem(ModTiers.LUMINITE, 28, 3.2F, unbreakable(), attributes(3, 0.55), ModRarity.RED));
     public static final DeferredItem<PickaxeItem> STARDUST_PICKAXE = ITEMS.register("stardust_pickaxe", () -> new BasePickaxeItem(ModTiers.LUMINITE, 28, 3.2F, unbreakable(), attributes(3, 0.55), ModRarity.RED));
-
-    public static void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> tag) {
-        ITEMS.getEntries().forEach(item -> tag.add(item.get()));
-    }
 }

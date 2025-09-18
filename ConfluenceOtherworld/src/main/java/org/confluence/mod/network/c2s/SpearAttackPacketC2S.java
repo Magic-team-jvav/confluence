@@ -24,7 +24,7 @@ public final class SpearAttackPacketC2S implements IPacketC2S {
     @Override
     public void work(ServerPlayer player) {
         ItemStack itemStack = player.getMainHandItem();
-        if (itemStack.is(ModTags.Items.SPEARS)) {
+        if (itemStack.is(ModTags.Items.SPEAR)) {
             itemStack.onEntitySwing(player, InteractionHand.MAIN_HAND);
         }
     }

@@ -1,6 +1,5 @@
 package org.confluence.mod.common.init.item;
 
-import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffects;
@@ -109,12 +108,4 @@ public class PotionItems {
 
     public static final DeferredItem<AbstractPotionItem> FLASK_OF_FIRE = ITEMS.register("flask_of_fire", () -> new EffectPotionItem(ModRarity.LIGHT_RED, ModEffects.WEAPON_IMBUE_FIRE, 24000));
     public static final DeferredItem<AbstractPotionItem> FLASK_OF_GOLD = ITEMS.register("flask_of_gold", () -> new EffectPotionItem(ModRarity.LIGHT_RED, ModEffects.WEAPON_IMBUE_GOLD, 24000));
-
-    public static void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> tag) {
-        ITEMS.getEntries().forEach(item -> {
-            if (item.get() instanceof AbstractPotionItem item1) {
-                tag.add(item1);
-            }
-        });
-    }
 }

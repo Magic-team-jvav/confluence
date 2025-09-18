@@ -1,7 +1,5 @@
 package org.confluence.mod.common.init.item;
 
-import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
-import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.component.ModRarity;
@@ -28,8 +26,4 @@ public class DrillItems {
     public static final DeferredItem<BaseDrillItem> NEBULA_DRILL = ITEMS.registerItem("nebula_drill", properties -> new BaseDrillItem(ModTiers.LUMINITE, 34, 2.9F, unbreakable(), attributes(2, 0.05), ModRarity.RED));
     public static final DeferredItem<BaseDrillItem> STARDUST_DRILL = ITEMS.registerItem("stardust_drill", properties -> new BaseDrillItem(ModTiers.LUMINITE, 34, 2.9F, unbreakable(), attributes(2, 0.05), ModRarity.RED));
     // todo 激光钻头
-
-    public static void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> tag) {
-        ITEMS.getEntries().forEach(item -> tag.add(item.get()));
-    }
 }

@@ -235,7 +235,7 @@ public final class PlayerEvents {
             Entity target = event.getTarget();
             AccessoryItems.applyLuckyCoin(serverPlayer, target);
         }
-        if (player.getMainHandItem().is(ModTags.Items.SPEARS)) {
+        if (player.getMainHandItem().is(ModTags.Items.SPEAR)) {
             event.setCanceled(true);
         }
     }

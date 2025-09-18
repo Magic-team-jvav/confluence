@@ -1,7 +1,5 @@
 package org.confluence.mod.common.init.item;
 
-import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
-import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.component.ModRarity;
@@ -50,8 +48,4 @@ public class ManaWeaponItems {
 
     public static final DeferredItem<BeeGunItem> BEE_GUN = ITEMS.registerItem("bee_gun", BeeGunItem::new);
     public static final DeferredItem<SpaceGunItem> SPACE_GUN = ITEMS.registerItem("space_gun", SpaceGunItem::new);
-
-    public static void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> tag) {
-        ITEMS.getEntries().forEach(item -> tag.add(item.get()));
-    }
 }

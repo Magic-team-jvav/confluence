@@ -1,7 +1,6 @@
 package org.confluence.mod.common.init.item;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -11,7 +10,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemNameBlockItem;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
@@ -244,8 +242,5 @@ public class FoodItems {
             BaseFoodItem.Builder builder = BaseFoodItem.builder().stackTo(64).food(foodProperties).duration(d -> duration).useAnim(u -> useAnim).drinkingSound(s -> drinkingSoundType).eatingSound(e -> eatingSoundType);
             return builder.build();
         });
-    }
-    public static void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> tag) {
-        for (DeferredHolder<Item, ? extends Item> foods : ITEMS.getEntries()) tag.add(foods.get());
     }
 }

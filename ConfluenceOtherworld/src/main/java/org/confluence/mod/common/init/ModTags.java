@@ -315,11 +315,12 @@ public final class ModTags {
 
         public static final TagKey<Item> NUGGETS_LEAD = c("nuggets/lead");
 
-        public static final TagKey<Item> HAMMERS = c("tools/hammers");
-        public static final TagKey<Item> SPEARS = c("tools/spears");
-        public static final TagKey<Item> LANCES = c("tools/lances");
-        public static final TagKey<Item> WEAPONS = c("weapons");
+        public static final TagKey<Item> TOOLS_HAMMER = c("tools/hammer");
+        public static final TagKey<Item> TOOLS_LANCE = c("tools/lance");
+        public static final TagKey<Item> TOOLS_DRILL = c("tools/drill");
+        public static final TagKey<Item> TOOLS_CHAINSAW = c("tools/tools_chainsaw");
 
+        public static final TagKey<Item> SPEAR = register("spear"); // neoforge那边为三叉戟
         public static final TagKey<Item> COINS = register("coins");
         public static final TagKey<Item> AMMO = register("ammo");
         public static final TagKey<Item> PET = register("pet");

@@ -1,7 +1,5 @@
 package org.confluence.mod.common.init.item;
 
-import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
-import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.component.ModRarity;
@@ -23,7 +21,4 @@ public class HoeItems {
     public static final DeferredItem<BaseHoeItem> PLATINUM_HOE = ITEMS.register("platinum_hoe", () -> new BaseHoeItem(ModTiers.PLATINUM, 1, 4f,ModRarity.COMMON));
     public static final DeferredItem<BaseHoeItem> SHADOW_HOE = ITEMS.register("shadow_hoe", () -> new BaseHoeItem(ModTiers.DEMONITE, 2, 4f,unbreakable(),ModRarity.BLUE));
     public static final DeferredItem<BaseHoeItem> CULTIVATOR = ITEMS.register("cultivator", () -> new BaseHoeItem(ModTiers.CRIMTANE, 2, 4f,unbreakable(),ModRarity.BLUE));
-    public static void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> tag) {
-        ITEMS.getEntries().forEach(hoe -> tag.add(hoe.get()));
-    }
 }

@@ -126,7 +126,7 @@ public class AltarBlock extends BaseEntityBlock {
 
     @Override
     public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
-        return player.getMainHandItem().is(ModTags.Items.HAMMERS) ? super.getDestroyProgress(state, player, level, pos) : 0.0F;
+        return player.getMainHandItem().is(ModTags.Items.TOOLS_HAMMER) ? super.getDestroyProgress(state, player, level, pos) : 0.0F;
     }
 
     @Override

@@ -1,7 +1,5 @@
 package org.confluence.mod.common.init.item;
 
-import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
-import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.component.ModRarity;
@@ -49,9 +47,4 @@ public class ArrowItems {
             BaseArrowEntity.Factory.create("textures/entity/arrow/fly_fish_arrow.png",()->new BaseArrowEntity.Builder()
                     .setDamage(2f).setDamageInRain(3).setSpeedUpInRain(1.5f).setSpeedInertiaInWater(0.8f))
     ));
-
-
-    public static void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> tag) {
-        ITEMS.getEntries().forEach(item -> tag.add(item.get()));
-    }
 }

@@ -1,7 +1,5 @@
 package org.confluence.mod.common.init.item;
 
-import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
-import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.component.ModRarity;
@@ -24,8 +22,4 @@ public class HamaxeItems {
     public static final DeferredItem<BaseHamaxeItem> NEBULA_HAMAXE = ITEMS.register("nebula_hamaxe", () -> new BaseHamaxeItem(ModTiers.LUMINITE, 60, 1.4F, unbreakable(), attributes(4, 0.7), ModRarity.RED));
     public static final DeferredItem<BaseHamaxeItem> STARDUST_HAMAXE = ITEMS.register("stardust_hamaxe", () -> new BaseHamaxeItem(ModTiers.LUMINITE, 60, 1.6F, unbreakable(), attributes(4, 0.7), ModRarity.RED));
     public static final DeferredItem<BaseHamaxeItem> THE_AXE = ITEMS.register("the_axe", () -> new BaseHamaxeItem(ModTiers.CHLOROPHYTE, 72, 1.8F, unbreakable(), attributes(1, 0.725), ModRarity.YELLOW));
-
-    public static void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> tag) {
-        ITEMS.getEntries().forEach(item -> tag.add(item.get()));
-    }
 }

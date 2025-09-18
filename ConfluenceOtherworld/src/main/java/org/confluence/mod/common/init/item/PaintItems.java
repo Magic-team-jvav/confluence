@@ -1,7 +1,6 @@
 package org.confluence.mod.common.init.item;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -82,11 +81,5 @@ public class PaintItems {
             ).build());
             return factory.apply(properties, ModRarity.WHITE, TooltipItem.getTooltipsFromString(suffix, 2, ChatFormatting.GRAY));
         });
-    }
-
-    public static void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> tag) {
-        for (PaintItem paintItem : PAINT_ITEMS) {
-            tag.add(paintItem);
-        }
     }
 }

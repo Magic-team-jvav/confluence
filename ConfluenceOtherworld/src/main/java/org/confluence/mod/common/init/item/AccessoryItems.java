@@ -1,8 +1,6 @@
 package org.confluence.mod.common.init.item;
 
-import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.Tuple;
 import net.minecraft.util.Unit;
@@ -21,7 +19,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.entity.fishing.CurioFishingHook;
 import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.item.accessory.*;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.api.primitive.*;
@@ -193,18 +190,6 @@ public class AccessoryItems {
                 .attribute(Attributes.FALL_DAMAGE_MULTIPLIER, -100, ADD_VALUE));
         WINGS.add(item);
         return item;
-    }
-
-    public static void acceptTags(Function<TagKey<Item>, IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item>> function) {
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> accessory = function.apply(TCTags.ACCESSORY);
-        ITEMS.getEntries().forEach(item -> accessory.add(item.get()));
-        accessory.add(
-                ModItems.PARADOX_INTERACTIVE_MEDAL.get(),
-                ModItems.BOREDOMS_PACT_FALLING_RESOLVE.get()
-        );
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> wings = function.apply(ModTags.Items.WINGS);
-        WINGS.forEach(item -> wings.add(item.get()));
-        wings.add(TCItems.CELESTIAL_STARBOARD.get());
     }
 
     public static void applyLuckyCoin(ServerPlayer player, Entity target) {

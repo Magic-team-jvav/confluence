@@ -365,7 +365,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(96))
                 )
         );
-        add(TEMonsterEntities.CRIMSON_KEMERA.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/crimson_kemera"), LootTable.lootTable()
+        add(TEMonsterEntities.CRIMERA.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/crimera"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.VERTEBRA).setWeight(33).setQuality(1)).apply(random0To1)
                         .add(EmptyLootItem.emptyItem().setWeight(67))

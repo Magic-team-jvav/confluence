@@ -671,21 +671,21 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(NatureBlocks.GRANITE)).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 10))).apply(random0To1)
                 )
         );
-        add(TEMonsterEntities.BLUE_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/blue_slime"), slimeCommon(-10040065));
+        add(TEMonsterEntities.BLUE_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/blue_slime"), slimeCommon(-10644993));
         add(TEMonsterEntities.DESERT_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/desert_slime"), slimeCommon(-2727));
-        add(TEMonsterEntities.GREEN_DUMPLING_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/green_dumpling_slime"), slimeCommon(-16718331)
+        add(TEMonsterEntities.GREEN_DUMPLING_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/green_dumpling_slime"), slimeCommon(-8470674)
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(FoodItems.GREEN_DUMPLING.get()))
                         .apply(random0To1)
                         .add(EmptyLootItem.emptyItem())
                 )
         );
-        add(TEMonsterEntities.GREEN_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/green_slime"), slimeCommon(-16718331));
-        add(TEMonsterEntities.PURPLE_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/purple_slime"), slimeCommon(-3133441));
-        add(TEMonsterEntities.RED_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/red_slime"), slimeCommon(-1179648));
-        add(TEMonsterEntities.YELLOW_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/yellow_slime"), slimeCommon(-11985));
-        add(TEMonsterEntities.JUNGLE_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/jungle_slime"), slimeCommon(-5308625));
-        add(TEMonsterEntities.ICE_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/ice_slime"), slimeCommon(-13631506)
+        add(TEMonsterEntities.GREEN_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/green_slime"), slimeCommon(-8470674));
+        add(TEMonsterEntities.PURPLE_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/purple_slime"), slimeCommon(-6326333));
+        add(TEMonsterEntities.RED_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/red_slime"), slimeCommon(-1079407));
+        add(TEMonsterEntities.YELLOW_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/yellow_slime"), slimeCommon(-871089));
+        add(TEMonsterEntities.JUNGLE_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/jungle_slime"), slimeCommon(-6570130));
+        add(TEMonsterEntities.ICE_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/ice_slime"), slimeCommon(-10628609)
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(FoodItems.ICE_CREAM.get()))
                         .apply(random0To1)
@@ -719,13 +719,13 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(14))
                 )
         );
-        add(TEMonsterEntities.BLACK_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/black_slime"), slimeCommon(-7566196)
+        add(TEMonsterEntities.BLACK_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/black_slime"), slimeCommon(-7697782)
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.COMPASS).setWeight(2))
                         .add(emptyWeight98)
                 )
         );
-        add(TEMonsterEntities.TROPIC_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/tropic_slime"), slimeCommon(-10040065)
+        add(TEMonsterEntities.TROPIC_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/tropic_slime"), slimeCommon(-10644993)
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.TROPICAL_FISH))
                         .add(EmptyLootItem.emptyItem().setWeight(2))

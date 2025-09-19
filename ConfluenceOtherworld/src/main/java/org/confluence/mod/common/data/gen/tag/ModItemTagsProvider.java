@@ -1080,7 +1080,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ToolItems.TARGET_DUMMY.get(),
                 ModItems.WHOOPIE_CUSHION.get(),
                 ModItems.TOKYO_TEDDY_BEAR.get(),
-                ModItems.ICE_TOFU_BRICK.get(),
                 ModItems.FAILED_SKULL.get(),
                 ModItems.KIND_MISIDE_RING.get(),
                 ModItems.FERTILE_SINGULARITY.get(),

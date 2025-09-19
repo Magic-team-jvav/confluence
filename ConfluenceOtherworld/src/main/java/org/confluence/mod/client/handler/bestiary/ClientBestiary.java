@@ -26,7 +26,7 @@ import net.neoforged.neoforge.common.TranslatableEnum;
 import net.neoforged.neoforge.resource.ContextAwareReloadListener;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.bestiary.RegisterBestiaryFilterEvent;
-import org.confluence.mod.common.data.map.BestiaryEntry;
+import org.confluence.mod.common.data.saved.BestiaryEntry;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.IOException;

@@ -87,7 +87,6 @@ import org.confluence.phase_journey.api.PhaseJourneyEvent;
 import org.confluence.terra_curio.api.event.RegisterAccessoriesComponentUpdateEvent;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTabs;
-import org.confluence.terraentity.entity.monster.demoneye.DemonEyeVariant;
 import org.confluence.terraentity.init.entity.TEAnimals;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
 import org.confluence.terraentity.mixed.IZombie;
@@ -513,7 +512,13 @@ public final class ModEvents {
         event.register(TEAnimals.FEALING.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
         event.register(TEAnimals.DUCK.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
         event.register(TEAnimals.FAIRY.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
-        event.register(TEMonsterEntities.DEMON_EYE.get(), RegisterBestiaryKeyEvent.vanillaVariant(DemonEyeVariant::getSerializedName));
+        event.register(TEMonsterEntities.DEMON_EYE.get(), (type, eye) -> {
+            String key = type.getDescriptionId() + '.';
+            if (eye.minion_getOwnerUUID() != null) {
+                return key + "minion";
+            }
+            return key + eye.getVariant().getSerializedName();
+        });
         event.register(EntityType.ZOMBIE, ((type, zombie) -> {
             String key = type.getDescriptionId();
             if (IZombie.of(zombie).terra_entity$isSlimeZombie()) {
@@ -527,5 +532,17 @@ public final class ModEvents {
             }
             return key;
         }));
+        event.register(TEMonsterEntities.BLACK_SLIME.get(), (type, slime) -> {
+            int size = slime.getSize();
+            if (size == 1) return "entity.terra_entity.baby_slime";
+            if (size == 4) return "entity.terra_entity.mother_slime";
+            return type.getDescriptionId();
+        });
+        event.register(EntityType.SKELETON, (type, skeleton) -> {
+            if (skeleton.getItemBySlot(EquipmentSlot.CHEST).is(ArmorItems.MINING_CHESTPLATE)) {
+                return "entity.confluence.undead_miner";
+            }
+            return type.getDescriptionId();
+        });
     }
 }

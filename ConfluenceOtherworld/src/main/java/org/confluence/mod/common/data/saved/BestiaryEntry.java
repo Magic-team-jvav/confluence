@@ -1,4 +1,4 @@
-package org.confluence.mod.common.data.map;
+package org.confluence.mod.common.data.saved;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -8,7 +8,6 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.entity.EntityType;
 import org.confluence.lib.util.LibStreamCodecUtils;
-import org.confluence.mod.common.init.ModDataMaps;
 import org.confluence.mod.util.Coins;
 import org.confluence.mod.util.PlayerUtils;
 
@@ -92,7 +91,65 @@ public class BestiaryEntry {
         return coins;
     }
 
-    public static BestiaryEntry getPresetEntry(EntityType<?> entityType) {
-        return ModDataMaps.getEntityData(ModDataMaps.BESTIARY_ENTRY, entityType);
+    public BestiaryEntry copy() {
+        return new BestiaryEntry(
+                type,
+                killedByCount,
+                maxHealth,
+                knockbackResistance,
+                attackDamage,
+                armor,
+                drops
+        );
+    }
+
+    public static Builder builder(EntityType<?> type, String key) {
+        return new Builder(type, key);
+    }
+
+    public static class Builder {
+        private final EntityType<?> type;
+        private final String key;
+        private float maxHealth;
+        private float knockbackResistance;
+        private float attackDamage;
+        private float armor;
+        private int drops;
+
+        private Builder(EntityType<?> type, String key) {
+            this.type = type;
+            this.key = key;
+        }
+
+        public Builder maxHealth(float maxHealth) {
+            this.maxHealth = maxHealth;
+            return this;
+        }
+
+        public Builder knockbackResistance(float knockbackResistance) {
+            this.knockbackResistance = knockbackResistance;
+            return this;
+        }
+
+        public Builder attackDamage(float attackDamage) {
+            this.attackDamage = attackDamage;
+            return this;
+        }
+
+        public Builder armor(float armor) {
+            this.armor = armor;
+            return this;
+        }
+
+        public Builder drops(int drops) {
+            this.drops = drops;
+            return this;
+        }
+
+        public BestiaryEntry build() {
+            BestiaryEntry entry = new BestiaryEntry(type, 0, maxHealth, knockbackResistance, attackDamage, armor, drops);
+            entry.key = key;
+            return entry;
+        }
     }
 }

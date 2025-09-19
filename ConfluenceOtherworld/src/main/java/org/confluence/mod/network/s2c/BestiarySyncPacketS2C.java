@@ -12,8 +12,8 @@ import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.lib.util.LibStreamCodecUtils;
 import org.confluence.mod.api.event.bestiary.RegisterBestiaryKeyEvent;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
-import org.confluence.mod.common.data.map.BestiaryEntry;
 import org.confluence.mod.common.data.saved.Bestiary;
+import org.confluence.mod.common.data.saved.BestiaryEntry;
 import org.confluence.mod.network.IPacket;
 
 import java.util.HashMap;

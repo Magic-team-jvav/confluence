@@ -42,7 +42,7 @@ public final class ModDataMaps {
             new GamePhase2AttributeModifiers.Merger(),
             false
     );
-    public static final DataMapType<EntityType<?>, BestiaryEntry> BESTIARY_ENTRY = register("bestiary", Registries.ENTITY_TYPE, BestiaryEntry.CODEC, false); // 交由Bestiary统一同步
+    public static final DataMapType<EntityType<?>, PresetBestiaryEntry> BESTIARY_ENTRY = register("bestiary", Registries.ENTITY_TYPE, PresetBestiaryEntry.CODEC, false); // 交由Bestiary统一同步
     public static final DataMapType<Block, BlockBreakSpawns> BLOCK_BREAK_SPAWNS = register("block_break_spawns", Registries.BLOCK, BlockBreakSpawns.CODEC, false);
 
     private static <R, T> DataMapType<R, T> register(String path, ResourceKey<Registry<R>> resourceKey, Codec<T> codec, boolean synced) {

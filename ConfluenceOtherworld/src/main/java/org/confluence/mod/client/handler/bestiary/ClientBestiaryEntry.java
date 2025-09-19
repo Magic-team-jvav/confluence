@@ -20,7 +20,7 @@ import org.confluence.lib.util.LibCodecUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.bestiary.RegisterCustomBestiaryEntryRendererEvent;
-import org.confluence.mod.common.data.map.BestiaryEntry;
+import org.confluence.mod.common.data.saved.BestiaryEntry;
 import org.confluence.mod.common.entity.BestiaryEntryDisplay;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.mixin.accessor.EntityAccessor;
@@ -210,10 +210,11 @@ public class ClientBestiaryEntry extends BestiaryEntry {
         return Confluence.asResource("bestiary/background/" + path);
     }
 
-    public static Builder builder(EntityType<?> type, String key) {
+    public static Builder builderc(EntityType<?> type, String key) {
         return new Builder(type, key);
     }
 
+    @Override
     public ClientBestiaryEntry copy() {
         return new ClientBestiaryEntry(
                 type,

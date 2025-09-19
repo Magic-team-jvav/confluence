@@ -6,7 +6,6 @@ import com.mojang.serialization.Dynamic;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -17,7 +16,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.mod.api.event.bestiary.RegisterBestiaryKeyEvent;
 import org.confluence.mod.api.event.bestiary.ToBeBestiaryEntryEvent;
-import org.confluence.mod.common.data.map.BestiaryEntry;
+import org.confluence.mod.common.data.map.PresetBestiaryEntry;
 import org.confluence.mod.network.s2c.BestiarySyncPacketS2C;
 import org.confluence.mod.util.ModUtils;
 
@@ -58,12 +57,11 @@ public class Bestiary implements IGlobalData {
 
     public BestiaryEntry getOrCreateEntry(LivingEntity living) {
         return entries.computeIfAbsent(RegisterBestiaryKeyEvent.getKey(living), key -> {
-            EntityType<?> type = living.getType();
-            BestiaryEntry entry = BestiaryEntry.getPresetEntry(type);
+            BestiaryEntry entry = PresetBestiaryEntry.getEntry(living);
             if (entry != null) return entry;
 
             entry = new BestiaryEntry();
-            entry.type = type;
+            entry.type = living.getType();
             entry.key = key;
             AttributeMap map = living.getAttributes();
             entry.maxHealth = getAttributeBaseValue(map, Attributes.MAX_HEALTH);

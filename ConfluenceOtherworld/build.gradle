@@ -25,6 +25,7 @@ neoForge {
         mappingsVersion = project.parchment_mappings_version
         minecraftVersion = project.parchment_minecraft_version
     }
+    validateAccessTransformers = true
     runs {
         client {
             client()

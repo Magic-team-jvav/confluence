@@ -172,36 +172,36 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 // 雨伞史莱姆
                 .add(TEMonsterEntities.FLYING_FISH, builder -> builder.order(13700).rarity(2).background(SURFACE_RAIN).filters(FilterEntry.SURFACE, FilterEntry.RAIN))
                 // 愤怒雨云怪
-                .demonEyeVariant(DemonEyeVariant.DILATED, builder -> builder.order(13900).rarity(1).background(SURFACE_NIGHTTIME).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
-                .demonEyeVariant(DemonEyeVariant.DILATED_SMALL, builder -> builder.order(13910).rarity(1).background(SURFACE_NIGHTTIME).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
-                .demonEyeVariant(DemonEyeVariant.SLEEPY, builder -> builder.order(14000).rarity(1).background(SURFACE_NIGHTTIME).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
-                .demonEyeVariant(DemonEyeVariant.SLEEPY_BIG, builder -> builder.order(14010).rarity(1).background(SURFACE_NIGHTTIME).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
-                .demonEyeVariant(DemonEyeVariant.PURPLE, builder -> builder.order(14100).rarity(1).background(SURFACE_NIGHTTIME).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
-                .demonEyeVariant(DemonEyeVariant.PURPLE_BIG, builder -> builder.order(14110).rarity(1).background(SURFACE_NIGHTTIME).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
-                .demonEyeVariant(DemonEyeVariant.NORMAL, builder -> builder.order(14200).rarity(1).background(SURFACE_NIGHTTIME).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
-                .demonEyeVariant(DemonEyeVariant.NORMAL_BIG, builder -> builder.order(14210).rarity(1).background(SURFACE_NIGHTTIME).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
-                .demonEyeVariant(DemonEyeVariant.GREEN, builder -> builder.order(14300).rarity(1).background(SURFACE_NIGHTTIME).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
-                .demonEyeVariant(DemonEyeVariant.GREEN_SMALL, builder -> builder.order(14310).rarity(1).background(SURFACE_NIGHTTIME).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
-                .demonEyeVariant(DemonEyeVariant.CATARACT, builder -> builder.order(14400).rarity(1).background(SURFACE_NIGHTTIME).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
-                .demonEyeVariant(DemonEyeVariant.CATARACT_BIG, builder -> builder.order(14410).rarity(1).background(SURFACE_NIGHTTIME).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
+                .demonEyeVariant(DemonEyeVariant.DILATED, builder -> builder.order(13900).rarity(1).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
+                .demonEyeVariant(DemonEyeVariant.DILATED_SMALL, builder -> builder.order(13910).rarity(1).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
+                .demonEyeVariant(DemonEyeVariant.SLEEPY, builder -> builder.order(14000).rarity(1).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
+                .demonEyeVariant(DemonEyeVariant.SLEEPY_BIG, builder -> builder.order(14010).rarity(1).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
+                .demonEyeVariant(DemonEyeVariant.PURPLE, builder -> builder.order(14100).rarity(1).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
+                .demonEyeVariant(DemonEyeVariant.PURPLE_BIG, builder -> builder.order(14110).rarity(1).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
+                .demonEyeVariant(DemonEyeVariant.NORMAL, builder -> builder.order(14200).rarity(1).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
+                .demonEyeVariant(DemonEyeVariant.NORMAL_BIG, builder -> builder.order(14210).rarity(1).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
+                .demonEyeVariant(DemonEyeVariant.GREEN, builder -> builder.order(14300).rarity(1).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
+                .demonEyeVariant(DemonEyeVariant.GREEN_SMALL, builder -> builder.order(14310).rarity(1).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
+                .demonEyeVariant(DemonEyeVariant.CATARACT, builder -> builder.order(14400).rarity(1).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
+                .demonEyeVariant(DemonEyeVariant.CATARACT_BIG, builder -> builder.order(14410).rarity(1).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
                 // 游荡眼球怪
                 // 僵尸 （女性）
-                // 僵尸 （史莱姆）
+                .add(EntityType.ZOMBIE.builtInRegistryHolder(), "slime", builder -> builder.order(14700).rarity(1).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
                 // 僵尸 （光头）
-                .add(EntityType.ZOMBIE.builtInRegistryHolder(), builder -> builder.order(14500).rarity(1).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
+                .add(EntityType.ZOMBIE.builtInRegistryHolder(), builder -> builder.order(14900).rarity(1).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
                 // 僵尸 （纤瘦）
                 // 僵尸 （火把）
                 // 僵尸 （沼泽）
                 // 僵尸 （中箭）
                 .mobArmorItems(EntityType.ZOMBIE.builtInRegistryHolder(), "raincoat", List.of(ArmorItems.RAIN_CAP.toStack(), ArmorItems.RAINCOAT.toStack(), ItemStack.EMPTY, ItemStack.EMPTY), provider, builder -> builder.order(15400).rarity(2).background(SURFACE_NIGHTTIME_RAIN).filters(FilterEntry.NIGHTTIME, FilterEntry.RAIN))
-                .add(TEMonsterEntities.POSSESS_ARMOR, builder -> builder.order(15100).rarity(2).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
+                .add(TEMonsterEntities.POSSESS_ARMOR, builder -> builder.order(15500).rarity(2).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
                 // 狼人
-                .add(TEMonsterEntities.WRAITH, builder -> builder.order(15300).rarity(2).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
+                .add(TEMonsterEntities.WRAITH, builder -> builder.order(15700).rarity(2).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
                 // 腐化兔兔
                 // 腐化企鹅
                 // 毒兔兔
                 // 毒企鹅
-                .add(TEMonsterEntities.BLOOD_ZOMBIE, builder -> builder.order(15800).rarity(1).background(BLOOD_MOON).filters(FilterEntry.SURFACE, FilterEntry.BLOOD_MOON, FilterEntry.NIGHTTIME))
+                .add(TEMonsterEntities.BLOOD_ZOMBIE, builder -> builder.order(16200).rarity(1).background(BLOOD_MOON).filters(FilterEntry.SURFACE, FilterEntry.BLOOD_MOON, FilterEntry.NIGHTTIME))
                 // 僵尸新郎
                 // 僵尸新娘
                 // 僵尸人鱼
@@ -210,22 +210,22 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 // 血鳗鱼
                 // 腐化金鱼
                 // 毒金鱼
-                .add(TEMonsterEntities.DRIPPLER, builder -> builder.order(16700).rarity(2).background(BLOOD_MOON).filters(FilterEntry.SURFACE, FilterEntry.BLOOD_MOON, FilterEntry.NIGHTTIME))
+                .add(TEMonsterEntities.DRIPPLER, builder -> builder.order(17100).rarity(2).background(BLOOD_MOON).filters(FilterEntry.SURFACE, FilterEntry.BLOOD_MOON, FilterEntry.NIGHTTIME))
                 // 嗒嗒牙齿炸弹
-                .add(TEMonsterEntities.WANDERING_EYE_FISH, builder -> builder.order(16900).rarity(4).background(BLOOD_MOON).filters(FilterEntry.SURFACE, FilterEntry.BLOOD_MOON, FilterEntry.NIGHTTIME))
+                .add(TEMonsterEntities.WANDERING_EYE_FISH, builder -> builder.order(17300).rarity(4).background(BLOOD_MOON).filters(FilterEntry.SURFACE, FilterEntry.BLOOD_MOON, FilterEntry.NIGHTTIME))
                 // 血浆哥布林鲨鱼
                 // 恐惧鹦鹉螺
                 // 弹跳杰克南瓜灯
                 // 蝇蛆僵尸
                 // 乌鸦
-                .add(TEMonsterEntities.GHOST, builder -> builder.order(17500).rarity(3).background(GRAVEYARD).filters(FilterEntry.GRAVEYARD))
-                .add(TEMonsterEntities.RED_SLIME, builder -> builder.order(17600).rarity(1).background(UNDERGROUND).filters(FilterEntry.UNDERGROUND))
-                .add(TEMonsterEntities.YELLOW_SLIME, builder -> builder.order(17700).rarity(3).background(UNDERGROUND).filters(FilterEntry.UNDERGROUND))
+                .add(TEMonsterEntities.GHOST, builder -> builder.order(17900).rarity(3).background(GRAVEYARD).filters(FilterEntry.GRAVEYARD))
+                .add(TEMonsterEntities.RED_SLIME, builder -> builder.order(18000).rarity(1).background(UNDERGROUND).filters(FilterEntry.UNDERGROUND))
+                .add(TEMonsterEntities.YELLOW_SLIME, builder -> builder.order(18100).rarity(3).background(UNDERGROUND).filters(FilterEntry.UNDERGROUND))
                 // 毒泥
-                .add(TEMonsterEntities.GIANT_WORM, builder -> builder.order(17900).rarity(1).background(UNDERGROUND).filters(FilterEntry.UNDERGROUND))
+                .add(TEMonsterEntities.GIANT_WORM, builder -> builder.order(18300).rarity(1).background(UNDERGROUND).filters(FilterEntry.UNDERGROUND))
                 // 挖掘怪
                 // 史莱姆宝宝
-                .add(TEMonsterEntities.BLACK_SLIME, builder -> builder.order(18200).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
+                .add(TEMonsterEntities.BLACK_SLIME, builder -> builder.order(18600).rarity(1).background(CAVE).filters(FilterEntry.CAVE))
 
 
                 .map);

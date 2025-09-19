@@ -1,4 +1,4 @@
-package org.confluence.mod.client.renderer.entity;
+package org.confluence.mod.client.renderer.entity.bestiary;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
 import org.confluence.mod.api.event.bestiary.RegisterCustomBestiaryEntryRendererEvent;
 import org.confluence.mod.common.entity.BestiaryEntryDisplay;
 
@@ -30,8 +31,15 @@ public class BestiaryEntryDisplayRenderer extends LivingEntityRenderer<BestiaryE
 
     @Override
     public void render(BestiaryEntryDisplay entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+        LivingEntity delegate = entity.getDelegate();
+        delegate.setXRot(entity.getXRot());
+        delegate.setYRot(entity.getYRot());
+        delegate.yBodyRot = entity.yBodyRot;
+        delegate.yHeadRot = entity.yHeadRot;
         RegisterCustomBestiaryEntryRendererEvent.getRenderer(
-                entity.getKey()).render(entity.getDelegate(), entityYaw, partialTick, poseStack, bufferSource, packedLight
+                entity.getKey()).render(delegate, entityYaw, partialTick, poseStack, bufferSource, packedLight
         );
+        delegate.yBodyRotO = entity.yBodyRotO;
+        delegate.yHeadRotO = entity.yHeadRotO;
     }
 }

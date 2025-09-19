@@ -3,10 +3,15 @@ package org.confluence.mod.api.event.bestiary;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.bus.api.Event;
 import net.neoforged.fml.ModLoader;
 import net.neoforged.fml.event.IModBusEvent;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import org.confluence.mod.client.renderer.entity.bestiary.GeoWormBestiaryEntryRenderer;
+import org.confluence.terraentity.entity.monster.BaseWorm;
+import org.confluence.terraentity.entity.monster.BaseWormPart;
 
 import java.util.Map;
 
@@ -24,6 +29,10 @@ public class RegisterCustomBestiaryEntryRendererEvent extends Event implements I
 
     public <T extends LivingEntity, R extends EntityRenderer<T>> void register(String key, R renderer) {
         RENDERERS.put(key, (EntityRenderer<LivingEntity>) renderer);
+    }
+
+    public void registerBaseWorm(DeferredHolder<EntityType<?>, EntityType<BaseWorm<BaseWormPart>>> holder) {
+        register(holder.get().getDescriptionId(), new GeoWormBestiaryEntryRenderer<>(context, holder.getId()));
     }
 
     public static void postEvent(EntityRendererProvider.Context context) {

@@ -90,6 +90,7 @@ import org.confluence.terra_curio.common.init.TCTabs;
 import org.confluence.terraentity.entity.monster.demoneye.DemonEyeVariant;
 import org.confluence.terraentity.init.entity.TEAnimals;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
+import org.confluence.terraentity.mixed.IZombie;
 
 import java.util.Optional;
 import java.util.function.Function;
@@ -515,6 +516,9 @@ public final class ModEvents {
         event.register(TEMonsterEntities.DEMON_EYE.get(), RegisterBestiaryKeyEvent.vanillaVariant(DemonEyeVariant::getSerializedName));
         event.register(EntityType.ZOMBIE, ((type, zombie) -> {
             String key = type.getDescriptionId();
+            if (IZombie.of(zombie).terra_entity$isSlimeZombie()) {
+                return key + ".slime";
+            }
             Item chest = zombie.getItemBySlot(EquipmentSlot.CHEST).getItem();
             if (chest == ArmorItems.RAINCOAT.get()) {
                 return key + ".raincoat";

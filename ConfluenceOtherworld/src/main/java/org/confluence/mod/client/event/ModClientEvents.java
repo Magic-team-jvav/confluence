@@ -63,7 +63,12 @@ import org.confluence.mod.client.particle.*;
 import org.confluence.mod.client.renderer.NoopTooltip;
 import org.confluence.mod.client.renderer.SizedTextureTooltip;
 import org.confluence.mod.client.renderer.block.*;
-import org.confluence.mod.client.renderer.entity.*;
+import org.confluence.mod.client.renderer.entity.BodyPartRenderer;
+import org.confluence.mod.client.renderer.entity.FallingStarRenderer;
+import org.confluence.mod.client.renderer.entity.TargetDummyRenderer;
+import org.confluence.mod.client.renderer.entity.TreasureBagRenderer;
+import org.confluence.mod.client.renderer.entity.bestiary.BestiaryEntryDisplayRenderer;
+import org.confluence.mod.client.renderer.entity.bestiary.SlimeZombieRenderer;
 import org.confluence.mod.client.renderer.entity.fishing.BaseFishingHookRenderer;
 import org.confluence.mod.client.renderer.entity.fishing.BloodyFishingHookRenderer;
 import org.confluence.mod.client.renderer.entity.fishing.GlowingFishingHookRenderer;
@@ -498,8 +503,11 @@ public final class ModClientEvents {
 
     @SubscribeEvent
     public static void registerCustomBestiaryEntryModel(RegisterCustomBestiaryEntryRendererEvent event) {
-        // todo 蠕虫类
         EntityRendererProvider.Context context = event.getContext();
-        event.register(TEMonsterEntities.DEVOURER.get().getDescriptionId(), new GeoWormBestiaryEntryRenderer<>(context, TEMonsterEntities.DEVOURER.getId()));
+        event.registerBaseWorm(TEMonsterEntities.DEVOURER);
+        event.registerBaseWorm(TEMonsterEntities.TOMB_CRAWLER);
+        event.registerBaseWorm(TEMonsterEntities.GIANT_WORM);
+        event.registerBaseWorm(TEMonsterEntities.LEECH);
+        event.register("entity.minecraft.zombie.slime", new SlimeZombieRenderer(context));
     }
 }

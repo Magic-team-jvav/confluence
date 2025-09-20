@@ -28,12 +28,8 @@ jobs:
       - name: Build Confluence
         working-directory: ./ConfluenceOtherworld
         run: ./gradlew build
-      - name: Create nightly release
-        uses: marvinpinto/action-automatic-releases@latest
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          automatic_release_tag: nightly
-          prerelease: true
-          title: "Confluence Automate Build"
-          files: |
-            ./ConfluenceOtherworld/build/libs/*.jar
+          name: Confluence Automate Build
+          path: ./ConfluenceOtherworld/build/libs/*.jar

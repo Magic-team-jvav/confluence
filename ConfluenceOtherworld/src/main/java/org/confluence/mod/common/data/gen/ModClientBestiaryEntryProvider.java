@@ -78,7 +78,7 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 .add(TEAnimals.BUNNY, builder -> builder.order(4200).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
                 .add(EntityType.RABBIT.builtInRegistryHolder(), builder -> builder.order(4210).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
                 // 兔兔 （戴帽子）
-                .add(TEAnimals.BOOM_BUNNY, builder -> builder.order(4250).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
+                .add(TEAnimals.EXPLOSIVE_BUNNY, builder -> builder.order(4250).rarity(1).background(SURFACE_SUN).filters(surfaceDaytime))
                 // 兔兔 （史莱姆）
                 // 兔兔 （圣诞节）
                 .addIntVariant(TEAnimals.JEWEL_BUNNY, JewelBunny.VARIANT_KEY, JewelBunny.GOLDEN_ID, builder -> builder.order(4700).rarity(5).background(SURFACE_SUN).filters(surfaceDaytime))

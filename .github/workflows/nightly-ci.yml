@@ -31,5 +31,5 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Confluence Automate Build
+          name: Confluence Automate Build Artifacts
           path: ./ConfluenceOtherworld/build/libs/*.jar

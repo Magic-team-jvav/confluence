@@ -54,6 +54,7 @@ public final class ModTags {
         public static final TagKey<Block> DECOMPOSE_THE_SOURCE_EXTRACT_BASE_BLOCK = register("decompose_the_source_extract_base_block");
         public static final TagKey<Block> SPREADABLE_GRASS_BLOCK = register("spreadable_grass_block");
         public static final TagKey<Block> ENVIRONMENTAL_PRESERVATION = register("environmental_preservation");
+        public static final TagKey<Block> CACTUS = register("cactus");
 
         public static final TagKey<Block> PURE_CONVERSION_GRASS_BLOCK = register("pure_conversion_grass_block");
         public static final TagKey<Block> PURE_CONVERSION_JUNGLE_GRASS_BLOCK = register("pure_conversion_jungle_grass_block");
@@ -64,6 +65,7 @@ public final class ModTags {
         public static final TagKey<Block> PURE_CONVERSION_SANDSTONE = register("pure_conversion_sandstone");
         public static final TagKey<Block> PURE_CONVERSION_HARDENED_SAND_BLOCK = register("pure_conversion_hardened_sand_block");
         public static final TagKey<Block> PURE_CONVERSION_MOIST_SAND_BLOCK = register("pure_conversion_moist_sand_block");
+        public static final TagKey<Block> PURE_CONVERSION_CACTUS = register("pure_conversion_cactus");
 
         public static final TagKey<Block> CORRUPTION_CONVERSION_DIRT = register("corruption_conversion_dirt");
         public static final TagKey<Block> CORRUPTION_CONVERSION_GRASS_BLOCK = register("corruption_conversion_grass_block");
@@ -75,6 +77,7 @@ public final class ModTags {
         public static final TagKey<Block> CORRUPTION_CONVERSION_SANDSTONE = register("corruption_conversion_sandstone");
         public static final TagKey<Block> CORRUPTION_CONVERSION_HARDENED_SAND_BLOCK = register("corruption_conversion_hardened_sand_block");
         public static final TagKey<Block> CORRUPTION_CONVERSION_MOIST_SAND_BLOCK = register("corruption_conversion_moist_sand_block");
+        public static final TagKey<Block> CORRUPTION_CONVERSION_CACTUS = register("corruption_conversion_cactus");
 
         public static final TagKey<Block> CRIMSON_CONVERSION_DIRT = register("crimson_conversion_dirt");
         public static final TagKey<Block> CRIMSON_CONVERSION_GRASS_BLOCK = register("crimson_conversion_grass_block");
@@ -86,6 +89,7 @@ public final class ModTags {
         public static final TagKey<Block> CRIMSON_CONVERSION_SANDSTONE = register("crimson_conversion_sandstone");
         public static final TagKey<Block> CRIMSON_CONVERSION_HARDENED_SAND_BLOCK = register("crimson_conversion_hardened_sand_block");
         public static final TagKey<Block> CRIMSON_CONVERSION_MOIST_SAND_BLOCK = register("crimson_conversion_moist_sand_block");
+        public static final TagKey<Block> CRIMSON_CONVERSION_CACTUS = register("crimson_conversion_cactus");
 
         public static final TagKey<Block> HALLOW_CONVERSION_GRASS_BLOCK = register("hallow_conversion_grass_block");
         public static final TagKey<Block> HALLOW_CONVERSION_SHORT_GRASS = register("hallow_conversion_short_grass");
@@ -95,6 +99,7 @@ public final class ModTags {
         public static final TagKey<Block> HALLOW_CONVERSION_SANDSTONE = register("hallow_conversion_sandstone");
         public static final TagKey<Block> HALLOW_CONVERSION_HARDENED_SAND_BLOCK = register("hallow_conversion_hardened_sand_block");
         public static final TagKey<Block> HALLOW_CONVERSION_MOIST_SAND_BLOCK = register("hallow_conversion_moist_sand_block");
+        public static final TagKey<Block> HALLOW_CONVERSION_CACTUS = register("hallow_conversion_cactus");
 
         public static final TagKey<Block> CRIMSON_BLOCKS = register("crimson_blocks");
         public static final TagKey<Block> CRIMSON_DESERT_BLOCKS = register("crimson_desert_blocks");

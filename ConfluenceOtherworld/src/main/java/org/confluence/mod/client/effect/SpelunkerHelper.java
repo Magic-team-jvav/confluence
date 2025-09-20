@@ -298,8 +298,8 @@ public class SpelunkerHelper extends AbstractBufferManager {
         putTarget(OPAL_ORE.get(), Color.red, true, ShowType.SPELUNKER);
 
         // 狱石
-        putTarget(HELLSTONE.get(), Color.ORANGE, true, ShowType.SPELUNKER);
-        putTarget(ASH_HELLSTONE.get(), Color.ORANGE, true, ShowType.SPELUNKER);
+        putTarget(HELLSTONE.get(), Color.red, true, ShowType.SPELUNKER);
+        putTarget(ASH_HELLSTONE.get(), Color.red, true, ShowType.SPELUNKER);
 
         // 石英
         putTarget(Blocks.NETHER_QUARTZ_ORE, Color.WHITE, true, ShowType.SPELUNKER);

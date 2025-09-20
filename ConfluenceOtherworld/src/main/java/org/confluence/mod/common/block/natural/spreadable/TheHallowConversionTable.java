@@ -41,6 +41,7 @@ public class TheHallowConversionTable extends ConversionTable {
         if (holder.is(ModTags.Blocks.HALLOW_CONVERSION_SANDSTONE)) return NatureBlocks.PEARLSANDSTONE.get();
         if (holder.is(ModTags.Blocks.HALLOW_CONVERSION_HARDENED_SAND_BLOCK)) return NatureBlocks.HARDENED_PEARLSAND_BLOCK.get();
         if (holder.is(ModTags.Blocks.HALLOW_CONVERSION_MOIST_SAND_BLOCK)) return NatureBlocks.MOISTENED_PEARLSAND_BLOCK.get();
+        if (holder.is(ModTags.Blocks.HALLOW_CONVERSION_CACTUS)) return NatureBlocks.HALLOW_CACTUS.get();
 
         if (holder.is(Tags.Blocks.ORES_REDSTONE)) return OreBlocks.SANCTIFICATION_REDSTONE_ORE.get();
         if (holder.is(Tags.Blocks.ORES_COAL)) return OreBlocks.SANCTIFICATION_COAL_ORE.get();

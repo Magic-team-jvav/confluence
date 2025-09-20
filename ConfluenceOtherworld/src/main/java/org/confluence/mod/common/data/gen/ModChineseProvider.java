@@ -3097,6 +3097,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.BLINKING_ROYAL_SHIMMERLILY.get(), "微光王莲");
         add(NatureBlocks.LARVA.get(), "幼虫");
         add(NatureBlocks.LOST_PAPER_BLOCK.get(), "遗落纸张");
+        add(NatureBlocks.CORRUPT_CACTUS.get(), "腐化仙人掌");
+        add(NatureBlocks.CRIMSON_CACTUS.get(), "猩红仙人掌");
+        add(NatureBlocks.HALLOW_CACTUS.get(), "神圣仙人掌");
 
         add(LightPetItems.SHADOW_ORB.get(), "暗影珠");
         add(LightPetItems.CRIMSON_HEART.get(), "猩红心脏");

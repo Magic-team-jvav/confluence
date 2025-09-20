@@ -42,6 +42,7 @@ public class TheCrimsonConversionTable extends ConversionTable {
         if (holder.is(ModTags.Blocks.CRIMSON_CONVERSION_SANDSTONE)) return NatureBlocks.CRIMSANDSTONE.get();
         if (holder.is(ModTags.Blocks.CRIMSON_CONVERSION_HARDENED_SAND_BLOCK)) return NatureBlocks.HARDENED_CRIMSAND_BLOCK.get();
         if (holder.is(ModTags.Blocks.CRIMSON_CONVERSION_MOIST_SAND_BLOCK)) return NatureBlocks.MOISTENED_CRIMSAND_BLOCK.get();
+        if (holder.is(ModTags.Blocks.CRIMSON_CONVERSION_CACTUS)) return NatureBlocks.CRIMSON_CACTUS.get();
 
         if (holder.is(Tags.Blocks.ORES_REDSTONE)) return OreBlocks.FLESHIFICATION_REDSTONE_ORE.get();
         if (holder.is(Tags.Blocks.ORES_COAL)) return OreBlocks.FLESHIFICATION_COAL_ORE.get();

@@ -467,7 +467,11 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 NatureBlocks.GLOWING_MUSHROOM_PILEUS_BLOCK.get(),
                 NatureBlocks.LIFE_MUSHROOM_INDUSIUM_BLOCK.get(),
                 NatureBlocks.LIFE_MUSHROOM_STEM_BLOCK.get(),
-                NatureBlocks.LIFE_MUSHROOM_PILEUS_BLOCK.get()
+                NatureBlocks.LIFE_MUSHROOM_PILEUS_BLOCK.get(),
+
+                CORRUPT_CACTUS.get(),
+                CRIMSON_CACTUS.get(),
+                HALLOW_CACTUS.get()
         );
         tag(BlockTags.INCORRECT_FOR_WOODEN_TOOL).addTag(ModTags.Blocks.NEEDS_2_LEVEL);
         tag(BlockTags.INCORRECT_FOR_GOLD_TOOL).addTag(ModTags.Blocks.NEEDS_2_LEVEL);
@@ -1344,6 +1348,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
             tag(ModTags.Blocks.PURE_CONVERSION_SANDSTONE).add(CRIMSANDSTONE.get(), PEARLSANDSTONE.get(), EBONSANDSTONE.get());
             tag(ModTags.Blocks.PURE_CONVERSION_HARDENED_SAND_BLOCK).add(HARDENED_PEARLSAND_BLOCK.get(), HARDENED_CRIMSAND_BLOCK.get(), HARDENED_EBONSAND_BLOCK.get());
             tag(ModTags.Blocks.PURE_CONVERSION_MOIST_SAND_BLOCK).add(MOISTENED_PEARLSAND_BLOCK.get(), MOISTENED_CRIMSAND_BLOCK.get(), MOISTENED_EBONSAND_BLOCK.get());
+            tag(ModTags.Blocks.PURE_CONVERSION_CACTUS).add(CORRUPT_CACTUS.get(), CRIMSON_CACTUS.get(), HALLOW_CACTUS.get());
         }
         {
             tag(ModTags.Blocks.CORRUPTION_CONVERSION_DIRT).add(Blocks.MUD);
@@ -1356,6 +1361,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
             tag(ModTags.Blocks.CORRUPTION_CONVERSION_SANDSTONE).add(Blocks.SANDSTONE, Blocks.RED_SANDSTONE, CRIMSANDSTONE.get(), PEARLSANDSTONE.get());
             tag(ModTags.Blocks.CORRUPTION_CONVERSION_HARDENED_SAND_BLOCK).add(HARDENED_SAND_BLOCK.get(), HARDENED_RED_SAND_BLOCK.get(), HARDENED_PEARLSAND_BLOCK.get(), HARDENED_CRIMSAND_BLOCK.get());
             tag(ModTags.Blocks.CORRUPTION_CONVERSION_MOIST_SAND_BLOCK).add(MOISTENED_SAND_BLOCK.get(), MOISTENED_RED_SAND_BLOCK.get(), MOISTENED_PEARLSAND_BLOCK.get(), MOISTENED_CRIMSAND_BLOCK.get());
+            tag(ModTags.Blocks.CORRUPTION_CONVERSION_CACTUS).add(Blocks.CACTUS);
         }
         {
             tag(ModTags.Blocks.CRIMSON_CONVERSION_DIRT).add(Blocks.MUD);
@@ -1368,6 +1374,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
             tag(ModTags.Blocks.CRIMSON_CONVERSION_SANDSTONE).add(Blocks.SANDSTONE, Blocks.RED_SANDSTONE, EBONSANDSTONE.get(), PEARLSANDSTONE.get());
             tag(ModTags.Blocks.CRIMSON_CONVERSION_HARDENED_SAND_BLOCK).add(HARDENED_SAND_BLOCK.get(), HARDENED_RED_SAND_BLOCK.get(), HARDENED_PEARLSAND_BLOCK.get(), HARDENED_EBONSAND_BLOCK.get());
             tag(ModTags.Blocks.CRIMSON_CONVERSION_MOIST_SAND_BLOCK).add(MOISTENED_SAND_BLOCK.get(), MOISTENED_RED_SAND_BLOCK.get(), MOISTENED_EBONSAND_BLOCK.get(), MOISTENED_PEARLSAND_BLOCK.get());
+            tag(ModTags.Blocks.CRIMSON_CONVERSION_CACTUS).add(Blocks.CACTUS);
         }
         {
             tag(ModTags.Blocks.HALLOW_CONVERSION_GRASS_BLOCK).addTag(BlockTags.CONVERTABLE_TO_MUD).add(Blocks.GRASS_BLOCK, CORRUPT_GRASS_BLOCK.get(), CRIMSON_GRASS.get());
@@ -1378,6 +1385,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
             tag(ModTags.Blocks.HALLOW_CONVERSION_SANDSTONE).add(Blocks.SANDSTONE, Blocks.RED_SANDSTONE, EBONSANDSTONE.get(), CRIMSANDSTONE.get());
             tag(ModTags.Blocks.HALLOW_CONVERSION_HARDENED_SAND_BLOCK).add(HARDENED_SAND_BLOCK.get(), HARDENED_RED_SAND_BLOCK.get(), HARDENED_EBONSAND_BLOCK.get(), HARDENED_CRIMSAND_BLOCK.get());
             tag(ModTags.Blocks.HALLOW_CONVERSION_MOIST_SAND_BLOCK).add(MOISTENED_SAND_BLOCK.get(), MOISTENED_RED_SAND_BLOCK.get(), MOISTENED_EBONSAND_BLOCK.get(), MOISTENED_CRIMSAND_BLOCK.get());
+            tag(ModTags.Blocks.HALLOW_CONVERSION_CACTUS).add(Blocks.CACTUS);
         }
         tag(ModTags.Blocks.CURSED_FLAME_BASE_BLOCK).add(
                 EBONSTONE.get(),
@@ -1497,6 +1505,12 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         tag(TETags.Blocks.NPC_HOUSE_CONSTITUTE).add(
                 WHITE_PAPER_PANE_LAMP.get(),
                 MALACHITE_PAPER_PANE_LAMP.get()
+        );
+        tag(ModTags.Blocks.CACTUS).add(
+                Blocks.CACTUS,
+                CRIMSON_CACTUS.get(),
+                CORRUPT_CACTUS.get(),
+                HALLOW_CACTUS.get()
         );
         { // 没沙子是防止河流里的沙子被误判成沙漠
             tag(ModTags.Blocks.HALLOW_DESERT_BLOCKS).add(PEARLSANDSTONE.get(), HARDENED_PEARLSAND_BLOCK.get(), MOISTENED_PEARLSAND_BLOCK.get());

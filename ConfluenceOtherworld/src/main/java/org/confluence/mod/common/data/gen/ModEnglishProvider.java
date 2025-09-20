@@ -452,7 +452,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.sweet_sword.0", "au'undertale: above nothingness' written by 一只屑水缡");
         add("tooltip.item.confluence.piglin_stew.0", "The last thing a Piglin would crave before starving, yet they never got to taste it...");
 
-        add("tooltip.item.confluence.copper_short_sword.0", "The smallest fragment of the divine weapon's power has been with you since the convergence of the two worlds... until the journey's end.");
+        add("tooltip.item.confluence.copper_short_sword.0", "The smallest fragment of the divine weapon's power has been with you since the confluence of the two worlds... until the journey's end.");
         add("tooltip.item.confluence.copper_short_sword.1", "\"We are so awesome!\" said the copper short sword.");
         add("tooltip.item.confluence.umbrella.0", "You will fall slower while holding this");
         add("tooltip.item.confluence.tragic_umbrella.0", "You will fall slower while holding this");
@@ -720,7 +720,7 @@ public class ModEnglishProvider extends LanguageProvider {
         // new
         add("achievements.toast.complete", "Achievement achieved!");
         add("achievements.confluence.new_world.title", "Old World, New Journey!");
-        add("achievements.confluence.new_world.description", "The afterlife of convergence and exchange");
+        add("achievements.confluence.new_world.description", "The otherworld of confluence and exchange");
         add("achievements.confluence.timber.title", "Timber!! ");
         add("achievements.confluence.timber.description", "Chop down your first tree.");
         add("achievements.confluence.benched.title", "Benched");

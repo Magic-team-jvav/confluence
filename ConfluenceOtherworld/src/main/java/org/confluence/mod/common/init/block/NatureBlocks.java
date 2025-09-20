@@ -2,18 +2,22 @@ package org.confluence.mod.common.init.block;
 
 import com.mojang.datafixers.DSL;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.ColorRGBA;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
+import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.block.TransparentLeavesBlock;
@@ -107,7 +111,26 @@ public class NatureBlocks {
     public static final DeferredBlock<Block> CORRUPT_GRASS = registerWithItem("corrupt_grass", () -> new BasePlantBlock(CORRUPT_GRASS_BLOCK.get())); // 腐化草
     public static final DeferredBlock<Block> CORRUPT_JUNGLE_GRASS_BLOCK = registerWithItem("corrupt_jungle_grass_block", () -> new JungleGrassBlock(ISpreadable.Type.CORRUPT, BlockBehaviour.Properties.ofFullCopy(Blocks.MUD).mapColor(MapColor.COLOR_PURPLE))); // 腐化丛林草
     public static final DeferredBlock<ShadowOrbBlock> SHADOW_ORB = registerWithoutItem("shadow_orb", ShadowOrbBlock::new);
-    public static final DeferredBlock<CrimsonHeartBlock> CRIMSON_HEART = registerWithoutItem("crimson_heart", CrimsonHeartBlock::new);
+    public static final DeferredBlock<Block> CORRUPT_CACTUS = registerWithItem("corrupt_cactus", () -> new CactusBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CACTUS).mapColor(MapColor.COLOR_CYAN)) {
+        @Override
+        protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+            for(Direction direction : Direction.Plane.HORIZONTAL) {
+                BlockState blockstate = level.getBlockState(pos.relative(direction));
+                if (blockstate.isSolid() || level.getFluidState(pos.relative(direction)).is(FluidTags.LAVA)) {
+                    return false;
+                }
+            }
+
+            BlockState blockstate1 = level.getBlockState(pos.below());
+            TriState soilDecision = blockstate1.canSustainPlant(level, pos.below(), Direction.UP, state);
+            if (!soilDecision.isDefault()) {
+                return soilDecision.isTrue();
+            } else {
+                return (blockstate1.is(ModTags.Blocks.CACTUS) || blockstate1.is(BlockTags.SAND)) && !level.getBlockState(pos.above()).liquid();
+            }
+        }
+
+    });
 
     // 神圣
     public static final DeferredBlock<Block> HALLOW_GRASS_BLOCK = registerWithItem("hallow_grass_block", () -> new SpreadingGrassBlock(ISpreadable.Type.HALLOW, BlockBehaviour.Properties.ofFullCopy(Blocks.GRASS_BLOCK).mapColor(MapColor.COLOR_CYAN)));
@@ -143,7 +166,26 @@ public class NatureBlocks {
     });
     public static final DeferredBlock<AmethystClusterBlock> CRYSTAL_SHARDS = registerWithoutItem("crystal_shards", () -> new AmethystClusterBlock(7.0F, 3.0F, BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_CLUSTER).mapColor(MapColor.COLOR_PINK).lightLevel(state -> 7)));
     public static final DeferredBlock<AmethystClusterBlock> GELATIN_CRYSTAL = registerWithoutItem("gelatin_crystal", () -> new AmethystClusterBlock(7.0F, 3.0F, BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_CLUSTER).mapColor(MapColor.COLOR_PINK).lightLevel(state -> 9)));
+    public static final DeferredBlock<Block> HALLOW_CACTUS = registerWithItem("hallow_cactus", () -> new CactusBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CACTUS).mapColor(MapColor.COLOR_CYAN)) {
+        @Override
+        protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+            for(Direction direction : Direction.Plane.HORIZONTAL) {
+                BlockState blockstate = level.getBlockState(pos.relative(direction));
+                if (blockstate.isSolid() || level.getFluidState(pos.relative(direction)).is(FluidTags.LAVA)) {
+                    return false;
+                }
+            }
 
+            BlockState blockstate1 = level.getBlockState(pos.below());
+            TriState soilDecision = blockstate1.canSustainPlant(level, pos.below(), Direction.UP, state);
+            if (!soilDecision.isDefault()) {
+                return soilDecision.isTrue();
+            } else {
+                return (blockstate1.is(ModTags.Blocks.CACTUS) || blockstate1.is(BlockTags.SAND)) && !level.getBlockState(pos.above()).liquid();
+            }
+        }
+
+    });
 
     // 猩红
     public static final DeferredBlock<Block> CRIMSON_GRASS_BLOCK = registerWithItem("crimson_grass_block", () -> new SpreadingGrassBlock(ISpreadable.Type.CRIMSON, BlockBehaviour.Properties.ofFullCopy(Blocks.GRASS_BLOCK).mapColor(MapColor.COLOR_RED)));
@@ -161,6 +203,27 @@ public class NatureBlocks {
     public static final DeferredBlock<Block> CRIMSON_JUNGLE_GRASS_BLOCK = registerWithItem("crimson_jungle_grass_block", () -> new JungleGrassBlock(ISpreadable.Type.CRIMSON, BlockBehaviour.Properties.ofFullCopy(Blocks.MUD))); // 腐化丛林草
     public static final DeferredBlock<Block> RED_ICE = registerWithItem("red_ice", () -> new SpreadingIceBlock(ISpreadable.Type.CRIMSON, BlockBehaviour.Properties.ofFullCopy(Blocks.ICE).mapColor(MapColor.COLOR_RED)));
     public static final DeferredBlock<Block> RED_PACKED_ICE = registerWithItem("red_packed_ice", () -> new SpreadingIceBlock(ISpreadable.Type.CRIMSON, BlockBehaviour.Properties.ofFullCopy(Blocks.PACKED_ICE).mapColor(MapColor.COLOR_RED)));
+    public static final DeferredBlock<CrimsonHeartBlock> CRIMSON_HEART = registerWithoutItem("crimson_heart", CrimsonHeartBlock::new);
+    public static final DeferredBlock<Block> CRIMSON_CACTUS = registerWithItem("crimson_cactus", () -> new CactusBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CACTUS).mapColor(MapColor.COLOR_RED)) {
+        @Override
+        protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+            for(Direction direction : Direction.Plane.HORIZONTAL) {
+                BlockState blockstate = level.getBlockState(pos.relative(direction));
+                if (blockstate.isSolid() || level.getFluidState(pos.relative(direction)).is(FluidTags.LAVA)) {
+                    return false;
+                }
+            }
+
+            BlockState blockstate1 = level.getBlockState(pos.below());
+            TriState soilDecision = blockstate1.canSustainPlant(level, pos.below(), Direction.UP, state);
+            if (!soilDecision.isDefault()) {
+                return soilDecision.isTrue();
+            } else {
+                return (blockstate1.is(ModTags.Blocks.CACTUS) || blockstate1.is(BlockTags.SAND)) && !level.getBlockState(pos.above()).liquid();
+            }
+        }
+
+    });
 
     // 蘑菇地
     public static final DeferredBlock<MushroomGrassBlock> MUSHROOM_GRASS_BLOCK = registerWithItem("mushroom_grass_block", MushroomGrassBlock::new);

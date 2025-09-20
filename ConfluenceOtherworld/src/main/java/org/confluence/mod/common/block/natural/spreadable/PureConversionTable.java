@@ -42,6 +42,7 @@ public class PureConversionTable extends ConversionTable {
         if (holder.is(ModTags.Blocks.PURE_CONVERSION_SANDSTONE)) return Blocks.SANDSTONE;
         if (holder.is(ModTags.Blocks.PURE_CONVERSION_HARDENED_SAND_BLOCK)) return NatureBlocks.HARDENED_SAND_BLOCK.get();
         if (holder.is(ModTags.Blocks.PURE_CONVERSION_MOIST_SAND_BLOCK)) return NatureBlocks.MOISTENED_SAND_BLOCK.get();
+        if (holder.is(ModTags.Blocks.PURE_CONVERSION_CACTUS)) return Blocks.CACTUS;
 
         if (holder.is(Tags.Blocks.ORES_REDSTONE)) return Blocks.REDSTONE_ORE;
         if (holder.is(Tags.Blocks.ORES_COAL)) return Blocks.COAL_ORE;

@@ -276,6 +276,10 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         add(MUSHROOM_GRASS_BLOCK.get(), p_251015_ -> createSingleItemTableWithSilkTouch(p_251015_, Blocks.MUD));
         add(HALLOW_GRASS_BLOCK.get(), p_251015_ -> createSingleItemTableWithSilkTouch(p_251015_, Blocks.DIRT));
 
+        add(CORRUPT_CACTUS.get(), p_251015_ -> createSingleItemTableWithSilkTouch(p_251015_, Blocks.CACTUS));
+        add(CRIMSON_CACTUS.get(), p_251015_ -> createSingleItemTableWithSilkTouch(p_251015_, Blocks.CACTUS));
+        add(HALLOW_CACTUS.get(), p_251015_ -> createSingleItemTableWithSilkTouch(p_251015_, Blocks.CACTUS));
+
         add(SHIMMER_DROOPING_VINE.get(), this::createShimmerBerriesDrop);
         add(SHIMMER_DROOPING_VINE_PLANT.get(), this::createShimmerBerriesDrop);
 

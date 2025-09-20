@@ -17,10 +17,6 @@
             "chars": [
                 "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
             ]
-        },
-        {
-            "type": "reference",
-            "id": "minecraft:default"
         }
     ]
 }

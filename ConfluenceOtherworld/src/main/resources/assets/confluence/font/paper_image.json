@@ -1,10 +1,6 @@
 {
     "providers": [
         {
-            "type": "reference",
-            "id": "minecraft:include/space"
-        },
-        {
             "type": "bitmap",
             "file": "confluence:paper_image/armory.png",
             "height": 64,

@@ -24,6 +24,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.event.ModClientSetups;
 import org.confluence.mod.client.gui.BestiaryScreen;
+import org.confluence.mod.client.gui.hud.HouseSelectHUD;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.menu.ExtraInventoryMenu;
 import org.confluence.mod.integration.mine_team.ExtraTeamRender;
@@ -38,7 +39,8 @@ import static org.confluence.mod.common.attachment.ExtraInventory.*;
 public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventoryMenu> {
     private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/container/extra_inventory.png");
     private static final ResourceLocation ACCESSORY = TerraCurio.asResource("textures/slot/accessory.png");
-    private static final WidgetSprites BUTTON = new WidgetSprites(Confluence.asResource("widget/bestiary_button"), Confluence.asResource("widget/bestiary_button_highlighted"));
+    private static final WidgetSprites BESTIARY_BUTTON = new WidgetSprites(Confluence.asResource("widget/bestiary_button"), Confluence.asResource("widget/bestiary_button_highlighted"));
+    private static final WidgetSprites HOUSE_BUTTON = new WidgetSprites(Confluence.asResource("widget/house_button"), Confluence.asResource("widget/house_button_highlighted"));
 
     private boolean buttonPressed = false;
     private final ExtraTeamRender teamRender = new ExtraTeamRender(this);
@@ -58,9 +60,16 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
     protected void init() {
         super.init();
         teamRender.initButton();
-        addRenderableWidget(new ImageButton(leftPos + 125, topPos + 166, 16, 16, BUTTON, button -> {
+        addRenderableWidget(new ImageButton(leftPos + 109, topPos + 166, 16, 16, HOUSE_BUTTON, button -> {
             if (menu.getCarried().isEmpty()) {
-                getMinecraft().setScreen(new BestiaryScreen(this));
+                getMinecraft().setScreen(null);
+                HouseSelectHUD.inSelectHUD = true;
+            }
+        }));
+        addRenderableWidget(new ImageButton(leftPos + 125, topPos + 166, 16, 16, BESTIARY_BUTTON, button -> {
+            if (menu.getCarried().isEmpty()) {
+                getMinecraft().pushGuiLayer(this);
+                getMinecraft().setScreen(new BestiaryScreen());
             }
         }));
         // better experience mixin here

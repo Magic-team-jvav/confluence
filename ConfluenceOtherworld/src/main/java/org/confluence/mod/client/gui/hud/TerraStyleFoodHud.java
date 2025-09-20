@@ -6,30 +6,20 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.common.TranslatableEnum;
 import org.confluence.lib.util.LibClientUtils;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Locale;
 
-import static org.confluence.mod.util.ClientUtils.draw;
+import static org.confluence.mod.util.ClientUtils.*;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class TerraStyleFoodHud implements LayeredDraw.Layer {
-    private static final ResourceLocation LEGACY_TEXTURE = Confluence.asResource("textures/gui/hud/icon.png");
-    private static final ResourceLocation OVERLAY_TEXTURE = Confluence.asResource("textures/gui/hud/overlay.png");
-//    private static final int LEGACY_SIZE = 128;
-    private static final int OVERLAY_SIZE = 128;
-//    private static final int[] Food = new int[]{0xab311e, 0x5d11ba, 0x41a9ba, 0x37c438, 0xeed536};
-//    private static final int[] Food_LOW = new int[]{0xab1f5d, 0x9d44ac, 0x12f7dd, 0x1fab7f, 0xf7b60b};
-//    private static final int[] Food_HIGH = new int[]{0xffb5b5, 0xd6e7eb, 0xbdced0, 0xd6eead, 0xeff4ce};
-
     @Override
     public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
         if (!ClientConfigs.terraStyleFood) return;
@@ -75,7 +65,7 @@ public class TerraStyleFoodHud implements LayeredDraw.Layer {
                 int heightFood = guiGraphics.guiHeight() - minecraft.gui.rightHeight;
                 minecraft.gui.rightHeight += 10;
                 for (int i = 0; i < 10; i++) {
-                    guiGraphics.blit(OVERLAY_TEXTURE, (widthFood + i * 8), heightFood, 60, 30, 9, 9, OVERLAY_SIZE, OVERLAY_SIZE);
+                    guiGraphics.blitSprite(OVERLAY_TEXTURE, OVERLAY_SIZE, OVERLAY_SIZE, 60, 30, (widthFood + i * 8), heightFood, 9, 9);
                 }
                 if (hunger) {
                     draw(widthFood, heightFood, guiGraphics, foodI, white, white, white, OVERLAY_TEXTURE, OVERLAY_SIZE, 20, 30, false, 1, 20);

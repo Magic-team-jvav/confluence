@@ -17,6 +17,10 @@ public class GuiSprite {
 
     private @Nullable GuiSprite hovered;
 
+    public GuiSprite(ResourceLocation path, int width, int height) {
+        this(path, width, height, 0, 0, width, height);
+    }
+
     public GuiSprite(ResourceLocation path, int textureW, int textureH, int u, int v, int w, int h) {
         this.path = path;
         this.textureW = textureW;
@@ -105,5 +109,9 @@ public class GuiSprite {
         if (hovered != null && hovered.isHovered(mouseX, mouseY)) {
             hovered.render(guiGraphics);
         }
+    }
+
+    public void renderAligned(GuiGraphics guiGraphics, int alignX, int alignY) {
+        guiGraphics.blitSprite(path, textureW, textureH, u, v, x + (alignX - w) / 2, y + (alignY - h) / 2, w, h);
     }
 }

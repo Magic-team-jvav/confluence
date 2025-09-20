@@ -54,6 +54,7 @@ import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.effect.EctoMistHelper;
 import org.confluence.mod.client.effect.SpelunkerHelper;
 import org.confluence.mod.client.gui.container.ExtraInventoryScreen;
+import org.confluence.mod.client.gui.hud.HouseSelectHUD;
 import org.confluence.mod.client.handler.*;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.client.renderer.item.DungeonCompassRenderer;
@@ -144,11 +145,20 @@ public final class GameClientEvents {
     }
 
     @SubscribeEvent
-    public static void leftClick(InputEvent.InteractionKeyMappingTriggered event) {
+    public static void input$InteractionKeyMappingTriggered(InputEvent.InteractionKeyMappingTriggered event) {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player == null) return;
         if (event.isUseItem() || event.isAttack() || event.isPickBlock()) {
             if (!((ILocalPlayer) player).confluence$isCanMove() || player.hasEffect(ModEffects.CURSED)) {
+                event.setCanceled(true);
+                event.setSwingHand(false);
+            }
+        }
+        if (HouseSelectHUD.inSelectHUD && event.getHand() == InteractionHand.MAIN_HAND) {
+            if (event.isUseItem()) {
+                HouseSelectHUD.checkHouse(player);
+                player.swing(InteractionHand.MAIN_HAND);
+            } else if (event.isAttack()) {
                 event.setCanceled(true);
                 event.setSwingHand(false);
             }
@@ -168,7 +178,8 @@ public final class GameClientEvents {
                 (ClientConfigs.terraStyleFood && VanillaGuiLayers.FOOD_LEVEL.equals(name)) ||
                 (ClientConfigs.terraStyleArmor && VanillaGuiLayers.ARMOR_LEVEL.equals(name)) ||
                 ArsNouveauHelper.cancelRenderManaBar(name) ||
-                IronSpellHelper.cancelRenderManaOverlay(name)
+                IronSpellHelper.cancelRenderManaOverlay(name) ||
+                (HouseSelectHUD.inSelectHUD && VanillaGuiLayers.CROSSHAIR.equals(name))
         ) {
             event.setCanceled(true);
         }

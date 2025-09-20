@@ -39,7 +39,6 @@ public class BestiaryScreen extends Screen {
     private static final int showedEntryWH = 48;
     private static final float textScale = 0.8F;
 
-    private final @Nullable Screen parent;
     private final ClientBestiary bestiary;
     private int topPos;
     private int leftPos;
@@ -79,9 +78,8 @@ public class BestiaryScreen extends Screen {
     private GuiSprite selectedSort;
     private GuiSprite openedSortBottom;
 
-    public BestiaryScreen(@Nullable Screen parent) {
+    public BestiaryScreen() {
         super(Component.empty());
-        this.parent = parent;
         this.bestiary = ClientBestiary.getInstance();
     }
 
@@ -481,13 +479,5 @@ public class BestiaryScreen extends Screen {
     @Override
     public boolean isPauseScreen() {
         return false;
-    }
-
-    @Override
-    public void onClose() {
-        super.onClose();
-        if (parent != null) {
-            getMinecraft().setScreen(parent);
-        }
     }
 }

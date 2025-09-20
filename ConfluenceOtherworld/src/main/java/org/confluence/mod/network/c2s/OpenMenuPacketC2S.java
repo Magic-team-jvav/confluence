@@ -7,6 +7,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.SimpleMenuProvider;
@@ -22,6 +23,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.mod.common.menu.*;
 import org.confluence.mod.network.IPacket;
+import org.confluence.mod.network.s2c.AvailableHouseSelectPacketS2C;
 import top.theillusivec4.curios.common.network.server.SPacketGrabbedItem;
 
 public record OpenMenuPacketC2S(byte menuId, ItemStack stack) implements IPacketC2S {
@@ -69,10 +71,12 @@ public record OpenMenuPacketC2S(byte menuId, ItemStack stack) implements IPacket
             ItemStack itemStack = player.isCreative() ? stack : player.containerMenu.getCarried();
             player.containerMenu.setCarried(ItemStack.EMPTY);
             player.openMenu(new SimpleMenuProvider(tuple.getA(), tuple.getB()));
+            CustomPacketPayload[] payloads = new CustomPacketPayload[0];
             if (!itemStack.isEmpty()) {
                 player.containerMenu.setCarried(itemStack);
-                PacketDistributor.sendToPlayer(player, new SPacketGrabbedItem(itemStack));
+                payloads = new CustomPacketPayload[]{new SPacketGrabbedItem(itemStack)};
             }
+            PacketDistributor.sendToPlayer(player, AvailableHouseSelectPacketS2C.collectPacket(player), payloads);
         }
     }
 

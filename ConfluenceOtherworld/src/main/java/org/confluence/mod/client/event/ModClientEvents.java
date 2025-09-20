@@ -44,6 +44,7 @@ import org.confluence.mod.client.connected.StitchedSprite;
 import org.confluence.mod.client.effect.ColoredGlintContext;
 import org.confluence.mod.client.gui.container.*;
 import org.confluence.mod.client.gui.hud.*;
+import org.confluence.mod.client.handler.ArrowInBowHandler;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.client.model.WrappedBakedModel;
 import org.confluence.mod.client.model.block.AltarBlockModel;
@@ -116,7 +117,7 @@ public final class ModClientEvents {
             ClientConfigs.onLoad();
             ModClientSetups.registerBowProperties();
             ModClientSetups.registerFishingPoleProperties();
-            ArrowInBowHud.initAdaptionMap();
+            ArrowInBowHandler.initAdaptionMap();
 
             ModClientSetups.registerItemProperties();
             ModClientSetups.setRenderLayers();
@@ -168,6 +169,8 @@ public final class ModClientEvents {
         event.registerAbove(VanillaGuiLayers.FOOD_LEVEL, manaHud, new TerraStyleManaHud());
         ResourceLocation foodHud = Confluence.asResource("food_hud");
         event.registerBelow(manaHud, foodHud, new TerraStyleFoodHud());
+
+        event.registerBelow(VanillaGuiLayers.CROSSHAIR, Confluence.asResource("house_select"), new HouseSelectHUD());
     }
 
     @SubscribeEvent

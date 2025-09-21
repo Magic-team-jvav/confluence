@@ -14,9 +14,9 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.Mth;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -35,6 +35,7 @@ import org.confluence.mod.common.init.block.ChestBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.phase_journey.common.phase.PhaseManager;
 import org.confluence.terraentity.client.buffer.AbstractBufferManager;
+import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.lwjgl.opengl.GL11;
@@ -64,7 +65,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
     public int textRenderType = 0;//0表示文字面向玩家,默认是摄像机方向
     public int centerInternal = 50;//中心块间距的平方
 
-    private final Map<Block, Tuple> targets = new HashMap<>();
+    private final Map<Block, Entry> targets = new HashMap<>();
     public Map<BlockPos, BlockPos> centerCache = new HashMap<>();
     public Map<BlockPos, Block> centerCacheFrame = new HashMap<>();//当前帧渲染的cache
     public Map<Block, ArrayList<BlockPos>> centers = new LinkedHashMap<>();
@@ -85,7 +86,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
                 while (lock) {
                     Thread.onSpinWait();
                 }
-                this.targets.putAll(Tuple.BLOCK_MAP_CODEC.codec().parse(JsonOps.INSTANCE, jsonobject).getOrThrow());
+                this.targets.putAll(Entry.BLOCK_MAP_CODEC.codec().parse(JsonOps.INSTANCE, jsonobject).getOrThrow());
                 player.sendSystemMessage(Component.literal("successfully load spelunker config"));
             } catch (Exception e) {
                 defaultBlocks();
@@ -98,18 +99,26 @@ public class SpelunkerHelper extends AbstractBufferManager {
         });
     }
 
-    enum ShowType {SPELUNKER, DANGER}
+    private enum ShowType implements StringRepresentable {
+        SPELUNKER,
+        DANGER;
 
-    private record Tuple(Color color, Boolean showText, ShowType showType) {
-        public static final Codec<Tuple> CODEC = RecordCodecBuilder.create((builder) -> builder.group(
-                Codec.INT.fieldOf("color").forGetter(t -> t.color.getRGB()),
-                Codec.BOOL.fieldOf("showText").forGetter(t -> t.showText),
-                Codec.INT.fieldOf("showType").forGetter(t -> t.showType.ordinal())
-        ).apply(builder, (color, showText, showType) -> new Tuple(new Color(color), showText, ShowType.values()[showType])));
+        private static final Codec<ShowType> CODEC = StringRepresentable.fromEnum(ShowType::values);
 
-        public static final MapCodec<Map<Block, Tuple>> BLOCK_MAP_CODEC =
-                Codec.unboundedMap(ResourceLocation.CODEC.xmap(BuiltInRegistries.BLOCK::get, BuiltInRegistries.BLOCK::getKey), Tuple.CODEC).fieldOf("targets").fieldOf("values");
+        @Override
+        public @NotNull String getSerializedName() {
+            return name().toLowerCase(Locale.ROOT);
+        }
+    }
 
+    private record Entry(int color, boolean showText, ShowType showType) {
+        private static final Codec<Entry> CODEC = RecordCodecBuilder.create((builder) -> builder.group(
+                Codec.INT.fieldOf("color").forGetter(Entry::color),
+                Codec.BOOL.fieldOf("showText").forGetter(Entry::showText),
+                ShowType.CODEC.fieldOf("showType").forGetter(Entry::showType)
+        ).apply(builder, Entry::new));
+
+        private static final MapCodec<Map<Block, Entry>> BLOCK_MAP_CODEC = Codec.unboundedMap(BuiltInRegistries.BLOCK.byNameCodec(), Entry.CODEC).fieldOf("targets").fieldOf("values");
     }
 
     protected boolean shouldRefresh() {
@@ -143,7 +152,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
         putTarget(Blocks.ANCIENT_DEBRIS, Color.MAGENTA, true, ShowType.SPELUNKER);//这个还必须放这个位置
 
         //钻石矿
-        putTarget(Blocks.DIAMOND_ORE, Color.CYAN, true, ShowType.SPELUNKER);
+        putTarget(Blocks.DIAMOND_ORE, 0x66CCFF, true, ShowType.SPELUNKER);
         putTarget(Blocks.DEEPSLATE_DIAMOND_ORE, Color.CYAN, true, ShowType.SPELUNKER);
         putTarget(CORRUPTION_DIAMOND_ORE.get(), Color.CYAN, true, ShowType.SPELUNKER);
         putTarget(SANCTIFICATION_DIAMOND_ORE.get(), Color.CYAN, true, ShowType.SPELUNKER);
@@ -359,9 +368,13 @@ public class SpelunkerHelper extends AbstractBufferManager {
         putTarget(ChestBlocks.DEATH_WOODEN_CHEST.get(), Color.MAGENTA, true, ShowType.DANGER);
     }
 
+    @Deprecated
+    private void putTarget(Block block, Color color, boolean always, ShowType showType) {
+        putTarget(block, color.getRGB(), always, showType);
+    }
 
-    private void putTarget(Block block, Color color, Boolean always, ShowType showType) {
-        targets.put(block, new Tuple(color, always, showType));
+    private void putTarget(Block block, int rgb, boolean always, ShowType showType) {
+        targets.put(block, new Entry(rgb, always, showType));
     }
 
 
@@ -424,17 +437,17 @@ public class SpelunkerHelper extends AbstractBufferManager {
             //初始化键
             centers.put(n.getKey(), new ArrayList<>());
 
-            Tuple target = blockGen.targets.get(n.getKey());
-            Color color;
+            Entry target = blockGen.targets.get(n.getKey());
+            int rgb;
             if (target != null) {
-                color = target.color();
+                rgb = target.color();
             } else {
-                color = new Color(n.getKey().defaultBlockState().getMapColor(player.level(), n.getValue().getFirst()).calculateRGBColor(MapColor.Brightness.HIGH));
+                rgb = n.getKey().defaultBlockState().getMapColor(player.level(), n.getValue().getFirst()).calculateRGBColor(MapColor.Brightness.HIGH);
             }
             if (n.getValue() == null) return;
-            int r = color.getRed();
-            int g = color.getGreen();
-            int b = color.getBlue();
+            int r = rgb >> 16 & 0xFF;
+            int g = rgb >> 8 & 0xFF;
+            int b = rgb & 0xFF;
             int a;
 
             for (BlockPos blockProps : n.getValue()) {//每个矿石
@@ -522,8 +535,8 @@ public class SpelunkerHelper extends AbstractBufferManager {
             var block = n.getValue();
             if (block.asItem() == Blocks.ANCIENT_DEBRIS.asItem()) count.getAndIncrement();
             if (playerPos.distanceToSqr(pos.getX(), pos.getY(), pos.getZ()) < textRange * textRange) {
-                Tuple tuple;
-                if (SHOW_DETAIL_SPECULAR.get().isDown() && (tuple = map.get(block)) != null && tuple.showText()) {
+                Entry entry;
+                if (SHOW_DETAIL_SPECULAR.get().isDown() && (entry = map.get(block)) != null && entry.showText()) {
                     double x = pos.getX() + 0.5;
                     double y = pos.getY() + 0.5;
                     double z = pos.getZ() + 0.5;
@@ -552,8 +565,8 @@ public class SpelunkerHelper extends AbstractBufferManager {
                         poseStack.translate(-component.getString().length() / 5.0 * scale, 0.7 * scale, 0);//旋转后偏移
 
 
-                        Minecraft.getInstance().font.renderText(Component.literal(component.getString()).withStyle(style -> style.withColor(tuple.color().getRGB())).getVisualOrderText(),
-                                -5, -5f, tuple.color().getRGB(),
+                        Minecraft.getInstance().font.renderText(Component.literal(component.getString()).withColor(entry.color()).getVisualOrderText(),
+                                -5, -5f, entry.color(),
                                 false, poseStack.last().pose(), Minecraft.getInstance().renderBuffers().bufferSource(), Font.DisplayMode.SEE_THROUGH, 0, 15 << 20 | 15 << 4);
 
                         poseStack.popPose();

@@ -78,6 +78,9 @@ public class BestiaryScreen extends Screen {
     private GuiSprite selectedSort;
     private GuiSprite openedSortBottom;
 
+    private int descPage = 0;
+    private int descPages = 0; // todo
+
     public BestiaryScreen() {
         super(Component.empty());
         this.bestiary = ClientBestiary.getInstance();
@@ -152,9 +155,7 @@ public class BestiaryScreen extends Screen {
 
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
-        int x = leftPos + renderedEntryX;
-        int y = topPos + renderedEntryY;
-        if (mouseX >= x && mouseX < x + 141 && mouseY >= y && mouseY < y + 211) {
+        if (mouseX >= leftPos + renderedEntryX && mouseX < leftPos + 141 + renderedEntryX && mouseY >= topPos + renderedEntryY && mouseY < topPos + 211 + renderedEntryY) {
             int lastPage = page;
             updateRenderedEntries(page + Mth.sign(-scrollY));
             return lastPage != page;
@@ -169,8 +170,16 @@ public class BestiaryScreen extends Screen {
                 }
                 return true;
             }
+        } else if (showedEntry != null && mouseX >= leftPos + 164 && mouseX < leftPos + 212 && mouseY >= topPos + 116 && mouseY < topPos + 221) {
+            int lastPage = descPage;
+            Component desc = showedEntry.getDescription();
+            if (font.width(desc) > 48) {
+                this.descPage = Mth.clamp(descPage + Mth.sign(-scrollY), 0, font.split(desc, 48).size());
+            } else {
+                this.descPage = 0;
+            }
+            return lastPage != descPage;
         }
-        // todo 描述滚动
         return false;
     }
 
@@ -203,6 +212,7 @@ public class BestiaryScreen extends Screen {
             if (mouseX >= x && mouseX < x + 36 && mouseY >= y && mouseY < y + 36) {
                 if (entry.isLocked()) return false;
                 this.showedEntry = entry;
+                this.descPage = 0;
                 return true;
             }
             x += 36;
@@ -448,14 +458,16 @@ public class BestiaryScreen extends Screen {
             if (p20) {
                 x1 = leftPos + 164;
                 if (!showedEntry.getFilters().isEmpty()) y1 += 16;
-                Component description = showedEntry.getDescription();
-                if (font.width(description) > 48) {
-                    for (FormattedCharSequence sequence : font.split(description, 48)) {
+                Component desc = showedEntry.getDescription();
+                if (font.width(desc) > 48) {
+                    List<FormattedCharSequence> split = font.split(desc, 48);
+                    int i = 0;
+                    for (FormattedCharSequence sequence : split) {
                         guiGraphics.drawString(font, sequence, x1, y1, 0xFFFFFF);
                         y1 += font.lineHeight;
                     }
                 } else {
-                    guiGraphics.drawString(font, description, x1, y1, 0xFFFFFF);
+                    guiGraphics.drawString(font, desc, x1, y1, 0xFFFFFF);
                 }
             }
         }

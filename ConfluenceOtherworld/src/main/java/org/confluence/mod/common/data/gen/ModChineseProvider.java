@@ -1858,11 +1858,11 @@ public class ModChineseProvider extends LanguageProvider {
         add("bestiary.sort_type.rarity", "稀有度");
 
         add("bestiary.confluence.filter.surface.title", "地表");
-        add("bestiary.confluence.filter.surface.desc", "地表层位于y40-y260的位置");
+        add("bestiary.confluence.filter.surface.desc", "地表层位于y40~y260的位置");
         add("bestiary.confluence.filter.underground.title", "地下");
-        add("bestiary.confluence.filter.underground.desc", "地下层位于y0——y40的位置");
+        add("bestiary.confluence.filter.underground.desc", "地下层位于y0~y40的位置");
         add("bestiary.confluence.filter.cave.title", "洞穴");
-        add("bestiary.confluence.filter.cave.desc", "洞穴层位于y-64——y0的位置");
+        add("bestiary.confluence.filter.cave.desc", "洞穴层位于y-64~y0的位置");
         add("bestiary.confluence.filter.desert.title", "沙漠");
         add("bestiary.confluence.filter.desert.desc", "沙漠是一个生物群系，主要由沙块和仙人掌组成。");
         add("bestiary.confluence.filter.underground_desert.title", "地下沙漠");

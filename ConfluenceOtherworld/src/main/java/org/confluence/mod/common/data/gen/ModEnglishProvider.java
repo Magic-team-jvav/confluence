@@ -1822,11 +1822,11 @@ public class ModEnglishProvider extends LanguageProvider {
         add("bestiary.sort_type.rarity", "Rarity");
 
         add("bestiary.confluence.filter.surface.title", "Surface");
-        add("bestiary.confluence.filter.surface.desc", "The Surface layer is located between y40 and y260.");
+        add("bestiary.confluence.filter.surface.desc", "The Surface layer is located between y40 ~ y260.");
         add("bestiary.confluence.filter.underground.title", "Underground");
-        add("bestiary.confluence.filter.underground.desc", "The Underground layer is located between y0 and y40.");
+        add("bestiary.confluence.filter.underground.desc", "The Underground layer is located between y0 ~ y40.");
         add("bestiary.confluence.filter.cave.title", "Cave");
-        add("bestiary.confluence.filter.cave.desc", "The Cavern layer is located between y-64 and y0.");
+        add("bestiary.confluence.filter.cave.desc", "The Cavern layer is located between y-64 ~ y0.");
         add("bestiary.confluence.filter.desert.title", "Desert");
         add("bestiary.confluence.filter.desert.desc", "The Desert is a biome primarily composed of sand blocks and cacti.");
         add("bestiary.confluence.filter.underground_desert.title", "Underground Desert");

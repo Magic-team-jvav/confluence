@@ -11,6 +11,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.model.AgeableHierarchicalModel;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
@@ -21,6 +23,8 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
+import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
@@ -31,15 +35,19 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.client.ClientHooks;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.client.AntiPushPoseStack;
 import org.confluence.lib.util.LibClientUtils;
@@ -66,6 +74,7 @@ import org.joml.Vector3f;
 import org.joml.Vector3i;
 import org.joml.Vector4f;
 import software.bernie.geckolib.animatable.GeoAnimatable;
+import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.cache.object.GeoCube;
@@ -326,15 +335,7 @@ public final class ClientUtils {
             ModelPart rootModelPart = ILivingEntityRenderer.of(livingRenderer).confluence$getRootModelPart();
             if (rootModelPart == null) return;
             AntiPushPoseStack poseStack = new AntiPushPoseStack();
-//            LivingEntityRendererAccessor rendererAccessor = (LivingEntityRendererAccessor) livingRenderer;
             poseStack.translate(entityPos.x, entityPos.y, entityPos.z);
-//            float scale = entity.getScale();
-//            poseStack.scale(scale, scale, scale);
-//            rendererAccessor.callSetupRotations(entity, poseStack, 0, entity.yBodyRot, 1, scale);
-//            poseStack.scale(-1.0F, -1.0F, 1.0F);
-//            rendererAccessor.callScale(entity, poseStack, 1);
-//            poseStack.translate(0.0F, -1.501F, 0.0F);
-//            livingRenderer.render(entity, entity.getYRot(), 1, poseStack, DummyMultiBufferSource.INSTANCE, 0);
             DeathAnimUtils.dummyRender(livingRenderer, entity, poseStack);
             if (livingRenderer.getModel() instanceof AgeableHierarchicalModel<?> model && model.young) {
                 poseStack.scale(model.youngScaleFactor, model.youngScaleFactor, model.youngScaleFactor);
@@ -342,12 +343,74 @@ public final class ClientUtils {
             }
             Stack<Vector3f> rots = new Stack<>();
             rots.push(new Vector3f());
-            makePartRecursively(rootModelPart, poseStack, livingRenderer, level, entity, deathSpeed, rots, deathMotion);
+            makePartRecursively(rootModelPart, poseStack, livingRenderer, level, entity, deathSpeed, rots, deathMotion, null);
+            for (RenderLayer<?, ?> layer : livingRenderer.layers) {
+                if (layer instanceof HumanoidArmorLayer<?, ?, ?> armorLayer) {
+                    ItemStack armorItemStack = entity.getItemBySlot(EquipmentSlot.CHEST);
+                    if (armorItemStack.getItem() instanceof ArmorItem armorItem && !(armorItem instanceof GeoItem)
+                        && armorItem.getEquipmentSlot() == EquipmentSlot.CHEST) {
+                        Model model = ClientHooks.getArmorModel(entity, armorItemStack, EquipmentSlot.CHEST, armorLayer.outerModel);
+                        if (model instanceof HumanoidModel<?> outerModel) {
+                            outerModel.setAllVisible(true);
+                            armorLayer.getParentModel().copyPropertiesTo((HumanoidModel) outerModel);
+                            for (ArmorMaterial.Layer materialLayer : armorItem.getMaterial().value().layers()) {
+                                ResourceLocation texture = ClientHooks.getArmorTexture(entity, armorItemStack, materialLayer, false, EquipmentSlot.CHEST);
+                                makePartRecursively(outerModel.body, poseStack, livingRenderer, level, entity, deathSpeed, rots, deathMotion, texture);
+                                makePartRecursively(outerModel.leftArm, poseStack, livingRenderer, level, entity, deathSpeed, rots, deathMotion, texture);
+                                makePartRecursively(outerModel.rightArm, poseStack, livingRenderer, level, entity, deathSpeed, rots, deathMotion, texture);
+                            }
+                        }
+                    }
+                    armorItemStack = entity.getItemBySlot(EquipmentSlot.LEGS);
+                    if (armorItemStack.getItem() instanceof ArmorItem armorItem && !(armorItem instanceof GeoItem)
+                        && armorItem.getEquipmentSlot() == EquipmentSlot.LEGS) {
+                        Model model = ClientHooks.getArmorModel(entity, armorItemStack, EquipmentSlot.LEGS, armorLayer.innerModel);
+                        if (model instanceof HumanoidModel<?> outerModel) {
+                            outerModel.setAllVisible(true);
+                            armorLayer.getParentModel().copyPropertiesTo((HumanoidModel) outerModel);
+                            for (ArmorMaterial.Layer materialLayer : armorItem.getMaterial().value().layers()) {
+                                ResourceLocation texture = ClientHooks.getArmorTexture(entity, armorItemStack, materialLayer, true, EquipmentSlot.LEGS);
+                                makePartRecursively(outerModel.leftLeg, poseStack, livingRenderer, level, entity, deathSpeed, rots, deathMotion, texture);
+                                makePartRecursively(outerModel.rightLeg, poseStack, livingRenderer, level, entity, deathSpeed, rots, deathMotion, texture);
+                            }
+                        }
+                    }
+                    armorItemStack = entity.getItemBySlot(EquipmentSlot.FEET);
+                    if (armorItemStack.getItem() instanceof ArmorItem armorItem && !(armorItem instanceof GeoItem)
+                        && armorItem.getEquipmentSlot() == EquipmentSlot.FEET) {
+                        Model model = ClientHooks.getArmorModel(entity, armorItemStack, EquipmentSlot.FEET, armorLayer.outerModel);
+                        if (model instanceof HumanoidModel<?> outerModel) {
+                            outerModel.setAllVisible(true);
+                            armorLayer.getParentModel().copyPropertiesTo((HumanoidModel) outerModel);
+                            for (ArmorMaterial.Layer materialLayer : armorItem.getMaterial().value().layers()) {
+                                ResourceLocation texture = ClientHooks.getArmorTexture(entity, armorItemStack, materialLayer, false, EquipmentSlot.FEET);
+                                makePartRecursively(outerModel.leftLeg, poseStack, livingRenderer, level, entity, deathSpeed, rots, deathMotion, texture);
+                                makePartRecursively(outerModel.rightLeg, poseStack, livingRenderer, level, entity, deathSpeed, rots, deathMotion, texture);
+                            }
+                        }
+                    }
+                    armorItemStack = entity.getItemBySlot(EquipmentSlot.HEAD);
+                    if (armorItemStack.getItem() instanceof ArmorItem armorItem && !(armorItem instanceof GeoItem)
+                        && armorItem.getEquipmentSlot() == EquipmentSlot.HEAD) {
+                        Model model = ClientHooks.getArmorModel(entity, armorItemStack, EquipmentSlot.HEAD, armorLayer.outerModel);
+                        if (model instanceof HumanoidModel<?> outerModel) {
+                            outerModel.setAllVisible(true);
+                            armorLayer.getParentModel().copyPropertiesTo((HumanoidModel) outerModel);
+                            for (ArmorMaterial.Layer materialLayer : armorItem.getMaterial().value().layers()) {
+                                ResourceLocation texture = ClientHooks.getArmorTexture(entity, armorItemStack, materialLayer, false, EquipmentSlot.HEAD);
+                                makePartRecursively(outerModel.head, poseStack, livingRenderer, level, entity, deathSpeed, rots, deathMotion, texture);
+                                makePartRecursively(outerModel.hat, poseStack, livingRenderer, level, entity, deathSpeed, rots, deathMotion, texture);
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
-    private static void makePartRecursively(ModelPart modelPart, AntiPushPoseStack poseStack, LivingEntityRenderer<?, ?> renderer, ClientLevel level, Entity entity, float deathSpeed, Stack<Vector3f> rots, Vec3 deathMotion) {
+    private static void makePartRecursively(ModelPart modelPart, AntiPushPoseStack poseStack, LivingEntityRenderer<?, ?> renderer, ClientLevel level, Entity entity, float deathSpeed, Stack<Vector3f> rots, Vec3 deathMotion, ResourceLocation texture) {
         if (!modelPart.visible || modelPart.skipDraw) return;
+        poseStack.pushPose(true);
         if (renderer.getModel().young && renderer.getModel() instanceof AgeableListModelAccessor model) {
             for (ModelPart bodyPart : model.callBodyParts()) {
                 if (modelPart == bodyPart) {
@@ -406,6 +469,7 @@ public final class ClientUtils {
             float scaledMin = min * finalScale;
 
             DeadBodyPartEntity part = new DeadBodyPartEntity(ModEntities.BODY_PART.get(), level, entity, cube, deathSpeed);
+            part.texture = texture;
             float xOffset = ((minX + maxX) / 2) / 16;
 //            float yOffset = centerY + min / 2;
             float zOffset = ((minZ + maxZ) / 2) / 16;
@@ -423,7 +487,10 @@ public final class ClientUtils {
 //            part.still();
 //            part.setDeltaMovement(new Vec3(0, 0.1, 0).offsetRandom(level.random, 0.6f));
             part.setDeltaMovement(deathMotion.offsetRandom(level.random, (float) (deathMotion.length() * 0.4 + 0.1))/*.multiply(1, 1.05f, 1)*/);
-            modelRot.add(modelPart.xRot, modelPart.yRot, modelPart.zRot);
+            // 僵尸盔甲有奇怪的旋转 干脆都不要旋转了
+            if (texture == null) {
+                modelRot.add(modelPart.xRot, modelPart.yRot, modelPart.zRot);
+            }
             part.modelPartRot = modelRot;
             part.xOffset = transformedOffset.x;
             part.yOffset = transformedOffset.y - scaledMin / 2;
@@ -441,10 +508,11 @@ public final class ClientUtils {
             poseStack.pushPose(true);
             Vector3f newRot = new Vector3f(modelRot);
             rots.push(newRot);
-            makePartRecursively(child, poseStack, renderer, level, entity, deathSpeed, rots, deathMotion);
+            makePartRecursively(child, poseStack, renderer, level, entity, deathSpeed, rots, deathMotion, texture);
             rots.pop();
             poseStack.popPose(true);
         }
+        poseStack.popPose(true);
     }
 
     public static <T extends BlockEntity> BlockEntityRendererProvider<T> rendererProvider(Supplier<BlockEntityRenderer<T>> factory) {

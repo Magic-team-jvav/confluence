@@ -4,6 +4,7 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -38,6 +39,8 @@ public class DeadBodyPartEntity extends Entity {
     /** true则停在原地不动，一般用来调试 */
     public boolean still = false;
     public ModelPart modelPart;
+    /** 目前如果非空则说明是盔甲 */
+    public ResourceLocation texture;
 
     public DeadBodyPartEntity(EntityType<?> entityType, Level level){
         this(entityType, level, null, null, 0);

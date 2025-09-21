@@ -543,13 +543,13 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 // 火把神
                 .add(TEBossEntities.EYE_OF_CTHULHU, builder -> builder.order(50400).rarity(2).background(SURFACE_MOON).filters(FilterEntry.BOSS_ENEMY, FilterEntry.NIGHTTIME))
                 .add(TEMonsterEntities.DEMON_EYE, "minion", builder -> builder.order(50500).rarity(1).background(SURFACE_MOON).filters(FilterEntry.NIGHTTIME))
-                // 史莱姆王
-                // 世界吞噬怪
-                // 克苏鲁之脑
-                // 飞眼怪
+                .add(TEBossEntities.KING_SLIME, builder -> builder.order(50600).rarity(2).background(SURFACE).filters(FilterEntry.BOSS_ENEMY, FilterEntry.SURFACE))
+                .add(TEBossEntities.EATER_OF_WORLDS, builder -> builder.order(50700).rarity(3).background(THE_CORRUPTION).filters(FilterEntry.BOSS_ENEMY, FilterEntry.THE_CORRUPTION))
+                .add(TEBossEntities.BRAIN_OF_CTHULHU, builder -> builder.order(50800).rarity(3).background(THE_CRIMSON).filters(FilterEntry.BOSS_ENEMY, FilterEntry.THE_CRIMSON))
+                .add(TEMonsterEntities.VISUAL_NEURON, builder -> builder.order(50900).rarity(2).background(THE_CRIMSON).filters(FilterEntry.THE_CRIMSON))
                 // 独眼巨鹿
-                // 骷髅王
-                // 蜂王
+                .add(TEBossEntities.SKELETRON, builder -> builder.order(51100).rarity(3).background(THE_DUNGEON).filters(FilterEntry.BOSS_ENEMY, FilterEntry.THE_DUNGEON))
+                .add(TEBossEntities.QUEEN_BEE, builder -> builder.order(51200).rarity(3).background(UNDERGROUND_JUNGLE).filters(FilterEntry.BOSS_ENEMY, FilterEntry.UNDERGROUND_JUNGLE))
                 // 血肉墙
                 // 血蛭
                 // 饿鬼 （连接）
@@ -568,7 +568,7 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 // 石巨人
                 // 猪龙鱼公爵
                 // 鲨鱼龙
-                // 	拜月教邪教徒
+                // 拜月教邪教徒
                 // 拜月教忠教徒
                 // 蓝邪教徒弓箭手
                 // 远古幻影妖

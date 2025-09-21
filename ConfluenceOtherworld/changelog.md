@@ -104,6 +104,9 @@
 - 坐骑现在可以装备，并且有快捷键
 - 召唤师头盔的附魔（与保护冲突）
 - 带引爆器的铂金矿与金矿
+- 小动物友谊指南(guide_to_critter_companionship)、环境保护指南(guide_to_environmental_preservation)、和平共处指南(guide_to_peaceful_coexistence)
+- 怪物图鉴(bestiary)
+- 动物学家(zoologist)，图鉴解锁条目数达到34时生成
 - 完整的渔夫任务
 
 | 任务鱼                         | 群系     | 高度范围    | 时期         |

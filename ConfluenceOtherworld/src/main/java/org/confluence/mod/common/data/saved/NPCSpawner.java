@@ -17,7 +17,6 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -298,7 +297,7 @@ public final class NPCSpawner implements IGlobalData {
             if (trySpawnDemolitionist(player, pos, region)) continue;
             if (trySpawnDyeTrader(player, pos, region)) continue;
             if (trySpawnAngler(player, region)) continue;
-            // 动物学家
+            if (trySpawnZoologist(player, pos, region)) continue;
             if (trySpawnDryad(player, pos, region)) continue;
             if (trySpawnPainter(player, pos, region)) continue;
             // 高尔夫球手
@@ -315,6 +314,15 @@ public final class NPCSpawner implements IGlobalData {
             // 蒸汽朋克人
             // 机器侠
         }
+    }
+
+    private boolean trySpawnZoologist(ServerPlayer player, BlockPos pos, Region region) {
+        if (!hasNPCAlive(region, TENpcEntities.ZOOLOGIST.get())) {
+            if (Bestiary.INSTANCE.getEntries().size() >= 34) {
+                return spawnAtPos(player.serverLevel(), pos, TENpcEntities.ZOOLOGIST.get());
+            }
+        }
+        return false;
     }
 
     /**
@@ -405,9 +413,8 @@ public final class NPCSpawner implements IGlobalData {
             if (closestBiome3d != null) {
                 AbstractTerraNPC npc = TENpcEntities.ANGLER.get().create(level);
                 if (npc != null) {
-                    RandomSource random = level.random;
-                    int dx = random.nextInt(4) - 2;
-                    int dz = random.nextInt(4) - 2;
+                    int dx = level.random.nextInt(4) - 2;
+                    int dz = level.random.nextInt(4) - 2;
                     npc.setPos(closestBiome3d.getFirst().atY(level.getSeaLevel()).offset(dx, 0, dz).getCenter());
                     level.addFreshEntity(npc);
                     IAbstractTerraNPC.of(npc).confluence$setRegion(playerRegion);

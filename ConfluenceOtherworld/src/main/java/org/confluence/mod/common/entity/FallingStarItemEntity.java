@@ -58,7 +58,7 @@ public class FallingStarItemEntity extends ItemEntity {
     public void tick() {
         if (level().isClientSide && emitter == null) {
             this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("falling_star"));
-            emitter.attached = this;
+            emitter.attachEntity(this);
             PSGameClient.LOADER.addEmitter(emitter, false);
         }
         super.tick();

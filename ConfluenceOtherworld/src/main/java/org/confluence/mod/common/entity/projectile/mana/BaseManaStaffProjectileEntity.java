@@ -87,7 +87,7 @@ public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
 
         if (level().isClientSide && emitter == null) {
             this.emitter = new ParticleEmitter(level(), position(), getParticleId());
-            emitter.attached = this;
+            emitter.attachEntity(this);
             PSGameClient.LOADER.addEmitter(emitter, false);
         }
 

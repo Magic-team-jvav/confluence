@@ -116,7 +116,7 @@ public class BaseBombEntity extends ThrowableItemProjectile {
             emitter.offsetRot.set(0.0, Mth.HALF_PI, 0.0);
             emitter.offsetPos = new Vec3(0.0, DIAMETER, 0.0);
             emitter.parentRotation = rotation;
-            emitter.attached = this;
+            emitter.attachEntity(this);
             PSGameClient.LOADER.addEmitter(emitter, false);
         }
     }

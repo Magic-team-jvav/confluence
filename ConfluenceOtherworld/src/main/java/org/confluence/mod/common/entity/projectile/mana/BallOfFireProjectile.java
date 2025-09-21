@@ -60,8 +60,8 @@ public class BallOfFireProjectile extends AbstractManaProjectile {
             if ((emitter == null || trail == null)) {
                 this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("ball_of_fire"));
                 this.trail = new ParticleEmitter(level(), position(), Confluence.asResource("ball_of_fire_trail"));
-                emitter.attached = this;
-                trail.attached = this;
+                emitter.attachEntity(this);
+                trail.attachEntity(this);
                 PSGameClient.LOADER.addEmitter(emitter, false);
                 PSGameClient.LOADER.addEmitter(trail, false);
             }

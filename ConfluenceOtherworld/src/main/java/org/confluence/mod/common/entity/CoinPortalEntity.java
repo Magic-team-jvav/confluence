@@ -46,7 +46,7 @@ public class CoinPortalEntity extends Entity {
         if (level().isClientSide && emitter == null && amount != 0) {
             MolangExp expression = new MolangExp("amount", amount);
             this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("coin_portal"), ParticleEffect.Type.EMITTER, expression);
-            emitter.attached = this;
+            emitter.attachEntity(this);
             PSGameClient.LOADER.addEmitter(emitter, false);
         }
         setDeltaMovement(getDeltaMovement().scale(0.96));

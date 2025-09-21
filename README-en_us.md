@@ -20,6 +20,7 @@
 | [ConfluenceDelight](https://github.com/cooobird/ConfluenceDelight)                  | Farmer's Delight integration                                                           |
 | [ConfluenceMusic](https://github.com/westernat/Confluence-Music)                    | Extra music                                                                            |
 | [ConfluenceDimensionPatch](https://github.com/westernat/Confluence-Dimension-Patch) | Transfer the Confluence Otherworld's modifications to the Overworld to a new dimension |
+| [BetterExperience](https://github.com/EDGtheXu/BetterExperience)                    | The ported version authorized by the original creator of the Terra mod.                |
 
 ## Build the Project
 

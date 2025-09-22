@@ -30,6 +30,7 @@ public class HouseSelectHUD implements LayeredDraw.Layer {
     private static final GuiSprite crosshair = new GuiSprite(Confluence.asResource("hud/house_select/crosshair"), 15, 15);
     private static final Component tip1 = Component.translatable("message.confluence.house_select.tip1");
     private static final Component tip2 = Component.translatable("message.confluence.house_select.tip2");
+    private static final Component check = Component.translatable("message.confluence.house_select.check");
     private static final GuiSprite[] sprites = Util.make(new GuiSprite[AvailableHouseSelectPacketS2C.size], a -> {
         ResourceLocation i = Confluence.asResource("hud/house_select/npc_head");
         int w = 128, h = 128;
@@ -61,7 +62,6 @@ public class HouseSelectHUD implements LayeredDraw.Layer {
         a[23] = null;
         a[24] = new GuiSprite(i, w, h, 94, 37, 14, 14);
     });
-    private static final Component check = Component.translatable("message.confluence.house_select.check");
 
     public static boolean inSelectHUD = false;
     private static boolean[] available = new boolean[AvailableHouseSelectPacketS2C.size];
@@ -96,7 +96,7 @@ public class HouseSelectHUD implements LayeredDraw.Layer {
                 sprite.setPos(x, y).renderAligned(guiGraphics, 24, 24);
                 if (mouseX >= x && mouseX < x + 24 && mouseY >= y && mouseY < y + 24) {
                     Component name;
-                    if (type == EntityType.PLAYER) {
+                    if (i == 0) {
                         name = check;
                     } else {
                         name = type.getDescription();

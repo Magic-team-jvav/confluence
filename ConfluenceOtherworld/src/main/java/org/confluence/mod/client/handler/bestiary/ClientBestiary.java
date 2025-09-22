@@ -96,6 +96,7 @@ public class ClientBestiary extends ContextAwareReloadListener {
         }
         this.entries = map;
         this.backupEntries = backup;
+        sortEntries();
     }
 
     public void registerCustomFilter() {
@@ -149,6 +150,14 @@ public class ClientBestiary extends ContextAwareReloadListener {
             }
         });
         this.sortedEntries = sorted;
+        this.searchTree = CompletableFuture.supplyAsync(() -> SearchTree.plainText(
+                sortedEntries.entrySet().stream().filter(entry -> !entry.getValue().isLocked()).toList(),
+                entry -> Stream.of(
+                        entry.getKey(),
+                        entry.getValue().getDescription().getString(),
+                        entry.getValue().type.getDescription().getString()
+                ).map(s -> ChatFormatting.stripFormatting(s).trim())
+        ), Util.backgroundExecutor());
     }
 
     private boolean filter(ClientBestiaryEntry entry) {
@@ -218,14 +227,6 @@ public class ClientBestiary extends ContextAwareReloadListener {
             }
             if (lastSize != entries.size()) {
                 sortEntries();
-                this.searchTree = CompletableFuture.supplyAsync(() -> SearchTree.plainText(
-                        sortedEntries.entrySet().stream().filter(entry -> !entry.getValue().isLocked()).toList(),
-                        entry -> Stream.of(
-                                entry.getKey(),
-                                entry.getValue().getDescription().getString(),
-                                entry.getValue().type.getDescription().getString()
-                        ).map(s -> ChatFormatting.stripFormatting(s).trim())
-                ), Util.backgroundExecutor());
             }
         }).ifRight(key -> {
             ClientBestiaryEntry entry = entries.get(key);

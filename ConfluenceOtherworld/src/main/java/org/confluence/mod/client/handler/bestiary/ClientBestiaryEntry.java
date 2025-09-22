@@ -216,7 +216,7 @@ public class ClientBestiaryEntry extends BestiaryEntry {
 
     @Override
     public ClientBestiaryEntry copy() {
-        return new ClientBestiaryEntry(
+        ClientBestiaryEntry entry = new ClientBestiaryEntry(
                 type,
                 order,
                 rarity,
@@ -225,6 +225,8 @@ public class ClientBestiaryEntry extends BestiaryEntry {
                 filters,
                 entityNbt
         );
+        entry.key = key;
+        return entry;
     }
 
     public static class Builder {

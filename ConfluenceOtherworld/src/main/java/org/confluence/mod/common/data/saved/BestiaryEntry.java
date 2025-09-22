@@ -92,7 +92,7 @@ public class BestiaryEntry {
     }
 
     public BestiaryEntry copy() {
-        return new BestiaryEntry(
+        BestiaryEntry entry = new BestiaryEntry(
                 type,
                 killedByCount,
                 maxHealth,
@@ -101,6 +101,8 @@ public class BestiaryEntry {
                 armor,
                 drops
         );
+        entry.key = key;
+        return entry;
     }
 
     public static Builder builder(EntityType<?> type, String key) {

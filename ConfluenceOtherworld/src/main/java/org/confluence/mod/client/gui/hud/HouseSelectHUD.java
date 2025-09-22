@@ -28,8 +28,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class HouseSelectHUD implements LayeredDraw.Layer {
     private static final GuiSprite crosshair = new GuiSprite(Confluence.asResource("hud/house_select/crosshair"), 15, 15);
-    private static final String tip1 = "Press Esc to escape, hold Alt to select";
-    private static final String tip2 = "Right Click to check or add/remove house";
+    private static final Component tip1 = Component.translatable("message.confluence.house_select.tip1");
+    private static final Component tip2 = Component.translatable("message.confluence.house_select.tip2");
     private static final GuiSprite[] sprites = Util.make(new GuiSprite[AvailableHouseSelectPacketS2C.size], a -> {
         ResourceLocation i = Confluence.asResource("hud/house_select/npc_head");
         int w = 128, h = 128;
@@ -131,7 +131,7 @@ public class HouseSelectHUD implements LayeredDraw.Layer {
         BlockHitResult result = Item.getPlayerPOVHitResult(player.level(), player, ClipContext.Fluid.NONE);
         BlockPos pos = result.getBlockPos().relative(result.getDirection());
         IHouseDetector detect = IHouseDetector.detect(pos, player.level());
-        if (!detect.isError()) {
+        if (selected == 0 && !detect.isError()) {
             for (BlockPos blockPos : detect.list()) {
                 DebugBlocksHelper.Singleton().addDebugBlock(blockPos, new DebugBlocksHelper.DebugInfo(255, 255, 30, 100));
             }

@@ -324,8 +324,9 @@ public class BestiaryScreen extends Screen {
             } else {
                 LivingEntity living = entry.getRenderedEntity(getMinecraft().level);
                 float size = (float) Math.max(living.getBoundingBox().getXsize(), living.getBoundingBox().getYsize());
-                int scale = Mth.ceil(20 * size);
-                float yOffset = 0.15F * size;
+                float factor = 2 / size;
+                int scale = Mth.ceil(10 * factor);
+                float yOffset = 0.3F / factor;
                 InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, x1, y1, x1 + 36, y1 + 36, scale, yOffset, mouseX, mouseY, living);
             }
 

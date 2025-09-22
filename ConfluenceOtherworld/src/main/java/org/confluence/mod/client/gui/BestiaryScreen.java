@@ -79,7 +79,7 @@ public class BestiaryScreen extends Screen {
     private GuiSprite openedSortBottom;
 
     private int descPage = 0;
-    private int descPages = 0; // todo
+    private Iterable<FormattedCharSequence> renderedDescs = List.of();
 
     public BestiaryScreen() {
         super(Component.empty());
@@ -174,9 +174,19 @@ public class BestiaryScreen extends Screen {
             int lastPage = descPage;
             Component desc = showedEntry.getDescription();
             if (font.width(desc) > 48) {
-                this.descPage = Mth.clamp(descPage + Mth.sign(-scrollY), 0, font.split(desc, 48).size());
+                List<FormattedCharSequence> split = font.split(desc, 48);
+                int filters = showedEntry.getFilters().size();
+                int filterLines = filters % 3 == 0 ? filters / 16 : filters / 16 + 1;
+                int limitSize = (221 - 116 - filterLines * 16) / font.lineHeight;
+                this.descPage = Mth.clamp(descPage + Mth.sign(-scrollY), 0, Math.max(split.size() - limitSize, 0));
+                if (descPage == 0) {
+                    this.renderedDescs = Iterables.limit(split, limitSize);
+                } else {
+                    this.renderedDescs = Iterables.limit(Iterables.skip(split, descPage), limitSize);
+                }
             } else {
                 this.descPage = 0;
+                this.renderedDescs = List.of(desc.getVisualOrderText());
             }
             return lastPage != descPage;
         }
@@ -213,6 +223,15 @@ public class BestiaryScreen extends Screen {
                 if (entry.isLocked()) return false;
                 this.showedEntry = entry;
                 this.descPage = 0;
+                Component desc = entry.getDescription();
+                if (font.width(desc) > 48) {
+                    int filters = showedEntry.getFilters().size();
+                    int filterLines = filters % 3 == 0 ? filters / 16 : filters / 16 + 1;
+                    int limitSize = (221 - 116 - filterLines * 16) / font.lineHeight;
+                    this.renderedDescs = Iterables.limit(font.split(desc, 48), limitSize);
+                } else {
+                    this.renderedDescs = List.of(desc.getVisualOrderText());
+                }
                 return true;
             }
             x += 36;
@@ -442,7 +461,6 @@ public class BestiaryScreen extends Screen {
             x1 = leftPos + 164;
             y1 = topPos + 116;
             x2 = x1 + 48;
-            int t = x1;
             for (FilterEntry filter : showedEntry.getFilters()) {
                 renderFilter(guiGraphics, filter, x1, y1, 16, 16);
                 if (mouseX >= x1 && mouseX < x1 + 16 && mouseY >= y1 && mouseY < y1 + 16) {
@@ -450,7 +468,7 @@ public class BestiaryScreen extends Screen {
                 }
                 x1 += 16;
                 if (x1 >= x2) {
-                    x1 = t;
+                    x1 = leftPos + 164;
                     y1 += 16;
                 }
             }
@@ -458,16 +476,9 @@ public class BestiaryScreen extends Screen {
             if (p20) {
                 x1 = leftPos + 164;
                 if (!showedEntry.getFilters().isEmpty()) y1 += 16;
-                Component desc = showedEntry.getDescription();
-                if (font.width(desc) > 48) {
-                    List<FormattedCharSequence> split = font.split(desc, 48);
-                    int i = 0;
-                    for (FormattedCharSequence sequence : split) {
-                        guiGraphics.drawString(font, sequence, x1, y1, 0xFFFFFF);
-                        y1 += font.lineHeight;
-                    }
-                } else {
+                for (FormattedCharSequence desc : renderedDescs) {
                     guiGraphics.drawString(font, desc, x1, y1, 0xFFFFFF);
+                    y1 += font.lineHeight;
                 }
             }
         }
@@ -481,9 +492,10 @@ public class BestiaryScreen extends Screen {
     }
 
     private void renderScaledString(GuiGraphics guiGraphics, PoseStack pose, String text, int x, int y, float lineHeight) {
+        float scale = text.length() <= 2 ? textScale : (1 - (text.length() - 2) * 0.1F) * textScale;
         pose.pushPose();
-        pose.translate(x - font.width(text) * textScale, y - lineHeight, 0);
-        pose.scale(textScale, textScale, 1);
+        pose.translate(x - font.width(text) * scale, y - lineHeight, 0);
+        pose.scale(scale, scale, 1);
         guiGraphics.drawString(font, text, 0, 0, 0xFFFFFF);
         pose.popPose();
     }

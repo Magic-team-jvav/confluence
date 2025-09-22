@@ -10,6 +10,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -62,6 +63,7 @@ import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.api.event.AfterAccessoryAbilitiesFlushedEvent;
 import org.confluence.terra_guns.api.event.GunEvent;
 import org.confluence.terraentity.entity.summon.AbstractSummonMob;
+import org.confluence.terraentity.init.entity.TEBossEntities;
 import top.theillusivec4.curios.api.event.CurioAttributeModifierEvent;
 import top.theillusivec4.curios.api.event.CurioChangeEvent;
 
@@ -244,6 +246,13 @@ public final class GameEvents {
     @SubscribeEvent
     public static void toBeBestiaryEntry(ToBeBestiaryEntryEvent event) {
         LivingEntity living = event.getEntity();
-        if (living instanceof AbstractSummonMob) event.setCanceled(true);
+        if (living instanceof AbstractSummonMob) {
+            event.setCanceled(true);
+        } else {
+            EntityType<?> type = living.getType();
+            if (type == TEBossEntities.SKELETRON_HAND.get()) {
+                event.setCanceled(true);
+            }
+        }
     }
 }

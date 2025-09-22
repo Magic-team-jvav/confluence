@@ -75,6 +75,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("message.confluence.lock.or", " or ");
         add("message.confluence.dungeon_not_found", "Failed to find the Dungeon");
         add("message.confluence.peddlers_satchel", "The Traveling Merchant's satchel deepens!");
+        add("tooltip.confluence.house_detect.occupied", "House has been occupied!");
+        add("message.confluence.house_detect.npc_not_fount", "NPC not found nearby!");
 
         add("commands.confluence.reforge.cannot_be_reforged", "This item cannot be reforged (or cannot find an item that needs to be reforged)!");
         add("commands.confluence.reforge.unknown_prefix_type", "Unknown prefix type (or reforge failure)!");
@@ -445,6 +447,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.confluence.attack_interval", "Attack Interval: %s");
         add("tooltip.confluence.attack_distance", "Attack Distance: %s");
         add("tooltip.confluence.knockback", "Knockback: %s");
+        add("tooltip.confluence.disabled", "Disabled");
 
         add("tooltip.item.confluence.radio_thing.0", "Allows the user to see the world differently");
         add("tooltip.item.terra_curio.radio_thing.1", "'Forbidden Knowledge echoes from the radio...'");
@@ -2656,7 +2659,6 @@ public class ModEnglishProvider extends LanguageProvider {
         addEffect(TEEffects.CRIMSON_STORM.get(), "You are trapped in the storm, there is no escape.");
         addEffect(TEEffects.HORRIFIED.get(), "You have seen something nasty, there is no escape.");
         addEffect(TEEffects.THE_TONGUE.get(), "You are being sucked into the mouth");
-        add("tooltip.confluence.disabled", "Disabled");
 
         add(TooltipManager.prefix, "** Sponsor Item **");
 

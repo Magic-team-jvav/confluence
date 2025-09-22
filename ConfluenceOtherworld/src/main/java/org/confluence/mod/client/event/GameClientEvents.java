@@ -156,7 +156,7 @@ public final class GameClientEvents {
         }
         if (HouseSelectHUD.inSelectHUD && event.getHand() == InteractionHand.MAIN_HAND) {
             if (event.isUseItem()) {
-                HouseSelectHUD.checkHouse(player);
+                HouseSelectHUD.selectHouse(player);
                 player.swing(InteractionHand.MAIN_HAND);
             } else if (event.isAttack()) {
                 event.setCanceled(true);

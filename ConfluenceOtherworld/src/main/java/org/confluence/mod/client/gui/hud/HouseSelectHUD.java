@@ -20,9 +20,9 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.BlockHitResult;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.GuiSprite;
+import org.confluence.mod.network.c2s.HouseSelectPacketC2S;
 import org.confluence.mod.network.s2c.AvailableHouseSelectPacketS2C;
 import org.confluence.terraentity.client.buffer.DebugBlocksHelper;
-import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 import org.confluence.terraentity.entity.npc.house.IHouseDetector;
 import org.jetbrains.annotations.NotNull;
 
@@ -115,7 +115,7 @@ public class HouseSelectHUD implements LayeredDraw.Layer {
                 }
             }
         } else {
-            if (selected == -1) {
+            if (selected < 0) {
                 crosshair.setPos(x - 7, y - 7).render(guiGraphics);
             } else {
                 sprites[selected].setPos(x - 12, y - 12).renderAligned(guiGraphics, 24, 24);
@@ -126,24 +126,18 @@ public class HouseSelectHUD implements LayeredDraw.Layer {
         }
     }
 
-    public static void checkHouse(Player player) {
-        if (selected == -1) return;
+    public static void selectHouse(Player player) {
+        if (selected < 0) return;
         BlockHitResult result = Item.getPlayerPOVHitResult(player.level(), player, ClipContext.Fluid.NONE);
         BlockPos pos = result.getBlockPos().relative(result.getDirection());
         IHouseDetector detect = IHouseDetector.detect(pos, player.level());
-        player.sendSystemMessage(Component.translatable(detect.message()));
-        if (detect.isError()) return;
-
-        for(BlockPos blockPos : detect.list()){
-            DebugBlocksHelper.Singleton().addDebugBlock(blockPos, new DebugBlocksHelper.DebugInfo(255,255,30, player.getRandom().nextIntBetweenInclusive(20,100)));
+        if (!detect.isError()) {
+            for (BlockPos blockPos : detect.list()) {
+                DebugBlocksHelper.Singleton().addDebugBlock(blockPos, new DebugBlocksHelper.DebugInfo(255, 255, 30, 100));
+            }
+            DebugBlocksHelper.Singleton().addDebugBlock(pos, new DebugBlocksHelper.DebugInfo(255, 0, 120, 120));
         }
-        DebugBlocksHelper.Singleton().addDebugBlock(pos, new DebugBlocksHelper.DebugInfo(255,0,120, 120));
-
-        // todo 改成汇流网络包
-    }
-
-    public static void addOrRemoveHouse(AbstractTerraNPC npc) {
-
+        HouseSelectPacketC2S.sendToServer(selected, pos);
     }
 
     public static void handle(boolean[] values) {

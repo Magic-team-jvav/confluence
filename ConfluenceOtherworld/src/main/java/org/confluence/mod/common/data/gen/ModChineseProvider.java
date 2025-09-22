@@ -65,6 +65,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("message.confluence.lock.or", " 或 ");
         add("message.confluence.dungeon_not_found", "未成功找到地牢");
         add("message.confluence.peddlers_satchel", "旅商的背包变大！");
+        add("message.confluence.house_detect.occupied", "这个房间已被占领！");
+        add("message.confluence.house_detect.npc_not_fount", "未在附近找到该NPC！");
 
         add("commands.confluence.reforge.cannot_be_reforged", "该物品无法被重铸（或无法找到需要重铸的物品）！");
         add("commands.confluence.reforge.unknown_prefix_type", "未知重铸类型（或重铸失败）！");
@@ -435,6 +437,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.confluence.attack_interval", "下次攻击间隔：%s");
         add("tooltip.confluence.attack_distance", "攻击距离：%s");
         add("tooltip.confluence.knockback", "击退：%s");
+        add("tooltip.confluence.disabled", "已禁用");
 
         add("tooltip.item.confluence.radio_thing.0", "允许使用者以不同的方式看世界");
         add("tooltip.item.terra_curio.radio_thing.1", "“禁忌的知识在其中回响……”");
@@ -5049,8 +5052,6 @@ public class ModChineseProvider extends LanguageProvider {
         addEffect(TEEffects.CRIMSON_STORM.get(), "猩红风暴", "你已陷入风暴，无可逃脱。");
         addEffect(TEEffects.HORRIFIED.get(), "惊恐", "你已看到污秽之物，无可逃脱。");
         addEffect(TEEffects.THE_TONGUE.get(), "狂卷之舌", "你被吸入嘴中");
-
-        add("tooltip.confluence.disabled", "已禁用");
 
         add(TooltipManager.prefix, "** 赞助者物品 **");
 

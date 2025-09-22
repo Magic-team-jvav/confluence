@@ -34,11 +34,6 @@ public class BestiaryScreen extends Screen {
     private static final int renderedEntryX = 8;
     private static final int renderedEntryY = 10;
 
-    private static final int showedEntryX = 164;
-    private static final int showedEntryY = renderedEntryY;
-    private static final int showedEntryWH = 48;
-    private static final float textScale = 0.8F;
-
     private final ClientBestiary bestiary;
     private int topPos;
     private int leftPos;
@@ -329,9 +324,8 @@ public class BestiaryScreen extends Screen {
             } else {
                 LivingEntity living = entry.getRenderedEntity(getMinecraft().level);
                 float size = (float) Math.max(living.getBoundingBox().getXsize(), living.getBoundingBox().getYsize());
-                float factor = 2 / size;
-                int scale = Mth.ceil(10 * factor);
-                float yOffset = 0.3F / factor;
+                int scale = Mth.ceil(20 * size);
+                float yOffset = 0.15F * size;
                 InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, x1, y1, x1 + 36, y1 + 36, scale, yOffset, mouseX, mouseY, living);
             }
 
@@ -408,13 +402,13 @@ public class BestiaryScreen extends Screen {
             PoseStack pose = guiGraphics.pose();
             int x2, y2;
 
-            x1 = leftPos + showedEntryX;
-            y1 = topPos + showedEntryY;
+            x1 = leftPos + 164;
+            y1 = topPos + 10;
             // 背景图
-            guiGraphics.blitSprite(showedEntry.getBackground(), showedEntryWH, showedEntryWH, 0, 0, x1, y1, showedEntryWH, showedEntryWH);
+            guiGraphics.blitSprite(showedEntry.getBackground(), 48, 48, 0, 0, x1, y1, 48, 48);
             // 实体
             LivingEntity living = showedEntry.getRenderedEntity(getMinecraft().level);
-            InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, x1, y1, x1 + showedEntryWH, y1 + showedEntryWH, 20, 0.3F, mouseX, mouseY, living);
+            InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, x1, y1, x1 + 48, y1 + 48, 20, 0.3F, mouseX, mouseY, living);
             // 稀有度
             pose.pushPose();
             pose.translate(0, 0, 180);
@@ -430,11 +424,11 @@ public class BestiaryScreen extends Screen {
             }
             pose.popPose();
             // 名字
-            if (mouseX >= x1 && mouseX < x1 + showedEntryWH && mouseY >= y1 && mouseY < y1 + showedEntryWH) {
+            if (mouseX >= x1 && mouseX < x1 + 48 && mouseY >= y1 && mouseY < y1 + 48) {
                 guiGraphics.renderTooltip(font, showedEntry.getDisplayName(), mouseX, mouseY);
             }
             // 杀死次数
-            float lineHeight = font.lineHeight * textScale;
+            float lineHeight = font.lineHeight * 0.8F;
             renderScaledString(guiGraphics, pose, Integer.toString(showedEntry.killedByCount), leftPos + 212 - 1, topPos + 73, lineHeight);
 
             boolean p20 = progress >= 0.2F;
@@ -492,7 +486,7 @@ public class BestiaryScreen extends Screen {
     }
 
     private void renderScaledString(GuiGraphics guiGraphics, PoseStack pose, String text, int x, int y, float lineHeight) {
-        float scale = text.length() <= 2 ? textScale : (1 - (text.length() - 2) * 0.1F) * textScale;
+        float scale = text.length() <= 2 ? 0.8F : (1 - (text.length() - 2) * 0.1F) * 0.8F;
         pose.pushPose();
         pose.translate(x - font.width(text) * scale, y - lineHeight, 0);
         pose.scale(scale, scale, 1);

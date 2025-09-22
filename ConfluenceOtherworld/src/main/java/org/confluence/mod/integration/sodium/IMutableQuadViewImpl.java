@@ -1,6 +1,6 @@
 package org.confluence.mod.integration.sodium;
 
-import org.confluence.mod.client.textures.GraySpriteShifterEntry;
+import org.confluence.mod.client.effect.textures.GraySpriteShifterEntry;
 import org.jetbrains.annotations.Nullable;
 
 public interface IMutableQuadViewImpl {

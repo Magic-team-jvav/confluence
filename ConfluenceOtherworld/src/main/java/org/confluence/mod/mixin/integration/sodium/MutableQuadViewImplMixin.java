@@ -2,7 +2,7 @@ package org.confluence.mod.mixin.integration.sodium;
 
 import net.caffeinemc.mods.sodium.client.render.frapi.mesh.MutableQuadViewImpl;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import org.confluence.mod.client.textures.GraySpriteShifterEntry;
+import org.confluence.mod.client.effect.textures.GraySpriteShifterEntry;
 import org.confluence.mod.integration.sodium.IMutableQuadViewImpl;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.*;

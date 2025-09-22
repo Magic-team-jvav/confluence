@@ -151,7 +151,7 @@ public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
         public static final Variant SPARK = register("spark", 0.04, 0.0F, Confluence.asResource("spark_projectile"));
         public static final Variant THUNDER_ZAPPER = register("thunder_zapper", -1.0, 0.0F, Confluence.asResource("thunder_zapper"));
 
-        public static final Codec<Variant> CODEC = StringRepresentable.fromValues(() -> VALUES.toArray(Variant[]::new));
+        public static final Codec<Variant> CODEC = StringRepresentable.fromValues(() -> VALUES.toArray(new Variant[0]));
 
         /**
          * @param rawKnockBack 换算前的击退

@@ -12,7 +12,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.mod.client.textures.LocalBrushData;
+import org.confluence.mod.client.effect.textures.LocalBrushData;
 import org.confluence.mod.common.attachment.ChunkBrushData;
 import org.confluence.mod.common.data.saved.BrushData;
 import org.confluence.mod.network.IPacket;

@@ -327,7 +327,7 @@ public class LogBlockSet {
                 if (logBlocks.SIGN.isBound()) list.add(logBlocks.SIGN.get());
                 if (logBlocks.WALL_SIGN.isBound()) list.add(logBlocks.WALL_SIGN.get());
             }
-            SIGN_BLOCKS = list.toArray(Block[]::new);
+            SIGN_BLOCKS = list.toArray(new Block[0]);
         }
         return SIGN_BLOCKS;
     }
@@ -339,7 +339,7 @@ public class LogBlockSet {
                 if (logBlocks.HANGING_SIGN.isBound()) list.add(logBlocks.HANGING_SIGN.get());
                 if (logBlocks.WALL_HANGING_SIGN.isBound()) list.add(logBlocks.WALL_HANGING_SIGN.get());
             }
-            HANGING_SIGN_BLOCKS = list.toArray(Block[]::new);
+            HANGING_SIGN_BLOCKS = list.toArray(new Block[0]);
         }
         return HANGING_SIGN_BLOCKS;
     }

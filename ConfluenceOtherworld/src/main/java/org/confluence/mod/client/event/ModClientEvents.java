@@ -37,11 +37,13 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.StartupConfigs;
 import org.confluence.mod.api.event.bestiary.RegisterCustomBestiaryEntryRendererEvent;
 import org.confluence.mod.client.ClientConfigs;
-import org.confluence.mod.client.connected.CustomBlockModels;
-import org.confluence.mod.client.connected.ModConnectives;
-import org.confluence.mod.client.connected.ModelSwapper;
-import org.confluence.mod.client.connected.StitchedSprite;
 import org.confluence.mod.client.effect.ColoredGlintContext;
+import org.confluence.mod.client.effect.connected.CustomBlockModels;
+import org.confluence.mod.client.effect.connected.ModConnectives;
+import org.confluence.mod.client.effect.connected.ModelSwapper;
+import org.confluence.mod.client.effect.connected.StitchedSprite;
+import org.confluence.mod.client.effect.textures.GrayBlockModelSwapper;
+import org.confluence.mod.client.effect.textures.GraySpriteShifterEntry;
 import org.confluence.mod.client.gui.container.*;
 import org.confluence.mod.client.gui.hud.*;
 import org.confluence.mod.client.handler.ArrowInBowHandler;
@@ -81,8 +83,6 @@ import org.confluence.mod.client.renderer.entity.projectile.sword.ForwardProjRen
 import org.confluence.mod.client.renderer.entity.projectile.sword.LightsBaneProjectileRenderer;
 import org.confluence.mod.client.renderer.entity.projectile.sword.NightEdgeProjectileRenderer;
 import org.confluence.mod.client.renderer.entity.projectile.sword.StarFuryProjectileRenderer;
-import org.confluence.mod.client.textures.GrayBlockModelSwapper;
-import org.confluence.mod.client.textures.GraySpriteShifterEntry;
 import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.*;
@@ -384,8 +384,8 @@ public final class ModClientEvents {
     public static void registerItemColors(RegisterColorHandlersEvent.Item event) {
         event.register((pStack, pTintIndex) -> ColoredItem.getRGBA(pStack), MaterialItems.GEL.get());
         event.register((pStack, pTintIndex) -> GrassColor.getDefaultColor(), NatureBlocks.JUNGLE_GRASS_BLOCK.get());
-        event.register((stack, tintIndex) -> tintIndex == 1 ? PaintItem.getARGB(stack) : 0xFFFFFFFF, PaintItems.PAINT_ITEMS.toArray(Item[]::new));
-        event.register((stack, tintIndex) -> tintIndex == 1 ? BaseDyeItem.getARGB(stack) : 0xFFFFFFFF, VanityArmorItems.COLORED_DYE_ITEMS.toArray(Item[]::new));
+        event.register((stack, tintIndex) -> tintIndex == 1 ? PaintItem.getARGB(stack) : 0xFFFFFFFF, PaintItems.PAINT_ITEMS.toArray(new Item[0]));
+        event.register((stack, tintIndex) -> tintIndex == 1 ? BaseDyeItem.getARGB(stack) : 0xFFFFFFFF, VanityArmorItems.COLORED_DYE_ITEMS.toArray(new Item[0]));
     }
 
     @SubscribeEvent

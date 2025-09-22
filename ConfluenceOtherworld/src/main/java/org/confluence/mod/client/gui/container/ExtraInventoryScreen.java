@@ -1,5 +1,6 @@
 package org.confluence.mod.client.gui.container;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.ImageButton;
@@ -31,6 +32,11 @@ import org.confluence.mod.integration.mine_team.ExtraTeamRender;
 import org.confluence.mod.mixed.IInventoryScreen;
 import org.confluence.mod.network.c2s.OpenMenuPacketC2S;
 import org.confluence.terra_curio.TerraCurio;
+import org.confluence.terra_curio.api.primitive.TooltipComponentsValue;
+import org.confluence.terra_curio.client.handler.InformationHandler;
+import org.confluence.terra_curio.client.renderer.tooltip.MultiFunctionTooltip;
+import org.confluence.terra_curio.common.init.TCItems;
+import org.confluence.terra_curio.network.InfoDisablePacket;
 import top.theillusivec4.curios.common.network.client.CPacketOpenVanilla;
 
 import static net.minecraft.client.gui.screens.inventory.InventoryScreen.renderEntityInInventoryFollowsMouse;
@@ -117,6 +123,29 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
             guiGraphics.blit(BACKGROUND, leftPos + 147, topPos + 33, 194, 0, 18, 20);
         }
         renderEntityInInventoryFollowsMouse(guiGraphics, leftPos + 26, topPos + 8, leftPos + 75, topPos + 78, 30, 0.0625F, mouseX, mouseY, minecraft.player);
+
+        RenderSystem.enableBlend();
+        int x = leftPos + 196;
+        int y = topPos + 1;
+        for (int i = 0; i < InformationHandler.DISABLE.length; i++) {
+            if (!InformationHandler.hasInfoData(i)) continue;
+            TooltipComponentsValue.Storage storage = TCItems.FULL_INFO.get(i);
+
+            boolean disable = InformationHandler.DISABLE[i];
+            if (disable) RenderSystem.setShaderColor(1, 1, 1, 0.5F);
+            guiGraphics.blit(storage.texture(), x, y, 0, 0, 7, 7, 7, 7);
+            if (disable) RenderSystem.setShaderColor(1, 1, 1, 1);
+
+            if (mouseX >= x && mouseX < x + 7 && mouseY >= y && mouseY < y + 7) {
+                RenderSystem.setShaderColor(1, 1, 0, 1);
+                guiGraphics.blit(MultiFunctionTooltip.HIGHLIGHT, x - 1, y - 1, 0, 0, 9, 9, 9, 9);
+                RenderSystem.setShaderColor(1, 1, 1, 1);
+                guiGraphics.renderTooltip(font, storage.text(), mouseX, mouseY);
+            }
+
+            y += 8;
+        }
+        RenderSystem.disableBlend();
     }
 
     private void renderEquipment(GuiGraphics guiGraphics, int i) {
@@ -141,6 +170,19 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
             toggleAllSlot();
             getMinecraft().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, buttonPressed ? 1.0F : 0.8F));
             return true;
+        }
+
+        int x = leftPos + 196;
+        int y = topPos + 1;
+        boolean[] disable = InformationHandler.DISABLE;
+        for (int i = 0; i < disable.length; i++) {
+            if (!InformationHandler.hasInfoData(i)) continue;
+            if (mouseX >= x && mouseX < x + 7 && mouseY >= y && mouseY < y + 7) {
+                disable[i] = !disable[i];
+                InfoDisablePacket.sendToServer(disable);
+                return true;
+            }
+            y += 8;
         }
         return super.mouseClicked(mouseX, mouseY, button);
     }

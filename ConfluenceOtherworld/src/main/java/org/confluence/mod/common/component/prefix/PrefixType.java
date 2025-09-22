@@ -60,7 +60,7 @@ public enum PrefixType implements StringRepresentable {
                 list.add(entry.getValue());
             }
         }
-        this.available = list.toArray(ModPrefix[]::new);
+        this.available = list.toArray(new ModPrefix[0]);
     }
 
     public boolean isGroupAvailable(String group) {

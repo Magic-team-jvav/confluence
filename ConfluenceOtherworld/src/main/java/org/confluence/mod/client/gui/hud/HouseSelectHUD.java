@@ -61,7 +61,7 @@ public class HouseSelectHUD implements LayeredDraw.Layer {
         a[23] = null;
         a[24] = new GuiSprite(i, w, h, 94, 37, 14, 14);
     });
-    private static final Component check = Component.literal("Check");
+    private static final Component check = Component.translatable("message.confluence.house_select.check");
 
     public static boolean inSelectHUD = false;
     private static boolean[] available = new boolean[AvailableHouseSelectPacketS2C.size];

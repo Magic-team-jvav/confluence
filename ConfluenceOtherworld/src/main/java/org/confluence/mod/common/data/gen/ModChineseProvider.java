@@ -69,6 +69,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("message.confluence.house_detect.npc_not_fount", "未在附近找到该NPC！");
         add("message.confluence.house_select.tip1", "按一次Esc以退出，长按Alt以选择");
         add("message.confluence.house_select.tip2", "右击以检查、添加或移除房间");
+        add("message.confluence.house_select.check", "检查");
 
         add("commands.confluence.reforge.cannot_be_reforged", "该物品无法被重铸（或无法找到需要重铸的物品）！");
         add("commands.confluence.reforge.unknown_prefix_type", "未知重铸类型（或重铸失败）！");

@@ -79,6 +79,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("message.confluence.house_detect.npc_not_fount", "NPC not found nearby!");
         add("message.confluence.house_select.tip1", "Press Esc to escape, hold Alt to select");
         add("message.confluence.house_select.tip2", "Right Click to check or add/remove house");
+        add("message.confluence.house_select.check", "Check");
 
         add("commands.confluence.reforge.cannot_be_reforged", "This item cannot be reforged (or cannot find an item that needs to be reforged)!");
         add("commands.confluence.reforge.unknown_prefix_type", "Unknown prefix type (or reforge failure)!");

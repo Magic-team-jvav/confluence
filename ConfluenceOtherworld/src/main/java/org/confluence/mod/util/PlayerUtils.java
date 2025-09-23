@@ -65,8 +65,8 @@ public final class PlayerUtils {
         default -> ModItems.PLATINUM_COIN.get();
     };
 
-    public static void syncMana2Client(ServerPlayer serverPlayer, ManaStorage manaStorage) {
-        PacketDistributor.sendToPlayer(serverPlayer, new ManaPacketS2C(manaStorage.getMaxMana(), manaStorage.getCurrentMana()));
+    public static void syncMana2Client(ServerPlayer player, ManaStorage manaStorage) {
+        PacketDistributor.sendToPlayer(player, new ManaPacketS2C(manaStorage.getMaxMana(), manaStorage.getCurrentMana()));
     }
 
     public static void syncMana2Client(ServerPlayer player) {
@@ -100,7 +100,7 @@ public final class PlayerUtils {
 
     public static boolean extractMana(ServerPlayer player, ItemStack itemStack, FloatSupplier sup) {
         if (player.isCreative()) return true;
-        return extractAndDelayAndSync(
+        return extractAndSync(
                 ManaStorage.of(player),
                 HookMapManager.postHooks(
                         ModHookTypes.MANA_CONSUME.get(),
@@ -112,10 +112,9 @@ public final class PlayerUtils {
         );
     }
 
-    public static boolean extractAndDelayAndSync(ManaStorage manaStorage, FloatSupplier sup, ServerPlayer serverPlayer) {
-        if (manaStorage.extractMana(sup, serverPlayer)) {
-            manaStorage.setRegenerateDelay();
-            syncMana2Client(serverPlayer, manaStorage);
+    public static boolean extractAndSync(ManaStorage manaStorage, FloatSupplier sup, ServerPlayer player) {
+        if (manaStorage.extractMana(sup, player)) {
+            syncMana2Client(player, manaStorage);
             return true;
         }
         return false;
@@ -359,7 +358,7 @@ public final class PlayerUtils {
      * @param player 玩家
      * @return 复活时间
      */
-    public static int getRespawnWaitTime(Player player) {
+    public static int getRespawnWaitTime(ServerPlayer player) {
         AABB aabb = new AABB(player.blockPosition()).inflate(Short.MAX_VALUE);
         int min, max;
         if (player.level().getEntitiesOfClass(LivingEntity.class, aabb, living -> living instanceof Boss).isEmpty()) {
@@ -376,11 +375,11 @@ public final class PlayerUtils {
     /**
      * @return true表示魔力值不够
      */
-    public static boolean applyAutoGetMana(ServerPlayer serverPlayer, float currentMana, float extract) {
+    public static boolean applyAutoGetMana(ServerPlayer player, float currentMana, float extract) {
         if (currentMana < extract) {
-            if (!TCUtils.hasAccessoriesType(serverPlayer, AccessoryItems.AUTO$GET$MANA)) return true;
+            if (!TCUtils.hasAccessoriesType(player, AccessoryItems.AUTO$GET$MANA)) return true;
             ItemStack toUse = null;
-            for (ItemStack itemStack : serverPlayer.getInventory().items) {
+            for (ItemStack itemStack : player.getInventory().items) {
                 if (itemStack.getItem() instanceof ManaPotionItem manaPotion) {
                     int amount = manaPotion.getAmount();
                     if (currentMana + amount < extract) continue;
@@ -389,7 +388,7 @@ public final class PlayerUtils {
                 }
             }
             if (toUse == null) return true;
-            toUse.finishUsingItem(serverPlayer.level(), serverPlayer);
+            toUse.finishUsingItem(player.level(), player);
         }
         return false;
     }

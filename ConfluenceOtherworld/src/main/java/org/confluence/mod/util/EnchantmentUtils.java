@@ -108,7 +108,6 @@ public final class EnchantmentUtils {
         ManaStorage manaStorage = ManaStorage.of(player);
         float clamp = 1 - Mth.clamp(ratio.floatValue(), 0, 0.8F);
         if (manaStorage.forceExtractMana(() -> manaStorage.getMaxMana() * clamp)) {
-            manaStorage.setRegenerateDelay();
             PlayerUtils.syncMana2Client(player, manaStorage);
             return amount * clamp;
         }

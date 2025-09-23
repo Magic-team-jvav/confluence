@@ -29,7 +29,7 @@ public class ArsNouveauHelper {
     }
 
     public static void extractMana(ServerPlayer serverPlayer, ManaStorage manaStorage, double manaToRemove) {
-        PlayerUtils.extractAndDelayAndSync(manaStorage, () -> (float) (manaToRemove * toConfluence()), serverPlayer);
+        PlayerUtils.extractAndSync(manaStorage, () -> (float) (manaToRemove * toConfluence()), serverPlayer);
     }
 
     public static TriState enoughMana(LivingEntity living, int totalCost) {

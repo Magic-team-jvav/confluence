@@ -104,6 +104,7 @@
         "level.WorldOptionsMixin"
     ],
     "client": [
+        "accessor.KeyMappingAccessor",
         "client.BlockClientMixin",
         "client.ClientLevelMixin",
         "client.ClientPacketListenerMixin",

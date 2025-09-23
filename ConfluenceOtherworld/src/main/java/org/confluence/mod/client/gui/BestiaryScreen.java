@@ -16,6 +16,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.client.handler.bestiary.ClientBestiaryEntry;
 import org.confluence.mod.client.handler.bestiary.FilterEntry;
+import org.confluence.mod.integration.jei.JeiHelper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -75,6 +76,8 @@ public class BestiaryScreen extends Screen {
 
     private int descPage = 0;
     private Iterable<FormattedCharSequence> renderedDescs = List.of();
+
+    private boolean showingName;
 
     public BestiaryScreen() {
         super(Component.empty());
@@ -312,6 +315,16 @@ public class BestiaryScreen extends Screen {
     }
 
     @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        if (showingName && showedEntry != null) {
+            if (JeiHelper.handleShowUses(keyCode, scanCode, showedEntry.getRenderedEntity(getMinecraft().level).getPickResult())) {
+                return true;
+            }
+        }
+        return super.keyPressed(keyCode, scanCode, modifiers);
+    }
+
+    @Override
     public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         guiGraphics.blitSprite(BACKGROUND, textureW, textureH, 0, 0, leftPos, topPos, imageWidth, imageHeight);
 
@@ -425,7 +438,8 @@ public class BestiaryScreen extends Screen {
             }
             pose.popPose();
             // 名字
-            if (mouseX >= x1 && mouseX < x1 + 48 && mouseY >= y1 && mouseY < y1 + 48) {
+            this.showingName = mouseX >= x1 && mouseX < x1 + 48 && mouseY >= y1 && mouseY < y1 + 48;
+            if (showingName) {
                 guiGraphics.renderTooltip(font, showedEntry.getDisplayName(), mouseX, mouseY);
             }
             // 杀死次数

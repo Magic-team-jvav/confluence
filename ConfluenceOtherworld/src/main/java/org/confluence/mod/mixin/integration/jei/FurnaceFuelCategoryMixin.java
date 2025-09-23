@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class FurnaceFuelCategoryMixin {
     @Inject(method = "createSmeltCountText", at = @At("HEAD"), cancellable = true)
     private static void infinite(int burnTime, CallbackInfoReturnable<Component> cir) {
-        if (burnTime == 1061109567) { // 0x3F3F3F3F
+        if (burnTime == 0x3F3F3F3F) {
             cir.setReturnValue(Component.translatable("gui.jei.category.fuel.smeltCount", "∞"));
         }
     }

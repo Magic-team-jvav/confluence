@@ -166,7 +166,7 @@ public class ClientBestiaryEntry extends BestiaryEntry {
     }
 
     public LivingEntity getRenderedEntity(Level level) {
-        if (renderedEntity == null) {
+        if (renderedEntity == null && level != null) {
             if (type.create(level) instanceof LivingEntity living) {
                 if (RegisterCustomBestiaryEntryRendererEvent.hasRenderer(key)) {
                     BestiaryEntryDisplay entity = new BestiaryEntryDisplay(ModEntities.BESTIARY_ENTRY_DISPLAY.get(), level);

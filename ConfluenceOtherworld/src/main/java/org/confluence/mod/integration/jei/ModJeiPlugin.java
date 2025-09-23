@@ -8,6 +8,7 @@ import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.helpers.IJeiHelpers;
 import mezz.jei.api.registration.*;
+import mezz.jei.api.runtime.IJeiRuntime;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.toasts.ToastComponent;
@@ -42,6 +43,7 @@ public final class ModJeiPlugin implements IModPlugin {
     public static final ResourceLocation UID = Confluence.asResource("jei_plugin");
     public static final ResourceLocation ARROW_DOWN = Confluence.asResource("textures/gui/arrow_down.png");
     public static final ResourceLocation ARROW_RIGHT = Confluence.asResource("textures/gui/arrow_right.png");
+    public static IJeiRuntime jeiRuntime;
 
     public static List<ToastComponent.ToastInstance<?>> filterAchievements(List<ToastComponent.ToastInstance<?>> original) {
         List<ToastComponent.ToastInstance<?>> list = new ArrayList<>(original);
@@ -160,6 +162,11 @@ public final class ModJeiPlugin implements IModPlugin {
         EitherRecipe4xHelper.register(registration, LoomRecipe.class, LoomMenu.class, ModMenuTypes.LOOM.get(), LoomRecipe::new, LoomCategory.TYPE, false);
         EitherRecipe4xHelper.register(registration, SawmillRecipe.class, SawmillMenu.class, ModMenuTypes.SAWMILL.get(), SawmillRecipe::new, SawmillCategory.TYPE, false);
         EitherRecipe4xHelper.register(registration, SolidifierRecipe.class, SolidifierMenu.class, ModMenuTypes.SOLIDIFIER.get(), SolidifierRecipe::new, SolidifierCategory.TYPE, false);
+    }
+
+    @Override
+    public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
+        ModJeiPlugin.jeiRuntime = jeiRuntime;
     }
 
     public static void drawArrowDown(GuiGraphics guiGraphics, int x, int y, boolean usable) {

@@ -109,7 +109,7 @@
 - 召唤师头盔的附魔（与保护冲突）
 - 带引爆器的铂金矿与金矿
 - 小动物友谊指南(guide_to_critter_companionship)、环境保护指南(guide_to_environmental_preservation)、和平共处指南(guide_to_peaceful_coexistence)
-- 怪物图鉴(bestiary)
+- 怪物图鉴(bestiary)，鼠标在图鉴的左上角显示生物框中时，按下JEI的显示用途键（默认为U）可跳转（如果安装了JER的话）
 - 动物学家(zoologist)，图鉴解锁条目数达到34时生成
 - 完整的渔夫任务
 

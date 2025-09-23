@@ -45,6 +45,7 @@ import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
 import org.confluence.mod.common.init.ModCommands;
 import org.confluence.mod.common.init.ModHookTypes;
 import org.confluence.mod.common.init.ModRecipes;
+import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.init.item.MinecartItems;
 import org.confluence.mod.common.init.item.ToolItems;
@@ -250,7 +251,9 @@ public final class GameEvents {
             event.setCanceled(true);
         } else {
             EntityType<?> type = living.getType();
-            if (type == TEBossEntities.SKELETRON_HAND.get()) {
+            if (type.is(ModTags.EntityTypes.BESTIARY_BLACKLIST)) {
+                event.setCanceled(true);
+            } else if (type == TEBossEntities.SKELETRON_HAND.get()) {
                 event.setCanceled(true);
             }
         }

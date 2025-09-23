@@ -101,9 +101,7 @@ public final class LivingEntityEvents {
                         level.getGameRules().getBoolean(GameRules.RULE_DOMOBLOOT) &&
                         (!(victim instanceof IMinion minion) || minion.minion_getOwnerUUID() == null)
                 ) ModUtils.enemyDropMoney(victim, level);
-                if (!victim.getType().is(ModTags.EntityTypes.BESTIARY_BLACKLIST)) {
-                    Bestiary.INSTANCE.updateEntry(victim, true);
-                }
+                Bestiary.INSTANCE.updateEntry(victim, true);
             }
             if (attacker != null && attacker.getType().is(TETags.EntityTypes.CORRUPT)) {
                 NatureBlocks.DECOMPOSE_THE_SOURCE_EXTRACT_BLOCK.get().checkVisibilityAndSummonEntity(level, victim);

@@ -72,6 +72,8 @@ public final class ModItems {
     public static final DeferredItem<Item> MYSTERIOUS_NOTE = HIDDEN.register("mysterious_note", () -> new Item(new Item.Properties()));
     public static final DeferredItem<Item> MYSTERIOUS_SLATE = HIDDEN.register("mysterious_slate", () -> new Item(new Item.Properties()));
 
+    public static final DeferredItem<BestiaryItem> BESTIARY = HIDDEN.register("bestiary", BestiaryItem::new);
+
     public static final DeferredItem<CoinItem> COPPER_COIN = ITEMS.register("copper_coin", () -> new CoinItem(ModBlocks.COPPER_COIN.get(), ModRarity.WHITE, ModItems.SILVER_COIN, 100));
     public static final DeferredItem<CoinItem> SILVER_COIN = ITEMS.register("silver_coin", () -> new CoinItem(ModBlocks.SILVER_COIN.get(), ModRarity.ORANGE, ModItems.GOLD_COIN, 100));
     public static final DeferredItem<CoinItem> GOLD_COIN = ITEMS.register("gold_coin", () -> new CoinItem(ModBlocks.GOLD_COIN.get(), ModRarity.LIGHT_PURPLE, ModItems.PLATINUM_COIN, 100));

@@ -19,7 +19,6 @@ import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.common.item.sword.GeoSwordItem;
 import org.confluence.mod.common.item.sword.Phaseblade;
 import org.confluence.mod.common.item.sword.SweetSword;
-import org.confluence.mod.common.item.sword.legacy.InventoryTickStrategy;
 import org.confluence.mod.common.item.sword.legacy.SwordPrefabs;
 import org.confluence.mod.integration.terra_entity.init.ModEffectStrategies;
 import org.confluence.terraentity.init.TEEffectStrategies;
@@ -136,10 +135,7 @@ public class SwordItems {
     // 特殊剑
     public static final DeferredItem<BaseSwordItem> CROWBAR = register("crowbar", ModTiers.UNBREAKABLE, 18, 3, ModRarity.MASTER, BOARD_SWORD.apply(2.0f));
     public static final DeferredItem<BaseSwordItem> DEVELOPER_SWORD = register("developer_sword", ModTiers.UNBREAKABLE, 9999, 9999, ModRarity.MASTER, SwordPrefabs.BOARD_SWORD
-            .apply(10.0f)                                //宽剑
-            .addAttributeModifier(Attributes.MOVEMENT_SPEED, 1.5f, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)        //手持属性加成
-            .setInventoryTick(InventoryTickStrategy.INVINCIBLE)             //背包每刻效果
-            .modifyProperties(p -> p.component(ModDataComponentTypes.SWORD_PROJECTILE, new SwordProjectileComponent(
+            .apply(10.0f).modifyProperties(p -> p.component(ModDataComponentTypes.SWORD_PROJECTILE, new SwordProjectileComponent(
                     1, 1, 1, 50, 0.05f, 20, ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.ENCHANTED_SWORD_PROJECTILE.getId(),
                     Optional.of(new SimpleTrack(Mth.HALF_PI, 0.5f, 0.1f, Optional.empty(), 0.1)),
                     ForwardGeneration.of(0, 0), Optional.empty()

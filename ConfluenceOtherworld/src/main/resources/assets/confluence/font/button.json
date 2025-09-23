@@ -11,7 +11,7 @@
         },
         {
             "type": "bitmap",
-            "file": "confluence:font/shift.png",
+            "file": "confluence:font/sneak.png",
             "height": 9,
             "ascent": 8,
             "chars": [

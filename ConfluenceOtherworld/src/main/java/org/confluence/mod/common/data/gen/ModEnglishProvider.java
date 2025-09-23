@@ -1899,9 +1899,9 @@ public class ModEnglishProvider extends LanguageProvider {
         add("bestiary.confluence.filter.graveyard.title", "Graveyard");
         add("bestiary.confluence.filter.graveyard.desc", "The Graveyard is a mini-biome that forms when there are five or more Tombstones near the player.");
         add("bestiary.confluence.filter.daytime.title", "Daytime");
-        add("bestiary.confluence.filter.daytime.desc", "From 6:00 AM to 6:00 PM.");
+        add("bestiary.confluence.filter.daytime.desc", "From 4:30 to 19:30.");
         add("bestiary.confluence.filter.nighttime.title", "Nighttime");
-        add("bestiary.confluence.filter.nighttime.desc", "From 7:48 PM to 4:12 AM.");
+        add("bestiary.confluence.filter.nighttime.desc", "From 19:30 to 4:30.");
         add("bestiary.confluence.filter.blood_moon.title", "Blood Moon");
         add("bestiary.confluence.filter.blood_moon.desc", "The Blood Moon is an event that occurs during the entire night and only affects the Surface layer.");
         add("bestiary.confluence.filter.eclipse.title", "Eclipse");

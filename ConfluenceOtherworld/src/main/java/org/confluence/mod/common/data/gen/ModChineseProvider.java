@@ -1935,9 +1935,9 @@ public class ModChineseProvider extends LanguageProvider {
         add("bestiary.confluence.filter.graveyard.title", "墓地");
         add("bestiary.confluence.filter.graveyard.desc", "墓地是一个迷你生物群系，当玩家附近有五个及以上的墓石时就会形成。");
         add("bestiary.confluence.filter.daytime.title", "白天");
-        add("bestiary.confluence.filter.daytime.desc", "早上06:00——下午06:00");
+        add("bestiary.confluence.filter.daytime.desc", "从04:30到19:30");
         add("bestiary.confluence.filter.nighttime.title", "夜晚");
-        add("bestiary.confluence.filter.nighttime.desc", "下午07:48——早上04:12");
+        add("bestiary.confluence.filter.nighttime.desc", "从19:30到04:30");
         add("bestiary.confluence.filter.blood_moon.title", "血月");
         add("bestiary.confluence.filter.blood_moon.desc", "血月是一个事件，会在整个夜晚期间发生，只影响地表地层。");
         add("bestiary.confluence.filter.eclipse.title", "日食");

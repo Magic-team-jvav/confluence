@@ -169,10 +169,6 @@ public final class ModCommands {
                             return 0;
                         })))
                 )
-                .then(Commands.literal("reload").then(Commands.argument("resource", EnumArgument.enumArgument(ReloadResource.class)).executes(context -> {
-                    ReloadResource.execute(context.getArgument("resource", ReloadResource.class));
-                    return 1;
-                })))
                 .then(Commands.literal("judgeBiome").executes(context -> {
                     Level level;
                     BlockPos pos;

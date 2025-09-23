@@ -1,11 +1,9 @@
 package org.confluence.mod.client.effect;
 
-import com.google.gson.JsonObject;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.client.Minecraft;
@@ -14,7 +12,6 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.util.GsonHelper;
 import net.minecraft.util.Mth;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.player.Player;
@@ -28,7 +25,6 @@ import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import org.confluence.lib.util.VectorUtils;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.common.BaseChestBlock;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.block.ChestBlocks;
@@ -74,30 +70,30 @@ public class SpelunkerHelper extends AbstractBufferManager {
     /**
      * 重载资源包
      */
-    public void reloadSpecular() {
-        this.targets.clear();
-        LocalPlayer player = Minecraft.getInstance().player;
-        if (player == null) return;
-        Minecraft.getInstance().getResourceManager().getResource(Confluence.asResource("spelunker/config.json")).ifPresentOrElse(r -> {
-            try {
-                var reader = r.openAsReader();
-                JsonObject jsonobject = GsonHelper.parse(reader);
-//                System.out.println(jsonobject);
-                while (lock) {
-                    Thread.onSpinWait();
-                }
-                this.targets.putAll(Entry.BLOCK_MAP_CODEC.codec().parse(JsonOps.INSTANCE, jsonobject).getOrThrow());
-                player.sendSystemMessage(Component.literal("successfully load spelunker config"));
-            } catch (Exception e) {
-                defaultBlocks();
-                player.sendSystemMessage(Component.literal("failed to load spelunker config"));
-
-            }
-        }, () -> {
-            this.defaultBlocks();
-            player.sendSystemMessage(Component.literal("failed to load spelunker config"));
-        });
-    }
+//    public void reloadSpecular() {
+//        this.targets.clear();
+//        LocalPlayer player = Minecraft.getInstance().player;
+//        if (player == null) return;
+//        Minecraft.getInstance().getResourceManager().getResource(Confluence.asResource("spelunker/config.json")).ifPresentOrElse(r -> {
+//            try {
+//                var reader = r.openAsReader();
+//                JsonObject jsonobject = GsonHelper.parse(reader);
+////                System.out.println(jsonobject);
+//                while (lock) {
+//                    Thread.onSpinWait();
+//                }
+//                this.targets.putAll(Entry.BLOCK_MAP_CODEC.codec().parse(JsonOps.INSTANCE, jsonobject).getOrThrow());
+//                player.sendSystemMessage(Component.literal("successfully load spelunker config"));
+//            } catch (Exception e) {
+//                defaultBlocks();
+//                player.sendSystemMessage(Component.literal("failed to load spelunker config"));
+//
+//            }
+//        }, () -> {
+//            this.defaultBlocks();
+//            player.sendSystemMessage(Component.literal("failed to load spelunker config"));
+//        });
+//    }
 
     private enum ShowType implements StringRepresentable {
         SPELUNKER,
@@ -155,7 +151,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
         putTarget(Blocks.DIAMOND_ORE, 0xbdfeff, true, ShowType.SPELUNKER);
         putTarget(Blocks.DEEPSLATE_DIAMOND_ORE, 0xbdfeff, true, ShowType.SPELUNKER);
         putTarget(CORRUPTION_DIAMOND_ORE.get(), 0xbdfeff, true, ShowType.SPELUNKER);
-        putTarget(SANCTIFICATION_DIAMOND_ORE.get(),0xbdfeff,true, ShowType.SPELUNKER);
+        putTarget(SANCTIFICATION_DIAMOND_ORE.get(), 0xbdfeff, true, ShowType.SPELUNKER);
         putTarget(FLESHIFICATION_DIAMOND_ORE.get(), 0xbdfeff, true, ShowType.SPELUNKER);
 
 
@@ -225,7 +221,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
         putTarget(CORRUPTION_GOLD_ORE.get(), 0xccbe20, true, ShowType.SPELUNKER);
         putTarget(SANCTIFICATION_GOLD_ORE.get(), 0xccbe20, true, ShowType.SPELUNKER);
         putTarget(FLESHIFICATION_GOLD_ORE.get(), 0xccbe20, true, ShowType.SPELUNKER);
-        putTarget(Blocks.GILDED_BLACKSTONE,0xccbe20, true, ShowType.SPELUNKER);
+        putTarget(Blocks.GILDED_BLACKSTONE, 0xccbe20, true, ShowType.SPELUNKER);
         putTarget(Blocks.NETHER_GOLD_ORE, 0xccbe20, true, ShowType.SPELUNKER);
 
 
@@ -246,7 +242,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
         //锡矿
         putTarget(TIN_ORE.get(), 0x96926e, false, ShowType.SPELUNKER);
         putTarget(DEEPSLATE_TIN_ORE.get(), 0x96926e, false, ShowType.SPELUNKER);
-        putTarget(CORRUPTION_TIN_ORE.get(),0x96926e, true, ShowType.SPELUNKER);
+        putTarget(CORRUPTION_TIN_ORE.get(), 0x96926e, true, ShowType.SPELUNKER);
         putTarget(SANCTIFICATION_TIN_ORE.get(), 0x96926e, true, ShowType.SPELUNKER);
         putTarget(FLESHIFICATION_TIN_ORE.get(), 0x96926e, true, ShowType.SPELUNKER);
 
@@ -267,7 +263,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
         // 钨矿
         putTarget(TUNGSTEN_ORE.get(), 0x86be9c, true, ShowType.SPELUNKER);
         putTarget(DEEPSLATE_TUNGSTEN_ORE.get(), 0x86be9c, true, ShowType.SPELUNKER);
-        putTarget(CORRUPTION_TUNGSTEN_ORE.get(),0x86be9c, true, ShowType.SPELUNKER);
+        putTarget(CORRUPTION_TUNGSTEN_ORE.get(), 0x86be9c, true, ShowType.SPELUNKER);
         putTarget(SANCTIFICATION_TUNGSTEN_ORE.get(), 0x86be9c, true, ShowType.SPELUNKER);
         putTarget(FLESHIFICATION_TUNGSTEN_ORE.get(), 0x86be9c, true, ShowType.SPELUNKER);
 

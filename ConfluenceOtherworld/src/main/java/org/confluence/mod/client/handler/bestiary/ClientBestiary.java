@@ -42,6 +42,7 @@ public class ClientBestiary extends ContextAwareReloadListener {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
     private static ClientBestiary INSTANCE;
 
+    private int unlockedCount;
     private boolean sortReversed = false;
     private SortType sortType = SortType.UNLOCKS;
     private Comparator<Map.Entry<String, ClientBestiaryEntry>> comparator = sortType.comparator;
@@ -144,11 +145,9 @@ public class ClientBestiary extends ContextAwareReloadListener {
 
     private void sortEntries() {
         Map<String, ClientBestiaryEntry> sorted = Maps.newLinkedHashMap();
-        entries.entrySet().stream().sorted(comparator).forEachOrdered(entry -> {
-            if (filter(entry.getValue())) {
-                sorted.put(entry.getKey(), entry.getValue());
-            }
-        });
+        entries.entrySet().stream()
+                .sorted(comparator).filter(entry -> filter(entry.getValue()))
+                .forEachOrdered(entry -> sorted.put(entry.getKey(), entry.getValue()));
         this.sortedEntries = sorted;
         this.searchTree = CompletableFuture.supplyAsync(() -> SearchTree.plainText(
                 sortedEntries.entrySet().stream().filter(entry -> !entry.getValue().isLocked()).toList(),
@@ -158,6 +157,10 @@ public class ClientBestiary extends ContextAwareReloadListener {
                         entry.getValue().type.getDescription().getString()
                 ).map(s -> ChatFormatting.stripFormatting(s).trim())
         ), Util.backgroundExecutor());
+    }
+
+    public int getUnlockedCount() {
+        return unlockedCount;
     }
 
     private boolean filter(ClientBestiaryEntry entry) {
@@ -208,7 +211,7 @@ public class ClientBestiary extends ContextAwareReloadListener {
             this.currentLevel = level;
         }
         either.ifLeft(map -> {
-            int lastSize = entries.size();
+            boolean shouldCount = false;
             for (Map.Entry<String, BestiaryEntry> entry : map.entrySet()) {
                 BestiaryEntry be = entry.getValue();
                 ClientBestiaryEntry cbe = entries.computeIfAbsent(entry.getKey(), key -> {
@@ -217,7 +220,7 @@ public class ClientBestiary extends ContextAwareReloadListener {
                     unknown.key = key;
                     return unknown;
                 });
-                cbe.unlock();
+                shouldCount |= cbe.unlock();
                 cbe.killedByCount = be.killedByCount;
                 cbe.maxHealth = be.maxHealth;
                 cbe.knockbackResistance = be.knockbackResistance;
@@ -225,8 +228,14 @@ public class ClientBestiary extends ContextAwareReloadListener {
                 cbe.armor = be.armor;
                 cbe.drops = be.drops;
             }
-            if (lastSize != entries.size()) {
-                sortEntries();
+            sortEntries();
+            if (shouldCount) {
+                int count = 0;
+                for (ClientBestiaryEntry entry : entries.values()) {
+                    if (entry.isLocked()) continue;
+                    count++;
+                }
+                this.unlockedCount = count;
             }
         }).ifRight(key -> {
             ClientBestiaryEntry entry = entries.get(key);

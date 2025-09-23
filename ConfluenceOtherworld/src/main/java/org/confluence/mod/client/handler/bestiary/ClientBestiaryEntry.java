@@ -191,8 +191,12 @@ public class ClientBestiaryEntry extends BestiaryEntry {
         return unlockedProgress < -Mth.EPSILON;
     }
 
-    public void unlock() {
-        if (isLocked()) this.unlockedProgress = 0.0F;
+    public boolean unlock() {
+        if (isLocked()) {
+            this.unlockedProgress = 0.0F;
+            return true;
+        }
+        return false;
     }
 
     public void updateUnlockedProgress(Level level) {

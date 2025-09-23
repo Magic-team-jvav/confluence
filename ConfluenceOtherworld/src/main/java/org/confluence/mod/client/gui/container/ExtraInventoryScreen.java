@@ -26,6 +26,7 @@ import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.event.ModClientSetups;
 import org.confluence.mod.client.gui.BestiaryScreen;
 import org.confluence.mod.client.gui.hud.HouseSelectHUD;
+import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.menu.ExtraInventoryMenu;
 import org.confluence.mod.integration.mine_team.ExtraTeamRender;
@@ -39,7 +40,6 @@ import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.network.InfoDisablePacket;
 import top.theillusivec4.curios.common.network.client.CPacketOpenVanilla;
 
-import static net.minecraft.client.gui.screens.inventory.InventoryScreen.renderEntityInInventoryFollowsMouse;
 import static org.confluence.mod.common.attachment.ExtraInventory.*;
 
 public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventoryMenu> {
@@ -48,8 +48,9 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
     private static final WidgetSprites BESTIARY_BUTTON = new WidgetSprites(Confluence.asResource("widget/bestiary_button"), Confluence.asResource("widget/bestiary_button_highlighted"));
     private static final WidgetSprites HOUSE_BUTTON = new WidgetSprites(Confluence.asResource("widget/house_button"), Confluence.asResource("widget/house_button_highlighted"));
 
-    private boolean buttonPressed = false;
+    private boolean dyeButtonPressed = false;
     private final ExtraTeamRender teamRender = new ExtraTeamRender(this);
+    private ImageButton bestiaryButton;
 
     public ExtraInventoryScreen(ExtraInventoryMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
@@ -72,7 +73,7 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
                 HouseSelectHUD.inSelectHUD = true;
             }
         }));
-        addRenderableWidget(new ImageButton(leftPos + 125, topPos + 166, 16, 16, BESTIARY_BUTTON, button -> {
+        addRenderableWidget(this.bestiaryButton = new ImageButton(leftPos + 125, topPos + 166, 16, 16, BESTIARY_BUTTON, button -> {
             if (menu.getCarried().isEmpty()) {
                 getMinecraft().pushGuiLayer(this);
                 getMinecraft().setScreen(new BestiaryScreen());
@@ -112,17 +113,17 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
             guiGraphics.blit(BACKGROUND, x, topPos, 224, 0, 32, 7);
             for (int i = 0; i < sizeAccessoryDye; i++) {
                 guiGraphics.blit(BACKGROUND, x, y, 224, 8, 32, 18);
-                if (buttonPressed ? menu.getSlot(SIZE_EXCEPT_ACCESSORY_DYE + i).getItem().isEmpty() : menu.getSlot(containerSize + i).getItem().isEmpty()) {
+                if (dyeButtonPressed ? menu.getSlot(SIZE_EXCEPT_ACCESSORY_DYE + i).getItem().isEmpty() : menu.getSlot(containerSize + i).getItem().isEmpty()) {
                     guiGraphics.blit(ACCESSORY, x + 8, y, 0, 0, 16, 16, 16, 16);
                 }
                 y += 18;
             }
             guiGraphics.blit(BACKGROUND, x, y, 224, 27, 32, 7);
         }
-        if (buttonPressed) {
+        if (dyeButtonPressed) {
             guiGraphics.blit(BACKGROUND, leftPos + 147, topPos + 33, 194, 0, 18, 20);
         }
-        renderEntityInInventoryFollowsMouse(guiGraphics, leftPos + 26, topPos + 8, leftPos + 75, topPos + 78, 30, 0.0625F, mouseX, mouseY, minecraft.player);
+        InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, leftPos + 26, topPos + 8, leftPos + 75, topPos + 78, 30, 0.0625F, mouseX, mouseY, minecraft.player);
 
         RenderSystem.enableBlend();
         int x = leftPos + 196;
@@ -146,6 +147,10 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
             y += 8;
         }
         RenderSystem.disableBlend();
+
+        if (bestiaryButton.isHovered()) {
+            guiGraphics.renderTooltip(font, Component.translatable("bestiary.unlocked_count", ClientBestiary.getInstance().getUnlockedCount()), mouseX, mouseY);
+        }
     }
 
     private void renderEquipment(GuiGraphics guiGraphics, int i) {
@@ -166,9 +171,9 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (mouseX >= leftPos + 147 && mouseX <= leftPos + 165 && mouseY >= topPos + 33 && mouseY <= topPos + 53) {
-            this.buttonPressed = !buttonPressed;
+            this.dyeButtonPressed = !dyeButtonPressed;
             toggleAllSlot();
-            getMinecraft().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, buttonPressed ? 1.0F : 0.8F));
+            getMinecraft().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, dyeButtonPressed ? 1.0F : 0.8F));
             return true;
         }
 

@@ -1862,6 +1862,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("bestiary.sort_type.coins", "钱币");
         add("bestiary.sort_type.hp", "生命");
         add("bestiary.sort_type.rarity", "稀有度");
+        add("bestiary.unlocked_count", "已解锁条目数：%s");
 
         add("bestiary.confluence.filter.surface.title", "地表");
         add("bestiary.confluence.filter.surface.desc", "地表层位于y40~y260的位置");

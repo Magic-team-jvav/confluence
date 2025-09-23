@@ -75,7 +75,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("message.confluence.lock.or", " or ");
         add("message.confluence.dungeon_not_found", "Failed to find the Dungeon");
         add("message.confluence.peddlers_satchel", "The Traveling Merchant's satchel deepens!");
-        add("tooltip.confluence.house_detect.occupied", "House has been occupied!");
+        add("message.confluence.house_detect.occupied", "House has been occupied!");
         add("message.confluence.house_detect.npc_not_fount", "NPC not found nearby!");
         add("message.confluence.house_select.tip1", "Press Esc to escape, hold Alt to select");
         add("message.confluence.house_select.tip2", "Right Click to check or add/remove house");
@@ -1826,6 +1826,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("bestiary.sort_type.coins", "Coins");
         add("bestiary.sort_type.hp", "HP");
         add("bestiary.sort_type.rarity", "Rarity");
+        add("bestiary.unlocked_count", "Unlocked Entries: %s");
 
         add("bestiary.confluence.filter.surface.title", "Surface");
         add("bestiary.confluence.filter.surface.desc", "The Surface layer is located between y40 ~ y260.");

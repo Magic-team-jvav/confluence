@@ -145,6 +145,14 @@ repositories {
         name "KosmX's maven" // Player Animator
         url 'https://maven.kosmx.dev/'
     }
+    maven {
+        name "org.confluenceReleases"
+        url "https://maven.confluence.ink/releases"
+    }
+    maven {
+        name "org.confluenceSnapshots"
+        url "https://maven.confluence.ink/snapshots"
+    }
 }
 
 boolean vanillin = false // 香兰素
@@ -165,7 +173,7 @@ dependencies {
 
     implementation(jarJar(group: 'com.xiaohunao.xhn_lib', name: 'xhn_lib', version: '1.21.1-0.0.2'))
     implementation(jarJar("software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"))
-    implementation(jarJar("curse.maven:particle-storm-1124172:${particle_storm_version}"))
+    implementation(jarJar("org.mesdag:ParticleStorm:${particle_storm_version}"))
 
     implementation "top.theillusivec4.curios:curios-neoforge:${curios_version}"
     implementation jarJar('com.github.glitchfiend:TerraBlender-neoforge:' + minecraft_version + '-' + terrablender_version)

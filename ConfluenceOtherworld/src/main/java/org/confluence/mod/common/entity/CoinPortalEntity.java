@@ -14,7 +14,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.item.ModItems;
 import org.mesdag.particlestorm.PSGameClient;
-import org.mesdag.particlestorm.data.event.ParticleEffect;
 import org.mesdag.particlestorm.data.molang.MolangExp;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 
@@ -45,7 +44,7 @@ public class CoinPortalEntity extends Entity {
     public void tick() {
         if (level().isClientSide && emitter == null && amount != 0) {
             MolangExp expression = new MolangExp("amount", amount);
-            this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("coin_portal"), ParticleEffect.Type.EMITTER, expression);
+            this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("coin_portal"), expression);
             emitter.attachEntity(this);
             PSGameClient.LOADER.addEmitter(emitter, false);
         }

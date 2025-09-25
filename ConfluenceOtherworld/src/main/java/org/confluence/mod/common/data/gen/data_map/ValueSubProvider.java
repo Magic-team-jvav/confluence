@@ -248,6 +248,7 @@ public final class ValueSubProvider {
                 .add(SwordItems.BONE_SWORD, silver20 - silver2)
                 .add(SwordItems.CACTUS_SWORD, silver2 + silver1 + 60)
                 .add(SwordItems.CANDY_CANE_SWORD, silver20 + silver5 + silver2)
+                .add(SwordItems.FALCON_BLADE, silver20)
                 .add(SwordItems.COPPER_BROADSWORD, 90)
                 .add(SwordItems.COPPER_SHORT_SWORD, 70)
                 .add(SwordItems.EBONWOOD_SWORD, 20)

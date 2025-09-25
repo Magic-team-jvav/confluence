@@ -1143,7 +1143,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 "###",
                 "###",
                 " / "
-        )), logBlockSet.SIGN_ITEM.toStack());
+        )), logBlockSet.SIGN_ITEM.toStack(3));
         if (logBlockSet.CHISELED_PLANKS.isBound()) shaped(output, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(logBlockSet.SLAB)
         ), List.of(

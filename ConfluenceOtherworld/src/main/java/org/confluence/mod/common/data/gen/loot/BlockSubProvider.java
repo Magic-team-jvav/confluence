@@ -148,6 +148,10 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(SAFE.get());
         dropSelf(ANNOUNCEMENT_BOX.get());
         dropSelf(KEG.get());
+        dropSelf(CRYSTAL_BALL.get());
+        dropSelf(MYTHRIL_ANVIL.get());
+        dropSelf(ORICHALCUM_ANVIL.get());
+        dropSelf(CHLOROPHYTE_EXTRACTINATOR.get());
         dropSelf(SOLIDIFIER.get());
         dropSelf(CAULDRON.get());
         dropSelf(TREE_HOLES_BLOCK.get());
@@ -195,6 +199,9 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         add(SANCTIFICATION_LAPIS_ORE.get(), super::createLapisOreDrops);
         add(CORRUPTION_LAPIS_ORE.get(), super::createLapisOreDrops);
         add(FLESHIFICATION_LAPIS_ORE.get(), super::createLapisOreDrops);
+        add(SANCTIFICATION_REDSTONE_ORE.get(), super::createRedstoneOreDrops);
+        add(CORRUPTION_REDSTONE_ORE.get(), super::createRedstoneOreDrops);
+        add(FLESHIFICATION_REDSTONE_ORE.get(), super::createRedstoneOreDrops);
         // 宝石
         add(RUBY_ORE.get(), block -> createOreDrop(block, RUBY.get()));
         add(SANCTIFICATION_RUBY_ORE.get(), block -> createOreDrop(block, RUBY.get()));
@@ -212,9 +219,9 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         add(FLESHIFICATION_TOPAZ_ORE.get(), block -> createOreDrop(block, TOPAZ.get()));
         add(DEEPSLATE_TOPAZ_ORE.get(), block -> createOreDrop(block, TOPAZ.get()));
         add(JADE_ORE.get(), block -> createOreDrop(block, JADE.get()));
-//            add(SANCTIFICATION_TR_EMERALD_ORE.get(), block -> createOreDrop(block, TR_EMERALD.get()));
-//            add(CORRUPTION_TR_EMERALD_ORE.get(), block -> createOreDrop(block, TR_EMERALD.get()));
-//            add(FLESHIFICATION_TR_EMERALD_ORE.get(), block -> createOreDrop(block, TR_EMERALD.get()));
+        add(SANCTIFICATION_JADE_ORE.get(), block -> createOreDrop(block, JADE.get()));
+        add(CORRUPTION_JADE_ORE.get(), block -> createOreDrop(block, JADE.get()));
+        add(FLESHIFICATION_JADE_ORE.get(), block -> createOreDrop(block, JADE.get()));
         add(DEEPSLATE_JADE_ORE.get(), block -> createOreDrop(block, JADE.get()));
         add(SAPPHIRE_ORE.get(), block -> createOreDrop(block, SAPPHIRE.get()));
         add(SANCTIFICATION_SAPPHIRE_ORE.get(), block -> createOreDrop(block, SAPPHIRE.get()));
@@ -648,150 +655,29 @@ public final class BlockSubProvider extends BlockLootSubProvider {
                         .add(LootItem.lootTableItem(ASH_LOG_BLOCKS.SAPLING.get()))
                         .add(EmptyLootItem.emptyItem().setWeight(19)))
         );
-        add(NatureBlocks.ASH_GRASS.get(), LootTable.lootTable()
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ASH_GRASS.get()))
-                        .when(hasSilkTouch()))
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ASH_GRASS.get()))
-                        .when(HAS_SHEARS))
-        );
-        add(DESERT_GRASS.get(), LootTable.lootTable()
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(DESERT_GRASS.get()))
-                        .when(hasSilkTouch()))
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(DESERT_GRASS.get()))
-                        .when(HAS_SHEARS))
-        );
-        add(DESERT_TALL_GRASS.get(), LootTable.lootTable()
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(DESERT_TALL_GRASS.get()))
-                        .when(hasSilkTouch()))
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(DESERT_TALL_GRASS.get()))
-                        .when(HAS_SHEARS))
-        );
-        add(CORRUPT_GRASS.get(), LootTable.lootTable()
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(CORRUPT_GRASS.get()))
-                        .when(hasSilkTouch()))
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(CORRUPT_GRASS.get()))
-                        .when(HAS_SHEARS))
-        );
-        add(HALLOW_GRASS.get(), LootTable.lootTable()
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(HALLOW_GRASS.get()))
-                        .when(hasSilkTouch()))
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(HALLOW_GRASS.get()))
-                        .when(HAS_SHEARS))
-        );
-        add(CRIMSON_GRASS.get(), LootTable.lootTable()
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(CRIMSON_GRASS.get()))
-                        .when(hasSilkTouch()))
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(CRIMSON_GRASS.get()))
-                        .when(HAS_SHEARS))
-        );
-        add(CATTAILS_BODY.get(), LootTable.lootTable()
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModItems.CATTAILS.get()))
-                        .when(hasSilkTouch()))
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModItems.CATTAILS.get()))
-                        .when(HAS_SHEARS))
-        );
-        add(CATTAILS_HEAD.get(), LootTable.lootTable()
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModItems.CATTAILS.get()))
-                        .when(hasSilkTouch()))
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModItems.CATTAILS.get()))
-                        .when(HAS_SHEARS))
-        );
-        add(JUNGLE_CATTAILS_BODY.get(), LootTable.lootTable()
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModItems.JUNGLE_CATTAILS.get()))
-                        .when(hasSilkTouch()))
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModItems.JUNGLE_CATTAILS.get()))
-                        .when(HAS_SHEARS))
-        );
-        add(JUNGLE_CATTAILS_HEAD.get(), LootTable.lootTable()
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModItems.JUNGLE_CATTAILS.get()))
-                        .when(hasSilkTouch()))
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModItems.JUNGLE_CATTAILS.get()))
-                        .when(HAS_SHEARS))
-        );
-        add(GLOWING_MUSHROOM_CATTAILS_BODY.get(), LootTable.lootTable()
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModItems.GLOWING_MUSHROOM_CATTAILS.get()))
-                        .when(hasSilkTouch()))
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModItems.GLOWING_MUSHROOM_CATTAILS.get()))
-                        .when(HAS_SHEARS))
-        );
-        add(GLOWING_MUSHROOM_CATTAILS_HEAD.get(), LootTable.lootTable()
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModItems.GLOWING_MUSHROOM_CATTAILS.get()))
-                        .when(hasSilkTouch()))
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModItems.GLOWING_MUSHROOM_CATTAILS.get()))
-                        .when(HAS_SHEARS))
-        );
-        add(HALLOW_CATTAILS_BODY.get(), LootTable.lootTable()
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModItems.HALLOW_CATTAILS.get()))
-                        .when(hasSilkTouch()))
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModItems.HALLOW_CATTAILS.get()))
-                        .when(HAS_SHEARS))
-        );
-        add(HALLOW_CATTAILS_HEAD.get(), LootTable.lootTable()
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModItems.HALLOW_CATTAILS.get()))
-                        .when(hasSilkTouch()))
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModItems.HALLOW_CATTAILS.get()))
-                        .when(HAS_SHEARS))
-        );
-        add(EBONY_CATTAILS_BODY.get(), LootTable.lootTable()
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModItems.EBONY_CATTAILS.get()))
-                        .when(hasSilkTouch()))
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModItems.EBONY_CATTAILS.get()))
-                        .when(HAS_SHEARS))
-        );
-        add(EBONY_CATTAILS_HEAD.get(), LootTable.lootTable()
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModItems.EBONY_CATTAILS.get()))
-                        .when(hasSilkTouch()))
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModItems.EBONY_CATTAILS.get()))
-                        .when(HAS_SHEARS))
-        );
-        add(CRIMSON_CATTAILS_BODY.get(), LootTable.lootTable()
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModItems.CRIMSON_CATTAILS.get()))
-                        .when(hasSilkTouch()))
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModItems.CRIMSON_CATTAILS.get()))
-                        .when(HAS_SHEARS))
-        );
-        add(CRIMSON_CATTAILS_HEAD.get(), LootTable.lootTable()
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModItems.CRIMSON_CATTAILS.get()))
-                        .when(hasSilkTouch()))
-                .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(ModItems.CRIMSON_CATTAILS.get()))
-                        .when(HAS_SHEARS))
-        );
+        addGrassLoot(ASH_GRASS.get(), ASH_GRASS.asItem());
+        addGrassLoot(DESERT_GRASS.get(), DESERT_GRASS.asItem());
+        addGrassLoot(DESERT_TALL_GRASS.get(), DESERT_TALL_GRASS.asItem());
+        addGrassLoot(CORRUPT_GRASS.get(), CORRUPT_GRASS.asItem());
+        addGrassLoot(HALLOW_GRASS.get(), HALLOW_GRASS.asItem());
+        addGrassLoot(CRIMSON_GRASS.get(), CRIMSON_GRASS.asItem());
+
+        addGrassLoot(CATTAILS_BODY.get(), ModItems.CATTAILS.get());
+        addGrassLoot(CATTAILS_HEAD.get(), ModItems.CATTAILS.get());
+        addGrassLoot(JUNGLE_CATTAILS_BODY.get(), ModItems.JUNGLE_CATTAILS.get());
+        addGrassLoot(JUNGLE_CATTAILS_HEAD.get(), ModItems.JUNGLE_CATTAILS.get());
+        addGrassLoot(GLOWING_MUSHROOM_CATTAILS_BODY.get(), ModItems.GLOWING_MUSHROOM_CATTAILS.get());
+        addGrassLoot(GLOWING_MUSHROOM_CATTAILS_HEAD.get(), ModItems.GLOWING_MUSHROOM_CATTAILS.get());
+        addGrassLoot(HALLOW_CATTAILS_BODY.get(), ModItems.HALLOW_CATTAILS.get());
+        addGrassLoot(HALLOW_CATTAILS_HEAD.get(), ModItems.HALLOW_CATTAILS.get());
+        addGrassLoot(EBONY_CATTAILS_BODY.get(), ModItems.EBONY_CATTAILS.get());
+        addGrassLoot(EBONY_CATTAILS_HEAD.get(), ModItems.EBONY_CATTAILS.get());
+        addGrassLoot(CRIMSON_CATTAILS_BODY.get(), ModItems.CRIMSON_CATTAILS.get());
+        addGrassLoot(CRIMSON_CATTAILS_HEAD.get(), ModItems.CRIMSON_CATTAILS.get());
+
+        addGrassLoot(SMALL_DESERT_PLANT.get(), SMALL_DESERT_PLANT.asItem());
+        addGrassLoot(BIG_DESERT_PLANT.get(), BIG_DESERT_PLANT.asItem());
+
         add(SWORD_IN_STONE.get(), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(SWORD_IN_STONE.get())
@@ -896,6 +782,17 @@ public final class BlockSubProvider extends BlockLootSubProvider {
 
     private Stream<Block> getStreamFromRegister(DeferredRegister<Block> register) {
         return (Stream<Block>) register.getEntries().stream().map(DeferredHolder::get).filter(block -> map.containsKey(block.getLootTable()));
+    }
+
+    private void addGrassLoot(Block block, Item dropItem) {
+        add(block, LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(dropItem))
+                        .when(hasSilkTouch()))
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(dropItem))
+                        .when(HAS_SHEARS))
+        );
     }
 
     private LootTable.Builder createTinOreDrop(Block block) {

@@ -30,11 +30,11 @@ import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.lib.event.SwitchItemFunctionEvent;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.StartupConfigs;
 import org.confluence.mod.api.event.AdditionalManaEvent;
 import org.confluence.mod.api.event.MinecartAbilityEvent;
 import org.confluence.mod.api.event.ShimmerItemTransmutationEvent;
 import org.confluence.mod.api.event.bestiary.ToBeBestiaryEntryEvent;
-import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
@@ -108,7 +108,7 @@ public final class GameEvents {
 
     @SubscribeEvent
     public static void registerBrewingRecipes(RegisterBrewingRecipesEvent event) {
-        if (CommonConfigs.BREWING_STAND_RECIPE.get()) {
+        if (StartupConfigs.brewingStandRecipe()) {
             ModRecipes.Brewing.registerRecipes(event.getBuilder()::addRecipe);
         }
     }

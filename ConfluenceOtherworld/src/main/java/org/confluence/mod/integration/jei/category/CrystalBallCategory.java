@@ -18,7 +18,6 @@ import org.confluence.mod.integration.jei.ModJeiPlugin;
 
 public class CrystalBallCategory implements IRecipeCategory<RecipeHolder<CrystalBallRecipe>> {
     public static final RecipeType<RecipeHolder<CrystalBallRecipe>> TYPE = RecipeType.createRecipeHolderType(Confluence.asResource("crystal_ball"));
-    private static final Component TITLE = Component.translatable("title.confluence.crystal_ball");
     private final IDrawable icon;
 
     public CrystalBallCategory(IJeiHelpers jeiHelpers) {
@@ -32,7 +31,7 @@ public class CrystalBallCategory implements IRecipeCategory<RecipeHolder<Crystal
 
     @Override
     public Component getTitle() {
-        return TITLE;
+        return Component.translatable("title.confluence.crystal_ball");
     }
 
     @Override
@@ -63,7 +62,6 @@ public class CrystalBallCategory implements IRecipeCategory<RecipeHolder<Crystal
 
     @Override
     public void getTooltip(ITooltipBuilder tooltip, RecipeHolder<CrystalBallRecipe> recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
-        IRecipeCategory.super.getTooltip(tooltip, recipe, recipeSlotsView, mouseX, mouseY);
         tooltip.addAll(recipe.value().getEnvironment().toDescriptions());
     }
 }

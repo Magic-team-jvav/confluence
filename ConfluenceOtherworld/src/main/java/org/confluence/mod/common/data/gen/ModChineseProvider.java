@@ -108,7 +108,9 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.jei.count_range", "数量：%s-%s");
         add("tooltip.jei.count_exact", "数量：%s");
         add("tooltip.jei.drop_chance", "爆率：%s%%");
-        add("jei.tooltip.shimmer_black_list", "微光将阻止该物品嬗变或分解");
+        add("tooltip.jei.shimmer_black_list", "微光将阻止该物品嬗变或分解");
+        add("tooltip.jei.brewing_stand_terra_potion", "中间产物为混沌药水，需要再次将其作为原料，与下个材料混合");
+        add("tooltip.jei.intermediate_product", "中间产物");
 
         add("tooltip.item.confluence.meteorite_ingot.0", "摸起来是温的");
         add("tooltip.item.confluence.encumbering_stone.0", "锁上时能防止拾取物品");
@@ -1090,6 +1092,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("title.confluence.orichalcum_anvil", "山铜砧");
         add("title.confluence.loom", "织布机");
         add("title.confluence.dye_vat", "染缸");
+        add("title.confluence.brewing_stand_terra_potion", "使用炼药台制作泰拉药剂");
 
         add("button.confluence.dye_vat", "染缸");
         add("button.confluence.dye_mix", "混色");

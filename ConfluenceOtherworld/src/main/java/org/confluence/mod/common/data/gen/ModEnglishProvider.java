@@ -118,7 +118,9 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.jei.count_range", "Count: %s-%s");
         add("tooltip.jei.count_exact", "Count: %s");
         add("tooltip.jei.drop_chance", "Chance: %s%%");
-        add("jei.tooltip.shimmer_black_list", "The shimmer will prevent the item from transmutation or decompose");
+        add("tooltip.jei.shimmer_black_list", "The shimmer will prevent the item from transmutation or decompose");
+        add("tooltip.jei.brewing_stand_terra_potion", "The intermediate product is a Chaos Potion, which needs to be used again as a raw material and mixed with the next ingredient.");
+        add("tooltip.jei.intermediate_product", "Intermediate Product");
 
         add("tooltip.item.confluence.meteorite_ingot.0", "Warm to the touch");
         add("tooltip.item.confluence.encumbering_stone.0", "Prevents item pickups while locked");
@@ -1025,6 +1027,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("title.confluence.orichalcum_anvil", "Orichalcum Anvil");
         add("title.confluence.loom", "Loom");
         add("title.confluence.dye_vat", "Dye Vat");
+        add("title.confluence.brewing_stand_terra_potion", "Use the Brewing Stand to craft Terra Potions");
 
         add("button.confluence.dye_vat", "Dye Vat");
         add("button.confluence.dye_mix", "Dye Mix");

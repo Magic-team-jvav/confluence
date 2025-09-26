@@ -15,7 +15,7 @@ import net.minecraft.client.gui.components.toasts.ToastComponent;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
@@ -23,6 +23,7 @@ import net.minecraft.world.level.block.Blocks;
 import org.confluence.lib.common.recipe.AbstractAmountRecipe;
 import org.confluence.lib.common.recipe.AmountIngredient;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.StartupConfigs;
 import org.confluence.mod.client.gui.AchievementToast;
 import org.confluence.mod.client.gui.container.*;
 import org.confluence.mod.common.CommonConfigs;
@@ -78,6 +79,7 @@ public final class ModJeiPlugin implements IModPlugin {
         registration.addRecipeCategories(new LoomCategory(jeiHelpers));
         registration.addRecipeCategories(new DyeVatCategory(jeiHelpers));
         registration.addRecipeCategories(new CrystalBallCategory(jeiHelpers));
+        registration.addRecipeCategories(new BrewingStandTerraPotionCategory());
     }
 
     @Override
@@ -104,34 +106,38 @@ public final class ModJeiPlugin implements IModPlugin {
         registration.addRecipes(LoomCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.LOOM_TYPE.get()));
         registration.addRecipes(DyeVatCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.DYE_VAT_TYPE.get()));
         registration.addRecipes(CrystalBallCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.CRYSTAL_BALL_TYPE.get()));
+        if (StartupConfigs.brewingStandRecipe()) {
+            registration.addRecipes(BrewingStandTerraPotionCategory.TYPE, BrewingStandTerraPotionCategory.Recipe.getAllRecipes());
+        }
     }
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(ToolItems.BOTTOMLESS_SHIMMER_BUCKET.toStack(), ShimmerItemTransmutationCategory.TYPE);
-        registration.addRecipeCatalyst(FunctionalBlocks.SKY_MILL.toStack(), SkyMillCategory.TYPE);
-        registration.addRecipeCatalyst(FunctionalBlocks.DEMON_ALTAR.toStack(), AltarCategory.TYPE);
-        registration.addRecipeCatalyst(FunctionalBlocks.CRIMSON_ALTAR.toStack(), AltarCategory.TYPE);
-        registration.addRecipeCatalyst(FunctionalBlocks.HELLFORGE.toStack(), HellforgeCategory.TYPE, RecipeTypes.BLASTING);
-        registration.addRecipeCatalyst(FunctionalBlocks.HEAVY_WORK_BENCH.toStack(), HeavyWorkBenchCategory.TYPE, RecipeTypes.CRAFTING);
-        registration.addRecipeCatalyst(FunctionalBlocks.ALCHEMY_TABLE.toStack(), AlchemyTableCategory.TYPE);
+        registration.addRecipeCatalyst(ToolItems.BOTTOMLESS_SHIMMER_BUCKET, ShimmerItemTransmutationCategory.TYPE);
+        registration.addRecipeCatalyst(FunctionalBlocks.SKY_MILL, SkyMillCategory.TYPE);
+        registration.addRecipeCatalyst(FunctionalBlocks.DEMON_ALTAR, AltarCategory.TYPE);
+        registration.addRecipeCatalyst(FunctionalBlocks.CRIMSON_ALTAR, AltarCategory.TYPE);
+        registration.addRecipeCatalyst(FunctionalBlocks.HELLFORGE, HellforgeCategory.TYPE, RecipeTypes.BLASTING);
+        registration.addRecipeCatalyst(FunctionalBlocks.HEAVY_WORK_BENCH, HeavyWorkBenchCategory.TYPE, RecipeTypes.CRAFTING);
+        registration.addRecipeCatalyst(FunctionalBlocks.ALCHEMY_TABLE, AlchemyTableCategory.TYPE);
         if (CommonConfigs.FLETCHING_MENU.get()) {
-            registration.addRecipeCatalyst(new ItemStack(Blocks.FLETCHING_TABLE), FletchingTableCategory.TYPE);
+            registration.addRecipeCatalyst(Blocks.FLETCHING_TABLE, FletchingTableCategory.TYPE);
         }
-        registration.addRecipeCatalyst(FunctionalBlocks.LEAD_ANVIL.toStack(), RecipeTypes.ANVIL);
-        registration.addRecipeCatalyst(FunctionalBlocks.COOKING_POT.toStack(), CookingPotCategory.TYPE);
-        registration.addRecipeCatalyst(FunctionalBlocks.CAULDRON.toStack(), CookingPotCategory.TYPE);
-        registration.addRecipeCatalyst(FunctionalBlocks.SAWMILL.toStack(), SawmillCategory.TYPE);
-        registration.addRecipeCatalyst(FunctionalBlocks.SOLIDIFIER.toStack(), SolidifierCategory.TYPE);
-        registration.addRecipeCatalyst(FunctionalBlocks.MYTHRIL_ANVIL.toStack(), HardmodeAnvilCategory.TYPE);
-        registration.addRecipeCatalyst(FunctionalBlocks.ORICHALCUM_ANVIL.toStack(), HardmodeAnvilCategory.TYPE);
-        registration.addRecipeCatalyst(FunctionalBlocks.EXTRACTINATOR.toStack(), ExtractinatorCategory.EXTRACTINATOR);
-        registration.addRecipeCatalyst(FunctionalBlocks.CHLOROPHYTE_EXTRACTINATOR.toStack(), ExtractinatorCategory.CHLOROPHYTE_EXTRACTINATOR);
-        registration.addRecipeCatalyst(FunctionalBlocks.ADAMANTITE_FORGE.toStack(), HardmodeForgeCategory.TYPE, HellforgeCategory.TYPE, RecipeTypes.BLASTING);
-        registration.addRecipeCatalyst(FunctionalBlocks.TITANIUM_FORGE.toStack(), HardmodeForgeCategory.TYPE, HellforgeCategory.TYPE, RecipeTypes.BLASTING);
-        registration.addRecipeCatalyst(FunctionalBlocks.LOOM.toStack(), LoomCategory.TYPE);
-        registration.addRecipeCatalyst(FunctionalBlocks.DYE_VAT.toStack(), DyeVatCategory.TYPE);
-        registration.addRecipeCatalyst(FunctionalBlocks.CRYSTAL_BALL.toStack(), CrystalBallCategory.TYPE);
+        registration.addRecipeCatalyst(FunctionalBlocks.LEAD_ANVIL, RecipeTypes.ANVIL);
+        registration.addRecipeCatalyst(FunctionalBlocks.COOKING_POT, CookingPotCategory.TYPE);
+        registration.addRecipeCatalyst(FunctionalBlocks.CAULDRON, CookingPotCategory.TYPE);
+        registration.addRecipeCatalyst(FunctionalBlocks.SAWMILL, SawmillCategory.TYPE);
+        registration.addRecipeCatalyst(FunctionalBlocks.SOLIDIFIER, SolidifierCategory.TYPE);
+        registration.addRecipeCatalyst(FunctionalBlocks.MYTHRIL_ANVIL, HardmodeAnvilCategory.TYPE);
+        registration.addRecipeCatalyst(FunctionalBlocks.ORICHALCUM_ANVIL, HardmodeAnvilCategory.TYPE);
+        registration.addRecipeCatalyst(FunctionalBlocks.EXTRACTINATOR, ExtractinatorCategory.EXTRACTINATOR);
+        registration.addRecipeCatalyst(FunctionalBlocks.CHLOROPHYTE_EXTRACTINATOR, ExtractinatorCategory.CHLOROPHYTE_EXTRACTINATOR);
+        registration.addRecipeCatalyst(FunctionalBlocks.ADAMANTITE_FORGE, HardmodeForgeCategory.TYPE, HellforgeCategory.TYPE, RecipeTypes.BLASTING);
+        registration.addRecipeCatalyst(FunctionalBlocks.TITANIUM_FORGE, HardmodeForgeCategory.TYPE, HellforgeCategory.TYPE, RecipeTypes.BLASTING);
+        registration.addRecipeCatalyst(FunctionalBlocks.LOOM, LoomCategory.TYPE);
+        registration.addRecipeCatalyst(FunctionalBlocks.DYE_VAT, DyeVatCategory.TYPE);
+        registration.addRecipeCatalyst(FunctionalBlocks.CRYSTAL_BALL, CrystalBallCategory.TYPE);
+        registration.addRecipeCatalyst(Items.BREWING_STAND, BrewingStandTerraPotionCategory.TYPE);
     }
 
     @Override

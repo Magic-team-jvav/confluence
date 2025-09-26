@@ -11,6 +11,7 @@ public final class StartupConfigs {
     private static ModConfigSpec.BooleanValue PAINTS_REPLACE_TEXTURE;
     private static ModConfigSpec.ConfigValue<List<? extends String>> BANNED_MOD_FOR_PAINTS;
     private static ModConfigSpec.BooleanValue FORCE_ALLOW_WIP_ITEMS_DISPLAY_IN_CREATIVE_MODE_TAB;
+    private static ModConfigSpec.BooleanValue BREWING_STAND_RECIPE;
 
     public static void register(ModContainer container) {
         ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
@@ -21,6 +22,7 @@ public final class StartupConfigs {
         BUILDER.pop();
 
         FORCE_ALLOW_WIP_ITEMS_DISPLAY_IN_CREATIVE_MODE_TAB = BUILDER.define("forceAllowWipItemsDisplayInCreativeModeTab", false);
+        BREWING_STAND_RECIPE = BUILDER.define("brewingStandRecipe", true);
 
         container.registerConfig(ModConfig.Type.STARTUP, BUILDER.build());
     }
@@ -35,5 +37,9 @@ public final class StartupConfigs {
 
     public static boolean forceAllowWipItemsDisplayInCreativeModeTab() {
         return FORCE_ALLOW_WIP_ITEMS_DISPLAY_IN_CREATIVE_MODE_TAB != null && FORCE_ALLOW_WIP_ITEMS_DISPLAY_IN_CREATIVE_MODE_TAB.get();
+    }
+
+    public static boolean brewingStandRecipe() {
+        return BREWING_STAND_RECIPE == null || BREWING_STAND_RECIPE.get();
     }
 }

@@ -19,7 +19,6 @@ import org.jetbrains.annotations.Nullable;
 
 public class HardmodeAnvilCategory implements IRecipeCategory<RecipeHolder<HardmodeAnvilRecipe>> {
     public static final RecipeType<RecipeHolder<HardmodeAnvilRecipe>> TYPE = RecipeType.createRecipeHolderType(Confluence.asResource("hardmode_anvil"));
-    private static final Component TITLE = Component.translatable("title.confluence.hardmode_anvil");
     private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/hardmode_anvil.png");
     private final IDrawable icon;
     private final EitherRecipe4xHelper helper;
@@ -36,7 +35,7 @@ public class HardmodeAnvilCategory implements IRecipeCategory<RecipeHolder<Hardm
 
     @Override
     public Component getTitle() {
-        return TITLE;
+        return Component.translatable("title.confluence.hardmode_anvil");
     }
 
     @Override

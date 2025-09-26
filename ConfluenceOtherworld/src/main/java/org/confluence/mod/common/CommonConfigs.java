@@ -30,7 +30,6 @@ public final class CommonConfigs {
 
     public static BooleanValue FLETCHING_MENU;
     public static BooleanValue SHIMMER_DECOMPOSE;
-    public static BooleanValue BREWING_STAND_RECIPE;
     public static BooleanValue ALTAR_TIPS;
 
     public static BooleanValue DO_FALLING_STAR_SPAWNING;
@@ -100,7 +99,6 @@ public final class CommonConfigs {
             BUILDER.push("Recipe");
             FLETCHING_MENU = BUILDER.define("fletchingMenu", true);
             SHIMMER_DECOMPOSE = BUILDER.define("shimmerDecompose", true);
-            BREWING_STAND_RECIPE = BUILDER.define("brewingStandRecipe", false);
             ALTAR_TIPS = BUILDER.define("altarTips", true);
             BUILDER.pop();
         }

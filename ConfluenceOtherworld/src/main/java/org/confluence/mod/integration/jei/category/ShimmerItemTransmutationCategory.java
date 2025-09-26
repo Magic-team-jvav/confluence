@@ -26,7 +26,6 @@ import org.confluence.mod.integration.jei.ModJeiPlugin;
 
 public class ShimmerItemTransmutationCategory implements IRecipeCategory<RecipeHolder<ItemTransmutationRecipe>> {
     public static final RecipeType<RecipeHolder<ItemTransmutationRecipe>> TYPE = RecipeType.createRecipeHolderType(Confluence.asResource("item_transmutation"));
-    private static final Component TITLE = Component.translatable("title.confluence.shimmer_transmutation");
     private final IDrawable icon;
 
     public ShimmerItemTransmutationCategory(IJeiHelpers jeiHelpers) {
@@ -40,7 +39,7 @@ public class ShimmerItemTransmutationCategory implements IRecipeCategory<RecipeH
 
     @Override
     public Component getTitle() {
-        return TITLE;
+        return Component.translatable("title.confluence.shimmer_transmutation");
     }
 
     @Override
@@ -95,9 +94,8 @@ public class ShimmerItemTransmutationCategory implements IRecipeCategory<RecipeH
 
     @Override
     public void getTooltip(ITooltipBuilder tooltip, RecipeHolder<ItemTransmutationRecipe> recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
-        IRecipeCategory.super.getTooltip(tooltip, recipe, recipeSlotsView, mouseX, mouseY);
         if (!recipe.value().isValid()) {
-            tooltip.add(Component.translatable("jei.tooltip.shimmer_black_list").withStyle(ChatFormatting.RED));
+            tooltip.add(Component.translatable("tooltip.jei.shimmer_black_list").withStyle(ChatFormatting.RED));
         }
     }
 }

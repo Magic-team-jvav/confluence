@@ -70,7 +70,6 @@ public class HeavyWorkBenchCategory implements IRecipeCategory<RecipeHolder<Heav
 
     @Override
     public void getTooltip(ITooltipBuilder tooltip, RecipeHolder<HeavyWorkBenchRecipe> recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
-        IRecipeCategory.super.getTooltip(tooltip, recipe, recipeSlotsView, mouseX, mouseY);
         tooltip.addAll(recipe.value().getEnvironment().toDescriptions());
     }
 }

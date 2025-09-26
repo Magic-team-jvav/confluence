@@ -16,7 +16,6 @@ import org.confluence.mod.integration.jei.ModJeiPlugin;
 
 public class AltarCategory implements IRecipeCategory<RecipeHolder<AltarRecipe>> {
     public static final RecipeType<RecipeHolder<AltarRecipe>> TYPE = RecipeType.createRecipeHolderType(Confluence.asResource("altar"));
-    private static final Component TITLE = Component.translatable("title.confluence.altar");
     private final IDrawable icon;
 
     public AltarCategory(IJeiHelpers jeiHelpers) {
@@ -30,7 +29,7 @@ public class AltarCategory implements IRecipeCategory<RecipeHolder<AltarRecipe>>
 
     @Override
     public Component getTitle() {
-        return TITLE;
+        return Component.translatable("title.confluence.altar");
     }
 
     @Override

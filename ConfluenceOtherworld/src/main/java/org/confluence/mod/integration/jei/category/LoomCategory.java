@@ -19,7 +19,6 @@ import org.jetbrains.annotations.Nullable;
 
 public class LoomCategory implements IRecipeCategory<RecipeHolder<LoomRecipe>> {
     public static final RecipeType<RecipeHolder<LoomRecipe>> TYPE = RecipeType.createRecipeHolderType(Confluence.asResource("loom"));
-    private static final Component TITLE = Component.translatable("title.confluence.loom");
     private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/loom.png");
     private final IDrawable icon;
     private final EitherRecipe4xHelper helper;
@@ -36,7 +35,7 @@ public class LoomCategory implements IRecipeCategory<RecipeHolder<LoomRecipe>> {
 
     @Override
     public Component getTitle() {
-        return TITLE;
+        return Component.translatable("title.confluence.loom");
     }
 
     @Override

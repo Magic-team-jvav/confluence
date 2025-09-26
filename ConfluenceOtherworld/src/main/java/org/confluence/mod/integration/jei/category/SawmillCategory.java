@@ -19,7 +19,6 @@ import org.jetbrains.annotations.Nullable;
 
 public class SawmillCategory implements IRecipeCategory<RecipeHolder<SawmillRecipe>> {
     public static final RecipeType<RecipeHolder<SawmillRecipe>> TYPE = RecipeType.createRecipeHolderType(Confluence.asResource("sawmill"));
-    private static final Component TITLE = Component.translatable("title.confluence.sawmill");
     private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/sawmill.png");
     private final IDrawable icon;
     private final EitherRecipe4xHelper helper;
@@ -36,7 +35,7 @@ public class SawmillCategory implements IRecipeCategory<RecipeHolder<SawmillReci
 
     @Override
     public Component getTitle() {
-        return TITLE;
+        return Component.translatable("title.confluence.sawmill");
     }
 
     @Override

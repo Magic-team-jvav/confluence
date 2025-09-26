@@ -23,7 +23,6 @@ import static org.confluence.mod.integration.jei.ModJeiPlugin.addInput;
 
 public class SolidifierCategory implements IRecipeCategory<RecipeHolder<SolidifierRecipe>> {
     public static final RecipeType<RecipeHolder<SolidifierRecipe>> TYPE = RecipeType.createRecipeHolderType(Confluence.asResource("solidifier"));
-    private static final Component TITLE = Component.translatable("title.confluence.solidifier");
     private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/solidifier.png");
     private final IDrawable icon;
     private final EitherRecipe4xHelper helper;
@@ -40,7 +39,7 @@ public class SolidifierCategory implements IRecipeCategory<RecipeHolder<Solidifi
 
     @Override
     public Component getTitle() {
-        return TITLE;
+        return Component.translatable("title.confluence.solidifier");
     }
 
     @Override

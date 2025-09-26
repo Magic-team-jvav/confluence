@@ -17,7 +17,6 @@ import org.jetbrains.annotations.Nullable;
 
 public class DyeVatCategory implements IRecipeCategory<RecipeHolder<DyeVatRecipe>> {
     public static final RecipeType<RecipeHolder<DyeVatRecipe>> TYPE = RecipeType.createRecipeHolderType(Confluence.asResource("dye_vat"));
-    private static final Component TITLE = Component.translatable("title.confluence.dye_vat");
     private final IDrawable icon;
 
     public DyeVatCategory(IJeiHelpers jeiHelpers) {
@@ -31,7 +30,7 @@ public class DyeVatCategory implements IRecipeCategory<RecipeHolder<DyeVatRecipe
 
     @Override
     public Component getTitle() {
-        return TITLE;
+        return Component.translatable("title.confluence.dye_vat");
     }
 
     @Override

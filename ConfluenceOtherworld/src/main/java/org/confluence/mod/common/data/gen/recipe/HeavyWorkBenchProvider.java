@@ -494,17 +494,6 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "B  "
         )), TEYoyosItems.AMAZON.toStack());
 
-        // 哥布林战旗
-        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                '#', AmountIngredient.of(3, MaterialItems.TATTERED_CLOTH),
-                'b', Ingredient.of(MaterialItems.TATTERED_CLOTH),
-                'a', AmountIngredient.of(2, ItemTags.PLANKS)
-        ), List.of(
-                "###",
-                " b ",
-                "aaa"
-        )), TMItems.GOBLIN_BATTLE_STANDARD.get().getDefaultInstance());
-
         // 秘银砧
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 '#', AmountIngredient.of(2, ModTags.Items.INGOTS_MYTHRIL),

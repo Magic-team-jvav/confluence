@@ -1,5 +1,6 @@
 package org.confluence.mod.common.data.gen.recipe;
 
+import com.xiaohunao.terra_moment.common.init.TMItems;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.advancements.AdvancementRequirements;
@@ -298,6 +299,20 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
                                 "a#a",
                                 "bbb",
                                 "b b"
+                        )
+                )
+        );
+
+        // 哥布林战旗
+        loom(recipeOutput, TMItems.GOBLIN_BATTLE_STANDARD.get().getDefaultInstance(),
+                ShapedRecipePattern.of(Map.of(
+                                '#', AmountIngredient.of(3, MaterialItems.TATTERED_CLOTH),
+                                'b', Ingredient.of(MaterialItems.TATTERED_CLOTH),
+                                'a', AmountIngredient.of(2, ItemTags.PLANKS)
+                        ), List.of(
+                                "###",
+                                " b ",
+                                "aaa"
                         )
                 )
         );

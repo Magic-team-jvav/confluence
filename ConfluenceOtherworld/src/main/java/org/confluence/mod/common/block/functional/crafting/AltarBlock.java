@@ -272,7 +272,7 @@ public class AltarBlock extends BaseEntityBlock {
             if (slot == -1) {
                 for (int i = 0; i < 5; i++) {
                     if (!itemHandler.getStackInSlot(i).isEmpty()) {
-                        ItemStack stack = itemHandler.extractItem(i, 64, false);
+                        ItemStack stack = itemHandler.extractItem(i, itemHandler.getItem(i).getMaxStackSize(), false);
                         setChanged();
                         return stack;
                     }

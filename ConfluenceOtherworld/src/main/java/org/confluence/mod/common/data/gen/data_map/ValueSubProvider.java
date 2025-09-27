@@ -237,7 +237,8 @@ public final class ValueSubProvider {
                 .add(MaterialItems.CRYSTAL_SHARDS, silver10 + silver5 + silver1)
                 .add(MaterialItems.CURSED_FLAME, silver10 - silver2)
                 .add(MaterialItems.ICHOR, silver10 - silver1)
-                .add(MaterialItems.PIXIE_DUST, silver1);
+                .add(MaterialItems.PIXIE_DUST, silver1)
+                .add(MaterialItems.FORBIDDEN_FRAGMENT, gold1);
         appender.create()
                 .add(SwordItems.ASH_WOOD_SWORD, 20)
                 .add(SwordItems.BAT_BAT, silver20 + silver5)

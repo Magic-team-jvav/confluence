@@ -145,6 +145,7 @@ public class MaterialItems {
     public static final DeferredItem<Item> SPIDER_FANG = register("spider_fang", ModRarity.LIGHT_RED);
     public static final DeferredItem<Item> SPELL_TOME = register("spell_tome", ModRarity.BLUE);
     public static final DeferredItem<Item> ECTOPLASM = register("ectoplasm", ModRarity.YELLOW);
+    public static final DeferredItem<Item> FORBIDDEN_FRAGMENT = register("forbidden_fragment", ModRarity.PINK);
 
     public static DeferredItem<Item> register(String id) {
         return ITEMS.register(id, () -> new Item(new Item.Properties()));

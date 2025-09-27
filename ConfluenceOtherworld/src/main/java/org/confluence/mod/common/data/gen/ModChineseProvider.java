@@ -1156,6 +1156,14 @@ public class ModChineseProvider extends LanguageProvider {
         add("equipment_benediction.set_switcher.confluence.cold_crystal_set.data.3", "暴击率提高4%");
         add("equipment_benediction.set_switcher.confluence.cold_crystal_set.data.4", "魔法攻击会有附带霜冻效果");
 
+        // 盔甲套装翻译新测试
+        add("equipment_benediction.equipment_set.branch.confluence.cold_crystal_set", "寒晶套装");
+        add("equipment_benediction.equipment_set.branch.confluence.cold_crystal_set.helmet", "最大魔力值增加20，暴击率提高4%");
+        add("equipment_benediction.equipment_set.branch.confluence.cold_crystal_set.chestplate", "最大魔力值增加20，暴击率提高4%");
+        add("equipment_benediction.equipment_set.branch.confluence.cold_crystal_set.leggings", "魔法伤害提高4%");
+        add("equipment_benediction.equipment_set.branch.confluence.cold_crystal_set.boots", "暴击率提高4%");
+        add("equipment_benediction.equipment_set.branch.confluence.cold_crystal_set.full_set", "魔法攻击会有附带霜冻效果");
+
         add("equipment_benediction.set_switcher.confluence.mining_set", "挖矿套装");
         add("equipment_benediction.set_switcher.confluence.mining_set.data.0", "提供照明");
         add("equipment_benediction.set_switcher.confluence.mining_set.data.1", "+10%挖矿速度");
@@ -3523,6 +3531,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.HALLOWED_INGOT.get(), "神圣锭");
         add(MaterialItems.SHROOMITE_INGOT.get(), "蘑菇矿锭");
         add(MaterialItems.ECTOPLASM.get(), "灵气");
+        add(MaterialItems.FORBIDDEN_FRAGMENT.get(), "禁忌碎片");
         add(MaterialItems.SPECTRE_INGOT.get(), "幽灵锭");
         add(MaterialItems.RUBY.get(), "红玉");
         add(MaterialItems.AMBER.get(), "琥珀");

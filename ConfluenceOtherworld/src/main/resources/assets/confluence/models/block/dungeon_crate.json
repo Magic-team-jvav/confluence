@@ -1,6 +1,7 @@
 {
-  "parent": "minecraft:block/cube_all",
+  "parent": "minecraft:block/cube_column_horizontal",
   "textures": {
-    "all": "confluence:block/dungeon_crate"
+    "end": "confluence:block/dungeon_crate_end",
+    "side": "confluence:block/dungeon_crate_side"
   }
 }

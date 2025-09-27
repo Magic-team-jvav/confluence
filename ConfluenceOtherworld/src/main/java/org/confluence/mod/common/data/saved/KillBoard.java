@@ -108,10 +108,14 @@ public final class KillBoard implements IGlobalData {
         if (gamePhase.isGraduated()) {
             IMinecraftServer.of(server).confluence$updateSecretFlag(IWorldOptions.GRADUATED);
         } else if (gamePhase.isHardmode()) {
-            IMinecraftServer.of(server).confluence$updateSecretFlag(IWorldOptions.HARDMODE);
-            PhaseUtils.achieveLevelPhase(OverworldUtils.getLevel(server), ChlorophyteOreBlock.PHASE, true);
+            onUnlockHardmode(server);
             HardmodeConvertor.INSTANCE.start(server, false);
         }
+    }
+
+    public static void onUnlockHardmode(MinecraftServer server) {
+        IMinecraftServer.of(server).confluence$updateSecretFlag(IWorldOptions.HARDMODE);
+        PhaseUtils.achieveLevelPhase(OverworldUtils.getLevel(server), ChlorophyteOreBlock.PHASE, true);
     }
 
     public void networkEncode(ByteBuf buffer) {

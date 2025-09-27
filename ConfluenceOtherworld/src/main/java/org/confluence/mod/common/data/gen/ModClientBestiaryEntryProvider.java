@@ -194,7 +194,7 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 // 僵尸 （火把）
                 // 僵尸 （沼泽）
                 // 僵尸 （中箭）
-                .mobArmorItems(EntityType.ZOMBIE.builtInRegistryHolder(), "entity.confluence.raincoat_zombie", "", List.of(ArmorItems.RAIN_CAP.toStack(), ArmorItems.RAINCOAT.toStack(), ItemStack.EMPTY, ItemStack.EMPTY), provider, builder -> builder.order(15400).rarity(2).background(SURFACE_NIGHTTIME_RAIN).filters(FilterEntry.NIGHTTIME, FilterEntry.RAIN))
+                .mobArmorItems(EntityType.ZOMBIE.builtInRegistryHolder(), "entity.confluence.raincoat_zombie", "", List.of(ItemStack.EMPTY, ItemStack.EMPTY, ArmorItems.RAINCOAT.toStack(), ArmorItems.RAIN_CAP.toStack()), provider, builder -> builder.order(15400).rarity(2).background(SURFACE_NIGHTTIME_RAIN).filters(FilterEntry.NIGHTTIME, FilterEntry.RAIN))
                 .add(TEMonsterEntities.POSSESS_ARMOR, builder -> builder.order(15500).rarity(2).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
                 // 狼人
                 .add(TEMonsterEntities.WRAITH, builder -> builder.order(15700).rarity(2).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
@@ -235,7 +235,7 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 // 骷髅 （头痛）
                 // 骷髅 （无裤）
                 // 龙虾
-                .mobArmorItems(EntityType.SKELETON.builtInRegistryHolder(), "entity.confluence.undead_miner", "", List.of(ArmorItems.MINING_HELMET.toStack(), ArmorItems.MINING_CHESTPLATE.toStack(), ArmorItems.MINING_LEGGINGS.toStack(), ArmorItems.MINING_BOOTS.toStack()), provider, builder -> builder.order(19600).rarity(3).background(CAVE).filters(FilterEntry.RARE_CREATURE, FilterEntry.CAVE))
+                .mobArmorItems(EntityType.SKELETON.builtInRegistryHolder(), "entity.confluence.undead_miner", "", List.of(ArmorItems.MINING_BOOTS.toStack(), ArmorItems.MINING_LEGGINGS.toStack(), ArmorItems.MINING_CHESTPLATE.toStack(), ArmorItems.MINING_HELMET.toStack()), provider, builder -> builder.order(19600).rarity(3).background(CAVE).filters(FilterEntry.RARE_CREATURE, FilterEntry.CAVE))
                 // 骷髅弓箭手
                 .add(TEMonsterEntities.NYMPH, builder -> builder.order(19800).rarity(5).background(CAVE).filters(FilterEntry.RARE_CREATURE, FilterEntry.CAVE))
                 // 装甲骷髅
@@ -258,8 +258,8 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 // 爬墙蜘蛛
                 // 黑隐士
                 .add(TEMonsterEntities.ICE_SLIME, builder -> builder.order(21800).rarity(1).background(SNOW).filters(FilterEntry.SNOW, FilterEntry.DAYTIME))
-                .mobArmorItems(EntityType.ZOMBIE.builtInRegistryHolder(), "entity.confluence.frozen_zombie", "", List.of(ArmorItems.SNOW_CAPS.toStack(), ArmorItems.SNOW_SUITS.toStack(), ArmorItems.INSULATED_PANTS.toStack(), ArmorItems.INSULATED_SHOES.toStack()), provider, builder -> builder.order(21900).rarity(2).background(SNOW_MOON).filters(FilterEntry.SNOW, FilterEntry.NIGHTTIME))
-                .mobArmorItems(EntityType.ZOMBIE.builtInRegistryHolder(), "entity.confluence.frozen_zombie.pink", "", List.of(ArmorItems.PINK_SNOW_CAPS.toStack(), ArmorItems.PINK_SNOW_SUITS.toStack(), ArmorItems.PINK_INSULATED_PANTS.toStack(), ArmorItems.PINK_INSULATED_SHOES.toStack()), provider, builder -> builder.order(21910).rarity(5).background(SNOW_MOON).filters(FilterEntry.SNOW, FilterEntry.NIGHTTIME))
+                .mobArmorItems(EntityType.ZOMBIE.builtInRegistryHolder(), "entity.confluence.frozen_zombie", "", List.of(ArmorItems.INSULATED_SHOES.toStack(), ArmorItems.INSULATED_PANTS.toStack(), ArmorItems.SNOW_SUITS.toStack(), ArmorItems.SNOW_CAPS.toStack()), provider, builder -> builder.order(21900).rarity(2).background(SNOW_MOON).filters(FilterEntry.SNOW, FilterEntry.NIGHTTIME))
+                .mobArmorItems(EntityType.ZOMBIE.builtInRegistryHolder(), "entity.confluence.frozen_zombie.pink", "", List.of(ArmorItems.PINK_INSULATED_SHOES.toStack(), ArmorItems.PINK_INSULATED_PANTS.toStack(), ArmorItems.PINK_SNOW_SUITS.toStack(), ArmorItems.PINK_SNOW_CAPS.toStack()), provider, builder -> builder.order(21910).rarity(5).background(SNOW_MOON).filters(FilterEntry.SNOW, FilterEntry.NIGHTTIME))
                 // 冰雪巨人
                 // 狼
                 // 尖刺冰雪史莱姆
@@ -618,6 +618,9 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
             return add(TEMonsterEntities.DEMON_EYE, variant.getSerializedName(), consumer.andThen(builder -> builder.entityNbt(nbt -> nbt.putInt(DemonEye.VARIANT_KEY, variant.getId()))));
         }
 
+        /**
+         * @param armorItems [鞋子，裤子，衣服，帽子]
+         */
         public Builder mobArmorItems(IHolderExtension<EntityType<?>> holder, String typeKey, String variant, List<ItemStack> armorItems, HolderLookup.Provider provider, Consumer<ClientBestiaryEntry.Builder> consumer) {
             if (armorItems.size() != 4) throw new IllegalArgumentException();
             return add(holder, typeKey, variant, consumer.andThen(builder -> builder.entityNbt(nbt -> {
@@ -633,6 +636,9 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
             })));
         }
 
+        /**
+         * @param armorItems [鞋子，裤子，衣服，帽子]
+         */
         public Builder mobArmorItems(IHolderExtension<EntityType<?>> holder, String variant, List<ItemStack> armorItems, HolderLookup.Provider provider, Consumer<ClientBestiaryEntry.Builder> consumer) {
             return mobArmorItems(holder, holder.getDelegate().value().getDescriptionId(), variant, armorItems, provider, consumer);
         }

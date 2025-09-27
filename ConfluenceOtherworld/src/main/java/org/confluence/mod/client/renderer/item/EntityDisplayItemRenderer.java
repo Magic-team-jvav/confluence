@@ -66,10 +66,15 @@ public class EntityDisplayItemRenderer extends BlockEntityWithoutLevelRenderer {
             entity = magicHarp2333.apply(level);
         } else {
             if (!entityMap.isEmpty() && level.getGameTime() % 24000L == 0) this.entityMap = new HashMap<>(); // 每天清一次缓存
-            entity = entityMap.computeIfAbsent(tag.getUUID(Entity.UUID_TAG), uuid -> {
-                Entity loaded = EntityType.loadEntityRecursive(tag, level, Function.identity());
-                return loaded == null ? new Pig(EntityType.PIG, level) : loaded;
-            });
+
+            try {
+                entity = entityMap.computeIfAbsent(tag.getUUID(Entity.UUID_TAG), uuid -> {
+                    Entity loaded = EntityType.loadEntityRecursive(tag, level, Function.identity());
+                    return loaded == null ? new Pig(EntityType.PIG, level) : loaded;
+                });
+            } catch (Exception e) {
+                entity = magicHarp2333.apply(level);
+            }
         }
 
         poseStack.pushPose();

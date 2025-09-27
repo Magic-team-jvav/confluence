@@ -248,11 +248,11 @@ dependencies {
         runtimeOnly "dev.latvian.mods:rhino:${rhino_version}"
     }
 
-    compileOnly "maven.modrinth:waystones:zKuhJ4Vo"
-    compileOnly "maven.modrinth:balm:YgPFqhlP"
+    compileOnly "maven.modrinth:waystones:21.1.23+neoforge-1.21.1"
+    compileOnly "maven.modrinth:balm:21.0.51+neoforge-1.21.1"
     if (true) {
-        runtimeOnly "maven.modrinth:waystones:zKuhJ4Vo"
-        runtimeOnly "maven.modrinth:balm:YgPFqhlP"
+        runtimeOnly "maven.modrinth:waystones:21.1.23+neoforge-1.21.1"
+        runtimeOnly "maven.modrinth:balm:21.0.51+neoforge-1.21.1"
     }
 
     compileOnly "curse.maven:xaeros-minimap-263420:6515043"
@@ -302,6 +302,7 @@ dependencies {
     //runtimeOnly "curse.maven:azurelib-817423:6849116"
     //runtimeOnly "curse.maven:lendercataclysm-551586:6849033"
     //runtimeOnly "curse.maven:lionfish-api-1001614:6168249"
+    //runtimeOnly "maven.modrinth:hexerei:0.5.0.3"
     if (advancementPlaques) {
         runtimeOnly "curse.maven:advancement-plaques-499826:5905995"
     }

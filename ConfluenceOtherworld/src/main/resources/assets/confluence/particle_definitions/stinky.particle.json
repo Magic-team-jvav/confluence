@@ -52,7 +52,8 @@
             "minecraft:particle_appearance_lighting": {},
             "minecraft:particle_appearance_tinting": {
                 "color": [0.6, 1, 0, 0.5]
-            }
+            },
+            "minecraft:particle_motion_collision": {}
         }
     }
 }

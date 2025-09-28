@@ -1,5 +1,6 @@
 package org.confluence.mod.common.entity.projectile.bomb;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -19,17 +20,17 @@ public class BeenadeEntity extends BaseGrenadeEntity {
     }
 
     @Override
-    protected void explodeFunction() {
-        super.explodeFunction();
+    protected void explodeFunction(ServerLevel level) {
+        super.explodeFunction(level);
         if (getOwner() instanceof LivingEntity living) {
             boolean hivePack = TCUtils.hasAccessoriesType(living, TCItems.HIVE$PACK);
             int amount = Mth.randomBetweenInclusive(living.getRandom(), 15, 20);
             if (hivePack && living.getRandom().nextFloat() < 0.3333F) amount++;
             for (int i = 0; i < amount; i++) {
-                BeeProjectile bee = new BeeProjectile(level(), living, hivePack && living.getRandom().nextBoolean());
+                BeeProjectile bee = new BeeProjectile(level, living, hivePack && living.getRandom().nextBoolean());
                 bee.setBaseDamage(2.5F);
                 bee.setPos(position());
-                level().addFreshEntity(bee);
+                level.addFreshEntity(bee);
             }
         }
     }

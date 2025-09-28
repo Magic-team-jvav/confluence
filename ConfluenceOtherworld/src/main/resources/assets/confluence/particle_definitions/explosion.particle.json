@@ -12,19 +12,22 @@
 			"event": {
 				"particle_effect": {
 					"effect": "confluence:bomb_spark",
-					"type": "emitter"
+					"type": "emitter",
+					"shared_vars": ["variable.radius"]
 				}
 			},
 			"event1": {
 				"particle_effect": {
 					"effect": "confluence:bomb_glitter",
-					"type": "emitter"
+					"type": "emitter",
+					"shared_vars": ["variable.radius"]
 				}
 			},
 			"event2": {
 				"particle_effect": {
 					"effect": "confluence:bomb_round",
-					"type": "emitter"
+					"type": "emitter",
+					"shared_vars": ["variable.radius"]
 				}
 			}
 		},

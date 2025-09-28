@@ -27,6 +27,7 @@ public final class CommonConfigs {
     public static BooleanValue ALERT_PLAYER_IN_DUNGEON;
     public static BooleanValue STAR_PHASE;
     private static ConfigValue<List<? extends String>> AMMO_SLOTS_BLACKLIST;
+    public static BooleanValue TERRA_STYLE_EXPLOSION;
 
     public static BooleanValue FLETCHING_MENU;
     public static BooleanValue SHIMMER_DECOMPOSE;
@@ -93,6 +94,7 @@ public final class CommonConfigs {
                 }
                 return false;
             });
+            TERRA_STYLE_EXPLOSION = BUILDER.define("terraStyleExplosion", true);
             BUILDER.pop();
         }
         {

@@ -687,6 +687,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.configuration.starPhase.tooltip", "Currently has no function. Not recommended to enable.");
         add("confluence.configuration.wrappedCrimsonHeart", "Wrapped Crimson Heart");
         add("confluence.configuration.wrappedCrimsonHeart.tooltip", "When enabled, newly generated Crimson Caverns will contain Wrapped Crimson Hearts.");
+        add("confluence.configuration.terraStyleExplosion", "Terra Style Explosion");
+        add("confluence.configuration.terraStyleExplosion.tooltip", "Once activated, the bombs in confluence will simulate the blast radius of a Terra explosion.");
         // Separator
         add("confluence.configuration.Mana.button", "Mana");
         add("confluence.configuration.Armor.button", "Armor");

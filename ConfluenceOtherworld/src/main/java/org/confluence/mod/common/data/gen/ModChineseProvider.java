@@ -676,6 +676,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.altarTips.tooltip", "学会后可自行关闭提示");
         add("confluence.configuration.ammoSlotsBlacklist", "弹药栏自动拾取黑名单");
         add("confluence.configuration.ammoSlotsBlacklist.tooltip", "在黑名单中的id或tag对应的物品不会自动进入弹药栏");
+        add("confluence.configuration.terraStyleExplosion", "泰拉样式爆炸");
+        add("confluence.configuration.terraStyleExplosion.tooltip", "开启后，模组内炸弹将模拟泰拉爆炸范围");
         // 分割
         add("confluence.configuration.Mana.button", "魔力值");
         add("confluence.configuration.Armor.button", "护甲值");

@@ -15,6 +15,7 @@ import net.minecraft.world.level.ChunkPos;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.network.s2c.PlayerDeathInfoPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
+import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -50,7 +51,7 @@ public abstract class ServerPlayerMixin implements IServerPlayer {
     @Unique
     private ChunkPos confluence$lastChunkPosition;
     @Unique
-    private double confluence$movementSpeed;
+    private final Vector3f confluence$movementSpeed = new Vector3f();
 
     @Override
     public void confluence$setCouldPickupItem(boolean enable) {
@@ -85,7 +86,7 @@ public abstract class ServerPlayerMixin implements IServerPlayer {
     }
 
     @Override
-    public double confluence$getMovementSpeed() {
+    public Vector3f confluence$getMovementSpeed() {
         return confluence$movementSpeed;
     }
 
@@ -98,11 +99,7 @@ public abstract class ServerPlayerMixin implements IServerPlayer {
 
     @Inject(method = "checkMovementStatistics", at = @At("HEAD"))
     private void checkSpeed(double dx, double dy, double dz, CallbackInfo ci) {
-        if (didNotMove(dx, dy, dz)) {
-            this.confluence$movementSpeed = 0;
-        } else {
-            this.confluence$movementSpeed = Math.sqrt(dx * dx + dy * dy + dz * dz) * 20;
-        }
+        this.confluence$movementSpeed.set(dx, dy, dz);
     }
 
     @WrapWithCondition(method = "die", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerGamePacketListenerImpl;send(Lnet/minecraft/network/protocol/Packet;Lnet/minecraft/network/PacketSendListener;)V"))

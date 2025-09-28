@@ -43,14 +43,14 @@ import java.util.function.Consumer;
 
 import static net.minecraft.world.item.component.ItemAttributeModifiers.ATTRIBUTE_MODIFIER_FORMAT;
 
-public class LanceItem extends TooltipItem implements ILeftClickStateItem, GeoItem {
+public class BaseLanceItem extends TooltipItem implements ILeftClickStateItem, GeoItem {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     private final int attackInterval;
     private final double attackDistance;
     private final double baseAttackDamage;
     private final double baseKnockback;
 
-    public LanceItem(Properties properties, ModRarity rarity, int attackInterval, double attackDistance, double baseAttackDamage, double baseKnockback, List<Component> tooltips) {
+    public BaseLanceItem(Properties properties, ModRarity rarity, int attackInterval, double attackDistance, double baseAttackDamage, double baseKnockback, List<Component> tooltips) {
         super(properties.stacksTo(1), rarity, collectTooltips(attackInterval, attackDistance, baseAttackDamage, baseKnockback, tooltips));
         this.attackInterval = attackInterval;
         this.attackDistance = attackDistance;
@@ -95,7 +95,8 @@ public class LanceItem extends TooltipItem implements ILeftClickStateItem, GeoIt
                 (attackInterval <= 1 || owner.level().getGameTime() % attackInterval == 0)
         ) {
             Vec3 startVec = new Vec3(owner.getX(), owner.getEyeY() - 0.1, owner.getZ());
-            Vec3 endVec = startVec.add(owner.getViewVector(1.0F).scale(attackDistance));
+            Vec3 lanceDirection = owner.getViewVector(1.0F);
+            Vec3 endVec = startVec.add(lanceDirection.scale(attackDistance));
 
             for (Entity victim : level.getEntities(owner, new AABB(startVec, endVec), target -> ModUtils.canHitEntity(target, owner))) {
                 if (victim.getBoundingBox().inflate(0.3).clip(startVec, endVec).isEmpty()) continue;
@@ -104,9 +105,14 @@ public class LanceItem extends TooltipItem implements ILeftClickStateItem, GeoIt
                     victim = partEntity.getParent();
                 }
                 DamageSource damageSource = ModDamageTypes.of(level, DamageTypes.STING, owner);
-                double v = IServerPlayer.of(owner).confluence$getMovementSpeed() * 1.5;
-                victim.hurt(damageSource, Mth.floor(baseAttackDamage * (v * 6 / 175 + 0.1F)));
-                double kb = v * baseKnockback * 4 / 105;
+
+                Vec3 attackerVelocity = new Vec3(IServerPlayer.of(owner).confluence$getMovementSpeed());
+                Vec3 relativeVelocity = attackerVelocity.subtract(victim.getDeltaMovement());
+                Vec3 projectedVelocity = VectorUtils.vectorProjection(relativeVelocity, lanceDirection);
+                double impactSpeed = projectedVelocity.length() * 30;
+
+                victim.hurt(damageSource, Mth.floor(baseAttackDamage * (impactSpeed * 6 / 175 + 0.1F)));
+                double kb = impactSpeed * baseKnockback * 4 / 105;
                 VectorUtils.knockBackA2B(owner, victim, kb, kb * 0.3);
                 EnchantmentHelper.doPostAttackEffects((ServerLevel) level, victim, damageSource);
             }
@@ -128,12 +134,12 @@ public class LanceItem extends TooltipItem implements ILeftClickStateItem, GeoIt
     public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
         if (true) return; // todo
         consumer.accept(new GeoRenderProvider() {
-            private GeoItemRenderer<LanceItem> renderer;
+            private GeoItemRenderer<BaseLanceItem> renderer;
 
             @Override
             public BlockEntityWithoutLevelRenderer getGeoItemRenderer() {
                 if (renderer == null) {
-                    this.renderer = new GeoItemRenderer<>(new DefaultedItemGeoModel<>(Confluence.asResource("lance/" + BuiltInRegistries.ITEM.getKey(LanceItem.this).getPath())));
+                    this.renderer = new GeoItemRenderer<>(new DefaultedItemGeoModel<>(Confluence.asResource("lance/" + BuiltInRegistries.ITEM.getKey(BaseLanceItem.this).getPath())));
                 }
                 return renderer;
             }

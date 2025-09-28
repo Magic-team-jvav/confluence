@@ -2,10 +2,18 @@
     "format_version": "1.10.0",
     "particle_effect": {
         "description": {
-            "identifier": "confluence:emerald_projectile",
+            "identifier": "confluence:jade_projectile",
             "basic_render_parameters": {
                 "material": "particles_add",
                 "texture": "confluence:base_mana_staff_projectile"
+            }
+        },
+        "events": {
+            "collision": {
+                "particle_effect": {
+                    "effect": "confluence:jade_projectile_collision",
+                    "type": "particle"
+                }
             }
         },
         "components": {
@@ -16,6 +24,9 @@
             "minecraft:emitter_rate_steady": {
                 "spawn_rate": 60,
                 "max_particles": 100
+            },
+            "minecraft:emitter_lifetime_events": {
+                "expiration_event": "collision"
             },
             "minecraft:emitter_lifetime_expression": {},
             "minecraft:emitter_shape_point": {

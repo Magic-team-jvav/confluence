@@ -8,6 +8,14 @@
                 "texture": "confluence:base_mana_staff_projectile"
             }
         },
+        "events": {
+            "collision": {
+                "particle_effect": {
+                    "effect": "confluence:topaz_projectile_collision",
+                    "type": "particle"
+                }
+            }
+        },
         "components": {
             "minecraft:emitter_local_space": {
                 "position": true,
@@ -16,6 +24,9 @@
             "minecraft:emitter_rate_steady": {
                 "spawn_rate": 60,
                 "max_particles": 100
+            },
+            "minecraft:emitter_lifetime_events": {
+                "expiration_event": "collision"
             },
             "minecraft:emitter_lifetime_expression": {},
             "minecraft:emitter_shape_point": {

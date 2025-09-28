@@ -21,7 +21,7 @@ public final class ModLootTables {
     public static final ResourceKey<LootTable> SKY_CRATE = register("gameplay/crate/sky_crate");
     public static final ResourceKey<LootTable> CORRUPT_CRATE = register("gameplay/crate/corrupt_crate");
     public static final ResourceKey<LootTable> CRIMSON_CRATE = register("gameplay/crate/crimson_crate");
-    public static final ResourceKey<LootTable> SACRED_CRATE = register("gameplay/crate/sacred_crate");
+    public static final ResourceKey<LootTable> HALLOWED_CRATE = register("gameplay/crate/hallowed_crate");
     public static final ResourceKey<LootTable> DUNGEON_CRATE = register("gameplay/crate/dungeon_crate");
     public static final ResourceKey<LootTable> FROZEN_CRATE = register("gameplay/crate/frozen_crate");
     public static final ResourceKey<LootTable> OASIS_CRATE = register("gameplay/crate/oasis_crate");

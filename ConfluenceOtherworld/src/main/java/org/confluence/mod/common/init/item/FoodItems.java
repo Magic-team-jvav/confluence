@@ -49,8 +49,8 @@ public class FoodItems {
     public static final DeferredItem<BaseFoodItem> MONSTER_LASAGNA = registerNormalFood("monster_lasagna", ModFoodProperties.PlentySatisfiedProperties(9600, 6, 3.5f)); //怪物千层面
     public static final DeferredItem<BaseFoodItem> COOK_FISH = registerNormalFood("cook_fish", ModFoodProperties.WellFedProperties(9600, 6, 3.5f)); //熟鱼
     public static final DeferredItem<BaseFoodItem> SASHIMI = registerNormalFood("sashimi", ModFoodProperties.PlentySatisfiedProperties(9600, 5, 3.0f)); //生鱼片
-    public static final DeferredItem<BaseFoodItem> ROASTED_BIRD = registerNormalFood("roasted_bird", ModFoodProperties.preparedMeatProperties(8, 12.8f)); //烤鸟腿
-    public static final DeferredItem<BaseFoodItem> ROASTED_DUCK = registerNormalFood("roasted_duck", ModFoodProperties.preparedMeatProperties(8, 12.8f)); //鸭肉
+    public static final DeferredItem<BaseFoodItem> ROASTED_BIRD = registerNormalFood("roasted_bird", ModFoodProperties.preparedMeatProperties(6, 3.6f)); //烤鸟腿
+    public static final DeferredItem<BaseFoodItem> ROASTED_DUCK = registerNormalFood("roasted_duck", ModFoodProperties.preparedMeatProperties(8, 7.2f)); //鸭肉
     public static final DeferredItem<BaseFoodItem> SAUTEED_FROG_LEGS = registerNormalFood("sauteed_frog_legs", ModFoodProperties.preparedMeatProperties(8, 12.8f)); //爆炒青蛙腿
     public static final DeferredItem<BaseFoodItem> SEAFOOD_DINNER = registerNormalFood("seafood_dinner", ModFoodProperties.PlentySatisfiedProperties(16800, 8, 12.8f)); //海鲜大餐
     public static final DeferredItem<BaseFoodItem> BACON = registerNormalFood("bacon", ModFoodProperties.ExquisitelyStuffedProperties(28800, 8, 5.5f)); //培根

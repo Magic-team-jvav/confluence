@@ -644,6 +644,12 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         )
                 )
         );
+        add(TEAnimals.SQUIRREL.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/squirrel"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FoodItems.RAW_SQUIRREL).apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot())).apply(random0To1)
+                        )
+                )
+        );
         add(TEAnimals.CARDINAL.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/cardinal"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(FoodItems.RAW_BIRD).apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot())).apply(random0To1)

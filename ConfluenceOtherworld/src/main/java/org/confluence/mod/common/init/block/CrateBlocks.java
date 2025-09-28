@@ -23,7 +23,7 @@ public class CrateBlocks {
     public static final DeferredBlock<Block> SKY_CRATE = register("sky_crate", ModLootTables.SKY_CRATE);
     public static final DeferredBlock<Block> CORRUPT_CRATE = register("corrupt_crate", ModLootTables.CORRUPT_CRATE);
     public static final DeferredBlock<Block> CRIMSON_CRATE = register("crimson_crate", ModLootTables.CRIMSON_CRATE);
-    public static final DeferredBlock<Block> HALLOWED_CRATE = register("hallowed_crate", ModLootTables.SACRED_CRATE);
+    public static final DeferredBlock<Block> HALLOWED_CRATE = register("hallowed_crate", ModLootTables.HALLOWED_CRATE);
     public static final DeferredBlock<Block> DUNGEON_CRATE = register("dungeon_crate", ModLootTables.DUNGEON_CRATE);
     public static final DeferredBlock<Block> FROZEN_CRATE = register("frozen_crate", ModLootTables.FROZEN_CRATE);
     public static final DeferredBlock<Block> OASIS_CRATE = register("oasis_crate", ModLootTables.OASIS_CRATE);

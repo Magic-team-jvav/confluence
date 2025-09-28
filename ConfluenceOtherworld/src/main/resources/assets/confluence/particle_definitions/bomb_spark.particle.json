@@ -39,9 +39,6 @@
 						"1.0": "#0DFF0000"
 					}
 				}
-			},
-			"minecraft:particle_motion_collision": {
-				"expire_on_contact": true
 			}
 		}
 	}

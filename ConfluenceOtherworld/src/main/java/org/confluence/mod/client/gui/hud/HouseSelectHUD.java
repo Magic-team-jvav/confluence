@@ -103,7 +103,7 @@ public class HouseSelectHUD implements LayeredDraw.Layer {
                     }
                     guiGraphics.renderTooltip(font, name, mouseX, mouseY);
 
-                    if (handler.isLeftPressed()) {
+                    if (handler.isLeftPressed() && i != AvailableHouseSelectPacketS2C.traveling_merchant) {
                         selected = i;
                     }
                 }

@@ -61,7 +61,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("options.difficulty.legendary", "§aLegendary");
         add("message.confluence.choking", "You're choking and need to drink water");
         add("message.confluence.advancement_combat_techniques", "The book's knowledge empowers your villagers!");
-        add("message.confluence.toolmode.tip", "Shift & Right click on the air to switch mode");
+        add("message.confluence.toolmode.tip", "Crouch & Right click on the air to switch mode");
         add("message.confluence.toolmode.current", "Current Mode: ");
         add("message.confluence.hamaxe.mode.0", "Hammer & Axe");
         add("message.confluence.hamaxe.mode.1", "Axe");
@@ -167,7 +167,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.magic_conch.0", "Right-click a block in the Beach biome to make the sea remember you");
         add("tooltip.item.confluence.demon_conch.0", "Right-click a Nether Portal block to make the Nether remember you.");
         add("tooltip.item.confluence.bait.common.0", "When placed in the inventory, it will be automatically used while fishing, prioritizing the bait in the off-hand.");
-        add("tooltip.item.confluence.crate.common.0", "Hold the right mouse button to open, and hold Shift while clicking the right mouse button to place.");
+        add("tooltip.item.confluence.crate.common.0", "Hold the right mouse button to open, and Crouch while clicking the right mouse button to place.");
         add("tooltip.item.confluence.right_click.common.0", "Hold the right mouse button to open.");
         add("tooltip.item.confluence.raw_asphalt.0", "Use a Blend-O-Matic to make asphalt blocks");
         add("tooltip.item.confluence.empty_dropper.0", "Right-click on the droplet to remove it (requires block assist aiming)");

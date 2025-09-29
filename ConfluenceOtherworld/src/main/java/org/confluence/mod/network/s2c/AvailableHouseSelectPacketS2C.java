@@ -16,6 +16,7 @@ import org.confluence.terraentity.init.entity.TENpcEntities;
 public record AvailableHouseSelectPacketS2C(boolean[] available) implements IPacketS2C {
     public static final Type<AvailableHouseSelectPacketS2C> TYPE = IPacket.createType("available_house_select");
     public static final int size = 25;
+    public static final int traveling_merchant = 20;
     public static final StreamCodec<ByteBuf, AvailableHouseSelectPacketS2C> STREAM_CODEC = LibStreamCodecUtils.booleanArray(size)
             .map(AvailableHouseSelectPacketS2C::new, AvailableHouseSelectPacketS2C::available);
     private static EntityType<?>[] TYPES;

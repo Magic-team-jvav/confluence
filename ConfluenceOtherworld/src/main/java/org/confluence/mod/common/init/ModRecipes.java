@@ -539,7 +539,7 @@ public final class ModRecipes {
                         boolean l = false;
                         boolean g = false;
                         for (int m : materials) {
-                            if (m == lesser_healing_potion) l = true;
+                            if (m == lesser_mana_potion) l = true;
                             else if (m == glowing_mushroom) g = true;
                         }
                         if (l && g) return PotionItems.MANA_POTION.toStack();

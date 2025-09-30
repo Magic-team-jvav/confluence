@@ -1,6 +1,7 @@
 package org.confluence.mod.common.entity.projectile.mana;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -13,11 +14,16 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.VectorUtils;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
+import org.mesdag.particlestorm.PSGameClient;
+import org.mesdag.particlestorm.particle.ParticleEmitter;
 
 public class BallOfFrostProjectile extends AbstractManaProjectile {
     private int collideCount = 0;
+    private ParticleEmitter emitter;
+    private ParticleEmitter trail;
 
     public BallOfFrostProjectile(EntityType<? extends AbstractManaProjectile> entityType, Level level) {
         super(entityType, level);
@@ -47,7 +53,16 @@ public class BallOfFrostProjectile extends AbstractManaProjectile {
         }
         setDeltaMovement(motion);
 
-        if (ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity) instanceof EntityHitResult entityHitResult) {
+        if (!(level() instanceof ServerLevel)) {
+            if (emitter == null || trail == null) {
+                this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("ball_of_frost"));
+                this.trail = new ParticleEmitter(level(), position(), Confluence.asResource("ball_of_frost_trail"));
+                emitter.attachEntity(this);
+                trail.attachEntity(this);
+                PSGameClient.LOADER.addEmitter(emitter, false);
+                PSGameClient.LOADER.addEmitter(trail, false);
+            }
+        } else if (ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity) instanceof EntityHitResult entityHitResult) {
             Entity entity = entityHitResult.getEntity();
             if (entity instanceof LivingEntity living) {
                 living.addEffect(new MobEffectInstance(ModEffects.FROSTBITE, Mth.randomBetweenInclusive(living.getRandom(), 100, 280)));
@@ -59,6 +74,7 @@ public class BallOfFrostProjectile extends AbstractManaProjectile {
 
         if (tickCount > 1200) discard();
     }
+
 
     @Override
     protected void readAdditionalSaveData(CompoundTag compound) {

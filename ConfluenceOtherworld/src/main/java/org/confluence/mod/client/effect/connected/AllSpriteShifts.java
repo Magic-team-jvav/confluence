@@ -34,7 +34,6 @@ public class AllSpriteShifts {
     public static final CTSpriteShiftEntry MALACHITE_PAPER_PANE = omni("malachite_paper_pane");
     public static final CTSpriteShiftEntry MALACHITE_PAPER_PANE_LAMP = omni("malachite_paper_pane_lamp");
 
-    public static final CTSpriteShiftEntry CRYSTAL_BLOCK = omni("crystal_block");
     private static CTSpriteShiftEntry omni(String name) {
         return getCT(AllCTTypes.OMNIDIRECTIONAL, name);
     }

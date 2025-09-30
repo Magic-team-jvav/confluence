@@ -4,6 +4,7 @@ import net.minecraft.Util;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.TooltipManager;
@@ -3610,6 +3611,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.JUNGLE_SPORE.get(), "丛林孢子");
 
 
+
         add(SwordItems.COPPER_SHORT_SWORD.get(), "铜短剑");
         add(SwordItems.TIN_SHORT_SWORD.get(), "锡短剑");
         add(SwordItems.COPPER_BROADSWORD.get(), "铜阔剑");
@@ -3666,6 +3668,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(SwordItems.BEE_KEEPER.get(), "养蜂人");
         add(SwordItems.BLADE_OF_GRASS.get(), "草剑");
         add(SwordItems.NIGHTS_EDGE.get(), "永夜刃");
+        add(SwordItems.BREAKER_BLADE.get(), "毁灭刃");
 
         add(SwordItems.DEVELOPER_SWORD.get(), "开发者剑");
         // 光剑
@@ -3877,6 +3880,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ToolItems.GUIDE_TO_CRITTER_COMPANIONSHIP.get(), "小动物友谊指南");
         add(ToolItems.GUIDE_TO_ENVIRONMENTAL_PRESERVATION.get(), "环境保护指南");
         add(ToolItems.GUIDE_TO_PEACEFUL_COEXISTENCE.get(), "和平共处指南");
+
 
         add(BoatItems.ASH_BOAT.get(), "白蜡木船");
         add(BoatItems.ASH_CHEST_BOAT.get(), "白蜡木运输船");

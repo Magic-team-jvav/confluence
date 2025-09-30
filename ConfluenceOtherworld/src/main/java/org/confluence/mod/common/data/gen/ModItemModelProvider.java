@@ -39,6 +39,7 @@ public class ModItemModelProvider extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
+        ModelFile.UncheckedModelFile templateReverse16x = new ModelFile.UncheckedModelFile(Confluence.asResource("item/template_reverse16x"));
         ModelFile.UncheckedModelFile templateReverse24x = new ModelFile.UncheckedModelFile(Confluence.asResource("item/template_reverse24x"));
         ModelFile.UncheckedModelFile templateNormal24x = new ModelFile.UncheckedModelFile(Confluence.asResource("item/template_normal24x"));
 
@@ -50,6 +51,7 @@ public class ModItemModelProvider extends ItemModelProvider {
         separateModel(SwordItems.BONE_SWORD, templateReverse24x, "sword/");
         separateModel(SwordItems.BLOOD_BUTCHERER, templateReverse24x, "sword/");
         separateModel(SwordItems.NIGHTS_EDGE, templateReverse24x, "sword/");
+        separateModel(SwordItems.BREAKER_BLADE, templateReverse16x, "sword/");
         separateModel(SwordItems.PURPLE_CLUBBERFISH, templateReverse24x, "sword/");
         separateModel(SwordItems.CANDY_CANE_SWORD, templateReverse24x, "sword/");
         separateModel(SwordItems.BAT_BAT, templateReverse24x, "sword/");

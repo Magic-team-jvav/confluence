@@ -94,6 +94,9 @@ public class SwordItems {
     //改横扫大小的宽剑
     public static final DeferredItem<BaseSwordItem> TERRAGRIM = register("terragrim", ModTiers.UNBREAKABLE, 1, 9, ModRarity.ORANGE, BOARD_SWORD.apply(1.2f));
 
+
+    public static final DeferredItem<BaseSwordItem> BREAKER_BLADE = register("breaker_blade", ModTiers.UNBREAKABLE, 37, 1.0F, ModRarity.LIGHT_RED, BOARD_SWORD.apply(12.0f));
+
     //效果剑
     public static final DeferredItem<BaseSwordItem> LIGHTS_BANE = register("lights_bane", ModTiers.UNBREAKABLE, 11, 3, ModRarity.BLUE, EFFECT_SWORD
             .apply(ModEffectStrategies.Components.LIGHTS_BANE_EFFECT.get()).image(24, 24));

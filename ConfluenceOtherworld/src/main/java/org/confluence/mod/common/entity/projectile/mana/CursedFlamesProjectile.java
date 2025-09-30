@@ -1,6 +1,7 @@
 package org.confluence.mod.common.entity.projectile.mana;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -13,12 +14,17 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.IgnoreThrowerExplosionDamageCalculator;
 import org.confluence.lib.util.VectorUtils;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
+import org.mesdag.particlestorm.PSGameClient;
+import org.mesdag.particlestorm.particle.ParticleEmitter;
 
 public class CursedFlamesProjectile extends AbstractManaProjectile {
     private int collideCount = 0;
     private int penetrateCount = 0;
+    private ParticleEmitter emitter;
+    private ParticleEmitter trail;
 
     public CursedFlamesProjectile(EntityType<CursedFlamesProjectile> entityType, Level level) {
         super(entityType, level);
@@ -52,7 +58,18 @@ public class CursedFlamesProjectile extends AbstractManaProjectile {
         }
         setDeltaMovement(motion.scale(0.99).add(0.0, -0.04, 0.0));
 
-        if (ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity) instanceof EntityHitResult entityHitResult) {
+        // 添加粒子发射器逻辑（仅在客户端执行）
+        if (!(level() instanceof ServerLevel)) {
+            if (emitter == null || trail == null) {
+                // 初始化粒子发射器，使用诅咒火焰相关的粒子资源
+                this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("cursed_flames"));
+                this.trail = new ParticleEmitter(level(), position(), Confluence.asResource("cursed_flames_trail"));
+                emitter.attachEntity(this);
+                trail.attachEntity(this);
+                PSGameClient.LOADER.addEmitter(emitter, false);
+                PSGameClient.LOADER.addEmitter(trail, false);
+            }
+        } else if (ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity) instanceof EntityHitResult entityHitResult) {
             Entity entity = entityHitResult.getEntity();
             if (entity instanceof LivingEntity living) {
                 living.addEffect(new MobEffectInstance(ModEffects.CURSED_INFERNO, 140));
@@ -68,6 +85,7 @@ public class CursedFlamesProjectile extends AbstractManaProjectile {
 
         if (tickCount > 1200) discard();
     }
+
 
     @Override
     protected void readAdditionalSaveData(CompoundTag compound) {

@@ -1,0 +1,22 @@
+{
+    "providers": [
+        {
+            "type": "bitmap",
+            "file": "confluence:font/mouse.png",
+            "height": 9,
+            "ascent": 8,
+            "chars": [
+                "12"
+            ]
+        },
+        {
+            "type": "bitmap",
+            "file": "confluence:font/sneak.png",
+            "height": 9,
+            "ascent": 8,
+            "chars": [
+                "3"
+            ]
+        }
+    ]
+}

@@ -22,8 +22,11 @@
 				"rotation": false
 			},
 			"minecraft:emitter_rate_steady": {
-				"spawn_rate": 100,
-				"max_particles": 120
+				"spawn_rate": 200,
+				"max_particles": 250
+			},
+			"minecraft:emitter_lifetime_events": {
+				"expiration_event": "collision"
 			},
 			"minecraft:emitter_lifetime_expression": {},
 			"minecraft:emitter_shape_point": {

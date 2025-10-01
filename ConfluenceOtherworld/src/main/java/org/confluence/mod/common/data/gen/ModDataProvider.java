@@ -1197,7 +1197,7 @@ public class ModDataProvider {
             context.register(ModBiomes.THE_CORRUPTION, new Biome.BiomeBuilder().hasPrecipitation(true).temperature(1).downfall(0)
                     .specialEffects(new BiomeSpecialEffects.Builder().foliageColorOverride(-9030507).grassColorOverride(-9351806).skyColor(-10726554).fogColor(-10726554).waterColor(-12837542).waterFogColor(-11055776).build())
                     .mobSpawnSettings(new MobSpawnSettings.Builder()
-                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.DECAYEDER.get(), 22, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.DECAYEDER.get(), 30, 1, 1))
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.DEVOURER.get(), 3, 1, 1))
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.EATER_OF_SOULS.get(), 75, 1, 2))
                             .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.CORRUPT_SLIME.get(), 35, 1, 1))

@@ -1,7 +1,6 @@
 package org.confluence.mod.common.entity.projectile.mana;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -53,16 +52,15 @@ public class BallOfFrostProjectile extends AbstractManaProjectile {
         }
         setDeltaMovement(motion);
 
-        if (!(level() instanceof ServerLevel)) {
-            if (emitter == null || trail == null) {
-                this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("ball_of_frost"));
-                this.trail = new ParticleEmitter(level(), position(), Confluence.asResource("ball_of_frost_trail"));
-                emitter.attachEntity(this);
-                trail.attachEntity(this);
-                PSGameClient.LOADER.addEmitter(emitter, false);
-                PSGameClient.LOADER.addEmitter(trail, false);
-            }
-        } else if (ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity) instanceof EntityHitResult entityHitResult) {
+        if (level().isClientSide && (emitter == null || trail == null)) {
+            this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("ball_of_frost"));
+            this.trail = new ParticleEmitter(level(), position(), Confluence.asResource("ball_of_frost_trail"));
+            emitter.attachEntity(this);
+            trail.attachEntity(this);
+            PSGameClient.LOADER.addEmitter(emitter, false);
+            PSGameClient.LOADER.addEmitter(trail, false);
+        }
+        if (ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity) instanceof EntityHitResult entityHitResult) {
             Entity entity = entityHitResult.getEntity();
             if (entity instanceof LivingEntity living) {
                 living.addEffect(new MobEffectInstance(ModEffects.FROSTBITE, Mth.randomBetweenInclusive(living.getRandom(), 100, 280)));

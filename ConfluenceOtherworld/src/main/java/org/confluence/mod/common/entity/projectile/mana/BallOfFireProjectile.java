@@ -1,7 +1,6 @@
 package org.confluence.mod.common.entity.projectile.mana;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -56,18 +55,17 @@ public class BallOfFireProjectile extends AbstractManaProjectile {
         }
         setDeltaMovement(motion.scale(0.99).add(0.0, -0.04, 0.0));
 
-        if (!(level() instanceof ServerLevel serverLevel)) {
-            if ((emitter == null || trail == null)) {
-                this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("ball_of_fire"));
-                this.trail = new ParticleEmitter(level(), position(), Confluence.asResource("ball_of_fire_trail"));
-                emitter.attachEntity(this);
-                trail.attachEntity(this);
-                PSGameClient.LOADER.addEmitter(emitter, false);
-                PSGameClient.LOADER.addEmitter(trail, false);
-            }
-        } else if (ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity) instanceof EntityHitResult entityHitResult) {
+        if (level().isClientSide && (emitter == null || trail == null)) {
+            this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("ball_of_fire"));
+            this.trail = new ParticleEmitter(level(), position(), Confluence.asResource("ball_of_fire_trail"));
+            emitter.attachEntity(this);
+            trail.attachEntity(this);
+            PSGameClient.LOADER.addEmitter(emitter, false);
+            PSGameClient.LOADER.addEmitter(trail, false);
+        }
+        if (ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity) instanceof EntityHitResult entityHitResult) {
             Entity entity = entityHitResult.getEntity();
-            boolean ddu = ModSecretSeeds.DONT_DIG_UP.match(serverLevel);
+            boolean ddu = ModSecretSeeds.DONT_DIG_UP.match();
             if (random.nextBoolean()) {
                 if (ddu && entity instanceof LivingEntity living) {
                     living.addEffect(new MobEffectInstance(TEEffects.HELLFIRE, 100));

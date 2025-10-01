@@ -9,6 +9,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.loot.DateLootItemCondition;
 import org.confluence.mod.common.loot.GamePhaseLootItemCondition;
+import org.confluence.mod.common.loot.SecretFlagLootItemCondition;
 
 import java.util.function.Supplier;
 
@@ -88,5 +89,6 @@ public final class ModLootTables {
 
         public static final Supplier<LootItemConditionType> DATE = TYPES.register("date", () -> new LootItemConditionType(DateLootItemCondition.CODEC));
         public static final Supplier<LootItemConditionType> GAME_PHASE = TYPES.register("game_phase", () -> new LootItemConditionType(GamePhaseLootItemCondition.CODEC));
+        public static final Supplier<LootItemConditionType> SECRET_FLAG = TYPES.register("secret_flag", () -> new LootItemConditionType(SecretFlagLootItemCondition.CODEC));
     }
 }

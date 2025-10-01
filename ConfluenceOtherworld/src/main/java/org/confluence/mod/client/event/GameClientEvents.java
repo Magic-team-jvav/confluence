@@ -80,7 +80,6 @@ import org.confluence.mod.util.ClientUtils;
 import org.confluence.mod.util.DeathAnimUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PrefixUtils;
-import org.confluence.terra_curio.api.event.PerformJumpingEvent;
 import org.confluence.terraentity.api.event.NPCEvent;
 import org.confluence.terraentity.init.entity.TENpcEntities;
 import software.bernie.geckolib.event.GeoRenderEvent;
@@ -182,13 +181,6 @@ public final class GameClientEvents {
                 (HouseSelectHUD.inSelectHUD && VanillaGuiLayers.CROSSHAIR.equals(name))
         ) {
             event.setCanceled(true);
-        }
-    }
-
-    @SubscribeEvent
-    public static void performJumping(PerformJumpingEvent event) {
-        if (event.isCanPerform() && event.getEntity().hasEffect(ModEffects.SHIMMER)) {
-            event.setCanPerform(false);
         }
     }
 

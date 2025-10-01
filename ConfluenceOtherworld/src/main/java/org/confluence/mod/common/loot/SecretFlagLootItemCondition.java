@@ -19,4 +19,16 @@ public record SecretFlagLootItemCondition(long secretFlag, boolean flipMatch) im
     public boolean test(LootContext context) {
         return matchesSecretFlag();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return this == o || (o instanceof SecretFlagLootItemCondition(long flag, boolean match) && secretFlag == flag && flipMatch == match);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Long.hashCode(secretFlag);
+        result = 31 * result + Boolean.hashCode(flipMatch);
+        return result;
+    }
 }

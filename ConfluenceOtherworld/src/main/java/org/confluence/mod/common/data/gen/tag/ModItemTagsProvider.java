@@ -1181,7 +1181,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 VanityArmorItems.THE_DOCTORS_PANTS.get(),
                 VanityArmorItems.THE_DOCTORS_SHOES.get(),
                 ManaWeaponItems.MAGIC_DAGGER.get(),
-                ManaWeaponItems.CRYSTAL_STORM.get(),
                 NatureBlocks.LOOSE_HONEY_BLOCK.asItem(),
                 NatureBlocks.GREEN_MOSS.asItem(),
                 NatureBlocks.BROWN_MOSS.asItem(),

@@ -138,6 +138,8 @@ public final class ModRecipes {
             registerMaterial(MaterialItems.AMBER.get());
             registerMaterial(FoodItems.MOTTLED_OILFISH.get());
             registerMaterial(MaterialItems.FALLING_STAR.get());
+            registerMaterial(FoodItems.PISCES_FIN_COD.get());
+            registerMaterial(MaterialItems.DUNGEON_DEMON_BONE.get());
 
 
             // 箭术

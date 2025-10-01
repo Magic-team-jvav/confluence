@@ -12,11 +12,16 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.util.ModUtils;
+import org.mesdag.particlestorm.PSGameClient;
+import org.mesdag.particlestorm.particle.ParticleEmitter;
 
 // 山铜套装奖励
 public class FlowerPetalProjectile extends Projectile {
+    private ParticleEmitter emitter;
+    private ParticleEmitter trail;
     public FlowerPetalProjectile(EntityType<FlowerPetalProjectile> entityType, Level level) {
         super(entityType, level);
     }
@@ -34,6 +39,14 @@ public class FlowerPetalProjectile extends Projectile {
     public void baseTick() {
         super.baseTick();
 
+        if (level().isClientSide && (emitter == null || trail == null)) {
+            this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("flower_petal"));
+            this.trail = new ParticleEmitter(level(), position(), Confluence.asResource("flower_petal_trail"));
+            emitter.attachEntity(this);
+            trail.attachEntity(this);
+            PSGameClient.LOADER.addEmitter(emitter, false);
+            PSGameClient.LOADER.addEmitter(trail, false);
+        }
         HitResult hitresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
         checkInsideBlocks();
         HitResult.Type hitresult$type = hitresult.getType();

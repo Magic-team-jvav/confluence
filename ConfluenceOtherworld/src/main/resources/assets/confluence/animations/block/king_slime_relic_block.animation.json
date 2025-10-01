@@ -1,7 +1,8 @@
 {
 	"format_version": "1.8.0",
 	"animations": {
-		"animation.unknown.new": {
+		"running": {
+			"loop": true,
 			"animation_length": 4,
 			"bones": {
 				"bone9": {

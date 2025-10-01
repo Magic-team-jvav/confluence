@@ -4,10 +4,8 @@ import net.minecraft.Util;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.gui.TooltipManager;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.*;
@@ -2306,7 +2304,7 @@ public class ModChineseProvider extends LanguageProvider {
 //        add("bestiary.entity.terra_entity.ragged_caster.desc", "褴褛邪教徒法师身为褴褛兄弟会成员，能施展被诅咒的魔法，让受害者在彻底的黑暗中无助地迷失方向。");
 //        add("bestiary.entity.terra_entity.necromancer_armored.desc", "生前，这些身着盔甲的巫士便佩戴着所属教团的死灵标旗，即便化为亡灵，这份印记也将永远伴随它们……直至永恒。");
 //        add("bestiary.entity.terra_entity.ragged_caster_open_coat.desc", "敞开外衣的褴褛邪教徒法师身为褴褛兄弟会成员，能施展被诅咒的魔法，让受害者在彻底的黑暗中无助地迷失方向。");
-       add("bestiary.entity.terra_entity.cursed_skull.desc", "受黑暗仪式影响，这颗诅咒骷髅头已能自行漂浮移动，主动追逐活物。一旦被它触碰，受害者将失去所有防御能力。");
+        add("bestiary.entity.terra_entity.cursed_skull.desc", "受黑暗仪式影响，这颗诅咒骷髅头已能自行漂浮移动，主动追逐活物。一旦被它触碰，受害者将失去所有防御能力。");
 //        add("bestiary.entity.terra_entity.giant_cursed_skull.desc", "没人知晓巨型诅咒骷髅头的来历，但与体型较小的同类一样，它们会用魔法搜寻活人，并对其施加诅咒。");
         add("bestiary.entity.terra_entity.dungeon_guardian.desc", "地牢守卫是镇守地牢大门的致命哨兵，任何被判定为“无资格进入”的生物，都绝无可能通过它的防线！");
 //        add("bestiary.entity.terra_entity.dungeon_spirit.desc", "在地牢中，部分实力较强的被诅咒住民体内，有时会聚集起高浓度的灵气，最终化为地牢幽魂。");
@@ -3609,7 +3607,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.DAYBLOOM.get(), "太阳花");
         add(MaterialItems.DEATHWEED.get(), "死亡草");
         add(MaterialItems.JUNGLE_SPORE.get(), "丛林孢子");
-
 
 
         add(SwordItems.COPPER_SHORT_SWORD.get(), "铜短剑");
@@ -5074,8 +5071,6 @@ public class ModChineseProvider extends LanguageProvider {
         addEffect(TEEffects.CRIMSON_STORM.get(), "猩红风暴", "你已陷入风暴，无可逃脱。");
         addEffect(TEEffects.HORRIFIED.get(), "惊恐", "你已看到污秽之物，无可逃脱。");
         addEffect(TEEffects.THE_TONGUE.get(), "狂卷之舌", "你被吸入嘴中");
-
-        add(TooltipManager.prefix, "** 赞助者物品 **");
 
         add("item.confluence.spawn_eggs", "%s刷怪蛋");
 

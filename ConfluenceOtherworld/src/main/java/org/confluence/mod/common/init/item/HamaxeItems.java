@@ -13,8 +13,8 @@ import static org.confluence.mod.common.init.item.ModItems.unbreakable;
 public class HamaxeItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
 
-    public static final DeferredItem<BaseHamaxeItem> METEOR_HAMAXE = ITEMS.register("meteor_hamaxe", () -> new BaseHamaxeItem(ModTiers.METEOR, 20, 0.8F, unbreakable(), attributes(0, 0.7), ModRarity.BLUE));
-    public static final DeferredItem<BaseHamaxeItem> MOLTEN_HAMAXE = ITEMS.register("molten_hamaxe", () -> new BaseHamaxeItem(ModTiers.HELLSTONE, 23, 0.8F, unbreakable(), attributes(0, 0.7), ModRarity.ORANGE));
+    public static final DeferredItem<BaseHamaxeItem> METEOR_HAMAXE = ITEMS.register("meteor_hamaxe", () -> new BaseHamaxeItem(ModTiers.METEOR, 20, 0.8F, unbreakable(), attributes(0, 0.7), ModRarity.BLUE).hasImage());
+    public static final DeferredItem<BaseHamaxeItem> MOLTEN_HAMAXE = ITEMS.register("molten_hamaxe", () -> new BaseHamaxeItem(ModTiers.HELLSTONE, 23, 0.8F, unbreakable(), attributes(0, 0.7), ModRarity.ORANGE).hasImage());
     public static final DeferredItem<BaseHamaxeItem> HAEMORRHAXE = ITEMS.register("haemorrhaxe", () -> new BaseHamaxeItem(ModTiers.CRIMTANE, 30, 0.9F, unbreakable(), attributes(0, 0.7), ModRarity.LIGHT_RED));
     public static final DeferredItem<BaseHamaxeItem> SPECTRE_HAMAXE = ITEMS.register("spectre_hamaxe", () -> new BaseHamaxeItem(ModTiers.SPECTRE, 45, 1.0F, unbreakable(), attributes(3, 0.7), ModRarity.YELLOW));
     public static final DeferredItem<BaseHamaxeItem> SOLAR_FLARE_HAMAXE = ITEMS.register("solar_flare_hamaxe", () -> new BaseHamaxeItem(ModTiers.LUMINITE, 60, 1.2F, unbreakable(), attributes(4, 0.7), ModRarity.RED));

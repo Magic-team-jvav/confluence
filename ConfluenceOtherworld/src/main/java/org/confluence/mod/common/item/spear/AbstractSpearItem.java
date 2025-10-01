@@ -36,7 +36,7 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.item.ModItems;
-import org.confluence.mod.common.item.SizedTextureComponent;
+import org.confluence.mod.common.item.AltImageComponent;
 import org.confluence.mod.util.ModUtils;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
@@ -97,7 +97,7 @@ public abstract class AbstractSpearItem extends TooltipItem implements GeoItem {
     @Override
     public Optional<TooltipComponent> getTooltipImage(ItemStack stack) {
         if (component == null) {
-            this.component = SizedTextureComponent.of(32, 32, stack.getItem(), "spear");
+            this.component = AltImageComponent.of(stack.getItem());
         }
         return Optional.of(component);
     }

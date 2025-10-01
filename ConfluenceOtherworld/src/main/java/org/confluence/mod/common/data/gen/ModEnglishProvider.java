@@ -10,7 +10,6 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import org.confluence.lib.mixin.accessor.LanguageProviderAccessor;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.client.gui.TooltipManager;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.*;
@@ -2668,8 +2667,6 @@ public class ModEnglishProvider extends LanguageProvider {
         addEffect(TEEffects.CRIMSON_STORM.get(), "You are trapped in the storm, there is no escape.");
         addEffect(TEEffects.HORRIFIED.get(), "You have seen something nasty, there is no escape.");
         addEffect(TEEffects.THE_TONGUE.get(), "You are being sucked into the mouth");
-
-        add(TooltipManager.prefix, "** Sponsor Item **");
 
         add("item.confluence.spawn_eggs", "%s Spawn Egg");
 

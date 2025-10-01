@@ -33,9 +33,9 @@ public class HammerItems {
     public static final DeferredItem<BaseHammerItem> TUNGSTEN_HAMMER = ITEMS.register("tungsten_hammer", () -> new BaseHammerItem(ModTiers.TUNGSTEN, 9, 1.3F, new Item.Properties(), attributes(0, 0.55), ModRarity.WHITE));
     public static final DeferredItem<BaseHammerItem> GOLDEN_HAMMER = ITEMS.register("golden_hammer", () -> new BaseHammerItem(ModTiers.GOLD, 9, 1.5F, new Item.Properties(), attributes(0, 0.55), ModRarity.WHITE));
     public static final DeferredItem<BaseHammerItem> PLATINUM_HAMMER = ITEMS.register("platinum_hammer", () -> new BaseHammerItem(ModTiers.PLATINUM, 10, 1.6F, new Item.Properties(), attributes(0, 0.55), ModRarity.WHITE));
-    public static final DeferredItem<BaseHammerItem> THE_BREAKER = ITEMS.register("the_breaker", () -> new BaseHammerItem(ModTiers.DEMONITE, 11, 1.6F, unbreakable(), attributes(0, 0.6), ModRarity.BLUE).image(32, 32));
-    public static final DeferredItem<BaseHammerItem> FLESH_GRINDER = ITEMS.register("flesh_grinder", () -> new BaseHammerItem(ModTiers.CRIMTANE, 12, 1.6F, unbreakable(), attributes(0, 0.6), ModRarity.BLUE).image(32, 32));
-    public static final DeferredItem<BaseHammerItem> ROCKFISH = ITEMS.register("rockfish", () -> new BaseHammerItem(new SimpleTier(ModTags.Blocks.NEEDS_4_LEVEL, 10000, 9, 3, 10, () -> Ingredient.of(ItemTags.FISHES)), 13, 1.2F, unbreakable(), attributes(0, 0.6), ModRarity.ORANGE).image(24, 24));
+    public static final DeferredItem<BaseHammerItem> THE_BREAKER = ITEMS.register("the_breaker", () -> new BaseHammerItem(ModTiers.DEMONITE, 11, 1.6F, unbreakable(), attributes(0, 0.6), ModRarity.BLUE).hasImage());
+    public static final DeferredItem<BaseHammerItem> FLESH_GRINDER = ITEMS.register("flesh_grinder", () -> new BaseHammerItem(ModTiers.CRIMTANE, 12, 1.6F, unbreakable(), attributes(0, 0.6), ModRarity.BLUE).hasImage());
+    public static final DeferredItem<BaseHammerItem> ROCKFISH = ITEMS.register("rockfish", () -> new BaseHammerItem(new SimpleTier(ModTags.Blocks.NEEDS_4_LEVEL, 10000, 9, 3, 10, () -> Ingredient.of(ItemTags.FISHES)), 13, 1.2F, unbreakable(), attributes(0, 0.6), ModRarity.ORANGE).hasImage());
 
     public static final DeferredItem<BaseHammerItem> PWNHAMMER = ITEMS.register("pwnhammer", () -> new BaseHammerItem(ModTiers.HALLOWED, 14, 2.0F, unbreakable(), attributes(0, 0.75), ModRarity.LIGHT_RED));
     public static final DeferredItem<BaseHammerItem> HAMMUSH = ITEMS.register("hammush", () -> new BaseHammerItem(ModTiers.SHROOMITE, 16, 2.2F, unbreakable(), attributes(0, 0.75), ModRarity.LIME));

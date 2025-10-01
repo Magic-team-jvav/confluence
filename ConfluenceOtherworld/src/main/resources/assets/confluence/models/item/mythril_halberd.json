@@ -113,7 +113,7 @@
         "head": {
             "parent": "minecraft:item/generated",
             "textures": {
-                "layer0": "confluence:item/spear/mythril_halberd_inventory"
+                "layer0": "confluence:item/spear/mythril_halberd_head"
             }
         }
     }

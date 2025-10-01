@@ -30,17 +30,15 @@ import org.confluence.mod.common.component.SwordProjectileComponent;
 import org.confluence.mod.common.entity.projectile.sword.SwordProjectile;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.item.ModItems;
-import org.confluence.mod.common.item.SizedTextureComponent;
+import org.confluence.mod.common.item.AltImageComponent;
 import org.confluence.mod.common.item.sword.legacy.InventoryTickStrategy;
 import org.confluence.mod.common.item.sword.legacy.SwordPrefabs;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terraentity.data.component.EffectStrategyComponent;
 import org.confluence.terraentity.init.TEDataComponentTypes;
 import org.confluence.terraentity.registries.hit_effect.IEffectStrategy;
-import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.joml.Vector2i;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
@@ -91,8 +89,8 @@ public class BaseSwordItem extends SwordItem {
 
     @Override
     public Optional<TooltipComponent> getTooltipImage(ItemStack stack) {
-        if (component == null && modifier != null && modifier.imageSize != null) {
-            this.component = SizedTextureComponent.of(modifier.imageSize.x, modifier.imageSize.y, stack.getItem(), "sword");
+        if (component == null && modifier.hasImage) {
+            this.component = AltImageComponent.of(stack.getItem());
         }
         return Optional.ofNullable(component);
     }
@@ -155,11 +153,10 @@ public class BaseSwordItem extends SwordItem {
         private int modifyCount = 0;
         protected List<Consumer<Item.Properties>> modifier = new ArrayList<>();
         List<Consumer<MutableComponent>> tooltipsModifier = new ArrayList<>();
-        private @Nullable Vector2i imageSize;
+        boolean hasImage;
 
-        @ApiStatus.Internal
-        public ModifierBuilder image(int width, int height) {
-            this.imageSize = new Vector2i(width, height);
+        public ModifierBuilder hasImage() {
+            this.hasImage = true;
             return this;
         }
 

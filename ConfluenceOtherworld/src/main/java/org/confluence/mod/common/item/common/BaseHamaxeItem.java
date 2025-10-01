@@ -14,6 +14,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.context.UseOnContext;
@@ -29,15 +30,21 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.component.ToolMode;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.ModItems;
+import org.confluence.mod.common.item.AltImageComponent;
 import org.confluence.mod.util.ModUtils;
+import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class BaseHamaxeItem extends DiggerItem {
+    private @Nullable TooltipComponent component;
+    private boolean hasImage;
+
     public BaseHamaxeItem(Tier tier, float rawDamage, float rawSpeed, Properties properties, ModRarity rarity) {
         super(tier, ModTags.Blocks.MINEABLE_WITH_HAMAXE, properties.component(ConfluenceMagicLib.MOD_RARITY, rarity)
                 .component(DataComponents.ATTRIBUTE_MODIFIERS, createAttributes(tier, (rawDamage - tier.getAttackDamageBonus() - 1), rawSpeed - 4))
@@ -48,6 +55,19 @@ public class BaseHamaxeItem extends DiggerItem {
         super(tier, ModTags.Blocks.MINEABLE_WITH_HAMAXE, properties.component(ConfluenceMagicLib.MOD_RARITY, rarity)
                 .component(DataComponents.ATTRIBUTE_MODIFIERS, ModItems.createAttributes(tier, (rawDamage - tier.getAttackDamageBonus() - 1), rawSpeed - 4, consumer))
                 .component(ConfluenceMagicLib.TOOL_MODE, new ToolMode(0)));
+    }
+
+    public BaseHamaxeItem hasImage() {
+        this.hasImage = true;
+        return this;
+    }
+
+    @Override
+    public Optional<TooltipComponent> getTooltipImage(ItemStack stack) {
+        if (component == null && hasImage) {
+            this.component = AltImageComponent.of(stack.getItem());
+        }
+        return Optional.ofNullable(component);
     }
 
     @Override

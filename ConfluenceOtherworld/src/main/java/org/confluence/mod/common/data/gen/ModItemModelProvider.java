@@ -213,18 +213,17 @@ public class ModItemModelProvider extends ItemModelProvider {
     private void separateModel(DeferredItem<?> deferredItem, ModelFile parentModel, String parentPath) {
         String path = deferredItem.getId().getPath();
         getBuilder(path).guiLight(BlockModel.GuiLight.FRONT).customLoader((builder, helper) -> {
-            ResourceLocation texture = Confluence.asResource("item/" + parentPath + path);
-            ItemModelBuilder standaloneModel = new ItemModelBuilder(Confluence.asResource("item/" + path + "_inventory"), helper)
+            ResourceLocation none = Confluence.asResource("");
+            ResourceLocation bigTexture = Confluence.asResource("item/" + parentPath + path);
+            ItemModelBuilder smallModel = new ItemModelBuilder(none, helper)
                     .parent(itemGenerated)
-                    .texture("layer0", texture.withSuffix("_inventory"));
+                    .texture("layer0", bigTexture.withSuffix("_inventory"));
             return SeparateTransformsModelBuilder.begin(builder, helper)
-                    .base(new ItemModelBuilder(Confluence.asResource("item/" + path + "_base"), helper)
-                            .parent(parentModel)
-                            .texture("layer0", texture))
-                    .perspective(ItemDisplayContext.HEAD, standaloneModel)
-                    .perspective(ItemDisplayContext.GUI, standaloneModel)
-                    .perspective(ItemDisplayContext.GROUND, standaloneModel)
-                    .perspective(ItemDisplayContext.FIXED, standaloneModel);
+                    .base(new ItemModelBuilder(none, helper).parent(parentModel).texture("layer0", bigTexture))
+                    .perspective(ItemDisplayContext.HEAD, new ItemModelBuilder(none, helper).parent(itemGenerated).texture("layer0", bigTexture.withSuffix("_head")))
+                    .perspective(ItemDisplayContext.GUI, smallModel)
+                    .perspective(ItemDisplayContext.GROUND, smallModel)
+                    .perspective(ItemDisplayContext.FIXED, smallModel);
         });
         skip.add(deferredItem.get());
     }

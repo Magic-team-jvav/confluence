@@ -108,7 +108,7 @@
     "head": {
       "parent": "minecraft:item/generated",
       "textures": {
-        "layer0": "confluence:item/spear/spear_inventory"
+        "layer0": "confluence:item/spear/spear_head"
       }
     }
   }

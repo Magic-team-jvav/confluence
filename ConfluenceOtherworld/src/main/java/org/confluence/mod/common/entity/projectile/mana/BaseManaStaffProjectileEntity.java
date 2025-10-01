@@ -94,6 +94,7 @@ public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
         if (level().isClientSide && emitter == null) {
             Variant variant = getVariant();
             ResourceLocation particleId;
+            MolangExp expression = MolangExp.EMPTY;
             if (variant == Variant.FROST) {
                 particleId = Confluence.asResource("frost_projectile");
             } else if (variant == Variant.SPARK) {
@@ -102,12 +103,13 @@ public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
                 particleId = Confluence.asResource("thunder_zapper");
             } else {
                 particleId = Confluence.asResource("base_mana_staff_projectile");
+                expression = new MolangExp(Map.of(
+                        "variable.red", Float.toString(variant.color.red()),
+                        "variable.green", Float.toString(variant.color.green()),
+                        "variable.blue", Float.toString(variant.color.blue())
+                ));
             }
-            this.emitter = new ParticleEmitter(level(), position(), particleId, new MolangExp(Map.of(
-                    "variable.red", Float.toString(variant.color.red()),
-                    "variable.green", Float.toString(variant.color.green()),
-                    "variable.blue", Float.toString(variant.color.blue())
-            )));
+            this.emitter = new ParticleEmitter(level(), position(), particleId, expression);
             emitter.attachEntity(this);
             PSGameClient.LOADER.addEmitter(emitter, false);
         }

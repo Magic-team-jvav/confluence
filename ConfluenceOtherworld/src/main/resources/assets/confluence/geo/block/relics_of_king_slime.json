@@ -95,7 +95,10 @@
 					"pivot": [0, 8, 0],
 					"rotation": [0, 180, 0],
 					"locators": {
-						"locator": [0, 8, 0]
+						"locator": {
+							"offset": [0, 8, 0],
+							"rotation": [0, 0, -180]
+						}
 					}
 				},
 				{

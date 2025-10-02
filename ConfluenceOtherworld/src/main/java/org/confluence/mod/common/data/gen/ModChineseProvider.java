@@ -1836,8 +1836,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("terra_entity.subtitle.summon_eye", "飞行召唤物：召唤");
         add("terra_entity.subtitle.summon_imp", "小鬼：召唤");
         //标签
-        add("tag.fluid.confluence.fishing_able", "可钓鱼液体");
-        add("tag.fluid.confluence.not_lava", "无熔岩");
+        add("tag.fluid.confluence.fishing_able", "可钓鱼");
+        add("tag.fluid.confluence.not_lava", "非熔岩");
         add("tag.item.confluence.ammo", "弹药");
         add("tag.item.confluence.boss_summoning", "Boss召唤物");
         add("tag.item.confluence.bottomless", "无底桶");

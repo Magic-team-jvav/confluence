@@ -1,0 +1,49 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "confluence:item/sword/breaker_blade_inventory"
+  },
+  "display": {
+    "fixed": {
+      "rotation": [
+        0,
+        0,
+        90
+      ],
+      "scale": [
+        2,
+        2,
+        1
+      ],
+      "translation": [
+        0,
+        0,
+        0
+      ]
+    },
+    "ground": {
+      "scale": [
+        1,
+        1,
+        0.5
+      ],
+      "translation": [
+        0,
+        6,
+        0
+      ]
+    },
+    "gui": {
+      "scale": [
+        2,
+        2,
+        1
+      ],
+      "translation": [
+        5,
+        8,
+        0
+      ]
+    }
+  }
+}

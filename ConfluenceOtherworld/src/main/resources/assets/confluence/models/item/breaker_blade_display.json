@@ -1,0 +1,76 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "confluence:item/sword/breaker_blade_inventory"
+  },
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        0,
+        270,
+        -67.5
+      ],
+      "scale": [
+        4,
+        4,
+        4
+      ],
+      "translation": [
+        2,
+        2,
+        0
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        67.5,
+        -270,
+        0
+      ],
+      "scale": [
+        4,
+        4,
+        1
+      ],
+      "translation": [
+        2,
+        2,
+        0
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        0,
+        270,
+        -45
+      ],
+      "scale": [
+        4,
+        4,
+        1
+      ],
+      "translation": [
+        0,
+        32.5,
+        2
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        45,
+        -270,
+        0
+      ],
+      "scale": [
+        4,
+        4,
+        1
+      ],
+      "translation": [
+        0,
+        32.5,
+        2
+      ]
+    }
+  }
+}

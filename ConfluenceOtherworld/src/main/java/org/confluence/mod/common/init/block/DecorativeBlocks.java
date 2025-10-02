@@ -279,13 +279,6 @@ public class DecorativeBlocks {
     public static final DeferredBlock<ChainBlock> SILK_CHAIN = copyBlockRegister("silk_chain", CHAIN, properties -> new ChainBlock(properties.mapColor(MapColor.TERRACOTTA_WHITE)));
     public static final DeferredBlock<ChainBlock> BONE_CHAIN = copyBlockRegister("bone_chain", CHAIN, properties -> new ChainBlock(properties.mapColor(MapColor.TERRACOTTA_WHITE)));
 
-    // boss圣物
-    public static final DeferredBlock<KingSlimeRelicBlock> KING_SLIME_RELIC = registerWithItem("king_slime_relic", () -> new KingSlimeRelicBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_CLUSTER).mapColor(MapColor.COLOR_YELLOW).lightLevel(state -> 7)), KingSlimeRelicBlock.BItem::new);
-    public static final Supplier<BlockEntityType<KingSlimeRelicBlock.BEntity>> KING_SLIME_RELIC_ENTITY = ModBlocks.BLOCK_ENTITIES.register("king_slime_relic_entity", () -> BlockEntityType.Builder.of(KingSlimeRelicBlock.BEntity::new, KING_SLIME_RELIC.get()).build(DSL.remainderType()));
-
-    public static final DeferredBlock<EyeOfCthulhuRelicBlock> EYE_OF_CTHULHU_RELIC = registerWithItem("eye_of_cthulhu_relic", () -> new EyeOfCthulhuRelicBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_CLUSTER).mapColor(MapColor.COLOR_YELLOW).lightLevel(state -> 7)), EyeOfCthulhuRelicBlock.BItem::new);
-    public static final Supplier<BlockEntityType<EyeOfCthulhuRelicBlock.BEntity>> EYE_OF_CTHULHU_RELIC_ENTITY = ModBlocks.BLOCK_ENTITIES.register("eye_of_cthulhu_relic_entity", () -> BlockEntityType.Builder.of(EyeOfCthulhuRelicBlock.BEntity::new, EYE_OF_CTHULHU_RELIC.get()).build(DSL.remainderType()));
-
 
     // 神庙
     public static final BlockSetType LIHZAHRD = BlockSetType.register(new BlockSetType("confluence:lihzahrd",

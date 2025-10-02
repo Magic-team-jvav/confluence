@@ -52,7 +52,7 @@ public class BallOfFrostProjectile extends AbstractManaProjectile {
         }
         setDeltaMovement(motion);
 
-        if (level().isClientSide && (emitter == null || trail == null)) {
+        if (level().isClientSide && (emitter == null || emitter.isRemoved() || trail == null || trail.isRemoved())) {
             this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("ball_of_frost"));
             this.trail = new ParticleEmitter(level(), position(), Confluence.asResource("ball_of_frost_trail"));
             emitter.attachEntity(this);

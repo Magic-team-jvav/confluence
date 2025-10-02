@@ -39,7 +39,7 @@ public class FlowerPetalProjectile extends Projectile {
     public void baseTick() {
         super.baseTick();
 
-        if (level().isClientSide && (emitter == null || trail == null)) {
+        if (level().isClientSide && (emitter == null || emitter.isRemoved() || trail == null || trail.isRemoved())) {
             this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("flower_petal"));
             this.trail = new ParticleEmitter(level(), position(), Confluence.asResource("flower_petal_trail"));
             emitter.attachEntity(this);

@@ -55,7 +55,7 @@ public class BallOfFireProjectile extends AbstractManaProjectile {
         }
         setDeltaMovement(motion.scale(0.99).add(0.0, -0.04, 0.0));
 
-        if (level().isClientSide && (emitter == null || trail == null)) {
+        if (level().isClientSide && (emitter == null || emitter.isRemoved() || trail == null || trail.isRemoved())) {
             this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("ball_of_fire"));
             this.trail = new ParticleEmitter(level(), position(), Confluence.asResource("ball_of_fire_trail"));
             emitter.attachEntity(this);

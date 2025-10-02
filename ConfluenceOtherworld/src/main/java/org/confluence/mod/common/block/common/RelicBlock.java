@@ -3,6 +3,7 @@ package org.confluence.mod.common.block.common;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -18,11 +19,9 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
-import org.confluence.mod.Confluence;
+import org.confluence.mod.client.model.block.RelicBlockModel;
+import org.confluence.mod.client.renderer.item.SimpleGeoItemRenderer;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
-import org.confluence.terra_furniture.client.model.CacheItemRefBlockModel;
-import org.confluence.terra_furniture.client.renderer.item.SimpleGeoItemRendererProvider;
-import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;
@@ -37,69 +36,71 @@ import java.util.function.Consumer;
 public class RelicBlock extends HorizontalDirectionalBlock implements EntityBlock {
     public static final MapCodec<RelicBlock> CODEC = simpleCodec(RelicBlock::new);
     private static final VoxelShape SHAPE = Shapes.box(0.1875, 0.0, 0.1875, 0.8125, 1.0, 0.8125);
+
     public RelicBlock(Properties properties) {
         super(properties);
         registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
 
     @Override
-    protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
+    protected MapCodec<RelicBlock> codec() {
         return CODEC;
     }
-    public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        return defaultBlockState().setValue(FACING, pContext.getHorizontalDirection().getOpposite());
+
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        return defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(FACING);
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(FACING);
     }
 
     @Override
-    public RenderShape getRenderShape(BlockState pState) {
+    public RenderShape getRenderShape(BlockState state) {
         return RenderShape.ENTITYBLOCK_ANIMATED;
     }
 
     @Override
-    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return SHAPE;
     }
 
     @Override
-    public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new BEntity(blockPos, blockState);
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new BEntity(pos, state);
     }
 
     public static class BEntity extends BlockEntity implements GeoBlockEntity {
-        private final AnimatableInstanceCache CACHE = GeckoLibUtil.createInstanceCache(this);
+        private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-        public BEntity(BlockPos pPos, BlockState pBlockState) {
-            super(DecorativeBlocks.RELIC_ENTITY.get(), pPos, pBlockState);
+        public BEntity(BlockPos pos, BlockState state) {
+            super(DecorativeBlocks.RELIC_ENTITY.get(), pos, state);
         }
 
         @Override
         public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-            controllers.add(new AnimationController<>(this, state ->
-                state.setAndContinue(RawAnimation.begin().thenLoop("running")))
-            );
+            RawAnimation running = RawAnimation.begin().thenLoop("running");
+            controllers.add(new AnimationController<>(this, state -> state.setAndContinue(running)));
         }
 
         @Override
         public AnimatableInstanceCache getAnimatableInstanceCache() {
-            return CACHE;
+            return cache;
         }
     }
 
     public static class BItem extends BlockItem implements GeoItem {
-        private final AnimatableInstanceCache CACHE = GeckoLibUtil.createInstanceCache(this);
+        private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
-        public BItem(RelicBlock pBlock) {
-            super(pBlock, new Properties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.GREEN));
+        public BItem(RelicBlock block) {
+            super(block, new Properties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.GREEN));
         }
 
         @Override
         public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
-            consumer.accept(new SimpleGeoItemRendererProvider<>(new CacheItemRefBlockModel<>(Confluence::asResource)));
+            ResourceLocation[] locations = RelicBlockModel.CACHE.get(getBlock());
+            consumer.accept(new SimpleGeoItemRenderer<>(locations[0], locations[1], locations[2]));
         }
 
         @Override
@@ -107,7 +108,7 @@ public class RelicBlock extends HorizontalDirectionalBlock implements EntityBloc
 
         @Override
         public AnimatableInstanceCache getAnimatableInstanceCache() {
-            return CACHE;
+            return cache;
         }
     }
 }

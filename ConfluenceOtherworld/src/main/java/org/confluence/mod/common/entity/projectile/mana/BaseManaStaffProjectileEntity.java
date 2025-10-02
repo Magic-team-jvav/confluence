@@ -91,7 +91,7 @@ public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
         }
         setPos(offX, offY, offZ);
 
-        if (level().isClientSide && emitter == null) {
+        if (level().isClientSide && (emitter == null || emitter.isRemoved())) {
             Variant variant = getVariant();
             ResourceLocation particleId;
             MolangExp expression = MolangExp.EMPTY;

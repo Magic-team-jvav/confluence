@@ -20,6 +20,12 @@
 						}
 					}
 				}
+			},
+			"particle_effects": {
+				"0.0": {
+					"effect": "confluence:relic_spark",
+					"locator": "locator"
+				}
 			}
 		}
 	},

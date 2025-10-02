@@ -3,12 +3,14 @@ package org.confluence.mod.common.item.gun;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.item.ArmorItems;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.terra_curio.common.entity.BeeProjectile;
@@ -34,7 +36,12 @@ public class BeeGunItem extends ManaGunItem {
         boolean hasHivePack = TCUtils.hasAccessoriesType(player, TCItems.HIVE$PACK);
         int times = ThreadLocalRandom.current().nextInt(1, hasHivePack ? 5 : 4);
         for (int i = 0; i < times; i++) {
-            BeeProjectile beeProjectile = new BeeProjectile(player.serverLevel(), player, hasHivePack && player.getRandom().nextBoolean());
+            BeeProjectile beeProjectile = new BeeProjectile(player.serverLevel(), player, hasHivePack && player.getRandom().nextBoolean()) {
+                @Override
+                protected DamageSource getDamageSource() {
+                    return ModDamageTypes.of(level(), ModDamageTypes.MAGICAL_PROJECTILE, this, getOwner());
+                }
+            };
             beeProjectile.setPos(player.getX(), player.getEyeY(), player.getZ());
             beeProjectile.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, velocity, inaccuracy);
 

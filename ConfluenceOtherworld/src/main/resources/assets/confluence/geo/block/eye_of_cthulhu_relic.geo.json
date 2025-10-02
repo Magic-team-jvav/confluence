@@ -92,13 +92,9 @@
 				{
 					"name": "bone",
 					"parent": "bone8",
-					"pivot": [0, 8, 0],
-					"rotation": [0, 180, 0],
+					"pivot": [0, 0, 0],
 					"locators": {
-						"locator": {
-							"offset": [0, 8, 0],
-							"rotation": [0, 0, -180]
-						}
+						"locator": [0, 8, 0]
 					}
 				},
 				{

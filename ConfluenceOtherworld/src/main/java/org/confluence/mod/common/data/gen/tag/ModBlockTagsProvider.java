@@ -11,6 +11,7 @@ import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import org.confluence.mod.common.block.common.TombstoneBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.init.ModTags;
@@ -943,7 +944,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                         LIHZAHRD_BRICKS.get(),
                         BLUE_BRICKS.get(),
                         GREEN_BRICKS.get(),
-                        PINK_BRICKS.get(), 
+                        PINK_BRICKS.get(),
                         BLUE_BRICK_COLUMN.get(),
                         GREEN_BRICK_COLUMN.get(),
                         PINK_BRICK_COLUMN.get(),
@@ -1512,6 +1513,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 CORRUPT_CACTUS.get(),
                 HALLOW_CACTUS.get()
         );
+        tag(ModTags.Blocks.RELIC).add(RELIC_BLOCKS.stream().map(DeferredHolder::get).toArray(Block[]::new));
         { // 没沙子是防止河流里的沙子被误判成沙漠
             tag(ModTags.Blocks.HALLOW_DESERT_BLOCKS).add(PEARLSANDSTONE.get(), HARDENED_PEARLSAND_BLOCK.get(), MOISTENED_PEARLSAND_BLOCK.get());
             tag(ModTags.Blocks.HALLOW_TUNDRA_BLOCKS).add(PINK_ICE.get(), PINK_PACKED_ICE.get());

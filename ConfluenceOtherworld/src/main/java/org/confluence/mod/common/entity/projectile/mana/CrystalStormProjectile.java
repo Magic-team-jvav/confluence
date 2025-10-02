@@ -1,6 +1,5 @@
 package org.confluence.mod.common.entity.projectile.mana;
 
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
@@ -41,8 +40,8 @@ public class CrystalStormProjectile extends AbstractManaProjectile {
     public void baseTick() {
         super.baseTick();
 
-        if (!(level() instanceof ServerLevel)) {
-            if (trail == null) {
+        if (level().isClientSide) {
+            if (trail == null || trail.isRemoved()) {
                 this.trail = new ParticleEmitter(level(), position(), Confluence.asResource("crystal_storm_projectile_trail"));
                 trail.attachEntity(this);
                 PSGameClient.LOADER.addEmitter(trail, false);

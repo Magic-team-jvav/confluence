@@ -35,7 +35,7 @@ public class WaterStreamProjectile extends AbstractManaProjectile {
     public void baseTick() {
         super.baseTick();
         if (level().isClientSide) {
-            if (emitter == null) {
+            if (emitter == null || emitter.isRemoved()) {
                 this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("water_stream"));
                 emitter.attachEntity(this);
                 PSGameClient.LOADER.addEmitter(emitter, false);

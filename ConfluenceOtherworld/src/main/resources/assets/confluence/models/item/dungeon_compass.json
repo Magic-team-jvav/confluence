@@ -1,0 +1,11 @@
+{
+    "parent": "minecraft:item/generated",
+    "textures": {
+        "layer0": "confluence:item/tool/dungeon_compass"
+    },
+    "display": {
+        "head": {
+            "scale": [0, 0, 0]
+        }
+    }
+}

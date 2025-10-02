@@ -12,6 +12,7 @@ import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.common.*;
@@ -19,7 +20,11 @@ import org.confluence.mod.common.block.natural.*;
 import org.confluence.mod.common.block.palettes.ConnectedGlassBlock;
 import org.confluence.mod.common.block.palettes.ConnectedStainedGlassBlock;
 import org.confluence.mod.common.init.item.ModItems;
+import org.confluence.terra_furniture.common.init.TFItems;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -27,6 +32,7 @@ import static net.minecraft.world.level.block.Blocks.*;
 
 public class DecorativeBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Confluence.MODID);
+    private static List<DeferredBlock<RelicBlock>> relicBlocks = new LinkedList<>();
 
     // 杂项
     public static final DeferredBlock<MuralBlock> MURAL_BLOCK = registerWithItem("mural_block", () -> new MuralBlock(BlockBehaviour.Properties.ofFullCopy(STONE)));
@@ -279,6 +285,15 @@ public class DecorativeBlocks {
     public static final DeferredBlock<ChainBlock> SILK_CHAIN = copyBlockRegister("silk_chain", CHAIN, properties -> new ChainBlock(properties.mapColor(MapColor.TERRACOTTA_WHITE)));
     public static final DeferredBlock<ChainBlock> BONE_CHAIN = copyBlockRegister("bone_chain", CHAIN, properties -> new ChainBlock(properties.mapColor(MapColor.TERRACOTTA_WHITE)));
 
+    // 圣物
+    public static final DeferredBlock<RelicBlock> KING_SLIME_RELIC = registerRelic("king_slime_relic");
+    public static final DeferredBlock<RelicBlock> EYE_OF_CTHULHU_RELIC = registerRelic("eye_of_cthulhu_relic");
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<RelicBlock.BEntity>> RELIC_ENTITY = ModBlocks.BLOCK_ENTITIES.register("relic_entity", () -> {
+        BlockEntityType<RelicBlock.BEntity> entityType = BlockEntityType.Builder.of(RelicBlock.BEntity::new, relicBlocks.stream().map(DeferredBlock::get).toArray(Block[]::new)).build(DSL.remainderType());
+        relicBlocks = null;
+        return entityType;
+    });
 
     // 神庙
     public static final BlockSetType LIHZAHRD = BlockSetType.register(new BlockSetType("confluence:lihzahrd",
@@ -323,4 +338,11 @@ public class DecorativeBlocks {
         ModItems.BLOCK_ITEMS.register(id, () -> function.apply(object.get()));
         return object;
     }
+    public static @NotNull DeferredBlock<RelicBlock> registerRelic(String id) {
+        DeferredBlock<RelicBlock> block = BLOCKS.register(id, () -> new RelicBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_CLUSTER).mapColor(MapColor.COLOR_YELLOW).lightLevel(state -> 7)));
+        relicBlocks.add(block);
+        TFItems.BLOCK_ITEMS.register(id,() -> new RelicBlock.BItem(block.get()));
+        return block;
+    }
+
 }

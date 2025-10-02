@@ -3398,6 +3398,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(StatueBlocks.STAR_STATUE.get(), "星星雕像");
         add(StatueBlocks.BAST_STATUE.get(), "巴斯特雕像");
 
+        add(DecorativeBlocks.KING_SLIME_RELIC.get(), "史莱姆王圣物");
+        add(DecorativeBlocks.EYE_OF_CTHULHU_RELIC.get(), "克苏鲁之眼圣物");
+
 
         add(ModBlocks.POO.get(), "臭臭");
         add(ModBlocks.WATERLEAF.get(), "水叶草");

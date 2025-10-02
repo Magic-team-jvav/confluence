@@ -49,7 +49,9 @@ import org.confluence.mod.client.gui.hud.*;
 import org.confluence.mod.client.handler.ArrowInBowHandler;
 import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.client.model.WrappedBakedModel;
-import org.confluence.mod.client.model.block.*;
+import org.confluence.mod.client.model.block.AltarBlockModel;
+import org.confluence.mod.client.model.block.LifeCrystalBlockModel;
+import org.confluence.mod.client.model.block.WeatherVaneBlockModel;
 import org.confluence.mod.client.model.entity.TargetDummyModel;
 import org.confluence.mod.client.model.entity.bomb.*;
 import org.confluence.mod.client.model.entity.fishing.BaseFishingHookModel;
@@ -95,6 +97,7 @@ import org.confluence.mod.integration.sodium.dynamiclights.SodiumDynamicLightsHe
 import org.confluence.mod.util.ClientUtils;
 import org.confluence.terra_curio.TerraCurio;
 import org.confluence.terra_curio.client.model.entity.BeeProjectileModel;
+import org.confluence.terra_furniture.client.model.CacheBlockModel;
 import org.confluence.terra_guns.util.TGUtil;
 import org.confluence.terraentity.client.entity.renderer.mob.GeoNegativeVolumeRenderer;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
@@ -360,6 +363,7 @@ public final class ModClientEvents {
         event.registerBlockEntityRenderer(ChestBlocks.BASE_CHEST_ENTITY.get(), BaseChestBlockRenderer::new);
         event.registerBlockEntityRenderer(ChestBlocks.DEATH_CHEST_ENTITY.get(), DeathChestBlockRenderer::new);
         event.registerBlockEntityRenderer(NatureBlocks.LIFE_CRYSTAL_BLOCK_ENTITY.get(), context -> new GeoBlockRenderer<>(new LifeCrystalBlockModel()));
+        event.registerBlockEntityRenderer(DecorativeBlocks.RELIC_ENTITY.get(), context -> new GeoBlockRenderer<>(new CacheBlockModel<>(Confluence::asResource)));
         event.registerBlockEntityRenderer(StatueBlocks.BLOCK_ENTITY.get(), ClientUtils.rendererProvider(MechanicalBlockRenderer::new));
         event.registerBlockEntityRenderer(FunctionalBlocks.COOKING_POT_ENTITY.get(), context -> new GeoBlockRenderer<>(new DefaultedBlockGeoModel<>(Confluence.asResource("cooking_pot"))));
         event.registerBlockEntityRenderer(FunctionalBlocks.ANNOUNCEMENT_BOX_ENTITY.get(), SignRenderer::new);

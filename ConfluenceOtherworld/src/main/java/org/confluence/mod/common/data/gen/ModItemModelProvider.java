@@ -77,7 +77,6 @@ public class ModItemModelProvider extends ItemModelProvider {
         separateModel(AxeItems.AXE_OF_REGROWTH, templateNormal24x, "axe/");
         separateModel(AxeItems.STAFF_OF_REGROWTH, templateNormal24x, "axe/");
         separateModel(PickaxeItems.REAVER_SHARK_PICKAXE, templateReverse24x, "pickaxe/");
-        separateModel(ManaWeaponItems.WEATHER_PAIN, templateReverse24x, "mana_staff/");
 
         getBuilder(SwordItems.NIGHTS_EDGE.getId().getPath()).parent(templateReverse24x).texture("layer0", SwordItems.NIGHTS_EDGE.getId().withPrefix("item/sword/"));
         skip.add(SwordItems.NIGHTS_EDGE.get());

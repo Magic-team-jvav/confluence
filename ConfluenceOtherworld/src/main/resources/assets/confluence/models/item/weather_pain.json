@@ -1,0 +1,36 @@
+{
+  "base": {
+    "parent": "confluence:item/weather_pain_24x",
+    "textures": {
+      "layer0": "confluence:item/mana_staff/weather_pain"
+    }
+  },
+  "gui_light": "front",
+  "loader": "neoforge:separate_transforms",
+  "perspectives": {
+    "fixed": {
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "confluence:item/mana_staff/weather_pain_inventory"
+      }
+    },
+    "ground": {
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "confluence:item/mana_staff/weather_pain_inventory"
+      }
+    },
+    "gui": {
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "confluence:item/mana_staff/weather_pain_inventory"
+      }
+    },
+    "head": {
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "confluence:item/mana_staff/weather_pain_head"
+      }
+    }
+  }
+}

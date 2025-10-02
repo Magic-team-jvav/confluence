@@ -292,10 +292,10 @@ public final class ModClientEvents {
         event.registerEntityRenderer(SHURIKEN_PROJECTILE.get(), ShurikenProjectileRenderer::new);
         event.registerEntityRenderer(SPIKY_BALL_PROJECTILE.get(), SpikyBallProjectileRenderer::new);
         event.registerEntityRenderer(THROWN_WATER_PROJECTILE.get(), ThrownItemRenderer::new);
-        event.registerEntityRenderer(MAGIC_DAGGER_PROJECTILE.get(), NoopRenderer::new); // todo 模型
-        event.registerEntityRenderer(CRYSTAL_STORM_PROJECTILE.get(), NoopRenderer::new); // todo 模型
-        event.registerEntityRenderer(CURSED_FLAMES_PROJECTILE.get(), NoopRenderer::new); // todo 模型
-        event.registerEntityRenderer(FLOWER_PETAL_PROJECTILE.get(), NoopRenderer::new); // todo 模型
+        event.registerEntityRenderer(MAGIC_DAGGER_PROJECTILE.get(), NoopRenderer::new);
+        event.registerEntityRenderer(CRYSTAL_STORM_PROJECTILE.get(), NoopRenderer::new);
+        event.registerEntityRenderer(CURSED_FLAMES_PROJECTILE.get(), NoopRenderer::new);
+        event.registerEntityRenderer(FLOWER_PETAL_PROJECTILE.get(), NoopRenderer::new);
         event.registerEntityRenderer(TITANIUM_SHARDS_PROJECTILE.get(), NoopRenderer::new); // todo 模型
         event.registerEntityRenderer(FALLING_STAR_ITEM_ENTITY.get(), FallingStarRenderer::new);
         event.registerEntityRenderer(TREASURE_BAG_ITEM_ENTITY.get(), TreasureBagRenderer::new);
@@ -308,7 +308,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(FLAME_CLOUD.get(), NoopRenderer::new); // todo 模型
         event.registerEntityRenderer(SUPER_SPIKY_BALL_PROJECTILE.get(), NoopRenderer::new); // todo 模型
         event.registerEntityRenderer(SPEAR.get(), NoopRenderer::new); // todo 模型
-        event.registerEntityRenderer(BALL_OF_FROST_PROJECTILE.get(), NoopRenderer::new); // todo 模型
+        event.registerEntityRenderer(BALL_OF_FROST_PROJECTILE.get(), NoopRenderer::new);
         event.registerEntityRenderer(DEMON_SCYTHE_PROJECTILE.get(), DemonScytheProjectileRenderer::new);
         event.registerEntityRenderer(SKULL_PROJECTILE.get(), SkullProjectileRenderer::new);
         event.registerEntityRenderer(BLOOD_CLOUD_PROJECTILE.get(), context -> new GeoNegativeVolumeRenderer<>(context, new BloodCloudProjectileModel(), false, 2, -0.2F));

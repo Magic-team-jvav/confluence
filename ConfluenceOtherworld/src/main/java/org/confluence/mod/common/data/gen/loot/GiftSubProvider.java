@@ -1186,6 +1186,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(LootItem.lootTableItem(TERideableItems.SLIMY_SADDLE))
                         .add(EmptyLootItem.emptyItem())
                 )
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(DecorativeBlocks.KING_SLIME_RELIC)))
         );
 
 
@@ -1220,6 +1221,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .apply(SetItemCountFunction.setCount(new ConstantValue(50)))
                 ))
                 .withPool(binoculars_1$30)
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(DecorativeBlocks.EYE_OF_CTHULHU_RELIC)))
         );
 
 
@@ -1248,6 +1250,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .apply(SetItemCountFunction.setCount(new ConstantValue(50)))
                 ))
                 .withPool(binoculars_1$30)
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(DecorativeBlocks.EYE_OF_CTHULHU_RELIC)))
         );
 
 
@@ -1276,6 +1279,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .apply(SetItemCountFunction.setCount(new ConstantValue(50)))
                 ))
                 .withPool(binoculars_1$30)
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(DecorativeBlocks.EYE_OF_CTHULHU_RELIC)))
         );
     }
 

@@ -504,6 +504,9 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(SAPPHIRE_CHAIN.get());
         dropSelf(DIAMOND_CHAIN.get());
         dropSelf(AMETHYST_CHAIN.get());
+        // 圣物
+        dropSelf(KING_SLIME_RELIC.get());
+        dropSelf(EYE_OF_CTHULHU_RELIC.get());
         // 片
         dropWhenSilkTouch(SAND_LAYER_BLOCK.get());
         dropWhenSilkTouch(RED_SAND_LAYER_BLOCK.get());

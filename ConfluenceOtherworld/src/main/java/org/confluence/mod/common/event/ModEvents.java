@@ -39,6 +39,7 @@ import net.neoforged.neoforge.event.BlockEntityTypeAddBlocksEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.ModifyDefaultComponentsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
+import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.fluids.RegisterCauldronFluidContentEvent;
@@ -76,6 +77,7 @@ import org.confluence.mod.common.init.item.ArmorItems;
 import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.integration.jei.RecipeTransferPacketC2S;
+import org.confluence.mod.integration.terra_entity.TEEvents;
 import org.confluence.mod.integration.terra_entity.TEItemComponentModify;
 import org.confluence.mod.integration.terra_entity.TERemoval;
 import org.confluence.mod.integration.waystones.WaystonesHelper;
@@ -85,6 +87,7 @@ import org.confluence.mod.util.DateUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.phase_journey.api.PhaseJourneyEvent;
 import org.confluence.terra_curio.api.event.RegisterAccessoriesComponentUpdateEvent;
+import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTabs;
 import org.confluence.terraentity.init.entity.TEAnimals;
@@ -231,9 +234,14 @@ public final class ModEvents {
     }
 
     @SubscribeEvent
-    public static void registerAttributes(EntityAttributeCreationEvent event) {
+    public static void entityAttributeCreation(EntityAttributeCreationEvent event) {
         event.put(ModEntities.TARGET_DUMMY.get(), TargetDummyEntity.createAttributes().build());
         event.put(ModEntities.BESTIARY_ENTRY_DISPLAY.get(), LivingEntity.createLivingAttributes().build());
+    }
+
+    @SubscribeEvent
+    public static void entityAttributeModification(EntityAttributeModificationEvent event) {
+        TEEvents.registerArmorPenetration((type, value) -> event.add(type, TCAttributes.ARMOR_PENETRATION, value));
     }
 
     @SubscribeEvent

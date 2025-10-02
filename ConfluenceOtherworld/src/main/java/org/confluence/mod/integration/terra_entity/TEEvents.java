@@ -1,5 +1,7 @@
 package org.confluence.mod.integration.terra_entity;
 
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -7,6 +9,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.integration.terra_entity.init.ModEffectStrategies;
 import org.confluence.mod.integration.terra_entity.init.ModTradeProviders;
 import org.confluence.terraentity.api.event.WhipRegisterModifyEvent;
+import org.confluence.terraentity.init.entity.TEBossEntities;
 
 @EventBusSubscriber(modid = Confluence.MODID, bus = EventBusSubscriber.Bus.MOD)
 public final class TEEvents {
@@ -20,5 +23,16 @@ public final class TEEvents {
         ModTradeProviders.TYPES.register(eventBus);
         ModEffectStrategies.EFFECT_STRATEGY.register(eventBus);
         AdditionalChesterTypes.register(eventBus);
+    }
+
+    public static void registerArmorPenetration(ArmorPenetrationRegistration registration) {
+        registration.register(TEBossEntities.QUEEN_BEE.get(), 2);
+        registration.register(TEBossEntities.SKELETRON.get(), 4);
+        registration.register(TEBossEntities.SKELETRON_HAND.get(), 4);
+    }
+
+    @FunctionalInterface
+    public interface ArmorPenetrationRegistration {
+        void register(EntityType<? extends LivingEntity> type, double value);
     }
 }

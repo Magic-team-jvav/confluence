@@ -20,7 +20,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
@@ -56,9 +56,9 @@ public class TerraStyleExplosion extends Explosion {
         BlockPos.betweenClosedStream(area).forEach(pos -> {
             double sqr = pos.distSqr(origin);
             if (level.isInWorldBounds(pos) && sqr <= radiusP2) {
+                if (!level.getFluidState(pos).isEmpty()) return; // 无视流体
                 BlockState blockState = level.getBlockState(pos);
-                FluidState fluidState = level.getFluidState(pos);
-                damageCalculator.getBlockExplosionResistance(this, level, pos, blockState, fluidState).ifPresent(resistance -> {
+                damageCalculator.getBlockExplosionResistance(this, level, pos, blockState, Fluids.EMPTY.defaultFluidState()).ifPresent(resistance -> {
                     if (resistance <= obsidianBasedExplosionResistance) {
                         if (sqr < inner || random.nextFloat() < 0.8F) {
                             toBlow.add(pos.immutable());

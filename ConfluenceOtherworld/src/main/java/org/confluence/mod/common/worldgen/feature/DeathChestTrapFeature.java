@@ -61,7 +61,7 @@ public class DeathChestTrapFeature extends Feature<DeathChestTrapFeature.Config>
         if (FeatureUtils.safeSetBlock(level, chestPos, chestState, ModFeatures.IS_REPLACEABLE)) {
             RandomizableContainer.setBlockEntityLootTable(level, random, chestPos, config.lootTable);
             INetworkEntity chest = ModFeatures.getNetworkEntity(level, chestPos);
-            if (chest != null && chest.getSelf() instanceof BaseChestBlock.BEntity entity) {
+            if (chest != null && chest.getSelf() instanceof BaseChestBlock.BEntity) {
                 boolean b = placeDartTraps(config, level, chestPos, chest);
                 boolean b1 = placeBoulders(config, random, level, chestPos, chest);
                 boolean b2 = placeTNTs(config, random, level, chestPos, chest);
@@ -133,7 +133,7 @@ public class DeathChestTrapFeature extends Feature<DeathChestTrapFeature.Config>
             for (BlockPos pos : BlockPos.betweenClosed(leftTop, rightBottom)) {
                 BlockPos.MutableBlockPos mutable = pos.mutable().move(direction);
                 int h;
-                for (h = 1; h <= maxDartDistance && FeatureUtils.isPosAir(level, mutable); ++h) {
+                for (h = 1; h <= maxDartDistance && FeatureUtils.ensureCanWrite(level, mutable) && FeatureUtils.isPosAir(level, mutable); ++h) {
                     mutable.move(direction);
                 }
                 if (h >= 16 && !level.isStateAtPosition(mutable, blockState -> blockState.isAir() || blockState.getCollisionShape(level, mutable).isEmpty())) {

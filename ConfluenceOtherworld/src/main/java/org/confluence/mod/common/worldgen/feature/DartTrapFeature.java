@@ -37,7 +37,7 @@ public class DartTrapFeature extends Feature<DartTrapFeature.Config> {
             for (Direction direction : LibUtils.HORIZONTAL) {
                 BlockPos.MutableBlockPos copy = dartPos.mutable();
                 int h;
-                for (h = 1; h <= config.maxDartDistance && FeatureUtils.isPosAir(level, copy); ++h) {
+                for (h = 1; h <= config.maxDartDistance && FeatureUtils.ensureCanWrite(level, copy) && FeatureUtils.isPosAir(level, copy); ++h) {
                     copy.move(direction);
                 }
                 ChunkPos chunkPos = new ChunkPos(mutablePos);

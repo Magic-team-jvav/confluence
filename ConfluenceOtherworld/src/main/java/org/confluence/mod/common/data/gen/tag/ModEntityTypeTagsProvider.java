@@ -85,5 +85,12 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
         tag(EnemyBanner.DENIED_ENTITIES).addTag( // 禁止作为旗帜的生物
                 Tags.EntityTypes.BOSSES
         );
+        tag(ModTags.EntityTypes.CRITTER_COMPANIONSHIP_WHITELIST).add(
+                EntityType.BAT
+        );
+        tag(ModTags.EntityTypes.CRITTER_COMPANIONSHIP_BLACKLIST).add(
+                TEAnimals.CRAB.get(),
+                TEMonsterEntities.PIRANHA.get()
+        );
     }
 }

@@ -56,11 +56,9 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.accessory.GuideVooDooDollItem;
-import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.common.item.sword.SweetSword;
 import org.confluence.mod.common.particle.DamageIndicatorOptions;
-import org.confluence.mod.common.particle.WholeItemParticleOptions;
 import org.confluence.mod.common.worldgen.secret_seed.NoTraps;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
 import org.confluence.mod.common.worldgen.structure.DungeonStructure;
@@ -180,18 +178,12 @@ public final class LivingEntityEvents {
         if (cause != null) {
             event.getContainer().setPostAttackInvulnerabilityTicks(living.invulnerableTime);
         }
-        if (living.getType() == TEMonsterEntities.GOLDEN_SLIME.get() && living.level() instanceof ServerLevel serverLevel) {
-            for (int i = 0; i < 3; i++) {
-                CoinItem item = PlayerUtils.INDEX_2_COIN.apply(i);
-                serverLevel.sendParticles(
-                        new WholeItemParticleOptions(item.getDefaultInstance(), 1f, 60 + living.getRandom().nextInt(10)),
-                        living.getX(), living.getY() + living.getBbHeight() / 2.0, living.getZ(),
-                        2, 0.0, 0.5, 0.0, 0.1
-                );
+        if (!living.getType().is(ModTags.EntityTypes.CRITTER_COMPANIONSHIP_BLACKLIST)) {
+            if (damageSource.getEntity() instanceof Player player && !PlayerSpecialData.of(player).isCouldHurtCritters()) {
+                if (LibUtils.isAnimal(living) || living.getType().is(ModTags.EntityTypes.CRITTER_COMPANIONSHIP_WHITELIST)) {
+                    event.setCanceled(true);
+                }
             }
-        }
-        if (LibUtils.isAnimal(living) && damageSource.getEntity() instanceof Player player && !PlayerSpecialData.of(player).isCouldHurtCritters()) {
-            event.setCanceled(true);
         }
     }
 

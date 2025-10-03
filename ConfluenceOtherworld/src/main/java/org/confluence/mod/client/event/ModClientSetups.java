@@ -84,6 +84,7 @@ import static net.minecraft.client.renderer.RenderStateShard.*;
 @MethodsReturnNonnullByDefault
 public final class ModClientSetups {
     public static final WidgetSprites EXTRA_INVENTORY_BUTTON = new WidgetSprites(Confluence.asResource("widget/extra_inventory_button"), Confluence.asResource("widget/extra_inventory_button_highlighted"));
+    public static final ResourceLocation BLOOM_TEXTURE = Confluence.asResource("textures/misc/bloom.png");
     static final IClientFluidTypeExtensions HONEY_CLIENT_EXTENSIONS = new IClientFluidTypeExtensions() {
         private static final ResourceLocation STILL = Confluence.asResource("block/fluid/honey_still");
         private static final ResourceLocation FLOWING = Confluence.asResource("block/fluid/honey_flowing");

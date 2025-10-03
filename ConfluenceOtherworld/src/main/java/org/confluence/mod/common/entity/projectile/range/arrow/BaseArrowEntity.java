@@ -5,6 +5,7 @@ import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -29,8 +30,10 @@ import org.confluence.mod.common.item.bow.BaseArrowItem;
 import org.confluence.mod.common.item.bow.TerraBowItem;
 import org.confluence.terraentity.data.component.EffectStrategyComponent;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.mesdag.particlestorm.PSGameClient;
+import org.mesdag.particlestorm.particle.ParticleEmitter;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -38,8 +41,8 @@ import java.util.function.Supplier;
 
 public class BaseArrowEntity extends AbstractArrow {
     protected float minSpeedAttackFactor = 0.5f;//速度影响伤害的最小系数
-    @Nullable
-    Item arrowItem;
+    @Nullable Item arrowItem;
+    private ParticleEmitter emitter;
 
     public static class Factory {
         public String path;
@@ -56,10 +59,12 @@ public class BaseArrowEntity extends AbstractArrow {
     }
 
     private static final EntityDataAccessor<String> TEXTURE_PATH = SynchedEntityData.defineId(BaseArrowEntity.class, EntityDataSerializers.STRING);
+    private static final EntityDataAccessor<String> DATA_PARTICLE_ID = SynchedEntityData.defineId(BaseArrowEntity.class, EntityDataSerializers.STRING);
+    private static final EntityDataAccessor<Integer> DATA_LUMINANCE = SynchedEntityData.defineId(BaseArrowEntity.class, EntityDataSerializers.INT);
     public String texturePath = "";
     private int penetrate = 0;
     private final List<LivingEntity> havenBeen = new ArrayList<>();//标记不能重复穿透
-    public Builder modify = new Builder();
+    public @NotNull Builder modify = new Builder();
     private Factory baseArrowFactory;
     public boolean fullPull = false;
 
@@ -116,6 +121,10 @@ public class BaseArrowEntity extends AbstractArrow {
             entityData.set(TEXTURE_PATH, baseArrowFactory.path);
             this.texturePath = baseArrowFactory.path;
         }
+        if (modify.particleId != null) {
+            entityData.set(DATA_PARTICLE_ID, modify.particleId.toString());
+        }
+        entityData.set(DATA_LUMINANCE, modify.luminance);
 
         super.onAddedToLevel();
     }
@@ -149,7 +158,7 @@ public class BaseArrowEntity extends AbstractArrow {
         // 限制速度增伤
         f = getSpeedDamageFactor(f);
         Entity entity1 = this.getOwner();
-        DamageSource damagesource = this.damageSources().arrow(this, (Entity) (entity1 != null ? entity1 : this));
+        DamageSource damagesource = this.damageSources().arrow(this, entity1 != null ? entity1 : this);
 
         // 附魔增伤
         double d0 = this.getBaseDamage();
@@ -207,7 +216,6 @@ public class BaseArrowEntity extends AbstractArrow {
             penetrate++;
             if (!canPenetrate()) {
                 discard();
-                return;
             }
 
         } else {
@@ -243,7 +251,6 @@ public class BaseArrowEntity extends AbstractArrow {
         return SoundEvents.TRIDENT_HIT_GROUND;
     }
 
-
     @Override
     protected ItemStack getDefaultPickupItem() {
         // 构造延迟
@@ -252,33 +259,43 @@ public class BaseArrowEntity extends AbstractArrow {
         return Items.ARROW.getDefaultInstance();
     }
 
-
     @Override
     public void tick() {
-
         if (!level().isClientSide && tickCount > modify.auto_discard_tick) discard();
         //todo 重力调整
         if ((modify.type & Tag.low_gravity) != 0) this.addDeltaMovement(new Vec3(0, modify.gravity_count, 0));
 
         super.tick();
-    }
 
+        if (level().isClientSide && emitter == null) {
+            String s = entityData.get(DATA_PARTICLE_ID);
+            if (!s.isEmpty()) {
+                ResourceLocation location = ResourceLocation.tryParse(s);
+                if (location != null) {
+                    this.emitter = new ParticleEmitter(level(), position(), location);
+                    emitter.attachEntity(this);
+                    PSGameClient.LOADER.addEmitter(emitter, false);
+                }
+            }
+        }
+    }
 
     public boolean canPenetrate() {
         return penetrate + 1 <= modify.penetration_count;
     }
 
     @Override
-    public void defineSynchedData(SynchedEntityData.Builder pBuilder) {
-        super.defineSynchedData(pBuilder);
-        pBuilder.define(TEXTURE_PATH, "");
+    public void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder.define(TEXTURE_PATH, "").define(DATA_PARTICLE_ID, "").define(DATA_LUMINANCE, 0));
     }
 
     @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> pKey) {
         super.onSyncedDataUpdated(pKey);
-        this.texturePath = entityData.get(TEXTURE_PATH);
-
+        if (level().isClientSide) {
+            this.texturePath = entityData.get(TEXTURE_PATH);
+            this.modify.luminance = entityData.get(DATA_LUMINANCE);
+        }
     }
 
     @Override
@@ -290,6 +307,10 @@ public class BaseArrowEntity extends AbstractArrow {
                 this.setPickupItemStack(getDefaultPickupItem());
             }
         }
+        if (modify.particleId != null) {
+            tag.putString("ParticleId", modify.particleId.toString());
+        }
+        tag.putInt("Luminance", modify.luminance);
         super.addAdditionalSaveData(tag);
     }
 
@@ -300,6 +321,11 @@ public class BaseArrowEntity extends AbstractArrow {
             texturePath = arrow.getModifier().path;
             entityData.set(TEXTURE_PATH, texturePath);
         }
+        String string = tag.getString("ParticleId");
+        if (!string.isEmpty()) {
+            entityData.set(DATA_PARTICLE_ID, string);
+        }
+        entityData.set(DATA_LUMINANCE, tag.getInt("Luminance"));
     }
 
     @Override
@@ -338,7 +364,7 @@ public class BaseArrowEntity extends AbstractArrow {
         private BaseArrowItem transformArrow = null;
         public List<EffectStrategyComponent> onHitEffects = new ArrayList<>();
         public List<EffectStrategyComponent> fullPullHitEffects = new ArrayList<>();
-
+        private @Nullable ResourceLocation particleId;
 
         public Builder addFullPullHitEffect(EffectStrategyComponent component) {
             this.fullPullHitEffects.add(component);
@@ -416,6 +442,11 @@ public class BaseArrowEntity extends AbstractArrow {
 
         public Builder setLuminance(int luminance) {
             this.luminance = luminance;
+            return this;
+        }
+
+        public Builder setParticleId(ResourceLocation particleId) {
+            this.particleId = particleId;
             return this;
         }
 

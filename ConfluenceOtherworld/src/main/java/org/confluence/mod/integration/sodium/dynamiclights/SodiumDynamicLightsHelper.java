@@ -17,6 +17,8 @@ public class SodiumDynamicLightsHelper {
     public static void registerDynamicLight() {
         if (IS_LOADED) {
             DynamicLightHandlers.registerDynamicLightHandler(ModEntities.ARROW_PROJECTILE.get(), entity -> entity.modify.getLuminance());
+            DynamicLightHandlers.registerDynamicLightHandler(ModEntities.CURSED_FLAMES_PROJECTILE.get(), entity -> 15);
+            DynamicLightHandlers.registerDynamicLightHandler(ModEntities.STAR_CANNON_BULLET.get(), entity -> 10);
         }
     }
 

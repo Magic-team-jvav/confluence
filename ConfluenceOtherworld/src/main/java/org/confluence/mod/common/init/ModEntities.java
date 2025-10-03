@@ -27,7 +27,7 @@ import org.confluence.mod.common.entity.projectile.sword.*;
  * Fast Link:
  * <p>渲染器 {@link org.confluence.mod.client.event.ModClientEvents#registerEntityRenderers}
  * <p>发包   {@link org.confluence.mod.common.event.ModEvents#registerPayloadHandlers}
- * <p>属性   {@link org.confluence.mod.common.event.ModEvents#registerAttributes}
+ * <p>属性   {@link org.confluence.mod.common.event.ModEvents#entityAttributeCreation}
  */
 public final class ModEntities {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(BuiltInRegistries.ENTITY_TYPE, Confluence.MODID);
@@ -75,7 +75,7 @@ public final class ModEntities {
     // 剑气
     public static final DeferredHolder<EntityType<?>, EntityType<ForwardSwordProjectile>> ICE_BLADE_SWORD_PROJECTILE = ENTITIES.register("ice_blade_sword_projectile", () -> EntityType.Builder.of(ForwardSwordProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:ice_blade_sword_projectile"));
     public static final DeferredHolder<EntityType<?>, EntityType<StarFuryProjectile>> STAR_FURY_PROJECTILE = ENTITIES.register("star_fury_projectile", () -> EntityType.Builder.of(StarFuryProjectile::new, MobCategory.MISC).sized(1F, 1F).build("confluence:star_fury_projectile"));//星怒弹幕
-    public static final DeferredHolder<EntityType<?>, EntityType<ForwardSwordProjectile>> ENCHANTED_SWORD_PROJECTILE = ENTITIES.register("enchanted_sword_projectile", () -> EntityType.Builder.of(ForwardSwordProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:enchanted_sword_projectile"));
+    public static final DeferredHolder<EntityType<?>, EntityType<EnchantedSwordProjectile>> ENCHANTED_SWORD_PROJECTILE = ENTITIES.register("enchanted_sword_projectile", () -> EntityType.Builder.of(EnchantedSwordProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:enchanted_sword_projectile"));
     public static final DeferredHolder<EntityType<?>, EntityType<LightBaneProjectile>> LIGHTS_BANE_PROJECTILE = ENTITIES.register("lights_bane_projectile", () -> EntityType.Builder.of(LightBaneProjectile::new, MobCategory.MISC).sized(1F, 1F).build("confluence:lights_bane_projectile"));
     public static final DeferredHolder<EntityType<?>, EntityType<GrassSwordProjectile>> GRASS_PROJECTILE = ENTITIES.register("grass_projectile", () -> EntityType.Builder.of(GrassSwordProjectile::new, MobCategory.MISC).sized(2F, 2F).build("confluence:grass_projectile"));
     public static final DeferredHolder<EntityType<?>, EntityType<BeeKeeperProjectile>> BEE_PROJECTILE = ENTITIES.register("bee_projectile", () -> EntityType.Builder.of(BeeKeeperProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:bee_projectile"));
@@ -154,6 +154,9 @@ public final class ModEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<DiggingMolecartEntity>> DIGGING_MOLECART = registerMinecart("digging_molecart", DiggingMolecartEntity::new);
 
     public static final DeferredHolder<EntityType<?>, EntityType<BestiaryEntryDisplay>> BESTIARY_ENTRY_DISPLAY = ENTITIES.register("bestiary_entry_display", () -> EntityType.Builder.of(BestiaryEntryDisplay::new, MobCategory.MISC).sized(1, 1).build(Confluence.asPlainId("bestiary_entry_display")));
+
+    // 子弹
+    public static final DeferredHolder<EntityType<?>, EntityType<StarCannonBulletEntity>> STAR_CANNON_BULLET = ENTITIES.register("star_cannon_bullet", () -> EntityType.Builder.<StarCannonBulletEntity>of(StarCannonBulletEntity::new, MobCategory.MISC).sized(0.5f, 0.5f).build(Confluence.asPlainId("star_cannon_bullet")));
 
     private static <E extends BaseMinecartEntity> DeferredHolder<EntityType<?>, EntityType<E>> registerMinecart(String id, EntityType.EntityFactory<E> factory) {
         return ENTITIES.register(id, () -> EntityType.Builder.of(factory, MobCategory.MISC).sized(0.98F, 0.7F).passengerAttachments(0.1875F).clientTrackingRange(8).build(Confluence.asPlainId(id)));

@@ -11,7 +11,6 @@ import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.IgnoreThrowerExplosionDamageCalculator;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEffects;
@@ -70,7 +69,6 @@ public class CursedFlamesProjectile extends AbstractManaProjectile {
                 VectorUtils.knockBackA2B(this, entity, 0.6, 0.2);
             }
             if (this.penetrateCount++ >= 1) {
-                level().explode(this, getDamagesource(), new IgnoreThrowerExplosionDamageCalculator(2, getOwner()), position(), 1.5F, false, Level.ExplosionInteraction.NONE);
                 discard();
             }
         }

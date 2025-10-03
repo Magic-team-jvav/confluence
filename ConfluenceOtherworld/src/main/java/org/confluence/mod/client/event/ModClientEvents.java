@@ -354,6 +354,8 @@ public final class ModClientEvents {
 
         event.registerEntityRenderer(BESTIARY_ENTRY_DISPLAY.get(), BestiaryEntryDisplayRenderer::new);
 
+        event.registerEntityRenderer(STAR_CANNON_BULLET.get(), StarCannonBulletRenderer::new);
+
         event.registerBlockEntityRenderer(FunctionalBlocks.ALTAR_BLOCK_ENTITY.get(), context -> new GeoBlockRenderer<>(new AltarBlockModel()));
         event.registerBlockEntityRenderer(FunctionalBlocks.SKY_MILL_ENTITY.get(), ClientUtils.rendererProvider(SkyMillBlockRenderer::new));
         event.registerBlockEntityRenderer(FunctionalBlocks.EXTRACTINATOR_ENTITY.get(), ClientUtils.rendererProvider(ExtractinatorBlockRenderer::new));

@@ -53,6 +53,6 @@ public class ConfettiCannonBlock extends HorizontalDirectionalBlock implements E
                 "variable.pitch", Integer.toString(pitch),
                 "variable.yaw", Integer.toString(yaw)
         ));
-        EmitterCreationPacketS2C.sendToAll(Confluence.asResource("confetti"), pos.getCenter().toVector3f(), expression);
+        EmitterCreationPacketS2C.sendToAll(Confluence.asResource("confetti"), pos.getCenter().toVector3f(), expression, null);
     }
 }

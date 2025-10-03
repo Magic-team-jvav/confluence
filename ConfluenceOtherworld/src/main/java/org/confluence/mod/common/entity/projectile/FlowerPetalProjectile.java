@@ -21,7 +21,6 @@ import org.mesdag.particlestorm.particle.ParticleEmitter;
 // 山铜套装奖励
 public class FlowerPetalProjectile extends Projectile {
     private ParticleEmitter emitter;
-    private ParticleEmitter trail;
     public FlowerPetalProjectile(EntityType<FlowerPetalProjectile> entityType, Level level) {
         super(entityType, level);
     }
@@ -39,13 +38,10 @@ public class FlowerPetalProjectile extends Projectile {
     public void baseTick() {
         super.baseTick();
 
-        if (level().isClientSide && (emitter == null || emitter.isRemoved() || trail == null || trail.isRemoved())) {
+        if (level().isClientSide && (emitter == null || emitter.isRemoved())) {
             this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("flower_petal"));
-            this.trail = new ParticleEmitter(level(), position(), Confluence.asResource("flower_petal_trail"));
             emitter.attachEntity(this);
-            trail.attachEntity(this);
             PSGameClient.LOADER.addEmitter(emitter, false);
-            PSGameClient.LOADER.addEmitter(trail, false);
         }
         HitResult hitresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
         checkInsideBlocks();

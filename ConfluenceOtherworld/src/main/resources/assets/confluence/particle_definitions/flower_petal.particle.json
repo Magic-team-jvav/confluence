@@ -8,6 +8,14 @@
 				"texture": "confluence:flower_petal"
 			}
 		},
+		"events": {
+			"trail": {
+				"particle_effect": {
+					"effect": "confluence:flower_petal_trail",
+					"type": "emitter_bound"
+				}
+			}
+		},
 		"components": {
 			"minecraft:emitter_local_space": {
 				"position": true,
@@ -18,6 +26,9 @@
 				"max_particles": 100
 			},
 			"minecraft:emitter_lifetime_expression": {},
+			"minecraft:emitter_lifetime_events": {
+				"creation_event": "trail"
+			},
 			"minecraft:emitter_shape_point": {},
 			"minecraft:particle_lifetime_expression": {
 				"max_lifetime": 0.1
@@ -33,11 +44,6 @@
 			"minecraft:particle_appearance_billboard": {
 				"size": [0.4, 0.4],
 				"facing_camera_mode": "rotate_xyz"
-			},
-			"minecraft:particle_motion_collision": {
-				"collision_drag": 0.2,
-				"coefficient_of_restitution": 0.6,
-				"collision_radius": 0.2
 			}
 		}
 	}

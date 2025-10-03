@@ -54,6 +54,17 @@ public final class ColoredGlintContext {
         }
     }
 
+    public void setGlintColor(int red, int green, int blue) {
+        float r = red / 255F;
+        float g = green / 255F;
+        float b = blue / 255F;
+        if (!RenderSystem.isOnRenderThread()) {
+            RenderSystem.recordRenderCall(() -> _setGlintColor(r, g, b));
+        } else {
+            _setGlintColor(r, g, b);
+        }
+    }
+
     private void _setGlintColor(float red, float green, float blue) {
         glintColor[0] = red;
         glintColor[1] = green;

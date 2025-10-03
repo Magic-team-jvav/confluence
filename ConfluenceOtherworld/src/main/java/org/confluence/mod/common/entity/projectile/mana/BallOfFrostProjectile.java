@@ -22,7 +22,6 @@ import org.mesdag.particlestorm.particle.ParticleEmitter;
 public class BallOfFrostProjectile extends AbstractManaProjectile {
     private int collideCount = 0;
     private ParticleEmitter emitter;
-    private ParticleEmitter trail;
 
     public BallOfFrostProjectile(EntityType<? extends AbstractManaProjectile> entityType, Level level) {
         super(entityType, level);
@@ -52,13 +51,10 @@ public class BallOfFrostProjectile extends AbstractManaProjectile {
         }
         setDeltaMovement(motion);
 
-        if (level().isClientSide && (emitter == null || emitter.isRemoved() || trail == null || trail.isRemoved())) {
+        if (level().isClientSide && (emitter == null || emitter.isRemoved())) {
             this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("ball_of_frost"));
-            this.trail = new ParticleEmitter(level(), position(), Confluence.asResource("ball_of_frost_trail"));
             emitter.attachEntity(this);
-            trail.attachEntity(this);
             PSGameClient.LOADER.addEmitter(emitter, false);
-            PSGameClient.LOADER.addEmitter(trail, false);
         }
         if (ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity) instanceof EntityHitResult entityHitResult) {
             Entity entity = entityHitResult.getEntity();

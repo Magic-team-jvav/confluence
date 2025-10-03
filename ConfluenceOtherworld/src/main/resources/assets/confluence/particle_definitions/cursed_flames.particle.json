@@ -8,6 +8,14 @@
 				"texture": "confluence:cursed_flames"
 			}
 		},
+		"events": {
+			"trail": {
+				"particle_effect": {
+					"effect": "confluence:cursed_flames_trail",
+					"type": "emitter_bound"
+				}
+			}
+		},
 		"components": {
 			"minecraft:emitter_local_space": {
 				"position": true,
@@ -18,6 +26,9 @@
 				"max_particles": 100
 			},
 			"minecraft:emitter_lifetime_expression": {},
+			"minecraft:emitter_lifetime_events": {
+				"creation_event": "trail"
+			},
 			"minecraft:emitter_shape_point": {},
 			"minecraft:particle_lifetime_expression": {
 				"max_lifetime": 0.05

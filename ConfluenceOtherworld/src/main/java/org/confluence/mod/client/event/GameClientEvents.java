@@ -48,6 +48,7 @@ import net.neoforged.neoforge.common.NeoForgeConfig;
 import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import org.confluence.lib.client.AntiPushPoseStack;
+import org.confluence.lib.client.animate.ExpertColorAnimation;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
@@ -109,6 +110,12 @@ public final class GameClientEvents {
         }
 
         EctoMistHelper.tick(minecraft, player);
+
+        ModClientSetups.GLINT_RAINBOW.setGlintColor(
+                ExpertColorAnimation.INSTANCE.getRed(),
+                ExpertColorAnimation.INSTANCE.getGreen(),
+                ExpertColorAnimation.INSTANCE.getBlue()
+        );
     }
 
     @SubscribeEvent

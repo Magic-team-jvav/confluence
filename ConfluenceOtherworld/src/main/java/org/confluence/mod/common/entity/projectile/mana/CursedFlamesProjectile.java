@@ -23,7 +23,6 @@ public class CursedFlamesProjectile extends AbstractManaProjectile {
     private int collideCount = 0;
     private int penetrateCount = 0;
     private ParticleEmitter emitter;
-    private ParticleEmitter trail;
 
     public CursedFlamesProjectile(EntityType<CursedFlamesProjectile> entityType, Level level) {
         super(entityType, level);
@@ -57,13 +56,10 @@ public class CursedFlamesProjectile extends AbstractManaProjectile {
         }
         setDeltaMovement(motion.scale(0.99).add(0.0, -0.04, 0.0));
 
-        if (level().isClientSide && (emitter == null || emitter.isRemoved() || trail == null || trail.isRemoved())) {
+        if (level().isClientSide && (emitter == null || emitter.isRemoved())) {
             this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("cursed_flames"));
-            this.trail = new ParticleEmitter(level(), position(), Confluence.asResource("cursed_flames_trail"));
             emitter.attachEntity(this);
-            trail.attachEntity(this);
             PSGameClient.LOADER.addEmitter(emitter, false);
-            PSGameClient.LOADER.addEmitter(trail, false);
         }
         if (ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity) instanceof EntityHitResult entityHitResult) {
             Entity entity = entityHitResult.getEntity();
@@ -74,7 +70,7 @@ public class CursedFlamesProjectile extends AbstractManaProjectile {
                 VectorUtils.knockBackA2B(this, entity, 0.6, 0.2);
             }
             if (this.penetrateCount++ >= 1) {
-                level().explode(this, getDamagesource(), new IgnoreThrowerExplosionDamageCalculator(2, getOwner()), position(), 1.5F, false, Level.ExplosionInteraction.MOB);
+                level().explode(this, getDamagesource(), new IgnoreThrowerExplosionDamageCalculator(2, getOwner()), position(), 1.5F, false, Level.ExplosionInteraction.NONE);
                 discard();
             }
         }

@@ -36,6 +36,7 @@ import org.confluence.mod.integration.waystones.WaystonesHelper;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.terra_curio.common.init.TCItems;
+import org.confluence.terra_furniture.common.init.TFBlocks;
 import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.TerraEntity;
 import org.confluence.terraentity.api.npc.trade.ITrade;
@@ -176,6 +177,8 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.SAPLING)
                 .add(Blocks.OAK_SAPLING)
                 .add(Blocks.SUNFLOWER)
+                .add(Blocks.FLOWER_POT)
+                .add(TFBlocks.HANGING_POT)
                 .add(Items.PUMPKIN_SEEDS)
                 .add(ModItems.GRASS_SEED)
                 .add(ToolItems.GUIDE_TO_ENVIRONMENTAL_PRESERVATION)

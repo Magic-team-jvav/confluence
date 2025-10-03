@@ -79,6 +79,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("message.confluence.house_select.tip1", "Press Esc to escape, hold Alt to select");
         add("message.confluence.house_select.tip2", "Right Click to check or add/remove house");
         add("message.confluence.house_select.check", "Check");
+        add("message.confluence.guide_voo_doo_doll.fail", "This powerful sacrificial item can only be used in the Nether!");
 
         add("commands.confluence.reforge.cannot_be_reforged", "This item cannot be reforged (or cannot find an item that needs to be reforged)!");
         add("commands.confluence.reforge.unknown_prefix_type", "Unknown prefix type (or reforge failure)!");
@@ -227,16 +228,15 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.ice_tofu_brick.0", "它现在不能吃了，但不妨碍它把你吃了");
         add("tooltip.item.confluence.pink_cola.0", "An ordinary bottle of pink cola. Maybe there was a whole case originally?");
         add("tooltip.item.confluence.dongdongs_flatbread.0", "Freshly baked flatbread on the Netherrack. Come and have a taste!");
-        add("tooltip.item.confluence.boredoms_pact_falling_resolve.0", "「无聊之咒·陨志」");
-        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.1", "(Boredom's Pact - Falling Resolve)");
-        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.2", "           ");
-        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.3", "The blood of the indolent has soaked into the stardust core, condensing into this breathing cursed stone.");
-        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.4", "When in motion, the veins of the earth surge, and blades cleave through the long night; when still, the earth's heart beats, and the sky opens its single eye.");
-        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.5", "The ancient god inscribed punishment into the contract: eight heartbeats of stillness summon the judgment of a falling star.");
-        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.6", "It doesn't remain silent like a golem - it cackles when boulders shatter shinbones:");
-        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.7", "'Look, even the stones understand the way of survival better than your legs.'");
-        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.8", "The wearer will eventually understand that so - called 'invincibility' merely means outrunning death by a single second.");
-        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.9", "And the soul has long been crushed into dust in the rock crevices, more desolate than the empty shell of a golem.");
+        add("tooltip.item.confluence.boredoms_pact_falling_resolve.0", "(Boredom's Pact - Falling Resolve)");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.1", "           ");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.2", "The blood of the indolent has soaked into the stardust core, condensing into this breathing cursed stone.");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.3", "When in motion, the veins of the earth surge, and blades cleave through the long night; when still, the earth's heart beats, and the sky opens its single eye.");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.4", "The ancient god inscribed punishment into the contract: eight heartbeats of stillness summon the judgment of a falling star.");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.5", "It doesn't remain silent like a golem - it cackles when boulders shatter shinbones:");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.6", "'Look, even the stones understand the way of survival better than your legs.'");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.7", "The wearer will eventually understand that so - called 'invincibility' merely means outrunning death by a single second.");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.8", "And the soul has long been crushed into dust in the rock crevices, more desolate than the empty shell of a golem.");
 
         // Text items ↓
         add("item.confluence.afterlife_notes", "Afterlife Notes");
@@ -726,6 +726,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("biome.confluence.the_crimson_desert", "The Crimson Desert");
         add("biome.confluence.the_crimson_tundra", "The Crimson Tundra");
 
+        add("biome.minecraft.confluence_sky", "Space");
         // new
         add("achievements.toast.complete", "Achievement achieved!");
         add("achievements.confluence.new_world.title", "Old World, New Journey!");

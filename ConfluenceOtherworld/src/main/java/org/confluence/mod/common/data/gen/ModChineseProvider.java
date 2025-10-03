@@ -69,6 +69,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("message.confluence.house_select.tip1", "按一次Esc以退出，长按Alt以选择");
         add("message.confluence.house_select.tip2", "右击以检查、添加或移除房间");
         add("message.confluence.house_select.check", "检查");
+        add("message.confluence.guide_voo_doo_doll.fail", "这种强大的献祭道具只能在下界使用！");
 
         add("commands.confluence.reforge.cannot_be_reforged", "该物品无法被重铸（或无法找到需要重铸的物品）！");
         add("commands.confluence.reforge.unknown_prefix_type", "未知重铸类型（或重铸失败）！");
@@ -218,15 +219,14 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.pink_cola.0", "一瓶普通的粉色可乐，或许原来有一整箱？");
         add("tooltip.item.confluence.dongdongs_flatbread.0", "刚在下界岩上烤好的饼，快来尝尝吧！");
         add("tooltip.item.confluence.boredoms_pact_falling_resolve.0", "「无聊之咒·陨志」");
-        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.1", "(Boredom's Pact - Falling Resolve)");
-        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.2", "           ");
-        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.3", "怠惰者的血浸透了星核，凝成这颗会呼吸的诅咒石。");
-        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.4", "动，则岩脉奔涌，刃锋割裂长夜；静，则地心跳搏，苍穹睁开独眼。");
-        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.5", "古神将惩罚编入契约：八次心跳的静止，便召来陨星审判。");
-        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.6", "它不像魔像般沉默——巨石砸碎胫骨时会尖笑：");
-        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.7", "'看啊，连石头都比你的双腿更懂生存之道。'");
-        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.8", "佩戴者终将明白：所谓'不摧'，不过是逃得比死亡快一秒。");
-        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.9", "而灵魂早被碾成岩缝里的尘，比魔像的空壳更荒芜。");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.1", "           ");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.2", "怠惰者的血浸透了星核，凝成这颗会呼吸的诅咒石。");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.3", "动，则岩脉奔涌，刃锋割裂长夜；静，则地心跳搏，苍穹睁开独眼。");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.4", "古神将惩罚编入契约：八次心跳的静止，便召来陨星审判。");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.5", "它不像魔像般沉默——巨石砸碎胫骨时会尖笑：");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.6", "'看啊，连石头都比你的双腿更懂生存之道。'");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.7", "佩戴者终将明白：所谓'不摧'，不过是逃得比死亡快一秒。");
+        add("tooltip.item.terra_curio.boredoms_pact_falling_resolve.8", "而灵魂早被碾成岩缝里的尘，比魔像的空壳更荒芜。");
 
         // 文本物品↓
         add("item.confluence.afterlife_notes", "来世手记");
@@ -715,6 +715,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("biome.confluence.glowing_mushroom", "发光蘑菇群系");
         add("biome.confluence.ash_wasteland", "灰烬荒地");
         add("biome.confluence.ash_forest", "白蜡木林");
+
+        add("biome.minecraft.confluence_sky", "太空层");
 
         //成就
         add("achievements.toast.complete", "成就达成！");

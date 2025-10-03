@@ -26,6 +26,7 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.loot.DateLootItemCondition;
 import org.confluence.terra_curio.common.init.TCItems;
+import org.confluence.terra_furniture.common.init.TFBlocks;
 import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.init.item.TEBoomerangItems;
 import org.confluence.terraentity.init.item.TERideableItems;
@@ -65,6 +66,10 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MinecartItems.DEMONIC_HELLCART))
                         .add(EmptyLootItem.emptyItem().setWeight(4))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TFBlocks.HANGING_POT).apply(SetItemCountFunction.setCount(new ConstantValue(2))))
+                        .add(EmptyLootItem.emptyItem().setWeight(3))
                 )
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/obsidian_lock_box"), LootTable.lootTable()
@@ -356,6 +361,10 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MinecartItems.DEMONIC_HELLCART))
                         .add(EmptyLootItem.emptyItem().setWeight(4))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TFBlocks.HANGING_POT).apply(SetItemCountFunction.setCount(new ConstantValue(2))))
+                        .add(EmptyLootItem.emptyItem().setWeight(3))
                 )
         );
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "gameplay/crate/stockade_crate"),environmentCrateHardModeCommon()

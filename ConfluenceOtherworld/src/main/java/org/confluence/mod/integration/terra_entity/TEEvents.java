@@ -35,6 +35,9 @@ public final class TEEvents {
         registration.register(TEMonsterEntities.WYVERN.get(), 8);
         registration.register(TEMonsterEntities.WRAITH.get(), 8);
         registration.register(TEMonsterEntities.POSSESS_ARMOR.get(), 8);
+        registration.register(TEMonsterEntities.CORRUPT_SLIME.get(), 8);
+        registration.register(TEMonsterEntities.LUMINOUS_SLIME.get(), 8);
+        registration.register(TEMonsterEntities.CRIMSLIME.get(), 8);
     }
 
     @FunctionalInterface

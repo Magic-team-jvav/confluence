@@ -12,9 +12,12 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.entitiy.IAxisZRotate;
 import org.confluence.lib.util.VectorUtils;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.item.spear.StormSpearItem;
 import org.confluence.mod.util.ModUtils;
+import org.mesdag.particlestorm.data.molang.MolangExp;
+import org.mesdag.particlestorm.network.EmitterCreationPacketS2C;
 
 public class StormSpearShotProjectile extends DamageSettableProjectile {
     public final IAxisZRotate.Rotate rotate = new IAxisZRotate.Rotate();
@@ -40,10 +43,15 @@ public class StormSpearShotProjectile extends DamageSettableProjectile {
         if (hitresult$type == HitResult.Type.BLOCK) {
             onHitBlock((BlockHitResult) hitresult);
             discard();
-            return;
         } else if (hitresult$type == HitResult.Type.ENTITY) {
             onHitEntity((EntityHitResult) hitresult);
             discard();
+        }
+
+        if (isRemoved()) {
+            if (!level().isClientSide) {
+                EmitterCreationPacketS2C.sendToAll(Confluence.asResource("thunder_zapper_expiration"), position().toVector3f(), MolangExp.EMPTY, null);
+            }
             return;
         }
 

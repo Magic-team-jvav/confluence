@@ -9,7 +9,7 @@
             }
         },
         "events": {
-            "collision": {
+            "expiration": {
                 "particle_effect": {
                     "effect": "confluence:base_mana_staff_projectile_expiration",
                     "type": "particle",
@@ -27,7 +27,7 @@
                 "max_particles": 100
             },
             "minecraft:emitter_lifetime_events": {
-                "expiration_event": "collision"
+                "expiration_event": "expiration"
             },
             "minecraft:emitter_lifetime_expression": {},
             "minecraft:emitter_shape_point": {

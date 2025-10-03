@@ -389,7 +389,10 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 BEWITCHING_TABLE.get(),
                 SHARPENING_STATION.get(),
                 SILLY_BALLOON_MACHINE.get(),
-                PIGGY_BANK.get()
+                PIGGY_BANK.get(),
+
+                KING_SLIME_RELIC.get(),
+                EYE_OF_CTHULHU_RELIC.get()
         );
 
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithShovel = tag(BlockTags.MINEABLE_WITH_SHOVEL);
@@ -659,7 +662,10 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 OPAL_BLOCK.get(),
                 GELSTONE_BLOCK.get(),
                 STURDY_FOSSIL_BLOCK.get(),
-                COLD_CRYSTAL_BLOCK.get()
+                COLD_CRYSTAL_BLOCK.get(),
+
+                KING_SLIME_RELIC.get(),
+                EYE_OF_CTHULHU_RELIC.get()
         );
         tag(ModTags.Blocks.NEEDS_2_LEVEL).addTags(
                 ModTags.Blocks.STORAGE_BLOCKS_RAW_METEORITE,

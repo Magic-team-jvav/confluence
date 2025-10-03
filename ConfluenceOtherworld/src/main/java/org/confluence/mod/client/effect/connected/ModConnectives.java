@@ -29,7 +29,7 @@ public final class ModConnectives {
 
         register(NatureBlocks.PALM_LOG_BLOCKS.CHISELED_PLANKS.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.CHISELED_PALM_PLANKS));
         register(DecorativeBlocks.GRANITE_COLUMN.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.GRANITE_COLUMN));
-        register(DecorativeBlocks.MARBLE_COLUMN.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.CALCITE_COLUMN));
+        register(DecorativeBlocks.MARBLE_COLUMN.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.MARBLE_COLUMN));
 
         register(DecorativeBlocks.WHITE_PAPER_PANE.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.WHITE_PAPER_PANE));
         register(DecorativeBlocks.WHITE_PAPER_PANE_LAMP.get(), () -> new SimpleCTBehaviour(AllSpriteShifts.WHITE_PAPER_PANE_LAMP));

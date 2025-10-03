@@ -716,14 +716,14 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         // 镶金方解石
         shaped(output,
                 ShapedRecipePattern.of(Map.of(
-                        'S', Ingredient.of(Blocks.CALCITE),
-                        'A', Ingredient.of(Tags.Items.NUGGETS_GOLD)
+                        'A', Ingredient.of(Blocks.CALCITE),
+                        'S', Ingredient.of(Tags.Items.INGOTS_GOLD)
                 ), List.of(
                         "AAA",
                         "ASA",
                         "AAA"
                 )),
-                DecorativeBlocks.GILDED_MARBLE.toStack()
+                DecorativeBlocks.GILDED_MARBLE.toStack(8)
         );
         // 蜂蜜月饼
         shaped(output,

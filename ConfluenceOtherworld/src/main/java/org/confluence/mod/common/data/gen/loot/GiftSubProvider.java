@@ -1338,6 +1338,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
     }
 
     private static LootTable.Builder wallOfFleshTreasureBagCommon() {
+        // tip 恶魔之心已通过代码给予
         return LootTable.lootTable().withPool(LootPool.lootPool().add(LootItem.lootTableItem(HammerItems.PWNHAMMER)))
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.WARRIOR_EMBLEM))
@@ -1347,7 +1348,11 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 )
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(PotionItems.HEALING_POTION)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 15)))
-                ));
+                ))
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(SwordItems.BREAKER_BLADE))
+                        // todo 另外三个
+                );
     }
 
     // 克脑的也只有药

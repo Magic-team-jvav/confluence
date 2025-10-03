@@ -1,6 +1,5 @@
 package org.confluence.mod.common.data.gen.data_map;
 
-import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -216,7 +215,7 @@ public final class ValueSubProvider {
                 .add(MaterialItems.WORM_TOOTH, 20)
                 .add(MaterialItems.ROTTEN_CHUNK, 2)
                 .add(MaterialItems.BLOOD_CLOT_POWDER, 3)
-                .add(MaterialItems.VERTEBRA,2)
+                .add(MaterialItems.VERTEBRA, 2)
                 .add(MaterialItems.ROTTEN_BONE, 3)
                 .add(MaterialItems.STINGER, 40)
                 .add(MaterialItems.MAN_EATER_VINE, 200)
@@ -329,7 +328,8 @@ public final class ValueSubProvider {
                 .add(TEBoomerangItems.SHROOMERANG, silver50 + silver10)
                 .add(TEBoomerangItems.TRIMARANG, gold2)
                 .add(TEBoomerangItems.COMBAT_WRENCH, silver50)
-                .add(TEBoomerangItems.WOOD_BOOMERANG, silver20);
+                .add(TEBoomerangItems.WOOD_BOOMERANG, silver20)
+                .add(SwordItems.BREAKER_BLADE, gold1 + gold2);
         appender.create() // 探索
                 .add(ModBlocks.ROPE, 2)
                 .add(ModBlocks.SILK_ROPE, 2)
@@ -394,7 +394,7 @@ public final class ValueSubProvider {
                 .add(SpearItems.CHLOROPHYTE_PARTISAN, gold2 + gold1 + silver50 + silver10)
                 .add(SpearItems.COBALT_NAGINATA, silver50 + silver20 + silver20)
                 .add(SpearItems.DARK_LANCE, gold2 + silver50)
-                .add(SpearItems.STREAMSTRIKE_HALBERD, gold2 + silver50+ silver20)
+                .add(SpearItems.STREAMSTRIKE_HALBERD, gold2 + silver50 + silver20)
                 .add(SpearItems.SPEAR, silver2)
                 .add(SpearItems.STORM_SPEAR, silver20 + silver10)
                 .add(SpearItems.THE_ROTTED_FORK, gold1 + silver50)

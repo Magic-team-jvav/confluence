@@ -56,8 +56,7 @@ public class SwordItems {
             .addTooltip(p -> p.withColor(11184810))
             .modifyProperties(p -> p.component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE))));
 
-
-    //普通宽剑 默认横扫*1.5
+    // 普通宽剑 默认横扫*1.5
     public static final DeferredItem<BaseSwordItem> CACTUS_SWORD = register("cactus_sword", ModTiers.CACTUS, 5, 1.6F, NORMAL_SWORD.get());
     public static final DeferredItem<BaseSwordItem> EBONWOOD_SWORD = register("ebonwood_sword", ModTiers.CACTUS, 6, 1.6F, NORMAL_SWORD.get());
     public static final DeferredItem<BaseSwordItem> SHADEWOOD_SWORD = register("shadewood_sword", ModTiers.CACTUS, 6, 1.6F, NORMAL_SWORD.get());
@@ -79,7 +78,7 @@ public class SwordItems {
     public static final DeferredItem<BaseSwordItem> ADAMANTITE_SWORD = register("adamantite_sword", ModTiers.UNBREAKABLE, 36, 2.4F, ModRarity.LIGHT_RED, NORMAL_SWORD.get().hasImage());
     public static final DeferredItem<BaseSwordItem> TITANIUM_SWORD = register("titanium_sword", ModTiers.UNBREAKABLE, 36, 2.4F, ModRarity.LIGHT_RED, NORMAL_SWORD.get().hasImage());
 
-    //tip 注册剑的特殊功能只需修改最后一个参数即可，只需要把 NORMAL_SWORD替换成prefab的其他预制效果，还可以追加效果
+    // tip 注册剑的特殊功能只需修改最后一个参数即可，只需要把 NORMAL_SWORD替换成prefab的其他预制效果，还可以追加效果
     public static final DeferredItem<BaseSwordItem> FAKE_SWORD = register("fake_sword", ModTiers.CANDY_CANE, 3, 1.6F, ModRarity.GRAY, NORMAL_SWORD.get());
     public static final DeferredItem<BaseSwordItem> CANDY_CANE_SWORD = register("candy_cane_sword", ModTiers.CANDY_CANE, 5, 2.6F, NORMAL_SWORD.get().hasImage());
     public static final DeferredItem<BaseSwordItem> FALCON_BLADE = register("falcon_blade", ModTiers.UNBREAKABLE, 9, 2.55F, ModRarity.BLUE, NORMAL_SWORD.get());
@@ -91,13 +90,14 @@ public class SwordItems {
     public static final DeferredItem<BaseSwordItem> EXOTIC_SCIMITAR = register("exotic_scimitar", ModTiers.UNBREAKABLE, 7, 2.9F, ModRarity.GREEN, NORMAL_SWORD.get());
     public static final DeferredItem<BaseSwordItem> KATANA = register("katana", ModTiers.UNBREAKABLE, 6, 3.7F, ModRarity.BLUE, NORMAL_SWORD.get().hasImage());
 
-    //改横扫大小的宽剑
+    // 改横扫大小的宽剑
     public static final DeferredItem<BaseSwordItem> TERRAGRIM = register("terragrim", ModTiers.UNBREAKABLE, 1, 9, ModRarity.ORANGE, BOARD_SWORD.apply(1.2f));
 
+    public static final DeferredItem<BaseSwordItem> BREAKER_BLADE = register("breaker_blade", ModTiers.UNBREAKABLE, 37, 1.0F, ModRarity.LIGHT_RED, BOARD_SWORD.apply(12.0f)
+            .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 9, AttributeModifier.Operation.ADD_VALUE)
+            .addAttributeModifier(Attributes.ATTACK_KNOCKBACK, 0.8F, AttributeModifier.Operation.ADD_VALUE).hasImage());
 
-    public static final DeferredItem<BaseSwordItem> BREAKER_BLADE = register("breaker_blade", ModTiers.UNBREAKABLE, 37, 1.0F, ModRarity.LIGHT_RED, BOARD_SWORD.apply(12.0f).hasImage());
-
-    //效果剑
+    // 效果剑
     public static final DeferredItem<BaseSwordItem> LIGHTS_BANE = register("lights_bane", ModTiers.UNBREAKABLE, 11, 3, ModRarity.BLUE, EFFECT_SWORD
             .apply(ModEffectStrategies.Components.LIGHTS_BANE_EFFECT.get()).hasImage());
     public static final DeferredItem<BaseSwordItem> BLOOD_BUTCHERER = register("blood_butcherer", ModTiers.UNBREAKABLE, 14, 1.3F, ModRarity.BLUE, EFFECT_SWORD
@@ -113,8 +113,7 @@ public class SwordItems {
     public static final DeferredItem<BaseSwordItem> BEE_KEEPER = register("bee_keeper", ModTiers.UNBREAKABLE, 18, 1.6F, ModRarity.GREEN, EFFECT_SWORD
             .apply(ModEffectStrategies.Components.BEE_KEEPER_EFFECT.get()).addTooltip(2).hasImage());
 
-
-    //弹幕剑
+    // 弹幕剑
     public static final DeferredItem<BaseSwordItem> ICE_BLADE = register("ice_blade", ModTiers.UNBREAKABLE, 10, 3, ModRarity.BLUE, PROJ_SWORD
             .apply(SwordProjectileComponent.ICE_PROJ).hasImage());
     public static final DeferredItem<BaseSwordItem> STARFURY = register("starfury", ModTiers.UNBREAKABLE, 14, 2.9F, ModRarity.GREEN, PROJ_SWORD
@@ -133,7 +132,6 @@ public class SwordItems {
     public static final DeferredItem<BaseSwordItem> BLUE_PHASEBLADE = register("blue_phaseblade", () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, "blue"));
     public static final DeferredItem<BaseSwordItem> PURPLE_PHASEBLADE = register("purple_phaseblade", () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, "purple"));
     public static final DeferredItem<BaseSwordItem> WHITE_PHASEBLADE = register("white_phaseblade", () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, "white"));
-
 
     // 特殊剑
     public static final DeferredItem<BaseSwordItem> CROWBAR = register("crowbar", ModTiers.UNBREAKABLE, 18, 3, ModRarity.MASTER, BOARD_SWORD.apply(2.0f));

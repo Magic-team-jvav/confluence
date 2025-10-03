@@ -818,25 +818,18 @@ public final class BlockSubProvider extends BlockLootSubProvider {
     private void addHerbDrop(BaseHerbBlock block, Item herb, Item seed) {
         add(block, LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .setRolls(ConstantValue.exactly(1))
                         .setBonusRolls(ConstantValue.exactly(0.5f))
                         .add(LootItem.lootTableItem(herb))
                         .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block)
-                                .setProperties(StatePropertiesPredicate.Builder.properties()
-                                        .hasProperty(BaseHerbBlock.AGE, 2))))
+                                .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(BaseHerbBlock.AGE, 2))))
                 .withPool(LootPool.lootPool()
-                        .setRolls(ConstantValue.exactly(1))
-                        .add(LootItem.lootTableItem(seed)
-                                .apply(setCount(UniformGenerator.between(1, 3))))
+                        .add(LootItem.lootTableItem(seed).apply(setCount(UniformGenerator.between(1, 3))))
                         .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block)
-                                .setProperties(StatePropertiesPredicate.Builder.properties()
-                                        .hasProperty(BaseHerbBlock.AGE, 2))))
+                                .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(BaseHerbBlock.AGE, 2))))
                 .withPool(LootPool.lootPool()
-                        .setRolls(ConstantValue.exactly(1))
-                        .add(LootItem.lootTableItem(herb))
+                        .add(LootItem.lootTableItem(seed))
                         .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block)
-                                .setProperties(StatePropertiesPredicate.Builder.properties()
-                                        .hasProperty(BaseHerbBlock.AGE, 1)))));
+                                .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(BaseHerbBlock.AGE, 1)))));
     }
 
     private void addCoinPileDrop(CoinPileBlock block) {

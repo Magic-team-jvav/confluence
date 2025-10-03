@@ -1594,6 +1594,15 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 )
                 .addTags(BlockTags.FLOWERS, BlockTags.LEAVES, BlockTags.SAPLINGS, BlockTags.CROPS)
                 .addOptionalTag(ResourceLocation.fromNamespaceAndPath("twilightforest", "portal/decoration"));
+        tag(BlockTags.CROPS).add(
+                WATERLEAF.get(),
+                FIREBLOSSOM.get(),
+                MOONGLOW.get(),
+                BLINKROOT.get(),
+                SHIVERTHORN.get(),
+                DAYBLOOM.get(),
+                DEATHWEED.get()
+        );
         WaystonesHelper.blockTag(this::tag);
     }
 }

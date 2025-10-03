@@ -74,37 +74,36 @@ public class BaseAxeItem extends AxeItem {
     public static void dropAndPlaceOnRightClick(Player player, ItemStack stack, BlockPos pos) {
         Level level = player.level();
         BlockState state = level.getBlockState(pos);
-        if (state.is(BlockTags.CROPS)) {
-            for (Property<?> property : state.getProperties()) {
-                if (property instanceof IntegerProperty integerProperty && "age".equals(integerProperty.getName())) {
-                    int age = state.getValue(integerProperty);
-                    if (property.getPossibleValues().size() == age + 1) { // 其他模组可能不兼容
-                        ItemStack consumed = ItemStack.EMPTY;
-                        for (ItemStack drop : Block.getDrops(state, (ServerLevel) level, pos, level.getBlockEntity(pos), player, stack)) {
-                            if (consumed.isEmpty() && (drop.is(Tags.Items.SEEDS) || drop.is(state.getBlock().asItem()))) {
-                                consumed = drop.split(1);
-                                if (drop.isEmpty()) continue;
-                            }
-                            Block.popResource(level, pos, drop);
+        if (!state.is(BlockTags.CROPS)) return;
+        for (Property<?> property : state.getProperties()) {
+            if (property instanceof IntegerProperty integerProperty && "age".equals(integerProperty.getName())) {
+                int age = state.getValue(integerProperty);
+                if (property.getPossibleValues().size() == age + 1) { // 其他模组可能不兼容
+                    ItemStack consumed = ItemStack.EMPTY;
+                    for (ItemStack drop : Block.getDrops(state, (ServerLevel) level, pos, level.getBlockEntity(pos), player, stack)) {
+                        if (consumed.isEmpty() && (drop.is(Tags.Items.SEEDS) || drop.is(state.getBlock().asItem()))) {
+                            consumed = drop.split(1);
+                            if (drop.isEmpty()) continue;
                         }
-                        if (!consumed.isEmpty() && consumed.getItem() instanceof BlockItem blockItem) {
-                            level.setBlockAndUpdate(pos, blockItem.getBlock().defaultBlockState());
-                        } else {
-                            level.removeBlock(pos, false);
-                        }
-                    } else if (age > 0) l:{ // 收种子
-                        for (ItemStack drop : Block.getDrops(state, (ServerLevel) level, pos, level.getBlockEntity(pos), player, stack)) {
-                            if (drop.is(Tags.Items.SEEDS)) {
-                                Block.popResource(level, pos, drop);
-                            } else if (drop.is(state.getBlock().asItem())) {
-                                break l;
-                            }
-                        }
-                        level.setBlock(pos, state.setValue(integerProperty, 0), 2);
+                        Block.popResource(level, pos, drop);
                     }
-                    player.swing(InteractionHand.MAIN_HAND, true);
-                    break;
+                    if (!consumed.isEmpty() && consumed.getItem() instanceof BlockItem blockItem) {
+                        level.setBlockAndUpdate(pos, blockItem.getBlock().defaultBlockState());
+                    } else {
+                        level.removeBlock(pos, false);
+                    }
+                } else if (age > 0) l:{ // 收种子
+                    for (ItemStack drop : Block.getDrops(state, (ServerLevel) level, pos, level.getBlockEntity(pos), player, stack)) {
+                        if (drop.is(Tags.Items.SEEDS)) {
+                            Block.popResource(level, pos, drop);
+                        } else if (drop.is(state.getBlock().asItem())) {
+                            break l;
+                        }
+                    }
+                    level.setBlock(pos, state.setValue(integerProperty, 0), 2);
                 }
+                player.swing(InteractionHand.MAIN_HAND, true);
+                break;
             }
         }
     }

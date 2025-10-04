@@ -306,7 +306,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(BODY_PART.get(), BodyPartRenderer::new);
         event.registerEntityRenderer(TARGET_DUMMY.get(), TargetDummyRenderer::new);
         event.registerEntityRenderer(FLAME_CLOUD.get(), NoopRenderer::new); // todo 模型
-        event.registerEntityRenderer(SUPER_SPIKY_BALL_PROJECTILE.get(), NoopRenderer::new); // todo 模型
+        event.registerEntityRenderer(SUPER_SPIKY_BALL_PROJECTILE.get(), SuperSpikyBallProjectileRenderer::new);
         event.registerEntityRenderer(SPEAR.get(), NoopRenderer::new); // todo 模型
         event.registerEntityRenderer(BALL_OF_FROST_PROJECTILE.get(), NoopRenderer::new);
         event.registerEntityRenderer(DEMON_SCYTHE_PROJECTILE.get(), DemonScytheProjectileRenderer::new);

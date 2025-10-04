@@ -1102,7 +1102,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 PickaxeItems.VORTEX_PICKAXE.get(),
                 PickaxeItems.NEBULA_PICKAXE.get(),
                 PickaxeItems.STARDUST_PICKAXE.get(),
-                AccessoryItems.FIN_WINGS.get(),
                 AccessoryItems.FROZEN_WINGS.get(),
                 AccessoryItems.JETPACK.get(),
                 AccessoryItems.LEAF_WINGS.get(),

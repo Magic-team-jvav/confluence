@@ -37,11 +37,6 @@ public abstract class ServerPlayerMixin implements IServerPlayer {
     @Shadow
     public abstract PlayerAdvancements getAdvancements();
 
-    @Shadow
-    private static boolean didNotMove(double dx, double dy, double dz) {
-        return false;
-    }
-
     @Unique
     private boolean confluence$couldPickupItem = true;
     @Unique

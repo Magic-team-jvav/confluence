@@ -15,7 +15,6 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.PostChain;
@@ -33,7 +32,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -48,26 +46,21 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.ClientHooks;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.client.AntiPushPoseStack;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ExtraInventory;
-import org.confluence.mod.common.component.SwordProjectileComponent;
 import org.confluence.mod.common.entity.DeadBodyPartEntity;
-import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.item.VanityArmorItems;
 import org.confluence.mod.common.item.common.BaseDyeItem;
-import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
 import org.confluence.mod.integration.geckolib.IGeoCube;
 import org.confluence.mod.mixed.IEntity;
 import org.confluence.mod.mixed.ILivingEntityRenderer;
 import org.confluence.mod.mixin.client.accessor.AgeableListModelAccessor;
-import org.confluence.mod.network.c2s.SwordShootingPacketC2S;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
@@ -348,7 +341,7 @@ public final class ClientUtils {
                 if (layer instanceof HumanoidArmorLayer<?, ?, ?> armorLayer) {
                     ItemStack armorItemStack = entity.getItemBySlot(EquipmentSlot.CHEST);
                     if (armorItemStack.getItem() instanceof ArmorItem armorItem && !(armorItem instanceof GeoItem)
-                        && armorItem.getEquipmentSlot() == EquipmentSlot.CHEST) {
+                            && armorItem.getEquipmentSlot() == EquipmentSlot.CHEST) {
                         Model model = ClientHooks.getArmorModel(entity, armorItemStack, EquipmentSlot.CHEST, armorLayer.outerModel);
                         if (model instanceof HumanoidModel<?> outerModel) {
                             outerModel.setAllVisible(true);
@@ -363,7 +356,7 @@ public final class ClientUtils {
                     }
                     armorItemStack = entity.getItemBySlot(EquipmentSlot.LEGS);
                     if (armorItemStack.getItem() instanceof ArmorItem armorItem && !(armorItem instanceof GeoItem)
-                        && armorItem.getEquipmentSlot() == EquipmentSlot.LEGS) {
+                            && armorItem.getEquipmentSlot() == EquipmentSlot.LEGS) {
                         Model model = ClientHooks.getArmorModel(entity, armorItemStack, EquipmentSlot.LEGS, armorLayer.innerModel);
                         if (model instanceof HumanoidModel<?> outerModel) {
                             outerModel.setAllVisible(true);
@@ -377,7 +370,7 @@ public final class ClientUtils {
                     }
                     armorItemStack = entity.getItemBySlot(EquipmentSlot.FEET);
                     if (armorItemStack.getItem() instanceof ArmorItem armorItem && !(armorItem instanceof GeoItem)
-                        && armorItem.getEquipmentSlot() == EquipmentSlot.FEET) {
+                            && armorItem.getEquipmentSlot() == EquipmentSlot.FEET) {
                         Model model = ClientHooks.getArmorModel(entity, armorItemStack, EquipmentSlot.FEET, armorLayer.outerModel);
                         if (model instanceof HumanoidModel<?> outerModel) {
                             outerModel.setAllVisible(true);
@@ -391,7 +384,7 @@ public final class ClientUtils {
                     }
                     armorItemStack = entity.getItemBySlot(EquipmentSlot.HEAD);
                     if (armorItemStack.getItem() instanceof ArmorItem armorItem && !(armorItem instanceof GeoItem)
-                        && armorItem.getEquipmentSlot() == EquipmentSlot.HEAD) {
+                            && armorItem.getEquipmentSlot() == EquipmentSlot.HEAD) {
                         Model model = ClientHooks.getArmorModel(entity, armorItemStack, EquipmentSlot.HEAD, armorLayer.outerModel);
                         if (model instanceof HumanoidModel<?> outerModel) {
                             outerModel.setAllVisible(true);
@@ -537,19 +530,6 @@ public final class ClientUtils {
         pose.scale(0.5F, 0.5F, 0.5F);
         guiGraphics.renderItem(bait, 0, 0);
         pose.popPose();
-    }
-
-    // TODO: 这是飞龙、波涌之刃的发剑气方式，还要写泰拉刃的
-    public static void swordProjectileHandle(Minecraft minecraft, LocalPlayer player) {
-        if (minecraft.gameMode == null || minecraft.gameMode.isDestroying() || !minecraft.options.keyAttack.isDown()) {return;}
-
-        ItemStack stack = player.getMainHandItem();
-        SwordProjectileComponent data = stack.get(ModDataComponentTypes.SWORD_PROJECTILE);
-        if (data != null && stack.getItem() instanceof BaseSwordItem sword && !player.getCooldowns().isOnCooldown(sword)) {
-            PacketDistributor.sendToServer(SwordShootingPacketC2S.INSTANCE);
-            player.getCooldowns().addCooldown(sword, data.getAttackSpeed(player));
-            player.swing(InteractionHand.MAIN_HAND);
-        }
     }
 
     public static void renderBoulderSun(Minecraft minecraft) {

@@ -12,6 +12,7 @@ import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -41,6 +42,7 @@ import org.confluence.mod.integration.irons_spell.IronSpellHelper;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.IMobEffectInstance;
 import org.confluence.mod.mixed.Immunity;
+import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.common.effect.HoneyEffect;
 import org.confluence.terra_curio.util.TCUtils;
 import org.spongepowered.asm.mixin.Mixin;
@@ -206,5 +208,12 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
     @WrapMethod(method = "getEffect")
     private MobEffectInstance getEffect(Holder<MobEffect> effect, Operation<MobEffectInstance> original) {
         return ILivingEntity.getEffect(getActiveEffectsMap(), effect);
+    }
+
+    @Inject(method = "swing(Lnet/minecraft/world/InteractionHand;Z)V",at=@At(value = "NEW",target = "(Lnet/minecraft/world/entity/Entity;I)Lnet/minecraft/network/protocol/game/ClientboundAnimatePacket;"))
+    private void handleSwordProjectile(InteractionHand hand, boolean updateSelf, CallbackInfo ci) {
+        if (hand == InteractionHand.MAIN_HAND && confluence$self() instanceof Player player) {
+            PlayerUtils.swordProjectile(player);
+        }
     }
 }

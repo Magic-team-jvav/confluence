@@ -133,7 +133,6 @@ public final class GameClientEvents {
             EctoMistHelper.effectiveTombstones = 0;
             ClientBestiary.getInstance().resetEntries();
         } else {
-            ClientUtils.swordProjectileHandle(minecraft, player);
             HookThrowingHandler.handle(player);
             KeyRequestHandler.handle();
             XaeroHelper.tick(player);
@@ -159,24 +158,22 @@ public final class GameClientEvents {
                 event.setSwingHand(false);
             }
         }
-        boolean mainHand = event.getHand() == InteractionHand.MAIN_HAND;
-        if (mainHand && HouseSelectHUD.inSelectHUD) {
-            if (event.isUseItem()) {
-                HouseSelectHUD.selectHouse(player);
-                player.swing(InteractionHand.MAIN_HAND);
-            } else if (event.isAttack()) {
-                event.setCanceled(true);
+
+        if (event.getHand() == InteractionHand.MAIN_HAND) {
+            if (HouseSelectHUD.inSelectHUD) {
+                if (event.isUseItem()) {
+                    HouseSelectHUD.selectHouse(player);
+                    player.swing(InteractionHand.MAIN_HAND);
+                } else if (event.isAttack()) {
+                    event.setCanceled(true);
+                    event.setSwingHand(false);
+                }
+            } else if (player.getMainHandItem().is(ModTags.Items.SPEAR)) {
+                if (event.isAttack()) {
+                    event.setCanceled(true);
+                }
                 event.setSwingHand(false);
             }
-        }
-        if (mainHand && player.getMainHandItem().is(ModTags.Items.SPEAR)) {
-            if (event.isAttack()) {
-                event.setCanceled(true);
-            }
-            event.setSwingHand(false);
-        }
-        if (mainHand && event.isAttack() && PlayerUtils.couldPerformEmptyTargetSweep(player)) {
-            event.setSwingHand(false); // 防止服务端攻击计数器过早重置
         }
     }
 

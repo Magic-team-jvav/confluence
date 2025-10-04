@@ -1459,6 +1459,10 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 BaitItems.LAVAFLY.get()
         );
 
+        tag(ModTags.Items.COULD_AUTO_ATTACK).add(
+                SwordItems.ICE_BLADE.get()
+        );
+
         WaystonesHelper.itemTag(this::tag);
     }
 }

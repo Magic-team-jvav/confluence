@@ -11,6 +11,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.Tuple;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -28,8 +29,10 @@ import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.attachment.PlayerPiggyBankContainer;
+import org.confluence.mod.common.component.SwordProjectileComponent;
 import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.data.saved.ConfluenceData;
+import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModHookTypes;
 import org.confluence.mod.common.init.ModTags;
@@ -403,5 +406,18 @@ public final class PlayerUtils {
             return stack.canPerformAction(ItemAbilities.SWORD_SWEEP) && stack.getItem() instanceof BaseSwordItem sword && sword.modifier != null && sword.modifier.specialSweep;
         }
         return false;
+    }
+
+    // TODO: 这是飞龙、波涌之刃的发剑气方式，还要写泰拉刃的
+    public static void swordProjectile(Player player) {
+        ItemStack stack = player.getMainHandItem();
+        if (stack.getItem() instanceof BaseSwordItem sword && !player.getCooldowns().isOnCooldown(sword)) {
+            SwordProjectileComponent data = stack.get(ModDataComponentTypes.SWORD_PROJECTILE);
+            if (data != null) {
+                sword.genProjectile(player, stack);
+                player.getCooldowns().addCooldown(sword, data.getAttackSpeed(player));
+                player.swing(InteractionHand.MAIN_HAND);
+            }
+        }
     }
 }

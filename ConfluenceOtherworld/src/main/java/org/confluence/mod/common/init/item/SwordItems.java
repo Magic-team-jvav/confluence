@@ -30,7 +30,14 @@ import java.util.function.Supplier;
 
 import static org.confluence.mod.common.item.sword.legacy.SwordPrefabs.*;
 
-
+/**
+ * 允许空挥的剑都是特殊横扫剑<p>
+ * 有自动挥舞的剑都是特殊横扫剑<p>
+ * 有特殊横扫的剑不一定是自动挥舞的剑<p>
+ * 是否允许自动挥舞是根据{@link ModTags.Items#COULD_AUTO_ATTACK}判断的<p>
+ * 是否允许特殊横扫是根据{@link BaseSwordItem.ModifierBuilder#specialSweep}判断的，即下文中的.setSpecialSweep()<p>
+ * 如果不是由BOARD_SWORD定义的，那么需要手动加上.addAttributeModifier(Attributes.SWEEPING_DAMAGE_RATIO, 0.8F, AttributeModifier.Operation.ADD_VALUE)
+ */
 public class SwordItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
 
@@ -122,7 +129,8 @@ public class SwordItems {
 
     // 弹幕剑
     public static final DeferredItem<BaseSwordItem> ICE_BLADE = register("ice_blade", ModTiers.UNBREAKABLE, 10, 3, ModRarity.BLUE, PROJ_SWORD
-            .apply(SwordProjectileComponent.ICE_PROJ).hasImage());
+            .apply(SwordProjectileComponent.ICE_PROJ).setSpecialSweep().hasImage()
+            .addAttributeModifier(Attributes.SWEEPING_DAMAGE_RATIO, 0.8F, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredItem<BaseSwordItem> STARFURY = register("starfury", ModTiers.UNBREAKABLE, 14, 2.9F, ModRarity.GREEN, PROJ_SWORD
             .apply(SwordProjectileComponent.STAR_FURY_PROJ).addTooltip(p -> p.withColor(0xe44189)).addTooltip(p -> p.withColor(0xe44189)));
     public static final DeferredItem<BaseSwordItem> ENCHANTED_SWORD = register("enchanted_sword", ModTiers.UNBREAKABLE, 12, 2.9F, ModRarity.ORANGE, PROJ_SWORD

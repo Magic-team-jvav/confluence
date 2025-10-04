@@ -22,6 +22,7 @@ import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.ItemAbility;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
@@ -37,7 +38,6 @@ import org.confluence.mod.util.ModUtils;
 import org.confluence.terraentity.data.component.EffectStrategyComponent;
 import org.confluence.terraentity.init.TEDataComponentTypes;
 import org.confluence.terraentity.registries.hit_effect.IEffectStrategy;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -50,7 +50,7 @@ import java.util.function.Supplier;
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class BaseSwordItem extends SwordItem {
-    public ModifierBuilder modifier;
+    public @Nullable ModifierBuilder modifier;
     private @Nullable TooltipComponent component;
 
     public BaseSwordItem(Tier tier, Item.Properties properties) {
@@ -89,7 +89,7 @@ public class BaseSwordItem extends SwordItem {
 
     @Override
     public Optional<TooltipComponent> getTooltipImage(ItemStack stack) {
-        if (component == null && modifier.hasImage) {
+        if (component == null && modifier != null && modifier.hasImage) {
             this.component = AltImageComponent.of(stack.getItem());
         }
         return Optional.ofNullable(component);
@@ -144,7 +144,7 @@ public class BaseSwordItem extends SwordItem {
 
     public static class ModifierBuilder {
         public boolean canPerformSweep = true;
-        public float sweepRange = 1.0F;
+        public boolean specialSweep = false;
 
         protected Item.Properties properties = new Item.Properties();
         //        private final List<DeferredHolder<EffectStrategy,? extends EffectStrategy>> onHitEffects = new ArrayList<>();
@@ -199,10 +199,12 @@ public class BaseSwordItem extends SwordItem {
         }
 
         /**
-         * 设置横扫范围
+         * 设置特殊横扫
+         *
+         * @see BaseSwordItem#getSpecialSweepArea
          */
-        public ModifierBuilder setSweepRange(float sweepRange) {
-            this.sweepRange = sweepRange;
+        public ModifierBuilder setSpecialSweep() {
+            this.specialSweep = true;
             return this;
         }
 
@@ -278,30 +280,59 @@ public class BaseSwordItem extends SwordItem {
             }
         }
 
-        for (int i = 0; i < modifier.tooltipsModifier.size(); i++) {
-            if (i == 0) {
-                tooltipComponents.add(Component.empty());
+        if (modifier != null) {
+            for (int i = 0; i < modifier.tooltipsModifier.size(); i++) {
+                if (i == 0) {
+                    tooltipComponents.add(Component.empty());
+                }
+                var it = modifier.tooltipsModifier.get(i);
+                MutableComponent component = Component.translatable("tooltip.item.confluence." + BuiltInRegistries.ITEM.getKey(this).getPath() + "." + i).withStyle(style -> style.withColor(0x666666).withItalic(true));
+                it.accept(component);
+                tooltipComponents.add(component);
             }
-            var it = modifier.tooltipsModifier.get(i);
-            MutableComponent component = Component.translatable("tooltip.item.confluence." + BuiltInRegistries.ITEM.getKey(this).getPath() + "." + i).withStyle(style -> style.withColor(0x666666).withItalic(true));
-            it.accept(component);
-            tooltipComponents.add(component);
         }
     }
 
+    /**
+     * 特殊横扫：<p>
+     * 玩家前、左、右各“手长”长度的方形区域<p>
+     * #########<p>
+     * #########<p>
+     * #########<p>
+     * #########<p>
+     * ####&####<p>
+     * #：横扫范围<p>
+     * &：玩家
+     */
     @Override
-    public @NotNull AABB getSweepHitBox(@NotNull ItemStack stack, @NotNull Player player, @NotNull Entity target) {
-        return super.getSweepHitBox(stack, player, target).inflate(modifier.sweepRange);
+    public AABB getSweepHitBox(ItemStack stack, Player player, Entity target) {
+        if (modifier != null && modifier.specialSweep) {
+            return getSpecialSweepArea(player);
+        }
+        return super.getSweepHitBox(stack, player, target);
+    }
+
+    public static AABB getSpecialSweepArea(Player player) {
+        Vec3 start = player.getEyePosition();
+        Vec3 up = player.getUpVector(1);
+        Vec3 forward = player.getViewVector(1).scale(player.getAttributeValue(Attributes.ENTITY_INTERACTION_RANGE));
+        Vec3 end = start.add(forward);
+        Vec3 left = forward.cross(up);
+        return new AABB(start.add(left), end.add(left.reverse()));
     }
 
     @Override
-    public boolean canPerformAction(@NotNull ItemStack stack, @NotNull ItemAbility itemAbility) {
-        return super.canPerformAction(stack, itemAbility) && modifier.canPerformSweep;
+    public boolean canPerformAction(ItemStack stack, ItemAbility itemAbility) {
+        boolean b = super.canPerformAction(stack, itemAbility);
+        if (modifier != null) {
+            return b && modifier.canPerformSweep;
+        }
+        return b;
     }
 
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
-        if (modifier.inventoryTick != null) modifier.inventoryTick.accept(stack, level, entity, isSelected);
+        if (modifier != null && modifier.inventoryTick != null) modifier.inventoryTick.accept(stack, level, entity, isSelected);
     }
 
     @FunctionalInterface

@@ -2,6 +2,7 @@ package org.confluence.mod.mixin.entity;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
@@ -67,7 +68,7 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
     @Unique
     private final Object2IntMap<Immunity> confluence$entityImmunityTicks = new Object2IntOpenHashMap<>();
     @Unique
-    private boolean confluence$breakingEasyCrashBlock = false;
+    private boolean confluence$breakingEasyCrashBlock;
     @Unique
     private boolean confluence$deadO;
     @Unique
@@ -145,31 +146,26 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
 
     @Override
     public boolean confluence$deadO(boolean... dead) {
-        if (dead != null && dead.length > 0) {
-            confluence$deadO = dead[0];
+        if (dead != null && dead.length != 0) {
+            this.confluence$deadO = dead[0];
         }
         return confluence$deadO;
     }
 
     @Inject(method = "canFreeze", at = @At(value = "HEAD"), cancellable = true)
     private void confluence$canFreeze(CallbackInfoReturnable<Boolean> cir) {
-        LivingFreezeEvent.Pre post = NeoForge.EVENT_BUS.post(new LivingFreezeEvent.Pre(confluence$self()));
+        LivingFreezeEvent event = NeoForge.EVENT_BUS.post(new LivingFreezeEvent(confluence$self()));
 
         if (confluence$self() instanceof Player player) {
             HookMapManager.postHooks(ModHookTypes.LIVING_FREEZE.get(), (owner, hook, original) -> {
                 hook.livingFreeze(owner, confluence$self(), original);
                 return original;
-            }, player, post);
+            }, player, event);
         }
 
-        if (!post.canFreeze()) {
+        if (event.isCanceled()) {
             cir.setReturnValue(false);
         }
-    }
-
-    @Inject(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/damagesource/DamageSources;freeze()Lnet/minecraft/world/damagesource/DamageSource;"))
-    private void confluence$aiStep(CallbackInfo ci) {
-        NeoForge.EVENT_BUS.post(new LivingFreezeEvent.Post(confluence$self()));
     }
 
     @WrapWithCondition(method = "triggerOnDeathMobEffects", at = @At(value = "INVOKE", target = "Ljava/util/Map;clear()V"))
@@ -202,13 +198,13 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
         return IMobEffectInstance.of(instance).confluence$isEnabled();
     }
 
-    @Inject(method = "hasEffect", at = @At("HEAD"), cancellable = true)
-    private void hasEffect(Holder<MobEffect> effect, CallbackInfoReturnable<Boolean> cir) {
-        cir.setReturnValue(ILivingEntity.hasEffect(getActiveEffectsMap(), effect));
+    @WrapMethod(method = "hasEffect")
+    private boolean hasEffect(Holder<MobEffect> effect, Operation<Boolean> original) {
+        return ILivingEntity.hasEffect(getActiveEffectsMap(), effect);
     }
 
-    @Inject(method = "getEffect", at = @At("HEAD"), cancellable = true)
-    private void getEffect(Holder<MobEffect> effect, CallbackInfoReturnable<MobEffectInstance> cir) {
-        cir.setReturnValue(ILivingEntity.getEffect(getActiveEffectsMap(), effect));
+    @WrapMethod(method = "getEffect")
+    private MobEffectInstance getEffect(Holder<MobEffect> effect, Operation<MobEffectInstance> original) {
+        return ILivingEntity.getEffect(getActiveEffectsMap(), effect);
     }
 }

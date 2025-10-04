@@ -114,7 +114,8 @@ public final class AchievementUtils {
     }
 
     public static void theFrequentFlyer(ServerPlayer player, long cost) {
-        short before = LibUtils.getOrCreatePersistedData(player).getShort("confluence:the_frequent_flyer");
+        CompoundTag tag = LibUtils.getOrCreatePersistedData(player);
+        short before = tag.getShort("confluence:the_frequent_flyer");
         if (before > 10000) return;
         long total = before + cost;
         if (total >= 10000) {
@@ -123,7 +124,7 @@ public final class AchievementUtils {
                 player.getAdvancements().award(advancement, "never");
             }
         }
-        LibUtils.getOrCreatePersistedData(player).putShort("confluence:the_frequent_flyer", (short) total);
+        tag.putShort("confluence:the_frequent_flyer", (short) total);
     }
 
     public static void noHobo(AbstractTerraNPC npc, NPCSpawner.Region region) {

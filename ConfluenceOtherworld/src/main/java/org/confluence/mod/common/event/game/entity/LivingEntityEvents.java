@@ -107,9 +107,9 @@ public final class LivingEntityEvents {
             if (victim instanceof Boss boss && boss.shouldShowMessage()) {
                 ModUtils.bossDeath(level, victim);
             }
-            if (victim instanceof ServerPlayer serverPlayer) {
-                PlayerUtils.dropMoney(serverPlayer);
-                TombstoneBoulderEntity.createTombstone(serverPlayer);
+            if (victim instanceof ServerPlayer player) {
+                PlayerUtils.dropMoney(player);
+                TombstoneBoulderEntity.createTombstone(player);
             }
             for (ServerPlayer player : level.players()) {
                 if (player.position().distanceToSqr(victim.position()) > 32 * 32) continue;

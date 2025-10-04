@@ -34,16 +34,18 @@ import java.util.function.BiFunction;
 
 public class TreasureBagItem extends CustomRarityItem {
     public final ResourceLocation lootTable;
+    public final ModRarity innerRarity; // 目前不知道有什么用
     public final BiFunction<ServerLevel, BlockPos, String> suffix;
 
-    public TreasureBagItem(ResourceLocation lootTable, BiFunction<ServerLevel, BlockPos, String> suffix) {
+    public TreasureBagItem(ResourceLocation lootTable, ModRarity innerRarity, BiFunction<ServerLevel, BlockPos, String> suffix) {
         super(new Properties().fireResistant(), ModRarity.EXPERT);
         this.lootTable = lootTable;
+        this.innerRarity = innerRarity;
         this.suffix = suffix;
     }
 
-    public TreasureBagItem(ResourceLocation lootTable) {
-        this(lootTable, (level, pos) -> LibUtils.switchByDifficulty(level, pos, "/classic", "/expert", "/master"));
+    public TreasureBagItem(ResourceLocation lootTable, ModRarity innerRarity) {
+        this(lootTable, innerRarity, (level, pos) -> LibUtils.switchByDifficulty(level, pos, "/classic", "/expert", "/master"));
     }
 
     @Override

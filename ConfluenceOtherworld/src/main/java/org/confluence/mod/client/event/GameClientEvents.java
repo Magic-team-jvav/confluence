@@ -47,8 +47,9 @@ import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.common.NeoForgeConfig;
 import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
-import org.confluence.lib.client.AntiPushPoseStack;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import org.confluence.lib.client.animate.ExpertColorAnimation;
+import org.confluence.lib.mixed.IPoseStack;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
@@ -76,11 +77,9 @@ import org.confluence.mod.integration.xaero.XaeroHelper;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.ILocalPlayer;
 import org.confluence.mod.mixed.IMobEffectInstance;
+import org.confluence.mod.network.c2s.EmptyTargetSweepPacketC2S;
 import org.confluence.mod.network.c2s.SpearAttackPacketC2S;
-import org.confluence.mod.util.ClientUtils;
-import org.confluence.mod.util.DeathAnimUtils;
-import org.confluence.mod.util.ModUtils;
-import org.confluence.mod.util.PrefixUtils;
+import org.confluence.mod.util.*;
 import org.confluence.terraentity.api.event.NPCEvent;
 import org.confluence.terraentity.init.entity.TENpcEntities;
 import software.bernie.geckolib.event.GeoRenderEvent;
@@ -155,12 +154,13 @@ public final class GameClientEvents {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player == null) return;
         if (event.isUseItem() || event.isAttack() || event.isPickBlock()) {
-            if (!((ILocalPlayer) player).confluence$isCanMove() || player.hasEffect(ModEffects.CURSED)) {
+            if (!ILocalPlayer.of(player).confluence$isCanMove() || player.hasEffect(ModEffects.CURSED)) {
                 event.setCanceled(true);
                 event.setSwingHand(false);
             }
         }
-        if (HouseSelectHUD.inSelectHUD && event.getHand() == InteractionHand.MAIN_HAND) {
+        boolean mainHand = event.getHand() == InteractionHand.MAIN_HAND;
+        if (mainHand && HouseSelectHUD.inSelectHUD) {
             if (event.isUseItem()) {
                 HouseSelectHUD.selectHouse(player);
                 player.swing(InteractionHand.MAIN_HAND);
@@ -169,11 +169,14 @@ public final class GameClientEvents {
                 event.setSwingHand(false);
             }
         }
-        if (event.getHand() == InteractionHand.MAIN_HAND && player.getMainHandItem().is(ModTags.Items.SPEAR)) {
+        if (mainHand && player.getMainHandItem().is(ModTags.Items.SPEAR)) {
             if (event.isAttack()) {
                 event.setCanceled(true);
             }
             event.setSwingHand(false);
+        }
+        if (mainHand && event.isAttack() && PlayerUtils.couldPerformEmptyTargetSweep(player)) {
+            event.setSwingHand(false); // 防止服务端攻击计数器过早重置
         }
     }
 
@@ -312,7 +315,7 @@ public final class GameClientEvents {
 
     @SubscribeEvent
     public static void postRenderLiving(RenderLivingEvent.Post<?, ?> event) {
-        if (event.getPoseStack() instanceof AntiPushPoseStack || ClientConfigs.goreEffect == ClientConfigs.GoreEffect.OFF) return;
+        if (IPoseStack.isAntiPush(event.getPoseStack()) || ClientConfigs.goreEffect == ClientConfigs.GoreEffect.OFF) return;
         LivingEntity living = event.getEntity();
         if (ClientConfigs.goreEffect == ClientConfigs.GoreEffect.CONFLUENCE_VANILLA
                 && !ResourceLocation.DEFAULT_NAMESPACE.equals(BuiltInRegistries.ENTITY_TYPE.getKey(living.getType()).getNamespace())
@@ -408,6 +411,13 @@ public final class GameClientEvents {
                     event.setCanRender(TriState.FALSE);
                 }
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void playerInteract$LeftClickEmpty(PlayerInteractEvent.LeftClickEmpty event) {
+        if (PlayerUtils.couldPerformEmptyTargetSweep(event.getEntity())) {
+            EmptyTargetSweepPacketC2S.send2Server();
         }
     }
 }

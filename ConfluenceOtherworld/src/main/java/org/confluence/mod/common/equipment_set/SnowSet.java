@@ -5,16 +5,14 @@ import com.xiaohunao.equipment_benediction.common.equipment_set.EquipmentSetBran
 import com.xiaohunao.equipment_benediction.common.equipment_set.EquippableGroup;
 import com.xiaohunao.equipment_benediction.common.equippable.VanillaWearable;
 import com.xiaohunao.equipment_benediction.common.hook.HookMap;
-import com.xiaohunao.equipment_benediction.common.interfaces.IBenediction;
-import net.minecraft.world.entity.LivingEntity;
-import org.confluence.mod.api.event.LivingFreezeEvent;
 import org.confluence.mod.common.equipment_set.hook.LivingFreezeHook;
 import org.confluence.mod.common.init.ModHookTypes;
 import org.confluence.mod.common.init.item.ArmorItems;
 
-public class SnowSet extends EquipmentSet implements LivingFreezeHook {
+public class SnowSet extends EquipmentSet {
     @Override
     protected void init(HookMap.Builder hook, EquippableGroup.Builder equippableGroup) {
+        LivingFreezeHook freezeHook = (owner, self, event) -> event.setCanceled(true);
         equippableGroup.addEquippableSet("default", new EquipmentSetBranch.Builder()
                 .addEquippable(
                         VanillaWearable.HEAD, ArmorItems.SNOW_CAPS,
@@ -22,20 +20,16 @@ public class SnowSet extends EquipmentSet implements LivingFreezeHook {
                         VanillaWearable.LEGS, ArmorItems.INSULATED_PANTS,
                         VanillaWearable.FEET, ArmorItems.INSULATED_SHOES
                 )
-                .bindHook(ModHookTypes.LIVING_FREEZE.get(), this)
+                .bindHook(ModHookTypes.LIVING_FREEZE.get(), freezeHook)
                 .build());
-        equippableGroup.addEquippableSet("pink",new EquipmentSetBranch.Builder()
+        equippableGroup.addEquippableSet("pink", new EquipmentSetBranch.Builder()
                 .addEquippable(
                         VanillaWearable.HEAD, ArmorItems.PINK_SNOW_CAPS,
                         VanillaWearable.CHEST, ArmorItems.PINK_SNOW_SUITS,
                         VanillaWearable.LEGS, ArmorItems.INSULATED_PANTS,
                         VanillaWearable.FEET, ArmorItems.INSULATED_SHOES
-                )                .bindHook(ModHookTypes.LIVING_FREEZE.get(), this)
+                )
+                .bindHook(ModHookTypes.LIVING_FREEZE.get(), freezeHook)
                 .build());
-    }
-
-    @Override
-    public void livingFreeze(IBenediction owner, LivingEntity self, LivingFreezeEvent.Pre event) {
-        event.setCanFreeze(false);
     }
 }

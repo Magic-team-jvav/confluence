@@ -19,6 +19,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
@@ -36,8 +37,10 @@ import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.common.item.potion.ManaPotionItem;
+import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.network.s2c.*;
 import org.confluence.terra_curio.common.init.TCItems;
+import org.confluence.terra_curio.integration.bettercombat.BetterCombatHelper;
 import org.confluence.terra_curio.util.TCUtils;
 import org.confluence.terraentity.api.entity.Boss;
 import org.jetbrains.annotations.ApiStatus;
@@ -389,6 +392,15 @@ public final class PlayerUtils {
             }
             if (toUse == null) return true;
             toUse.finishUsingItem(player.level(), player);
+        }
+        return false;
+    }
+
+    public static boolean couldPerformEmptyTargetSweep(Player player) {
+        if (!player.isAutoSpinAttack()) {
+            ItemStack stack = player.getWeaponItem();
+            if (BetterCombatHelper.hasWeaponAttributes(stack)) return false;
+            return stack.canPerformAction(ItemAbilities.SWORD_SWEEP) && stack.getItem() instanceof BaseSwordItem sword && sword.modifier != null && sword.modifier.specialSweep;
         }
         return false;
     }

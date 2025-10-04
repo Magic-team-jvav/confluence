@@ -1460,7 +1460,14 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         );
 
         tag(ModTags.Items.COULD_AUTO_ATTACK).add(
-                SwordItems.ICE_BLADE.get()
+                SwordItems.ICE_BLADE.get(),
+                SwordItems.MANDIBLE_BLADE.get(),
+                SwordItems.PURPLE_CLUBBERFISH.get(),
+                SwordItems.KATANA.get(),
+                SwordItems.FALCON_BLADE.get(),
+                SwordItems.BEE_KEEPER.get(),
+                SwordItems.TERRAGRIM.get(),
+                SwordItems.ENCHANTED_SWORD.get()
         );
 
         WaystonesHelper.itemTag(this::tag);

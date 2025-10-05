@@ -11,7 +11,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.Tuple;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -416,7 +415,6 @@ public final class PlayerUtils {
             if (data != null) {
                 sword.genProjectile(player, stack);
                 player.getCooldowns().addCooldown(sword, data.getAttackSpeed(player));
-                player.swing(InteractionHand.MAIN_HAND);
             }
         }
     }

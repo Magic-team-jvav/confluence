@@ -210,7 +210,7 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
         return ILivingEntity.getEffect(getActiveEffectsMap(), effect);
     }
 
-    @Inject(method = "swing(Lnet/minecraft/world/InteractionHand;Z)V",at=@At(value = "NEW",target = "(Lnet/minecraft/world/entity/Entity;I)Lnet/minecraft/network/protocol/game/ClientboundAnimatePacket;"))
+    @Inject(method = "swing(Lnet/minecraft/world/InteractionHand;Z)V", at = @At(value = "NEW", target = "(Lnet/minecraft/world/entity/Entity;I)Lnet/minecraft/network/protocol/game/ClientboundAnimatePacket;"))
     private void handleSwordProjectile(InteractionHand hand, boolean updateSelf, CallbackInfo ci) {
         if (hand == InteractionHand.MAIN_HAND && confluence$self() instanceof Player player) {
             PlayerUtils.swordProjectile(player);

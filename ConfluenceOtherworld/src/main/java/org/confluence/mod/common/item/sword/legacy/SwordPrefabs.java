@@ -26,8 +26,8 @@ public class SwordPrefabs {
     /**
      * 普通宽剑
      */
-    public static final Supplier<ModifierBuilder> BOARD_SWORD = () -> new ModifierBuilder().setSpecialSweep()
-            .addAttributeModifier(Attributes.SWEEPING_DAMAGE_RATIO, 0.8F, AttributeModifier.Operation.ADD_VALUE);
+    public static final Function<Float, ModifierBuilder> BOARD_SWORD = ratio -> new ModifierBuilder().setSpecialSweep()
+            .addAttributeModifier(Attributes.SWEEPING_DAMAGE_RATIO, ratio, AttributeModifier.Operation.ADD_VALUE);
 
     /**
      * 一般宽剑

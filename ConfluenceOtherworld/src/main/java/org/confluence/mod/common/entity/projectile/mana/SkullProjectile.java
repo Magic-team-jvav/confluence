@@ -78,7 +78,7 @@ public class SkullProjectile extends AbstractManaProjectile {
 
         if (level().isClientSide) {
             if (trail == null || trail.isRemoved()) {
-                this.trail = new ParticleEmitter(level(), position(), Confluence.asResource("flame"));
+                this.trail = new ParticleEmitter(level(), position(), Confluence.asResource("skull_projectile_flame"));
                 trail.attachEntity(this);
                 PSGameClient.LOADER.addEmitter(trail, false);
             }

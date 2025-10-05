@@ -75,49 +75,40 @@ public class SwordItems {
     public static final DeferredItem<BaseSwordItem> TUNGSTEN_BROADSWORD = register("tungsten_broadsword", ModTiers.TUNGSTEN, 6, 1.6F, NORMAL_SWORD.get());
     public static final DeferredItem<BaseSwordItem> GOLDEN_BROADSWORD = register("golden_broadsword", ModTiers.GOLD, 7, 1.6F, NORMAL_SWORD.get());
     public static final DeferredItem<BaseSwordItem> PLATINUM_BROADSWORD = register("platinum_broadsword", ModTiers.PLATINUM, 8, 1.6F, NORMAL_SWORD.get());
-    public static final DeferredItem<BaseSwordItem> MURAMASA = register("muramasa", ModTiers.UNBREAKABLE, 15, 3, BOARD_SWORD.get()
+    public static final DeferredItem<BaseSwordItem> MURAMASA = register("muramasa", ModTiers.UNBREAKABLE, 15, 3, BOARD_SWORD.apply(0.8F)
             .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 1.5F, AttributeModifier.Operation.ADD_VALUE)
             .addAttributeModifier(Attributes.ATTACK_KNOCKBACK, 0.2f, AttributeModifier.Operation.ADD_VALUE).hasImage());
-    public static final DeferredItem<BaseSwordItem> COBALT_SWORD = register("cobalt_sword", ModTiers.UNBREAKABLE, 25, 2.4F, ModRarity.LIGHT_RED, BOARD_SWORD.get()
+    public static final DeferredItem<BaseSwordItem> COBALT_SWORD = register("cobalt_sword", ModTiers.UNBREAKABLE, 25, 2.4F, ModRarity.LIGHT_RED, BOARD_SWORD.apply(0.8F)
             .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 4, AttributeModifier.Operation.ADD_VALUE).hasImage());
-    public static final DeferredItem<BaseSwordItem> PALLADIUM_SWORD = register("palladium_sword", ModTiers.UNBREAKABLE, 29, 2.6F, ModRarity.LIGHT_RED, BOARD_SWORD.get()
+    public static final DeferredItem<BaseSwordItem> PALLADIUM_SWORD = register("palladium_sword", ModTiers.UNBREAKABLE, 29, 2.6F, ModRarity.LIGHT_RED, BOARD_SWORD.apply(0.8F)
             .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 4, AttributeModifier.Operation.ADD_VALUE).hasImage());
-    public static final DeferredItem<BaseSwordItem> MYTHRIL_SWORD = register("mythril_sword", ModTiers.UNBREAKABLE, 30, 2.6F, ModRarity.LIGHT_RED, BOARD_SWORD.get()
+    public static final DeferredItem<BaseSwordItem> MYTHRIL_SWORD = register("mythril_sword", ModTiers.UNBREAKABLE, 30, 2.6F, ModRarity.LIGHT_RED, BOARD_SWORD.apply(0.8F)
             .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 4, AttributeModifier.Operation.ADD_VALUE).hasImage());
-    public static final DeferredItem<BaseSwordItem> ORICHALCUM_SWORD = register("orichalcum_sword", ModTiers.UNBREAKABLE, 34, 2.4F, ModRarity.LIGHT_RED, BOARD_SWORD.get()
+    public static final DeferredItem<BaseSwordItem> ORICHALCUM_SWORD = register("orichalcum_sword", ModTiers.UNBREAKABLE, 34, 2.4F, ModRarity.LIGHT_RED, BOARD_SWORD.apply(0.8F)
             .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 4, AttributeModifier.Operation.ADD_VALUE).hasImage());
-    public static final DeferredItem<BaseSwordItem> ADAMANTITE_SWORD = register("adamantite_sword", ModTiers.UNBREAKABLE, 36, 2.4F, ModRarity.LIGHT_RED, BOARD_SWORD.get()
+    public static final DeferredItem<BaseSwordItem> ADAMANTITE_SWORD = register("adamantite_sword", ModTiers.UNBREAKABLE, 36, 2.4F, ModRarity.LIGHT_RED, BOARD_SWORD.apply(0.8F)
             .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 4, AttributeModifier.Operation.ADD_VALUE).hasImage());
-    public static final DeferredItem<BaseSwordItem> TITANIUM_SWORD = register("titanium_sword", ModTiers.UNBREAKABLE, 36, 2.4F, ModRarity.LIGHT_RED, BOARD_SWORD.get()
+    public static final DeferredItem<BaseSwordItem> TITANIUM_SWORD = register("titanium_sword", ModTiers.UNBREAKABLE, 36, 2.4F, ModRarity.LIGHT_RED, BOARD_SWORD.apply(0.8F)
             .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 4, AttributeModifier.Operation.ADD_VALUE).hasImage());
 
     // tip 注册剑的特殊功能只需修改最后一个参数即可，只需要把 NORMAL_SWORD替换成prefab的其他预制效果，还可以追加效果
     public static final DeferredItem<BaseSwordItem> FAKE_SWORD = register("fake_sword", ModTiers.CANDY_CANE, 3, 1.6F, ModRarity.GRAY, NORMAL_SWORD.get());
-    public static final DeferredItem<BaseSwordItem> CANDY_CANE_SWORD = register("candy_cane_sword", ModTiers.CANDY_CANE, 5, 2.4F, NORMAL_SWORD.get().setSpecialSweep()
-            .addAttributeModifier(Attributes.SWEEPING_DAMAGE_RATIO, 0.5F, AttributeModifier.Operation.ADD_VALUE).hasImage());
-    public static final DeferredItem<BaseSwordItem> FALCON_BLADE = register("falcon_blade", ModTiers.UNBREAKABLE, 6, 2.55F, ModRarity.BLUE, NORMAL_SWORD.get().setSpecialSweep()
-            .addAttributeModifier(Attributes.SWEEPING_DAMAGE_RATIO, 0.5F, AttributeModifier.Operation.ADD_VALUE).hasImage());
-    public static final DeferredItem<BaseSwordItem> ZOMBIE_ARM = register("zombie_arm", ModTiers.UNBREAKABLE, 5, 2.4F, NORMAL_SWORD.get().setSpecialSweep()
-            .addAttributeModifier(Attributes.SWEEPING_DAMAGE_RATIO, 0.5F, AttributeModifier.Operation.ADD_VALUE).hasImage());
-    public static final DeferredItem<BaseSwordItem> MANDIBLE_BLADE = register("mandible_blade", ModTiers.UNBREAKABLE, 6, 2.4F, NORMAL_SWORD.get().setSpecialSweep()
-            .addAttributeModifier(Attributes.SWEEPING_DAMAGE_RATIO, 0.8F, AttributeModifier.Operation.ADD_VALUE).hasImage());
-    public static final DeferredItem<BaseSwordItem> BONE_SWORD = register("bone_sword", ModTiers.UNBREAKABLE, 7, 2.4F, ModRarity.ORANGE, NORMAL_SWORD.get().setSpecialSweep()
-            .addAttributeModifier(Attributes.SWEEPING_DAMAGE_RATIO, 0.8F, AttributeModifier.Operation.ADD_VALUE).hasImage());
-    public static final DeferredItem<BaseSwordItem> PURPLE_CLUBBERFISH = register("purple_clubberfish", ModTiers.UNBREAKABLE, 15, 0.5F, NORMAL_SWORD.get().setSpecialSweep()
-            .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 2, AttributeModifier.Operation.ADD_VALUE)
-            .addAttributeModifier(Attributes.SWEEPING_DAMAGE_RATIO, 0.8F, AttributeModifier.Operation.ADD_VALUE).hasImage());
-    public static final DeferredItem<BaseSwordItem> STYLISH_SCISSORS = register("stylish_scissors", ModTiers.UNBREAKABLE, 5, 2.2F, ModRarity.GREEN, NORMAL_SWORD.get().setSpecialSweep()
-            .addAttributeModifier(Attributes.SWEEPING_DAMAGE_RATIO, 0.8F, AttributeModifier.Operation.ADD_VALUE).hasImage());
-    public static final DeferredItem<BaseSwordItem> EXOTIC_SCIMITAR = register("exotic_scimitar", ModTiers.UNBREAKABLE, 7, 2.3F, ModRarity.GREEN, NORMAL_SWORD.get().setSpecialSweep()
-            .addAttributeModifier(Attributes.SWEEPING_DAMAGE_RATIO, 0.8F, AttributeModifier.Operation.ADD_VALUE).hasImage());
-    public static final DeferredItem<BaseSwordItem> KATANA = register("katana", ModTiers.UNBREAKABLE, 6, 3.7F, ModRarity.BLUE, NORMAL_SWORD.get().setSpecialSweep()
-            .addAttributeModifier(Attributes.SWEEPING_DAMAGE_RATIO, 0.8F, AttributeModifier.Operation.ADD_VALUE).hasImage());
+    public static final DeferredItem<BaseSwordItem> CANDY_CANE_SWORD = register("candy_cane_sword", ModTiers.CANDY_CANE, 5, 2.4F, BOARD_SWORD.apply(0.5F).hasImage());
+    public static final DeferredItem<BaseSwordItem> FALCON_BLADE = register("falcon_blade", ModTiers.UNBREAKABLE, 6, 2.55F, ModRarity.BLUE, BOARD_SWORD.apply(0.5F).hasImage());
+    public static final DeferredItem<BaseSwordItem> ZOMBIE_ARM = register("zombie_arm", ModTiers.UNBREAKABLE, 5, 2.4F, BOARD_SWORD.apply(0.5F).hasImage());
+    public static final DeferredItem<BaseSwordItem> MANDIBLE_BLADE = register("mandible_blade", ModTiers.UNBREAKABLE, 6, 2.4F, BOARD_SWORD.apply(0.8F).hasImage());
+    public static final DeferredItem<BaseSwordItem> BONE_SWORD = register("bone_sword", ModTiers.UNBREAKABLE, 7, 2.4F, ModRarity.ORANGE, BOARD_SWORD.apply(0.8F).hasImage());
+    public static final DeferredItem<BaseSwordItem> PURPLE_CLUBBERFISH = register("purple_clubberfish", ModTiers.UNBREAKABLE, 15, 0.5F, BOARD_SWORD.apply(0.8F)
+            .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 2, AttributeModifier.Operation.ADD_VALUE).hasImage());
+    public static final DeferredItem<BaseSwordItem> STYLISH_SCISSORS = register("stylish_scissors", ModTiers.UNBREAKABLE, 5, 2.2F, ModRarity.GREEN, BOARD_SWORD.apply(0.8F).hasImage());
+    public static final DeferredItem<BaseSwordItem> EXOTIC_SCIMITAR = register("exotic_scimitar", ModTiers.UNBREAKABLE, 7, 2.3F, ModRarity.GREEN, BOARD_SWORD.apply(0.8F).hasImage());
+    public static final DeferredItem<BaseSwordItem> KATANA = register("katana", ModTiers.UNBREAKABLE, 6, 3.7F, ModRarity.BLUE, BOARD_SWORD.apply(0.8F).hasImage());
 
     // 改横扫大小的宽剑(由 ENTITY_INTERACTION_RANGE 属性控制)
-    public static final DeferredItem<BaseSwordItem> TERRAGRIM = register("terragrim", ModTiers.UNBREAKABLE, 1, 6, ModRarity.ORANGE, BOARD_SWORD.get()
+    public static final DeferredItem<BaseSwordItem> TERRAGRIM = register("terragrim", ModTiers.UNBREAKABLE, 1, 6, ModRarity.ORANGE, BOARD_SWORD.apply(0.8F)
             .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, -1.8F, AttributeModifier.Operation.ADD_VALUE));
 
-    public static final DeferredItem<BaseSwordItem> BREAKER_BLADE = register("breaker_blade", ModTiers.UNBREAKABLE, 37, 1.0F, ModRarity.LIGHT_RED, BOARD_SWORD.get()
+    public static final DeferredItem<BaseSwordItem> BREAKER_BLADE = register("breaker_blade", ModTiers.UNBREAKABLE, 37, 1.0F, ModRarity.LIGHT_RED, BOARD_SWORD.apply(0.8F)
             .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 9, AttributeModifier.Operation.ADD_VALUE)
             .addAttributeModifier(Attributes.ATTACK_KNOCKBACK, 0.8F, AttributeModifier.Operation.ADD_VALUE).hasImage());
 
@@ -146,10 +137,10 @@ public class SwordItems {
             .addAttributeModifier(Attributes.SWEEPING_DAMAGE_RATIO, 0.8F, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredItem<BaseSwordItem> STARFURY = register("starfury", ModTiers.UNBREAKABLE, 14, 2.4F, ModRarity.GREEN, PROJ_SWORD
             .apply(SwordProjectileComponent.STAR_FURY_PROJ).addTooltip(p -> p.withColor(0xe44189)).addTooltip(p -> p.withColor(0xe44189))
-            .hasImage().addAttributeModifier(Attributes.SWEEPING_DAMAGE_RATIO, 0.8F, AttributeModifier.Operation.ADD_VALUE));
+            .hasImage().setSpecialSweep().addAttributeModifier(Attributes.SWEEPING_DAMAGE_RATIO, 0.8F, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredItem<BaseSwordItem> ENCHANTED_SWORD = register("enchanted_sword", ModTiers.UNBREAKABLE, 12, 2.4F, ModRarity.ORANGE, PROJ_SWORD
             .apply(SwordProjectileComponent.ENCHANTED_SWORD_PROJ).addTooltip(p -> p.withColor(0x4156e4)).addTooltip(p -> p.withColor(0x4156e4))
-            .hasImage().addAttributeModifier(Attributes.SWEEPING_DAMAGE_RATIO, 0.8F, AttributeModifier.Operation.ADD_VALUE));
+            .hasImage().setSpecialSweep().addAttributeModifier(Attributes.SWEEPING_DAMAGE_RATIO, 0.8F, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredItem<BaseSwordItem> BLADE_OF_GRASS = register("blade_of_grass", ModTiers.UNBREAKABLE, 11, 2.4F, ModRarity.GREEN, PROJ_SWORD
             .apply(SwordProjectileComponent.GRASS_PROJ).hasImage().addAttributeModifier(Attributes.SWEEPING_DAMAGE_RATIO, 0.8F, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredItem<BaseSwordItem> NIGHTS_EDGE = register("nights_edge", ModTiers.UNBREAKABLE, 25, 2.5F, ModRarity.GREEN, PROJ_SWORD
@@ -164,9 +155,9 @@ public class SwordItems {
     public static final DeferredItem<BaseSwordItem> WHITE_PHASEBLADE = register("white_phaseblade", () -> new Phaseblade(ModTiers.METEOR, ModRarity.BLUE, 10, 2, "white"));
 
     // 特殊剑
-    public static final DeferredItem<BaseSwordItem> CROWBAR = register("crowbar", ModTiers.UNBREAKABLE, 18, 3, ModRarity.MASTER, BOARD_SWORD.get()
+    public static final DeferredItem<BaseSwordItem> CROWBAR = register("crowbar", ModTiers.UNBREAKABLE, 18, 3, ModRarity.MASTER, BOARD_SWORD.apply(1.0F)
             .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, -1, AttributeModifier.Operation.ADD_VALUE));
-    public static final DeferredItem<BaseSwordItem> DEVELOPER_SWORD = register("developer_sword", ModTiers.UNBREAKABLE, 9999, 9999, ModRarity.MASTER, BOARD_SWORD.get()
+    public static final DeferredItem<BaseSwordItem> DEVELOPER_SWORD = register("developer_sword", ModTiers.UNBREAKABLE, 9999, 9999, ModRarity.MASTER, BOARD_SWORD.apply(1.0F)
             .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 7, AttributeModifier.Operation.ADD_VALUE)
             .modifyProperties(p -> p.component(ModDataComponentTypes.SWORD_PROJECTILE, new SwordProjectileComponent(
                     1, 1, 1, 50, 0.05f, 20, ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.ENCHANTED_SWORD_PROJECTILE.getId(),

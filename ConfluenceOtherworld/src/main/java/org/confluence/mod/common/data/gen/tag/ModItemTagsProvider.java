@@ -1467,7 +1467,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 SwordItems.FALCON_BLADE.get(),
                 SwordItems.BEE_KEEPER.get(),
                 SwordItems.TERRAGRIM.get(),
-                SwordItems.ENCHANTED_SWORD.get()
+                SwordItems.ENCHANTED_SWORD.get(),
+                SwordItems.DEVELOPER_SWORD.get()
         );
 
         WaystonesHelper.itemTag(this::tag);

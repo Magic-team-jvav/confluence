@@ -23,6 +23,8 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
 public class AltImageTooltip implements ClientTooltipComponent {
+    private static final Vector3f DIFFUSE_LIGHT_0 = new Vector3f(0.2F, 1.0F, -0.7F).normalize();
+    private static final Vector3f DIFFUSE_LIGHT_1 = new Vector3f(-0.2F, 1.0F, 0.7F).normalize();
     private final ItemStack stack;
 
     public AltImageTooltip(ItemStack stack) {
@@ -55,8 +57,6 @@ public class AltImageTooltip implements ClientTooltipComponent {
             pose.scale(-32.0F, -32.0F, 32.0F);
             boolean flag = !bakedmodel.usesBlockLight();
             if (flag) {
-                Vector3f DIFFUSE_LIGHT_0 = new Vector3f(0.2F, 1.0F, -0.7F).normalize();
-                Vector3f DIFFUSE_LIGHT_1 = new Vector3f(-0.2F, 1.0F, 0.7F).normalize();
                 Matrix4f matrix4f = new Matrix4f().rotationY(-Mth.PI / 8.0F).rotateX(-Mth.PI * 3.0F / 4.0F);
                 GlStateManager.setupLevelDiffuseLighting(DIFFUSE_LIGHT_1, DIFFUSE_LIGHT_0, matrix4f);
             }

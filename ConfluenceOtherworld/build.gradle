@@ -155,6 +155,7 @@ repositories {
     }
 }
 
+boolean sodium = true // 钠
 boolean vanillin = false // 香兰素
 boolean observable = false // 可视性能侦测
 boolean ftb = false // FTB系列
@@ -196,10 +197,6 @@ dependencies {
     compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
     runtimeOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
 
-    if (apotheosis) {
-        runtimeOnly "vazkii.patchouli:Patchouli:1.21-87-NEOFORGE"
-    }
-
     compileOnly "curse.maven:ftb-chunks-forge-314906:5968500"
     compileOnly "curse.maven:ftb-library-forge-404465:6016745"
     if (ftb) {
@@ -214,7 +211,7 @@ dependencies {
 
     compileOnly "curse.maven:sodium-394468:6382651"
     compileOnly "curse.maven:irisshaders-455508:6661598"
-    if (!vanillin) {
+    if (sodium) {
         runtimeOnly "curse.maven:sodium-394468:6382651"
         runtimeOnly "curse.maven:irisshaders-455508:6661598"
     }
@@ -281,8 +278,7 @@ dependencies {
 
     /**********************************************************/
 
-    runtimeOnly "curse.maven:worldedit-225608:5830452"
-    //runtimeOnly "curse.maven:spark-361579:6225208"
+    //runtimeOnly "curse.maven:worldedit-225608:5830452"
     //runtimeOnly "curse.maven:lithium-360438:6290413"
     //runtimeOnly "curse.maven:dynamiclights-reforged-551736:5807536"
     //runtimeOnly "curse.maven:lootr-361276:6294335"
@@ -361,9 +357,11 @@ dependencies {
     if (supplementaries || mmmmmmmmmmmm) {
         runtimeOnly "maven.modrinth:moonlight:1.21-2.18.18-neoforge"
     }
-
     if(spark){
         implementation "curse.maven:spark-361579:6225208"
+    }
+    if (apotheosis) {
+        runtimeOnly "vazkii.patchouli:Patchouli:1.21-87-NEOFORGE"
     }
 }
 

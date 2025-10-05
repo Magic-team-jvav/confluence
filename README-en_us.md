@@ -1,19 +1,20 @@
 - [中文](README.md)
 
-| Project Name                                 | Description                | Runs Independently             |
-|----------------------------------------------|----------------------------|--------------------------------|
-| [ConfluenceOtherworld](ConfluenceOtherworld) | Main module                | Depends on all                 |
-| [TerraEntity](TerraEntity)                   | Terra's Entities           | yes                            |
-| [MineTeam](MineTeam)                         | Terra's Teams              | yes                            |
-| [EquipmentBenediction](EquipmentBenediction) | Equipment Effects          | yes                            |
-| [TerraCurio](TerraCurio)                     | Terra's Wearables          | yes                            |
-| [TerraGuns](TerraGuns)                       | Terra's Guns               | yes                            |
-| [ParticleStorm](ParticleStorm)               | Particles API              | yes                            |
-| [HeavenDestinyMoment](HeavenDestinyMoment)   | Event API                  | yes                            |
-| [PhaseJourney](PhaseJourney)                 | Game Stage API             | yes                            |
-| [TerraMoment](TerraMoment)                   | Terra's Events             | depends on HeavenDestinyMoment |
-| [IsekaiInvaded](IsekaiInvaded)               | Dimensional Invasion Event | depends on HeavenDestinyMoment |
-| [TerraFurniture](TerraFurniture)             | Terra's Furniture          | yes                            |
+| Project Name                                 | Description                                        | Runs Independently             |
+|----------------------------------------------|----------------------------------------------------|--------------------------------|
+| [ConfluenceOtherworld](ConfluenceOtherworld) | Main module                                        | Depends on all                 |
+| [TerraEntity](TerraEntity)                   | Terra's Entities                                   | yes                            |
+| [MineTeam](MineTeam)                         | Terra's Teams                                      | yes                            |
+| [EquipmentBenediction](EquipmentBenediction) | Equipment Effects                                  | yes                            |
+| [TerraCurio](TerraCurio)                     | Terra's Wearables                                  | yes                            |
+| [TerraGuns](TerraGuns)                       | Terra's Guns                                       | yes                            |
+| [ParticleStorm](ParticleStorm)               | Particles API                                      | yes                            |
+| [HeavenDestinyMoment](HeavenDestinyMoment)   | Event API                                          | yes                            |
+| [PhaseJourney](PhaseJourney)                 | Game Stage API                                     | yes                            |
+| [TerraMoment](TerraMoment)                   | Terra's Events                                     | depends on HeavenDestinyMoment |
+| [IsekaiInvaded](IsekaiInvaded)               | Dimensional Invasion Event                         | depends on HeavenDestinyMoment |
+| [TerraFurniture](TerraFurniture)             | Terra's Furniture                                  | yes                            |
+| [EntityTrackerHUD](EntityTrackerHUD)         | Provide real-time location hints for Boss entities | Yes                            |
 
 | Official Integrations                                                               | Description                                                                            |
 |-------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------|

@@ -23,6 +23,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.EnchantmentUtil;
@@ -61,6 +62,7 @@ public class BaseArrowEntity extends AbstractArrow {
     private static final EntityDataAccessor<String> TEXTURE_PATH = SynchedEntityData.defineId(BaseArrowEntity.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<String> DATA_PARTICLE_ID = SynchedEntityData.defineId(BaseArrowEntity.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<Integer> DATA_LUMINANCE = SynchedEntityData.defineId(BaseArrowEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Float> DATA_GRAVITY = SynchedEntityData.defineId(BaseArrowEntity.class, EntityDataSerializers.FLOAT);
     public String texturePath = "";
     private int penetrate = 0;
     private final List<LivingEntity> havenBeen = new ArrayList<>();//标记不能重复穿透
@@ -116,7 +118,7 @@ public class BaseArrowEntity extends AbstractArrow {
 
     public void onAddedToLevel() {
 
-        if ((modify.type & Tag.low_gravity) != 0) this.setNoGravity(true);
+        if ((modify.type & Tag.no_gravity) != 0) this.setNoGravity(true);
         if (baseArrowFactory != null) {
             entityData.set(TEXTURE_PATH, baseArrowFactory.path);
             this.texturePath = baseArrowFactory.path;
@@ -125,6 +127,7 @@ public class BaseArrowEntity extends AbstractArrow {
             entityData.set(DATA_PARTICLE_ID, modify.particleId.toString());
         }
         entityData.set(DATA_LUMINANCE, modify.luminance);
+        entityData.set(DATA_GRAVITY, modify.gravity);
 
         super.onAddedToLevel();
     }
@@ -141,6 +144,17 @@ public class BaseArrowEntity extends AbstractArrow {
 
     protected float getSpeedDamageMinFactor(float f) {
         return Math.max(f, minSpeedAttackFactor);
+    }
+
+    @Override
+    protected void onHitBlock(BlockHitResult result) {
+        super.onHitBlock(result);
+        discard(); // todo 叶绿箭落地要弹不消失
+    }
+
+    @Override
+    protected double getDefaultGravity() {
+        return modify.gravity;
     }
 
     @Override
@@ -254,16 +268,12 @@ public class BaseArrowEntity extends AbstractArrow {
     @Override
     protected ItemStack getDefaultPickupItem() {
         // 构造延迟
-        if (this.modify == null)
-            return Items.ARROW.getDefaultInstance();
         return Items.ARROW.getDefaultInstance();
     }
 
     @Override
     public void tick() {
         if (!level().isClientSide && tickCount > modify.auto_discard_tick) discard();
-        //todo 重力调整
-        if ((modify.type & Tag.low_gravity) != 0) this.addDeltaMovement(new Vec3(0, modify.gravity_count, 0));
 
         super.tick();
 
@@ -286,7 +296,12 @@ public class BaseArrowEntity extends AbstractArrow {
 
     @Override
     public void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder.define(TEXTURE_PATH, "").define(DATA_PARTICLE_ID, "").define(DATA_LUMINANCE, 0));
+        super.defineSynchedData(builder
+                .define(TEXTURE_PATH, "")
+                .define(DATA_PARTICLE_ID, "")
+                .define(DATA_LUMINANCE, 0)
+                .define(DATA_GRAVITY, 0.05F)
+        );
     }
 
     @Override
@@ -295,6 +310,7 @@ public class BaseArrowEntity extends AbstractArrow {
         if (level().isClientSide) {
             this.texturePath = entityData.get(TEXTURE_PATH);
             this.modify.luminance = entityData.get(DATA_LUMINANCE);
+            this.modify.gravity = entityData.get(DATA_GRAVITY);
         }
     }
 
@@ -311,6 +327,7 @@ public class BaseArrowEntity extends AbstractArrow {
             tag.putString("ParticleId", modify.particleId.toString());
         }
         tag.putInt("Luminance", modify.luminance);
+        tag.putFloat("Gravity", modify.gravity);
         super.addAdditionalSaveData(tag);
     }
 
@@ -326,6 +343,7 @@ public class BaseArrowEntity extends AbstractArrow {
             entityData.set(DATA_PARTICLE_ID, string);
         }
         entityData.set(DATA_LUMINANCE, tag.getInt("Luminance"));
+        entityData.set(DATA_GRAVITY, tag.getFloat("Gravity"));
     }
 
     @Override
@@ -339,7 +357,7 @@ public class BaseArrowEntity extends AbstractArrow {
      **/
     public static class Tag {
         public static final int penetration = 1;//可穿透
-        public static final int low_gravity = 2;//低重力
+        public static final int no_gravity = 2;//无重力
         public static final int auto_discard = 4;//超过时间自动消失
         public static final int cause_fire = 8;//火焰附加
 
@@ -348,7 +366,7 @@ public class BaseArrowEntity extends AbstractArrow {
     public static class Builder {
         private int type = 0;
         public int penetration_count = 0;
-        private int gravity_count = 0;
+        private float gravity = 0.05F;
         private int auto_discard_tick = 1200;
         public float base_damage = 2;
         private float speedFactor = 1;
@@ -411,9 +429,9 @@ public class BaseArrowEntity extends AbstractArrow {
             return this;
         }
 
-        public Builder setGravity(int gravity) {//重力
-            type |= Tag.low_gravity;
-            gravity_count = gravity;
+        public Builder setGravity(float gravity) {//重力
+            if (gravity == 0.0F) type |= Tag.no_gravity;
+            this.gravity = gravity;
             return this;
         }
 

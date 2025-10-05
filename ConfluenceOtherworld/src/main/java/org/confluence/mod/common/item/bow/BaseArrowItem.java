@@ -66,7 +66,7 @@ public class BaseArrowItem extends ArrowItem {
                 );
             }
 
-            if ((attributes.getType() & BaseArrowEntity.Tag.low_gravity) != 0) {
+            if ((attributes.getType() & BaseArrowEntity.Tag.no_gravity) != 0) {
                 tooltipComponents.add(Component.translatable("tooltip.item.confluence.no_gravity"));
             }
             if ((attributes.getType() & BaseArrowEntity.Tag.cause_fire) != 0) {

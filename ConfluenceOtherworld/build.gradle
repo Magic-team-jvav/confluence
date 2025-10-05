@@ -220,7 +220,7 @@ dependencies {
     //runtimeOnly "curse.maven:journeymap-32274:6213329"
 
     compileOnly "curse.maven:touhou-little-maid-355044:6613831-sources-6613865"
-    runtimeOnly "curse.maven:touhou-little-maid-355044:6613831-sources-6613865"
+    //runtimeOnly "curse.maven:touhou-little-maid-355044:6613831-sources-6613865"
 
     compileOnly "curse.maven:carry-on-274259:5649344"
     //runtimeOnly "curse.maven:carry-on-274259:5649344"

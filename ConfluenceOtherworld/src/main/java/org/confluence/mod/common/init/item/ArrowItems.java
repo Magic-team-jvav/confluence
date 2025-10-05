@@ -31,8 +31,14 @@ public class ArrowItems {
             BaseArrowEntity.Factory.create("textures/entity/arrow/frostburn_arrow.png", () -> new BaseArrowEntity.Builder().setParticleId(Confluence.asResource("frost_projectile"))
                     .setDamage(4.5f).addOnHitEffect(TEEffectStrategies.Components.FROST_BURN_EFFECT.get()).setLuminance(5))
     ));
-    public static final DeferredItem<BaseArrowItem> BONE_ARROW = ITEMS.register("bone_arrow", () -> new BaseArrowItem(ModRarity.WHITE));
-    public static final DeferredItem<BaseArrowItem> SHIMMER_ARROW = ITEMS.register("shimmer_arrow", () -> new BaseArrowItem(ModRarity.WHITE));
+    public static final DeferredItem<BaseArrowItem> BONE_ARROW = ITEMS.register("bone_arrow", () -> new BaseArrowItem(ModRarity.WHITE,
+            BaseArrowEntity.Factory.create("textures/entity/arrow/bone_arrow.png", () -> new BaseArrowEntity.Builder()
+                    .setDamage(4.8F).setKnockBack(1.75F))
+    ));
+    public static final DeferredItem<BaseArrowItem> SHIMMER_ARROW = ITEMS.register("shimmer_arrow", () -> new BaseArrowItem(ModRarity.WHITE,
+            BaseArrowEntity.Factory.create("textures/entity/arrow/shimmer_arrow.png", () -> new BaseArrowEntity.Builder()
+                    .setDamage(7).setKnockBack(1.5F).setGravity(-0.05F).setAutoDiscard(1200))
+    ));
     public static final DeferredItem<BaseArrowItem> FOSSIL_ARROW = ITEMS.register("fossil_arrow", () -> new BaseArrowItem(ModRarity.WHITE,
             BaseArrowEntity.Factory.create("textures/entity/arrow/fossil_arrow.png", () -> new BaseArrowEntity.Builder()
                     .setDamage(4f).setPenetration(2))

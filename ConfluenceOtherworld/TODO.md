@@ -126,7 +126,6 @@
 - [根据游戏阶段改变生物属性](src/main/java/org/confluence/mod/common/data/gen/data_map/GamePhase2AttributeModifiersSubProvider.java)
 - 补生物图鉴翻译
 - 区分渔夫肉前肉后战利品表
-- 狱火粒子改为模型
 
 ## 其它
 
@@ -141,6 +140,9 @@
 - 黄金雨
 - 叶绿镋弹幕（现阶段不急）
 - 钛金套装奖励
+- NPC不受肉后数值的调整问题需要解决
+- 陆地钓鱼bug
+- 工具无法重铸问题
 
 # 牢枕の饼
 

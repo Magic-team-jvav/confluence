@@ -1311,7 +1311,15 @@ public class ModDataProvider {
             );
             context.register(ModBiomes.ASH_FOREST, new Biome.BiomeBuilder().hasPrecipitation(false).temperature(2).downfall(0)
                     .specialEffects(new BiomeSpecialEffects.Builder().foliageColorOverride(10387789).grassColorOverride(9470285).fogColor(-10541025).waterColor(-10541025).waterFogColor(4159204).skyColor(-4592650).build())
-                    .mobSpawnSettings(MobSpawnSettings.EMPTY)
+                    .mobSpawnSettings(new MobSpawnSettings.Builder()
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.DEMON.get(), 10, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.VOODOO_DEMON.get(), 2, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.FIRE_IMP.get(), 10, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.HELL_BAT.get(), 60, 1, 2))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.LAVA_SLIME.get(), 80, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEAnimals.MAGMA_SNAIL.get(), 20, 1, 2))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEAnimals.HELL_BUTTERFLY.get(), 20, 1, 2))
+                            .build())
                     .generationSettings(biomeGenerationSettings(placedFeatures, worldCarvers, builder -> {
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.FIREBLOSSOM);
                         builder.addFeature(GenerationStep.Decoration.SURFACE_STRUCTURES, PlacedFeatures.ASH_HELLSTONE);
@@ -1321,7 +1329,15 @@ public class ModDataProvider {
             );
             context.register(ModBiomes.ASH_WASTELAND, new Biome.BiomeBuilder().hasPrecipitation(false).temperature(2).downfall(0)
                     .specialEffects(new BiomeSpecialEffects.Builder().foliageColorOverride(10387789).grassColorOverride(9470285).fogColor(-10541025).waterColor(-10541025).waterFogColor(4159204).skyColor(-4592650).build())
-                    .mobSpawnSettings(MobSpawnSettings.EMPTY)
+                    .mobSpawnSettings(new MobSpawnSettings.Builder()
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.DEMON.get(), 15, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.VOODOO_DEMON.get(), 4, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.FIRE_IMP.get(), 15, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.HELL_BAT.get(), 40, 1, 2))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEMonsterEntities.LAVA_SLIME.get(), 40, 1, 1))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEAnimals.MAGMA_SNAIL.get(), 20, 1, 2))
+                            .addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(TEAnimals.HELL_BUTTERFLY.get(), 20, 1, 2))
+                            .build())
                     .generationSettings(biomeGenerationSettings(placedFeatures, worldCarvers, builder -> {
                         builder.addFeature(GenerationStep.Decoration.SURFACE_STRUCTURES, PlacedFeatures.ASH_HELLSTONE);
                         builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, PlacedFeatures.FIREBLOSSOM);

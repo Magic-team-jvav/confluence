@@ -1331,10 +1331,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FunctionalBlocks.BLEND_O_MATIC.asItem(),
                 FunctionalBlocks.MEAT_GRINDER.asItem(),
                 FunctionalBlocks.WOODEN_SPIKE.asItem(),
-                FunctionalBlocks.FRAGILE_BLUE_BRICKS.asItem(),
-                FunctionalBlocks.FRAGILE_GREEN_BRICKS.asItem(),
-                FunctionalBlocks.FRAGILE_PINK_BRICKS.asItem(),
-                FunctionalBlocks.ENCHANTED_FRAGILE_BLUE_BRICKS.asItem(),
                 FunctionalBlocks.ENCHANTED_FRAGILE_GREEN_BRICKS.asItem(),
                 FunctionalBlocks.ENCHANTED_FRAGILE_PINK_BRICKS.asItem(),
                 FunctionalBlocks.SILLY_BALLOON_MACHINE.asItem(),
@@ -1468,7 +1464,14 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 SwordItems.BEE_KEEPER.get(),
                 SwordItems.TERRAGRIM.get(),
                 SwordItems.ENCHANTED_SWORD.get(),
-                SwordItems.DEVELOPER_SWORD.get()
+                SwordItems.NIGHTS_EDGE.get(),
+                SwordItems.DEVELOPER_SWORD.get(),
+                SwordItems.COBALT_SWORD.get(),
+                SwordItems.PALLADIUM_SWORD.get(),
+                SwordItems.MYTHRIL_SWORD.get(),
+                SwordItems.ORICHALCUM_SWORD.get(),
+                SwordItems.ADAMANTITE_SWORD.get(),
+                SwordItems.TITANIUM_SWORD.get()
         );
 
         WaystonesHelper.itemTag(this::tag);

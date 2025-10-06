@@ -519,4 +519,11 @@ public final class ModClientEvents {
         event.registerBaseWorm(TEMonsterEntities.LEECH);
         event.register("entity.minecraft.zombie.slime", new SlimeZombieRenderer(context));
     }
+
+    @SubscribeEvent
+    public static void registerItemDecorations(RegisterItemDecorationsEvent event) {
+        for (DeferredHolder<Item, ? extends Item> entry : FishingPoleItems.ITEMS.getEntries()) {
+            event.register(entry.get(), ModClientSetups.FISHING_POLE_DECORATOR);
+        }
+    }
 }

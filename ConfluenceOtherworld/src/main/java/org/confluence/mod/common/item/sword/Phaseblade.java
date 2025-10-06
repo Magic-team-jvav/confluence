@@ -18,6 +18,7 @@ import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.client.renderer.item.PhasebladeRenderer;
 import org.confluence.mod.common.init.ModSoundEvents;
+import org.confluence.mod.common.item.sword.legacy.SwordPrefabs;
 import org.confluence.terraentity.data.component.SingleBooleanComponent;
 import org.confluence.terraentity.init.TEDataComponentTypes;
 import software.bernie.geckolib.animatable.GeoItem;
@@ -42,13 +43,13 @@ public class Phaseblade extends BaseSwordItem implements GeoItem {
     private final ItemAttributeModifiers turnOffModifiers;
 
     public Phaseblade(Tier tier, ModRarity rarity, int rawDamage, float rawSpeed, String color) {
-        super(tier, rarity, 0, rawSpeed, new ModifierBuilder() {
+        super(tier, rarity, 0, rawSpeed, SwordPrefabs.withSpecialSweep(0.8F, new ModifierBuilder() {
             @Override
             public Properties buildProperties(Tier tier, ModRarity rarity, int rawDamage, float rawSpeed) {
                 if (modifier != null) modifier.forEach(m -> m.accept(properties));
                 return this.properties = properties.durability(tier.getUses()).component(ConfluenceMagicLib.MOD_RARITY, rarity);
             }
-        }.modifyProperties(p -> p.component(TEDataComponentTypes.BOOMERANG_READY.get(), SingleBooleanComponent.TRUE)));
+        }.modifyProperties(p -> p.component(TEDataComponentTypes.BOOMERANG_READY.get(), SingleBooleanComponent.TRUE))));
         this.color = color;
         this.turnOnModifiers = createAttributes(tier, rawDamage - tier.getAttackDamageBonus() - 1, rawSpeed - 4);
         this.turnOffModifiers = createAttributes(tier, 1 - tier.getAttackDamageBonus(), -2);

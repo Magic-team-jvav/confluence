@@ -26,8 +26,7 @@ public class SwordPrefabs {
     /**
      * 普通宽剑
      */
-    public static final Function<Float, ModifierBuilder> BOARD_SWORD = ratio -> new ModifierBuilder().setSpecialSweep()
-            .addAttributeModifier(Attributes.SWEEPING_DAMAGE_RATIO, ratio, AttributeModifier.Operation.ADD_VALUE);
+    public static final Function<Float, ModifierBuilder> BOARD_SWORD = ratio -> withSpecialSweep(ratio, new ModifierBuilder());
 
     /**
      * 一般宽剑
@@ -49,4 +48,12 @@ public class SwordPrefabs {
      */
     // 雨伞
     public static final Supplier<ModifierBuilder> UMBRELLA_SWORD = () -> SHORT_SWORD.get().setInventoryTick(UMBRELLA_TICK);
+
+    public static ModifierBuilder withSpecialSweep(float ratio, ModifierBuilder builder) {
+        builder.setSpecialSweep();
+        if (ratio > 0.0F) {
+            return builder.addAttributeModifier(Attributes.SWEEPING_DAMAGE_RATIO, ratio, AttributeModifier.Operation.ADD_VALUE);
+        }
+        return builder;
+    }
 }

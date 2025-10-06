@@ -400,7 +400,7 @@ public final class PlayerUtils {
 
     public static boolean couldPerformEmptyTargetSweep(Player player) {
         if (!player.isAutoSpinAttack()) {
-            ItemStack stack = player.getWeaponItem();
+            ItemStack stack = player.getMainHandItem();
             if (BetterCombatHelper.hasWeaponAttributes(stack)) return false;
             return stack.canPerformAction(ItemAbilities.SWORD_SWEEP) && stack.getItem() instanceof BaseSwordItem sword && sword.modifier != null && sword.modifier.specialSweep;
         }

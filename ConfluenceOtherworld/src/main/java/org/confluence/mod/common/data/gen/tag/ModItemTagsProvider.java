@@ -1471,7 +1471,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 SwordItems.MYTHRIL_SWORD.get(),
                 SwordItems.ORICHALCUM_SWORD.get(),
                 SwordItems.ADAMANTITE_SWORD.get(),
-                SwordItems.TITANIUM_SWORD.get()
+                SwordItems.TITANIUM_SWORD.get(),
+                SwordItems.MURAMASA.get()
         );
 
         WaystonesHelper.itemTag(this::tag);

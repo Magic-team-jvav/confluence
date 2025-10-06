@@ -19,6 +19,7 @@ import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.common.item.sword.GeoSwordItem;
 import org.confluence.mod.common.item.sword.Phaseblade;
 import org.confluence.mod.common.item.sword.SweetSword;
+import org.confluence.mod.common.item.sword.legacy.SwordPrefabs;
 import org.confluence.mod.integration.terra_entity.init.ModEffectStrategies;
 import org.confluence.terraentity.init.TEEffectStrategies;
 import org.confluence.terraentity.registries.generation.variant.ForwardGeneration;
@@ -36,7 +37,7 @@ import static org.confluence.mod.common.item.sword.legacy.SwordPrefabs.*;
  * 有特殊横扫的剑不一定是自动挥舞的剑<p>
  * 是否允许自动挥舞是根据{@link ModTags.Items#COULD_AUTO_ATTACK}判断的<p>
  * 是否允许特殊横扫是根据{@link BaseSwordItem.ModifierBuilder#specialSweep}判断的，即下文中的.setSpecialSweep()<p>
- * 如果不是由BOARD_SWORD定义的，那么需要手动加上.addAttributeModifier(Attributes.SWEEPING_DAMAGE_RATIO, 0.8F, AttributeModifier.Operation.ADD_VALUE)
+ * 如果不是由BOARD_SWORD定义的，那么需要使用{@link SwordPrefabs#withSpecialSweep}方法
  */
 public class SwordItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
@@ -105,44 +106,39 @@ public class SwordItems {
     public static final DeferredItem<BaseSwordItem> KATANA = register("katana", ModTiers.UNBREAKABLE, 6, 3.7F, ModRarity.BLUE, BOARD_SWORD.apply(0.8F));
 
     // 改横扫大小的宽剑(由 ENTITY_INTERACTION_RANGE 属性控制)
-    public static final DeferredItem<BaseSwordItem> TERRAGRIM = register("terragrim", ModTiers.UNBREAKABLE, 1, 6, ModRarity.ORANGE, BOARD_SWORD.apply(0.8F)
+    public static final DeferredItem<BaseSwordItem> TERRAGRIM = register("terragrim", ModTiers.UNBREAKABLE, 1, 6, ModRarity.ORANGE, BOARD_SWORD.apply(0.0F)
             .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, -1.8F, AttributeModifier.Operation.ADD_VALUE));
 
-    public static final DeferredItem<BaseSwordItem> BREAKER_BLADE = register("breaker_blade", ModTiers.UNBREAKABLE, 37, 1.0F, ModRarity.LIGHT_RED, BOARD_SWORD.apply(0.8F)
+    public static final DeferredItem<BaseSwordItem> BREAKER_BLADE = register("breaker_blade", ModTiers.UNBREAKABLE, 37, 1.0F, ModRarity.LIGHT_RED, BOARD_SWORD.apply(0.8F).hasImage()
             .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 9, AttributeModifier.Operation.ADD_VALUE)
-            .addAttributeModifier(Attributes.ATTACK_KNOCKBACK, 0.8F, AttributeModifier.Operation.ADD_VALUE).hasImage());
+            .addAttributeModifier(Attributes.ATTACK_KNOCKBACK, 0.8F, AttributeModifier.Operation.ADD_VALUE));
 
     // 效果剑
-    public static final DeferredItem<BaseSwordItem> LIGHTS_BANE = register("lights_bane", ModTiers.UNBREAKABLE, 11, 3, ModRarity.BLUE, EFFECT_SWORD
-            .apply(ModEffectStrategies.Components.LIGHTS_BANE_EFFECT.get()).hasImage() .addAttributeModifier(Attributes.SWEEPING_DAMAGE_RATIO, 0.8F, AttributeModifier.Operation.ADD_VALUE));
-    public static final DeferredItem<BaseSwordItem> BLOOD_BUTCHERER = register("blood_butcherer", ModTiers.UNBREAKABLE, 14, 1.3F, ModRarity.BLUE, EFFECT_SWORD
-            .apply(ModEffectStrategies.Components.BLOOD_BUTCHERED_EFFECT.get()).hasImage() .addAttributeModifier(Attributes.SWEEPING_DAMAGE_RATIO, 0.8F, AttributeModifier.Operation.ADD_VALUE));
-    public static final DeferredItem<BaseSwordItem> VOLCANO = register("volcano", ModTiers.UNBREAKABLE, 25, 1.2f, ModRarity.ORANGE, EFFECT_SWORD
-            .apply(TEEffectStrategies.Components.HELL_FIRE_EFFECT.get())
+    public static final DeferredItem<BaseSwordItem> LIGHTS_BANE = register("lights_bane", ModTiers.UNBREAKABLE, 11, 3, ModRarity.BLUE, withSpecialSweep(0.8F, EFFECT_SWORD
+            .apply(ModEffectStrategies.Components.LIGHTS_BANE_EFFECT.get()).hasImage()));
+    public static final DeferredItem<BaseSwordItem> BLOOD_BUTCHERER = register("blood_butcherer", ModTiers.UNBREAKABLE, 14, 1.3F, ModRarity.BLUE, withSpecialSweep(0.8F, EFFECT_SWORD
+            .apply(ModEffectStrategies.Components.BLOOD_BUTCHERED_EFFECT.get()).hasImage()));
+    public static final DeferredItem<BaseSwordItem> VOLCANO = register("volcano", ModTiers.UNBREAKABLE, 25, 1.2f, ModRarity.ORANGE, withSpecialSweep(0.8F, EFFECT_SWORD
+            .apply(TEEffectStrategies.Components.HELL_FIRE_EFFECT.get()).hasImage()
             .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 2f, AttributeModifier.Operation.ADD_VALUE)
-            .addAttributeModifier(Attributes.ATTACK_KNOCKBACK, 0.5f, AttributeModifier.Operation.ADD_VALUE).hasImage());
-    public static final DeferredItem<BaseSwordItem> BAT_BAT = register("bat_bat", ModTiers.UNBREAKABLE, 21, 0.6F, ModRarity.ORANGE, EFFECT_SWORD
-            .apply(ModEffectStrategies.Components.BAT_FANG_EFFECT.get()).setSpecialSweep()
-            .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 2, AttributeModifier.Operation.ADD_VALUE)
-            .addAttributeModifier(Attributes.SWEEPING_DAMAGE_RATIO, 0.8F, AttributeModifier.Operation.ADD_VALUE).hasImage());
-    public static final DeferredItem<BaseSwordItem> TENTACLE_MACE = register("tentacle_mace", ModTiers.UNBREAKABLE, 13, 2.2F, ModRarity.GREEN, EFFECT_SWORD
-            .apply(ModEffectStrategies.Components.TENTACLE_SPIKES_EFFECT.get()) .addAttributeModifier(Attributes.SWEEPING_DAMAGE_RATIO, 0.8F, AttributeModifier.Operation.ADD_VALUE));
-    public static final DeferredItem<BaseSwordItem> BEE_KEEPER = register("bee_keeper", ModTiers.UNBREAKABLE, 18, 1.6F, ModRarity.GREEN, EFFECT_SWORD
-            .apply(ModEffectStrategies.Components.BEE_KEEPER_EFFECT.get()).addTooltip(2).setSpecialSweep()
-            .addAttributeModifier(Attributes.SWEEPING_DAMAGE_RATIO, 0.8F, AttributeModifier.Operation.ADD_VALUE).hasImage());
+            .addAttributeModifier(Attributes.ATTACK_KNOCKBACK, 0.5f, AttributeModifier.Operation.ADD_VALUE)));
+    public static final DeferredItem<BaseSwordItem> BAT_BAT = register("bat_bat", ModTiers.UNBREAKABLE, 21, 0.6F, ModRarity.ORANGE, withSpecialSweep(0.8F, EFFECT_SWORD
+            .apply(ModEffectStrategies.Components.BAT_FANG_EFFECT.get()).hasImage()
+            .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 2, AttributeModifier.Operation.ADD_VALUE)));
+    public static final DeferredItem<BaseSwordItem> TENTACLE_MACE = register("tentacle_mace", ModTiers.UNBREAKABLE, 13, 2.2F, ModRarity.GREEN, withSpecialSweep(0.8F, EFFECT_SWORD
+            .apply(ModEffectStrategies.Components.TENTACLE_SPIKES_EFFECT.get())));
+    public static final DeferredItem<BaseSwordItem> BEE_KEEPER = register("bee_keeper", ModTiers.UNBREAKABLE, 18, 1.6F, ModRarity.GREEN, withSpecialSweep(0.8F, EFFECT_SWORD
+            .apply(ModEffectStrategies.Components.BEE_KEEPER_EFFECT.get()).addTooltip(2).hasImage()));
 
     // 弹幕剑
-    public static final DeferredItem<BaseSwordItem> ICE_BLADE = register("ice_blade", ModTiers.UNBREAKABLE, 10, 3, ModRarity.BLUE, PROJ_SWORD
-            .apply(SwordProjectileComponent.ICE_PROJ).setSpecialSweep().hasImage()
-            .addAttributeModifier(Attributes.SWEEPING_DAMAGE_RATIO, 0.8F, AttributeModifier.Operation.ADD_VALUE));
-    public static final DeferredItem<BaseSwordItem> STARFURY = register("starfury", ModTiers.UNBREAKABLE, 14, 2.4F, ModRarity.GREEN, PROJ_SWORD
-            .apply(SwordProjectileComponent.STAR_FURY_PROJ).addTooltip(p -> p.withColor(0xe44189)).addTooltip(p -> p.withColor(0xe44189))
-            .setSpecialSweep().addAttributeModifier(Attributes.SWEEPING_DAMAGE_RATIO, 0.8F, AttributeModifier.Operation.ADD_VALUE));
-    public static final DeferredItem<BaseSwordItem> ENCHANTED_SWORD = register("enchanted_sword", ModTiers.UNBREAKABLE, 12, 2.4F, ModRarity.ORANGE, PROJ_SWORD
-            .apply(SwordProjectileComponent.ENCHANTED_SWORD_PROJ).addTooltip(p -> p.withColor(0x4156e4)).addTooltip(p -> p.withColor(0x4156e4))
-            .setSpecialSweep().addAttributeModifier(Attributes.SWEEPING_DAMAGE_RATIO, 0.8F, AttributeModifier.Operation.ADD_VALUE));
-    public static final DeferredItem<BaseSwordItem> BLADE_OF_GRASS = register("blade_of_grass", ModTiers.UNBREAKABLE, 11, 2.4F, ModRarity.GREEN, PROJ_SWORD
-            .apply(SwordProjectileComponent.GRASS_PROJ).hasImage().addAttributeModifier(Attributes.SWEEPING_DAMAGE_RATIO, 0.8F, AttributeModifier.Operation.ADD_VALUE));
+    public static final DeferredItem<BaseSwordItem> ICE_BLADE = register("ice_blade", ModTiers.UNBREAKABLE, 10, 3, ModRarity.BLUE, withSpecialSweep(0.8F, PROJ_SWORD
+            .apply(SwordProjectileComponent.ICE_PROJ).hasImage()));
+    public static final DeferredItem<BaseSwordItem> STARFURY = register("starfury", ModTiers.UNBREAKABLE, 14, 2.4F, ModRarity.GREEN, withSpecialSweep(0.8F, PROJ_SWORD
+            .apply(SwordProjectileComponent.STAR_FURY_PROJ).addTooltip(p -> p.withColor(0xe44189)).addTooltip(p -> p.withColor(0xe44189))));
+    public static final DeferredItem<BaseSwordItem> ENCHANTED_SWORD = register("enchanted_sword", ModTiers.UNBREAKABLE, 12, 2.4F, ModRarity.ORANGE, withSpecialSweep(0.8F, PROJ_SWORD
+            .apply(SwordProjectileComponent.ENCHANTED_SWORD_PROJ).addTooltip(p -> p.withColor(0x4156e4)).addTooltip(p -> p.withColor(0x4156e4))));
+    public static final DeferredItem<BaseSwordItem> BLADE_OF_GRASS = register("blade_of_grass", ModTiers.UNBREAKABLE, 11, 2.4F, ModRarity.GREEN, withSpecialSweep(0.8F, PROJ_SWORD
+            .apply(SwordProjectileComponent.GRASS_PROJ).hasImage()));
     public static final DeferredItem<BaseSwordItem> NIGHTS_EDGE = register("nights_edge", ModTiers.UNBREAKABLE, 25, 2.5F, ModRarity.GREEN, PROJ_SWORD
             .apply(SwordProjectileComponent.NIGHT_PROJ).hasImage());
 

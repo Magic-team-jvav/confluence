@@ -35,8 +35,7 @@ public final class EmptyTargetSweepPacketC2S implements IPacketC2S {
     public void work(ServerPlayer player) {
         if (PlayerUtils.couldPerformEmptyTargetSweep(player)) {
             float damage = (float) player.getAttributeValue(Attributes.ATTACK_DAMAGE);
-            float scale = player.getAttackStrengthScale(0.5F);
-            damage *= 0.2F + scale * scale * 0.8F;
+            if (player.getAttackStrengthScale(0.5F) < 1.0F - Mth.EPSILON) return;
             float baseDamage = 1.0F + (float) player.getAttributeValue(Attributes.SWEEPING_DAMAGE_RATIO) * damage;
             PlayerAboutToEmptyTargetSweepEvent event = NeoForge.EVENT_BUS.post(new PlayerAboutToEmptyTargetSweepEvent(player, baseDamage));
             if (event.isCanceled()) return;
@@ -50,7 +49,7 @@ public final class EmptyTargetSweepPacketC2S implements IPacketC2S {
                         player.distanceToSqr(target) < entityReachSq
                 ) {
                     target.knockback(0.4F, Mth.sin(player.getYRot() * Mth.DEG_TO_RAD), -Mth.cos(player.getYRot() * Mth.DEG_TO_RAD));
-                    float amount = ((ServerPlayerAccessor) player).callGetEnchantedDamage(target, attackDamage, source) * scale;
+                    float amount = ((ServerPlayerAccessor) player).callGetEnchantedDamage(target, attackDamage, source);
                     target.hurt(source, amount);
                     EnchantmentHelper.doPostAttackEffects(player.serverLevel(), target, source);
                 }

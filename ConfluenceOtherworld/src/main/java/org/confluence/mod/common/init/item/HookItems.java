@@ -1,9 +1,6 @@
 package org.confluence.mod.common.init.item;
 
-import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.item.Item;
-import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.component.ModRarity;
@@ -52,8 +49,4 @@ public class HookItems {
     public static final DeferredItem<BaseHookItem> STATIC_HOOK = ITEMS.register("static_hook", () -> new BaseHookItem(ModRarity.RED, 2, 25, 2, BaseHookItem.HookType.INDIVIDUAL, (itemStack, item, player, level) -> {
         throw new UnsupportedOperationException("Static Hook Can Not Use Right Now"); // todo
     }));
-
-    public static void acceptTag(IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> tag) {
-        for (DeferredHolder<Item, ? extends Item> hooks : ITEMS.getEntries()) tag.add(hooks.get());
-    }
 }

@@ -1,19 +1,14 @@
 package org.confluence.mod.mixin.entity;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSources;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.monster.Skeleton;
-import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -29,7 +24,6 @@ import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.init.block.ModBlocks;
-import org.confluence.mod.common.init.item.ArmorItems;
 import org.confluence.mod.integration.terra_entity.IAbstractTerraNPC;
 import org.confluence.mod.mixed.IEntity;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
@@ -40,15 +34,11 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import static org.confluence.mod.api.event.ShimmerEntityTransmutationEvent.ENTITY_TRANSMUTATION;
 
 @Mixin(Entity.class)
 public abstract class EntityMixin implements IEntity {
-    @Unique
-    private static final Vec3 ANTI_GRAVITY = new Vec3(0.0, -5.0E-4F, 0.0);
-
     @Shadow
     public abstract DamageSources damageSources();
 
@@ -168,28 +158,9 @@ public abstract class EntityMixin implements IEntity {
         }
     }
 
-    @Inject(method = "getName", at = @At("RETURN"), cancellable = true)
-    private void zombieName(CallbackInfoReturnable<Component> cir) {
-        Component returnValue = cir.getReturnValue();
-        Entity self = confluence$self();
-        if (self instanceof Zombie zombie) {
-            ItemStack chestItem = zombie.getItemBySlot(EquipmentSlot.CHEST);
-            if (chestItem.is(ArmorItems.RAINCOAT.get())) {
-                returnValue = Component.translatable("entity.confluence.raincoat_zombie");
-            } else if (chestItem.is(ArmorItems.SNOW_SUITS.get()) || chestItem.is(ArmorItems.PINK_SNOW_SUITS.get())) {
-                returnValue = Component.translatable("entity.confluence.frozen_zombie");
-            }
-        } else if (self instanceof Skeleton skeleton) {
-            if (skeleton.getItemBySlot(EquipmentSlot.CHEST).is(ArmorItems.MINING_CHESTPLATE.get())) {
-                returnValue = Component.translatable("entity.confluence.undead_miner");
-            }
-        }
-        cir.setReturnValue(returnValue);
-    }
-
     @Unique
     private static void confluence$setup(Entity entity, int coolDown, double y) {
-        IEntity iEntity = (IEntity) entity;
+        IEntity iEntity = IEntity.of(entity);
         iEntity.confluence$setOriginalNoGravity(entity.isNoGravity());
         iEntity.confluence$entity_setCoolDown(coolDown);
         entity.setNoGravity(true);
@@ -217,7 +188,7 @@ public abstract class EntityMixin implements IEntity {
                 }
                 event.setTarget(target);
                 if (sourceEntity instanceof AbstractTerraNPC sourceNpc && target instanceof AbstractTerraNPC targetNpc) {
-                    targetNpc.setHouse(sourceNpc.house);
+                    targetNpc.setHouse(sourceNpc.getHouse());
                     event.setSpeedY(0.7);
                     NPCSpawner.INSTANCE.setNPCAlive(((IAbstractTerraNPC) sourceNpc).confluence$getRegion(), sourceNpc.getType(), false);
                     if (target instanceof AnglerNPC anglerNPC) {

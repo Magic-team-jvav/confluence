@@ -86,7 +86,7 @@
             }
         },
         "textures": {
-            "particle": "confluence:item/lance/the_rotted_fork_item"
+            "particle": "confluence:item/spear/the_rotted_fork_item"
         }
     },
     "gui_light": "front",
@@ -95,25 +95,25 @@
         "fixed": {
             "parent": "minecraft:item/generated",
             "textures": {
-                "layer0": "confluence:item/lance/the_rotted_fork_inventory"
+                "layer0": "confluence:item/spear/the_rotted_fork_inventory"
             }
         },
         "ground": {
             "parent": "minecraft:item/generated",
             "textures": {
-                "layer0": "confluence:item/lance/the_rotted_fork_inventory"
+                "layer0": "confluence:item/spear/the_rotted_fork_inventory"
             }
         },
         "gui": {
             "parent": "minecraft:item/generated",
             "textures": {
-                "layer0": "confluence:item/lance/the_rotted_fork_inventory"
+                "layer0": "confluence:item/spear/the_rotted_fork_inventory"
             }
         },
         "head": {
             "parent": "minecraft:item/generated",
             "textures": {
-                "layer0": "confluence:item/lance/the_rotted_fork_inventory"
+                "layer0": "confluence:item/spear/the_rotted_fork_head"
             }
         }
     }

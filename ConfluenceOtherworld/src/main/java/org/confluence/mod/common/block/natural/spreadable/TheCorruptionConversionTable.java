@@ -4,8 +4,12 @@ import net.minecraft.core.Holder;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.neoforged.neoforge.common.Tags;
+import org.confluence.mod.common.block.natural.CattailsBodyBlock;
+import org.confluence.mod.common.block.natural.CattailsHeadBlock;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
@@ -14,12 +18,21 @@ import org.jetbrains.annotations.Nullable;
 public class TheCorruptionConversionTable extends ConversionTable {
     @Override
     protected @Nullable Block getTarget(BlockState source) {
-        Holder<Block> holder = source.getBlock().builtInRegistryHolder();
+        Block block = source.getBlock();
+
+        if (block == Blocks.TALL_GRASS) {
+            return source.getValue(DoublePlantBlock.HALF) == DoubleBlockHalf.LOWER ? NatureBlocks.CORRUPT_GRASS.get() : Blocks.AIR;
+        }
+        if (block instanceof CattailsHeadBlock) return NatureBlocks.EBONY_CATTAILS_HEAD.get();
+        if (block instanceof CattailsBodyBlock) return NatureBlocks.EBONY_CATTAILS_BODY.get();
+
+        Holder<Block> holder = block.builtInRegistryHolder();
 
         if (holder.is(BlockTags.LOGS)) return NatureBlocks.EBONY_LOG_BLOCKS.LOG.get();
         if (holder.is(BlockTags.LEAVES)) return NatureBlocks.EBONY_LOG_BLOCKS.LEAVES.get();
         if (holder.is(BlockTags.BASE_STONE_OVERWORLD)) return NatureBlocks.EBONSTONE.get();
         if (holder.is(Tags.Blocks.COBBLESTONES)) return NatureBlocks.COBBLED_EBONSTONE.get();
+
 
         if (holder.is(ModTags.Blocks.CORRUPTION_CONVERSION_DIRT)) return Blocks.DIRT;
         if (holder.is(ModTags.Blocks.CORRUPTION_CONVERSION_GRASS_BLOCK)) return NatureBlocks.CORRUPT_GRASS_BLOCK.get();
@@ -31,6 +44,7 @@ public class TheCorruptionConversionTable extends ConversionTable {
         if (holder.is(ModTags.Blocks.CORRUPTION_CONVERSION_SANDSTONE)) return NatureBlocks.EBONSANDSTONE.get();
         if (holder.is(ModTags.Blocks.CORRUPTION_CONVERSION_HARDENED_SAND_BLOCK)) return NatureBlocks.HARDENED_EBONSAND_BLOCK.get();
         if (holder.is(ModTags.Blocks.CORRUPTION_CONVERSION_MOIST_SAND_BLOCK)) return NatureBlocks.MOISTENED_EBONSAND_BLOCK.get();
+        if (holder.is(ModTags.Blocks.CORRUPTION_CONVERSION_CACTUS)) return NatureBlocks.CORRUPT_CACTUS.get();
 
         if (holder.is(Tags.Blocks.ORES_REDSTONE)) return OreBlocks.CORRUPTION_REDSTONE_ORE.get();
         if (holder.is(Tags.Blocks.ORES_COAL)) return OreBlocks.CORRUPTION_COAL_ORE.get();

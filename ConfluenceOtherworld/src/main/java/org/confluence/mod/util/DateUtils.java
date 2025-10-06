@@ -9,15 +9,24 @@ import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.common.init.item.FoodItems;
 import org.confluence.mod.common.init.item.ModItems;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.Calendar;
 import java.util.Date;
 
 public final class DateUtils {
-    public static final @Deprecated int _00$00 = LibDateUtils._00$00;
-    public static final @Deprecated int _04$30 = LibDateUtils._04$30;
-    public static final @Deprecated int _06$00 = LibDateUtils._06$00;
-    public static final @Deprecated int _19$30 = LibDateUtils._19$30;
+    @Deprecated(since = "1.2.0", forRemoval = true)
+    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
+    public static final int _00$00 = LibDateUtils._00$00;
+    @Deprecated(since = "1.2.0", forRemoval = true)
+    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
+    public static final int _04$30 = LibDateUtils._04$30;
+    @Deprecated(since = "1.2.0", forRemoval = true)
+    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
+    public static final int _06$00 = LibDateUtils._06$00;
+    @Deprecated(since = "1.2.0", forRemoval = true)
+    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
+    public static final int _19$30 = LibDateUtils._19$30;
 
     private static long lastCacheTime = 0;
     private static final Calendar calendar = Calendar.getInstance();
@@ -95,37 +104,44 @@ public final class DateUtils {
         return ModItems.STAR.get();
     }
 
-    @Deprecated
+    @Deprecated(since = "1.2.0", forRemoval = true)
+    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
     public static int getDayTime(Level level) {
         return LibDateUtils.getDayTime(level);
     }
 
-    @Deprecated
+    @Deprecated(since = "1.2.0", forRemoval = true)
+    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
     public static int getDayTime(long dayTime) {
         return LibDateUtils.getDayTime(dayTime);
     }
 
-    @Deprecated
+    @Deprecated(since = "1.2.0", forRemoval = true)
+    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
     public static int getDayTime(int hour, int minute) {
         return LibDateUtils.getDayTime(hour, minute);
     }
 
-    @Deprecated
+    @Deprecated(since = "1.2.0", forRemoval = true)
+    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
     public static boolean isWithinDayTime(int start, int end, int dayTime) {
         return LibDateUtils.isWithinDayTime(start, end, dayTime);
     }
 
-    @Deprecated
+    @Deprecated(since = "1.2.0", forRemoval = true)
+    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
     public static boolean isWithinDayTime(int startHour, int startMinute, int endHour, int endMinute, int dayTime) {
         return LibDateUtils.isWithinDayTime(startHour, startMinute, endHour, endMinute, dayTime);
     }
 
-    @Deprecated
+    @Deprecated(since = "1.2.0", forRemoval = true)
+    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
     public static boolean isDay(int dayTime) {
         return LibDateUtils.isDay(dayTime);
     }
 
-    @Deprecated
+    @Deprecated(since = "1.2.0", forRemoval = true)
+    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
     public static boolean isNight(int dayTime) {
         return LibDateUtils.isNight(dayTime);
     }

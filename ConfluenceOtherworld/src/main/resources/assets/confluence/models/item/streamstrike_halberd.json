@@ -81,7 +81,7 @@
             }
         },
         "textures": {
-            "particle": "confluence:item/lance/streamstrike_halberd_item"
+            "particle": "confluence:item/spear/streamstrike_halberd_item"
         }
     },
     "gui_light": "front",
@@ -90,25 +90,25 @@
         "fixed": {
             "parent": "minecraft:item/generated",
             "textures": {
-                "layer0": "confluence:item/lance/streamstrike_halberd_inventory"
+                "layer0": "confluence:item/spear/streamstrike_halberd_inventory"
             }
         },
         "ground": {
             "parent": "minecraft:item/generated",
             "textures": {
-                "layer0": "confluence:item/lance/streamstrike_halberd_inventory"
+                "layer0": "confluence:item/spear/streamstrike_halberd_inventory"
             }
         },
         "gui": {
             "parent": "minecraft:item/generated",
             "textures": {
-                "layer0": "confluence:item/lance/streamstrike_halberd_inventory"
+                "layer0": "confluence:item/spear/streamstrike_halberd_inventory"
             }
         },
         "head": {
             "parent": "minecraft:item/generated",
             "textures": {
-                "layer0": "confluence:item/lance/streamstrike_halberd_inventory"
+                "layer0": "confluence:item/spear/streamstrike_halberd_head"
             }
         }
     }

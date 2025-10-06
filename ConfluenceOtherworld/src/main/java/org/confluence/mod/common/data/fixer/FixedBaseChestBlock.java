@@ -138,12 +138,12 @@ public class FixedBaseChestBlock extends ChestBlock {
                     }
                     entity.variant = Variant.byId(unlock);
                     Component name = Component.translatable("block.confluence.base_chest_block." + entity.variant.name);
-                    ((IBaseContainerBlockEntity) entity).confluence$setCustomName(name);
+                    IBaseContainerBlockEntity.of(entity).confluence$setCustomName(name);
                     Direction relativeDir = ChestBlock.getConnectedDirection(state);
                     boolean isDouble = false;
                     if (state.getValue(TYPE) != ChestType.SINGLE && level.getBlockEntity(pos.relative(relativeDir)) instanceof BEntity entity1) {
                         entity1.variant = entity.variant;
-                        ((IBaseContainerBlockEntity) entity).confluence$setCustomName(name);
+                        IBaseContainerBlockEntity.of(entity).confluence$setCustomName(name);
                         isDouble = true;
                     }
                     if (level instanceof ServerLevel serverLevel) {

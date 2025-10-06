@@ -1,0 +1,14 @@
+{
+    "variants": {
+        "": [
+            {
+                "model": "confluence:block/chiseled_dynasty_planks",
+                "weight": 1
+            },
+            {
+                "model": "confluence:block/chiseled_dynasty_planks_0",
+                "weight": 1
+            }
+        ]
+    }
+}

@@ -25,7 +25,7 @@ import java.util.List;
 public class CrateBlockItem extends BlockItem {
     private final List<Component> commonTooltips;
     public CrateBlockItem(Block block, ResourceKey<LootTable> lootTable) {
-        super(block, new Properties().component(ModDataComponentTypes.LOOT.get(), new LootComponent(lootTable)));
+        super(block, new Properties().fireResistant().component(ModDataComponentTypes.LOOT.get(), new LootComponent(lootTable)));
         this.commonTooltips = createCommonTooltips();
     }
 

@@ -1,0 +1,157 @@
+package org.confluence.mod.common.data.saved;
+
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.entity.EntityType;
+import org.confluence.lib.util.LibStreamCodecUtils;
+import org.confluence.mod.util.Coins;
+import org.confluence.mod.util.PlayerUtils;
+
+/// <a href="https://terraria.wiki.gg/zh/wiki/%E6%80%AA%E7%89%A9%E5%9B%BE%E9%89%B4">怪物图鉴</a>
+public class BestiaryEntry {
+    public static final Codec<BestiaryEntry> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            BuiltInRegistries.ENTITY_TYPE.byNameCodec().fieldOf("type").forGetter(BestiaryEntry::getType),
+            Codec.INT.fieldOf("killed_by_count").forGetter(BestiaryEntry::getKilledByCount),
+            Codec.FLOAT.fieldOf("max_health").forGetter(BestiaryEntry::getMaxHealth),
+            Codec.FLOAT.fieldOf("knockback_resistance").forGetter(BestiaryEntry::getKnockbackResistance),
+            Codec.FLOAT.fieldOf("attack_damage").forGetter(BestiaryEntry::getAttackDamage),
+            Codec.FLOAT.fieldOf("armor").forGetter(BestiaryEntry::getArmor),
+            Codec.INT.fieldOf("drops").forGetter(BestiaryEntry::getDrops)
+    ).apply(instance, BestiaryEntry::new));
+    public static final StreamCodec<ByteBuf, BestiaryEntry> STREAM_CODEC = LibStreamCodecUtils.composite(
+            LibStreamCodecUtils.registry(BuiltInRegistries.ENTITY_TYPE), BestiaryEntry::getType,
+            ByteBufCodecs.VAR_INT, BestiaryEntry::getKilledByCount,
+            ByteBufCodecs.FLOAT, BestiaryEntry::getMaxHealth,
+            ByteBufCodecs.FLOAT, BestiaryEntry::getKnockbackResistance,
+            ByteBufCodecs.FLOAT, BestiaryEntry::getAttackDamage,
+            ByteBufCodecs.FLOAT, BestiaryEntry::getArmor,
+            ByteBufCodecs.VAR_INT, BestiaryEntry::getDrops,
+            BestiaryEntry::new
+    );
+
+    public EntityType<?> type;
+    public int killedByCount;
+    public float maxHealth;
+    public float knockbackResistance;
+    public float attackDamage;
+    public float armor;
+    public int drops;
+
+    public transient String key;
+    private transient Coins coins;
+
+    public BestiaryEntry() {}
+
+    private BestiaryEntry(EntityType<?> type, int killedByCount, float maxHealth, float knockbackResistance, float attackDamage, float armor, int drops) {
+        this.type = type;
+        this.killedByCount = killedByCount;
+        this.maxHealth = maxHealth;
+        this.knockbackResistance = knockbackResistance;
+        this.attackDamage = attackDamage;
+        this.armor = armor;
+        this.drops = drops;
+    }
+
+    public EntityType<?> getType() {
+        return type;
+    }
+
+    public int getKilledByCount() {
+        return killedByCount;
+    }
+
+    public float getMaxHealth() {
+        return maxHealth;
+    }
+
+    public float getKnockbackResistance() {
+        return knockbackResistance;
+    }
+
+    public float getAttackDamage() {
+        return attackDamage;
+    }
+
+    public float getArmor() {
+        return armor;
+    }
+
+    public int getDrops() {
+        return drops;
+    }
+
+    public Coins getCoins() {
+        if (coins == null) {
+            this.coins = PlayerUtils.decodeCoin(drops);
+        }
+        return coins;
+    }
+
+    public BestiaryEntry copy() {
+        BestiaryEntry entry = new BestiaryEntry(
+                type,
+                killedByCount,
+                maxHealth,
+                knockbackResistance,
+                attackDamage,
+                armor,
+                drops
+        );
+        entry.key = key;
+        return entry;
+    }
+
+    public static Builder builder(EntityType<?> type, String key) {
+        return new Builder(type, key);
+    }
+
+    public static class Builder {
+        private final EntityType<?> type;
+        private final String key;
+        private float maxHealth;
+        private float knockbackResistance;
+        private float attackDamage;
+        private float armor;
+        private int drops;
+
+        private Builder(EntityType<?> type, String key) {
+            this.type = type;
+            this.key = key;
+        }
+
+        public Builder maxHealth(float maxHealth) {
+            this.maxHealth = maxHealth;
+            return this;
+        }
+
+        public Builder knockbackResistance(float knockbackResistance) {
+            this.knockbackResistance = knockbackResistance;
+            return this;
+        }
+
+        public Builder attackDamage(float attackDamage) {
+            this.attackDamage = attackDamage;
+            return this;
+        }
+
+        public Builder armor(float armor) {
+            this.armor = armor;
+            return this;
+        }
+
+        public Builder drops(int drops) {
+            this.drops = drops;
+            return this;
+        }
+
+        public BestiaryEntry build() {
+            BestiaryEntry entry = new BestiaryEntry(type, 0, maxHealth, knockbackResistance, attackDamage, armor, drops);
+            entry.key = key;
+            return entry;
+        }
+    }
+}

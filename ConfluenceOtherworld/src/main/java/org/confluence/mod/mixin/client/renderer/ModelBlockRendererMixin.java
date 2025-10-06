@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.block.ModelBlockRenderer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.core.BlockPos;
 import org.confluence.lib.util.LibClientUtils;
-import org.confluence.mod.client.textures.LocalBrushData;
+import org.confluence.mod.client.effect.textures.LocalBrushData;
 import org.confluence.mod.common.data.saved.BrushData;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

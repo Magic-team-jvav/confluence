@@ -11,11 +11,29 @@
         },
         {
             "enum": "net/minecraft/client/model/HumanoidModel$ArmPose",
-            "name": "CONFLUENCE_LANCE",
+            "name": "CONFLUENCE_SPEAR",
             "constructor": "(ZLnet/neoforged/neoforge/client/IArmPoseTransformer;)V",
             "parameters": {
                 "class": "org/confluence/mod/common/init/ModArmPoses",
-                "field": "LANCE"
+                "field": "SPEAR"
+            }
+        },
+        {
+            "enum": "net/minecraft/client/model/HumanoidModel$ArmPose",
+            "name": "CONFLUENCE_UMBRELLA",
+            "constructor": "(ZLnet/neoforged/neoforge/client/IArmPoseTransformer;)V",
+            "parameters": {
+                "class": "org/confluence/mod/common/init/ModArmPoses",
+                "field": "UMBRELLA"
+            }
+        },
+        {
+            "enum": "net/minecraft/client/model/HumanoidModel$ArmPose",
+            "name": "CONFLUENCE_DRILL_O_CHAINSAW",
+            "constructor": "(ZLnet/neoforged/neoforge/client/IArmPoseTransformer;)V",
+            "parameters": {
+                "class": "org/confluence/mod/common/init/ModArmPoses",
+                "field": "DRILL_O_CHAINSAW"
             }
         },
         {
@@ -115,6 +133,15 @@
             "parameters": {
                 "class": "org/confluence/mod/common/init/ModBoatTypes",
                 "field": "YELLOW_WILLOW"
+            }
+        },
+        {
+            "enum": "net/minecraft/world/entity/vehicle/Boat$Type",
+            "name": "CONFLUENCE_DYNASTY",
+            "constructor": "(Ljava/util/function/Supplier;Ljava/lang/String;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Z)V",
+            "parameters": {
+                "class": "org/confluence/mod/common/init/ModBoatTypes",
+                "field": "DYNASTY"
             }
         }
     ]

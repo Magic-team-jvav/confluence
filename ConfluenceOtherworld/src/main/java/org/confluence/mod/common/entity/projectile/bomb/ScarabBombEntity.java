@@ -50,43 +50,43 @@ public class ScarabBombEntity extends StickyBombEntity {
         builder.define(DATA_OWNER_ID, -1);
     }
 
+    // todo 新粒子
     @Override
-    protected void explodeFunction() {
-        if (!(level() instanceof ServerLevel serverLevel)) return;
+    protected void explodeFunction(ServerLevel level) {
         Vec3 blastPos = getEyePosition();
         Vec3 step = facingDir.normalize().scale(-3);
         float upperLimit = ModBlocks.getObsidianBasedExplosionResistance(50);
         ObjectArrayList<Pair<ItemStack, BlockPos>> objectArrayList = new ObjectArrayList<>();
-        DamageSource damageSource = Explosion.getDefaultDamageSource(level(), this);
+        DamageSource damageSource = Explosion.getDefaultDamageSource(level, this);
         MultiplyExplosionDamageCalculator damageCalculator = new MultiplyExplosionDamageCalculator(0.2F);
         for (int i = 0; i < 24; i++) {
             if (i % 3 == 0) {
-                Explosion explosion = level().explode(this, damageSource, damageCalculator, blastPos.x(), blastPos.y(), blastPos.z(), blastPower, false, Level.ExplosionInteraction.MOB);
+                Explosion explosion = level.explode(this, damageSource, damageCalculator, blastPos.x(), blastPos.y(), blastPos.z(), blastPower, false, Level.ExplosionInteraction.MOB);
                 Vec3 end = blastPos.add(step);
                 BlockPos.betweenClosedStream(new AABB(blastPos, end)).forEach(blockPos -> {
-                    if (!level().isLoaded(blockPos)) return;
-                    BlockState blockState = level().getBlockState(blockPos);
-                    if (blockState.getExplosionResistance(level(), blockPos, explosion) < upperLimit) {
-                        level().getProfiler().push("explosion_blocks");
-                        if (blockState.canDropFromExplosion(level(), blockPos, explosion)) {
-                            BlockEntity blockentity = blockState.hasBlockEntity() ? level().getBlockEntity(blockPos) : null;
-                            LootParams.Builder lootparams$builder = new LootParams.Builder(serverLevel)
+                    if (!level.isLoaded(blockPos)) return;
+                    BlockState blockState = level.getBlockState(blockPos);
+                    if (blockState.getExplosionResistance(level, blockPos, explosion) < upperLimit) {
+                        level.getProfiler().push("explosion_blocks");
+                        if (blockState.canDropFromExplosion(level, blockPos, explosion)) {
+                            BlockEntity blockentity = blockState.hasBlockEntity() ? level.getBlockEntity(blockPos) : null;
+                            LootParams.Builder lootparams$builder = new LootParams.Builder(level)
                                     .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(blockPos))
                                     .withParameter(LootContextParams.TOOL, ItemStack.EMPTY)
                                     .withOptionalParameter(LootContextParams.BLOCK_ENTITY, blockentity)
                                     .withOptionalParameter(LootContextParams.THIS_ENTITY, this);
-                            blockState.spawnAfterBreak(serverLevel, blockPos, ItemStack.EMPTY, getOwner() instanceof Player);
+                            blockState.spawnAfterBreak(level, blockPos, ItemStack.EMPTY, getOwner() instanceof Player);
                             blockState.getDrops(lootparams$builder).forEach((itemStack) -> addBlockDrops(objectArrayList, itemStack, blockPos));
                         }
-                        blockState.onBlockExploded(level(), blockPos, explosion);
-                        level().getProfiler().pop();
+                        blockState.onBlockExploded(level, blockPos, explosion);
+                        level.getProfiler().pop();
                     }
                 });
                 blastPos = end;
             }
         }
         for (Pair<ItemStack, BlockPos> pair : objectArrayList) {
-            Block.popResource(level(), pair.getSecond(), pair.getFirst());
+            Block.popResource(level, pair.getSecond(), pair.getFirst());
         }
     }
 

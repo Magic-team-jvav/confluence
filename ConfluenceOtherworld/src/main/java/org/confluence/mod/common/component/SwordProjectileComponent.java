@@ -31,18 +31,19 @@ import java.util.function.Supplier;
 
 /**
  * <h1>弹幕组件</h1>
+ *
  * @param damageFactor 伤害系数
- * @param baseSpeed 基础速度
+ * @param baseSpeed    基础速度
  * @param acceleration 加速度
- * @param existTicks 存在时间
- * @param gravity 重力
- * @param cooldown 冷却时间
- * @param soundEvent 音效
- * @param trackType 追踪类型
- * @param generation 生成器
- * @param hitEffect 击中特效
+ * @param existTicks   存在时间
+ * @param gravity      重力
+ * @param cooldown     冷却时间
+ * @param soundEvent   音效
+ * @param trackType    追踪类型
+ * @param generation   生成器
+ * @param hitEffect    击中特效
  */
-public record SwordProjectileComponent (
+public record SwordProjectileComponent(
         float damageFactor,
         float baseSpeed,
         float acceleration,
@@ -71,36 +72,34 @@ public record SwordProjectileComponent (
     ).apply(instance, SwordProjectileComponent::new));
 
     public static final Supplier<SwordProjectileComponent> ICE_PROJ =
-            ()->new SwordProjectileComponent(2,0.6f,0.9f,40, 0, 15,
+            () -> new SwordProjectileComponent(1.0f, 0.6f, 0.9f, 40, 0, 15,
                     ModSoundEvents.FROZEN_ARROW.getId(), ModEntities.ICE_BLADE_SWORD_PROJECTILE.getId(),
-                    Optional.empty(), ForwardGeneration.of(0,0),
-                    Optional.empty()   );
+                    Optional.empty(), ForwardGeneration.of(0, 0),
+                    Optional.empty());
 
     public static final Supplier<SwordProjectileComponent> STAR_FURY_PROJ =
-            ()->new SwordProjectileComponent(1.5f,1.5f,0.9f,100, 0, 15,
-                    ModSoundEvents.STAR.getId(),ModEntities.STAR_FURY_PROJECTILE.getId(),
-                    Optional.empty(), new AboveFallenGeneration(30,30,10,1,20,5),
-                    Optional.empty() );
+            () -> new SwordProjectileComponent(1.5f, 1.5f, 0.9f, 100, 0, 15,
+                    ModSoundEvents.STAR.getId(), ModEntities.STAR_FURY_PROJECTILE.getId(),
+                    Optional.empty(), new AboveFallenGeneration(30, 30, 10, 1, 20, 5),
+                    Optional.empty());
 
     public static final Supplier<SwordProjectileComponent> ENCHANTED_SWORD_PROJ =
-            ()->new SwordProjectileComponent(1.2f,0.8f,0.9f,40, 0, 10,
-                    ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(),ModEntities.ENCHANTED_SWORD_PROJECTILE.getId(),
-                    Optional.empty(), ForwardGeneration.of(0,0),
-                    Optional.empty() );
+            () -> new SwordProjectileComponent(1.0f, 0.8f, 0.9f, 40, 0, 10,
+                    ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.ENCHANTED_SWORD_PROJECTILE.getId(),
+                    Optional.empty(), ForwardGeneration.of(0, 0),
+                    Optional.empty());
 
     public static final Supplier<SwordProjectileComponent> GRASS_PROJ =
-            ()->new SwordProjectileComponent(1,0.8f,0.9f,20, 0, 10,
+            () -> new SwordProjectileComponent(0.25f, 0.8f, 0.9f, 20, 0, 10,
                     ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.GRASS_PROJECTILE.getId(),
-                    Optional.empty(), ForwardGeneration.of(0,20),
+                    Optional.empty(), ForwardGeneration.of(0, 20),
                     Optional.of(EffectStrategyComponent.of(TimePossibilityAmplifierEffect.of("grass_effect", MobEffects.POISON, 100, 1, 0.5f))));
 
     public static final Supplier<SwordProjectileComponent> NIGHT_PROJ =
-            ()->new SwordProjectileComponent(1,0.8f,0.9f,20, 0, 10,
+            () -> new SwordProjectileComponent(1, 0.8f, 0.9f, 20, 0, 10,
                     ModSoundEvents.REGULAR_STAFF_SHOOT_2.getId(), ModEntities.NIGHTS_EDGE_PROJECTILE.getId(),
-                    Optional.empty(), ForwardGeneration.of(0,20),
+                    Optional.empty(), ForwardGeneration.of(0, 20),
                     Optional.empty());
-
-
 
 
     public SoundEvent getSoundEvent() {
@@ -126,7 +125,7 @@ public record SwordProjectileComponent (
             return damageFactor == other.damageFactor &&
                     baseSpeed == other.baseSpeed &&
                     acceleration == other.acceleration &&
-                    existTicks == other.existTicks&&
+                    existTicks == other.existTicks &&
                     gravity == other.gravity &&
                     cooldown == other.cooldown &&
                     soundEvent.equals(other.soundEvent) &&
@@ -160,7 +159,7 @@ public record SwordProjectileComponent (
         return velocity;
     }
 
-    public int getAttackSpeed(LivingEntity living){
+    public int getAttackSpeed(LivingEntity living) {
         int cooldown = cooldown();
         AttributeInstance attributeInstance = living.getAttribute(Attributes.ATTACK_SPEED);
         if (attributeInstance != null) return Math.max(cooldown - (int) (attributeInstance.getValue() / 3.0), 0);

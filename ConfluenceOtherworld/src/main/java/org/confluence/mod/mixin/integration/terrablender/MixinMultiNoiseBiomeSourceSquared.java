@@ -15,7 +15,6 @@ import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.levelgen.WorldOptions;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
-import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.common.init.ModBiomes;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.worldgen.BannedBiomeMultiNoiseBiomeSource;
@@ -36,7 +35,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Mixin(value = MultiNoiseBiomeSource.class, priority = 1100)
-public abstract class MixinMultiNoiseBiomeSourceSquared implements SelfGetter<MultiNoiseBiomeSource>, IMultiNoiseBiomeSource {
+public abstract class MixinMultiNoiseBiomeSourceSquared implements IMultiNoiseBiomeSource {
     @Unique
     private List<Holder<Biome>> confluence$jungle;
     @Unique
@@ -68,7 +67,7 @@ public abstract class MixinMultiNoiseBiomeSourceSquared implements SelfGetter<Mu
             MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
             if (server == null) return null;
             WorldOptions worldOptions = server.getWorldData().worldGenOptions();
-            long flag = ((IWorldOptions) worldOptions).confluence$getSecretFlag();
+            long flag = IWorldOptions.of(worldOptions).confluence$getSecretFlag();
             ResourceKey<Biome> from;
             ResourceKey<Biome> to;
             if (confluence$self() instanceof BannedBiomeMultiNoiseBiomeSource) {

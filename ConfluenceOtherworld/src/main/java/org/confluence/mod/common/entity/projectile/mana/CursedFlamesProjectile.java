@@ -11,14 +11,17 @@ import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.IgnoreThrowerExplosionDamageCalculator;
 import org.confluence.lib.util.VectorUtils;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
+import org.mesdag.particlestorm.PSGameClient;
+import org.mesdag.particlestorm.particle.ParticleEmitter;
 
 public class CursedFlamesProjectile extends AbstractManaProjectile {
     private int collideCount = 0;
     private int penetrateCount = 0;
+    private ParticleEmitter emitter;
 
     public CursedFlamesProjectile(EntityType<CursedFlamesProjectile> entityType, Level level) {
         super(entityType, level);
@@ -52,6 +55,11 @@ public class CursedFlamesProjectile extends AbstractManaProjectile {
         }
         setDeltaMovement(motion.scale(0.99).add(0.0, -0.04, 0.0));
 
+        if (level().isClientSide && (emitter == null || emitter.isRemoved())) {
+            this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("cursed_flames"));
+            emitter.attachEntity(this);
+            PSGameClient.LOADER.addEmitter(emitter, false);
+        }
         if (ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity) instanceof EntityHitResult entityHitResult) {
             Entity entity = entityHitResult.getEntity();
             if (entity instanceof LivingEntity living) {
@@ -61,13 +69,13 @@ public class CursedFlamesProjectile extends AbstractManaProjectile {
                 VectorUtils.knockBackA2B(this, entity, 0.6, 0.2);
             }
             if (this.penetrateCount++ >= 1) {
-                level().explode(this, getDamagesource(), new IgnoreThrowerExplosionDamageCalculator(2, getOwner()), position(), 1.5F, false, Level.ExplosionInteraction.MOB);
                 discard();
             }
         }
 
         if (tickCount > 1200) discard();
     }
+
 
     @Override
     protected void readAdditionalSaveData(CompoundTag compound) {

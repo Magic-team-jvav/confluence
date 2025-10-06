@@ -1,5 +1,6 @@
 package org.confluence.mod.common.entity.projectile.boulder;
 
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -34,6 +35,8 @@ import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.UUID;
+
 public class BoulderEntity extends Projectile {
     private static final EntityDataAccessor<Boolean> DATA_VERTICAL = SynchedEntityData.defineId(BoulderEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<BlockState> DATA_BLOCK_STATE = SynchedEntityData.defineId(BoulderEntity.class, EntityDataSerializers.BLOCK_STATE);
@@ -43,6 +46,7 @@ public class BoulderEntity extends Projectile {
     public float rotateO = 0.0F;
     public float rotate = 0.0F;
     public float radius = 0.5F;
+    private final Object2IntOpenHashMap<UUID> hitHistory = new Object2IntOpenHashMap<>();
 
     public BoulderEntity(EntityType<? extends BoulderEntity> entityType, Level level) {
         super(entityType, level);
@@ -154,7 +158,12 @@ public class BoulderEntity extends Projectile {
     @Override
     protected void onHitEntity(EntityHitResult entityHitResult) {
         Entity entity = entityHitResult.getEntity();
-        entity.hurt(ModDamageTypes.of(entity.level(), ModDamageTypes.BOULDER, this), 100.0F);
+        UUID uuid1 = entity.getUUID();
+        int i = hitHistory.containsKey(uuid1) ? hitHistory.addTo(uuid1, -1) : 0;
+        if (i <= 0) {
+            entity.hurt(ModDamageTypes.of(entity.level(), ModDamageTypes.BOULDER, this), 100.0F);
+            hitHistory.put(uuid1, 5);
+        }
     }
 
     public void targetTo(@Nullable Player player) {

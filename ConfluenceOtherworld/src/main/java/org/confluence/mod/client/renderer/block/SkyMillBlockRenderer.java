@@ -4,6 +4,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.AABB;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.crafting.SkyMillBlock;
+import org.confluence.mod.util.ClientUtils;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
@@ -33,6 +34,6 @@ public class SkyMillBlockRenderer extends GeoBlockRenderer<SkyMillBlock.BEntity>
 
     @Override
     public AABB getRenderBoundingBox(SkyMillBlock.BEntity blockEntity) {
-        return AABB.INFINITE;
+        return ClientUtils.getRenderBoundingBox3x(blockEntity.getBlockPos());
     }
 }

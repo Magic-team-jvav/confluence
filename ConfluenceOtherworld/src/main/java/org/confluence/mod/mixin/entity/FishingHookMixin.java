@@ -3,6 +3,7 @@ package org.confluence.mod.mixin.entity;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Local;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.resources.ResourceKey;
@@ -14,7 +15,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
-import org.confluence.lib.mixed.IExtraSyncedData;
 import org.confluence.lib.network.SetEntityDataPacketS2C;
 import org.confluence.mod.mixed.IFishingHook;
 import org.spongepowered.asm.mixin.Final;
@@ -26,18 +26,14 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import javax.annotation.Nullable;
-
 @Mixin(FishingHook.class)
-public abstract class FishingHookMixin implements IFishingHook, IExtraSyncedData<FishingHook> {
+public abstract class FishingHookMixin implements IFishingHook {
     @Unique
     private static final byte[] confluence$dataIds = {SetEntityDataPacketS2C.DATA_BOOLEAN};
 
     @Shadow
     @Final
     public int luck;
-    @Unique
-    private ItemStack confluence$bait = null;
     @Unique
     private boolean confluence$achievement = false;
     @Unique
@@ -57,7 +53,7 @@ public abstract class FishingHookMixin implements IFishingHook, IExtraSyncedData
 
     @Override
     public void confluence$setData(byte dataId, Object o) {
-        IExtraSyncedData.super.confluence$setData(dataId, o);
+        IFishingHook.super.confluence$setData(dataId, o);
         this.confluence$lavaHook = (boolean) o;
     }
 
@@ -69,16 +65,6 @@ public abstract class FishingHookMixin implements IFishingHook, IExtraSyncedData
     @Override
     public byte[] confluence$getAllDataId() {
         return confluence$dataIds;
-    }
-
-    @Override
-    public void confluence$setBait(@Nullable ItemStack bait) {
-        this.confluence$bait = bait;
-    }
-
-    @Override
-    public @Nullable ItemStack confluence$getBait() {
-        return confluence$bait;
     }
 
     @ModifyArg(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/material/FluidState;is(Lnet/minecraft/tags/TagKey;)Z"))
@@ -132,8 +118,8 @@ public abstract class FishingHookMixin implements IFishingHook, IExtraSyncedData
     }
 
     @ModifyArg(method = "retrieve", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/loot/LootTable;getRandomItems(Lnet/minecraft/world/level/storage/loot/LootParams;)Lit/unimi/dsi/fastutil/objects/ObjectArrayList;"))
-    private LootParams modifyLuck(LootParams params) {
-        return IFishingHook.modifyLuck(confluence$self(), params);
+    private LootParams modifyLuck(LootParams params, @Local(argsOnly = true) ItemStack stack) {
+        return IFishingHook.modifyLuck(confluence$self(), params, stack);
     }
 
     @ModifyArg(method = "retrieve", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/ReloadableServerRegistries$Holder;getLootTable(Lnet/minecraft/resources/ResourceKey;)Lnet/minecraft/world/level/storage/loot/LootTable;"))

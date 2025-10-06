@@ -10,8 +10,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.CustomWorldIconRegisterEvent;
 import org.confluence.mod.common.init.ModSecretSeeds;
 
-import java.util.Optional;
-
 public interface IWorldOptions {
     /**
      * 能获取到服务器的情况下尽量使用如下方法
@@ -22,15 +20,13 @@ public interface IWorldOptions {
 
     long confluence$getSecretFlag();
 
-    void confluence$setLegacyCustomOptions(Optional<String> legacyCustomOptions);
-
     WorldOptions confluence$copyWithoutSecretFlag();
 
-    long THE_CORRUPTION = 0b0001;
-    long THE_CRIMSON = 0b0010;
-    long DOUBLE_EVIL = 0b0011;
-    long HARDMODE = 0b0100;
-    long GRADUATED = 0b1100;
+    long THE_CORRUPTION = 0b00000001;
+    long THE_CRIMSON    = 0b00000010;
+    long DOUBLE_EVIL    = 0b00000011;
+    long HARDMODE       = 0b00000100;
+    long GRADUATED      = 0b00001100;
     long SECRET_SEED = Long.MAX_VALUE >> ModSecretSeeds.RESERVE << ModSecretSeeds.RESERVE;
 
     long DW_MASK = ModSecretSeeds.DRUNK_WORLD.getFlag();
@@ -44,12 +40,12 @@ public interface IWorldOptions {
     long BW_MASK = ModSecretSeeds.BOULDER_WORLD.getFlag();
 
 
-    ResourceLocation UNKNOWN_WORLD_ICON = Confluence.asResource("textures/gui/world_icon/unknown.png");
+    ResourceLocation UNKNOWN_WORLD_ICON = Confluence.asResource("world_icon/unknown");
     Long2ObjectMap<ResourceLocation> WORLD_ICON = Util.make(new Long2ObjectOpenHashMap<>(), map -> {
         registerWorldIcon(map, 0, "normal");
-        map.put(DW_MASK | DOUBLE_EVIL, Confluence.asResource("textures/gui/world_icon/drunk_world.png"));
-        map.put(DW_MASK | DOUBLE_EVIL | HARDMODE, Confluence.asResource("textures/gui/world_icon/drunk_world_hardmode.png"));
-        map.put(DW_MASK | DOUBLE_EVIL | GRADUATED, Confluence.asResource("textures/gui/world_icon/drunk_world_graduated.png"));
+        map.put(DW_MASK | DOUBLE_EVIL, Confluence.asResource("world_icon/drunk_world"));
+        map.put(DW_MASK | DOUBLE_EVIL | HARDMODE, Confluence.asResource("world_icon/drunk_world_hardmode"));
+        map.put(DW_MASK | DOUBLE_EVIL | GRADUATED, Confluence.asResource("world_icon/drunk_world_graduated"));
         registerWorldIcon(map, NTB_MASK, "not_the_bees");
         registerWorldIcon(map, FTW_MASK, "for_the_worthy");
         registerWorldIcon(map, C10_MASK, "celebrationmk10");
@@ -65,15 +61,19 @@ public interface IWorldOptions {
     });
 
     static void registerWorldIcon(Long2ObjectMap<ResourceLocation> map, long flag, String base) {
-        map.put(flag | THE_CORRUPTION, Confluence.asResource("textures/gui/world_icon/" + base + "_corruption.png"));
-        map.put(flag | THE_CORRUPTION | HARDMODE, Confluence.asResource("textures/gui/world_icon/" + base + "_corruption_hardmode.png"));
-        map.put(flag | THE_CORRUPTION | GRADUATED, Confluence.asResource("textures/gui/world_icon/" + base + "_corruption_graduated.png"));
-        map.put(flag | THE_CRIMSON, Confluence.asResource("textures/gui/world_icon/" + base + "_crimson.png"));
-        map.put(flag | THE_CRIMSON | HARDMODE, Confluence.asResource("textures/gui/world_icon/" + base + "_crimson_hardmode.png"));
-        map.put(flag | THE_CRIMSON | GRADUATED, Confluence.asResource("textures/gui/world_icon/" + base + "_crimson_graduated.png"));
+        map.put(flag | THE_CORRUPTION, Confluence.asResource("world_icon/" + base + "_corruption"));
+        map.put(flag | THE_CORRUPTION | HARDMODE, Confluence.asResource("world_icon/" + base + "_corruption_hardmode"));
+        map.put(flag | THE_CORRUPTION | GRADUATED, Confluence.asResource("world_icon/" + base + "_corruption_graduated"));
+        map.put(flag | THE_CRIMSON, Confluence.asResource("world_icon/" + base + "_crimson"));
+        map.put(flag | THE_CRIMSON | HARDMODE, Confluence.asResource("world_icon/" + base + "_crimson_hardmode"));
+        map.put(flag | THE_CRIMSON | GRADUATED, Confluence.asResource("world_icon/" + base + "_crimson_graduated"));
     }
 
     static ResourceLocation getWorldIcon(long flag) {
         return WORLD_ICON.getOrDefault(flag, UNKNOWN_WORLD_ICON);
+    }
+
+    static IWorldOptions of(WorldOptions options) {
+        return (IWorldOptions) options;
     }
 }

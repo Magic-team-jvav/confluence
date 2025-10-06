@@ -3,6 +3,7 @@ package org.confluence.mod.mixin.client;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHandler;
+import org.confluence.mod.client.gui.hud.HouseSelectHUD;
 import org.confluence.mod.mixed.ILocalPlayer;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -18,6 +19,14 @@ public abstract class MouseHandlerMixin {
     @WrapWithCondition(method = "handleAccumulatedMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MouseHandler;turnPlayer(D)V"))
     private boolean canTurn(MouseHandler instance, double d6) {
         assert minecraft.player != null;
-        return ((ILocalPlayer) minecraft.player).confluence$isCanMove();
+        if (!minecraft.player.hasInfiniteMaterials()) {
+            return ILocalPlayer.of(minecraft.player).confluence$isCanMove();
+        }
+        return true;
+    }
+
+    @WrapWithCondition(method = "onPress", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/MouseHandler;grabMouse()V"))
+    private boolean cancelGrab(MouseHandler instance) {
+        return !HouseSelectHUD.inSelectHUD;
     }
 }

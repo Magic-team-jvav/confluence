@@ -38,6 +38,7 @@ import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.attachment.ChunkBrushData;
 import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.component.prefix.ModPrefix;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
@@ -168,10 +169,6 @@ public final class ModCommands {
                             return 0;
                         })))
                 )
-                .then(Commands.literal("reload").then(Commands.argument("resource", EnumArgument.enumArgument(ReloadResource.class)).executes(context -> {
-                    ReloadResource.execute(context.getArgument("resource", ReloadResource.class));
-                    return 1;
-                })))
                 .then(Commands.literal("judgeBiome").executes(context -> {
                     Level level;
                     BlockPos pos;
@@ -187,7 +184,7 @@ public final class ModCommands {
                     }
                     LevelChunk chunk = level.getChunkAt(pos);
                     LevelChunkSection section = chunk.getSection(chunk.getSectionIndex(pos.getY()));
-                    Holder<Biome> result = DynamicBiomeUtils.judgeSection(section);
+                    Holder<Biome> result = DynamicBiomeUtils.judgeSection(section, level.registryAccess().lookupOrThrow(Registries.BIOME));
                     context.getSource().sendSuccess(() -> {
                         if (result == null) {
                             return Component.literal(pos + " pure");
@@ -305,7 +302,7 @@ public final class ModCommands {
             chunkPosMap.computeIfAbsent(new ChunkPos(blockPos), pos -> new HashMap<>()).put(blockPos.immutable(), list);
         }
         ServerLevel level = context.getSource().getLevel();
-        Map<ChunkPos, BrushData> dataMap = level.getData(ModAttachmentTypes.CHUNK_BRUSH_DATA).getDataMap();
+        Map<ChunkPos, BrushData> dataMap = ChunkBrushData.of(level).getDataMap();
         for (Map.Entry<ChunkPos, Map<BlockPos, int[]>> entry : chunkPosMap.entrySet()) {
             BrushData brushData = new BrushData(entry.getValue());
             ChunkPos chunkPos = entry.getKey();

@@ -27,7 +27,6 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terraentity.attachment.WeaponStorage;
 import org.confluence.terraentity.data.component.EffectStrategyComponent;
-import org.confluence.terraentity.init.TEAttachments;
 import org.confluence.terraentity.init.TEDataComponentTypes;
 import org.confluence.terraentity.registries.hit_effect.IEffectStrategy;
 import org.jetbrains.annotations.NotNull;
@@ -135,7 +134,7 @@ public class TerraBowItem extends BowItem {
                             // 多重射击的箭设置最大存在时间
                             if(count > 1 && (terraArrow.modify.getType() & BaseArrowEntity.Tag.auto_discard) == 0)
                                 terraArrow.modify.setAutoDiscard(100);
-                            WeaponStorage data = shooter.getData(TEAttachments.WEAPON_STORAGE);
+                            WeaponStorage data = WeaponStorage.of(shooter);
                             if (data.bowFullPull) {
                                 terraArrow.fullPull = true;
                                 data.bowFullPull = false;
@@ -160,9 +159,9 @@ public class TerraBowItem extends BowItem {
         if(this.arrowModifier.fullPullHitEffects != null) {
             float f = getUseDuration(stack, entity) - remainingUseDuration;
             if (f < 16)
-                entity.getData(TEAttachments.WEAPON_STORAGE).bowFullPull = false;
+                WeaponStorage.of(entity).bowFullPull = false;
             else if (f == 16) {
-                entity.getData(TEAttachments.WEAPON_STORAGE).bowFullPull = true;
+                WeaponStorage.of(entity).bowFullPull = true;
                 if (level.isClientSide)
                     entity.playSound(ModSoundEvents.BOW_COOLDOWN_RECOVERY.get());
 

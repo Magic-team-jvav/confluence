@@ -12,6 +12,6 @@ public final class ImmunitySubProvider {
     public static void gather(ModDataMapProvider.Appender<DataMapProvider.Builder<ImmunityDataMap, EntityType<?>>> appender) {
         appender.create()
                 .add(ModEntities.VILETHRON_PROJECTILE, new ImmunityDataMap(Immunity.Type.STATIC, 5), false)
-                .add(TCEntities.BEE_PROJECTILE, new ImmunityDataMap(Immunity.Type.LOCAL, 8), false);
+                .add(TCEntities.BEE_PROJECTILE, new ImmunityDataMap(Immunity.Type.STATIC, 8), false);
     }
 }

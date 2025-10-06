@@ -21,6 +21,7 @@
 | [ConfluenceDelight](https://github.com/cooobird/ConfluenceDelight)                  | 汇流乐事               |
 | [ConfluenceMusic](https://github.com/westernat/Confluence-Music)                    | 汇流音乐               |
 | [ConfluenceDimensionPatch](https://github.com/westernat/Confluence-Dimension-Patch) | 将汇流来世对主世界的修改转移到新维度 |
+| [BetterExperience](https://github.com/EDGtheXu/BetterExperience)                    | 经过泰拉模组原作者许可的移植版    |
 
 ## 构建项目
 
@@ -41,20 +42,19 @@
 
 ## Maven 例子
 
-
 ```groovy
 repositories {
-  maven {
-    name "org.confluenceReleases"
-    url "https://maven.confluence.ink/releases"
-  }
-  maven {
-    name "org.confluenceSnapshots"
-    url "https://maven.confluence.ink/snapshots"
-  }
+    maven {
+        name "org.confluenceReleases"
+        url "https://maven.confluence.ink/releases"
+    }
+    maven {
+        name "org.confluenceSnapshots"
+        url "https://maven.confluence.ink/snapshots"
+    }
 }
 
 dependencies {
-  implementation "org.confluence.lib:Confluence-Magic-Lib:<version>"
+    implementation "org.confluence.lib:Confluence-Magic-Lib:<version>"
 }
 ```

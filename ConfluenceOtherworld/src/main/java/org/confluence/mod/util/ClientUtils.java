@@ -11,33 +11,52 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.model.AgeableHierarchicalModel;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.Model;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.PostChain;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
+import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.DynamicTexture;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FastColor;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.client.ClientHooks;
 import org.confluence.lib.client.AntiPushPoseStack;
 import org.confluence.lib.util.LibClientUtils;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.entity.DeadBodyPartEntity;
 import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.common.init.ModSecretSeeds;
+import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.item.VanityArmorItems;
-import org.confluence.mod.common.item.vanity_armor.BaseDyeItem;
+import org.confluence.mod.common.item.common.BaseDyeItem;
+import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
 import org.confluence.mod.integration.geckolib.IGeoCube;
 import org.confluence.mod.mixed.IEntity;
 import org.confluence.mod.mixed.ILivingEntityRenderer;
@@ -48,6 +67,7 @@ import org.joml.Vector3f;
 import org.joml.Vector3i;
 import org.joml.Vector4f;
 import software.bernie.geckolib.animatable.GeoAnimatable;
+import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.cache.object.GeoCube;
@@ -58,12 +78,16 @@ import java.io.InputStream;
 import java.util.*;
 import java.util.function.Supplier;
 
-@OnlyIn(Dist.CLIENT)
 public final class ClientUtils {
     public static final String GRAY_SUFFIX = ".gray";
     public static final String NEGATIVE_SUFFIX = ".negative";
     public static final Set<ResourceLocation> ORIGINAL = new HashSet<>();
+    public static final ResourceLocation LEGACY_TEXTURE = Confluence.asResource("hud/icon");
+    public static final ResourceLocation OVERLAY_TEXTURE = Confluence.asResource("hud/overlay");
+    public static final ResourceLocation ICON_0 = Confluence.asResource("hud/icon_0");
     private static final Set<ResourceLocation> failed = new HashSet<>();
+    public static final int LEGACY_SIZE = 128;
+    public static final int OVERLAY_SIZE = 128;
 
     public static void clearCache() {
         failed.clear();
@@ -109,15 +133,15 @@ public final class ClientUtils {
         float blueLow = (colorLow & 0xFF) / 255.0F;
         if (part >= 1) {
             RenderSystem.setShaderColor(red, green, blue, 1.0F);
-            guiGraphics.blit(icon, x, y, iconX, iconY, 9, 9, size, size);
+            guiGraphics.blitSprite(icon, size, size, iconX, iconY, x, y, 9, 9);
         }
         if (part >= 2) {
             RenderSystem.setShaderColor(redLow, greenLow, blueLow, 1.0F);
-            guiGraphics.blit(icon, x, y, iconX + partDis, iconY, 9, 9, size, size);
+            guiGraphics.blitSprite(icon, size, size, iconX + partDis, iconY, x, y, 9, 9);
         }
         if (part >= 3) {
             RenderSystem.setShaderColor(redHigh, greenHigh, blueHigh, 1.0F);
-            guiGraphics.blit(icon, x, y, iconX + partDis * 2, iconY, 9, 9, size, size);
+            guiGraphics.blitSprite(icon, size, size, iconX + partDis * 2, iconY, x, y, 9, 9);
         }
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
     }
@@ -174,7 +198,7 @@ public final class ClientUtils {
         if (max / 2 > (float) backCount) {backCount++;}
         if (current > (float) heartCount) {heartCount++;}
         for (int i = 0; i < backCount && i < 10 && background; i++) {
-            guiGraphics.blit(texture, (x + i * 8) + ((backCount < 10 && !left) ? ((10 - backCount) * 8) : 0), y, 60, uvY, 9, 9, size, size);
+            guiGraphics.blitSprite(texture, size, size, 60, uvY, (x + i * 8) + ((backCount < 10 && !left) ? ((10 - backCount) * 8) : 0), y, 9, 9);
         }
         int lineCount = heartCount / 20;
         int drawCount;
@@ -209,22 +233,22 @@ public final class ClientUtils {
         }
     }
 
-    public static OptionalInt getVanityDyeColor(ExtraInventory extraInventory, int index, Player player) {
+    public static int getVanityDyeARGB(ExtraInventory extraInventory, int index, Player player) {
         if (index != -1) {
             ItemStack vanityArmorDye = extraInventory.getVanityArmor(index, true);
             if (!vanityArmorDye.isEmpty()) {
                 Item item = vanityArmorDye.getItem();
-                if (item instanceof BaseDyeItem dyeItem) {
-                    return OptionalInt.of(dyeItem.color);
+                if (item instanceof BaseDyeItem) {
+                    return BaseDyeItem.getARGB(vanityArmorDye);
                 } else if (item == VanityArmorItems.TEAM_DYE.get()) {
                     Team team = TeamManager.getTeam(player);
                     if (team != null) {
-                        return OptionalInt.of(0xFF << 24 | team.getColor());
+                        return FastColor.ARGB32.opaque(team.getRGB());
                     }
                 }
             }
         }
-        return OptionalInt.empty();
+        return -1;
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
@@ -237,7 +261,7 @@ public final class ClientUtils {
         if (entity instanceof Mob mob && mob.isNoAi()) {
             deathMotion = Vec3.ZERO;
         } else {
-            deathMotion = ((IEntity) (entity)).confluence$deathMotion();
+            deathMotion = IEntity.of(entity).confluence$deathMotion();
         }
         if (deathMotion == null) {
             deathMotion = entity.getDeltaMovement();
@@ -301,18 +325,10 @@ public final class ClientUtils {
                 }
             }
         } else if (renderer instanceof LivingEntityRenderer<?, ?> livingRenderer) {
-            ModelPart rootModelPart = ((ILivingEntityRenderer) livingRenderer).confluence$getRootModelPart();
+            ModelPart rootModelPart = ILivingEntityRenderer.of(livingRenderer).confluence$getRootModelPart();
             if (rootModelPart == null) return;
             AntiPushPoseStack poseStack = new AntiPushPoseStack();
-//            LivingEntityRendererAccessor rendererAccessor = (LivingEntityRendererAccessor) livingRenderer;
             poseStack.translate(entityPos.x, entityPos.y, entityPos.z);
-//            float scale = entity.getScale();
-//            poseStack.scale(scale, scale, scale);
-//            rendererAccessor.callSetupRotations(entity, poseStack, 0, entity.yBodyRot, 1, scale);
-//            poseStack.scale(-1.0F, -1.0F, 1.0F);
-//            rendererAccessor.callScale(entity, poseStack, 1);
-//            poseStack.translate(0.0F, -1.501F, 0.0F);
-//            livingRenderer.render(entity, entity.getYRot(), 1, poseStack, DummyMultiBufferSource.INSTANCE, 0);
             DeathAnimUtils.dummyRender(livingRenderer, entity, poseStack);
             if (livingRenderer.getModel() instanceof AgeableHierarchicalModel<?> model && model.young) {
                 poseStack.scale(model.youngScaleFactor, model.youngScaleFactor, model.youngScaleFactor);
@@ -320,12 +336,74 @@ public final class ClientUtils {
             }
             Stack<Vector3f> rots = new Stack<>();
             rots.push(new Vector3f());
-            makePartRecursively(rootModelPart, "root", poseStack, livingRenderer, level, entity, deathSpeed, rots, deathMotion);
+            makePartRecursively(rootModelPart, poseStack, livingRenderer, level, entity, deathSpeed, rots, deathMotion, null);
+            for (RenderLayer<?, ?> layer : livingRenderer.layers) {
+                if (layer instanceof HumanoidArmorLayer<?, ?, ?> armorLayer) {
+                    ItemStack armorItemStack = entity.getItemBySlot(EquipmentSlot.CHEST);
+                    if (armorItemStack.getItem() instanceof ArmorItem armorItem && !(armorItem instanceof GeoItem)
+                            && armorItem.getEquipmentSlot() == EquipmentSlot.CHEST) {
+                        Model model = ClientHooks.getArmorModel(entity, armorItemStack, EquipmentSlot.CHEST, armorLayer.outerModel);
+                        if (model instanceof HumanoidModel<?> outerModel) {
+                            outerModel.setAllVisible(true);
+                            armorLayer.getParentModel().copyPropertiesTo((HumanoidModel) outerModel);
+                            for (ArmorMaterial.Layer materialLayer : armorItem.getMaterial().value().layers()) {
+                                ResourceLocation texture = ClientHooks.getArmorTexture(entity, armorItemStack, materialLayer, false, EquipmentSlot.CHEST);
+                                makePartRecursively(outerModel.body, poseStack, livingRenderer, level, entity, deathSpeed, rots, deathMotion, texture);
+                                makePartRecursively(outerModel.leftArm, poseStack, livingRenderer, level, entity, deathSpeed, rots, deathMotion, texture);
+                                makePartRecursively(outerModel.rightArm, poseStack, livingRenderer, level, entity, deathSpeed, rots, deathMotion, texture);
+                            }
+                        }
+                    }
+                    armorItemStack = entity.getItemBySlot(EquipmentSlot.LEGS);
+                    if (armorItemStack.getItem() instanceof ArmorItem armorItem && !(armorItem instanceof GeoItem)
+                            && armorItem.getEquipmentSlot() == EquipmentSlot.LEGS) {
+                        Model model = ClientHooks.getArmorModel(entity, armorItemStack, EquipmentSlot.LEGS, armorLayer.innerModel);
+                        if (model instanceof HumanoidModel<?> outerModel) {
+                            outerModel.setAllVisible(true);
+                            armorLayer.getParentModel().copyPropertiesTo((HumanoidModel) outerModel);
+                            for (ArmorMaterial.Layer materialLayer : armorItem.getMaterial().value().layers()) {
+                                ResourceLocation texture = ClientHooks.getArmorTexture(entity, armorItemStack, materialLayer, true, EquipmentSlot.LEGS);
+                                makePartRecursively(outerModel.leftLeg, poseStack, livingRenderer, level, entity, deathSpeed, rots, deathMotion, texture);
+                                makePartRecursively(outerModel.rightLeg, poseStack, livingRenderer, level, entity, deathSpeed, rots, deathMotion, texture);
+                            }
+                        }
+                    }
+                    armorItemStack = entity.getItemBySlot(EquipmentSlot.FEET);
+                    if (armorItemStack.getItem() instanceof ArmorItem armorItem && !(armorItem instanceof GeoItem)
+                            && armorItem.getEquipmentSlot() == EquipmentSlot.FEET) {
+                        Model model = ClientHooks.getArmorModel(entity, armorItemStack, EquipmentSlot.FEET, armorLayer.outerModel);
+                        if (model instanceof HumanoidModel<?> outerModel) {
+                            outerModel.setAllVisible(true);
+                            armorLayer.getParentModel().copyPropertiesTo((HumanoidModel) outerModel);
+                            for (ArmorMaterial.Layer materialLayer : armorItem.getMaterial().value().layers()) {
+                                ResourceLocation texture = ClientHooks.getArmorTexture(entity, armorItemStack, materialLayer, false, EquipmentSlot.FEET);
+                                makePartRecursively(outerModel.leftLeg, poseStack, livingRenderer, level, entity, deathSpeed, rots, deathMotion, texture);
+                                makePartRecursively(outerModel.rightLeg, poseStack, livingRenderer, level, entity, deathSpeed, rots, deathMotion, texture);
+                            }
+                        }
+                    }
+                    armorItemStack = entity.getItemBySlot(EquipmentSlot.HEAD);
+                    if (armorItemStack.getItem() instanceof ArmorItem armorItem && !(armorItem instanceof GeoItem)
+                            && armorItem.getEquipmentSlot() == EquipmentSlot.HEAD) {
+                        Model model = ClientHooks.getArmorModel(entity, armorItemStack, EquipmentSlot.HEAD, armorLayer.outerModel);
+                        if (model instanceof HumanoidModel<?> outerModel) {
+                            outerModel.setAllVisible(true);
+                            armorLayer.getParentModel().copyPropertiesTo((HumanoidModel) outerModel);
+                            for (ArmorMaterial.Layer materialLayer : armorItem.getMaterial().value().layers()) {
+                                ResourceLocation texture = ClientHooks.getArmorTexture(entity, armorItemStack, materialLayer, false, EquipmentSlot.HEAD);
+                                makePartRecursively(outerModel.head, poseStack, livingRenderer, level, entity, deathSpeed, rots, deathMotion, texture);
+                                makePartRecursively(outerModel.hat, poseStack, livingRenderer, level, entity, deathSpeed, rots, deathMotion, texture);
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
-    private static void makePartRecursively(ModelPart modelPart, String name, AntiPushPoseStack poseStack, LivingEntityRenderer<?, ?> renderer, ClientLevel level, Entity entity, float deathSpeed, Stack<Vector3f> rots, Vec3 deathMotion) {
+    private static void makePartRecursively(ModelPart modelPart, AntiPushPoseStack poseStack, LivingEntityRenderer<?, ?> renderer, ClientLevel level, Entity entity, float deathSpeed, Stack<Vector3f> rots, Vec3 deathMotion, ResourceLocation texture) {
         if (!modelPart.visible || modelPart.skipDraw) return;
+        poseStack.pushPose(true);
         if (renderer.getModel().young && renderer.getModel() instanceof AgeableListModelAccessor model) {
             for (ModelPart bodyPart : model.callBodyParts()) {
                 if (modelPart == bodyPart) {
@@ -384,6 +462,7 @@ public final class ClientUtils {
             float scaledMin = min * finalScale;
 
             DeadBodyPartEntity part = new DeadBodyPartEntity(ModEntities.BODY_PART.get(), level, entity, cube, deathSpeed);
+            part.texture = texture;
             float xOffset = ((minX + maxX) / 2) / 16;
 //            float yOffset = centerY + min / 2;
             float zOffset = ((minZ + maxZ) / 2) / 16;
@@ -401,7 +480,10 @@ public final class ClientUtils {
 //            part.still();
 //            part.setDeltaMovement(new Vec3(0, 0.1, 0).offsetRandom(level.random, 0.6f));
             part.setDeltaMovement(deathMotion.offsetRandom(level.random, (float) (deathMotion.length() * 0.4 + 0.1))/*.multiply(1, 1.05f, 1)*/);
-            modelRot.add(modelPart.xRot, modelPart.yRot, modelPart.zRot);
+            // 僵尸盔甲有奇怪的旋转 干脆都不要旋转了
+            if (texture == null) {
+                modelRot.add(modelPart.xRot, modelPart.yRot, modelPart.zRot);
+            }
             part.modelPartRot = modelRot;
             part.xOffset = transformedOffset.x;
             part.yOffset = transformedOffset.y - scaledMin / 2;
@@ -419,13 +501,61 @@ public final class ClientUtils {
             poseStack.pushPose(true);
             Vector3f newRot = new Vector3f(modelRot);
             rots.push(newRot);
-            makePartRecursively(child, childName, poseStack, renderer, level, entity, deathSpeed, rots, deathMotion);
+            makePartRecursively(child, poseStack, renderer, level, entity, deathSpeed, rots, deathMotion, texture);
             rots.pop();
             poseStack.popPose(true);
         }
+        poseStack.popPose(true);
     }
 
     public static <T extends BlockEntity> BlockEntityRendererProvider<T> rendererProvider(Supplier<BlockEntityRenderer<T>> factory) {
         return context -> factory.get();
+    }
+
+    public static AABB getRenderBoundingBox3x(BlockPos pos) {
+        return new AABB(
+                pos.getX() - 1,
+                pos.getY() - 1,
+                pos.getZ() - 1,
+                pos.getX() + 2,
+                pos.getY() + 2,
+                pos.getZ() + 2
+        );
+    }
+
+    public static void renderBait(GuiGraphics guiGraphics, ItemStack bait, int x, int y) {
+        PoseStack pose = guiGraphics.pose();
+        pose.pushPose();
+        pose.translate(x + 8, y + 8, 0);
+        pose.scale(0.5F, 0.5F, 0.5F);
+        guiGraphics.renderItem(bait, 0, 0);
+        pose.popPose();
+    }
+
+    public static void renderBoulderSun(Minecraft minecraft) {
+        if (ModSecretSeeds.BOULDER_WORLD.match()) {
+            MultiBufferSource bufferSource = minecraft.renderBuffers().bufferSource();
+            BlockState blockState = FunctionalBlocks.NORMAL_BOULDER.get().defaultBlockState();
+            PoseStack poseStack = new PoseStack();
+            poseStack.mulPose(Axis.ZP.rotation(minecraft.level.getTimeOfDay(0) * Mth.TWO_PI));
+            poseStack.translate(-5, 100, -5);
+            poseStack.scale(10, 10, 10);
+            minecraft.getBlockRenderer().renderSingleBlock(blockState, poseStack, bufferSource, 0xF000F0, OverlayTexture.NO_OVERLAY);
+        }
+    }
+
+    public static void postTheConstantEffect(boolean post) {
+        GameRenderer gameRenderer = Minecraft.getInstance().gameRenderer;
+        PostChain postChain = gameRenderer.currentEffect();
+        if (post) {
+            if (postChain == null || !TheConstant.POST_EFFECT.toString().equals(postChain.getName())) {
+                gameRenderer.loadEffect(TheConstant.POST_EFFECT);
+            }
+            gameRenderer.effectActive = true;
+        } else {
+            if (postChain != null && TheConstant.POST_EFFECT.toString().equals(postChain.getName())) {
+                gameRenderer.effectActive = false;
+            }
+        }
     }
 }

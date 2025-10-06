@@ -21,7 +21,14 @@
             "conditions": {
                 "items": [
                     {
-                        "items": "#confluence:hardmode_raw_materials"
+                        "items": [
+                            "confluence:raw_cobalt",
+                            "confluence:raw_palladium",
+                            "confluence:raw_mythril",
+                            "confluence:raw_orichalcum",
+                            "confluence:raw_adamantite",
+                            "confluence:raw_titanium"
+                        ]
                     }
                 ]
             }

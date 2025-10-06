@@ -2,6 +2,7 @@ package org.confluence.mod.mixin.entity;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
@@ -11,12 +12,14 @@ import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -25,7 +28,9 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.fluids.FluidType;
 import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.api.event.LivingFreezeEvent;
+import org.confluence.mod.common.block.natural.ThinIceBlock;
 import org.confluence.mod.common.effect.flask.FlaskEffect;
+import org.confluence.mod.common.effect.neutral.ShimmerEffect;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.ModHookTypes;
@@ -35,9 +40,10 @@ import org.confluence.mod.common.item.hook.BaseHookItem;
 import org.confluence.mod.common.worldgen.secret_seed.NoTraps;
 import org.confluence.mod.integration.irons_spell.IronSpellHelper;
 import org.confluence.mod.mixed.ILivingEntity;
+import org.confluence.mod.mixed.IMobEffectInstance;
 import org.confluence.mod.mixed.Immunity;
+import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.common.effect.HoneyEffect;
-import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.util.TCUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -58,10 +64,13 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
     @Shadow
     public abstract boolean canFreeze();
 
+    @Shadow
+    public abstract Map<Holder<MobEffect>, MobEffectInstance> getActiveEffectsMap();
+
     @Unique
     private final Object2IntMap<Immunity> confluence$entityImmunityTicks = new Object2IntOpenHashMap<>();
     @Unique
-    private boolean confluence$breakingEasyCrashBlock = false;
+    private boolean confluence$breakingEasyCrashBlock;
     @Unique
     private boolean confluence$deadO;
     @Unique
@@ -101,15 +110,7 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
         LivingEntity self = confluence$self();
         if (fallDistance >= 2.5F && blockState.is(NatureBlocks.THIN_ICE_BLOCK)) {
             if (TCUtils.isIceSafe(self)) return;
-            if (!level().isClientSide) {
-                BlockPos.betweenClosedStream(getBoundingBox().move(0.0, -0.5, 0.0)).forEach(pos -> {
-                    if (pos.equals(blockPos) || level().getBlockState(pos).is(NatureBlocks.THIN_ICE_BLOCK)) {
-                        level().destroyBlock(pos, true, self);
-                    }
-                });
-            }
-            confluence$setBreakEasyCrashBlock(true);
-            setOnGround(false);
+            ThinIceBlock.fall(self, blockPos);
             super.checkFallDamage(motionY, false, blockState, blockPos);
             ci.cancel();
             return;
@@ -122,16 +123,12 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
         LivingEntity self = confluence$self();
         FluidType fluidType = self.getBlockStateOn().getFluidState().getType().getFluidType();
         if (fluidType == ModFluids.HONEY.type().get()) {
-            if (!self.level().isClientSide) {
+            if (!level().isClientSide) {
                 HoneyEffect.applyHoneyEffect(self);
             }
             instance = instance.scale(0.8);
         } else if (fluidType == ModFluids.SHIMMER.type().get()) {
-            if (!self.level().isClientSide && self.getEyeInFluidType() == ModFluids.SHIMMER.type().get() && !self.hasEffect(ModEffects.SHIMMER)) {
-                if (self.isCrouching() || !TCUtils.getAccessoriesValue(self, TCItems.EFFECT$IMMUNITIES).contains(ModEffects.SHIMMER)) {
-                    self.addEffect(new MobEffectInstance(ModEffects.SHIMMER, MobEffectInstance.INFINITE_DURATION));
-                }
-            }
+            ShimmerEffect.applyShimmerEffect(self);
             instance = instance.add(0, -0.03, 0);
         }
         if (self.hasEffect(ModEffects.FLIPPER)) {
@@ -151,31 +148,26 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
 
     @Override
     public boolean confluence$deadO(boolean... dead) {
-        if (dead != null && dead.length > 0) {
-            confluence$deadO = dead[0];
+        if (dead != null && dead.length != 0) {
+            this.confluence$deadO = dead[0];
         }
         return confluence$deadO;
     }
 
     @Inject(method = "canFreeze", at = @At(value = "HEAD"), cancellable = true)
     private void confluence$canFreeze(CallbackInfoReturnable<Boolean> cir) {
-        LivingFreezeEvent.Pre post = NeoForge.EVENT_BUS.post(new LivingFreezeEvent.Pre(confluence$self()));
+        LivingFreezeEvent event = NeoForge.EVENT_BUS.post(new LivingFreezeEvent(confluence$self()));
 
         if (confluence$self() instanceof Player player) {
             HookMapManager.postHooks(ModHookTypes.LIVING_FREEZE.get(), (owner, hook, original) -> {
                 hook.livingFreeze(owner, confluence$self(), original);
                 return original;
-            }, player, post);
+            }, player, event);
         }
 
-        if (!post.canFreeze()) {
+        if (event.isCanceled()) {
             cir.setReturnValue(false);
         }
-    }
-
-    @Inject(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/damagesource/DamageSources;freeze()Lnet/minecraft/world/damagesource/DamageSource;"))
-    private void confluence$aiStep(CallbackInfo ci) {
-        NeoForge.EVENT_BUS.post(new LivingFreezeEvent.Post(confluence$self()));
     }
 
     @WrapWithCondition(method = "triggerOnDeathMobEffects", at = @At(value = "INVOKE", target = "Ljava/util/Map;clear()V"))
@@ -201,5 +193,27 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
     @ModifyExpressionValue(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;shouldDiscardFriction()Z"))
     private boolean discardWhenHasAnyHooked(boolean original) {
         return original || (confluence$self() instanceof Player player && !player.isCrouching() && BaseHookItem.hasAnyHooked(player));
+    }
+
+    @WrapWithCondition(method = "onEffectUpdated", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/effect/MobEffect;addAttributeModifiers(Lnet/minecraft/world/entity/ai/attributes/AttributeMap;I)V"))
+    private boolean shouldAdd(MobEffect mobEffect, AttributeMap entry, int i, @Local(argsOnly = true) MobEffectInstance instance) {
+        return IMobEffectInstance.of(instance).confluence$isEnabled();
+    }
+
+    @WrapMethod(method = "hasEffect")
+    private boolean hasEffect(Holder<MobEffect> effect, Operation<Boolean> original) {
+        return ILivingEntity.hasEffect(getActiveEffectsMap(), effect);
+    }
+
+    @WrapMethod(method = "getEffect")
+    private MobEffectInstance getEffect(Holder<MobEffect> effect, Operation<MobEffectInstance> original) {
+        return ILivingEntity.getEffect(getActiveEffectsMap(), effect);
+    }
+
+    @Inject(method = "swing(Lnet/minecraft/world/InteractionHand;Z)V", at = @At(value = "NEW", target = "(Lnet/minecraft/world/entity/Entity;I)Lnet/minecraft/network/protocol/game/ClientboundAnimatePacket;"))
+    private void handleSwordProjectile(InteractionHand hand, boolean updateSelf, CallbackInfo ci) {
+        if (hand == InteractionHand.MAIN_HAND && confluence$self() instanceof Player player) {
+            PlayerUtils.swordProjectile(player);
+        }
     }
 }

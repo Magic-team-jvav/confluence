@@ -20,7 +20,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.block.functional.DartTrapBlock;
 import org.confluence.mod.common.data.saved.NPCSpawner;
-import org.confluence.mod.mixed.IChunkSection;
+import org.confluence.mod.mixed.ILevelChunkSection;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
@@ -35,14 +35,14 @@ public final class AchievementUtils {
     }
 
     public static boolean achievedAchievement(ServerPlayer player, String path) {
-        if (LibUtils.getOrCreatePersistedData(player).getBoolean(Confluence.MODID + ':' + path)) return true;
+        if (LibUtils.getOrCreatePersistedData(player).getBoolean(Confluence.asPlainId(path))) return true;
         AdvancementHolder advancement = player.server.getAdvancements().get(asAchievement(path));
         return advancement != null && player.getAdvancements().getOrStartProgress(advancement).isDone();
     }
 
     public static void awardAchievement(ServerPlayer player, String path) {
         CompoundTag data = LibUtils.getOrCreatePersistedData(player);
-        String key = Confluence.MODID + ':' + path;
+        String key = Confluence.asPlainId(path);
         if (!data.getBoolean(key)) {
             AdvancementHolder advancement = player.server.getAdvancements().get(asAchievement(path));
             if (advancement != null) {
@@ -59,7 +59,7 @@ public final class AchievementUtils {
             int dayTime = LibDateUtils.getDayTime(level);
             if (LibDateUtils.isNight(dayTime)) {
                 LibUtils.getOrCreatePersistedData(player).putByte("confluence:you_can_do_it", (byte) 1);
-            } else if (LibDateUtils.isDay(dayTime)) {
+            } else if (firstNight == 1 && LibDateUtils.isDay(dayTime)) {
                 AdvancementHolder advancement = player.server.getAdvancements().get(asAchievement("you_can_do_it"));
                 if (advancement != null) {
                     player.getAdvancements().award(advancement, "never");
@@ -114,7 +114,8 @@ public final class AchievementUtils {
     }
 
     public static void theFrequentFlyer(ServerPlayer player, long cost) {
-        short before = LibUtils.getOrCreatePersistedData(player).getShort("confluence:the_frequent_flyer");
+        CompoundTag tag = LibUtils.getOrCreatePersistedData(player);
+        short before = tag.getShort("confluence:the_frequent_flyer");
         if (before > 10000) return;
         long total = before + cost;
         if (total >= 10000) {
@@ -123,7 +124,7 @@ public final class AchievementUtils {
                 player.getAdvancements().award(advancement, "never");
             }
         }
-        LibUtils.getOrCreatePersistedData(player).putShort("confluence:the_frequent_flyer", (short) total);
+        tag.putShort("confluence:the_frequent_flyer", (short) total);
     }
 
     public static void noHobo(AbstractTerraNPC npc, NPCSpawner.Region region) {
@@ -138,7 +139,7 @@ public final class AchievementUtils {
 
     public static void quietNeighborhood(ServerPlayer player, ServerLevel level) {
         if (level.getGameTime() % 40 == 2) {
-            IChunkSection iSection = DynamicBiomeUtils.getISection(level, player.blockPosition());
+            ILevelChunkSection iSection = DynamicBiomeUtils.getISection(level, player.blockPosition());
             if (iSection != null && iSection.confluence$isGraveyard()) {
                 awardAchievement(player, "quiet_neighborhood");
             }
@@ -146,10 +147,8 @@ public final class AchievementUtils {
     }
 
     public static void aRareRealm(ServerPlayer player, ServerLevel level) {
-        if (IMinecraftServer.of(player.server).confluence$matchesSecretFlag(IWorldOptions.SECRET_SEED)) {
-            if (level.getGameTime() % 20 == 3) {
-                awardAchievement(player, "a_rare_realm");
-            }
+        if (IMinecraftServer.of(player.server).confluence$matchesSecretFlag(IWorldOptions.SECRET_SEED) && level.getGameTime() % 40 == 3) {
+            awardAchievement(player, "a_rare_realm");
         }
     }
 

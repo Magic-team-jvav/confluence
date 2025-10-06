@@ -2,18 +2,21 @@ package org.confluence.mod.common.init;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.registries.datamaps.DataMapType;
-import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
+import net.neoforged.neoforge.registries.datamaps.*;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.data.map.*;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -30,6 +33,17 @@ public final class ModDataMaps {
     public static final DataMapType<EntityType<?>, TreasureBagDrop> TREASURE_BAG = register("treasure_bag", Registries.ENTITY_TYPE, TreasureBagDrop.CODEC, false);
     public static final DataMapType<EntityType<?>, ImmunityDataMap> IMMUNITY = register("immunity", Registries.ENTITY_TYPE, ImmunityDataMap.CODEC, true);
     public static final DataMapType<EntityType<?>, BugNetEntityToItem> BUG_NET_ENTITY_TO_ITEM = register("bug_net_entity_to_item", Registries.ENTITY_TYPE, BugNetEntityToItem.CODEC, false);
+    public static final DataMapType<EntityType<?>, LivingInvulnerableEffects> LIVING_INVULNERABLE_EFFECTS = register("living_invulnerable_effects", Registries.ENTITY_TYPE, LivingInvulnerableEffects.CODEC, true);
+    public static final AdvancedDataMapType<EntityType<?>, GamePhase2AttributeModifiers, GamePhase2AttributeModifiers.Remover> GAME_PHASE_2_ATTRIBUTE_MODIFIERS = register(
+            "game_phase_2_attribute_modifiers",
+            Registries.ENTITY_TYPE,
+            GamePhase2AttributeModifiers.CODEC,
+            GamePhase2AttributeModifiers.Remover.CODEC,
+            new GamePhase2AttributeModifiers.Merger(),
+            false
+    );
+    public static final DataMapType<EntityType<?>, PresetBestiaryEntry> BESTIARY_ENTRY = register("bestiary", Registries.ENTITY_TYPE, PresetBestiaryEntry.CODEC, false); // 交由Bestiary统一同步
+    public static final DataMapType<Block, BlockBreakSpawns> BLOCK_BREAK_SPAWNS = register("block_break_spawns", Registries.BLOCK, BlockBreakSpawns.CODEC, false);
 
     private static <R, T> DataMapType<R, T> register(String path, ResourceKey<Registry<R>> resourceKey, Codec<T> codec, boolean synced) {
         DataMapType.Builder<T, R> builder = DataMapType.builder(Confluence.asResource(path), resourceKey, codec);
@@ -39,11 +53,32 @@ public final class ModDataMaps {
         return type;
     }
 
+    private static <R, T, VR extends DataMapValueRemover<R, T>> AdvancedDataMapType<R, T, VR> register(String path, ResourceKey<Registry<R>> resourceKey, Codec<T> codec, Codec<VR> removerCodec, @Nullable DataMapValueMerger<R, T> merger, boolean synced) {
+        AdvancedDataMapType.Builder<T, R, VR> builder = AdvancedDataMapType.builder(Confluence.asResource(path), resourceKey, codec).remover(removerCodec);
+        if (merger != null) builder.merger(merger);
+        if (synced) builder.synced(codec, false);
+        AdvancedDataMapType<R, T, VR> type = builder.build();
+        types.add(type);
+        return type;
+    }
+
+    private static <R, T, VR extends DataMapValueRemover<R, T>> AdvancedDataMapType<R, T, VR> register(String path, ResourceKey<Registry<R>> resourceKey, Codec<T> codec, Codec<VR> removerCodec, boolean synced) {
+        return register(path, resourceKey, codec, removerCodec, null, synced);
+    }
+
     @SubscribeEvent
     public static void registerDataMapTypes(RegisterDataMapTypesEvent event) {
         for (DataMapType<?, ?> type : types) {
             event.register(type);
         }
         types = null;
+    }
+
+    public static <T> @Nullable T getEntityData(DataMapType<EntityType<?>, T> type, Entity entity) {
+        return getEntityData(type, entity.getType());
+    }
+
+    public static <T> @Nullable T getEntityData(DataMapType<EntityType<?>, T> type, EntityType<?> entityType) {
+        return BuiltInRegistries.ENTITY_TYPE.getData(type, entityType.builtInRegistryHolder().unwrapKey().orElseThrow());
     }
 }

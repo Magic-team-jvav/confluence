@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "confluence:block/boreal_crate_bottom",
+    "side": "confluence:block/boreal_crate_side",
+    "top": "confluence:block/boreal_crate_top"
+  }
+}

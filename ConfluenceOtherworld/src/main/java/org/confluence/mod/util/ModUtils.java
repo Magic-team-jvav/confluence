@@ -13,6 +13,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -30,6 +31,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.npc.Npc;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
@@ -46,11 +48,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.neoforged.neoforge.common.NeoForge;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.api.event.EffectSwitchableCheckEvent;
 import org.confluence.mod.common.block.common.AetheriumCauldronBlock;
 import org.confluence.mod.common.block.common.HoneyCauldronBlock;
+import org.confluence.mod.common.component.LootComponent;
 import org.confluence.mod.common.data.saved.GamePhase;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.data.saved.MeteoriteTracker;
@@ -58,6 +63,7 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.init.item.PotionItems;
 import org.confluence.mod.common.init.item.ToolItems;
@@ -111,7 +117,7 @@ public final class ModUtils {
         return itemStack.is(PotionItems.BOTTLED_WATER) || itemStack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).is(Potions.WATER);
     }
 
-    public static void summonBoss(ServerLevel level, BlockPos pos, AbstractTerraBossBase<?> boss) {
+    public static void summonBoss(ServerLevel level, BlockPos pos, AbstractTerraBossBase boss) {
         double x = pos.getX() + 0.5 + level.random.nextInt(-50, 51);
         double z = pos.getZ() + 0.5 + level.random.nextInt(-50, 51);
         boss.setPos(x, 0.5 + level.getHeight(Heightmap.Types.MOTION_BLOCKING, Mth.floor(x), Mth.floor(z)), z);
@@ -159,15 +165,7 @@ public final class ModUtils {
     }
 
     public static void enemyDropMoney(LivingEntity living, ServerLevel level) {
-        AttributeInstance attack = living.getAttribute(Attributes.ATTACK_DAMAGE);
-        AttributeInstance armor = living.getAttribute(Attributes.ARMOR);
-        AttributeInstance knockbackResistance = living.getAttribute(Attributes.KNOCKBACK_RESISTANCE);
-        double healthFactor = living.getMaxHealth() * 0.15;
-        double attackFactor = attack == null ? 0.0 : attack.getValue() * 0.25;
-        double armorFactor = armor == null ? 0.0 : armor.getValue() * 0.1;
-        double knockbackResistanceFactor = knockbackResistance == null ? 10.0 : (1.0 + knockbackResistance.getValue()) * 10.0;
-        double difficultyFactor = level.getCurrentDifficultyAt(living.blockPosition()).getEffectiveDifficulty() * 0.5;
-        double amount = Math.min(Math.round((healthFactor + attackFactor + armorFactor + knockbackResistanceFactor) * difficultyFactor) * 7.0, 100000);
+        double amount = getLivingBaseMoneyDrops(living, level);
 
         if (living.hasEffect(ModEffects.MIDAS)) {
             amount *= Mth.nextDouble(living.getRandom(), 1.1, 1.49);
@@ -180,6 +178,18 @@ public final class ModUtils {
         }
 
         dropMoney((int) amount, living.getX(), living.getEyeY() - 0.3, living.getZ(), level);
+    }
+
+    public static double getLivingBaseMoneyDrops(LivingEntity living, Level level) {
+        AttributeInstance attack = living.getAttribute(Attributes.ATTACK_DAMAGE);
+        AttributeInstance armor = living.getAttribute(Attributes.ARMOR);
+        AttributeInstance knockbackResistance = living.getAttribute(Attributes.KNOCKBACK_RESISTANCE);
+        double healthFactor = living.getMaxHealth() * 0.15;
+        double attackFactor = attack == null ? 0.0 : attack.getValue() * 0.25;
+        double armorFactor = armor == null ? 0.0 : armor.getValue() * 0.1;
+        double knockbackResistanceFactor = knockbackResistance == null ? 10.0 : (1.0 + knockbackResistance.getValue()) * 10.0;
+        double difficultyFactor = level.getCurrentDifficultyAt(living.blockPosition()).getEffectiveDifficulty() * 0.5;
+        return Math.min(Math.round((healthFactor + attackFactor + armorFactor + knockbackResistanceFactor) * difficultyFactor) * 7.0, 100000);
     }
 
     public static void applyBrainOfCthulhuDebuff(ServerLevel level, @Nullable Entity attacker, LivingEntity living) {
@@ -346,7 +356,33 @@ public final class ModUtils {
         });
     }
 
+    /**
+     * 决定护士是否能治疗
+     */
     public static boolean isDebuff(MobEffectInstance instance) {
         return instance.getEffect().value().getCategory() == MobEffectCategory.HARMFUL && !instance.getCures().contains(ModEffects.CANNOT_REMOVE_BY_NURSE);
+    }
+
+    public static boolean isSwitchableEffect(MobEffectInstance instance) {
+        MobEffect effect = instance.getEffect().value();
+        boolean switchable = effect == TCEffects.GRAVITATION.get() ? instance.getAmplifier() <= 0 : effect.isBeneficial();
+        return NeoForge.EVENT_BUS.post(new EffectSwitchableCheckEvent(instance, switchable)).isSwitchable();
+    }
+
+    public static boolean useKey(ItemStack carried, ItemStack onSlot, Player player) {
+        if ((carried.is(ToolItems.GOLDEN_DUNGEON_KEY) && onSlot.is(ConsumableItems.GOLDEN_LOCK_BOX)) ||
+                (carried.is(ToolItems.SHADOW_KEY) && onSlot.is(ConsumableItems.OBSIDIAN_LOCK_BOX))
+        ) {
+            if (player instanceof ServerPlayer serverPlayer && LootComponent.open(serverPlayer, onSlot)) {
+                if (!serverPlayer.hasInfiniteMaterials()) {
+                    if (carried.is(ToolItems.GOLDEN_DUNGEON_KEY)) {
+                        carried.shrink(1);
+                    }
+                    onSlot.shrink(1);
+                }
+            }
+            return true;
+        }
+        return false;
     }
 }

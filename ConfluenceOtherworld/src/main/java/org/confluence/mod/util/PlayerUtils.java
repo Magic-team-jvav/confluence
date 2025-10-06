@@ -19,6 +19,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
@@ -27,8 +28,10 @@ import org.confluence.mod.common.attachment.EverBeneficial;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.attachment.PlayerPiggyBankContainer;
+import org.confluence.mod.common.component.SwordProjectileComponent;
 import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.data.saved.ConfluenceData;
+import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModHookTypes;
 import org.confluence.mod.common.init.ModTags;
@@ -36,12 +39,14 @@ import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.common.item.potion.ManaPotionItem;
+import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.network.s2c.*;
 import org.confluence.terra_curio.common.init.TCItems;
+import org.confluence.terra_curio.integration.bettercombat.BetterCombatHelper;
 import org.confluence.terra_curio.util.TCUtils;
 import org.confluence.terraentity.api.entity.Boss;
+import org.jetbrains.annotations.ApiStatus;
 
-import java.util.List;
 import java.util.function.IntFunction;
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
@@ -65,8 +70,8 @@ public final class PlayerUtils {
         default -> ModItems.PLATINUM_COIN.get();
     };
 
-    public static void syncMana2Client(ServerPlayer serverPlayer, ManaStorage manaStorage) {
-        PacketDistributor.sendToPlayer(serverPlayer, new ManaPacketS2C(manaStorage.getMaxMana(), manaStorage.getCurrentMana()));
+    public static void syncMana2Client(ServerPlayer player, ManaStorage manaStorage) {
+        PacketDistributor.sendToPlayer(player, new ManaPacketS2C(manaStorage.getMaxMana(), manaStorage.getCurrentMana()));
     }
 
     public static void syncMana2Client(ServerPlayer player) {
@@ -100,7 +105,7 @@ public final class PlayerUtils {
 
     public static boolean extractMana(ServerPlayer player, ItemStack itemStack, FloatSupplier sup) {
         if (player.isCreative()) return true;
-        return extractAndDelayAndSync(
+        return extractAndSync(
                 ManaStorage.of(player),
                 HookMapManager.postHooks(
                         ModHookTypes.MANA_CONSUME.get(),
@@ -112,10 +117,9 @@ public final class PlayerUtils {
         );
     }
 
-    public static boolean extractAndDelayAndSync(ManaStorage manaStorage, FloatSupplier sup, ServerPlayer serverPlayer) {
-        if (manaStorage.extractMana(sup, serverPlayer)) {
-            manaStorage.setRegenerateDelay();
-            syncMana2Client(serverPlayer, manaStorage);
+    public static boolean extractAndSync(ManaStorage manaStorage, FloatSupplier sup, ServerPlayer player) {
+        if (manaStorage.extractMana(sup, player)) {
+            syncMana2Client(player, manaStorage);
             return true;
         }
         return false;
@@ -126,14 +130,15 @@ public final class PlayerUtils {
         if (manaStorage.receiveMana(sup)) syncMana2Client(player, manaStorage);
     }
 
-    public static void syncSavedData(ServerPlayer serverPlayer) {
-        ConfluenceData data = ConfluenceData.get(serverPlayer.serverLevel());
-        WindSpeedPacketS2C.sendToClient(serverPlayer, data.getWindSpeedX(), data.getWindSpeedZ());
+    public static void syncSavedData(ServerPlayer player) {
+        ConfluenceData data = ConfluenceData.get(player.serverLevel());
+        WindSpeedPacketS2C.sendToClient(player, data.getWindSpeedX(), data.getWindSpeedZ());
         if (CommonConfigs.STAR_PHASE.get()) {
-            StarPhasesPacketS2C.sendToClient(serverPlayer, data.getStarPhases());
+            StarPhasesPacketS2C.sendToClient(player, data.getStarPhases());
         }
-        KillBoardSyncPacketS2C.sendToClient(serverPlayer);
+        KillBoardSyncPacketS2C.sendToClient(player);
         MeteoriteLocationPacketS2C.sendToAll(data.getMeteoriteLocation(), 0);
+        BestiarySyncPacketS2C.syncEntries(player);
     }
 
     public static float getFishingPower(ServerPlayer player) {
@@ -177,7 +182,7 @@ public final class PlayerUtils {
         return new Tuple<>(ret, max);
     }
 
-    public static void consumeItemCount(List<ItemStack> have, Item item, int consumeCount) {
+    public static void consumeItemCount(Iterable<ItemStack> have, Item item, int consumeCount) {
         int count = 0;
         for (ItemStack stack : have) {
             if (stack.is(item) && count < consumeCount) {
@@ -198,7 +203,8 @@ public final class PlayerUtils {
         return coins;
     }
 
-    @Deprecated
+    @Deprecated(since = "1.2.0", forRemoval = true)
+    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
     public static int[] getCoins(Player player) {
         Coins coins = getCoins(player, true);
         return new int[]{coins.platinum(), coins.gold(), coins.silver(), coins.copper()};
@@ -217,7 +223,8 @@ public final class PlayerUtils {
         return res;
     }
 
-    @Deprecated
+    @Deprecated(since = "1.2.0", forRemoval = true)
+    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
     public static long getMoney(Player player) {
         return getMoney(player, true);
     }
@@ -226,7 +233,8 @@ public final class PlayerUtils {
         return tryCostMoney(getMoney(player, withPiggyBank), player, cost, withPiggyBank);
     }
 
-    @Deprecated
+    @Deprecated(since = "1.2.0", forRemoval = true)
+    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
     public static boolean tryCostMoney(Player player, long cost) {
         return tryCostMoney(player, cost, true);
     }
@@ -268,7 +276,8 @@ public final class PlayerUtils {
         return true;
     }
 
-    @Deprecated
+    @Deprecated(since = "1.2.0", forRemoval = true)
+    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
     public static boolean tryCostMoney(long have, Player player, long cost) {
         return tryCostMoney(have, player, cost, true);
     }
@@ -354,7 +363,7 @@ public final class PlayerUtils {
      * @param player 玩家
      * @return 复活时间
      */
-    public static int getRespawnWaitTime(Player player) {
+    public static int getRespawnWaitTime(ServerPlayer player) {
         AABB aabb = new AABB(player.blockPosition()).inflate(Short.MAX_VALUE);
         int min, max;
         if (player.level().getEntitiesOfClass(LivingEntity.class, aabb, living -> living instanceof Boss).isEmpty()) {
@@ -371,11 +380,11 @@ public final class PlayerUtils {
     /**
      * @return true表示魔力值不够
      */
-    public static boolean applyAutoGetMana(ServerPlayer serverPlayer, float currentMana, float extract) {
+    public static boolean applyAutoGetMana(ServerPlayer player, float currentMana, float extract) {
         if (currentMana < extract) {
-            if (!TCUtils.hasAccessoriesType(serverPlayer, AccessoryItems.AUTO$GET$MANA)) return true;
+            if (!TCUtils.hasAccessoriesType(player, AccessoryItems.AUTO$GET$MANA)) return true;
             ItemStack toUse = null;
-            for (ItemStack itemStack : serverPlayer.getInventory().items) {
+            for (ItemStack itemStack : player.getInventory().items) {
                 if (itemStack.getItem() instanceof ManaPotionItem manaPotion) {
                     int amount = manaPotion.getAmount();
                     if (currentMana + amount < extract) continue;
@@ -384,8 +393,29 @@ public final class PlayerUtils {
                 }
             }
             if (toUse == null) return true;
-            toUse.finishUsingItem(serverPlayer.level(), serverPlayer);
+            toUse.finishUsingItem(player.level(), player);
         }
         return false;
+    }
+
+    public static boolean couldPerformEmptyTargetSweep(Player player) {
+        if (!player.isAutoSpinAttack()) {
+            ItemStack stack = player.getWeaponItem();
+            if (BetterCombatHelper.hasWeaponAttributes(stack)) return false;
+            return stack.canPerformAction(ItemAbilities.SWORD_SWEEP) && stack.getItem() instanceof BaseSwordItem sword && sword.modifier != null && sword.modifier.specialSweep;
+        }
+        return false;
+    }
+
+    // TODO: 这是飞龙、波涌之刃的发剑气方式，还要写泰拉刃的
+    public static void swordProjectile(Player player) {
+        ItemStack stack = player.getMainHandItem();
+        if (stack.getItem() instanceof BaseSwordItem sword && !player.getCooldowns().isOnCooldown(sword)) {
+            SwordProjectileComponent data = stack.get(ModDataComponentTypes.SWORD_PROJECTILE);
+            if (data != null) {
+                sword.genProjectile(player, stack);
+                player.getCooldowns().addCooldown(sword, data.getAttackSpeed(player));
+            }
+        }
     }
 }

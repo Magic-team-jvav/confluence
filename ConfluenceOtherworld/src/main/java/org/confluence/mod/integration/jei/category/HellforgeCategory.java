@@ -10,7 +10,6 @@ import org.confluence.mod.common.recipe.HellforgeRecipe;
 
 public class HellforgeCategory extends EnhancedForgeCategory<HellforgeRecipe> {
     public static final RecipeType<RecipeHolder<HellforgeRecipe>> TYPE = RecipeType.createRecipeHolderType(Confluence.asResource("hellforge"));
-    private static final Component TITLE = Component.translatable("title.confluence.hellforge");
 
     public HellforgeCategory(IJeiHelpers jeiHelpers) {
         super(jeiHelpers, FunctionalBlocks.HELLFORGE.toStack());
@@ -23,6 +22,6 @@ public class HellforgeCategory extends EnhancedForgeCategory<HellforgeRecipe> {
 
     @Override
     public Component getTitle() {
-        return TITLE;
+        return Component.translatable("title.confluence.hellforge");
     }
 }

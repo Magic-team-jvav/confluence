@@ -8,10 +8,15 @@ import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.world.Container;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -34,6 +39,7 @@ import net.neoforged.neoforge.event.BlockEntityTypeAddBlocksEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.ModifyDefaultComponentsEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
+import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.fluids.RegisterCauldronFluidContentEvent;
@@ -43,22 +49,23 @@ import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforgespi.locating.IModFile;
-import org.confluence.lib.api.NameFixRegisterEvent;
 import org.confluence.lib.common.block.StateProperties;
 import org.confluence.lib.common.data.saved.IGlobalData;
+import org.confluence.lib.event.NameFixRegisterEvent;
 import org.confluence.lib.util.ConfluenceResources;
+import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.WipNotDisplayOutput;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.StartupConfigs;
+import org.confluence.mod.api.event.bestiary.RegisterBestiaryKeyEvent;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.block.natural.ChlorophyteOreBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.block.natural.MagicMailBox;
 import org.confluence.mod.common.block.natural.StepRevealingBlock;
 import org.confluence.mod.common.capability.FluidBottomlessBucketWrapper;
-import org.confluence.mod.common.data.saved.ConfluenceData;
-import org.confluence.mod.common.data.saved.HardmodeConvertor;
-import org.confluence.mod.common.data.saved.KillBoard;
-import org.confluence.mod.common.data.saved.NPCSpawner;
+import org.confluence.mod.common.data.saved.*;
 import org.confluence.mod.common.entity.TargetDummyEntity;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.ChestBlocks;
@@ -66,8 +73,11 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
+import org.confluence.mod.common.init.item.ArmorItems;
+import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.integration.jei.RecipeTransferPacketC2S;
+import org.confluence.mod.integration.terra_entity.TEEvents;
 import org.confluence.mod.integration.terra_entity.TEItemComponentModify;
 import org.confluence.mod.integration.terra_entity.TERemoval;
 import org.confluence.mod.integration.waystones.WaystonesHelper;
@@ -77,11 +87,15 @@ import org.confluence.mod.util.DateUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.phase_journey.api.PhaseJourneyEvent;
 import org.confluence.terra_curio.api.event.RegisterAccessoriesComponentUpdateEvent;
+import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTabs;
+import org.confluence.terraentity.init.entity.TEAnimals;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
+import org.confluence.terraentity.mixed.IZombie;
 
 import java.util.Optional;
+import java.util.function.Function;
 
 import static org.confluence.mod.Confluence.MODID;
 
@@ -95,6 +109,9 @@ public final class ModEvents {
             ModFluids.registerInteraction();
             ModFluids.registerShimmerTransform();
             ModBiomes.registerRegionAndSurface();
+            if (StartupConfigs.forceAllowWipItemsDisplayInCreativeModeTab()) {
+                WipNotDisplayOutput.forceAllow();
+            }
 
             if (!ModList.get().isLoaded("attributefix")) {
                 if (Attributes.ARMOR.value() instanceof RangedAttribute rangedAttribute) {
@@ -137,7 +154,12 @@ public final class ModEvents {
             ModUtils.registerCauldronInteractions();
             TERemoval.redirectLootTable();
             MagicMailBox.registerVariants();
-            IGlobalData.registerGlobalData(KillBoard.INSTANCE, HardmodeConvertor.INSTANCE, NPCSpawner.INSTANCE);
+            IGlobalData.registerGlobalData(
+                    KillBoard.INSTANCE,
+                    HardmodeConvertor.INSTANCE,
+                    NPCSpawner.INSTANCE,
+                    Bestiary.INSTANCE
+            );
         });
     }
 
@@ -180,7 +202,7 @@ public final class ModEvents {
         registrar.playToClient(ExtraInventoryStackPacketS2C.TYPE, ExtraInventoryStackPacketS2C.STREAM_CODEC, ExtraInventoryStackPacketS2C::handle);
         registrar.playToClient(ExtraInventorySyncPacketS2C.TYPE, ExtraInventorySyncPacketS2C.STREAM_CODEC, ExtraInventorySyncPacketS2C::handle);
         registrar.playToClient(FishingPowerInfoPacketS2C.TYPE, FishingPowerInfoPacketS2C.STREAM_CODEC, FishingPowerInfoPacketS2C::handle);
-        registrar.playToClient(KillBoardSyncPacketS2C.TYPE, KillBoardSyncPacketS2C.STREAM_CODEC, (payload, context) -> {});
+        registrar.playToClient(KillBoardSyncPacketS2C.TYPE, KillBoardSyncPacketS2C.STREAM_CODEC, KillBoardSyncPacketS2C::handle);
         registrar.playToClient(ManaPacketS2C.TYPE, ManaPacketS2C.STREAM_CODEC, ManaPacketS2C::handle);
         registrar.playToClient(MeteoriteLocationPacketS2C.TYPE, MeteoriteLocationPacketS2C.STREAM_CODEC, MeteoriteLocationPacketS2C::handle);
         registrar.playToClient(OpenSelectionsScreenPacketS2C.TYPE, OpenSelectionsScreenPacketS2C.STREAM_CODEC, OpenSelectionsScreenPacketS2C::handle);
@@ -192,22 +214,34 @@ public final class ModEvents {
         registrar.playToClient(CompatibilitySyncPacketS2c.TYPE, CompatibilitySyncPacketS2c.STREAM_CODEC, CompatibilitySyncPacketS2c::handle);
         registrar.playToClient(PiggyBankTotalMoneyPacket.TYPE, PiggyBankTotalMoneyPacket.STREAM_CODEC, PiggyBankTotalMoneyPacket::handle);
         registrar.playToClient(DropletsSyncPacketS2C.TYPE, DropletsSyncPacketS2C.STREAM_CODEC, DropletsSyncPacketS2C::handle);
+        registrar.playToClient(BestiarySyncPacketS2C.TYPE, BestiarySyncPacketS2C.STREAM_CODEC, BestiarySyncPacketS2C::handle);
+        registrar.playToClient(AvailableHouseSelectPacketS2C.TYPE, AvailableHouseSelectPacketS2C.STREAM_CODEC, AvailableHouseSelectPacketS2C::handle);
+        registrar.playToClient(TerraStyleExplosionPacketS2C.TYPE, TerraStyleExplosionPacketS2C.STREAM_CODEC, TerraStyleExplosionPacketS2C::handle);
 
         registrar.playToServer(ApplySelectionPacketC2S.TYPE, ApplySelectionPacketC2S.STREAM_CODEC, ApplySelectionPacketC2S::handle);
         registrar.playToServer(HookThrowingPacketC2S.TYPE, HookThrowingPacketC2S.STREAM_CODEC, HookThrowingPacketC2S::handle);
         registrar.playToServer(KeyRequestPacketC2S.TYPE, KeyRequestPacketC2S.STREAM_CODEC, KeyRequestPacketC2S::handle);
         registrar.playToServer(OpenMenuPacketC2S.TYPE, OpenMenuPacketC2S.STREAM_CODEC, OpenMenuPacketC2S::handle);
-        registrar.playToServer(SwordShootingPacketC2S.TYPE, SwordShootingPacketC2S.STREAM_CODEC, SwordShootingPacketC2S::handle);
         registrar.playToServer(WormholeToPlayerPacketC2S.TYPE, WormholeToPlayerPacketC2S.STREAM_CODEC, WormholeToPlayerPacketC2S::handle);
         registrar.playToServer(SellTradePacketC2S.TYPE, SellTradePacketC2S.STREAM_CODEC, SellTradePacketC2S::handle);
         registrar.playToServer(RecipeTransferPacketC2S.TYPE, RecipeTransferPacketC2S.STREAM_CODEC, RecipeTransferPacketC2S::handle);
-        registrar.playToServer(LanceAttackPacketC2S.TYPE, LanceAttackPacketC2S.STREAM_CODEC, LanceAttackPacketC2S::handle);
+        registrar.playToServer(SpearAttackPacketC2S.TYPE, SpearAttackPacketC2S.STREAM_CODEC, SpearAttackPacketC2S::handle);
+        registrar.playToServer(SwitchEffectEnabledPackedC2S.TYPE, SwitchEffectEnabledPackedC2S.STREAM_CODEC, SwitchEffectEnabledPackedC2S::handle);
+        registrar.playToServer(DyeMixPacketC2S.TYPE, DyeMixPacketC2S.STREAM_CODEC, DyeMixPacketC2S::handle);
+        registrar.playToServer(HouseSelectPacketC2S.TYPE, HouseSelectPacketC2S.STREAM_CODEC, HouseSelectPacketC2S::handle);
+        registrar.playToServer(EmptyTargetSweepPacketC2S.TYPE, EmptyTargetSweepPacketC2S.STREAM_CODEC, EmptyTargetSweepPacketC2S::handle);
         WaystonesHelper.registerPayload(registrar);
     }
 
     @SubscribeEvent
-    public static void registerAttributes(EntityAttributeCreationEvent event) {
+    public static void entityAttributeCreation(EntityAttributeCreationEvent event) {
         event.put(ModEntities.TARGET_DUMMY.get(), TargetDummyEntity.createAttributes().build());
+        event.put(ModEntities.BESTIARY_ENTRY_DISPLAY.get(), LivingEntity.createLivingAttributes().build());
+    }
+
+    @SubscribeEvent
+    public static void entityAttributeModification(EntityAttributeModificationEvent event) {
+        TEEvents.registerArmorPenetration((type, value) -> event.add(type, TCAttributes.ARMOR_PENETRATION, value));
     }
 
     @SubscribeEvent
@@ -241,9 +275,14 @@ public final class ModEvents {
     public static void buildCreativeModeTabContents(BuildCreativeModeTabContentsEvent event) {
         CreativeModeTab.TabVisibility visibility = CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS;
         if (event.getTab() == TCTabs.ACCESSORIES.get()) {
-            event.accept(TCItems.EVERLASTING.get().getDefaultInstance(), visibility);
-            event.accept(TCItems.BASE_POINT.get().getDefaultInstance(), visibility);
-            AccessoryItems.ITEMS.getEntries().forEach(item -> event.accept(item.get()));
+            WipNotDisplayOutput output = new WipNotDisplayOutput(event);
+            output.accept(TCItems.EVERLASTING.get().getDefaultInstance(), visibility);
+            output.accept(TCItems.BASE_POINT.get().getDefaultInstance(), visibility);
+            AccessoryItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
+        } else if (event.getTab() == ModTabs.MISC.get()) {
+            ItemStack clothierVoodooDollStack = AccessoryItems.CLOTHIER_VOODOO_DOLL.toStack();
+            event.insertAfter(ConsumableItems.ABEEMINATION.toStack(), clothierVoodooDollStack, visibility);
+            event.insertAfter(clothierVoodooDollStack, AccessoryItems.GUIDE_VOODOO_DOLL.toStack(), visibility);
         }
     }
 
@@ -322,10 +361,12 @@ public final class ModEvents {
         event.register(TEMonsterEntities.GREEN_DUMPLING_SLIME.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, (entityType, serverLevel, spawnType, pos, random) -> {
             if (DateUtils.isQingMing(DateUtils.getLunar()) && serverLevel instanceof Level level) {
                 int y = pos.getY();
-                return y > 30 && y < 260 && level.isDay() && serverLevel.canSeeSky(pos);
+                return y > 30 && y < 260 && LibDateUtils.isDay(level) && serverLevel.canSeeSky(pos);
             }
             return false;
         }, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+
+        RegisterBestiaryKeyEvent.postEvent(); // 这个时期正好处于实体类型注册完的阶段，且datagen也会调用这个事件
     }
 
     @SubscribeEvent
@@ -466,5 +507,53 @@ public final class ModEvents {
                 .register("confluence:tr_crimson", "confluence:the_crimson")
                 .register("confluence:tr_crimson_desert", "confluence:the_crimson_desert")
                 .register("confluence:tr_crimson_tundra", "confluence:the_crimson_tundra");
+    }
+
+    @SubscribeEvent
+    public static void registerBestiaryKey(RegisterBestiaryKeyEvent event) {
+        Function<Integer, String> i2s = i -> Integer.toString(i);
+        event.register(TEAnimals.JEWEL_BUNNY.get(), RegisterBestiaryKeyEvent.terraVariant(i2s));
+        event.register(TEAnimals.SQUIRREL.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
+        event.register(TEAnimals.JEWEL_SQUIRREL.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
+        event.register(TEAnimals.GRASSHOPPER.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
+        event.register(TEAnimals.BUTTERFLY.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
+        event.register(TEAnimals.WORM.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
+        event.register(TEAnimals.DRAGONFLY.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
+        event.register(TEAnimals.LADYBUG.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
+        event.register(TEAnimals.FEALING.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
+        event.register(TEAnimals.DUCK.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
+        event.register(TEAnimals.FAIRY.get(), RegisterBestiaryKeyEvent.vanillaVariant(i2s));
+        event.register(TEMonsterEntities.DEMON_EYE.get(), (type, eye) -> {
+            String key = type.getDescriptionId() + '.';
+            if (eye.minion_getOwnerUUID() != null) {
+                return key + "minion";
+            }
+            return key + eye.getVariant().getSerializedName();
+        });
+        event.register(EntityType.ZOMBIE, ((type, zombie) -> {
+            String key = type.getDescriptionId();
+            if (IZombie.of(zombie).terra_entity$isSlimeZombie()) {
+                return key + ".slime";
+            }
+            Item chest = zombie.getItemBySlot(EquipmentSlot.CHEST).getItem();
+            if (chest == ArmorItems.RAINCOAT.get()) {
+                return key + ".raincoat";
+            } else if (chest == ArmorItems.SNOW_SUITS.get() || chest == ArmorItems.PINK_SNOW_SUITS.get()) {
+                return key + ".frozen";
+            }
+            return key;
+        }));
+        event.register(TEMonsterEntities.BLACK_SLIME.get(), (type, slime) -> {
+            int size = slime.getSize();
+            if (size == 1) return "entity.terra_entity.baby_slime";
+            if (size == 4) return "entity.terra_entity.mother_slime";
+            return type.getDescriptionId();
+        });
+        event.register(EntityType.SKELETON, (type, skeleton) -> {
+            if (skeleton.getItemBySlot(EquipmentSlot.CHEST).is(ArmorItems.MINING_CHESTPLATE)) {
+                return "entity.confluence.undead_miner";
+            }
+            return type.getDescriptionId();
+        });
     }
 }

@@ -12,10 +12,10 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.stats.ServerStatsCounter;
 import net.minecraft.world.level.ChunkPos;
-import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.network.s2c.PlayerDeathInfoPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
+import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -25,7 +25,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ServerPlayer.class)
-public abstract class ServerPlayerMixin implements IServerPlayer, SelfGetter<ServerPlayer> {
+public abstract class ServerPlayerMixin implements IServerPlayer {
     @Shadow
     @Final
     private ServerStatsCounter stats;
@@ -45,6 +45,8 @@ public abstract class ServerPlayerMixin implements IServerPlayer, SelfGetter<Ser
     private short confluence$bulldozer = 0;
     @Unique
     private ChunkPos confluence$lastChunkPosition;
+    @Unique
+    private final Vector3f confluence$movementSpeed = new Vector3f();
 
     @Override
     public void confluence$setCouldPickupItem(boolean enable) {
@@ -78,10 +80,21 @@ public abstract class ServerPlayerMixin implements IServerPlayer, SelfGetter<Ser
         return false;
     }
 
+    @Override
+    public Vector3f confluence$getMovementSpeed() {
+        return confluence$movementSpeed;
+    }
+
     @Inject(method = "checkMovementStatistics", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;isSprinting()Z"))
     private void checkMarathon(double dx, double dy, double dz, CallbackInfo ci) {
-        if (confluence$marathon_medalist) return;
-        this.confluence$marathon_medalist = AchievementUtils.marathonMedalist(confluence$self(), stats, confluence$marathon_medalist);
+        if (!confluence$marathon_medalist) {
+            this.confluence$marathon_medalist = AchievementUtils.marathonMedalist(confluence$self(), stats, confluence$marathon_medalist);
+        }
+    }
+
+    @Inject(method = "checkMovementStatistics", at = @At("HEAD"))
+    private void checkSpeed(double dx, double dy, double dz, CallbackInfo ci) {
+        this.confluence$movementSpeed.set(dx, dy, dz);
     }
 
     @WrapWithCondition(method = "die", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerGamePacketListenerImpl;send(Lnet/minecraft/network/protocol/Packet;Lnet/minecraft/network/PacketSendListener;)V"))

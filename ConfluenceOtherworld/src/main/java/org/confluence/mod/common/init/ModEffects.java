@@ -37,7 +37,11 @@ public final class ModEffects {
     public static final DeferredHolder<MobEffect, MobEffect> RAGE = EFFECTS.register("rage", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFF4500)
             .addAttributeModifier(TCAttributes.getCriticalChance(), Confluence.asResource("rage"), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
     public static final DeferredHolder<MobEffect, MobEffect> WRATH = EFFECTS.register("wrath", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFF8C00)
-            .addAttributeModifier(Attributes.ATTACK_DAMAGE, Confluence.asResource("wrath"), 3, AttributeModifier.Operation.ADD_VALUE));
+            .addAttributeModifier(Attributes.ATTACK_DAMAGE, Confluence.asResource("wrath"), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .addAttributeModifier(TCAttributes.getRangedDamage(), Confluence.asResource("wrath"), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .addAttributeModifier(TCAttributes.getMagicDamage(), Confluence.asResource("wrath"), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .addAttributeModifier(TEAttributes.SUMMON_DAMAGE, Confluence.asResource("wrath"), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+    );
     public static final DeferredHolder<MobEffect, MobEffect> THORNS = EFFECTS.register("thorns", ThornsEffect::new);
     public static final DeferredHolder<MobEffect, MobEffect> MANA_REGENERATION = EFFECTS.register("mana_regeneration", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x6600CC));
     public static final DeferredHolder<MobEffect, MobEffect> TITAN = EFFECTS.register("titan", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xD2B48C)

@@ -28,8 +28,9 @@ public final class ModArmorMaterials {
     public static final Holder<ArmorMaterial> VANITY_ARMOR_MATERIALS = ARMOR_MATERIALS.register("vanity_armor_materials", () -> new ArmorMaterial(
             new Object2IntOpenHashMap<>(),
             0, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.EMPTY,
-            List.of(new ArmorMaterial.Layer(Confluence.asResource("vanity_armor"))), 0.0F, 0.0F
-    ));
+            List.of(new ArmorMaterial.Layer(Confluence.asResource("vanity_armor"))), 0.0F, 0.0F)
+    );
+    public static final Holder<ArmorMaterial> GOLD_CROWN_ARMOR_MATERIAL = registerSingletonMaterial("gold_crown_armor_material", ArmorItem.Type.HELMET, 0, 0, SoundEvents.ARMOR_EQUIP_LEATHER, () -> Ingredient.EMPTY, "gold_crown", 0, 0);
     public static final Holder<ArmorMaterial> CACTUS_ARMOR_MATERIALS = registerArmorMaterial("cactus_armor_materials",
             1, 2, 2, 1,
             9, SoundEvents.ARMOR_EQUIP_GENERIC, Items.CACTUS, "cactus", 0.0F, 0.0F
@@ -231,14 +232,14 @@ public final class ModArmorMaterials {
     public static final Holder<ArmorMaterial> TITANIUM_ARMOR_MATERIALS = registerArmorMaterial("titanium_armor_materials", 4, 7, 7, 6, 18, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.TITANIUM_INGOT), "titanium", 2.0F, 0);
 
     public static final Holder<ArmorMaterial> CRYSTAL_ASSASSIN_ARMOR_MATERIALS = registerArmorMaterial("crystal_assassin_armor_materials",
-            12, 14, 5, 5,
+            6, 7, 7, 6,
             16, SoundEvents.ARMOR_EQUIP_LEATHER, Items.BONE,
             "crystal_assassin", 0.0F, 0.0F);
 
-    public static final Holder<ArmorMaterial> HALLOWED_MASK_MATERIAL = registerSingletonMaterial("hallowed_mask_material", ArmorItem.Type.HELMET, 7, 19, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.HALLOWED_INGOT), "hallowed_mask", 2.0F, 19);
-    public static final Holder<ArmorMaterial> HALLOWED_HEADGEAR_MATERIAL = registerSingletonMaterial("hallowed_headgear_material", ArmorItem.Type.HELMET, 3, 19, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.HALLOWED_INGOT), "hallowed_headgear", 2.0F, 19);
-    public static final Holder<ArmorMaterial> HALLOWED_HOOD_MATERIAL = registerSingletonMaterial("hallowed_hood_material", ArmorItem.Type.HELMET, 1, 19, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.HALLOWED_INGOT), "hallowed_hood", 2.0F, 19);
-    public static final Holder<ArmorMaterial> HALLOWED_ARMOR_MATERIALS = registerArmorMaterial("hallowed_armor_materials", 4, 8, 7, 7, 19,  SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.HALLOWED_INGOT), "hallowed", 2.0F, 19);
+    public static final Holder<ArmorMaterial> HALLOWED_MASK_MATERIAL = registerSingletonMaterial("hallowed_mask_material", ArmorItem.Type.HELMET, 7, 19, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.HALLOWED_INGOT), "hallowed_mask", 2.0F, 0);
+    public static final Holder<ArmorMaterial> HALLOWED_HEADGEAR_MATERIAL = registerSingletonMaterial("hallowed_headgear_material", ArmorItem.Type.HELMET, 3, 19, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.HALLOWED_INGOT), "hallowed_headgear", 2.0F, 0);
+    public static final Holder<ArmorMaterial> HALLOWED_HOOD_MATERIAL = registerSingletonMaterial("hallowed_hood_material", ArmorItem.Type.HELMET, 1, 19, SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.HALLOWED_INGOT), "hallowed_hood", 2.0F, 0);
+    public static final Holder<ArmorMaterial> HALLOWED_ARMOR_MATERIALS = registerArmorMaterial("hallowed_armor_materials", 4, 8, 7, 7, 19,  SoundEvents.ARMOR_EQUIP_NETHERITE, () -> Ingredient.of(MaterialItems.HALLOWED_INGOT), "hallowed", 2.0F, 0);
 
     public static Holder<ArmorMaterial> registerArmorMaterial(String name, int helmetArmor, int chestplateArmor, int leggingsArmor, int bootsArmor, int enchantmentValue, Holder<SoundEvent> equipSound, ItemLike fixItem, String layersName, float toughness, float knockbackResistance) {
         return ARMOR_MATERIALS.register(name, () -> new ArmorMaterial(

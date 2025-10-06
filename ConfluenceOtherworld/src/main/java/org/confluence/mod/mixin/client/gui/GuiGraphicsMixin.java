@@ -4,14 +4,20 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
+import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.item.fishing.AbstractFishingPole;
 import org.confluence.mod.integration.kubejs.KubeJSHelper;
+import org.confluence.mod.mixed.IPlayer;
+import org.confluence.mod.util.ClientUtils;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -20,10 +26,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import javax.annotation.Nullable;
-
 @Mixin(GuiGraphics.class)
-public abstract class GuiGraphicsMixin {
+public abstract class GuiGraphicsMixin implements SelfGetter<GuiGraphics> {
     @Unique
     private static final ResourceLocation confluence$death = Confluence.asResource("textures/gui/icon/death.png");
 
@@ -33,6 +37,10 @@ public abstract class GuiGraphicsMixin {
     @Shadow
     @Final
     private PoseStack pose;
+
+    @Shadow
+    @Final
+    private Minecraft minecraft;
 
     @WrapOperation(method = "renderItemDecorations(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;IILjava/lang/String;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Ljava/lang/String;IIIZ)I"))
     private int transform(GuiGraphics instance, Font font, String text, int x, int y, int color, boolean dropShadow, Operation<Integer> original, @Local(argsOnly = true, ordinal = 0) int ox, @Local(argsOnly = true, ordinal = 1) int oy) {
@@ -56,6 +64,11 @@ public abstract class GuiGraphicsMixin {
             pose.translate(0.0F, 0.0F, 200.0F);
             blit(confluence$death, x, y, 0.0F, 0.0F, 16, 16, 16, 16);
             pose.popPose();
+        } else if (minecraft.player != null) {
+            ItemStack bait = IPlayer.of(minecraft.player).confluence$getCurrentBait();
+            if (!bait.isEmpty() && stack.getItem() instanceof AbstractFishingPole) {
+                ClientUtils.renderBait(confluence$self(), bait, x, y);
+            }
         }
     }
 }

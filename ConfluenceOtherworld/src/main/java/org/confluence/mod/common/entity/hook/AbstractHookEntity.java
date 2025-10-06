@@ -23,6 +23,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.fluids.FluidType;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.common.item.hook.BaseHookItem;
@@ -30,11 +31,12 @@ import org.confluence.mod.common.item.hook.BaseHookItem;
 import java.util.function.IntFunction;
 
 public abstract class AbstractHookEntity extends Projectile {
-    private static final EntityDataAccessor<Integer> DATA_HOOK_STATE = SynchedEntityData.defineId(AbstractHookEntity.class, EntityDataSerializers.INT);
+    protected static final EntityDataAccessor<Integer> DATA_HOOK_STATE = SynchedEntityData.defineId(AbstractHookEntity.class, EntityDataSerializers.INT);
+    protected static final EntityDataAccessor<Float> DATA_POP_VELOCITY = SynchedEntityData.defineId(AbstractHookEntity.class, EntityDataSerializers.FLOAT);
     public final float hookRangeSqr;
-    private final BaseHookItem.HookType hookType;
-    private BlockPos hookPos;
-    private BlockState hookedState;
+    protected final BaseHookItem.HookType hookType;
+    protected BlockPos hookPos;
+    protected BlockState hookedState;
     public float lastDelta = 0.0F;
 
     public AbstractHookEntity(EntityType<? extends AbstractHookEntity> entityType, Level pLevel) {
@@ -47,6 +49,7 @@ public abstract class AbstractHookEntity extends Projectile {
         super(entityType, level);
         this.hookRangeSqr = item.getHookRange() * item.getHookRange();
         this.hookType = item.getHookType();
+        setPopVelocity(item.getHookVelocity() * 0.2F);
         setOwner(player);
         setNoGravity(true);
         setPos(player.getX(), player.getEyeY() - 0.1, player.getZ());
@@ -54,7 +57,7 @@ public abstract class AbstractHookEntity extends Projectile {
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        builder.define(DATA_HOOK_STATE, 0);
+        builder.define(DATA_HOOK_STATE, 0).define(DATA_POP_VELOCITY, 0.2F);
     }
 
     public HookState getHookState() {
@@ -63,6 +66,14 @@ public abstract class AbstractHookEntity extends Projectile {
 
     public void setHookState(HookState state) {
         entityData.set(DATA_HOOK_STATE, state.id);
+    }
+
+    public float getPopVelocity() {
+        return entityData.get(DATA_POP_VELOCITY);
+    }
+
+    public void setPopVelocity(float velocity) {
+        entityData.set(DATA_POP_VELOCITY, velocity);
     }
 
     public double getPullVelocity() {
@@ -86,7 +97,7 @@ public abstract class AbstractHookEntity extends Projectile {
 
         HookState hookState = getHookState();
         if (hookState == HookState.POP) {
-            setDeltaMovement(getDeltaMovement().scale(0.95).add(owner.position().subtract(position()).normalize().scale(0.2)));
+            setDeltaMovement(getDeltaMovement().scale(0.95).add(owner.position().subtract(position()).normalize().scale(getPopVelocity())));
             if (distanceToSqr(owner) < 4.0) {
                 discard();
                 return;
@@ -108,6 +119,11 @@ public abstract class AbstractHookEntity extends Projectile {
                 setHookState(HookState.POP);
             }
         }
+    }
+
+    @Override
+    public boolean isPushedByFluid(FluidType type) {
+        return false;
     }
 
     @Override

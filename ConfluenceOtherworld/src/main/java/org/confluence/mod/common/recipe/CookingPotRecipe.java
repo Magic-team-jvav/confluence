@@ -29,7 +29,7 @@ import net.minecraft.world.level.block.state.pattern.BlockInWorld;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.confluence.lib.common.recipe.AbstractAmountRecipe;
 import org.confluence.lib.common.recipe.AmountIngredient;
-import org.confluence.lib.network.ExtraByteBufCodecs;
+import org.confluence.lib.util.LibStreamCodecUtils;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 
@@ -161,7 +161,7 @@ public class CookingPotRecipe extends AbstractAmountRecipe<CookingPotRecipe.Inpu
                 NbtPredicate.CODEC.optionalFieldOf("nbt").forGetter(HeatSourcePredicate::nbt)
         ).apply(instance, HeatSourcePredicate::new));
         public static final StreamCodec<RegistryFriendlyByteBuf, HeatSourcePredicate> STREAM_CODEC = StreamCodec.composite(
-                ByteBufCodecs.optional(ByteBufCodecs.either(ExtraByteBufCodecs.tagKey(Registries.BLOCK), ByteBufCodecs.holderSet(Registries.BLOCK))), HeatSourcePredicate::blocks,
+                ByteBufCodecs.optional(ByteBufCodecs.either(LibStreamCodecUtils.tagKey(Registries.BLOCK), ByteBufCodecs.holderSet(Registries.BLOCK))), HeatSourcePredicate::blocks,
                 ByteBufCodecs.optional(StatePropertiesPredicate.STREAM_CODEC), HeatSourcePredicate::properties,
                 ByteBufCodecs.optional(NbtPredicate.STREAM_CODEC), HeatSourcePredicate::nbt,
                 HeatSourcePredicate::new

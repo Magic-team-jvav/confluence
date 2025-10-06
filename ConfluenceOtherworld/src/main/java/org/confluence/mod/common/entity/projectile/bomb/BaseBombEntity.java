@@ -2,6 +2,7 @@ package org.confluence.mod.common.entity.projectile.bomb;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -36,7 +37,7 @@ public class BaseBombEntity extends ThrowableItemProjectile {
     public ParticleEmitter emitter;
 
     protected int delay = 60;
-    protected float blastPower = 10.0F;
+    protected float blastPower = 5.0F;
     protected double bounceFactor = 0.2;
     protected double frictionFactor = 0.9;
 
@@ -65,8 +66,8 @@ public class BaseBombEntity extends ThrowableItemProjectile {
     /**
      * 子类可以覆盖的方法，定义炸弹如何爆炸
      */
-    protected void explodeFunction() {
-        level().explode(this, Explosion.getDefaultDamageSource(level(), this), getExplosionDamageCalculator(), getX(), getY(), getZ(), blastPower, false, Level.ExplosionInteraction.BLOCK);
+    protected void explodeFunction(ServerLevel level) {
+        TerraStyleExplosion.terraExplode(level, this, Explosion.getDefaultDamageSource(level, this), getExplosionDamageCalculator(), getX(), getY(), getZ(), blastPower, Level.ExplosionInteraction.TNT);
     }
 
     protected ExplosionDamageCalculator getExplosionDamageCalculator() {
@@ -85,7 +86,12 @@ public class BaseBombEntity extends ThrowableItemProjectile {
     @Override
     public void tick() {
         super.tick();
-        if (level().isClientSide) {
+        if (level() instanceof ServerLevel level) {
+            if (this.delay-- < 0) {
+                explodeFunction(level);
+                discard();
+            }
+        } else {
             float s = (float) getDeltaMovement().length();
             if (s > Mth.EPSILON + Mth.EPSILON + getDefaultGravity()) {
                 float r = 2.0F * s / diameter;
@@ -97,9 +103,6 @@ public class BaseBombEntity extends ThrowableItemProjectile {
                 this.rotateO = rotate;
             }
             createEmitter();
-        } else if (this.delay-- < 0) {
-            explodeFunction();
-            discard();
         }
     }
 
@@ -111,12 +114,12 @@ public class BaseBombEntity extends ThrowableItemProjectile {
     }
 
     protected void createEmitter() {
-        if (emitter == null) {
+        if (emitter == null || emitter.isRemoved()) {
             this.emitter = new ParticleEmitter(level(), position(), getLeadParticle());
             emitter.offsetRot.set(0.0, Mth.HALF_PI, 0.0);
             emitter.offsetPos = new Vec3(0.0, DIAMETER, 0.0);
             emitter.parentRotation = rotation;
-            emitter.attached = this;
+            emitter.attachEntity(this);
             PSGameClient.LOADER.addEmitter(emitter, false);
         }
     }

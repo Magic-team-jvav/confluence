@@ -11,7 +11,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import org.confluence.mod.client.gui.hud.ArrowInBowHud;
+import org.confluence.mod.client.handler.ArrowInBowHandler;
 import org.confluence.mod.common.item.bow.TerraBowItem;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
@@ -46,7 +46,7 @@ public abstract class ItemRendererMixin {
 
                 ItemStack arrowItem = player.getProjectile(bow);
                 // 移除mixin方便热交换
-                ArrowInBowHud.transform(bow, poseStack, charge, displayContext);
+                ArrowInBowHandler.transform(bow, poseStack, charge, displayContext);
                 BakedModel bakedmodel = this.getModel(arrowItem, level, entity, seed);
                 this.render(arrowItem, displayContext, leftHand, poseStack, bufferSource, combinedLight, combinedOverlay, bakedmodel);
             }

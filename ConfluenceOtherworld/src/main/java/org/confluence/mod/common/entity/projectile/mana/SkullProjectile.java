@@ -13,8 +13,11 @@ import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.*;
 import org.confluence.lib.util.VectorUtils;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEntities;
 import org.jetbrains.annotations.Nullable;
+import org.mesdag.particlestorm.PSGameClient;
+import org.mesdag.particlestorm.particle.ParticleEmitter;
 
 import java.util.Comparator;
 import java.util.HashSet;
@@ -22,6 +25,7 @@ import java.util.Set;
 import java.util.UUID;
 
 public class SkullProjectile extends AbstractManaProjectile {
+    private ParticleEmitter trail;
     private static final EntityDataAccessor<Integer> DATA_TARGET_ID = SynchedEntityData.defineId(SkullProjectile.class, EntityDataSerializers.INT);
     private UUID targetUUID;
     private transient LivingEntity target;
@@ -72,6 +76,13 @@ public class SkullProjectile extends AbstractManaProjectile {
             setTarget(null);
         }
 
+        if (level().isClientSide) {
+            if (trail == null || trail.isRemoved()) {
+                this.trail = new ParticleEmitter(level(), position(), Confluence.asResource("skull_projectile_flame"));
+                trail.attachEntity(this);
+                PSGameClient.LOADER.addEmitter(trail, false);
+            }
+        }
         HitResult hitresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
         checkInsideBlocks();
         HitResult.Type hitresult$type = hitresult.getType();
@@ -98,11 +109,18 @@ public class SkullProjectile extends AbstractManaProjectile {
         double offY = getY() + vec3.y;
         double offZ = getZ() + vec3.z;
         setPos(offX, offY, offZ);
+        updateRotation();
     }
 
     public void setTarget(@Nullable LivingEntity target) {
         this.target = target;
-        this.targetUUID = target == null ? null : target.getUUID();
+        if (target == null) {
+            this.targetUUID = null;
+            entityData.set(DATA_TARGET_ID, -114514);
+        } else {
+            this.targetUUID = target.getUUID();
+            entityData.set(DATA_TARGET_ID, target.getId());
+        }
     }
 
     public @Nullable LivingEntity getTarget() {

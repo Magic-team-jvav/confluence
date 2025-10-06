@@ -8,10 +8,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.ChunkPos;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.attachment.ChunkDropletsData;
-import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.network.s2c.DropletsSyncPacketS2C;
 import org.jetbrains.annotations.Nullable;
 
@@ -35,7 +33,7 @@ public class MagicDropperItem extends Item {
         }
         Player player = context.getPlayer();
         if (player != null) {
-            ChunkDropletsData data = level.getData(ModAttachmentTypes.CHUNK_DROPLETS_DATA);
+            ChunkDropletsData data = ChunkDropletsData.of(level);
             ChunkPos chunkPos = new ChunkPos(pos);
             Map<BlockPos, ParticleOptions> map = data.getDataMap().computeIfAbsent(chunkPos, c -> new HashMap<>());
             if (particle == null) {
@@ -43,7 +41,7 @@ public class MagicDropperItem extends Item {
             } else {
                 map.put(pos, particle);
             }
-            PacketDistributor.sendToPlayersTrackingChunk(level, chunkPos, new DropletsSyncPacketS2C(data.getDataMap(player, true)));
+            DropletsSyncPacketS2C.sendToPlayersTrackingChunk(level, chunkPos, data.getDataMap(player, true));
 
             if (!player.hasInfiniteMaterials()) {
                 context.getItemInHand().shrink(1);

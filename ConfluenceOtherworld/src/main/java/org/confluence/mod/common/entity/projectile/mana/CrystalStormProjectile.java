@@ -10,9 +10,14 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.VectorUtils;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEntities;
+import org.mesdag.particlestorm.PSGameClient;
+import org.mesdag.particlestorm.particle.ParticleEmitter;
 
 public class CrystalStormProjectile extends AbstractManaProjectile {
+    private ParticleEmitter trail;
+
     public CrystalStormProjectile(EntityType<CrystalStormProjectile> entityType, Level level) {
         super(entityType, level);
         setNoGravity(true);
@@ -35,6 +40,13 @@ public class CrystalStormProjectile extends AbstractManaProjectile {
     public void baseTick() {
         super.baseTick();
 
+        if (level().isClientSide) {
+            if (trail == null || trail.isRemoved()) {
+                this.trail = new ParticleEmitter(level(), position(), Confluence.asResource("crystal_storm_projectile_trail"));
+                trail.attachEntity(this);
+                PSGameClient.LOADER.addEmitter(trail, false);
+            }
+        }
         HitResult hitresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
         checkInsideBlocks();
         HitResult.Type hitresult$type = hitresult.getType();

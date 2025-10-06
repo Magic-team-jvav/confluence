@@ -13,7 +13,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LightBaneProjectile extends SwordProjectile<LightBaneProjectile> {
+public class LightBaneProjectile extends SwordProjectile {
 
     List<Entity> hits = new ArrayList<>();
 

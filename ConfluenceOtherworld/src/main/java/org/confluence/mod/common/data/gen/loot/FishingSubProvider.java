@@ -33,6 +33,7 @@ import org.confluence.mod.common.init.ModLootTables;
 import org.confluence.mod.common.init.ModStructures;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.CrateBlocks;
+import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.terra_curio.common.init.TCItems;
@@ -237,16 +238,19 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                                 LocationPredicate.Builder.location().setY(caveThroughSurface))
                         ).setWeight(7).setQuality(1))
                         .add(LootItem.lootTableItem(AccessoryItems.NATURES_GIFT).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setBiomes(isJungleOrLush).setY(caveThroughSpace))
+                                LocationPredicate.Builder.location().setBiomes(isJungleOrLush).setY(caveThroughSurface))
                         ).setWeight(25))
                         .add(LootItem.lootTableItem(SwordItems.PURPLE_CLUBBERFISH).when(LocationCheck.checkLocation(
                                 LocationPredicate.Builder.location().setBiomes(isCorruption).setY(caveThroughSurface)
                         )).setWeight(25))
                         .add(LootItem.lootTableItem(PickaxeItems.REAVER_SHARK_PICKAXE).when(LocationCheck.checkLocation(
-                                LocationPredicate.Builder.location().setBiomes(isOceanOrBeach).setY(caveThroughSpace)
+                                LocationPredicate.Builder.location().setBiomes(isOceanOrBeach).setY(caveThroughSurface)
                         )).setWeight(7))
                         .add(LootItem.lootTableItem(HammerItems.ROCKFISH).when(LocationCheck.checkLocation(
                                 LocationPredicate.Builder.location().setY(caveThroughSurface)
+                        )).setWeight(7))
+                        .add(LootItem.lootTableItem(FunctionalBlocks.ALCHEMY_TABLE).when(LocationCheck.checkLocation(
+                                LocationPredicate.Builder.location().setStructures(isDungeon).setY(caveThroughSurface)
                         )).setWeight(7))
                 )
         );

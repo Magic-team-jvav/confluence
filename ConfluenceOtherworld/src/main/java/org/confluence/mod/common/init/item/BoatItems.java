@@ -51,6 +51,9 @@ public class BoatItems {
     public static final DeferredItem<BoatItem> YELLOW_WILLOW_BOAT = boat("yellow_willow_boat", () -> ModBoatTypes.YELLOW_WILLOW.getValue());
     public static final DeferredItem<BoatItem> YELLOW_WILLOW_CHEST_BOAT = chestBoat("yellow_willow_chest_boat", () -> ModBoatTypes.YELLOW_WILLOW.getValue());
 
+    public static final DeferredItem<BoatItem> DYNASTY_BOAT = boat("dynasty_boat", () -> ModBoatTypes.DYNASTY.getValue());
+    public static final DeferredItem<BoatItem> DYNASTY_CHEST_BOAT = chestBoat("dynasty_chest_boat", () -> ModBoatTypes.DYNASTY.getValue());
+
     private static DeferredItem<BoatItem> boat(String name, Supplier<Boat.Type> type) {
         return BOAT_ITEMS.register(name, () -> new BoatItem(false, type.get(), new Item.Properties().stacksTo(1)));
     }

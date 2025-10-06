@@ -103,9 +103,8 @@ public class SkyMillBlock extends HorizontalDirectionalBlock implements EntityBl
 
         @Override
         public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-            controllers.add(new AnimationController<>(this, "controller", state ->
-                    state.setAndContinue(RawAnimation.begin().thenLoop("default")))
-            );
+            RawAnimation aDefault = RawAnimation.begin().thenLoop("default");
+            controllers.add(new AnimationController<>(this, state -> state.setAndContinue(aDefault)));
         }
 
         @Override

@@ -7,29 +7,33 @@ import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.helpers.IJeiHelpers;
-import mezz.jei.api.recipe.RecipeIngredientRole;
-import mezz.jei.api.recipe.transfer.IRecipeTransferHandlerHelper;
 import mezz.jei.api.registration.*;
+import mezz.jei.api.runtime.IJeiRuntime;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.toasts.ToastComponent;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.block.Blocks;
+import org.confluence.lib.common.recipe.AbstractAmountRecipe;
 import org.confluence.lib.common.recipe.AmountIngredient;
-import org.confluence.lib.common.recipe.EitherAmountRecipe4x;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.StartupConfigs;
 import org.confluence.mod.client.gui.AchievementToast;
 import org.confluence.mod.client.gui.container.*;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.init.ModDataMaps;
+import org.confluence.mod.common.init.ModMenuTypes;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.item.ToolItems;
+import org.confluence.mod.common.menu.*;
+import org.confluence.mod.common.recipe.*;
 import org.confluence.mod.integration.jei.category.*;
 
 import java.util.ArrayList;
@@ -40,6 +44,7 @@ public final class ModJeiPlugin implements IModPlugin {
     public static final ResourceLocation UID = Confluence.asResource("jei_plugin");
     public static final ResourceLocation ARROW_DOWN = Confluence.asResource("textures/gui/arrow_down.png");
     public static final ResourceLocation ARROW_RIGHT = Confluence.asResource("textures/gui/arrow_right.png");
+    public static IJeiRuntime jeiRuntime;
 
     public static List<ToastComponent.ToastInstance<?>> filterAchievements(List<ToastComponent.ToastInstance<?>> original) {
         List<ToastComponent.ToastInstance<?>> list = new ArrayList<>(original);
@@ -71,6 +76,10 @@ public final class ModJeiPlugin implements IModPlugin {
         registration.addRecipeCategories(new ExtractinatorCategory(jeiHelpers, ExtractinatorCategory.EXTRACTINATOR, FunctionalBlocks.EXTRACTINATOR.get()));
         registration.addRecipeCategories(new ExtractinatorCategory(jeiHelpers, ExtractinatorCategory.CHLOROPHYTE_EXTRACTINATOR, FunctionalBlocks.CHLOROPHYTE_EXTRACTINATOR.get()));
         registration.addRecipeCategories(new HardmodeForgeCategory(jeiHelpers));
+        registration.addRecipeCategories(new LoomCategory(jeiHelpers));
+        registration.addRecipeCategories(new DyeVatCategory(jeiHelpers));
+        registration.addRecipeCategories(new CrystalBallCategory(jeiHelpers));
+        registration.addRecipeCategories(new BrewingStandTerraPotionCategory());
     }
 
     @Override
@@ -94,31 +103,41 @@ public final class ModJeiPlugin implements IModPlugin {
         registration.addRecipes(ExtractinatorCategory.EXTRACTINATOR, ExtractinatorCategory.collectAll(ModDataMaps.EXTRACTINATOR, level.registryAccess()));
         registration.addRecipes(ExtractinatorCategory.CHLOROPHYTE_EXTRACTINATOR, ExtractinatorCategory.collectAll(ModDataMaps.CHLOROPHYTE_EXTRACTINATOR, level.registryAccess()));
         registration.addRecipes(HardmodeForgeCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.HARDMODE_FORGE_TYPE.get()));
+        registration.addRecipes(LoomCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.LOOM_TYPE.get()));
+        registration.addRecipes(DyeVatCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.DYE_VAT_TYPE.get()));
+        registration.addRecipes(CrystalBallCategory.TYPE, recipeManager.getAllRecipesFor(ModRecipes.CRYSTAL_BALL_TYPE.get()));
+        if (StartupConfigs.brewingStandRecipe()) {
+            registration.addRecipes(BrewingStandTerraPotionCategory.TYPE, BrewingStandTerraPotionCategory.Recipe.getAllRecipes());
+        }
     }
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(ToolItems.BOTTOMLESS_SHIMMER_BUCKET.toStack(), ShimmerItemTransmutationCategory.TYPE);
-        registration.addRecipeCatalyst(FunctionalBlocks.SKY_MILL.toStack(), SkyMillCategory.TYPE);
-        registration.addRecipeCatalyst(FunctionalBlocks.DEMON_ALTAR.toStack(), AltarCategory.TYPE);
-        registration.addRecipeCatalyst(FunctionalBlocks.CRIMSON_ALTAR.toStack(), AltarCategory.TYPE);
-        registration.addRecipeCatalyst(FunctionalBlocks.HELLFORGE.toStack(), HellforgeCategory.TYPE, RecipeTypes.BLASTING);
-        registration.addRecipeCatalyst(FunctionalBlocks.HEAVY_WORK_BENCH.toStack(), HeavyWorkBenchCategory.TYPE, RecipeTypes.CRAFTING);
-        registration.addRecipeCatalyst(FunctionalBlocks.ALCHEMY_TABLE.toStack(), AlchemyTableCategory.TYPE);
+        registration.addRecipeCatalyst(ToolItems.BOTTOMLESS_SHIMMER_BUCKET, ShimmerItemTransmutationCategory.TYPE);
+        registration.addRecipeCatalyst(FunctionalBlocks.SKY_MILL, SkyMillCategory.TYPE);
+        registration.addRecipeCatalyst(FunctionalBlocks.DEMON_ALTAR, AltarCategory.TYPE);
+        registration.addRecipeCatalyst(FunctionalBlocks.CRIMSON_ALTAR, AltarCategory.TYPE);
+        registration.addRecipeCatalyst(FunctionalBlocks.HELLFORGE, HellforgeCategory.TYPE, RecipeTypes.BLASTING);
+        registration.addRecipeCatalyst(FunctionalBlocks.HEAVY_WORK_BENCH, HeavyWorkBenchCategory.TYPE, RecipeTypes.CRAFTING);
+        registration.addRecipeCatalyst(FunctionalBlocks.ALCHEMY_TABLE, AlchemyTableCategory.TYPE);
         if (CommonConfigs.FLETCHING_MENU.get()) {
-            registration.addRecipeCatalyst(new ItemStack(Blocks.FLETCHING_TABLE), FletchingTableCategory.TYPE);
+            registration.addRecipeCatalyst(Blocks.FLETCHING_TABLE, FletchingTableCategory.TYPE);
         }
-        registration.addRecipeCatalyst(FunctionalBlocks.LEAD_ANVIL.toStack(), RecipeTypes.ANVIL);
-        registration.addRecipeCatalyst(FunctionalBlocks.COOKING_POT.toStack(), CookingPotCategory.TYPE);
-        registration.addRecipeCatalyst(FunctionalBlocks.CAULDRON.toStack(), CookingPotCategory.TYPE);
-        registration.addRecipeCatalyst(FunctionalBlocks.SAWMILL.toStack(), SawmillCategory.TYPE);
-        registration.addRecipeCatalyst(FunctionalBlocks.SOLIDIFIER.toStack(), SolidifierCategory.TYPE);
-        registration.addRecipeCatalyst(FunctionalBlocks.MYTHRIL_ANVIL.toStack(), HardmodeAnvilCategory.TYPE);
-        registration.addRecipeCatalyst(FunctionalBlocks.ORICHALCUM_ANVIL.toStack(), HardmodeAnvilCategory.TYPE);
-        registration.addRecipeCatalyst(FunctionalBlocks.EXTRACTINATOR.toStack(), ExtractinatorCategory.EXTRACTINATOR);
-        registration.addRecipeCatalyst(FunctionalBlocks.CHLOROPHYTE_EXTRACTINATOR.toStack(), ExtractinatorCategory.CHLOROPHYTE_EXTRACTINATOR);
-        registration.addRecipeCatalyst(FunctionalBlocks.ADAMANTITE_FORGE.toStack(), HardmodeForgeCategory.TYPE, HellforgeCategory.TYPE, RecipeTypes.BLASTING);
-        registration.addRecipeCatalyst(FunctionalBlocks.TITANIUM_FORGE.toStack(), HardmodeForgeCategory.TYPE, HellforgeCategory.TYPE, RecipeTypes.BLASTING);
+        registration.addRecipeCatalyst(FunctionalBlocks.LEAD_ANVIL, RecipeTypes.ANVIL);
+        registration.addRecipeCatalyst(FunctionalBlocks.COOKING_POT, CookingPotCategory.TYPE);
+        registration.addRecipeCatalyst(FunctionalBlocks.CAULDRON, CookingPotCategory.TYPE);
+        registration.addRecipeCatalyst(FunctionalBlocks.SAWMILL, SawmillCategory.TYPE);
+        registration.addRecipeCatalyst(FunctionalBlocks.SOLIDIFIER, SolidifierCategory.TYPE);
+        registration.addRecipeCatalyst(FunctionalBlocks.MYTHRIL_ANVIL, HardmodeAnvilCategory.TYPE);
+        registration.addRecipeCatalyst(FunctionalBlocks.ORICHALCUM_ANVIL, HardmodeAnvilCategory.TYPE);
+        registration.addRecipeCatalyst(FunctionalBlocks.EXTRACTINATOR, ExtractinatorCategory.EXTRACTINATOR);
+        registration.addRecipeCatalyst(FunctionalBlocks.CHLOROPHYTE_EXTRACTINATOR, ExtractinatorCategory.CHLOROPHYTE_EXTRACTINATOR);
+        registration.addRecipeCatalyst(FunctionalBlocks.ADAMANTITE_FORGE, HardmodeForgeCategory.TYPE, HellforgeCategory.TYPE, RecipeTypes.BLASTING);
+        registration.addRecipeCatalyst(FunctionalBlocks.TITANIUM_FORGE, HardmodeForgeCategory.TYPE, HellforgeCategory.TYPE, RecipeTypes.BLASTING);
+        registration.addRecipeCatalyst(FunctionalBlocks.LOOM, LoomCategory.TYPE);
+        registration.addRecipeCatalyst(FunctionalBlocks.DYE_VAT, DyeVatCategory.TYPE);
+        registration.addRecipeCatalyst(FunctionalBlocks.CRYSTAL_BALL, CrystalBallCategory.TYPE);
+        registration.addRecipeCatalyst(Items.BREWING_STAND, BrewingStandTerraPotionCategory.TYPE);
     }
 
     @Override
@@ -135,16 +154,25 @@ public final class ModJeiPlugin implements IModPlugin {
         registration.addRecipeClickArea(CookingPotScreen.class, 78, 36, 46, 15, CookingPotCategory.TYPE);
         registration.addRecipeClickArea(HardmodeAnvilScreen.class, 78, 36, 46, 15, HardmodeAnvilCategory.TYPE);
         registration.addRecipeClickArea(HardmodeForgeScreen.class, 89, 31, 28, 23, HardmodeForgeCategory.TYPE);
+        registration.addRecipeClickArea(LoomScreen.class, 95, 32, 28, 23, LoomCategory.TYPE);
+        registration.addRecipeClickArea(DyeVatScreen.class, 87, 36, 22, 15, DyeVatCategory.TYPE);
+        registration.addRecipeClickArea(CrystalBallScreen.class, 69, 36, 22, 15, CrystalBallCategory.TYPE);
 
         registration.addGlobalGuiHandler(new ExtraInventoryHandler());
     }
 
     @Override
     public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
-        IRecipeTransferHandlerHelper transferHelper = registration.getTransferHelper();
-        HeavyWorkBenchCategory.HeavyRecipeTransferHandler heavyRecipeTransferHandler = new HeavyWorkBenchCategory.HeavyRecipeTransferHandler(registration.getJeiHelpers(), transferHelper);
-        registration.addRecipeTransferHandler(heavyRecipeTransferHandler, HeavyWorkBenchCategory.TYPE);
-        registration.addUniversalRecipeTransferHandler(new HeavyWorkBenchCategory.CraftingRecipeTransferHandler(heavyRecipeTransferHandler));
+        EitherRecipe4xHelper.register(registration, HardmodeAnvilRecipe.class, HardmodeAnvilMenu.class, ModMenuTypes.HARDMODE_ANVIL.get(), HardmodeAnvilRecipe::new, HardmodeAnvilCategory.TYPE, false);
+        EitherRecipe4xHelper.register(registration, HeavyWorkBenchRecipe.class, HeavyWorkBenchMenu.class, ModMenuTypes.HEAVY_WORK_BENCH.get(), HeavyWorkBenchRecipe::new, HeavyWorkBenchCategory.TYPE, true);
+        EitherRecipe4xHelper.register(registration, LoomRecipe.class, LoomMenu.class, ModMenuTypes.LOOM.get(), LoomRecipe::new, LoomCategory.TYPE, false);
+        EitherRecipe4xHelper.register(registration, SawmillRecipe.class, SawmillMenu.class, ModMenuTypes.SAWMILL.get(), SawmillRecipe::new, SawmillCategory.TYPE, false);
+        EitherRecipe4xHelper.register(registration, SolidifierRecipe.class, SolidifierMenu.class, ModMenuTypes.SOLIDIFIER.get(), SolidifierRecipe::new, SolidifierCategory.TYPE, false);
+    }
+
+    @Override
+    public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
+        ModJeiPlugin.jeiRuntime = jeiRuntime;
     }
 
     public static void drawArrowDown(GuiGraphics guiGraphics, int x, int y, boolean usable) {
@@ -155,32 +183,26 @@ public final class ModJeiPlugin implements IModPlugin {
         guiGraphics.blit(ARROW_RIGHT, x, y, 0, usable ? 0 : 21, 28, 21, 42, 42);
     }
 
-    public static void setEitherRecipe4x(IRecipeLayoutBuilder builder, RecipeHolder<? extends EitherAmountRecipe4x<?>> recipe) {
-        recipe.value().either.ifLeft(shaped -> {
-            int width = shaped.width();
-            int height = shaped.height();
-            boolean symmetrical = shaped.symmetrical;
-            for (int i = 0; i < height; i++) {
-                for (int j = 0; j < width; j++) {
-                    if (symmetrical) {
-                        addInput(builder, j * 18 + 6, i * 18 + 5, shaped.ingredients().get(width - j - 1 + i * width));
-                    } else {
-                        addInput(builder, j * 18 + 6, i * 18 + 5, shaped.ingredients().get(j + i * width));
-                    }
-                }
-            }
-        }).ifRight(shapeless -> {
-            builder.setShapeless();
-            int i = 0, j = 0;
-            for (Ingredient ingredient : shapeless) {
-                addInput(builder, j * 18 + 6, i * 18 + 5, ingredient);
-                if (++j >= 4) {
-                    j = 0;
-                    i++;
-                }
-            }
-        });
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 117, 33).addItemStack(recipe.value().getResultItem(null));
+    public static void set4IngredientsRecipe(IRecipeLayoutBuilder builder, RecipeHolder<? extends AbstractAmountRecipe<?>> recipe) {
+        NonNullList<Ingredient> ingredients = recipe.value().getIngredients();
+        int size = ingredients.size();
+        if (size == 1) {
+            addInput(builder, 24, 8, ingredients.getFirst(), true);
+        } else if (size == 2) {
+            addInput(builder, 15, 8, ingredients.get(0), true);
+            addInput(builder, 33, 8, ingredients.get(1), true);
+        } else if (size == 3) {
+            addInput(builder, 15, 15, ingredients.get(0), true);
+            addInput(builder, 33, 15, ingredients.get(1), true);
+            addInput(builder, 24, 1, ingredients.get(2), true);
+        } else {
+            addInput(builder, 15, -1, ingredients.get(0), true);
+            addInput(builder, 15, 17, ingredients.get(1), true);
+            addInput(builder, 33, -1, ingredients.get(2), true);
+            addInput(builder, 33, 17, ingredients.get(3), true);
+        }
+        builder.addOutputSlot(88, 8).addItemStack(recipe.value().getResultItem(null)).setOutputSlotBackground();
+        builder.setShapeless();
     }
 
     public static void addInput(IRecipeLayoutBuilder builder, int x, int y, Ingredient ingredient) {

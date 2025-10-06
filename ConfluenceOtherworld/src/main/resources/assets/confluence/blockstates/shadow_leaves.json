@@ -1,0 +1,18 @@
+{
+    "variants": {
+        "": [
+            {
+                "model": "confluence:block/shadow_leaves",
+                "weight": 12
+            },
+            {
+                "model": "confluence:block/shadow_leaves_0",
+                "weight": 1
+            },
+            {
+                "model": "confluence:block/shadow_leaves_1",
+                "weight": 1
+            }
+        ]
+    }
+}

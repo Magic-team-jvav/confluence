@@ -23,6 +23,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.neoforge.common.CommonHooks;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
@@ -74,13 +75,12 @@ public abstract class BaseHerbBlock extends CropBlock implements EntityBlock {
     // 重写，不检查光照，不检查合理密植，抄父方法
     @Override
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-        if (!level.isAreaLoaded(pos, 1)) return; // Forge: prevent loading unloaded chunks when checking neighbor's light
-        int i = this.getAge(state);
-        if (i < this.getMaxAge()) {
-            float growthSpeed = 0.7f;
-            if (net.neoforged.neoforge.common.CommonHooks.canCropGrow(level, pos, state, random.nextInt((int) (25.0F / growthSpeed) + 1) == 0)) {
-                level.setBlock(pos, this.getStateForAge(i + 1), 2);
-                net.neoforged.neoforge.common.CommonHooks.fireCropGrowPost(level, pos, state);
+        if (!level.isAreaLoaded(pos, 1)) return;
+        int i = getAge(state);
+        if (i < getMaxAge()) {
+            if (CommonHooks.canCropGrow(level, pos, state, random.nextInt((int) (25.0F / 0.7F) + 1) == 0)) {
+                level.setBlockAndUpdate(pos, getStateForAge(i + 1));
+                CommonHooks.fireCropGrowPost(level, pos, state);
             }
         }
     }

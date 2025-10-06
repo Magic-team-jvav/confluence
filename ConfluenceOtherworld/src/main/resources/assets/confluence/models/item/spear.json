@@ -81,7 +81,7 @@
       }
     },
     "textures": {
-      "particle": "confluence:item/lance/spear_item"
+      "particle": "confluence:item/spear/spear_item"
     }
   },
   "gui_light": "front",
@@ -90,25 +90,25 @@
     "fixed": {
       "parent": "minecraft:item/generated",
       "textures": {
-        "layer0": "confluence:item/lance/spear_inventory"
+        "layer0": "confluence:item/spear/spear_inventory"
       }
     },
     "ground": {
       "parent": "minecraft:item/generated",
       "textures": {
-        "layer0": "confluence:item/lance/spear_inventory"
+        "layer0": "confluence:item/spear/spear_inventory"
       }
     },
     "gui": {
       "parent": "minecraft:item/generated",
       "textures": {
-        "layer0": "confluence:item/lance/spear_inventory"
+        "layer0": "confluence:item/spear/spear_inventory"
       }
     },
     "head": {
       "parent": "minecraft:item/generated",
       "textures": {
-        "layer0": "confluence:item/lance/spear_inventory"
+        "layer0": "confluence:item/spear/spear_head"
       }
     }
   }

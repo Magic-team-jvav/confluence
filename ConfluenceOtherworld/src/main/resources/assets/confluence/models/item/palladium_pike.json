@@ -86,7 +86,7 @@
             }
         },
         "textures": {
-            "particle": "confluence:item/lance/palladium_pike_item"
+            "particle": "confluence:item/spear/palladium_pike_item"
         }
     },
     "gui_light": "front",
@@ -95,25 +95,25 @@
         "fixed": {
             "parent": "minecraft:item/generated",
             "textures": {
-                "layer0": "confluence:item/lance/palladium_pike_inventory"
+                "layer0": "confluence:item/spear/palladium_pike_inventory"
             }
         },
         "ground": {
             "parent": "minecraft:item/generated",
             "textures": {
-                "layer0": "confluence:item/lance/palladium_pike_inventory"
+                "layer0": "confluence:item/spear/palladium_pike_inventory"
             }
         },
         "gui": {
             "parent": "minecraft:item/generated",
             "textures": {
-                "layer0": "confluence:item/lance/palladium_pike_inventory"
+                "layer0": "confluence:item/spear/palladium_pike_inventory"
             }
         },
         "head": {
             "parent": "minecraft:item/generated",
             "textures": {
-                "layer0": "confluence:item/lance/palladium_pike_inventory"
+                "layer0": "confluence:item/spear/palladium_pike_head"
             }
         }
     }

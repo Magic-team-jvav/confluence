@@ -86,7 +86,7 @@
             }
         },
         "textures": {
-            "particle": "confluence:item/lance/storm_spear_item"
+            "particle": "confluence:item/spear/storm_spear_item"
         }
     },
     "gui_light": "front",
@@ -95,25 +95,25 @@
         "fixed": {
             "parent": "minecraft:item/generated",
             "textures": {
-                "layer0": "confluence:item/lance/storm_spear_inventory"
+                "layer0": "confluence:item/spear/storm_spear_inventory"
             }
         },
         "ground": {
             "parent": "minecraft:item/generated",
             "textures": {
-                "layer0": "confluence:item/lance/storm_spear_inventory"
+                "layer0": "confluence:item/spear/storm_spear_inventory"
             }
         },
         "gui": {
             "parent": "minecraft:item/generated",
             "textures": {
-                "layer0": "confluence:item/lance/storm_spear_inventory"
+                "layer0": "confluence:item/spear/storm_spear_inventory"
             }
         },
         "head": {
             "parent": "minecraft:item/generated",
             "textures": {
-                "layer0": "confluence:item/lance/storm_spear_inventory"
+                "layer0": "confluence:item/spear/storm_spear_head"
             }
         }
     }

@@ -31,7 +31,6 @@ public final class ModTags {
         public static final TagKey<Block> HARDMODE = register("hardmode"); // todo
         public static final TagKey<Block> COINS = register("coins");
         public static final TagKey<Block> EASY_CRASH = register("easy_crash");
-        public static final TagKey<Block> VINES = register("vines");
         public static final TagKey<Block> MINEABLE_WITH_PICKAXE_AXE = register("mineable_with_pickaxe_axe");
         public static final TagKey<Block> DROOPING_VINE_CAN_SURVIVE = register("drooping_vine_can_survive");
         public static final TagKey<Block> JEWELLERY_BRANCHES_ATTACHABLE = register("jewellery_branches_attachable");
@@ -42,7 +41,6 @@ public final class ModTags {
         public static final TagKey<Block> COLD_CRYSTAL_ORE_REPLACEMENT = register("cold_crystal_ore_replacement");
         public static final TagKey<Block> GELSTONE_ORE_REPLACEMENT = register("gelstone_ore_replacement");
         public static final TagKey<Block> OPAL_ORE_REPLACEMENT = register("opal_ore_replacement");
-        public static final TagKey<Block> TOMBSTONE = register("tombstone");
         public static final TagKey<Block> ROPE = register("rope"); // 汇流的绳子
         public static final TagKey<Block> MINEABLE_WITH_HAMMER = register("mineable_with_hammer"); // 使用锤子挖掘更快
         public static final TagKey<Block> MINEABLE_WITH_HAMAXE = register("mineable_with_hamaxe"); // 锤斧
@@ -53,6 +51,8 @@ public final class ModTags {
         public static final TagKey<Block> CORRODED_WORM_ROOTS_BASE_BLOCK = register("corroded_worm_roots_base_block");
         public static final TagKey<Block> DECOMPOSE_THE_SOURCE_EXTRACT_BASE_BLOCK = register("decompose_the_source_extract_base_block");
         public static final TagKey<Block> SPREADABLE_GRASS_BLOCK = register("spreadable_grass_block");
+        public static final TagKey<Block> ENVIRONMENTAL_PRESERVATION = register("environmental_preservation");
+        public static final TagKey<Block> RELIC = register("relic"); // 圣物
 
         public static final TagKey<Block> PURE_CONVERSION_GRASS_BLOCK = register("pure_conversion_grass_block");
         public static final TagKey<Block> PURE_CONVERSION_JUNGLE_GRASS_BLOCK = register("pure_conversion_jungle_grass_block");
@@ -63,6 +63,7 @@ public final class ModTags {
         public static final TagKey<Block> PURE_CONVERSION_SANDSTONE = register("pure_conversion_sandstone");
         public static final TagKey<Block> PURE_CONVERSION_HARDENED_SAND_BLOCK = register("pure_conversion_hardened_sand_block");
         public static final TagKey<Block> PURE_CONVERSION_MOIST_SAND_BLOCK = register("pure_conversion_moist_sand_block");
+        public static final TagKey<Block> PURE_CONVERSION_CACTUS = register("pure_conversion_cactus");
 
         public static final TagKey<Block> CORRUPTION_CONVERSION_DIRT = register("corruption_conversion_dirt");
         public static final TagKey<Block> CORRUPTION_CONVERSION_GRASS_BLOCK = register("corruption_conversion_grass_block");
@@ -74,6 +75,7 @@ public final class ModTags {
         public static final TagKey<Block> CORRUPTION_CONVERSION_SANDSTONE = register("corruption_conversion_sandstone");
         public static final TagKey<Block> CORRUPTION_CONVERSION_HARDENED_SAND_BLOCK = register("corruption_conversion_hardened_sand_block");
         public static final TagKey<Block> CORRUPTION_CONVERSION_MOIST_SAND_BLOCK = register("corruption_conversion_moist_sand_block");
+        public static final TagKey<Block> CORRUPTION_CONVERSION_CACTUS = register("corruption_conversion_cactus");
 
         public static final TagKey<Block> CRIMSON_CONVERSION_DIRT = register("crimson_conversion_dirt");
         public static final TagKey<Block> CRIMSON_CONVERSION_GRASS_BLOCK = register("crimson_conversion_grass_block");
@@ -85,6 +87,7 @@ public final class ModTags {
         public static final TagKey<Block> CRIMSON_CONVERSION_SANDSTONE = register("crimson_conversion_sandstone");
         public static final TagKey<Block> CRIMSON_CONVERSION_HARDENED_SAND_BLOCK = register("crimson_conversion_hardened_sand_block");
         public static final TagKey<Block> CRIMSON_CONVERSION_MOIST_SAND_BLOCK = register("crimson_conversion_moist_sand_block");
+        public static final TagKey<Block> CRIMSON_CONVERSION_CACTUS = register("crimson_conversion_cactus");
 
         public static final TagKey<Block> HALLOW_CONVERSION_GRASS_BLOCK = register("hallow_conversion_grass_block");
         public static final TagKey<Block> HALLOW_CONVERSION_SHORT_GRASS = register("hallow_conversion_short_grass");
@@ -94,6 +97,7 @@ public final class ModTags {
         public static final TagKey<Block> HALLOW_CONVERSION_SANDSTONE = register("hallow_conversion_sandstone");
         public static final TagKey<Block> HALLOW_CONVERSION_HARDENED_SAND_BLOCK = register("hallow_conversion_hardened_sand_block");
         public static final TagKey<Block> HALLOW_CONVERSION_MOIST_SAND_BLOCK = register("hallow_conversion_moist_sand_block");
+        public static final TagKey<Block> HALLOW_CONVERSION_CACTUS = register("hallow_conversion_cactus");
 
         public static final TagKey<Block> CRIMSON_BLOCKS = register("crimson_blocks");
         public static final TagKey<Block> CRIMSON_DESERT_BLOCKS = register("crimson_desert_blocks");
@@ -105,6 +109,10 @@ public final class ModTags {
         public static final TagKey<Block> HALLOW_DESERT_BLOCKS = register("hallow_desert_blocks");
         public static final TagKey<Block> HALLOW_TUNDRA_BLOCKS = register("hallow_tundra_blocks");
         public static final TagKey<Block> GLOWING_MUSHROOM_BLOCKS = register("glowing_mushroom_blocks");
+
+        public static final TagKey<Block> VINES = c("vines");
+        public static final TagKey<Block> TOMBSTONE = c("tombstone");
+        public static final TagKey<Block> CACTUS = c("cactus");
 
         public static final TagKey<Block> ORES_TIN = c("ores/tin");
         public static final TagKey<Block> ORES_LEAD = c("ores/lead");
@@ -314,10 +322,12 @@ public final class ModTags {
 
         public static final TagKey<Item> NUGGETS_LEAD = c("nuggets/lead");
 
-        public static final TagKey<Item> HAMMERS = c("tools/hammers");
-        public static final TagKey<Item> LANCES = c("tools/lances");
-        public static final TagKey<Item> WEAPONS = c("weapons");
+        public static final TagKey<Item> TOOLS_HAMMER = c("tools/hammer");
+        public static final TagKey<Item> TOOLS_LANCE = c("tools/lance");
+        public static final TagKey<Item> TOOLS_DRILL = c("tools/drill");
+        public static final TagKey<Item> TOOLS_CHAINSAW = c("tools/tools_chainsaw");
 
+        public static final TagKey<Item> SPEAR = register("spear"); // neoforge那边为三叉戟
         public static final TagKey<Item> COINS = register("coins");
         public static final TagKey<Item> AMMO = register("ammo");
         public static final TagKey<Item> PET = register("pet");
@@ -382,7 +392,6 @@ public final class ModTags {
         public static final TagKey<Item> MOSS_ITEM = register("moss_item");
         public static final TagKey<Item> SUMMONER_WEAPON = register("summoner_weapon");
         public static final TagKey<Item> CROP_FORTUNE = register("crop_fortune");
-        public static final TagKey<Item> EVIL_KEY = register("evil_key"); // 用于地牢二层的门锁 todo 改为列表
         public static final TagKey<Item> TREASURE_BAG = register("treasure_bag");
         public static final TagKey<Item> FAST_BOW = register("fast_bow");
         public static final TagKey<Item> ABLE_TO_DESTROY_ALTAR = register("able_to_destroy_altar");
@@ -392,6 +401,8 @@ public final class ModTags {
         public static final TagKey<Item> DEATH = register("death");
         public static final TagKey<Item> UNABLE_TO_APPLY_PREFIX = register("unable_to_apply_prefix"); // 不能上词缀
         public static final TagKey<Item> ANTIGRAVITY = register("antigravity"); // 无视重力
+        public static final TagKey<Item> LAVA_PROOF_BAIT = register("lava_proof_bait"); // 防熔岩鱼饵
+        public static final TagKey<Item> COULD_AUTO_ATTACK = register("could_auto_attack"); // 允许自动挥舞
 
         private static TagKey<Item> c(String name) {
             return ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", name));
@@ -422,9 +433,18 @@ public final class ModTags {
     }
 
     public static class EntityTypes {
-        public static final TagKey<EntityType<?>> SPAWN_AT_DUNGEON = Confluence.asTagKey(Registries.ENTITY_TYPE, "spawn_at_dungeon"); // 允许生成在地牢的生物
-        public static final TagKey<EntityType<?>> LAVA_BUG_NET_ALLOWS = Confluence.asTagKey(Registries.ENTITY_TYPE, "lava_bug_net_allows"); // 熔岩萤火虫、岩浆蜗牛和地狱蝴蝶; 用于区分普通虫网与防熔岩虫网
-        public static final TagKey<EntityType<?>> FEALING_TRANSMUTATION = Confluence.asTagKey(Registries.ENTITY_TYPE, "fealing_transmutation"); // 可转化为飞灵的生物
+        public static final TagKey<EntityType<?>> SPAWN_AT_DUNGEON = register("spawn_at_dungeon"); // 允许生成在地牢的生物
+        public static final TagKey<EntityType<?>> LAVA_BUG_NET_ALLOWS = register("lava_bug_net_allows"); // 熔岩萤火虫、岩浆蜗牛和地狱蝴蝶; 用于区分普通虫网与防熔岩虫网
+        public static final TagKey<EntityType<?>> FEALING_TRANSMUTATION = register("fealing_transmutation"); // 可转化为飞灵的生物
+        public static final TagKey<EntityType<?>> SPAWN_AT_GRAVEYARD = register("spawn_at_graveyard"); // 可以生成在墓地的生物
+        public static final TagKey<EntityType<?>> DO_NOT_DROPS_EVIL_SOUL = register("do_not_drops_evil_soul"); // 不掉落光明或暗影之魂
+        public static final TagKey<EntityType<?>> BESTIARY_BLACKLIST = register("bestiary_blacklist"); // 怪物图鉴黑名单
+        public static final TagKey<EntityType<?>> CRITTER_COMPANIONSHIP_WHITELIST = register("critter_companionship_whitelist"); // 小动物保护指南白名单
+        public static final TagKey<EntityType<?>> CRITTER_COMPANIONSHIP_BLACKLIST = register("critter_companionship_blacklist"); // 小动物保护指南黑名单
+
+        private static TagKey<EntityType<?>> register(String id) {
+            return Confluence.asTagKey(Registries.ENTITY_TYPE, id);
+        }
     }
 
     public static class Enchantments {

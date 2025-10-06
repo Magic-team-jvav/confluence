@@ -4,10 +4,9 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class ForwardSwordProjectile extends SwordProjectile<ForwardSwordProjectile> {
-
-    public ForwardSwordProjectile(EntityType<ForwardSwordProjectile> entityType, Level pLevel) {
-        super(entityType, pLevel);
+public class ForwardSwordProjectile extends SwordProjectile {
+    public ForwardSwordProjectile(EntityType<? extends ForwardSwordProjectile> type, Level level) {
+        super(type, level);
     }
 
     @Override
@@ -18,15 +17,13 @@ public class ForwardSwordProjectile extends SwordProjectile<ForwardSwordProjecti
         double offY = getY() + vec3.y;
         double offZ = getZ() + vec3.z;
         float accelerate;
-        if(projComponent != null){
+        if (projComponent != null) {
             accelerate = projComponent.acceleration();
-        }else{
+        } else {
             accelerate = 0.8f;
         }
 
         setDeltaMovement(vec3.scale(accelerate));
         setPos(offX, offY, offZ);
     }
-
-
 }

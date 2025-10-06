@@ -6,16 +6,13 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.protocol.game.ClientboundPlayerCombatKillPacket;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import org.confluence.mod.common.init.ModSoundEvents;
-import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
 import org.confluence.mod.mixed.IDeathScreen;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.network.s2c.*;
+import org.confluence.mod.util.ClientUtils;
 import org.confluence.phase_journey.mixed.ILevelRenderer;
 
-@OnlyIn(Dist.CLIENT)
 public final class ClientPacketHandler {
     private static int maxMana = 20;
     private static float currentMana = 20;
@@ -83,7 +80,7 @@ public final class ClientPacketHandler {
             }
         }
         if ((mask & VisibilityPacketS2C.THE_CONSTANT_POST_EFFECT) != 0) {
-            TheConstant.postEffect(visible);
+            ClientUtils.postTheConstantEffect(visible);
         }
         if ((mask & VisibilityPacketS2C.SIGNAL) != 0) {
             showSignal = visible;

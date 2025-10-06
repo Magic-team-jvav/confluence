@@ -33,7 +33,7 @@ public abstract class MinecraftMixin {
 
     @Inject(method = "doWorldLoad", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;setScreen(Lnet/minecraft/client/gui/screens/Screen;)V"))
     private void setSecretFlag(LevelStorageSource.LevelStorageAccess levelStorage, PackRepository packRepository, WorldStem worldStem, boolean newWorld, CallbackInfo ci, @Local LevelLoadingScreen levelloadingscreen) {
-        ((ILevelLoadingScreen) levelloadingscreen).confluence$setSecretFlag(((IWorldOptions) worldStem.worldData().worldGenOptions()).confluence$getSecretFlag());
+        ILevelLoadingScreen.of(levelloadingscreen).confluence$setSecretFlag(IWorldOptions.of(worldStem.worldData().worldGenOptions()).confluence$getSecretFlag());
     }
 
     @Inject(method = "shouldEntityAppearGlowing", at = @At(value = "HEAD"), cancellable = true)

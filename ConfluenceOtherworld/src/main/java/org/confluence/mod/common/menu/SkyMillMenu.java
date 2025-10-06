@@ -89,8 +89,8 @@ public class SkyMillMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public boolean stillValid(Player pPlayer) {
-        return stillValid(access, pPlayer, FunctionalBlocks.SKY_MILL.get());
+    public boolean stillValid(Player player) {
+        return stillValid(access, player, FunctionalBlocks.SKY_MILL.get());
     }
 
     public int getSelectedRecipeIndex() {
@@ -110,20 +110,20 @@ public class SkyMillMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public boolean clickMenuButton(Player pPlayer, int pId) {
-        if (isValidRecipeIndex(pId)) {
-            selectedRecipeIndex.set(pId);
+    public boolean clickMenuButton(Player player, int id) {
+        if (isValidRecipeIndex(id)) {
+            selectedRecipeIndex.set(id);
             setupResultSlot();
         }
         return true;
     }
 
-    private boolean isValidRecipeIndex(int pRecipeIndex) {
-        return pRecipeIndex >= 0 && pRecipeIndex < recipes.size();
+    private boolean isValidRecipeIndex(int recipeIndex) {
+        return recipeIndex >= 0 && recipeIndex < recipes.size();
     }
 
     @Override
-    public void slotsChanged(Container pInventory) {
+    public void slotsChanged(Container container) {
         this.recipes = player.level().getRecipeManager().getRecipesFor(ModRecipes.SKY_MILL_TYPE.get(), input, player.level());
         if (selectedRecipeIndex.get() >= recipes.size()) selectedRecipeIndex.set(recipes.size() - 1);
         access.execute((level, pos) -> {
@@ -158,41 +158,39 @@ public class SkyMillMenu extends AbstractContainerMenu {
         broadcastChanges();
     }
 
-    public void registerUpdateListener(Runnable pListener) {
-        this.slotUpdateListener = pListener;
+    public void registerUpdateListener(Runnable listener) {
+        this.slotUpdateListener = listener;
     }
 
     @Override
-    public boolean canTakeItemForPickAll(ItemStack pStack, Slot pSlot) {
-        return pSlot.container != result && super.canTakeItemForPickAll(pStack, pSlot);
+    public boolean canTakeItemForPickAll(ItemStack stack, Slot slot) {
+        return slot.container != result && super.canTakeItemForPickAll(stack, slot);
     }
 
     @Override
-    public ItemStack quickMoveStack(Player pPlayer, int pIndex) {
+    public ItemStack quickMoveStack(Player player, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
-        Slot slot = slots.get(pIndex);
+        Slot slot = slots.get(index);
         if (slot.hasItem()) {
             ItemStack itemstack1 = slot.getItem();
             Item item = itemstack1.getItem();
             itemstack = itemstack1.copy();
-            if (pIndex == 0) {
-                item.onCraftedBy(itemstack1, pPlayer.level(), pPlayer);
+            if (index == 0) {
+                item.onCraftedBy(itemstack1, player.level(), player);
                 if (!moveItemStackTo(itemstack1, INV_SLOT_START, USE_ROW_SLOT_END, true)) {
                     return ItemStack.EMPTY;
                 }
                 slot.onQuickCraft(itemstack1, itemstack);
-            } else if (pIndex < 4) {
+            } else if (index < 4) {
                 if (!moveItemStackTo(itemstack1, INV_SLOT_START, USE_ROW_SLOT_END, false)) {
                     return ItemStack.EMPTY;
                 }
-            } else {
-                if (!moveItemStackTo(itemstack1, 1, 4, false)) {
-                    return ItemStack.EMPTY;
-                } else if (pIndex < INV_SLOT_END) {
+            } else if (!moveItemStackTo(itemstack1, 1, 4, false)) {
+                if (index < INV_SLOT_END) {
                     if (!moveItemStackTo(itemstack1, USE_ROW_SLOT_START, USE_ROW_SLOT_END, false)) {
                         return ItemStack.EMPTY;
                     }
-                } else if (pIndex < USE_ROW_SLOT_END && !moveItemStackTo(itemstack1, INV_SLOT_START, INV_SLOT_END, false)) {
+                } else if (index < USE_ROW_SLOT_END && !moveItemStackTo(itemstack1, INV_SLOT_START, INV_SLOT_END, false)) {
                     return ItemStack.EMPTY;
                 }
             }
@@ -206,7 +204,7 @@ public class SkyMillMenu extends AbstractContainerMenu {
                 return ItemStack.EMPTY;
             }
 
-            slot.onTake(pPlayer, itemstack1);
+            slot.onTake(player, itemstack1);
             broadcastChanges();
         }
 
@@ -214,9 +212,9 @@ public class SkyMillMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public void removed(Player pPlayer) {
-        super.removed(pPlayer);
+    public void removed(Player player) {
+        super.removed(player);
         result.removeItemNoUpdate(0);
-        access.execute((level, blockPos) -> clearContainer(pPlayer, input));
+        access.execute((level, blockPos) -> clearContainer(player, input));
     }
 }

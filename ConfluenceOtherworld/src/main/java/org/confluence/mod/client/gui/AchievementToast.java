@@ -1,5 +1,7 @@
 package org.confluence.mod.client.gui;
 
+import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
+import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.advancements.AdvancementType;
 import net.minecraft.client.gui.Font;
@@ -12,8 +14,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.util.AchievementUtils;
@@ -27,11 +27,11 @@ import java.util.List;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-@OnlyIn(Dist.CLIENT)
 public class AchievementToast implements Toast {
     public static final Component DISPLAY = Component.translatable("achievements.toast.complete");
     private static final ResourceLocation TEXTURE = Confluence.asResource("textures/achievement/toast.png");
     private static final Hashtable<ResourceLocation, AchievementToast> ACHIEVEMENTS = new Hashtable<>();
+    private static final Object2BooleanMap<ResourceLocation> HIDE_LINK = new Object2BooleanOpenHashMap<>();
     private final ResourceLocation icon;
     private final Display display;
     public boolean playedSound;
@@ -157,7 +157,7 @@ public class AchievementToast implements Toast {
         return false;
     }
 
-    public static void registerToast(ResourceLocation id) {
+    public static void registerToast(ResourceLocation id, boolean hideLink) {
         String namespace = id.getNamespace();
         String path = id.getPath().substring(AchievementUtils.PREFIX.length());
         ACHIEVEMENTS.put(ResourceLocation.fromNamespaceAndPath(namespace, AchievementUtils.PREFIX + path), new AchievementToast(
@@ -166,14 +166,20 @@ public class AchievementToast implements Toast {
                         Component.translatable("achievements." + namespace + "." + path + ".title"),
                         Component.translatable("achievements." + namespace + "." + path + ".description")
                 )));
+        HIDE_LINK.put(id, hideLink);
     }
 
     public static @Nullable AchievementToast getToast(ResourceLocation advancement) {
         return ACHIEVEMENTS.get(advancement);
     }
 
+    public static boolean hideLink(ResourceLocation id, boolean defaultValue) {
+        return HIDE_LINK.getOrDefault(id, defaultValue);
+    }
+
     public static void clearToast() {
         ACHIEVEMENTS.clear();
+        HIDE_LINK.clear();
     }
 
     public record Display(AdvancementType type, Component title, Component description) {}

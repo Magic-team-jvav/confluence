@@ -23,7 +23,6 @@ import static org.confluence.mod.integration.jei.ModJeiPlugin.addInput;
 
 public class SkyMillCategory implements IRecipeCategory<RecipeHolder<SkyMillRecipe>> {
     public static final RecipeType<RecipeHolder<SkyMillRecipe>> TYPE = RecipeType.createRecipeHolderType(Confluence.asResource("sky_mill"));
-    private static final Component TITLE = Component.translatable("title.confluence.sky_mill");
     private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/sky_mill.png");
     private final IDrawable icon;
 
@@ -38,7 +37,7 @@ public class SkyMillCategory implements IRecipeCategory<RecipeHolder<SkyMillReci
 
     @Override
     public Component getTitle() {
-        return TITLE;
+        return Component.translatable("title.confluence.sky_mill");
     }
 
     @Override
@@ -82,7 +81,6 @@ public class SkyMillCategory implements IRecipeCategory<RecipeHolder<SkyMillReci
 
     @Override
     public void getTooltip(ITooltipBuilder tooltip, RecipeHolder<SkyMillRecipe> recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
-        IRecipeCategory.super.getTooltip(tooltip, recipe, recipeSlotsView, mouseX, mouseY);
         tooltip.addAll(recipe.value().getEnvironment().toDescriptions());
     }
 }

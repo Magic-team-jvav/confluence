@@ -16,6 +16,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.util.Tuple;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -34,7 +35,6 @@ import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.mixed.IDedicatedServer;
 import org.confluence.mod.mixed.IMinecraftServer;
-import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.network.s2c.SecretFlagSyncPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.OverworldUtils;
@@ -123,10 +123,10 @@ public final class HardmodeConvertor implements IGlobalData {
                     dedicatedServer.confluence$setOnHardmodeConversation(false);
                 }
                 SecretFlagSyncPacketS2C.sendToAll(IMinecraftServer.of(server).confluence$getSecretFlag());
-                for (ServerPlayer serverPlayer : server.getPlayerList().getPlayers()) {
-                    AchievementUtils.awardAchievement(serverPlayer, "its_hard");
+                for (ServerPlayer player : server.getPlayerList().getPlayers()) {
+                    AchievementUtils.awardAchievement(player, "its_hard");
                 }
-                IMinecraftServer.of(server).confluence$updateSecretFlag(IWorldOptions.HARDMODE);
+                KillBoard.onUnlockHardmode(server);
                 print(server, Component.translatable("event.confluence.hardmode_conversion.hardmode"), !FMLEnvironment.production);
                 print(server, Component.translatable("event.confluence.hardmode_conversion.finished").withColor(GlobalColors.MESSAGE.get()), true);
                 print(server, Component.translatable("event.confluence.hardmode_conversion.welcome").withColor(GlobalColors.EVENT.get()), true);
@@ -138,7 +138,7 @@ public final class HardmodeConvertor implements IGlobalData {
                 dedicatedServer.confluence$setOnHardmodeConversation(true);
             }
             if (CommonConfigs.INSTANTLY_HARDMODE_CONVERSION.get()) {
-                Confluence.LOGGER.info("Starting hardmode conversion ...");
+                Confluence.LOGGER.debug("Starting hardmode conversion ...");
                 Stopwatch stopwatch = Stopwatch.createStarted();
                 sanctification.removeIf(entry -> {
                     ChunkPos chunkPos = entry.getA();
@@ -150,8 +150,8 @@ public final class HardmodeConvertor implements IGlobalData {
 
                     return refilled;
                 });
-                Confluence.LOGGER.info("Hardmode conversion took {}", stopwatch.stop());
-            } else if (serverLevel.getGameTime() % 5 == 0) {
+                Confluence.LOGGER.debug("Hardmode conversion took {}", stopwatch.stop());
+            } else if (serverLevel.getGameTime() % 5 == 0 && serverLevel.getServer().getPlayerList().getPlayers().stream().noneMatch(Entity::isRemoved)) {
                 Tuple<ChunkPos, BlockPosColumn[][]> entry = sanctification.getFirst();
                 ChunkPos chunkPos = entry.getA();
 

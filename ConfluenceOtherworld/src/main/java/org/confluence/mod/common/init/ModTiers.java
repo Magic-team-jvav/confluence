@@ -6,7 +6,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.Tiers;
-import net.minecraft.world.item.component.Tool;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -15,7 +14,6 @@ import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
 import java.util.function.Supplier;
 
 /**
@@ -44,8 +42,8 @@ public final class ModTiers {
     public static final Tier HELLSTONE = new PoweredTier(100, ModTags.Blocks.NEEDS_6_LEVEL, 10000, 30, 7, 15, () -> Ingredient.of(MaterialItems.HELLSTONE_INGOT));
     public static final Tier COBALT = new PoweredTier(110, ModTags.Blocks.NEEDS_7_LEVEL, 10000, 31, 8, 15, () -> Ingredient.of(MaterialItems.COBALT_INGOT));
     public static final Tier PALLADIUM = new PoweredTier(130, ModTags.Blocks.NEEDS_7_LEVEL, 10000, 32, 12, 15, () -> Ingredient.of(MaterialItems.PALLADIUM_INGOT));
-    public static final Tier MYTHRIL = new PoweredTier(150, ModTags.Blocks.NEEDS_7_LEVEL, 10000, 33, 14, 16, () -> Ingredient.of(MaterialItems.MYTHRIL_INGOT));
-    public static final Tier ORICHALCUM = new PoweredTier(165, ModTags.Blocks.NEEDS_7_LEVEL, 10000, 34, 16, 16, () -> Ingredient.of(MaterialItems.ORICHALCUM_INGOT));
+    public static final Tier MYTHRIL = new PoweredTier(150, ModTags.Blocks.NEEDS_8_LEVEL, 10000, 33, 14, 16, () -> Ingredient.of(MaterialItems.MYTHRIL_INGOT));
+    public static final Tier ORICHALCUM = new PoweredTier(165, ModTags.Blocks.NEEDS_8_LEVEL, 10000, 34, 16, 16, () -> Ingredient.of(MaterialItems.ORICHALCUM_INGOT));
     public static final Tier ADAMANTITE = new PoweredTier(180, ModTags.Blocks.NEEDS_8_LEVEL, 10000, 35, 22, 17, () -> Ingredient.of(MaterialItems.ADAMANTITE_INGOT));
     public static final Tier TITANIUM = new PoweredTier(190, ModTags.Blocks.NEEDS_8_LEVEL, 10000, 36, 24, 18, () -> Ingredient.of(MaterialItems.TITANIUM_INGOT));
     public static final Tier SPECTRE = new PoweredTier(200, ModTags.Blocks.NEEDS_9_LEVEL, 10000, 48, 26, 21, () -> Ingredient.of(MaterialItems.SPECTRE_INGOT));
@@ -80,9 +78,9 @@ public final class ModTiers {
      * 191 ======================= 8 <p>
      * 190 钛金 <p>
      * 180 精金 <p>
-     * 166 ======================= 7 <p>
      * 165 山铜 <p>
      * 150 秘银 <p>
+     * 131 ======================= 7 <p>
      * 130 钯金 <p>
      * 110 钴 <p>
      * 101 ======================= 6 <p>
@@ -111,7 +109,7 @@ public final class ModTiers {
         if (!pickaxeItem.isCorrectToolForDrops(blockState)) return false;
         if (power == -1 || power >= 201) return true;
         if (power >= 191) return !blockState.is(ModTags.Blocks.NEEDS_9_LEVEL);
-        if (power >= 166) return !blockState.is(ModTags.Blocks.NEEDS_8_LEVEL);
+        if (power >= 131) return !blockState.is(ModTags.Blocks.NEEDS_8_LEVEL);
         if (power >= 101) return !blockState.is(ModTags.Blocks.NEEDS_7_LEVEL);
         if (power >= 71) return !blockState.is(ModTags.Blocks.NEEDS_6_LEVEL);
         if (power >= 60) return !blockState.is(ModTags.Blocks.NEEDS_5_LEVEL);
@@ -140,14 +138,6 @@ public final class ModTiers {
 
         public int getPower() {
             return power;
-        }
-
-        @Override
-        public @NotNull Tool createToolProperties(@NotNull TagKey<Block> block) {
-            return new Tool(List.of(
-                    Tool.Rule.deniesDrops(getIncorrectBlocksForDrops()),
-                    Tool.Rule.minesAndDrops(block, getSpeed())
-            ), 1.0F, 1);
         }
 
         @Override

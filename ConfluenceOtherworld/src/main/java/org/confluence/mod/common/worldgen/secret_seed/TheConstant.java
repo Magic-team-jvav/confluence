@@ -1,8 +1,5 @@
 package org.confluence.mod.common.worldgen.secret_seed;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.PostChain;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -11,8 +8,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModDamageTypes;
@@ -61,22 +56,6 @@ public class TheConstant extends SecretSeed {
                 }
             } else if (tick != 0) {
                 data.putInt("confluence:in_darkness_tick", 0);
-            }
-        }
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public static void postEffect(boolean post) {
-        GameRenderer gameRenderer = Minecraft.getInstance().gameRenderer;
-        PostChain postChain = gameRenderer.currentEffect();
-        if (post) {
-            if (postChain == null || !POST_EFFECT.toString().equals(postChain.getName())) {
-                gameRenderer.loadEffect(POST_EFFECT);
-            }
-            gameRenderer.effectActive = true;
-        } else {
-            if (postChain != null && POST_EFFECT.toString().equals(postChain.getName())) {
-                gameRenderer.effectActive = false;
             }
         }
     }

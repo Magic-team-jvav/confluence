@@ -4,7 +4,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -15,6 +14,7 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.ModTags;
@@ -63,13 +63,16 @@ public class ToolItems {
     public static final DeferredItem<WireCutterItem> WIRE_CUTTER = ITEMS.register("wire_cutter", WireCutterItem::new);
 
     public static final DeferredItem<EncumberingStoneItem> ENCUMBERING_STONE = ITEMS.register("encumbering_stone", EncumberingStoneItem::new);
+    public static final DeferredItem<GuideToCritterCompanionshipItem> GUIDE_TO_CRITTER_COMPANIONSHIP = ITEMS.register("guide_to_critter_companionship", GuideToCritterCompanionshipItem::new);
+    public static final DeferredItem<GuideToEnvironmentalPreservationItem> GUIDE_TO_ENVIRONMENTAL_PRESERVATION = ITEMS.register("guide_to_environmental_preservation", GuideToEnvironmentalPreservationItem::new);
+    public static final DeferredItem<GuideToPeacefulCoexistenceItem> GUIDE_TO_PEACEFUL_COEXISTENCE = ITEMS.register("guide_to_peaceful_coexistence", GuideToPeacefulCoexistenceItem::new);
     public static final DeferredItem<MagicMirror> ICE_MIRROR = ITEMS.register("ice_mirror", () -> new MagicMirror(ModRarity.BLUE));
     public static final DeferredItem<MagicConch> MAGIC_CONCH = ITEMS.register("magic_conch", () -> new MagicConch(new Item.Properties().stacksTo(1), ModRarity.BLUE));
     public static final DeferredItem<DemonConch> DEMON_CONCH = ITEMS.register("demon_conch", DemonConch::new);
 
-    public static final DeferredItem<BugNetItem> BUG_NET = ITEMS.register("bug_net", () -> new BugNetItem(ModRarity.BLUE, TooltipItem.getTooltipsFromString("bug_net", 1, ChatFormatting.GRAY), 0.5, living -> living instanceof Animal && !living.getType().is(ModTags.EntityTypes.LAVA_BUG_NET_ALLOWS)));
-    public static final DeferredItem<BugNetItem> LAVAPROOF_BUG_NET = ITEMS.register("lavaproof_bug_net", () -> new BugNetItem(ModRarity.ORANGE, TooltipItem.getTooltipsFromString("lavaproof_bug_net", 1, ChatFormatting.GRAY), 0.5, living -> living instanceof Animal));
-    public static final DeferredItem<BugNetItem> GOLDEN_BUG_NET = ITEMS.register("golden_bug_net", () -> new BugNetItem(ModRarity.QUEST, TooltipItem.getTooltipsFromString("golden_bug_net", 2, ChatFormatting.GRAY), 1.1, living -> living instanceof Animal));
+    public static final DeferredItem<BugNetItem> BUG_NET = ITEMS.register("bug_net", () -> new BugNetItem(ModRarity.BLUE, TooltipItem.getTooltipsFromString("bug_net", 1, ChatFormatting.GRAY), 0.5, living -> LibUtils.isAnimal(living) && !living.getType().is(ModTags.EntityTypes.LAVA_BUG_NET_ALLOWS)));
+    public static final DeferredItem<BugNetItem> LAVAPROOF_BUG_NET = ITEMS.register("lavaproof_bug_net", () -> new BugNetItem(ModRarity.ORANGE, TooltipItem.getTooltipsFromString("lavaproof_bug_net", 1, ChatFormatting.GRAY), 0.5, LibUtils::isAnimal));
+    public static final DeferredItem<BugNetItem> GOLDEN_BUG_NET = ITEMS.register("golden_bug_net", () -> new BugNetItem(ModRarity.QUEST, TooltipItem.getTooltipsFromString("golden_bug_net", 2, ChatFormatting.GRAY), 1.1, LibUtils::isAnimal));
     public static final DeferredItem<BugNetItem> DEV_BUG_NET = ITEMS.register("dev_bug_net", () -> new BugNetItem(ModRarity.MASTER, TooltipItem.getTooltipsFromString("dev_bug_net", 1, ChatFormatting.GRAY), Double.MAX_VALUE, living -> !(living instanceof Player)));
 
     public static final DeferredItem<RopeCoilItem> ROPE_COIL = ITEMS.register("rope_coil", () -> new RopeCoilItem(new Item.Properties(), ModBlocks.ROPE.get()));
@@ -83,7 +86,7 @@ public class ToolItems {
     public static final DeferredItem<NPCInvitationItem> NPC_INVITATION = ITEMS.register("npc_invitation", NPCInvitationItem::new);
     public static final DeferredItem<DungeonCompass> DUNGEON_COMPASS = ITEMS.register("dungeon_compass", DungeonCompass::new);
 
-    public static final DeferredItem<MagicDropperItem> EMPTY_DROPPER = ITEMS.register("empty_dropper", () -> new MagicDropperItem(null){
+    public static final DeferredItem<MagicDropperItem> EMPTY_DROPPER = ITEMS.register("empty_dropper", () -> new MagicDropperItem(null) {
         @Override
         public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
             tooltipComponents.add(Component.translatable("tooltip.item.confluence.empty_dropper.0"));

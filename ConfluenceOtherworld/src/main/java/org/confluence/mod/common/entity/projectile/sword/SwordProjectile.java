@@ -33,7 +33,7 @@ import java.util.Comparator;
 /**
  * 基础属性如伤害、击退、初始位置由弹幕容器设置，弹幕实体只定义运动、伤害公式、碰撞检测
  */
-public abstract class SwordProjectile<T extends SwordProjectile<T>> extends AbstractHurtingProjectile implements ICollisionAttackEntity<T> {
+public abstract class SwordProjectile extends AbstractHurtingProjectile implements ICollisionAttackEntity {
 
     // 可调参数
     public int lifetime = 40;

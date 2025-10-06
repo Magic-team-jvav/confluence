@@ -1,7 +1,6 @@
 package org.confluence.mod.common.entity.projectile.mana;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -22,7 +21,6 @@ import org.mesdag.particlestorm.particle.ParticleEmitter;
 public class BallOfFireProjectile extends AbstractManaProjectile {
     private int collideCount = 0;
     private ParticleEmitter emitter;
-    private ParticleEmitter trail;
 
     public BallOfFireProjectile(EntityType<BallOfFireProjectile> entityType, Level level) {
         super(entityType, level);
@@ -56,18 +54,14 @@ public class BallOfFireProjectile extends AbstractManaProjectile {
         }
         setDeltaMovement(motion.scale(0.99).add(0.0, -0.04, 0.0));
 
-        if (!(level() instanceof ServerLevel serverLevel)) {
-            if ((emitter == null || trail == null)) {
-                this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("ball_of_fire"));
-                this.trail = new ParticleEmitter(level(), position(), Confluence.asResource("ball_of_fire_trail"));
-                emitter.attached = this;
-                trail.attached = this;
-                PSGameClient.LOADER.addEmitter(emitter, false);
-                PSGameClient.LOADER.addEmitter(trail, false);
-            }
-        } else if (ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity) instanceof EntityHitResult entityHitResult) {
+        if (level().isClientSide && (emitter == null || emitter.isRemoved())) {
+            this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("ball_of_fire"));
+            emitter.attachEntity(this);
+            PSGameClient.LOADER.addEmitter(emitter, false);
+        }
+        if (ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity) instanceof EntityHitResult entityHitResult) {
             Entity entity = entityHitResult.getEntity();
-            boolean ddu = ModSecretSeeds.DONT_DIG_UP.match(serverLevel);
+            boolean ddu = ModSecretSeeds.DONT_DIG_UP.match();
             if (random.nextBoolean()) {
                 if (ddu && entity instanceof LivingEntity living) {
                     living.addEffect(new MobEffectInstance(TEEffects.HELLFIRE, 100));

@@ -68,7 +68,8 @@
 						"1.0": "#FFFF0000"
 					}
 				}
-			}
+			},
+			"minecraft:particle_motion_collision": {}
 		}
 	}
 }

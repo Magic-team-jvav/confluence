@@ -13,11 +13,15 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.VectorUtils;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
+import org.mesdag.particlestorm.PSGameClient;
+import org.mesdag.particlestorm.particle.ParticleEmitter;
 
 public class BallOfFrostProjectile extends AbstractManaProjectile {
     private int collideCount = 0;
+    private ParticleEmitter emitter;
 
     public BallOfFrostProjectile(EntityType<? extends AbstractManaProjectile> entityType, Level level) {
         super(entityType, level);
@@ -47,6 +51,11 @@ public class BallOfFrostProjectile extends AbstractManaProjectile {
         }
         setDeltaMovement(motion);
 
+        if (level().isClientSide && (emitter == null || emitter.isRemoved())) {
+            this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("ball_of_frost"));
+            emitter.attachEntity(this);
+            PSGameClient.LOADER.addEmitter(emitter, false);
+        }
         if (ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity) instanceof EntityHitResult entityHitResult) {
             Entity entity = entityHitResult.getEntity();
             if (entity instanceof LivingEntity living) {
@@ -59,6 +68,7 @@ public class BallOfFrostProjectile extends AbstractManaProjectile {
 
         if (tickCount > 1200) discard();
     }
+
 
     @Override
     protected void readAdditionalSaveData(CompoundTag compound) {

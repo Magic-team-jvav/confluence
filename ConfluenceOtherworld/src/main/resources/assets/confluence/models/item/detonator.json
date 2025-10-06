@@ -1,3 +1,3 @@
 {
-    "parent": "confluence:block/detonator_close"
+    "parent": "confluence:block/detonator_push"
 }

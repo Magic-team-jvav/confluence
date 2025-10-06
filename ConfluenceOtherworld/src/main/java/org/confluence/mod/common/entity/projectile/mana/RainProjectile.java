@@ -5,6 +5,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
@@ -18,6 +19,7 @@ import java.util.UUID;
 
 public class RainProjectile extends AbstractManaProjectile implements Immunity {
     protected final Set<UUID> penetrateSet = new HashSet<>();
+    private int maxPenetrate = 2;
 
     public RainProjectile(EntityType<? extends RainProjectile> entityType, Level level) {
         super(entityType, level);
@@ -29,6 +31,10 @@ public class RainProjectile extends AbstractManaProjectile implements Immunity {
         setPos(position);
     }
 
+    public void setMaxPenetrate(int maxPenetrate) {
+        this.maxPenetrate = maxPenetrate;
+    }
+
     @Override
     public void baseTick() {
         if (tickCount > 200) {
@@ -37,19 +43,19 @@ public class RainProjectile extends AbstractManaProjectile implements Immunity {
         }
         super.baseTick();
 
-        HitResult hitresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
+        HitResult hitresult = ProjectileUtil.getHitResult(position(), this, this::canHitEntity, getDeltaMovement(), level(), 0.6F, ClipContext.Block.COLLIDER);
         checkInsideBlocks();
         HitResult.Type hitresult$type = hitresult.getType();
         if (hitresult$type == HitResult.Type.BLOCK) {
             onHitBlock((BlockHitResult) hitresult);
             discard();
             return;
-        } else if (hitresult$type == HitResult.Type.ENTITY) {
+        } else if (!level().isClientSide && hitresult$type == HitResult.Type.ENTITY) {
             Entity entity = ((EntityHitResult) hitresult).getEntity();
             if (!penetrateSet.contains(entity.getUUID())) {
                 entity.hurt(getDamagesource(), getCalculatedDamage());
                 penetrateSet.add(entity.getUUID());
-                if (penetrateSet.size() == 2) {
+                if (penetrateSet.size() == maxPenetrate) {
                     discard();
                     return;
                 }

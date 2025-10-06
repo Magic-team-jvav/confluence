@@ -1,10 +1,7 @@
 {
     "values": [
-        "minecraft:water",
-        "minecraft:flowing_water",
-        "confluence:honey",
-        "confluence:flowing_honey",
-        "confluence:shimmer",
-        "confluence:flowing_shimmer"
+        "#minecraft:water",
+        "#c:honey",
+        "#confluence:shimmer"
     ]
 }

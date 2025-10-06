@@ -1,6 +1,7 @@
 package org.confluence.mod.common.entity.projectile.bomb;
 
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
@@ -30,7 +31,7 @@ public class SmokeBombEntity extends BaseBombEntity {
     }
 
     @Override
-    protected void explodeFunction() {}
+    protected void explodeFunction(ServerLevel level) {}
 
     @Override
     protected void createEmitter() {}

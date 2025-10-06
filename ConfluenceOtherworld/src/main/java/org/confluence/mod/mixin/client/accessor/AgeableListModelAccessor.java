@@ -31,5 +31,4 @@ public interface AgeableListModelAccessor {
 
     @Invoker
     Iterable<ModelPart> callBodyParts();
-
 }

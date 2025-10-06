@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibDateUtils;
 import org.confluence.mod.common.init.item.FoodItems;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
@@ -26,9 +27,9 @@ public class Moonglow extends BaseHerbBlock {
 	}
 
 	@Override
-	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder){
-		super.createBlockStateDefinition(pBuilder);
-		pBuilder.add(PROP_LIGHT);
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder);
+        builder.add(PROP_LIGHT);
 	}
 
 
@@ -38,24 +39,24 @@ public class Moonglow extends BaseHerbBlock {
 	}
 
 	@Override
-	public void animateTick(BlockState pState, Level pLevel, BlockPos pPos, RandomSource pRandom){
-		if(getAge(pState) != MAX_AGE) return;
-		int r = pRandom.nextInt(200);
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
+        if (getAge(state) != MAX_AGE) return;
+        int r = random.nextInt(200);
 		int brightness;
 		if(r < 10){
-			pLevel.setBlockAndUpdate(pPos, pState.setValue(PROP_LIGHT, 5));
-			Vec3 center = pPos.getCenter().offsetRandom(pRandom,0.6f);
-			pLevel.addParticle(new DustParticleOptions(new Vector3f(0, 0.7f, 1), 1), center.x, center.y / 2, center.z, 10,10,10);
-			center = pPos.getCenter().offsetRandom(pRandom,0.6f);
-			pLevel.addParticle(new DustParticleOptions(new Vector3f(0, 0.7f, 1), 1), center.x, center.y / 2, center.z, 10,10,10);
-		}else if(r < 160 && (brightness = pState.getValue(PROP_LIGHT)) > BRIGHTNESS){
-			pLevel.setBlockAndUpdate(pPos, pState.setValue(PROP_LIGHT, brightness - 1));
+            level.setBlockAndUpdate(pos, state.setValue(PROP_LIGHT, 5));
+            Vec3 center = pos.getCenter().offsetRandom(random, 0.6f);
+            level.addParticle(new DustParticleOptions(new Vector3f(0, 0.7f, 1), 1), center.x, center.y / 2, center.z, 10, 10, 10);
+            center = pos.getCenter().offsetRandom(random, 0.6f);
+            level.addParticle(new DustParticleOptions(new Vector3f(0, 0.7f, 1), 1), center.x, center.y / 2, center.z, 10, 10, 10);
+        } else if (r < 160 && (brightness = state.getValue(PROP_LIGHT)) > BRIGHTNESS) {
+            level.setBlockAndUpdate(pos, state.setValue(PROP_LIGHT, brightness - 1));
 		}
 	}
 
 
 	@Override
-	public boolean canBloom(ServerLevel world, BlockState state){
-		return world.isNight();
+    public boolean canBloom(ServerLevel level, BlockState state) {
+        return LibDateUtils.isNight(level);
 	}
 }

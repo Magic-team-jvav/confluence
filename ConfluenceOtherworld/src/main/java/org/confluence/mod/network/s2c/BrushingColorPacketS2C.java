@@ -4,27 +4,25 @@ import it.unimi.dsi.fastutil.ints.IntArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ChunkPos;
 import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.mod.Confluence;
-import org.confluence.mod.client.textures.LocalBrushData;
+import org.confluence.mod.client.effect.textures.LocalBrushData;
+import org.confluence.mod.common.attachment.ChunkBrushData;
 import org.confluence.mod.common.data.saved.BrushData;
-import org.confluence.mod.common.init.ModAttachmentTypes;
+import org.confluence.mod.network.IPacket;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Hashtable;
 import java.util.Map;
 
-public record BrushingColorPacketS2C(ChunkPos chunkPos, BrushData data) implements CustomPacketPayload {
-    public static final Type<BrushingColorPacketS2C> TYPE = new Type<>(Confluence.asResource("brushing_color"));
+public record BrushingColorPacketS2C(ChunkPos chunkPos, BrushData data) implements IPacketS2C {
+    public static final Type<BrushingColorPacketS2C> TYPE = IPacket.createType("brushing_color");
     public static final StreamCodec<RegistryFriendlyByteBuf, BrushingColorPacketS2C> STREAM_CODEC = new StreamCodec<>() {
         @Override
         public BrushingColorPacketS2C decode(RegistryFriendlyByteBuf buffer) {
@@ -74,15 +72,9 @@ public record BrushingColorPacketS2C(ChunkPos chunkPos, BrushData data) implemen
         return TYPE;
     }
 
-    public void handle(IPayloadContext context) {
-        context.enqueueWork(() -> {
-            if (context.player().isLocalPlayer()) {
-                LocalBrushData.handlePacket(this);
-            }
-        }).exceptionally(e -> {
-            context.disconnect(Component.translatable("neoforge.network.invalid_flow", e.getMessage()));
-            return null;
-        });
+    @Override
+    public void work(Player player) {
+        LocalBrushData.handlePacket(this);
     }
 
     public static void sendToClient(ServerPlayer serverPlayer, ChunkPos chunkPos, BrushData data, boolean save) {
@@ -105,7 +97,7 @@ public record BrushingColorPacketS2C(ChunkPos chunkPos, BrushData data) implemen
     public static void remove(ServerLevel level, BlockPos pos, Direction facing) {
         if (ServerLifecycleHooks.getCurrentServer() != null) {
             ChunkPos chunkPos = new ChunkPos(pos);
-            BrushData brushData = level.getData(ModAttachmentTypes.CHUNK_BRUSH_DATA).getDataMap().get(chunkPos);
+            BrushData brushData = ChunkBrushData.of(level).getDataMap().get(chunkPos);
             if (brushData == null) return;
             if (level.getBlockState(pos).isSolidRender(level, pos)) {
                 brushData.remove(pos, facing);
@@ -120,7 +112,7 @@ public record BrushingColorPacketS2C(ChunkPos chunkPos, BrushData data) implemen
     public static void remove(ServerLevel level, BlockPos pos) {
         if (ServerLifecycleHooks.getCurrentServer() != null) {
             ChunkPos chunkPos = new ChunkPos(pos);
-            BrushData brushData = level.getData(ModAttachmentTypes.CHUNK_BRUSH_DATA).getDataMap().get(chunkPos);
+            BrushData brushData = ChunkBrushData.of(level).getDataMap().get(chunkPos);
             if (brushData == null) return;
             brushData.remove(pos);
             PacketDistributor.sendToAllPlayers(new BrushingColorPacketS2C(chunkPos, new BrushData(Map.of(pos, CLEAR_COLORS))));
@@ -128,7 +120,7 @@ public record BrushingColorPacketS2C(ChunkPos chunkPos, BrushData data) implemen
     }
 
     private static void saveData(ServerLevel level, ChunkPos chunkPos, BrushData data) {
-        level.getData(ModAttachmentTypes.CHUNK_BRUSH_DATA).getDataMap()
+        ChunkBrushData.of(level).getDataMap()
                 .computeIfAbsent(chunkPos, pos -> new BrushData(new Hashtable<>()))
                 .merge(data);
     }

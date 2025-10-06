@@ -41,6 +41,11 @@ public class ExquisitelyStuffedEffect extends MobEffect {   //吃得好/很满�
             case 2 -> 0.10;
             default -> 0.05;
         });
+        addAttributeModifier(TCAttributes.MAGIC_DAMAGE, ID, ADD_MULTIPLIED_TOTAL, v -> switch (v) {
+            case 1 -> 0.075;
+            case 2 -> 0.10;
+            default -> 0.05;
+        });
         addAttributeModifier(TCAttributes.getRangedDamage(), ID, ADD_MULTIPLIED_TOTAL, v -> switch (v) {
             case 1 -> 0.075;
             case 2 -> 0.10;

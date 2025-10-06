@@ -16,10 +16,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.fml.loading.FMLEnvironment;
 import org.confluence.lib.common.block.HorizontalDirectionalWithHorizontalTwoPartBlock;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipBlockItem;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.client.renderer.block.ExtractinatorBlockRenderer;
 import org.confluence.mod.client.renderer.item.SimpleGeoItemRenderer;
 import org.confluence.mod.common.data.map.ExtractinatorData;
@@ -78,7 +78,7 @@ public class ExtractinatorBlock extends HorizontalDirectionalWithHorizontalTwoPa
             ExtractinatorData data = itemStack.getItemHolder().getData(ModDataMaps.EXTRACTINATOR);
             if (data == null) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
             ExtractinatorData.extract(level, pos, player, hand, serverLevel, itemStack, data);
-        } else if (FMLEnvironment.dist.isClient()) {
+        } else if (LibUtils.isPhysicalClient()) {
             ((MinecraftAccessor) Minecraft.getInstance()).setRightClickDelay(1);
         }
         return ItemInteractionResult.SUCCESS;

@@ -58,7 +58,7 @@ public final class ModSecretSeeds {
         s = s.trim().toLowerCase(Locale.ROOT);
         for (SecretSeed secretSeed : VALUES) {
             if (secretSeed.match(s)) {
-                ((IWorldOptions) worldOptions).confluence$withSecretFlag(secretSeed.getFlag());
+                IWorldOptions.of(worldOptions).confluence$withSecretFlag(secretSeed.getFlag());
                 return new Pair<>(secretSeed, worldOptions.withSeed(l.isPresent() ? l : OptionalLong.of(WorldOptions.randomSeed())));
             }
         }

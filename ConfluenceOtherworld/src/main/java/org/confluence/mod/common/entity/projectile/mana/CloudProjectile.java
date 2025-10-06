@@ -14,7 +14,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.init.ModEntities;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -29,18 +28,21 @@ public class CloudProjectile extends AbstractManaProjectile implements GeoEntity
     private final AnimatableInstanceCache CACHE = GeckoLibUtil.createInstanceCache(this);
     protected UUID targetUUID;
     protected transient LivingEntity target;
+    protected transient double motionY;
     private EntityType<? extends RainProjectile> rainType;
     private int duration;
+    private int maxPenetrate;
 
     public CloudProjectile(EntityType<? extends CloudProjectile> entityType, Level level) {
         super(entityType, level);
         setNoGravity(true);
     }
 
-    public CloudProjectile(EntityType<? extends CloudProjectile> cloudType, EntityType<? extends RainProjectile> rainType, LivingEntity living, int duration) {
+    public CloudProjectile(EntityType<? extends CloudProjectile> cloudType, EntityType<? extends RainProjectile> rainType, LivingEntity living, int duration, int maxPenetrate) {
         this(cloudType, living.level());
         this.rainType = rainType;
         this.duration = duration;
+        this.maxPenetrate = maxPenetrate;
         setOwner(living);
         setPos(living.getX(), living.getEyeY() - 0.1, living.getZ());
     }
@@ -53,10 +55,16 @@ public class CloudProjectile extends AbstractManaProjectile implements GeoEntity
     @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
         super.onSyncedDataUpdated(key);
-        if (level().isClientSide && DATA_TARGET_ID.equals(key)) {
-            Entity entity = level().getEntity(entityData.get(DATA_TARGET_ID));
-            if (entity instanceof LivingEntity living) {
+        if (DATA_TARGET_ID.equals(key)) {
+            if (level().isClientSide && level().getEntity(entityData.get(DATA_TARGET_ID)) instanceof LivingEntity living) {
                 this.target = living;
+            }
+            if (target != null) {
+                double d = target.distanceTo(this);
+                double h = getY() - target.getY() - target.getBbHeight();
+                double v0 = getDefaultVelocity();
+                double vy = getDeltaMovement().y;
+                this.motionY = 2 * v0 * v0 * (2 - h) / (d * d) - 2 * vy * v0 / d;
             }
         }
     }
@@ -82,11 +90,13 @@ public class CloudProjectile extends AbstractManaProjectile implements GeoEntity
             if (!level().isClientSide && (duration <= 1 || level().getGameTime() % duration == 0)) {
                 LivingEntity owner = getLivingOwner();
                 if (owner != null) {
+                    float width = getDimensions(getPose()).width() * 1.2F;
                     RainProjectile entity = new RainProjectile(rainType, owner, position().add(
-                            (random.nextFloat() - 0.5F) * 2,
+                            (random.nextFloat() - 0.5F) * width,
                             -1,
-                            (random.nextFloat() - 0.5F) * 2
+                            (random.nextFloat() - 0.5F) * width
                     ));
+                    entity.setMaxPenetrate(maxPenetrate);
                     entity.setDamage(getDamage());
                     level().addFreshEntity(entity);
                 }
@@ -97,11 +107,7 @@ public class CloudProjectile extends AbstractManaProjectile implements GeoEntity
                 setDeltaMovement(Vec3.ZERO);
                 setTarget(null);
             } else {
-                Vec3 added = motion.add(VectorUtils.getVectorA2B(this, target).scale(0.2).add(0, 0.2, 0));
-                float maxVelocity = getDefaultVelocity();
-                if (added.lengthSqr() > maxVelocity * maxVelocity) {
-                    setDeltaMovement(added.normalize().scale(maxVelocity));
-                }
+                setDeltaMovement(motion.add(0, motionY, 0));
             }
         } else {
             setTarget(null);

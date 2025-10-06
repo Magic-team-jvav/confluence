@@ -1,11 +1,15 @@
 package org.confluence.mod.common.block.common;
 
 import com.mojang.serialization.MapCodec;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -26,8 +30,13 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.init.block.ModBlocks;
+import org.confluence.mod.mixed.ILevelChunkSection;
+import org.confluence.mod.util.DynamicBiomeUtils;
+import org.confluence.mod.util.OverworldUtils;
+import org.confluence.terraentity.init.entity.TEMonsterEntities;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
@@ -49,6 +58,22 @@ public class TombstoneBlock extends HorizontalDirectionalBlock implements Entity
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(FACING, WATERLOGGED);
+    }
+
+    @Override
+    public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack tool) {
+        super.playerDestroy(level, player, pos, state, blockEntity, tool);
+        if (!level.isClientSide && pos.getY() < OverworldUtils.getSurfaceY() && LibDateUtils.isNight(level)) {
+            ILevelChunkSection iSection = DynamicBiomeUtils.getISection(level, pos);
+            RandomSource random = player.getRandom();
+            if (iSection != null && iSection.confluence$isGraveyard() && random.nextBoolean()) {
+                TEMonsterEntities.GHOST.get().spawn((ServerLevel) level, pos.offset(
+                        Mth.randomBetweenInclusive(random, -15, 15),
+                        Mth.randomBetweenInclusive(random, -15, 15),
+                        Mth.randomBetweenInclusive(random, -15, 15)
+                ), MobSpawnType.MOB_SUMMONED);
+            }
+        }
     }
 
     @Override
@@ -83,7 +108,7 @@ public class TombstoneBlock extends HorizontalDirectionalBlock implements Entity
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
         if (level.getBlockEntity(pos) instanceof BEntity entity) {
             if (level.isClientSide) {
-                Util.pauseInIde(new IllegalStateException("Expected to only call this on server"));
+                return InteractionResult.PASS;
             }
             if (!otherPlayerIsEditingSign(player, entity) && player.mayBuild()) {
                 openTextEdit(player, entity);

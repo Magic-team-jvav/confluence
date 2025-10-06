@@ -29,7 +29,9 @@ public class SolidifierMenu extends EitherAmountContainerMenu4x<MenuRecipeInput,
                     @Override
                     public void onTake(Player player, ItemStack stack) {
                         if (recipe != null) {
-                            AbstractAmountRecipe.consumeShaped(input, 4, 4, recipe.either.orThrow());
+                            recipe.either
+                                    .ifLeft(pattern -> AbstractAmountRecipe.consumeShaped(input, 4, 4, pattern))
+                                    .ifRight(ingredients -> AbstractAmountRecipe.consumeShapeless(input, ingredients));
                             input.setChanged();
                             updateMenu();
                         }

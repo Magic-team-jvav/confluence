@@ -17,11 +17,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.ByIdMap;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -58,6 +61,7 @@ import org.confluence.mod.common.init.item.HammerItems;
 import org.confluence.mod.common.recipe.AltarRecipe;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.util.AchievementUtils;
+import org.confluence.terraentity.init.entity.TEMonsterEntities;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.GeoItem;
@@ -122,7 +126,7 @@ public class AltarBlock extends BaseEntityBlock {
 
     @Override
     public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
-        return player.getMainHandItem().is(ModTags.Items.HAMMERS) ? super.getDestroyProgress(state, player, level, pos) : 0.0F;
+        return player.getMainHandItem().is(ModTags.Items.TOOLS_HAMMER) ? super.getDestroyProgress(state, player, level, pos) : 0.0F;
     }
 
     @Override
@@ -143,6 +147,15 @@ public class AltarBlock extends BaseEntityBlock {
             }
             if (tool.is(HammerItems.PWNHAMMER)) {
                 AchievementUtils.awardAchievement(serverPlayer, "begone_evil");
+            }
+            RandomSource random = player.getRandom();
+            int wraithAmount = random.nextInt(2) + 1;
+            for (int i = 0; i < wraithAmount; i++) {
+                TEMonsterEntities.WRAITH.get().spawn(serverLevel, pos.offset(
+                        Mth.randomBetweenInclusive(random, -15, 15),
+                        Mth.randomBetweenInclusive(random, -15, 15),
+                        Mth.randomBetweenInclusive(random, -15, 15)
+                ), MobSpawnType.MOB_SUMMONED);
             }
         }
     }
@@ -258,8 +271,9 @@ public class AltarBlock extends BaseEntityBlock {
         public ItemStack takeItem(int slot) {
             if (slot == -1) {
                 for (int i = 0; i < 5; i++) {
-                    if (!itemHandler.getStackInSlot(i).isEmpty()) {
-                        ItemStack stack = itemHandler.extractItem(i, 64, false);
+                    ItemStack stack = itemHandler.getStackInSlot(i);
+                    if (!stack.isEmpty()) {
+                        stack = itemHandler.extractItem(i, stack.getMaxStackSize(), false);
                         setChanged();
                         return stack;
                     }

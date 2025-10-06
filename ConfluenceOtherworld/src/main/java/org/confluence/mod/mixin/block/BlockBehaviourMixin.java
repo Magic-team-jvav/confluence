@@ -16,10 +16,10 @@ import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.common.block.StateProperties;
+import org.confluence.mod.common.attachment.ChunkBrushData;
 import org.confluence.mod.common.block.common.BaseChestBlock;
 import org.confluence.mod.common.block.common.BiomeChestBlock;
 import org.confluence.mod.common.data.saved.BrushData;
-import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
@@ -71,7 +71,7 @@ public abstract class BlockBehaviourMixin {
         @Inject(method = "onRemove", at = @At("HEAD"))
         private void removeData(Level level, BlockPos pos, BlockState newState, boolean movedByPiston, CallbackInfo ci) {
             if (!isAir && !level.isClientSide && getBlock() != newState.getBlock()) {
-                Map<ChunkPos, BrushData> dataMap = level.getData(ModAttachmentTypes.CHUNK_BRUSH_DATA).getDataMap();
+                Map<ChunkPos, BrushData> dataMap = ChunkBrushData.of(level).getDataMap();
                 if (!dataMap.isEmpty()) {
                     BrushingColorPacketS2C.remove((ServerLevel) level, pos);
                 }

@@ -14,6 +14,7 @@ import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
+import org.confluence.mod.common.data.saved.Bestiary;
 import org.confluence.mod.common.data.saved.NPCSpawner;
 import org.confluence.mod.common.menu.NPCTradesForgeMenu;
 import org.confluence.mod.integration.terra_entity.brain.ConfluenceDemolitionistNPCAi;
@@ -76,6 +77,10 @@ public final class TEGameEvents {
                 if (task != null) {
                     PlayerSpecialData.of(player).setCurrentQuestedFish(task.getCurrentCost(), task.getCurrentLock());
                 }
+            }
+
+            if (!Bestiary.INSTANCE.containsKey(npc)) {
+                Bestiary.INSTANCE.updateEntry(npc, false);
             }
 
             event.setResult(InteractionResult.CONSUME_PARTIAL);

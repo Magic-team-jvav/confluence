@@ -47,7 +47,7 @@ public class CoinItem extends BlockItem {
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         if (upgrade != null && stack.getCount() >= UPGRADES_COUNT) {
-            tooltipComponents.add(Component.translatable("tooltip.item.confluence.coin").withColor(0xAAAAAA));
+            tooltipComponents.add(Component.translatable("tooltip.item.confluence.coin.0").withColor(0xAAAAAA));
         }
     }
 }

@@ -23,7 +23,7 @@ public class GelItem extends ColoredItem {
     @Override
     public @NotNull ItemStack getDefaultInstance() {
         ItemStack itemStack = new ItemStack(MaterialItems.GEL.get());
-        setColor(itemStack, 0xFF66CCFF);
+        setRGBA(itemStack, 0xFF66CCFF);
         return itemStack;
     }
 

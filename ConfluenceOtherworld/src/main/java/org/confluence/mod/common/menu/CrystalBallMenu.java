@@ -73,11 +73,18 @@ public class CrystalBallMenu extends AbstractContainerMenu {
 
     @Override
     public ItemStack quickMoveStack(Player player, int index) {
-        return ItemStack.EMPTY;
+        return ItemStack.EMPTY; // todo
     }
 
     @Override
     public boolean stillValid(Player player) {
         return stillValid(access, player, FunctionalBlocks.CRYSTAL_BALL.get());
+    }
+
+    @Override
+    public void removed(Player player) {
+        super.removed(player);
+        result.removeItemNoUpdate(0);
+        access.execute((level, blockPos) -> clearContainer(player, input));
     }
 }

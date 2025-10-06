@@ -14,17 +14,18 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.HardmodeAnvilRecipe;
-import org.confluence.mod.integration.jei.ModJeiPlugin;
+import org.confluence.mod.integration.jei.EitherRecipe4xHelper;
 import org.jetbrains.annotations.Nullable;
 
 public class HardmodeAnvilCategory implements IRecipeCategory<RecipeHolder<HardmodeAnvilRecipe>> {
     public static final RecipeType<RecipeHolder<HardmodeAnvilRecipe>> TYPE = RecipeType.createRecipeHolderType(Confluence.asResource("hardmode_anvil"));
-    private static final Component TITLE = Component.translatable("title.confluence.hardmode_anvil");
     private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/hardmode_anvil.png");
     private final IDrawable icon;
+    private final EitherRecipe4xHelper helper;
 
     public HardmodeAnvilCategory(IJeiHelpers jeiHelpers) {
         this.icon = jeiHelpers.getGuiHelper().createDrawableItemStack(FunctionalBlocks.ORICHALCUM_ANVIL.toStack());
+        this.helper = new EitherRecipe4xHelper(jeiHelpers.getIngredientManager());
     }
 
     @Override
@@ -34,7 +35,7 @@ public class HardmodeAnvilCategory implements IRecipeCategory<RecipeHolder<Hardm
 
     @Override
     public Component getTitle() {
-        return TITLE;
+        return Component.translatable("title.confluence.hardmode_anvil");
     }
 
     @Override
@@ -54,11 +55,14 @@ public class HardmodeAnvilCategory implements IRecipeCategory<RecipeHolder<Hardm
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<HardmodeAnvilRecipe> recipe, IFocusGroup focuses) {
-        ModJeiPlugin.setEitherRecipe4x(builder, recipe);
+        EitherRecipe4xHelper.setEitherRecipe4x(builder, recipe);
     }
 
     @Override
     public void draw(RecipeHolder<HardmodeAnvilRecipe> recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         guiGraphics.blit(BACKGROUND, 0, 0, 0, 0, 144, 80, 144, 80);
+        if (mouseX >= 80 && mouseX <= 80 + 28 && mouseY >= 29 && mouseY <= 29 + 23) {
+            helper.drawSummary(recipeSlotsView, guiGraphics);
+        }
     }
 }

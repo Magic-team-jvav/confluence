@@ -5,6 +5,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
@@ -19,16 +20,18 @@ import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.level.ChunkWatchEvent;
 import net.neoforged.neoforge.event.level.ExplosionEvent;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.attachment.ChunkBrushData;
+import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
+import org.confluence.mod.common.data.map.BlockBreakSpawns;
 import org.confluence.mod.common.data.saved.BrushData;
 import org.confluence.mod.common.entity.projectile.bomb.BaseBombEntity;
-import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
-import org.confluence.mod.common.item.axe.BaseAxeItem;
+import org.confluence.mod.common.item.common.BaseAxeItem;
 import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
 import org.confluence.mod.common.worldgen.secret_seed.NoTraps;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
@@ -48,7 +51,7 @@ public final class LevelEvents {
             BlockState originalState = event.getState();
             Block block = LogBlockSet.WRAPPED_STRIP_TABLE.get(originalState.getBlock());
             if (block != null) {
-                event.setFinalState(block.defaultBlockState().setValue(RotatedPillarBlock.AXIS, originalState.getValue(RotatedPillarBlock.AXIS)));
+                event.setFinalState(block.defaultBlockState().trySetValue(RotatedPillarBlock.AXIS, originalState.getValue(RotatedPillarBlock.AXIS)));
             }
         }
         if (event.getItemAbility() == ItemAbilities.SHOVEL_FLATTEN) {
@@ -82,7 +85,7 @@ public final class LevelEvents {
 
     @SubscribeEvent
     public static void chunkWatch$Watch(ChunkWatchEvent.Watch event) {
-        BrushData data = event.getLevel().getData(ModAttachmentTypes.CHUNK_BRUSH_DATA).getDataMap().get(event.getPos());
+        BrushData data = ChunkBrushData.of(event.getLevel()).getDataMap().get(event.getPos());
         if (data != null && !data.colors().isEmpty()) {
             data.ensureValid(event.getLevel());
             BrushingColorPacketS2C.sendToClient(event.getPlayer(), event.getPos(), data, false);
@@ -91,16 +94,29 @@ public final class LevelEvents {
 
     @SubscribeEvent
     public static void block$Break(BlockEvent.BreakEvent event) {
-        if (!(event.getPlayer() instanceof ServerPlayer serverPlayer)) return;
-        BlockState blockState = event.getState();
-
-        if (AltarBlock.hurtPlayerIfBrokenNotAllowed(serverPlayer, blockState)) {
+        Player player = event.getPlayer();
+        BlockState state = event.getState();
+        if (!PlayerSpecialData.of(player).isCouldDamageEnvironment() && state.is(ModTags.Blocks.ENVIRONMENTAL_PRESERVATION)) {
             event.setCanceled(true);
             return;
         }
+        if (player instanceof ServerPlayer serverPlayer) {
+            if (AltarBlock.hurtPlayerIfBrokenNotAllowed(serverPlayer, state)) {
+                event.setCanceled(true);
+                return;
+            }
 
-        BlockPos pos = event.getPos();
-        NoTraps.dropBombWhenLeavesDestroy(serverPlayer, blockState, pos);
-        BoulderWorld.createBoulderWhenBlockDestroy(serverPlayer, blockState, pos);
+            BlockPos pos = event.getPos();
+            NoTraps.dropBombWhenLeavesDestroy(serverPlayer, state, pos);
+            BoulderWorld.createBoulderWhenBlockDestroy(serverPlayer, state, pos);
+            BlockBreakSpawns.spawn(serverPlayer.serverLevel(), pos, state);
+        }
+    }
+
+    @SubscribeEvent
+    public static void farmlandTrample(BlockEvent.FarmlandTrampleEvent event) {
+        if (event.getEntity() instanceof Player player && !PlayerSpecialData.of(player).isCouldDamageEnvironment()) {
+            event.setCanceled(true);
+        }
     }
 }

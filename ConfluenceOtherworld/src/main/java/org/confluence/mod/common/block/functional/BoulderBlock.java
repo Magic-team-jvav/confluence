@@ -5,12 +5,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -43,34 +40,13 @@ public class BoulderBlock extends AbstractMechanicalBlock {
 
     @Override
     public void onProjectileHit(Level level, BlockState state, BlockHitResult hit, Projectile projectile) {
-        level.destroyBlock(hit.getBlockPos(), false);
-        summon(level, hit.getBlockPos(), state, entity -> {
-            if (projectile.getOwner() instanceof Player player) {
-                return player;
-            }
-            return level.getNearestPlayer(entity, BoulderEntity.SEARCH_RANGE);
-        });
-    }
-
-    @Override
-    public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack tool) {
-        summon(level, pos, state, entity -> player);
+        level.removeBlock(hit.getBlockPos(), false);
     }
 
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
         super.onRemove(state, level, pos, newState, movedByPiston);
         summon(level, pos, state, entity -> level.getNearestPlayer(entity, BoulderEntity.SEARCH_RANGE));
-    }
-
-    @Override
-    public void wasExploded(Level pLevel, BlockPos pPos, Explosion pExplosion) {
-        summon(pLevel, pPos, defaultBlockState(), entity -> {
-            if (pExplosion.getIndirectSourceEntity() instanceof Player player) {
-                return player;
-            }
-            return pLevel.getNearestPlayer(entity, BoulderEntity.SEARCH_RANGE);
-        });
     }
 
     @Override
@@ -93,7 +69,6 @@ public class BoulderBlock extends AbstractMechanicalBlock {
     @Override
     public void onExecute(BlockState state, ServerLevel level, BlockPos pos, int color, INetworkEntity networkEntity) {
         level.removeBlock(pos, false);
-        summon(level, pos, state, entity -> level.getNearestPlayer(entity, BoulderEntity.SEARCH_RANGE));
     }
 
     protected void summon(Level level, BlockPos pos, BlockState blockState, Function<BoulderEntity, Player> function) {

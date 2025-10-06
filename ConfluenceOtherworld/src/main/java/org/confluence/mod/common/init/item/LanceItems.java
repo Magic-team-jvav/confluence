@@ -1,25 +1,30 @@
 package org.confluence.mod.common.init.item;
 
+import net.minecraft.ChatFormatting;
+import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.confluence.lib.common.component.ModRarity;
+import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.item.lance.*;
+import org.confluence.mod.common.item.common.BaseLanceItem;
 
 public class LanceItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
 
+    public static final DeferredItem<BaseLanceItem> JOUSTING_LANCE = register("jousting_lance", ModRarity.LIGHT_RED, 4, 9, 12, 1.5, 2);
+    public static final DeferredItem<BaseLanceItem> HALLOWED_JOUSTING_LANCE = register("hallowed_jousting_lance", ModRarity.PINK, 3, 10, 18, 1.625, 1);
+    public static final DeferredItem<BaseLanceItem> SHADOW_JOUSTING_LANCE = register("shadow_jousting_lance", ModRarity.YELLOW, 2, 11, 26, 1.75, 1);
 
-    public static final DeferredItem<SpearItem> SPEAR = ITEMS.register("spear", SpearItem::new);
-    public static final DeferredItem<StormSpearItem> STORM_SPEAR = ITEMS.register("storm_spear", StormSpearItem::new);
-    public static final DeferredItem<TheRottedForkItem> THE_ROTTED_FORK = ITEMS.register("the_rotted_fork", TheRottedForkItem::new);
-    public static final DeferredItem<StreamstrikeHalberdItem> STREAMSTRIKE_HALBERD = ITEMS.register("streamstrike_halberd", StreamstrikeHalberdItem::new);
-    public static final DeferredItem<DarkLanceItem> DARK_LANCE = ITEMS.register("dark_lance", DarkLanceItem::new);
-    public static final DeferredItem<CobaltNaginataItem> COBALT_NAGINATA = ITEMS.register("cobalt_naginata", CobaltNaginataItem::new);
-    public static final DeferredItem<CobaltNaginataItem> PALLADIUM_PIKE = ITEMS.register("palladium_pike", CobaltNaginataItem::new);
-    public static final DeferredItem<OrichalcumHalberdItem> ORICHALCUM_HALBERD = ITEMS.register("orichalcum_halberd", OrichalcumHalberdItem::new);
-    public static final DeferredItem<OrichalcumHalberdItem> MYTHRIL_HALBERD = ITEMS.register("mythril_halberd", OrichalcumHalberdItem::new);
-    public static final DeferredItem<AdamantiteGlaiveItem> ADAMANTITE_GLAIVE = ITEMS.register("adamantite_glaive", AdamantiteGlaiveItem::new);
-    public static final DeferredItem<AdamantiteGlaiveItem> TITANIUM_TRIDENT = ITEMS.register("titanium_trident", AdamantiteGlaiveItem::new);
-    public static final DeferredItem<GungnirItem> GUNGNIR = ITEMS.register("gungnir", GungnirItem::new);
-    public static final DeferredItem<ChlorophytePartisanItem> CHLOROPHYTE_PARTISAN = ITEMS.register("chlorophyte_partisan", ChlorophytePartisanItem::new);
+    private static DeferredItem<BaseLanceItem> register(String name, ModRarity rarity, int attackInterval, double attackDistance, double baseAttackDamage, double baseKnockback, int tooltipCount) {
+        return ITEMS.register(name, () -> new BaseLanceItem(
+                new Item.Properties(),
+                rarity,
+                attackInterval,
+                attackDistance,
+                baseAttackDamage,
+                baseKnockback,
+                TooltipItem.getTooltipsFromString(name, tooltipCount, ChatFormatting.GRAY)
+        ));
+    }
 }

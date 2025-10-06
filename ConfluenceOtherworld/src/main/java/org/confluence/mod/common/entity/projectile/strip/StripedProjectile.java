@@ -16,8 +16,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.entity.projectile.DamageSettableProjectile;
 import org.confluence.mod.common.init.ModDamageTypes;
@@ -36,7 +34,6 @@ public abstract class StripedProjectile extends DamageSettableProjectile {
     protected int ticksForBodyRemove = 28;
     private Vec3 startPos = Vec3.ZERO;
     private double distO = -0.5;
-    @OnlyIn(Dist.CLIENT)
     public float[] rot;
 
     public StripedProjectile(EntityType<? extends StripedProjectile> entityType, Level level) {
@@ -125,7 +122,6 @@ public abstract class StripedProjectile extends DamageSettableProjectile {
 
     protected abstract StripedProjectile createBody(LivingEntity shooter);
 
-    @OnlyIn(Dist.CLIENT)
     public float[] getRot() {
         if (rot == null) {
             updateRotation();

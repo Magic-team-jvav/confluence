@@ -21,7 +21,7 @@ public abstract class ServerWatchdogMixin {
 
     @ModifyExpressionValue(method = "run", at = @At(value = "FIELD", target = "Lnet/minecraft/server/dedicated/ServerWatchdog;maxTickTimeNanos:J", ordinal = 0))
     private long replaceWhenOnHardmodeConversation(long original) {
-        if (((IDedicatedServer) server).confluence$isOnHardmodeConversation()) {
+        if (IDedicatedServer.of(server).confluence$isOnHardmodeConversation()) {
             return CONSERVATION_DELAY;
         }
         return original;

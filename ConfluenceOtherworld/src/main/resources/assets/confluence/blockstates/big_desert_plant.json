@@ -1,0 +1,15 @@
+{
+    "variants": {
+        "": [
+            {
+                "model": "confluence:block/big_desert_plant_0"
+            },
+            {
+                "model": "confluence:block/big_desert_plant_1"
+            },
+            {
+                "model": "confluence:block/big_desert_plant_2"
+            }
+        ]
+    }
+}

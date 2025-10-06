@@ -40,7 +40,7 @@ public record GamePhase2AttributeModifiers(Map<GamePhase, AttributeModifiersValu
 
     public AttributeModifiersValue get(GamePhase gamePhase) {
         AttributeModifiersValue value = map.get(gamePhase);
-        return value == null ? map.keySet().stream().filter(gamePhase::isAboveThan)
+        return value == null ? map.keySet().stream().filter(gamePhase::isAtLeast)
                 .max(Comparator.comparingInt(GamePhase::getOrder))
                 .map(map::get).orElse(AttributeModifiersValue.EMPTY) : value;
     }

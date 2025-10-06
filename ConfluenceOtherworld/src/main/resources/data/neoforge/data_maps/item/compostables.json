@@ -1,0 +1,142 @@
+{
+    "values": {
+        "confluence:stellar_blossom_seed": {
+            "chance": 0.45
+        },
+        "confluence:cloudweaver_seed": {
+            "chance": 0.45
+        },
+        "confluence:floating_wheat_seed": {
+            "chance": 0.45
+        },
+        "confluence:waterleaf_seed": {
+            "chance": 0.45
+        },
+        "confluence:fireblossom_seed": {
+            "chance": 0.45
+        },
+        "confluence:moonglow_seed": {
+            "chance": 0.45
+        },
+        "confluence:blinkroot_seed": {
+            "chance": 0.45
+        },
+        "confluence:shiverthorn_seed": {
+            "chance": 0.45
+        },
+        "confluence:daybloom_seed": {
+            "chance": 0.45
+        },
+        "confluence:deathweed_seed": {
+            "chance": 0.45
+        },
+        "confluence:grass_seed": {
+            "chance": 0.45
+        },
+        "confluence:jungle_grass_seed": {
+            "chance": 0.45
+        },
+        "confluence:mushroom_grass_seed": {
+            "chance": 0.45
+        },
+        "confluence:corrupt_seed": {
+            "chance": 0.45
+        },
+        "confluence:crimson_seed": {
+            "chance": 0.45
+        },
+        "confluence:hallowed_seed": {
+            "chance": 0.45
+        },
+        "confluence:ash_grass_seed": {
+            "chance": 0.45
+        },
+        "confluence:waterleaf": {
+            "chance": 0.45
+        },
+        "confluence:fireblossom": {
+            "chance": 0.45
+        },
+        "confluence:moonglow": {
+            "chance": 0.45
+        },
+        "confluence:blinkroot": {
+            "chance": 0.45
+        },
+        "confluence:shiverthorn": {
+            "chance": 0.45
+        },
+        "confluence:daybloom": {
+            "chance": 0.45
+        },
+        "confluence:deathweed": {
+            "chance": 0.45
+        },
+        "confluence:star_petals": {
+            "chance": 0.45
+        },
+        "confluence:floating_wheat_heads": {
+            "chance": 0.45
+        },
+        "confluence:weaving_cloud_cotton": {
+            "chance": 0.45
+        },
+        "confluence:rotten_chunk": {
+            "chance": 0.45
+        },
+        "confluence:vertebra": {
+            "chance": 0.45
+        },
+        "confluence:ebony_leaves": {
+            "chance": 0.45
+        },
+        "confluence:baobab_leaves": {
+            "chance": 0.45
+        },
+        "confluence:living_leaves": {
+            "chance": 0.45
+        },
+        "confluence:palm_leaves": {
+            "chance": 0.45
+        },
+        "confluence:shadow_leaves": {
+            "chance": 0.45
+        },
+        "confluence:yellow_willow_leaves": {
+            "chance": 0.45
+        },
+        "confluence:pearl_leaves": {
+            "chance": 0.45
+        },
+        "confluence:vicious_mushroom": {
+            "chance": 0.45
+        },
+        "confluence:vile_mushroom": {
+            "chance": 0.45
+        },
+        "confluence:glowing_mushroom": {
+            "chance": 0.45
+        },
+        "confluence:life_mushroom": {
+            "chance": 0.45
+        },
+        "confluence:jungle_spore": {
+            "chance": 0.45
+        },
+        "confluence:jungle_rose": {
+            "chance": 0.45
+        },
+        "confluence:corrupt_grass": {
+            "chance": 0.45
+        },
+        "confluence:crimson_grass": {
+            "chance": 0.45
+        },
+        "confluence:hallow_grass": {
+            "chance": 0.45
+        },
+        "#c:foods/fruit": {
+            "chance": 0.65
+        }
+    }
+}

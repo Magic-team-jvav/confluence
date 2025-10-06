@@ -1,0 +1,9 @@
+{
+  "parent": "block/cube_bottom_top",
+  "textures": {
+    "bottom": "confluence:block/sun_plate",
+    "top": "confluence:block/sun_plate",
+    "side": "confluence:block/sun_plate"
+  },
+  "render_type": "solid"
+}

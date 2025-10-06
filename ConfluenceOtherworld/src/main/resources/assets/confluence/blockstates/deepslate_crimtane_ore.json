@@ -1,0 +1,14 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "confluence:block/deepslate_crimtane_ore",
+        "weight": 1
+      },
+      {
+        "model": "confluence:block/deepslate_crimtane_ore_0",
+        "weight": 1
+      }
+    ]
+  }
+}

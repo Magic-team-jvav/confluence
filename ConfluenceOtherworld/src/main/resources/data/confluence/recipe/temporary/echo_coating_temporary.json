@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#",
+        "a"
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:sculk"
+        },
+        "a": {
+            "item": "minecraft:water_bucket"
+        }
+    },
+    "result": {
+        "id": "confluence:echo_coating",
+        "count": 8
+    }
+}

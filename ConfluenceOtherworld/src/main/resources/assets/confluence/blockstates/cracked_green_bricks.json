@@ -1,0 +1,14 @@
+{
+    "variants": {
+        "": [
+            {
+                "model": "confluence:block/cracked_green_bricks",
+                "weight": 1
+            },
+            {
+                "model": "confluence:block/cracked_green_bricks_0",
+                "weight": 1
+            }
+        ]
+    }
+}

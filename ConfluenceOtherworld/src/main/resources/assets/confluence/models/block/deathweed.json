@@ -1,0 +1,8 @@
+{
+  "parent": "block/cross",
+  "textures": {
+    "cross": "confluence:block/deathweed",
+    "particle": "confluence:block/deathweed"
+  },
+  "render_type": "cutout"
+}

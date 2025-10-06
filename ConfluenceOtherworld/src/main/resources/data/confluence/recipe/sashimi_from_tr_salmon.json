@@ -1,0 +1,14 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "confluence:salmon"
+        },
+        {
+            "item": "confluence:salmon"
+        }
+    ],
+    "result": {
+        "id": "confluence:sashimi"
+    }
+}

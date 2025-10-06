@@ -1,0 +1,14 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "confluence:ruby"
+        },
+        {
+            "item": "minecraft:oak_sapling"
+        }
+    ],
+    "result": {
+        "id": "confluence:ruby_sapling"
+    }
+}

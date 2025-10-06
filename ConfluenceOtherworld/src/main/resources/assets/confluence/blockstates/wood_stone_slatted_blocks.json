@@ -1,0 +1,14 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "confluence:block/wood_stone_slatted_blocks",
+        "weight": 2
+      },
+      {
+        "model": "confluence:block/wood_stone_slatted_blocks_1",
+        "weight": 1
+      }
+    ]
+  }
+}

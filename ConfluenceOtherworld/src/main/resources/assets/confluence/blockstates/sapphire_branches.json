@@ -1,0 +1,158 @@
+{
+    "multipart": [
+        {
+            "when": {
+                "north": "true"
+            },
+            "apply": {
+                "model": "confluence:block/sapphire_branches_side",
+                "uvlock": true
+            }
+        },
+        {
+            "when": {
+                "east": "true"
+            },
+            "apply": {
+                "model": "confluence:block/sapphire_branches_side",
+                "y": 90,
+                "uvlock": true
+            }
+        },
+        {
+            "when": {
+                "south": "true"
+            },
+            "apply": {
+                "model": "confluence:block/sapphire_branches_side",
+                "y": 180,
+                "uvlock": true
+            }
+        },
+        {
+            "when": {
+                "west": "true"
+            },
+            "apply": {
+                "model": "confluence:block/sapphire_branches_side",
+                "y": 270,
+                "uvlock": true
+            }
+        },
+        {
+            "when": {
+                "up": "true"
+            },
+            "apply": {
+                "model": "confluence:block/sapphire_branches_side",
+                "x": 270,
+                "uvlock": true
+            }
+        },
+        {
+            "when": {
+                "down": "true"
+            },
+            "apply": {
+                "model": "confluence:block/sapphire_branches_side",
+                "x": 90,
+                "uvlock": true
+            }
+        },
+        {
+            "when": {
+                "north": "true",
+                "east": "false",
+                "south": "false",
+                "west": "false",
+                "up": "false",
+                "down": "false"
+            },
+            "apply": {
+                "model": "confluence:block/sapphire_branches_end",
+                "uvlock": true
+            }
+        },
+        {
+            "when": {
+                "east": "true",
+                "north": "false",
+                "south": "false",
+                "west": "false",
+                "up": "false",
+                "down": "false"
+            },
+            "apply": {
+                "model": "confluence:block/sapphire_branches_end",
+                "y": 90,
+                "uvlock": true
+            }
+        },
+        {
+            "when": {
+                "south": "true",
+                "north": "false",
+                "east": "false",
+                "west": "false",
+                "up": "false",
+                "down": "false"
+            },
+            "apply": {
+                "model": "confluence:block/sapphire_branches_end",
+                "y": 180,
+                "uvlock": true
+            }
+        },
+        {
+            "when": {
+                "west": "true",
+                "north": "false",
+                "east": "false",
+                "south": "false",
+                "up": "false",
+                "down": "false"
+            },
+            "apply": {
+                "model": "confluence:block/sapphire_branches_end",
+                "y": 270,
+                "uvlock": true
+            }
+        },
+        {
+            "when": {
+                "up": "true",
+                "north": "false",
+                "east": "false",
+                "south": "false",
+                "west": "false",
+                "down": "false"
+            },
+            "apply": {
+                "model": "confluence:block/sapphire_branches_end",
+                "x": 270,
+                "uvlock": true
+            }
+        },
+        {
+            "when": {
+                "down": "true",
+                "north": "false",
+                "east": "false",
+                "south": "false",
+                "west": "false",
+                "up": "false"
+            },
+            "apply": {
+                "model": "confluence:block/sapphire_branches_end",
+                "x": 90,
+                "uvlock": true
+            }
+        },
+        {
+            "apply": {
+                "model": "confluence:block/sapphire_branches_center",
+                "uvlock": true
+            }
+        }
+    ]
+}

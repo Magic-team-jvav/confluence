@@ -1,0 +1,14 @@
+{
+    "parent": "item/handheld_rod",
+    "textures": {
+        "layer0": "confluence:item/fishing_pole/chum_caster"
+    },
+    "overrides": [
+        {
+            "predicate": {
+                "cast": 1
+            },
+            "model": "confluence:item/chum_caster_cast"
+        }
+    ]
+}

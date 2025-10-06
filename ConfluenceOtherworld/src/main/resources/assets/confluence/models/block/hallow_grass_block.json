@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "minecraft:block/dirt",
+    "side": "confluence:block/hallow_grass_block_side",
+    "top": "confluence:block/hallow_grass_block_top"
+  }
+}

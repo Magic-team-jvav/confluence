@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "confluence:block/thin_ice_block"
+    }
+  }
+}

@@ -1,0 +1,451 @@
+{
+    "values": {
+        "terra_curio:hand_warmer": {
+            "terra_curio:frozen_immune": {},
+            "terra_curio:effect_immunities": [
+                "confluence:frozen"
+            ]
+        },
+        "terra_curio:ice_skates": {
+            "terra_curio:ice_safe": {}
+        },
+        "terra_curio:angler_earring": {
+            "replace": true,
+            "value": {
+                "terra_curio:fishing_power": 10.0,
+                "terra_curio:attributes": {}
+            }
+        },
+        "terra_curio:base_point": {
+            "terra_curio:ice_safe": {}
+        },
+        "terra_curio:ankh_charm": {
+            "terra_curio:effect_immunities": [
+                "minecraft:poison",
+                "minecraft:blindness",
+                "minecraft:slowness",
+                "minecraft:weakness",
+                "confluence:bleeding",
+                "confluence:broken_armor",
+                "terra_curio:confused",
+                "confluence:cursed",
+                "confluence:silenced",
+                "confluence:stoned"
+            ]
+        },
+        "terra_curio:ankh_shield": {
+            "terra_curio:frozen_immune": {},
+            "terra_curio:fire_immune": {},
+            "terra_curio:effect_immunities": [
+                "minecraft:poison",
+                "minecraft:blindness",
+                "minecraft:slowness",
+                "minecraft:weakness",
+                "confluence:bleeding",
+                "confluence:broken_armor",
+                "terra_curio:confused",
+                "confluence:cursed",
+                "confluence:silenced",
+                "confluence:stoned"
+            ]
+        },
+        "terra_curio:everlasting": {
+            "terra_curio:effect_immunities": [
+                "minecraft:poison",
+                "minecraft:blindness",
+                "minecraft:slowness",
+                "minecraft:weakness",
+                "confluence:bleeding",
+                "confluence:broken_armor",
+                "terra_curio:confused",
+                "confluence:cursed",
+                "confluence:silenced",
+                "confluence:stoned"
+            ]
+        },
+        "terra_curio:avenger_emblem": {
+            "terra_curio:attributes": {
+                "minecraft:generic.attack_damage": [
+                    {
+                        "id": "terra_curio:avenger_emblem",
+                        "amount": 0.12,
+                        "operation": "add_multiplied_total"
+                    }
+                ],
+                "terra_curio:generic.ranged_damage": [
+                    {
+                        "id": "terra_curio:avenger_emblem",
+                        "amount": 0.12,
+                        "operation": "add_multiplied_total"
+                    }
+                ],
+                "terra_curio:generic.magic_damage": [
+                    {
+                        "id": "terra_curio:avenger_emblem",
+                        "amount": 0.12,
+                        "operation": "add_multiplied_total"
+                    }
+                ],
+                "terra_entity:player.summon_damage": [
+                    {
+                        "id": "terra_curio:avenger_emblem",
+                        "amount": 0.12,
+                        "operation": "add_multiplied_total"
+                    }
+                ]
+            }
+        },
+        "terra_curio:destroyer_emblem": {
+            "terra_curio:attributes": {
+                "minecraft:generic.attack_damage": [
+                    {
+                        "id": "terra_curio:destroyer_emblem",
+                        "amount": 0.1,
+                        "operation": "add_multiplied_total"
+                    }
+                ],
+                "terra_curio:generic.ranged_damage": [
+                    {
+                        "id": "terra_curio:destroyer_emblem",
+                        "amount": 0.1,
+                        "operation": "add_multiplied_total"
+                    }
+                ],
+                "terra_curio:generic.magic_damage": [
+                    {
+                        "id": "terra_curio:destroyer_emblem",
+                        "amount": 0.1,
+                        "operation": "add_multiplied_total"
+                    }
+                ],
+                "terra_entity:player.summon_damage": [
+                    {
+                        "id": "terra_curio:destroyer_emblem",
+                        "amount": 0.1,
+                        "operation": "add_multiplied_total"
+                    }
+                ],
+                "terra_curio:generic.crit_chance": [
+                    {
+                        "id": "terra_curio:destroyer_emblem",
+                        "amount": 0.08,
+                        "operation": "add_multiplied_total"
+                    }
+                ]
+            }
+        },
+        "terra_curio:putrid_scent": {
+            "terra_curio:attributes": {
+                "minecraft:generic.attack_damage": [
+                    {
+                        "id": "terra_curio:putrid_scent",
+                        "amount": 0.05,
+                        "operation": "add_multiplied_total"
+                    }
+                ],
+                "terra_curio:generic.ranged_damage": [
+                    {
+                        "id": "terra_curio:putrid_scent",
+                        "amount": 0.05,
+                        "operation": "add_multiplied_total"
+                    }
+                ],
+                "terra_curio:generic.magic_damage": [
+                    {
+                        "id": "terra_curio:putrid_scent",
+                        "amount": 0.05,
+                        "operation": "add_multiplied_total"
+                    }
+                ],
+                "terra_entity:player.summon_damage": [
+                    {
+                        "id": "terra_curio:putrid_scent",
+                        "amount": 0.05,
+                        "operation": "add_multiplied_total"
+                    }
+                ],
+                "terra_curio:player.aggro": [
+                    {
+                        "id": "terra_curio:putrid_scent",
+                        "amount": -400,
+                        "operation": "add_value"
+                    }
+                ]
+            }
+        },
+        "terra_curio:moon_stone": {
+            "terra_curio:attributes": {
+                "minecraft:generic.attack_speed": [
+                    {
+                        "id": "terra_curio:moon_stone",
+                        "amount": 0.1,
+                        "operation": "add_multiplied_total"
+                    }
+                ],
+                "minecraft:generic.attack_damage": [
+                    {
+                        "id": "terra_curio:moon_stone",
+                        "amount": 0.1,
+                        "operation": "add_multiplied_total"
+                    }
+                ],
+                "terra_curio:generic.ranged_damage": [
+                    {
+                        "id": "terra_curio:moon_stone",
+                        "amount": 0.1,
+                        "operation": "add_multiplied_total"
+                    }
+                ],
+                "terra_curio:generic.magic_damage": [
+                    {
+                        "id": "terra_curio:moon_stone",
+                        "amount": 0.1,
+                        "operation": "add_multiplied_total"
+                    }
+                ],
+                "terra_entity:player.summon_damage": [
+                    {
+                        "id": "terra_curio:moon_stone",
+                        "amount": 0.1,
+                        "operation": "add_multiplied_total"
+                    }
+                ],
+                "terra_curio:generic.crit_chance": [
+                    {
+                        "id": "terra_curio:moon_stone",
+                        "amount": 0.02,
+                        "operation": "add_value"
+                    }
+                ],
+                "minecraft:generic.armor": [
+                    {
+                        "id": "terra_curio:moon_stone",
+                        "amount": 4.0,
+                        "operation": "add_value"
+                    }
+                ],
+                "minecraft:player.block_break_speed": [
+                    {
+                        "id": "terra_curio:moon_stone",
+                        "amount": 0.15,
+                        "operation": "add_multiplied_total"
+                    }
+                ],
+                "terra_entity:player.summon_knockback": [
+                    {
+                        "id": "terra_curio:moon_stone",
+                        "amount": 0.5,
+                        "operation": "add_value"
+                    }
+                ]
+            }
+        },
+        "terra_curio:sun_stone": {
+            "terra_curio:attributes": {
+                "minecraft:generic.attack_speed": [
+                    {
+                        "id": "terra_curio:sun_stone",
+                        "amount": 0.1,
+                        "operation": "add_multiplied_total"
+                    }
+                ],
+                "minecraft:generic.attack_damage": [
+                    {
+                        "id": "terra_curio:sun_stone",
+                        "amount": 0.1,
+                        "operation": "add_multiplied_total"
+                    }
+                ],
+                "terra_curio:generic.ranged_damage": [
+                    {
+                        "id": "terra_curio:sun_stone",
+                        "amount": 0.1,
+                        "operation": "add_multiplied_total"
+                    }
+                ],
+                "terra_curio:generic.magic_damage": [
+                    {
+                        "id": "terra_curio:sun_stone",
+                        "amount": 0.1,
+                        "operation": "add_multiplied_total"
+                    }
+                ],
+                "terra_entity:player.summon_damage": [
+                    {
+                        "id": "terra_curio:sun_stone",
+                        "amount": 0.1,
+                        "operation": "add_multiplied_total"
+                    }
+                ],
+                "terra_curio:generic.crit_chance": [
+                    {
+                        "id": "terra_curio:sun_stone",
+                        "amount": 0.02,
+                        "operation": "add_value"
+                    }
+                ],
+                "minecraft:generic.armor": [
+                    {
+                        "id": "terra_curio:sun_stone",
+                        "amount": 4.0,
+                        "operation": "add_value"
+                    }
+                ],
+                "minecraft:player.block_break_speed": [
+                    {
+                        "id": "terra_curio:sun_stone",
+                        "amount": 0.15,
+                        "operation": "add_multiplied_total"
+                    }
+                ],
+                "terra_entity:player.summon_knockback": [
+                    {
+                        "id": "terra_curio:sun_stone",
+                        "amount": 0.5,
+                        "operation": "add_value"
+                    }
+                ]
+            }
+        },
+        "terra_curio:celestial_stone": {
+            "terra_curio:attributes": {
+                "minecraft:generic.attack_speed": [
+                    {
+                        "id": "terra_curio:celestial_stone",
+                        "amount": 0.1,
+                        "operation": "add_multiplied_total"
+                    }
+                ],
+                "minecraft:generic.attack_damage": [
+                    {
+                        "id": "terra_curio:celestial_stone",
+                        "amount": 0.1,
+                        "operation": "add_multiplied_total"
+                    }
+                ],
+                "terra_curio:generic.ranged_damage": [
+                    {
+                        "id": "terra_curio:celestial_stone",
+                        "amount": 0.1,
+                        "operation": "add_multiplied_total"
+                    }
+                ],
+                "terra_curio:generic.magic_damage": [
+                    {
+                        "id": "terra_curio:celestial_stone",
+                        "amount": 0.1,
+                        "operation": "add_multiplied_total"
+                    }
+                ],
+                "terra_entity:player.summon_damage": [
+                    {
+                        "id": "terra_curio:celestial_stone",
+                        "amount": 0.1,
+                        "operation": "add_multiplied_total"
+                    }
+                ],
+                "terra_curio:generic.crit_chance": [
+                    {
+                        "id": "terra_curio:celestial_stone",
+                        "amount": 0.02,
+                        "operation": "add_value"
+                    }
+                ],
+                "minecraft:generic.armor": [
+                    {
+                        "id": "terra_curio:celestial_stone",
+                        "amount": 4.0,
+                        "operation": "add_value"
+                    }
+                ],
+                "minecraft:player.block_break_speed": [
+                    {
+                        "id": "terra_curio:celestial_stone",
+                        "amount": 0.15,
+                        "operation": "add_multiplied_total"
+                    }
+                ],
+                "terra_entity:player.summon_knockback": [
+                    {
+                        "id": "terra_curio:celestial_stone",
+                        "amount": 0.5,
+                        "operation": "add_value"
+                    }
+                ]
+            }
+        },
+        "terra_curio:celestial_shell": {
+            "terra_curio:attributes": {
+                "minecraft:generic.attack_speed": [
+                    {
+                        "id": "terra_curio:celestial_stone",
+                        "amount": 0.1,
+                        "operation": "add_multiplied_total"
+                    }
+                ],
+                "minecraft:generic.attack_damage": [
+                    {
+                        "id": "terra_curio:celestial_stone",
+                        "amount": 0.1,
+                        "operation": "add_multiplied_total"
+                    }
+                ],
+                "terra_curio:generic.ranged_damage": [
+                    {
+                        "id": "terra_curio:celestial_stone",
+                        "amount": 0.1,
+                        "operation": "add_multiplied_total"
+                    }
+                ],
+                "terra_curio:generic.magic_damage": [
+                    {
+                        "id": "terra_curio:celestial_stone",
+                        "amount": 0.1,
+                        "operation": "add_multiplied_total"
+                    }
+                ],
+                "terra_entity:player.summon_damage": [
+                    {
+                        "id": "terra_curio:celestial_stone",
+                        "amount": 0.1,
+                        "operation": "add_multiplied_total"
+                    }
+                ],
+                "terra_curio:generic.crit_chance": [
+                    {
+                        "id": "terra_curio:celestial_stone",
+                        "amount": 0.02,
+                        "operation": "add_value"
+                    }
+                ],
+                "minecraft:generic.armor": [
+                    {
+                        "id": "terra_curio:celestial_stone",
+                        "amount": 4.0,
+                        "operation": "add_value"
+                    }
+                ],
+                "minecraft:player.block_break_speed": [
+                    {
+                        "id": "terra_curio:celestial_stone",
+                        "amount": 0.15,
+                        "operation": "add_multiplied_total"
+                    }
+                ],
+                "terra_entity:player.summon_knockback": [
+                    {
+                        "id": "terra_curio:celestial_stone",
+                        "amount": 0.5,
+                        "operation": "add_value"
+                    }
+                ]
+            }
+        }
+    },
+    "neoforge:conditions": [
+        {
+            "type": "neoforge:mod_loaded",
+            "modid": "terra_curio"
+        }
+    ]
+}

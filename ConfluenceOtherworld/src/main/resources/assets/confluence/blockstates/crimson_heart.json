@@ -1,0 +1,21 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "confluence:block/crimson_heart"
+      },
+      {
+        "model": "confluence:block/crimson_heart",
+        "y": 90
+      },
+      {
+        "model": "confluence:block/crimson_heart",
+        "y": 180
+      },
+      {
+        "model": "confluence:block/crimson_heart",
+        "y": 270
+      }
+    ]
+  }
+}

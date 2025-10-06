@@ -1,0 +1,15 @@
+{
+    "type": "confluence:heavy_work_bench",
+    "pattern": [
+        "###",
+        "# #"
+    ],
+    "key": {
+        "#": {
+                "item": "confluence:royal_wax"
+        }
+    },
+    "result": {
+        "id": "confluence:bee_helmet"
+    }
+}

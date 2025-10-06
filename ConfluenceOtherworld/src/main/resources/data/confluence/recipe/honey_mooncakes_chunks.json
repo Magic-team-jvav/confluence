@@ -1,0 +1,15 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#"
+    ],
+    "key": {
+        "#": {
+            "item": "confluence:honey_mooncakes"
+        }
+    },
+    "result": {
+        "id": "confluence:honey_mooncakes_chunks",
+        "count": 3
+    }
+}

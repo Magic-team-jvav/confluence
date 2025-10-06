@@ -1,0 +1,37 @@
+{
+    "display": {
+        "icon": {
+            "id": "minecraft:saddle"
+        },
+        "title": {
+            "translate": "achievements.confluence.the_cavalry.title"
+        },
+        "description": {
+            "translate": "achievements.confluence.the_cavalry.description"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": false,
+        "hidden": false
+    },
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "never": {
+            "trigger": "minecraft:impossible"
+        },
+        "curio": {
+            "trigger": "terra_curio:curios_equipped",
+            "conditions": {
+                "item": {
+                    "items": "#confluence:mount"
+                }
+            }
+        }
+    },
+    "requirements": [
+        [
+            "never",
+            "curio"
+        ]
+    ]
+}

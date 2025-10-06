@@ -1,0 +1,9 @@
+{
+  "parent": "confluence:block/light_cross",
+  "textures": {
+    "cross": "confluence:block/glowing_mushroom_1",
+    "light_cross": "confluence:block/glowing_mushroom_light_1",
+    "particle": "confluence:block/glowing_mushroom_light_1"
+  },
+  "render_type": "cutout"
+}

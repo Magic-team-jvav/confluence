@@ -1,0 +1,41 @@
+{
+    "display": {
+        "icon": {
+            "id": "confluence:golden_dungeon_key"
+        },
+        "title": {
+            "translate": "achievements.confluence.dungeon_heist.title"
+        },
+        "description": {
+            "translate": "achievements.confluence.dungeon_heist.description"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": false,
+        "hidden": false
+    },
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "requirement": {
+            "trigger": "minecraft:item_used_on_block",
+            "conditions": {
+                "location": [
+                    {
+                        "condition": "minecraft:location_check",
+                        "predicate": {
+                            "block": {
+                                "blocks": "confluence:dungeon_chest"
+                            }
+                        }
+                    },
+                    {
+                        "condition": "minecraft:match_tool",
+                        "predicate": {
+                            "items": "confluence:golden_dungeon_key"
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}

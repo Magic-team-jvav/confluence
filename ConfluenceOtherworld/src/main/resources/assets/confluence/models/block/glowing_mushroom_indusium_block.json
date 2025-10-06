@@ -1,0 +1,28 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "confluence:block/glowing_mushroom_indusium_block",
+		"particle": "confluence:block/glowing_mushroom_indusium_block"
+	},
+	"render_type": "cutout_mipped",
+	"elements": [
+		{
+			"from": [-16, 3.25, 0],
+			"to": [32, 3.25, 16],
+			"rotation": {"angle": -22.5, "axis": "x", "origin": [8, 3.25, 16]},
+			"faces": {
+				"north": {"uv": [0, 0, 16, 0], "texture": "#missing"},
+				"east": {"uv": [0, 0, 16, 0], "texture": "#missing"},
+				"south": {"uv": [0, 0, 16, 0], "texture": "#missing"},
+				"west": {"uv": [0, 0, 16, 0], "texture": "#missing"},
+				"up": {"uv": [0, 0, 12, 4], "texture": "#0"},
+				"down": {"uv": [0, 4, 12, 0], "texture": "#0"}
+			},
+			"neoforge_data": {
+				"block_light": 15,
+				"sky_light": 15
+			},
+			"shade": false
+		}
+	]
+}

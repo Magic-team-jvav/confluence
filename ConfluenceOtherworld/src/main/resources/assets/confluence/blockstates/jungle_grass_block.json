@@ -1,0 +1,21 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "confluence:block/jungle_grass_block"
+      },
+      {
+        "model": "confluence:block/jungle_grass_block",
+        "y": 90
+      },
+      {
+        "model": "confluence:block/jungle_grass_block",
+        "y": 180
+      },
+      {
+        "model": "confluence:block/jungle_grass_block",
+        "y": 270
+      }
+    ]
+  }
+}

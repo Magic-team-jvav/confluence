@@ -1,0 +1,8 @@
+{
+  "parent": "block/cross",
+  "textures": {
+    "cross": "confluence:block/crops/cloudweaver_stage7",
+    "particle": "confluence:block/crops/cloudweaver_stage7"
+  },
+  "render_type": "cutout"
+}

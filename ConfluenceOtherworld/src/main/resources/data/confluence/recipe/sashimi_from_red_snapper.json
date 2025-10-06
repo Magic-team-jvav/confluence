@@ -1,0 +1,14 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "confluence:red_snapper"
+        },
+        {
+            "item": "confluence:red_snapper"
+        }
+    ],
+    "result": {
+        "id": "confluence:sashimi"
+    }
+}

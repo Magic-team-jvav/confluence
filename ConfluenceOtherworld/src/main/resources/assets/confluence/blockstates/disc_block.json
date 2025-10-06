@@ -1,0 +1,27 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "confluence:block/disc_block"
+      },
+      {
+        "model": "confluence:block/disc_block_0"
+      },
+      {
+        "model": "confluence:block/disc_block_1"
+      },
+      {
+        "model": "confluence:block/disc_block_2"
+      },
+      {
+        "model": "confluence:block/disc_block_3"
+      },
+      {
+        "model": "confluence:block/disc_block_4"
+      },
+      {
+        "model": "confluence:block/disc_block_5"
+      }
+    ]
+  }
+}

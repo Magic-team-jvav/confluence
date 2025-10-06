@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/door_top_left_open",
+  "textures": {
+    "bottom": "confluence:block/skyware_glass_door_bottom",
+    "top": "confluence:block/skyware_glass_door_top"
+  },
+  "render_type": "cutout"
+}

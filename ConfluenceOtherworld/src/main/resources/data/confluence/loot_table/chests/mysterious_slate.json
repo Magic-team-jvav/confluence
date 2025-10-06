@@ -1,0 +1,66 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "confluence:mysterious_slate",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "minecraft:set_lore",
+              "lore": [
+                {
+                  "translate": "lore.confluence.mysterious_slate_0",
+                  "color": "gray",
+                  "italic": false
+                }
+              ],
+              "mode": "replace_all"
+            },
+            {
+              "function": "minecraft:set_name",
+              "name": {
+                "translate": "item.confluence.mysterious_slate.name_0",
+                "italic": false
+              },
+              "target": "custom_name"
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "confluence:mysterious_slate",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "minecraft:set_lore",
+              "lore": [
+                {
+                  "translate": "lore.confluence.mysterious_slate_1",
+                  "color": "gray",
+                  "italic": false
+                }
+              ],
+              "mode": "replace_all"
+            },
+            {
+              "function": "minecraft:set_name",
+              "name": {
+                "translate": "item.confluence.mysterious_slate.name_1",
+                "italic": false
+              },
+              "target": "custom_name"
+            }
+          ]
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 30
+        }
+      ]
+    }
+  ]
+}

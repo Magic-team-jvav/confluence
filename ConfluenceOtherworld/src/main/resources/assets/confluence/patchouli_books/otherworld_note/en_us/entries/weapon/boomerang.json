@@ -1,0 +1,32 @@
+{
+    "name": "patchouli.confluence.otherworld_note.weapon.boomerang.name",
+    "icon": "minecraft:tnt",
+    "category": "confluence:weapon",
+    "pages": [
+        {
+            "type": "patchouli:spotlight",
+            "item": "minecraft:stick",
+            "text": "patchouli.confluence.otherworld_note.weapon.boomerang.0"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minecraft:stick",
+            "text": "patchouli.confluence.otherworld_note.weapon.boomerang.1"
+        },
+        {
+            "type": "patchouli:spotlight",
+            "item": "minecraft:stick",
+            "text": "patchouli.confluence.otherworld_note.weapon.boomerang.2"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minecraft:stick",
+            "text": "patchouli.confluence.otherworld_note.weapon.boomerang.3"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minecraft:stick",
+            "text": "patchouli.confluence.otherworld_note.weapon.boomerang.4"
+        }
+    ]
+}

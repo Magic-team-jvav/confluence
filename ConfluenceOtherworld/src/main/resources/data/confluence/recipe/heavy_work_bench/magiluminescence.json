@@ -1,0 +1,31 @@
+{
+    "type": "confluence:heavy_work_bench",
+    "pattern": [
+        "a  a",
+        " cc ",
+        "c//c",
+        "cccc"
+    ],
+    "key": {
+        "a": {
+            "tag": "confluence:evil_ingot"
+        },
+        "c": {
+            "type": "confluence_magic_lib:amount_ingredient",
+            "ingredient": {
+                "tag": "confluence:evil_ingot"
+            },
+            "count": 2
+        },
+        "/": {
+            "type": "confluence_magic_lib:amount_ingredient",
+            "ingredient": {
+                "item": "confluence:topaz"
+            },
+            "count": 2
+        }
+    },
+    "result": {
+        "id": "terra_curio:magiluminescence"
+    }
+}

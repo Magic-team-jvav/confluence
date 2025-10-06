@@ -1,0 +1,31 @@
+{
+    "name": "patchouli.confluence.otherworld_note.tool.bottomless_bucket.name",
+    "icon": "minecraft:lava_bucket",
+    "category": "confluence:tool",
+    "pages": [
+        {
+            "type": "patchouli:text",
+            "text": "patchouli.confluence.otherworld_note.tool.bottomless_bucket.0"
+        },
+        {
+            "type": "patchouli:spotlight",
+            "item": "minecraft:water_bucket",
+            "text": "patchouli.confluence.otherworld_note.tool.bottomless_bucket.1"
+        },
+        {
+            "type": "patchouli:spotlight",
+            "item": "minecraft:lava_bucket",
+            "text": "patchouli.confluence.otherworld_note.tool.bottomless_bucket.2"
+        },
+        {
+            "type": "patchouli:spotlight",
+            "item": "minecraft:lava_bucket",
+            "text": "patchouli.confluence.otherworld_note.tool.bottomless_bucket.3"
+        },
+        {
+            "type": "patchouli:spotlight",
+            "item": "minecraft:water_bucket",
+            "text": "patchouli.confluence.otherworld_note.tool.bottomless_bucket.4"
+        }
+    ]
+}

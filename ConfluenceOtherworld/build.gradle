@@ -1,0 +1,445 @@
+import java.text.SimpleDateFormat
+
+plugins {
+    id 'maven-publish'
+    id 'net.neoforged.moddev'
+}
+var projectName = ["Confluence-Magic-Lib", "TerraEntity", "MineTeam", "EquipmentBenediction",
+                   "TerraCurio", "HeavenDestinyMoment", "PhaseJourney",
+                   "TerraMoment", "TerraGuns", "IsekaiInvaded", "TerraFurniture",
+                   "EntityTrackerHUD", "EnemyBanner"
+]
+
+version = mod_version + "-${new SimpleDateFormat("yyMMdd").format(new Date())}"
+group = mod_group_id
+
+base {
+    archivesName = "ConfluenceOtherworld"
+}
+
+boolean isRunningInIdea = System.getProperty("idea.active") == "true"
+
+neoForge {
+    version = project.neo_version
+    parchment {
+        mappingsVersion = project.parchment_mappings_version
+        minecraftVersion = project.parchment_minecraft_version
+    }
+    runs {
+        client {
+            client()
+            programArguments.addAll '--username', 'Confluence'
+        }
+
+        client1 {
+            client()
+            programArguments.addAll "--username", "Confluence1"
+        }
+        client2 {
+            client()
+            programArguments.addAll "--username", "Confluence2"
+        }
+
+
+        server {
+            server()
+            //programArgument '--nogui'
+        }
+        data {
+            data()
+            gameDirectory = project.file('run-data')
+            programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+        }
+        configureEach {
+            systemProperty 'forge.logging.markers', 'REGISTRIES'
+            logLevel = org.slf4j.event.Level.DEBUG
+            jvmArguments.addAll([
+                    // 忽略无效指令，避免有的人没安装 JetBrain Runtime 无法启动游戏
+                    "-XX:+IgnoreUnrecognizedVMOptions",
+                    // 启用 JetBrain Runtime 热重载功能
+                    "-XX:+AllowEnhancedClassRedefinition",
+                    // 并发修改检测
+                    //"-javaagent:mods/CMESuckMyDuck-1.0.5.jar=net/minecraft/util/ClassInstanceMultiMap;byClass;Map;nonstatic"
+            ])
+            if (isRunningInIdea) {
+                systemProperty "terminal.jline", "true"
+            }
+        }
+    }
+
+    mods {
+        "${mod_id}" {
+            sourceSet(sourceSets.main)
+        }
+    }
+}
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+repositories {
+    mavenLocal()
+    flatDir {
+        dirs 'libs'
+    }
+    maven { url = "https://www.cursemaven.com" }
+    maven {
+        name = "Modrinth"
+        url = "https://api.modrinth.com/maven"
+    }
+    maven {
+        // location of the maven that hosts JEI files since January 2023
+        name = "Jared's maven"
+        url = "https://maven.blamejared.com/"
+    }
+    maven {
+        // location of a maven mirror for JEI files, as a fallback
+        name = "ModMaven"
+        url = "https://modmaven.dev"
+    }
+    maven {
+        name = 'GeckoLib'
+        url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
+        content {
+            includeGroup("software.bernie.geckolib")
+        }
+    }
+    maven {
+        // Shedaniel's maven (Architectury API)
+        url = "https://maven.architectury.dev"
+        content {
+            includeGroup "dev.architectury"
+        }
+    }
+    maven {
+        name = "LatvianMaven" // KubeJS
+        url = "https://maven.latvian.dev/releases"
+        content {
+            includeGroup "dev.latvian.mods"
+            includeGroup "dev.latvian.apps"
+        }
+    }
+    maven {
+        url = 'https://jitpack.io'
+        content {
+            includeGroup "com.github.rtyley"
+        }
+    }
+    maven { url = "https://maven.bawnorton.com/releases" }
+    maven { url = 'https://maven.minecraftforge.net/' }
+    maven {
+        name = "Curios"
+        url = uri("https://maven.theillusivec4.top/")
+    }
+    maven { url = "https://maven.createmod.net" } // Create
+    maven { url "https://maven.ithundxr.dev/snapshots" } // Registrate
+    maven {
+        name = "Fuzs Mod Resources"
+        url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/"
+    }
+    maven {
+        name = "Iron's Maven - Release" // Iron's Spell n Spellbooks
+        url = "https://code.redspace.io/releases"
+    }
+    maven {
+        name "KosmX's maven" // Player Animator
+        url 'https://maven.kosmx.dev/'
+    }
+}
+
+boolean vanillin = false // 香兰素
+boolean observable = false // 可视性能侦测
+boolean ftb = false // feed the beast
+boolean ipn = false // 一键背包整理Next
+boolean mmmmmmmmmmmm = false // 试验假人
+boolean supplementaries = false // 锦致装饰
+boolean lootBeams = false // 战利品光束
+boolean spark = false // 火花
+boolean apotheosis = false // 神化
+
+dependencies {
+    projectName.forEach { name -> implementation jarJar(project(":" + name)) }
+
+//    implementation jarJar(project(":XHN-Lib"))
+    implementation(jarJar(group: 'com.xiaohunao.xhn_lib', name: 'xhn_lib', version: '1.21.1-0.0.2'))
+    implementation(jarJar("software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"))
+    implementation(jarJar("curse.maven:particle-storm-1124172:${particle_storm_version}"))
+
+    implementation "top.theillusivec4.curios:curios-neoforge:${curios_version}"
+    implementation jarJar('com.github.glitchfiend:TerraBlender-neoforge:' + minecraft_version + '-' + terrablender_version)
+
+    compileOnly(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-common:0.3.3"))
+    implementation(jarJar(group: 'com.github.bawnorton.mixinsquared', name: 'mixinsquared-neoforge', version: '[0.3.3,)'))
+
+    implementation(files('libs/lunar-1.7.4.jar')) // 使用修改了MANIFEST.MF的农历库，以防止有些服务端无法识别
+    jarJar('cn.6tail:lunar:1.7.4')
+
+    compileOnly "net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}"
+    if (true) {
+        runtimeOnly("com.simibubi.create:create-${minecraft_version}:${create_version}") { transitive = false }
+    }
+
+    compileOnly "curse.maven:jade-324717:6011258"
+    runtimeOnly "curse.maven:jade-324717:6011258"
+
+    compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
+    compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
+    runtimeOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
+
+    compileOnly "vazkii.patchouli:Patchouli:1.21-87-NEOFORGE:api"
+    compileOnly "vazkii.patchouli:Patchouli:1.21-87-NEOFORGE"
+    if (false || apotheosis) {
+        runtimeOnly "vazkii.patchouli:Patchouli:1.21-87-NEOFORGE"
+    }
+
+    compileOnly "curse.maven:ftb-chunks-forge-314906:5968500"
+    compileOnly "curse.maven:ftb-library-forge-404465:6016745"
+    if (ftb) {
+        runtimeOnly "curse.maven:ftb-chunks-forge-314906:6504893"
+        runtimeOnly "curse.maven:ftb-library-forge-404465:6016745"
+        runtimeOnly "curse.maven:ftb-ultimine-forge-386134:5671703"
+        runtimeOnly "curse.maven:ftb-teams-forge-404468:5882217"
+    }
+
+    compileOnly "curse.maven:better-advancements-272515:5850587"
+    runtimeOnly "curse.maven:better-advancements-272515:5850587"
+
+    compileOnly "curse.maven:sodium-394468:6382651"
+    if (!vanillin) {
+        runtimeOnly "curse.maven:sodium-394468:6382651"
+        runtimeOnly "curse.maven:irisshaders-455508:6213632"
+    }
+
+    compileOnly "curse.maven:advancement-plaques-499826:5905995"
+    //runtimeOnly "curse.maven:advancement-plaques-499826:5905995"
+    //runtimeOnly "curse.maven:iceberg-520110:6118329"
+
+    compileOnly "curse.maven:journeymap-32274:6213329"
+    //runtimeOnly "curse.maven:journeymap-32274:6213329"
+
+    compileOnly "curse.maven:touhou-little-maid-355044:6613831-sources-6613865"
+    runtimeOnly "curse.maven:touhou-little-maid-355044:6613831-sources-6613865"
+
+    compileOnly "curse.maven:carry-on-274259:5649344"
+    //runtimeOnly "curse.maven:carry-on-274259:5649344"
+
+    compileOnly "curse.maven:apothic-attributes-898963:6302334"
+    if (apotheosis) {
+        runtimeOnly "curse.maven:apotheosis-313970:6545942"
+        runtimeOnly "curse.maven:apothic-enchanting-1063926:6563643"
+        runtimeOnly "curse.maven:apothic-spawners-986583:6430294"
+        runtimeOnly "curse.maven:apothic-attributes-898963:6302334"
+        runtimeOnly "curse.maven:placebo-283644:6446766"
+    }
+
+    compileOnly "curse.maven:appleskin-248787:5586600"
+    runtimeOnly "curse.maven:appleskin-248787:5586600"
+
+    api("dev.latvian.mods:kubejs-neoforge:${kubejs_version}")
+    if (false) {
+        runtimeOnly "dev.latvian.mods:kubejs-neoforge:${kubejs_version}"
+        runtimeOnly "dev.latvian.mods:rhino:${rhino_version}"
+    }
+
+    compileOnly "maven.modrinth:waystones:zKuhJ4Vo"
+    compileOnly "maven.modrinth:balm:YgPFqhlP"
+    if (true) {
+        runtimeOnly "maven.modrinth:waystones:zKuhJ4Vo"
+        runtimeOnly "maven.modrinth:balm:YgPFqhlP"
+    }
+
+    compileOnly "curse.maven:xaeros-minimap-263420:6515043"
+    compileOnly "curse.maven:xaeros-world-map-317780:6538359"
+    if (true) {
+        runtimeOnly "curse.maven:xaeros-minimap-263420:6515043"
+        runtimeOnly "curse.maven:xaeros-world-map-317780:6538359"
+    }
+
+    compileOnly "maven.modrinth:loot-beams-refork:neoforge-1.21.1-3.2.5"
+    if (lootBeams) {
+        runtimeOnly "maven.modrinth:loot-beams-refork:neoforge-1.21.1-3.2.5"
+        runtimeOnly "maven.modrinth:nirvana-library:neoforge-1.21.1-2.0.13"
+        runtimeOnly "maven.modrinth:common-network:QYLtKTFr"
+        runtimeOnly "maven.modrinth:fzzy-config:0.7.0+1.21+neoforge"
+    }
+
+    compileOnly "com.hollingsworth.ars_nouveau:ars_nouveau-${minecraft_version}:${ars_nouveau_version}"
+    //runtimeOnly "com.hollingsworth.ars_nouveau:ars_nouveau-${minecraft_version}:${ars_nouveau_version}"
+
+    compileOnly "io.redspace:irons_spellbooks:${irons_spells_version}:api"
+    if (true) {
+        runtimeOnly "io.redspace:irons_spellbooks:${irons_spells_version}"
+        runtimeOnly "dev.kosmx.player-anim:player-animation-lib-forge:${player_animator_version}"
+    }
+
+    compileOnly "curse.maven:dynamiclights-reforged-551736:5807536"
+
+    /**********************************************************/
+
+
+    runtimeOnly "curse.maven:worldedit-225608:5830452"
+    //runtimeOnly "curse.maven:spark-361579:6225208"
+    //runtimeOnly "curse.maven:lithium-360438:6290413"
+    //runtimeOnly "curse.maven:dynamiclights-reforged-551736:5807536"
+    //runtimeOnly "curse.maven:lootr-361276:6294335"
+    //runtimeOnly "curse.maven:the-twilight-forest-227639:6087105"
+    //runtimeOnly "maven.modrinth:mekanism:10.7.13.78"
+    //runtimeOnly "curse.maven:modern-ui-352491:6200236"
+    //runtimeOnly "curse.maven:eternal-starlight-1080592:6383693"
+    //runtimeOnly "curse.maven:refined-storage-243076:6391989"
+    //runtimeOnly "curse.maven:display-delight-1144296:5964213"
+    //runtimeOnly "curse.maven:dynamictrees-252818:6360173"
+    //runtimeOnly "maven.modrinth:modernfix:JNjN5X7g" // 冲突真多
+    //runtimeOnly "maven.modrinth:feature-recycler:2.0.0-neoforge" // 协助修复feature order cycle
+    //runtimeOnly "curse.maven:fargo-soul-1315726:6819904"
+    //runtimeOnly "curse.maven:cataclysm-spellbooks-1099461:6427259"
+    //runtimeOnly "curse.maven:azurelib-817423:6849116"
+    //runtimeOnly "curse.maven:lendercataclysm-551586:6849033"
+    //runtimeOnly "curse.maven:lionfish-api-1001614:6168249"
+    if (true) {
+        runtimeOnly "curse.maven:enchantment-descriptions-250419:6348560"
+        runtimeOnly "curse.maven:bookshelf-228525:6717571"
+        runtimeOnly "curse.maven:prickle-1023259:6546240"
+    }
+    if (false) {
+        runtimeOnly "curse.maven:immersive-portals-for-forge-355440:6013197"
+        runtimeOnly "curse.maven:cloth-config-348521:5729127"
+    }
+    if (observable) {
+        runtimeOnly "curse.maven:observable-509575:5733591"
+    }
+    if (ipn) {
+        runtimeOnly "maven.modrinth:inventory-profiles-next:neoforge-1.21.1-2.1.8"
+        runtimeOnly "maven.modrinth:libipn:neoforge-1.21.1-6.5.0"
+    }
+    if (observable || ftb) {
+        runtimeOnly "dev.architectury:architectury-neoforge:${architectury_version}"
+    }
+    if (observable || ipn || lootBeams) {
+        runtimeOnly "curse.maven:kotlin-for-forge-351264:5978393"
+    }
+    if (false) {
+        runtimeOnly "curse.maven:tweakerge-915857:6387063"
+        runtimeOnly "curse.maven:mafglib-910766:6416901"
+    }
+    if (vanillin) {
+        runtimeOnly "curse.maven:vanillin-965702:6446560"
+    }
+    if (false) {
+        runtimeOnly "maven.modrinth:ae2:juQOuKVW"
+        runtimeOnly "maven.modrinth:guideme:9aIv5HxH"
+    }
+    if (supplementaries) {
+        runtimeOnly "curse.maven:supplementaries-412082:6284266"
+    }
+    if (false) {
+        runtimeOnly "curse.maven:oh-the-biomes-weve-gone-1070751:6298837"
+        runtimeOnly "curse.maven:corgilib-693313:6002859"
+        runtimeOnly "curse.maven:oh-the-trees-youll-grow-962544:6294221"
+    }
+    if (mmmmmmmmmmmm) {
+        runtimeOnly "maven.modrinth:mmmmmmmmmmmm:neoforge_1.21-2.0.8"
+    }
+    if (supplementaries || mmmmmmmmmmmm) {
+        runtimeOnly "maven.modrinth:moonlight:1.21-2.18.18-neoforge"
+    }
+
+    if(spark){
+        implementation "curse.maven:spark-361579:6225208"
+
+    }
+
+}
+
+tasks.withType(ProcessResources).configureEach {
+    var replaceProperties = [minecraft_version      : minecraft_version,
+                             minecraft_version_range: minecraft_version_range,
+                             neo_version            : neo_version,
+                             neo_version_range      : neo_version_range,
+                             loader_version_range   : loader_version_range,
+                             mod_id                 : mod_id,
+                             mod_name               : mod_name,
+                             mod_license            : mod_license,
+                             mod_version            : mod_version,
+                             mod_authors            : mod_authors,
+                             mod_description        : mod_description,
+                             curios_version         : curios_version]
+    inputs.properties replaceProperties
+
+    filesMatching(['META-INF/neoforge.mods.toml']) {
+        expand replaceProperties
+    }
+}
+
+tasks.withType(Copy).configureEach { duplicatesStrategy = DuplicatesStrategy.EXCLUDE }
+
+tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
+
+tasks.register("genVoilaRun") {
+    dependsOn("prepareClientRun")
+    inputs.files(sourceSets.main.output)
+    inputs.files(configurations.runtimeClasspath)
+    def runtimeClasspath = files({
+        sourceSets.main.output + configurations.runtimeClasspath
+    })
+    def projectDir = project.projectDir
+    def runConfigDir = new File(project.rootDir, ".idea/runConfigurations")
+    def programParam = new File(projectDir, "build/moddev/clientRunProgramArgs.txt").toString().replace("\\", "\\\\")
+    def workingDir = new File(projectDir, "run")
+    def vmArgs = new File(projectDir, "build/moddev/clientRunVmArgs.txt").toString().replace("\\", "\\\\")
+    def moduleName = "${project.rootProject.name}.${project.name}.${sourceSets.main.name}" // 写死了自身必定在第二层
+    def classesDir = new File(projectDir, "build/classes/java/main").toString().replace("\\", "\\\\")
+    def resDir = new File(projectDir, "build/resources/main").toString().replace("\\", "\\\\")
+    def modId = mod_id
+    def ideaRt = "D:\\Program Files\\JetBrains\\IntelliJ IDEA 2024.2.3\\lib\\idea_rt.jar"
+//    return;
+
+    def runConfig = """
+            <component name="ProjectRunConfigurationManager">
+                <configuration default="false" name="Confluence" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="false">
+                    <option name="MAIN_CLASS_NAME" value="net.neoforged.devlaunch.Main" />
+                    <option name="SPRING_BOOT_MAIN_CLASS" value="net.neoforged.devlaunch.Main" />
+                    <module name="${moduleName}" />
+                    <option name="VM_PARAMETERS" value="@${vmArgs} -Dfml.modFolders=${modId}%%${classesDir};${modId}%%${resDir} -cp &quot;${runtimeClasspath.asPath};${ideaRt}&quot;" />
+                    <option name="PROGRAM_PARAMETERS" value="@${programParam}" />
+                    <option name="WORKING_DIRECTORY" value="${workingDir}" />
+                    <method v="2">
+                        <option name="Make" enabled="true" />
+                    </method>
+                </configuration>
+            </component>"""
+    if (!runConfigDir.exists()) {
+        runConfigDir.mkdirs()
+    }
+    new File(runConfigDir, "GeneratedRunConfig.xml").text = runConfig
+}
+
+jar {
+    exclude 'org/confluence/mod/common/data/gen'
+}
+
+tasks.register('sourcesJar', Jar) {
+    from sourceSets.main.allJava
+    archiveClassifier.set("sources")
+}
+
+ext {
+    releasesUrl = "https://maven.confluence.ink/releases"
+    snapshotsUrl = "https://maven.confluence.ink/snapshots"
+}
+publishing {
+    publications {
+        register('mavenJava', MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            name = "Confluence"
+            url = version.toString().endsWith("SNAPSHOT") ? snapshotsUrl : releasesUrl
+            credentials {
+                username = System.getenv("MAGIC_TEAM_USERNAME")
+                password = System.getenv("MAGIC_TEAM_TOKEN")
+            }
+        }
+    }
+}

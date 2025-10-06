@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "minecraft:stick"
+    },
+    "X": {
+      "tag": "confluence:lead_and_iron"
+    }
+  },
+  "pattern": [
+    "X X",
+    "X#X",
+    "X X"
+  ],
+  "result": {
+    "count": 16,
+    "id": "minecraft:rail"
+  },
+  "show_notification": true
+}

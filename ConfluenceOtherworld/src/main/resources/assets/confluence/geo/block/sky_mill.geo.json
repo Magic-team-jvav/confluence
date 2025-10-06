@@ -1,0 +1,41 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.sky_mill",
+				"texture_width": 64,
+				"texture_height": 64,
+				"visible_bounds_width": 2,
+				"visible_bounds_height": 2.5,
+				"visible_bounds_offset": [0, 0.75, 0]
+			},
+			"bones": [
+				{
+					"name": "bb_main",
+					"pivot": [0, 0, 0],
+					"cubes": [
+						{"origin": [-5, 9, 6], "size": [10, 11, 2], "uv": [0, 22]},
+						{"origin": [-5, 5, 0], "size": [10, 4, 8], "uv": [0, 0]},
+						{"origin": [-5, 4, -5], "size": [10, 5, 5], "uv": [0, 12]},
+						{"origin": [-5, 0, 6], "size": [2, 5, 2], "uv": [32, 29]},
+						{"origin": [3, 0, 6], "size": [2, 5, 2], "uv": [30, 12]},
+						{"origin": [-4, 0, -1], "size": [2, 5, 2], "uv": [0, 0]},
+						{"origin": [2, 0, -1], "size": [2, 5, 2], "uv": [24, 29]}
+					]
+				},
+				{
+					"name": "bone",
+					"pivot": [0, 15, 5],
+					"cubes": [
+						{"origin": [-2, 13, 4], "size": [4, 4, 2], "uv": [28, 0]},
+						{"origin": [-5.5, 15.5, 3.5], "size": [5, 5, 2], "uv": [24, 22]},
+						{"origin": [0.5, 15.5, 3.5], "size": [5, 5, 2], "uv": [24, 22], "mirror": true},
+						{"origin": [0.5, 9.5, 3.5], "size": [5, 5, 2], "uv": [24, 22], "mirror": true},
+						{"origin": [-5.5, 9.5, 3.5], "size": [5, 5, 2], "uv": [24, 22]}
+					]
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,11 @@
+{
+    "type": "confluence:sky_mill",
+    "ingredients": [
+        {
+            "item": "confluence:weaving_cloud_cotton"
+        }
+    ],
+    "result": {
+        "id": "confluence:cloud_block"
+    }
+}

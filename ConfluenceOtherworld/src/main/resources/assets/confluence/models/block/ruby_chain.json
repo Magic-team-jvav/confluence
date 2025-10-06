@@ -1,0 +1,8 @@
+{
+    "parent": "block/chain",
+    "render_type": "cutout",
+    "textures": {
+        "particle": "confluence:block/chain/ruby_chain",
+        "all": "confluence:block/chain/ruby_chain"
+    }
+}

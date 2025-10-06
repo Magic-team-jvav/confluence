@@ -1,0 +1,51 @@
+{
+  "processors": [
+    {
+      "processor_type": "minecraft:rule",
+      "rules": [
+        {
+          "location_predicate": {
+            "predicate_type": "always_true"
+          },
+          "input_predicate": {
+            "predicate_type": "random_blockstate_match",
+            "probability": 0.25,
+            "block_state": {
+              "Name": "minecraft:cave_vines",
+              "Properties": {
+                "berries": "false"
+              }
+            }
+          },
+          "output_state": {
+            "Name": "minecraft:cave_vines",
+            "Properties": {
+              "berries": "true"
+            }
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "always_true"
+          },
+          "input_predicate": {
+            "predicate_type": "random_blockstate_match",
+            "probability": 0.25,
+            "block_state": {
+              "Name": "minecraft:cave_vines_plant",
+              "Properties": {
+                "berries": "false"
+              }
+            }
+          },
+          "output_state": {
+            "Name": "minecraft:cave_vines_plant",
+            "Properties": {
+              "berries": "true"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

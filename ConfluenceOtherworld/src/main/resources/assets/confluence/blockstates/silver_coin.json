@@ -1,0 +1,138 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "confluence:block/coins/silver_coins_0",
+        "uvlock": false
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/coins/silver_coins_1",
+        "uvlock": false
+      },
+      "when": {
+        "heaps": 2
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/coins/silver_coins_2",
+        "uvlock": false
+      },
+      "when": {
+        "heaps": 3
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/coins/silver_coins_3",
+        "uvlock": false
+      },
+      "when": {
+        "heaps": 4
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/coins/silver_coins_4",
+        "uvlock": false
+      },
+      "when": {
+        "heaps": 5
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/coins/silver_coins_5",
+        "uvlock": false
+      },
+      "when": {
+        "heaps": 6
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/coins/silver_coins_6",
+        "uvlock": false
+      },
+      "when": {
+        "heaps": 7
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/coins/silver_coins_7",
+        "uvlock": false
+      },
+      "when": {
+        "heaps": 8
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/coins/silver_coins_8",
+        "uvlock": false
+      },
+      "when": {
+        "heaps": 9
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/coins/silver_coins_9",
+        "uvlock": false
+      },
+      "when": {
+        "heaps": 10
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/coins/silver_coins_10",
+        "uvlock": false
+      },
+      "when": {
+        "heaps": 11
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/coins/silver_coins_11",
+        "uvlock": false
+      },
+      "when": {
+        "heaps": 12
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/coins/silver_coins_off",
+        "uvlock": false
+      },
+      "when": {
+        "isbase": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/coins/silver_coins_on_0",
+        "uvlock": false
+      },
+      "when": {
+        "isbase": "true",
+        "heaps": "1|2|3|4|5|6"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/coins/silver_coins_on_1",
+        "uvlock": false
+      },
+      "when": {
+        "isbase": "true",
+        "heaps": "7|8|9|10|11|12"
+      }
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+    "type": "minecraft:smoking",
+    "ingredient": {
+        "item": "confluence:fluttering_lamb_chops"
+    },
+    "result": {
+        "id": "confluence:cooked_fluttering_lamb_chops"
+    },
+    "experience": 0.1,
+    "cookingtime": 100
+}

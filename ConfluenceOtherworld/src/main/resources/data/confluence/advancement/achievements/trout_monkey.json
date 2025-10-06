@@ -1,0 +1,23 @@
+{
+    "display": {
+        "icon": {
+            "id": "confluence:trout"
+        },
+        "title": {
+            "translate": "achievements.confluence.trout_monkey.title"
+        },
+        "description": {
+            "translate": "achievements.confluence.trout_monkey.description"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": false,
+        "hidden": false
+    },
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "never": {
+            "trigger": "minecraft:impossible"
+        }
+    }
+}

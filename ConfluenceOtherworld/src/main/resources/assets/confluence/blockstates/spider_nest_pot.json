@@ -1,0 +1,15 @@
+{
+	"variants": {
+		"": [
+			{
+				"model": "confluence:block/pot/spider_nest/spider_nest_pot_0"
+			},
+			{
+				"model": "confluence:block/pot/spider_nest/spider_nest_pot_1"
+			},
+			{
+				"model": "confluence:block/pot/spider_nest/spider_nest_pot_2"
+			}
+		]
+	}
+}

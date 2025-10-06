@@ -1,0 +1,23 @@
+{
+    "display": {
+        "icon": {
+            "id": "terra_moment:slime_rain"
+        },
+        "title": {
+            "translate": "achievements.confluence.sticky_situation.title"
+        },
+        "description": {
+            "translate": "achievements.confluence.sticky_situation.description"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": false,
+        "hidden": false
+    },
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "never": {
+            "trigger": "minecraft:impossible"
+        }
+    }
+}

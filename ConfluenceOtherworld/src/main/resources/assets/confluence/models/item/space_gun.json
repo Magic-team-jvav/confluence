@@ -1,0 +1,112 @@
+{
+  "credit": "Made with Blockbench",
+  "parent": "builtin/entity",
+  "texture_size": [
+    64,
+    64
+  ],
+  "display": {
+    "thirdperson_righthand": {
+      "translation": [
+        0,
+        -0.75,
+        2.25
+      ],
+      "scale": [
+        0.7,
+        0.7,
+        0.7
+      ]
+    },
+    "thirdperson_lefthand": {
+      "translation": [
+        0,
+        -0.75,
+        2.25
+      ],
+      "scale": [
+        0.7,
+        0.7,
+        0.7
+      ]
+    },
+    "firstperson_righthand": {
+      "translation": [
+        0.75,
+        0.5,
+        3.75
+      ],
+      "scale": [
+        0.7,
+        0.7,
+        0.7
+      ]
+    },
+    "firstperson_lefthand": {
+      "translation": [
+        0.75,
+        0.5,
+        3.75
+      ],
+      "scale": [
+        0.7,
+        0.7,
+        0.7
+      ]
+    },
+    "ground": {
+      "rotation": [
+        0,
+        -90,
+        0
+      ],
+      "translation": [
+        -6,
+        -1.5,
+        0
+      ],
+      "scale": [
+        0.65,
+        0.65,
+        0.65
+      ]
+    },
+    "gui": {
+      "rotation": [
+        0,
+        -90,
+        0
+      ],
+      "translation": [
+        -4.75,
+        -3.25,
+        0
+      ],
+      "scale": [
+        0.8,
+        0.8,
+        0.8
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        0,
+        90,
+        0
+      ],
+      "translation": [
+        5,
+        -2.5,
+        0
+      ],
+      "scale": [
+        0.8,
+        0.8,
+        0.8
+      ]
+    }
+  },
+  "textures": {
+    "particle": "terra_guns:item/texture"
+  }
+}

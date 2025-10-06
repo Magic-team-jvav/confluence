@@ -1,0 +1,19 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 61943871,
+    "separation": 10,
+    "spacing": 15,
+    "spread_type": "triangular",
+    "exclusion_zone": {
+      "chunk_count": 10,
+      "other_set": "minecraft:villages"
+    }
+  },
+  "structures": [
+    {
+      "structure": "confluence:nether_tower",
+      "weight": 1
+    }
+  ]
+}

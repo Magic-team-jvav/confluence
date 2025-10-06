@@ -1,0 +1,8 @@
+{
+  "parent": "block/cross",
+  "textures": {
+    "cross": "confluence:block/jungle_rose",
+    "particle": "confluence:block/jungle_rose"
+  },
+  "render_type": "cutout"
+}

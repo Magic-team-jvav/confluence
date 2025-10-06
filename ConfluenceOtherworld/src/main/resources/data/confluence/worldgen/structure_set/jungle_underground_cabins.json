@@ -1,0 +1,20 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 62840809,
+    "separation": 3,
+    "spacing": 5,
+    "spread_type": "triangular",
+    "exclusion_zone": {
+      "chunk_count": 10,
+      "other_set": "confluence:shimmer_lake"
+    }
+  },
+  "structures": [{
+    "structure": "confluence:jungle_underground_cabins",
+    "weight": 1
+  }],
+  "values": [
+    
+  ]
+}

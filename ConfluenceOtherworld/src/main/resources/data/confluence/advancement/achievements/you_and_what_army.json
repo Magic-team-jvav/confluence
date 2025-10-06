@@ -1,0 +1,23 @@
+{
+    "display": {
+        "icon": {
+            "id": "terra_entity:slime_staff"
+        },
+        "title": {
+            "translate": "achievements.confluence.you_and_what_army.title"
+        },
+        "description": {
+            "translate": "achievements.confluence.you_and_what_army.description"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": false,
+        "hidden": false
+    },
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "never": {
+            "trigger": "minecraft:impossible"
+        }
+    }
+}

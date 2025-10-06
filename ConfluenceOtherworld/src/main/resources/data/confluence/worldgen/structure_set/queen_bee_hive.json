@@ -1,0 +1,17 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 23234854,
+    "separation": 8,
+    "spacing": 13,
+    "spread_type": "triangular",
+    "exclusion_zone": {
+      "other_set": "minecraft:villages",
+      "chunk_count": 8
+    }
+  },
+  "structures": [{
+    "structure": "confluence:queen_bee_hive",
+    "weight": 1
+  }]
+}

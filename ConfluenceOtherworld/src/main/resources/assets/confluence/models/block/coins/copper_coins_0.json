@@ -1,0 +1,22 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "confluence:block/copper_coins",
+		"particle": "confluence:block/copper_coins"
+	},
+	"elements": [
+		{
+			"from": [3, 0, 3],
+			"to": [7, 3, 7],
+			"rotation": {"angle": 0, "axis": "y", "origin": [3, 0, 3]},
+			"faces": {
+				"north": {"uv": [0, 0, 4, 3], "texture": "#0"},
+				"east": {"uv": [0, 0, 4, 3], "texture": "#0"},
+				"south": {"uv": [0, 0, 4, 3], "texture": "#0"},
+				"west": {"uv": [0, 0, 4, 3], "texture": "#0"},
+				"up": {"uv": [4, 0, 8, 4], "texture": "#0"},
+				"down": {"uv": [4, 0, 8, 4], "texture": "#0"}
+			}
+		}
+	]
+}

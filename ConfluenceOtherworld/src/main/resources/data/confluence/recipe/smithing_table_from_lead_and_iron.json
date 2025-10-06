@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "tag": "minecraft:planks"
+    },
+    "@": {
+      "tag": "c:ingots/lead"
+    }
+  },
+  "pattern": [
+    "@@",
+    "##",
+    "##"
+  ],
+  "result": {
+    "id": "minecraft:smithing_table"
+  },
+  "show_notification": true
+}

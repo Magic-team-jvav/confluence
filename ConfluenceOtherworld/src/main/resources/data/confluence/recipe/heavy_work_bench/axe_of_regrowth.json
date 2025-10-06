@@ -1,0 +1,30 @@
+{
+    "type": "confluence:heavy_work_bench",
+    "pattern": [
+        " aaa",
+        " c#b",
+        " b a",
+        "b   "
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:wooden_axe"
+        },
+        "b": {
+            "item": "confluence:man_eater_vine"
+        },
+        "c": {
+            "item": "confluence:staff_of_regrowth"
+        },
+        "a": {
+            "type": "confluence_magic_lib:amount_ingredient",
+            "ingredient": {
+                "item": "confluence:jungle_spore"
+            },
+            "count": 3
+        }
+    },
+    "result": {
+        "id": "confluence:axe_of_regrowth"
+    }
+}

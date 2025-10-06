@@ -1,0 +1,8 @@
+{
+  "parent": "confluence:block/crop_for_complete_blocks",
+  "textures": {
+    "crop": "confluence:block/crops/floating_wheat_stage6",
+    "particle": "confluence:block/crops/floating_wheat_stage6"
+  },
+  "render_type": "cutout"
+}

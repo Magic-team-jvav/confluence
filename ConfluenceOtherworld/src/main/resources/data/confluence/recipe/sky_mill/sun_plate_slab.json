@@ -1,0 +1,12 @@
+{
+    "type": "confluence:sky_mill",
+    "ingredients": [
+        {
+                "item": "confluence:sun_plate"
+        }
+    ],
+    "result": {
+        "id": "confluence:sun_plate_slab",
+        "count": 2
+    }
+}

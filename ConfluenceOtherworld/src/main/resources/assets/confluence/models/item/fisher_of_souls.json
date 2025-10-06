@@ -1,0 +1,14 @@
+{
+    "parent": "item/handheld_rod",
+    "textures": {
+        "layer0": "confluence:item/fishing_pole/fisher_of_souls"
+    },
+    "overrides": [
+        {
+            "predicate": {
+                "cast": 1
+            },
+            "model": "confluence:item/fisher_of_souls_cast"
+        }
+    ]
+}

@@ -1,0 +1,30 @@
+{
+    "display": {
+        "icon": {
+            "id": "confluence:copper_pickaxe"
+        },
+        "title": {
+            "translate": "achievements.confluence.ooo_shinny.title"
+        },
+        "description": {
+            "translate": "achievements.confluence.ooo_shinny.description"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": false,
+        "hidden": false
+    },
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "requirement": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "items": "#c:raw_materials"
+                    }
+                ]
+            }
+        }
+    }
+}

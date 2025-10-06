@@ -1,0 +1,7 @@
+{
+    "parent": "minecraft:item/generated",
+    "textures": {
+        "layer0": "confluence:block/glowing_mushroom_cattails_head",
+        "layer1": "confluence:block/glowing_mushroom_cattails_head_light"
+    }
+}

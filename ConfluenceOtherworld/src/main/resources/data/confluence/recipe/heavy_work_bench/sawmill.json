@@ -1,0 +1,30 @@
+{
+	"type": "confluence:heavy_work_bench",
+	"pattern": [
+		"AA  ",
+		"BBBB",
+		"CD C",
+		"CBBC"
+	],
+	"key": {
+		"A": {
+			"item": "minecraft:iron_ingot"
+		},
+		"B": {
+			"type": "confluence_magic_lib:amount_ingredient",
+			"ingredient": {
+				"tag": "minecraft:wooden_slabs"
+			},
+			"count": 3
+		},
+		"C": {
+			"item": "minecraft:stick"
+		},
+		"D": {
+			"item": "minecraft:chain"
+		}
+	},
+	"result": {
+		"id": "confluence:sawmill"
+	}
+}

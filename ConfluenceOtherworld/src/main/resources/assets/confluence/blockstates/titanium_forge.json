@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "horizontal_two_part=base,facing=north": {
+      "model": "confluence:block/titanium_forge"
+    },
+    "horizontal_two_part=right,facing=north": {
+      "model": "confluence:block/titanium_forge_right"
+    },
+    "horizontal_two_part=base,facing=south": {
+      "model": "confluence:block/titanium_forge",
+      "y": 180
+    },
+    "horizontal_two_part=right,facing=south": {
+      "model": "confluence:block/titanium_forge_right",
+      "y": 180
+    },
+    "horizontal_two_part=base,facing=east": {
+      "model": "confluence:block/titanium_forge",
+      "y": 90
+    },
+    "horizontal_two_part=right,facing=east": {
+      "model": "confluence:block/titanium_forge_right",
+      "y": 90
+    },
+    "horizontal_two_part=base,facing=west": {
+      "model": "confluence:block/titanium_forge",
+      "y": 270
+    },
+    "horizontal_two_part=right,facing=west": {
+      "model": "confluence:block/titanium_forge_right",
+      "y": 270
+    }
+  }
+}

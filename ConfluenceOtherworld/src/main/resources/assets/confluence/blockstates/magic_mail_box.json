@@ -1,0 +1,304 @@
+{
+  "variants": {
+    "facing=north,variant=0,snow=false": {
+      "model": "confluence:block/magic_mails/magic_mail_box_oak"
+    },
+    "facing=east,variant=0,snow=false": {
+      "model": "confluence:block/magic_mails/magic_mail_box_oak",
+      "y": 90
+    },
+    "facing=south,variant=0,snow=false": {
+      "model": "confluence:block/magic_mails/magic_mail_box_oak",
+      "y": 180
+    },
+    "facing=west,variant=0,snow=false": {
+      "model": "confluence:block/magic_mails/magic_mail_box_oak",
+      "y": 270
+    },
+    "facing=north,variant=1,snow=false": {
+      "model": "confluence:block/magic_mails/magic_mail_box_spruce"
+    },
+    "facing=east,variant=1,snow=false": {
+      "model": "confluence:block/magic_mails/magic_mail_box_spruce",
+      "y": 90
+    },
+    "facing=south,variant=1,snow=false": {
+      "model": "confluence:block/magic_mails/magic_mail_box_spruce",
+      "y": 180
+    },
+    "facing=west,variant=1,snow=false": {
+      "model": "confluence:block/magic_mails/magic_mail_box_spruce",
+      "y": 270
+    },
+    "facing=north,variant=2,snow=false": {
+      "model": "confluence:block/magic_mails/magic_mail_box_birch"
+    },
+    "facing=east,variant=2,snow=false": {
+      "model": "confluence:block/magic_mails/magic_mail_box_birch",
+      "y": 90
+    },
+    "facing=south,variant=2,snow=false": {
+      "model": "confluence:block/magic_mails/magic_mail_box_birch",
+      "y": 180
+    },
+    "facing=west,variant=2,snow=false": {
+      "model": "confluence:block/magic_mails/magic_mail_box_birch",
+      "y": 270
+    },
+    "facing=north,variant=3,snow=false": {
+      "model": "confluence:block/magic_mails/magic_mail_box_jungle"
+    },
+    "facing=east,variant=3,snow=false": {
+      "model": "confluence:block/magic_mails/magic_mail_box_jungle",
+      "y": 90
+    },
+    "facing=south,variant=3,snow=false": {
+      "model": "confluence:block/magic_mails/magic_mail_box_jungle",
+      "y": 180
+    },
+    "facing=west,variant=3,snow=false": {
+      "model": "confluence:block/magic_mails/magic_mail_box_jungle",
+      "y": 270
+    },
+    "facing=north,variant=4,snow=false": {
+      "model": "confluence:block/magic_mails/magic_mail_box_acacia"
+    },
+    "facing=east,variant=4,snow=false": {
+      "model": "confluence:block/magic_mails/magic_mail_box_acacia",
+      "y": 90
+    },
+    "facing=south,variant=4,snow=false": {
+      "model": "confluence:block/magic_mails/magic_mail_box_acacia",
+      "y": 180
+    },
+    "facing=west,variant=4,snow=false": {
+      "model": "confluence:block/magic_mails/magic_mail_box_acacia",
+      "y": 270
+    },
+    "facing=north,variant=5,snow=false": {
+      "model": "confluence:block/magic_mails/magic_mail_box_dark_oak"
+    },
+    "facing=east,variant=5,snow=false": {
+      "model": "confluence:block/magic_mails/magic_mail_box_dark_oak",
+      "y": 90
+    },
+    "facing=south,variant=5,snow=false": {
+      "model": "confluence:block/magic_mails/magic_mail_box_dark_oak",
+      "y": 180
+    },
+    "facing=west,variant=5,snow=false": {
+      "model": "confluence:block/magic_mails/magic_mail_box_dark_oak",
+      "y": 270
+    },
+    "facing=north,variant=6,snow=false": {
+      "model": "confluence:block/magic_mails/magic_mail_box_mangrove"
+    },
+    "facing=east,variant=6,snow=false": {
+      "model": "confluence:block/magic_mails/magic_mail_box_mangrove",
+      "y": 90
+    },
+    "facing=south,variant=6,snow=false": {
+      "model": "confluence:block/magic_mails/magic_mail_box_mangrove",
+      "y": 180
+    },
+    "facing=west,variant=6,snow=false": {
+      "model": "confluence:block/magic_mails/magic_mail_box_mangrove",
+      "y": 270
+    },
+    "facing=north,variant=7,snow=false": {
+      "model": "confluence:block/magic_mails/magic_mail_box_cherry"
+    },
+    "facing=east,variant=7,snow=false": {
+      "model": "confluence:block/magic_mails/magic_mail_box_cherry",
+      "y": 90
+    },
+    "facing=south,variant=7,snow=false": {
+      "model": "confluence:block/magic_mails/magic_mail_box_cherry",
+      "y": 180
+    },
+    "facing=west,variant=7,snow=false": {
+      "model": "confluence:block/magic_mails/magic_mail_box_cherry",
+      "y": 270
+    },
+    "facing=north,variant=8,snow=false": {
+      "model": "confluence:block/magic_mails/magic_mail_box_crimson"
+    },
+    "facing=east,variant=8,snow=false": {
+      "model": "confluence:block/magic_mails/magic_mail_box_crimson",
+      "y": 90
+    },
+    "facing=south,variant=8,snow=false": {
+      "model": "confluence:block/magic_mails/magic_mail_box_crimson",
+      "y": 180
+    },
+    "facing=west,variant=8,snow=false": {
+      "model": "confluence:block/magic_mails/magic_mail_box_crimson",
+      "y": 270
+    },
+    "facing=north,variant=9,snow=false": {
+      "model": "confluence:block/magic_mails/magic_mail_box_warped"
+    },
+    "facing=east,variant=9,snow=false": {
+      "model": "confluence:block/magic_mails/magic_mail_box_warped",
+      "y": 90
+    },
+    "facing=south,variant=9,snow=false": {
+      "model": "confluence:block/magic_mails/magic_mail_box_warped",
+      "y": 180
+    },
+    "facing=west,variant=9,snow=false": {
+      "model": "confluence:block/magic_mails/magic_mail_box_warped",
+      "y": 270
+    },
+    "facing=north,variant=0,snow=true": {
+      "model": "confluence:block/magic_mails/snowy/magic_mail_box_oak_snow"
+    },
+    "facing=east,variant=0,snow=true": {
+      "model": "confluence:block/magic_mails/snowy/magic_mail_box_oak_snow",
+      "y": 90
+    },
+    "facing=south,variant=0,snow=true": {
+      "model": "confluence:block/magic_mails/snowy/magic_mail_box_oak_snow",
+      "y": 180
+    },
+    "facing=west,variant=0,snow=true": {
+      "model": "confluence:block/magic_mails/snowy/magic_mail_box_oak_snow",
+      "y": 270
+    },
+    "facing=north,variant=1,snow=true": {
+      "model": "confluence:block/magic_mails/snowy/magic_mail_box_spruce_snow"
+    },
+    "facing=east,variant=1,snow=true": {
+      "model": "confluence:block/magic_mails/snowy/magic_mail_box_spruce_snow",
+      "y": 90
+    },
+    "facing=south,variant=1,snow=true": {
+      "model": "confluence:block/magic_mails/snowy/magic_mail_box_spruce_snow",
+      "y": 180
+    },
+    "facing=west,variant=1,snow=true": {
+      "model": "confluence:block/magic_mails/snowy/magic_mail_box_spruce_snow",
+      "y": 270
+    },
+    "facing=north,variant=2,snow=true": {
+      "model": "confluence:block/magic_mails/snowy/magic_mail_box_birch_snow"
+    },
+    "facing=east,variant=2,snow=true": {
+      "model": "confluence:block/magic_mails/snowy/magic_mail_box_birch_snow",
+      "y": 90
+    },
+    "facing=south,variant=2,snow=true": {
+      "model": "confluence:block/magic_mails/snowy/magic_mail_box_birch_snow",
+      "y": 180
+    },
+    "facing=west,variant=2,snow=true": {
+      "model": "confluence:block/magic_mails/snowy/magic_mail_box_birch_snow",
+      "y": 270
+    },
+    "facing=north,variant=3,snow=true": {
+      "model": "confluence:block/magic_mails/snowy/magic_mail_box_jungle_snow"
+    },
+    "facing=east,variant=3,snow=true": {
+      "model": "confluence:block/magic_mails/snowy/magic_mail_box_jungle_snow",
+      "y": 90
+    },
+    "facing=south,variant=3,snow=true": {
+      "model": "confluence:block/magic_mails/snowy/magic_mail_box_jungle_snow",
+      "y": 180
+    },
+    "facing=west,variant=3,snow=true": {
+      "model": "confluence:block/magic_mails/snowy/magic_mail_box_jungle_snow",
+      "y": 270
+    },
+    "facing=north,variant=4,snow=true": {
+      "model": "confluence:block/magic_mails/snowy/magic_mail_box_acacia_snow"
+    },
+    "facing=east,variant=4,snow=true": {
+      "model": "confluence:block/magic_mails/snowy/magic_mail_box_acacia_snow",
+      "y": 90
+    },
+    "facing=south,variant=4,snow=true": {
+      "model": "confluence:block/magic_mails/snowy/magic_mail_box_acacia_snow",
+      "y": 180
+    },
+    "facing=west,variant=4,snow=true": {
+      "model": "confluence:block/magic_mails/snowy/magic_mail_box_acacia_snow",
+      "y": 270
+    },
+    "facing=north,variant=5,snow=true": {
+      "model": "confluence:block/magic_mails/snowy/magic_mail_box_dark_oak_snow"
+    },
+    "facing=east,variant=5,snow=true": {
+      "model": "confluence:block/magic_mails/snowy/magic_mail_box_dark_oak_snow",
+      "y": 90
+    },
+    "facing=south,variant=5,snow=true": {
+      "model": "confluence:block/magic_mails/snowy/magic_mail_box_dark_oak_snow",
+      "y": 180
+    },
+    "facing=west,variant=5,snow=true": {
+      "model": "confluence:block/magic_mails/snowy/magic_mail_box_dark_oak_snow",
+      "y": 270
+    },
+    "facing=north,variant=6,snow=true": {
+      "model": "confluence:block/magic_mails/snowy/magic_mail_box_mangrove_snow"
+    },
+    "facing=east,variant=6,snow=true": {
+      "model": "confluence:block/magic_mails/snowy/magic_mail_box_mangrove_snow",
+      "y": 90
+    },
+    "facing=south,variant=6,snow=true": {
+      "model": "confluence:block/magic_mails/snowy/magic_mail_box_mangrove_snow",
+      "y": 180
+    },
+    "facing=west,variant=6,snow=true": {
+      "model": "confluence:block/magic_mails/snowy/magic_mail_box_mangrove_snow",
+      "y": 270
+    },
+    "facing=north,variant=7,snow=true": {
+      "model": "confluence:block/magic_mails/snowy/magic_mail_box_cherry_snow"
+    },
+    "facing=east,variant=7,snow=true": {
+      "model": "confluence:block/magic_mails/snowy/magic_mail_box_cherry_snow",
+      "y": 90
+    },
+    "facing=south,variant=7,snow=true": {
+      "model": "confluence:block/magic_mails/snowy/magic_mail_box_cherry_snow",
+      "y": 180
+    },
+    "facing=west,variant=7,snow=true": {
+      "model": "confluence:block/magic_mails/snowy/magic_mail_box_cherry_snow",
+      "y": 270
+    },
+    "facing=north,variant=8,snow=true": {
+      "model": "confluence:block/magic_mails/snowy/magic_mail_box_crimson_snow"
+    },
+    "facing=east,variant=8,snow=true": {
+      "model": "confluence:block/magic_mails/snowy/magic_mail_box_crimson_snow",
+      "y": 90
+    },
+    "facing=south,variant=8,snow=true": {
+      "model": "confluence:block/magic_mails/snowy/magic_mail_box_crimson_snow",
+      "y": 180
+    },
+    "facing=west,variant=8,snow=true": {
+      "model": "confluence:block/magic_mails/snowy/magic_mail_box_crimson_snow",
+      "y": 270
+    },
+    "facing=north,variant=9,snow=true": {
+      "model": "confluence:block/magic_mails/snowy/magic_mail_box_warped_snow"
+    },
+    "facing=east,variant=9,snow=true": {
+      "model": "confluence:block/magic_mails/snowy/magic_mail_box_warped_snow",
+      "y": 90
+    },
+    "facing=south,variant=9,snow=true": {
+      "model": "confluence:block/magic_mails/snowy/magic_mail_box_warped_snow",
+      "y": 180
+    },
+    "facing=west,variant=9,snow=true": {
+      "model": "confluence:block/magic_mails/snowy/magic_mail_box_warped_snow",
+      "y": 270
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "reverse=false": {
+      "model": "confluence:block/signal_adapter_signal"
+    },
+    "reverse=true": {
+      "model": "confluence:block/signal_adapter_redstone"
+    }
+  }
+}

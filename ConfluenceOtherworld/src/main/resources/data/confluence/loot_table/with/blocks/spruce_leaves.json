@@ -1,0 +1,35 @@
+{
+    "type": "minecraft:block",
+    "pools": [
+        {
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "name": "confluence:plum"
+                }
+            ],
+            "conditions": [
+                {
+                    "condition": "minecraft:random_chance",
+                    "chance": 0.009
+                }
+            ]
+        },
+        {
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "name": "confluence:cherry"
+                }
+            ],
+            "conditions": [
+                {
+                    "condition": "minecraft:random_chance",
+                    "chance": 0.009
+                }
+            ]
+        }
+    ]
+}

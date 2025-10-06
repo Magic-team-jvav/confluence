@@ -1,0 +1,366 @@
+{
+    "type": "minecraft:chest",
+    "pools": [
+        {
+            "bonus_rolls": 0.0,
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "name": "confluence:silver_ingot",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "type": "uniform",
+                                "min": 4,
+                                "max": 7
+                            }
+                        }
+                    ],
+                    "weight": 1
+                },
+                {
+                    "type": "minecraft:item",
+                    "name": "confluence:tungsten_ingot",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "type": "uniform",
+                                "min": 4,
+                                "max": 7
+                            }
+                        }
+                    ],
+                    "weight": 1
+                },
+                {
+                    "type": "minecraft:empty",
+                    "weight": 2
+                }
+            ],
+            "rolls": 1
+        },
+        {
+            "bonus_rolls": 0.0,
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "name": "minecraft:iron_ingot",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "type": "uniform",
+                                "min": 4,
+                                "max": 7
+                            }
+                        }
+                    ],
+                    "weight": 1
+                },
+                {
+                    "type": "minecraft:item",
+                    "name": "confluence:lead_ingot",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "type": "uniform",
+                                "min": 4,
+                                "max": 7
+                            }
+                        }
+                    ],
+                    "weight": 1
+                },
+                {
+                    "type": "minecraft:empty",
+                    "weight": 2
+                }
+            ],
+            "rolls": 1
+        },
+        {
+            "bonus_rolls": 0.0,
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "name": "minecraft:arrow",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "type": "uniform",
+                                "min": 20,
+                                "max": 35
+                            }
+                        }
+                    ],
+                    "weight": 1
+                },
+                {
+                    "type": "minecraft:item",
+                    "name": "confluence:shuriken",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "type": "uniform",
+                                "min": 20,
+                                "max": 35
+                            }
+                        }
+                    ],
+                    "weight": 1
+                },
+                {
+                    "type": "minecraft:empty",
+                    "weight": 2
+                }
+            ],
+            "rolls": 1
+        },
+        {
+            "bonus_rolls": 0.0,
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "name": "confluence:lesser_healing_potion",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "type": "uniform",
+                                "min": 3,
+                                "max": 5
+                            }
+                        }
+                    ],
+                    "weight": 1
+                },
+                {
+                    "type": "minecraft:empty",
+                    "weight": 1
+                }
+            ],
+            "rolls": 1
+        },
+        {
+            "bonus_rolls": 0.0,
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "name": "confluence:shine_potion",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "type": "uniform",
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ],
+                    "weight": 2
+                },
+                {
+                    "type": "minecraft:item",
+                    "name": "confluence:regeneration_potion",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "type": "uniform",
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ],
+                    "weight": 2
+                },
+                {
+                    "type": "minecraft:item",
+                    "name": "confluence:night_owl_potion",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "type": "uniform",
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ],
+                    "weight": 2
+                },
+                {
+                    "type": "minecraft:item",
+                    "name": "confluence:archery_potion",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "type": "uniform",
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ],
+                    "weight": 2
+                },
+                {
+                    "type": "minecraft:item",
+                    "name": "confluence:mining_potion",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "type": "uniform",
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ],
+                    "weight": 2
+                },
+                {
+                    "type": "minecraft:item",
+                    "name": "confluence:swiftness_potion",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "type": "uniform",
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ],
+                    "weight": 2
+                },
+                {
+                    "type": "minecraft:item",
+                    "name": "confluence:gills_potion",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "type": "uniform",
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ],
+                    "weight": 2
+                },
+                {
+                    "type": "minecraft:item",
+                    "name": "confluence:dangersense_potion",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "type": "uniform",
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ],
+                    "weight": 2
+                },
+                {
+                    "type": "minecraft:item",
+                    "name": "confluence:hunter_potion",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "type": "uniform",
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ],
+                    "weight": 2
+                },
+                {
+                    "type": "minecraft:empty",
+                    "weight": 9
+                }
+            ],
+            "rolls": 1
+        },
+        {
+            "bonus_rolls": 0.0,
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "name": "minecraft:torch",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "type": "uniform",
+                                "min": 10,
+                                "max": 20
+                            }
+                        }
+                    ],
+                    "weight": 1
+                }
+            ],
+            "rolls": 1
+        },
+        {
+            "bonus_rolls": 0.0,
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "name": "confluence:recall_potion",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "type": "uniform",
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ],
+                    "weight": 2
+                },
+                {
+                    "type": "minecraft:empty",
+                    "weight": 1
+                }
+            ],
+            "rolls": 1
+        },
+        {
+            "bonus_rolls": 0.0,
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "name": "confluence:silver_coin",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "type": "uniform",
+                                "min": 5,
+                                "max": 8
+                            }
+                        }
+                    ],
+                    "weight": 1
+                },
+                {
+                    "type": "minecraft:empty",
+                    "weight": 1
+                }
+            ],
+            "rolls": 1
+        }
+    ]
+}

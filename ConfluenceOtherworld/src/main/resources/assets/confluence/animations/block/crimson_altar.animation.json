@@ -1,0 +1,95 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"default": {
+			"loop": true,
+			"bones": {
+				"bone": {
+					"position": {
+						"vector": [0, -0.125, 0]
+					}
+				}
+			}
+		},
+		"crafting": {
+			"animation_length": 1.25,
+			"bones": {
+				"bone": {
+					"position": {
+						"0.0": {
+							"vector": [0, -0.125, 0]
+						},
+						"1.25": {
+							"vector": [0, -0.125, 0]
+						}
+					},
+					"scale": {
+						"0.0": {
+							"vector": [1, 1, 1]
+						},
+						"0.25": {
+							"vector": [1.1, 0.9, 1.1],
+							"easing": "easeInOutQuad"
+						},
+						"0.5": {
+							"vector": [0.9531, 1.1203, 0.9531],
+							"easing": "easeInQuint"
+						},
+						"0.5417": {
+							"vector": [0.9266, 1.1352, 0.9266],
+							"easing": "easeInOutBounce"
+						},
+						"0.5833": {
+							"vector": [0.9, 1.2, 0.9],
+							"easing": "easeInOutBounce"
+						},
+						"0.625": {
+							"vector": [0.9266, 1.1352, 0.9266],
+							"easing": "easeInOutBounce"
+						},
+						"0.6667": {
+							"vector": [0.9, 1.2, 0.9],
+							"easing": "easeInOutBounce"
+						},
+						"0.7083": {
+							"vector": [0.9266, 1.1352, 0.9266],
+							"easing": "easeInOutBounce"
+						},
+						"0.75": {
+							"vector": [0.9, 1.2, 0.9],
+							"easing": "easeInOutBounce"
+						},
+						"0.7917": {
+							"vector": [0.9266, 1.1352, 0.9266],
+							"easing": "easeInOutBounce"
+						},
+						"0.8333": {
+							"vector": [0.9, 1.2, 0.9],
+							"easing": "easeInOutBounce"
+						},
+						"0.875": {
+							"vector": [0.9266, 1.1352, 0.9266],
+							"easing": "easeInOutBounce"
+						},
+						"0.9167": {
+							"vector": [0.9, 1.2, 0.9],
+							"easing": "easeInOutBounce"
+						},
+						"0.9583": {
+							"vector": [0.9266, 1.1352, 0.9266],
+							"easing": "easeInOutBounce"
+						},
+						"1.0": {
+							"vector": [0.9, 1.2, 0.9],
+							"easing": "easeInOutBounce"
+						},
+						"1.25": {
+							"vector": [1, 1, 1]
+						}
+					}
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}

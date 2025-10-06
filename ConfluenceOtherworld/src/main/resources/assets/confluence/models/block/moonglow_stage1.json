@@ -1,0 +1,8 @@
+{
+  "parent": "block/cross",
+  "textures": {
+    "cross": "confluence:block/moonglow_stage1",
+    "particle": "confluence:block/moonglow_stage1"
+  },
+  "render_type": "cutout"
+}

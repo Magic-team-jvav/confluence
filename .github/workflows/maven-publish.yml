@@ -1,0 +1,30 @@
+permissions: write-all
+name: Maven Publish
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: refs/heads/neoforge-dev/1.21.1
+          submodules: recursive
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: 21
+          cache: "gradle"
+      - name: Generate assets
+        run: |
+          git submodule foreach '../gradlew runData'
+          cd ./ConfluenceOtherworld && ./gradlew runData
+      - name: Build & Publish to Maven Confluence
+        working-directory: ./ConfluenceOtherworld
+        run: ./gradlew build publish
+        env:
+          MAGIC_TEAM_USERNAME: ${{ secrets.MAGIC_TEAM_USERNAME }}
+          MAGIC_TEAM_TOKEN: ${{ secrets.MAGIC_TEAM_TOKEN }}

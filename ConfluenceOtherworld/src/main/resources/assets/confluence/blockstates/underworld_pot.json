@@ -1,0 +1,15 @@
+{
+	"variants": {
+		"": [
+			{
+				"model": "confluence:block/pot/underworld/underworld_pot_0"
+			},
+			{
+				"model": "confluence:block/pot/underworld/underworld_pot_1"
+			},
+			{
+				"model": "confluence:block/pot/underworld/underworld_pot_2"
+			}
+		]
+	}
+}

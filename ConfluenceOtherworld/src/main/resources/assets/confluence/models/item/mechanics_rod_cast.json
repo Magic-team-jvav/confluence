@@ -1,0 +1,6 @@
+{
+    "parent": "item/fishing_rod",
+    "textures": {
+        "layer0": "confluence:item/fishing_pole/mechanics_rod_cast"
+    }
+}

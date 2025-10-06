@@ -1,0 +1,26 @@
+{
+    "variants": {
+        "facing=down": {
+            "model": "confluence:block/dart_trap_vertical",
+            "x": 180
+        },
+        "facing=east": {
+            "model": "confluence:block/dart_trap",
+            "y": 90
+        },
+        "facing=north": {
+            "model": "confluence:block/dart_trap"
+        },
+        "facing=south": {
+            "model": "confluence:block/dart_trap",
+            "y": 180
+        },
+        "facing=up": {
+            "model": "confluence:block/dart_trap_vertical"
+        },
+        "facing=west": {
+            "model": "confluence:block/dart_trap",
+            "y": 270
+        }
+    }
+}

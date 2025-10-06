@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/stairs",
+  "textures": {
+    "bottom": "confluence:block/ebonstone_bricks",
+    "side": "confluence:block/ebonstone_bricks",
+    "top": "confluence:block/ebonstone_bricks"
+  }
+}

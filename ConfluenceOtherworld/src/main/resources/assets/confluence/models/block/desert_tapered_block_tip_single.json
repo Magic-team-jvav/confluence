@@ -1,0 +1,8 @@
+{
+  "parent": "block/cross",
+  "textures": {
+    "cross": "confluence:block/desert_tapered_block_tip_single",
+    "particle": "confluence:block/desert_tapered_block_tip_single"
+  },
+  "render_type": "cutout"
+}

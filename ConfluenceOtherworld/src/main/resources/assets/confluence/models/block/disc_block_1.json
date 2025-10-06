@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "confluence:block/disc_block_1"
+  }
+}

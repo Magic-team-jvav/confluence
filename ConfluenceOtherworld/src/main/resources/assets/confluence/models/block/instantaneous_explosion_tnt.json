@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "confluence:block/instantaneous_explosion_tnt_bottom",
+    "side": "confluence:block/instantaneous_explosion_tnt_side",
+    "top": "confluence:block/instantaneous_explosion_tnt_top"
+  }
+}

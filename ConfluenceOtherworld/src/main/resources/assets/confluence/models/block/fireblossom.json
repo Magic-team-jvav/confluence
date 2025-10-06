@@ -1,0 +1,8 @@
+{
+  "parent": "block/cross",
+  "textures": {
+    "cross": "confluence:block/fireblossom",
+    "particle": "confluence:block/fireblossom"
+  },
+  "render_type": "cutout"
+}

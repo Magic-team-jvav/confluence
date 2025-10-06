@@ -1,0 +1,22 @@
+{
+    "replace": false,
+    "values": [
+        "terra_entity:blue_slime",
+        "terra_entity:green_slime",
+        "terra_entity:pink_slime",
+        "terra_entity:corrupt_slime",
+        "terra_entity:desert_slime",
+        "terra_entity:jungle_slime",
+        "terra_entity:evil_slime",
+        "terra_entity:ice_slime",
+        "terra_entity:lava_slime",
+        "terra_entity:luminous_slime",
+        "terra_entity:crimson_slime",
+        "terra_entity:purple_slime",
+        "terra_entity:red_slime",
+        "terra_entity:tropic_slime",
+        "terra_entity:yellow_slime",
+        "terra_entity:honey_slime",
+        "terra_entity:black_slime"
+    ]
+}

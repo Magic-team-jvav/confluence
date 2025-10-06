@@ -1,0 +1,24 @@
+{
+    "type": "confluence:heavy_work_bench",
+    "pattern": [
+        " ccc",
+        "  /c",
+        " / c",
+        "/   "
+    ],
+    "key": {
+        "c": {
+            "type": "confluence_magic_lib:amount_ingredient",
+            "ingredient": {
+                "item": "confluence:hellstone_ingot"
+            },
+            "count": 4
+        },
+        "/": {
+            "item": "minecraft:blaze_rod"
+        }
+    },
+    "result": {
+        "id": "confluence:molten_pickaxe"
+    }
+}

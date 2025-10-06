@@ -1,0 +1,22 @@
+{
+	"credit": "Made with Blockbench",
+	"texture_size": [64, 64],
+	"textures": {
+		"0": "confluence:block/signal_adapter_redstone",
+		"particle": "confluence:block/signal_adapter_redstone"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 0],
+			"to": [16, 16, 16],
+			"faces": {
+				"north": {"uv": [16, 0, 0, 16], "texture": "#0"},
+				"east": {"uv": [0, 0, 16, 16], "texture": "#0"},
+				"south": {"uv": [16, 16, 0, 0], "texture": "#0"},
+				"west": {"uv": [0, 16, 16, 0], "texture": "#0"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#0"},
+				"down": {"uv": [16, 0, 0, 16], "texture": "#0"}
+			}
+		}
+	]
+}

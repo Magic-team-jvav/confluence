@@ -1,0 +1,48 @@
+{
+    "type": "neoforge:add_spawns",
+    "biomes": {
+        "type": "neoforge:or",
+        "values": [
+            "#c:is_jungle",
+            "#c:is_lush"
+        ]
+    },
+    "spawners": [
+        {
+            "type": "terra_entity:hornet",
+            "weight": 150,
+            "minCount": 1,
+            "maxCount": 2
+        },
+        {
+            "type": "terra_entity:jungle_bat",
+            "weight": 40,
+            "minCount": 1,
+            "maxCount": 2
+        },
+        {
+            "type": "terra_entity:jungle_slime",
+            "weight": 40,
+            "minCount": 1,
+            "maxCount": 2
+        },
+        {
+            "type": "terra_entity:man_eater",
+            "weight": 150,
+            "minCount": 1,
+            "maxCount": 1
+        },
+        {
+            "type": "terra_entity:snatcher",
+            "weight": 40,
+            "minCount": 1,
+            "maxCount": 1
+        },
+        {
+            "type": "terra_entity:piranha",
+            "weight": 40,
+            "minCount": 2,
+            "maxCount": 3
+        }
+    ]
+}

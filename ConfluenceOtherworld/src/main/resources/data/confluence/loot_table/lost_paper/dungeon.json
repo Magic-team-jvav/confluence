@@ -1,0 +1,141 @@
+{
+  "type": "minecraft:generic",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "confluence:mysterious_note",
+          "weight": 5,
+          "functions": [
+            {
+              "function": "minecraft:set_lore",
+              "lore": [
+                {
+                  "translate":"lore.confluence.mysterious_note.handwriting_0",
+                  "color":"dark_gray"
+                },
+                {
+                  "translate":"lore.confluence.mysterious_note_structure_0_0",
+                  "color":"gray",
+                  "italic":false
+                },
+                {
+                  "translate":"lore.confluence.mysterious_note_structure_0_1",
+                  "color":"gray",
+                  "italic":false
+                },
+                {
+                  "text":""
+                },
+                {
+                  "text":""
+                },
+                {
+                  "text":""
+                },
+                {
+                  "text":""
+                },
+                {
+                  "text":""
+                },
+                [
+                  {
+                    "text":" "
+                  },
+                  {
+                    "text":"1",
+                    "font":"confluence:paper_image",
+                    "italic":false,
+                    "color":"#FFFFFF"
+                  }
+                ]
+              ],
+              "mode": "replace_all"
+            },
+            {
+              "function": "minecraft:set_name",
+              "name": {
+                "translate":"item.confluence.mysterious_note.name_structure_0",
+                "italic":false
+              },
+              "target": "custom_name"
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "confluence:mysterious_note",
+          "weight": 5,
+          "functions": [
+            {
+              "function": "minecraft:set_lore",
+              "lore": [
+                {
+                  "translate":"lore.confluence.mysterious_note.handwriting_2",
+                  "color":"dark_gray"
+                },
+                {
+                  "translate":"lore.confluence.mysterious_note_structure_1_0",
+                  "color":"gray",
+                  "italic":false
+                },
+                {
+                  "text":""
+                },
+                {
+                  "text":""
+                },
+                {
+                  "text":""
+                },
+                {
+                  "text":""
+                },
+                {
+                  "text":""
+                },
+                {
+                  "text":""
+                },
+                {
+                  "text":""
+                },
+                {
+                  "text":""
+                },
+                [
+                  {
+                    "text":" "
+                  },
+                  {
+                    "text":"2",
+                    "font":"confluence:paper_image",
+                    "italic":false,
+                    "color":"#FFFFFF"
+                  }
+                ]
+              ],
+              "mode": "replace_all"
+            },
+            {
+              "function": "minecraft:set_name",
+              "name": {
+                "translate":"item.confluence.mysterious_note.name_structure_0",
+                "italic":false
+              },
+              "target": "custom_name"
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:paper",
+          "weight": 10
+        }
+      ]
+    }
+  ]
+}

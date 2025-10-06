@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "confluence:block/sun_plate_slab"
+    },
+    "type=top": {
+      "model": "confluence:block/sun_plate_slab_top"
+    },
+    "type=double": {
+      "model": "confluence:block/sun_plate_slab_full"
+    }
+  }
+}

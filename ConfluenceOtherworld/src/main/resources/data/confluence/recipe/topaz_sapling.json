@@ -1,0 +1,14 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "confluence:topaz"
+        },
+        {
+            "item": "minecraft:oak_sapling"
+        }
+    ],
+    "result": {
+        "id": "confluence:topaz_sapling"
+    }
+}

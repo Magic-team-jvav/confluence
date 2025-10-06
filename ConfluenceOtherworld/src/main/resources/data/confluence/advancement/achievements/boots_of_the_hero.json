@@ -1,0 +1,32 @@
+{
+    "display": {
+        "icon": {
+            "id": "terra_curio:terraspark_boots"
+        },
+        "title": {
+            "translate": "achievements.confluence.boots_of_the_hero.title"
+        },
+        "description": {
+            "translate": "achievements.confluence.boots_of_the_hero.description"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": false,
+        "hidden": false
+    },
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "requirement": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+                            "terra_curio:terraspark_boots"
+                        ]
+                    }
+                ]
+            }
+        }
+    }
+}

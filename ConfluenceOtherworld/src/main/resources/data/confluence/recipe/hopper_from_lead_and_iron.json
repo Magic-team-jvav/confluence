@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "C": {
+      "item": "minecraft:chest"
+    },
+    "I": {
+      "tag":"confluence:lead_and_iron"
+    }
+  },
+  "pattern": [
+    "I I",
+    "ICI",
+    " I "
+  ],
+  "result": {
+    "id": "minecraft:hopper"
+  },
+  "show_notification": true
+}

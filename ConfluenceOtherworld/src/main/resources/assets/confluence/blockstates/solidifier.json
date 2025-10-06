@@ -1,0 +1,19 @@
+{
+    "variants": {
+        "facing=east": {
+            "model": "confluence:block/solidifier",
+            "y": 90
+        },
+        "facing=north": {
+            "model": "confluence:block/solidifier"
+        },
+        "facing=south": {
+            "model": "confluence:block/solidifier",
+            "y": 180
+        },
+        "facing=west": {
+            "model": "confluence:block/solidifier",
+            "y": 270
+        }
+    }
+}

@@ -1,0 +1,35 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "confluence:block/gold_coins",
+		"particle": "confluence:block/gold_coins"
+	},
+	"elements": [
+		{
+			"from": [9, 0, 3],
+			"to": [13, 4, 7],
+			"rotation": {"angle": 0, "axis": "y", "origin": [9, 0, 3]},
+			"faces": {
+				"north": {"uv": [0, 0, 4, 4], "texture": "#0"},
+				"east": {"uv": [0, 0, 4, 4], "texture": "#0"},
+				"south": {"uv": [0, 0, 4, 4], "texture": "#0"},
+				"west": {"uv": [0, 0, 4, 4], "texture": "#0"},
+				"up": {"uv": [4, 0, 8, 4], "texture": "#0"},
+				"down": {"uv": [4, 0, 8, 4], "texture": "#0"}
+			}
+		},
+		{
+			"from": [9, 0, 9],
+			"to": [13, 2, 13],
+			"rotation": {"angle": 0, "axis": "y", "origin": [9, 0, 9]},
+			"faces": {
+				"north": {"uv": [0, 0, 4, 2], "texture": "#0"},
+				"east": {"uv": [0, 0, 4, 2], "texture": "#0"},
+				"south": {"uv": [0, 0, 4, 2], "texture": "#0"},
+				"west": {"uv": [0, 0, 4, 2], "texture": "#0"},
+				"up": {"uv": [4, 0, 8, 4], "texture": "#0"},
+				"down": {"uv": [4, 0, 8, 4], "texture": "#0"}
+			}
+		}
+	]
+}

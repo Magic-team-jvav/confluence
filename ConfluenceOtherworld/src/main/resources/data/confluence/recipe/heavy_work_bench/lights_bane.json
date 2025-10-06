@@ -1,0 +1,20 @@
+{
+    "type": "confluence:heavy_work_bench",
+    "pattern": [
+        "  cc",
+        " ccc",
+        "c/c ",
+        "/c  "
+    ],
+    "key": {
+        "c": {
+            "item": "confluence:demonite_ingot"
+        },
+        "/": {
+            "item": "confluence:rotten_bone"
+        }
+    },
+    "result": {
+        "id": "confluence:lights_bane"
+    }
+}

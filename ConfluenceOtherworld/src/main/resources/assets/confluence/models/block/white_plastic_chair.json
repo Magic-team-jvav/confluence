@@ -1,0 +1,7 @@
+{
+  "credit": "Made with Blockbench",
+  "parent": "builtin/entity",
+  "textures": {
+      "particle": "confluence:block/white_plastic_chair"
+  }
+}

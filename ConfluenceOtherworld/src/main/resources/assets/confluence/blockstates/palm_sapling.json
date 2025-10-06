@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "": {
+            "model": "confluence:block/palm_sapling"
+        }
+    }
+}

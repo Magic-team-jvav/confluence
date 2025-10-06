@@ -1,0 +1,22 @@
+{
+  "biomes": "#confluence:has_structure/sky_village",
+  "adapt_noise": false,
+  "spawn_overrides": {},
+  "type": "minecraft:jigsaw",
+  "start_pool": "confluence:sky_village/center",
+  "size": 7,
+  "step": "top_layer_modification",
+  "start_height": {
+    "type": "uniform",
+    "min_inclusive": {
+      "absolute": 250
+    },
+    "max_inclusive": {
+      "absolute": 260
+    }
+  },
+  "max_distance_from_center": 128,
+  "terrain_adaptation": "none",
+  "use_expansion_hack": false,
+  "liquid_settings": "ignore_waterlogging"
+}

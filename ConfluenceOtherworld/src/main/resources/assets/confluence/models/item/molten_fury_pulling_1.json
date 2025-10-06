@@ -1,0 +1,6 @@
+{
+    "parent": "confluence:item/molten_fury",
+    "textures": {
+        "layer0": "confluence:item/bow/molten_fury_pulling_1"
+    }
+}

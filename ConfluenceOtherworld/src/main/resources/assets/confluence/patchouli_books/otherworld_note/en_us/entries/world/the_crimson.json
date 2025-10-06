@@ -1,0 +1,23 @@
+{
+    "name": "patchouli.confluence.otherworld_note.world.the_crimson.name",
+    "icon": "confluence:crimson_grass_block",
+    "category": "confluence:world",
+    "pages": [
+        {
+            "type": "patchouli:text",
+            "text": "patchouli.confluence.otherworld_note.world.the_crimson.0"
+        },
+        {
+            "type": "patchouli:image",
+            "images":[
+                "minecraft:textures/block/grass_block.png"
+            ],
+            "text": "patchouli.confluence.otherworld_note.world.the_crimson.1",
+            "title": "patchouli.confluence.otherworld_note.appearance"
+        },
+        {
+            "type": "patchouli:text",
+            "text": "patchouli.confluence.otherworld_note.world.the_crimson.2"
+        }
+    ]
+}

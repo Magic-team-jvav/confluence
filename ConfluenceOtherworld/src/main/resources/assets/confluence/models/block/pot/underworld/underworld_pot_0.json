@@ -1,0 +1,50 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "confluence:block/underworld/underworld_pot_0",
+		"1": "confluence:block/underworld/underworld_pot_top_0",
+		"2": "confluence:block/underworld/underworld_pot_bottom_0",
+		"particle": "confluence:block/underworld/underworld_pot_0"
+	},
+	"elements": [
+		{
+			"from": [4, 0, 4],
+			"to": [12, 10, 12],
+			"rotation": {"angle": 0, "axis": "y", "origin": [4, 0, 4]},
+			"faces": {
+				"north": {"uv": [4, 6, 12, 16], "texture": "#0"},
+				"east": {"uv": [4, 6, 12, 16], "texture": "#0"},
+				"south": {"uv": [4, 6, 12, 16], "texture": "#0"},
+				"west": {"uv": [4, 6, 12, 16], "texture": "#0"},
+				"up": {"uv": [4, 4, 12, 12], "texture": "#1"},
+				"down": {"uv": [4, 4, 12, 12], "texture": "#2"}
+			}
+		},
+		{
+			"from": [5, 10, 5],
+			"to": [11, 13, 11],
+			"rotation": {"angle": 0, "axis": "y", "origin": [4, 10, 4]},
+			"faces": {
+				"north": {"uv": [5, 3, 11, 6], "texture": "#0"},
+				"east": {"uv": [5, 3, 11, 6], "texture": "#0"},
+				"south": {"uv": [5, 3, 11, 6], "texture": "#0"},
+				"west": {"uv": [5, 3, 11, 6], "texture": "#0"},
+				"up": {"uv": [5, 5, 11, 11], "texture": "#1"},
+				"down": {"uv": [5, 5, 11, 11], "texture": "#2"}
+			}
+		},
+		{
+			"from": [3, 2, 3],
+			"to": [13, 9, 13],
+			"rotation": {"angle": 0, "axis": "y", "origin": [4, 2, 4]},
+			"faces": {
+				"north": {"uv": [3, 7, 13, 14], "texture": "#0"},
+				"east": {"uv": [3, 7, 13, 14], "texture": "#0"},
+				"south": {"uv": [3, 7, 13, 14], "texture": "#0"},
+				"west": {"uv": [3, 7, 13, 14], "texture": "#0"},
+				"up": {"uv": [3, 3, 13, 13], "texture": "#1"},
+				"down": {"uv": [3, 3, 13, 13], "texture": "#2"}
+			}
+		}
+	]
+}

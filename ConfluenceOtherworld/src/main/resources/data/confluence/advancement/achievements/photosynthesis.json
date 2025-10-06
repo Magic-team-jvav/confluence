@@ -1,0 +1,30 @@
+{
+    "display": {
+        "icon": {
+            "id": "confluence:raw_chlorophyte"
+        },
+        "title": {
+            "translate": "achievements.confluence.photosynthesis.title"
+        },
+        "description": {
+            "translate": "achievements.confluence.photosynthesis.description"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": false,
+        "hidden": false
+    },
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "requirement": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "items": "confluence:raw_chlorophyte"
+                    }
+                ]
+            }
+        }
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "display": {
+        "icon": {
+            "id": "confluence:mana_crystal"
+        },
+        "title": {
+            "translate": "achievements.confluence.star_power.title"
+        },
+        "description": {
+            "translate": "achievements.confluence.star_power.description"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": false,
+        "hidden": false
+    },
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "requirement": {
+            "trigger": "minecraft:consume_item",
+            "conditions": {
+                "item": {
+                    "items": [
+                        "confluence:mana_crystal"
+                    ]
+                }
+            }
+        }
+    }
+}

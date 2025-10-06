@@ -1,0 +1,26 @@
+{
+    "type": "confluence:heavy_work_bench",
+    "pattern": [
+        "a a",
+        "# #"
+    ],
+    "key": {
+        "a": {
+            "type": "confluence_magic_lib:amount_ingredient",
+            "ingredient": {
+                "item": "minecraft:prismarine_shard"
+            },
+            "count": 2
+        },
+        "#": {
+            "type": "confluence_magic_lib:amount_ingredient",
+            "ingredient": {
+                "item": "confluence:heim"
+            },
+            "count": 2
+        }
+    },
+    "result": {
+        "id": "confluence:heim_boots"
+    }
+}

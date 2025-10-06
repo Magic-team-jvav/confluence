@@ -1,0 +1,14 @@
+{
+    "parent": "minecraft:item/generated",
+    "textures": {
+        "layer0": "confluence:item/accessory/spectre_goggles_off"
+    },
+    "overrides": [
+        {
+            "predicate": {
+                "confluence:enable": 1
+            },
+            "model": "confluence:item/spectre_goggles_on"
+        }
+    ]
+}

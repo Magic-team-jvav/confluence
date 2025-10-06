@@ -1,0 +1,23 @@
+{
+    "display": {
+        "icon": {
+            "id": "terra_entity:house_detector"
+        },
+        "title": {
+            "translate": "achievements.confluence.no_hobo.title"
+        },
+        "description": {
+            "translate": "achievements.confluence.no_hobo.description"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": false,
+        "hidden": false
+    },
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "never": {
+            "trigger": "minecraft:impossible"
+        }
+    }
+}

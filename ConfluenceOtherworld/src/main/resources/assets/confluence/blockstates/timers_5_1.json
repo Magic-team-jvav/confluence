@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "signal=false": {
+            "model": "confluence:block/timers_5_1_off"
+        },
+        "signal=true": {
+            "model": "confluence:block/timers_5_1_on"
+        }
+    }
+}

@@ -1,0 +1,39 @@
+permissions: write-all
+name: Nightly Build
+on:
+  workflow_dispatch:
+  schedule:
+    # Run this job every day at 5:30 AM UTC+8
+    - cron: "30 21 * * *"
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: refs/heads/neoforge-dev/1.21.1
+          submodules: recursive
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: 21
+          cache: "gradle"
+      - name: Generate assets
+        run: |
+          git submodule foreach '../gradlew runData'
+          cd ./ConfluenceOtherworld && ./gradlew runData
+      - name: Build Confluence
+        working-directory: ./ConfluenceOtherworld
+        run: ./gradlew build
+      - name: Create nightly release
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          automatic_release_tag: nightly
+          prerelease: true
+          title: "Confluence Automate Build"
+          files: |
+            ./ConfluenceOtherworld/build/libs/*.jar

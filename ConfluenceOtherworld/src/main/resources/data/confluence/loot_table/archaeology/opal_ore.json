@@ -1,0 +1,16 @@
+{
+    "type": "minecraft:archaeology",
+    "pools": [
+        {
+            "bonus_rolls": 0.0,
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "name": "confluence:opal"
+                }
+            ],
+            "rolls": 1.0
+        }
+    ],
+    "random_sequence": "confluence:archaeology/opal_ore"
+}

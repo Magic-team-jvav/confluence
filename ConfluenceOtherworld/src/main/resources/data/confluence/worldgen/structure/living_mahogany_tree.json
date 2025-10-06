@@ -1,0 +1,6 @@
+{
+  "type": "confluence:living_mahogany_tree",
+  "biomes": "#c:is_jungle",
+  "spawn_overrides": {},
+  "step": "vegetal_decoration"
+}

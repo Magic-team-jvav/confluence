@@ -1,0 +1,14 @@
+{
+    "type": "terra_curio:workshop",
+    "ingredients": [
+        {
+            "item": "confluence:mana_flower"
+        },
+        {
+            "item": "terra_curio:putrid_scent"
+        }
+    ],
+    "result": {
+        "id": "confluence:arcane_flower"
+    }
+}

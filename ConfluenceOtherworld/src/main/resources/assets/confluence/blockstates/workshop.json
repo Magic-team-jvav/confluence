@@ -1,0 +1,19 @@
+{
+    "variants": {
+        "facing=east": {
+            "model": "confluence:block/workshop",
+            "y": 90
+        },
+        "facing=north": {
+            "model": "confluence:block/workshop"
+        },
+        "facing=south": {
+            "model": "confluence:block/workshop",
+            "y": 180
+        },
+        "facing=west": {
+            "model": "confluence:block/workshop",
+            "y": 270
+        }
+    }
+}

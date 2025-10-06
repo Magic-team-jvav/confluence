@@ -1,0 +1,8 @@
+{
+  "parent": "block/cross",
+  "textures": {
+    "cross": "confluence:block/ash_grass_0",
+    "particle": "confluence:block/ash_grass_0"
+  },
+  "render_type": "cutout"
+}

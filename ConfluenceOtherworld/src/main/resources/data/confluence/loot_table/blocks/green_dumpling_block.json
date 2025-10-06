@@ -1,0 +1,131 @@
+{
+    "type": "minecraft:block",
+    "pools": [
+        {
+            "bonus_rolls": 0.0,
+            "conditions": [
+                {
+                    "block": "confluence:green_dumpling_block",
+                    "condition": "minecraft:block_state_property",
+                    "properties": {
+                        "piece": "0"
+                    }
+                }
+            ],
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "name": "confluence:green_dumpling",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": 1
+                        }
+                    ]
+                }
+            ],
+            "rolls": 1.0
+        },
+        {
+            "bonus_rolls": 0.0,
+            "conditions": [
+                {
+                    "block": "confluence:green_dumpling_block",
+                    "condition": "minecraft:block_state_property",
+                    "properties": {
+                        "piece": "1"
+                    }
+                }
+            ],
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "name": "confluence:green_dumpling",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": 2
+                        }
+                    ]
+                }
+            ],
+            "rolls": 1.0
+        },
+        {
+            "bonus_rolls": 0.0,
+            "conditions": [
+                {
+                    "block": "confluence:green_dumpling_block",
+                    "condition": "minecraft:block_state_property",
+                    "properties": {
+                        "piece": "2"
+                    }
+                }
+            ],
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "name": "confluence:green_dumpling",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": 3
+                        }
+                    ]
+                }
+            ],
+            "rolls": 1.0
+        },
+        {
+            "bonus_rolls": 0.0,
+            "conditions": [
+                {
+                    "block": "confluence:green_dumpling_block",
+                    "condition": "minecraft:block_state_property",
+                    "properties": {
+                        "piece": "3"
+                    }
+                }
+            ],
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "name": "confluence:green_dumpling",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": 4
+                        }
+                    ]
+                }
+            ],
+            "rolls": 1.0
+        },
+        {
+            "bonus_rolls": 0.0,
+            "conditions": [
+                {
+                    "block": "confluence:green_dumpling_block",
+                    "condition": "minecraft:block_state_property",
+                    "properties": {
+                        "piece": "4"
+                    }
+                }
+            ],
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "name": "confluence:green_dumpling",
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": 5
+                        }
+                    ]
+                }
+            ],
+            "rolls": 1.0
+        }
+    ],
+    "random_sequence": "confluence:block/green_dumpling_block"
+}

@@ -1,0 +1,22 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "confluence:block/topaz_branches",
+		"1": "confluence:block/stony_log_end",
+		"particle": "confluence:block/topaz_branches"
+	},
+	"elements": [
+		{
+			"from": [5, 5, 0],
+			"to": [11, 11, 5],
+			"faces": {
+				"north": {"uv": [5, 5, 11, 11], "texture": "#1"},
+				"east": {"uv": [0, 5, 5, 11], "texture": "#0"},
+				"south": {"uv": [5, 5, 11, 11], "texture": "#1"},
+				"west": {"uv": [0, 5, 5, 11], "texture": "#0"},
+				"up": {"uv": [5, 0, 11, 5], "texture": "#0"},
+				"down": {"uv": [5, 0, 11, 5], "texture": "#0"}
+			}
+		}
+	]
+}

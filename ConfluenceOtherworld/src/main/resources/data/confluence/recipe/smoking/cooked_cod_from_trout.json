@@ -1,0 +1,11 @@
+{
+    "type": "minecraft:smoking",
+    "ingredient": {
+        "item": "confluence:trout"
+    },
+    "result": {
+        "id": "minecraft:cooked_cod"
+    },
+    "experience": 0.1,
+    "cookingtime": 100
+}

@@ -1,0 +1,217 @@
+{
+  "processors": [
+    {
+      "processor_type": "minecraft:rule",
+      "rules": [
+        {
+          "location_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:air"
+          },
+          "input_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:deepslate"
+          },
+          "output_state": {
+            "Name": "minecraft:air"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:air"
+          },
+          "input_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:tnt"
+          },
+          "output_state": {
+            "Name": "minecraft:air"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:air"
+          },
+          "input_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:obsidian"
+          },
+          "output_state": {
+            "Name": "minecraft:air"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:air"
+          },
+          "input_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:redstone_wire"
+          },
+          "output_state": {
+            "Name": "minecraft:air"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:air"
+          },
+          "input_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:redstone_torch"
+          },
+          "output_state": {
+            "Name": "minecraft:air"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:air"
+          },
+          "input_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:repeater"
+          },
+          "output_state": {
+            "Name": "minecraft:air"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:air"
+          },
+          "input_predicate": {
+            "predicate_type": "block_match",
+            "block": "confluence:instantaneous_explosion_tnt"
+          },
+          "output_state": {
+            "Name": "minecraft:air"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:air"
+          },
+          "input_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:target"
+          },
+          "output_state": {
+            "Name": "minecraft:air"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:air"
+          },
+          "input_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:sticky_piston"
+          },
+          "output_state": {
+            "Name": "minecraft:air"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:air"
+          },
+          "input_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:slime_block"
+          },
+          "output_state": {
+            "Name": "minecraft:air"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:air"
+          },
+          "input_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:honey_block"
+          },
+          "output_state": {
+            "Name": "minecraft:air"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:air"
+          },
+          "input_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:lava"
+          },
+          "output_state": {
+            "Name": "minecraft:air"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:air"
+          },
+          "input_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:tripwire"
+          },
+          "output_state": {
+            "Name": "minecraft:air"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:air"
+          },
+          "input_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:tripwire_hook"
+          },
+          "output_state": {
+            "Name": "minecraft:air"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:deepslate"
+          },
+          "input_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:stone"
+          },
+          "output_state": {
+            "Name": "minecraft:deepslate"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:stone"
+          },
+          "input_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:deepslate"
+          },
+          "output_state": {
+            "Name": "minecraft:stone"
+          }
+        }
+      ]
+    }
+  ]
+}

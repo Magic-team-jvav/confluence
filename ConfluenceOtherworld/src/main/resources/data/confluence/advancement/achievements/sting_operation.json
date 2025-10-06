@@ -1,0 +1,34 @@
+{
+    "display": {
+        "icon": {
+            "id": "confluence:abeemination"
+        },
+        "title": {
+            "translate": "achievements.confluence.sting_operation.title"
+        },
+        "description": {
+            "translate": "achievements.confluence.sting_operation.description"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": false,
+        "hidden": false
+    },
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "requirement": {
+            "trigger": "minecraft:player_killed_entity",
+            "conditions": {
+                "entity": [
+                    {
+                        "condition": "minecraft:entity_properties",
+                        "entity": "this",
+                        "predicate": {
+                            "type": "terra_entity:queen_bee"
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}

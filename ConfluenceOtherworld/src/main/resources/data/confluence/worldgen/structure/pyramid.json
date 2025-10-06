@@ -1,0 +1,6 @@
+{
+  "type": "confluence:pyramid",
+  "biomes": "#c:is_desert",
+  "spawn_overrides": {},
+  "step": "top_layer_modification"
+}

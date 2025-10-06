@@ -1,0 +1,95 @@
+package org.confluence.mod.common.data.gen.data_map;
+
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.data.DataMapProvider;
+import org.confluence.mod.common.data.gen.ModDataMapProvider;
+import org.confluence.mod.common.data.map.ExtractinatorData;
+import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.item.BaitItems;
+import org.confluence.mod.common.init.item.MaterialItems;
+import org.confluence.mod.common.init.item.ModItems;
+
+public final class ExtractinatorSubProvider {
+    public static void gather(ModDataMapProvider.Appender<DataMapProvider.Builder<ExtractinatorData, Item>> appender) {
+        appender.create()
+                .add(ModTags.Items.DESERT_FOSSIL, ExtractinatorData.builder().withPool(extractCommon())
+                        .withPool(ExtractinatorData.Pool.builder()
+                                .add(ExtractinatorData.Entry.of(MaterialItems.STURDY_FOSSIL, 1, 1))
+                                .add(ExtractinatorData.Entry.empty(9))
+                        ).build(), false)
+                .add(Tags.Items.GRAVELS, ExtractinatorData.builder().withPool(extractCommon()).build(), false)
+                .add(ModTags.Items.JUNK, ExtractinatorData.builder().withPool(extractCommon())
+                        .withPool(ExtractinatorData.Pool.builder()
+                                .add(ExtractinatorData.Entry.of(BaitItems.SNAIL, 1, 1667))
+                                .add(ExtractinatorData.Entry.of(BaitItems.APPRENTICE_BAIT, 1, 7500))
+                                .add(ExtractinatorData.Entry.of(BaitItems.WORM, 1, 5560))
+                                .add(ExtractinatorData.Entry.of(BaitItems.SNAIL, 1, 2780))
+                        ).build(), false)
+                .add(ModTags.Items.SILT_BLOCK, ExtractinatorData.builder().withPool(extractCommon())
+                        .withPool(ExtractinatorData.Pool.builder()
+                                .add(ExtractinatorData.Entry.of(Items.FLINT, 1, 1))
+                                .add(ExtractinatorData.Entry.empty(9))
+                        )
+                        .withPool(ExtractinatorData.Pool.builder()
+                                .add(ExtractinatorData.Entry.of(ModItems.SILVER_COIN, 1, 4, 13534))
+                                .add(ExtractinatorData.Entry.of(ModItems.COPPER_COIN, 1, 15, 642145))
+                                .add(ExtractinatorData.Entry.of(Items.RAW_COPPER, 1, 2, 39192))
+                                .add(ExtractinatorData.Entry.of(MaterialItems.RAW_TIN, 1, 2, 39192))
+                                .add(ExtractinatorData.Entry.of(Items.RAW_IRON, 1, 2, 39192))
+                                .add(ExtractinatorData.Entry.of(Items.RAW_GOLD, 1, 2, 39192))
+                                .add(ExtractinatorData.Entry.of(MaterialItems.RAW_LEAD, 1, 2, 39192))
+                                .add(ExtractinatorData.Entry.of(MaterialItems.RAW_PLATINUM, 1, 2, 39192))
+                        ).build(), false)
+                .add(ModTags.Items.SLUSH, ExtractinatorData.builder().withPool(extractCommon())
+                        .withPool(ExtractinatorData.Pool.builder()
+                                .add(ExtractinatorData.Entry.of(Items.SNOWBALL, 1, 1))
+                                .add(ExtractinatorData.Entry.empty(9))
+                        ).build(), false)
+                .add(ModTags.Items.MARINE_GRAVEL, ExtractinatorData.builder().withPool(extractCommon())
+                        .withPool(ExtractinatorData.Pool.builder()
+                                .add(ExtractinatorData.Entry.of(Items.PRISMARINE_SHARD, 1, 1))
+                                .add(ExtractinatorData.Entry.empty(19))
+                        )
+                        .withPool(ExtractinatorData.Pool.builder()
+                                .add(ExtractinatorData.Entry.of(Items.PRISMARINE_CRYSTALS, 1, 1))
+                                .add(ExtractinatorData.Entry.empty(19))
+                        )
+                        .withPool(ExtractinatorData.Pool.builder()
+                                .add(ExtractinatorData.Entry.of(Items.NAUTILUS_SHELL, 1, 1))
+                                .add(ExtractinatorData.Entry.empty(19))
+                        )
+                        .withPool(ExtractinatorData.Pool.builder()
+                                .add(ExtractinatorData.Entry.of(Items.SNIFFER_EGG, 1, 1))
+                                .add(ExtractinatorData.Entry.empty(99))
+                        )
+                        .withPool(ExtractinatorData.Pool.builder()
+                                .add(ExtractinatorData.Entry.of(MaterialItems.HEIM, 1, 1))
+                                .add(ExtractinatorData.Entry.empty(9))
+                        ).build(), false);
+    }
+
+    private static ExtractinatorData.Pool.Builder extractCommon() {
+        return ExtractinatorData.Pool.builder()
+                .add(ExtractinatorData.Entry.of(ModItems.PLATINUM_COIN, 1, 73))
+                .add(ExtractinatorData.Entry.of(ModItems.GOLD_COIN, 1, 2, 1017))
+                .add(ExtractinatorData.Entry.of(ModItems.SILVER_COIN, 1, 4, 13534))
+                .add(ExtractinatorData.Entry.of(ModItems.COPPER_COIN, 1, 15, 642145))
+                .add(ExtractinatorData.Entry.of(MaterialItems.AMETHYST, 1, 2, 3333))
+                .add(ExtractinatorData.Entry.of(MaterialItems.SAPPHIRE, 1, 2, 3333))
+                .add(ExtractinatorData.Entry.of(MaterialItems.TOPAZ, 1, 2, 3333))
+                .add(ExtractinatorData.Entry.of(MaterialItems.AMBER, 1, 2, 9598))
+                .add(ExtractinatorData.Entry.of(MaterialItems.RUBY, 1, 2, 3333))
+                .add(ExtractinatorData.Entry.of(MaterialItems.JADE, 1, 2, 3333))
+                .add(ExtractinatorData.Entry.of(Items.DIAMOND, 1, 2, 3333))
+                .add(ExtractinatorData.Entry.of(Items.RAW_COPPER, 1, 2, 39192))
+                .add(ExtractinatorData.Entry.of(MaterialItems.RAW_TIN, 1, 2, 39192))
+                .add(ExtractinatorData.Entry.of(Items.RAW_IRON, 1, 2, 39192))
+                .add(ExtractinatorData.Entry.of(Items.RAW_GOLD, 1, 2, 39192))
+                .add(ExtractinatorData.Entry.of(MaterialItems.RAW_LEAD, 1, 2, 39192))
+                .add(ExtractinatorData.Entry.of(MaterialItems.RAW_SILVER, 1, 2, 39192))
+                .add(ExtractinatorData.Entry.of(MaterialItems.RAW_TUNGSTEN, 1, 2, 39192))
+                .add(ExtractinatorData.Entry.of(MaterialItems.RAW_PLATINUM, 1, 2, 39192));
+    }
+}

@@ -1,0 +1,26 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "create"
+    }
+  ],
+  "type": "create:mechanical_crafting",
+  "accept_mirrored": false,
+  "key": {
+    "#": {
+      "item": "confluence:jade_chain"
+    },
+    "$": {
+      "item": "confluence:jade_block"
+    }
+  },
+  "pattern": [
+    "##$"
+  ],
+  "result": {
+    "count": 1,
+    "id": "confluence:jade_hook"
+  },
+  "show_notification": false
+}

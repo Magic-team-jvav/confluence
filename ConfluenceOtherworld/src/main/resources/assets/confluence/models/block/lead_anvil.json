@@ -1,0 +1,6 @@
+{
+  "parent": "confluence:block/template_lead_anvil",
+  "textures": {
+    "top": "confluence:block/lead_anvil_top"
+  }
+}

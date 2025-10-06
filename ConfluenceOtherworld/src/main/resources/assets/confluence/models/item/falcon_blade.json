@@ -1,0 +1,6 @@
+{
+  "parent": "confluence:item/template_reverse16x",
+  "textures": {
+    "layer0": "confluence:item/sword/falcon_blade"
+  }
+}

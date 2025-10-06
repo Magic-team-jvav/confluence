@@ -1,0 +1,114 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "confluence:block/ash_block",
+        "uvlock": false
+      },
+      {
+        "model": "confluence:block/ash_block_0",
+        "uvlock": false
+      },
+      {
+        "model": "confluence:block/ash_block",
+        "uvlock": false,
+        "x": 180
+      },
+      {
+        "model": "confluence:block/ash_block_0",
+        "uvlock": false,
+        "x": 180
+      },
+      {
+        "model": "confluence:block/ash_block",
+        "uvlock": false,
+        "y": 90
+      },
+      {
+        "model": "confluence:block/ash_block_0",
+        "uvlock": false,
+        "y": 90
+      },
+      {
+        "model": "confluence:block/ash_block",
+        "uvlock": false,
+        "y": 180
+      },
+      {
+        "model": "confluence:block/ash_block_0",
+        "uvlock": false,
+        "y": 180
+      },
+      {
+        "model": "confluence:block/ash_block",
+        "uvlock": false,
+        "y": 270
+      },
+      {
+        "model": "confluence:block/ash_block_0",
+        "uvlock": false,
+        "y": 270
+      },
+      {
+        "model": "confluence:block/ash_block",
+        "uvlock": false,
+        "z": 180
+      },
+      {
+        "model": "confluence:block/ash_block_0",
+        "uvlock": false,
+        "z": 180
+      },
+      {
+        "model": "confluence:block/ash_block",
+        "uvlock": false,
+        "x": 180,
+        "z": 180
+      },
+      {
+        "model": "confluence:block/ash_block_0",
+        "uvlock": false,
+        "x": 180,
+        "z": 180
+      },
+      {
+        "model": "confluence:block/ash_block",
+        "uvlock": false,
+        "x": 180,
+        "y": 180
+      },
+      {
+        "model": "confluence:block/ash_block_0",
+        "uvlock": false,
+        "x": 180,
+        "y": 180
+      },
+      {
+        "model": "confluence:block/ash_block",
+        "uvlock": false,
+        "y": 180,
+        "z": 180
+      },
+      {
+        "model": "confluence:block/ash_block_0",
+        "uvlock": false,
+        "y": 180,
+        "z": 180
+      },
+      {
+        "model": "confluence:block/ash_block",
+        "uvlock": false,
+        "x": 180,
+        "y": 180,
+        "z": 180
+      },
+      {
+        "model": "confluence:block/ash_block_0",
+        "uvlock": false,
+        "x": 180,
+        "y": 180,
+        "z": 180
+      }
+    ]
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "parent": "block/cross",
+  "textures": {
+    "cross": "confluence:block/waterleaf_stage1",
+    "particle": "confluence:block/waterleaf_stage1"
+  },
+  "render_type": "cutout"
+}

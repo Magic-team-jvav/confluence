@@ -1,0 +1,26 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "create"
+    }
+  ],
+  "type": "create:mechanical_crafting",
+  "accept_mirrored": false,
+  "key": {
+    "#": {
+      "item": "confluence:amethyst_chain"
+    },
+    "$": {
+      "item": "confluence:amethyst_block"
+    }
+  },
+  "pattern": [
+    "##$"
+  ],
+  "result": {
+    "count": 1,
+    "id": "confluence:amethyst_hook"
+  },
+  "show_notification": false
+}

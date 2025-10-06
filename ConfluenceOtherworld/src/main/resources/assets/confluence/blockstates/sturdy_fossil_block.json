@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "confluence:block/sturdy_fossil_block"
+    }
+  }
+}

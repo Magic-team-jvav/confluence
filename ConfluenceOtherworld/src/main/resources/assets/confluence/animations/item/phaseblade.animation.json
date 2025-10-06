@@ -1,0 +1,40 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"turn_off": {
+			"loop": "hold_on_last_frame",
+			"animation_length": 0.5,
+			"bones": {
+				"light": {
+					"scale": {
+						"0.0": {
+							"vector": [1, 1, 1]
+						},
+						"0.5": {
+							"vector": [1, 0, 1],
+							"easing": "easeInQuint"
+						}
+					}
+				}
+			}
+		},
+		"turn_on": {
+			"loop": "hold_on_last_frame",
+			"animation_length": 0.5,
+			"bones": {
+				"light": {
+					"scale": {
+						"0.0": {
+							"vector": [1, 0, 1]
+						},
+						"0.5": {
+							"vector": [1, 1, 1],
+							"easing": "easeInQuint"
+						}
+					}
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}

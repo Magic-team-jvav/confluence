@@ -1,0 +1,19 @@
+{
+    "type": "confluence:sky_mill",
+    "ingredients": [
+        {
+            "type": "confluence_magic_lib:amount_ingredient",
+            "ingredient": {
+                "item": "confluence:sun_plate"
+            },
+            "count": 2
+        },
+        {
+            "item": "confluence:pure_glass"
+        }
+    ],
+    "result": {
+        "id": "confluence:skyware_glass_door",
+        "count": 1
+    }
+}

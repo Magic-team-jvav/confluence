@@ -1,0 +1,285 @@
+{
+  "processors": [
+    {
+      "processor_type": "minecraft:rule",
+      "rules": [
+        {
+          "location_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:dirt"
+          },
+          "input_predicate": {
+            "predicate_type": "always_true"
+          },
+          "output_state": {
+            "Name": "minecraft:dirt"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:grass_block"
+          },
+          "input_predicate": {
+            "predicate_type": "always_true"
+          },
+          "output_state": {
+            "Name": "minecraft:grass_block"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:water"
+          },
+          "input_predicate": {
+            "predicate_type": "always_true"
+          },
+          "output_state": {
+            "Name": "minecraft:water"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:yellow_terracotta"
+          },
+          "input_predicate": {
+            "predicate_type": "always_true"
+          },
+          "output_state": {
+            "Name": "minecraft:yellow_terracotta"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:orange_terracotta"
+          },
+          "input_predicate": {
+            "predicate_type": "always_true"
+          },
+          "output_state": {
+            "Name": "minecraft:orange_terracotta"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:red_terracotta"
+          },
+          "input_predicate": {
+            "predicate_type": "always_true"
+          },
+          "output_state": {
+            "Name": "minecraft:red_terracotta"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:white_terracotta"
+          },
+          "input_predicate": {
+            "predicate_type": "always_true"
+          },
+          "output_state": {
+            "Name": "minecraft:white_terracotta"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:terracotta"
+          },
+          "input_predicate": {
+            "predicate_type": "always_true"
+          },
+          "output_state": {
+            "Name": "minecraft:terracotta"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:brown_terracotta"
+          },
+          "input_predicate": {
+            "predicate_type": "always_true"
+          },
+          "output_state": {
+            "Name": "minecraft:brown_terracotta"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:sandstone"
+          },
+          "input_predicate": {
+            "predicate_type": "always_true"
+          },
+          "output_state": {
+            "Name": "minecraft:sandstone"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:sand"
+          },
+          "input_predicate": {
+            "predicate_type": "always_true"
+          },
+          "output_state": {
+            "Name": "minecraft:sand"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:red_sandstone"
+          },
+          "input_predicate": {
+            "predicate_type": "always_true"
+          },
+          "output_state": {
+            "Name": "minecraft:red_sandstone"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:red_sand"
+          },
+          "input_predicate": {
+            "predicate_type": "always_true"
+          },
+          "output_state": {
+            "Name": "minecraft:red_sand"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:clay"
+          },
+          "input_predicate": {
+            "predicate_type": "always_true"
+          },
+          "output_state": {
+            "Name": "minecraft:clay"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:mud"
+          },
+          "input_predicate": {
+            "predicate_type": "always_true"
+          },
+          "output_state": {
+            "Name": "minecraft:mud"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:coarse_dirt"
+          },
+          "input_predicate": {
+            "predicate_type": "always_true"
+          },
+          "output_state": {
+            "Name": "minecraft:coarse_dirt"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:podzol"
+          },
+          "input_predicate": {
+            "predicate_type": "always_true"
+          },
+          "output_state": {
+            "Name": "minecraft:podzol"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:mycelium"
+          },
+          "input_predicate": {
+            "predicate_type": "always_true"
+          },
+          "output_state": {
+            "Name": "minecraft:mycelium"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:dirt_path"
+          },
+          "input_predicate": {
+            "predicate_type": "always_true"
+          },
+          "output_state": {
+            "Name": "minecraft:dirt_path"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "block_match",
+            "block": "confluence:corrupt_grass_block"
+          },
+          "input_predicate": {
+            "predicate_type": "always_true"
+          },
+          "output_state": {
+            "Name": "confluence:corrupt_grass_block"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "block_match",
+            "block": "confluence:crimson_grass_block"
+          },
+          "input_predicate": {
+            "predicate_type": "always_true"
+          },
+          "output_state": {
+            "Name": "confluence:crimson_grass_block"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "block_match",
+            "block": "confluence:hallow_grass_block"
+          },
+          "input_predicate": {
+            "predicate_type": "always_true"
+          },
+          "output_state": {
+            "Name": "confluence:hallow_grass_block"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "always_true"
+          },
+          "input_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:crying_obsidian"
+          },
+          "output_state": {
+            "Name": "minecraft:air"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+    "display": {
+        "icon": {
+            "id": "confluence:stellar_blossom_seed"
+        },
+        "title": {
+            "translate": "achievements.confluence.a_rare_realm.title"
+        },
+        "description": {
+            "translate": "achievements.confluence.a_rare_realm.description"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": false,
+        "hidden": false
+    },
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "never": {
+            "trigger": "minecraft:impossible"
+        }
+    }
+}

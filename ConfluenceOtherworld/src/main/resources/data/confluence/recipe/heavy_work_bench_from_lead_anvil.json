@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#",
+        "a",
+        "#"
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:crafting_table"
+        },
+        "a": {
+            "item": "confluence:lead_anvil"
+        }
+    },
+    "result": {
+        "id": "confluence:heavy_work_bench"
+    }
+}

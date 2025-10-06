@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "confluence:block/ammo_box",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "confluence:block/ammo_box"
+    },
+    "facing=south": {
+      "model": "confluence:block/ammo_box",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "confluence:block/ammo_box",
+      "y": 270
+    }
+  }
+}

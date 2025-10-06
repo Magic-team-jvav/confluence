@@ -1,0 +1,7 @@
+{
+    "parent": "minecraft:block/template_torch",
+    "render_type": "cutout",
+    "textures": {
+        "torch": "confluence:block/torch/crimson_torch"
+    }
+}

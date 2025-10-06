@@ -1,0 +1,15 @@
+{
+    "name": "patchouli.confluence.otherworld_note.mana.mana_regeneration.name",
+    "icon": "minecraft:fire_charge",
+    "category": "confluence:mana",
+    "pages": [
+        {
+            "type": "patchouli:text",
+            "text": "patchouli.confluence.otherworld_note.mana.mana_regeneration.0"
+        },
+        {
+            "type": "patchouli:empty",
+            "draw_filler": false
+        }
+    ]
+}

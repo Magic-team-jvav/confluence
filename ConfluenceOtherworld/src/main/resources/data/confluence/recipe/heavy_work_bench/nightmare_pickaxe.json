@@ -1,0 +1,31 @@
+{
+    "type": "confluence:heavy_work_bench",
+    "pattern": [
+        " cca",
+        "  /c",
+        " / c",
+        "/   "
+    ],
+    "key": {
+        "c": {
+            "type": "confluence_magic_lib:amount_ingredient",
+            "ingredient": {
+                "item": "confluence:demonite_ingot"
+            },
+            "count": 3
+        },
+        "a": {
+            "type": "confluence_magic_lib:amount_ingredient",
+            "ingredient": {
+                "item": "confluence:shadow_scale"
+            },
+            "count": 6
+        },
+        "/": {
+            "item": "confluence:rotten_bone"
+        }
+    },
+    "result": {
+        "id": "confluence:nightmare_pickaxe"
+    }
+}

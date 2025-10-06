@@ -1,0 +1,8 @@
+{
+"parent":"minecraft:block/outer_stairs",
+"textures":{
+"bottom":"confluence:block/green_brick",
+"side":"confluence:block/green_brick",
+"top":"confluence:block/green_brick"
+}
+}

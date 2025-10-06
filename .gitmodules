@@ -1,0 +1,55 @@
+[submodule "TerraCurio"]
+	path = TerraCurio
+	url = https://github.com/westernat/TerraCurio
+	branch = neoforge-dev/1.21.1
+[submodule "MineTeam"]
+    path = MineTeam
+    url = https://github.com/XiaoHuNao/MineTeam
+    branch = neoforge-dev/1.21.1
+[submodule "EquipmentBenediction"]
+    path = EquipmentBenediction
+    url = https://github.com/XiaoHuNao/EquipmentBenediction
+    branch = neoforge-dev/1.21.1
+[submodule "HeavenDestinyMoment"]
+	path = HeavenDestinyMoment
+	url = https://github.com/XiaoHuNao/HeavenDestinyMoment
+	branch = neoforge-dev/1.21.1
+[submodule "PhaseJourney"]
+	path = PhaseJourney
+	url = https://github.com/XiaoHuNao/PhaseJourney
+	branch = neoforge-dev/1.21.1
+[submodule "TerraMoment"]
+	path = TerraMoment
+	url = https://github.com/XiaoHuNao/TerraMoment
+	branch = neoforge-dev/1.21.1
+[submodule "TerraGuns"]
+	path = TerraGuns
+	url = https://github.com/XiaoHuNao/TerraGuns
+	branch = neoforge-dev/1.21.1
+[submodule "IsekaiInvaded"]
+	path = IsekaiInvaded
+	url = https://github.com/XiaoHuNao/IsekaiInvaded.git
+	branch = IsekaiInvaded
+[submodule "TerraFurniture"]
+	path = TerraFurniture
+	url = https://github.com/MakerTechno/TerraFurniture
+	branch = neoforge-dev/1.21.1
+[submodule "TerraEntity"]
+	path = TerraEntity
+	url = https://github.com/EDGtheXu/TerraEntity
+	branch = neoforge-dev/1.21.1
+[submodule "EntityTrackerHUD"]
+	path = EntityTrackerHUD
+	url = https://github.com/MakerTechno/EntityTrackerHUD.git
+	branch = neoforge-dev/1.21.1
+[submodule "Confluence-Magic-Lib"]
+	path = Confluence-Magic-Lib
+	url = https://github.com/westernat/Confluence-Magic-Lib.git
+	branch = neoforge-dev/1.21.1
+[submodule "EnemyBanner"]
+	path = EnemyBanner
+	url = https://github.com/XiaoHuNao/EnemyBanner
+	branch = neoforge-dev/1.21.1
+[submodule "ConfluenceWiki"]
+	path = ConfluenceWiki
+	url = https://github.com/IAFEnvoy/ConfluenceWiki.git

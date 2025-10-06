@@ -1,0 +1,24 @@
+{
+    "type": "confluence:heavy_work_bench",
+    "pattern": [
+        " ccc",
+        " c/c",
+        " /c ",
+        "/   "
+    ],
+    "key": {
+        "c": {
+            "type": "confluence_magic_lib:amount_ingredient",
+            "ingredient": {
+                "item": "confluence:demonite_ingot"
+            },
+            "count": 2
+        },
+        "/": {
+            "item": "confluence:rotten_bone"
+        }
+    },
+    "result": {
+        "id": "confluence:war_axe_of_the_night"
+    }
+}

@@ -1,0 +1,7 @@
+{
+    "parent": "minecraft:block/orientable_vertical",
+    "textures": {
+        "front": "confluence:block/dart_trap_front_vertical",
+        "side": "minecraft:block/furnace_top"
+    }
+}

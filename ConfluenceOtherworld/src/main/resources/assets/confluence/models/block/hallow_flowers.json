@@ -1,0 +1,8 @@
+{
+  "parent": "block/cross",
+  "textures": {
+    "cross": "confluence:block/hallow_flowers",
+    "particle": "confluence:block/hallow_flowers"
+  },
+  "render_type": "cutout"
+}

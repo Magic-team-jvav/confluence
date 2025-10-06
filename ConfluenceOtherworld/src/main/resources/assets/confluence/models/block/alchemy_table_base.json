@@ -1,0 +1,65 @@
+{
+	"credit": "Made with Blockbench",
+	"render_type": "cutout",
+	"texture_size": [64, 64],
+	"textures": {
+		"1": "confluence:block/alchemy_table",
+		"particle": "confluence:block/particle/alchemy_table_particle"
+	},
+	"elements": [
+		{
+			"from": [0, 3, 2],
+			"to": [11, 12, 14],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 5, 8]},
+			"faces": {
+				"north": {"uv": [7.5, 10, 10.25, 12.25], "texture": "#1"},
+				"east": {"uv": [0, 9.75, 3, 12], "texture": "#1"},
+				"south": {"uv": [10.25, 3.5, 13, 5.75], "texture": "#1"}
+			}
+		},
+		{
+			"from": [0, 0, 1],
+			"to": [14, 3, 15],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 8]},
+			"faces": {
+				"north": {"uv": [10.25, 8.75, 13.75, 9.5], "texture": "#1"},
+				"east": {"uv": [10.25, 9.5, 13.75, 10.25], "texture": "#1"},
+				"south": {"uv": [10.25, 10.25, 13.75, 11], "texture": "#1"},
+				"up": {"uv": [7.5, 7.5, 4, 4], "texture": "#1"},
+				"down": {"uv": [7.5, 7.5, 4, 11], "texture": "#1"}
+			}
+		},
+		{
+			"from": [0, 12, 0],
+			"to": [16, 16, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 14, 8]},
+			"faces": {
+				"north": {"uv": [10.25, 5.75, 14.25, 6.75], "texture": "#1"},
+				"east": {"uv": [10.25, 6.75, 14.25, 7.75], "texture": "#1"},
+				"south": {"uv": [10.25, 7.75, 14.25, 8.75], "texture": "#1"},
+				"up": {"uv": [4, 4, 0, 0], "texture": "#1"},
+				"down": {"uv": [4, 4, 0, 8], "texture": "#1"}
+			}
+		},
+		{
+			"from": [0, 5, 0],
+			"to": [16, 12, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 14, 8]},
+			"faces": {
+				"north": {"uv": [0, 8, 4, 9.75], "texture": "#1"},
+				"east": {"uv": [8, 0, 12, 1.75], "texture": "#1"},
+				"south": {"uv": [8, 1.75, 12, 3.5], "texture": "#1"},
+				"up": {"uv": [8, 4, 4, 0], "texture": "#1"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "group",
+			"origin": [0, 14, 0],
+			"color": 0,
+			"nbt": "{}",
+			"children": [0, 1, 2, 3]
+		}
+	]
+}

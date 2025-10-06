@@ -1,0 +1,25 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "confluence:block/corrupt_grass_block",
+        "uvlock": false
+      },
+      {
+        "model": "confluence:block/corrupt_grass_block",
+        "y": 90,
+        "uvlock": false
+      },
+      {
+        "model": "confluence:block/corrupt_grass_block",
+        "y": 180,
+        "uvlock": false
+      },
+      {
+        "model": "confluence:block/corrupt_grass_block",
+        "y": 270,
+        "uvlock": false
+      }
+    ]
+  }
+}

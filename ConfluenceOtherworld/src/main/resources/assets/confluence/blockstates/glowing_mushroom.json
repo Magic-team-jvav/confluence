@@ -1,0 +1,15 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "confluence:block/glowing_mushroom_0"
+      },
+      {
+        "model": "confluence:block/glowing_mushroom_1"
+      },
+      {
+        "model": "confluence:block/glowing_mushroom_2"
+      }
+    ]
+  }
+}

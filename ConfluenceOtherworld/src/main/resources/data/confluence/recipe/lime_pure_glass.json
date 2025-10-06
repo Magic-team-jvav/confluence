@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "###",
+        "#W#",
+        "###"
+    ],
+    "key": {
+        "#": {
+            "item": "confluence:pure_glass"
+        },
+        "W": {
+            "item": "minecraft:lime_dye"
+        }
+    },
+    "result": {
+        "id": "confluence:lime_pure_glass",
+        "count": 8
+    }
+}

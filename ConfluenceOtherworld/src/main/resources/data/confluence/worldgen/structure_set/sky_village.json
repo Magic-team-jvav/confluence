@@ -1,0 +1,17 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 17846607,
+    "separation": 70,
+    "spacing": 80,
+    "spread_type": "triangular",
+    "exclusion_zone": {
+      "chunk_count": 16,
+      "other_set": "confluence:air"
+    }
+  },
+  "structures": [{
+    "structure": "confluence:sky_village",
+    "weight": 1
+  }]
+}

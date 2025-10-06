@@ -1,0 +1,24 @@
+{
+    "type": "confluence:heavy_work_bench",
+    "pattern": [
+        " ccc",
+        " c/c",
+        " /c ",
+        "/   "
+    ],
+    "key": {
+        "c": {
+            "type": "confluence_magic_lib:amount_ingredient",
+            "ingredient": {
+                "item": "confluence:crimtane_ingot"
+            },
+            "count": 2
+        },
+        "/": {
+            "item": "confluence:vertebra"
+        }
+    },
+    "result": {
+        "id": "confluence:blood_lust_cluster"
+    }
+}

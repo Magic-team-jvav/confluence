@@ -1,0 +1,13 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "minecraft:item/written_book"
+  },
+    "overrides": [
+      {"predicate":{"custom_model_data":3276800},"model":"confluence:item/book_0"},
+      {"predicate":{"custom_model_data":3276801},"model":"confluence:item/book_1"},
+      {"predicate":{"custom_model_data":3276802},"model":"confluence:item/book_2"},
+      {"predicate":{"custom_model_data":3276803},"model":"confluence:item/book_3"},
+      {"predicate":{"custom_model_data":3276804},"model":"confluence:item/book_4"}
+    ]
+}

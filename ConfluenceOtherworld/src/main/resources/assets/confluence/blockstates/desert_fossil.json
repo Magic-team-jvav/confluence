@@ -1,0 +1,240 @@
+{
+    "variants": {
+        "": [
+            {
+                "model": "confluence:block/desert_fossil_0"
+            },
+            {
+                "model": "confluence:block/desert_fossil_0",
+                "x": 90
+            },
+            {
+                "model": "confluence:block/desert_fossil_0",
+                "x": 180
+            },
+            {
+                "model": "confluence:block/desert_fossil_0",
+                "x": 270
+            },
+            {
+                "model": "confluence:block/desert_fossil_0",
+                "y": 90
+            },
+            {
+                "model": "confluence:block/desert_fossil_0",
+                "y": 180
+            },
+            {
+                "model": "confluence:block/desert_fossil_0",
+                "y": 270
+            },
+            {
+                "model": "confluence:block/desert_fossil_0",
+                "z": 90
+            },
+            {
+                "model": "confluence:block/desert_fossil_0",
+                "z": 180
+            },
+            {
+                "model": "confluence:block/desert_fossil_0",
+                "z": 270
+            },
+            {
+                "model": "confluence:block/desert_fossil_0"
+            },
+            {
+                "model": "confluence:block/desert_fossil_0",
+                "x": 90
+            },
+            {
+                "model": "confluence:block/desert_fossil_0",
+                "x": 180
+            },
+            {
+                "model": "confluence:block/desert_fossil_0",
+                "x": 270
+            },
+            {
+                "model": "confluence:block/desert_fossil_0",
+                "y": 90
+            },
+            {
+                "model": "confluence:block/desert_fossil_0",
+                "y": 180
+            },
+            {
+                "model": "confluence:block/desert_fossil_0",
+                "y": 270
+            },
+            {
+                "model": "confluence:block/desert_fossil_0",
+                "z": 90
+            },
+            {
+                "model": "confluence:block/desert_fossil_0",
+                "z": 180
+            },
+            {
+                "model": "confluence:block/desert_fossil_0",
+                "z": 270
+            },
+            {
+                "model": "confluence:block/desert_fossil_1"
+            },
+            {
+                "model": "confluence:block/desert_fossil_1",
+                "x": 90
+            },
+            {
+                "model": "confluence:block/desert_fossil_1",
+                "x": 180
+            },
+            {
+                "model": "confluence:block/desert_fossil_1",
+                "x": 270
+            },
+            {
+                "model": "confluence:block/desert_fossil_1",
+                "y": 90
+            },
+            {
+                "model": "confluence:block/desert_fossil_1",
+                "y": 180
+            },
+            {
+                "model": "confluence:block/desert_fossil_1",
+                "y": 270
+            },
+            {
+                "model": "confluence:block/desert_fossil_1",
+                "z": 90
+            },
+            {
+                "model": "confluence:block/desert_fossil_1",
+                "z": 180
+            },
+            {
+                "model": "confluence:block/desert_fossil_1",
+                "z": 270
+            },
+            {
+                "model": "confluence:block/desert_fossil_2"
+            },
+            {
+                "model": "confluence:block/desert_fossil_2",
+                "x": 90
+            },
+            {
+                "model": "confluence:block/desert_fossil_2",
+                "x": 180
+            },
+            {
+                "model": "confluence:block/desert_fossil_2",
+                "x": 270
+            },
+            {
+                "model": "confluence:block/desert_fossil_2",
+                "y": 90
+            },
+            {
+                "model": "confluence:block/desert_fossil_2",
+                "y": 180
+            },
+            {
+                "model": "confluence:block/desert_fossil_2",
+                "y": 270
+            },
+            {
+                "model": "confluence:block/desert_fossil_2",
+                "z": 90
+            },
+            {
+                "model": "confluence:block/desert_fossil_2",
+                "z": 180
+            },
+            {
+                "model": "confluence:block/desert_fossil_2",
+                "z": 270
+            },
+            {
+                "model": "confluence:block/desert_fossil_3"
+            },
+            {
+                "model": "confluence:block/desert_fossil_3",
+                "x": 90
+            },
+            {
+                "model": "confluence:block/desert_fossil_3",
+                "x": 180
+            },
+            {
+                "model": "confluence:block/desert_fossil_3",
+                "x": 270
+            },
+            {
+                "model": "confluence:block/desert_fossil_3",
+                "y": 90
+            },
+            {
+                "model": "confluence:block/desert_fossil_3",
+                "y": 180
+            },
+            {
+                "model": "confluence:block/desert_fossil_3",
+                "y": 270
+            },
+            {
+                "model": "confluence:block/desert_fossil_3",
+                "z": 90
+            },
+            {
+                "model": "confluence:block/desert_fossil_3",
+                "z": 180
+            },
+            {
+                "model": "confluence:block/desert_fossil_3",
+                "z": 270
+            },
+            {
+                "model": "confluence:block/desert_fossil_4"
+            },
+            {
+                "model": "confluence:block/desert_fossil_4",
+                "x": 90
+            },
+            {
+                "model": "confluence:block/desert_fossil_4",
+                "x": 180
+            },
+            {
+                "model": "confluence:block/desert_fossil_4",
+                "x": 270
+            },
+            {
+                "model": "confluence:block/desert_fossil_4",
+                "y": 90
+            },
+            {
+                "model": "confluence:block/desert_fossil_4",
+                "y": 180
+            },
+            {
+                "model": "confluence:block/desert_fossil_4",
+                "y": 270
+            },
+            {
+                "model": "confluence:block/desert_fossil_4",
+                "z": 90
+            },
+            {
+                "model": "confluence:block/desert_fossil_4",
+                "z": 180
+            },
+            {
+                "model": "confluence:block/desert_fossil_4",
+                "z": 270
+            }
+        ]
+    }
+}

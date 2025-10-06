@@ -1,0 +1,14 @@
+{
+    "parent": "item/handheld_rod",
+    "textures": {
+        "layer0": "confluence:item/fishing_pole/sitting_ducks_fishing_pole"
+    },
+    "overrides": [
+        {
+            "predicate": {
+                "cast": 1
+            },
+            "model": "confluence:item/sitting_ducks_fishing_pole_cast"
+        }
+    ]
+}

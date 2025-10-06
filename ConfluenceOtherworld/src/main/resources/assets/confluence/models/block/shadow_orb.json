@@ -1,0 +1,60 @@
+{
+	"credit": "Made with Blockbench",
+	"texture_size": [64, 64],
+	"textures": {
+		"1": "confluence:block/shadow_orb",
+		"particle": "confluence:block/shadow_orb"
+	},
+	"elements": [
+		{
+			"from": [14, 14, 14],
+			"to": [2, 2, 2],
+			"faces": {
+				"north": {"uv": [3, 3, 6, 6], "texture": "#1"},
+				"east": {"uv": [3, 3, 6, 6], "texture": "#1"},
+				"south": {"uv": [3, 3, 6, 6], "texture": "#1"},
+				"west": {"uv": [3, 3, 6, 6], "texture": "#1"},
+				"up": {"uv": [3, 9, 0, 6], "texture": "#1"},
+				"down": {"uv": [9, 0, 6, 3], "texture": "#1"}
+			},
+			"shade": false,
+			"neoforge_data": {
+				"block_light": 15,
+				"ambient_occlusion": false
+			}
+		},
+		{
+			"from": [13.25, 13.25, 13.25],
+			"to": [2.75, 2.75, 2.75],
+			"faces": {
+				"north": {"uv": [0, 0, 3, 3], "texture": "#1"},
+				"east": {"uv": [0, 0, 3, 3], "texture": "#1"},
+				"south": {"uv": [0, 0, 3, 3], "texture": "#1"},
+				"west": {"uv": [0, 0, 3, 3], "texture": "#1"},
+				"up": {"uv": [3, 6, 0, 3], "texture": "#1"},
+				"down": {"uv": [6, 0, 3, 3], "texture": "#1"}
+			},
+			"shade": false,
+			"neoforge_data": {
+				"block_light": 15,
+				"ambient_occlusion": false
+			}
+		},
+		{
+			"from": [3, 3, 3],
+			"to": [13, 13, 13],
+			"faces": {
+				"north": {"uv": [3, 6, 5.5, 8.5], "texture": "#1"},
+				"east": {"uv": [3, 6, 5.5, 8.5], "texture": "#1"},
+				"south": {"uv": [3, 6, 5.5, 8.5], "texture": "#1"},
+				"west": {"uv": [3, 6, 5.5, 8.5], "texture": "#1"},
+				"up": {"uv": [8.5, 5.5, 6, 3], "texture": "#1"},
+				"down": {"uv": [8, 6, 5.5, 8.5], "texture": "#1"}
+			},
+			"neoforge_data": {
+				"block_light": 15,
+				"ambient_occlusion": false
+			}
+		}
+	]
+}

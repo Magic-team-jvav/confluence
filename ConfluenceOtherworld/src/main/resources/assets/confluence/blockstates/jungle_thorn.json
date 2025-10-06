@@ -1,0 +1,68 @@
+{
+    "multipart": [
+        {
+            "when": {
+                "north": "true"
+            },
+            "apply": {
+                "model": "confluence:block/jungle_thorn_side"
+            }
+        },
+        {
+            "when": {
+                "east": "true"
+            },
+            "apply": {
+                "model": "confluence:block/jungle_thorn_side",
+                "y": 90,
+                "uvlock": false
+            }
+        },
+        {
+            "when": {
+                "south": "true"
+            },
+            "apply": {
+                "model": "confluence:block/jungle_thorn_side",
+                "y": 180,
+                "uvlock": false
+            }
+        },
+        {
+            "when": {
+                "west": "true"
+            },
+            "apply": {
+                "model": "confluence:block/jungle_thorn_side",
+                "y": 270,
+                "uvlock": false
+            }
+        },
+        {
+            "when": {
+                "up": "true"
+            },
+            "apply": {
+                "model": "confluence:block/jungle_thorn_side",
+                "x": 270,
+                "uvlock": false
+            }
+        },
+        {
+            "when": {
+                "down": "true"
+            },
+            "apply": {
+                "model": "confluence:block/jungle_thorn_side",
+                "x": 90,
+                "uvlock": false
+            }
+        },
+        {
+            "apply": {
+                "model": "confluence:block/jungle_thorn_center",
+                "uvlock": false
+            }
+        }
+    ]
+}

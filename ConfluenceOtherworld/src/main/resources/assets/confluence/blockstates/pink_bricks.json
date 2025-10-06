@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "confluence:block/pink_bricks",
+        "weight": 120
+      },
+      {
+        "model": "confluence:block/pink_bricks_0",
+        "weight": 10
+      },
+      {
+        "model": "confluence:block/pink_bricks_1",
+        "weight": 10
+      },
+      {
+        "model": "confluence:block/pink_bricks_2",
+        "weight": 10
+      },
+      {
+        "model": "confluence:block/pink_bricks_3",
+        "weight": 10
+      },
+      {
+        "model": "confluence:block/pink_bricks_4",
+        "weight": 1
+      }
+    ]
+  }
+}

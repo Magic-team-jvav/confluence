@@ -1,0 +1,131 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "confluence:block/vine_rope_str",
+        "uvlock": true
+      },
+      "when": {
+        "up": "true",
+        "down": "true",
+        "north": "false",
+        "south": "false",
+        "east": "false",
+        "west": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/vine_rope",
+        "uvlock": true
+      },
+      "when": {
+        "OR": [
+          {
+            "up": "false",
+            "down": "false",
+            "north": "false",
+            "south": "false",
+            "east": "false",
+            "west": "false"
+          },
+          {
+            "up": "true",
+            "down": "false"
+          },
+          {
+            "up": "false",
+            "down": "true"
+          },
+          {
+            "north": "true"
+          },
+          {
+            "south": "true"
+          },
+          {
+            "east": "true"
+          },
+          {
+            "west": "true"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/vine_rope_down",
+        "uvlock": true
+      },
+      "when": {
+        "down": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/vine_rope_down_false",
+        "uvlock": true
+      },
+      "when": {
+        "down": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/vine_rope_up_true",
+        "uvlock": true
+      },
+      "when": {
+        "up": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/vine_rope_up_false",
+        "uvlock": true
+      },
+      "when": {
+        "up": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/vine_rope_side",
+        "uvlock": true,
+        "y": 180
+      },
+      "when": {
+        "north": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/vine_rope_side",
+        "uvlock": true
+      },
+      "when": {
+        "south": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/vine_rope_side",
+        "uvlock": true,
+        "y": 270
+      },
+      "when": {
+        "east": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "confluence:block/vine_rope_side",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "west": "true"
+      }
+    }
+  ]
+}

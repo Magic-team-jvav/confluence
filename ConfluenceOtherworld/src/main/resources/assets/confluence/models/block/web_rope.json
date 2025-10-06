@@ -1,0 +1,22 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "confluence:block/web_rope",
+		"particle": "confluence:block/web_rope"
+	},
+	"elements": [
+		{
+			"from": [6, 6, 6],
+			"to": [10, 10, 10],
+			"rotation": {"angle": 0, "axis": "y", "origin": [7, 7, 7]},
+			"faces": {
+				"north": {"uv": [0, 10, 4, 14], "texture": "#0"},
+				"east": {"uv": [0, 10, 4, 14], "texture": "#0"},
+				"south": {"uv": [0, 10, 4, 14], "texture": "#0"},
+				"west": {"uv": [0, 10, 4, 14], "texture": "#0"},
+				"up": {"uv": [8, 14, 4, 10], "texture": "#0"},
+				"down": {"uv": [12, 10, 8, 14], "texture": "#0"}
+			}
+		}
+	]
+}

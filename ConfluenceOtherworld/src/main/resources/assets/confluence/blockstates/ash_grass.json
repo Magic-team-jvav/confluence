@@ -1,0 +1,18 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "confluence:block/ash_grass_0",
+        "weight": 15
+      },
+      {
+        "model": "confluence:block/ash_grass_1",
+        "weight": 1
+      },
+      {
+        "model": "confluence:block/ash_grass_2",
+        "weight": 1
+      }
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+    "name": "patchouli.confluence.otherworld_note.material.gems.name",
+    "icon": "confluence:ruby",
+    "category": "confluence:material",
+    "pages": [
+        {
+            "type": "patchouli:spotlight",
+            "item": "confluence:ruby",
+            "text": "patchouli.confluence.otherworld_note.material.gems.0"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minecraft:emerald"
+        }
+    ]
+}

@@ -1,0 +1,168 @@
+{
+    "transmission": {
+        "sounds": [
+            "confluence:transmission"
+        ],
+        "subtitle": "confluence.subtitle.transmission"
+    },
+    "lightsaber_open": {
+        "sounds": [
+            "confluence:lightsaber_open"
+        ],
+        "subtitle": "confluence.subtitle.lightsaber_open"
+    },
+    "regular_staff_shoot": {
+        "sounds": [
+            "confluence:regular_staff_shoot"
+        ],
+        "subtitle": "confluence.subtitle.regular_staff_shoot"
+    },
+    "life_crystal_use": {
+        "sounds": [
+            "confluence:life_crystal_use"
+        ],
+        "subtitle": "confluence.subtitle.life_crystal_use"
+    },
+    "mana_star_use": {
+        "sounds": [
+            "confluence:mana_star_use"
+        ],
+        "subtitle": "confluence.subtitle.mana_star_use"
+    },
+    "coins": {
+        "sounds": [
+            "confluence:coins"
+        ],
+        "subtitle": "confluence.subtitle.coins"
+    },
+    "regular_staff_shoot_2": {
+        "sounds": [
+            "confluence:regular_staff_shoot_2"
+        ],
+        "subtitle": "confluence.subtitle.regular_staff_shoot_2"
+    },
+    "frozen_broken": {
+        "sounds": [
+            "confluence:frozen_broken"
+        ],
+        "subtitle": "confluence.subtitle.frozen_broken"
+    },
+    "frozen_arrow": {
+        "sounds": [
+            "confluence:frozen_arrow"
+        ],
+        "subtitle": "confluence.subtitle.frozen_arrow"
+    },
+    "cooldown_recovery": {
+        "sounds": [
+            "confluence:cooldown_recovery"
+        ],
+        "subtitle": "confluence.subtitle.cooldown_recovery"
+    },
+    "shimmer_detachment": {
+        "sounds": [
+            "confluence:shimmer_detachment"
+        ],
+        "subtitle": "confluence.subtitle.shimmer_detachment"
+    },
+    "shimmer_evolution": {
+        "sounds": [
+            "confluence:shimmer_evolution"
+        ],
+        "subtitle": "confluence.subtitle.shimmer_evolution"
+    },
+    "shimmer_immersion": {
+        "sounds": [
+            "confluence:shimmer_immersion"
+        ],
+        "subtitle": "confluence.subtitle.shimmer_immersion"
+    },
+    "shimmer_item_interactions": {
+        "sounds": [
+            "confluence:shimmer_item_interactions"
+        ],
+        "subtitle": "confluence.subtitle.shimmer_item_interactions"
+    },
+    "star": {
+        "sounds": [
+            "confluence:star"
+        ],
+        "subtitle": "confluence.subtitle.star"
+    },
+    "star_lands": {
+        "sounds": [
+            "confluence:star_lands"
+        ],
+        "subtitle": "confluence.subtitle.star_lands"
+    },
+    "terra_operation": {
+        "sounds": [
+            "confluence:terra_operation"
+        ],
+        "subtitle": "confluence.subtitle.terra_operation"
+    },
+    "bow_cooldown_recovery": {
+        "sounds": [
+            "confluence:bow_cooldown_recovery"
+        ],
+        "subtitle": "confluence.subtitle.bow_cooldown_recovery"
+    },
+    "decoupling": {
+        "sounds": [
+            "confluence:decoupling"
+        ],
+        "subtitle": "confluence.subtitle.decoupling"
+    },
+    "achievements": {
+        "sounds": [
+            "confluence:achievements"
+        ],
+        "subtitle": "confluence.subtitle.achievements"
+    },
+    "transmutation_use": {
+        "sounds": [
+            "confluence:transmutation_use"
+        ],
+        "subtitle": "confluence.subtitle.transmutation_use"
+    },
+    "hook_attach": {
+        "sounds": [
+            "confluence:hook_attach_0",
+            "confluence:hook_attach_1",
+            "confluence:hook_attach_2"
+        ],
+        "subtitle": "confluence.subtitle.hook_attach"
+    },
+    "hook_shoot": {
+        "sounds": [
+            "confluence:hook_shoot_0",
+            "confluence:hook_shoot_1",
+            "confluence:hook_shoot_2"
+        ],
+        "subtitle": "confluence.subtitle.hook_shoot"
+    },
+    "coins_large": {
+        "sounds": [
+            "confluence:coins_large_0",
+            "confluence:coins_large_1",
+            "confluence:coins_large_2"
+        ],
+        "subtitle": "confluence.subtitle.coins_large"
+    },
+    "coins_medium": {
+        "sounds": [
+            "confluence:coins_medium_0",
+            "confluence:coins_medium_1",
+            "confluence:coins_medium_2"
+        ],
+        "subtitle": "confluence.subtitle.coins_medium"
+    },
+    "coins_small": {
+        "sounds": [
+            "confluence:coins_small_0",
+            "confluence:coins_small_1",
+            "confluence:coins_small_2"
+        ],
+        "subtitle": "confluence.subtitle.coins_small"
+    }
+}

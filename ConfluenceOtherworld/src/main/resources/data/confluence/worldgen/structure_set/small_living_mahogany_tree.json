@@ -1,0 +1,17 @@
+{
+    "placement": {
+        "type": "minecraft:random_spread",
+        "salt": 42961406,
+        "separation": 7,
+        "spacing": 22,
+        "spread_type": "triangular",
+        "exclusion_zone": {
+            "other_set": "minecraft:villages",
+            "chunk_count": 8
+        }
+    },
+    "structures": [{
+        "structure": "confluence:small_living_mahogany_tree",
+        "weight": 1
+    }]
+}

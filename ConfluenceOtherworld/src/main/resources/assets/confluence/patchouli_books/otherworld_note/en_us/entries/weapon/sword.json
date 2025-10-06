@@ -1,0 +1,22 @@
+{
+    "name": "patchouli.confluence.otherworld_note.weapon.sword.name",
+    "icon": "minecraft:diamond_sword",
+    "category": "confluence:weapon",
+    "pages": [
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minecraft:diamond_sword",
+            "text": "patchouli.confluence.otherworld_note.weapon.sword.0"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minecraft:golden_sword",
+            "text": "patchouli.confluence.otherworld_note.weapon.sword.1"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minecraft:golden_sword",
+            "text": "patchouli.confluence.otherworld_note.weapon.sword.2"
+        }
+    ]
+}

@@ -1,0 +1,30 @@
+{
+    "display": {
+        "icon": {
+            "id": "confluence:suspicious_looking_eye"
+        },
+        "title": {
+            "translate": "achievements.confluence.like_a_boss.title"
+        },
+        "description": {
+            "translate": "achievements.confluence.like_a_boss.description"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": false,
+        "hidden": false
+    },
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "requirement": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "items": "#confluence:boss_summoning"
+                    }
+                ]
+            }
+        }
+    }
+}

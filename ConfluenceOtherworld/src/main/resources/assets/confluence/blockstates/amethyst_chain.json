@@ -1,0 +1,16 @@
+{
+    "variants": {
+        "axis=x": {
+            "model": "confluence:block/amethyst_chain",
+            "x": 90,
+            "y": 90
+        },
+        "axis=y": {
+            "model": "confluence:block/amethyst_chain"
+        },
+        "axis=z": {
+            "model": "confluence:block/amethyst_chain",
+            "x": 90
+        }
+    }
+}

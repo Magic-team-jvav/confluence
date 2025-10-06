@@ -1,0 +1,18 @@
+{
+    "type": "confluence:heavy_work_bench",
+    "pattern": [
+        "#",
+        "E"
+    ],
+    "key": {
+        "#": {
+            "item": "confluence:sturdy_fossil"
+        },
+        "E": {
+            "item": "confluence:bomb"
+        }
+    },
+    "result": {
+        "id": "confluence:scarab_bomb"
+    }
+}

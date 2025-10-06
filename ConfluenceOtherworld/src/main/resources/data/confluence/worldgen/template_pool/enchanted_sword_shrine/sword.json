@@ -1,0 +1,32 @@
+{
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 49,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "projection": "rigid",
+        "location": "confluence:enchanted_sword_shrine/enchanted_sword",
+        "processors": "minecraft:empty"
+      }
+    },
+    {
+      "weight": 2,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "projection": "rigid",
+        "location": "confluence:enchanted_sword_shrine/rotten_sword",
+        "processors": "minecraft:empty"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "projection": "rigid",
+        "location": "confluence:enchanted_sword_shrine/terragrim",
+        "processors": "minecraft:empty"
+      }
+    }
+  ]
+}

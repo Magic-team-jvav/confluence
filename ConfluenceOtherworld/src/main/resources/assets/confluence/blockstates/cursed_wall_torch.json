@@ -1,0 +1,19 @@
+{
+    "variants": {
+        "facing=east": {
+            "model": "confluence:block/cursed_wall_torch"
+        },
+        "facing=north": {
+            "model": "confluence:block/cursed_wall_torch",
+            "y": 270
+        },
+        "facing=south": {
+            "model": "confluence:block/cursed_wall_torch",
+            "y": 90
+        },
+        "facing=west": {
+            "model": "confluence:block/cursed_wall_torch",
+            "y": 180
+        }
+    }
+}

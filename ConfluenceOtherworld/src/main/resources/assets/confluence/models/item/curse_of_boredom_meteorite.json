@@ -1,0 +1,6 @@
+{
+	"parent": "item/generated",
+	"textures": {
+		"layer0": "confluence:item/accessory/curse_of_boredom_meteorite"
+	}
+}

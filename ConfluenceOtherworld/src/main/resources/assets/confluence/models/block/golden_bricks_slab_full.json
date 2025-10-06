@@ -1,0 +1,9 @@
+{
+  "parent": "block/cube_bottom_top",
+  "textures": {
+    "bottom": "confluence:block/golden_bricks",
+    "top": "confluence:block/golden_bricks",
+    "side": "confluence:block/golden_bricks"
+  },
+  "render_type": "solid"
+}

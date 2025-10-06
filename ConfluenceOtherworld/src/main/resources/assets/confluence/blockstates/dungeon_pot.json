@@ -1,0 +1,36 @@
+{
+	"variants": {
+		"": [
+			{
+				"model": "confluence:block/pot/dungeon/dungeon_pot_0"
+			},
+			{
+				"model": "confluence:block/pot/dungeon/dungeon_pot_0",
+				"y": 90
+			},
+			{
+				"model": "confluence:block/pot/dungeon/dungeon_pot_0",
+				"y": 180
+			},
+			{
+				"model": "confluence:block/pot/dungeon/dungeon_pot_0",
+				"y": 270
+			},
+			{
+				"model": "confluence:block/pot/dungeon/dungeon_pot_1"
+			},
+			{
+				"model": "confluence:block/pot/dungeon/dungeon_pot_1",
+				"y": 90
+			},
+			{
+				"model": "confluence:block/pot/dungeon/dungeon_pot_1",
+				"y": 180
+			},
+			{
+				"model": "confluence:block/pot/dungeon/dungeon_pot_1",
+				"y": 270
+			}
+		]
+	}
+}

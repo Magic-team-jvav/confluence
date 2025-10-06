@@ -1,0 +1,18 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#",
+        "a"
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:lime_dye"
+        },
+        "a": {
+            "item": "confluence:bottle"
+        }
+    },
+    "result": {
+        "id": "confluence:lime_dye"
+    }
+}

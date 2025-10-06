@@ -1,0 +1,30 @@
+{
+    "display": {
+        "icon": {
+            "id": "terra_guns:minishark"
+        },
+        "title": {
+            "translate": "achievements.confluence.completely_awesome.title"
+        },
+        "description": {
+            "translate": "achievements.confluence.completely_awesome.description"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": false,
+        "hidden": false
+    },
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "requirement": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "items": "terra_guns:minishark"
+                    }
+                ]
+            }
+        }
+    }
+}

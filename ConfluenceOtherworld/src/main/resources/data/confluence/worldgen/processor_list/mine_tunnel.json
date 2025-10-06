@@ -1,0 +1,35 @@
+{
+  "processors": [
+    {
+      "processor_type": "minecraft:rule",
+      "rules": [
+        {
+          "location_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:air"
+          },
+          "input_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:stone"
+          },
+          "output_state": {
+            "Name": "minecraft:oak_planks"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:deepslate"
+          },
+          "input_predicate": {
+            "predicate_type": "block_match",
+            "block": "minecraft:stone"
+          },
+          "output_state": {
+            "Name": "minecraft:deepslate"
+          }
+        }
+      ]
+    }
+  ]
+}

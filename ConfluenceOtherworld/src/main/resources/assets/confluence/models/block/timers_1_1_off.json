@@ -1,0 +1,6 @@
+{
+    "parent": "confluence:block/timers_template",
+    "textures": {
+        "layer_top": "confluence:block/timers_1_1_off"
+    }
+}

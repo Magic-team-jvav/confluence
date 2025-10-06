@@ -1,0 +1,50 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "confluence:block/jungle/jungle_pot_2",
+		"1": "confluence:block/jungle/jungle_pot_top_2",
+		"2": "confluence:block/jungle/jungle_pot_bottom_2",
+		"particle": "confluence:block/jungle/jungle_pot_2"
+	},
+	"elements": [
+		{
+			"from": [6, 10, 6],
+			"to": [10, 11, 10],
+			"rotation": {"angle": 0, "axis": "y", "origin": [4, 10, 4]},
+			"faces": {
+				"north": {"uv": [6, 5, 10, 6], "texture": "#0"},
+				"east": {"uv": [6, 5, 10, 6], "texture": "#0"},
+				"south": {"uv": [6, 5, 10, 6], "texture": "#0"},
+				"west": {"uv": [6, 5, 10, 6], "texture": "#0"},
+				"up": {"uv": [6, 6, 10, 10], "texture": "#1"},
+				"down": {"uv": [6, 6, 10, 10], "texture": "#2"}
+			}
+		},
+		{
+			"from": [5, 11, 5],
+			"to": [11, 12, 11],
+			"rotation": {"angle": 0, "axis": "y", "origin": [4, 11, 4]},
+			"faces": {
+				"north": {"uv": [5, 4, 11, 5], "texture": "#0"},
+				"east": {"uv": [5, 4, 11, 5], "texture": "#0"},
+				"south": {"uv": [5, 4, 11, 5], "texture": "#0"},
+				"west": {"uv": [5, 4, 11, 5], "texture": "#0"},
+				"up": {"uv": [5, 5, 11, 11], "texture": "#1"},
+				"down": {"uv": [5, 5, 11, 11], "texture": "#2"}
+			}
+		},
+		{
+			"from": [4, 0, 4],
+			"to": [12, 10, 12],
+			"rotation": {"angle": 0, "axis": "y", "origin": [4, 0, 4]},
+			"faces": {
+				"north": {"uv": [4, 6, 12, 16], "texture": "#0"},
+				"east": {"uv": [4, 6, 12, 16], "texture": "#0"},
+				"south": {"uv": [4, 6, 12, 16], "texture": "#0"},
+				"west": {"uv": [4, 6, 12, 16], "texture": "#0"},
+				"up": {"uv": [4, 4, 12, 12], "texture": "#1"},
+				"down": {"uv": [4, 4, 12, 12], "texture": "#2"}
+			}
+		}
+	]
+}

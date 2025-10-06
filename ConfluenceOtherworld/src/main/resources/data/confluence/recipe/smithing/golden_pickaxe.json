@@ -1,0 +1,15 @@
+{
+    "type": "minecraft:smithing_transform",
+    "template": {
+        "item": "confluence:ruby"
+    },
+    "base": {
+        "item": "minecraft:golden_pickaxe"
+    },
+    "addition": {
+        "item": "minecraft:gold_ingot"
+    },
+    "result": {
+        "id": "confluence:golden_pickaxe"
+    }
+}

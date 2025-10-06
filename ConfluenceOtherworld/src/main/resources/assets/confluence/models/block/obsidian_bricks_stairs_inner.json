@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "confluence:block/obsidian_bricks",
+    "side": "confluence:block/obsidian_bricks",
+    "top": "confluence:block/obsidian_bricks"
+  }
+}

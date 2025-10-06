@@ -1,0 +1,7 @@
+{
+  "parent": "block/cube_all",
+  "render_type": "translucent",
+  "textures": {
+    "all": "confluence:block/black_pure_glass"
+  }
+}

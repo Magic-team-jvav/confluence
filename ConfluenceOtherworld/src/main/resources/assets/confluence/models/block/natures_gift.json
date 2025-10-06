@@ -1,0 +1,8 @@
+{
+  "parent": "block/cross",
+  "textures": {
+    "cross": "confluence:block/natures_gift",
+    "particle": "confluence:block/natures_gift"
+  },
+  "render_type": "cutout"
+}

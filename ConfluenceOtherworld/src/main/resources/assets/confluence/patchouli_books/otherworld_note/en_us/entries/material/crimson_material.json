@@ -1,0 +1,35 @@
+{
+    "name": "patchouli.confluence.otherworld_note.material.crimson_material.name",
+    "icon": "confluence:cobbled_crimstone",
+    "category": "confluence:material",
+    "pages": [
+        {
+            "type": "patchouli:text",
+            "text": "patchouli.confluence.otherworld_note.material.crimson_material.0"
+        },
+        {
+            "type": "patchouli:spotlight",
+            "item": "minecraft:bone",            
+            "text": "patchouli.confluence.otherworld_note.material.crimson_material.1"
+        },
+        {
+            "type": "patchouli:spotlight",
+            "item": "minecraft:leather",            
+            "text": "patchouli.confluence.otherworld_note.material.crimson_material.2"
+        },
+        {
+            "type": "patchouli:spotlight",
+            "item": "minecraft:crimson_fungus",            
+            "text": "patchouli.confluence.otherworld_note.material.crimson_material.3"
+        },
+        {
+            "type": "patchouli:crafting",
+            "recipe": "minecraft:redstone",            
+            "text": "patchouli.confluence.otherworld_note.material.crimson_material.4"
+        },
+        {
+            "type": "patchouli:empty",
+            "draw_filler": false
+        }
+    ]
+}

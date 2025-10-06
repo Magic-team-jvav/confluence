@@ -1,0 +1,30 @@
+{
+    "display": {
+        "background": "minecraft:textures/gui/advancements/backgrounds/adventure.png",
+        "icon": {
+            "id": "confluence:copper_short_sword"
+        },
+        "title": {
+            "translate": "achievements.confluence.new_world.title"
+        },
+        "description": {
+            "translate": "achievements.confluence.new_world.description"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": false,
+        "hidden": false
+    },
+    "criteria": {
+        "requirement": {
+            "trigger": "minecraft:location",
+            "conditions": {
+                "player":{
+                    "type_specific": {
+                        "gamemode": "survival"
+                    }
+                }
+            }
+        }
+    }
+}

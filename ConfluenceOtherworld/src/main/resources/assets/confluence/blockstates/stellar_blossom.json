@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "age=0": {
+      "model": "confluence:block/stellar_blossom_stage0"
+    },
+    "age=1": {
+      "model": "confluence:block/stellar_blossom_stage1"
+    },
+    "age=2": {
+      "model": "confluence:block/stellar_blossom_stage2"
+    },
+    "age=3": {
+      "model": "confluence:block/stellar_blossom_stage3"
+    },
+    "age=4": {
+      "model": "confluence:block/stellar_blossom_stage4"
+    },
+    "age=5": {
+      "model": "confluence:block/stellar_blossom_stage5"
+    },
+    "age=6": {
+      "model": "confluence:block/stellar_blossom_stage6"
+    },
+    "age=7": {
+      "model": "confluence:block/stellar_blossom_stage7"
+    }
+  }
+}

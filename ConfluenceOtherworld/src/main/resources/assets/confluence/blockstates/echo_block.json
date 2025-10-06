@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "visible=true": {
+            "model": "confluence:block/echo_block_visible"
+        },
+        "visible=false": {
+            "model": "confluence:block/echo_block_invisible"
+        }
+    }
+}

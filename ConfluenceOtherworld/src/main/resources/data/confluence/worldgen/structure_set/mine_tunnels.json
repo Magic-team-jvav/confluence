@@ -1,0 +1,17 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 24836848,
+    "separation": 7,
+    "spacing": 10,
+    "spread_type": "triangular",
+    "exclusion_zone": {
+      "chunk_count": 10,
+      "other_set": "confluence:shimmer_lake"
+    }
+  },
+  "structures": [{
+    "structure": "confluence:mine_tunnels",
+    "weight": 1
+  }]
+}

@@ -1,0 +1,26 @@
+{
+    "variants": {
+        "": [
+            {
+                "model": "confluence:block/pearlsand",
+                "weight": 12
+            },
+            {
+                "model": "confluence:block/pearlsand_0",
+                "weight": 1
+            },
+            {
+                "model": "confluence:block/pearlsand_1",
+                "weight": 1
+            },
+            {
+                "model": "confluence:block/pearlsand_2",
+                "weight": 1
+            },
+            {
+                "model": "confluence:block/pearlsand_3",
+                "weight": 1
+            }
+        ]
+    }
+}

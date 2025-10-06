@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "sword_type=null": {
+      "model": "confluence:block/sword_in_stone"
+    },
+    "sword_type=terragrim": {
+      "model": "confluence:block/terragrim_in_stone"
+    },
+    "sword_type=enchanted_sword": {
+      "model": "confluence:block/enchanted_sword_in_stone"
+    },
+    "sword_type=rotten_sword": {
+      "model": "confluence:block/rotten_sword_in_stone"
+    }
+  }
+}

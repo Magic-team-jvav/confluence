@@ -1,0 +1,25 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#H#",
+        "WEW"
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:sugar"
+        },
+        "H": {
+            "item": "minecraft:honey_bottle"
+        },
+        "W": {
+            "item": "minecraft:wheat"
+        },
+        "E": {
+            "item": "minecraft:egg"
+        }
+    },
+    "result": {
+        "id": "confluence:honey_mooncakes",
+        "count": 2
+    }
+}

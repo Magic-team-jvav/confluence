@@ -1,0 +1,15 @@
+{
+    "type": "minecraft:smithing_transform",
+    "template": {
+        "item": "confluence:diamond_chain"
+    },
+    "base": {
+        "item": "confluence:diamond_chain"
+    },
+    "addition": {
+        "item": "minecraft:diamond_block"
+    },
+    "result": {
+        "id": "confluence:diamond_hook"
+    }
+}

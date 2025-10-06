@@ -1,0 +1,33 @@
+{
+    "display": {
+        "icon": {
+            "id": "confluence:drax"
+        },
+        "title": {
+            "translate": "achievements.confluence.drax_attax.title"
+        },
+        "description": {
+            "translate": "achievements.confluence.drax_attax.description"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": false,
+        "hidden": false
+    },
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "requirement": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "items": [
+                            "confluence:drax",
+                            "confluence:pickaxe_axe"
+                        ]
+                    }
+                ]
+            }
+        }
+    }
+}

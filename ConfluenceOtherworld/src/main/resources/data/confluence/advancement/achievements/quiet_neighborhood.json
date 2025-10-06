@@ -1,0 +1,23 @@
+{
+    "display": {
+        "icon": {
+            "id": "confluence:tombstone"
+        },
+        "title": {
+            "translate": "achievements.confluence.quiet_neighborhood.title"
+        },
+        "description": {
+            "translate": "achievements.confluence.quiet_neighborhood.description"
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": false,
+        "hidden": false
+    },
+    "parent": "confluence:achievements/new_world",
+    "criteria": {
+        "never": {
+            "trigger": "minecraft:impossible"
+        }
+    }
+}

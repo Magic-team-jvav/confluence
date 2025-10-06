@@ -1,0 +1,114 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "confluence:block/crispy_honey_block",
+        "uvlock": false
+      },
+      {
+        "model": "confluence:block/crispy_honey_block_1",
+        "uvlock": false
+      },
+      {
+        "model": "confluence:block/crispy_honey_block",
+        "uvlock": false,
+        "x": 180
+      },
+      {
+        "model": "confluence:block/crispy_honey_block_1",
+        "uvlock": false,
+        "x": 180
+      },
+      {
+        "model": "confluence:block/crispy_honey_block",
+        "uvlock": false,
+        "y": 90
+      },
+      {
+        "model": "confluence:block/crispy_honey_block_1",
+        "uvlock": false,
+        "y": 90
+      },
+      {
+        "model": "confluence:block/crispy_honey_block",
+        "uvlock": false,
+        "y": 180
+      },
+      {
+        "model": "confluence:block/crispy_honey_block_1",
+        "uvlock": false,
+        "y": 180
+      },
+      {
+        "model": "confluence:block/crispy_honey_block",
+        "uvlock": false,
+        "y": 270
+      },
+      {
+        "model": "confluence:block/crispy_honey_block_1",
+        "uvlock": false,
+        "y": 270
+      },
+      {
+        "model": "confluence:block/crispy_honey_block",
+        "uvlock": false,
+        "z": 180
+      },
+      {
+        "model": "confluence:block/crispy_honey_block_1",
+        "uvlock": false,
+        "z": 180
+      },
+      {
+        "model": "confluence:block/crispy_honey_block",
+        "uvlock": false,
+        "x": 180,
+        "z": 180
+      },
+      {
+        "model": "confluence:block/crispy_honey_block_1",
+        "uvlock": false,
+        "x": 180,
+        "z": 180
+      },
+      {
+        "model": "confluence:block/crispy_honey_block",
+        "uvlock": false,
+        "x": 180,
+        "y": 180
+      },
+      {
+        "model": "confluence:block/crispy_honey_block_1",
+        "uvlock": false,
+        "x": 180,
+        "y": 180
+      },
+      {
+        "model": "confluence:block/crispy_honey_block",
+        "uvlock": false,
+        "y": 180,
+        "z": 180
+      },
+      {
+        "model": "confluence:block/crispy_honey_block_1",
+        "uvlock": false,
+        "y": 180,
+        "z": 180
+      },
+      {
+        "model": "confluence:block/crispy_honey_block",
+        "uvlock": false,
+        "x": 180,
+        "y": 180,
+        "z": 180
+      },
+      {
+        "model": "confluence:block/crispy_honey_block_1",
+        "uvlock": false,
+        "x": 180,
+        "y": 180,
+        "z": 180
+      }
+    ]
+  }
+}

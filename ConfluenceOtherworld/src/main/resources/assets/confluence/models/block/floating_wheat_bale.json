@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "confluence:block/floating_wheat_bale_bottom",
+    "side": "confluence:block/floating_wheat_bale_side",
+    "top": "confluence:block/floating_wheat_bale_top"
+  }
+}

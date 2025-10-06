@@ -1,0 +1,64 @@
+{
+  "variants": {
+    "facing=east,horizontal_four_part=front": {
+      "model": "confluence:block/blinking_royal_shimmerlily_front",
+      "y": 90
+    },
+    "facing=north,horizontal_four_part=front": {
+      "model": "confluence:block/blinking_royal_shimmerlily_front"
+    },
+    "facing=south,horizontal_four_part=front": {
+      "model": "confluence:block/blinking_royal_shimmerlily_front",
+      "y": 180
+    },
+    "facing=west,horizontal_four_part=front": {
+      "model": "confluence:block/blinking_royal_shimmerlily_front",
+      "y": 270
+    },
+    "facing=east,horizontal_four_part=corner": {
+      "model": "confluence:block/blinking_royal_shimmerlily_corner",
+      "y": 90
+    },
+    "facing=north,horizontal_four_part=corner": {
+      "model": "confluence:block/blinking_royal_shimmerlily_corner"
+    },
+    "facing=south,horizontal_four_part=corner": {
+      "model": "confluence:block/blinking_royal_shimmerlily_corner",
+      "y": 180
+    },
+    "facing=west,horizontal_four_part=corner": {
+      "model": "confluence:block/blinking_royal_shimmerlily_corner",
+      "y": 270
+    },
+    "facing=east,horizontal_four_part=right": {
+      "model": "confluence:block/blinking_royal_shimmerlily_right",
+      "y": 90
+    },
+    "facing=north,horizontal_four_part=right": {
+      "model": "confluence:block/blinking_royal_shimmerlily_right"
+    },
+    "facing=south,horizontal_four_part=right": {
+      "model": "confluence:block/blinking_royal_shimmerlily_right",
+      "y": 180
+    },
+    "facing=west,horizontal_four_part=right": {
+      "model": "confluence:block/blinking_royal_shimmerlily_right",
+      "y": 270
+    },
+    "facing=east,horizontal_four_part=base": {
+      "model": "confluence:block/blinking_royal_shimmerlily_base",
+      "y": 90
+    },
+    "facing=north,horizontal_four_part=base": {
+      "model": "confluence:block/blinking_royal_shimmerlily_base"
+    },
+    "facing=south,horizontal_four_part=base": {
+      "model": "confluence:block/blinking_royal_shimmerlily_base",
+      "y": 180
+    },
+    "facing=west,horizontal_four_part=base": {
+      "model": "confluence:block/blinking_royal_shimmerlily_base",
+      "y": 270
+    }
+  }
+}

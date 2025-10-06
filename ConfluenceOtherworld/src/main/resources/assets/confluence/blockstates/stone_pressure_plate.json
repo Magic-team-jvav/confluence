@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "powered=false": {
+      "model": "confluence:block/stone_pressure_plate"
+    },
+    "powered=true": {
+      "model": "confluence:block/stone_pressure_plate_down"
+    }
+  }
+}

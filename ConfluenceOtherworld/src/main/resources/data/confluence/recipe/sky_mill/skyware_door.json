@@ -1,0 +1,16 @@
+{
+    "type": "confluence:sky_mill",
+    "ingredients": [
+        {
+            "type": "confluence_magic_lib:amount_ingredient",
+            "ingredient": {
+                "item": "confluence:sun_plate"
+            },
+            "count": 2
+        }
+    ],
+    "result": {
+        "id": "confluence:skyware_door",
+        "count": 1
+    }
+}

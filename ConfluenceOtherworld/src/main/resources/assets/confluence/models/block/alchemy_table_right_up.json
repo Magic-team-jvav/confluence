@@ -1,0 +1,80 @@
+{
+	"credit": "Made with Blockbench",
+	"render_type": "cutout",
+	"texture_size": [64, 64],
+	"textures": {
+		"3": "confluence:block/items_on_alchemy_table",
+		"particle": "confluence:block/particle/alchemy_table_particle",
+		"all": "block/candle"
+	},
+	"elements": [
+		{
+			"from": [4.75, 6, 9],
+			"to": [6.75, 12, 11],
+			"rotation": {"angle": 22.5, "axis": "y", "origin": [5.75, 10.75, 10]},
+			"faces": {
+				"north": {"uv": [0, 8, 2, 14], "texture": "#all"},
+				"east": {"uv": [0, 8, 2, 14], "texture": "#all"},
+				"south": {"uv": [0, 8, 2, 14], "texture": "#all"},
+				"west": {"uv": [0, 8, 2, 14], "texture": "#all"},
+				"up": {"uv": [0, 6, 2, 8], "texture": "#all"},
+				"down": {"uv": [0, 14, 2, 16], "texture": "#all", "cullface": "down"}
+			}
+		},
+		{
+			"from": [5.75, 12, 9.5],
+			"to": [5.75, 13, 10.5],
+			"rotation": {"angle": -22.5, "axis": "y", "origin": [5.75, 10.75, 10]},
+			"faces": {
+				"east": {"uv": [0, 5, 1, 6], "texture": "#all"},
+				"west": {"uv": [0, 5, 1, 6], "texture": "#all"},
+				"down": {"uv": [0, 0, 0, 0], "rotation": 90, "texture": "#all"}
+			}
+		},
+		{
+			"from": [5.25, 12, 10],
+			"to": [6.25, 13, 10],
+			"rotation": {"angle": -22.5, "axis": "y", "origin": [5.75, 10.75, 10]},
+			"faces": {
+				"north": {"uv": [0, 5, 1, 6], "texture": "#all"},
+				"south": {"uv": [0, 5, 1, 6], "texture": "#all"},
+				"down": {"uv": [0, 0, 0, 0], "texture": "#all"}
+			}
+		},
+		{
+			"from": [1.75, -0.75, 4],
+			"to": [9.75, 7.25, 12],
+			"rotation": {"angle": 22.5, "axis": "x", "origin": [4.75, -0.75, 7]},
+			"faces": {
+				"north": {"uv": [0, 5.5, 2, 7.5], "texture": "#3"},
+				"east": {"uv": [2, 5.5, 4, 7.5], "texture": "#3"},
+				"south": {"uv": [4, 5.5, 6, 7.5], "texture": "#3"},
+				"west": {"uv": [6, 5.5, 8, 7.5], "texture": "#3"},
+				"up": {"uv": [9, 2, 7, 0], "texture": "#3"},
+				"down": {"uv": [9, 2, 7, 4], "texture": "#3"}
+			}
+		},
+		{
+			"from": [9.75, 6.56283, 13.45461],
+			"to": [1.75, -1.43717, 5.45461],
+			"rotation": {"angle": 22.5, "axis": "x", "origin": [5.75, 2.56283, 9.45461]},
+			"faces": {
+				"north": {"uv": [6, 5.5, 4, 7.5], "rotation": 180, "texture": "#3"},
+				"east": {"uv": [8, 5.5, 6, 7.5], "rotation": 180, "texture": "#3"},
+				"south": {"uv": [2, 5.5, 0, 7.5], "rotation": 180, "texture": "#3"},
+				"west": {"uv": [4, 5.5, 2, 7.5], "rotation": 180, "texture": "#3"},
+				"up": {"uv": [7, 2, 9, 4], "texture": "#3"},
+				"down": {"uv": [7, 2, 9, 0], "texture": "#3"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "group",
+			"origin": [8, 8, 8],
+			"color": 0,
+			"nbt": "{}",
+			"children": [0, 1, 2, 3, 4]
+		}
+	]
+}

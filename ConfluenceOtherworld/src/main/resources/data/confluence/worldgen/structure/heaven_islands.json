@@ -1,0 +1,6 @@
+{
+  "type": "confluence:heaven_islands",
+  "biomes": "#c:is_overworld",
+  "spawn_overrides": {},
+  "step": "top_layer_modification"
+}

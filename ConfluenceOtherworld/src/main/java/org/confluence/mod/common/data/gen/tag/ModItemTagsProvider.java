@@ -41,6 +41,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
+@SuppressWarnings("all")
 public class ModItemTagsProvider extends ItemTagsProvider {
     public ModItemTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, CompletableFuture<TagLookup<Block>> b, @Nullable ExistingFileHelper helper) {
         super(output, provider, b, Confluence.MODID, helper);
@@ -470,7 +471,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
         IntrinsicTagAppender<Item> tools = tag(Tags.Items.TOOLS);
         IntrinsicTagAppender<Item> mining_tool_tools = tag(Tags.Items.MINING_TOOL_TOOLS); // 镐子
-        IntrinsicTagAppender<Item> prefix_universal_only = tag(ModTags.Items.PREFIX_UNIVERSAL_ONLY);
         IntrinsicTagAppender<Item> mining_loot_enchantable = tag(ItemTags.MINING_LOOT_ENCHANTABLE);
         IntrinsicTagAppender<Item> mining_enchantable = tag(ItemTags.MINING_ENCHANTABLE);
         IntrinsicTagAppender<Item> durability_enchantable = tag(ItemTags.DURABILITY_ENCHANTABLE);
@@ -480,6 +480,20 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         IntrinsicTagAppender<Item> ranged_weapon_tools = tag(Tags.Items.RANGED_WEAPON_TOOLS);
         IntrinsicTagAppender<Item> weapon_enchantable = tag(ItemTags.WEAPON_ENCHANTABLE);
         IntrinsicTagAppender<Item> sharp_weapon_enchantable = tag(ItemTags.SHARP_WEAPON_ENCHANTABLE);
+
+        tag(ModTags.Items.PREFIX_UNIVERSAL_ONLY)
+                .addTags(ModTags.Items.TOOLS_DRILL, ModTags.Items.TOOLS_CHAINSAW)
+                .add(TEBoomerangItems.ITEMS.getEntries().stream().map(DeferredHolder::get).toArray(Item[]::new));
+        tag(ModTags.Items.PREFIX_MELEE_ONLY)
+                .addTags(ItemTags.SWORDS, ItemTags.AXES, ItemTags.PICKAXES, ItemTags.SHOVELS, ItemTags.HOES)
+                .add(Items.MACE);
+        tag(ModTags.Items.PREFIX_RANGED_ONLY)
+                .addTags(Tags.Items.RANGED_WEAPON_TOOLS, TGTags.GUN)
+                .add(Items.TRIDENT);
+        tag(ModTags.Items.PREFIX_MAGIC_ONLY)
+                .addTags(ModTags.Items.MANA_WEAPON, ModTags.Items.SUMMONER_WEAPON);
+        tag(ModTags.Items.PREFIX_ACCESSORY_ONLY)
+                .addTag(TCTags.ACCESSORY);
 
         IntrinsicTagAppender<Item> dye = tag(ModTags.Items.DYE);
         dye.add(VanityArmorItems.TEAM_DYE.get());
@@ -535,7 +549,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
         mining_tool_tools.addTag(ModTags.Items.TOOLS_DRILL);
         mining_loot_enchantable.addTag(ModTags.Items.TOOLS_DRILL);
         mining_enchantable.addTag(ModTags.Items.TOOLS_DRILL);
-        prefix_universal_only.addTag(ModTags.Items.TOOLS_DRILL);
         skip_reset_strength.addTag(ModTags.Items.TOOLS_DRILL);
         weapon_enchantable.addTag(ModTags.Items.TOOLS_DRILL);
         IntrinsicTagAppender<Item> drill = tag(ModTags.Items.TOOLS_DRILL);
@@ -558,8 +571,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
             hammer.add(value);
             axes.add(value);
         });
-
-        TEBoomerangItems.ITEMS.getEntries().forEach(item -> prefix_universal_only.add(item.get()));
 
         IntrinsicTagAppender<Item> tools_bows = tag(Tags.Items.TOOLS_BOW);
         IntrinsicTagAppender<Item> bow_enchantable = tag(ItemTags.BOW_ENCHANTABLE);
@@ -606,7 +617,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
         IntrinsicTagAppender<Item> tools_chainsaw = tag(ModTags.Items.TOOLS_CHAINSAW);
         skip_reset_strength.addTag(ModTags.Items.TOOLS_CHAINSAW);
-        prefix_universal_only.addTag(ModTags.Items.TOOLS_CHAINSAW);
         tools.addTag(ModTags.Items.TOOLS_CHAINSAW);
         mining_loot_enchantable.addTag(ModTags.Items.TOOLS_CHAINSAW);
         mining_enchantable.addTag(ModTags.Items.TOOLS_CHAINSAW);

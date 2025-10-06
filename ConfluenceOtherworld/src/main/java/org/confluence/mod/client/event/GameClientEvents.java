@@ -36,6 +36,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
@@ -69,6 +70,7 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEquipmentSets;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.init.item.SwordItems;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.common.item.spear.AbstractSpearItem;
 import org.confluence.mod.integration.ars_nouveau.ArsNouveauHelper;
@@ -80,6 +82,7 @@ import org.confluence.mod.mixed.IMobEffectInstance;
 import org.confluence.mod.network.c2s.EmptyTargetSweepPacketC2S;
 import org.confluence.mod.network.c2s.SpearAttackPacketC2S;
 import org.confluence.mod.util.*;
+import org.confluence.terra_curio.api.event.PlayerEmptyAutoAttackEvent;
 import org.confluence.terraentity.api.event.NPCEvent;
 import org.confluence.terraentity.init.entity.TENpcEntities;
 import software.bernie.geckolib.event.GeoRenderEvent;
@@ -413,7 +416,23 @@ public final class GameClientEvents {
 
     @SubscribeEvent
     public static void playerInteract$LeftClickEmpty(PlayerInteractEvent.LeftClickEmpty event) {
-        if (PlayerUtils.couldPerformEmptyTargetSweep(event.getEntity())) {
+        Player player = event.getEntity();
+        if (!player.getMainHandItem().is(ModTags.Items.COULD_AUTO_ATTACK) && PlayerUtils.couldPerformEmptyTargetSweep(player)) {
+            EmptyTargetSweepPacketC2S.send2Server();
+        }
+    }
+
+    @SubscribeEvent
+    public static void playerEmptyAutoAttack(PlayerEmptyAutoAttackEvent event) {
+        Player player = event.getEntity();
+        ItemStack itemStack = event.getItemStack();
+        if (itemStack.is(SwordItems.NIGHTS_EDGE)) {
+            if (!player.getCooldowns().isOnCooldown(itemStack.getItem())) {
+                player.swing(InteractionHand.MAIN_HAND);
+                player.resetAttackStrengthTicker();
+            }
+            event.setCanceled(true);
+        } else if (PlayerUtils.couldPerformEmptyTargetSweep(player)) {
             EmptyTargetSweepPacketC2S.send2Server();
         }
     }

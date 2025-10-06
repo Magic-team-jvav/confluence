@@ -3,7 +3,6 @@ package org.confluence.mod.util;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.common.Tags;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.component.ValueComponent;
@@ -14,9 +13,7 @@ import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.terra_curio.api.primitive.AttributeModifiersValue;
-import org.confluence.terra_curio.common.init.TCTags;
 import org.confluence.terra_curio.util.TCUtils;
-import org.confluence.terra_guns.common.init.TGTags;
 import org.confluence.terraentity.api.npc.trade.ITradeHolder;
 import org.confluence.terraentity.mixed.IPlayer;
 import org.jetbrains.annotations.Nullable;
@@ -29,15 +26,13 @@ public final class PrefixUtils {
         return couldReforge(itemStack);
     }
 
-    public static boolean couldReforge(ItemStack itemStack) {
-        return !itemStack.is(ModTags.Items.UNABLE_TO_APPLY_PREFIX) &&
-                (itemStack.is(Tags.Items.MELEE_WEAPON_TOOLS) ||
-                        itemStack.is(Tags.Items.MINING_TOOL_TOOLS) ||
-                        itemStack.is(Tags.Items.RANGED_WEAPON_TOOLS) ||
-                        itemStack.is(TCTags.ACCESSORY) ||
-                        itemStack.is(ModTags.Items.MANA_WEAPON) ||
-                        itemStack.is(TGTags.GUN) ||
-                        itemStack.is(ModTags.Items.PREFIX_UNIVERSAL_ONLY));
+    public static boolean couldReforge(ItemStack stack) {
+        return !stack.is(ModTags.Items.UNABLE_TO_APPLY_PREFIX) &&
+                (stack.is(ModTags.Items.PREFIX_UNIVERSAL_ONLY) ||
+                        stack.is(ModTags.Items.PREFIX_MELEE_ONLY) ||
+                        stack.is(ModTags.Items.PREFIX_RANGED_ONLY) ||
+                        stack.is(ModTags.Items.PREFIX_MAGIC_ONLY) ||
+                        stack.is(ModTags.Items.PREFIX_ACCESSORY_ONLY));
     }
 
     public static @Nullable PrefixComponent initPrefix(RandomSource random, ItemStack itemStack) {
@@ -68,13 +63,13 @@ public final class PrefixUtils {
     public static PrefixType getPrefixType(ItemStack itemStack) {
         if (itemStack.is(ModTags.Items.PREFIX_UNIVERSAL_ONLY)) {
             return PrefixType.UNIVERSAL;
-        } else if (itemStack.is(Tags.Items.MELEE_WEAPON_TOOLS) || itemStack.is(Tags.Items.MINING_TOOL_TOOLS)) {
+        } else if (itemStack.is(ModTags.Items.PREFIX_MELEE_ONLY)) {
             return PrefixType.MELEE;
-        } else if (itemStack.is(Tags.Items.RANGED_WEAPON_TOOLS) || itemStack.is(TGTags.GUN)) { // todo 三叉戟会从背包里飞出去，而吃不到加成
+        } else if (itemStack.is(ModTags.Items.PREFIX_RANGED_ONLY)) { // todo 三叉戟会从背包里飞出去，而吃不到加成
             return PrefixType.RANGED;
-        } else if (itemStack.is(ModTags.Items.MANA_WEAPON) || itemStack.is(ModTags.Items.SUMMONER_WEAPON)) {
+        } else if (itemStack.is(ModTags.Items.PREFIX_MAGIC_ONLY)) {
             return PrefixType.MAGIC;
-        } else if (itemStack.is(TCTags.ACCESSORY)) {
+        } else if (itemStack.is(ModTags.Items.PREFIX_ACCESSORY_ONLY)) {
             return PrefixType.ACCESSORY;
         }
         return PrefixType.UNKNOWN;

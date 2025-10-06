@@ -389,11 +389,11 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.argon_moss_fishing_bobber.0", "Increases fishing power, fishing bobber glows");
         add("tooltip.item.confluence.krypton_moss_fishing_bobber.0", "Increases fishing power, fishing bobber glows");
         add("tooltip.item.confluence.xenon_moss_fishing_bobber.0", "Increases fishing power, fishing bobber glows");
-        add("tooltip.item.confluence.tackle_box.0", "Reduces bait consumption rate by 5%");
-        add("tooltip.item.confluence.angler_tackle_bag.0", "Fishing line will never break, reduces bait consumption rate by 5%");
-        add("tooltip.item.confluence.lavaproof_fishing_hook.0", "Can fish in lava with any bait or rod");
-        add("tooltip.item.confluence.lavaproof_tackle_bag.0", "Can fish in lava with any bait or rod");
-        add("tooltip.item.terra_curio.lavaproof_tackle_bag.1", "Fishing line will never break, reduces bait consumption rate by 5%");
+        add("tooltip.item.confluence.tackle_box.0", "Decreases chance of bait consumption");
+        add("tooltip.item.confluence.angler_tackle_bag.0", "Fishing line will never break, decreases chance of bait consumption, increases fishing power by 10");
+        add("tooltip.item.confluence.lavaproof_fishing_hook.0", "Allows fishing in lava");
+        add("tooltip.item.confluence.lavaproof_tackle_bag.0", "Fishing line will never break, decreases chance of bait consumption, increases fishing power by 10");
+        add("tooltip.item.terra_curio.lavaproof_tackle_bag.1", "Allows fishing in lava");
         add("tooltip.item.confluence.lucky_coin.0", "Hitting enemies may drop extra coins");
         add("tooltip.item.confluence.gold_ring.0", "Increases coin pickup range");
         add("tooltip.item.confluence.discount_card.0", "Reduces shop prices by 20%");

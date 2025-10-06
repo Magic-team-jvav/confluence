@@ -362,7 +362,6 @@ public final class ModTags {
         public static final TagKey<Item> SHADOW_SCALE_AND_TISSUE_SAMPLE = register("shadow_scale_and_tissue_sample");
         public static final TagKey<Item> EVIL_INGOT = register("evil_ingot");
         public static final TagKey<Item> MANA_WEAPON = register("mana_weapon");
-        public static final TagKey<Item> PREFIX_UNIVERSAL_ONLY = register("prefix_universal_only");
         public static final TagKey<Item> HARDMODE_RAW_MATERIALS = register("hardmode_raw_materials");
         public static final TagKey<Item> WINGS = register("wings");
         public static final TagKey<Item> BOSS_SUMMONING = register("boss_summoning");
@@ -381,6 +380,12 @@ public final class ModTags {
         public static final TagKey<Item> DIAMOND_ORE_SMELTING = register("diamond_ore_smelting");
         public static final TagKey<Item> EMERALD_ORE_SMELTING = register("emerald_ore_smelting");
         public static final TagKey<Item> REDSTONE_ORE_SMELTING = register("redstone_ore_smelting");
+
+        public static final TagKey<Item> PREFIX_UNIVERSAL_ONLY = register("prefix_universal_only");
+        public static final TagKey<Item> PREFIX_MELEE_ONLY = register("prefix_melee_only");
+        public static final TagKey<Item> PREFIX_RANGED_ONLY = register("prefix_ranged_only");
+        public static final TagKey<Item> PREFIX_MAGIC_ONLY = register("prefix_magic_only");
+        public static final TagKey<Item> PREFIX_ACCESSORY_ONLY = register("prefix_accessory_only");
 
         public static final TagKey<Item> COBALT_ORE_SMELTING = c("cobalt_ore_smelting");
         public static final TagKey<Item> PALLADIUM_ORE_SMELTING = c("palladium_ore_smelting");

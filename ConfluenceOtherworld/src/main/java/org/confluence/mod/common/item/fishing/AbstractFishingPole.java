@@ -67,7 +67,7 @@ public abstract class AbstractFishingPole extends FishingRodItem {
         ItemStack stack = player.getItemInHand(hand);
         if (player.fishing != null) {
             if (!level.isClientSide) {
-                consumeBait(player, level);
+                consumeBait(player, stack);
                 int i = player.fishing.retrieve(stack);
                 ItemStack original = stack.copy();
                 stack.hurtAndBreak(i, player, LivingEntity.getSlotForHand(hand));
@@ -115,7 +115,7 @@ public abstract class AbstractFishingPole extends FishingRodItem {
                 if (level.getGameTime() % 4 == 0) {
                     iPlayer.confluence$setCurrentBait(getBait(level.registryAccess(), stack));
                 }
-            } else if (!bait.isEmpty()) {
+            } else if (!bait.isEmpty() && !(player.getMainHandItem().getItem() instanceof AbstractFishingPole)) {
                 if (player.addItem(bait)) {
                     player.drop(bait, true);
                 }
@@ -166,32 +166,30 @@ public abstract class AbstractFishingPole extends FishingRodItem {
         });
     }
 
-    public static void consumeBait(Player player, Level level) {
-        ItemStack fishingPole = player.getMainHandItem();
-        if (fishingPole.getItem() instanceof AbstractFishingPole) {
-            RegistryAccess provider = level.registryAccess();
-            ItemStack bait = getBait(provider, fishingPole);
-            if (bait.isEmpty()) return;
-            boolean consume = false;
-            if (bait.is(BaitItems.TRUFFLE_WORM)) {
+    public void consumeBait(Player player, ItemStack fishingPole) {
+        RegistryAccess provider = player.registryAccess();
+        ItemStack bait = getBait(provider, fishingPole);
+        if (bait.isEmpty()) return;
+        boolean consume = false;
+        if (bait.is(BaitItems.TRUFFLE_WORM)) {
+            consume = true;
+        } else if (bait.is(BaitItems.GOLD_WORM)) {
+            if (player.getRandom().nextInt(20) == 0) {
                 consume = true;
-            } else if (bait.is(BaitItems.GOLD_WORM)) {
-                if (player.getRandom().nextInt(20) == 0) {
-                    consume = true;
-                }
-            } else {
-                float factor = TCUtils.hasAccessoriesType(player, AccessoryItems.TACKLE$BOX) ? 1.0F : 2.0F;
-                IBait iBait = IBait.of(bait);
-                if (player.getRandom().nextFloat() < 1.0F / (factor + (iBait == null ? 0 : iBait.getBaitBonus()) / 6.0F)) {
-                    consume = true;
-                }
             }
-            if (!consume && player.addItem(bait)) {
-                player.drop(bait, true);
+        } else {
+            float factor = TCUtils.hasAccessoriesType(player, AccessoryItems.TACKLE$BOX) ? 2.0F : 1.0F;
+            IBait iBait = IBait.of(bait);
+            float bonus = iBait == null ? 0 : iBait.getBaitBonus() * 100;
+            if (player.getRandom().nextFloat() < 1.0F / (factor + bonus / 6.0F)) {
+                consume = true;
             }
-            setBait(level.registryAccess(), fishingPole, ItemStack.EMPTY);
-            IPlayer.of(player).confluence$setCurrentBait(ItemStack.EMPTY);
         }
+        if (!consume && player.addItem(bait)) {
+            player.drop(bait, true);
+        }
+        setBait(player.registryAccess(), fishingPole, ItemStack.EMPTY);
+        IPlayer.of(player).confluence$setCurrentBait(ItemStack.EMPTY);
     }
 
     public static void resetCurrentBait(Player player) {

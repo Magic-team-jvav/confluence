@@ -9,9 +9,13 @@ import com.xiaohunao.equipment_benediction.common.init.EBHookTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.crafting.Ingredient;
+import org.confluence.mod.common.entity.projectile.TitaniumShardsProjectile;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModHookTypes;
 import org.confluence.mod.common.init.item.ArmorItems;
+import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terraentity.init.TEAttributes;
 
@@ -64,14 +68,23 @@ public class TitaniumSet extends EquipmentSet {
 
         equippableGroup.addEquippableSet("full_set", new EquipmentSetBranch.Builder()
                 .addEquippable(
-                        VanillaWearable.HEAD, ArmorItems.TITANIUM_HELMET,
+                        VanillaWearable.HEAD, Ingredient.of(ArmorItems.TITANIUM_HEADGEAR, ArmorItems.TITANIUM_MASK, ArmorItems.TITANIUM_HELMET),
                         VanillaWearable.CHEST, ArmorItems.TITANIUM_CHESTPLATE,
                         VanillaWearable.LEGS, ArmorItems.TITANIUM_LEGGINGS,
                         VanillaWearable.FEET, ArmorItems.TITANIUM_BOOTS
                 )
                 .bindHook(EBHookTypes.AFTER_LIVING_HURT_ENTITY.get(), (owner, data) -> {
-                    if (!data.attacker().hasEffect(ModEffects.TITANIUM_BARRIER)) {
-                        data.attacker().addEffect(new MobEffectInstance(ModEffects.TITANIUM_BARRIER));
+                    Player player = data.attacker();
+                    if (player instanceof IServerPlayer serverPlayer &&
+                            !(data.damageSource().getDirectEntity() instanceof TitaniumShardsProjectile) &&
+                            !player.hasEffect(ModEffects.TITANIUM_BARRIER)
+                    ) {
+                        player.addEffect(new MobEffectInstance(ModEffects.TITANIUM_BARRIER, 200));
+                        if (!serverPlayer.confluence$hasTitaniumShards()) {
+                            TitaniumShardsProjectile projectile = new TitaniumShardsProjectile(player);
+                            serverPlayer.confluence$setTitaniumShards(projectile);
+                            player.level().addFreshEntity(projectile);
+                        }
                     }
                 })
                 .build());

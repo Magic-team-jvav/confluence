@@ -104,7 +104,7 @@ public final class ModEffects {
             .addAttributeModifier(TCAttributes.getMagicDamage(), Confluence.asResource("clairvoyance"), 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
             .addAttributeModifier(TCAttributes.getCriticalChance(), Confluence.asResource("clairvoyance"), 0.02, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredHolder<MobEffect, MobEffect> HOLY_PROTECTION = EFFECTS.register("holy_protection", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x8888FF));
-    public static final DeferredHolder<MobEffect, MobEffect> TITANIUM_BARRIER = EFFECTS.register("titanium_barrier", TitaniumBarrierEffect::new);
+    public static final DeferredHolder<MobEffect, MobEffect> TITANIUM_BARRIER = EFFECTS.register("titanium_barrier", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x777777));
     public static final DeferredHolder<MobEffect, MobEffect> FROSTBITE = EFFECTS.register("frostbite", FrostbiteEffect::new);
     public static final DeferredHolder<MobEffect, MobEffect> SHADOWFLAME = EFFECTS.register("shadowflame", ShadowflameEffect::new);
     public static final DeferredHolder<MobEffect, MobEffect> SUMMONING = EFFECTS.register("summoning", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x888888)

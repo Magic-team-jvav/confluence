@@ -71,6 +71,7 @@ public final class ModEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<RainProjectile>> BLOOD_RAIN_PROJECTILE = ENTITIES.register("blood_rain_projectile", () -> EntityType.Builder.<RainProjectile>of(RainProjectile::new, MobCategory.MISC).sized(0.25F, 1.5F).build("confluence:blood_rain_projectile"));
     public static final DeferredHolder<EntityType<?>, EntityType<CloudProjectile>> RAIN_CLOUD_PROJECTILE = ENTITIES.register("rain_cloud_projectile", () -> EntityType.Builder.<CloudProjectile>of(CloudProjectile::new, MobCategory.MISC).sized(2, 0.8F).build("confluence:rain_cloud_projectile"));
     public static final DeferredHolder<EntityType<?>, EntityType<RainProjectile>> RAIN_PROJECTILE = ENTITIES.register("rain_projectile", () -> EntityType.Builder.<RainProjectile>of(RainProjectile::new, MobCategory.MISC).sized(0.25F, 1.5F).build("confluence:rain_projectile"));
+    public static final DeferredHolder<EntityType<?>, EntityType<GoldenShowerProjectile>> GOLDEN_SHOWER_PROJECTILE = ENTITIES.register("golden_shower_projectile", () -> EntityType.Builder.<GoldenShowerProjectile>of(GoldenShowerProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:golden_shower_projectile"));
 
     // 剑气
     public static final DeferredHolder<EntityType<?>, EntityType<IceBladeSwordProjectile>> ICE_BLADE_SWORD_PROJECTILE = ENTITIES.register("ice_blade_sword_projectile", () -> EntityType.Builder.of(IceBladeSwordProjectile::new, MobCategory.MISC).sized(0.5F, 0.5F).build("confluence:ice_blade_sword_projectile"));

@@ -2,18 +2,10 @@
 	"format_version": "1.10.0",
 	"particle_effect": {
 		"description": {
-			"identifier": "confluence:ichor",
+			"identifier": "confluence:golden_shower",
 			"basic_render_parameters": {
 				"material": "particles_alpha",
-				"texture": "confluence:ichor"
-			}
-		},
-		"events": {
-			"expiration": {
-				"particle_effect": {
-					"effect": "confluence:ichor_expiration",
-					"type": "particle"
-				}
+				"texture": "confluence:golden_shower"
 			}
 		},
 		"components": {
@@ -26,9 +18,6 @@
 				"max_particles": 250
 			},
 			"minecraft:emitter_lifetime_expression": {},
-			"minecraft:emitter_lifetime_events": {
-				"expiration_event": "expiration"
-			},
 			"minecraft:emitter_shape_point": {
 				"offset": ["math.lerp(query.attached_xo, query.attached_x, variable.particle_random_1)-query.attached_xo", "math.lerp(query.attached_yo, query.attached_y, variable.particle_random_1)-query.attached_yo", "math.lerp(query.attached_zo, query.attached_z, variable.particle_random_1)-query.attached_zo"]
 			},

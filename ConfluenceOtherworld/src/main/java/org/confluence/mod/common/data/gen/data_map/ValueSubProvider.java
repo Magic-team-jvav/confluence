@@ -608,7 +608,8 @@ public final class ValueSubProvider {
                 .add(ManaWeaponItems.DEMON_SCYTHE, gold1 + silver50)
                 .add(ManaWeaponItems.BOOK_OF_SKULLS, gold1 + silver50)
                 .add(ManaWeaponItems.FLOWER_OF_FIRE, gold2 + silver50)
-                .add(ManaWeaponItems.THUNDER_ZAPPER, 2100);
+                .add(ManaWeaponItems.THUNDER_ZAPPER, 2100)
+                .add(ManaWeaponItems.GOLDEN_SHOWER, gold2 + gold2);
         appender.create()
                 .add(TESummonItems.SLIME_STAFF, gold2)
                 .add(TESummonItems.HORNET_STAFF, silver50 + silver20)
@@ -1888,6 +1889,8 @@ public final class ValueSubProvider {
         appender.create()
                 .add(DecorativeBlocks.EYE_OF_CTHULHU_RELIC, gold1)
                 .add(DecorativeBlocks.KING_SLIME_RELIC, gold1)
+                .add(DecorativeBlocks.BRAIN_OF_CTHULHU_RELIC, gold1)
+                .add(DecorativeBlocks.EATER_OF_WORLDS_RELIC, gold1)
         ;
         // 箱子
         appender.create()

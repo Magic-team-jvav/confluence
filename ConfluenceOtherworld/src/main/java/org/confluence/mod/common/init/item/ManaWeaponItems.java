@@ -10,10 +10,7 @@ import org.confluence.mod.common.entity.projectile.strip.VilethronProjectile;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.common.item.gun.BeeGunItem;
 import org.confluence.mod.common.item.gun.SpaceGunItem;
-import org.confluence.mod.common.item.mana.CloudRodItem;
-import org.confluence.mod.common.item.mana.MagicDaggerItem;
-import org.confluence.mod.common.item.mana.ManaStaffItem;
-import org.confluence.mod.common.item.mana.WeatherPainItem;
+import org.confluence.mod.common.item.mana.*;
 
 public class ManaWeaponItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
@@ -44,7 +41,8 @@ public class ManaWeaponItems {
     public static final DeferredItem<ManaStaffItem<MagicDaggerProjectile>> MAGIC_DAGGER = ITEMS.register("magic_dagger", MagicDaggerItem::new);
     public static final DeferredItem<ManaStaffItem<CrystalStormProjectile>> CRYSTAL_STORM = ITEMS.register("crystal_storm", () -> new ManaStaffItem<>(ModRarity.LIGHT_RED, CrystalStormProjectile::new, 21, 5, 16, 3, 0.04));
     public static final DeferredItem<ManaStaffItem<CursedFlamesProjectile>> CURSED_FLAMES = ITEMS.register("cursed_flames", () -> new ManaStaffItem<>(ModRarity.LIGHT_RED, CursedFlamesProjectile::new, 32, 9, 10, 5, 0.04));
-    public static final DeferredItem<ManaStaffItem<BallOfFrostProjectile>> FLOWER_OF_FROST = ITEMS.register("flower_of_frost", () -> new ManaStaffItem<>(ModRarity.PINK, BallOfFrostProjectile::new,35 , 11, 9, 4, 0.04));
+    public static final DeferredItem<ManaStaffItem<BallOfFrostProjectile>> FLOWER_OF_FROST = ITEMS.register("flower_of_frost", () -> new ManaStaffItem<>(ModRarity.PINK, BallOfFrostProjectile::new, 35, 11, 9, 4, 0.04));
+    public static final DeferredItem<GoldenShowerItem> GOLDEN_SHOWER = ITEMS.register("golden_shower", GoldenShowerItem::new);
 
     public static final DeferredItem<BeeGunItem> BEE_GUN = ITEMS.registerItem("bee_gun", BeeGunItem::new);
     public static final DeferredItem<SpaceGunItem> SPACE_GUN = ITEMS.registerItem("space_gun", SpaceGunItem::new);

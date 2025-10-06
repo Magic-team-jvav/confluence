@@ -1773,6 +1773,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.subtitle.lightsaber_open", "光剑：开启");
         add("confluence.subtitle.regular_staff_shoot", "魔法：发射");
         add("confluence.subtitle.regular_staff_shoot_2", "魔法：迸发");
+        add("confluence.subtitle.regular_staff_shoot_3", "魔法：喷射");
         add("confluence.subtitle.frozen_broken", "霜冻魔法：破裂");
         add("confluence.subtitle.frozen_arrow", "霜冻魔法：发射");
         add("confluence.subtitle.cooldown_recovery", "冷却：准备就绪");
@@ -3402,6 +3403,8 @@ public class ModChineseProvider extends LanguageProvider {
 
         add(DecorativeBlocks.KING_SLIME_RELIC.get(), "史莱姆王圣物");
         add(DecorativeBlocks.EYE_OF_CTHULHU_RELIC.get(), "克苏鲁之眼圣物");
+        add(DecorativeBlocks.BRAIN_OF_CTHULHU_RELIC.get(), "克苏鲁之脑圣物");
+        add(DecorativeBlocks.EATER_OF_WORLDS_RELIC.get(), "世界吞噬怪圣物");
 
 
         add(ModBlocks.POO.get(), "臭臭");
@@ -3760,6 +3763,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(PickaxeItems.BONE_PICKAXE.get(), "骨镐");
         add(PickaxeItems.REAVER_SHARK_PICKAXE.get(), "掠夺鲨");
         add(PickaxeItems.FOSSIL_PICKAXE.get(), "化石镐");
+        add(PickaxeItems.ABYSSAL_PICKAXE.get(), "潜渊镐");
+        add(PickaxeItems.MIASMA_PICKAXE.get(), "凝瘴镐");
+        add(PickaxeItems.COLD_CRYSTAL_PICKAXE.get(), "寒晶镐");
         add(PickaxeItems.TIN_PICKAXE.get(), "锡镐");
         add(PickaxeItems.LEAD_PICKAXE.get(), "铅镐");
         add(PickaxeItems.SILVER_PICKAXE.get(), "银镐");

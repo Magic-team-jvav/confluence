@@ -1727,6 +1727,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.subtitle.lightsaber_open", "Lightsaber: Activated");
         add("confluence.subtitle.regular_staff_shoot", "Magic: Cast");
         add("confluence.subtitle.regular_staff_shoot_2", "Magic: Burst");
+        add("confluence.subtitle.regular_staff_shoot_3", "Magic: Jet");
         add("confluence.subtitle.frozen_broken", "Frost Magic: Shatter");
         add("confluence.subtitle.frozen_arrow", "Frost Magic: Fire");
         add("confluence.subtitle.cooldown_recovery", "Cooldown: Ready");

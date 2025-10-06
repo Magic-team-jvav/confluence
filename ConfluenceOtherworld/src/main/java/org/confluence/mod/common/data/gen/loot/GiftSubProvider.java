@@ -1104,6 +1104,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.GOLD_COIN)
                         .apply(SetItemCountFunction.setCount(new ConstantValue(13)))
                 ))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(DecorativeBlocks.BRAIN_OF_CTHULHU_RELIC)))
         );
 
 
@@ -1127,6 +1128,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 .withPool(LootPool.lootPool().add(LootItem.lootTableItem(ModItems.SILVER_COIN)
                         .apply(SetItemCountFunction.setCount(new ConstantValue(50)))
                 ))
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(DecorativeBlocks.EATER_OF_WORLDS_RELIC)))
         );
 
 

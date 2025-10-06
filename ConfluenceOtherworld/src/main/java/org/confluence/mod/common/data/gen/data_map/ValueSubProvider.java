@@ -1889,6 +1889,8 @@ public final class ValueSubProvider {
         appender.create()
                 .add(DecorativeBlocks.EYE_OF_CTHULHU_RELIC, gold1)
                 .add(DecorativeBlocks.KING_SLIME_RELIC, gold1)
+                .add(DecorativeBlocks.BRAIN_OF_CTHULHU_RELIC, gold1)
+                .add(DecorativeBlocks.EATER_OF_WORLDS_RELIC, gold1)
         ;
         // 箱子
         appender.create()

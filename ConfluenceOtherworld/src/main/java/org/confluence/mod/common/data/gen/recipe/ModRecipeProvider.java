@@ -470,7 +470,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         crystalBlock(recipeOutput, TGItems.ENDLESS_MUSKET_POUCH.toStack(), AmountIngredient.of(3996, TGItems.MUSKET_BULLET));
         crystalBlock(recipeOutput, ManaWeaponItems.CURSED_FLAMES.toStack(), Ingredient.of(MaterialItems.SPELL_TOME),AmountIngredient.of(20, MaterialItems.CURSED_FLAME),AmountIngredient.of(15, MaterialItems.SOUL_OF_NIGHT));
         crystalBlock(recipeOutput, ManaWeaponItems.CRYSTAL_STORM.toStack(), Ingredient.of(MaterialItems.SPELL_TOME),AmountIngredient.of(20, MaterialItems.CRYSTAL_SHARDS),AmountIngredient.of(15, MaterialItems.SOUL_OF_LIGHT));
-        // crystalBlock(recipeOutput, ManaWeaponItems.GOLDEN_SHOWER.toStack(), Ingredient.of(MaterialItems.SPELL_TOME),AmountIngredient.of(20, MaterialItems.ICHOR),AmountIngredient.of(15, MaterialItems.SOUL_OF_NIGHT));
+        crystalBlock(recipeOutput, ManaWeaponItems.GOLDEN_SHOWER.toStack(), Ingredient.of(MaterialItems.SPELL_TOME),AmountIngredient.of(20, MaterialItems.ICHOR),AmountIngredient.of(15, MaterialItems.SOUL_OF_NIGHT));
         crystalBlock(recipeOutput, ToolItems.MAGIC_SAND_DROPPER.toStack(3), AmountIngredient.of(3, emptyDropper), Ingredient.of(Tags.Items.SANDS));
         crystalBlock(recipeOutput, ToolItems.MAGIC_HONEY_DROPPER.toStack(), EnvironmentLevelAccess.matcher(null, searchHoney(holderLookup), false), emptyDropper);
         crystalBlock(recipeOutput, ToolItems.MAGIC_LAVA_DROPPER.toStack(), EnvironmentLevelAccess.matcher(null, searchLava(holderLookup), false), emptyDropper);

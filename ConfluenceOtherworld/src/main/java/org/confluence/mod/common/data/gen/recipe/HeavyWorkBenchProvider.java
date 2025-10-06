@@ -748,6 +748,36 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 " / #",
                 "/   "
         )), PickaxeItems.FOSSIL_PICKAXE.toStack());
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '/', Ingredient.of(Items.STICK),
+                '#', Ingredient.of(ModTags.Items.RAW_MATERIALS_OPAL),
+                'a', Ingredient.of(MaterialItems.HEIM)
+        ), List.of(
+                " aa#",
+                "  /a",
+                " / a",
+                "/   "
+        )), PickaxeItems.ABYSSAL_PICKAXE.toStack());
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '/', Ingredient.of(Items.STICK),
+                '#', Ingredient.of(ModTags.Items.RAW_MATERIALS_GELSTONE),
+                'a', Ingredient.of(MaterialItems.SPORE_ROOT)
+        ), List.of(
+                " aa#",
+                "  /a",
+                " / a",
+                "/   "
+        )), PickaxeItems.MIASMA_PICKAXE.toStack());
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '/', Ingredient.of(Items.STICK),
+                '#', Ingredient.of(ModTags.Items.RAW_MATERIALS_COLD_CRYSTAL),
+                'a', Ingredient.of(MaterialItems.WINTER_MARROW)
+        ), List.of(
+                " aa#",
+                "  /a",
+                " / a",
+                "/   "
+        )), PickaxeItems.COLD_CRYSTAL_PICKAXE.toStack());
         // 化石套
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 '#', AmountIngredient.of(2, ModTags.Items.RAW_MATERIALS_STURDY_FOSSIL),

@@ -392,7 +392,9 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 PIGGY_BANK.get(),
 
                 KING_SLIME_RELIC.get(),
-                EYE_OF_CTHULHU_RELIC.get()
+                EYE_OF_CTHULHU_RELIC.get(),
+                BRAIN_OF_CTHULHU_RELIC.get(),
+                EATER_OF_WORLDS_RELIC.get()
         );
 
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithShovel = tag(BlockTags.MINEABLE_WITH_SHOVEL);
@@ -665,7 +667,9 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 COLD_CRYSTAL_BLOCK.get(),
 
                 KING_SLIME_RELIC.get(),
-                EYE_OF_CTHULHU_RELIC.get()
+                EYE_OF_CTHULHU_RELIC.get(),
+                BRAIN_OF_CTHULHU_RELIC.get(),
+                EATER_OF_WORLDS_RELIC.get()
         );
         tag(ModTags.Blocks.NEEDS_2_LEVEL).addTags(
                 ModTags.Blocks.STORAGE_BLOCKS_RAW_METEORITE,

@@ -114,9 +114,9 @@ public class SwordItems {
 
     // 效果剑
     public static final DeferredItem<BaseSwordItem> LIGHTS_BANE = register("lights_bane", ModTiers.UNBREAKABLE, 11, 3, ModRarity.BLUE, EFFECT_SWORD
-            .apply(ModEffectStrategies.Components.LIGHTS_BANE_EFFECT.get()).hasImage() .addAttributeModifier(Attributes.ATTACK_KNOCKBACK, 0.8F, AttributeModifier.Operation.ADD_VALUE));
+            .apply(ModEffectStrategies.Components.LIGHTS_BANE_EFFECT.get()).hasImage() .addAttributeModifier(Attributes.SWEEPING_DAMAGE_RATIO, 0.8F, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredItem<BaseSwordItem> BLOOD_BUTCHERER = register("blood_butcherer", ModTiers.UNBREAKABLE, 14, 1.3F, ModRarity.BLUE, EFFECT_SWORD
-            .apply(ModEffectStrategies.Components.BLOOD_BUTCHERED_EFFECT.get()).hasImage() .addAttributeModifier(Attributes.ATTACK_KNOCKBACK, 0.8F, AttributeModifier.Operation.ADD_VALUE));
+            .apply(ModEffectStrategies.Components.BLOOD_BUTCHERED_EFFECT.get()).hasImage() .addAttributeModifier(Attributes.SWEEPING_DAMAGE_RATIO, 0.8F, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredItem<BaseSwordItem> VOLCANO = register("volcano", ModTiers.UNBREAKABLE, 25, 1.2f, ModRarity.ORANGE, EFFECT_SWORD
             .apply(TEEffectStrategies.Components.HELL_FIRE_EFFECT.get())
             .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 2f, AttributeModifier.Operation.ADD_VALUE)

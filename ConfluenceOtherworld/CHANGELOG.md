@@ -46,6 +46,7 @@
 - 地物中的毒镖有时候会越界生成并造成卡顿的问题
 - 宝匣不再能被烧毁
 - 鱼饵错误的消耗概率
+- 星星炮没有无限穿透
 
 ## 优化：
 
@@ -119,9 +120,7 @@
 
 ## 更新内容：
 
-- 花岗精(granite elemental)、鬼魂(ghost)、飞龙(wyvern)、妖精(pixie)、装甲幻影魔(possess armor)、幻灵(wraith)、更多小动物
-- 部分长矛(lance)、链锯(chainsaw)、钻头(drill)、镐(pickaxe)、盔甲(armor)、剑(sword)
-- 防熔岩虫网(lavaproof bug net)、猩红魔杖(crimson rod)、织布机(Loom)、骷髅头法术书(book_of_skulls)
+- 新增部分动物、敌怪、武器、工具、方块
 - 坐骑现在可以装备，并且有快捷键
 - 召唤师头盔的附魔（与保护冲突）
 - 带引爆器的铂金矿与金矿

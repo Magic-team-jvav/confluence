@@ -6,6 +6,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.neoforge.common.EffectCure;
 import net.neoforged.neoforge.common.Tags;
@@ -31,11 +32,11 @@ public abstract class FlaskEffect extends MobEffect {
 
     public abstract void doMeleeAttack(LivingEntity attacker, LivingEntity victim, int amplifier, DamageSource damageSource, float amount);
 
-    public static void onLivingDamage(LivingEntity victim, DamageSource damageSource, float amount) {
-        if (damageSource.getEntity() instanceof LivingEntity attacker && attacker.getWeaponItem().is(Tags.Items.MELEE_WEAPON_TOOLS)) {
-            for (MobEffectInstance activeEffect : attacker.getActiveEffects()) {
+    public static void onLivingDamage(LivingEntity victim, Entity attacker, DamageSource damageSource, float amount) {
+        if (attacker instanceof LivingEntity living && living.getWeaponItem().is(Tags.Items.MELEE_WEAPON_TOOLS)) {
+            for (MobEffectInstance activeEffect : living.getActiveEffects()) {
                 if (activeEffect.getEffect().value() instanceof FlaskEffect flaskEffect) {
-                    flaskEffect.doMeleeAttack(attacker, victim, activeEffect.getAmplifier(), damageSource, amount);
+                    flaskEffect.doMeleeAttack(living, victim, activeEffect.getAmplifier(), damageSource, amount);
                 }
             }
         }

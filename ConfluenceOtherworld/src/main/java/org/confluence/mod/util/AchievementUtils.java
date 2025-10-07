@@ -12,7 +12,6 @@ import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
@@ -84,15 +83,13 @@ public final class AchievementUtils {
         return false;
     }
 
-    public static void luckyBreak_watchYourStep(LivingEntity damagingEntity, DamageSource damageSource, Entity sourceEntity) {
-        if (damagingEntity instanceof ServerPlayer serverPlayer) {
-            if (damagingEntity.isAlive()) {
-                if (damagingEntity.getHealth() / damagingEntity.getMaxHealth() < 0.1F && damageSource.is(DamageTypeTags.IS_FALL)) {
-                    awardAchievement(serverPlayer, "lucky_break");
-                }
-            } else if (sourceEntity != null && DartTrapBlock.NAME.equals(sourceEntity.getCustomName())) {
-                awardAchievement(serverPlayer, "watch_your_step");
+    public static void luckyBreak_watchYourStep(ServerPlayer player, DamageSource damageSource, Entity sourceEntity) {
+        if (player.isAlive()) {
+            if (player.getHealth() / player.getMaxHealth() < 0.1F && damageSource.is(DamageTypeTags.IS_FALL)) {
+                awardAchievement(player, "lucky_break");
             }
+        } else if (sourceEntity != null && DartTrapBlock.NAME.equals(sourceEntity.getCustomName())) {
+            awardAchievement(player, "watch_your_step");
         }
     }
 

@@ -2517,6 +2517,7 @@ public class ModEnglishProvider extends LanguageProvider {
         HoeItems.ITEMS.getEntries().forEach(itemAction);
         HookItems.ITEMS.getEntries().forEach(itemAction);
         IconItems.ITEMS.getEntries().forEach(itemAction);
+        LanceItems.ITEMS.getEntries().forEach(itemAction);
         LightPetItems.ITEMS.getEntries().forEach(itemAction);
         ManaWeaponItems.ITEMS.getEntries().forEach(itemAction);
         MaterialItems.ITEMS.getEntries().forEach(itemAction);

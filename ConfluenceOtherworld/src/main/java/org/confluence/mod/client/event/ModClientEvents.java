@@ -406,6 +406,7 @@ public final class ModClientEvents {
                 DrillItems.ITEMS.getEntries(),
                 ChainsawItems.ITEMS.getEntries()
         )).map(DeferredHolder::get).toArray(Item[]::new));
+        event.registerItem(ModClientSetups.LANCE, LanceItems.ITEMS.getEntries().stream().map(DeferredHolder::get).toArray(Item[]::new));
         event.registerItem(ModClientSetups.NOOP_ITEM, SwordItems.ZOMBIE_ARM);
         event.registerItem(ModClientSetups.GUIDE_VOODOO_DOLL, AccessoryItems.GUIDE_VOODOO_DOLL);
         event.registerItem(ModClientSetups.FULL_LIGHT, MaterialItems.SOUL_OF_FRIGHT);

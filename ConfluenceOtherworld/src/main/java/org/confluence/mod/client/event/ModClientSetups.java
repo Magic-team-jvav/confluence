@@ -161,6 +161,7 @@ public final class ModClientSetups {
     static final IClientItemExtensions SPEAR = simpleArmPose(ModArmPoses.SPEAR::getValue);
     static final IClientItemExtensions UMBRELLA = simpleArmPose(ModArmPoses.UMBRELLA::getValue);
     static final IClientItemExtensions DRILL_O_CHAINSAW = simpleArmPose(ModArmPoses.DRILL_O_CHAINSAW::getValue);
+    static final IClientItemExtensions LANCE = simpleArmPose(ModArmPoses.LANCE::getValue);
 
     private static IClientItemExtensions simpleArmPose(Supplier<HumanoidModel.ArmPose> supplier) {
         return new IClientItemExtensions() {

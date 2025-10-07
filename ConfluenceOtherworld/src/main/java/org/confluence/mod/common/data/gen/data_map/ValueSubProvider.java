@@ -1945,6 +1945,11 @@ public final class ValueSubProvider {
 
         ;
 
+        appender.create()
+                .add(LanceItems.JOUSTING_LANCE.get(), gold1 + silver20)
+                .add(LanceItems.HALLOWED_JOUSTING_LANCE.get(), gold5 - silver20 - silver20)
+                .add(LanceItems.SHADOW_JOUSTING_LANCE.get(), gold10);
+
         WaystonesHelper.appendValue(appender.create());
     }
 

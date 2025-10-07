@@ -413,8 +413,11 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.SAPLING)
                 .add(Items.CHERRY_SAPLING)
                 .add(SellTrade.INSTANCE)
+                .add(new MoneyTradeItem.Builder()
+                        .setResult(LanceItems.JOUSTING_LANCE.toStack())
+                        .setProperties(TradeProperties.builder().setLock(new BestiaryUnlockedCountLock(75)).build())
+                        .build())
                 .build());
-
     }
 
 

@@ -56,6 +56,7 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.accessory.GuideVooDooDollItem;
+import org.confluence.mod.common.item.common.BaseLanceItem;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.common.item.sword.SweetSword;
 import org.confluence.mod.common.particle.DamageIndicatorOptions;
@@ -248,10 +249,13 @@ public final class LivingEntityEvents {
         Entity attacker = damageSource.getEntity();
         float amount = event.getNewDamage();
 
-        AchievementUtils.luckyBreak_watchYourStep(victim, damageSource, attacker);
-        FlaskEffect.onLivingDamage(victim, damageSource, amount);
+        FlaskEffect.onLivingDamage(victim, attacker, damageSource, amount);
         Immunity.calculateInvTicks(damageSource, victim);
         DamageIndicatorOptions.sendDamageParticle(serverLevel, damageSource, amount, victim);
+        if (victim instanceof ServerPlayer player) {
+            AchievementUtils.luckyBreak_watchYourStep(player, damageSource, attacker);
+            BaseLanceItem.cancelSting(player);
+        }
     }
 
     @SubscribeEvent

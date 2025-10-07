@@ -1000,6 +1000,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(LootItem.lootTableItem(ManaWeaponItems.BOOK_OF_SKULLS))
                         .add(EmptyLootItem.emptyItem().setWeight(2))
                 )
+                .withPool(LootPool.lootPool().add(LootItem.lootTableItem(DecorativeBlocks.SKELETRON_RELIC)))
         );
 
         output.accept(Confluence.asResourceKey(Registries.LOOT_TABLE, "treasure_bag/queen_bee/classic"), queenBeeTreasureBagCommon()

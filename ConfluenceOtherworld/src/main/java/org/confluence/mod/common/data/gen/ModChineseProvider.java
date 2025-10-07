@@ -3608,6 +3608,13 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.AETHERIUM_GOLD.get(), "嬗金");
         add(MaterialItems.CHINA_PLATE.get(), "陶瓷盘");
         add(MaterialItems.CHINA_BOWL.get(), "陶瓷碗");
+        add(MaterialItems.EMPTY_BULLET.get(), "空心子弹");
+        add(MaterialItems.EXPLOSIVE_POWDER.get(), "爆炸粉");
+        add(MaterialItems.GOLD_DUST.get(), "金粉");
+        add(MaterialItems.COG.get(), "齿轮");
+        add(MaterialItems.NANITES.get(), "纳米机器人");
+        add(MaterialItems.CONFETTI.get(), "彩纸");
+        add(MaterialItems.VIAL_OF_VENOM.get(), "小瓶毒液");
         // 植物
         add(MaterialItems.WATERLEAF.get(), "水叶草");
         add(MaterialItems.FIREBLOSSOM.get(), "火焰花");

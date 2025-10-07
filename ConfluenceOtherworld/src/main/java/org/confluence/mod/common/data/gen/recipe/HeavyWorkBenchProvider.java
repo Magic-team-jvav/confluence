@@ -1319,6 +1319,13 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         shapeless(recipeOutput, TGItems.TUNGSTEN_BULLET.toStack(70), AmountIngredient.of(70, TGItems.MUSKET_BULLET), Ingredient.of(ModTags.Items.INGOTS_TUNGSTEN));
         shapeless(recipeOutput, TGItems.METEOR_SHOT.toStack(70), AmountIngredient.of(70, TGItems.MUSKET_BULLET), Ingredient.of(ModTags.Items.INGOTS_METEORITE));
 
+        shapeless(recipeOutput, TGItems.HIGH_VELOCITY_BULLET.toStack(50), AmountIngredient.of(50, MaterialItems.EMPTY_BULLET), Ingredient.of(MaterialItems.COG));
+        shapeless(recipeOutput, TGItems.PARTY_BULLET.toStack(50), AmountIngredient.of(50, MaterialItems.EMPTY_BULLET), Ingredient.of(MaterialItems.CONFETTI));
+        shapeless(recipeOutput, TGItems.GOLDEN_BULLET.toStack(50), AmountIngredient.of(50, MaterialItems.EMPTY_BULLET), Ingredient.of(MaterialItems.GOLD_DUST));
+        shapeless(recipeOutput, TGItems.NANO_BULLET.toStack(50), AmountIngredient.of(50, MaterialItems.EMPTY_BULLET), Ingredient.of(MaterialItems.NANITES));
+        shapeless(recipeOutput, TGItems.EXPLODING_BULLET.toStack(50), AmountIngredient.of(50, MaterialItems.EMPTY_BULLET), Ingredient.of(MaterialItems.EXPLOSIVE_POWDER));
+        shapeless(recipeOutput, TGItems.VENOM_BULLET.toStack(50), AmountIngredient.of(50, MaterialItems.EMPTY_BULLET), Ingredient.of(MaterialItems.VIAL_OF_VENOM));
+
         shapeless(recipeOutput, FunctionalBlocks.EXPLODE_BOULDER.toStack(), Ingredient.of(FunctionalBlocks.NORMAL_BOULDER), Ingredient.of(FunctionalBlocks.INSTANTANEOUS_EXPLOSION_TNT));
         shapeless(recipeOutput, FunctionalBlocks.FOLLOWER_BOULDER.toStack(), Ingredient.of(FunctionalBlocks.NORMAL_BOULDER), Ingredient.of(Items.OBSERVER));
         shapeless(recipeOutput, FunctionalBlocks.EVER_POWERED_RAIL.toStack(16), AmountIngredient.of(16, Items.RAIL), Ingredient.of(Items.REDSTONE_TORCH));

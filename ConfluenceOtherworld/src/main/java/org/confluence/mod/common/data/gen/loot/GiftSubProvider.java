@@ -30,6 +30,7 @@ import org.confluence.terra_furniture.common.init.TFBlocks;
 import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.init.item.TEBoomerangItems;
 import org.confluence.terraentity.init.item.TERideableItems;
+import org.confluence.terraentity.init.item.TEWhipItems;
 import org.confluence.terraentity.init.item.TEYoyosItems;
 
 import java.util.Calendar;
@@ -1363,6 +1364,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 ))
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(SwordItems.BREAKER_BLADE))
+                        .add(LootItem.lootTableItem(TEWhipItems.FIRECRACKER))
                         // todo 另外三个
                 );
     }

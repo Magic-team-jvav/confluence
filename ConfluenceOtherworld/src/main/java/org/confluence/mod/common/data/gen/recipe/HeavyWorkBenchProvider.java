@@ -1288,6 +1288,28 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "#aaa"
         )), ChainsawItems.PALLADIUM_CHAINSAW.toStack());
 
+        // 荆鞭
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(6,MaterialItems.JUNGLE_SPORE),
+                'a', Ingredient.of(MaterialItems.MAN_EATER_VINE),
+                'b', AmountIngredient.of(15, MaterialItems.STINGER)
+        ), List.of(
+                "  a ",
+                " a a",
+                " # b",
+                "#   "
+        )), TEWhipItems.SNAPTHORN.toStack());
+        // 脊柱骨鞭
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(45,MaterialItems.DUNGEON_DEMON_BONE),
+                'a', AmountIngredient.of(13,Items.COBWEB)
+        ), List.of(
+                "  a ",
+                " a a",
+                " # a",
+                "#   "
+        )), TEWhipItems.SPINAL_TAP.toStack());
+
 
         shapeless(recipeOutput, NatureBlocks.THIN_ICE_BLOCK.toStack(), EnvironmentLevelAccess.matcher(null, null, true), Ingredient.of(Items.ICE));
         shapeless(recipeOutput, ConsumableItems.BONE_THROWING_KNIFE.toStack(), Ingredient.of(ConsumableItems.THROWING_KNIVE), Ingredient.of(MaterialItems.STURDY_FOSSIL));

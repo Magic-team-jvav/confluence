@@ -637,7 +637,10 @@ public final class ValueSubProvider {
                 .add(TEWhipItems.DIAMOND_WHIP, gold2 + silver50)
                 .add(TEWhipItems.SAPPHIRE_WHIP, gold2 + silver20)
                 .add(TEWhipItems.AMETHYST_WHIP, gold2 + silver10)
-                .add(TEWhipItems.SWAMP_WHIP, gold2 + silver50 + silver50);
+                .add(TEWhipItems.SWAMP_WHIP, gold2 + silver50 + silver50)
+                .add(TEWhipItems.SNAPTHORN, gold1)
+                .add(TEWhipItems.SPINAL_TAP, gold1 + silver50)
+                .add(TEWhipItems.FIRECRACKER, gold1 + gold2);
         builder
                 .add(TCItems.AGLET, 25000)
                 .add(TCItems.AMBER_HORSESHOE_BALLOON, 30000)

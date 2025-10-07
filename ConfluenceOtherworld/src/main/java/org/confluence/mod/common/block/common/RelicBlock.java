@@ -94,7 +94,7 @@ public class RelicBlock extends HorizontalDirectionalBlock implements EntityBloc
         private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
         public BItem(RelicBlock block) {
-            super(block, new Properties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.GREEN));
+            super(block, new Properties().component(ConfluenceMagicLib.MOD_RARITY, ModRarity.MASTER));
         }
 
         @Override

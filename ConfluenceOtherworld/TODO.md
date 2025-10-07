@@ -126,6 +126,7 @@
 - [根据游戏阶段改变生物属性](src/main/java/org/confluence/mod/common/data/gen/data_map/GamePhase2AttributeModifiersSubProvider.java)
 - 补生物图鉴翻译
 - 区分渔夫肉前肉后战利品表
+- 狱火环渲染（直接换成一堆小粒子）
 
 ## 其它
 
@@ -138,7 +139,7 @@
 - 骑枪加速坐骑
 - 魔法飞弹（不知道怎么实现）
 - 叶绿镋弹幕（现阶段不急）
-- 狱火环渲染
+- 泰拉爆炸有概率炸不到生物
 
 # 牢枕の饼
 

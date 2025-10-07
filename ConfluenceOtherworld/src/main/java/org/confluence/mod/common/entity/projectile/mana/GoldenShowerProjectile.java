@@ -1,5 +1,6 @@
 package org.confluence.mod.common.entity.projectile.mana;
 
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -10,6 +11,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
 import org.mesdag.particlestorm.PSGameClient;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
@@ -49,6 +51,9 @@ public class GoldenShowerProjectile extends AbstractManaProjectile {
                 Entity entity = entityHitResult.getEntity();
                 if (passThrough.add(entity)) {
                     if (entity.hurt(getDamagesource(), getCalculatedDamage())) {
+                        if (entity instanceof LivingEntity living) {
+                            living.addEffect(new MobEffectInstance(ModEffects.ICHOR, 200));
+                        }
                         VectorUtils.knockBackA2B(this, entity, 3.5, 0.2);
                     }
                     if (passThrough.size() >= 4) {

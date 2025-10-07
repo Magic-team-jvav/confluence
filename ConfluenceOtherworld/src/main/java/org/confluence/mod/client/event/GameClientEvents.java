@@ -423,6 +423,14 @@ public final class GameClientEvents {
     }
 
     @SubscribeEvent
+    public static void playerInteract$LeftClickBlock(PlayerInteractEvent.LeftClickBlock event) {
+        Player player = event.getEntity();
+        if (!player.getMainHandItem().is(ModTags.Items.COULD_AUTO_ATTACK) && PlayerUtils.couldPerformEmptyTargetSweep(player)) {
+            EmptyTargetSweepPacketC2S.send2Server();
+        }
+    }
+
+    @SubscribeEvent
     public static void playerEmptyAutoAttack(PlayerEmptyAutoAttackEvent event) {
         Player player = event.getEntity();
         ItemStack itemStack = event.getItemStack();

@@ -51,7 +51,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
 
     public SwordProjectile(EntityType<? extends SwordProjectile> entityType, Level pLevel) {
         super(entityType, pLevel);
-        if(!level().isClientSide()){
+        if (!level().isClientSide()) {
             direction = new Vec3(this.getRandom().nextFloat() - 0.5f, this.getRandom().nextFloat() - 0.5f, this.getRandom().nextFloat() - 0.5f);
 //            direction = new Vec3(1,0,0);
             this.entityData.set(DATA_DIRECTION, direction.toVector3f());
@@ -67,16 +67,16 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
     protected static final EntityDataAccessor<Float> DATA_INIT_GRAVITY = SynchedEntityData.defineId(SwordProjectile.class, EntityDataSerializers.FLOAT);
 
     @Override
-    public void onSyncedDataUpdated(EntityDataAccessor<?> data){
+    public void onSyncedDataUpdated(EntityDataAccessor<?> data) {
         super.onSyncedDataUpdated(data);
-        if(level().isClientSide) {
+        if (level().isClientSide) {
             if (data == DATA_INIT_SPEED) {
                 this.initSpeed = new Vec3(this.entityData.get(DATA_INIT_SPEED));
                 this.setDeltaMovement(initSpeed);
-            }else if (data == DATA_INIT_GRAVITY) {
+            } else if (data == DATA_INIT_GRAVITY) {
                 this.gravity = this.entityData.get(DATA_INIT_GRAVITY);
-            }else if (DATA_DIRECTION.equals(data)) {
-                direction =new Vec3(this.entityData.get(DATA_DIRECTION));
+            } else if (DATA_DIRECTION.equals(data)) {
+                direction = new Vec3(this.entityData.get(DATA_DIRECTION));
                 float yaw = (float) Math.atan2(direction.x, direction.z) * (180F / (float) Math.PI);
                 this.setYRot(yaw);
                 yRotO = yaw;
@@ -135,10 +135,10 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
     LivingEntity target;
 
     @Override
-    public void onAddedToLevel(){
+    public void onAddedToLevel() {
         super.onAddedToLevel();
         var owner1 = getOwner();
-        if(owner1 instanceof LivingEntity owner){
+        if (owner1 instanceof LivingEntity owner) {
             AttributeInstance attributeInstance = owner.getAttribute(Attributes.ATTACK_KNOCKBACK);
 
             if (attributeInstance != null) {
@@ -151,10 +151,10 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
                 this.criticalChance = (float) attributeInstance.getValue();
             }
 
-            var entities = level().getEntities(this, getBoundingBox().inflate(50), e-> e instanceof LivingEntity living && living.isAlive() && e != owner1);
+            var entities = level().getEntities(this, getBoundingBox().inflate(50), e -> e instanceof LivingEntity living && living.isAlive() && e != owner1);
             entities.sort(Comparator.comparingDouble(a -> a.distanceToSqr(this)));
             for (Entity entity : entities) {
-                if(entity instanceof LivingEntity living){
+                if (entity instanceof LivingEntity living) {
                     target = living;
                     break;
                 }
@@ -171,11 +171,11 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
     @Override
     public void tick() {
         super.tick();
-        if(projComponent != null){
-            if(!level().isClientSide() && tickCount >= projComponent.existTicks())
+        if (projComponent != null) {
+            if (!level().isClientSide() && tickCount >= projComponent.existTicks())
                 discard();
             this.applyGravity();
-            if(target != null && target.isAlive()) {
+            if (target != null && target.isAlive()) {
 
                 Vec3 dir = target.position().add(0, target.getEyeHeight() * 0.5f, 0).subtract(this.position()).normalize();
                 Vec3 motion = getDeltaMovement();
@@ -196,7 +196,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
 
     @Override
     protected boolean canHitEntity(Entity target) {
-        if(hitCount <= 0){
+        if (hitCount <= 0) {
             return false;
         }
 
@@ -207,7 +207,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
     protected void onHitEntity(EntityHitResult entityHitResult) {
 //        Entity entity = entityHitResult.getEntity();
 //        if (!level().isClientSide && entity instanceof LivingEntity living && getOwner() instanceof LivingEntity owner && owner != entity) {
-            // 事件统一暴击判定 org.confluence.mod.common.event.game.entity.LivingEntityEvents.livingDamage$Pre
+        // 事件统一暴击判定 org.confluence.mod.common.event.game.entity.LivingEntityEvents.livingDamage$Pre
 //            if (random.nextFloat() < criticalChance) damage *= 1.5F;
 //            doHurt(living);
 //        }
@@ -216,14 +216,11 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
     @Override
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
-        if(!canPenalize && !level().isClientSide) discard();
+        if (!canPenalize && !level().isClientSide) discard();
     }
 
-
-    public DamageSource damageSource(){
-        if(getOwner() instanceof LivingEntity living)
-            return ModDamageTypes.of(level(), ModDamageTypes.SWORD_PROJECTILE, living); // 剑气默认有无敌帧
-        else return damageSources().magic();
+    public DamageSource damageSource() {
+        return ModDamageTypes.of(level(), ModDamageTypes.SWORD_PROJECTILE, this, getOwner());
     }
 
     @Override
@@ -231,21 +228,21 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
         return collisionProperties;
     }
 
-    protected boolean doHurt(Entity target){
-        if(TEUtils.projectileCanHurtEntityTest.test(this, target)) {
+    protected boolean doHurt(Entity target) {
+        if (TEUtils.projectileCanHurtEntityTest.test(this, target)) {
             float damage = getBaseDamage() * (attackDamageFactor);
             DamageSource damageSource = damageSource();
 
-            if(IAttackableProjectile.tryHit(target, damageSource)){
+            if (IAttackableProjectile.tryHit(target, damageSource)) {
                 return true;
             }
 
             LivingEntity hurter;
-            if(target instanceof LivingEntity living){
+            if (target instanceof LivingEntity living) {
                 hurter = living;
-            }else if(target instanceof PartEntity<?> partEntity && partEntity.getParent() instanceof LivingEntity living){
+            } else if (target instanceof PartEntity<?> partEntity && partEntity.getParent() instanceof LivingEntity living) {
                 hurter = living;
-            }else{
+            } else {
                 return false;
             }
 
@@ -258,7 +255,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
                 float attackKnockBack = getBaseKnockBack() + knockBack;
                 VectorUtils.knockBackA2B(this, hurter, attackKnockBack * 0.5, 0.2);
 
-                if(--hitCount <= 0 && !level().isClientSide){
+                if (--hitCount <= 0 && !level().isClientSide) {
                     discard();
                 }
             }
@@ -288,10 +285,12 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
     protected boolean shouldBurn() {
         return false;
     }
+
     @Override
     public boolean isPickable() {
         return false;
     }
+
     @Override//空气阻力
     protected float getInertia() {
         return 1;
@@ -303,7 +302,7 @@ public abstract class SwordProjectile extends AbstractHurtingProjectile implemen
         return null;
     }
 
-    public SwordProjectile setExistTime(int time){
+    public SwordProjectile setExistTime(int time) {
         lifetime = time;
         return this;
     }

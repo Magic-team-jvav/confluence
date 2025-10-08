@@ -31,19 +31,6 @@ import java.util.function.Function;
 
 public final class DynamicBiomeUtils {
     public static final int BIOME_THRESHOLD = 256;
-    //    public static final Map<Predicate<BlockState>, BiConsumer<BlockCounts, Integer>> COUNTER = new ImmutableMap.Builder<Predicate<BlockState>, BiConsumer<BlockCounts, Integer>>()
-//            .put(block -> block.is(ModTags.Blocks.CRIMSON_BLOCKS), (counter, count) -> counter.crimson.addAndGet(count))
-//            .put(block -> block.is(ModTags.Blocks.CRIMSON_DESERT_BLOCKS), (counter, count) -> counter.crimsonSand.addAndGet(count))
-//            .put(block -> block.is(ModTags.Blocks.CRIMSON_TUNDRA_BLOCKS), (counter, count) -> counter.crimsonIce.addAndGet(count))
-//            .put(block -> block.is(ModTags.Blocks.CORRUPTION_BLOCKS), (counter, count) -> counter.corrupt.addAndGet(count))
-//            .put(block -> block.is(ModTags.Blocks.CORRUPTED_DESERT_BLOCKS), (counter, count) -> counter.corruptSand.addAndGet(count))
-//            .put(block -> block.is(ModTags.Blocks.CORRUPTED_TUNDRA_BLOCKS), (counter, count) -> counter.corruptIce.addAndGet(count))
-//            .put(block -> block.is(ModTags.Blocks.HALLOW_BLOCKS), (counter, count) -> counter.hallow.addAndGet(count))
-//            .put(block -> block.is(ModTags.Blocks.HALLOW_DESERT_BLOCKS), (counter, count) -> counter.hallowSand.addAndGet(count))
-//            .put(block -> block.is(ModTags.Blocks.HALLOW_TUNDRA_BLOCKS), (counter, count) -> counter.hallowIce.addAndGet(count))
-//            .put(block -> block.is(Blocks.SUNFLOWER), (counter, count) -> counter.sunflower.addAndGet(count))
-//            .put(block -> block.is(ModTags.Blocks.TOMBSTONE), (counter, count) -> counter.tomb.addAndGet(count))
-//            .build();
     public static final Function<BlockState, BlockCounts.@Nullable Type> COUNTER = state -> {
         Block block = state.getBlock();
         if (block == Blocks.SUNFLOWER) return BlockCounts.Type.SUNFLOWER;
@@ -168,7 +155,6 @@ public final class DynamicBiomeUtils {
      * 为这个区块应用动态群系，从底部判断到顶部，应用动态群系的规则
      */
     public static void applyDynamicBiome(ChunkAccess chunk, HolderLookup.RegistryLookup<Biome> lookup) {
-        //LibUtils.devRun(() -> Confluence.LOGGER.debug("protoToLevel {}", chunk));
         Holder<Biome> belowBiome = null;
         for (LevelChunkSection section : chunk.getSections()) {
             section.recalcBlockCounts();

@@ -1,5 +1,6 @@
 package org.confluence.mod.client.event;
 
+import com.google.common.collect.ImmutableListMultimap;
 import com.ibm.icu.impl.Pair;
 import com.mojang.datafixers.util.Either;
 import com.xiaohunao.equipment_benediction.api.manager.EquipmentSetManager;
@@ -19,6 +20,7 @@ import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -36,6 +38,9 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
@@ -64,6 +69,7 @@ import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.client.renderer.item.DungeonCompassRenderer;
 import org.confluence.mod.client.renderer.item.ZombieArmRenderer;
 import org.confluence.mod.common.component.ValueComponent;
+import org.confluence.mod.common.component.prefix.ModPrefix;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.init.ModEffects;
@@ -83,7 +89,9 @@ import org.confluence.mod.network.c2s.EmptyTargetSweepPacketC2S;
 import org.confluence.mod.network.c2s.SpearAttackPacketC2S;
 import org.confluence.mod.util.*;
 import org.confluence.terra_curio.api.event.PlayerEmptyAutoAttackEvent;
+import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terraentity.api.event.NPCEvent;
+import org.confluence.terraentity.init.TEAttributes;
 import org.confluence.terraentity.init.entity.TENpcEntities;
 import software.bernie.geckolib.event.GeoRenderEvent;
 
@@ -240,7 +248,7 @@ public final class GameClientEvents {
         if (prefix.type() == PrefixType.MAGIC) {
             if (prefix.manaCost() != 0.0) {
                 boolean positive = prefix.manaCost() > 0.0;
-                String format = ATTRIBUTE_MODIFIER_FORMAT.format(prefix.manaCost() * (positive ? 100.0 : -100.0));
+                String format = ATTRIBUTE_MODIFIER_FORMAT.format(prefix.manaCost() * (positive ? 100 : -100));
                 MutableComponent component = Component.translatable("prefix.confluence.tooltip.mana_cost");
                 if (event.getContext().flag().isAdvanced() && NeoForgeConfig.COMMON.attributeAdvancedTooltipDebugInfo.get()) {
                     String valueStr = ATTRIBUTE_MODIFIER_FORMAT.format(1 + prefix.manaCost());
@@ -257,6 +265,53 @@ public final class GameClientEvents {
                 }
                 event.addTooltipLines(Component.translatable("prefix.confluence.tooltip.add", prefix.additionalMana(), component)
                         .withStyle(ChatFormatting.BLUE));
+            }
+            ImmutableListMultimap<Holder<Attribute>, AttributeModifier> multimap = prefix.modifiers().get();
+            if (multimap.keySet().size() >= 4) {
+                byte b = 0;
+                for (Holder<Attribute> holder : multimap.keySet()) {
+                    Attribute attribute = holder.value();
+                    if ((b & 0b0001) == 0 && attribute == Attributes.ATTACK_DAMAGE.value()) b |= 0b0001;
+                    if ((b & 0b0010) == 0 && attribute == TCAttributes.getRangedDamage().value()) b |= 0b0010;
+                    if ((b & 0b0100) == 0 && attribute == TCAttributes.getMagicDamage().value()) b |= 0b0100;
+                    if ((b & 0b1000) == 0 && attribute == TEAttributes.SUMMON_DAMAGE.value()) b |= 0b1000;
+                    if ((b & 0b1111) == 0b1111) {
+                        double value = multimap.get(holder).stream().filter(m -> m.is(ModPrefix.Accessory.ID)).map(AttributeModifier::amount).findAny().orElse(0.0);
+                        if (value > 0.0) {
+                            String format = ATTRIBUTE_MODIFIER_FORMAT.format(value * 100);
+                            MutableComponent component = Component.translatable("prefix.confluence.tooltip.four_classes_damage");
+                            if (event.getContext().flag().isAdvanced() && NeoForgeConfig.COMMON.attributeAdvancedTooltipDebugInfo.get()) {
+                                String valueStr = ATTRIBUTE_MODIFIER_FORMAT.format(1 + value);
+                                component.append(Component.literal(" [x" + valueStr + "]").withStyle(ChatFormatting.GRAY));
+                            }
+                            event.addTooltipLines(Component.translatable("prefix.confluence.tooltip.plus", format, component)
+                                    .withStyle(ChatFormatting.BLUE));
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void gatherSkippedAttributeTooltip(GatherSkippedAttributeTooltipsEvent event) {
+        PrefixComponent prefix = PrefixUtils.getPrefix(event.getStack());
+        if (prefix != null && prefix.type() == PrefixType.ACCESSORY) {
+            ImmutableListMultimap<Holder<Attribute>, AttributeModifier> multimap = prefix.modifiers().get();
+            if (multimap.keySet().size() >= 4) {
+                byte b = 0;
+                for (Holder<Attribute> holder : multimap.keySet()) {
+                    Attribute attribute = holder.value();
+                    if ((b & 0b0001) == 0 && attribute == Attributes.ATTACK_DAMAGE.value()) b |= 0b0001;
+                    if ((b & 0b0010) == 0 && attribute == TCAttributes.getRangedDamage().value()) b |= 0b0010;
+                    if ((b & 0b0100) == 0 && attribute == TCAttributes.getMagicDamage().value()) b |= 0b0100;
+                    if ((b & 0b1000) == 0 && attribute == TEAttributes.SUMMON_DAMAGE.value()) b |= 0b1000;
+                    if ((b & 0b1111) == 0b1111) {
+                        event.skipId(ModPrefix.Accessory.ID);
+                        break;
+                    }
+                }
             }
         }
     }

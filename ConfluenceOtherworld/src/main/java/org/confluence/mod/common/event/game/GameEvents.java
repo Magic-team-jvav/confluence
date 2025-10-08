@@ -97,11 +97,10 @@ public final class GameEvents {
     public static void curioAttributeModifier(CurioAttributeModifierEvent event) {
         PrefixComponent prefix = PrefixUtils.getPrefix(event.getItemStack());
         if (prefix == null) return;
-        String suffix = "_" + event.getSlotContext().index();
         for (Map.Entry<Holder<Attribute>, Collection<AttributeModifier>> entry : prefix.modifiers().get().asMap().entrySet()) {
             Holder<Attribute> attribute = entry.getKey();
             for (AttributeModifier modifier : entry.getValue()) {
-                event.addModifier(attribute, new AttributeModifier(modifier.id().withSuffix(suffix), modifier.amount(), modifier.operation()));
+                event.addModifier(attribute, new AttributeModifier(modifier.id(), modifier.amount(), modifier.operation()));
             }
         }
     }

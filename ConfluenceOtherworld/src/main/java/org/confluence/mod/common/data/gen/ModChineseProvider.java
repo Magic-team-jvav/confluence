@@ -958,6 +958,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("prefix.confluence.tooltip.add", "+%s %s");
         add("prefix.confluence.tooltip.mana_cost", "魔力消耗");
         add("prefix.confluence.tooltip.additional_mana", "额外魔力");
+        add("prefix.confluence.tooltip.four_classes_damage", "四职业伤害");
         add("prefix.confluence.hard", "坚硬");
         add("prefix.confluence.guarding", "守护");
         add("prefix.confluence.armored", "装甲");

@@ -967,6 +967,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("prefix.confluence.tooltip.add", "+%s %s");
         add("prefix.confluence.tooltip.mana_cost", "Mana Cost");
         add("prefix.confluence.tooltip.additional_mana", "Additional Mana");
+        add("prefix.confluence.tooltip.four_classes_damage", "Four Classes Damage");
         add("prefix.confluence.quick", "Quick");
         add("prefix.confluence.hasty", "Hasty");
         add("prefix.confluence.deadly", "Deadly");

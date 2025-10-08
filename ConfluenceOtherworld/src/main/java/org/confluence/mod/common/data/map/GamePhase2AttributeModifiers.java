@@ -47,7 +47,7 @@ public record GamePhase2AttributeModifiers(Map<GamePhase, AttributeModifiersValu
     }
 
     public static void applyModifiers(LivingEntity living) {
-        if (living instanceof Player || LibUtils.isAtLeastExpert(living.level(), living.blockPosition())) return;
+        if (living instanceof Player || !LibUtils.isAtLeastExpert(living.level(), living.blockPosition())) return;
         GamePhase2AttributeModifiers data = ModDataMaps.getEntityData(ModDataMaps.GAME_PHASE_2_ATTRIBUTE_MODIFIERS, living);
         if (data == null) return;
         ImmutableListMultimap<Holder<Attribute>, AttributeModifier> modifiers = data.get(KillBoard.INSTANCE.getGamePhase()).get();

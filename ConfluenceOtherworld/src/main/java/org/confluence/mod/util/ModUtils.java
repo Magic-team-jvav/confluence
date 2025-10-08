@@ -18,6 +18,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -139,6 +140,8 @@ public final class ModUtils {
     }
 
     public static void bossDeath(ServerLevel level, LivingEntity living) {
+        if (level.getDifficulty() == Difficulty.PEACEFUL) return;
+
         EntityType<?> type = living.getType();
         KillBoard.INSTANCE.defeat(type);
         boolean isEaterOfWorlds = type == TEBossEntities.EATER_OF_WORLDS.get();

@@ -24,6 +24,7 @@ import org.confluence.terraentity.init.entity.TEAnimals;
 import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
 import org.confluence.terraentity.init.entity.TENpcEntities;
+import org.confluence.terraentity.init.item.TEArmors;
 
 import java.util.List;
 import java.util.Map;
@@ -195,7 +196,7 @@ public class ModClientBestiaryEntryProvider extends AbstractRecipeProvider {
                 // 僵尸 （沼泽）
                 // 僵尸 （中箭）
                 .mobArmorItems(EntityType.ZOMBIE.builtInRegistryHolder(), "entity.confluence.raincoat_zombie", "", List.of(ItemStack.EMPTY, ItemStack.EMPTY, ArmorItems.RAINCOAT.toStack(), ArmorItems.RAIN_CAP.toStack()), provider, builder -> builder.order(15400).rarity(2).background(SURFACE_NIGHTTIME_RAIN).filters(FilterEntry.NIGHTTIME, FilterEntry.RAIN))
-                .add(TEMonsterEntities.POSSESS_ARMOR, builder -> builder.order(15500).rarity(2).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
+                .mobArmorItems(TEMonsterEntities.POSSESS_ARMOR, "", List.of(TEArmors.POSSESSED_ARMOR.boots.toStack(), TEArmors.POSSESSED_ARMOR.leggings.toStack(), TEArmors.POSSESSED_ARMOR.chestplate.toStack(), TEArmors.POSSESSED_ARMOR.helmet.toStack()), provider, builder -> builder.order(15500).rarity(2).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
                 // 狼人
                 .add(TEMonsterEntities.WRAITH, builder -> builder.order(15700).rarity(2).background(SURFACE_MOON).filters(FilterEntry.SURFACE, FilterEntry.NIGHTTIME))
                 // 腐化兔兔

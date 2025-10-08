@@ -119,8 +119,8 @@ public final class ModUtils {
     }
 
     public static void summonBoss(ServerLevel level, BlockPos pos, AbstractTerraBossBase boss) {
-        double x = pos.getX() + 0.5 + level.random.nextInt(-50, 51);
-        double z = pos.getZ() + 0.5 + level.random.nextInt(-50, 51);
+        double x = pos.getX() + 0.5 + Mth.randomBetweenInclusive(level.random, -50, 50);
+        double z = pos.getZ() + 0.5 + Mth.randomBetweenInclusive(level.random, -50, 50);
         boss.setPos(x, 0.5 + level.getHeight(Heightmap.Types.MOTION_BLOCKING, Mth.floor(x), Mth.floor(z)), z);
         if (TEUtils.internalSpawnEntity(boss, level)) {
             level.addFreshEntityWithPassengers(boss);

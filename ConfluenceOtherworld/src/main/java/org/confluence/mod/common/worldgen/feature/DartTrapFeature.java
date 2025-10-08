@@ -6,7 +6,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.Tuple;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -40,8 +39,7 @@ public class DartTrapFeature extends Feature<DartTrapFeature.Config> {
                 for (h = 1; h <= config.maxDartDistance && FeatureUtils.ensureCanWrite(level, copy) && FeatureUtils.isPosAir(level, copy); ++h) {
                     copy.move(direction);
                 }
-                ChunkPos chunkPos = new ChunkPos(mutablePos);
-                if (!level.hasChunk(chunkPos.x, chunkPos.z)) continue;
+                if (!FeatureUtils.ensureCanWrite(level, copy)) continue;
                 if (h >= 4 && !level.isStateAtPosition(copy, blockState -> blockState.isAir() || blockState.getCollisionShape(level, copy).isEmpty())) {
                     BlockState dartTrap = ModFeatures.getDartTrap(level, copy, direction.getOpposite());
                     boolean b = FeatureUtils.safeSetBlock(level, copy, dartTrap, ModFeatures.IS_REPLACEABLE);

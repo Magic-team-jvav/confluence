@@ -11,6 +11,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -20,7 +21,6 @@ import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.registries.datamaps.DataMapValueMerger;
 import net.neoforged.neoforge.registries.datamaps.DataMapValueRemover;
 import org.confluence.lib.util.LibCodecUtils;
-import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.data.saved.GamePhase;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.init.ModDataMaps;
@@ -47,7 +47,9 @@ public record GamePhase2AttributeModifiers(Map<GamePhase, AttributeModifiersValu
     }
 
     public static void applyModifiers(LivingEntity living) {
-        if (living instanceof Player || !LibUtils.isAtLeastExpert(living.level(), living.blockPosition())) return;
+        if (living instanceof Player) return;
+        Difficulty difficulty = living.level().getDifficulty();
+        if (difficulty == Difficulty.PEACEFUL || difficulty == Difficulty.EASY) return;
         GamePhase2AttributeModifiers data = ModDataMaps.getEntityData(ModDataMaps.GAME_PHASE_2_ATTRIBUTE_MODIFIERS, living);
         if (data == null) return;
         ImmutableListMultimap<Holder<Attribute>, AttributeModifier> modifiers = data.get(KillBoard.INSTANCE.getGamePhase()).get();

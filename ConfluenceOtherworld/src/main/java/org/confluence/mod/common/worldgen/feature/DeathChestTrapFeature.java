@@ -136,6 +136,7 @@ public class DeathChestTrapFeature extends Feature<DeathChestTrapFeature.Config>
                 for (h = 1; h <= maxDartDistance && FeatureUtils.ensureCanWrite(level, mutable) && FeatureUtils.isPosAir(level, mutable); ++h) {
                     mutable.move(direction);
                 }
+                if (!FeatureUtils.ensureCanWrite(level, mutable)) continue;
                 if (h >= 16 && !level.isStateAtPosition(mutable, blockState -> blockState.isAir() || blockState.getCollisionShape(level, mutable).isEmpty())) {
                     BlockState dartTrap = ModFeatures.getDartTrap(level, mutable, opposite);
                     if (FeatureUtils.safeSetBlock(level, mutable, dartTrap, ModFeatures.IS_REPLACEABLE)) {

@@ -33,7 +33,7 @@ public record BestiarySyncPacketS2C(Either<Map<String, BestiaryEntry>, String> e
 
     @Override
     public void work(Player player) {
-        ClientBestiary.getInstance().handle(player.level(), either);
+        ClientBestiary.getInstance().handle(either);
     }
 
     public static void syncEntries(ServerPlayer player) {

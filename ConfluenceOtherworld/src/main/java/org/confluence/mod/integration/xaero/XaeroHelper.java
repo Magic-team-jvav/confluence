@@ -22,7 +22,7 @@ public class XaeroHelper {
         return collector;
     }
 
-    public static void tick(LocalPlayer player) {
+    public static void handle(LocalPlayer player) {
         if (IS_LOADED && WaystonesHelper.IS_LOADED) {
             ((PylonWaypointElementCollector) getCollector()).update(player);
         }

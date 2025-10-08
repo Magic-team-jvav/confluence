@@ -36,6 +36,10 @@ public class EctoMistHelper {
         }
     }
 
+    public static void reset() {
+        effectiveTombstones = 0;
+    }
+
     public static boolean isGraveyard() {
         return effectiveTombstones >= 7;
     }

@@ -1,7 +1,6 @@
 package org.confluence.mod.client.event;
 
 import com.google.common.collect.ImmutableListMultimap;
-import com.ibm.icu.impl.Pair;
 import com.mojang.datafixers.util.Either;
 import com.xiaohunao.equipment_benediction.api.manager.EquipmentSetManager;
 import com.xiaohunao.equipment_benediction.common.equipment_set.EquipmentSetBranch;
@@ -133,30 +132,32 @@ public final class GameClientEvents {
         Minecraft minecraft = Minecraft.getInstance();
         LocalPlayer player = minecraft.player;
 
-        WeatherHandler.initialize(player);
-        MeteorLandingHandler.handle(minecraft, player);
-
-        if (player == null) {
-            LocalBrushData.clear();
-            ClientPacketHandler.reset();
-            CompatibilityHandler.reset();
-            DropletsHandler.clear();
-            EctoMistHelper.effectiveTombstones = 0;
-            ClientBestiary.getInstance().resetEntries();
-        } else {
+        if (player != null) {
+            MeteorLandingHandler.handle(minecraft, player);
             HookThrowingHandler.handle(player);
             KeyRequestHandler.handle();
-            XaeroHelper.tick(player);
+            XaeroHelper.handle(player);
             DropletsHandler.handle(minecraft, player);
-            for (Pair<ClientLevel, Entity> pair : DeathAnimUtils.toBeAdded) {
-                pair.first.addEntity(pair.second);
-            }
-            for (Entity entity : DeathAnimUtils.toBeDiscarded) {
-                entity.discard();
-            }
+            DeathAnimUtils.handle();
         }
-        DeathAnimUtils.toBeAdded.clear();
-        DeathAnimUtils.toBeDiscarded.clear();
+        DeathAnimUtils.clear();
+    }
+
+    @SubscribeEvent
+    public static void clientPlayerNetwork$LoggingIn(ClientPlayerNetworkEvent.LoggingIn event) {
+        WeatherHandler.initialize(event.getPlayer());
+    }
+
+    @SubscribeEvent
+    public static void clientPlayerNetwork$LoggingOut(ClientPlayerNetworkEvent.LoggingOut event) {
+        WeatherHandler.reset();
+        MeteorLandingHandler.reset();
+        LocalBrushData.reset();
+        ClientPacketHandler.reset();
+        CompatibilityHandler.reset();
+        DropletsHandler.reset();
+        EctoMistHelper.reset();
+        ClientBestiary.reset();
     }
 
     @SubscribeEvent

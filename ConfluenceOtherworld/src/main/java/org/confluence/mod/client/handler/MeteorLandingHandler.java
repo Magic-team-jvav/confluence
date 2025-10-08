@@ -37,13 +37,13 @@ public final class MeteorLandingHandler {
     private static float v0 = 0;
     private static float v1 = 0;
 
-    public static void handle(Minecraft minecraft, @Nullable Player player) {
-        if (player == null) {
-            globalPos = null;
-            location = null;
-            tickUntilLanding = 0;
-            return;
-        }
+    public static void reset() {
+        globalPos = null;
+        location = null;
+        tickUntilLanding = 0;
+    }
+
+    public static void handle(Minecraft minecraft, Player player) {
         if (minecraft.isPaused()) return;
         if (tickUntilLanding > 0) {
             pitchO = pitch;

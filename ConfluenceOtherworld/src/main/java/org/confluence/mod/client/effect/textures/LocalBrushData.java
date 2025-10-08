@@ -68,7 +68,7 @@ public final class LocalBrushData {
         } catch (Exception ignored) {}
     }
 
-    public static void clear() {
+    public static void reset() {
         DATA.clear();
     }
 

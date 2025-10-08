@@ -2528,6 +2528,7 @@ public class ModEnglishProvider extends LanguageProvider {
         PaintItems.ITEMS.getEntries().forEach(itemAction);
         PickaxeAxeItems.ITEMS.getEntries().forEach(itemAction);
         PickaxeItems.ITEMS.getEntries().forEach(itemAction);
+        PotionItems.ITEMS.getEntries().forEach(itemAction);
         QuestedFishes.ITEMS.getEntries().forEach(itemAction);
         ShovelItems.ITEMS.getEntries().forEach(itemAction);
         SwordItems.ITEMS.getEntries().forEach(itemAction);

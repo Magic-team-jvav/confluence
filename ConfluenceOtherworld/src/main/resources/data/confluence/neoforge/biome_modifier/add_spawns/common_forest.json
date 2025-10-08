@@ -130,13 +130,13 @@
         },
         {
             "type": "terra_entity:blue_jellyfish",
-            "weight": 15,
+            "weight": 5,
             "minCount": 1,
             "maxCount": 1
         },
         {
             "type": "terra_entity:green_jellyfish",
-            "weight": 15,
+            "weight": 5,
             "minCount": 1,
             "maxCount": 1
         }

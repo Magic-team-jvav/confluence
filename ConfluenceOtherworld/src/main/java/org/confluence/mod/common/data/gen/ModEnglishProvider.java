@@ -2486,6 +2486,9 @@ public class ModEnglishProvider extends LanguageProvider {
 //        add("bestiary.entity.terra_entity.vortex_pillar.desc", "Representing a deep celestial void known as 'vortex', this tower holds the seal locking away a terrifying tyrant.");
 //        add("bestiary.entity.terra_entity.stardust_pillar.desc", "Representing a glittering celestial remnant known as 'stardust', this tower holds the seal locking away a terrifying tyrant.");
 //        add("bestiary.entity.terra_entity.moon_lord.desc", "The mastermind behind all terrors which befall the world, freed from his lunar prison. Practically a god, his power knows no limits.");
+
+
+
         Consumer<DeferredHolder<Block, ? extends Block>> blockAction = block -> add(block.get(), LibUtils.toTitleCase(block.getId().getPath()));
         ChestBlocks.BLOCKS.getEntries().forEach(blockAction);
         CrateBlocks.BLOCKS.getEntries().forEach(blockAction);

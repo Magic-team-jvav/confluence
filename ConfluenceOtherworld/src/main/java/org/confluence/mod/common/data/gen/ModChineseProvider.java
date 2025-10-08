@@ -2529,6 +2529,9 @@ public class ModChineseProvider extends LanguageProvider {
 //        add("bestiary.entity.terra_entity.stardust_pillar.desc", "星尘柱代表着名为“星尘”的闪亮天界残骸，这座塔楼持有封印，锁住了一个可怕的暴君。");
 //        add("bestiary.entity.terra_entity.moon_lord.desc", "月亮领主是降临世间所有恐怖的幕后主使，已从月球监狱中释放。它近乎神明，力量无穷无尽。");
 
+
+
+
         add(ModEntities.BEE_ARROW.get(), "蜜蜂箭");
         add(ModEntities.ARROW_PROJECTILE.get(), "泰拉箭");
         add(ModEntities.ANTI_GRAVITY_HOOK.get(), "反重力钩");

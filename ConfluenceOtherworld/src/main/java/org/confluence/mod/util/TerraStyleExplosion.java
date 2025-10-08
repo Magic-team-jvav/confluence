@@ -1,4 +1,4 @@
-package org.confluence.mod.common.entity.projectile.bomb;
+package org.confluence.mod.util;
 
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.Util;
@@ -71,10 +71,10 @@ public class TerraStyleExplosion extends Explosion {
         List<Entity> list = level.getEntities(source, area);
         net.neoforged.neoforge.event.EventHooks.onExplosionDetonate(level, this, list, radius + radius);
         for (Entity entity : list) {
-            if (entity.ignoreExplosion(this) || entity.distanceToSqr(center) > radiusP2) continue;
+            if (entity.ignoreExplosion(this)) continue;
 
             if (damageCalculator.shouldDamageEntity(this, entity)) {
-                entity.hurt(damageSource, damageCalculator.getEntityDamageAmount(this, entity));
+                entity.hurt(damageSource, Math.max(damageCalculator.getEntityDamageAmount(this, entity), radius * 10));
             }
             if (entity instanceof Player player && !player.isSpectator() && (!player.isCreative() || !player.getAbilities().flying)) {
                 hitPlayers.put(player, Vec3.ZERO);

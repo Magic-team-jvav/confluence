@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.lib.util.MultiplyExplosionDamageCalculator;
 import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.util.TerraStyleExplosion;
 
 public class BaseDirtBombEntity extends BaseBombEntity {
     protected int radius = 4;

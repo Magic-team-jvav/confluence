@@ -47,7 +47,6 @@ public class BossSummoningItem extends TooltipItem {
             if (TEUtils.internalSpawnEntity(mob, serverLevel)) {
                 serverLevel.addFreshEntityWithPassengers(mob);
             }
-            level.addFreshEntity(mob);
         }
         return InteractionResultHolder.success(itemStack);
     }

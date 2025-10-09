@@ -48,18 +48,15 @@ public class SawmillRecipe extends EitherAmountRecipe4x<MenuRecipeInput> {
         return ModRecipes.SAWMILL_TYPE.get();
     }
 
-    public static class Serializer implements RecipeSerializer<SawmillRecipe> {
-        public static final MapCodec<SawmillRecipe> CODEC = EitherAmountRecipe4x.eitherSerializerMapCodec(SawmillRecipe::new);
-        public static final StreamCodec<RegistryFriendlyByteBuf, SawmillRecipe> STREAM_CODEC = EitherAmountRecipe4x.eitherSerializerStreamCodec(SawmillRecipe::new);
-
+    public static class Serializer extends SimpleRecipeSerializer<SawmillRecipe> {
         @Override
-        public MapCodec<SawmillRecipe> codec() {
-            return CODEC;
+        protected MapCodec<SawmillRecipe> getCodec() {
+            return eitherSerializerMapCodec(SawmillRecipe::new);
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, SawmillRecipe> streamCodec() {
-            return STREAM_CODEC;
+        protected StreamCodec<RegistryFriendlyByteBuf, SawmillRecipe> getStreamCodec() {
+            return eitherSerializerStreamCodec(SawmillRecipe::new);
         }
     }
 }

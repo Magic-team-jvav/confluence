@@ -43,18 +43,15 @@ public class SkyMillRecipe extends EnvironmentAmountRecipe {
         return ModRecipes.SKY_MILL_TYPE.get();
     }
 
-    public static class Serializer implements RecipeSerializer<SkyMillRecipe> {
-        public static final MapCodec<SkyMillRecipe> CODEC = environmentShapelessSerializerMapCodec(SkyMillRecipe::new);
-        public static final StreamCodec<RegistryFriendlyByteBuf, SkyMillRecipe> STREAM_CODEC = environmentShapelessSerializerSteamCodec(SkyMillRecipe::new);
-
+    public static class Serializer extends SimpleRecipeSerializer<SkyMillRecipe> {
         @Override
-        public MapCodec<SkyMillRecipe> codec() {
-            return CODEC;
+        protected MapCodec<SkyMillRecipe> getCodec() {
+            return environmentShapelessSerializerMapCodec(SkyMillRecipe::new);
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, SkyMillRecipe> streamCodec() {
-            return STREAM_CODEC;
+        protected StreamCodec<RegistryFriendlyByteBuf, SkyMillRecipe> getStreamCodec() {
+            return environmentShapelessSerializerSteamCodec(SkyMillRecipe::new);
         }
     }
 }

@@ -76,38 +76,37 @@ public class FletchingTableRecipe implements Recipe<FletchingTableRecipe.Input> 
         return ModRecipes.FLETCHING_TABLE_TYPE.get();
     }
 
-    public static class Serializer implements RecipeSerializer<FletchingTableRecipe> {
-        public static final MapCodec<FletchingTableRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-                ItemStack.STRICT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
-                Ingredient.CODEC_NONEMPTY.lenientOptionalFieldOf("tail", Ingredient.EMPTY).forGetter(recipe -> recipe.tail),
-                Ingredient.CODEC_NONEMPTY.lenientOptionalFieldOf("body", Ingredient.EMPTY).forGetter(recipe -> recipe.body),
-                Ingredient.CODEC_NONEMPTY.lenientOptionalFieldOf("head", Ingredient.EMPTY).forGetter(recipe -> recipe.head)
-        ).apply(instance, FletchingTableRecipe::new));
-        public static final StreamCodec<RegistryFriendlyByteBuf, FletchingTableRecipe> STREAM_CODEC = StreamCodec.of(Serializer::toNetwork, Serializer::fromNetwork);
-
+    public static class Serializer extends SimpleRecipeSerializer<FletchingTableRecipe> {
         @Override
-        public MapCodec<FletchingTableRecipe> codec() {
-            return CODEC;
+        protected MapCodec<FletchingTableRecipe> getCodec() {
+            return RecordCodecBuilder.mapCodec(instance -> instance.group(
+                    ItemStack.STRICT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
+                    Ingredient.CODEC_NONEMPTY.lenientOptionalFieldOf("tail", Ingredient.EMPTY).forGetter(recipe -> recipe.tail),
+                    Ingredient.CODEC_NONEMPTY.lenientOptionalFieldOf("body", Ingredient.EMPTY).forGetter(recipe -> recipe.body),
+                    Ingredient.CODEC_NONEMPTY.lenientOptionalFieldOf("head", Ingredient.EMPTY).forGetter(recipe -> recipe.head)
+            ).apply(instance, FletchingTableRecipe::new));
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, FletchingTableRecipe> streamCodec() {
-            return STREAM_CODEC;
-        }
+        protected StreamCodec<RegistryFriendlyByteBuf, FletchingTableRecipe> getStreamCodec() {
+            return new StreamCodec<>() {
+                @Override
+                public FletchingTableRecipe decode(RegistryFriendlyByteBuf buffer) {
+                    ItemStack itemstack = ItemStack.STREAM_CODEC.decode(buffer);
+                    Ingredient tail = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
+                    Ingredient body = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
+                    Ingredient head = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
+                    return new FletchingTableRecipe(itemstack, tail, body, head);
+                }
 
-        private static FletchingTableRecipe fromNetwork(RegistryFriendlyByteBuf buffer) {
-            ItemStack itemstack = ItemStack.STREAM_CODEC.decode(buffer);
-            Ingredient tail = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
-            Ingredient body = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
-            Ingredient head = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
-            return new FletchingTableRecipe(itemstack, tail, body, head);
-        }
-
-        private static void toNetwork(RegistryFriendlyByteBuf buffer, FletchingTableRecipe recipe) {
-            ItemStack.STREAM_CODEC.encode(buffer, recipe.result);
-            Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.tail);
-            Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.body);
-            Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.head);
+                @Override
+                public void encode(RegistryFriendlyByteBuf buffer, FletchingTableRecipe recipe) {
+                    ItemStack.STREAM_CODEC.encode(buffer, recipe.result);
+                    Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.tail);
+                    Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.body);
+                    Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.head);
+                }
+            };
         }
     }
 

@@ -1489,7 +1489,7 @@ public class ModDataProvider {
                                     EquipmentSlotGroup.MAINHAND
                             ))
                     .exclusiveWith(enchantment.getOrThrow(ModTags.Enchantments.MAGIC_ATTACK_EXCLUSIVE))
-                    .withEffect(ModEnchantments.EffectComponentTypes.LESS_MANA_MORE_ATTACK.get(), new AddValue(LevelBasedValue.perLevel(1)), isMagic)
+                    .withEffect(ModEnchantments.EffectComponentTypes.LESS_MANA_MORE_ATTACK.get(), new AddValue(LevelBasedValue.perLevel(0.5f)), isMagic)
             );
             register(context, ModEnchantments.MYSTIC_SURGE, Enchantment.enchantment(
                             Enchantment.definition(
@@ -1502,7 +1502,7 @@ public class ModDataProvider {
                                     EquipmentSlotGroup.MAINHAND
                             ))
                     .exclusiveWith(enchantment.getOrThrow(ModTags.Enchantments.MAGIC_ATTACK_EXCLUSIVE))
-                    .withEffect(ModEnchantments.EffectComponentTypes.MORE_MANA_MORE_ATTACK.get(), new AddValue(LevelBasedValue.perLevel(1)), isMagic)
+                    .withEffect(ModEnchantments.EffectComponentTypes.MORE_MANA_MORE_ATTACK.get(), new AddValue(LevelBasedValue.perLevel(0.5f)), isMagic)
             );
         }
 

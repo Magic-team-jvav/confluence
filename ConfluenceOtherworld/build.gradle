@@ -82,7 +82,12 @@ repositories {
     flatDir {
         dirs 'libs'
     }
-    maven { url = "https://www.cursemaven.com" }
+    maven {
+        url = "https://www.cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
     maven {
         name = "Modrinth"
         url = "https://api.modrinth.com/maven"

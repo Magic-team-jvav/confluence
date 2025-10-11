@@ -2,8 +2,9 @@ package org.confluence.mod.common.data.saved;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.entity.EntityType;
@@ -22,8 +23,8 @@ public class BestiaryEntry {
             Codec.FLOAT.fieldOf("armor").forGetter(BestiaryEntry::getArmor),
             Codec.INT.fieldOf("drops").forGetter(BestiaryEntry::getDrops)
     ).apply(instance, BestiaryEntry::new));
-    public static final StreamCodec<ByteBuf, BestiaryEntry> STREAM_CODEC = LibStreamCodecUtils.composite(
-            LibStreamCodecUtils.registry(BuiltInRegistries.ENTITY_TYPE), BestiaryEntry::getType,
+    public static final StreamCodec<RegistryFriendlyByteBuf, BestiaryEntry> STREAM_CODEC = LibStreamCodecUtils.composite(
+            ByteBufCodecs.registry(Registries.ENTITY_TYPE), BestiaryEntry::getType,
             ByteBufCodecs.VAR_INT, BestiaryEntry::getKilledByCount,
             ByteBufCodecs.FLOAT, BestiaryEntry::getMaxHealth,
             ByteBufCodecs.FLOAT, BestiaryEntry::getKnockbackResistance,

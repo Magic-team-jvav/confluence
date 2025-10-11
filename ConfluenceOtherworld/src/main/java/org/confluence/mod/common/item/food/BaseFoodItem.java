@@ -86,6 +86,10 @@ public class BaseFoodItem extends Item {
         private final List<Component> tooltips = new ArrayList<>();
         private TriConsumer<ItemStack, Level, LivingEntity> finishUsingCallback;
 
+        Builder() {
+            this.properties = new Properties();
+        }
+
         Builder(Properties properties) {
             this.properties = properties;
         }

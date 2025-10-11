@@ -35,7 +35,7 @@ import static org.confluence.mod.common.item.sword.legacy.SwordPrefabs.*;
  * 允许空挥的剑都是特殊横扫剑<p>
  * 有自动挥舞的剑都是特殊横扫剑<p>
  * 有特殊横扫的剑不一定是自动挥舞的剑<p>
- * 是否允许自动挥舞是根据{@link ModTags.Items#COULD_AUTO_ATTACK}判断的<p>
+ * 是否允许自动挥舞是根据{@link ModTags.Items#AUTO_ATTACK_WHITELIST}判断的<p>
  * 是否允许特殊横扫是根据{@link BaseSwordItem.ModifierBuilder#specialSweep}判断的，即下文中的.setSpecialSweep()<p>
  * 如果不是由BOARD_SWORD定义的，那么需要使用{@link SwordPrefabs#withSpecialSweep}方法
  */

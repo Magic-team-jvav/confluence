@@ -473,7 +473,7 @@ public final class GameClientEvents {
     @SubscribeEvent
     public static void playerInteract$LeftClickEmpty(PlayerInteractEvent.LeftClickEmpty event) {
         Player player = event.getEntity();
-        if (!player.getMainHandItem().is(ModTags.Items.COULD_AUTO_ATTACK) && PlayerUtils.couldPerformEmptyTargetSweep(player)) {
+        if (!player.getMainHandItem().is(ModTags.Items.AUTO_ATTACK_WHITELIST) && PlayerUtils.couldPerformEmptyTargetSweep(player)) {
             EmptyTargetSweepPacketC2S.send2Server();
         }
     }
@@ -481,7 +481,7 @@ public final class GameClientEvents {
     @SubscribeEvent
     public static void playerInteract$LeftClickBlock(PlayerInteractEvent.LeftClickBlock event) {
         Player player = event.getEntity();
-        if (!player.getMainHandItem().is(ModTags.Items.COULD_AUTO_ATTACK) && PlayerUtils.couldPerformEmptyTargetSweep(player)) {
+        if (!player.getMainHandItem().is(ModTags.Items.AUTO_ATTACK_WHITELIST) && PlayerUtils.couldPerformEmptyTargetSweep(player)) {
             EmptyTargetSweepPacketC2S.send2Server();
         }
     }

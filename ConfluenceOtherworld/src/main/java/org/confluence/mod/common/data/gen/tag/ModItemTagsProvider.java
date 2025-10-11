@@ -1465,7 +1465,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 BaitItems.LAVAFLY.get()
         );
 
-        tag(ModTags.Items.COULD_AUTO_ATTACK).add(
+        tag(ModTags.Items.AUTO_ATTACK_WHITELIST).add(
                 SwordItems.ICE_BLADE.get(),
                 SwordItems.MANDIBLE_BLADE.get(),
                 SwordItems.PURPLE_CLUBBERFISH.get(),

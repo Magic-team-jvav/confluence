@@ -8,6 +8,7 @@ import org.confluence.mod.common.component.LootComponent;
 import org.confluence.mod.common.component.SwordProjectileComponent;
 import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
+import org.confluence.mod.common.item.GroupItem;
 
 import java.util.function.Supplier;
 
@@ -18,4 +19,5 @@ public final class ModDataComponentTypes {
     public static final Supplier<DataComponentType<PrefixComponent>> PREFIX = TYPES.registerComponentType("prefix", builder -> builder.persistent(PrefixComponent.CODEC)); // 不能使用同步
     public static final Supplier<DataComponentType<ValueComponent>> VALUE = TYPES.registerComponentType("value", builder -> builder.persistent(ValueComponent.CODEC).networkSynchronized(ValueComponent.STREAM_CODEC));
     public static final Supplier<DataComponentType<SwordProjectileComponent>> SWORD_PROJECTILE = TYPES.registerComponentType("sword_projectile", builder -> builder.persistent(SwordProjectileComponent.CODEC).networkSynchronized(SwordProjectileComponent.STREAM_CODEC));
+    public static final Supplier<DataComponentType<GroupItem.Stacks>> GROUP_STACKS = TYPES.registerComponentType("group_stacks", builder -> builder.persistent(GroupItem.Stacks.CODEC).networkSynchronized(GroupItem.Stacks.STREAM_CODEC));
 }

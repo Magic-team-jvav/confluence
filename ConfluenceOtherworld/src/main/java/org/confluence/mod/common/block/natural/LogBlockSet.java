@@ -1,5 +1,6 @@
 package org.confluence.mod.common.block.natural;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Streams;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
@@ -7,10 +8,7 @@ import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.HangingSignItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.SignItem;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -27,6 +25,7 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import org.apache.commons.lang3.function.TriFunction;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.item.ModItems;
+import org.confluence.mod.common.item.GroupItem;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -302,11 +301,23 @@ public class LogBlockSet {
     }
 
     public static void acceptNature(CreativeModeTab.Output output) {
+        int size = LOG_BLOCK_SETS.size();
+        List<ItemStack> logs = Lists.newArrayListWithCapacity(size);
+        List<ItemStack> leaves = Lists.newArrayListWithCapacity(size);
+        List<ItemStack> saplings = Lists.newArrayListWithCapacity(size);
         for (LogBlockSet logBlocks : LOG_BLOCK_SETS) {
-            if (logBlocks.LOG.isBound()) output.accept(logBlocks.LOG);
-            if (logBlocks.LEAVES.isBound()) output.accept(logBlocks.LEAVES);
-            if (logBlocks.SAPLING.isBound()) output.accept(logBlocks.SAPLING);
+            if (logBlocks.LOG.isBound()) logs.add(logBlocks.LOG.toStack());
+            if (logBlocks.LEAVES.isBound()) leaves.add(logBlocks.LEAVES.toStack());
+            if (logBlocks.SAPLING.isBound()) saplings.add(logBlocks.SAPLING.toStack());
         }
+        output.accept(GroupItem.of(logs));
+        output.accept(GroupItem.of(leaves));
+        output.accept(GroupItem.of(saplings));
+//        for (LogBlockSet logBlocks : LOG_BLOCK_SETS) {
+//            if (logBlocks.LOG.isBound()) output.accept(logBlocks.LOG);
+//            if (logBlocks.LEAVES.isBound()) output.accept(logBlocks.LEAVES);
+//            if (logBlocks.SAPLING.isBound()) output.accept(logBlocks.SAPLING);
+//        }
     }
 
     public static void wrapStrip() {

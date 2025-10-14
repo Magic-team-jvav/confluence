@@ -71,6 +71,7 @@ public class ManaStorage implements INBTSerializable<CompoundTag> {
         float extract = sup.getAsFloat() * (1.0F - TCUtils.getAccessoriesValue(serverPlayer, AccessoryItems.MANA$USE$REDUCE));
         if (PlayerUtils.applyAutoGetMana(serverPlayer, currentMana, extract)) return false;
         this.currentMana -= extract;
+        if (extract > 0.0F) setRegenerateDelay();
         EnchantmentUtils.repairPlayerItems(serverPlayer, extract);
         return true;
     }
@@ -80,6 +81,7 @@ public class ManaStorage implements INBTSerializable<CompoundTag> {
         float extract = sup.getAsFloat();
         if (currentMana < extract) return false;
         this.currentMana -= extract;
+        if (extract > 0.0F) setRegenerateDelay();
         return true;
     }
 

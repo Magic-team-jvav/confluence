@@ -11,6 +11,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -40,13 +41,15 @@ public record GamePhase2AttributeModifiers(Map<GamePhase, AttributeModifiersValu
 
     public AttributeModifiersValue get(GamePhase gamePhase) {
         AttributeModifiersValue value = map.get(gamePhase);
-        return value == null ? map.keySet().stream().filter(gamePhase::isAboveThan)
+        return value == null ? map.keySet().stream().filter(gamePhase::isAtLeast)
                 .max(Comparator.comparingInt(GamePhase::getOrder))
                 .map(map::get).orElse(AttributeModifiersValue.EMPTY) : value;
     }
 
     public static void applyModifiers(LivingEntity living) {
         if (living instanceof Player) return;
+        Difficulty difficulty = living.level().getDifficulty();
+        if (difficulty == Difficulty.PEACEFUL || difficulty == Difficulty.EASY) return;
         GamePhase2AttributeModifiers data = ModDataMaps.getEntityData(ModDataMaps.GAME_PHASE_2_ATTRIBUTE_MODIFIERS, living);
         if (data == null) return;
         ImmutableListMultimap<Holder<Attribute>, AttributeModifier> modifiers = data.get(KillBoard.INSTANCE.getGamePhase()).get();

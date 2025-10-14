@@ -15,7 +15,6 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.network.INetworkBlock;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.jetbrains.annotations.Nullable;
-import org.mesdag.particlestorm.data.event.ParticleEffect;
 import org.mesdag.particlestorm.data.molang.MolangExp;
 import org.mesdag.particlestorm.network.EmitterCreationPacketS2C;
 
@@ -54,6 +53,6 @@ public class ConfettiCannonBlock extends HorizontalDirectionalBlock implements E
                 "variable.pitch", Integer.toString(pitch),
                 "variable.yaw", Integer.toString(yaw)
         ));
-        EmitterCreationPacketS2C.sendToAll(Confluence.asResource("confetti"), pos.getCenter().toVector3f(), ParticleEffect.Type.PARTICLE_WITH_VELOCITY, expression);
+        EmitterCreationPacketS2C.sendToAll(Confluence.asResource("confetti"), pos.getCenter().toVector3f(), expression, null);
     }
 }

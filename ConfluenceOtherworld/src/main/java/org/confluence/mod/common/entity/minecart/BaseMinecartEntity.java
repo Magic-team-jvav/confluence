@@ -10,6 +10,8 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.vehicle.Minecart;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseRailBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.VectorUtils;
@@ -78,6 +80,24 @@ public class BaseMinecartEntity extends Minecart {
     @Override
     public boolean isPushable() {
         return driver == null;
+    }
+
+    @Override
+    public void setDeltaMovement(Vec3 deltaMovement) {
+        if (!horizontalCollision || shouldPerformStop()) {
+            super.setDeltaMovement(deltaMovement);
+        }
+    }
+
+    private boolean shouldPerformStop() {
+        if (isOnRails()) {
+            BlockPos pos = getCurrentRailPosition();
+            BlockState state = level().getBlockState(pos);
+            if (state.getBlock() instanceof BaseRailBlock block) {
+                return !block.getRailDirection(state, level(), pos, this).isAscending();
+            }
+        }
+        return true;
     }
 
     @Override

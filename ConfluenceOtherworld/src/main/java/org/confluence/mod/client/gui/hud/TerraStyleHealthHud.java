@@ -7,7 +7,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -15,23 +14,17 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.common.TranslatableEnum;
 import org.confluence.lib.util.LibClientUtils;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.common.item.common.EverBeneficialItem;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Locale;
 
-import static org.confluence.mod.util.ClientUtils.colorDraw;
-import static org.confluence.mod.util.ClientUtils.drawString;
+import static org.confluence.mod.util.ClientUtils.*;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class TerraStyleHealthHud implements LayeredDraw.Layer {
-    private static final ResourceLocation LEGACY_TEXTURE = Confluence.asResource("textures/gui/hud/icon.png");
-    private static final ResourceLocation OVERLAY_TEXTURE = Confluence.asResource("textures/gui/hud/overlay.png");
-    private static final int LEGACY_SIZE = 128;
-    private static final int OVERLAY_SIZE = 128;
     private static final int[] HEALTH = new int[]{0xab311e, 0x5d11ba, 0x41a9ba, 0x37c438, 0xeed536};
     private static final int[] HEALTH_LOW = new int[]{0xab1f5d, 0x9d44ac, 0x12f7dd, 0x1fab7f, 0xf7b60b};
     private static final int[] HEALTH_HIGH = new int[]{0xffb5b5, 0xd6e7eb, 0xbdced0, 0xd6eead, 0xeff4ce};
@@ -86,13 +79,13 @@ public class TerraStyleHealthHud implements LayeredDraw.Layer {
                 heartBuff = (typeHeart == 0) ? heartBuff : 0;
                 int heightUV = (typeHeart * 17);
                 if (num == heartNum) {
-                    guiGraphics.blit(LEGACY_TEXTURE, x, y, ((type == 1) ? 54 : 44) + heartBuff, heightUV, 9, 16, LEGACY_SIZE, LEGACY_SIZE);
+                    guiGraphics.blitSprite(LEGACY_TEXTURE, LEGACY_SIZE, LEGACY_SIZE, ((type == 1) ? 54 : 44) + heartBuff, heightUV, x, y, 9, 16);
                 } else if (num > 0.0F) {
                     float ts = num / heartNum;
                     guiGraphics.pose().pushPose();
                     guiGraphics.pose().translate(x + 4.5F * (1.0F - ts), y + 9.0F * (1.0F - ts), 0.0F);
                     guiGraphics.pose().scale(ts, ts, 1.0F);
-                    guiGraphics.blit(LEGACY_TEXTURE, 0, 0, ((type == 1) ? 54 : 44) + heartBuff, heightUV, 9, 16, LEGACY_SIZE, LEGACY_SIZE);
+                    guiGraphics.blitSprite(LEGACY_TEXTURE, LEGACY_SIZE, LEGACY_SIZE, ((type == 1) ? 54 : 44) + heartBuff, heightUV, 0, 0, 9, 16);
                     guiGraphics.pose().popPose();
                 }
             }
@@ -113,18 +106,18 @@ public class TerraStyleHealthHud implements LayeredDraw.Layer {
                     blitX = countToBlit * 10 - countLine * 100;
                     blitXFirst = (countHeart / 10 == 0) ? 100 - (countHeart - (countHeart / 10) * 10) * 10 : 0;
                     if (countToBlit % 10 == 0) {
-                        guiGraphics.blit(LEGACY_TEXTURE, width + blitX - 1 + blitXFirst, height + blitY, 0, heightUV, 1, 16, LEGACY_SIZE, LEGACY_SIZE);
+                        guiGraphics.blitSprite(LEGACY_TEXTURE, LEGACY_SIZE, LEGACY_SIZE, 0, heightUV, width + blitX - 1 + blitXFirst, height + blitY, 1, 16);
                         if (countToBlit + 1 == countHeart) {
-                            guiGraphics.blit(LEGACY_TEXTURE, width + blitX - 3 + blitXFirst, height + blitY, 13, heightUV, 17, 16, LEGACY_SIZE, LEGACY_SIZE);
+                            guiGraphics.blitSprite(LEGACY_TEXTURE, LEGACY_SIZE, LEGACY_SIZE, 13, heightUV, width + blitX - 3 + blitXFirst, height + blitY, 17, 16);
                         } else {
-                            guiGraphics.blit(LEGACY_TEXTURE, width + blitX + blitXFirst, height + blitY, 2, heightUV, 10, 16, LEGACY_SIZE, LEGACY_SIZE);
+                            guiGraphics.blitSprite(LEGACY_TEXTURE, LEGACY_SIZE, LEGACY_SIZE, 2, heightUV, width + blitX + blitXFirst, height + blitY, 10, 16);
                         }
                     } else if (countToBlit + 1 == countHeart) {
-                        guiGraphics.blit(LEGACY_TEXTURE, width + blitX - 3 + blitXFirst, height + blitY, 13, heightUV, 17, 16, LEGACY_SIZE, LEGACY_SIZE);
+                        guiGraphics.blitSprite(LEGACY_TEXTURE, LEGACY_SIZE, LEGACY_SIZE, 13, heightUV, width + blitX - 3 + blitXFirst, height + blitY, 17, 16);
                     } else if ((countToBlit + 1) % 10 == 0) {
-                        guiGraphics.blit(LEGACY_TEXTURE, width + blitX + blitXFirst, height + blitY, 31, heightUV, 12, 16, LEGACY_SIZE, LEGACY_SIZE);
+                        guiGraphics.blitSprite(LEGACY_TEXTURE, LEGACY_SIZE, LEGACY_SIZE, 31, heightUV, width + blitX + blitXFirst, height + blitY, 12, 16);
                     } else {
-                        guiGraphics.blit(LEGACY_TEXTURE, width + blitX + blitXFirst, height + blitY, 2, heightUV, 10, 16, LEGACY_SIZE, LEGACY_SIZE);
+                        guiGraphics.blitSprite(LEGACY_TEXTURE, LEGACY_SIZE, LEGACY_SIZE, 2, heightUV, width + blitX + blitXFirst, height + blitY, 10, 16);
                     }
                     type = (countToBlit < lifeFruitHealth) ? 1 : 0;
                     blitHeart(guiGraphics, type, typeHeart, heartNumList.getFloat(countToBlit), width + blitX + blitXFirst + 1, height + blitY, heartBuff);
@@ -171,7 +164,7 @@ public class TerraStyleHealthHud implements LayeredDraw.Layer {
                 RandomSource random = RandomSource.create(114514);
                 colorDraw(guiGraphics, minecraft, random, OVERLAY_TEXTURE, HEALTH, HEALTH_HIGH, HEALTH_LOW, maxHealth, currentHealth, widthHealth, heightHealth, OVERLAY_SIZE, 0, true);
                 if (absorptionHealth > 0.0F) {
-                    guiGraphics.blit(Confluence.asResource("textures/gui/hud/icon_0.png"), widthHealth, heightHealth, 0, 0, 81, 9, 128, 16);
+                    guiGraphics.blitSprite(ICON_0, 128, 16, 0, 0, widthHealth, heightHealth, 81, 9);
                     drawString(guiGraphics, minecraft.font, abHealth, widthHealth + 41F - (minecraft.font.width(Component.literal(abHealth))) / 2.0F, heightHealth + 1, 0x5efff8);
                 }
             }

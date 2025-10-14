@@ -6,26 +6,21 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.neoforged.neoforge.common.TranslatableEnum;
 import org.confluence.lib.util.LibClientUtils;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.handler.ClientPacketHandler;
+import org.confluence.mod.util.ClientUtils;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Locale;
 
-import static org.confluence.mod.util.ClientUtils.colorDraw;
+import static org.confluence.mod.util.ClientUtils.*;
 
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class TerraStyleManaHud implements LayeredDraw.Layer {
-    private static final ResourceLocation LEGACY_TEXTURE = Confluence.asResource("textures/gui/hud/icon.png");
-    private static final ResourceLocation OVERLAY_TEXTURE = Confluence.asResource("textures/gui/hud/overlay.png");
-    private static final int LEGACY_SIZE = 128;
-    private static final int OVERLAY_SIZE = 128;
     private static final int[] MANA = new int[]{0x5a82e2, 0xa248d7};
     private static final int[] MANA_LOW = new int[]{0x5d11ba, 0xac1a91};
     private static final int[] MANA_HIGH = new int[]{0x90aff8, 0xff94bd};
@@ -54,15 +49,15 @@ public class TerraStyleManaHud implements LayeredDraw.Layer {
                 float ts;
                 for (int i = 0; i < maxManaCount; i++) {
                     currentManaToBlit = currentMana - (i + 1) * 20;
-                    guiGraphics.blit(LEGACY_TEXTURE, widthMana, heightMana + i * 12, 0, 34, 17, 16, LEGACY_SIZE, LEGACY_SIZE);
+                    guiGraphics.blitSprite(LEGACY_TEXTURE, LEGACY_SIZE, LEGACY_SIZE, 0, 34, widthMana, heightMana + i * 12, 17, 16);
                     if (currentManaToBlit >= 0) {
-                        guiGraphics.blit(LEGACY_TEXTURE, widthMana + 2, heightMana + i * 12, 18, 34, 13, 16, LEGACY_SIZE, LEGACY_SIZE);
+                        guiGraphics.blitSprite(LEGACY_TEXTURE, LEGACY_SIZE, LEGACY_SIZE, 18, 34, widthMana + 2, heightMana + i * 12, 13, 16);
                     } else if (currentManaToBlit + 20 >= 0) {
                         ts = (currentManaToBlit + 20) / 20.0F;
                         guiGraphics.pose().pushPose();
                         guiGraphics.pose().translate(widthMana + 2 + 6.5F * (1 - ts), heightMana + i * 12 + 8.5F * (1 - ts), 0.0F);
                         guiGraphics.pose().scale(ts, ts, 1.0F);
-                        guiGraphics.blit(LEGACY_TEXTURE, 0, 0, 18, 34, 13, 16, LEGACY_SIZE, LEGACY_SIZE);
+                        guiGraphics.blitSprite(LEGACY_TEXTURE, 0, 0, 18, 34, 13, 16, LEGACY_SIZE, LEGACY_SIZE);
                         guiGraphics.pose().popPose();
                     }
                 }
@@ -77,7 +72,7 @@ public class TerraStyleManaHud implements LayeredDraw.Layer {
                 int heightMana = guiGraphics.guiHeight() - minecraft.gui.rightHeight + ClientConfigs.manaOffsetY;
                 minecraft.gui.rightHeight += 10;
                 RandomSource random = RandomSource.create(1919810);
-                colorDraw(guiGraphics, minecraft, random, OVERLAY_TEXTURE, MANA, MANA_HIGH, MANA_LOW, maxMana, currentMana, widthMana, heightMana, OVERLAY_SIZE, 10, false);
+                colorDraw(guiGraphics, minecraft, random, ClientUtils.OVERLAY_TEXTURE, MANA, MANA_HIGH, MANA_LOW, maxMana, currentMana, widthMana, heightMana, ClientUtils.OVERLAY_SIZE, 10, false);
             }
         };
 

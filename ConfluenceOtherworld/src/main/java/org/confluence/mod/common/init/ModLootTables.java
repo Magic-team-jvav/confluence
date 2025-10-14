@@ -9,6 +9,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.loot.DateLootItemCondition;
 import org.confluence.mod.common.loot.GamePhaseLootItemCondition;
+import org.confluence.mod.common.loot.SecretFlagLootItemCondition;
 
 import java.util.function.Supplier;
 
@@ -21,7 +22,7 @@ public final class ModLootTables {
     public static final ResourceKey<LootTable> SKY_CRATE = register("gameplay/crate/sky_crate");
     public static final ResourceKey<LootTable> CORRUPT_CRATE = register("gameplay/crate/corrupt_crate");
     public static final ResourceKey<LootTable> CRIMSON_CRATE = register("gameplay/crate/crimson_crate");
-    public static final ResourceKey<LootTable> SACRED_CRATE = register("gameplay/crate/sacred_crate");
+    public static final ResourceKey<LootTable> HALLOWED_CRATE = register("gameplay/crate/hallowed_crate");
     public static final ResourceKey<LootTable> DUNGEON_CRATE = register("gameplay/crate/dungeon_crate");
     public static final ResourceKey<LootTable> FROZEN_CRATE = register("gameplay/crate/frozen_crate");
     public static final ResourceKey<LootTable> OASIS_CRATE = register("gameplay/crate/oasis_crate");
@@ -88,5 +89,6 @@ public final class ModLootTables {
 
         public static final Supplier<LootItemConditionType> DATE = TYPES.register("date", () -> new LootItemConditionType(DateLootItemCondition.CODEC));
         public static final Supplier<LootItemConditionType> GAME_PHASE = TYPES.register("game_phase", () -> new LootItemConditionType(GamePhaseLootItemCondition.CODEC));
+        public static final Supplier<LootItemConditionType> SECRET_FLAG = TYPES.register("secret_flag", () -> new LootItemConditionType(SecretFlagLootItemCondition.CODEC));
     }
 }

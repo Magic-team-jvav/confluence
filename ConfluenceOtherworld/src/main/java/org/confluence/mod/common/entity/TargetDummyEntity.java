@@ -27,6 +27,11 @@ public class TargetDummyEntity extends LivingEntity {
     }
 
     @Override
+    public boolean isDeadOrDying() {
+        return false;
+    }
+
+    @Override
     public boolean hurt(DamageSource source, float amount) {
         if (source.getEntity() instanceof Player player && player.isCrouching() && player.onGround()) {
             if (player.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof PickaxeItem) {

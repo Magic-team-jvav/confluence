@@ -43,6 +43,7 @@ public class BugNetItem extends TooltipItem {
                 interactionTarget.setYHeadRot(0.0F);
                 interactionTarget.setYBodyRot(0.0F);
                 interactionTarget.setXRot(0.0F);
+                interactionTarget.stopRiding();
                 LibUtils.updateItemStackNbt(itemStack, interactionTarget::save);
                 if (interactionTarget.hasCustomName()) {
                     itemStack.set(DataComponents.CUSTOM_NAME, interactionTarget.getCustomName());

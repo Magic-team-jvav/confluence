@@ -6,5 +6,5 @@ import net.minecraft.world.entity.LivingEntity;
 import org.confluence.mod.api.event.LivingFreezeEvent;
 
 public interface LivingFreezeHook extends IHook {
-    void livingFreeze(IBenediction owner, LivingEntity self, LivingFreezeEvent.Pre post);
+    void livingFreeze(IBenediction owner, LivingEntity self, LivingFreezeEvent event);
 }

@@ -11,6 +11,7 @@ import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import org.confluence.mod.common.block.common.TombstoneBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.init.ModTags;
@@ -388,7 +389,13 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 BEWITCHING_TABLE.get(),
                 SHARPENING_STATION.get(),
                 SILLY_BALLOON_MACHINE.get(),
-                PIGGY_BANK.get()
+                PIGGY_BANK.get(),
+
+                KING_SLIME_RELIC.get(),
+                EYE_OF_CTHULHU_RELIC.get(),
+                BRAIN_OF_CTHULHU_RELIC.get(),
+                EATER_OF_WORLDS_RELIC.get(),
+                SKELETRON_RELIC.get()
         );
 
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithShovel = tag(BlockTags.MINEABLE_WITH_SHOVEL);
@@ -467,7 +474,11 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 NatureBlocks.GLOWING_MUSHROOM_PILEUS_BLOCK.get(),
                 NatureBlocks.LIFE_MUSHROOM_INDUSIUM_BLOCK.get(),
                 NatureBlocks.LIFE_MUSHROOM_STEM_BLOCK.get(),
-                NatureBlocks.LIFE_MUSHROOM_PILEUS_BLOCK.get()
+                NatureBlocks.LIFE_MUSHROOM_PILEUS_BLOCK.get(),
+
+                CORRUPT_CACTUS.get(),
+                CRIMSON_CACTUS.get(),
+                HALLOW_CACTUS.get()
         );
         tag(BlockTags.INCORRECT_FOR_WOODEN_TOOL).addTag(ModTags.Blocks.NEEDS_2_LEVEL);
         tag(BlockTags.INCORRECT_FOR_GOLD_TOOL).addTag(ModTags.Blocks.NEEDS_2_LEVEL);
@@ -654,7 +665,13 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 OPAL_BLOCK.get(),
                 GELSTONE_BLOCK.get(),
                 STURDY_FOSSIL_BLOCK.get(),
-                COLD_CRYSTAL_BLOCK.get()
+                COLD_CRYSTAL_BLOCK.get(),
+
+                KING_SLIME_RELIC.get(),
+                EYE_OF_CTHULHU_RELIC.get(),
+                BRAIN_OF_CTHULHU_RELIC.get(),
+                EATER_OF_WORLDS_RELIC.get(),
+                SKELETRON_RELIC.get()
         );
         tag(ModTags.Blocks.NEEDS_2_LEVEL).addTags(
                 ModTags.Blocks.STORAGE_BLOCKS_RAW_METEORITE,
@@ -939,7 +956,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                         LIHZAHRD_BRICKS.get(),
                         BLUE_BRICKS.get(),
                         GREEN_BRICKS.get(),
-                        PINK_BRICKS.get(), 
+                        PINK_BRICKS.get(),
                         BLUE_BRICK_COLUMN.get(),
                         GREEN_BRICK_COLUMN.get(),
                         PINK_BRICK_COLUMN.get(),
@@ -1344,6 +1361,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
             tag(ModTags.Blocks.PURE_CONVERSION_SANDSTONE).add(CRIMSANDSTONE.get(), PEARLSANDSTONE.get(), EBONSANDSTONE.get());
             tag(ModTags.Blocks.PURE_CONVERSION_HARDENED_SAND_BLOCK).add(HARDENED_PEARLSAND_BLOCK.get(), HARDENED_CRIMSAND_BLOCK.get(), HARDENED_EBONSAND_BLOCK.get());
             tag(ModTags.Blocks.PURE_CONVERSION_MOIST_SAND_BLOCK).add(MOISTENED_PEARLSAND_BLOCK.get(), MOISTENED_CRIMSAND_BLOCK.get(), MOISTENED_EBONSAND_BLOCK.get());
+            tag(ModTags.Blocks.PURE_CONVERSION_CACTUS).add(CORRUPT_CACTUS.get(), CRIMSON_CACTUS.get(), HALLOW_CACTUS.get());
         }
         {
             tag(ModTags.Blocks.CORRUPTION_CONVERSION_DIRT).add(Blocks.MUD);
@@ -1356,6 +1374,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
             tag(ModTags.Blocks.CORRUPTION_CONVERSION_SANDSTONE).add(Blocks.SANDSTONE, Blocks.RED_SANDSTONE, CRIMSANDSTONE.get(), PEARLSANDSTONE.get());
             tag(ModTags.Blocks.CORRUPTION_CONVERSION_HARDENED_SAND_BLOCK).add(HARDENED_SAND_BLOCK.get(), HARDENED_RED_SAND_BLOCK.get(), HARDENED_PEARLSAND_BLOCK.get(), HARDENED_CRIMSAND_BLOCK.get());
             tag(ModTags.Blocks.CORRUPTION_CONVERSION_MOIST_SAND_BLOCK).add(MOISTENED_SAND_BLOCK.get(), MOISTENED_RED_SAND_BLOCK.get(), MOISTENED_PEARLSAND_BLOCK.get(), MOISTENED_CRIMSAND_BLOCK.get());
+            tag(ModTags.Blocks.CORRUPTION_CONVERSION_CACTUS).add(Blocks.CACTUS);
         }
         {
             tag(ModTags.Blocks.CRIMSON_CONVERSION_DIRT).add(Blocks.MUD);
@@ -1368,6 +1387,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
             tag(ModTags.Blocks.CRIMSON_CONVERSION_SANDSTONE).add(Blocks.SANDSTONE, Blocks.RED_SANDSTONE, EBONSANDSTONE.get(), PEARLSANDSTONE.get());
             tag(ModTags.Blocks.CRIMSON_CONVERSION_HARDENED_SAND_BLOCK).add(HARDENED_SAND_BLOCK.get(), HARDENED_RED_SAND_BLOCK.get(), HARDENED_PEARLSAND_BLOCK.get(), HARDENED_EBONSAND_BLOCK.get());
             tag(ModTags.Blocks.CRIMSON_CONVERSION_MOIST_SAND_BLOCK).add(MOISTENED_SAND_BLOCK.get(), MOISTENED_RED_SAND_BLOCK.get(), MOISTENED_EBONSAND_BLOCK.get(), MOISTENED_PEARLSAND_BLOCK.get());
+            tag(ModTags.Blocks.CRIMSON_CONVERSION_CACTUS).add(Blocks.CACTUS);
         }
         {
             tag(ModTags.Blocks.HALLOW_CONVERSION_GRASS_BLOCK).addTag(BlockTags.CONVERTABLE_TO_MUD).add(Blocks.GRASS_BLOCK, CORRUPT_GRASS_BLOCK.get(), CRIMSON_GRASS.get());
@@ -1378,6 +1398,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
             tag(ModTags.Blocks.HALLOW_CONVERSION_SANDSTONE).add(Blocks.SANDSTONE, Blocks.RED_SANDSTONE, EBONSANDSTONE.get(), CRIMSANDSTONE.get());
             tag(ModTags.Blocks.HALLOW_CONVERSION_HARDENED_SAND_BLOCK).add(HARDENED_SAND_BLOCK.get(), HARDENED_RED_SAND_BLOCK.get(), HARDENED_EBONSAND_BLOCK.get(), HARDENED_CRIMSAND_BLOCK.get());
             tag(ModTags.Blocks.HALLOW_CONVERSION_MOIST_SAND_BLOCK).add(MOISTENED_SAND_BLOCK.get(), MOISTENED_RED_SAND_BLOCK.get(), MOISTENED_EBONSAND_BLOCK.get(), MOISTENED_CRIMSAND_BLOCK.get());
+            tag(ModTags.Blocks.HALLOW_CONVERSION_CACTUS).add(Blocks.CACTUS);
         }
         tag(ModTags.Blocks.CURSED_FLAME_BASE_BLOCK).add(
                 EBONSTONE.get(),
@@ -1498,6 +1519,13 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 WHITE_PAPER_PANE_LAMP.get(),
                 MALACHITE_PAPER_PANE_LAMP.get()
         );
+        tag(ModTags.Blocks.CACTUS).add(
+                Blocks.CACTUS,
+                CRIMSON_CACTUS.get(),
+                CORRUPT_CACTUS.get(),
+                HALLOW_CACTUS.get()
+        );
+        tag(ModTags.Blocks.RELIC).add(RELIC_BLOCKS.stream().map(DeferredHolder::get).toArray(Block[]::new));
         { // 没沙子是防止河流里的沙子被误判成沙漠
             tag(ModTags.Blocks.HALLOW_DESERT_BLOCKS).add(PEARLSANDSTONE.get(), HARDENED_PEARLSAND_BLOCK.get(), MOISTENED_PEARLSAND_BLOCK.get());
             tag(ModTags.Blocks.HALLOW_TUNDRA_BLOCKS).add(PINK_ICE.get(), PINK_PACKED_ICE.get());
@@ -1524,11 +1552,63 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                         Blocks.PINK_PETALS,
                         Blocks.BIG_DRIPLEAF,
                         Blocks.BIG_DRIPLEAF_STEM,
-                        Blocks.SMALL_DRIPLEAF
-                        // todo 剩下的植物
+                        Blocks.SMALL_DRIPLEAF,
+
+                        NatureBlocks.DESERT_GRASS.get(),
+                        NatureBlocks.DESERT_TALL_GRASS.get(),
+                        NatureBlocks.CORRUPT_GRASS.get(),
+                        NatureBlocks.CRIMSON_GRASS.get(),
+                        NatureBlocks.HALLOW_GRASS.get(),
+                        NatureBlocks.NATURES_GIFT.get(),
+                        JUNGLE_ROSE.get(),
+                        GREEN_MOSS.get(),
+                        BROWN_MOSS.get(),
+                        RED_MOSS.get(),
+                        BLUE_MOSS.get(),
+                        PURPLE_MOSS.get(),
+                        LAVA_MOSS.get(),
+                        KRYPTON_MOSS.get(),
+                        XENON_MOSS.get(),
+                        ARGON_MOSS.get(),
+                        NEON_MOSS.get(),
+                        HELIUM_MOSS.get(),
+                        GLOWING_MUSHROOM_MOSS.get(),
+                        CATTAILS_BODY.get(),
+                        JUNGLE_CATTAILS_BODY.get(),
+                        GLOWING_MUSHROOM_CATTAILS_BODY.get(),
+                        HALLOW_CATTAILS_BODY.get(),
+                        EBONY_CATTAILS_BODY.get(),
+                        CRIMSON_CATTAILS_BODY.get(),
+                        CATTAILS_HEAD.get(),
+                        JUNGLE_CATTAILS_HEAD.get(),
+                        GLOWING_MUSHROOM_CATTAILS_HEAD.get(),
+                        HALLOW_CATTAILS_HEAD.get(),
+                        EBONY_CATTAILS_HEAD.get(),
+                        CRIMSON_CATTAILS_HEAD.get(),
+                        YELLOW_WILLOW_DROOPING_LEAVES.get(),
+                        GLOWING_MUSHROOM_VINE.get(),
+                        FOREST_DROOPING_VINE.get(),
+                        JUNGLE_DROOPING_VINE.get(),
+                        CORRUPT_DROOPING_VINE.get(),
+                        CRIMSON_DROOPING_VINE.get(),
+                        HALLOW_DROOPING_VINE.get(),
+                        SHIMMER_DROOPING_VINE_PLANT.get(),
+                        SMALL_DESERT_PLANT.get(),
+                        BIG_DESERT_PLANT.get(),
+                        SMALL_CACTUS.get(),
+                        BLINKING_ROYAL_SHIMMERLILY.get()
                 )
                 .addTags(BlockTags.FLOWERS, BlockTags.LEAVES, BlockTags.SAPLINGS, BlockTags.CROPS)
                 .addOptionalTag(ResourceLocation.fromNamespaceAndPath("twilightforest", "portal/decoration"));
+        tag(BlockTags.CROPS).add(
+                WATERLEAF.get(),
+                FIREBLOSSOM.get(),
+                MOONGLOW.get(),
+                BLINKROOT.get(),
+                SHIVERTHORN.get(),
+                DAYBLOOM.get(),
+                DEATHWEED.get()
+        );
         WaystonesHelper.blockTag(this::tag);
     }
 }

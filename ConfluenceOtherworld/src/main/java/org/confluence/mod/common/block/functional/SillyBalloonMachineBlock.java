@@ -60,7 +60,7 @@ public class SillyBalloonMachineBlock extends Block implements EntityBlock, INet
         }
 
         public static void clientTick(Level level, BlockPos blockPos, BlockState blockState, BEntity blockEntity) {
-            if (blockEntity.emitter == null) {
+            if (blockEntity.emitter == null || blockEntity.emitter.isRemoved()) {
                 blockEntity.emitter = new ParticleEmitter(level, blockPos.getCenter(), Confluence.asResource("balloon"));
                 PSGameClient.LOADER.addEmitter(blockEntity.emitter, false);
             }

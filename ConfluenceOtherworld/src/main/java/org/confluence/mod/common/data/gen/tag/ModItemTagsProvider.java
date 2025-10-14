@@ -2,10 +2,10 @@ package org.confluence.mod.common.data.gen.tag;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
+import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
@@ -23,8 +23,11 @@ import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
+import org.confluence.mod.common.item.common.BaseDyeItem;
+import org.confluence.mod.common.item.potion.AbstractPotionItem;
 import org.confluence.mod.integration.waystones.WaystonesHelper;
 import org.confluence.terra_curio.common.init.TCItems;
+import org.confluence.terra_curio.common.init.TCTags;
 import org.confluence.terra_furniture.common.init.TFBlocks;
 import org.confluence.terra_guns.common.init.TGTags;
 import org.confluence.terraentity.init.TEItems;
@@ -38,6 +41,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
+@SuppressWarnings("all")
 public class ModItemTagsProvider extends ItemTagsProvider {
     public ModItemTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, CompletableFuture<TagLookup<Block>> b, @Nullable ExistingFileHelper helper) {
         super(output, provider, b, Confluence.MODID, helper);
@@ -45,9 +49,21 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.@NotNull Provider provider) {
-        HookItems.acceptTag(tag(ModTags.Items.HOOK));
-        PotionItems.acceptTag(tag(Tags.Items.POTIONS));
-        FoodItems.acceptTag(tag(Tags.Items.FOODS));
+        IntrinsicTagAppender<Item> hook = tag(ModTags.Items.HOOK);
+        HookItems.ITEMS.getEntries().forEach(item -> {
+            hook.add(item.get());
+        });
+        IntrinsicTagAppender<Item> potions = tag(Tags.Items.POTIONS);
+        PotionItems.ITEMS.getEntries().forEach(item -> {
+            if (item.get() instanceof AbstractPotionItem item1) {
+                potions.add(item1);
+            }
+        });
+        IntrinsicTagAppender<Item> foods = tag(Tags.Items.FOODS);
+        foods.add(PotionItems.ALE.get());
+        FoodItems.ITEMS.getEntries().forEach(item -> {
+            foods.add(item.get());
+        });
 
         IntrinsicTagAppender<Item> notFlammableWood = tag(ItemTags.NON_FLAMMABLE_WOOD);
         for (LogBlockSet logBlockSet : LogBlockSet.LOG_BLOCK_SETS) {
@@ -453,47 +469,176 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FoodItems.FLOATING_WHEAT_SEED.get()
         );
 
-        PaintItems.acceptTag(tag(Tags.Items.DYED));
-        ArrowItems.acceptTag(tag(ItemTags.ARROWS));
-        IntrinsicTagAppender<Item> hammer = tag(ModTags.Items.HAMMERS);
-        HamaxeItems.acceptTag(hammer);
-        HammerItems.acceptTag(hammer);
-        IntrinsicTagAppender<Item> pickaxes = tag(ItemTags.PICKAXES);
-        PickaxeItems.acceptTag(pickaxes);
-        PickaxeAxeItems.acceptTag(pickaxes);
-        IntrinsicTagAppender<Item> axes = tag(ItemTags.AXES);
-        HamaxeItems.acceptTag(axes);
-        AxeItems.acceptTag(axes);
-        PickaxeAxeItems.acceptTag(axes);
-        IntrinsicTagAppender<Item> hoes = tag(ItemTags.HOES);
-        HoeShovelItems.acceptTag(hoes);
-        IntrinsicTagAppender<Item> shovels = tag(ItemTags.SHOVELS);
-        HoeShovelItems.acceptTag(shovels);
-
         IntrinsicTagAppender<Item> tools = tag(Tags.Items.TOOLS);
-        PickaxeAxeItems.acceptTag(tools);
-        AxeItems.acceptTag(tools);
-        PickaxeItems.acceptTag(tools);
-        HamaxeItems.acceptTag(tools);
-        HammerItems.acceptTag(tools);
-        FishingPoleItems.acceptTag(tools);
+        IntrinsicTagAppender<Item> mining_tool_tools = tag(Tags.Items.MINING_TOOL_TOOLS); // 镐子
+        IntrinsicTagAppender<Item> mining_loot_enchantable = tag(ItemTags.MINING_LOOT_ENCHANTABLE);
+        IntrinsicTagAppender<Item> mining_enchantable = tag(ItemTags.MINING_ENCHANTABLE);
+        IntrinsicTagAppender<Item> durability_enchantable = tag(ItemTags.DURABILITY_ENCHANTABLE);
+        IntrinsicTagAppender<Item> skip_reset_strength = tag(LibTags.Items.SKIP_RESET_STRENGTH);
+        IntrinsicTagAppender<Item> melee_weapon_tools = tag(Tags.Items.MELEE_WEAPON_TOOLS);
+        IntrinsicTagAppender<Item> skip_using_slowdown = tag(LibTags.Items.SKIP_USING_SLOWDOWN);
+        IntrinsicTagAppender<Item> ranged_weapon_tools = tag(Tags.Items.RANGED_WEAPON_TOOLS);
+        IntrinsicTagAppender<Item> weapon_enchantable = tag(ItemTags.WEAPON_ENCHANTABLE);
+        IntrinsicTagAppender<Item> sharp_weapon_enchantable = tag(ItemTags.SHARP_WEAPON_ENCHANTABLE);
 
-        ManaWeaponItems.acceptTag(tag(ModTags.Items.MANA_WEAPON));
-        IntrinsicTagAppender<Item> weapons = tag(ModTags.Items.WEAPONS);
-        ManaWeaponItems.acceptTag(weapons);
-        GunItems.acceptTag(weapons);
-        GunItems.acceptTag(tag(TGTags.GUN));
-        IntrinsicTagAppender<Item> mining_tool_tools = tag(Tags.Items.MINING_TOOL_TOOLS);
-        PickaxeItems.acceptTag(mining_tool_tools);
-        PickaxeAxeItems.acceptTag(mining_tool_tools);
-        AxeItems.acceptTag(mining_tool_tools);
-        HamaxeItems.acceptTag(mining_tool_tools);
-        HoeShovelItems.acceptTag(mining_tool_tools);
-        HammerItems.acceptTag(mining_tool_tools);
-        DrillItems.acceptTag(mining_tool_tools);
-        IntrinsicTagAppender<Item> prefix_universal_only = tag(ModTags.Items.PREFIX_UNIVERSAL_ONLY);
-        DrillItems.acceptTag(prefix_universal_only);
-        TEBoomerangItems.acceptTag(prefix_universal_only);
+        tag(ModTags.Items.PREFIX_UNIVERSAL_ONLY)
+                .addTags(ModTags.Items.TOOLS_DRILL, ModTags.Items.TOOLS_CHAINSAW)
+                .add(TEBoomerangItems.ITEMS.getEntries().stream().map(DeferredHolder::get).toArray(Item[]::new));
+        tag(ModTags.Items.PREFIX_MELEE_ONLY)
+                .addTags(ItemTags.SWORDS, ItemTags.AXES, ItemTags.PICKAXES, ItemTags.SHOVELS, ItemTags.HOES)
+                .add(Items.MACE);
+        tag(ModTags.Items.PREFIX_RANGED_ONLY)
+                .addTags(Tags.Items.RANGED_WEAPON_TOOLS, TGTags.GUN)
+                .add(Items.TRIDENT);
+        tag(ModTags.Items.PREFIX_MAGIC_ONLY)
+                .addTags(ModTags.Items.MANA_WEAPON, ModTags.Items.SUMMONER_WEAPON);
+        tag(ModTags.Items.PREFIX_ACCESSORY_ONLY)
+                .addTag(TCTags.ACCESSORY);
+
+        IntrinsicTagAppender<Item> dye = tag(ModTags.Items.DYE);
+        dye.add(VanityArmorItems.TEAM_DYE.get());
+
+        IntrinsicTagAppender<Item> dyed = tag(Tags.Items.DYED);
+        for (BaseDyeItem dyeItem : VanityArmorItems.COLORED_DYE_ITEMS) {
+            dye.add(dyeItem);
+            dyed.add(dyeItem);
+        }
+
+        PaintItems.ITEMS.getEntries().forEach(item -> dyed.add(item.get()));
+
+        IntrinsicTagAppender<Item> arrows = tag(ItemTags.ARROWS);
+        ArrowItems.ITEMS.getEntries().forEach(item -> arrows.add(item.get()));
+
+        IntrinsicTagAppender<Item> gun = tag(TGTags.GUN);
+        GunItems.ITEMS.getEntries().forEach(item -> gun.add(item.get()));
+
+        IntrinsicTagAppender<Item> mana_weapon = tag(ModTags.Items.MANA_WEAPON);
+        ManaWeaponItems.ITEMS.getEntries().forEach(item -> mana_weapon.add(item.get()));
+        skip_using_slowdown.addTag(ModTags.Items.MANA_WEAPON);
+
+        IntrinsicTagAppender<Item> fishing_rod = tag(Tags.Items.TOOLS_FISHING_ROD);
+        IntrinsicTagAppender<Item> fishing_enchantable = tag(ItemTags.FISHING_ENCHANTABLE);
+        FishingPoleItems.ITEMS.getEntries().forEach(item -> {
+            Item value = item.get();
+            fishing_rod.add(value);
+            fishing_enchantable.add(value);
+        });
+
+        IntrinsicTagAppender<Item> axes = tag(ItemTags.AXES);
+        AxeItems.ITEMS.getEntries().forEach(item -> {
+            Item value = item.get();
+            axes.add(value);
+            melee_weapon_tools.add(value);
+        });
+
+        IntrinsicTagAppender<Item> pickaxes = tag(ItemTags.PICKAXES);
+        PickaxeItems.ITEMS.getEntries().forEach(item -> pickaxes.add(item.get()));
+
+        PickaxeAxeItems.ITEMS.getEntries().forEach(item -> {
+            Item value = item.get();
+            pickaxes.add(value);
+            axes.add(value);
+        });
+
+        tools.addTag(ModTags.Items.TOOLS_HAMMER);
+        mining_loot_enchantable.addTag(ModTags.Items.TOOLS_HAMMER);
+        mining_enchantable.addTag(ModTags.Items.TOOLS_HAMMER);
+        durability_enchantable.addTag(ModTags.Items.TOOLS_HAMMER);
+        IntrinsicTagAppender<Item> hammer = tag(ModTags.Items.TOOLS_HAMMER);
+        HammerItems.ITEMS.getEntries().forEach(item -> hammer.add(item.get()));
+
+        mining_tool_tools.addTag(ModTags.Items.TOOLS_DRILL);
+        mining_loot_enchantable.addTag(ModTags.Items.TOOLS_DRILL);
+        mining_enchantable.addTag(ModTags.Items.TOOLS_DRILL);
+        skip_reset_strength.addTag(ModTags.Items.TOOLS_DRILL);
+        weapon_enchantable.addTag(ModTags.Items.TOOLS_DRILL);
+        IntrinsicTagAppender<Item> drill = tag(ModTags.Items.TOOLS_DRILL);
+        DrillItems.ITEMS.getEntries().forEach(item -> drill.add(item.get()));
+
+        IntrinsicTagAppender<Item> hoes = tag(ItemTags.HOES);
+        HoeItems.ITEMS.getEntries().forEach(item -> hoes.add(item.get()));
+
+        IntrinsicTagAppender<Item> shovels = tag(ItemTags.SHOVELS);
+        ShovelItems.ITEMS.getEntries().forEach(item -> shovels.add(item.get()));
+
+        HoeShovelItems.ITEMS.getEntries().forEach(item -> {
+            Item value = item.get();
+            hoes.add(value);
+            shovels.add(value);
+        });
+
+        HamaxeItems.ITEMS.getEntries().forEach(item -> {
+            Item value = item.get();
+            hammer.add(value);
+            axes.add(value);
+        });
+
+        IntrinsicTagAppender<Item> tools_bows = tag(Tags.Items.TOOLS_BOW);
+        IntrinsicTagAppender<Item> bow_enchantable = tag(ItemTags.BOW_ENCHANTABLE);
+        BowItems.ITEMS.getEntries().forEach(item -> {
+            Item value = item.get();
+            durability_enchantable.add(value);
+            bow_enchantable.add(value);
+            ranged_weapon_tools.add(value);
+            tools_bows.add(value);
+            skip_using_slowdown.add(value);
+        });
+
+        IntrinsicTagAppender<Item> swords = tag(ItemTags.SWORDS);
+        SwordItems.ITEMS.getEntries().forEach(item -> {
+            Item value = item.get();
+            melee_weapon_tools.add(value);
+            swords.add(value);
+        });
+
+        IntrinsicTagAppender<Item> head_armor = tag(ItemTags.HEAD_ARMOR);
+        IntrinsicTagAppender<Item> chest_armor = tag(ItemTags.CHEST_ARMOR);
+        IntrinsicTagAppender<Item> leg_armor = tag(ItemTags.LEG_ARMOR);
+        IntrinsicTagAppender<Item> foot_armor = tag(ItemTags.FOOT_ARMOR);
+        ArmorItems.ITEMS.getEntries().forEach(item -> {
+            if (item.get() instanceof ArmorItem armor) {
+                if (armor.getEquipmentSlot() == EquipmentSlot.HEAD) {
+                    head_armor.add(armor);
+                } else if (armor.getEquipmentSlot() == EquipmentSlot.CHEST) {
+                    chest_armor.add(armor);
+                } else if (armor.getEquipmentSlot() == EquipmentSlot.LEGS) {
+                    leg_armor.add(armor);
+                } else if (armor.getEquipmentSlot() == EquipmentSlot.FEET) {
+                    foot_armor.add(armor);
+                }
+            }
+        });
+
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> accessory = tag(TCTags.ACCESSORY);
+        AccessoryItems.ITEMS.getEntries().forEach(item -> accessory.add(item.get()));
+        accessory.add(ModItems.PARADOX_INTERACTIVE_MEDAL.get(), ModItems.BOREDOMS_PACT_FALLING_RESOLVE.get());
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> wings = tag(ModTags.Items.WINGS);
+        AccessoryItems.WINGS.forEach(item -> wings.add(item.get()));
+        wings.add(TCItems.CELESTIAL_STARBOARD.get());
+
+        IntrinsicTagAppender<Item> tools_chainsaw = tag(ModTags.Items.TOOLS_CHAINSAW);
+        skip_reset_strength.addTag(ModTags.Items.TOOLS_CHAINSAW);
+        tools.addTag(ModTags.Items.TOOLS_CHAINSAW);
+        mining_loot_enchantable.addTag(ModTags.Items.TOOLS_CHAINSAW);
+        mining_enchantable.addTag(ModTags.Items.TOOLS_CHAINSAW);
+        sharp_weapon_enchantable.addTag(ModTags.Items.TOOLS_CHAINSAW);
+        ChainsawItems.ITEMS.getEntries().forEach(item -> tools_chainsaw.add(item.get()));
+
+        IntrinsicTagAppender<Item> spear = tag(ModTags.Items.SPEAR);
+        skip_reset_strength.addTag(ModTags.Items.SPEAR);
+        melee_weapon_tools.addTag(ModTags.Items.SPEAR);
+        sharp_weapon_enchantable.addTag(ModTags.Items.SPEAR);
+        SpearItems.ITEMS.getEntries().forEach(item -> spear.add(item.get()));
+
+        IntrinsicTagAppender<Item> lances = tag(ModTags.Items.TOOLS_LANCE);
+        skip_reset_strength.addTag(ModTags.Items.TOOLS_LANCE);
+        melee_weapon_tools.addTag(ModTags.Items.TOOLS_LANCE);
+        weapon_enchantable.addTag(ModTags.Items.TOOLS_LANCE);
+        LanceItems.ITEMS.getEntries().forEach(item -> lances.add(item.get()));
+
+        TreasureBagItems.ITEMS.getEntries().forEach(item -> tag(ModTags.Items.TREASURE_BAG).add(item.get()));
+
+        TESummonItems.ITEMS.getEntries().forEach(item -> tag(ModTags.Items.SUMMONER_WEAPON).add(item.get()));
 
         copy(ModTags.Blocks.COINS, ModTags.Items.COINS);
         tag(ModTags.Items.HARDMODE_RAW_MATERIALS).add(
@@ -520,6 +665,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.UNICORN_HORN.get(),
                 MaterialItems.SPIDER_FANG.get(),
                 MaterialItems.SPELL_TOME.get(),
+                MaterialItems.FORBIDDEN_FRAGMENT.get(),
 
                 FoodItems.COLORFUL_MINERAL_FISH.get(),
                 FoodItems.CHAOS_FISH.get()
@@ -723,77 +869,10 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 BowItems.THE_BEES_KNEES.get()
         );
 
-        AccessoryItems.acceptTags(this);
         tag(ModTags.Items.AMMO)
                 .add(Items.FIREWORK_ROCKET, MaterialItems.FALLING_STAR.get())
                 .addTag(ItemTags.ARROWS)
                 .addOptionalTag(TGTags.AMMO);
-        IntrinsicTagAppender<Item> dye = tag(ModTags.Items.DYE);
-        VanityArmorItems.DYE_ITEMS.forEach(item -> dye.add(item.get()));
-        dye.add(VanityArmorItems.TEAM_DYE.get());
-
-        // Bow 附魔
-        IntrinsicTagAppender<Item> durabilityEnchantable = tag(ItemTags.DURABILITY_ENCHANTABLE);
-        IntrinsicTagAppender<Item> skipUsingSlowdown = tag(LibTags.Items.SKIP_USING_SLOWDOWN);
-        BowItems.ITEMS.getEntries().forEach(item -> {
-            Item value = item.get();
-            durabilityEnchantable.add(value);
-            tag(ItemTags.BOW_ENCHANTABLE).add(value);
-            tag(Tags.Items.RANGED_WEAPON_TOOLS).add(value);
-            weapons.add(value);
-            tag(Tags.Items.TOOLS_BOW).add(value);
-            skipUsingSlowdown.add(value);
-        });
-        //  FishingPole 附魔
-        FishingPoleItems.acceptTag(tag(ItemTags.FISHING_ENCHANTABLE));
-        // Sword 附魔
-        IntrinsicTagAppender<Item> meleeWeaponTools = tag(Tags.Items.MELEE_WEAPON_TOOLS);
-        SwordItems.ITEMS.getEntries().forEach(item -> {
-            Item value = item.get();
-            tag(ItemTags.SHARP_WEAPON_ENCHANTABLE).add(value);
-            tag(ItemTags.SWORD_ENCHANTABLE).add(value);
-            durabilityEnchantable.add(value);
-            tag(ItemTags.WEAPON_ENCHANTABLE).add(value);
-            meleeWeaponTools.add(value);
-            weapons.add(value);
-            tag(ItemTags.SWORDS).add(value);
-        });
-
-        // Tool 附魔
-        //ToolItems.ITEMS.getEntries().forEach(item -> tag(ItemTags.DURABILITY_ENCHANTABLE).add(item.get())); 不是所有工具都能附魔！
-        HoeItems.acceptTag(durabilityEnchantable);
-        HoeItems.acceptTag(tag(ItemTags.HOES));
-        ShovelItems.acceptTag(durabilityEnchantable);
-        ShovelItems.acceptTag(tag(ItemTags.SHOVELS));
-        HamaxeItems.acceptTag(durabilityEnchantable);
-        HoeShovelItems.acceptTag(tag(ItemTags.HOES));
-        HoeShovelItems.acceptTag(tag(ItemTags.SHOVELS));
-        HoeShovelItems.acceptTag(durabilityEnchantable);
-
-
-        // Armor 附魔
-        ArmorItems.ITEMS.getEntries().forEach(item -> {
-            if (item.get() instanceof ArmorItem armor) {
-                durabilityEnchantable.add(armor);
-                tag(ItemTags.ARMOR_ENCHANTABLE).add(armor);
-                tag(ItemTags.EQUIPPABLE_ENCHANTABLE).add(armor);
-                if (armor.getEquipmentSlot() == EquipmentSlot.HEAD) {
-                    tag(ItemTags.HEAD_ARMOR_ENCHANTABLE).add(armor);
-                    tag(ItemTags.HEAD_ARMOR).add(armor);
-                } else if (armor.getEquipmentSlot() == EquipmentSlot.CHEST) {
-                    tag(ItemTags.CHEST_ARMOR_ENCHANTABLE).add(armor);
-                    tag(ItemTags.CHEST_ARMOR).add(armor);
-                } else if (armor.getEquipmentSlot() == EquipmentSlot.LEGS) {
-                    tag(ItemTags.LEG_ARMOR_ENCHANTABLE).add(armor);
-                    tag(ItemTags.LEG_ARMOR).add(armor);
-                } else if (armor.getEquipmentSlot() == EquipmentSlot.FEET) {
-                    tag(ItemTags.FOOT_ARMOR).add(armor);
-                    tag(ItemTags.FOOT_ARMOR_ENCHANTABLE).add(armor);
-                }
-            }
-        });
-
-        TreasureBagItems.ITEMS.getEntries().forEach(item -> tag(ModTags.Items.TREASURE_BAG).add(item.get()));
 
         tag(ModTags.Items.HARDMODE)
                 .addTag(ModTags.Items.HARDMODE_RAW_MATERIALS)
@@ -811,14 +890,9 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                         QuestedFishes.UNICORN_FISH.get()
                 );
 
-        TESummonItems.ITEMS.getEntries().forEach(item -> tag(ModTags.Items.SUMMONER_WEAPON).add(item.get()));
-
         tag(ModTags.Items.ABLE_TO_DESTROY_ALTAR).add(
                 HammerItems.PWNHAMMER.get(),
                 HammerItems.HAMMUSH.get()
-        );
-        tag(Tags.Items.FOODS).add(
-                PotionItems.ALE.get()
         );
         tag(Tags.Items.FOODS_SOUP).add(
                 FoodItems.BOWL_OF_SOUP.get(),
@@ -1018,7 +1092,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ToolItems.TARGET_DUMMY.get(),
                 ModItems.WHOOPIE_CUSHION.get(),
                 ModItems.TOKYO_TEDDY_BEAR.get(),
-                ModItems.ICE_TOFU_BRICK.get(),
                 ModItems.FAILED_SKULL.get(),
                 ModItems.KIND_MISIDE_RING.get(),
                 ModItems.FERTILE_SINGULARITY.get(),
@@ -1036,12 +1109,10 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 HammerItems.CHLOROPHYTE_JACKHAMMER.get(),
                 PickaxeAxeItems.SHROOMITE_DIGGING_CLAW.get(),
                 PickaxeItems.SPECTRE_PICKAXE.get(),
-                PickaxeItems.CHLOROPHYTE_PICKAXE.get(),
                 PickaxeItems.SOLAR_FLARE_PICKAXE.get(),
                 PickaxeItems.VORTEX_PICKAXE.get(),
                 PickaxeItems.NEBULA_PICKAXE.get(),
                 PickaxeItems.STARDUST_PICKAXE.get(),
-                AccessoryItems.FIN_WINGS.get(),
                 AccessoryItems.FROZEN_WINGS.get(),
                 AccessoryItems.JETPACK.get(),
                 AccessoryItems.LEAF_WINGS.get(),
@@ -1120,9 +1191,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 VanityArmorItems.THE_DOCTORS_PANTS.get(),
                 VanityArmorItems.THE_DOCTORS_SHOES.get(),
                 ManaWeaponItems.MAGIC_DAGGER.get(),
-                ManaWeaponItems.CRYSTAL_STORM.get(),
-                ManaWeaponItems.CURSED_FLAMES.get(),
-                ManaWeaponItems.FLOWER_OF_FROST.get(),
                 NatureBlocks.LOOSE_HONEY_BLOCK.asItem(),
                 NatureBlocks.GREEN_MOSS.asItem(),
                 NatureBlocks.BROWN_MOSS.asItem(),
@@ -1150,17 +1218,15 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 NatureBlocks.LIFE_MUSHROOM_STEM_BLOCK.asItem(),
                 NatureBlocks.LIFE_MUSHROOM_PILEUS_BLOCK.asItem(),
                 NatureBlocks.SMALL_DESERT_PLANT.asItem(),
-                NatureBlocks.BIG_DESERT_PLANT.asItem(),
                 NatureBlocks.SMALL_CACTUS.asItem(),
                 NatureBlocks.JUNGLE_PATH.asItem(),
                 NatureBlocks.MUSHROOM_PATH.asItem(),
                 NatureBlocks.ASH_PATH.asItem(),
                 NatureBlocks.SHIMMER_CRYSTALS_BLOCK.asItem(),
-                NatureBlocks.LOST_PAPER_BLOCK.asItem(),
                 NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.TRAPDOOR.asItem(),
                 NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.DOOR.asItem(),
+                NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.CHISELED_PLANKS.asItem(),
                 PotBlocks.OCEAN_POT.asItem(),
-                OreBlocks.METEORITE_BLOCK.asItem(),
                 OreBlocks.HALLOWED_BLOCK.asItem(),
                 OreBlocks.RAW_CHLOROPHYTE_BLOCK.asItem(),
                 OreBlocks.CHLOROPHYTE_BLOCK.asItem(),
@@ -1209,8 +1275,10 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 DecorativeBlocks.CRIMSANDSTONE_BRICKS_STAIRS.asItem(),
                 DecorativeBlocks.CRIMSANDSTONE_BRICKS_SLAB.asItem(),
                 DecorativeBlocks.CRIMSANDSTONE_BRICKS_WALL.asItem(),
-                NatureBlocks.GLOWING_MUSHROOM_LOG_BLOCKS.CHISELED_PLANKS.asItem(),
                 DecorativeBlocks.SNOW_BRICKS_WALL.asItem(),
+                DecorativeBlocks.CRIMTANE_ORE_BRICKS_STAIRS.asItem(),
+                DecorativeBlocks.CRIMTANE_ORE_BRICKS_SLAB.asItem(),
+                DecorativeBlocks.CHISELED_SPRUCE_PLANKS.asItem(),
                 StatueBlocks.ARMOR_STATUE.asItem(),
                 StatueBlocks.AXE_STATUE.asItem(),
                 StatueBlocks.BOOMERANG_STATUE.asItem(),
@@ -1274,10 +1342,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 FunctionalBlocks.BLEND_O_MATIC.asItem(),
                 FunctionalBlocks.MEAT_GRINDER.asItem(),
                 FunctionalBlocks.WOODEN_SPIKE.asItem(),
-                FunctionalBlocks.FRAGILE_BLUE_BRICKS.asItem(),
-                FunctionalBlocks.FRAGILE_GREEN_BRICKS.asItem(),
-                FunctionalBlocks.FRAGILE_PINK_BRICKS.asItem(),
-                FunctionalBlocks.ENCHANTED_FRAGILE_BLUE_BRICKS.asItem(),
                 FunctionalBlocks.ENCHANTED_FRAGILE_GREEN_BRICKS.asItem(),
                 FunctionalBlocks.ENCHANTED_FRAGILE_PINK_BRICKS.asItem(),
                 FunctionalBlocks.SILLY_BALLOON_MACHINE.asItem(),
@@ -1294,22 +1358,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.ECTOPLASM.get(),
                 MaterialItems.UNICORN_HORN.get(),
                 MaterialItems.SPIDER_FANG.get(),
-                CrateBlocks.HALLOWED_CRATE.asItem(),
-                CrateBlocks.OBSIDIAN_CRATE.asItem(),
-                CrateBlocks.PEARLWOOD_CRATE.asItem(),
-                CrateBlocks.MYTHRIL_CRATE.asItem(),
-                CrateBlocks.TITANIUM_CRATE.asItem(),
-                CrateBlocks.BRAMBLE_CRATE.asItem(),
-                CrateBlocks.WILD_CRATE.asItem(),
-                CrateBlocks.AZURE_CRATE.asItem(),
-                CrateBlocks.DEFILED_CRATE.asItem(),
-                CrateBlocks.HEMATIC_CRATE.asItem(),
-                CrateBlocks.DIVINE_CRATE.asItem(),
-                CrateBlocks.STOCKADE_CRATE.asItem(),
-                CrateBlocks.BOREAL_CRATE.asItem(),
-                CrateBlocks.MIRAGE_CRATE.asItem(),
-                CrateBlocks.HELLSTONE_CRATE.asItem(),
-                CrateBlocks.SEASIDE_CRATE.asItem(),
                 HookItems.WEB_SLINGER.get(),
                 HookItems.SLIME_HOOK.get(),
                 HookItems.FISH_HOOK.get(),
@@ -1336,15 +1384,13 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 DrillItems.STARDUST_DRILL.get(),
                 TEFigureBlocks.FIGURE.asItem(),
                 TEFigureBlocks.FIGURE2.asItem(),
-                TEFigureBlocks.FIGURE3.asItem()
+                TEFigureBlocks.FIGURE3.asItem(),
+                LanceItems.HALLOWED_JOUSTING_LANCE.get(),
+                LanceItems.SHADOW_JOUSTING_LANCE.get()
         );
         Consumer<DeferredHolder<Item, ? extends Item>> wipAction = item -> wip.add(item.get());
         MinecartItems.ITEMS.getEntries().forEach(wipAction);
         LightPetItems.ITEMS.getEntries().forEach(wipAction);
-
-        tag(TGTags.GUN).add(
-                GunItems.STAR_CANNON.get()
-        );
         tag(TGTags.AUTOMATIC_GUN).add(
                 ManaWeaponItems.BEE_GUN.get(),
                 ManaWeaponItems.SPACE_GUN.get(),
@@ -1405,24 +1451,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 MaterialItems.SOUL_OF_SIGHT.get()
         );
 
-        IntrinsicTagAppender<Item> skipResetStrength = tag(LibTags.Items.SKIP_RESET_STRENGTH);
-        DrillItems.ITEMS.getEntries().forEach(item -> skipResetStrength.add(item.get()));
-        ChainsawItems.ITEMS.getEntries().forEach(item -> skipResetStrength.add(item.get()));
-        SpearItems.ITEMS.getEntries().forEach(item -> {
-            Item value = item.get();
-            skipResetStrength.add(value);
-            meleeWeaponTools.add(value);
-            weapons.add(value);
-            tag(ModTags.Items.SPEARS).add(value);
-        });
-        LanceItems.ITEMS.getEntries().forEach(item -> {
-            Item value = item.get();
-            skipResetStrength.add(value);
-            meleeWeaponTools.add(value);
-            weapons.add(value);
-            tag(ModTags.Items.LANCES).add(value);
-        });
-
         tag(ModTags.Items.SHOW_SIGNAL).add(
                 ToolItems.RED_WRENCH.get(),
                 ToolItems.GREEN_WRENCH.get(),
@@ -1437,11 +1465,26 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 BaitItems.LAVAFLY.get()
         );
 
-        WaystonesHelper.itemTag(this::tag);
-    }
+        tag(ModTags.Items.AUTO_ATTACK_WHITELIST).add(
+                SwordItems.ICE_BLADE.get(),
+                SwordItems.MANDIBLE_BLADE.get(),
+                SwordItems.PURPLE_CLUBBERFISH.get(),
+                SwordItems.KATANA.get(),
+                SwordItems.FALCON_BLADE.get(),
+                SwordItems.BEE_KEEPER.get(),
+                SwordItems.TERRAGRIM.get(),
+                SwordItems.ENCHANTED_SWORD.get(),
+                SwordItems.NIGHTS_EDGE.get(),
+                SwordItems.DEVELOPER_SWORD.get(),
+                SwordItems.COBALT_SWORD.get(),
+                SwordItems.PALLADIUM_SWORD.get(),
+                SwordItems.MYTHRIL_SWORD.get(),
+                SwordItems.ORICHALCUM_SWORD.get(),
+                SwordItems.ADAMANTITE_SWORD.get(),
+                SwordItems.TITANIUM_SWORD.get(),
+                SwordItems.MURAMASA.get()
+        );
 
-    @Override
-    public IntrinsicTagAppender<Item> tag(TagKey<Item> tag) {
-        return super.tag(tag);
+        WaystonesHelper.itemTag(this::tag);
     }
 }

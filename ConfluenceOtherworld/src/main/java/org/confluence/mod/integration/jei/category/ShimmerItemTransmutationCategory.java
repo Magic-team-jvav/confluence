@@ -2,6 +2,7 @@ package org.confluence.mod.integration.jei.category;
 
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
+import mezz.jei.api.gui.builder.ITooltipBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IJeiHelpers;
@@ -25,7 +26,6 @@ import org.confluence.mod.integration.jei.ModJeiPlugin;
 
 public class ShimmerItemTransmutationCategory implements IRecipeCategory<RecipeHolder<ItemTransmutationRecipe>> {
     public static final RecipeType<RecipeHolder<ItemTransmutationRecipe>> TYPE = RecipeType.createRecipeHolderType(Confluence.asResource("item_transmutation"));
-    private static final Component TITLE = Component.translatable("title.confluence.shimmer_transmutation");
     private final IDrawable icon;
 
     public ShimmerItemTransmutationCategory(IJeiHelpers jeiHelpers) {
@@ -39,7 +39,7 @@ public class ShimmerItemTransmutationCategory implements IRecipeCategory<RecipeH
 
     @Override
     public Component getTitle() {
-        return TITLE;
+        return Component.translatable("title.confluence.shimmer_transmutation");
     }
 
     @Override
@@ -89,6 +89,13 @@ public class ShimmerItemTransmutationCategory implements IRecipeCategory<RecipeH
             }
         } else {
             ModJeiPlugin.drawArrowDown(guiGraphics, 54, 46, recipe.value().isValid());
+        }
+    }
+
+    @Override
+    public void getTooltip(ITooltipBuilder tooltip, RecipeHolder<ItemTransmutationRecipe> recipe, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY) {
+        if (!recipe.value().isValid()) {
+            tooltip.add(Component.translatable("tooltip.jei.shimmer_black_list").withStyle(ChatFormatting.RED));
         }
     }
 }

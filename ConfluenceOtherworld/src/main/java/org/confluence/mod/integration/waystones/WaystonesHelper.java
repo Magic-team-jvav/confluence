@@ -31,6 +31,7 @@ import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.LibTags;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.lib.util.WipNotDisplayOutput;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.component.ValueComponent;
@@ -93,7 +94,8 @@ public class WaystonesHelper {
 
     private static void buildCreativeModeTabContents(BuildCreativeModeTabContentsEvent event) {
         if (event.getTab() == ModTabs.MECHANICAL.get()) {
-            ITEMS.getEntries().forEach(item -> event.accept(item.get()));
+            WipNotDisplayOutput output = new WipNotDisplayOutput(event);
+            ITEMS.getEntries().forEach(item -> output.accept(item.get()));
         }
     }
 

@@ -1,6 +1,7 @@
 {
-  "parent": "minecraft:block/cube_all",
+  "parent": "minecraft:block/cube_column_horizontal",
   "textures": {
-    "all": "confluence:block/savanna_crate"
+    "end": "confluence:block/savanna_crate_end",
+    "side": "confluence:block/savanna_crate_side"
   }
 }

@@ -111,7 +111,6 @@ public class BodyPartRenderer extends EntityRenderer<DeadBodyPartEntity> {
                 geoRenderer.getRenderColor(dying, partialTick, packedLight).argbInt());
             poseStack.popPose();
         }else if(cube instanceof ModelPart.Cube partCube && renderer instanceof LivingEntityRenderer livingRenderer && dying instanceof LivingEntity living){ // 原版生物
-//            if(true)return;
             LivingEntityRendererAccessor ra=(LivingEntityRendererAccessor) livingRenderer;
             boolean visible = ra.callIsBodyVisible(living);
             boolean translucent = !visible && !entity.isInvisibleTo(Minecraft.getInstance().player);
@@ -120,7 +119,6 @@ public class BodyPartRenderer extends EntityRenderer<DeadBodyPartEntity> {
             float halfMinSide = entity.minSide / 2;
             poseStack.translate(0, halfMinSide, 0);
             applyRandomRotation(entity, poseStack, partialTick);
-//            poseStack.mulPose(Axis.XP.rotationDegrees(Mth.lerp((float) entity.tickCount / entity.lifetime, 0, 360)));
             poseStack.translate(-entity.xOffset, -entity.yOffset - halfMinSide, -entity.zOffset);
 
             if(livingRenderer.getModel() instanceof AgeableHierarchicalModel<?> model && model.young){
@@ -153,7 +151,8 @@ public class BodyPartRenderer extends EntityRenderer<DeadBodyPartEntity> {
             poseStack.scale(-1.0F, -1.0F, 1.0F);
             ra.callScale(living, poseStack, 1);
 
-            partCube.compile(poseStack.last(), bufferSource.getBuffer(ra.callGetRenderType(living, visible, translucent, glowing)),
+            RenderType renderType = entity.texture != null ? RenderType.armorCutoutNoCull(entity.texture) : ra.callGetRenderType(living, visible, translucent, glowing);
+            partCube.compile(poseStack.last(), bufferSource.getBuffer(renderType),
                 packedLight, 655360, translucent ? 654311423 : -1);
             poseStack.popPose();
         }

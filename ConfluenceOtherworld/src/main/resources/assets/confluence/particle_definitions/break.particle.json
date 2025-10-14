@@ -55,7 +55,8 @@
 						"2.0": "#FFFF008F"
 					}
 				}
-			}
+			},
+			"minecraft:particle_motion_collision": {}
 		}
 	}
 }

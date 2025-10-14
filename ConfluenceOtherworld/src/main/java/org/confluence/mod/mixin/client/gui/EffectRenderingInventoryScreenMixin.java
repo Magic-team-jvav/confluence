@@ -28,9 +28,14 @@ public abstract class EffectRenderingInventoryScreenMixin implements IAbstractCo
 
     @Inject(method = "renderEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;renderTooltip(Lnet/minecraft/client/gui/Font;Ljava/util/List;Ljava/util/Optional;II)V", shift = At.Shift.AFTER))
     private void switchEnabled(GuiGraphics guiGraphics, int mouseX, int mouseY, CallbackInfo ci, @Local(ordinal = 0) MobEffectInstance instance) {
-        if (confluence$mouseClicked && IAbstractContainerScreen.switchEnabled(instance)) {
-            this.confluence$mouseClicked = false;
+        if (confluence$mouseClicked) {
+            IAbstractContainerScreen.switchEnabled(instance);
         }
+    }
+
+    @Inject(method = "renderEffects", at = @At("TAIL"))
+    private void reset(GuiGraphics guiGraphics, int mouseX, int mouseY, CallbackInfo ci) {
+        this.confluence$mouseClicked = false;
     }
 
     @WrapOperation(method = "renderIcons", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(IIIIILnet/minecraft/client/renderer/texture/TextureAtlasSprite;)V"))

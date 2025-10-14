@@ -126,7 +126,7 @@ public class AltarBlock extends BaseEntityBlock {
 
     @Override
     public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
-        return player.getMainHandItem().is(ModTags.Items.HAMMERS) ? super.getDestroyProgress(state, player, level, pos) : 0.0F;
+        return player.getMainHandItem().is(ModTags.Items.TOOLS_HAMMER) ? super.getDestroyProgress(state, player, level, pos) : 0.0F;
     }
 
     @Override
@@ -271,8 +271,9 @@ public class AltarBlock extends BaseEntityBlock {
         public ItemStack takeItem(int slot) {
             if (slot == -1) {
                 for (int i = 0; i < 5; i++) {
-                    if (!itemHandler.getStackInSlot(i).isEmpty()) {
-                        ItemStack stack = itemHandler.extractItem(i, 64, false);
+                    ItemStack stack = itemHandler.getStackInSlot(i);
+                    if (!stack.isEmpty()) {
+                        stack = itemHandler.extractItem(i, stack.getMaxStackSize(), false);
                         setChanged();
                         return stack;
                     }

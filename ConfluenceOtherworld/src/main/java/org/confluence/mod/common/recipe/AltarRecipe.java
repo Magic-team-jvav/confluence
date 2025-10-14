@@ -43,18 +43,15 @@ public class AltarRecipe extends AbstractAmountRecipe<ItemStackHandlerRecipeInpu
         return FunctionalBlocks.DEMON_ALTAR.toStack();
     }
 
-    public static class Serializer implements RecipeSerializer<AltarRecipe> {
-        public static final MapCodec<AltarRecipe> CODEC = shapelessSerializerMapCodec(AltarRecipe::new);
-        public static final StreamCodec<RegistryFriendlyByteBuf, AltarRecipe> STREAM_CODEC = shapelessSerializerSteamCodec(AltarRecipe::new);
-
+    public static class Serializer extends SimpleRecipeSerializer<AltarRecipe> {
         @Override
-        public MapCodec<AltarRecipe> codec() {
-            return CODEC;
+        protected MapCodec<AltarRecipe> getCodec() {
+            return shapelessSerializerMapCodec(AltarRecipe::new);
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, AltarRecipe> streamCodec() {
-            return STREAM_CODEC;
+        protected StreamCodec<RegistryFriendlyByteBuf, AltarRecipe> getStreamCodec() {
+            return shapelessSerializerSteamCodec(AltarRecipe::new);
         }
     }
 }

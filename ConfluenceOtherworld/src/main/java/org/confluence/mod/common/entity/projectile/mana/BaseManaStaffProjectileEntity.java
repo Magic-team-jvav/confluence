@@ -1,6 +1,10 @@
 package org.confluence.mod.common.entity.projectile.mana;
 
+import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.DynamicOps;
+import com.mojang.serialization.Lifecycle;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -16,16 +20,18 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.color.FloatRGB;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEntities;
 import org.mesdag.particlestorm.PSGameClient;
+import org.mesdag.particlestorm.data.molang.MolangExp;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 
 import java.util.*;
 
 public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
-    private static final EntityDataAccessor<Integer> DATA_VARIANT_ID = SynchedEntityData.defineId(BaseManaStaffProjectileEntity.class, EntityDataSerializers.INT);
+    protected static final EntityDataAccessor<Integer> DATA_VARIANT_ID = SynchedEntityData.defineId(BaseManaStaffProjectileEntity.class, EntityDataSerializers.INT);
     protected int penetrateCount = 2;
     protected final Set<UUID> penetrateSet = new HashSet<>();
 
@@ -85,9 +91,26 @@ public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
         }
         setPos(offX, offY, offZ);
 
-        if (level().isClientSide && emitter == null) {
-            this.emitter = new ParticleEmitter(level(), position(), getParticleId());
-            emitter.attached = this;
+        if (level().isClientSide && (emitter == null || emitter.isRemoved())) {
+            Variant variant = getVariant();
+            ResourceLocation particleId;
+            MolangExp expression = MolangExp.EMPTY;
+            if (variant == Variant.FROST) {
+                particleId = Confluence.asResource("frost_projectile");
+            } else if (variant == Variant.SPARK) {
+                particleId = Confluence.asResource("spark_projectile");
+            } else if (variant == Variant.THUNDER_ZAPPER) {
+                particleId = Confluence.asResource("thunder_zapper");
+            } else {
+                particleId = Confluence.asResource("base_mana_staff_projectile");
+                expression = new MolangExp(Map.of(
+                        "variable.red", Float.toString(variant.color.red()),
+                        "variable.green", Float.toString(variant.color.green()),
+                        "variable.blue", Float.toString(variant.color.blue())
+                ));
+            }
+            this.emitter = new ParticleEmitter(level(), position(), particleId, expression);
+            emitter.attachEntity(this);
             PSGameClient.LOADER.addEmitter(emitter, false);
         }
 
@@ -119,10 +142,6 @@ public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
         return 0.0F;
     }
 
-    protected ResourceLocation getParticleId() {
-        return getVariant().particleId;
-    }
-
     @Override
     public boolean hurt(DamageSource source, float amount) {
         return false;
@@ -137,27 +156,40 @@ public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
         return getVariant().knockBack;
     }
 
-    public record Variant(int id, String name, double gravity, float knockBack, ResourceLocation particleId) implements StringRepresentable {
+    public record Variant(int id, String name, double gravity, float knockBack, FloatRGB color) implements StringRepresentable {
         public static final List<Variant> VALUES = new ArrayList<>();
 
-        public static final Variant AMETHYST = register("amethyst", -1.0, 3.25F, Confluence.asResource("amethyst_projectile"));
-        public static final Variant TOPAZ = register("topaz", -1.0, 3.5F, Confluence.asResource("topaz_projectile"));
-        public static final Variant SAPPHIRE = register("sapphire", -1.0, 4.0F, Confluence.asResource("sapphire_projectile"));
-        public static final Variant JADE = register("emerald", -1.0, 4.25F, Confluence.asResource("emerald_projectile"));
-        public static final Variant RUBY = register("ruby", -1.0, 4.75F, Confluence.asResource("ruby_projectile"));
-        public static final Variant AMBER = register("amber", -1.0, 4.75F, Confluence.asResource("amber_projectile"));
-        public static final Variant DIAMOND = register("diamond", -1.0, 5.5F, Confluence.asResource("diamond_projectile"));
-        public static final Variant FROST = register("frost", 0.04, 0.0F, Confluence.asResource("frost_projectile"));
-        public static final Variant SPARK = register("spark", 0.04, 0.0F, Confluence.asResource("spark_projectile"));
-        public static final Variant THUNDER_ZAPPER = register("thunder_zapper", -1.0, 0.0F, Confluence.asResource("thunder_zapper"));
+        public static final Variant AMETHYST = register("amethyst", -1.0, 3.25F, 0.91765F, 0.41961F, 1F);
+        public static final Variant TOPAZ = register("topaz", -1.0, 3.5F, 1F, 0.81569F, 0F);
+        public static final Variant SAPPHIRE = register("sapphire", -1.0, 4.0F, 0.30196F, 0.65098F, 1F);
+        public static final Variant JADE = register("jade", -1.0, 4.25F, 0.12941F, 0.72157F, 0.45098F);
+        public static final Variant RUBY = register("ruby", -1.0, 4.75F, 0.92157F, 0.38824F, 0.45882F);
+        public static final Variant AMBER = register("amber", -1.0, 4.75F, 0.98824F, 0.75686F, 0.17647F);
+        public static final Variant DIAMOND = register("diamond", -1.0, 5.5F, 0.60392F, 1F, 0.86667F);
+        public static final Variant FROST = register("frost", 0.04, 0.0F, 0, 0, 0);
+        public static final Variant SPARK = register("spark", 0.04, 0.0F, 0, 0, 0);
+        public static final Variant THUNDER_ZAPPER = register("thunder_zapper", -1.0, 0.0F, 0, 0, 0);
 
-        public static final Codec<Variant> CODEC = StringRepresentable.fromValues(() -> VALUES.toArray(Variant[]::new));
+        public static final Codec<Variant> CODEC = StringRepresentable.fromValues(() -> VALUES.toArray(new Variant[0])).mapResult(new Codec.ResultFunction<>() {
+            @Override
+            public <T> DataResult<Pair<Variant, T>> apply(DynamicOps<T> ops, T input, DataResult<Pair<Variant, T>> a) {
+                if (a.isError()) {
+                    return DataResult.success(new Pair<>(JADE, input), Lifecycle.stable());
+                }
+                return a;
+            }
+
+            @Override
+            public <T> DataResult<T> coApply(DynamicOps<T> ops, Variant input, DataResult<T> t) {
+                return t;
+            }
+        });
 
         /**
          * @param rawKnockBack 换算前的击退
          */
-        private static Variant register(String name, double gravity, float rawKnockBack, ResourceLocation particleId) {
-            Variant variant = new Variant(VALUES.size(), name, gravity, rawKnockBack / 8.0F, particleId);
+        private static Variant register(String name, double gravity, float rawKnockBack, float red, float green, float blue) {
+            Variant variant = new Variant(VALUES.size(), name, gravity, rawKnockBack / 8.0F, new FloatRGB(red, green, blue));
             VALUES.add(variant);
             return variant;
         }

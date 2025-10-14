@@ -2,7 +2,10 @@ package org.confluence.mod.client.event;
 
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -18,12 +21,9 @@ import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
 import net.minecraft.client.renderer.item.CompassItemPropertyFunction;
 import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
@@ -41,6 +41,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModList;
+import net.neoforged.neoforge.client.IItemDecorator;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientBlockExtensions;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
@@ -50,8 +51,11 @@ import org.confluence.lib.color.IntegerRGB;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.effect.ColoredGlintContext;
 import org.confluence.mod.client.handler.MeteorLandingHandler;
+import org.confluence.mod.client.renderer.item.CustomLightItemExtension;
 import org.confluence.mod.client.renderer.item.EntityDisplayItemRenderer;
+import org.confluence.mod.client.renderer.item.MutableRenderTypeItemExtension;
 import org.confluence.mod.common.init.ModArmPoses;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
@@ -66,6 +70,8 @@ import org.confluence.mod.common.item.bow.ShortBowItem;
 import org.confluence.mod.integration.waystones.PylonBlock;
 import org.confluence.mod.integration.waystones.PylonModel;
 import org.confluence.mod.integration.waystones.WaystonesHelper;
+import org.confluence.mod.mixed.IPlayer;
+import org.confluence.mod.util.ClientUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
@@ -81,6 +87,7 @@ import static net.minecraft.client.renderer.RenderStateShard.*;
 @MethodsReturnNonnullByDefault
 public final class ModClientSetups {
     public static final WidgetSprites EXTRA_INVENTORY_BUTTON = new WidgetSprites(Confluence.asResource("widget/extra_inventory_button"), Confluence.asResource("widget/extra_inventory_button_highlighted"));
+    public static final ResourceLocation BLOOM_TEXTURE = Confluence.asResource("textures/misc/bloom.png");
     static final IClientFluidTypeExtensions HONEY_CLIENT_EXTENSIONS = new IClientFluidTypeExtensions() {
         private static final ResourceLocation STILL = Confluence.asResource("block/fluid/honey_still");
         private static final ResourceLocation FLOWING = Confluence.asResource("block/fluid/honey_flowing");
@@ -154,6 +161,7 @@ public final class ModClientSetups {
     static final IClientItemExtensions SPEAR = simpleArmPose(ModArmPoses.SPEAR::getValue);
     static final IClientItemExtensions UMBRELLA = simpleArmPose(ModArmPoses.UMBRELLA::getValue);
     static final IClientItemExtensions DRILL_O_CHAINSAW = simpleArmPose(ModArmPoses.DRILL_O_CHAINSAW::getValue);
+    static final IClientItemExtensions LANCE = simpleArmPose(ModArmPoses.LANCE::getValue);
 
     private static IClientItemExtensions simpleArmPose(Supplier<HumanoidModel.ArmPose> supplier) {
         return new IClientItemExtensions() {
@@ -189,27 +197,9 @@ public final class ModClientSetups {
             return renderer;
         }
     };
-    static final IClientItemExtensions GUIDE_VOODOO_DOLL = new IClientItemExtensions() {
-        private BlockEntityWithoutLevelRenderer renderer;
-
-        @Override
-        public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-            if (renderer == null) {
-                Minecraft minecraft = Minecraft.getInstance();
-                this.renderer = new BlockEntityWithoutLevelRenderer(minecraft.getBlockEntityRenderDispatcher(), minecraft.getEntityModels()) {
-                    @Override
-                    public void renderByItem(ItemStack stack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
-                        CompoundTag tag = LibUtils.getItemStackNbtIfPresent(stack);
-                        RenderType renderType = GuideVooDooDollItem.isWall(tag) ? ModClientSetups.RED_GLINT : RenderType.glint();
-                        VertexConsumer consumer = VertexMultiConsumer.create(buffer.getBuffer(renderType), buffer.getBuffer(Sheets.translucentCullBlockSheet()));
-                        BakedModel model = minecraft.getItemRenderer().getModel(stack, minecraft.level, null, 250826);
-                        minecraft.getItemRenderer().renderModelLists(model, stack, packedLight, OverlayTexture.NO_OVERLAY, poseStack, consumer);
-                    }
-                };
-            }
-            return renderer;
-        }
-    };
+    static final IClientItemExtensions GUIDE_VOODOO_DOLL = new MutableRenderTypeItemExtension(stack -> GuideVooDooDollItem.isWall(LibUtils.getItemStackNbtIfPresent(stack)) ? ModClientSetups.GLINT_FF0000.renderType() : RenderType.glint());
+    static final IClientItemExtensions GLINT_RAINBOW_EXTENSIONS = new MutableRenderTypeItemExtension(stack -> ModClientSetups.GLINT_RAINBOW.renderType());
+    static final IClientItemExtensions FULL_LIGHT = new CustomLightItemExtension(15);
     static final IClientMobEffectExtensions TRANSLUCENT_EFFECT_ICON = new IClientMobEffectExtensions() {
         @Override
         public boolean renderInventoryIcon(MobEffectInstance instance, EffectRenderingInventoryScreen<?> screen, GuiGraphics guiGraphics, int x, int y, int blitOffset) {
@@ -237,14 +227,24 @@ public final class ModClientSetups {
             return IntegerRGB.HALLOW_C.mixture(IntegerRGB.HALLOW_A, (m - 8) * 0.25F);
         }
     };
+
+    static final IItemDecorator FISHING_POLE_DECORATOR = (guiGraphics, font, itemStack, x, y) -> {
+        LocalPlayer player = Minecraft.getInstance().player;
+        if (player != null && player.getInventory().getSelected() == itemStack) {
+            ItemStack bait = IPlayer.of(player).confluence$getCurrentBait();
+            if (!bait.isEmpty()) {
+                ClientUtils.renderBait(guiGraphics, bait, x, y);
+            }
+        }
+        return false;
+    };
+
     static boolean guideCheckedJEI = ModList.get().isLoaded("jei") || ModList.get().isLoaded("emi");
 
     static void setRenderLayers() {
         RenderType translucent = RenderType.translucent();
         ItemBlockRenderTypes.setRenderLayer(ModFluids.SHIMMER.fluid().get(), translucent);
         ItemBlockRenderTypes.setRenderLayer(ModFluids.SHIMMER.flowing().get(), translucent);
-// todo 等蜂蜜贴图被画成半透明       ItemBlockRenderTypes.setRenderLayer(ModFluids.HONEY.fluid().get(), translucent);
-//        ItemBlockRenderTypes.setRenderLayer(ModFluids.HONEY.flowing().get(), translucent);
         ItemBlockRenderTypes.setRenderLayer(DecorativeBlocks.WHITE_PURE_GLASS.get(), translucent);
         ItemBlockRenderTypes.setRenderLayer(DecorativeBlocks.LIGHT_GRAY_PURE_GLASS.get(), translucent);
         ItemBlockRenderTypes.setRenderLayer(DecorativeBlocks.GRAY_PURE_GLASS.get(), translucent);
@@ -297,20 +297,8 @@ public final class ModClientSetups {
                     .setOverlayState(OVERLAY)
                     .createCompositeState(false));
 
-    public static final RenderType RED_GLINT = createGlint("red_glint");
-
-    private static RenderType createGlint(String name) {
-        return RenderType.create(name, DefaultVertexFormat.POSITION_TEX, VertexFormat.Mode.QUADS, 1536, RenderType.CompositeState.builder()
-                .setShaderState(RENDERTYPE_GLINT_SHADER)
-                .setTextureState(new TextureStateShard(Confluence.asResource("textures/misc/" + name + ".png"), true, false))
-                .setWriteMaskState(COLOR_WRITE)
-                .setCullState(NO_CULL)
-                .setDepthTestState(EQUAL_DEPTH_TEST)
-                .setTransparencyState(GLINT_TRANSPARENCY)
-                .setTexturingState(GLINT_TEXTURING)
-                .createCompositeState(false)
-        );
-    }
+    public static final ColoredGlintContext GLINT_FF0000 = ColoredGlintContext.create("FF0000", 0xFF0000);
+    public static final ColoredGlintContext GLINT_RAINBOW = ColoredGlintContext.create("rainbow", 0, 0, 0);
 
     public static void registerBowProperties() {
         ResourceLocation pull = ResourceLocation.withDefaultNamespace("pull");

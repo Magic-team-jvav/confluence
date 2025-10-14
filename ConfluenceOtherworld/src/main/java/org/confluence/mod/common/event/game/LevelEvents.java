@@ -112,4 +112,11 @@ public final class LevelEvents {
             BlockBreakSpawns.spawn(serverPlayer.serverLevel(), pos, state);
         }
     }
+
+    @SubscribeEvent
+    public static void farmlandTrample(BlockEvent.FarmlandTrampleEvent event) {
+        if (event.getEntity() instanceof Player player && !PlayerSpecialData.of(player).isCouldDamageEnvironment()) {
+            event.setCanceled(true);
+        }
+    }
 }

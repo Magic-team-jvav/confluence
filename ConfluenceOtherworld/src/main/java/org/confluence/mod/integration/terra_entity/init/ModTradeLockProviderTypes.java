@@ -21,4 +21,5 @@ public class ModTradeLockProviderTypes {
     public static final Supplier<TradeLockProvider> ENVIRONMENT_LOCK = TYPES.register("environment_lock", () -> new TradeLockProvider(EnvironmentLock.CODEC));
     public static final Supplier<TradeLockProvider> FISHING_HOOK_IN_FLUID_LOCK = TYPES.register("fishing_hook_in_fluid_lock", () -> new TradeLockProvider(FishingHookInFluidLock.CODEC));
     public static final Supplier<TradeLockProvider> ANY_BOSS_DEFEATED_LOCK = TYPES.register("any_boss_defeated_lock", () -> new TradeLockProvider(AnyBossDefeatedLock.CODEC));
+    public static final Supplier<TradeLockProvider> BESTIARY_UNLOCKED_COUNT_LOCK = TYPES.register("bestiary_unlocked_count_lock", () -> new TradeLockProvider(BestiaryUnlockedCountLock.CODEC));
 }

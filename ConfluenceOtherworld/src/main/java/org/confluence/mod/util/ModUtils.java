@@ -18,6 +18,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -118,8 +119,8 @@ public final class ModUtils {
     }
 
     public static void summonBoss(ServerLevel level, BlockPos pos, AbstractTerraBossBase boss) {
-        double x = pos.getX() + 0.5 + level.random.nextInt(-50, 51);
-        double z = pos.getZ() + 0.5 + level.random.nextInt(-50, 51);
+        double x = pos.getX() + 0.5 + Mth.randomBetweenInclusive(level.random, -50, 50);
+        double z = pos.getZ() + 0.5 + Mth.randomBetweenInclusive(level.random, -50, 50);
         boss.setPos(x, 0.5 + level.getHeight(Heightmap.Types.MOTION_BLOCKING, Mth.floor(x), Mth.floor(z)), z);
         if (TEUtils.internalSpawnEntity(boss, level)) {
             level.addFreshEntityWithPassengers(boss);
@@ -139,6 +140,8 @@ public final class ModUtils {
     }
 
     public static void bossDeath(ServerLevel level, LivingEntity living) {
+        if (level.getDifficulty() == Difficulty.PEACEFUL) return;
+
         EntityType<?> type = living.getType();
         KillBoard.INSTANCE.defeat(type);
         boolean isEaterOfWorlds = type == TEBossEntities.EATER_OF_WORLDS.get();
@@ -165,15 +168,7 @@ public final class ModUtils {
     }
 
     public static void enemyDropMoney(LivingEntity living, ServerLevel level) {
-        AttributeInstance attack = living.getAttribute(Attributes.ATTACK_DAMAGE);
-        AttributeInstance armor = living.getAttribute(Attributes.ARMOR);
-        AttributeInstance knockbackResistance = living.getAttribute(Attributes.KNOCKBACK_RESISTANCE);
-        double healthFactor = living.getMaxHealth() * 0.15;
-        double attackFactor = attack == null ? 0.0 : attack.getValue() * 0.25;
-        double armorFactor = armor == null ? 0.0 : armor.getValue() * 0.1;
-        double knockbackResistanceFactor = knockbackResistance == null ? 10.0 : (1.0 + knockbackResistance.getValue()) * 10.0;
-        double difficultyFactor = level.getCurrentDifficultyAt(living.blockPosition()).getEffectiveDifficulty() * 0.5;
-        double amount = Math.min(Math.round((healthFactor + attackFactor + armorFactor + knockbackResistanceFactor) * difficultyFactor) * 7.0, 100000);
+        double amount = getLivingBaseMoneyDrops(living, level);
 
         if (living.hasEffect(ModEffects.MIDAS)) {
             amount *= Mth.nextDouble(living.getRandom(), 1.1, 1.49);
@@ -186,6 +181,18 @@ public final class ModUtils {
         }
 
         dropMoney((int) amount, living.getX(), living.getEyeY() - 0.3, living.getZ(), level);
+    }
+
+    public static double getLivingBaseMoneyDrops(LivingEntity living, Level level) {
+        AttributeInstance attack = living.getAttribute(Attributes.ATTACK_DAMAGE);
+        AttributeInstance armor = living.getAttribute(Attributes.ARMOR);
+        AttributeInstance knockbackResistance = living.getAttribute(Attributes.KNOCKBACK_RESISTANCE);
+        double healthFactor = living.getMaxHealth() * 0.15;
+        double attackFactor = attack == null ? 0.0 : attack.getValue() * 0.25;
+        double armorFactor = armor == null ? 0.0 : armor.getValue() * 0.1;
+        double knockbackResistanceFactor = knockbackResistance == null ? 10.0 : (1.0 + knockbackResistance.getValue()) * 10.0;
+        double difficultyFactor = level.getCurrentDifficultyAt(living.blockPosition()).getEffectiveDifficulty() * 0.5;
+        return Math.min(Math.round((healthFactor + attackFactor + armorFactor + knockbackResistanceFactor) * difficultyFactor) * 7.0, 100000);
     }
 
     public static void applyBrainOfCthulhuDebuff(ServerLevel level, @Nullable Entity attacker, LivingEntity living) {

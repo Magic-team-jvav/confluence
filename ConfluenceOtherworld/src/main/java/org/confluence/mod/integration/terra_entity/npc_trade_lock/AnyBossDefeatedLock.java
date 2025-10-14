@@ -8,7 +8,7 @@ import org.confluence.terraentity.api.npc.trade.ITradeHolder;
 import org.confluence.terraentity.api.npc.trade.ITradeLock;
 import org.confluence.terraentity.registries.npc_trade_lock.TradeLockProvider;
 
-public class AnyBossDefeatedLock implements ITradeLock {
+public final class AnyBossDefeatedLock implements ITradeLock {
     public static final AnyBossDefeatedLock INSTANCE = new AnyBossDefeatedLock();
     public static final MapCodec<AnyBossDefeatedLock> CODEC = MapCodec.unit(INSTANCE);
 

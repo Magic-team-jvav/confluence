@@ -8,8 +8,11 @@ import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
 import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
@@ -33,11 +36,11 @@ public final class KillBoard implements IGlobalData {
     public static final KillBoard INSTANCE = new KillBoard();
     public static final Codec<Object2BooleanMap<EntityType<?>>> DEFEATED_BOSSES_CODEC = ExtraCodecs.object2BooleanMap(BuiltInRegistries.ENTITY_TYPE.byNameCodec());
     public static final Codec<Object2BooleanMap<ResourceKey<IMoment>>> DEFEATED_EVENTS_CODEC = ExtraCodecs.object2BooleanMap(ResourceKey.codec(HDMRegistries.Keys.MOMENT));
-    public static final StreamCodec<ByteBuf, Object2BooleanMap<EntityType<?>>> DEFEATED_BOSSES_STREAM_CODEC = LibStreamCodecUtils.object2BooleanMap(LibStreamCodecUtils.registry(BuiltInRegistries.ENTITY_TYPE));
+    public static final StreamCodec<RegistryFriendlyByteBuf, Object2BooleanMap<EntityType<?>>> DEFEATED_BOSSES_STREAM_CODEC = LibStreamCodecUtils.object2BooleanMap(ByteBufCodecs.registry(Registries.ENTITY_TYPE));
     public static final StreamCodec<ByteBuf, Object2BooleanMap<ResourceKey<IMoment>>> DEFEATED_EVENTS_STREAM_CODEC = LibStreamCodecUtils.object2BooleanMap(ResourceKey.streamCodec(HDMRegistries.Keys.MOMENT));
 
-    private final Object2BooleanMap<EntityType<?>> defeatedBosses = new Object2BooleanOpenHashMap<>();
-    private final Object2BooleanMap<ResourceKey<IMoment>> defeatedEvents = new Object2BooleanOpenHashMap<>();
+    private Object2BooleanMap<EntityType<?>> defeatedBosses = new Object2BooleanOpenHashMap<>();
+    private Object2BooleanMap<ResourceKey<IMoment>> defeatedEvents = new Object2BooleanOpenHashMap<>();
     private GamePhase gamePhase = GamePhase.BEFORE_SKELETRON;
 
     private KillBoard() {}
@@ -108,31 +111,32 @@ public final class KillBoard implements IGlobalData {
         if (gamePhase.isGraduated()) {
             IMinecraftServer.of(server).confluence$updateSecretFlag(IWorldOptions.GRADUATED);
         } else if (gamePhase.isHardmode()) {
-            IMinecraftServer.of(server).confluence$updateSecretFlag(IWorldOptions.HARDMODE);
-            PhaseUtils.achieveLevelPhase(OverworldUtils.getLevel(server), ChlorophyteOreBlock.PHASE, true);
+            onUnlockHardmode(server);
             HardmodeConvertor.INSTANCE.start(server, false);
         }
     }
 
-    public void networkEncode(ByteBuf buffer) {
+    public static void onUnlockHardmode(MinecraftServer server) {
+        IMinecraftServer.of(server).confluence$updateSecretFlag(IWorldOptions.HARDMODE);
+        PhaseUtils.achieveLevelPhase(OverworldUtils.getLevel(server), ChlorophyteOreBlock.PHASE, true);
+    }
+
+    public void networkEncode(RegistryFriendlyByteBuf buffer) {
         DEFEATED_BOSSES_STREAM_CODEC.encode(buffer, defeatedBosses);
         DEFEATED_EVENTS_STREAM_CODEC.encode(buffer, defeatedEvents);
         GamePhase.STREAM_CODEC.encode(buffer, gamePhase);
     }
 
-    public void networkDecode(ByteBuf buffer) {
-        clear();
-        this.defeatedBosses.putAll(DEFEATED_BOSSES_STREAM_CODEC.decode(buffer));
-        this.defeatedEvents.putAll(DEFEATED_EVENTS_STREAM_CODEC.decode(buffer));
+    public void networkDecode(RegistryFriendlyByteBuf buffer) {
+        this.defeatedBosses = DEFEATED_BOSSES_STREAM_CODEC.decode(buffer);
+        this.defeatedEvents = DEFEATED_EVENTS_STREAM_CODEC.decode(buffer);
         this.gamePhase = GamePhase.STREAM_CODEC.decode(buffer);
     }
 
     @Override
     public <T> void decode(Dynamic<T> tag) {
-        defeatedBosses.clear();
-        defeatedEvents.clear();
-        tag.get("defeated_bosses").result().or(() -> tag.get("defeated_map").result()).orElseGet(tag::emptyMap).read(DEFEATED_BOSSES_CODEC).ifSuccess(defeatedBosses::putAll);
-        tag.get("defeated_events").orElseEmptyMap().read(DEFEATED_EVENTS_CODEC).ifSuccess(defeatedEvents::putAll);
+        tag.get("defeated_bosses").result().or(() -> tag.get("defeated_map").result()).orElseGet(tag::emptyMap).read(DEFEATED_BOSSES_CODEC).ifSuccess(result -> this.defeatedBosses = result);
+        tag.get("defeated_events").orElseEmptyMap().read(DEFEATED_EVENTS_CODEC).ifSuccess(result -> this.defeatedEvents = result);
         this.gamePhase = GamePhase.getByOrder(tag.get("game_phase").asInt(0));
     }
 
@@ -150,8 +154,8 @@ public final class KillBoard implements IGlobalData {
 
     @Override
     public void clear() {
-        defeatedBosses.clear();
-        defeatedEvents.clear();
+        this.defeatedBosses = new Object2BooleanOpenHashMap<>();
+        this.defeatedEvents = new Object2BooleanOpenHashMap<>();
         this.gamePhase = GamePhase.BEFORE_SKELETRON;
     }
 }

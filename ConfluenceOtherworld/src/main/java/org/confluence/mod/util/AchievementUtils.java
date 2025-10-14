@@ -12,7 +12,6 @@ import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
@@ -84,15 +83,13 @@ public final class AchievementUtils {
         return false;
     }
 
-    public static void luckyBreak_watchYourStep(LivingEntity damagingEntity, DamageSource damageSource, Entity sourceEntity) {
-        if (damagingEntity instanceof ServerPlayer serverPlayer) {
-            if (damagingEntity.isAlive()) {
-                if (damagingEntity.getHealth() / damagingEntity.getMaxHealth() < 0.1F && damageSource.is(DamageTypeTags.IS_FALL)) {
-                    awardAchievement(serverPlayer, "lucky_break");
-                }
-            } else if (sourceEntity != null && DartTrapBlock.NAME.equals(sourceEntity.getCustomName())) {
-                awardAchievement(serverPlayer, "watch_your_step");
+    public static void luckyBreak_watchYourStep(ServerPlayer player, DamageSource damageSource, Entity sourceEntity) {
+        if (player.isAlive()) {
+            if (player.getHealth() / player.getMaxHealth() < 0.1F && damageSource.is(DamageTypeTags.IS_FALL)) {
+                awardAchievement(player, "lucky_break");
             }
+        } else if (sourceEntity != null && DartTrapBlock.NAME.equals(sourceEntity.getCustomName())) {
+            awardAchievement(player, "watch_your_step");
         }
     }
 
@@ -114,7 +111,8 @@ public final class AchievementUtils {
     }
 
     public static void theFrequentFlyer(ServerPlayer player, long cost) {
-        short before = LibUtils.getOrCreatePersistedData(player).getShort("confluence:the_frequent_flyer");
+        CompoundTag tag = LibUtils.getOrCreatePersistedData(player);
+        short before = tag.getShort("confluence:the_frequent_flyer");
         if (before > 10000) return;
         long total = before + cost;
         if (total >= 10000) {
@@ -123,7 +121,7 @@ public final class AchievementUtils {
                 player.getAdvancements().award(advancement, "never");
             }
         }
-        LibUtils.getOrCreatePersistedData(player).putShort("confluence:the_frequent_flyer", (short) total);
+        tag.putShort("confluence:the_frequent_flyer", (short) total);
     }
 
     public static void noHobo(AbstractTerraNPC npc, NPCSpawner.Region region) {
@@ -146,10 +144,8 @@ public final class AchievementUtils {
     }
 
     public static void aRareRealm(ServerPlayer player, ServerLevel level) {
-        if (IMinecraftServer.of(player.server).confluence$matchesSecretFlag(IWorldOptions.SECRET_SEED)) {
-            if (level.getGameTime() % 20 == 3) {
-                awardAchievement(player, "a_rare_realm");
-            }
+        if (IMinecraftServer.of(player.server).confluence$matchesSecretFlag(IWorldOptions.SECRET_SEED) && level.getGameTime() % 40 == 3) {
+            awardAchievement(player, "a_rare_realm");
         }
     }
 

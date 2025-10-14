@@ -14,17 +14,18 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.recipe.LoomRecipe;
-import org.confluence.mod.integration.jei.ModJeiPlugin;
+import org.confluence.mod.integration.jei.EitherRecipe4xHelper;
 import org.jetbrains.annotations.Nullable;
 
 public class LoomCategory implements IRecipeCategory<RecipeHolder<LoomRecipe>> {
     public static final RecipeType<RecipeHolder<LoomRecipe>> TYPE = RecipeType.createRecipeHolderType(Confluence.asResource("loom"));
-    private static final Component TITLE = Component.translatable("title.confluence.loom");
     private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/loom.png");
     private final IDrawable icon;
+    private final EitherRecipe4xHelper helper;
 
     public LoomCategory(IJeiHelpers jeiHelpers) {
         this.icon = jeiHelpers.getGuiHelper().createDrawableItemStack(FunctionalBlocks.LOOM.toStack());
+        this.helper = new EitherRecipe4xHelper(jeiHelpers.getIngredientManager());
     }
 
     @Override
@@ -34,7 +35,7 @@ public class LoomCategory implements IRecipeCategory<RecipeHolder<LoomRecipe>> {
 
     @Override
     public Component getTitle() {
-        return TITLE;
+        return Component.translatable("title.confluence.loom");
     }
 
     @Override
@@ -54,11 +55,14 @@ public class LoomCategory implements IRecipeCategory<RecipeHolder<LoomRecipe>> {
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<LoomRecipe> recipe, IFocusGroup focuses) {
-        ModJeiPlugin.setEitherRecipe4x(builder, recipe);
+        EitherRecipe4xHelper.setEitherRecipe4x(builder, recipe);
     }
 
     @Override
     public void draw(RecipeHolder<LoomRecipe> recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         guiGraphics.blit(BACKGROUND, 0, 0, 0, 0, 144, 80, 144, 80);
+        if (mouseX >= 80 && mouseX <= 80 + 28 && mouseY >= 29 && mouseY <= 29 + 23) {
+            helper.drawSummary(recipeSlotsView, guiGraphics);
+        }
     }
 }

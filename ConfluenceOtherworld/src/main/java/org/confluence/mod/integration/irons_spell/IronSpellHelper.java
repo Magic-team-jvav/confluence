@@ -38,7 +38,7 @@ public class IronSpellHelper {
         if (CommonConfigs.CONVERT_IRONS_SPELL_MANA.get()) {
             if (manaCost > 0) {
                 ManaStorage manaStorage = ManaStorage.of(player);
-                PlayerUtils.extractAndDelayAndSync(manaStorage, () -> manaCost * toConfluence(), player);
+                PlayerUtils.extractAndSync(manaStorage, () -> manaCost * toConfluence(), player);
             }
         }
     }

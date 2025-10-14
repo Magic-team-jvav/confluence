@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column_horizontal",
+  "textures": {
+    "end": "confluence:block/stockade_crate_end",
+    "side": "confluence:block/stockade_crate_side"
+  }
+}

@@ -27,7 +27,8 @@ public class TheCrimsonConversionTable extends ConversionTable {
         if (block instanceof CattailsBodyBlock) return NatureBlocks.HALLOW_CATTAILS_BODY.get();
 
         Holder<Block> holder = block.builtInRegistryHolder();
-
+        if (holder.is(BlockTags.LOGS)) return NatureBlocks.SHADOW_LOG_BLOCKS.LOG.get();
+        if (holder.is(BlockTags.LEAVES)) return NatureBlocks.SHADOW_LOG_BLOCKS.LEAVES.get();
         if (holder.is(BlockTags.BASE_STONE_OVERWORLD)) return NatureBlocks.CRIMSTONE.get();
         if (holder.is(Tags.Blocks.COBBLESTONES)) return NatureBlocks.COBBLED_CRIMSTONE.get();
 
@@ -41,6 +42,7 @@ public class TheCrimsonConversionTable extends ConversionTable {
         if (holder.is(ModTags.Blocks.CRIMSON_CONVERSION_SANDSTONE)) return NatureBlocks.CRIMSANDSTONE.get();
         if (holder.is(ModTags.Blocks.CRIMSON_CONVERSION_HARDENED_SAND_BLOCK)) return NatureBlocks.HARDENED_CRIMSAND_BLOCK.get();
         if (holder.is(ModTags.Blocks.CRIMSON_CONVERSION_MOIST_SAND_BLOCK)) return NatureBlocks.MOISTENED_CRIMSAND_BLOCK.get();
+        if (holder.is(ModTags.Blocks.CRIMSON_CONVERSION_CACTUS)) return NatureBlocks.CRIMSON_CACTUS.get();
 
         if (holder.is(Tags.Blocks.ORES_REDSTONE)) return OreBlocks.FLESHIFICATION_REDSTONE_ORE.get();
         if (holder.is(Tags.Blocks.ORES_COAL)) return OreBlocks.FLESHIFICATION_COAL_ORE.get();

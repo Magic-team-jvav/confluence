@@ -1,0 +1,106 @@
+{
+    "base": {
+        "credit": "Made with Blockbench",
+        "parent": "builtin/entity",
+        "texture_size": [
+            128,
+            128
+        ],
+        "display": {
+            "thirdperson_righthand": {
+                "rotation": [
+                    60,
+                    0,
+                    0
+                ],
+                "translation": [
+                    0,
+                    1.5,
+                    0.25
+                ],
+                "scale": [
+                    0.75,
+                    0.75,
+                    0.75
+                ]
+            },
+            "thirdperson_lefthand": {
+                "rotation": [
+                    60,
+                    0,
+                    0
+                ],
+                "translation": [
+                    0,
+                    1.5,
+                    0.25
+                ],
+                "scale": [
+                    0.75,
+                    0.75,
+                    0.75
+                ]
+            },
+            "firstperson_righthand": {
+                "rotation": [
+                    1,
+                    0,
+                    0
+                ],
+                "translation": [
+                    0,
+                    0.5,
+                    2
+                ],
+                "scale": [
+                    0.5,
+                    0.5,
+                    0.5
+                ]
+            },
+            "firstperson_lefthand": {
+                "translation": [
+                    0,
+                    0.5,
+                    2
+                ],
+                "scale": [
+                    0.5,
+                    0.5,
+                    0.5
+                ]
+            }
+        },
+        "textures": {
+            "particle": "confluence:item/lance/jousting_lance_inventory"
+        }
+    },
+    "gui_light": "front",
+    "loader": "neoforge:separate_transforms",
+    "perspectives": {
+        "fixed": {
+            "parent": "minecraft:item/generated",
+            "textures": {
+                "layer0": "confluence:item/lance/jousting_lance_inventory"
+            }
+        },
+        "ground": {
+            "parent": "minecraft:item/generated",
+            "textures": {
+                "layer0": "confluence:item/lance/jousting_lance_inventory"
+            }
+        },
+        "gui": {
+            "parent": "minecraft:item/generated",
+            "textures": {
+                "layer0": "confluence:item/lance/jousting_lance_inventory"
+            }
+        },
+        "head": {
+            "parent": "minecraft:item/generated",
+            "textures": {
+                "layer0": "confluence:item/lance/jousting_lance_head"
+            }
+        }
+    }
+}

@@ -1,7 +1,6 @@
 package org.confluence.mod.common.entity.projectile.bomb;
 
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.sounds.SoundEvents;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Explosion;
@@ -10,6 +9,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import org.confluence.lib.util.MultiplyExplosionDamageCalculator;
 import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.util.TerraStyleExplosion;
 
 public class BaseGrenadeEntity extends BaseBombEntity {
     public static final float DIAMETER = 0.125F;
@@ -35,21 +35,15 @@ public class BaseGrenadeEntity extends BaseBombEntity {
 
     @Override
     protected void onHitEntity(EntityHitResult result) {
-        if (!level().isClientSide) {
-            explodeFunction();
+        if (level() instanceof ServerLevel level) {
+            explodeFunction(level);
             discard();
         }
     }
 
     @Override
-    protected void explodeFunction() {
-        level().explode(
-                this, Explosion.getDefaultDamageSource(level(), this),
-                getExplosionDamageCalculator(),
-                getX(), getY(), getZ(), 1.5F, false,
-                Level.ExplosionInteraction.NONE, ParticleTypes.EXPLOSION,
-                ParticleTypes.EXPLOSION_EMITTER, SoundEvents.GENERIC_EXPLODE
-        );
+    protected void explodeFunction(ServerLevel level) {
+        TerraStyleExplosion.terraExplode(level, this, Explosion.getDefaultDamageSource(level, this), getExplosionDamageCalculator(), getX(), getY(), getZ(), 1.5F, Level.ExplosionInteraction.NONE);
     }
 
     protected ExplosionDamageCalculator getExplosionDamageCalculator() {

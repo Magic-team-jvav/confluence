@@ -56,9 +56,9 @@ public class FallingStarItemEntity extends ItemEntity {
 
     @Override
     public void tick() {
-        if (level().isClientSide && emitter == null) {
+        if (level().isClientSide && (emitter == null || emitter.isRemoved())) {
             this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("falling_star"));
-            emitter.attached = this;
+            emitter.attachEntity(this);
             PSGameClient.LOADER.addEmitter(emitter, false);
         }
         super.tick();

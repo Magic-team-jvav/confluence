@@ -8,8 +8,8 @@ import net.minecraft.client.renderer.chunk.SectionCompiler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import org.confluence.mod.client.effect.textures.LocalBrushData;
 import org.confluence.mod.client.handler.ClientPacketHandler;
-import org.confluence.mod.client.textures.LocalBrushData;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 

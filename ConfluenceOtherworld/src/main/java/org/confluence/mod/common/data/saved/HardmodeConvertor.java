@@ -35,7 +35,6 @@ import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.mixed.IDedicatedServer;
 import org.confluence.mod.mixed.IMinecraftServer;
-import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.network.s2c.SecretFlagSyncPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.OverworldUtils;
@@ -127,7 +126,7 @@ public final class HardmodeConvertor implements IGlobalData {
                 for (ServerPlayer player : server.getPlayerList().getPlayers()) {
                     AchievementUtils.awardAchievement(player, "its_hard");
                 }
-                IMinecraftServer.of(server).confluence$updateSecretFlag(IWorldOptions.HARDMODE);
+                KillBoard.onUnlockHardmode(server);
                 print(server, Component.translatable("event.confluence.hardmode_conversion.hardmode"), !FMLEnvironment.production);
                 print(server, Component.translatable("event.confluence.hardmode_conversion.finished").withColor(GlobalColors.MESSAGE.get()), true);
                 print(server, Component.translatable("event.confluence.hardmode_conversion.welcome").withColor(GlobalColors.EVENT.get()), true);

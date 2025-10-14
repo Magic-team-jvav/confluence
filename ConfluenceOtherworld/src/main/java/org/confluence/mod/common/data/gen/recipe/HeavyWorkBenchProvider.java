@@ -494,17 +494,6 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "B  "
         )), TEYoyosItems.AMAZON.toStack());
 
-        // 哥布林战旗
-        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                '#', AmountIngredient.of(3, MaterialItems.TATTERED_CLOTH),
-                'b', Ingredient.of(MaterialItems.TATTERED_CLOTH),
-                'a', AmountIngredient.of(2, ItemTags.PLANKS)
-        ), List.of(
-                "###",
-                " b ",
-                "aaa"
-        )), TMItems.GOBLIN_BATTLE_STANDARD.get().getDefaultInstance());
-
         // 秘银砧
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 '#', AmountIngredient.of(2, ModTags.Items.INGOTS_MYTHRIL),
@@ -759,6 +748,36 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 " / #",
                 "/   "
         )), PickaxeItems.FOSSIL_PICKAXE.toStack());
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '/', Ingredient.of(Items.STICK),
+                '#', Ingredient.of(ModTags.Items.RAW_MATERIALS_OPAL),
+                'a', Ingredient.of(MaterialItems.HEIM)
+        ), List.of(
+                " aa#",
+                "  /a",
+                " / a",
+                "/   "
+        )), PickaxeItems.ABYSSAL_PICKAXE.toStack());
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '/', Ingredient.of(Items.STICK),
+                '#', Ingredient.of(ModTags.Items.RAW_MATERIALS_GELSTONE),
+                'a', Ingredient.of(MaterialItems.SPORE_ROOT)
+        ), List.of(
+                " aa#",
+                "  /a",
+                " / a",
+                "/   "
+        )), PickaxeItems.MIASMA_PICKAXE.toStack());
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '/', Ingredient.of(Items.STICK),
+                '#', Ingredient.of(ModTags.Items.RAW_MATERIALS_COLD_CRYSTAL),
+                'a', Ingredient.of(MaterialItems.WINTER_MARROW)
+        ), List.of(
+                " aa#",
+                "  /a",
+                " / a",
+                "/   "
+        )), PickaxeItems.COLD_CRYSTAL_PICKAXE.toStack());
         // 化石套
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 '#', AmountIngredient.of(2, ModTags.Items.RAW_MATERIALS_STURDY_FOSSIL),
@@ -1269,6 +1288,28 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "#aaa"
         )), ChainsawItems.PALLADIUM_CHAINSAW.toStack());
 
+        // 荆鞭
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(6,MaterialItems.JUNGLE_SPORE),
+                'a', Ingredient.of(MaterialItems.MAN_EATER_VINE),
+                'b', AmountIngredient.of(15, MaterialItems.STINGER)
+        ), List.of(
+                "  a ",
+                " a a",
+                " # b",
+                "#   "
+        )), TEWhipItems.SNAPTHORN.toStack());
+        // 脊柱骨鞭
+        shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
+                '#', AmountIngredient.of(45,MaterialItems.DUNGEON_DEMON_BONE),
+                'a', AmountIngredient.of(13,Items.COBWEB)
+        ), List.of(
+                "  a ",
+                " a a",
+                " # a",
+                "#   "
+        )), TEWhipItems.SPINAL_TAP.toStack());
+
 
         shapeless(recipeOutput, NatureBlocks.THIN_ICE_BLOCK.toStack(), EnvironmentLevelAccess.matcher(null, null, true), Ingredient.of(Items.ICE));
         shapeless(recipeOutput, ConsumableItems.BONE_THROWING_KNIFE.toStack(), Ingredient.of(ConsumableItems.THROWING_KNIVE), Ingredient.of(MaterialItems.STURDY_FOSSIL));
@@ -1277,6 +1318,13 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         shapeless(recipeOutput, TGItems.SILVER_BULLET.toStack(70), AmountIngredient.of(70, TGItems.MUSKET_BULLET), Ingredient.of(ModTags.Items.INGOTS_SILVER));
         shapeless(recipeOutput, TGItems.TUNGSTEN_BULLET.toStack(70), AmountIngredient.of(70, TGItems.MUSKET_BULLET), Ingredient.of(ModTags.Items.INGOTS_TUNGSTEN));
         shapeless(recipeOutput, TGItems.METEOR_SHOT.toStack(70), AmountIngredient.of(70, TGItems.MUSKET_BULLET), Ingredient.of(ModTags.Items.INGOTS_METEORITE));
+
+        shapeless(recipeOutput, TGItems.HIGH_VELOCITY_BULLET.toStack(50), AmountIngredient.of(50, MaterialItems.EMPTY_BULLET), Ingredient.of(MaterialItems.COG));
+        shapeless(recipeOutput, TGItems.PARTY_BULLET.toStack(50), AmountIngredient.of(50, MaterialItems.EMPTY_BULLET), Ingredient.of(MaterialItems.CONFETTI));
+        shapeless(recipeOutput, TGItems.GOLDEN_BULLET.toStack(50), AmountIngredient.of(50, MaterialItems.EMPTY_BULLET), Ingredient.of(MaterialItems.GOLD_DUST));
+        shapeless(recipeOutput, TGItems.NANO_BULLET.toStack(50), AmountIngredient.of(50, MaterialItems.EMPTY_BULLET), Ingredient.of(MaterialItems.NANITES));
+        shapeless(recipeOutput, TGItems.EXPLODING_BULLET.toStack(50), AmountIngredient.of(50, MaterialItems.EMPTY_BULLET), Ingredient.of(MaterialItems.EXPLOSIVE_POWDER));
+        shapeless(recipeOutput, TGItems.VENOM_BULLET.toStack(50), AmountIngredient.of(50, MaterialItems.EMPTY_BULLET), Ingredient.of(MaterialItems.VIAL_OF_VENOM));
 
         shapeless(recipeOutput, FunctionalBlocks.EXPLODE_BOULDER.toStack(), Ingredient.of(FunctionalBlocks.NORMAL_BOULDER), Ingredient.of(FunctionalBlocks.INSTANTANEOUS_EXPLOSION_TNT));
         shapeless(recipeOutput, FunctionalBlocks.FOLLOWER_BOULDER.toStack(), Ingredient.of(FunctionalBlocks.NORMAL_BOULDER), Ingredient.of(Items.OBSERVER));

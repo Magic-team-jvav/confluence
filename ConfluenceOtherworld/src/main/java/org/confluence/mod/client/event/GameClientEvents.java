@@ -1,6 +1,6 @@
 package org.confluence.mod.client.event;
 
-import com.ibm.icu.impl.Pair;
+import com.google.common.collect.ImmutableListMultimap;
 import com.mojang.datafixers.util.Either;
 import com.xiaohunao.equipment_benediction.api.manager.EquipmentSetManager;
 import com.xiaohunao.equipment_benediction.common.equipment_set.EquipmentSetBranch;
@@ -19,11 +19,13 @@ import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.stats.Stat;
@@ -35,8 +37,11 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
@@ -45,27 +50,32 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.common.NeoForgeConfig;
+import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
-import org.confluence.lib.client.AntiPushPoseStack;
-import org.confluence.lib.common.component.ModRarity;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import org.confluence.lib.client.animate.ExpertColorAnimation;
+import org.confluence.lib.mixed.IPoseStack;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.effect.EctoMistHelper;
 import org.confluence.mod.client.effect.SpelunkerHelper;
-import org.confluence.mod.client.gui.TooltipManager;
+import org.confluence.mod.client.effect.textures.LocalBrushData;
 import org.confluence.mod.client.gui.container.ExtraInventoryScreen;
+import org.confluence.mod.client.gui.hud.HouseSelectHUD;
 import org.confluence.mod.client.handler.*;
+import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.client.renderer.item.DungeonCompassRenderer;
 import org.confluence.mod.client.renderer.item.ZombieArmRenderer;
-import org.confluence.mod.client.textures.LocalBrushData;
 import org.confluence.mod.common.component.ValueComponent;
+import org.confluence.mod.common.component.prefix.ModPrefix;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEquipmentSets;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.init.item.SwordItems;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.common.item.spear.AbstractSpearItem;
 import org.confluence.mod.integration.ars_nouveau.ArsNouveauHelper;
@@ -74,13 +84,13 @@ import org.confluence.mod.integration.xaero.XaeroHelper;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.ILocalPlayer;
 import org.confluence.mod.mixed.IMobEffectInstance;
+import org.confluence.mod.network.c2s.EmptyTargetSweepPacketC2S;
 import org.confluence.mod.network.c2s.SpearAttackPacketC2S;
-import org.confluence.mod.util.ClientUtils;
-import org.confluence.mod.util.DeathAnimUtils;
-import org.confluence.mod.util.ModUtils;
-import org.confluence.mod.util.PrefixUtils;
-import org.confluence.terra_curio.api.event.PerformJumpingEvent;
+import org.confluence.mod.util.*;
+import org.confluence.terra_curio.api.event.PlayerEmptyAutoAttackEvent;
+import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terraentity.api.event.NPCEvent;
+import org.confluence.terraentity.init.TEAttributes;
 import org.confluence.terraentity.init.entity.TENpcEntities;
 import software.bernie.geckolib.event.GeoRenderEvent;
 
@@ -109,6 +119,12 @@ public final class GameClientEvents {
         }
 
         EctoMistHelper.tick(minecraft, player);
+
+        ModClientSetups.GLINT_RAINBOW.setGlintColor(
+                ExpertColorAnimation.INSTANCE.getRed(),
+                ExpertColorAnimation.INSTANCE.getGreen(),
+                ExpertColorAnimation.INSTANCE.getBlue()
+        );
     }
 
     @SubscribeEvent
@@ -116,47 +132,60 @@ public final class GameClientEvents {
         Minecraft minecraft = Minecraft.getInstance();
         LocalPlayer player = minecraft.player;
 
-        WeatherHandler.initialize(player);
-        MeteorLandingHandler.handle(minecraft, player);
-
-        if (player == null) {
-            LocalBrushData.clear();
-            ClientPacketHandler.reset();
-            CompatibilityHandler.reset();
-            DropletsHandler.clear();
-            EctoMistHelper.effectiveTombstones = 0;
-        } else {
-            ClientUtils.swordProjectileHandle(minecraft, player);
+        if (player != null) {
+            MeteorLandingHandler.handle(minecraft, player);
             HookThrowingHandler.handle(player);
             KeyRequestHandler.handle();
-            XaeroHelper.tick(player);
+            XaeroHelper.handle(player);
             DropletsHandler.handle(minecraft, player);
-            for (Pair<ClientLevel, Entity> pair : DeathAnimUtils.toBeAdded) {
-                pair.first.addEntity(pair.second);
-            }
-            for (Entity entity : DeathAnimUtils.toBeDiscarded) {
-                entity.discard();
-            }
+            DeathAnimUtils.handle();
         }
-        DeathAnimUtils.toBeAdded.clear();
-        DeathAnimUtils.toBeDiscarded.clear();
+        DeathAnimUtils.clear();
     }
 
     @SubscribeEvent
-    public static void leftClick(InputEvent.InteractionKeyMappingTriggered event) {
+    public static void clientPlayerNetwork$LoggingIn(ClientPlayerNetworkEvent.LoggingIn event) {
+        WeatherHandler.initialize(event.getPlayer());
+    }
+
+    @SubscribeEvent
+    public static void clientPlayerNetwork$LoggingOut(ClientPlayerNetworkEvent.LoggingOut event) {
+        WeatherHandler.reset();
+        MeteorLandingHandler.reset();
+        LocalBrushData.reset();
+        ClientPacketHandler.reset();
+        CompatibilityHandler.reset();
+        DropletsHandler.reset();
+        EctoMistHelper.reset();
+        ClientBestiary.reset();
+    }
+
+    @SubscribeEvent
+    public static void input$InteractionKeyMappingTriggered(InputEvent.InteractionKeyMappingTriggered event) {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player == null) return;
         if (event.isUseItem() || event.isAttack() || event.isPickBlock()) {
-            if (!((ILocalPlayer) player).confluence$isCanMove() || player.hasEffect(ModEffects.CURSED)) {
+            if (!ILocalPlayer.of(player).confluence$isCanMove() || player.hasEffect(ModEffects.CURSED)) {
                 event.setCanceled(true);
                 event.setSwingHand(false);
             }
         }
-        if (event.getHand() == InteractionHand.MAIN_HAND && player.getMainHandItem().is(ModTags.Items.SPEARS)) {
-            if (event.isAttack()) {
-                event.setCanceled(true);
+
+        if (event.getHand() == InteractionHand.MAIN_HAND) {
+            if (HouseSelectHUD.inSelectHUD) {
+                if (event.isUseItem()) {
+                    HouseSelectHUD.selectHouse(player);
+                    player.swing(InteractionHand.MAIN_HAND);
+                } else if (event.isAttack()) {
+                    event.setCanceled(true);
+                    event.setSwingHand(false);
+                }
+            } else if (player.getMainHandItem().is(ModTags.Items.SPEAR)) {
+                if (event.isAttack()) {
+                    event.setCanceled(true);
+                }
+                event.setSwingHand(false);
             }
-            event.setSwingHand(false);
         }
     }
 
@@ -167,16 +196,10 @@ public final class GameClientEvents {
                 (ClientConfigs.terraStyleFood && VanillaGuiLayers.FOOD_LEVEL.equals(name)) ||
                 (ClientConfigs.terraStyleArmor && VanillaGuiLayers.ARMOR_LEVEL.equals(name)) ||
                 ArsNouveauHelper.cancelRenderManaBar(name) ||
-                IronSpellHelper.cancelRenderManaOverlay(name)
+                IronSpellHelper.cancelRenderManaOverlay(name) ||
+                (HouseSelectHUD.inSelectHUD && VanillaGuiLayers.CROSSHAIR.equals(name))
         ) {
             event.setCanceled(true);
-        }
-    }
-
-    @SubscribeEvent
-    public static void performJumping(PerformJumpingEvent event) {
-        if (event.isCanPerform() && event.getEntity().hasEffect(ModEffects.SHIMMER)) {
-            event.setCanPerform(false);
         }
     }
 
@@ -184,7 +207,6 @@ public final class GameClientEvents {
     public static void gatherComponents(RenderTooltipEvent.GatherComponents event) {
         ItemStack itemStack = event.getItemStack();
         if (itemStack.isEmpty()) return;
-        Item item = itemStack.getItem();
         List<Either<FormattedText, TooltipComponent>> tooltipElements = event.getTooltipElements();
         if (tooltipElements.isEmpty()) return;
         Optional<FormattedText> displayName = tooltipElements.getFirst().left();
@@ -196,18 +218,18 @@ public final class GameClientEvents {
                 ));
             }
         }
-        // 捐赠者物品
-        var ins = TooltipManager.getInstance();
-        if (ins.contains(item)) {
-            tooltipElements.add(Either.left(
-                    Component.empty()
-            ));
-            tooltipElements.add(Either.left(
-                    Component.translatable(TooltipManager.prefix).withColor(ModRarity.EXPERT.color())
-                            .append("  ")
-                            .append(Component.literal(ins.getTooltip(item))))
-            );
-        }
+//        // 捐赠者物品
+//        var ins = TooltipManager.getInstance();
+//        if (ins.contains(item)) {
+//            tooltipElements.add(Either.left(
+//                    Component.empty()
+//            ));
+//            tooltipElements.add(Either.left(
+//                    Component.translatable(TooltipManager.prefix).withColor(ModRarity.EXPERT.color())
+//                            .append("  ")
+//                            .append(Component.literal(ins.getTooltip(item))))
+//            );
+//        }
     }
 
     @SubscribeEvent
@@ -227,7 +249,7 @@ public final class GameClientEvents {
         if (prefix.type() == PrefixType.MAGIC) {
             if (prefix.manaCost() != 0.0) {
                 boolean positive = prefix.manaCost() > 0.0;
-                String format = ATTRIBUTE_MODIFIER_FORMAT.format(prefix.manaCost() * (positive ? 100.0 : -100.0));
+                String format = ATTRIBUTE_MODIFIER_FORMAT.format(prefix.manaCost() * (positive ? 100 : -100));
                 MutableComponent component = Component.translatable("prefix.confluence.tooltip.mana_cost");
                 if (event.getContext().flag().isAdvanced() && NeoForgeConfig.COMMON.attributeAdvancedTooltipDebugInfo.get()) {
                     String valueStr = ATTRIBUTE_MODIFIER_FORMAT.format(1 + prefix.manaCost());
@@ -244,6 +266,53 @@ public final class GameClientEvents {
                 }
                 event.addTooltipLines(Component.translatable("prefix.confluence.tooltip.add", prefix.additionalMana(), component)
                         .withStyle(ChatFormatting.BLUE));
+            }
+            ImmutableListMultimap<Holder<Attribute>, AttributeModifier> multimap = prefix.modifiers().get();
+            if (multimap.keySet().size() >= 4) {
+                byte b = 0;
+                for (Holder<Attribute> holder : multimap.keySet()) {
+                    Attribute attribute = holder.value();
+                    if ((b & 0b0001) == 0 && attribute == Attributes.ATTACK_DAMAGE.value()) b |= 0b0001;
+                    if ((b & 0b0010) == 0 && attribute == TCAttributes.getRangedDamage().value()) b |= 0b0010;
+                    if ((b & 0b0100) == 0 && attribute == TCAttributes.getMagicDamage().value()) b |= 0b0100;
+                    if ((b & 0b1000) == 0 && attribute == TEAttributes.SUMMON_DAMAGE.value()) b |= 0b1000;
+                    if ((b & 0b1111) == 0b1111) {
+                        double value = multimap.get(holder).stream().filter(m -> m.is(ModPrefix.Accessory.ID)).map(AttributeModifier::amount).findAny().orElse(0.0);
+                        if (value > 0.0) {
+                            String format = ATTRIBUTE_MODIFIER_FORMAT.format(value * 100);
+                            MutableComponent component = Component.translatable("prefix.confluence.tooltip.four_classes_damage");
+                            if (event.getContext().flag().isAdvanced() && NeoForgeConfig.COMMON.attributeAdvancedTooltipDebugInfo.get()) {
+                                String valueStr = ATTRIBUTE_MODIFIER_FORMAT.format(1 + value);
+                                component.append(Component.literal(" [x" + valueStr + "]").withStyle(ChatFormatting.GRAY));
+                            }
+                            event.addTooltipLines(Component.translatable("prefix.confluence.tooltip.plus", format, component)
+                                    .withStyle(ChatFormatting.BLUE));
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void gatherSkippedAttributeTooltip(GatherSkippedAttributeTooltipsEvent event) {
+        PrefixComponent prefix = PrefixUtils.getPrefix(event.getStack());
+        if (prefix != null && prefix.type() == PrefixType.ACCESSORY) {
+            ImmutableListMultimap<Holder<Attribute>, AttributeModifier> multimap = prefix.modifiers().get();
+            if (multimap.keySet().size() >= 4) {
+                byte b = 0;
+                for (Holder<Attribute> holder : multimap.keySet()) {
+                    Attribute attribute = holder.value();
+                    if ((b & 0b0001) == 0 && attribute == Attributes.ATTACK_DAMAGE.value()) b |= 0b0001;
+                    if ((b & 0b0010) == 0 && attribute == TCAttributes.getRangedDamage().value()) b |= 0b0010;
+                    if ((b & 0b0100) == 0 && attribute == TCAttributes.getMagicDamage().value()) b |= 0b0100;
+                    if ((b & 0b1000) == 0 && attribute == TEAttributes.SUMMON_DAMAGE.value()) b |= 0b1000;
+                    if ((b & 0b1111) == 0b1111) {
+                        event.skipId(ModPrefix.Accessory.ID);
+                        break;
+                    }
+                }
             }
         }
     }
@@ -302,7 +371,7 @@ public final class GameClientEvents {
 
     @SubscribeEvent
     public static void postRenderLiving(RenderLivingEvent.Post<?, ?> event) {
-        if (event.getPoseStack() instanceof AntiPushPoseStack || ClientConfigs.goreEffect == ClientConfigs.GoreEffect.OFF) return;
+        if (IPoseStack.isAntiPush(event.getPoseStack()) || ClientConfigs.goreEffect == ClientConfigs.GoreEffect.OFF) return;
         LivingEntity living = event.getEntity();
         if (ClientConfigs.goreEffect == ClientConfigs.GoreEffect.CONFLUENCE_VANILLA
                 && !ResourceLocation.DEFAULT_NAMESPACE.equals(BuiltInRegistries.ENTITY_TYPE.getKey(living.getType()).getNamespace())
@@ -383,6 +452,52 @@ public final class GameClientEvents {
         }
         if (!IMobEffectInstance.of(event.getEffectInstance()).confluence$isEnabled()) {
             event.getTooltip().add(Component.translatable("tooltip.confluence.disabled").withStyle(ChatFormatting.DARK_GRAY));
+        }
+    }
+
+    @SubscribeEvent
+    public static void renderNameTag(RenderNameTagEvent event) {
+        if (!event.canRender().isDefault()) return;
+        Entity entity = event.getEntity();
+        if (entity.getType() == EntityType.ZOMBIE || entity.getType() == EntityType.SKELETON) {
+            if (entity.hasCustomName() && event.getContent().getContents() instanceof TranslatableContents contents && contents.getKey().contains("confluence")) {
+                if (entity == Minecraft.getInstance().getEntityRenderDispatcher().crosshairPickEntity) {
+                    event.setCanRender(TriState.TRUE);
+                } else {
+                    event.setCanRender(TriState.FALSE);
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void playerInteract$LeftClickEmpty(PlayerInteractEvent.LeftClickEmpty event) {
+        Player player = event.getEntity();
+        if (!player.getMainHandItem().is(ModTags.Items.AUTO_ATTACK_WHITELIST) && PlayerUtils.couldPerformEmptyTargetSweep(player)) {
+            EmptyTargetSweepPacketC2S.send2Server();
+        }
+    }
+
+    @SubscribeEvent
+    public static void playerInteract$LeftClickBlock(PlayerInteractEvent.LeftClickBlock event) {
+        Player player = event.getEntity();
+        if (!player.getMainHandItem().is(ModTags.Items.AUTO_ATTACK_WHITELIST) && PlayerUtils.couldPerformEmptyTargetSweep(player)) {
+            EmptyTargetSweepPacketC2S.send2Server();
+        }
+    }
+
+    @SubscribeEvent
+    public static void playerEmptyAutoAttack(PlayerEmptyAutoAttackEvent event) {
+        Player player = event.getEntity();
+        ItemStack itemStack = event.getItemStack();
+        if (itemStack.is(SwordItems.NIGHTS_EDGE)) {
+            if (!player.getCooldowns().isOnCooldown(itemStack.getItem())) {
+                player.swing(InteractionHand.MAIN_HAND);
+                player.resetAttackStrengthTicker();
+            }
+            event.setCanceled(true);
+        } else if (PlayerUtils.couldPerformEmptyTargetSweep(player)) {
+            EmptyTargetSweepPacketC2S.send2Server();
         }
     }
 }

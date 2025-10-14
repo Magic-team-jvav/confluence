@@ -6,10 +6,14 @@ import com.xiaohunao.equipment_benediction.common.equipment_set.EquippableGroup;
 import com.xiaohunao.equipment_benediction.common.equippable.VanillaWearable;
 import com.xiaohunao.equipment_benediction.common.hook.HookMap;
 import com.xiaohunao.equipment_benediction.common.init.EBHookTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.entity.projectile.FlowerPetalProjectile;
 import org.confluence.mod.common.init.ModHookTypes;
 import org.confluence.mod.common.init.item.ArmorItems;
@@ -56,18 +60,29 @@ public class OrichalcumSet extends EquipmentSet {
 
         equippableGroup.addEquippableSet("full_set", new EquipmentSetBranch.Builder()
                 .addEquippable(
-                        VanillaWearable.HEAD, ArmorItems.ORICHALCUM_HELMET,
+                        VanillaWearable.HEAD, Ingredient.of(ArmorItems.ORICHALCUM_MASK, ArmorItems.ORICHALCUM_HEADGEAR, ArmorItems.ORICHALCUM_HELMET),
                         VanillaWearable.CHEST, ArmorItems.ORICHALCUM_CHESTPLATE,
                         VanillaWearable.LEGS, ArmorItems.ORICHALCUM_LEGGINGS,
                         VanillaWearable.FEET, ArmorItems.ORICHALCUM_BOOTS
                 )
                 .bindHook(EBHookTypes.AFTER_LIVING_HURT_ENTITY.get(), (owner, data) -> {
+                    if (data.damageSource().getDirectEntity() instanceof FlowerPetalProjectile) return;
                     Player attacker = data.attacker();
+                    CompoundTag tag = LibUtils.getOrCreatePersistedData(attacker);
+                    long gameTime = attacker.level().getGameTime();
+                    if (gameTime - tag.getLong("confluence:last_flower_petal_attack") < 6) return;
+                    tag.putLong("confluence:last_flower_petal_attack", gameTime);
                     FlowerPetalProjectile projectile = new FlowerPetalProjectile(attacker);
-                    Vec3 position = data.victim().position();
-                    Vec3 offset = position.offsetRandom(attacker.getRandom(), 10);
+                    Vec3 position = data.victim().position().add(0, data.victim().getBbHeight() * 0.5, 0);
+                    RandomSource random = attacker.getRandom();
+                    double y = (random.nextFloat() - 0.5) * 10;
+                    Vec3 offset = position.add(
+                            (random.nextFloat() - 0.5) * 10,
+                            y > 0.0 ? y + 5 : y,
+                            (random.nextFloat() - 0.5) * 10
+                    );
                     projectile.setPos(offset);
-                    projectile.shoot(position.x - offset.x, position.y - offset.x, position.z - offset.z, 0.4F, 0.0F);
+                    projectile.shoot(position.x - offset.x, position.y - offset.y, position.z - offset.z, 1.2F, 0.0F);
                     attacker.level().addFreshEntity(projectile);
                 })
                 .build());

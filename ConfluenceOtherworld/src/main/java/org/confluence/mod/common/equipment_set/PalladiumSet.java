@@ -10,6 +10,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.crafting.Ingredient;
 import org.confluence.mod.common.init.ModHookTypes;
 import org.confluence.mod.common.init.item.ArmorItems;
 import org.confluence.terra_curio.common.init.TCAttributes;
@@ -62,7 +63,7 @@ public class PalladiumSet extends EquipmentSet {
 
         equippableGroup.addEquippableSet("full_set", new EquipmentSetBranch.Builder()
                 .addEquippable(
-                        VanillaWearable.HEAD, ArmorItems.PALLADIUM_HELMET,
+                        VanillaWearable.HEAD, Ingredient.of(ArmorItems.PALLADIUM_MASK, ArmorItems.PALLADIUM_HEADGEAR, ArmorItems.PALLADIUM_HELMET),
                         VanillaWearable.CHEST, ArmorItems.PALLADIUM_CHESTPLATE,
                         VanillaWearable.LEGS, ArmorItems.PALLADIUM_LEGGINGS,
                         VanillaWearable.FEET, ArmorItems.PALLADIUM_BOOTS

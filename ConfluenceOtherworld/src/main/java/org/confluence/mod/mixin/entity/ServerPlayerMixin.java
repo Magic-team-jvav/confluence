@@ -12,9 +12,12 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.stats.ServerStatsCounter;
 import net.minecraft.world.level.ChunkPos;
+import org.confluence.mod.common.entity.projectile.TitaniumShardsProjectile;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.network.s2c.PlayerDeathInfoPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
+import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -36,11 +39,6 @@ public abstract class ServerPlayerMixin implements IServerPlayer {
     @Shadow
     public abstract PlayerAdvancements getAdvancements();
 
-    @Shadow
-    private static boolean didNotMove(double dx, double dy, double dz) {
-        return false;
-    }
-
     @Unique
     private boolean confluence$couldPickupItem = true;
     @Unique
@@ -50,7 +48,9 @@ public abstract class ServerPlayerMixin implements IServerPlayer {
     @Unique
     private ChunkPos confluence$lastChunkPosition;
     @Unique
-    private double confluence$movementSpeed;
+    private final Vector3f confluence$movementSpeed = new Vector3f();
+    @Unique
+    private @Nullable TitaniumShardsProjectile confluence$titaniumShards;
 
     @Override
     public void confluence$setCouldPickupItem(boolean enable) {
@@ -85,8 +85,18 @@ public abstract class ServerPlayerMixin implements IServerPlayer {
     }
 
     @Override
-    public double confluence$getMovementSpeed() {
+    public Vector3f confluence$getMovementSpeed() {
         return confluence$movementSpeed;
+    }
+
+    @Override
+    public void confluence$setTitaniumShards(@Nullable TitaniumShardsProjectile projectile) {
+        this.confluence$titaniumShards = projectile;
+    }
+
+    @Override
+    public boolean confluence$hasTitaniumShards() {
+        return confluence$titaniumShards != null && !confluence$titaniumShards.isRemoved();
     }
 
     @Inject(method = "checkMovementStatistics", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;isSprinting()Z"))
@@ -98,11 +108,7 @@ public abstract class ServerPlayerMixin implements IServerPlayer {
 
     @Inject(method = "checkMovementStatistics", at = @At("HEAD"))
     private void checkSpeed(double dx, double dy, double dz, CallbackInfo ci) {
-        if (didNotMove(dx, dy, dz)) {
-            this.confluence$movementSpeed = 0;
-        } else {
-            this.confluence$movementSpeed = Math.sqrt(dx * dx + dy * dy + dz * dz) * 20;
-        }
+        this.confluence$movementSpeed.set(dx, dy, dz);
     }
 
     @WrapWithCondition(method = "die", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerGamePacketListenerImpl;send(Lnet/minecraft/network/protocol/Packet;Lnet/minecraft/network/PacketSendListener;)V"))

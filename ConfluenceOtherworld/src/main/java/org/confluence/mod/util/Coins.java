@@ -8,6 +8,20 @@ import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.common.CoinItem;
 
 public final class Coins {
+//    public static final Codec<Coins> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+//            Codec.INT.fieldOf("copper").forGetter(Coins::copper),
+//            Codec.INT.fieldOf("silver").forGetter(Coins::silver),
+//            Codec.INT.fieldOf("gold").forGetter(Coins::gold),
+//            Codec.INT.fieldOf("platinum").forGetter(Coins::platinum)
+//    ).apply(instance, Coins::new));
+//    public static final StreamCodec<ByteBuf, Coins> STREAM_CODEC = StreamCodec.composite(
+//            ByteBufCodecs.VAR_INT, Coins::copper,
+//            ByteBufCodecs.VAR_INT, Coins::silver,
+//            ByteBufCodecs.VAR_INT, Coins::gold,
+//            ByteBufCodecs.VAR_INT, Coins::platinum,
+//            Coins::new
+//    );
+
     private int copper;
     private int silver;
     private int gold;

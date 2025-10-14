@@ -27,10 +27,10 @@ public final class CommonConfigs {
     public static BooleanValue ALERT_PLAYER_IN_DUNGEON;
     public static BooleanValue STAR_PHASE;
     private static ConfigValue<List<? extends String>> AMMO_SLOTS_BLACKLIST;
+    public static BooleanValue TERRA_STYLE_EXPLOSION;
 
     public static BooleanValue FLETCHING_MENU;
     public static BooleanValue SHIMMER_DECOMPOSE;
-    public static BooleanValue BREWING_STAND_RECIPE;
     public static BooleanValue ALTAR_TIPS;
 
     public static BooleanValue DO_FALLING_STAR_SPAWNING;
@@ -94,13 +94,13 @@ public final class CommonConfigs {
                 }
                 return false;
             });
+            TERRA_STYLE_EXPLOSION = BUILDER.define("terraStyleExplosion", true);
             BUILDER.pop();
         }
         {
             BUILDER.push("Recipe");
             FLETCHING_MENU = BUILDER.define("fletchingMenu", true);
             SHIMMER_DECOMPOSE = BUILDER.define("shimmerDecompose", true);
-            BREWING_STAND_RECIPE = BUILDER.define("brewingStandRecipe", false);
             ALTAR_TIPS = BUILDER.define("altarTips", true);
             BUILDER.pop();
         }

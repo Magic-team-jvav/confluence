@@ -14,10 +14,16 @@ import org.confluence.lib.common.recipe.EnvironmentEitherAmountRecipe4x;
 import org.confluence.lib.common.recipe.EnvironmentLevelAccess;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.jetbrains.annotations.ApiStatus;
 
 public class HeavyWorkBenchRecipe extends EnvironmentEitherAmountRecipe4x {
     public HeavyWorkBenchRecipe(ItemStack result, Either<ShapedRecipePattern, NonNullList<Ingredient>> either, EnvironmentLevelAccess.Matcher environment) {
         super(result, either, environment);
+    }
+
+    @ApiStatus.Internal
+    public HeavyWorkBenchRecipe(ItemStack result, Either<ShapedRecipePattern, NonNullList<Ingredient>> either) {
+        this(result, either, EnvironmentLevelAccess.Matcher.EMPTY);
     }
 
     public HeavyWorkBenchRecipe(ItemStack result, NonNullList<Ingredient> ingredients, EnvironmentLevelAccess.Matcher environment) {
@@ -48,18 +54,15 @@ public class HeavyWorkBenchRecipe extends EnvironmentEitherAmountRecipe4x {
         return FunctionalBlocks.HEAVY_WORK_BENCH.toStack();
     }
 
-    public static class Serializer implements RecipeSerializer<HeavyWorkBenchRecipe> {
-        public static final MapCodec<HeavyWorkBenchRecipe> CODEC = EnvironmentEitherAmountRecipe4x.environmentEitherSerializerMapCodec(HeavyWorkBenchRecipe::new);
-        public static final StreamCodec<RegistryFriendlyByteBuf, HeavyWorkBenchRecipe> STREAM_CODEC = EnvironmentEitherAmountRecipe4x.environmentEitherSerializerStreamCodec(HeavyWorkBenchRecipe::new);
-
+    public static class Serializer extends SimpleRecipeSerializer<HeavyWorkBenchRecipe> {
         @Override
-        public MapCodec<HeavyWorkBenchRecipe> codec() {
-            return CODEC;
+        protected MapCodec<HeavyWorkBenchRecipe> getCodec() {
+            return environmentEitherSerializerMapCodec(HeavyWorkBenchRecipe::new);
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, HeavyWorkBenchRecipe> streamCodec() {
-            return STREAM_CODEC;
+        protected StreamCodec<RegistryFriendlyByteBuf, HeavyWorkBenchRecipe> getStreamCodec() {
+            return environmentEitherSerializerStreamCodec(HeavyWorkBenchRecipe::new);
         }
     }
 }

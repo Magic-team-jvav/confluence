@@ -49,35 +49,6 @@
                     0,
                     2
                 ]
-            },
-            "ground": {
-                "rotation": [
-                    90,
-                    0,
-                    0
-                ],
-                "translation": [
-                    0,
-                    12.25,
-                    0
-                ],
-                "scale": [
-                    0.5,
-                    0.5,
-                    0.5
-                ]
-            },
-            "head": {
-                "rotation": [
-                    90.4,
-                    -50.25,
-                    0.29
-                ],
-                "translation": [
-                    0,
-                    -14,
-                    4
-                ]
             }
         },
         "textures": {
@@ -108,7 +79,7 @@
         "head": {
             "parent": "minecraft:item/generated",
             "textures": {
-                "layer0": "confluence:item/spear/titanium_trident_inventory"
+                "layer0": "confluence:item/spear/titanium_trident_head"
             }
         }
     }

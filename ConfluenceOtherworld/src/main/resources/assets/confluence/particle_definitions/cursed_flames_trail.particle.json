@@ -1,0 +1,41 @@
+{
+	"format_version": "1.10.0",
+	"particle_effect": {
+		"description": {
+			"identifier": "confluence:cursed_flames_trail",
+			"basic_render_parameters": {
+				"material": "particles_alpha",
+				"texture": "confluence:cursed_flames_trail"
+			}
+		},
+		"components": {
+			"minecraft:emitter_local_space": {
+				"position": true,
+				"rotation": false
+			},
+			"minecraft:emitter_rate_steady": {
+				"spawn_rate": 100,
+				"max_particles": 120
+			},
+			"minecraft:emitter_lifetime_expression": {},
+			"minecraft:emitter_shape_point": {
+				"offset": ["math.lerp(query.attached_xo, query.attached_x, variable.particle_random_1)-query.attached_xo", "math.lerp(query.attached_yo, query.attached_y, variable.particle_random_1)-query.attached_yo", "math.lerp(query.attached_zo, query.attached_z, variable.particle_random_1)-query.attached_zo"]
+			},
+			"minecraft:particle_lifetime_expression": {
+				"max_lifetime": 0.2
+			},
+			"minecraft:particle_initial_speed": 1.5,
+			"minecraft:particle_motion_dynamic": {},
+			"minecraft:particle_appearance_billboard": {
+				"size": [0.2, 0.2],
+				"facing_camera_mode": "rotate_xyz",
+				"uv": {
+					"texture_width": 16,
+					"texture_height": 16,
+					"uv": ["v.particle_random_3>0.5?0:8", "v.particle_random_3>0.5?0:8"],
+					"uv_size": [8, 8]
+				}
+			}
+		}
+	}
+}

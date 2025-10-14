@@ -36,18 +36,15 @@ public class HellforgeRecipe extends EnhancedForgeRecipe {
         return ModRecipes.HELLFORGE_TYPE.get();
     }
 
-    public static class Serializer implements RecipeSerializer<HellforgeRecipe> {
-        public static final MapCodec<HellforgeRecipe> CODEC = EnhancedForgeRecipe.codec(HellforgeRecipe::new);
-        public static final StreamCodec<RegistryFriendlyByteBuf, HellforgeRecipe> STREAM_CODEC = EnhancedForgeRecipe.streamCodec(HellforgeRecipe::new);
-
+    public static class Serializer extends SimpleRecipeSerializer<HellforgeRecipe> {
         @Override
-        public MapCodec<HellforgeRecipe> codec() {
-            return CODEC;
+        protected MapCodec<HellforgeRecipe> getCodec() {
+            return EnhancedForgeRecipe.codec(HellforgeRecipe::new);
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, HellforgeRecipe> streamCodec() {
-            return STREAM_CODEC;
+        protected StreamCodec<RegistryFriendlyByteBuf, HellforgeRecipe> getStreamCodec() {
+            return EnhancedForgeRecipe.streamCodec(HellforgeRecipe::new);
         }
     }
 }

@@ -1,5 +1,6 @@
 package org.confluence.mod.common.entity.projectile.bomb;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
@@ -9,15 +10,16 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.common.init.ModEntities;
 
 public class StickyDynamiteEntity extends BaseDynamiteEntity {
-    protected BlockState stickBlock = null;
+    protected BlockState stickBlock;
+    protected BlockPos stickPos;
 
-    public StickyDynamiteEntity(EntityType<StickyDynamiteEntity> pEntityType, Level pLevel) {
-        super(pEntityType, pLevel);
+    public StickyDynamiteEntity(EntityType<StickyDynamiteEntity> type, Level level) {
+        super(type, level);
         this.bounceFactor = 0.0;
     }
 
-    public StickyDynamiteEntity(LivingEntity pShooter) {
-        super(ModEntities.STICKY_DYNAMITE.get(), pShooter);
+    public StickyDynamiteEntity(LivingEntity shooter) {
+        super(ModEntities.STICKY_DYNAMITE.get(), shooter);
         this.bounceFactor = 0.0;
     }
 
@@ -28,13 +30,14 @@ public class StickyDynamiteEntity extends BaseDynamiteEntity {
         setNoGravity(true);
         Vec3 collPos = blockHitResult.getLocation();
         moveTo(collPos.x, collPos.y, collPos.z, getYRot(), getXRot());
-        this.stickBlock = level().getBlockState(blockPosition());
+        this.stickPos = blockHitResult.getBlockPos();
+        this.stickBlock = level().getBlockState(stickPos);
     }
 
     @Override
     public void tick() {
         super.tick();
-        if (stickBlock != level().getBlockState(blockPosition())) {
+        if (stickPos == null || stickBlock != level().getBlockState(stickPos)) {
             setNoGravity(false);
             this.stickBlock = null;
         }

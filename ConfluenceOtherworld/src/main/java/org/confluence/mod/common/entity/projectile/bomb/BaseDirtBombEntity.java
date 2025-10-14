@@ -1,8 +1,7 @@
 package org.confluence.mod.common.entity.projectile.bomb;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.sounds.SoundEvents;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -12,6 +11,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.lib.util.MultiplyExplosionDamageCalculator;
 import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.util.TerraStyleExplosion;
 
 public class BaseDirtBombEntity extends BaseBombEntity {
     protected int radius = 4;
@@ -30,7 +30,7 @@ public class BaseDirtBombEntity extends BaseBombEntity {
     }
 
     @Override
-    protected void explodeFunction() {
+    protected void explodeFunction(ServerLevel level) {
         BlockPos blockPos = blockPosition();
         BlockPos.MutableBlockPos mutable = blockPos.mutable();
         int radiusSqr = Mth.square(radius);
@@ -41,18 +41,12 @@ public class BaseDirtBombEntity extends BaseBombEntity {
                 for (int k = -radius; k < radius; k++) {
                     int z = blockPos.getZ() + k;
                     mutable.set(x, y, z);
-                    if (mutable.distSqr(blockPos) <= radiusSqr && level().getBlockState(mutable).isEmpty()) {
-                        level().setBlockAndUpdate(mutable, toFill);
+                    if (mutable.distSqr(blockPos) <= radiusSqr && level.getBlockState(mutable).isEmpty()) {
+                        level.setBlockAndUpdate(mutable, toFill);
                     }
                 }
             }
         }
-        level().explode(
-                this, Explosion.getDefaultDamageSource(level(), this),
-                new MultiplyExplosionDamageCalculator(0.9F),
-                getX(), getY(), getZ(), radius, false,
-                Level.ExplosionInteraction.NONE, ParticleTypes.EXPLOSION,
-                ParticleTypes.EXPLOSION_EMITTER, SoundEvents.GENERIC_EXPLODE
-        );
+        TerraStyleExplosion.terraExplode(level, this, Explosion.getDefaultDamageSource(level, this), new MultiplyExplosionDamageCalculator(0.9F), getX(), getY(), getZ(), radius, Level.ExplosionInteraction.NONE);
     }
 }

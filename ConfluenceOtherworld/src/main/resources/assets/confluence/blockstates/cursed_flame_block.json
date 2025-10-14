@@ -1,0 +1,90 @@
+{
+  "multipart": [
+    {
+      "apply": [
+        {
+          "model": "confluence:block/cursed_flame_block_floor0"
+        },
+        {
+          "model": "confluence:block/cursed_flame_block_floor1"
+        }
+      ]
+    },
+    {
+      "apply": [
+        {
+          "model": "confluence:block/cursed_flame_block_side0"
+        },
+        {
+          "model": "confluence:block/cursed_flame_block_side1"
+        },
+        {
+          "model": "confluence:block/cursed_flame_block_side_alt0"
+        },
+        {
+          "model": "confluence:block/cursed_flame_block_side_alt1"
+        }
+      ]
+    },
+    {
+      "apply": [
+        {
+          "model": "confluence:block/cursed_flame_block_side0",
+          "y": 90
+        },
+        {
+          "model": "confluence:block/cursed_flame_block_side1",
+          "y": 90
+        },
+        {
+          "model": "confluence:block/cursed_flame_block_side_alt0",
+          "y": 90
+        },
+        {
+          "model": "confluence:block/cursed_flame_block_side_alt1",
+          "y": 90
+        }
+      ]
+    },
+    {
+      "apply": [
+        {
+          "model": "confluence:block/cursed_flame_block_side0",
+          "y": 180
+        },
+        {
+          "model": "confluence:block/cursed_flame_block_side1",
+          "y": 180
+        },
+        {
+          "model": "confluence:block/cursed_flame_block_side_alt0",
+          "y": 180
+        },
+        {
+          "model": "confluence:block/cursed_flame_block_side_alt1",
+          "y": 180
+        }
+      ]
+    },
+    {
+      "apply": [
+        {
+          "model": "confluence:block/cursed_flame_block_side0",
+          "y": 270
+        },
+        {
+          "model": "confluence:block/cursed_flame_block_side1",
+          "y": 270
+        },
+        {
+          "model": "confluence:block/cursed_flame_block_side_alt0",
+          "y": 270
+        },
+        {
+          "model": "confluence:block/cursed_flame_block_side_alt1",
+          "y": 270
+        }
+      ]
+    }
+  ]
+}

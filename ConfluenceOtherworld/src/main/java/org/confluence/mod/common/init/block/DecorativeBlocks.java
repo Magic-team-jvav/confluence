@@ -2,6 +2,7 @@ package org.confluence.mod.common.init.block;
 
 import com.mojang.datafixers.DSL;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -13,15 +14,14 @@ import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.block.common.CrackedBricksBlock;
-import org.confluence.mod.common.block.common.EnchantedBricksBlock;
-import org.confluence.mod.common.block.common.LihzahrdDoorBlock;
-import org.confluence.mod.common.block.common.MuralBlock;
+import org.confluence.mod.common.block.common.*;
 import org.confluence.mod.common.block.natural.*;
 import org.confluence.mod.common.block.palettes.ConnectedGlassBlock;
 import org.confluence.mod.common.block.palettes.ConnectedStainedGlassBlock;
 import org.confluence.mod.common.init.item.ModItems;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -29,10 +29,11 @@ import static net.minecraft.world.level.block.Blocks.*;
 
 public class DecorativeBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Confluence.MODID);
+    public static final List<DeferredBlock<RelicBlock>> RELIC_BLOCKS = new ArrayList<>();
 
     // 杂项
     public static final DeferredBlock<MuralBlock> MURAL_BLOCK = registerWithItem("mural_block", () -> new MuralBlock(BlockBehaviour.Properties.ofFullCopy(STONE)));
-    public static final Supplier<BlockEntityType<MuralBlock.BEntity>> MURAL_ENTITY_BLOCK = ModBlocks.BLOCK_ENTITIES.register("mural_entity_block", () ->BlockEntityType.Builder.of(MuralBlock.BEntity::new, MURAL_BLOCK.get()).build(DSL.remainderType()));
+    public static final Supplier<BlockEntityType<MuralBlock.BEntity>> MURAL_ENTITY_BLOCK = ModBlocks.BLOCK_ENTITIES.register("mural_entity_block", () -> BlockEntityType.Builder.of(MuralBlock.BEntity::new, MURAL_BLOCK.get()).build(DSL.remainderType()));
     // 雕纹木板
     public static final DeferredBlock<Block> CHISELED_OAK_PLANKS = copyBlockRegister("chiseled_oak_planks", OAK_PLANKS);
     public static final DeferredBlock<Block> CHISELED_SPRUCE_PLANKS = copyBlockRegister("chiseled_spruce_planks", SPRUCE_PLANKS);
@@ -72,7 +73,6 @@ public class DecorativeBlocks {
     public static final DeferredBlock<SlabBlock> CRIMSANDSTONE_BRICKS_SLAB = registerWithItem("crimsandstone_bricks_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(SANDSTONE).mapColor(MapColor.TERRACOTTA_GRAY)));
     public static final DeferredBlock<WallBlock> CRIMSANDSTONE_BRICKS_WALL = registerWithItem("crimsandstone_bricks_wall", () -> new WallBlock(BlockBehaviour.Properties.ofFullCopy(SANDSTONE).mapColor(MapColor.TERRACOTTA_GRAY)));
 
-
     public static final DeferredBlock<Block> SNOW_BRICKS = registerWithItem("snow_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_WHITE)));
     public static final DeferredBlock<StairBlock> SNOW_BRICKS_STAIRS = registerWithItem("snow_bricks_stairs", () -> new StairBlock(SNOW_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_WHITE)));
     public static final DeferredBlock<SlabBlock> SNOW_BRICKS_SLAB = registerWithItem("snow_bricks_slab", () -> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_WHITE)));
@@ -80,7 +80,7 @@ public class DecorativeBlocks {
 
     public static final DeferredBlock<Block> AETHERIUM_BRICKS = registerWithItem("aetherium_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_PINK)));
 
-    public static final DeferredBlock<Block> CRYSTAL_BLOCK = registerWithItem("crystal_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_WHITE)));
+    public static final DeferredBlock<Block> CRYSTAL_BLOCK = registerWithItem("crystal_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_BLOCK).mapColor(MapColor.TERRACOTTA_WHITE)));
 
     public static final DeferredBlock<Block> RAINBOW_BRICKS = copyBlockRegister("rainbow_bricks", STONE_BRICKS);
 
@@ -138,7 +138,6 @@ public class DecorativeBlocks {
     public static final DeferredBlock<Block> PURPLE_PURE_GLASS = registerWithItem("purple_pure_glass", () -> new ConnectedStainedGlassBlock(DyeColor.PURPLE, BlockBehaviour.Properties.ofFullCopy(PURPLE_STAINED_GLASS).mapColor(MapColor.COLOR_PURPLE)));
     public static final DeferredBlock<Block> MAGENTA_PURE_GLASS = registerWithItem("magenta_pure_glass", () -> new ConnectedStainedGlassBlock(DyeColor.MAGENTA, BlockBehaviour.Properties.ofFullCopy(MAGENTA_STAINED_GLASS).mapColor(MapColor.TERRACOTTA_MAGENTA)));
     public static final DeferredBlock<Block> PINK_PURE_GLASS = registerWithItem("pink_pure_glass", () -> new ConnectedStainedGlassBlock(DyeColor.PINK, BlockBehaviour.Properties.ofFullCopy(PINK_STAINED_GLASS).mapColor(MapColor.COLOR_PINK)));
-
 
     // 矿砖
     public static final DeferredBlock<Block> COPPER_BRICKS = registerWithItem("copper_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(MapColor.TERRACOTTA_ORANGE)));
@@ -218,16 +217,15 @@ public class DecorativeBlocks {
 
     // 王朝木系列
     public static final DeferredBlock<Block> WHITE_PAPER_PANE = copyBlockRegister("white_paper_pane", OAK_PLANKS);
-    public static final DeferredBlock<Block> WHITE_PAPER_PANE_LAMP = registerWithItem("white_paper_pane_lamp", () -> new Block(BlockBehaviour.Properties.ofFullCopy(OAK_PLANKS).lightLevel(state->15)));
+    public static final DeferredBlock<Block> WHITE_PAPER_PANE_LAMP = registerWithItem("white_paper_pane_lamp", () -> new Block(BlockBehaviour.Properties.ofFullCopy(OAK_PLANKS).lightLevel(state -> 15)));
     public static final DeferredBlock<Block> MALACHITE_PAPER_PANE = copyBlockRegister("malachite_paper_pane", OAK_PLANKS);
-    public static final DeferredBlock<Block> MALACHITE_PAPER_PANE_LAMP = registerWithItem("malachite_paper_pane_lamp", () -> new Block(BlockBehaviour.Properties.ofFullCopy(OAK_PLANKS).lightLevel(state->15)));
+    public static final DeferredBlock<Block> MALACHITE_PAPER_PANE_LAMP = registerWithItem("malachite_paper_pane_lamp", () -> new Block(BlockBehaviour.Properties.ofFullCopy(OAK_PLANKS).lightLevel(state -> 15)));
     public static final DeferredBlock<DoorBlock> TRADITIONAL_DYNASTY_DOOR = registerWithItem("traditional_dynasty_door", () -> new DoorBlock(BlockSetType.OAK, BlockBehaviour.Properties.ofFullCopy(OAK_DOOR).mapColor(DyeColor.BROWN).pushReaction(PushReaction.BLOCK)));
 
     // 花岗岩
-    public static final DeferredBlock<Block> GRANITE_COLUMN = registerWithItem("granite_column",  () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_BLUE)));
-    public static final DeferredBlock<Block> GRANITE_BRICKS = registerWithItem("granite_bricks",  () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_BLUE)));
+    public static final DeferredBlock<Block> GRANITE_COLUMN = registerWithItem("granite_column", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_BLUE)));
+    public static final DeferredBlock<Block> GRANITE_BRICKS = registerWithItem("granite_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_BLUE)));
     public static final DeferredBlock<Block> POLISHED_GRANITE = registerWithItem("polished_granite", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_BLUE)));
-
 
     // 方解石
     public static final DeferredBlock<Block> MARBLE_COLUMN = registerWithItem("marble_column", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_WHITE)));
@@ -236,7 +234,6 @@ public class DecorativeBlocks {
     public static final DeferredBlock<Block> MARBLE_SMALL_BRICKS = registerWithItem("marble_small_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_WHITE)));
     public static final DeferredBlock<Block> GILDED_MARBLE = registerWithItem("gilded_marble", () -> new GlazedTerracottaBlock(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_WHITE)));
     public static final DeferredBlock<Block> POLISHED_MARBLE = registerWithItem("polished_marble", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE).mapColor(MapColor.TERRACOTTA_WHITE)));
-
 
     // 地牢
     public static final DeferredBlock<Block> BLUE_BRICKS = registerWithItem("blue_bricks", () -> new Block(BlockBehaviour.Properties.ofFullCopy(STONE_BRICKS).mapColor(DyeColor.BLUE).pushReaction(PushReaction.BLOCK).strength(5.0F, ModBlocks.getObsidianBasedExplosionResistance(100))));
@@ -281,6 +278,14 @@ public class DecorativeBlocks {
     public static final DeferredBlock<ChainBlock> SILK_CHAIN = copyBlockRegister("silk_chain", CHAIN, properties -> new ChainBlock(properties.mapColor(MapColor.TERRACOTTA_WHITE)));
     public static final DeferredBlock<ChainBlock> BONE_CHAIN = copyBlockRegister("bone_chain", CHAIN, properties -> new ChainBlock(properties.mapColor(MapColor.TERRACOTTA_WHITE)));
 
+    // 圣物
+    public static final DeferredBlock<RelicBlock> KING_SLIME_RELIC = registerRelic("king_slime_relic");
+    public static final DeferredBlock<RelicBlock> EYE_OF_CTHULHU_RELIC = registerRelic("eye_of_cthulhu_relic");
+    public static final DeferredBlock<RelicBlock> BRAIN_OF_CTHULHU_RELIC = registerRelic("brain_of_cthulhu_relic");
+    public static final DeferredBlock<RelicBlock> EATER_OF_WORLDS_RELIC = registerRelic("eater_of_worlds_relic");
+    public static final DeferredBlock<RelicBlock> SKELETRON_RELIC = registerRelic("skeletron_relic");
+
+    public static final Supplier<BlockEntityType<RelicBlock.BEntity>> RELIC_ENTITY = ModBlocks.BLOCK_ENTITIES.register("relic_entity", () -> BlockEntityType.Builder.of(RelicBlock.BEntity::new, RELIC_BLOCKS.stream().map(DeferredBlock::get).toArray(Block[]::new)).build(DSL.remainderType()));
 
     // 神庙
     public static final BlockSetType LIHZAHRD = BlockSetType.register(new BlockSetType("confluence:lihzahrd",
@@ -317,6 +322,18 @@ public class DecorativeBlocks {
     private static <B extends Block> DeferredBlock<B> registerWithItem(String newName, Supplier<B> supplier) {
         DeferredBlock<B> block = BLOCKS.register(newName, supplier);
         ModItems.BLOCK_ITEMS.registerSimpleBlockItem(newName, block);
+        return block;
+    }
+
+    private static <B extends Block> DeferredBlock<B> registerWithItem(String id, Supplier<B> block, Function<B, BlockItem> function) {
+        DeferredBlock<B> object = BLOCKS.register(id, block);
+        ModItems.BLOCK_ITEMS.register(id, () -> function.apply(object.get()));
+        return object;
+    }
+
+    public static DeferredBlock<RelicBlock> registerRelic(String id) {
+        DeferredBlock<RelicBlock> block = registerWithItem(id, () -> new RelicBlock(BlockBehaviour.Properties.ofFullCopy(GOLD_BLOCK).lightLevel(state -> 7)), RelicBlock.BItem::new);
+        RELIC_BLOCKS.add(block);
         return block;
     }
 }

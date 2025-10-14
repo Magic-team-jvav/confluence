@@ -1,10 +1,8 @@
 package org.confluence.mod.common.item.common;
 
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -51,10 +49,7 @@ public class EntityDisplayItem extends CustomRarityItem {
     @Override
     public Component getName(ItemStack stack) {
         CompoundTag tag = LibUtils.getItemStackNbtIfPresent(stack);
-        if (tag != null) {
-            EntityType<?> entityType = BuiltInRegistries.ENTITY_TYPE.getOptional(ResourceLocation.tryParse(tag.getString(Entity.ID_TAG))).orElse(EntityType.PIG);
-            return entityType.getDescription();
-        }
-        return super.getName(stack);
+        if (tag == null) return super.getName(stack);
+        return EntityType.by(tag).orElse(EntityType.PIG).getDescription();
     }
 }

@@ -5,6 +5,7 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.Item;
@@ -20,7 +21,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.StartupConfigs;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.BaitItems;
@@ -29,13 +30,15 @@ import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.init.item.PotionItems;
 import org.confluence.mod.common.recipe.*;
 import org.confluence.mod.common.recipe.special.BoomBunnyRecipe;
-import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public final class ModRecipes {
     public static final DeferredRegister<RecipeSerializer<?>> SERIALIZERS = DeferredRegister.create(BuiltInRegistries.RECIPE_SERIALIZER, Confluence.MODID);
     public static final DeferredRegister<RecipeType<?>> TYPES = DeferredRegister.create(BuiltInRegistries.RECIPE_TYPE, Confluence.MODID);
@@ -89,11 +92,11 @@ public final class ModRecipes {
     }
 
     public static final class Brewing {
-        private static final Object2IntMap<Item> MATERIAL_ID_MAP = new Object2IntOpenHashMap<>();
-        private static final Object2ObjectMap<int[], ItemStack> MATERIAL_TO_RESULT = new Object2ObjectOpenHashMap<>();
+        public static final Object2IntMap<Item> MATERIAL_ID_MAP = new Object2IntOpenHashMap<>();
+        public static final Object2ObjectMap<int[], ItemStack> MATERIAL_TO_RESULT = new Object2ObjectOpenHashMap<>();
 
         public static void initialize() {
-            if (!CommonConfigs.BREWING_STAND_RECIPE.get()) return;
+            if (!StartupConfigs.brewingStandRecipe()) return;
             registerMaterial(MaterialItems.WATERLEAF.get());
             registerMaterial(MaterialItems.FIREBLOSSOM.get());
             registerMaterial(MaterialItems.MOONGLOW.get());
@@ -105,7 +108,7 @@ public final class ModRecipes {
             registerMaterial(Items.COBWEB);
             registerMaterial(FoodItems.ARMORED_CAVE_FISH.get());
             registerMaterial(Items.FEATHER);
-            registerMaterial(DecorativeBlocks.CRISPY_HONEY_BLOCK.get().asItem());
+            registerMaterial(DecorativeBlocks.CRISPY_HONEY_BLOCK.asItem());
             registerMaterial(Items.FIRE_CORAL);
             registerMaterial(BaitItems.LADYBUG.get());
             registerMaterial(FoodItems.FLASHFIN_KOI.get());
@@ -130,10 +133,13 @@ public final class ModRecipes {
             registerMaterial(FoodItems.CHAOS_FISH.get());
             registerMaterial(FoodItems.MIRROR_FISH.get());
             registerMaterial(FoodItems.EBONY_KOI.get());
-            registerMaterial(NatureBlocks.GLOWING_MUSHROOM.get().asItem());
+            registerMaterial(NatureBlocks.GLOWING_MUSHROOM.asItem());
             registerMaterial(FoodItems.STINKY_FISH.get());
             registerMaterial(MaterialItems.AMBER.get());
             registerMaterial(FoodItems.MOTTLED_OILFISH.get());
+            registerMaterial(MaterialItems.FALLING_STAR.get());
+            registerMaterial(FoodItems.PISCES_FIN_COD.get());
+            registerMaterial(MaterialItems.DUNGEON_DEMON_BONE.get());
 
 
             // 箭术
@@ -165,7 +171,7 @@ public final class ModRecipes {
             }, PotionItems.FEATHERFALL_POTION.toStack());
             // 钓鱼
             registerMix(new Item[]{
-                    DecorativeBlocks.CRISPY_HONEY_BLOCK.get().asItem(),
+                    DecorativeBlocks.CRISPY_HONEY_BLOCK.asItem(),
                     MaterialItems.WATERLEAF.get(),
             }, PotionItems.FISHING_POTION.toStack());
             // 脚蹼
@@ -283,7 +289,7 @@ public final class ModRecipes {
             // 光环
             registerMix(new Item[]{
                     MaterialItems.DAYBLOOM.get(),
-                    NatureBlocks.GLOWING_MUSHROOM.get().asItem()
+                    NatureBlocks.GLOWING_MUSHROOM.asItem()
             }, PotionItems.SHINE_POTION.toStack());
             // 洞探
             registerMix(new Item[]{
@@ -380,17 +386,17 @@ public final class ModRecipes {
         public static void registerRecipes(Consumer<IBrewingRecipe> consumer) {
             consumer.accept(new IBrewingRecipe() {
                 @Override
-                public boolean isInput(@NotNull ItemStack input) {
+                public boolean isInput(ItemStack input) {
                     return input.is(PotionItems.CHAOS_POTION) || input.is(PotionItems.BOTTLED_WATER);
                 }
 
                 @Override
-                public boolean isIngredient(@NotNull ItemStack ingredient) {
+                public boolean isIngredient(ItemStack ingredient) {
                     return MATERIAL_ID_MAP.containsKey(ingredient.getItem());
                 }
 
                 @Override
-                public @NotNull ItemStack getOutput(@NotNull ItemStack input, @NotNull ItemStack ingredient) {
+                public ItemStack getOutput(ItemStack input, ItemStack ingredient) {
                     if (!isIngredient(ingredient) || !isInput(input)) return ItemStack.EMPTY;
                     int addition = MATERIAL_ID_MAP.getOrDefault(ingredient.getItem(), -1);
                     if (addition == -1) return ItemStack.EMPTY;
@@ -423,17 +429,17 @@ public final class ModRecipes {
             int lesser_mana_potion = -5;
             consumer.accept(new IBrewingRecipe() {
                 @Override
-                public boolean isInput(@NotNull ItemStack input) {
-                    return input.is(PotionItems.BOTTLE);
+                public boolean isInput(ItemStack input) {
+                    return input.is(PotionItems.CHAOS_POTION) || input.is(PotionItems.BOTTLE);
                 }
 
                 @Override
-                public boolean isIngredient(@NotNull ItemStack ingredient) {
+                public boolean isIngredient(ItemStack ingredient) {
                     return ingredient.is(MaterialItems.GEL) || ingredient.is(MaterialItems.LIFE_MUSHROOM);
                 }
 
                 @Override
-                public @NotNull ItemStack getOutput(@NotNull ItemStack input, @NotNull ItemStack ingredient) {
+                public ItemStack getOutput(ItemStack input, ItemStack ingredient) {
                     if (!isIngredient(ingredient) || !isInput(input)) return ItemStack.EMPTY;
                     int[] materials = getMaterials(input);
                     if (materials.length >= 2) return ItemStack.EMPTY;
@@ -462,17 +468,17 @@ public final class ModRecipes {
             });
             consumer.accept(new IBrewingRecipe() {
                 @Override
-                public boolean isInput(@NotNull ItemStack input) {
-                    return input.is(PotionItems.LESSER_HEALING_POTION);
+                public boolean isInput(ItemStack input) {
+                    return input.is(PotionItems.CHAOS_POTION) || input.is(PotionItems.LESSER_HEALING_POTION);
                 }
 
                 @Override
-                public boolean isIngredient(@NotNull ItemStack ingredient) {
+                public boolean isIngredient(ItemStack ingredient) {
                     return ingredient.is(PotionItems.LESSER_HEALING_POTION) || ingredient.is(MaterialItems.GLOWING_MUSHROOM);
                 }
 
                 @Override
-                public @NotNull ItemStack getOutput(@NotNull ItemStack input, @NotNull ItemStack ingredient) {
+                public ItemStack getOutput(ItemStack input, ItemStack ingredient) {
                     if (!isIngredient(ingredient) || !isInput(input)) return ItemStack.EMPTY;
                     int[] materials = getMaterials(input);
                     if (materials.length >= 3) return ItemStack.EMPTY;
@@ -505,17 +511,17 @@ public final class ModRecipes {
             });
             consumer.accept(new IBrewingRecipe() {
                 @Override
-                public boolean isInput(@NotNull ItemStack input) {
-                    return input.is(PotionItems.LESSER_MANA_POTION);
+                public boolean isInput(ItemStack input) {
+                    return input.is(PotionItems.CHAOS_POTION) || input.is(PotionItems.LESSER_MANA_POTION);
                 }
 
                 @Override
-                public boolean isIngredient(@NotNull ItemStack ingredient) {
+                public boolean isIngredient(ItemStack ingredient) {
                     return ingredient.is(PotionItems.LESSER_MANA_POTION) || ingredient.is(MaterialItems.GLOWING_MUSHROOM);
                 }
 
                 @Override
-                public @NotNull ItemStack getOutput(@NotNull ItemStack input, @NotNull ItemStack ingredient) {
+                public ItemStack getOutput(ItemStack input, ItemStack ingredient) {
                     if (!isIngredient(ingredient) || !isInput(input)) return ItemStack.EMPTY;
                     int[] materials = getMaterials(input);
                     if (materials.length >= 3) return ItemStack.EMPTY;
@@ -536,7 +542,7 @@ public final class ModRecipes {
                         boolean l = false;
                         boolean g = false;
                         for (int m : materials) {
-                            if (m == lesser_healing_potion) l = true;
+                            if (m == lesser_mana_potion) l = true;
                             else if (m == glowing_mushroom) g = true;
                         }
                         if (l && g) return PotionItems.MANA_POTION.toStack();

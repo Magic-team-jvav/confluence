@@ -365,7 +365,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(96))
                 )
         );
-        add(TEMonsterEntities.CRIMSON_KEMERA.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/crimson_kemera"), LootTable.lootTable()
+        add(TEMonsterEntities.CRIMERA.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/crimera"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(MaterialItems.VERTEBRA).setWeight(33).setQuality(1)).apply(random0To1)
                         .add(EmptyLootItem.emptyItem().setWeight(67))
@@ -644,6 +644,12 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         )
                 )
         );
+        add(TEAnimals.SQUIRREL.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/squirrel"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FoodItems.RAW_SQUIRREL).apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot())).apply(random0To1)
+                        )
+                )
+        );
         add(TEAnimals.CARDINAL.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/cardinal"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(FoodItems.RAW_BIRD).apply(SmeltItemFunction.smelted().when(this.shouldSmeltLoot())).apply(random0To1)
@@ -671,21 +677,21 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(LootItem.lootTableItem(NatureBlocks.GRANITE)).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 10))).apply(random0To1)
                 )
         );
-        add(TEMonsterEntities.BLUE_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/blue_slime"), slimeCommon(-10040065));
+        add(TEMonsterEntities.BLUE_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/blue_slime"), slimeCommon(-10644993));
         add(TEMonsterEntities.DESERT_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/desert_slime"), slimeCommon(-2727));
-        add(TEMonsterEntities.GREEN_DUMPLING_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/green_dumpling_slime"), slimeCommon(-16718331)
+        add(TEMonsterEntities.GREEN_DUMPLING_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/green_dumpling_slime"), slimeCommon(-8470674)
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(FoodItems.GREEN_DUMPLING.get()))
                         .apply(random0To1)
                         .add(EmptyLootItem.emptyItem())
                 )
         );
-        add(TEMonsterEntities.GREEN_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/green_slime"), slimeCommon(-16718331));
-        add(TEMonsterEntities.PURPLE_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/purple_slime"), slimeCommon(-3133441));
-        add(TEMonsterEntities.RED_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/red_slime"), slimeCommon(-1179648));
-        add(TEMonsterEntities.YELLOW_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/yellow_slime"), slimeCommon(-11985));
-        add(TEMonsterEntities.JUNGLE_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/jungle_slime"), slimeCommon(-5308625));
-        add(TEMonsterEntities.ICE_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/ice_slime"), slimeCommon(-13631506)
+        add(TEMonsterEntities.GREEN_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/green_slime"), slimeCommon(-8470674));
+        add(TEMonsterEntities.PURPLE_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/purple_slime"), slimeCommon(-6326333));
+        add(TEMonsterEntities.RED_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/red_slime"), slimeCommon(-1079407));
+        add(TEMonsterEntities.YELLOW_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/yellow_slime"), slimeCommon(-871089));
+        add(TEMonsterEntities.JUNGLE_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/jungle_slime"), slimeCommon(-6570130));
+        add(TEMonsterEntities.ICE_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/ice_slime"), slimeCommon(-10628609)
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(FoodItems.ICE_CREAM.get()))
                         .apply(random0To1)
@@ -719,13 +725,13 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                         .add(EmptyLootItem.emptyItem().setWeight(14))
                 )
         );
-        add(TEMonsterEntities.BLACK_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/black_slime"), slimeCommon(-7566196)
+        add(TEMonsterEntities.BLACK_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/black_slime"), slimeCommon(-7697782)
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.COMPASS).setWeight(2))
                         .add(emptyWeight98)
                 )
         );
-        add(TEMonsterEntities.TROPIC_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/tropic_slime"), slimeCommon(-10040065)
+        add(TEMonsterEntities.TROPIC_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/tropic_slime"), slimeCommon(-10644993)
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(Items.TROPICAL_FISH))
                         .add(EmptyLootItem.emptyItem().setWeight(2))
@@ -816,6 +822,46 @@ public final class EntitySubProvider extends EntityLootSubProvider {
                 .withPool(LootPool.lootPool()
                         .add(LootItem.lootTableItem(TCItems.JELLYFISH_NECKLACE))
                         .add(EmptyLootItem.emptyItem().setWeight(99))
+                )
+        );
+        add(TEMonsterEntities.LUMINOUS_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/luminous_slime"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TESummonItems.SLIME_STAFF).setQuality(14))
+                        .add(EmptyLootItem.emptyItem().setWeight(9986))
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(FoodItems.APPLE_PIE).setWeight(33))
+                        .add(EmptyLootItem.emptyItem().setWeight(67)).apply(random0To1)
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(MaterialItems.GEL))
+                        .apply(random0To1)
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))
+                        .apply(SetComponentsFunction.setComponent(ConfluenceMagicLib.NBT.get(), NbtComponent.create(tag -> tag.putInt("color", -4040988))))
+                )
+        );
+        add(TEMonsterEntities.CRIMSLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/crimslime"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TCItems.BLINDFOLD).setWeight(2))
+                        .add(emptyWeight98)
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(MaterialItems.GEL))
+                        .apply(random0To1)
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4)))
+                        .apply(SetComponentsFunction.setComponent(ConfluenceMagicLib.NBT.get(), NbtComponent.create(tag -> tag.putInt("color", -3386287))))
+                )
+        );
+        add(TEMonsterEntities.CORRUPT_SLIME.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/corrupt_slime"), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(TCItems.BLINDFOLD).setWeight(2))
+                        .add(emptyWeight98)
+                )
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(MaterialItems.GEL))
+                        .apply(random0To1)
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4)))
+                        .apply(SetComponentsFunction.setComponent(ConfluenceMagicLib.NBT.get(), NbtComponent.create(tag -> tag.putInt("color", -6522185))))
                 )
         );
     }

@@ -10,7 +10,6 @@ import org.confluence.mod.common.recipe.HardmodeForgeRecipe;
 
 public class HardmodeForgeCategory extends EnhancedForgeCategory<HardmodeForgeRecipe> {
     public static final RecipeType<RecipeHolder<HardmodeForgeRecipe>> TYPE = RecipeType.createRecipeHolderType(Confluence.asResource("hardmode_forge"));
-    private static final Component TITLE = Component.translatable("title.confluence.hardmode_forge");
 
     public HardmodeForgeCategory(IJeiHelpers jeiHelpers) {
         super(jeiHelpers, FunctionalBlocks.TITANIUM_FORGE.toStack());
@@ -23,6 +22,6 @@ public class HardmodeForgeCategory extends EnhancedForgeCategory<HardmodeForgeRe
 
     @Override
     public Component getTitle() {
-        return TITLE;
+        return Component.translatable("title.confluence.hardmode_forge");
     }
 }

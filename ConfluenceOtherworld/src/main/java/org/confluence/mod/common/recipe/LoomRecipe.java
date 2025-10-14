@@ -48,18 +48,15 @@ public class LoomRecipe extends EitherAmountRecipe4x<MenuRecipeInput> {
         return ModRecipes.LOOM_TYPE.get();
     }
 
-    public static class Serializer implements RecipeSerializer<LoomRecipe> {
-        public static final MapCodec<LoomRecipe> CODEC = EitherAmountRecipe4x.eitherSerializerMapCodec(LoomRecipe::new);
-        public static final StreamCodec<RegistryFriendlyByteBuf, LoomRecipe> STREAM_CODEC = EitherAmountRecipe4x.eitherSerializerStreamCodec(LoomRecipe::new);
-
+    public static class Serializer extends SimpleRecipeSerializer<LoomRecipe> {
         @Override
-        public MapCodec<LoomRecipe> codec() {
-            return CODEC;
+        protected MapCodec<LoomRecipe> getCodec() {
+            return eitherSerializerMapCodec(LoomRecipe::new);
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, LoomRecipe> streamCodec() {
-            return STREAM_CODEC;
+        protected StreamCodec<RegistryFriendlyByteBuf, LoomRecipe> getStreamCodec() {
+            return eitherSerializerStreamCodec(LoomRecipe::new);
         }
     }
 }

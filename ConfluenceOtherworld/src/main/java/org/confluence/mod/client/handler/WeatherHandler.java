@@ -4,7 +4,6 @@ import com.mojang.datafixers.util.Function3;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -16,6 +15,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
@@ -28,7 +28,6 @@ import net.neoforged.neoforge.fluids.FluidType;
 import org.confluence.mod.common.init.ModParticleTypes;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.network.s2c.WindSpeedPacketS2C;
-import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2f;
 
 import java.util.Hashtable;
@@ -80,11 +79,8 @@ public final class WeatherHandler {
         }
     }
 
-    public static void initialize(@Nullable LocalPlayer player) {
-        if (player == null) {
-            BLOCK_PARTICLES.clear();
-            FLUID_PARTICLES.clear();
-        } else if (BLOCK_PARTICLES.isEmpty()) {
+    public static void initialize(Player player) {
+        if (BLOCK_PARTICLES.isEmpty()) {
             for (Holder<Biome> biome : player.registryAccess().registryOrThrow(Registries.BIOME).asHolderIdMap()) {
                 ResourceKey<Biome> key = biome.getKey();
                 if (key == null || !biome.is(BiomeTags.IS_OVERWORLD)) continue;
@@ -95,6 +91,11 @@ public final class WeatherHandler {
                 });
             }
         }
+    }
+
+    public static void reset() {
+        BLOCK_PARTICLES.clear();
+        FLUID_PARTICLES.clear();
     }
 
     public static void leavesParticles(Map<Block, Context> map) {

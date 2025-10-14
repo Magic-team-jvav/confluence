@@ -89,45 +89,44 @@ public class CookingPotRecipe extends AbstractAmountRecipe<CookingPotRecipe.Inpu
         return ModRecipes.COOKING_POT_TYPE.get();
     }
 
-    public static class Serializer implements RecipeSerializer<CookingPotRecipe> {
-        public static final MapCodec<CookingPotRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-                ItemStack.STRICT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
-                INGREDIENTS_CODEC.forGetter(recipe -> recipe.ingredients),
-                Ingredient.CODEC.fieldOf("container").forGetter(recipe -> recipe.container),
-                HeatSourcePredicate.CODEC.fieldOf("heat_source").forGetter(recipe -> recipe.heatSource),
-                Codec.INT.fieldOf("cookingtime").forGetter(recipe -> recipe.cookingTime)
-        ).apply(instance, CookingPotRecipe::new));
-        public static final StreamCodec<RegistryFriendlyByteBuf, CookingPotRecipe> STREAM_CODEC = StreamCodec.of(Serializer::toNetwork, Serializer::fromNetwork);
-
+    public static class Serializer extends SimpleRecipeSerializer<CookingPotRecipe> {
         @Override
-        public MapCodec<CookingPotRecipe> codec() {
-            return CODEC;
+        protected MapCodec<CookingPotRecipe> getCodec() {
+            return RecordCodecBuilder.mapCodec(instance -> instance.group(
+                    ItemStack.STRICT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
+                    INGREDIENTS_CODEC.forGetter(recipe -> recipe.ingredients),
+                    Ingredient.CODEC.fieldOf("container").forGetter(recipe -> recipe.container),
+                    HeatSourcePredicate.CODEC.fieldOf("heat_source").forGetter(recipe -> recipe.heatSource),
+                    Codec.INT.fieldOf("cookingtime").forGetter(recipe -> recipe.cookingTime)
+            ).apply(instance, CookingPotRecipe::new));
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, CookingPotRecipe> streamCodec() {
-            return STREAM_CODEC;
-        }
+        protected StreamCodec<RegistryFriendlyByteBuf, CookingPotRecipe> getStreamCodec() {
+            return new StreamCodec<>() {
+                @Override
+                public CookingPotRecipe decode(RegistryFriendlyByteBuf buffer) {
+                    int size = buffer.readVarInt();
+                    NonNullList<Ingredient> nonnulllist = NonNullList.withSize(size, AmountIngredient.EMPTY);
+                    nonnulllist.replaceAll(ignore -> Ingredient.CONTENTS_STREAM_CODEC.decode(buffer));
+                    ItemStack itemstack = ItemStack.STREAM_CODEC.decode(buffer);
+                    Ingredient container = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
+                    HeatSourcePredicate heatSource = HeatSourcePredicate.STREAM_CODEC.decode(buffer);
+                    return new CookingPotRecipe(itemstack, nonnulllist, container, heatSource, buffer.readVarInt());
+                }
 
-        private static CookingPotRecipe fromNetwork(RegistryFriendlyByteBuf buffer) {
-            int size = buffer.readVarInt();
-            NonNullList<Ingredient> nonnulllist = NonNullList.withSize(size, AmountIngredient.EMPTY);
-            nonnulllist.replaceAll(ignore -> Ingredient.CONTENTS_STREAM_CODEC.decode(buffer));
-            ItemStack itemstack = ItemStack.STREAM_CODEC.decode(buffer);
-            Ingredient container = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
-            HeatSourcePredicate heatSource = HeatSourcePredicate.STREAM_CODEC.decode(buffer);
-            return new CookingPotRecipe(itemstack, nonnulllist, container, heatSource, buffer.readVarInt());
-        }
-
-        private static void toNetwork(RegistryFriendlyByteBuf buffer, CookingPotRecipe recipe) {
-            buffer.writeVarInt(recipe.ingredients.size());
-            for (Ingredient ingredient : recipe.ingredients) {
-                Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, ingredient);
-            }
-            ItemStack.STREAM_CODEC.encode(buffer, recipe.result);
-            Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.container);
-            HeatSourcePredicate.STREAM_CODEC.encode(buffer, recipe.heatSource);
-            buffer.writeVarInt(recipe.cookingTime);
+                @Override
+                public void encode(RegistryFriendlyByteBuf buffer, CookingPotRecipe recipe) {
+                    buffer.writeVarInt(recipe.ingredients.size());
+                    for (Ingredient ingredient : recipe.ingredients) {
+                        Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, ingredient);
+                    }
+                    ItemStack.STREAM_CODEC.encode(buffer, recipe.result);
+                    Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.container);
+                    HeatSourcePredicate.STREAM_CODEC.encode(buffer, recipe.heatSource);
+                    buffer.writeVarInt(recipe.cookingTime);
+                }
+            };
         }
     }
 
@@ -183,11 +182,13 @@ public class CookingPotRecipe extends AbstractAmountRecipe<CookingPotRecipe.Inpu
             return new Builder();
         }
 
-        @SuppressWarnings("all")
+        @SuppressWarnings({"deprecation", "OptionalUsedAsFieldOrParameterType", "unused"})
         public static class Builder {
             private Optional<Either<TagKey<Block>, HolderSet<Block>>> blocks = Optional.empty();
             private Optional<StatePropertiesPredicate> properties = Optional.empty();
             private Optional<NbtPredicate> nbt = Optional.empty();
+
+            private Builder() {}
 
             public Builder of(TagKey<Block> tag) {
                 this.blocks = Optional.of(Either.left(tag));

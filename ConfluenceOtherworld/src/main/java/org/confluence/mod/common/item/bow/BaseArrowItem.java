@@ -1,5 +1,6 @@
 package org.confluence.mod.common.item.bow;
 
+import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
@@ -12,64 +13,68 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.common.entity.projectile.range.arrow.BaseArrowEntity;
 import org.confluence.mod.common.init.ModEntities;
 import org.confluence.terraentity.registries.hit_effect.IEffectStrategy;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public class BaseArrowItem extends ArrowItem {
-    private final BaseArrowEntity.Factory modifier;
-    BaseArrowEntity.Builder attributes;
+    protected final @Nullable BaseArrowEntity.Factory modifier;
+    protected BaseArrowEntity.Builder attributes;
+
     public BaseArrowItem(ModRarity rarity) {
-        this(rarity,null);
-    }
-    public BaseArrowItem(ModRarity rarity,@Nullable BaseArrowEntity.Factory modifier) {
-        super(new Properties().component(ConfluenceMagicLib.MOD_RARITY, rarity));
-        this.modifier=modifier;
-        if(modifier!=null)
-            attributes = modifier.attr.get();
+        this(rarity, null);
     }
 
-    public BaseArrowEntity.Factory getModifier() {
+    public BaseArrowItem(ModRarity rarity, @Nullable BaseArrowEntity.Factory modifier) {
+        super(new Properties().component(ConfluenceMagicLib.MOD_RARITY, rarity));
+        this.modifier = modifier;
+        if (modifier != null) {
+            attributes = modifier.attr.get();
+        }
+    }
+
+    public BaseArrowEntity.@Nullable Factory getModifier() {
         return modifier;
     }
 
     @Override
-    public AbstractArrow createArrow(Level pLevel, ItemStack pStack, LivingEntity pShooter,ItemStack weapon) {
-        if(pStack.getItem() instanceof BaseArrowItem arrowItem && arrowItem.modifier != null){
+    public AbstractArrow createArrow(Level level, ItemStack stack, LivingEntity shooter, @Nullable ItemStack weapon) {
+        if (stack.getItem() instanceof BaseArrowItem arrowItem && arrowItem.modifier != null) {
             BaseArrowEntity arrow;
-            if(weapon.getItem() instanceof TerraBowItem item){
-                arrow= new BaseArrowEntity(ModEntities.ARROW_PROJECTILE.get(),pShooter, this.getDefaultInstance(), weapon, this, item.modifyArrowBuilder);
-            }else{
-                arrow= new BaseArrowEntity(ModEntities.ARROW_PROJECTILE.get(), pShooter, this.getDefaultInstance(), weapon, this);
+            if (weapon != null && weapon.getItem() instanceof TerraBowItem item) {
+                arrow = new BaseArrowEntity(ModEntities.ARROW_PROJECTILE.get(), shooter, this.getDefaultInstance(), weapon, this, item.modifyArrowBuilder);
+            } else {
+                arrow = new BaseArrowEntity(ModEntities.ARROW_PROJECTILE.get(), shooter, this.getDefaultInstance(), weapon, this);
             }
-            //arrow.setEffectsFromItem(pStack);
+            //arrow.setEffectsFromItem(stack);
             return arrow;
         }
-        return super.createArrow(pLevel, pStack, pShooter,weapon);
+        return super.createArrow(level, stack, shooter, weapon);
     }
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-
-        if(attributes!=null){
+        if (attributes != null) {
             tooltipComponents.add(Component.translatable("tooltip.item.confluence.additional_attack_damage").append(": +").append(String.format("%.1f", attributes.base_damage)).withColor(0x00FF00));
 
-            if(attributes.onHitEffects !=null){
+            if (attributes.onHitEffects != null) {
                 IEffectStrategy.appendDescriptions(tooltipComponents, attributes.onHitEffects,
                         Component.translatable("tooltip.item.confluence.on_hit_effects").append(": ").withColor(0xFF00FF)
                 );
             }
 
-            if((attributes.getType() & BaseArrowEntity.Tag.low_gravity) != 0){
+            if ((attributes.getType() & BaseArrowEntity.Tag.no_gravity) != 0) {
                 tooltipComponents.add(Component.translatable("tooltip.item.confluence.no_gravity"));
             }
-            if((attributes.getType() & BaseArrowEntity.Tag.cause_fire) != 0){
+            if ((attributes.getType() & BaseArrowEntity.Tag.cause_fire) != 0) {
                 tooltipComponents.add(Component.translatable("tooltip.item.confluence.cause_fire"));
             }
-            if((attributes.getType() & BaseArrowEntity.Tag.penetration) != 0){
+            if ((attributes.getType() & BaseArrowEntity.Tag.penetration) != 0) {
                 tooltipComponents.add(Component.translatable("tooltip.item.confluence.can_penetrate"));
             }
         }
-
     }
 }

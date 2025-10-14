@@ -716,14 +716,14 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         // 镶金方解石
         shaped(output,
                 ShapedRecipePattern.of(Map.of(
-                        'S', Ingredient.of(Blocks.CALCITE),
-                        'A', Ingredient.of(Tags.Items.NUGGETS_GOLD)
+                        'A', Ingredient.of(Blocks.CALCITE),
+                        'S', Ingredient.of(Tags.Items.INGOTS_GOLD)
                 ), List.of(
                         "AAA",
                         "ASA",
                         "AAA"
                 )),
-                DecorativeBlocks.GILDED_MARBLE.toStack()
+                DecorativeBlocks.GILDED_MARBLE.toStack(8)
         );
         // 蜂蜜月饼
         shaped(output,
@@ -1031,6 +1031,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         shaped(output, ShapedRecipePattern.of(Map.of('#', Ingredient.of(Blocks.DEEPSLATE)), List.of("##")), new ItemStack(FunctionalBlocks.DEEPSLATE_PRESSURE_PLATE));
 
         shapeless(output, ToolItems.NPC_INVITATION.toStack(), Ingredient.of(Items.PAPER), Ingredient.of(Items.HONEYCOMB, MaterialItems.ROYAL_WAX));
+        shapeless(output, ToolItems.GUIDE_TO_PEACEFUL_COEXISTENCE.toStack(), Ingredient.of(ToolItems.GUIDE_TO_CRITTER_COMPANIONSHIP), Ingredient.of(ToolItems.GUIDE_TO_ENVIRONMENTAL_PRESERVATION));
         // 钱币
         shapeless(output, ModItems.COPPER_COIN.toStack(100), Ingredient.of(ModItems.SILVER_COIN));
         shapeless(output, ModItems.SILVER_COIN.toStack(100), Ingredient.of(ModItems.GOLD_COIN));
@@ -1142,7 +1143,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
                 "###",
                 "###",
                 " / "
-        )), logBlockSet.SIGN_ITEM.toStack());
+        )), logBlockSet.SIGN_ITEM.toStack(3));
         if (logBlockSet.CHISELED_PLANKS.isBound()) shaped(output, ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(logBlockSet.SLAB)
         ), List.of(

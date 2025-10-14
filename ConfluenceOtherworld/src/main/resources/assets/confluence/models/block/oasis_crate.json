@@ -1,6 +1,7 @@
 {
-  "parent": "minecraft:block/cube_all",
+  "parent": "minecraft:block/cube_column_horizontal",
   "textures": {
-    "all": "confluence:block/oasis_crate"
+    "end": "confluence:block/oasis_crate_end",
+    "side": "confluence:block/oasis_crate_side"
   }
 }

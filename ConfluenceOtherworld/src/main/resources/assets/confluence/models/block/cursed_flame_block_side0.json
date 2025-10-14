@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/template_fire_side",
+  "textures": {
+    "fire": "confluence:block/cursed_flame_block_0"
+  }
+}

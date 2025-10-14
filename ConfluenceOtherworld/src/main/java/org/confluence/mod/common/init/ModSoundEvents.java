@@ -15,6 +15,7 @@ public final class ModSoundEvents {
     public static final DeferredHolder<SoundEvent, SoundEvent> LIGHTSABER_OPEN = register("lightsaber_open"); // 光剑
     public static final DeferredHolder<SoundEvent, SoundEvent> REGULAR_STAFF_SHOOT = register("regular_staff_shoot"); // 法杖1
     public static final DeferredHolder<SoundEvent, SoundEvent> REGULAR_STAFF_SHOOT_2 = register("regular_staff_shoot_2"); // 法杖2
+    public static final DeferredHolder<SoundEvent, SoundEvent> REGULAR_STAFF_SHOOT_3 = register("regular_staff_shoot_3"); // 法杖3 滋水专属
     public static final DeferredHolder<SoundEvent, SoundEvent> LIFE_CRYSTAL_USE = register("life_crystal_use");// 生命水晶
     public static final DeferredHolder<SoundEvent, SoundEvent> MANA_STAR_USE = register("mana_star_use"); // 魔力水晶
     public static final DeferredHolder<SoundEvent, SoundEvent> COINS = register("coins"); // 币

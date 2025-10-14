@@ -40,6 +40,6 @@ public abstract class WorldSelectionList$WorldListEntryMixin {
         if (confluence$worldIcon == null) {
             this.confluence$worldIcon = IWorldOptions.getWorldIcon(confluence$secretFlag);
         }
-        guiGraphics.blit(confluence$worldIcon, left, top - 1, 0, 0, 32, 32, 32, 32);
+        guiGraphics.blitSprite(confluence$worldIcon, 32, 32, 0, 0, left, top - 1, 32, 32);
     }
 }

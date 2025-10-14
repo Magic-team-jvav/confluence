@@ -33,6 +33,7 @@ public class TheCorruptionConversionTable extends ConversionTable {
         if (holder.is(BlockTags.BASE_STONE_OVERWORLD)) return NatureBlocks.EBONSTONE.get();
         if (holder.is(Tags.Blocks.COBBLESTONES)) return NatureBlocks.COBBLED_EBONSTONE.get();
 
+
         if (holder.is(ModTags.Blocks.CORRUPTION_CONVERSION_DIRT)) return Blocks.DIRT;
         if (holder.is(ModTags.Blocks.CORRUPTION_CONVERSION_GRASS_BLOCK)) return NatureBlocks.CORRUPT_GRASS_BLOCK.get();
         if (holder.is(ModTags.Blocks.CORRUPTION_CONVERSION_JUNGLE_GRASS_BLOCK)) return NatureBlocks.CORRUPT_JUNGLE_GRASS_BLOCK.get();
@@ -43,6 +44,7 @@ public class TheCorruptionConversionTable extends ConversionTable {
         if (holder.is(ModTags.Blocks.CORRUPTION_CONVERSION_SANDSTONE)) return NatureBlocks.EBONSANDSTONE.get();
         if (holder.is(ModTags.Blocks.CORRUPTION_CONVERSION_HARDENED_SAND_BLOCK)) return NatureBlocks.HARDENED_EBONSAND_BLOCK.get();
         if (holder.is(ModTags.Blocks.CORRUPTION_CONVERSION_MOIST_SAND_BLOCK)) return NatureBlocks.MOISTENED_EBONSAND_BLOCK.get();
+        if (holder.is(ModTags.Blocks.CORRUPTION_CONVERSION_CACTUS)) return NatureBlocks.CORRUPT_CACTUS.get();
 
         if (holder.is(Tags.Blocks.ORES_REDSTONE)) return OreBlocks.CORRUPTION_REDSTONE_ORE.get();
         if (holder.is(Tags.Blocks.ORES_COAL)) return OreBlocks.CORRUPTION_COAL_ORE.get();

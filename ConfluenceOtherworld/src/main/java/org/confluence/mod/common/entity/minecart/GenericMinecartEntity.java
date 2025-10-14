@@ -64,7 +64,7 @@ public class GenericMinecartEntity extends BaseMinecartEntity implements Variant
                 FART = register("fart"),
                 TERRA_FART = register("terra_fart");
 
-        public static final Codec<Variant> CODEC = StringRepresentable.fromValues(() -> VALUES.toArray(Variant[]::new));
+        public static final Codec<Variant> CODEC = StringRepresentable.fromValues(() -> VALUES.toArray(new Variant[0]));
 
         public static Variant byId(int id) {
             return VALUES.get(id);

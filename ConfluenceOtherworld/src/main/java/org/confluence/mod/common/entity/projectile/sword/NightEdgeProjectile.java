@@ -1,11 +1,14 @@
 package org.confluence.mod.common.entity.projectile.sword;
 
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.particle.CrossDustParticleOptions;
+import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.integration.terra_entity.trail.TerraSwordTrail;
 import org.confluence.terraentity.api.entity.IOBBProjectile;
 import org.confluence.terraentity.entity.ai.keyframe.Keyframe;
@@ -65,6 +68,10 @@ public class NightEdgeProjectile extends SwordProjectile implements IOBBProjecti
 
     }
 
+    @Override
+    public DamageSource damageSource() {
+        return ModDamageTypes.of(level(), DamageTypes.GENERIC, this, getOwner());
+    }
 
     @Override
     public @NotNull AABB getBoundingBoxForCulling() {

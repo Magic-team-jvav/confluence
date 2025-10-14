@@ -1,0 +1,36 @@
+{
+  "base": {
+    "parent": "confluence:item/breaker_blade_display",
+    "textures": {
+      "layer0": "confluence:item/sword/breaker_blade"
+    }
+  },
+  "gui_light": "front",
+  "loader": "neoforge:separate_transforms",
+  "perspectives": {
+    "fixed": {
+      "parent": "confluence:item/breaker_blade_gui",
+      "textures": {
+        "layer0": "confluence:item/sword/breaker_blade_inventory"
+      }
+    },
+    "ground": {
+      "parent": "confluence:item/breaker_blade_gui",
+      "textures": {
+        "layer0": "confluence:item/sword/breaker_blade_inventory"
+      }
+    },
+    "gui": {
+      "parent": "confluence:item/breaker_blade_gui",
+      "textures": {
+        "layer0": "confluence:item/sword/breaker_blade_inventory"
+      }
+    },
+    "head": {
+      "parent": "confluence:item/breaker_blade_gui",
+      "textures": {
+        "layer0": "confluence:item/sword/breaker_blade_head"
+      }
+    }
+  }
+}

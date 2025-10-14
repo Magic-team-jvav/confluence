@@ -112,8 +112,16 @@ public class MaterialItems {
     public static final DeferredItem<Item> BLACK_PEARL = register("black_pearl", ModRarity.BLUE);
     public static final DeferredItem<Item> PINK_PEARL = register("pink_pearl", ModRarity.BLUE);
     
-    public static final DeferredItem<Item> CHINA_PLATE = register("china_plate");
-    public static final DeferredItem<Item> CHINA_BOWL = register("china_bowl");
+    public static final DeferredItem<Item> CHINA_PLATE = register("china_plate", ModRarity.WHITE);
+    public static final DeferredItem<Item> CHINA_BOWL = register("china_bowl", ModRarity.WHITE);
+
+    public static final DeferredItem<Item> EMPTY_BULLET = register("empty_bullet", ModRarity.WHITE);
+    public static final DeferredItem<Item> EXPLOSIVE_POWDER = register("explosive_powder", ModRarity.WHITE);
+    public static final DeferredItem<Item> GOLD_DUST = register("gold_dust", ModRarity.WHITE);
+    public static final DeferredItem<Item> COG = register("cog", ModRarity.WHITE);
+    public static final DeferredItem<Item> NANITES = register("nanites", ModRarity.WHITE);
+    public static final DeferredItem<Item> CONFETTI = register("confetti", ModRarity.WHITE);
+    public static final DeferredItem<Item> VIAL_OF_VENOM = register("vial_of_venom", ModRarity.WHITE);
 
     // 草药
     public static final DeferredItem<Item> WATERLEAF = ITEMS.registerSimpleItem("waterleaf");
@@ -145,6 +153,7 @@ public class MaterialItems {
     public static final DeferredItem<Item> SPIDER_FANG = register("spider_fang", ModRarity.LIGHT_RED);
     public static final DeferredItem<Item> SPELL_TOME = register("spell_tome", ModRarity.BLUE);
     public static final DeferredItem<Item> ECTOPLASM = register("ectoplasm", ModRarity.YELLOW);
+    public static final DeferredItem<Item> FORBIDDEN_FRAGMENT = register("forbidden_fragment", ModRarity.PINK);
 
     public static DeferredItem<Item> register(String id) {
         return ITEMS.register(id, () -> new Item(new Item.Properties()));

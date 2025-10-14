@@ -33,6 +33,14 @@
         "confluence:chests/desert_pyramid",
         "confluence:chests/jungle_temple",
         "confluence:chests/abandoned_mineshaft",
-        "confluence:chests/village/village_savanna_house"
+        "confluence:chests/village/village_savanna_house",
+        "confluence:chests/trial_chambers/village_savanna_house",
+        "confluence:chests/trial_chambers/corridor",
+        "confluence:chests/trial_chambers/entrance",
+        "confluence:chests/trial_chambers/intersection",
+        "confluence:chests/trial_chambers/intersection_barrel",
+        "confluence:chests/trial_chambers/reward",
+        "confluence:chests/trial_chambers/reward_ominous",
+        "confluence:chests/trial_chambers/supply"
     ]
 }

@@ -29,7 +29,6 @@ import static org.confluence.mod.integration.jei.ModJeiPlugin.addInput;
 
 public class CookingPotCategory implements IRecipeCategory<RecipeHolder<CookingPotRecipe>> {
     public static final RecipeType<RecipeHolder<CookingPotRecipe>> TYPE = RecipeType.createRecipeHolderType(Confluence.asResource("cooking_pot"));
-    private static final Component TITLE = Component.translatable("title.confluence.cooking_pot");
     private static final ResourceLocation BACKGROUND = Confluence.asResource("textures/gui/cooking_pot.png");
     private final IDrawable icon;
 
@@ -44,7 +43,7 @@ public class CookingPotCategory implements IRecipeCategory<RecipeHolder<CookingP
 
     @Override
     public Component getTitle() {
-        return TITLE;
+        return Component.translatable("title.confluence.cooking_pot");
     }
 
     @Override

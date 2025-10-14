@@ -108,7 +108,7 @@ public class ManaStaffItem<E extends DamageSettableProjectile> extends CustomRar
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        tooltipComponents.add(Component.translatable("tooltip.confluence.damage", damage).withStyle(ChatFormatting.GRAY));
+        tooltipComponents.add(Component.translatable("tooltip.confluence.attack_damage", damage).withStyle(ChatFormatting.GRAY));
         tooltipComponents.add(Component.translatable("tooltip.confluence.mana_cost", manaCost).withStyle(ChatFormatting.GRAY));
         tooltipComponents.add(Component.translatable("tooltip.confluence.velocity", velocity).withStyle(ChatFormatting.GRAY));
         tooltipComponents.add(Component.translatable("tooltip.confluence.cooldown", cooldown).withStyle(ChatFormatting.GRAY));

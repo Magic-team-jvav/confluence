@@ -108,6 +108,7 @@
     "client": [
         "accessor.KeyMappingAccessor",
         "client.BlockClientMixin",
+        "client.ClientItemStackMixin",
         "client.ClientLevelMixin",
         "client.ClientPacketListenerMixin",
         "client.CreativeModeTabMixin",

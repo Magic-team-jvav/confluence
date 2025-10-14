@@ -16,6 +16,7 @@ import net.neoforged.neoforge.event.entity.EntityInvulnerabilityCheckEvent;
 import net.neoforged.neoforge.event.entity.EntityMountEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.MinecartAbilityEvent;
+import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEffects;
@@ -31,7 +32,7 @@ public final class EntityEvents {
         if (beingMounted instanceof LivingEntity) {
             AchievementUtils.awardAchievement(player, "the_cavalry");
         }
-        if (event.isDismounting() && beingMounted instanceof AbstractMinecart minecart) {
+        if (CommonConfigs.RIGHT_CLICK_RIDE_MINECART.get() && event.isDismounting() && beingMounted instanceof AbstractMinecart minecart) {
             MinecartAbilityEvent.DismountOnMinecart e = NeoForge.EVENT_BUS.post(new MinecartAbilityEvent.DismountOnMinecart(player, minecart));
             ItemStack itemStack = e.getMinecartItem();
             if (e.isCanceled() || itemStack == null) return;

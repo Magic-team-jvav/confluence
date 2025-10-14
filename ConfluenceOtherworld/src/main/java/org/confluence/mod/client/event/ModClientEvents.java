@@ -2,6 +2,7 @@ package org.confluence.mod.client.event;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Streams;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.RecipeBookCategories;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.BiomeColors;
@@ -84,11 +85,13 @@ import org.confluence.mod.client.renderer.entity.projectile.sword.ForwardProjRen
 import org.confluence.mod.client.renderer.entity.projectile.sword.LightsBaneProjectileRenderer;
 import org.confluence.mod.client.renderer.entity.projectile.sword.NightEdgeProjectileRenderer;
 import org.confluence.mod.client.renderer.entity.projectile.sword.StarFuryProjectileRenderer;
+import org.confluence.mod.client.renderer.item.GroupItemExtension;
 import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.AltImageComponent;
+import org.confluence.mod.common.item.GroupItem;
 import org.confluence.mod.common.item.common.BaseDyeItem;
 import org.confluence.mod.common.item.paint.PaintItem;
 import org.confluence.mod.integration.appleskin.AppleskinHelper;
@@ -415,7 +418,7 @@ public final class ModClientEvents {
         event.registerItem(ModClientSetups.FULL_LIGHT, MaterialItems.SOUL_OF_LIGHT);
         event.registerItem(ModClientSetups.FULL_LIGHT, MaterialItems.SOUL_OF_NIGHT);
         event.registerItem(ModClientSetups.FULL_LIGHT, MaterialItems.SOUL_OF_FLIGHT);
-        event.registerItem(ModClientSetups.ITEM_GROUP, ModItems.GROUP);
+        event.registerItem(GroupItemExtension.INSTANCE, GroupItem.getInstance());
         event.registerItem(ModClientSetups.GLINT_RAINBOW_EXTENSIONS, TreasureBagItems.ITEMS.getEntries().stream().map(DeferredHolder::get).toArray(Item[]::new));
         TGUtil.registerOtherGunModel(event, Confluence.MODID, ManaWeaponItems.BEE_GUN);
         TGUtil.registerOtherGunModel(event, Confluence.MODID, ManaWeaponItems.SPACE_GUN);
@@ -528,5 +531,18 @@ public final class ModClientEvents {
         for (DeferredHolder<Item, ? extends Item> entry : FishingPoleItems.ITEMS.getEntries()) {
             event.register(entry.get(), ModClientSetups.FISHING_POLE_DECORATOR);
         }
+        ResourceLocation plus = Confluence.asResource("plus");
+        ResourceLocation minus = Confluence.asResource("minus");
+        event.register(GroupItem.getInstance(), (guiGraphics, font, stack, xOffset, yOffset) -> {
+            GroupItem.Stacks stacks = stack.get(ModDataComponentTypes.GROUP_STACKS);
+            if (stacks != null) {
+                PoseStack pose = guiGraphics.pose();
+                pose.pushPose();
+                pose.translate(xOffset + 9, yOffset + 9, 200);
+                guiGraphics.blitSprite(stacks.isVisible() ? minus : plus, 0, 0, 7, 7);
+                pose.popPose();
+            }
+            return false;
+        });
     }
 }

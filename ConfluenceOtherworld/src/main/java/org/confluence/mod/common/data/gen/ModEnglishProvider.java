@@ -36,6 +36,10 @@ public class ModEnglishProvider extends LanguageProvider {
     protected void addTranslations() {
         add("confluence.prefix_separator", " ");
 
+        add("itemGroup.confluence.log", "Log");
+        add("itemGroup.confluence.leaves", "Leaves");
+        add("itemGroup.confluence.sapling", "Sapling");
+
         add("config.jade.plugin_confluence.jade_network_component", "Mechanical Info");
         add("config.jade.plugin_confluence.jade_ponder_component", "Ponder Info");
         add("config.jade.plugin_confluence.jade_tombstone_info", "Tombstone Info");

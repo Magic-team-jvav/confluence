@@ -5,6 +5,7 @@ import com.google.common.collect.Streams;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
+import net.minecraft.network.chat.Component;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
@@ -302,17 +303,17 @@ public class LogBlockSet {
 
     public static void acceptNature(CreativeModeTab.Output output) {
         int size = LOG_BLOCK_SETS.size();
-        List<ItemStack> logs = Lists.newArrayListWithCapacity(size);
+        List<ItemStack> log = Lists.newArrayListWithCapacity(size);
         List<ItemStack> leaves = Lists.newArrayListWithCapacity(size);
-        List<ItemStack> saplings = Lists.newArrayListWithCapacity(size);
+        List<ItemStack> sapling = Lists.newArrayListWithCapacity(size);
         for (LogBlockSet logBlocks : LOG_BLOCK_SETS) {
-            if (logBlocks.LOG.isBound()) logs.add(logBlocks.LOG.toStack());
+            if (logBlocks.LOG.isBound()) log.add(logBlocks.LOG.toStack());
             if (logBlocks.LEAVES.isBound()) leaves.add(logBlocks.LEAVES.toStack());
-            if (logBlocks.SAPLING.isBound()) saplings.add(logBlocks.SAPLING.toStack());
+            if (logBlocks.SAPLING.isBound()) sapling.add(logBlocks.SAPLING.toStack());
         }
-        output.accept(GroupItem.of(logs));
-        output.accept(GroupItem.of(leaves));
-        output.accept(GroupItem.of(saplings));
+        output.accept(GroupItem.of(Component.translatable("itemGroup.confluence.log"), log));
+        output.accept(GroupItem.of(Component.translatable("itemGroup.confluence.leaves"), leaves));
+        output.accept(GroupItem.of(Component.translatable("itemGroup.confluence.sapling"), sapling));
 //        for (LogBlockSet logBlocks : LOG_BLOCK_SETS) {
 //            if (logBlocks.LOG.isBound()) output.accept(logBlocks.LOG);
 //            if (logBlocks.LEAVES.isBound()) output.accept(logBlocks.LEAVES);

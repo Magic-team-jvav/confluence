@@ -1,5 +1,6 @@
 package org.confluence.mod.common.block.natural;
 
+import com.xiaohunao.phase_journey.common.util.PhaseUtils;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -13,7 +14,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.phase_journey.common.util.PhaseUtils;
 
 public class ChlorophyteOreBlock extends Block {
     public static final ResourceLocation PHASE = Confluence.asResource("chlorophyte");

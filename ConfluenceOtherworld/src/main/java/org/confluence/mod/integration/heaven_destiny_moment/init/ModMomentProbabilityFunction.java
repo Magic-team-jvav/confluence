@@ -2,13 +2,13 @@ package org.confluence.mod.integration.heaven_destiny_moment.init;
 
 import com.xiaohunao.heaven_destiny_moment.common.function.MomentProbabilityFunction;
 import com.xiaohunao.heaven_destiny_moment.common.init.HDMRegistries;
+import com.xiaohunao.phase_journey.common.util.PhaseUtils;
 import com.xiaohunao.terra_moment.common.moment.SlimeRainMoment;
 import com.xiaohunao.xhn_lib.api.register.holder.FlexibleHolder;
 import com.xiaohunao.xhn_lib.api.register.register.FlexibleRegister;
 import net.minecraft.world.Difficulty;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.KillBoard;
-import org.confluence.phase_journey.common.util.PhaseUtils;
 
 public class ModMomentProbabilityFunction {
     public static final FlexibleRegister<MomentProbabilityFunction> MOMENT_PROBABILITY_FUNCTION = FlexibleRegister.create(HDMRegistries.Keys.MOMENT_PROBABILITY_FUNCTION, Confluence.MODID);

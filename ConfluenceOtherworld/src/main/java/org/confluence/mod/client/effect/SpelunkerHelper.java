@@ -6,6 +6,7 @@ import com.mojang.math.Axis;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.xiaohunao.phase_journey.common.phase.block.BlockPhaseManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.player.LocalPlayer;
@@ -29,7 +30,6 @@ import org.confluence.mod.common.block.common.BaseChestBlock;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.block.ChestBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
-import org.confluence.phase_journey.common.phase.PhaseManager;
 import org.confluence.terraentity.client.buffer.AbstractBufferManager;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
@@ -396,7 +396,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
                     pos.setZ(center.getZ() + k);
                     BlockState blockState = level.getBlockState(pos);
                     if (blockState.isAir()) continue;
-                    blockState = PhaseManager.BLOCK.replaceSourceIfPlayerNotReachedPhase(player, blockState);
+                    blockState = BlockPhaseManager.MANAGER.replaceSourceIfPlayerNotReachedPhase(player, blockState);
                     Block block = blockState.getBlock();
                     if (targets.containsKey(block) &&  /*&&//有目标且
                             (!centerCache.containsKey(pos) ||//未已缓存或

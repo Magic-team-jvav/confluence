@@ -3,12 +3,12 @@ package org.confluence.mod.mixin.integration.terra_curio;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
+import com.xiaohunao.phase_journey.common.phase.block.BlockPhaseManager;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.client.handler.WeatherHandler;
-import org.confluence.phase_journey.common.phase.PhaseManager;
 import org.confluence.terra_curio.client.handler.InformationHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -34,6 +34,6 @@ public abstract class InformationHandlerMixin {
 
     @ModifyReturnValue(method = "mapCloakedBlock", at = @At("RETURN"))
     private static BlockState checkRevealed(BlockState original, @Local(argsOnly = true) Player player) {
-        return PhaseManager.BLOCK.replaceSourceIfPlayerNotReachedPhase(player, original);
+        return BlockPhaseManager.MANAGER.replaceSourceIfPlayerNotReachedPhase(player, original);
     }
 }

@@ -1,5 +1,9 @@
 package org.confluence.mod.common.event;
 
+import com.xiaohunao.phase_journey.api.event.PhaseJourneyEvent;
+import com.xiaohunao.phase_journey.common.init.PJPhaseContextTypes;
+import com.xiaohunao.phase_journey.common.phase.PhaseType;
+import com.xiaohunao.phase_journey.common.phase.block.BlockReplacementPhaseContext;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackLocationInfo;
@@ -86,7 +90,6 @@ import org.confluence.mod.network.c2s.*;
 import org.confluence.mod.network.s2c.*;
 import org.confluence.mod.util.DateUtils;
 import org.confluence.mod.util.ModUtils;
-import org.confluence.phase_journey.api.PhaseJourneyEvent;
 import org.confluence.terra_curio.api.event.RegisterAccessoriesComponentUpdateEvent;
 import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terra_curio.common.init.TCItems;
@@ -291,24 +294,45 @@ public final class ModEvents {
     @SubscribeEvent
     public static void phaseJourney$Register(PhaseJourneyEvent.Register event) {
         BlockState deepslate = Blocks.DEEPSLATE.defaultBlockState();
+        Block[] oreBlocks = {
+                OreBlocks.DEEPSLATE_COBALT_ORE.get(),
+                OreBlocks.DEEPSLATE_PALLADIUM_ORE.get(),
+                OreBlocks.DEEPSLATE_MYTHRIL_ORE.get(),
+                OreBlocks.DEEPSLATE_ORICHALCUM_ORE.get(),
+                OreBlocks.DEEPSLATE_ADAMANTITE_ORE.get(),
+                OreBlocks.DEEPSLATE_TITANIUM_ORE.get()
+        };
+
         int step = 0;
-        for (int state = 0; state < 3; state++) {
-            int finalState = state;
-            event.phaseRegister(Confluence.asResource("reveal_step_" + (step++)), context -> {
-                context.blockReplacement(OreBlocks.DEEPSLATE_COBALT_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), deepslate);
-                context.blockReplacement(OreBlocks.DEEPSLATE_PALLADIUM_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), deepslate);
-            });
-            event.phaseRegister(Confluence.asResource("reveal_step_" + (step++)), context -> {
-                context.blockReplacement(OreBlocks.DEEPSLATE_MYTHRIL_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), deepslate);
-                context.blockReplacement(OreBlocks.DEEPSLATE_ORICHALCUM_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), deepslate);
-            });
-            event.phaseRegister(Confluence.asResource("reveal_step_" + (step++)), context -> {
-                context.blockReplacement(OreBlocks.DEEPSLATE_ADAMANTITE_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), deepslate);
-                context.blockReplacement(OreBlocks.DEEPSLATE_TITANIUM_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), deepslate);
-            });
+        for (Block oreBlock : oreBlocks) {
+            for (int state = 0; state < 3; state++) {
+                event.register(PhaseType.LEVEL, PJPhaseContextTypes.BLOCK.get(), new BlockReplacementPhaseContext(
+                        Confluence.asResource("reveal_step_" + (step++)),
+                        oreBlock.defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, state),
+                        deepslate
+                ));
+            }
         }
 
-        event.phaseRegister(ChlorophyteOreBlock.PHASE, context -> context.blockReplacement(OreBlocks.CHLOROPHYTE_ORE.get(), Blocks.MUD));
+        event.register(PhaseType.LEVEL, PJPhaseContextTypes.BLOCK.get(), new BlockReplacementPhaseContext(
+                ChlorophyteOreBlock.PHASE,
+                OreBlocks.CHLOROPHYTE_ORE.get().defaultBlockState(),
+                Blocks.MUD.defaultBlockState()
+        ));
+
+//            event.phaseRegister(Confluence.asResource("reveal_step_" + (step++)), context -> {
+//                context.blockReplacement(OreBlocks.DEEPSLATE_COBALT_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), deepslate);
+//                context.blockReplacement(OreBlocks.DEEPSLATE_PALLADIUM_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), deepslate);
+//            });
+//            event.phaseRegister(Confluence.asResource("reveal_step_" + (step++)), context -> {
+//                context.blockReplacement(OreBlocks.DEEPSLATE_MYTHRIL_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), deepslate);
+//                context.blockReplacement(OreBlocks.DEEPSLATE_ORICHALCUM_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), deepslate);
+//            });
+//            event.phaseRegister(Confluence.asResource("reveal_step_" + (step++)), context -> {
+//                context.blockReplacement(OreBlocks.DEEPSLATE_ADAMANTITE_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), deepslate);
+//                context.blockReplacement(OreBlocks.DEEPSLATE_TITANIUM_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), deepslate);
+//            });
+//        event.phaseRegister(ChlorophyteOreBlock.PHASE, context -> context.blockReplacement(OreBlocks.CHLOROPHYTE_ORE.get(), Blocks.MUD));
     }
 
     @SubscribeEvent

@@ -1,5 +1,6 @@
 package org.confluence.mod.client.handler;
 
+import com.xiaohunao.phase_journey.mixed.ILevelRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
@@ -11,7 +12,6 @@ import org.confluence.mod.mixed.IDeathScreen;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.network.s2c.*;
 import org.confluence.mod.util.ClientUtils;
-import org.confluence.phase_journey.mixed.ILevelRenderer;
 
 public final class ClientPacketHandler {
     private static int maxMana = 20;

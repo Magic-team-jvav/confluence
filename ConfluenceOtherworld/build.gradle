@@ -242,11 +242,8 @@ dependencies {
     compileOnly "curse.maven:appleskin-248787:5586600"
     runtimeOnly "curse.maven:appleskin-248787:5586600"
 
-    api("dev.latvian.mods:kubejs-neoforge:${kubejs_version}")
-    if (false) {
-        runtimeOnly "dev.latvian.mods:kubejs-neoforge:${kubejs_version}"
-        runtimeOnly "dev.latvian.mods:rhino:${rhino_version}"
-    }
+    implementation "curse.maven:rhino-416294:6886923"
+    implementation "curse.maven:kubejs-238086:5810100"
 
     compileOnly "maven.modrinth:waystones:21.1.23+neoforge-1.21.1"
     compileOnly "maven.modrinth:balm:21.0.51+neoforge-1.21.1"

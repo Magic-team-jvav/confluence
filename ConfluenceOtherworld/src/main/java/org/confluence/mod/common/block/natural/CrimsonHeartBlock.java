@@ -1,5 +1,6 @@
 package org.confluence.mod.common.block.natural;
 
+import com.xiaohunao.phase_journey.common.util.PhaseUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -28,7 +29,6 @@ import org.confluence.mod.common.init.item.ManaWeaponItems;
 import org.confluence.mod.common.init.item.SpearItems;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.ModUtils;
-import org.confluence.phase_journey.common.util.PhaseUtils;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.entity.boss.BrainOfCthulhu;

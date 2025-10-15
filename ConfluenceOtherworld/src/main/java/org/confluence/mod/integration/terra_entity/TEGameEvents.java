@@ -30,7 +30,7 @@ import org.confluence.terraentity.init.TEAttachments;
 import org.confluence.terraentity.init.entity.TENpcEntities;
 import org.confluence.terraentity.registries.npc_trade_task.variant.DynamicAnglerTradeTask;
 
-@EventBusSubscriber(modid = Confluence.MODID, bus = EventBusSubscriber.Bus.GAME)
+@EventBusSubscriber(modid = Confluence.MODID)
 public final class TEGameEvents {
     @SubscribeEvent
     public static void onTravelMerchantGenerator(NPCEvent.TravelingMerchantGenerateTradeEvent event) {

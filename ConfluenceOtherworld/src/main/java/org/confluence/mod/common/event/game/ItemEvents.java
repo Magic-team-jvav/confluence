@@ -35,7 +35,7 @@ import org.confluence.terra_guns.api.event.GunEvent;
 import java.util.Collection;
 import java.util.Map;
 
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
+@EventBusSubscriber(modid = Confluence.MODID)
 public final class ItemEvents {
     @SubscribeEvent(receiveCanceled = true)
     public static void itemStackedOnOther(ItemStackedOnOtherEvent event) {

@@ -113,7 +113,7 @@ import java.util.Set;
 
 import static org.confluence.mod.common.init.ModEntities.*;
 
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT, modid = Confluence.MODID)
+@EventBusSubscriber(value = Dist.CLIENT, modid = Confluence.MODID)
 public final class ModClientEvents {
     @SubscribeEvent
     public static void clientSetup(FMLClientSetupEvent event) {

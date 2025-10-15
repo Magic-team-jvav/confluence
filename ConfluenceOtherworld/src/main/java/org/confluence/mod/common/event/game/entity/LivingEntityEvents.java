@@ -85,7 +85,7 @@ import java.util.List;
 
 import static org.confluence.mod.util.PlayerUtils.receiveMana;
 
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
+@EventBusSubscriber(modid = Confluence.MODID)
 public final class LivingEntityEvents {
     @SubscribeEvent
     public static void livingDeath(LivingDeathEvent event) {

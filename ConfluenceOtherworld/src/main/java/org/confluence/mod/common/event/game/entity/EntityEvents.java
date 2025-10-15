@@ -23,7 +23,7 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.util.AchievementUtils;
 
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
+@EventBusSubscriber(modid = Confluence.MODID)
 public final class EntityEvents {
     @SubscribeEvent
     public static void mount(EntityMountEvent event) {

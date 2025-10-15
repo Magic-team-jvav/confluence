@@ -100,7 +100,7 @@ import java.util.Optional;
 
 import static net.minecraft.world.item.component.ItemAttributeModifiers.ATTRIBUTE_MODIFIER_FORMAT;
 
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, value = Dist.CLIENT, modid = Confluence.MODID)
+@EventBusSubscriber(value = Dist.CLIENT, modid = Confluence.MODID)
 public final class GameClientEvents {
     @SubscribeEvent
     public static void clientTick$Pre(ClientTickEvent.Pre event) {

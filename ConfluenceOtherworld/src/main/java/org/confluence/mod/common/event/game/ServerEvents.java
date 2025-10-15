@@ -8,7 +8,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.block.functional.network.NetworkService;
 import org.confluence.mod.common.block.functional.network.PathService;
 
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
+@EventBusSubscriber(modid = Confluence.MODID)
 public final class ServerEvents {
     @SubscribeEvent
     public static void serverAboutToStart(ServerAboutToStartEvent event) {

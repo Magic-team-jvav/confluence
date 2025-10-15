@@ -15,7 +15,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Supplier;
 
-@EventBusSubscriber(modid = Confluence.MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+@EventBusSubscriber(modid = Confluence.MODID, value = Dist.CLIENT)
 public final class ModKeyBindings {
     public static final String KEY_BINDINGS_CATEGORY = "key.confluence.gameplay";
     private static List<Lazy<KeyMapping>> keyMappings = new LinkedList<>();

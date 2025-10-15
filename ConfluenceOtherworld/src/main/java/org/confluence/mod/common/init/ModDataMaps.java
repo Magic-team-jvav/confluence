@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.LinkedList;
 import java.util.List;
 
-@EventBusSubscriber(modid = Confluence.MODID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = Confluence.MODID)
 public final class ModDataMaps {
     private static List<DataMapType<?, ?>> types = new LinkedList<>();
     private static final boolean jei = ModList.get().isLoaded("jei");

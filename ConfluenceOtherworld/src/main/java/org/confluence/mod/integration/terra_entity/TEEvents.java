@@ -12,7 +12,7 @@ import org.confluence.terraentity.api.event.WhipRegisterModifyEvent;
 import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
 
-@EventBusSubscriber(modid = Confluence.MODID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = Confluence.MODID)
 public final class TEEvents {
     @SubscribeEvent
     public static void onRegisterWhips(WhipRegisterModifyEvent event) {

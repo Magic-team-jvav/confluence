@@ -64,7 +64,7 @@ import org.confluence.terraentity.entity.npc.AbstractTerraNPC;
 
 import static org.confluence.mod.api.event.MinecartAbilityEvent.RightClickRailBlock;
 
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
+@EventBusSubscriber(modid = Confluence.MODID)
 public final class PlayerEvents {
     @SubscribeEvent
     public static void loggedIn(PlayerEvent.PlayerLoggedInEvent event) {

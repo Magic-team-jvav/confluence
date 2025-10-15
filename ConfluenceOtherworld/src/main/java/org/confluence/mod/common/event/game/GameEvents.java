@@ -70,7 +70,7 @@ import top.theillusivec4.curios.api.event.CurioChangeEvent;
 
 import java.util.*;
 
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
+@EventBusSubscriber(modid = Confluence.MODID)
 public final class GameEvents {
     @SubscribeEvent
     public static void afterAccessoryAbilitiesFlushed(AfterAccessoryAbilitiesFlushedEvent event) {

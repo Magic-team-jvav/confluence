@@ -14,7 +14,7 @@ import org.confluence.mod.mixed.ILevelChunkSection;
 import org.confluence.mod.util.DynamicBiomeUtils;
 import software.bernie.geckolib.animation.EasingType;
 
-@EventBusSubscriber(modid = Confluence.MODID, bus = EventBusSubscriber.Bus.GAME, value = Dist.CLIENT)
+@EventBusSubscriber(modid = Confluence.MODID, value = Dist.CLIENT)
 public class EctoMistHelper {
     public static int effectiveTombstones = 0;
     private static float ectoMistStep = 1.0F;

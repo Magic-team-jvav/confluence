@@ -10,7 +10,7 @@ import software.bernie.geckolib.animation.EasingType;
 // todo攻击时能向前发射孢子云射弹
 public class ChlorophytePartisanItem extends AbstractSpearItem {
     public ChlorophytePartisanItem() {
-        super(new Properties().attributes(attributes(6, 20.5F)), ModRarity.LIME, 10, 3, createKeyframes(
+        super(new Properties().attributes(attributes(6, 24.5F)), ModRarity.LIME, 10, 3, createKeyframes(
                 K.of(0, 0, EasingType.LINEAR),
                 K.of(0.17, 6, EasingType.EASE_OUT_BACK),
                 K.of(0.33, -16, EasingType.EASE_IN_EXPO),
@@ -21,6 +21,6 @@ public class ChlorophytePartisanItem extends AbstractSpearItem {
     @Override
     protected void onHitEntity(DamageSource damageSource, LivingEntity owner, Entity victim) {
         hurtVictim(damageSource, owner, victim);
-        VectorUtils.knockBackA2B(owner, victim, 0.62, 0.2);
+        VectorUtils.knockBackA2B(owner, victim, 0.31, 0.2);
     }
 }

@@ -11,7 +11,7 @@ import software.bernie.geckolib.animation.EasingType;
 
 public class DarkLanceItem extends AbstractSpearItem {
     public DarkLanceItem() {
-        super(new Properties().attributes(attributes(6, 8.3F)), ModRarity.ORANGE, 10, 3, createKeyframes(
+        super(new Properties().attributes(attributes(6, 17F)), ModRarity.ORANGE, 10, 3, createKeyframes(
                 K.of(0, 0, EasingType.LINEAR),
                 K.of(0.17, 6, EasingType.EASE_OUT_BACK),
                 K.of(0.33, -16, EasingType.EASE_IN_EXPO),
@@ -25,6 +25,6 @@ public class DarkLanceItem extends AbstractSpearItem {
         if (victim instanceof LivingEntity living) {
             living.addEffect(new MobEffectInstance(ModEffects.SHADOWFLAME, 300));
         }
-        VectorUtils.knockBackA2B(owner, victim, 0.5, 0.1);
+        VectorUtils.knockBackA2B(owner, victim, 0.25, 0.1);
     }
 }

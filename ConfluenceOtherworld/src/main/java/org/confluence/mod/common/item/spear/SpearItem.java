@@ -9,7 +9,7 @@ import software.bernie.geckolib.animation.EasingType;
 
 public class SpearItem extends AbstractSpearItem {
     public SpearItem() {
-        super(new Properties().attributes(attributes(3, 2.8F)), ModRarity.WHITE, 15, 5, createKeyframes(
+        super(new Properties().attributes(attributes(3, 4F)), ModRarity.WHITE, 15, 5, createKeyframes(
                 K.of(0, 0, EasingType.LINEAR),
                 K.of(0.25, 6, EasingType.EASE_OUT_BACK),
                 K.of(0.5, -16, EasingType.EASE_IN_EXPO),
@@ -20,6 +20,6 @@ public class SpearItem extends AbstractSpearItem {
     @Override
     protected void onHitEntity(DamageSource damageSource, LivingEntity owner, Entity victim) {
         hurtVictim(damageSource, owner, victim);
-        VectorUtils.knockBackA2B(owner, victim, 0.65, 0.1);
+        VectorUtils.knockBackA2B(owner, victim, 0.33, 0.1);
     }
 }

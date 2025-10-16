@@ -1,7 +1,6 @@
 package org.confluence.mod.mixin.entity;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import com.mojang.authlib.GameProfile;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketSendListener;
@@ -9,8 +8,6 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundPlayerCombatKillPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.PlayerAdvancements;
-import net.minecraft.server.level.ClientInformation;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.stats.ServerStatsCounter;
@@ -132,17 +129,5 @@ public abstract class ServerPlayerMixin implements IServerPlayer {
     private void add(CompoundTag compound, CallbackInfo ci) {
         compound.putShort("confluence:bulldozer", confluence$bulldozer);
         compound.putBoolean("confluence:marathon_medalist", confluence$marathon_medalist);
-    }
-
-    @Inject(method = "<init>", at = @At("TAIL"))
-    private void initialize(MinecraftServer server, ServerLevel level, GameProfile gameProfile, ClientInformation clientInformation, CallbackInfo ci) throws Exception {
-        IServerPlayer.track(confluence$self());
-    }
-
-    @SuppressWarnings("removal")
-    @Override
-    protected void finalize() throws Throwable {
-        IServerPlayer.remove(confluence$self());
-        super.finalize();
     }
 }

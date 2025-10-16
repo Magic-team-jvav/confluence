@@ -328,7 +328,7 @@ public class ModDataProvider {
             ore(context, DESERT_FOSSIL, 33, OreConfiguration.target(new TagMatchTest(ModTags.Blocks.DESERT_FOSSIL_REPLACEMENT), NatureBlocks.DESERT_FOSSIL.get().defaultBlockState()));
             ore(context, SILT_BLOCK, 33, OreConfiguration.target(stoneOreReplaceables, NatureBlocks.SILT_BLOCK.get().defaultBlockState()), OreConfiguration.target(deepslateOreReplaceables, NatureBlocks.SILT_BLOCK.get().defaultBlockState()));
             ore(context, SLUSH, 33, OreConfiguration.target(new TagMatchTest(ModTags.Blocks.SLUSH_REPLACEMENT), NatureBlocks.SLUSH.get().defaultBlockState()));
-            ore(context, CHLOROPHYTE_ORE, 10, OreConfiguration.target(new TagMatchTest(ModTags.Blocks.GELSTONE_ORE_REPLACEMENT), OreBlocks.CHLOROPHYTE_ORE.get().defaultBlockState()));
+            ore(context, CHLOROPHYTE_ORE, 9, OreConfiguration.target(new TagMatchTest(ModTags.Blocks.GELSTONE_ORE_REPLACEMENT), OreBlocks.CHLOROPHYTE_ORE.get().defaultBlockState()));
 
             // 标记生成大小
             scatteredOre(context, DEEPSLATE_ADAMANTITE_ORE_STEP_0, 9, OreConfiguration.target(deepslateOreReplaceables, OreBlocks.DEEPSLATE_ADAMANTITE_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, 0)));
@@ -839,7 +839,7 @@ public class ModDataProvider {
             register(context, DEEPSLATE_TITANIUM_ORE_STEP_2, configured.getOrThrow(ConfiguredFeatures.DEEPSLATE_TITANIUM_ORE_STEP_2), CountPlacement.of(6), inSquare, heightRangeTriangle(-60, -30), biome);
             register(context, DEMONITE_ORE, configured.getOrThrow(ConfiguredFeatures.DEMONITE_ORE), SecretFlagPlacement.of(IWorldOptions.THE_CORRUPTION), count2, inSquare, heightRangeTriangle(-50, 30), biome);
             register(context, GELSTONE_ORE, configured.getOrThrow(ConfiguredFeatures.GELSTONE_ORE), inSquare, heightRangeTriangle(-52, 160), biome);
-            register(context, CHLOROPHYTE_ORE, configured.getOrThrow(ConfiguredFeatures.CHLOROPHYTE_ORE), inSquare, heightRangeTriangle(-52, 160), biome);
+            register(context, CHLOROPHYTE_ORE, configured.getOrThrow(ConfiguredFeatures.CHLOROPHYTE_ORE), CountPlacement.of(12), inSquare, heightRangeTriangle(-52, 160), biome);
             register(context, JADE_ORE, configured.getOrThrow(ConfiguredFeatures.JADE_ORE), inSquare, heightRangeTriangle(-52, 10), biome);
             register(context, LEAD_ORE, configured.getOrThrow(ConfiguredFeatures.LEAD_ORE), CountPlacement.of(8), inSquare, heightRangeTriangle(-24, 56), biome);
             register(context, PLATINUM_ORE, configured.getOrThrow(ConfiguredFeatures.PLATINUM_ORE), SecretFlagPlacement.of(IWorldOptions.TC_MASK, true), count2, inSquare, heightRangeTriangle(-48, 10), biome);

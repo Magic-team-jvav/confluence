@@ -813,13 +813,15 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 RAW_TITANIUM_BLOCK.get(),
                 TITANIUM_BLOCK.get()
         );
-        tag(ModTags.Blocks.NEEDS_8_LEVEL).add(HALLOWED_BLOCK.get());
-        tag(ModTags.Blocks.NEEDS_9_LEVEL).add(
+        tag(ModTags.Blocks.NEEDS_8_LEVEL).add(
+                HALLOWED_BLOCK.get(),
                 CHLOROPHYTE_ORE.get(),
                 RAW_CHLOROPHYTE_BLOCK.get(),
                 CHLOROPHYTE_BLOCK.get(),
                 SHROOMITE_BLOCK.get(),
-                SPECTRE_BLOCK.get(),
+                SPECTRE_BLOCK.get()
+        );
+        tag(ModTags.Blocks.NEEDS_9_LEVEL).add(
                 RAW_LUMINITE_BLOCK.get(),
                 LUMINITE_BLOCK.get()
         );
@@ -1085,7 +1087,13 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 DEEPSLATE_ADAMANTITE_ORE.get(),
                 RAW_ADAMANTITE_BLOCK.get(),
                 DEEPSLATE_TITANIUM_ORE.get(),
-                RAW_TITANIUM_BLOCK.get()
+                RAW_TITANIUM_BLOCK.get(),
+                HALLOWED_BLOCK.get(),
+                CHLOROPHYTE_ORE.get(),
+                RAW_CHLOROPHYTE_BLOCK.get(),
+                CHLOROPHYTE_BLOCK.get(),
+                SHROOMITE_BLOCK.get(),
+                SPECTRE_BLOCK.get()
         );
         tag(Tags.Blocks.OBSIDIANS).add(
                 CHISELED_OBSIDIAN_BRICKS.get(),

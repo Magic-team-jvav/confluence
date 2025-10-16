@@ -1,6 +1,5 @@
 package org.confluence.mod.common.data.gen.recipe;
 
-import com.xiaohunao.terra_moment.common.init.TMItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.data.PackOutput;

@@ -71,6 +71,6 @@ public interface IAbstractContainerScreen {
     }
 
     private static boolean hasNeighbour(int index, Container container, int id) {
-        return index >= 0 && index < container.getContainerSize() && IClientItemStack.of(container.getItem(index)).confluence$getGroupId() == id;
+        return index % 9 != 0 && index >= 0 && index < container.getContainerSize() && IClientItemStack.of(container.getItem(index)).confluence$getGroupId() == id;
     }
 }

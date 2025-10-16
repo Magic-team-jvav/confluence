@@ -73,6 +73,7 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyC
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.world.BiomeModifier;
 import net.neoforged.neoforge.common.world.BiomeModifiers;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import net.neoforged.neoforge.registries.holdersets.AndHolderSet;
 import net.neoforged.neoforge.registries.holdersets.NotHolderSet;
@@ -1061,6 +1062,9 @@ public class ModDataProvider {
             HolderSet<Biome> jungle = biome.getOrThrow(Tags.Biomes.IS_JUNGLE);
             HolderSet<Biome> jungleLike = new OrHolderSet<>(jungle, biome.getOrThrow(Tags.Biomes.IS_LUSH));
 
+            HolderSet<Biome> desertAndBadlands = new OrHolderSet<>(biome.getOrThrow(Tags.Biomes.IS_DESERT), biome.getOrThrow(Tags.Biomes.IS_BADLANDS));
+            HolderSet<Biome> jungleAndLush = new OrHolderSet<>(biome.getOrThrow(Tags.Biomes.IS_JUNGLE), biome.getOrThrow(Tags.Biomes.IS_LUSH));
+
             HolderGetter<PlacedFeature> placedFeature = context.lookup(Registries.PLACED_FEATURE);
             Function<ResourceKey<PlacedFeature>, Holder<PlacedFeature>> factory = placedFeature::getOrThrow;
 
@@ -1178,6 +1182,152 @@ public class ModDataProvider {
             addCarvers(context, "desert_air", desert, HolderSet.direct(configuredWorldCarver.getOrThrow(ConfiguredWorldCarvers.DESERT_CAVE_CARVER)), GenerationStep.Carving.AIR);
             addCarvers(context, "jungle_air", jungle, HolderSet.direct(configuredWorldCarver.getOrThrow(ConfiguredWorldCarvers.JUNGLE_CAVE_CARVER)), GenerationStep.Carving.AIR);
             addCarvers(context, "overworld_air", overworld, HolderSet.direct(configuredWorldCarver.getOrThrow(ConfiguredWorldCarvers.WAVY_CAVE_CARVER)), GenerationStep.Carving.AIR);
+
+            register(context, createModifierKey("common_beach"), new BiomeModifiers.AddSpawnsBiomeModifier(
+                    biome.getOrThrow(Tags.Biomes.IS_BEACH),
+                    List.of(
+                            new MobSpawnSettings.SpawnerData(TEAnimals.CRAB.get(), 7, 1, 1),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.TROPIC_SLIME.get(), 7, 1, 2),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GOBLIN_SCOUT.get(), 30, 1, 1)
+                    )
+            ));
+            register(context, createModifierKey("common_desert"), new BiomeModifiers.AddSpawnsBiomeModifier(
+                    desertAndBadlands,
+                    List.of(
+                            new MobSpawnSettings.SpawnerData(TEAnimals.SCORPION.get(), 15, 1, 1),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.DESERT_SLIME.get(), 15, 1, 2),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.TOMB_CRAWLER.get(), 250, 1, 1),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.ANTLION_SWARMER.get(), 500, 1, 1),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GIANT_ANTLION_SWARMER.get(), 200, 1, 1)
+                    )
+            ));
+            register(context, createModifierKey("common_hell"), new BiomeModifiers.AddSpawnsBiomeModifier(
+                    HolderSet.direct(
+                            biome.getOrThrow(net.minecraft.world.level.biome.Biomes.NETHER_WASTES),
+                            biome.getOrThrow(net.minecraft.world.level.biome.Biomes.CRIMSON_FOREST),
+                            biome.getOrThrow(net.minecraft.world.level.biome.Biomes.BASALT_DELTAS)
+                    ),
+                    List.of(
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.HELL_BAT.get(), 60, 1, 1),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.FIRE_IMP.get(), 60, 1, 1),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.DEMON.get(), 45, 1, 1),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.VOODOO_DEMON.get(), 15, 1, 1)
+                    )
+            ));
+            register(context, createModifierKey("common_highlevel"), new BiomeModifiers.AddSpawnsBiomeModifier(
+                    biome.getOrThrow(Tags.Biomes.IS_OVERWORLD),
+                    List.of(
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.HARPY.get(), 60, 1, 2)
+                    )
+            ));
+            register(context, createModifierKey("common_icy"), new BiomeModifiers.AddSpawnsBiomeModifier(
+                    snowyIcy,
+                    List.of(
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.ICE_BAT.get(), 80, 1, 2),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.UNDEAD_VIKING.get(), 80, 1, 2),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.SNOW_FLINX.get(), 80, 1, 2),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.ICE_SLIME.get(), 15, 1, 2)
+                    )
+            ));
+            register(context, createModifierKey("common_jungle"), new BiomeModifiers.AddSpawnsBiomeModifier(
+                    jungleAndLush,
+                    List.of(
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.HORNET.get(), 150, 1, 2),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.JUNGLE_BAT.get(), 40, 1, 2),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.JUNGLE_SLIME.get(), 40, 1, 2),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.MAN_EATER.get(), 150, 1, 1),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.SNATCHER.get(), 40, 1, 1),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.PIRANHA.get(), 40, 2, 3)
+                    )
+            ));
+            register(context, createModifierKey("common_overworld"), new BiomeModifiers.AddSpawnsBiomeModifier(
+                    snowyIcy,
+                    List.of(
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.NYMPH.get(), 3, 1, 1),
+                            new MobSpawnSettings.SpawnerData(TEAnimals.FAIRY.get(), 2, 1, 1),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.HARPY.get(), 60, 1, 2),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.WYVERN.get(), 5, 1, 1),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.POSSESS_ARMOR.get(), 65, 1, 2),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.WRAITH.get(), 65, 1, 2)
+                    )
+            ));
+            register(context, createModifierKey("common_plain"), new BiomeModifiers.AddSpawnsBiomeModifier(
+                    HolderSet.direct(biome.get(net.minecraft.world.level.biome.Biomes.PLAINS).get()),
+                    List.of(
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GOBLIN_ARCHER.get(), 5, 1, 2),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GOBLIN_PEON.get(), 5, 1, 2),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GOBLIN_WARRIOR.get(), 5, 1, 2),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GOBLIN_THIEF.get(), 5, 1, 2),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GOBLIN_SCOUT.get(), 5, 1, 1),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.ANGER_GOBLIN.get(), 3, 1, 1),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GOBLIN_SORCERER.get(), 5, 1, 1)
+                    )));
+            register(context, createModifierKey("common_swamp"), new BiomeModifiers.AddSpawnsBiomeModifier(
+                    biome.getOrThrow(Tags.Biomes.IS_SWAMP),
+                    List.of(
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.SWAMP_SLIME.get(), 90, 1, 3)
+                    )
+            ));
+            register(context, createModifierKey("only_forest"), new BiomeModifiers.AddSpawnsBiomeModifier(
+                    biome.getOrThrow(Tags.Biomes.IS_FOREST),
+                    List.of(
+                            new MobSpawnSettings.SpawnerData(TEAnimals.BUNNY.get(), 10, 1, 2),
+                            new MobSpawnSettings.SpawnerData(TEAnimals.SQUIRREL.get(), 10, 1, 2),
+                            new MobSpawnSettings.SpawnerData(TEAnimals.DUCK.get(), 10, 1, 2),
+                            new MobSpawnSettings.SpawnerData(TEAnimals.BIRD.get(), 10, 1, 2),
+                            new MobSpawnSettings.SpawnerData(TEAnimals.BLUE_JAY.get(), 10, 1, 2),
+                            new MobSpawnSettings.SpawnerData(TEAnimals.CARDINAL.get(), 10, 1, 2)
+                    )
+            ));
+            register(context, createModifierKey("common_forest"), new BiomeModifiers.AddSpawnsBiomeModifier(
+                    biome.getOrThrow(ModTags.Biomes.IS_FOREST),
+                    List.of(
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.BLACK_SLIME.get(), 60, 1, 3),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.BLUE_SLIME.get(), 30, 2, 4),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.CAVE_BAT.get(), 80, 1, 2),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GIANT_SHELLY.get(), 60, 1, 1),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GIANT_WORM.get(), 60, 1, 1),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GREEN_DUMPLING_SLIME.get(), 30, 1, 3),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GREEN_SLIME.get(), 45, 3, 3),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.PINK_SLIME.get(), 3, 1, 1),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.PURPLE_SLIME.get(), 15, 1, 3),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.RED_SLIME.get(), 45, 1, 2),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.YELLOW_SLIME.get(), 45, 1, 2),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.DEMON_EYE.get(), 65, 1, 2),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.FLYING_FISH.get(), 60, 1, 2),
+                            new MobSpawnSettings.SpawnerData(TEAnimals.BUNNY.get(), 10, 1, 2),
+                            new MobSpawnSettings.SpawnerData(TEAnimals.SQUIRREL.get(), 10, 1, 2),
+                            new MobSpawnSettings.SpawnerData(TEAnimals.DUCK.get(), 10, 1, 2),
+                            new MobSpawnSettings.SpawnerData(TEAnimals.BIRD.get(), 10, 1, 2),
+                            new MobSpawnSettings.SpawnerData(TEAnimals.BLUE_JAY.get(), 10, 1, 2),
+                            new MobSpawnSettings.SpawnerData(TEAnimals.CARDINAL.get(), 10, 1, 2),
+                            new MobSpawnSettings.SpawnerData(TEAnimals.SNAIL.get(), 10, 1, 1),
+                            new MobSpawnSettings.SpawnerData(TEAnimals.WORM.get(), 15, 1, 1),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.BLUE_JELLYFISH.get(), 5, 1, 1),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GREEN_JELLYFISH.get(), 5, 1, 1)
+                    )
+            ));
+            register(context, createModifierKey("common_nether_wastes"), new BiomeModifiers.AddSpawnsBiomeModifier(
+                    biome.getOrThrow(Tags.Biomes.IS_NETHER),
+                    List.of(
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.LAVA_SLIME.get(), 20, 1, 1),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.HELL_BAT.get(), 10, 1, 1),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.FIRE_IMP.get(), 5, 1, 1),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.DEMON.get(), 5, 1, 1)
+                    )
+            ));
+            register(context, createModifierKey("common_ocean"), new BiomeModifiers.AddSpawnsBiomeModifier(
+                    biome.getOrThrow(Tags.Biomes.IS_OCEAN),
+                    List.of(
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.PINK_JELLYFISH.get(), 2, 1, 1)
+                    )
+            ));
+            register(context, createModifierKey("flower_forest"), new BiomeModifiers.AddSpawnsBiomeModifier(
+                    biome.getOrThrow(Tags.Biomes.IS_FLOWER_FOREST),
+                    List.of(
+                            new MobSpawnSettings.SpawnerData(TEAnimals.BUTTERFLY.get(), 30, 1, 3)
+                            )
+            ));
         }
 
         private static void addFeatures(BootstrapContext<BiomeModifier> context, String path, HolderSet<Biome> biomes, HolderSet<PlacedFeature> features, GenerationStep.Decoration step) {
@@ -1186,6 +1336,15 @@ public class ModDataProvider {
 
         private static void addCarvers(BootstrapContext<BiomeModifier> context, String path, HolderSet<Biome> biomes, HolderSet<ConfiguredWorldCarver<?>> carvers, GenerationStep.Carving step) {
             context.register(Confluence.asResourceKey(NeoForgeRegistries.Keys.BIOME_MODIFIERS, path), new BiomeModifiers.AddCarversBiomeModifier(biomes, carvers, step));
+        }
+
+        private static  ResourceKey<BiomeModifier>  createModifierKey(String name) {return ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, Confluence.asResource("mob_spawner/" + name));}
+
+        private static Holder.Reference<BiomeModifier> register(BootstrapContext<BiomeModifier> context, ResourceKey<BiomeModifier> key, BiomeModifier value) {
+            return context.register(key, value, Lifecycle.stable());
+        }
+        private HolderSet.Direct<Biome> getHolderSet(HolderGetter<Biome> biomeLookup, ResourceKey<Biome>... biomeNames){
+            return HolderSet.direct(Arrays.stream(biomeNames).map(biomeLookup::getOrThrow).toList());
         }
     }
 

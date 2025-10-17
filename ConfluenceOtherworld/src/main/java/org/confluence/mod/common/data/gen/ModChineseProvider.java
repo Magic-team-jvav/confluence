@@ -4710,6 +4710,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.PIGLIN_STEW.get(), "猪灵堡");
         // 鱼
         add(FoodItems.GOLDFISH.get(), "金鱼");
+        add(FoodItems.GOLD_GOLDFISH.get(), "金金鱼");
         add(FoodItems.SEA_BASS.get(), "鲈鱼");
         add(FoodItems.ATLANTIC_COD.get(), "大西洋鳕鱼");
         add(FoodItems.ARMORED_CAVE_FISH.get(), "装甲洞穴鱼");

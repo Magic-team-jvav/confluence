@@ -210,7 +210,9 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 BaitItems.GOLD_GRASSHOPPER.get(),
                 BaitItems.GOLD_LADYBUG.get(),
                 BaitItems.GOLD_WATER_STRIDER.get(),
-                BaitItems.GOLD_WORM.get()
+                BaitItems.GOLD_WORM.get(),
+                FoodItems.GOLD_GOLDFISH.get(),
+                FoodItems.GOLDEN_CARP.get()
         );
         tag(ModTags.Items.SHADOW_SCALE_AND_TISSUE_SAMPLE).add(
                 MaterialItems.SHADOW_SCALE.get(),

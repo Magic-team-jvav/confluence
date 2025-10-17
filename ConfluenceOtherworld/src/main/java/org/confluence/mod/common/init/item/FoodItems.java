@@ -143,6 +143,7 @@ public class FoodItems {
     public static final DeferredItem<BaseFoodItem> SAKE = registerDrinkingFood("sake", ModRarity.BLUE, ModFoodProperties.WellFedProperties(1200, 4, 1.5f), 20, UseAnim.DRINK, SoundEvents.HONEY_DRINK, SoundEvents.HONEY_DRINK); //清酒
     //鱼
     public static final DeferredItem<BaseFoodItem> GOLDFISH = registerNormalFood("goldfish", ModRarity.WHITE, ModFoodProperties.noEffectProperties(2, 0.4f));
+    public static final DeferredItem<BaseFoodItem> GOLD_GOLDFISH = registerNormalFood("gold_goldfish", ModRarity.ORANGE, ModFoodProperties.GOLDEN_CARP);
     public static final DeferredItem<BaseFoodItem> SEA_BASS = registerNormalFood("sea_bass", ModRarity.WHITE, ModFoodProperties.noEffectProperties(2, 0.4f));
     public static final DeferredItem<BaseFoodItem> ATLANTIC_COD = registerNormalFood("atlantic_cod", ModRarity.WHITE, ModFoodProperties.noEffectProperties(2, 0.4f));
     public static final DeferredItem<BaseFoodItem> FROSTY_MINNOW = registerNormalFood("frosty_minnow", ModRarity.BLUE, ModFoodProperties.noEffectProperties(2, 0.4f));

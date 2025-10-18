@@ -390,6 +390,10 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 SHARPENING_STATION.get(),
                 SILLY_BALLOON_MACHINE.get(),
                 PIGGY_BANK.get(),
+                MYTHRIL_ANVIL.get(),
+                ORICHALCUM_ANVIL.get(),
+                TITANIUM_FORGE.get(),
+                ADAMANTITE_FORGE.get(),
 
                 KING_SLIME_RELIC.get(),
                 EYE_OF_CTHULHU_RELIC.get(),
@@ -659,6 +663,10 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 SPIKE.get(),
                 ASPHALT_BLOCK.get(),
                 REMAINS_BLOCK.get(),
+                MYTHRIL_ANVIL.get(),
+                ORICHALCUM_ANVIL.get(),
+                TITANIUM_FORGE.get(),
+                ADAMANTITE_FORGE.get(),
 
                 AETHERIUM_BLOCK.get(),
                 DARK_AETHERIUM_BLOCK.get(),

@@ -246,7 +246,9 @@ public final class ModEvents {
     @SubscribeEvent
     public static void entityAttributeModification(EntityAttributeModificationEvent event) {
         TEEvents.registerArmorPenetration((type, value) -> event.add(type, TCAttributes.ARMOR_PENETRATION, value));
+        TEEvents.registerArmorToughness((type, value) -> event.add(type, Attributes.ARMOR_TOUGHNESS, value));
     }
+
 
     @SubscribeEvent
     public static void registerUnitType(RegisterAccessoriesComponentUpdateEvent.UnitType event) {

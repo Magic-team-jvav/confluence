@@ -9,7 +9,7 @@ import software.bernie.geckolib.animation.EasingType;
 
 public class AdamantiteGlaiveItem extends AbstractSpearItem {
     public AdamantiteGlaiveItem() {
-        super(new Properties().attributes(attributes(6, 19.5F)), ModRarity.LIGHT_RED, 10, 3, createKeyframes(
+        super(new Properties().attributes(attributes(6, 24F)), ModRarity.LIGHT_RED, 10, 3, createKeyframes(
                 K.of(0, 0, EasingType.LINEAR),
                 K.of(0.17, 6, EasingType.EASE_OUT_BACK),
                 K.of(0.33, -16, EasingType.EASE_IN_EXPO),
@@ -20,6 +20,6 @@ public class AdamantiteGlaiveItem extends AbstractSpearItem {
     @Override
     protected void onHitEntity(DamageSource damageSource, LivingEntity owner, Entity victim) {
         hurtVictim(damageSource, owner, victim);
-        VectorUtils.knockBackA2B(owner, victim, 0.6, 0.2);
+        VectorUtils.knockBackA2B(owner, victim, 0.3, 0.2);
     }
 }

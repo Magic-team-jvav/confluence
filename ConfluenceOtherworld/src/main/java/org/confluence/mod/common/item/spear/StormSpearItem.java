@@ -14,11 +14,11 @@ import org.confluence.mod.common.init.ModEntities;
 import software.bernie.geckolib.animation.EasingType;
 
 public class StormSpearItem extends AbstractSpearItem {
-    public static final double knockBackScale = 0.6;
+    public static final double knockBackScale = 0.3;
     public static final double knockBackMotionY = 0.1;
 
     public StormSpearItem() {
-        super(new Properties().attributes(attributes(3, 3.9F)), ModRarity.BLUE, 15, 5, createKeyframes(
+        super(new Properties().attributes(attributes(3, 7F)), ModRarity.BLUE, 15, 5, createKeyframes(
                 K.of(0, 0, EasingType.LINEAR),
                 K.of(0.25, 6, EasingType.EASE_OUT_BACK),
                 K.of(0.5, -16, EasingType.EASE_IN_EXPO),

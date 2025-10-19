@@ -94,8 +94,8 @@ public class SwordItems {
 
     // tip 注册剑的特殊功能只需修改最后一个参数即可，只需要把 NORMAL_SWORD替换成prefab的其他预制效果，还可以追加效果
     public static final DeferredItem<BaseSwordItem> FAKE_SWORD = register("fake_sword", ModTiers.CANDY_CANE, 3, 1.6F, ModRarity.GRAY, NORMAL_SWORD.get());
-    public static final DeferredItem<BaseSwordItem> CANDY_CANE_SWORD = register("candy_cane_sword", ModTiers.CANDY_CANE, 5, 2.4F, BOARD_SWORD.apply(0.5F).hasImage());
-    public static final DeferredItem<BaseSwordItem> FALCON_BLADE = register("falcon_blade", ModTiers.UNBREAKABLE, 6, 2.55F, ModRarity.BLUE, BOARD_SWORD.apply(0.5F));
+    public static final DeferredItem<BaseSwordItem> CANDY_CANE_SWORD = register("candy_cane_sword", ModTiers.CANDY_CANE, 5, 1.8F, BOARD_SWORD.apply(0.5F).hasImage());
+    public static final DeferredItem<BaseSwordItem> FALCON_BLADE = register("falcon_blade", ModTiers.UNBREAKABLE, 6, 1.8F, ModRarity.BLUE, BOARD_SWORD.apply(0.5F));
     public static final DeferredItem<BaseSwordItem> ZOMBIE_ARM = register("zombie_arm", ModTiers.UNBREAKABLE, 5, 2.4F, BOARD_SWORD.apply(0.5F));
     public static final DeferredItem<BaseSwordItem> MANDIBLE_BLADE = register("mandible_blade", ModTiers.UNBREAKABLE, 6, 2.4F, BOARD_SWORD.apply(0.8F));
     public static final DeferredItem<BaseSwordItem> BONE_SWORD = register("bone_sword", ModTiers.UNBREAKABLE, 7, 2.4F, ModRarity.ORANGE, BOARD_SWORD.apply(0.8F).hasImage());
@@ -125,19 +125,19 @@ public class SwordItems {
     public static final DeferredItem<BaseSwordItem> BAT_BAT = register("bat_bat", ModTiers.UNBREAKABLE, 21, 0.6F, ModRarity.ORANGE, withSpecialSweep(0.8F, EFFECT_SWORD
             .apply(ModEffectStrategies.Components.BAT_FANG_EFFECT.get()).hasImage()
             .addAttributeModifier(Attributes.ENTITY_INTERACTION_RANGE, 2, AttributeModifier.Operation.ADD_VALUE)));
-    public static final DeferredItem<BaseSwordItem> TENTACLE_MACE = register("tentacle_mace", ModTiers.UNBREAKABLE, 13, 2.2F, ModRarity.GREEN, withSpecialSweep(0.8F, EFFECT_SWORD
+    public static final DeferredItem<BaseSwordItem> TENTACLE_MACE = register("tentacle_mace", ModTiers.UNBREAKABLE, 13, 2.0F, ModRarity.GREEN, withSpecialSweep(0.8F, EFFECT_SWORD
             .apply(ModEffectStrategies.Components.TENTACLE_SPIKES_EFFECT.get())));
     public static final DeferredItem<BaseSwordItem> BEE_KEEPER = register("bee_keeper", ModTiers.UNBREAKABLE, 18, 1.6F, ModRarity.GREEN, withSpecialSweep(0.8F, EFFECT_SWORD
             .apply(ModEffectStrategies.Components.BEE_KEEPER_EFFECT.get()).addTooltip(2).hasImage()));
 
     // 弹幕剑
-    public static final DeferredItem<BaseSwordItem> ICE_BLADE = register("ice_blade", ModTiers.UNBREAKABLE, 10, 2.4F, ModRarity.BLUE, withSpecialSweep(0.8F, PROJ_SWORD
+    public static final DeferredItem<BaseSwordItem> ICE_BLADE = register("ice_blade", ModTiers.UNBREAKABLE, 10, 2.0F, ModRarity.BLUE, withSpecialSweep(0.8F, PROJ_SWORD
             .apply(SwordProjectileComponent.ICE_PROJ).hasImage()));
-    public static final DeferredItem<BaseSwordItem> STARFURY = register("starfury", ModTiers.UNBREAKABLE, 14, 2.4F, ModRarity.GREEN, withSpecialSweep(0.8F, PROJ_SWORD
+    public static final DeferredItem<BaseSwordItem> STARFURY = register("starfury", ModTiers.UNBREAKABLE, 14, 2.0F, ModRarity.GREEN, withSpecialSweep(0.8F, PROJ_SWORD
             .apply(SwordProjectileComponent.STAR_FURY_PROJ).addTooltip(p -> p.withColor(0xe44189)).addTooltip(p -> p.withColor(0xe44189))));
-    public static final DeferredItem<BaseSwordItem> ENCHANTED_SWORD = register("enchanted_sword", ModTiers.UNBREAKABLE, 9, 2.4F, ModRarity.ORANGE, withSpecialSweep(0.8F, PROJ_SWORD
+    public static final DeferredItem<BaseSwordItem> ENCHANTED_SWORD = register("enchanted_sword", ModTiers.UNBREAKABLE, 9, 2.0F, ModRarity.ORANGE, withSpecialSweep(0.8F, PROJ_SWORD
             .apply(SwordProjectileComponent.ENCHANTED_SWORD_PROJ).addTooltip(p -> p.withColor(0x4156e4)).addTooltip(p -> p.withColor(0x4156e4))));
-    public static final DeferredItem<BaseSwordItem> BLADE_OF_GRASS = register("blade_of_grass", ModTiers.UNBREAKABLE, 10, 2.4F, ModRarity.GREEN, withSpecialSweep(0.8F, PROJ_SWORD
+    public static final DeferredItem<BaseSwordItem> BLADE_OF_GRASS = register("blade_of_grass", ModTiers.UNBREAKABLE, 10, 2.0F, ModRarity.GREEN, withSpecialSweep(0.8F, PROJ_SWORD
             .apply(SwordProjectileComponent.GRASS_PROJ).hasImage()));
     public static final DeferredItem<BaseSwordItem> NIGHTS_EDGE = register("nights_edge", ModTiers.UNBREAKABLE, 25, 2.5F, ModRarity.GREEN, PROJ_SWORD
             .apply(SwordProjectileComponent.NIGHT_PROJ).hasImage());

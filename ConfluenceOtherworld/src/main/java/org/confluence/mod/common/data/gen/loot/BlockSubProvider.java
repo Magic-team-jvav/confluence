@@ -151,6 +151,8 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(CRYSTAL_BALL.get());
         dropSelf(MYTHRIL_ANVIL.get());
         dropSelf(ORICHALCUM_ANVIL.get());
+        dropSelf(ADAMANTITE_FORGE.get());
+        dropSelf(TITANIUM_FORGE.get());
         dropSelf(CHLOROPHYTE_EXTRACTINATOR.get());
         dropSelf(SOLIDIFIER.get());
         dropSelf(CAULDRON.get());
@@ -509,6 +511,7 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(EYE_OF_CTHULHU_RELIC.get());
         dropSelf(BRAIN_OF_CTHULHU_RELIC.get());
         dropSelf(EATER_OF_WORLDS_RELIC.get());
+        dropSelf(SKELETRON_RELIC.get());
         // 片
         dropWhenSilkTouch(SAND_LAYER_BLOCK.get());
         dropWhenSilkTouch(RED_SAND_LAYER_BLOCK.get());

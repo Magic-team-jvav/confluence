@@ -40,6 +40,16 @@ public final class TEEvents {
         registration.register(TEMonsterEntities.CRIMSLIME.get(), 8);
     }
 
+    public static void registerArmorToughness(ArmorPenetrationRegistration registration) {
+        registration.register(TEMonsterEntities.PIXIE.get(), 2);
+        registration.register(TEMonsterEntities.WYVERN.get(), 2);
+        registration.register(TEMonsterEntities.WRAITH.get(), 2);
+        registration.register(TEMonsterEntities.POSSESS_ARMOR.get(), 2);
+        registration.register(TEMonsterEntities.CORRUPT_SLIME.get(), 2);
+        registration.register(TEMonsterEntities.LUMINOUS_SLIME.get(), 2);
+        registration.register(TEMonsterEntities.CRIMSLIME.get(), 2);
+    }
+
     @FunctionalInterface
     public interface ArmorPenetrationRegistration {
         void register(EntityType<? extends LivingEntity> type, double value);

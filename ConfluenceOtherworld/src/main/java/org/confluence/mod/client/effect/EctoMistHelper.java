@@ -9,6 +9,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ViewportEvent;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.common.init.ModParticleTypes;
 import org.confluence.mod.mixed.ILevelChunkSection;
 import org.confluence.mod.util.DynamicBiomeUtils;
@@ -23,7 +24,7 @@ public class EctoMistHelper {
     private static float lastStart = 4;
 
     public static void tick(Minecraft minecraft, LocalPlayer player) {
-        if (player.level().getGameTime() % 40 == 2) {
+        if (ClientConfigs.ectoMistEffect && player.level().getGameTime() % 40 == 2) {
             ILevelChunkSection iSection = DynamicBiomeUtils.getISection(player.level(), player.blockPosition());
             effectiveTombstones = iSection == null ? 0 : iSection.confluence$getBlockCounts().tomb.get() - iSection.confluence$getBlockCounts().sunflower.get();
         }

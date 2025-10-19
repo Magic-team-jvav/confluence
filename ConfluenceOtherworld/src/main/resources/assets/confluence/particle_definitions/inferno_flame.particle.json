@@ -13,7 +13,7 @@
 				"type": "bezier",
 				"input": "v.particle_age",
 				"horizontal_range": "v.particle_lifetime",
-				"nodes": [0, 0.24, 0, 0]
+				"nodes": [0, 0.4, 0.2, 0]
 			}
 		},
 		"components": {
@@ -21,8 +21,8 @@
 				"position": true
 			},
 			"minecraft:emitter_rate_steady": {
-				"spawn_rate": 4,
-				"max_particles": 8
+				"spawn_rate": 20,
+				"max_particles": 30
 			},
 			"minecraft:emitter_lifetime_once": {
 				"active_time": 1

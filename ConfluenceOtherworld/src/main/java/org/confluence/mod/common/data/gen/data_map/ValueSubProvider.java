@@ -89,7 +89,7 @@ public final class ValueSubProvider {
         builder
                 .add(Items.ROTTEN_FLESH, 1)
                 .add(Items.BONE, 2)
-                .add(Items.GUNPOWDER, 2)
+                .add(Items.GUNPOWDER, 10)
                 .add(Items.STRING, 2)
                 .add(Items.ENDER_PEARL, 10)
                 .add(Items.ENDER_EYE, 40)

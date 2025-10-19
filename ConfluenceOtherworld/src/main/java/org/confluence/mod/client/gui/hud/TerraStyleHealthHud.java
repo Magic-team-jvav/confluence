@@ -15,6 +15,7 @@ import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.common.TranslatableEnum;
 import org.confluence.lib.util.LibClientUtils;
 import org.confluence.mod.client.ClientConfigs;
+import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.item.common.EverBeneficialItem;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -152,20 +153,32 @@ public class TerraStyleHealthHud implements LayeredDraw.Layer {
                 float currentHealth = 0.0F;
                 float absorptionHealth = 0.0F;
                 Player player = minecraft.player;
+                int heartBuff = 0;
+                boolean hardcore = false;
                 if (player != null) {
+                    heartBuff = (player.hasEffect(MobEffects.POISON)) ? 1 : heartBuff;
+                    heartBuff = (player.getTicksFrozen() >= 140) ? 2 : heartBuff;
+                    heartBuff = (player.hasEffect(MobEffects.WITHER)) ? 3 : heartBuff;
+                    heartBuff = (player.hasEffect(ModEffects.ACID_VENOM)) ? 4 : heartBuff;
+                    absorptionHealth = player.getAbsorptionAmount();
                     maxHealth = player.getMaxHealth();
                     currentHealth = player.getHealth();
-                    absorptionHealth = player.getAbsorptionAmount();
+                    hardcore = player.level().getLevelData().isHardcore();
                 }
+                int white = 0xFFFFFF;
                 int widthHealth = guiGraphics.guiWidth() / 2 - 91 + ClientConfigs.healthOffsetX;
                 int heightHealth = guiGraphics.guiHeight() - minecraft.gui.leftHeight + ClientConfigs.healthOffsetY;
                 String abHealth = String.format("%.1f", absorptionHealth);
+                int healthI = Math.min((int) Math.ceil(currentHealth), 20);
+                int absorptionHealthI = Math.min((int) Math.ceil(absorptionHealth), 20);
                 minecraft.gui.leftHeight += 10;
                 RandomSource random = RandomSource.create(114514);
-                colorDraw(guiGraphics, minecraft, random, OVERLAY_TEXTURE, HEALTH, HEALTH_HIGH, HEALTH_LOW, maxHealth, currentHealth, widthHealth, heightHealth, OVERLAY_SIZE, 0, true);
+                colorDraw(guiGraphics, minecraft, random, OVERLAY_TEXTURE, HEALTH, HEALTH_HIGH, HEALTH_LOW, maxHealth, currentHealth, widthHealth, heightHealth, OVERLAY_SIZE, hardcore ? 40 : 0, true);
                 if (absorptionHealth > 0.0F) {
-                    guiGraphics.blitSprite(ICON_0, 128, 16, 0, 0, widthHealth, heightHealth, 81, 9);
-                    drawString(guiGraphics, minecraft.font, abHealth, widthHealth + 41F - (minecraft.font.width(Component.literal(abHealth))) / 2.0F, heightHealth + 1, 0x5efff8);
+                    draw(widthHealth, heightHealth, guiGraphics, absorptionHealthI, white, white, white, OVERLAY_TEXTURE, OVERLAY_SIZE, 0, 50, true, 1, 20);
+                }
+                if (heartBuff > 0) {
+                    draw(widthHealth, heightHealth, guiGraphics, healthI, white, white, white, OVERLAY_TEXTURE, OVERLAY_SIZE, heartBuff * 20, 50, true, 1, 20);
                 }
             }
         };

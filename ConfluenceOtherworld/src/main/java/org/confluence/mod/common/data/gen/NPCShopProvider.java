@@ -375,9 +375,8 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .addResult(20, List.of(ArmorItems.ANGLER_PANTS.toStack()))
                 .addResult(25, List.of(ToolItems.BOTTOMLESS_WATER_BUCKET.toStack()))
                 .addResult(30, List.of(FishingPoleItems.GOLDEN_FISHING_ROD.toStack()))
-                .addLootTable(10, ModLootTables.QUESTS_1)
-                .addLootTable(50, ModLootTables.QUESTS_2)
-                .addLootTable(75, ModLootTables.QUESTS_3)
+                .addLootTable(10, ModLootTables.QUESTS_AFTER_10)
+                .addLootTable(75, ModLootTables.QUESTS_AFTER_75)
                 .build())).build());
 
         shop(TENpcEntities.MECHANIC.getId()).addRecipe(withDefaultPylon()

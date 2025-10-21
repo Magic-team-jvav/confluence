@@ -242,8 +242,12 @@ dependencies {
     compileOnly "curse.maven:appleskin-248787:5586600"
     runtimeOnly "curse.maven:appleskin-248787:5586600"
 
-    implementation "curse.maven:rhino-416294:6886923"
-    implementation "curse.maven:kubejs-238086:5810100"
+    compileOnly "curse.maven:rhino-416294:6886923"
+    compileOnly "curse.maven:kubejs-238086:5810100"
+    if (false) {
+        runtimeOnly "curse.maven:rhino-416294:6886923"
+        runtimeOnly "curse.maven:kubejs-238086:5810100"
+    }
 
     compileOnly "maven.modrinth:waystones:21.1.23+neoforge-1.21.1"
     compileOnly "maven.modrinth:balm:21.0.51+neoforge-1.21.1"

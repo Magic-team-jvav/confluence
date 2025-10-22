@@ -1201,25 +1201,6 @@ public class ModDataProvider {
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.GIANT_ANTLION_SWARMER.get(), 200, 1, 1)
                     )
             ));
-            register(context, createModifierKey("common_hell"), new BiomeModifiers.AddSpawnsBiomeModifier(
-                    HolderSet.direct(
-                            biome.getOrThrow(net.minecraft.world.level.biome.Biomes.NETHER_WASTES),
-                            biome.getOrThrow(net.minecraft.world.level.biome.Biomes.CRIMSON_FOREST),
-                            biome.getOrThrow(net.minecraft.world.level.biome.Biomes.BASALT_DELTAS)
-                    ),
-                    List.of(
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.HELL_BAT.get(), 60, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.FIRE_IMP.get(), 60, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.DEMON.get(), 45, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.VOODOO_DEMON.get(), 15, 1, 1)
-                    )
-            ));
-            register(context, createModifierKey("common_highlevel"), new BiomeModifiers.AddSpawnsBiomeModifier(
-                    biome.getOrThrow(Tags.Biomes.IS_OVERWORLD),
-                    List.of(
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.HARPY.get(), 60, 1, 2)
-                    )
-            ));
             register(context, createModifierKey("common_icy"), new BiomeModifiers.AddSpawnsBiomeModifier(
                     snowyIcy,
                     List.of(
@@ -1232,18 +1213,18 @@ public class ModDataProvider {
             register(context, createModifierKey("common_jungle"), new BiomeModifiers.AddSpawnsBiomeModifier(
                     jungleAndLush,
                     List.of(
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.HORNET.get(), 150, 1, 2),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.HORNET.get(), 170, 1, 2),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.JUNGLE_BAT.get(), 40, 1, 2),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.JUNGLE_SLIME.get(), 40, 1, 2),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.MAN_EATER.get(), 150, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.SNATCHER.get(), 40, 1, 1),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.SNATCHER.get(), 50, 1, 1),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.PIRANHA.get(), 40, 2, 3)
                     )
             ));
             register(context, createModifierKey("common_overworld"), new BiomeModifiers.AddSpawnsBiomeModifier(
                     snowyIcy,
                     List.of(
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.NYMPH.get(), 3, 1, 1),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.NYMPH.get(), 4, 1, 1),
                             new MobSpawnSettings.SpawnerData(TEAnimals.FAIRY.get(), 2, 1, 1),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.HARPY.get(), 60, 1, 2),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.WYVERN.get(), 5, 1, 1),
@@ -1251,17 +1232,6 @@ public class ModDataProvider {
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.WRAITH.get(), 65, 1, 2)
                     )
             ));
-            register(context, createModifierKey("common_plain"), new BiomeModifiers.AddSpawnsBiomeModifier(
-                    HolderSet.direct(biome.get(net.minecraft.world.level.biome.Biomes.PLAINS).get()),
-                    List.of(
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GOBLIN_ARCHER.get(), 5, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GOBLIN_PEON.get(), 5, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GOBLIN_WARRIOR.get(), 5, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GOBLIN_THIEF.get(), 5, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GOBLIN_SCOUT.get(), 5, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.ANGER_GOBLIN.get(), 3, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GOBLIN_SORCERER.get(), 5, 1, 1)
-                    )));
             register(context, createModifierKey("common_swamp"), new BiomeModifiers.AddSpawnsBiomeModifier(
                     biome.getOrThrow(Tags.Biomes.IS_SWAMP),
                     List.of(
@@ -1284,8 +1254,8 @@ public class ModDataProvider {
                     List.of(
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.BLACK_SLIME.get(), 60, 1, 3),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.BLUE_SLIME.get(), 30, 2, 4),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.CAVE_BAT.get(), 80, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GIANT_SHELLY.get(), 60, 1, 1),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.CAVE_BAT.get(), 110, 1, 2),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GIANT_SHELLY.get(), 80, 1, 1),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.GIANT_WORM.get(), 60, 1, 1),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.GREEN_DUMPLING_SLIME.get(), 30, 1, 3),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.GREEN_SLIME.get(), 45, 3, 3),

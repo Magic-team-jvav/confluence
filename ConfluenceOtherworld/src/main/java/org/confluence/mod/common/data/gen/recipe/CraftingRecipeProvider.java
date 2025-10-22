@@ -616,6 +616,16 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         shapeless(output, ToolItems.SILK_ROPE_COIL.toStack(), Ingredient.of(ModBlocks.SILK_ROPE), Ingredient.of(ModBlocks.SILK_ROPE), Ingredient.of(ModBlocks.SILK_ROPE), Ingredient.of(ModBlocks.SILK_ROPE));
         shapeless(output, ToolItems.ROPE_COIL.toStack(), Ingredient.of(ModBlocks.ROPE), Ingredient.of(ModBlocks.ROPE), Ingredient.of(ModBlocks.ROPE), Ingredient.of(ModBlocks.ROPE));
 
+        shapeless(output, ArmorItems.GOLDEN_HELMET.toStack(), Ingredient.of(Items.GOLDEN_HELMET), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD));
+        shapeless(output, ArmorItems.GOLDEN_CHESTPLATE.toStack(), Ingredient.of(Items.GOLDEN_CHESTPLATE), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD));
+        shapeless(output, ArmorItems.GOLDEN_LEGGINGS.toStack(), Ingredient.of(Items.GOLDEN_LEGGINGS), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD));
+        shapeless(output, ArmorItems.GOLDEN_BOOTS.toStack(), Ingredient.of(Items.GOLDEN_BOOTS), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD));
+        shapeless(output, SwordItems.GOLDEN_BROADSWORD.toStack(), Ingredient.of(Items.GOLDEN_SWORD), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD));
+        shapeless(output, AxeItems.GOLDEN_AXE.toStack(), Ingredient.of(Items.GOLDEN_AXE), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD));
+        shapeless(output, PickaxeItems.GOLDEN_PICKAXE.toStack(), Ingredient.of(Items.GOLDEN_PICKAXE), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD));
+        shapeless(output, HoeItems.GOLDEN_HOE.toStack(), Ingredient.of(Items.GOLDEN_HOE), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD));
+        shapeless(output, ShovelItems.GOLDEN_SHOVEL.toStack(), Ingredient.of(Items.GOLDEN_SHOVEL), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD), Ingredient.of(Tags.Items.INGOTS_GOLD));
+
         shapeless(output, new ItemStack(Items.STRING, 2), Ingredient.of(ItemTags.WOOL));
         shapeless(output, "", "_from_stony_log", new ItemStack(Items.COBBLESTONE, 2), Ingredient.of(NatureBlocks.STONY_LOG));
         shapeless(output, "", "_from_gel", new ItemStack(Items.TORCH, 3), Ingredient.of(MaterialItems.GEL), Ingredient.of(Items.STICK));

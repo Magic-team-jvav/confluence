@@ -56,7 +56,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
         LootItemConditionalFunction.Builder<?> count1To4 = SetItemCountFunction.setCount(UniformGenerator.between(1, 4));
         LootItemConditionalFunction.Builder<?> count5To15 = SetItemCountFunction.setCount(UniformGenerator.between(5, 15));
         LootItemConditionalFunction.Builder<?> count8To11 = SetItemCountFunction.setCount(UniformGenerator.between(8, 11));
-        GamePhaseLootItemCondition.Builder afterWallOfFlesh = GamePhaseLootItemCondition.builder().from(GamePhase.WALL_OF_FLESH);
+        GamePhaseLootItemCondition.Builder afterWallOfFlesh = GamePhaseLootItemCondition.builder().from(GamePhase.WALL_OF_FLESH).to(GamePhase.MOON_LORD);
         GamePhaseLootItemCondition.Builder beforeWallOfFlesh = GamePhaseLootItemCondition.builder().from(GamePhase.BEFORE_SKELETRON).to(GamePhase.WALL_OF_FLESH);
 
 
@@ -845,15 +845,19 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                 )
         );
         output.accept(ModLootTables.QUESTS_AFTER_10, LootTable.lootTable()
-                        .withPool(LootPool.lootPool()
-                                .add(NestedLootTable.lootTableReference(ModLootTables.QUESTS_1)).when(afterWallOfFlesh)
-                                .add(NestedLootTable.lootTableReference(ModLootTables.QUESTS_2)).when(beforeWallOfFlesh)
-                        )
+                .withPool(LootPool.lootPool()
+                        .add(NestedLootTable.lootTableReference(ModLootTables.QUESTS_1)).when(beforeWallOfFlesh)
+                )
+                .withPool(LootPool.lootPool()
+                        .add(NestedLootTable.lootTableReference(ModLootTables.QUESTS_2)).when(afterWallOfFlesh)
+                )
         );
         output.accept(ModLootTables.QUESTS_AFTER_75, LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(NestedLootTable.lootTableReference(ModLootTables.QUESTS_3)).when(afterWallOfFlesh)
-                        .add(NestedLootTable.lootTableReference(ModLootTables.QUESTS_4)).when(beforeWallOfFlesh)
+                        .add(NestedLootTable.lootTableReference(ModLootTables.QUESTS_3)).when(beforeWallOfFlesh)
+                )
+                .withPool(LootPool.lootPool()
+                        .add(NestedLootTable.lootTableReference(ModLootTables.QUESTS_4)).when(afterWallOfFlesh)
                 )
         );
         // 渔夫奖励列表其二  肉前，第十个任务后

@@ -198,60 +198,6 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
                 Ingredient.of(MaterialItems.HOOK),
                 HookItems.GRAPPLING_HOOK.toStack()
         ), null);
-        recipeOutput.accept(Confluence.asResource("smithing/golden_axe"), new SmithingTransformRecipe(
-                Ingredient.of(Tags.Items.GEMS),
-                Ingredient.of(Items.GOLDEN_AXE),
-                Ingredient.of(Tags.Items.INGOTS_GOLD),
-                AxeItems.GOLDEN_AXE.toStack()
-        ), null);
-        recipeOutput.accept(Confluence.asResource("smithing/golden_broadsword"), new SmithingTransformRecipe(
-                Ingredient.of(Tags.Items.GEMS),
-                Ingredient.of(Items.GOLDEN_SWORD),
-                Ingredient.of(Tags.Items.INGOTS_GOLD),
-                SwordItems.GOLDEN_BROADSWORD.toStack()
-        ), null);
-        recipeOutput.accept(Confluence.asResource("smithing/golden_pickaxe"), new SmithingTransformRecipe(
-                Ingredient.of(Tags.Items.GEMS),
-                Ingredient.of(Items.GOLDEN_PICKAXE),
-                Ingredient.of(Tags.Items.INGOTS_GOLD),
-                PickaxeItems.GOLDEN_PICKAXE.toStack()
-        ), null);
-        recipeOutput.accept(Confluence.asResource("smithing/golden_shovel"), new SmithingTransformRecipe(
-                Ingredient.of(Tags.Items.GEMS),
-                Ingredient.of(Items.GOLDEN_SHOVEL),
-                Ingredient.of(Tags.Items.INGOTS_GOLD),
-                ShovelItems.GOLDEN_SHOVEL.toStack()
-        ), null);
-        recipeOutput.accept(Confluence.asResource("smithing/golden_hoe"), new SmithingTransformRecipe(
-                Ingredient.of(Tags.Items.GEMS),
-                Ingredient.of(Items.GOLDEN_HOE),
-                Ingredient.of(Tags.Items.INGOTS_GOLD),
-                HoeItems.GOLDEN_HOE.toStack()
-        ), null);
-        recipeOutput.accept(Confluence.asResource("smithing/golden_helmet"), new SmithingTransformRecipe(
-                Ingredient.of(Tags.Items.GEMS),
-                Ingredient.of(Items.GOLDEN_HELMET),
-                Ingredient.of(Tags.Items.INGOTS_GOLD),
-                ArmorItems.GOLDEN_HELMET.toStack()
-        ), null);
-        recipeOutput.accept(Confluence.asResource("smithing/golden_chestplate"), new SmithingTransformRecipe(
-                Ingredient.of(Tags.Items.GEMS),
-                Ingredient.of(Items.GOLDEN_CHESTPLATE),
-                Ingredient.of(Tags.Items.INGOTS_GOLD),
-                ArmorItems.GOLDEN_CHESTPLATE.toStack()
-        ), null);
-        recipeOutput.accept(Confluence.asResource("smithing/golden_leggings"), new SmithingTransformRecipe(
-                Ingredient.of(Tags.Items.GEMS),
-                Ingredient.of(Items.GOLDEN_LEGGINGS),
-                Ingredient.of(Tags.Items.INGOTS_GOLD),
-                ArmorItems.GOLDEN_LEGGINGS.toStack()
-        ), null);
-        recipeOutput.accept(Confluence.asResource("smithing/golden_boots"), new SmithingTransformRecipe(
-                Ingredient.of(Tags.Items.GEMS),
-                Ingredient.of(Items.GOLDEN_BOOTS),
-                Ingredient.of(Tags.Items.INGOTS_GOLD),
-                ArmorItems.GOLDEN_BOOTS.toStack()
-        ), null);
 
 
         skyMill(recipeOutput, DecorativeBlocks.BOUNCY_CLOUD_BLOCK.toStack(), Ingredient.of(MaterialItems.PINK_GEL), Ingredient.of(NatureBlocks.CLOUD_BLOCK));

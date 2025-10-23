@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.Dynamic;
 import com.xiaohunao.heaven_destiny_moment.common.init.HDMRegistries;
 import com.xiaohunao.heaven_destiny_moment.common.moment.IMoment;
+import com.xiaohunao.phase_journey.common.phase.PhaseType;
 import com.xiaohunao.phase_journey.common.util.PhaseUtils;
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
@@ -118,7 +119,7 @@ public final class KillBoard implements IGlobalData {
 
     public static void onUnlockHardmode(MinecraftServer server) {
         IMinecraftServer.of(server).confluence$updateSecretFlag(IWorldOptions.HARDMODE);
-        PhaseUtils.achieveLevelPhase(OverworldUtils.getLevel(server), ChlorophyteOreBlock.PHASE, true);
+        PhaseType.LEVEL.applyOrRevokePhase(OverworldUtils.getLevel(server),ChlorophyteOreBlock.PHASE, true);
     }
 
     public void networkEncode(RegistryFriendlyByteBuf buffer) {

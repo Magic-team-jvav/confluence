@@ -1,5 +1,6 @@
 package org.confluence.mod.common.block.natural;
 
+import com.xiaohunao.phase_journey.common.phase.PhaseType;
 import com.xiaohunao.phase_journey.common.util.PhaseUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -55,7 +56,7 @@ public class CrimsonHeartBlock extends Block {
             ConfluenceData data = ConfluenceData.get(serverLevel);
             int count = data.getEvilBrokenCount() % 3;
 
-            PhaseUtils.achieveLevelPhase(serverLevel, Confluence.asResource("has_it_evil_ever_been_broken"), true);
+            PhaseType.LEVEL.applyOrRevokePhase(serverLevel, Confluence.asResource("has_it_evil_ever_been_broken"), true);
 
             if (count == 0 || level.random.nextFloat() < 0.2F) {
                 LibUtils.createItemEntity(TGItems.THE_UNDERTAKER.toStack(), center.x, center.y, center.z, level, 0);

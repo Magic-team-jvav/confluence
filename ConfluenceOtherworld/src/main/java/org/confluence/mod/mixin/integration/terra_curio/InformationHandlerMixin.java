@@ -4,6 +4,7 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.xiaohunao.phase_journey.common.phase.block.BlockPhaseManager;
+import com.xiaohunao.phase_journey.common.phase.block.BlockReplacementPhaseContext;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
@@ -34,6 +35,12 @@ public abstract class InformationHandlerMixin {
 
     @ModifyReturnValue(method = "mapCloakedBlock", at = @At("RETURN"))
     private static BlockState checkRevealed(BlockState original, @Local(argsOnly = true) Player player) {
-        return BlockPhaseManager.MANAGER.replaceSourceIfPlayerNotReachedPhase(player, original);
+        return BlockPhaseManager.MANAGER.isRestricteds(player.level(),null,player, ctx -> {
+            BlockReplacementPhaseContext blockReplacementPhaseContext = BlockPhaseManager.MANAGER.getBlockReplacementPhaseContext(original);
+            if (ctx.equals(blockReplacementPhaseContext)){
+                return blockReplacementPhaseContext.getTarget();
+            }
+            return original;
+        },original);
     }
 }

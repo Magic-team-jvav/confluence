@@ -1,5 +1,6 @@
 package org.confluence.mod.common.data.saved;
 
+import com.xiaohunao.phase_journey.common.phase.PhaseType;
 import com.xiaohunao.phase_journey.common.util.PhaseUtils;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
@@ -134,7 +135,7 @@ public final class ConfluenceData extends SavedData {
 
     public boolean increaseRevealStep(ServerLevel serverLevel) {
         if (revealStep < 8) {
-            serverLevel.players().forEach(player -> PhaseUtils.achievePlayerPhase(player, Confluence.asResource("reveal_step_" + ++this.revealStep), true));
+            serverLevel.players().forEach(player -> PhaseType.PLAYER.applyOrRevokePhase(player, Confluence.asResource("reveal_step_" + ++this.revealStep), true));
             setDirty();
             return true;
         }

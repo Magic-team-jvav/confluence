@@ -2070,12 +2070,12 @@ public class ModChineseProvider extends LanguageProvider {
         add("bestiary.entity.terra_entity.jewel_squirrel.1.desc", "罕见情况下，有些小动物会全身覆金！店主们愿意出高价收购，你也可以把它们关在笼子里炫耀！");
 //        add("bestiary.entity.terra_entity.mouse.desc", "老鼠会发出吱吱的叫声，在潮湿的地下环境中四处寻找小昆虫，对人并无危害。");
 //        add("bestiary.entity.terra_entity.gold_mouse.desc", "罕见情况下，有些小动物会全身覆金！店主们愿意出高价收购，你也可以把它们关在笼子里炫耀！");
-//        add("bestiary.entity.terra_entity.frog.desc", "青蛙偏爱植被茂密的水域，无论是陆地还是水下，它都能轻松适应。");
+        add("bestiary.entity.minecraft.frog.desc", "青蛙偏爱植被茂密的水域，无论是陆地还是水下，它都能轻松适应。");
 //        add("bestiary.entity.terra_entity.gold_frog.desc", "罕见情况下，有些小动物会全身覆金！店主们愿意出高价收购，你也可以把它们关在笼子里炫耀！");
-        add("bestiary.entity.terra_entity.grasshopper.desc", "蚱蜢能一跃跳过高高的草叶，鱼儿很容易被它们吸引。");
-        add("bestiary.entity.terra_entity.gold_grasshopper.desc", "罕见情况下，有些小动物会全身覆金！店主们会出高价收购，而且鱼儿超爱金色的鱼饵！");
-        add("bestiary.entity.terra_entity.butterfly.desc", "蝴蝶是喜爱日出的美丽昆虫，它们色彩多样，连鱼儿都会被吸引。");
-        add("bestiary.entity.terra_entity.gold_butterfly.desc", "罕见情况下，有些小动物会全身覆金！店主们会出高价收购，而且鱼儿超爱金色的鱼饵！");
+        add("bestiary.entity.terra_entity.grasshopper.1.desc", "蚱蜢能一跃跳过高高的草叶，鱼儿很容易被它们吸引。");
+        add("bestiary.entity.terra_entity.grasshopper.0.desc", "罕见情况下，有些小动物会全身覆金！店主们会出高价收购，而且鱼儿超爱金色的鱼饵！");
+        add("bestiary.entity.terra_entity.butterfly.1.desc", "蝴蝶是喜爱日出的美丽昆虫，它们色彩多样，连鱼儿都会被吸引。");
+        add("bestiary.entity.terra_entity.butterfly.0.desc", "罕见情况下，有些小动物会全身覆金！店主们会出高价收购，而且鱼儿超爱金色的鱼饵！");
         add("bestiary.entity.terra_entity.worm.2.desc", "蠕虫是光滑的管状无脊椎动物，常藏在岩石、泥土和草丛中，喜欢雨天。鱼儿尤其容易被它们吸引。");
         add("bestiary.entity.terra_entity.worm.1.desc", "罕见情况下，有些小动物会全身覆金！店主们会出高价收购，而且鱼儿超爱金色的鱼饵！");
         add("bestiary.entity.terra_entity.dragonfly.desc", "蜻蜓飞行速度快，以蚊子为食，有多种颜色。鱼儿多少会被它们吸引。");
@@ -2084,10 +2084,10 @@ public class ModChineseProvider extends LanguageProvider {
 //        add("bestiary.entity.terra_entity.gold_seahorse.desc", "罕见情况下，有些小动物会全身覆金！店主们愿意出高价收购，你也可以把它们关在笼子里炫耀！");
 //        add("bestiary.entity.terra_entity.water_strider.desc", "水黾会优雅地在平静的水面滑行，寻找小虫子为食。鱼儿偶尔会被它们吸引。");
 //        add("bestiary.entity.terra_entity.gold_water_strider.desc", "罕见情况下，有些小动物会全身覆金！店主们会出高价收购，而且鱼儿超爱金色的鱼饵！");
-        add("bestiary.entity.terra_entity.ladybug.desc", "瓢虫是亮红色的昆虫，常被视为好运的象征。但用它们当鱼饵钓鱼，可能会招来不好的运气。");
-        add("bestiary.entity.terra_entity.gold_ladybug.desc", "罕见情况下，有些小动物会全身覆金！店主们会出高价收购，而且鱼儿超爱金色的鱼饵！");
+        add("bestiary.entity.terra_entity.ladybug.1.desc", "瓢虫是亮红色的昆虫，常被视为好运的象征。但用它们当鱼饵钓鱼，可能会招来不好的运气。");
+        add("bestiary.entity.terra_entity.ladybug.0.desc", "罕见情况下，有些小动物会全身覆金！店主们会出高价收购，而且鱼儿超爱金色的鱼饵！");
 //        add("bestiary.entity.terra_entity.stinkbug.desc", "臭虫是鬼祟的害虫，就算是密不透风的房子，它们也能钻进去；一旦受到干扰，就会散发出类似香菜的臭味，弥漫各处。");
-        add("bestiary.entity.terra_entity.faeling.desc", "当动物误入微光池塘发光的深处时，就会孕育出飞灵这种闪闪发光、形似仙灵的生物。");
+        add("bestiary.entity.terra_entity.faeling.0.desc", "当动物误入微光池塘发光的深处时，就会孕育出飞灵这种闪闪发光、形似仙灵的生物。");
         add("bestiary.entity.terra_entity.duck.0.desc", "野鸭是拥有漂亮羽毛的水禽，喜欢在最纯净的水中游动，还会欢快地嘎嘎叫。");
         add("bestiary.entity.terra_entity.duck.1.desc", "鸭子是白色羽毛的水禽，喜欢在纯净的水中游动，沐浴温暖的阳光。");
 //        add("bestiary.entity.terra_entity.turtle.desc", "乌龟行动缓慢、性情沉稳，在湖泊与陆地之间往返活动，背上坚硬的龟壳是它们的保护盾。");
@@ -2152,7 +2152,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("bestiary.entity.terra_entity.zombie_female.desc", "敞着门可能会让蹒跚的食脑僵尸闯入家中，没人愿意遇到这种事。");
         add("bestiary.entity.terra_entity.zombie_slimed.desc", "有时，史莱姆的猎物在被消化的过程中会变成僵尸。这样“半消化半僵尸”地四处游荡，对双方来说都很尴尬。");
         add("bestiary.entity.terra_entity.zombie_bald.desc", "敞着门可能会让蹒跚的食脑僵尸闯入家中，没人愿意遇到这种事。");
-        add("bestiary.entity.terra_entity.zombie.desc", "敞着门可能会让蹒跚的食脑僵尸闯入家中，没人愿意遇到这种事。");
+        add("bestiary.entity.minecraft.zombie.desc", "敞着门可能会让蹒跚的食脑僵尸闯入家中，没人愿意遇到这种事。");
         add("bestiary.entity.terra_entity.zombie_twiggy.desc", "敞着门可能会让蹒跚的食脑僵尸闯入家中，没人愿意遇到这种事。");
         add("bestiary.entity.terra_entity.zombie_torch.desc", "这位手持火把的僵尸生前曾加入愤怒的暴民猎杀亡灵，死后却加入亡灵队伍猎杀生者。");
         add("bestiary.entity.terra_entity.zombie_swamp.desc", "敞着门可能会让蹒跚的食脑僵尸闯入家中，没人愿意遇到这种事。");
@@ -2194,7 +2194,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("bestiary.entity.terra_entity.mother_slime.desc", "史莱姆之母对史莱姆物种的生命周期至关重要，这些体型庞大、摇摇晃晃的胶状生物，常带着幼崽栖息在地下深处。");
 //        add("bestiary.entity.terra_entity.cochineal_beetle.desc", "胭脂虫生活在黑暗的深层洞穴中，这种大型甲虫因鳞状外骨骼中储存的深红色分泌物而被人们搜寻。");
 //        add("bestiary.entity.terra_entity.skeleton_misassembled.desc", "谁说非得有肌肉、皮肤甚至眼球？畸形骷髅仅凭身上的骨头就能行动，杀伤力不亚于有肉体的敌人。");
-//        add("bestiary.entity.terra_entity.skeleton.desc", "谁说非得有肌肉、皮肤甚至眼球？骷髅仅凭身上的骨头就能行动，杀伤力不亚于有肉体的敌人。");
+        add("bestiary.entity.minecraft.skeleton.desc", "谁说非得有肌肉、皮肤甚至眼球？骷髅仅凭身上的骨头就能行动，杀伤力不亚于有肉体的敌人。");
 //        add("bestiary.entity.terra_entity.salamander.desc", "蝾螈是栖息在黑暗洞穴中的特殊两栖双足蜥蜴，受到威胁时，会向四周喷射高腐蚀性的酸液。");
 //        add("bestiary.entity.terra_entity.skeleton_headache.desc", "谁说非得有肌肉、皮肤甚至眼球？头痛骷髅仅凭身上的骨头就能行动，杀伤力不亚于有肉体的敌人。");
 //        add("bestiary.entity.terra_entity.skeleton_pantless.desc", "谁说非得有肌肉、皮肤甚至眼球？无裤骷髅仅凭身上的骨头就能行动，杀伤力不亚于有肉体的敌人。");
@@ -2236,7 +2236,7 @@ public class ModChineseProvider extends LanguageProvider {
 //        add("bestiary.entity.terra_entity.ice_mimic.desc", "对着宝箱说话不会让人发疯，但要是宝箱回了话，那很可能会让人丧命！不过无论如何，它里面确实藏着稀有宝藏！");
 //        add("bestiary.entity.terra_entity.ice_tortoise.desc", "冰雪陆龟和它们的丛林近亲一样，是远超预期的可怕威胁，拥有惊人的速度与机动性。");
 //        add("bestiary.entity.terra_entity.vulture.desc", "秃鹰是为适应沙漠酷热而生的鸟类食腐者，任何靠近它们腐食的生物，都会被其啄咬撕扯。");
-        add("bestiary.entity.terra_entity.sand_slime.desc", "沙漠环境极度干旱，而沙史莱姆通过化为一团“活沙”，成功适应了这种恶劣条件。");
+        add("bestiary.entity.terra_entity.desert_slime.desc", "沙漠环境极度干旱，而沙史莱姆通过化为一团“活沙”，成功适应了这种恶劣条件。");
 //        add("bestiary.entity.terra_entity.antlion_larva.desc", "刚从卵中孵化的蚁狮幼虫绝不可轻视，即便尚处幼年，它们的攻击性也极强。");
 //        add("bestiary.entity.terra_entity.giant_antlion_charger.desc", "巨型蚁狮马是蚁狮族群的士兵，会以惊人的速度凶猛地追击入侵者。");
 //        add("bestiary.entity.terra_entity.mummy.desc", "外界力量改变了沙漠的形态，那些安息于此的生灵——无论善恶——如今都苏醒过来，肆意残杀。");
@@ -2541,6 +2541,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("bestiary.entity.minecraft.camel.desc", "骆驼是沙漠中的坐骑，能承载俩个人。");
         add("bestiary.entity.minecraft.chicken.desc", "鸡是常见的农场动物，会下蛋并能被小麦种子吸引。");
         add("bestiary.entity.minecraft.cod.desc", "鳕鱼是生活在海洋中的常见鱼类，可作为食物来源。");
+        add("bestiary.entity.minecraft.rabbit.desc", "兔子是擅长跳跃的野生动物，可作为食物来源。");
         add("bestiary.entity.minecraft.cow.desc", "牛是提供牛奶、牛肉和皮革的农场动物，喜欢吃草。");
         add("bestiary.entity.minecraft.donkey.desc", "驴是可以被驯服并用来运输物品的生物，能装备箱子。");
         add("bestiary.entity.minecraft.glow_squid.desc", "发光鱿鱼是洞穴中的发光生物，其墨囊可制作荧光物品。");
@@ -2607,6 +2608,9 @@ public class ModChineseProvider extends LanguageProvider {
         add("bestiary.entity.minecraft.zombified_piglin.desc", "僵尸猪灵是下界的中立生物，被攻击时会群体反击。");
         add("bestiary.entity.minecraft.ender_dragon.desc", "末影龙镇守着末路之地。");
         add("bestiary.entity.minecraft.wither.desc", "凋灵只能由玩家所召唤，会发射凋灵之首并造成大范围破坏。");
+
+        add("bestiary.entity.minecraft.turtle.desc", "喜欢咸水和海洋猎物的软壳爬行动物。");
+        add("bestiary.entity.minecraft.dolphin.desc", "一种活泼的海洋哺乳动物，它的智力可与人类媲美。");
 
         add("bestiary.entity.terra_entity.decayeder.desc", "被腐化之地重组的骸骨，脆弱但是擅长传播邪念。");
         add("bestiary.entity.terra_entity.bloody_spore.desc", "猩红之地知道苦力怕这种生物最容易将它的肉体撒播。");

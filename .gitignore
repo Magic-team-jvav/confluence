@@ -22,6 +22,10 @@ build
 eclipse
 run
 run-data
+*.hprof
+*.nphd
+*.ref
+*.map
 
 ConfluenceOtherworld/src/generated
 

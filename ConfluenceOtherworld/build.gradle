@@ -163,7 +163,7 @@ repositories {
 boolean sodium = true // 钠
 boolean vanillin = false // 香兰素
 boolean observable = false // 可视性能侦测
-boolean ftb = false // FTB系列
+boolean ftb = true // FTB系列
 boolean ipn = false // 一键背包整理Next
 boolean mmmmmmmmmmmm = false // 试验假人
 boolean supplementaries = false // 锦致装饰
@@ -203,12 +203,15 @@ dependencies {
     runtimeOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
 
     compileOnly "curse.maven:ftb-chunks-forge-314906:5968500"
-    compileOnly "curse.maven:ftb-library-forge-404465:6016745"
+    compileOnly "curse.maven:ftb-library-forge-404465:7134093"
     if (ftb) {
-        runtimeOnly "curse.maven:ftb-chunks-forge-314906:6504893"
-        runtimeOnly "curse.maven:ftb-library-forge-404465:6016745"
-        runtimeOnly "curse.maven:ftb-ultimine-forge-386134:5671703"
-        runtimeOnly "curse.maven:ftb-teams-forge-404468:5882217"
+        //runtimeOnly "curse.maven:ftb-chunks-forge-314906:6504893"
+        runtimeOnly "curse.maven:ftb-library-forge-404465:7134093"
+        //runtimeOnly "curse.maven:ftb-ultimine-forge-386134:5671703"
+        runtimeOnly "curse.maven:ftb-teams-forge-404468:6930910"
+        runtimeOnly "curse.maven:ftb-quests-forge-289412:7133722"
+        runtimeOnly "curse.maven:ftb-filter-system-943925:6899527"
+        runtimeOnly "curse.maven:ftb-xmod-compat-889915:6979171"
     }
 
     compileOnly "curse.maven:better-advancements-272515:5850587"

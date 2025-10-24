@@ -7,6 +7,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.xiaohunao.phase_journey.common.phase.block.BlockPhaseManager;
+import com.xiaohunao.phase_journey.common.util.PhaseUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.player.LocalPlayer;
@@ -396,7 +397,16 @@ public class SpelunkerHelper extends AbstractBufferManager {
                     pos.setZ(center.getZ() + k);
                     BlockState blockState = level.getBlockState(pos);
                     if (blockState.isAir()) continue;
-                    blockState = BlockPhaseManager.MANAGER.replaceSourceIfPlayerNotReachedPhase(player, blockState);
+
+                    BlockState finalBlockState = blockState;
+                    blockState = PhaseUtils.findFirstContextOrReturnDefault(BlockPhaseManager.MANAGER, level, player, pos, (ctx, manager) -> {
+                        if (ctx.getSource().equals(finalBlockState)){
+                            return ctx.getTarget();
+                        }
+                        return finalBlockState;
+                    },blockState);
+
+
                     Block block = blockState.getBlock();
                     if (targets.containsKey(block) &&  /*&&//有目标且
                             (!centerCache.containsKey(pos) ||//未已缓存或

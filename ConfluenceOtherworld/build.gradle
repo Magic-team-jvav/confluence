@@ -366,7 +366,7 @@ dependencies {
     if (supplementaries || mmmmmmmmmmmm) {
         runtimeOnly "maven.modrinth:moonlight:1.21-2.18.18-neoforge"
     }
-    if(spark){
+    if (spark) {
         implementation "curse.maven:spark-361579:6225208"
     }
     if (apotheosis) {

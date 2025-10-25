@@ -80,6 +80,7 @@ import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.common.item.spear.AbstractSpearItem;
 import org.confluence.mod.integration.ars_nouveau.ArsNouveauHelper;
 import org.confluence.mod.integration.irons_spell.IronSpellHelper;
+import org.confluence.mod.integration.prism_lib.PrismLibHelper;
 import org.confluence.mod.integration.xaero.XaeroHelper;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.ILocalPlayer;
@@ -208,28 +209,16 @@ public final class GameClientEvents {
         ItemStack itemStack = event.getItemStack();
         if (itemStack.isEmpty()) return;
         List<Either<FormattedText, TooltipComponent>> tooltipElements = event.getTooltipElements();
-        if (tooltipElements.isEmpty()) return;
+        if (PrismLibHelper.shouldSkipOriginalPrefixGather(itemStack, tooltipElements) || tooltipElements.isEmpty()) return;
         Optional<FormattedText> displayName = tooltipElements.getFirst().left();
         if (displayName.isPresent() && displayName.get() instanceof Component component) {
-            PrefixComponent prefix = PrefixUtils.getPrefix(event.getItemStack());
+            PrefixComponent prefix = PrefixUtils.getPrefix(itemStack);
             if (prefix != null && prefix.type() != PrefixType.UNKNOWN) {
                 tooltipElements.set(0, Either.left(
                         prefix.getName().setStyle(component.getStyle()).append(Component.translatable("confluence.prefix_separator")).append(component)
                 ));
             }
         }
-//        // 捐赠者物品
-//        var ins = TooltipManager.getInstance();
-//        if (ins.contains(item)) {
-//            tooltipElements.add(Either.left(
-//                    Component.empty()
-//            ));
-//            tooltipElements.add(Either.left(
-//                    Component.translatable(TooltipManager.prefix).withColor(ModRarity.EXPERT.color())
-//                            .append("  ")
-//                            .append(Component.literal(ins.getTooltip(item))))
-//            );
-//        }
     }
 
     @SubscribeEvent

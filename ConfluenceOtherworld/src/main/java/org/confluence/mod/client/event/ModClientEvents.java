@@ -508,7 +508,7 @@ public final class ModClientEvents {
 
     @SubscribeEvent
     public static void registerClientTooltipComponentFactories(RegisterClientTooltipComponentFactoriesEvent event) {
-        event.register(AltImageComponent.class, component -> PrismLibHelper.IS_LOADED ? NoopTooltip.INSTANCE : new AltImageTooltip(component));
+        event.register(AltImageComponent.class, component -> PrismLibHelper.shouldDisableAltImageTooltip() ? NoopTooltip.INSTANCE : new AltImageTooltip(component));
     }
 
     @SubscribeEvent

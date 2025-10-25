@@ -5061,11 +5061,11 @@ public class ModChineseProvider extends LanguageProvider {
         addPotion(PotionItems.GREATER_MANA_POTION.get(), "强效魔力药水", "恢复200魔力");
         addPotion(PotionItems.SUPER_MANA_POTION.get(), "超级魔力药水", "恢复300魔力");
         addPotion(PotionItems.GRAVITATION_POTION.get(), "重力药水", "可控制重力");
-        addPotion(PotionItems.SHINE_POTION.get(), "光环药水", "发出光环");
+        addPotion(PotionItems.SHINE_POTION.get(), "光芒药水", "发出光芒");
         addPotion(PotionItems.IRON_SKIN_POTION.get(), "铁皮药水", "防御力增加4");
         addPotion(PotionItems.WRATH_POTION.get(), "怒气药水", "伤害提高10%");
         addPotion(PotionItems.TITAN_POTION.get(), "泰坦药水", "提高击退力");
-        addPotion(PotionItems.BUILDER_POTION.get(), "建造者药水", "提高放置速度、扩大放置范围");
+        addPotion(PotionItems.BUILDER_POTION.get(), "建筑工药水", "提高放置速度、扩大放置范围");
         addPotion(PotionItems.ENDURANCE_POTION.get(), "耐力药水", "所受伤害降低10%");
         addPotion(PotionItems.INFERNO_POTION.get(), "狱火药水", "点燃附近的敌人");
         addPotion(PotionItems.LIFEFORCE_POTION.get(), "生命力药水", "最大生命提高20%");
@@ -5079,7 +5079,7 @@ public class ModChineseProvider extends LanguageProvider {
         addPotion(PotionItems.LUCK_POTION.get(), "幸运药水", "提高使用者的运气");
         addPotion(PotionItems.GREATER_LUCK_POTION.get(), "强效幸运药水", "提高使用者的运气");
         addPotion(PotionItems.LOVE_POTION.get(), "爱情药水", "投掷此物可让人坠入爱河（或使动物繁衍）");
-        addPotion(PotionItems.SWIFTNESS_POTION.get(), "迅捷药水", "移动速度提高25%");
+        addPotion(PotionItems.SWIFTNESS_POTION.get(), "敏捷药水", "移动速度提高25%");
         addPotion(PotionItems.REGENERATION_POTION.get(), "再生药水", "提供生命再生");
         addPotion(PotionItems.FLIPPER_POTION.get(), "脚蹼药水", "让你在液体中快速移动");
         addPotion(PotionItems.ARCHERY_POTION.get(), "箭术药水", "弓伤害提高10%，箭速度提高20%");
@@ -5087,7 +5087,7 @@ public class ModChineseProvider extends LanguageProvider {
         addPotion(PotionItems.GILLS_POTION.get(), "鱼鳃药水", "可在水中呼吸");
         addPotion(PotionItems.INVISIBILITY_POTION.get(), "隐形药水", "隐身"); // 等待战斗药水实装后改功能和描述
         addPotion(PotionItems.WORMHOLE_POTION.get(), "虫洞药水", "当玩家在地图上点击队友图标时将玩家传送至队友的位置处。");
-        addPotion(PotionItems.MINING_POTION.get(), "采矿药水", "挖矿速度提高25%");
+        addPotion(PotionItems.MINING_POTION.get(), "挖矿药水", "挖矿速度提高25%");
         addPotion(PotionItems.RECALL_POTION.get(), "回忆药水", "将玩家传送到其重生点。");
         addPotion(PotionItems.NIGHT_OWL_POTION.get(), "夜猫子药水", "赋予夜视");
         addPotion(PotionItems.WATER_WALKING_POTION.get(), "水上漂药水", "可在水上行走");

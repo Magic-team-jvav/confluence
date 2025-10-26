@@ -28,6 +28,7 @@ neoForge {
     validateAccessTransformers = true
     runs {
         client {
+            loggingConfigFile = file('tools/extraConfig.xml')
             client()
             programArguments.addAll '--username', 'Confluence'
         }

@@ -17,6 +17,7 @@ import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.integration.waystones.WaystonesHelper;
+import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terraentity.init.TETags;
 import org.jetbrains.annotations.Nullable;
 

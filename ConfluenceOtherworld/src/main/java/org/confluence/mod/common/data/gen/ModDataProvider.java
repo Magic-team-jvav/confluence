@@ -878,7 +878,7 @@ public class ModDataProvider {
             register(context, CRIMSON_CATTAILS, configured.getOrThrow(ConfiguredFeatures.CRIMSON_CATTAILS), inSquare, RarityFilter.onAverageOnceEvery(4), worldSurfaceWG, BlockPredicateFilter.forPredicate(BlockPredicate.matchesBlocks(new Vec3i(0, -1, 0), Blocks.WATER)), biome);
             register(context, VICIOUS_MUSHROOM, configured.getOrThrow(ConfiguredFeatures.VICIOUS_MUSHROOM), RarityFilter.onAverageOnceEvery(32), count3, HeightmapPlacement.onHeightmap(Heightmap.Types.WORLD_SURFACE_WG), biome);
             register(context, GLOWING_MUSHROOM, configured.getOrThrow(ConfiguredFeatures.GLOWING_MUSHROOM), CountPlacement.of(40), inSquare, bottomThroughUnderground, biome);
-            register(context, GLOWING_MUSHROOM_LIFE_CRYSTAL, configured.getOrThrow(ConfiguredFeatures.LIFE_CRYSTAL), CountPlacement.of(8), inSquare, bottomThroughUnderground, targetSturdyAllowedAir, SurfaceRelativeThresholdFilter.of(Heightmap.Types.WORLD_SURFACE_WG, -110, -70), biome);
+            register(context, GLOWING_MUSHROOM_LIFE_CRYSTAL, configured.getOrThrow(ConfiguredFeatures.LIFE_CRYSTAL), CountPlacement.of(6), inSquare, bottomThroughUnderground, targetSturdyAllowedAir, SurfaceRelativeThresholdFilter.of(Heightmap.Types.WORLD_SURFACE_WG, -110, -70), biome);
             register(context, GLOWING_MUSHROOM_TREE, configured.getOrThrow(ModFeatures.Configured.GLOWING_MUSHROOM_TREE), CountOnEveryLayerPlacement.of(3), EnvironmentScanPlacement.scanningFor(Direction.DOWN, BlockPredicate.matchesBlocks(new Vec3i(0, -1, 0), Blocks.MUD, NatureBlocks.MUSHROOM_GRASS_BLOCK.get()), air, 12), biome);
             register(context, GLOWING_MUSHROOM_VINE, configured.getOrThrow(ConfiguredFeatures.GLOWING_MUSHROOM_VINE), CountPlacement.of(144), inSquare, bottomThroughUnderground, EnvironmentScanPlacement.scanningFor(Direction.UP, BlockPredicate.matchesBlocks(Blocks.MUD, NatureBlocks.MUSHROOM_GRASS_BLOCK.get()), air, 12), ySpreadN1, biome);
             register(context, GLOWING_MUSHROOM_CATTAILS, configured.getOrThrow(ConfiguredFeatures.GLOWING_MUSHROOM_CATTAILS), CountOnEveryLayerPlacement.of(32), bottomThroughUnderground, ySpreadN1, biome);
@@ -908,7 +908,7 @@ public class ModDataProvider {
             register(context, DART_TRAP, configured.getOrThrow(ConfiguredFeatures.DART_TRAP), inSquare, bottomThroughUnderground, biome);
             register(context, BOULDER_TRAP, configured.getOrThrow(ConfiguredFeatures.BOULDER_TRAP), inSquare, bottomThroughUnderground, biome);
             register(context, DEATH_CHEST_TRAP, configured.getOrThrow(ConfiguredFeatures.DEATH_CHEST_TRAP), RarityFilter.onAverageOnceEvery(20), inSquare, throughCave, biome);
-            register(context, LIFE_CRYSTAL, configured.getOrThrow(ConfiguredFeatures.LIFE_CRYSTAL), count4, inSquare, bottomThroughUnderground, targetSturdyAllowedAir, SurfaceRelativeThresholdFilter.of(Heightmap.Types.WORLD_SURFACE_WG, -110, -70), biome);
+            register(context, LIFE_CRYSTAL, configured.getOrThrow(ConfiguredFeatures.LIFE_CRYSTAL), count3, inSquare, bottomThroughUnderground, targetSturdyAllowedAir, SurfaceRelativeThresholdFilter.of(Heightmap.Types.WORLD_SURFACE_WG, -110, -70), biome);
             register(context, WATER_CHESTS, configured.getOrThrow(ConfiguredFeatures.WATER_CHESTS),
                     RarityFilter.onAverageOnceEvery(6), inSquare, bottomThroughSurface,
                     EnvironmentScanPlacement.scanningFor(

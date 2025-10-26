@@ -2618,6 +2618,7 @@ public class ModChineseProvider extends LanguageProvider {
 
 
         add(ModEntities.BEE_ARROW.get(), "蜜蜂箭");
+        add(ModEntities.HELL_BAT_ARROW.get(), "地狱蝙蝠箭");
         add(ModEntities.ARROW_PROJECTILE.get(), "泰拉箭");
         add(ModEntities.ANTI_GRAVITY_HOOK.get(), "反重力钩");
         add(ModEntities.BALL_OF_FIRE_PROJECTILE.get(), "火球弹");
@@ -4487,10 +4488,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.GLADIATOR_HELMET.get(), "角斗士头盔");
         add(ArmorItems.GLADIATOR_LEGGINGS.get(), "角斗士护腿");
         add(ArmorItems.GLADIATOR_BOOTS.get(), "角斗士靴子");
-        add(ArmorItems.METEOR_CHESTPLATE.get(), "陨石胸甲");
-        add(ArmorItems.METEOR_HELMET.get(), "陨石头盔");
-        add(ArmorItems.METEOR_LEGGINGS.get(), "陨石护腿");
-        add(ArmorItems.METEOR_BOOTS.get(), "陨石靴子");
+        add(ArmorItems.METEOR_CHESTPLATE.get(), "流星胸甲");
+        add(ArmorItems.METEOR_HELMET.get(), "流星头盔");
+        add(ArmorItems.METEOR_LEGGINGS.get(), "流星护腿");
+        add(ArmorItems.METEOR_BOOTS.get(), "流星靴子");
         add(ArmorItems.COPPER_HELMET.get(), "铜头盔");
         add(ArmorItems.COPPER_CHESTPLATE.get(), "铜胸甲");
         add(ArmorItems.COPPER_LEGGINGS.get(), "铜护腿");

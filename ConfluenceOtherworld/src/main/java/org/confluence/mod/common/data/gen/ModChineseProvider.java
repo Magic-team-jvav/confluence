@@ -4235,7 +4235,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ChestBlocks.FROZEN_CHEST.get(), "冰冻箱");
         add(ChestBlocks.IVY_CHEST.get(), "常春藤箱");
         add(ChestBlocks.WATER_CHEST.get(), "水中箱");
-        add(ChestBlocks.SKYWARE_CHEST.get(), "天界箱");
+        add(ChestBlocks.SKYWARE_CHEST.get(), "天域箱");
         add(ChestBlocks.DEATH_WOODEN_CHEST.get(), "死人木箱");
         add(ChestBlocks.SANDSTONE_CHEST.get(), "沙岩箱");
         add(ChestBlocks.LIVING_WOOD_CHEST.get(), "生命木箱");

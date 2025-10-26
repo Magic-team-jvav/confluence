@@ -4802,13 +4802,13 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.DAMSEL_FISH.get(), "雀鲷");
         add(FoodItems.PISCES_FIN_COD.get(), "双鳍鳕鱼");
         add(FoodItems.EBONY_KOI.get(), "黑檀锦鲤");
-        add(FoodItems.FLASHFIN_KOI.get(), "闪耀锦鲤");
+        add(FoodItems.FLASHFIN_KOI.get(), "闪鳍锦鲤");
         add(FoodItems.PARTIAL_MOUTH_FISH.get(), "偏口鱼");
         add(FoodItems.FROSTY_MINNOW.get(), "寒霜鲦鱼");
         add(FoodItems.GOLDEN_CARP.get(), "金鲤鱼");
         add(FoodItems.BLOODY_PIRANHAS.get(), "血腥食人鱼");
         add(FoodItems.NEON_GREASE_CARP.get(), "霓虹脂鲤");
-        add(FoodItems.OBSIDIAN_FISH.get(), "黑曜石鱼");
+        add(FoodItems.OBSIDIFISH.get(), "黑曜石鱼");
         add(FoodItems.PRINCESS_FISH.get(), "公主鱼");
         add(FoodItems.COLORFUL_MINERAL_FISH.get(), "七彩矿鱼");
         add(FoodItems.RED_SNAPPER.get(), "红鲷鱼");

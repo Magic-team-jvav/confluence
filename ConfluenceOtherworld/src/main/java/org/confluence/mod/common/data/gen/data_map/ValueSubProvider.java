@@ -1761,7 +1761,7 @@ public final class ValueSubProvider {
                 .add(FoodItems.GOLDEN_CARP, gold10)
                 .add(FoodItems.BLOODY_PIRANHAS, silver10 + silver5)
                 .add(FoodItems.NEON_GREASE_CARP, silver10 + silver5)
-                .add(FoodItems.OBSIDIAN_FISH, silver10 + silver5)
+                .add(FoodItems.OBSIDIFISH, silver10 + silver5)
                 .add(FoodItems.PRINCESS_FISH, silver20 + silver5)
                 .add(FoodItems.COLORFUL_MINERAL_FISH, gold1)
                 .add(FoodItems.RED_SNAPPER, silver5 + silver2 + 50)

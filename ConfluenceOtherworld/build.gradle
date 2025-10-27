@@ -10,7 +10,7 @@ var projectName = ["Confluence-Magic-Lib", "TerraEntity", "MineTeam", "Equipment
                    "EntityTrackerHUD", "EnemyBanner"
 ]
 
-version = mod_version + "-SNAPSHOT" + "-beta" + "-${new SimpleDateFormat("yyMMdd").format(new Date())}"
+version = mod_version + "-beta" + "-${new SimpleDateFormat("yyMMdd").format(new Date())}"
 group = mod_group_id
 
 base {

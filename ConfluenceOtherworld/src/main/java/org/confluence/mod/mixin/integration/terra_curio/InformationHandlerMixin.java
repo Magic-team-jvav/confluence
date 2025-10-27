@@ -36,13 +36,16 @@ public abstract class InformationHandlerMixin {
 
     @ModifyReturnValue(method = "mapCloakedBlock", at = @At("RETURN"))
     private static BlockState checkRevealed(BlockState original, @Local(argsOnly = true) Player player) {
-        return PhaseUtils.isRestricted(BlockPhaseManager.MANAGER,player.level(),player,null,
-                (ctx,phaseManager) -> {
-                    BlockReplacementPhaseContext context = phaseManager.getBlockReplacementPhaseContext(original);
-                    if (ctx.equals(context) && context.getSource().equals(original)){
-                        return ctx.getTarget();
-                    }
-                    return original;
-                },original);
+//        return PhaseUtils.isRestricted(BlockPhaseManager.MANAGER,player.level(),player,null,
+//                (ctx,phaseManager) -> {
+//                    BlockReplacementPhaseContext context = phaseManager.getBlockReplacementPhaseContext(original);
+//                    if (ctx.equals(context) && context.getSource().equals(original)){
+//                        return ctx.getTarget();
+//                    }
+//                    return original;
+//                },original);
+        return PhaseUtils.findFirstContextOrReturnDefault(BlockPhaseManager.MANAGER,player.level(),player,null,(ctx, phaseManager) -> {
+            return ctx.getSource().equals(original) ? ctx.getTarget() : original;
+        }, original);
     }
 }

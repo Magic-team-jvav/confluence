@@ -118,13 +118,18 @@ public final class ModUtils {
         return itemStack.is(PotionItems.BOTTLED_WATER) || itemStack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).is(Potions.WATER);
     }
 
-    public static void summonBoss(ServerLevel level, BlockPos pos, AbstractTerraBossBase boss) {
+    public static void summonBoss(ServerLevel level, BlockPos pos, AbstractTerraBossBase boss, boolean onSurface) {
         double x = pos.getX() + 0.5 + Mth.randomBetweenInclusive(level.random, -50, 50);
         double z = pos.getZ() + 0.5 + Mth.randomBetweenInclusive(level.random, -50, 50);
-        boss.setPos(x, 0.5 + level.getHeight(Heightmap.Types.MOTION_BLOCKING, Mth.floor(x), Mth.floor(z)), z);
+        double y = (onSurface ? level.getHeight(Heightmap.Types.MOTION_BLOCKING, Mth.floor(x), Mth.floor(z)) : pos.getY()) + 0.5;
+        boss.setPos(x, y, z);
         if (TEUtils.internalSpawnEntity(boss, level)) {
             level.addFreshEntityWithPassengers(boss);
         }
+    }
+
+    public static void summonBoss(ServerLevel level, BlockPos pos, AbstractTerraBossBase boss) {
+        summonBoss(level, pos, boss, true);
     }
 
     public static @Nullable BlockState getLeadAnvilDamage(BlockState state, DirectionProperty FACING) {

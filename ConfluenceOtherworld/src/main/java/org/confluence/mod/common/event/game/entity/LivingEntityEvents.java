@@ -1,6 +1,5 @@
 package org.confluence.mod.common.event.game.entity;
 
-import com.xiaohunao.equipment_benediction.common.hook.HookMapManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
@@ -50,7 +49,6 @@ import org.confluence.mod.common.effect.harmful.ManaSicknessEffect;
 import org.confluence.mod.common.effect.neutral.LoveEffect;
 import org.confluence.mod.common.entity.projectile.boulder.TombstoneBoulderEntity;
 import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.init.ModHookTypes;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
@@ -351,21 +349,12 @@ public final class LivingEntityEvents {
     @SubscribeEvent
     public static void livingGetProjectile(LivingGetProjectileEvent event) {
         LivingEntity living = event.getEntity();
-        event.setProjectileItemStack(ExtraInventory.getProjectile(event.getProjectileItemStack(), event.getProjectileWeaponItemStack(), living));
+        ItemStack projectileItemStack = event.getProjectileItemStack();
+        event.setProjectileItemStack(ExtraInventory.getProjectile(projectileItemStack, event.getProjectileWeaponItemStack(), living));
 
-        if (!event.getProjectileItemStack().isEmpty()) {
+        if (!projectileItemStack.isEmpty()) {
             if (living.hasEffect(ModEffects.AMMO_BOX) && living.getRandom().nextFloat() < 0.2F) {
-                event.setProjectileItemStack(event.getProjectileItemStack().copy());
-                return;
-            }
-
-            if (event.getEntity() instanceof Player player) {
-                HookMapManager.postHooks(ModHookTypes.SKIP_AMMO_CONSUME.get(), (owner, hook, original) -> {
-                    if (hook.shouldSkipConsume(owner, original.getEntity(), original.getProjectileItemStack())) {
-                        original.setProjectileItemStack(original.getProjectileItemStack().copy());
-                    }
-                    return original;
-                }, player, event);
+                event.setProjectileItemStack(projectileItemStack.copy());
             }
         }
     }

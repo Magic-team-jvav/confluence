@@ -2,10 +2,6 @@ package org.confluence.mod.client.event;
 
 import com.google.common.collect.ImmutableListMultimap;
 import com.mojang.datafixers.util.Either;
-import com.xiaohunao.equipment_benediction.api.manager.EquipmentSetManager;
-import com.xiaohunao.equipment_benediction.common.equipment_set.EquipmentSetBranch;
-import com.xiaohunao.equipment_benediction.common.event.AfterEquipmentBenedictionUpdatedEvent;
-import com.xiaohunao.equipment_benediction.common.init.EBAttachments;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
@@ -72,7 +68,6 @@ import org.confluence.mod.common.component.prefix.ModPrefix;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.init.ModEquipmentSets;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.SwordItems;
@@ -95,7 +90,6 @@ import org.confluence.terraentity.init.TEAttributes;
 import org.confluence.terraentity.init.entity.TENpcEntities;
 import software.bernie.geckolib.event.GeoRenderEvent;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -388,15 +382,6 @@ public final class GameClientEvents {
             }
             ILivingEntity.of(living).confluence$deadO(dead);
         }
-    }
-
-    @SubscribeEvent
-    public static void afterEquipmentBenedictionUpdated(AfterEquipmentBenedictionUpdatedEvent event) {
-        Collection<EquipmentSetBranch> equipmentSetBranches = event.getEntity().getData(EBAttachments.ENTITY_HOOK_MANAGER)
-                .getSetHookManager().getActivatedSetBranch().get(ModEquipmentSets.CRYSTAL_ASSASSIN_SET.get());
-        EquipmentSetBranch branch = EquipmentSetManager.getInstance().getBranchResource(Confluence.asResource("crystal_assassin_set/full_set"));
-        boolean contains = equipmentSetBranches.contains(branch);
-        ClientPacketHandler.handleSprintable(contains);
     }
 
     @SubscribeEvent

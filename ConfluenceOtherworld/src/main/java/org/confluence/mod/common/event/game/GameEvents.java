@@ -1,7 +1,5 @@
 package org.confluence.mod.common.event.game;
 
-import com.xiaohunao.equipment_benediction.common.event.AfterEquipmentBenedictionUpdatedEvent;
-import com.xiaohunao.equipment_benediction.common.hook.HookMapManager;
 import com.xiaohunao.heaven_destiny_moment.common.event.MomentEvent;
 import com.xiaohunao.heaven_destiny_moment.common.moment.MomentInstance;
 import com.xiaohunao.terra_moment.common.init.TMMoments;
@@ -43,7 +41,6 @@ import org.confluence.mod.common.data.AchievementOffsetLoader;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
 import org.confluence.mod.common.init.ModCommands;
-import org.confluence.mod.common.init.ModHookTypes;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.MaterialItems;
@@ -62,7 +59,6 @@ import org.confluence.mod.network.s2c.VisibilityPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.api.event.AfterAccessoryAbilitiesFlushedEvent;
-import org.confluence.terra_guns.api.event.GunEvent;
 import org.confluence.terraentity.entity.summon.AbstractSummonMob;
 import org.confluence.terraentity.init.entity.TEBossEntities;
 import top.theillusivec4.curios.api.event.CurioAttributeModifierEvent;
@@ -78,13 +74,6 @@ public final class GameEvents {
             ManaStorage.of(player).flushAbility(player);
             FishingPowerInfoPacketS2C.sendAndGet(player);
             VisibilityPacketS2C.sendEcho(player);
-        }
-    }
-
-    @SubscribeEvent
-    public static void afterEquipmentBenedictionUpdated(AfterEquipmentBenedictionUpdatedEvent event) {
-        if (event.getEntity() instanceof ServerPlayer player) {
-            ManaStorage.of(player).flushAbility(player);
         }
     }
 
@@ -172,17 +161,6 @@ public final class GameEvents {
                 event.setTargets(targets);
             }
         }
-    }
-
-    @SubscribeEvent
-    public static void gun$ShrinkBullet(GunEvent.ShrinkBulletEvent event) {
-        if (event.isInfinity()) return;
-        HookMapManager.postHooks(ModHookTypes.SKIP_AMMO_CONSUME.get(), (owner, hook, original) -> {
-            if (hook.shouldSkipConsume(owner, original.getPlayer(), original.getBulletStack())) {
-                original.setCanceled(true);
-            }
-            return original;
-        }, event.getPlayer(), event);
     }
 
     @SubscribeEvent

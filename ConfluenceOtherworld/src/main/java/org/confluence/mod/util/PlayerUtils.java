@@ -1,7 +1,6 @@
 package org.confluence.mod.util;
 
 import com.google.common.collect.Iterables;
-import com.xiaohunao.equipment_benediction.common.hook.HookMapManager;
 import com.xiaohunao.heaven_destiny_moment.common.moment.MomentInstanceManager;
 import com.xiaohunao.terra_moment.common.init.TMMoments;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
@@ -33,7 +32,6 @@ import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.init.ModHookTypes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.ModItems;
@@ -107,12 +105,7 @@ public final class PlayerUtils {
         if (player.isCreative()) return true;
         return extractAndSync(
                 ManaStorage.of(player),
-                HookMapManager.postHooks(
-                        ModHookTypes.MANA_CONSUME.get(),
-                        (owner, hook, original) -> hook.onManaConsume(owner, itemStack, original),
-                        player,
-                        () -> sup.getAsFloat() * EnchantmentUtils.processEfficientMagic(player)
-                ),
+                EnchantmentUtils.processEfficientMagic(sup, player),
                 player
         );
     }
@@ -164,7 +157,6 @@ public final class PlayerUtils {
         if (MomentInstanceManager.of(level).hasMoment(TMMoments.BLOOD_MOON.getKey())) {
             base *= 1.1F;
         }
-        base = HookMapManager.postHooks(ModHookTypes.FISHING_POWER.get(), (owner, hook, original) -> hook.modifyFishingPower(owner, player, original), player, base);
         return base;
     }
 

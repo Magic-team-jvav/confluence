@@ -11,12 +11,14 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.resources.PlayerSkin;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.Pig;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 
@@ -28,6 +30,7 @@ import java.util.function.Function;
 
 public class EntityDisplayItemRenderer extends BlockEntityWithoutLevelRenderer {
     private Map<UUID, Entity> entityMap = new Hashtable<>();
+    private ResourceKey<Level> currentLevel;
     private final Function<ClientLevel, RemotePlayer> magicHarp2333 = new Function<>() {
         private RemotePlayer cache;
 
@@ -65,7 +68,10 @@ public class EntityDisplayItemRenderer extends BlockEntityWithoutLevelRenderer {
         if (tag == null) {
             entity = magicHarp2333.apply(level);
         } else {
-            if (!entityMap.isEmpty() && level.getGameTime() % 24000L == 0) this.entityMap = new HashMap<>(); // 每天清一次缓存
+            if (level.dimension() != currentLevel) {
+                this.currentLevel = level.dimension();
+                this.entityMap = new HashMap<>();
+            }
 
             try {
                 entity = entityMap.computeIfAbsent(tag.getUUID(Entity.UUID_TAG), uuid -> {

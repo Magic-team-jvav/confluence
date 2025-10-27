@@ -115,59 +115,6 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         basePhaseblade(recipeOutput, AmountIngredient.of(5, ModTags.Items.GEMS_SAPPHIRE), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.BLUE_PHASEBLADE.toStack());
         basePhaseblade(recipeOutput, AmountIngredient.of(5, ModTags.Items.GEMS_AMETHYST), AmountIngredient.of(5, MaterialItems.METEORITE_INGOT), SwordItems.PURPLE_PHASEBLADE.toStack());
 
-        // 金系列
-        Map<Character, Ingredient> goldWithGems = Map.of(
-                '#', Ingredient.of(Tags.Items.GEMS),
-                'a', Ingredient.of(Items.GOLD_INGOT)
-        );
-        shaped(recipeOutput, "golden_helmet_from_reinforce", ShapedRecipePattern.of(goldWithGems, List.of(
-                "a#a",
-                "a a"
-        )), ArmorItems.GOLDEN_HELMET.toStack());
-        shaped(recipeOutput, "golden_leggings_from_reinforce", ShapedRecipePattern.of(goldWithGems, List.of(
-                "a#a",
-                "a a",
-                "a a"
-        )), ArmorItems.GOLDEN_LEGGINGS.toStack());
-        shaped(recipeOutput, "golden_boots_from_reinforce", ShapedRecipePattern.of(goldWithGems, List.of(
-                "a a",
-                "a#a"
-        )), ArmorItems.GOLDEN_BOOTS.toStack());
-        shaped(recipeOutput, "golden_chestplate_from_reinforce", ShapedRecipePattern.of(goldWithGems, List.of(
-                "a a",
-                "a#a",
-                "aaa"
-        )), ArmorItems.GOLDEN_CHESTPLATE.toStack());
-        Map<Character, Ingredient> goldWithGemsAndStick = Map.of(
-                '#', Ingredient.of(Tags.Items.GEMS),
-                'a', Ingredient.of(Items.GOLD_INGOT),
-                '/', Ingredient.of(Items.STICK)
-        );
-        shaped(recipeOutput, ShapedRecipePattern.of(goldWithGemsAndStick, List.of(
-                "a",
-                "#",
-                "/"
-        )), SwordItems.GOLDEN_BROADSWORD.toStack());
-        shaped(recipeOutput, ShapedRecipePattern.of(goldWithGemsAndStick, List.of(
-                "a#a",
-                " / ",
-                " / "
-        )), PickaxeItems.GOLDEN_PICKAXE.toStack());
-        shaped(recipeOutput, ShapedRecipePattern.of(goldWithGemsAndStick, List.of(
-                "a#",
-                "a/",
-                " /"
-        )), AxeItems.GOLDEN_AXE.toStack());
-        shaped(recipeOutput, ShapedRecipePattern.of(goldWithGemsAndStick, List.of(
-                "a",
-                "#",
-                "/"
-        )), ShovelItems.GOLDEN_SHOVEL.toStack());
-        shaped(recipeOutput, ShapedRecipePattern.of(goldWithGemsAndStick, List.of(
-                "a#",
-                " /",
-                " /"
-        )), HoeItems.GOLDEN_HOE.toStack());
         // 星星炮
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
                 '#', AmountIngredient.of(4, MaterialItems.METEORITE_INGOT),

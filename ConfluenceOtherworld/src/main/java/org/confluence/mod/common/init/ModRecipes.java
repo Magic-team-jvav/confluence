@@ -112,7 +112,7 @@ public final class ModRecipes {
             registerMaterial(Items.FIRE_CORAL);
             registerMaterial(BaitItems.LADYBUG.get());
             registerMaterial(FoodItems.FLASHFIN_KOI.get());
-            registerMaterial(FoodItems.OBSIDIAN_FISH.get());
+            registerMaterial(FoodItems.OBSIDIFISH.get());
             registerMaterial(FoodItems.COLORFUL_MINERAL_FISH.get());
             registerMaterial(FoodItems.SCARLET_TIGER_FISH.get());
             registerMaterial(MaterialItems.ANTLION_MANDIBLE.get());
@@ -223,8 +223,8 @@ public final class ModRecipes {
             // 狱火
             registerMix(new Item[]{
                     FoodItems.FLASHFIN_KOI.get(),
-                    FoodItems.OBSIDIAN_FISH.get(),
-                    FoodItems.OBSIDIAN_FISH.get(),
+                    FoodItems.OBSIDIFISH.get(),
+                    FoodItems.OBSIDIFISH.get(),
                     MaterialItems.FIREBLOSSOM.get(),
             }, PotionItems.INFERNO_POTION.toStack());
             // 铁皮

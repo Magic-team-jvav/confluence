@@ -4,7 +4,7 @@ plugins {
     id 'maven-publish'
     id 'net.neoforged.moddev'
 }
-var projectName = ["Confluence-Magic-Lib", "TerraEntity", "MineTeam", "EquipmentBenediction",
+var projectName = ["Confluence-Magic-Lib", "TerraEntity", "MineTeam",
                    "TerraCurio", "HeavenDestinyMoment", "PhaseJourney",
                    "TerraMoment", "TerraGuns", "IsekaiInvaded", "TerraFurniture",
                    "EntityTrackerHUD", "EnemyBanner"
@@ -28,6 +28,7 @@ neoForge {
     validateAccessTransformers = true
     runs {
         client {
+            loggingConfigFile = file('tools/extraConfig.xml')
             client()
             programArguments.addAll '--username', 'Confluence'
         }
@@ -163,7 +164,7 @@ repositories {
 boolean sodium = true // 钠
 boolean vanillin = false // 香兰素
 boolean observable = false // 可视性能侦测
-boolean ftb = false // FTB系列
+boolean ftb = true // FTB系列
 boolean ipn = false // 一键背包整理Next
 boolean mmmmmmmmmmmm = false // 试验假人
 boolean supplementaries = false // 锦致装饰
@@ -203,12 +204,15 @@ dependencies {
     runtimeOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
 
     compileOnly "curse.maven:ftb-chunks-forge-314906:5968500"
-    compileOnly "curse.maven:ftb-library-forge-404465:6016745"
+    compileOnly "curse.maven:ftb-library-forge-404465:7134093"
     if (ftb) {
-        runtimeOnly "curse.maven:ftb-chunks-forge-314906:6504893"
-        runtimeOnly "curse.maven:ftb-library-forge-404465:6016745"
-        runtimeOnly "curse.maven:ftb-ultimine-forge-386134:5671703"
-        runtimeOnly "curse.maven:ftb-teams-forge-404468:5882217"
+        //runtimeOnly "curse.maven:ftb-chunks-forge-314906:6504893"
+        runtimeOnly "curse.maven:ftb-library-forge-404465:7134093"
+        //runtimeOnly "curse.maven:ftb-ultimine-forge-386134:5671703"
+        runtimeOnly "curse.maven:ftb-teams-forge-404468:6930910"
+        runtimeOnly "curse.maven:ftb-quests-forge-289412:7133722"
+        runtimeOnly "curse.maven:ftb-filter-system-943925:6899527"
+        runtimeOnly "curse.maven:ftb-xmod-compat-889915:6979171"
     }
 
     compileOnly "curse.maven:better-advancements-272515:5850587"
@@ -242,8 +246,12 @@ dependencies {
     compileOnly "curse.maven:appleskin-248787:5586600"
     runtimeOnly "curse.maven:appleskin-248787:5586600"
 
-    implementation "curse.maven:rhino-416294:6886923"
-    implementation "curse.maven:kubejs-238086:5810100"
+    compileOnly "curse.maven:rhino-416294:6886923"
+    compileOnly "curse.maven:kubejs-238086:5810100"
+    if (false) {
+        runtimeOnly "curse.maven:rhino-416294:6886923"
+        runtimeOnly "curse.maven:kubejs-238086:5810100"
+    }
 
     compileOnly "maven.modrinth:waystones:21.1.23+neoforge-1.21.1"
     compileOnly "maven.modrinth:balm:21.0.51+neoforge-1.21.1"
@@ -359,7 +367,7 @@ dependencies {
     if (supplementaries || mmmmmmmmmmmm) {
         runtimeOnly "maven.modrinth:moonlight:1.21-2.18.18-neoforge"
     }
-    if(spark){
+    if (spark) {
         implementation "curse.maven:spark-361579:6225208"
     }
     if (apotheosis) {

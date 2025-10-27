@@ -17,6 +17,7 @@ import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.integration.waystones.WaystonesHelper;
+import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terraentity.init.TETags;
 import org.jetbrains.annotations.Nullable;
 
@@ -395,6 +396,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 TITANIUM_FORGE.get(),
                 ADAMANTITE_FORGE.get(),
 
+                SANDSTONE_CHEST.get(),
+
                 KING_SLIME_RELIC.get(),
                 EYE_OF_CTHULHU_RELIC.get(),
                 BRAIN_OF_CTHULHU_RELIC.get(),
@@ -448,7 +451,6 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 WOOD_STONE_SLATTED_BLOCKS.get(),
                 DEATH_WOODEN_CHEST.get(),
                 LIVING_WOOD_CHEST.get(),
-                SANDSTONE_CHEST.get(),
                 DUNGEON_CHEST.get(),
                 SPORE_ROOT_BLOCK.get(),
 

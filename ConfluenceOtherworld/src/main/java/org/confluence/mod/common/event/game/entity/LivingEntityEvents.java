@@ -1,6 +1,5 @@
 package org.confluence.mod.common.event.game.entity;
 
-import com.xiaohunao.equipment_benediction.common.hook.HookMapManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
@@ -50,7 +49,6 @@ import org.confluence.mod.common.effect.harmful.ManaSicknessEffect;
 import org.confluence.mod.common.effect.neutral.LoveEffect;
 import org.confluence.mod.common.entity.projectile.boulder.TombstoneBoulderEntity;
 import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.init.ModHookTypes;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
@@ -351,21 +349,12 @@ public final class LivingEntityEvents {
     @SubscribeEvent
     public static void livingGetProjectile(LivingGetProjectileEvent event) {
         LivingEntity living = event.getEntity();
-        event.setProjectileItemStack(ExtraInventory.getProjectile(event.getProjectileItemStack(), event.getProjectileWeaponItemStack(), living));
+        ItemStack projectileItemStack = event.getProjectileItemStack();
+        event.setProjectileItemStack(ExtraInventory.getProjectile(projectileItemStack, event.getProjectileWeaponItemStack(), living));
 
-        if (!event.getProjectileItemStack().isEmpty()) {
+        if (!projectileItemStack.isEmpty()) {
             if (living.hasEffect(ModEffects.AMMO_BOX) && living.getRandom().nextFloat() < 0.2F) {
-                event.setProjectileItemStack(event.getProjectileItemStack().copy());
-                return;
-            }
-
-            if (event.getEntity() instanceof Player player) {
-                HookMapManager.postHooks(ModHookTypes.SKIP_AMMO_CONSUME.get(), (owner, hook, original) -> {
-                    if (hook.shouldSkipConsume(owner, original.getEntity(), original.getProjectileItemStack())) {
-                        original.setProjectileItemStack(original.getProjectileItemStack().copy());
-                    }
-                    return original;
-                }, player, event);
+                event.setProjectileItemStack(projectileItemStack.copy());
             }
         }
     }
@@ -404,11 +393,13 @@ public final class LivingEntityEvents {
                 LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.LEGS, (pink ? ArmorItems.PINK_INSULATED_PANTS : ArmorItems.INSULATED_PANTS).get(), 0.003F);
                 LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.FEET, (pink ? ArmorItems.PINK_INSULATED_SHOES : ArmorItems.INSULATED_SHOES).get(), 0.003F);
                 mob.setCustomName(Component.translatable("entity.confluence.frozen_zombie"));
+                mob.addTag("frozen_zombie");
                 event.setCanceled(true);
             } else if (ModUtils.isRainingAt(mob.level(), blockPos)) {
                 LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.HEAD, ArmorItems.RAIN_CAP.get(), 0.003F);
                 LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.CHEST, ArmorItems.RAINCOAT.get(), 0.003F);
                 mob.setCustomName(Component.translatable("entity.confluence.raincoat_zombie"));
+                mob.addTag("raincoat_zombie");
                 event.setCanceled(true);
             }
         } else if (mob.getType() == EntityType.SKELETON) {
@@ -420,6 +411,7 @@ public final class LivingEntityEvents {
                 LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.FEET, ArmorItems.MINING_BOOTS.get(), 1.0F);
                 LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.MAINHAND, PickaxeItems.BONE_PICKAXE.get(), 0.25F);
                 mob.setCustomName(Component.translatable("entity.confluence.undead_miner"));
+                mob.addTag("undead_miner");
                 event.setCanceled(true);
             }
         } else if (event.getSpawnType() == MobSpawnType.NATURAL && event.getEntity() instanceof Slime slime) {

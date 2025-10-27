@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%highlight{[%d{HH:mm:ss.SSS}] [%t/%level] [%c{1.}] - %msg%n}"
+                           disableAnsi="false"
+                           noConsoleNoAnsi="false"/>
+            <Filters>
+                <!-- 过滤 blockstate 缺失模型的警告 -->
+                <RegexFilter regex="Exception loading blockstate definition: '.*' missing model for variant: '.*'"
+                             onMatch="DENY"
+                             onMismatch="NEUTRAL"/>
+                <!-- 过滤缺失纹理的警告 -->
+                <RegexFilter regex="Missing textures in model .*:\n.*"
+                             onMatch="DENY"
+                             onMismatch="NEUTRAL"/>
+                <!-- 过滤模型加载失败的警告 -->
+                <RegexFilter regex="Unable to load model: '.*' referenced from: .*: .*"
+                             onMatch="DENY"
+                             onMismatch="NEUTRAL"/>
+            </Filters>
+        </Console>
+
+        <RollingRandomAccessFile name="File" fileName="logs/latest.log"
+                                 filePattern="logs/%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout pattern="[%d{ddMMMyyyy HH:mm:ss.SSS}] [%t/%level] [%logger]: %msg%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <OnStartupTriggeringPolicy />
+            </Policies>
+        </RollingRandomAccessFile>
+    </Appenders>
+
+    <Loggers>
+        <Logger name="com.mojang" level="INFO"/>
+        <Logger name="net.minecraft" level="INFO"/>
+        <Root level="WARN">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="File"/>
+        </Root>
+    </Loggers>
+</Configuration>

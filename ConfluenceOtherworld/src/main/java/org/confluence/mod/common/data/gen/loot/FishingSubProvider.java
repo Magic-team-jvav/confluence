@@ -370,7 +370,7 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
         // 岩浆
         output.accept(ModLootTables.FISHING_LAVA, LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                                .add(LootItem.lootTableItem(FoodItems.OBSIDIAN_FISH).setWeight(630))
+                                .add(LootItem.lootTableItem(FoodItems.OBSIDIFISH).setWeight(630))
                                 .add(LootItem.lootTableItem(FoodItems.FLASHFIN_KOI).setWeight(630))
                                 .add(LootItem.lootTableItem(ToolItems.DEMON_CONCH).setWeight(3).setQuality(1))
                                 .add(LootItem.lootTableItem(ToolItems.BOTTOMLESS_LAVA_BUCKET).setWeight(3).setQuality(1))

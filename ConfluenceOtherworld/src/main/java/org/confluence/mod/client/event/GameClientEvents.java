@@ -2,10 +2,6 @@ package org.confluence.mod.client.event;
 
 import com.google.common.collect.ImmutableListMultimap;
 import com.mojang.datafixers.util.Either;
-import com.xiaohunao.equipment_benediction.api.manager.EquipmentSetManager;
-import com.xiaohunao.equipment_benediction.common.equipment_set.EquipmentSetBranch;
-import com.xiaohunao.equipment_benediction.common.event.AfterEquipmentBenedictionUpdatedEvent;
-import com.xiaohunao.equipment_benediction.common.init.EBAttachments;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
@@ -72,7 +68,6 @@ import org.confluence.mod.common.component.prefix.ModPrefix;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.init.ModEquipmentSets;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.SwordItems;
@@ -80,6 +75,7 @@ import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.common.item.spear.AbstractSpearItem;
 import org.confluence.mod.integration.ars_nouveau.ArsNouveauHelper;
 import org.confluence.mod.integration.irons_spell.IronSpellHelper;
+import org.confluence.mod.integration.prism_lib.PrismLibHelper;
 import org.confluence.mod.integration.xaero.XaeroHelper;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.ILocalPlayer;
@@ -94,7 +90,6 @@ import org.confluence.terraentity.init.TEAttributes;
 import org.confluence.terraentity.init.entity.TENpcEntities;
 import software.bernie.geckolib.event.GeoRenderEvent;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -208,28 +203,16 @@ public final class GameClientEvents {
         ItemStack itemStack = event.getItemStack();
         if (itemStack.isEmpty()) return;
         List<Either<FormattedText, TooltipComponent>> tooltipElements = event.getTooltipElements();
-        if (tooltipElements.isEmpty()) return;
+        if (PrismLibHelper.shouldSkipOriginalPrefixGather(itemStack, tooltipElements) || tooltipElements.isEmpty()) return;
         Optional<FormattedText> displayName = tooltipElements.getFirst().left();
         if (displayName.isPresent() && displayName.get() instanceof Component component) {
-            PrefixComponent prefix = PrefixUtils.getPrefix(event.getItemStack());
+            PrefixComponent prefix = PrefixUtils.getPrefix(itemStack);
             if (prefix != null && prefix.type() != PrefixType.UNKNOWN) {
                 tooltipElements.set(0, Either.left(
                         prefix.getName().setStyle(component.getStyle()).append(Component.translatable("confluence.prefix_separator")).append(component)
                 ));
             }
         }
-//        // 捐赠者物品
-//        var ins = TooltipManager.getInstance();
-//        if (ins.contains(item)) {
-//            tooltipElements.add(Either.left(
-//                    Component.empty()
-//            ));
-//            tooltipElements.add(Either.left(
-//                    Component.translatable(TooltipManager.prefix).withColor(ModRarity.EXPERT.color())
-//                            .append("  ")
-//                            .append(Component.literal(ins.getTooltip(item))))
-//            );
-//        }
     }
 
     @SubscribeEvent
@@ -399,15 +382,6 @@ public final class GameClientEvents {
             }
             ILivingEntity.of(living).confluence$deadO(dead);
         }
-    }
-
-    @SubscribeEvent
-    public static void afterEquipmentBenedictionUpdated(AfterEquipmentBenedictionUpdatedEvent event) {
-        Collection<EquipmentSetBranch> equipmentSetBranches = event.getEntity().getData(EBAttachments.ENTITY_HOOK_MANAGER)
-                .getSetHookManager().getActivatedSetBranch().get(ModEquipmentSets.CRYSTAL_ASSASSIN_SET.get());
-        EquipmentSetBranch branch = EquipmentSetManager.getInstance().getBranchResource(Confluence.asResource("crystal_assassin_set/full_set"));
-        boolean contains = equipmentSetBranches.contains(branch);
-        ClientPacketHandler.handleSprintable(contains);
     }
 
     @SubscribeEvent

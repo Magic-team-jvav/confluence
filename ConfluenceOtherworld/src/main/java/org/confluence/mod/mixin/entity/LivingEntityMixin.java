@@ -6,7 +6,6 @@ import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
-import com.xiaohunao.equipment_benediction.common.hook.HookMapManager;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
@@ -24,16 +23,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.fluids.FluidType;
 import org.confluence.lib.mixed.SelfGetter;
-import org.confluence.mod.api.event.LivingFreezeEvent;
 import org.confluence.mod.common.block.natural.ThinIceBlock;
 import org.confluence.mod.common.effect.flask.FlaskEffect;
 import org.confluence.mod.common.effect.neutral.ShimmerEffect;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModFluids;
-import org.confluence.mod.common.init.ModHookTypes;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.item.hook.BaseHookItem;
@@ -52,7 +48,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Map;
 
@@ -152,22 +147,6 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
             this.confluence$deadO = dead[0];
         }
         return confluence$deadO;
-    }
-
-    @Inject(method = "canFreeze", at = @At(value = "HEAD"), cancellable = true)
-    private void confluence$canFreeze(CallbackInfoReturnable<Boolean> cir) {
-        LivingFreezeEvent event = NeoForge.EVENT_BUS.post(new LivingFreezeEvent(confluence$self()));
-
-        if (confluence$self() instanceof Player player) {
-            HookMapManager.postHooks(ModHookTypes.LIVING_FREEZE.get(), (owner, hook, original) -> {
-                hook.livingFreeze(owner, confluence$self(), original);
-                return original;
-            }, player, event);
-        }
-
-        if (event.isCanceled()) {
-            cir.setReturnValue(false);
-        }
     }
 
     @WrapWithCondition(method = "triggerOnDeathMobEffects", at = @At(value = "INVOKE", target = "Ljava/util/Map;clear()V"))

@@ -66,8 +66,6 @@ public final class Confluence {
         ModChunkGenerators.GENERATORS.register(eventBus);
         ModCarvers.CARVERS.register(eventBus);
         ModStructures.TYPES.register(eventBus);
-        ModEquipmentSets.SETS.register(eventBus);
-        ModHookTypes.TYPES.register(eventBus);
         ModLootTables.ItemConditions.TYPES.register(eventBus);
         ModTradeLockProviderTypes.TYPES.register(eventBus);
         ModCommands.ARGUMENT_TYPE_INFOS.register(eventBus);

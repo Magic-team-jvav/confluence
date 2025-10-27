@@ -11,33 +11,31 @@ import org.confluence.mod.common.init.ModEntities;
 import org.jetbrains.annotations.Nullable;
 
 public class FollowerBoulderEntity extends BoulderEntity {
-    Player target;
+    private int tick;
+    private Player target;
 
     public FollowerBoulderEntity(EntityType<FollowerBoulderEntity> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
-        tick = 0;
+        this.tick = 0;
     }
 
     public FollowerBoulderEntity(Level level, Vec3 pos, BlockState blockState) {
         super(ModEntities.FOLLOWER_BOULDER.get(), level, pos, blockState);
-        tick = 0;
+        this.tick = 0;
     }
 
-    private int tick;
-
     @Override
-    public void tick() {
-        super.tick();
-        tick++;
+    public void baseTick() {
+        super.baseTick();
         if (target != null) {
             Vec3 vec3 = target.position().subtract(position()).normalize();
             vec3 = new Vec3(vec3.x, 0.0, vec3.z);
             setDeltaMovement(vec3.scale(speed / 1.75F));
-            setYRot((float) (Mth.atan2(vec3.x, vec3.z) * Mth.RAD_TO_DEG));
             this.yRotO = getYRot();
-            if (this.distanceTo(target) >= 30) onRemove();
+            setYRot((float) (Mth.atan2(vec3.x, vec3.z) * Mth.RAD_TO_DEG));
+            if (distanceTo(target) >= 30) onRemove();
         }
-        if (tick >= 20 * 20) onRemove();
+        if (this.tick++ >= 20 * 20) onRemove();
     }
 
     @Override

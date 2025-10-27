@@ -5,7 +5,6 @@
 | [ConfluenceOtherworld](ConfluenceOtherworld) | Main module                                        | Depends on all                 |
 | [TerraEntity](TerraEntity)                   | Terra's Entities                                   | yes                            |
 | [MineTeam](MineTeam)                         | Terra's Teams                                      | yes                            |
-| [EquipmentBenediction](EquipmentBenediction) | Equipment Effects                                  | yes                            |
 | [TerraCurio](TerraCurio)                     | Terra's Wearables                                  | yes                            |
 | [TerraGuns](TerraGuns)                       | Terra's Guns                                       | yes                            |
 | [ParticleStorm](ParticleStorm)               | Particles API                                      | yes                            |

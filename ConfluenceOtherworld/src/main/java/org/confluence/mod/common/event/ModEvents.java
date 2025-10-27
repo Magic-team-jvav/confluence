@@ -91,7 +91,6 @@ import org.confluence.mod.network.s2c.*;
 import org.confluence.mod.util.DateUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.terra_curio.api.event.RegisterAccessoriesComponentUpdateEvent;
-import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTabs;
 import org.confluence.terraentity.init.entity.TEAnimals;
@@ -245,10 +244,8 @@ public final class ModEvents {
 
     @SubscribeEvent
     public static void entityAttributeModification(EntityAttributeModificationEvent event) {
-        TEEvents.registerArmorPenetration((type, value) -> event.add(type, TCAttributes.ARMOR_PENETRATION, value));
-        TEEvents.registerArmorToughness((type, value) -> event.add(type, Attributes.ARMOR_TOUGHNESS, value));
+        TEEvents.modifyAttributes(event);
     }
-
 
     @SubscribeEvent
     public static void registerUnitType(RegisterAccessoriesComponentUpdateEvent.UnitType event) {
@@ -522,7 +519,8 @@ public final class ModEvents {
                 .register("confluence:crystal_shards_item", "confluence:crystal_shards")
                 .register("confluence:throwing_knives", "confluence:throwing_knive")
                 // 1.1.5 -> 1.2.0
-                .register("confluence:cap_tunabeard", "confluence:capn_tunabeard");
+                .register("confluence:cap_tunabeard", "confluence:capn_tunabeard")
+                .register("confluence:obsidian_fish", "confluence:obsidifish");
     }
 
     @SubscribeEvent

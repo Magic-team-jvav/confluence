@@ -878,7 +878,7 @@ public class ModDataProvider {
             register(context, CRIMSON_CATTAILS, configured.getOrThrow(ConfiguredFeatures.CRIMSON_CATTAILS), inSquare, RarityFilter.onAverageOnceEvery(4), worldSurfaceWG, BlockPredicateFilter.forPredicate(BlockPredicate.matchesBlocks(new Vec3i(0, -1, 0), Blocks.WATER)), biome);
             register(context, VICIOUS_MUSHROOM, configured.getOrThrow(ConfiguredFeatures.VICIOUS_MUSHROOM), RarityFilter.onAverageOnceEvery(32), count3, HeightmapPlacement.onHeightmap(Heightmap.Types.WORLD_SURFACE_WG), biome);
             register(context, GLOWING_MUSHROOM, configured.getOrThrow(ConfiguredFeatures.GLOWING_MUSHROOM), CountPlacement.of(40), inSquare, bottomThroughUnderground, biome);
-            register(context, GLOWING_MUSHROOM_LIFE_CRYSTAL, configured.getOrThrow(ConfiguredFeatures.LIFE_CRYSTAL), CountPlacement.of(8), inSquare, bottomThroughUnderground, targetSturdyAllowedAir, SurfaceRelativeThresholdFilter.of(Heightmap.Types.WORLD_SURFACE_WG, -110, -70), biome);
+            register(context, GLOWING_MUSHROOM_LIFE_CRYSTAL, configured.getOrThrow(ConfiguredFeatures.LIFE_CRYSTAL), CountPlacement.of(6), inSquare, bottomThroughUnderground, targetSturdyAllowedAir, SurfaceRelativeThresholdFilter.of(Heightmap.Types.WORLD_SURFACE_WG, -110, -70), biome);
             register(context, GLOWING_MUSHROOM_TREE, configured.getOrThrow(ModFeatures.Configured.GLOWING_MUSHROOM_TREE), CountOnEveryLayerPlacement.of(3), EnvironmentScanPlacement.scanningFor(Direction.DOWN, BlockPredicate.matchesBlocks(new Vec3i(0, -1, 0), Blocks.MUD, NatureBlocks.MUSHROOM_GRASS_BLOCK.get()), air, 12), biome);
             register(context, GLOWING_MUSHROOM_VINE, configured.getOrThrow(ConfiguredFeatures.GLOWING_MUSHROOM_VINE), CountPlacement.of(144), inSquare, bottomThroughUnderground, EnvironmentScanPlacement.scanningFor(Direction.UP, BlockPredicate.matchesBlocks(Blocks.MUD, NatureBlocks.MUSHROOM_GRASS_BLOCK.get()), air, 12), ySpreadN1, biome);
             register(context, GLOWING_MUSHROOM_CATTAILS, configured.getOrThrow(ConfiguredFeatures.GLOWING_MUSHROOM_CATTAILS), CountOnEveryLayerPlacement.of(32), bottomThroughUnderground, ySpreadN1, biome);
@@ -908,7 +908,7 @@ public class ModDataProvider {
             register(context, DART_TRAP, configured.getOrThrow(ConfiguredFeatures.DART_TRAP), inSquare, bottomThroughUnderground, biome);
             register(context, BOULDER_TRAP, configured.getOrThrow(ConfiguredFeatures.BOULDER_TRAP), inSquare, bottomThroughUnderground, biome);
             register(context, DEATH_CHEST_TRAP, configured.getOrThrow(ConfiguredFeatures.DEATH_CHEST_TRAP), RarityFilter.onAverageOnceEvery(20), inSquare, throughCave, biome);
-            register(context, LIFE_CRYSTAL, configured.getOrThrow(ConfiguredFeatures.LIFE_CRYSTAL), count4, inSquare, bottomThroughUnderground, targetSturdyAllowedAir, SurfaceRelativeThresholdFilter.of(Heightmap.Types.WORLD_SURFACE_WG, -110, -70), biome);
+            register(context, LIFE_CRYSTAL, configured.getOrThrow(ConfiguredFeatures.LIFE_CRYSTAL), count3, inSquare, bottomThroughUnderground, targetSturdyAllowedAir, SurfaceRelativeThresholdFilter.of(Heightmap.Types.WORLD_SURFACE_WG, -110, -70), biome);
             register(context, WATER_CHESTS, configured.getOrThrow(ConfiguredFeatures.WATER_CHESTS),
                     RarityFilter.onAverageOnceEvery(6), inSquare, bottomThroughSurface,
                     EnvironmentScanPlacement.scanningFor(
@@ -1188,7 +1188,7 @@ public class ModDataProvider {
                     List.of(
                             new MobSpawnSettings.SpawnerData(TEAnimals.CRAB.get(), 7, 1, 1),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.TROPIC_SLIME.get(), 7, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GOBLIN_SCOUT.get(), 30, 1, 1)
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GOBLIN_SCOUT.get(), 5, 1, 1)
                     )
             ));
             register(context, createModifierKey("common_desert"), new BiomeModifiers.AddSpawnsBiomeModifier(
@@ -1199,25 +1199,6 @@ public class ModDataProvider {
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.TOMB_CRAWLER.get(), 250, 1, 1),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.ANTLION_SWARMER.get(), 500, 1, 1),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.GIANT_ANTLION_SWARMER.get(), 200, 1, 1)
-                    )
-            ));
-            register(context, createModifierKey("common_hell"), new BiomeModifiers.AddSpawnsBiomeModifier(
-                    HolderSet.direct(
-                            biome.getOrThrow(net.minecraft.world.level.biome.Biomes.NETHER_WASTES),
-                            biome.getOrThrow(net.minecraft.world.level.biome.Biomes.CRIMSON_FOREST),
-                            biome.getOrThrow(net.minecraft.world.level.biome.Biomes.BASALT_DELTAS)
-                    ),
-                    List.of(
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.HELL_BAT.get(), 60, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.FIRE_IMP.get(), 60, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.DEMON.get(), 45, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.VOODOO_DEMON.get(), 15, 1, 1)
-                    )
-            ));
-            register(context, createModifierKey("common_highlevel"), new BiomeModifiers.AddSpawnsBiomeModifier(
-                    biome.getOrThrow(Tags.Biomes.IS_OVERWORLD),
-                    List.of(
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.HARPY.get(), 60, 1, 2)
                     )
             ));
             register(context, createModifierKey("common_icy"), new BiomeModifiers.AddSpawnsBiomeModifier(
@@ -1232,18 +1213,18 @@ public class ModDataProvider {
             register(context, createModifierKey("common_jungle"), new BiomeModifiers.AddSpawnsBiomeModifier(
                     jungleAndLush,
                     List.of(
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.HORNET.get(), 150, 1, 2),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.HORNET.get(), 170, 1, 2),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.JUNGLE_BAT.get(), 40, 1, 2),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.JUNGLE_SLIME.get(), 40, 1, 2),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.MAN_EATER.get(), 150, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.SNATCHER.get(), 40, 1, 1),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.SNATCHER.get(), 50, 1, 1),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.PIRANHA.get(), 40, 2, 3)
                     )
             ));
             register(context, createModifierKey("common_overworld"), new BiomeModifiers.AddSpawnsBiomeModifier(
                     snowyIcy,
                     List.of(
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.NYMPH.get(), 3, 1, 1),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.NYMPH.get(), 4, 1, 1),
                             new MobSpawnSettings.SpawnerData(TEAnimals.FAIRY.get(), 2, 1, 1),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.HARPY.get(), 60, 1, 2),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.WYVERN.get(), 5, 1, 1),
@@ -1251,17 +1232,6 @@ public class ModDataProvider {
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.WRAITH.get(), 65, 1, 2)
                     )
             ));
-            register(context, createModifierKey("common_plain"), new BiomeModifiers.AddSpawnsBiomeModifier(
-                    HolderSet.direct(biome.get(net.minecraft.world.level.biome.Biomes.PLAINS).get()),
-                    List.of(
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GOBLIN_ARCHER.get(), 5, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GOBLIN_PEON.get(), 5, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GOBLIN_WARRIOR.get(), 5, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GOBLIN_THIEF.get(), 5, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GOBLIN_SCOUT.get(), 5, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.ANGER_GOBLIN.get(), 3, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GOBLIN_SORCERER.get(), 5, 1, 1)
-                    )));
             register(context, createModifierKey("common_swamp"), new BiomeModifiers.AddSpawnsBiomeModifier(
                     biome.getOrThrow(Tags.Biomes.IS_SWAMP),
                     List.of(
@@ -1284,8 +1254,8 @@ public class ModDataProvider {
                     List.of(
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.BLACK_SLIME.get(), 60, 1, 3),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.BLUE_SLIME.get(), 30, 2, 4),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.CAVE_BAT.get(), 80, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GIANT_SHELLY.get(), 60, 1, 1),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.CAVE_BAT.get(), 110, 1, 2),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.GIANT_SHELLY.get(), 80, 1, 1),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.GIANT_WORM.get(), 60, 1, 1),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.GREEN_DUMPLING_SLIME.get(), 30, 1, 3),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.GREEN_SLIME.get(), 45, 3, 3),

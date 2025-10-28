@@ -9,6 +9,7 @@ import org.confluence.mod.common.component.SwordProjectileComponent;
 import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.item.GroupItem;
+import org.confluence.terra_curio.common.component.PrimitiveValueComponent;
 
 import java.util.function.Supplier;
 
@@ -20,4 +21,5 @@ public final class ModDataComponentTypes {
     public static final Supplier<DataComponentType<ValueComponent>> VALUE = TYPES.registerComponentType("value", builder -> builder.persistent(ValueComponent.CODEC).networkSynchronized(ValueComponent.STREAM_CODEC));
     public static final Supplier<DataComponentType<SwordProjectileComponent>> SWORD_PROJECTILE = TYPES.registerComponentType("sword_projectile", builder -> builder.persistent(SwordProjectileComponent.CODEC).networkSynchronized(SwordProjectileComponent.STREAM_CODEC));
     public static final Supplier<DataComponentType<GroupItem.Stacks>> GROUP_STACKS = TYPES.registerComponentType("group_stacks", builder -> builder.persistent(GroupItem.Stacks.CODEC).networkSynchronized(GroupItem.Stacks.STREAM_CODEC));
+    public static final Supplier<DataComponentType<PrimitiveValueComponent>> ARMOR_BONUS = TYPES.registerComponentType("armor_bonus", builder -> builder.persistent(PrimitiveValueComponent.CODEC).networkSynchronized(PrimitiveValueComponent.STREAM_CODEC));
 }

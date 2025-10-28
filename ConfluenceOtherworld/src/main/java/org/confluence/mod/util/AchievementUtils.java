@@ -93,20 +93,19 @@ public final class AchievementUtils {
         }
     }
 
-    public static void matchingAttire_fashionStatement(EquipmentSlot slot, ServerPlayer player) {
-        if (slot.getType() == EquipmentSlot.Type.HUMANOID_ARMOR) {
-            if (Streams.stream(player.getArmorSlots()).noneMatch(ItemStack::isEmpty)) {
-                awardAchievement(player, "matching_attire");
-                ExtraInventory extraInventory = ExtraInventory.of(player);
-                boolean fashionStatement = true;
-                for (int i = 0; i < SIZE_VANITY_ARMOR; i++) {
-                    if (extraInventory.getVanityArmor(i, false).isEmpty()) {
-                        fashionStatement = false;
-                        break;
-                    }
+    public static void matchingAttire_fashionStatement(EquipmentSlot.Type type, ServerPlayer player) {
+        if (type != EquipmentSlot.Type.HUMANOID_ARMOR) return;
+        if (Streams.stream(player.getArmorSlots()).noneMatch(ItemStack::isEmpty)) {
+            awardAchievement(player, "matching_attire");
+            ExtraInventory extraInventory = ExtraInventory.of(player);
+            boolean fashionStatement = true;
+            for (int i = 0; i < SIZE_VANITY_ARMOR; i++) {
+                if (extraInventory.getVanityArmor(i, false).isEmpty()) {
+                    fashionStatement = false;
+                    break;
                 }
-                if (fashionStatement) awardAchievement(player, "fashion_statement");
             }
+            if (fashionStatement) awardAchievement(player, "fashion_statement");
         }
     }
 

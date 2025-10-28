@@ -29,7 +29,7 @@ public class ModFoodProperties {
 
     //自填效果食物
     public static FoodProperties hasEffectProperties(int nutrition, float saturation, EffectData... effects) {
-        FoodProperties.Builder builder = new FoodProperties.Builder().nutrition(nutrition).saturationModifier(saturation).fast().alwaysEdible();
+        FoodProperties.Builder builder = new FoodProperties.Builder().nutrition(nutrition).saturationModifier(calcSaturationModifier(nutrition, saturation)).fast().alwaysEdible();
         Arrays.stream(effects).forEach(e -> builder.effect(() -> new MobEffectInstance(e.effect, e.duration, e.level), e.probability));
         return builder.build();
     }

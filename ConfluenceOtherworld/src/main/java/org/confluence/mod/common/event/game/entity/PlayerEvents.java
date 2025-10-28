@@ -306,8 +306,10 @@ public final class PlayerEvents {
 
     @SubscribeEvent
     public static void startTracking(PlayerEvent.StartTracking event) {
-        if (event.getTarget() instanceof ServerPlayer player) {
-            ExtraInventorySyncPacketS2C.sendToClient((ServerPlayer) event.getEntity(), player, ExtraInventory.of(player));
+        if (event.getTarget() instanceof ServerPlayer target) {
+            ServerPlayer sendTo = (ServerPlayer) event.getEntity();
+            ExtraInventorySyncPacketS2C.sendToClient(sendTo, target, ExtraInventory.of(target));
+            FlushArmorSetBonusPacketS2C.sendToClient(sendTo, target);
         } else if (event.getTarget() instanceof AbstractTerraNPC npc) {
             NPCSpawner.INSTANCE.applyBenedictions(npc);
         }

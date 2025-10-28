@@ -283,14 +283,12 @@ public final class LivingEntityEvents {
 
     @SubscribeEvent
     public static void livingEquipmentChange(LivingEquipmentChangeEvent event) {
-        LivingEntity living = event.getEntity();
-        if (living instanceof ServerPlayer serverPlayer) {
-            AchievementUtils.matchingAttire_fashionStatement(event.getSlot(), serverPlayer);
-            if (event.getTo().is(ModTags.Items.SHOW_SIGNAL)) {
-                VisibilityPacketS2C.sendSignal(serverPlayer, true);
-            } else if (event.getFrom().is(ModTags.Items.SHOW_SIGNAL)) {
-                VisibilityPacketS2C.sendSignal(serverPlayer, false);
-            }
+        if (!(event.getEntity() instanceof ServerPlayer player)) return;
+        AchievementUtils.matchingAttire_fashionStatement(event.getSlot().getType(), player);
+        if (event.getTo().is(ModTags.Items.SHOW_SIGNAL)) {
+            VisibilityPacketS2C.sendSignal(player, true);
+        } else if (event.getFrom().is(ModTags.Items.SHOW_SIGNAL)) {
+            VisibilityPacketS2C.sendSignal(player, false);
         }
     }
 

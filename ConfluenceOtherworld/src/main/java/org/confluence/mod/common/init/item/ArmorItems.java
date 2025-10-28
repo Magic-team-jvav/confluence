@@ -12,8 +12,11 @@ import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModArmorMaterials;
+import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.item.armor.MultiHeadArmorItem;
 import org.confluence.mod.common.item.armor.NormalArmorItem;
+import org.confluence.terra_curio.common.component.PrimitiveValueComponent;
+import org.confluence.terra_curio.common.init.TCItems;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
@@ -21,7 +24,11 @@ import java.util.List;
 public class ArmorItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
 
-    public static final DeferredItem<ArmorItem> MINING_HELMET = ITEMS.register("mining_helmet", () -> new NormalArmorItem("armor/mining_armor", ModArmorMaterials.MINING_ARMOR_MATERIALS, ArmorItem.Type.HELMET, new Item.Properties().stacksTo(1).component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.PINK)) {
+    public static final DeferredItem<ArmorItem> MINING_HELMET = ITEMS.register("mining_helmet", () -> new NormalArmorItem("armor/mining_armor", ModArmorMaterials.MINING_ARMOR_MATERIALS, ArmorItem.Type.HELMET, new Item.Properties().stacksTo(1)
+            .component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE)
+            .component(ConfluenceMagicLib.MOD_RARITY, ModRarity.PINK)
+            .component(ModDataComponentTypes.ARMOR_BONUS, PrimitiveValueComponent.of(TCItems.LUMINANCE, 10))
+    ) {
         private final boolean noneLoaded = !ModList.get().isLoaded("sodiumdynamiclights");
 
         @ParametersAreNonnullByDefault

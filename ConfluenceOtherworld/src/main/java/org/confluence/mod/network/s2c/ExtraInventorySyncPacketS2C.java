@@ -30,10 +30,10 @@ public record ExtraInventorySyncPacketS2C(int entityId, ExtraInventory extraInve
         }
     }
 
-    public static void sendToClient(ServerPlayer from, ServerPlayer to, ExtraInventory extraInventory) {
+    public static void sendToClient(ServerPlayer sendTo, ServerPlayer target, ExtraInventory extraInventory) {
         if (ServerLifecycleHooks.getCurrentServer() != null) {
-            extraInventory.initialize(from);
-            PacketDistributor.sendToPlayer(from, new ExtraInventorySyncPacketS2C(to.getId(), extraInventory));
+            extraInventory.initialize(sendTo);
+            PacketDistributor.sendToPlayer(sendTo, new ExtraInventorySyncPacketS2C(target.getId(), extraInventory));
         }
     }
 

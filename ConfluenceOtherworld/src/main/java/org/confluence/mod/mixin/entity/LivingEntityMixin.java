@@ -11,20 +11,23 @@ import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.fluids.FluidType;
-import org.confluence.lib.mixed.SelfGetter;
+import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.block.natural.ThinIceBlock;
 import org.confluence.mod.common.effect.flask.FlaskEffect;
 import org.confluence.mod.common.effect.neutral.ShimmerEffect;
@@ -38,6 +41,7 @@ import org.confluence.mod.integration.irons_spell.IronSpellHelper;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.IMobEffectInstance;
 import org.confluence.mod.mixed.Immunity;
+import org.confluence.mod.network.s2c.FlushArmorSetBonusPacketS2C;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.common.effect.HoneyEffect;
 import org.confluence.terra_curio.util.TCUtils;
@@ -52,7 +56,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.Map;
 
 @Mixin(LivingEntity.class)
-public abstract class LivingEntityMixin extends Entity implements ILivingEntity, SelfGetter<LivingEntity> {
+public abstract class LivingEntityMixin extends Entity implements ILivingEntity {
     @Shadow
     public abstract boolean isSuppressingSlidingDownLadder();
 
@@ -193,6 +197,14 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity,
     private void handleSwordProjectile(InteractionHand hand, boolean updateSelf, CallbackInfo ci) {
         if (hand == InteractionHand.MAIN_HAND && confluence$self() instanceof Player player) {
             PlayerUtils.swordProjectile(player);
+        }
+    }
+
+    @Inject(method = "handleEquipmentChanges", at = @At("TAIL"))
+    private void handleArmorChanges(Map<EquipmentSlot, ItemStack> equipments, CallbackInfo ci) {
+        if (confluence$self() instanceof ServerPlayer player && equipments.keySet().stream().anyMatch(slot -> slot.getType() == EquipmentSlot.Type.HUMANOID_ARMOR)) {
+            PlayerSpecialData.of(player).flushArmorSetBonus(player);
+            FlushArmorSetBonusPacketS2C.sendToPlayersTrackingTarget(player);
         }
     }
 }

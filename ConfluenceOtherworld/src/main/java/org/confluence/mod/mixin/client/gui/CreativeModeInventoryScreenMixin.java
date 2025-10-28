@@ -26,7 +26,7 @@ public abstract class CreativeModeInventoryScreenMixin {
 
     @Inject(method = "slotClicked", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/inventory/CreativeModeInventoryScreen$ItemPickerMenu;getCarried()Lnet/minecraft/world/item/ItemStack;", ordinal = 7), cancellable = true)
     private void checkIsGroupItem(Slot slot, int slotId, int mouseButton, ClickType type, CallbackInfo ci) {
-        if (selectedTab == ModTabs.DEVELOPER.get()) return;
+        if (!GroupItem.enable || selectedTab == ModTabs.DEVELOPER.get()) return;
         ItemStack stack = slot.getItem();
         if (stack.is(GroupItem.getInstance())) {
             GroupItem.toggleVisibility(stack);

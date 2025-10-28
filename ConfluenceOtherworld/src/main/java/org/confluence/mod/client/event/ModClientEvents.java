@@ -418,7 +418,9 @@ public final class ModClientEvents {
         event.registerItem(ModClientSetups.FULL_LIGHT, MaterialItems.SOUL_OF_LIGHT);
         event.registerItem(ModClientSetups.FULL_LIGHT, MaterialItems.SOUL_OF_NIGHT);
         event.registerItem(ModClientSetups.FULL_LIGHT, MaterialItems.SOUL_OF_FLIGHT);
-        event.registerItem(GroupItemExtension.INSTANCE, GroupItem.getInstance());
+        if (GroupItem.enable) {
+            event.registerItem(GroupItemExtension.INSTANCE, GroupItem.getInstance());
+        }
         event.registerItem(ModClientSetups.GLINT_RAINBOW_EXTENSIONS, TreasureBagItems.ITEMS.getEntries().stream().map(DeferredHolder::get).toArray(Item[]::new));
         TGUtil.registerOtherGunModel(event, Confluence.MODID, ManaWeaponItems.BEE_GUN);
         TGUtil.registerOtherGunModel(event, Confluence.MODID, ManaWeaponItems.SPACE_GUN);
@@ -531,18 +533,20 @@ public final class ModClientEvents {
         for (DeferredHolder<Item, ? extends Item> entry : FishingPoleItems.ITEMS.getEntries()) {
             event.register(entry.get(), ModClientSetups.FISHING_POLE_DECORATOR);
         }
-        ResourceLocation plus = Confluence.asResource("plus");
-        ResourceLocation minus = Confluence.asResource("minus");
-        event.register(GroupItem.getInstance(), (guiGraphics, font, stack, xOffset, yOffset) -> {
-            GroupItem.Stacks stacks = stack.get(ModDataComponentTypes.GROUP_STACKS);
-            if (stacks != null) {
-                PoseStack pose = guiGraphics.pose();
-                pose.pushPose();
-                pose.translate(xOffset + 9, yOffset + 9, 200);
-                guiGraphics.blitSprite(stacks.isVisible() ? minus : plus, 0, 0, 7, 7);
-                pose.popPose();
-            }
-            return false;
-        });
+        if (GroupItem.enable) {
+            ResourceLocation plus = Confluence.asResource("plus");
+            ResourceLocation minus = Confluence.asResource("minus");
+            event.register(GroupItem.getInstance(), (guiGraphics, font, stack, xOffset, yOffset) -> {
+                GroupItem.Stacks stacks = stack.get(ModDataComponentTypes.GROUP_STACKS);
+                if (stacks != null) {
+                    PoseStack pose = guiGraphics.pose();
+                    pose.pushPose();
+                    pose.translate(xOffset + 9, yOffset + 9, 200);
+                    guiGraphics.blitSprite(stacks.isVisible() ? minus : plus, 0, 0, 7, 7);
+                    pose.popPose();
+                }
+                return false;
+            });
+        }
     }
 }

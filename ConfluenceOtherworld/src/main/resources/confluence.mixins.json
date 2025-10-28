@@ -167,7 +167,6 @@
         "integration.sodium.ChunkBuilderMeshingTaskMixin",
         "integration.sodium.MutableQuadViewImplMixin",
         "integration.sodium.iris.IdMapMixin",
-        "integration.terra_curio.GameClientEventsMixin",
         "integration.terra_curio.InformationHandlerMixin",
         "integration.terra_curio.ScopeFovHandlerMixin",
         "integration.terra_curio.TCClientPacketHandlerMixin",

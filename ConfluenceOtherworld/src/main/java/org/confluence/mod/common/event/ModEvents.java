@@ -157,6 +157,7 @@ public final class ModEvents {
             ModUtils.registerCauldronInteractions();
             TERemoval.redirectLootTable();
             MagicMailBox.registerVariants();
+            ModArmorBonus.registerArmorSetBonus();
             IGlobalData.registerGlobalData(
                     KillBoard.INSTANCE,
                     HardmodeConvertor.INSTANCE,
@@ -220,6 +221,7 @@ public final class ModEvents {
         registrar.playToClient(BestiarySyncPacketS2C.TYPE, BestiarySyncPacketS2C.STREAM_CODEC, BestiarySyncPacketS2C::handle);
         registrar.playToClient(AvailableHouseSelectPacketS2C.TYPE, AvailableHouseSelectPacketS2C.STREAM_CODEC, AvailableHouseSelectPacketS2C::handle);
         registrar.playToClient(TerraStyleExplosionPacketS2C.TYPE, TerraStyleExplosionPacketS2C.STREAM_CODEC, TerraStyleExplosionPacketS2C::handle);
+        registrar.playToClient(FlushArmorSetBonusPacketS2C.TYPE, FlushArmorSetBonusPacketS2C.STREAM_CODEC, FlushArmorSetBonusPacketS2C::handle);
 
         registrar.playToServer(ApplySelectionPacketC2S.TYPE, ApplySelectionPacketC2S.STREAM_CODEC, ApplySelectionPacketC2S::handle);
         registrar.playToServer(HookThrowingPacketC2S.TYPE, HookThrowingPacketC2S.STREAM_CODEC, HookThrowingPacketC2S::handle);

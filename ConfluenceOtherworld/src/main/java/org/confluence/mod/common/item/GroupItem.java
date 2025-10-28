@@ -20,6 +20,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class GroupItem extends Item {
+    public static boolean enable = false;
     private static GroupItem instance;
 
     public GroupItem() {

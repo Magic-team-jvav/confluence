@@ -14,7 +14,7 @@ import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.network.IPacket;
-import org.confluence.terra_curio.common.component.AccessoriesComponent;
+import org.confluence.terra_curio.common.component.PrimitiveValueComponent;
 import org.confluence.terra_curio.util.CuriosUtils;
 import org.confluence.terra_curio.util.TCUtils;
 
@@ -45,7 +45,7 @@ public record VisibilityPacketS2C(byte mask) implements IPacketS2C {
         boolean visible = TCUtils.hasAccessoriesType(player, AccessoryItems.SPECTRE$GOGGLES) &&
                 CuriosUtils.hasCurio(player, (Predicate<ItemStack>) itemStack -> {
                     if (itemStack.getItem() instanceof IFunctionCouldEnable func && func.isEnabled(itemStack)) {
-                        AccessoriesComponent component = TCUtils.getAccessoriesComponent(itemStack);
+                        PrimitiveValueComponent component = TCUtils.getAccessoriesComponent(itemStack);
                         if (component != null) {
                             return component.contains(AccessoryItems.SPECTRE$GOGGLES);
                         }

@@ -39,8 +39,8 @@ import java.util.function.Function;
 import static net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL;
 import static net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADD_VALUE;
 import static org.confluence.lib.common.component.ModRarity.*;
-import static org.confluence.terra_curio.common.component.AccessoriesComponent.of;
-import static org.confluence.terra_curio.common.component.AccessoriesComponent.units;
+import static org.confluence.terra_curio.common.component.PrimitiveValueComponent.of;
+import static org.confluence.terra_curio.common.component.PrimitiveValueComponent.units;
 
 @SuppressWarnings("all")
 public class AccessoryItems {

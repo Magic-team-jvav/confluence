@@ -9,6 +9,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -25,6 +26,10 @@ public interface Immunity {
         Entity directEntity = damageSource.getDirectEntity();
         ItemStack weaponItemStack = damageSource.getWeaponItem();
         if (weaponItemStack != null) {
+            if (weaponItemStack.isEmpty()) {
+                return directEntity instanceof Player ? (Immunity) (Object) weaponItemStack : null;
+            }
+
             Item weaponItem = weaponItemStack.getItem();
             boolean fromConfluence = ModUtils.isFromConfluence(BuiltInRegistries.ITEM, weaponItem);
             if (fromConfluence && (weaponItem instanceof SwordItem) && directEntity instanceof Projectile projectile) { // 汇流剑气
@@ -100,9 +105,13 @@ public interface Immunity {
     }
 
     enum Type implements StringRepresentable {
-        /** 静态无敌帧，以类而不是对象区分不同的伤害，比如魔刺，多个魔刺弹幕叠在一起伤害频率也不会变快 */
+        /**
+         * 静态无敌帧，以类而不是对象区分不同的伤害，比如魔刺，多个魔刺弹幕叠在一起伤害频率也不会变快
+         */
         STATIC,
-        /** 局部无敌帧，以对象区分不同的伤害，比如召唤物，多个同种召唤物同时击中不会骗伤 */
+        /**
+         * 局部无敌帧，以对象区分不同的伤害，比如召唤物，多个同种召唤物同时击中不会骗伤
+         */
         LOCAL;
 
         public static final Codec<Type> CODEC = StringRepresentable.fromEnum(Type::values);

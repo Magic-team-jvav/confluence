@@ -15,10 +15,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.player.Player;
@@ -61,17 +58,15 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity 
     public abstract boolean isSuppressingSlidingDownLadder();
 
     @Shadow
-    public abstract boolean canFreeze();
+    public abstract Map<Holder<MobEffect>, MobEffectInstance> getActiveEffectsMap();
 
     @Shadow
-    public abstract Map<Holder<MobEffect>, MobEffectInstance> getActiveEffectsMap();
+    protected abstract ItemStack getLastArmorItem(EquipmentSlot slot);
 
     @Unique
     private final Object2IntMap<Immunity> confluence$entityImmunityTicks = new Object2IntOpenHashMap<>();
     @Unique
     private boolean confluence$breakingEasyCrashBlock;
-    @Unique
-    private boolean confluence$deadO;
     @Unique
     private int confluence$extraInvulnerableTicks;
 
@@ -145,14 +140,6 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity 
         return Math.max(deltaMovement.y, -0.15F);
     }
 
-    @Override
-    public boolean confluence$deadO(boolean... dead) {
-        if (dead != null && dead.length != 0) {
-            this.confluence$deadO = dead[0];
-        }
-        return confluence$deadO;
-    }
-
     @WrapWithCondition(method = "triggerOnDeathMobEffects", at = @At(value = "INVOKE", target = "Ljava/util/Map;clear()V"))
     private boolean cacheFlasks(Map<Holder<MobEffect>, MobEffectInstance> instance) {
         return FlaskEffect.saveFlaskEffects(instance);
@@ -196,15 +183,21 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity 
     @Inject(method = "swing(Lnet/minecraft/world/InteractionHand;Z)V", at = @At(value = "NEW", target = "(Lnet/minecraft/world/entity/Entity;I)Lnet/minecraft/network/protocol/game/ClientboundAnimatePacket;"))
     private void handleSwordProjectile(InteractionHand hand, boolean updateSelf, CallbackInfo ci) {
         if (hand == InteractionHand.MAIN_HAND && confluence$self() instanceof Player player) {
-            PlayerUtils.swordProjectile(player);
+            PlayerUtils.swordProjectile(player); // fixme 右键交互会导致发射剑气
         }
     }
 
-    @Inject(method = "handleEquipmentChanges", at = @At("TAIL"))
+    @Inject(method = "handleEquipmentChanges", at = @At("HEAD"))
     private void handleArmorChanges(Map<EquipmentSlot, ItemStack> equipments, CallbackInfo ci) {
-        if (confluence$self() instanceof ServerPlayer player && equipments.keySet().stream().anyMatch(slot -> slot.getType() == EquipmentSlot.Type.HUMANOID_ARMOR)) {
-            PlayerSpecialData.of(player).flushArmorSetBonus(player);
-            FlushArmorSetBonusPacketS2C.sendToPlayersTrackingTarget(player);
+        if (confluence$self() instanceof ServerPlayer player) {
+            for (Map.Entry<EquipmentSlot, ItemStack> entry : equipments.entrySet()) {
+                EquipmentSlot slot = entry.getKey();
+                if (EquipmentSlotGroup.ARMOR.test(slot) && !ItemStack.isSameItem(entry.getValue(), getLastArmorItem(slot))) {
+                    PlayerSpecialData.of(player).flushArmorSetBonus(player);
+                    FlushArmorSetBonusPacketS2C.sendToPlayersTrackingTarget(player);
+                    break;
+                }
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-package org.confluence.mod.common.init;
+package org.confluence.mod.common.init.armor;
 
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.Util;

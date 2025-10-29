@@ -78,7 +78,7 @@ import org.confluence.mod.integration.ars_nouveau.ArsNouveauHelper;
 import org.confluence.mod.integration.irons_spell.IronSpellHelper;
 import org.confluence.mod.integration.prism_lib.PrismLibHelper;
 import org.confluence.mod.integration.xaero.XaeroHelper;
-import org.confluence.mod.mixed.ILivingEntity;
+import org.confluence.mod.mixed.IClientLivingEntity;
 import org.confluence.mod.mixed.ILocalPlayer;
 import org.confluence.mod.mixed.IMobEffectInstance;
 import org.confluence.mod.network.c2s.EmptyTargetSweepPacketC2S;
@@ -361,10 +361,10 @@ public final class GameClientEvents {
                 && !ResourceLocation.DEFAULT_NAMESPACE.equals(BuiltInRegistries.ENTITY_TYPE.getKey(living.getType()).getNamespace())
         ) return;
         boolean dead = living.isDeadOrDying();
-        if (dead != ILivingEntity.of(living).confluence$deadO()) {
+        if (dead != IClientLivingEntity.of(living).confluence$deadO()) {
             ClientUtils.livingDeath(living);
         }
-        ILivingEntity.of(living).confluence$deadO(dead);
+        IClientLivingEntity.of(living).confluence$deadO(dead);
     }
 
     @SubscribeEvent
@@ -378,10 +378,10 @@ public final class GameClientEvents {
         // 渲染这个实体结束的时候检测是不是刚死，这时候方便获取到这个实体的姿势
         if (entity instanceof LivingEntity living) {
             boolean dead = living.isDeadOrDying();
-            if (dead != ILivingEntity.of(living).confluence$deadO()) {
+            if (dead != IClientLivingEntity.of(living).confluence$deadO()) {
                 ClientUtils.livingDeath(living);
             }
-            ILivingEntity.of(living).confluence$deadO(dead);
+            IClientLivingEntity.of(living).confluence$deadO(dead);
         }
     }
 

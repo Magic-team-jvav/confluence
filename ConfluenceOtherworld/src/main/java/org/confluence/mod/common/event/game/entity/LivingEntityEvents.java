@@ -51,6 +51,7 @@ import org.confluence.mod.common.entity.projectile.boulder.TombstoneBoulderEntit
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.accessory.GuideVooDooDollItem;
@@ -167,8 +168,9 @@ public final class LivingEntityEvents {
     public static void livingIncomingDamage(LivingIncomingDamageEvent event) {
         DamageSource damageSource = event.getSource();
         LivingEntity living = event.getEntity();
-        if (living instanceof ServerPlayer serverPlayer) {
-            AccessoryItems.applyHurtGetMana(serverPlayer, damageSource, event.getAmount());
+        if (living instanceof ServerPlayer player) {
+            AccessoryItems.applyHurtGetMana(player, damageSource, event.getAmount());
+            ModArmorBonus.applyCactusThorn(player, damageSource);
         }
         Immunity cause = Immunity.getCause(event.getSource());
         if (ILivingEntity.of(living).confluence$getImmunityTicks().containsKey(cause)) {

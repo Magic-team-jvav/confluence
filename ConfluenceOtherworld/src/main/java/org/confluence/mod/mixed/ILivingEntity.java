@@ -17,8 +17,6 @@ public interface ILivingEntity extends SelfGetter<LivingEntity> {
 
     Object2IntMap<Immunity> confluence$getImmunityTicks();
 
-    boolean confluence$deadO(boolean... dead);
-
     void confluence$setExtraInvulnerableTicks(int ticks);
 
     int confluence$getExtraInvulnerableTicks();

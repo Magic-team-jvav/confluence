@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Entity.class)
-public abstract class EntityClientMixin implements IEntity {
+public abstract class ClientEntityMixin implements IEntity {
     @Unique
     private Vec3 confluence$deathMotion;
 

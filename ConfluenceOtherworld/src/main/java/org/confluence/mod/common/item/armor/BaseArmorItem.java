@@ -1,14 +1,21 @@
 package org.confluence.mod.common.item.armor;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableListMultimap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EquipmentSlotGroup;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.neoforged.fml.ModList;
 import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
@@ -16,10 +23,16 @@ import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.item.ModItems;
+import org.confluence.terra_curio.api.primitive.AttributeModifiersValue;
+import org.confluence.terra_curio.api.primitive.PrimitiveValue;
+import org.confluence.terra_curio.api.primitive.ValueType;
 import org.confluence.terra_curio.common.component.PrimitiveValueComponent;
+import org.confluence.terra_curio.common.init.TCItems;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 public class BaseArmorItem extends ArmorItem {
@@ -55,6 +68,8 @@ public class BaseArmorItem extends ArmorItem {
         private int durability = 0;
         private boolean multiHead = false;
         private String requiresModLoaded = null;
+        private ImmutableList.Builder<ItemAttributeModifiers.Entry> vanillaAttributes = null;
+        private ImmutableListMultimap.Builder<Holder<Attribute>, AttributeModifier> modAttributes = null;
 
         public Builder(String name, Holder<ArmorMaterial> material, Type type) {
             this.name = name;
@@ -107,6 +122,25 @@ public class BaseArmorItem extends ArmorItem {
             return this;
         }
 
+        public Builder attribute(Holder<Attribute> attribute, double value, AttributeModifier.Operation operation) {
+            return attribute(attribute, value, operation, true);
+        }
+
+        public Builder attribute(Holder<Attribute> attribute, double value, AttributeModifier.Operation operation, boolean vanilla) {
+            if (vanilla) {
+                if (vanillaAttributes == null) {
+                    this.vanillaAttributes = ImmutableList.builder();
+                }
+                vanillaAttributes.add(new ItemAttributeModifiers.Entry(attribute, new AttributeModifier(asResource(), value, operation), EquipmentSlotGroup.bySlot(type.getSlot())));
+            } else {
+                if (modAttributes == null) {
+                    this.modAttributes = ImmutableListMultimap.builder();
+                }
+                modAttributes.put(attribute, new AttributeModifier(asResource(), value, operation));
+            }
+            return this;
+        }
+
         public BaseArmorItem build() {
             properties.stacksTo(1);
             if (durability > 0) {
@@ -114,6 +148,31 @@ public class BaseArmorItem extends ArmorItem {
             } else {
                 properties.component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE);
             }
+            if (vanillaAttributes != null) {
+                properties.attributes(new ItemAttributeModifiers(vanillaAttributes.build(), true));
+            }
+            if (modAttributes != null) {
+                ImmutableListMultimap<Holder<Attribute>, AttributeModifier> multimap = modAttributes.build();
+                DataComponentMap.Builder components = properties.components;
+                if (components != null && components.map.get(ModDataComponentTypes.ARMOR_BONUS.get()) instanceof PrimitiveValueComponent(
+                        Map<ValueType<?, ? extends PrimitiveValue<?>>, PrimitiveValue<?>> types
+                )) {
+                    Map<ValueType<?, ? extends PrimitiveValue<?>>, PrimitiveValue<?>> map = new Hashtable<>(types);
+                    if (types.get(TCItems.ATTRIBUTES) instanceof AttributeModifiersValue(ImmutableListMultimap<Holder<Attribute>, AttributeModifier> value1)) {
+                        map.put(TCItems.ATTRIBUTES, new AttributeModifiersValue(ImmutableListMultimap.<Holder<Attribute>, AttributeModifier>builder()
+                                .putAll(value1)
+                                .putAll(multimap)
+                                .build()));
+                    } else {
+                        map.put(TCItems.ATTRIBUTES, new AttributeModifiersValue(multimap));
+                    }
+
+                    components.set(ModDataComponentTypes.ARMOR_BONUS.get(), new PrimitiveValueComponent(map));
+                } else {
+                    armorBonus(PrimitiveValueComponent.entry(TCItems.ATTRIBUTES, new AttributeModifiersValue(multimap)));
+                }
+            }
+
             BaseArmorItem item;
             if (geoName != null) {
                 if (multiHead) {

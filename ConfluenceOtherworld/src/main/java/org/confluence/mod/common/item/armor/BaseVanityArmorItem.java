@@ -26,7 +26,7 @@ import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.function.Consumer;
 
-public class BaseVanityArmorItem extends ArmorItem implements GeoItem {
+public class BaseVanityArmorItem extends BaseArmorItem implements GeoItem {
     protected final AnimatableInstanceCache CACHE = GeckoLibUtil.createInstanceCache(this);
     protected final String name;
 

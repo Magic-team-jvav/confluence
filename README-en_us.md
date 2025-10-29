@@ -45,16 +45,25 @@
 ```groovy
 repositories {
     maven {
-        name "org.confluenceReleases"
+        name "magicTeam MavenReleases"
         url "https://maven.confluence.ink/releases"
     }
     maven {
-        name "org.confluenceSnapshots"
+        name "magicTeam MavenSnapshots"
         url "https://maven.confluence.ink/snapshots"
+    }
+    maven {
+        name = "Curios"
+        url = uri("https://maven.theillusivec4.top/")
     }
 }
 
 dependencies {
-    implementation "org.confluence.lib:Confluence-Magic-Lib:<version>"
+    // Lib
+    implementation ("org.confluence.lib:Confluence-Magic-Lib:${confluence_lib_version}")
+    // Confluence Otherworld
+    implementation ("org.confluence.mod:ConfluenceOtherworld:${confluence_version}"){transitive = false}
+    // Curios API
+    implementation "top.theillusivec4.curios:curios-neoforge:${curios_version}"
 }
 ```

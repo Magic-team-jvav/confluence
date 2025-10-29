@@ -19,6 +19,8 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.common.NeoForge;
+import org.confluence.mod.api.event.AfterFlushArmorSetBonusEvent;
 import org.confluence.mod.common.init.ModArmorBonus;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.item.ToolItems;
@@ -146,6 +148,8 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
                 attributeinstance.addTransientModifier(modifier);
             }
         }
+
+        NeoForge.EVENT_BUS.post(new AfterFlushArmorSetBonusEvent(player, this));
     }
 
     @Override

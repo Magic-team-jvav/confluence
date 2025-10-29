@@ -39,7 +39,7 @@
 
 - 全部拉取完成后,在gradle插件中启动ConfluenceOtherworld本体项目中的runClient命令
 
-## 项目依赖
+## Maven 例子
 ```groovy
 repositories {
     maven {
@@ -60,28 +60,8 @@ dependencies {
     // Lib
     implementation ("org.confluence.lib:Confluence-Magic-Lib:${confluence_lib_version}")
     // 本体 
-    // transitive = false 是为了避免传递本体的依赖-可选
     implementation ("org.confluence.mod:ConfluenceOtherworld:${confluence_version}"){transitive = false}
     // 前置-饰品
     implementation "top.theillusivec4.curios:curios-neoforge:${curios_version}"
-}
-```
-
-## Maven 例子
-
-```groovy
-repositories {
-    maven {
-        name "org.confluenceReleases"
-        url "https://maven.confluence.ink/releases"
-    }
-    maven {
-        name "org.confluenceSnapshots"
-        url "https://maven.confluence.ink/snapshots"
-    }
-}
-
-dependencies {
-    implementation "org.confluence.lib:Confluence-Magic-Lib:<version>"
 }
 ```

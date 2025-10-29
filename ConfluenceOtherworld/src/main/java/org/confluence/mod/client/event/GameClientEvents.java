@@ -53,6 +53,7 @@ import org.confluence.lib.client.animate.ExpertColorAnimation;
 import org.confluence.lib.mixed.IPoseStack;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.api.event.AfterFlushArmorSetBonusEvent;
 import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.client.effect.EctoMistHelper;
 import org.confluence.mod.client.effect.SpelunkerHelper;
@@ -473,5 +474,10 @@ public final class GameClientEvents {
         } else if (PlayerUtils.couldPerformEmptyTargetSweep(player)) {
             EmptyTargetSweepPacketC2S.send2Server();
         }
+    }
+
+    @SubscribeEvent
+    public static void afterFlushArmorSetBonus(AfterFlushArmorSetBonusEvent event) {
+        ClientPacketHandler.setLuminance(event.getEntity(), event.getData());
     }
 }

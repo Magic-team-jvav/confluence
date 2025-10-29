@@ -5,7 +5,6 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.createmod.catnip.animation.LerpedFloat;
 import net.createmod.catnip.gui.ScreenOpener;
-import net.createmod.catnip.platform.CatnipClientServices;
 import net.createmod.ponder.enums.PonderKeybinds;
 import net.createmod.ponder.foundation.ui.PonderUI;
 import net.minecraft.world.item.ItemStack;
@@ -26,7 +25,7 @@ public abstract class PonderTooltipHandlerMixin {
 
     @WrapOperation(method = "deferredTick", at = @At(value = "INVOKE", target = "Lnet/createmod/catnip/animation/LerpedFloat;setValue(D)V", ordinal = 1))
     private static void modify(LerpedFloat instance, double value, Operation<Void> original, @Local float vValue) {
-        if (!subject && CatnipClientServices.CLIENT_HOOKS.isKeyPressed(PonderKeybinds.PONDER.getKeybind()) && trackingStack.getItem() instanceof AltarBlock.BItem) {
+        if (!subject && PonderKeybinds.PONDER.isDown() && trackingStack.getItem() instanceof AltarBlock.BItem) {
             if (vValue >= 1) {
                 ScreenOpener.transitionTo(PonderUI.of(trackingStack));
                 instance.startWithValue(0);

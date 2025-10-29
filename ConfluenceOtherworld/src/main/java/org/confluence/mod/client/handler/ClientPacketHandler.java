@@ -57,6 +57,14 @@ public final class ClientPacketHandler {
         return player == Minecraft.getInstance().player ? luminance : remoteLuminance.getOrDefault(player.getId(), 0);
     }
 
+    public static void setLuminance(Player player, PlayerSpecialData data) {
+        if (player == Minecraft.getInstance().player) {
+            luminance = data.getValue(TCItems.LUMINANCE);
+        } else {
+            remoteLuminance.put(player.getId(), (int) data.getValue(TCItems.LUMINANCE));
+        }
+    }
+
     public static void reset() {
         maxMana = 20;
         currentMana = 20;
@@ -129,13 +137,9 @@ public final class ClientPacketHandler {
     public static void handleFlushArmorSetBonus(Player localPlayer, int playerId) {
         if (localPlayer.level().getEntity(playerId) instanceof AbstractClientPlayer clientPlayer) {
             if (localPlayer == clientPlayer) {
-                PlayerSpecialData data = PlayerSpecialData.of(localPlayer);
-                data.flushArmorSetBonus(localPlayer);
-                luminance = data.getValue(TCItems.LUMINANCE);
+                PlayerSpecialData.of(localPlayer).flushArmorSetBonus(localPlayer);
             } else {
-                PlayerSpecialData data = PlayerSpecialData.of(clientPlayer);
-                data.flushArmorSetBonus(clientPlayer);
-                remoteLuminance.put(playerId, (int) data.getValue(TCItems.LUMINANCE));
+                PlayerSpecialData.of(clientPlayer).flushArmorSetBonus(clientPlayer);
             }
         }
     }

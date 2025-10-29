@@ -6,7 +6,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -24,16 +23,16 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.function.Consumer;
 
-public class NormalArmorItem extends ArmorItem implements GeoItem {
+public class NormalGeoArmorItem extends BaseArmorItem implements GeoItem {
     protected final AnimatableInstanceCache CACHE = GeckoLibUtil.createInstanceCache(this);
     protected final String name;
 
-    public NormalArmorItem(String name, Holder<ArmorMaterial> material, Type type, Properties properties) {
+    public NormalGeoArmorItem(String name, Holder<ArmorMaterial> material, Type type, Properties properties) {
         super(material, type, properties);
         this.name = name;
     }
 
-    public NormalArmorItem(String name, ModRarity rarity, Holder<ArmorMaterial> material, Type type, Properties properties) {
+    public NormalGeoArmorItem(String name, ModRarity rarity, Holder<ArmorMaterial> material, Type type, Properties properties) {
         super(material, type, properties.component(ConfluenceMagicLib.MOD_RARITY, rarity));
         this.name = name;
     }
@@ -51,7 +50,7 @@ public class NormalArmorItem extends ArmorItem implements GeoItem {
     @Override
     public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
         consumer.accept(new GeoRenderProvider() {
-            private NormalArmorItemRenderer<NormalArmorItem> renderer;
+            private NormalArmorItemRenderer<NormalGeoArmorItem> renderer;
 
             @Override
             public <T extends LivingEntity> HumanoidModel<?> getGeoArmorRenderer(@Nullable T livingEntity, ItemStack itemStack, @Nullable EquipmentSlot equipmentSlot, @Nullable HumanoidModel<T> original) {

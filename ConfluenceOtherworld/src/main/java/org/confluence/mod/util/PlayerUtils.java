@@ -35,16 +35,19 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.item.AccessoryItems;
+import org.confluence.mod.common.init.item.ManaWeaponItems;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.common.item.potion.ManaPotionItem;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
+import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.network.s2c.*;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.integration.bettercombat.BetterCombatHelper;
 import org.confluence.terra_curio.util.TCUtils;
 import org.confluence.terraentity.api.entity.Boss;
 import org.jetbrains.annotations.ApiStatus;
+import org.joml.Vector3f;
 
 import java.util.function.IntFunction;
 import java.util.function.Supplier;
@@ -79,9 +82,10 @@ public final class PlayerUtils {
 
     public static void regenerateMana(ServerPlayer player) {
         ManaStorage manaStorage = ManaStorage.of(player);
+        if (!manaStorage.canReceive()) return;
 
         int delay = manaStorage.getRegenerateDelay();
-        boolean notMove = Math.abs(player.walkDist - player.walkDistO) < Mth.EPSILON;
+        boolean notMove = isNotMove(player);
         if (delay > 0) {
             if (manaStorage.isArcaneCrystalUsed()) delay = (int) ((float) delay * (notMove ? 0.975F : 0.95F));
             if (delay > 20 && player.hasEffect(ModEffects.MANA_REGENERATION)) delay = 20;
@@ -102,21 +106,28 @@ public final class PlayerUtils {
         if (manaStorage.receiveMana(receive)) syncMana2Client(player, manaStorage);
     }
 
-    public static boolean extractMana(ServerPlayer player, ItemStack itemStack, FloatSupplier sup) {
-        if (player.isCreative()) return true;
-        return extractAndSync(
-                ManaStorage.of(player),
-                EnchantmentUtils.processEfficientMagic(sup, player),
-                player
-        );
+    private static boolean isNotMove(ServerPlayer player) {
+        Vector3f vector3f = IServerPlayer.of(player).confluence$getMovementSpeed();
+        return Math.abs(vector3f.x) < Mth.EPSILON && Math.abs(vector3f.y) < Mth.EPSILON && Math.abs(vector3f.z) < Mth.EPSILON;
     }
 
-    public static boolean extractAndSync(ManaStorage manaStorage, FloatSupplier sup, ServerPlayer player) {
-        if (manaStorage.extractMana(sup, player)) {
+    public static boolean extractMana(ServerPlayer player, ItemStack itemStack, FloatSupplier sup) {
+        if (player.isCreative()) return true;
+        if (itemStack.is(ManaWeaponItems.SPACE_GUN) && ModArmorBonus.hasType(player, ModArmorBonus.SPACE$GUN$FREE)) {
+            sup = () -> 0;
+        }
+        ManaStorage manaStorage = ManaStorage.of(player);
+        if (manaStorage.extractMana(EnchantmentUtils.processEfficientMagic(sup, player), player)) {
             syncMana2Client(player, manaStorage);
             return true;
         }
         return false;
+    }
+
+    @Deprecated(forRemoval = true)
+    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
+    public static boolean extractAndSync(ManaStorage manaStorage, FloatSupplier sup, ServerPlayer player) {
+        return extractMana(player, ItemStack.EMPTY, sup);
     }
 
     public static void receiveMana(ServerPlayer player, FloatSupplier sup) {

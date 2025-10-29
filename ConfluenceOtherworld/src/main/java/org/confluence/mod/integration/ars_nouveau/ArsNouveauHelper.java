@@ -7,6 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.common.util.TriState;
 import org.confluence.mod.api.event.AdditionalManaEvent;
@@ -28,8 +29,8 @@ public class ArsNouveauHelper {
         return 200.0 / getInitMaxMana();
     }
 
-    public static void extractMana(ServerPlayer serverPlayer, ManaStorage manaStorage, double manaToRemove) {
-        PlayerUtils.extractAndSync(manaStorage, () -> (float) (manaToRemove * toConfluence()), serverPlayer);
+    public static void extractMana(ServerPlayer serverPlayer, double manaToRemove) {
+        PlayerUtils.extractMana(serverPlayer, ItemStack.EMPTY, () -> (float) (manaToRemove * toConfluence()));
     }
 
     public static TriState enoughMana(LivingEntity living, int totalCost) {

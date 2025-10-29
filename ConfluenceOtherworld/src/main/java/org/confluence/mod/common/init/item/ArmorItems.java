@@ -317,16 +317,22 @@ public class ArmorItems {
 
     public static final DeferredItem<BaseArmorItem> BEE_HELMET = register("bee_helmet", ModArmorMaterials.BEE_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/bee_armor")
-            .rarity(ModRarity.ORANGE));
+            .rarity(ModRarity.ORANGE)
+            .attribute(TEAttributes.SUMMON_DAMAGE, 0.04, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .attribute(TEAttributes.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredItem<BaseArmorItem> BEE_CHESTPLATE = register("bee_chestplate", ModArmorMaterials.BEE_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/bee_armor")
-            .rarity(ModRarity.ORANGE));
+            .rarity(ModRarity.ORANGE)
+            .attribute(TEAttributes.SUMMON_DAMAGE, 0.04, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .attribute(TEAttributes.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredItem<BaseArmorItem> BEE_LEGGINGS = register("bee_leggings", ModArmorMaterials.BEE_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/bee_armor")
-            .rarity(ModRarity.ORANGE));
+            .rarity(ModRarity.ORANGE)
+            .attribute(TEAttributes.SUMMON_DAMAGE, 0.025, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
     public static final DeferredItem<BaseArmorItem> BEE_BOOTS = register("bee_boots", ModArmorMaterials.BEE_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/bee_armor")
-            .rarity(ModRarity.ORANGE));
+            .rarity(ModRarity.ORANGE)
+            .attribute(TEAttributes.SUMMON_DAMAGE, 0.025, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
 
     public static final DeferredItem<BaseArmorItem> OBSIDIAN_HELMET = register("obsidian_helmet", ModArmorMaterials.OBSIDIAN_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/obsidian_armor")

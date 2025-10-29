@@ -40,6 +40,7 @@ public final class ModArmorBonus {
 
     public static final ValueType.UnitType CACTUS$THORNS = ValueType.UnitType.of(Confluence.asResource("thorns"));
     public static final ValueType.FloatType SKIP$CONSUME$AMMO$CHANCE = ValueType.FloatType.of(Confluence.asResource("skip_consume_ammo_chance"), FloatValue.ADDITION_WITHIN_0_TO_1, 0);
+    public static final ValueType.UnitType SPACE$GUN$FREE = ValueType.UnitType.of(Confluence.asResource("space_gun_free"));
 
     @SuppressWarnings("all")
     public static void registerArmorSetBonus() {
@@ -100,6 +101,9 @@ public final class ModArmorBonus {
         register("fossil_set", 1, FOSSIL_HELMET, FOSSIL_CHESTPLATE, FOSSIL_LEGGINGS, FOSSIL_BOOTS, key -> {
             key.of(SKIP$CONSUME$AMMO$CHANCE, 0.2F);
         });
+        register("bee_set", 1, BEE_HELMET, BEE_CHESTPLATE, BEE_LEGGINGS, BEE_BOOTS, key -> {
+            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(TEAttributes.SUMMON_DAMAGE, key.id, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+        });
         register("obsidian_set", 1, OBSIDIAN_HELMET, OBSIDIAN_CHESTPLATE, OBSIDIAN_LEGGINGS, OBSIDIAN_BOOTS, key -> {
             key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.builder()
                     .add(TEAttributes.WHIP_RANGE, key.id, 0.3, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
@@ -112,6 +116,9 @@ public final class ModArmorBonus {
                     .add(Attributes.KNOCKBACK_RESISTANCE, key.id, 1, AttributeModifier.Operation.ADD_VALUE)
                     .add(Attributes.EXPLOSION_KNOCKBACK_RESISTANCE, key.id, 1, AttributeModifier.Operation.ADD_VALUE)
                     .build());
+        });
+        register("meteor_set", 1, METEOR_HELMET, METEOR_CHESTPLATE, METEOR_LEGGINGS, METEOR_BOOTS, key -> {
+            key.unit(SPACE$GUN$FREE);
         });
     }
 
@@ -152,7 +159,6 @@ public final class ModArmorBonus {
         consumer.accept(key);
         VALUE_MAP.put(key, new IntObjectImmutablePair<>(tooltipCount, new PrimitiveValueComponent(key.types)));
         key.types = null;
-        key.id = null;
     }
 
     public static boolean hasType(Player player, ValueType<Unit, UnitValue> type) {

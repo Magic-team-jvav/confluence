@@ -7,6 +7,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.fml.ModList;
 import org.confluence.mod.api.event.AdditionalManaEvent;
 import org.confluence.mod.client.handler.CompatibilityHandler;
@@ -35,11 +36,8 @@ public class IronSpellHelper {
     }
 
     public static void extractMana(float manaCost, ServerPlayer player) {
-        if (CommonConfigs.CONVERT_IRONS_SPELL_MANA.get()) {
-            if (manaCost > 0) {
-                ManaStorage manaStorage = ManaStorage.of(player);
-                PlayerUtils.extractAndSync(manaStorage, () -> manaCost * toConfluence(), player);
-            }
+        if (CommonConfigs.CONVERT_IRONS_SPELL_MANA.get() && manaCost > 0) {
+            PlayerUtils.extractMana(player, ItemStack.EMPTY, () -> manaCost * toConfluence());
         }
     }
 

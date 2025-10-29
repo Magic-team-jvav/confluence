@@ -94,8 +94,8 @@ public final class ArmorSetBonusKey {
     }
 
     // region registration
-    Map<ValueType<?, ? extends PrimitiveValue<?>>, PrimitiveValue<?>> types;
-    ResourceLocation id;
+    transient Map<ValueType<?, ? extends PrimitiveValue<?>>, PrimitiveValue<?>> types;
+    transient ResourceLocation id;
 
     public <T, V extends PrimitiveValue<T>> void of(ValueType<T, V> type, T value) {
         types.put(type, type.newInstance(value));
@@ -119,7 +119,7 @@ public final class ArmorSetBonusKey {
     // endregion
 
     // region tooltip
-    private String descriptionKey;
+    private transient String descriptionKey;
 
     public @NotNull String getDescriptionKey() {
         if (descriptionKey == null) {

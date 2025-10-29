@@ -12,6 +12,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.terra_curio.api.primitive.PrimitiveValue;
 import org.confluence.terra_curio.api.primitive.UnitValue;
 import org.confluence.terra_curio.api.primitive.ValueType;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
@@ -43,6 +44,10 @@ public final class ArmorSetBonusKey {
                 feet.isEmpty() ? null : feet.getItem(),
                 false
         ));
+    }
+
+    public static @Nullable ResourceLocation getId(ArmorSetBonusKey key) {
+        return MAP.inverse().get(key);
     }
 
     static int mixHash(@Nullable Item head, @Nullable Item chest, @Nullable Item legs, @Nullable Item feet, boolean check) {
@@ -88,6 +93,7 @@ public final class ArmorSetBonusKey {
                 "hash=" + hash + ']';
     }
 
+    // region registration
     Map<ValueType<?, ? extends PrimitiveValue<?>>, PrimitiveValue<?>> types;
     ResourceLocation id;
 
@@ -102,4 +108,29 @@ public final class ArmorSetBonusKey {
     public void unit(ValueType<Unit, UnitValue> type) {
         types.put(type, UnitValue.INSTANCE);
     }
+
+    public @Nullable ResourceLocation getId() {
+        if (id == null) {
+            this.id = ArmorSetBonusKey.getId(this);
+        }
+        return id;
+    }
+
+    // endregion
+
+    // region tooltip
+    private String descriptionKey;
+
+    public @NotNull String getDescriptionKey() {
+        if (descriptionKey == null) {
+            ResourceLocation id = getId();
+            if (id == null) {
+                this.descriptionKey = "unregistered." + hash;
+            } else {
+                this.descriptionKey = id.getNamespace() + "." + id.getPath();
+            }
+        }
+        return descriptionKey;
+    }
+    // endregion
 }

@@ -19,6 +19,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.NeoForge;
 import org.confluence.mod.api.event.AfterFlushArmorSetBonusEvent;
+import org.confluence.mod.api.event.GetArmorSetBonusEvent;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.armor.ArmorSetBonusKey;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
@@ -52,6 +53,10 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
 
         this.couldHurtCritters = true;
         this.couldDamageEnvironment = true;
+    }
+
+    public ArmorSetBonusKey getArmorSetBonusKey() {
+        return armorSetBonusKey;
     }
 
     public void setCurrentQuestedFish(ItemStack cost, ITradeLock lock) {
@@ -90,7 +95,6 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
      * @see LivingEntity#collectEquipmentChanges()
      */
     public void flushArmorSetBonus(Player player) {
-        setToDefaultValue();
         Inventory inventory = player.getInventory();
         ItemStack head = inventory.getArmor(EquipmentSlot.HEAD.getIndex());
         ItemStack chest = inventory.getArmor(EquipmentSlot.CHEST.getIndex());
@@ -108,17 +112,18 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
             }
         }
 
-        PrimitiveValueComponent component = ModArmorBonus.getArmorSetBonus(key);
-        if (component == null) {
+        setToDefaultValue();
+        PrimitiveValueComponent bonus = NeoForge.EVENT_BUS.post(new GetArmorSetBonusEvent(player, key, ModArmorBonus.getArmorSetBonus(key))).getNeoBonus();
+        if (bonus == null) {
             this.armorSetBonusKey = ArmorSetBonusKey.NONE;
         } else {
             this.armorSetBonusKey = key;
-            compute(component);
+            compute(bonus);
         }
-        for (ItemStack stack : player.getArmorSlots()) {
-            component = ModArmorBonus.getArmorStackBonus(stack);
-            if (component != null) compute(component);
-        }
+        flushArmor(head);
+        flushArmor(chest);
+        flushArmor(legs);
+        flushArmor(feet);
 
         for (Map.Entry<Holder<Attribute>, Collection<AttributeModifier>> entry : getValue(TCItems.ATTRIBUTES).asMap().entrySet()) {
             AttributeInstance attributeinstance = attributes.getInstance(entry.getKey());
@@ -130,6 +135,12 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
         }
 
         NeoForge.EVENT_BUS.post(new AfterFlushArmorSetBonusEvent(player, this));
+    }
+
+    private void flushArmor(ItemStack stack) {
+        if (stack.isEmpty()) return;
+        PrimitiveValueComponent component = ModArmorBonus.getArmorStackBonus(stack);
+        if (component != null) compute(component);
     }
 
     @Override

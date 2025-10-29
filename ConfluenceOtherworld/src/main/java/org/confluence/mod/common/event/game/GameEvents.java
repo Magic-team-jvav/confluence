@@ -57,8 +57,10 @@ import org.confluence.mod.network.s2c.ExtraInventorySyncPacketS2C;
 import org.confluence.mod.network.s2c.FishingPowerInfoPacketS2C;
 import org.confluence.mod.network.s2c.VisibilityPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
+import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.api.event.AfterAccessoryAbilitiesFlushedEvent;
+import org.confluence.terra_guns.api.event.GunEvent;
 import org.confluence.terraentity.entity.summon.AbstractSummonMob;
 import org.confluence.terraentity.init.entity.TEBossEntities;
 import top.theillusivec4.curios.api.event.CurioAttributeModifierEvent;
@@ -160,6 +162,13 @@ public final class GameEvents {
                 }
                 event.setTargets(targets);
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void gun$ShrinkBullet(GunEvent.ShrinkBulletEvent event) {
+        if (!event.isInfinity() && PlayerUtils.shouldSkipConsumeAmmo(event.getPlayer())) {
+            event.setCanceled(true);
         }
     }
 

@@ -33,6 +33,7 @@ import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.common.CoinItem;
@@ -408,5 +409,12 @@ public final class PlayerUtils {
             sword.genProjectile(player, stack);
             player.getCooldowns().addCooldown(sword, data.getAttackSpeed(player));
         }
+    }
+
+    public static boolean shouldSkipConsumeAmmo(Player player) {
+        if (player.hasEffect(ModEffects.AMMO_BOX) && player.getRandom().nextFloat() < 0.2F) {
+            return true;
+        }
+        return LibUtils.checkChance(ModArmorBonus.getValue(player, ModArmorBonus.SKIP$CONSUME$AMMO$CHANCE), player.getRandom());
     }
 }

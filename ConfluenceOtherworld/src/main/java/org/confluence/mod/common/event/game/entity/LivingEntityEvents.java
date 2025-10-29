@@ -227,7 +227,7 @@ public final class LivingEntityEvents {
         // 暴击判定和伤害显示
         boolean crit = false;
         if (!TCAttributes.hasCustomAttribute(TCAttributes.CRIT_CHANCE) && attacker instanceof Player player) {
-            if (LibUtils.checkChance(player.getAttributeValue(TCAttributes.CRIT_CHANCE), player.getRandom())) {
+            if (LibUtils.checkChance((float) player.getAttributeValue(TCAttributes.CRIT_CHANCE), player.getRandom())) {
                 amount *= 1.5F;
                 player.crit(victim);
                 crit = true;
@@ -349,13 +349,11 @@ public final class LivingEntityEvents {
     @SubscribeEvent
     public static void livingGetProjectile(LivingGetProjectileEvent event) {
         LivingEntity living = event.getEntity();
-        ItemStack projectileItemStack = event.getProjectileItemStack();
-        event.setProjectileItemStack(ExtraInventory.getProjectile(projectileItemStack, event.getProjectileWeaponItemStack(), living));
+        event.setProjectileItemStack(ExtraInventory.getProjectile(event.getProjectileItemStack(), event.getProjectileWeaponItemStack(), living));
 
-        if (!projectileItemStack.isEmpty()) {
-            if (living.hasEffect(ModEffects.AMMO_BOX) && living.getRandom().nextFloat() < 0.2F) {
-                event.setProjectileItemStack(projectileItemStack.copy());
-            }
+        ItemStack projectileItemStack = event.getProjectileItemStack();
+        if (!projectileItemStack.isEmpty() && living instanceof Player player && PlayerUtils.shouldSkipConsumeAmmo(player)) {
+            event.setProjectileItemStack(projectileItemStack.copy());
         }
     }
 

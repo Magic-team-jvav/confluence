@@ -13,7 +13,9 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.armor.ModArmorMaterials;
 import org.confluence.mod.common.item.armor.BaseArmorItem;
 import org.confluence.terra_curio.common.component.PrimitiveValueComponent;
+import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terra_curio.common.init.TCItems;
+import org.confluence.terraentity.init.TEAttributes;
 
 import java.util.function.Consumer;
 
@@ -177,16 +179,20 @@ public class ArmorItems {
 
     public static final DeferredItem<BaseArmorItem> NINJA_HELMET = register("ninja_helmet", ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/ninja_armor")
-            .rarity(ModRarity.BLUE));
+            .rarity(ModRarity.BLUE)
+            .attribute(TCAttributes.getCriticalChance(), 0.03, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredItem<BaseArmorItem> NINJA_CHESTPLATE = register("ninja_chestplate", ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/ninja_armor")
-            .rarity(ModRarity.BLUE));
+            .rarity(ModRarity.BLUE)
+            .attribute(TCAttributes.getCriticalChance(), 0.03, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredItem<BaseArmorItem> NINJA_LEGGINGS = register("ninja_leggings", ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/ninja_armor")
-            .rarity(ModRarity.BLUE));
+            .rarity(ModRarity.BLUE)
+            .attribute(TCAttributes.getCriticalChance(), 0.015, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredItem<BaseArmorItem> NINJA_BOOTS = register("ninja_boots", ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/ninja_armor")
-            .rarity(ModRarity.BLUE));
+            .rarity(ModRarity.BLUE)
+            .attribute(TCAttributes.getCriticalChance(), 0.015, AttributeModifier.Operation.ADD_VALUE));
 
     public static final DeferredItem<BaseArmorItem> LEAD_HELMET = register("lead_helmet", ModArmorMaterials.LEAD_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/lead_armor")
@@ -255,16 +261,20 @@ public class ArmorItems {
 
     public static final DeferredItem<BaseArmorItem> FOSSIL_HELMET = register("fossil_helmet", ModArmorMaterials.FOSSIL_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/fossil_armor")
-            .rarity(ModRarity.BLUE));
+            .rarity(ModRarity.BLUE)
+            .attribute(TCAttributes.getCriticalChance(), 0.04, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredItem<BaseArmorItem> FOSSIL_CHESTPLATE = register("fossil_chestplate", ModArmorMaterials.FOSSIL_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/fossil_armor")
-            .rarity(ModRarity.BLUE));
+            .rarity(ModRarity.BLUE)
+            .attribute(TCAttributes.getRangedDamage(), 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
     public static final DeferredItem<BaseArmorItem> FOSSIL_LEGGINGS = register("fossil_leggings", ModArmorMaterials.FOSSIL_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/fossil_armor")
-            .rarity(ModRarity.BLUE));
+            .rarity(ModRarity.BLUE)
+            .attribute(TCAttributes.getCriticalChance(), 0.02, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredItem<BaseArmorItem> FOSSIL_BOOTS = register("fossil_boots", ModArmorMaterials.FOSSIL_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/fossil_armor")
-            .rarity(ModRarity.BLUE));
+            .rarity(ModRarity.BLUE)
+            .attribute(TCAttributes.getCriticalChance(), 0.02, AttributeModifier.Operation.ADD_VALUE));
 
     public static final DeferredItem<BaseArmorItem> SPORE_ROOT_HELMET = register("spore_root_helmet", ModArmorMaterials.SPORE_ROOT_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/spore_root_armor")
@@ -320,16 +330,20 @@ public class ArmorItems {
 
     public static final DeferredItem<BaseArmorItem> OBSIDIAN_HELMET = register("obsidian_helmet", ModArmorMaterials.OBSIDIAN_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/obsidian_armor")
-            .rarity(ModRarity.BLUE));
+            .rarity(ModRarity.BLUE)
+            .attribute(TEAttributes.SUMMON_DAMAGE, 0.08, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
     public static final DeferredItem<BaseArmorItem> OBSIDIAN_CHESTPLATE = register("obsidian_chestplate", ModArmorMaterials.OBSIDIAN_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/obsidian_armor")
-            .rarity(ModRarity.BLUE));
+            .rarity(ModRarity.BLUE)
+            .attribute(TEAttributes.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredItem<BaseArmorItem> OBSIDIAN_LEGGINGS = register("obsidian_leggings", ModArmorMaterials.OBSIDIAN_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/obsidian_armor")
-            .rarity(ModRarity.BLUE));
+            .rarity(ModRarity.BLUE)
+            .attribute(TEAttributes.SUMMON_DAMAGE, 0.04, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
     public static final DeferredItem<BaseArmorItem> OBSIDIAN_BOOTS = register("obsidian_boots", ModArmorMaterials.OBSIDIAN_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/obsidian_armor")
-            .rarity(ModRarity.BLUE));
+            .rarity(ModRarity.BLUE)
+            .attribute(TEAttributes.SUMMON_DAMAGE, 0.04, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
 
     public static final DeferredItem<BaseArmorItem> GLADIATOR_HELMET = register("gladiator_helmet", ModArmorMaterials.GLADIATOR_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/gladiator_armor"));

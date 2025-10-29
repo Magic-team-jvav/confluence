@@ -30,6 +30,7 @@ import org.confluence.terra_curio.common.component.PrimitiveValueComponent;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +44,7 @@ public class BaseArmorItem extends ArmorItem {
         super(material, type, properties);
     }
 
+    @ParametersAreNonnullByDefault
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         if (tooltips != null) {

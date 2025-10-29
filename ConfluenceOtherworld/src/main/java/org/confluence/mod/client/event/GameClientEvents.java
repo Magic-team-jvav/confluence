@@ -70,6 +70,7 @@ import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.component.prefix.PrefixType;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.SwordItems;
 import org.confluence.mod.common.init.item.ToolItems;
@@ -224,6 +225,7 @@ public final class GameClientEvents {
                 event.getToolTip().add(Component.translatable("tooltip.price.sell").withStyle(ChatFormatting.GRAY).append(ModUtils.formatPrice(price)));
             }
         }
+        ModArmorBonus.addBonusTooltip(event.getEntity(), event.getItemStack(), event.getToolTip());
     }
 
     @SubscribeEvent(priority = EventPriority.LOW)

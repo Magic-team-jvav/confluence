@@ -1461,6 +1461,17 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 ToolItems.WIRE_CUTTER.get()
         );
 
+        tag(ModTags.Items.ROBE).add(
+                ArmorItems.AMETHYST_ROBE.get(),
+                ArmorItems.TOPAZ_ROBE.get(),
+                ArmorItems.SAPPHIRE_ROBE.get(),
+                ArmorItems.JADE_ROBE.get(),
+                ArmorItems.RUBY_ROBE.get(),
+                ArmorItems.MYSTIC_ROBE.get(),
+                ArmorItems.DIAMOND_ROBE.get(),
+                ArmorItems.AMBER_ROBE.get()
+        );
+
         tag(ModTags.Items.LAVA_PROOF_BAIT).add(
                 BaitItems.HELL_BUTTERFLY.get(),
                 BaitItems.MAGMA_SNAIL.get(),

@@ -19,8 +19,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.NeoForge;
 import org.confluence.mod.api.event.AfterFlushArmorSetBonusEvent;
-import org.confluence.mod.api.event.GetArmorSetBonusEvent;
 import org.confluence.mod.common.init.ModAttachmentTypes;
+import org.confluence.mod.common.init.armor.ArmorSetBonusData;
 import org.confluence.mod.common.init.armor.ArmorSetBonusKey;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.item.ToolItems;
@@ -113,12 +113,12 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
         }
 
         setToDefaultValue();
-        PrimitiveValueComponent bonus = NeoForge.EVENT_BUS.post(new GetArmorSetBonusEvent(player, key, ModArmorBonus.getArmorSetBonus(key))).getNeoBonus();
-        if (bonus == null) {
+        ArmorSetBonusData data = ModArmorBonus.getArmorSetBonusData(player, key);
+        if (data == null) {
             this.armorSetBonusKey = ArmorSetBonusKey.NONE;
         } else {
             this.armorSetBonusKey = key;
-            compute(bonus);
+            compute(data.bonus());
         }
         flushArmor(head);
         flushArmor(chest);

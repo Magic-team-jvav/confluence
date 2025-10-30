@@ -10,6 +10,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.Tuple;
+import net.minecraft.util.Unit;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -42,6 +43,9 @@ import org.confluence.mod.common.item.potion.ManaPotionItem;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.network.s2c.*;
+import org.confluence.terra_curio.api.primitive.PrimitiveValue;
+import org.confluence.terra_curio.api.primitive.UnitValue;
+import org.confluence.terra_curio.api.primitive.ValueType;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.integration.bettercombat.BetterCombatHelper;
 import org.confluence.terra_curio.util.TCUtils;
@@ -113,10 +117,11 @@ public final class PlayerUtils {
 
     public static boolean extractMana(ServerPlayer player, ItemStack itemStack, FloatSupplier sup) {
         if (player.isCreative()) return true;
+        ManaStorage manaStorage = ManaStorage.of(player);
+        if (!manaStorage.canExtract()) return false;
         if (itemStack.is(ManaWeaponItems.SPACE_GUN) && ModArmorBonus.hasType(player, ModArmorBonus.SPACE$GUN$FREE)) {
             sup = () -> 0;
         }
-        ManaStorage manaStorage = ManaStorage.of(player);
         if (manaStorage.extractMana(EnchantmentUtils.processEfficientMagic(sup, player), player)) {
             syncMana2Client(player, manaStorage);
             return true;
@@ -147,7 +152,7 @@ public final class PlayerUtils {
     }
 
     public static float getFishingPower(ServerPlayer player) {
-        float base = TCUtils.getAccessoriesValue(player, AccessoryItems.FISHING$POWER);
+        float base = getPrimitiveValue(player, AccessoryItems.FISHING$POWER);
         if (EverBeneficial.of(player).isGummyWormUsed()) base += 3.0F;
         if (player.isInFluidType() && TCUtils.hasAccessoriesType(player, TCItems.FLOAT$ON$LIQUID$SURFACE)) base += 5.0F;
         if (player.hasEffect(ModEffects.TIPSY)) base += 5.0F;
@@ -427,5 +432,15 @@ public final class PlayerUtils {
             return true;
         }
         return LibUtils.checkChance(ModArmorBonus.getValue(player, ModArmorBonus.SKIP$CONSUME$AMMO$CHANCE), player.getRandom());
+    }
+
+    public static <T, V extends PrimitiveValue<T>> T getPrimitiveValue(Player player, ValueType<T, V> type) {
+        T t1 = TCUtils.getAccessoriesValue(player, type);
+        T t2 = ModArmorBonus.getValue(player, type);
+        return type.combineRule().combine(t1, t2);
+    }
+
+    public static boolean hasPrimitiveType(Player player, ValueType<Unit, UnitValue> type) {
+        return TCUtils.hasAccessoriesType(player, type) && ModArmorBonus.hasType(player, type);
     }
 }

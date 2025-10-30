@@ -66,7 +66,7 @@ public class ManaStorage implements INBTSerializable<CompoundTag> {
 
     public boolean extractMana(FloatSupplier sup, ServerPlayer serverPlayer) {
         if (!canExtract()) return false;
-        float extract = sup.getAsFloat() * (1.0F - TCUtils.getAccessoriesValue(serverPlayer, AccessoryItems.MANA$USE$REDUCE));
+        float extract = sup.getAsFloat() * (1.0F - PlayerUtils.getPrimitiveValue(serverPlayer, AccessoryItems.MANA$USE$REDUCE));
         if (PlayerUtils.applyAutoGetMana(serverPlayer, currentMana, extract)) return false;
         this.currentMana = Mth.clamp(currentMana - extract, 0.0F, getMaxMana());
         if (extract > 0.0F) setRegenerateDelay();
@@ -140,15 +140,15 @@ public class ManaStorage implements INBTSerializable<CompoundTag> {
         return stars >= 10;
     }
 
-    public void flushAbility(ServerPlayer serverPlayer) {
-        this.fastManaRegeneration = TCUtils.hasAccessoriesType(serverPlayer, AccessoryItems.FAST$MANA$GENERATION);
-        int value = TCUtils.getAccessoriesValue(serverPlayer, AccessoryItems.ADDITIONAL$MANA);
-        if (serverPlayer.hasEffect(ModEffects.CLAIRVOYANCE)) value += 20;
-        AdditionalManaEvent event = NeoForge.EVENT_BUS.post(new AdditionalManaEvent(serverPlayer, this, value, additionalMana));
+    public void flushAbility(ServerPlayer player) {
+        this.fastManaRegeneration = TCUtils.hasAccessoriesType(player, AccessoryItems.FAST$MANA$GENERATION);
+        int value = PlayerUtils.getPrimitiveValue(player, AccessoryItems.ADDITIONAL$MANA);
+        if (player.hasEffect(ModEffects.CLAIRVOYANCE)) value += 20;
+        AdditionalManaEvent event = NeoForge.EVENT_BUS.post(new AdditionalManaEvent(player, this, value, additionalMana));
         if (!event.isCanceled() && event.getNeoValue() != additionalMana) {
             this.additionalMana = event.getNeoValue();
             freshMaxMana();
-            PlayerUtils.syncMana2Client(serverPlayer, this);
+            PlayerUtils.syncMana2Client(player, this);
         }
     }
 

@@ -159,9 +159,12 @@ public final class LivingEntityEvents {
         if (living.hasEffect(ModEffects.COZY_FIRE)) {
             amount *= 1.1F;
         }
+        if (living instanceof Player player) {
+            amount = ModArmorBonus.applyHealAmount(player, amount);
+        }
         event.setAmount(amount);
 
-        DamageIndicatorOptions.sendHealParticle(event.getAmount(), level, living);
+        DamageIndicatorOptions.sendHealParticle(amount, level, living);
     }
 
     @SubscribeEvent
@@ -170,7 +173,6 @@ public final class LivingEntityEvents {
         LivingEntity living = event.getEntity();
         if (living instanceof ServerPlayer player) {
             AccessoryItems.applyHurtGetMana(player, damageSource, event.getAmount());
-            ModArmorBonus.applyCactusThorn(player, damageSource);
         }
         Immunity cause = Immunity.getCause(event.getSource());
         if (ILivingEntity.of(living).confluence$getImmunityTicks().containsKey(cause)) {
@@ -255,6 +257,10 @@ public final class LivingEntityEvents {
         if (victim instanceof ServerPlayer player) {
             AchievementUtils.luckyBreak_watchYourStep(player, damageSource, attacker);
             BaseLanceItem.cancelSting(player);
+            ModArmorBonus.beAttacked(player, damageSource);
+        }
+        if (attacker instanceof ServerPlayer player) {
+            ModArmorBonus.onAttacked(player, damageSource, victim);
         }
     }
 

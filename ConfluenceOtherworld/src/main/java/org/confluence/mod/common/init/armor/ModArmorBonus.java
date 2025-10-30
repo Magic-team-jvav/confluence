@@ -1,26 +1,40 @@
 package org.confluence.mod.common.init.armor;
 
-import it.unimi.dsi.fastutil.ints.IntObjectImmutablePair;
-import it.unimi.dsi.fastutil.ints.IntObjectPair;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.ChatFormatting;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.Unit;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.common.NeoForge;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.api.event.GetArmorSetBonusDataEvent;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
+import org.confluence.mod.common.entity.projectile.FlowerPetalProjectile;
+import org.confluence.mod.common.entity.projectile.TitaniumShardsProjectile;
+import org.confluence.mod.common.event.game.GameEvents;
 import org.confluence.mod.common.init.ModDataComponentTypes;
+import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.item.armor.BaseArmorItem;
+import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.terra_curio.api.primitive.*;
 import org.confluence.terra_curio.common.component.PrimitiveValueComponent;
 import org.confluence.terra_curio.common.init.TCAttributes;
@@ -36,20 +50,34 @@ import java.util.function.Supplier;
 import static org.confluence.mod.common.init.item.ArmorItems.*;
 
 public final class ModArmorBonus {
-    private static final Object2ObjectMap<ArmorSetBonusKey, IntObjectPair<PrimitiveValueComponent>> VALUE_MAP = new Object2ObjectOpenHashMap<>();
+    private static final Object2ObjectMap<ArmorSetBonusKey, ArmorSetBonusData> VALUE_MAP = new Object2ObjectOpenHashMap<>();
 
+    // region preset bonus
+    public static final ArmorSetBonusData WIZARD_HAT_SET_BONUS = new ArmorSetBonusData(PrimitiveValueComponent.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(
+            TCAttributes.getCriticalChance(),
+            Confluence.asResource("wizard_hat_set_bonus"),
+            0.1,
+            AttributeModifier.Operation.ADD_VALUE
+    )), 1);
+    public static final ArmorSetBonusData MAGIC_HAT_SET_BONUS = new ArmorSetBonusData(PrimitiveValueComponent.of(AccessoryItems.ADDITIONAL$MANA, 60), 1);
+    // endregion
+
+    // region value type
     public static final ValueType.UnitType CACTUS$THORNS = ValueType.UnitType.of(Confluence.asResource("thorns"));
     public static final ValueType.FloatType SKIP$CONSUME$AMMO$CHANCE = ValueType.FloatType.of(Confluence.asResource("skip_consume_ammo_chance"), FloatValue.ADDITION_WITHIN_0_TO_1, 0);
     public static final ValueType.UnitType SPACE$GUN$FREE = ValueType.UnitType.of(Confluence.asResource("space_gun_free"));
+    public static final ValueType.FloatType HEAL$AMOUNT$MULTIPLIER = ValueType.FloatType.of(Confluence.asResource("heal_amount_multiplier"), FloatValue.ADDITION_WITHIN_0_TO_1, 0);
+    public static final ValueType<List<MobEffectInstancesValue.Effect>, MobEffectInstancesValue> HURT$ENEMY$AWARD$EFFECTS = ValueType.create(Confluence.asResource("hurt_enemy_award_effects"), MobEffectInstancesValue.MERGE, MobEffectInstancesValue.CODEC, List.of(), MobEffectInstancesValue::new);
+    public static final ValueType.UnitType FLOWER$PETAL = ValueType.UnitType.of(Confluence.asResource("flower_petal"));
+    public static final ValueType.UnitType TITANIUM$SHARDS = ValueType.UnitType.of(Confluence.asResource("titanium_shards"));
+    // endregion
 
     @SuppressWarnings("all")
     public static void registerArmorSetBonus() {
         register("mining_set", 1, MINING_HELMET, MINING_CHESTPLATE, MINING_LEGGINGS, MINING_BOOTS, key -> {
             key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(Attributes.BLOCK_BREAK_SPEED, key.id, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
         });
-        register("plank_set", 1, PLANK_HELMET, PLANK_CHESTPLATE, PLANK_LEGGINGS, PLANK_BOOTS, key -> {
-            armor(key, 0.5);
-        });
+        register("plank_set", 1, PLANK_HELMET, PLANK_CHESTPLATE, PLANK_LEGGINGS, PLANK_BOOTS, armor(0.5));
         register("snow_set", 1, SNOW_CAPS, SNOW_SUITS, INSULATED_PANTS, INSULATED_SHOES, key -> {
             key.unit(TCItems.FROZEN$IMMUNE);
         });
@@ -62,12 +90,8 @@ public final class ModArmorBonus {
         register("cactus_set", 1, CACTUS_HELMET, CACTUS_CHESTPLATE, CACTUS_LEGGINGS, CACTUS_BOOTS, key -> {
             key.unit(CACTUS$THORNS);
         });
-        register("copper_set", 1, COPPER_HELMET, COPPER_CHESTPLATE, COPPER_LEGGINGS, COPPER_BOOTS, key -> {
-            armor(key, 1);
-        });
-        register("tin_set", 1, TIN_HELMET, TIN_CHESTPLATE, TIN_LEGGINGS, TIN_BOOTS, key -> {
-            armor(key, 1);
-        });
+        register("copper_set", 1, COPPER_HELMET, COPPER_CHESTPLATE, COPPER_LEGGINGS, COPPER_BOOTS, armor(1));
+        register("tin_set", 1, TIN_HELMET, TIN_CHESTPLATE, TIN_LEGGINGS, TIN_BOOTS, armor(1));
         register("pumpkin_set", 1, PUMPKIN_HELMET, PUMPKIN_CHESTPLATE, PUMPKIN_LEGGINGS, PUMPKIN_BOOTS, key -> {
             key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.builder()
                     .add(Attributes.ATTACK_DAMAGE, key.id, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
@@ -80,24 +104,12 @@ public final class ModArmorBonus {
             key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(Attributes.MOVEMENT_SPEED, key.id, 0.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
             // todo 移动时身后有拖影效果
         });
-        register("iron_set", 1, Items.IRON_HELMET, Items.IRON_CHESTPLATE, Items.IRON_LEGGINGS, Items.IRON_BOOTS, key -> {
-            armor(key, 1);
-        });
-        register("lead_set", 1, LEAD_HELMET, LEAD_CHESTPLATE, LEAD_LEGGINGS, LEAD_BOOTS, key -> {
-            armor(key, 1.5);
-        });
-        register("silver_set", 1, SILVER_HELMET, SILVER_CHESTPLATE, SILVER_LEGGINGS, SILVER_BOOTS, key -> {
-            armor(key, 1.5);
-        });
-        register("tungsten_set", 1, TUNGSTEN_HELMET, TUNGSTEN_CHESTPLATE, TUNGSTEN_LEGGINGS, TUNGSTEN_BOOTS, key -> {
-            armor(key, 1.5);
-        });
-        register("golden_set", 1, GOLDEN_HELMET, GOLDEN_CHESTPLATE, GOLDEN_LEGGINGS, GOLDEN_BOOTS, key -> {
-            armor(key, 1.5);
-        });
-        register("platinum_set", 1, PLATINUM_HELMET, PLATINUM_CHESTPLATE, PLATINUM_LEGGINGS, PLATINUM_BOOTS, key -> {
-            armor(key, 2);
-        });
+        register("iron_set", 1, Items.IRON_HELMET, Items.IRON_CHESTPLATE, Items.IRON_LEGGINGS, Items.IRON_BOOTS, armor(1));
+        register("lead_set", 1, LEAD_HELMET, LEAD_CHESTPLATE, LEAD_LEGGINGS, LEAD_BOOTS, armor(1.5));
+        register("silver_set", 1, SILVER_HELMET, SILVER_CHESTPLATE, SILVER_LEGGINGS, SILVER_BOOTS, armor(1.5));
+        register("tungsten_set", 1, TUNGSTEN_HELMET, TUNGSTEN_CHESTPLATE, TUNGSTEN_LEGGINGS, TUNGSTEN_BOOTS, armor(1.5));
+        register("golden_set", 1, GOLDEN_HELMET, GOLDEN_CHESTPLATE, GOLDEN_LEGGINGS, GOLDEN_BOOTS, armor(1.5));
+        register("platinum_set", 1, PLATINUM_HELMET, PLATINUM_CHESTPLATE, PLATINUM_LEGGINGS, PLATINUM_BOOTS, armor(2));
         register("fossil_set", 1, FOSSIL_HELMET, FOSSIL_CHESTPLATE, FOSSIL_LEGGINGS, FOSSIL_BOOTS, key -> {
             key.of(SKIP$CONSUME$AMMO$CHANCE, 0.2F);
         });
@@ -119,11 +131,95 @@ public final class ModArmorBonus {
         });
         register("meteor_set", 1, METEOR_HELMET, METEOR_CHESTPLATE, METEOR_LEGGINGS, METEOR_BOOTS, key -> {
             key.unit(SPACE$GUN$FREE);
+            // todo 移动时有火焰微粒（类似于火箭靴，但不发光）
         });
+        register("jungle_set", 2, JUNGLE_HELMET, JUNGLE_CHESTPLATE, JUNGLE_LEGGINGS, JUNGLE_BOOTS, key -> {
+            key.of(AccessoryItems.MANA$USE$REDUCE, 0.16F);
+            // todo 移动时草粒飞舞
+        });
+        register("necro_set", 2, NECRO_HELMET, NECRO_CHESTPLATE, NECRO_LEGGINGS, NECRO_BOOTS, key -> {
+            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(TCAttributes.getCriticalChance(), key.id, 0.1, AttributeModifier.Operation.ADD_VALUE));
+            // todo 移动时身后有拖影，受伤时发出骨头碎裂的声音
+        });
+        register("shadow_set", 2, SHADOW_HELMET, SHADOW_CHESTPLATE, SHADOW_LEGGINGS, SHADOW_BOOTS, key -> {
+            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(Attributes.MOVEMENT_SPEED, key.id, 0.15, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            // todo 加速度增加 75%；移动时身后有拖影，并有火箭靴那样的火焰，但是紫色的。
+        });
+        register("crimson_set", 2, CRIMSON_HELMET, CRIMSON_CHESTPLATE, CRIMSON_LEGGINGS, CRIMSON_BOOTS, key -> {
+            key.of(HEAL$AMOUNT$MULTIPLIER, 0.5F);
+            // todo 在移动时与再生生命时会发出红色微粒
+        });
+        register("molten_set", 2, MOLTEN_HELMET, MOLTEN_CHESTPLATE, MOLTEN_LEGGINGS, MOLTEN_BOOTS, key -> {
+            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(Attributes.ATTACK_DAMAGE, key.id, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            // todo 移动时有火焰微粒
+        });
+        register("pearlwood_set", 1, PEARL_HELMET, PEARL_CHESTPLATE, PEARL_LEGGINGS, PEARL_BOOTS, armor(0.5));
+        register("spider_set", 1, SPIDER_HELMET, SPIDER_CHESTPLATE, SPIDER_LEGGINGS, SPIDER_BOOTS, key -> {
+            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(TEAttributes.SUMMON_DAMAGE, key.id, 0.12, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+        });
+        register("cobalt_helmet_set", 2, COBALT_HELMET, COBALT_CHESTPLATE, COBALT_LEGGINGS, COBALT_BOOTS, key -> {
+            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(Attributes.ATTACK_SPEED, key.id, 0.15, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            // todo 移动时产生残影效果
+        });
+        register("cobalt_mask_set", 2, COBALT_MASK, COBALT_CHESTPLATE, COBALT_LEGGINGS, COBALT_BOOTS, key -> {
+            key.of(SKIP$CONSUME$AMMO$CHANCE, 0.2F);
+            // todo 移动时产生残影效果
+        });
+        register("cobalt_hat_set", 2, COBALT_HAT, COBALT_CHESTPLATE, COBALT_LEGGINGS, COBALT_BOOTS, key -> {
+            key.of(AccessoryItems.MANA$USE$REDUCE, 0.14F);
+            // todo 移动时产生残影效果
+        });
+        Consumer<ArmorSetBonusKey> palladiumSet = key -> {
+            key.of(HURT$ENEMY$AWARD$EFFECTS, List.of(new MobEffectInstancesValue.Effect(MobEffects.REGENERATION, 100, 1)));
+        };
+        register("palladium_mask_set", 1, PALLADIUM_MASK, PALLADIUM_CHESTPLATE, PALLADIUM_LEGGINGS, PALLADIUM_BOOTS, palladiumSet);
+        register("palladium_helmet_set", 1, PALLADIUM_HELMET, PALLADIUM_CHESTPLATE, PALLADIUM_LEGGINGS, PALLADIUM_BOOTS, palladiumSet);
+        register("palladium_headgear_set", 1, PALLADIUM_HEADGEAR, PALLADIUM_CHESTPLATE, PALLADIUM_LEGGINGS, PALLADIUM_BOOTS, palladiumSet);
+        register("mythril_hood_set", 1, MYTHRIL_HOOD, MYTHRIL_CHESTPLATE, MYTHRIL_LEGGINGS, MYTHRIL_BOOTS, key -> {
+            key.of(AccessoryItems.MANA$USE$REDUCE, 0.17F);
+        });
+        register("mythril_helmet_set", 1, MYTHRIL_HELMET, MYTHRIL_CHESTPLATE, MYTHRIL_LEGGINGS, MYTHRIL_BOOTS, key -> {
+            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(TCAttributes.getCriticalChance(), key.id, 0.1, AttributeModifier.Operation.ADD_VALUE));
+        });
+        register("mythril_hat_set", 1, MYTHRIL_HAT, MYTHRIL_CHESTPLATE, MYTHRIL_LEGGINGS, MYTHRIL_BOOTS, key -> {
+            key.of(SKIP$CONSUME$AMMO$CHANCE, 0.2F);
+        });
+        Consumer<ArmorSetBonusKey> orichalcumSet = key -> {
+            key.unit(FLOWER$PETAL);
+        };
+        register("orichalcum_headgear_set", 1, ORICHALCUM_HEADGEAR, ORICHALCUM_CHESTPLATE, ORICHALCUM_LEGGINGS, ORICHALCUM_BOOTS, orichalcumSet);
+        register("orichalcum_mask_set", 1, ORICHALCUM_MASK, ORICHALCUM_CHESTPLATE, ORICHALCUM_LEGGINGS, ORICHALCUM_BOOTS, orichalcumSet);
+        register("orichalcum_helmet_set", 1, ORICHALCUM_HELMET, ORICHALCUM_CHESTPLATE, ORICHALCUM_LEGGINGS, ORICHALCUM_BOOTS, orichalcumSet);
+        register("adamantite_headgear_set", 2, ADAMANTITE_HEADGEAR, ADAMANTITE_CHESTPLATE, ADAMANTITE_LEGGINGS, ADAMANTITE_BOOTS, key -> {
+            key.of(AccessoryItems.MANA$USE$REDUCE, 0.19F);
+            // todo 玩家身周发出微弱的脉动光环。
+        });
+        register("adamantite_helmet_set", 2, ADAMANTITE_HELMET, ADAMANTITE_CHESTPLATE, ADAMANTITE_LEGGINGS, ADAMANTITE_BOOTS, key -> {
+            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.builder()
+                    .add(Attributes.ATTACK_SPEED, key.id, 0.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                    .add(Attributes.MOVEMENT_SPEED, key.id, 0.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                    .build());
+            // todo 玩家身周发出微弱的脉动光环。
+        });
+        register("adamantite_mask_set", 2, ADAMANTITE_MASK, ADAMANTITE_CHESTPLATE, ADAMANTITE_LEGGINGS, ADAMANTITE_BOOTS, key -> {
+            key.of(SKIP$CONSUME$AMMO$CHANCE, 0.25F);
+            // todo 玩家身周发出微弱的脉动光环。
+        });
+        Consumer<ArmorSetBonusKey> titaniumSet = key -> {
+            key.unit(TITANIUM$SHARDS);
+        };
+        register("titanium_mask_set", 2, TITANIUM_MASK, TITANIUM_CHESTPLATE, TITANIUM_LEGGINGS, TITANIUM_BOOTS, titaniumSet);
+        register("titanium_helmet_set", 2, TITANIUM_HELMET, TITANIUM_CHESTPLATE, TITANIUM_LEGGINGS, TITANIUM_BOOTS, titaniumSet);
+        register("titanium_headgear_set", 2, TITANIUM_HEADGEAR, TITANIUM_CHESTPLATE, TITANIUM_LEGGINGS, TITANIUM_BOOTS, titaniumSet);
+
+        // todo	水晶刺客盔甲、神圣盔甲
+
+        /// 巫师套装
+        /// @see GameEvents#getArmorSetBonus(GetArmorSetBonusDataEvent)
     }
 
-    private static void armor(ArmorSetBonusKey key, double value) {
-        key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(Attributes.ARMOR, key.id, value, AttributeModifier.Operation.ADD_VALUE));
+    private static Consumer<ArmorSetBonusKey> armor(double value) {
+        return key -> key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(Attributes.ARMOR, key.id, value, AttributeModifier.Operation.ADD_VALUE));
     }
 
     private static void register(String path,
@@ -157,7 +253,7 @@ public final class ModArmorBonus {
         key.types = new HashMap<>();
         key.id = id;
         consumer.accept(key);
-        VALUE_MAP.put(key, new IntObjectImmutablePair<>(tooltipCount, new PrimitiveValueComponent(key.types)));
+        VALUE_MAP.put(key, new ArmorSetBonusData(new PrimitiveValueComponent(key.types), tooltipCount));
         key.types = null;
     }
 
@@ -173,13 +269,37 @@ public final class ModArmorBonus {
         return itemStack.get(ModDataComponentTypes.ARMOR_BONUS);
     }
 
-    public static @Nullable PrimitiveValueComponent getArmorSetBonus(ArmorSetBonusKey key) {
+    public static @Nullable ArmorSetBonusData getArmorSetBonusData(Player player, ArmorSetBonusKey key) {
         if (key == ArmorSetBonusKey.NONE) return null;
-        IntObjectPair<PrimitiveValueComponent> pair = VALUE_MAP.get(key);
-        return pair == null ? null : pair.right();
+        return NeoForge.EVENT_BUS.post(new GetArmorSetBonusDataEvent(player, key, VALUE_MAP.get(key))).getNeoData();
     }
 
-    public static void applyCactusThorn(ServerPlayer player, DamageSource damageSource) {
+    public static void addBonusTooltip(@Nullable Player player, ItemStack itemStack, List<Component> toolTip) {
+        if (player == null) return;
+        ArmorSetBonusKey key = PlayerSpecialData.of(player).getArmorSetBonusKey();
+        if (key == ArmorSetBonusKey.NONE) return;
+        if (itemStack.getItem() instanceof BaseArmorItem armorItem && switch (armorItem.getEquipmentSlot()) {
+            case FEET -> key.feet() == armorItem;
+            case LEGS -> key.legs() == armorItem;
+            case CHEST -> key.chest() == armorItem;
+            case HEAD -> key.head() == armorItem;
+            default -> false;
+        }) {
+            ArmorSetBonusData data = getArmorSetBonusData(player, key);
+            if (data == null || data.tooltipCount() == 0) return;
+            String descriptionKey = key.getDescriptionKey();
+            toolTip.add(Component.translatable("armor_set_bonus.when_applied").withStyle(ChatFormatting.GRAY));
+            for (int i = 0; i < data.tooltipCount(); i++) {
+                toolTip.add(Component.translatable("armor_set_bonus." + descriptionKey + "." + i).withStyle(ChatFormatting.AQUA));
+            }
+        }
+    }
+
+    public static float applyHealAmount(Player player, float amount) {
+        return amount * (1 + getValue(player, HEAL$AMOUNT$MULTIPLIER));
+    }
+
+    public static void beAttacked(ServerPlayer player, DamageSource damageSource) {
         if (hasType(player, CACTUS$THORNS)) {
             Entity entity = damageSource.getEntity();
             if (entity != null && entity.isRemoved()) {
@@ -196,23 +316,44 @@ public final class ModArmorBonus {
         }
     }
 
-    public static void addBonusTooltip(@Nullable Player player, ItemStack itemStack, List<Component> toolTip) {
-        if (player == null) return;
-        ArmorSetBonusKey key = PlayerSpecialData.of(player).getArmorSetBonusKey();
-        if (key == ArmorSetBonusKey.NONE) return;
-        if (itemStack.getItem() instanceof BaseArmorItem armorItem && switch (armorItem.getEquipmentSlot()) {
-            case FEET -> key.feet() == armorItem;
-            case LEGS -> key.legs() == armorItem;
-            case CHEST -> key.chest() == armorItem;
-            case HEAD -> key.head() == armorItem;
-            default -> false;
-        }) {
-            IntObjectPair<PrimitiveValueComponent> pair = VALUE_MAP.get(key);
-            if (pair == null) return;
-            String descriptionKey = key.getDescriptionKey();
-            toolTip.add(Component.translatable("armor_set_bonus.when_applied").withStyle(ChatFormatting.GRAY));
-            for (int i = 0; i < pair.leftInt(); i++) {
-                toolTip.add(Component.translatable("armor_set_bonus." + descriptionKey + "." + i).withStyle(ChatFormatting.AQUA));
+    public static void onAttacked(ServerPlayer player, DamageSource damageSource, LivingEntity victim) {
+        if (victim instanceof Enemy) {
+            List<MobEffectInstancesValue.Effect> effects = getValue(player, HURT$ENEMY$AWARD$EFFECTS);
+            if (!effects.isEmpty()) {
+                for (MobEffectInstancesValue.Effect effect : effects) {
+                    player.addEffect(effect.get());
+                }
+            }
+        }
+        if (hasType(player, FLOWER$PETAL)) flowerPetal:{
+            if (damageSource.getDirectEntity() instanceof FlowerPetalProjectile) break flowerPetal;
+            CompoundTag tag = LibUtils.getOrCreatePersistedData(player);
+            long gameTime = player.level().getGameTime();
+            if (gameTime - tag.getLong("confluence:last_flower_petal_attack") < 6) break flowerPetal;
+            tag.putLong("confluence:last_flower_petal_attack", gameTime);
+            FlowerPetalProjectile projectile = new FlowerPetalProjectile(player);
+            Vec3 position = victim.position().add(0, victim.getBbHeight() * 0.5, 0);
+            RandomSource random = player.getRandom();
+            double y = (random.nextFloat() - 0.5) * 10;
+            Vec3 offset = position.add(
+                    (random.nextFloat() - 0.5) * 10,
+                    y > 0.0 ? y + 5 : y,
+                    (random.nextFloat() - 0.5) * 10
+            );
+            projectile.setPos(offset);
+            projectile.shoot(position.x - offset.x, position.y - offset.y, position.z - offset.z, 1.2F, 0.0F);
+            player.level().addFreshEntity(projectile);
+        }
+        if (hasType(player, TITANIUM$SHARDS) &&
+                player instanceof IServerPlayer serverPlayer &&
+                !(damageSource.getDirectEntity() instanceof TitaniumShardsProjectile) &&
+                !player.hasEffect(ModEffects.TITANIUM_BARRIER)
+        ) {
+            player.addEffect(new MobEffectInstance(ModEffects.TITANIUM_BARRIER, 200));
+            if (!serverPlayer.confluence$hasTitaniumShards()) {
+                TitaniumShardsProjectile projectile = new TitaniumShardsProjectile(player);
+                serverPlayer.confluence$setTitaniumShards(projectile);
+                player.level().addFreshEntity(projectile);
             }
         }
     }

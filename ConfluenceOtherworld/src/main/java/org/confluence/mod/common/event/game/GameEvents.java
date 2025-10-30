@@ -30,6 +30,7 @@ import org.confluence.lib.event.SwitchItemFunctionEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.StartupConfigs;
 import org.confluence.mod.api.event.AdditionalManaEvent;
+import org.confluence.mod.api.event.GetArmorSetBonusDataEvent;
 import org.confluence.mod.api.event.MinecartAbilityEvent;
 import org.confluence.mod.api.event.ShimmerItemTransmutationEvent;
 import org.confluence.mod.api.event.bestiary.ToBeBestiaryEntryEvent;
@@ -43,6 +44,9 @@ import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
 import org.confluence.mod.common.init.ModCommands;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.armor.ArmorSetBonusKey;
+import org.confluence.mod.common.init.armor.ModArmorBonus;
+import org.confluence.mod.common.init.item.ArmorItems;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.init.item.MinecartItems;
 import org.confluence.mod.common.init.item.ToolItems;
@@ -241,6 +245,18 @@ public final class GameEvents {
                 event.setCanceled(true);
             } else if (type == TEBossEntities.SKELETRON_HAND.get()) {
                 event.setCanceled(true);
+            }
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public static void getArmorSetBonus(GetArmorSetBonusDataEvent event) {
+        ArmorSetBonusKey key = event.getKey();
+        if (key.head() != null && key.chest() != null && key.head().builtInRegistryHolder().is(ModTags.Items.ROBE)) {
+            if (key.chest() == ArmorItems.WIZARD_HAT.get()) {
+                event.setNeoData(ModArmorBonus.WIZARD_HAT_SET_BONUS);
+            } else if (key.chest() == ArmorItems.MAGIC_HAT.get()) {
+                event.setNeoData(ModArmorBonus.MAGIC_HAT_SET_BONUS);
             }
         }
     }

@@ -1,12 +1,10 @@
 package org.confluence.mod.mixin.integration.terra_curio;
 
-import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.material.FluidState;
 import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.init.armor.ModArmorBonus;
+import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.util.TCUtils;
 import org.spongepowered.asm.mixin.Mixin;
@@ -23,11 +21,10 @@ public abstract class TCUtilsMixin {
         }
     }
 
-    @ModifyReturnValue(method = "applyFrozenImmune", at = @At(value = "RETURN", ordinal = 0))
-    private static boolean modify(boolean original, @Local(argsOnly = true) LivingEntity living) {
-        if (original && living instanceof Player player && ModArmorBonus.hasType(player, TCItems.FROZEN$IMMUNE)) {
-            return false;
+    @Inject(method = "applyFrozenImmune", at = @At("HEAD"), cancellable = true)
+    private static void modify(LivingEntity living, boolean original, CallbackInfoReturnable<Boolean> cir) {
+        if (original && living instanceof Player player && PlayerUtils.hasPrimitiveType(player, TCItems.FROZEN$IMMUNE)) {
+            cir.setReturnValue(false);
         }
-        return original;
     }
 }

@@ -8,6 +8,7 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -44,6 +45,17 @@ public abstract class AbstractBoulderBlock<T extends AbstractBoulderEntity> exte
 		super(properties);
 		this.createEntityFactory = createEntityFactory;
 		this.builder = builder;
+	}
+
+	@Override
+	protected void onPlace(final BlockState state, final Level level, final BlockPos pos, final BlockState oldState, final boolean movedByPiston) {
+		super.onPlace(state, level, pos, oldState, movedByPiston);
+		var relative = pos.relative(Direction.DOWN);
+		var blockState = level.getBlockState(relative);
+		if (!blockState.isAir() || (blockState.isFaceSturdy(level, relative, Direction.UP))) {
+			return;
+		}
+		level.removeBlock(pos, false);
 	}
 
 	@Override
@@ -92,7 +104,7 @@ public abstract class AbstractBoulderBlock<T extends AbstractBoulderEntity> exte
 	}
 
 	protected void summon(Level level, BlockPos pos, BlockState blockState, Function<T, Player> function) {
-		var entity = this.createEntityFactory.create(level, pos.getBottomCenter(), blockState, this.builder);
+		var entity = createEntityFactory.create(level, pos.getBottomCenter(), blockState, this.builder);
 		if (!level.getBlockState(pos.below()).isAir()) {
 			entity.setTracking(true);
 			entity.targetPlayer(function.apply(entity));

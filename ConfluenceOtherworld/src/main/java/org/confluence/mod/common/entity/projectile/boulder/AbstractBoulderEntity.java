@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -21,12 +22,12 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.*;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.block.functional.boulder.AbstractBoulderBlock;
 import org.confluence.mod.common.init.ModDamageTypes;
-import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2d;
 
@@ -370,6 +371,15 @@ public abstract class AbstractBoulderEntity extends Projectile {
 	@Override
 	protected void onHitBlock(BlockHitResult blockHitResult) {
 		super.onHitBlock(blockHitResult);
+		var level = level();
+		if (level instanceof ServerLevel serverLevel) {
+			var pos = blockHitResult.getBlockPos();
+			var vec3 = blockHitResult.getLocation();
+			var blockState = level.getBlockState(pos);
+			serverLevel.sendParticles(new BlockParticleOption(this.particleType, blockState).setPos(pos),
+					vec3.x, vec3.y, vec3.z, 175, 0.0, 0.0, 0.0, 0.15);
+			serverLevel.playSound(null, pos, this.sound, this.soundCategory, 10.0F, 1.0F);
+		}
 		var axis = blockHitResult.getDirection().getAxis();
 		if (axis == Direction.Axis.Y) {
 			onVerticalBlockHit(blockHitResult);
@@ -384,7 +394,6 @@ public abstract class AbstractBoulderEntity extends Projectile {
 	 * @param blockHitResult 方块碰撞结果
 	 */
 	protected void onHorizontalBlockHit(final BlockHitResult blockHitResult) {
-		// 撞墙破碎
 		onRemoveBroken();
 	}
 
@@ -399,8 +408,12 @@ public abstract class AbstractBoulderEntity extends Projectile {
 			return;
 		}
 		var vec3 = blockHitResult.getLocation();
-		findLocation(vec3.subtract(vec3.scale(Math.pow(vec3.length(), -(getSizeRadius() * 2)))));
+		findLocation(getAdjustMoveVector(vec3, -1));
 		this.landingCount--;
+	}
+
+	protected Vec3 getAdjustMoveVector(final Vec3 vec3, double v) {
+		return vec3.subtract(vec3.scale(Math.pow(vec3.length(), v * (getSizeRadius() * 2))));
 	}
 
 	/**

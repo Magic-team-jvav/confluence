@@ -66,8 +66,7 @@ public class ExplodeBoulderEntity extends AbstractBoulderEntity {
 		if (level().isClientSide) {
 			return;
 		}
-		var vec3 = hitResult.getLocation();
-		vec3 = vec3.subtract(vec3.scale(Math.pow(vec3.length(), -(getSizeRadius() * 2))));
+		var vec3 = getAdjustMoveVector(hitResult.getLocation(), -1);
 		this.level().explode(this, vec3.x, vec3.y, vec3.z, this.explosiveRadius, true, Level.ExplosionInteraction.TNT);
 		onRemoveBroken();
 	}

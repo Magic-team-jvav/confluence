@@ -2397,6 +2397,125 @@ public class ModChineseProvider extends LanguageProvider {
         add("bestiary.entity.terra_entity.bloody_spore.desc", "猩红之地知道苦力怕这种生物最容易将它的肉体撒播。");
         add("bestiary.entity.terra_entity.hill_of_flesh.desc", "世界的双相，造就了血肉墙对世界另一适应形态的出现，血肉山是世界的核心与守护者，这尊高大的恶魔领主存在的意义，便是将强大的远古灵魂封印起来。");
 
+        // 套装效果
+        add("armor_set_bonus.when_applied", "套装奖励");
+        // 挖矿
+        add("tooltip.item.confluence.mining_helmet.0", "穿戴时可提供照明");
+        add("tooltip.item.confluence.mining_chestplate.0", "挖矿速度提高10%");
+        add("tooltip.item.confluence.mining_leggings.0", "挖矿速度提高5%");
+        add("tooltip.item.confluence.mining_boots.0", "挖矿速度提高5%");
+        add("armor_set_bonus.confluence.mining_set.0", "挖矿速度提高10%");
+        // 木
+        add("armor_set_bonus.confluence.plank_set.0", "+1 护甲值");
+        add("armor_set_bonus.confluence.pearlwood_set.0", "+1 护甲值");
+        // 肉前基础矿石
+        add("armor_set_bonus.confluence.copper_set.0", "+1 护甲值");
+        add("armor_set_bonus.confluence.tin_set.0", "+2 护甲值");
+        add("armor_set_bonus.confluence.lead_set.0", "+1 护甲值");
+        add("armor_set_bonus.confluence.silver_set.0", "+2 护甲值");
+        add("armor_set_bonus.confluence.tungsten_set.0", "+1 护甲值");
+        add("armor_set_bonus.confluence.golden_set.0", "+1 护甲值");
+        add("armor_set_bonus.confluence.platinum_set.0", "+2 护甲值");
+        // 防雪
+        add("armor_set_bonus.confluence.snow_set.0", "不会被冷冻或冰冻");
+        add("armor_set_bonus.confluence.pink_snow_set.0", "不会被冷冻或冰冻");
+        // 渔夫
+        add("tooltip.item.confluence.angler_hat.0", "渔力增加5");
+        add("tooltip.item.confluence.angler_vest.0", "渔力增加5");
+        add("tooltip.item.confluence.angler_pants.0", "渔力增加5");
+        add("armor_set_bonus.confluence.angler_set.0", "敌人生成速度降低（未完成）");
+        // 仙人掌
+        add("armor_set_bonus.confluence.cactus_set.0", "攻击者因为仙人掌尖刺受到伤害");
+        // 南瓜
+        add("armor_set_bonus.confluence.pumpkin_set.0", "伤害提高10%");
+        // 忍者
+        add("tooltip.item.confluence.ninja_helmet.0", "暴击率提高3%");
+        add("tooltip.item.confluence.ninja_chestplate.0", "暴击率提高3%");
+        add("tooltip.item.confluence.ninja_leggings.0", "暴击率提高1.5%");
+        add("tooltip.item.confluence.ninja_boots.0", "暴击率提高1.5%");
+        add("armor_set_bonus.confluence.ninja_set.0", "移动速度提高20%");
+        // 化石
+        add("tooltip.item.confluence.fossil_helmet.0", "暴击率提高4%");
+        add("tooltip.item.confluence.fossil_chestplate.0", "远程伤害提高5%");
+        add("tooltip.item.confluence.fossil_leggings.0", "暴击率提高2%");
+        add("tooltip.item.confluence.fossil_boots.0", "暴击率提高2%");
+        add("armor_set_bonus.confluence.fossil_set.0", "20%几率省下弹药");
+        // 蜜蜂
+        add("tooltip.item.confluence.bee_helmet.0", "召唤伤害提高4%，仆从数量上限增加1");
+        add("tooltip.item.confluence.bee_chestplate.0", "召唤伤害提高4%，仆从数量上限增加1");
+        add("tooltip.item.confluence.bee_leggings.0", "召唤伤害提高2.5%");
+        add("tooltip.item.confluence.bee_boots.0", "召唤伤害提高2.5%");
+        add("armor_set_bonus.confluence.bee_set.0", "召唤伤害提高10%");
+        // 黑曜石
+        add("tooltip.item.confluence.obsidian_helmet.0", "召唤伤害提高8%");
+        add("tooltip.item.confluence.obsidian_chestplate.0", "仆从数量上限增加1");
+        add("tooltip.item.confluence.obsidian_leggings.0", "召唤伤害提高4%");
+        add("tooltip.item.confluence.obsidian_boots.0", "召唤伤害提高4%");
+        add("armor_set_bonus.confluence.obsidian_set.0", "鞭子攻击范围扩大30%，鞭子攻击速度提高15%，召唤伤害提高15%");
+        // 角斗士
+        add("armor_set_bonus.confluence.gladiator_set.0", "免疫击退");
+        // 流星
+        add("tooltip.item.confluence.meteor_helmet.0", "魔法伤害提高9%");
+        add("tooltip.item.confluence.meteor_chestplate.0", "魔法伤害提高9%");
+        add("tooltip.item.confluence.meteor_leggings.0", "魔法伤害提高4.5%");
+        add("tooltip.item.confluence.meteor_boots.0", "魔法伤害提高4.5%");
+        add("armor_set_bonus.confluence.meteor_set.0", "太空枪魔力消耗降低为0");
+        // 丛林
+        add("tooltip.item.confluence.jungle_helmet.0", "最大魔力增加40，暴击率提高6%");
+        add("tooltip.item.confluence.jungle_chestplate.0", "最大魔力增加20，魔法伤害提高6%");
+        add("tooltip.item.confluence.jungle_leggings.0", "最大魔力增加20");
+        add("tooltip.item.confluence.jungle_boots.0", "魔法伤害提高6%");
+        add("armor_set_bonus.confluence.jungle_set.0", "魔力消耗降低16%");
+        // 死灵
+        add("tooltip.item.confluence.necro_helmet.0", "远程伤害提高5%");
+        add("tooltip.item.confluence.necro_chestplate.0", "远程伤害提高5%");
+        add("tooltip.item.confluence.necro_leggings.0", "远程伤害提高2.5%");
+        add("tooltip.item.confluence.necro_boots.0", "远程伤害提高2.5%");
+        add("armor_set_bonus.confluence.necro_set.0", "暴击率提高10%");
+        // 暗影
+        add("tooltip.item.confluence.shadow_helmet.0", "暴击率提高5%");
+        add("tooltip.item.confluence.shadow_chestplate.0", "暴击率提高5%");
+        add("tooltip.item.confluence.shadow_leggings.0", "暴击率提高2.5%");
+        add("tooltip.item.confluence.shadow_boots.0", "暴击率提高2.5%");
+        add("armor_set_bonus.confluence.shadow_set.0", "提高移动速度和加速度");
+        // 猩红
+        add("tooltip.item.confluence.crimson_helmet.0", "伤害提高3%");
+        add("tooltip.item.confluence.crimson_chestplate.0", "伤害提高3%");
+        add("tooltip.item.confluence.crimson_leggings.0", "伤害提高1.5%");
+        add("tooltip.item.confluence.crimson_boots.0", "伤害提高1.5%");
+        add("armor_set_bonus.confluence.crimson_set.0", "生命再生能力大幅提升");
+        // 熔岩
+        add("tooltip.item.confluence.molten_helmet.0", "暴击率提高7%");
+        add("tooltip.item.confluence.molten_chestplate.0", "近战伤害提高7%");
+        add("tooltip.item.confluence.molten_leggings.0", "近战速度提高3.5%");
+        add("tooltip.item.confluence.molten_boots.0", "近战速度提高3.5%");
+        add("armor_set_bonus.confluence.molten_set.0", "近战伤害提高10%，免疫着火");
+        // 蜘蛛
+        add("tooltip.item.confluence.spider_helmet.0", "仆从数量上限增加1，召唤伤害提高5%");
+        add("tooltip.item.confluence.spider_chestplate.0", "仆从数量上限增加1，召唤伤害提高5%");
+        add("tooltip.item.confluence.spider_leggings.0", "仆从数量上限增加1");
+        add("tooltip.item.confluence.spider_boots.0", "召唤伤害提高6%");
+        add("armor_set_bonus.confluence.spider_set.0", "召唤伤害提高12%");
+        // 困难模式矿石
+        add("tooltip.item.confluence.cobalt_mask.0", "远程伤害提高10%，远程暴击率提高10%");
+        add("tooltip.item.confluence.cobalt_hat.0", "最大魔力增加40，魔法伤害提高10%，魔法暴击率提高9%");
+        add("tooltip.item.confluence.cobalt_helmet.0", "移动速度提高10%，近战伤害提高15%");
+        add("tooltip.item.confluence.cobalt_chestplate.0", "暴击率提高5%");
+        add("tooltip.item.confluence.cobalt_leggings.0", "移动速度提高10%");
+        add("tooltip.item.confluence.cobalt_boots.0", "伤害提高3%");
+        add("armor_set_bonus.confluence.cobalt_helmet_set.0", "近战速度提高15%");
+        add("armor_set_bonus.confluence.cobalt_mask_set.0", "20%几率省下弹药");
+        add("armor_set_bonus.confluence.cobalt_hat_set.0", "魔力消耗降低14%");
+
+        add("tooltip.item.confluence.palladium_mask.0", "近战伤害提高12%,近战速度提高12%");
+        add("tooltip.item.confluence.palladium_headgear.0", "魔法伤害和魔法暴击率各提高9%,最大魔力增加60");
+        add("tooltip.item.confluence.palladium_helmet.0", "远程伤害提高9%,远程暴击率提高9%");
+        add("tooltip.item.confluence.palladium_chestplate.0", "伤害提高3%,暴击率提高2%");
+        add("tooltip.item.confluence.palladium_leggings.0", "伤害提高2%");
+        add("tooltip.item.confluence.palladium_boots.0", "暴击率提高1%");
+        add("armor_set_bonus.confluence.palladium_mask_set.0", "攻击敌人后大大提高生命再生速度");
+        add("armor_set_bonus.confluence.palladium_helmet_set.0", "攻击敌人后大大提高生命再生速度");
+        add("armor_set_bonus.confluence.palladium_headgear_set.0", "攻击敌人后大大提高生命再生速度");
 
         add(ModEntities.BEE_ARROW.get(), "蜜蜂箭");
         add(ModEntities.HELL_BAT_ARROW.get(), "地狱蝙蝠箭");
@@ -4333,10 +4452,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.CRIMSON_CHESTPLATE.get(), "猩红胸甲");
         add(ArmorItems.CRIMSON_LEGGINGS.get(), "猩红护腿");
         add(ArmorItems.CRIMSON_BOOTS.get(), "猩红靴");
-        add(ArmorItems.MINING_HELMET.get(), "照明头盔");
-        add(ArmorItems.MINING_CHESTPLATE.get(), "矿工衣");
-        add(ArmorItems.MINING_LEGGINGS.get(), "矿工裤");
-        add(ArmorItems.MINING_BOOTS.get(), "矿工靴");
+        add(ArmorItems.MINING_HELMET.get(), "挖矿头盔");
+        add(ArmorItems.MINING_CHESTPLATE.get(), "挖矿衣");
+        add(ArmorItems.MINING_LEGGINGS.get(), "挖矿裤");
+        add(ArmorItems.MINING_BOOTS.get(), "挖矿靴");
         add(ArmorItems.ANGLER_HAT.get(), "渔夫帽");
         add(ArmorItems.ANGLER_VEST.get(), "渔夫背心");
         add(ArmorItems.ANGLER_PANTS.get(), "渔夫裤");

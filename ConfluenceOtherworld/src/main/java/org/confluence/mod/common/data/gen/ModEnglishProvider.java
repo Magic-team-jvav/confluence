@@ -2359,6 +2359,127 @@ public class ModEnglishProvider extends LanguageProvider {
         add("bestiary.entity.terra_entity.bloody_spore.desc", "The Crimson recognizes that Creepers are the easiest creatures to spread its flesh.");
         add("bestiary.entity.terra_entity.hill_of_flesh.desc", "The duality of the world has forged the Wall of Flesh into another adaptive form for the world. As the core and guardian of the world, this towering demon lord exists to seal away the powerful ancient souls.");
 
+        // Armor Bonus
+        add("armor_set_bonus.when_applied", "套装奖励");
+        // Mining Set
+        add("tooltip.item.confluence.mining_helmet.0", "Provides light when worn");
+        add("tooltip.item.confluence.mining_chestplate.0", "10% increased mining speed");
+        add("tooltip.item.confluence.mining_leggings.0", "5% increased mining speed");
+        add("tooltip.item.confluence.mining_boots.0", "5% increased mining speed");
+        add("armor_set_bonus.confluence.mining_set.0", "10% increased mining speed");
+        // Plank Set
+        add("armor_set_bonus.confluence.plank_set.0", "+1 Aromor");
+        add("armor_set_bonus.confluence.pearlwood_set.0", "+1 Aromor");
+        // Base Ore
+        add("armor_set_bonus.confluence.copper_set.0", "+1 Aromor");
+        add("armor_set_bonus.confluence.tin_set.0", "+2 Aromor");
+        add("armor_set_bonus.confluence.lead_set.0", "+1 Aromor");
+        add("armor_set_bonus.confluence.silver_set.0", "+2 Aromor");
+        add("armor_set_bonus.confluence.tungsten_set.0", "+1 Aromor");
+        add("armor_set_bonus.confluence.golden_set.0", "+1 Aromor");
+        add("armor_set_bonus.confluence.platinum_set.0", "+2 Aromor");
+        // Snow Set
+        add("armor_set_bonus.confluence.snow_set.0", "Cannot be frozen or chilled");
+        add("armor_set_bonus.confluence.pink_snow_set.0", "Cannot be frozen or chilled");
+        // Angler Set
+        add("tooltip.item.confluence.angler_hat.0", "Increases fishing power by 5");
+        add("tooltip.item.confluence.angler_vest.0", "Increases fishing power by 5");
+        add("tooltip.item.confluence.angler_pants.0", "Increases fishing power by 5");
+        add("armor_set_bonus.confluence.angler_set.0", "Decreased enemy spawn rate（WIP）");
+        // Cactus Set
+        add("armor_set_bonus.confluence.cactus_set.0", "Attackers take damage from the cactus spines");
+        // Pumpkin Set
+        add("armor_set_bonus.confluence.pumpkin_set.0", "10% increased damage");
+        // Ninja Set
+        add("tooltip.item.confluence.ninja_helmet.0", "3% increased critical strike chance");
+        add("tooltip.item.confluence.ninja_chestplate.0", "3% increased critical strike chance");
+        add("tooltip.item.confluence.ninja_leggings.0", "1.5% increased critical strike chance");
+        add("tooltip.item.confluence.ninja_boots.0", "1.5% increased critical strike chance");
+        add("armor_set_bonus.confluence.ninja_set.0", "20% increased movement speed");
+        // Fossil Set
+        add("tooltip.item.confluence.fossil_helmet.0", "4% increased critical strike chance");
+        add("tooltip.item.confluence.fossil_chestplate.0", "5% increased ranged damage");
+        add("tooltip.item.confluence.fossil_leggings.0", "2% increased critical strike chance");
+        add("tooltip.item.confluence.fossil_boots.0", "2% increased critical strike chance");
+        add("armor_set_bonus.confluence.fossil_set.0", "20% chance to save ammo");
+        // Bee Set
+        add("tooltip.item.confluence.bee_helmet.0", "Increases summon damage by 4% ,Increases your max number of minions by 1");
+        add("tooltip.item.confluence.bee_chestplate.0", "Increases summon damage by 4% ,Increases your max number of minions by 1");
+        add("tooltip.item.confluence.bee_leggings.0", "Increases summon damage by 2.5%");
+        add("tooltip.item.confluence.bee_boots.0", "Increases summon damage by 2.5%");
+        add("armor_set_bonus.confluence.bee_set.0", "Increases summon damage by 10%");
+        // Obsidian Set
+        add("tooltip.item.confluence.obsidian_helmet.0", "Increases summon damage by 8%");
+        add("tooltip.item.confluence.obsidian_chestplate.0", "Increases your max number of minions by 1");
+        add("tooltip.item.confluence.obsidian_leggings.0", "Increases summon damage by 4%");
+        add("tooltip.item.confluence.obsidian_boots.0", "Increases summon damage by 4%");
+        add("armor_set_bonus.confluence.obsidian_set.0", "Increases whip range by 30% and speed by 15%,Increases summon damage by 15%");
+        // Gladiator Set
+        add("armor_set_bonus.confluence.gladiator_set.0", "Immunity to Knockback");
+        // Meteor Set
+        add("tooltip.item.confluence.meteor_helmet.0", "9% increased magic damage");
+        add("tooltip.item.confluence.meteor_chestplate.0", "9% increased magic damage");
+        add("tooltip.item.confluence.meteor_leggings.0", "4.5% increased magic damage");
+        add("tooltip.item.confluence.meteor_boots.0", "4.5% increased magic damage");
+        add("armor_set_bonus.confluence.meteor_set.0", "Space Gun magic consumption reduced to 0");
+        // Jungle Set
+        add("tooltip.item.confluence.jungle_helmet.0", "Increases maximum mana by 40,6% increased critical strike chance");
+        add("tooltip.item.confluence.jungle_chestplate.0", "Increases maximum mana by 20,6% increased critical strike chance");
+        add("tooltip.item.confluence.jungle_leggings.0", "Increases maximum mana by 20");
+        add("tooltip.item.confluence.jungle_boots.0", "6% increased critical strike chance");
+        add("armor_set_bonus.confluence.jungle_set.0", "16% reduced mana costs");
+        // Necro Set
+        add("tooltip.item.confluence.necro_helmet.0", "5% increased ranged damage");
+        add("tooltip.item.confluence.necro_chestplate.0", "5% increased ranged damage");
+        add("tooltip.item.confluence.necro_leggings.0", "2.5% increased ranged damage");
+        add("tooltip.item.confluence.necro_boots.0", "2.5% increased ranged damage");
+        add("armor_set_bonus.confluence.necro_set.0", "10% increased critical strike chance");
+        // Shadow Set
+        add("tooltip.item.confluence.shadow_helmet.0", "5% increased ranged damage");
+        add("tooltip.item.confluence.shadow_chestplate.0", "5% increased ranged damage");
+        add("tooltip.item.confluence.shadow_leggings.0", "2.5% increased ranged damage");
+        add("tooltip.item.confluence.shadow_boots.0", "2.5% increased ranged damage");
+        add("armor_set_bonus.confluence.shadow_set.0", "Increased movement speed and acceleration");
+        // Crimson Set
+        add("tooltip.item.confluence.crimson_helmet.0", "3% increased damage");
+        add("tooltip.item.confluence.crimson_chestplate.0", "3% increased damage");
+        add("tooltip.item.confluence.crimson_leggings.0", "1.5% increased damage");
+        add("tooltip.item.confluence.crimson_boots.0", "1.5% increased damage");
+        add("armor_set_bonus.confluence.crimson_set.0", "Greatly increased life regen");
+        // Molten Set
+        add("tooltip.item.confluence.molten_helmet.0", "7% increased ranged damage");
+        add("tooltip.item.confluence.molten_chestplate.0", "7% increased melee damage%");
+        add("tooltip.item.confluence.molten_leggings.0", "3.5% increased melee speed");
+        add("tooltip.item.confluence.molten_boots.0", "3.5% increased melee speed");
+        add("armor_set_bonus.confluence.molten_set.0", "10% extra melee damage,Cannot be set on fire");
+        // Spider Set
+        add("tooltip.item.confluence.spider_helmet.0", "Increases summon damage by 5%,Increases your max number of minions by 1");
+        add("tooltip.item.confluence.spider_chestplate.0", "Increases summon damage by 5%,Increases your max number of minions by 1");
+        add("tooltip.item.confluence.spider_leggings.0", "Increases your max number of minions by 1");
+        add("tooltip.item.confluence.spider_boots.0", "Increases summon damage by 6%");
+        add("armor_set_bonus.confluence.spider_set.0", "Increases summon damage by 12%");
+        // HardMode Ore
+        add("tooltip.item.confluence.cobalt_mask.0", "10% increased ranged damage,10% increased ranged critical strike chance");
+        add("tooltip.item.confluence.cobalt_hat.0", "Increases maximum mana by 40,10% increased magic damage,9% increased magic critical strike chance");
+        add("tooltip.item.confluence.cobalt_helmet.0", "10% increased movement speed,15% increased melee damage");
+        add("tooltip.item.confluence.cobalt_chestplate.0", "5% increased critical strike chance");
+        add("tooltip.item.confluence.cobalt_leggings.0", "10% increased movement speed");
+        add("tooltip.item.confluence.cobalt_boots.0", "3% increased damage");
+        add("armor_set_bonus.confluence.cobalt_helmet_set.0", "15% increased melee speed");
+        add("armor_set_bonus.confluence.cobalt_mask_set.0", "20% chance to save ammo");
+        add("armor_set_bonus.confluence.cobalt_hat_set.0", "14% reduced mana costs");
+
+        add("tooltip.item.confluence.palladium_mask.0", "12% increased melee damage ,12% increased melee speed");
+        add("tooltip.item.confluence.palladium_headgear.0", "9% increased magic damage and critical strike chance ,Increases maximum mana by 60");
+        add("tooltip.item.confluence.palladium_helmet.0", "9% increased ranged damage ,9% increased ranged critical strike chance");
+        add("tooltip.item.confluence.palladium_chestplate.0", "3% increased damage ,2% increased critical strike chance");
+        add("tooltip.item.confluence.palladium_leggings.0", "2% increased damage");
+        add("tooltip.item.confluence.palladium_boots.0", "1% increased critical strike chance");
+        add("armor_set_bonus.confluence.palladium_mask_set.0", "Greatly increases life regeneration after striking an enemy");
+        add("armor_set_bonus.confluence.palladium_helmet_set.0", "Greatly increases life regeneration after striking an enemy");
+        add("armor_set_bonus.confluence.palladium_headgear_set.0", "Greatly increases life regeneration after striking an enemy");
+
+
         Consumer<DeferredHolder<Block, ? extends Block>> blockAction = block -> add(block.get(), LibUtils.toTitleCase(block.getId().getPath()));
         ChestBlocks.BLOCKS.getEntries().forEach(blockAction);
         CrateBlocks.BLOCKS.getEntries().forEach(blockAction);

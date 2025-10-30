@@ -23,6 +23,7 @@ public class HellStoneBlock extends Block {
                 .ofFullCopy(Blocks.ANCIENT_DEBRIS)
                 .mapColor(MapColor.COLOR_RED)
                 .lightLevel(value -> 10)
+                .strength(12.0F, 1200.0F)
                 .requiresCorrectToolForDrops());
         this.lava = lava;
     }

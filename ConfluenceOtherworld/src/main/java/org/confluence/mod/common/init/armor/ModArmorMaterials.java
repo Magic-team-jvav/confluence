@@ -82,27 +82,27 @@ public final class ModArmorMaterials {
             0.0F
     );
     public static final Holder<ArmorMaterial> COPPER_ARMOR_MATERIALS = registerArmorMaterial("copper_armor_materials",
-            2, 4, 4, 2,
+            2, 3, 3, 2,
             9, SoundEvents.ARMOR_EQUIP_IRON, Items.COPPER_INGOT,
             "copper", 0.0F, 0.0F
     );
     public static final Holder<ArmorMaterial> TIN_ARMOR_MATERIALS = registerArmorMaterial("tin_armor_materials",
-            2, 4, 4, 2,
+            2, 3, 3, 2,
             9, SoundEvents.ARMOR_EQUIP_IRON, MaterialItems.TIN_INGOT,
             "tin", 0.0F, 0.0F
     );
     public static final Holder<ArmorMaterial> LEAD_ARMOR_MATERIALS = registerArmorMaterial("lead_armor_materials",
-            2, 6, 5, 2,
+            2, 5, 5, 2,
             9, SoundEvents.ARMOR_EQUIP_IRON, MaterialItems.LEAD_INGOT,
             "lead", 0.0F, 0.0F
     );
     public static final Holder<ArmorMaterial> SILVER_ARMOR_MATERIALS = registerArmorMaterial("silver_armor_materials",
-            2, 6, 6, 2,
+            2, 6, 5, 2,
             10, SoundEvents.ARMOR_EQUIP_IRON, MaterialItems.SILVER_INGOT,
             "silver", 0.0F, 0.0F
     );
     public static final Holder<ArmorMaterial> TUNGSTEN_ARMOR_MATERIALS = registerArmorMaterial("tungsten_armor_materials",
-            2, 7, 6, 2,
+            2, 6, 5, 2,
             10, SoundEvents.ARMOR_EQUIP_IRON, MaterialItems.TUNGSTEN_INGOT,
             "tungsten", 0.0F, 0.0F
     );
@@ -112,7 +112,7 @@ public final class ModArmorMaterials {
             "golden", 2.0F, 0.0F
     );
     public static final Holder<ArmorMaterial> PLATINUM_ARMOR_MATERIALS = registerArmorMaterial("platinum_armor_materials",
-            3, 7, 6, 3,
+            3, 6, 6, 3,
             10, SoundEvents.ARMOR_EQUIP_GOLD, MaterialItems.PLATINUM_INGOT,
             "platinum", 2.0F, 0.0F
     );

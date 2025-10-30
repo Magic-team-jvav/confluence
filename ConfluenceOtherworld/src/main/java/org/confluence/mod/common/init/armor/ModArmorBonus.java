@@ -77,7 +77,7 @@ public final class ModArmorBonus {
         register("mining_set", 1, MINING_HELMET, MINING_CHESTPLATE, MINING_LEGGINGS, MINING_BOOTS, key -> {
             key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(Attributes.BLOCK_BREAK_SPEED, key.id, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
         });
-        register("plank_set", 1, PLANK_HELMET, PLANK_CHESTPLATE, PLANK_LEGGINGS, PLANK_BOOTS, armor(0.5));
+        register("plank_set", 1, PLANK_HELMET, PLANK_CHESTPLATE, PLANK_LEGGINGS, PLANK_BOOTS, armor(1));
         register("snow_set", 1, SNOW_CAPS, SNOW_SUITS, INSULATED_PANTS, INSULATED_SHOES, key -> {
             key.unit(TCItems.FROZEN$IMMUNE);
         });
@@ -91,7 +91,7 @@ public final class ModArmorBonus {
             key.unit(CACTUS$THORNS);
         });
         register("copper_set", 1, COPPER_HELMET, COPPER_CHESTPLATE, COPPER_LEGGINGS, COPPER_BOOTS, armor(1));
-        register("tin_set", 1, TIN_HELMET, TIN_CHESTPLATE, TIN_LEGGINGS, TIN_BOOTS, armor(1));
+        register("tin_set", 1, TIN_HELMET, TIN_CHESTPLATE, TIN_LEGGINGS, TIN_BOOTS, armor(2));
         register("pumpkin_set", 1, PUMPKIN_HELMET, PUMPKIN_CHESTPLATE, PUMPKIN_LEGGINGS, PUMPKIN_BOOTS, key -> {
             key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.builder()
                     .add(Attributes.ATTACK_DAMAGE, key.id, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
@@ -104,11 +104,10 @@ public final class ModArmorBonus {
             key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(Attributes.MOVEMENT_SPEED, key.id, 0.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
             // todo 移动时身后有拖影效果
         });
-        register("iron_set", 1, Items.IRON_HELMET, Items.IRON_CHESTPLATE, Items.IRON_LEGGINGS, Items.IRON_BOOTS, armor(1));
-        register("lead_set", 1, LEAD_HELMET, LEAD_CHESTPLATE, LEAD_LEGGINGS, LEAD_BOOTS, armor(1.5));
-        register("silver_set", 1, SILVER_HELMET, SILVER_CHESTPLATE, SILVER_LEGGINGS, SILVER_BOOTS, armor(1.5));
-        register("tungsten_set", 1, TUNGSTEN_HELMET, TUNGSTEN_CHESTPLATE, TUNGSTEN_LEGGINGS, TUNGSTEN_BOOTS, armor(1.5));
-        register("golden_set", 1, GOLDEN_HELMET, GOLDEN_CHESTPLATE, GOLDEN_LEGGINGS, GOLDEN_BOOTS, armor(1.5));
+        register("lead_set", 1, LEAD_HELMET, LEAD_CHESTPLATE, LEAD_LEGGINGS, LEAD_BOOTS, armor(1));
+        register("silver_set", 1, SILVER_HELMET, SILVER_CHESTPLATE, SILVER_LEGGINGS, SILVER_BOOTS, armor(2));
+        register("tungsten_set", 1, TUNGSTEN_HELMET, TUNGSTEN_CHESTPLATE, TUNGSTEN_LEGGINGS, TUNGSTEN_BOOTS, armor(1));
+        register("golden_set", 1, GOLDEN_HELMET, GOLDEN_CHESTPLATE, GOLDEN_LEGGINGS, GOLDEN_BOOTS, armor(1));
         register("platinum_set", 1, PLATINUM_HELMET, PLATINUM_CHESTPLATE, PLATINUM_LEGGINGS, PLATINUM_BOOTS, armor(2));
         register("fossil_set", 1, FOSSIL_HELMET, FOSSIL_CHESTPLATE, FOSSIL_LEGGINGS, FOSSIL_BOOTS, key -> {
             key.of(SKIP$CONSUME$AMMO$CHANCE, 0.2F);
@@ -153,7 +152,7 @@ public final class ModArmorBonus {
             key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(Attributes.ATTACK_DAMAGE, key.id, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
             // todo 移动时有火焰微粒
         });
-        register("pearlwood_set", 1, PEARL_HELMET, PEARL_CHESTPLATE, PEARL_LEGGINGS, PEARL_BOOTS, armor(0.5));
+        register("pearlwood_set", 1, PEARL_HELMET, PEARL_CHESTPLATE, PEARL_LEGGINGS, PEARL_BOOTS, armor(1));
         register("spider_set", 1, SPIDER_HELMET, SPIDER_CHESTPLATE, SPIDER_LEGGINGS, SPIDER_BOOTS, key -> {
             key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(TEAttributes.SUMMON_DAMAGE, key.id, 0.12, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
         });
@@ -213,6 +212,9 @@ public final class ModArmorBonus {
         register("titanium_headgear_set", 2, TITANIUM_HEADGEAR, TITANIUM_CHESTPLATE, TITANIUM_LEGGINGS, TITANIUM_BOOTS, titaniumSet);
 
         // todo	水晶刺客盔甲、神圣盔甲
+        // todo 汇流4原创甲套装效果
+        // todo 钻石甲全套给2时运
+        // todo 下界合金甲免疫岩浆和着火，浸泡在岩浆时回复耐久
 
         /// 巫师套装
         /// @see GameEvents#getArmorSetBonus(GetArmorSetBonusDataEvent)

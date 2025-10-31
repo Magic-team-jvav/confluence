@@ -33,8 +33,7 @@ public interface ModPrefix {
     }
 
     default AttributeModifier createModifier(double value, AttributeModifier.Operation operation) {
-        ResourceLocation id = getModifierId();
-        return new AttributeModifier(LibUtils.withUniqueSuffix(id), value, operation);
+        return new AttributeModifier(LibUtils.withUniqueSuffix(getModifierId()), value, operation);
     }
 
     String name();

@@ -18,14 +18,15 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.fml.ModLoader;
 import net.neoforged.neoforge.common.NeoForge;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.GetArmorSetBonusDataEvent;
+import org.confluence.mod.api.event.RegisterArmorSetBonusEvent;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.entity.projectile.FlowerPetalProjectile;
 import org.confluence.mod.common.entity.projectile.TitaniumShardsProjectile;
@@ -45,7 +46,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import static org.confluence.mod.common.init.item.ArmorItems.*;
 
@@ -227,36 +227,35 @@ public final class ModArmorBonus {
 
         /// 巫师套装
         /// @see GameEvents#getArmorSetBonus(GetArmorSetBonusDataEvent)
+
+        ModLoader.postEvent(new RegisterArmorSetBonusEvent(ModArmorBonus::register));
     }
 
     private static Consumer<ArmorSetBonusKey> armor(double value) {
         return key -> key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(Attributes.ARMOR, key.id, value, AttributeModifier.Operation.ADD_VALUE));
     }
 
-    private static void register(String path,
-                                 int tooltipCount,
-                                 @Nullable Supplier<? extends Item> head,
-                                 @Nullable Supplier<? extends Item> chest,
-                                 @Nullable Supplier<? extends Item> legs,
-                                 @Nullable Supplier<? extends Item> feet,
-                                 Consumer<ArmorSetBonusKey> consumer) {
-        register(path, tooltipCount, unwrap(head), unwrap(chest), unwrap(legs), unwrap(feet), consumer);
-    }
-
-    private static @Nullable Item unwrap(@Nullable Supplier<? extends Item> supplier) {
-        return supplier == null ? null : supplier.get();
-    }
-
     private static void register(
             String path,
             int tooltipCount,
-            @Nullable Item head,
-            @Nullable Item chest,
-            @Nullable Item legs,
-            @Nullable Item feet,
+            @Nullable ItemLike head,
+            @Nullable ItemLike chest,
+            @Nullable ItemLike legs,
+            @Nullable ItemLike feet,
             Consumer<ArmorSetBonusKey> consumer
     ) {
-        ResourceLocation id = Confluence.asResource(path);
+        register(Confluence.asResource(path), tooltipCount, head, chest, legs, feet, consumer);
+    }
+
+    private static void register(
+            ResourceLocation id,
+            int tooltipCount,
+            @Nullable ItemLike head,
+            @Nullable ItemLike chest,
+            @Nullable ItemLike legs,
+            @Nullable ItemLike feet,
+            Consumer<ArmorSetBonusKey> consumer
+    ) {
         ArmorSetBonusKey key = new ArmorSetBonusKey(head, chest, legs, feet, ArmorSetBonusKey.mixHash(head, chest, legs, feet, true));
         if (ArmorSetBonusKey.MAP.put(id, key) != null) {
             throw new IllegalArgumentException("Duplicated ArmorBonusKey with id '" + id + "'");

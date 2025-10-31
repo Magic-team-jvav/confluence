@@ -7,6 +7,8 @@ import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.helpers.IJeiHelpers;
+import mezz.jei.api.recipe.IFocus;
+import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.registration.*;
 import mezz.jei.api.runtime.IJeiRuntime;
 import net.minecraft.client.Minecraft;
@@ -15,6 +17,7 @@ import net.minecraft.client.gui.components.toasts.ToastComponent;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -35,6 +38,7 @@ import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.common.menu.*;
 import org.confluence.mod.common.recipe.*;
 import org.confluence.mod.integration.jei.category.*;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -219,5 +223,14 @@ public final class ModJeiPlugin implements IModPlugin {
             }
             if (directSlot) sb.setStandardSlotBackground();
         }
+    }
+
+    public static boolean handleShowUses(int keyCode, int scanCode, @Nullable ItemStack spawnEgg) {
+        if (spawnEgg != null && jeiRuntime != null && JeiHelper.showUses != null && JeiHelper.showUses.matches(keyCode, scanCode)) {
+            IFocus<ItemStack> focus = jeiRuntime.getJeiHelpers().getFocusFactory().createFocus(RecipeIngredientRole.CATALYST, VanillaTypes.ITEM_STACK, spawnEgg);
+            jeiRuntime.getRecipesGui().show(focus);
+            return true;
+        }
+        return false;
     }
 }

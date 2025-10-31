@@ -2409,6 +2409,8 @@ public class ModChineseProvider extends LanguageProvider {
         // 木
         add("armor_set_bonus.confluence.plank_set.0", "+1 护甲值");
         add("armor_set_bonus.confluence.pearlwood_set.0", "+1 护甲值");
+
+        add("armor_set_bonus.confluence.ash_set.0", "降低因触碰熔岩而受到的伤害");
         // 肉前基础矿石
         add("armor_set_bonus.confluence.copper_set.0", "+1 护甲值");
         add("armor_set_bonus.confluence.tin_set.0", "+2 护甲值");
@@ -2441,6 +2443,29 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.fossil_leggings.0", "暴击率提高2%");
         add("tooltip.item.confluence.fossil_boots.0", "暴击率提高2%");
         add("armor_set_bonus.confluence.fossil_set.0", "20%几率省下弹药");
+        // 寒晶
+        add("tooltip.item.confluence.cold_crystal_helmet.0", "最大魔力值增加20");
+        add("tooltip.item.confluence.cold_crystal_helmet.1", "暴击率提高4%");
+        add("tooltip.item.confluence.cold_crystal_chestplate.0", "最大魔力值增加20");
+        add("tooltip.item.confluence.cold_crystal_chestplate.1", "暴击率提高4%");
+        add("tooltip.item.confluence.cold_crystal_leggings.0", "魔法伤害提高4");
+        add("tooltip.item.confluence.cold_crystal_boots.0", "暴击率提高4%");
+        add("armor_set_bonus.confluence.cold_crystal_set.0", "魔法攻击会有附带霜冻效果");
+        // 孢根
+        add("tooltip.item.confluence.spore_root_helmet.0", "召唤伤害提高2%");
+        add("tooltip.item.confluence.spore_root_helmet.1", "仆从数量上限增加1");
+        add("tooltip.item.confluence.spore_root_chestplate.0", "召唤伤害提高3%");
+        add("tooltip.item.confluence.spore_root_leggings.0", "召唤伤害提高3%");
+        add("tooltip.item.confluence.spore_root_boots.0", "召唤伤害提高2%");
+        add("armor_set_bonus.confluence.spore_root_set.0", "仆从数量上限增加1");
+        // 渊鳞
+        add("tooltip.item.confluence.heim_helmet.0", "延长水下呼吸时间5%");
+        add("tooltip.item.confluence.heim_helmet.1", "近战伤害提高3%");
+        add("tooltip.item.confluence.heim_chestplate.0", "暴击率提高4%");
+        add("tooltip.item.confluence.heim_leggings.0", "暴击率提高3%");
+        add("tooltip.item.confluence.heim_leggings.1", "近战伤害提高2%");
+        add("tooltip.item.confluence.heim_boots.0", "提高水下移动速度5%");
+        add("armor_set_bonus.confluence.heim_set.0", "赋予4点生命值的伤害吸收，每隔5秒钟再次赋予");
         // 蜜蜂
         add("tooltip.item.confluence.bee_helmet.0", "召唤伤害提高4%");
         add("tooltip.item.confluence.bee_helmet.1", "仆从数量上限增加1");

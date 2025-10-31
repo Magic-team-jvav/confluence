@@ -112,6 +112,15 @@ public final class ModArmorBonus {
         register("fossil_set", 1, FOSSIL_HELMET, FOSSIL_CHESTPLATE, FOSSIL_LEGGINGS, FOSSIL_BOOTS, key -> {
             key.of(SKIP$CONSUME$AMMO$CHANCE, 0.2F);
         });
+        register("cold_crystal_set", 1, COLD_CRYSTAL_HELMET, COLD_CRYSTAL_CHESTPLATE, COLD_CRYSTAL_LEGGINGS, COLD_CRYSTAL_BOOTS, key -> {
+            // todo 魔法攻击会有附带霜冻效果
+        });
+        register("heim_set", 1, HEIM_HELMET, HEIM_CHESTPLATE, HEIM_LEGGINGS, HEIM_BOOTS, key -> {
+            // todo 赋予4点生命值的伤害吸收，每隔5秒钟再次赋予
+        });
+        register("spore_root_set", 1, SPORE_ROOT_HELMET, SPORE_ROOT_CHESTPLATE, SPORE_ROOT_LEGGINGS, SPORE_ROOT_BOOTS, key -> {
+            // todo 仆从栏位+1
+        });
         register("bee_set", 1, BEE_HELMET, BEE_CHESTPLATE, BEE_LEGGINGS, BEE_BOOTS, key -> {
             key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(TEAttributes.SUMMON_DAMAGE, key.id, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
         });

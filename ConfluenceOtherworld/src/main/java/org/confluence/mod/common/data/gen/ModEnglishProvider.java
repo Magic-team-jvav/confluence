@@ -2372,6 +2372,8 @@ public class ModEnglishProvider extends LanguageProvider {
         // Plank Set
         add("armor_set_bonus.confluence.plank_set.0", "+1 Aromor");
         add("armor_set_bonus.confluence.pearlwood_set.0", "+1 Aromor");
+
+        add("armor_set_bonus.confluence.ash_set.0", "Reduces damage from touching lava");
         // Base Ore
         add("armor_set_bonus.confluence.copper_set.0", "+1 Aromor");
         add("armor_set_bonus.confluence.tin_set.0", "+2 Aromor");
@@ -2404,6 +2406,29 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.fossil_leggings.0", "2% increased critical strike chance");
         add("tooltip.item.confluence.fossil_boots.0", "2% increased critical strike chance");
         add("armor_set_bonus.confluence.fossil_set.0", "20% chance to save ammo");
+        // Cold Crystal Set
+        add("tooltip.item.confluence.cold_crystal_helmet.0", "Increases maximum mana by 20");
+        add("tooltip.item.confluence.cold_crystal_helmet.1", "4% increased critical strike chance");
+        add("tooltip.item.confluence.cold_crystal_chestplate.0", "Increases maximum mana by 20");
+        add("tooltip.item.confluence.cold_crystal_chestplate.1", "4% increased critical strike chance");
+        add("tooltip.item.confluence.cold_crystal_leggings.0", "4% increased magic damage");
+        add("tooltip.item.confluence.cold_crystal_boots.0", "4% increased critical strike chance");
+        add("armor_set_bonus.confluence.cold_crystal_set.0", "Magic Attack will have an additional Frostbite effect");
+        // Spore Root Set
+        add("tooltip.item.confluence.spore_root_helmet.0", "Increases summon damage by 2%");
+        add("tooltip.item.confluence.spore_root_helmet.1", "Increases your max number of minions by 1");
+        add("tooltip.item.confluence.spore_root_chestplate.0", "Increases summon damage by 3%");
+        add("tooltip.item.confluence.spore_root_leggings.0", "Increases summon damage by 3%");
+        add("tooltip.item.confluence.spore_root_boots.0", "Increases summon damage by 2%");
+        add("armor_set_bonus.confluence.spore_root_set.0", "Increases your max number of minions by 1");
+        // Heim Set
+        add("tooltip.item.confluence.heim_helmet.0", "Extend underwater breathing time by 5%");
+        add("tooltip.item.confluence.heim_helmet.1", "3% increased ranged damage");
+        add("tooltip.item.confluence.heim_chestplate.0", "4% increased critical strike chance");
+        add("tooltip.item.confluence.heim_leggings.0", "3% increased critical strike chance");
+        add("tooltip.item.confluence.heim_leggings.1", "2% increased ranged damage");
+        add("tooltip.item.confluence.heim_boots.0", "Increase underwater movement speed by 5%");
+        add("armor_set_bonus.confluence.heim_set.0", "Grant you 4 health of absorption, and grant it again every 5 seconds");
         // Bee Set
         add("tooltip.item.confluence.bee_helmet.0", "Increases summon damage by 4%");
         add("tooltip.item.confluence.bee_helmet.1", "Increases your max number of minions by 1");
@@ -2453,9 +2478,9 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.jungle_helmet.0", "Increases maximum mana by 40");
         add("tooltip.item.confluence.jungle_helmet.1", "6% increased critical strike chance");
         add("tooltip.item.confluence.jungle_chestplate.0", "Increases maximum mana by 20");
-        add("tooltip.item.confluence.jungle_chestplate.1", "6% increased critical strike chance");
+        add("tooltip.item.confluence.jungle_chestplate.1", "6% increased magic damage");
         add("tooltip.item.confluence.jungle_leggings.0", "Increases maximum mana by 20");
-        add("tooltip.item.confluence.jungle_boots.0", "6% increased critical strike chance");
+        add("tooltip.item.confluence.jungle_boots.0", "6% increased magic damage");
         add("armor_set_bonus.confluence.jungle_set.0", "16% reduced mana costs");
         // Necro Set
         add("tooltip.item.confluence.necro_helmet.0", "5% increased ranged damage");

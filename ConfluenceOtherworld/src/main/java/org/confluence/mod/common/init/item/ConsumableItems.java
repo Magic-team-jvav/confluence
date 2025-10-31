@@ -82,8 +82,8 @@ public class ConsumableItems {
     public static final DeferredItem<ThrownPowderItem> VILE_POWDER = ITEMS.register("vile_powder", () -> new ThrownPowderItem(ISpreadable.Type.CORRUPT));
     public static final DeferredItem<ThrownPowderItem> VICIOUS_POWDER = ITEMS.register("vicious_powder", () -> new ThrownPowderItem(ISpreadable.Type.CRIMSON));
     public static final DeferredItem<FertilizerItem> FERTILIZER = ITEMS.register("fertilizer", FertilizerItem::new);
-    public static final DeferredItem<ModBoneMealItem> ROTTEN_BONE_DUST = ITEMS.register("rotten_bone_dust", ModBoneMealItem::new);
-    public static final DeferredItem<ModBoneMealItem> BLOODSTAINED_POWDER = ITEMS.register("bloodstained_powder", ModBoneMealItem::new);
+    public static final DeferredItem<ModBoneMealItem> ROTTEN_BONE_DUST = ITEMS.register("rotten_bone_dust", () -> new ModBoneMealItem(ModRarity.BLUE,"rotten_bone_dust"));
+    public static final DeferredItem<ModBoneMealItem> BLOODSTAINED_POWDER = ITEMS.register("bloodstained_powder",  () -> new ModBoneMealItem(ModRarity.BLUE,"bloodstained_powder"));
 
     public static final DeferredItem<BossSummoningItem> SUSPICIOUS_LOOKING_EYE = ITEMS.register("suspicious_looking_eye", () -> new BossSummoningItem(player -> LibDateUtils.isNight(player.level()), EyeOfCthulhu::new, TooltipItem.getTooltipsFromString("suspicious_looking_eye", 3, ChatFormatting.RED)));
     public static final DeferredItem<BossSummoningItem> SLIME_CROWN = ITEMS.register("slime_crown", () -> new BossSummoningItem(player -> true, KingSlime::new, TooltipItem.getTooltipsFromString("slime_crown", 3, ChatFormatting.BLUE)));

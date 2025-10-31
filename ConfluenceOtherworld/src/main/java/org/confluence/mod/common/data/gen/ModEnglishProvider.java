@@ -162,7 +162,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.advanced_combat_techniques_volume_two.0", "Increases the defense and strength of all villagers");
         add("tooltip.item.confluence.advanced_combat_techniques_volume_two.1", "'Contains offensive and defensive fighting techniques, volume two!'");
         add("tooltip.item.confluence.binoculars.0", "Expand the FOV when in use, and adjust the zoom with the mouse wheel");
-        add("tooltip.item.confluence.meteor_compass.0", "Only the position of the last meteorite are saved");
         add("tooltip.item.confluence.gel.0", "'Both tasty and flammable'");
         add("tooltip.item.confluence.npc_invitation.0", "Use it to invite a new batch of NPCs in the current area!");
         add("tooltip.item.confluence.red_potion.0", "'Only for those who are worthy'");
@@ -182,6 +181,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.guide_to_peaceful_coexistence.0", "Prevents you from hurting critters while in the inventory");
         add("tooltip.item.confluence.guide_to_peaceful_coexistence.1", "Prevents you from accidentally destroying the environment while in the inventory");
         add("tooltip.item.confluence.guide_to_peaceful_coexistence.2", "Right click to deactivate/reactivate effects");
+
 
         add("tooltip.item.confluence.slime_crown.0", "Right - click to summon the King Slime");
         add("tooltip.item.confluence.slime_crown.1", "A small crown that seems to be prepared for the coronation ceremony of those cute and harmless gel - like creatures.");
@@ -219,6 +219,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.jousting_lance.1", "'Have at thee!'");
         add("tooltip.item.confluence.hallowed_jousting_lance.0", "Build momentum to increase attack power");
         add("tooltip.item.confluence.shadow_jousting_lance.0", "Build momentum to increase attack power");
+        add("tooltip.item.confluence.rotten_bone_dust.0", "Right-click to spawn vegetation in the Corruption, or corrupt Skeletons");
+        add("tooltip.item.confluence.bloodstained_powder.0", "Right-click to spawn vegetation in the Crimson, or infest Creepers with Crimson");
 
         add("tooltip.item.confluence.tokyo_teddy_bear.0", "A self - abased girl said like a broken teddy bear:");
         add("tooltip.item.confluence.tokyo_teddy_bear.1", "           Let me tell you");
@@ -2403,8 +2405,10 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.fossil_boots.0", "2% increased critical strike chance");
         add("armor_set_bonus.confluence.fossil_set.0", "20% chance to save ammo");
         // Bee Set
-        add("tooltip.item.confluence.bee_helmet.0", "Increases summon damage by 4% ,Increases your max number of minions by 1");
-        add("tooltip.item.confluence.bee_chestplate.0", "Increases summon damage by 4% ,Increases your max number of minions by 1");
+        add("tooltip.item.confluence.bee_helmet.0", "Increases summon damage by 4%");
+        add("tooltip.item.confluence.bee_helmet.1", "Increases your max number of minions by 1");
+        add("tooltip.item.confluence.bee_chestplate.0", "Increases summon damage by 4%");
+        add("tooltip.item.confluence.bee_chestplate.1", "Increases your max number of minions by 1");
         add("tooltip.item.confluence.bee_leggings.0", "Increases summon damage by 2.5%");
         add("tooltip.item.confluence.bee_boots.0", "Increases summon damage by 2.5%");
         add("armor_set_bonus.confluence.bee_set.0", "Increases summon damage by 10%");
@@ -2414,8 +2418,31 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.obsidian_leggings.0", "Increases summon damage by 4%");
         add("tooltip.item.confluence.obsidian_boots.0", "Increases summon damage by 4%");
         add("armor_set_bonus.confluence.obsidian_set.0", "Increases whip range by 30% and speed by 15%,Increases summon damage by 15%");
+        add("armor_set_bonus.confluence.obsidian_set.1", "Increases summon damage by 15%");
         // Gladiator Set
         add("armor_set_bonus.confluence.gladiator_set.0", "Immunity to Knockback");
+        // Flinx Set
+        add("tooltip.item.confluence.flinx_fur_coat.0", "Increases summon damage by 5%");
+        add("tooltip.item.confluence.flinx_fur_coat.1", "Increases your max number of minions by 1");
+        // Wizard Set
+        add("tooltip.item.confluence.amber_robe.0", "Increases maximum mana by 60");
+        add("tooltip.item.confluence.amber_robe.1", "13% reduced mana cost");
+        add("tooltip.item.confluence.diamond_robe.0", "Increases maximum mana by 80");
+        add("tooltip.item.confluence.diamond_robe.1", "15% reduced mana cost");
+        add("tooltip.item.confluence.mystic_robe.0", "6% increased magic damage and critical strike chance");
+        add("tooltip.item.confluence.mystic_robe.1", "10% reduced mana cost");
+        add("tooltip.item.confluence.ruby_robe.0", "Increases maximum mana by 60");
+        add("tooltip.item.confluence.ruby_robe.1", "13% reduced mana cost");
+        add("tooltip.item.confluence.jade_robe.0", "Increases maximum mana by 60");
+        add("tooltip.item.confluence.jade_robe.1", "11% reduced mana cost");
+        add("tooltip.item.confluence.sapphire_robe.0", "Increases maximum mana by 40");
+        add("tooltip.item.confluence.sapphire_robe.1", "9% reduced mana cost");
+        add("tooltip.item.confluence.topaz_robe.0", "Increases maximum mana by 40");
+        add("tooltip.item.confluence.topaz_robe.1", "7% reduced mana cost");
+        add("tooltip.item.confluence.amethyst_robe.0", "Increases maximum mana by 20");
+        add("tooltip.item.confluence.amethyst_robe.1", "5% reduced mana cost");
+        add("tooltip.item.confluence.wizard_hat.0", "5% increased magic damage");
+        add("tooltip.item.confluence.magic_hat.0", "6% increased magic damage and critical strike chance");
         // Meteor Set
         add("tooltip.item.confluence.meteor_helmet.0", "9% increased magic damage");
         add("tooltip.item.confluence.meteor_chestplate.0", "9% increased magic damage");
@@ -2423,8 +2450,10 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.meteor_boots.0", "4.5% increased magic damage");
         add("armor_set_bonus.confluence.meteor_set.0", "Space Gun magic consumption reduced to 0");
         // Jungle Set
-        add("tooltip.item.confluence.jungle_helmet.0", "Increases maximum mana by 40,6% increased critical strike chance");
-        add("tooltip.item.confluence.jungle_chestplate.0", "Increases maximum mana by 20,6% increased critical strike chance");
+        add("tooltip.item.confluence.jungle_helmet.0", "Increases maximum mana by 40");
+        add("tooltip.item.confluence.jungle_helmet.1", "6% increased critical strike chance");
+        add("tooltip.item.confluence.jungle_chestplate.0", "Increases maximum mana by 20");
+        add("tooltip.item.confluence.jungle_chestplate.1", "6% increased critical strike chance");
         add("tooltip.item.confluence.jungle_leggings.0", "Increases maximum mana by 20");
         add("tooltip.item.confluence.jungle_boots.0", "6% increased critical strike chance");
         add("armor_set_bonus.confluence.jungle_set.0", "16% reduced mana costs");
@@ -2453,15 +2482,21 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.molten_boots.0", "3.5% increased melee speed");
         add("armor_set_bonus.confluence.molten_set.0", "10% extra melee damage,Cannot be set on fire");
         // Spider Set
-        add("tooltip.item.confluence.spider_helmet.0", "Increases summon damage by 5%,Increases your max number of minions by 1");
-        add("tooltip.item.confluence.spider_chestplate.0", "Increases summon damage by 5%,Increases your max number of minions by 1");
+        add("tooltip.item.confluence.spider_helmet.0", "Increases summon damage by 5%");
+        add("tooltip.item.confluence.spider_helmet.1", "Increases your max number of minions by 1");
+        add("tooltip.item.confluence.spider_chestplate.0", "Increases summon damage by 5%");
+        add("tooltip.item.confluence.spider_chestplate.1", "Increases your max number of minions by 1");
         add("tooltip.item.confluence.spider_leggings.0", "Increases your max number of minions by 1");
         add("tooltip.item.confluence.spider_boots.0", "Increases summon damage by 6%");
         add("armor_set_bonus.confluence.spider_set.0", "Increases summon damage by 12%");
         // HardMode Ore
-        add("tooltip.item.confluence.cobalt_mask.0", "10% increased ranged damage,10% increased ranged critical strike chance");
-        add("tooltip.item.confluence.cobalt_hat.0", "Increases maximum mana by 40,10% increased magic damage,9% increased magic critical strike chance");
+        add("tooltip.item.confluence.cobalt_mask.0", "10% increased ranged damage");
+        add("tooltip.item.confluence.cobalt_mask.1", "10% increased critical strike chance");
+        add("tooltip.item.confluence.cobalt_hat.0", "Increases maximum mana by 40");
+        add("tooltip.item.confluence.cobalt_hat.1", "10% increased magic damage");
+        add("tooltip.item.confluence.cobalt_hat.2", "9% increased critical strike chance");
         add("tooltip.item.confluence.cobalt_helmet.0", "10% increased movement speed,15% increased melee damage");
+        add("tooltip.item.confluence.cobalt_helmet.1", "15% increased melee damage");
         add("tooltip.item.confluence.cobalt_chestplate.0", "5% increased critical strike chance");
         add("tooltip.item.confluence.cobalt_leggings.0", "10% increased movement speed");
         add("tooltip.item.confluence.cobalt_boots.0", "3% increased damage");
@@ -2469,16 +2504,73 @@ public class ModEnglishProvider extends LanguageProvider {
         add("armor_set_bonus.confluence.cobalt_mask_set.0", "20% chance to save ammo");
         add("armor_set_bonus.confluence.cobalt_hat_set.0", "14% reduced mana costs");
 
-        add("tooltip.item.confluence.palladium_mask.0", "12% increased melee damage ,12% increased melee speed");
-        add("tooltip.item.confluence.palladium_headgear.0", "9% increased magic damage and critical strike chance ,Increases maximum mana by 60");
-        add("tooltip.item.confluence.palladium_helmet.0", "9% increased ranged damage ,9% increased ranged critical strike chance");
-        add("tooltip.item.confluence.palladium_chestplate.0", "3% increased damage ,2% increased critical strike chance");
+        add("tooltip.item.confluence.palladium_mask.0", "12% increased melee damage");
+        add("tooltip.item.confluence.palladium_mask.1", "12% increased melee speed");
+        add("tooltip.item.confluence.palladium_headgear.0", "9% increased magic damage and critical strike chance");
+        add("tooltip.item.confluence.palladium_headgear.1", "Increases maximum mana by 60");
+        add("tooltip.item.confluence.palladium_helmet.0", "9% increased ranged damage");
+        add("tooltip.item.confluence.palladium_helmet.1", "9% increased critical strike chance");
+        add("tooltip.item.confluence.palladium_chestplate.0", "3% increased damage");
+        add("tooltip.item.confluence.palladium_chestplate.1", "2% increased critical strike chance");
         add("tooltip.item.confluence.palladium_leggings.0", "2% increased damage");
         add("tooltip.item.confluence.palladium_boots.0", "1% increased critical strike chance");
         add("armor_set_bonus.confluence.palladium_mask_set.0", "Greatly increases life regeneration after striking an enemy");
         add("armor_set_bonus.confluence.palladium_helmet_set.0", "Greatly increases life regeneration after striking an enemy");
         add("armor_set_bonus.confluence.palladium_headgear_set.0", "Greatly increases life regeneration after striking an enemy");
 
+        add("tooltip.item.confluence.mythril_hood.0", "Increases maximum mana by 60");
+        add("tooltip.item.confluence.mythril_hood.1", "15% increased magic damage");
+        add("tooltip.item.confluence.mythril_hat.0", "12% increased ranged damage");
+        add("tooltip.item.confluence.mythril_hat.1", "7% increased critical strike chance");
+        add("tooltip.item.confluence.mythril_helmet.0", "8% increased critical strike chance");
+        add("tooltip.item.confluence.mythril_helmet.1", "10% increased melee damage");
+        add("tooltip.item.confluence.mythril_chestplate.0", "7% increased damage");
+        add("tooltip.item.confluence.mythril_leggings.0", "5% increased critical strike chance");
+        add("tooltip.item.confluence.mythril_boots.0", "5% increased critical strike chance");
+        add("armor_set_bonus.confluence.mythril_hood_set.0", "17% reduced mana costs");
+        add("armor_set_bonus.confluence.mythril_helmet_set.0", "10% increased critical strike chance");
+        add("armor_set_bonus.confluence.mythril_hat_set.0", " 20% chance to save ammo");
+
+        add("tooltip.item.confluence.orichalcum_headgear.0", "18% increased critical strike chance");
+        add("tooltip.item.confluence.orichalcum_headgear.1", "Increases maximum mana by 80");
+        add("tooltip.item.confluence.orichalcum_mask.0", "11% increased melee damage and melee speed");
+        add("tooltip.item.confluence.orichalcum_mask.1", "7% increased movement speed");
+        add("tooltip.item.confluence.orichalcum_helmet.0", "15% increased critical strike chance");
+        add("tooltip.item.confluence.orichalcum_helmet.1", "8% increased movement speed");
+        add("tooltip.item.confluence.orichalcum_chestplate.0", "6% increased critical strike chance");
+        add("tooltip.item.confluence.orichalcum_leggings.0", "8% increased damage ");
+        add("tooltip.item.confluence.orichalcum_boots.0", "11% increased movement speed");
+        add("armor_set_bonus.confluence.orichalcum_headgear_set.0", "Flower petals will fall on your target for extra damage");
+        add("armor_set_bonus.confluence.orichalcum_mask_set.0", "Flower petals will fall on your target for extra damage");
+        add("armor_set_bonus.confluence.orichalcum_helmet_set.0", "Flower petals will fall on your target for extra damage");
+
+        add("tooltip.item.confluence.adamantite_headgear.0", "Increases maximum mana by 80");
+        add("tooltip.item.confluence.adamantite_headgear.1", "12% increased magic damage and critical strike chance");
+        add("tooltip.item.confluence.adamantite_mask.0", "14% increased ranged damage");
+        add("tooltip.item.confluence.adamantite_mask.1", "10% increased critical strike chance");
+        add("tooltip.item.confluence.adamantite_helmet.0", "7% increased critical strike chance");
+        add("tooltip.item.confluence.adamantite_helmet.1", "14% increased melee damage");
+        add("tooltip.item.confluence.adamantite_chestplate.0", "8% increased damage");
+        add("tooltip.item.confluence.adamantite_leggings.0", "7% increased critical strike chance");
+        add("tooltip.item.confluence.adamantite_boots.0", "5% increased movement speed");
+        add("armor_set_bonus.confluence.adamantite_headgear_set.0", "19% reduced mana costs");
+        add("armor_set_bonus.confluence.adamantite_helmet_set.0", "20% increased melee and movement speed");
+        add("armor_set_bonus.confluence.adamantite_mask_set.0", "25% chance to save ammo");
+
+        add("tooltip.item.confluence.titanium_headgear.0", "16% increased magic damage");
+        add("tooltip.item.confluence.titanium_headgear.1", "7% increased magic critical strike chance");
+        add("tooltip.item.confluence.titanium_headgear.2", "Increases maximum mana by 100");
+        add("tooltip.item.confluence.titanium_mask.0", "9% increased melee damage and critical strike chance");
+        add("tooltip.item.confluence.titanium_mask.1", "9% increased melee speed");
+        add("tooltip.item.confluence.titanium_helmet.0", "16% increased ranged damage");
+        add("tooltip.item.confluence.titanium_helmet.1", "7% increased critical strike chance");
+        add("tooltip.item.confluence.titanium_chestplate.0", "4% increased damage");
+        add("tooltip.item.confluence.titanium_chestplate.1", "3% increased critical strike chance");
+        add("tooltip.item.confluence.titanium_leggings.0", "3% increased damage and critical strike chance");
+        add("tooltip.item.confluence.titanium_boots.0", "6% increased movement speed");
+        add("armor_set_bonus.confluence.titanium_mask_set.0", "Attacking generates a defensive barrier of titanium shards");
+        add("armor_set_bonus.confluence.titanium_helmet_set.0", "Attacking generates a defensive barrier of titanium shards");
+        add("armor_set_bonus.confluence.titanium_headgear_set.0", "Attacking generates a defensive barrier of titanium shards");
 
         Consumer<DeferredHolder<Block, ? extends Block>> blockAction = block -> add(block.get(), LibUtils.toTitleCase(block.getId().getPath()));
         ChestBlocks.BLOCKS.getEntries().forEach(blockAction);

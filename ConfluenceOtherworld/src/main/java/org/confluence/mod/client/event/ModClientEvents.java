@@ -68,10 +68,7 @@ import org.confluence.mod.client.particle.*;
 import org.confluence.mod.client.renderer.AltImageTooltip;
 import org.confluence.mod.client.renderer.NoopTooltip;
 import org.confluence.mod.client.renderer.block.*;
-import org.confluence.mod.client.renderer.entity.BodyPartRenderer;
-import org.confluence.mod.client.renderer.entity.FallingStarRenderer;
-import org.confluence.mod.client.renderer.entity.TargetDummyRenderer;
-import org.confluence.mod.client.renderer.entity.TreasureBagRenderer;
+import org.confluence.mod.client.renderer.entity.*;
 import org.confluence.mod.client.renderer.entity.bestiary.BestiaryEntryDisplayRenderer;
 import org.confluence.mod.client.renderer.entity.bestiary.SlimeZombieRenderer;
 import org.confluence.mod.client.renderer.entity.fishing.BaseFishingHookRenderer;
@@ -244,6 +241,8 @@ public final class ModClientEvents {
 
     @SubscribeEvent
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+				event.registerEntityRenderer(EMPTY_ENTITY.get(), EmptyEntityRenderer::new);// 牢枕专用
+
         event.registerEntityRenderer(BOMB_ENTITY.get(), BaseBombEntityRenderer::new);
         event.registerEntityRenderer(BOUNCY_BOMB_ENTITY.get(), BouncyBombEntityRenderer::new);
         event.registerEntityRenderer(SCARAB_BOMB_ENTITY.get(), ScarabBombEntityRenderer::new);

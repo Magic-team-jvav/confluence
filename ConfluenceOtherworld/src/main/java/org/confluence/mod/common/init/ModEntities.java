@@ -32,6 +32,11 @@ import org.confluence.mod.common.entity.projectile.sword.*;
 public final class ModEntities {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(BuiltInRegistries.ENTITY_TYPE, Confluence.MODID);
 
+	// 牢枕专用
+	public static final DeferredHolder<EntityType<?>, EntityType<EmptyEntity>> EMPTY_ENTITY = ENTITIES.register(
+			"empty_entity",
+			() -> EntityType.Builder.of(EmptyEntity::new, MobCategory.MISC).build(Confluence.asPlainId("empty_entity")));
+
     // 炸弹
     public static final DeferredHolder<EntityType<?>, EntityType<BaseBombEntity>> BOMB_ENTITY = registerBomb("bomb_entity", BaseBombEntity::new, BaseBombEntity.DIAMETER);
     public static final DeferredHolder<EntityType<?>, EntityType<BouncyBombEntity>> BOUNCY_BOMB_ENTITY = registerBomb("bouncy_bomb_entity", BouncyBombEntity::new, BaseBombEntity.DIAMETER);

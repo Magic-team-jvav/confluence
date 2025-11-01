@@ -2399,12 +2399,9 @@ public class ModChineseProvider extends LanguageProvider {
         add("bestiary.entity.terra_entity.hill_of_flesh.desc", "世界的双相，造就了血肉墙对世界另一适应形态的出现，血肉山是世界的核心与守护者，这尊高大的恶魔领主存在的意义，便是将强大的远古灵魂封印起来。");
 
         // 套装效果
-        add("armor_set_bonus.when_applied", "套装奖励");
+        add("armor_set_bonus.when_applied", "套装奖励：");
         // 挖矿
         add("tooltip.item.confluence.mining_helmet.0", "穿戴时可提供照明");
-        add("tooltip.item.confluence.mining_chestplate.0", "挖矿速度提高10%");
-        add("tooltip.item.confluence.mining_leggings.0", "挖矿速度提高5%");
-        add("tooltip.item.confluence.mining_boots.0", "挖矿速度提高5%");
         add("armor_set_bonus.confluence.mining_set.0", "挖矿速度提高10%");
         // 木
         add("armor_set_bonus.confluence.plank_set.0", "+1 护甲值");
@@ -2432,60 +2429,26 @@ public class ModChineseProvider extends LanguageProvider {
         // 南瓜
         add("armor_set_bonus.confluence.pumpkin_set.0", "伤害提高10%");
         // 忍者
-        add("tooltip.item.confluence.ninja_helmet.0", "暴击率提高3%");
-        add("tooltip.item.confluence.ninja_chestplate.0", "暴击率提高3%");
-        add("tooltip.item.confluence.ninja_leggings.0", "暴击率提高1.5%");
-        add("tooltip.item.confluence.ninja_boots.0", "暴击率提高1.5%");
         add("armor_set_bonus.confluence.ninja_set.0", "移动速度提高20%");
         // 化石
-        add("tooltip.item.confluence.fossil_helmet.0", "暴击率提高4%");
-        add("tooltip.item.confluence.fossil_chestplate.0", "远程伤害提高5%");
-        add("tooltip.item.confluence.fossil_leggings.0", "暴击率提高2%");
-        add("tooltip.item.confluence.fossil_boots.0", "暴击率提高2%");
         add("armor_set_bonus.confluence.fossil_set.0", "20%几率省下弹药");
         // 寒晶
         add("tooltip.item.confluence.cold_crystal_helmet.0", "最大魔力值增加20");
-        add("tooltip.item.confluence.cold_crystal_helmet.1", "暴击率提高4%");
         add("tooltip.item.confluence.cold_crystal_chestplate.0", "最大魔力值增加20");
-        add("tooltip.item.confluence.cold_crystal_chestplate.1", "暴击率提高4%");
-        add("tooltip.item.confluence.cold_crystal_leggings.0", "魔法伤害提高4");
-        add("tooltip.item.confluence.cold_crystal_boots.0", "暴击率提高4%");
         add("armor_set_bonus.confluence.cold_crystal_set.0", "魔法攻击会有附带霜冻效果");
         // 孢根
-        add("tooltip.item.confluence.spore_root_helmet.0", "召唤伤害提高2%");
-        add("tooltip.item.confluence.spore_root_helmet.1", "仆从数量上限增加1");
-        add("tooltip.item.confluence.spore_root_chestplate.0", "召唤伤害提高3%");
-        add("tooltip.item.confluence.spore_root_leggings.0", "召唤伤害提高3%");
-        add("tooltip.item.confluence.spore_root_boots.0", "召唤伤害提高2%");
         add("armor_set_bonus.confluence.spore_root_set.0", "仆从数量上限增加1");
         // 渊鳞
         add("tooltip.item.confluence.heim_helmet.0", "延长水下呼吸时间5%");
-        add("tooltip.item.confluence.heim_helmet.1", "近战伤害提高3%");
-        add("tooltip.item.confluence.heim_chestplate.0", "暴击率提高4%");
-        add("tooltip.item.confluence.heim_leggings.0", "暴击率提高3%");
-        add("tooltip.item.confluence.heim_leggings.1", "近战伤害提高2%");
         add("tooltip.item.confluence.heim_boots.0", "提高水下移动速度5%");
         add("armor_set_bonus.confluence.heim_set.0", "赋予4点生命值的伤害吸收，每隔5秒钟再次赋予");
         // 蜜蜂
-        add("tooltip.item.confluence.bee_helmet.0", "召唤伤害提高4%");
-        add("tooltip.item.confluence.bee_helmet.1", "仆从数量上限增加1");
-        add("tooltip.item.confluence.bee_chestplate.0", "召唤伤害提高4%，");
-        add("tooltip.item.confluence.bee_chestplate.1", "仆从数量上限增加1");
-        add("tooltip.item.confluence.bee_leggings.0", "召唤伤害提高2.5%");
-        add("tooltip.item.confluence.bee_boots.0", "召唤伤害提高2.5%");
         add("armor_set_bonus.confluence.bee_set.0", "召唤伤害提高10%");
         // 黑曜石
-        add("tooltip.item.confluence.obsidian_helmet.0", "召唤伤害提高8%");
-        add("tooltip.item.confluence.obsidian_chestplate.0", "仆从数量上限增加1");
-        add("tooltip.item.confluence.obsidian_leggings.0", "召唤伤害提高4%");
-        add("tooltip.item.confluence.obsidian_boots.0", "召唤伤害提高4%");
         add("armor_set_bonus.confluence.obsidian_set.0", "鞭子攻击范围扩大30%，鞭子攻击速度提高15%");
         add("armor_set_bonus.confluence.obsidian_set.1", "召唤伤害提高15%");
         // 角斗士
         add("armor_set_bonus.confluence.gladiator_set.0", "免疫击退");
-        // 小雪怪
-        add("tooltip.item.confluence.flinx_fur_coat.0", "召唤伤害提高5%");
-        add("tooltip.item.confluence.flinx_fur_coat.1", "仆从数量上限增加1");
         // 巫师
         add("tooltip.item.confluence.amber_robe.0", "最大魔力增加60");
         add("tooltip.item.confluence.amber_robe.1", "魔力消耗降低13%");
@@ -2503,133 +2466,50 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.topaz_robe.1", "魔力消耗降低7%");
         add("tooltip.item.confluence.amethyst_robe.0", "最大魔力增加20");
         add("tooltip.item.confluence.amethyst_robe.1", "魔力消耗降低5%");
-        add("tooltip.item.confluence.wizard_hat.0", "魔法伤害提高5%");
-        add("tooltip.item.confluence.magic_hat.0", "魔法伤害和魔法暴击率各提高6%");
         // 流星
-        add("tooltip.item.confluence.meteor_helmet.0", "魔法伤害提高9%");
-        add("tooltip.item.confluence.meteor_chestplate.0", "魔法伤害提高9%");
-        add("tooltip.item.confluence.meteor_leggings.0", "魔法伤害提高4.5%");
-        add("tooltip.item.confluence.meteor_boots.0", "魔法伤害提高4.5%");
         add("armor_set_bonus.confluence.meteor_set.0", "太空枪魔力消耗降低为0");
         // 丛林
         add("tooltip.item.confluence.jungle_helmet.0", "最大魔力增加40");
-        add("tooltip.item.confluence.jungle_helmet.1", "暴击率提高6%");
         add("tooltip.item.confluence.jungle_chestplate.0", "最大魔力增加20");
-        add("tooltip.item.confluence.jungle_chestplate.1", "魔法伤害提高6%");
         add("tooltip.item.confluence.jungle_leggings.0", "最大魔力增加20");
-        add("tooltip.item.confluence.jungle_boots.0", "魔法伤害提高6%");
         add("armor_set_bonus.confluence.jungle_set.0", "魔力消耗降低16%");
         // 死灵
-        add("tooltip.item.confluence.necro_helmet.0", "远程伤害提高5%");
-        add("tooltip.item.confluence.necro_chestplate.0", "远程伤害提高5%");
-        add("tooltip.item.confluence.necro_leggings.0", "远程伤害提高2.5%");
-        add("tooltip.item.confluence.necro_boots.0", "远程伤害提高2.5%");
         add("armor_set_bonus.confluence.necro_set.0", "暴击率提高10%");
         // 暗影
-        add("tooltip.item.confluence.shadow_helmet.0", "暴击率提高5%");
-        add("tooltip.item.confluence.shadow_chestplate.0", "暴击率提高5%");
-        add("tooltip.item.confluence.shadow_leggings.0", "暴击率提高2.5%");
-        add("tooltip.item.confluence.shadow_boots.0", "暴击率提高2.5%");
         add("armor_set_bonus.confluence.shadow_set.0", "提高移动速度和加速度");
         // 猩红
-        add("tooltip.item.confluence.crimson_helmet.0", "伤害提高3%");
-        add("tooltip.item.confluence.crimson_chestplate.0", "伤害提高3%");
-        add("tooltip.item.confluence.crimson_leggings.0", "伤害提高1.5%");
-        add("tooltip.item.confluence.crimson_boots.0", "伤害提高1.5%");
         add("armor_set_bonus.confluence.crimson_set.0", "生命再生能力大幅提升");
         // 熔岩
-        add("tooltip.item.confluence.molten_helmet.0", "暴击率提高7%");
-        add("tooltip.item.confluence.molten_chestplate.0", "近战伤害提高7%");
-        add("tooltip.item.confluence.molten_leggings.0", "近战速度提高3.5%");
-        add("tooltip.item.confluence.molten_boots.0", "近战速度提高3.5%");
         add("armor_set_bonus.confluence.molten_set.0", "近战伤害提高10%，免疫着火");
         // 蜘蛛
-        add("tooltip.item.confluence.spider_helmet.0", "仆从数量上限增加1");
-        add("tooltip.item.confluence.spider_helmet.1", "召唤伤害提高5%");
-        add("tooltip.item.confluence.spider_chestplate.0", "仆从数量上限增加1");
-        add("tooltip.item.confluence.spider_chestplate.1", "召唤伤害提高5%");
-        add("tooltip.item.confluence.spider_leggings.0", "仆从数量上限增加1");
-        add("tooltip.item.confluence.spider_boots.0", "召唤伤害提高6%");
         add("armor_set_bonus.confluence.spider_set.0", "召唤伤害提高12%");
         // 困难模式矿石
-        add("tooltip.item.confluence.cobalt_mask.0", "远程伤害提高10%");
-        add("tooltip.item.confluence.cobalt_mask.1", "暴击率提高10%");
         add("tooltip.item.confluence.cobalt_hat.0", "最大魔力增加40");
-        add("tooltip.item.confluence.cobalt_hat.1", "魔法伤害提高10%");
-        add("tooltip.item.confluence.cobalt_hat.2", "暴击率提高9%");
-        add("tooltip.item.confluence.cobalt_helmet.0", "移动速度提高10%");
-        add("tooltip.item.confluence.cobalt_helmet.1", "近战伤害提高15%");
-        add("tooltip.item.confluence.cobalt_chestplate.0", "暴击率提高5%");
-        add("tooltip.item.confluence.cobalt_leggings.0", "移动速度提高10%");
-        add("tooltip.item.confluence.cobalt_boots.0", "伤害提高3%");
         add("armor_set_bonus.confluence.cobalt_helmet_set.0", "近战速度提高15%");
         add("armor_set_bonus.confluence.cobalt_mask_set.0", "20%几率省下弹药");
         add("armor_set_bonus.confluence.cobalt_hat_set.0", "魔力消耗降低14%");
 
-        add("tooltip.item.confluence.palladium_mask.0", "近战伤害提高12%");
-        add("tooltip.item.confluence.palladium_mask.1", "近战速度提高12%");
-        add("tooltip.item.confluence.palladium_headgear.0", "魔法伤害和暴击率各提高9%");
-        add("tooltip.item.confluence.palladium_headgear.1", "最大魔力增加60");
-        add("tooltip.item.confluence.palladium_helmet.0", "远程伤害提高9%");
-        add("tooltip.item.confluence.palladium_helmet.1", "暴击率提高9%");
-        add("tooltip.item.confluence.palladium_chestplate.0", "伤害提高3%");
-        add("tooltip.item.confluence.palladium_chestplate.1", "暴击率提高2%");
-        add("tooltip.item.confluence.palladium_leggings.0", "伤害提高2%");
-        add("tooltip.item.confluence.palladium_boots.0", "暴击率提高1%");
+        add("tooltip.item.confluence.palladium_headgear.0", "最大魔力增加60");
         add("armor_set_bonus.confluence.palladium_mask_set.0", "攻击敌人后大大提高生命再生速度");
         add("armor_set_bonus.confluence.palladium_helmet_set.0", "攻击敌人后大大提高生命再生速度");
         add("armor_set_bonus.confluence.palladium_headgear_set.0", "攻击敌人后大大提高生命再生速度");
 
         add("tooltip.item.confluence.mythril_hood.0", "最大魔力增加60");
-        add("tooltip.item.confluence.mythril_hood.1", "魔法伤害提高15%");
-        add("tooltip.item.confluence.mythril_hat.0", "远程伤害提高12%");
-        add("tooltip.item.confluence.mythril_hat.1", "暴击率提高7%");
-        add("tooltip.item.confluence.mythril_helmet.0", "暴击率提高8%");
-        add("tooltip.item.confluence.mythril_helmet.1", "近战伤害提高10%");
-        add("tooltip.item.confluence.mythril_chestplate.0", "伤害提高7%");
-        add("tooltip.item.confluence.mythril_leggings.0", "暴击率提高5%");
-        add("tooltip.item.confluence.mythril_boots.0", "暴击率提高5%");
         add("armor_set_bonus.confluence.mythril_hood_set.0", "魔力消耗降低17%");
         add("armor_set_bonus.confluence.mythril_helmet_set.0", "暴击率提高10%");
         add("armor_set_bonus.confluence.mythril_hat_set.0", "20%几率省下弹药");
 
-        add("tooltip.item.confluence.orichalcum_headgear.0", "暴击率提高18%");
-        add("tooltip.item.confluence.orichalcum_headgear.1", "最大魔力增加80");
-        add("tooltip.item.confluence.orichalcum_mask.0", "近战伤害和近战速度各提高11%");
-        add("tooltip.item.confluence.orichalcum_mask.1", "移动速度提高7%");
-        add("tooltip.item.confluence.orichalcum_helmet.0", "暴击率提高15%");
-        add("tooltip.item.confluence.orichalcum_helmet.1", "移动速度提高8%");
-        add("tooltip.item.confluence.orichalcum_chestplate.0", "暴击率提高6%");
-        add("tooltip.item.confluence.orichalcum_leggings.0", "伤害提高8%");
-        add("tooltip.item.confluence.orichalcum_boots.0", "移动速度提高11%");
+        add("tooltip.item.confluence.orichalcum_headgear.0", "最大魔力增加80");
         add("armor_set_bonus.confluence.orichalcum_headgear_set.0", "花瓣将落到目标身上造成额外伤害");
         add("armor_set_bonus.confluence.orichalcum_mask_set.0", "花瓣将落到目标身上造成额外伤害");
         add("armor_set_bonus.confluence.orichalcum_helmet_set.0", "花瓣将落到目标身上造成额外伤害");
 
         add("tooltip.item.confluence.adamantite_headgear.0", "最大魔力增加80");
-        add("tooltip.item.confluence.adamantite_headgear.1", "魔法伤害和暴击率各提高12%");
-        add("tooltip.item.confluence.adamantite_mask.0", "远程伤害提高14%");
-        add("tooltip.item.confluence.adamantite_mask.1", "暴击率提高10%");
-        add("tooltip.item.confluence.adamantite_helmet.0", "暴击率提高7%");
-        add("tooltip.item.confluence.adamantite_helmet.1", "近战伤害提高14%");
-        add("tooltip.item.confluence.adamantite_chestplate.0", "伤害提高8%");
-        add("tooltip.item.confluence.adamantite_leggings.0", "暴击率提高7%");
-        add("tooltip.item.confluence.adamantite_boots.0", "移动速度提高5%");
         add("armor_set_bonus.confluence.adamantite_headgear_set.0", "魔力消耗降低19%");
         add("armor_set_bonus.confluence.adamantite_helmet_set.0", "近战速度和移动速度各提高20%");
         add("armor_set_bonus.confluence.adamantite_mask_set.0", "25%几率省下弹药");
 
-        add("tooltip.item.confluence.titanium_headgear.0", "魔法伤害提高16%");
-        add("tooltip.item.confluence.titanium_headgear.1", "暴击率提高7%");
-        add("tooltip.item.confluence.titanium_headgear.2", "最大魔力增加100");
-        add("tooltip.item.confluence.titanium_mask.0", "近战伤害和暴击率各提高9%");
-        add("tooltip.item.confluence.titanium_mask.1", "近战速度提高9%");
-        add("tooltip.item.confluence.titanium_helmet.0", "远程伤害提高16%");
-        add("tooltip.item.confluence.titanium_helmet.1", "暴击率提高7%");
-        add("tooltip.item.confluence.titanium_chestplate.0", "伤害提高4%");
-        add("tooltip.item.confluence.titanium_chestplate.1", "暴击率提高3%");
-        add("tooltip.item.confluence.titanium_leggings.0", "伤害和暴击率各提高3%");
-        add("tooltip.item.confluence.titanium_boots.0", "移动速度提高6%");
+        add("tooltip.item.confluence.titanium_headgear.0", "最大魔力增加100");
         add("armor_set_bonus.confluence.titanium_mask_set.0", "攻击生成钛金碎片防御屏障");
         add("armor_set_bonus.confluence.titanium_helmet_set.0", "攻击生成钛金碎片防御屏障");
         add("armor_set_bonus.confluence.titanium_headgear_set.0", "攻击生成钛金碎片防御屏障");

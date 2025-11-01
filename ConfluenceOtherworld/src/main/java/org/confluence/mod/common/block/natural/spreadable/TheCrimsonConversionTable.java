@@ -23,8 +23,8 @@ public class TheCrimsonConversionTable extends ConversionTable {
         if (block == Blocks.TALL_GRASS) {
             return source.getValue(DoublePlantBlock.HALF) == DoubleBlockHalf.LOWER ? NatureBlocks.CRIMSON_GRASS.get() : Blocks.AIR;
         }
-        if (block instanceof CattailsHeadBlock) return NatureBlocks.HALLOW_CATTAILS_HEAD.get();
-        if (block instanceof CattailsBodyBlock) return NatureBlocks.HALLOW_CATTAILS_BODY.get();
+        if (block instanceof CattailsHeadBlock) return NatureBlocks.CRIMSON_CATTAILS_HEAD.get();
+        if (block instanceof CattailsBodyBlock) return NatureBlocks.CRIMSON_CATTAILS_BODY.get();
 
         Holder<Block> holder = block.builtInRegistryHolder();
         if (holder.is(BlockTags.LOGS)) return NatureBlocks.SHADOW_LOG_BLOCKS.LOG.get();

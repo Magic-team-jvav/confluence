@@ -3559,7 +3559,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.SHADOW_SCALE.get(), "暗影鳞片");
         add(MaterialItems.TISSUE_SAMPLE.get(), "组织样本");
         add(MaterialItems.ROYAL_WAX.get(), "蜂王蜡");
-        add(MaterialItems.DUNGEON_DEMON_BONE.get(), "地牢魔骨");
         add(MaterialItems.CURSED_FLAME.get(), "诅咒焰");
         add(MaterialItems.ICHOR.get(), "灵液");
         add(MaterialItems.PIXIE_DUST.get(), "妖精尘");
@@ -3917,6 +3916,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ConsumableItems.BONE_THROWING_KNIFE.get(), "骨投刀");
         add(ConsumableItems.FROST_DAGGERFISH.get(), "寒霜飞鱼");
         add(ConsumableItems.JAVELIN.get(), "标枪");
+        add(ConsumableItems.DUNGEON_DEMON_BONE.get(), "地牢魔骨");
         add(ConsumableItems.SPIKY_BALL.get(), "尖球");
         add(ConsumableItems.HOLY_WATER.get(), "圣水");
         add(ConsumableItems.UNHOLY_WATER.get(), "邪水");

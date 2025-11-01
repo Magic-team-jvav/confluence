@@ -142,7 +142,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         );
         add(TEMonsterEntities.ANGER_BONES.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/anger_bones"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.DUNGEON_DEMON_BONE).apply(count2To6).apply(random0To1).setWeight(97))
+                        .add(LootItem.lootTableItem(ConsumableItems.DUNGEON_DEMON_BONE).apply(count2To6).apply(random0To1).setWeight(97))
                         .add(LootItem.lootTableItem(ToolItems.GOLDEN_DUNGEON_KEY).setWeight(2))
                         .add(LootItem.lootTableItem(TCItems.TALLY_COUNTER))
                 )
@@ -156,7 +156,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         );
         add(TEMonsterEntities.BIG_ANGER_BONES.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/big_anger_bones"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.DUNGEON_DEMON_BONE).apply(count2To6).apply(random0To1).setWeight(97))
+                        .add(LootItem.lootTableItem(ConsumableItems.DUNGEON_DEMON_BONE).apply(count2To6).apply(random0To1).setWeight(97))
                         .add(LootItem.lootTableItem(ToolItems.GOLDEN_DUNGEON_KEY).setWeight(2))
                         .add(LootItem.lootTableItem(TCItems.TALLY_COUNTER))
                 )
@@ -170,7 +170,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         );
         add(TEMonsterEntities.BIG_BONES.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/big_bones"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.DUNGEON_DEMON_BONE).apply(count2To6).apply(random0To1).setWeight(97))
+                        .add(LootItem.lootTableItem(ConsumableItems.DUNGEON_DEMON_BONE).apply(count2To6).apply(random0To1).setWeight(97))
                         .add(LootItem.lootTableItem(ToolItems.GOLDEN_DUNGEON_KEY).setWeight(2))
                         .add(LootItem.lootTableItem(TCItems.TALLY_COUNTER))
                 )
@@ -184,7 +184,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         );
         add(TEMonsterEntities.BIG_HELMET_ANGER_BONES.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/big_helmet_anger_bones"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.DUNGEON_DEMON_BONE).apply(count2To6).apply(random0To1).setWeight(97))
+                        .add(LootItem.lootTableItem(ConsumableItems.DUNGEON_DEMON_BONE).apply(count2To6).apply(random0To1).setWeight(97))
                         .add(LootItem.lootTableItem(ToolItems.GOLDEN_DUNGEON_KEY).setWeight(2))
                         .add(LootItem.lootTableItem(TCItems.TALLY_COUNTER))
                 )
@@ -198,7 +198,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         );
         add(TEMonsterEntities.BIG_MUSCLE_ANGER_BONES.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/big_muscle_anger_bones"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.DUNGEON_DEMON_BONE).apply(count2To6).apply(random0To1).setWeight(97))
+                        .add(LootItem.lootTableItem(ConsumableItems.DUNGEON_DEMON_BONE).apply(count2To6).apply(random0To1).setWeight(97))
                         .add(LootItem.lootTableItem(ToolItems.GOLDEN_DUNGEON_KEY).setWeight(2))
                         .add(LootItem.lootTableItem(TCItems.TALLY_COUNTER))
                 )
@@ -212,7 +212,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         );
         add(TEMonsterEntities.SHORT_BONES.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/short_bones"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.DUNGEON_DEMON_BONE).apply(count2To6).apply(random0To1).setWeight(97))
+                        .add(LootItem.lootTableItem(ConsumableItems.DUNGEON_DEMON_BONE).apply(count2To6).apply(random0To1).setWeight(97))
                         .add(LootItem.lootTableItem(ToolItems.GOLDEN_DUNGEON_KEY).setWeight(2))
                         .add(LootItem.lootTableItem(TCItems.TALLY_COUNTER))
                 )
@@ -226,7 +226,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         );
         add(TEMonsterEntities.DARK_CASTER.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/dark_caster"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.DUNGEON_DEMON_BONE).apply(count2To6).apply(random0To1).setWeight(97))
+                        .add(LootItem.lootTableItem(ConsumableItems.DUNGEON_DEMON_BONE).apply(count2To6).apply(random0To1).setWeight(97))
                         .add(LootItem.lootTableItem(ToolItems.GOLDEN_DUNGEON_KEY).setWeight(2))
                         .add(LootItem.lootTableItem(TCItems.TALLY_COUNTER))
                 )
@@ -240,7 +240,7 @@ public final class EntitySubProvider extends EntityLootSubProvider {
         );
         add(TEMonsterEntities.CURSED_SKULL.get(), Confluence.asResourceKey(Registries.LOOT_TABLE, "entities/terra_entity/cursed_skull"), LootTable.lootTable()
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(MaterialItems.DUNGEON_DEMON_BONE).apply(count2To6).apply(random0To1).setWeight(97))
+                        .add(LootItem.lootTableItem(ConsumableItems.DUNGEON_DEMON_BONE).apply(count2To6).apply(random0To1).setWeight(97))
                         .add(LootItem.lootTableItem(ToolItems.GOLDEN_DUNGEON_KEY).setWeight(2))
                         .add(LootItem.lootTableItem(TCItems.TALLY_COUNTER))
                 )

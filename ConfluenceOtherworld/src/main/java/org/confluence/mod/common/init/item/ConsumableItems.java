@@ -63,6 +63,7 @@ public class ConsumableItems {
     public static final DeferredItem<ThrowableDropSelfItem> THROWING_KNIVE = ITEMS.register("throwing_knive", () -> new ThrowableDropSelfItem(ModEntities.THROWN_KNIVE_PROJECTILE.get(), 5f, 1.2f, 0.5f, 5, 3, true));
     public static final DeferredItem<ThrowableDropSelfItem> BONE_THROWING_KNIFE = ITEMS.register("bone_throwing_knife", () -> new ThrowableDropSelfItem(ModEntities.BONE_THROWN_KNIVE_PROJECTILE.get(), 6f, 1.2f, 0.5f, 5, 3, false));
     public static final DeferredItem<ThrowableDropSelfItem> FROST_DAGGERFISH = ITEMS.register("frost_daggerfish", () -> new ThrowableDropSelfItem(ModEntities.FROST_DAGGERFISH_PROJECTILE.get(), 7f, 1.7f, 0.5f, 5, 3, false));
+    public static final DeferredItem<ThrowableDropSelfItem> DUNGEON_DEMON_BONE = ITEMS.register("dungeon_demon_bone", () -> new ThrowableDropSelfItem(ModEntities.DUNGEON_DEMON_BONE_PROJECTILE.get(), 5f, 1.2f, 0.5f, 3, 3, false));
     public static final DeferredItem<ThrowableDropSelfItem> JAVELIN = ITEMS.register("javelin", () -> new ThrowableDropSelfItem(ModEntities.JAVELIN_PROJECTILE.get(), 5f, 1.2f, 0.5f, 5, 5, true));
     public static final DeferredItem<SpikyBallItem> SPIKY_BALL = ITEMS.register("spiky_ball", SpikyBallItem::new);
     public static final DeferredItem<ThrowableItem<ThrownWaterProjectile>> HOLY_WATER = ITEMS.register("holy_water", () -> new ThrowableItem<>(0.8F, player -> new ThrownWaterProjectile(player, ISpreadable.Type.PURE)));

@@ -864,7 +864,7 @@ public final class ValueSubProvider {
                 .add(ConsumableItems.HOLY_WATER, 40)
                 .add(ConsumableItems.UNHOLY_WATER, 40)
                 .add(ConsumableItems.BLOOD_WATER, 40)
-                .add(MaterialItems.DUNGEON_DEMON_BONE, 10)
+                .add(ConsumableItems.DUNGEON_DEMON_BONE, 10)
                 .add(ConsumableItems.BONE_THROWING_KNIFE, 10)
                 .add(ConsumableItems.FROST_DAGGERFISH, 16)
                 .add(ConsumableItems.JAVELIN, 5)

@@ -362,13 +362,13 @@ public class ArmorItems {
             .rarity(ModRarity.ORANGE)
             .summonDamage(0.04)
             .attribute(TEAttributes.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE)
-            .tooltips(2));
+            );
     public static final DeferredItem<BaseArmorItem> BEE_CHESTPLATE = register("bee_chestplate", ModArmorMaterials.BEE_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/bee_armor")
             .rarity(ModRarity.ORANGE)
             .summonDamage(0.04)
             .attribute(TEAttributes.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE)
-            .tooltips(2));
+            );
     public static final DeferredItem<BaseArmorItem> BEE_LEGGINGS = register("bee_leggings", ModArmorMaterials.BEE_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/bee_armor")
             .rarity(ModRarity.ORANGE)

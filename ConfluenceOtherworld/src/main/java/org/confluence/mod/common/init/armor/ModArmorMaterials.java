@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.init.item.ConsumableItems;
 import org.confluence.mod.common.init.item.MaterialItems;
 
 import java.util.Collections;
@@ -178,7 +179,7 @@ public final class ModArmorMaterials {
     );
     public static final Holder<ArmorMaterial> NECRO_ARMOR_MATERIALS = registerArmorMaterial("necro_armor_materials",
             3, 7, 6, 3,
-            16, SoundEvents.ARMOR_EQUIP_LEATHER, MaterialItems.DUNGEON_DEMON_BONE,
+            16, SoundEvents.ARMOR_EQUIP_LEATHER, ConsumableItems.DUNGEON_DEMON_BONE,
             "necro", 2.0F, 0.0F);
     public static final Holder<ArmorMaterial> SPIDER_ARMOR_MATERIALS = registerArmorMaterial("spider_armor_materials",
             3, 7, 7, 3,

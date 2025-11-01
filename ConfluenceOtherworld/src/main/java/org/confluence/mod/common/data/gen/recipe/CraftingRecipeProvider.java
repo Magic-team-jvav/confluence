@@ -700,7 +700,7 @@ public class CraftingRecipeProvider extends AbstractRecipeProvider {
         registerChainsRecipes(output, Ingredient.of(ModTags.Items.GEMS_JADE), DecorativeBlocks.JADE_CHAIN);
         registerChainsRecipes(output, Ingredient.of(ModTags.Items.GEMS_RUBY), DecorativeBlocks.RUBY_CHAIN);
         registerChainsRecipes(output, Ingredient.of(ModTags.Items.GEMS_TOPAZ), DecorativeBlocks.TOPAZ_CHAIN);
-        registerChainsRecipes(output, Ingredient.of(MaterialItems.DUNGEON_DEMON_BONE), DecorativeBlocks.BONE_CHAIN);
+        registerChainsRecipes(output, Ingredient.of(ConsumableItems.DUNGEON_DEMON_BONE), DecorativeBlocks.BONE_CHAIN);
         // 纯净玻璃
         registerPureGlassRecipes(output, Ingredient.of(DecorativeBlocks.PURE_GLASS), Ingredient.of(Items.BLACK_DYE), DecorativeBlocks.BLACK_PURE_GLASS, 8);
         registerPureGlassRecipes(output, Ingredient.of(DecorativeBlocks.PURE_GLASS), Ingredient.of(Items.BLUE_DYE), DecorativeBlocks.BLUE_PURE_GLASS, 8);

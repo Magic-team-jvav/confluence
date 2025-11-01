@@ -127,14 +127,14 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         )), GunItems.STAR_CANNON.toStack());
         // 死灵套装
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                'A', AmountIngredient.of(10, MaterialItems.DUNGEON_DEMON_BONE),
+                'A', AmountIngredient.of(10, ConsumableItems.DUNGEON_DEMON_BONE),
                 '/', AmountIngredient.of(10, Items.COBWEB)
         ), List.of(
                 "/A/",
                 "A A"
         )), ArmorItems.NECRO_HELMET.toStack());
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                'A', AmountIngredient.of(10, MaterialItems.DUNGEON_DEMON_BONE),
+                'A', AmountIngredient.of(10, ConsumableItems.DUNGEON_DEMON_BONE),
                 '/', AmountIngredient.of(5, Items.COBWEB)
         ), List.of(
                 "/ /",
@@ -142,7 +142,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "AAA"
         )), ArmorItems.NECRO_CHESTPLATE.toStack());
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                'A', AmountIngredient.of(10, MaterialItems.DUNGEON_DEMON_BONE),
+                'A', AmountIngredient.of(10, ConsumableItems.DUNGEON_DEMON_BONE),
                 '/', AmountIngredient.of(5, Items.COBWEB)
         ), List.of(
                 "/A/",
@@ -150,7 +150,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
                 "A A"
         )), ArmorItems.NECRO_LEGGINGS.toStack());
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                'A', AmountIngredient.of(10, MaterialItems.DUNGEON_DEMON_BONE),
+                'A', AmountIngredient.of(10, ConsumableItems.DUNGEON_DEMON_BONE),
                 '/', AmountIngredient.of(10, Items.COBWEB)
         ), List.of(
                 "/ /",
@@ -1247,7 +1247,7 @@ public class HeavyWorkBenchProvider extends AbstractRecipeProvider {
         )), TEWhipItems.SNAPTHORN.toStack());
         // 脊柱骨鞭
         shaped(recipeOutput, ShapedRecipePattern.of(Map.of(
-                '#', AmountIngredient.of(45,MaterialItems.DUNGEON_DEMON_BONE),
+                '#', AmountIngredient.of(45,ConsumableItems.DUNGEON_DEMON_BONE),
                 'a', AmountIngredient.of(13,Items.COBWEB)
         ), List.of(
                 "  a ",

@@ -493,7 +493,7 @@ public abstract class AbstractBoulderEntity extends Projectile {
 			return;
 		}
 		var entity = entityHitResult.getEntity();
-		if (!entity.isAlive() || entity.equals(getOwner())) {
+		if (!entity.isAlive() || !entity.isAttackable() || entity.equals(getOwner())) {
 			return;
 		}
 		var uuid = entity.getUUID();

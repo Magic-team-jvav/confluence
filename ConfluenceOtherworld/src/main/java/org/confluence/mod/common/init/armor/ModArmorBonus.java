@@ -23,6 +23,7 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.fml.ModLoader;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.common.Tags;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.GetArmorSetBonusDataEvent;
@@ -41,10 +42,12 @@ import org.confluence.terra_curio.common.component.PrimitiveValueComponent;
 import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terraentity.init.TEAttributes;
+import org.confluence.terraentity.init.TEEffects;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import static org.confluence.mod.common.init.item.ArmorItems.*;
@@ -62,7 +65,7 @@ public final class ModArmorBonus {
     public static final ArmorSetBonusData MAGIC_HAT_SET_BONUS = new ArmorSetBonusData(PrimitiveValueComponent.of(AccessoryItems.ADDITIONAL$MANA, 60), 1);
     // endregion
 
-    // region value type
+    // region type
     public static final ValueType.UnitType CACTUS$THORNS = ValueType.UnitType.of(Confluence.asResource("thorns"));
     public static final ValueType.FloatType SKIP$CONSUME$AMMO$CHANCE = ValueType.FloatType.of(Confluence.asResource("skip_consume_ammo_chance"), FloatValue.ADDITION_WITHIN_0_TO_1, 0);
     public static final ValueType.UnitType SPACE$GUN$FREE = ValueType.UnitType.of(Confluence.asResource("space_gun_free"));
@@ -70,6 +73,11 @@ public final class ModArmorBonus {
     public static final ValueType<List<MobEffectInstancesValue.Effect>, MobEffectInstancesValue> HURT$ENEMY$AWARD$EFFECTS = ValueType.create(Confluence.asResource("hurt_enemy_award_effects"), MobEffectInstancesValue.MERGE, MobEffectInstancesValue.CODEC, List.of(), MobEffectInstancesValue::new);
     public static final ValueType.UnitType FLOWER$PETAL = ValueType.UnitType.of(Confluence.asResource("flower_petal"));
     public static final ValueType.UnitType TITANIUM$SHARDS = ValueType.UnitType.of(Confluence.asResource("titanium_shards"));
+    // endregion
+
+    // region key
+    public static ArmorSetBonusKey COLD_CRYSTAL_SET;
+    public static ArmorSetBonusKey HEIM_SET;
     // endregion
 
     @SuppressWarnings("all")
@@ -112,14 +120,10 @@ public final class ModArmorBonus {
         register("fossil_set", 1, FOSSIL_HELMET, FOSSIL_CHESTPLATE, FOSSIL_LEGGINGS, FOSSIL_BOOTS, key -> {
             key.of(SKIP$CONSUME$AMMO$CHANCE, 0.2F);
         });
-        register("cold_crystal_set", 1, COLD_CRYSTAL_HELMET, COLD_CRYSTAL_CHESTPLATE, COLD_CRYSTAL_LEGGINGS, COLD_CRYSTAL_BOOTS, key -> {
-            // todo 魔法攻击会有附带霜冻效果
-        });
-        register("heim_set", 1, HEIM_HELMET, HEIM_CHESTPLATE, HEIM_LEGGINGS, HEIM_BOOTS, key -> {
-            // todo 赋予4点生命值的伤害吸收，每隔5秒钟再次赋予
-        });
+        COLD_CRYSTAL_SET = register("cold_crystal_set", 1, COLD_CRYSTAL_HELMET, COLD_CRYSTAL_CHESTPLATE, COLD_CRYSTAL_LEGGINGS, COLD_CRYSTAL_BOOTS, key -> {});
+        HEIM_SET = register("heim_set", 1, HEIM_HELMET, HEIM_CHESTPLATE, HEIM_LEGGINGS, HEIM_BOOTS, key -> {});
         register("spore_root_set", 1, SPORE_ROOT_HELMET, SPORE_ROOT_CHESTPLATE, SPORE_ROOT_LEGGINGS, SPORE_ROOT_BOOTS, key -> {
-            // todo 仆从栏位+1
+            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(TEAttributes.MINION_CAPACITY, key.id, 1, AttributeModifier.Operation.ADD_VALUE));
         });
         register("bee_set", 1, BEE_HELMET, BEE_CHESTPLATE, BEE_LEGGINGS, BEE_BOOTS, key -> {
             key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(TEAttributes.SUMMON_DAMAGE, key.id, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
@@ -159,6 +163,7 @@ public final class ModArmorBonus {
         });
         register("molten_set", 1, MOLTEN_HELMET, MOLTEN_CHESTPLATE, MOLTEN_LEGGINGS, MOLTEN_BOOTS, key -> {
             key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(Attributes.ATTACK_DAMAGE, key.id, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            key.unit(TCItems.FIRE$IMMUNE);
             // todo 移动时有火焰微粒
         });
         register("pearlwood_set", 1, PEARL_HELMET, PEARL_CHESTPLATE, PEARL_LEGGINGS, PEARL_BOOTS, armor(1));
@@ -235,7 +240,7 @@ public final class ModArmorBonus {
         return key -> key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(Attributes.ARMOR, key.id, value, AttributeModifier.Operation.ADD_VALUE));
     }
 
-    private static void register(
+    private static ArmorSetBonusKey register(
             String path,
             int tooltipCount,
             @Nullable ItemLike head,
@@ -244,10 +249,10 @@ public final class ModArmorBonus {
             @Nullable ItemLike feet,
             Consumer<ArmorSetBonusKey> consumer
     ) {
-        register(Confluence.asResource(path), tooltipCount, head, chest, legs, feet, consumer);
+        return register(Confluence.asResource(path), tooltipCount, head, chest, legs, feet, consumer);
     }
 
-    private static void register(
+    private static ArmorSetBonusKey register(
             ResourceLocation id,
             int tooltipCount,
             @Nullable ItemLike head,
@@ -265,6 +270,15 @@ public final class ModArmorBonus {
         consumer.accept(key);
         VALUE_MAP.put(key, new ArmorSetBonusData(new PrimitiveValueComponent(key.types), tooltipCount));
         key.types = null;
+        return key;
+    }
+
+    public static boolean isArmorSet(Player player, ResourceLocation id) {
+        return isArmorSet(player, ArmorSetBonusKey.byId(id));
+    }
+
+    public static boolean isArmorSet(Player player, ArmorSetBonusKey key) {
+        return PlayerSpecialData.of(player).getArmorSetBonusKey().equals(Objects.requireNonNullElse(key, ArmorSetBonusKey.NONE));
     }
 
     public static boolean hasType(Player player, ValueType<Unit, UnitValue> type) {
@@ -327,12 +341,11 @@ public final class ModArmorBonus {
     }
 
     public static void onAttacked(ServerPlayer player, DamageSource damageSource, LivingEntity victim) {
-        if (victim instanceof Enemy) {
+        if (victim instanceof Enemy) hurtEnemyAwardEffects:{
             List<MobEffectInstancesValue.Effect> effects = getValue(player, HURT$ENEMY$AWARD$EFFECTS);
-            if (!effects.isEmpty()) {
-                for (MobEffectInstancesValue.Effect effect : effects) {
-                    player.addEffect(effect.get());
-                }
+            if (effects.isEmpty()) break hurtEnemyAwardEffects;
+            for (MobEffectInstancesValue.Effect effect : effects) {
+                player.addEffect(effect.get());
             }
         }
         if (hasType(player, FLOWER$PETAL)) flowerPetal:{
@@ -354,17 +367,21 @@ public final class ModArmorBonus {
             projectile.shoot(position.x - offset.x, position.y - offset.y, position.z - offset.z, 1.2F, 0.0F);
             player.level().addFreshEntity(projectile);
         }
-        if (hasType(player, TITANIUM$SHARDS) &&
-                player instanceof IServerPlayer serverPlayer &&
-                !(damageSource.getDirectEntity() instanceof TitaniumShardsProjectile) &&
-                !player.hasEffect(ModEffects.TITANIUM_BARRIER)
-        ) {
+        if (player instanceof IServerPlayer serverPlayer && hasType(player, TITANIUM$SHARDS)) titaniumShards:{
+            if (player.hasEffect(ModEffects.TITANIUM_BARRIER)) break titaniumShards;
+            if (damageSource.getDirectEntity() instanceof TitaniumShardsProjectile) break titaniumShards;
+            if (serverPlayer.confluence$hasTitaniumShards()) break titaniumShards;
+
             player.addEffect(new MobEffectInstance(ModEffects.TITANIUM_BARRIER, 200));
-            if (!serverPlayer.confluence$hasTitaniumShards()) {
-                TitaniumShardsProjectile projectile = new TitaniumShardsProjectile(player);
-                serverPlayer.confluence$setTitaniumShards(projectile);
-                player.level().addFreshEntity(projectile);
-            }
+            TitaniumShardsProjectile projectile = new TitaniumShardsProjectile(player);
+            serverPlayer.confluence$setTitaniumShards(projectile);
+            player.level().addFreshEntity(projectile);
+        }
+        if (damageSource.is(Tags.DamageTypes.IS_MAGIC) && isArmorSet(player, COLD_CRYSTAL_SET)) {
+            victim.addEffect(new MobEffectInstance(TEEffects.FROST_BURN, 100));
+        }
+        if (isArmorSet(player, HEIM_SET)) {
+            // todo
         }
     }
 }

@@ -1,5 +1,7 @@
 package org.confluence.mod.mixin.integration.terra_curio;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.material.FluidState;
@@ -21,10 +23,11 @@ public abstract class TCUtilsMixin {
         }
     }
 
-    @Inject(method = "applyFrozenImmune", at = @At("HEAD"), cancellable = true)
-    private static void modify(LivingEntity living, boolean original, CallbackInfoReturnable<Boolean> cir) {
+    @ModifyReturnValue(method = "applyFrozenImmune", at = @At(value = "RETURN", ordinal = 1))
+    private static boolean modify(boolean original, @Local(argsOnly = true) LivingEntity living) {
         if (original && living instanceof Player player && PlayerUtils.hasPrimitiveType(player, TCItems.FROZEN$IMMUNE)) {
-            cir.setReturnValue(false);
+            return false;
         }
+        return original;
     }
 }

@@ -18,14 +18,15 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.fml.ModLoader;
 import net.neoforged.neoforge.common.NeoForge;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.GetArmorSetBonusDataEvent;
+import org.confluence.mod.api.event.RegisterArmorSetBonusEvent;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.entity.projectile.FlowerPetalProjectile;
 import org.confluence.mod.common.entity.projectile.TitaniumShardsProjectile;
@@ -45,7 +46,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import static org.confluence.mod.common.init.item.ArmorItems.*;
 
@@ -100,7 +100,7 @@ public final class ModArmorBonus {
                     .add(TEAttributes.SUMMON_DAMAGE, key.id, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                     .build());
         });
-        register("ninja_set", 2, NINJA_HELMET, NINJA_CHESTPLATE, NINJA_LEGGINGS, NINJA_BOOTS, key -> {
+        register("ninja_set", 1, NINJA_HELMET, NINJA_CHESTPLATE, NINJA_LEGGINGS, NINJA_BOOTS, key -> {
             key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(Attributes.MOVEMENT_SPEED, key.id, 0.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
             // todo 移动时身后有拖影效果
         });
@@ -112,10 +112,19 @@ public final class ModArmorBonus {
         register("fossil_set", 1, FOSSIL_HELMET, FOSSIL_CHESTPLATE, FOSSIL_LEGGINGS, FOSSIL_BOOTS, key -> {
             key.of(SKIP$CONSUME$AMMO$CHANCE, 0.2F);
         });
+        register("cold_crystal_set", 1, COLD_CRYSTAL_HELMET, COLD_CRYSTAL_CHESTPLATE, COLD_CRYSTAL_LEGGINGS, COLD_CRYSTAL_BOOTS, key -> {
+            // todo 魔法攻击会有附带霜冻效果
+        });
+        register("heim_set", 1, HEIM_HELMET, HEIM_CHESTPLATE, HEIM_LEGGINGS, HEIM_BOOTS, key -> {
+            // todo 赋予4点生命值的伤害吸收，每隔5秒钟再次赋予
+        });
+        register("spore_root_set", 1, SPORE_ROOT_HELMET, SPORE_ROOT_CHESTPLATE, SPORE_ROOT_LEGGINGS, SPORE_ROOT_BOOTS, key -> {
+            // todo 仆从栏位+1
+        });
         register("bee_set", 1, BEE_HELMET, BEE_CHESTPLATE, BEE_LEGGINGS, BEE_BOOTS, key -> {
             key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(TEAttributes.SUMMON_DAMAGE, key.id, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
         });
-        register("obsidian_set", 1, OBSIDIAN_HELMET, OBSIDIAN_CHESTPLATE, OBSIDIAN_LEGGINGS, OBSIDIAN_BOOTS, key -> {
+        register("obsidian_set", 2, OBSIDIAN_HELMET, OBSIDIAN_CHESTPLATE, OBSIDIAN_LEGGINGS, OBSIDIAN_BOOTS, key -> {
             key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.builder()
                     .add(TEAttributes.WHIP_RANGE, key.id, 0.3, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                     .add(Attributes.ATTACK_SPEED, key.id, 0.15, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
@@ -132,23 +141,23 @@ public final class ModArmorBonus {
             key.unit(SPACE$GUN$FREE);
             // todo 移动时有火焰微粒（类似于火箭靴，但不发光）
         });
-        register("jungle_set", 2, JUNGLE_HELMET, JUNGLE_CHESTPLATE, JUNGLE_LEGGINGS, JUNGLE_BOOTS, key -> {
+        register("jungle_set", 1, JUNGLE_HELMET, JUNGLE_CHESTPLATE, JUNGLE_LEGGINGS, JUNGLE_BOOTS, key -> {
             key.of(AccessoryItems.MANA$USE$REDUCE, 0.16F);
             // todo 移动时草粒飞舞
         });
-        register("necro_set", 2, NECRO_HELMET, NECRO_CHESTPLATE, NECRO_LEGGINGS, NECRO_BOOTS, key -> {
+        register("necro_set", 1, NECRO_HELMET, NECRO_CHESTPLATE, NECRO_LEGGINGS, NECRO_BOOTS, key -> {
             key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(TCAttributes.getCriticalChance(), key.id, 0.1, AttributeModifier.Operation.ADD_VALUE));
             // todo 移动时身后有拖影，受伤时发出骨头碎裂的声音
         });
-        register("shadow_set", 2, SHADOW_HELMET, SHADOW_CHESTPLATE, SHADOW_LEGGINGS, SHADOW_BOOTS, key -> {
+        register("shadow_set", 1, SHADOW_HELMET, SHADOW_CHESTPLATE, SHADOW_LEGGINGS, SHADOW_BOOTS, key -> {
             key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(Attributes.MOVEMENT_SPEED, key.id, 0.15, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
             // todo 加速度增加 75%；移动时身后有拖影，并有火箭靴那样的火焰，但是紫色的。
         });
-        register("crimson_set", 2, CRIMSON_HELMET, CRIMSON_CHESTPLATE, CRIMSON_LEGGINGS, CRIMSON_BOOTS, key -> {
+        register("crimson_set", 1, CRIMSON_HELMET, CRIMSON_CHESTPLATE, CRIMSON_LEGGINGS, CRIMSON_BOOTS, key -> {
             key.of(HEAL$AMOUNT$MULTIPLIER, 0.5F);
             // todo 在移动时与再生生命时会发出红色微粒
         });
-        register("molten_set", 2, MOLTEN_HELMET, MOLTEN_CHESTPLATE, MOLTEN_LEGGINGS, MOLTEN_BOOTS, key -> {
+        register("molten_set", 1, MOLTEN_HELMET, MOLTEN_CHESTPLATE, MOLTEN_LEGGINGS, MOLTEN_BOOTS, key -> {
             key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(Attributes.ATTACK_DAMAGE, key.id, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
             // todo 移动时有火焰微粒
         });
@@ -156,15 +165,15 @@ public final class ModArmorBonus {
         register("spider_set", 1, SPIDER_HELMET, SPIDER_CHESTPLATE, SPIDER_LEGGINGS, SPIDER_BOOTS, key -> {
             key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(TEAttributes.SUMMON_DAMAGE, key.id, 0.12, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
         });
-        register("cobalt_helmet_set", 2, COBALT_HELMET, COBALT_CHESTPLATE, COBALT_LEGGINGS, COBALT_BOOTS, key -> {
+        register("cobalt_helmet_set", 1, COBALT_HELMET, COBALT_CHESTPLATE, COBALT_LEGGINGS, COBALT_BOOTS, key -> {
             key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(Attributes.ATTACK_SPEED, key.id, 0.15, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
             // todo 移动时产生残影效果
         });
-        register("cobalt_mask_set", 2, COBALT_MASK, COBALT_CHESTPLATE, COBALT_LEGGINGS, COBALT_BOOTS, key -> {
+        register("cobalt_mask_set", 1, COBALT_MASK, COBALT_CHESTPLATE, COBALT_LEGGINGS, COBALT_BOOTS, key -> {
             key.of(SKIP$CONSUME$AMMO$CHANCE, 0.2F);
             // todo 移动时产生残影效果
         });
-        register("cobalt_hat_set", 2, COBALT_HAT, COBALT_CHESTPLATE, COBALT_LEGGINGS, COBALT_BOOTS, key -> {
+        register("cobalt_hat_set", 1, COBALT_HAT, COBALT_CHESTPLATE, COBALT_LEGGINGS, COBALT_BOOTS, key -> {
             key.of(AccessoryItems.MANA$USE$REDUCE, 0.14F);
             // todo 移动时产生残影效果
         });
@@ -189,27 +198,27 @@ public final class ModArmorBonus {
         register("orichalcum_headgear_set", 1, ORICHALCUM_HEADGEAR, ORICHALCUM_CHESTPLATE, ORICHALCUM_LEGGINGS, ORICHALCUM_BOOTS, orichalcumSet);
         register("orichalcum_mask_set", 1, ORICHALCUM_MASK, ORICHALCUM_CHESTPLATE, ORICHALCUM_LEGGINGS, ORICHALCUM_BOOTS, orichalcumSet);
         register("orichalcum_helmet_set", 1, ORICHALCUM_HELMET, ORICHALCUM_CHESTPLATE, ORICHALCUM_LEGGINGS, ORICHALCUM_BOOTS, orichalcumSet);
-        register("adamantite_headgear_set", 2, ADAMANTITE_HEADGEAR, ADAMANTITE_CHESTPLATE, ADAMANTITE_LEGGINGS, ADAMANTITE_BOOTS, key -> {
+        register("adamantite_headgear_set", 1, ADAMANTITE_HEADGEAR, ADAMANTITE_CHESTPLATE, ADAMANTITE_LEGGINGS, ADAMANTITE_BOOTS, key -> {
             key.of(AccessoryItems.MANA$USE$REDUCE, 0.19F);
             // todo 玩家身周发出微弱的脉动光环。
         });
-        register("adamantite_helmet_set", 2, ADAMANTITE_HELMET, ADAMANTITE_CHESTPLATE, ADAMANTITE_LEGGINGS, ADAMANTITE_BOOTS, key -> {
+        register("adamantite_helmet_set", 1, ADAMANTITE_HELMET, ADAMANTITE_CHESTPLATE, ADAMANTITE_LEGGINGS, ADAMANTITE_BOOTS, key -> {
             key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.builder()
                     .add(Attributes.ATTACK_SPEED, key.id, 0.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                     .add(Attributes.MOVEMENT_SPEED, key.id, 0.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                     .build());
             // todo 玩家身周发出微弱的脉动光环。
         });
-        register("adamantite_mask_set", 2, ADAMANTITE_MASK, ADAMANTITE_CHESTPLATE, ADAMANTITE_LEGGINGS, ADAMANTITE_BOOTS, key -> {
+        register("adamantite_mask_set", 1, ADAMANTITE_MASK, ADAMANTITE_CHESTPLATE, ADAMANTITE_LEGGINGS, ADAMANTITE_BOOTS, key -> {
             key.of(SKIP$CONSUME$AMMO$CHANCE, 0.25F);
             // todo 玩家身周发出微弱的脉动光环。
         });
         Consumer<ArmorSetBonusKey> titaniumSet = key -> {
             key.unit(TITANIUM$SHARDS);
         };
-        register("titanium_mask_set", 2, TITANIUM_MASK, TITANIUM_CHESTPLATE, TITANIUM_LEGGINGS, TITANIUM_BOOTS, titaniumSet);
-        register("titanium_helmet_set", 2, TITANIUM_HELMET, TITANIUM_CHESTPLATE, TITANIUM_LEGGINGS, TITANIUM_BOOTS, titaniumSet);
-        register("titanium_headgear_set", 2, TITANIUM_HEADGEAR, TITANIUM_CHESTPLATE, TITANIUM_LEGGINGS, TITANIUM_BOOTS, titaniumSet);
+        register("titanium_mask_set", 1, TITANIUM_MASK, TITANIUM_CHESTPLATE, TITANIUM_LEGGINGS, TITANIUM_BOOTS, titaniumSet);
+        register("titanium_helmet_set", 1, TITANIUM_HELMET, TITANIUM_CHESTPLATE, TITANIUM_LEGGINGS, TITANIUM_BOOTS, titaniumSet);
+        register("titanium_headgear_set", 1, TITANIUM_HEADGEAR, TITANIUM_CHESTPLATE, TITANIUM_LEGGINGS, TITANIUM_BOOTS, titaniumSet);
 
         // todo	水晶刺客盔甲、神圣盔甲
         // todo 汇流4原创甲套装效果
@@ -218,36 +227,35 @@ public final class ModArmorBonus {
 
         /// 巫师套装
         /// @see GameEvents#getArmorSetBonus(GetArmorSetBonusDataEvent)
+
+        ModLoader.postEvent(new RegisterArmorSetBonusEvent(ModArmorBonus::register));
     }
 
     private static Consumer<ArmorSetBonusKey> armor(double value) {
         return key -> key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(Attributes.ARMOR, key.id, value, AttributeModifier.Operation.ADD_VALUE));
     }
 
-    private static void register(String path,
-                                 int tooltipCount,
-                                 @Nullable Supplier<? extends Item> head,
-                                 @Nullable Supplier<? extends Item> chest,
-                                 @Nullable Supplier<? extends Item> legs,
-                                 @Nullable Supplier<? extends Item> feet,
-                                 Consumer<ArmorSetBonusKey> consumer) {
-        register(path, tooltipCount, unwrap(head), unwrap(chest), unwrap(legs), unwrap(feet), consumer);
-    }
-
-    private static @Nullable Item unwrap(@Nullable Supplier<? extends Item> supplier) {
-        return supplier == null ? null : supplier.get();
-    }
-
     private static void register(
             String path,
             int tooltipCount,
-            @Nullable Item head,
-            @Nullable Item chest,
-            @Nullable Item legs,
-            @Nullable Item feet,
+            @Nullable ItemLike head,
+            @Nullable ItemLike chest,
+            @Nullable ItemLike legs,
+            @Nullable ItemLike feet,
             Consumer<ArmorSetBonusKey> consumer
     ) {
-        ResourceLocation id = Confluence.asResource(path);
+        register(Confluence.asResource(path), tooltipCount, head, chest, legs, feet, consumer);
+    }
+
+    private static void register(
+            ResourceLocation id,
+            int tooltipCount,
+            @Nullable ItemLike head,
+            @Nullable ItemLike chest,
+            @Nullable ItemLike legs,
+            @Nullable ItemLike feet,
+            Consumer<ArmorSetBonusKey> consumer
+    ) {
         ArmorSetBonusKey key = new ArmorSetBonusKey(head, chest, legs, feet, ArmorSetBonusKey.mixHash(head, chest, legs, feet, true));
         if (ArmorSetBonusKey.MAP.put(id, key) != null) {
             throw new IllegalArgumentException("Duplicated ArmorBonusKey with id '" + id + "'");

@@ -1,5 +1,6 @@
 package org.confluence.mod.common.item.armor;
 
+import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
@@ -35,6 +36,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class BaseArmorItem extends ArmorItem {
     private @Nullable List<Component> tooltips;
@@ -174,10 +176,6 @@ public class BaseArmorItem extends ArmorItem {
             if (types != null) {
                 properties.component(ModDataComponentTypes.ARMOR_BONUS, new PrimitiveValueComponent(types));
             }
-            if (vanillaAttributes != null) {
-                properties.attributes(new ItemAttributeModifiers(vanillaAttributes.build(), true));
-            }
-
             BaseArmorItem item;
             if (geoName != null) {
                 if (multiHead) {
@@ -187,6 +185,13 @@ public class BaseArmorItem extends ArmorItem {
                 }
             } else {
                 item = new BaseArmorItem(material, type, properties.component(ConfluenceMagicLib.MOD_RARITY, rarity));
+            }
+            if (vanillaAttributes != null) {
+                Supplier<ItemAttributeModifiers> supplier = item.defaultModifiers;
+                item.defaultModifiers = Suppliers.memoize(() -> {
+                    vanillaAttributes.addAll(supplier.get().modifiers());
+                    return new ItemAttributeModifiers(vanillaAttributes.build(), true);
+                });
             }
             if (lineCount > 0) {
                 item.tooltips = TooltipItem.getTooltipsFromString(name, lineCount, ChatFormatting.GRAY);

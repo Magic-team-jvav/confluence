@@ -8,6 +8,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlotGroup;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -41,6 +42,7 @@ import java.util.function.Supplier;
 public class BaseArmorItem extends ArmorItem {
     private @Nullable List<Component> tooltips;
     private @Nullable String requiresModLoaded;
+    private boolean golden;
 
     public BaseArmorItem(Holder<ArmorMaterial> material, Type type, Properties properties) {
         super(material, type, properties);
@@ -55,6 +57,11 @@ public class BaseArmorItem extends ArmorItem {
         if (requiresModLoaded != null && !ModList.get().isLoaded(requiresModLoaded)) {
             tooltipComponents.add(Component.translatable("tooltip.terra_curio.requires_mod_loaded", requiresModLoaded));
         }
+    }
+
+    @Override
+    public boolean makesPiglinsNeutral(ItemStack stack, LivingEntity wearer) {
+        return golden;
     }
 
     public static Builder builder(String name, Holder<ArmorMaterial> material, Type type) {
@@ -74,6 +81,7 @@ public class BaseArmorItem extends ArmorItem {
         private boolean multiHead = false;
         private String requiresModLoaded = null;
         private ImmutableList.Builder<ItemAttributeModifiers.Entry> vanillaAttributes = null;
+        private boolean golden;
 
         private transient ResourceLocation id;
 
@@ -166,6 +174,11 @@ public class BaseArmorItem extends ArmorItem {
             return attribute(TCAttributes.getCriticalChance(), value, AttributeModifier.Operation.ADD_VALUE);
         }
 
+        public Builder setGolden() {
+            this.golden = true;
+            return this;
+        }
+
         public BaseArmorItem build() {
             properties.stacksTo(1);
             if (durability > 0) {
@@ -197,6 +210,7 @@ public class BaseArmorItem extends ArmorItem {
                 item.tooltips = TooltipItem.getTooltipsFromString(name, lineCount, ChatFormatting.GRAY);
             }
             item.requiresModLoaded = requiresModLoaded;
+            item.golden = golden;
             return item;
         }
     }

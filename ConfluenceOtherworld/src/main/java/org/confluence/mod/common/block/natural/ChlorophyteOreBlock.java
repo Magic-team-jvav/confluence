@@ -12,6 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.common.data.saved.GlobalCloakData;
+import org.confluence.mod.common.init.block.ModBlocks;
 
 public class ChlorophyteOreBlock extends Block {
     public ChlorophyteOreBlock() {
@@ -19,7 +20,7 @@ public class ChlorophyteOreBlock extends Block {
                 .randomTicks()
                 .mapColor(MapColor.COLOR_GREEN)
                 .requiresCorrectToolForDrops()
-                .strength(30.0F, 1200.0F)
+                .strength(30.0F, ModBlocks.getObsidianBasedExplosionResistance(100))
                 .sound(SoundType.ANCIENT_DEBRIS));
     }
 

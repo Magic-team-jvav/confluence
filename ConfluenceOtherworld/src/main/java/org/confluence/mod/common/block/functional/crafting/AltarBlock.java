@@ -140,7 +140,7 @@ public class AltarBlock extends BaseEntityBlock {
         if (player instanceof ServerPlayer serverPlayer && IMinecraftServer.isHardmode(serverPlayer.server)) {
             ServerLevel serverLevel = serverPlayer.serverLevel();
             ConfluenceData data = ConfluenceData.get(serverLevel);
-            if (data.increaseRevealStep(serverLevel)) {
+            if (data.increaseRevealStep()) {
                 serverLevel.getServer().getPlayerList().broadcastSystemMessage(Component.translatable(
                         "event.confluence.reveal_step" + data.getRevealStep()
                 ).withColor(GlobalColors.MESSAGE.get()), false);

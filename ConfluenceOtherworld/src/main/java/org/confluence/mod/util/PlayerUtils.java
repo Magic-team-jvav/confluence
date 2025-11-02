@@ -147,6 +147,7 @@ public final class PlayerUtils {
             StarPhasesPacketS2C.sendToClient(player, data.getStarPhases());
         }
         KillBoardSyncPacketS2C.sendToClient(player);
+        GlobalCloakSyncPacketS2C.sendToClient(player);
         MeteoriteLocationPacketS2C.sendToAll(data.getMeteoriteLocation(), 0);
         BestiarySyncPacketS2C.syncEntries(player);
     }

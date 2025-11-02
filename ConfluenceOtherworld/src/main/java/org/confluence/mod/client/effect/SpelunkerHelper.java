@@ -6,8 +6,6 @@ import com.mojang.math.Axis;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.xiaohunao.phase_journey.common.phase.block.BlockPhaseManager;
-import com.xiaohunao.phase_journey.common.util.PhaseUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.player.LocalPlayer;
@@ -28,6 +26,7 @@ import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.block.common.BaseChestBlock;
+import org.confluence.mod.common.data.saved.GlobalCloakData;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.block.ChestBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
@@ -398,14 +397,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
                     BlockState blockState = level.getBlockState(pos);
                     if (blockState.isAir()) continue;
 
-                    BlockState finalBlockState = blockState;
-                    blockState = PhaseUtils.findFirstContextOrReturnDefault(BlockPhaseManager.MANAGER, level, player, pos, (ctx, manager) -> {
-                        if (ctx.getSource().equals(finalBlockState)){
-                            return ctx.getTarget();
-                        }
-                        return finalBlockState;
-                    },blockState);
-
+                    blockState = GlobalCloakData.INSTANCE.getTarget(blockState);
 
                     Block block = blockState.getBlock();
                     if (targets.containsKey(block) &&  /*&&//有目标且

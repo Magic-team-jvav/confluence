@@ -1,7 +1,5 @@
 package org.confluence.mod.common.data.saved;
 
-import com.xiaohunao.phase_journey.common.phase.PhaseType;
-import com.xiaohunao.phase_journey.common.util.PhaseUtils;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.core.BlockPos;
@@ -16,6 +14,7 @@ import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.saveddata.SavedData;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.block.natural.StepRevealingBlock;
 import org.confluence.mod.network.s2c.MeteoriteLocationPacketS2C;
 import org.confluence.mod.network.s2c.StarPhasesPacketS2C;
 import org.confluence.mod.network.s2c.WindSpeedPacketS2C;
@@ -133,9 +132,9 @@ public final class ConfluenceData extends SavedData {
         return starPhases;
     }
 
-    public boolean increaseRevealStep(ServerLevel serverLevel) {
+    public boolean increaseRevealStep() {
         if (revealStep < 8) {
-            serverLevel.players().forEach(player -> PhaseType.PLAYER.applyOrRevokePhase(player, Confluence.asResource("reveal_step_" + ++this.revealStep), true));
+            GlobalCloakData.INSTANCE.reveal(StepRevealingBlock.PAIRS.get()[++this.revealStep]);
             setDirty();
             return true;
         }

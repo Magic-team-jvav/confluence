@@ -9,7 +9,6 @@
 | [TerraGuns](TerraGuns)                                      | 泰拉枪支              | 是                     |
 | [ParticleStorm](https://github.com/westernat/ParticleStorm) | 为复杂的粒子提供API       | 是                     |
 | [HeavenDestinyMoment](HeavenDestinyMoment)                  | 提供各类事件机制API       | 是                     |
-| [PhaseJourney](PhaseJourney)                                | 提供各类阶游戏段机制API     | 是                     |
 | [TerraMoment](TerraMoment)                                  | 泰拉事件              | 依赖HeavenDestinyMoment |
 | [IsekaiInvaded](IsekaiInvaded)                              | 多维度入侵事件           | 依赖HeavenDestinyMoment |
 | [TerraFurniture](TerraFurniture)                            | 泰拉家具              | 是                     |

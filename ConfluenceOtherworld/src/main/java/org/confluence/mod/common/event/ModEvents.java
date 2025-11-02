@@ -1,9 +1,5 @@
 package org.confluence.mod.common.event;
 
-import com.xiaohunao.phase_journey.api.event.PhaseJourneyEvent;
-import com.xiaohunao.phase_journey.common.init.PJPhaseContextTypes;
-import com.xiaohunao.phase_journey.common.phase.PhaseType;
-import com.xiaohunao.phase_journey.common.phase.block.BlockReplacementPhaseContext;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackLocationInfo;
@@ -24,10 +20,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -65,10 +59,8 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.StartupConfigs;
 import org.confluence.mod.api.event.bestiary.RegisterBestiaryKeyEvent;
 import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.common.block.natural.ChlorophyteOreBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.block.natural.MagicMailBox;
-import org.confluence.mod.common.block.natural.StepRevealingBlock;
 import org.confluence.mod.common.capability.FluidBottomlessBucketWrapper;
 import org.confluence.mod.common.data.saved.*;
 import org.confluence.mod.common.entity.TargetDummyEntity;
@@ -163,8 +155,10 @@ public final class ModEvents {
                     KillBoard.INSTANCE,
                     HardmodeConvertor.INSTANCE,
                     NPCSpawner.INSTANCE,
-                    Bestiary.INSTANCE
+                    Bestiary.INSTANCE,
+                    GlobalCloakData.INSTANCE
             );
+            GlobalCloakData.INSTANCE.initialize();
         });
     }
 
@@ -223,6 +217,7 @@ public final class ModEvents {
         registrar.playToClient(AvailableHouseSelectPacketS2C.TYPE, AvailableHouseSelectPacketS2C.STREAM_CODEC, AvailableHouseSelectPacketS2C::handle);
         registrar.playToClient(TerraStyleExplosionPacketS2C.TYPE, TerraStyleExplosionPacketS2C.STREAM_CODEC, TerraStyleExplosionPacketS2C::handle);
         registrar.playToClient(FlushArmorSetBonusPacketS2C.TYPE, FlushArmorSetBonusPacketS2C.STREAM_CODEC, FlushArmorSetBonusPacketS2C::handle);
+        registrar.playToClient(GlobalCloakSyncPacketS2C.TYPE, GlobalCloakSyncPacketS2C.STREAM_CODEC, GlobalCloakSyncPacketS2C::handle);
 
         registrar.playToServer(ApplySelectionPacketC2S.TYPE, ApplySelectionPacketC2S.STREAM_CODEC, ApplySelectionPacketC2S::handle);
         registrar.playToServer(HookThrowingPacketC2S.TYPE, HookThrowingPacketC2S.STREAM_CODEC, HookThrowingPacketC2S::handle);
@@ -288,53 +283,6 @@ public final class ModEvents {
             event.insertAfter(ConsumableItems.ABEEMINATION.toStack(), clothierVoodooDollStack, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             event.insertAfter(clothierVoodooDollStack, AccessoryItems.GUIDE_VOODOO_DOLL.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
         }
-    }
-
-    /**
-     * @see ConfluenceData#increaseRevealStep
-     */
-    @SubscribeEvent
-    public static void phaseJourney$Register(PhaseJourneyEvent.Register event) {
-        BlockState deepslate = Blocks.DEEPSLATE.defaultBlockState();
-        Block[] oreBlocks = {
-                OreBlocks.DEEPSLATE_COBALT_ORE.get(),
-                OreBlocks.DEEPSLATE_PALLADIUM_ORE.get(),
-                OreBlocks.DEEPSLATE_MYTHRIL_ORE.get(),
-                OreBlocks.DEEPSLATE_ORICHALCUM_ORE.get(),
-                OreBlocks.DEEPSLATE_ADAMANTITE_ORE.get(),
-                OreBlocks.DEEPSLATE_TITANIUM_ORE.get()
-        };
-
-        int step = 0;
-        for (Block oreBlock : oreBlocks) {
-            for (int state = 0; state < 3; state++) {
-                event.register(PhaseType.LEVEL, PJPhaseContextTypes.BLOCK.get(), new BlockReplacementPhaseContext(
-                        Confluence.asResource("reveal_step_" + (step++)),
-                        oreBlock.defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, state),
-                        deepslate
-                ));
-            }
-        }
-
-        event.register(PhaseType.LEVEL, PJPhaseContextTypes.BLOCK.get(), new BlockReplacementPhaseContext(
-                ChlorophyteOreBlock.PHASE,
-                OreBlocks.CHLOROPHYTE_ORE.get().defaultBlockState(),
-                Blocks.MUD.defaultBlockState()
-        ));
-
-//            event.phaseRegister(Confluence.asResource("reveal_step_" + (step++)), context -> {
-//                context.blockReplacement(OreBlocks.DEEPSLATE_COBALT_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), deepslate);
-//                context.blockReplacement(OreBlocks.DEEPSLATE_PALLADIUM_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), deepslate);
-//            });
-//            event.phaseRegister(Confluence.asResource("reveal_step_" + (step++)), context -> {
-//                context.blockReplacement(OreBlocks.DEEPSLATE_MYTHRIL_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), deepslate);
-//                context.blockReplacement(OreBlocks.DEEPSLATE_ORICHALCUM_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), deepslate);
-//            });
-//            event.phaseRegister(Confluence.asResource("reveal_step_" + (step++)), context -> {
-//                context.blockReplacement(OreBlocks.DEEPSLATE_ADAMANTITE_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), deepslate);
-//                context.blockReplacement(OreBlocks.DEEPSLATE_TITANIUM_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), deepslate);
-//            });
-//        event.phaseRegister(ChlorophyteOreBlock.PHASE, context -> context.blockReplacement(OreBlocks.CHLOROPHYTE_ORE.get(), Blocks.MUD));
     }
 
     @SubscribeEvent

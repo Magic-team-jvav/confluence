@@ -34,7 +34,6 @@ TerraEntity/run
 MineTeam/run
 TerraCurio/run
 HeavenDestinyMoment/run
-PhaseJourney/run
 TerraMoment/run
 TerraGuns/run
 Confluence-Magic-Lib/run
@@ -44,7 +43,6 @@ TerraEntity/build
 MineTeam/build
 TerraCurio/build
 HeavenDestinyMoment/build
-PhaseJourney/build
 TerraMoment/build
 TerraGuns/build
 Confluence-Magic-Lib/build
@@ -54,7 +52,6 @@ TerraEntity/src/generated
 MineTeam/src/generated
 TerraCurio/src/generated
 HeavenDestinyMoment/src/generated
-PhaseJourney/src/generated
 TerraMoment/src/generated
 TerraGuns/src/generated
 TerraFurniture/src/generated

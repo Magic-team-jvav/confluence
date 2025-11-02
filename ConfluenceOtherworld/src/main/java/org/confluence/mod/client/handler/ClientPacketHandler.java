@@ -1,6 +1,5 @@
 package org.confluence.mod.client.handler;
 
-import com.xiaohunao.phase_journey.mixed.ILevelRenderer;
 import it.unimi.dsi.fastutil.ints.Int2IntArrayMap;
 import it.unimi.dsi.fastutil.ints.Int2IntMap;
 import net.minecraft.client.Minecraft;
@@ -11,8 +10,10 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.protocol.game.ClientboundPlayerCombatKillPacket;
 import net.minecraft.world.entity.player.Player;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
+import org.confluence.mod.common.data.saved.GlobalCloakData;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.mixed.IDeathScreen;
+import org.confluence.mod.mixed.ILevelRenderer;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.network.s2c.*;
 import org.confluence.mod.util.ClientUtils;
@@ -91,7 +92,7 @@ public final class ClientPacketHandler {
     public static void handleVisibility(byte mask, boolean visible) {
         if ((mask & VisibilityPacketS2C.ECHO) != 0) {
             if (echoVisible != visible) {
-                ((ILevelRenderer) Minecraft.getInstance().levelRenderer).phase_journey$rebuildAllChunks();
+                ILevelRenderer.rebuildAllChunks();
                 echoVisible = visible;
             }
         }
@@ -106,7 +107,7 @@ public final class ClientPacketHandler {
     public static void handleSecretFlag(SecretFlagSyncPacketS2C packet) {
         secretFlag = packet.flag();
         if ((secretFlag & IWorldOptions.HARDMODE) != 0) {
-            ((ILevelRenderer) Minecraft.getInstance().levelRenderer).phase_journey$rebuildAllChunks();
+            ILevelRenderer.rebuildAllChunks();
         }
     }
 
@@ -142,5 +143,11 @@ public final class ClientPacketHandler {
                 PlayerSpecialData.of(clientPlayer).flushArmorSetBonus(clientPlayer);
             }
         }
+    }
+
+    // 客户端同步过来的只有隐藏的
+    public static void handleCloak() {
+        GlobalCloakData.INSTANCE.rollbackAllProperties();
+        ILevelRenderer.rebuildAllChunks();
     }
 }

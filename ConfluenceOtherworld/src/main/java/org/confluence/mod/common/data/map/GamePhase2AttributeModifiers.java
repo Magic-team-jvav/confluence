@@ -65,7 +65,7 @@ public record GamePhase2AttributeModifiers(Map<GamePhase, AttributeModifiersValu
     }
 
     public record Remover(Map<GamePhase, ImmutableListMultimap<Holder<Attribute>, ResourceLocation>> map) implements DataMapValueRemover<EntityType<?>, GamePhase2AttributeModifiers> {
-        public static final Codec<Remover> CODEC = Codec.unboundedMap(GamePhase.CODEC, LibCodecUtils.multimapCodec(Attribute.CODEC, ResourceLocation.CODEC)).xmap(Remover::new, Remover::map);
+        public static final Codec<Remover> CODEC = Codec.unboundedMap(GamePhase.CODEC, LibCodecUtils.multimap(Attribute.CODEC, ResourceLocation.CODEC)).xmap(Remover::new, Remover::map);
 
         @Override
         public Optional<GamePhase2AttributeModifiers> remove(

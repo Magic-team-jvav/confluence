@@ -387,8 +387,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.tackle_box.0", "降低鱼饵消耗几率");
         add("tooltip.item.confluence.angler_tackle_bag.0", "钓鱼线永远不会断，降低鱼饵消耗几率，渔力增加10");
         add("tooltip.item.confluence.lavaproof_fishing_hook.0", "可在熔岩中钓鱼");
-        add("tooltip.item.terra_curio.lavaproof_tackle_bag.0", "钓鱼线永远不会断，降低鱼饵消耗几率，渔力增加10");
-        add("tooltip.item.confluence.lavaproof_tackle_bag.1", "可在熔岩中钓鱼");
+        add("tooltip.item.confluence.lavaproof_tackle_bag.0", "钓鱼线永远不会断，降低鱼饵消耗几率，渔力增加10");
+        add("tooltip.item.terra_curio.lavaproof_tackle_bag.1", "可在熔岩中钓鱼");
         add("tooltip.item.confluence.lucky_coin.0", "击中敌人有时会掉落额外的钱币");
         add("tooltip.item.confluence.gold_ring.0", "扩大钱币的拾取范围");
         add("tooltip.item.confluence.discount_card.0", "商店价格降低20%");

@@ -167,7 +167,7 @@ public class OreBlocks {
     public static final DeferredBlock<Block> GELSTONE_ORE = copyBlockRegister("gelstone_ore", Blocks.IRON_ORE);
     public static final DeferredBlock<Block> SPORE_ROOT_BLOCK = copyBlockRegister("spore_root_block", Blocks.IRON_ORE);
     public static final DeferredBlock<Block> WINTER_MARROW_BLOCK = copyBlockRegister("winter_marrow_block", Blocks.IRON_ORE);
-    public static final DeferredBlock<Block> COLD_CRYSTAL_ORE = registerWithItem("cold_crystal_ore", () -> new TransparentBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_ORE).noOcclusion().sound(SoundType.GRASS)));
+    public static final DeferredBlock<Block> COLD_CRYSTAL_ORE = registerWithItem("cold_crystal_ore", () -> new TransparentBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_ORE).noOcclusion().sound(SoundType.GLASS)));
     public static final DeferredBlock<Block> HELLSTONE = registerWithItem("hellstone", () -> new HellStoneBlock(true), block -> new BlockItem(block, new Item.Properties().fireResistant()));
     public static final DeferredBlock<Block> ASH_HELLSTONE = registerWithItem("ash_hellstone", () -> new HellStoneBlock(true), block -> new BlockItem(block, new Item.Properties().fireResistant()));
     public static final DeferredBlock<Block> HELLSTONE_BRICKS = registerWithItem("hellstone_bricks", () -> new HellStoneBlock(true), block -> new BlockItem(block, new Item.Properties().fireResistant()));

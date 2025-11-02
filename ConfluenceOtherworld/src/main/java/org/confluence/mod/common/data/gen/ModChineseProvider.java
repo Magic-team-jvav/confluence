@@ -2515,7 +2515,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("armor_set_bonus.confluence.titanium_headgear_set.0", "攻击生成钛金碎片防御屏障");
 
 
-
         add(ModEntities.BEE_ARROW.get(), "蜜蜂箭");
         add(ModEntities.HELL_BAT_ARROW.get(), "地狱蝙蝠箭");
         add(ModEntities.ARROW_PROJECTILE.get(), "泰拉箭");

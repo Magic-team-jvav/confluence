@@ -109,20 +109,15 @@ public class WaystonesHelper {
     }
 
     public static void blockTags(Function<TagKey<Block>, IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block>> consumer) {
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> isTeleportTarget = consumer.apply(
-                TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(MODID, "is_teleport_target"))
-        );
-        BLOCKS.getEntries().forEach(block -> isTeleportTarget.addOptional(block.getId()));
-
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithPickaxe = consumer.apply(
-                BlockTags.MINEABLE_WITH_PICKAXE
-        );
-        BLOCKS.getEntries().forEach(block -> mineableWithPickaxe.addOptional(block.getId()));
-
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> needsOneLevel = consumer.apply(
-                ModTags.Blocks.NEEDS_1_LEVEL
-        );
-        BLOCKS.getEntries().forEach(block -> needsOneLevel.addOptional(block.getId()));
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> isTeleportTarget = consumer.apply(TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(MODID, "is_teleport_target")));
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithPickaxe = consumer.apply(BlockTags.MINEABLE_WITH_PICKAXE);
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> needsOneLevel = consumer.apply(ModTags.Blocks.NEEDS_1_LEVEL);
+        BLOCKS.getEntries().forEach(block -> {
+            ResourceLocation id = block.getId();
+            isTeleportTarget.addOptional(id);
+            mineableWithPickaxe.addOptional(id);
+            needsOneLevel.addOptional(id);
+        });
     }
 
     public static void addTranslateKeys(BiConsumer<DeferredHolder<Block, ? extends Block>, String> consumer, boolean en) {

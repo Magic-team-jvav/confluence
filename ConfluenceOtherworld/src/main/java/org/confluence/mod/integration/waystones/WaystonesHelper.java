@@ -9,6 +9,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
@@ -99,17 +100,29 @@ public class WaystonesHelper {
         }
     }
 
-    public static void blockTag(Function<TagKey<Block>, IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block>> consumer) {
-        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> isTeleportTarget = consumer.apply(TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(MODID, "is_teleport_target")));
-        BLOCKS.getEntries().forEach(block -> isTeleportTarget.addOptional(block.getId()));
-    }
-
     public static void itemTag(Function<TagKey<Item>, IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item>> consumer) {
         IntrinsicHolderTagsProvider.IntrinsicTagAppender<Item> wip = consumer.apply(LibTags.Items.WIP);
         wip.addOptional(JUNGLE_PYLON.getId());
         wip.addOptional(HALLOW_PYLON.getId());
         wip.addOptional(MUSHROOM_PYLON.getId());
         wip.addOptional(UNIVERSAL_PYLON.getId());
+    }
+
+    public static void blockTags(Function<TagKey<Block>, IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block>> consumer) {
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> isTeleportTarget = consumer.apply(
+                TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(MODID, "is_teleport_target"))
+        );
+        BLOCKS.getEntries().forEach(block -> isTeleportTarget.addOptional(block.getId()));
+
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> mineableWithPickaxe = consumer.apply(
+                BlockTags.MINEABLE_WITH_PICKAXE
+        );
+        BLOCKS.getEntries().forEach(block -> mineableWithPickaxe.addOptional(block.getId()));
+
+        IntrinsicHolderTagsProvider.IntrinsicTagAppender<Block> needsOneLevel = consumer.apply(
+                ModTags.Blocks.NEEDS_1_LEVEL
+        );
+        BLOCKS.getEntries().forEach(block -> needsOneLevel.addOptional(block.getId()));
     }
 
     public static void addTranslateKeys(BiConsumer<DeferredHolder<Block, ? extends Block>, String> consumer, boolean en) {

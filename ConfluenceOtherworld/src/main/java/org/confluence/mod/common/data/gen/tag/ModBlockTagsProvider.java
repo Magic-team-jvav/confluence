@@ -17,7 +17,6 @@ import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.*;
 import org.confluence.mod.integration.waystones.WaystonesHelper;
-import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terraentity.init.TETags;
 import org.jetbrains.annotations.Nullable;
 
@@ -158,7 +157,6 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 LIVING_MAHOGANY_LOG_BLOCKS.LOG.get(),
                 BAOBAB_LOG_BLOCKS.LOG.get()
         );
-
         mineableWithPickaxe.add(
                 RUBY_BLOCK.get(),
                 AMBER_BLOCK.get(),
@@ -1627,6 +1625,6 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
                 DAYBLOOM.get(),
                 DEATHWEED.get()
         );
-        WaystonesHelper.blockTag(this::tag);
+        WaystonesHelper.blockTags(this::tag);
     }
 }

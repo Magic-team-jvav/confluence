@@ -92,7 +92,8 @@ public final class LivingEntityEvents {
         DamageSource damageSource = event.getSource();
 
         if (victim.level() instanceof ServerLevel level) {
-            Entity attacker = damageSource.getEntity();
+            Entity attacker = ModUtils.getOwner(damageSource);
+
             if (attacker instanceof ServerPlayer) {
                 if (victim instanceof Enemy &&
                         CommonConfigs.DROP_MONEY.get() &&

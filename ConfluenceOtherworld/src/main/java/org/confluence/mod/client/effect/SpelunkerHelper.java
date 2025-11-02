@@ -27,7 +27,6 @@ import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.block.common.BaseChestBlock;
-import org.confluence.mod.common.data.saved.GlobalCloakData;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.block.ChestBlocks;
 import org.confluence.mod.common.init.block.OreBlocks;
@@ -397,8 +396,6 @@ public class SpelunkerHelper extends AbstractBufferManager {
                     pos.setZ(center.getZ() + k);
                     BlockState blockState = level.getBlockState(pos);
                     if (blockState.isAir()) continue;
-
-                    blockState = GlobalCloakData.INSTANCE.getTarget(blockState);
 
                     Block block = blockState.getBlock();
                     if (targets.containsKey(block) &&  /*&&//有目标且

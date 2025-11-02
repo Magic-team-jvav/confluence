@@ -25,6 +25,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.data.saved.GlobalCloakData;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.network.s2c.TerraStyleExplosionPacketS2C;
 import org.jetbrains.annotations.Nullable;
@@ -57,9 +58,9 @@ public class TerraStyleExplosion extends Explosion {
             double sqr = pos.distSqr(origin);
             if (level.isInWorldBounds(pos) && sqr <= radiusP2) {
                 if (!level.getFluidState(pos).isEmpty()) return; // 无视流体
-                BlockState blockState = level.getBlockState(pos);
+                BlockState blockState = GlobalCloakData.INSTANCE.getTarget(level.getBlockState(pos));
                 damageCalculator.getBlockExplosionResistance(this, level, pos, blockState, Fluids.EMPTY.defaultFluidState()).ifPresent(resistance -> {
-                    if (resistance <= obsidianBasedExplosionResistance) {
+                    if (resistance < obsidianBasedExplosionResistance) {
                         if (sqr < inner || random.nextFloat() < 0.8F) {
                             toBlow.add(pos.immutable());
                         }

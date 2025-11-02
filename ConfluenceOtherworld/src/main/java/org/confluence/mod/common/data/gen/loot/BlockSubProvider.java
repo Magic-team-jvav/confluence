@@ -544,6 +544,7 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(LIFE_MUSHROOM_STEM_BLOCK.get());
 
 
+
         for (LogBlockSet logBlocks : LogBlockSet.LOG_BLOCK_SETS) {
             dropSelf(logBlocks.PLANKS.get());
             if (logBlocks.LOG.isBound()) dropSelf(logBlocks.LOG.get());
@@ -832,7 +833,7 @@ public final class BlockSubProvider extends BlockLootSubProvider {
                         .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block)
                                 .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(BaseHerbBlock.AGE, 2))))
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(seed))
+                        .add(LootItem.lootTableItem(herb))
                         .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block)
                                 .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(BaseHerbBlock.AGE, 1)))));
     }

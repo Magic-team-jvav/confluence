@@ -1,14 +1,11 @@
 package org.confluence.mod.mixin.integration.terra_curio;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.block.state.BlockState;
 import org.confluence.mod.client.handler.ClientPacketHandler;
 import org.confluence.mod.client.handler.WeatherHandler;
-import org.confluence.mod.common.data.saved.GlobalCloakData;
 import org.confluence.terra_curio.client.handler.InformationHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -30,10 +27,5 @@ public abstract class InformationHandlerMixin {
     @Inject(method = "hasMechanicalView", at = @At("RETURN"), cancellable = true)
     private static void modifyView(CallbackInfoReturnable<Boolean> cir) {
         if (!cir.getReturnValue()) cir.setReturnValue(ClientPacketHandler.isShowSignal());
-    }
-
-    @ModifyReturnValue(method = "mapCloakedBlock", at = @At("RETURN"))
-    private static BlockState checkRevealed(BlockState original) {
-        return GlobalCloakData.INSTANCE.getTarget(original);
     }
 }

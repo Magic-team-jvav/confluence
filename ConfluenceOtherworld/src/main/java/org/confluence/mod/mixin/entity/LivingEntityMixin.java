@@ -33,7 +33,6 @@ import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.item.hook.BaseHookItem;
-import org.confluence.mod.common.worldgen.secret_seed.NoTraps;
 import org.confluence.mod.integration.irons_spell.IronSpellHelper;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.mixed.IMobEffectInstance;
@@ -47,16 +46,12 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Map;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity implements ILivingEntity {
-    @Shadow
-    public abstract boolean isSuppressingSlidingDownLadder();
-
     @Shadow
     public abstract Map<Holder<MobEffect>, MobEffectInstance> getActiveEffectsMap();
 
@@ -131,13 +126,12 @@ public abstract class LivingEntityMixin extends Entity implements ILivingEntity 
         return original.call(instance, factorX, factorY, factorZ);
     }
 
-    @ModifyVariable(method = "handleOnClimbable", at = @At(value = "NEW", target = "(DDD)Lnet/minecraft/world/phys/Vec3;"), ordinal = 2)
-    private double checkRope(double d2, @Local(argsOnly = true) Vec3 deltaMovement) {
-        NoTraps.breakClimbable(confluence$self());
-        if (deltaMovement.y < 0.0 && !isSuppressingSlidingDownLadder() && confluence$self() instanceof Player && getInBlockState().is(ModTags.Blocks.ROPE)) {
-            return 0.0;
+    @ModifyExpressionValue(method = "handleOnClimbable", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;isSuppressingSlidingDownLadder()Z"))
+    private boolean checkRope(boolean original) {
+        if (getInBlockState().is(ModTags.Blocks.ROPE)) {
+            return !original;
         }
-        return Math.max(deltaMovement.y, -0.15F);
+        return original;
     }
 
     @WrapWithCondition(method = "triggerOnDeathMobEffects", at = @At(value = "INVOKE", target = "Ljava/util/Map;clear()V"))

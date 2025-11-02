@@ -99,6 +99,7 @@ public final class GlobalCloakData implements IGlobalData {
     }
 
     public BlockState getTarget(BlockState source) {
+        if (source.isAir()) return source;
         BooleanObjectPair<BlockState> pair = blockMap.get(source);
         if (pair == null || !pair.leftBoolean()) return source;
         return pair.right();
@@ -183,6 +184,7 @@ public final class GlobalCloakData implements IGlobalData {
         sourceBlock.jumpFactor = targetBlock.jumpFactor;
         sourceBlock.dynamicShape = targetBlock.dynamicShape;
         sourceBlock.requiredFeatures = targetBlock.requiredFeatures;
+        sourceBlock.explosionResistance = targetBlock.explosionResistance;
 
         sourceBlock.properties = targetBlock.properties;
     }
@@ -196,6 +198,7 @@ public final class GlobalCloakData implements IGlobalData {
         sourceBlock.jumpFactor = properties.jumpFactor;
         sourceBlock.dynamicShape = properties.dynamicShape;
         sourceBlock.requiredFeatures = properties.requiredFeatures;
+        sourceBlock.explosionResistance = properties.explosionResistance;
 
         sourceBlock.properties = properties;
     }

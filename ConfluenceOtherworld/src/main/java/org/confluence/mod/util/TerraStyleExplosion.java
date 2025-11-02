@@ -59,7 +59,7 @@ public class TerraStyleExplosion extends Explosion {
                 if (!level.getFluidState(pos).isEmpty()) return; // 无视流体
                 BlockState blockState = level.getBlockState(pos);
                 damageCalculator.getBlockExplosionResistance(this, level, pos, blockState, Fluids.EMPTY.defaultFluidState()).ifPresent(resistance -> {
-                    if (resistance <= obsidianBasedExplosionResistance) {
+                    if (resistance < obsidianBasedExplosionResistance) {
                         if (sqr < inner || random.nextFloat() < 0.8F) {
                             toBlow.add(pos.immutable());
                         }

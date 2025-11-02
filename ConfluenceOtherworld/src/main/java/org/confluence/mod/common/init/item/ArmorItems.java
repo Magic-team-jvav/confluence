@@ -244,16 +244,20 @@ public class ArmorItems {
 
     public static final DeferredItem<BaseArmorItem> GOLDEN_HELMET = register("golden_helmet", ModArmorMaterials.GOLDEN_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/golden_armor")
-            .durability(250));
+            .durability(250)
+            .setGolden());
     public static final DeferredItem<BaseArmorItem> GOLDEN_CHESTPLATE = register("golden_chestplate", ModArmorMaterials.GOLDEN_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/golden_armor")
-            .durability(340));
+            .durability(340)
+            .setGolden());
     public static final DeferredItem<BaseArmorItem> GOLDEN_LEGGINGS = register("golden_leggings", ModArmorMaterials.GOLDEN_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/golden_armor")
-            .durability(320));
+            .durability(320)
+            .setGolden());
     public static final DeferredItem<BaseArmorItem> GOLDEN_BOOTS = register("golden_boots", ModArmorMaterials.GOLDEN_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/golden_armor")
-            .durability(260));
+            .durability(260)
+            .setGolden());
 
     public static final DeferredItem<BaseArmorItem> PLATINUM_HELMET = register("platinum_helmet", ModArmorMaterials.PLATINUM_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/platinum_armor")

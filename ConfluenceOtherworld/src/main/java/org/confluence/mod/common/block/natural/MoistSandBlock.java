@@ -2,17 +2,17 @@ package org.confluence.mod.common.block.natural;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -20,23 +20,16 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.feature.stateproviders.WeightedStateProvider;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.confluence.mod.common.worldgen.feature.PlantPatchFeature;
 
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
+import java.util.Optional;
 
 public class MoistSandBlock extends Block implements BonemealableBlock {
-
-    private record PlantEntry(Supplier<? extends Block> plant, int weight) {
-    }
-
-    private static final List<PlantEntry> PLANTS = List.of(
-            new PlantEntry(NatureBlocks.SMALL_DESERT_PLANT, 4),
-            new PlantEntry(NatureBlocks.BIG_DESERT_PLANT, 2),
-            new PlantEntry(NatureBlocks.SMALL_CACTUS, 4)
-    );
-
     private final Block TargetBlock;
     public static final BooleanProperty NORTH = PipeBlock.NORTH;
     public static final BooleanProperty EAST = PipeBlock.EAST;
@@ -50,12 +43,12 @@ public class MoistSandBlock extends Block implements BonemealableBlock {
         super(properties.randomTicks().instrument(NoteBlockInstrument.SNARE).strength(0.5F).sound(SoundType.SAND));
         this.TargetBlock = TargetSand;
         registerDefaultState(stateDefinition.any()
-                .setValue(NORTH, true)
-                .setValue(EAST, true)
-                .setValue(SOUTH, true)
-                .setValue(WEST, true)
-                .setValue(UP, true)
-                .setValue(DOWN, true));
+            .setValue(NORTH, true)
+            .setValue(EAST, true)
+            .setValue(SOUTH, true)
+            .setValue(WEST, true)
+            .setValue(UP, true)
+            .setValue(DOWN, true));
     }
 
     @Override
@@ -68,12 +61,12 @@ public class MoistSandBlock extends Block implements BonemealableBlock {
         BlockGetter blockgetter = context.getLevel();
         BlockPos blockpos = context.getClickedPos();
         return this.defaultBlockState()
-                .setValue(DOWN, !blockgetter.getBlockState(blockpos.below()).is(TargetBlock))
-                .setValue(UP, !blockgetter.getBlockState(blockpos.above()).is(TargetBlock))
-                .setValue(NORTH, !blockgetter.getBlockState(blockpos.north()).is(TargetBlock))
-                .setValue(EAST, !blockgetter.getBlockState(blockpos.east()).is(TargetBlock))
-                .setValue(SOUTH, !blockgetter.getBlockState(blockpos.south()).is(TargetBlock))
-                .setValue(WEST, !blockgetter.getBlockState(blockpos.west()).is(TargetBlock));
+            .setValue(DOWN, !blockgetter.getBlockState(blockpos.below()).is(TargetBlock))
+            .setValue(UP, !blockgetter.getBlockState(blockpos.above()).is(TargetBlock))
+            .setValue(NORTH, !blockgetter.getBlockState(blockpos.north()).is(TargetBlock))
+            .setValue(EAST, !blockgetter.getBlockState(blockpos.east()).is(TargetBlock))
+            .setValue(SOUTH, !blockgetter.getBlockState(blockpos.south()).is(TargetBlock))
+            .setValue(WEST, !blockgetter.getBlockState(blockpos.west()).is(TargetBlock));
     }
 
     @Override
@@ -87,21 +80,21 @@ public class MoistSandBlock extends Block implements BonemealableBlock {
     @Override
     protected BlockState rotate(BlockState state, Rotation rot) {
         return state.setValue(PROPERTY_BY_DIRECTION.get(rot.rotate(Direction.NORTH)), state.getValue(NORTH))
-                .setValue(PROPERTY_BY_DIRECTION.get(rot.rotate(Direction.SOUTH)), state.getValue(SOUTH))
-                .setValue(PROPERTY_BY_DIRECTION.get(rot.rotate(Direction.EAST)), state.getValue(EAST))
-                .setValue(PROPERTY_BY_DIRECTION.get(rot.rotate(Direction.WEST)), state.getValue(WEST))
-                .setValue(PROPERTY_BY_DIRECTION.get(rot.rotate(Direction.UP)), state.getValue(UP))
-                .setValue(PROPERTY_BY_DIRECTION.get(rot.rotate(Direction.DOWN)), state.getValue(DOWN));
+            .setValue(PROPERTY_BY_DIRECTION.get(rot.rotate(Direction.SOUTH)), state.getValue(SOUTH))
+            .setValue(PROPERTY_BY_DIRECTION.get(rot.rotate(Direction.EAST)), state.getValue(EAST))
+            .setValue(PROPERTY_BY_DIRECTION.get(rot.rotate(Direction.WEST)), state.getValue(WEST))
+            .setValue(PROPERTY_BY_DIRECTION.get(rot.rotate(Direction.UP)), state.getValue(UP))
+            .setValue(PROPERTY_BY_DIRECTION.get(rot.rotate(Direction.DOWN)), state.getValue(DOWN));
     }
 
     @Override
     protected BlockState mirror(BlockState state, Mirror mirror) {
         return state.setValue(PROPERTY_BY_DIRECTION.get(mirror.mirror(Direction.NORTH)), state.getValue(NORTH))
-                .setValue(PROPERTY_BY_DIRECTION.get(mirror.mirror(Direction.SOUTH)), state.getValue(SOUTH))
-                .setValue(PROPERTY_BY_DIRECTION.get(mirror.mirror(Direction.EAST)), state.getValue(EAST))
-                .setValue(PROPERTY_BY_DIRECTION.get(mirror.mirror(Direction.WEST)), state.getValue(WEST))
-                .setValue(PROPERTY_BY_DIRECTION.get(mirror.mirror(Direction.UP)), state.getValue(UP))
-                .setValue(PROPERTY_BY_DIRECTION.get(mirror.mirror(Direction.DOWN)), state.getValue(DOWN));
+            .setValue(PROPERTY_BY_DIRECTION.get(mirror.mirror(Direction.SOUTH)), state.getValue(SOUTH))
+            .setValue(PROPERTY_BY_DIRECTION.get(mirror.mirror(Direction.EAST)), state.getValue(EAST))
+            .setValue(PROPERTY_BY_DIRECTION.get(mirror.mirror(Direction.WEST)), state.getValue(WEST))
+            .setValue(PROPERTY_BY_DIRECTION.get(mirror.mirror(Direction.UP)), state.getValue(UP))
+            .setValue(PROPERTY_BY_DIRECTION.get(mirror.mirror(Direction.DOWN)), state.getValue(DOWN));
     }
 
     @Override
@@ -115,55 +108,36 @@ public class MoistSandBlock extends Block implements BonemealableBlock {
     }
 
     @Override
-    public void performBonemeal(ServerLevel serverLevel, RandomSource randomSource, BlockPos blockPos, BlockState blockState) {
-        BlockPos blockpos = blockPos.above();
-        for (int i = 0; i < 128; i++) {
-            BlockPos blockpos1 = blockpos;
-            if (!isDesertBiomes(serverLevel, blockpos1)) {
-                continue;
-            }
-            for (int j = 0; j < i / 16; j++) {
-                blockpos1 = blockpos1.offset(randomSource.nextInt(3) - 1, (randomSource.nextInt(3) - 1) * randomSource.nextInt(3) / 2, randomSource.nextInt(3) - 1);
-                if (!isMoistSand(serverLevel.getBlockState(blockpos1.below())) || serverLevel.getBlockState(blockpos1).isCollisionShapeFullBlock(serverLevel, blockpos1)) {
-                    break;
-                }
-            }
-            BlockState blockstate1 = serverLevel.getBlockState(blockpos1);
-            if (blockstate1.isAir()) {
-                BlockState randomPlant = selectRandomPlant(randomSource);
-                if (randomPlant.canSurvive(serverLevel, blockpos1)) {
-                    serverLevel.setBlock(blockpos1, randomPlant, 3);
-                }
-            }
-        }
+    public void performBonemeal(ServerLevel serverLevel, RandomSource randomSource, BlockPos pos, BlockState state) {
+        BlockPos targetPos = pos.above();
+        PlantPatchFeature plantPatchFeature = new PlantPatchFeature(PlantPatchFeature.Config.CODEC);
+        WeightedStateProvider plantProvider = new WeightedStateProvider(SimpleWeightedRandomList.<BlockState>builder()
+            .add(NatureBlocks.SMALL_DESERT_PLANT.get().defaultBlockState(), 50)
+            .add(NatureBlocks.SMALL_CACTUS.get().defaultBlockState(), 30)
+            .add(NatureBlocks.BIG_DESERT_PLANT.get().defaultBlockState(), 20)
+            .build());
+        PlantPatchFeature.Config config = new PlantPatchFeature.Config(plantProvider,
+            NatureBlocks.BIG_DESERT_PLANT.get(), 1, 6, 128,
+            List.of(serverLevel.registryAccess().registryOrThrow(Registries.BIOME).getHolderOrThrow(Biomes.DESERT)));
+        if (!serverLevel.getBlockState(targetPos).isAir()) return;
+        if (!isMoistSand(serverLevel.getBlockState(targetPos.below()))) return;
+        plantPatchFeature.place(new FeaturePlaceContext<>(
+            Optional.empty(),
+            serverLevel,
+            serverLevel.getChunkSource().getGenerator(),
+            randomSource,
+            targetPos,
+            config
+        ));
+    }
+
+    private boolean isMoistSand(BlockState state) {
+        return state.is(NatureBlocks.MOISTENED_SAND_BLOCK.get()) || state.is(NatureBlocks.MOISTENED_RED_SAND_BLOCK.get());
     }
 
     @Override
     public BonemealableBlock.Type getType() {
         return BonemealableBlock.Type.NEIGHBOR_SPREADER;
-    }
-
-    private static boolean isMoistSand(BlockState state) {
-        return state.is(NatureBlocks.MOISTENED_SAND_BLOCK.get()) || state.is(NatureBlocks.MOISTENED_RED_SAND_BLOCK.get());
-    }
-
-    private static boolean isDesertBiomes(ServerLevel serverLevel, BlockPos pos) {
-        Holder<Biome> holder = serverLevel.getBiome(pos);
-        return holder.is(Biomes.DESERT);
-    }
-
-    private static BlockState selectRandomPlant(RandomSource randomSource) {
-        int totalWeight = PLANTS.stream().mapToInt(p -> p.weight).sum();
-        int randomValue = randomSource.nextInt(totalWeight);
-        int cumulativeWeight = 0;
-
-        for (MoistSandBlock.PlantEntry entry : PLANTS) {
-            cumulativeWeight += entry.weight;
-            if (randomValue < cumulativeWeight) {
-                return entry.plant.get().defaultBlockState();
-            }
-        }
-        return Blocks.AIR.defaultBlockState();
     }
 
     @Override

@@ -20,13 +20,12 @@ import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.decoration.ArmorStand;
@@ -50,6 +49,7 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.entity.PartEntity;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
@@ -392,5 +392,17 @@ public final class ModUtils {
             return true;
         }
         return false;
+    }
+
+    public static @Nullable Entity getOwner(DamageSource damageSource) {
+        Entity attacker = damageSource.getEntity();
+        if (attacker instanceof PartEntity<?> partEntity) {
+            attacker = partEntity.getParent();
+        } else if (attacker instanceof OwnableEntity ownableEntity) {
+            attacker = ownableEntity.getOwner();
+        } else if (attacker instanceof TraceableEntity traceableEntity) {
+            attacker = traceableEntity.getOwner();
+        }
+        return attacker == null ? damageSource.getEntity() : attacker;
     }
 }

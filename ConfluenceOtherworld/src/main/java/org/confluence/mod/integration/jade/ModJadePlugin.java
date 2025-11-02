@@ -11,7 +11,6 @@ import org.confluence.mod.common.block.functional.BehaviourPressurePlateBlock;
 import org.confluence.mod.common.block.functional.DeathChestBlock;
 import org.confluence.mod.common.block.functional.SignalPressurePlateBlock;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
-import org.confluence.mod.common.data.saved.GlobalCloakData;
 import org.confluence.mod.common.entity.TreasureBagItemEntity;
 import org.confluence.mod.common.init.block.ChestBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
@@ -45,16 +44,6 @@ public final class ModJadePlugin implements IWailaPlugin {
         hideMap.put(ChestBlocks.DEATH_GOLDEN_CHEST.get(), ChestBlocks.GOLDEN_CHEST.get().defaultBlockState());
         hideMap.put(ChestBlocks.DEATH_WOODEN_CHEST.get(), Blocks.CHEST.defaultBlockState());
         hideMap.put(FunctionalBlocks.OAK_LOG_BOULDER.get(), Blocks.OAK_LOG.defaultBlockState());
-        registration.addRayTraceCallback((hitResult, accessor, originalAccessor) -> {
-            if (accessor instanceof BlockAccessor blockAccessor) {
-                BlockState source = blockAccessor.getBlockState();
-                BlockState target = GlobalCloakData.INSTANCE.getTarget(source);
-                if (source != target) {
-                    return registration.blockAccessor().from(blockAccessor).blockState(target).build();
-                }
-            }
-            return accessor;
-        });
         registration.addRayTraceCallback((hitResult, accessor, originalAccessor) -> {
             if (accessor instanceof BlockAccessor blockAccessor) {
                 Player player = accessor.getPlayer();

@@ -59,7 +59,6 @@
         "integration.ars_nouveau.LivingCasterMixin",
         "integration.ars_nouveau.ManaCapMixin",
         "integration.carryon.PickupHandlerMixin",
-        "integration.create.BlockHelperMixin",
         "integration.curios.CuriosServerPayloadHandlerMixin",
         "integration.ftbchunks.LongRangePlayerTrackerMixin",
         "integration.irons_spell.AbstractSpellMixin",
@@ -103,6 +102,7 @@
         "item.ProjectileWeaponItemMixin",
         "level.DifficultyInstanceMixin",
         "level.DifficultyMixin",
+        "level.LevelMixin",
         "level.TreeFeatureMixin",
         "level.WorldOptionsMixin"
     ],
@@ -113,7 +113,6 @@
         "client.ClientLevelMixin",
         "client.ClientPacketListenerMixin",
         "client.CreativeModeTabMixin",
-        "client.DebugScreenOverlayMixin",
         "client.LevelRendererMixin",
         "client.MinecraftMixin",
         "client.MouseHandlerMixin",

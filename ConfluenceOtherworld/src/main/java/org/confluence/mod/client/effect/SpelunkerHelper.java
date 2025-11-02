@@ -12,6 +12,7 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.player.Player;
@@ -564,7 +565,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
 
 
                         Minecraft.getInstance().font.renderText(Component.literal(component.getString()).withColor(entry.color()).getVisualOrderText(),
-                                -5, -5f, entry.color(),
+                                0, -16, FastColor.ARGB32.opaque(entry.color()),
                                 false, poseStack.last().pose(), Minecraft.getInstance().renderBuffers().bufferSource(), Font.DisplayMode.SEE_THROUGH, 0, 15 << 20 | 15 << 4);
 
                         poseStack.popPose();

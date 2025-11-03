@@ -1,4 +1,5 @@
-permissions: write-all
+permissions: 
+  contents: write
 name: Nightly Build
 on:
   workflow_dispatch:
@@ -28,8 +29,27 @@ jobs:
       - name: Build Confluence
         working-directory: ./ConfluenceOtherworld
         run: ./gradlew build
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: Confluence Automate Build Artifacts
-          path: ./ConfluenceOtherworld/build/libs/*.jar
+          tag_name: nightly-${{ github.run_id }}
+          release_name: Nightly Build ${{ github.run_id }}
+          body: |
+            Automated nightly build
+            - Build Number: ${{ github.run_number }}
+            - Triggered by: ${{ github.event_name }}
+            - Commit: ${{ github.sha }}
+          draft: false
+          prerelease: true
+      - name: Upload JAR to Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./ConfluenceOtherworld/build/libs/*.jar
+          asset_name: Confluence-Nightly-${{ github.run_id }}.jar
+          asset_content_type: application/java-archive

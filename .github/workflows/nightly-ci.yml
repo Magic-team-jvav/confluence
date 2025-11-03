@@ -34,6 +34,7 @@ jobs:
         id: version
         working-directory: ./ConfluenceOtherworld
         run: |
+          # 从 gradle.properties 获取基础版本号
           if [ -f "gradle.properties" ]; then
             BASE_VERSION=$(grep -E "^(mod_)?version" gradle.properties | head -1 | cut -d'=' -f2 | tr -d ' \r\n' | sed 's/-.*//')
           elif [ -f "build.gradle" ]; then
@@ -41,6 +42,8 @@ jobs:
           else
             BASE_VERSION="1.2.0"
           fi
+          
+          # 添加日期后缀
           DATE_SUFFIX=$(date +%y%m%d)
           FULL_VERSION="${BASE_VERSION}-alpha-${DATE_SUFFIX}"
           
@@ -48,6 +51,14 @@ jobs:
           echo "FULL_VERSION=$FULL_VERSION" >> $GITHUB_OUTPUT
           echo "Base version: $BASE_VERSION"
           echo "Full version with date: $FULL_VERSION"
+      
+      - name: List JAR files for debugging
+        working-directory: ./ConfluenceOtherworld/build/libs
+        run: |
+          echo "=== JAR files in build/libs ==="
+          ls -la *.jar || echo "No JAR files found!"
+          echo "=== Current directory ==="
+          pwd
       
       - name: Create Release
         id: create_release
@@ -69,27 +80,9 @@ jobs:
           draft: false
           prerelease: true
       
-      - name: Upload all JAR files to Release
-        run: |
-          cd ./ConfluenceOtherworld/build/libs
-          echo "Found JAR files:"
-          ls -la *.jar
-          
-          for jar_file in *.jar; do
-            echo "=== Uploading $jar_file ==="
-            response=$(curl -w "\n%{http_code}" -s -X POST \
-              -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-              -H "Content-Type: application/java-archive" \
-              --data-binary @"$jar_file" \
-              "${{ steps.create_release.outputs.upload_url }}?name=$jar_file")
-            
-            http_code=$(echo "$response" | tail -n1)
-            response_body=$(echo "$response" | head -n -1)
-            
-            if [ "$http_code" = "201" ]; then
-              echo "✅ Successfully uploaded $jar_file"
-            else
-              echo "❌ Failed to upload $jar_file (HTTP $http_code)"
-              echo "Response: $response_body"
-            fi
-          done
+      - name: Upload JAR files to Release
+        uses: AButler/upload-release-assets@v2.0
+        with:
+          files: ./ConfluenceOtherworld/build/libs/*.jar
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          release-tag: ${{ steps.version.outputs.FULL_VERSION }}

@@ -62,7 +62,7 @@ public class DemonicCaveCarver extends WorldCarver<DemonicCaveCarver.Config> {
         };
 
         List<Vector3d> positions = Lists.newArrayList(new Vector3d(x1, y1, z1), new Vector3d(x2, y2, z2));
-        VectorUtils.lightningPathList(positions, 2.5, 8, random);
+        VectorUtils.lightningPathList(positions, 2.5, 0.125F, random);
         int size = positions.size();
         for (int i = 0; i < size; i++) {
             Vector3d position = positions.get(i);

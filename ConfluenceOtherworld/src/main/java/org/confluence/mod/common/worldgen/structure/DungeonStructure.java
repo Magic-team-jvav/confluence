@@ -174,7 +174,7 @@ public class DungeonStructure extends Structure {
             firstChannel.add(new Vector3d(centerPos.getX(), centerPos.getY() - 4, centerPos.getZ()));
             Vector3d vct = new Vector3d(centerPos.getX(), random.nextInt(-15, -10), centerPos.getZ());
             firstChannel.add(new Vector3d(vct.x, vct.y + outRoomSizeHeight + 10, vct.z));
-            VectorUtils.lightningPathList(firstChannel, 2, 8, random);
+            VectorUtils.lightningPathList(firstChannel, 2, 0.125F, random);
             lineSet(firstChannel, 5.5, 5.5, 1, true, blockMap);
 
             BlockPos underCenter = new BlockPos(centerPos.getX(), Mth.floor(vct.y), centerPos.getZ());

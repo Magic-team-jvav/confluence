@@ -297,6 +297,22 @@ public final class ModClientSetups {
                     .setOverlayState(OVERLAY)
                     .createCompositeState(false));
 
+    public static final RenderType COLORED_TRANSLUCENT_UNLIT = RenderType.create(
+            "colored_translucent_unlit",
+            DefaultVertexFormat.POSITION_COLOR, // 仍然只需要位置和颜色
+            VertexFormat.Mode.QUADS,
+            256,
+            true, // affectsCrumbling 设为 true，对于半透明物体更安全
+            true, // sortOnUpload 设为 true，半透明物体需要排序才能正确渲染
+            RenderType.CompositeState.builder()
+                    .setShaderState(RENDERTYPE_LINES_SHADER) // 换成支持透明度的着色器
+                    .setTransparencyState(TRANSLUCENT_TRANSPARENCY) // 关键：启用标准透明度混合
+                    .setCullState(CULL) // 保留背面剔除
+                    .setLightmapState(NO_LIGHTMAP) // 关键：禁用光照贴图
+                    .setTextureState(NO_TEXTURE) // 仍然不绑定纹理
+                    .createCompositeState(false)
+    );
+
     public static final ColoredGlintContext GLINT_FF0000 = ColoredGlintContext.create("FF0000", 0xFF0000);
     public static final ColoredGlintContext GLINT_RAINBOW = ColoredGlintContext.create("rainbow", 0, 0, 0);
 

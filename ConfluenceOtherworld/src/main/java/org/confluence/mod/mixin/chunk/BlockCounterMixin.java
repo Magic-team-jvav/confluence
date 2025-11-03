@@ -25,11 +25,6 @@ public abstract class BlockCounterMixin {
     @Inject(method = "accept", at = @At("RETURN"))
     private void accept(BlockState state, int count, CallbackInfo ci) {
         if (confluence$section == null) return;
-//        DynamicBiomeUtils.COUNTER.forEach((predicate, consumer) -> {
-//            if (predicate.test(state)) {
-//                consumer.accept(confluence$section.confluence$getBlockCounts(), count);
-//            }
-//        });
         BlockCounts.Type type = DynamicBiomeUtils.COUNTER.apply(state);
         if (type != null) {
             type.apply(confluence$section.confluence$getBlockCounts()).addAndGet(count);

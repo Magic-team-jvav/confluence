@@ -1,7 +1,7 @@
 package org.confluence.mod.network.s2c;
 
 import com.mojang.datafixers.util.Either;
-import io.netty.buffer.ByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
@@ -21,7 +21,7 @@ import java.util.Map;
 
 public record BestiarySyncPacketS2C(Either<Map<String, BestiaryEntry>, String> either) implements IPacketS2C {
     public static final Type<BestiarySyncPacketS2C> TYPE = IPacket.createType("bestiary_sync");
-    public static final StreamCodec<ByteBuf, BestiarySyncPacketS2C> STREAM_CODEC = ByteBufCodecs.either(
+    public static final StreamCodec<RegistryFriendlyByteBuf, BestiarySyncPacketS2C> STREAM_CODEC = ByteBufCodecs.either(
             LibStreamCodecUtils.map(HashMap::new, ByteBufCodecs.STRING_UTF8, BestiaryEntry.STREAM_CODEC),
             ByteBufCodecs.STRING_UTF8
     ).map(BestiarySyncPacketS2C::new, BestiarySyncPacketS2C::either);
@@ -33,7 +33,7 @@ public record BestiarySyncPacketS2C(Either<Map<String, BestiaryEntry>, String> e
 
     @Override
     public void work(Player player) {
-        ClientBestiary.getInstance().handle(player.level(), either);
+        ClientBestiary.getInstance().handle(either);
     }
 
     public static void syncEntries(ServerPlayer player) {

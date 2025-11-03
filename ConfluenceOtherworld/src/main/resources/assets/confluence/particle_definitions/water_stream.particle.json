@@ -8,14 +8,6 @@
 				"texture": "confluence:water_stream"
 			}
 		},
-		"events": {
-			"expiration": {
-				"particle_effect": {
-					"effect": "confluence:water_stream_expiration",
-					"type": "particle"
-				}
-			}
-		},
 		"components": {
 			"minecraft:emitter_local_space": {
 				"position": true,
@@ -24,9 +16,6 @@
 			"minecraft:emitter_rate_steady": {
 				"spawn_rate": 200,
 				"max_particles": 250
-			},
-			"minecraft:emitter_lifetime_events": {
-				"expiration_event": "expiration"
 			},
 			"minecraft:emitter_lifetime_expression": {},
 			"minecraft:emitter_shape_point": {

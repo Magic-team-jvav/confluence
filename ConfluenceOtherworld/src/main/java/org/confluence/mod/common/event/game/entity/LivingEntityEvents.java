@@ -1,6 +1,5 @@
 package org.confluence.mod.common.event.game.entity;
 
-import com.xiaohunao.equipment_benediction.common.hook.HookMapManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
@@ -50,12 +49,13 @@ import org.confluence.mod.common.effect.harmful.ManaSicknessEffect;
 import org.confluence.mod.common.effect.neutral.LoveEffect;
 import org.confluence.mod.common.entity.projectile.boulder.TombstoneBoulderEntity;
 import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.init.ModHookTypes;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.item.accessory.GuideVooDooDollItem;
+import org.confluence.mod.common.item.common.BaseLanceItem;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
 import org.confluence.mod.common.item.sword.SweetSword;
 import org.confluence.mod.common.particle.DamageIndicatorOptions;
@@ -84,7 +84,7 @@ import java.util.List;
 
 import static org.confluence.mod.util.PlayerUtils.receiveMana;
 
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
+@EventBusSubscriber(modid = Confluence.MODID)
 public final class LivingEntityEvents {
     @SubscribeEvent
     public static void livingDeath(LivingDeathEvent event) {
@@ -92,7 +92,8 @@ public final class LivingEntityEvents {
         DamageSource damageSource = event.getSource();
 
         if (victim.level() instanceof ServerLevel level) {
-            Entity attacker = damageSource.getEntity();
+            Entity attacker = ModUtils.getOwner(damageSource);
+
             if (attacker instanceof ServerPlayer) {
                 if (victim instanceof Enemy &&
                         CommonConfigs.DROP_MONEY.get() &&
@@ -159,17 +160,20 @@ public final class LivingEntityEvents {
         if (living.hasEffect(ModEffects.COZY_FIRE)) {
             amount *= 1.1F;
         }
+        if (living instanceof Player player) {
+            amount = ModArmorBonus.applyHealAmount(player, amount);
+        }
         event.setAmount(amount);
 
-        DamageIndicatorOptions.sendHealParticle(event.getAmount(), level, living);
+        DamageIndicatorOptions.sendHealParticle(amount, level, living);
     }
 
     @SubscribeEvent
     public static void livingIncomingDamage(LivingIncomingDamageEvent event) {
         DamageSource damageSource = event.getSource();
         LivingEntity living = event.getEntity();
-        if (living instanceof ServerPlayer serverPlayer) {
-            AccessoryItems.applyHurtGetMana(serverPlayer, damageSource, event.getAmount());
+        if (living instanceof ServerPlayer player) {
+            AccessoryItems.applyHurtGetMana(player, damageSource, event.getAmount());
         }
         Immunity cause = Immunity.getCause(event.getSource());
         if (ILivingEntity.of(living).confluence$getImmunityTicks().containsKey(cause)) {
@@ -248,10 +252,17 @@ public final class LivingEntityEvents {
         Entity attacker = damageSource.getEntity();
         float amount = event.getNewDamage();
 
-        AchievementUtils.luckyBreak_watchYourStep(victim, damageSource, attacker);
-        FlaskEffect.onLivingDamage(victim, damageSource, amount);
+        FlaskEffect.onLivingDamage(victim, attacker, damageSource, amount);
         Immunity.calculateInvTicks(damageSource, victim);
         DamageIndicatorOptions.sendDamageParticle(serverLevel, damageSource, amount, victim);
+        if (victim instanceof ServerPlayer player) {
+            AchievementUtils.luckyBreak_watchYourStep(player, damageSource, attacker);
+            BaseLanceItem.cancelSting(player);
+            ModArmorBonus.beAttacked(player, damageSource);
+        }
+        if (attacker instanceof ServerPlayer player) {
+            ModArmorBonus.onAttacked(player, damageSource, victim);
+        }
     }
 
     @SubscribeEvent
@@ -281,14 +292,12 @@ public final class LivingEntityEvents {
 
     @SubscribeEvent
     public static void livingEquipmentChange(LivingEquipmentChangeEvent event) {
-        LivingEntity living = event.getEntity();
-        if (living instanceof ServerPlayer serverPlayer) {
-            AchievementUtils.matchingAttire_fashionStatement(event.getSlot(), serverPlayer);
-            if (event.getTo().is(ModTags.Items.SHOW_SIGNAL)) {
-                VisibilityPacketS2C.sendSignal(serverPlayer, true);
-            } else if (event.getFrom().is(ModTags.Items.SHOW_SIGNAL)) {
-                VisibilityPacketS2C.sendSignal(serverPlayer, false);
-            }
+        if (!(event.getEntity() instanceof ServerPlayer player)) return;
+        AchievementUtils.matchingAttire_fashionStatement(event.getSlot().getType(), player);
+        if (event.getTo().is(ModTags.Items.SHOW_SIGNAL)) {
+            VisibilityPacketS2C.sendSignal(player, true);
+        } else if (event.getFrom().is(ModTags.Items.SHOW_SIGNAL)) {
+            VisibilityPacketS2C.sendSignal(player, false);
         }
     }
 
@@ -349,20 +358,9 @@ public final class LivingEntityEvents {
         LivingEntity living = event.getEntity();
         event.setProjectileItemStack(ExtraInventory.getProjectile(event.getProjectileItemStack(), event.getProjectileWeaponItemStack(), living));
 
-        if (!event.getProjectileItemStack().isEmpty()) {
-            if (living.hasEffect(ModEffects.AMMO_BOX) && living.getRandom().nextFloat() < 0.2F) {
-                event.setProjectileItemStack(event.getProjectileItemStack().copy());
-                return;
-            }
-
-            if (event.getEntity() instanceof Player player) {
-                HookMapManager.postHooks(ModHookTypes.SKIP_AMMO_CONSUME.get(), (owner, hook, original) -> {
-                    if (hook.shouldSkipConsume(owner, original.getEntity(), original.getProjectileItemStack())) {
-                        original.setProjectileItemStack(original.getProjectileItemStack().copy());
-                    }
-                    return original;
-                }, player, event);
-            }
+        ItemStack projectileItemStack = event.getProjectileItemStack();
+        if (!projectileItemStack.isEmpty() && living instanceof Player player && PlayerUtils.shouldSkipConsumeAmmo(player)) {
+            event.setProjectileItemStack(projectileItemStack.copy());
         }
     }
 
@@ -400,11 +398,13 @@ public final class LivingEntityEvents {
                 LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.LEGS, (pink ? ArmorItems.PINK_INSULATED_PANTS : ArmorItems.INSULATED_PANTS).get(), 0.003F);
                 LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.FEET, (pink ? ArmorItems.PINK_INSULATED_SHOES : ArmorItems.INSULATED_SHOES).get(), 0.003F);
                 mob.setCustomName(Component.translatable("entity.confluence.frozen_zombie"));
+                mob.addTag("frozen_zombie");
                 event.setCanceled(true);
             } else if (ModUtils.isRainingAt(mob.level(), blockPos)) {
                 LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.HEAD, ArmorItems.RAIN_CAP.get(), 0.003F);
                 LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.CHEST, ArmorItems.RAINCOAT.get(), 0.003F);
                 mob.setCustomName(Component.translatable("entity.confluence.raincoat_zombie"));
+                mob.addTag("raincoat_zombie");
                 event.setCanceled(true);
             }
         } else if (mob.getType() == EntityType.SKELETON) {
@@ -416,6 +416,7 @@ public final class LivingEntityEvents {
                 LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.FEET, ArmorItems.MINING_BOOTS.get(), 1.0F);
                 LibUtils.setItemAndDropChance(mob, difficulty, EquipmentSlot.MAINHAND, PickaxeItems.BONE_PICKAXE.get(), 0.25F);
                 mob.setCustomName(Component.translatable("entity.confluence.undead_miner"));
+                mob.addTag("undead_miner");
                 event.setCanceled(true);
             }
         } else if (event.getSpawnType() == MobSpawnType.NATURAL && event.getEntity() instanceof Slime slime) {

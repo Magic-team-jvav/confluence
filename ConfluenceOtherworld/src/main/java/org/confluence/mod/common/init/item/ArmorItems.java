@@ -1,288 +1,912 @@
 package org.confluence.mod.common.init.item;
 
 import net.minecraft.core.Holder;
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.*;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterial;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
-import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.common.component.ModRarity;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.init.ModArmorMaterials;
-import org.confluence.mod.common.item.armor.MultiHeadArmorItem;
-import org.confluence.mod.common.item.armor.NormalArmorItem;
+import org.confluence.mod.common.init.armor.ModArmorMaterials;
+import org.confluence.mod.common.item.armor.BaseArmorItem;
+import org.confluence.terra_curio.common.component.PrimitiveValueComponent;
+import org.confluence.terra_curio.common.init.TCItems;
+import org.confluence.terraentity.init.TEAttributes;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.List;
+import java.util.function.Consumer;
 
 public class ArmorItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
 
-    public static final DeferredItem<ArmorItem> MINING_HELMET = ITEMS.register("mining_helmet", () -> new NormalArmorItem("armor/mining_armor", ModArmorMaterials.MINING_ARMOR_MATERIALS, ArmorItem.Type.HELMET, new Item.Properties().stacksTo(1).component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.PINK)) {
-        private final boolean noneLoaded = !ModList.get().isLoaded("sodiumdynamiclights");
+    public static final DeferredItem<BaseArmorItem> MINING_HELMET = register("mining_helmet", ModArmorMaterials.MINING_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/mining_armor")
+            .rarity(ModRarity.BLUE)
+            .armorBonus(PrimitiveValueComponent.of(TCItems.LUMINANCE, 10))
+            .requiresModLoaded("sodiumdynamiclights")
+            .tooltips(1));
+    public static final DeferredItem<BaseArmorItem> MINING_CHESTPLATE = register("mining_chestplate", ModArmorMaterials.MINING_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/mining_armor")
+            .rarity(ModRarity.BLUE)
+            .attribute(Attributes.BLOCK_BREAK_SPEED, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+    );
+    public static final DeferredItem<BaseArmorItem> MINING_LEGGINGS = register("mining_leggings", ModArmorMaterials.MINING_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/mining_armor")
+            .rarity(ModRarity.BLUE)
+            .attribute(Attributes.BLOCK_BREAK_SPEED, 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+    );
+    public static final DeferredItem<BaseArmorItem> MINING_BOOTS = register("mining_boots", ModArmorMaterials.MINING_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/mining_armor")
+            .rarity(ModRarity.BLUE)
+            .attribute(Attributes.BLOCK_BREAK_SPEED, 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
+    );
 
-        @ParametersAreNonnullByDefault
-        @Override
-        public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-            if (noneLoaded) tooltipComponents.add(Component.translatable("tooltip.terra_curio.requires_mod_loaded", "sodiumdynamiclights"));
-        }
+    public static final DeferredItem<BaseArmorItem> PLANK_HELMET = register("plank_helmet", ModArmorMaterials.PLANK_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/plank_armor")
+            .durability(55));
+    public static final DeferredItem<BaseArmorItem> PLANK_CHESTPLATE = register("plank_chestplate", ModArmorMaterials.PLANK_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/plank_armor")
+            .durability(80));
+    public static final DeferredItem<BaseArmorItem> PLANK_LEGGINGS = register("plank_leggings", ModArmorMaterials.PLANK_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/plank_armor")
+            .durability(75));
+    public static final DeferredItem<BaseArmorItem> PLANK_BOOTS = register("plank_boots", ModArmorMaterials.PLANK_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/plank_armor")
+            .durability(65));
+
+    public static final DeferredItem<BaseArmorItem> EBONY_HELMET = register("ebony_helmet", ModArmorMaterials.EBONY_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/ebony_armor")
+            .durability(120));
+    public static final DeferredItem<BaseArmorItem> EBONY_CHESTPLATE = register("ebony_chestplate", ModArmorMaterials.EBONY_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/ebony_armor")
+            .durability(170));
+    public static final DeferredItem<BaseArmorItem> EBONY_LEGGINGS = register("ebony_leggings", ModArmorMaterials.EBONY_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/ebony_armor")
+            .durability(150));
+    public static final DeferredItem<BaseArmorItem> EBONY_BOOTS = register("ebony_boots", ModArmorMaterials.EBONY_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/ebony_armor")
+            .durability(130));
+
+    public static final DeferredItem<BaseArmorItem> SHADOW_PLANK_HELMET = register("shadow_plank_helmet", ModArmorMaterials.SHADOW_PLANK_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/shadow_plank_armor")
+            .durability(120));
+    public static final DeferredItem<BaseArmorItem> SHADOW_PLANK_CHESTPLATE = register("shadow_plank_chestplate", ModArmorMaterials.SHADOW_PLANK_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/shadow_plank_armor")
+            .durability(170));
+    public static final DeferredItem<BaseArmorItem> SHADOW_PLANK_LEGGINGS = register("shadow_plank_leggings", ModArmorMaterials.SHADOW_PLANK_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/shadow_plank_armor")
+            .durability(150));
+    public static final DeferredItem<BaseArmorItem> SHADOW_PLANK_BOOTS = register("shadow_plank_boots", ModArmorMaterials.SHADOW_PLANK_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/shadow_plank_armor")
+            .durability(130));
+
+    public static final DeferredItem<BaseArmorItem> ASH_HELMET = register("ash_helmet", ModArmorMaterials.ASH_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/ash_armor")
+            .durability(220));
+    public static final DeferredItem<BaseArmorItem> ASH_CHESTPLATE = register("ash_chestplate", ModArmorMaterials.ASH_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/ash_armor")
+            .durability(270));
+    public static final DeferredItem<BaseArmorItem> ASH_LEGGINGS = register("ash_leggings", ModArmorMaterials.ASH_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/ash_armor")
+            .durability(250));
+    public static final DeferredItem<BaseArmorItem> ASH_BOOTS = register("ash_boots", ModArmorMaterials.ASH_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/ash_armor")
+            .durability(230));
+
+    public static final DeferredItem<BaseArmorItem> RAIN_CAP = register("rain_cap", ModArmorMaterials.RAINCOAT_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/raincoat_armor"));
+    public static final DeferredItem<BaseArmorItem> RAINCOAT = register("raincoat", ModArmorMaterials.RAINCOAT_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/raincoat_armor"));
+
+    public static final DeferredItem<BaseArmorItem> SNOW_CAPS = register("snow_caps", ModArmorMaterials.SNOW_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/snow_armor"));
+    public static final DeferredItem<BaseArmorItem> SNOW_SUITS = register("snow_suits", ModArmorMaterials.SNOW_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/snow_armor"));
+    public static final DeferredItem<BaseArmorItem> INSULATED_PANTS = register("insulated_pants", ModArmorMaterials.SNOW_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/snow_armor"));
+    public static final DeferredItem<BaseArmorItem> INSULATED_SHOES = register("insulated_shoes", ModArmorMaterials.SNOW_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/snow_armor"));
+
+    public static final DeferredItem<BaseArmorItem> PINK_SNOW_CAPS = register("pink_snow_caps", ModArmorMaterials.PINK_SNOW_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/snow_pink_armor"));
+    public static final DeferredItem<BaseArmorItem> PINK_SNOW_SUITS = register("pink_snow_suits", ModArmorMaterials.PINK_SNOW_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/snow_pink_armor"));
+    public static final DeferredItem<BaseArmorItem> PINK_INSULATED_PANTS = register("pink_insulated_pants", ModArmorMaterials.PINK_SNOW_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/snow_pink_armor"));
+    public static final DeferredItem<BaseArmorItem> PINK_INSULATED_SHOES = register("pink_insulated_shoes", ModArmorMaterials.PINK_SNOW_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/snow_pink_armor"));
+
+    public static final DeferredItem<BaseArmorItem> ANGLER_HAT = register("angler_hat", ModArmorMaterials.ANGLER_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/angler_armor")
+            .rarity(ModRarity.BLUE)
+            .armorBonus(PrimitiveValueComponent.of(AccessoryItems.FISHING$POWER, 5.0F))
+            .tooltips(1));
+    public static final DeferredItem<BaseArmorItem> ANGLER_VEST = register("angler_vest", ModArmorMaterials.ANGLER_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/angler_armor")
+            .rarity(ModRarity.BLUE)
+            .armorBonus(PrimitiveValueComponent.of(AccessoryItems.FISHING$POWER, 5.0F))
+            .tooltips(1));
+    public static final DeferredItem<BaseArmorItem> ANGLER_PANTS = register("angler_pants", ModArmorMaterials.ANGLER_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/angler_armor")
+            .rarity(ModRarity.BLUE)
+            .armorBonus(PrimitiveValueComponent.of(AccessoryItems.FISHING$POWER, 5.0F))
+            .tooltips(1));
+
+    public static final DeferredItem<BaseArmorItem> CACTUS_HELMET = register("cactus_helmet", ModArmorMaterials.CACTUS_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/cactus_armor")
+            .durability(120));
+    public static final DeferredItem<BaseArmorItem> CACTUS_CHESTPLATE = register("cactus_chestplate", ModArmorMaterials.CACTUS_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/cactus_armor")
+            .durability(170));
+    public static final DeferredItem<BaseArmorItem> CACTUS_LEGGINGS = register("cactus_leggings", ModArmorMaterials.CACTUS_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/cactus_armor")
+            .durability(150));
+    public static final DeferredItem<BaseArmorItem> CACTUS_BOOTS = register("cactus_boots", ModArmorMaterials.CACTUS_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/cactus_armor")
+            .durability(130));
+
+    public static final DeferredItem<BaseArmorItem> COPPER_HELMET = register("copper_helmet", ModArmorMaterials.COPPER_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/copper_armor")
+            .durability(120));
+    public static final DeferredItem<BaseArmorItem> COPPER_CHESTPLATE = register("copper_chestplate", ModArmorMaterials.COPPER_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/copper_armor")
+            .durability(170));
+    public static final DeferredItem<BaseArmorItem> COPPER_LEGGINGS = register("copper_leggings", ModArmorMaterials.COPPER_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/copper_armor")
+            .durability(150));
+    public static final DeferredItem<BaseArmorItem> COPPER_BOOTS = register("copper_boots", ModArmorMaterials.COPPER_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/copper_armor")
+            .durability(130));
+
+    public static final DeferredItem<BaseArmorItem> TIN_HELMET = register("tin_helmet", ModArmorMaterials.TIN_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/tin_armor")
+            .durability(150));
+    public static final DeferredItem<BaseArmorItem> TIN_CHESTPLATE = register("tin_chestplate", ModArmorMaterials.TIN_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/tin_armor")
+            .durability(190));
+    public static final DeferredItem<BaseArmorItem> TIN_LEGGINGS = register("tin_leggings", ModArmorMaterials.TIN_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/tin_armor")
+            .durability(170));
+    public static final DeferredItem<BaseArmorItem> TIN_BOOTS = register("tin_boots", ModArmorMaterials.TIN_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/tin_armor")
+            .durability(150));
+
+    public static final DeferredItem<BaseArmorItem> PUMPKIN_HELMET = register("pumpkin_helmet", ModArmorMaterials.PUMPKIN_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/pumpkin_armor"));
+    public static final DeferredItem<BaseArmorItem> PUMPKIN_CHESTPLATE = register("pumpkin_chestplate", ModArmorMaterials.PUMPKIN_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/pumpkin_armor"));
+    public static final DeferredItem<BaseArmorItem> PUMPKIN_LEGGINGS = register("pumpkin_leggings", ModArmorMaterials.PUMPKIN_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/pumpkin_armor"));
+    public static final DeferredItem<BaseArmorItem> PUMPKIN_BOOTS = register("pumpkin_boots", ModArmorMaterials.PUMPKIN_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/pumpkin_armor"));
+
+    public static final DeferredItem<BaseArmorItem> NINJA_HELMET = register("ninja_helmet", ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/ninja_armor")
+            .rarity(ModRarity.BLUE)
+            .criticalChance(0.03)
+    );
+    public static final DeferredItem<BaseArmorItem> NINJA_CHESTPLATE = register("ninja_chestplate", ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/ninja_armor")
+            .rarity(ModRarity.BLUE)
+            .criticalChance(0.03)
+    );
+    public static final DeferredItem<BaseArmorItem> NINJA_LEGGINGS = register("ninja_leggings", ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/ninja_armor")
+            .rarity(ModRarity.BLUE)
+            .criticalChance(0.015)
+    );
+    public static final DeferredItem<BaseArmorItem> NINJA_BOOTS = register("ninja_boots", ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/ninja_armor")
+            .rarity(ModRarity.BLUE)
+            .criticalChance(0.015)
+    );
+
+    public static final DeferredItem<BaseArmorItem> LEAD_HELMET = register("lead_helmet", ModArmorMaterials.LEAD_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/lead_armor")
+            .durability(170));
+    public static final DeferredItem<BaseArmorItem> LEAD_CHESTPLATE = register("lead_chestplate", ModArmorMaterials.LEAD_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/lead_armor")
+            .durability(250));
+    public static final DeferredItem<BaseArmorItem> LEAD_LEGGINGS = register("lead_leggings", ModArmorMaterials.LEAD_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/lead_armor")
+            .durability(230));
+    public static final DeferredItem<BaseArmorItem> LEAD_BOOTS = register("lead_boots", ModArmorMaterials.LEAD_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/lead_armor")
+            .durability(160));
+
+    public static final DeferredItem<BaseArmorItem> SILVER_HELMET = register("silver_helmet", ModArmorMaterials.SILVER_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/silver_armor")
+            .durability(190));
+    public static final DeferredItem<BaseArmorItem> SILVER_CHESTPLATE = register("silver_chestplate", ModArmorMaterials.SILVER_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/silver_armor")
+            .durability(270));
+    public static final DeferredItem<BaseArmorItem> SILVER_LEGGINGS = register("silver_leggings", ModArmorMaterials.SILVER_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/silver_armor")
+            .durability(250));
+    public static final DeferredItem<BaseArmorItem> SILVER_BOOTS = register("silver_boots", ModArmorMaterials.SILVER_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/silver_armor")
+            .durability(180));
+
+    public static final DeferredItem<BaseArmorItem> TUNGSTEN_HELMET = register("tungsten_helmet", ModArmorMaterials.TUNGSTEN_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/tungsten_armor")
+            .durability(210));
+    public static final DeferredItem<BaseArmorItem> TUNGSTEN_CHESTPLATE = register("tungsten_chestplate", ModArmorMaterials.TUNGSTEN_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/tungsten_armor")
+            .durability(290));
+    public static final DeferredItem<BaseArmorItem> TUNGSTEN_LEGGINGS = register("tungsten_leggings", ModArmorMaterials.TUNGSTEN_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/tungsten_armor")
+            .durability(270));
+    public static final DeferredItem<BaseArmorItem> TUNGSTEN_BOOTS = register("tungsten_boots", ModArmorMaterials.TUNGSTEN_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/tungsten_armor")
+            .durability(200));
+
+    public static final DeferredItem<BaseArmorItem> GOLDEN_HELMET = register("golden_helmet", ModArmorMaterials.GOLDEN_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/golden_armor")
+            .durability(250)
+            .setGolden());
+    public static final DeferredItem<BaseArmorItem> GOLDEN_CHESTPLATE = register("golden_chestplate", ModArmorMaterials.GOLDEN_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/golden_armor")
+            .durability(340)
+            .setGolden());
+    public static final DeferredItem<BaseArmorItem> GOLDEN_LEGGINGS = register("golden_leggings", ModArmorMaterials.GOLDEN_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/golden_armor")
+            .durability(320)
+            .setGolden());
+    public static final DeferredItem<BaseArmorItem> GOLDEN_BOOTS = register("golden_boots", ModArmorMaterials.GOLDEN_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/golden_armor")
+            .durability(260)
+            .setGolden());
+
+    public static final DeferredItem<BaseArmorItem> PLATINUM_HELMET = register("platinum_helmet", ModArmorMaterials.PLATINUM_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/platinum_armor")
+            .durability(250));
+    public static final DeferredItem<BaseArmorItem> PLATINUM_CHESTPLATE = register("platinum_chestplate", ModArmorMaterials.PLATINUM_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/platinum_armor")
+            .durability(340));
+    public static final DeferredItem<BaseArmorItem> PLATINUM_LEGGINGS = register("platinum_leggings", ModArmorMaterials.PLATINUM_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/platinum_armor")
+            .durability(320));
+    public static final DeferredItem<BaseArmorItem> PLATINUM_BOOTS = register("platinum_boots", ModArmorMaterials.PLATINUM_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/platinum_armor")
+            .durability(260));
+
+    public static final DeferredItem<BaseArmorItem> FOSSIL_HELMET = register("fossil_helmet", ModArmorMaterials.FOSSIL_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/fossil_armor")
+            .rarity(ModRarity.BLUE)
+            .criticalChance(0.04)
+    );
+    public static final DeferredItem<BaseArmorItem> FOSSIL_CHESTPLATE = register("fossil_chestplate", ModArmorMaterials.FOSSIL_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/fossil_armor")
+            .rarity(ModRarity.BLUE)
+            .rangedDamage(0.05)
+    );
+    public static final DeferredItem<BaseArmorItem> FOSSIL_LEGGINGS = register("fossil_leggings", ModArmorMaterials.FOSSIL_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/fossil_armor")
+            .rarity(ModRarity.BLUE)
+            .criticalChance(0.02)
+    );
+    public static final DeferredItem<BaseArmorItem> FOSSIL_BOOTS = register("fossil_boots", ModArmorMaterials.FOSSIL_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/fossil_armor")
+            .rarity(ModRarity.BLUE)
+            .criticalChance(0.02)
+    );
+
+    public static final DeferredItem<BaseArmorItem> SPORE_ROOT_HELMET = register("spore_root_helmet", ModArmorMaterials.SPORE_ROOT_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/spore_root_armor")
+            .rarity(ModRarity.BLUE)
+            .summonDamage(0.02)
+            .attribute(TEAttributes.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE)
+    );
+    public static final DeferredItem<BaseArmorItem> SPORE_ROOT_CHESTPLATE = register("spore_root_chestplate", ModArmorMaterials.SPORE_ROOT_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/spore_root_armor")
+            .rarity(ModRarity.BLUE)
+            .summonDamage(0.03)
+    );
+    public static final DeferredItem<BaseArmorItem> SPORE_ROOT_LEGGINGS = register("spore_root_leggings", ModArmorMaterials.SPORE_ROOT_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/spore_root_armor")
+            .rarity(ModRarity.BLUE)
+            .summonDamage(0.03)
+    );
+    public static final DeferredItem<BaseArmorItem> SPORE_ROOT_BOOTS = register("spore_root_boots", ModArmorMaterials.SPORE_ROOT_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/spore_root_armor")
+            .rarity(ModRarity.BLUE)
+            .summonDamage(0.02)
+    );
+
+    public static final DeferredItem<BaseArmorItem> COLD_CRYSTAL_HELMET = register("cold_crystal_helmet", ModArmorMaterials.COLD_CRYSTAL_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/cold_crystal_armor")
+            .rarity(ModRarity.BLUE)
+            .additionalMana(20)
+            .criticalChance(0.04)
+            .tooltips(1));
+    public static final DeferredItem<BaseArmorItem> COLD_CRYSTAL_CHESTPLATE = register("cold_crystal_chestplate", ModArmorMaterials.COLD_CRYSTAL_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/cold_crystal_armor")
+            .rarity(ModRarity.BLUE)
+            .additionalMana(20)
+            .criticalChance(0.04)
+            .tooltips(1));
+    public static final DeferredItem<BaseArmorItem> COLD_CRYSTAL_LEGGINGS = register("cold_crystal_leggings", ModArmorMaterials.COLD_CRYSTAL_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/cold_crystal_armor")
+            .rarity(ModRarity.BLUE)
+            .magicDamage(0.04)
+    );
+    public static final DeferredItem<BaseArmorItem> COLD_CRYSTAL_BOOTS = register("cold_crystal_boots", ModArmorMaterials.COLD_CRYSTAL_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/cold_crystal_armor")
+            .rarity(ModRarity.BLUE)
+            .criticalChance(0.04)
+    );
+
+    public static final DeferredItem<BaseArmorItem> HEIM_HELMET = register("heim_helmet", ModArmorMaterials.HEIM_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/heim_armor")
+            .rarity(ModRarity.BLUE)
+            // todo延长水下呼吸时间5%
+            .meleeDamage(0.03)
+            .tooltips(1));
+    public static final DeferredItem<BaseArmorItem> HEIM_CHESTPLATE = register("heim_chestplate", ModArmorMaterials.HEIM_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/heim_armor")
+            .rarity(ModRarity.BLUE)
+            .criticalChance(0.04)
+    );
+    public static final DeferredItem<BaseArmorItem> HEIM_LEGGINGS = register("heim_leggings", ModArmorMaterials.HEIM_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/heim_armor")
+            .rarity(ModRarity.BLUE)
+            .meleeDamage(0.02)
+            .criticalChance(0.03)
+    );
+    public static final DeferredItem<BaseArmorItem> HEIM_BOOTS = register("heim_boots", ModArmorMaterials.HEIM_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/heim_armor")
+            // todo提高水下移动速度5%
+            .rarity(ModRarity.BLUE)
+            .tooltips(1));
+
+    public static final DeferredItem<BaseArmorItem> BEE_HELMET = register("bee_helmet", ModArmorMaterials.BEE_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/bee_armor")
+            .rarity(ModRarity.ORANGE)
+            .summonDamage(0.04)
+            .attribute(TEAttributes.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE)
+            );
+    public static final DeferredItem<BaseArmorItem> BEE_CHESTPLATE = register("bee_chestplate", ModArmorMaterials.BEE_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/bee_armor")
+            .rarity(ModRarity.ORANGE)
+            .summonDamage(0.04)
+            .attribute(TEAttributes.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE)
+            );
+    public static final DeferredItem<BaseArmorItem> BEE_LEGGINGS = register("bee_leggings", ModArmorMaterials.BEE_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/bee_armor")
+            .rarity(ModRarity.ORANGE)
+            .summonDamage(0.025)
+    );
+    public static final DeferredItem<BaseArmorItem> BEE_BOOTS = register("bee_boots", ModArmorMaterials.BEE_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/bee_armor")
+            .rarity(ModRarity.ORANGE)
+            .summonDamage(0.025)
+    );
+
+    public static final DeferredItem<BaseArmorItem> OBSIDIAN_HELMET = register("obsidian_helmet", ModArmorMaterials.OBSIDIAN_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/obsidian_armor")
+            .rarity(ModRarity.BLUE)
+            .summonDamage(0.08)
+    );
+    public static final DeferredItem<BaseArmorItem> OBSIDIAN_CHESTPLATE = register("obsidian_chestplate", ModArmorMaterials.OBSIDIAN_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/obsidian_armor")
+            .rarity(ModRarity.BLUE)
+            .attribute(TEAttributes.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE)
+    );
+    public static final DeferredItem<BaseArmorItem> OBSIDIAN_LEGGINGS = register("obsidian_leggings", ModArmorMaterials.OBSIDIAN_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/obsidian_armor")
+            .rarity(ModRarity.BLUE)
+            .summonDamage(0.04)
+    );
+    public static final DeferredItem<BaseArmorItem> OBSIDIAN_BOOTS = register("obsidian_boots", ModArmorMaterials.OBSIDIAN_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/obsidian_armor")
+            .rarity(ModRarity.BLUE)
+            .summonDamage(0.04)
+    );
+
+    public static final DeferredItem<BaseArmorItem> GLADIATOR_HELMET = register("gladiator_helmet", ModArmorMaterials.GLADIATOR_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/gladiator_armor"));
+    public static final DeferredItem<BaseArmorItem> GLADIATOR_CHESTPLATE = register("gladiator_chestplate", ModArmorMaterials.GLADIATOR_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/gladiator_armor"));
+    public static final DeferredItem<BaseArmorItem> GLADIATOR_LEGGINGS = register("gladiator_leggings", ModArmorMaterials.GLADIATOR_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/gladiator_armor"));
+    public static final DeferredItem<BaseArmorItem> GLADIATOR_BOOTS = register("gladiator_boots", ModArmorMaterials.GLADIATOR_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/gladiator_armor"));
+
+    public static final DeferredItem<BaseArmorItem> METEOR_HELMET = register("meteor_helmet", ModArmorMaterials.METEOR_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/meteor_armor")
+            .rarity(ModRarity.BLUE)
+            .magicDamage(0.09)
+    );
+    public static final DeferredItem<BaseArmorItem> METEOR_CHESTPLATE = register("meteor_chestplate", ModArmorMaterials.METEOR_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/meteor_armor")
+            .rarity(ModRarity.BLUE)
+            .magicDamage(0.09)
+    );
+    public static final DeferredItem<BaseArmorItem> METEOR_LEGGINGS = register("meteor_leggings", ModArmorMaterials.METEOR_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/meteor_armor")
+            .rarity(ModRarity.BLUE)
+            .magicDamage(0.045)
+    );
+    public static final DeferredItem<BaseArmorItem> METEOR_BOOTS = register("meteor_boots", ModArmorMaterials.METEOR_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/meteor_armor")
+            .rarity(ModRarity.BLUE)
+            .magicDamage(0.045)
+    );
+
+    public static final DeferredItem<BaseArmorItem> JUNGLE_HELMET = register("jungle_helmet", ModArmorMaterials.JUNGLE_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/jungle_armor")
+            .rarity(ModRarity.ORANGE)
+            .additionalMana(40)
+            .criticalChance(0.06)
+            .tooltips(1));
+    public static final DeferredItem<BaseArmorItem> JUNGLE_CHESTPLATE = register("jungle_chestplate", ModArmorMaterials.JUNGLE_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/jungle_armor")
+            .rarity(ModRarity.ORANGE)
+            .additionalMana(20)
+            .magicDamage(0.06)
+            .tooltips(1));
+    public static final DeferredItem<BaseArmorItem> JUNGLE_LEGGINGS = register("jungle_leggings", ModArmorMaterials.JUNGLE_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/jungle_armor")
+            .rarity(ModRarity.ORANGE)
+            .additionalMana(20)
+            .tooltips(1));
+    public static final DeferredItem<BaseArmorItem> JUNGLE_BOOTS = register("jungle_boots", ModArmorMaterials.JUNGLE_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/jungle_armor")
+            .rarity(ModRarity.ORANGE)
+            .criticalChance(0.06)
+    );
+
+    public static final DeferredItem<BaseArmorItem> NECRO_HELMET = register("necro_helmet", ModArmorMaterials.NECRO_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/necro_armor")
+            .rarity(ModRarity.GREEN)
+            .rangedDamage(0.05)
+    );
+    public static final DeferredItem<BaseArmorItem> NECRO_CHESTPLATE = register("necro_chestplate", ModArmorMaterials.NECRO_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/necro_armor")
+            .rarity(ModRarity.GREEN)
+            .rangedDamage(0.05)
+    );
+    public static final DeferredItem<BaseArmorItem> NECRO_LEGGINGS = register("necro_leggings", ModArmorMaterials.NECRO_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/necro_armor")
+            .rarity(ModRarity.GREEN)
+            .rangedDamage(0.025)
+    );
+    public static final DeferredItem<BaseArmorItem> NECRO_BOOTS = register("necro_boots", ModArmorMaterials.NECRO_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/necro_armor")
+            .rarity(ModRarity.GREEN)
+            .rangedDamage(0.025)
+    );
+
+    public static final DeferredItem<BaseArmorItem> SHADOW_HELMET = register("shadow_helmet", ModArmorMaterials.SHADOW_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/shadow_armor")
+            .rarity(ModRarity.BLUE)
+            .criticalChance(0.05)
+    );
+    public static final DeferredItem<BaseArmorItem> SHADOW_CHESTPLATE = register("shadow_chestplate", ModArmorMaterials.SHADOW_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/shadow_armor")
+            .rarity(ModRarity.BLUE)
+            .criticalChance(0.05)
+    );
+    public static final DeferredItem<BaseArmorItem> SHADOW_LEGGINGS = register("shadow_leggings", ModArmorMaterials.SHADOW_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/shadow_armor")
+            .rarity(ModRarity.BLUE)
+            .criticalChance(0.025)
+    );
+    public static final DeferredItem<BaseArmorItem> SHADOW_BOOTS = register("shadow_boots", ModArmorMaterials.SHADOW_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/shadow_armor")
+            .rarity(ModRarity.BLUE)
+            .criticalChance(0.025)
+    );
+
+    public static final DeferredItem<BaseArmorItem> CRIMSON_HELMET = register("crimson_helmet", ModArmorMaterials.CRIMSON_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/crimson_armor")
+            .rarity(ModRarity.BLUE)
+            .fourClassesDamage(0.03)
+    );
+    public static final DeferredItem<BaseArmorItem> CRIMSON_CHESTPLATE = register("crimson_chestplate", ModArmorMaterials.CRIMSON_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/crimson_armor")
+            .rarity(ModRarity.BLUE)
+            .fourClassesDamage(0.03)
+    );
+    public static final DeferredItem<BaseArmorItem> CRIMSON_LEGGINGS = register("crimson_leggings", ModArmorMaterials.CRIMSON_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/crimson_armor")
+            .rarity(ModRarity.BLUE)
+            .fourClassesDamage(0.015)
+    );
+    public static final DeferredItem<BaseArmorItem> CRIMSON_BOOTS = register("crimson_boots", ModArmorMaterials.CRIMSON_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/crimson_armor")
+            .rarity(ModRarity.BLUE)
+            .fourClassesDamage(0.015)
+    );
+
+    public static final DeferredItem<BaseArmorItem> MOLTEN_HELMET = register("molten_helmet", ModArmorMaterials.MOLTEN_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/molten_armor")
+            .rarity(ModRarity.ORANGE)
+            .criticalChance(0.07)
+    );
+    public static final DeferredItem<BaseArmorItem> MOLTEN_CHESTPLATE = register("molten_chestplate", ModArmorMaterials.MOLTEN_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/molten_armor")
+            .rarity(ModRarity.ORANGE)
+            .meleeDamage(0.07)
+    );
+    public static final DeferredItem<BaseArmorItem> MOLTEN_LEGGINGS = register("molten_leggings", ModArmorMaterials.MOLTEN_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/molten_armor")
+            .rarity(ModRarity.ORANGE)
+            .attribute(Attributes.ATTACK_SPEED, 0.035, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+    );
+    public static final DeferredItem<BaseArmorItem> MOLTEN_BOOTS = register("molten_boots", ModArmorMaterials.MOLTEN_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/molten_armor")
+            .rarity(ModRarity.ORANGE)
+            .attribute(Attributes.ATTACK_SPEED, 0.035, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+    );
+
+    public static final DeferredItem<BaseArmorItem> PEARL_HELMET = register("pearl_helmet", ModArmorMaterials.PEARL_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/pearl_armor")
+            .durability(120));
+    public static final DeferredItem<BaseArmorItem> PEARL_CHESTPLATE = register("pearl_chestplate", ModArmorMaterials.PEARL_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/pearl_armor")
+            .durability(170));
+    public static final DeferredItem<BaseArmorItem> PEARL_LEGGINGS = register("pearl_leggings", ModArmorMaterials.PEARL_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/pearl_armor")
+            .durability(150));
+    public static final DeferredItem<BaseArmorItem> PEARL_BOOTS = register("pearl_boots", ModArmorMaterials.PEARL_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/pearl_armor")
+            .durability(130));
+
+    public static final DeferredItem<BaseArmorItem> SPIDER_HELMET = register("spider_helmet", ModArmorMaterials.SPIDER_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/spider_armor")
+            .rarity(ModRarity.LIGHT_RED)
+            .attribute(TEAttributes.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE)
+            .summonDamage(0.05)
+    );
+    public static final DeferredItem<BaseArmorItem> SPIDER_CHESTPLATE = register("spider_chestplate", ModArmorMaterials.SPIDER_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/spider_armor")
+            .rarity(ModRarity.LIGHT_RED)
+            .attribute(TEAttributes.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE)
+            .summonDamage(0.05)
+    );
+    public static final DeferredItem<BaseArmorItem> SPIDER_LEGGINGS = register("spider_leggings", ModArmorMaterials.SPIDER_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/spider_armor")
+            .rarity(ModRarity.LIGHT_RED)
+            .attribute(TEAttributes.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE)
+    );
+    public static final DeferredItem<BaseArmorItem> SPIDER_BOOTS = register("spider_boots", ModArmorMaterials.SPIDER_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/spider_armor")
+            .rarity(ModRarity.LIGHT_RED)
+            .summonDamage(0.06)
+    );
+
+    public static final DeferredItem<BaseArmorItem> COBALT_MASK = register("cobalt_mask", ModArmorMaterials.COBALT_MASK_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/cobalt_armor", true)
+            .rarity(ModRarity.LIGHT_RED)
+            .rangedDamage(0.1)
+            .criticalChance(0.1)
+    );
+    public static final DeferredItem<BaseArmorItem> COBALT_HAT = register("cobalt_hat", ModArmorMaterials.COBALT_HAT_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/cobalt_armor", true)
+            .rarity(ModRarity.LIGHT_RED)
+            .additionalMana(40)
+            .magicDamage(0.1)
+            .criticalChance(0.09)
+            .tooltips(1));
+    public static final DeferredItem<BaseArmorItem> COBALT_HELMET = register("cobalt_helmet", ModArmorMaterials.COBALT_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/cobalt_armor", true)
+            .rarity(ModRarity.LIGHT_RED)
+            .attribute(Attributes.MOVEMENT_SPEED, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .meleeDamage(0.15)
+    );
+    public static final DeferredItem<BaseArmorItem> COBALT_CHESTPLATE = register("cobalt_chestplate", ModArmorMaterials.COBALT_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/cobalt_armor", true)
+            .rarity(ModRarity.LIGHT_RED)
+            .criticalChance(0.05)
+    );
+    public static final DeferredItem<BaseArmorItem> COBALT_LEGGINGS = register("cobalt_leggings", ModArmorMaterials.COBALT_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/cobalt_armor", true)
+            .rarity(ModRarity.LIGHT_RED)
+            .attribute(Attributes.MOVEMENT_SPEED, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+    );
+    public static final DeferredItem<BaseArmorItem> COBALT_BOOTS = register("cobalt_boots", ModArmorMaterials.COBALT_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/cobalt_armor", true)
+            .rarity(ModRarity.LIGHT_RED)
+            .fourClassesDamage(0.03)
+    );
+
+    public static final DeferredItem<BaseArmorItem> PALLADIUM_MASK = register("palladium_mask", ModArmorMaterials.PALLADIUM_MASK_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/palladium_armor", true)
+            .rarity(ModRarity.PINK)
+            .meleeDamage(0.12)
+            .attribute(Attributes.ATTACK_SPEED, 0.12, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+    );
+    public static final DeferredItem<BaseArmorItem> PALLADIUM_HEADGEAR = register("palladium_headgear", ModArmorMaterials.PALLADIUM_HEADGEAR_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/palladium_armor", true)
+            .rarity(ModRarity.PINK)
+            .magicDamage(0.09)
+            .criticalChance(0.09)
+            .additionalMana(60)
+            .tooltips(1));
+    public static final DeferredItem<BaseArmorItem> PALLADIUM_HELMET = register("palladium_helmet", ModArmorMaterials.PALLADIUM_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/palladium_armor", true)
+            .rarity(ModRarity.PINK)
+            .rangedDamage(0.09)
+            .criticalChance(0.09)
+    );
+    public static final DeferredItem<BaseArmorItem> PALLADIUM_CHESTPLATE = register("palladium_chestplate", ModArmorMaterials.PALLADIUM_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/palladium_armor", true)
+            .rarity(ModRarity.PINK)
+            .fourClassesDamage(0.03)
+            .criticalChance(0.02)
+    );
+    public static final DeferredItem<BaseArmorItem> PALLADIUM_LEGGINGS = register("palladium_leggings", ModArmorMaterials.PALLADIUM_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/palladium_armor", true)
+            .rarity(ModRarity.PINK)
+            .fourClassesDamage(0.02)
+    );
+    public static final DeferredItem<BaseArmorItem> PALLADIUM_BOOTS = register("palladium_boots", ModArmorMaterials.PALLADIUM_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/palladium_armor", true)
+            .rarity(ModRarity.PINK)
+            .criticalChance(0.01)
+    );
+
+    public static final DeferredItem<BaseArmorItem> MYTHRIL_HOOD = register("mythril_hood", ModArmorMaterials.MYTHRIL_HOOD_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/mythril_armor", true)
+            .rarity(ModRarity.LIGHT_RED)
+            .additionalMana(60)
+            .magicDamage(0.15)
+            .tooltips(1));
+    public static final DeferredItem<BaseArmorItem> MYTHRIL_HAT = register("mythril_hat", ModArmorMaterials.MYTHRIL_HAT_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/mythril_armor", true)
+            .rarity(ModRarity.LIGHT_RED)
+            .rangedDamage(0.12)
+            .criticalChance(0.07)
+    );
+    public static final DeferredItem<BaseArmorItem> MYTHRIL_HELMET = register("mythril_helmet", ModArmorMaterials.MYTHRIL_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/mythril_armor", true)
+            .rarity(ModRarity.LIGHT_RED)
+            .criticalChance(0.08)
+            .meleeDamage(0.1)
+    );
+    public static final DeferredItem<BaseArmorItem> MYTHRIL_CHESTPLATE = register("mythril_chestplate", ModArmorMaterials.MYTHRIL_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/mythril_armor", true)
+            .rarity(ModRarity.LIGHT_RED)
+            .fourClassesDamage(0.07)
+    );
+    public static final DeferredItem<BaseArmorItem> MYTHRIL_LEGGINGS = register("mythril_leggings", ModArmorMaterials.MYTHRIL_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/mythril_armor", true)
+            .rarity(ModRarity.LIGHT_RED)
+            .criticalChance(0.05)
+    );
+    public static final DeferredItem<BaseArmorItem> MYTHRIL_BOOTS = register("mythril_boots", ModArmorMaterials.MYTHRIL_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/mythril_armor", true)
+            .rarity(ModRarity.LIGHT_RED)
+            .criticalChance(0.05)
+    );
+
+    public static final DeferredItem<BaseArmorItem> ORICHALCUM_HEADGEAR = register("orichalcum_headgear", ModArmorMaterials.ORICHALCUM_HEADGEAR_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/orichalcum_armor", true)
+            .rarity(ModRarity.LIGHT_RED)
+            .criticalChance(0.18)
+            .additionalMana(80)
+            .tooltips(1));
+    public static final DeferredItem<BaseArmorItem> ORICHALCUM_MASK = register("orichalcum_mask", ModArmorMaterials.ORICHALCUM_MASK_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/orichalcum_armor", true)
+            .rarity(ModRarity.LIGHT_RED)
+            .meleeDamage(0.11)
+            .attribute(Attributes.ATTACK_SPEED, 0.11, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .attribute(Attributes.MOVEMENT_SPEED, 0.07, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+    );
+    public static final DeferredItem<BaseArmorItem> ORICHALCUM_HELMET = register("orichalcum_helmet", ModArmorMaterials.ORICHALCUM_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/orichalcum_armor", true)
+            .rarity(ModRarity.LIGHT_RED)
+            .criticalChance(0.15)
+            .attribute(Attributes.MOVEMENT_SPEED, 0.08, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+    );
+    public static final DeferredItem<BaseArmorItem> ORICHALCUM_CHESTPLATE = register("orichalcum_chestplate", ModArmorMaterials.ORICHALCUM_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/orichalcum_armor", true)
+            .rarity(ModRarity.LIGHT_RED)
+            .criticalChance(0.06)
+    );
+    public static final DeferredItem<BaseArmorItem> ORICHALCUM_LEGGINGS = register("orichalcum_leggings", ModArmorMaterials.ORICHALCUM_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/orichalcum_armor", true)
+            .rarity(ModRarity.LIGHT_RED)
+            .fourClassesDamage(0.08)
+    );
+    public static final DeferredItem<BaseArmorItem> ORICHALCUM_BOOTS = register("orichalcum_boots", ModArmorMaterials.ORICHALCUM_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/orichalcum_armor", true)
+            .rarity(ModRarity.LIGHT_RED)
+            .attribute(Attributes.MOVEMENT_SPEED, 0.11, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+    );
+
+    public static final DeferredItem<BaseArmorItem> ADAMANTITE_HEADGEAR = register("adamantite_headgear", ModArmorMaterials.ADAMANTITE_HEADGEAR_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/adamantite_armor", true)
+            .rarity(ModRarity.LIGHT_RED)
+            .additionalMana(80)
+            .magicDamage(0.12)
+            .criticalChance(0.12)
+            .tooltips(1));
+    public static final DeferredItem<BaseArmorItem> ADAMANTITE_MASK = register("adamantite_mask", ModArmorMaterials.ADAMANTITE_MASK_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/adamantite_armor", true)
+            .rarity(ModRarity.LIGHT_RED)
+            .rangedDamage(0.14)
+            .criticalChance(0.1)
+    );
+    public static final DeferredItem<BaseArmorItem> ADAMANTITE_HELMET = register("adamantite_helmet", ModArmorMaterials.ADAMANTITE_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/adamantite_armor", true)
+            .rarity(ModRarity.LIGHT_RED)
+            .criticalChance(0.07)
+            .meleeDamage(0.14)
+    );
+    public static final DeferredItem<BaseArmorItem> ADAMANTITE_CHESTPLATE = register("adamantite_chestplate", ModArmorMaterials.ADAMANTITE_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/adamantite_armor", true)
+            .rarity(ModRarity.LIGHT_RED)
+            .fourClassesDamage(0.08)
+    );
+    public static final DeferredItem<BaseArmorItem> ADAMANTITE_LEGGINGS = register("adamantite_leggings", ModArmorMaterials.ADAMANTITE_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/adamantite_armor", true)
+            .rarity(ModRarity.LIGHT_RED)
+            .criticalChance(0.07)
+    );
+    public static final DeferredItem<BaseArmorItem> ADAMANTITE_BOOTS = register("adamantite_boots", ModArmorMaterials.ADAMANTITE_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/adamantite_armor", true)
+            .rarity(ModRarity.LIGHT_RED)
+            .attribute(Attributes.MOVEMENT_SPEED, 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+    );
+
+    public static final DeferredItem<BaseArmorItem> TITANIUM_HEADGEAR = register("titanium_headgear", ModArmorMaterials.TITANIUM_HEADGEAR_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/titanium_armor", true)
+            .rarity(ModRarity.LIGHT_RED)
+            .magicDamage(0.16)
+            .criticalChance(0.07)
+            .additionalMana(100)
+            .tooltips(1));
+    public static final DeferredItem<BaseArmorItem> TITANIUM_MASK = register("titanium_mask", ModArmorMaterials.TITANIUM_MASK_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/titanium_armor", true)
+            .rarity(ModRarity.LIGHT_RED)
+            .meleeDamage(0.09)
+            .criticalChance(0.09)
+            .attribute(Attributes.ATTACK_SPEED, 0.09, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+    );
+    public static final DeferredItem<BaseArmorItem> TITANIUM_HELMET = register("titanium_helmet", ModArmorMaterials.TITANIUM_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/titanium_armor", true)
+            .rarity(ModRarity.LIGHT_RED)
+            .rangedDamage(0.16)
+            .criticalChance(0.07)
+    );
+    public static final DeferredItem<BaseArmorItem> TITANIUM_CHESTPLATE = register("titanium_chestplate", ModArmorMaterials.TITANIUM_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/titanium_armor", true)
+            .rarity(ModRarity.LIGHT_RED)
+            .fourClassesDamage(0.04)
+            .criticalChance(0.03)
+    );
+    public static final DeferredItem<BaseArmorItem> TITANIUM_LEGGINGS = register("titanium_leggings", ModArmorMaterials.TITANIUM_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/titanium_armor", true)
+            .rarity(ModRarity.LIGHT_RED)
+            .fourClassesDamage(0.03)
+            .criticalChance(0.03)
+    );
+    public static final DeferredItem<BaseArmorItem> TITANIUM_BOOTS = register("titanium_boots", ModArmorMaterials.TITANIUM_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/titanium_armor", true)
+            .rarity(ModRarity.LIGHT_RED)
+            .attribute(Attributes.MOVEMENT_SPEED, 0.06, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+    );
+
+    public static final DeferredItem<BaseArmorItem> CRYSTAL_ASSASSIN_HELMET = register("crystal_assassin_helmet", ModArmorMaterials.CRYSTAL_ASSASSIN_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/crystal_assassin_armor")
+            .rarity(ModRarity.PINK));
+    public static final DeferredItem<BaseArmorItem> CRYSTAL_ASSASSIN_CHESTPLATE = register("crystal_assassin_chestplate", ModArmorMaterials.CRYSTAL_ASSASSIN_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/crystal_assassin_armor")
+            .rarity(ModRarity.PINK));
+    public static final DeferredItem<BaseArmorItem> CRYSTAL_ASSASSIN_LEGGINGS = register("crystal_assassin_leggings", ModArmorMaterials.CRYSTAL_ASSASSIN_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/crystal_assassin_armor")
+            .rarity(ModRarity.PINK));
+    public static final DeferredItem<BaseArmorItem> CRYSTAL_ASSASSIN_BOOTS = register("crystal_assassin_boots", ModArmorMaterials.CRYSTAL_ASSASSIN_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/crystal_assassin_armor")
+            .rarity(ModRarity.PINK));
+
+    public static final DeferredItem<BaseArmorItem> HALLOWED_MASK = register("hallowed_mask", ModArmorMaterials.HALLOWED_MASK_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/hallowed_armor", true)
+            .rarity(ModRarity.PINK));
+    public static final DeferredItem<BaseArmorItem> HALLOWED_HEADGEAR = register("hallowed_headgear", ModArmorMaterials.HALLOWED_HEADGEAR_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/hallowed_armor", true)
+            .rarity(ModRarity.PINK));
+    public static final DeferredItem<BaseArmorItem> HALLOWED_HOOD = register("hallowed_hood", ModArmorMaterials.HALLOWED_HOOD_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/hallowed_armor", true)
+            .rarity(ModRarity.PINK));
+    public static final DeferredItem<BaseArmorItem> HALLOWED_HELMET = register("hallowed_helmet", ModArmorMaterials.HALLOWED_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/hallowed_armor", true)
+            .rarity(ModRarity.PINK));
+    public static final DeferredItem<BaseArmorItem> HALLOWED_CHESTPLATE = register("hallowed_chestplate", ModArmorMaterials.HALLOWED_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/hallowed_armor", true)
+            .rarity(ModRarity.PINK));
+    public static final DeferredItem<BaseArmorItem> HALLOWED_LEGGINGS = register("hallowed_leggings", ModArmorMaterials.HALLOWED_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
+            .geo("armor/hallowed_armor", true)
+            .rarity(ModRarity.PINK));
+    public static final DeferredItem<BaseArmorItem> HALLOWED_BOOTS = register("hallowed_boots", ModArmorMaterials.HALLOWED_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
+            .geo("armor/hallowed_armor", true)
+            .rarity(ModRarity.PINK));
+
+    public static final DeferredItem<BaseArmorItem> WIZARD_HAT = register("wizard_hat", ModArmorMaterials.WIZARD_HAT_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/wizard_hat")
+            .rarity(ModRarity.GREEN)
+            .magicDamage(0.05)
+    );
+    public static final DeferredItem<BaseArmorItem> MAGIC_HAT = register("magic_hat", ModArmorMaterials.MAGIC_HAT_ARMOR_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/magic_hat")
+            .rarity(ModRarity.GREEN)
+            .magicDamage(0.06)
+            .criticalChance(0.06)
+    );
+    public static final DeferredItem<BaseArmorItem> AMETHYST_ROBE = register("amethyst_robe", ModArmorMaterials.AMETHYST_ROBE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/amethyst_robe")
+            .rarity(ModRarity.WHITE)
+            .additionalMana(20)
+            .armorBonus(PrimitiveValueComponent.of(AccessoryItems.MANA$USE$REDUCE, 0.05F))
+            .tooltips(2));
+    public static final DeferredItem<BaseArmorItem> TOPAZ_ROBE = register("topaz_robe", ModArmorMaterials.TOPAZ_ROBE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/topaz_robe")
+            .rarity(ModRarity.WHITE)
+            .additionalMana(40)
+            .armorBonus(PrimitiveValueComponent.of(AccessoryItems.MANA$USE$REDUCE, 0.07F))
+            .tooltips(2));
+    public static final DeferredItem<BaseArmorItem> SAPPHIRE_ROBE = register("sapphire_robe", ModArmorMaterials.SAPPHIRE_ROBE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/sapphire_robe")
+            .rarity(ModRarity.BLUE)
+            .additionalMana(40)
+            .armorBonus(PrimitiveValueComponent.of(AccessoryItems.MANA$USE$REDUCE, 0.09F))
+            .tooltips(2));
+    public static final DeferredItem<BaseArmorItem> JADE_ROBE = register("jade_robe", ModArmorMaterials.EMERALD_ROBE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/jade_robe")
+            .rarity(ModRarity.BLUE)
+            .additionalMana(60)
+            .armorBonus(PrimitiveValueComponent.of(AccessoryItems.MANA$USE$REDUCE, 0.11F))
+            .tooltips(2));
+    public static final DeferredItem<BaseArmorItem> RUBY_ROBE = register("ruby_robe", ModArmorMaterials.RUBY_ROBE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/ruby_robe")
+            .rarity(ModRarity.BLUE)
+            .additionalMana(60)
+            .armorBonus(PrimitiveValueComponent.of(AccessoryItems.MANA$USE$REDUCE, 0.13F))
+            .tooltips(2));
+    public static final DeferredItem<BaseArmorItem> MYSTIC_ROBE = register("mystic_robe", ModArmorMaterials.MYSTIC_ROBE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/mystic_robe")
+            .rarity(ModRarity.BLUE)
+            .magicDamage(0.06)
+            .criticalChance(0.06)
+            .armorBonus(PrimitiveValueComponent.of(AccessoryItems.MANA$USE$REDUCE, 0.1F))
+    );
+    public static final DeferredItem<BaseArmorItem> DIAMOND_ROBE = register("diamond_robe", ModArmorMaterials.DIAMOND_ROBE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/diamond_robe")
+            .rarity(ModRarity.GREEN)
+            .additionalMana(80)
+            .armorBonus(PrimitiveValueComponent.of(AccessoryItems.MANA$USE$REDUCE, 0.15F))
+            .tooltips(2));
+    public static final DeferredItem<BaseArmorItem> AMBER_ROBE = register("amber_robe", ModArmorMaterials.AMBER_ROBE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/amber_robe")
+            .rarity(ModRarity.GREEN)
+            .additionalMana(60)
+            .armorBonus(PrimitiveValueComponent.of(AccessoryItems.MANA$USE$REDUCE, 0.13F))
+            .tooltips(2));
+
+    public static final DeferredItem<BaseArmorItem> GOGGLES = register("goggles", ModArmorMaterials.GOGGLES_MATERIAL, ArmorItem.Type.HELMET, builder -> {
     });
-    public static final DeferredItem<NormalArmorItem> MINING_CHESTPLATE = registerNormalArmor("mining_chestplate", "mining_armor", ModRarity.PINK, ModArmorMaterials.MINING_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE);
-    public static final DeferredItem<NormalArmorItem> MINING_LEGGINGS = registerNormalArmor("mining_leggings", "mining_armor", ModRarity.PINK, ModArmorMaterials.MINING_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS);
-    public static final DeferredItem<NormalArmorItem> MINING_BOOTS = registerNormalArmor("mining_boots", "mining_armor", ModRarity.PINK, ModArmorMaterials.MINING_ARMOR_MATERIALS, ArmorItem.Type.BOOTS);
+    public static final DeferredItem<BaseArmorItem> GREEN_CAP = register("green_cap", ModArmorMaterials.GREEN_CAP_MATERIAL, ArmorItem.Type.HELMET, builder -> {
+    });
+    public static final DeferredItem<BaseArmorItem> VIKING_HELMET = register("viking_helmet", ModArmorMaterials.VIKING_ARMOR_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
+            .geo("armor/viking_armor")
+            .rarity(ModRarity.BLUE));
+    public static final DeferredItem<BaseArmorItem> FLINX_FUR_COAT = register("flinx_fur_coat", ModArmorMaterials.FLINX_FUR_COAT_MATERIAL, ArmorItem.Type.CHESTPLATE, builder -> builder
+            .geo("armor/flinx_fur_coat_armor")
+            .rarity(ModRarity.GREEN)
+            .summonDamage(0.05)
+            .attribute(TEAttributes.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE)
+    );
 
-    public static final DeferredItem<NormalArmorItem> PLANK_HELMET = registerNormalArmor("plank_helmet", "plank_armor", ModArmorMaterials.PLANK_ARMOR_MATERIALS, ArmorItem.Type.HELMET, 55);
-    public static final DeferredItem<NormalArmorItem> PLANK_CHESTPLATE = registerNormalArmor("plank_chestplate", "plank_armor", ModArmorMaterials.PLANK_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, 80);
-    public static final DeferredItem<NormalArmorItem> PLANK_LEGGINGS = registerNormalArmor("plank_leggings", "plank_armor", ModArmorMaterials.PLANK_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, 75);
-    public static final DeferredItem<NormalArmorItem> PLANK_BOOTS = registerNormalArmor("plank_boots", "plank_armor", ModArmorMaterials.PLANK_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, 65);
-
-    public static final DeferredItem<NormalArmorItem> EBONY_HELMET = registerNormalArmor("ebony_helmet", "ebony_armor", ModArmorMaterials.EBONY_ARMOR_MATERIALS, ArmorItem.Type.HELMET, 120);
-    public static final DeferredItem<NormalArmorItem> EBONY_CHESTPLATE = registerNormalArmor("ebony_chestplate", "ebony_armor", ModArmorMaterials.EBONY_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, 170);
-    public static final DeferredItem<NormalArmorItem> EBONY_LEGGINGS = registerNormalArmor("ebony_leggings", "ebony_armor", ModArmorMaterials.EBONY_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, 150);
-    public static final DeferredItem<NormalArmorItem> EBONY_BOOTS = registerNormalArmor("ebony_boots", "ebony_armor", ModArmorMaterials.EBONY_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, 130);
-
-    public static final DeferredItem<NormalArmorItem> SHADOW_PLANK_HELMET = registerNormalArmor("shadow_plank_helmet", "shadow_plank_armor", ModArmorMaterials.SHADOW_PLANK_ARMOR_MATERIALS, ArmorItem.Type.HELMET, 120);
-    public static final DeferredItem<NormalArmorItem> SHADOW_PLANK_CHESTPLATE = registerNormalArmor("shadow_plank_chestplate", "shadow_plank_armor", ModArmorMaterials.SHADOW_PLANK_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, 170);
-    public static final DeferredItem<NormalArmorItem> SHADOW_PLANK_LEGGINGS = registerNormalArmor("shadow_plank_leggings", "shadow_plank_armor", ModArmorMaterials.SHADOW_PLANK_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, 150);
-    public static final DeferredItem<NormalArmorItem> SHADOW_PLANK_BOOTS = registerNormalArmor("shadow_plank_boots", "shadow_plank_armor", ModArmorMaterials.SHADOW_PLANK_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, 130);
-
-    public static final DeferredItem<NormalArmorItem> ASH_HELMET = registerNormalArmor("ash_helmet", "ash_armor", ModArmorMaterials.ASH_ARMOR_MATERIALS, ArmorItem.Type.HELMET, 220);
-    public static final DeferredItem<NormalArmorItem> ASH_CHESTPLATE = registerNormalArmor("ash_chestplate", "ash_armor", ModArmorMaterials.ASH_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, 270);
-    public static final DeferredItem<NormalArmorItem> ASH_LEGGINGS = registerNormalArmor("ash_leggings", "ash_armor", ModArmorMaterials.ASH_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, 250);
-    public static final DeferredItem<NormalArmorItem> ASH_BOOTS = registerNormalArmor("ash_boots", "ash_armor", ModArmorMaterials.ASH_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, 230);
-
-    public static final DeferredItem<NormalArmorItem> RAIN_CAP = registerNormalArmor("rain_cap", "raincoat_armor", ModArmorMaterials.RAINCOAT_ARMOR_MATERIALS, ArmorItem.Type.HELMET);
-    public static final DeferredItem<NormalArmorItem> RAINCOAT = registerNormalArmor("raincoat", "raincoat_armor", ModArmorMaterials.RAINCOAT_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE);
-
-    public static final DeferredItem<NormalArmorItem> SNOW_CAPS = registerNormalArmor("snow_caps", "snow_armor", ModArmorMaterials.SNOW_ARMOR_MATERIALS, ArmorItem.Type.HELMET);
-    public static final DeferredItem<NormalArmorItem> SNOW_SUITS = registerNormalArmor("snow_suits", "snow_armor", ModArmorMaterials.SNOW_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE);
-    public static final DeferredItem<NormalArmorItem> INSULATED_PANTS = registerNormalArmor("insulated_pants", "snow_armor", ModArmorMaterials.SNOW_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS);
-    public static final DeferredItem<NormalArmorItem> INSULATED_SHOES = registerNormalArmor("insulated_shoes", "snow_armor", ModArmorMaterials.SNOW_ARMOR_MATERIALS, ArmorItem.Type.BOOTS);
-
-    public static final DeferredItem<NormalArmorItem> PINK_SNOW_CAPS = registerNormalArmor("pink_snow_caps", "snow_pink_armor", ModArmorMaterials.PINK_SNOW_ARMOR_MATERIALS, ArmorItem.Type.HELMET);
-    public static final DeferredItem<NormalArmorItem> PINK_SNOW_SUITS = registerNormalArmor("pink_snow_suits", "snow_pink_armor", ModArmorMaterials.PINK_SNOW_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE);
-    public static final DeferredItem<NormalArmorItem> PINK_INSULATED_PANTS = registerNormalArmor("pink_insulated_pants", "snow_pink_armor", ModArmorMaterials.PINK_SNOW_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS);
-    public static final DeferredItem<NormalArmorItem> PINK_INSULATED_SHOES = registerNormalArmor("pink_insulated_shoes", "snow_pink_armor", ModArmorMaterials.PINK_SNOW_ARMOR_MATERIALS, ArmorItem.Type.BOOTS);
-
-    public static final DeferredItem<NormalArmorItem> ANGLER_HAT = registerNormalArmor("angler_hat", "angler_armor", ModRarity.BLUE, ModArmorMaterials.ANGLER_ARMOR_MATERIALS, ArmorItem.Type.HELMET);
-    public static final DeferredItem<NormalArmorItem> ANGLER_VEST = registerNormalArmor("angler_vest", "angler_armor", ModRarity.BLUE, ModArmorMaterials.ANGLER_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE);
-    public static final DeferredItem<NormalArmorItem> ANGLER_PANTS = registerNormalArmor("angler_pants", "angler_armor", ModRarity.BLUE, ModArmorMaterials.ANGLER_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS);
-
-    public static final DeferredItem<NormalArmorItem> CACTUS_HELMET = registerNormalArmor("cactus_helmet", "cactus_armor", ModArmorMaterials.CACTUS_ARMOR_MATERIALS, ArmorItem.Type.HELMET, 120);
-    public static final DeferredItem<NormalArmorItem> CACTUS_CHESTPLATE = registerNormalArmor("cactus_chestplate", "cactus_armor", ModArmorMaterials.CACTUS_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, 170);
-    public static final DeferredItem<NormalArmorItem> CACTUS_LEGGINGS = registerNormalArmor("cactus_leggings", "cactus_armor", ModArmorMaterials.CACTUS_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, 150);
-    public static final DeferredItem<NormalArmorItem> CACTUS_BOOTS = registerNormalArmor("cactus_boots", "cactus_armor", ModArmorMaterials.CACTUS_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, 130);
-
-    public static final DeferredItem<NormalArmorItem> COPPER_HELMET = registerNormalArmor("copper_helmet", "copper_armor", ModArmorMaterials.COPPER_ARMOR_MATERIALS, ArmorItem.Type.HELMET, 120);
-    public static final DeferredItem<NormalArmorItem> COPPER_CHESTPLATE = registerNormalArmor("copper_chestplate", "copper_armor", ModArmorMaterials.COPPER_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, 170);
-    public static final DeferredItem<NormalArmorItem> COPPER_LEGGINGS = registerNormalArmor("copper_leggings", "copper_armor", ModArmorMaterials.COPPER_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, 150);
-    public static final DeferredItem<NormalArmorItem> COPPER_BOOTS = registerNormalArmor("copper_boots", "copper_armor", ModArmorMaterials.COPPER_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, 130);
-
-    public static final DeferredItem<NormalArmorItem> TIN_HELMET = registerNormalArmor("tin_helmet", "tin_armor", ModArmorMaterials.TIN_ARMOR_MATERIALS, ArmorItem.Type.HELMET, 150);
-    public static final DeferredItem<NormalArmorItem> TIN_CHESTPLATE = registerNormalArmor("tin_chestplate", "tin_armor", ModArmorMaterials.TIN_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, 190);
-    public static final DeferredItem<NormalArmorItem> TIN_LEGGINGS = registerNormalArmor("tin_leggings", "tin_armor", ModArmorMaterials.TIN_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, 170);
-    public static final DeferredItem<NormalArmorItem> TIN_BOOTS = registerNormalArmor("tin_boots", "tin_armor", ModArmorMaterials.TIN_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, 150);
-
-    public static final DeferredItem<NormalArmorItem> PUMPKIN_HELMET = registerNormalArmor("pumpkin_helmet", "pumpkin_armor", ModArmorMaterials.PUMPKIN_ARMOR_MATERIALS, ArmorItem.Type.HELMET);
-    public static final DeferredItem<NormalArmorItem> PUMPKIN_CHESTPLATE = registerNormalArmor("pumpkin_chestplate", "pumpkin_armor", ModArmorMaterials.PUMPKIN_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE);
-    public static final DeferredItem<NormalArmorItem> PUMPKIN_LEGGINGS = registerNormalArmor("pumpkin_leggings", "pumpkin_armor", ModArmorMaterials.PUMPKIN_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS);
-    public static final DeferredItem<NormalArmorItem> PUMPKIN_BOOTS = registerNormalArmor("pumpkin_boots", "pumpkin_armor", ModArmorMaterials.PUMPKIN_ARMOR_MATERIALS, ArmorItem.Type.BOOTS);
-
-    public static final DeferredItem<NormalArmorItem> NINJA_HELMET = registerNormalArmor("ninja_helmet", "ninja_armor", ModRarity.BLUE, ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.HELMET);
-    public static final DeferredItem<NormalArmorItem> NINJA_CHESTPLATE = registerNormalArmor("ninja_chestplate", "ninja_armor", ModRarity.BLUE, ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE);
-    public static final DeferredItem<NormalArmorItem> NINJA_LEGGINGS = registerNormalArmor("ninja_leggings", "ninja_armor", ModRarity.BLUE, ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS);
-    public static final DeferredItem<NormalArmorItem> NINJA_BOOTS = registerNormalArmor("ninja_boots", "ninja_armor", ModRarity.BLUE, ModArmorMaterials.NINJA_ARMOR_MATERIALS, ArmorItem.Type.BOOTS);
-
-    public static final DeferredItem<NormalArmorItem> LEAD_HELMET = registerNormalArmor("lead_helmet", "lead_armor", ModArmorMaterials.LEAD_ARMOR_MATERIALS, ArmorItem.Type.HELMET, 170);
-    public static final DeferredItem<NormalArmorItem> LEAD_CHESTPLATE = registerNormalArmor("lead_chestplate", "lead_armor", ModArmorMaterials.LEAD_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, 250);
-    public static final DeferredItem<NormalArmorItem> LEAD_LEGGINGS = registerNormalArmor("lead_leggings", "lead_armor", ModArmorMaterials.LEAD_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, 230);
-    public static final DeferredItem<NormalArmorItem> LEAD_BOOTS = registerNormalArmor("lead_boots", "lead_armor", ModArmorMaterials.LEAD_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, 160);
-
-    public static final DeferredItem<NormalArmorItem> SILVER_HELMET = registerNormalArmor("silver_helmet", "silver_armor", ModArmorMaterials.SILVER_ARMOR_MATERIALS, ArmorItem.Type.HELMET, 190);
-    public static final DeferredItem<NormalArmorItem> SILVER_CHESTPLATE = registerNormalArmor("silver_chestplate", "silver_armor", ModArmorMaterials.SILVER_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, 270);
-    public static final DeferredItem<NormalArmorItem> SILVER_LEGGINGS = registerNormalArmor("silver_leggings", "silver_armor", ModArmorMaterials.SILVER_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, 250);
-    public static final DeferredItem<NormalArmorItem> SILVER_BOOTS = registerNormalArmor("silver_boots", "silver_armor", ModArmorMaterials.SILVER_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, 180);
-
-    public static final DeferredItem<NormalArmorItem> TUNGSTEN_HELMET = registerNormalArmor("tungsten_helmet", "tungsten_armor", ModArmorMaterials.TUNGSTEN_ARMOR_MATERIALS, ArmorItem.Type.HELMET, 210);
-    public static final DeferredItem<NormalArmorItem> TUNGSTEN_CHESTPLATE = registerNormalArmor("tungsten_chestplate", "tungsten_armor", ModArmorMaterials.TUNGSTEN_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, 290);
-    public static final DeferredItem<NormalArmorItem> TUNGSTEN_LEGGINGS = registerNormalArmor("tungsten_leggings", "tungsten_armor", ModArmorMaterials.TUNGSTEN_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, 270);
-    public static final DeferredItem<NormalArmorItem> TUNGSTEN_BOOTS = registerNormalArmor("tungsten_boots", "tungsten_armor", ModArmorMaterials.TUNGSTEN_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, 200);
-
-    public static final DeferredItem<NormalArmorItem> GOLDEN_HELMET = registerNormalArmor("golden_helmet", "golden_armor", ModArmorMaterials.GOLDEN_ARMOR_MATERIALS, ArmorItem.Type.HELMET, 250);
-    public static final DeferredItem<NormalArmorItem> GOLDEN_CHESTPLATE = registerNormalArmor("golden_chestplate", "golden_armor", ModArmorMaterials.GOLDEN_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, 340);
-    public static final DeferredItem<NormalArmorItem> GOLDEN_LEGGINGS = registerNormalArmor("golden_leggings", "golden_armor", ModArmorMaterials.GOLDEN_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, 320);
-    public static final DeferredItem<NormalArmorItem> GOLDEN_BOOTS = registerNormalArmor("golden_boots", "golden_armor", ModArmorMaterials.GOLDEN_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, 260);
-
-    public static final DeferredItem<NormalArmorItem> PLATINUM_HELMET = registerNormalArmor("platinum_helmet", "platinum_armor", ModArmorMaterials.PLATINUM_ARMOR_MATERIALS, ArmorItem.Type.HELMET, 250);
-    public static final DeferredItem<NormalArmorItem> PLATINUM_CHESTPLATE = registerNormalArmor("platinum_chestplate", "platinum_armor", ModArmorMaterials.PLATINUM_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, 340);
-    public static final DeferredItem<NormalArmorItem> PLATINUM_LEGGINGS = registerNormalArmor("platinum_leggings", "platinum_armor", ModArmorMaterials.PLATINUM_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, 320);
-    public static final DeferredItem<NormalArmorItem> PLATINUM_BOOTS = registerNormalArmor("platinum_boots", "platinum_armor", ModArmorMaterials.PLATINUM_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, 260);
-
-    public static final DeferredItem<NormalArmorItem> FOSSIL_HELMET = registerNormalArmor("fossil_helmet", "fossil_armor", ModRarity.BLUE, ModArmorMaterials.FOSSIL_ARMOR_MATERIALS, ArmorItem.Type.HELMET);
-    public static final DeferredItem<NormalArmorItem> FOSSIL_CHESTPLATE = registerNormalArmor("fossil_chestplate", "fossil_armor", ModRarity.BLUE, ModArmorMaterials.FOSSIL_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE);
-    public static final DeferredItem<NormalArmorItem> FOSSIL_LEGGINGS = registerNormalArmor("fossil_leggings", "fossil_armor", ModRarity.BLUE, ModArmorMaterials.FOSSIL_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS);
-    public static final DeferredItem<NormalArmorItem> FOSSIL_BOOTS = registerNormalArmor("fossil_boots", "fossil_armor", ModRarity.BLUE, ModArmorMaterials.FOSSIL_ARMOR_MATERIALS, ArmorItem.Type.BOOTS);
-
-    public static final DeferredItem<NormalArmorItem> SPORE_ROOT_HELMET = registerNormalArmor("spore_root_helmet", "spore_root_armor", ModRarity.BLUE, ModArmorMaterials.SPORE_ROOT_ARMOR_MATERIALS, ArmorItem.Type.HELMET);
-    public static final DeferredItem<NormalArmorItem> SPORE_ROOT_CHESTPLATE = registerNormalArmor("spore_root_chestplate", "spore_root_armor", ModRarity.BLUE, ModArmorMaterials.SPORE_ROOT_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE);
-    public static final DeferredItem<NormalArmorItem> SPORE_ROOT_LEGGINGS = registerNormalArmor("spore_root_leggings", "spore_root_armor", ModRarity.BLUE, ModArmorMaterials.SPORE_ROOT_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS);
-    public static final DeferredItem<NormalArmorItem> SPORE_ROOT_BOOTS = registerNormalArmor("spore_root_boots", "spore_root_armor", ModRarity.BLUE, ModArmorMaterials.SPORE_ROOT_ARMOR_MATERIALS, ArmorItem.Type.BOOTS);
-
-    public static final DeferredItem<NormalArmorItem> COLD_CRYSTAL_HELMET = registerNormalArmor("cold_crystal_helmet", "cold_crystal_armor", ModRarity.BLUE, ModArmorMaterials.COLD_CRYSTAL_ARMOR_MATERIALS, ArmorItem.Type.HELMET);
-    public static final DeferredItem<NormalArmorItem> COLD_CRYSTAL_CHESTPLATE = registerNormalArmor("cold_crystal_chestplate", "cold_crystal_armor", ModRarity.BLUE, ModArmorMaterials.COLD_CRYSTAL_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE);
-    public static final DeferredItem<NormalArmorItem> COLD_CRYSTAL_LEGGINGS = registerNormalArmor("cold_crystal_leggings", "cold_crystal_armor", ModRarity.BLUE, ModArmorMaterials.COLD_CRYSTAL_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS);
-    public static final DeferredItem<NormalArmorItem> COLD_CRYSTAL_BOOTS = registerNormalArmor("cold_crystal_boots", "cold_crystal_armor", ModRarity.BLUE, ModArmorMaterials.COLD_CRYSTAL_ARMOR_MATERIALS, ArmorItem.Type.BOOTS);
-
-    public static final DeferredItem<NormalArmorItem> HEIM_HELMET = registerNormalArmor("heim_helmet", "heim_armor", ModRarity.BLUE, ModArmorMaterials.HEIM_ARMOR_MATERIALS, ArmorItem.Type.HELMET);
-    public static final DeferredItem<NormalArmorItem> HEIM_CHESTPLATE = registerNormalArmor("heim_chestplate", "heim_armor", ModRarity.BLUE, ModArmorMaterials.HEIM_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE);
-    public static final DeferredItem<NormalArmorItem> HEIM_LEGGINGS = registerNormalArmor("heim_leggings", "heim_armor", ModRarity.BLUE, ModArmorMaterials.HEIM_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS);
-    public static final DeferredItem<NormalArmorItem> HEIM_BOOTS = registerNormalArmor("heim_boots", "heim_armor", ModRarity.BLUE, ModArmorMaterials.HEIM_ARMOR_MATERIALS, ArmorItem.Type.BOOTS);
-
-    public static final DeferredItem<NormalArmorItem> BEE_HELMET = registerNormalArmor("bee_helmet", "bee_armor", ModRarity.ORANGE, ModArmorMaterials.BEE_ARMOR_MATERIALS, ArmorItem.Type.HELMET);
-    public static final DeferredItem<NormalArmorItem> BEE_CHESTPLATE = registerNormalArmor("bee_chestplate", "bee_armor", ModRarity.ORANGE, ModArmorMaterials.BEE_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE);
-    public static final DeferredItem<NormalArmorItem> BEE_LEGGINGS = registerNormalArmor("bee_leggings", "bee_armor", ModRarity.ORANGE, ModArmorMaterials.BEE_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS);
-    public static final DeferredItem<NormalArmorItem> BEE_BOOTS = registerNormalArmor("bee_boots", "bee_armor", ModRarity.ORANGE, ModArmorMaterials.BEE_ARMOR_MATERIALS, ArmorItem.Type.BOOTS);
-
-    public static final DeferredItem<NormalArmorItem> OBSIDIAN_HELMET = registerNormalArmor("obsidian_helmet", "obsidian_armor", ModRarity.BLUE, ModArmorMaterials.OBSIDIAN_ARMOR_MATERIALS, ArmorItem.Type.HELMET);
-    public static final DeferredItem<NormalArmorItem> OBSIDIAN_CHESTPLATE = registerNormalArmor("obsidian_chestplate", "obsidian_armor", ModRarity.BLUE, ModArmorMaterials.OBSIDIAN_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE);
-    public static final DeferredItem<NormalArmorItem> OBSIDIAN_LEGGINGS = registerNormalArmor("obsidian_leggings", "obsidian_armor", ModRarity.BLUE, ModArmorMaterials.OBSIDIAN_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS);
-    public static final DeferredItem<NormalArmorItem> OBSIDIAN_BOOTS = registerNormalArmor("obsidian_boots", "obsidian_armor", ModRarity.BLUE, ModArmorMaterials.OBSIDIAN_ARMOR_MATERIALS, ArmorItem.Type.BOOTS);
-
-    public static final DeferredItem<NormalArmorItem> GLADIATOR_HELMET = registerNormalArmor("gladiator_helmet", "gladiator_armor", ModArmorMaterials.GLADIATOR_ARMOR_MATERIALS, ArmorItem.Type.HELMET);
-    public static final DeferredItem<NormalArmorItem> GLADIATOR_CHESTPLATE = registerNormalArmor("gladiator_chestplate", "gladiator_armor", ModArmorMaterials.GLADIATOR_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE);
-    public static final DeferredItem<NormalArmorItem> GLADIATOR_LEGGINGS = registerNormalArmor("gladiator_leggings", "gladiator_armor", ModArmorMaterials.GLADIATOR_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS);
-    public static final DeferredItem<NormalArmorItem> GLADIATOR_BOOTS = registerNormalArmor("gladiator_boots", "gladiator_armor", ModArmorMaterials.GLADIATOR_ARMOR_MATERIALS, ArmorItem.Type.BOOTS);
-
-    public static final DeferredItem<NormalArmorItem> METEOR_HELMET = registerNormalArmor("meteor_helmet", "meteor_armor", ModRarity.BLUE, ModArmorMaterials.METEOR_ARMOR_MATERIALS, ArmorItem.Type.HELMET);
-    public static final DeferredItem<NormalArmorItem> METEOR_CHESTPLATE = registerNormalArmor("meteor_chestplate", "meteor_armor", ModRarity.BLUE, ModArmorMaterials.METEOR_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE);
-    public static final DeferredItem<NormalArmorItem> METEOR_LEGGINGS = registerNormalArmor("meteor_leggings", "meteor_armor", ModRarity.BLUE, ModArmorMaterials.METEOR_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS);
-    public static final DeferredItem<NormalArmorItem> METEOR_BOOTS = registerNormalArmor("meteor_boots", "meteor_armor", ModRarity.BLUE, ModArmorMaterials.METEOR_ARMOR_MATERIALS, ArmorItem.Type.BOOTS);
-
-    public static final DeferredItem<NormalArmorItem> JUNGLE_HELMET = registerNormalArmor("jungle_helmet", "jungle_armor", ModRarity.ORANGE, ModArmorMaterials.JUNGLE_ARMOR_MATERIALS, ArmorItem.Type.HELMET);
-    public static final DeferredItem<NormalArmorItem> JUNGLE_CHESTPLATE = registerNormalArmor("jungle_chestplate", "jungle_armor", ModRarity.ORANGE, ModArmorMaterials.JUNGLE_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE);
-    public static final DeferredItem<NormalArmorItem> JUNGLE_LEGGINGS = registerNormalArmor("jungle_leggings", "jungle_armor", ModRarity.ORANGE, ModArmorMaterials.JUNGLE_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS);
-    public static final DeferredItem<NormalArmorItem> JUNGLE_BOOTS = registerNormalArmor("jungle_boots", "jungle_armor", ModRarity.ORANGE, ModArmorMaterials.JUNGLE_ARMOR_MATERIALS, ArmorItem.Type.BOOTS);
-
-    public static final DeferredItem<NormalArmorItem> NECRO_HELMET = registerNormalArmor("necro_helmet", "necro_armor", ModRarity.GREEN, ModArmorMaterials.NECRO_ARMOR_MATERIALS, ArmorItem.Type.HELMET);
-    public static final DeferredItem<NormalArmorItem> NECRO_CHESTPLATE = registerNormalArmor("necro_chestplate", "necro_armor", ModRarity.GREEN, ModArmorMaterials.NECRO_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE);
-    public static final DeferredItem<NormalArmorItem> NECRO_LEGGINGS = registerNormalArmor("necro_leggings", "necro_armor", ModRarity.GREEN, ModArmorMaterials.NECRO_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS);
-    public static final DeferredItem<NormalArmorItem> NECRO_BOOTS = registerNormalArmor("necro_boots", "necro_armor", ModRarity.GREEN, ModArmorMaterials.NECRO_ARMOR_MATERIALS, ArmorItem.Type.BOOTS);
-
-    public static final DeferredItem<NormalArmorItem> SHADOW_HELMET = registerNormalArmor("shadow_helmet", "shadow_armor", ModRarity.BLUE, ModArmorMaterials.SHADOW_ARMOR_MATERIALS, ArmorItem.Type.HELMET);
-    public static final DeferredItem<NormalArmorItem> SHADOW_CHESTPLATE = registerNormalArmor("shadow_chestplate", "shadow_armor", ModRarity.BLUE, ModArmorMaterials.SHADOW_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE);
-    public static final DeferredItem<NormalArmorItem> SHADOW_LEGGINGS = registerNormalArmor("shadow_leggings", "shadow_armor", ModRarity.BLUE, ModArmorMaterials.SHADOW_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS);
-    public static final DeferredItem<NormalArmorItem> SHADOW_BOOTS = registerNormalArmor("shadow_boots", "shadow_armor", ModRarity.BLUE, ModArmorMaterials.SHADOW_ARMOR_MATERIALS, ArmorItem.Type.BOOTS);
-
-    public static final DeferredItem<NormalArmorItem> CRIMSON_HELMET = registerNormalArmor("crimson_helmet", "crimson_armor", ModRarity.BLUE, ModArmorMaterials.CRIMSON_ARMOR_MATERIALS, ArmorItem.Type.HELMET);
-    public static final DeferredItem<NormalArmorItem> CRIMSON_CHESTPLATE = registerNormalArmor("crimson_chestplate", "crimson_armor", ModRarity.BLUE, ModArmorMaterials.CRIMSON_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE);
-    public static final DeferredItem<NormalArmorItem> CRIMSON_LEGGINGS = registerNormalArmor("crimson_leggings", "crimson_armor", ModRarity.BLUE, ModArmorMaterials.CRIMSON_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS);
-    public static final DeferredItem<NormalArmorItem> CRIMSON_BOOTS = registerNormalArmor("crimson_boots", "crimson_armor", ModRarity.BLUE, ModArmorMaterials.CRIMSON_ARMOR_MATERIALS, ArmorItem.Type.BOOTS);
-
-    public static final DeferredItem<NormalArmorItem> MOLTEN_HELMET = registerNormalArmor("molten_helmet", "molten_armor", ModRarity.ORANGE, ModArmorMaterials.MOLTEN_ARMOR_MATERIALS, ArmorItem.Type.HELMET);
-    public static final DeferredItem<NormalArmorItem> MOLTEN_CHESTPLATE = registerNormalArmor("molten_chestplate", "molten_armor", ModRarity.ORANGE, ModArmorMaterials.MOLTEN_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE);
-    public static final DeferredItem<NormalArmorItem> MOLTEN_LEGGINGS = registerNormalArmor("molten_leggings", "molten_armor", ModRarity.ORANGE, ModArmorMaterials.MOLTEN_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS);
-    public static final DeferredItem<NormalArmorItem> MOLTEN_BOOTS = registerNormalArmor("molten_boots", "molten_armor", ModRarity.ORANGE, ModArmorMaterials.MOLTEN_ARMOR_MATERIALS, ArmorItem.Type.BOOTS);
-
-    public static final DeferredItem<NormalArmorItem> PEARL_HELMET = registerNormalArmor("pearl_helmet", "pearl_armor", ModArmorMaterials.PEARL_ARMOR_MATERIALS, ArmorItem.Type.HELMET, 120);
-    public static final DeferredItem<NormalArmorItem> PEARL_CHESTPLATE = registerNormalArmor("pearl_chestplate", "pearl_armor", ModArmorMaterials.PEARL_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, 170);
-    public static final DeferredItem<NormalArmorItem> PEARL_LEGGINGS = registerNormalArmor("pearl_leggings", "pearl_armor", ModArmorMaterials.PEARL_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, 150);
-    public static final DeferredItem<NormalArmorItem> PEARL_BOOTS = registerNormalArmor("pearl_boots", "pearl_armor", ModArmorMaterials.PEARL_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, 130);
-
-    public static final DeferredItem<NormalArmorItem> SPIDER_HELMET = registerNormalArmor("spider_helmet", "spider_armor", ModRarity.LIGHT_RED, ModArmorMaterials.SPIDER_ARMOR_MATERIALS, ArmorItem.Type.HELMET);
-    public static final DeferredItem<NormalArmorItem> SPIDER_CHESTPLATE = registerNormalArmor("spider_chestplate", "spider_armor", ModRarity.LIGHT_RED, ModArmorMaterials.SPIDER_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE);
-    public static final DeferredItem<NormalArmorItem> SPIDER_LEGGINGS = registerNormalArmor("spider_leggings", "spider_armor", ModRarity.LIGHT_RED, ModArmorMaterials.SPIDER_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS);
-    public static final DeferredItem<NormalArmorItem> SPIDER_BOOTS = registerNormalArmor("spider_boots", "spider_armor", ModRarity.LIGHT_RED, ModArmorMaterials.SPIDER_ARMOR_MATERIALS, ArmorItem.Type.BOOTS);
-
-    public static final DeferredItem<MultiHeadArmorItem> COBALT_MASK = registerMultiHeadArmor("cobalt_mask", "cobalt_armor", ModRarity.LIGHT_RED, ModArmorMaterials.COBALT_MASK_MATERIAL, ArmorItem.Type.HELMET);
-    public static final DeferredItem<MultiHeadArmorItem> COBALT_HAT = registerMultiHeadArmor("cobalt_hat", "cobalt_armor", ModRarity.LIGHT_RED, ModArmorMaterials.COBALT_HAT_MATERIAL, ArmorItem.Type.HELMET);
-    public static final DeferredItem<MultiHeadArmorItem> COBALT_HELMET = registerMultiHeadArmor("cobalt_helmet", "cobalt_armor", ModRarity.LIGHT_RED, ModArmorMaterials.COBALT_ARMOR_MATERIALS, ArmorItem.Type.HELMET);
-    public static final DeferredItem<MultiHeadArmorItem> COBALT_CHESTPLATE = registerMultiHeadArmor("cobalt_chestplate", "cobalt_armor", ModRarity.LIGHT_RED, ModArmorMaterials.COBALT_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE);
-    public static final DeferredItem<MultiHeadArmorItem> COBALT_LEGGINGS = registerMultiHeadArmor("cobalt_leggings", "cobalt_armor", ModRarity.LIGHT_RED, ModArmorMaterials.COBALT_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS);
-    public static final DeferredItem<MultiHeadArmorItem> COBALT_BOOTS = registerMultiHeadArmor("cobalt_boots", "cobalt_armor", ModRarity.LIGHT_RED, ModArmorMaterials.COBALT_ARMOR_MATERIALS, ArmorItem.Type.BOOTS);
-
-    public static final DeferredItem<MultiHeadArmorItem> PALLADIUM_MASK = registerMultiHeadArmor("palladium_mask", "palladium_armor", ModRarity.PINK, ModArmorMaterials.PALLADIUM_MASK_MATERIAL, ArmorItem.Type.HELMET);
-    public static final DeferredItem<MultiHeadArmorItem> PALLADIUM_HEADGEAR = registerMultiHeadArmor("palladium_headgear", "palladium_armor", ModRarity.PINK, ModArmorMaterials.PALLADIUM_HEADGEAR_MATERIAL, ArmorItem.Type.HELMET);
-    public static final DeferredItem<MultiHeadArmorItem> PALLADIUM_HELMET = registerMultiHeadArmor("palladium_helmet", "palladium_armor", ModRarity.PINK, ModArmorMaterials.PALLADIUM_ARMOR_MATERIALS, ArmorItem.Type.HELMET);
-    public static final DeferredItem<MultiHeadArmorItem> PALLADIUM_CHESTPLATE = registerMultiHeadArmor("palladium_chestplate", "palladium_armor", ModRarity.PINK, ModArmorMaterials.PALLADIUM_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE);
-    public static final DeferredItem<MultiHeadArmorItem> PALLADIUM_LEGGINGS = registerMultiHeadArmor("palladium_leggings", "palladium_armor", ModRarity.PINK, ModArmorMaterials.PALLADIUM_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS);
-    public static final DeferredItem<MultiHeadArmorItem> PALLADIUM_BOOTS = registerMultiHeadArmor("palladium_boots", "palladium_armor", ModRarity.PINK, ModArmorMaterials.PALLADIUM_ARMOR_MATERIALS, ArmorItem.Type.BOOTS);
-
-    public static final DeferredItem<MultiHeadArmorItem> MYTHRIL_HOOD = registerMultiHeadArmor("mythril_hood", "mythril_armor", ModRarity.LIGHT_RED, ModArmorMaterials.MYTHRIL_HOOD_MATERIAL, ArmorItem.Type.HELMET);
-    public static final DeferredItem<MultiHeadArmorItem> MYTHRIL_HAT = registerMultiHeadArmor("mythril_hat", "mythril_armor", ModRarity.LIGHT_RED, ModArmorMaterials.MYTHRIL_HAT_MATERIAL, ArmorItem.Type.HELMET);
-    public static final DeferredItem<MultiHeadArmorItem> MYTHRIL_HELMET = registerMultiHeadArmor("mythril_helmet", "mythril_armor", ModRarity.LIGHT_RED, ModArmorMaterials.MYTHRIL_ARMOR_MATERIALS, ArmorItem.Type.HELMET);
-    public static final DeferredItem<MultiHeadArmorItem> MYTHRIL_CHESTPLATE = registerMultiHeadArmor("mythril_chestplate", "mythril_armor", ModRarity.LIGHT_RED, ModArmorMaterials.MYTHRIL_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE);
-    public static final DeferredItem<MultiHeadArmorItem> MYTHRIL_LEGGINGS = registerMultiHeadArmor("mythril_leggings", "mythril_armor", ModRarity.LIGHT_RED, ModArmorMaterials.MYTHRIL_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS);
-    public static final DeferredItem<MultiHeadArmorItem> MYTHRIL_BOOTS = registerMultiHeadArmor("mythril_boots", "mythril_armor", ModRarity.LIGHT_RED, ModArmorMaterials.MYTHRIL_ARMOR_MATERIALS, ArmorItem.Type.BOOTS);
-
-    public static final DeferredItem<MultiHeadArmorItem> ORICHALCUM_HEADGEAR = registerMultiHeadArmor("orichalcum_headgear", "orichalcum_armor", ModRarity.LIGHT_RED, ModArmorMaterials.ORICHALCUM_HEADGEAR_MATERIAL, ArmorItem.Type.HELMET);
-    public static final DeferredItem<MultiHeadArmorItem> ORICHALCUM_MASK = registerMultiHeadArmor("orichalcum_mask", "orichalcum_armor", ModRarity.LIGHT_RED, ModArmorMaterials.ORICHALCUM_MASK_MATERIAL, ArmorItem.Type.HELMET);
-    public static final DeferredItem<MultiHeadArmorItem> ORICHALCUM_HELMET = registerMultiHeadArmor("orichalcum_helmet", "orichalcum_armor", ModRarity.LIGHT_RED, ModArmorMaterials.ORICHALCUM_ARMOR_MATERIALS, ArmorItem.Type.HELMET);
-    public static final DeferredItem<MultiHeadArmorItem> ORICHALCUM_CHESTPLATE = registerMultiHeadArmor("orichalcum_chestplate", "orichalcum_armor", ModRarity.LIGHT_RED, ModArmorMaterials.ORICHALCUM_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE);
-    public static final DeferredItem<MultiHeadArmorItem> ORICHALCUM_LEGGINGS = registerMultiHeadArmor("orichalcum_leggings", "orichalcum_armor", ModRarity.LIGHT_RED, ModArmorMaterials.ORICHALCUM_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS);
-    public static final DeferredItem<MultiHeadArmorItem> ORICHALCUM_BOOTS = registerMultiHeadArmor("orichalcum_boots", "orichalcum_armor", ModRarity.LIGHT_RED, ModArmorMaterials.ORICHALCUM_ARMOR_MATERIALS, ArmorItem.Type.BOOTS);
-
-    public static final DeferredItem<MultiHeadArmorItem> ADAMANTITE_HEADGEAR = registerMultiHeadArmor("adamantite_headgear", "adamantite_armor", ModRarity.LIGHT_RED, ModArmorMaterials.ADAMANTITE_HEADGEAR_MATERIAL, ArmorItem.Type.HELMET);
-    public static final DeferredItem<MultiHeadArmorItem> ADAMANTITE_MASK = registerMultiHeadArmor("adamantite_mask", "adamantite_armor", ModRarity.LIGHT_RED, ModArmorMaterials.ADAMANTITE_MASK_MATERIAL, ArmorItem.Type.HELMET);
-    public static final DeferredItem<MultiHeadArmorItem> ADAMANTITE_HELMET = registerMultiHeadArmor("adamantite_helmet", "adamantite_armor", ModRarity.LIGHT_RED, ModArmorMaterials.ADAMANTITE_ARMOR_MATERIALS, ArmorItem.Type.HELMET);
-    public static final DeferredItem<MultiHeadArmorItem> ADAMANTITE_CHESTPLATE = registerMultiHeadArmor("adamantite_chestplate", "adamantite_armor", ModRarity.LIGHT_RED, ModArmorMaterials.ADAMANTITE_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE);
-    public static final DeferredItem<MultiHeadArmorItem> ADAMANTITE_LEGGINGS = registerMultiHeadArmor("adamantite_leggings", "adamantite_armor", ModRarity.LIGHT_RED, ModArmorMaterials.ADAMANTITE_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS);
-    public static final DeferredItem<MultiHeadArmorItem> ADAMANTITE_BOOTS = registerMultiHeadArmor("adamantite_boots", "adamantite_armor", ModRarity.LIGHT_RED, ModArmorMaterials.ADAMANTITE_ARMOR_MATERIALS, ArmorItem.Type.BOOTS);
-
-    public static final DeferredItem<MultiHeadArmorItem> TITANIUM_HEADGEAR = registerMultiHeadArmor("titanium_headgear", "titanium_armor", ModRarity.LIGHT_RED, ModArmorMaterials.TITANIUM_HEADGEAR_MATERIAL, ArmorItem.Type.HELMET);
-    public static final DeferredItem<MultiHeadArmorItem> TITANIUM_MASK = registerMultiHeadArmor("titanium_mask", "titanium_armor", ModRarity.LIGHT_RED, ModArmorMaterials.TITANIUM_MASK_MATERIAL, ArmorItem.Type.HELMET);
-    public static final DeferredItem<MultiHeadArmorItem> TITANIUM_HELMET = registerMultiHeadArmor("titanium_helmet", "titanium_armor", ModRarity.LIGHT_RED, ModArmorMaterials.TITANIUM_ARMOR_MATERIALS, ArmorItem.Type.HELMET);
-    public static final DeferredItem<MultiHeadArmorItem> TITANIUM_CHESTPLATE = registerMultiHeadArmor("titanium_chestplate", "titanium_armor", ModRarity.LIGHT_RED, ModArmorMaterials.TITANIUM_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE);
-    public static final DeferredItem<MultiHeadArmorItem> TITANIUM_LEGGINGS = registerMultiHeadArmor("titanium_leggings", "titanium_armor", ModRarity.LIGHT_RED, ModArmorMaterials.TITANIUM_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS);
-    public static final DeferredItem<MultiHeadArmorItem> TITANIUM_BOOTS = registerMultiHeadArmor("titanium_boots", "titanium_armor", ModRarity.LIGHT_RED, ModArmorMaterials.TITANIUM_ARMOR_MATERIALS, ArmorItem.Type.BOOTS);
-
-    public static final DeferredItem<NormalArmorItem> CRYSTAL_ASSASSIN_HELMET = registerNormalArmor("crystal_assassin_helmet", "crystal_assassin_armor", ModRarity.PINK, ModArmorMaterials.CRYSTAL_ASSASSIN_ARMOR_MATERIALS, ArmorItem.Type.HELMET);
-    public static final DeferredItem<NormalArmorItem> CRYSTAL_ASSASSIN_CHESTPLATE = registerNormalArmor("crystal_assassin_chestplate", "crystal_assassin_armor", ModRarity.PINK, ModArmorMaterials.CRYSTAL_ASSASSIN_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE);
-    public static final DeferredItem<NormalArmorItem> CRYSTAL_ASSASSIN_LEGGINGS = registerNormalArmor("crystal_assassin_leggings", "crystal_assassin_armor", ModRarity.PINK, ModArmorMaterials.CRYSTAL_ASSASSIN_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS);
-    public static final DeferredItem<NormalArmorItem> CRYSTAL_ASSASSIN_BOOTS = registerNormalArmor("crystal_assassin_boots", "crystal_assassin_armor", ModRarity.PINK, ModArmorMaterials.CRYSTAL_ASSASSIN_ARMOR_MATERIALS, ArmorItem.Type.BOOTS);
-
-    public static final DeferredItem<MultiHeadArmorItem> HALLOWED_MASK = registerMultiHeadArmor("hallowed_mask", "hallowed_armor", ModRarity.PINK, ModArmorMaterials.HALLOWED_MASK_MATERIAL, ArmorItem.Type.HELMET);
-    public static final DeferredItem<MultiHeadArmorItem> HALLOWED_HEADGEAR = registerMultiHeadArmor("hallowed_headgear", "hallowed_armor", ModRarity.PINK, ModArmorMaterials.HALLOWED_HEADGEAR_MATERIAL, ArmorItem.Type.HELMET);
-    public static final DeferredItem<MultiHeadArmorItem> HALLOWED_HOOD = registerMultiHeadArmor("hallowed_hood", "hallowed_armor", ModRarity.PINK, ModArmorMaterials.HALLOWED_HOOD_MATERIAL, ArmorItem.Type.HELMET);
-    public static final DeferredItem<MultiHeadArmorItem> HALLOWED_HELMET = registerMultiHeadArmor("hallowed_helmet", "hallowed_armor", ModRarity.PINK, ModArmorMaterials.HALLOWED_ARMOR_MATERIALS, ArmorItem.Type.HELMET);
-    public static final DeferredItem<MultiHeadArmorItem> HALLOWED_CHESTPLATE = registerMultiHeadArmor("hallowed_chestplate", "hallowed_armor", ModRarity.PINK, ModArmorMaterials.HALLOWED_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE);
-    public static final DeferredItem<MultiHeadArmorItem> HALLOWED_LEGGINGS = registerMultiHeadArmor("hallowed_leggings", "hallowed_armor", ModRarity.PINK, ModArmorMaterials.HALLOWED_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS);
-    public static final DeferredItem<MultiHeadArmorItem> HALLOWED_BOOTS = registerMultiHeadArmor("hallowed_boots", "hallowed_armor", ModRarity.PINK, ModArmorMaterials.HALLOWED_ARMOR_MATERIALS, ArmorItem.Type.BOOTS);
-
-    // 巫师套装
-    public static final DeferredItem<NormalArmorItem> WIZARD_HAT = registerNormalArmor("wizard_hat", "wizard_hat", ModRarity.GREEN, ModArmorMaterials.WIZARD_HAT_MATERIAL, ArmorItem.Type.HELMET);
-    public static final DeferredItem<NormalArmorItem> MAGIC_HAT = registerNormalArmor("magic_hat", "magic_hat", ModRarity.GREEN, ModArmorMaterials.MAGIC_HAT_ARMOR_MATERIAL, ArmorItem.Type.HELMET);
-    public static final DeferredItem<NormalArmorItem> AMETHYST_ROBE = registerNormalArmor("amethyst_robe", "amethyst_robe", ModRarity.WHITE, ModArmorMaterials.AMETHYST_ROBE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE);
-    public static final DeferredItem<NormalArmorItem> TOPAZ_ROBE = registerNormalArmor("topaz_robe", "topaz_robe", ModRarity.WHITE, ModArmorMaterials.TOPAZ_ROBE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE);
-    public static final DeferredItem<NormalArmorItem> SAPPHIRE_ROBE = registerNormalArmor("sapphire_robe", "sapphire_robe", ModRarity.BLUE, ModArmorMaterials.SAPPHIRE_ROBE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE);
-    public static final DeferredItem<NormalArmorItem> JADE_ROBE = registerNormalArmor("jade_robe", "jade_robe", ModRarity.BLUE, ModArmorMaterials.EMERALD_ROBE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE);
-    public static final DeferredItem<NormalArmorItem> RUBY_ROBE = registerNormalArmor("ruby_robe", "ruby_robe", ModRarity.BLUE, ModArmorMaterials.RUBY_ROBE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE);
-    public static final DeferredItem<NormalArmorItem> MYSTIC_ROBE = registerNormalArmor("mystic_robe", "mystic_robe", ModRarity.BLUE, ModArmorMaterials.MYSTIC_ROBE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE);
-    public static final DeferredItem<NormalArmorItem> DIAMOND_ROBE = registerNormalArmor("diamond_robe", "diamond_robe", ModRarity.GREEN, ModArmorMaterials.DIAMOND_ROBE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE);
-    public static final DeferredItem<NormalArmorItem> AMBER_ROBE = registerNormalArmor("amber_robe", "amber_robe", ModRarity.GREEN, ModArmorMaterials.AMBER_ROBE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE);
-    // 其它盔甲
-    public static final DeferredItem<ArmorItem> GOGGLES = ITEMS.register("goggles", () -> new ArmorItem(ModArmorMaterials.GOGGLES_MATERIAL, ArmorItem.Type.HELMET, new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.WHITE)));
-    public static final DeferredItem<ArmorItem> GREEN_CAP = ITEMS.register("green_cap", () -> new ArmorItem(ModArmorMaterials.GREEN_CAP_MATERIAL, ArmorItem.Type.HELMET, new Item.Properties().stacksTo(1).component(ConfluenceMagicLib.MOD_RARITY, ModRarity.WHITE)));
-    public static final DeferredItem<NormalArmorItem> VIKING_HELMET = registerNormalArmor("viking_helmet","viking_armor", ModRarity.BLUE,ModArmorMaterials.VIKING_ARMOR_MATERIAL, ArmorItem.Type.HELMET);
-    public static final DeferredItem<NormalArmorItem> FLINX_FUR_COAT = registerNormalArmor("flinx_fur_coat","flinx_fur_coat_armor", ModRarity.GREEN,ModArmorMaterials.FLINX_FUR_COAT_MATERIAL, ArmorItem.Type.CHESTPLATE);
-    // 时装
-
-    private static DeferredItem<NormalArmorItem> registerNormalArmor(String name, String geoName, Holder<ArmorMaterial> material, ArmorItem.Type type, int durability) {
-        return ITEMS.register(name, () -> new NormalArmorItem("armor/" + geoName, material, type, new Item.Properties().stacksTo(1).durability(durability)));
-    }
-
-    private static DeferredItem<NormalArmorItem> registerNormalArmor(String name, String geoName, Holder<ArmorMaterial> material, ArmorItem.Type type) {
-        return ITEMS.register(name, () -> new NormalArmorItem("armor/" + geoName, material, type, new Item.Properties().stacksTo(1).component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE)));
-    }
-
-    private static DeferredItem<NormalArmorItem> registerNormalArmor(String name, String geoName, ModRarity rarity, Holder<ArmorMaterial> material, ArmorItem.Type type) {
-        return ITEMS.register(name, () -> new NormalArmorItem("armor/" + geoName, rarity, material, type, new Item.Properties().stacksTo(1).component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE)));
-    }
-
-    private static DeferredItem<MultiHeadArmorItem> registerMultiHeadArmor(String name, String geoName, ModRarity rarity, Holder<ArmorMaterial> material, ArmorItem.Type type) {
-        return ITEMS.register(name, () -> new MultiHeadArmorItem("armor/" + geoName, rarity, material, type, new Item.Properties().stacksTo(1).component(DataComponents.UNBREAKABLE, ModItems.UNBREAKABLE)));
+    private static DeferredItem<BaseArmorItem> register(String name, Holder<ArmorMaterial> material, ArmorItem.Type type, Consumer<BaseArmorItem.Builder> consumer) {
+        return ITEMS.register(name, () -> {
+            BaseArmorItem.Builder builder = BaseArmorItem.builder(name, material, type);
+            consumer.accept(builder);
+            return builder.build();
+        });
     }
 
     public static void register(IEventBus eventBus) {

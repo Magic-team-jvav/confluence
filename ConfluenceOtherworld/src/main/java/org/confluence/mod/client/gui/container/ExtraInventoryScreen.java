@@ -47,6 +47,7 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
     private static final ResourceLocation ACCESSORY = TerraCurio.asResource("textures/slot/accessory.png");
     private static final WidgetSprites BESTIARY_BUTTON = new WidgetSprites(Confluence.asResource("widget/bestiary_button"), Confluence.asResource("widget/bestiary_button_highlighted"));
     private static final WidgetSprites HOUSE_BUTTON = new WidgetSprites(Confluence.asResource("widget/house_button"), Confluence.asResource("widget/house_button_highlighted"));
+    private static final TooltipComponentsValue.Storage MECHANICAL$LENS = new TooltipComponentsValue.Storage(Confluence.asResource("textures/gui/information/mechanical_lens.png"), Component.translatable("tooltip.confluence.mechanical_lens"));
 
     private boolean dyeButtonPressed = false;
     private final ExtraTeamRender teamRender = new ExtraTeamRender(this);
@@ -130,7 +131,7 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
         int y = topPos + 1;
         for (int i = 0; i < InformationHandler.DISABLE.length; i++) {
             if (!InformationHandler.hasInfoData(i)) continue;
-            TooltipComponentsValue.Storage storage = TCItems.FULL_INFO.get(i);
+            TooltipComponentsValue.Storage storage = i == 12 ? MECHANICAL$LENS : TCItems.FULL_INFO.get(i);
 
             boolean disable = InformationHandler.DISABLE[i];
             if (disable) RenderSystem.setShaderColor(1, 1, 1, 0.5F);

@@ -40,18 +40,15 @@ public class HardmodeAnvilRecipe extends EitherAmountRecipe4x<MenuRecipeInput> {
         return ModRecipes.HARDMODE_ANVIL_TYPE.get();
     }
 
-    public static class Serializer implements RecipeSerializer<HardmodeAnvilRecipe> {
-        public static final MapCodec<HardmodeAnvilRecipe> CODEC = eitherSerializerMapCodec(HardmodeAnvilRecipe::new);
-        public static final StreamCodec<RegistryFriendlyByteBuf, HardmodeAnvilRecipe> STREAM_CODEC = eitherSerializerStreamCodec(HardmodeAnvilRecipe::new);
-
+    public static class Serializer extends SimpleRecipeSerializer<HardmodeAnvilRecipe> {
         @Override
-        public MapCodec<HardmodeAnvilRecipe> codec() {
-            return CODEC;
+        protected MapCodec<HardmodeAnvilRecipe> getCodec() {
+            return eitherSerializerMapCodec(HardmodeAnvilRecipe::new);
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, HardmodeAnvilRecipe> streamCodec() {
-            return STREAM_CODEC;
+        protected StreamCodec<RegistryFriendlyByteBuf, HardmodeAnvilRecipe> getStreamCodec() {
+            return eitherSerializerStreamCodec(HardmodeAnvilRecipe::new);
         }
     }
 }

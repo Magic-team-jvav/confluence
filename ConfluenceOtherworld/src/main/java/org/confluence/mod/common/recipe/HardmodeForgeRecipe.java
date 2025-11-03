@@ -36,18 +36,15 @@ public class HardmodeForgeRecipe extends EnhancedForgeRecipe {
         return ModRecipes.HARDMODE_FORGE_TYPE.get();
     }
 
-    public static class Serializer implements RecipeSerializer<HardmodeForgeRecipe> {
-        public static final MapCodec<HardmodeForgeRecipe> CODEC = EnhancedForgeRecipe.codec(HardmodeForgeRecipe::new);
-        public static final StreamCodec<RegistryFriendlyByteBuf, HardmodeForgeRecipe> STREAM_CODEC = EnhancedForgeRecipe.streamCodec(HardmodeForgeRecipe::new);
-
+    public static class Serializer extends SimpleRecipeSerializer<HardmodeForgeRecipe> {
         @Override
-        public MapCodec<HardmodeForgeRecipe> codec() {
-            return CODEC;
+        protected MapCodec<HardmodeForgeRecipe> getCodec() {
+            return EnhancedForgeRecipe.codec(HardmodeForgeRecipe::new);
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, HardmodeForgeRecipe> streamCodec() {
-            return STREAM_CODEC;
+        protected StreamCodec<RegistryFriendlyByteBuf, HardmodeForgeRecipe> getStreamCodec() {
+            return EnhancedForgeRecipe.streamCodec(HardmodeForgeRecipe::new);
         }
     }
 }

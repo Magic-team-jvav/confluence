@@ -41,6 +41,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModList;
+import net.neoforged.neoforge.client.IItemDecorator;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientBlockExtensions;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
@@ -69,6 +70,8 @@ import org.confluence.mod.common.item.bow.ShortBowItem;
 import org.confluence.mod.integration.waystones.PylonBlock;
 import org.confluence.mod.integration.waystones.PylonModel;
 import org.confluence.mod.integration.waystones.WaystonesHelper;
+import org.confluence.mod.mixed.IPlayer;
+import org.confluence.mod.util.ClientUtils;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
@@ -158,6 +161,7 @@ public final class ModClientSetups {
     static final IClientItemExtensions SPEAR = simpleArmPose(ModArmPoses.SPEAR::getValue);
     static final IClientItemExtensions UMBRELLA = simpleArmPose(ModArmPoses.UMBRELLA::getValue);
     static final IClientItemExtensions DRILL_O_CHAINSAW = simpleArmPose(ModArmPoses.DRILL_O_CHAINSAW::getValue);
+    static final IClientItemExtensions LANCE = simpleArmPose(ModArmPoses.LANCE::getValue);
 
     private static IClientItemExtensions simpleArmPose(Supplier<HumanoidModel.ArmPose> supplier) {
         return new IClientItemExtensions() {
@@ -223,6 +227,18 @@ public final class ModClientSetups {
             return IntegerRGB.HALLOW_C.mixture(IntegerRGB.HALLOW_A, (m - 8) * 0.25F);
         }
     };
+
+    static final IItemDecorator FISHING_POLE_DECORATOR = (guiGraphics, font, itemStack, x, y) -> {
+        LocalPlayer player = Minecraft.getInstance().player;
+        if (player != null && player.getInventory().getSelected() == itemStack) {
+            ItemStack bait = IPlayer.of(player).confluence$getCurrentBait();
+            if (!bait.isEmpty()) {
+                ClientUtils.renderBait(guiGraphics, bait, x, y);
+            }
+        }
+        return false;
+    };
+
     static boolean guideCheckedJEI = ModList.get().isLoaded("jei") || ModList.get().isLoaded("emi");
 
     static void setRenderLayers() {

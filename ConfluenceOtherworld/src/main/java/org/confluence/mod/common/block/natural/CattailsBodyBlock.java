@@ -7,7 +7,10 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.GrowingPlantBodyBlock;
+import net.minecraft.world.level.block.GrowingPlantHeadBlock;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -18,7 +21,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.init.block.NatureBlocks;
 
-public class CattailsBodyBlock extends GrowingPlantBodyBlock implements SimpleWaterloggedBlock, BonemealableBlock {
+public class CattailsBodyBlock extends GrowingPlantBodyBlock implements SimpleWaterloggedBlock {
     public static final MapCodec<CattailsBodyBlock> CODEC = simpleCodec(CattailsBodyBlock::new);
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     private static final VoxelShape SHAPE = Block.box(2.0, 0.0, 2.0, 14.0, 16.0, 14.0);
@@ -75,7 +78,7 @@ public class CattailsBodyBlock extends GrowingPlantBodyBlock implements SimpleWa
 
     @Override
     protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
-        boolean water = level.getBlockState(currentPos).getFluidState().is(Fluids.WATER);
+        boolean water = state.getFluidState().is(Fluids.WATER);
         if (facing == this.growthDirection.getOpposite() && !state.canSurvive(level, currentPos)) {
             level.scheduleTick(currentPos, this, 1);
         }

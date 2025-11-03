@@ -63,6 +63,7 @@ public class ConsumableItems {
     public static final DeferredItem<ThrowableDropSelfItem> THROWING_KNIVE = ITEMS.register("throwing_knive", () -> new ThrowableDropSelfItem(ModEntities.THROWN_KNIVE_PROJECTILE.get(), 5f, 1.2f, 0.5f, 5, 3, true));
     public static final DeferredItem<ThrowableDropSelfItem> BONE_THROWING_KNIFE = ITEMS.register("bone_throwing_knife", () -> new ThrowableDropSelfItem(ModEntities.BONE_THROWN_KNIVE_PROJECTILE.get(), 6f, 1.2f, 0.5f, 5, 3, false));
     public static final DeferredItem<ThrowableDropSelfItem> FROST_DAGGERFISH = ITEMS.register("frost_daggerfish", () -> new ThrowableDropSelfItem(ModEntities.FROST_DAGGERFISH_PROJECTILE.get(), 7f, 1.7f, 0.5f, 5, 3, false));
+    public static final DeferredItem<ThrowableDropSelfItem> DUNGEON_DEMON_BONE = ITEMS.register("dungeon_demon_bone", () -> new ThrowableDropSelfItem(ModEntities.DUNGEON_DEMON_BONE_PROJECTILE.get(), 5f, 1.2f, 0.5f, 3, 3, false));
     public static final DeferredItem<ThrowableDropSelfItem> JAVELIN = ITEMS.register("javelin", () -> new ThrowableDropSelfItem(ModEntities.JAVELIN_PROJECTILE.get(), 5f, 1.2f, 0.5f, 5, 5, true));
     public static final DeferredItem<SpikyBallItem> SPIKY_BALL = ITEMS.register("spiky_ball", SpikyBallItem::new);
     public static final DeferredItem<ThrowableItem<ThrownWaterProjectile>> HOLY_WATER = ITEMS.register("holy_water", () -> new ThrowableItem<>(0.8F, player -> new ThrownWaterProjectile(player, ISpreadable.Type.PURE)));
@@ -82,8 +83,8 @@ public class ConsumableItems {
     public static final DeferredItem<ThrownPowderItem> VILE_POWDER = ITEMS.register("vile_powder", () -> new ThrownPowderItem(ISpreadable.Type.CORRUPT));
     public static final DeferredItem<ThrownPowderItem> VICIOUS_POWDER = ITEMS.register("vicious_powder", () -> new ThrownPowderItem(ISpreadable.Type.CRIMSON));
     public static final DeferredItem<FertilizerItem> FERTILIZER = ITEMS.register("fertilizer", FertilizerItem::new);
-    public static final DeferredItem<ModBoneMealItem> ROTTEN_BONE_DUST = ITEMS.register("rotten_bone_dust", ModBoneMealItem::new);
-    public static final DeferredItem<ModBoneMealItem> BLOODSTAINED_POWDER = ITEMS.register("bloodstained_powder", ModBoneMealItem::new);
+    public static final DeferredItem<ModBoneMealItem> ROTTEN_BONE_DUST = ITEMS.register("rotten_bone_dust", () -> new ModBoneMealItem(ModRarity.BLUE,"rotten_bone_dust"));
+    public static final DeferredItem<ModBoneMealItem> BLOODSTAINED_POWDER = ITEMS.register("bloodstained_powder",  () -> new ModBoneMealItem(ModRarity.BLUE,"bloodstained_powder"));
 
     public static final DeferredItem<BossSummoningItem> SUSPICIOUS_LOOKING_EYE = ITEMS.register("suspicious_looking_eye", () -> new BossSummoningItem(player -> LibDateUtils.isNight(player.level()), EyeOfCthulhu::new, TooltipItem.getTooltipsFromString("suspicious_looking_eye", 3, ChatFormatting.RED)));
     public static final DeferredItem<BossSummoningItem> SLIME_CROWN = ITEMS.register("slime_crown", () -> new BossSummoningItem(player -> true, KingSlime::new, TooltipItem.getTooltipsFromString("slime_crown", 3, ChatFormatting.BLUE)));

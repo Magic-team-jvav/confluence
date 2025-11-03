@@ -14,10 +14,10 @@ import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.saveddata.SavedData;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.block.natural.StepRevealingBlock;
 import org.confluence.mod.network.s2c.MeteoriteLocationPacketS2C;
 import org.confluence.mod.network.s2c.StarPhasesPacketS2C;
 import org.confluence.mod.network.s2c.WindSpeedPacketS2C;
-import org.confluence.phase_journey.common.util.PhaseUtils;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
@@ -132,9 +132,9 @@ public final class ConfluenceData extends SavedData {
         return starPhases;
     }
 
-    public boolean increaseRevealStep(ServerLevel serverLevel) {
+    public boolean increaseRevealStep() {
         if (revealStep < 8) {
-            serverLevel.players().forEach(player -> PhaseUtils.achievePlayerPhase(player, Confluence.asResource("reveal_step_" + ++this.revealStep), true));
+            GlobalCloakData.INSTANCE.reveal(StepRevealingBlock.PAIRS.get()[++this.revealStep]);
             setDirty();
             return true;
         }

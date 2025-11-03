@@ -1,9 +1,9 @@
-permissions: write-all
+permissions: 
+  contents: write
 name: Nightly Build
 on:
   workflow_dispatch:
   schedule:
-    # Run this job every day at 5:30 AM UTC+8
     - cron: "30 21 * * *"
 
 jobs:
@@ -28,8 +28,29 @@ jobs:
       - name: Build Confluence
         working-directory: ./ConfluenceOtherworld
         run: ./gradlew build
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
+      
+      - name: Get version with date suffix
+        id: version
+        working-directory: ./ConfluenceOtherworld
+        run: |
+          if [ -f "gradle.properties" ]; then
+            BASE_VERSION=$(grep -E "^(mod_)?version" gradle.properties | head -1 | cut -d'=' -f2 | tr -d ' \r\n' | sed 's/-.*//')
+          else
+            BASE_VERSION="1.2.0"
+          fi
+          DATE_SUFFIX=$(date +%y%m%d)
+          FULL_VERSION="${BASE_VERSION}-alpha-${DATE_SUFFIX}"
+          echo "FULL_VERSION=$FULL_VERSION" >> $GITHUB_OUTPUT
+      
+      - name: Upload to Nightly Release
+        uses: softprops/action-gh-release@v1
         with:
-          name: Confluence Automate Build Artifacts
-          path: ./ConfluenceOtherworld/build/libs/*.jar
+          files: ./ConfluenceOtherworld/build/libs/*.jar
+          tag_name: nightly
+          name: Nightly Build
+          body: |
+            **Pre-release**
+          prerelease: true
+          keep_latest: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

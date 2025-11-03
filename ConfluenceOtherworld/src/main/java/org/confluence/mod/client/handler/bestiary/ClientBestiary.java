@@ -191,7 +191,11 @@ public class ClientBestiary extends ContextAwareReloadListener {
         return INSTANCE;
     }
 
-    public void resetEntries() {
+    public static void reset() {
+        getInstance().resetEntries();
+    }
+
+    private void resetEntries() {
         if (currentLevel == null) return;
         this.currentLevel = null;
         Map<String, ClientBestiaryEntry> map = Maps.newHashMap();
@@ -205,11 +209,7 @@ public class ClientBestiary extends ContextAwareReloadListener {
 
     // 玩家进入存档统一同步
     // 随后只需更新部分实体
-    public void handle(Level level, Either<Map<String, BestiaryEntry>, String> either) {
-        if (currentLevel != level) { // 这一步是为了释放内存
-            resetEntries();
-            this.currentLevel = level;
-        }
+    public void handle(Either<Map<String, BestiaryEntry>, String> either) {
         either.ifLeft(map -> {
             boolean shouldCount = false;
             for (Map.Entry<String, BestiaryEntry> entry : map.entrySet()) {

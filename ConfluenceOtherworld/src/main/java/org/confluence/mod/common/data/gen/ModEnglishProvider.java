@@ -36,6 +36,10 @@ public class ModEnglishProvider extends LanguageProvider {
     protected void addTranslations() {
         add("confluence.prefix_separator", " ");
 
+        add("itemGroup.confluence.log", "Log");
+        add("itemGroup.confluence.leaves", "Leaves");
+        add("itemGroup.confluence.sapling", "Sapling");
+
         add("config.jade.plugin_confluence.jade_network_component", "Mechanical Info");
         add("config.jade.plugin_confluence.jade_ponder_component", "Ponder Info");
         add("config.jade.plugin_confluence.jade_tombstone_info", "Tombstone Info");
@@ -158,7 +162,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.advanced_combat_techniques_volume_two.0", "Increases the defense and strength of all villagers");
         add("tooltip.item.confluence.advanced_combat_techniques_volume_two.1", "'Contains offensive and defensive fighting techniques, volume two!'");
         add("tooltip.item.confluence.binoculars.0", "Expand the FOV when in use, and adjust the zoom with the mouse wheel");
-        add("tooltip.item.confluence.meteor_compass.0", "Only the position of the last meteorite are saved");
         add("tooltip.item.confluence.gel.0", "'Both tasty and flammable'");
         add("tooltip.item.confluence.npc_invitation.0", "Use it to invite a new batch of NPCs in the current area!");
         add("tooltip.item.confluence.red_potion.0", "'Only for those who are worthy'");
@@ -178,6 +181,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.guide_to_peaceful_coexistence.0", "Prevents you from hurting critters while in the inventory");
         add("tooltip.item.confluence.guide_to_peaceful_coexistence.1", "Prevents you from accidentally destroying the environment while in the inventory");
         add("tooltip.item.confluence.guide_to_peaceful_coexistence.2", "Right click to deactivate/reactivate effects");
+
 
         add("tooltip.item.confluence.slime_crown.0", "Right - click to summon the King Slime");
         add("tooltip.item.confluence.slime_crown.1", "A small crown that seems to be prepared for the coronation ceremony of those cute and harmless gel - like creatures.");
@@ -215,6 +219,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.jousting_lance.1", "'Have at thee!'");
         add("tooltip.item.confluence.hallowed_jousting_lance.0", "Build momentum to increase attack power");
         add("tooltip.item.confluence.shadow_jousting_lance.0", "Build momentum to increase attack power");
+        add("tooltip.item.confluence.rotten_bone_dust.0", "Right-click to spawn vegetation in the Corruption, or corrupt Skeletons");
+        add("tooltip.item.confluence.bloodstained_powder.0", "Right-click to spawn vegetation in the Crimson, or infest Creepers with Crimson");
 
         add("tooltip.item.confluence.tokyo_teddy_bear.0", "A self - abased girl said like a broken teddy bear:");
         add("tooltip.item.confluence.tokyo_teddy_bear.1", "           Let me tell you");
@@ -389,11 +395,11 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.argon_moss_fishing_bobber.0", "Increases fishing power, fishing bobber glows");
         add("tooltip.item.confluence.krypton_moss_fishing_bobber.0", "Increases fishing power, fishing bobber glows");
         add("tooltip.item.confluence.xenon_moss_fishing_bobber.0", "Increases fishing power, fishing bobber glows");
-        add("tooltip.item.confluence.tackle_box.0", "Reduces bait consumption rate by 5%");
-        add("tooltip.item.confluence.angler_tackle_bag.0", "Fishing line will never break, reduces bait consumption rate by 5%");
-        add("tooltip.item.confluence.lavaproof_fishing_hook.0", "Can fish in lava with any bait or rod");
-        add("tooltip.item.confluence.lavaproof_tackle_bag.0", "Can fish in lava with any bait or rod");
-        add("tooltip.item.terra_curio.lavaproof_tackle_bag.1", "Fishing line will never break, reduces bait consumption rate by 5%");
+        add("tooltip.item.confluence.tackle_box.0", "Decreases chance of bait consumption");
+        add("tooltip.item.confluence.angler_tackle_bag.0", "Fishing line will never break, decreases chance of bait consumption, increases fishing power by 10");
+        add("tooltip.item.confluence.lavaproof_fishing_hook.0", "Allows fishing in lava");
+        add("tooltip.item.confluence.lavaproof_tackle_bag.0", "Fishing line will never break, decreases chance of bait consumption, increases fishing power by 10");
+        add("tooltip.item.terra_curio.lavaproof_tackle_bag.1", "Allows fishing in lava");
         add("tooltip.item.confluence.lucky_coin.0", "Hitting enemies may drop extra coins");
         add("tooltip.item.confluence.gold_ring.0", "Increases coin pickup range");
         add("tooltip.item.confluence.discount_card.0", "Reduces shop prices by 20%");
@@ -967,6 +973,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("prefix.confluence.tooltip.add", "+%s %s");
         add("prefix.confluence.tooltip.mana_cost", "Mana Cost");
         add("prefix.confluence.tooltip.additional_mana", "Additional Mana");
+        add("prefix.confluence.tooltip.four_classes_damage", "Four Classes Damage");
         add("prefix.confluence.quick", "Quick");
         add("prefix.confluence.hasty", "Hasty");
         add("prefix.confluence.deadly", "Deadly");
@@ -1107,217 +1114,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add("entity.confluence.frozen_zombie", "Frozen Zombie");
         add("entity.confluence.raincoat_zombie", "Raincoat Zombie");
         add("entity.confluence.undead_miner", "Undead Miner");
-
-        add("equipment_benediction.set_switcher.confluence.cold_crystal_set", "Cold Crystal Set");
-        add("equipment_benediction.set_switcher.confluence.cold_crystal_set.data.0", "Increase maximum mana by 20, Critical Hit Rate increased by 4%");
-        add("equipment_benediction.set_switcher.confluence.cold_crystal_set.data.1", "Increase maximum mana by 20, Magic Damage increased by 4%");
-        add("equipment_benediction.set_switcher.confluence.cold_crystal_set.data.2", "Magic Damage increased by 4%");
-        add("equipment_benediction.set_switcher.confluence.cold_crystal_set.data.3", "Critical Hit Rate increased by 4%");
-        add("equipment_benediction.set_switcher.confluence.cold_crystal_set.data.4", "Magic Attack will have an additional Frostbite effect");
-
-        add("equipment_benediction.set_switcher.confluence.mining_set", "Mining Set");
-        add("equipment_benediction.set_switcher.confluence.mining_set.data.0", "Provides lighting");
-        add("equipment_benediction.set_switcher.confluence.mining_set.data.1", "+10% Mining Speed");
-        add("equipment_benediction.set_switcher.confluence.mining_set.data.2", "+10% Mining Speed");
-
-        add("equipment_benediction.set_switcher.confluence.shadow_set", "Shadow Set");
-        add("equipment_benediction.set_switcher.confluence.shadow_set.data.0", "Critical Hit Rate increased by 3.5%");
-        add("equipment_benediction.set_switcher.confluence.shadow_set.data.1", "Critical Hit Rate increased by 3.5%");
-        add("equipment_benediction.set_switcher.confluence.shadow_set.data.2", "Critical Hit Rate increased by 3.5%");
-        add("equipment_benediction.set_switcher.confluence.shadow_set.data.3", "Critical Hit Rate increased by 3.5%");
-        add("equipment_benediction.set_switcher.confluence.shadow_set.data.4", "Increased movement speed and acceleration");
-
-        add("equipment_benediction.set_switcher.confluence.crimson_set", "Crimson Set");
-        add("equipment_benediction.set_switcher.confluence.crimson_set.data.0", "Damage increased by 2%");
-        add("equipment_benediction.set_switcher.confluence.crimson_set.data.1", "Damage increased by 2%");
-        add("equipment_benediction.set_switcher.confluence.crimson_set.data.2", "Damage increased by 2%");
-        add("equipment_benediction.set_switcher.confluence.crimson_set.data.3", "Damage increased by 2%");
-        add("equipment_benediction.set_switcher.confluence.crimson_set.data.4", "Increases regeneration by 50%");
-
-        add("equipment_benediction.set_switcher.confluence.snow_set", "Snowproof Set");
-        add("equipment_benediction.set_switcher.confluence.snow_set.data.0", "Immunity to Frozen-type debuffs");
-        add("equipment_benediction.set_switcher.confluence.snow_set.data.1", "Immunity to Frozen-type debuffs");
-
-        add("equipment_benediction.set_switcher.confluence.bee_set", "Bee Set");
-        add("equipment_benediction.set_switcher.confluence.bee_set.data.0", "Summon damage increased by 4%, Summon limit increased by 1");
-        add("equipment_benediction.set_switcher.confluence.bee_set.data.1", "Summon damage increased by 4%");
-        add("equipment_benediction.set_switcher.confluence.bee_set.data.2", "Summon limit increased by 1");
-        add("equipment_benediction.set_switcher.confluence.bee_set.data.3", "Summon damage increased by 5%");
-        add("equipment_benediction.set_switcher.confluence.bee_set.data.4", "Summon damage increased by 10%");
-
-        add("equipment_benediction.set_switcher.confluence.molten_set", "Molten Set");
-        add("equipment_benediction.set_switcher.confluence.molten_set.data.0", "Critical Hit Rate increased by 7%");
-        add("equipment_benediction.set_switcher.confluence.molten_set.data.1", "Melee damage increased by 7%");
-        add("equipment_benediction.set_switcher.confluence.molten_set.data.2", "Melee speed increased by 3.5%");
-        add("equipment_benediction.set_switcher.confluence.molten_set.data.3", "Melee speed increased by 3.5%");
-        add("equipment_benediction.set_switcher.confluence.molten_set.data.4", "Melee damage increased by 10%, Immunity to Fire");
-
-        add("equipment_benediction.set_switcher.confluence.meteor_set", "Meteor Set");
-        add("equipment_benediction.set_switcher.confluence.meteor_set.data.0", "Magic damage increased by 7%");
-        add("equipment_benediction.set_switcher.confluence.meteor_set.data.1", "Magic damage increased by 7%");
-        add("equipment_benediction.set_switcher.confluence.meteor_set.data.2", "Magic damage increased by 7%");
-        add("equipment_benediction.set_switcher.confluence.meteor_set.data.3", "Magic damage increased by 7%");
-        add("equipment_benediction.set_switcher.confluence.meteor_set.data.4", "Space Gun magic consumption reduced to 0");
-
-        add("equipment_benediction.set_switcher.confluence.gladiator_set", "Gladiator Set");
-        add("equipment_benediction.set_switcher.confluence.gladiator_set.data.0", "Immunity to Knockback");
-
-        add("equipment_benediction.set_switcher.confluence.fossil_set", "Fossil Set");
-        add("equipment_benediction.set_switcher.confluence.fossil_set.data.0", "Critical Hit Rate increased by 4%");
-        add("equipment_benediction.set_switcher.confluence.fossil_set.data.1", "Ranged damage increased by 2.5%");
-        add("equipment_benediction.set_switcher.confluence.fossil_set.data.2", "Ranged damage increased by 2.5%");
-        add("equipment_benediction.set_switcher.confluence.fossil_set.data.3", "Critical Hit Rate increased by 4%");
-        add("equipment_benediction.set_switcher.confluence.fossil_set.data.4", "Chance of not consuming ammo increased by 20%");
-
-        add("equipment_benediction.set_switcher.confluence.ninja_set", "Ninja Set");
-        add("equipment_benediction.set_switcher.confluence.ninja_set.data.0", "Critical Hit Rate increased by 2%");
-        add("equipment_benediction.set_switcher.confluence.ninja_set.data.1", "Critical Hit Rate increased by 2%");
-        add("equipment_benediction.set_switcher.confluence.ninja_set.data.2", "Critical Hit Rate increased by 2%");
-        add("equipment_benediction.set_switcher.confluence.ninja_set.data.3", "Critical Hit Rate increased by 2%");
-        add("equipment_benediction.set_switcher.confluence.ninja_set.data.4", "Movement speed increased by 20%");
-
-        add("equipment_benediction.set_switcher.confluence.spore_root_set", "Spore Root Set");
-        add("equipment_benediction.set_switcher.confluence.spore_root_set.data.0", "Summon damage increased by 2%, Summon limit increased by 1");
-        add("equipment_benediction.set_switcher.confluence.spore_root_set.data.1", "Summon damage increased by 3%");
-        add("equipment_benediction.set_switcher.confluence.spore_root_set.data.2", "Summon damage increased by 3%");
-        add("equipment_benediction.set_switcher.confluence.spore_root_set.data.3", "Summon damage increased by 2%");
-        add("equipment_benediction.set_switcher.confluence.spore_root_set.data.4", "Summon limit increased by 1");
-
-        add("equipment_benediction.set_switcher.confluence.cactus_set", "Cactus Set");
-        add("equipment_benediction.set_switcher.confluence.cactus_set.data.0", "Attackers take damage from cactus thorns");
-
-        add("equipment_benediction.set_switcher.confluence.heim_set", "Heim Set");
-        add("equipment_benediction.set_switcher.confluence.heim_set.data.0", "Extend underwater breathing time by 5% and increase melee damage by 1%");
-        add("equipment_benediction.set_switcher.confluence.heim_set.data.1", "After successfully using the shield to intercept the next attack, increase damage by 20% within three seconds. The damage increase stops when you launch an attack and hit or get hit during these three seconds. Increase melee damage by 1%");
-        add("equipment_benediction.set_switcher.confluence.heim_set.data.2", "Increase critical hit rate by 2% and increase melee damage by 1%");
-        add("equipment_benediction.set_switcher.confluence.heim_set.data.3", "Increase underwater movement speed by 5% and increase melee damage by 1%");
-        add("equipment_benediction.set_switcher.confluence.heim_set.data.4", "Grant you 4 HP of damage absorption, and grant it again every 3 seconds");
-
-        add("equipment_benediction.set_switcher.confluence.necro_set", "Necro Set");
-        add("equipment_benediction.set_switcher.confluence.necro_set.data.0", "5% increased ranged damage");
-        add("equipment_benediction.set_switcher.confluence.necro_set.data.1", "5% increased ranged damage");
-        add("equipment_benediction.set_switcher.confluence.necro_set.data.2", "2.5% increased ranged damage");
-        add("equipment_benediction.set_switcher.confluence.necro_set.data.3", "2.5% increased ranged damage");
-        add("equipment_benediction.set_switcher.confluence.necro_set.data.4", "Critical Hit Rate increased by 10%");
-
-        add("equipment_benediction.set_switcher.confluence.jungle_set", "Jungle set");
-        add("equipment_benediction.set_switcher.confluence.jungle_set.data.0", "Increases maximum mana by 40,6% increased magic critical strike chance");
-        add("equipment_benediction.set_switcher.confluence.jungle_set.data.1", "Increases maximum mana by 20,6% increased magic critical strike chance");
-        add("equipment_benediction.set_switcher.confluence.jungle_set.data.2", "Increases maximum mana by 10,3% increased magic critical strike chance");
-        add("equipment_benediction.set_switcher.confluence.jungle_set.data.3", "Increases maximum mana by 10,3% increased magic critical strike chance");
-        add("equipment_benediction.set_switcher.confluence.jungle_set.data.4", "16% reduced mana costs");
-
-        add("equipment_benediction.set_switcher.confluence.ash_set", "Ash set");
-        add("equipment_benediction.set_switcher.confluence.ash_set.data.0", "Reduce fire damage by 50%");
-
-        add("equipment_benediction.set_switcher.confluence.pumpkin_set", "Pumpkin set");
-        add("equipment_benediction.set_switcher.confluence.pumpkin_set.data.0", "Damage increased by 10%");
-
-        add("equipment_benediction.set_switcher.confluence.obsidian_set", "Obsidian Set");
-        add("equipment_benediction.set_switcher.confluence.obsidian_set.data.0", "Increases summon damage by 8%");
-        add("equipment_benediction.set_switcher.confluence.obsidian_set.data.1", "Increases your max number of minions by 1");
-        add("equipment_benediction.set_switcher.confluence.obsidian_set.data.2", "Increases summon damage by 4%");
-        add("equipment_benediction.set_switcher.confluence.obsidian_set.data.3", "Increases summon damage by 4%");
-        add("equipment_benediction.set_switcher.confluence.obsidian_set.data.4", "Increases whip range by 30% and speed by 15%,Increases summon damage by 15%");
-
-        add("equipment_benediction.set_switcher.confluence.wizard_set", "Wizard Set");
-        add("equipment_benediction.set_switcher.confluence.wizard_set.data.0", "5% increased magic damage");
-        add("equipment_benediction.set_switcher.confluence.wizard_set.data.1", "6% increased magic damage and critical strike chance");
-        add("equipment_benediction.set_switcher.confluence.wizard_set.data.2", "Increases maximum mana by 20,5% reduced mana cost");
-        add("equipment_benediction.set_switcher.confluence.wizard_set.data.3", "Increases maximum mana by 40,7% reduced mana cost");
-        add("equipment_benediction.set_switcher.confluence.wizard_set.data.4", "Increases maximum mana by 40,9% reduced mana cost");
-        add("equipment_benediction.set_switcher.confluence.wizard_set.data.5", "Increases maximum mana by 60,11% reduced mana cost");
-        add("equipment_benediction.set_switcher.confluence.wizard_set.data.6", "Increases maximum mana by 60,13% reduced mana cost");
-        add("equipment_benediction.set_switcher.confluence.wizard_set.data.7", "Increases maximum mana by 80,15% reduced mana cost");
-        add("equipment_benediction.set_switcher.confluence.wizard_set.data.8", "Increases maximum mana by 60,13% reduced mana cost");
-
-        add("equipment_benediction.set_switcher.confluence.flinx_set", "Flinx set");
-        add("equipment_benediction.set_switcher.confluence.flinx_set.data.0", "Increases summon damage by 5%,Increases your max number of minions by 1");
-
-        add("equipment_benediction.set_switcher.confluence.cobalt_set", "Cobalt Set");
-        add("equipment_benediction.set_switcher.confluence.cobalt_set.data.0", "10% increased ranged damage,10% increased ranged critical strike chance");
-        add("equipment_benediction.set_switcher.confluence.cobalt_set.data.1", "Increases maximum mana by 40,10% increased magic damage,9% increased magic critical strike chance");
-        add("equipment_benediction.set_switcher.confluence.cobalt_set.data.2", "10% increased movement speed,15% increased melee damage");
-        add("equipment_benediction.set_switcher.confluence.cobalt_set.data.3", "5% increased critical strike chance");
-        add("equipment_benediction.set_switcher.confluence.cobalt_set.data.4", "3% increased damage");
-        add("equipment_benediction.set_switcher.confluence.cobalt_set.data.5", "10% increased movement speed ");
-        add("equipment_benediction.set_switcher.confluence.cobalt_set.data.6", "15% increased melee speed");
-        add("equipment_benediction.set_switcher.confluence.cobalt_set.data.7", "20% chance to save ammo");
-        add("equipment_benediction.set_switcher.confluence.cobalt_set.data.8", "14% reduced mana costs");
-
-        add("equipment_benediction.set_switcher.confluence.palladium_set", "Palladium Set");
-        add("equipment_benediction.set_switcher.confluence.palladium_set.data.0", "12% increased melee damage,12% increased melee speed");
-        add("equipment_benediction.set_switcher.confluence.palladium_set.data.1", "9% increased magic damage and critical strike chance,Increases maximum mana by 60");
-        add("equipment_benediction.set_switcher.confluence.palladium_set.data.2", "9% increased ranged damage,9% increased ranged critical strike chance");
-        add("equipment_benediction.set_switcher.confluence.palladium_set.data.3", "3% increased damage,2% increased critical strike chance");
-        add("equipment_benediction.set_switcher.confluence.palladium_set.data.4", "2% increased damage");
-        add("equipment_benediction.set_switcher.confluence.palladium_set.data.5", "1% increased critical strike chance");
-        add("equipment_benediction.set_switcher.confluence.palladium_set.data.6", "Greatly increases life regeneration after striking an enemy");
-
-        add("equipment_benediction.set_switcher.confluence.mythril_set", "Mythril Set");
-        add("equipment_benediction.set_switcher.confluence.mythril_set.data.0", "Increases maximum mana by 60,15% increased magic damage");
-        add("equipment_benediction.set_switcher.confluence.mythril_set.data.1", "12% increased ranged damage,7% increased ranged critical strike chance");
-        add("equipment_benediction.set_switcher.confluence.mythril_set.data.2", "8% increased melee critical strike chance,10% increased melee damage");
-        add("equipment_benediction.set_switcher.confluence.mythril_set.data.3", "7% increased damage");
-        add("equipment_benediction.set_switcher.confluence.mythril_set.data.4", "5% increased critical strike chance");
-        add("equipment_benediction.set_switcher.confluence.mythril_set.data.5", "5% increased critical strike chance");
-        add("equipment_benediction.set_switcher.confluence.mythril_set.data.6", "10% increased melee critical strike chance");
-        add("equipment_benediction.set_switcher.confluence.mythril_set.data.7", "17% reduced mana costs");
-        add("equipment_benediction.set_switcher.confluence.mythril_set.data.8", "20% chance to save ammo");
-
-        add("equipment_benediction.set_switcher.confluence.orichalcum_set", "Orichalcum Set");
-        add("equipment_benediction.set_switcher.confluence.orichalcum_set.data.0", "18% increased magic critical strike chance,Increases maximum mana by 80");
-        add("equipment_benediction.set_switcher.confluence.orichalcum_set.data.1", "11% increased melee damage and melee speed,7% increased movement speed");
-        add("equipment_benediction.set_switcher.confluence.orichalcum_set.data.2", "15% increased ranged critical strike chance,8% increased movement speed");
-        add("equipment_benediction.set_switcher.confluence.orichalcum_set.data.3", "6% increased critical strike chance");
-        add("equipment_benediction.set_switcher.confluence.orichalcum_set.data.4", "8% increased damage");
-        add("equipment_benediction.set_switcher.confluence.orichalcum_set.data.5", "11% increased movement speed");
-        add("equipment_benediction.set_switcher.confluence.orichalcum_set.data.6", "Flower petals will fall on your target for extra damage");
-
-        add("equipment_benediction.set_switcher.confluence.adamantite_set", "Adamantite Set");
-        add("equipment_benediction.set_switcher.confluence.adamantite_set.data.0", "Increases maximum mana by 80,12% increased magic damage and critical strike chance");
-        add("equipment_benediction.set_switcher.confluence.adamantite_set.data.1", "14% increased ranged damage,10% increased ranged critical strike chance");
-        add("equipment_benediction.set_switcher.confluence.adamantite_set.data.2", "7% increased melee critical strike chance,14% increased melee damage");
-        add("equipment_benediction.set_switcher.confluence.adamantite_set.data.3", "8% increased damage");
-        add("equipment_benediction.set_switcher.confluence.adamantite_set.data.4", "7% increased critical strike chance");
-        add("equipment_benediction.set_switcher.confluence.adamantite_set.data.5", "5% increased movement speed");
-        add("equipment_benediction.set_switcher.confluence.adamantite_set.data.6", "20% increased melee and movement speed");
-        add("equipment_benediction.set_switcher.confluence.adamantite_set.data.7", "25% chance to save ammo");
-        add("equipment_benediction.set_switcher.confluence.adamantite_set.data.8", "19% reduced mana costs");
-
-        add("equipment_benediction.set_switcher.confluence.titanium_set", "Titanium Set");
-        add("equipment_benediction.set_switcher.confluence.titanium_set.data.0", "16% increased magic damage and 7% increased magic critical strike chance,Increases maximum mana by 100");
-        add("equipment_benediction.set_switcher.confluence.titanium_set.data.1", "9% increased melee damage and critical strike chance,9% increased melee speed");
-        add("equipment_benediction.set_switcher.confluence.titanium_set.data.2", "16% increased ranged damage,7% increased ranged critical strike chance");
-        add("equipment_benediction.set_switcher.confluence.titanium_set.data.3", "4% increased damage,3% increased critical strike chance");
-        add("equipment_benediction.set_switcher.confluence.titanium_set.data.4", "3% increased damage and critical strike chance");
-        add("equipment_benediction.set_switcher.confluence.titanium_set.data.5", "6% increased movement speed");
-        add("equipment_benediction.set_switcher.confluence.titanium_set.data.6", "Attacking generates a defensive barrier of titanium shards");
-
-        add("equipment_benediction.set_switcher.confluence.hallowed_set", "Hallowed Set");
-        add("equipment_benediction.set_switcher.confluence.hallowed_set.data.0", "10% increased melee damage and critical strike chance,10% increased melee speed");
-        add("equipment_benediction.set_switcher.confluence.hallowed_set.data.1", "Increases maximum mana by 100,12% increased magic damage and critical strike chance");
-        add("equipment_benediction.set_switcher.confluence.hallowed_set.data.2", "Increases your max number of minions by 1,Increases summon damage by 10%");
-        add("equipment_benediction.set_switcher.confluence.hallowed_set.data.3", "15% increased ranged damage,8% increased ranged critical strike chance");
-        add("equipment_benediction.set_switcher.confluence.hallowed_set.data.4", "7% increased critical strike chance");
-        add("equipment_benediction.set_switcher.confluence.hallowed_set.data.5", "7% increased damage");
-        add("equipment_benediction.set_switcher.confluence.hallowed_set.data.6", "8% increased movement speed");
-        add("equipment_benediction.set_switcher.confluence.hallowed_set.data.7", "Become immune after striking an enemy");
-        add("equipment_benediction.set_switcher.confluence.hallowed_set.data.8", "Become immune after striking an enemy,and increases your max number of minions by 2");
-
-        add("equipment_benediction.set_switcher.confluence.crystal_assassin_set", "Crystal Assassin Set");
-        add("equipment_benediction.set_switcher.confluence.crystal_assassin_set.data.0", "5% increased critical strike chance,10% reduced mana cost");
-        add("equipment_benediction.set_switcher.confluence.crystal_assassin_set.data.1", "5% increased damage,10% chance to save ammo");
-        add("equipment_benediction.set_switcher.confluence.crystal_assassin_set.data.2", "10% increased melee speed");
-        add("equipment_benediction.set_switcher.confluence.crystal_assassin_set.data.3", "20% increased movement speed");
-        add("equipment_benediction.set_switcher.confluence.crystal_assassin_set.data.4", "Allows the ability to dash,10% increased damage and critical strike chance");
-
-        add("equipment_benediction.set_switcher.confluence.spider_set", "Spider Set");
-        add("equipment_benediction.set_switcher.confluence.spider_set.data.0", "Increases your max number of minions by 1，Increases summon damage by 5%");
-        add("equipment_benediction.set_switcher.confluence.spider_set.data.1", "ncreases your max number of minions by 1，Increases summon damage by 5%");
-        add("equipment_benediction.set_switcher.confluence.spider_set.data.2", "Increases your max number of minions by 1");
-        add("equipment_benediction.set_switcher.confluence.spider_set.data.3", "Increases summon damage by 6%");
-        add("equipment_benediction.set_switcher.confluence.spider_set.data.4", "Increases summon damage by 12%");
 
         // npc dialogs
         add("dialogs.terra_entity.angler.item.confluence.amanita_fungifin", "I found this spectacular place draped in giant glowing mushrooms! Everything was blue! I was picking some of the mushrooms I found next to a glistening blue lake, when one of the mushrooms snapped at me and swam away! I want to give it a taste of its own medicine, and give it a good chompin'! What I mean is, you gotta get it for me!(Caught in Glowing Mushroom Biomes)");
@@ -1727,6 +1523,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.subtitle.lightsaber_open", "Lightsaber: Activated");
         add("confluence.subtitle.regular_staff_shoot", "Magic: Cast");
         add("confluence.subtitle.regular_staff_shoot_2", "Magic: Burst");
+        add("confluence.subtitle.regular_staff_shoot_3", "Magic: Jet");
         add("confluence.subtitle.frozen_broken", "Frost Magic: Shatter");
         add("confluence.subtitle.frozen_arrow", "Frost Magic: Fire");
         add("confluence.subtitle.cooldown_recovery", "Cooldown: Ready");
@@ -2019,12 +1816,12 @@ public class ModEnglishProvider extends LanguageProvider {
         add("bestiary.entity.terra_entity.jewel_squirrel.1.desc", "Rarely, critters are found coated entirely in gold! Shopkeepers will pay handsomely for these, or you can show them off in cages!");
         add("bestiary.entity.terra_entity.mouse.desc", "Mice squeak around harmlessly, looking for small insects in damp underground locations.");
 //        add("bestiary.entity.terra_entity.gold_mouse.desc", "Rarely, critters are found coated entirely in gold! Shopkeepers will pay handsomely for these, or you can show them off in cages!");
-//        add("bestiary.entity.terra_entity.frog.desc", "Prefers bodies of water filled with thick growth. Perfectly content both on land and underwater.");
+        add("bestiary.entity.minecraft.frog.desc", "Prefers bodies of water filled with thick growth. Perfectly content both on land and underwater.");
 //        add("bestiary.entity.terra_entity.gold_frog.desc", "Rarely, critters are found coated entirely in gold! Shopkeepers will pay handsomely for these, or you can show them off in cages!");
-//        add("bestiary.entity.terra_entity.grasshopper.desc", "It leaps tall blades of grass in a single bound. Fish are fairly attracted to these.");
-        add("bestiary.entity.terra_entity.gold_grasshopper.desc", "Rarely, critters are found coated entirely in gold! They are worth great coin to shopkeepers and fish absolutely love golden bait!");
-        add("bestiary.entity.terra_entity.butterfly.desc", "Beautiful fluttering insects that love sunrises. Fish are attracted to these based on their color variety.");
-//        add("bestiary.entity.terra_entity.gold_butterfly.desc", "Rarely, critters are found coated entirely in gold! They are worth great coin to shopkeepers and fish absolutely love golden bait!");
+        add("bestiary.entity.terra_entity.grasshopper.1.desc", "It leaps tall blades of grass in a single bound. Fish are fairly attracted to these.");
+        add("bestiary.entity.terra_entity.grasshopper.0.desc", "Rarely, critters are found coated entirely in gold! They are worth great coin to shopkeepers and fish absolutely love golden bait!");
+        add("bestiary.entity.terra_entity.butterfly.1.desc", "Beautiful fluttering insects that love sunrises. Fish are attracted to these based on their color variety.");
+        add("bestiary.entity.terra_entity.butterfly.0.desc", "Rarely, critters are found coated entirely in gold! They are worth great coin to shopkeepers and fish absolutely love golden bait!");
         add("bestiary.entity.terra_entity.worm.2.desc", "A slick, tubular invertebrate found hiding in rocks, dirt, and grass. Loves the rain. Fish are especially attracted to these.");
         add("bestiary.entity.terra_entity.worm.1.desc", "Rarely, critters are found coated entirely in gold! They are worth great coin to shopkeepers and fish absolutely love golden bait!");
         add("bestiary.entity.terra_entity.dragonfly.desc", "A swift-flying insect which hunts mosquitoes. Comes in a variety of colors. Fish are somewhat attracted to these.");
@@ -2033,13 +1830,13 @@ public class ModEnglishProvider extends LanguageProvider {
 //        add("bestiary.entity.terra_entity.gold_seahorse.desc", "Rarely, critters are found coated entirely in gold! Shopkeepers will pay handsomely for these, or you can show them off in cages!");
         add("bestiary.entity.terra_entity.water_strider.desc", "Glides elegantly along the surface of calm bodies of water searching for smaller bugs. Fish are occasionally attracted to these.");
         add("bestiary.entity.terra_entity.gold_water_strider.desc", "Rarely, critters are found coated entirely in gold! They are worth great coin to shopkeepers and fish absolutely love golden bait!");
-        add("bestiary.entity.terra_entity.ladybug.desc", "A brilliant red insect often associated with luck. Fishing with these as bait may result in unwanted karma.");
-        add("bestiary.entity.terra_entity.gold_ladybug.desc", "Rarely, critters are found coated entirely in gold! They are worth great coin to shopkeepers and fish absolutely love golden bait!");
+        add("bestiary.entity.terra_entity.ladybug.1.desc", "A brilliant red insect often associated with luck. Fishing with these as bait may result in unwanted karma.");
+        add("bestiary.entity.terra_entity.ladybug.0.desc", "Rarely, critters are found coated entirely in gold! They are worth great coin to shopkeepers and fish absolutely love golden bait!");
 //        add("bestiary.entity.terra_entity.stinkbug.desc", "These sneaky pests have a knack for invading even the most airtight of homes, projecting their cilantro-like stench everywhere if disturbed.");
-        add("bestiary.entity.terra_entity.faeling.desc", "These scintillating fairy-like creatures are born when animals wander into the glowing depths of a Shimmer pond.");
+        add("bestiary.entity.terra_entity.faeling.0.desc", "These scintillating fairy-like creatures are born when animals wander into the glowing depths of a Shimmer pond.");
         add("bestiary.entity.terra_entity.duck.0.desc", "A water fowl with beautiful plumage. Swims in the purest of water, quacking happily.");
         add("bestiary.entity.terra_entity.duck.1.desc", "A white feathered waterfowl that swims in pure water and basks in the warm sun.");
-        add("bestiary.entity.terra_entity.turtle.desc", "These slow, stoic creatures travel between lakes and dry land, carrying a hard shell on their backs for protection.");
+        add("bestiary.entity.minecraft.turtle.desc", "These slow, stoic creatures travel between lakes and dry land, carrying a hard shell on their backs for protection.");
         add("bestiary.entity.terra_entity.owl.desc", "A large, wise predatory bird which hunts nocturnally from the tree tops.");
         add("bestiary.entity.terra_entity.firefly.desc", "Appears at night in calm locations, illuminating the sky with strobing green light. Fish are fairly attracted to these.");
         add("bestiary.entity.terra_entity.worm.0.desc", "Worms infused with fallen star magic glow with a glittering light. Fish are extremely attracted to these.");
@@ -2072,7 +1869,7 @@ public class ModEnglishProvider extends LanguageProvider {
 //        add("bestiary.entity.terra_entity.pupfish.desc", "These fish prefer isolated, extreme climates where competition is scarce, such as the lakebeds of a desert oasis.");
 //        add("bestiary.entity.terra_entity.seagull.desc", "A larger bird that inhabits coastal areas. Watch out for droppings!");
         add("bestiary.entity.terra_entity.sea_turtle.desc", "A soft-shelled reptile that prefers saltwater and marine prey.");
-        add("bestiary.entity.terra_entity.dolphin.desc", "A playful sea mammal whose intelligence rivals that of humanity.");
+        add("bestiary.entity.minecraft.dolphin.desc", "A playful sea mammal whose intelligence rivals that of humanity.");
 //        add("bestiary.entity.terra_entity.jungle_turtle.desc", "Their hard shells camouflage them from vicious predators by blending in with the thick, jungly environment in which they reside.");
         add("bestiary.entity.terra_entity.grubby.desc", "Slimy, yet satisfying! Fish are somewhat attracted to these.");
         add("bestiary.entity.terra_entity.sluggy.desc", "Slow and covered in a slick mucus. Fish are especially attracted to these.");
@@ -2104,7 +1901,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("bestiary.entity.terra_entity.zombie_female.desc", "Leaving doors open may be an invitation for shambling brain-eaters to enter the home, and nobody likes that.");
         add("bestiary.entity.terra_entity.zombie_slimed.desc", "Sometimes, a slime's victim will turn into a zombie mid-digestion. Walking around like that is quite awkward for both parties.");
         add("bestiary.entity.terra_entity.zombie_bald.desc", "Leaving doors open may be an invitation for shambling brain-eaters to enter the home, and nobody likes that.");
-        add("bestiary.entity.terra_entity.zombie.desc", "Leaving doors open may be an invitation for shambling brain-eaters to enter the home, and nobody likes that.");
+        add("bestiary.entity.minecraft.zombie.desc", "Leaving doors open may be an invitation for shambling brain-eaters to enter the home, and nobody likes that.");
         add("bestiary.entity.terra_entity.zombie_twiggy.desc", "Leaving doors open may be an invitation for shambling brain-eaters to enter the home, and nobody likes that.");
         add("bestiary.entity.terra_entity.zombie_torch.desc", "In life, this torch-wielding zombie joined an angry mob to hunt the undead. In death, it joined an undead mob to hunt the living.");
         add("bestiary.entity.terra_entity.zombie_swamp.desc", "Leaving doors open may be an invitation for shambling brain-eaters to enter the home, and nobody likes that.");
@@ -2146,7 +1943,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("bestiary.entity.terra_entity.mother_slime.desc", "Critical to the lifecycle of the slime species, these oversized jiggling masses are often found carrying their young deep underground.");
 //        add("bestiary.entity.terra_entity.cochineal_beetle.desc", "Found in deep, dark caverns, these large beetles are sought out for the deep, blood-red secretions stored in their scaly exoskeleton.");
 //        add("bestiary.entity.terra_entity.skeleton_misassembled.desc", "Who needs muscles, skin, or even eyeballs? Skeletons get by with just the bones on their back, just as deadly as more fleshy foes.");
-//        add("bestiary.entity.terra_entity.skeleton.desc", "Who needs muscles, skin, or even eyeballs? Skeletons get by with just the bones on their back, just as deadly as more fleshy foes.");
+        add("bestiary.entity.minecraft.skeleton.desc", "Who needs muscles, skin, or even eyeballs? Skeletons get by with just the bones on their back, just as deadly as more fleshy foes.");
 //        add("bestiary.entity.terra_entity.salamander.desc", "An unusual amphibious bipedal lizard which inhabits the dark caverns. When threatened, it spews a highly corrosive acid everywhere.");
 //        add("bestiary.entity.terra_entity.skeleton_headache.desc", "Who needs muscles, skin, or even eyeballs? Skeletons get by with just the bones on their back, just as deadly as more fleshy foes.");
 //        add("bestiary.entity.terra_entity.skeleton_pantless.desc", "Who needs muscles, skin, or even eyeballs? Skeletons get by with just the bones on their back, just as deadly as more fleshy foes.");
@@ -2188,7 +1985,7 @@ public class ModEnglishProvider extends LanguageProvider {
 //        add("bestiary.entity.terra_entity.ice_mimic.desc", "Talking to a chest doesn't cause craziness, but if the chest answers back, it may cause death! It still contains rare treasure, regardless!");
 //        add("bestiary.entity.terra_entity.ice_tortoise.desc", "Like their jungle cousins, ice tortoises are an unexpectedly serious threat, possessing surprising speed and mobility.");
 //        add("bestiary.entity.terra_entity.vulture.desc", "Built to survive the desert heat, avian scavengers such as these will peck apart those who come near their carrion.");
-        add("bestiary.entity.terra_entity.sand_slime.desc", "Deserts are very dry, but the Sand Slime seems to have successfully adapted to the harsh conditions by becoming a pile of living sand.");
+        add("bestiary.entity.terra_entity.desert_slime.desc", "Deserts are very dry, but the Sand Slime seems to have successfully adapted to the harsh conditions by becoming a pile of living sand.");
 //        add("bestiary.entity.terra_entity.antlion_larva.desc", "Freshly hatched from their eggs, larval antlions should not be underestimated. Though young, they are still very aggressive.");
 //        add("bestiary.entity.terra_entity.giant_antlion_charger.desc", "The soldiers of the antlion species, Antlion Chargers ferociously chase after intruders with a surprising speed.");
 //        add("bestiary.entity.terra_entity.mummy.desc", "With the sands transmogrified by outside forces, those put to rest in the desert, whether good or evil, now rise to maim and kill.");
@@ -2485,6 +2282,203 @@ public class ModEnglishProvider extends LanguageProvider {
 //        add("bestiary.entity.terra_entity.vortex_pillar.desc", "Representing a deep celestial void known as 'vortex', this tower holds the seal locking away a terrifying tyrant.");
 //        add("bestiary.entity.terra_entity.stardust_pillar.desc", "Representing a glittering celestial remnant known as 'stardust', this tower holds the seal locking away a terrifying tyrant.");
 //        add("bestiary.entity.terra_entity.moon_lord.desc", "The mastermind behind all terrors which befall the world, freed from his lunar prison. Practically a god, his power knows no limits.");
+
+        add ("bestiary.entity.minecraft.allay.desc", "The Allay is a pure and kind soul that loves music.");
+        add ("bestiary.entity.minecraft.armadillo.desc", "The Armadillo is a small creature that can curl into a ball to protect itself.");
+        add ("bestiary.entity.minecraft.bat.desc", "Bats are small flying creatures that inhabit caves and are active at night.");
+        add ("bestiary.entity.minecraft.camel.desc", "Camels are desert mounts that can carry two people.");
+        add ("bestiary.entity.minecraft.chicken.desc", "Chickens are common farm animals that lay eggs and can be attracted by wheat seeds.");
+        add ("bestiary.entity.minecraft.cod.desc", "Cod are common fish living in oceans and can serve as a food source.");
+        add ("bestiary.entity.minecraft.cow.desc", "Cows are farm animals that provide milk, beef, and leather, and they love to eat grass.");
+        add ("bestiary.entity.minecraft.rabbit.description", "Rabbits are wild animals good at jumping and can be a source of food.");
+        add ("bestiary.entity.minecraft.donkey.desc", "Donkeys are tamed creatures used for transporting items and can be equipped with chests.");
+        add ("bestiary.entity.minecraft.glow_squid.desc", "Glow Squids are bioluminescent creatures in caves, and their ink sacs can make fluorescent items.");
+        add ("bestiary.entity.minecraft.horse.desc", "Horses are tamed mounts with different speeds and jumping abilities depending on their breed.");
+        add ("bestiary.entity.minecraft.mooshroom.desc", "Mooshrooms are special cows on mushroom islands that provide mushroom stew and mycelium.");
+        add ("bestiary.entity.minecraft.mule.desc", "Mules are hybrid offspring of horses and donkeys, with strong load-bearing capacity but unable to breed.");
+        add ("bestiary.entity.minecraft.pig.desc", "Pigs are farm animals attracted by carrots, which can be ridden and controlled with a carrot on a stick.");
+        add ("bestiary.entity.minecraft.salmon.desc", "Salmon are fish that swim upstream and can be cooked into delicious food.");
+        add ("bestiary.entity.minecraft.sheep.desc", "Sheep are farm animals that provide wool, which can be dyed and used to make cloth.");
+        add ("bestiary.entity.minecraft.skeleton_horse.desc", "Skeleton Horses are undead creatures, usually spawned during thunderstorms and can be tamed.");
+        add ("bestiary.entity.minecraft.sniffer.desc", "The Sniffer is an ancient creature that can sniff out seeds buried underground.");
+        add ("bestiary.entity.minecraft.squid.desc", "Squids are cephalopods in oceans that squirt ink to escape danger.");
+        add ("bestiary.entity.minecraft.strider.desc", "Striders are creatures in the Nether that can walk on lava and serve as mounts.");
+        add ("bestiary.entity.minecraft.tadpole.desc", "Tadpoles are the larvae of frogs that live in water and gradually develop into adults.");
+        add ("bestiary.entity.minecraft.tropical_fish.desc", "Tropical Fish are colorful marine creatures that can be kept as ornamental pets.");
+        add ("bestiary.entity.minecraft.wandering_trader.desc", "Wandering Traders appear randomly in the world and sell rare items.");
+        add ("bestiary.entity.minecraft.pufferfish.desc", "Pufferfish inflate when threatened, and their toxins can be used to make potions.");
+        add ("bestiary.entity.minecraft.goat.desc", "Goats live in mountains, are good at jumping, and will ram players and creatures.");
+        add ("bestiary.entity.minecraft.villager.desc", "Villagers are humans living in villages who can trade with players.");
+        add ("bestiary.entity.minecraft.axolotl.desc", "Axolotls are amphibious creatures living in underground water that can heal players and attack hostile mobs.");
+        add ("bestiary.entity.minecraft.cat.desc", "Cats are tamed pets that can scare away Creepers and bring gifts.");
+        add ("bestiary.entity.minecraft.ocelot.desc", "Ocelots live in jungles, can be tamed with raw fish, and can scare away Creepers.");
+        add ("bestiary.entity.minecraft.snow_golem.desc", "Snow Golems are creatures made of snow blocks and pumpkins that throw snowballs to attack enemies.");
+        add ("bestiary.entity.minecraft.bee.desc", "Bees are creatures that pollinate and produce honey, and will sting when provoked.");
+        add ("bestiary.entity.minecraft.fox.desc", "Foxes are cute but cunning creatures that steal items and can be tamed with berries.");
+        add ("bestiary.entity.minecraft.iron_golem.desc", "Iron Golems are village guardians made of iron blocks and pumpkins that attack hostile mobs.");
+        add ("bestiary.entity.minecraft.llama.desc", "Llamas are creatures that can carry items, spit to defend themselves, and form caravans.");
+        add ("bestiary.entity.minecraft.panda.desc", "Pandas live in jungles, have different personalities, and love to eat bamboo.");
+        add ("bestiary.entity.minecraft.polar_bear.desc", "Polar Bears live in snowy areas, with adult individuals being aggressive and protecting their cubs.");
+        add ("bestiary.entity.minecraft.trader_llama.desc", "Trader Llamas are creatures that follow Wandering Traders and can be tamed and equipped.");
+        add ("bestiary.entity.minecraft.wolf.desc", "Wolves are tamable creatures that become loyal companions after taming and help attack enemies.");
+        add ("bestiary.entity.minecraft.blaze.desc", "Blazes are hostile mobs in the Nether that shoot fireballs at players.");
+        add ("bestiary.entity.minecraft.bogged.desc", "Bogged are hostile mobs that appear in swamps at night and cause slowness.");
+        add ("bestiary.entity.minecraft.breeze.desc", "Breezes are flying hostile mobs that shoot wind blasts to push players away.");
+        add ("bestiary.entity.minecraft.creeper.desc", "Creepers are hostile mobs that sneak up and explode, and they are afraid of cats.");
+        add ("bestiary.entity.minecraft.elder_guardian.desc", "Elder Guardians are powerful guardians of ocean monuments that apply mining fatigue.");
+        add ("bestiary.entity.minecraft.endermite.desc", "Endermites are small hostile mobs, usually spawning when using Ender Pearls to teleport.");
+        add ("bestiary.entity.minecraft.evoker.desc", "Evokers are hostile illagers that summon Vexes and attack with magic.");
+        add ("bestiary.entity.minecraft.ghast.desc", "Ghasts are large flying creatures in the Nether that shoot fireballs at players.");
+        add ("bestiary.entity.minecraft.guardian.desc", "Guardians are creatures that protect ocean monuments and attack intruders with lasers.");
+        add ("bestiary.entity.minecraft.hoglin.desc", "Hoglins are hostile mobs in the Nether that drop pork when killed.");
+        add ("bestiary.entity.minecraft.husk.desc", "Husks are zombie variants in deserts that don't burn in sunlight and cause hunger.");
+        add ("bestiary.entity.minecraft.magma_cube.desc", "Magma Cubes are hostile mobs in the Nether made of magma that split into smaller ones.");
+        add ("bestiary.entity.minecraft.phantom.desc", "Phantoms are flying hostile mobs that spawn when players don't sleep for a long time.");
+        add ("bestiary.entity.minecraft.piglin_brute.desc", "Piglin Brutes are powerful hostile mobs in the Nether that protect bastion remnants.");
+        add ("bestiary.entity.minecraft.pillager.desc", "Pillagers are hostile illagers that participate in raids on villages.");
+        add ("bestiary.entity.minecraft.ravager.desc", "Ravagers are mounts of illagers with strong attack power and health.");
+        add ("bestiary.entity.minecraft.shulker.desc", "Shulkers are creatures in the End that disguise themselves as blocks and shoot bullets to make players float.");
+        add ("bestiary.entity.minecraft.silverfish.desc", "Silverfish are small hostile mobs that hide in stones and summon companions when attacked.");
+        add ("bestiary.entity.minecraft.slime.desc", "Slimes are jelly-like hostile mobs that jump to attack and split into smaller slimes when killed.");
+        add ("bestiary.entity.minecraft.stray.desc", "Strays are skeleton variants in snowy areas that shoot arrows with slowness effect.");
+        add ("bestiary.entity.minecraft.vex.desc", "Vexes are small flying hostile mobs summoned by Evokers that can pass through walls.");
+        add ("bestiary.entity.minecraft.vindicator.desc", "Vindicators are hostile illagers that attack players with axes.");
+        add ("bestiary.entity.minecraft.warden.desc", "The Warden is a powerful creature deep in caves that senses players through sound and vibrations.");
+        add ("bestiary.entity.minecraft.witch.desc", "Witches are hostile mobs that attack players with various potions and drop potion ingredients.");
+        add ("bestiary.entity.minecraft.wither_skeleton.desc", "Wither Skeletons are hostile mobs in Nether fortresses that cause wither effect.");
+        add ("bestiary.entity.minecraft.zoglin.desc", "Zoglins are hoglins infected with the zombie virus and are aggressive.");
+        add ("bestiary.entity.minecraft.zombie_villager.desc", "Zombie Villagers are infected villagers that can be cured with a Weakness potion and a Golden Apple.");
+        add ("bestiary.entity.minecraft.drowned.desc", "Drowned are underwater zombie variants that attack with tridents or fishing rods.");
+        add ("bestiary.entity.minecraft.enderman.desc", "Endermen are neutral mobs that can teleport and become hostile when stared at.");
+        add ("bestiary.entity.minecraft.piglin.desc", "Piglins are creatures in the Nether that trade with players and are afraid of soul fire.");
+        add ("bestiary.entity.minecraft.spider.desc", "Spiders are nocturnal hostile mobs that can climb walls and become neutral during the day.");
+        add ("bestiary.entity.minecraft.cave_spider.desc", "Cave Spiders are small spider variants living in abandoned mineshafts that inflict a poison effect.");
+        add ("bestiary.entity.minecraft.zombified_piglin.desc", "Zombified Piglins are neutral mobs in the Nether that counterattack in groups when attacked.");
+        add ("bestiary.entity.minecraft.ender_dragon.desc", "The Ender Dragon guards the End dimension.");
+        add ("bestiary.entity.minecraft.wither.desc", "The Wither can only be summoned by players and shoots Wither Skulls to cause large-scale damage.");
+
+        add("bestiary.entity.terra_entity.decayeder.desc", "Skeletons reanimated by the Corrupted; fragile yet adept at spreading evil thoughts.");
+        add("bestiary.entity.terra_entity.bloody_spore.desc", "The Crimson recognizes that Creepers are the easiest creatures to spread its flesh.");
+        add("bestiary.entity.terra_entity.hill_of_flesh.desc", "The duality of the world has forged the Wall of Flesh into another adaptive form for the world. As the core and guardian of the world, this towering demon lord exists to seal away the powerful ancient souls.");
+
+        // Armor Bonus
+        add("armor_set_bonus.when_applied", "Set Bonus:");
+        // Mining Set
+        add("tooltip.item.confluence.mining_helmet.0", "Provides light when worn");
+        add("armor_set_bonus.confluence.mining_set.0", "10% increased mining speed");
+        // Plank Set
+        add("armor_set_bonus.confluence.plank_set.0", "+1 Aromor");
+        add("armor_set_bonus.confluence.pearlwood_set.0", "+1 Aromor");
+
+        add("armor_set_bonus.confluence.ash_set.0", "Reduces damage from touching lava");
+        // Base Ore
+        add("armor_set_bonus.confluence.copper_set.0", "+1 Aromor");
+        add("armor_set_bonus.confluence.tin_set.0", "+2 Aromor");
+        add("armor_set_bonus.confluence.lead_set.0", "+1 Aromor");
+        add("armor_set_bonus.confluence.silver_set.0", "+2 Aromor");
+        add("armor_set_bonus.confluence.tungsten_set.0", "+1 Aromor");
+        add("armor_set_bonus.confluence.golden_set.0", "+1 Aromor");
+        add("armor_set_bonus.confluence.platinum_set.0", "+2 Aromor");
+        // Snow Set
+        add("armor_set_bonus.confluence.snow_set.0", "Cannot be frozen or chilled");
+        add("armor_set_bonus.confluence.pink_snow_set.0", "Cannot be frozen or chilled");
+        // Angler Set
+        add("tooltip.item.confluence.angler_hat.0", "Increases fishing power by 5");
+        add("tooltip.item.confluence.angler_vest.0", "Increases fishing power by 5");
+        add("tooltip.item.confluence.angler_pants.0", "Increases fishing power by 5");
+        add("armor_set_bonus.confluence.angler_set.0", "Decreased enemy spawn rate（WIP）");
+        // Cactus Set
+        add("armor_set_bonus.confluence.cactus_set.0", "Attackers take damage from the cactus spines");
+        // Pumpkin Set
+        add("armor_set_bonus.confluence.pumpkin_set.0", "10% increased damage");
+        // Ninja Set
+        add("armor_set_bonus.confluence.ninja_set.0", "20% increased movement speed");
+        // Fossil Set
+        add("armor_set_bonus.confluence.fossil_set.0", "20% chance to save ammo");
+        // Cold Crystal Set
+        add("tooltip.item.confluence.cold_crystal_helmet.0", "Increases maximum mana by 20");
+        add("tooltip.item.confluence.cold_crystal_chestplate.0", "Increases maximum mana by 20");
+        add("armor_set_bonus.confluence.cold_crystal_set.0", "Magic Attack will have an additional Frostbite effect");
+        // Spore Root Set
+        add("armor_set_bonus.confluence.spore_root_set.0", "Increases your max number of minions by 1");
+        // Heim Set
+        add("tooltip.item.confluence.heim_helmet.0", "Extend underwater breathing time by 5%");
+        add("tooltip.item.confluence.heim_boots.0", "Increase underwater movement speed by 5%");
+        add("armor_set_bonus.confluence.heim_set.0", "Grant you 4 health of absorption, and grant it again every 5 seconds");
+        // Bee Set
+        add("armor_set_bonus.confluence.bee_set.0", "Increases summon damage by 10%");
+        // Obsidian Set
+        add("armor_set_bonus.confluence.obsidian_set.0", "Increases whip range by 30% and speed by 15%,Increases summon damage by 15%");
+        add("armor_set_bonus.confluence.obsidian_set.1", "Increases summon damage by 15%");
+        // Gladiator Set
+        add("armor_set_bonus.confluence.gladiator_set.0", "Immunity to Knockback");
+        // Wizard Set
+        add("tooltip.item.confluence.amber_robe.0", "Increases maximum mana by 60");
+        add("tooltip.item.confluence.amber_robe.1", "13% reduced mana cost");
+        add("tooltip.item.confluence.diamond_robe.0", "Increases maximum mana by 80");
+        add("tooltip.item.confluence.diamond_robe.1", "15% reduced mana cost");
+        add("tooltip.item.confluence.mystic_robe.0", "6% increased magic damage and critical strike chance");
+        add("tooltip.item.confluence.mystic_robe.1", "10% reduced mana cost");
+        add("tooltip.item.confluence.ruby_robe.0", "Increases maximum mana by 60");
+        add("tooltip.item.confluence.ruby_robe.1", "13% reduced mana cost");
+        add("tooltip.item.confluence.jade_robe.0", "Increases maximum mana by 60");
+        add("tooltip.item.confluence.jade_robe.1", "11% reduced mana cost");
+        add("tooltip.item.confluence.sapphire_robe.0", "Increases maximum mana by 40");
+        add("tooltip.item.confluence.sapphire_robe.1", "9% reduced mana cost");
+        add("tooltip.item.confluence.topaz_robe.0", "Increases maximum mana by 40");
+        add("tooltip.item.confluence.topaz_robe.1", "7% reduced mana cost");
+        add("tooltip.item.confluence.amethyst_robe.0", "Increases maximum mana by 20");
+        add("tooltip.item.confluence.amethyst_robe.1", "5% reduced mana cost");
+        add("tooltip.item.confluence.wizard_hat.0", "5% increased magic damage");
+        add("tooltip.item.confluence.magic_hat.0", "6% increased magic damage and critical strike chance");
+        // Meteor Set
+        add("armor_set_bonus.confluence.meteor_set.0", "Space Gun magic consumption reduced to 0");
+        // Jungle Set
+        add("tooltip.item.confluence.jungle_helmet.0", "Increases maximum mana by 40");
+        add("tooltip.item.confluence.jungle_chestplate.0", "Increases maximum mana by 20");
+        add("tooltip.item.confluence.jungle_leggings.0", "Increases maximum mana by 20");
+        add("armor_set_bonus.confluence.jungle_set.0", "16% reduced mana costs");
+        // Necro Set
+        add("armor_set_bonus.confluence.necro_set.0", "10% increased critical strike chance");
+        // Shadow Set
+        add("armor_set_bonus.confluence.shadow_set.0", "Increased movement speed and acceleration");
+        // Crimson Set
+        add("armor_set_bonus.confluence.crimson_set.0", "Greatly increased life regen");
+        // Molten Set
+        add("armor_set_bonus.confluence.molten_set.0", "10% extra melee damage,Cannot be set on fire");
+        // Spider Set
+        add("armor_set_bonus.confluence.spider_set.0", "Increases summon damage by 12%");
+        // HardMode Ore
+        add("tooltip.item.confluence.cobalt_hat.0", "Increases maximum mana by 40");
+        add("armor_set_bonus.confluence.cobalt_helmet_set.0", "15% increased melee speed");
+        add("armor_set_bonus.confluence.cobalt_mask_set.0", "20% chance to save ammo");
+        add("armor_set_bonus.confluence.cobalt_hat_set.0", "14% reduced mana costs");
+
+        add("tooltip.item.confluence.palladium_headgear.0", "Increases maximum mana by 60");
+        add("armor_set_bonus.confluence.palladium_mask_set.0", "Greatly increases life regeneration after striking an enemy");
+        add("armor_set_bonus.confluence.palladium_helmet_set.0", "Greatly increases life regeneration after striking an enemy");
+        add("armor_set_bonus.confluence.palladium_headgear_set.0", "Greatly increases life regeneration after striking an enemy");
+
+        add("tooltip.item.confluence.mythril_hood.0", "Increases maximum mana by 60");
+        add("armor_set_bonus.confluence.mythril_hood_set.0", "17% reduced mana costs");
+        add("armor_set_bonus.confluence.mythril_helmet_set.0", "10% increased critical strike chance");
+        add("armor_set_bonus.confluence.mythril_hat_set.0", " 20% chance to save ammo");
+
+        add("tooltip.item.confluence.orichalcum_headgear.0", "Increases maximum mana by 80");
+        add("armor_set_bonus.confluence.orichalcum_headgear_set.0", "Flower petals will fall on your target for extra damage");
+        add("armor_set_bonus.confluence.orichalcum_mask_set.0", "Flower petals will fall on your target for extra damage");
+        add("armor_set_bonus.confluence.orichalcum_helmet_set.0", "Flower petals will fall on your target for extra damage");
+
+        add("tooltip.item.confluence.adamantite_headgear.0", "Increases maximum mana by 80");
+        add("armor_set_bonus.confluence.adamantite_headgear_set.0", "19% reduced mana costs");
+        add("armor_set_bonus.confluence.adamantite_helmet_set.0", "20% increased melee and movement speed");
+        add("armor_set_bonus.confluence.adamantite_mask_set.0", "25% chance to save ammo");
+
+        add("tooltip.item.confluence.titanium_headgear.0", "Increases maximum mana by 100");
+        add("armor_set_bonus.confluence.titanium_mask_set.0", "Attacking generates a defensive barrier of titanium shards");
+        add("armor_set_bonus.confluence.titanium_helmet_set.0", "Attacking generates a defensive barrier of titanium shards");
+        add("armor_set_bonus.confluence.titanium_headgear_set.0", "Attacking generates a defensive barrier of titanium shards");
+
         Consumer<DeferredHolder<Block, ? extends Block>> blockAction = block -> add(block.get(), LibUtils.toTitleCase(block.getId().getPath()));
         ChestBlocks.BLOCKS.getEntries().forEach(blockAction);
         CrateBlocks.BLOCKS.getEntries().forEach(blockAction);
@@ -2516,6 +2510,7 @@ public class ModEnglishProvider extends LanguageProvider {
         HoeItems.ITEMS.getEntries().forEach(itemAction);
         HookItems.ITEMS.getEntries().forEach(itemAction);
         IconItems.ITEMS.getEntries().forEach(itemAction);
+        LanceItems.ITEMS.getEntries().forEach(itemAction);
         LightPetItems.ITEMS.getEntries().forEach(itemAction);
         ManaWeaponItems.ITEMS.getEntries().forEach(itemAction);
         MaterialItems.ITEMS.getEntries().forEach(itemAction);
@@ -2526,6 +2521,7 @@ public class ModEnglishProvider extends LanguageProvider {
         PaintItems.ITEMS.getEntries().forEach(itemAction);
         PickaxeAxeItems.ITEMS.getEntries().forEach(itemAction);
         PickaxeItems.ITEMS.getEntries().forEach(itemAction);
+        PotionItems.ITEMS.getEntries().forEach(itemAction);
         QuestedFishes.ITEMS.getEntries().forEach(itemAction);
         ShovelItems.ITEMS.getEntries().forEach(itemAction);
         SwordItems.ITEMS.getEntries().forEach(itemAction);

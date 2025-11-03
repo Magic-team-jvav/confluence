@@ -14,6 +14,8 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import org.apache.commons.lang3.function.TriConsumer;
+import org.confluence.lib.ConfluenceMagicLib;
+import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.item.FoodItems;
@@ -84,12 +86,21 @@ public class BaseFoodItem extends Item {
         private final List<Component> tooltips = new ArrayList<>();
         private TriConsumer<ItemStack, Level, LivingEntity> finishUsingCallback;
 
-        Builder(Properties properties) {
+        public Builder() {
+            this.properties = new Properties();
+        }
+
+        public Builder(Properties properties) {
             this.properties = properties;
         }
 
         public void isFireResistant() {
             this.properties.fireResistant();
+        }
+
+        public Builder rarity(ModRarity rarity) {
+            properties.component(ConfluenceMagicLib.MOD_RARITY, rarity);
+            return this;
         }
 
         public Builder food(FoodProperties foodProperties) {
@@ -122,9 +133,8 @@ public class BaseFoodItem extends Item {
             return this;
         }
 
-        public Builder setFinishUsingCallback(TriConsumer<ItemStack, Level, LivingEntity> finishUsingCallback) {
+        public void setFinishUsingCallback(TriConsumer<ItemStack, Level, LivingEntity> finishUsingCallback) {
             this.finishUsingCallback = finishUsingCallback;
-            return this;
         }
 
         public Properties getProperties() {

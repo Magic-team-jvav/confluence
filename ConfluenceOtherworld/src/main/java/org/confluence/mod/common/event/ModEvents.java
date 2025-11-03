@@ -20,11 +20,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -60,14 +59,13 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.StartupConfigs;
 import org.confluence.mod.api.event.bestiary.RegisterBestiaryKeyEvent;
 import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.common.block.natural.ChlorophyteOreBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.block.natural.MagicMailBox;
-import org.confluence.mod.common.block.natural.StepRevealingBlock;
 import org.confluence.mod.common.capability.FluidBottomlessBucketWrapper;
 import org.confluence.mod.common.data.saved.*;
 import org.confluence.mod.common.entity.TargetDummyEntity;
 import org.confluence.mod.common.init.*;
+import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.block.ChestBlocks;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
@@ -85,9 +83,7 @@ import org.confluence.mod.network.c2s.*;
 import org.confluence.mod.network.s2c.*;
 import org.confluence.mod.util.DateUtils;
 import org.confluence.mod.util.ModUtils;
-import org.confluence.phase_journey.api.PhaseJourneyEvent;
 import org.confluence.terra_curio.api.event.RegisterAccessoriesComponentUpdateEvent;
-import org.confluence.terra_curio.common.init.TCAttributes;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.common.init.TCTabs;
 import org.confluence.terraentity.init.entity.TEAnimals;
@@ -99,7 +95,7 @@ import java.util.function.Function;
 
 import static org.confluence.mod.Confluence.MODID;
 
-@EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = MODID)
 public final class ModEvents {
     @SubscribeEvent
     public static void commonSetup(FMLCommonSetupEvent event) {
@@ -154,12 +150,15 @@ public final class ModEvents {
             ModUtils.registerCauldronInteractions();
             TERemoval.redirectLootTable();
             MagicMailBox.registerVariants();
+            ModArmorBonus.registerArmorSetBonus();
             IGlobalData.registerGlobalData(
                     KillBoard.INSTANCE,
                     HardmodeConvertor.INSTANCE,
                     NPCSpawner.INSTANCE,
-                    Bestiary.INSTANCE
+                    Bestiary.INSTANCE,
+                    GlobalCloakData.INSTANCE
             );
+            GlobalCloakData.INSTANCE.initialize();
         });
     }
 
@@ -217,6 +216,8 @@ public final class ModEvents {
         registrar.playToClient(BestiarySyncPacketS2C.TYPE, BestiarySyncPacketS2C.STREAM_CODEC, BestiarySyncPacketS2C::handle);
         registrar.playToClient(AvailableHouseSelectPacketS2C.TYPE, AvailableHouseSelectPacketS2C.STREAM_CODEC, AvailableHouseSelectPacketS2C::handle);
         registrar.playToClient(TerraStyleExplosionPacketS2C.TYPE, TerraStyleExplosionPacketS2C.STREAM_CODEC, TerraStyleExplosionPacketS2C::handle);
+        registrar.playToClient(FlushArmorSetBonusPacketS2C.TYPE, FlushArmorSetBonusPacketS2C.STREAM_CODEC, FlushArmorSetBonusPacketS2C::handle);
+        registrar.playToClient(GlobalCloakSyncPacketS2C.TYPE, GlobalCloakSyncPacketS2C.STREAM_CODEC, GlobalCloakSyncPacketS2C::handle);
 
         registrar.playToServer(ApplySelectionPacketC2S.TYPE, ApplySelectionPacketC2S.STREAM_CODEC, ApplySelectionPacketC2S::handle);
         registrar.playToServer(HookThrowingPacketC2S.TYPE, HookThrowingPacketC2S.STREAM_CODEC, HookThrowingPacketC2S::handle);
@@ -241,7 +242,7 @@ public final class ModEvents {
 
     @SubscribeEvent
     public static void entityAttributeModification(EntityAttributeModificationEvent event) {
-        TEEvents.registerArmorPenetration((type, value) -> event.add(type, TCAttributes.ARMOR_PENETRATION, value));
+        TEEvents.modifyAttributes(event);
     }
 
     @SubscribeEvent
@@ -270,46 +271,18 @@ public final class ModEvents {
         event.register(AccessoryItems.SPECIAL$PRICE);
     }
 
-    @SuppressWarnings("all")
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void buildCreativeModeTabContents(BuildCreativeModeTabContentsEvent event) {
-        CreativeModeTab.TabVisibility visibility = CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS;
         if (event.getTab() == TCTabs.ACCESSORIES.get()) {
             WipNotDisplayOutput output = new WipNotDisplayOutput(event);
-            output.accept(TCItems.EVERLASTING.get().getDefaultInstance(), visibility);
-            output.accept(TCItems.BASE_POINT.get().getDefaultInstance(), visibility);
+            output.accept(TCItems.EVERLASTING.get().getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            output.accept(TCItems.BASE_POINT.get().getDefaultInstance(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
             AccessoryItems.ITEMS.getEntries().forEach(item -> output.accept(item.get()));
         } else if (event.getTab() == ModTabs.MISC.get()) {
             ItemStack clothierVoodooDollStack = AccessoryItems.CLOTHIER_VOODOO_DOLL.toStack();
-            event.insertAfter(ConsumableItems.ABEEMINATION.toStack(), clothierVoodooDollStack, visibility);
-            event.insertAfter(clothierVoodooDollStack, AccessoryItems.GUIDE_VOODOO_DOLL.toStack(), visibility);
+            event.insertAfter(ConsumableItems.ABEEMINATION.toStack(), clothierVoodooDollStack, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+            event.insertAfter(clothierVoodooDollStack, AccessoryItems.GUIDE_VOODOO_DOLL.toStack(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
         }
-    }
-
-    /**
-     * @see ConfluenceData#increaseRevealStep
-     */
-    @SubscribeEvent
-    public static void phaseJourney$Register(PhaseJourneyEvent.Register event) {
-        BlockState deepslate = Blocks.DEEPSLATE.defaultBlockState();
-        int step = 0;
-        for (int state = 0; state < 3; state++) {
-            int finalState = state;
-            event.phaseRegister(Confluence.asResource("reveal_step_" + (step++)), context -> {
-                context.blockReplacement(OreBlocks.DEEPSLATE_COBALT_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), deepslate);
-                context.blockReplacement(OreBlocks.DEEPSLATE_PALLADIUM_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), deepslate);
-            });
-            event.phaseRegister(Confluence.asResource("reveal_step_" + (step++)), context -> {
-                context.blockReplacement(OreBlocks.DEEPSLATE_MYTHRIL_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), deepslate);
-                context.blockReplacement(OreBlocks.DEEPSLATE_ORICHALCUM_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), deepslate);
-            });
-            event.phaseRegister(Confluence.asResource("reveal_step_" + (step++)), context -> {
-                context.blockReplacement(OreBlocks.DEEPSLATE_ADAMANTITE_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), deepslate);
-                context.blockReplacement(OreBlocks.DEEPSLATE_TITANIUM_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), deepslate);
-            });
-        }
-
-        event.phaseRegister(ChlorophyteOreBlock.PHASE, context -> context.blockReplacement(OreBlocks.CHLOROPHYTE_ORE.get(), Blocks.MUD));
     }
 
     @SubscribeEvent
@@ -497,7 +470,8 @@ public final class ModEvents {
                 .register("confluence:crystal_shards_item", "confluence:crystal_shards")
                 .register("confluence:throwing_knives", "confluence:throwing_knive")
                 // 1.1.5 -> 1.2.0
-                .register("confluence:cap_tunabeard", "confluence:capn_tunabeard");
+                .register("confluence:cap_tunabeard", "confluence:capn_tunabeard")
+                .register("confluence:obsidian_fish", "confluence:obsidifish");
     }
 
     @SubscribeEvent

@@ -17,6 +17,7 @@ import org.confluence.mod.client.handler.bestiary.ClientBestiary;
 import org.confluence.mod.client.handler.bestiary.ClientBestiaryEntry;
 import org.confluence.mod.client.handler.bestiary.FilterEntry;
 import org.confluence.mod.integration.jei.JeiHelper;
+import org.confluence.mod.integration.jei.ModJeiPlugin;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -316,8 +317,8 @@ public class BestiaryScreen extends Screen {
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if (showingName && showedEntry != null) {
-            if (JeiHelper.handleShowUses(keyCode, scanCode, showedEntry.getRenderedEntity(getMinecraft().level).getPickResult())) {
+        if (JeiHelper.IS_LOADED && showingName && showedEntry != null) {
+            if (ModJeiPlugin.handleShowUses(keyCode, scanCode, showedEntry.getRenderedEntity(getMinecraft().level).getPickResult())) {
                 return true;
             }
         }
@@ -470,16 +471,20 @@ public class BestiaryScreen extends Screen {
             x1 = leftPos + 164;
             y1 = topPos + 116;
             x2 = x1 + 48;
+            FilterEntry renderedFilter = null;
             for (FilterEntry filter : showedEntry.getFilters()) {
                 renderFilter(guiGraphics, filter, x1, y1, 16, 16);
                 if (mouseX >= x1 && mouseX < x1 + 16 && mouseY >= y1 && mouseY < y1 + 16) {
-                    guiGraphics.renderTooltip(font, filter.tooltip(), Optional.empty(), mouseX, mouseY);
+                    renderedFilter = filter;
                 }
                 x1 += 16;
                 if (x1 >= x2) {
                     x1 = leftPos + 164;
                     y1 += 16;
                 }
+            }
+            if (renderedFilter != null) {
+                guiGraphics.renderTooltip(font, renderedFilter.tooltip(), Optional.empty(), mouseX, mouseY);
             }
             // 描述
             if (p20) {

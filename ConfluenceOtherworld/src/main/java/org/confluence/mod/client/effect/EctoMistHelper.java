@@ -9,12 +9,13 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ViewportEvent;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.client.ClientConfigs;
 import org.confluence.mod.common.init.ModParticleTypes;
 import org.confluence.mod.mixed.ILevelChunkSection;
 import org.confluence.mod.util.DynamicBiomeUtils;
 import software.bernie.geckolib.animation.EasingType;
 
-@EventBusSubscriber(modid = Confluence.MODID, bus = EventBusSubscriber.Bus.GAME, value = Dist.CLIENT)
+@EventBusSubscriber(modid = Confluence.MODID, value = Dist.CLIENT)
 public class EctoMistHelper {
     public static int effectiveTombstones = 0;
     private static float ectoMistStep = 1.0F;
@@ -23,7 +24,7 @@ public class EctoMistHelper {
     private static float lastStart = 4;
 
     public static void tick(Minecraft minecraft, LocalPlayer player) {
-        if (player.level().getGameTime() % 40 == 2) {
+        if (ClientConfigs.ectoMistEffect && player.level().getGameTime() % 40 == 2) {
             ILevelChunkSection iSection = DynamicBiomeUtils.getISection(player.level(), player.blockPosition());
             effectiveTombstones = iSection == null ? 0 : iSection.confluence$getBlockCounts().tomb.get() - iSection.confluence$getBlockCounts().sunflower.get();
         }
@@ -34,6 +35,10 @@ public class EctoMistHelper {
                     player.getZ() + (player.getRandom().nextDouble() - 0.5) * 16,
                     0, 0, 0);
         }
+    }
+
+    public static void reset() {
+        effectiveTombstones = 0;
     }
 
     public static boolean isGraveyard() {

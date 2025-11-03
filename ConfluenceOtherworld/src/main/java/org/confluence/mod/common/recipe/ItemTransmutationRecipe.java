@@ -83,29 +83,26 @@ public record ItemTransmutationRecipe(Ingredient source, List<ItemStack> target,
         return NonNullList.withSize(1, ItemStack.EMPTY);
     }
 
-    public static class Serializer implements RecipeSerializer<ItemTransmutationRecipe> {
-        public static final MapCodec<ItemTransmutationRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-                Ingredient.CODEC.fieldOf("source").forGetter(ItemTransmutationRecipe::source),
-                ItemStack.CODEC.listOf().lenientOptionalFieldOf("target", List.of()).forGetter(ItemTransmutationRecipe::target),
-                ExtraCodecs.POSITIVE_INT.lenientOptionalFieldOf("shrink", 1).forGetter(ItemTransmutationRecipe::shrink),
-                GamePhase.CODEC.lenientOptionalFieldOf("game_phase", GamePhase.BEFORE_SKELETRON).forGetter(ItemTransmutationRecipe::gamePhase)
-        ).apply(instance, ItemTransmutationRecipe::new));
-        public static final StreamCodec<RegistryFriendlyByteBuf, ItemTransmutationRecipe> STREAM_CODEC = StreamCodec.composite(
-                Ingredient.CONTENTS_STREAM_CODEC, ItemTransmutationRecipe::source,
-                ItemStack.LIST_STREAM_CODEC, ItemTransmutationRecipe::target,
-                ByteBufCodecs.VAR_INT, ItemTransmutationRecipe::shrink,
-                GamePhase.STREAM_CODEC, ItemTransmutationRecipe::gamePhase,
-                ItemTransmutationRecipe::new
-        );
-
+    public static class Serializer extends SimpleRecipeSerializer<ItemTransmutationRecipe> {
         @Override
-        public MapCodec<ItemTransmutationRecipe> codec() {
-            return CODEC;
+        protected MapCodec<ItemTransmutationRecipe> getCodec() {
+            return RecordCodecBuilder.mapCodec(instance -> instance.group(
+                    Ingredient.CODEC.fieldOf("source").forGetter(ItemTransmutationRecipe::source),
+                    ItemStack.CODEC.listOf().lenientOptionalFieldOf("target", List.of()).forGetter(ItemTransmutationRecipe::target),
+                    ExtraCodecs.POSITIVE_INT.lenientOptionalFieldOf("shrink", 1).forGetter(ItemTransmutationRecipe::shrink),
+                    GamePhase.CODEC.lenientOptionalFieldOf("game_phase", GamePhase.BEFORE_SKELETRON).forGetter(ItemTransmutationRecipe::gamePhase)
+            ).apply(instance, ItemTransmutationRecipe::new));
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, ItemTransmutationRecipe> streamCodec() {
-            return STREAM_CODEC;
+        protected StreamCodec<RegistryFriendlyByteBuf, ItemTransmutationRecipe> getStreamCodec() {
+            return StreamCodec.composite(
+                    Ingredient.CONTENTS_STREAM_CODEC, ItemTransmutationRecipe::source,
+                    ItemStack.LIST_STREAM_CODEC, ItemTransmutationRecipe::target,
+                    ByteBufCodecs.VAR_INT, ItemTransmutationRecipe::shrink,
+                    GamePhase.STREAM_CODEC, ItemTransmutationRecipe::gamePhase,
+                    ItemTransmutationRecipe::new
+            );
         }
     }
 }

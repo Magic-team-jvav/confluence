@@ -7,6 +7,8 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.DataMapProvider;
+import net.neoforged.neoforge.registries.DeferredBlock;
+import org.confluence.mod.common.block.common.RelicBlock;
 import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.common.data.gen.ModDataMapProvider;
 import org.confluence.mod.common.init.ModDataMaps;
@@ -20,6 +22,7 @@ import org.confluence.terraentity.init.item.*;
 
 public final class ValueSubProvider {
     public static void gather(ModDataMapProvider.Appender<Builder> appender) {
+        Builder builder = appender.create();
         int gold1 = 10000;
         int gold2 = 20000;
         int gold5 = 50000;
@@ -33,12 +36,12 @@ public final class ValueSubProvider {
         int silver20 = 2000;
         int silver50 = 5000;
 
-        appender.create()
+        builder
                 .add(Items.DRAGON_EGG, gold2)
                 .add(Items.NETHER_STAR, silver20)
                 .add(Items.ANVIL, silver1 * 10)
                 .add(Items.TORCH, 10);
-        appender.create()
+        builder
                 .add(Items.COPPER_INGOT, silver1 + 50)
                 .add(MaterialItems.CRIMTANE_INGOT, 3900)
                 .add(MaterialItems.DEMONITE_INGOT, silver20 + silver10)
@@ -63,10 +66,10 @@ public final class ValueSubProvider {
                 .add(MaterialItems.ORICHALCUM_INGOT, 5200)
                 .add(MaterialItems.PALLADIUM_INGOT, 2700)
                 .add(MaterialItems.HALLOWED_INGOT, silver20 + silver20);
-        appender.create()
+        builder
                 .add(Items.IRON_NUGGET, 15)
                 .add(Items.GOLD_NUGGET, 133);
-        appender.create()
+        builder
                 .add(Items.IRON_HELMET, 150 * 5)
                 .add(Items.GOLDEN_HELMET, 1200 * 5)
                 .add(Items.DIAMOND_HELMET, (silver20 + silver10) * 5)
@@ -83,10 +86,10 @@ public final class ValueSubProvider {
                 .add(Items.GOLDEN_BOOTS, 1200 * 4)
                 .add(Items.DIAMOND_BOOTS, (silver20 + silver10) * 4)
                 .add(Items.NETHERITE_BOOTS, (silver20 + silver20) * 4);
-        appender.create()
+        builder
                 .add(Items.ROTTEN_FLESH, 1)
                 .add(Items.BONE, 2)
-                .add(Items.GUNPOWDER, 2)
+                .add(Items.GUNPOWDER, 10)
                 .add(Items.STRING, 2)
                 .add(Items.ENDER_PEARL, 10)
                 .add(Items.ENDER_EYE, 40)
@@ -97,7 +100,7 @@ public final class ValueSubProvider {
                 .add(Items.TOTEM_OF_UNDYING, silver10)
                 .add(Tags.Items.MUSIC_DISCS, silver5)
                 .add(Items.ENCHANTED_BOOK, silver10);
-        appender.create()
+        builder
                 .add(Items.COPPER_BLOCK, 150 * 9)
                 .add(OreBlocks.CRIMTANE_BLOCK, 3900 * 9)
                 .add(OreBlocks.DEMONITE_BLOCK, 3000 * 9)
@@ -122,7 +125,7 @@ public final class ValueSubProvider {
                 .add(OreBlocks.ORICHALCUM_BLOCK, 5200 * 9)
                 .add(OreBlocks.PALLADIUM_BLOCK, 2700 * 9)
                 .add(OreBlocks.HALLOWED_BLOCK, (silver20 + silver20) * 9);
-        appender.create()
+        builder
                 .add(Items.DIAMOND, silver20 + silver10)
                 .add(MaterialItems.AMBER, silver20 + silver10)
                 .add(MaterialItems.RUBY, silver20 + silver2 + 50)
@@ -138,7 +141,7 @@ public final class ValueSubProvider {
                 .add(Items.NETHERITE_SCRAP, silver10)
                 .add(Items.COAL, 40)
                 .add(Items.CHARCOAL, 40);
-        appender.create()
+        builder
                 .add(NatureBlocks.AMETHYST_SAPLING, 375)
                 .add(NatureBlocks.TOPAZ_SAPLING, 750)
                 .add(NatureBlocks.SAPPHIRE_SAPLING, 1125)
@@ -146,7 +149,7 @@ public final class ValueSubProvider {
                 .add(NatureBlocks.RUBY_SAPLING, 2250)
                 .add(NatureBlocks.DIAMOND_SAPLING, 3000)
                 .add(NatureBlocks.AMBER_SAPLING, 3000);
-        appender.create()
+        builder
                 .add(Items.DIAMOND_BLOCK, (silver20 + silver10) * 9)
                 .add(DecorativeBlocks.AMBER_BLOCK, (silver20 + silver10) * 9)
                 .add(DecorativeBlocks.RUBY_BLOCK, (silver20 + silver2 + 50) * 9)
@@ -158,12 +161,12 @@ public final class ValueSubProvider {
                 .add(Items.LAPIS_BLOCK, 50 * 9)
                 .add(Items.REDSTONE_BLOCK, 40 * 9)
                 .add(Items.COAL_BLOCK, 40 * 9);
-        appender.create()
+        builder
                 .add(Items.REDSTONE_LAMP, silver2)
                 .add(Items.PISTON, silver2 + silver2)
                 .add(Items.STICKY_PISTON, silver5 + silver1)
                 .add(Items.DAYLIGHT_DETECTOR, silver2);
-        appender.create()
+        builder
                 .add(Items.RAW_COPPER, 50)
                 .add(MaterialItems.RAW_TIN, 75)
                 .add(Items.RAW_IRON, 80)
@@ -184,7 +187,7 @@ public final class ValueSubProvider {
                 .add(MaterialItems.RAW_TITANIUM, 1700)
                 .add(MaterialItems.RAW_CHLOROPHYTE, 1500)
                 .add(MaterialItems.RAW_LUMINITE, 3000);
-        appender.create()
+        builder
                 .add(Items.RAW_COPPER_BLOCK, 50 * 9)
                 .add(OreBlocks.RAW_TIN_BLOCK, 75 * 9)
                 .add(Items.RAW_IRON_BLOCK, 80 * 9)
@@ -205,7 +208,7 @@ public final class ValueSubProvider {
                 .add(OreBlocks.RAW_TITANIUM_BLOCK, 1700 * 9)
                 .add(OreBlocks.RAW_CHLOROPHYTE_BLOCK, 1500 * 9)
                 .add(OreBlocks.RAW_LUMINITE_BLOCK, 3000 * 9);
-        appender.create()
+        builder
                 .add(MaterialItems.GEL, 1)
                 .add(MaterialItems.PINK_GEL, 3)
                 .add(MaterialItems.SILK, 200)
@@ -231,6 +234,13 @@ public final class ValueSubProvider {
                 .add(MaterialItems.BLACK_LENS, silver10)
                 .add(MaterialItems.CHINA_PLATE, 30)
                 .add(MaterialItems.CHINA_BOWL, 4)
+                .add(MaterialItems.EMPTY_BULLET, 1)
+                .add(MaterialItems.EXPLOSIVE_POWDER, 240)
+                .add(MaterialItems.GOLD_DUST, 340)
+                .add(MaterialItems.COG, 140)
+                .add(MaterialItems.NANITES, 300)
+                .add(MaterialItems.CONFETTI, 40)
+                .add(MaterialItems.VIAL_OF_VENOM, 300)
                 .add(MaterialItems.HARPY_FEATHER, 10)
                 .add(MaterialItems.GIANT_HARPY_FEATHER, gold2 + silver50)
                 .add(MaterialItems.FLINX_FUR, silver1)
@@ -264,7 +274,7 @@ public final class ValueSubProvider {
                 .add(MaterialItems.SOUL_OF_SIGHT, 8000)
                 .add(MaterialItems.SOUL_OF_FRIGHT, 8000)
                 .add(MaterialItems.SPELL_TOME, gold1);
-        appender.create()
+        builder
                 .add(SwordItems.ASH_WOOD_SWORD, 20)
                 .add(SwordItems.BAT_BAT, silver20 + silver5)
                 .add(SwordItems.BEE_KEEPER, gold2)
@@ -331,7 +341,7 @@ public final class ValueSubProvider {
                 .add(TEBoomerangItems.COMBAT_WRENCH, silver50)
                 .add(TEBoomerangItems.WOOD_BOOMERANG, silver20)
                 .add(SwordItems.BREAKER_BLADE, gold1 + gold2);
-        appender.create() // 探索
+        builder // 探索
                 .add(ModBlocks.ROPE, 2)
                 .add(ModBlocks.SILK_ROPE, 2)
                 .add(ModBlocks.WEB_ROPE, 2)
@@ -365,16 +375,16 @@ public final class ValueSubProvider {
                 .add(ToolItems.LAVA_ABSORBANT_SPONGE, gold10)
                 .add(ToolItems.ULTRA_ABSORBANT_SPONGE, gold10 + gold10 + gold10)
         ;
-        appender.create()
+        builder
                 .add(ToolItems.SHADOW_KEY, gold1 + silver50 + silver20 + silver5);
-        appender.create()
+        builder
                 .add(LightPetItems.SHADOW_ORB, gold1 + silver50)
                 .add(LightPetItems.CRIMSON_HEART, gold1 + silver50)
                 .add(LightPetItems.MAGIC_LANTERN, gold2);
-        appender.create()
+        builder
                 .add(TERideableItems.SLIMY_SADDLE, gold5)
                 .add(TERideableItems.HONEYED_GOGGLES, gold5);
-        appender.create() // 影响地形
+        builder // 影响地形
                 .add(AxeItems.STAFF_OF_REGROWTH, silver50)
                 .add(ModItems.HIVE_WAND, silver50)
                 .add(ModItems.LIVING_WOOD_WAND, silver20 + silver5)
@@ -384,13 +394,13 @@ public final class ValueSubProvider {
                 .add(ConsumableItems.PURIFICATION_POWDER, 15)
                 .add(ConsumableItems.VILE_POWDER, 20)
                 .add(ConsumableItems.VICIOUS_POWDER, 20);
-        appender.create() // 电路
+        builder // 电路
                 .add(ToolItems.RED_WRENCH, silver20 + silver20)
                 .add(ToolItems.GREEN_WRENCH, silver20 + silver20)
                 .add(ToolItems.BLUE_WRENCH, silver20 + silver20)
                 .add(ToolItems.YELLOW_WRENCH, silver20 + silver20)
                 .add(ToolItems.WIRE_CUTTER, silver20 + silver20);
-        appender.create()
+        builder
                 .add(SpearItems.ADAMANTITE_GLAIVE, gold1 + silver50 + silver20 + silver10)
                 .add(SpearItems.CHLOROPHYTE_PARTISAN, gold2 + gold1 + silver50 + silver10)
                 .add(SpearItems.COBALT_NAGINATA, silver50 + silver20 + silver20)
@@ -404,7 +414,7 @@ public final class ValueSubProvider {
                 .add(SpearItems.PALLADIUM_PIKE, gold1 + silver20)
                 .add(SpearItems.TITANIUM_TRIDENT, gold2 + silver10)
                 .add(SpearItems.GUNGNIR, gold2 + gold2 + silver50 + silver10);
-        appender.create()
+        builder
                 .add(BowItems.ASH_WOOD_BOW, 20)
                 .add(BowItems.ASH_WOOD_SHORT_BOW, 10)
                 .add(BowItems.EBONWOOD_BOW, 20)
@@ -439,7 +449,7 @@ public final class ValueSubProvider {
                 .add(BowItems.HUNTING_BOW, 3800)
                 .add(BowItems.HELLWING_BOW, gold2 + silver50)
                 .add(BowItems.WOODEN_SHORT_BOW, 30);
-        appender.create()
+        builder
                 .add(PickaxeItems.CACTUS_PICKAXE, silver2 + silver2)
                 .add(PickaxeItems.COPPER_PICKAXE, silver1)
                 .add(PickaxeItems.TIN_PICKAXE, silver1 + 50)
@@ -451,6 +461,9 @@ public final class ValueSubProvider {
                 .add(PickaxeItems.GOLDEN_PICKAXE, silver20)
                 .add(PickaxeItems.CANDY_CANE_PICKAXE, silver20)
                 .add(PickaxeItems.FOSSIL_PICKAXE, silver20 + silver10)
+                .add(PickaxeItems.ABYSSAL_PICKAXE, silver20 + silver20)
+                .add(PickaxeItems.MIASMA_PICKAXE, silver20 + silver20)
+                .add(PickaxeItems.COLD_CRYSTAL_PICKAXE, silver20 + silver20)
                 .add(PickaxeItems.BONE_PICKAXE, silver20 + silver10)
                 .add(PickaxeItems.PLATINUM_PICKAXE, 3000)
                 .add(PickaxeItems.REAVER_SHARK_PICKAXE, gold1 + silver50)
@@ -470,11 +483,11 @@ public final class ValueSubProvider {
                 .add(PickaxeItems.NEBULA_PICKAXE, gold5 + gold2)
                 .add(PickaxeItems.SOLAR_FLARE_PICKAXE, gold5 + gold2)
                 .add(PickaxeItems.STARDUST_PICKAXE, gold5 + gold2);
-        appender.create()
+        builder
                 .add(PickaxeAxeItems.PICKAXE_AXE, gold2 + gold2 + silver20 + silver20)
                 .add(PickaxeAxeItems.SHROOMITE_DIGGING_CLAW, gold2 + gold2)
                 .add(PickaxeAxeItems.PICKSAW, gold2 + gold2 + silver20 + silver10 + silver2);
-        appender.create()
+        builder
                 .add(HammerItems.WOODEN_HAMMER, 10)
                 .add(HammerItems.COPPER_HAMMER, 80)
                 .add(HammerItems.TIN_HAMMER, silver1 + 20)
@@ -495,7 +508,7 @@ public final class ValueSubProvider {
                 .add(HammerItems.HAMMUSH, gold10 - gold2)
                 .add(HammerItems.CHLOROPHYTE_WARHAMMER, gold2 + gold2 + silver20 + silver10 + silver2)
                 .add(HammerItems.CHLOROPHYTE_JACKHAMMER, gold2 + gold2 + silver20 + silver10 + silver2);
-        appender.create()
+        builder
                 .add(Items.WOODEN_HOE, 8)
                 .add(Items.STONE_HOE, 12)
                 .add(HoeItems.COPPER_HOE, 20)
@@ -511,7 +524,7 @@ public final class ValueSubProvider {
                 .add(HoeItems.SHADOW_HOE, silver20 + silver2 + silver2 + 20)
                 .add(HoeItems.CULTIVATOR, silver20 + silver5 + 20)
                 .add(Items.NETHERITE_HOE, silver20 + silver10 + silver2);
-        appender.create()
+        builder
                 .add(Items.WOODEN_SHOVEL, 5)
                 .add(Items.STONE_SHOVEL, 7)
                 .add(ShovelItems.COPPER_SHOVEL, 20)
@@ -527,7 +540,7 @@ public final class ValueSubProvider {
                 .add(ShovelItems.SHADOW_SHOVEL, silver20 + silver2 + 10)
                 .add(ShovelItems.MINER, silver20 + silver2 + silver2 + 10)
                 .add(Items.NETHERITE_SHOVEL, silver20 + silver10);
-        appender.create()
+        builder
                 .add(FishingPoleItems.WOOD_FISHING_POLE, 60)
                 .add(FishingPoleItems.REINFORCED_FISHING_POLE, silver20 + silver2 + silver2)
                 .add(FishingPoleItems.FISHER_OF_SOULS, gold2 + silver20 + silver20)
@@ -539,7 +552,7 @@ public final class ValueSubProvider {
                 .add(FishingPoleItems.SITTING_DUCKS_FISHING_POLE, gold5 + gold2)
                 .add(FishingPoleItems.HOTLINE_FISHING_HOOK, gold10)
                 .add(FishingPoleItems.GOLDEN_FISHING_ROD, gold10 + gold5 + gold2 + silver20);
-        appender.create()
+        builder
                 .add(AxeItems.COPPER_AXE, 80)
                 .add(AxeItems.TIN_AXE, silver1 + 20)
                 .add(Items.IRON_AXE, silver1 + 60)
@@ -562,7 +575,7 @@ public final class ValueSubProvider {
                 .add(AxeItems.CHLOROPHYTE_GREATAXE, gold2 + gold2 + silver20 + silver10 + silver2)
                 .add(AxeItems.LUCY_THE_AXE, gold1 + silver50)
                 .add(AxeItems.AXE_OF_REGROWTH, gold1 + silver50);
-        appender.create()
+        builder
                 .add(HamaxeItems.METEOR_HAMAXE, silver20 + silver10)
                 .add(HoeShovelItems.METEOR_HOE_SHOVEL, silver20 + silver10)
                 .add(HamaxeItems.MOLTEN_HAMAXE, silver50 + silver2 + silver2)
@@ -574,7 +587,7 @@ public final class ValueSubProvider {
                 .add(HamaxeItems.NEBULA_HAMAXE, gold5)
                 .add(HamaxeItems.STARDUST_HAMAXE, gold5)
                 .add(HamaxeItems.THE_AXE, gold10);
-        appender.create()
+        builder
                 .add(DrillItems.COBALT_DRILL, gold1 + silver10 - silver2)
                 .add(DrillItems.PALLADIUM_DRILL, gold1 + silver50 - silver5 - silver1)
                 .add(DrillItems.MYTHRIL_DRILL, gold1 + silver50 + silver10 + silver2)
@@ -587,7 +600,7 @@ public final class ValueSubProvider {
                 .add(DrillItems.NEBULA_DRILL, gold5 + gold2)
                 .add(DrillItems.SOLAR_FLARE_DRILL, gold5 + gold2)
                 .add(DrillItems.STARDUST_DRILL, gold5 + gold2);
-        appender.create()
+        builder
                 .add(ManaWeaponItems.WAND_OF_SPARKING, gold1)
                 .add(ManaWeaponItems.WAND_OF_FROSTING, 3500)
                 .add(ManaWeaponItems.AMETHYST_STAFF, 2800)
@@ -608,8 +621,9 @@ public final class ValueSubProvider {
                 .add(ManaWeaponItems.DEMON_SCYTHE, gold1 + silver50)
                 .add(ManaWeaponItems.BOOK_OF_SKULLS, gold1 + silver50)
                 .add(ManaWeaponItems.FLOWER_OF_FIRE, gold2 + silver50)
-                .add(ManaWeaponItems.THUNDER_ZAPPER, 2100);
-        appender.create()
+                .add(ManaWeaponItems.THUNDER_ZAPPER, 2100)
+                .add(ManaWeaponItems.GOLDEN_SHOWER, gold2 + gold2);
+        builder
                 .add(TESummonItems.SLIME_STAFF, gold2)
                 .add(TESummonItems.HORNET_STAFF, silver50 + silver20)
                 .add(TESummonItems.IMP_STAFF, silver50 + silver2 + silver2)
@@ -620,7 +634,7 @@ public final class ValueSubProvider {
                 .add(TESummonItems.TERRAPRISMA, gold20)
                 .add(TEPetItems.CHESTER_STAFF, gold2)
                 .add(TEPetItems.WALLET, gold2);
-        appender.create()
+        builder
                 .add(TEWhipItems.LEATHER_WHIP, gold2)
                 .add(TEWhipItems.SLUB_WHIP, 30)
                 .add(TEWhipItems.RUBY_WHIP, gold2)
@@ -630,8 +644,11 @@ public final class ValueSubProvider {
                 .add(TEWhipItems.DIAMOND_WHIP, gold2 + silver50)
                 .add(TEWhipItems.SAPPHIRE_WHIP, gold2 + silver20)
                 .add(TEWhipItems.AMETHYST_WHIP, gold2 + silver10)
-                .add(TEWhipItems.SWAMP_WHIP, gold2 + silver50 + silver50);
-        appender.create()
+                .add(TEWhipItems.SWAMP_WHIP, gold2 + silver50 + silver50)
+                .add(TEWhipItems.SNAPTHORN, gold1)
+                .add(TEWhipItems.SPINAL_TAP, gold1 + silver50)
+                .add(TEWhipItems.FIRECRACKER, gold1 + gold2);
+        builder
                 .add(TCItems.AGLET, 25000)
                 .add(TCItems.AMBER_HORSESHOE_BALLOON, 30000)
                 .add(TCItems.AMBHIPIAN_BOOTS, gold2)
@@ -809,7 +826,7 @@ public final class ValueSubProvider {
                 .add(TCItems.WORM_SCARF, gold2)
                 .add(TCItems.YELLOW_HORSESHOE_BALLOON, 30000)
                 .add(TCItems.WORKSHOP, gold2);
-        appender.create()
+        builder
                 .add(TGItems.BOOMSTICK, gold2)
                 .add(TGItems.SNOWBALL_CANNON, gold2)
                 .add(TGItems.BLOWGUN, silver20)
@@ -837,7 +854,7 @@ public final class ValueSubProvider {
                 .add(TGItems.ENDLESS_MUSKET_POUCH, gold1)
                 .add(TGItems.LUMINITE_BULLET, 2)
                 .add(TGItems.TUNGSTEN_BULLET, 3);
-        appender.create()
+        builder
                 .add(ConsumableItems.SHURIKEN, 15)
                 .add(ConsumableItems.THROWING_KNIVE, 50)
                 .add(ConsumableItems.GRENADE, 75)
@@ -847,7 +864,7 @@ public final class ValueSubProvider {
                 .add(ConsumableItems.HOLY_WATER, 40)
                 .add(ConsumableItems.UNHOLY_WATER, 40)
                 .add(ConsumableItems.BLOOD_WATER, 40)
-                .add(MaterialItems.DUNGEON_DEMON_BONE, 10)
+                .add(ConsumableItems.DUNGEON_DEMON_BONE, 10)
                 .add(ConsumableItems.BONE_THROWING_KNIFE, 10)
                 .add(ConsumableItems.FROST_DAGGERFISH, 16)
                 .add(ConsumableItems.JAVELIN, 5)
@@ -858,7 +875,7 @@ public final class ValueSubProvider {
                 .add(ConsumableItems.GOLDEN_LOCK_BOX, 4000)
                 .add(ConsumableItems.OBSIDIAN_LOCK_BOX, 4000)
                 .add(ConsumableItems.BEENADE, silver5);
-        appender.create()
+        builder
                 .add(ConsumableItems.BOMB, 60)
                 .add(ConsumableItems.STICKY_BOMB, silver1)
                 .add(ConsumableItems.BOUNCY_BOMB, 80)
@@ -869,7 +886,7 @@ public final class ValueSubProvider {
                 .add(ConsumableItems.BOUNCY_DYNAMITE, silver2 + silver2)
                 .add(ConsumableItems.BOMB_FISH, silver2)
                 .add(ConsumableItems.SCARAB_BOMB, silver1 + silver2);
-        appender.create()
+        builder
                 .add(Items.ARROW, 1)
                 .add(ArrowItems.FLAMING_ARROW, 2)
                 .add(ArrowItems.UNHOLY_ARROW, 8)
@@ -880,7 +897,7 @@ public final class ValueSubProvider {
                 .add(ArrowItems.BONE_ARROW, 3)
                 .add(ArrowItems.SHIMMER_ARROW, 3)
                 .add(ArrowItems.FLY_FISH_ARROW, 2);
-        appender.create() // 其它
+        builder // 其它
                 .add(ConsumableItems.DRY_BOMB, silver5)
                 .add(ConsumableItems.WET_BOMB, silver5)
                 .add(ConsumableItems.LAVA_BOMB, silver5)
@@ -893,7 +910,7 @@ public final class ValueSubProvider {
                 .add(ToolItems.GUIDE_TO_CRITTER_COMPANIONSHIP, gold1)
                 .add(ToolItems.GUIDE_TO_ENVIRONMENTAL_PRESERVATION, gold1)
                 .add(ToolItems.GUIDE_TO_PEACEFUL_COEXISTENCE, gold2);
-        appender.create()
+        builder
                 .add(ArmorItems.MINING_HELMET, gold1 - silver20)
                 .add(ArmorItems.MINING_CHESTPLATE, silver10)
                 .add(ArmorItems.MINING_LEGGINGS, silver10)
@@ -1074,7 +1091,7 @@ public final class ValueSubProvider {
                 .add(VanityArmorItems.ROBE, silver5 - silver1)
                 .add(VanityArmorItems.DEAD_MANS_SWEATER, silver20)
                 .add(TCItems.DIVING_HELMET, silver2);
-        appender.create()
+        builder
                 .add(Items.LEATHER_HORSE_ARMOR, 14)
                 .add(Items.IRON_HORSE_ARMOR, silver2 + silver2)
                 .add(Items.GOLDEN_HORSE_ARMOR, silver20 - silver1 + 8)
@@ -1153,7 +1170,7 @@ public final class ValueSubProvider {
                 .add(Items.PHANTOM_MEMBRANE, 50)
                 .add(Items.PHANTOM_MEMBRANE, 50)
         ;
-        appender.create()
+        builder
                 .add(Items.POTION, silver2)
                 .add(Items.SPLASH_POTION, silver2 + silver2)
                 .add(Items.LINGERING_POTION, silver10 - silver2)
@@ -1217,12 +1234,12 @@ public final class ValueSubProvider {
                 .add(PotionItems.LUCK_POTION, gold5)
                 .add(PotionItems.GREATER_LUCK_POTION, gold20 + gold5
                 );
-        appender.create()
+        builder
                 .add(Items.ENCHANTED_GOLDEN_APPLE, gold2)
                 .add(Items.GOLDEN_APPLE, silver50)
                 .add(FoodItems.PAD_THAI, 1100)
                 .add(FoodItems.HONEYFIN, silver5 + silver10);
-        appender.create()
+        builder
                 .add(PaintItems.EYEDROPPER, 20)
                 .add(PaintItems.PAINTBRUSH, silver20)
                 .add(PaintItems.PAINT_ROLLER, silver20)
@@ -1262,12 +1279,12 @@ public final class ValueSubProvider {
                 .add(PaintItems.NEGATIVE_PAINT, 15)
                 .add(PaintItems.ILLUMINANT_COATING, 40)
         ;
-        appender.create()
+        builder
                 .add(LanceItems.JOUSTING_LANCE, gold1 + silver20)
                 .add(LanceItems.HALLOWED_JOUSTING_LANCE, gold2 + gold2 + silver50 + silver10)
                 .add(LanceItems.SHADOW_JOUSTING_LANCE, gold10);
 
-        appender.create()
+        builder
                 .add(VanityArmorItems.GOLD_CROWN, silver20)
                 .add(VanityArmorItems.PLATINUM_CROWN, silver20 + silver10)
                 .add(VanityArmorItems.RED_DYE, silver20)
@@ -1300,10 +1317,10 @@ public final class ValueSubProvider {
                 .add(VanityArmorItems.BROWN_DYE, silver20)
                 .add(VanityArmorItems.TEAM_DYE, silver20);
 
-        appender.create()
+        builder
                 .add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.SAPLING, silver20);
 
-        appender.create()
+        builder
                 .add(ModItems.GRASS_SEED, 4)
                 .add(ModItems.ASH_GRASS_SEED, 30)
                 .add(ModItems.CORRUPT_SEED, silver1)
@@ -1316,7 +1333,7 @@ public final class ValueSubProvider {
                 .add(ModItems.MUSHROOM_GRASS_SEED, 30)
                 .add(NatureBlocks.DYNASTY_LOG_BLOCKS.LOG, 10)
                 .add(ModItems.JUNGLE_GRASS_SEED, 30);
-        appender.create()
+        builder
                 .add(HookItems.GRAPPLING_HOOK, silver20 + silver20)
                 .add(HookItems.AMETHYST_HOOK, silver20 + silver20)
                 .add(HookItems.TOPAZ_HOOK, silver20 + silver20)
@@ -1343,10 +1360,10 @@ public final class ValueSubProvider {
                 .add(HookItems.CHRISTMAS_HOOK, gold2 + gold2)
                 .add(HookItems.LUNAR_HOOK, gold10)
                 .add(HookItems.STATIC_HOOK, gold10);
-        appender.create() // 小玩具物品
+        builder // 小玩具物品
                 .add(ModItems.WHOOPIE_CUSHION, 20)
                 .add(ConsumableItems.SMOKE_BOMB, 4);
-        appender.create()
+        builder
                 .add(Items.MINECART, silver2)
                 .add(MinecartItems.MECHANICAL_CART, gold1)
                 .add(MinecartItems.DESERT_MINECART, silver50)
@@ -1373,7 +1390,7 @@ public final class ValueSubProvider {
                 .add(MinecartItems.DIGGING_MOLECART, gold10)
                 .add(MinecartItems.FART_KART, silver50)
                 .add(MinecartItems.TERRA_FART_KART, gold1);
-        appender.create()
+        builder
                 .add(ConsumableItems.LIFE_CRYSTAL, gold1 + silver50)
                 .add(ConsumableItems.LIFE_FRUIT, gold2)
                 .add(ConsumableItems.MANA_CRYSTAL, silver20 + silver5)
@@ -1387,7 +1404,7 @@ public final class ValueSubProvider {
                 .add(ConsumableItems.GALAXY_PEARL, gold10 + gold5)
                 .add(ConsumableItems.MINECART_UPGRADE_KIT, gold2)
                 .add(ConsumableItems.PEDDLERS_SATCHEL, silver20 + silver5);
-        appender.create()
+        builder
                 .add(TreasureBagItems.KING_SLIME_TREASURE_BAG, gold2 + silver50)
                 .add(TreasureBagItems.EYE_OF_CTHULHU_TREASURE_BAG, gold1 + gold2 + silver50)
                 .add(TreasureBagItems.BRAIN_OF_CTHULHU_TREASURE_BAG, gold5)
@@ -1395,7 +1412,7 @@ public final class ValueSubProvider {
                 .add(TreasureBagItems.QUEEN_BEE_TREASURE_BAG, gold5 + gold2)
                 .add(TreasureBagItems.SKELETRON_TREASURE_BAG, gold1 + gold2)
                 .add(TreasureBagItems.WALL_OF_FLESH_TREASURE_BAG, gold10 - silver50);
-        appender.create()
+        builder
                 .add(AccessoryItems.PAINT_SPRAYER, gold2)
                 .add(AccessoryItems.LUCKY_COIN, gold1)
                 .add(AccessoryItems.ADHESIVE_BANDAGE, gold2)
@@ -1481,7 +1498,7 @@ public final class ValueSubProvider {
                 .add(AccessoryItems.SOLAR_WINGS, gold10 - gold2)
                 .add(AccessoryItems.STARDUST_WINGS, gold10 - gold2)
         ;
-        appender.create()
+        builder
                 .add(BaitItems.APPRENTICE_BAIT, silver1)
                 .add(BaitItems.JOURNEYMAN_BAIT, silver1 + silver2)
                 .add(BaitItems.MASTER_BAIT, silver10)
@@ -1528,7 +1545,7 @@ public final class ValueSubProvider {
                 .add(BaitItems.WORM, silver5)
                 .add(BaitItems.YELLOW_DRAGONFLY, silver10)
                 .add(BaitItems.ZEBRA_SWALLOWTAIL_BUTTERFLY, silver5 + silver10);
-        appender.create()
+        builder
                 .add(CrateBlocks.WOODEN_CRATE, silver10)
                 .add(CrateBlocks.IRON_CRATE, silver50)
                 .add(CrateBlocks.GOLDEN_CRATE, gold2)
@@ -1557,7 +1574,7 @@ public final class ValueSubProvider {
                 .add(CrateBlocks.HELLSTONE_CRATE, gold1)
                 .add(CrateBlocks.SEASIDE_CRATE, gold1)
                 .add(CrateBlocks.WILD_CRATE, gold1);
-        appender.create()
+        builder
                 .add(MaterialItems.BLINKROOT, 20)
                 .add(MaterialItems.DAYBLOOM, 20)
                 .add(MaterialItems.DEATHWEED, 20)
@@ -1565,12 +1582,12 @@ public final class ValueSubProvider {
                 .add(MaterialItems.MOONGLOW, 20)
                 .add(MaterialItems.SHIVERTHORN, 20)
                 .add(MaterialItems.WATERLEAF, 20);
-        appender.create()
+        builder
                 .add(MaterialItems.VILE_MUSHROOM, 10)
                 .add(MaterialItems.VICIOUS_MUSHROOM, 10)
                 .add(MaterialItems.GLOWING_MUSHROOM, 10);
         // 悠悠球
-        appender.create()
+        builder
                 .add(TEYoyosItems.WOODEN_YOYO, 100)
                 .add(TEYoyosItems.RALLY, 5000)
                 .add(TEYoyosItems.MALAISE, gold1)
@@ -1580,7 +1597,7 @@ public final class ValueSubProvider {
                 .add(TEYoyosItems.HIVE_FIVE, 7000)
                 .add(TEYoyosItems.CASCADE, 18000)
                 .add(TEYoyosItems.VALOR, 17500);
-        appender.create()
+        builder
                 .add(FoodItems.BLINKROOT_SEED, 16)
                 .add(FoodItems.CLOUDWEAVER_SEED, silver5)
                 .add(FoodItems.DAYBLOOM_SEED, 16)
@@ -1591,7 +1608,7 @@ public final class ValueSubProvider {
                 .add(FoodItems.SHIVERTHORN_SEED, 16)
                 .add(FoodItems.STELLAR_BLOSSOM_SEED, silver5)
                 .add(FoodItems.WATERLEAF_SEED, 16);
-        appender.create()
+        builder
                 .add(FoodItems.COOKED_SHRIMP, silver5 + silver10)
                 .add(FoodItems.COOK_FISH, silver5)
                 .add(FoodItems.SASHIMI, silver5)
@@ -1698,7 +1715,7 @@ public final class ValueSubProvider {
                 .add(FoodItems.COOKED_BIRD, silver20)
                 .add(FoodItems.COOKED_DUCK, silver20)
                 .add(FoodItems.ZONGZI, silver20);
-        appender.create()
+        builder
                 .add(FoodItems.TROUT, silver5)
                 .add(FoodItems.SEA_BASS, silver5)
                 .add(FoodItems.ATLANTIC_COD, silver5 + silver2 + 50)
@@ -1744,7 +1761,7 @@ public final class ValueSubProvider {
                 .add(FoodItems.GOLDEN_CARP, gold10)
                 .add(FoodItems.BLOODY_PIRANHAS, silver10 + silver5)
                 .add(FoodItems.NEON_GREASE_CARP, silver10 + silver5)
-                .add(FoodItems.OBSIDIAN_FISH, silver10 + silver5)
+                .add(FoodItems.OBSIDIFISH, silver10 + silver5)
                 .add(FoodItems.PRINCESS_FISH, silver20 + silver5)
                 .add(FoodItems.COLORFUL_MINERAL_FISH, gold1)
                 .add(FoodItems.RED_SNAPPER, silver5 + silver2 + 50)
@@ -1758,7 +1775,7 @@ public final class ValueSubProvider {
                 .add(FoodItems.STINKY_FISH, silver5 + silver20)
                 .add(FoodItems.MOTTLED_OILFISH, silver5 + silver10);
         // 电器元件
-        appender.create()
+        builder
                 .add(FunctionalBlocks.PIGGY_BANK, silver20)
                 .add(FunctionalBlocks.SAFE, gold1 - silver20)
                 .add(FunctionalBlocks.SWITCH, silver2 + silver2)
@@ -1809,7 +1826,7 @@ public final class ValueSubProvider {
                 .add(FunctionalBlocks.LEAD_ANVIL, 100)
                 .add(TFBlocks.GLASS_KILN, silver50 + silver2 + silver2)
                 .add(TFBlocks.LIVING_LOOM, gold2);
-        appender.create()
+        builder
                 .add(ChainsawItems.COBALT_CHAINSAW, gold1 + silver10 - silver2)
                 .add(ChainsawItems.PALLADIUM_CHAINSAW, gold1 + silver20 + silver20 + silver2 + silver2)
                 .add(ChainsawItems.MYTHRIL_CHAINSAW, gold1 + silver50 + silver10 + silver2)
@@ -1818,7 +1835,7 @@ public final class ValueSubProvider {
                 .add(ChainsawItems.TITANIUM_CHAINSAW, gold2 + silver50 + silver2)
         ;
         // 门
-        appender.create()
+        builder
                 .add(NatureBlocks.EBONY_LOG_BLOCKS.DOOR, 10)
                 .add(NatureBlocks.PEARL_LOG_BLOCKS.DOOR, 10)
                 .add(NatureBlocks.SHADOW_LOG_BLOCKS.DOOR, 10)
@@ -1885,12 +1902,11 @@ public final class ValueSubProvider {
                 .add(Blocks.WEATHERED_COPPER_TRAPDOOR, 10)
         ;
         // 圣物
-        appender.create()
-                .add(DecorativeBlocks.EYE_OF_CTHULHU_RELIC, gold1)
-                .add(DecorativeBlocks.KING_SLIME_RELIC, gold1)
-        ;
+        for (DeferredBlock<RelicBlock> block : DecorativeBlocks.RELIC_BLOCKS) {
+            builder.add(block, gold1);
+        }
         // 箱子
-        appender.create()
+        builder
                 .add(Blocks.CHEST, 10)
                 .add(Blocks.TRAPPED_CHEST, 20)
                 .add(Blocks.ENDER_CHEST, 60)
@@ -1907,7 +1923,7 @@ public final class ValueSubProvider {
                 .add(ChestBlocks.DUNGEON_CHEST, silver10)
         ;
         // 家具
-        appender.create()
+        builder
                 .add(TFBlocks.GLASS_TOILET, 30)
                 .add(TFBlocks.BLUE_BRICK_TOILET, 30)
 
@@ -1939,7 +1955,12 @@ public final class ValueSubProvider {
 
         ;
 
-        WaystonesHelper.appendValue(appender.create());
+        builder
+                .add(LanceItems.JOUSTING_LANCE.get(), gold1 + silver20)
+                .add(LanceItems.HALLOWED_JOUSTING_LANCE.get(), gold5 - silver20 - silver20)
+                .add(LanceItems.SHADOW_JOUSTING_LANCE.get(), gold10);
+
+        WaystonesHelper.appendValue(builder);
     }
 
     public static class Builder extends DataMapProvider.Builder<ValueComponent, Item> {

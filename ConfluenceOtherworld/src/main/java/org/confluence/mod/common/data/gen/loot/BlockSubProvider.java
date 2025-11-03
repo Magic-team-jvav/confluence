@@ -151,6 +151,8 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         dropSelf(CRYSTAL_BALL.get());
         dropSelf(MYTHRIL_ANVIL.get());
         dropSelf(ORICHALCUM_ANVIL.get());
+        dropSelf(ADAMANTITE_FORGE.get());
+        dropSelf(TITANIUM_FORGE.get());
         dropSelf(CHLOROPHYTE_EXTRACTINATOR.get());
         dropSelf(SOLIDIFIER.get());
         dropSelf(CAULDRON.get());
@@ -507,6 +509,9 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         // 圣物
         dropSelf(KING_SLIME_RELIC.get());
         dropSelf(EYE_OF_CTHULHU_RELIC.get());
+        dropSelf(BRAIN_OF_CTHULHU_RELIC.get());
+        dropSelf(EATER_OF_WORLDS_RELIC.get());
+        dropSelf(SKELETRON_RELIC.get());
         // 片
         dropWhenSilkTouch(SAND_LAYER_BLOCK.get());
         dropWhenSilkTouch(RED_SAND_LAYER_BLOCK.get());
@@ -537,6 +542,7 @@ public final class BlockSubProvider extends BlockLootSubProvider {
         add(LIFE_MUSHROOM_INDUSIUM_BLOCK.get(), block -> createMushroomBlockDrop(block, MaterialItems.LIFE_MUSHROOM));
         add(LIFE_MUSHROOM_PILEUS_BLOCK.get(), block -> createMushroomBlockDrop(block, MaterialItems.LIFE_MUSHROOM));
         dropSelf(LIFE_MUSHROOM_STEM_BLOCK.get());
+
 
 
         for (LogBlockSet logBlocks : LogBlockSet.LOG_BLOCK_SETS) {
@@ -827,7 +833,7 @@ public final class BlockSubProvider extends BlockLootSubProvider {
                         .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block)
                                 .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(BaseHerbBlock.AGE, 2))))
                 .withPool(LootPool.lootPool()
-                        .add(LootItem.lootTableItem(seed))
+                        .add(LootItem.lootTableItem(herb))
                         .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block)
                                 .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(BaseHerbBlock.AGE, 1)))));
     }

@@ -8,7 +8,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.confluence.mod.mixed.Immunity;
 
 public class StarFuryProjectile extends SwordProjectile implements Immunity {
-
     public StarFuryProjectile(EntityType<? extends SwordProjectile> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
         hitCount = 2;
@@ -21,12 +20,12 @@ public class StarFuryProjectile extends SwordProjectile implements Immunity {
     }
 
     @Override
-    public Type confluence$getImmunityType(){
+    public Type confluence$getImmunityType() {
         return Type.LOCAL;
     }
 
     @Override
-    public int confluence$getImmunityDuration(DamageSource damageSource){
+    public int confluence$getImmunityDuration(DamageSource damageSource) {
         return 5;
     }
 }

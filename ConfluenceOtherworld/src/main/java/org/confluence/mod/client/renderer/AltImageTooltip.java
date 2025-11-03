@@ -49,19 +49,19 @@ public class AltImageTooltip implements ClientTooltipComponent {
     public void renderImage(Font font, int x, int y, GuiGraphics guiGraphics) {
         Minecraft minecraft = Minecraft.getInstance();
         PoseStack pose = guiGraphics.pose();
-        BakedModel bakedmodel = minecraft.getItemRenderer().getModel(stack, minecraft.level, minecraft.player, 20251001);
+        BakedModel bakedModel = minecraft.getItemRenderer().getModel(stack, minecraft.level, minecraft.player, 20251001);
         pose.pushPose();
         pose.translate(x + 16, y + 40, 150);
 
         try {
             pose.scale(-32.0F, -32.0F, 32.0F);
-            boolean flag = !bakedmodel.usesBlockLight();
+            boolean flag = !bakedModel.usesBlockLight();
             if (flag) {
                 Matrix4f matrix4f = new Matrix4f().rotationY(-Mth.PI / 8.0F).rotateX(-Mth.PI * 3.0F / 4.0F);
                 GlStateManager.setupLevelDiffuseLighting(DIFFUSE_LIGHT_1, DIFFUSE_LIGHT_0, matrix4f);
             }
 
-            minecraft.getItemRenderer().render(stack, ItemDisplayContext.HEAD, false, pose, guiGraphics.bufferSource(), 15728880, OverlayTexture.NO_OVERLAY, bakedmodel);
+            minecraft.getItemRenderer().render(stack, ItemDisplayContext.HEAD, false, pose, guiGraphics.bufferSource(), 15728880, OverlayTexture.NO_OVERLAY, bakedModel);
             guiGraphics.flush();
             if (flag) {
                 Lighting.setupFor3DItems();

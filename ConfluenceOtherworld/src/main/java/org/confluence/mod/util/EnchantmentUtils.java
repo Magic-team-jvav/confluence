@@ -51,12 +51,12 @@ public final class EnchantmentUtils {
         return value.floatValue();
     }
 
-    public static float processEfficientMagic(ServerPlayer player) {
+    public static FloatSupplier processEfficientMagic(FloatSupplier sup, ServerPlayer player) {
         if (EnchantmentHelper.has(player.getMainHandItem(), ModEnchantments.EffectComponentTypes.EFFICIENT_MAGIC.get())) {
             ManaStorage manaStorage = ManaStorage.of(player);
-            return Mth.lerp(manaStorage.getCurrentMana() / manaStorage.getMaxMana(), 0.5F, 1.0F);
+            return () -> sup.getAsFloat() * Mth.lerp(manaStorage.getCurrentMana() / manaStorage.getMaxMana(), 0.5F, 1.0F);
         }
-        return 1.0F;
+        return sup;
     }
 
     public static void repairPlayerItems(ServerPlayer player, float consumedManaAmount) {

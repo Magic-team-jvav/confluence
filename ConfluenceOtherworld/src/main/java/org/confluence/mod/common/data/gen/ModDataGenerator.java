@@ -16,7 +16,7 @@ import org.confluence.mod.common.data.gen.tag.*;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
-@EventBusSubscriber(modid = Confluence.MODID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = Confluence.MODID)
 public final class ModDataGenerator {
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event) {

@@ -54,18 +54,15 @@ public class HeavyWorkBenchRecipe extends EnvironmentEitherAmountRecipe4x {
         return FunctionalBlocks.HEAVY_WORK_BENCH.toStack();
     }
 
-    public static class Serializer implements RecipeSerializer<HeavyWorkBenchRecipe> {
-        public static final MapCodec<HeavyWorkBenchRecipe> CODEC = EnvironmentEitherAmountRecipe4x.environmentEitherSerializerMapCodec(HeavyWorkBenchRecipe::new);
-        public static final StreamCodec<RegistryFriendlyByteBuf, HeavyWorkBenchRecipe> STREAM_CODEC = EnvironmentEitherAmountRecipe4x.environmentEitherSerializerStreamCodec(HeavyWorkBenchRecipe::new);
-
+    public static class Serializer extends SimpleRecipeSerializer<HeavyWorkBenchRecipe> {
         @Override
-        public MapCodec<HeavyWorkBenchRecipe> codec() {
-            return CODEC;
+        protected MapCodec<HeavyWorkBenchRecipe> getCodec() {
+            return environmentEitherSerializerMapCodec(HeavyWorkBenchRecipe::new);
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, HeavyWorkBenchRecipe> streamCodec() {
-            return STREAM_CODEC;
+        protected StreamCodec<RegistryFriendlyByteBuf, HeavyWorkBenchRecipe> getStreamCodec() {
+            return environmentEitherSerializerStreamCodec(HeavyWorkBenchRecipe::new);
         }
     }
 }

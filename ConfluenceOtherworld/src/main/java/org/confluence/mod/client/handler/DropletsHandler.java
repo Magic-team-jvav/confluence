@@ -31,7 +31,7 @@ public final class DropletsHandler {
         droplets = packet.data();
     }
 
-    public static void clear() {
+    public static void reset() {
         droplets = null;
     }
 }

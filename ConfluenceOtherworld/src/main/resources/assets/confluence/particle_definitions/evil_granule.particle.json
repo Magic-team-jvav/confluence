@@ -1,0 +1,72 @@
+{
+	"format_version": "1.10.0",
+	"particle_effect": {
+		"description": {
+			"identifier": "confluence:evil_granule",
+			"basic_render_parameters": {
+				"material": "particles_add",
+				"texture": "confluence:evil_granule"
+			}
+		},
+		"events": {
+			"event": {
+				"particle_effect": {
+					"effect": "confluence:hallow_granule",
+					"type": "emitter"
+				}
+			}
+		},
+		"components": {
+			"minecraft:emitter_local_space": {
+				"position": true,
+				"rotation": false
+			},
+			"minecraft:emitter_rate_steady": {
+				"spawn_rate": 30,
+				"max_particles": 100
+			},
+			"minecraft:emitter_lifetime_looping": {
+				"active_time": 8,
+				"sleep_time": 0.01
+			},
+			"minecraft:emitter_lifetime_events": {
+				"creation_event": "event"
+			},
+			"minecraft:emitter_shape_point": {
+				"offset": ["math.sin(variable.emitter_age * 180 + 180) * 0.4", 0, "math.cos(variable.emitter_age * 180 + 180) * 0.4"],
+				"direction": ["math.random(-0.5,0.5) + math.sin(variable.emitter_age * 180 + 180)", "math.random(-0.5,0.5)", "math.random(-0.5,0.5) + math.cos(variable.emitter_age * 180 + 180)"]
+			},
+			"minecraft:particle_lifetime_expression": {
+				"max_lifetime": 1
+			},
+			"minecraft:particle_initial_spin": {
+				"rotation": "math.random(-180, 180)"
+			},
+			"minecraft:particle_initial_speed": 5,
+			"minecraft:particle_motion_dynamic": {
+				"linear_acceleration": [0, 1, 0],
+				"linear_drag_coefficient": 4
+			},
+			"minecraft:particle_appearance_billboard": {
+				"size": [0.15, 0.15],
+				"facing_camera_mode": "rotate_xyz",
+				"uv": {
+					"texture_width": 16,
+					"texture_height": 128,
+					"flipbook": {
+						"base_UV": ["Math.floor(v.particle_random_3 * 2) * 8", "Math.floor(v.particle_random_4 * 2) * 8"],
+						"size_UV": [8, 8],
+						"step_UV": [0, 16],
+						"frames_per_second": 12,
+						"max_frame": 8,
+						"stretch_to_lifetime": true
+					}
+				}
+			},
+			"minecraft:particle_motion_collision": {
+				"collision_drag": 0.4,
+				"collision_radius": 0.2
+			}
+		}
+	}
+}

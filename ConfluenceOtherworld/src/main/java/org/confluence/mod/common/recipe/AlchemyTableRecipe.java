@@ -69,40 +69,39 @@ public class AlchemyTableRecipe implements Recipe<AlchemyTableRecipe.Input> {
         return ModRecipes.ALCHEMY_TABLE_TYPE.get();
     }
 
-    public static class Serializer implements RecipeSerializer<AlchemyTableRecipe> {
-        public static final MapCodec<AlchemyTableRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-                ItemStack.STRICT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
-                Ingredient.CODEC_NONEMPTY.fieldOf("base").forGetter(recipe -> recipe.base),
-                AbstractAmountRecipe.INGREDIENTS_CODEC.forGetter(recipe -> recipe.ingredients)
-        ).apply(instance, AlchemyTableRecipe::new));
-        public static final StreamCodec<RegistryFriendlyByteBuf, AlchemyTableRecipe> STREAM_CODEC = StreamCodec.of(Serializer::toNetwork, Serializer::fromNetwork);
-
+    public static class Serializer extends SimpleRecipeSerializer<AlchemyTableRecipe> {
         @Override
-        public MapCodec<AlchemyTableRecipe> codec() {
-            return CODEC;
+        protected MapCodec<AlchemyTableRecipe> getCodec() {
+            return RecordCodecBuilder.mapCodec(instance -> instance.group(
+                    ItemStack.STRICT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
+                    Ingredient.CODEC_NONEMPTY.fieldOf("base").forGetter(recipe -> recipe.base),
+                    AbstractAmountRecipe.INGREDIENTS_CODEC.forGetter(recipe -> recipe.ingredients)
+            ).apply(instance, AlchemyTableRecipe::new));
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, AlchemyTableRecipe> streamCodec() {
-            return STREAM_CODEC;
-        }
+        protected StreamCodec<RegistryFriendlyByteBuf, AlchemyTableRecipe> getStreamCodec() {
+            return new StreamCodec<>() {
+                @Override
+                public AlchemyTableRecipe decode(RegistryFriendlyByteBuf buffer) {
+                    int size = buffer.readVarInt();
+                    NonNullList<Ingredient> nonnulllist = NonNullList.withSize(size, AmountIngredient.EMPTY);
+                    nonnulllist.replaceAll(ignore -> Ingredient.CONTENTS_STREAM_CODEC.decode(buffer));
+                    ItemStack itemstack = ItemStack.STREAM_CODEC.decode(buffer);
+                    Ingredient input = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
+                    return new AlchemyTableRecipe(itemstack, input, nonnulllist);
+                }
 
-        private static AlchemyTableRecipe fromNetwork(RegistryFriendlyByteBuf buffer) {
-            int size = buffer.readVarInt();
-            NonNullList<Ingredient> nonnulllist = NonNullList.withSize(size, AmountIngredient.EMPTY);
-            nonnulllist.replaceAll(ignore -> Ingredient.CONTENTS_STREAM_CODEC.decode(buffer));
-            ItemStack itemstack = ItemStack.STREAM_CODEC.decode(buffer);
-            Ingredient input = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
-            return new AlchemyTableRecipe(itemstack, input, nonnulllist);
-        }
-
-        private static void toNetwork(RegistryFriendlyByteBuf buffer, AlchemyTableRecipe recipe) {
-            buffer.writeVarInt(recipe.ingredients.size());
-            for (Ingredient ingredient : recipe.ingredients) {
-                Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, ingredient);
-            }
-            ItemStack.STREAM_CODEC.encode(buffer, recipe.result);
-            Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.base);
+                @Override
+                public void encode(RegistryFriendlyByteBuf buffer, AlchemyTableRecipe recipe) {
+                    buffer.writeVarInt(recipe.ingredients.size());
+                    for (Ingredient ingredient : recipe.ingredients) {
+                        Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, ingredient);
+                    }
+                    ItemStack.STREAM_CODEC.encode(buffer, recipe.result);
+                    Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.base);
+                }
+            };
         }
     }
 

@@ -1,17 +1,23 @@
 package org.confluence.mod.client.handler;
 
+import it.unimi.dsi.fastutil.ints.Int2IntArrayMap;
+import it.unimi.dsi.fastutil.ints.Int2IntMap;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.protocol.game.ClientboundPlayerCombatKillPacket;
 import net.minecraft.world.entity.player.Player;
+import org.confluence.mod.common.attachment.PlayerSpecialData;
+import org.confluence.mod.common.data.saved.GlobalCloakData;
 import org.confluence.mod.common.init.ModSoundEvents;
 import org.confluence.mod.mixed.IDeathScreen;
+import org.confluence.mod.mixed.ILevelRenderer;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.network.s2c.*;
 import org.confluence.mod.util.ClientUtils;
-import org.confluence.phase_journey.mixed.ILevelRenderer;
+import org.confluence.terra_curio.common.init.TCItems;
 
 public final class ClientPacketHandler {
     private static int maxMana = 20;
@@ -19,8 +25,10 @@ public final class ClientPacketHandler {
     private static float fishingPower = 0.0F;
     private static boolean echoVisible = false;
     private static long secretFlag = 0L;
-    private static boolean sprintable = false;
     private static boolean showSignal = false;
+
+    private static int luminance = 0;
+    private static final Int2IntMap remoteLuminance = new Int2IntArrayMap();
 
     public static float getCurrentMana() {
         return currentMana;
@@ -42,12 +50,20 @@ public final class ClientPacketHandler {
         return secretFlag;
     }
 
-    public static boolean isSprintable() {
-        return sprintable;
-    }
-
     public static boolean isShowSignal() {
         return showSignal;
+    }
+
+    public static int getLuminance(Player player) {
+        return player == Minecraft.getInstance().player ? luminance : remoteLuminance.getOrDefault(player.getId(), 0);
+    }
+
+    public static void setLuminance(Player player, PlayerSpecialData data) {
+        if (player == Minecraft.getInstance().player) {
+            luminance = data.getValue(TCItems.LUMINANCE);
+        } else {
+            remoteLuminance.put(player.getId(), (int) data.getValue(TCItems.LUMINANCE));
+        }
     }
 
     public static void reset() {
@@ -56,8 +72,9 @@ public final class ClientPacketHandler {
         fishingPower = 0.0F;
         echoVisible = false;
         secretFlag = 0L;
-        sprintable = false;
         showSignal = false;
+        luminance = 0;
+        remoteLuminance.clear();
     }
 
     public static void handleMana(ManaPacketS2C packet, Player player) {
@@ -75,7 +92,7 @@ public final class ClientPacketHandler {
     public static void handleVisibility(byte mask, boolean visible) {
         if ((mask & VisibilityPacketS2C.ECHO) != 0) {
             if (echoVisible != visible) {
-                ((ILevelRenderer) Minecraft.getInstance().levelRenderer).phase_journey$rebuildAllChunks();
+                ILevelRenderer.rebuildAllChunks();
                 echoVisible = visible;
             }
         }
@@ -90,7 +107,7 @@ public final class ClientPacketHandler {
     public static void handleSecretFlag(SecretFlagSyncPacketS2C packet) {
         secretFlag = packet.flag();
         if ((secretFlag & IWorldOptions.HARDMODE) != 0) {
-            ((ILevelRenderer) Minecraft.getInstance().levelRenderer).phase_journey$rebuildAllChunks();
+            ILevelRenderer.rebuildAllChunks();
         }
     }
 
@@ -118,7 +135,19 @@ public final class ClientPacketHandler {
         }
     }
 
-    public static void handleSprintable(boolean able) {
-        sprintable = able;
+    public static void handleFlushArmorSetBonus(Player localPlayer, int playerId) {
+        if (localPlayer.level().getEntity(playerId) instanceof AbstractClientPlayer clientPlayer) {
+            if (localPlayer == clientPlayer) {
+                PlayerSpecialData.of(localPlayer).flushArmorSetBonus(localPlayer);
+            } else {
+                PlayerSpecialData.of(clientPlayer).flushArmorSetBonus(clientPlayer);
+            }
+        }
+    }
+
+    // 客户端同步过来的只有隐藏的
+    public static void handleCloak() {
+        GlobalCloakData.INSTANCE.rollbackAllProperties();
+        ILevelRenderer.rebuildAllChunks();
     }
 }

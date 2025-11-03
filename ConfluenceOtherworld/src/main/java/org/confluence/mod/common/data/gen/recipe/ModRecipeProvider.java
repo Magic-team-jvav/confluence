@@ -198,60 +198,6 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
                 Ingredient.of(MaterialItems.HOOK),
                 HookItems.GRAPPLING_HOOK.toStack()
         ), null);
-        recipeOutput.accept(Confluence.asResource("smithing/golden_axe"), new SmithingTransformRecipe(
-                Ingredient.of(Tags.Items.GEMS),
-                Ingredient.of(Items.GOLDEN_AXE),
-                Ingredient.of(Tags.Items.INGOTS_GOLD),
-                AxeItems.GOLDEN_AXE.toStack()
-        ), null);
-        recipeOutput.accept(Confluence.asResource("smithing/golden_broadsword"), new SmithingTransformRecipe(
-                Ingredient.of(Tags.Items.GEMS),
-                Ingredient.of(Items.GOLDEN_SWORD),
-                Ingredient.of(Tags.Items.INGOTS_GOLD),
-                SwordItems.GOLDEN_BROADSWORD.toStack()
-        ), null);
-        recipeOutput.accept(Confluence.asResource("smithing/golden_pickaxe"), new SmithingTransformRecipe(
-                Ingredient.of(Tags.Items.GEMS),
-                Ingredient.of(Items.GOLDEN_PICKAXE),
-                Ingredient.of(Tags.Items.INGOTS_GOLD),
-                PickaxeItems.GOLDEN_PICKAXE.toStack()
-        ), null);
-        recipeOutput.accept(Confluence.asResource("smithing/golden_shovel"), new SmithingTransformRecipe(
-                Ingredient.of(Tags.Items.GEMS),
-                Ingredient.of(Items.GOLDEN_SHOVEL),
-                Ingredient.of(Tags.Items.INGOTS_GOLD),
-                ShovelItems.GOLDEN_SHOVEL.toStack()
-        ), null);
-        recipeOutput.accept(Confluence.asResource("smithing/golden_hoe"), new SmithingTransformRecipe(
-                Ingredient.of(Tags.Items.GEMS),
-                Ingredient.of(Items.GOLDEN_HOE),
-                Ingredient.of(Tags.Items.INGOTS_GOLD),
-                HoeItems.GOLDEN_HOE.toStack()
-        ), null);
-        recipeOutput.accept(Confluence.asResource("smithing/golden_helmet"), new SmithingTransformRecipe(
-                Ingredient.of(Tags.Items.GEMS),
-                Ingredient.of(Items.GOLDEN_HELMET),
-                Ingredient.of(Tags.Items.INGOTS_GOLD),
-                ArmorItems.GOLDEN_HELMET.toStack()
-        ), null);
-        recipeOutput.accept(Confluence.asResource("smithing/golden_chestplate"), new SmithingTransformRecipe(
-                Ingredient.of(Tags.Items.GEMS),
-                Ingredient.of(Items.GOLDEN_CHESTPLATE),
-                Ingredient.of(Tags.Items.INGOTS_GOLD),
-                ArmorItems.GOLDEN_CHESTPLATE.toStack()
-        ), null);
-        recipeOutput.accept(Confluence.asResource("smithing/golden_leggings"), new SmithingTransformRecipe(
-                Ingredient.of(Tags.Items.GEMS),
-                Ingredient.of(Items.GOLDEN_LEGGINGS),
-                Ingredient.of(Tags.Items.INGOTS_GOLD),
-                ArmorItems.GOLDEN_LEGGINGS.toStack()
-        ), null);
-        recipeOutput.accept(Confluence.asResource("smithing/golden_boots"), new SmithingTransformRecipe(
-                Ingredient.of(Tags.Items.GEMS),
-                Ingredient.of(Items.GOLDEN_BOOTS),
-                Ingredient.of(Tags.Items.INGOTS_GOLD),
-                ArmorItems.GOLDEN_BOOTS.toStack()
-        ), null);
 
 
         skyMill(recipeOutput, DecorativeBlocks.BOUNCY_CLOUD_BLOCK.toStack(), Ingredient.of(MaterialItems.PINK_GEL), Ingredient.of(NatureBlocks.CLOUD_BLOCK));
@@ -320,7 +266,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         workshop(recipeOutput, AccessoryItems.ANGLER_TACKLE_BAG.toStack(), Ingredient.of(AccessoryItems.HIGH_TEST_FISHING_LINE), Ingredient.of(AccessoryItems.TACKLE_BOX), Ingredient.of(TCItems.ANGLER_EARRING));
         workshop(recipeOutput, AccessoryItems.MAGIC_CUFFS.toStack(), Ingredient.of(AccessoryItems.MANA_REGENERATION_BAND), Ingredient.of(TCItems.SHACKLE));
         workshop(recipeOutput, AccessoryItems.CELESTIAL_CUFFS.toStack(), Ingredient.of(AccessoryItems.MAGIC_CUFFS), Ingredient.of(AccessoryItems.CELESTIAL_MAGNET));
-        workshop(recipeOutput, AccessoryItems.CELESTIAL_EMBLEM.toStack(), Ingredient.of(AccessoryItems.CELESTIAL_CUFFS), Ingredient.of(TCItems.AVENGER_EMBLEM));
+        workshop(recipeOutput, AccessoryItems.CELESTIAL_EMBLEM.toStack(), Ingredient.of(AccessoryItems.CELESTIAL_MAGNET), Ingredient.of(TCItems.AVENGER_EMBLEM));
         workshop(recipeOutput, AccessoryItems.LAVAPROOF_TACKLE_BAG.toStack(), Ingredient.of(AccessoryItems.LAVAPROOF_FISHING_HOOK), Ingredient.of(AccessoryItems.ANGLER_TACKLE_BAG));
         workshop(recipeOutput, AccessoryItems.GLOWING_FISHING_BOBBER.toStack(), Ingredient.of(AccessoryItems.FISHING_BOBBER), AmountIngredient.of(5, MaterialItems.FALLING_STAR));
         workshop(recipeOutput, AccessoryItems.COIN_RING.toStack(), Ingredient.of(AccessoryItems.LUCKY_COIN), Ingredient.of(AccessoryItems.GOLD_RING));
@@ -334,6 +280,8 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         workshop(recipeOutput, AccessoryItems.COUNTERCURSE_MANTRA.toStack(), Ingredient.of(AccessoryItems.MEGAPHONE), Ingredient.of(AccessoryItems.NAZAR));
         workshop(recipeOutput, AccessoryItems.MANA_FLOWER.toStack(), Ingredient.of(PotionItems.MANA_POTION), Ingredient.of(AccessoryItems.NATURES_GIFT));
         workshop(recipeOutput, AccessoryItems.MANA_REGENERATION_BAND.toStack(), Ingredient.of(TCItems.BAND_OF_REGENERATION), Ingredient.of(AccessoryItems.BAND_OF_STARPOWER));
+        workshop(recipeOutput, AccessoryItems.MAGNET_FLOWER.toStack(), Ingredient.of(AccessoryItems.MANA_FLOWER), Ingredient.of(AccessoryItems.CELESTIAL_MAGNET));
+        workshop(recipeOutput, AccessoryItems.MANA_CLOAK.toStack(), Ingredient.of(AccessoryItems.MANA_FLOWER), Ingredient.of(TCItems.STAR_CLOAK));
         workshop(recipeOutput, TCItems.FART_IN_A_JAR.toStack(), Ingredient.of(ModItems.WHOOPIE_CUSHION), Ingredient.of(TCItems.CLOUD_IN_A_BOTTLE));
         workshop(recipeOutput, TCItems.ARCHITECT_GIZMO_PACK.toStack(), Ingredient.of(TCItems.BRICK_LAYER), Ingredient.of(TCItems.EXTENDO_GRIP), Ingredient.of(TCItems.PORTABLE_CEMENT_MIXER), Ingredient.of(AccessoryItems.PAINT_SPRAYER));
         workshop(recipeOutput, AccessoryItems.ARCANE_FLOWER.toStack(), Ingredient.of(TCItems.PUTRID_SCENT), Ingredient.of(AccessoryItems.MANA_FLOWER));
@@ -439,7 +387,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         alchemyTable(recipeOutput, PotionItems.HEALING_POTION.toStack(), Ingredient.of(PotionItems.LESSER_HEALING_POTION), Ingredient.of(MaterialItems.GLOWING_MUSHROOM), Ingredient.of(PotionItems.LESSER_HEALING_POTION));
         alchemyTable(recipeOutput, PotionItems.HEART_REACH_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(FoodItems.SCARLET_TIGER_FISH), Ingredient.of(MaterialItems.DAYBLOOM));
         alchemyTable(recipeOutput, PotionItems.HUNTER_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.DAYBLOOM), Ingredient.of(MaterialItems.BLINKROOT), Ingredient.of(MaterialItems.SHARK_FIN));
-        alchemyTable(recipeOutput, PotionItems.INFERNO_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(FoodItems.FLASHFIN_KOI), AmountIngredient.of(2, FoodItems.OBSIDIAN_FISH), Ingredient.of(MaterialItems.FIREBLOSSOM));
+        alchemyTable(recipeOutput, PotionItems.INFERNO_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(FoodItems.FLASHFIN_KOI), AmountIngredient.of(2, FoodItems.OBSIDIFISH), Ingredient.of(MaterialItems.FIREBLOSSOM));
         alchemyTable(recipeOutput, PotionItems.INVISIBILITY_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.BLINKROOT), Ingredient.of(MaterialItems.MOONGLOW));
         alchemyTable(recipeOutput, PotionItems.IRON_SKIN_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.DAYBLOOM), Ingredient.of(Items.RAW_IRON, MaterialItems.RAW_LEAD));
         alchemyTable(recipeOutput, PotionItems.LESSER_HEALING_POTION.toStack(), Ingredient.of(PotionItems.BOTTLE), Ingredient.of(MaterialItems.LIFE_MUSHROOM), AmountIngredient.of(2, MaterialItems.GEL));
@@ -459,7 +407,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         alchemyTable(recipeOutput, PotionItems.SHINE_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.DAYBLOOM), Ingredient.of(MaterialItems.GLOWING_MUSHROOM));
         alchemyTable(recipeOutput, PotionItems.SPELUNKER_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.BLINKROOT), Ingredient.of(MaterialItems.MOONGLOW), Ingredient.of(MaterialItems.RAW_PLATINUM, Items.RAW_GOLD));
         alchemyTable(recipeOutput, PotionItems.STINK_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(FoodItems.STINKY_FISH), Ingredient.of(MaterialItems.DEATHWEED));
-        alchemyTable(recipeOutput, PotionItems.TITAN_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.DUNGEON_DEMON_BONE), Ingredient.of(MaterialItems.DEATHWEED), Ingredient.of(MaterialItems.SHIVERTHORN));
+        alchemyTable(recipeOutput, PotionItems.TITAN_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(ConsumableItems.DUNGEON_DEMON_BONE), Ingredient.of(MaterialItems.DEATHWEED), Ingredient.of(MaterialItems.SHIVERTHORN));
         alchemyTable(recipeOutput, PotionItems.WATER_WALKING_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.WATERLEAF), Ingredient.of(MaterialItems.SHARK_FIN));
         alchemyTable(recipeOutput, PotionItems.WORMHOLE_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(FoodItems.MIRROR_FISH), Ingredient.of(MaterialItems.BLINKROOT));
         alchemyTable(recipeOutput, PotionItems.WRATH_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(FoodItems.EBONY_KOI), Ingredient.of(MaterialItems.DEATHWEED));
@@ -470,7 +418,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         crystalBlock(recipeOutput, TGItems.ENDLESS_MUSKET_POUCH.toStack(), AmountIngredient.of(3996, TGItems.MUSKET_BULLET));
         crystalBlock(recipeOutput, ManaWeaponItems.CURSED_FLAMES.toStack(), Ingredient.of(MaterialItems.SPELL_TOME),AmountIngredient.of(20, MaterialItems.CURSED_FLAME),AmountIngredient.of(15, MaterialItems.SOUL_OF_NIGHT));
         crystalBlock(recipeOutput, ManaWeaponItems.CRYSTAL_STORM.toStack(), Ingredient.of(MaterialItems.SPELL_TOME),AmountIngredient.of(20, MaterialItems.CRYSTAL_SHARDS),AmountIngredient.of(15, MaterialItems.SOUL_OF_LIGHT));
-        // crystalBlock(recipeOutput, ManaWeaponItems.GOLDEN_SHOWER.toStack(), Ingredient.of(MaterialItems.SPELL_TOME),AmountIngredient.of(20, MaterialItems.ICHOR),AmountIngredient.of(15, MaterialItems.SOUL_OF_NIGHT));
+        crystalBlock(recipeOutput, ManaWeaponItems.GOLDEN_SHOWER.toStack(), Ingredient.of(MaterialItems.SPELL_TOME),AmountIngredient.of(20, MaterialItems.ICHOR),AmountIngredient.of(15, MaterialItems.SOUL_OF_NIGHT));
         crystalBlock(recipeOutput, ToolItems.MAGIC_SAND_DROPPER.toStack(3), AmountIngredient.of(3, emptyDropper), Ingredient.of(Tags.Items.SANDS));
         crystalBlock(recipeOutput, ToolItems.MAGIC_HONEY_DROPPER.toStack(), EnvironmentLevelAccess.matcher(null, searchHoney(holderLookup), false), emptyDropper);
         crystalBlock(recipeOutput, ToolItems.MAGIC_LAVA_DROPPER.toStack(), EnvironmentLevelAccess.matcher(null, searchLava(holderLookup), false), emptyDropper);

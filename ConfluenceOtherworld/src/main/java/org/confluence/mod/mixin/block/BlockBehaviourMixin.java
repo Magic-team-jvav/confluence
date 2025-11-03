@@ -1,6 +1,7 @@
 package org.confluence.mod.mixin.block;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -78,12 +79,13 @@ public abstract class BlockBehaviourMixin {
             }
         }
 
-        @Inject(method = "getDestroySpeed", at = @At("RETURN"), cancellable = true)
-        private void modify(BlockGetter level, BlockPos pos, CallbackInfoReturnable<Float> cir) {
-            if (cir.getReturnValue() == -1) return;
+        @ModifyReturnValue(method = "getDestroySpeed", at = @At("RETURN"))
+        private float modify(float original) {
+            if (original == -1) return original;
             if ((getBlock() instanceof BaseChestBlock || getBlock() instanceof BiomeChestBlock) && !asState().getValue(StateProperties.UNLOCKED)) {
-                cir.setReturnValue(-1.0F);
+                return -1;
             }
+            return original;
         }
     }
 }

@@ -11,7 +11,6 @@ import com.xiaohunao.heaven_destiny_moment.common.moment.IMoment;
 import com.xiaohunao.heaven_destiny_moment.common.moment.MomentInstanceManager;
 import com.xiaohunao.heaven_destiny_moment.common.predicate.AttributePredicate;
 import com.xiaohunao.heaven_destiny_moment.common.trigger.triggers.TimeProbabilityTrigger;
-import com.xiaohunao.heaven_destiny_moment.compat.phase_journey.condition.PhaseJourneyCondition;
 import com.xiaohunao.terra_moment.TerraMoment;
 import com.xiaohunao.terra_moment.common.init.TMMomentTypes;
 import com.xiaohunao.terra_moment.common.init.TMMoments;
@@ -26,8 +25,8 @@ import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.integration.heaven_destiny_moment.context.condition.EverBeneficialCondition;
+import org.confluence.mod.integration.heaven_destiny_moment.context.condition.EvilBrokenCountCondition;
 import org.confluence.mod.integration.heaven_destiny_moment.init.ModMomentProbabilityFunction;
 
 import java.util.List;
@@ -53,7 +52,7 @@ public class MomentEvents {
                                     .attributePredicate(Attributes.ARMOR, AttributePredicate.ValueType.CURRENT, MinMaxBounds.Doubles.atLeast(18.0D))
                                     .subConditions(EverBeneficialCondition.builder().lifeCrystals(5).build())
                                     .build(),
-                            PhaseJourneyCondition.of(PhaseJourneyCondition.Type.LEVEL, Confluence.asResource("has_it_evil_ever_been_broken")),
+                            new EvilBrokenCountCondition(1),
                             WorldUniqueMomentCondition.DEFAULT,
                             OrCondition.of(ModLoadedCondition.of("confluence_dimension_patch"),
                                 List.of(LocationCondition.Builder.inDimension(ResourceKey.create(Registries.DIMENSION, ResourceLocation.parse("confluence_dimension_patch:otherworld"))).build()),

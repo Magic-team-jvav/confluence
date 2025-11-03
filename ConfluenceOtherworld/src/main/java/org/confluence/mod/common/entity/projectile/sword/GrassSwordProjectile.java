@@ -3,35 +3,38 @@ package org.confluence.mod.common.entity.projectile.sword;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModParticleTypes;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 public class GrassSwordProjectile extends SwordProjectile {
-
-    float yawSpeed;
-    float pitchSpeed;
     protected static final EntityDataAccessor<Float> DATA_YAW = SynchedEntityData.defineId(GrassSwordProjectile.class, EntityDataSerializers.FLOAT);
     protected static final EntityDataAccessor<Float> DATA_PITCH = SynchedEntityData.defineId(GrassSwordProjectile.class, EntityDataSerializers.FLOAT);
+    private float yawSpeed;
+    private float pitchSpeed;
 
     public GrassSwordProjectile(EntityType<GrassSwordProjectile> entityType, Level pLevel) {
         super(entityType, pLevel);
         this.canPenalize = true;
-        hitCount = 99999;
-        this.collisionProperties = new CollisionProperties(10,10,1);
+        this.hitCount = 99999;
+        this.collisionProperties = new CollisionProperties(10, 10, 1);
     }
 
     @Override
-    public void onSyncedDataUpdated(EntityDataAccessor<?> data){
+    public void onSyncedDataUpdated(EntityDataAccessor<?> data) {
         super.onSyncedDataUpdated(data);
-        if(level().isClientSide) {
+        if (level().isClientSide) {
             if (data == DATA_YAW) {
                 this.yawSpeed = this.entityData.get(DATA_YAW);
-            }else if (data == DATA_PITCH) {
+            } else if (data == DATA_PITCH) {
                 this.pitchSpeed = this.entityData.get(DATA_PITCH);
             }
         }
@@ -47,11 +50,11 @@ public class GrassSwordProjectile extends SwordProjectile {
     @Override
     public void tick() {
         super.tick();
-        if(tickCount > 5) {
+        if (tickCount > 5) {
             Vec3 motion = getDeltaMovement();
-            float yaw = (float) (Math.PI / 2-Math.atan2(motion.z, motion.x));
-            float pitch = (float) (-Math.atan2(motion.y,
-                    Math.sqrt(motion.x * motion.x + motion.z * motion.z)));
+            float yaw = Mth.HALF_PI - (float) Mth.atan2(motion.z, motion.x);
+            float pitch = (float) -Mth.atan2(motion.y,
+                    Math.sqrt(motion.x * motion.x + motion.z * motion.z));
             Quaternionf q = new Quaternionf()
                     .rotateY(yaw)
                     .rotateX(pitch)
@@ -60,9 +63,8 @@ public class GrassSwordProjectile extends SwordProjectile {
 
             Vec3 transformed = new Vec3(q.transform(new Vector3f(0, 0, 1)));
             setDeltaMovement(transformed);
-
         }
-        if(tickCount % 2 == 0 && level().isClientSide){
+        if (tickCount % 2 == 0 && level().isClientSide) {
             level().addParticle(ModParticleTypes.LEAVES.get(), getX(), getY(), getZ(), 0, 0, 0);
         }
     }
@@ -74,7 +76,10 @@ public class GrassSwordProjectile extends SwordProjectile {
         this.pitchSpeed = (float) (-Math.random() * 0.05f - 0.05f);
         this.entityData.set(DATA_YAW, yawSpeed);
         this.entityData.set(DATA_PITCH, pitchSpeed);
-
     }
 
+    @Override
+    public DamageSource damageSource() {
+        return ModDamageTypes.of(level(), DamageTypes.GENERIC, this, getOwner());
+    }
 }

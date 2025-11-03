@@ -5,12 +5,10 @@
 | [ConfluenceOtherworld](ConfluenceOtherworld) | Main module                                        | Depends on all                 |
 | [TerraEntity](TerraEntity)                   | Terra's Entities                                   | yes                            |
 | [MineTeam](MineTeam)                         | Terra's Teams                                      | yes                            |
-| [EquipmentBenediction](EquipmentBenediction) | Equipment Effects                                  | yes                            |
 | [TerraCurio](TerraCurio)                     | Terra's Wearables                                  | yes                            |
 | [TerraGuns](TerraGuns)                       | Terra's Guns                                       | yes                            |
 | [ParticleStorm](ParticleStorm)               | Particles API                                      | yes                            |
 | [HeavenDestinyMoment](HeavenDestinyMoment)   | Event API                                          | yes                            |
-| [PhaseJourney](PhaseJourney)                 | Game Stage API                                     | yes                            |
 | [TerraMoment](TerraMoment)                   | Terra's Events                                     | depends on HeavenDestinyMoment |
 | [IsekaiInvaded](IsekaiInvaded)               | Dimensional Invasion Event                         | depends on HeavenDestinyMoment |
 | [TerraFurniture](TerraFurniture)             | Terra's Furniture                                  | yes                            |
@@ -46,16 +44,25 @@
 ```groovy
 repositories {
     maven {
-        name "org.confluenceReleases"
+        name "magicTeam MavenReleases"
         url "https://maven.confluence.ink/releases"
     }
     maven {
-        name "org.confluenceSnapshots"
+        name "magicTeam MavenSnapshots"
         url "https://maven.confluence.ink/snapshots"
+    }
+    maven {
+        name = "Curios"
+        url = uri("https://maven.theillusivec4.top/")
     }
 }
 
 dependencies {
-    implementation "org.confluence.lib:Confluence-Magic-Lib:<version>"
+    // Lib
+    implementation ("org.confluence.lib:Confluence-Magic-Lib:${confluence_lib_version}")
+    // Confluence Otherworld
+    implementation ("org.confluence.mod:ConfluenceOtherworld:${confluence_version}"){transitive = false}
+    // Curios API
+    implementation "top.theillusivec4.curios:curios-neoforge:${curios_version}"
 }
 ```

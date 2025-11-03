@@ -1,4 +1,4 @@
-package org.confluence.mod.common.block.functional;
+package org.confluence.mod.common.block.functional.boulder;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
@@ -8,9 +8,14 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.confluence.mod.common.entity.projectile.boulder.AbstractBoulderEntity;
 import org.confluence.mod.common.entity.projectile.boulder.RollingCactusBoulderEntity;
 
-public class RollingCactusBoulderBlock extends BoulderBlock {
+/**
+ * 滚动仙人掌巨石方块
+ * @author 尽
+ */
+public class RollingCactusBoulderBlock extends AbstractBoulderBlock<RollingCactusBoulderEntity> {
     protected static final VoxelShape COLLISION_SHAPE = Block.box(1.0, 1.0, 1.0, 15.0, 15.0, 15.0);
     protected static final VoxelShape OUTLINE_SHAPE = Block.box(0.0, 0.0, 0.0, 16.0, 16.0, 16.0);
 

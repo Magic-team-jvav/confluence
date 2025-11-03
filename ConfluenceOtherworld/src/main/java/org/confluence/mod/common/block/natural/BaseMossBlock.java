@@ -26,30 +26,41 @@ import org.confluence.mod.common.init.ModTags;
 import java.util.function.ToIntFunction;
 
 public class BaseMossBlock extends MultifaceBlock implements BonemealableBlock, SimpleWaterloggedBlock {
-    public static final MapCodec<BaseMossBlock> CODEC = RecordCodecBuilder.mapCodec(
-        builder -> builder.group(
-                Codec.INT.fieldOf("lightLevel").forGetter(baseMossBlock -> baseMossBlock.lightLevel),
-                Codec.BOOL.fieldOf("isLavaLogged").forGetter(baseMossBlock -> baseMossBlock.isIgnitedByLava))
-            .apply(builder, BaseMossBlock::new)
+    public static final MapCodec<BaseMossBlock> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
+            Codec.INT.fieldOf("light_level").forGetter(block -> block.lightLevel),
+            BlockBehaviour.Properties.CODEC.fieldOf("properties").forGetter(block -> block.properties)
+        ).apply(builder, BaseMossBlock::new)
     );
 
     private final int lightLevel;
-    private final boolean isIgnitedByLava;
     private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     private final MultifaceSpreader spreader = new MultifaceSpreader(this);
 
-    public BaseMossBlock(int lightLevel) {
-        super(BlockBehaviour.Properties.of().lightLevel(BaseMossBlock.emission(lightLevel)).noCollission().ignitedByLava().pushReaction(PushReaction.DESTROY).strength(0.2F).sound(SoundType.GLOW_LICHEN).replaceable());
+    private BaseMossBlock(int lightLevel, Properties properties) {
+        super(properties);
         this.lightLevel = lightLevel;
-        this.isIgnitedByLava = true;
         this.registerDefaultState(this.defaultBlockState().setValue(WATERLOGGED, false));
     }
 
-    public BaseMossBlock(int lightLevel, boolean isIgnitedByLava) {
-        super(BlockBehaviour.Properties.of().lightLevel(BaseMossBlock.emission(lightLevel)).noCollission().pushReaction(PushReaction.DESTROY).strength(0.2F).sound(SoundType.GLOW_LICHEN).replaceable());
-        this.lightLevel = lightLevel;
-        this.isIgnitedByLava = isIgnitedByLava;
-        this.registerDefaultState(this.defaultBlockState().setValue(WATERLOGGED, false));
+    public static BaseMossBlock createNormal(int lightLevel) {
+        return new BaseMossBlock(lightLevel, BlockBehaviour.Properties.of()
+            .lightLevel(emission(lightLevel))
+            .noCollission()
+            .ignitedByLava()
+            .pushReaction(PushReaction.DESTROY)
+            .strength(0.2F)
+            .sound(SoundType.GLOW_LICHEN)
+            .replaceable());
+    }
+
+    public static BaseMossBlock createLavaImmune(int lightLevel) {
+        return new BaseMossBlock(lightLevel, BlockBehaviour.Properties.of()
+            .lightLevel(emission(lightLevel))
+            .noCollission()
+            .pushReaction(PushReaction.DESTROY)
+            .strength(0.2F)
+            .sound(SoundType.GLOW_LICHEN)
+            .replaceable());
     }
 
     @Override

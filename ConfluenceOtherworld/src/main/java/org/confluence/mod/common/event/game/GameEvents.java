@@ -1,7 +1,5 @@
 package org.confluence.mod.common.event.game;
 
-import com.xiaohunao.equipment_benediction.common.event.AfterEquipmentBenedictionUpdatedEvent;
-import com.xiaohunao.equipment_benediction.common.hook.HookMapManager;
 import com.xiaohunao.heaven_destiny_moment.common.event.MomentEvent;
 import com.xiaohunao.heaven_destiny_moment.common.moment.MomentInstance;
 import com.xiaohunao.terra_moment.common.init.TMMoments;
@@ -32,6 +30,7 @@ import org.confluence.lib.event.SwitchItemFunctionEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.StartupConfigs;
 import org.confluence.mod.api.event.AdditionalManaEvent;
+import org.confluence.mod.api.event.GetArmorSetBonusDataEvent;
 import org.confluence.mod.api.event.MinecartAbilityEvent;
 import org.confluence.mod.api.event.ShimmerItemTransmutationEvent;
 import org.confluence.mod.api.event.bestiary.ToBeBestiaryEntryEvent;
@@ -43,9 +42,11 @@ import org.confluence.mod.common.data.AchievementOffsetLoader;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.entity.minecart.BaseMinecartEntity;
 import org.confluence.mod.common.init.ModCommands;
-import org.confluence.mod.common.init.ModHookTypes;
 import org.confluence.mod.common.init.ModRecipes;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.armor.ArmorSetBonusKey;
+import org.confluence.mod.common.init.armor.ModArmorBonus;
+import org.confluence.mod.common.init.item.ArmorItems;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.init.item.MinecartItems;
 import org.confluence.mod.common.init.item.ToolItems;
@@ -60,6 +61,7 @@ import org.confluence.mod.network.s2c.ExtraInventorySyncPacketS2C;
 import org.confluence.mod.network.s2c.FishingPowerInfoPacketS2C;
 import org.confluence.mod.network.s2c.VisibilityPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
+import org.confluence.mod.util.PlayerUtils;
 import org.confluence.mod.util.PrefixUtils;
 import org.confluence.terra_curio.api.event.AfterAccessoryAbilitiesFlushedEvent;
 import org.confluence.terra_guns.api.event.GunEvent;
@@ -70,7 +72,7 @@ import top.theillusivec4.curios.api.event.CurioChangeEvent;
 
 import java.util.*;
 
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
+@EventBusSubscriber(modid = Confluence.MODID)
 public final class GameEvents {
     @SubscribeEvent
     public static void afterAccessoryAbilitiesFlushed(AfterAccessoryAbilitiesFlushedEvent event) {
@@ -78,13 +80,6 @@ public final class GameEvents {
             ManaStorage.of(player).flushAbility(player);
             FishingPowerInfoPacketS2C.sendAndGet(player);
             VisibilityPacketS2C.sendEcho(player);
-        }
-    }
-
-    @SubscribeEvent
-    public static void afterEquipmentBenedictionUpdated(AfterEquipmentBenedictionUpdatedEvent event) {
-        if (event.getEntity() instanceof ServerPlayer player) {
-            ManaStorage.of(player).flushAbility(player);
         }
     }
 
@@ -97,11 +92,10 @@ public final class GameEvents {
     public static void curioAttributeModifier(CurioAttributeModifierEvent event) {
         PrefixComponent prefix = PrefixUtils.getPrefix(event.getItemStack());
         if (prefix == null) return;
-        String suffix = "_" + event.getSlotContext().index();
         for (Map.Entry<Holder<Attribute>, Collection<AttributeModifier>> entry : prefix.modifiers().get().asMap().entrySet()) {
             Holder<Attribute> attribute = entry.getKey();
             for (AttributeModifier modifier : entry.getValue()) {
-                event.addModifier(attribute, new AttributeModifier(modifier.id().withSuffix(suffix), modifier.amount(), modifier.operation()));
+                event.addModifier(attribute, new AttributeModifier(modifier.id(), modifier.amount(), modifier.operation()));
             }
         }
     }
@@ -177,13 +171,9 @@ public final class GameEvents {
 
     @SubscribeEvent
     public static void gun$ShrinkBullet(GunEvent.ShrinkBulletEvent event) {
-        if (event.isInfinity()) return;
-        HookMapManager.postHooks(ModHookTypes.SKIP_AMMO_CONSUME.get(), (owner, hook, original) -> {
-            if (hook.shouldSkipConsume(owner, original.getPlayer(), original.getBulletStack())) {
-                original.setCanceled(true);
-            }
-            return original;
-        }, event.getPlayer(), event);
+        if (!event.isInfinity() && PlayerUtils.shouldSkipConsumeAmmo(event.getPlayer())) {
+            event.setCanceled(true);
+        }
     }
 
     @SubscribeEvent
@@ -255,6 +245,18 @@ public final class GameEvents {
                 event.setCanceled(true);
             } else if (type == TEBossEntities.SKELETRON_HAND.get()) {
                 event.setCanceled(true);
+            }
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public static void getArmorSetBonus(GetArmorSetBonusDataEvent event) {
+        ArmorSetBonusKey key = event.getKey();
+        if (key.head() != null && key.chest() != null && key.head().builtInRegistryHolder().is(ModTags.Items.ROBE)) {
+            if (key.chest() == ArmorItems.WIZARD_HAT.get()) {
+                event.setNeoData(ModArmorBonus.WIZARD_HAT_SET_BONUS);
+            } else if (key.chest() == ArmorItems.MAGIC_HAT.get()) {
+                event.setNeoData(ModArmorBonus.MAGIC_HAT_SET_BONUS);
             }
         }
     }

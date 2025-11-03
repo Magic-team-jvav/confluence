@@ -13,10 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import org.confluence.lib.mixed.SelfGetter;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
-import org.confluence.mod.common.item.fishing.AbstractFishingPole;
 import org.confluence.mod.integration.kubejs.KubeJSHelper;
-import org.confluence.mod.mixed.IPlayer;
-import org.confluence.mod.util.ClientUtils;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -64,11 +61,6 @@ public abstract class GuiGraphicsMixin implements SelfGetter<GuiGraphics> {
             pose.translate(0.0F, 0.0F, 200.0F);
             blit(confluence$death, x, y, 0.0F, 0.0F, 16, 16, 16, 16);
             pose.popPose();
-        } else if (minecraft.player != null) {
-            ItemStack bait = IPlayer.of(minecraft.player).confluence$getCurrentBait();
-            if (!bait.isEmpty() && stack.getItem() instanceof AbstractFishingPole) {
-                ClientUtils.renderBait(confluence$self(), bait, x, y);
-            }
         }
     }
 }

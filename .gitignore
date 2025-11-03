@@ -22,16 +22,18 @@ build
 eclipse
 run
 run-data
+*.hprof
+*.nphd
+*.ref
+*.map
 
 ConfluenceOtherworld/src/generated
 
 
 TerraEntity/run
 MineTeam/run
-EquipmentBenediction/run
 TerraCurio/run
 HeavenDestinyMoment/run
-PhaseJourney/run
 TerraMoment/run
 TerraGuns/run
 Confluence-Magic-Lib/run
@@ -39,10 +41,8 @@ TerraFurniture/run
 
 TerraEntity/build
 MineTeam/build
-EquipmentBenediction/build
 TerraCurio/build
 HeavenDestinyMoment/build
-PhaseJourney/build
 TerraMoment/build
 TerraGuns/build
 Confluence-Magic-Lib/build
@@ -50,10 +50,8 @@ TerraFurniture/build
 
 TerraEntity/src/generated
 MineTeam/src/generated
-EquipmentBenediction/src/generated
 TerraCurio/src/generated
 HeavenDestinyMoment/src/generated
-PhaseJourney/src/generated
 TerraMoment/src/generated
 TerraGuns/src/generated
 TerraFurniture/src/generated

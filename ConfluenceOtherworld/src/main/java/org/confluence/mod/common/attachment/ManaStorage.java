@@ -1,6 +1,5 @@
 package org.confluence.mod.common.attachment;
 
-import com.xiaohunao.equipment_benediction.common.hook.HookMapManager;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
@@ -11,7 +10,6 @@ import net.neoforged.neoforge.common.util.INBTSerializable;
 import org.confluence.mod.api.event.AdditionalManaEvent;
 import org.confluence.mod.common.init.ModAttachmentTypes;
 import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.init.ModHookTypes;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.util.EnchantmentUtils;
 import org.confluence.mod.util.FloatSupplier;
@@ -62,15 +60,15 @@ public class ManaStorage implements INBTSerializable<CompoundTag> {
 
     public boolean receiveMana(FloatSupplier sup) {
         if (!canReceive()) return false;
-        this.currentMana = Math.min(getMaxMana(), sup.getAsFloat() + currentMana);
+        this.currentMana = Mth.clamp(sup.getAsFloat() + currentMana, 0.0F, getMaxMana());
         return true;
     }
 
     public boolean extractMana(FloatSupplier sup, ServerPlayer serverPlayer) {
         if (!canExtract()) return false;
-        float extract = sup.getAsFloat() * (1.0F - TCUtils.getAccessoriesValue(serverPlayer, AccessoryItems.MANA$USE$REDUCE));
+        float extract = sup.getAsFloat() * (1.0F - PlayerUtils.getPrimitiveValue(serverPlayer, AccessoryItems.MANA$USE$REDUCE));
         if (PlayerUtils.applyAutoGetMana(serverPlayer, currentMana, extract)) return false;
-        this.currentMana -= extract;
+        this.currentMana = Mth.clamp(currentMana - extract, 0.0F, getMaxMana());
         if (extract > 0.0F) setRegenerateDelay();
         EnchantmentUtils.repairPlayerItems(serverPlayer, extract);
         return true;
@@ -80,7 +78,7 @@ public class ManaStorage implements INBTSerializable<CompoundTag> {
         if (!canExtract()) return false;
         float extract = sup.getAsFloat();
         if (currentMana < extract) return false;
-        this.currentMana -= extract;
+        this.currentMana = Mth.clamp(currentMana - extract, 0.0F, getMaxMana());
         if (extract > 0.0F) setRegenerateDelay();
         return true;
     }
@@ -142,16 +140,15 @@ public class ManaStorage implements INBTSerializable<CompoundTag> {
         return stars >= 10;
     }
 
-    public void flushAbility(ServerPlayer serverPlayer) {
-        this.fastManaRegeneration = TCUtils.hasAccessoriesType(serverPlayer, AccessoryItems.FAST$MANA$GENERATION);
-        int value = TCUtils.getAccessoriesValue(serverPlayer, AccessoryItems.ADDITIONAL$MANA);
-        if (serverPlayer.hasEffect(ModEffects.CLAIRVOYANCE)) value += 20;
-        int posted = HookMapManager.postHooks(ModHookTypes.ADDITIONAL_MANA.get(), (owner, hook, original) -> hook.additional(owner, serverPlayer, original), serverPlayer, value);
-        AdditionalManaEvent event = NeoForge.EVENT_BUS.post(new AdditionalManaEvent(serverPlayer, this, posted, additionalMana));
+    public void flushAbility(ServerPlayer player) {
+        this.fastManaRegeneration = TCUtils.hasAccessoriesType(player, AccessoryItems.FAST$MANA$GENERATION);
+        int value = PlayerUtils.getPrimitiveValue(player, AccessoryItems.ADDITIONAL$MANA);
+        if (player.hasEffect(ModEffects.CLAIRVOYANCE)) value += 20;
+        AdditionalManaEvent event = NeoForge.EVENT_BUS.post(new AdditionalManaEvent(player, this, value, additionalMana));
         if (!event.isCanceled() && event.getNeoValue() != additionalMana) {
             this.additionalMana = event.getNeoValue();
             freshMaxMana();
-            PlayerUtils.syncMana2Client(serverPlayer, this);
+            PlayerUtils.syncMana2Client(player, this);
         }
     }
 

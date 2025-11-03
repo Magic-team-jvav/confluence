@@ -4,6 +4,7 @@ import net.minecraft.Util;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.monster.Slime;
+import org.confluence.mod.common.entity.projectile.boulder.AbstractBoulderEntity;
 import org.confluence.mod.common.entity.projectile.boulder.BoulderEntity;
 
 import java.awt.*;
@@ -19,7 +20,7 @@ public class GlowingHelper {
         helper.addHunter(Animal.class, Color.green, false);//动物
 
         //危险感知实体
-        helper.addDanger(BoulderEntity.class, Color.red, true);//巨石
+        helper.addDanger(AbstractBoulderEntity.class, Color.red, true);//巨石
     });
 
     /**

@@ -50,6 +50,10 @@ public class Bestiary implements IGlobalData {
         return entries;
     }
 
+    public int getUnlockedCount() {
+        return entries.size();
+    }
+
     @Override
     public void clear() {
         entries.clear();

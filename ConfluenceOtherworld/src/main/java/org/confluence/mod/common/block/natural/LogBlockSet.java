@@ -1,16 +1,15 @@
 package org.confluence.mod.common.block.natural;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Streams;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
+import net.minecraft.network.chat.Component;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.HangingSignItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.SignItem;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -27,6 +26,7 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import org.apache.commons.lang3.function.TriFunction;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.item.ModItems;
+import org.confluence.mod.common.item.GroupItem;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -302,10 +302,25 @@ public class LogBlockSet {
     }
 
     public static void acceptNature(CreativeModeTab.Output output) {
-        for (LogBlockSet logBlocks : LOG_BLOCK_SETS) {
-            if (logBlocks.LOG.isBound()) output.accept(logBlocks.LOG);
-            if (logBlocks.LEAVES.isBound()) output.accept(logBlocks.LEAVES);
-            if (logBlocks.SAPLING.isBound()) output.accept(logBlocks.SAPLING);
+        if (GroupItem.enable) {
+            int size = LOG_BLOCK_SETS.size();
+            List<ItemStack> log = Lists.newArrayListWithCapacity(size);
+            List<ItemStack> leaves = Lists.newArrayListWithCapacity(size);
+            List<ItemStack> sapling = Lists.newArrayListWithCapacity(size);
+            for (LogBlockSet logBlocks : LOG_BLOCK_SETS) {
+                if (logBlocks.LOG.isBound()) log.add(logBlocks.LOG.toStack());
+                if (logBlocks.LEAVES.isBound()) leaves.add(logBlocks.LEAVES.toStack());
+                if (logBlocks.SAPLING.isBound()) sapling.add(logBlocks.SAPLING.toStack());
+            }
+            output.accept(GroupItem.of(Component.translatable("itemGroup.confluence.log"), log));
+            output.accept(GroupItem.of(Component.translatable("itemGroup.confluence.leaves"), leaves));
+            output.accept(GroupItem.of(Component.translatable("itemGroup.confluence.sapling"), sapling));
+        } else {
+            for (LogBlockSet logBlocks : LOG_BLOCK_SETS) {
+                if (logBlocks.LOG.isBound()) output.accept(logBlocks.LOG);
+                if (logBlocks.LEAVES.isBound()) output.accept(logBlocks.LEAVES);
+                if (logBlocks.SAPLING.isBound()) output.accept(logBlocks.SAPLING);
+            }
         }
     }
 

@@ -9,6 +9,7 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
+import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.terra_curio.api.primitive.AttributeModifiersValue;
 import org.confluence.terra_curio.common.init.TCAttributes;
@@ -32,7 +33,7 @@ public interface ModPrefix {
     }
 
     default AttributeModifier createModifier(double value, AttributeModifier.Operation operation) {
-        return new AttributeModifier(getModifierId(), value, operation);
+        return new AttributeModifier(LibUtils.withUniqueSuffix(getModifierId()), value, operation);
     }
 
     String name();

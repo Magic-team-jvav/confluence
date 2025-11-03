@@ -69,7 +69,8 @@ public final class ModEffects {
     public static final DeferredHolder<MobEffect, MobEffect> CURSED = EFFECTS.register("cursed", () -> new PublicMobEffect(MobEffectCategory.HARMFUL, 0x4F4F4F));
     public static final DeferredHolder<MobEffect, MobEffect> WITHERED_ARMOR = EFFECTS.register("withered_armor", () -> new PublicMobEffect(MobEffectCategory.HARMFUL, 0xE0EEE0)
             .addAttributeModifier(Attributes.ARMOR, Confluence.asResource("withered_armor"), -0.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
-    public static final DeferredHolder<MobEffect, MobEffect> ICHOR = EFFECTS.register("ichor", IchorEffect::new);
+    public static final DeferredHolder<MobEffect, MobEffect> ICHOR = EFFECTS.register("ichor", () -> new PublicMobEffect(MobEffectCategory.HARMFUL, 0xFFD700)
+            .addAttributeModifier(Attributes.ARMOR, Confluence.asResource("ichor"), -15, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredHolder<MobEffect, MobEffect> POTION_SICKNESS = EFFECTS.register("potion_sickness", PotionSicknessEffect::new);
     public static final DeferredHolder<MobEffect, MobEffect> BROKEN_ARMOR = EFFECTS.register("broken_armor", BrokenArmorEffect::new);
     public static final DeferredHolder<MobEffect, MobEffect> STONED = EFFECTS.register("stoned", () -> new PublicMobEffect(MobEffectCategory.HARMFUL, 0x999999)
@@ -104,7 +105,7 @@ public final class ModEffects {
             .addAttributeModifier(TCAttributes.getMagicDamage(), Confluence.asResource("clairvoyance"), 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
             .addAttributeModifier(TCAttributes.getCriticalChance(), Confluence.asResource("clairvoyance"), 0.02, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredHolder<MobEffect, MobEffect> HOLY_PROTECTION = EFFECTS.register("holy_protection", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x8888FF));
-    public static final DeferredHolder<MobEffect, MobEffect> TITANIUM_BARRIER = EFFECTS.register("titanium_barrier", TitaniumBarrierEffect::new);
+    public static final DeferredHolder<MobEffect, MobEffect> TITANIUM_BARRIER = EFFECTS.register("titanium_barrier", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x777777));
     public static final DeferredHolder<MobEffect, MobEffect> FROSTBITE = EFFECTS.register("frostbite", FrostbiteEffect::new);
     public static final DeferredHolder<MobEffect, MobEffect> SHADOWFLAME = EFFECTS.register("shadowflame", ShadowflameEffect::new);
     public static final DeferredHolder<MobEffect, MobEffect> SUMMONING = EFFECTS.register("summoning", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x888888)

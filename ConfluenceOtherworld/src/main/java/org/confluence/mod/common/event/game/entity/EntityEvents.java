@@ -6,6 +6,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -16,13 +17,16 @@ import net.neoforged.neoforge.event.entity.EntityInvulnerabilityCheckEvent;
 import net.neoforged.neoforge.event.entity.EntityMountEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.MinecartAbilityEvent;
+import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEffects;
+import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.util.AchievementUtils;
+import org.confluence.terra_curio.common.init.TCItems;
 
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
+@EventBusSubscriber(modid = Confluence.MODID)
 public final class EntityEvents {
     @SubscribeEvent
     public static void mount(EntityMountEvent event) {
@@ -31,7 +35,7 @@ public final class EntityEvents {
         if (beingMounted instanceof LivingEntity) {
             AchievementUtils.awardAchievement(player, "the_cavalry");
         }
-        if (event.isDismounting() && beingMounted instanceof AbstractMinecart minecart) {
+        if (CommonConfigs.RIGHT_CLICK_RIDE_MINECART.get() && event.isDismounting() && beingMounted instanceof AbstractMinecart minecart) {
             MinecartAbilityEvent.DismountOnMinecart e = NeoForge.EVENT_BUS.post(new MinecartAbilityEvent.DismountOnMinecart(player, minecart));
             ItemStack itemStack = e.getMinecartItem();
             if (e.isCanceled() || itemStack == null) return;
@@ -60,8 +64,9 @@ public final class EntityEvents {
             event.setInvulnerable(true); // boss 免疫巨石
         } else if ((damageSource.getEntity() == null || !damageSource.getEntity().getType().is(Tags.EntityTypes.BOSSES)) && living.hasEffect(ModEffects.SHIMMER)) {
             event.setInvulnerable(true); // 微光状态时免疫小怪和环境伤害
-        } else if (damageSource.is(DamageTypeTags.IS_FIRE) && living.hasEffect(ModEffects.OBSIDIAN_SKIN)) {
-            event.setInvulnerable(true); // 喝黑曜石皮免疫火系
+        } else if (damageSource.is(DamageTypeTags.IS_FIRE) && (living.hasEffect(ModEffects.OBSIDIAN_SKIN) || (living instanceof Player player && ModArmorBonus.hasType(player, TCItems.FIRE$IMMUNE)))) {
+            living.clearFire();
+            event.setInvulnerable(true); // 免疫着火
         }
     }
 }

@@ -362,7 +362,6 @@ public final class ModTags {
         public static final TagKey<Item> SHADOW_SCALE_AND_TISSUE_SAMPLE = register("shadow_scale_and_tissue_sample");
         public static final TagKey<Item> EVIL_INGOT = register("evil_ingot");
         public static final TagKey<Item> MANA_WEAPON = register("mana_weapon");
-        public static final TagKey<Item> PREFIX_UNIVERSAL_ONLY = register("prefix_universal_only");
         public static final TagKey<Item> HARDMODE_RAW_MATERIALS = register("hardmode_raw_materials");
         public static final TagKey<Item> WINGS = register("wings");
         public static final TagKey<Item> BOSS_SUMMONING = register("boss_summoning");
@@ -382,6 +381,12 @@ public final class ModTags {
         public static final TagKey<Item> EMERALD_ORE_SMELTING = register("emerald_ore_smelting");
         public static final TagKey<Item> REDSTONE_ORE_SMELTING = register("redstone_ore_smelting");
 
+        public static final TagKey<Item> PREFIX_UNIVERSAL_ONLY = register("prefix_universal_only");
+        public static final TagKey<Item> PREFIX_MELEE_ONLY = register("prefix_melee_only");
+        public static final TagKey<Item> PREFIX_RANGED_ONLY = register("prefix_ranged_only");
+        public static final TagKey<Item> PREFIX_MAGIC_ONLY = register("prefix_magic_only");
+        public static final TagKey<Item> PREFIX_ACCESSORY_ONLY = register("prefix_accessory_only");
+
         public static final TagKey<Item> COBALT_ORE_SMELTING = c("cobalt_ore_smelting");
         public static final TagKey<Item> PALLADIUM_ORE_SMELTING = c("palladium_ore_smelting");
         public static final TagKey<Item> MYTHRIL_ORE_SMELTING = c("mythril_ore_smelting");
@@ -397,12 +402,14 @@ public final class ModTags {
         public static final TagKey<Item> ABLE_TO_DESTROY_ALTAR = register("able_to_destroy_altar");
         public static final TagKey<Item> EXPLOSIVE = register("explosive"); // 爆炸物，用于爆破专家入住
         public static final TagKey<Item> SHOW_SIGNAL = register("show_signal"); // 手持可以显示信号连线
+        public static final TagKey<Item> ROBE = register("robe"); // 用于巫师套装
 
         public static final TagKey<Item> DEATH = register("death");
         public static final TagKey<Item> UNABLE_TO_APPLY_PREFIX = register("unable_to_apply_prefix"); // 不能上词缀
         public static final TagKey<Item> ANTIGRAVITY = register("antigravity"); // 无视重力
         public static final TagKey<Item> LAVA_PROOF_BAIT = register("lava_proof_bait"); // 防熔岩鱼饵
-        public static final TagKey<Item> COULD_AUTO_ATTACK = register("could_auto_attack"); // 允许自动挥舞
+        public static final TagKey<Item> AUTO_ATTACK_WHITELIST = register("auto_attack_whitelist"); // 自动挥舞白名单
+        public static final TagKey<Item> AUTO_ATTACK_BLACKLIST = register("auto_attack_blacklist"); // 自动挥舞黑名单
 
         private static TagKey<Item> c(String name) {
             return ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", name));

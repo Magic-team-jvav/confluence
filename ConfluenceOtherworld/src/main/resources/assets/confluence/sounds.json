@@ -41,6 +41,12 @@
         ],
         "subtitle": "confluence.subtitle.regular_staff_shoot_2"
     },
+    "regular_staff_shoot_3": {
+        "sounds": [
+            "confluence:regular_staff_shoot_3"
+        ],
+        "subtitle": "confluence.subtitle.regular_staff_shoot_3"
+    },
     "frozen_broken": {
         "sounds": [
             "confluence:frozen_broken"

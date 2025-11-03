@@ -122,6 +122,18 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(ConsumableItems.GRENADE)
                 .add(ConsumableItems.BOMB)
                 .add(ConsumableItems.DYNAMITE)
+                .add(new MoneyTradeItem.Builder()
+                        .setResult(Items.GUNPOWDER)
+                        .setProperties(TradeProperties.builder().setLock(ITradeLock.and(ITradeLock.or(bloodMoonLock, ectoMistLock), theCrimsonWorldLock)).build())
+                        .build())
+                .add(new MoneyTradeItem.Builder()
+                        .setResult(MaterialItems.EXPLOSIVE_POWDER.toStack())
+                        .setProperties(hardmode)
+                        .build())
+                .add(new MoneyTradeItem.Builder()
+                        .setResult(ArrowItems.HELLFIRE_ARROW.toStack())
+                        .setProperties(hardmode)
+                        .build())
                 .add(SellTrade.INSTANCE)
                 .build());
 
@@ -135,11 +147,29 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(ModBlocks.ROPE)
                 .add(ConsumableItems.SHURIKEN)
                 .add(FunctionalBlocks.PIGGY_BANK)
-                .add(FunctionalBlocks.SAFE)
+                .add(FunctionalBlocks.SAFE) // todo骷髅王后
                 .add(PickaxeItems.COPPER_PICKAXE)
                 .add(AxeItems.COPPER_AXE)
                 .add(PotionItems.LESSER_HEALING_POTION)
                 .add(PotionItems.LESSER_MANA_POTION)
+                .add(FoodItems.MARSHMALLOW) // todo当在雪原时
+
+                .add(new MoneyTradeItem.Builder()
+                        .setResult(PotionItems.HEALING_POTION.toStack())
+                        .setProperties(hardmode)
+                        .build())
+                .add(new MoneyTradeItem.Builder()
+                        .setResult(PotionItems.MANA_POTION.toStack())
+                        .setProperties(hardmode)
+                        .build())
+                .add(new MoneyTradeItem.Builder()
+                        .setResult(FunctionalBlocks.SHARPENING_STATION.toStack())
+                        .setProperties(hardmode)
+                        .build())
+                .add(new MoneyTradeItem.Builder()
+                        .setResult(MaterialItems.GOLD_DUST.toStack())
+                        .setProperties(hardmode)
+                        .build())
                 .add(SellTrade.INSTANCE)
                 .build());
 
@@ -165,6 +195,26 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                         .build())
                 .add(new MoneyTradeItem.Builder()
                         .setResult(TGItems.SILVER_BULLET.toStack(100))
+                        .setProperties(hardmode)
+                        .build())
+                .add(new MoneyTradeItem.Builder()
+                        .setResult(TGItems.TUNGSTEN_BULLET.toStack())
+                        .setProperties(hardmode)
+                        .build())
+                .add(new MoneyTradeItem.Builder()
+                        .setResult(TGItems.TUNGSTEN_BULLET.toStack(100))
+                        .setProperties(hardmode)
+                        .build())
+                .add(new MoneyTradeItem.Builder()
+                        .setResult(MaterialItems.EMPTY_BULLET.toStack())
+                        .setProperties(hardmode)
+                        .build())
+                .add(new MoneyTradeItem.Builder()
+                        .setResult(FunctionalBlocks.AMMO_BOX.toStack())
+                        .setProperties(hardmode)
+                        .build())
+                .add(new MoneyTradeItem.Builder()
+                        .setResult(TGItems.SHOTGUN.toStack())
                         .setProperties(hardmode)
                         .build())
                 .add(TGItems.FLINTLOCK_PISTOL)
@@ -325,9 +375,8 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .addResult(20, List.of(ArmorItems.ANGLER_PANTS.toStack()))
                 .addResult(25, List.of(ToolItems.BOTTOMLESS_WATER_BUCKET.toStack()))
                 .addResult(30, List.of(FishingPoleItems.GOLDEN_FISHING_ROD.toStack()))
-                .addLootTable(10, ModLootTables.QUESTS_1)
-                .addLootTable(50, ModLootTables.QUESTS_2)
-                .addLootTable(75, ModLootTables.QUESTS_3)
+                .addLootTable(10, ModLootTables.QUESTS_AFTER_10)
+                .addLootTable(75, ModLootTables.QUESTS_AFTER_75)
                 .build())).build());
 
         shop(TENpcEntities.MECHANIC.getId()).addRecipe(withDefaultPylon()
@@ -390,6 +439,8 @@ public class NPCShopProvider extends AbstractRecipeProvider {
         shop(TENpcEntities.PARTY_GIRL.getId()).addRecipe(withDefaultPylon()
                 .add(FunctionalBlocks.SILLY_BALLOON_MACHINE)
                 .add(ConsumableItems.SMOKE_BOMB)
+                .add(MaterialItems.CONFETTI)
+                .add(MinecartItems.PARTY_WAGON)
                 .add(SellTrade.INSTANCE)
                 .build());
 
@@ -413,8 +464,11 @@ public class NPCShopProvider extends AbstractRecipeProvider {
                 .add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.SAPLING)
                 .add(Items.CHERRY_SAPLING)
                 .add(SellTrade.INSTANCE)
+                .add(new MoneyTradeItem.Builder()
+                        .setResult(LanceItems.JOUSTING_LANCE.toStack())
+                        .setProperties(TradeProperties.builder().setLock(new BestiaryUnlockedCountLock(75)).build())
+                        .build())
                 .build());
-
     }
 
 

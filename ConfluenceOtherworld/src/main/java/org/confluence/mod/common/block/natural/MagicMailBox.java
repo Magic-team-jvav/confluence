@@ -1,5 +1,7 @@
 package org.confluence.mod.common.block.natural;
 
+import it.unimi.dsi.fastutil.objects.Reference2IntMap;
+import it.unimi.dsi.fastutil.objects.Reference2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
@@ -24,9 +26,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.init.block.NatureBlocks;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class MagicMailBox extends Block {
     private static final VoxelShape[] SHAPES = new VoxelShape[]{
             Shapes.or(box(8, 5, 0, 13, 11, 15), box(8, 0, 0, 13, 5, 15), box(3, 0, 0, 8, 5, 15), box(3, 5, 0, 8, 11, 15), box(8, 5, 15, 13, 11, 16), box(3, 5, 15, 8, 11, 16), box(8, 0, 15, 13, 5, 16), box(3, 0, 15, 8, 5, 16), box(13, 4, 8, 15, 14, 10), box(13, 4, 6, 15, 14, 8), box(11, 4, 6, 13, 14, 8), box(11, 4, 8, 13, 14, 10), box(2, 1, 4, 3, 5, 8), box(2, 1, 8, 3, 5, 12), box(2, 5, 4, 3, 10, 8), box(2, 5, 8, 3, 10, 12)),
@@ -42,7 +41,7 @@ public class MagicMailBox extends Block {
     private static final IntegerProperty VARIANT = IntegerProperty.create("variant", 0, 19);
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
-    private static final Map<Block, Integer> BLOCK_TO_VARIANT = new HashMap<>();
+    private static final Reference2IntMap<Block> BLOCK_TO_VARIANT = new Reference2IntOpenHashMap<>();
 
     public MagicMailBox() {
         super(BlockBehaviour.Properties.of().strength(1.0f));
@@ -75,11 +74,9 @@ public class MagicMailBox extends Block {
         }
         if (item instanceof BlockItem) {
             Block heldBlock = ((BlockItem) item).getBlock();
-            if (BLOCK_TO_VARIANT.containsKey(heldBlock)) {
-                int variant = BLOCK_TO_VARIANT.get(heldBlock);
-                if (state.getValue(VARIANT) != variant) {
-                    level.setBlockAndUpdate(pos, state.setValue(VARIANT, variant));
-                }
+            int variant = BLOCK_TO_VARIANT.getInt(heldBlock);
+            if (variant != -1 && state.getValue(VARIANT) != variant) {
+                level.setBlockAndUpdate(pos, state.setValue(VARIANT, variant));
             }
         }
     }
@@ -109,6 +106,7 @@ public class MagicMailBox extends Block {
     }
 
     public static void registerVariants() {
+        BLOCK_TO_VARIANT.defaultReturnValue(-1);
         BLOCK_TO_VARIANT.put(Blocks.OAK_PLANKS, 0);
         BLOCK_TO_VARIANT.put(Blocks.SPRUCE_PLANKS, 1);
         BLOCK_TO_VARIANT.put(Blocks.BIRCH_PLANKS, 2);

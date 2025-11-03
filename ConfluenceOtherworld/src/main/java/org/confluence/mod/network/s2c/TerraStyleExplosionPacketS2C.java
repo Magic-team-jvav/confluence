@@ -9,8 +9,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ChunkPos;
 import net.neoforged.neoforge.network.PacketDistributor;
-import org.confluence.mod.common.entity.projectile.bomb.TerraStyleExplosion;
 import org.confluence.mod.network.IPacket;
+import org.confluence.mod.util.TerraStyleExplosion;
 
 public record TerraStyleExplosionPacketS2C(double x, double y, double z, float radius) implements IPacketS2C {
     public static final Type<TerraStyleExplosionPacketS2C> TYPE = IPacket.createType("terra_style_explosion");

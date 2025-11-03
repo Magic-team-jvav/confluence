@@ -7,7 +7,6 @@ import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
@@ -31,7 +30,7 @@ public class MutableRenderTypeItemExtension implements IClientItemExtensions {
                 public void renderByItem(ItemStack stack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
                     minecraft.getItemRenderer().renderModelLists(
                             minecraft.getItemRenderer().getModel(stack, minecraft.level, null, 250913),
-                            stack, packedLight, OverlayTexture.NO_OVERLAY, poseStack,
+                            stack, packedLight, packedOverlay, poseStack,
                             VertexMultiConsumer.create(buffer.getBuffer(getter.apply(stack)), buffer.getBuffer(Sheets.translucentCullBlockSheet()))
                     );
                 }

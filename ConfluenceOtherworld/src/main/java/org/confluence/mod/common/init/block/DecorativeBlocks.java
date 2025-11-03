@@ -281,6 +281,9 @@ public class DecorativeBlocks {
     // 圣物
     public static final DeferredBlock<RelicBlock> KING_SLIME_RELIC = registerRelic("king_slime_relic");
     public static final DeferredBlock<RelicBlock> EYE_OF_CTHULHU_RELIC = registerRelic("eye_of_cthulhu_relic");
+    public static final DeferredBlock<RelicBlock> BRAIN_OF_CTHULHU_RELIC = registerRelic("brain_of_cthulhu_relic");
+    public static final DeferredBlock<RelicBlock> EATER_OF_WORLDS_RELIC = registerRelic("eater_of_worlds_relic");
+    public static final DeferredBlock<RelicBlock> SKELETRON_RELIC = registerRelic("skeletron_relic");
 
     public static final Supplier<BlockEntityType<RelicBlock.BEntity>> RELIC_ENTITY = ModBlocks.BLOCK_ENTITIES.register("relic_entity", () -> BlockEntityType.Builder.of(RelicBlock.BEntity::new, RELIC_BLOCKS.stream().map(DeferredBlock::get).toArray(Block[]::new)).build(DSL.remainderType()));
 

@@ -82,9 +82,9 @@ public class NatureBlocks {
     public static final DeferredBlock<SandLayerBlock> SAND_LAYER_BLOCK = registerWithItem("sand_layer_block", SandLayerBlock::new);
     public static final DeferredBlock<SandLayerBlock> RED_SAND_LAYER_BLOCK = registerWithItem("red_sand_layer_block", SandLayerBlock::new);
     public static final DeferredBlock<Block> DESERT_FOSSIL = registerWithItem("desert_fossil", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.SANDSTONE).mapColor(MapColor.TERRACOTTA_RED)));
-    public static final DeferredBlock<Block> SLUSH = registerWithItem("slush", () -> new ColoredFallingBlock(new ColorRGBA(1531531531), BlockBehaviour.Properties.ofFullCopy(Blocks.SAND).mapColor(MapColor.TERRACOTTA_WHITE)));
-    public static final DeferredBlock<Block> SILT_BLOCK = registerWithItem("silt_block", () -> new ColoredFallingBlock(new ColorRGBA(1531531531), BlockBehaviour.Properties.ofFullCopy(Blocks.SAND).mapColor(MapColor.TERRACOTTA_GRAY)));
-    public static final DeferredBlock<Block> MARINE_GRAVEL = registerWithItem("marine_gravel", () -> new ColoredFallingBlock(new ColorRGBA(1531531531), BlockBehaviour.Properties.ofFullCopy(Blocks.SAND).mapColor(MapColor.TERRACOTTA_CYAN)));
+    public static final DeferredBlock<Block> SLUSH = registerWithItem("slush", () -> new ColoredFallingBlock(new ColorRGBA(-4532781), BlockBehaviour.Properties.ofFullCopy(Blocks.SAND).mapColor(MapColor.TERRACOTTA_WHITE)));
+    public static final DeferredBlock<Block> SILT_BLOCK = registerWithItem("silt_block", () -> new ColoredFallingBlock(new ColorRGBA(-9673114), BlockBehaviour.Properties.ofFullCopy(Blocks.SAND).mapColor(MapColor.TERRACOTTA_GRAY)));
+    public static final DeferredBlock<Block> MARINE_GRAVEL = registerWithItem("marine_gravel", () -> new ColoredFallingBlock(new ColorRGBA(-9588022), BlockBehaviour.Properties.ofFullCopy(Blocks.SAND).mapColor(MapColor.TERRACOTTA_CYAN)));
     public static final DeferredBlock<RotatedPillarBlock> STONY_LOG = registerWithItem("stony_log", () -> new RotatedPillarBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).mapColor(MapColor.COLOR_LIGHT_GRAY)));
     public static final DeferredBlock<LifeCrystalBlock> LIFE_CRYSTAL_BLOCK = registerWithItem("life_crystal_block", () -> new LifeCrystalBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.AMETHYST_CLUSTER).mapColor(MapColor.COLOR_RED).lightLevel(state -> 7)), LifeCrystalBlock.BItem::new);
     public static final Supplier<BlockEntityType<LifeCrystalBlock.BEntity>> LIFE_CRYSTAL_BLOCK_ENTITY = ModBlocks.BLOCK_ENTITIES.register("life_crystal_block_entity", () -> BlockEntityType.Builder.of(LifeCrystalBlock.BEntity::new, LIFE_CRYSTAL_BLOCK.get()).build(DSL.remainderType()));
@@ -135,10 +135,10 @@ public class NatureBlocks {
     public static final DeferredBlock<Block> HALLOW_GRASS_BLOCK = registerWithItem("hallow_grass_block", () -> new SpreadingGrassBlock(ISpreadable.Type.HALLOW, BlockBehaviour.Properties.ofFullCopy(Blocks.GRASS_BLOCK).mapColor(MapColor.COLOR_CYAN)));
     public static final DeferredBlock<Block> HALLOW_GRASS = registerWithItem("hallow_grass", () -> new BasePlantBlock(HALLOW_GRASS_BLOCK.get())); // 神圣草
     public static final LogBlockSet PEARL_LOG_BLOCKS = LogBlockSet.builder("pearl", true, PEARL).sapling(properties -> new BaseSaplingBlock(ModFeatures.TreeGrowers.PEARL_GROWER, properties, null, HALLOW_GRASS_BLOCK)).build();
-    public static final DeferredBlock<Block> PEARLSTONE = registerWithItem("pearlstone", () -> new PearlstoneBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).mapColor(MapColor.TERRACOTTA_MAGENTA)));
+    public static final DeferredBlock<Block> PEARLSTONE = registerWithItem("pearlstone", () -> new PearlstoneBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).mapColor(MapColor.TERRACOTTA_MAGENTA).strength(8.0F)));
     public static final DeferredBlock<Block> COBBLED_PEARLSTONE = registerWithItem("cobbled_pearlstone", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.COBBLESTONE).mapColor(MapColor.TERRACOTTA_MAGENTA)));
     public static final DeferredBlock<Block> HARDENED_PEARLSAND_BLOCK = registerWithItem("hardened_pearlsand_block", () -> new PearlstoneBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE).mapColor(MapColor.TERRACOTTA_PINK)));
-    public static final DeferredBlock<Block> PEARLSANDSTONE = registerWithItem("pearlsandstone", () -> new PearlstoneBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SANDSTONE).mapColor(MapColor.TERRACOTTA_PINK)));
+    public static final DeferredBlock<Block> PEARLSANDSTONE = registerWithItem("pearlsandstone", () -> new PearlstoneBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SANDSTONE).mapColor(MapColor.TERRACOTTA_PINK).strength(8.0F)));
     public static final DeferredBlock<Block> PEARLSAND = registerWithItem("pearlsand", () -> new SpreadingSandBlock(ISpreadable.Type.HALLOW, 0xEDD5F6, BlockBehaviour.Properties.ofFullCopy(Blocks.SAND).mapColor(MapColor.TERRACOTTA_PINK)) {
         @Override
         public void spread(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource) {
@@ -270,9 +270,9 @@ public class NatureBlocks {
     public static final DeferredBlock<ThornBlock> JUNGLE_THORN = registerWithItem("jungle_thorn", () -> new ThornBlock(3.4f, Blocks.MOSS_BLOCK));
     public static final DeferredBlock<ThornBlock> PLANTERA_THORN = registerWithItem("plantera_thorn", () -> new ThornBlock(20, Blocks.MUD));
     public static final DeferredBlock<JungleSporeBlock> JUNGLE_SPORE = registerWithoutItem("jungle_spore", JungleSporeBlock::new);
-    public static final DeferredBlock<NaturesGiftBlock> NATURES_GIFT = registerWithoutItem("natures_gift", NaturesGiftBlock::new);
+    public static final DeferredBlock<NaturesGiftBlock> NATURES_GIFT = registerWithoutItem("natures_gift", () -> new NaturesGiftBlock(NaturesGiftBlock.BlockItemType.NATURES_GIFT));
     public static final DeferredBlock<JungleHiveBlock> JUNGLE_HIVE_BLOCK = registerWithItem("jungle_hive_block", JungleHiveBlock::new);
-    public static final DeferredBlock<NaturesGiftBlock> JUNGLE_ROSE = registerWithItem("jungle_rose", NaturesGiftBlock::new);
+    public static final DeferredBlock<NaturesGiftBlock> JUNGLE_ROSE = registerWithItem("jungle_rose", () -> new NaturesGiftBlock(NaturesGiftBlock.BlockItemType.JUNGLE_ROSE));
     public static final DeferredBlock<LarvaBlock> LARVA = registerWithItem("larva", () -> new LarvaBlock(BlockBehaviour.Properties.of().pushReaction(PushReaction.DESTROY).noOcclusion().replaceable().instabreak()));
 
     public static final DeferredBlock<Block> JUNGLE_PATH = registerWithItem("mud_path", () -> new MudPathBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MUD).mapColor(MapColor.COLOR_LIGHT_GRAY)));
@@ -343,18 +343,18 @@ public class NatureBlocks {
     public static final DeferredBlock<Block> BLINKING_ROYAL_SHIMMERLILY = registerWithItem("blinking_royal_shimmerlily", () -> new BlinkingRoyalShimmerlilyBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LILY_PAD)), BlinkingRoyalShimmerlilyBlock.BItem::new);
 
     //苔藓
-    public static final DeferredBlock<BaseMossBlock> GREEN_MOSS = registerWithItem("green_moss", () -> new BaseMossBlock(5));
-    public static final DeferredBlock<BaseMossBlock> BROWN_MOSS = registerWithItem("brown_moss", () -> new BaseMossBlock(5));
-    public static final DeferredBlock<BaseMossBlock> RED_MOSS = registerWithItem("red_moss", () -> new BaseMossBlock(5));
-    public static final DeferredBlock<BaseMossBlock> BLUE_MOSS = registerWithItem("blue_moss", () -> new BaseMossBlock(5));
-    public static final DeferredBlock<BaseMossBlock> PURPLE_MOSS = registerWithItem("purple_moss", () -> new BaseMossBlock(5));
-    public static final DeferredBlock<BaseMossBlock> LAVA_MOSS = registerWithItem("lava_moss", () -> new BaseMossBlock(10, true));
-    public static final DeferredBlock<BaseMossBlock> KRYPTON_MOSS = registerWithItem("krypton_moss", () -> new BaseMossBlock(5));
-    public static final DeferredBlock<BaseMossBlock> XENON_MOSS = registerWithItem("xenon_moss", () -> new BaseMossBlock(5));
-    public static final DeferredBlock<BaseMossBlock> ARGON_MOSS = registerWithItem("argon_moss", () -> new BaseMossBlock(5));
-    public static final DeferredBlock<BaseMossBlock> NEON_MOSS = registerWithItem("neon_moss", () -> new BaseMossBlock(5));
-    public static final DeferredBlock<BaseMossBlock> HELIUM_MOSS = registerWithItem("helium_moss", () -> new BaseMossBlock(5));
-    public static final DeferredBlock<BaseMossBlock> GLOWING_MUSHROOM_MOSS = registerWithItem("glowing_mushroom_moss", () -> new BaseMossBlock(5));
+    public static final DeferredBlock<BaseMossBlock> GREEN_MOSS = registerWithItem("green_moss", () -> BaseMossBlock.createNormal(5));
+    public static final DeferredBlock<BaseMossBlock> BROWN_MOSS = registerWithItem("brown_moss", () -> BaseMossBlock.createNormal(5));
+    public static final DeferredBlock<BaseMossBlock> RED_MOSS = registerWithItem("red_moss", () -> BaseMossBlock.createNormal(5));
+    public static final DeferredBlock<BaseMossBlock> BLUE_MOSS = registerWithItem("blue_moss", () -> BaseMossBlock.createNormal(5));
+    public static final DeferredBlock<BaseMossBlock> PURPLE_MOSS = registerWithItem("purple_moss", () -> BaseMossBlock.createNormal(5));
+    public static final DeferredBlock<BaseMossBlock> LAVA_MOSS = registerWithItem("lava_moss", () -> BaseMossBlock.createLavaImmune(10));
+    public static final DeferredBlock<BaseMossBlock> KRYPTON_MOSS = registerWithItem("krypton_moss", () -> BaseMossBlock.createNormal(5));
+    public static final DeferredBlock<BaseMossBlock> XENON_MOSS = registerWithItem("xenon_moss", () -> BaseMossBlock.createNormal(5));
+    public static final DeferredBlock<BaseMossBlock> ARGON_MOSS = registerWithItem("argon_moss", () -> BaseMossBlock.createNormal(5));
+    public static final DeferredBlock<BaseMossBlock> NEON_MOSS = registerWithItem("neon_moss", () -> BaseMossBlock.createNormal(5));
+    public static final DeferredBlock<BaseMossBlock> HELIUM_MOSS = registerWithItem("helium_moss", () -> BaseMossBlock.createNormal(5));
+    public static final DeferredBlock<BaseMossBlock> GLOWING_MUSHROOM_MOSS = registerWithItem("glowing_mushroom_moss", () -> BaseMossBlock.createNormal(5));
 
     public static final DeferredBlock<CrimsonVenusFlytrapBlock> CRIMSON_VENUS_FLYTRAP_BLOCK = registerWithItem("crimson_venus_flytrap_block", CrimsonVenusFlytrapBlock::new);
     public static final DeferredBlock<BloodthirstCrystallizedBlock> BLOODTHIRST_CRYSTALLIZED_BLOCK = registerWithItem("bloodthirst_crystallized_block", BloodthirstCrystallizedBlock::new);

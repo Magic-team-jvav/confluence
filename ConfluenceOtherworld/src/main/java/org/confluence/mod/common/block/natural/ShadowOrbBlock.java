@@ -21,14 +21,12 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.lib.color.GlobalColors;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.init.item.AccessoryItems;
 import org.confluence.mod.common.init.item.LightPetItems;
 import org.confluence.mod.common.init.item.ManaWeaponItems;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.ModUtils;
-import org.confluence.phase_journey.common.util.PhaseUtils;
 import org.confluence.terra_guns.common.init.TGItems;
 import org.confluence.terraentity.entity.boss.EaterOfWorlds;
 import org.jetbrains.annotations.Nullable;
@@ -52,7 +50,6 @@ public class ShadowOrbBlock extends Block {
             Vec3 center = pos.getCenter();
             ConfluenceData data = ConfluenceData.get(serverLevel);
             int count = data.getEvilBrokenCount() % 3;
-            PhaseUtils.achieveLevelPhase(serverLevel, Confluence.asResource("has_it_evil_ever_been_broken"), true);
 
             if (count == 0 || level.random.nextFloat() < 0.2F) {
                 LibUtils.createItemEntity(TGItems.MUSKET.toStack(), center.x, center.y, center.z, level, 0);
@@ -81,7 +78,7 @@ public class ShadowOrbBlock extends Block {
             }
 
             if (data.updateEvilBrokenCount()) {
-                ModUtils.summonBoss(serverLevel, pos, new EaterOfWorlds(level, true));
+                ModUtils.summonBoss(serverLevel, pos, new EaterOfWorlds(level, true), false);
             }
         }
     }

@@ -1,7 +1,6 @@
 package org.confluence.mod.util;
 
 import com.google.common.collect.Iterables;
-import com.xiaohunao.equipment_benediction.common.hook.HookMapManager;
 import com.xiaohunao.heaven_destiny_moment.common.moment.MomentInstanceManager;
 import com.xiaohunao.terra_moment.common.init.TMMoments;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
@@ -11,6 +10,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.Tuple;
+import net.minecraft.util.Unit;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -33,19 +33,25 @@ import org.confluence.mod.common.data.map.DiggingPower;
 import org.confluence.mod.common.data.saved.ConfluenceData;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModEffects;
-import org.confluence.mod.common.init.ModHookTypes;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.item.AccessoryItems;
+import org.confluence.mod.common.init.item.ManaWeaponItems;
 import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.common.item.potion.ManaPotionItem;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
+import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.network.s2c.*;
+import org.confluence.terra_curio.api.primitive.PrimitiveValue;
+import org.confluence.terra_curio.api.primitive.UnitValue;
+import org.confluence.terra_curio.api.primitive.ValueType;
 import org.confluence.terra_curio.common.init.TCItems;
 import org.confluence.terra_curio.integration.bettercombat.BetterCombatHelper;
 import org.confluence.terra_curio.util.TCUtils;
 import org.confluence.terraentity.api.entity.Boss;
 import org.jetbrains.annotations.ApiStatus;
+import org.joml.Vector3f;
 
 import java.util.function.IntFunction;
 import java.util.function.Supplier;
@@ -80,9 +86,10 @@ public final class PlayerUtils {
 
     public static void regenerateMana(ServerPlayer player) {
         ManaStorage manaStorage = ManaStorage.of(player);
+        if (!manaStorage.canReceive()) return;
 
         int delay = manaStorage.getRegenerateDelay();
-        boolean notMove = Math.abs(player.walkDist - player.walkDistO) < Mth.EPSILON;
+        boolean notMove = isNotMove(player);
         if (delay > 0) {
             if (manaStorage.isArcaneCrystalUsed()) delay = (int) ((float) delay * (notMove ? 0.975F : 0.95F));
             if (delay > 20 && player.hasEffect(ModEffects.MANA_REGENERATION)) delay = 20;
@@ -103,26 +110,29 @@ public final class PlayerUtils {
         if (manaStorage.receiveMana(receive)) syncMana2Client(player, manaStorage);
     }
 
-    public static boolean extractMana(ServerPlayer player, ItemStack itemStack, FloatSupplier sup) {
-        if (player.isCreative()) return true;
-        return extractAndSync(
-                ManaStorage.of(player),
-                HookMapManager.postHooks(
-                        ModHookTypes.MANA_CONSUME.get(),
-                        (owner, hook, original) -> hook.onManaConsume(owner, itemStack, original),
-                        player,
-                        () -> sup.getAsFloat() * EnchantmentUtils.processEfficientMagic(player)
-                ),
-                player
-        );
+    private static boolean isNotMove(ServerPlayer player) {
+        Vector3f vector3f = IServerPlayer.of(player).confluence$getMovementSpeed();
+        return Math.abs(vector3f.x) < Mth.EPSILON && Math.abs(vector3f.y) < Mth.EPSILON && Math.abs(vector3f.z) < Mth.EPSILON;
     }
 
-    public static boolean extractAndSync(ManaStorage manaStorage, FloatSupplier sup, ServerPlayer player) {
-        if (manaStorage.extractMana(sup, player)) {
+    public static boolean extractMana(ServerPlayer player, ItemStack itemStack, FloatSupplier sup) {
+        if (player.isCreative()) return true;
+        ManaStorage manaStorage = ManaStorage.of(player);
+        if (!manaStorage.canExtract()) return false;
+        if (itemStack.is(ManaWeaponItems.SPACE_GUN) && ModArmorBonus.hasType(player, ModArmorBonus.SPACE$GUN$FREE)) {
+            sup = () -> 0;
+        }
+        if (manaStorage.extractMana(EnchantmentUtils.processEfficientMagic(sup, player), player)) {
             syncMana2Client(player, manaStorage);
             return true;
         }
         return false;
+    }
+
+    @Deprecated(forRemoval = true)
+    @ApiStatus.ScheduledForRemoval(inVersion = "1.3.0")
+    public static boolean extractAndSync(ManaStorage manaStorage, FloatSupplier sup, ServerPlayer player) {
+        return extractMana(player, ItemStack.EMPTY, sup);
     }
 
     public static void receiveMana(ServerPlayer player, FloatSupplier sup) {
@@ -137,12 +147,13 @@ public final class PlayerUtils {
             StarPhasesPacketS2C.sendToClient(player, data.getStarPhases());
         }
         KillBoardSyncPacketS2C.sendToClient(player);
+        GlobalCloakSyncPacketS2C.sendToClient(player);
         MeteoriteLocationPacketS2C.sendToAll(data.getMeteoriteLocation(), 0);
         BestiarySyncPacketS2C.syncEntries(player);
     }
 
     public static float getFishingPower(ServerPlayer player) {
-        float base = TCUtils.getAccessoriesValue(player, AccessoryItems.FISHING$POWER);
+        float base = getPrimitiveValue(player, AccessoryItems.FISHING$POWER);
         if (EverBeneficial.of(player).isGummyWormUsed()) base += 3.0F;
         if (player.isInFluidType() && TCUtils.hasAccessoriesType(player, TCItems.FLOAT$ON$LIQUID$SURFACE)) base += 5.0F;
         if (player.hasEffect(ModEffects.TIPSY)) base += 5.0F;
@@ -164,7 +175,6 @@ public final class PlayerUtils {
         if (MomentInstanceManager.of(level).hasMoment(TMMoments.BLOOD_MOON.getKey())) {
             base *= 1.1F;
         }
-        base = HookMapManager.postHooks(ModHookTypes.FISHING_POWER.get(), (owner, hook, original) -> hook.modifyFishingPower(owner, player, original), player, base);
         return base;
     }
 
@@ -400,7 +410,7 @@ public final class PlayerUtils {
 
     public static boolean couldPerformEmptyTargetSweep(Player player) {
         if (!player.isAutoSpinAttack()) {
-            ItemStack stack = player.getWeaponItem();
+            ItemStack stack = player.getMainHandItem();
             if (BetterCombatHelper.hasWeaponAttributes(stack)) return false;
             return stack.canPerformAction(ItemAbilities.SWORD_SWEEP) && stack.getItem() instanceof BaseSwordItem sword && sword.modifier != null && sword.modifier.specialSweep;
         }
@@ -412,10 +422,26 @@ public final class PlayerUtils {
         ItemStack stack = player.getMainHandItem();
         if (stack.getItem() instanceof BaseSwordItem sword && !player.getCooldowns().isOnCooldown(sword)) {
             SwordProjectileComponent data = stack.get(ModDataComponentTypes.SWORD_PROJECTILE);
-            if (data != null) {
-                sword.genProjectile(player, stack);
-                player.getCooldowns().addCooldown(sword, data.getAttackSpeed(player));
-            }
+            if (data == null) return;
+            sword.genProjectile(player, stack);
+            player.getCooldowns().addCooldown(sword, data.getAttackSpeed(player));
         }
+    }
+
+    public static boolean shouldSkipConsumeAmmo(Player player) {
+        if (player.hasEffect(ModEffects.AMMO_BOX) && player.getRandom().nextFloat() < 0.2F) {
+            return true;
+        }
+        return LibUtils.checkChance(ModArmorBonus.getValue(player, ModArmorBonus.SKIP$CONSUME$AMMO$CHANCE), player.getRandom());
+    }
+
+    public static <T, V extends PrimitiveValue<T>> T getPrimitiveValue(Player player, ValueType<T, V> type) {
+        T t1 = TCUtils.getAccessoriesValue(player, type);
+        T t2 = ModArmorBonus.getValue(player, type);
+        return type.combineRule().combine(t1, t2);
+    }
+
+    public static boolean hasPrimitiveType(Player player, ValueType<Unit, UnitValue> type) {
+        return TCUtils.hasAccessoriesType(player, type) && ModArmorBonus.hasType(player, type);
     }
 }

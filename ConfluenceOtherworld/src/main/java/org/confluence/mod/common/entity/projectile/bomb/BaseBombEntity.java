@@ -20,6 +20,7 @@ import org.confluence.lib.util.MultiplyExplosionDamageCalculator;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEntities;
+import org.confluence.mod.util.TerraStyleExplosion;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import org.mesdag.particlestorm.PSGameClient;

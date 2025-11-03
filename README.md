@@ -5,12 +5,10 @@
 | [ConfluenceOtherworld](ConfluenceOtherworld)                | 本体                | 依赖所有                  |
 | [TerraEntity](TerraEntity)                                  | 泰拉实体生物            | 是                     |
 | [MineTeam](MineTeam)                                        | 类泰拉团队机制           | 是                     |
-| [EquipmentBenediction](EquipmentBenediction)                | 多种装备加成机制          | 是                     |
 | [TerraCurio](TerraCurio)                                    | 泰拉饰品              | 是                     |
 | [TerraGuns](TerraGuns)                                      | 泰拉枪支              | 是                     |
 | [ParticleStorm](https://github.com/westernat/ParticleStorm) | 为复杂的粒子提供API       | 是                     |
 | [HeavenDestinyMoment](HeavenDestinyMoment)                  | 提供各类事件机制API       | 是                     |
-| [PhaseJourney](PhaseJourney)                                | 提供各类阶游戏段机制API     | 是                     |
 | [TerraMoment](TerraMoment)                                  | 泰拉事件              | 依赖HeavenDestinyMoment |
 | [IsekaiInvaded](IsekaiInvaded)                              | 多维度入侵事件           | 依赖HeavenDestinyMoment |
 | [TerraFurniture](TerraFurniture)                            | 泰拉家具              | 是                     |
@@ -39,22 +37,3 @@
   > 以及[ConfluenceOtherworld/build.gradle](ConfluenceOtherworld/build.gradle)里加上子模块名
 
 - 全部拉取完成后,在gradle插件中启动ConfluenceOtherworld本体项目中的runClient命令
-
-## Maven 例子
-
-```groovy
-repositories {
-    maven {
-        name "org.confluenceReleases"
-        url "https://maven.confluence.ink/releases"
-    }
-    maven {
-        name "org.confluenceSnapshots"
-        url "https://maven.confluence.ink/snapshots"
-    }
-}
-
-dependencies {
-    implementation "org.confluence.lib:Confluence-Magic-Lib:<version>"
-}
-```

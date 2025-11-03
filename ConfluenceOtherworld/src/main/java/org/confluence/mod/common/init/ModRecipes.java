@@ -24,10 +24,7 @@ import org.confluence.mod.Confluence;
 import org.confluence.mod.StartupConfigs;
 import org.confluence.mod.common.init.block.DecorativeBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
-import org.confluence.mod.common.init.item.BaitItems;
-import org.confluence.mod.common.init.item.FoodItems;
-import org.confluence.mod.common.init.item.MaterialItems;
-import org.confluence.mod.common.init.item.PotionItems;
+import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.recipe.*;
 import org.confluence.mod.common.recipe.special.BoomBunnyRecipe;
 
@@ -112,7 +109,7 @@ public final class ModRecipes {
             registerMaterial(Items.FIRE_CORAL);
             registerMaterial(BaitItems.LADYBUG.get());
             registerMaterial(FoodItems.FLASHFIN_KOI.get());
-            registerMaterial(FoodItems.OBSIDIAN_FISH.get());
+            registerMaterial(FoodItems.OBSIDIFISH.get());
             registerMaterial(FoodItems.COLORFUL_MINERAL_FISH.get());
             registerMaterial(FoodItems.SCARLET_TIGER_FISH.get());
             registerMaterial(MaterialItems.ANTLION_MANDIBLE.get());
@@ -139,7 +136,7 @@ public final class ModRecipes {
             registerMaterial(FoodItems.MOTTLED_OILFISH.get());
             registerMaterial(MaterialItems.FALLING_STAR.get());
             registerMaterial(FoodItems.PISCES_FIN_COD.get());
-            registerMaterial(MaterialItems.DUNGEON_DEMON_BONE.get());
+            registerMaterial(ConsumableItems.DUNGEON_DEMON_BONE.get());
 
 
             // 箭术
@@ -223,8 +220,8 @@ public final class ModRecipes {
             // 狱火
             registerMix(new Item[]{
                     FoodItems.FLASHFIN_KOI.get(),
-                    FoodItems.OBSIDIAN_FISH.get(),
-                    FoodItems.OBSIDIAN_FISH.get(),
+                    FoodItems.OBSIDIFISH.get(),
+                    FoodItems.OBSIDIFISH.get(),
                     MaterialItems.FIREBLOSSOM.get(),
             }, PotionItems.INFERNO_POTION.toStack());
             // 铁皮
@@ -314,7 +311,7 @@ public final class ModRecipes {
             }, PotionItems.THORNS_POTION.toStack());
             // 泰坦
             registerMix(new Item[]{
-                    MaterialItems.DUNGEON_DEMON_BONE.get(),
+                    ConsumableItems.DUNGEON_DEMON_BONE.get(),
                     MaterialItems.DEATHWEED.get(),
                     MaterialItems.SHIVERTHORN.get()
             }, PotionItems.TITAN_POTION.toStack());

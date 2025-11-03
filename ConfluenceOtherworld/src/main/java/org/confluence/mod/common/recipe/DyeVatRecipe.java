@@ -43,18 +43,15 @@ public class DyeVatRecipe extends AbstractAmountRecipe<MenuRecipeInput> {
         return ModRecipes.DYE_VAT_TYPE.get();
     }
 
-    public static class Serializer implements RecipeSerializer<DyeVatRecipe> {
-        public static final MapCodec<DyeVatRecipe> CODEC = AbstractAmountRecipe.shapelessSerializerMapCodec(DyeVatRecipe::new);
-        public static final StreamCodec<RegistryFriendlyByteBuf, DyeVatRecipe> STREAM_CODEC = AbstractAmountRecipe.shapelessSerializerSteamCodec(DyeVatRecipe::new);
-
+    public static class Serializer extends SimpleRecipeSerializer<DyeVatRecipe> {
         @Override
-        public MapCodec<DyeVatRecipe> codec() {
-            return CODEC;
+        protected MapCodec<DyeVatRecipe> getCodec() {
+            return AbstractAmountRecipe.shapelessSerializerMapCodec(DyeVatRecipe::new);
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, DyeVatRecipe> streamCodec() {
-            return STREAM_CODEC;
+        protected StreamCodec<RegistryFriendlyByteBuf, DyeVatRecipe> getStreamCodec() {
+            return AbstractAmountRecipe.shapelessSerializerSteamCodec(DyeVatRecipe::new);
         }
     }
 }

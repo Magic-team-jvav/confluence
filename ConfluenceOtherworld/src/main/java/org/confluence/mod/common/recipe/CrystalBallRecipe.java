@@ -43,18 +43,15 @@ public class CrystalBallRecipe extends EnvironmentAmountRecipe {
         return ModRecipes.CRYSTAL_BALL_TYPE.get();
     }
 
-    public static class Serializer implements RecipeSerializer<CrystalBallRecipe> {
-        public static final MapCodec<CrystalBallRecipe> CODEC = environmentShapelessSerializerMapCodec(CrystalBallRecipe::new);
-        public static final StreamCodec<RegistryFriendlyByteBuf, CrystalBallRecipe> STREAM_CODEC = environmentShapelessSerializerSteamCodec(CrystalBallRecipe::new);
-
+    public static class Serializer extends SimpleRecipeSerializer<CrystalBallRecipe> {
         @Override
-        public MapCodec<CrystalBallRecipe> codec() {
-            return CODEC;
+        protected MapCodec<CrystalBallRecipe> getCodec() {
+            return environmentShapelessSerializerMapCodec(CrystalBallRecipe::new);
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, CrystalBallRecipe> streamCodec() {
-            return STREAM_CODEC;
+        protected StreamCodec<RegistryFriendlyByteBuf, CrystalBallRecipe> getStreamCodec() {
+            return environmentShapelessSerializerSteamCodec(CrystalBallRecipe::new);
         }
     }
 }

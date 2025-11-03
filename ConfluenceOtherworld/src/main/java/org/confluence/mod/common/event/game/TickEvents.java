@@ -34,7 +34,7 @@ import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terraentity.entity.boss.EyeOfCthulhu;
 import org.confluence.terraentity.init.entity.TEBossEntities;
 
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
+@EventBusSubscriber(modid = Confluence.MODID)
 public final class TickEvents {
     @SubscribeEvent
     public static void levelTick$Post(LevelTickEvent.Post event) {

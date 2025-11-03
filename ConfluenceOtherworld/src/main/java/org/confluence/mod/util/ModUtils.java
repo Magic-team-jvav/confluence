@@ -18,14 +18,14 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.decoration.ArmorStand;
@@ -49,6 +49,7 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.entity.PartEntity;
 import org.confluence.lib.util.LibDateUtils;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
@@ -117,13 +118,18 @@ public final class ModUtils {
         return itemStack.is(PotionItems.BOTTLED_WATER) || itemStack.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).is(Potions.WATER);
     }
 
-    public static void summonBoss(ServerLevel level, BlockPos pos, AbstractTerraBossBase boss) {
-        double x = pos.getX() + 0.5 + level.random.nextInt(-50, 51);
-        double z = pos.getZ() + 0.5 + level.random.nextInt(-50, 51);
-        boss.setPos(x, 0.5 + level.getHeight(Heightmap.Types.MOTION_BLOCKING, Mth.floor(x), Mth.floor(z)), z);
+    public static void summonBoss(ServerLevel level, BlockPos pos, AbstractTerraBossBase boss, boolean onSurface) {
+        double x = pos.getX() + 0.5 + Mth.randomBetweenInclusive(level.random, -50, 50);
+        double z = pos.getZ() + 0.5 + Mth.randomBetweenInclusive(level.random, -50, 50);
+        double y = (onSurface ? level.getHeight(Heightmap.Types.MOTION_BLOCKING, Mth.floor(x), Mth.floor(z)) : pos.getY()) + 0.5;
+        boss.setPos(x, y, z);
         if (TEUtils.internalSpawnEntity(boss, level)) {
             level.addFreshEntityWithPassengers(boss);
         }
+    }
+
+    public static void summonBoss(ServerLevel level, BlockPos pos, AbstractTerraBossBase boss) {
+        summonBoss(level, pos, boss, true);
     }
 
     public static @Nullable BlockState getLeadAnvilDamage(BlockState state, DirectionProperty FACING) {
@@ -139,6 +145,8 @@ public final class ModUtils {
     }
 
     public static void bossDeath(ServerLevel level, LivingEntity living) {
+        if (level.getDifficulty() == Difficulty.PEACEFUL) return;
+
         EntityType<?> type = living.getType();
         KillBoard.INSTANCE.defeat(type);
         boolean isEaterOfWorlds = type == TEBossEntities.EATER_OF_WORLDS.get();
@@ -384,5 +392,17 @@ public final class ModUtils {
             return true;
         }
         return false;
+    }
+
+    public static @Nullable Entity getOwner(DamageSource damageSource) {
+        Entity attacker = damageSource.getEntity();
+        if (attacker instanceof PartEntity<?> partEntity) {
+            attacker = partEntity.getParent();
+        } else if (attacker instanceof OwnableEntity ownableEntity) {
+            attacker = ownableEntity.getOwner();
+        } else if (attacker instanceof TraceableEntity traceableEntity) {
+            attacker = traceableEntity.getOwner();
+        }
+        return attacker == null ? damageSource.getEntity() : attacker;
     }
 }

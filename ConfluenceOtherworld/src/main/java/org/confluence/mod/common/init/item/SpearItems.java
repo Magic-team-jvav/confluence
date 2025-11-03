@@ -7,7 +7,7 @@ import org.confluence.mod.common.item.spear.*;
 
 public class SpearItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Confluence.MODID);
-
+    // 矛参考数值为 泰拉wiki中的伤害÷2为基础值 击退值为一半
     public static final DeferredItem<SpearItem> SPEAR = ITEMS.register("spear", SpearItem::new);
     public static final DeferredItem<StormSpearItem> STORM_SPEAR = ITEMS.register("storm_spear", StormSpearItem::new);
     public static final DeferredItem<TheRottedForkItem> THE_ROTTED_FORK = ITEMS.register("the_rotted_fork", TheRottedForkItem::new);

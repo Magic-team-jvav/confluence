@@ -48,18 +48,15 @@ public class SolidifierRecipe extends EitherAmountRecipe4x<MenuRecipeInput> {
         return ModRecipes.SOLIDIFIER_TYPE.get();
     }
 
-    public static class Serializer implements RecipeSerializer<SolidifierRecipe> {
-        public static final MapCodec<SolidifierRecipe> CODEC = EitherAmountRecipe4x.shapedSerializerMapCodec(SolidifierRecipe::new);
-        public static final StreamCodec<RegistryFriendlyByteBuf, SolidifierRecipe> STREAM_CODEC = EitherAmountRecipe4x.shapedSerializerSteamCodec(SolidifierRecipe::new);
-
+    public static class Serializer extends SimpleRecipeSerializer<SolidifierRecipe> {
         @Override
-        public MapCodec<SolidifierRecipe> codec() {
-            return CODEC;
+        protected MapCodec<SolidifierRecipe> getCodec() {
+            return shapedSerializerMapCodec(SolidifierRecipe::new);
         }
 
         @Override
-        public StreamCodec<RegistryFriendlyByteBuf, SolidifierRecipe> streamCodec() {
-            return STREAM_CODEC;
+        protected StreamCodec<RegistryFriendlyByteBuf, SolidifierRecipe> getStreamCodec() {
+            return shapedSerializerSteamCodec(SolidifierRecipe::new);
         }
     }
 }

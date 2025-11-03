@@ -26,6 +26,10 @@ public class ModChineseProvider extends LanguageProvider {
     protected void addTranslations() {
         add("confluence.prefix_separator", " ");
 
+        add("itemGroup.confluence.log", "原木");
+        add("itemGroup.confluence.leaves", "树叶");
+        add("itemGroup.confluence.sapling", "树苗");
+
         add("config.jade.plugin_confluence.jade_network_component", "机械信息");
         add("config.jade.plugin_confluence.jade_ponder_component", "思索信息");
         add("config.jade.plugin_confluence.jade_tombstone_info", "墓石信息");
@@ -149,7 +153,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.advanced_combat_techniques_volume_two.0", "增强所有城镇居民的防御力和力量");
         add("tooltip.item.confluence.advanced_combat_techniques_volume_two.1", "“包含攻防战斗技术，卷二！”");
         add("tooltip.item.confluence.binoculars.0", "使用时扩大视野，鼠标滚轮可调整缩放");
-        add("tooltip.item.confluence.meteor_compass.0", "仅保存上一次陨石的坐标");
         add("tooltip.item.confluence.mug.0", "在酒桶处接取麦芽酒");
         add("tooltip.item.confluence.magic_conch.0", "右键海滩群系的方块以让大海记住你");
         add("tooltip.item.confluence.demon_conch.0", "右键下界传送门方块以让地狱记住你");
@@ -205,6 +208,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.jousting_lance.1", "“纳命来！”");
         add("tooltip.item.confluence.hallowed_jousting_lance.0", "提升速度来加强攻击力");
         add("tooltip.item.confluence.shadow_jousting_lance.0", "提升速度来加强攻击力");
+        add("tooltip.item.confluence.rotten_bone_dust.0", "右键以在腐化之地催生植被，或腐化骷髅");
+        add("tooltip.item.confluence.bloodstained_powder.0", "右键以在猩红之地催生植被，或猩红化苦力怕");
 
         add("tooltip.item.confluence.tokyo_teddy_bear.0", "一位自卑的少女如破碎的泰迪熊般说到：");
         add("tooltip.item.confluence.tokyo_teddy_bear.1", "           来让你听听");
@@ -379,11 +384,11 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.argon_moss_fishing_bobber.0", "增加渔力，钓鱼浮标会发光");
         add("tooltip.item.confluence.krypton_moss_fishing_bobber.0", "增加渔力，钓鱼浮标会发光");
         add("tooltip.item.confluence.xenon_moss_fishing_bobber.0", "增加渔力，钓鱼浮标会发光");
-        add("tooltip.item.confluence.tackle_box.0", "诱饵消耗率减少5%");
-        add("tooltip.item.confluence.angler_tackle_bag.0", "鱼线永远不会断、诱饵消耗率减少5%");
-        add("tooltip.item.confluence.lavaproof_fishing_hook.0", "无论使用何种诱饵或鱼竿，都可以在熔岩中钓鱼");
-        add("tooltip.item.confluence.lavaproof_tackle_bag.0", "无论使用何种诱饵或鱼竿，都可以在熔岩中钓鱼");
-        add("tooltip.item.terra_curio.lavaproof_tackle_bag.1", "鱼线永远不会断、诱饵消耗率减少5%");
+        add("tooltip.item.confluence.tackle_box.0", "降低鱼饵消耗几率");
+        add("tooltip.item.confluence.angler_tackle_bag.0", "钓鱼线永远不会断，降低鱼饵消耗几率，渔力增加10");
+        add("tooltip.item.confluence.lavaproof_fishing_hook.0", "可在熔岩中钓鱼");
+        add("tooltip.item.confluence.lavaproof_tackle_bag.0", "钓鱼线永远不会断，降低鱼饵消耗几率，渔力增加10");
+        add("tooltip.item.terra_curio.lavaproof_tackle_bag.1", "可在熔岩中钓鱼");
         add("tooltip.item.confluence.lucky_coin.0", "击中敌人有时会掉落额外的钱币");
         add("tooltip.item.confluence.gold_ring.0", "扩大钱币的拾取范围");
         add("tooltip.item.confluence.discount_card.0", "商店价格降低20%");
@@ -958,6 +963,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("prefix.confluence.tooltip.add", "+%s %s");
         add("prefix.confluence.tooltip.mana_cost", "魔力消耗");
         add("prefix.confluence.tooltip.additional_mana", "额外魔力");
+        add("prefix.confluence.tooltip.four_classes_damage", "四职业伤害");
         add("prefix.confluence.hard", "坚硬");
         add("prefix.confluence.guarding", "守护");
         add("prefix.confluence.armored", "装甲");
@@ -1151,225 +1157,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("entity.confluence.frozen_zombie", "冰冻僵尸");
         add("entity.confluence.raincoat_zombie", "雨衣僵尸");
         add("entity.confluence.undead_miner", "不死矿工");
-
-        add("equipment_benediction.set_switcher.confluence.cold_crystal_set", "寒晶套装");
-        add("equipment_benediction.set_switcher.confluence.cold_crystal_set.data.0", "最大魔力值增加20，暴击率提高4%");
-        add("equipment_benediction.set_switcher.confluence.cold_crystal_set.data.1", "最大魔力值增加20，魔法伤害提高4%");
-        add("equipment_benediction.set_switcher.confluence.cold_crystal_set.data.2", "魔法伤害提高4%");
-        add("equipment_benediction.set_switcher.confluence.cold_crystal_set.data.3", "暴击率提高4%");
-        add("equipment_benediction.set_switcher.confluence.cold_crystal_set.data.4", "魔法攻击会有附带霜冻效果");
-
-        // 盔甲套装翻译新测试
-        add("equipment_benediction.equipment_set.branch.confluence.cold_crystal_set", "寒晶套装");
-        add("equipment_benediction.equipment_set.branch.confluence.cold_crystal_set.helmet", "最大魔力值增加20，暴击率提高4%");
-        add("equipment_benediction.equipment_set.branch.confluence.cold_crystal_set.chestplate", "最大魔力值增加20，暴击率提高4%");
-        add("equipment_benediction.equipment_set.branch.confluence.cold_crystal_set.leggings", "魔法伤害提高4%");
-        add("equipment_benediction.equipment_set.branch.confluence.cold_crystal_set.boots", "暴击率提高4%");
-        add("equipment_benediction.equipment_set.branch.confluence.cold_crystal_set.full_set", "魔法攻击会有附带霜冻效果");
-
-        add("equipment_benediction.set_switcher.confluence.mining_set", "挖矿套装");
-        add("equipment_benediction.set_switcher.confluence.mining_set.data.0", "提供照明");
-        add("equipment_benediction.set_switcher.confluence.mining_set.data.1", "+10%挖矿速度");
-        add("equipment_benediction.set_switcher.confluence.mining_set.data.2", "+10%挖矿速度");
-
-        add("equipment_benediction.set_switcher.confluence.shadow_set", "暗影套装");
-        add("equipment_benediction.set_switcher.confluence.shadow_set.data.0", "暴击率提高3.5%");
-        add("equipment_benediction.set_switcher.confluence.shadow_set.data.1", "暴击率提高3.5%");
-        add("equipment_benediction.set_switcher.confluence.shadow_set.data.2", "暴击率提高3.5%");
-        add("equipment_benediction.set_switcher.confluence.shadow_set.data.3", "暴击率提高3.5%");
-        add("equipment_benediction.set_switcher.confluence.shadow_set.data.4", "提高移动速度和加速度");
-
-        add("equipment_benediction.set_switcher.confluence.crimson_set", "猩红套装");
-        add("equipment_benediction.set_switcher.confluence.crimson_set.data.0", "伤害提高2%");
-        add("equipment_benediction.set_switcher.confluence.crimson_set.data.1", "伤害提高2%");
-        add("equipment_benediction.set_switcher.confluence.crimson_set.data.2", "伤害提高2%");
-        add("equipment_benediction.set_switcher.confluence.crimson_set.data.3", "伤害提高2%");
-        add("equipment_benediction.set_switcher.confluence.crimson_set.data.4", "提高再生量50%");
-
-        add("equipment_benediction.set_switcher.confluence.snow_set", "防雪套装");
-        add("equipment_benediction.set_switcher.confluence.snow_set.data.0", "免疫冷冻类debuff");
-        add("equipment_benediction.set_switcher.confluence.snow_set.data.1", "免疫冷冻类debuff");
-
-        add("equipment_benediction.set_switcher.confluence.bee_set", "蜜蜂套装");
-        add("equipment_benediction.set_switcher.confluence.bee_set.data.0", "召唤伤害提高4%，仆从数量上限增加1");
-        add("equipment_benediction.set_switcher.confluence.bee_set.data.1", "召唤伤害提高4%");
-        add("equipment_benediction.set_switcher.confluence.bee_set.data.2", "仆从数量上限增加1");
-        add("equipment_benediction.set_switcher.confluence.bee_set.data.3", "召唤伤害提高5%");
-        add("equipment_benediction.set_switcher.confluence.bee_set.data.4", "召唤伤害提高10%");
-
-        add("equipment_benediction.set_switcher.confluence.molten_set", "熔岩套装");
-        add("equipment_benediction.set_switcher.confluence.molten_set.data.0", "暴击率提高7%");
-        add("equipment_benediction.set_switcher.confluence.molten_set.data.1", "近战伤害提高7%");
-        add("equipment_benediction.set_switcher.confluence.molten_set.data.2", "近战速度提高3.5%");
-        add("equipment_benediction.set_switcher.confluence.molten_set.data.3", "近战速度提高3.5%");
-        add("equipment_benediction.set_switcher.confluence.molten_set.data.4", "近战伤害提高10%，免疫着火");
-
-        add("equipment_benediction.set_switcher.confluence.meteor_set", "流星套装");
-        add("equipment_benediction.set_switcher.confluence.meteor_set.data.0", "魔法伤害提高7%");
-        add("equipment_benediction.set_switcher.confluence.meteor_set.data.1", "魔法伤害提高7%");
-        add("equipment_benediction.set_switcher.confluence.meteor_set.data.2", "魔法伤害提高7%");
-        add("equipment_benediction.set_switcher.confluence.meteor_set.data.3", "魔法伤害提高7%");
-        add("equipment_benediction.set_switcher.confluence.meteor_set.data.4", "太空枪魔力消耗降低为0");
-
-        add("equipment_benediction.set_switcher.confluence.gladiator_set", "角斗士套装");
-        add("equipment_benediction.set_switcher.confluence.gladiator_set.data.0", "免疫击退");
-
-        add("equipment_benediction.set_switcher.confluence.fossil_set", "化石套装");
-        add("equipment_benediction.set_switcher.confluence.fossil_set.data.0", "暴击率提高4%");
-        add("equipment_benediction.set_switcher.confluence.fossil_set.data.1", "远程伤害提高2.5%");
-        add("equipment_benediction.set_switcher.confluence.fossil_set.data.2", "远程伤害提高2.5%");
-        add("equipment_benediction.set_switcher.confluence.fossil_set.data.3", "暴击率提高4%");
-        add("equipment_benediction.set_switcher.confluence.fossil_set.data.4", "不消耗弹药几率提高20%");
-
-        add("equipment_benediction.set_switcher.confluence.ninja_set", "忍者套装");
-        add("equipment_benediction.set_switcher.confluence.ninja_set.data.0", "暴击率提高2%");
-        add("equipment_benediction.set_switcher.confluence.ninja_set.data.1", "暴击率提高2%");
-        add("equipment_benediction.set_switcher.confluence.ninja_set.data.2", "暴击率提高2%");
-        add("equipment_benediction.set_switcher.confluence.ninja_set.data.3", "暴击率提高2%");
-        add("equipment_benediction.set_switcher.confluence.ninja_set.data.4", "移动速度提高20%");
-
-        add("equipment_benediction.set_switcher.confluence.spore_root_set", "孢根套装");
-        add("equipment_benediction.set_switcher.confluence.spore_root_set.data.0", "召唤伤害提高2%，仆从数量上限增加1");
-        add("equipment_benediction.set_switcher.confluence.spore_root_set.data.1", "召唤伤害提高3%");
-        add("equipment_benediction.set_switcher.confluence.spore_root_set.data.2", "召唤伤害提高3%");
-        add("equipment_benediction.set_switcher.confluence.spore_root_set.data.3", "召唤伤害提高2%");
-        add("equipment_benediction.set_switcher.confluence.spore_root_set.data.4", "仆从数量上限增加1");
-
-        add("equipment_benediction.set_switcher.confluence.cactus_set", "仙人掌套装");
-        add("equipment_benediction.set_switcher.confluence.cactus_set.data.0", "攻击者因为仙人掌尖刺受到伤害");
-
-        add("equipment_benediction.set_switcher.confluence.heim_set", "渊鳞套装");
-        add("equipment_benediction.set_switcher.confluence.heim_set.data.0", "延长水下呼吸时间5%，近战伤害提高1%");
-        add("equipment_benediction.set_switcher.confluence.heim_set.data.1", "成功使用护盾拦截下一次攻击后三秒内伤害提高20%，三秒提高过程中你发动攻击命中或被击中时停止，近战伤害提高1%");
-        add("equipment_benediction.set_switcher.confluence.heim_set.data.2", "增加2%暴击率，近战伤害提高1%");
-        add("equipment_benediction.set_switcher.confluence.heim_set.data.3", "提高水下移动速度5%，近战伤害提高1%");
-        add("equipment_benediction.set_switcher.confluence.heim_set.data.4", "赋予你4点血量的伤害吸收，每隔3秒钟再次赋予");
-
-        add("equipment_benediction.set_switcher.confluence.necro_set", "死灵套装");
-        add("equipment_benediction.set_switcher.confluence.necro_set.data.0", "远程伤害提高5%");
-        add("equipment_benediction.set_switcher.confluence.necro_set.data.1", "远程伤害提高5%");
-        add("equipment_benediction.set_switcher.confluence.necro_set.data.2", "远程伤害提高2.5%");
-        add("equipment_benediction.set_switcher.confluence.necro_set.data.3", "远程伤害提高2.5%");
-        add("equipment_benediction.set_switcher.confluence.necro_set.data.4", "暴击率提高10%");
-
-        add("equipment_benediction.set_switcher.confluence.jungle_set", "丛林套装");
-        add("equipment_benediction.set_switcher.confluence.jungle_set.data.0", "最大魔力增加40，暴击率提高6%");
-        add("equipment_benediction.set_switcher.confluence.jungle_set.data.1", "最大魔力增加20，魔法伤害提高6%");
-        add("equipment_benediction.set_switcher.confluence.jungle_set.data.2", "最大魔力增加10，暴击率提高3%");
-        add("equipment_benediction.set_switcher.confluence.jungle_set.data.3", "最大魔力增加10，暴击率提高3%");
-        add("equipment_benediction.set_switcher.confluence.jungle_set.data.4", "魔力消耗降低16%");
-
-        add("equipment_benediction.set_switcher.confluence.ash_set", "白蜡木套装");
-        add("equipment_benediction.set_switcher.confluence.ash_set.data.0", "受到的火焰伤害降低50%");
-
-        add("equipment_benediction.set_switcher.confluence.pumpkin_set", "南瓜套装");
-        add("equipment_benediction.set_switcher.confluence.pumpkin_set.data.0", "伤害提高10%");
-
-        add("equipment_benediction.set_switcher.confluence.obsidian_set", "黑曜石套装");
-        add("equipment_benediction.set_switcher.confluence.obsidian_set.data.0", "召唤伤害提高8%");
-        add("equipment_benediction.set_switcher.confluence.obsidian_set.data.1", "仆从数量上限增加1");
-        add("equipment_benediction.set_switcher.confluence.obsidian_set.data.2", "召唤伤害提高4%");
-        add("equipment_benediction.set_switcher.confluence.obsidian_set.data.3", "召唤伤害提高4%");
-        add("equipment_benediction.set_switcher.confluence.obsidian_set.data.4", "鞭子攻击范围扩大30%，鞭子攻击速度提高15%，召唤伤害提高15%");
-
-        add("equipment_benediction.set_switcher.confluence.wizard_set", "巫师套装");
-        add("equipment_benediction.set_switcher.confluence.wizard_set.data.0", "魔法伤害提高5%");
-        add("equipment_benediction.set_switcher.confluence.wizard_set.data.1", "魔法伤害和魔法暴击率各提高6%");
-        add("equipment_benediction.set_switcher.confluence.wizard_set.data.2", "最大魔力增加20，魔力消耗降低5%");
-        add("equipment_benediction.set_switcher.confluence.wizard_set.data.3", "最大魔力增加40，魔力消耗降低7%");
-        add("equipment_benediction.set_switcher.confluence.wizard_set.data.4", "最大魔力增加40，魔力消耗降低9%");
-        add("equipment_benediction.set_switcher.confluence.wizard_set.data.5", "最大魔力增加60，魔力消耗降低11%");
-        add("equipment_benediction.set_switcher.confluence.wizard_set.data.6", "最大魔力增加60，魔力消耗降低13%");
-        add("equipment_benediction.set_switcher.confluence.wizard_set.data.7", "最大魔力增加80，魔力消耗降低15%");
-        add("equipment_benediction.set_switcher.confluence.wizard_set.data.8", "最大魔力增加60，魔力消耗降低13%");
-
-        add("equipment_benediction.set_switcher.confluence.flinx_set", "雪怪套装");
-        add("equipment_benediction.set_switcher.confluence.flinx_set.data.0", "召唤伤害提高5%，仆从数量上限增加1");
-
-        add("equipment_benediction.set_switcher.confluence.cobalt_set", "钴套装");
-        add("equipment_benediction.set_switcher.confluence.cobalt_set.data.0", "远程伤害提高10%，远程暴击率提高10%");
-        add("equipment_benediction.set_switcher.confluence.cobalt_set.data.1", "最大魔力增加40，魔法伤害提高10%，魔法暴击率提高9%");
-        add("equipment_benediction.set_switcher.confluence.cobalt_set.data.2", "移动速度提高10%，近战伤害提高15%");
-        add("equipment_benediction.set_switcher.confluence.cobalt_set.data.3", "暴击率提高5%");
-        add("equipment_benediction.set_switcher.confluence.cobalt_set.data.4", "伤害提高3%");
-        add("equipment_benediction.set_switcher.confluence.cobalt_set.data.5", "移动速度提高10%");
-        add("equipment_benediction.set_switcher.confluence.cobalt_set.data.6", "近战速度提高15%");
-        add("equipment_benediction.set_switcher.confluence.cobalt_set.data.7", "20%几率省下弹药");
-        add("equipment_benediction.set_switcher.confluence.cobalt_set.data.8", "魔力消耗降低14%");
-
-        add("equipment_benediction.set_switcher.confluence.palladium_set", "钯金套装");
-        add("equipment_benediction.set_switcher.confluence.palladium_set.data.0", "近战伤害提高12%，近战速度提高12%");
-        add("equipment_benediction.set_switcher.confluence.palladium_set.data.1", "魔法伤害和魔法暴击率各提高9%，最大魔力增加60");
-        add("equipment_benediction.set_switcher.confluence.palladium_set.data.2", "远程伤害提高9%，远程暴击率提高9%");
-        add("equipment_benediction.set_switcher.confluence.palladium_set.data.3", "伤害提高3%，暴击率提高2%");
-        add("equipment_benediction.set_switcher.confluence.palladium_set.data.4", "伤害提高2%");
-        add("equipment_benediction.set_switcher.confluence.palladium_set.data.5", "暴击率提高1%");
-        add("equipment_benediction.set_switcher.confluence.palladium_set.data.6", "攻击敌人后大大提高生命再生速度");
-
-        add("equipment_benediction.set_switcher.confluence.mythril_set", "秘银套装");
-        add("equipment_benediction.set_switcher.confluence.mythril_set.data.0", "最大魔力增加60，魔法伤害提高15%");
-        add("equipment_benediction.set_switcher.confluence.mythril_set.data.1", "远程伤害提高12%，远程暴击率提高7%");
-        add("equipment_benediction.set_switcher.confluence.mythril_set.data.2", "近战暴击率提高8%，近战伤害提高10%");
-        add("equipment_benediction.set_switcher.confluence.mythril_set.data.3", "伤害提高7%");
-        add("equipment_benediction.set_switcher.confluence.mythril_set.data.4", "暴击率提高5%");
-        add("equipment_benediction.set_switcher.confluence.mythril_set.data.5", "暴击率提高5%");
-        add("equipment_benediction.set_switcher.confluence.mythril_set.data.6", "近战暴击率提高10%");
-        add("equipment_benediction.set_switcher.confluence.mythril_set.data.7", "魔力消耗降低17%");
-        add("equipment_benediction.set_switcher.confluence.mythril_set.data.8", "20%几率省下弹药");
-
-        add("equipment_benediction.set_switcher.confluence.orichalcum_set", "山铜套装");
-        add("equipment_benediction.set_switcher.confluence.orichalcum_set.data.0", "魔法暴击率提高18%，最大魔力增加80");
-        add("equipment_benediction.set_switcher.confluence.orichalcum_set.data.1", "近战伤害和近战速度各提高11%，移动速度提高7%");
-        add("equipment_benediction.set_switcher.confluence.orichalcum_set.data.2", "远程暴击率提高15%，移动速度提高8%");
-        add("equipment_benediction.set_switcher.confluence.orichalcum_set.data.3", "暴击率提高6%");
-        add("equipment_benediction.set_switcher.confluence.orichalcum_set.data.4", "伤害提高8%");
-        add("equipment_benediction.set_switcher.confluence.orichalcum_set.data.5", "移动速度提高11%");
-        add("equipment_benediction.set_switcher.confluence.orichalcum_set.data.6", "花瓣将落到目标身上造成额外伤害");
-
-        add("equipment_benediction.set_switcher.confluence.adamantite_set", "精金套装");
-        add("equipment_benediction.set_switcher.confluence.adamantite_set.data.0", "最大魔力增加80，魔法伤害和魔法暴击率各提高12%");
-        add("equipment_benediction.set_switcher.confluence.adamantite_set.data.1", "远程伤害提高14%，远程暴击率提高10%");
-        add("equipment_benediction.set_switcher.confluence.adamantite_set.data.2", "近战暴击率提高7%，近战伤害提高14%");
-        add("equipment_benediction.set_switcher.confluence.adamantite_set.data.3", "伤害提高8%");
-        add("equipment_benediction.set_switcher.confluence.adamantite_set.data.4", "暴击率提高7%");
-        add("equipment_benediction.set_switcher.confluence.adamantite_set.data.5", "移动速度提高5%");
-        add("equipment_benediction.set_switcher.confluence.adamantite_set.data.6", "近战速度和移动速度各提高20%");
-        add("equipment_benediction.set_switcher.confluence.adamantite_set.data.7", "25%几率省下弹药");
-        add("equipment_benediction.set_switcher.confluence.adamantite_set.data.8", "魔力消耗降低19%");
-
-        add("equipment_benediction.set_switcher.confluence.titanium_set", "钛金套装");
-        add("equipment_benediction.set_switcher.confluence.titanium_set.data.0", "魔法伤害提高16%、魔法暴击率提高7%，最大魔力增加100");
-        add("equipment_benediction.set_switcher.confluence.titanium_set.data.1", "近战伤害和近战暴击率各提高9%，近战速度提高9%");
-        add("equipment_benediction.set_switcher.confluence.titanium_set.data.2", "远程伤害提高16%，远程暴击率提高7%");
-        add("equipment_benediction.set_switcher.confluence.titanium_set.data.3", "伤害提高4%，暴击率提高3%");
-        add("equipment_benediction.set_switcher.confluence.titanium_set.data.4", "伤害和暴击率各提高3%");
-        add("equipment_benediction.set_switcher.confluence.titanium_set.data.5", "移动速度提高6%");
-        add("equipment_benediction.set_switcher.confluence.titanium_set.data.6", "攻击生成钛金碎片防御屏障");
-
-        add("equipment_benediction.set_switcher.confluence.hallowed_set", "神圣套装");
-        add("equipment_benediction.set_switcher.confluence.hallowed_set.data.0", "近战伤害和近战暴击率各提高10%，近战速度提高10%");
-        add("equipment_benediction.set_switcher.confluence.hallowed_set.data.1", "最大魔力增加100，魔法伤害和魔法暴击率各提高12%");
-        add("equipment_benediction.set_switcher.confluence.hallowed_set.data.2", "仆从数量上限增加1，召唤伤害提高10%");
-        add("equipment_benediction.set_switcher.confluence.hallowed_set.data.3", "远程伤害提高15%，远程暴击率提高8%");
-        add("equipment_benediction.set_switcher.confluence.hallowed_set.data.4", "暴击率提高7%");
-        add("equipment_benediction.set_switcher.confluence.hallowed_set.data.5", "伤害提高7%");
-        add("equipment_benediction.set_switcher.confluence.hallowed_set.data.6", "移动速度提高8%");
-        add("equipment_benediction.set_switcher.confluence.hallowed_set.data.7", "攻击敌人后进入免疫状态");
-        add("equipment_benediction.set_switcher.confluence.hallowed_set.data.8", "攻击敌人后进入免疫状态，仆从数量上限增加2");
-
-        add("equipment_benediction.set_switcher.confluence.crystal_assassin_set", "水晶刺客套装");
-        add("equipment_benediction.set_switcher.confluence.crystal_assassin_set.data.0", "暴击率提高5%，魔力消耗降低10%");
-        add("equipment_benediction.set_switcher.confluence.crystal_assassin_set.data.1", "伤害提高5%，10%几率省下弹药");
-        add("equipment_benediction.set_switcher.confluence.crystal_assassin_set.data.2", "近战速度提高10%");
-        add("equipment_benediction.set_switcher.confluence.crystal_assassin_set.data.3", "移动速度提高20%");
-        add("equipment_benediction.set_switcher.confluence.crystal_assassin_set.data.4", "可猛冲，伤害和暴击率各提高10%");
-
-        add("equipment_benediction.set_switcher.confluence.spider_set", "蜘蛛套装");
-        add("equipment_benediction.set_switcher.confluence.spider_set.data.0", "仆从数量上限增加1，召唤伤害提高5%");
-        add("equipment_benediction.set_switcher.confluence.spider_set.data.1", "仆从数量上限增加1，召唤伤害提高5%");
-        add("equipment_benediction.set_switcher.confluence.spider_set.data.2", "仆从数量上限增加1");
-        add("equipment_benediction.set_switcher.confluence.spider_set.data.3", "召唤伤害提高6%");
-        add("equipment_benediction.set_switcher.confluence.spider_set.data.4", "召唤伤害提高12%");
 
         // npc对话
         add("dialogs.terra_entity.angler.item.confluence.amanita_fungifin", "我在巨大的发光蘑菇中发现了这个惊人的地方！一切都是蓝的！我正在采摘蓝光湖畔的一些蘑菇，其中一只蘑菇突然咬了我一口，然后游走了！我想以其人之道还治其人之身，并狂咬它一顿！我的意思是，你去把它弄回来给我！（抓捕位置：发光蘑菇地）");
@@ -1773,6 +1560,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.subtitle.lightsaber_open", "光剑：开启");
         add("confluence.subtitle.regular_staff_shoot", "魔法：发射");
         add("confluence.subtitle.regular_staff_shoot_2", "魔法：迸发");
+        add("confluence.subtitle.regular_staff_shoot_3", "魔法：喷射");
         add("confluence.subtitle.frozen_broken", "霜冻魔法：破裂");
         add("confluence.subtitle.frozen_arrow", "霜冻魔法：发射");
         add("confluence.subtitle.cooldown_recovery", "冷却：准备就绪");
@@ -2064,12 +1852,12 @@ public class ModChineseProvider extends LanguageProvider {
         add("bestiary.entity.terra_entity.jewel_squirrel.1.desc", "罕见情况下，有些小动物会全身覆金！店主们愿意出高价收购，你也可以把它们关在笼子里炫耀！");
 //        add("bestiary.entity.terra_entity.mouse.desc", "老鼠会发出吱吱的叫声，在潮湿的地下环境中四处寻找小昆虫，对人并无危害。");
 //        add("bestiary.entity.terra_entity.gold_mouse.desc", "罕见情况下，有些小动物会全身覆金！店主们愿意出高价收购，你也可以把它们关在笼子里炫耀！");
-//        add("bestiary.entity.terra_entity.frog.desc", "青蛙偏爱植被茂密的水域，无论是陆地还是水下，它都能轻松适应。");
+        add("bestiary.entity.minecraft.frog.desc", "青蛙偏爱植被茂密的水域，无论是陆地还是水下，它都能轻松适应。");
 //        add("bestiary.entity.terra_entity.gold_frog.desc", "罕见情况下，有些小动物会全身覆金！店主们愿意出高价收购，你也可以把它们关在笼子里炫耀！");
-        add("bestiary.entity.terra_entity.grasshopper.desc", "蚱蜢能一跃跳过高高的草叶，鱼儿很容易被它们吸引。");
-        add("bestiary.entity.terra_entity.gold_grasshopper.desc", "罕见情况下，有些小动物会全身覆金！店主们会出高价收购，而且鱼儿超爱金色的鱼饵！");
-        add("bestiary.entity.terra_entity.butterfly.desc", "蝴蝶是喜爱日出的美丽昆虫，它们色彩多样，连鱼儿都会被吸引。");
-        add("bestiary.entity.terra_entity.gold_butterfly.desc", "罕见情况下，有些小动物会全身覆金！店主们会出高价收购，而且鱼儿超爱金色的鱼饵！");
+        add("bestiary.entity.terra_entity.grasshopper.1.desc", "蚱蜢能一跃跳过高高的草叶，鱼儿很容易被它们吸引。");
+        add("bestiary.entity.terra_entity.grasshopper.0.desc", "罕见情况下，有些小动物会全身覆金！店主们会出高价收购，而且鱼儿超爱金色的鱼饵！");
+        add("bestiary.entity.terra_entity.butterfly.1.desc", "蝴蝶是喜爱日出的美丽昆虫，它们色彩多样，连鱼儿都会被吸引。");
+        add("bestiary.entity.terra_entity.butterfly.0.desc", "罕见情况下，有些小动物会全身覆金！店主们会出高价收购，而且鱼儿超爱金色的鱼饵！");
         add("bestiary.entity.terra_entity.worm.2.desc", "蠕虫是光滑的管状无脊椎动物，常藏在岩石、泥土和草丛中，喜欢雨天。鱼儿尤其容易被它们吸引。");
         add("bestiary.entity.terra_entity.worm.1.desc", "罕见情况下，有些小动物会全身覆金！店主们会出高价收购，而且鱼儿超爱金色的鱼饵！");
         add("bestiary.entity.terra_entity.dragonfly.desc", "蜻蜓飞行速度快，以蚊子为食，有多种颜色。鱼儿多少会被它们吸引。");
@@ -2078,10 +1866,10 @@ public class ModChineseProvider extends LanguageProvider {
 //        add("bestiary.entity.terra_entity.gold_seahorse.desc", "罕见情况下，有些小动物会全身覆金！店主们愿意出高价收购，你也可以把它们关在笼子里炫耀！");
 //        add("bestiary.entity.terra_entity.water_strider.desc", "水黾会优雅地在平静的水面滑行，寻找小虫子为食。鱼儿偶尔会被它们吸引。");
 //        add("bestiary.entity.terra_entity.gold_water_strider.desc", "罕见情况下，有些小动物会全身覆金！店主们会出高价收购，而且鱼儿超爱金色的鱼饵！");
-        add("bestiary.entity.terra_entity.ladybug.desc", "瓢虫是亮红色的昆虫，常被视为好运的象征。但用它们当鱼饵钓鱼，可能会招来不好的运气。");
-        add("bestiary.entity.terra_entity.gold_ladybug.desc", "罕见情况下，有些小动物会全身覆金！店主们会出高价收购，而且鱼儿超爱金色的鱼饵！");
+        add("bestiary.entity.terra_entity.ladybug.1.desc", "瓢虫是亮红色的昆虫，常被视为好运的象征。但用它们当鱼饵钓鱼，可能会招来不好的运气。");
+        add("bestiary.entity.terra_entity.ladybug.0.desc", "罕见情况下，有些小动物会全身覆金！店主们会出高价收购，而且鱼儿超爱金色的鱼饵！");
 //        add("bestiary.entity.terra_entity.stinkbug.desc", "臭虫是鬼祟的害虫，就算是密不透风的房子，它们也能钻进去；一旦受到干扰，就会散发出类似香菜的臭味，弥漫各处。");
-        add("bestiary.entity.terra_entity.faeling.desc", "当动物误入微光池塘发光的深处时，就会孕育出飞灵这种闪闪发光、形似仙灵的生物。");
+        add("bestiary.entity.terra_entity.faeling.0.desc", "当动物误入微光池塘发光的深处时，就会孕育出飞灵这种闪闪发光、形似仙灵的生物。");
         add("bestiary.entity.terra_entity.duck.0.desc", "野鸭是拥有漂亮羽毛的水禽，喜欢在最纯净的水中游动，还会欢快地嘎嘎叫。");
         add("bestiary.entity.terra_entity.duck.1.desc", "鸭子是白色羽毛的水禽，喜欢在纯净的水中游动，沐浴温暖的阳光。");
 //        add("bestiary.entity.terra_entity.turtle.desc", "乌龟行动缓慢、性情沉稳，在湖泊与陆地之间往返活动，背上坚硬的龟壳是它们的保护盾。");
@@ -2146,7 +1934,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("bestiary.entity.terra_entity.zombie_female.desc", "敞着门可能会让蹒跚的食脑僵尸闯入家中，没人愿意遇到这种事。");
         add("bestiary.entity.terra_entity.zombie_slimed.desc", "有时，史莱姆的猎物在被消化的过程中会变成僵尸。这样“半消化半僵尸”地四处游荡，对双方来说都很尴尬。");
         add("bestiary.entity.terra_entity.zombie_bald.desc", "敞着门可能会让蹒跚的食脑僵尸闯入家中，没人愿意遇到这种事。");
-        add("bestiary.entity.terra_entity.zombie.desc", "敞着门可能会让蹒跚的食脑僵尸闯入家中，没人愿意遇到这种事。");
+        add("bestiary.entity.minecraft.zombie.desc", "敞着门可能会让蹒跚的食脑僵尸闯入家中，没人愿意遇到这种事。");
         add("bestiary.entity.terra_entity.zombie_twiggy.desc", "敞着门可能会让蹒跚的食脑僵尸闯入家中，没人愿意遇到这种事。");
         add("bestiary.entity.terra_entity.zombie_torch.desc", "这位手持火把的僵尸生前曾加入愤怒的暴民猎杀亡灵，死后却加入亡灵队伍猎杀生者。");
         add("bestiary.entity.terra_entity.zombie_swamp.desc", "敞着门可能会让蹒跚的食脑僵尸闯入家中，没人愿意遇到这种事。");
@@ -2188,7 +1976,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("bestiary.entity.terra_entity.mother_slime.desc", "史莱姆之母对史莱姆物种的生命周期至关重要，这些体型庞大、摇摇晃晃的胶状生物，常带着幼崽栖息在地下深处。");
 //        add("bestiary.entity.terra_entity.cochineal_beetle.desc", "胭脂虫生活在黑暗的深层洞穴中，这种大型甲虫因鳞状外骨骼中储存的深红色分泌物而被人们搜寻。");
 //        add("bestiary.entity.terra_entity.skeleton_misassembled.desc", "谁说非得有肌肉、皮肤甚至眼球？畸形骷髅仅凭身上的骨头就能行动，杀伤力不亚于有肉体的敌人。");
-//        add("bestiary.entity.terra_entity.skeleton.desc", "谁说非得有肌肉、皮肤甚至眼球？骷髅仅凭身上的骨头就能行动，杀伤力不亚于有肉体的敌人。");
+        add("bestiary.entity.minecraft.skeleton.desc", "谁说非得有肌肉、皮肤甚至眼球？骷髅仅凭身上的骨头就能行动，杀伤力不亚于有肉体的敌人。");
 //        add("bestiary.entity.terra_entity.salamander.desc", "蝾螈是栖息在黑暗洞穴中的特殊两栖双足蜥蜴，受到威胁时，会向四周喷射高腐蚀性的酸液。");
 //        add("bestiary.entity.terra_entity.skeleton_headache.desc", "谁说非得有肌肉、皮肤甚至眼球？头痛骷髅仅凭身上的骨头就能行动，杀伤力不亚于有肉体的敌人。");
 //        add("bestiary.entity.terra_entity.skeleton_pantless.desc", "谁说非得有肌肉、皮肤甚至眼球？无裤骷髅仅凭身上的骨头就能行动，杀伤力不亚于有肉体的敌人。");
@@ -2230,7 +2018,7 @@ public class ModChineseProvider extends LanguageProvider {
 //        add("bestiary.entity.terra_entity.ice_mimic.desc", "对着宝箱说话不会让人发疯，但要是宝箱回了话，那很可能会让人丧命！不过无论如何，它里面确实藏着稀有宝藏！");
 //        add("bestiary.entity.terra_entity.ice_tortoise.desc", "冰雪陆龟和它们的丛林近亲一样，是远超预期的可怕威胁，拥有惊人的速度与机动性。");
 //        add("bestiary.entity.terra_entity.vulture.desc", "秃鹰是为适应沙漠酷热而生的鸟类食腐者，任何靠近它们腐食的生物，都会被其啄咬撕扯。");
-        add("bestiary.entity.terra_entity.sand_slime.desc", "沙漠环境极度干旱，而沙史莱姆通过化为一团“活沙”，成功适应了这种恶劣条件。");
+        add("bestiary.entity.terra_entity.desert_slime.desc", "沙漠环境极度干旱，而沙史莱姆通过化为一团“活沙”，成功适应了这种恶劣条件。");
 //        add("bestiary.entity.terra_entity.antlion_larva.desc", "刚从卵中孵化的蚁狮幼虫绝不可轻视，即便尚处幼年，它们的攻击性也极强。");
 //        add("bestiary.entity.terra_entity.giant_antlion_charger.desc", "巨型蚁狮马是蚁狮族群的士兵，会以惊人的速度凶猛地追击入侵者。");
 //        add("bestiary.entity.terra_entity.mummy.desc", "外界力量改变了沙漠的形态，那些安息于此的生灵——无论善恶——如今都苏醒过来，肆意残杀。");
@@ -2528,7 +2316,207 @@ public class ModChineseProvider extends LanguageProvider {
 //        add("bestiary.entity.terra_entity.stardust_pillar.desc", "星尘柱代表着名为“星尘”的闪亮天界残骸，这座塔楼持有封印，锁住了一个可怕的暴君。");
 //        add("bestiary.entity.terra_entity.moon_lord.desc", "月亮领主是降临世间所有恐怖的幕后主使，已从月球监狱中释放。它近乎神明，力量无穷无尽。");
 
+
+        add("bestiary.entity.minecraft.allay.desc", "悦灵是纯洁善良，爱好音乐的灵魂。");
+        add("bestiary.entity.minecraft.armadillo.desc", "犰狳是一种能蜷缩成球来保护自己的小型生物。");
+        add("bestiary.entity.minecraft.bat.desc", "蝙蝠是栖息在洞穴中的小型飞行生物，会在夜间活动。");
+        add("bestiary.entity.minecraft.camel.desc", "骆驼是沙漠中的坐骑，能承载俩个人。");
+        add("bestiary.entity.minecraft.chicken.desc", "鸡是常见的农场动物，会下蛋并能被小麦种子吸引。");
+        add("bestiary.entity.minecraft.cod.desc", "鳕鱼是生活在海洋中的常见鱼类，可作为食物来源。");
+        add("bestiary.entity.minecraft.rabbit.desc", "兔子是擅长跳跃的野生动物，可作为食物来源。");
+        add("bestiary.entity.minecraft.cow.desc", "牛是提供牛奶、牛肉和皮革的农场动物，喜欢吃草。");
+        add("bestiary.entity.minecraft.donkey.desc", "驴是可以被驯服并用来运输物品的生物，能装备箱子。");
+        add("bestiary.entity.minecraft.glow_squid.desc", "发光鱿鱼是洞穴中的发光生物，其墨囊可制作荧光物品。");
+        add("bestiary.entity.minecraft.horse.desc", "马是可驯服的坐骑，不同品种有不同的速度和跳跃能力。");
+        add("bestiary.entity.minecraft.mooshroom.desc", "哞菇是蘑菇岛上的特殊牛，能提供蘑菇汤和菌丝。");
+        add("bestiary.entity.minecraft.mule.desc", "骡子是马和驴的杂交后代，负重能力强但不能繁殖。");
+        add("bestiary.entity.minecraft.pig.desc", "猪是农场动物，被胡萝卜吸引，可骑乘并通过胡萝卜钓竿控制。");
+        add("bestiary.entity.minecraft.salmon.desc", "鲑鱼是会逆流而上的鱼类，可烹饪为美味的食物。");
+        add("bestiary.entity.minecraft.sheep.desc", "羊是提供羊毛的农场动物，羊毛可染色并用于制作布料。");
+        add("bestiary.entity.minecraft.skeleton_horse.desc", "骷髅马是亡灵生物，通常在雷暴中生成，可被驯服。");
+        add("bestiary.entity.minecraft.sniffer.desc", "嗅探兽是古老的生物，能嗅出埋藏在地下的种子。");
+        add("bestiary.entity.minecraft.squid.desc", "鱿鱼是海洋中的头足类生物，会喷墨来躲避危险。");
+        add("bestiary.entity.minecraft.strider.desc", "炽足兽是下届中能在熔岩上行走的生物，可作为坐骑。");
+        add("bestiary.entity.minecraft.tadpole.desc", "蝌蚪是青蛙的幼体，生活在水中，会逐渐发育为成体。");
+        add("bestiary.entity.minecraft.tropical_fish.desc", "热带鱼是色彩斑斓的海洋生物，可作为装饰性宠物。");
+        add("bestiary.entity.minecraft.wandering_trader.desc", "流浪商人会随机出现在世界中，出售稀有物品。");
+        add("bestiary.entity.minecraft.pufferfish.desc", "河豚受到威胁时会膨胀，其毒素可用于制作药水。");
+        add("bestiary.entity.minecraft.goat.desc", "山羊生活在山地，擅长跳跃，会冲撞玩家和生物。");
+        add("bestiary.entity.minecraft.villager.desc", "村民是居住在村庄中的人类，可与玩家进行交易。");
+        add("bestiary.entity.minecraft.axolotl.desc", "美西螈是生活在地下水中的两栖生物，能治愈玩家并攻击敌对生物。");
+        add("bestiary.entity.minecraft.cat.desc", "猫是可驯服的宠物，能吓跑苦力怕并带来礼物。");
+        add("bestiary.entity.minecraft.ocelot.desc", "豹猫生活在丛林中，可被生鱼驯服，能吓跑苦力怕。");
+        add("bestiary.entity.minecraft.snow_golem.desc", "雪傀儡是由雪块和南瓜制作的生物，会投掷雪球攻击敌人。");
+        add("bestiary.entity.minecraft.bee.desc", "蜜蜂是授粉和生产蜂蜜的生物，被激怒时会蜇人。");
+        add("bestiary.entity.minecraft.fox.desc", "狐狸是可爱但狡猾的生物，会偷取物品，可被浆果驯服。");
+        add("bestiary.entity.minecraft.iron_golem.desc", "铁傀儡是村庄的守护者，由铁块和南瓜制作，会攻击敌对生物。");
+        add("bestiary.entity.minecraft.llama.desc", "羊驼是能携带物品的生物，会吐口水防御，可组成商队。");
+        add("bestiary.entity.minecraft.panda.desc", "熊猫生活在丛林中，有不同的个性，喜欢吃竹子。");
+        add("bestiary.entity.minecraft.polar_bear.desc", "北极熊生活在雪地，成年个体具有攻击性，会保护幼崽。");
+        add("bestiary.entity.minecraft.trader_llama.desc", "行商羊驼是跟随流浪商人的生物，可被驯服和装备。");
+        add("bestiary.entity.minecraft.wolf.desc", "狼是可驯服的生物，驯服后会成为忠诚的伙伴，帮助攻击敌人。");
+        add("bestiary.entity.minecraft.blaze.desc", "烈焰人是下界中的敌对生物，会发射火球攻击玩家。");
+        add("bestiary.entity.minecraft.bogged.desc", "沼骸是夜间出现在沼泽的敌对生物，会造成缓慢效果。");
+        add("bestiary.entity.minecraft.breeze.desc", "旋风人是会飞行的敌对生物，会发射风弹将玩家推开。");
+        add("bestiary.entity.minecraft.creeper.desc", "苦力怕是会悄悄靠近并爆炸的敌对生物，害怕猫。");
+        add("bestiary.entity.minecraft.elder_guardian.desc", "远古守卫者是海底遗迹的强大守护者，会施加挖掘疲劳效果。");
+        add("bestiary.entity.minecraft.endermite.desc", "末影螨是小型敌对生物，通常在使用末影珍珠传送时生成。");
+        add("bestiary.entity.minecraft.evoker.desc", "唤魔者是敌对的灾厄村民，会召唤恼鬼并使用魔法攻击。");
+        add("bestiary.entity.minecraft.ghast.desc", "恶魂是下界中的大型飞行生物，会发射火球攻击玩家。");
+        add("bestiary.entity.minecraft.guardian.desc", "守卫者是保护海底遗迹的生物，会用激光攻击入侵者。");
+        add("bestiary.entity.minecraft.hoglin.desc", "疣猪兽是下界的敌对生物，被杀死后会掉落猪肉。");
+        add("bestiary.entity.minecraft.husk.desc", "尸壳是沙漠中的僵尸变种，不会在阳光下燃烧，会造成饥饿效果。");
+        add("bestiary.entity.minecraft.magma_cube.desc", "岩浆怪是下界中的敌对生物，由岩浆构成，会分裂成小个体。");
+        add("bestiary.entity.minecraft.phantom.desc", "幻翼是在玩家长时间不睡觉时生成的飞行敌对生物。");
+        add("bestiary.entity.minecraft.piglin_brute.desc", "猪灵蛮兵是下界的强大敌对生物，会保护堡垒遗迹。");
+        add("bestiary.entity.minecraft.pillager.desc", "掠夺者是敌对的灾厄村民，会参与袭击村庄的行动。");
+        add("bestiary.entity.minecraft.ravager.desc", "劫掠兽是灾厄村民的坐骑，具有强大的攻击力和生命值。");
+        add("bestiary.entity.minecraft.shulker.desc", "潜影贝是末路之地中的生物，会伪装成方块并发射子弹使玩家漂浮。");
+        add("bestiary.entity.minecraft.silverfish.desc", "蠹虫是小型敌对生物，会躲藏在石头中，受到攻击时会召唤同伴。");
+        add("bestiary.entity.minecraft.slime.desc", "史莱姆是果冻状的敌对生物，会跳跃攻击，被杀死后会分裂成小史莱姆。");
+        add("bestiary.entity.minecraft.stray.desc", "流浪者是雪地中的骷髅变种，会发射带有迟缓效果的箭。");
+        add("bestiary.entity.minecraft.vex.desc", "恼鬼是由唤魔者召唤的小型飞行敌对生物，能穿过墙壁。");
+        add("bestiary.entity.minecraft.vindicator.desc", "卫道士是敌对的灾厄村民，会挥舞斧头攻击玩家。");
+        add("bestiary.entity.minecraft.warden.desc", "监守者是深藏在洞穴中的强大生物，通过声音和震动感知玩家。");
+        add("bestiary.entity.minecraft.witch.desc", "女巫是使用各种药水攻击玩家的敌对生物，会掉落药水材料。");
+        add("bestiary.entity.minecraft.wither_skeleton.desc", "凋灵骷髅是下界堡垒中的敌对生物，会造成凋零效果。");
+        add("bestiary.entity.minecraft.zoglin.desc", "僵尸疣猪兽是被僵尸病毒感染的疣猪兽，具有攻击性。");
+        add("bestiary.entity.minecraft.zombie_villager.desc", "僵尸村民是被感染的村民，可通过虚弱药水和金苹果治愈。");
+        add("bestiary.entity.minecraft.drowned.desc", "溺尸是水下的僵尸变种，会使用三叉戟或钓鱼竿攻击。");
+        add("bestiary.entity.minecraft.enderman.desc", "末影人是能传送的中立生物，被直视时会变得敌对。");
+        add("bestiary.entity.minecraft.piglin.desc", "猪灵是下界的生物，会与玩家交易，害怕灵魂火。");
+        add("bestiary.entity.minecraft.spider.desc", "蜘蛛是夜间活动的敌对生物，能攀爬墙壁，在白天会变得中立。");
+        add("bestiary.entity.minecraft.cave_spider.desc", "洞穴蜘蛛是小型蜘蛛变种，生活在废弃矿井，会造成剧毒效果。");
+        add("bestiary.entity.minecraft.zombified_piglin.desc", "僵尸猪灵是下界的中立生物，被攻击时会群体反击。");
+        add("bestiary.entity.minecraft.ender_dragon.desc", "末影龙镇守着末路之地。");
+        add("bestiary.entity.minecraft.wither.desc", "凋灵只能由玩家所召唤，会发射凋灵之首并造成大范围破坏。");
+
+        add("bestiary.entity.minecraft.turtle.desc", "喜欢咸水和海洋猎物的软壳爬行动物。");
+        add("bestiary.entity.minecraft.dolphin.desc", "一种活泼的海洋哺乳动物，它的智力可与人类媲美。");
+
+        add("bestiary.entity.terra_entity.decayeder.desc", "被腐化之地重组的骸骨，脆弱但是擅长传播邪念。");
+        add("bestiary.entity.terra_entity.bloody_spore.desc", "猩红之地知道苦力怕这种生物最容易将它的肉体撒播。");
+        add("bestiary.entity.terra_entity.hill_of_flesh.desc", "世界的双相，造就了血肉墙对世界另一适应形态的出现，血肉山是世界的核心与守护者，这尊高大的恶魔领主存在的意义，便是将强大的远古灵魂封印起来。");
+
+        // 套装效果
+        add("armor_set_bonus.when_applied", "套装奖励：");
+        // 挖矿
+        add("tooltip.item.confluence.mining_helmet.0", "穿戴时可提供照明");
+        add("armor_set_bonus.confluence.mining_set.0", "挖矿速度提高10%");
+        // 木
+        add("armor_set_bonus.confluence.plank_set.0", "+1 护甲值");
+        add("armor_set_bonus.confluence.pearlwood_set.0", "+1 护甲值");
+
+        add("armor_set_bonus.confluence.ash_set.0", "降低因触碰熔岩而受到的伤害");
+        // 肉前基础矿石
+        add("armor_set_bonus.confluence.copper_set.0", "+1 护甲值");
+        add("armor_set_bonus.confluence.tin_set.0", "+2 护甲值");
+        add("armor_set_bonus.confluence.lead_set.0", "+1 护甲值");
+        add("armor_set_bonus.confluence.silver_set.0", "+2 护甲值");
+        add("armor_set_bonus.confluence.tungsten_set.0", "+1 护甲值");
+        add("armor_set_bonus.confluence.golden_set.0", "+1 护甲值");
+        add("armor_set_bonus.confluence.platinum_set.0", "+2 护甲值");
+        // 防雪
+        add("armor_set_bonus.confluence.snow_set.0", "不会被冷冻或冰冻");
+        add("armor_set_bonus.confluence.pink_snow_set.0", "不会被冷冻或冰冻");
+        // 渔夫
+        add("tooltip.item.confluence.angler_hat.0", "渔力增加5");
+        add("tooltip.item.confluence.angler_vest.0", "渔力增加5");
+        add("tooltip.item.confluence.angler_pants.0", "渔力增加5");
+        add("armor_set_bonus.confluence.angler_set.0", "敌人生成速度降低（未完成）");
+        // 仙人掌
+        add("armor_set_bonus.confluence.cactus_set.0", "攻击者因为仙人掌尖刺受到伤害");
+        // 南瓜
+        add("armor_set_bonus.confluence.pumpkin_set.0", "伤害提高10%");
+        // 忍者
+        add("armor_set_bonus.confluence.ninja_set.0", "移动速度提高20%");
+        // 化石
+        add("armor_set_bonus.confluence.fossil_set.0", "20%几率省下弹药");
+        // 寒晶
+        add("tooltip.item.confluence.cold_crystal_helmet.0", "最大魔力值增加20");
+        add("tooltip.item.confluence.cold_crystal_chestplate.0", "最大魔力值增加20");
+        add("armor_set_bonus.confluence.cold_crystal_set.0", "魔法攻击会有附带霜冻效果");
+        // 孢根
+        add("armor_set_bonus.confluence.spore_root_set.0", "仆从数量上限增加1");
+        // 渊鳞
+        add("tooltip.item.confluence.heim_helmet.0", "延长水下呼吸时间5%");
+        add("tooltip.item.confluence.heim_boots.0", "提高水下移动速度5%");
+        add("armor_set_bonus.confluence.heim_set.0", "赋予4点生命值的伤害吸收，每隔5秒钟再次赋予");
+        // 蜜蜂
+        add("armor_set_bonus.confluence.bee_set.0", "召唤伤害提高10%");
+        // 黑曜石
+        add("armor_set_bonus.confluence.obsidian_set.0", "鞭子攻击范围扩大30%，鞭子攻击速度提高15%");
+        add("armor_set_bonus.confluence.obsidian_set.1", "召唤伤害提高15%");
+        // 角斗士
+        add("armor_set_bonus.confluence.gladiator_set.0", "免疫击退");
+        // 巫师
+        add("tooltip.item.confluence.amber_robe.0", "最大魔力增加60");
+        add("tooltip.item.confluence.amber_robe.1", "魔力消耗降低13%");
+        add("tooltip.item.confluence.diamond_robe.0", "最大魔力增加80");
+        add("tooltip.item.confluence.diamond_robe.1", "魔力消耗降低15%");
+        add("tooltip.item.confluence.mystic_robe.0", "魔法伤害和暴击率各提高6%");
+        add("tooltip.item.confluence.mystic_robe.1", "魔力消耗降低10%");
+        add("tooltip.item.confluence.ruby_robe.0", "最大魔力增加60");
+        add("tooltip.item.confluence.ruby_robe.1", "魔力消耗降低13%");
+        add("tooltip.item.confluence.jade_robe.0", "最大魔力增加60");
+        add("tooltip.item.confluence.jade_robe.1", "魔力消耗降低11%");
+        add("tooltip.item.confluence.sapphire_robe.0", "最大魔力增加40");
+        add("tooltip.item.confluence.sapphire_robe.1", "魔力消耗降低9%");
+        add("tooltip.item.confluence.topaz_robe.0", "最大魔力增加40");
+        add("tooltip.item.confluence.topaz_robe.1", "魔力消耗降低7%");
+        add("tooltip.item.confluence.amethyst_robe.0", "最大魔力增加20");
+        add("tooltip.item.confluence.amethyst_robe.1", "魔力消耗降低5%");
+        // 流星
+        add("armor_set_bonus.confluence.meteor_set.0", "太空枪魔力消耗降低为0");
+        // 丛林
+        add("tooltip.item.confluence.jungle_helmet.0", "最大魔力增加40");
+        add("tooltip.item.confluence.jungle_chestplate.0", "最大魔力增加20");
+        add("tooltip.item.confluence.jungle_leggings.0", "最大魔力增加20");
+        add("armor_set_bonus.confluence.jungle_set.0", "魔力消耗降低16%");
+        // 死灵
+        add("armor_set_bonus.confluence.necro_set.0", "暴击率提高10%");
+        // 暗影
+        add("armor_set_bonus.confluence.shadow_set.0", "提高移动速度和加速度");
+        // 猩红
+        add("armor_set_bonus.confluence.crimson_set.0", "生命再生能力大幅提升");
+        // 熔岩
+        add("armor_set_bonus.confluence.molten_set.0", "近战伤害提高10%，免疫着火");
+        // 蜘蛛
+        add("armor_set_bonus.confluence.spider_set.0", "召唤伤害提高12%");
+        // 困难模式矿石
+        add("tooltip.item.confluence.cobalt_hat.0", "最大魔力增加40");
+        add("armor_set_bonus.confluence.cobalt_helmet_set.0", "近战速度提高15%");
+        add("armor_set_bonus.confluence.cobalt_mask_set.0", "20%几率省下弹药");
+        add("armor_set_bonus.confluence.cobalt_hat_set.0", "魔力消耗降低14%");
+
+        add("tooltip.item.confluence.palladium_headgear.0", "最大魔力增加60");
+        add("armor_set_bonus.confluence.palladium_mask_set.0", "攻击敌人后大大提高生命再生速度");
+        add("armor_set_bonus.confluence.palladium_helmet_set.0", "攻击敌人后大大提高生命再生速度");
+        add("armor_set_bonus.confluence.palladium_headgear_set.0", "攻击敌人后大大提高生命再生速度");
+
+        add("tooltip.item.confluence.mythril_hood.0", "最大魔力增加60");
+        add("armor_set_bonus.confluence.mythril_hood_set.0", "魔力消耗降低17%");
+        add("armor_set_bonus.confluence.mythril_helmet_set.0", "暴击率提高10%");
+        add("armor_set_bonus.confluence.mythril_hat_set.0", "20%几率省下弹药");
+
+        add("tooltip.item.confluence.orichalcum_headgear.0", "最大魔力增加80");
+        add("armor_set_bonus.confluence.orichalcum_headgear_set.0", "花瓣将落到目标身上造成额外伤害");
+        add("armor_set_bonus.confluence.orichalcum_mask_set.0", "花瓣将落到目标身上造成额外伤害");
+        add("armor_set_bonus.confluence.orichalcum_helmet_set.0", "花瓣将落到目标身上造成额外伤害");
+
+        add("tooltip.item.confluence.adamantite_headgear.0", "最大魔力增加80");
+        add("armor_set_bonus.confluence.adamantite_headgear_set.0", "魔力消耗降低19%");
+        add("armor_set_bonus.confluence.adamantite_helmet_set.0", "近战速度和移动速度各提高20%");
+        add("armor_set_bonus.confluence.adamantite_mask_set.0", "25%几率省下弹药");
+
+        add("tooltip.item.confluence.titanium_headgear.0", "最大魔力增加100");
+        add("armor_set_bonus.confluence.titanium_mask_set.0", "攻击生成钛金碎片防御屏障");
+        add("armor_set_bonus.confluence.titanium_helmet_set.0", "攻击生成钛金碎片防御屏障");
+        add("armor_set_bonus.confluence.titanium_headgear_set.0", "攻击生成钛金碎片防御屏障");
+
+
         add(ModEntities.BEE_ARROW.get(), "蜜蜂箭");
+        add(ModEntities.HELL_BAT_ARROW.get(), "地狱蝙蝠箭");
         add(ModEntities.ARROW_PROJECTILE.get(), "泰拉箭");
         add(ModEntities.ANTI_GRAVITY_HOOK.get(), "反重力钩");
         add(ModEntities.BALL_OF_FIRE_PROJECTILE.get(), "火球弹");
@@ -3402,6 +3390,9 @@ public class ModChineseProvider extends LanguageProvider {
 
         add(DecorativeBlocks.KING_SLIME_RELIC.get(), "史莱姆王圣物");
         add(DecorativeBlocks.EYE_OF_CTHULHU_RELIC.get(), "克苏鲁之眼圣物");
+        add(DecorativeBlocks.BRAIN_OF_CTHULHU_RELIC.get(), "克苏鲁之脑圣物");
+        add(DecorativeBlocks.EATER_OF_WORLDS_RELIC.get(), "世界吞噬怪圣物");
+        add(DecorativeBlocks.SKELETRON_RELIC.get(), "骷髅王圣物");
 
 
         add(ModBlocks.POO.get(), "臭臭");
@@ -3491,7 +3482,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArrowItems.UNHOLY_ARROW.get(), "邪箭");
         add(ArrowItems.STAR_ARROW.get(), "耀星之箭");
         add(ArrowItems.HELLFIRE_ARROW.get(), "狱炎箭");
-        add(ArrowItems.FROSTBURN_ARROW.get(), "寒霜箭");
+        add(ArrowItems.FROSTBURN_ARROW.get(), "霜冻箭");
         add(ArrowItems.BONE_ARROW.get(), "骨箭");
         add(ArrowItems.SHIMMER_ARROW.get(), "微光箭");
         add(ArrowItems.FOSSIL_ARROW.get(), "化石箭");
@@ -3567,7 +3558,6 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.SHADOW_SCALE.get(), "暗影鳞片");
         add(MaterialItems.TISSUE_SAMPLE.get(), "组织样本");
         add(MaterialItems.ROYAL_WAX.get(), "蜂王蜡");
-        add(MaterialItems.DUNGEON_DEMON_BONE.get(), "地牢魔骨");
         add(MaterialItems.CURSED_FLAME.get(), "诅咒焰");
         add(MaterialItems.ICHOR.get(), "灵液");
         add(MaterialItems.PIXIE_DUST.get(), "妖精尘");
@@ -3604,6 +3594,13 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.AETHERIUM_GOLD.get(), "嬗金");
         add(MaterialItems.CHINA_PLATE.get(), "陶瓷盘");
         add(MaterialItems.CHINA_BOWL.get(), "陶瓷碗");
+        add(MaterialItems.EMPTY_BULLET.get(), "空心子弹");
+        add(MaterialItems.EXPLOSIVE_POWDER.get(), "爆炸粉");
+        add(MaterialItems.GOLD_DUST.get(), "金粉");
+        add(MaterialItems.COG.get(), "齿轮");
+        add(MaterialItems.NANITES.get(), "纳米机器人");
+        add(MaterialItems.CONFETTI.get(), "彩纸");
+        add(MaterialItems.VIAL_OF_VENOM.get(), "小瓶毒液");
         // 植物
         add(MaterialItems.WATERLEAF.get(), "水叶草");
         add(MaterialItems.FIREBLOSSOM.get(), "火焰花");
@@ -3760,6 +3757,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(PickaxeItems.BONE_PICKAXE.get(), "骨镐");
         add(PickaxeItems.REAVER_SHARK_PICKAXE.get(), "掠夺鲨");
         add(PickaxeItems.FOSSIL_PICKAXE.get(), "化石镐");
+        add(PickaxeItems.ABYSSAL_PICKAXE.get(), "潜渊镐");
+        add(PickaxeItems.MIASMA_PICKAXE.get(), "凝瘴镐");
+        add(PickaxeItems.COLD_CRYSTAL_PICKAXE.get(), "寒晶镐");
         add(PickaxeItems.TIN_PICKAXE.get(), "锡镐");
         add(PickaxeItems.LEAD_PICKAXE.get(), "铅镐");
         add(PickaxeItems.SILVER_PICKAXE.get(), "银镐");
@@ -3915,6 +3915,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ConsumableItems.BONE_THROWING_KNIFE.get(), "骨投刀");
         add(ConsumableItems.FROST_DAGGERFISH.get(), "寒霜飞鱼");
         add(ConsumableItems.JAVELIN.get(), "标枪");
+        add(ConsumableItems.DUNGEON_DEMON_BONE.get(), "地牢魔骨");
         add(ConsumableItems.SPIKY_BALL.get(), "尖球");
         add(ConsumableItems.HOLY_WATER.get(), "圣水");
         add(ConsumableItems.UNHOLY_WATER.get(), "邪水");
@@ -4133,7 +4134,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ChestBlocks.FROZEN_CHEST.get(), "冰冻箱");
         add(ChestBlocks.IVY_CHEST.get(), "常春藤箱");
         add(ChestBlocks.WATER_CHEST.get(), "水中箱");
-        add(ChestBlocks.SKYWARE_CHEST.get(), "天界箱");
+        add(ChestBlocks.SKYWARE_CHEST.get(), "天域箱");
         add(ChestBlocks.DEATH_WOODEN_CHEST.get(), "死人木箱");
         add(ChestBlocks.SANDSTONE_CHEST.get(), "沙岩箱");
         add(ChestBlocks.LIVING_WOOD_CHEST.get(), "生命木箱");
@@ -4292,6 +4293,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ManaWeaponItems.BOOK_OF_SKULLS.get(), "骷髅头法书");
         add(ManaWeaponItems.CRIMSON_ROD.get(), "猩红魔杖");
         add(ManaWeaponItems.NIMBUS_ROD.get(), "雨云魔杖");
+        add(ManaWeaponItems.GOLDEN_SHOWER.get(), "黄金雨");
 
         add(ManaWeaponItems.BEE_GUN.get(), "蜜蜂枪");
         add(ManaWeaponItems.SPACE_GUN.get(), "太空枪");
@@ -4384,10 +4386,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.GLADIATOR_HELMET.get(), "角斗士头盔");
         add(ArmorItems.GLADIATOR_LEGGINGS.get(), "角斗士护腿");
         add(ArmorItems.GLADIATOR_BOOTS.get(), "角斗士靴子");
-        add(ArmorItems.METEOR_CHESTPLATE.get(), "陨石胸甲");
-        add(ArmorItems.METEOR_HELMET.get(), "陨石头盔");
-        add(ArmorItems.METEOR_LEGGINGS.get(), "陨石护腿");
-        add(ArmorItems.METEOR_BOOTS.get(), "陨石靴子");
+        add(ArmorItems.METEOR_CHESTPLATE.get(), "流星胸甲");
+        add(ArmorItems.METEOR_HELMET.get(), "流星头盔");
+        add(ArmorItems.METEOR_LEGGINGS.get(), "流星护腿");
+        add(ArmorItems.METEOR_BOOTS.get(), "流星靴子");
         add(ArmorItems.COPPER_HELMET.get(), "铜头盔");
         add(ArmorItems.COPPER_CHESTPLATE.get(), "铜胸甲");
         add(ArmorItems.COPPER_LEGGINGS.get(), "铜护腿");
@@ -4448,10 +4450,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.CRIMSON_CHESTPLATE.get(), "猩红胸甲");
         add(ArmorItems.CRIMSON_LEGGINGS.get(), "猩红护腿");
         add(ArmorItems.CRIMSON_BOOTS.get(), "猩红靴");
-        add(ArmorItems.MINING_HELMET.get(), "照明头盔");
-        add(ArmorItems.MINING_CHESTPLATE.get(), "矿工衣");
-        add(ArmorItems.MINING_LEGGINGS.get(), "矿工裤");
-        add(ArmorItems.MINING_BOOTS.get(), "矿工靴");
+        add(ArmorItems.MINING_HELMET.get(), "挖矿头盔");
+        add(ArmorItems.MINING_CHESTPLATE.get(), "挖矿衣");
+        add(ArmorItems.MINING_LEGGINGS.get(), "挖矿裤");
+        add(ArmorItems.MINING_BOOTS.get(), "挖矿靴");
         add(ArmorItems.ANGLER_HAT.get(), "渔夫帽");
         add(ArmorItems.ANGLER_VEST.get(), "渔夫背心");
         add(ArmorItems.ANGLER_PANTS.get(), "渔夫裤");
@@ -4605,7 +4607,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.PLUM.get(), "李子");
         add(FoodItems.SPICY_PEPPER.get(), "辣椒");
         add(FoodItems.STAR_FRUIT.get(), "杨桃");
-        add(FoodItems.POMEGRANATE.get(), "番石榴");
+        add(FoodItems.POMEGRANATE.get(), "石榴");
         add(FoodItems.RAMBUTAN.get(), "红毛丹");
         add(FoodItems.PEELED_SUGAR_TANGERINE.get(), "剥开的砂糖橘");
         add(FoodItems.SHIMMER_BERRIES.get(), "微光浆果");
@@ -4618,7 +4620,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.MONSTER_LASAGNA.get(), "怪物千层面");
         add(FoodItems.COOK_FISH.get(), "熟鱼");
         add(FoodItems.SASHIMI.get(), "生鱼片");
-        add(FoodItems.ROASTED_BIRD.get(), "烤鸟腿");
+        add(FoodItems.ROASTED_BIRD.get(), "烤鸟");
         add(FoodItems.ROASTED_DUCK.get(), "烤鸭");
         add(FoodItems.SAUTEED_FROG_LEGS.get(), "炒蛙腿");
         add(FoodItems.SEAFOOD_DINNER.get(), "海鲜大餐");
@@ -4652,18 +4654,18 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.PINA_COLADA.get(), "椰林飘香");
         add(FoodItems.PRISMATIC_PUNCH.get(), "七彩潘趣酒");
         add(FoodItems.TROPICAL_SMOOTHIE.get(), "热带奶昔");
-        add(FoodItems.SMOOTHIE_OF_DARKNESS.get(), "黑暗奶昔");
+        add(FoodItems.SMOOTHIE_OF_DARKNESS.get(), "暗黑奶昔");
         add(FoodItems.CREAM_SODA.get(), "奶油苏打水");
         add(FoodItems.ICE_CREAM.get(), "冰淇淋");
         add(FoodItems.MILKSHAKE.get(), "奶昔");
         add(FoodItems.JOJA_COLA.get(), "Joja可乐");
-        add(FoodItems.CARTON_OF_MILK.get(), "卡通牛奶");
-        add(FoodItems.TEACUP.get(), "一小杯茶");
+        add(FoodItems.CARTON_OF_MILK.get(), "盒装牛奶");
+        add(FoodItems.TEACUP.get(), "一杯茶");
         add(FoodItems.COFFEE.get(), "咖啡");
         add(FoodItems.BOWL_OF_SOUP.get(), "鱼菇汤");
         add(FoodItems.FRUIT_SALAD.get(), "水果沙拉");
         add(FoodItems.GRUB_SOUP.get(), "蛆虫汤");
-        add(FoodItems.NACHOS.get(), "一碗玉米粒");
+        add(FoodItems.NACHOS.get(), "玉米片");
         add(FoodItems.PHO.get(), "越南河粉");
         add(FoodItems.FRUIT_JUICE.get(), "果汁");
         add(FoodItems.SAKE.get(), "清酒");
@@ -4689,6 +4691,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.PIGLIN_STEW.get(), "猪灵堡");
         // 鱼
         add(FoodItems.GOLDFISH.get(), "金鱼");
+        add(FoodItems.GOLD_GOLDFISH.get(), "金金鱼");
         add(FoodItems.SEA_BASS.get(), "鲈鱼");
         add(FoodItems.ATLANTIC_COD.get(), "大西洋鳕鱼");
         add(FoodItems.ARMORED_CAVE_FISH.get(), "装甲洞穴鱼");
@@ -4697,19 +4700,19 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.DAMSEL_FISH.get(), "雀鲷");
         add(FoodItems.PISCES_FIN_COD.get(), "双鳍鳕鱼");
         add(FoodItems.EBONY_KOI.get(), "黑檀锦鲤");
-        add(FoodItems.FLASHFIN_KOI.get(), "闪耀锦鲤");
+        add(FoodItems.FLASHFIN_KOI.get(), "闪鳍锦鲤");
         add(FoodItems.PARTIAL_MOUTH_FISH.get(), "偏口鱼");
         add(FoodItems.FROSTY_MINNOW.get(), "寒霜鲦鱼");
         add(FoodItems.GOLDEN_CARP.get(), "金鲤鱼");
         add(FoodItems.BLOODY_PIRANHAS.get(), "血腥食人鱼");
         add(FoodItems.NEON_GREASE_CARP.get(), "霓虹脂鲤");
-        add(FoodItems.OBSIDIAN_FISH.get(), "黑曜石鱼");
+        add(FoodItems.OBSIDIFISH.get(), "黑曜石鱼");
         add(FoodItems.PRINCESS_FISH.get(), "公主鱼");
         add(FoodItems.COLORFUL_MINERAL_FISH.get(), "七彩矿鱼");
         add(FoodItems.RED_SNAPPER.get(), "红鲷鱼");
         add(FoodItems.TROUT.get(), "鳟鱼");
         add(FoodItems.ROCK_LOBSTER.get(), "岩石龙虾");
-        add(FoodItems.SALMON.get(), "鲑鱼");
+        add(FoodItems.SALMON.get(), "三文鱼");
         add(FoodItems.SHRIMP.get(), "虾");
         add(FoodItems.MIRROR_FISH.get(), "镜面鱼");
         add(FoodItems.STINKY_FISH.get(), "臭味鱼");
@@ -4957,11 +4960,11 @@ public class ModChineseProvider extends LanguageProvider {
         addPotion(PotionItems.GREATER_MANA_POTION.get(), "强效魔力药水", "恢复200魔力");
         addPotion(PotionItems.SUPER_MANA_POTION.get(), "超级魔力药水", "恢复300魔力");
         addPotion(PotionItems.GRAVITATION_POTION.get(), "重力药水", "可控制重力");
-        addPotion(PotionItems.SHINE_POTION.get(), "光环药水", "发出光环");
+        addPotion(PotionItems.SHINE_POTION.get(), "光芒药水", "发出光芒");
         addPotion(PotionItems.IRON_SKIN_POTION.get(), "铁皮药水", "防御力增加4");
         addPotion(PotionItems.WRATH_POTION.get(), "怒气药水", "伤害提高10%");
         addPotion(PotionItems.TITAN_POTION.get(), "泰坦药水", "提高击退力");
-        addPotion(PotionItems.BUILDER_POTION.get(), "建造者药水", "提高放置速度、扩大放置范围");
+        addPotion(PotionItems.BUILDER_POTION.get(), "建筑工药水", "提高放置速度、扩大放置范围");
         addPotion(PotionItems.ENDURANCE_POTION.get(), "耐力药水", "所受伤害降低10%");
         addPotion(PotionItems.INFERNO_POTION.get(), "狱火药水", "点燃附近的敌人");
         addPotion(PotionItems.LIFEFORCE_POTION.get(), "生命力药水", "最大生命提高20%");
@@ -4975,7 +4978,7 @@ public class ModChineseProvider extends LanguageProvider {
         addPotion(PotionItems.LUCK_POTION.get(), "幸运药水", "提高使用者的运气");
         addPotion(PotionItems.GREATER_LUCK_POTION.get(), "强效幸运药水", "提高使用者的运气");
         addPotion(PotionItems.LOVE_POTION.get(), "爱情药水", "投掷此物可让人坠入爱河（或使动物繁衍）");
-        addPotion(PotionItems.SWIFTNESS_POTION.get(), "迅捷药水", "移动速度提高25%");
+        addPotion(PotionItems.SWIFTNESS_POTION.get(), "敏捷药水", "移动速度提高25%");
         addPotion(PotionItems.REGENERATION_POTION.get(), "再生药水", "提供生命再生");
         addPotion(PotionItems.FLIPPER_POTION.get(), "脚蹼药水", "让你在液体中快速移动");
         addPotion(PotionItems.ARCHERY_POTION.get(), "箭术药水", "弓伤害提高10%，箭速度提高20%");
@@ -4983,7 +4986,7 @@ public class ModChineseProvider extends LanguageProvider {
         addPotion(PotionItems.GILLS_POTION.get(), "鱼鳃药水", "可在水中呼吸");
         addPotion(PotionItems.INVISIBILITY_POTION.get(), "隐形药水", "隐身"); // 等待战斗药水实装后改功能和描述
         addPotion(PotionItems.WORMHOLE_POTION.get(), "虫洞药水", "当玩家在地图上点击队友图标时将玩家传送至队友的位置处。");
-        addPotion(PotionItems.MINING_POTION.get(), "采矿药水", "挖矿速度提高25%");
+        addPotion(PotionItems.MINING_POTION.get(), "挖矿药水", "挖矿速度提高25%");
         addPotion(PotionItems.RECALL_POTION.get(), "回忆药水", "将玩家传送到其重生点。");
         addPotion(PotionItems.NIGHT_OWL_POTION.get(), "夜猫子药水", "赋予夜视");
         addPotion(PotionItems.WATER_WALKING_POTION.get(), "水上漂药水", "可在水上行走");

@@ -37,7 +37,7 @@ import org.confluence.mod.common.worldgen.secret_seed.NoTraps;
 import org.confluence.mod.network.s2c.BrushingColorPacketS2C;
 import org.confluence.terra_curio.util.TCUtils;
 
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, modid = Confluence.MODID)
+@EventBusSubscriber(modid = Confluence.MODID)
 public final class LevelEvents {
     @SubscribeEvent
     public static void explosion$Detonate(ExplosionEvent.Detonate event) {

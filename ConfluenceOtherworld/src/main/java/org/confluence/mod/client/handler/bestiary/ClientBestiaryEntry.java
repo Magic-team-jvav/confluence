@@ -89,6 +89,8 @@ public class ClientBestiaryEntry extends BestiaryEntry {
     public static final ResourceLocation NEBULA_PILLAR = background("nebula_pillar");
     public static final ResourceLocation STARDUST_PILLAR = background("stardust_pillar");
 
+    public static final ResourceLocation THE_END = background("the_end");
+
     public static final Component UNKNOWN = Component.literal("???");
     public static final Codec<ClientBestiaryEntry> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             BuiltInRegistries.ENTITY_TYPE.byNameCodec().fieldOf("type").forGetter(ClientBestiaryEntry::getType),

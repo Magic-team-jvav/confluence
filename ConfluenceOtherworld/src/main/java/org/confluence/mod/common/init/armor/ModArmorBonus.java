@@ -161,7 +161,7 @@ public final class ModArmorBonus {
             key.of(HEAL$AMOUNT$MULTIPLIER, 0.5F);
             // todo 在移动时与再生生命时会发出红色微粒
         });
-        register("molten_set", 1, MOLTEN_HELMET, MOLTEN_CHESTPLATE, MOLTEN_LEGGINGS, MOLTEN_BOOTS, key -> {
+        register("molten_set", 2, MOLTEN_HELMET, MOLTEN_CHESTPLATE, MOLTEN_LEGGINGS, MOLTEN_BOOTS, key -> {
             key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(Attributes.ATTACK_DAMAGE, key.id, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
             key.unit(TCItems.FIRE$IMMUNE);
             // todo 移动时有火焰微粒

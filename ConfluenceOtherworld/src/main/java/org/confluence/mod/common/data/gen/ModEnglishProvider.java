@@ -2445,7 +2445,8 @@ public class ModEnglishProvider extends LanguageProvider {
         // Crimson Set
         add("armor_set_bonus.confluence.crimson_set.0", "Greatly increased life regen");
         // Molten Set
-        add("armor_set_bonus.confluence.molten_set.0", "10% extra melee damage,Cannot be set on fire");
+        add("armor_set_bonus.confluence.molten_set.0", "10% extra melee damage");
+        add("armor_set_bonus.confluence.molten_set.1", "Cannot be set on fire");
         // Spider Set
         add("armor_set_bonus.confluence.spider_set.0", "Increases summon damage by 12%");
         // HardMode Ore

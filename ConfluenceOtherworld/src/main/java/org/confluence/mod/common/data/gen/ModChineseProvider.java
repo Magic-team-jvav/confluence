@@ -2480,7 +2480,8 @@ public class ModChineseProvider extends LanguageProvider {
         // 猩红
         add("armor_set_bonus.confluence.crimson_set.0", "生命再生能力大幅提升");
         // 熔岩
-        add("armor_set_bonus.confluence.molten_set.0", "近战伤害提高10%，免疫着火");
+        add("armor_set_bonus.confluence.molten_set.0", "近战伤害提高10%");
+        add("armor_set_bonus.confluence.molten_set.1", "免疫着火");
         // 蜘蛛
         add("armor_set_bonus.confluence.spider_set.0", "召唤伤害提高12%");
         // 困难模式矿石

@@ -44,12 +44,15 @@ jobs:
             - Commit: ${{ github.sha }}
           draft: false
           prerelease: true
-      - name: Upload JAR to Release
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./ConfluenceOtherworld/build/libs/*.jar
-          asset_name: Confluence-Nightly-${{ github.run_id }}.jar
-          asset_content_type: application/java-archive
+      - name: Upload all JAR files to Release
+        run: |
+          cd ./ConfluenceOtherworld/build/libs
+          for jar_file in *.jar; do
+            echo "Uploading $jar_file"
+            curl -s -X POST \
+              -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+              -H "Content-Type: application/java-archive" \
+              --data-binary @"$jar_file" \
+              "${{ steps.create_release.outputs.upload_url }}?name=$jar_file"
+            echo " - Upload completed for $jar_file"
+          done

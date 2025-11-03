@@ -50,9 +50,6 @@ jobs:
           name: Nightly Build
           body: |
             **Pre-release**
-            
-            Latest automated nightly build
-            - Built: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
           prerelease: true
           keep_latest: true
         env:

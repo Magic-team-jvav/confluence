@@ -4,7 +4,6 @@ name: Nightly Build
 on:
   workflow_dispatch:
   schedule:
-    # Run this job every day at 5:30 AM UTC+8
     - cron: "30 21 * * *"
 
 jobs:
@@ -34,55 +33,27 @@ jobs:
         id: version
         working-directory: ./ConfluenceOtherworld
         run: |
-          # 从 gradle.properties 获取基础版本号
           if [ -f "gradle.properties" ]; then
             BASE_VERSION=$(grep -E "^(mod_)?version" gradle.properties | head -1 | cut -d'=' -f2 | tr -d ' \r\n' | sed 's/-.*//')
-          elif [ -f "build.gradle" ]; then
-            BASE_VERSION=$(grep -E "version.*=.*['\"].*['\"]" build.gradle | head -1 | sed -E "s/.*['\"]([^'\"]+)['\"].*/\1/" | sed 's/-.*//')
           else
             BASE_VERSION="1.2.0"
           fi
-          
-          # 添加日期后缀
           DATE_SUFFIX=$(date +%y%m%d)
           FULL_VERSION="${BASE_VERSION}-alpha-${DATE_SUFFIX}"
-          
-          echo "BASE_VERSION=$BASE_VERSION" >> $GITHUB_OUTPUT
           echo "FULL_VERSION=$FULL_VERSION" >> $GITHUB_OUTPUT
-          echo "Base version: $BASE_VERSION"
-          echo "Full version with date: $FULL_VERSION"
       
-      - name: List JAR files for debugging
-        working-directory: ./ConfluenceOtherworld/build/libs
-        run: |
-          echo "=== JAR files in build/libs ==="
-          ls -la *.jar || echo "No JAR files found!"
-          echo "=== Current directory ==="
-          pwd
-      
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload to Nightly Release
+        uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ steps.version.outputs.FULL_VERSION }}
-          release_name: Confluence Automate Build
+          files: ./ConfluenceOtherworld/build/libs/*.jar
+          tag_name: nightly
+          name: Nightly Build
           body: |
             **Pre-release**
             
-            Automated nightly build
-            - Version: ${{ steps.version.outputs.FULL_VERSION }}
-            - Base Version: ${{ steps.version.outputs.BASE_VERSION }}
-            - Build Number: ${{ github.run_number }}
-            - Triggered by: ${{ github.event_name }}
-            - Commit: ${{ github.sha }}
-          draft: false
+            Latest automated nightly build
+            - Built: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
           prerelease: true
-      
-      - name: Upload JAR files to Release
-        uses: AButler/upload-release-assets@v2.0
-        with:
-          files: ./ConfluenceOtherworld/build/libs/*.jar
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          release-tag: ${{ steps.version.outputs.FULL_VERSION }}
+          keep_latest: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

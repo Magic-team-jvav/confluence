@@ -19,11 +19,13 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.fml.ModLoader;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.event.entity.living.LivingBreatheEvent;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.GetArmorSetBonusDataEvent;
@@ -73,6 +75,8 @@ public final class ModArmorBonus {
     public static final ValueType<List<MobEffectInstancesValue.Effect>, MobEffectInstancesValue> HURT$ENEMY$AWARD$EFFECTS = ValueType.create(Confluence.asResource("hurt_enemy_award_effects"), MobEffectInstancesValue.MERGE, MobEffectInstancesValue.CODEC, List.of(), MobEffectInstancesValue::new);
     public static final ValueType.UnitType FLOWER$PETAL = ValueType.UnitType.of(Confluence.asResource("flower_petal"));
     public static final ValueType.UnitType TITANIUM$SHARDS = ValueType.UnitType.of(Confluence.asResource("titanium_shards"));
+    public static final ValueType.UnitType LAVA$IMMUNE = ValueType.UnitType.of(Confluence.asResource("lava_immune"));
+    public static final ValueType.IntegerType DURABILITY$REPAIR$AMOUNT$PER$SECOND$IN$LAVA = ValueType.IntegerType.of(Confluence.asResource("durability_repair_amount_per_second_in_lava"), IntegerValue.GET_MAX, 0);
     // endregion
 
     // region key
@@ -86,6 +90,10 @@ public final class ModArmorBonus {
             key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(Attributes.BLOCK_BREAK_SPEED, key.id, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
         });
         register("plank_set", 1, PLANK_HELMET, PLANK_CHESTPLATE, PLANK_LEGGINGS, PLANK_BOOTS, armor(1));
+        register("ash_set", 1, ASH_HELMET, ASH_CHESTPLATE, ASH_LEGGINGS, ASH_BOOTS, key -> {
+            key.of(TCItems.LAVA$HURT$REDUCE, 0.5F);
+            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.simple(Attributes.BURNING_TIME, key.id, -0.35, AttributeModifier.Operation.ADD_VALUE));
+        });
         register("snow_set", 1, SNOW_CAPS, SNOW_SUITS, INSULATED_PANTS, INSULATED_SHOES, key -> {
             key.unit(TCItems.FROZEN$IMMUNE);
         });
@@ -227,10 +235,20 @@ public final class ModArmorBonus {
 
         // todo	水晶刺客盔甲、神圣盔甲
 
-        // todo 白蜡木甲ash_set
-        // todo 汇流4原创甲套装效果（还差cold_crystal_set和heim_set）
+//        register("diamond_set", 1, Items.DIAMOND_HELMET, Items.DIAMOND_CHESTPLATE, Items.DIAMOND_LEGGINGS, Items.DIAMOND_BOOTS, key -> {
         // todo 钻石甲给2时运
-        // todo 下界合金甲免疫岩浆和着火，浸泡在岩浆时回复耐久，全伤害提升8%，移速增加5%
+//        });
+        register("netherite_set", 4, Items.NETHERITE_HELMET, Items.NETHERITE_CHESTPLATE, Items.NETHERITE_LEGGINGS, Items.NETHERITE_BOOTS, key -> {
+            key.unit(LAVA$IMMUNE);
+            key.of(DURABILITY$REPAIR$AMOUNT$PER$SECOND$IN$LAVA, 50);
+            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.builder()
+                    .add(Attributes.ATTACK_DAMAGE, key.id, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                    .add(TCAttributes.getRangedDamage(), key.id, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                    .add(TCAttributes.getMagicDamage(), key.id, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                    .add(TEAttributes.SUMMON_DAMAGE, key.id, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                    .add(Attributes.MOVEMENT_SPEED, key.id, 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                    .build());
+        });
 
         /// 巫师套装
         /// @see GameEvents#getArmorSetBonus(GetArmorSetBonusDataEvent)
@@ -283,10 +301,20 @@ public final class ModArmorBonus {
         return PlayerSpecialData.of(player).getArmorSetBonusKey().equals(Objects.requireNonNullElse(key, ArmorSetBonusKey.NONE));
     }
 
+    /**
+     * 仅使用套装奖励注册的type
+     * <p>
+     * 如果type是配饰用的就使用{@link org.confluence.terra_curio.util.TCUtils#hasAccessoriesType(LivingEntity, ValueType)}
+     */
     public static boolean hasType(Player player, ValueType<Unit, UnitValue> type) {
         return PlayerSpecialData.of(player).contains(type);
     }
 
+    /**
+     * 仅使用套装奖励注册的type
+     * <p>
+     * 如果type是配饰用的就使用{@link org.confluence.terra_curio.util.TCUtils#getAccessoriesValue(LivingEntity, ValueType)}
+     */
     public static <T, V extends PrimitiveValue<T>> T getValue(Player player, ValueType<T, V> type) {
         return PlayerSpecialData.of(player).getValue(type);
     }
@@ -382,8 +410,28 @@ public final class ModArmorBonus {
         if (damageSource.is(Tags.DamageTypes.IS_MAGIC) && isArmorSet(player, COLD_CRYSTAL_SET)) {
             victim.addEffect(new MobEffectInstance(TEEffects.FROST_BURN, 100));
         }
-        if (isArmorSet(player, HEIM_SET)) {
-            // todo
+    }
+
+    public static void onBreath(LivingBreatheEvent event) {
+        if (event.canBreathe() || !(event.getEntity() instanceof Player player)) return;
+
+        if (player.getAirSupply() > 0 && player.level().getGameTime() % 20 == 0 && isArmorSet(player, HEIM_SET)) { // 延长5%
+            event.setConsumeAirAmount(0);
+        }
+    }
+
+    public static void afterTick(ServerPlayer player) {
+        long gameTime = player.level().getGameTime();
+        if (gameTime % 80 == 0 && isArmorSet(player, HEIM_SET)) {
+            player.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 100, 1, false, false));
+        }
+        if (gameTime % 20 == 0 && player.isInLava()) drapsil:{
+            int amount = getValue(player, DURABILITY$REPAIR$AMOUNT$PER$SECOND$IN$LAVA);
+            if (amount <= 0) break drapsil;
+            for (ItemStack stack : player.getArmorSlots()) {
+                int j = Math.min(amount, stack.getDamageValue());
+                stack.setDamageValue(stack.getDamageValue() - j);
+            }
         }
     }
 }

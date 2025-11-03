@@ -382,6 +382,7 @@ public final class LivingEntityEvents {
                 event.setCanBreathe(true);
             }
         }
+        ModArmorBonus.onBreath(event);
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)

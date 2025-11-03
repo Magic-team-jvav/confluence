@@ -23,6 +23,7 @@ import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.block.functional.network.PathService;
 import org.confluence.mod.common.data.saved.*;
 import org.confluence.mod.common.entity.FallingStarItemEntity;
+import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.item.fishing.AbstractFishingPole;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
 import org.confluence.mod.common.worldgen.structure.DungeonStructure;
@@ -90,6 +91,7 @@ public final class TickEvents {
             TheConstant.applyDarkness(player, level);
             DungeonStructure.checkSkeletronDefeated(player, level);
             ChunkDropletsData.syncDroplets(player);
+            ModArmorBonus.afterTick(player);
         }
 
         if (entity.level().getGameTime() % 60 == 3) {

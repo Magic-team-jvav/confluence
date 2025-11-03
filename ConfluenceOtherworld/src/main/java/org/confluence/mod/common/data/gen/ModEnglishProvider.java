@@ -2403,7 +2403,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add("armor_set_bonus.confluence.spore_root_set.0", "Increases your max number of minions by 1");
         // Heim Set
         add("tooltip.item.confluence.heim_helmet.0", "Extend underwater breathing time by 5%");
-        add("tooltip.item.confluence.heim_boots.0", "Increase underwater movement speed by 5%");
         add("armor_set_bonus.confluence.heim_set.0", "Grant you 4 health of absorption, and grant it again every 5 seconds");
         // Bee Set
         add("armor_set_bonus.confluence.bee_set.0", "Increases summon damage by 10%");

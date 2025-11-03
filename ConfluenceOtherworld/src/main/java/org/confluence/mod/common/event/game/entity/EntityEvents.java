@@ -24,7 +24,6 @@ import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.mixed.ILivingEntity;
 import org.confluence.mod.util.AchievementUtils;
-import org.confluence.terra_curio.common.init.TCItems;
 
 @EventBusSubscriber(modid = Confluence.MODID)
 public final class EntityEvents {
@@ -63,10 +62,12 @@ public final class EntityEvents {
         if (damageSource.is(ModDamageTypes.BOULDER) && living.getType().is(Tags.EntityTypes.BOSSES)) {
             event.setInvulnerable(true); // boss 免疫巨石
         } else if ((damageSource.getEntity() == null || !damageSource.getEntity().getType().is(Tags.EntityTypes.BOSSES)) && living.hasEffect(ModEffects.SHIMMER)) {
-            event.setInvulnerable(true); // 微光状态时免疫小怪和环境伤害
-        } else if (damageSource.is(DamageTypeTags.IS_FIRE) && (living.hasEffect(ModEffects.OBSIDIAN_SKIN) || (living instanceof Player player && ModArmorBonus.hasType(player, TCItems.FIRE$IMMUNE)))) {
-            living.clearFire();
-            event.setInvulnerable(true); // 免疫着火
+            event.setInvulnerable(true); // 微光状态时免疫非Boss和环境伤害
+        } else if (damageSource.is(DamageTypeTags.IS_FIRE)) {
+            if (living.hasEffect(ModEffects.OBSIDIAN_SKIN) || (living instanceof Player player && ModArmorBonus.hasType(player, ModArmorBonus.LAVA$IMMUNE))) {
+                living.clearFire();
+                event.setInvulnerable(true); // 免疫熔岩/着火
+            }
         }
     }
 }

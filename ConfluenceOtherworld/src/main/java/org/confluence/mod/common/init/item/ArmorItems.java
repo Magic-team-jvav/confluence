@@ -6,6 +6,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.component.ModRarity;
@@ -341,7 +342,6 @@ public class ArmorItems {
     public static final DeferredItem<BaseArmorItem> HEIM_HELMET = register("heim_helmet", ModArmorMaterials.HEIM_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/heim_armor")
             .rarity(ModRarity.BLUE)
-            // todo延长水下呼吸时间5%
             .meleeDamage(0.03)
             .tooltips(1));
     public static final DeferredItem<BaseArmorItem> HEIM_CHESTPLATE = register("heim_chestplate", ModArmorMaterials.HEIM_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
@@ -357,9 +357,8 @@ public class ArmorItems {
     );
     public static final DeferredItem<BaseArmorItem> HEIM_BOOTS = register("heim_boots", ModArmorMaterials.HEIM_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/heim_armor")
-            // todo提高水下移动速度5%
             .rarity(ModRarity.BLUE)
-            .tooltips(1));
+            .attribute(NeoForgeMod.SWIM_SPEED, 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
 
     public static final DeferredItem<BaseArmorItem> BEE_HELMET = register("bee_helmet", ModArmorMaterials.BEE_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/bee_armor")

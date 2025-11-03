@@ -2407,7 +2407,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("armor_set_bonus.confluence.plank_set.0", "+1 护甲值");
         add("armor_set_bonus.confluence.pearlwood_set.0", "+1 护甲值");
 
-        add("armor_set_bonus.confluence.ash_set.0", "降低因触碰熔岩而受到的伤害");
+        add("armor_set_bonus.confluence.ash_set.0", "将熔岩的接触伤害降低 50%");
+        add("armor_set_bonus.confluence.ash_set.1", "受到的着火持续时间降低35%");
         // 肉前基础矿石
         add("armor_set_bonus.confluence.copper_set.0", "+1 护甲值");
         add("armor_set_bonus.confluence.tin_set.0", "+2 护甲值");
@@ -2440,7 +2441,6 @@ public class ModChineseProvider extends LanguageProvider {
         add("armor_set_bonus.confluence.spore_root_set.0", "仆从数量上限增加1");
         // 渊鳞
         add("tooltip.item.confluence.heim_helmet.0", "延长水下呼吸时间5%");
-        add("tooltip.item.confluence.heim_boots.0", "提高水下移动速度5%");
         add("armor_set_bonus.confluence.heim_set.0", "赋予4点生命值的伤害吸收，每隔5秒钟再次赋予");
         // 蜜蜂
         add("armor_set_bonus.confluence.bee_set.0", "召唤伤害提高10%");

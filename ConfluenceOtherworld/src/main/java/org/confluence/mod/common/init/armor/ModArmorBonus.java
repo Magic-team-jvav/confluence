@@ -226,9 +226,11 @@ public final class ModArmorBonus {
         register("titanium_headgear_set", 1, TITANIUM_HEADGEAR, TITANIUM_CHESTPLATE, TITANIUM_LEGGINGS, TITANIUM_BOOTS, titaniumSet);
 
         // todo	水晶刺客盔甲、神圣盔甲
-        // todo 汇流4原创甲套装效果
-        // todo 钻石甲全套给2时运
-        // todo 下界合金甲免疫岩浆和着火，浸泡在岩浆时回复耐久
+
+        // todo 白蜡木甲ash_set
+        // todo 汇流4原创甲套装效果（还差cold_crystal_set和heim_set）
+        // todo 钻石甲给2时运
+        // todo 下界合金甲免疫岩浆和着火，浸泡在岩浆时回复耐久，全伤害提升8%，移速增加5%
 
         /// 巫师套装
         /// @see GameEvents#getArmorSetBonus(GetArmorSetBonusDataEvent)

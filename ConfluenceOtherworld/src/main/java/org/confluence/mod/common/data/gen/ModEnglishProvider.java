@@ -146,6 +146,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.ammo_box.0", "20% chance to save ammo");
         add("tooltip.item.confluence.bewitching_table.0", "Right click to have more minions");
         add("tooltip.item.confluence.keg.0", "Used for brewing ale");
+        add("tooltip.item.confluence.meteor_compass.0", "Only the position of the last meteorite are saved");
         add("tooltip.item.confluence.chlorophyte_extractinator.0", "Placing silt/slush/fossil/gravel/marine_gravel piles into the extractinator turns them into something more useful");
         add("tooltip.item.confluence.chlorophyte_extractinator.1", "Place contaminated blocks into the extractinator to purify them");
         add("tooltip.item.confluence.chlorophyte_extractinator.2", "Other items placed inside may have interesting effects");
@@ -2403,6 +2404,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("armor_set_bonus.confluence.spore_root_set.0", "Increases your max number of minions by 1");
         // Heim Set
         add("tooltip.item.confluence.heim_helmet.0", "Extend underwater breathing time by 5%");
+        add("tooltip.item.confluence.heim_boots.0", "Increase underwater movement speed by 5%");
         add("armor_set_bonus.confluence.heim_set.0", "Grant you 4 health of absorption, and grant it again every 5 seconds");
         // Bee Set
         add("armor_set_bonus.confluence.bee_set.0", "Increases summon damage by 10%");
@@ -2446,6 +2448,11 @@ public class ModEnglishProvider extends LanguageProvider {
         // Molten Set
         add("armor_set_bonus.confluence.molten_set.0", "10% extra melee damage");
         add("armor_set_bonus.confluence.molten_set.1", "Cannot be set on fire");
+        // Netherite Set
+        add("armor_set_bonus.confluence.netherite_set.0", "Cannot be set on fire and immune to lava");
+        add("armor_set_bonus.confluence.netherite_set.1", "5% increased movement speed");
+        add("armor_set_bonus.confluence.netherite_set.2", "8% increased damage");
+        add("armor_set_bonus.confluence.netherite_set.3", "Restores durability when submerged in lava");
         // Spider Set
         add("armor_set_bonus.confluence.spider_set.0", "Increases summon damage by 12%");
         // HardMode Ore

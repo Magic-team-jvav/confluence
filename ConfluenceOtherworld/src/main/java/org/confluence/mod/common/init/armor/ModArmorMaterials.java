@@ -175,7 +175,7 @@ public final class ModArmorMaterials {
     public static final Holder<ArmorMaterial> MOLTEN_ARMOR_MATERIALS = registerArmorMaterial("molten_armor_materials",
             5, 7, 7, 6,
             15, SoundEvents.ARMOR_EQUIP_NETHERITE, MaterialItems.HELLSTONE_INGOT,
-            "molten", 0.0F, 0.0F
+            "molten", 1.0F, 0.0F
     );
     public static final Holder<ArmorMaterial> NECRO_ARMOR_MATERIALS = registerArmorMaterial("necro_armor_materials",
             3, 7, 6, 3,

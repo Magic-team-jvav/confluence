@@ -166,7 +166,6 @@
   定性为系统级别问题，由freetype!FT_Load_Glyph起到freetype!FT_Vector_Unit，
   触发了重载，并因内存上的DoubleFree引发关键错误，JVM崩溃，无法产生错误报告。
   是内存操作错误，由lwjgl提供的本地方法FT_Load_Glyph触发，其调用是TrueTypeGlyphProvider#line:60。
-- 需要验证召唤物、特殊箭杀怪看掉不掉落物品
 
 #### 待调查问题
 

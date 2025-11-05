@@ -150,10 +150,11 @@ public final class GameEvents {
     @SubscribeEvent
     public static void shimmerItemTransmutation$Post(ShimmerItemTransmutationEvent.Post event) {
         MinecraftServer currentServer;
-        if (event.getTargets() != null && (currentServer = ServerLifecycleHooks.getCurrentServer()) != null) {
-            boolean corruption = IMinecraftServer.matchesSecretFlag(currentServer, IWorldOptions.THE_CORRUPTION);
-            boolean crimson = IMinecraftServer.matchesSecretFlag(currentServer, IWorldOptions.THE_CRIMSON);
-            if (corruption != crimson) {
+        if (event.getTargets() != null && (currentServer = ServerLifecycleHooks.getCurrentServer()) != null)
+            replaceEvilMaterials:{
+                boolean corruption = IMinecraftServer.matchesSecretFlag(currentServer, IWorldOptions.THE_CORRUPTION);
+                boolean crimson = IMinecraftServer.matchesSecretFlag(currentServer, IWorldOptions.THE_CRIMSON);
+                if (corruption == crimson) break replaceEvilMaterials;
                 List<ItemStack> targets = new ArrayList<>();
                 for (ItemStack target : event.getTargets()) {
                     if (corruption && target.is(MaterialItems.CRIMTANE_INGOT)) {
@@ -166,7 +167,6 @@ public final class GameEvents {
                 }
                 event.setTargets(targets);
             }
-        }
     }
 
     @SubscribeEvent

@@ -311,7 +311,7 @@ public final class LivingEntityEvents {
         double y = living.getY();
         double z = living.getZ();
 
-        if (living instanceof Player player) {
+        if (living instanceof Player player) { // 掉落玩家的钱币
             ExtraInventory data = ExtraInventory.of(player);
             for (int i = 0; i < ExtraInventory.SIZE_COINS; i++) {
                 ItemStack itemStack = data.getCoins(i);
@@ -321,13 +321,12 @@ public final class LivingEntityEvents {
                 drops.add(new ItemEntity(level, x, y, z, itemStack));
             }
         }
-        if (living.getRandom().nextFloat() < 0.011F) {
+        if (living.getRandom().nextFloat() < 0.011F) dropsHolidayGift:{ // 掉落节日礼物
             Item holidayGift = DateUtils.getHolidayGift(living.getRandom());
-            if (holidayGift != Items.AIR) {
-                ItemEntity entity = new ItemEntity(level, x, y, z, holidayGift.getDefaultInstance());
-                entity.setNoPickUpDelay();
-                drops.add(entity);
-            }
+            if (holidayGift == Items.AIR) break dropsHolidayGift;
+            ItemEntity entity = new ItemEntity(level, x, y, z, holidayGift.getDefaultInstance());
+            entity.setNoPickUpDelay();
+            drops.add(entity);
         }
         if (KillBoard.INSTANCE.getGamePhase().isHardmode() &&
                 living instanceof Enemy &&
@@ -335,7 +334,7 @@ public final class LivingEntityEvents {
                 !living.getType().is(ModTags.EntityTypes.DO_NOT_DROPS_EVIL_SOUL) &&
                 (y < OverworldUtils.getUndergroundY() || ModSecretSeeds.DONT_DIG_UP.match(level) || ModSecretSeeds.GET_FIXED_BOI.match(level)) &&
                 living.getRandom().nextFloat() < (LibUtils.isAtLeastExpert(level, living.blockPosition()) ? 0.36F : 0.2F)
-        ) {
+        ) { // 掉落光明或暗影之魂
             Holder<Biome> biome = level.getBiome(living.blockPosition());
             ItemStack soul = ItemStack.EMPTY;
             if (biome.is(ModTags.Biomes.THE_HALLOW)) {

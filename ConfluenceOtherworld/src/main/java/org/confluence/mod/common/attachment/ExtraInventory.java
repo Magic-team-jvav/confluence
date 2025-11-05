@@ -210,22 +210,21 @@ public class ExtraInventory implements Container, INBTSerializable<CompoundTag> 
 
     public void sync(ServerPlayer player) {
         initialize(player);
-        if (dirty) {
-            for (int i = 0; i < getContainerSize(); i++) {
-                ItemStack itemStack = getItem(i);
-                ItemStack previous = previousStacks.get(i);
-                if (!ItemStack.matches(itemStack, previous)) {
-                    ExtraInventoryStackPacketS2C.sendToPlayersTrackingEntityAndSelf(player, player, accessoryDye.size(), i, itemStack);
-                    if (previous.getItem() instanceof BaseHookItem hookItem) {
-                        hookItem.onUnequip(player, itemStack, previous);
-                    }
-                    previousStacks.set(i, itemStack.copy());
+        if (!dirty) return;
+        for (int i = 0; i < getContainerSize(); i++) {
+            ItemStack itemStack = getItem(i);
+            ItemStack previous = previousStacks.get(i);
+            if (!ItemStack.matches(itemStack, previous)) {
+                ExtraInventoryStackPacketS2C.sendToPlayersTrackingEntityAndSelf(player, player, accessoryDye.size(), i, itemStack);
+                if (previous.getItem() instanceof BaseHookItem hookItem) {
+                    hookItem.onUnequip(player, itemStack, previous);
                 }
+                previousStacks.set(i, itemStack.copy());
             }
-            this.dirty = false;
-
-            checkAchievements(player);
         }
+        this.dirty = false;
+
+        checkAchievements(player);
     }
 
     private void checkAchievements(ServerPlayer player) {
@@ -245,20 +244,19 @@ public class ExtraInventory implements Container, INBTSerializable<CompoundTag> 
 
     // 需要晚于Curios Api
     public void initialize(ServerPlayer player) {
-        if (!initialized) {
-            Optional<ICuriosItemHandler> inventory = CuriosApi.getCuriosInventory(player);
-            updateAccessorySize(player, inventory.map(handler -> {
-                ICurioStacksHandler accessory = handler.getCurios().get(TerraCurio.CURIO_SLOT);
-                return accessory == null ? 0 : accessory.getSlots();
-            }).orElse(0));
-            inventory.ifPresent(handler -> {
-                BiConsumer<Integer, ICurioStacksHandler> function = (i, t) -> equipment.set(i, new CurioStackWithDye(0, t, equipment.get(i)));
-                handler.getStacksHandler(CuriosHelper.PET_KEY).ifPresent(t -> function.accept(PET_INDEX, t));
-                handler.getStacksHandler(CuriosHelper.LIGHT_PET_KEY).ifPresent(t -> function.accept(LIGHT_PET_INDEX, t));
-                handler.getStacksHandler(CuriosHelper.MOUNT_KEY).ifPresent(t -> function.accept(MOUNT_INDEX, t));
-            });
-            this.initialized = true;
-        }
+        if (initialized) return;
+        Optional<ICuriosItemHandler> inventory = CuriosApi.getCuriosInventory(player);
+        updateAccessorySize(player, inventory.map(handler -> {
+            ICurioStacksHandler accessory = handler.getCurios().get(TerraCurio.CURIO_SLOT);
+            return accessory == null ? 0 : accessory.getSlots();
+        }).orElse(0));
+        inventory.ifPresent(handler -> {
+            BiConsumer<Integer, ICurioStacksHandler> function = (i, t) -> equipment.set(i, new CurioStackWithDye(0, t, equipment.get(i)));
+            handler.getStacksHandler(CuriosHelper.PET_KEY).ifPresent(t -> function.accept(PET_INDEX, t));
+            handler.getStacksHandler(CuriosHelper.LIGHT_PET_KEY).ifPresent(t -> function.accept(LIGHT_PET_INDEX, t));
+            handler.getStacksHandler(CuriosHelper.MOUNT_KEY).ifPresent(t -> function.accept(MOUNT_INDEX, t));
+        });
+        this.initialized = true;
     }
 
     public void updateAccessorySize(Player player, int accessoryDye) {
@@ -314,11 +312,15 @@ public class ExtraInventory implements Container, INBTSerializable<CompoundTag> 
         if (nbt.getBoolean("confluence:fixed")) {
             RegistryOps<Tag> ops = provider.createSerializationContext(NbtOps.INSTANCE);
             ListTag t = nbt.getList("VanityArmor", Tag.TAG_COMPOUND);
-            for (int i = 0; i < vanityArmor.size(); i++) vanityArmor.set(i, StackWithDye.DEFAULT.decode(t.getCompound(i), ops));
+            for (int i = 0; i < vanityArmor.size(); i++) {
+                vanityArmor.set(i, StackWithDye.DEFAULT.decode(t.getCompound(i), ops));
+            }
             decodeList(coin, nbt.getList("Coin", Tag.TAG_COMPOUND), ops);
             decodeList(ammo, nbt.getList("Ammo", Tag.TAG_COMPOUND), ops);
             t = nbt.getList("Equipment", Tag.TAG_COMPOUND);
-            for (int i = 0; i < equipment.size(); i++) equipment.set(i, StackWithDye.DEFAULT.decode(t.getCompound(i), ops));
+            for (int i = 0; i < equipment.size(); i++) {
+                equipment.set(i, StackWithDye.DEFAULT.decode(t.getCompound(i), ops));
+            }
             this.trash = decode(nbt.getCompound("Trash"), ops);
             t = nbt.getList("AccessoryDye", Tag.TAG_COMPOUND);
             encodeList(this.accessoryDye = NonNullList.withSize(t.size(), ItemStack.EMPTY), ops);
@@ -329,24 +331,23 @@ public class ExtraInventory implements Container, INBTSerializable<CompoundTag> 
             for (int i = 0; i < tagList.size(); i++) {
                 CompoundTag itemTags = tagList.getCompound(i);
                 int slot = itemTags.getInt("Slot");
-                if (slot >= 0 && slot < size) {
-                    ItemStack.parse(provider, itemTags).ifPresent(stack -> {
-                        if (slot < 4) setVanityArmor(slot, stack, false);
-                        else if (slot < 8) setCoins(slot - 4, stack);
-                        else if (slot < 12) setAmmo(slot - 8, stack);
-                        else if (slot == 12) setEquipment(PET_INDEX, stack, false);
-                        else if (slot == 13) setEquipment(LIGHT_PET_INDEX, stack, false);
-                        else if (slot == 14) setEquipment(MINECART_INDEX, stack, false);
-                        else if (slot == 15) setEquipment(HOOK_INDEX, stack, false);
-                        else if (slot == 16) setTrash(stack);
-                        else if (slot < 21) setVanityArmor(slot - 17, stack, true);
-                        else if (slot == 21) setEquipment(PET_INDEX, stack, true);
-                        else if (slot == 22) setEquipment(LIGHT_PET_INDEX, stack, true);
-                        else if (slot == 23) setEquipment(MINECART_INDEX, stack, true);
-                        else if (slot == 24) setEquipment(HOOK_INDEX, stack, true);
-                        else if (slot < 25 + accessoryDye.size()) setAccessoryDye(slot - 25, stack);
-                    });
-                }
+                if (slot < 0 || slot >= size) continue;
+                ItemStack.parse(provider, itemTags).ifPresent(stack -> {
+                    if (slot < 4) setVanityArmor(slot, stack, false);
+                    else if (slot < 8) setCoins(slot - 4, stack);
+                    else if (slot < 12) setAmmo(slot - 8, stack);
+                    else if (slot == 12) setEquipment(PET_INDEX, stack, false);
+                    else if (slot == 13) setEquipment(LIGHT_PET_INDEX, stack, false);
+                    else if (slot == 14) setEquipment(MINECART_INDEX, stack, false);
+                    else if (slot == 15) setEquipment(HOOK_INDEX, stack, false);
+                    else if (slot == 16) setTrash(stack);
+                    else if (slot < 21) setVanityArmor(slot - 17, stack, true);
+                    else if (slot == 21) setEquipment(PET_INDEX, stack, true);
+                    else if (slot == 22) setEquipment(LIGHT_PET_INDEX, stack, true);
+                    else if (slot == 23) setEquipment(MINECART_INDEX, stack, true);
+                    else if (slot == 24) setEquipment(HOOK_INDEX, stack, true);
+                    else if (slot < 25 + accessoryDye.size()) setAccessoryDye(slot - 25, stack);
+                });
             }
         }
     }
@@ -486,10 +487,9 @@ public class ExtraInventory implements Container, INBTSerializable<CompoundTag> 
             ExtraInventory extraInventory = of(player);
             for (int i = 0; i < SIZE_AMMO; i++) {
                 ItemStack ammo = extraInventory.getAmmo(i);
-                if (predicate.test(ammo)) {
-                    extraInventory.setChanged();
-                    return ammo;
-                }
+                if (!predicate.test(ammo)) continue;
+                extraInventory.setChanged();
+                return ammo;
             }
         }
         return projectile;

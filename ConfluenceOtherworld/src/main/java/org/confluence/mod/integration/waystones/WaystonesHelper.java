@@ -170,11 +170,8 @@ public class WaystonesHelper {
         });
     }
 
-    public static boolean teleport(Object o) {
-        if (o instanceof PylonWaypointElement element) {
-            PacketDistributor.sendToServer(new PlayerToPylonPacketC2S(element.getWaystone().getWaystoneUid()));
-            return true;
-        }
-        return false;
+    public static void teleport(Object o) {
+        PylonWaypointElement element = (PylonWaypointElement) o;
+        PacketDistributor.sendToServer(new PlayerToPylonPacketC2S(element.getWaystone().getWaystoneUid()));
     }
 }

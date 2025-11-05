@@ -30,7 +30,9 @@ public final class EntityEvents {
     @SubscribeEvent
     public static void mount(EntityMountEvent event) {
         Entity beingMounted = event.getEntityBeingMounted();
-        if (beingMounted.isRemoved() || !(event.getEntityMounting() instanceof ServerPlayer player)) return;
+        if (beingMounted.isRemoved() || !(event.getEntityMounting() instanceof ServerPlayer player)) {
+            return;
+        }
         if (beingMounted instanceof LivingEntity) {
             AchievementUtils.awardAchievement(player, "the_cavalry");
         }
@@ -57,7 +59,9 @@ public final class EntityEvents {
         if (ILivingEntity.of(living).confluence$getExtraInvulnerableTicks() > 0) return;
 
         DamageSource damageSource = event.getSource();
-        if (damageSource.is(DamageTypes.FELL_OUT_OF_WORLD) || damageSource.is(DamageTypes.GENERIC_KILL)) return;
+        if (damageSource.is(DamageTypes.FELL_OUT_OF_WORLD) || damageSource.is(DamageTypes.GENERIC_KILL)) {
+            return;
+        }
 
         if (damageSource.is(ModDamageTypes.BOULDER) && living.getType().is(Tags.EntityTypes.BOSSES)) {
             event.setInvulnerable(true); // boss 免疫巨石

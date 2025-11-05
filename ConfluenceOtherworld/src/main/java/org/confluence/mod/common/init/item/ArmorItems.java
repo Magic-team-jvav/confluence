@@ -359,7 +359,6 @@ public class ArmorItems {
             .geo("armor/heim_armor")
             .rarity(ModRarity.BLUE)
             .attribute(NeoForgeMod.SWIM_SPEED, 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-            .tooltips(1)
     );
     public static final DeferredItem<BaseArmorItem> BEE_HELMET = register("bee_helmet", ModArmorMaterials.BEE_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/bee_armor")

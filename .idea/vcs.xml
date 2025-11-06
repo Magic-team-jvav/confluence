@@ -5,11 +5,9 @@
     <mapping directory="$PROJECT_DIR$/Confluence-Magic-Lib" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/EnemyBanner" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/EntityTrackerHUD" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/EquipmentBenediction" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/HeavenDestinyMoment" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/IsekaiInvaded" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/MineTeam" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/PhaseJourney" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/TerraCurio" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/TerraEntity" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/TerraFurniture" vcs="Git" />

@@ -1227,9 +1227,7 @@ public class ModDataProvider {
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.NYMPH.get(), 4, 1, 1),
                             new MobSpawnSettings.SpawnerData(TEAnimals.FAIRY.get(), 3, 1, 1),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.HARPY.get(), 60, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.WYVERN.get(), 5, 1, 1),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.POSSESS_ARMOR.get(), 65, 1, 2),
-                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.WRAITH.get(), 65, 1, 2)
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.WYVERN.get(), 5, 1, 1)
                     )
             ));
             register(context, createModifierKey("common_swamp"), new BiomeModifiers.AddSpawnsBiomeModifier(
@@ -1264,6 +1262,8 @@ public class ModDataProvider {
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.RED_SLIME.get(), 45, 1, 2),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.YELLOW_SLIME.get(), 45, 1, 2),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.DEMON_EYE.get(), 65, 1, 2),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.POSSESS_ARMOR.get(), 65, 1, 2),
+                            new MobSpawnSettings.SpawnerData(TEMonsterEntities.WRAITH.get(), 65, 1, 2),
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.FLYING_FISH.get(), 60, 1, 2),
                             new MobSpawnSettings.SpawnerData(TEAnimals.BUNNY.get(), 10, 1, 2),
                             new MobSpawnSettings.SpawnerData(TEAnimals.SQUIRREL.get(), 10, 1, 2),

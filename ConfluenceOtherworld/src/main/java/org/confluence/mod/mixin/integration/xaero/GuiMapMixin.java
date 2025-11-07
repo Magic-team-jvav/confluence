@@ -31,8 +31,7 @@ public abstract class GuiMapMixin implements IGuiMap, SelfGetter<GuiMap> {
         if (viewed == null) return;
         if (CompatibilityHandler.isXaerosMapWormholePotion() && XaeroHelper.teleport(viewed.getElement())) {
             confluence$self().onClose();
-        } else if (CompatibilityHandler.isXaerosMapPylonWaypoint()) {
-            WaystonesHelper.teleport(viewed.getElement());
+        } else if (CompatibilityHandler.isXaerosMapPylonWaypoint() && WaystonesHelper.teleport(viewed.getElement())) {
             confluence$self().onClose();
         }
     }

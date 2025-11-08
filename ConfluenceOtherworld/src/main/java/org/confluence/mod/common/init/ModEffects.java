@@ -3,7 +3,6 @@ package org.confluence.mod.common.init;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.neoforged.neoforge.common.EffectCure;
@@ -37,7 +36,7 @@ public final class ModEffects {
     public static final DeferredHolder<MobEffect, MobEffect> LIFE_FORCE = EFFECTS.register("life_force", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFFC0CB)
             .addAttributeModifier(Attributes.MAX_HEALTH, Confluence.asResource("life_force"), 0.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
     public static final DeferredHolder<MobEffect, MobEffect> RAGE = EFFECTS.register("rage", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFF4500)
-            .addAttributeModifier(TCAttributes.getCriticalChance(), Confluence.asResource("rage"), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            .addAttributeModifier(TCAttributes.getCriticalChance(), Confluence.asResource("rage"), 0.1, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredHolder<MobEffect, MobEffect> WRATH = EFFECTS.register("wrath", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFF8C00)
             .addAttributeModifier(Attributes.ATTACK_DAMAGE, Confluence.asResource("wrath"), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
             .addAttributeModifier(TCAttributes.getRangedDamage(), Confluence.asResource("wrath"), 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)

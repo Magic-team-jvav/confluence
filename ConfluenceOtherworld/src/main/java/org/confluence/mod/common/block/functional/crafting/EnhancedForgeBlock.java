@@ -77,7 +77,7 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
     @Override
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean moveByPiston) {
         if (state.is(newState.getBlock())) return;
-        if (level.getBlockEntity(pos) instanceof EnhancedForgeBlock.BEntity<?> entity && state.getValue(PART).isBase()) {
+        if (state.getValue(PART).isBase() && level.getBlockEntity(pos) instanceof EnhancedForgeBlock.BEntity<?> entity) {
             if (level instanceof ServerLevel serverLevel) {
                 Containers.dropContents(level, pos, entity);
                 entity.getRecipesToAwardAndPopExperience(serverLevel, Vec3.atCenterOf(pos));

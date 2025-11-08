@@ -17,6 +17,7 @@
         "RecipeManagerMixin",
         "RegistryDataLoaderMixin",
         "ServerAdvancementManagerMixin",
+        "ServerGamePacketListenerImplMixin",
         "ServerPlayerAccessor",
         "ServerPlayerGameModeMixin",
         "StructureStartMixin",

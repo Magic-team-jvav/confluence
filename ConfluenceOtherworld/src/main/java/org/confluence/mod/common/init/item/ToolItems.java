@@ -4,10 +4,12 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -16,14 +18,18 @@ import org.confluence.lib.common.component.ModRarity;
 import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
+import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModFluids;
 import org.confluence.mod.common.init.ModTags;
+import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.item.common.*;
+import org.confluence.mod.common.item.food.ModFoodPropertiesBuilder;
 import org.confluence.terra_curio.common.item.MagicMirror;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
+import java.util.function.Supplier;
 
 @ParametersAreNonnullByDefault
 public class ToolItems {
@@ -96,4 +102,30 @@ public class ToolItems {
     public static final DeferredItem<MagicDropperItem> MAGIC_HONEY_DROPPER = ITEMS.register("magic_honey_dropper", () -> new MagicDropperItem(ParticleTypes.DRIPPING_HONEY));
     public static final DeferredItem<MagicDropperItem> MAGIC_LAVA_DROPPER = ITEMS.register("magic_lava_dropper", () -> new MagicDropperItem(ParticleTypes.DRIPPING_LAVA));
     public static final DeferredItem<MagicDropperItem> MAGIC_WATER_DROPPER = ITEMS.register("magic_water_dropper", () -> new MagicDropperItem(ParticleTypes.DRIPPING_WATER));
+
+    // 有效果的蜡烛
+    public static final DeferredItem<EffectiveCandleItem> WATER_CANDLE = registerCandle(
+            "water_candle",
+            FunctionalBlocks.WATER_CANDLE,
+            ModFoodPropertiesBuilder.EffectData.of(ModEffects.WATER_CANDLE, 0));
+    public static final DeferredItem<EffectiveCandleItem> PEACE_CANDLE = registerCandle(
+            "peace_candle",
+            FunctionalBlocks.PEACE_CANDLE,
+            ModFoodPropertiesBuilder.EffectData.of(ModEffects.PEACE_CANDLE, 0));
+
+    public static  <B extends Block> DeferredItem<EffectiveCandleItem> registerCandle(String name, Supplier<B> block, ModFoodPropertiesBuilder.EffectData... effect) {
+        return registerCandle(name, block, new Item.Properties(), effect);
+    }
+
+    public static  <B extends Block> DeferredItem<EffectiveCandleItem> registerCandle(String name, Supplier<B> block, EffectiveCandleItem.HandheldEffect effect) {
+        return registerCandle(name, block, new Item.Properties(), effect);
+    }
+
+    public static  <B extends Block> DeferredItem<EffectiveCandleItem> registerCandle(String name, Supplier<B> block, Item.Properties properties, ModFoodPropertiesBuilder.EffectData... effect){
+        return ITEMS.register(name, () -> new EffectiveCandleItem(block.get(), properties, effect));
+    }
+
+    public static  <B extends Block> DeferredItem<EffectiveCandleItem> registerCandle(String name, Supplier<B> block, Item.Properties properties, EffectiveCandleItem.HandheldEffect effect) {
+        return ITEMS.register(name, () -> new EffectiveCandleItem(block.get(), properties, effect));
+    }
 }

@@ -4,6 +4,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameRules;
@@ -23,6 +24,7 @@ import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.block.functional.network.PathService;
 import org.confluence.mod.common.data.saved.*;
 import org.confluence.mod.common.entity.FallingStarItemEntity;
+import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.item.fishing.AbstractFishingPole;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
@@ -30,6 +32,7 @@ import org.confluence.mod.common.worldgen.structure.DungeonStructure;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.util.AchievementUtils;
+import org.confluence.mod.util.DynamicBiomeUtils;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terraentity.entity.boss.EyeOfCthulhu;
@@ -80,6 +83,7 @@ public final class TickEvents {
     @SubscribeEvent
     public static void playerTick$Post(PlayerTickEvent.Post event) {
         Player entity = event.getEntity();
+        long gameTime = entity.level().getGameTime();
         if (entity instanceof ServerPlayer player) {
             ServerLevel level = player.serverLevel();
             IServerPlayer.of(player).confluence$setCouldPickupItem(true);
@@ -92,9 +96,14 @@ public final class TickEvents {
             DungeonStructure.checkSkeletronDefeated(player, level);
             ChunkDropletsData.syncDroplets(player);
             ModArmorBonus.afterTick(player);
+            if (gameTime % 200 == 0) {
+                if (DynamicBiomeUtils.getISection(player.level(), player.blockPosition()).confluence$getBlockCounts().sunflower.get() > 0) {
+                    player.addEffect(new MobEffectInstance(ModEffects.TIPSY, 200));
+                }
+            }
         }
 
-        if (entity.level().getGameTime() % 60 == 3) {
+        if (gameTime % 60 == 3) {
             AbstractFishingPole.resetCurrentBait(entity);
             PlayerSpecialData.resetSomeData(entity);
         }

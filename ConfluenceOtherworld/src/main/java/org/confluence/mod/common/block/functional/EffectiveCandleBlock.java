@@ -25,6 +25,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.item.food.ModFoodPropertiesBuilder;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
@@ -84,13 +85,15 @@ public class EffectiveCandleBlock extends AbstractMechanicalBlock {
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return this.defaultBlockState().setValue(FACING,
-                context.getNearestLookingDirection().getOpposite());
+        return this.defaultBlockState()
+                .setValue(FACING,
+                context.getNearestLookingDirection().getOpposite())
+                .setValue(BLOOM, true);
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(FACING);
+        builder.add(FACING, BLOOM);
     }
 
     @Override

@@ -104,14 +104,8 @@ public class ToolItems {
     public static final DeferredItem<MagicDropperItem> MAGIC_WATER_DROPPER = ITEMS.register("magic_water_dropper", () -> new MagicDropperItem(ParticleTypes.DRIPPING_WATER));
 
     // 有效果的蜡烛
-    public static final DeferredItem<EffectiveCandleItem> WATER_CANDLE = registerCandle(
-            "water_candle",
-            FunctionalBlocks.WATER_CANDLE,
-            ModFoodPropertiesBuilder.EffectData.of(ModEffects.WATER_CANDLE, 0));
-    public static final DeferredItem<EffectiveCandleItem> PEACE_CANDLE = registerCandle(
-            "peace_candle",
-            FunctionalBlocks.PEACE_CANDLE,
-            ModFoodPropertiesBuilder.EffectData.of(ModEffects.PEACE_CANDLE, 0));
+    public static final DeferredItem<EffectiveCandleItem> WATER_CANDLE = registerCandle("water_candle", FunctionalBlocks.WATER_CANDLE, ModFoodPropertiesBuilder.EffectData.of(ModEffects.WATER_CANDLE, 0));
+    public static final DeferredItem<EffectiveCandleItem> PEACE_CANDLE = registerCandle("peace_candle", FunctionalBlocks.PEACE_CANDLE, ModFoodPropertiesBuilder.EffectData.of(ModEffects.PEACE_CANDLE, 0));
 
     public static  <B extends Block> DeferredItem<EffectiveCandleItem> registerCandle(String name, Supplier<B> block, ModFoodPropertiesBuilder.EffectData... effect) {
         return registerCandle(name, block, new Item.Properties(), effect);

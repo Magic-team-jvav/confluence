@@ -77,6 +77,7 @@ import org.confluence.terraentity.init.TETags;
 import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
 import org.confluence.terraentity.init.entity.TENpcEntities;
+import org.confluence.terraentity.init.item.TEYoyosItems;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
@@ -328,8 +329,9 @@ public final class LivingEntityEvents {
             entity.setNoPickUpDelay();
             drops.add(entity);
         }
+        boolean isEnemy = living instanceof Enemy;
         if (KillBoard.INSTANCE.getGamePhase().isHardmode() &&
-                living instanceof Enemy &&
+                isEnemy &&
                 (!(living instanceof IMinion minion) || minion.minion_getOwnerUUID() == null) &&
                 !living.getType().is(ModTags.EntityTypes.DO_NOT_DROPS_EVIL_SOUL) &&
                 (y < OverworldUtils.getUndergroundY() || ModSecretSeeds.DONT_DIG_UP.match(level) || ModSecretSeeds.GET_FIXED_BOI.match(level)) &&
@@ -345,6 +347,9 @@ public final class LivingEntityEvents {
             if (soul != ItemStack.EMPTY) {
                 drops.add(new ItemEntity(level, x, y, z, soul, 0, 0.02, 0));
             }
+        }
+        if (isEnemy && level.dimension() == OverworldUtils.underworld() && living.getRandom().nextInt(400) == 0) { // 掉落喷流球
+            drops.add(new ItemEntity(level, x, y, z, TEYoyosItems.CASCADE.toStack()));
         }
 
         for (ItemEntity entity : drops) {

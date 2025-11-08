@@ -34,11 +34,13 @@ import org.confluence.mod.common.block.functional.crafting.LoomBlock;
 import org.confluence.mod.common.block.functional.network.INetworkBlock;
 import org.confluence.mod.common.block.natural.MagicMailBox;
 import org.confluence.mod.common.block.natural.TreeHolesBlock;
-import org.confluence.mod.common.entity.projectile.boulder.*;
+import org.confluence.mod.common.entity.projectile.boulder.AbstractBoulderEntity;
+import org.confluence.mod.common.entity.projectile.boulder.BoulderEntity;
+import org.confluence.mod.common.entity.projectile.boulder.ExplodeBoulderEntity;
+import org.confluence.mod.common.entity.projectile.boulder.FollowerBoulderEntity;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.init.item.ModItems;
-import org.confluence.mod.common.item.common.EffectiveCandleItem;
 import org.confluence.mod.common.item.food.ModFoodPropertiesBuilder;
 
 import java.util.ArrayList;
@@ -178,8 +180,8 @@ public class FunctionalBlocks {
     public static final Supplier<BlockEntityType<LockBlock.BEntity>> LOCK_BLOCK_ENTITY = BLOCK_ENTITIES.register("lock_block_entity", () -> BlockEntityType.Builder.of(LockBlock.BEntity::new, LOCK_BLOCK.get()).build(DSL.remainderType()));
 
     // 有效果的蜡烛
-    public static final DeferredBlock<EffectiveCandleBlock> WATER_CANDLE = registerCandle("water_candle", 50, ModFoodPropertiesBuilder.EffectData.of(ModEffects.WATER_CANDLE, 1));
-    public static final DeferredBlock<EffectiveCandleBlock> PEACE_CANDLE = registerCandle("peace_candle", 50, ModFoodPropertiesBuilder.EffectData.of(ModEffects.PEACE_CANDLE, 1));
+    public static final DeferredBlock<EffectiveCandleBlock> WATER_CANDLE = registerCandle("water_candle", 50, ModFoodPropertiesBuilder.EffectData.of(ModEffects.WATER_CANDLE, 0));
+    public static final DeferredBlock<EffectiveCandleBlock> PEACE_CANDLE = registerCandle("peace_candle", 50, ModFoodPropertiesBuilder.EffectData.of(ModEffects.PEACE_CANDLE, 0));
 
     private static <B extends Block> DeferredBlock<B> registerWithItem(String id, Supplier<B> supplier) {
         DeferredBlock<B> block = BLOCKS.register(id, supplier);
@@ -203,7 +205,7 @@ public class FunctionalBlocks {
             String id,
             float scope,
             ModFoodPropertiesBuilder.EffectData... effectData) {
-        return registerWithEntity(id, () -> new EffectiveCandleBlock(BlockBehaviour.Properties.of(), scope, effectData));
+        return registerCandle(id, BlockBehaviour.Properties.of(), scope, effectData);
     }
 
     static DeferredBlock<EffectiveCandleBlock> registerCandle(
@@ -211,7 +213,9 @@ public class FunctionalBlocks {
             BlockBehaviour.Properties properties,
             float scope,
             ModFoodPropertiesBuilder.EffectData... effectData) {
-        return registerWithEntity(id, () -> new EffectiveCandleBlock(properties, scope, effectData));
+        var holder = BLOCKS.register(id, () -> new EffectiveCandleBlock(properties, scope, effectData));
+        MECHANICAL_BLOCKS.add(holder);
+        return holder;
     }
 
     static DeferredBlock<EffectiveCandleBlock> registerCandle(
@@ -219,12 +223,14 @@ public class FunctionalBlocks {
             BlockBehaviour.Properties properties,
             float scope,
             EffectiveCandleBlock.TickEffect tickEffects) {
-        return registerWithEntity(id, () -> new EffectiveCandleBlock(properties, scope, tickEffects));
+        var holder = BLOCKS.register(id, () -> new EffectiveCandleBlock(properties, scope, tickEffects));
+        MECHANICAL_BLOCKS.add(holder);
+        return holder;
     }
 
     static <B extends AbstractBoulderBlock<?>> DeferredBlock<B> registerBoulder(
-				String id,
-				Supplier<B> block) {
+            String id,
+            Supplier<B> block) {
         return registerWithEntity(id, block);
     }
 
@@ -232,47 +238,47 @@ public class FunctionalBlocks {
             String id,
             Function<BoulderEntity.Builder, B> block,
             BoulderEntity.Builder builder) {
-        return registerWithEntity(id, ()-> block.apply(builder));
+        return registerWithEntity(id, () -> block.apply(builder));
     }
 
     static <B extends AbstractBoulderBlock<? extends E>, E extends AbstractBoulderEntity> DeferredBlock<B> registerBoulder(
-				String id,
-				Function<AbstractBoulderBlock.BoulderEntityFactory<E>, B> block,
-				AbstractBoulderBlock.BoulderEntityFactory<E> entity) {
+            String id,
+            Function<AbstractBoulderBlock.BoulderEntityFactory<E>, B> block,
+            AbstractBoulderBlock.BoulderEntityFactory<E> entity) {
         return registerWithEntity(id, () -> block.apply(entity));
     }
 
     static <B extends AbstractBoulderBlock<? extends E>, E extends AbstractBoulderEntity> DeferredBlock<B> registerBoulder(
-		    String id,
-		    BiFunction<AbstractBoulderBlock.BoulderEntityFactory<E>, BoulderEntity.Builder, B> block,
-		    AbstractBoulderBlock.BoulderEntityFactory<E> entity,
-		    BoulderEntity.Builder builder) {
-		    return registerWithEntity(id, () -> block.apply(entity, builder));
+            String id,
+            BiFunction<AbstractBoulderBlock.BoulderEntityFactory<E>, BoulderEntity.Builder, B> block,
+            AbstractBoulderBlock.BoulderEntityFactory<E> entity,
+            BoulderEntity.Builder builder) {
+        return registerWithEntity(id, () -> block.apply(entity, builder));
     }
 
-		static <B extends AbstractBoulderBlock<? extends E>, E extends AbstractBoulderEntity> DeferredBlock<B> registerBoulder(
-		    String id,
-		    Function3<BlockBehaviour.Properties, AbstractBoulderBlock.BoulderEntityFactory<E>, BoulderEntity.Builder, B> block,
-		    AbstractBoulderBlock.BoulderEntityFactory<E> entity,
-		    BlockBehaviour.Properties properties,
-		    BoulderEntity.Builder builder) {
-		    return registerWithEntity(id, () -> block.apply(properties, entity, builder));
+    static <B extends AbstractBoulderBlock<? extends E>, E extends AbstractBoulderEntity> DeferredBlock<B> registerBoulder(
+            String id,
+            Function3<BlockBehaviour.Properties, AbstractBoulderBlock.BoulderEntityFactory<E>, BoulderEntity.Builder, B> block,
+            AbstractBoulderBlock.BoulderEntityFactory<E> entity,
+            BlockBehaviour.Properties properties,
+            BoulderEntity.Builder builder) {
+        return registerWithEntity(id, () -> block.apply(properties, entity, builder));
     }
 
-		static <B extends AbstractBoulderBlock<? extends E>, E extends AbstractBoulderEntity> DeferredBlock<B> baseRegisterBoulder(
-				String id,
-				Function<AbstractBoulderBlock.BoulderEntityFactory<E>, B> block,
-				Function3<Level, Vec3, BlockState, E> entity) {
-			return registerWithEntity(id, () -> block.apply(
-					(level, position, blockState, builder) -> entity.apply(level, position, blockState)
-			));
-		}
+    static <B extends AbstractBoulderBlock<? extends E>, E extends AbstractBoulderEntity> DeferredBlock<B> baseRegisterBoulder(
+            String id,
+            Function<AbstractBoulderBlock.BoulderEntityFactory<E>, B> block,
+            Function3<Level, Vec3, BlockState, E> entity) {
+        return registerWithEntity(id, () -> block.apply(
+                (level, position, blockState, builder) -> entity.apply(level, position, blockState)
+        ));
+    }
 
-		static <B extends AbstractBoulderBlock<? extends E>, E extends AbstractBoulderEntity> DeferredBlock<B> baseRegisterBoulder(
-		    String id,
-		    BiFunction<BlockBehaviour.Properties, AbstractBoulderBlock.BoulderEntityFactory<E>, B> block,
-		    Function3<Level, Vec3, BlockState, E> entity,
-		    BlockBehaviour.Properties properties) {
-		    return registerWithEntity(id, () -> block.apply(properties, (level, position, blockState, builder1) -> entity.apply(level, position, blockState)));
+    static <B extends AbstractBoulderBlock<? extends E>, E extends AbstractBoulderEntity> DeferredBlock<B> baseRegisterBoulder(
+            String id,
+            BiFunction<BlockBehaviour.Properties, AbstractBoulderBlock.BoulderEntityFactory<E>, B> block,
+            Function3<Level, Vec3, BlockState, E> entity,
+            BlockBehaviour.Properties properties) {
+        return registerWithEntity(id, () -> block.apply(properties, (level, position, blockState, builder1) -> entity.apply(level, position, blockState)));
     }
 }

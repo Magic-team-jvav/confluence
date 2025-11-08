@@ -25,7 +25,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.item.food.ModFoodPropertiesBuilder;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
@@ -37,7 +36,7 @@ public class EffectiveCandleBlock extends AbstractMechanicalBlock {
 
     public EffectiveCandleBlock(Properties properties, float scope, ModFoodPropertiesBuilder.EffectData... effectData) {
         this(properties, scope, (level, entity, stack) -> Arrays.stream(effectData)
-                .map(e -> new MobEffectInstance(e.effect(), 200, e.level()))
+                .map(e -> new MobEffectInstance(e.effect(), 210, e.level()))
                 .forEach(entity::addEffect));
     }
 
@@ -52,11 +51,18 @@ public class EffectiveCandleBlock extends AbstractMechanicalBlock {
 
     @Override
     protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        level.scheduleTick(pos, this, 1);
         if (level.getGameTime() % 200 != 0 || !state.getValue(BLOOM)) {
             return;
         }
         level.getPlayers(player -> player.isAlive() && new AABB(pos).inflate(this.scope).contains(player.position()))
                 .forEach(player -> this.tickEffect.handheld(level, player, state));
+    }
+
+    @Override
+    public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
+        super.onPlace(state, level, pos, oldState, isMoving);
+        level.scheduleTick(pos, this, 1);
     }
 
     @Override
@@ -67,13 +73,13 @@ public class EffectiveCandleBlock extends AbstractMechanicalBlock {
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
         switchStatus(level, state, pos);
-        return super.useWithoutItem(state, level, pos, player, hitResult);
+        return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         switchStatus(level, state, pos);
-        return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
+        return ItemInteractionResult.sidedSuccess(level.isClientSide);
     }
 
     public void switchStatus(final Level level, final BlockState state, final BlockPos pos) {
@@ -85,10 +91,7 @@ public class EffectiveCandleBlock extends AbstractMechanicalBlock {
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return this.defaultBlockState()
-                .setValue(FACING,
-                context.getNearestLookingDirection().getOpposite())
-                .setValue(BLOOM, true);
+        return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
     }
 
     @Override

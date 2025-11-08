@@ -1232,6 +1232,9 @@ public final class ValueSubProvider {
                 .add(PotionItems.WORMHOLE_POTION, silver2)
                 .add(PotionItems.LESSER_LUCK_POTION, gold1)
                 .add(PotionItems.LUCK_POTION, gold5)
+                .add(PotionItems.SHIMMER_POTION, silver2)
+                .add(PotionItems.BATTLE_POTION, silver2)
+                .add(PotionItems.LUCK_POTION, gold5)
                 .add(PotionItems.GREATER_LUCK_POTION, gold20 + gold5
                 );
         builder

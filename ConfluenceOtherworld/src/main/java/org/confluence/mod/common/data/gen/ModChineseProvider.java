@@ -2485,6 +2485,8 @@ public class ModChineseProvider extends LanguageProvider {
         // 熔岩
         add("armor_set_bonus.confluence.molten_set.0", "近战伤害提高10%");
         add("armor_set_bonus.confluence.molten_set.1", "免疫着火");
+        // 钻石
+        add("armor_set_bonus.confluence.diamond_set.0", "赋予时运II");
         // 下界合金
         add("armor_set_bonus.confluence.netherite_set.0", "免疫着火和熔岩");
         add("armor_set_bonus.confluence.netherite_set.1", "移动速度提高5%");
@@ -5018,8 +5020,8 @@ public class ModChineseProvider extends LanguageProvider {
         addPotion(PotionItems.FLASK_OF_FIRE.get(), "烈火药剂", "近战攻击和鞭子攻击会使敌人着火");
         addPotion(PotionItems.FLASK_OF_GOLD.get(), "金药剂", "近战攻击和鞭子攻击会使敌人掉落更多金子");
         addPotion(PotionItems.EGGNOG.get(), "蛋酒", "恢复16生命");
-        addPotion(PotionItems.COMBAT_POTION.get(), "战斗药水", "提高敌人生成速度");
-        addPotion(PotionItems.SEDATIVE_POTION.get(), "镇静药水", "降低敌人生成速度");
+        addPotion(PotionItems.BATTLE_POTION.get(), "战斗药水", "提高敌人生成速度");
+        addPotion(PotionItems.CALMING_POTION.get(), "镇静药水", "降低敌人生成速度");
 
         // 药水效果
         addEffect(ModEffects.MANA_SICKNESS.get(), "耐魔性", "魔法伤害降低");
@@ -5081,10 +5083,10 @@ public class ModChineseProvider extends LanguageProvider {
         addEffect(ModEffects.FROSTBITE.get(), "冻伤", "持续损失生命值");
         addEffect(ModEffects.SHADOWFLAME.get(), "暗影焰", "持续损失生命值");
         addEffect(ModEffects.WATER_CANDLE.get(), "水蜡烛", "提高怪物生成速度");
-        addEffect(ModEffects.PEACE_CANDLE.get(), "和平蜡烛", "敌怪生成速度降低 23%，屏幕上允许的最大敌怪降低 30%");
-        addEffect(ModEffects.CALM.get(), "战斗", "提高敌怪和小动物的生成速度和屏幕上敌怪的最大数量");
-        addEffect(ModEffects.BATTLE.get(), "冷静", "敌怪生成速度降低 17%");
-        addEffect(ModEffects.HAPPY.get(), "快乐", "移动速度提高 10%，敌怪生成降低 17%");
+        addEffect(ModEffects.PEACE_CANDLE.get(), "和平蜡烛", "怪物生成速度降低");
+        addEffect(ModEffects.BATTLE.get(), "战斗", "提高怪物生成速度");
+        addEffect(ModEffects.CALM.get(), "冷静", "敌人生成速度降低");
+        addEffect(ModEffects.HAPPY.get(), "快乐", "移动速度提高，怪物生成减少");
 
         addEffect(TCEffects.CEREBRAL_MINDTRICK.get(), "控脑术", "提高暴击率");
         addEffect(TCEffects.HONEY.get(), "蜂蜜", "生命再生速度提高");

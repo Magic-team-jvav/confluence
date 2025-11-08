@@ -413,6 +413,9 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         alchemyTable(recipeOutput, PotionItems.WRATH_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(FoodItems.EBONY_KOI), Ingredient.of(MaterialItems.DEATHWEED));
         alchemyTable(recipeOutput, PotionItems.AMMO_RESERVATION_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(FoodItems.PISCES_FIN_COD), Ingredient.of(MaterialItems.MOONGLOW));
         alchemyTable(recipeOutput, PotionItems.SUMMONING_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(FoodItems.MOTTLED_OILFISH), Ingredient.of(MaterialItems.MOONGLOW));
+        // 嬗金可获取时启用 alchemyTable(recipeOutput, PotionItems.SHIMMER_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.AETHERIUM_GOLD), Ingredient.of(NatureBlocks.AETHERIUM_BLOCK));
+        alchemyTable(recipeOutput, PotionItems.BATTLE_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.DEATHWEED), Ingredient.of(ModTags.Items.EVIL_MATERIAL));
+        alchemyTable(recipeOutput, PotionItems.CALMING_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(FoodItems.DAMSEL_FISH), Ingredient.of(MaterialItems.DAYBLOOM));
 
         Ingredient emptyDropper = Ingredient.of(ToolItems.EMPTY_DROPPER);
         crystalBlock(recipeOutput, TGItems.ENDLESS_MUSKET_POUCH.toStack(), AmountIngredient.of(3996, TGItems.MUSKET_BULLET));

@@ -2449,6 +2449,8 @@ public class ModEnglishProvider extends LanguageProvider {
         // Molten Set
         add("armor_set_bonus.confluence.molten_set.0", "10% extra melee damage");
         add("armor_set_bonus.confluence.molten_set.1", "Cannot be set on fire");
+        // Diamond Set
+        add("armor_set_bonus.confluence.diamond_set.0", "Grant Fortune II");
         // Netherite Set
         add("armor_set_bonus.confluence.netherite_set.0", "Cannot be set on fire and immune to lava");
         add("armor_set_bonus.confluence.netherite_set.1", "5% increased movement speed");
@@ -2658,6 +2660,11 @@ public class ModEnglishProvider extends LanguageProvider {
         addEffect(ModEffects.WEAPON_IMBUE_GOLD.get(), "Melee attacks make enemies drop more gold");
         addEffect(ModEffects.FROSTBITE.get(), "Slowly losing life");
         addEffect(ModEffects.SHADOWFLAME.get(), "Losing life");
+        addEffect(ModEffects.WATER_CANDLE.get(), "Increased monster spawn rate");
+        addEffect(ModEffects.PEACE_CANDLE.get(), "Decreased monster spawn rate");
+        addEffect(ModEffects.BATTLE.get(), "Increased enemy spawn rate");
+        addEffect(ModEffects.CALM.get(), "Decreased enemy spawn rate");
+        addEffect(ModEffects.HAPPY.get(), "Movement speed increased and monster spawns reduced");
 
         addEffect(TCEffects.CEREBRAL_MINDTRICK.get(), "Increased critical chance");
         addEffect(TCEffects.HONEY.get(), "Life regeneration is increased");

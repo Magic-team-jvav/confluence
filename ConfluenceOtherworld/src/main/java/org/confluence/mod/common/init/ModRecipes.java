@@ -137,6 +137,13 @@ public final class ModRecipes {
             registerMaterial(MaterialItems.FALLING_STAR.get());
             registerMaterial(FoodItems.PISCES_FIN_COD.get());
             registerMaterial(ConsumableItems.DUNGEON_DEMON_BONE.get());
+            registerMaterial(MaterialItems.AETHERIUM_GOLD.get());
+            registerMaterial(MaterialItems.WORM_TOOTH.get());
+            registerMaterial(MaterialItems.VERTEBRA.get());
+            registerMaterial(MaterialItems.BLOOD_CLOT_POWDER.get());
+            registerMaterial(MaterialItems.ROTTEN_BONE.get());
+            registerMaterial(FoodItems.DAMSEL_FISH.get());
+            registerMaterial(NatureBlocks.AETHERIUM_BLOCK.asItem());
 
 
             // 箭术
@@ -367,6 +374,33 @@ public final class ModRecipes {
                     FoodItems.MOTTLED_OILFISH.get(),
                     MaterialItems.MOONGLOW.get()
             }, PotionItems.SUMMONING_POTION.toStack());
+            // 微光 嬗金可获取时启用
+//            registerMix(new Item[]{
+//                    MaterialItems.AETHERIUM_GOLD.get(),
+//                    NatureBlocks.AETHERIUM_BLOCK.asItem()
+//            }, PotionItems.SHIMMER_POTION.toStack());
+            // 战斗
+            registerMix(new Item[]{
+                    MaterialItems.DEATHWEED.get(),
+                    MaterialItems.ROTTEN_BONE.get()
+            }, PotionItems.BATTLE_POTION.toStack());
+            registerMix(new Item[]{
+                    MaterialItems.DEATHWEED.get(),
+                    MaterialItems.VERTEBRA.get()
+            }, PotionItems.BATTLE_POTION.toStack());
+            registerMix(new Item[]{
+                    MaterialItems.DEATHWEED.get(),
+                    MaterialItems.BLOOD_CLOT_POWDER.get()
+            }, PotionItems.BATTLE_POTION.toStack());
+            registerMix(new Item[]{
+                    MaterialItems.DEATHWEED.get(),
+                    MaterialItems.WORM_TOOTH.get()
+            }, PotionItems.BATTLE_POTION.toStack());
+            // 镇静
+            registerMix(new Item[]{
+                    FoodItems.DAMSEL_FISH.get(),
+                    MaterialItems.DAYBLOOM.get()
+            }, PotionItems.CALMING_POTION.toStack());
         }
 
         private static void registerMaterial(Item material) {

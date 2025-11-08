@@ -82,6 +82,7 @@ public final class ModArmorBonus {
     // region key
     public static ArmorSetBonusKey COLD_CRYSTAL_SET;
     public static ArmorSetBonusKey HEIM_SET;
+    public static ArmorSetBonusKey DIAMOND_SET;
     // endregion
 
     @SuppressWarnings("all")
@@ -235,9 +236,7 @@ public final class ModArmorBonus {
 
         // todo	水晶刺客盔甲、神圣盔甲
 
-//        register("diamond_set", 1, Items.DIAMOND_HELMET, Items.DIAMOND_CHESTPLATE, Items.DIAMOND_LEGGINGS, Items.DIAMOND_BOOTS, key -> {
-        // todo 钻石甲给2时运
-//        });
+        DIAMOND_SET = register("diamond_set", 1, Items.DIAMOND_HELMET, Items.DIAMOND_CHESTPLATE, Items.DIAMOND_LEGGINGS, Items.DIAMOND_BOOTS, key -> {});
         register("netherite_set", 4, Items.NETHERITE_HELMET, Items.NETHERITE_CHESTPLATE, Items.NETHERITE_LEGGINGS, Items.NETHERITE_BOOTS, key -> {
             key.unit(LAVA$IMMUNE);
             key.of(DURABILITY$REPAIR$AMOUNT$PER$SECOND$IN$LAVA, 50);
@@ -382,7 +381,8 @@ public final class ModArmorBonus {
             if (damageSource.getDirectEntity() instanceof FlowerPetalProjectile) break flowerPetal;
             CompoundTag tag = LibUtils.getOrCreatePersistedData(player);
             long gameTime = player.level().getGameTime();
-            if (gameTime - tag.getLong("confluence:last_flower_petal_attack") < 6) break flowerPetal;
+            if (gameTime - tag.getLong("confluence:last_flower_petal_attack") < 6)
+                break flowerPetal;
             tag.putLong("confluence:last_flower_petal_attack", gameTime);
             FlowerPetalProjectile projectile = new FlowerPetalProjectile(player);
             Vec3 position = victim.position().add(0, victim.getBbHeight() * 0.5, 0);
@@ -397,16 +397,18 @@ public final class ModArmorBonus {
             projectile.shoot(position.x - offset.x, position.y - offset.y, position.z - offset.z, 1.2F, 0.0F);
             player.level().addFreshEntity(projectile);
         }
-        if (player instanceof IServerPlayer serverPlayer && hasType(player, TITANIUM$SHARDS)) titaniumShards:{
-            if (player.hasEffect(ModEffects.TITANIUM_BARRIER)) break titaniumShards;
-            if (damageSource.getDirectEntity() instanceof TitaniumShardsProjectile) break titaniumShards;
-            if (serverPlayer.confluence$hasTitaniumShards()) break titaniumShards;
+        if (player instanceof IServerPlayer serverPlayer && hasType(player, TITANIUM$SHARDS))
+            titaniumShards:{
+                if (player.hasEffect(ModEffects.TITANIUM_BARRIER)) break titaniumShards;
+                if (damageSource.getDirectEntity() instanceof TitaniumShardsProjectile)
+                    break titaniumShards;
+                if (serverPlayer.confluence$hasTitaniumShards()) break titaniumShards;
 
-            player.addEffect(new MobEffectInstance(ModEffects.TITANIUM_BARRIER, 200));
-            TitaniumShardsProjectile projectile = new TitaniumShardsProjectile(player);
-            serverPlayer.confluence$setTitaniumShards(projectile);
-            player.level().addFreshEntity(projectile);
-        }
+                player.addEffect(new MobEffectInstance(ModEffects.TITANIUM_BARRIER, 200));
+                TitaniumShardsProjectile projectile = new TitaniumShardsProjectile(player);
+                serverPlayer.confluence$setTitaniumShards(projectile);
+                player.level().addFreshEntity(projectile);
+            }
         if (damageSource.is(Tags.DamageTypes.IS_MAGIC) && isArmorSet(player, COLD_CRYSTAL_SET)) {
             victim.addEffect(new MobEffectInstance(TEEffects.FROST_BURN, 100));
         }

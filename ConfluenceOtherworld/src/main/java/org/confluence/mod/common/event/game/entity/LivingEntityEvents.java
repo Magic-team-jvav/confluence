@@ -92,7 +92,7 @@ public final class LivingEntityEvents {
         DamageSource damageSource = event.getSource();
 
         if (victim.level() instanceof ServerLevel level) {
-            Entity attacker = ModUtils.getOwner(damageSource);
+            Entity attacker = LibUtils.getOwner(damageSource);
 
             if (attacker instanceof ServerPlayer) {
                 if (victim instanceof Enemy &&

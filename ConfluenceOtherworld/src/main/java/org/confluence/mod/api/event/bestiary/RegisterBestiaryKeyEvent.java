@@ -6,7 +6,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.VariantHolder;
 import net.neoforged.bus.api.Event;
-import net.neoforged.fml.ModLoader;
 import net.neoforged.fml.event.IModBusEvent;
 import org.confluence.terraentity.api.entity.IVariant;
 
@@ -17,19 +16,12 @@ import java.util.function.Function;
  * 仅需要注册特殊键，如带有变种的生物
  */
 public class RegisterBestiaryKeyEvent extends Event implements IModBusEvent {
-    private static final RegisterBestiaryKeyEvent INSTANCE = new RegisterBestiaryKeyEvent();
     private static final Map<EntityType<?>, Factory<?>> factories = Maps.newIdentityHashMap();
-
-    private RegisterBestiaryKeyEvent() {}
 
     public <T extends LivingEntity> void register(EntityType<T> type, Factory<T> factory) {
         if (!factories.containsKey(type)) {
             factories.put(type, factory);
         }
-    }
-
-    public static void postEvent() {
-        ModLoader.postEvent(INSTANCE);
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})

@@ -707,6 +707,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.section.confluence.client.toml.title", "客户端配置");
         add("confluence.configuration.Entity.tooltip", "与生物有关的视觉效果");
         add("confluence.configuration.section.confluence.common.toml.title", "通用配置");
+        add("confluence.configuration.minEctoMistEffectRadius", "最小迷雾效果距离");
+        add("confluence.configuration.minEctoMistEffectRadius.tooltip", "设置为0时，关闭迷雾效果");
 
         //生物群系
         add("biome.confluence.the_corruption", "腐化之地");

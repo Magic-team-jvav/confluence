@@ -29,10 +29,7 @@ import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.lib.event.SwitchItemFunctionEvent;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.StartupConfigs;
-import org.confluence.mod.api.event.AdditionalManaEvent;
-import org.confluence.mod.api.event.GetArmorSetBonusDataEvent;
-import org.confluence.mod.api.event.MinecartAbilityEvent;
-import org.confluence.mod.api.event.ShimmerItemTransmutationEvent;
+import org.confluence.mod.api.event.*;
 import org.confluence.mod.api.event.bestiary.ToBeBestiaryEntryEvent;
 import org.confluence.mod.common.attachment.ExtraInventory;
 import org.confluence.mod.common.attachment.ManaStorage;
@@ -47,7 +44,6 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.armor.ArmorSetBonusKey;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.init.item.ArmorItems;
-import org.confluence.mod.common.init.item.MaterialItems;
 import org.confluence.mod.common.init.item.MinecartItems;
 import org.confluence.mod.common.init.item.ToolItems;
 import org.confluence.mod.common.item.common.BaseMinecartItem;
@@ -149,24 +145,23 @@ public final class GameEvents {
 
     @SubscribeEvent
     public static void shimmerItemTransmutation$Post(ShimmerItemTransmutationEvent.Post event) {
-        MinecraftServer currentServer;
-        if (event.getTargets() != null && (currentServer = ServerLifecycleHooks.getCurrentServer()) != null)
-            replaceEvilMaterials:{
-                boolean corruption = IMinecraftServer.matchesSecretFlag(currentServer, IWorldOptions.THE_CORRUPTION);
-                boolean crimson = IMinecraftServer.matchesSecretFlag(currentServer, IWorldOptions.THE_CRIMSON);
-                if (corruption == crimson) break replaceEvilMaterials;
-                List<ItemStack> targets = new ArrayList<>();
-                for (ItemStack target : event.getTargets()) {
-                    if (corruption && target.is(MaterialItems.CRIMTANE_INGOT)) {
-                        targets.add(MaterialItems.DEMONITE_INGOT.toStack(target.getCount()));
-                    } else if (crimson && target.is(MaterialItems.DEMONITE_INGOT)) {
-                        targets.add(MaterialItems.CRIMTANE_INGOT.toStack(target.getCount()));
-                    } else {
-                        targets.add(target);
-                    }
-                }
-                event.setTargets(targets);
+        if (event.getTargets() == null) return;
+        MinecraftServer currentServer = ServerLifecycleHooks.getCurrentServer();
+        if (currentServer == null) return;
+
+        boolean corrupt = IMinecraftServer.matchesSecretFlag(currentServer, IWorldOptions.THE_CORRUPTION);
+        boolean crimson = IMinecraftServer.matchesSecretFlag(currentServer, IWorldOptions.THE_CRIMSON);
+        if (corrupt == crimson) return;
+        List<ItemStack> targets = new ArrayList<>();
+        for (ItemStack targetStack : event.getTargets()) {
+            Item target = RegisterEvilMaterialReplacesEvent.getPossible(targetStack.getItem(), corrupt, crimson);
+            if (target == null) {
+                targets.add(targetStack);
+            } else {
+                targets.add(new ItemStack(target, targetStack.getCount()));
             }
+        }
+        event.setTargets(targets);
     }
 
     @SubscribeEvent

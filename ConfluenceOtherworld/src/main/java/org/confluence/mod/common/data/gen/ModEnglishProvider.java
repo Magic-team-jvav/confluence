@@ -719,6 +719,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.configuration.section.confluence.client.toml.title", "Client-side Configuration");
         add("confluence.configuration.Entity.tooltip", "Entity-related Visual Effects");
         add("confluence.configuration.section.confluence.common.toml.title", "Common Configuration");
+        add("confluence.configuration.minEctoMistEffectRadius", "Min Ecto Mist Effect Radius");
+        add("confluence.configuration.minEctoMistEffectRadius.tooltip", "Disables ecto mist effect when set to 0.");
 
         add("biome.confluence.ash_forest", "Ash Forest");
         add("biome.confluence.ash_wasteland", "Ash Wasteland");

@@ -22,9 +22,18 @@ public class EctoMistHelper {
     private static float originalNearFog = 0.0F;
     private static float originalFarFog = 0.0F;
     private static float lastStart = 4;
+    private static boolean turnOn = true;
 
     public static void tick(Minecraft minecraft, LocalPlayer player) {
-        if (ClientConfigs.ectoMistEffect && player.level().getGameTime() % 40 == 2) {
+        if (ClientConfigs.minEctoMistEffectRadius <= 0) {
+            if (turnOn) {
+                effectiveTombstones = 0;
+                turnOn = false;
+            }
+            return;
+        }
+        turnOn = true;
+        if (player.level().getGameTime() % 40 == 2) {
             ILevelChunkSection iSection = DynamicBiomeUtils.getISection(player.level(), player.blockPosition());
             effectiveTombstones = iSection == null ? 0 : iSection.confluence$getBlockCounts().tomb.get() - iSection.confluence$getBlockCounts().sunflower.get();
         }
@@ -70,7 +79,7 @@ public class EctoMistHelper {
     public static void renderFog(ViewportEvent.RenderFog event) {
         if (isGraveyard()) {
             float exp = (float) EasingType.exp(ectoMistStep);
-            lastStart = 28.0F / (effectiveTombstones - 6);
+            lastStart = Math.max(ClientConfigs.minEctoMistEffectRadius, 28.0F / (effectiveTombstones - 6));
             event.setNearPlaneDistance(Mth.lerp(exp, lastStart, originalNearFog));
             event.setFarPlaneDistance(Mth.lerp(exp, lastStart + lastStart, originalFarFog));
             event.setFogShape(FogShape.SPHERE);

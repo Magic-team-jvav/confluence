@@ -1,5 +1,6 @@
 package org.confluence.mod.common.data.saved;
 
+import com.google.common.collect.Lists;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.Dynamic;
 import it.unimi.dsi.fastutil.booleans.BooleanObjectMutablePair;
@@ -11,6 +12,7 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
@@ -28,6 +30,7 @@ import org.confluence.mod.network.s2c.GlobalCloakSyncPacketS2C;
 
 import java.util.HashMap;
 import java.util.IdentityHashMap;
+import java.util.List;
 import java.util.Map;
 
 public final class GlobalCloakData implements IGlobalData {
@@ -55,8 +58,23 @@ public final class GlobalCloakData implements IGlobalData {
     private Map<BlockState, BooleanObjectPair<BlockState>> blockMap = new IdentityHashMap<>();
     private Map<BlockState, BlockBehaviour.Properties> backupProperties = new IdentityHashMap<>();
     private Map<Item, BooleanObjectPair<Item>> itemMap = new IdentityHashMap<>();
+    private boolean fixed = false;
 
     private GlobalCloakData() {}
+
+    public void fix(ServerLevel level) {
+        if (fixed) return;
+        this.fixed = true;
+        int revealStep = ConfluenceData.get(level).getRevealStep() + 1; // [0, 9]
+        if (revealStep == 0) return;
+        List<BlockState> pairs = Lists.newArrayListWithExpectedSize(revealStep);
+        for (int i = 0; i < revealStep; i++) {
+            BlockState[] pair = StepRevealingBlock.PAIRS.get()[revealStep];
+            pairs.add(pair[0]);
+            pairs.add(pair[1]);
+        }
+        GlobalCloakData.INSTANCE.reveal(pairs.toArray(new BlockState[0]));
+    }
 
     public void initialize() {
         BlockState deepslate = Blocks.DEEPSLATE.defaultBlockState();
@@ -133,6 +151,7 @@ public final class GlobalCloakData implements IGlobalData {
     public <T> void decode(Dynamic<T> tag) {
         tag.get("BlockMap").orElseEmptyMap().read(BLOCK_MAP_CODEC).ifSuccess(blockMap::putAll);
         tag.get("ItemMap").orElseEmptyMap().read(ITEM_MAP_CODEC).ifSuccess(itemMap::putAll);
+        tag.get("Fixed").asBoolean(false);
 
         rollbackAllProperties();
     }
@@ -141,6 +160,7 @@ public final class GlobalCloakData implements IGlobalData {
     public void encode(CompoundTag tag) {
         tag.put("BlockMap", BLOCK_MAP_CODEC.encodeStart(NbtOps.INSTANCE, blockMap).result().orElseGet(CompoundTag::new));
         tag.put("ItemMap", ITEM_MAP_CODEC.encodeStart(NbtOps.INSTANCE, itemMap).result().orElseGet(CompoundTag::new));
+        tag.putBoolean("Fixed", fixed);
     }
 
     @Override

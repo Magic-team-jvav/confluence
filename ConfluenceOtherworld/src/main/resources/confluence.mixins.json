@@ -60,6 +60,7 @@
         "integration.ars_nouveau.ManaCapMixin",
         "integration.carryon.PickupHandlerMixin",
         "integration.curios.CuriosServerPayloadHandlerMixin",
+        "integration.curios.CuriosUtilMixinHooksMixin",
         "integration.ftbchunks.LongRangePlayerTrackerMixin",
         "integration.irons_spell.AbstractSpellMixin",
         "integration.irons_spell.MagicManagerMixin",

@@ -18,6 +18,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
@@ -38,7 +39,6 @@ import org.confluence.mod.common.event.game.GameEvents;
 import org.confluence.mod.common.init.ModDataComponentTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.item.AccessoryItems;
-import org.confluence.mod.common.item.armor.BaseArmorItem;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.terra_curio.api.primitive.*;
 import org.confluence.terra_curio.common.component.PrimitiveValueComponent;
@@ -335,7 +335,7 @@ public final class ModArmorBonus {
         if (player == null) return;
         ArmorSetBonusKey key = PlayerSpecialData.of(player).getArmorSetBonusKey();
         if (key == ArmorSetBonusKey.NONE) return;
-        if (itemStack.getItem() instanceof BaseArmorItem armorItem && switch (armorItem.getEquipmentSlot()) {
+        if (itemStack.getItem() instanceof ArmorItem armorItem && switch (armorItem.getEquipmentSlot()) {
             case FEET -> key.feet() == armorItem;
             case LEGS -> key.legs() == armorItem;
             case CHEST -> key.chest() == armorItem;

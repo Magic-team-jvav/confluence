@@ -2427,7 +2427,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.angler_hat.0", "渔力增加5");
         add("tooltip.item.confluence.angler_vest.0", "渔力增加5");
         add("tooltip.item.confluence.angler_pants.0", "渔力增加5");
-        add("armor_set_bonus.confluence.angler_set.0", "敌人生成速度降低（未完成）");
+        add("armor_set_bonus.confluence.angler_set.0", "敌人生成速度降低");
         // 仙人掌
         add("armor_set_bonus.confluence.cactus_set.0", "攻击者因为仙人掌尖刺受到伤害");
         // 南瓜

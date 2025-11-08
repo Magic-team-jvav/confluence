@@ -26,6 +26,7 @@ import net.neoforged.fml.ModLoader;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.entity.living.LivingBreatheEvent;
+import org.confluence.lib.ConfluenceMagicLib;
 import org.confluence.lib.util.LibUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.api.event.GetArmorSetBonusDataEvent;
@@ -101,8 +102,11 @@ public final class ModArmorBonus {
         register("pink_snow_set", 1, PINK_SNOW_CAPS, PINK_SNOW_SUITS, PINK_INSULATED_PANTS, PINK_INSULATED_SHOES, key -> {
             key.unit(TCItems.FROZEN$IMMUNE);
         });
-        register("angler_set", 1, ANGLER_HAT, ANGLER_VEST, ANGLER_PANTS, null, key -> {
-            // todo 降低敌怪生成速度
+        register("angler_set", 1, ANGLER_HAT, ANGLER_VEST, ANGLER_PANTS, Items.AIR, key -> {
+            key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.builder()
+                    .add(ConfluenceMagicLib.ENEMY_SPAWN_SPEED_MULTIPLIER, key.id, -0.23, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                    .add(ConfluenceMagicLib.ENEMY_SPAWN_COUNT_MULTIPLIER, key.id, -0.30, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                    .build());
         });
         register("cactus_set", 1, CACTUS_HELMET, CACTUS_CHESTPLATE, CACTUS_LEGGINGS, CACTUS_BOOTS, key -> {
             key.unit(CACTUS$THORNS);
@@ -262,10 +266,10 @@ public final class ModArmorBonus {
     private static ArmorSetBonusKey register(
             String path,
             int tooltipCount,
-            @Nullable ItemLike head,
-            @Nullable ItemLike chest,
-            @Nullable ItemLike legs,
-            @Nullable ItemLike feet,
+            ItemLike head,
+            ItemLike chest,
+            ItemLike legs,
+            ItemLike feet,
             Consumer<ArmorSetBonusKey> consumer
     ) {
         return register(Confluence.asResource(path), tooltipCount, head, chest, legs, feet, consumer);
@@ -274,10 +278,10 @@ public final class ModArmorBonus {
     private static ArmorSetBonusKey register(
             ResourceLocation id,
             int tooltipCount,
-            @Nullable ItemLike head,
-            @Nullable ItemLike chest,
-            @Nullable ItemLike legs,
-            @Nullable ItemLike feet,
+            ItemLike head,
+            ItemLike chest,
+            ItemLike legs,
+            ItemLike feet,
             Consumer<ArmorSetBonusKey> consumer
     ) {
         ArmorSetBonusKey key = new ArmorSetBonusKey(head, chest, legs, feet, ArmorSetBonusKey.mixHash(head, chest, legs, feet, true));

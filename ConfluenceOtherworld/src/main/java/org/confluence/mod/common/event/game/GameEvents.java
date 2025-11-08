@@ -247,7 +247,7 @@ public final class GameEvents {
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void getArmorSetBonus(GetArmorSetBonusDataEvent event) {
         ArmorSetBonusKey key = event.getKey();
-        if (key.head() != null && key.chest() != null && key.head().builtInRegistryHolder().is(ModTags.Items.ROBE)) {
+        if (key.head().builtInRegistryHolder().is(ModTags.Items.ROBE)) {
             if (key.chest() == ArmorItems.WIZARD_HAT.get()) {
                 event.setNeoData(ModArmorBonus.WIZARD_HAT_SET_BONUS);
             } else if (key.chest() == ArmorItems.MAGIC_HAT.get()) {

@@ -114,22 +114,22 @@ public final class ModEffects {
 
     // TODO 玩家在 y260-320（太空）中将 33 替换为 167
     public static final DeferredHolder<MobEffect, MobEffect> WATER_CANDLE = EFFECTS.register("water_candle", () -> new PublicMobEffect(MobEffectCategory.HARMFUL, 0xFF0000)
-            .addAttributeModifier(ConfluenceMagicLib.PLAYER_MONSTER_SPAWN_SPEED_FACTOR, Confluence.asResource("water_candle"), AttributeModifier.Operation.ADD_VALUE, (i) -> i * 0.33)
-            .addAttributeModifier(ConfluenceMagicLib.PLAYER_MONSTER_SPAWN_COUNT_FACTOR, Confluence.asResource("water_candle"), AttributeModifier.Operation.ADD_VALUE, (i) -> i * 0.50));
+            .addAttributeModifier(ConfluenceMagicLib.ENEMY_SPAWN_SPEED_MULTIPLIER, Confluence.asResource("water_candle"), AttributeModifier.Operation.ADD_VALUE, (i) -> i * 0.33)
+            .addAttributeModifier(ConfluenceMagicLib.ENEMY_SPAWN_COUNT_MULTIPLIER, Confluence.asResource("water_candle"), AttributeModifier.Operation.ADD_VALUE, (i) -> i * 0.50));
     public static final DeferredHolder<MobEffect, MobEffect> PEACE_CANDLE = EFFECTS.register("peace_candle", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFF0000)
-            .addAttributeModifier(ConfluenceMagicLib.PLAYER_MONSTER_SPAWN_SPEED_FACTOR, Confluence.asResource("peace_candle"), AttributeModifier.Operation.ADD_VALUE, (i) -> i * -0.23)
-            .addAttributeModifier(ConfluenceMagicLib.PLAYER_MONSTER_SPAWN_COUNT_FACTOR, Confluence.asResource("peace_candle"), AttributeModifier.Operation.ADD_VALUE, (i) -> i * -0.30));
+            .addAttributeModifier(ConfluenceMagicLib.ENEMY_SPAWN_SPEED_MULTIPLIER, Confluence.asResource("peace_candle"), AttributeModifier.Operation.ADD_VALUE, (i) -> i * -0.23)
+            .addAttributeModifier(ConfluenceMagicLib.ENEMY_SPAWN_COUNT_MULTIPLIER, Confluence.asResource("peace_candle"), AttributeModifier.Operation.ADD_VALUE, (i) -> i * -0.30));
     public static final DeferredHolder<MobEffect, MobEffect> HAPPY = EFFECTS.register("happy", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFF0000)
             .addAttributeModifier(Attributes.MOVEMENT_SPEED, Confluence.asResource("happy_doubling"), AttributeModifier.Operation.ADD_MULTIPLIED_BASE, (i) -> i * 1.1)
             .addAttributeModifier(Attributes.MOVEMENT_SPEED, Confluence.asResource("happy"), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL, (i) -> i * 0.1)
-            .addAttributeModifier(ConfluenceMagicLib.PLAYER_MONSTER_SPAWN_SPEED_FACTOR, Confluence.asResource("happy"), AttributeModifier.Operation.ADD_VALUE, (i) -> i * -0.17)
-            .addAttributeModifier(ConfluenceMagicLib.PLAYER_MONSTER_SPAWN_COUNT_FACTOR, Confluence.asResource("happy"), AttributeModifier.Operation.ADD_VALUE, (i) -> i * -0.20));
+            .addAttributeModifier(ConfluenceMagicLib.ENEMY_SPAWN_SPEED_MULTIPLIER, Confluence.asResource("happy"), AttributeModifier.Operation.ADD_VALUE, (i) -> i * -0.17)
+            .addAttributeModifier(ConfluenceMagicLib.ENEMY_SPAWN_COUNT_MULTIPLIER, Confluence.asResource("happy"), AttributeModifier.Operation.ADD_VALUE, (i) -> i * -0.20));
     public static final DeferredHolder<MobEffect, MobEffect> CALM = EFFECTS.register("calm", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFF0000)
-            .addAttributeModifier(ConfluenceMagicLib.PLAYER_MONSTER_SPAWN_SPEED_FACTOR, Confluence.asResource("calm"), AttributeModifier.Operation.ADD_VALUE, (i) -> i * -0.39)
-            .addAttributeModifier(ConfluenceMagicLib.PLAYER_MONSTER_SPAWN_COUNT_FACTOR, Confluence.asResource("calm"), AttributeModifier.Operation.ADD_VALUE, (i) -> i * -0.40));
+            .addAttributeModifier(ConfluenceMagicLib.ENEMY_SPAWN_SPEED_MULTIPLIER, Confluence.asResource("calm"), AttributeModifier.Operation.ADD_VALUE, (i) -> i * -0.39)
+            .addAttributeModifier(ConfluenceMagicLib.ENEMY_SPAWN_COUNT_MULTIPLIER, Confluence.asResource("calm"), AttributeModifier.Operation.ADD_VALUE, (i) -> i * -0.40));
     public static final DeferredHolder<MobEffect, MobEffect> BATTLE = EFFECTS.register("battle", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFF0000)
-            .addAttributeModifier(ConfluenceMagicLib.PLAYER_MONSTER_SPAWN_SPEED_FACTOR, Confluence.asResource("battle"), AttributeModifier.Operation.ADD_MULTIPLIED_BASE, (i) -> i * 2)
-            .addAttributeModifier(ConfluenceMagicLib.PLAYER_MONSTER_SPAWN_COUNT_FACTOR, Confluence.asResource("battle"), AttributeModifier.Operation.ADD_MULTIPLIED_BASE, (i) -> i * 2));
+            .addAttributeModifier(ConfluenceMagicLib.ENEMY_SPAWN_SPEED_MULTIPLIER, Confluence.asResource("battle"), AttributeModifier.Operation.ADD_MULTIPLIED_BASE, (i) -> i * 2)
+            .addAttributeModifier(ConfluenceMagicLib.ENEMY_SPAWN_COUNT_MULTIPLIER, Confluence.asResource("battle"), AttributeModifier.Operation.ADD_MULTIPLIED_BASE, (i) -> i * 2));
 
     // 药剂
     public static final DeferredHolder<MobEffect, FlaskEffect> WEAPON_IMBUE_FIRE = EFFECTS.register("weapon_imbue_fire", FlaskOfFireEffect::new);

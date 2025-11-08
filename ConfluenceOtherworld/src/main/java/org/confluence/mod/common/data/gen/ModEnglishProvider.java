@@ -2389,7 +2389,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.angler_hat.0", "Increases fishing power by 5");
         add("tooltip.item.confluence.angler_vest.0", "Increases fishing power by 5");
         add("tooltip.item.confluence.angler_pants.0", "Increases fishing power by 5");
-        add("armor_set_bonus.confluence.angler_set.0", "Decreased enemy spawn rate（WIP）");
+        add("armor_set_bonus.confluence.angler_set.0", "Decreased enemy spawn rate");
         // Cactus Set
         add("armor_set_bonus.confluence.cactus_set.0", "Attackers take damage from the cactus spines");
         // Pumpkin Set

@@ -58,7 +58,7 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
             return InteractionResult.SUCCESS;
         } else {
             if (level.getBlockEntity(pos) instanceof EnhancedForgeBlock.BEntity<?> entity) {
-                player.openMenu(entity);
+                player.openMenu(entity.getBasePart());
             }
             return InteractionResult.CONSUME;
         }
@@ -482,13 +482,18 @@ public abstract class EnhancedForgeBlock extends HorizontalDirectionalWithHorizo
         }
 
         protected BEntity<?> getBasePart() {
-            if (basePart == null && level != null && getBlockState().getValue(StateProperties.HORIZONTAL_TWO_PART).isRight()) {
+            if (basePart == null) {
+                if (getBlockState().getValue(StateProperties.HORIZONTAL_TWO_PART).isBase()) {
+                    return this.basePart = this;
+                }
+                if (level == null) return this;
                 BlockPos relative = getBlockPos().relative(StateProperties.HorizontalTwoPart.getConnectedDirection(getBlockState()));
-                if (level.getBlockEntity(relative) instanceof BEntity<?> entity) {
+                if (level.isLoaded(relative) && level.getBlockEntity(relative) instanceof BEntity<?> entity) {
                     return this.basePart = entity;
                 }
+                return this;
             }
-            return this.basePart = this;
+            return basePart;
         }
 
         @Override

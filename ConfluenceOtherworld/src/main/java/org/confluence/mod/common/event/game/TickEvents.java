@@ -98,7 +98,7 @@ public final class TickEvents {
             ModArmorBonus.afterTick(player);
             if (gameTime % 200 == 0) {
                 if (DynamicBiomeUtils.getISection(player.level(), player.blockPosition()).confluence$getBlockCounts().sunflower.get() > 0) {
-                    player.addEffect(new MobEffectInstance(ModEffects.TIPSY, 200));
+                    player.addEffect(new MobEffectInstance(ModEffects.HAPPY, 210));
                 }
             }
         }

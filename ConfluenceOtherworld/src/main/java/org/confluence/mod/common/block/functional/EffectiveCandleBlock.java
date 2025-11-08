@@ -83,7 +83,7 @@ public class EffectiveCandleBlock extends AbstractMechanicalBlock {
     }
 
     public void switchStatus(final Level level, final BlockState state, final BlockPos pos) {
-        if (!level.isClientSide()){
+        if (level.isClientSide()) {
             return;
         }
         level.setBlockAndUpdate(pos, state.setValue(BLOOM, !state.getValue(BLOOM)));

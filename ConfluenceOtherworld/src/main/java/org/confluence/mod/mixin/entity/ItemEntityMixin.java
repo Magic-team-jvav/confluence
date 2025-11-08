@@ -76,14 +76,18 @@ public abstract class ItemEntityMixin implements IItemEntity {
                 if (targets == null) {
                     confluence$setup(self, post.getCoolDown(), post.getSpeedY());
                 } else {
+                    ServerPlayer serverPlayer = self.getOwner() instanceof ServerPlayer player ? player : null;
                     for (ItemStack target : targets) {
                         if (PrefixUtils.canInit(target)) PrefixUtils.unknown(target);
                         ItemEntity itemEntity = new ItemEntity(level, self.getX(), self.getY(), self.getZ(), target);
                         confluence$setup(itemEntity, post.getCoolDown(), post.getSpeedY());
+                        if (serverPlayer != null) {
+                            target.onCraftedBy(level, serverPlayer, target.getCount());
+                        }
                         level.addFreshEntity(itemEntity);
                     }
                     level.playSound(null, self.getX(), self.getY(), self.getZ(), ModSoundEvents.SHIMMER_EVOLUTION.get(), SoundSource.AMBIENT, 0.5F, 1.0F);
-                    if (self.getOwner() instanceof ServerPlayer serverPlayer) {
+                    if (serverPlayer != null) {
                         ModAdvancements.CriterionTriggerz.SHIMMER_TRANSMUTATION.get().trigger(serverPlayer, self);
                     }
                 }
@@ -136,7 +140,8 @@ public abstract class ItemEntityMixin implements IItemEntity {
         RandomSource random = source.level().random;
         for (RecipeHolder<?> recipeHolder : ((ServerLevel) source.level()).getServer().getRecipeManager().getRecipes()) {
             Recipe<?> recipe = recipeHolder.value();
-            if (recipe.isSpecial() || recipe.isIncomplete() || recipe instanceof AbstractCookingRecipe) continue;
+            if (recipe.isSpecial() || recipe.isIncomplete() || recipe instanceof AbstractCookingRecipe)
+                continue;
             ItemStack resultItem = recipe.getResultItem(registryAccess);
             if (sourceItem.getCount() >= resultItem.getCount() && ItemStack.isSameItem(sourceItem, resultItem)) {
                 int times = sourceItem.getCount() / resultItem.getCount();

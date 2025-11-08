@@ -69,6 +69,13 @@ public final class ModArmorBonus {
     // endregion
 
     // region type
+    public static final CombineRule<Integer, IntegerValue> AS_ENCHANTMENT_INT_CR = CombineRule.register((a, b) -> {
+        if (a.equals(b)) {
+            return a == 0 ? 0 : a + 1;
+        }
+        return Math.max(a, b);
+    }, Confluence.asResource("as_enchantment"));
+
     public static final ValueType.UnitType CACTUS$THORNS = ValueType.UnitType.of(Confluence.asResource("thorns"));
     public static final ValueType.FloatType SKIP$CONSUME$AMMO$CHANCE = ValueType.FloatType.of(Confluence.asResource("skip_consume_ammo_chance"), FloatValue.ADDITION_WITHIN_0_TO_1, 0);
     public static final ValueType.UnitType SPACE$GUN$FREE = ValueType.UnitType.of(Confluence.asResource("space_gun_free"));
@@ -78,12 +85,12 @@ public final class ModArmorBonus {
     public static final ValueType.UnitType TITANIUM$SHARDS = ValueType.UnitType.of(Confluence.asResource("titanium_shards"));
     public static final ValueType.UnitType LAVA$IMMUNE = ValueType.UnitType.of(Confluence.asResource("lava_immune"));
     public static final ValueType.IntegerType DURABILITY$REPAIR$AMOUNT$PER$SECOND$IN$LAVA = ValueType.IntegerType.of(Confluence.asResource("durability_repair_amount_per_second_in_lava"), IntegerValue.GET_MAX, 0);
+    public static final ValueType.IntegerType FORTUNE = ValueType.IntegerType.of(Confluence.asResource("FORTUNE"), AS_ENCHANTMENT_INT_CR, 0);
     // endregion
 
     // region key
     public static ArmorSetBonusKey COLD_CRYSTAL_SET;
     public static ArmorSetBonusKey HEIM_SET;
-    public static ArmorSetBonusKey DIAMOND_SET;
     // endregion
 
     @SuppressWarnings("all")
@@ -240,7 +247,9 @@ public final class ModArmorBonus {
 
         // todo	水晶刺客盔甲、神圣盔甲
 
-        DIAMOND_SET = register("diamond_set", 1, Items.DIAMOND_HELMET, Items.DIAMOND_CHESTPLATE, Items.DIAMOND_LEGGINGS, Items.DIAMOND_BOOTS, key -> {});
+        register("diamond_set", 1, Items.DIAMOND_HELMET, Items.DIAMOND_CHESTPLATE, Items.DIAMOND_LEGGINGS, Items.DIAMOND_BOOTS, key -> {
+            key.of(FORTUNE, 2);
+        });
         register("netherite_set", 4, Items.NETHERITE_HELMET, Items.NETHERITE_CHESTPLATE, Items.NETHERITE_LEGGINGS, Items.NETHERITE_BOOTS, key -> {
             key.unit(LAVA$IMMUNE);
             key.of(DURABILITY$REPAIR$AMOUNT$PER$SECOND$IN$LAVA, 50);

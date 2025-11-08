@@ -7,6 +7,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -94,7 +95,7 @@ public class ChestBlocks {
             }
             return false;
         }));
-        ModItems.BLOCK_ITEMS.registerSimpleBlockItem(block);
+        ModItems.BLOCK_ITEMS.register(id, () -> new BaseChestBlock.BItem(block.get(), new Item.Properties()));
         NORMAL_CHESTS.add(block);
         return block;
     }

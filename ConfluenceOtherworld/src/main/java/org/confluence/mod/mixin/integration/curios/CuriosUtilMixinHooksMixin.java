@@ -14,7 +14,7 @@ public abstract class CuriosUtilMixinHooksMixin {
     @ModifyReturnValue(method = "getFortuneLevel", at = @At(value = "RETURN", ordinal = 0))
     private static int modify(int original, @Local LivingEntity living) {
         if (living instanceof Player player) {
-            return original + (ModArmorBonus.isArmorSet(player, ModArmorBonus.DIAMOND_SET) ? 2 : 0);
+            return original + ModArmorBonus.getValue(player, ModArmorBonus.FORTUNE);
         }
         return original;
     }

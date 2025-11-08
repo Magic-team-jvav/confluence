@@ -40,12 +40,12 @@ public final class ItemEvents {
     @SubscribeEvent(receiveCanceled = true)
     public static void itemStackedOnOther(ItemStackedOnOtherEvent event) {
         ItemStack carried = event.getCarriedItem();
-        ItemStack onSlot = event.getStackedOnItem();
-        if (event.getClickAction() == ClickAction.SECONDARY && ModUtils.useKey(carried, onSlot, event.getPlayer())) {
+        ItemStack stackedOn = event.getStackedOnItem();
+        if (event.getClickAction() == ClickAction.SECONDARY && ModUtils.useKey(carried, stackedOn, event.getPlayer())) {
             event.setCanceled(true);
         }
         if (carried.is(MaterialItems.GEL)) {
-            ColoredItem.merge(carried, onSlot);
+            ColoredItem.merge(carried, stackedOn);
         }
     }
 

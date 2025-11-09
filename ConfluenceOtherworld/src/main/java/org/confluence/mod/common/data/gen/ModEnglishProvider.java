@@ -695,6 +695,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.configuration.wrappedCrimsonHeart.tooltip", "When enabled, newly generated Crimson Caverns will contain Wrapped Crimson Hearts.");
         add("confluence.configuration.terraStyleExplosion", "Terra Style Explosion");
         add("confluence.configuration.terraStyleExplosion.tooltip", "Once activated, the bombs in confluence will simulate the blast radius of a Terra explosion.");
+        add("confluence.configuration.terraStyleFireDamage", "Terra Style Fire Damage");
+        add("confluence.configuration.terraStyleFireDamage.tooltip", "Once activated, fire damage will be multiplied by 4 and healing will be blocked. It only affects players.");
         // Separator
         add("confluence.configuration.Mana.button", "Mana");
         add("confluence.configuration.Armor.button", "Armor");

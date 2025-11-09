@@ -7,9 +7,11 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.Tuple;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -88,7 +90,8 @@ public final class PlayerUtils {
         int delay = manaStorage.getRegenerateDelay();
         boolean notMove = isNotMove(player);
         if (delay > 0) {
-            if (manaStorage.isArcaneCrystalUsed()) delay = (int) ((float) delay * (notMove ? 0.975F : 0.95F));
+            if (manaStorage.isArcaneCrystalUsed())
+                delay = (int) ((float) delay * (notMove ? 0.975F : 0.95F));
             if (delay > 20 && player.hasEffect(ModEffects.MANA_REGENERATION)) delay = 20;
             int delayReduce = notMove ? 2 : 1;
             if (manaStorage.isFastManaRegeneration()) delayReduce += 1;
@@ -160,15 +163,18 @@ public final class PlayerUtils {
     public static float getFishingPower(ServerPlayer player) {
         float base = TCUtils.getValue(player, AccessoryItems.FISHING$POWER);
         if (EverBeneficial.of(player).isGummyWormUsed()) base += 3.0F;
-        if (player.isInFluidType() && TCUtils.hasType(player, TCItems.FLOAT$ON$LIQUID$SURFACE)) base += 5.0F;
+        if (player.isInFluidType() && TCUtils.hasType(player, TCItems.FLOAT$ON$LIQUID$SURFACE))
+            base += 5.0F;
         if (player.hasEffect(ModEffects.TIPSY)) base += 5.0F;
         Level level = player.level();
         if (level.isRaining()) base *= 1.1F;
         else if (level.isThundering()) base *= 1.2F;
         int dayTime = LibDateUtils.getDayTime(level);
-        if (LibDateUtils.isWithinDayTime(LibDateUtils._04$30, LibDateUtils._06$00, dayTime)) base *= 1.3F;
+        if (LibDateUtils.isWithinDayTime(LibDateUtils._04$30, LibDateUtils._06$00, dayTime))
+            base *= 1.3F;
         else if (LibDateUtils.isWithinDayTime(9, 0, 15, 0, dayTime)) base *= 0.8F;
-        else if (LibDateUtils.isWithinDayTime(LibDateUtils.getDayTime(18, 0), LibDateUtils._19$30, dayTime)) base *= 1.3F;
+        else if (LibDateUtils.isWithinDayTime(LibDateUtils.getDayTime(18, 0), LibDateUtils._19$30, dayTime))
+            base *= 1.3F;
         else if (LibDateUtils.isWithinDayTime(21, 18, 2, 12, dayTime)) base *= 0.8F;
         base *= switch (level.getMoonPhase()) {
             case 0 -> 1.1F; // 满月
@@ -403,7 +409,8 @@ public final class PlayerUtils {
                 if (itemStack.getItem() instanceof ManaPotionItem manaPotion) {
                     int amount = manaPotion.getAmount();
                     if (currentMana + amount < extract) continue;
-                    if (toUse == null || amount < ((ManaPotionItem) toUse.getItem()).getAmount()) toUse = itemStack;
+                    if (toUse == null || amount < ((ManaPotionItem) toUse.getItem()).getAmount())
+                        toUse = itemStack;
                     if (amount == 50) break;
                 }
             }
@@ -443,5 +450,16 @@ public final class PlayerUtils {
     public static void flushLocalData(ServerPlayer sendTo, ServerPlayer target) {
         ExtraInventorySyncPacketS2C.sendToClient(sendTo, target, ExtraInventory.of(target));
         FlushArmorSetBonusPacketS2C.sendToClient(sendTo, target);
+    }
+
+    public static boolean skipHealIfOnFire(Player player) {
+        return CommonConfigs.TERRA_STYLE_FIRE_DAMAGE.get() && player.isOnFire();
+    }
+
+    public static float applyTerraFire(DamageSource damageSource, float amount) {
+        if (CommonConfigs.TERRA_STYLE_FIRE_DAMAGE.get() && damageSource.is(DamageTypeTags.IS_FIRE)) {
+            return amount * 4;
+        }
+        return amount;
     }
 }

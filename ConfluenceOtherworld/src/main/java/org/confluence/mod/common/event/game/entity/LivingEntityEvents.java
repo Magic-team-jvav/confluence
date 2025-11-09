@@ -153,16 +153,20 @@ public final class LivingEntityEvents {
     public static void livingHeal(LivingHealEvent event) {
         LivingEntity living = event.getEntity();
         if (!(living.level() instanceof ServerLevel level)) return;
-
         float amount = event.getAmount();
+
+        if (living instanceof Player player) {
+            if (PlayerUtils.skipHealIfOnFire(player)) {
+                event.setCanceled(true);
+                return;
+            }
+            amount = ModArmorBonus.applyHealAmount(player, amount);
+        }
         if (EverBeneficial.of(living).isVitalCrystalUsed()) {
             amount *= 1.2F;
         }
         if (living.hasEffect(ModEffects.COZY_FIRE)) {
             amount *= 1.1F;
-        }
-        if (living instanceof Player player) {
-            amount = ModArmorBonus.applyHealAmount(player, amount);
         }
         event.setAmount(amount);
 
@@ -215,6 +219,7 @@ public final class LivingEntityEvents {
         }
         if (victim instanceof ServerPlayer player) {
             amount = EnchantmentUtils.processManaProtection(player, damageSource, amount);
+            amount = PlayerUtils.applyTerraFire(damageSource, amount);
         }
 
         // 芦苇呼吸管对溺水伤害减半

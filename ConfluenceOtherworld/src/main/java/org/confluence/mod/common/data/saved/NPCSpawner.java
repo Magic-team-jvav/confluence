@@ -203,7 +203,7 @@ public final class NPCSpawner implements IGlobalData {
         }
     }
 
-    /// [考证](https://terraria.wiki.gg/zh/wiki/%E7%8A%B6%E6%80%81%E8%AE%AF%E6%81%AF#NPC)
+    /// [考据](https://terraria.wiki.gg/zh/wiki/%E7%8A%B6%E6%80%81%E8%AE%AF%E6%81%AF#NPC)
     /// - 当 NPC 死亡时，会显示讯息“<NPC的类型><NPC的名字>被杀死了……”。
     ///   - 渔夫、公主、或城镇宠物死亡时，会改为显示讯息“<渔夫/宠物/公主的名字>已离开！”。
     ///   - 两种情况下，都会使用 #ff1919 颜色。
@@ -212,11 +212,8 @@ public final class NPCSpawner implements IGlobalData {
         if (CommonConfigs.BROADCAST_NPC_MSG.get() && living.getType() != TENpcEntities.OLD_MAN.get()) { // 老人不用广播死亡信息
             MutableComponent message;
             if (living instanceof AnglerNPC /* todo 或宠物/公主 */) {
-                if (!living.isLieDown()) { // 渔夫未解锁时死亡不会广播死亡消息
-                    message = Component.translatable("event.confluence.npc.left", living.getName()).withColor(GlobalColors.NPC_SLAIN.get());
-                } else {
-                    return;
-                }
+                if (living.isLieDown()) return; // 渔夫未解锁时死亡不会广播死亡消息
+                message = Component.translatable("event.confluence.npc.left", living.getName()).withColor(GlobalColors.NPC_SLAIN.get());
             } else if (living instanceof TravelingMerchantNPC) {
                 message = Component.translatable("event.confluence.traveling_merchant.departed", living.getName()).withColor(GlobalColors.NPC_ARRIVED.get());
             } else {

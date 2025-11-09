@@ -683,6 +683,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.ammoSlotsBlacklist.tooltip", "在黑名单中的id或tag对应的物品不会自动进入弹药栏");
         add("confluence.configuration.terraStyleExplosion", "泰拉样式爆炸");
         add("confluence.configuration.terraStyleExplosion.tooltip", "开启后，模组内炸弹将模拟泰拉爆炸范围");
+        add("confluence.configuration.terraStyleFireDamage", "泰拉样式火焰伤害");
+        add("confluence.configuration.terraStyleFireDamage.tooltip", "开启后，火焰伤害将x4，并阻止回血。且仅对玩家有效");
         // 分割
         add("confluence.configuration.Mana.button", "魔力值");
         add("confluence.configuration.Armor.button", "护甲值");

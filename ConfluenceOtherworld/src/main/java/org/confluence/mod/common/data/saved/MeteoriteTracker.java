@@ -1,5 +1,6 @@
 package org.confluence.mod.common.data.saved;
 
+import it.unimi.dsi.fastutil.longs.LongSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.Registries;
@@ -108,16 +109,18 @@ public final class MeteoriteTracker {
         } while ((chunkHolder = chunkMap.getVisibleChunkIfPresent(ChunkPos.asLong(x, z))) != null && chunkHolder.getTicketLevel() >= 34);
         // 获取能放陨石的区块
         BlockPos.MutableBlockPos landingPos = new BlockPos.MutableBlockPos();
+        LongSet forcedChunks = level.getForcedChunks();
         do {
             while ((chunkHolder = chunkMap.getVisibleChunkIfPresent(ChunkPos.asLong(x, z))) != null && chunkHolder.getTicketLevel() >= 34) {
                 if (level.random.nextBoolean()) x += xStep;
                 else z += zStep;
             }
-            level.setChunkForced(x, z, true);
+            boolean requires = !forcedChunks.contains(ChunkPos.asLong(x, z));
+            if (requires) level.setChunkForced(x, z, true);
             int bx = SectionPos.sectionToBlockCoord(x, 7);
             int bz = SectionPos.sectionToBlockCoord(z, 7);
             landingPos.set(bx, level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, bx, bz), bz);
-            level.setChunkForced(x, z, false);
+            if (requires) level.setChunkForced(x, z, false);
             x += xStep;
             z += zStep;
         } while (!level.getBlockState(landingPos).getFluidState().isEmpty());

@@ -117,7 +117,7 @@ public final class GlobalCloakData implements IGlobalData {
     }
 
     public BlockState getTarget(BlockState source) {
-        if (source.isAir()) return source;
+        if (source.canBeReplaced()) return source;
         BooleanObjectPair<BlockState> pair = blockMap.get(source);
         if (pair == null || !pair.leftBoolean()) return source;
         return pair.right();

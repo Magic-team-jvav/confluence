@@ -15,7 +15,6 @@ import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
 import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.AllOfCondition;
-import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import org.confluence.mod.Confluence;
@@ -292,7 +291,7 @@ public record GiftSubProvider(HolderLookup.Provider registries) implements LootT
                         .add(LootItem.lootTableItem(PotionItems.GRAVITATION_POTION).apply(count2To4))
                         .add(LootItem.lootTableItem(PotionItems.MINING_POTION.get()).apply(count2To4))
                         .add(LootItem.lootTableItem(PotionItems.HEART_REACH_POTION.get()).apply(count2To4))
-                        // todo 镇静药水
+                        .add(LootItem.lootTableItem(PotionItems.CALMING_POTION.get()).apply(count2To4))
                         .add(LootItem.lootTableItem(PotionItems.FLIPPER_POTION.get()).apply(count2To4))
 
                         .add(EmptyLootItem.emptyItem().setWeight(42))

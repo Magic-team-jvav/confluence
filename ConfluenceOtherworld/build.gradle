@@ -286,6 +286,12 @@ dependencies {
 
     compileOnly "curse.maven:dynamiclights-reforged-551736:5807536"
 
+    compileOnly "maven.modrinth:better-combat:2.2.5+1.21.1-neoforge"
+    if (false) {
+        runtimeOnly "maven.modrinth:better-combat:2.2.5+1.21.1-neoforge"
+        runtimeOnly "maven.modrinth:cloth-config:15.0.140+neoforge"
+    }
+
     /**********************************************************/
 
     //runtimeOnly "curse.maven:worldedit-225608:5830452"
@@ -324,10 +330,6 @@ dependencies {
         runtimeOnly "curse.maven:enchantment-descriptions-250419:6348560"
         runtimeOnly "curse.maven:bookshelf-228525:6717571"
         runtimeOnly "curse.maven:prickle-1023259:6546240"
-    }
-    if (false) {
-        runtimeOnly "curse.maven:immersive-portals-for-forge-355440:6013197"
-        runtimeOnly "curse.maven:cloth-config-348521:5729127"
     }
     if (observable) {
         runtimeOnly "curse.maven:observable-509575:5733591"

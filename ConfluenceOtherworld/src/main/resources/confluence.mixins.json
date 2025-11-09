@@ -59,6 +59,7 @@
         "integration.apothic_attributes.AttributeEventsMixin",
         "integration.ars_nouveau.LivingCasterMixin",
         "integration.ars_nouveau.ManaCapMixin",
+        "integration.better_combat.ServerNetworkMixin",
         "integration.carryon.PickupHandlerMixin",
         "integration.curios.CuriosServerPayloadHandlerMixin",
         "integration.curios.CuriosUtilMixinHooksMixin",

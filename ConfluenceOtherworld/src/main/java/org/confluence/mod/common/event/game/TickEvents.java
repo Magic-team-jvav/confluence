@@ -4,7 +4,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameRules;
@@ -24,7 +23,6 @@ import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.block.functional.network.PathService;
 import org.confluence.mod.common.data.saved.*;
 import org.confluence.mod.common.entity.FallingStarItemEntity;
-import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.item.fishing.AbstractFishingPole;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
@@ -32,7 +30,6 @@ import org.confluence.mod.common.worldgen.structure.DungeonStructure;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.mixed.Immunity;
 import org.confluence.mod.util.AchievementUtils;
-import org.confluence.mod.util.DynamicBiomeUtils;
 import org.confluence.mod.util.OverworldUtils;
 import org.confluence.mod.util.PlayerUtils;
 import org.confluence.terraentity.entity.boss.EyeOfCthulhu;
@@ -89,19 +86,14 @@ public final class TickEvents {
             IServerPlayer.of(player).confluence$setCouldPickupItem(true);
             PlayerUtils.regenerateMana(player);
             ExtraInventory.of(player).sync(player);
-            AchievementUtils.youCanDoIt(player, level);
-            AchievementUtils.quietNeighborhood(player, level);
-            AchievementUtils.aRareRealm(player, level);
-            TheConstant.applyDarkness(player, level);
+            AchievementUtils.youCanDoIt(player, level, gameTime);
+            AchievementUtils.quietNeighborhood(player, level, gameTime);
+            AchievementUtils.aRareRealm(player, level, gameTime);
+            TheConstant.applyDarkness(player, level, gameTime);
             DungeonStructure.checkSkeletronDefeated(player, level);
             ChunkDropletsData.syncDroplets(player);
-            ModArmorBonus.afterTick(player);
-            if (gameTime % 200 == 0) {
-                var iSection = DynamicBiomeUtils.getISection(player.level(), player.blockPosition());
-                if (iSection != null && iSection.confluence$getBlockCounts().sunflower.get() > 0) {
-                    player.addEffect(new MobEffectInstance(ModEffects.HAPPY, 210));
-                }
-            }
+            ModArmorBonus.afterTick(player, gameTime);
+            PlayerUtils.applySunflowerEffect(player, level, gameTime);
         }
 
         if (gameTime % 60 == 3) {

@@ -6,12 +6,14 @@ import com.xiaohunao.terra_moment.common.init.TMMoments;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -42,6 +44,7 @@ import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.common.item.potion.ManaPotionItem;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
+import org.confluence.mod.mixed.ILevelChunkSection;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.network.s2c.*;
@@ -461,5 +464,14 @@ public final class PlayerUtils {
             return amount * 4;
         }
         return amount;
+    }
+
+    public static void applySunflowerEffect(ServerPlayer player, ServerLevel level, long gameTime) {
+        if (gameTime % 200 == 0) {
+            ILevelChunkSection iSection = DynamicBiomeUtils.getISection(level, player.blockPosition());
+            if (iSection != null && iSection.confluence$getBlockCounts().sunflower.get() > 0) {
+                player.addEffect(new MobEffectInstance(ModEffects.HAPPY, 220));
+            }
+        }
     }
 }

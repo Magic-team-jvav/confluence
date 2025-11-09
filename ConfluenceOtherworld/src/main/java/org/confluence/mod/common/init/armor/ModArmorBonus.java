@@ -444,8 +444,7 @@ public final class ModArmorBonus {
         }
     }
 
-    public static void afterTick(ServerPlayer player) {
-        long gameTime = player.level().getGameTime();
+    public static void afterTick(ServerPlayer player, long gameTime) {
         if (gameTime % 80 == 0 && isArmorSet(player, HEIM_SET)) {
             player.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 100, 1, false, false));
         }

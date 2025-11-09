@@ -91,7 +91,7 @@ public interface IFishingHook extends IExtraSyncedData<FishingHook> {
         Player owner = self.getPlayerOwner();
         if (owner != null) {
             float luck = self.luck;
-            luck += TCUtils.getAccessoriesValue(owner, AccessoryItems.FISHING$POWER);
+            luck += TCUtils.getValue(owner, AccessoryItems.FISHING$POWER);
             IBait bait = IBait.of(AbstractFishingPole.getBait(self.registryAccess(), stack));
             if (bait != null) luck *= (1 + bait.getBaitBonus());
             params.luck = luck;

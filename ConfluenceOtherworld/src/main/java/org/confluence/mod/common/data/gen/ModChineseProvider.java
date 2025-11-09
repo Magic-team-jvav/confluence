@@ -153,8 +153,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.advanced_combat_techniques_volume_two.0", "增强所有城镇居民的防御力和力量");
         add("tooltip.item.confluence.advanced_combat_techniques_volume_two.1", "“包含攻防战斗技术，卷二！”");
         add("tooltip.item.confluence.binoculars.0", "使用时扩大视野，鼠标滚轮可调整缩放");
-        add("tooltip.item.confluence.meteor_compass.0", "仅保存上一次陨石的坐标");
         add("tooltip.item.confluence.mug.0", "在酒桶处接取麦芽酒");
+        add("tooltip.item.confluence.meteor_compass.0", "仅保存上一次陨石的坐标");
         add("tooltip.item.confluence.magic_conch.0", "右键海滩群系的方块以让大海记住你");
         add("tooltip.item.confluence.demon_conch.0", "右键下界传送门方块以让地狱记住你");
         add("tooltip.item.confluence.bait.common.0", "放入背包即可钓鱼时自动使用，优先使用副手的鱼饵");
@@ -209,6 +209,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.jousting_lance.1", "“纳命来！”");
         add("tooltip.item.confluence.hallowed_jousting_lance.0", "提升速度来加强攻击力");
         add("tooltip.item.confluence.shadow_jousting_lance.0", "提升速度来加强攻击力");
+        add("tooltip.item.confluence.rotten_bone_dust.0", "右键以在腐化之地催生植被，或腐化骷髅");
+        add("tooltip.item.confluence.bloodstained_powder.0", "右键以在猩红之地催生植被，或猩红化苦力怕");
 
         add("tooltip.item.confluence.tokyo_teddy_bear.0", "一位自卑的少女如破碎的泰迪熊般说到：");
         add("tooltip.item.confluence.tokyo_teddy_bear.1", "           来让你听听");
@@ -386,8 +388,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("tooltip.item.confluence.tackle_box.0", "降低鱼饵消耗几率");
         add("tooltip.item.confluence.angler_tackle_bag.0", "钓鱼线永远不会断，降低鱼饵消耗几率，渔力增加10");
         add("tooltip.item.confluence.lavaproof_fishing_hook.0", "可在熔岩中钓鱼");
-        add("tooltip.item.terra_curio.lavaproof_tackle_bag.0", "钓鱼线永远不会断，降低鱼饵消耗几率，渔力增加10");
-        add("tooltip.item.confluence.lavaproof_tackle_bag.1", "可在熔岩中钓鱼");
+        add("tooltip.item.confluence.lavaproof_tackle_bag.0", "钓鱼线永远不会断，降低鱼饵消耗几率，渔力增加10");
+        add("tooltip.item.terra_curio.lavaproof_tackle_bag.1", "可在熔岩中钓鱼");
         add("tooltip.item.confluence.lucky_coin.0", "击中敌人有时会掉落额外的钱币");
         add("tooltip.item.confluence.gold_ring.0", "扩大钱币的拾取范围");
         add("tooltip.item.confluence.discount_card.0", "商店价格降低20%");
@@ -681,6 +683,12 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.ammoSlotsBlacklist.tooltip", "在黑名单中的id或tag对应的物品不会自动进入弹药栏");
         add("confluence.configuration.terraStyleExplosion", "泰拉样式爆炸");
         add("confluence.configuration.terraStyleExplosion.tooltip", "开启后，模组内炸弹将模拟泰拉爆炸范围");
+        add("confluence.configuration.terraStyleFireDamage", "泰拉样式火焰伤害");
+        add("confluence.configuration.terraStyleFireDamage.tooltip", "开启后，火焰伤害将x4，并阻止回血。且仅对玩家有效");
+        add("confluence.configuration.npcInvulnerableToPlayer", "NPC对玩家免疫");
+        add("confluence.configuration.npcInvulnerableToPlayer.tooltip", "开启后，NPC将不再能被玩家攻击（包括原版村民）");
+        add("confluence.configuration.allowsVanillaEntitiesToPerformStageAttributes", "允许原版生物应用阶段属性");
+        add("confluence.configuration.allowsVanillaEntitiesToPerformStageAttributes.tooltip", "开启后，原版生物将在困难模式或其它阶段修改属性");
         // 分割
         add("confluence.configuration.Mana.button", "魔力值");
         add("confluence.configuration.Armor.button", "护甲值");
@@ -705,6 +713,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.section.confluence.client.toml.title", "客户端配置");
         add("confluence.configuration.Entity.tooltip", "与生物有关的视觉效果");
         add("confluence.configuration.section.confluence.common.toml.title", "通用配置");
+        add("confluence.configuration.minEctoMistEffectRadius", "最小迷雾效果距离");
+        add("confluence.configuration.minEctoMistEffectRadius.tooltip", "设置为0时，关闭迷雾效果");
 
         //生物群系
         add("biome.confluence.the_corruption", "腐化之地");
@@ -718,7 +728,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("biome.confluence.the_hallow_tundra", "神圣苔原");
         add("biome.confluence.glowing_mushroom", "发光蘑菇群系");
         add("biome.confluence.ash_wasteland", "灰烬荒地");
-        add("biome.confluence.ash_forest", "白蜡木林");
+        add("biome.confluence.ash_forest", "灰烬木林");
 
         add("biome.minecraft.confluence_sky", "太空层");
 
@@ -1497,8 +1507,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("patchouli.confluence.otherworld_note.weapon.sword.2", "金阔剑是使用红玉、金剑和金锭制作的镐。*b*o不要与原版的金剑混淆。");
 
         //世界
-        add("patchouli.confluence.otherworld_note.world.ash_forest.name", "白蜡木林");
-        add("patchouli.confluence.otherworld_note.world.ash_forest.0", "白蜡木林是一种会在下界生成的生物群系，这里生长着大量的白蜡木。*b白蜡木林几乎都由灰烬块组成，最上方则被灰烬草方块覆盖，灰烬草在其上生长。*2白蜡木在这里生长，玩家可以在这里获取到白蜡木及其衍生物。火焰花同样会在这里生成。");
+        add("patchouli.confluence.otherworld_note.world.ash_forest.name", "灰烬木林");
+        add("patchouli.confluence.otherworld_note.world.ash_forest.0", "灰烬木林是一种会在下界生成的生物群系，这里生长着大量的灰烬木。*b灰烬木林几乎都由灰烬块组成，最上方则被灰烬草方块覆盖，灰烬草在其上生长。*2灰烬木在这里生长，玩家可以在这里获取到灰烬木及其衍生物。火焰花同样会在这里生成。");
         add("patchouli.confluence.otherworld_note.world.ash_forest.1", "*z$(#AAAAAA)“烬墟生芽启新痕。”");
         add("patchouli.confluence.otherworld_note.world.ash_forest.2", "*o*t灰暗的尘土死气沉沉，*b*t赤红的世界生机勃勃");
 
@@ -2397,6 +2407,130 @@ public class ModChineseProvider extends LanguageProvider {
         add("bestiary.entity.terra_entity.bloody_spore.desc", "猩红之地知道苦力怕这种生物最容易将它的肉体撒播。");
         add("bestiary.entity.terra_entity.hill_of_flesh.desc", "世界的双相，造就了血肉墙对世界另一适应形态的出现，血肉山是世界的核心与守护者，这尊高大的恶魔领主存在的意义，便是将强大的远古灵魂封印起来。");
 
+        // 套装效果
+        add("armor_set_bonus.when_applied", "套装奖励：");
+        // 挖矿
+        add("tooltip.item.confluence.mining_helmet.0", "穿戴时可提供照明");
+        add("armor_set_bonus.confluence.mining_set.0", "挖矿速度提高10%");
+        // 木
+        add("armor_set_bonus.confluence.plank_set.0", "+1 护甲值");
+        add("armor_set_bonus.confluence.pearlwood_set.0", "+1 护甲值");
+
+        add("armor_set_bonus.confluence.ash_set.0", "将熔岩的接触伤害降低 50%");
+        add("armor_set_bonus.confluence.ash_set.1", "受到的着火持续时间降低35%");
+        // 肉前基础矿石
+        add("armor_set_bonus.confluence.copper_set.0", "+1 护甲值");
+        add("armor_set_bonus.confluence.tin_set.0", "+2 护甲值");
+        add("armor_set_bonus.confluence.lead_set.0", "+1 护甲值");
+        add("armor_set_bonus.confluence.silver_set.0", "+2 护甲值");
+        add("armor_set_bonus.confluence.tungsten_set.0", "+1 护甲值");
+        add("armor_set_bonus.confluence.golden_set.0", "+1 护甲值");
+        add("armor_set_bonus.confluence.platinum_set.0", "+2 护甲值");
+        // 防雪
+        add("armor_set_bonus.confluence.snow_set.0", "不会被冷冻或冰冻");
+        add("armor_set_bonus.confluence.pink_snow_set.0", "不会被冷冻或冰冻");
+        // 渔夫
+        add("tooltip.item.confluence.angler_hat.0", "渔力增加5");
+        add("tooltip.item.confluence.angler_vest.0", "渔力增加5");
+        add("tooltip.item.confluence.angler_pants.0", "渔力增加5");
+        add("armor_set_bonus.confluence.angler_set.0", "敌人生成速度降低");
+        // 仙人掌
+        add("armor_set_bonus.confluence.cactus_set.0", "攻击者因为仙人掌尖刺受到伤害");
+        // 南瓜
+        add("armor_set_bonus.confluence.pumpkin_set.0", "伤害提高10%");
+        // 忍者
+        add("armor_set_bonus.confluence.ninja_set.0", "移动速度提高20%");
+        // 化石
+        add("armor_set_bonus.confluence.fossil_set.0", "20%几率省下弹药");
+        // 寒晶
+        add("tooltip.item.confluence.cold_crystal_helmet.0", "最大魔力值增加20");
+        add("tooltip.item.confluence.cold_crystal_chestplate.0", "最大魔力值增加20");
+        add("armor_set_bonus.confluence.cold_crystal_set.0", "魔法攻击会有附带霜冻效果");
+        // 孢根
+        add("armor_set_bonus.confluence.spore_root_set.0", "仆从数量上限增加1");
+        // 渊鳞
+        add("tooltip.item.confluence.heim_helmet.0", "延长水下呼吸时间5%");
+        add("armor_set_bonus.confluence.heim_set.0", "赋予4点生命值的伤害吸收，每隔5秒钟再次赋予");
+        // 蜜蜂
+        add("armor_set_bonus.confluence.bee_set.0", "召唤伤害提高10%");
+        // 黑曜石
+        add("armor_set_bonus.confluence.obsidian_set.0", "鞭子攻击范围扩大30%，鞭子攻击速度提高15%");
+        add("armor_set_bonus.confluence.obsidian_set.1", "召唤伤害提高15%");
+        // 角斗士
+        add("armor_set_bonus.confluence.gladiator_set.0", "免疫击退");
+        // 巫师
+        add("tooltip.item.confluence.amber_robe.0", "最大魔力增加60");
+        add("tooltip.item.confluence.amber_robe.1", "魔力消耗降低13%");
+        add("tooltip.item.confluence.diamond_robe.0", "最大魔力增加80");
+        add("tooltip.item.confluence.diamond_robe.1", "魔力消耗降低15%");
+        add("tooltip.item.confluence.mystic_robe.0", "魔法伤害和暴击率各提高6%");
+        add("tooltip.item.confluence.mystic_robe.1", "魔力消耗降低10%");
+        add("tooltip.item.confluence.ruby_robe.0", "最大魔力增加60");
+        add("tooltip.item.confluence.ruby_robe.1", "魔力消耗降低13%");
+        add("tooltip.item.confluence.jade_robe.0", "最大魔力增加60");
+        add("tooltip.item.confluence.jade_robe.1", "魔力消耗降低11%");
+        add("tooltip.item.confluence.sapphire_robe.0", "最大魔力增加40");
+        add("tooltip.item.confluence.sapphire_robe.1", "魔力消耗降低9%");
+        add("tooltip.item.confluence.topaz_robe.0", "最大魔力增加40");
+        add("tooltip.item.confluence.topaz_robe.1", "魔力消耗降低7%");
+        add("tooltip.item.confluence.amethyst_robe.0", "最大魔力增加20");
+        add("tooltip.item.confluence.amethyst_robe.1", "魔力消耗降低5%");
+        // 流星
+        add("armor_set_bonus.confluence.meteor_set.0", "太空枪魔力消耗降低为0");
+        // 丛林
+        add("tooltip.item.confluence.jungle_helmet.0", "最大魔力增加40");
+        add("tooltip.item.confluence.jungle_chestplate.0", "最大魔力增加20");
+        add("tooltip.item.confluence.jungle_leggings.0", "最大魔力增加20");
+        add("armor_set_bonus.confluence.jungle_set.0", "魔力消耗降低16%");
+        // 死灵
+        add("armor_set_bonus.confluence.necro_set.0", "暴击率提高10%");
+        // 暗影
+        add("armor_set_bonus.confluence.shadow_set.0", "提高移动速度和加速度");
+        // 猩红
+        add("armor_set_bonus.confluence.crimson_set.0", "生命再生能力大幅提升");
+        // 熔岩
+        add("armor_set_bonus.confluence.molten_set.0", "近战伤害提高10%");
+        add("armor_set_bonus.confluence.molten_set.1", "免疫着火");
+        // 钻石
+        add("armor_set_bonus.confluence.diamond_set.0", "赋予时运II");
+        // 下界合金
+        add("armor_set_bonus.confluence.netherite_set.0", "免疫着火和熔岩");
+        add("armor_set_bonus.confluence.netherite_set.1", "移动速度提高5%");
+        add("armor_set_bonus.confluence.netherite_set.2", "伤害提高8%");
+        add("armor_set_bonus.confluence.netherite_set.3", "浸泡在熔岩时回复耐久");
+        // 蜘蛛
+        add("armor_set_bonus.confluence.spider_set.0", "召唤伤害提高12%");
+        // 困难模式矿石
+        add("tooltip.item.confluence.cobalt_hat.0", "最大魔力增加40");
+        add("armor_set_bonus.confluence.cobalt_helmet_set.0", "近战速度提高15%");
+        add("armor_set_bonus.confluence.cobalt_mask_set.0", "20%几率省下弹药");
+        add("armor_set_bonus.confluence.cobalt_hat_set.0", "魔力消耗降低14%");
+
+        add("tooltip.item.confluence.palladium_headgear.0", "最大魔力增加60");
+        add("armor_set_bonus.confluence.palladium_mask_set.0", "攻击敌人后大大提高生命再生速度");
+        add("armor_set_bonus.confluence.palladium_helmet_set.0", "攻击敌人后大大提高生命再生速度");
+        add("armor_set_bonus.confluence.palladium_headgear_set.0", "攻击敌人后大大提高生命再生速度");
+
+        add("tooltip.item.confluence.mythril_hood.0", "最大魔力增加60");
+        add("armor_set_bonus.confluence.mythril_hood_set.0", "魔力消耗降低17%");
+        add("armor_set_bonus.confluence.mythril_helmet_set.0", "暴击率提高10%");
+        add("armor_set_bonus.confluence.mythril_hat_set.0", "20%几率省下弹药");
+
+        add("tooltip.item.confluence.orichalcum_headgear.0", "最大魔力增加80");
+        add("armor_set_bonus.confluence.orichalcum_headgear_set.0", "花瓣将落到目标身上造成额外伤害");
+        add("armor_set_bonus.confluence.orichalcum_mask_set.0", "花瓣将落到目标身上造成额外伤害");
+        add("armor_set_bonus.confluence.orichalcum_helmet_set.0", "花瓣将落到目标身上造成额外伤害");
+
+        add("tooltip.item.confluence.adamantite_headgear.0", "最大魔力增加80");
+        add("armor_set_bonus.confluence.adamantite_headgear_set.0", "魔力消耗降低19%");
+        add("armor_set_bonus.confluence.adamantite_helmet_set.0", "近战速度和移动速度各提高20%");
+        add("armor_set_bonus.confluence.adamantite_mask_set.0", "25%几率省下弹药");
+
+        add("tooltip.item.confluence.titanium_headgear.0", "最大魔力增加100");
+        add("armor_set_bonus.confluence.titanium_mask_set.0", "攻击生成钛金碎片防御屏障");
+        add("armor_set_bonus.confluence.titanium_helmet_set.0", "攻击生成钛金碎片防御屏障");
+        add("armor_set_bonus.confluence.titanium_headgear_set.0", "攻击生成钛金碎片防御屏障");
+
 
         add(ModEntities.BEE_ARROW.get(), "蜜蜂箭");
         add(ModEntities.HELL_BAT_ARROW.get(), "地狱蝙蝠箭");
@@ -2464,6 +2598,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEntities.WATER_STREAM_PROJECTILE.get(), "水流射弹");
         add(ModEntities.WEB_SLINGER.get(), "网射手");
         add(ModEntities.WET_BOMB.get(), "湿炸弹");
+        add(ModEntities.VANILLA_MINECART.get(), "矿车");
         add(ModEntities.WOODEN_MINECART.get(), "木制矿车");
         add(ModEntities.BOULDER.get(), "巨石");
         add(ModEntities.FOLLOWER_BOULDER.get(), "跟踪巨石");
@@ -2745,21 +2880,21 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.FENCE_GATE.get(), "黄柳木栅栏门");
         add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.PRESSURE_PLATE.get(), "黄柳木压力板");
 
-        add(NatureBlocks.ASH_LOG_BLOCKS.BUTTON.get(), "白蜡木按钮");
-        add(NatureBlocks.ASH_LOG_BLOCKS.PLANKS.get(), "白蜡木板");
-        add(NatureBlocks.ASH_LOG_BLOCKS.LOG.get(), "白蜡原木");
-        add(NatureBlocks.ASH_LOG_BLOCKS.STRIPPED_LOG.get(), "去皮白蜡原木");
-        add(NatureBlocks.ASH_LOG_BLOCKS.STRIPPED_WOOD.get(), "去皮白蜡木");
-        add(NatureBlocks.ASH_LOG_BLOCKS.DOOR.get(), "白蜡木门");
-        add(NatureBlocks.ASH_LOG_BLOCKS.TRAPDOOR.get(), "白蜡木活板门");
-        add(NatureBlocks.ASH_LOG_BLOCKS.SIGN.get(), "白蜡木告示牌");
-        add(NatureBlocks.ASH_LOG_BLOCKS.HANGING_SIGN.get(), "悬挂式白蜡木告示牌");
-        add(NatureBlocks.ASH_LOG_BLOCKS.STAIRS.get(), "白蜡木楼梯");
-        add(NatureBlocks.ASH_LOG_BLOCKS.SLAB.get(), "白蜡木台阶");
-        add(NatureBlocks.ASH_LOG_BLOCKS.WOOD.get(), "白蜡木");
-        add(NatureBlocks.ASH_LOG_BLOCKS.FENCE.get(), "白蜡木栅栏");
-        add(NatureBlocks.ASH_LOG_BLOCKS.FENCE_GATE.get(), "白蜡木栅栏门");
-        add(NatureBlocks.ASH_LOG_BLOCKS.PRESSURE_PLATE.get(), "白蜡木压力板");
+        add(NatureBlocks.ASH_LOG_BLOCKS.BUTTON.get(), "灰烬木按钮");
+        add(NatureBlocks.ASH_LOG_BLOCKS.PLANKS.get(), "灰烬木板");
+        add(NatureBlocks.ASH_LOG_BLOCKS.LOG.get(), "灰烬原木");
+        add(NatureBlocks.ASH_LOG_BLOCKS.STRIPPED_LOG.get(), "去皮灰烬原木");
+        add(NatureBlocks.ASH_LOG_BLOCKS.STRIPPED_WOOD.get(), "去皮灰烬木");
+        add(NatureBlocks.ASH_LOG_BLOCKS.DOOR.get(), "灰烬木门");
+        add(NatureBlocks.ASH_LOG_BLOCKS.TRAPDOOR.get(), "灰烬木活板门");
+        add(NatureBlocks.ASH_LOG_BLOCKS.SIGN.get(), "灰烬木告示牌");
+        add(NatureBlocks.ASH_LOG_BLOCKS.HANGING_SIGN.get(), "悬挂式灰烬木告示牌");
+        add(NatureBlocks.ASH_LOG_BLOCKS.STAIRS.get(), "灰烬木楼梯");
+        add(NatureBlocks.ASH_LOG_BLOCKS.SLAB.get(), "灰烬木台阶");
+        add(NatureBlocks.ASH_LOG_BLOCKS.WOOD.get(), "灰烬木");
+        add(NatureBlocks.ASH_LOG_BLOCKS.FENCE.get(), "灰烬木栅栏");
+        add(NatureBlocks.ASH_LOG_BLOCKS.FENCE_GATE.get(), "灰烬木栅栏门");
+        add(NatureBlocks.ASH_LOG_BLOCKS.PRESSURE_PLATE.get(), "灰烬木压力板");
 
         add(NatureBlocks.LIVING_LOG_BLOCKS.BUTTON.get(), "生命木按钮");
         add(NatureBlocks.LIVING_LOG_BLOCKS.PLANKS.get(), "生命木板");
@@ -2884,7 +3019,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.DIAMOND_BRANCHES.get(), "钻石枝杈");
         add(NatureBlocks.SAPPHIRE_BRANCHES.get(), "蓝玉石枝杈");
         add(NatureBlocks.AMETHYST_BRANCHES.get(), "紫晶石枝杈");
-        add(NatureBlocks.ASH_BRANCHES.get(), "白蜡枝杈");
+        add(NatureBlocks.ASH_BRANCHES.get(), "灰烬枝杈");
         add(NatureBlocks.AETHERIUM_BLOCK.get(), "以太块");
         add(NatureBlocks.DARK_AETHERIUM_BLOCK.get(), "黯淡以太块");
         add(NatureBlocks.SHADOW_ORB.get(), "暗影珠");
@@ -2927,7 +3062,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.DIAMOND_SAPLING.get(), "钻石树苗");
         add(NatureBlocks.SAPPHIRE_SAPLING.get(), "蓝玉树苗");
         add(NatureBlocks.AMETHYST_SAPLING.get(), "紫晶树苗");
-        add(NatureBlocks.ASH_LOG_BLOCKS.SAPLING.get(), "白蜡树苗");
+        add(NatureBlocks.ASH_LOG_BLOCKS.SAPLING.get(), "灰烬树苗");
         add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.SAPLING.get(), "黄柳树苗");
         add(NatureBlocks.BAOBAB_LOG_BLOCKS.SAPLING.get(), "猴面包树苗");
 
@@ -3108,7 +3243,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(NatureBlocks.SHADOW_LOG_BLOCKS.CHISELED_PLANKS.get(), "雕纹暗影木板");
         add(NatureBlocks.PEARL_LOG_BLOCKS.CHISELED_PLANKS.get(), "雕纹珍珠木板");
         add(NatureBlocks.PALM_LOG_BLOCKS.CHISELED_PLANKS.get(), "雕纹棕榈木板");
-        add(NatureBlocks.ASH_LOG_BLOCKS.CHISELED_PLANKS.get(), "雕纹白蜡木板");
+        add(NatureBlocks.ASH_LOG_BLOCKS.CHISELED_PLANKS.get(), "雕纹灰烬木板");
         add(NatureBlocks.YELLOW_WILLOW_LOG_BLOCKS.CHISELED_PLANKS.get(), "雕纹黄柳木板");
         add(NatureBlocks.BAOBAB_LOG_BLOCKS.CHISELED_PLANKS.get(), "雕纹猴面包木木板");
         add(NatureBlocks.LIVING_LOG_BLOCKS.CHISELED_PLANKS.get(), "雕纹生命木板");
@@ -3291,6 +3426,9 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModBlocks.SILK_ROPE.get(), "丝绸绳");
         add(ModBlocks.WEB_ROPE.get(), "蛛丝绳");
 
+        // 带效果的蜡烛
+        add(FunctionalBlocks.WATER_CANDLE.get(), "水蜡烛");
+        add(FunctionalBlocks.PEACE_CANDLE.get(), "和平蜡烛");
 /*
         add(Torches.RED_TORCH.item.get(), "红火把");
         add(Torches.ORANGE_TORCH.item.get(), "橙火把");
@@ -3441,7 +3579,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.SHADOW_SCALE.get(), "暗影鳞片");
         add(MaterialItems.TISSUE_SAMPLE.get(), "组织样本");
         add(MaterialItems.ROYAL_WAX.get(), "蜂王蜡");
-        add(MaterialItems.DUNGEON_DEMON_BONE.get(), "地牢魔骨");
+        add(MaterialItems.PEARLWOOD_STICK.get(), "珍珠木棍");
         add(MaterialItems.CURSED_FLAME.get(), "诅咒焰");
         add(MaterialItems.ICHOR.get(), "灵液");
         add(MaterialItems.PIXIE_DUST.get(), "妖精尘");
@@ -3514,7 +3652,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(SwordItems.CACTUS_SWORD.get(), "仙人掌剑");
         add(SwordItems.EBONWOOD_SWORD.get(), "乌木剑");
         add(SwordItems.SHADEWOOD_SWORD.get(), "暗影木剑");
-        add(SwordItems.ASH_WOOD_SWORD.get(), "白蜡木剑");
+        add(SwordItems.ASH_WOOD_SWORD.get(), "灰烬木剑");
         add(SwordItems.PEARLWOOD_SWORD.get(), "珍珠木剑");
         add(SwordItems.MURAMASA.get(), "村正大刀");
         add(SwordItems.COBALT_SWORD.get(), "钴剑");
@@ -3695,7 +3833,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(HammerItems.WOODEN_HAMMER.get(), "木锤");
         add(HammerItems.EBONWOOD_HAMMER.get(), "乌木锤");
         add(HammerItems.SHADEWOOD_HAMMER.get(), "暗影木锤");
-        add(HammerItems.ASH_WOOD_HAMMER.get(), "白蜡木锤");
+        add(HammerItems.ASH_WOOD_HAMMER.get(), "灰烬木锤");
         add(HammerItems.PEARLWOOD_HAMMER.get(), "珍珠木锤");
         add(HammerItems.COPPER_HAMMER.get(), "铜锤");
         add(HammerItems.TIN_HAMMER.get(), "锡锤");
@@ -3769,8 +3907,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(ToolItems.GUIDE_TO_PEACEFUL_COEXISTENCE.get(), "和平共处指南");
 
 
-        add(BoatItems.ASH_BOAT.get(), "白蜡木船");
-        add(BoatItems.ASH_CHEST_BOAT.get(), "白蜡木运输船");
+        add(BoatItems.ASH_BOAT.get(), "灰烬木船");
+        add(BoatItems.ASH_CHEST_BOAT.get(), "灰烬木运输船");
         add(BoatItems.BAOBAB_BOAT.get(), "猴面包木船");
         add(BoatItems.BAOBAB_CHEST_BOAT.get(), "猴面包木运输船");
         add(BoatItems.EBONY_BOAT.get(), "乌木船");
@@ -3799,6 +3937,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ConsumableItems.BONE_THROWING_KNIFE.get(), "骨投刀");
         add(ConsumableItems.FROST_DAGGERFISH.get(), "寒霜飞鱼");
         add(ConsumableItems.JAVELIN.get(), "标枪");
+        add(ConsumableItems.DUNGEON_DEMON_BONE.get(), "地牢魔骨");
         add(ConsumableItems.SPIKY_BALL.get(), "尖球");
         add(ConsumableItems.HOLY_WATER.get(), "圣水");
         add(ConsumableItems.UNHOLY_WATER.get(), "邪水");
@@ -4186,7 +4325,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(BowItems.WOODEN_SHORT_BOW.get(), "木短弓");
         add(BowItems.EBONWOOD_SHORT_BOW.get(), "乌木短弓");
         add(BowItems.SHADEWOOD_SHORT_BOW.get(), "暗影木短弓");
-        add(BowItems.ASH_WOOD_SHORT_BOW.get(), "白蜡木短弓");
+        add(BowItems.ASH_WOOD_SHORT_BOW.get(), "灰烬木短弓");
         add(BowItems.PEARLWOOD_SHORT_BOW.get(), "珍珠木短弓");
         add(BowItems.COPPER_SHORT_BOW.get(), "铜短弓");
         add(BowItems.TIN_SHORT_BOW.get(), "锡短弓");
@@ -4199,7 +4338,7 @@ public class ModChineseProvider extends LanguageProvider {
 
         add(BowItems.EBONWOOD_BOW.get(), "乌木弓");
         add(BowItems.SHADEWOOD_BOW.get(), "暗影木弓");
-        add(BowItems.ASH_WOOD_BOW.get(), "白蜡木弓");
+        add(BowItems.ASH_WOOD_BOW.get(), "灰烬木弓");
         add(BowItems.PEARLWOOD_BOW.get(), "珍珠木弓");
         add(BowItems.COPPER_BOW.get(), "铜弓");
         add(BowItems.TIN_BOW.get(), "锡弓");
@@ -4243,10 +4382,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.PEARL_HELMET.get(), "珍珠木头盔");
         add(ArmorItems.PEARL_LEGGINGS.get(), "珍珠木护腿");
         add(ArmorItems.PEARL_BOOTS.get(), "珍珠木靴子");
-        add(ArmorItems.ASH_CHESTPLATE.get(), "白蜡木胸甲");
-        add(ArmorItems.ASH_HELMET.get(), "白蜡木头盔");
-        add(ArmorItems.ASH_LEGGINGS.get(), "白蜡木护腿");
-        add(ArmorItems.ASH_BOOTS.get(), "白蜡木靴子");
+        add(ArmorItems.ASH_CHESTPLATE.get(), "灰烬木胸甲");
+        add(ArmorItems.ASH_HELMET.get(), "灰烬木头盔");
+        add(ArmorItems.ASH_LEGGINGS.get(), "灰烬木护腿");
+        add(ArmorItems.ASH_BOOTS.get(), "灰烬木靴子");
         add(ArmorItems.PUMPKIN_CHESTPLATE.get(), "南瓜胸甲");
         add(ArmorItems.PUMPKIN_HELMET.get(), "南瓜头盔");
         add(ArmorItems.PUMPKIN_LEGGINGS.get(), "南瓜护腿");
@@ -4333,10 +4472,10 @@ public class ModChineseProvider extends LanguageProvider {
         add(ArmorItems.CRIMSON_CHESTPLATE.get(), "猩红胸甲");
         add(ArmorItems.CRIMSON_LEGGINGS.get(), "猩红护腿");
         add(ArmorItems.CRIMSON_BOOTS.get(), "猩红靴");
-        add(ArmorItems.MINING_HELMET.get(), "照明头盔");
-        add(ArmorItems.MINING_CHESTPLATE.get(), "矿工衣");
-        add(ArmorItems.MINING_LEGGINGS.get(), "矿工裤");
-        add(ArmorItems.MINING_BOOTS.get(), "矿工靴");
+        add(ArmorItems.MINING_HELMET.get(), "挖矿头盔");
+        add(ArmorItems.MINING_CHESTPLATE.get(), "挖矿衣");
+        add(ArmorItems.MINING_LEGGINGS.get(), "挖矿裤");
+        add(ArmorItems.MINING_BOOTS.get(), "挖矿靴");
         add(ArmorItems.ANGLER_HAT.get(), "渔夫帽");
         add(ArmorItems.ANGLER_VEST.get(), "渔夫背心");
         add(ArmorItems.ANGLER_PANTS.get(), "渔夫裤");
@@ -4571,7 +4710,7 @@ public class ModChineseProvider extends LanguageProvider {
         //赞助
         add(FoodItems.PINK_COLA.get(), "粉色可乐");
         add(FoodItems.DONGDONGS_FLATBREAD.get(), "东东的大饼");
-        add(FoodItems.PIGLIN_STEW.get(), "猪灵堡");
+        add(FoodItems.PIGLIN_STEW.get(), "猪灵煲");
         // 鱼
         add(FoodItems.GOLDFISH.get(), "金鱼");
         add(FoodItems.GOLD_GOLDFISH.get(), "金金鱼");
@@ -4604,6 +4743,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.YELLOW_EEL.get(), "黄鳝");
         add(FoodItems.TILAPIA.get(), "罗非鱼");
         add(FoodItems.HONEYFIN.get(), "蜂蜜鱼");
+        add(FoodItems.RED_PLEATFISH.get(), "朱褶鱼");
+        add(FoodItems.BROWN_STALKSPINE.get(), "棕柄脊鱼");
 
         add(FoodItems.RAW_FROG.get(), "生青蛙肉");
         add(FoodItems.RAW_SQUIRREL.get(), "生松鼠肉");
@@ -4889,6 +5030,9 @@ public class ModChineseProvider extends LanguageProvider {
         addPotion(PotionItems.FLASK_OF_FIRE.get(), "烈火药剂", "近战攻击和鞭子攻击会使敌人着火");
         addPotion(PotionItems.FLASK_OF_GOLD.get(), "金药剂", "近战攻击和鞭子攻击会使敌人掉落更多金子");
         addPotion(PotionItems.EGGNOG.get(), "蛋酒", "恢复16生命");
+        addPotion(PotionItems.BATTLE_POTION.get(), "战斗药水", "提高敌人生成速度");
+        addPotion(PotionItems.CALMING_POTION.get(), "镇静药水", "降低敌人生成速度");
+        addPotion(PotionItems.SATIETY_POTION.get(), "耐饿药水", "延缓饥饿值下降速度");
 
         // 药水效果
         addEffect(ModEffects.MANA_SICKNESS.get(), "耐魔性", "魔法伤害降低");
@@ -4949,6 +5093,12 @@ public class ModChineseProvider extends LanguageProvider {
         addEffect(ModEffects.WEAPON_IMBUE_GOLD.get(), "武器灌注：金", "近战攻击会使敌人掉落更多金子");
         addEffect(ModEffects.FROSTBITE.get(), "冻伤", "持续损失生命值");
         addEffect(ModEffects.SHADOWFLAME.get(), "暗影焰", "持续损失生命值");
+        addEffect(ModEffects.WATER_CANDLE.get(), "水蜡烛", "提高怪物生成速度");
+        addEffect(ModEffects.PEACE_CANDLE.get(), "和平蜡烛", "怪物生成速度降低");
+        addEffect(ModEffects.BATTLE.get(), "战斗", "提高怪物生成速度");
+        addEffect(ModEffects.CALM.get(), "冷静", "敌人生成速度降低");
+        addEffect(ModEffects.HAPPY.get(), "快乐", "移动速度提高，怪物生成减少");
+
 
         addEffect(TCEffects.CEREBRAL_MINDTRICK.get(), "控脑术", "提高暴击率");
         addEffect(TCEffects.HONEY.get(), "蜂蜜", "生命再生速度提高");

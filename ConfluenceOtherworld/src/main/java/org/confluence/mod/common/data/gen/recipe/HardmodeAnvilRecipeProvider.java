@@ -15,6 +15,7 @@ import org.confluence.lib.common.recipe.AmountIngredient;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.FunctionalBlocks;
+import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.common.recipe.HardmodeAnvilRecipe;
 import org.confluence.terra_guns.common.init.TGItems;
@@ -44,19 +45,23 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
         hardmodeAnvil(recipeOutput, FunctionalBlocks.CHLOROPHYTE_EXTRACTINATOR.toStack(), AmountIngredient.of(18, MaterialItems.CHLOROPHYTE_INGOT), Ingredient.of(FunctionalBlocks.EXTRACTINATOR));
         hardmodeAnvil(recipeOutput, FunctionalBlocks.TITANIUM_FORGE.toStack(), ShapedRecipePattern.of(Map.of(
                 'H', AmountIngredient.of(5, MaterialItems.RAW_TITANIUM),
-                'F', Ingredient.of(FunctionalBlocks.HELLFORGE)
+                'F', Ingredient.of(FunctionalBlocks.HELLFORGE),
+                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
         ), List.of(
                 " H ",
                 "HFH",
-                "HHH"
+                "HHH",
+                "ppp"
         )));
         hardmodeAnvil(recipeOutput, FunctionalBlocks.ADAMANTITE_FORGE.toStack(), ShapedRecipePattern.of(Map.of(
                 'H', AmountIngredient.of(5, MaterialItems.RAW_ADAMANTITE),
-                'F', Ingredient.of(FunctionalBlocks.HELLFORGE)
+                'F', Ingredient.of(FunctionalBlocks.HELLFORGE),
+                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
         ), List.of(
                 " H ",
                 "HFH",
-                "HHH"
+                "HHH",
+                "ppp"
         )));
         hardmodeAnvil(recipeOutput, TGItems.CHLOROPHYTE_BULLET.toStack(60), AmountIngredient.of(60, TGItems.MUSKET_BULLET), Ingredient.of(MaterialItems.CHLOROPHYTE_INGOT));
         hardmodeAnvil(recipeOutput, TGItems.CRYSTAL_BULLET.toStack(100), AmountIngredient.of(100, TGItems.MUSKET_BULLET), Ingredient.of(MaterialItems.CRYSTAL_SHARDS));
@@ -66,53 +71,65 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
         hardmodeAnvil(recipeOutput, ArmorItems.MYTHRIL_HAT.toStack(), ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(ModTags.Items.INGOTS_MYTHRIL),
                 'a', AmountIngredient.of(2, ModTags.Items.INGOTS_MYTHRIL),
-                'b', AmountIngredient.of(3, ModTags.Items.INGOTS_MYTHRIL)
+                'b', AmountIngredient.of(3, ModTags.Items.INGOTS_MYTHRIL),
+                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
         ), List.of(
                 "bab",
-                "# #"
+                "# #",
+                "ppp"
         )));
         hardmodeAnvil(recipeOutput, ArmorItems.MYTHRIL_HELMET.toStack(), ShapedRecipePattern.of(Map.of(
-                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_MYTHRIL)
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_MYTHRIL),
+                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
         ), List.of(
                 "aaa",
-                "a a"
+                "a a",
+                "ppp"
         )));
         hardmodeAnvil(recipeOutput, ArmorItems.MYTHRIL_HOOD.toStack(), ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(ModTags.Items.INGOTS_MYTHRIL),
-                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_MYTHRIL)
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_MYTHRIL),
+                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
         ), List.of(
                 " a ",
                 "aaa",
-                "# #"
+                "# #",
+                "ppp"
         )));
         hardmodeAnvil(recipeOutput, ArmorItems.MYTHRIL_CHESTPLATE.toStack(), ShapedRecipePattern.of(Map.of(
                 'a', AmountIngredient.of(2, ModTags.Items.INGOTS_MYTHRIL),
-                'b', AmountIngredient.of(3, ModTags.Items.INGOTS_MYTHRIL)
+                'b', AmountIngredient.of(3, ModTags.Items.INGOTS_MYTHRIL),
+                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
         ), List.of(
                 "a a",
                 "bab",
-                "bab"
+                "bab",
+                "ppp"
         )));
         hardmodeAnvil(recipeOutput, ArmorItems.MYTHRIL_LEGGINGS.toStack(), ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(ModTags.Items.INGOTS_MYTHRIL),
-                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_MYTHRIL)
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_MYTHRIL),
+                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
         ), List.of(
                 "a#a",
                 "# #",
-                "# #"
+                "# #",
+                "ppp"
         )));
         hardmodeAnvil(recipeOutput, ArmorItems.MYTHRIL_BOOTS.toStack(), ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(ModTags.Items.INGOTS_MYTHRIL),
-                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_MYTHRIL)
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_MYTHRIL),
+                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
         ), List.of(
                 "a a",
-                "# #"
+                "# #",
+                "ppp"
         )));
 
         // 秘银武器工具
         hardmodeAnvil(recipeOutput, SwordItems.MYTHRIL_SWORD.toStack(), ShapedRecipePattern.of(Map.of(
                 'a', AmountIngredient.of(2, ModTags.Items.INGOTS_MYTHRIL),
-                '/', Ingredient.of(Items.STICK)
+                '/', Ingredient.of(MaterialItems.PEARLWOOD_STICK)
         ), List.of(
                 "   a",
                 "  a ",
@@ -120,16 +137,18 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
                 "/   "
         )));
         hardmodeAnvil(recipeOutput, SpearItems.MYTHRIL_HALBERD.toStack(), ShapedRecipePattern.of(Map.of(
-                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_MYTHRIL)
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_MYTHRIL),
+                'b', AmountIngredient.of(3, ModTags.Items.INGOTS_MYTHRIL),
+                '/', Ingredient.of(MaterialItems.PEARLWOOD_STICK)
         ), List.of(
-                "   a",
-                "  aa",
-                " a  ",
+                "   b",
+                "  ab",
+                " /  ",
                 "a   "
         )));
         hardmodeAnvil(recipeOutput, PickaxeItems.MYTHRIL_PICKAXE.toStack(), ShapedRecipePattern.of(Map.of(
                 'b', AmountIngredient.of(3, ModTags.Items.INGOTS_MYTHRIL),
-                '/', Ingredient.of(Items.STICK)
+                '/', Ingredient.of(MaterialItems.PEARLWOOD_STICK)
         ), List.of(
                 " bbb",
                 "  /b",
@@ -139,7 +158,7 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
         hardmodeAnvil(recipeOutput, AxeItems.MYTHRIL_WARAXE.toStack(), ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(ModTags.Items.INGOTS_MYTHRIL),
                 'b', AmountIngredient.of(2, ModTags.Items.INGOTS_MYTHRIL),
-                '/', Ingredient.of(Items.STICK)
+                '/', Ingredient.of(MaterialItems.PEARLWOOD_STICK)
         ), List.of(
                 " bbb",
                 " #/b",
@@ -148,69 +167,85 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
         )));
         hardmodeAnvil(recipeOutput, DrillItems.MYTHRIL_DRILL.toStack(), ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(ModTags.Items.INGOTS_MYTHRIL),
-                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_MYTHRIL)
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_MYTHRIL),
+                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
         ), List.of(
                 "##a ",
                 "# #a",
-                "##a "
+                "##a ",
+                "pppp"
         )));
         hardmodeAnvil(recipeOutput, ChainsawItems.MYTHRIL_CHAINSAW.toStack(), ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(ModTags.Items.INGOTS_MYTHRIL),
-                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_MYTHRIL)
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_MYTHRIL),
+                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
         ), List.of(
                 "##a ",
-                "##aa"
+                "##aa",
+                "pppp"
         )));
 
         // 山铜套
         hardmodeAnvil(recipeOutput, ArmorItems.ORICHALCUM_HEADGEAR.toStack(), ShapedRecipePattern.of(Map.of(
                 'a', AmountIngredient.of(2, ModTags.Items.INGOTS_ORICHALCUM),
-                'b', AmountIngredient.of(3, ModTags.Items.INGOTS_ORICHALCUM)
+                'b', AmountIngredient.of(3, ModTags.Items.INGOTS_ORICHALCUM),
+                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
         ), List.of(
                 "bab",
-                "a a"
+                "a a",
+                "ppp"
         )));
         hardmodeAnvil(recipeOutput, ArmorItems.ORICHALCUM_HELMET.toStack(), ShapedRecipePattern.of(Map.of(
                 'a', AmountIngredient.of(2, ModTags.Items.INGOTS_ORICHALCUM),
-                'b', AmountIngredient.of(3, ModTags.Items.INGOTS_ORICHALCUM)
+                'b', AmountIngredient.of(3, ModTags.Items.INGOTS_ORICHALCUM),
+                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
         ), List.of(
                 "aaa",
-                "b b"
+                "b b",
+                "ppp"
         )));
         hardmodeAnvil(recipeOutput, ArmorItems.ORICHALCUM_MASK.toStack(), ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(ModTags.Items.INGOTS_ORICHALCUM),
-                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_ORICHALCUM)
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_ORICHALCUM),
+                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
         ), List.of(
                 "aaa",
                 "#a#",
-                " a "
+                " a ",
+                "ppp"
         )));
         hardmodeAnvil(recipeOutput, ArmorItems.ORICHALCUM_CHESTPLATE.toStack(), ShapedRecipePattern.of(Map.of(
-                'b', AmountIngredient.of(3, ModTags.Items.INGOTS_ORICHALCUM)
+                'b', AmountIngredient.of(3, ModTags.Items.INGOTS_ORICHALCUM),
+                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
         ), List.of(
                 "b b",
                 "bbb",
-                "bbb"
+                "bbb",
+                "ppp"
         )));
         hardmodeAnvil(recipeOutput, ArmorItems.ORICHALCUM_LEGGINGS.toStack(), ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(ModTags.Items.INGOTS_ORICHALCUM),
-                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_ORICHALCUM)
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_ORICHALCUM),
+                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
         ), List.of(
                 "aaa",
                 "# #",
-                "# #"
+                "# #",
+                "ppp"
         )));
         hardmodeAnvil(recipeOutput, ArmorItems.ORICHALCUM_BOOTS.toStack(), ShapedRecipePattern.of(Map.of(
-                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_ORICHALCUM)
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_ORICHALCUM),
+                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
         ), List.of(
                 "a a",
-                "a a"
+                "a a",
+                "ppp"
         )));
 
         // 山铜武器工具
         hardmodeAnvil(recipeOutput, SwordItems.ORICHALCUM_SWORD.toStack(), ShapedRecipePattern.of(Map.of(
                 'a', AmountIngredient.of(2, ModTags.Items.INGOTS_ORICHALCUM),
-                '/', Ingredient.of(Items.STICK)
+                '/', Ingredient.of(MaterialItems.PEARLWOOD_STICK)
         ), List.of(
                 "   a",
                 "  aa",
@@ -218,17 +253,19 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
                 "/   "
         )));
         hardmodeAnvil(recipeOutput, SpearItems.ORICHALCUM_HALBERD.toStack(), ShapedRecipePattern.of(Map.of(
-                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_ORICHALCUM)
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_ORICHALCUM),
+                'b', AmountIngredient.of(3, ModTags.Items.INGOTS_ORICHALCUM),
+                '/', Ingredient.of(MaterialItems.PEARLWOOD_STICK)
         ), List.of(
-                "   a",
-                "  aa",
+                "   b",
+                "  /a",
                 " a a",
-                "a   "
+                "b   "
         )));
         hardmodeAnvil(recipeOutput, PickaxeItems.ORICHALCUM_PICKAXE.toStack(), ShapedRecipePattern.of(Map.of(
                 'b', AmountIngredient.of(3, ModTags.Items.INGOTS_ORICHALCUM),
                 'c', AmountIngredient.of(4, ModTags.Items.INGOTS_ORICHALCUM),
-                '/', Ingredient.of(Items.STICK)
+                '/', Ingredient.of(MaterialItems.PEARLWOOD_STICK)
         ), List.of(
                 " bcc",
                 "  /c",
@@ -238,7 +275,7 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
         hardmodeAnvil(recipeOutput, AxeItems.ORICHALCUM_WARAXE.toStack(), ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(ModTags.Items.INGOTS_ORICHALCUM),
                 'b', AmountIngredient.of(2, ModTags.Items.INGOTS_ORICHALCUM),
-                '/', Ingredient.of(Items.STICK)
+                '/', Ingredient.of(MaterialItems.PEARLWOOD_STICK)
         ), List.of(
                 " bbb",
                 " #/b",
@@ -247,72 +284,89 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
         )));
         hardmodeAnvil(recipeOutput, DrillItems.ORICHALCUM_DRILL.toStack(), ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(ModTags.Items.INGOTS_ORICHALCUM),
-                'a', AmountIngredient.of(4, ModTags.Items.INGOTS_ORICHALCUM)
+                'a', AmountIngredient.of(4, ModTags.Items.INGOTS_ORICHALCUM),
+                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
         ), List.of(
                 "##a ",
                 "# #a",
-                "##a "
+                "##a ",
+                "pppp"
         )));
         hardmodeAnvil(recipeOutput, ChainsawItems.ORICHALCUM_CHAINSAW.toStack(), ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(ModTags.Items.INGOTS_ORICHALCUM),
-                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_ORICHALCUM)
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_ORICHALCUM),
+                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
+
         ), List.of(
                 "#aa ",
-                "#aaa"
+                "#aaa",
+                "pppp"
         )));
 
         // 钛金套
         hardmodeAnvil(recipeOutput, ArmorItems.TITANIUM_HEADGEAR.toStack(), ShapedRecipePattern.of(Map.of(
                 'a', AmountIngredient.of(2, ModTags.Items.INGOTS_TITANIUM),
-                'b', AmountIngredient.of(3, ModTags.Items.INGOTS_TITANIUM)
+                'b', AmountIngredient.of(3, ModTags.Items.INGOTS_TITANIUM),
+                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
         ), List.of(
                 "aba",
-                "b b"
+                "b b",
+                "ppp"
         )));
         hardmodeAnvil(recipeOutput, ArmorItems.TITANIUM_HELMET.toStack(), ShapedRecipePattern.of(Map.of(
                 'a', AmountIngredient.of(2, ModTags.Items.INGOTS_TITANIUM),
-                'b', AmountIngredient.of(3, ModTags.Items.INGOTS_TITANIUM)
+                'b', AmountIngredient.of(3, ModTags.Items.INGOTS_TITANIUM),
+                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
         ), List.of(
                 "bbb",
-                "a a"
+                "a a",
+                "ppp"
         )));
         hardmodeAnvil(recipeOutput, ArmorItems.TITANIUM_MASK.toStack(), ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(ModTags.Items.INGOTS_TITANIUM),
-                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_TITANIUM)
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_TITANIUM),
+                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
         ), List.of(
                 "a#a",
                 "#a#",
-                " a "
+                " a ",
+                "ppp"
         )));
         hardmodeAnvil(recipeOutput, ArmorItems.TITANIUM_CHESTPLATE.toStack(), ShapedRecipePattern.of(Map.of(
                 'a', AmountIngredient.of(2, ModTags.Items.INGOTS_TITANIUM),
                 'b', AmountIngredient.of(3, ModTags.Items.INGOTS_TITANIUM),
-                'c', AmountIngredient.of(4, ModTags.Items.INGOTS_TITANIUM)
+                'c', AmountIngredient.of(4, ModTags.Items.INGOTS_TITANIUM),
+                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
         ), List.of(
                 "c c",
                 "bcb",
-                "bab"
+                "bab",
+                "ppp"
         )));
         hardmodeAnvil(recipeOutput, ArmorItems.TITANIUM_LEGGINGS.toStack(), ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(ModTags.Items.INGOTS_TITANIUM),
-                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_TITANIUM)
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_TITANIUM),
+                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
         ), List.of(
                 "aaa",
                 "a a",
-                "# #"
+                "# #",
+                "ppp"
         )));
         hardmodeAnvil(recipeOutput, ArmorItems.TITANIUM_BOOTS.toStack(), ShapedRecipePattern.of(Map.of(
-                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_TITANIUM)
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_TITANIUM),
+                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
         ), List.of(
                 "a a",
-                "a a"
+                "a a",
+                "ppp"
         )));
 
         // 钛金武器工具
         hardmodeAnvil(recipeOutput, SwordItems.TITANIUM_SWORD.toStack(), ShapedRecipePattern.of(Map.of(
                 'c', Ingredient.of(ModTags.Items.INGOTS_TITANIUM),
                 'a', AmountIngredient.of(2, ModTags.Items.INGOTS_TITANIUM),
-                '/', Ingredient.of(Items.STICK)
+                '/', Ingredient.of(MaterialItems.PEARLWOOD_STICK)
         ), List.of(
                 "  cc",
                 " cac",
@@ -321,17 +375,17 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
         )));
         hardmodeAnvil(recipeOutput, SpearItems.TITANIUM_TRIDENT.toStack(), ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(ModTags.Items.INGOTS_TITANIUM),
-                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_TITANIUM),
-                'b', AmountIngredient.of(3, ModTags.Items.INGOTS_TITANIUM)
+                'b', AmountIngredient.of(3, ModTags.Items.INGOTS_TITANIUM),
+                '/', Ingredient.of(MaterialItems.PEARLWOOD_STICK)
         ), List.of(
-                "  #a",
+                "  #b",
                 " #b#",
-                " a# ",
-                "a   "
+                " /# ",
+                "b   "
         )));
         hardmodeAnvil(recipeOutput, PickaxeItems.TITANIUM_PICKAXE.toStack(), ShapedRecipePattern.of(Map.of(
                 'b', AmountIngredient.of(4, ModTags.Items.INGOTS_TITANIUM),
-                '/', Ingredient.of(Items.STICK)
+                '/', Ingredient.of(MaterialItems.PEARLWOOD_STICK)
         ), List.of(
                 " bbb",
                 "  /b",
@@ -341,7 +395,7 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
         hardmodeAnvil(recipeOutput, AxeItems.TITANIUM_WARAXE.toStack(), ShapedRecipePattern.of(Map.of(
                 'b', AmountIngredient.of(2, ModTags.Items.INGOTS_TITANIUM),
                 'c', AmountIngredient.of(3, ModTags.Items.INGOTS_TITANIUM),
-                '/', Ingredient.of(Items.STICK)
+                '/', Ingredient.of(MaterialItems.PEARLWOOD_STICK)
         ), List.of(
                 " bbc",
                 " b/b",
@@ -351,70 +405,86 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
         hardmodeAnvil(recipeOutput, DrillItems.TITANIUM_DRILL.toStack(), ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(ModTags.Items.INGOTS_TITANIUM),
                 'a', AmountIngredient.of(2, ModTags.Items.INGOTS_TITANIUM),
-                'b', AmountIngredient.of(3, ModTags.Items.INGOTS_TITANIUM)
+                'b', AmountIngredient.of(3, ModTags.Items.INGOTS_TITANIUM),
+                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
         ), List.of(
                 "aab ",
                 "# ab",
-                "aab "
+                "aab ",
+                "pppp"
         )));
         hardmodeAnvil(recipeOutput, ChainsawItems.TITANIUM_CHAINSAW.toStack(), ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(ModTags.Items.INGOTS_TITANIUM),
-                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_TITANIUM)
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_TITANIUM),
+                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
         ), List.of(
                 "aaa ",
-                "#aaa"
+                "#aaa",
+                "pppp"
         )));
 
         // 精金套
         hardmodeAnvil(recipeOutput, ArmorItems.ADAMANTITE_HEADGEAR.toStack(), ShapedRecipePattern.of(Map.of(
                 'a', AmountIngredient.of(2, ModTags.Items.INGOTS_ADAMANTITE),
-                'b', AmountIngredient.of(3, ModTags.Items.INGOTS_ADAMANTITE)
+                'b', AmountIngredient.of(3, ModTags.Items.INGOTS_ADAMANTITE),
+                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
         ), List.of(
                 "bab",
-                "a a"
+                "a a",
+                "ppp"
         )));
         hardmodeAnvil(recipeOutput, ArmorItems.ADAMANTITE_HELMET.toStack(), ShapedRecipePattern.of(Map.of(
                 'a', AmountIngredient.of(2, ModTags.Items.INGOTS_ADAMANTITE),
-                'b', AmountIngredient.of(3, ModTags.Items.INGOTS_ADAMANTITE)
+                'b', AmountIngredient.of(3, ModTags.Items.INGOTS_ADAMANTITE),
+                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
         ), List.of(
                 "aaa",
-                "b b"
+                "b b",
+                "ppp"
         )));
         hardmodeAnvil(recipeOutput, ArmorItems.ADAMANTITE_MASK.toStack(), ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(ModTags.Items.INGOTS_ADAMANTITE),
-                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_ADAMANTITE)
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_ADAMANTITE),
+                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
         ), List.of(
                 "aaa",
                 "#a#",
-                " a "
+                " a ",
+                "ppp"
         )));
         hardmodeAnvil(recipeOutput, ArmorItems.ADAMANTITE_CHESTPLATE.toStack(), ShapedRecipePattern.of(Map.of(
-                'b', AmountIngredient.of(3, ModTags.Items.INGOTS_ADAMANTITE)
+                'b', AmountIngredient.of(3, ModTags.Items.INGOTS_ADAMANTITE),
+                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
         ), List.of(
                 "b b",
                 "bbb",
-                "bbb"
+                "bbb",
+                "ppp"
         )));
         hardmodeAnvil(recipeOutput, ArmorItems.ADAMANTITE_LEGGINGS.toStack(), ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(ModTags.Items.INGOTS_ADAMANTITE),
-                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_ADAMANTITE)
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_ADAMANTITE),
+                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
         ), List.of(
                 "aaa",
                 "# #",
-                "# #"
+                "# #",
+                "ppp"
         )));
         hardmodeAnvil(recipeOutput, ArmorItems.ADAMANTITE_BOOTS.toStack(), ShapedRecipePattern.of(Map.of(
-                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_ADAMANTITE)
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_ADAMANTITE),
+                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
         ), List.of(
                 "a a",
-                "a a"
+                "a a",
+                "ppp"
         )));
 
         // 精金武器工具
         hardmodeAnvil(recipeOutput, SwordItems.ADAMANTITE_SWORD.toStack(), ShapedRecipePattern.of(Map.of(
                 'c', Ingredient.of(ModTags.Items.INGOTS_ADAMANTITE),
                 'a', AmountIngredient.of(2, ModTags.Items.INGOTS_ADAMANTITE),
-                '/', Ingredient.of(Items.STICK)
+                '/', Ingredient.of(MaterialItems.PEARLWOOD_STICK)
         ), List.of(
                 "  c ",
                 " cac",
@@ -422,17 +492,19 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
                 "/a  "
         )));
         hardmodeAnvil(recipeOutput, SpearItems.ADAMANTITE_GLAIVE.toStack(), ShapedRecipePattern.of(Map.of(
-                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_ADAMANTITE)
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_ADAMANTITE),
+                'b', AmountIngredient.of(3, ModTags.Items.INGOTS_ADAMANTITE),
+                '/', Ingredient.of(MaterialItems.PEARLWOOD_STICK)
         ), List.of(
-                "  aa",
+                "  bb",
                 " aa ",
-                " a  ",
+                " /  ",
                 "a   "
         )));
         hardmodeAnvil(recipeOutput, PickaxeItems.ADAMANTITE_PICKAXE.toStack(), ShapedRecipePattern.of(Map.of(
                 'b', AmountIngredient.of(3, ModTags.Items.INGOTS_ADAMANTITE),
                 'c', AmountIngredient.of(4, ModTags.Items.INGOTS_ADAMANTITE),
-                '/', Ingredient.of(Items.STICK)
+                '/', Ingredient.of(MaterialItems.PEARLWOOD_STICK)
         ), List.of(
                 " bcc",
                 "  /c",
@@ -442,7 +514,7 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
         hardmodeAnvil(recipeOutput, AxeItems.ADAMANTITE_WARAXE.toStack(), ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(ModTags.Items.INGOTS_ADAMANTITE),
                 'b', AmountIngredient.of(2, ModTags.Items.INGOTS_ADAMANTITE),
-                '/', Ingredient.of(Items.STICK)
+                '/', Ingredient.of(MaterialItems.PEARLWOOD_STICK)
         ), List.of(
                 " bbb",
                 " #/b",
@@ -451,18 +523,22 @@ public class HardmodeAnvilRecipeProvider extends AbstractRecipeProvider {
         )));
         hardmodeAnvil(recipeOutput, DrillItems.ADAMANTITE_DRILL.toStack(), ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(ModTags.Items.INGOTS_ADAMANTITE),
-                'a', AmountIngredient.of(4, ModTags.Items.INGOTS_ADAMANTITE)
+                'a', AmountIngredient.of(4, ModTags.Items.INGOTS_ADAMANTITE),
+                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
         ), List.of(
                 "##a ",
                 "# #a",
-                "##a "
+                "##a ",
+                "pppp"
         )));
         hardmodeAnvil(recipeOutput, ChainsawItems.ADAMANTITE_CHAINSAW.toStack(), ShapedRecipePattern.of(Map.of(
                 '#', Ingredient.of(ModTags.Items.INGOTS_ADAMANTITE),
-                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_ADAMANTITE)
+                'a', AmountIngredient.of(2, ModTags.Items.INGOTS_ADAMANTITE),
+                'p', Ingredient.of(NatureBlocks.PEARL_LOG_BLOCKS.PLANKS.get())
         ), List.of(
                 "#aa ",
-                "#aaa"
+                "#aaa",
+                "pppp"
         )));
 
         // 翅膀

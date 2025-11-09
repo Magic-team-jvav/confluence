@@ -10,7 +10,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import org.confluence.lib.util.LibUtils;
-import org.confluence.mod.Confluence;
 import org.confluence.mod.common.component.ValueComponent;
 import org.confluence.mod.integration.terra_entity.init.ModTradeProviders;
 import org.confluence.terraentity.api.npc.trade.ITradeHolder;
@@ -41,7 +40,6 @@ public class DeferredMoneyTradeItem implements ITradeItem, IMoneyTrade {
         if (cachedResult == ItemStack.EMPTY) {
             Item item = BuiltInRegistries.ITEM.get(deferredResult);
             if (item == Items.AIR) {
-                Confluence.LOGGER.warn("Unknown item '{}', skipped", deferredResult);
                 this.cachedResult = Items.BARRIER.getDefaultInstance();
             } else {
                 this.cachedResult = new ItemStack(item, count);

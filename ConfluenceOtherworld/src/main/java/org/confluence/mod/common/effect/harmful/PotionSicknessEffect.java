@@ -15,7 +15,7 @@ public class PotionSicknessEffect extends MobEffect { // 耐药性
 
     // 应当使用这个方法来给玩家添加效果
     public static void addTo(LivingEntity living, int duration) {
-        duration = (int) (duration * (1.0F - TCUtils.getAccessoriesValue(living, AccessoryItems.REDUCE$HEALING$COOLDOWN)));
+        duration = (int) (duration * (1.0F - TCUtils.getValue(living, AccessoryItems.REDUCE$HEALING$COOLDOWN)));
         living.addEffect(new MobEffectInstance(ModEffects.POTION_SICKNESS, duration));
     }
 }

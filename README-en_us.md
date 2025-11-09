@@ -9,7 +9,6 @@
 | [TerraGuns](TerraGuns)                       | Terra's Guns                                       | yes                            |
 | [ParticleStorm](ParticleStorm)               | Particles API                                      | yes                            |
 | [HeavenDestinyMoment](HeavenDestinyMoment)   | Event API                                          | yes                            |
-| [PhaseJourney](PhaseJourney)                 | Game Stage API                                     | yes                            |
 | [TerraMoment](TerraMoment)                   | Terra's Events                                     | depends on HeavenDestinyMoment |
 | [IsekaiInvaded](IsekaiInvaded)               | Dimensional Invasion Event                         | depends on HeavenDestinyMoment |
 | [TerraFurniture](TerraFurniture)             | Terra's Furniture                                  | yes                            |

@@ -146,6 +146,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.ammo_box.0", "20% chance to save ammo");
         add("tooltip.item.confluence.bewitching_table.0", "Right click to have more minions");
         add("tooltip.item.confluence.keg.0", "Used for brewing ale");
+        add("tooltip.item.confluence.meteor_compass.0", "Only the position of the last meteorite are saved");
         add("tooltip.item.confluence.chlorophyte_extractinator.0", "Placing silt/slush/fossil/gravel/marine_gravel piles into the extractinator turns them into something more useful");
         add("tooltip.item.confluence.chlorophyte_extractinator.1", "Place contaminated blocks into the extractinator to purify them");
         add("tooltip.item.confluence.chlorophyte_extractinator.2", "Other items placed inside may have interesting effects");
@@ -162,7 +163,6 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.advanced_combat_techniques_volume_two.0", "Increases the defense and strength of all villagers");
         add("tooltip.item.confluence.advanced_combat_techniques_volume_two.1", "'Contains offensive and defensive fighting techniques, volume two!'");
         add("tooltip.item.confluence.binoculars.0", "Expand the FOV when in use, and adjust the zoom with the mouse wheel");
-        add("tooltip.item.confluence.meteor_compass.0", "Only the position of the last meteorite are saved");
         add("tooltip.item.confluence.gel.0", "'Both tasty and flammable'");
         add("tooltip.item.confluence.npc_invitation.0", "Use it to invite a new batch of NPCs in the current area!");
         add("tooltip.item.confluence.red_potion.0", "'Only for those who are worthy'");
@@ -182,6 +182,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.guide_to_peaceful_coexistence.0", "Prevents you from hurting critters while in the inventory");
         add("tooltip.item.confluence.guide_to_peaceful_coexistence.1", "Prevents you from accidentally destroying the environment while in the inventory");
         add("tooltip.item.confluence.guide_to_peaceful_coexistence.2", "Right click to deactivate/reactivate effects");
+
 
         add("tooltip.item.confluence.slime_crown.0", "Right - click to summon the King Slime");
         add("tooltip.item.confluence.slime_crown.1", "A small crown that seems to be prepared for the coronation ceremony of those cute and harmless gel - like creatures.");
@@ -219,6 +220,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("tooltip.item.confluence.jousting_lance.1", "'Have at thee!'");
         add("tooltip.item.confluence.hallowed_jousting_lance.0", "Build momentum to increase attack power");
         add("tooltip.item.confluence.shadow_jousting_lance.0", "Build momentum to increase attack power");
+        add("tooltip.item.confluence.rotten_bone_dust.0", "Right-click to spawn vegetation in the Corruption, or corrupt Skeletons");
+        add("tooltip.item.confluence.bloodstained_powder.0", "Right-click to spawn vegetation in the Crimson, or infest Creepers with Crimson");
 
         add("tooltip.item.confluence.tokyo_teddy_bear.0", "A self - abased girl said like a broken teddy bear:");
         add("tooltip.item.confluence.tokyo_teddy_bear.1", "           Let me tell you");
@@ -691,7 +694,13 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.configuration.wrappedCrimsonHeart", "Wrapped Crimson Heart");
         add("confluence.configuration.wrappedCrimsonHeart.tooltip", "When enabled, newly generated Crimson Caverns will contain Wrapped Crimson Hearts.");
         add("confluence.configuration.terraStyleExplosion", "Terra Style Explosion");
-        add("confluence.configuration.terraStyleExplosion.tooltip", "Once activated, the bombs in confluence will simulate the blast radius of a Terra explosion.");
+        add("confluence.configuration.terraStyleExplosion.tooltip", "When enabled, the bombs in confluence will simulate the blast radius of a Terra explosion.");
+        add("confluence.configuration.terraStyleFireDamage", "Terra Style Fire Damage");
+        add("confluence.configuration.terraStyleFireDamage.tooltip", "When enabled, fire damage will be multiplied by 4 and healing will be blocked. It only affects players.");
+        add("confluence.configuration.npcInvulnerableToPlayer", "NPC Invulnerable To Player");
+        add("confluence.configuration.npcInvulnerableToPlayer.tooltip", "When enabled, NPCs can no longer be attacked by players (including vanilla villagers).");
+        add("confluence.configuration.allowsVanillaEntitiesToPerformStageAttributes", "Allows Vanilla Entities To Perform Stage Attributes");
+        add("confluence.configuration.allowsVanillaEntitiesToPerformStageAttributes.tooltip", "When enabled, the attributes of the vanilla entities will be modified in Hard mode or other stages.");
         // Separator
         add("confluence.configuration.Mana.button", "Mana");
         add("confluence.configuration.Armor.button", "Armor");
@@ -716,6 +725,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.configuration.section.confluence.client.toml.title", "Client-side Configuration");
         add("confluence.configuration.Entity.tooltip", "Entity-related Visual Effects");
         add("confluence.configuration.section.confluence.common.toml.title", "Common Configuration");
+        add("confluence.configuration.minEctoMistEffectRadius", "Min Ecto Mist Effect Radius");
+        add("confluence.configuration.minEctoMistEffectRadius.tooltip", "Disables ecto mist effect when set to 0.");
 
         add("biome.confluence.ash_forest", "Ash Forest");
         add("biome.confluence.ash_wasteland", "Ash Wasteland");
@@ -2359,6 +2370,131 @@ public class ModEnglishProvider extends LanguageProvider {
         add("bestiary.entity.terra_entity.bloody_spore.desc", "The Crimson recognizes that Creepers are the easiest creatures to spread its flesh.");
         add("bestiary.entity.terra_entity.hill_of_flesh.desc", "The duality of the world has forged the Wall of Flesh into another adaptive form for the world. As the core and guardian of the world, this towering demon lord exists to seal away the powerful ancient souls.");
 
+        // Armor Bonus
+        add("armor_set_bonus.when_applied", "Set Bonus:");
+        // Mining Set
+        add("tooltip.item.confluence.mining_helmet.0", "Provides light when worn");
+        add("armor_set_bonus.confluence.mining_set.0", "10% increased mining speed");
+        // Plank Set
+        add("armor_set_bonus.confluence.plank_set.0", "+1 Aromor");
+        add("armor_set_bonus.confluence.pearlwood_set.0", "+1 Aromor");
+
+        add("armor_set_bonus.confluence.ash_set.0", "Reduces damage from touching lava");
+        // Base Ore
+        add("armor_set_bonus.confluence.copper_set.0", "+1 Aromor");
+        add("armor_set_bonus.confluence.tin_set.0", "+2 Aromor");
+        add("armor_set_bonus.confluence.lead_set.0", "+1 Aromor");
+        add("armor_set_bonus.confluence.silver_set.0", "+2 Aromor");
+        add("armor_set_bonus.confluence.tungsten_set.0", "+1 Aromor");
+        add("armor_set_bonus.confluence.golden_set.0", "+1 Aromor");
+        add("armor_set_bonus.confluence.platinum_set.0", "+2 Aromor");
+        // Snow Set
+        add("armor_set_bonus.confluence.snow_set.0", "Cannot be frozen or chilled");
+        add("armor_set_bonus.confluence.pink_snow_set.0", "Cannot be frozen or chilled");
+        // Angler Set
+        add("tooltip.item.confluence.angler_hat.0", "Increases fishing power by 5");
+        add("tooltip.item.confluence.angler_vest.0", "Increases fishing power by 5");
+        add("tooltip.item.confluence.angler_pants.0", "Increases fishing power by 5");
+        add("armor_set_bonus.confluence.angler_set.0", "Decreased enemy spawn rate");
+        // Cactus Set
+        add("armor_set_bonus.confluence.cactus_set.0", "Attackers take damage from the cactus spines");
+        // Pumpkin Set
+        add("armor_set_bonus.confluence.pumpkin_set.0", "10% increased damage");
+        // Ninja Set
+        add("armor_set_bonus.confluence.ninja_set.0", "20% increased movement speed");
+        // Fossil Set
+        add("armor_set_bonus.confluence.fossil_set.0", "20% chance to save ammo");
+        // Cold Crystal Set
+        add("tooltip.item.confluence.cold_crystal_helmet.0", "Increases maximum mana by 20");
+        add("tooltip.item.confluence.cold_crystal_chestplate.0", "Increases maximum mana by 20");
+        add("armor_set_bonus.confluence.cold_crystal_set.0", "Magic Attack will have an additional Frostbite effect");
+        // Spore Root Set
+        add("armor_set_bonus.confluence.spore_root_set.0", "Increases your max number of minions by 1");
+        // Heim Set
+        add("tooltip.item.confluence.heim_helmet.0", "Extend underwater breathing time by 5%");
+        add("armor_set_bonus.confluence.heim_set.0", "Grant you 4 health of absorption, and grant it again every 5 seconds");
+        // Bee Set
+        add("armor_set_bonus.confluence.bee_set.0", "Increases summon damage by 10%");
+        // Obsidian Set
+        add("armor_set_bonus.confluence.obsidian_set.0", "Increases whip range by 30% and speed by 15%,Increases summon damage by 15%");
+        add("armor_set_bonus.confluence.obsidian_set.1", "Increases summon damage by 15%");
+        // Gladiator Set
+        add("armor_set_bonus.confluence.gladiator_set.0", "Immunity to Knockback");
+        // Wizard Set
+        add("tooltip.item.confluence.amber_robe.0", "Increases maximum mana by 60");
+        add("tooltip.item.confluence.amber_robe.1", "13% reduced mana cost");
+        add("tooltip.item.confluence.diamond_robe.0", "Increases maximum mana by 80");
+        add("tooltip.item.confluence.diamond_robe.1", "15% reduced mana cost");
+        add("tooltip.item.confluence.mystic_robe.0", "6% increased magic damage and critical strike chance");
+        add("tooltip.item.confluence.mystic_robe.1", "10% reduced mana cost");
+        add("tooltip.item.confluence.ruby_robe.0", "Increases maximum mana by 60");
+        add("tooltip.item.confluence.ruby_robe.1", "13% reduced mana cost");
+        add("tooltip.item.confluence.jade_robe.0", "Increases maximum mana by 60");
+        add("tooltip.item.confluence.jade_robe.1", "11% reduced mana cost");
+        add("tooltip.item.confluence.sapphire_robe.0", "Increases maximum mana by 40");
+        add("tooltip.item.confluence.sapphire_robe.1", "9% reduced mana cost");
+        add("tooltip.item.confluence.topaz_robe.0", "Increases maximum mana by 40");
+        add("tooltip.item.confluence.topaz_robe.1", "7% reduced mana cost");
+        add("tooltip.item.confluence.amethyst_robe.0", "Increases maximum mana by 20");
+        add("tooltip.item.confluence.amethyst_robe.1", "5% reduced mana cost");
+        add("tooltip.item.confluence.wizard_hat.0", "5% increased magic damage");
+        add("tooltip.item.confluence.magic_hat.0", "6% increased magic damage and critical strike chance");
+        // Meteor Set
+        add("armor_set_bonus.confluence.meteor_set.0", "Space Gun magic consumption reduced to 0");
+        // Jungle Set
+        add("tooltip.item.confluence.jungle_helmet.0", "Increases maximum mana by 40");
+        add("tooltip.item.confluence.jungle_chestplate.0", "Increases maximum mana by 20");
+        add("tooltip.item.confluence.jungle_leggings.0", "Increases maximum mana by 20");
+        add("armor_set_bonus.confluence.jungle_set.0", "16% reduced mana costs");
+        // Necro Set
+        add("armor_set_bonus.confluence.necro_set.0", "10% increased critical strike chance");
+        // Shadow Set
+        add("armor_set_bonus.confluence.shadow_set.0", "Increased movement speed and acceleration");
+        // Crimson Set
+        add("armor_set_bonus.confluence.crimson_set.0", "Greatly increased life regen");
+        // Molten Set
+        add("armor_set_bonus.confluence.molten_set.0", "10% extra melee damage");
+        add("armor_set_bonus.confluence.molten_set.1", "Cannot be set on fire");
+        // Diamond Set
+        add("armor_set_bonus.confluence.diamond_set.0", "Grant Fortune II");
+        // Netherite Set
+        add("armor_set_bonus.confluence.netherite_set.0", "Cannot be set on fire and immune to lava");
+        add("armor_set_bonus.confluence.netherite_set.1", "5% increased movement speed");
+        add("armor_set_bonus.confluence.netherite_set.2", "8% increased damage");
+        add("armor_set_bonus.confluence.netherite_set.3", "Restores durability when submerged in lava");
+        // Spider Set
+        add("armor_set_bonus.confluence.spider_set.0", "Increases summon damage by 12%");
+        // HardMode Ore
+        add("tooltip.item.confluence.cobalt_hat.0", "Increases maximum mana by 40");
+        add("armor_set_bonus.confluence.cobalt_helmet_set.0", "15% increased melee speed");
+        add("armor_set_bonus.confluence.cobalt_mask_set.0", "20% chance to save ammo");
+        add("armor_set_bonus.confluence.cobalt_hat_set.0", "14% reduced mana costs");
+
+        add("tooltip.item.confluence.palladium_headgear.0", "Increases maximum mana by 60");
+        add("armor_set_bonus.confluence.palladium_mask_set.0", "Greatly increases life regeneration after striking an enemy");
+        add("armor_set_bonus.confluence.palladium_helmet_set.0", "Greatly increases life regeneration after striking an enemy");
+        add("armor_set_bonus.confluence.palladium_headgear_set.0", "Greatly increases life regeneration after striking an enemy");
+
+        add("tooltip.item.confluence.mythril_hood.0", "Increases maximum mana by 60");
+        add("armor_set_bonus.confluence.mythril_hood_set.0", "17% reduced mana costs");
+        add("armor_set_bonus.confluence.mythril_helmet_set.0", "10% increased critical strike chance");
+        add("armor_set_bonus.confluence.mythril_hat_set.0", " 20% chance to save ammo");
+
+        add("tooltip.item.confluence.orichalcum_headgear.0", "Increases maximum mana by 80");
+        add("armor_set_bonus.confluence.orichalcum_headgear_set.0", "Flower petals will fall on your target for extra damage");
+        add("armor_set_bonus.confluence.orichalcum_mask_set.0", "Flower petals will fall on your target for extra damage");
+        add("armor_set_bonus.confluence.orichalcum_helmet_set.0", "Flower petals will fall on your target for extra damage");
+
+        add("tooltip.item.confluence.adamantite_headgear.0", "Increases maximum mana by 80");
+        add("armor_set_bonus.confluence.adamantite_headgear_set.0", "19% reduced mana costs");
+        add("armor_set_bonus.confluence.adamantite_helmet_set.0", "20% increased melee and movement speed");
+        add("armor_set_bonus.confluence.adamantite_mask_set.0", "25% chance to save ammo");
+
+        add("tooltip.item.confluence.titanium_headgear.0", "Increases maximum mana by 100");
+        add("armor_set_bonus.confluence.titanium_mask_set.0", "Attacking generates a defensive barrier of titanium shards");
+        add("armor_set_bonus.confluence.titanium_helmet_set.0", "Attacking generates a defensive barrier of titanium shards");
+        add("armor_set_bonus.confluence.titanium_headgear_set.0", "Attacking generates a defensive barrier of titanium shards");
+
         Consumer<DeferredHolder<Block, ? extends Block>> blockAction = block -> add(block.get(), LibUtils.toTitleCase(block.getId().getPath()));
         ChestBlocks.BLOCKS.getEntries().forEach(blockAction);
         CrateBlocks.BLOCKS.getEntries().forEach(blockAction);
@@ -2530,6 +2666,11 @@ public class ModEnglishProvider extends LanguageProvider {
         addEffect(ModEffects.WEAPON_IMBUE_GOLD.get(), "Melee attacks make enemies drop more gold");
         addEffect(ModEffects.FROSTBITE.get(), "Slowly losing life");
         addEffect(ModEffects.SHADOWFLAME.get(), "Losing life");
+        addEffect(ModEffects.WATER_CANDLE.get(), "Increased monster spawn rate");
+        addEffect(ModEffects.PEACE_CANDLE.get(), "Decreased monster spawn rate");
+        addEffect(ModEffects.BATTLE.get(), "Increased enemy spawn rate");
+        addEffect(ModEffects.CALM.get(), "Decreased enemy spawn rate");
+        addEffect(ModEffects.HAPPY.get(), "Movement speed increased and monster spawns reduced");
 
         addEffect(TCEffects.CEREBRAL_MINDTRICK.get(), "Increased critical chance");
         addEffect(TCEffects.HONEY.get(), "Life regeneration is increased");

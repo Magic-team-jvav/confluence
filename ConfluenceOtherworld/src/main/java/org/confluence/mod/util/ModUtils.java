@@ -31,7 +31,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.npc.Npc;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -249,7 +248,7 @@ public final class ModUtils {
 
     public static boolean canHitEntity(@Nullable Entity target, @Nullable Entity owner) {
         if (target == null || target.isRemoved()) return false; // 有模组把target写成了null
-        if (owner == target || !target.isAttackable() || !target.canBeHitByProjectile() || target instanceof ArmorStand || target instanceof Npc) return false;
+        if (owner == target || !target.isAttackable() || !target.canBeHitByProjectile() || target instanceof ArmorStand) return false;
         return owner == null || (!owner.isPassengerOfSameVehicle(target)/* && !target.skipAttackInteraction(owner)*/);
     }
 

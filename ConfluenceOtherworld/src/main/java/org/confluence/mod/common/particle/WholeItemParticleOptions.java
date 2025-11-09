@@ -9,9 +9,11 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
+import org.confluence.lib.util.ScheduledForMove;
 import org.confluence.mod.common.init.ModParticleTypes;
 import org.jetbrains.annotations.NotNull;
 
+@ScheduledForMove(since = "1.2.0", inVersion = "2.0.0")
 public record WholeItemParticleOptions(ItemStack item, float gravity, int life) implements ParticleOptions {
     public static final MapCodec<WholeItemParticleOptions> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             ItemStack.SINGLE_ITEM_CODEC.fieldOf("item").forGetter(WholeItemParticleOptions::item),

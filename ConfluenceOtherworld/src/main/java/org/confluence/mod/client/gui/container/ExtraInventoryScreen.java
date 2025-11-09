@@ -129,9 +129,9 @@ public class ExtraInventoryScreen extends AbstractContainerScreen<ExtraInventory
         RenderSystem.enableBlend();
         int x = leftPos + 196;
         int y = topPos + 1;
-        for (int i = 0; i < InformationHandler.DISABLE.length; i++) {
+        for (int i = 0; i < 12; i++) { // 跳过机械棱镜的
             if (!InformationHandler.hasInfoData(i)) continue;
-            TooltipComponentsValue.Storage storage = i == 12 ? MECHANICAL$LENS : TCItems.FULL_INFO.get(i);
+            TooltipComponentsValue.Storage storage = TCItems.FULL_INFO.get(i);
 
             boolean disable = InformationHandler.DISABLE[i];
             if (disable) RenderSystem.setShaderColor(1, 1, 1, 0.5F);

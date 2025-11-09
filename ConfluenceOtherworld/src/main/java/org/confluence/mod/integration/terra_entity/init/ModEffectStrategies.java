@@ -21,6 +21,7 @@ import static org.confluence.terraentity.registries.hit_effect.EffectStrategy.*;
  * <h1> 攻击时给敌人施加的效果或回调 </h1>
  * <p> 适用于剑、弹射物、生物命中特效等 </p>
  * <p> 为使翻译键统一，建议注册 EffectStrategy 使用 private, 复用Components  </p>
+ *
  * @author coffee
  */
 public final class ModEffectStrategies {
@@ -28,41 +29,51 @@ public final class ModEffectStrategies {
 
     /**
      * 复杂的回调效果
-     * @param name id
+     *
+     * @param name   id
      * @param effect 效果回调
      */
     public static DeferredHolder<EffectStrategy, EffectStrategy> createEffect(String name, BiConsumer<LivingEntity, LivingEntity> effect) {
-        return EFFECT_STRATEGY.register(name, ()->new EffectStrategy(name, effect));
+        return EFFECT_STRATEGY.register(name, () -> new EffectStrategy(name, effect));
     }
 
     /**
      * 预定义类型效果
-     * @param name id
+     *
+     * @param name   id
      * @param effect 效果类型
      */
     public static DeferredHolder<EffectStrategy, EffectStrategy> createEffect(String name, IEffectStrategy effect) {
-        return EFFECT_STRATEGY.register(name, ()->new EffectStrategy(effect));
+        return EFFECT_STRATEGY.register(name, () -> new EffectStrategy(effect));
     }
 
-    /**未定义效果*/
+    /**
+     * 未定义效果
+     */
     private static final DeferredHolder<EffectStrategy, EffectStrategy> UNDEFINED = createEffect("undefined",
             UNDEFINED_EFFECT);
 
-    /**蝙蝠棍*/
-    private static final  DeferredHolder<EffectStrategy, EffectStrategy> BAT_FANG_EFFECT = createEffect("bat",
-            (owner, entity)-> owner.heal(1));
+    /**
+     * 蝙蝠棍
+     */
+    private static final DeferredHolder<EffectStrategy, EffectStrategy> BAT_FANG_EFFECT = createEffect("bat",
+            (owner, entity) -> owner.heal(1));
 
 //    /**着火*/
 //    private static final DeferredHolder<EffectStrategy, EffectStrategy> SET_FIRE_EFFECT = createEffect("set_fire_5_sec",
 //            SET_FIRE.apply(5 * 20, 1f));
 
-    /** 魔光剑*/
-    private static final  DeferredHolder<EffectStrategy, EffectStrategy> LIGHTS_BANE_EFFECT = createEffect("lights_bane",
-            ON_HIT_PROJECTILE.apply((level)-> ModEntities.LIGHTS_BANE_PROJECTILE.get().create(level).addAttackDamage(7f)));
+    /**
+     * 魔光剑
+     */
+    private static final DeferredHolder<EffectStrategy, EffectStrategy> LIGHTS_BANE_EFFECT = createEffect("lights_bane",
+            ON_HIT_PROJECTILE.apply((level) -> ModEntities.LIGHTS_BANE_PROJECTILE.get().create(level).addAttackDamage(7f)));
 
-    /** 养蜂人*/
-    private static final  DeferredHolder<EffectStrategy, EffectStrategy> BEE_KEEPER_EFFECT = createEffect("bee_keeper",
-            ON_HIT_PROJECTILE_COUNT.apply((level)->ModEntities.BEE_PROJECTILE.get().create(level).addAttackDamage(2), 3));
+    /**
+     * 养蜂人
+     */
+    private static final DeferredHolder<EffectStrategy, EffectStrategy> BEE_KEEPER_EFFECT = createEffect("bee_keeper",
+            ON_HIT_PROJECTILE_COUNT.apply((level) -> ModEntities.BEE_PROJECTILE.get().create(level).addAttackDamage(2), 3));
 
     // 北斗飞镖
 //    private static final DeferredHolder<EffectStrategy, EffectStrategy> FROST_BURN_10_SEC_4_AMP = createEffect("frozen_burn_10_sec_4_amp",
@@ -84,9 +95,9 @@ public final class ModEffectStrategies {
     /**
      * 预定义效果的数据组件
      */
-    public static class Components{
+    public static class Components {
 
-/* effect效果*/
+        /* effect效果*/
 
 //        /**霜冻*/
 //        public static final Supplier<EffectStrategyComponent> FROST_BURN_EFFECT = ()->EffectStrategyComponent.of(
@@ -95,9 +106,11 @@ public final class ModEffectStrategies {
 //        public static final Supplier<EffectStrategyComponent> FROST_BURN_BOOMERANG_EFFECT = ()->EffectStrategyComponent.of(
 //                TimePossibilityAmplifierEffect.of("frozen_burn_3_sec_50_chance", ModEffects.FROST_BURN,3 * 20,0,0.5F));
 
-        /**触手钉锤*/
-        public static final Supplier<EffectStrategyComponent>  TENTACLE_SPIKES_EFFECT =()->EffectStrategyComponent.of(
-                TimePossibilityAmplifierEffect.of("tentacle_spikes", ModEffects.TENTACLE_SPIKES, 180, 0, 4, 0.5f));
+        /**
+         * 触手钉锤
+         */
+        public static final Supplier<EffectStrategyComponent> TENTACLE_SPIKES_EFFECT = () -> EffectStrategyComponent.of(
+                TimePossibilityAmplifierEffect.of("tentacle_spikes", ModEffects.TENTACLE_SPIKES, 180, 0, 4, 1));
 
 //        /**猎弓*/
 //        public static final Supplier<EffectStrategyComponent>  HUNTING_RIFLE_EFFECT = ()->EffectStrategyComponent.of(
@@ -109,25 +122,33 @@ public final class ModEffectStrategies {
 //                PrefabEffect.of("set_fire_5_sec", SET_FIRE_EFFECT)
 //        ));
 
-        /**血腥屠刀*/
-        public static final Supplier<EffectStrategyComponent>  BLOOD_BUTCHERED_EFFECT = ()->EffectStrategyComponent.of(
-                TimePossibilityAmplifierEffect.of("blood_butchered",ModEffects.BLOOD_BUTCHERED.getDelegate(), 180, 0, 4, 0.5f));
+        /**
+         * 血腥屠刀
+         */
+        public static final Supplier<EffectStrategyComponent> BLOOD_BUTCHERED_EFFECT = () -> EffectStrategyComponent.of(
+                TimePossibilityAmplifierEffect.of("blood_butchered", ModEffects.BLOOD_BUTCHERED.getDelegate(), 180, 0, 4, 1));
 
-/* prefab效果*/
+        /* prefab效果*/
 
-        /**蝙蝠棍*/
-        public static final Supplier<EffectStrategyComponent> BAT_FANG_EFFECT = ()->EffectStrategyComponent.ofPrefab("bat",
+        /**
+         * 蝙蝠棍
+         */
+        public static final Supplier<EffectStrategyComponent> BAT_FANG_EFFECT = () -> EffectStrategyComponent.ofPrefab("bat",
                 ModEffectStrategies.BAT_FANG_EFFECT);
 
-        /** 魔光剑*/
-        public static final Supplier<EffectStrategyComponent> LIGHTS_BANE_EFFECT = ()->EffectStrategyComponent.ofPrefab("lights_bane",
+        /**
+         * 魔光剑
+         */
+        public static final Supplier<EffectStrategyComponent> LIGHTS_BANE_EFFECT = () -> EffectStrategyComponent.ofPrefab("lights_bane",
                 ModEffectStrategies.LIGHTS_BANE_EFFECT);
 
-        /** 养蜂人*/
-        public static final Supplier<EffectStrategyComponent> BEE_KEEPER_EFFECT = ()->EffectStrategyComponent.ofPrefab("bee_keeper",
+        /**
+         * 养蜂人
+         */
+        public static final Supplier<EffectStrategyComponent> BEE_KEEPER_EFFECT = () -> EffectStrategyComponent.ofPrefab("bee_keeper",
                 ModEffectStrategies.BEE_KEEPER_EFFECT);
 
-/* random效果*/
+        /* random效果*/
 
 //        /**北斗飞镖*/
 //        public static final Supplier<EffectStrategyComponent> BEI_DOU_EFFECT = ()->EffectStrategyComponent.of(

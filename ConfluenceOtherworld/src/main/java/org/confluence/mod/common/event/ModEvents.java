@@ -1,9 +1,5 @@
 package org.confluence.mod.common.event;
 
-import com.xiaohunao.phase_journey.api.event.PhaseJourneyEvent;
-import com.xiaohunao.phase_journey.common.init.PJPhaseContextTypes;
-import com.xiaohunao.phase_journey.common.phase.PhaseType;
-import com.xiaohunao.phase_journey.common.phase.block.BlockReplacementPhaseContext;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackLocationInfo;
@@ -24,14 +20,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
+import net.neoforged.fml.ModLoader;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.config.ModConfigEvent;
@@ -50,6 +45,7 @@ import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.fluids.RegisterCauldronFluidContentEvent;
 import net.neoforged.neoforge.fluids.capability.wrappers.FluidBucketWrapper;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
+import net.neoforged.neoforge.items.wrapper.SidedInvWrapper;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -63,25 +59,18 @@ import org.confluence.lib.util.LibUtils;
 import org.confluence.lib.util.WipNotDisplayOutput;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.StartupConfigs;
+import org.confluence.mod.api.event.RegisterEvilMaterialReplacesEvent;
 import org.confluence.mod.api.event.bestiary.RegisterBestiaryKeyEvent;
 import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.common.block.natural.ChlorophyteOreBlock;
 import org.confluence.mod.common.block.natural.LogBlockSet;
 import org.confluence.mod.common.block.natural.MagicMailBox;
-import org.confluence.mod.common.block.natural.StepRevealingBlock;
 import org.confluence.mod.common.capability.FluidBottomlessBucketWrapper;
 import org.confluence.mod.common.data.saved.*;
 import org.confluence.mod.common.entity.TargetDummyEntity;
 import org.confluence.mod.common.init.*;
 import org.confluence.mod.common.init.armor.ModArmorBonus;
-import org.confluence.mod.common.init.block.ChestBlocks;
-import org.confluence.mod.common.init.block.FunctionalBlocks;
-import org.confluence.mod.common.init.block.ModBlocks;
-import org.confluence.mod.common.init.block.OreBlocks;
-import org.confluence.mod.common.init.item.AccessoryItems;
-import org.confluence.mod.common.init.item.ArmorItems;
-import org.confluence.mod.common.init.item.ConsumableItems;
-import org.confluence.mod.common.init.item.ToolItems;
+import org.confluence.mod.common.init.block.*;
+import org.confluence.mod.common.init.item.*;
 import org.confluence.mod.integration.jei.RecipeTransferPacketC2S;
 import org.confluence.mod.integration.terra_entity.TEEvents;
 import org.confluence.mod.integration.terra_entity.TEItemComponentModify;
@@ -163,8 +152,11 @@ public final class ModEvents {
                     KillBoard.INSTANCE,
                     HardmodeConvertor.INSTANCE,
                     NPCSpawner.INSTANCE,
-                    Bestiary.INSTANCE
+                    Bestiary.INSTANCE,
+                    GlobalCloakData.INSTANCE
             );
+            GlobalCloakData.INSTANCE.initialize();
+            ModLoader.postEvent(new RegisterEvilMaterialReplacesEvent());
         });
     }
 
@@ -223,6 +215,7 @@ public final class ModEvents {
         registrar.playToClient(AvailableHouseSelectPacketS2C.TYPE, AvailableHouseSelectPacketS2C.STREAM_CODEC, AvailableHouseSelectPacketS2C::handle);
         registrar.playToClient(TerraStyleExplosionPacketS2C.TYPE, TerraStyleExplosionPacketS2C.STREAM_CODEC, TerraStyleExplosionPacketS2C::handle);
         registrar.playToClient(FlushArmorSetBonusPacketS2C.TYPE, FlushArmorSetBonusPacketS2C.STREAM_CODEC, FlushArmorSetBonusPacketS2C::handle);
+        registrar.playToClient(GlobalCloakSyncPacketS2C.TYPE, GlobalCloakSyncPacketS2C.STREAM_CODEC, GlobalCloakSyncPacketS2C::handle);
 
         registrar.playToServer(ApplySelectionPacketC2S.TYPE, ApplySelectionPacketC2S.STREAM_CODEC, ApplySelectionPacketC2S::handle);
         registrar.playToServer(HookThrowingPacketC2S.TYPE, HookThrowingPacketC2S.STREAM_CODEC, HookThrowingPacketC2S::handle);
@@ -290,53 +283,6 @@ public final class ModEvents {
         }
     }
 
-    /**
-     * @see ConfluenceData#increaseRevealStep
-     */
-    @SubscribeEvent
-    public static void phaseJourney$Register(PhaseJourneyEvent.Register event) {
-        BlockState deepslate = Blocks.DEEPSLATE.defaultBlockState();
-        Block[] oreBlocks = {
-                OreBlocks.DEEPSLATE_COBALT_ORE.get(),
-                OreBlocks.DEEPSLATE_PALLADIUM_ORE.get(),
-                OreBlocks.DEEPSLATE_MYTHRIL_ORE.get(),
-                OreBlocks.DEEPSLATE_ORICHALCUM_ORE.get(),
-                OreBlocks.DEEPSLATE_ADAMANTITE_ORE.get(),
-                OreBlocks.DEEPSLATE_TITANIUM_ORE.get()
-        };
-
-        int step = 0;
-        for (Block oreBlock : oreBlocks) {
-            for (int state = 0; state < 3; state++) {
-                event.register(PhaseType.LEVEL, PJPhaseContextTypes.BLOCK.get(), new BlockReplacementPhaseContext(
-                        Confluence.asResource("reveal_step_" + (step++)),
-                        oreBlock.defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, state),
-                        deepslate
-                ));
-            }
-        }
-
-        event.register(PhaseType.LEVEL, PJPhaseContextTypes.BLOCK.get(), new BlockReplacementPhaseContext(
-                ChlorophyteOreBlock.PHASE,
-                OreBlocks.CHLOROPHYTE_ORE.get().defaultBlockState(),
-                Blocks.MUD.defaultBlockState()
-        ));
-
-//            event.phaseRegister(Confluence.asResource("reveal_step_" + (step++)), context -> {
-//                context.blockReplacement(OreBlocks.DEEPSLATE_COBALT_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), deepslate);
-//                context.blockReplacement(OreBlocks.DEEPSLATE_PALLADIUM_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), deepslate);
-//            });
-//            event.phaseRegister(Confluence.asResource("reveal_step_" + (step++)), context -> {
-//                context.blockReplacement(OreBlocks.DEEPSLATE_MYTHRIL_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), deepslate);
-//                context.blockReplacement(OreBlocks.DEEPSLATE_ORICHALCUM_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), deepslate);
-//            });
-//            event.phaseRegister(Confluence.asResource("reveal_step_" + (step++)), context -> {
-//                context.blockReplacement(OreBlocks.DEEPSLATE_ADAMANTITE_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), deepslate);
-//                context.blockReplacement(OreBlocks.DEEPSLATE_TITANIUM_ORE.get().defaultBlockState().setValue(StepRevealingBlock.REVEAL_STEP, finalState), deepslate);
-//            });
-//        event.phaseRegister(ChlorophyteOreBlock.PHASE, context -> context.blockReplacement(OreBlocks.CHLOROPHYTE_ORE.get(), Blocks.MUD));
-    }
-
     @SubscribeEvent
     public static void blockEntityTypeAddBlocks(BlockEntityTypeAddBlocksEvent event) {
         event.modify(BlockEntityType.BRUSHABLE_BLOCK, OreBlocks.OPAL_ORE.get());
@@ -355,7 +301,8 @@ public final class ModEvents {
     @SubscribeEvent
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.registerBlock(Capabilities.ItemHandler.BLOCK, (level, pos, state, blockEntity, side) -> {
-            if (state.hasProperty(StateProperties.UNLOCKED) && !state.getValue(StateProperties.UNLOCKED)) return null;
+            if (state.hasProperty(StateProperties.UNLOCKED) && !state.getValue(StateProperties.UNLOCKED))
+                return null;
             Container container = ChestBlock.getContainer((ChestBlock) state.getBlock(), state, level, pos, true);
             return container == null ? null : new InvWrapper(container);
         }, ChestBlocks.BLOCKS.getEntries().stream().map(DeferredHolder::get).toArray(Block[]::new));
@@ -368,7 +315,7 @@ public final class ModEvents {
 //        for (BlockEntityType<? extends BaseContainerBlockEntity> type : invBlockEntities) {
 //            event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, type, (container, side) -> new InvWrapper(container));
 //        }
-//        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, FunctionalBlocks.HELLFORGE_ENTITY.get(), SidedInvWrapper::new);
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, FunctionalBlocks.HELLFORGE_ENTITY.get(), SidedInvWrapper::new);
 
         event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBottomlessBucketWrapper(stack),
                 ToolItems.BOTTOMLESS_WATER_BUCKET,
@@ -391,7 +338,7 @@ public final class ModEvents {
             return false;
         }, RegisterSpawnPlacementsEvent.Operation.REPLACE);
 
-        RegisterBestiaryKeyEvent.postEvent(); // 这个时期正好处于实体类型注册完的阶段，且datagen也会调用这个事件
+        ModLoader.postEvent(new RegisterBestiaryKeyEvent()); // 这个时期正好处于实体类型注册完的阶段，且datagen也会调用这个事件
     }
 
     @SubscribeEvent
@@ -581,5 +528,11 @@ public final class ModEvents {
             }
             return type.getDescriptionId();
         });
+    }
+
+    @SubscribeEvent
+    public static void registerEvilMaterialReplaces(RegisterEvilMaterialReplacesEvent event) {
+        event.register(MaterialItems.DEMONITE_INGOT, MaterialItems.CRIMTANE_INGOT);
+        event.register(NatureBlocks.VILE_MUSHROOM, NatureBlocks.VICIOUS_MUSHROOM);
     }
 }

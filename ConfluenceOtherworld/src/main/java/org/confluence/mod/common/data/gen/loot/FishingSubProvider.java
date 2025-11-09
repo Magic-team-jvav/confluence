@@ -51,6 +51,7 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
         HolderSet<Biome> isCorruption = registrylookup.getOrThrow(ModTags.Biomes.THE_CORRUPTION);
         HolderSet<Biome> isCrimson = registrylookup.getOrThrow(ModTags.Biomes.THE_CRIMSON);
         HolderSet<Biome> isHallow = registrylookup.getOrThrow(ModTags.Biomes.THE_HALLOW);
+        HolderSet<Biome> isMushroom = registrylookup.getOrThrow(Tags.Biomes.IS_MUSHROOM);
         HolderSet<Biome> isSnowyOrIcy = new OrHolderSet<>(
                 registrylookup.getOrThrow(Tags.Biomes.IS_SNOWY),
                 registrylookup.getOrThrow(Tags.Biomes.IS_ICY)
@@ -196,6 +197,13 @@ public record FishingSubProvider(HolderLookup.Provider registries) implements Lo
                         .add(LootItem.lootTableItem(FoodItems.CHAOS_FISH).when(LocationCheck.checkLocation(
                                 LocationPredicate.Builder.location().setBiomes(isHallow).setY(caveThroughSurface)
                         )).setWeight(2100))
+                        // 蘑菇岛
+                        .add(LootItem.lootTableItem(FoodItems.RED_PLEATFISH).when(LocationCheck.checkLocation(
+                                LocationPredicate.Builder.location().setBiomes(isMushroom).setY(caveThroughSpace)
+                        )).setWeight(60))
+                        .add(LootItem.lootTableItem(FoodItems.BROWN_STALKSPINE).when(LocationCheck.checkLocation(
+                                LocationPredicate.Builder.location().setBiomes(isMushroom).setY(caveThroughSpace)
+                        )).setWeight(60))
                 )
         );
 

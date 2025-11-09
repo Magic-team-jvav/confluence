@@ -21,6 +21,7 @@ import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.registries.datamaps.DataMapValueMerger;
 import net.neoforged.neoforge.registries.datamaps.DataMapValueRemover;
 import org.confluence.lib.util.LibCodecUtils;
+import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.data.saved.GamePhase;
 import org.confluence.mod.common.data.saved.KillBoard;
 import org.confluence.mod.common.init.ModDataMaps;
@@ -48,9 +49,14 @@ public record GamePhase2AttributeModifiers(Map<GamePhase, AttributeModifiersValu
 
     public static void applyModifiers(LivingEntity living) {
         if (living instanceof Player) return;
+        EntityType<?> type = living.getType();
+        if (!CommonConfigs.ALLOWS_VANILLA_ENTITIES_TO_PERFORM_STAGE_ATTRIBUTES.get() &&
+                "minecraft".equals(type.builtInRegistryHolder().key().location().getNamespace())
+        ) return;
+
         Difficulty difficulty = living.level().getDifficulty();
         if (difficulty == Difficulty.PEACEFUL || difficulty == Difficulty.EASY) return;
-        GamePhase2AttributeModifiers data = ModDataMaps.getEntityData(ModDataMaps.GAME_PHASE_2_ATTRIBUTE_MODIFIERS, living);
+        GamePhase2AttributeModifiers data = ModDataMaps.getEntityData(ModDataMaps.GAME_PHASE_2_ATTRIBUTE_MODIFIERS, type);
         if (data == null) return;
         ImmutableListMultimap<Holder<Attribute>, AttributeModifier> modifiers = data.get(KillBoard.INSTANCE.getGamePhase()).get();
         if (modifiers.isEmpty()) return;
@@ -65,7 +71,7 @@ public record GamePhase2AttributeModifiers(Map<GamePhase, AttributeModifiersValu
     }
 
     public record Remover(Map<GamePhase, ImmutableListMultimap<Holder<Attribute>, ResourceLocation>> map) implements DataMapValueRemover<EntityType<?>, GamePhase2AttributeModifiers> {
-        public static final Codec<Remover> CODEC = Codec.unboundedMap(GamePhase.CODEC, LibCodecUtils.multimapCodec(Attribute.CODEC, ResourceLocation.CODEC)).xmap(Remover::new, Remover::map);
+        public static final Codec<Remover> CODEC = Codec.unboundedMap(GamePhase.CODEC, LibCodecUtils.multimap(Attribute.CODEC, ResourceLocation.CODEC)).xmap(Remover::new, Remover::map);
 
         @Override
         public Optional<GamePhase2AttributeModifiers> remove(

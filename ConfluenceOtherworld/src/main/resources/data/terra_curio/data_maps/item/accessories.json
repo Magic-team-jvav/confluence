@@ -440,6 +440,18 @@
                     }
                 ]
             }
+        },
+        "terra_curio:hand_of_creation": {
+            "terra_curio:coin_pickup_range": {
+                "range": 6.25,
+                "combine_id": 0
+            }
+        },
+        "terra_curio:treasure_magnet": {
+            "terra_curio:coin_pickup_range": {
+                "range": 6.25,
+                "combine_id": 0
+            }
         }
     },
     "neoforge:conditions": [

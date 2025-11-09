@@ -68,10 +68,7 @@ import org.confluence.mod.client.particle.*;
 import org.confluence.mod.client.renderer.AltImageTooltip;
 import org.confluence.mod.client.renderer.NoopTooltip;
 import org.confluence.mod.client.renderer.block.*;
-import org.confluence.mod.client.renderer.entity.BodyPartRenderer;
-import org.confluence.mod.client.renderer.entity.FallingStarRenderer;
-import org.confluence.mod.client.renderer.entity.TargetDummyRenderer;
-import org.confluence.mod.client.renderer.entity.TreasureBagRenderer;
+import org.confluence.mod.client.renderer.entity.*;
 import org.confluence.mod.client.renderer.entity.bestiary.BestiaryEntryDisplayRenderer;
 import org.confluence.mod.client.renderer.entity.bestiary.SlimeZombieRenderer;
 import org.confluence.mod.client.renderer.entity.fishing.BaseFishingHookRenderer;
@@ -244,6 +241,8 @@ public final class ModClientEvents {
 
     @SubscribeEvent
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+				event.registerEntityRenderer(EMPTY_ENTITY.get(), EmptyEntityRenderer::new);// 牢枕专用
+
         event.registerEntityRenderer(BOMB_ENTITY.get(), BaseBombEntityRenderer::new);
         event.registerEntityRenderer(BOUNCY_BOMB_ENTITY.get(), BouncyBombEntityRenderer::new);
         event.registerEntityRenderer(SCARAB_BOMB_ENTITY.get(), ScarabBombEntityRenderer::new);
@@ -292,6 +291,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(THROWN_KNIVE_PROJECTILE.get(), ThrownKniveProjectileRenderer::new);
         event.registerEntityRenderer(BONE_THROWN_KNIVE_PROJECTILE.get(), BoneThrownKniveProjectileRenderer::new);
         event.registerEntityRenderer(FROST_DAGGERFISH_PROJECTILE.get(), FrostDaggerfishProjectileRenderer::new);
+        event.registerEntityRenderer(DUNGEON_DEMON_BONE_PROJECTILE.get(), NoopRenderer::new);// todo 模型
         event.registerEntityRenderer(JAVELIN_PROJECTILE.get(), SpearRenderer::new);
         event.registerEntityRenderer(SHURIKEN_PROJECTILE.get(), ShurikenProjectileRenderer::new);
         event.registerEntityRenderer(SPIKY_BALL_PROJECTILE.get(), SpikyBallProjectileRenderer::new);
@@ -348,6 +348,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(FLAIL_BALL.get(), FlailRenderer::new);
 
         EntityRendererProvider<BaseMinecartEntity> provider = context -> new MinecartRenderer<>(context, ModelLayers.MINECART);
+        event.registerEntityRenderer(VANILLA_MINECART.get(), provider);
         event.registerEntityRenderer(WOODEN_MINECART.get(), provider); // todo 模型
         event.registerEntityRenderer(GENERIC_MINECART.get(), provider);
         event.registerEntityRenderer(MECHANICAL_CART.get(), provider);

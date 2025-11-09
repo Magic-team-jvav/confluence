@@ -96,7 +96,7 @@ public abstract class AbstractFishingPole extends FishingRodItem {
 
                 if (this == FishingPoleItems.HOTLINE_FISHING_HOOK.get() ||
                         (!bait.isEmpty() && bait.is(ModTags.Items.LAVA_PROOF_BAIT)) ||
-                        TCUtils.hasAccessoriesType(player, AccessoryItems.LAVAPROOF$FISHING$HOOK)
+                        TCUtils.hasType(player, AccessoryItems.LAVAPROOF$FISHING$HOOK)
                 ) IFishingHook.of(fishingHook).confluence$setIsLavaHook();
                 level.addFreshEntity(fishingHook);
             }
@@ -178,7 +178,7 @@ public abstract class AbstractFishingPole extends FishingRodItem {
                 consume = true;
             }
         } else {
-            float factor = TCUtils.hasAccessoriesType(player, AccessoryItems.TACKLE$BOX) ? 2.0F : 1.0F;
+            float factor = TCUtils.hasType(player, AccessoryItems.TACKLE$BOX) ? 2.0F : 1.0F;
             IBait iBait = IBait.of(bait);
             float bonus = iBait == null ? 0 : iBait.getBaitBonus() * 100;
             if (player.getRandom().nextFloat() < 1.0F / (factor + bonus / 6.0F)) {

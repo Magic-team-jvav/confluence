@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
@@ -36,5 +37,10 @@ public record MeteoriteLocationPacketS2C(BlockPos location, int tickUntilLanding
         if (ServerLifecycleHooks.getCurrentServer() != null && !BlockPos.ZERO.equals(location)) {
             PacketDistributor.sendToAllPlayers(new MeteoriteLocationPacketS2C(location, tickUntilLanding));
         }
+    }
+
+    public static void sendToClient(ServerPlayer player, BlockPos location, int tickUntilLanding) {
+        if (BlockPos.ZERO.equals(location)) return;
+        PacketDistributor.sendToPlayer(player, new MeteoriteLocationPacketS2C(location, tickUntilLanding));
     }
 }

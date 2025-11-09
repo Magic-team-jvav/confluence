@@ -7,10 +7,9 @@ import net.minecraft.util.AbortableIterationConsumer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.entity.EntityTypeTest;
+import org.apache.commons.lang3.mutable.MutableInt;
 import org.confluence.mod.common.block.functional.network.INetworkEntity;
 import org.confluence.mod.common.entity.projectile.SuperSpikyBallProjectile;
-
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class SpikyBallTrapBlock extends AbstractDispenserMechanicalBlock {
     private static final double sigma = Mth.square(50.0 / 8.0);
@@ -21,11 +20,11 @@ public class SpikyBallTrapBlock extends AbstractDispenserMechanicalBlock {
 
     @Override
     protected boolean behaviour(BlockState pState, ServerLevel pLevel, BlockPos pPos, int pColor, INetworkEntity pEntity) {
-        AtomicInteger value = new AtomicInteger();
+        MutableInt value = new MutableInt();
         pLevel.getProfiler().incrementCounter("getEntities");
         pLevel.getEntities().get(EntityTypeTest.forClass(SuperSpikyBallProjectile.class), projectile -> {
             double sqr = pPos.distToCenterSqr(projectile.position());
-            int newValue = value.get();
+            int newValue = value.intValue();
 
             if (sqr <= sigma) newValue += 50;
             else if (sqr <= sigma * 2) newValue += 15;
@@ -41,10 +40,10 @@ public class SpikyBallTrapBlock extends AbstractDispenserMechanicalBlock {
             if (newValue >= 200) {
                 return AbortableIterationConsumer.Continuation.ABORT;
             }
-            value.set(newValue);
+            value.setValue(newValue);
             return AbortableIterationConsumer.Continuation.CONTINUE;
         });
-        if (value.get() >= 200) return false;
+        if (value.intValue() >= 200) return false;
         Direction direction = pState.getValue(FACING);
         double x = pPos.getX() + 0.5 + 1.7 * direction.getStepX(); // 可以穿过一个遮挡方块
         double y = pPos.getY() + 0.5 + 1.7 * direction.getStepY();

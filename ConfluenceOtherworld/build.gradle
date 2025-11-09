@@ -5,7 +5,7 @@ plugins {
     id 'net.neoforged.moddev'
 }
 var projectName = ["Confluence-Magic-Lib", "TerraEntity", "MineTeam",
-                   "TerraCurio", "HeavenDestinyMoment", "PhaseJourney",
+                   "TerraCurio", "HeavenDestinyMoment",
                    "TerraMoment", "TerraGuns", "IsekaiInvaded", "TerraFurniture",
                    "EntityTrackerHUD", "EnemyBanner"
 ]
@@ -164,12 +164,12 @@ repositories {
 boolean sodium = true // 钠
 boolean vanillin = false // 香兰素
 boolean observable = false // 可视性能侦测
-boolean ftb = true // FTB系列
+boolean ftb = false // FTB系列
 boolean ipn = false // 一键背包整理Next
 boolean mmmmmmmmmmmm = false // 试验假人
 boolean supplementaries = false // 锦致装饰
 boolean lootBeams = false // 战利品光束
-boolean spark = false // 火花
+boolean spark = true // 火花
 boolean apotheosis = false // 神化
 boolean legendarytooltips = false // 传说提示框
 boolean itemborders = false // 物品边框
@@ -255,7 +255,7 @@ dependencies {
 
     compileOnly "maven.modrinth:waystones:21.1.23+neoforge-1.21.1"
     compileOnly "maven.modrinth:balm:21.0.51+neoforge-1.21.1"
-    if (true) {
+    if (false) {
         runtimeOnly "maven.modrinth:waystones:21.1.23+neoforge-1.21.1"
         runtimeOnly "maven.modrinth:balm:21.0.51+neoforge-1.21.1"
     }
@@ -279,12 +279,18 @@ dependencies {
     //runtimeOnly "com.hollingsworth.ars_nouveau:ars_nouveau-${minecraft_version}:${ars_nouveau_version}"
 
     compileOnly "io.redspace:irons_spellbooks:${irons_spells_version}:api"
-    if (true) {
+    if (false) {
         runtimeOnly "io.redspace:irons_spellbooks:${irons_spells_version}"
         runtimeOnly "dev.kosmx.player-anim:player-animation-lib-forge:${player_animator_version}"
     }
 
     compileOnly "curse.maven:dynamiclights-reforged-551736:5807536"
+
+    compileOnly "maven.modrinth:better-combat:2.2.5+1.21.1-neoforge"
+    if (false) {
+        runtimeOnly "maven.modrinth:better-combat:2.2.5+1.21.1-neoforge"
+        runtimeOnly "maven.modrinth:cloth-config:15.0.140+neoforge"
+    }
 
     /**********************************************************/
 
@@ -324,10 +330,6 @@ dependencies {
         runtimeOnly "curse.maven:enchantment-descriptions-250419:6348560"
         runtimeOnly "curse.maven:bookshelf-228525:6717571"
         runtimeOnly "curse.maven:prickle-1023259:6546240"
-    }
-    if (false) {
-        runtimeOnly "curse.maven:immersive-portals-for-forge-355440:6013197"
-        runtimeOnly "curse.maven:cloth-config-348521:5729127"
     }
     if (observable) {
         runtimeOnly "curse.maven:observable-509575:5733591"

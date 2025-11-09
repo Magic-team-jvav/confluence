@@ -33,7 +33,7 @@ public class BeeGunItem extends ManaGunItem {
 
     @Override
     protected void prepareBulletEntity(List<Projectile> baseBulletEntities, ServerPlayer player, ItemStack bullet, ItemStack gun, float damage, float knockback, float velocity, int penetrate, float inaccuracy) {
-        boolean hasHivePack = TCUtils.hasAccessoriesType(player, TCItems.HIVE$PACK);
+        boolean hasHivePack = TCUtils.hasType(player, TCItems.HIVE$PACK);
         int times = ThreadLocalRandom.current().nextInt(1, hasHivePack ? 5 : 4);
         for (int i = 0; i < times; i++) {
             BeeProjectile beeProjectile = new BeeProjectile(player.serverLevel(), player, hasHivePack && player.getRandom().nextBoolean()) {

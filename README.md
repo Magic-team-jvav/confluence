@@ -9,7 +9,6 @@
 | [TerraGuns](TerraGuns)                                      | 泰拉枪支              | 是                     |
 | [ParticleStorm](https://github.com/westernat/ParticleStorm) | 为复杂的粒子提供API       | 是                     |
 | [HeavenDestinyMoment](HeavenDestinyMoment)                  | 提供各类事件机制API       | 是                     |
-| [PhaseJourney](PhaseJourney)                                | 提供各类阶游戏段机制API     | 是                     |
 | [TerraMoment](TerraMoment)                                  | 泰拉事件              | 依赖HeavenDestinyMoment |
 | [IsekaiInvaded](IsekaiInvaded)                              | 多维度入侵事件           | 依赖HeavenDestinyMoment |
 | [TerraFurniture](TerraFurniture)                            | 泰拉家具              | 是                     |
@@ -38,30 +37,3 @@
   > 以及[ConfluenceOtherworld/build.gradle](ConfluenceOtherworld/build.gradle)里加上子模块名
 
 - 全部拉取完成后,在gradle插件中启动ConfluenceOtherworld本体项目中的runClient命令
-
-## Maven 例子
-```groovy
-repositories {
-    maven {
-        name "magicTeam MavenReleases"
-        url "https://maven.confluence.ink/releases"
-    }
-    maven {
-        name "magicTeam MavenSnapshots"
-        url "https://maven.confluence.ink/snapshots"
-    }
-    maven {
-        name = "Curios"
-        url = uri("https://maven.theillusivec4.top/")
-    }
-}
-
-dependencies {
-    // Lib
-    implementation ("org.confluence.lib:Confluence-Magic-Lib:${confluence_lib_version}")
-    // 本体 
-    implementation ("org.confluence.mod:ConfluenceOtherworld:${confluence_version}"){transitive = false}
-    // 前置-饰品
-    implementation "top.theillusivec4.curios:curios-neoforge:${curios_version}"
-}
-```

@@ -6,6 +6,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import org.confluence.lib.common.component.ModRarity;
@@ -30,18 +31,15 @@ public class ArmorItems {
     public static final DeferredItem<BaseArmorItem> MINING_CHESTPLATE = register("mining_chestplate", ModArmorMaterials.MINING_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/mining_armor")
             .rarity(ModRarity.BLUE)
-            .attribute(Attributes.BLOCK_BREAK_SPEED, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
-            .tooltips(1));
+            .attribute(Attributes.BLOCK_BREAK_SPEED, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
     public static final DeferredItem<BaseArmorItem> MINING_LEGGINGS = register("mining_leggings", ModArmorMaterials.MINING_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/mining_armor")
             .rarity(ModRarity.BLUE)
-            .attribute(Attributes.BLOCK_BREAK_SPEED, 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
-            .tooltips(1));
+            .attribute(Attributes.BLOCK_BREAK_SPEED, 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
     public static final DeferredItem<BaseArmorItem> MINING_BOOTS = register("mining_boots", ModArmorMaterials.MINING_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/mining_armor")
             .rarity(ModRarity.BLUE)
-            .attribute(Attributes.BLOCK_BREAK_SPEED, 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_BASE)
-            .tooltips(1));
+            .attribute(Attributes.BLOCK_BREAK_SPEED, 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
 
     public static final DeferredItem<BaseArmorItem> PLANK_HELMET = register("plank_helmet", ModArmorMaterials.PLANK_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/plank_armor")
@@ -240,16 +238,20 @@ public class ArmorItems {
 
     public static final DeferredItem<BaseArmorItem> GOLDEN_HELMET = register("golden_helmet", ModArmorMaterials.GOLDEN_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/golden_armor")
-            .durability(250));
+            .durability(250)
+            .setGolden());
     public static final DeferredItem<BaseArmorItem> GOLDEN_CHESTPLATE = register("golden_chestplate", ModArmorMaterials.GOLDEN_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/golden_armor")
-            .durability(340));
+            .durability(340)
+            .setGolden());
     public static final DeferredItem<BaseArmorItem> GOLDEN_LEGGINGS = register("golden_leggings", ModArmorMaterials.GOLDEN_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/golden_armor")
-            .durability(320));
+            .durability(320)
+            .setGolden());
     public static final DeferredItem<BaseArmorItem> GOLDEN_BOOTS = register("golden_boots", ModArmorMaterials.GOLDEN_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/golden_armor")
-            .durability(260));
+            .durability(260)
+            .setGolden());
 
     public static final DeferredItem<BaseArmorItem> PLATINUM_HELMET = register("platinum_helmet", ModArmorMaterials.PLATINUM_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/platinum_armor")
@@ -271,7 +273,7 @@ public class ArmorItems {
     public static final DeferredItem<BaseArmorItem> FOSSIL_CHESTPLATE = register("fossil_chestplate", ModArmorMaterials.FOSSIL_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/fossil_armor")
             .rarity(ModRarity.BLUE)
-            .criticalChance(0.05));
+            .rangedDamage(0.05));
     public static final DeferredItem<BaseArmorItem> FOSSIL_LEGGINGS = register("fossil_leggings", ModArmorMaterials.FOSSIL_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/fossil_armor")
             .rarity(ModRarity.BLUE)
@@ -283,43 +285,61 @@ public class ArmorItems {
 
     public static final DeferredItem<BaseArmorItem> SPORE_ROOT_HELMET = register("spore_root_helmet", ModArmorMaterials.SPORE_ROOT_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/spore_root_armor")
-            .rarity(ModRarity.BLUE));
+            .rarity(ModRarity.BLUE)
+            .summonDamage(0.02)
+            .attribute(TEAttributes.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredItem<BaseArmorItem> SPORE_ROOT_CHESTPLATE = register("spore_root_chestplate", ModArmorMaterials.SPORE_ROOT_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/spore_root_armor")
-            .rarity(ModRarity.BLUE));
+            .rarity(ModRarity.BLUE)
+            .summonDamage(0.03));
     public static final DeferredItem<BaseArmorItem> SPORE_ROOT_LEGGINGS = register("spore_root_leggings", ModArmorMaterials.SPORE_ROOT_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/spore_root_armor")
-            .rarity(ModRarity.BLUE));
+            .rarity(ModRarity.BLUE)
+            .summonDamage(0.03));
     public static final DeferredItem<BaseArmorItem> SPORE_ROOT_BOOTS = register("spore_root_boots", ModArmorMaterials.SPORE_ROOT_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/spore_root_armor")
-            .rarity(ModRarity.BLUE));
+            .rarity(ModRarity.BLUE)
+            .summonDamage(0.02));
 
     public static final DeferredItem<BaseArmorItem> COLD_CRYSTAL_HELMET = register("cold_crystal_helmet", ModArmorMaterials.COLD_CRYSTAL_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/cold_crystal_armor")
-            .rarity(ModRarity.BLUE));
+            .rarity(ModRarity.BLUE)
+            .additionalMana(20)
+            .criticalChance(0.04)
+            .tooltips(1));
     public static final DeferredItem<BaseArmorItem> COLD_CRYSTAL_CHESTPLATE = register("cold_crystal_chestplate", ModArmorMaterials.COLD_CRYSTAL_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/cold_crystal_armor")
-            .rarity(ModRarity.BLUE));
+            .rarity(ModRarity.BLUE)
+            .additionalMana(20)
+            .criticalChance(0.04)
+            .tooltips(1));
     public static final DeferredItem<BaseArmorItem> COLD_CRYSTAL_LEGGINGS = register("cold_crystal_leggings", ModArmorMaterials.COLD_CRYSTAL_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/cold_crystal_armor")
-            .rarity(ModRarity.BLUE));
+            .rarity(ModRarity.BLUE)
+            .magicDamage(0.04));
     public static final DeferredItem<BaseArmorItem> COLD_CRYSTAL_BOOTS = register("cold_crystal_boots", ModArmorMaterials.COLD_CRYSTAL_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/cold_crystal_armor")
-            .rarity(ModRarity.BLUE));
+            .rarity(ModRarity.BLUE)
+            .criticalChance(0.04));
 
     public static final DeferredItem<BaseArmorItem> HEIM_HELMET = register("heim_helmet", ModArmorMaterials.HEIM_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/heim_armor")
-            .rarity(ModRarity.BLUE));
+            .rarity(ModRarity.BLUE)
+            .meleeDamage(0.03)
+            .tooltips(1));
     public static final DeferredItem<BaseArmorItem> HEIM_CHESTPLATE = register("heim_chestplate", ModArmorMaterials.HEIM_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/heim_armor")
-            .rarity(ModRarity.BLUE));
+            .rarity(ModRarity.BLUE)
+            .criticalChance(0.04));
     public static final DeferredItem<BaseArmorItem> HEIM_LEGGINGS = register("heim_leggings", ModArmorMaterials.HEIM_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/heim_armor")
-            .rarity(ModRarity.BLUE));
+            .rarity(ModRarity.BLUE)
+            .meleeDamage(0.02)
+            .criticalChance(0.03));
     public static final DeferredItem<BaseArmorItem> HEIM_BOOTS = register("heim_boots", ModArmorMaterials.HEIM_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/heim_armor")
-            .rarity(ModRarity.BLUE));
-
+            .rarity(ModRarity.BLUE)
+            .attribute(NeoForgeMod.SWIM_SPEED, 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
     public static final DeferredItem<BaseArmorItem> BEE_HELMET = register("bee_helmet", ModArmorMaterials.BEE_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/bee_armor")
             .rarity(ModRarity.ORANGE)
@@ -367,16 +387,20 @@ public class ArmorItems {
 
     public static final DeferredItem<BaseArmorItem> METEOR_HELMET = register("meteor_helmet", ModArmorMaterials.METEOR_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/meteor_armor")
-            .rarity(ModRarity.BLUE));
+            .rarity(ModRarity.BLUE)
+            .magicDamage(0.09));
     public static final DeferredItem<BaseArmorItem> METEOR_CHESTPLATE = register("meteor_chestplate", ModArmorMaterials.METEOR_ARMOR_MATERIALS, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/meteor_armor")
-            .rarity(ModRarity.BLUE));
+            .rarity(ModRarity.BLUE)
+            .magicDamage(0.09));
     public static final DeferredItem<BaseArmorItem> METEOR_LEGGINGS = register("meteor_leggings", ModArmorMaterials.METEOR_ARMOR_MATERIALS, ArmorItem.Type.LEGGINGS, builder -> builder
             .geo("armor/meteor_armor")
-            .rarity(ModRarity.BLUE));
+            .rarity(ModRarity.BLUE)
+            .magicDamage(0.045));
     public static final DeferredItem<BaseArmorItem> METEOR_BOOTS = register("meteor_boots", ModArmorMaterials.METEOR_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/meteor_armor")
-            .rarity(ModRarity.BLUE));
+            .rarity(ModRarity.BLUE)
+            .magicDamage(0.045));
 
     public static final DeferredItem<BaseArmorItem> JUNGLE_HELMET = register("jungle_helmet", ModArmorMaterials.JUNGLE_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/jungle_armor")
@@ -498,7 +522,7 @@ public class ArmorItems {
     public static final DeferredItem<BaseArmorItem> SPIDER_BOOTS = register("spider_boots", ModArmorMaterials.SPIDER_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/spider_armor")
             .rarity(ModRarity.LIGHT_RED)
-            .summonDamage(0.03));
+            .summonDamage(0.06));
 
     public static final DeferredItem<BaseArmorItem> COBALT_MASK = register("cobalt_mask", ModArmorMaterials.COBALT_MASK_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/cobalt_armor", true)
@@ -625,7 +649,8 @@ public class ArmorItems {
             .rarity(ModRarity.LIGHT_RED)
             .additionalMana(80)
             .magicDamage(0.12)
-            .criticalChance(0.12));
+            .criticalChance(0.12)
+            .tooltips(1));
     public static final DeferredItem<BaseArmorItem> ADAMANTITE_MASK = register("adamantite_mask", ModArmorMaterials.ADAMANTITE_MASK_MATERIAL, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/adamantite_armor", true)
             .rarity(ModRarity.LIGHT_RED)
@@ -676,11 +701,11 @@ public class ArmorItems {
             .geo("armor/titanium_armor", true)
             .rarity(ModRarity.LIGHT_RED)
             .fourClassesDamage(0.03)
-            .criticalChance(0.03)
-            .attribute(Attributes.MOVEMENT_SPEED, 0.06, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+            .criticalChance(0.03));
     public static final DeferredItem<BaseArmorItem> TITANIUM_BOOTS = register("titanium_boots", ModArmorMaterials.TITANIUM_ARMOR_MATERIALS, ArmorItem.Type.BOOTS, builder -> builder
             .geo("armor/titanium_armor", true)
-            .rarity(ModRarity.LIGHT_RED));
+            .rarity(ModRarity.LIGHT_RED)
+            .attribute(Attributes.MOVEMENT_SPEED, 0.06, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
 
     public static final DeferredItem<BaseArmorItem> CRYSTAL_ASSASSIN_HELMET = register("crystal_assassin_helmet", ModArmorMaterials.CRYSTAL_ASSASSIN_ARMOR_MATERIALS, ArmorItem.Type.HELMET, builder -> builder
             .geo("armor/crystal_assassin_armor")
@@ -761,8 +786,7 @@ public class ArmorItems {
             .rarity(ModRarity.BLUE)
             .magicDamage(0.06)
             .criticalChance(0.06)
-            .armorBonus(PrimitiveValueComponent.of(AccessoryItems.MANA$USE$REDUCE, 0.1F))
-            .tooltips(1));
+            .armorBonus(PrimitiveValueComponent.of(AccessoryItems.MANA$USE$REDUCE, 0.1F)));
     public static final DeferredItem<BaseArmorItem> DIAMOND_ROBE = register("diamond_robe", ModArmorMaterials.DIAMOND_ROBE_ARMOR_MATERIAL, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/diamond_robe")
             .rarity(ModRarity.GREEN)
@@ -783,7 +807,9 @@ public class ArmorItems {
             .rarity(ModRarity.BLUE));
     public static final DeferredItem<BaseArmorItem> FLINX_FUR_COAT = register("flinx_fur_coat", ModArmorMaterials.FLINX_FUR_COAT_MATERIAL, ArmorItem.Type.CHESTPLATE, builder -> builder
             .geo("armor/flinx_fur_coat_armor")
-            .rarity(ModRarity.GREEN));
+            .rarity(ModRarity.GREEN)
+            .summonDamage(0.05)
+            .attribute(TEAttributes.MINION_CAPACITY, 1, AttributeModifier.Operation.ADD_VALUE));
 
     private static DeferredItem<BaseArmorItem> register(String name, Holder<ArmorMaterial> material, ArmorItem.Type type, Consumer<BaseArmorItem.Builder> consumer) {
         return ITEMS.register(name, () -> {

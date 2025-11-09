@@ -23,7 +23,7 @@ public class BeenadeEntity extends BaseGrenadeEntity {
     protected void explodeFunction(ServerLevel level) {
         super.explodeFunction(level);
         if (getOwner() instanceof LivingEntity living) {
-            boolean hivePack = TCUtils.hasAccessoriesType(living, TCItems.HIVE$PACK);
+            boolean hivePack = TCUtils.hasType(living, TCItems.HIVE$PACK);
             int amount = Mth.randomBetweenInclusive(living.getRandom(), 15, 20);
             if (hivePack && living.getRandom().nextFloat() < 0.3333F) amount++;
             for (int i = 0; i < amount; i++) {

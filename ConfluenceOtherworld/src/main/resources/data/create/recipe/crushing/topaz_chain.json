@@ -1,25 +1,25 @@
 {
-  "neoforge:conditions": [
-    {
-      "type": "neoforge:mod_loaded",
-      "modid": "create"
-    }
-  ],
-  "type": "create:crushing",
-  "ingredients": [
-    {
-      "item": "confluence:topaz_chain"
-    }
-  ],
-  "processing_time": 100,
-  "results": [
-    {
-      "count": 2,
-      "id": "confluence:topaz"
-    },
-    {
-      "chance": 0.5,
-      "id": "confluence:topaz"
-    }
-  ]
+    "neoforge:conditions": [
+        {
+            "type": "neoforge:mod_loaded",
+            "modid": "create"
+        }
+    ],
+    "type": "create:crushing",
+    "ingredients": [
+        {
+            "item": "confluence:topaz_chain"
+        }
+    ],
+    "processing_time": 100,
+    "results": [
+        {
+            "count": 2,
+            "id": "confluence:topaz"
+        },
+        {
+            "chance": 0.5,
+            "id": "confluence:topaz"
+        }
+    ]
 }

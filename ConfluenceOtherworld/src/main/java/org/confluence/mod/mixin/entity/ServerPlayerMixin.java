@@ -106,11 +106,6 @@ public abstract class ServerPlayerMixin implements IServerPlayer {
         }
     }
 
-    @Inject(method = "checkMovementStatistics", at = @At("HEAD"))
-    private void checkSpeed(double dx, double dy, double dz, CallbackInfo ci) {
-        this.confluence$movementSpeed.set(dx, dy, dz);
-    }
-
     @WrapWithCondition(method = "die", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerGamePacketListenerImpl;send(Lnet/minecraft/network/protocol/Packet;Lnet/minecraft/network/PacketSendListener;)V"))
     private boolean replacePacket(ServerGamePacketListenerImpl instance, Packet<?> packet, PacketSendListener packetSendListener) {
         if (packet instanceof ClientboundPlayerCombatKillPacket combatKillPacket) {

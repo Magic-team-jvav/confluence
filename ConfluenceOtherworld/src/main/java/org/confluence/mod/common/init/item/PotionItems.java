@@ -108,4 +108,9 @@ public class PotionItems {
 
     public static final DeferredItem<AbstractPotionItem> FLASK_OF_FIRE = ITEMS.register("flask_of_fire", () -> new EffectPotionItem(ModRarity.LIGHT_RED, ModEffects.WEAPON_IMBUE_FIRE, 24000));
     public static final DeferredItem<AbstractPotionItem> FLASK_OF_GOLD = ITEMS.register("flask_of_gold", () -> new EffectPotionItem(ModRarity.LIGHT_RED, ModEffects.WEAPON_IMBUE_GOLD, 24000));
+
+    public static final DeferredItem<AbstractPotionItem> BATTLE_POTION = ITEMS.register("battle_potion", () -> new EffectPotionItem(ModRarity.BLUE, ModEffects.BATTLE, 8400));
+    public static final DeferredItem<AbstractPotionItem> CALMING_POTION = ITEMS.register("calming_potion", () -> new EffectPotionItem(ModRarity.BLUE, ModEffects.CALM, 14400));
+
+    public static final DeferredItem<AbstractPotionItem> SATIETY_POTION = ITEMS.register("satiety_potion", () -> new EffectPotionItem(ModRarity.ORANGE, ModEffects.HUNGER_DELAYED, 24000));
 }

@@ -3,6 +3,7 @@ package org.confluence.mod.network.s2c;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -10,6 +11,7 @@ import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.mod.client.handler.CompatibilityHandler;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.network.IPacket;
+import org.jetbrains.annotations.NotNull;
 
 public record CompatibilitySyncPacketS2c(int data) implements IPacketS2C {
     private static ModConfigSpec.BooleanValue[] configs;
@@ -28,13 +30,22 @@ public record CompatibilitySyncPacketS2c(int data) implements IPacketS2C {
 
     public static void sendToAll() {
         if (ServerLifecycleHooks.getCurrentServer() != null) {
-            int data = 0;
-            ModConfigSpec.BooleanValue[] arr = getConfigs();
-            for (int i = 0; i < arr.length; i++) {
-                if (arr[i].get()) data |= (1 << i);
-            }
-            PacketDistributor.sendToAllPlayers(new CompatibilitySyncPacketS2c(data));
+            PacketDistributor.sendToAllPlayers(collectPacket());
         }
+    }
+
+    public static void sendToClient(ServerPlayer player) {
+        CompatibilitySyncPacketS2c packet = collectPacket();
+        PacketDistributor.sendToPlayer(player, packet);
+    }
+
+    private static @NotNull CompatibilitySyncPacketS2c collectPacket() {
+        int data = 0;
+        ModConfigSpec.BooleanValue[] arr = getConfigs();
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i].get()) data |= (1 << i);
+        }
+        return new CompatibilitySyncPacketS2c(data);
     }
 
     public static ModConfigSpec.BooleanValue[] getConfigs() {

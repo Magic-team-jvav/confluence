@@ -1,18 +1,18 @@
 {
-  "neoforge:conditions": [
-    {
-      "type": "neoforge:mod_loaded",
-      "modid": "create"
-    }
-  ],
-  "type": "confluence:item_transmutation",
-  "source": {
-    "item": "create:sweet_roll"
-  },
-  "target": [
-    {
-      "count": 1,
-      "id": "minecraft:bread"
-    }
-  ]
+    "neoforge:conditions": [
+        {
+            "type": "neoforge:mod_loaded",
+            "modid": "create"
+        }
+    ],
+    "type": "confluence:item_transmutation",
+    "source": {
+        "item": "create:sweet_roll"
+    },
+    "target": [
+        {
+            "count": 1,
+            "id": "minecraft:bread"
+        }
+    ]
 }

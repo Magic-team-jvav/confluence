@@ -417,7 +417,7 @@ public final class PrefixUtils {
 
     public static int getReforgeCost(Player player, ItemStack itemStack) {
         int price = ValueComponent.getValue(itemStack, 5000);
-        if (TCUtils.getAccessoriesValue(player, AccessoryItems.SPECIAL$PRICE) > 0) {
+        if (TCUtils.getValue(player, AccessoryItems.SPECIAL$PRICE) > 0) {
             price = (int) ((double) price * 0.8);
         }
         ITradeHolder holder = ((IPlayer) player).terra_entity$getTradeHolder();

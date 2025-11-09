@@ -140,7 +140,7 @@ public class AltarBlock extends BaseEntityBlock {
         if (player instanceof ServerPlayer serverPlayer && IMinecraftServer.isHardmode(serverPlayer.server)) {
             ServerLevel serverLevel = serverPlayer.serverLevel();
             ConfluenceData data = ConfluenceData.get(serverLevel);
-            if (data.increaseRevealStep(serverLevel)) {
+            if (data.increaseRevealStep()) {
                 serverLevel.getServer().getPlayerList().broadcastSystemMessage(Component.translatable(
                         "event.confluence.reveal_step" + data.getRevealStep()
                 ).withColor(GlobalColors.MESSAGE.get()), false);
@@ -236,17 +236,6 @@ public class AltarBlock extends BaseEntityBlock {
             SingletonGeoAnimatable.registerSyncedAnimatable(this);
         }
 
-//        @Override
-//        public void onLoad() {
-//            super.onLoad();
-//            invalidateCapabilities();
-//        }
-//
-//        @Override
-//        public void onChunkUnloaded() {
-//            invalidateCapabilities();
-//        }
-
         public ItemStack addItem(ItemStack toAdd) {
             int firstEmptySlot = -1;
             for (int i = 0; i < 5; i++) {
@@ -265,7 +254,7 @@ public class AltarBlock extends BaseEntityBlock {
                 setChanged();
                 return ItemStack.EMPTY;
             }
-            return ItemStack.EMPTY;
+            return toAdd;
         }
 
         public ItemStack takeItem(int slot) {

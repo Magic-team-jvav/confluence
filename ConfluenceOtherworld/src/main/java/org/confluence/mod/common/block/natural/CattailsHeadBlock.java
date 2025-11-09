@@ -7,10 +7,12 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.GrowingPlantHeadBlock;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -20,10 +22,10 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.init.block.NatureBlocks;
+import org.jetbrains.annotations.Nullable;
 
-public class CattailsHeadBlock extends GrowingPlantHeadBlock implements SimpleWaterloggedBlock, BonemealableBlock {
+public class CattailsHeadBlock extends GrowingPlantHeadBlock implements SimpleWaterloggedBlock {
     public static final MapCodec<CattailsHeadBlock> CODEC = simpleCodec(CattailsHeadBlock::new);
-    public static final BooleanProperty UP = BlockStateProperties.UP;
     public static final IntegerProperty AGE = BlockStateProperties.AGE_25;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final BooleanProperty PLACE = BooleanProperty.create("place");
@@ -32,7 +34,7 @@ public class CattailsHeadBlock extends GrowingPlantHeadBlock implements SimpleWa
 
     public CattailsHeadBlock(Properties properties) {
         super(properties, Direction.UP, SHAPE, true, 0.20);
-        registerDefaultState(stateDefinition.any().setValue(UP, true).setValue(PLACE, false).setValue(WATERLOGGED, false));
+        registerDefaultState(stateDefinition.any().setValue(PLACE, false).setValue(WATERLOGGED, false));
     }
 
     @Override
@@ -58,7 +60,7 @@ public class CattailsHeadBlock extends GrowingPlantHeadBlock implements SimpleWa
     }
 
     @Override
-    public BlockState getStateForPlacement(BlockPlaceContext context) {
+    public @Nullable BlockState getStateForPlacement(BlockPlaceContext context) {
         BlockState state = context.getLevel().getBlockState(context.getClickedPos());
         if (state.is(this)) return state.setValue(PLACE, true);
         FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
@@ -105,11 +107,6 @@ public class CattailsHeadBlock extends GrowingPlantHeadBlock implements SimpleWa
     }
 
     @Override
-    public boolean isBonemealSuccess(Level level, RandomSource randomSource, BlockPos pos, BlockState state) {
-        return true;
-    }
-
-    @Override
     protected boolean canGrowInto(BlockState state) {
         return state.is(Blocks.AIR);
     }
@@ -119,21 +116,19 @@ public class CattailsHeadBlock extends GrowingPlantHeadBlock implements SimpleWa
         return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
+    @Override
     public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
-        BlockPos blockpos = pos.relative(this.growthDirection);
+        BlockPos growPos = pos.relative(this.growthDirection);
         int currentAge = state.getValue(AGE);
-        FluidState fluidState = level.getFluidState(blockpos);
-        boolean isWaterlogged = fluidState.is(FluidTags.WATER) && fluidState.getAmount() == 8;
+        BlockState targetState = level.getBlockState(growPos);
+        FluidState targetFluid = targetState.getFluidState();
+        boolean isTargetWater = targetFluid.is(FluidTags.WATER) && targetFluid.getAmount() == 8;
         if (currentAge >= MAX_AGE) {
-            if (isWaterlogged || level.getBlockState(blockpos).is(Blocks.WATER)) {
+            if (isTargetWater || canGrowInto(targetState)) {
                 level.setBlockAndUpdate(pos, state.setValue(AGE, 0));
             }
-            return;
-        }
-        BlockState targetState = level.getBlockState(blockpos);
-        if (targetState.is(Blocks.WATER) || canGrowInto(targetState)) {
-            BlockState newGrowState = this.getGrowIntoState(state, random).setValue(WATERLOGGED, isWaterlogged);
-            level.setBlockAndUpdate(blockpos, newGrowState);
+        } else if (isTargetWater || canGrowInto(targetState)) {
+            level.setBlockAndUpdate(growPos, getGrowIntoState(state, random).setValue(WATERLOGGED, isTargetWater));
         }
     }
 
@@ -144,6 +139,11 @@ public class CattailsHeadBlock extends GrowingPlantHeadBlock implements SimpleWa
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(UP, AGE, PLACE, WATERLOGGED);
+        builder.add(AGE, PLACE, WATERLOGGED);
+    }
+
+    @Override
+    protected BlockState updateBodyAfterConvertedFromHead(BlockState head, BlockState body) {
+        return body.setValue(WATERLOGGED, head.getValue(WATERLOGGED));
     }
 }

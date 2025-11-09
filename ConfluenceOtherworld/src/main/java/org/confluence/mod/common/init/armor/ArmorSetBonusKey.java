@@ -8,27 +8,29 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Unit;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ItemLike;
 import org.confluence.mod.Confluence;
 import org.confluence.terra_curio.api.primitive.PrimitiveValue;
 import org.confluence.terra_curio.api.primitive.UnitValue;
 import org.confluence.terra_curio.api.primitive.ValueType;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 import java.util.Objects;
 
 public final class ArmorSetBonusKey {
-    public static final ArmorSetBonusKey NONE = new ArmorSetBonusKey(null, null, null, null, mixHash(null, null, null, null, false));
-    static final BiMap<ResourceLocation, ArmorSetBonusKey> MAP = Util.make(HashBiMap.create(), map -> map.put(Confluence.asResource("none"), NONE));
+    public static final ResourceLocation NONE_ID = Confluence.asResource("none");
+    public static final ArmorSetBonusKey NONE = new ArmorSetBonusKey(Items.AIR, Items.AIR, Items.AIR, Items.AIR, mixHash(Items.AIR, Items.AIR, Items.AIR, Items.AIR, false));
+    static final BiMap<ResourceLocation, ArmorSetBonusKey> MAP = Util.make(HashBiMap.create(), map -> map.put(NONE_ID, NONE));
     public static final Codec<ArmorSetBonusKey> CODEC = ResourceLocation.CODEC.xmap(MAP::get, MAP.inverse()::get);
-    private final @Nullable Item head;
-    private final @Nullable Item chest;
-    private final @Nullable Item legs;
-    private final @Nullable Item feet;
+    private final Item head;
+    private final Item chest;
+    private final Item legs;
+    private final Item feet;
     private final int hash;
 
-    ArmorSetBonusKey(@Nullable Item head, @Nullable Item chest, @Nullable Item legs, @Nullable Item feet, int hash) {
+    ArmorSetBonusKey(Item head, Item chest, Item legs, Item feet, int hash) {
         this.head = head;
         this.chest = chest;
         this.legs = legs;
@@ -36,25 +38,33 @@ public final class ArmorSetBonusKey {
         this.hash = hash;
     }
 
+    ArmorSetBonusKey(ItemLike head, ItemLike chest, ItemLike legs, ItemLike feet, int hash) {
+        this(head.asItem(), chest.asItem(), legs.asItem(), feet.asItem(), hash);
+    }
+
     public static ArmorSetBonusKey of(ItemStack head, ItemStack chest, ItemStack legs, ItemStack feet) {
         return new ArmorSetBonusKey(head.getItem(), chest.getItem(), legs.getItem(), feet.getItem(), mixHash(
-                head.isEmpty() ? null : head.getItem(),
-                chest.isEmpty() ? null : chest.getItem(),
-                legs.isEmpty() ? null : legs.getItem(),
-                feet.isEmpty() ? null : feet.getItem(),
+                head.getItem(),
+                chest.getItem(),
+                legs.getItem(),
+                feet.getItem(),
                 false
         ));
     }
 
-    public static @Nullable ResourceLocation getId(ArmorSetBonusKey key) {
-        return MAP.inverse().get(key);
+    public static ResourceLocation getId(ArmorSetBonusKey key) {
+        return MAP.inverse().getOrDefault(key, NONE_ID);
     }
 
-    static int mixHash(@Nullable Item head, @Nullable Item chest, @Nullable Item legs, @Nullable Item feet, boolean check) {
-        if (check && head == null && chest == null && legs == null && feet == null) {
-            throw new IllegalArgumentException("head, chest, legs and feet must at least one non-null");
+    public static ArmorSetBonusKey byId(ResourceLocation id) {
+        return MAP.getOrDefault(id, NONE);
+    }
+
+    static int mixHash(ItemLike head, ItemLike chest, ItemLike legs, ItemLike feet, boolean check) {
+        if (check && head == Items.AIR && chest == Items.AIR && legs == Items.AIR && feet == Items.AIR) {
+            throw new IllegalArgumentException("head, chest, legs and feet must at least one non-air");
         }
-        return Objects.hash(head, chest, legs, feet);
+        return Objects.hash(head.asItem(), chest.asItem(), legs.asItem(), feet.asItem());
     }
 
     @Override
@@ -67,19 +77,19 @@ public final class ArmorSetBonusKey {
         return hash;
     }
 
-    public @Nullable Item head() {
+    public Item head() {
         return head;
     }
 
-    public @Nullable Item chest() {
+    public Item chest() {
         return chest;
     }
 
-    public @Nullable Item legs() {
+    public Item legs() {
         return legs;
     }
 
-    public @Nullable Item feet() {
+    public Item feet() {
         return feet;
     }
 
@@ -109,7 +119,7 @@ public final class ArmorSetBonusKey {
         types.put(type, UnitValue.INSTANCE);
     }
 
-    public @Nullable ResourceLocation getId() {
+    public ResourceLocation getId() {
         if (id == null) {
             this.id = ArmorSetBonusKey.getId(this);
         }
@@ -124,7 +134,7 @@ public final class ArmorSetBonusKey {
     public @NotNull String getDescriptionKey() {
         if (descriptionKey == null) {
             ResourceLocation id = getId();
-            if (id == null) {
+            if (id.equals(ArmorSetBonusKey.NONE_ID)) {
                 this.descriptionKey = "unregistered." + hash;
             } else {
                 this.descriptionKey = id.getNamespace() + "." + id.getPath();

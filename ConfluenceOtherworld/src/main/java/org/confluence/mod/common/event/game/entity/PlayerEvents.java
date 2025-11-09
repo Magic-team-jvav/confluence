@@ -10,7 +10,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -33,7 +32,10 @@ import net.neoforged.neoforge.event.entity.player.*;
 import org.confluence.lib.common.item.ColoredItem;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.common.attachment.*;
+import org.confluence.mod.common.attachment.ChunkDropletsData;
+import org.confluence.mod.common.attachment.EverBeneficial;
+import org.confluence.mod.common.attachment.ExtraInventory;
+import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import org.confluence.mod.common.data.AchievementOffsetLoader;
 import org.confluence.mod.common.data.map.DiggingPower;
@@ -53,9 +55,7 @@ import org.confluence.mod.common.item.common.DungeonCompass;
 import org.confluence.mod.common.item.common.EverBeneficialItem;
 import org.confluence.mod.common.menu.FletchingTableMenu;
 import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
-import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IServerPlayer;
-import org.confluence.mod.network.s2c.*;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
@@ -69,22 +69,14 @@ public final class PlayerEvents {
     @SubscribeEvent
     public static void loggedIn(PlayerEvent.PlayerLoggedInEvent event) {
         ServerPlayer player = (ServerPlayer) event.getEntity();
-        PlayerUtils.syncMana2Client(player);
         PlayerUtils.syncSavedData(player);
-        ExtraInventorySyncPacketS2C.sendToClient(player, player, ExtraInventory.of(player));
-        PiggyBankTotalMoneyPacket.sendToClient(player, PlayerPiggyBankContainer.of(player), true);
-        FishingPowerInfoPacketS2C.sendAndGet(player);
-        VisibilityPacketS2C.sendEcho(player);
         BoulderWorld.forceSetAccessory(player);
-        VisibilityPacketS2C.sendTheConstantPostEffect(player);
-        SecretFlagSyncPacketS2C.sendToAll(IMinecraftServer.of(player.server).confluence$getSecretFlag());
         if (HardmodeConvertor.INSTANCE.isCompleted()) {
             AchievementUtils.awardAchievement(player, "its_hard");
         }
         if (CommonConfigs.DO_NPC_SPAWNING.get() && player.level().getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)) {
             NPCSpawner.INSTANCE.trySpawnGuide(player);
         }
-        CompatibilitySyncPacketS2c.sendToAll();
     }
 
     @SubscribeEvent
@@ -122,21 +114,19 @@ public final class PlayerEvents {
                 block instanceof BaseRailBlock railBlock &&
                 !player.isSpectator() &&
                 !player.isPassenger()
-        ) {
+        ) rightClickRideMinecart:{
             player.swing(InteractionHand.MAIN_HAND);
-            if (!level.isClientSide) {
-                ExtraInventory extraInventory = ExtraInventory.of(player);
-                ItemStack minecartItemStack = extraInventory.getMinecart(false);
-                RightClickRailBlock e = NeoForge.EVENT_BUS.post(new RightClickRailBlock(player, minecartItemStack, blockState, railBlock, blockPos));
-                if (e.isCanceled()) return;
-                AbstractMinecart minecart = e.getMinecart();
-                if (minecart != null) {
-                    extraInventory.setEquipment(ExtraInventory.MINECART_INDEX, ItemStack.EMPTY, false);
-                    level.addFreshEntity(minecart);
-                    player.startRiding(minecart, true);
-                }
-            }
             event.setCanceled(true);
+            if (level.isClientSide) break rightClickRideMinecart;
+            ExtraInventory extraInventory = ExtraInventory.of(player);
+            ItemStack minecartItemStack = extraInventory.getMinecart(false);
+            RightClickRailBlock e = NeoForge.EVENT_BUS.post(new RightClickRailBlock(player, minecartItemStack, blockState, railBlock, blockPos));
+            if (e.isCanceled()) break rightClickRideMinecart;
+            AbstractMinecart minecart = e.getMinecart();
+            if (minecart == null) break rightClickRideMinecart;
+            extraInventory.setEquipment(ExtraInventory.MINECART_INDEX, ItemStack.EMPTY, false);
+            level.addFreshEntity(minecart);
+            player.startRiding(minecart, true);
         }
 
         if (CommonConfigs.FLETCHING_MENU.get() && blockState.is(Blocks.FLETCHING_TABLE)) {
@@ -157,18 +147,17 @@ public final class PlayerEvents {
 
     @SubscribeEvent
     public static void playerInteract$EntityInteract(PlayerInteractEvent.EntityInteract event) {
-        if (event.getEntity() instanceof ServerPlayer serverPlayer && event.getTarget() instanceof LivingEntity targetEntity) {
-            ItemStack item = serverPlayer.getMainHandItem();
-            boolean isWaterBottle = ModUtils.isWaterBottle(item);
-            if (isWaterBottle && targetEntity.hasEffect(ModEffects.CHOKING)) {
+        if (event.getEntity() instanceof ServerPlayer serverPlayer && event.getTarget() instanceof LivingEntity targetEntity)
+            healChocking:{
+                if (!targetEntity.hasEffect(ModEffects.CHOKING)) break healChocking;
+                ItemStack stack = serverPlayer.getMainHandItem();
+                if (!ModUtils.isWaterBottle(stack)) break healChocking;
                 targetEntity.removeEffect(ModEffects.CHOKING);
-                ItemStack emptyBottle = item.is(PotionItems.BOTTLED_WATER) ? PotionItems.BOTTLE.toStack() : Items.GLASS_BOTTLE.getDefaultInstance();
-                if (!serverPlayer.hasInfiniteMaterials()) {
-                    serverPlayer.getInventory().add(emptyBottle);
-                    item.shrink(1);
-                }
+                ItemStack emptyBottle = stack.is(PotionItems.BOTTLED_WATER) ? PotionItems.BOTTLE.toStack() : Items.GLASS_BOTTLE.getDefaultInstance();
+                if (serverPlayer.hasInfiniteMaterials()) break healChocking;
+                serverPlayer.getInventory().add(emptyBottle);
+                stack.shrink(1);
             }
-        }
     }
 
     @SubscribeEvent
@@ -208,7 +197,7 @@ public final class PlayerEvents {
     public static void itemFished(ItemFishedEvent event) {
         Player player = event.getEntity();
 
-        if (!TCUtils.hasAccessoriesType(player, AccessoryItems.HIGH$TEST$FISHING$LINE) && player.getRandom().nextFloat() < 0.1429F) {
+        if (!TCUtils.hasType(player, AccessoryItems.HIGH$TEST$FISHING$LINE) && player.getRandom().nextFloat() < 0.1429F) {
             player.level().playSound(null, event.getHookEntity().blockPosition(), ModSoundEvents.DECOUPLING.get(), SoundSource.AMBIENT);
             event.setCanceled(true);
         }
@@ -232,8 +221,7 @@ public final class PlayerEvents {
     public static void attackEntity(AttackEntityEvent event) {
         Player player = event.getEntity();
         if (player instanceof ServerPlayer serverPlayer) {
-            Entity target = event.getTarget();
-            AccessoryItems.applyLuckyCoin(serverPlayer, target);
+            AccessoryItems.applyLuckyCoin(serverPlayer, event.getTarget());
         }
         if (player.getMainHandItem().is(ModTags.Items.SPEAR)) {
             event.setCanceled(true);
@@ -245,6 +233,8 @@ public final class PlayerEvents {
         Player old = event.getOriginal();
         Player neo = event.getEntity();
 
+        /// 保留下来的flask effect
+        /// @see org.confluence.mod.common.effect.flask.FlaskEffect#saveFlaskEffects
         for (MobEffectInstance activeEffect : old.getActiveEffects()) {
             neo.forceAddEffect(activeEffect, null);
         }
@@ -262,7 +252,7 @@ public final class PlayerEvents {
         EverBeneficialItem.ARTISAN_LOAF.recovery(everBeneficial, EverBeneficial::isArtisanLoafUsed, player);
 
         BoulderWorld.forceSetAccessory(player);
-        ExtraInventorySyncPacketS2C.sendToClient(player, player, ExtraInventory.of(player));
+        PlayerUtils.flushLocalData(player, player);
     }
 
     @SubscribeEvent
@@ -277,16 +267,15 @@ public final class PlayerEvents {
     public static void itemPickup(ItemEntityPickupEvent.Pre event) {
         ServerPlayer player = (ServerPlayer) event.getPlayer();
         if (IServerPlayer.of(player).confluence$isCouldPickupItem()) {
-            if (CommonConfigs.AUTO_STACK_GELS_COLOR.get()) {
+            if (CommonConfigs.AUTO_STACK_GELS_COLOR.get()) autoStackGelsColor:{
                 ItemStack itemStack = event.getItemEntity().getItem();
                 Item gel = MaterialItems.GEL.get();
-                if (itemStack.is(gel)) {
-                    int defaultMaxStackSize = gel.getDefaultMaxStackSize();
-                    for (ItemStack stack : player.getInventory().items) {
-                        if (!stack.isEmpty() && stack.is(gel) && stack.getCount() + itemStack.getCount() <= defaultMaxStackSize) {
-                            ColoredItem.setRGBA(itemStack, ColoredItem.getRGBA(stack));
-                            break;
-                        }
+                if (!itemStack.is(gel)) break autoStackGelsColor;
+                int defaultMaxStackSize = gel.getDefaultMaxStackSize();
+                for (ItemStack stack : player.getInventory().items) {
+                    if (!stack.isEmpty() && stack.is(gel) && stack.getCount() + itemStack.getCount() <= defaultMaxStackSize) {
+                        ColoredItem.setRGBA(itemStack, ColoredItem.getRGBA(stack));
+                        break;
                     }
                 }
             }
@@ -308,8 +297,7 @@ public final class PlayerEvents {
     public static void startTracking(PlayerEvent.StartTracking event) {
         if (event.getTarget() instanceof ServerPlayer target) {
             ServerPlayer sendTo = (ServerPlayer) event.getEntity();
-            ExtraInventorySyncPacketS2C.sendToClient(sendTo, target, ExtraInventory.of(target));
-            FlushArmorSetBonusPacketS2C.sendToClient(sendTo, target);
+            PlayerUtils.flushLocalData(sendTo, target);
         } else if (event.getTarget() instanceof AbstractTerraNPC npc) {
             NPCSpawner.INSTANCE.applyBenedictions(npc);
         }
@@ -318,6 +306,6 @@ public final class PlayerEvents {
     @SubscribeEvent
     public static void changedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
         ServerPlayer player = (ServerPlayer) event.getEntity();
-        ExtraInventorySyncPacketS2C.sendToClient(player, player, ExtraInventory.of(player));
+        PlayerUtils.flushLocalData(player, player);
     }
 }

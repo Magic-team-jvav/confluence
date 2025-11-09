@@ -17,11 +17,13 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
+import org.confluence.lib.util.ScheduledForMove;
 import org.confluence.mod.common.init.ModParticleTypes;
 import org.confluence.mod.mixed.IDamageSource;
 import org.jetbrains.annotations.NotNull;
 
 // 除了显示数字还能显示“美味...” “致命失误！”
+@ScheduledForMove(since = "1.2.0", inVersion = "2.0.0")
 public record DamageIndicatorOptions(Component text, boolean big, Type type) implements ParticleOptions {
     @Override
     @NotNull

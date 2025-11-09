@@ -66,7 +66,7 @@ public class ManaStorage implements INBTSerializable<CompoundTag> {
 
     public boolean extractMana(FloatSupplier sup, ServerPlayer serverPlayer) {
         if (!canExtract()) return false;
-        float extract = sup.getAsFloat() * (1.0F - PlayerUtils.getPrimitiveValue(serverPlayer, AccessoryItems.MANA$USE$REDUCE));
+        float extract = sup.getAsFloat() * (1.0F - TCUtils.getValue(serverPlayer, AccessoryItems.MANA$USE$REDUCE));
         if (PlayerUtils.applyAutoGetMana(serverPlayer, currentMana, extract)) return false;
         this.currentMana = Mth.clamp(currentMana - extract, 0.0F, getMaxMana());
         if (extract > 0.0F) setRegenerateDelay();
@@ -141,8 +141,8 @@ public class ManaStorage implements INBTSerializable<CompoundTag> {
     }
 
     public void flushAbility(ServerPlayer player) {
-        this.fastManaRegeneration = TCUtils.hasAccessoriesType(player, AccessoryItems.FAST$MANA$GENERATION);
-        int value = PlayerUtils.getPrimitiveValue(player, AccessoryItems.ADDITIONAL$MANA);
+        this.fastManaRegeneration = TCUtils.hasType(player, AccessoryItems.FAST$MANA$GENERATION);
+        int value = TCUtils.getValue(player, AccessoryItems.ADDITIONAL$MANA);
         if (player.hasEffect(ModEffects.CLAIRVOYANCE)) value += 20;
         AdditionalManaEvent event = NeoForge.EVENT_BUS.post(new AdditionalManaEvent(player, this, value, additionalMana));
         if (!event.isCanceled() && event.getNeoValue() != additionalMana) {

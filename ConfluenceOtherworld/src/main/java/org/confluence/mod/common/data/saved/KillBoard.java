@@ -4,8 +4,6 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.Dynamic;
 import com.xiaohunao.heaven_destiny_moment.common.init.HDMRegistries;
 import com.xiaohunao.heaven_destiny_moment.common.moment.IMoment;
-import com.xiaohunao.phase_journey.common.phase.PhaseType;
-import com.xiaohunao.phase_journey.common.util.PhaseUtils;
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
 import it.unimi.dsi.fastutil.objects.Object2BooleanOpenHashMap;
@@ -24,11 +22,10 @@ import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.confluence.lib.common.data.saved.IGlobalData;
 import org.confluence.lib.util.LibStreamCodecUtils;
 import org.confluence.mod.Confluence;
-import org.confluence.mod.common.block.natural.ChlorophyteOreBlock;
+import org.confluence.mod.common.init.block.OreBlocks;
 import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.network.s2c.KillBoardSyncPacketS2C;
-import org.confluence.mod.util.OverworldUtils;
 import org.confluence.terraentity.init.entity.TEBossEntities;
 
 import java.util.Set;
@@ -119,7 +116,7 @@ public final class KillBoard implements IGlobalData {
 
     public static void onUnlockHardmode(MinecraftServer server) {
         IMinecraftServer.of(server).confluence$updateSecretFlag(IWorldOptions.HARDMODE);
-        PhaseType.LEVEL.applyOrRevokePhase(OverworldUtils.getLevel(server),ChlorophyteOreBlock.PHASE, true);
+        GlobalCloakData.INSTANCE.reveal(OreBlocks.CHLOROPHYTE_ORE.get().defaultBlockState());
     }
 
     public void networkEncode(RegistryFriendlyByteBuf buffer) {

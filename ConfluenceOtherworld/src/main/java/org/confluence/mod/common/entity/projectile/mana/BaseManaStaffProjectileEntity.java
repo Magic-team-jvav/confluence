@@ -128,11 +128,14 @@ public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
                 if (attackKnockback > 0.0F) {
                     VectorUtils.knockBackA2B(this, entity, attackKnockback * 0.5, 0.2);
                 }
+                afterHurtTarget(entity);
             }
             penetrateSet.add(entity.getUUID());
             if (penetrateSet.size() == penetrateCount) discard();
         }
     }
+
+    protected void afterHurtTarget(Entity target) {}
 
     protected float getAttackBonus() {
         return 0.0F;

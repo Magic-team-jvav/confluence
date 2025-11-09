@@ -1,7 +1,5 @@
 package org.confluence.mod.common.data.saved;
 
-import com.xiaohunao.phase_journey.common.phase.PhaseType;
-import com.xiaohunao.phase_journey.common.util.PhaseUtils;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.core.BlockPos;
@@ -12,10 +10,12 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.saveddata.SavedData;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
+import org.confluence.mod.common.block.natural.StepRevealingBlock;
 import org.confluence.mod.network.s2c.MeteoriteLocationPacketS2C;
 import org.confluence.mod.network.s2c.StarPhasesPacketS2C;
 import org.confluence.mod.network.s2c.WindSpeedPacketS2C;
@@ -133,15 +133,19 @@ public final class ConfluenceData extends SavedData {
         return starPhases;
     }
 
-    public boolean increaseRevealStep(ServerLevel serverLevel) {
-        if (revealStep < 8) {
-            serverLevel.players().forEach(player -> PhaseType.PLAYER.applyOrRevokePhase(player, Confluence.asResource("reveal_step_" + ++this.revealStep), true));
+    public boolean increaseRevealStep() {
+        BlockState[][] pairs = StepRevealingBlock.PAIRS.get();
+        if (revealStep < pairs.length - 1) {
+            GlobalCloakData.INSTANCE.reveal(pairs[++this.revealStep]);
             setDirty();
             return true;
         }
         return false;
     }
 
+    /**
+     * 一般为[-1, 8]
+     */
     public int getRevealStep() {
         return revealStep;
     }

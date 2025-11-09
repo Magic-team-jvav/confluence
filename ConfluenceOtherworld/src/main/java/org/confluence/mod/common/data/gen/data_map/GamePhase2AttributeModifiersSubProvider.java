@@ -34,7 +34,7 @@ public final class GamePhase2AttributeModifiersSubProvider {
             .build();
 
     private static final AttributeModifiersValue NORMAL_CHANGE_1 = AttributeModifiersValue.builder()
-            .add(Attributes.MAX_HEALTH, id,  0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+            .add(Attributes.MAX_HEALTH, id, 0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
             .add(Attributes.ATTACK_DAMAGE, id, -0.1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
             .build();
 
@@ -49,6 +49,7 @@ public final class GamePhase2AttributeModifiersSubProvider {
             .add(Attributes.ATTACK_DAMAGE, id, 1.6, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
             .add(Attributes.ARMOR, id, 2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
             .build();
+
     public static void gather(ModDataMapProvider.Appender<Builder> appender) {
         appender.create()
                 // 初始数值基础，目标阶段数值除初始数值-1 = 填参值
@@ -83,11 +84,11 @@ public final class GamePhase2AttributeModifiersSubProvider {
                 ))
                 .add(TEMonsterEntities.LITTLE_HORNET, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_2,
-                        GamePhase.PLANTERA,NORMAL_CHANGE_3
+                        GamePhase.PLANTERA, NORMAL_CHANGE_3
                 ))
                 .add(TEMonsterEntities.BLACK_SLIME, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_2,
-                        GamePhase.PLANTERA,NORMAL_CHANGE_3
+                        GamePhase.PLANTERA, NORMAL_CHANGE_3
                 ))
                 .add(TEMonsterEntities.BLUE_SLIME, Map.of(
                         GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
@@ -295,10 +296,10 @@ public final class GamePhase2AttributeModifiersSubProvider {
                 .add(TEMonsterEntities.VOODOO_DEMON, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1
                 ))
-                .add(TEMonsterEntities.DRIPPLER,Map.of(
+                .add(TEMonsterEntities.DRIPPLER, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1
                 ))
-                .add(TEMonsterEntities.FLYING_FISH,Map.of(
+                .add(TEMonsterEntities.FLYING_FISH, Map.of(
                         GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
                                 .add(Attributes.MAX_HEALTH, id, 3.3, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .add(Attributes.ATTACK_DAMAGE, id, 2.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
@@ -310,181 +311,181 @@ public final class GamePhase2AttributeModifiersSubProvider {
                                 .add(Attributes.ARMOR, id, 4, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                                 .build()
                 ))
-                .add(TEMonsterEntities.GOBLIN_ARCHER,Map.of(
+                .add(TEMonsterEntities.GOBLIN_ARCHER, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1,
                         GamePhase.PLANTERA, NORMAL_CHANGE_2
                 ))
-                .add(TEMonsterEntities.GOBLIN_PEON,Map.of(
+                .add(TEMonsterEntities.GOBLIN_PEON, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_2,
                         GamePhase.PLANTERA, NORMAL_CHANGE_3
                 ))
-                .add(TEMonsterEntities.GOBLIN_SORCERER,Map.of(
+                .add(TEMonsterEntities.GOBLIN_SORCERER, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_2,
                         GamePhase.PLANTERA, NORMAL_CHANGE_3
                 ))
-                .add(TEMonsterEntities.GOBLIN_THIEF,Map.of(
+                .add(TEMonsterEntities.GOBLIN_THIEF, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1,
                         GamePhase.PLANTERA, NORMAL_CHANGE_2
-                ))  .add(TEMonsterEntities.GOBLIN_WARRIOR,Map.of(
+                )).add(TEMonsterEntities.GOBLIN_WARRIOR, Map.of(
                         GamePhase.WALL_OF_FLESH, NORMAL_CHANGE_1
                 ))
 
                 // MC原版敌对怪物
-//                .add(EntityType.ZOMBIE.builtInRegistryHolder(), Map.of(
-//                        GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
-//                                .add(Attributes.ATTACK_DAMAGE, id, 1.7, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-//                                .add(Attributes.MAX_HEALTH, id, 2.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-//                                .add(Attributes.ARMOR, id, 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-//                                .build(),
-//                        GamePhase.PLANTERA, AttributeModifiersValue.builder()
-//                                .add(Attributes.ATTACK_DAMAGE, id, 2.6, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-//                                .add(Attributes.MAX_HEALTH, id, 3.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-//                                .add(Attributes.ARMOR, id, 2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-//                                .build()
-//                ))
-//                .add(EntityType.VINDICATOR.builtInRegistryHolder(), Map.of(
-//                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
-//                ))
-//                .add(EntityType.BOGGED.builtInRegistryHolder(), Map.of(
-//                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
-//                ))
-//                .add(EntityType.BREEZE.builtInRegistryHolder(), Map.of(
-//                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
-//                ))
-//                .add(EntityType.CREEPER.builtInRegistryHolder(), Map.of(
-//                        GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
-//                                .add(Attributes.MAX_HEALTH, id, 3, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-//                                .build()
-//                ))
-//                .add(EntityType.ELDER_GUARDIAN.builtInRegistryHolder(), Map.of(
-//                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
-//                ))
-//                .add(EntityType.EVOKER.builtInRegistryHolder(), Map.of(
-//                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
-//                ))
-//                .add(EntityType.GHAST.builtInRegistryHolder(), Map.of(
-//                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
-//                ))
-//                .add(EntityType.GUARDIAN.builtInRegistryHolder(), Map.of(
-//                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
-//                ))
-//                .add(EntityType.HOGLIN.builtInRegistryHolder(), Map.of(
-//                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
-//                ))
-//                .add(EntityType.HUSK.builtInRegistryHolder(), Map.of(
-//                        GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
-//                                .add(Attributes.ATTACK_DAMAGE, id, 1.7, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-//                                .add(Attributes.MAX_HEALTH, id, 2.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-//                                .add(Attributes.ARMOR, id, 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-//                                .build(),
-//                        GamePhase.PLANTERA, AttributeModifiersValue.builder()
-//                                .add(Attributes.ATTACK_DAMAGE, id, 2.6, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-//                                .add(Attributes.MAX_HEALTH, id, 3.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-//                                .add(Attributes.ARMOR, id, 2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-//                                .build()
-//                ))
-//                .add(EntityType.MAGMA_CUBE.builtInRegistryHolder(), Map.of(
-//                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
-//                ))
-//                .add(EntityType.PHANTOM.builtInRegistryHolder(), Map.of(
-//                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
-//                ))
-//                .add(EntityType.PIGLIN_BRUTE.builtInRegistryHolder(), Map.of(
-//                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
-//                ))
-//                .add(EntityType.PILLAGER.builtInRegistryHolder(), Map.of(
-//                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
-//                ))
-//                .add(EntityType.RAVAGER.builtInRegistryHolder(), Map.of(
-//                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
-//                ))
-//                .add(EntityType.SHULKER.builtInRegistryHolder(), Map.of(
-//                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
-//                ))
-//                .add(EntityType.SILVERFISH.builtInRegistryHolder(), Map.of(
-//                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
-//                ))
-//                .add(EntityType.SKELETON.builtInRegistryHolder(), Map.of(
-//                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
-//                ))
-//                .add(EntityType.SLIME.builtInRegistryHolder(), Map.of(
-//                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
-//                ))
-//                .add(EntityType.STRAY.builtInRegistryHolder(), Map.of(
-//                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
-//                ))
-//                .add(EntityType.VEX.builtInRegistryHolder(), Map.of(
-//                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
-//                ))
-//                .add(EntityType.WARDEN.builtInRegistryHolder(), Map.of(
-//                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
-//                ))
-//                .add(EntityType.WITCH.builtInRegistryHolder(), Map.of(
-//                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
-//                ))
-//                .add(EntityType.WITHER_SKELETON.builtInRegistryHolder(), Map.of(
-//                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
-//                ))
-//                .add(EntityType.ZOGLIN.builtInRegistryHolder(), Map.of(
-//                        GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
-//                                .add(Attributes.ATTACK_DAMAGE, id, 1.7, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-//                                .add(Attributes.MAX_HEALTH, id, 2.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-//                                .add(Attributes.ARMOR, id, 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-//                                .build(),
-//                        GamePhase.PLANTERA, AttributeModifiersValue.builder()
-//                                .add(Attributes.ATTACK_DAMAGE, id, 2.6, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-//                                .add(Attributes.MAX_HEALTH, id, 3.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-//                                .add(Attributes.ARMOR, id, 2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-//                                .build()
-//                ))
-//                .add(EntityType.ZOMBIE_VILLAGER.builtInRegistryHolder(), Map.of(
-//                        GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
-//                                .add(Attributes.ATTACK_DAMAGE, id, 1.7, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-//                                .add(Attributes.MAX_HEALTH, id, 2.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-//                                .add(Attributes.ARMOR, id, 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-//                                .build(),
-//                        GamePhase.PLANTERA, AttributeModifiersValue.builder()
-//                                .add(Attributes.ATTACK_DAMAGE, id, 2.6, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-//                                .add(Attributes.MAX_HEALTH, id, 3.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-//                                .add(Attributes.ARMOR, id, 2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-//                                .build()
-//                ))
-//                .add(EntityType.DROWNED.builtInRegistryHolder(), Map.of(
-//                        GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
-//                                .add(Attributes.ATTACK_DAMAGE, id, 1.7, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-//                                .add(Attributes.MAX_HEALTH, id, 2.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-//                                .add(Attributes.ARMOR, id, 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-//                                .build(),
-//                        GamePhase.PLANTERA, AttributeModifiersValue.builder()
-//                                .add(Attributes.ATTACK_DAMAGE, id, 2.6, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-//                                .add(Attributes.MAX_HEALTH, id, 3.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-//                                .add(Attributes.ARMOR, id, 2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-//                                .build()
-//                ))
-//                .add(EntityType.ENDERMAN.builtInRegistryHolder(), Map.of(
-//                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
-//                ))
-//                .add(EntityType.PIGLIN.builtInRegistryHolder(), Map.of(
-//                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
-//                ))
-//                .add(EntityType.SPIDER.builtInRegistryHolder(), Map.of(
-//                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
-//                ))
-//                .add(EntityType.CAVE_SPIDER.builtInRegistryHolder(), Map.of(
-//                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
-//                ))
-//                .add(EntityType.ZOMBIFIED_PIGLIN.builtInRegistryHolder(), Map.of(
-//                        GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
-//                                .add(Attributes.ATTACK_DAMAGE, id, 1.7, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-//                                .add(Attributes.MAX_HEALTH, id, 2.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-//                                .add(Attributes.ARMOR, id, 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-//                                .build(),
-//                        GamePhase.PLANTERA, AttributeModifiersValue.builder()
-//                                .add(Attributes.ATTACK_DAMAGE, id, 2.6, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-//                                .add(Attributes.MAX_HEALTH, id, 3.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-//                                .add(Attributes.ARMOR, id, 2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-//                                .build()
-//                ))
+                .add(EntityType.ZOMBIE.builtInRegistryHolder(), Map.of(
+                        GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
+                                .add(Attributes.ATTACK_DAMAGE, id, 1.7, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.MAX_HEALTH, id, 2.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.ARMOR, id, 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .build(),
+                        GamePhase.PLANTERA, AttributeModifiersValue.builder()
+                                .add(Attributes.ATTACK_DAMAGE, id, 2.6, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.MAX_HEALTH, id, 3.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.ARMOR, id, 2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .build()
+                ))
+                .add(EntityType.VINDICATOR.builtInRegistryHolder(), Map.of(
+                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
+                ))
+                .add(EntityType.BOGGED.builtInRegistryHolder(), Map.of(
+                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
+                ))
+                .add(EntityType.BREEZE.builtInRegistryHolder(), Map.of(
+                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
+                ))
+                .add(EntityType.CREEPER.builtInRegistryHolder(), Map.of(
+                        GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
+                                .add(Attributes.MAX_HEALTH, id, 3, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .build()
+                ))
+                .add(EntityType.ELDER_GUARDIAN.builtInRegistryHolder(), Map.of(
+                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
+                ))
+                .add(EntityType.EVOKER.builtInRegistryHolder(), Map.of(
+                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
+                ))
+                .add(EntityType.GHAST.builtInRegistryHolder(), Map.of(
+                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
+                ))
+                .add(EntityType.GUARDIAN.builtInRegistryHolder(), Map.of(
+                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
+                ))
+                .add(EntityType.HOGLIN.builtInRegistryHolder(), Map.of(
+                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
+                ))
+                .add(EntityType.HUSK.builtInRegistryHolder(), Map.of(
+                        GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
+                                .add(Attributes.ATTACK_DAMAGE, id, 1.7, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.MAX_HEALTH, id, 2.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.ARMOR, id, 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .build(),
+                        GamePhase.PLANTERA, AttributeModifiersValue.builder()
+                                .add(Attributes.ATTACK_DAMAGE, id, 2.6, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.MAX_HEALTH, id, 3.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.ARMOR, id, 2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .build()
+                ))
+                .add(EntityType.MAGMA_CUBE.builtInRegistryHolder(), Map.of(
+                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
+                ))
+                .add(EntityType.PHANTOM.builtInRegistryHolder(), Map.of(
+                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
+                ))
+                .add(EntityType.PIGLIN_BRUTE.builtInRegistryHolder(), Map.of(
+                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
+                ))
+                .add(EntityType.PILLAGER.builtInRegistryHolder(), Map.of(
+                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
+                ))
+                .add(EntityType.RAVAGER.builtInRegistryHolder(), Map.of(
+                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
+                ))
+                .add(EntityType.SHULKER.builtInRegistryHolder(), Map.of(
+                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
+                ))
+                .add(EntityType.SILVERFISH.builtInRegistryHolder(), Map.of(
+                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
+                ))
+                .add(EntityType.SKELETON.builtInRegistryHolder(), Map.of(
+                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
+                ))
+                .add(EntityType.SLIME.builtInRegistryHolder(), Map.of(
+                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
+                ))
+                .add(EntityType.STRAY.builtInRegistryHolder(), Map.of(
+                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
+                ))
+                .add(EntityType.VEX.builtInRegistryHolder(), Map.of(
+                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
+                ))
+                .add(EntityType.WARDEN.builtInRegistryHolder(), Map.of(
+                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
+                ))
+                .add(EntityType.WITCH.builtInRegistryHolder(), Map.of(
+                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
+                ))
+                .add(EntityType.WITHER_SKELETON.builtInRegistryHolder(), Map.of(
+                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
+                ))
+                .add(EntityType.ZOGLIN.builtInRegistryHolder(), Map.of(
+                        GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
+                                .add(Attributes.ATTACK_DAMAGE, id, 1.7, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.MAX_HEALTH, id, 2.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.ARMOR, id, 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .build(),
+                        GamePhase.PLANTERA, AttributeModifiersValue.builder()
+                                .add(Attributes.ATTACK_DAMAGE, id, 2.6, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.MAX_HEALTH, id, 3.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.ARMOR, id, 2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .build()
+                ))
+                .add(EntityType.ZOMBIE_VILLAGER.builtInRegistryHolder(), Map.of(
+                        GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
+                                .add(Attributes.ATTACK_DAMAGE, id, 1.7, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.MAX_HEALTH, id, 2.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.ARMOR, id, 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .build(),
+                        GamePhase.PLANTERA, AttributeModifiersValue.builder()
+                                .add(Attributes.ATTACK_DAMAGE, id, 2.6, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.MAX_HEALTH, id, 3.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.ARMOR, id, 2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .build()
+                ))
+                .add(EntityType.DROWNED.builtInRegistryHolder(), Map.of(
+                        GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
+                                .add(Attributes.ATTACK_DAMAGE, id, 1.7, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.MAX_HEALTH, id, 2.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.ARMOR, id, 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .build(),
+                        GamePhase.PLANTERA, AttributeModifiersValue.builder()
+                                .add(Attributes.ATTACK_DAMAGE, id, 2.6, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.MAX_HEALTH, id, 3.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.ARMOR, id, 2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .build()
+                ))
+                .add(EntityType.ENDERMAN.builtInRegistryHolder(), Map.of(
+                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
+                ))
+                .add(EntityType.PIGLIN.builtInRegistryHolder(), Map.of(
+                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
+                ))
+                .add(EntityType.SPIDER.builtInRegistryHolder(), Map.of(
+                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
+                ))
+                .add(EntityType.CAVE_SPIDER.builtInRegistryHolder(), Map.of(
+                        GamePhase.WALL_OF_FLESH, VANILLA_MINECRAFT_MONSTER_ENHANCEMENT
+                ))
+                .add(EntityType.ZOMBIFIED_PIGLIN.builtInRegistryHolder(), Map.of(
+                        GamePhase.WALL_OF_FLESH, AttributeModifiersValue.builder()
+                                .add(Attributes.ATTACK_DAMAGE, id, 1.7, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.MAX_HEALTH, id, 2.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.ARMOR, id, 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .build(),
+                        GamePhase.PLANTERA, AttributeModifiersValue.builder()
+                                .add(Attributes.ATTACK_DAMAGE, id, 2.6, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.MAX_HEALTH, id, 3.2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .add(Attributes.ARMOR, id, 2, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                                .build()
+                ))
                 // NPC
                 .add(TENpcEntities.GUIDE, Map.of(
                         GamePhase.WALL_OF_FLESH, INCREASE_FRIENDLY_CREATURE_HEALTH
@@ -543,7 +544,7 @@ public final class GamePhase2AttributeModifiersSubProvider {
                 .add(TENpcEntities.TRUFFLE, Map.of(
                         GamePhase.WALL_OF_FLESH, INCREASE_FRIENDLY_CREATURE_HEALTH
                 ))
-                // MC原版友好生物
+        // MC原版友好生物
 //                .add(EntityType.ALLAY.builtInRegistryHolder(), Map.of(
 //                        GamePhase.WALL_OF_FLESH, INCREASE_FRIENDLY_CREATURE_HEALTH
 //                ))

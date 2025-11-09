@@ -39,7 +39,7 @@ public class WavyCaveCarver extends WorldCarver<CarverConfiguration> {
         BlockPos b = start.offset(deltaPos.getX() / 2, deltaPos.getY() / 2 + random.nextInt(32, 48), deltaPos.getZ() / 2);
 
         List<Vector3d> positions = Lists.newArrayList(Stream.of(start, a, middle, b, end).map(VectorUtils::toVector3d).toList());
-        VectorUtils.lightningPathList(positions, 2.5, 8, random);
+        VectorUtils.lightningPathList(positions, 2.5, 0.125F, random);
         float yScale = config.yScale.sample(random);
         int size = positions.size();
         for (int i = 0; i < size; i++) {

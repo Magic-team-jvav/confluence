@@ -23,6 +23,7 @@ import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.block.functional.network.PathService;
 import org.confluence.mod.common.data.saved.*;
 import org.confluence.mod.common.entity.FallingStarItemEntity;
+import org.confluence.mod.common.init.armor.ModArmorBonus;
 import org.confluence.mod.common.item.fishing.AbstractFishingPole;
 import org.confluence.mod.common.worldgen.secret_seed.TheConstant;
 import org.confluence.mod.common.worldgen.structure.DungeonStructure;
@@ -79,20 +80,23 @@ public final class TickEvents {
     @SubscribeEvent
     public static void playerTick$Post(PlayerTickEvent.Post event) {
         Player entity = event.getEntity();
+        long gameTime = entity.level().getGameTime();
         if (entity instanceof ServerPlayer player) {
             ServerLevel level = player.serverLevel();
             IServerPlayer.of(player).confluence$setCouldPickupItem(true);
             PlayerUtils.regenerateMana(player);
             ExtraInventory.of(player).sync(player);
-            AchievementUtils.youCanDoIt(player, level);
-            AchievementUtils.quietNeighborhood(player, level);
-            AchievementUtils.aRareRealm(player, level);
-            TheConstant.applyDarkness(player, level);
+            AchievementUtils.youCanDoIt(player, level, gameTime);
+            AchievementUtils.quietNeighborhood(player, level, gameTime);
+            AchievementUtils.aRareRealm(player, level, gameTime);
+            TheConstant.applyDarkness(player, level, gameTime);
             DungeonStructure.checkSkeletronDefeated(player, level);
             ChunkDropletsData.syncDroplets(player);
+            ModArmorBonus.afterTick(player, gameTime);
+            PlayerUtils.applySunflowerEffect(player, level, gameTime);
         }
 
-        if (entity.level().getGameTime() % 60 == 3) {
+        if (gameTime % 60 == 3) {
             AbstractFishingPole.resetCurrentBait(entity);
             PlayerSpecialData.resetSomeData(entity);
         }

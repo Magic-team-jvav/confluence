@@ -107,9 +107,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
                 Blocks.DEAD_TUBE_CORAL.asItem(), Blocks.DEAD_TUBE_CORAL_FAN.asItem(), Blocks.DEAD_TUBE_CORAL_BLOCK.asItem(), Blocks.DEAD_BRAIN_CORAL.asItem(), Blocks.DEAD_BRAIN_CORAL_FAN.asItem(), Blocks.DEAD_BRAIN_CORAL_BLOCK.asItem(),
                 Blocks.DEAD_BUBBLE_CORAL.asItem(), Blocks.DEAD_BUBBLE_CORAL_FAN.asItem(), Blocks.DEAD_BUBBLE_CORAL_BLOCK.asItem(), Blocks.DEAD_FIRE_CORAL.asItem(), Blocks.DEAD_FIRE_CORAL_FAN.asItem(), Blocks.DEAD_FIRE_CORAL_BLOCK.asItem(), Blocks.DEAD_HORN_CORAL.asItem(), Blocks.DEAD_HORN_CORAL_FAN.asItem(), Blocks.DEAD_HORN_CORAL_BLOCK.asItem());
         tag(ModTags.Items.EVIL_MATERIAL).add(
-                MaterialItems.CRIMTANE_INGOT.get(),
-                MaterialItems.CRIMTANE_INGOT.get(),
-                MaterialItems.DEMONITE_INGOT.get(),
                 MaterialItems.WORM_TOOTH.get(),
                 MaterialItems.VERTEBRA.get(),
                 MaterialItems.BLOOD_CLOT_POWDER.get(),

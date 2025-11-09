@@ -16,6 +16,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Slime;
+import net.minecraft.world.entity.npc.Npc;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.Item;
@@ -48,6 +49,7 @@ import org.confluence.mod.common.effect.flask.FlaskEffect;
 import org.confluence.mod.common.effect.harmful.ManaSicknessEffect;
 import org.confluence.mod.common.effect.neutral.LoveEffect;
 import org.confluence.mod.common.entity.projectile.boulder.TombstoneBoulderEntity;
+import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.ModTags;
@@ -77,6 +79,7 @@ import org.confluence.terraentity.init.TETags;
 import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.confluence.terraentity.init.entity.TEMonsterEntities;
 import org.confluence.terraentity.init.entity.TENpcEntities;
+import org.confluence.terraentity.init.item.TEYoyosItems;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
@@ -92,7 +95,8 @@ public final class LivingEntityEvents {
         DamageSource damageSource = event.getSource();
 
         if (victim.level() instanceof ServerLevel level) {
-            Entity attacker = damageSource.getEntity();
+            Entity attacker = LibUtils.getOwner(damageSource);
+
             if (attacker instanceof ServerPlayer) {
                 if (victim instanceof Enemy &&
                         CommonConfigs.DROP_MONEY.get() &&
@@ -123,7 +127,7 @@ public final class LivingEntityEvents {
                 if (attacker != null && npc.getType() == TENpcEntities.CLOTHIER.get() &&
                         attacker instanceof Player player &&
                         LibDateUtils.isNight(level) && // 晚上杀死才生成
-                        TCUtils.hasAccessoriesType(player, AccessoryItems.CLOTHIER$KILLER)
+                        TCUtils.hasType(player, AccessoryItems.CLOTHIER$KILLER)
                 ) {
                     Skeletron skeletron = new Skeletron(TEBossEntities.SKELETRON.get(), level);
                     skeletron.finalizeSpawn(level, level.getCurrentDifficultyAt(skeletron.blockPosition()), MobSpawnType.EVENT, null);
@@ -151,16 +155,20 @@ public final class LivingEntityEvents {
     public static void livingHeal(LivingHealEvent event) {
         LivingEntity living = event.getEntity();
         if (!(living.level() instanceof ServerLevel level)) return;
-
         float amount = event.getAmount();
+
+        if (living instanceof Player player) {
+            if (PlayerUtils.skipHealIfOnFire(player)) {
+                event.setCanceled(true);
+                return;
+            }
+            amount = ModArmorBonus.applyHealAmount(player, amount);
+        }
         if (EverBeneficial.of(living).isVitalCrystalUsed()) {
             amount *= 1.2F;
         }
         if (living.hasEffect(ModEffects.COZY_FIRE)) {
             amount *= 1.1F;
-        }
-        if (living instanceof Player player) {
-            amount = ModArmorBonus.applyHealAmount(player, amount);
         }
         event.setAmount(amount);
 
@@ -171,6 +179,15 @@ public final class LivingEntityEvents {
     public static void livingIncomingDamage(LivingIncomingDamageEvent event) {
         DamageSource damageSource = event.getSource();
         LivingEntity living = event.getEntity();
+
+        if (CommonConfigs.NPC_INVULNERABLE_TO_PLAYER.get() &&
+                living instanceof Npc &&
+                !damageSource.is(ModDamageTypes.BYPASS_NPC_INVULNERABLE_TO_PLAYER) &&
+                LibUtils.getOwner(damageSource) instanceof Player
+        ) {
+            event.setCanceled(true);
+            return;
+        }
         if (living instanceof ServerPlayer player) {
             AccessoryItems.applyHurtGetMana(player, damageSource, event.getAmount());
         }
@@ -181,12 +198,12 @@ public final class LivingEntityEvents {
         if (cause != null) {
             event.getContainer().setPostAttackInvulnerabilityTicks(living.invulnerableTime);
         }
-        if (!living.getType().is(ModTags.EntityTypes.CRITTER_COMPANIONSHIP_BLACKLIST)) {
-            if (damageSource.getEntity() instanceof Player player && !PlayerSpecialData.of(player).isCouldHurtCritters()) {
-                if (LibUtils.isAnimal(living) || living.getType().is(ModTags.EntityTypes.CRITTER_COMPANIONSHIP_WHITELIST)) {
-                    event.setCanceled(true);
-                }
-            }
+        if (!living.getType().is(ModTags.EntityTypes.CRITTER_COMPANIONSHIP_BLACKLIST) &&
+                damageSource.getEntity() instanceof Player player &&
+                !PlayerSpecialData.of(player).isCouldHurtCritters() &&
+                (LibUtils.isAnimal(living) || living.getType().is(ModTags.EntityTypes.CRITTER_COMPANIONSHIP_WHITELIST))
+        ) {
+            event.setCanceled(true);
         }
     }
 
@@ -213,6 +230,7 @@ public final class LivingEntityEvents {
         }
         if (victim instanceof ServerPlayer player) {
             amount = EnchantmentUtils.processManaProtection(player, damageSource, amount);
+            amount = PlayerUtils.applyTerraFire(damageSource, amount);
         }
 
         // 芦苇呼吸管对溺水伤害减半
@@ -229,7 +247,7 @@ public final class LivingEntityEvents {
         // 暴击判定和伤害显示
         boolean crit = false;
         if (!TCAttributes.hasCustomAttribute(TCAttributes.CRIT_CHANCE) && attacker instanceof Player player) {
-            if (LibUtils.checkChance((float) player.getAttributeValue(TCAttributes.CRIT_CHANCE), player.getRandom())) {
+            if (LibUtils.checkChance(player.getAttributeValue(TCAttributes.CRIT_CHANCE), player.getRandom())) {
                 amount *= 1.5F;
                 player.crit(victim);
                 crit = true;
@@ -310,7 +328,7 @@ public final class LivingEntityEvents {
         double y = living.getY();
         double z = living.getZ();
 
-        if (living instanceof Player player) {
+        if (living instanceof Player player) { // 掉落玩家的钱币
             ExtraInventory data = ExtraInventory.of(player);
             for (int i = 0; i < ExtraInventory.SIZE_COINS; i++) {
                 ItemStack itemStack = data.getCoins(i);
@@ -320,21 +338,21 @@ public final class LivingEntityEvents {
                 drops.add(new ItemEntity(level, x, y, z, itemStack));
             }
         }
-        if (living.getRandom().nextFloat() < 0.011F) {
+        if (living.getRandom().nextFloat() < 0.011F) dropsHolidayGift:{ // 掉落节日礼物
             Item holidayGift = DateUtils.getHolidayGift(living.getRandom());
-            if (holidayGift != Items.AIR) {
-                ItemEntity entity = new ItemEntity(level, x, y, z, holidayGift.getDefaultInstance());
-                entity.setNoPickUpDelay();
-                drops.add(entity);
-            }
+            if (holidayGift == Items.AIR) break dropsHolidayGift;
+            ItemEntity entity = new ItemEntity(level, x, y, z, holidayGift.getDefaultInstance());
+            entity.setNoPickUpDelay();
+            drops.add(entity);
         }
+        boolean isEnemy = living instanceof Enemy;
         if (KillBoard.INSTANCE.getGamePhase().isHardmode() &&
-                living instanceof Enemy &&
+                isEnemy &&
                 (!(living instanceof IMinion minion) || minion.minion_getOwnerUUID() == null) &&
                 !living.getType().is(ModTags.EntityTypes.DO_NOT_DROPS_EVIL_SOUL) &&
                 (y < OverworldUtils.getUndergroundY() || ModSecretSeeds.DONT_DIG_UP.match(level) || ModSecretSeeds.GET_FIXED_BOI.match(level)) &&
                 living.getRandom().nextFloat() < (LibUtils.isAtLeastExpert(level, living.blockPosition()) ? 0.36F : 0.2F)
-        ) {
+        ) { // 掉落光明或暗影之魂
             Holder<Biome> biome = level.getBiome(living.blockPosition());
             ItemStack soul = ItemStack.EMPTY;
             if (biome.is(ModTags.Biomes.THE_HALLOW)) {
@@ -345,6 +363,9 @@ public final class LivingEntityEvents {
             if (soul != ItemStack.EMPTY) {
                 drops.add(new ItemEntity(level, x, y, z, soul, 0, 0.02, 0));
             }
+        }
+        if (isEnemy && level.dimension() == OverworldUtils.underworld() && living.getRandom().nextInt(400) == 0) { // 掉落喷流球
+            drops.add(new ItemEntity(level, x, y, z, TEYoyosItems.CASCADE.toStack()));
         }
 
         for (ItemEntity entity : drops) {
@@ -381,6 +402,7 @@ public final class LivingEntityEvents {
                 event.setCanBreathe(true);
             }
         }
+        ModArmorBonus.onBreath(event);
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)

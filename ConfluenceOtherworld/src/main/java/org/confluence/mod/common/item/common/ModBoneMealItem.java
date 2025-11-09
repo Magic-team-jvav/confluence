@@ -15,6 +15,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import org.confluence.lib.common.component.ModRarity;
+import org.confluence.lib.common.item.TooltipItem;
 import org.confluence.mod.common.init.block.ModBlocks;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.ConsumableItems;
@@ -22,9 +24,9 @@ import org.confluence.terraentity.init.entity.TEMonsterEntities;
 
 import java.util.List;
 
-public class ModBoneMealItem extends Item {
-    public ModBoneMealItem() {
-        super(new Properties());
+public class ModBoneMealItem extends TooltipItem {
+    public ModBoneMealItem(ModRarity rarity, String name) {
+        super(new Properties(), rarity, "tooltip.item.confluence." + name + ".0");
     }
 
     @Override

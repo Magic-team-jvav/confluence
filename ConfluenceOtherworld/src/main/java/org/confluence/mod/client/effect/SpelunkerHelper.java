@@ -6,14 +6,13 @@ import com.mojang.math.Axis;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.xiaohunao.phase_journey.common.phase.block.BlockPhaseManager;
-import com.xiaohunao.phase_journey.common.util.PhaseUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.player.Player;
@@ -398,15 +397,6 @@ public class SpelunkerHelper extends AbstractBufferManager {
                     BlockState blockState = level.getBlockState(pos);
                     if (blockState.isAir()) continue;
 
-                    BlockState finalBlockState = blockState;
-                    blockState = PhaseUtils.findFirstContextOrReturnDefault(BlockPhaseManager.MANAGER, level, player, pos, (ctx, manager) -> {
-                        if (ctx.getSource().equals(finalBlockState)){
-                            return ctx.getTarget();
-                        }
-                        return finalBlockState;
-                    },blockState);
-
-
                     Block block = blockState.getBlock();
                     if (targets.containsKey(block) &&  /*&&//有目标且
                             (!centerCache.containsKey(pos) ||//未已缓存或
@@ -572,7 +562,7 @@ public class SpelunkerHelper extends AbstractBufferManager {
 
 
                         Minecraft.getInstance().font.renderText(Component.literal(component.getString()).withColor(entry.color()).getVisualOrderText(),
-                                -5, -5f, entry.color(),
+                                0, -16, FastColor.ARGB32.opaque(entry.color()),
                                 false, poseStack.last().pose(), Minecraft.getInstance().renderBuffers().bufferSource(), Font.DisplayMode.SEE_THROUGH, 0, 15 << 20 | 15 << 4);
 
                         poseStack.popPose();

@@ -1,26 +1,26 @@
 {
-  "neoforge:conditions": [
-    {
-      "type": "neoforge:mod_loaded",
-      "modid": "create"
-    }
-  ],
-  "type": "create:mechanical_crafting",
-  "accept_mirrored": false,
-  "key": {
-    "#": {
-      "item": "minecraft:oak_log"
-    }
-  },
-  "pattern": [
-    " ## ",
-    "####",
-    "####",
-    " ## "
-  ],
-  "result": {
-    "count": 1,
-    "id": "confluence:oak_log_boulder"
-  },
-  "show_notification": false
+    "neoforge:conditions": [
+        {
+            "type": "neoforge:mod_loaded",
+            "modid": "create"
+        }
+    ],
+    "type": "create:mechanical_crafting",
+    "accept_mirrored": false,
+    "key": {
+        "#": {
+            "item": "minecraft:oak_log"
+        }
+    },
+    "pattern": [
+        " ## ",
+        "####",
+        "####",
+        " ## "
+    ],
+    "result": {
+        "count": 1,
+        "id": "confluence:oak_log_boulder"
+    },
+    "show_notification": false
 }

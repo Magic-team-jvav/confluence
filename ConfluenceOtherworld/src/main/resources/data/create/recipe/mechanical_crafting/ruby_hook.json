@@ -1,26 +1,26 @@
 {
-  "neoforge:conditions": [
-    {
-      "type": "neoforge:mod_loaded",
-      "modid": "create"
-    }
-  ],
-  "type": "create:mechanical_crafting",
-  "accept_mirrored": false,
-  "key": {
-    "#": {
-      "item": "confluence:ruby_chain"
+    "neoforge:conditions": [
+        {
+            "type": "neoforge:mod_loaded",
+            "modid": "create"
+        }
+    ],
+    "type": "create:mechanical_crafting",
+    "accept_mirrored": false,
+    "key": {
+        "#": {
+            "item": "confluence:ruby_chain"
+        },
+        "$": {
+            "item": "confluence:ruby_block"
+        }
     },
-    "$": {
-      "item": "confluence:ruby_block"
-    }
-  },
-  "pattern": [
-    "##$"
-  ],
-  "result": {
-    "count": 1,
-    "id": "confluence:ruby_hook"
-  },
-  "show_notification": false
+    "pattern": [
+        "##$"
+    ],
+    "result": {
+        "count": 1,
+        "id": "confluence:ruby_hook"
+    },
+    "show_notification": false
 }

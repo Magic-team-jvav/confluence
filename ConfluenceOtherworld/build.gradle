@@ -255,7 +255,7 @@ dependencies {
 
     compileOnly "maven.modrinth:waystones:21.1.23+neoforge-1.21.1"
     compileOnly "maven.modrinth:balm:21.0.51+neoforge-1.21.1"
-    if (true) {
+    if (false) {
         runtimeOnly "maven.modrinth:waystones:21.1.23+neoforge-1.21.1"
         runtimeOnly "maven.modrinth:balm:21.0.51+neoforge-1.21.1"
     }
@@ -276,10 +276,10 @@ dependencies {
     }
 
     compileOnly "com.hollingsworth.ars_nouveau:ars_nouveau-${minecraft_version}:${ars_nouveau_version}"
-    runtimeOnly "com.hollingsworth.ars_nouveau:ars_nouveau-${minecraft_version}:${ars_nouveau_version}"
+    //runtimeOnly "com.hollingsworth.ars_nouveau:ars_nouveau-${minecraft_version}:${ars_nouveau_version}"
 
     compileOnly "io.redspace:irons_spellbooks:${irons_spells_version}:api"
-    if (true) {
+    if (false) {
         runtimeOnly "io.redspace:irons_spellbooks:${irons_spells_version}"
         runtimeOnly "dev.kosmx.player-anim:player-animation-lib-forge:${player_animator_version}"
     }

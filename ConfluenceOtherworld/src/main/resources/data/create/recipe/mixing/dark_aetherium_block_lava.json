@@ -1,26 +1,26 @@
 {
-  "neoforge:conditions": [
-    {
-      "type": "neoforge:mod_loaded",
-      "modid": "create"
-    }
-  ],
-  "type": "create:mixing",
-  "ingredients": [
-    {
-      "type": "fluid_stack",
-      "amount": 500,
-      "fluid": "confluence:shimmer"
-    },
-    {
-      "type": "fluid_stack",
-      "amount": 500,
-      "fluid": "minecraft:lava"
-    }
-  ],
-  "results": [
-    {
-      "id": "confluence:dark_aetherium_block"
-    }
-  ]
+    "neoforge:conditions": [
+        {
+            "type": "neoforge:mod_loaded",
+            "modid": "create"
+        }
+    ],
+    "type": "create:mixing",
+    "ingredients": [
+        {
+            "type": "fluid_stack",
+            "amount": 500,
+            "fluid": "confluence:shimmer"
+        },
+        {
+            "type": "fluid_stack",
+            "amount": 500,
+            "fluid": "minecraft:lava"
+        }
+    ],
+    "results": [
+        {
+            "id": "confluence:dark_aetherium_block"
+        }
+    ]
 }

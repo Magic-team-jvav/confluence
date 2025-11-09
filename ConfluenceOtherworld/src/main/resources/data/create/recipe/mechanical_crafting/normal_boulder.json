@@ -1,26 +1,26 @@
 {
-  "neoforge:conditions": [
-    {
-      "type": "neoforge:mod_loaded",
-      "modid": "create"
-    }
-  ],
-  "type": "create:mechanical_crafting",
-  "accept_mirrored": false,
-  "key": {
-    "#": {
-      "item": "minecraft:cobblestone"
-    }
-  },
-  "pattern": [
-    " ## ",
-    "####",
-    "####",
-    " ## "
-  ],
-  "result": {
-    "count": 1,
-    "id": "confluence:normal_boulder"
-  },
-  "show_notification": false
+    "neoforge:conditions": [
+        {
+            "type": "neoforge:mod_loaded",
+            "modid": "create"
+        }
+    ],
+    "type": "create:mechanical_crafting",
+    "accept_mirrored": false,
+    "key": {
+        "#": {
+            "item": "minecraft:cobblestone"
+        }
+    },
+    "pattern": [
+        " ## ",
+        "####",
+        "####",
+        " ## "
+    ],
+    "result": {
+        "count": 1,
+        "id": "confluence:normal_boulder"
+    },
+    "show_notification": false
 }

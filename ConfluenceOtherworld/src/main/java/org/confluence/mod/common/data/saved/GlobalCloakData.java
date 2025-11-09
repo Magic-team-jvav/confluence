@@ -67,7 +67,7 @@ public final class GlobalCloakData implements IGlobalData {
         this.fixed = true;
         int revealStep = ConfluenceData.get(level).getRevealStep() + 1; // [0, 9]
         if (revealStep == 0) return;
-        List<BlockState> pairs = Lists.newArrayListWithExpectedSize(revealStep);
+        List<BlockState> pairs = Lists.newArrayListWithExpectedSize(revealStep + revealStep);
         for (int i = 0; i < revealStep; i++) {
             BlockState[] pair = StepRevealingBlock.PAIRS.get()[revealStep];
             pairs.add(pair[0]);

@@ -32,7 +32,10 @@ import net.neoforged.neoforge.event.entity.player.*;
 import org.confluence.lib.common.item.ColoredItem;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.common.attachment.*;
+import org.confluence.mod.common.attachment.ChunkDropletsData;
+import org.confluence.mod.common.attachment.EverBeneficial;
+import org.confluence.mod.common.attachment.ExtraInventory;
+import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.block.functional.crafting.AltarBlock;
 import org.confluence.mod.common.data.AchievementOffsetLoader;
 import org.confluence.mod.common.data.map.DiggingPower;
@@ -52,9 +55,7 @@ import org.confluence.mod.common.item.common.DungeonCompass;
 import org.confluence.mod.common.item.common.EverBeneficialItem;
 import org.confluence.mod.common.menu.FletchingTableMenu;
 import org.confluence.mod.common.worldgen.secret_seed.BoulderWorld;
-import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IServerPlayer;
-import org.confluence.mod.network.s2c.*;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.ModUtils;
 import org.confluence.mod.util.PlayerUtils;
@@ -68,22 +69,14 @@ public final class PlayerEvents {
     @SubscribeEvent
     public static void loggedIn(PlayerEvent.PlayerLoggedInEvent event) {
         ServerPlayer player = (ServerPlayer) event.getEntity();
-        PlayerUtils.syncMana2Client(player);
         PlayerUtils.syncSavedData(player);
-        ExtraInventorySyncPacketS2C.sendToClient(player, player, ExtraInventory.of(player));
-        PiggyBankTotalMoneyPacket.sendToClient(player, PlayerPiggyBankContainer.of(player), true);
-        FishingPowerInfoPacketS2C.sendAndGet(player);
-        VisibilityPacketS2C.sendEcho(player);
         BoulderWorld.forceSetAccessory(player);
-        VisibilityPacketS2C.sendTheConstantPostEffect(player);
-        SecretFlagSyncPacketS2C.sendToAll(IMinecraftServer.of(player.server).confluence$getSecretFlag());
         if (HardmodeConvertor.INSTANCE.isCompleted()) {
             AchievementUtils.awardAchievement(player, "its_hard");
         }
         if (CommonConfigs.DO_NPC_SPAWNING.get() && player.level().getGameRules().getBoolean(GameRules.RULE_DOMOBSPAWNING)) {
             NPCSpawner.INSTANCE.trySpawnGuide(player);
         }
-        CompatibilitySyncPacketS2c.sendToAll();
     }
 
     @SubscribeEvent
@@ -204,7 +197,7 @@ public final class PlayerEvents {
     public static void itemFished(ItemFishedEvent event) {
         Player player = event.getEntity();
 
-        if (!TCUtils.hasAccessoriesType(player, AccessoryItems.HIGH$TEST$FISHING$LINE) && player.getRandom().nextFloat() < 0.1429F) {
+        if (!TCUtils.hasType(player, AccessoryItems.HIGH$TEST$FISHING$LINE) && player.getRandom().nextFloat() < 0.1429F) {
             player.level().playSound(null, event.getHookEntity().blockPosition(), ModSoundEvents.DECOUPLING.get(), SoundSource.AMBIENT);
             event.setCanceled(true);
         }
@@ -259,7 +252,7 @@ public final class PlayerEvents {
         EverBeneficialItem.ARTISAN_LOAF.recovery(everBeneficial, EverBeneficial::isArtisanLoafUsed, player);
 
         BoulderWorld.forceSetAccessory(player);
-        ExtraInventorySyncPacketS2C.sendToClient(player, player, ExtraInventory.of(player));
+        PlayerUtils.flushLocalData(player, player);
     }
 
     @SubscribeEvent
@@ -304,8 +297,7 @@ public final class PlayerEvents {
     public static void startTracking(PlayerEvent.StartTracking event) {
         if (event.getTarget() instanceof ServerPlayer target) {
             ServerPlayer sendTo = (ServerPlayer) event.getEntity();
-            ExtraInventorySyncPacketS2C.sendToClient(sendTo, target, ExtraInventory.of(target));
-            FlushArmorSetBonusPacketS2C.sendToClient(sendTo, target);
+            PlayerUtils.flushLocalData(sendTo, target);
         } else if (event.getTarget() instanceof AbstractTerraNPC npc) {
             NPCSpawner.INSTANCE.applyBenedictions(npc);
         }
@@ -314,6 +306,6 @@ public final class PlayerEvents {
     @SubscribeEvent
     public static void changedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
         ServerPlayer player = (ServerPlayer) event.getEntity();
-        ExtraInventorySyncPacketS2C.sendToClient(player, player, ExtraInventory.of(player));
+        PlayerUtils.flushLocalData(player, player);
     }
 }

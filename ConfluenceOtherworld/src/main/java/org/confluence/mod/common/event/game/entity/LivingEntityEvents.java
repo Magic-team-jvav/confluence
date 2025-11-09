@@ -125,7 +125,7 @@ public final class LivingEntityEvents {
                 if (attacker != null && npc.getType() == TENpcEntities.CLOTHIER.get() &&
                         attacker instanceof Player player &&
                         LibDateUtils.isNight(level) && // 晚上杀死才生成
-                        TCUtils.hasAccessoriesType(player, AccessoryItems.CLOTHIER$KILLER)
+                        TCUtils.hasType(player, AccessoryItems.CLOTHIER$KILLER)
                 ) {
                     Skeletron skeletron = new Skeletron(TEBossEntities.SKELETRON.get(), level);
                     skeletron.finalizeSpawn(level, level.getCurrentDifficultyAt(skeletron.blockPosition()), MobSpawnType.EVENT, null);

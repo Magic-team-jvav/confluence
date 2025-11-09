@@ -3,6 +3,7 @@ package org.confluence.mod.network.s2c;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
@@ -27,5 +28,9 @@ public record SecretFlagSyncPacketS2C(long flag) implements IPacketS2C {
         if (ServerLifecycleHooks.getCurrentServer() != null) {
             PacketDistributor.sendToAllPlayers(new SecretFlagSyncPacketS2C(flag));
         }
+    }
+
+    public static void sendToClient(ServerPlayer player, long flag) {
+        PacketDistributor.sendToPlayer(player, new SecretFlagSyncPacketS2C(flag));
     }
 }

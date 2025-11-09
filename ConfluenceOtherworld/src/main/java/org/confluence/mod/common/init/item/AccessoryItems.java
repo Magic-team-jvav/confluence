@@ -195,7 +195,7 @@ public class AccessoryItems {
     public static void applyLuckyCoin(ServerPlayer player, Entity target) {
         if (!CommonConfigs.DROP_MONEY.get()) return;
         RandomSource randomSource = player.getRandom();
-        if (TCUtils.hasAccessoriesType(player, LUCKY$COIN) && randomSource.nextFloat() < 0.2F) {
+        if (TCUtils.hasType(player, LUCKY$COIN) && randomSource.nextFloat() < 0.2F) {
             Item item;
             float a = randomSource.nextFloat();
             if (a < 0.01F) {
@@ -212,7 +212,7 @@ public class AccessoryItems {
     }
 
     public static void applyHurtGetMana(ServerPlayer serverPlayer, DamageSource damageSource, float amount) {
-        if (TCUtils.hasAccessoriesType(serverPlayer, HURT$GET$MANA)) {
+        if (TCUtils.hasType(serverPlayer, HURT$GET$MANA)) {
             if (!damageSource.is(DamageTypes.DROWN) && !damageSource.is(TCTags.HARMFUL_EFFECT)) {
                 PlayerUtils.receiveMana(serverPlayer, () -> amount);
             }

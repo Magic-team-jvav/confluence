@@ -72,7 +72,7 @@ public final class LevelEvents {
         Entity breaker = event.getBreaker();
         BlockState state = event.getState();
         if (breaker instanceof LivingEntity living && !tool.is(Items.SHEARS)) {
-            if (state.is(ModTags.Blocks.VINES) && TCUtils.hasAccessoriesType(living, AccessoryItems.VINE$ROPE)) {
+            if (state.is(ModTags.Blocks.VINES) && TCUtils.hasType(living, AccessoryItems.VINE$ROPE)) {
                 event.setCanceled(true);
                 Block.popResource(event.getLevel(), event.getPos(), ModBlocks.VINE_ROPE.get().asItem().getDefaultInstance());
             }

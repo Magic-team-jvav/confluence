@@ -103,7 +103,7 @@ public final class GameEvents {
         }
     }
 
-    @SubscribeEvent(priority = EventPriority.LOW)
+    @SubscribeEvent(priority = EventPriority.LOW) // 需要晚于Curios Api
     public static void onDatapackSync(OnDatapackSyncEvent event) {
         ServerPlayer from = event.getPlayer();
         if (from == null) {
@@ -111,7 +111,7 @@ public final class GameEvents {
                 ExtraInventorySyncPacketS2C.sendToPlayersTrackingEntityAndSelf(to, to, ExtraInventory.of(to));
             }
         } else {
-            ExtraInventorySyncPacketS2C.sendToClient(from, from, ExtraInventory.of(from)); // 需要晚于Curios Api
+            ExtraInventorySyncPacketS2C.sendToClient(from, from, ExtraInventory.of(from));
             AchievementOffsetSyncPacketS2C.sendToClient(from);
         }
     }

@@ -85,7 +85,7 @@ public final class ModArmorBonus {
     public static final ValueType.UnitType TITANIUM$SHARDS = ValueType.UnitType.of(Confluence.asResource("titanium_shards"));
     public static final ValueType.UnitType LAVA$IMMUNE = ValueType.UnitType.of(Confluence.asResource("lava_immune"));
     public static final ValueType.IntegerType DURABILITY$REPAIR$AMOUNT$PER$SECOND$IN$LAVA = ValueType.IntegerType.of(Confluence.asResource("durability_repair_amount_per_second_in_lava"), IntegerValue.GET_MAX, 0);
-    public static final ValueType.IntegerType FORTUNE = ValueType.IntegerType.of(Confluence.asResource("FORTUNE"), AS_ENCHANTMENT_INT_CR, 0);
+    public static final ValueType.IntegerType FORTUNE = ValueType.IntegerType.of(Confluence.asResource("fortune"), AS_ENCHANTMENT_INT_CR, 0);
     // endregion
 
     // region key
@@ -316,7 +316,7 @@ public final class ModArmorBonus {
     /**
      * 仅使用套装奖励注册的type
      * <p>
-     * 如果type是配饰用的就使用{@link org.confluence.terra_curio.util.TCUtils#hasAccessoriesType(LivingEntity, ValueType)}
+     * 如果type是配饰用的就使用{@link org.confluence.terra_curio.util.TCUtils#hasType(LivingEntity, ValueType)}
      */
     public static boolean hasType(Player player, ValueType<Unit, UnitValue> type) {
         return PlayerSpecialData.of(player).contains(type);
@@ -325,10 +325,19 @@ public final class ModArmorBonus {
     /**
      * 仅使用套装奖励注册的type
      * <p>
-     * 如果type是配饰用的就使用{@link org.confluence.terra_curio.util.TCUtils#getAccessoriesValue(LivingEntity, ValueType)}
+     * 如果type是配饰用的就使用{@link org.confluence.terra_curio.util.TCUtils#getValue(LivingEntity, ValueType)}
      */
     public static <T, V extends PrimitiveValue<T>> T getValue(Player player, ValueType<T, V> type) {
         return PlayerSpecialData.of(player).getValue(type);
+    }
+
+    /**
+     * 仅使用套装奖励注册的type
+     * <p>
+     * 如果type是配饰用的就使用{@link org.confluence.terra_curio.util.TCUtils#getPrimitiveValue(LivingEntity, ValueType)}
+     */
+    public static <T, V extends PrimitiveValue<T>> @Nullable V getPrimitiveValue(Player player, ValueType<T, V> type) {
+        return PlayerSpecialData.of(player).getPrimitiveValue(type);
     }
 
     public static @Nullable PrimitiveValueComponent getArmorStackBonus(ItemStack itemStack) {

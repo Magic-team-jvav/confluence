@@ -40,6 +40,7 @@ import org.confluence.mod.common.init.item.ModItems;
 import org.confluence.mod.common.item.common.CoinItem;
 import org.confluence.mod.common.item.potion.ManaPotionItem;
 import org.confluence.mod.common.item.sword.BaseSwordItem;
+import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IServerPlayer;
 import org.confluence.mod.network.s2c.*;
 import org.confluence.terra_curio.common.init.TCItems;
@@ -144,14 +145,22 @@ public final class PlayerUtils {
         }
         KillBoardSyncPacketS2C.sendToClient(player);
         GlobalCloakSyncPacketS2C.sendToClient(player);
-        MeteoriteLocationPacketS2C.sendToAll(data.getMeteoriteLocation(), 0);
+        MeteoriteLocationPacketS2C.sendToClient(player, data.getMeteoriteLocation(), 0);
         BestiarySyncPacketS2C.syncEntries(player);
+        ExtraInventorySyncPacketS2C.sendToClient(player, player, ExtraInventory.of(player));
+        PiggyBankTotalMoneyPacket.sendToClient(player, PlayerPiggyBankContainer.of(player), true);
+        FishingPowerInfoPacketS2C.sendAndGet(player);
+        VisibilityPacketS2C.sendEcho(player);
+        syncMana2Client(player);
+        VisibilityPacketS2C.sendTheConstantPostEffect(player);
+        SecretFlagSyncPacketS2C.sendToClient(player, IMinecraftServer.of(player.server).confluence$getSecretFlag());
+        CompatibilitySyncPacketS2c.sendToClient(player);
     }
 
     public static float getFishingPower(ServerPlayer player) {
-        float base = TCUtils.getAccessoriesValue(player, AccessoryItems.FISHING$POWER);
+        float base = TCUtils.getValue(player, AccessoryItems.FISHING$POWER);
         if (EverBeneficial.of(player).isGummyWormUsed()) base += 3.0F;
-        if (player.isInFluidType() && TCUtils.hasAccessoriesType(player, TCItems.FLOAT$ON$LIQUID$SURFACE)) base += 5.0F;
+        if (player.isInFluidType() && TCUtils.hasType(player, TCItems.FLOAT$ON$LIQUID$SURFACE)) base += 5.0F;
         if (player.hasEffect(ModEffects.TIPSY)) base += 5.0F;
         Level level = player.level();
         if (level.isRaining()) base *= 1.1F;
@@ -388,7 +397,7 @@ public final class PlayerUtils {
      */
     public static boolean applyAutoGetMana(ServerPlayer player, float currentMana, float extract) {
         if (currentMana < extract) {
-            if (!TCUtils.hasAccessoriesType(player, AccessoryItems.AUTO$GET$MANA)) return true;
+            if (!TCUtils.hasType(player, AccessoryItems.AUTO$GET$MANA)) return true;
             ItemStack toUse = null;
             for (ItemStack itemStack : player.getInventory().items) {
                 if (itemStack.getItem() instanceof ManaPotionItem manaPotion) {
@@ -429,5 +438,10 @@ public final class PlayerUtils {
             return true;
         }
         return LibUtils.checkChance(ModArmorBonus.getValue(player, ModArmorBonus.SKIP$CONSUME$AMMO$CHANCE), player.getRandom());
+    }
+
+    public static void flushLocalData(ServerPlayer sendTo, ServerPlayer target) {
+        ExtraInventorySyncPacketS2C.sendToClient(sendTo, target, ExtraInventory.of(target));
+        FlushArmorSetBonusPacketS2C.sendToClient(sendTo, target);
     }
 }

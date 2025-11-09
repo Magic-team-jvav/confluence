@@ -42,7 +42,7 @@ public record VisibilityPacketS2C(byte mask) implements IPacketS2C {
     }
 
     public static void sendEcho(ServerPlayer player) {
-        boolean visible = TCUtils.hasAccessoriesType(player, AccessoryItems.SPECTRE$GOGGLES) &&
+        boolean visible = TCUtils.hasType(player, AccessoryItems.SPECTRE$GOGGLES) &&
                 CuriosUtils.hasCurio(player, (Predicate<ItemStack>) itemStack -> {
                     if (itemStack.getItem() instanceof IFunctionCouldEnable func && func.isEnabled(itemStack)) {
                         PrimitiveValueComponent component = TCUtils.getAccessoriesComponent(itemStack);

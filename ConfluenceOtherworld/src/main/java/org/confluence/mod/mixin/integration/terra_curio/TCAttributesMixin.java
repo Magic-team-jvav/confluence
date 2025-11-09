@@ -20,8 +20,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class TCAttributesMixin {
     @ModifyVariable(method = "applyPickupRange", at = @At("STORE"))
     private static float[] inflate(float[] rangesSqr, @Local(argsOnly = true) Player player) {
-        rangesSqr[0] = Mth.square(TCUtils.getAccessoriesValue(player, AccessoryItems.MANA$PICKUP$RANGE).getA());
-        rangesSqr[1] = Mth.square(TCUtils.getAccessoriesValue(player, AccessoryItems.COIN$PICKUP$RANGE).getA());
+        rangesSqr[0] = Mth.square(TCUtils.getValue(player, AccessoryItems.MANA$PICKUP$RANGE).getA());
+        rangesSqr[1] = Mth.square(TCUtils.getValue(player, AccessoryItems.COIN$PICKUP$RANGE).getA());
         rangesSqr[2] = Mth.square(HeartReachEffect.getRange(player));
         return rangesSqr;
     }

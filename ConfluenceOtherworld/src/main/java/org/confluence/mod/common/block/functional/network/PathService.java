@@ -2,12 +2,10 @@ package org.confluence.mod.common.block.functional.network;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.SectionPos;
 import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.ChunkAccess;
-import net.minecraft.world.level.chunk.status.ChunkStatus;
+import org.confluence.lib.util.LibUtils;
 
 import java.util.ArrayDeque;
 import java.util.Iterator;
@@ -66,24 +64,18 @@ public class PathService {
             NetworkNode cur = queue.remove();
             cur.inQueue = false;
             INetworkEntity entity = cur.getEntity();
-            Level level = entity.getSelf().getLevel();
-            if (level == null ||
-                    (!(level.getChunkSource() instanceof ServerChunkCache chunkSource)) ||
+            if (!(entity.getSelf().getLevel() instanceof ServerLevel level) ||
                     !level.isLoaded(cur.getPos()) ||
                     entity.getSelf().isRemoved()
             ) continue;
 
+            ServerChunkCache chunkSource = level.getChunkSource();
             for (Int2ObjectMap.Entry<Set<BlockPos>> entry1 : entity.getConnectedPoses().int2ObjectEntrySet()) {
                 int color = entry1.getIntKey();
                 Iterator<BlockPos> iterator = entry1.getValue().iterator();
                 while (iterator.hasNext()) {
                     BlockPos pos = iterator.next();
-                    int cx = SectionPos.blockToSectionCoord(pos.getX());
-                    int cz = SectionPos.blockToSectionCoord(pos.getZ());
-                    if (!chunkSource.getChunkFuture(cx, cz, ChunkStatus.FULL, false).isDone()) {
-                        continue;
-                    }
-                    ChunkAccess chunk = chunkSource.getChunk(cx, cz, ChunkStatus.FULL, false);
+                    ChunkAccess chunk = LibUtils.getChunkIfLoaded(chunkSource, pos);
                     if (chunk == null) continue;
                     Network curNetwork = null;
                     if (chunk.getBlockEntity(pos) instanceof INetworkEntity blockEntity) {

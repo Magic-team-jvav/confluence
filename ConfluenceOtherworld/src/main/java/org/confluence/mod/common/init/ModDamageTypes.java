@@ -3,19 +3,21 @@ package org.confluence.mod.common.init;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.damagesource.*;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
+import org.confluence.lib.util.ScheduledForMove;
 import org.confluence.mod.Confluence;
 import org.confluence.terraentity.init.TETags;
 
+@ScheduledForMove(since = "1.2.0", inVersion = "2.0.0")
 public final class ModDamageTypes {
-    public static final ResourceKey<DamageType> FALLING_STAR = register("falling_star");
     public static final ResourceKey<DamageType> ACID_VENOM = register("acid_venom");
-    public static final ResourceKey<DamageType> CURSED_INFERNO = register("cursed_inferno");
     public static final ResourceKey<DamageType> BOULDER = register("boulder");
+    public static final ResourceKey<DamageType> BYPASS_NPC_INVULNERABLE_TO_PLAYER = register("bypass_npc_invulnerable_to_player");
+    public static final ResourceKey<DamageType> CURSED_INFERNO = register("cursed_inferno");
     public static final ResourceKey<DamageType> DARKNESS = register("darkness");
+    public static final ResourceKey<DamageType> FALLING_STAR = register("falling_star");
     public static final ResourceKey<DamageType> MAGICAL_PROJECTILE = register("magical_projectile");
     public static final ResourceKey<DamageType> SWORD_PROJECTILE = register("sword_projectile");
 
@@ -37,6 +39,25 @@ public final class ModDamageTypes {
 
     public static void bootstrap(BootstrapContext<DamageType> context) {
         TETags.DamageTypes.createDamageTypes(context);
-        context.register(SWORD_PROJECTILE, new DamageType("sword_projectile_damage_type", 0.1F));
+        damageType(context, ACID_VENOM, DamageScaling.ALWAYS, 10);
+        damageType(context, BOULDER, DamageScaling.ALWAYS, 5);
+        damageType(context, BYPASS_NPC_INVULNERABLE_TO_PLAYER, DamageScaling.ALWAYS, 10);
+        damageType(context, CURSED_INFERNO, DamageScaling.ALWAYS, 10, DamageEffects.BURNING);
+        damageType(context, DARKNESS, DamageScaling.ALWAYS, 20);
+        damageType(context, FALLING_STAR, DamageScaling.ALWAYS, 10);
+        damageType(context, MAGICAL_PROJECTILE, DamageScaling.WHEN_CAUSED_BY_LIVING_NON_PLAYER, 0.1F);
+        damageType(context, SWORD_PROJECTILE, DamageScaling.WHEN_CAUSED_BY_LIVING_NON_PLAYER, 0.1F);
+    }
+
+    private static void damageType(BootstrapContext<DamageType> context, ResourceKey<DamageType> key, DamageScaling scaling, float exhaustion, DamageEffects effects, DeathMessageType deathMessageType) {
+        context.register(key, new DamageType(key.location().getPath(), scaling, exhaustion, effects, deathMessageType));
+    }
+
+    private static void damageType(BootstrapContext<DamageType> context, ResourceKey<DamageType> key, DamageScaling scaling, float exhaustion, DamageEffects effects) {
+        damageType(context, key, scaling, exhaustion, effects, DeathMessageType.DEFAULT);
+    }
+
+    private static void damageType(BootstrapContext<DamageType> context, ResourceKey<DamageType> key, DamageScaling scaling, float exhaustion) {
+        damageType(context, key, scaling, exhaustion, DamageEffects.HURT, DeathMessageType.DEFAULT);
     }
 }

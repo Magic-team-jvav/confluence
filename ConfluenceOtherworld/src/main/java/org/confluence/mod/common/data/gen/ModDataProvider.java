@@ -73,7 +73,6 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyC
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.world.BiomeModifier;
 import net.neoforged.neoforge.common.world.BiomeModifiers;
-import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import net.neoforged.neoforge.registries.holdersets.AndHolderSet;
 import net.neoforged.neoforge.registries.holdersets.NotHolderSet;
@@ -105,7 +104,7 @@ import java.util.stream.Stream;
 
 public class ModDataProvider {
     public static final RegistrySetBuilder DATA_BUILDER = new RegistrySetBuilder()
-            .add(Registries.DAMAGE_TYPE, ModDamageTypes::bootstrap) // todo
+            .add(Registries.DAMAGE_TYPE, ModDamageTypes::bootstrap)
             .add(Registries.BIOME, Biomes::boostrap)
             .add(Registries.PROCESSOR_LIST, ProcessorListz::bootstrap)
             .add(Registries.TEMPLATE_POOL, TemplatePools::bootstrap)

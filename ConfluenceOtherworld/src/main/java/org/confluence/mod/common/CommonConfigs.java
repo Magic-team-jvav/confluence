@@ -29,6 +29,7 @@ public final class CommonConfigs {
     private static ConfigValue<List<? extends String>> AMMO_SLOTS_BLACKLIST;
     public static BooleanValue TERRA_STYLE_EXPLOSION;
     public static BooleanValue TERRA_STYLE_FIRE_DAMAGE;
+    public static BooleanValue NPC_INVULNERABLE_TO_PLAYER;
 
     public static BooleanValue FLETCHING_MENU;
     public static BooleanValue SHIMMER_DECOMPOSE;
@@ -97,6 +98,7 @@ public final class CommonConfigs {
             });
             TERRA_STYLE_EXPLOSION = BUILDER.define("terraStyleExplosion", true);
             TERRA_STYLE_FIRE_DAMAGE = BUILDER.define("terraStyleFireDamage", true);
+            NPC_INVULNERABLE_TO_PLAYER = BUILDER.define("npcInvulnerableToPlayer", true);
             BUILDER.pop();
         }
         {

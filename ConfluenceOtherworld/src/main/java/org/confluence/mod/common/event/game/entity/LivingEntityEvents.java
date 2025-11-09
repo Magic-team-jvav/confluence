@@ -16,6 +16,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Slime;
+import net.minecraft.world.entity.npc.Npc;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.Item;
@@ -48,6 +49,7 @@ import org.confluence.mod.common.effect.flask.FlaskEffect;
 import org.confluence.mod.common.effect.harmful.ManaSicknessEffect;
 import org.confluence.mod.common.effect.neutral.LoveEffect;
 import org.confluence.mod.common.entity.projectile.boulder.TombstoneBoulderEntity;
+import org.confluence.mod.common.init.ModDamageTypes;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModSecretSeeds;
 import org.confluence.mod.common.init.ModTags;
@@ -177,6 +179,15 @@ public final class LivingEntityEvents {
     public static void livingIncomingDamage(LivingIncomingDamageEvent event) {
         DamageSource damageSource = event.getSource();
         LivingEntity living = event.getEntity();
+
+        if (CommonConfigs.NPC_INVULNERABLE_TO_PLAYER.get() &&
+                living instanceof Npc &&
+                !damageSource.is(ModDamageTypes.BYPASS_NPC_INVULNERABLE_TO_PLAYER) &&
+                LibUtils.getOwner(damageSource) instanceof Player
+        ) {
+            event.setCanceled(true);
+            return;
+        }
         if (living instanceof ServerPlayer player) {
             AccessoryItems.applyHurtGetMana(player, damageSource, event.getAmount());
         }
@@ -187,12 +198,12 @@ public final class LivingEntityEvents {
         if (cause != null) {
             event.getContainer().setPostAttackInvulnerabilityTicks(living.invulnerableTime);
         }
-        if (!living.getType().is(ModTags.EntityTypes.CRITTER_COMPANIONSHIP_BLACKLIST)) {
-            if (damageSource.getEntity() instanceof Player player && !PlayerSpecialData.of(player).isCouldHurtCritters()) {
-                if (LibUtils.isAnimal(living) || living.getType().is(ModTags.EntityTypes.CRITTER_COMPANIONSHIP_WHITELIST)) {
-                    event.setCanceled(true);
-                }
-            }
+        if (!living.getType().is(ModTags.EntityTypes.CRITTER_COMPANIONSHIP_BLACKLIST) &&
+                damageSource.getEntity() instanceof Player player &&
+                !PlayerSpecialData.of(player).isCouldHurtCritters() &&
+                (LibUtils.isAnimal(living) || living.getType().is(ModTags.EntityTypes.CRITTER_COMPANIONSHIP_WHITELIST))
+        ) {
+            event.setCanceled(true);
         }
     }
 

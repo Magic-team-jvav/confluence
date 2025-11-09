@@ -97,7 +97,8 @@ public final class TickEvents {
             ChunkDropletsData.syncDroplets(player);
             ModArmorBonus.afterTick(player);
             if (gameTime % 200 == 0) {
-                if (DynamicBiomeUtils.getISection(player.level(), player.blockPosition()).confluence$getBlockCounts().sunflower.get() > 0) {
+                var iSection = DynamicBiomeUtils.getISection(player.level(), player.blockPosition());
+                if (iSection != null && iSection.confluence$getBlockCounts().sunflower.get() > 0) {
                     player.addEffect(new MobEffectInstance(ModEffects.HAPPY, 210));
                 }
             }

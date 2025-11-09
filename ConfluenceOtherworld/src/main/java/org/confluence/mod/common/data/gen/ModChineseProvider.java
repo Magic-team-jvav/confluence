@@ -687,6 +687,8 @@ public class ModChineseProvider extends LanguageProvider {
         add("confluence.configuration.terraStyleFireDamage.tooltip", "开启后，火焰伤害将x4，并阻止回血。且仅对玩家有效");
         add("confluence.configuration.npcInvulnerableToPlayer", "NPC对玩家免疫");
         add("confluence.configuration.npcInvulnerableToPlayer.tooltip", "开启后，NPC将不再能被玩家攻击（包括原版村民）");
+        add("confluence.configuration.allowsVanillaEntitiesToPerformStageAttributes", "允许原版生物应用阶段属性");
+        add("confluence.configuration.allowsVanillaEntitiesToPerformStageAttributes.tooltip", "开启后，原版生物将在困难模式或其它阶段修改属性");
         // 分割
         add("confluence.configuration.Mana.button", "魔力值");
         add("confluence.configuration.Armor.button", "护甲值");

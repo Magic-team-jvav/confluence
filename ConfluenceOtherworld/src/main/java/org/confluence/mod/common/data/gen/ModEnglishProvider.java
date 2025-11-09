@@ -699,6 +699,8 @@ public class ModEnglishProvider extends LanguageProvider {
         add("confluence.configuration.terraStyleFireDamage.tooltip", "When enabled, fire damage will be multiplied by 4 and healing will be blocked. It only affects players.");
         add("confluence.configuration.npcInvulnerableToPlayer", "NPC Invulnerable To Player");
         add("confluence.configuration.npcInvulnerableToPlayer.tooltip", "When enabled, NPCs can no longer be attacked by players (including vanilla villagers).");
+        add("confluence.configuration.allowsVanillaEntitiesToPerformStageAttributes", "Allows Vanilla Entities To Perform Stage Attributes");
+        add("confluence.configuration.allowsVanillaEntitiesToPerformStageAttributes.tooltip", "When enabled, the attributes of the vanilla entities will be modified in Hard mode or other stages.");
         // Separator
         add("confluence.configuration.Mana.button", "Mana");
         add("confluence.configuration.Armor.button", "Armor");

@@ -2596,6 +2596,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(ModEntities.WATER_STREAM_PROJECTILE.get(), "水流射弹");
         add(ModEntities.WEB_SLINGER.get(), "网射手");
         add(ModEntities.WET_BOMB.get(), "湿炸弹");
+        add(ModEntities.VANILLA_MINECART.get(), "矿车");
         add(ModEntities.WOODEN_MINECART.get(), "木制矿车");
         add(ModEntities.BOULDER.get(), "巨石");
         add(ModEntities.FOLLOWER_BOULDER.get(), "跟踪巨石");

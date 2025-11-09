@@ -14,7 +14,6 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
-import net.minecraft.world.entity.vehicle.Minecart;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -213,10 +212,9 @@ public final class GameEvents {
         ItemStack minecartItem = event.getMinecartItem();
 
         if (minecartItem.isEmpty()) {
-            BaseMinecartEntity baseMinecart = new BaseMinecartEntity(level, x, y, z, MinecartItems.Types.WOODEN);
-            event.setMinecart(baseMinecart);
+            event.setMinecart(new BaseMinecartEntity(level, x, y, z, MinecartItems.Types.WOODEN));
         } else if (minecartItem.getItem() == Items.MINECART) {
-            event.setMinecart(new Minecart(level, x, y, z));
+            event.setMinecart(new BaseMinecartEntity(level, x, y, z, MinecartItems.Types.VANILLA));
         } else if (minecartItem.getItem() instanceof BaseMinecartItem baseMinecartItem) {
             event.setMinecart(Objects.requireNonNull(baseMinecartItem.createMinecart(level, x, y, z, AbstractMinecart.Type.RIDEABLE, minecartItem, event.getEntity())));
         }

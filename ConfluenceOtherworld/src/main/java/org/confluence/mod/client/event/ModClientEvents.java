@@ -348,6 +348,7 @@ public final class ModClientEvents {
         event.registerEntityRenderer(FLAIL_BALL.get(), FlailRenderer::new);
 
         EntityRendererProvider<BaseMinecartEntity> provider = context -> new MinecartRenderer<>(context, ModelLayers.MINECART);
+        event.registerEntityRenderer(VANILLA_MINECART.get(), provider);
         event.registerEntityRenderer(WOODEN_MINECART.get(), provider); // todo 模型
         event.registerEntityRenderer(GENERIC_MINECART.get(), provider);
         event.registerEntityRenderer(MECHANICAL_CART.get(), provider);

@@ -152,6 +152,7 @@ public final class ModEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<FlailBall>> FLAIL_BALL = ENTITIES.register("flail_ball", () -> EntityType.Builder.<FlailBall>of((entityType, level) -> new FlailBall(level, null), MobCategory.MISC).sized(1F, 3F)/*.clientTrackingRange(6)*/.noSave().build("confluence:flail_ball"));
 
     // 矿车
+    public static final DeferredHolder<EntityType<?>, EntityType<BaseMinecartEntity>> VANILLA_MINECART = registerMinecart("vanilla_minecart", BaseMinecartEntity::new);
     public static final DeferredHolder<EntityType<?>, EntityType<BaseMinecartEntity>> WOODEN_MINECART = registerMinecart("wooden_minecart", BaseMinecartEntity::new);
     public static final DeferredHolder<EntityType<?>, EntityType<GenericMinecartEntity>> GENERIC_MINECART = registerMinecart("generic_minecart", GenericMinecartEntity::new);
     public static final DeferredHolder<EntityType<?>, EntityType<MechanicalCartEntity>> MECHANICAL_CART = registerMinecart("mechanical_cart", MechanicalCartEntity::new);

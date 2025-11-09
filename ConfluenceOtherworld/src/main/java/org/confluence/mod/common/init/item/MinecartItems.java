@@ -51,6 +51,10 @@ public class MinecartItems {
     }
 
     public static class Types {
+        public static final float DEFAULT_MAX_SPEED = 0.4F;
+        public static final double DEFAULT_ACCELERATION = 0.75;
+
+        public static final Abilities<BaseMinecartEntity> VANILLA = register(ModEntities.VANILLA_MINECART, Confluence.asResource("vanilla"), DEFAULT_MAX_SPEED, DEFAULT_ACCELERATION, IAbstractMinecartExtension.DEFAULT_AIR_DRAG);
         public static final Abilities<BaseMinecartEntity> WOODEN = register(ModEntities.WOODEN_MINECART, ResourceLocation.withDefaultNamespace("air"), 0.308F, 0.16, 0.94);
         public static final Abilities<MechanicalCartEntity> MECHANICAL = register(ModEntities.MECHANICAL_CART, Confluence.asResource("mechanical_cart"), (float) MECHANICAL_CART_MAX_SPEED, MECHANICAL_CART_ACCELERATION, MECHANICAL_CART_DRAG_AIR);
         public static final Abilities<GenericMinecartEntity> DESERT = registerGeneric(Confluence.asResource("desert_minecart"));
@@ -83,11 +87,11 @@ public class MinecartItems {
         }
 
         private static <E extends BaseMinecartEntity> Abilities<E> registerGeneric(Supplier<EntityType<E>> entityType, ResourceLocation item) {
-            return new Abilities<>(entityType, item, 0.4F, 0.75, IAbstractMinecartExtension.DEFAULT_AIR_DRAG);
+            return new Abilities<>(entityType, item, DEFAULT_MAX_SPEED, DEFAULT_ACCELERATION, IAbstractMinecartExtension.DEFAULT_AIR_DRAG);
         }
 
         private static Abilities<GenericMinecartEntity> registerGeneric(ResourceLocation item) {
-            return new Abilities<>(ModEntities.GENERIC_MINECART, item, 0.4F, 0.75, IAbstractMinecartExtension.DEFAULT_AIR_DRAG);
+            return new Abilities<>(ModEntities.GENERIC_MINECART, item, DEFAULT_MAX_SPEED, DEFAULT_ACCELERATION, IAbstractMinecartExtension.DEFAULT_AIR_DRAG);
         }
     }
 }

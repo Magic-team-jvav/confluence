@@ -1136,7 +1136,7 @@ public class ModChineseProvider extends LanguageProvider {
         add("event.confluence.hardmode_conversion.welcome", "欢迎来到泰拉瑞亚");
         add("event.confluence.npc.arrived", "%1$s%2$s已到达！");
         add("event.confluence.npc.slain", "%1$s%2$s被杀死了……");
-        add("event.confluence.npc.left", "%s已离开！");
+        add("event.confluence.npc.left", "%1$s%2$s已离开！");
         add("event.confluence.traveling_merchant.departed", "旅商%s已离去！");
         add("event.confluence.reveal_step1.departed", "旅商%s已离去！");
 

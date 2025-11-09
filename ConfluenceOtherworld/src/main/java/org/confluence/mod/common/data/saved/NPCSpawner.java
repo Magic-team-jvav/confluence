@@ -208,13 +208,19 @@ public final class NPCSpawner implements IGlobalData {
         if (CommonConfigs.BROADCAST_NPC_MSG.get() && living.getType() != TENpcEntities.OLD_MAN.get()) { // 老人不用广播死亡信息
             MutableComponent message;
             if (living instanceof AnglerNPC /* todo 或宠物/公主 */) {
-                message = Component.translatable("event.confluence.npc.left", living.getName()).withColor(GlobalColors.NPC_SLAIN.get());
+                if (!living.isLieDown()){ // 渔夫未解锁时死亡不会广播死亡消息
+                    message = Component.translatable("event.confluence.npc.left", living.getType().getDescription(), living.getName()).withColor(GlobalColors.NPC_SLAIN.get());
+                } else{
+                    message = null;
+                }
             } else if (living instanceof TravelingMerchantNPC) {
                 message = Component.translatable("event.confluence.traveling_merchant.departed", living.getName()).withColor(GlobalColors.NPC_ARRIVED.get());
             } else {
                 message = Component.translatable("event.confluence.npc.slain", living.getType().getDescription(), living.getName()).withColor(GlobalColors.NPC_SLAIN.get());
             }
-            broadcastMessageToRegion(living.level(), living, message);
+            if (message != null){
+                broadcastMessageToRegion(living.level(), living, message);
+            }
         }
     }
 

@@ -416,6 +416,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         // 嬗金可获取时启用 alchemyTable(recipeOutput, PotionItems.SHIMMER_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.AETHERIUM_GOLD), Ingredient.of(NatureBlocks.AETHERIUM_BLOCK));
         alchemyTable(recipeOutput, PotionItems.BATTLE_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(MaterialItems.DEATHWEED), Ingredient.of(ModTags.Items.EVIL_MATERIAL));
         alchemyTable(recipeOutput, PotionItems.CALMING_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(FoodItems.DAMSEL_FISH), Ingredient.of(MaterialItems.DAYBLOOM));
+        alchemyTable(recipeOutput, PotionItems.SATIETY_POTION.toStack(), Ingredient.of(PotionItems.BOTTLED_WATER), Ingredient.of(FoodItems.RED_PLEATFISH), Ingredient.of(FoodItems.BROWN_STALKSPINE));
 
         Ingredient emptyDropper = Ingredient.of(ToolItems.EMPTY_DROPPER);
         crystalBlock(recipeOutput, TGItems.ENDLESS_MUSKET_POUCH.toStack(), AmountIngredient.of(3996, TGItems.MUSKET_BULLET));
@@ -426,6 +427,7 @@ public class ModRecipeProvider extends AbstractRecipeProvider {
         crystalBlock(recipeOutput, ToolItems.MAGIC_HONEY_DROPPER.toStack(), EnvironmentLevelAccess.matcher(null, searchHoney(holderLookup), false), emptyDropper);
         crystalBlock(recipeOutput, ToolItems.MAGIC_LAVA_DROPPER.toStack(), EnvironmentLevelAccess.matcher(null, searchLava(holderLookup), false), emptyDropper);
         crystalBlock(recipeOutput, ToolItems.MAGIC_WATER_DROPPER.toStack(), EnvironmentLevelAccess.matcher(null, searchWater, false), emptyDropper);
+        crystalBlock(recipeOutput, ToolItems.WATER_CANDLE.toStack(), Ingredient.of(ItemTags.CANDLES));
 
         hardmodeForge(recipeOutput, MaterialItems.ADAMANTITE_INGOT.toStack(), 0.5F, 100, true, AmountIngredient.of(4, MaterialItems.RAW_ADAMANTITE));
         hardmodeForge(recipeOutput, MaterialItems.TITANIUM_INGOT.toStack(), 0.5F, 100, true, AmountIngredient.of(4, MaterialItems.RAW_TITANIUM));

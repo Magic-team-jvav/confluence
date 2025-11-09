@@ -1165,6 +1165,7 @@ public final class ValueSubProvider {
                 .add(Items.PITCHER_POD, 50)
                 .add(Items.MELON_SEEDS, 5)
                 .add(Items.PUMPKIN, 25)
+                .add(Items.JACK_O_LANTERN, 5)
                 .add(Items.PRISMARINE_CRYSTALS, 40)
                 .add(Items.PRISMARINE_SHARD, 20)
                 .add(Items.PHANTOM_MEMBRANE, 50)
@@ -1234,6 +1235,8 @@ public final class ValueSubProvider {
                 .add(PotionItems.LUCK_POTION, gold5)
                 .add(PotionItems.SHIMMER_POTION, silver2)
                 .add(PotionItems.BATTLE_POTION, silver2)
+                .add(PotionItems.CALMING_POTION, silver2)
+                .add(PotionItems.SATIETY_POTION, silver2 + 50)
                 .add(PotionItems.LUCK_POTION, gold5)
                 .add(PotionItems.GREATER_LUCK_POTION, gold20 + gold5
                 );
@@ -1331,7 +1334,7 @@ public final class ValueSubProvider {
                 .add(Items.SUNFLOWER, silver10)
                 .add(Items.OAK_SAPLING, 2)
                 .add(Items.CHERRY_SAPLING, 5)
-                .add(Items.PUMPKIN_SEEDS, 50)
+                .add(Items.PUMPKIN_SEEDS, 25)
                 .add(ModItems.HALLOWED_SEED, silver2 + silver2)
                 .add(ModItems.MUSHROOM_GRASS_SEED, 30)
                 .add(NatureBlocks.DYNASTY_LOG_BLOCKS.LOG, 10)
@@ -1776,6 +1779,8 @@ public final class ValueSubProvider {
                 .add(FoodItems.TILAPIA, silver5 + silver2 + 50)
                 .add(FoodItems.SHRIMP, silver5 + silver10)
                 .add(FoodItems.STINKY_FISH, silver5 + silver20)
+                .add(FoodItems.RED_PLEATFISH, silver5)
+                .add(FoodItems.BROWN_STALKSPINE, silver5)
                 .add(FoodItems.MOTTLED_OILFISH, silver5 + silver10);
         // 电器元件
         builder

@@ -3574,6 +3574,7 @@ public class ModChineseProvider extends LanguageProvider {
         add(MaterialItems.SHADOW_SCALE.get(), "暗影鳞片");
         add(MaterialItems.TISSUE_SAMPLE.get(), "组织样本");
         add(MaterialItems.ROYAL_WAX.get(), "蜂王蜡");
+        add(MaterialItems.PEARLWOOD_STICK.get(), "珍珠木棍");
         add(MaterialItems.CURSED_FLAME.get(), "诅咒焰");
         add(MaterialItems.ICHOR.get(), "灵液");
         add(MaterialItems.PIXIE_DUST.get(), "妖精尘");
@@ -4737,6 +4738,8 @@ public class ModChineseProvider extends LanguageProvider {
         add(FoodItems.YELLOW_EEL.get(), "黄鳝");
         add(FoodItems.TILAPIA.get(), "罗非鱼");
         add(FoodItems.HONEYFIN.get(), "蜂蜜鱼");
+        add(FoodItems.RED_PLEATFISH.get(), "朱褶鱼");
+        add(FoodItems.BROWN_STALKSPINE.get(), "棕柄脊鱼");
 
         add(FoodItems.RAW_FROG.get(), "生青蛙肉");
         add(FoodItems.RAW_SQUIRREL.get(), "生松鼠肉");
@@ -5024,6 +5027,7 @@ public class ModChineseProvider extends LanguageProvider {
         addPotion(PotionItems.EGGNOG.get(), "蛋酒", "恢复16生命");
         addPotion(PotionItems.BATTLE_POTION.get(), "战斗药水", "提高敌人生成速度");
         addPotion(PotionItems.CALMING_POTION.get(), "镇静药水", "降低敌人生成速度");
+        addPotion(PotionItems.SATIETY_POTION.get(), "耐饿药水", "延缓饥饿值下降速度");
 
         // 药水效果
         addEffect(ModEffects.MANA_SICKNESS.get(), "耐魔性", "魔法伤害降低");
@@ -5089,6 +5093,7 @@ public class ModChineseProvider extends LanguageProvider {
         addEffect(ModEffects.BATTLE.get(), "战斗", "提高怪物生成速度");
         addEffect(ModEffects.CALM.get(), "冷静", "敌人生成速度降低");
         addEffect(ModEffects.HAPPY.get(), "快乐", "移动速度提高，怪物生成减少");
+
 
         addEffect(TCEffects.CEREBRAL_MINDTRICK.get(), "控脑术", "提高暴击率");
         addEffect(TCEffects.HONEY.get(), "蜂蜜", "生命再生速度提高");

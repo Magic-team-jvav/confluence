@@ -111,4 +111,6 @@ public class PotionItems {
 
     public static final DeferredItem<AbstractPotionItem> BATTLE_POTION = ITEMS.register("battle_potion", () -> new EffectPotionItem(ModRarity.BLUE, ModEffects.BATTLE, 8400));
     public static final DeferredItem<AbstractPotionItem> CALMING_POTION = ITEMS.register("calming_potion", () -> new EffectPotionItem(ModRarity.BLUE, ModEffects.CALM, 14400));
+
+    public static final DeferredItem<AbstractPotionItem> SATIETY_POTION = ITEMS.register("satiety_potion", () -> new EffectPotionItem(ModRarity.ORANGE, ModEffects.HUNGER_DELAYED, 24000));
 }

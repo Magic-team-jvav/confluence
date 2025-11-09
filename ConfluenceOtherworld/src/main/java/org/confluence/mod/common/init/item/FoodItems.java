@@ -295,6 +295,10 @@ public class FoodItems {
             () -> ModFoodProperties.noEffectProperties(2, 0.4f));
     public static final DeferredItem<BaseFoodItem> TILAPIA = registerNormalFood("tilapia", ModRarity.BLUE,
             () -> ModFoodProperties.noEffectProperties(2, 0.4f));
+    public static final DeferredItem<BaseFoodItem> RED_PLEATFISH = registerNormalFood("red_pleatfish", ModRarity.BLUE,
+            () -> ModFoodProperties.noEffectProperties(4, 1.8f));
+    public static final DeferredItem<BaseFoodItem> BROWN_STALKSPINE = registerNormalFood("brown_stalkspine", ModRarity.BLUE,
+            () -> ModFoodProperties.noEffectProperties(4, 1.8f));
     public static final DeferredItem<BaseFoodItem> GOLDEN_CARP = registerNormalFood("golden_carp", ModRarity.LIGHT_RED,
             () -> ModFoodProperties.GOLDEN_CARP);
     public static final DeferredItem<BaseFoodItem> OBSIDIFISH = registerFood("obsidifish",

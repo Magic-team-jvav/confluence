@@ -401,6 +401,11 @@ public final class ModRecipes {
                     FoodItems.DAMSEL_FISH.get(),
                     MaterialItems.DAYBLOOM.get()
             }, PotionItems.CALMING_POTION.toStack());
+            // 耐饿
+            registerMix(new Item[]{
+                    FoodItems.RED_PLEATFISH.get(),
+                    FoodItems.BROWN_STALKSPINE.get()
+            }, PotionItems.SATIETY_POTION.toStack());
         }
 
         private static void registerMaterial(Item material) {

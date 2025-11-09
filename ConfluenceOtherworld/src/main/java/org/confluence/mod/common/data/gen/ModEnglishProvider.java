@@ -1094,7 +1094,7 @@ public class ModEnglishProvider extends LanguageProvider {
         add("event.confluence.hardmode_conversion.welcome", "Welcome to Terraria");
         add("event.confluence.npc.arrived", "%2$s the %1$s has arrived!");
         add("event.confluence.npc.slain", "%2$s the %1$s was slain...");
-        add("event.confluence.npc.left", "%2$s the %1$s has left!");
+        add("event.confluence.npc.left", "%s has left!");
         add("event.confluence.traveling_merchant.departed", "%s the Traveling Merchant has departed!");
 
         add("event.confluence.reveal_step0", "Your world has been blessed with Cobalt and Palladium!");

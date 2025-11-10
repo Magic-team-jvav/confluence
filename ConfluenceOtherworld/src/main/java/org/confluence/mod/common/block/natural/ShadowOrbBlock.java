@@ -32,7 +32,7 @@ import org.confluence.terraentity.entity.boss.EaterOfWorlds;
 import org.jetbrains.annotations.Nullable;
 
 public class ShadowOrbBlock extends Block {
-    private static final VoxelShape SHAPE = box(3, 3, 3, 13, 13, 13);
+    protected static final VoxelShape SHAPE = box(3, 3, 3, 13, 13, 13);
 
     public ShadowOrbBlock() {
         super(BlockBehaviour.Properties.of()

@@ -23,19 +23,19 @@ public class CrispyHoneyBlock extends Block {
         super(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BROWN).strength(1.2F));
     }
 
-    public void playerDestroy(Level pLevel, Player pPlayer, BlockPos pPos, BlockState pState, @Nullable BlockEntity pTe, ItemStack pStack) {
-        super.playerDestroy(pLevel, pPlayer, pPos, pState, pTe, pStack);
-        if(pLevel instanceof ServerLevel serverLevel
-            && (ModSecretSeeds.GET_FIXED_BOI.match(serverLevel) || ModSecretSeeds.FOR_THE_WORTHY.match(serverLevel))
-            && pLevel.random.nextBoolean()){
-            pLevel.setBlockAndUpdate(pPos, Blocks.LAVA.defaultBlockState());
+    public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity, ItemStack tool) {
+        super.playerDestroy(level, player, pos, state, blockEntity, tool);
+        if (level instanceof ServerLevel serverLevel
+                && (ModSecretSeeds.GET_FIXED_BOI.match(serverLevel) || ModSecretSeeds.FOR_THE_WORTHY.match(serverLevel))
+                && level.random.nextBoolean()) {
+            level.setBlockAndUpdate(pos, Blocks.LAVA.defaultBlockState());
         }
     }
 
     @Override
-    public void stepOn(Level pLevel, BlockPos pPos, BlockState pState, Entity pEntity) {
-        if(pLevel instanceof ServerLevel serverLevel && (ModSecretSeeds.GET_FIXED_BOI.match(serverLevel) || ModSecretSeeds.FOR_THE_WORTHY.match(serverLevel))){
-            pEntity.igniteForSeconds(5.0F);
+    public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
+        if (level instanceof ServerLevel serverLevel && (ModSecretSeeds.GET_FIXED_BOI.match(serverLevel) || ModSecretSeeds.FOR_THE_WORTHY.match(serverLevel))) {
+            entity.igniteForSeconds(5.0F);
         }
     }
 

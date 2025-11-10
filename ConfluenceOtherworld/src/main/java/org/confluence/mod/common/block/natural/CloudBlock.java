@@ -11,9 +11,11 @@ public class CloudBlock extends TransparentBlock {
     public CloudBlock(Properties properties) {
         super(properties);
     }
+
     protected float getShadeBrightness(BlockState p_308911_, BlockGetter p_308952_, BlockPos p_308918_) {
         return 0.2F;
     }
+
     public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, float fallDistance) {
         if (entity.isSuppressingBounce()) {
             super.fallOn(level, state, pos, entity, fallDistance);

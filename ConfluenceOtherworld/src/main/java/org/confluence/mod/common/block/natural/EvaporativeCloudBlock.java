@@ -49,6 +49,7 @@ public class EvaporativeCloudBlock extends BaseEntityBlock {
     protected float getShadeBrightness(BlockState p_308911_, BlockGetter p_308952_, BlockPos p_308918_) {
         return 1.0F;
     }
+
     protected boolean propagatesSkylightDown(BlockState p_309084_, BlockGetter p_309133_, BlockPos p_309097_) {
         return true;
     }

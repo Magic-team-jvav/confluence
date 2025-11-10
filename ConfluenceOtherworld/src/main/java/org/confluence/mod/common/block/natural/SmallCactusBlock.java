@@ -34,7 +34,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class SmallCactusBlock extends Block {
-    private static final VoxelShape SHAPE = Block.box(2.0, 0.0, 2.0, 14.0, 16.0, 14.0);
+    protected static final VoxelShape SHAPE = box(2.0, 0.0, 2.0, 14.0, 16.0, 14.0);
 
     public SmallCactusBlock() {
         super(BlockBehaviour.Properties.of().strength(0.4F).sound(SoundType.WOOL).pushReaction(PushReaction.DESTROY));

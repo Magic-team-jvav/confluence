@@ -1,4 +1,4 @@
-package org.confluence.mod.common.block.natural.spreadable;
+package org.confluence.mod.common.block.natural.spreadable.conversion_table;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -10,16 +10,20 @@ import org.confluence.mod.common.block.natural.CattailsHeadBlock;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.jetbrains.annotations.Nullable;
 
-public class JungleConversionTable extends ConversionTable {
+public class GlowingMushroomConversionTable extends ConversionTable {
     @Override
     protected @Nullable Block getTarget(BlockState source) {
         Block block = source.getBlock();
         if (block == Blocks.TALL_GRASS) {
-            return source.getValue(DoublePlantBlock.HALF) == DoubleBlockHalf.LOWER ? Blocks.SHORT_GRASS : Blocks.AIR;
+            return source.getValue(DoublePlantBlock.HALF) == DoubleBlockHalf.LOWER ? NatureBlocks.GLOWING_MUSHROOM.get() : Blocks.AIR;
         }
-        if (block == Blocks.MUD) return NatureBlocks.JUNGLE_GRASS_BLOCK.get();
-        if (block instanceof CattailsHeadBlock) return NatureBlocks.JUNGLE_CATTAILS_HEAD.get();
-        if (block instanceof CattailsBodyBlock) return NatureBlocks.JUNGLE_CATTAILS_BODY.get();
+        if (block == Blocks.MUD) return NatureBlocks.MUSHROOM_GRASS_BLOCK.get();
+        if (block instanceof CattailsHeadBlock) {
+            return NatureBlocks.GLOWING_MUSHROOM_CATTAILS_HEAD.get();
+        }
+        if (block instanceof CattailsBodyBlock) {
+            return NatureBlocks.GLOWING_MUSHROOM_CATTAILS_BODY.get();
+        }
         return null;
     }
 }

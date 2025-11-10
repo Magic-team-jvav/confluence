@@ -1,4 +1,4 @@
-package org.confluence.mod.common.block.natural.spreadable;
+package org.confluence.mod.common.block.natural.spreadable.conversion_table;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;

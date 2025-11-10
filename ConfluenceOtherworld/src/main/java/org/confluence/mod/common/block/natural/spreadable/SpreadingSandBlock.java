@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 
 public class SpreadingSandBlock extends ColoredFallingBlock implements ISpreadable {
-    private final Type type;
+    protected final Type type;
 
     public SpreadingSandBlock(Type type, int color, BlockBehaviour.Properties properties) {
         super(new ColorRGBA(color), properties.randomTicks().instrument(NoteBlockInstrument.SNARE).strength(0.5F).sound(SoundType.SAND));

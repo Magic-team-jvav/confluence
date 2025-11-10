@@ -7,7 +7,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class ParticleCloudBlock extends CloudBlock {
-    private final ParticleOptions particleTypes;
+    protected final ParticleOptions particleTypes;
 
     public ParticleCloudBlock(Properties properties, ParticleOptions particleTypes) {
         super(properties);

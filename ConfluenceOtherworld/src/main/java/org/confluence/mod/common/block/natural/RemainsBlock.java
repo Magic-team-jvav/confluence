@@ -23,7 +23,7 @@ import org.jetbrains.annotations.NotNull;
 public class RemainsBlock extends DirectionalBlock implements SimpleWaterloggedBlock {
     private static final VoxelShape SHAPE = box(2, 0, 2, 14, 12, 14);
     private static final MapCodec<RemainsBlock> CODEC = simpleCodec(RemainsBlock::new);
-    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+    protected static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final BooleanProperty IS_FACE_STURDY = BooleanProperty.create("is_face_sturdy");
 
     public RemainsBlock(Properties properties) {

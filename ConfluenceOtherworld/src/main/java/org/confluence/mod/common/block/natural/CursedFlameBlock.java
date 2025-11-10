@@ -29,20 +29,22 @@ public class CursedFlameBlock extends BaseFireBlock {
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return this.defaultBlockState();
+        return defaultBlockState();
     }
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        if (!stack.is(MaterialItems.CURSED_FLAME.get())) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        if (!stack.is(MaterialItems.CURSED_FLAME.get())) {
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        }
         level.playSound(null, pos, SoundEvents.WOOL_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
-        level.setBlockAndUpdate(pos, this.defaultBlockState());
+        level.setBlockAndUpdate(pos, defaultBlockState());
         return ItemInteractionResult.SUCCESS;
     }
 
     @Override
     protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
-        return this.canSurvive(state, level, currentPos) ? this.defaultBlockState() : Blocks.AIR.defaultBlockState();
+        return canSurvive(state, level, currentPos) ? defaultBlockState() : Blocks.AIR.defaultBlockState();
     }
 
     @Override

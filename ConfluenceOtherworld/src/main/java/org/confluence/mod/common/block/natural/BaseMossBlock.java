@@ -26,15 +26,14 @@ import org.confluence.mod.common.init.ModTags;
 import java.util.function.ToIntFunction;
 
 public class BaseMossBlock extends MultifaceBlock implements BonemealableBlock, SimpleWaterloggedBlock {
-    public static final MapCodec<BaseMossBlock> CODEC = RecordCodecBuilder.mapCodec(builder -> builder.group(
+    public static final MapCodec<BaseMossBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             Codec.INT.fieldOf("light_level").forGetter(block -> block.lightLevel),
-            BlockBehaviour.Properties.CODEC.fieldOf("properties").forGetter(block -> block.properties)
-        ).apply(builder, BaseMossBlock::new)
-    );
+            propertiesCodec()
+    ).apply(instance, BaseMossBlock::new));
+    protected static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-    private final int lightLevel;
-    private static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-    private final MultifaceSpreader spreader = new MultifaceSpreader(this);
+    protected final int lightLevel;
+    protected final MultifaceSpreader spreader = new MultifaceSpreader(this);
 
     private BaseMossBlock(int lightLevel, Properties properties) {
         super(properties);
@@ -44,28 +43,27 @@ public class BaseMossBlock extends MultifaceBlock implements BonemealableBlock, 
 
     public static BaseMossBlock createNormal(int lightLevel) {
         return new BaseMossBlock(lightLevel, BlockBehaviour.Properties.of()
-            .lightLevel(emission(lightLevel))
-            .noCollission()
-            .ignitedByLava()
-            .pushReaction(PushReaction.DESTROY)
-            .strength(0.2F)
-            .sound(SoundType.GLOW_LICHEN)
-            .replaceable());
+                .lightLevel(emission(lightLevel))
+                .noCollission()
+                .ignitedByLava()
+                .pushReaction(PushReaction.DESTROY)
+                .strength(0.2F)
+                .sound(SoundType.GLOW_LICHEN)
+                .replaceable());
     }
 
     public static BaseMossBlock createLavaImmune(int lightLevel) {
         return new BaseMossBlock(lightLevel, BlockBehaviour.Properties.of()
-            .lightLevel(emission(lightLevel))
-            .noCollission()
-            .pushReaction(PushReaction.DESTROY)
-            .strength(0.2F)
-            .sound(SoundType.GLOW_LICHEN)
-            .replaceable());
+                .lightLevel(emission(lightLevel))
+                .noCollission()
+                .pushReaction(PushReaction.DESTROY)
+                .strength(0.2F)
+                .sound(SoundType.GLOW_LICHEN)
+                .replaceable());
     }
 
     @Override
-    protected BlockState updateShape(
-        BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+    protected BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
         if (state.getValue(WATERLOGGED)) {
             level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
         }
@@ -88,8 +86,7 @@ public class BaseMossBlock extends MultifaceBlock implements BonemealableBlock, 
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        super.createBlockStateDefinition(builder);
-        builder.add(WATERLOGGED);
+        super.createBlockStateDefinition(builder.add(WATERLOGGED));
     }
 
     @Override
@@ -99,7 +96,7 @@ public class BaseMossBlock extends MultifaceBlock implements BonemealableBlock, 
 
     @Override
     public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
-        return Direction.stream().anyMatch(p_153316_ -> this.spreader.canSpreadInAnyDirection(state, level, pos, p_153316_.getOpposite()));
+        return Direction.stream().anyMatch(p_153316_ -> spreader.canSpreadInAnyDirection(state, level, pos, p_153316_.getOpposite()));
     }
 
     @Override
@@ -109,7 +106,7 @@ public class BaseMossBlock extends MultifaceBlock implements BonemealableBlock, 
 
     @Override
     public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
-        this.spreader.spreadFromRandomFaceTowardRandomDirection(state, level, pos, random);
+        spreader.spreadFromRandomFaceTowardRandomDirection(state, level, pos, random);
     }
 
     @Override

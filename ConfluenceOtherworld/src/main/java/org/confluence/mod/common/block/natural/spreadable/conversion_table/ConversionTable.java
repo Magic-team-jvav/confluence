@@ -1,4 +1,4 @@
-package org.confluence.mod.common.block.natural.spreadable;
+package org.confluence.mod.common.block.natural.spreadable.conversion_table;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.world.level.block.Block;

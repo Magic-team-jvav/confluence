@@ -19,8 +19,8 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.AccessoryItems;
 
 public class NaturesGiftBlock extends BasePlantBlock {
-    private static final VoxelShape SHAPE = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 10.0D, 12.0D);
-    private final BlockItemType type;
+    protected static final VoxelShape SHAPE = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 10.0D, 12.0D);
+    protected final BlockItemType type;
 
     public NaturesGiftBlock(BlockItemType type) {
         super(Blocks.GRASS_BLOCK, Blocks.MOSS_BLOCK, Blocks.CLAY, NatureBlocks.JUNGLE_GRASS_BLOCK.get());
@@ -33,8 +33,8 @@ public class NaturesGiftBlock extends BasePlantBlock {
     }
 
     @Override
-    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        Vec3 vec3 = pState.getOffset(pLevel, pPos);
+    public VoxelShape getShape(BlockState pState, BlockGetter level, BlockPos pPos, CollisionContext pContext) {
+        Vec3 vec3 = pState.getOffset(level, pPos);
         return SHAPE.move(vec3.x, vec3.y, vec3.z);
     }
 

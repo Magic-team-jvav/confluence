@@ -3,8 +3,6 @@ package org.confluence.mod.common.block.natural;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -23,12 +21,12 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 
 public class CattailsBodyBlock extends GrowingPlantBodyBlock implements SimpleWaterloggedBlock {
     public static final MapCodec<CattailsBodyBlock> CODEC = simpleCodec(CattailsBodyBlock::new);
-    public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-    private static final VoxelShape SHAPE = Block.box(2.0, 0.0, 2.0, 14.0, 16.0, 14.0);
+    protected static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+    protected static final VoxelShape SHAPE = box(2.0, 0.0, 2.0, 14.0, 16.0, 14.0);
 
     public CattailsBodyBlock(BlockBehaviour.Properties properties) {
         super(properties, Direction.UP, SHAPE, true);
-        this.registerDefaultState(this.stateDefinition.any().setValue(WATERLOGGED, false));
+        registerDefaultState(stateDefinition.any().setValue(WATERLOGGED, false));
     }
 
     @Override
@@ -38,7 +36,7 @@ public class CattailsBodyBlock extends GrowingPlantBodyBlock implements SimpleWa
 
     @Override
     protected GrowingPlantHeadBlock getHeadBlock() {
-        BlockState state = this.defaultBlockState();
+        BlockState state = defaultBlockState();
         if (state.is(NatureBlocks.CATTAILS_BODY.get())) {
             return NatureBlocks.CATTAILS_HEAD.get();
         } else if (state.is(NatureBlocks.JUNGLE_CATTAILS_BODY.get())) {
@@ -63,11 +61,6 @@ public class CattailsBodyBlock extends GrowingPlantBodyBlock implements SimpleWa
 
     @Override
     public boolean isValidBonemealTarget(LevelReader levelReader, BlockPos pos, BlockState state) {
-        return true;
-    }
-
-    @Override
-    public boolean isBonemealSuccess(Level level, RandomSource randomSource, BlockPos pos, BlockState state) {
         return true;
     }
 

@@ -34,11 +34,11 @@ import java.util.concurrent.ConcurrentHashMap;
 public class DecomposeTheSourceExtractBlock extends Block implements EntityBlock {
     public static final Set<BlockPos> ALL_BLOCKS = ConcurrentHashMap.newKeySet();
     public static final BooleanProperty VISIBLE = StateProperties.VISIBLE;
-    private static final VoxelShape SHAPE = Shapes.box(0.1875, 0.0, 0.1875, 0.8125, 1.0, 0.8125);
+    protected static final VoxelShape SHAPE = Shapes.box(0.1875, 0.0, 0.1875, 0.8125, 1.0, 0.8125);
 
     public DecomposeTheSourceExtractBlock() {
         super(BlockBehaviour.Properties.of().randomTicks());
-        registerDefaultState(this.stateDefinition.any().setValue(VISIBLE, false));
+        registerDefaultState(stateDefinition.any().setValue(VISIBLE, false));
     }
 
     @Override
@@ -101,18 +101,17 @@ public class DecomposeTheSourceExtractBlock extends Block implements EntityBlock
         Iterator<BlockPos> iterator = ALL_BLOCKS.iterator();
         while (iterator.hasNext()) {
             BlockPos pos = iterator.next();
-            if (pos.distSqr(blockPos) <= 400) {
-                BlockState state = level.getBlockState(pos);
-                if (state.is(this)) {
-                    level.setBlockAndUpdate(pos.immutable(), state.setValue(VISIBLE, true));
-                    AbstractMonster entity = TEMonsterEntities.EATER_OF_SOULS.get().create(level);
-                    if (entity != null) {
-                        entity.setPos(pos.getX() - 0.5, pos.getY() - 1.5, pos.getZ() - 0.5);
-                        level.addFreshEntity(entity);
-                    }
-                } else {
-                    iterator.remove();
+            if (pos.distSqr(blockPos) > 400) continue;
+            BlockState state = level.getBlockState(pos);
+            if (state.is(this)) {
+                level.setBlockAndUpdate(pos.immutable(), state.setValue(VISIBLE, true));
+                AbstractMonster entity = TEMonsterEntities.EATER_OF_SOULS.get().create(level);
+                if (entity != null) {
+                    entity.setPos(pos.getX() - 0.5, pos.getY() - 1.5, pos.getZ() - 0.5);
+                    level.addFreshEntity(entity);
                 }
+            } else {
+                iterator.remove();
             }
         }
     }

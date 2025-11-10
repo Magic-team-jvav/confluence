@@ -22,8 +22,8 @@ import org.confluence.terraentity.entity.boss.QueenBee;
 import org.confluence.terraentity.init.entity.TEBossEntities;
 
 public class LarvaBlock extends HorizontalDirectionalWithVerticalTwoPartBlock {
-    private static final VoxelShape SHAPE_UPPER = box(0, 0, 0, 16, 8, 16);
-    private static final VoxelShape SHAPE_LOWER = box(0, 8, 0, 16, 16, 16);
+    protected static final VoxelShape SHAPE_UPPER = box(0, 0, 0, 16, 8, 16);
+    protected static final VoxelShape SHAPE_LOWER = box(0, 8, 0, 16, 16, 16);
 
     public LarvaBlock(Properties properties) {
         super(properties);

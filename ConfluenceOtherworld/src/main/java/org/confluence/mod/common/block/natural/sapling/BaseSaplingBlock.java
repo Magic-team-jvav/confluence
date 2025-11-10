@@ -18,16 +18,16 @@ public class BaseSaplingBlock extends SaplingBlock {
     private final TagKey<Block> tags;
 
     @SafeVarargs
-    public BaseSaplingBlock(TreeGrower grower, Properties properties, @Nullable TagKey<Block> tags, Supplier<? extends Block>... block) {
+    public BaseSaplingBlock(TreeGrower grower, Properties properties, @Nullable TagKey<Block> tags, Supplier<? extends Block>... blocks) {
         super(grower, properties);
-        this.blocksSupplier = block;
+        this.blocksSupplier = blocks;
         this.tags = tags;
     }
 
     @Override
-    public boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
-        BlockPos below = pPos.below();
-        BlockState blockBelow = pLevel.getBlockState(below);
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+        BlockPos below = pos.below();
+        BlockState blockBelow = level.getBlockState(below);
         if (blocks == null) {
             this.blocks = Arrays.stream(blocksSupplier).map(Supplier::get).toArray(Block[]::new);
             this.blocksSupplier = null;

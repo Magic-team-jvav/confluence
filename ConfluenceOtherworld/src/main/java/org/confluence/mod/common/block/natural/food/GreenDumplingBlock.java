@@ -32,13 +32,16 @@ import org.confluence.mod.common.init.item.FoodItems;
 
 public class GreenDumplingBlock extends Block {
     public static final IntegerProperty PIECE = IntegerProperty.create("piece", 0, 4);
-    private static final VoxelShape[] SHAPE_BY_PIECE = new VoxelShape[]{
-            Block.box(3.0, 0.0, 3.0, 13.0, 3.0, 13.0),
-            Block.box(3.0, 0.0, 3.0, 13.0, 4.0, 13.0),
-            Block.box(3.0, 0.0, 3.0, 13.0, 5.0, 13.0),
-            Block.box(3.0, 0.0, 3.0, 13.0, 9.0, 13.0),
-            Block.box(3.0, 0.0, 3.0, 13.0, 11.0, 13.0)
-    };
+    protected static final VoxelShape[] SHAPE_BY_PIECE;
+
+    static {
+        VoxelShape[] shapes = new VoxelShape[5];
+        double[] ys = {3, 4, 5, 9, 11};
+        for (int i = 0; i < 5; i++) {
+            shapes[i] = box(3, 0, 3, 13, ys[i], 13);
+        }
+        SHAPE_BY_PIECE = shapes;
+    }
 
     public GreenDumplingBlock() {
         super(BlockBehaviour.Properties.of().pushReaction(PushReaction.DESTROY).strength(1.0f));
@@ -59,7 +62,9 @@ public class GreenDumplingBlock extends Block {
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        if (!stack.is(FoodItems.GREEN_DUMPLING.get())) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        if (!stack.is(FoodItems.GREEN_DUMPLING.get())) {
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        }
         int currentPiece = state.getValue(PIECE);
         if (currentPiece >= 4) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         if (!player.isCreative()) stack.shrink(1);
@@ -72,15 +77,19 @@ public class GreenDumplingBlock extends Block {
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
         if (player.hasEffect(ModEffects.CHOKING)) {
-            if (!level.isClientSide) player.sendSystemMessage(Component.translatable("message.confluence.choking"));
+            if (!level.isClientSide) {
+                player.sendSystemMessage(Component.translatable("message.confluence.choking"));
+            }
             return InteractionResult.FAIL;
         }
         if (level.isClientSide) {
             InteractionResult result = eat(level, pos, state, player);
             if (result.consumesAction()) return InteractionResult.SUCCESS;
-            if (player.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) return InteractionResult.CONSUME;
+            if (player.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) {
+                return InteractionResult.CONSUME;
+            }
         }
-        return eat(level, pos, state, player);
+        return InteractionResult.SUCCESS;
     }
 
     protected static InteractionResult eat(LevelAccessor level, BlockPos pos, BlockState state, Player player) {
@@ -106,7 +115,9 @@ public class GreenDumplingBlock extends Block {
 
     @Override
     protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
-        return facing == Direction.DOWN && !state.canSurvive(level, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, facing, facingState, level, currentPos, facingPos);
+        return facing == Direction.DOWN && !state.canSurvive(level, currentPos)
+                ? Blocks.AIR.defaultBlockState()
+                : super.updateShape(state, facing, facingState, level, currentPos, facingPos);
     }
 
     @Override
@@ -116,7 +127,8 @@ public class GreenDumplingBlock extends Block {
 
     @Override
     protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-        return level.getBlockState(pos.below()).isSolid();
+        BlockPos below = pos.below();
+        return level.getBlockState(below).isFaceSturdy(level, below, Direction.UP);
     }
 
     @Override
@@ -124,5 +136,3 @@ public class GreenDumplingBlock extends Block {
         builder.add(PIECE);
     }
 }
-
-

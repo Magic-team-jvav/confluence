@@ -1,4 +1,4 @@
-package org.confluence.mod.common.block.natural.spreadable;
+package org.confluence.mod.common.block.natural.spreadable.extended;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -8,6 +8,8 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
+import org.confluence.mod.common.block.natural.spreadable.SpreadingGrassBlock;
 import org.confluence.mod.common.init.block.NatureBlocks;
 
 import java.util.function.BiConsumer;
@@ -58,5 +60,4 @@ public class MushroomGrassBlock extends SpreadingGrassBlock implements Bonemeala
         tryPlaceBlock.accept(glowingMushroom, dy -> dy);
         tryPlaceBlock.accept(glowingMushroomVine, dy -> -dy);
     }
-
 }

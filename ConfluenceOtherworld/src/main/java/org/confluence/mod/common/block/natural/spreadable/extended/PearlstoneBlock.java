@@ -1,4 +1,4 @@
-package org.confluence.mod.common.block.natural.spreadable;
+package org.confluence.mod.common.block.natural.spreadable.extended;
 
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -8,6 +8,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.AmethystClusterBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import org.confluence.mod.common.block.natural.spreadable.SpreadingBlock;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.util.OverworldUtils;
 

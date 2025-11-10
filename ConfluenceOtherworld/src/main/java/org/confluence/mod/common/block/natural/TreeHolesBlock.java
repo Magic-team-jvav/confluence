@@ -31,12 +31,12 @@ import org.confluence.mod.common.init.block.FunctionalBlocks;
 import org.jetbrains.annotations.Nullable;
 
 public class TreeHolesBlock extends BaseEntityBlock {
-    private static final MapCodec<TreeHolesBlock> CODEC = simpleCodec(TreeHolesBlock::new);
-    public static final DirectionProperty FACING = BlockStateProperties.FACING;
+    public static final MapCodec<TreeHolesBlock> CODEC = simpleCodec(TreeHolesBlock::new);
+    protected static final DirectionProperty FACING = BlockStateProperties.FACING;
 
     public TreeHolesBlock(Properties properties) {
         super(properties);
-        registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
+        registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
 
     @Override
@@ -100,17 +100,6 @@ public class TreeHolesBlock extends BaseEntityBlock {
         public BEntity(BlockPos pos, BlockState blockState) {
             super(FunctionalBlocks.TREE_HOLES_ENTITY.get(), pos, blockState);
         }
-
-//        @Override
-//        public void onLoad() {
-//            super.onLoad();
-//            invalidateCapabilities();
-//        }
-//
-//        @Override
-//        public void onChunkUnloaded() {
-//            invalidateCapabilities();
-//        }
 
         @Override
         protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {

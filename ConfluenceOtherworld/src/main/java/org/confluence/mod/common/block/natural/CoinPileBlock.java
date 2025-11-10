@@ -26,12 +26,12 @@ public class CoinPileBlock extends FallingBlock {
     public static final MapCodec<CoinPileBlock> CODEC = simpleCodec(CoinPileBlock::new);
     public static final BooleanProperty ISBASE = BooleanProperty.create("isbase");
     public static final IntegerProperty HEAPS = IntegerProperty.create("heaps", 1, 12);
-    private static final VoxelShape ONE_CUBE = box(3.0, 0.0, 3.0, 13.0, 3.0, 13.0);
-    private static final VoxelShape TWO_CUBES = box(3.0, 0.0, 3.0, 13.0, 4.0, 13.0);
-    private static final VoxelShape THREE_CUBES = box(3.0, 0.0, 3.0, 13.0, 5.0, 13.0);
-    private static final VoxelShape FOUR_CUBES = box(3.0, 0.0, 3.0, 13.0, 9.0, 13.0);
-    private static final VoxelShape FIVE_CUBES = box(3.0, 0.0, 3.0, 13.0, 11.0, 13.0);
-    private static final VoxelShape SIX_CUBES = box(3.0, 0.0, 3.0, 13.0, 16.0, 13.0);
+    protected static final VoxelShape ONE_CUBE = box(3.0, 0.0, 3.0, 13.0, 3.0, 13.0);
+    protected static final VoxelShape TWO_CUBES = box(3.0, 0.0, 3.0, 13.0, 4.0, 13.0);
+    protected static final VoxelShape THREE_CUBES = box(3.0, 0.0, 3.0, 13.0, 5.0, 13.0);
+    protected static final VoxelShape FOUR_CUBES = box(3.0, 0.0, 3.0, 13.0, 9.0, 13.0);
+    protected static final VoxelShape FIVE_CUBES = box(3.0, 0.0, 3.0, 13.0, 11.0, 13.0);
+    protected static final VoxelShape SIX_CUBES = box(3.0, 0.0, 3.0, 13.0, 16.0, 13.0);
 
     public CoinPileBlock(Properties properties) {
         super(properties.sound(ModSoundEvents.Types.COIN));

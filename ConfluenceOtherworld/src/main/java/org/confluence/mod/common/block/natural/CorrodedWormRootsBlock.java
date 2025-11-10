@@ -29,7 +29,6 @@ import org.confluence.mod.common.init.ModTags;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.terraentity.init.TETags;
 
-import java.util.List;
 import java.util.Map;
 
 public class CorrodedWormRootsBlock extends Block {
@@ -56,12 +55,12 @@ public class CorrodedWormRootsBlock extends Block {
         for (Map.Entry<Direction, BooleanProperty> entry : PROPERTY_BY_DIRECTION.entrySet()) {
             BlockPos adjacentPos = blockpos.relative(entry.getKey());
             BlockState adjacentState = blockgetter.getBlockState(adjacentPos);
-            state = state.setValue(entry.getValue(), connectsTo(adjacentState, entry.getKey().getOpposite()));
+            state = state.setValue(entry.getValue(), connectsTo(adjacentState));
         }
         return state;
     }
 
-    public boolean connectsTo(BlockState state, Direction direction) {
+    public boolean connectsTo(BlockState state) {
         return state.is(this) || state.is(NatureBlocks.EBONY_LOG_BLOCKS.LOG.get());
     }
 
@@ -83,25 +82,22 @@ public class CorrodedWormRootsBlock extends Block {
             for (Map.Entry<Direction, BooleanProperty> entry : PROPERTY_BY_DIRECTION.entrySet()) {
                 BlockPos adjacentPos = currentPos.relative(entry.getKey());
                 BlockState adjacentState = level.getBlockState(adjacentPos);
-                boolean connected = this.connectsTo(adjacentState, entry.getKey().getOpposite());
+                boolean connected = this.connectsTo(adjacentState);
                 state = state.setValue(entry.getValue(), connected);
             }
             return state;
-        } else {
-            return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
         }
+        return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
     }
 
     @Override
     public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
         double radius = 100.0;
-        if (entity instanceof Player player) {
-            if (player.isAlive() && !level.isClientSide) {
-                player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 1000, 1));
-                player.addEffect(new MobEffectInstance(MobEffects.POISON, 1000, 1));
-                List<Mob> corruptEntity = level.getEntitiesOfClass(Mob.class, new AABB(pos).inflate(radius),
-                        e -> e.getType().is(TETags.EntityTypes.CORRUPT));
-                corruptEntity.forEach(e -> e.setTarget(player));
+        if (!level.isClientSide && entity instanceof Player player && player.isAlive()) {
+            player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 1000, 1));
+            player.addEffect(new MobEffectInstance(MobEffects.POISON, 1000, 1));
+            for (Mob mob : level.getEntitiesOfClass(Mob.class, new AABB(pos).inflate(radius), e -> e.getType().is(TETags.EntityTypes.CORRUPT))) {
+                mob.setTarget(player);
             }
         }
         super.stepOn(level, pos, state, entity);

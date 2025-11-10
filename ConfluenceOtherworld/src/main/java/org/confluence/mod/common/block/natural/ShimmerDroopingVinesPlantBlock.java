@@ -16,12 +16,10 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.confluence.mod.common.init.block.NatureBlocks;
 import org.confluence.mod.common.init.item.FoodItems;
 
-
 public class ShimmerDroopingVinesPlantBlock extends CaveVinesPlantBlock {
     public ShimmerDroopingVinesPlantBlock(BlockBehaviour.Properties properties) {
         super(properties);
-        this.registerDefaultState(this.defaultBlockState()
-                .setValue(BERRIES, false));
+        registerDefaultState(defaultBlockState().setValue(BERRIES, false));
     }
 
     @Override
@@ -31,7 +29,7 @@ public class ShimmerDroopingVinesPlantBlock extends CaveVinesPlantBlock {
 
     @Override
     protected GrowingPlantHeadBlock getHeadBlock() {
-        return (GrowingPlantHeadBlock) NatureBlocks.SHIMMER_DROOPING_VINE.get();
+        return NatureBlocks.SHIMMER_DROOPING_VINE.get();
     }
 
     @Override
@@ -44,8 +42,7 @@ public class ShimmerDroopingVinesPlantBlock extends CaveVinesPlantBlock {
 
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
-        // 调用ShimmerDroopingVines的交互方法
-        return ShimmerDroopingVines.useShimmerBerries(player, state, level, pos);
+        return ShimmerDroopingVinesBlock.useShimmerBerries(player, state, level, pos);
     }
 
     @Override

@@ -34,7 +34,7 @@ import org.confluence.terraentity.init.entity.TEBossEntities;
 import org.jetbrains.annotations.Nullable;
 
 public class CrimsonHeartBlock extends Block {
-    private static final VoxelShape SHAPE = box(3, 3, 3, 13, 13, 13);
+    protected static final VoxelShape SHAPE = box(3, 3, 3, 13, 13, 13);
 
     public CrimsonHeartBlock() {
         super(BlockBehaviour.Properties.of()

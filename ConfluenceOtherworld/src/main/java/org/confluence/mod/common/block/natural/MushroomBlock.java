@@ -18,7 +18,7 @@ import org.confluence.mod.common.init.block.NatureBlocks;
 import org.jetbrains.annotations.NotNull;
 
 public class MushroomBlock extends BasePlantBlock implements ISpreadable, BonemealableBlock {
-    private static final VoxelShape SHAPE = Block.box(5.0D, 0.0D, 5.0D, 11.0D, 6.0D, 11.0D);
+    protected static final VoxelShape SHAPE = Block.box(5.0D, 0.0D, 5.0D, 11.0D, 6.0D, 11.0D);
     public ISpreadable.Type type;
 
     public MushroomBlock(ISpreadable.Type type, Block... surviveBlock) {
@@ -28,8 +28,8 @@ public class MushroomBlock extends BasePlantBlock implements ISpreadable, Boneme
 
     @Override
     @NotNull
-    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        Vec3 vec3 = pState.getOffset(pLevel, pPos);
+    public VoxelShape getShape(BlockState pState, BlockGetter level, BlockPos pPos, CollisionContext pContext) {
+        Vec3 vec3 = pState.getOffset(level, pPos);
         return SHAPE.move(vec3.x, vec3.y, vec3.z);
     }
 

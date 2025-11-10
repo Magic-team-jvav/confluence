@@ -20,12 +20,16 @@ import javax.annotation.Nullable;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.LAYERS;
 
 public class SandLayerBlock extends Block {
-    protected static final VoxelShape[] SHAPE_BY_LAYER = new VoxelShape[]{
-        Shapes.empty(), box(0.0, 0.0, 0.0, 16.0, 2.0, 16.0), box(0.0, 0.0, 0.0, 16.0, 4.0, 16.0),
-        box(0.0, 0.0, 0.0, 16.0, 6.0, 16.0), box(0.0, 0.0, 0.0, 16.0, 8.0, 16.0),
-        box(0.0, 0.0, 0.0, 16.0, 10.0, 16.0), box(0.0, 0.0, 0.0, 16.0, 12.0, 16.0),
-        box(0.0, 0.0, 0.0, 16.0, 14.0, 16.0), box(0.0, 0.0, 0.0, 16.0, 16.0, 16.0)
-    };
+    protected static final VoxelShape[] SHAPE_BY_LAYER;
+
+    static {
+        VoxelShape[] shapes = new VoxelShape[9];
+        shapes[0] = Shapes.empty();
+        for (int i = 1; i <= 8; i++) {
+            shapes[i] = box(0, 0, 0, 16, 2 * i, 16);
+        }
+        SHAPE_BY_LAYER = shapes;
+    }
 
     public SandLayerBlock() {
         super(Properties.of().sound(SoundType.SAND));
@@ -58,12 +62,10 @@ public class SandLayerBlock extends Block {
         if (UseContext.getItemInHand().is(asItem()) && StackLayers < 8) {
             if (UseContext.replacingClickedOnBlock()) {
                 return UseContext.getClickedFace() == Direction.UP;
-            } else {
-                return true;
             }
-        } else {
-            return StackLayers == 1;
+            return true;
         }
+        return StackLayers == 1;
     }
 
     @Nullable
@@ -71,9 +73,8 @@ public class SandLayerBlock extends Block {
         BlockState state = context.getLevel().getBlockState(context.getClickedPos());
         if (state.is(this) && state.getValue(LAYERS) < 8) {
             return state.cycle(LAYERS);
-        } else {
-            return super.getStateForPlacement(context);
         }
+        return super.getStateForPlacement(context);
     }
 
     @Override
@@ -84,7 +85,9 @@ public class SandLayerBlock extends Block {
 
     @Override
     public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos CurrentPos, BlockPos facingPos) {
-        return !state.canSurvive(level, CurrentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, facing, facingState, level, CurrentPos, facingPos);
+        return state.canSurvive(level, CurrentPos)
+                ? super.updateShape(state, facing, facingState, level, CurrentPos, facingPos)
+                : Blocks.AIR.defaultBlockState();
     }
 
     @Override

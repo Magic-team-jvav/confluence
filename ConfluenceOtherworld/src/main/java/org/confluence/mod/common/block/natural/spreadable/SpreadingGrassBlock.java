@@ -26,11 +26,11 @@ public class SpreadingGrassBlock extends SpreadingBlock {
                 default -> null;
             };
             if (thorn != null && randomSource.nextInt(50) == 0
-                && serverLevel.getBlockState(above).isAir()
-                && serverLevel.getBlockState(above.east()).isAir()
-                && serverLevel.getBlockState(above.west()).isAir()
-                && serverLevel.getBlockState(above.south()).isAir()
-                && serverLevel.getBlockState(above.north()).isAir()
+                    && serverLevel.getBlockState(above).isAir()
+                    && serverLevel.getBlockState(above.east()).isAir()
+                    && serverLevel.getBlockState(above.west()).isAir()
+                    && serverLevel.getBlockState(above.south()).isAir()
+                    && serverLevel.getBlockState(above.north()).isAir()
             ) {
                 serverLevel.setBlockAndUpdate(above, thorn.getStateForPlacement(serverLevel, above));
             }

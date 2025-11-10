@@ -18,7 +18,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.confluence.mod.common.init.block.NatureBlocks;
 
 public class DesertPlantBlock extends Block {
-    public VoxelShape shape;
+    protected final VoxelShape shape;
 
     public DesertPlantBlock(VoxelShape shape) {
         super(BlockBehaviour.Properties.of().pushReaction(PushReaction.DESTROY));

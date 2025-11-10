@@ -22,7 +22,7 @@ import org.confluence.mod.common.data.saved.MoonPhase;
 
 public class ShimmerCrystalslBlock extends Block {
     public static final BooleanProperty VISIBLE = StateProperties.VISIBLE;
-    private static final VoxelShape SHAPE = Shapes.box(0.1875, 0.0, 0.1875, 0.8125, 1.0, 0.8125);
+    protected static final VoxelShape SHAPE = Shapes.box(0.1875, 0.0, 0.1875, 0.8125, 1.0, 0.8125);
 
     public ShimmerCrystalslBlock() {
         super(BlockBehaviour.Properties.of().randomTicks());
@@ -56,8 +56,8 @@ public class ShimmerCrystalslBlock extends Block {
 
     @Override
     protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-        BlockState stateBelow = level.getBlockState(pos.below());
-        return stateBelow.isSolid();
+        BlockPos below = pos.below();
+        return level.getBlockState(below).isFaceSturdy(level, below, Direction.UP);
     }
 
     @Override

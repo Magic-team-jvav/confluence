@@ -30,8 +30,8 @@ public class StoneSaplingBlock extends SaplingBlock {
     }
 
     @Override
-    public boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
-        BlockState blockBelow = pLevel.getBlockState(pPos.below());
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+        BlockState blockBelow = level.getBlockState(pos.below());
         return blockBelow.is(Blocks.DEEPSLATE) || blockBelow.is(Blocks.STONE);
     }
 }

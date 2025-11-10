@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import org.confluence.mod.common.block.natural.ThornBlock;
 
 public class SpreadingThornBlock extends ThornBlock implements ISpreadable {
-    private final Type type;
+    protected final Type type;
 
     public SpreadingThornBlock(float amount, Block ground, Type type){
         super(amount, ground);

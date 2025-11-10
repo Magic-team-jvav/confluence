@@ -41,7 +41,15 @@ public abstract class BaseHerbBlock extends CropBlock implements EntityBlock {
     public static final int MAX_AGE = BlockStateProperties.MAX_AGE_2;
     public static final int BRIGHTNESS = 3;
     public static final IntegerProperty AGE = BlockStateProperties.AGE_2;
-    private static final VoxelShape[] SHAPE_BY_AGE = new VoxelShape[]{Block.box(0.0D, 0.0D, 0.0D, 16.0D, 2.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 4.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 6.0D, 16.0D), Block.box(0.0D, 0.0D, 0.0D, 16.0D, 8.0D, 16.0D)};
+    protected static final VoxelShape[] SHAPE_BY_AGE;
+
+    static {
+        VoxelShape[] shapes = new VoxelShape[4];
+        for (int i = 0; i < 4; i++) {
+            shapes[i] = box(0, 0, 0, 16, 2 * (i + 1), 16);
+        }
+        SHAPE_BY_AGE = shapes;
+    }
 
     public static final Supplier<Map<Block, Set<Block>>> HERB_GROUND_MAP = Suppliers.memoize(() -> new ImmutableMap.Builder<Block, Set<Block>>()
             .put(ModBlocks.DAYBLOOM.get(), Set.of(Blocks.GRASS_BLOCK, NatureBlocks.HALLOW_GRASS_BLOCK.get()))
@@ -86,15 +94,15 @@ public abstract class BaseHerbBlock extends CropBlock implements EntityBlock {
     }
 
     @Override
-    public boolean isValidBonemealTarget(LevelReader pLevel, BlockPos pPos, BlockState pState) {
+    public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
         return false;
     }
 
     @Override
-    public boolean canSurvive(BlockState blockstate, LevelReader worldIn, BlockPos pos) {
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         BlockPos blockpos = pos.below();
-        BlockState groundState = worldIn.getBlockState(blockpos);
-        return this.mayPlaceOn(groundState, worldIn, blockpos);
+        BlockState groundState = level.getBlockState(blockpos);
+        return this.mayPlaceOn(groundState, level, blockpos);
     }
 
     @Override
@@ -109,8 +117,8 @@ public abstract class BaseHerbBlock extends CropBlock implements EntityBlock {
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(AGE);
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(AGE);
     }
 
     public int getMaxAge() {
@@ -118,37 +126,37 @@ public abstract class BaseHerbBlock extends CropBlock implements EntityBlock {
     }
 
     @NotNull
-    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        return SHAPE_BY_AGE[this.getAge(pState)];
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+        return SHAPE_BY_AGE[this.getAge(state)];
     }
 
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return new BEntity(pPos, pState);
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new BEntity(pos, state);
     }
 
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
-        return pLevel.isClientSide ? null : LibUtils.getTicker(pBlockEntityType, ModBlocks.HERBS_ENTITY.get(), (level, blockPos, blockState, e) -> {
-            if (level.getGameTime() % 20 == 2) { // 每秒判断能不能开花
-                int age = getAge(blockState);
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+        return level.isClientSide ? null : LibUtils.getTicker(type, ModBlocks.HERBS_ENTITY.get(), (level1, pos, state1, entity) -> {
+            if (level1.getGameTime() % 20 == 2) { // 每秒判断能不能开花
+                int age = getAge(state1);
                 if (age < MAX_AGE - 1) return;
-                if (canBloom((ServerLevel) level, blockState)) {
+                if (canBloom((ServerLevel) level1, state1)) {
                     if (age != MAX_AGE) {
-                        level.setBlockAndUpdate(blockPos, blockState.setValue(AGE, MAX_AGE));
+                        level1.setBlockAndUpdate(pos, state1.setValue(AGE, MAX_AGE));
                     }
                 } else if (age == MAX_AGE) { // 如果不能开花且已经开花
-                    level.setBlockAndUpdate(blockPos, blockState.setValue(AGE, MAX_AGE - 1));
+                    level1.setBlockAndUpdate(pos, state1.setValue(AGE, MAX_AGE - 1));
                 }
             }
         });
     }
 
     public static class BEntity extends BlockEntity {
-        public BEntity(BlockPos pPos, BlockState pBlockState) {
-            super(ModBlocks.HERBS_ENTITY.get(), pPos, pBlockState);
+        public BEntity(BlockPos pos, BlockState state) {
+            super(ModBlocks.HERBS_ENTITY.get(), pos, state);
         }
     }
 }

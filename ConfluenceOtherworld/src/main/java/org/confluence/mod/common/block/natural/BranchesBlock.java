@@ -31,8 +31,8 @@ public class BranchesBlock extends PipeBlock {
     public static final int DECAY_DISTANCE = 12;
     public static final IntegerProperty DISTANCE = IntegerProperty.create("distance", 1, DECAY_DISTANCE);
 
-    private final TagKey<Block> attachable;
-    private final TagKey<Block> supporting;
+    protected final TagKey<Block> attachable;
+    protected final TagKey<Block> supporting;
 
     public BranchesBlock(TagKey<Block> attachable, TagKey<Block> supporting) {
         super(0.1875F, Properties.of().instabreak().sound(SoundType.WOOD).pushReaction(PushReaction.DESTROY).randomTicks());

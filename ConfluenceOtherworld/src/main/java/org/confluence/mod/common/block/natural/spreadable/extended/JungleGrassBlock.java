@@ -1,4 +1,4 @@
-package org.confluence.mod.common.block.natural.spreadable;
+package org.confluence.mod.common.block.natural.spreadable.extended;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -15,6 +15,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
+import org.confluence.mod.common.block.natural.spreadable.ISpreadable;
+import org.confluence.mod.common.block.natural.spreadable.SpreadingGrassBlock;
 
 import java.util.List;
 import java.util.Optional;

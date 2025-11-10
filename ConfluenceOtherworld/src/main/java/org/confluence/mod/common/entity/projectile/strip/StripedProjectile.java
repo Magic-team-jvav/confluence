@@ -1,5 +1,6 @@
 package org.confluence.mod.common.entity.projectile.strip;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -12,10 +13,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.*;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.common.entity.projectile.DamageSettableProjectile;
 import org.confluence.mod.common.init.ModDamageTypes;
@@ -99,6 +98,15 @@ public abstract class StripedProjectile extends DamageSettableProjectile {
                     onTouchEntity(hitResult);
                 }
             }
+        }
+
+        // 没有用BaseManaStaffProjectileEntity那种写法，因为这里写的可以保证敲钟这种行为只敲一次，而那边的会一直猛敲。
+        if (!level().isClientSide){
+            Vec3 forwardP = this.position();
+            BlockPos blockPos = BlockPos.containing(forwardP);
+            BlockState blockstate = level().getBlockState(blockPos);
+            BlockHitResult blockHitResult = new BlockHitResult(forwardP, this.getDirection(), blockPos, true);
+            blockstate.onProjectileHit(level(), blockstate, blockHitResult, this);
         }
     }
 

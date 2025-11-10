@@ -15,13 +15,13 @@ public class WaterCandleEffect extends MobEffect {
 
     public WaterCandleEffect() {
         super(MobEffectCategory.HARMFUL, 0xFF0000);
-        addAttributeModifier(ConfluenceMagicLib.ENEMY_SPAWN_SPEED_MULTIPLIER, WATER_CANDLE, AttributeModifier.Operation.ADD_VALUE, amplifier -> (amplifier + 1) * 0.33);
-        addAttributeModifier(ConfluenceMagicLib.ENEMY_SPAWN_COUNT_MULTIPLIER, WATER_CANDLE, AttributeModifier.Operation.ADD_VALUE, amplifier -> (amplifier + 1) * 0.50);
+        addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_SPEED_MULTIPLIER, WATER_CANDLE, AttributeModifier.Operation.ADD_VALUE, amplifier -> (amplifier + 1) * 0.33);
+        addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_COUNT_MULTIPLIER, WATER_CANDLE, AttributeModifier.Operation.ADD_VALUE, amplifier -> (amplifier + 1) * 0.50);
     }
 
     @Override
     public boolean applyEffectTick(LivingEntity livingEntity, int amplifier) {
-        AttributeInstance instance = livingEntity.getAttributes().getInstance(ConfluenceMagicLib.ENEMY_SPAWN_SPEED_MULTIPLIER);
+        AttributeInstance instance = livingEntity.getAttributes().getInstance(ConfluenceMagicLib.MOB_SPAWN_SPEED_MULTIPLIER);
         if (instance != null) {
             double amount = (amplifier + 1) * (livingEntity.getY() >= OverworldUtils.getSpaceY() ? 1.67 : 0.33);
             AttributeModifier modifier = instance.getModifier(WATER_CANDLE);

@@ -114,19 +114,19 @@ public final class ModEffects {
 
     public static final DeferredHolder<MobEffect, MobEffect> WATER_CANDLE = EFFECTS.register("water_candle", WaterCandleEffect::new);
     public static final DeferredHolder<MobEffect, MobEffect> PEACE_CANDLE = EFFECTS.register("peace_candle", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFF0000)
-            .addAttributeModifier(ConfluenceMagicLib.ENEMY_SPAWN_SPEED_MULTIPLIER, Confluence.asResource("peace_candle"), AttributeModifier.Operation.ADD_VALUE, (i) -> (i + 1) * -0.23)
-            .addAttributeModifier(ConfluenceMagicLib.ENEMY_SPAWN_COUNT_MULTIPLIER, Confluence.asResource("peace_candle"), AttributeModifier.Operation.ADD_VALUE, (i) -> (i + 1) * -0.30));
+            .addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_SPEED_MULTIPLIER, Confluence.asResource("peace_candle"), AttributeModifier.Operation.ADD_VALUE, (i) -> (i + 1) * -0.23)
+            .addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_COUNT_MULTIPLIER, Confluence.asResource("peace_candle"), AttributeModifier.Operation.ADD_VALUE, (i) -> (i + 1) * -0.30));
     public static final DeferredHolder<MobEffect, MobEffect> HAPPY = EFFECTS.register("happy", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFF0000)
             .addAttributeModifier(Attributes.MOVEMENT_SPEED, Confluence.asResource("happy_doubling"), AttributeModifier.Operation.ADD_MULTIPLIED_BASE, (i) -> (i + 1) * 1.1)
             .addAttributeModifier(Attributes.MOVEMENT_SPEED, Confluence.asResource("happy"), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL, (i) -> (i + 1) * 0.1)
-            .addAttributeModifier(ConfluenceMagicLib.ENEMY_SPAWN_SPEED_MULTIPLIER, Confluence.asResource("happy"), AttributeModifier.Operation.ADD_VALUE, (i) -> (i + 1) * -0.17)
-            .addAttributeModifier(ConfluenceMagicLib.ENEMY_SPAWN_COUNT_MULTIPLIER, Confluence.asResource("happy"), AttributeModifier.Operation.ADD_VALUE, (i) -> (i + 1) * -0.20));
+            .addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_SPEED_MULTIPLIER, Confluence.asResource("happy"), AttributeModifier.Operation.ADD_VALUE, (i) -> (i + 1) * -0.17)
+            .addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_COUNT_MULTIPLIER, Confluence.asResource("happy"), AttributeModifier.Operation.ADD_VALUE, (i) -> (i + 1) * -0.20));
     public static final DeferredHolder<MobEffect, MobEffect> CALM = EFFECTS.register("calm", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFF0000)
-            .addAttributeModifier(ConfluenceMagicLib.ENEMY_SPAWN_SPEED_MULTIPLIER, Confluence.asResource("calm"), AttributeModifier.Operation.ADD_VALUE, (i) -> (i + 1) * -0.39)
-            .addAttributeModifier(ConfluenceMagicLib.ENEMY_SPAWN_COUNT_MULTIPLIER, Confluence.asResource("calm"), AttributeModifier.Operation.ADD_VALUE, (i) -> (i + 1) * -0.40));
+            .addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_SPEED_MULTIPLIER, Confluence.asResource("calm"), AttributeModifier.Operation.ADD_VALUE, (i) -> (i + 1) * -0.39)
+            .addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_COUNT_MULTIPLIER, Confluence.asResource("calm"), AttributeModifier.Operation.ADD_VALUE, (i) -> (i + 1) * -0.40));
     public static final DeferredHolder<MobEffect, MobEffect> BATTLE = EFFECTS.register("battle", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFF0000)
-            .addAttributeModifier(ConfluenceMagicLib.ENEMY_SPAWN_SPEED_MULTIPLIER, Confluence.asResource("battle"), AttributeModifier.Operation.ADD_MULTIPLIED_BASE, (i) -> (i + 1) * 2)
-            .addAttributeModifier(ConfluenceMagicLib.ENEMY_SPAWN_COUNT_MULTIPLIER, Confluence.asResource("battle"), AttributeModifier.Operation.ADD_MULTIPLIED_BASE, (i) -> (i + 1) * 2));
+            .addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_SPEED_MULTIPLIER, Confluence.asResource("battle"), AttributeModifier.Operation.ADD_MULTIPLIED_BASE, (i) -> (i + 1) * 2)
+            .addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_COUNT_MULTIPLIER, Confluence.asResource("battle"), AttributeModifier.Operation.ADD_MULTIPLIED_BASE, (i) -> (i + 1) * 2));
 
 
     // 药剂

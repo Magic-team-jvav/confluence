@@ -111,8 +111,8 @@ public final class ModArmorBonus {
         });
         register("angler_set", 1, ANGLER_HAT, ANGLER_VEST, ANGLER_PANTS, Items.AIR, key -> {
             key.entry(TCItems.ATTRIBUTES, AttributeModifiersValue.builder()
-                    .add(ConfluenceMagicLib.ENEMY_SPAWN_SPEED_MULTIPLIER, key.id, -0.23, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
-                    .add(ConfluenceMagicLib.ENEMY_SPAWN_COUNT_MULTIPLIER, key.id, -0.30, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                    .add(ConfluenceMagicLib.MOB_SPAWN_SPEED_MULTIPLIER, key.id, -0.23, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                    .add(ConfluenceMagicLib.MOB_SPAWN_COUNT_MULTIPLIER, key.id, -0.30, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
                     .build());
         });
         register("cactus_set", 1, CACTUS_HELMET, CACTUS_CHESTPLATE, CACTUS_LEGGINGS, CACTUS_BOOTS, key -> {

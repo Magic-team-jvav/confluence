@@ -69,7 +69,7 @@ public final class GlobalCloakData implements IGlobalData {
         if (revealStep == 0) return;
         List<BlockState> pairs = Lists.newArrayListWithExpectedSize(revealStep + revealStep);
         for (int i = 0; i < revealStep; i++) {
-            BlockState[] pair = StepRevealingBlock.PAIRS.get()[revealStep];
+            BlockState[] pair = StepRevealingBlock.PAIRS.get()[i];
             pairs.add(pair[0]);
             pairs.add(pair[1]);
         }

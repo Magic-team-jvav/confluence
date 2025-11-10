@@ -14,13 +14,8 @@ import org.confluence.mod.common.init.ModEntities;
 import org.mesdag.particlestorm.PSGameClient;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
-
 // todo 专家模式下，黄金雨对毁灭者及其探测怪仅造成 75% 伤害。
 public class GoldenShowerProjectile extends AbstractManaProjectile {
-    private final Set<UUID> penetrateSet = new HashSet<>();
     private ParticleEmitter emitter;
 
     public GoldenShowerProjectile(EntityType<GoldenShowerProjectile> entityType, Level level) {
@@ -62,13 +57,11 @@ public class GoldenShowerProjectile extends AbstractManaProjectile {
     @Override
     protected void onHitEntity(EntityHitResult result) {
         Entity entity = result.getEntity();
-        if (penetrateSet.add(entity.getUUID())) {
+        if (doPenetrateCheck(entity)) {
             if (doHurtAndKnockback(entity, 3.5, 0.2) && entity instanceof LivingEntity living) {
                 living.addEffect(new MobEffectInstance(ModEffects.ICHOR, 200));
             }
-            if (penetrateSet.size() >= 4) {
-                discard();
-            }
+            doDiscardInMaxPenetrate(4);
         }
     }
 }

@@ -13,12 +13,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.mod.mixed.Immunity;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
-
 public class RainProjectile extends AbstractManaProjectile implements Immunity {
-    protected final Set<UUID> penetrateSet = new HashSet<>();
     private int maxPenetrate = 2;
 
     public RainProjectile(EntityType<? extends RainProjectile> entityType, Level level) {
@@ -72,12 +67,9 @@ public class RainProjectile extends AbstractManaProjectile implements Immunity {
     @Override
     protected void onHitEntity(EntityHitResult result) {
         Entity entity = result.getEntity();
-        if (!penetrateSet.contains(entity.getUUID())) {
+        if (doPenetrateCheck(entity)) {
             doHurtAndKnockback(entity, 0, 0);
-            penetrateSet.add(entity.getUUID());
-            if (penetrateSet.size() >= maxPenetrate) {
-                discard();
-            }
+            doDiscardInMaxPenetrate(maxPenetrate);
         }
     }
 

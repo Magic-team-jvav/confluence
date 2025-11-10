@@ -19,8 +19,13 @@ import org.confluence.mod.util.ModUtils;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+
 public abstract class AbstractManaProjectile extends DamageSettableProjectile {
     protected boolean localVelocity = false;
+    private Set<UUID> penetrateSet;
 
     public AbstractManaProjectile(EntityType<? extends AbstractManaProjectile> entityType, Level level) {
         super(entityType, level);
@@ -59,6 +64,18 @@ public abstract class AbstractManaProjectile extends DamageSettableProjectile {
             return true;
         }
         return false;
+    }
+
+    protected boolean doPenetrateCheck(Entity entity) {
+        if (penetrateSet == null) this.penetrateSet = new HashSet<>();
+        return penetrateSet.add(entity.getUUID());
+    }
+
+    protected void doDiscardInMaxPenetrate(int max) {
+        if (penetrateSet == null) this.penetrateSet = new HashSet<>();
+        if (penetrateSet.size() >= max) {
+            discard();
+        }
     }
 
     public @Nullable LivingEntity getLivingOwner() {

@@ -12,12 +12,7 @@ import org.confluence.mod.common.init.ModEntities;
 import org.mesdag.particlestorm.PSGameClient;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
-
 public class WaterBoltProjectile extends AbstractManaProjectile {
-    private final Set<UUID> penetrateSet = new HashSet<>();
     private int collideCount = 0;
     private ParticleEmitter emitter;
 
@@ -64,14 +59,10 @@ public class WaterBoltProjectile extends AbstractManaProjectile {
 
     @Override
     protected void onHitEntity(EntityHitResult result) {
-        super.onHitEntity(result);
-        if (level().isClientSide) return;
         Entity entity = result.getEntity();
-        if (penetrateSet.add(entity.getUUID())) {
+        if (doPenetrateCheck(entity)) {
             doHurtAndKnockback(entity, 1.5, 0.2);
-            if (penetrateSet.size() >= 10) {
-                discard();
-            }
+            doDiscardInMaxPenetrate(10);
         }
     }
 }

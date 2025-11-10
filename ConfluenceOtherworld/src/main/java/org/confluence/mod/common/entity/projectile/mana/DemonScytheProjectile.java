@@ -10,13 +10,8 @@ import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.common.entitiy.IAxisZRotate;
 import org.confluence.mod.common.init.ModEntities;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
-
 public class DemonScytheProjectile extends AbstractManaProjectile implements IAxisZRotate {
     public final Rotate rotate = new Rotate();
-    protected final Set<UUID> penetrateSet = new HashSet<>();
 
     public DemonScytheProjectile(EntityType<DemonScytheProjectile> entityType, Level level) {
         super(entityType, level);
@@ -61,12 +56,9 @@ public class DemonScytheProjectile extends AbstractManaProjectile implements IAx
     @Override
     protected void onHitEntity(EntityHitResult result) {
         Entity entity = result.getEntity();
-        if (!penetrateSet.contains(entity.getUUID())) {
+        if (doPenetrateCheck(entity)) {
             doHurtAndKnockback(entity, 0.5, 0.2);
-            penetrateSet.add(entity.getUUID());
-            if (penetrateSet.size() >= 5) {
-                discard();
-            }
+            doDiscardInMaxPenetrate(5);
         }
     }
 }

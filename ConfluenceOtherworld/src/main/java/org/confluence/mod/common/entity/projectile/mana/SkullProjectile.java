@@ -22,8 +22,6 @@ import org.mesdag.particlestorm.PSGameClient;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 
 import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 public class SkullProjectile extends AbstractManaProjectile {
@@ -31,7 +29,6 @@ public class SkullProjectile extends AbstractManaProjectile {
     private static final EntityDataAccessor<Integer> DATA_TARGET_ID = SynchedEntityData.defineId(SkullProjectile.class, EntityDataSerializers.INT);
     private UUID targetUUID;
     private transient LivingEntity target;
-    protected final Set<UUID> penetrateSet = new HashSet<>();
 
     public SkullProjectile(EntityType<SkullProjectile> entityType, Level level) {
         super(entityType, level);
@@ -103,12 +100,9 @@ public class SkullProjectile extends AbstractManaProjectile {
     @Override
     protected void onHitEntity(EntityHitResult result) {
         Entity entity = result.getEntity();
-        if (!penetrateSet.contains(entity.getUUID())) {
+        if (doPenetrateCheck(entity)) {
             doHurtAndKnockback(entity, 0.35, 0.1);
-            penetrateSet.add(entity.getUUID());
-            if (penetrateSet.size() >= 3) {
-                discard();
-            }
+            doDiscardInMaxPenetrate(3);
         }
     }
 

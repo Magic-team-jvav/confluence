@@ -26,12 +26,13 @@ import org.mesdag.particlestorm.PSGameClient;
 import org.mesdag.particlestorm.data.molang.MolangExp;
 import org.mesdag.particlestorm.particle.ParticleEmitter;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
     protected static final EntityDataAccessor<Integer> DATA_VARIANT_ID = SynchedEntityData.defineId(BaseManaStaffProjectileEntity.class, EntityDataSerializers.INT);
     protected int penetrateCount = 2;
-    protected final Set<UUID> penetrateSet = new HashSet<>();
 
     protected ParticleEmitter emitter;
 
@@ -112,12 +113,9 @@ public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
     @Override
     protected void onHitEntity(EntityHitResult entityHitResult) {
         Entity entity = entityHitResult.getEntity();
-        if (!penetrateSet.contains(entity.getUUID())) {
+        if (doPenetrateCheck(entity)) {
             doHurtAndKnockback(entity, 0.5, 0.2);
-            penetrateSet.add(entity.getUUID());
-            if (penetrateSet.size() >= penetrateCount) {
-                discard();
-            }
+            doDiscardInMaxPenetrate(penetrateCount);
         }
     }
 

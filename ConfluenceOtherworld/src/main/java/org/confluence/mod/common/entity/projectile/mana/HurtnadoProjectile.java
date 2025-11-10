@@ -17,12 +17,7 @@ import org.confluence.mod.common.init.ModEntities;
 import org.confluence.mod.mixed.Immunity;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
-
 public class HurtnadoProjectile extends AbstractManaProjectile implements Immunity {
-    private final Set<UUID> penetrateSet = new HashSet<>();
     private Entity target;
     public float rotateO = 0.0F;
     public float rotate = 0.0F;
@@ -76,15 +71,13 @@ public class HurtnadoProjectile extends AbstractManaProjectile implements Immuni
 
     @Override
     protected void doHitCheck() {
-        if (level().isClientSide) return;
         AABB boundingBox = getBoundingBox().inflate(1.0);
         EntityHitResult hitResult = ProjectileUtil.getEntityHitResult(level(), this, boundingBox.getMinPosition(), boundingBox.getMaxPosition(), boundingBox, this::canHitEntity, 0.5F);
-        if (hitResult != null) {
-            Entity entity = hitResult.getEntity();
-            doHurtAndKnockback(entity, 0.5, 0.2);
-            if (penetrateSet.add(entity.getUUID()) && penetrateSet.size() >= 14) {
-                discard();
-            }
+        if (hitResult == null) return;
+        Entity entity = hitResult.getEntity();
+        doHurtAndKnockback(entity, 0.5, 0.2);
+        if (doPenetrateCheck(entity)) {
+            doDiscardInMaxPenetrate(14);
         }
     }
 

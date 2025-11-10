@@ -114,6 +114,9 @@ public class CloudProjectile extends AbstractManaProjectile implements GeoEntity
         }
     }
 
+    @Override
+    protected void doHitCheck() {}
+
     public void setTarget(@Nullable LivingEntity target) {
         this.target = target;
         if (target == null) {

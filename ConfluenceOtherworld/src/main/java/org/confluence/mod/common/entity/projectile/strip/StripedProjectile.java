@@ -1,6 +1,5 @@
 package org.confluence.mod.common.entity.projectile.strip;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -94,20 +93,17 @@ public abstract class StripedProjectile extends DamageSettableProjectile {
             } else {
                 AABB boundingBox = getBoundingBox().inflate(1.0);
                 EntityHitResult hitResult = ProjectileUtil.getEntityHitResult(level(), this, boundingBox.getMinPosition(), boundingBox.getMaxPosition(), boundingBox, this::canHitEntity, 0.5F);
+                checkInsideBlocks();
                 if (hitResult != null) {
                     onTouchEntity(hitResult);
                 }
             }
         }
+    }
 
-        // 没有用BaseManaStaffProjectileEntity那种写法，因为这里写的可以保证敲钟这种行为只敲一次，而那边的会一直猛敲。
-        if (!level().isClientSide){
-            Vec3 forwardP = this.position();
-            BlockPos blockPos = BlockPos.containing(forwardP);
-            BlockState blockstate = level().getBlockState(blockPos);
-            BlockHitResult blockHitResult = new BlockHitResult(forwardP, this.getDirection(), blockPos, true);
-            blockstate.onProjectileHit(level(), blockstate, blockHitResult, this);
-        }
+    @Override
+    protected void onInsideBlock(BlockState state) {
+        state.onProjectileHit(level(), state, new BlockHitResult(position(), getDirection(), blockPosition(), true), this);
     }
 
     @Override

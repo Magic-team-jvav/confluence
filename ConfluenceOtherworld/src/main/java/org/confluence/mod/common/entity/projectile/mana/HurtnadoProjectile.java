@@ -46,31 +46,19 @@ public class HurtnadoProjectile extends AbstractManaProjectile implements Immuni
         super.baseTick();
 
         Vec3 vec3 = getDeltaMovement();
-        move(MoverType.SELF, vec3.add(0.0, -0.04, 0.0));
+        move(MoverType.SELF, vec3.add(0.0, -getGravity(), 0.0));
         Vec3 motion = getDeltaMovement();
         if (!vec3.equals(motion)) {
             if (motion.x != vec3.x) motion = new Vec3(-vec3.x, vec3.y, vec3.z);
             if (motion.y != vec3.y) motion = new Vec3(vec3.x, -vec3.y, vec3.z);
             if (motion.z != vec3.z) motion = new Vec3(vec3.x, vec3.y, -vec3.z);
         }
-        setDeltaMovement(motion.add(0.0, -0.04, 0.0));
+        setDeltaMovement(motion.add(0.0, -getGravity(), 0.0));
 
         if (level().isClientSide) {
             if (rotate > Mth.TWO_PI) this.rotate -= Mth.TWO_PI;
             this.rotateO = rotate;
             this.rotate += Mth.PI * 0.15F;
-        } else {
-            AABB boundingBox = getBoundingBox().inflate(1.0);
-            if (ProjectileUtil.getEntityHitResult(level(), this, boundingBox.getMinPosition(), boundingBox.getMaxPosition(), boundingBox, this::canHitEntity, 0.5F) instanceof EntityHitResult entityHitResult) {
-                Entity entity = entityHitResult.getEntity();
-                if (entity.hurt(getDamagesource(), getCalculatedDamage())) {
-                    VectorUtils.knockBackA2B(this, entity, 0.5, 0.2);
-                }
-                if (penetrateSet.add(entity.getUUID()) && penetrateSet.size() >= 14) {
-                    discard();
-                    return;
-                }
-            }
         }
 
         if (target == null || target.isRemoved()) {
@@ -78,6 +66,25 @@ public class HurtnadoProjectile extends AbstractManaProjectile implements Immuni
         }
         if (target != null) {
             setDeltaMovement(getDeltaMovement().scale(0.96).add(VectorUtils.getVectorA2B(this, target).scale(0.05)));
+        }
+    }
+
+    @Override
+    protected double getDefaultGravity() {
+        return 0.04;
+    }
+
+    @Override
+    protected void doHitCheck() {
+        if (level().isClientSide) return;
+        AABB boundingBox = getBoundingBox().inflate(1.0);
+        EntityHitResult hitResult = ProjectileUtil.getEntityHitResult(level(), this, boundingBox.getMinPosition(), boundingBox.getMaxPosition(), boundingBox, this::canHitEntity, 0.5F);
+        if (hitResult != null) {
+            Entity entity = hitResult.getEntity();
+            doHurtAndKnockback(entity, 0.5, 0.2);
+            if (penetrateSet.add(entity.getUUID()) && penetrateSet.size() >= 14) {
+                discard();
+            }
         }
     }
 

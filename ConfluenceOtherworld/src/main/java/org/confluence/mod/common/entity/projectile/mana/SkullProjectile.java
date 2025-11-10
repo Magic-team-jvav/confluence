@@ -9,9 +9,11 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Enemy;
-import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.*;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEntities;
@@ -83,26 +85,6 @@ public class SkullProjectile extends AbstractManaProjectile {
                 PSGameClient.LOADER.addEmitter(trail, false);
             }
         }
-        HitResult hitresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
-        checkInsideBlocks();
-        HitResult.Type hitresult$type = hitresult.getType();
-        if (hitresult$type == HitResult.Type.BLOCK) {
-            onHitBlock((BlockHitResult) hitresult);
-            discard();
-            return;
-        } else if (hitresult$type == HitResult.Type.ENTITY) {
-            Entity entity = ((EntityHitResult) hitresult).getEntity();
-            if (!penetrateSet.contains(entity.getUUID())) {
-                if (entity.hurt(getDamagesource(), getCalculatedDamage())) {
-                    VectorUtils.knockBackA2B(this, entity, 0.35, 0.1);
-                }
-                penetrateSet.add(entity.getUUID());
-                if (penetrateSet.size() == 3) {
-                    discard();
-                    return;
-                }
-            }
-        }
 
         Vec3 vec3 = getDeltaMovement();
         double offX = getX() + vec3.x;
@@ -110,6 +92,24 @@ public class SkullProjectile extends AbstractManaProjectile {
         double offZ = getZ() + vec3.z;
         setPos(offX, offY, offZ);
         updateRotation();
+    }
+
+    @Override
+    protected void onHitBlock(BlockHitResult result) {
+        super.onHitBlock(result);
+        discard();
+    }
+
+    @Override
+    protected void onHitEntity(EntityHitResult result) {
+        Entity entity = result.getEntity();
+        if (!penetrateSet.contains(entity.getUUID())) {
+            doHurtAndKnockback(entity, 0.35, 0.1);
+            penetrateSet.add(entity.getUUID());
+            if (penetrateSet.size() >= 3) {
+                discard();
+            }
+        }
     }
 
     public void setTarget(@Nullable LivingEntity target) {

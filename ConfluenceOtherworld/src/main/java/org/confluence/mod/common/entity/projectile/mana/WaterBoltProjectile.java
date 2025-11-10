@@ -4,12 +4,9 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
-import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEntities;
 import org.mesdag.particlestorm.PSGameClient;
@@ -17,9 +14,10 @@ import org.mesdag.particlestorm.particle.ParticleEmitter;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 public class WaterBoltProjectile extends AbstractManaProjectile {
-    private final Set<Entity> passThrough = new HashSet<>();
+    private final Set<UUID> penetrateSet = new HashSet<>();
     private int collideCount = 0;
     private ParticleEmitter emitter;
 
@@ -61,18 +59,18 @@ public class WaterBoltProjectile extends AbstractManaProjectile {
                 emitter.attachEntity(this);
                 PSGameClient.LOADER.addEmitter(emitter, false);
             }
-        } else {
-            HitResult hitResult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
-            if (hitResult instanceof EntityHitResult entityHitResult) {
-                Entity entity = entityHitResult.getEntity();
-                if (passThrough.add(entity)) {
-                    if (entity.hurt(getDamagesource(), getCalculatedDamage())) {
-                        VectorUtils.knockBackA2B(this, entity, 1.5, 0.2);
-                    }
-                    if (passThrough.size() >= 10) {
-                        discard();
-                    }
-                }
+        }
+    }
+
+    @Override
+    protected void onHitEntity(EntityHitResult result) {
+        super.onHitEntity(result);
+        if (level().isClientSide) return;
+        Entity entity = result.getEntity();
+        if (penetrateSet.add(entity.getUUID())) {
+            doHurtAndKnockback(entity, 1.5, 0.2);
+            if (penetrateSet.size() >= 10) {
+                discard();
             }
         }
     }

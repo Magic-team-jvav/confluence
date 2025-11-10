@@ -33,30 +33,26 @@ public abstract class DamageSettableProjectile extends Projectile {
     }
 
     public float getCalculatedDamage() {
-        if (getOwner() instanceof LivingEntity living) {
-            ItemStack itemStack = living.getMainHandItem();
-            if (!itemStack.isEmpty()) {
-                PrefixComponent component = itemStack.get(ModDataComponentTypes.PREFIX);
-                if (component != null) {
-                    double d0 = damage;
-                    for (AttributeModifier modifier : component.modifiers().get().get(Attributes.ATTACK_DAMAGE)) {
-                        if (modifier.operation() == AttributeModifier.Operation.ADD_VALUE) {
-                            d0 += modifier.amount();
-                        }
-                        double d1 = d0;
-                        if (modifier.operation() == AttributeModifier.Operation.ADD_MULTIPLIED_BASE) {
-                            d1 += d0 * modifier.amount();
-                        }
-                        if (modifier.operation() == AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL) {
-                            d1 *= 1.0 + modifier.amount();
-                        }
-                        d0 = d1;
-                    }
-                    return (float) Attributes.ATTACK_DAMAGE.value().sanitizeValue(d0);
-                }
+        if (!(getOwner() instanceof LivingEntity living)) return damage;
+        ItemStack itemStack = living.getMainHandItem();
+        if (itemStack.isEmpty()) return damage;
+        PrefixComponent component = itemStack.get(ModDataComponentTypes.PREFIX);
+        if (component == null) return damage;
+        double d0 = damage;
+        for (AttributeModifier modifier : component.modifiers().get().get(Attributes.ATTACK_DAMAGE)) {
+            if (modifier.operation() == AttributeModifier.Operation.ADD_VALUE) {
+                d0 += modifier.amount();
             }
+            double d1 = d0;
+            if (modifier.operation() == AttributeModifier.Operation.ADD_MULTIPLIED_BASE) {
+                d1 += d0 * modifier.amount();
+            }
+            if (modifier.operation() == AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL) {
+                d1 *= 1.0 + modifier.amount();
+            }
+            d0 = d1;
         }
-        return damage;
+        return (float) Attributes.ATTACK_DAMAGE.value().sanitizeValue(d0);
     }
 
     public float getDamage() {

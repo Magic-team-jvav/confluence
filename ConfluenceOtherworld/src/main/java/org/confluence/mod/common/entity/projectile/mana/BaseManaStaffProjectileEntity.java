@@ -14,11 +14,9 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.confluence.lib.color.FloatRGB;
 import org.confluence.lib.util.VectorUtils;
@@ -70,18 +68,6 @@ public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
     public void baseTick() {
         super.baseTick();
 
-        HitResult hitresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
-        checkInsideBlocks();
-        HitResult.Type hitresult$type = hitresult.getType();
-        if (hitresult$type == HitResult.Type.BLOCK) {
-            onHitBlock((BlockHitResult) hitresult);
-            discard();
-            return;
-        } else if (hitresult$type == HitResult.Type.ENTITY) {
-            onHitEntity((EntityHitResult) hitresult);
-            if (isRemoved()) return;
-        }
-
         Vec3 vec3 = getDeltaMovement();
         double offX = getX() + vec3.x;
         double offY = getY() + vec3.y;
@@ -118,21 +104,35 @@ public class BaseManaStaffProjectileEntity extends AbstractManaProjectile {
     }
 
     @Override
+    protected void onHitBlock(BlockHitResult result) {
+        super.onHitBlock(result);
+        discard();
+    }
+
+    @Override
     protected void onHitEntity(EntityHitResult entityHitResult) {
-        if (level().isClientSide) return;
         Entity entity = entityHitResult.getEntity();
         if (!penetrateSet.contains(entity.getUUID())) {
-            float damage = getCalculatedDamage() * (1.0F + getAttackBonus());
-            if (entity.hurt(getDamagesource(), damage)) {
-                float attackKnockback = getBaseKnockBack() * (1.0F + getKnockbackBonus());
-                if (attackKnockback > 0.0F) {
-                    VectorUtils.knockBackA2B(this, entity, attackKnockback * 0.5, 0.2);
-                }
-                afterHurtTarget(entity);
-            }
+            doHurtAndKnockback(entity, 0.5, 0.2);
             penetrateSet.add(entity.getUUID());
-            if (penetrateSet.size() == penetrateCount) discard();
+            if (penetrateSet.size() >= penetrateCount) {
+                discard();
+            }
         }
+    }
+
+    @Override
+    protected boolean doHurtAndKnockback(Entity target, double knockbackStrength, double knockbackMotionY) {
+        float damage = getCalculatedDamage() * (1.0F + getAttackBonus());
+        if (target.hurt(getDamagesource(), damage)) {
+            float attackKnockback = getBaseKnockBack() * (1.0F + getKnockbackBonus());
+            if ((attackKnockback > 0.0F && knockbackStrength > 0) || knockbackMotionY > 0) {
+                VectorUtils.knockBackA2B(this, target, attackKnockback * knockbackStrength, knockbackMotionY);
+            }
+            afterHurtTarget(target);
+            return true;
+        }
+        return false;
     }
 
     protected void afterHurtTarget(Entity target) {}

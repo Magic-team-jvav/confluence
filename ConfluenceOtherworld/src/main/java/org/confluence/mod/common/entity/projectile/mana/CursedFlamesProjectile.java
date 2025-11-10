@@ -7,11 +7,9 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.confluence.lib.util.VectorUtils;
 import org.confluence.mod.Confluence;
 import org.confluence.mod.common.init.ModEffects;
 import org.confluence.mod.common.init.ModEntities;
@@ -42,7 +40,7 @@ public class CursedFlamesProjectile extends AbstractManaProjectile {
         super.baseTick();
 
         Vec3 vec3 = getDeltaMovement();
-        move(MoverType.SELF, vec3.add(0.0, -0.04, 0.0));
+        move(MoverType.SELF, vec3.add(0.0, -getGravity(), 0.0));
         Vec3 motion = getDeltaMovement();
         if (!vec3.equals(motion)) {
             if (motion.x != vec3.x) motion = new Vec3(-vec3.x, vec3.y, vec3.z);
@@ -53,29 +51,33 @@ public class CursedFlamesProjectile extends AbstractManaProjectile {
                 return;
             }
         }
-        setDeltaMovement(motion.scale(0.99).add(0.0, -0.04, 0.0));
+        setDeltaMovement(motion.scale(0.99).add(0.0, -getGravity(), 0.0));
 
         if (level().isClientSide && (emitter == null || emitter.isRemoved())) {
             this.emitter = new ParticleEmitter(level(), position(), Confluence.asResource("cursed_flames"));
             emitter.attachEntity(this);
             PSGameClient.LOADER.addEmitter(emitter, false);
         }
-        if (ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity) instanceof EntityHitResult entityHitResult) {
-            Entity entity = entityHitResult.getEntity();
-            if (entity instanceof LivingEntity living) {
-                living.addEffect(new MobEffectInstance(ModEffects.CURSED_INFERNO, 140));
-            }
-            if (entity.hurt(getDamagesource(), getCalculatedDamage())) {
-                VectorUtils.knockBackA2B(this, entity, 0.6, 0.2);
-            }
-            if (this.penetrateCount++ >= 1) {
-                discard();
-            }
-        }
 
         if (tickCount > 1200) discard();
     }
 
+    @Override
+    protected double getDefaultGravity() {
+        return 0.04;
+    }
+
+    @Override
+    protected void onHitEntity(EntityHitResult result) {
+        Entity entity = result.getEntity();
+        if (entity instanceof LivingEntity living) {
+            living.addEffect(new MobEffectInstance(ModEffects.CURSED_INFERNO, 140));
+        }
+        doHurtAndKnockback(entity, 0.6, 0.2);
+        if (this.penetrateCount++ >= 1) {
+            discard();
+        }
+    }
 
     @Override
     protected void readAdditionalSaveData(CompoundTag compound) {

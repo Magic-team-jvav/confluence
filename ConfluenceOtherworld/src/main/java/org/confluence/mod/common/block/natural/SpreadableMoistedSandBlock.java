@@ -24,7 +24,7 @@ import java.util.function.Supplier;
 
 public class SpreadableMoistedSandBlock extends Block implements ISpreadable {
     private final ISpreadable.Type type;
-    private final Supplier<Block> targetBlock;
+    private final Supplier<? extends Block> targetBlock;
     public static final BooleanProperty NORTH = PipeBlock.NORTH;
     public static final BooleanProperty EAST = PipeBlock.EAST;
     public static final BooleanProperty SOUTH = PipeBlock.SOUTH;
@@ -33,7 +33,7 @@ public class SpreadableMoistedSandBlock extends Block implements ISpreadable {
     public static final BooleanProperty DOWN = PipeBlock.DOWN;
     private static final Map<Direction, BooleanProperty> PROPERTY_BY_DIRECTION = PipeBlock.PROPERTY_BY_DIRECTION;
 
-    public SpreadableMoistedSandBlock(ISpreadable.Type type, BlockBehaviour.Properties properties, Supplier<Block> targetBlock) {
+    public SpreadableMoistedSandBlock(ISpreadable.Type type, BlockBehaviour.Properties properties, Supplier<? extends Block> targetBlock) {
         super(properties.randomTicks().instrument(NoteBlockInstrument.SNARE).strength(0.5F).sound(SoundType.SAND));
         this.type = type;
         this.targetBlock = targetBlock;

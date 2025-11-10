@@ -13,12 +13,12 @@ import java.util.Arrays;
 import java.util.function.Supplier;
 
 public class BaseSaplingBlock extends SaplingBlock {
-    private Supplier<Block>[] blocksSupplier;
+    private Supplier<? extends Block>[] blocksSupplier;
     private Block[] blocks;
     private final TagKey<Block> tags;
 
     @SafeVarargs
-    public BaseSaplingBlock(TreeGrower grower, Properties properties, @Nullable TagKey<Block> tags, Supplier<Block>... block) {
+    public BaseSaplingBlock(TreeGrower grower, Properties properties, @Nullable TagKey<Block> tags, Supplier<? extends Block>... block) {
         super(grower, properties);
         this.blocksSupplier = block;
         this.tags = tags;

@@ -1,21 +1,17 @@
 package org.confluence.mod.common.init.block;
 
 import com.mojang.datafixers.DSL;
-import com.mojang.datafixers.util.Function3;
 import net.minecraft.ChatFormatting;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SignItem;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.MapColor;
-import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -35,7 +31,6 @@ import org.confluence.mod.common.block.functional.network.INetworkBlock;
 import org.confluence.mod.common.block.natural.MagicMailBox;
 import org.confluence.mod.common.block.natural.TreeHolesBlock;
 import org.confluence.mod.common.entity.projectile.boulder.AbstractBoulderEntity;
-import org.confluence.mod.common.entity.projectile.boulder.BoulderEntity;
 import org.confluence.mod.common.entity.projectile.boulder.ExplodeBoulderEntity;
 import org.confluence.mod.common.entity.projectile.boulder.FollowerBoulderEntity;
 import org.confluence.mod.common.init.ModEffects;
@@ -45,7 +40,6 @@ import org.confluence.mod.common.item.food.ModFoodPropertiesBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -218,15 +212,15 @@ public class FunctionalBlocks {
         return holder;
     }
 
-    static DeferredBlock<EffectiveCandleBlock> registerCandle(
-            String id,
-            BlockBehaviour.Properties properties,
-            float scope,
-            EffectiveCandleBlock.TickEffect tickEffects) {
-        var holder = BLOCKS.register(id, () -> new EffectiveCandleBlock(properties, scope, tickEffects));
-        MECHANICAL_BLOCKS.add(holder);
-        return holder;
-    }
+//    static DeferredBlock<EffectiveCandleBlock> registerCandle(
+//            String id,
+//            BlockBehaviour.Properties properties,
+//            float scope,
+//            EffectiveCandleBlock.TickEffect tickEffects) {
+//        var holder = BLOCKS.register(id, () -> new EffectiveCandleBlock(properties, scope, tickEffects));
+//        MECHANICAL_BLOCKS.add(holder);
+//        return holder;
+//    }
 
     static <B extends AbstractBoulderBlock<?>> DeferredBlock<B> registerBoulder(
             String id,
@@ -234,12 +228,12 @@ public class FunctionalBlocks {
         return registerWithEntity(id, block);
     }
 
-    static <B extends AbstractBoulderBlock<?>> DeferredBlock<B> registerBoulder(
-            String id,
-            Function<BoulderEntity.Builder, B> block,
-            BoulderEntity.Builder builder) {
-        return registerWithEntity(id, () -> block.apply(builder));
-    }
+//    static <B extends AbstractBoulderBlock<?>> DeferredBlock<B> registerBoulder(
+//            String id,
+//            Function<BoulderEntity.Builder, B> block,
+//            BoulderEntity.Builder builder) {
+//        return registerWithEntity(id, () -> block.apply(builder));
+//    }
 
     static <B extends AbstractBoulderBlock<? extends E>, E extends AbstractBoulderEntity> DeferredBlock<B> registerBoulder(
             String id,
@@ -248,37 +242,37 @@ public class FunctionalBlocks {
         return registerWithEntity(id, () -> block.apply(entity));
     }
 
-    static <B extends AbstractBoulderBlock<? extends E>, E extends AbstractBoulderEntity> DeferredBlock<B> registerBoulder(
-            String id,
-            BiFunction<AbstractBoulderBlock.BoulderEntityFactory<E>, BoulderEntity.Builder, B> block,
-            AbstractBoulderBlock.BoulderEntityFactory<E> entity,
-            BoulderEntity.Builder builder) {
-        return registerWithEntity(id, () -> block.apply(entity, builder));
-    }
-
-    static <B extends AbstractBoulderBlock<? extends E>, E extends AbstractBoulderEntity> DeferredBlock<B> registerBoulder(
-            String id,
-            Function3<BlockBehaviour.Properties, AbstractBoulderBlock.BoulderEntityFactory<E>, BoulderEntity.Builder, B> block,
-            AbstractBoulderBlock.BoulderEntityFactory<E> entity,
-            BlockBehaviour.Properties properties,
-            BoulderEntity.Builder builder) {
-        return registerWithEntity(id, () -> block.apply(properties, entity, builder));
-    }
-
-    static <B extends AbstractBoulderBlock<? extends E>, E extends AbstractBoulderEntity> DeferredBlock<B> baseRegisterBoulder(
-            String id,
-            Function<AbstractBoulderBlock.BoulderEntityFactory<E>, B> block,
-            Function3<Level, Vec3, BlockState, E> entity) {
-        return registerWithEntity(id, () -> block.apply(
-                (level, position, blockState, builder) -> entity.apply(level, position, blockState)
-        ));
-    }
-
-    static <B extends AbstractBoulderBlock<? extends E>, E extends AbstractBoulderEntity> DeferredBlock<B> baseRegisterBoulder(
-            String id,
-            BiFunction<BlockBehaviour.Properties, AbstractBoulderBlock.BoulderEntityFactory<E>, B> block,
-            Function3<Level, Vec3, BlockState, E> entity,
-            BlockBehaviour.Properties properties) {
-        return registerWithEntity(id, () -> block.apply(properties, (level, position, blockState, builder1) -> entity.apply(level, position, blockState)));
-    }
+//    static <B extends AbstractBoulderBlock<? extends E>, E extends AbstractBoulderEntity> DeferredBlock<B> registerBoulder(
+//            String id,
+//            BiFunction<AbstractBoulderBlock.BoulderEntityFactory<E>, BoulderEntity.Builder, B> block,
+//            AbstractBoulderBlock.BoulderEntityFactory<E> entity,
+//            BoulderEntity.Builder builder) {
+//        return registerWithEntity(id, () -> block.apply(entity, builder));
+//    }
+//
+//    static <B extends AbstractBoulderBlock<? extends E>, E extends AbstractBoulderEntity> DeferredBlock<B> registerBoulder(
+//            String id,
+//            Function3<BlockBehaviour.Properties, AbstractBoulderBlock.BoulderEntityFactory<E>, BoulderEntity.Builder, B> block,
+//            AbstractBoulderBlock.BoulderEntityFactory<E> entity,
+//            BlockBehaviour.Properties properties,
+//            BoulderEntity.Builder builder) {
+//        return registerWithEntity(id, () -> block.apply(properties, entity, builder));
+//    }
+//
+//    static <B extends AbstractBoulderBlock<? extends E>, E extends AbstractBoulderEntity> DeferredBlock<B> baseRegisterBoulder(
+//            String id,
+//            Function<AbstractBoulderBlock.BoulderEntityFactory<E>, B> block,
+//            Function3<Level, Vec3, BlockState, E> entity) {
+//        return registerWithEntity(id, () -> block.apply(
+//                (level, position, blockState, builder) -> entity.apply(level, position, blockState)
+//        ));
+//    }
+//
+//    static <B extends AbstractBoulderBlock<? extends E>, E extends AbstractBoulderEntity> DeferredBlock<B> baseRegisterBoulder(
+//            String id,
+//            BiFunction<BlockBehaviour.Properties, AbstractBoulderBlock.BoulderEntityFactory<E>, B> block,
+//            Function3<Level, Vec3, BlockState, E> entity,
+//            BlockBehaviour.Properties properties) {
+//        return registerWithEntity(id, () -> block.apply(properties, (level, position, blockState, builder1) -> entity.apply(level, position, blockState)));
+//    }
 }

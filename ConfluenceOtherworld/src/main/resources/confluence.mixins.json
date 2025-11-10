@@ -110,7 +110,6 @@
         "level.WorldOptionsMixin"
     ],
     "client": [
-        "accessor.KeyMappingAccessor",
         "client.BlockClientMixin",
         "client.ClientItemStackMixin",
         "client.ClientLevelMixin",

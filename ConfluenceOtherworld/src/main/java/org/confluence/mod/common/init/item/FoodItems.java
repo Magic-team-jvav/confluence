@@ -22,8 +22,6 @@ import org.confluence.mod.common.item.food.BaseFoodItem;
 import org.confluence.mod.common.item.food.ModFoodProperties;
 import org.confluence.mod.common.item.food.ModFoodPropertiesBuilder.EffectData;
 
-import java.util.Collections;
-import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -308,13 +306,12 @@ public class FoodItems {
             builder -> builder.rarity(ModRarity.GREEN).food(ModFoodProperties.noEffectProperties(2, 0.4f))
                     .duration(d -> 15).useAnim(u -> UseAnim.EAT).eatingSound(s -> SoundEvents.GENERIC_EAT).isFireResistant());
     public static final DeferredItem<BaseFoodItem> HONEYFIN = registerFood("honeyfin",
-            builder -> builder.rarity(ModRarity.BLUE)
-                    .food(new FoodProperties(1, 1, true, 1,
-                            Optional.empty(), Collections.singletonList(
-                            new FoodProperties.PossibleEffect(() -> new MobEffectInstance(ModEffects.POTION_SICKNESS, 1200), 1.0F))))
-                    .setFinishUsingCallback((k, v, s) -> {
-                        if (!s.level().isClientSide) s.heal(24);
-                    }));
+            builder -> builder.rarity(ModRarity.BLUE).food(ModFoodProperties.noEffectProperties(1, 1))
+                    .setFinishUsingCallback((k, l, p) -> {
+                        if (!l.isClientSide && !p.hasEffect(ModEffects.POTION_SICKNESS)) {
+                            p.heal(24);
+                            p.addEffect(new MobEffectInstance(ModEffects.POTION_SICKNESS, 1200));
+                        }}));
     //赞助
     public static final DeferredItem<BaseFoodItem> PINK_COLA = registerToolTipFood("pink_cola",
             builder -> builder.rarity(ModRarity.EXPERT).food(ModFoodProperties.hasEffectProperties(1, 0.5f,

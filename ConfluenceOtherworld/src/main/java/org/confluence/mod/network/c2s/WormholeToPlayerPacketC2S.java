@@ -7,15 +7,16 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
+import org.confluence.lib.network.IPacketC2S;
 import org.confluence.lib.util.LibStreamCodecUtils;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.CommonConfigs;
 import org.confluence.mod.common.init.item.PotionItems;
-import org.confluence.mod.network.IPacket;
 
 import java.util.UUID;
 
 public record WormholeToPlayerPacketC2S(UUID playerId, ByMod byMod) implements IPacketC2S {
-    public static final Type<WormholeToPlayerPacketC2S> TYPE = IPacket.createType("wormhole_to_player");
+    public static final Type<WormholeToPlayerPacketC2S> TYPE = Confluence.createType("wormhole_to_player");
     public static final StreamCodec<FriendlyByteBuf, WormholeToPlayerPacketC2S> STREAM_CODEC = StreamCodec.composite(
             LibStreamCodecUtils.UUID, WormholeToPlayerPacketC2S::playerId,
             ByMod.STREAM_CODEC, WormholeToPlayerPacketC2S::byMod,

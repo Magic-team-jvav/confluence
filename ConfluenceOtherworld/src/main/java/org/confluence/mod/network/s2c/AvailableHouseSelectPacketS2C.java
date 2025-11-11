@@ -7,14 +7,15 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
+import org.confluence.lib.network.IPacketS2C;
 import org.confluence.lib.util.LibStreamCodecUtils;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.hud.HouseSelectHUD;
 import org.confluence.mod.common.data.saved.NPCSpawner;
-import org.confluence.mod.network.IPacket;
 import org.confluence.terraentity.init.entity.TENpcEntities;
 
 public record AvailableHouseSelectPacketS2C(boolean[] available) implements IPacketS2C {
-    public static final Type<AvailableHouseSelectPacketS2C> TYPE = IPacket.createType("available_house_select");
+    public static final Type<AvailableHouseSelectPacketS2C> TYPE = Confluence.createType("available_house_select");
     public static final int size = 25;
     public static final int traveling_merchant = 20;
     public static final StreamCodec<ByteBuf, AvailableHouseSelectPacketS2C> STREAM_CODEC = LibStreamCodecUtils.booleanArray(size)

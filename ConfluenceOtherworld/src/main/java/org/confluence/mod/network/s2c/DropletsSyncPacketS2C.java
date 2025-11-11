@@ -10,15 +10,16 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ChunkPos;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.confluence.lib.network.IPacketS2C;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.DropletsHandler;
-import org.confluence.mod.network.IPacket;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public record DropletsSyncPacketS2C(Map<ChunkPos, Map<BlockPos, ParticleOptions>> data) implements IPacketS2C {
-    public static final Type<DropletsSyncPacketS2C> TYPE = IPacket.createType("droplets_sync");
+    public static final Type<DropletsSyncPacketS2C> TYPE = Confluence.createType("droplets_sync");
     public static final StreamCodec<RegistryFriendlyByteBuf, DropletsSyncPacketS2C> STREAM_CODEC = new StreamCodec<>() {
         @Override
         public DropletsSyncPacketS2C decode(RegistryFriendlyByteBuf buffer) {

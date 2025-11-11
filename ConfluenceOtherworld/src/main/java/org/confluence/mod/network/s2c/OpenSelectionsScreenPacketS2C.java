@@ -7,15 +7,16 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.confluence.lib.network.IPacketS2C;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.client.gui.SelectionsScreen;
-import org.confluence.mod.network.IPacket;
 
 /**
  * @see SelectionsScreen
  * @see org.confluence.mod.network.c2s.ApplySelectionPacketC2S
  */
 public record OpenSelectionsScreenPacketS2C(Component[] selections, boolean[] enables) implements IPacketS2C {
-    public static final Type<OpenSelectionsScreenPacketS2C> TYPE = IPacket.createType("open_selections_screen_s2c");
+    public static final Type<OpenSelectionsScreenPacketS2C> TYPE = Confluence.createType("open_selections_screen_s2c");
     public static final StreamCodec<RegistryFriendlyByteBuf, OpenSelectionsScreenPacketS2C> STREAM_CODEC = new StreamCodec<>() {
         @Override
         public OpenSelectionsScreenPacketS2C decode(RegistryFriendlyByteBuf buffer) {

@@ -8,12 +8,13 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.confluence.lib.network.IPacketC2S;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.mixed.IMobEffectInstance;
-import org.confluence.mod.network.IPacket;
 import org.confluence.mod.util.ModUtils;
 
 public record SwitchEffectEnabledPackedC2S(Holder<MobEffect> effect, boolean enabled) implements IPacketC2S {
-    public static final Type<SwitchEffectEnabledPackedC2S> TYPE = IPacket.createType("switch_effect_enabled");
+    public static final Type<SwitchEffectEnabledPackedC2S> TYPE = Confluence.createType("switch_effect_enabled");
     public static final StreamCodec<RegistryFriendlyByteBuf, SwitchEffectEnabledPackedC2S> STREAM_CODEC = StreamCodec.composite(
             MobEffect.STREAM_CODEC, SwitchEffectEnabledPackedC2S::effect,
             ByteBufCodecs.BOOL, SwitchEffectEnabledPackedC2S::enabled,

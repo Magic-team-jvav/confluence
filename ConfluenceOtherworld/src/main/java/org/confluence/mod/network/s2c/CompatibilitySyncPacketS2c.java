@@ -8,14 +8,15 @@ import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
+import org.confluence.lib.network.IPacketS2C;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.CompatibilityHandler;
 import org.confluence.mod.common.CommonConfigs;
-import org.confluence.mod.network.IPacket;
 import org.jetbrains.annotations.NotNull;
 
 public record CompatibilitySyncPacketS2c(int data) implements IPacketS2C {
     private static ModConfigSpec.BooleanValue[] configs;
-    public static final Type<CompatibilitySyncPacketS2c> TYPE = IPacket.createType("compatibility_sync");
+    public static final Type<CompatibilitySyncPacketS2c> TYPE = Confluence.createType("compatibility_sync");
     public static final StreamCodec<ByteBuf, CompatibilitySyncPacketS2c> STREAM_CODEC = ByteBufCodecs.VAR_INT.map(CompatibilitySyncPacketS2c::new, CompatibilitySyncPacketS2c::data);
 
     @Override

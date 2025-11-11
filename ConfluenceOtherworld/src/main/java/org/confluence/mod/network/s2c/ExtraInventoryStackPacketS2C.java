@@ -9,11 +9,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
+import org.confluence.lib.network.IPacketS2C;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ExtraInventory;
-import org.confluence.mod.network.IPacket;
 
 public record ExtraInventoryStackPacketS2C(long packedData, ItemStack itemStack) implements IPacketS2C {
-    public static final Type<ExtraInventoryStackPacketS2C> TYPE = IPacket.createType("extra_inventory_stack");
+    public static final Type<ExtraInventoryStackPacketS2C> TYPE = Confluence.createType("extra_inventory_stack");
     public static final StreamCodec<RegistryFriendlyByteBuf, ExtraInventoryStackPacketS2C> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.VAR_LONG, ExtraInventoryStackPacketS2C::packedData,
             ItemStack.OPTIONAL_STREAM_CODEC, ExtraInventoryStackPacketS2C::itemStack,

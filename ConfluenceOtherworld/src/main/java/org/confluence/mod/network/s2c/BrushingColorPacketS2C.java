@@ -11,18 +11,19 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ChunkPos;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
+import org.confluence.lib.network.IPacketS2C;
 import org.confluence.lib.util.LibUtils;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.client.effect.textures.LocalBrushData;
 import org.confluence.mod.common.attachment.ChunkBrushData;
 import org.confluence.mod.common.data.saved.BrushData;
-import org.confluence.mod.network.IPacket;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Hashtable;
 import java.util.Map;
 
 public record BrushingColorPacketS2C(ChunkPos chunkPos, BrushData data) implements IPacketS2C {
-    public static final Type<BrushingColorPacketS2C> TYPE = IPacket.createType("brushing_color");
+    public static final Type<BrushingColorPacketS2C> TYPE = Confluence.createType("brushing_color");
     public static final StreamCodec<RegistryFriendlyByteBuf, BrushingColorPacketS2C> STREAM_CODEC = new StreamCodec<>() {
         @Override
         public BrushingColorPacketS2C decode(RegistryFriendlyByteBuf buffer) {

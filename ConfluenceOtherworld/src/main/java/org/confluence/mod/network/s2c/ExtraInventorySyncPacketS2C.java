@@ -6,12 +6,13 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.confluence.lib.network.IPacketS2C;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.common.attachment.ExtraInventory;
-import org.confluence.mod.network.IPacket;
 
 public record ExtraInventorySyncPacketS2C(int entityId,
                                           ExtraInventory extraInventory) implements IPacketS2C {
-    public static final Type<ExtraInventorySyncPacketS2C> TYPE = IPacket.createType("extra_inventory_sync");
+    public static final Type<ExtraInventorySyncPacketS2C> TYPE = Confluence.createType("extra_inventory_sync");
     public static final StreamCodec<RegistryFriendlyByteBuf, ExtraInventorySyncPacketS2C> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.VAR_INT, ExtraInventorySyncPacketS2C::entityId,
             ExtraInventory.STREAM_CODEC, ExtraInventorySyncPacketS2C::extraInventory,

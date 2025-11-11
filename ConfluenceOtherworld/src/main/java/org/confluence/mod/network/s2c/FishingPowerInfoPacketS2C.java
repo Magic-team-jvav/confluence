@@ -6,12 +6,13 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.confluence.lib.network.IPacketS2C;
+import org.confluence.mod.Confluence;
 import org.confluence.mod.client.handler.ClientPacketHandler;
-import org.confluence.mod.network.IPacket;
 import org.confluence.mod.util.PlayerUtils;
 
 public record FishingPowerInfoPacketS2C(float value) implements IPacketS2C {
-    public static final Type<FishingPowerInfoPacketS2C> TYPE = IPacket.createType("fishing_power_info");
+    public static final Type<FishingPowerInfoPacketS2C> TYPE = Confluence.createType("fishing_power_info");
     public static final StreamCodec<ByteBuf, FishingPowerInfoPacketS2C> STREAM_CODEC = ByteBufCodecs.FLOAT.map(FishingPowerInfoPacketS2C::new, FishingPowerInfoPacketS2C::value);
 
     @Override

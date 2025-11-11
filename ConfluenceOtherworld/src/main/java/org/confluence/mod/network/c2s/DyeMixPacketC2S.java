@@ -7,10 +7,11 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
-import org.confluence.mod.network.IPacket;
+import org.confluence.lib.network.IPacketC2S;
+import org.confluence.mod.Confluence;
 
 public record DyeMixPacketC2S(ItemStack stack) implements IPacketC2S {
-    public static final Type<DyeMixPacketC2S> TYPE = IPacket.createType("dye_mix");
+    public static final Type<DyeMixPacketC2S> TYPE = Confluence.createType("dye_mix");
     public static final StreamCodec<RegistryFriendlyByteBuf, DyeMixPacketC2S> STREAM_CODEC = ItemStack.OPTIONAL_STREAM_CODEC.map(DyeMixPacketC2S::new, DyeMixPacketC2S::stack);
 
     @Override

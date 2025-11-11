@@ -1221,7 +1221,7 @@ public class ModDataProvider {
                     )
             ));
             register(context, createModifierKey("common_overworld"), new BiomeModifiers.AddSpawnsBiomeModifier(
-                    snowyIcy,
+                    overworld,
                     List.of(
                             new MobSpawnSettings.SpawnerData(TEMonsterEntities.NYMPH.get(), 4, 1, 1),
                             new MobSpawnSettings.SpawnerData(TEAnimals.FAIRY.get(), 3, 1, 1),

@@ -5008,7 +5008,7 @@ public class ModChineseProvider extends LanguageProvider {
         addPotion(PotionItems.ARCHERY_POTION.get(), "箭术药水", "弓伤害提高10%，箭速度提高20%");
         addPotion(PotionItems.HEART_REACH_POTION.get(), "拾心药水", "扩大生命心的拾取范围");
         addPotion(PotionItems.GILLS_POTION.get(), "鱼鳃药水", "可在水中呼吸");
-        addPotion(PotionItems.INVISIBILITY_POTION.get(), "隐形药水", "隐身"); // 等待战斗药水实装后改功能和描述
+        addPotion(PotionItems.INVISIBILITY_POTION.get(), "隐形药水", "隐身并降低敌人的生成速度"); // 等待战斗药水实装后改功能
         addPotion(PotionItems.WORMHOLE_POTION.get(), "虫洞药水", "当玩家在地图上点击队友图标时将玩家传送至队友的位置处。");
         addPotion(PotionItems.MINING_POTION.get(), "挖矿药水", "挖矿速度提高25%");
         addPotion(PotionItems.RECALL_POTION.get(), "回忆药水", "将玩家传送到其重生点。");

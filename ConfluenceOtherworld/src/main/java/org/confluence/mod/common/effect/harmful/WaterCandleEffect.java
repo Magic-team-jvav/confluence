@@ -14,16 +14,16 @@ public class WaterCandleEffect extends MobEffect {
     public static final ResourceLocation WATER_CANDLE = Confluence.asResource("water_candle");
 
     public WaterCandleEffect() {
-        super(MobEffectCategory.HARMFUL, 0xFF0000);
-        addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_SPEED_MULTIPLIER, WATER_CANDLE, AttributeModifier.Operation.ADD_VALUE, amplifier -> (amplifier + 1) * 0.33);
-        addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_COUNT_MULTIPLIER, WATER_CANDLE, AttributeModifier.Operation.ADD_VALUE, amplifier -> (amplifier + 1) * 0.50);
+        super(MobEffectCategory.HARMFUL, 0xa8d5e6);
+        addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_SPEED_MULTIPLIER, WATER_CANDLE, AttributeModifier.Operation.ADD_VALUE, amplifier -> (amplifier + 1) * 0.17);
+        addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_COUNT_MULTIPLIER, WATER_CANDLE, AttributeModifier.Operation.ADD_VALUE, amplifier -> (amplifier + 1) * 0.25);
     }
 
     @Override
     public boolean applyEffectTick(LivingEntity livingEntity, int amplifier) {
         AttributeInstance instance = livingEntity.getAttributes().getInstance(ConfluenceMagicLib.MOB_SPAWN_SPEED_MULTIPLIER);
         if (instance != null) {
-            double amount = (amplifier + 1) * (livingEntity.getY() >= OverworldUtils.getSpaceY() ? 1.67 : 0.33);
+            double amount = (amplifier + 1) * (livingEntity.getY() >= OverworldUtils.getSpaceY() ? 0.8 : 0.17);
             AttributeModifier modifier = instance.getModifier(WATER_CANDLE);
             if (modifier == null || modifier.amount() != amount) {
                 instance.addOrReplacePermanentModifier(new AttributeModifier(WATER_CANDLE, amount, AttributeModifier.Operation.ADD_VALUE));

@@ -2586,7 +2586,7 @@ public class ModEnglishProvider extends LanguageProvider {
         addPotion(PotionItems.ARCHERY_POTION.get(), "10% increased bow damage and 20% increased arrow speed");
         addPotion(PotionItems.HEART_REACH_POTION.get(), "Increased heart pickup range");
         addPotion(PotionItems.GILLS_POTION.get(), "Breathe water instead of air");
-        addPotion(PotionItems.INVISIBILITY_POTION.get(), "Grants invisibility");
+        addPotion(PotionItems.INVISIBILITY_POTION.get(), "Grants invisibility and lowers the spawn rate of enemies");
         addPotion(PotionItems.WORMHOLE_POTION.get(), "Teleports the player to a teammate when they click their icon on the map.");
         addPotion(PotionItems.MINING_POTION.get(), "Increases mining speed by 25%");
         addPotion(PotionItems.RECALL_POTION.get(), "Teleports you home");

@@ -92,8 +92,8 @@ public final class ModEffects {
             .addAttributeModifier(TEAttributes.MINION_CAPACITY, Confluence.asResource("bewitched"), 1.0, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredHolder<MobEffect, MobEffect> AMMO_BOX = EFFECTS.register("ammo_box", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x119911));
     public static final DeferredHolder<MobEffect, MobEffect> COZY_FIRE = EFFECTS.register("cozy_fire", CozyFireEffect::new);
-    public static final DeferredHolder<MobEffect, MobEffect> HUNGER_DELAYED = EFFECTS.register("hunger_delayed", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xAA0099));
-    public static final DeferredHolder<MobEffect, MobEffect> DELICIOUS = EFFECTS.register("delicious", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xAA0099));
+    public static final DeferredHolder<MobEffect, MobEffect> HUNGER_DELAYED = EFFECTS.register("hunger_delayed", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xdd6e20));
+    public static final DeferredHolder<MobEffect, MobEffect> DELICIOUS = EFFECTS.register("delicious", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xf25778));
     public static final DeferredHolder<MobEffect, MobEffect> CHOKING = EFFECTS.register("choking", () -> new PublicMobEffect(MobEffectCategory.HARMFUL, 0x708090)
             .addAttributeModifier(Attributes.MOVEMENT_SPEED, Confluence.asResource("choking"), -0.30F, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
     public static final DeferredHolder<MobEffect, MobEffect> MIDAS = EFFECTS.register("midas", () -> new PublicMobEffect(MobEffectCategory.HARMFUL, 0xFFAA00));
@@ -106,27 +106,27 @@ public final class ModEffects {
             .addAttributeModifier(TCAttributes.getMagicDamage(), Confluence.asResource("clairvoyance"), 0.05, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
             .addAttributeModifier(TCAttributes.getCriticalChance(), Confluence.asResource("clairvoyance"), 0.02, AttributeModifier.Operation.ADD_VALUE));
     public static final DeferredHolder<MobEffect, MobEffect> HOLY_PROTECTION = EFFECTS.register("holy_protection", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x8888FF));
-    public static final DeferredHolder<MobEffect, MobEffect> TITANIUM_BARRIER = EFFECTS.register("titanium_barrier", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x777777));
+    public static final DeferredHolder<MobEffect, MobEffect> TITANIUM_BARRIER = EFFECTS.register("titanium_barrier", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xb9bfbf));
     public static final DeferredHolder<MobEffect, MobEffect> FROSTBITE = EFFECTS.register("frostbite", FrostbiteEffect::new);
     public static final DeferredHolder<MobEffect, MobEffect> SHADOWFLAME = EFFECTS.register("shadowflame", ShadowflameEffect::new);
-    public static final DeferredHolder<MobEffect, MobEffect> SUMMONING = EFFECTS.register("summoning", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x888888)
+    public static final DeferredHolder<MobEffect, MobEffect> SUMMONING = EFFECTS.register("summoning", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x9cf257)
             .addAttributeModifier(TEAttributes.MINION_CAPACITY, Confluence.asResource("summoning"), 1, AttributeModifier.Operation.ADD_VALUE));
 
     public static final DeferredHolder<MobEffect, MobEffect> WATER_CANDLE = EFFECTS.register("water_candle", WaterCandleEffect::new);
-    public static final DeferredHolder<MobEffect, MobEffect> PEACE_CANDLE = EFFECTS.register("peace_candle", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFF0000)
-            .addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_SPEED_MULTIPLIER, Confluence.asResource("peace_candle"), AttributeModifier.Operation.ADD_VALUE, (i) -> (i + 1) * -0.23)
+    public static final DeferredHolder<MobEffect, MobEffect> PEACE_CANDLE = EFFECTS.register("peace_candle", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xda9ae0)
+            .addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_SPEED_MULTIPLIER, Confluence.asResource("peace_candle"), AttributeModifier.Operation.ADD_VALUE, (i) -> (i + 1) * -0.26)
             .addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_COUNT_MULTIPLIER, Confluence.asResource("peace_candle"), AttributeModifier.Operation.ADD_VALUE, (i) -> (i + 1) * -0.30));
-    public static final DeferredHolder<MobEffect, MobEffect> HAPPY = EFFECTS.register("happy", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFF0000)
+    public static final DeferredHolder<MobEffect, MobEffect> HAPPY = EFFECTS.register("happy", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xe6ad25)
             .addAttributeModifier(Attributes.MOVEMENT_SPEED, Confluence.asResource("happy_doubling"), AttributeModifier.Operation.ADD_MULTIPLIED_BASE, (i) -> (i + 1) * 1.1)
             .addAttributeModifier(Attributes.MOVEMENT_SPEED, Confluence.asResource("happy"), AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL, (i) -> (i + 1) * 0.1)
-            .addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_SPEED_MULTIPLIER, Confluence.asResource("happy"), AttributeModifier.Operation.ADD_VALUE, (i) -> (i + 1) * -0.17)
+            .addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_SPEED_MULTIPLIER, Confluence.asResource("happy"), AttributeModifier.Operation.ADD_VALUE, (i) -> (i + 1) * -0.13)
             .addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_COUNT_MULTIPLIER, Confluence.asResource("happy"), AttributeModifier.Operation.ADD_VALUE, (i) -> (i + 1) * -0.20));
-    public static final DeferredHolder<MobEffect, MobEffect> CALM = EFFECTS.register("calm", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFF0000)
-            .addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_SPEED_MULTIPLIER, Confluence.asResource("calm"), AttributeModifier.Operation.ADD_VALUE, (i) -> (i + 1) * -0.39)
-            .addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_COUNT_MULTIPLIER, Confluence.asResource("calm"), AttributeModifier.Operation.ADD_VALUE, (i) -> (i + 1) * -0.40));
-    public static final DeferredHolder<MobEffect, MobEffect> BATTLE = EFFECTS.register("battle", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0xFF0000)
-            .addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_SPEED_MULTIPLIER, Confluence.asResource("battle"), AttributeModifier.Operation.ADD_MULTIPLIED_BASE, (i) -> (i + 1) * 2)
-            .addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_COUNT_MULTIPLIER, Confluence.asResource("battle"), AttributeModifier.Operation.ADD_MULTIPLIED_BASE, (i) -> (i + 1) * 2));
+    public static final DeferredHolder<MobEffect, MobEffect> CALM = EFFECTS.register("calm", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x6469ca)
+            .addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_SPEED_MULTIPLIER, Confluence.asResource("calm"), AttributeModifier.Operation.ADD_VALUE, (i) -> (i + 1) * -0.49)
+            .addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_COUNT_MULTIPLIER, Confluence.asResource("calm"), AttributeModifier.Operation.ADD_VALUE, (i) -> (i + 1) * -0.5)); //对比初始值多-0.1来拟合效果，数值暂定
+    public static final DeferredHolder<MobEffect, MobEffect> BATTLE = EFFECTS.register("battle", () -> new PublicMobEffect(MobEffectCategory.BENEFICIAL, 0x8b64ca)
+            .addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_SPEED_MULTIPLIER, Confluence.asResource("battle"), AttributeModifier.Operation.ADD_MULTIPLIED_BASE, (i) -> (i + 1) * 0.5)  //0.5 就大概是翻倍了，数值暂定
+            .addAttributeModifier(ConfluenceMagicLib.MOB_SPAWN_COUNT_MULTIPLIER, Confluence.asResource("battle"), AttributeModifier.Operation.ADD_MULTIPLIED_BASE, (i) -> (i + 1) * 0.5));
 
 
     // 药剂

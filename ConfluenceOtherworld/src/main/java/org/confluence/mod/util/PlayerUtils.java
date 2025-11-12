@@ -474,4 +474,10 @@ public final class PlayerUtils {
             }
         }
     }
+
+    public static void flushPrimitiveValueData(ServerPlayer player) {
+        ManaStorage.of(player).flushAbility(player);
+        FishingPowerInfoPacketS2C.sendAndGet(player);
+        VisibilityPacketS2C.sendEcho(player);
+    }
 }

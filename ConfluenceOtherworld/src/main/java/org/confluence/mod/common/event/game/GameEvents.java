@@ -31,7 +31,6 @@ import org.confluence.mod.StartupConfigs;
 import org.confluence.mod.api.event.*;
 import org.confluence.mod.api.event.bestiary.ToBeBestiaryEntryEvent;
 import org.confluence.mod.common.attachment.ExtraInventory;
-import org.confluence.mod.common.attachment.ManaStorage;
 import org.confluence.mod.common.attachment.PlayerSpecialData;
 import org.confluence.mod.common.component.prefix.PrefixComponent;
 import org.confluence.mod.common.data.AchievementOffsetLoader;
@@ -53,7 +52,6 @@ import org.confluence.mod.mixed.IMinecraftServer;
 import org.confluence.mod.mixed.IWorldOptions;
 import org.confluence.mod.network.s2c.AchievementOffsetSyncPacketS2C;
 import org.confluence.mod.network.s2c.ExtraInventorySyncPacketS2C;
-import org.confluence.mod.network.s2c.FishingPowerInfoPacketS2C;
 import org.confluence.mod.network.s2c.VisibilityPacketS2C;
 import org.confluence.mod.util.AchievementUtils;
 import org.confluence.mod.util.PlayerUtils;
@@ -72,9 +70,14 @@ public final class GameEvents {
     @SubscribeEvent
     public static void afterAccessoryAbilitiesFlushed(AfterAccessoryAbilitiesFlushedEvent event) {
         if (event.getEntity() instanceof ServerPlayer player) {
-            ManaStorage.of(player).flushAbility(player);
-            FishingPowerInfoPacketS2C.sendAndGet(player);
-            VisibilityPacketS2C.sendEcho(player);
+            PlayerUtils.flushPrimitiveValueData(player);
+        }
+    }
+
+    @SubscribeEvent
+    public static void afterFlushArmorSetBonus(AfterFlushArmorSetBonusEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player) {
+            PlayerUtils.flushPrimitiveValueData(player);
         }
     }
 

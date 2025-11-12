@@ -207,7 +207,7 @@ public final class LivingEntityEvents {
         }
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOW)
     public static void livingDamage$Pre(LivingDamageEvent.Pre event) {
         float amount = event.getNewDamage();
         if (amount <= 0.0F) return; // 防止莫名的负数伤害
@@ -218,7 +218,6 @@ public final class LivingEntityEvents {
         @Nullable Entity attacker = damageSource.getEntity();
 
         amount = ArcheryEffect.apply(victim, damageSource, amount);
-        amount = ManaSicknessEffect.apply(damageSource, amount);
         amount = TheConstant.applyAttackDamage(attacker, amount);
 
         ModUtils.applyBrainOfCthulhuDebuff(level, attacker, victim);
@@ -244,6 +243,9 @@ public final class LivingEntityEvents {
         if (weapon != null && weapon.getItem() instanceof BaseSwordItem sword) {
             sword.applyHitEffects(weapon, attacker, victim, damageSource);
         }
+
+        amount = ManaSicknessEffect.apply(damageSource, amount);
+
         // 暴击判定和伤害显示
         boolean crit = false;
         if (!TCAttributes.hasCustomAttribute(TCAttributes.CRIT_CHANCE) && attacker instanceof Player player) {

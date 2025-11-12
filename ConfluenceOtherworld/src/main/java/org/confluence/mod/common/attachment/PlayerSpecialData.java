@@ -101,7 +101,17 @@ public class PlayerSpecialData extends PrimitiveValueHolder {
         ItemStack legs = inventory.getArmor(EquipmentSlot.LEGS.getIndex());
         ItemStack feet = inventory.getArmor(EquipmentSlot.FEET.getIndex());
         ArmorSetBonusKey key = ArmorSetBonusKey.of(head, chest, legs, feet);
-        if (armorSetBonusKey.equals(key)) return;
+        if (armorSetBonusKey.equals(key)) {
+            ArmorSetBonusKey lastKey = ArmorSetBonusKey.of(
+                    player.getLastArmorItem(EquipmentSlot.HEAD),
+                    player.getLastArmorItem(EquipmentSlot.CHEST),
+                    player.getLastArmorItem(EquipmentSlot.LEGS),
+                    player.getLastArmorItem(EquipmentSlot.FEET)
+            );
+            if (lastKey.equals(key)) {
+                return;
+            }
+        }
         AttributeMap attributes = player.getAttributes();
 
         for (Map.Entry<Holder<Attribute>, Collection<AttributeModifier>> entry : getValue(TCItems.ATTRIBUTES).asMap().entrySet()) {

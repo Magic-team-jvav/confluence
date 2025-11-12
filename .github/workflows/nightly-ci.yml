@@ -60,14 +60,6 @@ jobs:
           files: ./ConfluenceOtherworld/build/libs/*.jar
           tag_name: nightly
           name: Nightly Build
-          body: |
-            **Nightly Build - $(date +%Y-%m-%d)**
-            
-            This is an automated nightly build. Use at your own risk.
-            
-            Features:
-            - Latest changes from development branch
-            - May contain bugs and unfinished features
           prerelease: true
           make_latest: true
         env:
